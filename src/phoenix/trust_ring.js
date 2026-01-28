@@ -185,23 +185,33 @@ const VERSION_PORTER_KEY = Phoenix.isTestWindow ? "VERSION_PORTER_TEST" : "VERSI
 const { key, iv } = _selectKeys();
 
 async function setCredential(credKey, secret) {
-    if(!window.__TAURI__){
-        throw new Error("Phoenix API key can only be set in tauri shell!");
+    if(!window.__IS_NATIVE_SHELL__){
+        throw new Error("Phoenix API key can only be set in native shell!");
     }
     if(!credKey){
         throw new Error("credKey is required to set credential!");
     }
-    return window.__TAURI__.tauri.invoke("store_credential", {scopeName: credKey, secretVal: secret});
+    if(window.__TAURI__) {
+        return window.__TAURI__.tauri.invoke("store_credential", {scopeName: credKey, secretVal: secret});
+    }
+    if(window.__ELECTRON__) {
+        return window.electronAPI.storeCredential(credKey, secret);
+    }
 }
 
 async function getCredential(credKey) {
-    if(!window.__TAURI__){
-        throw new Error("Phoenix API key can only be get in tauri shell!");
+    if(!window.__IS_NATIVE_SHELL__){
+        throw new Error("Phoenix API key can only be get in native shell!");
     }
     if(!credKey){
         throw new Error("credKey is required to get credential!");
     }
-    const encryptedKey = await window.__TAURI__.tauri.invoke("get_credential", {scopeName: credKey});
+    let encryptedKey;
+    if(window.__TAURI__) {
+        encryptedKey = await window.__TAURI__.tauri.invoke("get_credential", {scopeName: credKey});
+    } else if(window.__ELECTRON__) {
+        encryptedKey = await window.electronAPI.getCredential(credKey);
+    }
     if(!encryptedKey){
         return null;
     }
@@ -209,13 +219,18 @@ async function getCredential(credKey) {
 }
 
 async function removeCredential(credKey) {
-    if(!window.__TAURI__){
-        throw new Error("Phoenix API key can only be set in tauri shell!");
+    if(!window.__IS_NATIVE_SHELL__){
+        throw new Error("Phoenix API key can only be removed in native shell!");
     }
     if(!credKey){
         throw new Error("credKey is required to remove credential!");
     }
-    return window.__TAURI__.tauri.invoke("delete_credential", {scopeName: credKey});
+    if(window.__TAURI__) {
+        return window.__TAURI__.tauri.invoke("delete_credential", {scopeName: credKey});
+    }
+    if(window.__ELECTRON__) {
+        return window.electronAPI.deleteCredential(credKey);
+    }
 }
 
 let _dismatled = false;
@@ -231,25 +246,34 @@ async function dismantleKeyring() {
         console.error("Invalid kernal keys supplied to shutdown. Ignoring kernal trust reset at shutdown.");
         return;
     }
-    if(!window.__TAURI__){
+    if(!window.__IS_NATIVE_SHELL__){
         return;
     }
-    return window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", {key, iv});
+    if(window.__TAURI__) {
+        return window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", {key, iv});
+    }
+    if(window.__ELECTRON__) {
+        return window.electronAPI.removeTrustWindowAesKey(key, iv);
+    }
 }
 
 export async function initTrustRing() {
-    if(!window.__TAURI__){
+    if(!window.__IS_NATIVE_SHELL__){
         return;
     }
     // this will only work once in a window unless dismantleKeyring is called. So this is safe as
     // a public export as essentially this is a fn that only works in the boot and shutdown phase.
-    await window.__TAURI__.tauri.invoke("trust_window_aes_key", {key, iv});
+    if(window.__TAURI__) {
+        await window.__TAURI__.tauri.invoke("trust_window_aes_key", {key, iv});
+    } else if(window.__ELECTRON__) {
+        await window.electronAPI.trustWindowAesKey(key, iv);
+    }
 
-    _portCredentials();
+    await _portCredentials();
 }
 async function reinstallCreds() {
-    if(!window.__TAURI__){
-        throw new Error("reinstallCreds can only be called in tauri shell!");
+    if(!window.__IS_NATIVE_SHELL__){
+        throw new Error("reinstallCreds can only be called in native shell!");
     }
     // Read current credential values
     const apiKey = await getCredential(CRED_KEY_API);
