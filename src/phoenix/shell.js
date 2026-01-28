@@ -85,8 +85,21 @@ async function openURLInPhoenixWindow(url, {
             acceptFirstMouse: acceptFirstMouse === undefined ? true : acceptFirstMouse,
             fileDropEnabled: false
         });
-        tauriWindow.isTauriWindow = true;
+        tauriWindow.isNativeWindow = true;
         return tauriWindow;
+    }
+    if(window.__ELECTRON__){
+        const label = await window.electronAPI.createPhoenixWindow(url, {
+            windowTitle,
+            fullscreen,
+            resizable: resizable === undefined ? true : resizable,
+            height: height || defaultHeight,
+            minHeight: minHeight || 600,
+            width: width || defaultWidth,
+            minWidth: minWidth || 800,
+            isExtension: _prefixPvt === PHOENIX_EXTENSION_WINDOW_PREFIX
+        });
+        return { label, isNativeWindow: true };
     }
     let features = 'toolbar=no,location=no, status=no, menubar=no, scrollbars=yes';
     features = `${features}, width=${width||defaultWidth}, height=${height||defaultHeight}`;
@@ -97,7 +110,7 @@ async function openURLInPhoenixWindow(url, {
         features = "";
     }
     const nativeWindow = window.open(url, '_blank', features);
-    nativeWindow.isTauriWindow = false;
+    nativeWindow.isNativeWindow = false;
     return nativeWindow;
 }
 
@@ -160,9 +173,14 @@ Phoenix.app = {
         let extensionWindowCount = 0;
         try{
             instanceCount = await Phoenix.app.getPhoenixInstanceCount();
-            const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
-            for(let tauriWindowLabel of allTauriWindowsLabels){
-                if(tauriWindowLabel && tauriWindowLabel.startsWith(PHOENIX_EXTENSION_WINDOW_PREFIX)) {
+            let allWindowLabels;
+            if(window.__TAURI__){
+                allWindowLabels = await window.__TAURI__.invoke('_get_window_labels');
+            } else if(window.__ELECTRON__){
+                allWindowLabels = await window.electronAPI.getWindowLabels();
+            }
+            for(let windowLabel of allWindowLabels){
+                if(windowLabel && windowLabel.startsWith(PHOENIX_EXTENSION_WINDOW_PREFIX)) {
                     extensionWindowCount ++;
                 }
             }
@@ -179,18 +197,30 @@ Phoenix.app = {
                     console.error(e);
                 }
             }
-            window.__TAURI__.process.exit(0);
+            if(window.__TAURI__){
+                window.__TAURI__.process.exit(0);
+            } else if(window.__ELECTRON__){
+                window.electronAPI.quitApp(0);
+            }
             return;
         }
-        window.__TAURI__.window.getCurrent().close();
+        if(window.__TAURI__){
+            window.__TAURI__.window.getCurrent().close();
+        } else if(window.__ELECTRON__){
+            window.electronAPI.closeWindow();
+        }
     },
     focusWindow: function () {
         if(!Phoenix.isNativeApp){
             return Promise.reject(new Error("focusWindow is not supported in browsers"));
         }
-        window.__TAURI__.window.getCurrent().setAlwaysOnTop(true);
-        window.__TAURI__.window.getCurrent().setFocus();
-        window.__TAURI__.window.getCurrent().setAlwaysOnTop(false);
+        if(window.__TAURI__){
+            window.__TAURI__.window.getCurrent().setAlwaysOnTop(true);
+            window.__TAURI__.window.getCurrent().setFocus();
+            window.__TAURI__.window.getCurrent().setAlwaysOnTop(false);
+        } else if(window.__ELECTRON__){
+            return window.electronAPI.focusWindow();
+        }
     },
     /**
      * Gets the commandline argument in desktop builds and null in browser builds.
@@ -456,21 +486,27 @@ Phoenix.app = {
             console.error("isPrimaryDesktopPhoenixWindow is not supported in browsers!");
             return true;
         }
-        const currentWindowLabel = window.__TAURI__.window.getCurrent().label;
+        let currentWindowLabel, allWindowLabels;
+        if(window.__TAURI__){
+            currentWindowLabel = window.__TAURI__.window.getCurrent().label;
+            allWindowLabels = await window.__TAURI__.invoke('_get_window_labels');
+        } else if(window.__ELECTRON__){
+            currentWindowLabel = await window.electronAPI.getCurrentWindowLabel();
+            allWindowLabels = await window.electronAPI.getWindowLabels();
+        }
         if(currentWindowLabel === 'main'){
             // main window if there will be the primary
             return true;
         }
-        const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
-        if(allTauriWindowsLabels.includes('main')){
-            // we are not main and there is a main window in tauri windows
+        if(allWindowLabels.includes('main')){
+            // we are not main and there is a main window
             return false;
         }
         // the main window has been closed and some other window is the primary now.
         // the one with the lowest label is primary
-        for(let tauriWindowLabel of allTauriWindowsLabels){
-            if(tauriWindowLabel && tauriWindowLabel.startsWith(PHOENIX_WINDOW_PREFIX) &&
-                currentWindowLabel !== tauriWindowLabel && currentWindowLabel > tauriWindowLabel) {
+        for(let windowLabel of allWindowLabels){
+            if(windowLabel && windowLabel.startsWith(PHOENIX_WINDOW_PREFIX) &&
+                currentWindowLabel !== windowLabel && currentWindowLabel > windowLabel) {
                 return false;
             }
         }
@@ -484,12 +520,17 @@ Phoenix.app = {
         if(!Phoenix.isNativeApp) {
             // there is no primary window concept in browsers. all are primary for now.
             console.error("getPhoenixInstanceCount is not supported in browsers!");
-            return true;
+            return 1;
         }
         let windowCount = 0;
-        const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
-        for(let tauriWindowLabel of allTauriWindowsLabels){
-            if(tauriWindowLabel && (tauriWindowLabel.startsWith(PHOENIX_WINDOW_PREFIX) || tauriWindowLabel === 'main')) {
+        let allWindowLabels;
+        if(window.__TAURI__){
+            allWindowLabels = await window.__TAURI__.invoke('_get_window_labels');
+        } else if(window.__ELECTRON__){
+            allWindowLabels = await window.electronAPI.getWindowLabels();
+        }
+        for(let windowLabel of allWindowLabels){
+            if(windowLabel && (windowLabel.startsWith(PHOENIX_WINDOW_PREFIX) || windowLabel === 'main')) {
                 windowCount ++;
             }
         }
