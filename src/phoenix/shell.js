@@ -299,7 +299,7 @@ Phoenix.app = {
         if(handlerFn){
             singleInstanceCLIHandler = handlerFn;
         }
-        if(Phoenix.isNativeApp){
+        if(window.__TAURI__){
             window.__TAURI__.event.listen("single-instance", ({payload})=> {
                 handlerFn(payload.args, payload.cwd);
             });
@@ -338,6 +338,13 @@ Phoenix.app = {
                     window.__TAURI__.event.emit('scheme-request-received', {fileURLArray: filesURLList});
                 });
             });
+        } else if(window.__ELECTRON__){
+            // Listen for single instance event from main process
+            window.electronAPI.onSingleInstance((payload) => {
+                handlerFn(payload.args, payload.cwd);
+            });
+            // macOS deep linking (scheme-request-received, get_mac_deep_link_requests) not implemented for Electron yet
+            // Implement macOS open-with handling when needed. we dont have a electron edge now in mac/windows.
         }
     },
     clipboardReadText: function () {
