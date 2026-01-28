@@ -642,7 +642,7 @@ function nodeLoader() {
                 if (Phoenix.platform === "win" && nodeSrcPath.startsWith('\\\\?\\')) {
                     nodeSrcPath = nodeSrcPath.slice(4);
                 }
-                if(Phoenix.platform === "linux") {
+                if(Phoenix.platform === "linux" && window.__TAURI__) {
                     // in linux installed distributions, src-node is present in the same dir as the executable.
                     const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
                     nodeSrcPath = `${window.path.dirname(cliArgs[0])}/src-node/index.js`;
