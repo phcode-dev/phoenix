@@ -637,6 +637,11 @@ function nodeLoader() {
 
         window.__TAURI__.path.resolveResource("src-node/index.js")
             .then(async nodeSrcPath=>{
+                // Strip Windows UNC prefix (\\?\) that Tauri adds on Windows
+                // Node 24 doesn't handle UNC paths correctly in module resolution
+                if (Phoenix.platform === "win" && nodeSrcPath.startsWith('\\\\?\\')) {
+                    nodeSrcPath = nodeSrcPath.slice(4);
+                }
                 if(Phoenix.platform === "linux") {
                     // in linux installed distributions, src-node is present in the same dir as the executable.
                     const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
