@@ -173,7 +173,9 @@
                   if(data && data.__fsError) {
                     throw new Error(data.message);
                   }
-                  return data;
+                  // fsReadFile returns binary data, decode to text
+                  const decoder = new TextDecoder("utf-8");
+                  return decoder.decode(data);
                 })
                 .catch(err => {
                   console.error("First boot detected or Failed to init storage from cache." +
