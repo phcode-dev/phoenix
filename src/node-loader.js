@@ -635,110 +635,216 @@ function nodeLoader() {
             nodeErrorLogCount = 0;
         }, NODE_ERROR_LOGS_RESET_INTERVAL);
 
-        window.__TAURI__.path.resolveResource("src-node/index.js")
-            .then(async nodeSrcPath=>{
-                // Strip Windows UNC prefix (\\?\) that Tauri adds on Windows
-                // Node 24 doesn't handle UNC paths correctly in module resolution
-                if (Phoenix.platform === "win" && nodeSrcPath.startsWith('\\\\?\\')) {
-                    nodeSrcPath = nodeSrcPath.slice(4);
+        async function _tauriNodeSetup() {
+            let nodeSrcPath = await window.__TAURI__.path.resolveResource("src-node/index.js");
+            // Strip Windows UNC prefix (\\?\) that Tauri adds on Windows
+            // Node 24 doesn't handle UNC paths correctly in module resolution
+            if (Phoenix.platform === "win" && nodeSrcPath.startsWith('\\\\?\\')) {
+                nodeSrcPath = nodeSrcPath.slice(4);
+            }
+            if(Phoenix.platform === "linux") {
+                // in linux installed distributions, src-node is present in the same dir as the executable.
+                const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+                nodeSrcPath = `${window.path.dirname(cliArgs[0])}/src-node/index.js`;
+            }
+            // node is designed such that it is not required at boot time to lower startup time.
+            // Keep this so to increase boot speed.
+            const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
+            const argsArray = isInspectEnabled() ? [`--inspect=${inspectPort}`, nodeSrcPath] : [nodeSrcPath, ''];
+            command = window.__TAURI__.shell.Command.sidecar('phnode', argsArray);
+            command.on('close', data => {
+                window.isNodeTerminated = true;
+                window.isNodeReady = false;
+                nodeTerminationResolve();
+                console.log(`PhNode: command finished with code ${data.code} and signal ${data.signal}`);
+                if(!resolved) {
+                    reject("PhNode: closed - Terminated.");
                 }
-                if(Phoenix.platform === "linux" && window.__TAURI__) {
-                    // in linux installed distributions, src-node is present in the same dir as the executable.
-                    const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
-                    nodeSrcPath = `${window.path.dirname(cliArgs[0])}/src-node/index.js`;
-                }
-                // node is designed such that it is not required at boot time to lower startup time.
-                // Keep this so to increase boot speed.
-                const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
-                const argsArray = isInspectEnabled() ? [`--inspect=${inspectPort}`, nodeSrcPath] : [nodeSrcPath, ''];
-                command = window.__TAURI__.shell.Command.sidecar('phnode', argsArray);
-                command.on('close', data => {
-                    window.isNodeTerminated = true;
-                    window.isNodeReady = false;
-                    nodeTerminationResolve();
-                    console.log(`PhNode: command finished with code ${data.code} and signal ${data.signal}`);
-                    if(!resolved) {
-                        reject("PhNode: closed - Terminated.");
-                    }
-                });
-                command.on('error', error => {
-                    window.isNodeTerminated = true;
-                    window.isNodeReady = false;
-                    nodeTerminationResolve();
-                    console.error(`PhNode: command error: "${error}"`);
-                    if(!resolved) {
-                        logger.reportError(error, `PhNode failed to start!`);
-                        reject("PhNode: closed - Terminated.");
-                    }
-                });
-                command.stdout.on('data', line => {
-                    if(line){
-                        if(line.startsWith(COMMAND_RESPONSE_PREFIX)){
-                            // its a js response object
-                            line = line.replace(COMMAND_RESPONSE_PREFIX, "");
-                            const jsonMsg = JSON.parse(line);
-                            pendingCommands[jsonMsg.commandID].resolve(jsonMsg.message);
-                            delete pendingCommands[jsonMsg.commandID];
-                        } else if(line.startsWith(COMMAND_ERROR_PREFIX)){
-                            // its a js response object
-                            line = line.replace(COMMAND_ERROR_PREFIX, "");
-                            const err = JSON.parse(line);
-                            logger.reportError(err, `PhNode ${err.type}:${err.code?err.code:''}`);
-                        } else {
-                            console.log(`PhNode: ${line}`);
-                        }
-                    }
-                });
-                command.stderr.on('data', line => {
-                    if(window.debugMode || nodeErrorLogCount < MAX_NODE_ERROR_LOGS_ALLOWED){
-                        // in release builds, too many node errors from file system/other sources can
-                        // happen, Eg. user opens a very large project and fs watchers goes bust.
-                        // if that happens, the app may get stuck logging large number of errors to console, so
-                        // we show atmost 10 error lines every 10 seconds in non-debug builds.
-                        console.error(`PhNode: ${line}`);
-                    }
-                    nodeErrorLogCount ++;
-                });
-                child = await command.spawn();
-
-                const execNode = function (commandCode, commandData) {
-                    if(window.isNodeTerminated){
-                        return Promise.reject("Node is terminated! Cannot execute: " + commandCode);
-                    }
-                    const newCommandID = commandID ++;
-                    child.write(JSON.stringify({
-                        commandCode: commandCode, commandID: newCommandID, commandData
-                    }) + "\n");
-                    let resolveP, rejectP;
-                    const promise = new Promise((resolve, reject) => { resolveP = resolve; rejectP=reject; });
-                    pendingCommands[newCommandID]= {resolve: resolveP, reject: rejectP};
-                    return promise;
-                };
-
-                window.PhNodeEngine.terminateNode = function () {
-                    if(!window.isNodeTerminated) {
-                        execNode(NODE_COMMANDS.TERMINATE);
-                    }
-                    return nodeTerminationPromise;
-                };
-                window.PhNodeEngine.getInspectPort = function () {
-                    return inspectPort;
-                };
-
-                execNode(NODE_COMMANDS.GET_ENDPOINTS)
-                    .then(message=>{
-                        fs.setNodeWSEndpoint(message.phoenixFSURL);
-                        fs.forceUseNodeWSEndpoint(true);
-                        setNodeWSEndpoint(message.phoenixNodeURL);
-                        KernalModeTrust.localAutoAuthURL = message.autoAuthURL;
-                        window.isNodeReady = true;
-                        resolve(message);
-                        // node is designed such that it is not required at boot time to lower startup time.
-                        // Keep this so to increase boot speed.
-                        window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;
-                    });
-                execNode(NODE_COMMANDS.SET_DEBUG_MODE, window.debugMode);
             });
+            command.on('error', error => {
+                window.isNodeTerminated = true;
+                window.isNodeReady = false;
+                nodeTerminationResolve();
+                console.error(`PhNode: command error: "${error}"`);
+                if(!resolved) {
+                    logger.reportError(error, `PhNode failed to start!`);
+                    reject("PhNode: closed - Terminated.");
+                }
+            });
+            command.stdout.on('data', line => {
+                if(line){
+                    if(line.startsWith(COMMAND_RESPONSE_PREFIX)){
+                        // its a js response object
+                        line = line.replace(COMMAND_RESPONSE_PREFIX, "");
+                        const jsonMsg = JSON.parse(line);
+                        pendingCommands[jsonMsg.commandID].resolve(jsonMsg.message);
+                        delete pendingCommands[jsonMsg.commandID];
+                    } else if(line.startsWith(COMMAND_ERROR_PREFIX)){
+                        // its a js response object
+                        line = line.replace(COMMAND_ERROR_PREFIX, "");
+                        const err = JSON.parse(line);
+                        logger.reportError(err, `PhNode ${err.type}:${err.code?err.code:''}`);
+                    } else {
+                        console.log(`PhNode: ${line}`);
+                    }
+                }
+            });
+            command.stderr.on('data', line => {
+                if(window.debugMode || nodeErrorLogCount < MAX_NODE_ERROR_LOGS_ALLOWED){
+                    // in release builds, too many node errors from file system/other sources can
+                    // happen, Eg. user opens a very large project and fs watchers goes bust.
+                    // if that happens, the app may get stuck logging large number of errors to console, so
+                    // we show atmost 10 error lines every 10 seconds in non-debug builds.
+                    console.error(`PhNode: ${line}`);
+                }
+                nodeErrorLogCount ++;
+            });
+            child = await command.spawn();
+
+            const execNode = function (commandCode, commandData) {
+                if(window.isNodeTerminated){
+                    return Promise.reject("Node is terminated! Cannot execute: " + commandCode);
+                }
+                const newCommandID = commandID ++;
+                child.write(JSON.stringify({
+                    commandCode: commandCode, commandID: newCommandID, commandData
+                }) + "\n");
+                let resolveP, rejectP;
+                const promise = new Promise((resolve, reject) => { resolveP = resolve; rejectP=reject; });
+                pendingCommands[newCommandID]= {resolve: resolveP, reject: rejectP};
+                return promise;
+            };
+
+            window.PhNodeEngine.terminateNode = function () {
+                if(!window.isNodeTerminated) {
+                    execNode(NODE_COMMANDS.TERMINATE);
+                }
+                return nodeTerminationPromise;
+            };
+            window.PhNodeEngine.getInspectPort = function () {
+                return inspectPort;
+            };
+
+            execNode(NODE_COMMANDS.GET_ENDPOINTS)
+                .then(message=>{
+                    fs.setNodeWSEndpoint(message.phoenixFSURL);
+                    fs.forceUseNodeWSEndpoint(true);
+                    setNodeWSEndpoint(message.phoenixNodeURL);
+                    KernalModeTrust.localAutoAuthURL = message.autoAuthURL;
+                    window.isNodeReady = true;
+                    resolve(message);
+                    // node is designed such that it is not required at boot time to lower startup time.
+                    // Keep this so to increase boot speed.
+                    window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;
+                });
+            execNode(NODE_COMMANDS.SET_DEBUG_MODE, window.debugMode);
+        }
+
+        async function _electronNodeSetup() {
+            // Get phnode path and src-node path, similar to Tauri's sidecar approach
+            const phNodePath = await window.electronAPI.getPhNodePath();
+            const nodeSrcPath = `${await window.electronAPI.getSrcNodePath()}/index.js`;
+
+            const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
+            const argsArray = isInspectEnabled()
+                ? [`--inspect=${inspectPort}`, nodeSrcPath]
+                : [nodeSrcPath, ''];
+
+            // Spawn the node process
+            const instanceId = await window.electronAppAPI.spawnProcess(phNodePath, argsArray);
+
+            // Register event handlers - filter by our instanceId since callbacks are global
+            window.electronAppAPI.onProcessClose((eventInstanceId, data) => {
+                if (eventInstanceId !== instanceId) {
+                    return;
+                }
+                window.isNodeTerminated = true;
+                window.isNodeReady = false;
+                nodeTerminationResolve();
+                console.log(`PhNode: command finished with code ${data.code} and signal ${data.signal}`);
+                if (!resolved) {
+                    reject("PhNode: closed - Terminated.");
+                }
+            });
+
+            window.electronAppAPI.onProcessStdout((eventInstanceId, line) => {
+                if (eventInstanceId !== instanceId) {
+                    return;
+                }
+                if (line) {
+                    if (line.startsWith(COMMAND_RESPONSE_PREFIX)) {
+                        // its a js response object
+                        line = line.replace(COMMAND_RESPONSE_PREFIX, "");
+                        const jsonMsg = JSON.parse(line);
+                        pendingCommands[jsonMsg.commandID].resolve(jsonMsg.message);
+                        delete pendingCommands[jsonMsg.commandID];
+                    } else if (line.startsWith(COMMAND_ERROR_PREFIX)) {
+                        // its a js response object
+                        line = line.replace(COMMAND_ERROR_PREFIX, "");
+                        const err = JSON.parse(line);
+                        logger.reportError(err, `PhNode ${err.type}:${err.code ? err.code : ''}`);
+                    } else {
+                        console.log(`PhNode: ${line}`);
+                    }
+                }
+            });
+
+            window.electronAppAPI.onProcessStderr((eventInstanceId, line) => {
+                if (eventInstanceId !== instanceId) {
+                    return;
+                }
+                if (window.debugMode || nodeErrorLogCount < MAX_NODE_ERROR_LOGS_ALLOWED) {
+                    console.error(`PhNode: ${line}`);
+                }
+                nodeErrorLogCount++;
+            });
+
+            const execNode = function (commandCode, commandData) {
+                if (window.isNodeTerminated) {
+                    return Promise.reject("Node is terminated! Cannot execute: " + commandCode);
+                }
+                const newCommandID = commandID++;
+                window.electronAppAPI.writeToProcess(instanceId, JSON.stringify({
+                    commandCode: commandCode, commandID: newCommandID, commandData
+                }) + "\n");
+                let resolveP, rejectP;
+                const promise = new Promise((res, rej) => { resolveP = res; rejectP = rej; });
+                pendingCommands[newCommandID] = { resolve: resolveP, reject: rejectP };
+                return promise;
+            };
+
+            window.PhNodeEngine.terminateNode = function () {
+                if (!window.isNodeTerminated) {
+                    execNode(NODE_COMMANDS.TERMINATE);
+                }
+                return nodeTerminationPromise;
+            };
+            window.PhNodeEngine.getInspectPort = function () {
+                return inspectPort;
+            };
+
+            execNode(NODE_COMMANDS.GET_ENDPOINTS)
+                .then(message => {
+                    fs.setNodeWSEndpoint(message.phoenixFSURL);
+                    fs.forceUseNodeWSEndpoint(true);
+                    setNodeWSEndpoint(message.phoenixNodeURL);
+                    KernalModeTrust.localAutoAuthURL = message.autoAuthURL;
+                    window.isNodeReady = true;
+                    resolve(message);
+                    window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;
+                });
+            execNode(NODE_COMMANDS.SET_DEBUG_MODE, window.debugMode);
+        }
+
+        if(window.__TAURI__) {
+            _tauriNodeSetup().catch(err => {
+                logger.reportError(err, "PhNode Tauri setup failed");
+            });
+        } else if(window.__ELECTRON__) {
+            _electronNodeSetup().catch(err => {
+                logger.reportError(err, "PhNode Electron setup failed");
+            });
+        }
     });
 }
 
