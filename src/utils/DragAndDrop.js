@@ -186,16 +186,20 @@ define(function (require, exports, module) {
 
     async function _focusAndOpenDroppedFiles(droppedPaths) {
         try{
-            const currentWindow = window.__TAURI__.window.getCurrent();
-            await currentWindow.setAlwaysOnTop(true);
-            await currentWindow.setAlwaysOnTop(false);
+            if(window.__TAURI__) {
+                const currentWindow = window.__TAURI__.window.getCurrent();
+                await currentWindow.setAlwaysOnTop(true);
+                await currentWindow.setAlwaysOnTop(false);
+            } else if(window.__ELECTRON__) {
+                await window.electronAPI.focusWindow();
+            }
         } catch (e) {
             console.error("Error focusing window");
         }
         openDroppedFiles(droppedPaths);
     }
 
-    if(Phoenix.isNativeApp){
+    if(window.__TAURI__){
         window.__TAURI__.event.listen('file-drop-event-phoenix', ({payload})=> {
             if(!payload || !payload.pathList || !payload.pathList.length || !payload.windowLabelOfListener
                 || payload.windowLabelOfListener !== window.__TAURI__.window.appWindow.label){
@@ -302,10 +306,24 @@ define(function (require, exports, module) {
                 event.dataTransfer.types && event.dataTransfer.types.includes("Files")){
                 // in linux, there is a bug in ubuntu 24 where dropping a file will cause a ghost icon which only
                 // goes away on reboot. So we dont support drop files in linux for now.
-                showAndResizeFileDropWindow(event);
+                if(window.__TAURI__) {
+                    showAndResizeFileDropWindow(event);
+                }
             }
 
-            if (files && files.length) {
+            if(window.__ELECTRON__ &&
+                event.dataTransfer.types && event.dataTransfer.types.includes("Files")) {
+                // In Electron (Chromium), dataTransfer.files is empty during dragover for
+                // security reasons - only populated on drop. We must call preventDefault()
+                // here based on types to allow the drop event to fire.
+                event.stopPropagation();
+                event.preventDefault();
+                if ($(".modal.instance").length === 0) {
+                    event.dataTransfer.dropEffect = "copy";
+                } else {
+                    event.dataTransfer.dropEffect = "none";
+                }
+            } else if (files && files.length) {
                 event.stopPropagation();
                 event.preventDefault();
 
@@ -331,11 +349,34 @@ define(function (require, exports, module) {
                 event.stopPropagation();
                 event.preventDefault();
 
-                brackets.app.getDroppedFiles(function (err, paths) {
-                    if (!err) {
-                        openDroppedFiles(paths);
+                if(window.__ELECTRON__) {
+                    // With contextIsolation, file.path is not available.
+                    // Use Electron's webUtils.getPathForFile() exposed via preload.
+                    const droppedVirtualPaths = [];
+                    for (const file of files) {
+                        const filePath = window.electronAPI.getPathForFile(file);
+                        if (filePath) {
+                            try {
+                                droppedVirtualPaths.push(
+                                    window.fs.getTauriVirtualPath(filePath)
+                                );
+                            } catch (e) {
+                                console.error("Error resolving dropped path: ",
+                                    filePath);
+                            }
+                        }
                     }
-                });
+                    if (droppedVirtualPaths.length) {
+                        openDroppedFiles(droppedVirtualPaths);
+                    }
+                } else {
+                    // Browser fallback (legacy Brackets API)
+                    brackets.app.getDroppedFiles(function (err, paths) {
+                        if (!err) {
+                            openDroppedFiles(paths);
+                        }
+                    });
+                }
             }
         }
 
