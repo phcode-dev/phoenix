@@ -11,7 +11,7 @@
         "_watch_src-node": "cd .. && npm run _watch_src-node"
     },
     "engines": {
-        "node": "20"
+        "node": "24"
     },
     "repository": {
         "type": "git",
