@@ -5,6 +5,11 @@
     <meta name="robots" content="noindex, nofollow">
     <title>Desktop Metrics logger with Google Analytics</title>
     <script>
+        // Set __ELECTRON__ flag like index.html does
+        if(window.electronAppAPI) {
+            window.__ELECTRON__ = true;
+        }
+
         const SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY = "SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY";
         let gaReady = false, loadedGoogleAnalyticsID;
 
@@ -20,8 +25,10 @@
             let gaFocusCallback, focusCallbackDone;
             window.savedEventListener = window.addEventListener;
             savedEventListener('focus', (focusEvent)=>{
-                gaFocusCallback.call(this, focusEvent);
-                focusCallbackDone = true;
+                if (gaFocusCallback) {
+                    gaFocusCallback.call(this, focusEvent);
+                    focusCallbackDone = true;
+                }
             });
 
             window.addEventListener = function (eventName, fn, globalEvFlag) {
@@ -118,14 +125,22 @@
                 setTimeout(reloadOnce, 1000);
             }
         }
-        window.__TAURI__.event.listen("health", processRequest);
-        setInterval(async ()=>{
-            // close window if the metrics hidden window and file drop window is the only one around.
-            const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
-            if(allTauriWindowsLabels.length === 2 || allTauriWindowsLabels.length === 1){
-                window.__TAURI__.window.getCurrent().close();
-            }
-        }, 1000);
+
+        if(window.__TAURI__) {
+            window.__TAURI__.event.listen("health", processRequest);
+            setInterval(async ()=>{
+                // close window if the metrics hidden window and file drop window is the only one around.
+                const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
+                if(allTauriWindowsLabels.length === 2 || allTauriWindowsLabels.length === 1){
+                    window.__TAURI__.window.getCurrent().close();
+                }
+            }, 1000);
+        } else if(window.__ELECTRON__) {
+            window.electronAPI.onHealthMetric((payload) => {
+                processRequest({ payload });
+            });
+            // No cleanup needed - Electron app exits when main windows close
+        }
     </script>
 </head>
 <body>
