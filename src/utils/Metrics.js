@@ -196,10 +196,14 @@ define(function (require, exports, module) {
 
     function _sendNativeGAEvent(analyticsID, customUserID, events=[]) {
         if(window.__TAURI__){
-            return _sendTauriGAEvent(analyticsID, customUserID, events=[]);
+            return _sendTauriGAEvent(analyticsID, customUserID, events);
         }
         if(window.__ELECTRON__){
-            // todo electron send event to metrics window with electron
+            window.electronAPI.sendHealthMetric({
+                analyticsID: analyticsID,
+                customUserID: customUserID,
+                events: events
+            });
             return;
         }
         console.error("Metrics send event failed. Unknown native platform");
