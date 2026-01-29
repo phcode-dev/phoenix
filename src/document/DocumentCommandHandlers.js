@@ -1731,7 +1731,13 @@ define(function (require, exports, module) {
                     .finally(()=>{
                         raceAgainstTime(_safeNodeTerminate())
                             .finally(()=>{
-                                Phoenix.app.closeWindow();
+                                // In Electron, use allowClose() to bypass the close handler
+                                // (which would otherwise trigger another cleanup cycle).
+                                if(window.__ELECTRON__) {
+                                    window.electronAPI.allowClose();
+                                } else {
+                                    Phoenix.app.closeWindow();
+                                }
                             });
                     });
             },
