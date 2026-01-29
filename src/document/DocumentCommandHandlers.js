@@ -1748,8 +1748,10 @@ define(function (require, exports, module) {
     }
 
     function newPhoenixWindow(cliArgsArray = null, cwd=null) {
-        let width = window.innerWidth;
-        let height = window.innerHeight;
+        // Electron needs outerWidth/outerHeight (includes window chrome).
+        // Tauri needs innerWidth/innerHeight.
+        let width = window.__ELECTRON__ ? window.outerWidth : window.innerWidth;
+        let height = window.__ELECTRON__ ? window.outerHeight : window.innerHeight;
         Phoenix.app.openNewPhoenixEditorWindow(width, height, cliArgsArray, cwd);
     }
 
