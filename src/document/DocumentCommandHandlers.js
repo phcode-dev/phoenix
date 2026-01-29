@@ -2268,7 +2268,14 @@ define(function (require, exports, module) {
                         raceAgainstTime(_safeNodeTerminate())
                             .finally(()=>{
                                 closeInProgress = false;
-                                Phoenix.app.closeWindow();
+                                // In Electron, we must call allowClose() to complete the original
+                                // close request (sets forceClose=true). Calling closeWindow() would
+                                // trigger a new close sequence and cause an infinite loop.
+                                if(window.__ELECTRON__) {
+                                    window.electronAPI.allowClose();
+                                } else {
+                                    Phoenix.app.closeWindow();
+                                }
                             });
                     });
             }, closeFail=>{
