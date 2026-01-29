@@ -2252,7 +2252,7 @@ define(function (require, exports, module) {
             Phoenix.app.closeWindow(true);
         }
     }
-    function attachTauriUnloadHandler() {
+    function _attachNativeUnloadHandler() {
         Phoenix.app.onCloseWindowRequested(()=>{
             _forceQuitIfNeeded();
             if(closeInProgress){
@@ -2289,7 +2289,7 @@ define(function (require, exports, module) {
     let isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     if (!isTestWindow) {
         if(Phoenix.isNativeApp) {
-            attachTauriUnloadHandler();
+            _attachNativeUnloadHandler();
         } else {
             attachBrowserUnloadHandler();
         }
