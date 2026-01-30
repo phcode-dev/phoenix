@@ -797,7 +797,7 @@ define(function (require, exports, module) {
         describe("specialDirectories", function () {
             it("should have an application support directory", async function () {
                 // these tests are here as these are absolute unchanging dir convention used by phoenix.
-                if(window.__TAURI__){
+                if(Phoenix.isNativeApp){
                     const appSupportDIR = window.fs.getTauriVirtualPath(window._tauriBootVars.appLocalDir);
                     expect(brackets.app.getApplicationSupportDirectory().startsWith("/tauri/")).toBeTrue();
                     expect(brackets.app.getApplicationSupportDirectory()).toBe(appSupportDIR);
@@ -807,7 +807,7 @@ define(function (require, exports, module) {
             });
             it("should have a user documents directory", function () {
                 // these tests are here as these are absolute unchanging dir convention used by phoenix.
-                if(window.__TAURI__){
+                if(Phoenix.isNativeApp){
                     const documentsDIR = window.fs.getTauriVirtualPath(window._tauriBootVars.documentDir);
                     expect(brackets.app.getUserDocumentsDirectory().startsWith("/tauri/")).toBeTrue();
                     expect(brackets.app.getUserDocumentsDirectory()).toBe(documentsDIR);
@@ -817,7 +817,7 @@ define(function (require, exports, module) {
             });
             it("should have a user projects directory", function () {
                 // these tests are here as these are absolute unchanging dir convention used by phoenix.
-                if(window.__TAURI__){
+                if(Phoenix.isNativeApp){
                     const documentsDIR = window.fs.getTauriVirtualPath(window._tauriBootVars.documentDir);
                     const appName = window._tauriBootVars.appname;
                     const userProjectsDir = `${documentsDIR}${appName}/`;
@@ -829,7 +829,7 @@ define(function (require, exports, module) {
             });
             it("should have a temp directory", function () {
                 // these tests are here as these are absolute unchanging dir convention used by phoenix.
-                if(window.__TAURI__){
+                if(Phoenix.isNativeApp){
                     let tempDIR = window.fs.getTauriVirtualPath(window._tauriBootVars.tempDir);
                     if(!tempDIR.endsWith("/")){
                         tempDIR = `${tempDIR}/`;
@@ -844,7 +844,7 @@ define(function (require, exports, module) {
             });
             it("should have extensions directory", function () {
                 // these tests are here as these are absolute unchanging dir convention used by phoenix.
-                if(window.__TAURI__){
+                if(Phoenix.isNativeApp){
                     const appSupportDIR = window.fs.getTauriVirtualPath(window._tauriBootVars.appLocalDir);
                     const extensionsDir = `${appSupportDIR}assets/extensions/`;
                     expect(brackets.app.getExtensionsDirectory().startsWith("/tauri/")).toBeTrue();
@@ -855,7 +855,7 @@ define(function (require, exports, module) {
             });
 
             it("should get virtual serving directory from virtual serving URL in browser", async function () {
-                if(window.__TAURI__){
+                if(Phoenix.isNativeApp){
                     return;
                 }
                 expect(brackets.VFS.getPathForVirtualServingURL(`${window.fsServerUrl}blinker`)).toBe("/blinker");
@@ -866,7 +866,7 @@ define(function (require, exports, module) {
             });
 
             it("should not get virtual serving directory from virtual serving URL in tauri", async function () {
-                if(!window.__TAURI__){
+                if(!Phoenix.isNativeApp){
                     return;
                 }
                 expect(window.fsServerUrl).not.toBeDefined();
