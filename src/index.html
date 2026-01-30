@@ -173,6 +173,7 @@
             // this means that we are loaded in an iframe in the specrunner. Electron doesnt expose APIs
             // in its iframes, so we directly use the top most windows electron api objects for tests to run properly.
             console.warn("Phoenix is loaded in iframe, attempting to use electron APIs from window.top");
+            window.__ELECTRON__ = true;
             window.electronAppAPI = window.top.window.electronAppAPI;
             window.electronFSAPI = window.top.window.electronFSAPI;
             window.electronAPI = window.top.window.electronAPI;
