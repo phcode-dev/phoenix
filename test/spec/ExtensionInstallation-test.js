@@ -31,7 +31,8 @@ define(function (require, exports, module) {
 
     const testFilePath = SpecRunnerUtils.getTestPath("/spec/extension-test-files");
 
-    const tempDirectory = window.__TAURI__ ? Phoenix.VFS.getTauriAssetServeDir() + "tests": SpecRunnerUtils.getTempDirectory();
+    const tempDirectory = Phoenix.isNativeApp ?
+        Phoenix.VFS.getTauriAssetServeDir() + "tests": SpecRunnerUtils.getTempDirectory();
     const extensionsRoot = tempDirectory + "/extensions";
 
     const basicValidSrc          = testFilePath + "/basic-valid-extension.zip",
@@ -79,7 +80,7 @@ define(function (require, exports, module) {
 
         beforeAll(async function () {
             await SpecRunnerUtils.ensureExistsDirAsync(tempDirectory);
-            if(window.__TAURI__){
+            if(Phoenix.isNativeApp){
                 basicValid          = tempDirectory + "/basic-valid-extension.zip";
                 missingNameVersion  = tempDirectory + "/missing-name-version.zip";
                 missingNameVersion  = tempDirectory + "/missing-name-version.zip";

@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     const testPathSrc = SpecRunnerUtils.getTestPath("/spec/ExtensionLoader-test-files");
-    const testPath = window.__TAURI__ ? Phoenix.VFS.getTauriAssetServeDir() + "tests": SpecRunnerUtils.getTempDirectory();
+    const testPath = Phoenix.isNativeApp ? Phoenix.VFS.getTauriAssetServeDir() + "tests": SpecRunnerUtils.getTempDirectory();
 
     describe("ExtensionLoader", function () {
 
