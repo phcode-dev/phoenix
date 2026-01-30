@@ -4,20 +4,48 @@
     <meta charset="UTF-8">
     <title>Starting tests...</title>
     <script type="text/javascript">
+        function navigateToTests(testSuiteToExec) {
+            if (testSuiteToExec) {
+                location.href = `test/SpecRunner.html?spec=All&category=${testSuiteToExec}`;
+            } else {
+                location.href = `test/SpecRunner.html`;
+            }
+        }
+
+        function parseCliArg(args, argName) {
+            // Parse --argName=value or --argName value from array
+            for (let i = 0; i < args.length; i++) {
+                const arg = args[i];
+                if (arg.startsWith(`--${argName}=`)) {
+                    return arg.split('=')[1];
+                }
+                if (arg === `--${argName}` && args[i + 1] && !args[i + 1].startsWith('--')) {
+                    return args[i + 1];
+                }
+            }
+            return null;
+        }
+
         function redirectToTestPage() {
-            if(window.__TAURI__) {
-                __TAURI__.window.appWindow.setFocus().catch(console.error).finally(()=>{
-                    __TAURI__.cli.getMatches().then(matches=>{
+            if (window.__TAURI__) {
+                // Tauri path
+                __TAURI__.window.appWindow.setFocus().catch(console.error).finally(() => {
+                    __TAURI__.cli.getMatches().then(matches => {
                         const testSuiteToExec = matches.args["run-tests"].value;
-                        if(testSuiteToExec){
-                            location.href = `test/SpecRunner.html?spec=All&category=${testSuiteToExec}`;
-                        } else {
-                            location.href = `test/SpecRunner.html`;
-                        }
+                        navigateToTests(testSuiteToExec);
+                    }).catch(console.error);
+                });
+            } else if (window.electronAppAPI?.isElectron) {
+                // Electron path
+                window.electronAPI.focusWindow().catch(console.error).finally(() => {
+                    window.electronAppAPI.getCliArgs().then(args => {
+                        const testSuiteToExec = parseCliArg(args, 'run-tests');
+                        navigateToTests(testSuiteToExec);
                     }).catch(console.error);
                 });
             } else {
-                location.href = "test/SpecRunner.html";
+                // Browser fallback
+                navigateToTests(null);
             }
         }
     </script>
