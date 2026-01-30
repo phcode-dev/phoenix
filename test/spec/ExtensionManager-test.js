@@ -808,6 +808,12 @@ define(function (require, exports, module) {
                 });
             });
 
+            afterEach(function () {
+                // Clean up any lingering dialogs
+                Dialogs.cancelModalDialogIfOpen("install-extension-dialog");
+                $(".modal-wrapper").remove();
+            });
+
             it("should set flag to keep local files for new installs", async function () {
                 var filename = "/path/to/downloaded/file.zip",
                     file = FileSystem.getFileForPath(filename),
