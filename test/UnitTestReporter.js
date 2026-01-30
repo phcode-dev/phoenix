@@ -65,8 +65,12 @@ define(function (require, exports, module) {
         return '';
     }
 
-    function hasCliFlag(args, flagName) {
-        return args.some(arg => arg === `--${flagName}` || arg.startsWith(`--${flagName}=`));
+    function hasCliFlag(args, flagName, shortFlag) {
+        return args.some(arg =>
+            arg === `--${flagName}` ||
+            arg.startsWith(`--${flagName}=`) ||
+            (shortFlag && arg === `-${shortFlag}`)
+        );
     }
 
     function quitIfNeeded(exitStatus) {
@@ -88,7 +92,7 @@ define(function (require, exports, module) {
                 });
             } else if (isElectron) {
                 window.electronAppAPI.getCliArgs().then(args => {
-                    if (hasCliFlag(args, 'quit-when-done')) {
+                    if (hasCliFlag(args, 'quit-when-done', 'q')) {
                         window.electronAppAPI.quitApp(exitStatus);
                     }
                 });
