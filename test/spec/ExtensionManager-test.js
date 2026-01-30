@@ -49,7 +49,7 @@ define(function (require, exports, module) {
         mockExtensionList         = require("text!spec/ExtensionManager-test-files/mockExtensionList.json"),
         mockRegistry;
 
-    const testPath = window.__TAURI__ ?
+    const testPath = Phoenix.isNativeApp ?
         Phoenix.VFS.getTauriAssetServeDir() + "tests" :
         SpecRunnerUtils.getTempDirectory();
     const testSrc = SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
