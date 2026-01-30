@@ -175,6 +175,7 @@
             console.warn("Phoenix is loaded in iframe, attempting to use electron APIs from window.top");
             window.electronAppAPI = window.top.window.electronAppAPI;
             window.electronFSAPI = window.top.window.electronFSAPI;
+            window.electronAPI = window.top.window.electronAPI;
         }
         if(window.__TAURI__ || window.__ELECTRON__) {
             window.__IS_NATIVE_SHELL__ = true;
