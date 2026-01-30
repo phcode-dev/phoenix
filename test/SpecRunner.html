@@ -213,6 +213,10 @@
           e.preventDefault();
           window.electronAPI.toggleDevTools();
         }
+        if (e.key === 'F5') {
+          e.preventDefault();
+          location.reload();
+        }
       });
     }
   </script>
