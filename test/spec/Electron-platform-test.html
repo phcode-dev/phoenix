@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test electron apis accessible</title>
+    <script>
+        const ELECTRON_TEST_SIGNAL_KEY = 'ELECTRON_PLATFORM_TEST_SIGNAL';
+
+        async function init() {
+            if (window.electronAPI) {
+                // Get our window label
+                const myLabel = await window.electronAPI.getCurrentWindowLabel();
+
+                // Signal to parent that we're ready
+                await window.electronAPI.putItem(ELECTRON_TEST_SIGNAL_KEY, myLabel);
+
+                // Poll for close signal from parent
+                const pollInterval = setInterval(async () => {
+                    try {
+                        const items = await window.electronAPI.getAllItems();
+                        if (items && items[`${ELECTRON_TEST_SIGNAL_KEY}_CLOSE_${myLabel}`]) {
+                            clearInterval(pollInterval);
+                            // Clear the close signal
+                            await window.electronAPI.putItem(`${ELECTRON_TEST_SIGNAL_KEY}_CLOSE_${myLabel}`, null);
+                            // Close ourselves
+                            await window.electronAPI.closeWindow();
+                        }
+                    } catch (e) {
+                        // Ignore errors
+                    }
+                }, 100);
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</head>
+<body>
+sending event with electron api...
+</body>
+</html>
