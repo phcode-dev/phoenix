@@ -66,6 +66,25 @@ async function _getTauriWindowLabel(prefix) {
     throw new Error("Could not get a free window label to create tauri window");
 }
 
+/**
+ * Opens a URL in a new Phoenix window. Works across all platforms (Tauri, Electron, browser).
+ *
+ * @param {string} url - The URL to open in the new window
+ * @param {Object} [options] - Window configuration options
+ * @param {string} [options.windowTitle] - Title for the window (defaults to label or URL)
+ * @param {boolean} [options.fullscreen] - Whether to open in fullscreen mode
+ * @param {boolean} [options.resizable=true] - Whether the window is resizable
+ * @param {number} [options.height=900] - Window height in pixels
+ * @param {number} [options.minHeight=600] - Minimum window height in pixels
+ * @param {number} [options.width=1366] - Window width in pixels
+ * @param {number} [options.minWidth=800] - Minimum window width in pixels
+ * @param {boolean} [options.acceptFirstMouse=true] - (Tauri only) Accept first mouse click
+ * @param {boolean} [options.preferTabs] - (Browser only) Prefer opening in a new tab
+ * @param {string} [options._prefixPvt] - Internal: window label prefix
+ * @returns {Promise<{label: string, isNativeWindow: boolean}>} Window object with `label` and `isNativeWindow` properties.
+ *   - In Tauri/Electron: `{ label: string, isNativeWindow: true }` (Tauri returns WebviewWindow instance with these props)
+ *   - In browser: Returns window.open() result with `isNativeWindow: false`
+ */
 async function openURLInPhoenixWindow(url, {
     windowTitle, fullscreen, resizable,
     height, minHeight, width, minWidth, acceptFirstMouse, preferTabs, _prefixPvt = PHOENIX_EXTENSION_WINDOW_PREFIX
@@ -241,6 +260,27 @@ Phoenix.app = {
         } else if(window.__ELECTRON__){
             return window.electronAPI.focusWindow();
         }
+    },
+    /**
+     * Closes a window by its label. Returns true if window was found and closed, false otherwise.
+     * @param {string} label - The window label to close
+     * @return {Promise<boolean>}
+     */
+    closeWindowByLabel: async function (label) {
+        if(!Phoenix.isNativeApp){
+            throw new Error("closeWindowByLabel is not supported in browsers");
+        }
+        if(window.__TAURI__){
+            const win = window.__TAURI__.window.WebviewWindow.getByLabel(label);
+            if(win){
+                await win.close();
+                return true;
+            }
+            return false;
+        } else if(window.__ELECTRON__){
+            return window.electronAPI.closeWindowByLabel(label);
+        }
+        return false;
     },
     /**
      * Gets the commandline argument in desktop builds and null in browser builds.
