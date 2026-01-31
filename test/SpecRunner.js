@@ -44,7 +44,8 @@ require.config({
             "thirdparty/preact": "preact-compat",
             "thirdparty/preact-test-utils": "preact-test-utils"
         }
-    }
+    },
+    locale: "en" // force English (US) for consistent test strings
 });
 
 window.logger = {
