@@ -122,7 +122,7 @@ define(function (require, exports, module) {
             expect(val).toEql(expectedValue);
         });
 
-        it("Should be able to create lmdb dumps in tauri", async function () {
+        it("Should be able to create lmdb dumps in native app", async function () {
             if(!Phoenix.isNativeApp){
                 return;
             }
@@ -137,7 +137,14 @@ define(function (require, exports, module) {
             });
 
             const dumpFileLocation = await window.storageNodeConnector.execPeer("dumpDBToFile");
-            const dumpFileText = await window.__TAURI__.fs.readTextFile(dumpFileLocation);
+            let dumpFileText;
+            if (window.__TAURI__) {
+                dumpFileText = await window.__TAURI__.fs.readTextFile(dumpFileLocation);
+            } else if (window.__ELECTRON__) {
+                const data = await window.electronFSAPI.fsReadFile(dumpFileLocation);
+                const decoder = new TextDecoder("utf-8");
+                dumpFileText = decoder.decode(data);
+            }
             const dumpObj = JSON.parse(dumpFileText);
             expect(dumpObj[key]).toEql(expectedValue);
         });
