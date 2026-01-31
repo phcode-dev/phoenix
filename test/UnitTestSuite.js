@@ -22,7 +22,7 @@
 define(function (require, exports, module) {
 
     require("spec/Phoenix-platform-test");
-    require("spec/Tauri-platform-test");
+    require("test/spec/Native-platform-test");
     require("spec/trust-ring-test");
     require("spec/utframework-suite-test");
     require("spec/Async-test");
