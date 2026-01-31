@@ -75,8 +75,8 @@ define(function (require, exports, module) {
         // Window management - returns platform-specific window object
         // For window spawning tests, we use a helper HTML file
         getTestHtmlPath: () => isElectron
-            ? 'spec/Electron-platform-test.html'
-            : 'spec/Tauri-platform-test.html',
+            ? 'spec/native-platform-electron-test.html'
+            : 'spec/native-platform-tauri-test.html',
 
         // Close window by label (uses platform-agnostic Phoenix.app API)
         closeWindow: (windowObj) => Phoenix.app.closeWindowByLabel(windowObj.label)
@@ -253,44 +253,32 @@ define(function (require, exports, module) {
 
                     let newURL = currentURL.href;
 
-                    if (isElectron) {
-                        // For Electron, use the event system (mirrors Tauri)
-                        // We need to handle race: event might fire before or after window reference is available
-                        let electronWindow = null;
-                        let eventReceived = false;
+                    // Use unified event API for both platforms
+                    let nativeWindow = null;
+                    let eventReceived = false;
 
-                        const tryResolve = () => {
-                            if (electronWindow && eventReceived) {
-                                resolve(electronWindow);
-                            }
-                        };
+                    const tryResolve = () => {
+                        if (nativeWindow && eventReceived) {
+                            resolve(nativeWindow);
+                        }
+                    };
 
-                        const unlisten = window.electronAPI.onWindowEvent('PLATFORM_API_WORKING', () => {
-                            unlisten();
-                            eventReceived = true;
+                    const unlisten = Phoenix.app.onWindowEvent('PLATFORM_API_WORKING', () => {
+                        unlisten();
+                        eventReceived = true;
+                        tryResolve();
+                    });
+
+                    Phoenix.app.openURLInPhoenixWindow(newURL)
+                        .then(win => {
+                            expect(win.label.startsWith("extn-")).toBeTrue();
+                            expect(win.isNativeWindow).toBeTrue();
+                            nativeWindow = win;
                             tryResolve();
+                        }).catch(err => {
+                            unlisten();
+                            reject(err);
                         });
-
-                        Phoenix.app.openURLInPhoenixWindow(newURL)
-                            .then(win => {
-                                expect(win.label.startsWith("extn-")).toBeTrue();
-                                expect(win.isNativeWindow).toBeTrue();
-                                electronWindow = win;
-                                tryResolve();
-                            }).catch(err => {
-                                unlisten();
-                                reject(err);
-                            });
-                    } else {
-                        // For Tauri, use the event system
-                        Phoenix.app.openURLInPhoenixWindow(newURL)
-                            .then(tauriWindow => {
-                                expect(tauriWindow.label.startsWith("extn-")).toBeTrue();
-                                tauriWindow.listen('TAURI_API_WORKING', function () {
-                                    resolve(tauriWindow);
-                                });
-                            }).catch(reject);
-                    }
                 });
             }
 
@@ -316,6 +304,90 @@ define(function (require, exports, module) {
                 // Wait for windows to close
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }, 120000);
+        });
+
+        describe("Inter-window Event API Tests", function () {
+            // Note: emitToAllWindows excludes the sender, so we test cross-window communication
+            // using spawned windows that emit PLATFORM_API_WORKING event
+
+            it("Should receive events from spawned windows using unified API", async function () {
+                let eventReceived = false;
+                let receivedPayload = null;
+                const unlisten = Phoenix.app.onWindowEvent('PLATFORM_API_WORKING', (payload) => {
+                    eventReceived = true;
+                    receivedPayload = payload;
+                });
+
+                // Small delay for listener registration (Tauri's listen is async)
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                let currentURL = new URL(location.href);
+                let pathParts = currentURL.pathname.split('/');
+                pathParts[pathParts.length - 1] = platform.getTestHtmlPath();
+                currentURL.pathname = pathParts.join('/');
+
+                const win = await Phoenix.app.openURLInPhoenixWindow(currentURL.href);
+                expect(win.label.startsWith("extn-")).toBeTrue();
+
+                // Wait for the spawned window to emit the event
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                expect(eventReceived).toBeTrue();
+                expect(receivedPayload).toBeDefined();
+
+                unlisten();
+                await platform.closeWindow(win);
+            });
+
+            it("Should unlisten properly and not receive events after unlisten", async function () {
+                let callCount = 0;
+                const unlisten = Phoenix.app.onWindowEvent('PLATFORM_API_WORKING', () => {
+                    callCount++;
+                });
+
+                // Small delay for listener registration
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                // Spawn first window - should receive event
+                let currentURL = new URL(location.href);
+                let pathParts = currentURL.pathname.split('/');
+                pathParts[pathParts.length - 1] = platform.getTestHtmlPath();
+                currentURL.pathname = pathParts.join('/');
+
+                const win1 = await Phoenix.app.openURLInPhoenixWindow(currentURL.href);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                expect(callCount).toBeGreaterThanOrEqual(1);
+                const countAfterFirst = callCount;
+
+                // Unlisten
+                unlisten();
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                // Spawn second window - should NOT receive event
+                const win2 = await Phoenix.app.openURLInPhoenixWindow(currentURL.href);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                expect(callCount).toEqual(countAfterFirst); // Count should not increase
+
+                await platform.closeWindow(win1);
+                await platform.closeWindow(win2);
+            });
+
+            it("Should not throw when emitting events", async function () {
+                // Basic sanity test that emit APIs don't throw
+                await expectAsync(
+                    Phoenix.app.emitToAllWindows('TEST_EVENT', { test: true })
+                ).toBeResolved();
+
+                await expectAsync(
+                    Phoenix.app.emitToWindow('nonexistent-window', 'TEST_EVENT', { test: true })
+                ).toBeResolved();
+            });
+
+            it("Should return unlisten function from onWindowEvent", function () {
+                const unlisten = Phoenix.app.onWindowEvent('TEST_EVENT', () => {});
+                expect(typeof unlisten).toEqual('function');
+                unlisten(); // Should not throw
+            });
         });
 
         describe("Credentials OTP API Tests", function () {

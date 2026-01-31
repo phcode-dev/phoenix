@@ -729,7 +729,72 @@ Phoenix.app = {
     getTimeSinceStartup: function () {
         return Date.now() - Phoenix.startTime; // milliseconds elapsed since app start
     },
-    language: navigator.language
+    language: navigator.language,
+    /**
+     * Broadcast an event to all windows (excludes sender).
+     * @param {string} eventName - Name of the event
+     * @param {*} payload - Event data
+     * @returns {Promise<void>}
+     */
+    emitToAllWindows: async function (eventName, payload) {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("emitToAllWindows is not supported in browsers");
+        }
+        if (window.__TAURI__) {
+            return window.__TAURI__.event.emit(eventName, payload);
+        }
+        if (window.__ELECTRON__) {
+            return window.electronAPI.emitToAllWindows(eventName, payload);
+        }
+    },
+    /**
+     * Send an event to a specific window by label.
+     * @param {string} targetLabel - Window label to send to
+     * @param {string} eventName - Name of the event
+     * @param {*} payload - Event data
+     * @returns {Promise<boolean>} True if window found and event sent
+     */
+    emitToWindow: async function (targetLabel, eventName, payload) {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("emitToWindow is not supported in browsers");
+        }
+        if (window.__TAURI__) {
+            // Tauri doesn't have direct window-to-window emit, use global emit
+            // The listener filters by source if needed
+            return window.__TAURI__.event.emit(eventName, payload);
+        }
+        if (window.__ELECTRON__) {
+            return window.electronAPI.emitToWindow(targetLabel, eventName, payload);
+        }
+        return false;
+    },
+    /**
+     * Listen for events from other windows.
+     * @param {string} eventName - Name of the event to listen for
+     * @param {Function} callback - Called with (payload) when event received
+     * @returns {Function} Unlisten function to remove the listener
+     */
+    onWindowEvent: function (eventName, callback) {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("onWindowEvent is not supported in browsers");
+        }
+        if (window.__TAURI__) {
+            let unlisten = null;
+            window.__TAURI__.event.listen(eventName, (event) => {
+                callback(event.payload);
+            }).then(fn => { unlisten = fn; });
+            // Return a function that will unlisten when called
+            return () => {
+                if (unlisten) {
+                    unlisten();
+                }
+            };
+        }
+        if (window.__ELECTRON__) {
+            return window.electronAPI.onWindowEvent(eventName, callback);
+        }
+        return () => {}; // No-op for unsupported platforms
+    }
 };
 
 if(!window.appshell){

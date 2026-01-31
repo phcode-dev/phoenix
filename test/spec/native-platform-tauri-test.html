@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Test tauri apis accessible</title>
     <script>
-        window.__TAURI__.event.emit('TAURI_API_WORKING', { data: 'Hello from Window!' });
+        // Use same event name as Electron for unified API testing
+        window.__TAURI__.event.emit('PLATFORM_API_WORKING', { data: 'Hello from Window!' });
     </script>
 </head>
 <body>
