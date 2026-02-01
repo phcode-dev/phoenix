@@ -178,6 +178,8 @@ define(function (require, exports, module) {
         updateScheduled = true;
         updatePendingRestart = true;
         cachedUpdateDetails = updateDetails;
+        // Store in shared state so other windows know update is scheduled
+        await window.electronAPI.setUpdateScheduled(true);
         showOrHideUpdateIcon();
         Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'scheduled', Phoenix.platform);
         updateTask.setSucceded();
@@ -313,6 +315,8 @@ define(function (require, exports, module) {
         if(!updateScheduled){
             return;
         }
+        // Clear the scheduled flag in shared state
+        await window.electronAPI.setUpdateScheduled(false);
         console.log("Installing update at quit time");
         return new Promise(resolve => {
             let dialog;
@@ -442,7 +446,7 @@ define(function (require, exports, module) {
         });
     }
 
-    AppInit.appReady(function () {
+    AppInit.appReady(async function () {
         if(!window.__ELECTRON__ || Phoenix.isTestWindow) {
             return;
         }
@@ -450,6 +454,29 @@ define(function (require, exports, module) {
         if (brackets.platform !== "linux") {
             console.error("App updates not yet implemented on this platform in Electron builds!");
             return;
+        }
+        // Check if another window already scheduled an update (multi-window state persistence)
+        // This ensures the quit handler is registered in this window too
+        try {
+            const isUpdateScheduled = await window.electronAPI.getUpdateScheduled();
+            if (isUpdateScheduled) {
+                updateScheduled = true;
+                updatePendingRestart = true;
+                // Create task in success state (update ready, waiting for restart)
+                updateTask = TaskManager.addNewTask(Strings.UPDATE_DONE, Strings.UPDATE_RESTART_INSTALL,
+                    `<i class="fa-solid fa-cogs"></i>`, {
+                        noSpinnerNotification: true,
+                        onSelect: function () {
+                            Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE,
+                                Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
+                        }
+                    });
+                updateTask.setSucceded();
+                Phoenix.app.registerQuitTimeAppUpdateHandler(quitTimeAppUpdateHandler);
+                console.log("Update was scheduled in another window, registering quit handler");
+            }
+        } catch (e) {
+            console.error("Error checking shared state for update state:", e);
         }
         $("#update-notification").click(()=>{
             checkForUpdates();

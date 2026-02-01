@@ -518,7 +518,14 @@ define(function (require, exports, module) {
 
     let updateInstalledDialogShown = false, updateFailedDialogShown = false;
     AppInit.appReady(function () {
-        if(!window.__TAURI__ || Phoenix.isTestWindow) {
+        if(Phoenix.isTestWindow) {
+            return;
+        }
+        if(window.__ELECTRON__) {
+            // Electron updates handled by update-electron.js
+            return;
+        }
+        if(!window.__TAURI__) {
             // app updates are only for desktop builds
             return;
         }
