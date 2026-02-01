@@ -12,22 +12,19 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: 1.85.1
 
       - name: install dependencies (ubuntu only)
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-          sudo apt install build-essential curl wget file libssl-dev libayatana-appindicator3-dev
+          sudo apt install build-essential curl wget file libssl-dev
           sudo apt-get install xvfb
+          # libfuse2 is required for AppImages to run
+          sudo apt-get install libfuse2
 
       - name: build phoenix dist-test
         env:
@@ -50,50 +47,50 @@ jobs:
           npm ci
           npm run releaseDistTestDebug
 
-      - name: Run tauri unit tests
-        uses: nick-fields/retry@v2
+      - name: Run desktop unit tests
+        uses: nick-fields/retry@v3
         id: linuxRunUnit
         continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=unit -q
+          command: xvfb-run ../phoenix-desktop/src-electron/dist/phoenix-test-runner.appimage --run-tests=unit -q
 
-      - name: Run tauri integration tests
-        uses: nick-fields/retry@v2
+      - name: Run desktop integration tests
+        uses: nick-fields/retry@v3
         id: linuxRunIntegration
         continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=integration -q
+          command: xvfb-run ../phoenix-desktop/src-electron/dist/phoenix-test-runner.appimage --run-tests=integration -q
 
-      - name: Run tauri mainview tests
-        uses: nick-fields/retry@v2
+      - name: Run desktop mainview tests
+        uses: nick-fields/retry@v3
         id: linuxRunMainview
         continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=mainview -q
+          command: xvfb-run ../phoenix-desktop/src-electron/dist/phoenix-test-runner.appimage --run-tests=mainview -q
 
-      - name: Run tauri livepreview tests
-        uses: nick-fields/retry@v2
+      - name: Run desktop livepreview tests
+        uses: nick-fields/retry@v3
         id: linuxRunLivepreview
         continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=livepreview -q
+          command: xvfb-run ../phoenix-desktop/src-electron/dist/phoenix-test-runner.appimage --run-tests=livepreview -q
 
-      - name: Run tauri LegacyInteg tests
-        uses: nick-fields/retry@v2
+      - name: Run desktop LegacyInteg tests
+        uses: nick-fields/retry@v3
         id: linuxRunLegacyInteg
         continue-on-error: true
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=LegacyInteg -q
+          command: xvfb-run ../phoenix-desktop/src-electron/dist/phoenix-test-runner.appimage --run-tests=LegacyInteg -q
 
       - name: Fail on test runs failed in Linux
         if: steps.linuxRunUnit.outcome == 'failure' || steps.linuxRunIntegration.outcome == 'failure' || steps.linuxRunMainview.outcome == 'failure' || steps.linuxRunLivepreview.outcome == 'failure' || steps.linuxRunLegacyInteg.outcome == 'failure'
@@ -101,18 +98,18 @@ jobs:
           echo "Linux tests failed, marking step as failed"
           echo "Failed tests:"
           if [ "${{ steps.linuxRunUnit.outcome }}" == "failure" ]; then
-            echo "- Run tauri unit tests"
+            echo "- Run desktop unit tests"
           fi
           if [ "${{ steps.linuxRunIntegration.outcome }}" == "failure" ]; then
-            echo "- Run tauri integration tests"
+            echo "- Run desktop integration tests"
           fi
           if [ "${{ steps.linuxRunMainview.outcome }}" == "failure" ]; then
-            echo "- Run tauri mainview tests"
+            echo "- Run desktop mainview tests"
           fi
           if [ "${{ steps.linuxRunLivepreview.outcome }}" == "failure" ]; then
-            echo "- Run tauri livepreview tests"
+            echo "- Run desktop livepreview tests"
           fi
           if [ "${{ steps.linuxRunLegacyInteg.outcome }}" == "failure" ]; then
-            echo "- Run tauri LegacyInteg tests"
+            echo "- Run desktop LegacyInteg tests"
           fi
           exit 1
