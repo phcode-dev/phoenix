@@ -39,7 +39,6 @@ define(function main(require, exports, module) {
         LivePreviewTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport"),
         CommandManager      = require("command/CommandManager"),
         PreferencesManager  = require("preferences/PreferencesManager"),
-        StateManager        = require("preferences/StateManager"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         Strings             = require("strings"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
@@ -57,10 +56,6 @@ define(function main(require, exports, module) {
 
     const PREFERENCE_LIVE_PREVIEW_MODE = CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE;
 
-    // state manager key to track image gallery selected state, by default we keep this as selected
-    // if this is true we show the image gallery when an image element is clicked
-    const IMAGE_GALLERY_STATE = "livePreview.imageGallery.state";
-
     PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", LIVE_HIGHLIGHT_MODE, {
         description: StringUtils.format(
             Strings.LIVE_PREVIEW_MODE_PREFERENCE, LIVE_PREVIEW_MODE, LIVE_HIGHLIGHT_MODE, LIVE_EDIT_MODE),
@@ -70,34 +65,11 @@ define(function main(require, exports, module) {
         _previewModeUpdated();
     });
 
-    /**
-     * get the image gallery state from StateManager
-     * @returns {boolean} true (default)
-     */
-    function _getImageGalleryState() {
-        const savedState = StateManager.get(IMAGE_GALLERY_STATE);
-        return savedState !== undefined && savedState !== null ? savedState : true;
-    }
-
-    /**
-     * sets the image gallery state
-     * @param {Boolean} the state that we need to set
-     */
-    function setImageGalleryState(state) {
-        StateManager.set(IMAGE_GALLERY_STATE, state);
-
-        // update the config with the new state
-        const config = MultiBrowserLiveDev.getConfig();
-        config.imageGalleryState = state;
-        MultiBrowserLiveDev.updateConfig(config);
-    }
-
     let params = new UrlParams();
     const defaultConfig = {
         mode: LIVE_HIGHLIGHT_MODE, // will be updated when we fetch entitlements
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
-        imageGalleryState: _getImageGalleryState(), // image gallery selected state
         isPaidUser: false, // will be updated when we fetch entitlements
         isLoggedIn: false, // will be updated when we fetch entitlements
         hasLiveEditCapability: false // handled inside _liveEditCapabilityChanged function
@@ -373,7 +345,6 @@ define(function main(require, exports, module) {
     exports.isActive = isActive;
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
-    exports.setImageGalleryState = setImageGalleryState;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
