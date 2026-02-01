@@ -24,6 +24,7 @@
 // shell.js file. This is app updates are pretty core level even though we do it as an extension here.
 
 define(function (require, exports, module) {
+    require("./update-electron");
     const AppInit = require("utils/AppInit"),
         Metrics = require("utils/Metrics"),
         FileSystem    = require("filesystem/FileSystem"),
@@ -521,7 +522,6 @@ define(function (require, exports, module) {
             // app updates are only for desktop builds
             return;
         }
-        // todo electron edge for app updater
         if (brackets.platform === "mac") {
             // in mac, the `update.app.tar.gz` is downloaded, and only extracted on app quit.
             // we do this only in mac as the `.app` file is extracted only at app quit and deleted
