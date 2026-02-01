@@ -24,7 +24,9 @@ function RemoteFunctions(config = {}) {
     const MessageBroker = window._Brackets_MessageBroker; // to be used by plugins.
 
     const SHARED_STATE = {
-        __description: "Use this to keep shared state for Live Preview Edit instead of window.*"
+        __description: "Use this to keep shared state for Live Preview Edit instead of window.*",
+        _suppressDOMEditDismissal: false,
+        _suppressDOMEditDismissalTimeout: null
     };
 
     let _hoverHighlight;
@@ -1257,10 +1259,13 @@ function RemoteFunctions(config = {}) {
         this.rememberedNodes = {};
 
         // this check makes sure that if the element is no more in the DOM then we remove it
-        if (previouslySelectedElement && !previouslySelectedElement.isConnected) {
-            dismissUIAndCleanupState();
-        } else {
-            redrawEverything();
+        // skip this check if suppression is active (e.g., when some internal feature updates source)
+        if (!SHARED_STATE._suppressDOMEditDismissal) {
+            if (previouslySelectedElement && !previouslySelectedElement.isConnected) {
+                dismissUIAndCleanupState();
+            } else {
+                redrawEverything();
+            }
         }
     };
 
@@ -1333,6 +1338,24 @@ function RemoteFunctions(config = {}) {
                 }
             });
         }
+    }
+
+    /**
+     * Temporarily suppress the DOM edit dismissal check in apply()
+     * Used when source is modified from UI panels to prevent
+     * the panel from being dismissed when the DOM is updated.
+     * @param {Number} durationMs - Duration in milliseconds to suppress (default 100)
+     */
+    function suppressDOMEditDismissal(durationMs) {
+        durationMs = durationMs || 100;
+        if (SHARED_STATE._suppressDOMEditDismissalTimeout) {
+            clearTimeout(SHARED_STATE._suppressDOMEditDismissalTimeout);
+        }
+        SHARED_STATE._suppressDOMEditDismissal = true;
+        SHARED_STATE._suppressDOMEditDismissalTimeout = setTimeout(function() {
+            SHARED_STATE._suppressDOMEditDismissal = false;
+            SHARED_STATE._suppressDOMEditDismissalTimeout = null;
+        }, durationMs);
     }
 
     /**
@@ -1425,7 +1448,8 @@ function RemoteFunctions(config = {}) {
         "updateConfig": updateConfig,
         "dismissUIAndCleanupState": dismissUIAndCleanupState,
         "escapeKeyPressInEditor": _handleEscapeKeyPress,
-        "getMode": function() { return config.mode; }
+        "getMode": function() { return config.mode; },
+        "suppressDOMEditDismissal": suppressDOMEditDismissal
     };
 
     // the below code comment is replaced by added scripts for extensibility
