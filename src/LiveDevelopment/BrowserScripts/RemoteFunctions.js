@@ -1266,6 +1266,12 @@ function RemoteFunctions(config = {}) {
             } else {
                 redrawEverything();
             }
+        } else {
+            // Suppression is active - re-apply outline since attrChange may have wiped it
+            if (previouslySelectedElement && previouslySelectedElement.isConnected) {
+                const outlineColor = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+                previouslySelectedElement.style.outline = `1px solid ${outlineColor}`;
+            }
         }
     };
 
