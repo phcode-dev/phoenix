@@ -1731,10 +1731,18 @@ define(function (require, exports, module) {
                     .finally(()=>{
                         raceAgainstTime(_safeNodeTerminate())
                             .finally(()=>{
-                                // In Electron, use allowClose() to bypass the close handler
-                                // (which would otherwise trigger another cleanup cycle).
+                                // In Electron multi-window case, use allowClose() to bypass
+                                // the close handler (which would otherwise trigger another
+                                // cleanup cycle). But for last window, closeWindow() calls
+                                // quitApp() (no loop) and runs quitTimeAppUpdateHandler.
                                 if(window.__ELECTRON__) {
-                                    window.electronAPI.allowClose();
+                                    Phoenix.app.getPhoenixInstanceCount().then(count => {
+                                        if(count === 1) {
+                                            Phoenix.app.closeWindow();
+                                        } else {
+                                            window.electronAPI.allowClose();
+                                        }
+                                    });
                                 } else {
                                     Phoenix.app.closeWindow();
                                 }
@@ -2276,11 +2284,19 @@ define(function (require, exports, module) {
                         raceAgainstTime(_safeNodeTerminate())
                             .finally(()=>{
                                 closeInProgress = false;
-                                // In Electron, we must call allowClose() to complete the original
-                                // close request (sets forceClose=true). Calling closeWindow() would
+                                // In Electron multi-window case, we must call allowClose() to
+                                // complete the original close request. Calling closeWindow() would
                                 // trigger a new close sequence and cause an infinite loop.
+                                // But for last window, closeWindow() calls quitApp() (no loop),
+                                // and we need it to run quitTimeAppUpdateHandler.
                                 if(window.__ELECTRON__) {
-                                    window.electronAPI.allowClose();
+                                    Phoenix.app.getPhoenixInstanceCount().then(count => {
+                                        if(count === 1) {
+                                            Phoenix.app.closeWindow();
+                                        } else {
+                                            window.electronAPI.allowClose();
+                                        }
+                                    });
                                 } else {
                                     Phoenix.app.closeWindow();
                                 }
