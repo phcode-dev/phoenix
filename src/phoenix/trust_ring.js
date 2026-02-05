@@ -179,8 +179,7 @@ function _selectKeys() {
 }
 
 const CRED_KEY_API = Phoenix.isTestWindow ? "API_KEY_TEST" : "API_KEY";
-const CRED_KEY_PROMO = Phoenix.isTestWindow ? "PROMO_GRANT_KEY_TEST" : "PROMO_GRANT_KEY";
-const SIGNATURE_SALT_KEY = Phoenix.isTestWindow ? "SIGNATURE_SALT_KEY_TEST" : "SIGNATURE_SALT_KEY";
+const CRED_KEY_PROMO = Phoenix.isTestWindow ? "PROMO_GRANT_KEY_TEST" : "PROMO_GRANT_KEY_1";
 const VERSION_PORTER_KEY = Phoenix.isTestWindow ? "VERSION_PORTER_TEST" : "VERSION_PORTER";
 const { key, iv } = _selectKeys();
 
@@ -278,7 +277,6 @@ async function reinstallCreds() {
     // Read current credential values
     const apiKey = await getCredential(CRED_KEY_API);
     const promoKey = await getCredential(CRED_KEY_PROMO);
-    const saltKey = await getCredential(SIGNATURE_SALT_KEY);
 
     // Remove credentials from keychain
     if(apiKey) {
@@ -287,9 +285,6 @@ async function reinstallCreds() {
     if(promoKey) {
         await removeCredential(CRED_KEY_PROMO);
     }
-    if(saltKey) {
-        await removeCredential(SIGNATURE_SALT_KEY);
-    }
 
     // Re-set credentials to refresh keychain access
     if(apiKey) {
@@ -297,9 +292,6 @@ async function reinstallCreds() {
     }
     if(promoKey) {
         await setCredential(CRED_KEY_PROMO, promoKey);
-    }
-    if(saltKey) {
-        await setCredential(SIGNATURE_SALT_KEY, saltKey);
     }
 
     const currentVersion = Phoenix.metadata.version;
@@ -383,7 +375,6 @@ async function validateDataSignature(data, signature, salt) {
 window.KernalModeTrust = {
     CRED_KEY_API,
     CRED_KEY_PROMO,
-    SIGNATURE_SALT_KEY,
     aesKeys: { key, iv },
     setCredential,
     getCredential,
