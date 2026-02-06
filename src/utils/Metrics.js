@@ -141,7 +141,9 @@ define(function (require, exports, module) {
         // for core analytics
         if(!window.analytics){ window.analytics = {
             _initData: [], loadStartTime: new Date().getTime(),
-            event: function (){window.analytics._initData.push(arguments);}
+            event: function (){window.analytics._initData.push(arguments);},
+            countEvent: function(t,c,s,n){window.analytics._initData.push([t,c,s,n||1,0]);},
+            valueEvent: function(t,c,s,v,n){window.analytics._initData.push([t,c,s,n||1,v||0]);}
         };}
         // for google analytics
         if(!Phoenix.isNativeApp) {
@@ -275,8 +277,8 @@ define(function (require, exports, module) {
                 brackets.config.coreAnalyticsAppNameDesktop:
                 brackets.config.coreAnalyticsAppName;
             window.initAnalyticsSession( brackets.config.coreAnalyticsID, appName);
-            window.analytics.event("core-analytics", "client-lib", "loadTime", 1,
-                (new Date().getTime())- window.analytics.loadStartTime);
+            window.analytics.valueEvent("core-analytics", "client-lib", "loadTime",
+                (new Date().getTime())- window.analytics.loadStartTime, 1);
         };
         script.src = 'https://unpkg.com/@aicore/core-analytics-client-lib/dist/analytics.min.js';
         document.getElementsByTagName('head')[0].appendChild(script);
@@ -360,10 +362,11 @@ define(function (require, exports, module) {
         if(!label){
             label = action;
         }
-        if(!value){
-            value = 1;
+        if(value){
+            analytics.valueEvent(category, action, label, value, count || 1);
+        } else {
+            analytics.countEvent(category, action, label, count || 1);
         }
-        analytics.event(category, action, label, count, value);
     }
 
     const AUDIT_TYPE_COUNT = "count",
