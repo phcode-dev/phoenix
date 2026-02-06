@@ -184,7 +184,13 @@ const SIGNATURE_SALT_KEY = Phoenix.isTestWindow ? "SIGNATURE_SALT_KEY_TEST" : "S
 const VERSION_PORTER_KEY = Phoenix.isTestWindow ? "VERSION_PORTER_TEST" : "VERSION_PORTER";
 const { key, iv } = _selectKeys();
 
+let _trustRingReadyResolve;
+let _trustRingReady = new Promise(resolve => {
+    _trustRingReadyResolve = resolve;
+});
+
 async function setCredential(credKey, secret) {
+    await _trustRingReady;
     if(!window.__IS_NATIVE_SHELL__){
         throw new Error("Phoenix API key can only be set in native shell!");
     }
@@ -200,6 +206,7 @@ async function setCredential(credKey, secret) {
 }
 
 async function getCredential(credKey) {
+    await _trustRingReady;
     if(!window.__IS_NATIVE_SHELL__){
         throw new Error("Phoenix API key can only be get in native shell!");
     }
@@ -219,6 +226,7 @@ async function getCredential(credKey) {
 }
 
 async function removeCredential(credKey) {
+    await _trustRingReady;
     if(!window.__IS_NATIVE_SHELL__){
         throw new Error("Phoenix API key can only be removed in native shell!");
     }
@@ -235,6 +243,7 @@ async function removeCredential(credKey) {
 
 let _dismatled = false;
 async function dismantleKeyring() {
+    await _trustRingReady;
     if(_dismatled){
         throw new Error("Keyring can only be dismantled once!");
         // and once dismantled, the next line should be reload page. this is a strict security posture requirement to
@@ -249,25 +258,41 @@ async function dismantleKeyring() {
     if(!window.__IS_NATIVE_SHELL__){
         return;
     }
+    let result;
     if(window.__TAURI__) {
-        return window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", {key, iv});
+        result = await window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", {key, iv});
+    } else if(window.__ELECTRON__) {
+        result = await window.electronAPI.removeTrustWindowAesKey(key, iv);
     }
-    if(window.__ELECTRON__) {
-        return window.electronAPI.removeTrustWindowAesKey(key, iv);
-    }
+    // After dismantling, reset the gate so credential APIs block until a new trust ring is established
+    _trustRingReady = new Promise(resolve => {
+        _trustRingReadyResolve = resolve;
+    });
+    return result;
 }
 
 export async function initTrustRing() {
     if(!window.__IS_NATIVE_SHELL__){
+        _trustRingReadyResolve();
         return;
     }
     // this will only work once in a window unless dismantleKeyring is called. So this is safe as
     // a public export as essentially this is a fn that only works in the boot and shutdown phase.
-    if(window.__TAURI__) {
-        await window.__TAURI__.tauri.invoke("trust_window_aes_key", {key, iv});
-    } else if(window.__ELECTRON__) {
-        await window.electronAPI.trustWindowAesKey(key, iv);
+    try {
+        if(window.__TAURI__) {
+            await window.__TAURI__.tauri.invoke("trust_window_aes_key", {key, iv});
+        } else if(window.__ELECTRON__) {
+            await window.electronAPI.trustWindowAesKey(key, iv);
+        }
+    } catch(e) {
+        // Trust may already be established for this window (e.g., iframe reusing parent's trust).
+        // This is expected for tests and not an error - the trust ring is still functional. But for live this is
+        // a critical error that should never happen.
+        window.logger && window.logger.reportError(e, "Error establishing trust ring");
+        const Metrics = window.Metrics;
+        Metrics && Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "trustRing", "initFailed");
     }
+    _trustRingReadyResolve();
 
     await _portCredentials();
 }
