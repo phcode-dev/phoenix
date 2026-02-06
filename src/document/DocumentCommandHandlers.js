@@ -2310,8 +2310,7 @@ define(function (require, exports, module) {
         });
     }
 
-    let isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
-    if (!isTestWindow) {
+    if (!Phoenix.isTestWindow) {
         if(Phoenix.isNativeApp) {
             _attachNativeUnloadHandler();
         } else {
