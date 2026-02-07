@@ -254,7 +254,6 @@ define(function (require, exports, module) {
         script.onload = function(){
             gtag('js', new Date());
 
-            // TODO use googleAnalyticsIDDesktop for desktop analytics
             gtag('config', brackets.config.googleAnalyticsID, {
                 'page_title': 'Phoenix editor',
                 'page_path': '/index.html',
