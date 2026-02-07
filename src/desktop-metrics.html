@@ -11,7 +11,9 @@
         }
 
         const SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY = "SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY";
+        const SAVED_CUSTOM_USER_ID_KEY = "SAVED_CUSTOM_USER_ID";
         let gaReady = false, loadedGoogleAnalyticsID;
+        let savedCustomUserID = localStorage.getItem(SAVED_CUSTOM_USER_ID_KEY);
 
         const url = window.location.href;
         const urlParams = new URLSearchParams(window.location.search);
@@ -90,7 +92,11 @@
             document.head.appendChild(gaScript);
 
             gtag('js', new Date());
-            gtag('config', analyticsID);
+            const configParams = {};
+            if (savedCustomUserID) {
+                configParams.client_id = savedCustomUserID;
+            }
+            gtag('config', analyticsID, configParams);
             gaReady = true;
         }
 
@@ -109,6 +115,16 @@
 
         async function processRequest(event) {
             const payload = event.payload;
+            if (payload.customUserID && payload.customUserID !== savedCustomUserID) {
+                savedCustomUserID = payload.customUserID;
+                localStorage.setItem(SAVED_CUSTOM_USER_ID_KEY, payload.customUserID);
+                if (gaReady) {
+                    gtag('config', loadedGoogleAnalyticsID, {
+                        client_id: savedCustomUserID,
+                        send_page_view: false
+                    });
+                }
+            }
             if(payload.analyticsID && loadedGoogleAnalyticsID !== payload.analyticsID) {
                 localStorage.setItem(SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY, payload.analyticsID);
                 installGoogleAnalytics();
