@@ -4,7 +4,21 @@ var exec  = require("child_process").exec,
     which = require("which");
 
 var isWin = /^win/.test(process.platform);
+var isMac = process.platform === "darwin";
 var noop = function () {};
+
+// Cache for xcode-select CLT check (null = not yet checked)
+var _xcodeCliToolsInstalled = null;
+
+function _isXcodeCliToolsInstalled(callback) {
+    if (_xcodeCliToolsInstalled !== null) {
+        return callback(_xcodeCliToolsInstalled);
+    }
+    exec("xcode-select -p", function (err) {
+        _xcodeCliToolsInstalled = !err;
+        callback(_xcodeCliToolsInstalled);
+    });
+}
 
 function fixEOL(str) {
     if (str[str.length - 1] === "\n") {
@@ -103,6 +117,17 @@ function executableExists(filename, dir, callback) {
 
             var exists = stats.isFile();
             if (!exists) { path = undefined; }
+
+            // On macOS, /usr/bin/git is a shim that triggers an "Install Xcode CLT" dialog
+            // when spawned if CLT is not installed. Check for CLT before allowing it.
+            if (exists && isMac && Path.normalize(path) === "/usr/bin/git") {
+                return _isXcodeCliToolsInstalled(function (installed) {
+                    if (!installed) {
+                        return callback(null, false, undefined);
+                    }
+                    return callback(null, true, path);
+                });
+            }
 
             return callback(null, exists, path);
         });

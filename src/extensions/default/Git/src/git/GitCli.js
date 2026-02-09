@@ -1022,9 +1022,33 @@ define(function (require, exports) {
 
     function getGitRoot() {
         var projectRoot = Utils.getProjectRoot();
-        return git(["rev-parse", "--show-toplevel"], {
-            cwd: fs.getTauriPlatformPath(projectRoot)
-        })
+
+        // Quick filesystem pre-check: if .git doesn't exist in the project root,
+        // skip spawning git entirely. This avoids triggering macOS CLT shim dialogs
+        // on non-git projects and is a minor optimization on all platforms.
+        return new Promise(function (resolve) {
+            var checkPath = projectRoot;
+            if (strEndsWith(checkPath, "/")) {
+                checkPath = checkPath.slice(0, -1);
+            }
+            if (typeof brackets !== "undefined" && brackets.fs && brackets.fs.stat) {
+                brackets.fs.stat(checkPath + "/.git", function (err, result) {
+                    var exists = err ? false : (result.isFile() || result.isDirectory());
+                    resolve(exists);
+                });
+            } else {
+                FileSystem.resolve(checkPath + "/.git", function (err, item, stat) {
+                    var exists = err ? false : (stat.isFile || stat.isDirectory);
+                    resolve(exists);
+                });
+            }
+        }).then(function (hasGitDir) {
+            if (!hasGitDir) {
+                return null;
+            }
+            return git(["rev-parse", "--show-toplevel"], {
+                cwd: fs.getTauriPlatformPath(projectRoot)
+            })
             .catch(function (e) {
                 if (ErrorHandler.contains(e, "Not a git repository")) {
                     return null;
@@ -1095,6 +1119,7 @@ define(function (require, exports) {
                 });
 
             });
+        });
     }
 
     function setTagName(tagname, commitHash) {
