@@ -16,9 +16,10 @@ define(function (require, exports) {
     ];
 
     let standardGitPathsNonWin = [
+        "/opt/homebrew/bin/git",   // Apple Silicon Homebrew
         "/usr/local/git/bin/git",
         "/usr/local/bin/git",
-        "/usr/bin/git"
+        "/usr/bin/git"             // macOS CLT shim check handled on node side
     ];
 
     let extensionActivated = false;
@@ -27,7 +28,7 @@ define(function (require, exports) {
     function getGitVersion() {
         return new Promise(function (resolve, reject) {
 
-            // TODO: do this in two steps - first check user config and then check all
+            // User-configured path gets priority, then "git" (PATH lookup), then standard paths
             var pathsToLook = [Preferences.get("gitPath"), "git"].concat(brackets.platform === "win" ? standardGitPathsWin : standardGitPathsNonWin);
             pathsToLook = _.unique(_.compact(pathsToLook));
 
