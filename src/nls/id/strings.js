@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Ukuran Huruf",
   "FONT_FAMILY": "Famili Huruf",
   "FONT_LINE_HEIGHT": "Tinggi Baris",
+  "SCROLL_SENSITIVITY": "Sensitivitas Gulir",
   "THEMES_SETTINGS": "Pengaturan Tema",
   "THEMES_ERROR": "Kesalahan Tema",
   "THEMES_ERROR_CANNOT_APPLY": "Tema tidak dapat diterapkan karena kesalahan.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Pengaturan khusus jalur",
   "DESCRIPTION_PROXY": "URL server proxy yang digunakan untuk instalasi ekstensi",
   "DESCRIPTION_SCROLL_PAST_END": "`true` untuk mengaktifkan pengguliran melewati akhir dokumen",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Pengali untuk kecepatan gulir roda mouse (0,1 hingga 10, default 1). Sesuaikan jika guliran terasa terlalu lambat atau cepat.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` untuk menonaktifkan semua petunjuk kode",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Menjaga kursor berkedip tetap terlihat saat Anda memiliki pilihan teks",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` untuk menampilkan nomor baris di \"gutter\" di sebelah kiri kode",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "SCROLL_SENSITIVITY": "Sensitivitas Gulir",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Pengali untuk kecepatan gulir roda mouse (0,1 hingga 10, default 1). Sesuaikan jika guliran terasa terlalu lambat atau cepat."
+  "DEVICE_SIZE_LIMIT_TITLE": "Batas Pratinjau Responsif Tercapai",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Akun gratis mendapatkan beberapa pratinjau responsif per hari. Upgrade ke Phoenix Pro untuk pratinjau responsif tanpa batas di semua ukuran perangkat.",
+  "CMD_CANCEL_TRIAL": "Batalkan Uji Coba Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Batalkan Uji Coba {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Anda memiliki {0} hari tersisa dalam uji coba Phoenix Pro Anda. Pembatalan tidak dapat diurungkan. Apakah Anda yakin ingin menghentikan uji coba Anda?",
+  "CANCEL_TRIAL_STOP_BTN": "Hentikan Uji Coba"
 });

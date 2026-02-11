@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Font Size",
   "FONT_FAMILY": "Font Family",
   "FONT_LINE_HEIGHT": "Line Height",
+  "SCROLL_SENSITIVITY": "Scroll Sensitivity",
   "THEMES_SETTINGS": "Theme Settings",
   "THEMES_ERROR": "Theme Error",
   "THEMES_ERROR_CANNOT_APPLY": "Couldn't apply theme due to an error.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Path-specific settings.",
   "DESCRIPTION_PROXY": "The URL of the proxy server used for extension installation.",
   "DESCRIPTION_SCROLL_PAST_END": "Enable scrolling beyond the end of the document.",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplier for mouse wheel scroll speed (0.1 to 10, default 1). Adjust if scrolling feels too slow or fast.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` to disable all code hints",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Keeps the blinking cursor visible when you have selected text",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` to show line numbers in a “gutter” to the left of the code",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "SCROLL_SENSITIVITY": "Scroll Sensitivity",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplier for mouse wheel scroll speed (0.1 to 10, default 1). Adjust if scrolling feels too slow or fast."
+  "DEVICE_SIZE_LIMIT_TITLE": "Responsive Preview Limit Reached",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Free accounts get a few responsive previews per day. Upgrade to Phoenix Pro for unlimited responsive previews across all device sizes.",
+  "CMD_CANCEL_TRIAL": "Cancel Phoenix Pro Trial",
+  "CANCEL_TRIAL_TITLE": "Cancel {0} Trial?",
+  "CANCEL_TRIAL_MESSAGE": "You have {0} days remaining in your Phoenix Pro trial. Cancelling cannot be undone. Are you sure you want to stop your trial?",
+  "CANCEL_TRIAL_STOP_BTN": "Stop Trial"
 });

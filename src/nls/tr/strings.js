@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Yazı Tipi Boyutu",
   "FONT_FAMILY": "Yazı Tipi Ailesi",
   "FONT_LINE_HEIGHT": "Satır Yüksekliği",
+  "SCROLL_SENSITIVITY": "Kaydırma Hassasiyeti",
   "THEMES_SETTINGS": "Tema Ayarları",
   "THEMES_ERROR": "Tema Hatası",
   "THEMES_ERROR_CANNOT_APPLY": "Bir hata nedeniyle tema uygulanamadı.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Yola özgü ayarlar",
   "DESCRIPTION_PROXY": "Eklenti kurulumu için kullanılan vekil sunucusunun URL'si",
   "DESCRIPTION_SCROLL_PAST_END": "Belgenin sonunun ötesine kaydırmayı etkinleştirmek için `true`",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Fare tekerleği kaydırma hızı için çarpan (0,1 ila 10, varsayılan 1). Kaydırma çok yavaş veya hızlı geliyorsa ayarlayın.",
   "DESCRIPTION_SHOW_CODE_HINTS": "Tüm kod ipuçlarını devre dışı bırakmak için \"false\"",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Metin seçiliyken yanıp sönen imleci görünür tutar",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "Kodun sol tarafında bir “olukta” satır numaralarını göstermek için \"true\"",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "SCROLL_SENSITIVITY": "Kaydırma Hassasiyeti",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Fare tekerleği kaydırma hızı için çarpan (0,1 ila 10, varsayılan 1). Kaydırma çok yavaş veya hızlı geliyorsa ayarlayın."
+  "DEVICE_SIZE_LIMIT_TITLE": "Duyarlı Önizleme Sınırına Ulaşıldı",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Ücretsiz hesaplar günde birkaç duyarlı önizleme hakkı elde eder. Tüm cihaz boyutlarında sınırsız duyarlı önizleme için Phoenix Pro'ya yükseltin.",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro Denemesini İptal Et",
+  "CANCEL_TRIAL_TITLE": "{0} Denemesi İptal Edilsin mi?",
+  "CANCEL_TRIAL_MESSAGE": "Phoenix Pro denemenizin bitmesine {0} gün kaldı. İptal etme işlemi geri alınamaz. Denemenizi sonlandırmak istediğinizden emin misiniz?",
+  "CANCEL_TRIAL_STOP_BTN": "Denemeyi Sonlandır"
 });

@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Fonta lielums",
   "FONT_FAMILY": "Fontu saime",
   "FONT_LINE_HEIGHT": "Rindas augstums",
+  "SCROLL_SENSITIVITY": "Ritināšanas jutība",
   "THEMES_SETTINGS": "Dizaina iestatījumi",
   "THEMES_ERROR": "Kļūda tēmās",
   "THEMES_ERROR_CANNOT_APPLY": "Motīvu neizdevās lietot kļūdas dēļ.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Specifiski ceļu iestatījumi",
   "DESCRIPTION_PROXY": "Paplašinājuma instalēšanai izmantotais starpniekservera URL",
   "DESCRIPTION_SCROLL_PAST_END": "vērtība true, lai iespējotu ritināšanu pēc dokumenta beigām",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Peles ritentiņa ritināšanas ātruma reizinātājs (no 0,1 līdz 10, noklusējums 1). Pielāgojiet, ja ritināšana šķiet pārāk lēna vai ātra.",
   "DESCRIPTION_SHOW_CODE_HINTS": "vērtība false, lai atspējotu koda ieteikumus",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Atstāj mirgojošo kursoru redzamu, kad izvēlēts teksts",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "vērtība true, lai rādītu rindu numuru koda kreisajā malā",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "SCROLL_SENSITIVITY": "Ritināšanas jutība",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Peles ritentiņa ritināšanas ātruma reizinātājs (no 0,1 līdz 10, noklusējums 1). Pielāgojiet, ja ritināšana šķiet pārāk lēna vai ātra."
+  "DEVICE_SIZE_LIMIT_TITLE": "Responzīvo priekšskatījumu limits sasniegts",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Bezmaksas konti saņem dažus responzīvos priekšskatījumus dienā. Jauniniet uz Phoenix Pro, lai saņemtu neierobežotus responzīvos priekšskatījumus visos ierīču izmēros.",
+  "CMD_CANCEL_TRIAL": "Atcelt Phoenix Pro izmēģinājumu",
+  "CANCEL_TRIAL_TITLE": "Atcelt {0} izmēģinājumu?",
+  "CANCEL_TRIAL_MESSAGE": "Jums ir atlikušas {0} dienas Phoenix Pro izmēģinājuma versijā. Atcelšanu nevarēs atsaukt. Vai tiešām vēlaties pārtraukt savu izmēģinājumu?",
+  "CANCEL_TRIAL_STOP_BTN": "Pārtraukt izmēģinājumu"
 });

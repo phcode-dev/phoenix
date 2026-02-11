@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "فونٹ سائز",
   "FONT_FAMILY": "فونٹ فیملی",
   "FONT_LINE_HEIGHT": "لائن کی اونچائی",
+  "SCROLL_SENSITIVITY": "اسکرول حساسیت",
   "THEMES_SETTINGS": "تھیمز کی ترتیبات",
   "THEMES_ERROR": "تھیمز میں خرابی",
   "THEMES_ERROR_CANNOT_APPLY": "کسی خرابی کی وجہ سے تھیم لاگو نہیں ہو سکی۔",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "راستے کی مخصوص ترتیبات",
   "DESCRIPTION_PROXY": "ایکسٹینشن انسٹالیشن کے لیے استعمال ہونے والے پراکسی سرور کا یو آر ایل",
   "DESCRIPTION_SCROLL_PAST_END": "دستاویز کے اختتام سے آگے سکرولنگ کو فعال کرنے کے لیے 'صحیح'",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "ماؤس وہیل کی اسکرول رفتار کا ملٹی پلائر (0.1 سے 10 تک، ڈیفالٹ 1)۔ اگر اسکرولنگ بہت سست یا تیز محسوس ہو تو ایڈجسٹ کریں۔",
   "DESCRIPTION_SHOW_CODE_HINTS": "تمام کوڈ اشارے غیر فعال کرنے کیلئے غلط",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "جب آپ ٹیکسٹ منتخب کرتے ہیں تو پلک کرتا ہوا کرسر نظر آتا رہتا ہے",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "کوڈ کے بائیں جانب \"گٹر\" میں لائن نمبرز دکھانے کیلئے درست",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "SCROLL_SENSITIVITY": "اسکرول حساسیت",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "ماؤس وہیل کی اسکرول رفتار کا ملٹی پلائر (0.1 سے 10 تک، ڈیفالٹ 1)۔ اگر اسکرولنگ بہت سست یا تیز محسوس ہو تو ایڈجسٹ کریں۔"
+  "DEVICE_SIZE_LIMIT_TITLE": "رسپانسیو پریویو کی حد پوری ہو گئی",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "مفت اکاؤنٹس کو روزانہ چند رسپانسیو پریویوز ملتے ہیں۔ تمام ڈیوائس سائزز پر لامحدود رسپانسیو پریویوز کے لیے Phoenix Pro پر اپ گریڈ کریں۔",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro ٹرائل منسوخ کریں",
+  "CANCEL_TRIAL_TITLE": "{0} ٹرائل منسوخ کریں؟",
+  "CANCEL_TRIAL_MESSAGE": "آپ کے Phoenix Pro ٹرائل میں {0} دن باقی ہیں۔ منسوخی کو واپس نہیں لیا جا سکتا۔ کیا آپ واقعی اپنا ٹرائل روکنا چاہتے ہیں؟",
+  "CANCEL_TRIAL_STOP_BTN": "ٹرائل روکیں"
 });

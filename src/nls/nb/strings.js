@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Skriftstørrelse",
   "FONT_FAMILY": "Skriftfamilie",
   "FONT_LINE_HEIGHT": "Linjehøyde",
+  "SCROLL_SENSITIVITY": "Rullefølsomhet",
   "THEMES_SETTINGS": "Temainnstillinger",
   "THEMES_ERROR": "Temafeil",
   "THEMES_ERROR_CANNOT_APPLY": "Kunne ikke bruke temaet på grunn av en feil.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Stiespesifikke innstillinger.",
   "DESCRIPTION_PROXY": "URL-en til proxy-serveren som brukes for installasjon av utvidelser.",
   "DESCRIPTION_SCROLL_PAST_END": "`true` for å aktivere rulling forbi slutten av dokumentet.",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator for rullehastigheten til musehjulet (0,1 til 10, standard 1). Juster hvis rullingen føles for treg eller for rask.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` for å deaktivere alle kodehint",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Holder den blinkende markøren synlig når du har en tekst markert",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` for å vise linjenumre i en marg til venstre for koden",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "SCROLL_SENSITIVITY": "Rullefølsomhet",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator for rullehastigheten til musehjulet (0,1 til 10, standard 1). Juster hvis rullingen føles for treg eller for rask."
+  "DEVICE_SIZE_LIMIT_TITLE": "Grense for responsiv forhåndsvisning nådd",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Gratiskontoer får et begrenset antall responsive forhåndsvisninger per dag. Oppgrader til Phoenix Pro for ubegrensede responsive forhåndsvisninger på tvers av alle enhetsstørrelser.",
+  "CMD_CANCEL_TRIAL": "Avbryt Phoenix Pro-prøveperiode",
+  "CANCEL_TRIAL_TITLE": "Avbryte {0}-prøveperioden?",
+  "CANCEL_TRIAL_MESSAGE": "Du har {0} dager igjen av din Phoenix Pro-prøveperiode. Avbrytelsen kan ikke angres. Er du sikker på at du vil avslutte prøveperioden din?",
+  "CANCEL_TRIAL_STOP_BTN": "Avslutt prøveperiode"
 });

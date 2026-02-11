@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Velikost písma",
   "FONT_FAMILY": "Rodina písma",
   "FONT_LINE_HEIGHT": "Výška řádku",
+  "SCROLL_SENSITIVITY": "Citlivost posouvání",
   "THEMES_SETTINGS": "Nastavení motivů",
   "THEMES_ERROR": "Chyba motivů",
   "THEMES_ERROR_CANNOT_APPLY": "Nepodařilo se použít motiv kvůli chybě.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Vlastní nastavení cest",
   "DESCRIPTION_PROXY": "URL proxy serveru použitého k instalaci doplňků",
   "DESCRIPTION_SCROLL_PAST_END": "true k povolení rolování za konec dokumentu",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Násobič rychlosti posouvání kolečkem myši (0,1 až 10, výchozí 1). Upravte, pokud se vám posouvání zdá příliš pomalé nebo rychlé.",
   "DESCRIPTION_SHOW_CODE_HINTS": "false k zakázání všech nápověd kódu",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Při výběru textu nechat zobrazený blikající kurzor",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "true ke zobrazení čísel řádků na okraji vlevo od kódu",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "SCROLL_SENSITIVITY": "Citlivost posouvání",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Násobič rychlosti posouvání kolečkem myši (0,1 až 10, výchozí 1). Upravte, pokud se vám posouvání zdá příliš pomalé nebo rychlé."
+  "DEVICE_SIZE_LIMIT_TITLE": "Byl dosažen limit responzivních náhledů",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Bezplatné účty mají k dispozici několik responzivních náhledů denně. Přejděte na Phoenix Pro a získejte neomezené responzivní náhledy pro všechny velikosti zařízení.",
+  "CMD_CANCEL_TRIAL": "Zrušit zkušební verzi Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Zrušit zkušební verzi {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Zbývá vám {0} dní zkušební verze Phoenix Pro. Zrušení je nevratné. Jste si jisti, že chcete zkušební verzi ukončit?",
+  "CANCEL_TRIAL_STOP_BTN": "Ukončit zkušební verzi"
 });

@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Taille de la police ",
   "FONT_FAMILY": "Famille de polices ",
   "FONT_LINE_HEIGHT": "Hauteur de ligne",
+  "SCROLL_SENSITIVITY": "Sensibilité du défilement",
   "THEMES_SETTINGS": "Paramètres des thèmes",
   "THEMES_ERROR": "Erreur de thèmes",
   "THEMES_ERROR_CANNOT_APPLY": "Impossible d'appliquer le thème en raison d'une erreur.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Paramètres spécifiques au chemin d’accès",
   "DESCRIPTION_PROXY": "URL du serveur proxy utilisé pour l’installation des extensions",
   "DESCRIPTION_SCROLL_PAST_END": "vrai pour autoriser le défilement au-delà de la fin du document",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicateur pour la vitesse de défilement de la molette (0,1 à 10, par défaut 1). Ajustez si le défilement vous semble trop lent ou trop rapide.",
   "DESCRIPTION_SHOW_CODE_HINTS": "faux pour désactiver tous les indicateurs de code",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Laisse le curseur clignotant visible en cas de sélection de texte",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "vrai pour afficher les numéros de ligne dans une « gouttière » à gauche du code",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "SCROLL_SENSITIVITY": "Sensibilité du défilement",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicateur pour la vitesse de défilement de la molette (0,1 à 10, par défaut 1). Ajustez si le défilement vous semble trop lent ou trop rapide."
+  "DEVICE_SIZE_LIMIT_TITLE": "Limite d'aperçus adaptatifs atteinte",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Les comptes gratuits ont droit à quelques aperçus adaptatifs par jour. Passez à Phoenix Pro pour des aperçus adaptatifs illimités sur toutes les tailles d'appareils.",
+  "CMD_CANCEL_TRIAL": "Annuler l'essai de Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Annuler l'essai de {0} ?",
+  "CANCEL_TRIAL_MESSAGE": "Il vous reste {0} jours dans votre période d'essai de Phoenix Pro. L'annulation est irréversible. Êtes-vous sûr de vouloir arrêter votre essai ?",
+  "CANCEL_TRIAL_STOP_BTN": "Arrêter l'essai"
 });

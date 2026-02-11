@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Schriftgröße",
   "FONT_FAMILY": "Schriftart",
   "FONT_LINE_HEIGHT": "Zeilenhöhe",
+  "SCROLL_SENSITIVITY": "Scroll-Empfindlichkeit",
   "THEMES_SETTINGS": "Design-Einstellungen",
   "THEMES_ERROR": "Designfehler",
   "THEMES_ERROR_CANNOT_APPLY": "Design konnte aufgrund eines Fehlers nicht angewendet werden.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Pfadspezifische Einstellungen",
   "DESCRIPTION_PROXY": "URL des Proxyservers, der bei der Installation von Erweiterungen verwendet wird",
   "DESCRIPTION_SCROLL_PAST_END": "Aktiviert Scrollen über das Ende des Dokuments hinaus",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator für die Scroll-Geschwindigkeit des Mausrads (0,1 bis 10, Standard: 1). Passen Sie diesen Wert an, wenn sich das Scrollen zu langsam oder zu schnell anfühlt.",
   "DESCRIPTION_SHOW_CODE_HINTS": "Aktiviert Code Hints",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Der Cursor wird auch angezeigt, wenn eine Auswahl besteht",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "Zeigt Zeilennummern am linken Zeilenrand an",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "SCROLL_SENSITIVITY": "Scroll-Empfindlichkeit",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator für die Scroll-Geschwindigkeit des Mausrads (0,1 bis 10, Standard: 1). Passen Sie diesen Wert an, wenn sich das Scrollen zu langsam oder zu schnell anfühlt."
+  "DEVICE_SIZE_LIMIT_TITLE": "Limit für responsive Vorschauen erreicht",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Kostenlose Konten erhalten einige responsive Vorschauen pro Tag. Upgraden Sie auf Phoenix Pro für unbegrenzte responsive Vorschauen auf allen Gerätegrößen.",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro-Testversion beenden",
+  "CANCEL_TRIAL_TITLE": "{0}-Testversion beenden?",
+  "CANCEL_TRIAL_MESSAGE": "Sie haben noch {0} Tage in Ihrer Phoenix Pro-Testversion. Das Beenden kann nicht rückgängig gemacht werden. Möchten Sie Ihre Testversion wirklich beenden?",
+  "CANCEL_TRIAL_STOP_BTN": "Testversion beenden"
 });

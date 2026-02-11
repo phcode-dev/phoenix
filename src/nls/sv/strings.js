@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Teckenstorlek",
   "FONT_FAMILY": "Typsnitt",
   "FONT_LINE_HEIGHT": "Radhöjd",
+  "SCROLL_SENSITIVITY": "Scrollkänslighet",
   "THEMES_SETTINGS": "Temainställningar",
   "THEMES_ERROR": "Temafel",
   "THEMES_ERROR_CANNOT_APPLY": "Kunde inte tillämpa temat på grund av ett fel.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Vägspecifika inställningar",
   "DESCRIPTION_PROXY": "URL:en för proxyservern som används för installation av tillägg",
   "DESCRIPTION_SCROLL_PAST_END": "true för att aktivera scrollning bortom slutet av dokumentet",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator för mushjulets scrollhastighet (0,1 till 10, standard 1). Justera om scrollningen känns för långsam eller snabb.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` för att inaktivera alla kodförslag",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Håller den blinkande markören synlig när du har en textmarkering",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` för att visa radnummer i en \"ränna\" till vänster om koden",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "SCROLL_SENSITIVITY": "Scrollkänslighet",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator för mushjulets scrollhastighet (0,1 till 10, standard 1). Justera om scrollningen känns för långsam eller snabb."
+  "DEVICE_SIZE_LIMIT_TITLE": "Gräns för responsiv förhandsgranskning uppnådd",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Gratiskonton får ett fåtal responsiva förhandsgranskningar per dag. Uppgradera till Phoenix Pro för obegränsade responsiva förhandsgranskningar för alla enhetsstorlekar.",
+  "CMD_CANCEL_TRIAL": "Avbryt Phoenix Pro-provperiod",
+  "CANCEL_TRIAL_TITLE": "Avbryta {0}-provperiod?",
+  "CANCEL_TRIAL_MESSAGE": "Du har {0} dagar kvar av din Phoenix Pro-provperiod. Avbrytandet kan inte ångras. Är du säker på att du vill avsluta din provperiod?",
+  "CANCEL_TRIAL_STOP_BTN": "Avsluta provperiod"
 });

@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Rozmiar czcionki",
   "FONT_FAMILY": "Rodzina czcionek",
   "FONT_LINE_HEIGHT": "Wysokość wiersza",
+  "SCROLL_SENSITIVITY": "Czułość przewijania",
   "THEMES_SETTINGS": "Ustawienia motywów",
   "THEMES_ERROR": "Błąd motywów",
   "THEMES_ERROR_CANNOT_APPLY": "Nie można zastosować motywu z powodu błędu.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Ścieżka do ustawień",
   "DESCRIPTION_PROXY": "Adres URL serwera proxy używanego do instalacji rozszerzeń",
   "DESCRIPTION_SCROLL_PAST_END": "true, by włączyć możliwość przewijania poza koniec dokumentu",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Mnożnik prędkości przewijania kółkiem myszy (od 0,1 do 10, domyślnie 1). Dostosuj, jeśli przewijanie jest zbyt wolne lub zbyt szybkie.",
   "DESCRIPTION_SHOW_CODE_HINTS": "false, by wyłączyć wszystkie podpowiedzi do kodu",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Wyświetlaj migający kursor podczas zaznaczenia tekstu",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "true, by wyświetlać numery linii obok kodu",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "SCROLL_SENSITIVITY": "Czułość przewijania",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Mnożnik prędkości przewijania kółkiem myszy (od 0,1 do 10, domyślnie 1). Dostosuj, jeśli przewijanie jest zbyt wolne lub zbyt szybkie."
+  "DEVICE_SIZE_LIMIT_TITLE": "Osiągnięto limit responsywnych podglądów",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Darmowe konta mają dostęp do kilku responsywnych podglądów dziennie. Przejdź na Phoenix Pro, aby uzyskać nieograniczony dostęp do responsywnych podglądów na wszystkich rozmiarach urządzeń.",
+  "CMD_CANCEL_TRIAL": "Anuluj okres próbny Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Anulować okres próbny {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Pozostało Ci {0} dni okresu próbnego Phoenix Pro. Anulowania nie można cofnąć. Czy na pewno chcesz zakończyć okres próbny?",
+  "CANCEL_TRIAL_STOP_BTN": "Zakończ okres próbny"
 });

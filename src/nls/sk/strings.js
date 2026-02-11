@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Veľkosť písma",
   "FONT_FAMILY": "Rodina písma",
   "FONT_LINE_HEIGHT": "Výška riadku",
+  "SCROLL_SENSITIVITY": "Citlivosť posúvania",
   "THEMES_SETTINGS": "Nastavenia tém",
   "THEMES_ERROR": "Chyba tém",
   "THEMES_ERROR_CANNOT_APPLY": "Nepodarilo sa použiť tému z dôvodu chyby.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Nastavenia špecifické pre cestu.",
   "DESCRIPTION_PROXY": "URL adresa proxy servera použitého na inštaláciu rozšírenia.",
   "DESCRIPTION_SCROLL_PAST_END": "Pravda pre povolenie posúvania za koniec dokumentu.",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Násobok rýchlosti posúvania kolieskom myši (0,1 až 10, predvolené 1). Upravte, ak sa vám posúvanie zdá príliš pomalé alebo rýchle.",
   "DESCRIPTION_SHOW_CODE_HINTS": "Hodnota `false` zakáže všetky tipy kódu",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Udržuje blikajúci kurzor viditeľný, aj keď máte vybratý text",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "Hodnota `true` zobrazí čísla riadkov v ľavom okraji editora kódu",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "SCROLL_SENSITIVITY": "Citlivosť posúvania",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Násobok rýchlosti posúvania kolieskom myši (0,1 až 10, predvolené 1). Upravte, ak sa vám posúvanie zdá príliš pomalé alebo rýchle."
+  "DEVICE_SIZE_LIMIT_TITLE": "Dosiahnutý limit responzívnych náhľadov",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Bezplatné účty majú k dispozícii niekoľko responzívnych náhľadov denne. Prejdite na Phoenix Pro a získajte neobmedzené responzívne náhľady na všetkých veľkostiach zariadení.",
+  "CMD_CANCEL_TRIAL": "Zrušiť skúšobnú verziu Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Zrušiť skúšobnú verziu {0}?",
+  "CANCEL_TRIAL_MESSAGE": "V skúšobnej verzii Phoenix Pro vám zostáva {0} dní. Zrušenie nie je možné vrátiť späť. Naozaj chcete ukončiť skúšobnú verziu?",
+  "CANCEL_TRIAL_STOP_BTN": "Ukončiť skúšobnú verziu"
 });

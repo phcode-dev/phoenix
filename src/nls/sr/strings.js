@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Величина фонта",
   "FONT_FAMILY": "Породица фонта",
   "FONT_LINE_HEIGHT": "Висина линије",
+  "SCROLL_SENSITIVITY": "Осетљивост скроловања",
   "THEMES_SETTINGS": "Подешавања теме",
   "THEMES_ERROR": "Грешка тема",
   "THEMES_ERROR_CANNOT_APPLY": "Тема није могла бити примењена због грешке.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Подешавања специфична за путању",
   "DESCRIPTION_PROXY": "URL прокси сервера који се користи за инсталацију екстензија",
   "DESCRIPTION_SCROLL_PAST_END": "true за омогућавање померања ван краја документа",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множилац за брзину скроловања точкићем миша (од 0,1 до 10, подразумевано 1). Подесите ако вам се чини да је скроловање преспоро или пребрзо.",
   "DESCRIPTION_SHOW_CODE_HINTS": "Унесите `false` да бисте онемогућили све сугестије кода",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Одржава курсор видљивим када је текст селектован",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "Унесите `true` да бисте приказали бројеве редова у левом делу уређивача кода",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "SCROLL_SENSITIVITY": "Осетљивост скроловања",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множилац за брзину скроловања точкићем миша (од 0,1 до 10, подразумевано 1). Подесите ако вам се чини да је скроловање преспоро или пребрзо."
+  "DEVICE_SIZE_LIMIT_TITLE": "Достигнуто је ограничење за респонзивни преглед",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Бесплатни налози добијају неколико респонзивних прегледа дневно. Надоградите на Phoenix Pro за неограничене респонзивне прегледе на свим величинама уређаја.",
+  "CMD_CANCEL_TRIAL": "Откажи Phoenix Pro пробни период",
+  "CANCEL_TRIAL_TITLE": "Откажи {0} пробни период?",
+  "CANCEL_TRIAL_MESSAGE": "Преостало вам је {0} дана у пробном периоду за Phoenix Pro. Отказивање се не може опозвати. Да ли сте сигурни да желите да прекинете пробни период?",
+  "CANCEL_TRIAL_STOP_BTN": "Прекини пробни период"
 });

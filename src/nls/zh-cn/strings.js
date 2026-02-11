@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "字号",
   "FONT_FAMILY": "字体",
   "FONT_LINE_HEIGHT": "行高",
+  "SCROLL_SENSITIVITY": "滚动灵敏度",
   "THEMES_SETTINGS": "主题设置",
   "THEMES_ERROR": "主题错误",
   "THEMES_ERROR_CANNOT_APPLY": "由于发生错误，无法应用主题。",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "路径特定设置",
   "DESCRIPTION_PROXY": "扩展安装所用的代理服务器 URL",
   "DESCRIPTION_SCROLL_PAST_END": "值为真时，允许滚动超出文档末尾",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "鼠标滚轮滚动速度倍率（0.1 到 10，默认为 1）。如果滚动过慢或过快，可调整此项。",
   "DESCRIPTION_SHOW_CODE_HINTS": "值为假时，关闭所有代码提示",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "有文字选区时保持光标闪烁",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "值为真时，在代码左侧显示行号",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "SCROLL_SENSITIVITY": "滚动灵敏度",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "鼠标滚轮滚动速度倍率（0.1 到 10，默认为 1）。如果滚动过慢或过快，可调整此项。"
+  "DEVICE_SIZE_LIMIT_TITLE": "响应式预览次数已达上限",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "免费帐户每天可进行有限次数的响应式预览。升级到 Phoenix Pro 即可在所有设备尺寸上享受无限制的响应式预览。",
+  "CMD_CANCEL_TRIAL": "取消 Phoenix Pro 试用",
+  "CANCEL_TRIAL_TITLE": "取消 {0} 试用？",
+  "CANCEL_TRIAL_MESSAGE": "您的 Phoenix Pro 试用还剩 {0} 天。取消后将无法撤销。您确定要停止试用吗？",
+  "CANCEL_TRIAL_STOP_BTN": "停止试用"
 });

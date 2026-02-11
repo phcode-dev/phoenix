@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "フォントサイズ ",
   "FONT_FAMILY": "フォントファミリー ",
   "FONT_LINE_HEIGHT": "行の高さ",
+  "SCROLL_SENSITIVITY": "スクロール感度",
   "THEMES_SETTINGS": "テーマ設定",
   "THEMES_ERROR": "テーマエラー",
   "THEMES_ERROR_CANNOT_APPLY": "エラーが発生したため、テーマを適用できませんでした。",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "パス固有の設定",
   "DESCRIPTION_PROXY": "拡張機能のインストールに使用するプロキシサーバーの URL",
   "DESCRIPTION_SCROLL_PAST_END": "ドキュメントの終端を超えたスクロールを有効にするには true",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "マウスホイールのスクロール速度の倍率（0.1～10、デフォルトは1）。スクロールが遅すぎる、または速すぎると感じる場合に調整してください。",
   "DESCRIPTION_SHOW_CODE_HINTS": "すべてのコードヒントを無効にするには false",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "文字が選択されているときに点滅カーソルを表示したままにします",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "コードの左の「余白」に行番号を表示するには true",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "SCROLL_SENSITIVITY": "スクロール感度",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "マウスホイールのスクロール速度の倍率（0.1～10、デフォルトは1）。スクロールが遅すぎる、または速すぎると感じる場合に調整してください。"
+  "DEVICE_SIZE_LIMIT_TITLE": "レスポンシブプレビューの上限に達しました",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "無料アカウントでは、１日あたりのレスポンシブプレビューの回数が制限されています。Phoenix Proにアップグレードすると、すべてのデバイスサイズでレスポンシブプレビューを無制限にご利用いただけます。",
+  "CMD_CANCEL_TRIAL": "Phoenix Proトライアルの解約",
+  "CANCEL_TRIAL_TITLE": "{0}トライアルを解約しますか？",
+  "CANCEL_TRIAL_MESSAGE": "Phoenix Proトライアルの残り日数は{0}日です。一度解約すると元に戻すことはできません。トライアルを解約してもよろしいですか？",
+  "CANCEL_TRIAL_STOP_BTN": "トライアルを解約する"
 });

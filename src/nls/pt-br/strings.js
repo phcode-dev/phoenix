@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Tamanho da fonte",
   "FONT_FAMILY": "Família da fonte",
   "FONT_LINE_HEIGHT": "Altura da linha",
+  "SCROLL_SENSITIVITY": "Sensibilidade da Rolagem",
   "THEMES_SETTINGS": "Configurações de temas",
   "THEMES_ERROR": "Erro de temas",
   "THEMES_ERROR_CANNOT_APPLY": "Não foi possível aplicar o tema devido a um erro.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Configurações específicas para uma rota de arquivo",
   "DESCRIPTION_PROXY": "A URL do proxy utilizado para a instalação das extensões",
   "DESCRIPTION_SCROLL_PAST_END": "verdadeiro (true) para habilitar o scrolling após o fim do arquivo",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicador para a velocidade de rolagem da roda do mouse (0,1 a 10, padrão 1). Ajuste se a rolagem parecer muito lenta ou rápida.",
   "DESCRIPTION_SHOW_CODE_HINTS": "falso (false) para desabilitar todos as sugestões de código",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Mantenha o cursor visível quando houver uma seleção de texto",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "verdadeiro (true) para mostrar o número das linhas na borda \"gutter\" à esquerda do editor",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "SCROLL_SENSITIVITY": "Sensibilidade da Rolagem",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicador para a velocidade de rolagem da roda do mouse (0,1 a 10, padrão 1). Ajuste se a rolagem parecer muito lenta ou rápida."
+  "DEVICE_SIZE_LIMIT_TITLE": "Limite de Visualizações Responsivas Atingido",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Contas gratuitas têm direito a algumas visualizações responsivas por dia. Faça o upgrade para o Phoenix Pro para ter visualizações responsivas ilimitadas em todos os tamanhos de dispositivo.",
+  "CMD_CANCEL_TRIAL": "Cancelar Avaliação do Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Cancelar a Avaliação do {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Você tem {0} dias restantes na sua avaliação do Phoenix Pro. O cancelamento não pode ser desfeito. Tem certeza de que deseja interromper sua avaliação?",
+  "CANCEL_TRIAL_STOP_BTN": "Interromper Avaliação"
 });

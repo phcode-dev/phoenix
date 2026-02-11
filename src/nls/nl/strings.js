@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Lettergrootte",
   "FONT_FAMILY": "Lettertype(s)",
   "FONT_LINE_HEIGHT": "Regelhoogte",
+  "SCROLL_SENSITIVITY": "Scrolgevoeligheid",
   "THEMES_SETTINGS": "Thema-instellingen",
   "THEMES_ERROR": "Themafout",
   "THEMES_ERROR_CANNOT_APPLY": "Thema kon vanwege een fout niet worden toegepast.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Pad-specifieke instellingen.",
   "DESCRIPTION_PROXY": "De URL van de proxyserver die gebruikt wordt voor extensie-installatie.",
   "DESCRIPTION_SCROLL_PAST_END": "`true` om scrollen voorbij het einde van het document mogelijk te maken.",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Vermenigvuldiger voor de scrolsnelheid van het muiswiel (0,1 tot 10, standaard 1). Pas aan als scrollen te traag of te snel aanvoelt.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` om alle codehints uit te schakelen",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Houdt de knipperende cursor zichtbaar wanneer u een tekstselectie hebt",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` om regelnummers weer te geven in een \"goot\" links van de code",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "SCROLL_SENSITIVITY": "Scrolgevoeligheid",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Vermenigvuldiger voor de scrolsnelheid van het muiswiel (0,1 tot 10, standaard 1). Pas aan als scrollen te traag of te snel aanvoelt."
+  "DEVICE_SIZE_LIMIT_TITLE": "Limiet voor responsieve voorvertoningen bereikt",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Met een gratis account krijgt u een paar responsieve voorvertoningen per dag. Upgrade naar Phoenix Pro voor onbeperkte responsieve voorvertoningen op alle apparaatformaten.",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro-proefperiode annuleren",
+  "CANCEL_TRIAL_TITLE": "{0}-proefperiode annuleren?",
+  "CANCEL_TRIAL_MESSAGE": "U heeft nog {0} dagen van uw Phoenix Pro-proefperiode. Annuleren kan niet ongedaan worden gemaakt. Weet u zeker dat u uw proefperiode wilt beëindigen?",
+  "CANCEL_TRIAL_STOP_BTN": "Proefperiode beëindigen"
 });
