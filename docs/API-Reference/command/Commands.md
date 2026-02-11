@@ -735,6 +735,12 @@ Opens support resources
 Opens Phoenix Pro page
 
 **Kind**: global variable  
+<a name="HELP_CANCEL_TRIAL"></a>
+
+## HELP\_CANCEL\_TRIAL
+Cancels Phoenix Pro trial
+
+**Kind**: global variable  
 <a name="HELP_VIEW_LICENSE"></a>
 
 ## HELP\_VIEW\_LICENSE
