@@ -121,6 +121,20 @@ Returns true if visible else false.
 | --- |
 | panelID | 
 
+<a name="setPluginPanelWidth"></a>
+
+## setPluginPanelWidth(width)
+Programmatically sets the plugin panel content width to the given value in pixels.
+The total toolbar width is adjusted to account for the plugin icons bar.
+Width is clamped to respect panel minWidth and max size (75% of window).
+No-op if no panel is currently visible.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| width | <code>number</code> | Desired content width in pixels |
+
 <a name="addEscapeKeyEventHandler"></a>
 
 ## addEscapeKeyEventHandler(consumerName, eventHandler) ⇒ <code>boolean</code>

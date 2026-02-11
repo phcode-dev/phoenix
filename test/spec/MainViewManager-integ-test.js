@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, beforeAll, afterAll, it, expect, awaitsForDone, spyOn, jasmine, awaitsFor */
+/*global describe, beforeEach, beforeAll, afterAll, afterEach, it, expect, awaitsForDone, spyOn, jasmine, awaitsFor */
 
 define(function (require, exports, module) {
 
@@ -1137,6 +1137,106 @@ define(function (require, exports, module) {
                 expect(panel2.isVisible()).toBeFalse();
                 expect(panel1.isVisible()).toBeTrue();
                 panel2.registerCanBeShownHandler(null);
+            });
+        });
+
+        describe("setPluginPanelWidth", function () {
+            let pluginPanel, $toolbarIcon;
+            const MIN_WIDTH = 200;
+
+            beforeAll(function () {
+                // Create a toolbar icon in #plugin-icons-bar
+                $toolbarIcon = _$('<a id="test-plugin-icon" href="#"></a>');
+                _$("#plugin-icons-bar").append($toolbarIcon);
+
+                let panelTemplate = '<div id="test-plugin-panel">Test Panel</div>';
+                pluginPanel = WorkspaceManager.createPluginPanel(
+                    "test-setwidth-panel", _$(panelTemplate), MIN_WIDTH, $toolbarIcon
+                );
+            });
+
+            afterAll(function () {
+                if (pluginPanel) {
+                    pluginPanel.hide();
+                }
+                $toolbarIcon.remove();
+            });
+
+            afterEach(function () {
+                pluginPanel.hide();
+            });
+
+            it("should be a no-op when no panel is visible", function () {
+                expect(pluginPanel.isVisible()).toBeFalse();
+                var toolbarWidthBefore = _$("#main-toolbar").width();
+                WorkspaceManager.setPluginPanelWidth(500);
+                var toolbarWidthAfter = _$("#main-toolbar").width();
+                expect(toolbarWidthAfter).toEqual(toolbarWidthBefore);
+            });
+
+            it("should resize the panel to the specified width", function () {
+                pluginPanel.show();
+                expect(pluginPanel.isVisible()).toBeTrue();
+
+                WorkspaceManager.setPluginPanelWidth(500);
+
+                var $mainToolbar = _$("#main-toolbar");
+                var $pluginIconsBar = _$("#plugin-icons-bar");
+                var panelContentWidth = $mainToolbar.width() - $pluginIconsBar.outerWidth();
+                expect(panelContentWidth).toEqual(500);
+            });
+
+            it("should clamp width to panel minWidth", function () {
+                pluginPanel.show();
+
+                // Request a width smaller than minWidth
+                WorkspaceManager.setPluginPanelWidth(50);
+
+                var $mainToolbar = _$("#main-toolbar");
+                var $pluginIconsBar = _$("#plugin-icons-bar");
+                var panelContentWidth = $mainToolbar.width() - $pluginIconsBar.outerWidth();
+                expect(panelContentWidth).toBeGreaterThanOrEqual(MIN_WIDTH);
+            });
+
+            it("should clamp width to max size (75% of window)", function () {
+                pluginPanel.show();
+
+                var maxContentWidth = (testWindow.innerWidth * 0.75) -
+                    _$("#plugin-icons-bar").outerWidth();
+
+                // Request a width larger than max
+                WorkspaceManager.setPluginPanelWidth(testWindow.innerWidth);
+
+                var $mainToolbar = _$("#main-toolbar");
+                var $pluginIconsBar = _$("#plugin-icons-bar");
+                var panelContentWidth = $mainToolbar.width() - $pluginIconsBar.outerWidth();
+                expect(panelContentWidth).toBeLessThanOrEqual(maxContentWidth + 1);
+            });
+
+            it("should update $windowContent right offset to match toolbar width", function () {
+                pluginPanel.show();
+
+                WorkspaceManager.setPluginPanelWidth(600);
+
+                var $mainToolbar = _$("#main-toolbar");
+                var $windowContent = _$(".content");
+                var toolbarWidth = $mainToolbar.width();
+                var rightOffset = parseInt($windowContent.css("right"), 10);
+                expect(rightOffset).toEqual(toolbarWidth);
+            });
+
+            it("should handle multiple successive resizes", function () {
+                pluginPanel.show();
+
+                var widths = [300, 500, 400, 700];
+                var $mainToolbar = _$("#main-toolbar");
+                var $pluginIconsBar = _$("#plugin-icons-bar");
+
+                widths.forEach(function (targetWidth) {
+                    WorkspaceManager.setPluginPanelWidth(targetWidth);
+                    var panelContentWidth = $mainToolbar.width() - $pluginIconsBar.outerWidth();
+                    expect(panelContentWidth).toEqual(targetWidth);
+                });
             });
         });
     });

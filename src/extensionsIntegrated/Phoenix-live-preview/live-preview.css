@@ -105,6 +105,36 @@
     padding-left: 7.5px;
 }
 
+.lp-device-size-icon {
+    color: #a0a0a0;
+    display: flex;
+    align-items: center;
+    padding-left: 7.5px;
+    margin-right: 7.5px;
+}
+
+#deviceSizeBtn.btn-dropdown::after {
+    position: static;
+    margin-top: 2px;
+    margin-left: 3px;
+}
+
+.device-size-item-icon {
+    margin-right: 6px;
+    width: 12px;
+    text-align: center;
+    font-size: inherit;
+}
+
+.device-size-item-width {
+    margin-left: 10px;
+    opacity: 0.5;
+}
+
+.device-size-item-disabled {
+    opacity: 0.35;
+}
+
 #livePreviewModeBtn {
     min-width: fit-content;
     display: flex;
