@@ -232,6 +232,8 @@ define({
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Type folder path (e.g., assets/images/)",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Type folder path or leave empty to download in 'images' folder.",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
+    "DEVICE_SIZE_LIMIT_TITLE": "Responsive Preview Limit Reached",
+    "DEVICE_SIZE_LIMIT_MESSAGE": "Free accounts get a few responsive previews per day. Upgrade to Phoenix Pro for unlimited responsive previews across all device sizes.",
     "IMAGE_SEARCH_LIMIT_TITLE": "Image search limit reached",
     "IMAGE_SEARCH_LIMIT_MESSAGE": "You’ve used all {0} image searches for this month.<br>Start a paid Phoenix Pro plan to remove trial limits and continue searching.",
     "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Image search is temporarily unavailable due to high demand.<br>Start a paid Phoenix Pro plan to remove trial limits and continue searching.",
