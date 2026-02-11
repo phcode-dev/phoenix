@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "字體大小",
   "FONT_FAMILY": "字體",
   "FONT_LINE_HEIGHT": "行高",
+  "SCROLL_SENSITIVITY": "捲動靈敏度",
   "THEMES_SETTINGS": "佈景主題設定",
   "THEMES_ERROR": "佈景主題錯誤",
   "THEMES_ERROR_CANNOT_APPLY": "因發生錯誤，無法套用佈景主題。",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "路徑相關設定",
   "DESCRIPTION_PROXY": "用來安裝擴充功能的 Proxy 伺服器 URL",
   "DESCRIPTION_SCROLL_PAST_END": "true 代表允許捲動到檔案結尾之後",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "滑鼠滾輪捲動速度倍率 (0.1 至 10，預設值為 1)。若您覺得捲動速度過慢或過快，可調整此數值。",
   "DESCRIPTION_SHOW_CODE_HINTS": "false 代表停用所有的程式碼提示",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "選取文字時還是要顯示閃動的游標",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "true 代表在程式碼左方「邊欄」中顯示行號",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "SCROLL_SENSITIVITY": "捲動靈敏度",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "滑鼠滾輪捲動速度倍率 (0.1 至 10，預設值為 1)。若您覺得捲動速度過慢或過快，可調整此數值。"
+  "DEVICE_SIZE_LIMIT_TITLE": "響應式預覽次數已達上限",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "免費帳號每日的響應式預覽次數有限。升級至 Phoenix Pro，即可在所有裝置尺寸上無限次使用響應式預覽。",
+  "CMD_CANCEL_TRIAL": "取消 Phoenix Pro 試用",
+  "CANCEL_TRIAL_TITLE": "要取消 {0} 試用嗎？",
+  "CANCEL_TRIAL_MESSAGE": "您的 Phoenix Pro 試用期還剩下 {0} 天。取消後將無法復原。您確定要中止試用嗎？",
+  "CANCEL_TRIAL_STOP_BTN": "中止試用"
 });

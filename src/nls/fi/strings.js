@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Fonttikoko",
   "FONT_FAMILY": "Fonttiperhe",
   "FONT_LINE_HEIGHT": "Rivin korkeus",
+  "SCROLL_SENSITIVITY": "Vierityksen herkkyys",
   "THEMES_SETTINGS": "Teema-asetukset",
   "THEMES_ERROR": "Teemoissa virhe",
   "THEMES_ERROR_CANNOT_APPLY": "Teeman käyttöönotto epäonnistui virheen vuoksi.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Polkukohtaiset asetukset",
   "DESCRIPTION_PROXY": "URL välityspalvelimelle, jota käytetään laajennusten asentamiseen",
   "DESCRIPTION_SCROLL_PAST_END": "true: ota käyttöön vierittäminen pidemmälle kuin dokumentin loppuun",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Kerroin hiiren rullan vieritysnopeudelle (0,1–10, oletus 1). Säädä, jos vieritys tuntuu liian hitaalta tai nopealta.",
   "DESCRIPTION_SHOW_CODE_HINTS": "false: poista kaikki koodivihjeet käytöstä",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Pitää vilkkuvan kohdistimen esillä, kun tekstiä on valittu",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "true: näytä rivinumerot vasemman reunan marginaalissa",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "SCROLL_SENSITIVITY": "Vierityksen herkkyys",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Kerroin hiiren rullan vieritysnopeudelle (0,1–10, oletus 1). Säädä, jos vieritys tuntuu liian hitaalta tai nopealta."
+  "DEVICE_SIZE_LIMIT_TITLE": "Responsiivisten esikatselujen raja saavutettu",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Maksuttomat tilit saavat muutaman responsiivisen esikatselun päivässä. Päivitä Phoenix Pro -versioon saadaksesi rajattomat responsiiviset esikatselut kaikilla laitekooilla.",
+  "CMD_CANCEL_TRIAL": "Peruuta Phoenix Pro -kokeilu",
+  "CANCEL_TRIAL_TITLE": "Peruutetaanko {0}-kokeilu?",
+  "CANCEL_TRIAL_MESSAGE": "Sinulla on {0} päivää jäljellä Phoenix Pro -kokeilujaksossasi. Peruuttamista ei voi kumota. Haluatko varmasti lopettaa kokeilujaksosi?",
+  "CANCEL_TRIAL_STOP_BTN": "Lopeta kokeilu"
 });

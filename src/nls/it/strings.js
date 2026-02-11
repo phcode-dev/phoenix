@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Dimensioni carattere",
   "FONT_FAMILY": "Tipo di carattere",
   "FONT_LINE_HEIGHT": "Interlinea",
+  "SCROLL_SENSITIVITY": "Sensibilità scorrimento",
   "THEMES_SETTINGS": "Impostazioni Temi",
   "THEMES_ERROR": "Errore temi",
   "THEMES_ERROR_CANNOT_APPLY": "Impossibile applicare il tema a causa di un errore.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Impostazioni specifiche per un percorso",
   "DESCRIPTION_PROXY": "L'URL del server proxy utilizzato per installare le estensioni",
   "DESCRIPTION_SCROLL_PAST_END": "true per attivare lo scorrimento oltre la fine del documento",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Moltiplicatore per la velocità di scorrimento della rotellina del mouse (da 0,1 a 10, predefinito 1). Regolare se lo scorrimento risulta troppo lento o veloce.",
   "DESCRIPTION_SHOW_CODE_HINTS": "false per disattivare tutti i suggerimenti sul codice",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Mantiene il cursore lampeggiante quando del testo è selezionato",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "true per mostrare i numeri delle righe a sinistra del codice",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "SCROLL_SENSITIVITY": "Sensibilità scorrimento",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Moltiplicatore per la velocità di scorrimento della rotellina del mouse (da 0,1 a 10, predefinito 1). Regolare se lo scorrimento risulta troppo lento o veloce."
+  "DEVICE_SIZE_LIMIT_TITLE": "Limite anteprime responsive raggiunto",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Gli account gratuiti hanno a disposizione un numero limitato di anteprime responsive al giorno. Passa a Phoenix Pro per anteprime responsive illimitate su tutte le dimensioni dei dispositivi.",
+  "CMD_CANCEL_TRIAL": "Annulla prova di Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Annullare la prova di {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Ti rimangono {0} giorni della tua prova di Phoenix Pro. L'annullamento è irreversibile. Sei sicuro di voler interrompere la prova?",
+  "CANCEL_TRIAL_STOP_BTN": "Interrompi prova"
 });

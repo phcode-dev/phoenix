@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Veličina fonta",
   "FONT_FAMILY": "Obitelj fonta",
   "FONT_LINE_HEIGHT": "Visina retka",
+  "SCROLL_SENSITIVITY": "Osjetljivost pomicanja",
   "THEMES_SETTINGS": "Postavke teme",
   "THEMES_ERROR": "Pogreška teme",
   "THEMES_ERROR_CANNOT_APPLY": "Tema nije mogla biti primijenjena zbog pogreške.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Postavke specifične za putanju",
   "DESCRIPTION_PROXY": "URL proxy poslužitelja koji se koristi za instalaciju proširenja",
   "DESCRIPTION_SCROLL_PAST_END": "true za omogućavanje pomicanja preko kraja dokumenta",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Množitelj za brzinu pomicanja kotačićem miša (0,1 do 10, zadano 1). Prilagodite ako vam se pomicanje čini presporim ili prebrzim.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` za onemogućavanje svih savjeta za kod",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Trepćući kursor ostaje vidljiv kada je tekst označen",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` za prikaz brojeva redaka u \"žlijebu\" lijevo od koda",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "SCROLL_SENSITIVITY": "Osjetljivost pomicanja",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Množitelj za brzinu pomicanja kotačićem miša (0,1 do 10, zadano 1). Prilagodite ako vam se pomicanje čini presporim ili prebrzim."
+  "DEVICE_SIZE_LIMIT_TITLE": "Dosegnuto ograničenje responzivnih pregleda",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Besplatni računi imaju nekoliko responzivnih pregleda dnevno. Nadogradite na Phoenix Pro za neograničene responzivne preglede na svim veličinama uređaja.",
+  "CMD_CANCEL_TRIAL": "Otkaži probno razdoblje za Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Otkaži probno razdoblje za {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Preostalo vam je {0} dana u probnom razdoblju za Phoenix Pro. Otkazivanje je nepovratno. Jeste li sigurni da želite prekinuti probno razdoblje?",
+  "CANCEL_TRIAL_STOP_BTN": "Prekini probno razdoblje"
 });

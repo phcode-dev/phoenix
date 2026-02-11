@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Tamanho da letra",
   "FONT_FAMILY": "Família da letra",
   "FONT_LINE_HEIGHT": "Altura da linha",
+  "SCROLL_SENSITIVITY": "Sensibilidade de Deslocamento",
   "THEMES_SETTINGS": "Definições de temas",
   "THEMES_ERROR": "Erro de temas",
   "THEMES_ERROR_CANNOT_APPLY": "Não foi possível aplicar o tema devido a um erro.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Definições específicas do caminho",
   "DESCRIPTION_PROXY": "O URL do servidor proxy usado para a instalação de extensões",
   "DESCRIPTION_SCROLL_PAST_END": "`true` para ativar a deslocação para além do final do documento",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicador para a velocidade de deslocamento da roda do rato (0,1 a 10, predefinição 1). Ajuste se o deslocamento parecer demasiado lento ou rápido.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` para desativar todas as sugestões de código",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Mantém o cursor piscando visível quando tem uma seleção de texto",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` para mostrar os números de linha numa \"margem\" à esquerda do código",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "SCROLL_SENSITIVITY": "Sensibilidade de Deslocamento",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicador para a velocidade de deslocamento da roda do rato (0,1 a 10, predefinição 1). Ajuste se o deslocamento parecer demasiado lento ou rápido."
+  "DEVICE_SIZE_LIMIT_TITLE": "Limite de Pré-visualizações Responsivas Atingido",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "As contas gratuitas têm um número limitado de pré-visualizações responsivas por dia. Atualize para o Phoenix Pro para obter pré-visualizações responsivas ilimitadas em todos os tamanhos de dispositivo.",
+  "CMD_CANCEL_TRIAL": "Cancelar Período de Avaliação do Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Cancelar o período de avaliação do {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Restam-lhe {0} dias no seu período de avaliação do Phoenix Pro. O cancelamento não pode ser revertido. Tem a certeza de que quer terminar o seu período de avaliação?",
+  "CANCEL_TRIAL_STOP_BTN": "Terminar Período de Avaliação"
 });

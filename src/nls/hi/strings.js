@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "फ़ॉन्ट आकार",
   "FONT_FAMILY": "फ़ॉन्ट फ़ैमिली",
   "FONT_LINE_HEIGHT": "लाइन ऊँचाई",
+  "SCROLL_SENSITIVITY": "स्क्रॉल संवेदनशीलता",
   "THEMES_SETTINGS": "थीम सेटिंग्स",
   "THEMES_ERROR": "थीम त्रुटि",
   "THEMES_ERROR_CANNOT_APPLY": "किसी त्रुटि के कारण थीम लागू नहीं हो सका।",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "पथ विशिष्ट सेटिंग्स",
   "DESCRIPTION_PROXY": "एक्सटेंशन इंस्टॉलेशन के लिए उपयोग किए जाने वाले प्रॉक्सी सर्वर का URL",
   "DESCRIPTION_SCROLL_PAST_END": "दस्तावेज़ के अंत से आगे स्क्रॉल करने में सक्षम बनाने के लिए सही",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "माउस व्हील स्क्रॉल गति के लिए गुणक (0.1 से 10, डिफ़ॉल्ट 1)। यदि स्क्रॉलिंग बहुत धीमी या तेज़ लगे तो समायोजित करें।",
   "DESCRIPTION_SHOW_CODE_HINTS": "सभी कोड संकेतों को अक्षम करने के लिए `false`",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "टेक्स्ट चयन होने पर ब्लिंकिंग कर्सर को दृश्यमान रखता है",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "कोड के बाईं ओर “गटर” में लाइन नंबर दिखाने के लिए `true`",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "SCROLL_SENSITIVITY": "स्क्रॉल संवेदनशीलता",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "माउस व्हील स्क्रॉल गति के लिए गुणक (0.1 से 10, डिफ़ॉल्ट 1)। यदि स्क्रॉलिंग बहुत धीमी या तेज़ लगे तो समायोजित करें।"
+  "DEVICE_SIZE_LIMIT_TITLE": "रिस्पॉन्सिव प्रीव्यू सीमा समाप्त",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "मुफ़्त खातों को प्रतिदिन कुछ रिस्पॉन्सिव प्रीव्यू मिलते हैं। सभी डिवाइस आकारों पर असीमित रिस्पॉन्सिव प्रीव्यू के लिए Phoenix Pro में अपग्रेड करें।",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro ट्रायल रद्द करें",
+  "CANCEL_TRIAL_TITLE": "{0} ट्रायल रद्द करें?",
+  "CANCEL_TRIAL_MESSAGE": "आपके Phoenix Pro ट्रायल में {0} दिन शेष हैं। रद्द करने की प्रक्रिया को पूर्ववत नहीं किया जा सकता। क्या आप वाकई अपना ट्रायल रोकना चाहते हैं?",
+  "CANCEL_TRIAL_STOP_BTN": "ट्रायल रोकें"
 });

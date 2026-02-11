@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Mărimea fontului",
   "FONT_FAMILY": "Familia fontului",
   "FONT_LINE_HEIGHT": "Înălțimea liniei",
+  "SCROLL_SENSITIVITY": "Sensibilitate derulare",
   "THEMES_SETTINGS": "Setările temei",
   "THEMES_ERROR": "Eroare teme",
   "THEMES_ERROR_CANNOT_APPLY": "Nu s-a putut aplica tema din cauza unei erori.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Setări specifice căii.",
   "DESCRIPTION_PROXY": "URL-ul serverului proxy utilizat pentru instalarea extensiilor.",
   "DESCRIPTION_SCROLL_PAST_END": "`true` pentru a activa derularea dincolo de sfârșitul documentului.",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicator pentru viteza de derulare a rotiței mouse-ului (de la 0,1 la 10, implicit 1). Ajustați dacă derularea pare prea lentă sau prea rapidă.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` pentru a dezactiva toate sugestiile de cod",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Păstrează cursorul intermitent vizibil atunci când aveți o selecție de text",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` pentru a afișa numerele de linie într-un „chenar” în stânga codului",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "SCROLL_SENSITIVITY": "Sensibilitate derulare",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicator pentru viteza de derulare a rotiței mouse-ului (de la 0,1 la 10, implicit 1). Ajustați dacă derularea pare prea lentă sau prea rapidă."
+  "DEVICE_SIZE_LIMIT_TITLE": "Limitǎ de previzualizări responsive atinsă",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Conturile gratuite beneficiază de câteva previzualizări responsive pe zi. Faceți upgrade la Phoenix Pro pentru previzualizări responsive nelimitate pe toate dimensiunile de dispozitive.",
+  "CMD_CANCEL_TRIAL": "Anulați perioada de probă Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Anulați perioada de probă {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Mai aveți {0} zile rămase din perioada de probă Phoenix Pro. Anularea nu poate fi revocată. Sunteți sigur că doriți să opriți perioada de probă?",
+  "CANCEL_TRIAL_STOP_BTN": "Opriți proba"
 });

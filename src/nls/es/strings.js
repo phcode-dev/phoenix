@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Tamaño de letra",
   "FONT_FAMILY": "Tipo de letra",
   "FONT_LINE_HEIGHT": "Altura de línea",
+  "SCROLL_SENSITIVITY": "Sensibilidad de desplazamiento",
   "THEMES_SETTINGS": "Preferencias de temas",
   "THEMES_ERROR": "Error de temas",
   "THEMES_ERROR_CANNOT_APPLY": "No se pudo aplicar el tema debido a un error.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Preferencias especificas para una ruta de archivo",
   "DESCRIPTION_PROXY": "La URL del servidor proxy utilizada para la instalación de extensiones",
   "DESCRIPTION_SCROLL_PAST_END": "true permitir el desplazamiento más allá del final del documento",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicador para la velocidad de desplazamiento de la rueda del ratón (de 0,1 a 10, predeterminado 1). Ajusta este valor si el desplazamiento es demasiado lento o rápido.",
   "DESCRIPTION_SHOW_CODE_HINTS": "false para deshabilitar todas las sugerencias de código",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Mantiene el cursor intermitente visible cuando se tiene una selección de texto",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "true para mostrar los números de líne a la izquierda del código",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "SCROLL_SENSITIVITY": "Sensibilidad de desplazamiento",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicador para la velocidad de desplazamiento de la rueda del ratón (de 0,1 a 10, predeterminado 1). Ajusta este valor si el desplazamiento es demasiado lento o rápido."
+  "DEVICE_SIZE_LIMIT_TITLE": "Límite de previsualizaciones adaptables alcanzado",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Las cuentas gratuitas obtienen unas pocas previsualizaciones adaptables al día. Actualiza a Phoenix Pro para obtener previsualizaciones adaptables ilimitadas en todos los tamaños de dispositivo.",
+  "CMD_CANCEL_TRIAL": "Cancelar la prueba de Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "¿Cancelar la prueba de {0}?",
+  "CANCEL_TRIAL_MESSAGE": "Te quedan {0} días de tu prueba de Phoenix Pro. La cancelación no se puede deshacer. ¿Estás seguro de que quieres detener la prueba?",
+  "CANCEL_TRIAL_STOP_BTN": "Detener prueba"
 });

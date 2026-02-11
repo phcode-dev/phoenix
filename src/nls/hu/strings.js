@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Betűméret",
   "FONT_FAMILY": "Betűtípus",
   "FONT_LINE_HEIGHT": "Sorköz",
+  "SCROLL_SENSITIVITY": "Görgetési érzékenység",
   "THEMES_SETTINGS": "Témabeállítások",
   "THEMES_ERROR": "Témahiba",
   "THEMES_ERROR_CANNOT_APPLY": "Téma alkalmazása hiba miatt sikertelen.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Elérési úthoz tartozó beállítások.",
   "DESCRIPTION_PROXY": "A bővítménytelepítéshez használt proxy szerver URL-címe.",
   "DESCRIPTION_SCROLL_PAST_END": "`true`, ha engedélyezni szeretné a görgetést a dokumentum vége után is.",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Szorzó az egérgörgő görgetési sebességéhez (0,1-től 10-ig, alapértelmezett: 1). Módosítsa, ha a görgetést túl lassúnak vagy gyorsnak érzi.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` érték esetén a kódsúgók letiltásra kerülnek",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "A villogó kurzor látható marad szöveg kijelölésekor",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` érték esetén sorszámok jelennek meg a kód bal oldalán",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "SCROLL_SENSITIVITY": "Görgetési érzékenység",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Szorzó az egérgörgő görgetési sebességéhez (0,1-től 10-ig, alapértelmezett: 1). Módosítsa, ha a görgetést túl lassúnak vagy gyorsnak érzi."
+  "DEVICE_SIZE_LIMIT_TITLE": "Reszponzív előnézeti korlát elérve",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "Az ingyenes fiókok naponta néhány reszponzív előnézetet tesznek lehetővé. Váltson Phoenix Pro-ra a korlátlan, minden eszközméretre kiterjedő reszponzív előnézetekért.",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro próbaverzió lemondása",
+  "CANCEL_TRIAL_TITLE": "A(z) {0} próbaverzió lemondása?",
+  "CANCEL_TRIAL_MESSAGE": "Még {0} nap van hátra a Phoenix Pro próbaidőszakából. A lemondás nem vonható vissza. Biztosan le szeretné állítani a próbaidőszakot?",
+  "CANCEL_TRIAL_STOP_BTN": "Próbaidőszak leállítása"
 });

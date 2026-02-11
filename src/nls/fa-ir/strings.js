@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "اندازه قلم",
   "FONT_FAMILY": "نوع قلم",
   "FONT_LINE_HEIGHT": "ارتفاع خط",
+  "SCROLL_SENSITIVITY": "حساسیت اسکرول",
   "THEMES_SETTINGS": "تنظیمات پوسته ها",
   "THEMES_ERROR": "خطای پوسته‌ها",
   "THEMES_ERROR_CANNOT_APPLY": "به دلیل خطایی، پوسته اعمال نشد.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "تنظیمات مختص مسیر",
   "DESCRIPTION_PROXY": "آدرس URL سرور پروکسی مورد استفاده برای نصب افزونه.",
   "DESCRIPTION_SCROLL_PAST_END": "فعال‌سازی پیمایش فراتر از انتهای سند (true)",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "ضریب برای سرعت اسکرول چرخ ماوس (از ۰٫۱ تا ۱۰، پیش‌فرض ۱). اگر اسکرول خیلی کند یا سریع به نظر می‌رسد، این مقدار را تنظیم کنید.",
   "DESCRIPTION_SHOW_CODE_HINTS": "مقدار «نادرست» برای غیرفعال کردن تمام подскаزهای کد",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "مکان‌نما (Cursor) چشمک‌زن را هنگام انتخاب متن، قابل مشاهده نگه می‌دارد",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "مقدار «درست» برای نمایش شماره خطوط در یک «حاشیه» در سمت چپ کد",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "SCROLL_SENSITIVITY": "حساسیت اسکرول",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "ضریب برای سرعت اسکرول چرخ ماوس (از ۰٫۱ تا ۱۰، پیش‌فرض ۱). اگر اسکرول خیلی کند یا سریع به نظر می‌رسد، این مقدار را تنظیم کنید."
+  "DEVICE_SIZE_LIMIT_TITLE": "محدودیت پیش‌نمایش واکنش‌گرا",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "حساب‌های رایگان روزانه تعداد محدودی پیش‌نمایش واکنش‌گرا دریافت می‌کنند. برای پیش‌نمایش واکنش‌گرای نامحدود در تمام اندازه‌های دستگاه، به Phoenix Pro ارتقا دهید.",
+  "CMD_CANCEL_TRIAL": "لغو دوره آزمایشی Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "آیا دوره آزمایشی {0} لغو شود؟",
+  "CANCEL_TRIAL_MESSAGE": "از دوره آزمایشی Phoenix Pro شما {0} روز باقی مانده است. این عملیات قابل بازگردانی نیست. آیا از توقف دوره آزمایشی خود اطمینان دارید؟",
+  "CANCEL_TRIAL_STOP_BTN": "توقف دوره آزمایشی"
 });

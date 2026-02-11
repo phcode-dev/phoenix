@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "Размер шрифта",
   "FONT_FAMILY": "Семейство шрифтов",
   "FONT_LINE_HEIGHT": "Высота строки",
+  "SCROLL_SENSITIVITY": "Чувствительность прокрутки",
   "THEMES_SETTINGS": "Настройки тем",
   "THEMES_ERROR": "Ошибка тем",
   "THEMES_ERROR_CANNOT_APPLY": "Не удалось применить тему из-за ошибки.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "Настройки, специфичные для пути.",
   "DESCRIPTION_PROXY": "URL прокси-сервера, используемого для установки расширений.",
   "DESCRIPTION_SCROLL_PAST_END": "`true` для включения прокрутки за пределы конца документа.",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множитель скорости прокрутки колесом мыши (от 0,1 до 10, по умолчанию 1). Настройте, если прокрутка кажется слишком медленной или быстрой.",
   "DESCRIPTION_SHOW_CODE_HINTS": "Значение `false` отключает все подсказки кода",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Курсор остается видимым при выделении текста",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "Значение `true` отображает номера строк слева от кода",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "SCROLL_SENSITIVITY": "Чувствительность прокрутки",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множитель скорости прокрутки колесом мыши (от 0,1 до 10, по умолчанию 1). Настройте, если прокрутка кажется слишком медленной или быстрой."
+  "DEVICE_SIZE_LIMIT_TITLE": "Достигнут лимит адаптивных предпросмотров",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "На бесплатных аккаунтах доступно несколько адаптивных предпросмотров в день. Перейдите на Phoenix Pro, чтобы получить неограниченный доступ к адаптивным предпросмотрам для всех размеров устройств.",
+  "CMD_CANCEL_TRIAL": "Отменить пробную версию Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "Отменить пробную версию {0}?",
+  "CANCEL_TRIAL_MESSAGE": "У вас осталось {0} дней пробного периода Phoenix Pro. Это действие нельзя будет отменить. Вы уверены, что хотите прекратить пробный период?",
+  "CANCEL_TRIAL_STOP_BTN": "Прекратить пробную версию"
 });

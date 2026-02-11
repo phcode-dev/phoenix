@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "حجم الخط",
   "FONT_FAMILY": "عائلة الخطوط",
   "FONT_LINE_HEIGHT": "ارتفاع السطر",
+  "SCROLL_SENSITIVITY": "حساسية التمرير",
   "THEMES_SETTINGS": "إعدادات السمات",
   "THEMES_ERROR": "خطأ في السمات",
   "THEMES_ERROR_CANNOT_APPLY": "تعذر تطبيق السمة بسبب خطأ.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "إعدادات خاصة بالمسار",
   "DESCRIPTION_PROXY": "عنوان URL لخادم الوكيل المستخدم لتثبيت الامتداد",
   "DESCRIPTION_SCROLL_PAST_END": "صحيح لتمكين التمرير إلى ما بعد نهاية المستند",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "مُضاعِف لسرعة تمرير عجلة الماوس (من 0.1 إلى 10، الافتراضي 1). اضبط القيمة إذا كان التمرير بطيئًا جدًا أو سريعًا جدًا.",
   "DESCRIPTION_SHOW_CODE_HINTS": "`false` لإخفاء كل تلميحات الأكواد",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "إبقاء المؤشر الوامض مرئيًا عند تحديد نص",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "`true` لإظهار أرقام الأسطر في \"هامش\" على يسار الكود",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "SCROLL_SENSITIVITY": "حساسية التمرير",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "مُضاعِف لسرعة تمرير عجلة الماوس (من 0.1 إلى 10، الافتراضي 1). اضبط القيمة إذا كان التمرير بطيئًا جدًا أو سريعًا جدًا."
+  "DEVICE_SIZE_LIMIT_TITLE": "تم الوصول إلى حد المعاينة المتجاوبة",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "تحصل الحسابات المجانية على عدد قليل من المعاينات المتجاوبة يوميًا. قم بالترقية إلى Phoenix Pro للحصول على معاينات متجاوبة غير محدودة عبر جميع أحجام الأجهزة.",
+  "CMD_CANCEL_TRIAL": "إلغاء الفترة التجريبية لـ Phoenix Pro",
+  "CANCEL_TRIAL_TITLE": "هل تريد إلغاء الفترة التجريبية لـ {0}؟",
+  "CANCEL_TRIAL_MESSAGE": "تبقى لديك {0} أيام في الفترة التجريبية لـ Phoenix Pro. لا يمكن التراجع عن الإلغاء. هل أنت متأكد من أنك تريد إيقاف فترتك التجريبية؟",
+  "CANCEL_TRIAL_STOP_BTN": "إيقاف الفترة التجريبية"
 });

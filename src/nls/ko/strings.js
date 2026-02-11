@@ -657,6 +657,7 @@ define({
   "FONT_SIZE": "글자 크기",
   "FONT_FAMILY": "글꼴",
   "FONT_LINE_HEIGHT": "줄 높이",
+  "SCROLL_SENSITIVITY": "스크롤 감도",
   "THEMES_SETTINGS": "테마 설정",
   "THEMES_ERROR": "테마 오류",
   "THEMES_ERROR_CANNOT_APPLY": "오류로 인해 테마를 적용할 수 없습니다.",
@@ -953,6 +954,7 @@ define({
   "DESCRIPTION_PATH": "경로 별 설정",
   "DESCRIPTION_PROXY": "확장기능 설치를 위해 사용된 프록시 서버 URL",
   "DESCRIPTION_SCROLL_PAST_END": "문서 끝을 넘어선 스크롤을 활성화 하려면 true",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "마우스 휠 스크롤 속도 배수 (0.1에서 10까지, 기본값 1). 스크롤이 너무 느리거나 빠르다고 느껴지면 조절하세요.",
   "DESCRIPTION_SHOW_CODE_HINTS": "모든 코드 힌트를 비활성화 하려면 false",
   "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "문자를 선택한 경우 깜빡이는 커서 표시",
   "DESCRIPTION_SHOW_LINE_NUMBERS": "코드 왼쪽의 “여백”에 행 번호를 표시하려면 true",
@@ -1664,6 +1666,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "SCROLL_SENSITIVITY": "스크롤 감도",
-  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "마우스 휠 스크롤 속도 배수 (0.1에서 10까지, 기본값 1). 스크롤이 너무 느리거나 빠르다고 느껴지면 조절하세요."
+  "DEVICE_SIZE_LIMIT_TITLE": "반응형 미리보기 한도 초과",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "무료 계정은 하루에 몇 번의 반응형 미리보기만 사용할 수 있습니다. 모든 기기 크기에서 무제한 반응형 미리보기를 사용하려면 Phoenix Pro로 업그레이드하세요.",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro 체험판 취소",
+  "CANCEL_TRIAL_TITLE": "{0} 체험판을 취소하시겠습니까?",
+  "CANCEL_TRIAL_MESSAGE": "Phoenix Pro 체험판이 {0}일 남았습니다. 취소하면 되돌릴 수 없습니다. 정말로 체험판을 중단하시겠습니까?",
+  "CANCEL_TRIAL_STOP_BTN": "체험판 중단"
 });
