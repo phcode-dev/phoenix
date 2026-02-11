@@ -424,6 +424,33 @@ define(function (require, exports, module) {
         return false;
     }
 
+    /**
+     * Programmatically sets the plugin panel content width to the given value in pixels.
+     * The total toolbar width is adjusted to account for the plugin icons bar.
+     * Width is clamped to respect panel minWidth and max size (75% of window).
+     * No-op if no panel is currently visible.
+     * @param {number} width  Desired content width in pixels
+     */
+    function setPluginPanelWidth(width) {
+        if (!currentlyShownPanel) {
+            return;
+        }
+        var pluginIconsBarWidth = $pluginIconsBar.outerWidth();
+        var newToolbarWidth = width + pluginIconsBarWidth;
+
+        // Respect min/max constraints
+        var minSize = currentlyShownPanel.minWidth || 0;
+        var minToolbarWidth = minSize + pluginIconsBarWidth;
+        var maxToolbarWidth = window.innerWidth * 0.75;
+        newToolbarWidth = Math.max(newToolbarWidth, minToolbarWidth);
+        newToolbarWidth = Math.min(newToolbarWidth, maxToolbarWidth);
+
+        $mainToolbar.width(newToolbarWidth);
+        $windowContent.css("right", newToolbarWidth);
+        Resizer.resyncSizer($mainToolbar[0]);
+        recomputeLayout(true);
+    }
+
     // Escape key and toggle panel special handling
     let _escapeKeyConsumers = {};
 
@@ -540,6 +567,7 @@ define(function (require, exports, module) {
     exports.createBottomPanel               = createBottomPanel;
     exports.createPluginPanel               = createPluginPanel;
     exports.isPanelVisible                  = isPanelVisible;
+    exports.setPluginPanelWidth             = setPluginPanelWidth;
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
