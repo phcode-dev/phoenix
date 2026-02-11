@@ -405,6 +405,9 @@ define(function (require, exports, module) {
     /** Opens Phoenix Pro page */
     exports.HELP_GET_PRO                = "help.getPro";                // HelpCommandHandlers.js       _handleLinkMenuItem()
 
+    /** Cancels Phoenix Pro trial */
+    exports.HELP_CANCEL_TRIAL           = "help.cancelTrial";
+
     /** Opens Phoenix License page */
     exports.HELP_VIEW_LICENSE           = "help.viewLicense";           // HelpCommandHandlers.js       _handleLinkMenuItem()
 
