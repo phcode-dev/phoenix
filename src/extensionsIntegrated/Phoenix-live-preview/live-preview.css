@@ -126,6 +126,13 @@
     font-size: inherit;
 }
 
+.device-size-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .device-size-item-width {
     margin-left: 10px;
     opacity: 0.5;
