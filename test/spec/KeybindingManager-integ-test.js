@@ -98,8 +98,12 @@ define(function (require, exports, module) {
             await _writeKeyboardJson(KeyBindingManager._getUserKeyMapFilePath());
             await KeyBindingManager._loadUserKeyMapImmediate();
             await awaitsFor(async ()=>{
-                const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
-                return Object.keys(textJson.overrides).length === 0;
+                try {
+                    const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
+                    return Object.keys(textJson.overrides).length === 0;
+                } catch (e) {
+                    return false; // file may be mid-write; retry on next poll
+                }
             }, "reset user shortcuts");
             await awaitsFor(()=>{
                 const binding = KeyBindingManager.getKeyBindings(Commands.EDIT_BEAUTIFY_CODE);
@@ -203,8 +207,12 @@ define(function (require, exports, module) {
             testWindow.$(".change-shortcut-dialog .Remove").click();
             let existingBinding = KeyBindingManager.getKeyBindings(Commands.EDIT_BEAUTIFY_CODE);
             await awaitsFor(async ()=>{
-                const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
-                return textJson.overrides[existingBinding[0].key] === null;
+                try {
+                    const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
+                    return textJson.overrides[existingBinding[0].key] === null;
+                } catch (e) {
+                    return false; // file may be mid-write; retry on next poll
+                }
             }, "command to be removed");
         });
 
@@ -212,8 +220,12 @@ define(function (require, exports, module) {
             await editShortcut(Commands.EDIT_BEAUTIFY_CODE);
             keyboardType('F6');
             await awaitsFor(async ()=>{
-                const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
-                return textJson.overrides['F6'] === Commands.EDIT_BEAUTIFY_CODE;
+                try {
+                    const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
+                    return textJson.overrides['F6'] === Commands.EDIT_BEAUTIFY_CODE;
+                } catch (e) {
+                    return false; // file may be mid-write; retry on next poll
+                }
             }, "F6 to be assigned");
         });
 
@@ -221,8 +233,12 @@ define(function (require, exports, module) {
             await editShortcut(Commands.EDIT_BEAUTIFY_CODE);
             keyboardType('Shift-F6');
             await awaitsFor(async ()=>{
-                const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
-                return textJson.overrides['Shift-F6'] === Commands.EDIT_BEAUTIFY_CODE;
+                try {
+                    const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
+                    return textJson.overrides['Shift-F6'] === Commands.EDIT_BEAUTIFY_CODE;
+                } catch (e) {
+                    return false; // file may be mid-write; retry on next poll
+                }
             }, "Shift-F6 to be assigned");
         });
 
@@ -246,8 +262,12 @@ define(function (require, exports, module) {
             expect(testWindow.$(".change-shortcut-dialog .Assign").is(":visible")).toBeTrue();
             testWindow.$(".change-shortcut-dialog .Assign").click();
             await awaitsFor(async ()=>{
-                const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
-                return textJson.overrides['F1'] === Commands.EDIT_BEAUTIFY_CODE;
+                try {
+                    const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
+                    return textJson.overrides['F1'] === Commands.EDIT_BEAUTIFY_CODE;
+                } catch (e) {
+                    return false; // file may be mid-write; retry on next poll
+                }
             }, "F1 to be assigned");
         });
 
@@ -262,8 +282,14 @@ define(function (require, exports, module) {
             expect(testWindow.$(".change-shortcut-dialog .Assign").is(":visible")).toBeTrue();
             testWindow.$(".change-shortcut-dialog .Cancel").click();
             await awaits(200);
-            const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
-            expect(textJson.overrides).toEql({});
+            await awaitsFor(async ()=>{
+                try {
+                    const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));
+                    return Object.keys(textJson.overrides).length === 0;
+                } catch (e) {
+                    return false; // file may be mid-write; retry on next poll
+                }
+            }, "overrides to be empty");
             expect(testWindow.$(".change-shortcut-dialog").is(":visible")).toBeFalse();
         });
 
