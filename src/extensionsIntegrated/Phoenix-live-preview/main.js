@@ -545,7 +545,8 @@ define(function (require, exports, module) {
     let panel,
         urlPinned,
         currentLivePreviewURL = "",
-        currentPreviewFile = '';
+        currentPreviewFile = '',
+        _loadGeneration = 0;
 
     function _blankIframe() {
         // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
@@ -795,8 +796,12 @@ define(function (require, exports, module) {
         if(!isPreviewLoadable){
             return;
         }
+        const thisGeneration = ++_loadGeneration;
         // panel-live-preview-title
         let previewDetails = await StaticServer.getPreviewDetails();
+        if(thisGeneration !== _loadGeneration) {
+            return; // A newer _loadPreview call has been made; this one is stale
+        }
         if(urlPinned && !force) {
             return;
         }
