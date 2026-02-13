@@ -461,6 +461,54 @@ define(function (require, exports, module) {
                         Phoenix.app.screenShotBinary({x: 0, y: 0, width: 100, height: 999999})
                     ).toBeRejectedWithError("rect y + height exceeds window innerHeight");
                 });
+
+                it("Should capture a screenshot of a DOM element", async function () {
+                    const el = document.createElement("div");
+                    el.id = "screenshot-test-element";
+                    el.style.cssText = "position:fixed;top:0;left:0;width:100px;height:100px;background:red;";
+                    document.body.appendChild(el);
+                    try {
+                        const bytes = await Phoenix.app.screenShotBinary(el);
+                        expect(bytes instanceof Uint8Array).toBeTrue();
+                        expect(bytes.length).toBeGreaterThan(0);
+                        expect(isPNG(bytes)).withContext("Result should be valid PNG data").toBeTrue();
+                    } finally {
+                        el.remove();
+                    }
+                });
+
+                it("Should capture a screenshot using a jQuery selector string", async function () {
+                    const el = document.createElement("div");
+                    el.id = "screenshot-test-element";
+                    el.style.cssText = "position:fixed;top:0;left:0;width:100px;height:100px;background:red;";
+                    document.body.appendChild(el);
+                    try {
+                        const bytes = await Phoenix.app.screenShotBinary("#screenshot-test-element");
+                        expect(bytes instanceof Uint8Array).toBeTrue();
+                        expect(bytes.length).toBeGreaterThan(0);
+                        expect(isPNG(bytes)).withContext("Result should be valid PNG data").toBeTrue();
+                    } finally {
+                        el.remove();
+                    }
+                });
+
+                it("Should throw when jQuery selector matches no elements", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary("#nonexistent-element-xyz")
+                    ).toBeRejectedWithError("No element found for selector: #nonexistent-element-xyz");
+                });
+
+                it("Should throw when jQuery selector matches multiple elements", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary("div")
+                    ).toBeRejectedWithError(/Selector must match exactly one element, but matched \d+: div/);
+                });
+
+                it("Should throw for invalid argument type", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary(42)
+                    ).toBeRejectedWithError("Expected a rect object, DOM node, or jQuery selector string");
+                });
             });
 
             describe("screenShotToBlob", function () {
@@ -476,6 +524,36 @@ define(function (require, exports, module) {
                     expect(blob instanceof Blob).toBeTrue();
                     expect(blob.type).toEqual("image/png");
                     expect(blob.size).toBeGreaterThan(0);
+                });
+
+                it("Should return a Blob when given a DOM element", async function () {
+                    const el = document.createElement("div");
+                    el.id = "screenshot-blob-test-element";
+                    el.style.cssText = "position:fixed;top:0;left:0;width:100px;height:100px;background:red;";
+                    document.body.appendChild(el);
+                    try {
+                        const blob = await Phoenix.app.screenShotToBlob(el);
+                        expect(blob instanceof Blob).toBeTrue();
+                        expect(blob.type).toEqual("image/png");
+                        expect(blob.size).toBeGreaterThan(0);
+                    } finally {
+                        el.remove();
+                    }
+                });
+
+                it("Should return a Blob when given a jQuery selector", async function () {
+                    const el = document.createElement("div");
+                    el.id = "screenshot-blob-test-element";
+                    el.style.cssText = "position:fixed;top:0;left:0;width:100px;height:100px;background:red;";
+                    document.body.appendChild(el);
+                    try {
+                        const blob = await Phoenix.app.screenShotToBlob("#screenshot-blob-test-element");
+                        expect(blob instanceof Blob).toBeTrue();
+                        expect(blob.type).toEqual("image/png");
+                        expect(blob.size).toBeGreaterThan(0);
+                    } finally {
+                        el.remove();
+                    }
                 });
             });
 
@@ -524,6 +602,29 @@ define(function (require, exports, module) {
                     });
                     const bytes = new Uint8Array(content);
                     expect(isPNG(bytes)).withContext("Written file should be valid PNG").toBeTrue();
+                });
+
+                it("Should write a valid PNG file when given a jQuery selector", async function () {
+                    const el = document.createElement("div");
+                    el.id = "screenshot-file-test-element";
+                    el.style.cssText = "position:fixed;top:0;left:0;width:100px;height:100px;background:red;";
+                    document.body.appendChild(el);
+                    try {
+                        await Phoenix.app.screenShotToPNGFile(testFilePath, "#screenshot-file-test-element");
+                        const content = await new Promise((resolve, reject) => {
+                            fs.readFile(testFilePath, 'binary', (err, data) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    resolve(data);
+                                }
+                            });
+                        });
+                        const bytes = new Uint8Array(content);
+                        expect(isPNG(bytes)).withContext("Written file should be valid PNG").toBeTrue();
+                    } finally {
+                        el.remove();
+                    }
                 });
 
                 it("Should throw when filePathToSave is not provided", async function () {
