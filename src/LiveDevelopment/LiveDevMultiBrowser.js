@@ -189,15 +189,14 @@ define(function (require, exports, module) {
      * @param {string} url Absolute URL of the related document
      */
     function _handleRelatedDocumentDeleted(url) {
-        var liveDoc = _relatedDocuments[url];
+        const liveDoc = _relatedDocuments[url];
         if (liveDoc) {
             delete _relatedDocuments[url];
+            if (_server) {
+                _server.remove(liveDoc);
+            }
+            _closeDocument(liveDoc);
         }
-
-        if (_server) {
-            _server.remove(liveDoc);
-        }
-        _closeDocument(liveDoc);
     }
 
     /**
@@ -313,12 +312,17 @@ define(function (require, exports, module) {
         var docPromise = DocumentManager.getDocumentForPath(path);
 
         docPromise.done(function (doc) {
+            // Re-check after async gap: another StylesheetAdded event may have
+            // already created a live document for this URL while we were waiting.
+            if (_relatedDocuments[url]) {
+                return;
+            }
             if ((_classForDocument(doc) === LiveCSSDocument) &&
                     (!_liveDocument || (doc !== _liveDocument.doc))) {
                 var liveDoc = _createLiveDocument(doc, doc._masterEditor, roots);
                 if (liveDoc) {
                     _server.add(liveDoc);
-                    _relatedDocuments[doc.url] = liveDoc;
+                    _relatedDocuments[url] = liveDoc;
                     liveDoc.on("updateDoc", function (event, url) {
                         var path = _server.urlToPath(url),
                             doc = getLiveDocForPath(path);

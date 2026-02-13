@@ -775,7 +775,7 @@ define(function (require, exports, module) {
 
     // Set up event dispatching
     EventDispatcher.makeEventDispatcher(exports);
-    EventDispatcher.setLeakThresholdForEvent(EVENT_ACTIVE_EDITOR_CHANGED, 30);
+    EventDispatcher.setLeakThresholdForEvent(EVENT_ACTIVE_EDITOR_CHANGED, 50);
 
     // File-based preferences handling
     exports.on(EVENT_ACTIVE_EDITOR_CHANGED, function (e, current) {
