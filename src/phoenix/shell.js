@@ -881,6 +881,17 @@ Phoenix.app = {
      *   - A jQuery selector string (must match exactly one element)
      *   - Omit to capture the full page
      * @returns {Promise<Uint8Array>} PNG image data
+     * @example <caption>Capture a specific rectangle</caption>
+     * const bytes = await Phoenix.app.screenShotBinary({
+     *     x: 100, y: 100, width: 400, height: 300
+     * });
+     * @example <caption>Capture a DOM element</caption>
+     * const element = document.getElementById("preview");
+     * const bytes = await Phoenix.app.screenShotBinary(element);
+     * @example <caption>Capture using a selector</caption>
+     * const bytes = await Phoenix.app.screenShotBinary("#preview");
+     * @example <caption>Capture the full page</caption>
+     * const bytes = await Phoenix.app.screenShotBinary();
      */
     screenShotBinary: function (rectOrNodeOrSelector) {
         return _capturePageBinary(rectOrNodeOrSelector);
@@ -893,6 +904,14 @@ Phoenix.app = {
      *   - A jQuery selector string (must match exactly one element)
      *   - Omit to capture the full page
      * @returns {Promise<Blob>} PNG Blob with type "image/png"
+     * @example <caption>Display in an image element</caption>
+     * const blob = await Phoenix.app.screenShotToBlob("#preview");
+     * const url = URL.createObjectURL(blob);
+     * document.getElementById("imgOutput").src = url;
+     * @example <caption>Draw to a canvas</caption>
+     * const blob = await Phoenix.app.screenShotToBlob();
+     * const bitmap = await createImageBitmap(blob);
+     * ctx.drawImage(bitmap, 0, 0);
      */
     screenShotToBlob: async function (rectOrNodeOrSelector) {
         const bytes = await _capturePageBinary(rectOrNodeOrSelector);
@@ -907,6 +926,14 @@ Phoenix.app = {
      *   - A jQuery selector string (must match exactly one element)
      *   - Omit to capture the full page
      * @returns {Promise<void>}
+     * @throws {Error} If filePathToSave is not a non-empty string
+     * @example <caption>Save the full page</caption>
+     * await Phoenix.app.screenShotToPNGFile("/project/output/screenshot.png");
+     * @example <caption>Save a specific element</caption>
+     * await Phoenix.app.screenShotToPNGFile(
+     *     "/project/output/preview.png",
+     *     "#preview"
+     * );
      */
     screenShotToPNGFile: async function (filePathToSave, rectOrNodeOrSelector) {
         if (!filePathToSave || typeof filePathToSave !== 'string') {
