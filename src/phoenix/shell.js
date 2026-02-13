@@ -147,10 +147,52 @@ Phoenix.libs = {
 // global API is only usable/stable after App init
 Phoenix.globalAPI = {};
 
-async function _capturePageBinary(rect) {
+function _resolveRect(rectOrNodeOrSelector) {
+    if (rectOrNodeOrSelector === undefined || rectOrNodeOrSelector === null) {
+        return undefined; // full page capture
+    }
+    let element;
+    // Case 1: jQuery selector string
+    if (typeof rectOrNodeOrSelector === 'string') {
+        const $el = $(rectOrNodeOrSelector);
+        if ($el.length === 0) {
+            throw new Error("No element found for selector: " +
+                rectOrNodeOrSelector);
+        }
+        if ($el.length > 1) {
+            throw new Error("Selector must match exactly one element, but matched " +
+                $el.length + ": " + rectOrNodeOrSelector);
+        }
+        element = $el[0];
+    } else if (rectOrNodeOrSelector instanceof HTMLElement) {
+        // Case 2: DOM node (Element instance)
+        element = rectOrNodeOrSelector;
+    } else if (typeof rectOrNodeOrSelector === 'object') {
+        // Case 3: Plain rect object {x, y, width, height}
+        return rectOrNodeOrSelector; // pass through for validation in _capturePageBinary
+    } else {
+        throw new Error("Expected a rect object, DOM node, or jQuery selector string");
+    }
+    // Convert DOM element to rect via getBoundingClientRect().
+    // getBoundingClientRect() returns values in the zoomed CSS coordinate space, but
+    // the native capture APIs (Electron capturePage, Tauri capture_page) expect
+    // coordinates in the unzoomed viewport space. Divide by the webview zoom factor
+    // to convert.
+    const zoomFactor = (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
+    const domRect = element.getBoundingClientRect();
+    return {
+        x: Math.round(domRect.x * zoomFactor),
+        y: Math.round(domRect.y * zoomFactor),
+        width: Math.round(domRect.width * zoomFactor),
+        height: Math.round(domRect.height * zoomFactor)
+    };
+}
+
+async function _capturePageBinary(rectOrNodeOrSelector) {
     if (!Phoenix.isNativeApp) {
         throw new Error("Screenshot capture is not supported in browsers");
     }
+    const rect = _resolveRect(rectOrNodeOrSelector);
     if (rect !== undefined) {
         if (rect.x === undefined || rect.y === undefined ||
             rect.width === undefined || rect.height === undefined) {
@@ -166,10 +208,11 @@ async function _capturePageBinary(rect) {
         if (rect.width <= 0 || rect.height <= 0) {
             throw new Error("rect width and height must be greater than 0");
         }
-        if (rect.x + rect.width > window.innerWidth) {
+        const zoomFactor = (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
+        if (rect.x + rect.width > window.innerWidth * zoomFactor) {
             throw new Error("rect x + width exceeds window innerWidth");
         }
-        if (rect.y + rect.height > window.innerHeight) {
+        if (rect.y + rect.height > window.innerHeight * zoomFactor) {
             throw new Error("rect y + height exceeds window innerHeight");
         }
     }
@@ -830,18 +873,46 @@ Phoenix.app = {
         }
         return () => {}; // No-op for unsupported platforms
     },
-    screenShotBinary: function (rect) {
-        return _capturePageBinary(rect);
+    /**
+     * Captures a screenshot and returns the raw PNG bytes.
+     * @param {Object|HTMLElement|string} [rectOrNodeOrSelector] - Area to capture. Can be:
+     *   - A rect object `{x, y, width, height}` specifying pixel coordinates
+     *   - A DOM element whose bounding rect will be captured
+     *   - A jQuery selector string (must match exactly one element)
+     *   - Omit to capture the full page
+     * @returns {Promise<Uint8Array>} PNG image data
+     */
+    screenShotBinary: function (rectOrNodeOrSelector) {
+        return _capturePageBinary(rectOrNodeOrSelector);
     },
-    screenShotToBlob: async function (rect) {
-        const bytes = await _capturePageBinary(rect);
+    /**
+     * Captures a screenshot and returns it as a PNG Blob.
+     * @param {Object|HTMLElement|string} [rectOrNodeOrSelector] - Area to capture. Can be:
+     *   - A rect object `{x, y, width, height}` specifying pixel coordinates
+     *   - A DOM element whose bounding rect will be captured
+     *   - A jQuery selector string (must match exactly one element)
+     *   - Omit to capture the full page
+     * @returns {Promise<Blob>} PNG Blob with type "image/png"
+     */
+    screenShotToBlob: async function (rectOrNodeOrSelector) {
+        const bytes = await _capturePageBinary(rectOrNodeOrSelector);
         return new Blob([bytes], { type: "image/png" });
     },
-    screenShotToPNGFile: async function (filePathToSave, rect) {
+    /**
+     * Captures a screenshot and writes it to a PNG file.
+     * @param {string} filePathToSave - VFS path to save the PNG file to
+     * @param {Object|HTMLElement|string} [rectOrNodeOrSelector] - Area to capture. Can be:
+     *   - A rect object `{x, y, width, height}` specifying pixel coordinates
+     *   - A DOM element whose bounding rect will be captured
+     *   - A jQuery selector string (must match exactly one element)
+     *   - Omit to capture the full page
+     * @returns {Promise<void>}
+     */
+    screenShotToPNGFile: async function (filePathToSave, rectOrNodeOrSelector) {
         if (!filePathToSave || typeof filePathToSave !== 'string') {
             throw new Error("filePathToSave must be a non-empty string");
         }
-        const bytes = await _capturePageBinary(rect);
+        const bytes = await _capturePageBinary(rectOrNodeOrSelector);
         return new Promise((resolve, reject) => {
             fs.writeFile(filePathToSave, bytes.buffer, 'binary', (err) => {
                 if (err) {
