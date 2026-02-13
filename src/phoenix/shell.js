@@ -209,10 +209,12 @@ async function _capturePageBinary(rectOrNodeOrSelector) {
             throw new Error("rect width and height must be greater than 0");
         }
         const zoomFactor = (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
-        if (rect.x + rect.width > window.innerWidth * zoomFactor) {
+        const maxWidth = Math.ceil(window.innerWidth * zoomFactor);
+        const maxHeight = Math.ceil(window.innerHeight * zoomFactor);
+        if (rect.x + rect.width > maxWidth) {
             throw new Error("rect x + width exceeds window innerWidth");
         }
-        if (rect.y + rect.height > window.innerHeight * zoomFactor) {
+        if (rect.y + rect.height > maxHeight) {
             throw new Error("rect y + height exceeds window innerHeight");
         }
     }
