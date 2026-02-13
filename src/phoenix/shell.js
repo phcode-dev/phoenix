@@ -147,6 +147,41 @@ Phoenix.libs = {
 // global API is only usable/stable after App init
 Phoenix.globalAPI = {};
 
+async function _capturePageBinary(rect) {
+    if (!Phoenix.isNativeApp) {
+        throw new Error("Screenshot capture is not supported in browsers");
+    }
+    if (rect !== undefined) {
+        if (rect.x === undefined || rect.y === undefined ||
+            rect.width === undefined || rect.height === undefined) {
+            throw new Error("rect must include all fields: x, y, width, height");
+        }
+        if (typeof rect.x !== 'number' || typeof rect.y !== 'number' ||
+            typeof rect.width !== 'number' || typeof rect.height !== 'number') {
+            throw new Error("rect fields x, y, width, height must be numbers");
+        }
+        if (rect.x < 0 || rect.y < 0 || rect.width < 0 || rect.height < 0) {
+            throw new Error("rect fields x, y, width, height must be non-negative");
+        }
+        if (rect.width <= 0 || rect.height <= 0) {
+            throw new Error("rect width and height must be greater than 0");
+        }
+        if (rect.x + rect.width > window.innerWidth) {
+            throw new Error("rect x + width exceeds window innerWidth");
+        }
+        if (rect.y + rect.height > window.innerHeight) {
+            throw new Error("rect y + height exceeds window innerHeight");
+        }
+    }
+    if (window.__TAURI__) {
+        const bytes = await window.__TAURI__.invoke('capture_page', { rect });
+        return new Uint8Array(bytes);
+    }
+    if (window.__ELECTRON__) {
+        return window.electronAPI.capturePage(rect);
+    }
+}
+
 Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
@@ -794,6 +829,28 @@ Phoenix.app = {
             return window.electronAPI.onWindowEvent(eventName, callback);
         }
         return () => {}; // No-op for unsupported platforms
+    },
+    screenShotBinary: function (rect) {
+        return _capturePageBinary(rect);
+    },
+    screenShotToBlob: async function (rect) {
+        const bytes = await _capturePageBinary(rect);
+        return new Blob([bytes], { type: "image/png" });
+    },
+    screenShotToPNGFile: async function (filePathToSave, rect) {
+        if (!filePathToSave || typeof filePathToSave !== 'string') {
+            throw new Error("filePathToSave must be a non-empty string");
+        }
+        const bytes = await _capturePageBinary(rect);
+        return new Promise((resolve, reject) => {
+            fs.writeFile(filePathToSave, bytes.buffer, 'binary', (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
     }
 };
 
