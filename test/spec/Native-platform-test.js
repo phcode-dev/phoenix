@@ -390,6 +390,162 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Screenshot Capture API Tests", function () {
+            const PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10]; // PNG magic bytes
+
+            function isPNG(bytes) {
+                if (bytes.length < 8) {
+                    return false;
+                }
+                for (let i = 0; i < PNG_SIGNATURE.length; i++) {
+                    if (bytes[i] !== PNG_SIGNATURE[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            describe("screenShotBinary", function () {
+                it("Should return a Uint8Array of PNG data for full page capture", async function () {
+                    const bytes = await Phoenix.app.screenShotBinary();
+                    expect(bytes instanceof Uint8Array).toBeTrue();
+                    expect(bytes.length).toBeGreaterThan(0);
+                    expect(isPNG(bytes)).withContext("Result should be valid PNG data").toBeTrue();
+                });
+
+                it("Should return a Uint8Array of PNG data for bounded capture", async function () {
+                    const bytes = await Phoenix.app.screenShotBinary({x: 0, y: 0, width: 100, height: 100});
+                    expect(bytes instanceof Uint8Array).toBeTrue();
+                    expect(bytes.length).toBeGreaterThan(0);
+                    expect(isPNG(bytes)).withContext("Result should be valid PNG data").toBeTrue();
+                });
+
+                it("Should throw when rect is missing required fields", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary({x: 0, y: 0})
+                    ).toBeRejectedWithError("rect must include all fields: x, y, width, height");
+                });
+
+                it("Should throw when rect fields are not numbers", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary({x: "0", y: 0, width: 100, height: 100})
+                    ).toBeRejectedWithError("rect fields x, y, width, height must be numbers");
+                });
+
+                it("Should throw when rect fields are negative", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary({x: -1, y: 0, width: 100, height: 100})
+                    ).toBeRejectedWithError("rect fields x, y, width, height must be non-negative");
+                });
+
+                it("Should throw when rect width is 0", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary({x: 0, y: 0, width: 0, height: 100})
+                    ).toBeRejectedWithError("rect width and height must be greater than 0");
+                });
+
+                it("Should throw when rect height is 0", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary({x: 0, y: 0, width: 100, height: 0})
+                    ).toBeRejectedWithError("rect width and height must be greater than 0");
+                });
+
+                it("Should throw when rect exceeds window width bounds", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary({x: 0, y: 0, width: 999999, height: 100})
+                    ).toBeRejectedWithError("rect x + width exceeds window innerWidth");
+                });
+
+                it("Should throw when rect exceeds window height bounds", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotBinary({x: 0, y: 0, width: 100, height: 999999})
+                    ).toBeRejectedWithError("rect y + height exceeds window innerHeight");
+                });
+            });
+
+            describe("screenShotToBlob", function () {
+                it("Should return a Blob of type image/png for full page capture", async function () {
+                    const blob = await Phoenix.app.screenShotToBlob();
+                    expect(blob instanceof Blob).toBeTrue();
+                    expect(blob.type).toEqual("image/png");
+                    expect(blob.size).toBeGreaterThan(0);
+                });
+
+                it("Should return a Blob of type image/png for bounded capture", async function () {
+                    const blob = await Phoenix.app.screenShotToBlob({x: 0, y: 0, width: 100, height: 100});
+                    expect(blob instanceof Blob).toBeTrue();
+                    expect(blob.type).toEqual("image/png");
+                    expect(blob.size).toBeGreaterThan(0);
+                });
+            });
+
+            describe("screenShotToPNGFile", function () {
+                let testDir;
+                let testFilePath;
+                const testFileName = "screenshot-test-output.png";
+
+                beforeEach(async function () {
+                    const appLocalData = fs.getTauriVirtualPath(await platform.appLocalDataDir());
+                    testDir = appLocalData;
+                    testFilePath = `${testDir}/${testFileName}`;
+                });
+
+                afterEach(async function () {
+                    // Always clean up the test file, even if the test failed
+                    await SpecRunnerUtils.deletePathAsync(testFilePath).catch(() => {});
+                });
+
+                it("Should write a valid PNG file", async function () {
+                    await Phoenix.app.screenShotToPNGFile(testFilePath);
+                    // Read back and verify PNG signature
+                    const content = await new Promise((resolve, reject) => {
+                        fs.readFile(testFilePath, 'binary', (err, data) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(data);
+                            }
+                        });
+                    });
+                    const bytes = new Uint8Array(content);
+                    expect(isPNG(bytes)).withContext("Written file should be valid PNG").toBeTrue();
+                });
+
+                it("Should write a valid PNG file with bounded rect", async function () {
+                    await Phoenix.app.screenShotToPNGFile(testFilePath, {x: 0, y: 0, width: 100, height: 100});
+                    const content = await new Promise((resolve, reject) => {
+                        fs.readFile(testFilePath, 'binary', (err, data) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(data);
+                            }
+                        });
+                    });
+                    const bytes = new Uint8Array(content);
+                    expect(isPNG(bytes)).withContext("Written file should be valid PNG").toBeTrue();
+                });
+
+                it("Should throw when filePathToSave is not provided", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotToPNGFile()
+                    ).toBeRejectedWithError("filePathToSave must be a non-empty string");
+                });
+
+                it("Should throw when filePathToSave is not a string", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotToPNGFile(123)
+                    ).toBeRejectedWithError("filePathToSave must be a non-empty string");
+                });
+
+                it("Should throw when filePathToSave is an empty string", async function () {
+                    await expectAsync(
+                        Phoenix.app.screenShotToPNGFile("")
+                    ).toBeRejectedWithError("filePathToSave must be a non-empty string");
+                });
+            });
+        });
+
         describe("Credentials OTP API Tests", function () {
             const scopeName = "testScope";
             const trustRing = window.specRunnerTestKernalModeTrust;
