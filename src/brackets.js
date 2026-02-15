@@ -292,6 +292,7 @@ define(function (require, exports, module) {
             WorkspaceManager: require("view/WorkspaceManager"),
             SearchResultsView: require("search/SearchResultsView"),
             ScrollTrackMarkers: require("search/ScrollTrackMarkers"),
+            SidebarTabs: require("view/SidebarTabs"),
             WorkingSetView: require("project/WorkingSetView"),
             doneLoading: false
         };

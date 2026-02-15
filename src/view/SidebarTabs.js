@@ -34,7 +34,7 @@
  */
 define(function (require, exports, module) {
 
-    var AppInit          = require("utils/AppInit"),
+    const AppInit          = require("utils/AppInit"),
         EventDispatcher  = require("utils/EventDispatcher");
 
     // --- Constants -----------------------------------------------------------
@@ -43,7 +43,7 @@ define(function (require, exports, module) {
      * The built-in Files tab id.
      * @const {string}
      */
-    var SIDEBAR_TAB_FILES = "sidebar-tab-files";
+    const SIDEBAR_TAB_FILES = "sidebar-tab-files";
 
     // --- Events --------------------------------------------------------------
 
@@ -51,41 +51,41 @@ define(function (require, exports, module) {
      * Fired when a new tab is registered via `addTab`.
      * @const {string}
      */
-    var EVENT_TAB_ADDED = "tabAdded";
+    const EVENT_TAB_ADDED = "tabAdded";
 
     /**
      * Fired when a tab is removed via `removeTab`.
      * @const {string}
      */
-    var EVENT_TAB_REMOVED = "tabRemoved";
+    const EVENT_TAB_REMOVED = "tabRemoved";
 
     /**
      * Fired when the active tab changes via `setActiveTab`.
      * @const {string}
      */
-    var EVENT_TAB_CHANGED = "tabChanged";
+    const EVENT_TAB_CHANGED = "tabChanged";
 
     // --- Private state -------------------------------------------------------
 
     /** @type {jQuery} */
-    var $navTabBar;
+    let $navTabBar;
 
     /** @type {jQuery} */
-    var $sidebar;
+    let $sidebar;
 
     /**
      * Ordered array of registered tab descriptors.
      * Each entry: { id, label, iconClass, priority, $tabItem }
      * @type {Array}
      */
-    var _tabs = [];
+    const _tabs = [];
 
     /**
      * Map from tabId -> array of DOM elements (not jQuery) associated with
      * that tab via `addToTab`.
      * @type {Object.<string, Array.<Element>>}
      */
-    var _tabContent = {};
+    const _tabContent = {};
 
     /**
      * Set of DOM elements that were appended to #sidebar by `addToTab` (i.e.
@@ -93,23 +93,23 @@ define(function (require, exports, module) {
      * decide whether to also detach the node from the DOM.
      * @type {Set.<Element>}
      */
-    var _appendedNodes = new Set();
+    const _appendedNodes = new Set();
 
     /**
      * Currently active tab id.
      * @type {string}
      */
-    var _activeTabId = SIDEBAR_TAB_FILES;
+    let _activeTabId = SIDEBAR_TAB_FILES;
 
     // --- IDs to always exclude from visibility toggling ----------------------
 
-    var _EXCLUDED_IDS = { "mainNavBar": true, "navTabBar": true };
+    const _EXCLUDED_IDS = { "mainNavBar": true, "navTabBar": true };
 
     /**
      * CSS classes that mark structural/resizer elements which must never be
      * hidden by tab switching.
      */
-    var _EXCLUDED_CLASSES = ["horz-resizer", "vert-resizer"];
+    const _EXCLUDED_CLASSES = ["horz-resizer", "vert-resizer"];
 
     // --- Private helpers -----------------------------------------------------
 
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
         if (_EXCLUDED_IDS[node.id]) {
             return true;
         }
-        for (var i = 0; i < _EXCLUDED_CLASSES.length; i++) {
+        for (let i = 0; i < _EXCLUDED_CLASSES.length; i++) {
             if (node.classList.contains(_EXCLUDED_CLASSES[i])) {
                 return true;
             }
@@ -136,7 +136,7 @@ define(function (require, exports, module) {
         $navTabBar.empty();
         _tabs.sort(function (a, b) { return a.priority - b.priority; });
         _tabs.forEach(function (tab) {
-            var $item = $('<div class="sidebar-tab" data-tab-id="' + tab.id + '">' +
+            const $item = $('<div class="sidebar-tab" data-tab-id="' + tab.id + '">' +
                 '<i class="' + tab.iconClass + '"></i>' +
                 '<span>' + tab.label + '</span>' +
                 '</div>');
@@ -168,8 +168,8 @@ define(function (require, exports, module) {
      * registered tab.
      */
     function _isNodeInAnyTab(node) {
-        var tabIds = Object.keys(_tabContent);
-        for (var i = 0; i < tabIds.length; i++) {
+        const tabIds = Object.keys(_tabContent);
+        for (let i = 0; i < tabIds.length; i++) {
             if (_tabContent[tabIds[i]].indexOf(node) !== -1) {
                 return true;
             }
@@ -190,13 +190,13 @@ define(function (require, exports, module) {
             return;
         }
 
-        var children = $sidebar.children().toArray();
+        const children = $sidebar.children().toArray();
 
         if (_activeTabId === SIDEBAR_TAB_FILES) {
             // Files tab: show nodes that are in the files tab content OR
             // unassociated (not in any tab). Hide nodes that are exclusively
             // in other tabs.
-            var filesNodes = new Set(_tabContent[SIDEBAR_TAB_FILES] || []);
+            const filesNodes = new Set(_tabContent[SIDEBAR_TAB_FILES] || []);
 
             children.forEach(function (child) {
                 if (_isExcludedNode(child)) {
@@ -211,7 +211,7 @@ define(function (require, exports, module) {
         } else {
             // Non-files tab: show nodes associated with this tab, hide
             // everything else (except excluded nodes).
-            var activeNodes = new Set(_tabContent[_activeTabId] || []);
+            const activeNodes = new Set(_tabContent[_activeTabId] || []);
 
             children.forEach(function (child) {
                 if (_isExcludedNode(child)) {
@@ -241,13 +241,13 @@ define(function (require, exports, module) {
         options = options || {};
 
         // Prevent duplicate registrations
-        for (var i = 0; i < _tabs.length; i++) {
+        for (let i = 0; i < _tabs.length; i++) {
             if (_tabs[i].id === id) {
                 return;
             }
         }
 
-        var tab = {
+        const tab = {
             id: id,
             label: label,
             iconClass: iconClass,
@@ -270,7 +270,7 @@ define(function (require, exports, module) {
      * @param {jQuery|Element} $content  DOM node or jQuery wrapper
      */
     function addToTab(tabId, $content) {
-        var node = $content instanceof $ ? $content[0] : $content;
+        const node = $content instanceof $ ? $content[0] : $content;
         if (!node) {
             return;
         }
@@ -312,12 +312,12 @@ define(function (require, exports, module) {
      * @param {jQuery|Element} $content  DOM node or jQuery wrapper
      */
     function removeFromTab(tabId, $content) {
-        var node = $content instanceof $ ? $content[0] : $content;
+        const node = $content instanceof $ ? $content[0] : $content;
         if (!node || !_tabContent[tabId]) {
             return;
         }
 
-        var idx = _tabContent[tabId].indexOf(node);
+        const idx = _tabContent[tabId].indexOf(node);
         if (idx === -1) {
             return;
         }
@@ -355,8 +355,8 @@ define(function (require, exports, module) {
             return false;
         }
 
-        var removed = false;
-        for (var i = _tabs.length - 1; i >= 0; i--) {
+        let removed = false;
+        for (let i = _tabs.length - 1; i >= 0; i--) {
             if (_tabs[i].id === id) {
                 _tabs.splice(i, 1);
                 removed = true;
@@ -388,8 +388,8 @@ define(function (require, exports, module) {
      */
     function setActiveTab(id) {
         // Verify the tab exists
-        var found = false;
-        for (var i = 0; i < _tabs.length; i++) {
+        let found = false;
+        for (let i = 0; i < _tabs.length; i++) {
             if (_tabs[i].id === id) {
                 found = true;
                 break;
@@ -399,7 +399,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        var previousTabId = _activeTabId;
+        const previousTabId = _activeTabId;
         _activeTabId = id;
 
         // Update active class on tab items
@@ -450,7 +450,7 @@ define(function (require, exports, module) {
 
         // Set up click handler for tab switching
         $navTabBar.on("click", ".sidebar-tab", function () {
-            var tabId = $(this).attr("data-tab-id");
+            const tabId = $(this).attr("data-tab-id");
             if (tabId) {
                 setActiveTab(tabId);
             }
