@@ -126,6 +126,8 @@ define(function (require, exports, module) {
     require("search/QuickOpenHelper");
     require("file/FileUtils");
     require("project/SidebarView");
+    require("view/SidebarTabs");
+    require("core-ai/main");
     require("utils/Resizer");
     require("LiveDevelopment/main");
     require("utils/NodeConnection");
