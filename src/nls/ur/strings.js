@@ -179,7 +179,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_LOADING_MORE": "لوڈ ہو رہا ہے…",
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "کوئی تصاویر نہیں ملیں",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "تصاویر لوڈ کرنے میں ناکامی ہوئی",
-  "LIVE_DEV_IMAGE_GALLERY_CLOSE": "بند کریں",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "اپنے ڈیوائس سے ایک تصویر منتخب کریں",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "ڈیوائس سے منتخب کریں",
   "LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE": "جاری رکھنے کے لیے ایڈیٹر میں تصویر ڈاؤن لوڈ کرنے کی جگہ منتخب کریں",
@@ -207,6 +206,8 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "فولڈر کا پاتھ ٹائپ کریں (مثلاً، assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 فولڈر کا پاتھ ٹائپ کریں، یا 'images' فولڈر میں ڈاؤن لوڈ کرنے کے لیے خالی چھوڑ دیں۔",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "اس پروجیکٹ کے لیے دوبارہ نہ پوچھیں۔",
+  "DEVICE_SIZE_LIMIT_TITLE": "رسپانسیو پریویو کی حد پوری ہو گئی",
+  "DEVICE_SIZE_LIMIT_MESSAGE": "مفت اکاؤنٹس کو روزانہ چند رسپانسیو پریویوز ملتے ہیں۔ تمام ڈیوائس سائزز پر لامحدود رسپانسیو پریویوز کے لیے Phoenix Pro پر اپ گریڈ کریں۔",
   "IMAGE_SEARCH_LIMIT_TITLE": "تصویری تلاش کی حد پوری ہوگئی",
   "IMAGE_SEARCH_LIMIT_MESSAGE": "آپ نے اس مہینے کی تمام {0} تصویری تلاشیں استعمال کر لی ہیں۔<br>آزمائشی حدود کو ہٹانے اور تلاش جاری رکھنے کے لیے ایک بامعاوضہ Phoenix Pro پلان شروع کریں۔",
   "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "بہت زیادہ طلب کی وجہ سے تصویری تلاش عارضی طور پر دستیاب نہیں ہے۔<br>آزمائشی حدود کو ہٹانے اور تلاش جاری رکھنے کے لیے ایک بامعاوضہ Phoenix Pro پلان شروع کریں۔",
@@ -582,6 +583,10 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} استعمال کرنے کا طریقہ",
   "CMD_SUPPORT": "{APP_NAME} سپورٹ",
   "CMD_GET_PRO": "Phoenix Pro حاصل کریں",
+  "CMD_CANCEL_TRIAL": "Phoenix Pro ٹرائل منسوخ کریں",
+  "CANCEL_TRIAL_TITLE": "{0} ٹرائل منسوخ کریں؟",
+  "CANCEL_TRIAL_MESSAGE": "آپ کے Phoenix Pro ٹرائل میں {0} دن باقی ہیں۔ منسوخی کو واپس نہیں لیا جا سکتا۔ کیا آپ واقعی اپنا ٹرائل روکنا چاہتے ہیں؟",
+  "CANCEL_TRIAL_STOP_BTN": "ٹرائل روکیں",
   "CMD_VIEW_LICENSE": "لائسنس دیکھیں",
   "CMD_MANAGE_LICENSES": "لائسنسوں کا انتظام کریں",
   "CMD_USER_PROFILE": "{APP_NAME} اکاؤنٹ",
@@ -1666,10 +1671,13 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "DEVICE_SIZE_LIMIT_TITLE": "رسپانسیو پریویو کی حد پوری ہو گئی",
-  "DEVICE_SIZE_LIMIT_MESSAGE": "مفت اکاؤنٹس کو روزانہ چند رسپانسیو پریویوز ملتے ہیں۔ تمام ڈیوائس سائزز پر لامحدود رسپانسیو پریویوز کے لیے Phoenix Pro پر اپ گریڈ کریں۔",
-  "CMD_CANCEL_TRIAL": "Phoenix Pro ٹرائل منسوخ کریں",
-  "CANCEL_TRIAL_TITLE": "{0} ٹرائل منسوخ کریں؟",
-  "CANCEL_TRIAL_MESSAGE": "آپ کے Phoenix Pro ٹرائل میں {0} دن باقی ہیں۔ منسوخی کو واپس نہیں لیا جا سکتا۔ کیا آپ واقعی اپنا ٹرائل روکنا چاہتے ہیں؟",
-  "CANCEL_TRIAL_STOP_BTN": "ٹرائل روکیں"
+  "LIVE_DEV_STYLES_PANEL_HEADER": "اسٹائل ایڈیٹر",
+  "LIVE_DEV_STYLES_EDIT_TOOLTIP": "اسٹائلز میں ترمیم کریں",
+  "LIVE_DEV_STYLES_PANEL_ADD": "+ شامل کریں",
+  "LIVE_DEV_STYLES_PANEL_NO_RULES": "کوئی CSS قواعد نہیں ملے",
+  "LIVE_DEV_STYLES_PANEL_MATCHING_RULES": "مطابقت رکھنے والے قواعد ({0})",
+  "LIVE_DEV_STYLES_PANEL_LOADING": "اسٹائلز لوڈ ہو رہے ہیں…",
+  "LIVE_DEV_STYLES_PANEL_NO_STYLES": "کوئی اسٹائلز نہیں ملے",
+  "LIVE_DEV_STYLES_PANEL_PROPERTY_PLACEHOLDER": "پراپرٹی",
+  "LIVE_DEV_STYLES_PANEL_VALUE_PLACEHOLDER": "ویلیو"
 });
