@@ -3,9 +3,9 @@
 const MainViewManager = brackets.getModule("view/MainViewManager")
 ```
 
-<a name="_"></a>
+<a name="module_view/MainViewManager"></a>
 
-## \_
+## view/MainViewManager
 MainViewManager manages the arrangement of all open panes as well as provides the controller
 logic behind all views in the MainView (e.g. ensuring that a file doesn't appear in 2 lists)
 
@@ -56,226 +56,261 @@ This module dispatches several events:
 To listen for events, do something like this: (see EventDispatcher for details on this pattern)
    `MainViewManager.on("eventname", handler);`
 
-**Kind**: global variable  
-<a name="EVENT_CURRENT_FILE_CHANGE"></a>
 
-## EVENT\_CURRENT\_FILE\_CHANGE : <code>string</code>
+* [view/MainViewManager](#module_view/MainViewManager)
+    * [.EVENT_CURRENT_FILE_CHANGE](#module_view/MainViewManager..EVENT_CURRENT_FILE_CHANGE) : <code>string</code>
+    * [.ALL_PANES](#module_view/MainViewManager..ALL_PANES)
+    * [.ACTIVE_PANE](#module_view/MainViewManager..ACTIVE_PANE)
+    * [.isExclusiveToPane(File)](#module_view/MainViewManager..isExclusiveToPane) ⇒ <code>Object</code>
+    * [.getActivePaneId()](#module_view/MainViewManager..getActivePaneId) ⇒ <code>string</code>
+    * [.focusActivePane()](#module_view/MainViewManager..focusActivePane)
+    * [.setActivePaneId(paneId)](#module_view/MainViewManager..setActivePaneId)
+    * [.getCurrentlyViewedFile(paneId)](#module_view/MainViewManager..getCurrentlyViewedFile) ⇒ <code>File</code>
+    * [.getCurrentlyViewedEditor(paneId)](#module_view/MainViewManager..getCurrentlyViewedEditor) ⇒ <code>Editor</code>
+    * [.getAllViewedEditors()](#module_view/MainViewManager..getAllViewedEditors) ⇒ <code>Object</code>
+    * [.getCurrentlyViewedPath(paneId)](#module_view/MainViewManager..getCurrentlyViewedPath) ⇒ <code>string</code>
+    * [.cacheScrollState(paneId)](#module_view/MainViewManager..cacheScrollState)
+    * [.restoreAdjustedScrollState(paneId, heightDelta)](#module_view/MainViewManager..restoreAdjustedScrollState)
+    * [.getWorkingSet(paneId)](#module_view/MainViewManager..getWorkingSet) ⇒ <code>Array.&lt;File&gt;</code>
+    * [.getAllOpenFiles()](#module_view/MainViewManager..getAllOpenFiles) ⇒ <code>array.&lt;File&gt;</code>
+    * [.getPaneIdList()](#module_view/MainViewManager..getPaneIdList) ⇒ <code>array.&lt;string&gt;</code>
+    * [.getWorkingSetSize(paneId)](#module_view/MainViewManager..getWorkingSetSize) ⇒ <code>number</code>
+    * [.getPaneTitle(paneId)](#module_view/MainViewManager..getPaneTitle) ⇒ <code>string</code>
+    * [.getPaneCount()](#module_view/MainViewManager..getPaneCount) ⇒ <code>number</code>
+    * [.findInAllWorkingSets(fullPath)](#module_view/MainViewManager..findInAllWorkingSets) ⇒ <code>Object</code>
+    * [.findInOpenPane(fullPath)](#module_view/MainViewManager..findInOpenPane) ⇒ <code>Object</code>
+    * [.findInWorkingSet(paneId, fullPath)](#module_view/MainViewManager..findInWorkingSet) ⇒ <code>number</code>
+    * [.findInWorkingSetByAddedOrder(paneId, fullPath)](#module_view/MainViewManager..findInWorkingSetByAddedOrder) ⇒ <code>number</code>
+    * [.findInWorkingSetByMRUOrder(paneId, fullPath)](#module_view/MainViewManager..findInWorkingSetByMRUOrder) ⇒ <code>number</code>
+    * [.addToWorkingSet(paneId, file, [index], [forceRedraw])](#module_view/MainViewManager..addToWorkingSet)
+    * [.addListToWorkingSet(paneId, fileList)](#module_view/MainViewManager..addListToWorkingSet)
+    * [.switchPaneFocus()](#module_view/MainViewManager..switchPaneFocus)
+    * [.traverseToNextViewByMRU(direction)](#module_view/MainViewManager..traverseToNextViewByMRU) ⇒ <code>Object</code>
+    * [.traverseToNextViewInListOrder(direction)](#module_view/MainViewManager..traverseToNextViewInListOrder) ⇒ <code>Object</code>
+    * [.beginTraversal()](#module_view/MainViewManager..beginTraversal)
+    * [.endTraversal()](#module_view/MainViewManager..endTraversal)
+    * [.setLayoutScheme(rows, columns)](#module_view/MainViewManager..setLayoutScheme)
+    * [.getLayoutScheme()](#module_view/MainViewManager..getLayoutScheme) ⇒ <code>Object</code>
+
+<a name="module_view/MainViewManager..EVENT_CURRENT_FILE_CHANGE"></a>
+
+### view/MainViewManager.EVENT\_CURRENT\_FILE\_CHANGE : <code>string</code>
 Event current file change
 
-**Kind**: global constant  
-<a name="ALL_PANES"></a>
+**Kind**: inner constant of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..ALL_PANES"></a>
 
-## ALL\_PANES
+### view/MainViewManager.ALL\_PANES
 Special paneId shortcut that can be used to specify that
 all panes should be targeted by the API.
 Not all APIs support this constnant.
 Check the API documentation before use.
 
-**Kind**: global constant  
-<a name="ACTIVE_PANE"></a>
+**Kind**: inner constant of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..ACTIVE_PANE"></a>
 
-## ACTIVE\_PANE
+### view/MainViewManager.ACTIVE\_PANE
 Special paneId shortcut that can be used to specify that
 the API should target the focused pane only.
 All APIs support this shortcut.
 
-**Kind**: global constant  
-<a name="isExclusiveToPane"></a>
+**Kind**: inner constant of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..isExclusiveToPane"></a>
 
-## isExclusiveToPane(File) ⇒ <code>Object</code>
+### view/MainViewManager.isExclusiveToPane(File) ⇒ <code>Object</code>
 Checks whether a file is listed exclusively in the provided pane
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | File | <code>File</code> | the file |
 
-<a name="getActivePaneId"></a>
+<a name="module_view/MainViewManager..getActivePaneId"></a>
 
-## getActivePaneId() ⇒ <code>string</code>
+### view/MainViewManager.getActivePaneId() ⇒ <code>string</code>
 Retrieves the currently active Pane Id
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>string</code> - Active Pane's ID.  
-<a name="focusActivePane"></a>
+<a name="module_view/MainViewManager..focusActivePane"></a>
 
-## focusActivePane()
+### view/MainViewManager.focusActivePane()
 Focuses the current pane. If the current pane has a current view, then the pane will focus the view.
 
-**Kind**: global function  
-<a name="setActivePaneId"></a>
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..setActivePaneId"></a>
 
-## setActivePaneId(paneId)
+### view/MainViewManager.setActivePaneId(paneId)
 Switch active pane to the specified pane id (or ACTIVE_PANE/ALL_PANES, in which case this
 call does nothing).
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | the id of the pane to activate |
 
-<a name="getCurrentlyViewedFile"></a>
+<a name="module_view/MainViewManager..getCurrentlyViewedFile"></a>
 
-## getCurrentlyViewedFile(paneId) ⇒ <code>File</code>
+### view/MainViewManager.getCurrentlyViewedFile(paneId) ⇒ <code>File</code>
 Retrieves the currently viewed file of the specified paneId
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>File</code> - File object of the currently viewed file, or null if there isn't one or there's no such pane  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | the id of the pane in which to retrieve the currently viewed file |
 
-<a name="getCurrentlyViewedEditor"></a>
+<a name="module_view/MainViewManager..getCurrentlyViewedEditor"></a>
 
-## getCurrentlyViewedEditor(paneId) ⇒ <code>Editor</code>
+### view/MainViewManager.getCurrentlyViewedEditor(paneId) ⇒ <code>Editor</code>
 Retrieves the currently viewed editor of the specified paneId
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>Editor</code> - currently editor, or null if there isn't one or there's no such pane  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | the id of the pane in which to retrieve the currently viewed editor |
 
-<a name="getAllViewedEditors"></a>
+<a name="module_view/MainViewManager..getAllViewedEditors"></a>
 
-## getAllViewedEditors() ⇒ <code>Object</code>
+### view/MainViewManager.getAllViewedEditors() ⇒ <code>Object</code>
 Gets an array of editors open in panes with their pane IDs.
 Can return an empty array if no editors are open.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>Object</code> - An array of objects, each containing an editor and its corresponding pane ID.  
-<a name="getCurrentlyViewedPath"></a>
+<a name="module_view/MainViewManager..getCurrentlyViewedPath"></a>
 
-## getCurrentlyViewedPath(paneId) ⇒ <code>string</code>
+### view/MainViewManager.getCurrentlyViewedPath(paneId) ⇒ <code>string</code>
 Retrieves the currently viewed path of the pane specified by paneId
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>string</code> - the path of the currently viewed file or null if there isn't one  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | the id of the pane in which to retrieve the currently viewed path |
 
-<a name="cacheScrollState"></a>
+<a name="module_view/MainViewManager..cacheScrollState"></a>
 
-## cacheScrollState(paneId)
+### view/MainViewManager.cacheScrollState(paneId)
 Caches the specified pane's current scroll state
 If there was already cached state for the specified pane, it is discarded and overwritten
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | id of the pane in which to cache the scroll state,                            ALL_PANES or ACTIVE_PANE |
 
-<a name="restoreAdjustedScrollState"></a>
+<a name="module_view/MainViewManager..restoreAdjustedScrollState"></a>
 
-## restoreAdjustedScrollState(paneId, heightDelta)
+### view/MainViewManager.restoreAdjustedScrollState(paneId, heightDelta)
 Restores the scroll state from cache and applies the heightDelta
 The view implementation is responsible for applying or ignoring the heightDelta.
 This is used primarily when a modal bar opens to keep the editor from scrolling the current
 page out of view in order to maintain the appearance.
 The state is removed from the cache after calling this function.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | id of the pane in which to adjust the scroll state,                              ALL_PANES or ACTIVE_PANE |
 | heightDelta | <code>number</code> | delta H to apply to the scroll state |
 
-<a name="getWorkingSet"></a>
+<a name="module_view/MainViewManager..getWorkingSet"></a>
 
-## getWorkingSet(paneId) ⇒ <code>Array.&lt;File&gt;</code>
+### view/MainViewManager.getWorkingSet(paneId) ⇒ <code>Array.&lt;File&gt;</code>
 Retrieves the WorkingSet for the given paneId not including temporary views
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | id of the pane in which to get the view list, ALL_PANES or ACTIVE_PANE |
 
-<a name="getAllOpenFiles"></a>
+<a name="module_view/MainViewManager..getAllOpenFiles"></a>
 
-## getAllOpenFiles() ⇒ <code>array.&lt;File&gt;</code>
+### view/MainViewManager.getAllOpenFiles() ⇒ <code>array.&lt;File&gt;</code>
 Retrieves the list of all open files including temporary views
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>array.&lt;File&gt;</code> - the list of all open files in all open panes  
-<a name="getPaneIdList"></a>
+<a name="module_view/MainViewManager..getPaneIdList"></a>
 
-## getPaneIdList() ⇒ <code>array.&lt;string&gt;</code>
+### view/MainViewManager.getPaneIdList() ⇒ <code>array.&lt;string&gt;</code>
 Retrieves the list of all open pane ids
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>array.&lt;string&gt;</code> - the list of all open panes  
-<a name="getWorkingSetSize"></a>
+<a name="module_view/MainViewManager..getWorkingSetSize"></a>
 
-## getWorkingSetSize(paneId) ⇒ <code>number</code>
+### view/MainViewManager.getWorkingSetSize(paneId) ⇒ <code>number</code>
 Retrieves the size of the selected pane's view list
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>number</code> - the number of items in the specified pane  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | id of the pane in which to get the workingset size.      Can use `ALL_PANES` or `ACTIVE_PANE` |
 
-<a name="getPaneTitle"></a>
+<a name="module_view/MainViewManager..getPaneTitle"></a>
 
-## getPaneTitle(paneId) ⇒ <code>string</code>
+### view/MainViewManager.getPaneTitle(paneId) ⇒ <code>string</code>
 Retrieves the title to display in the workingset view
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>string</code> - title  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | id of the pane in which to get the title |
 
-<a name="getPaneCount"></a>
+<a name="module_view/MainViewManager..getPaneCount"></a>
 
-## getPaneCount() ⇒ <code>number</code>
+### view/MainViewManager.getPaneCount() ⇒ <code>number</code>
 Retrieves the number of panes
 
-**Kind**: global function  
-<a name="findInAllWorkingSets"></a>
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..findInAllWorkingSets"></a>
 
-## findInAllWorkingSets(fullPath) ⇒ <code>Object</code>
+### view/MainViewManager.findInAllWorkingSets(fullPath) ⇒ <code>Object</code>
 Finds all instances of the specified file in all working sets.
 If there is a temporary view of the file, it is not part of the result set
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>Object</code> - an array of paneId/index records  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | fullPath | <code>string</code> | path of the file to find views of |
 
-<a name="findInOpenPane"></a>
+<a name="module_view/MainViewManager..findInOpenPane"></a>
 
-## findInOpenPane(fullPath) ⇒ <code>Object</code>
-Returns the pane IDs and editors (if present) of the given file in any open and viewable pane. 
-If the same file is open in multiple panes, all matching panes will be returned. 
+### view/MainViewManager.findInOpenPane(fullPath) ⇒ <code>Object</code>
+Returns the pane IDs and editors (if present) of the given file in any open and viewable pane.
+If the same file is open in multiple panes, all matching panes will be returned.
 If not found in any panes, an empty array will be returned.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>Object</code> - An array of objects, each containing the pane ID and the corresponding editor, if present.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | fullPath | <code>string</code> | The full path of the file to search for. |
 
-<a name="findInWorkingSet"></a>
+<a name="module_view/MainViewManager..findInWorkingSet"></a>
 
-## findInWorkingSet(paneId, fullPath) ⇒ <code>number</code>
+### view/MainViewManager.findInWorkingSet(paneId, fullPath) ⇒ <code>number</code>
 Gets the index of the file matching fullPath in the workingset
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>number</code> - index, -1 if not found.  
 
 | Param | Type | Description |
@@ -283,12 +318,12 @@ Gets the index of the file matching fullPath in the workingset
 | paneId | <code>string</code> | id of the pane in which to search or ALL_PANES or ACTIVE_PANE |
 | fullPath | <code>string</code> | full path of the file to search for |
 
-<a name="findInWorkingSetByAddedOrder"></a>
+<a name="module_view/MainViewManager..findInWorkingSetByAddedOrder"></a>
 
-## findInWorkingSetByAddedOrder(paneId, fullPath) ⇒ <code>number</code>
+### view/MainViewManager.findInWorkingSetByAddedOrder(paneId, fullPath) ⇒ <code>number</code>
 Gets the index of the file matching fullPath in the added order workingset
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>number</code> - index, -1 if not found.  
 
 | Param | Type | Description |
@@ -296,12 +331,12 @@ Gets the index of the file matching fullPath in the added order workingset
 | paneId | <code>string</code> | id of the pane in which to search or ALL_PANES or ACTIVE_PANE |
 | fullPath | <code>string</code> | full path of the file to search for |
 
-<a name="findInWorkingSetByMRUOrder"></a>
+<a name="module_view/MainViewManager..findInWorkingSetByMRUOrder"></a>
 
-## findInWorkingSetByMRUOrder(paneId, fullPath) ⇒ <code>number</code>
+### view/MainViewManager.findInWorkingSetByMRUOrder(paneId, fullPath) ⇒ <code>number</code>
 Gets the index of the file matching fullPath in the MRU order workingset
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>number</code> - index, -1 if not found.  
 
 | Param | Type | Description |
@@ -309,9 +344,9 @@ Gets the index of the file matching fullPath in the MRU order workingset
 | paneId | <code>string</code> | id of the pane in which to search or ALL_PANES or ACTIVE_PANE |
 | fullPath | <code>string</code> | full path of the file to search for |
 
-<a name="addToWorkingSet"></a>
+<a name="module_view/MainViewManager..addToWorkingSet"></a>
 
-## addToWorkingSet(paneId, file, [index], [forceRedraw])
+### view/MainViewManager.addToWorkingSet(paneId, file, [index], [forceRedraw])
 Adds the given file to the end of the workingset, if it is not already there.
  This API does not create a view of the file, it just adds it to the working set
 Views of files in the working set are persisted and are not destroyed until the user
@@ -319,7 +354,7 @@ Views of files in the working set are persisted and are not destroyed until the 
  made the current view. If a File is already opened then the file is just made current
  and its view is shown.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -328,30 +363,30 @@ Views of files in the working set are persisted and are not destroyed until the 
 | [index] | <code>number</code> | Position to add to list (defaults to last); -1 is ignored |
 | [forceRedraw] | <code>boolean</code> | If true, a workingset change notification is always sent    (useful if suppressRedraw was used with removeView() earlier) |
 
-<a name="addListToWorkingSet"></a>
+<a name="module_view/MainViewManager..addListToWorkingSet"></a>
 
-## addListToWorkingSet(paneId, fileList)
+### view/MainViewManager.addListToWorkingSet(paneId, fileList)
 Adds the given file list to the end of the workingset.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | paneId | <code>string</code> | The id of the pane in which to add the file object to or ACTIVE_PANE |
 | fileList | <code>Array.&lt;File&gt;</code> | Array of files to add to the pane |
 
-<a name="switchPaneFocus"></a>
+<a name="module_view/MainViewManager..switchPaneFocus"></a>
 
-## switchPaneFocus()
+### view/MainViewManager.switchPaneFocus()
 Switch between panes
 
-**Kind**: global function  
-<a name="traverseToNextViewByMRU"></a>
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..traverseToNextViewByMRU"></a>
 
-## traverseToNextViewByMRU(direction) ⇒ <code>Object</code>
+### view/MainViewManager.traverseToNextViewByMRU(direction) ⇒ <code>Object</code>
 Get the next or previous file in the MRU list.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>Object</code> - The File object of the next item in the traversal order or null if there aren't any files to traverse.
                                       May return current file if there are no other files to traverse.  
 
@@ -359,12 +394,12 @@ Get the next or previous file in the MRU list.
 | --- | --- | --- |
 | direction | <code>number</code> | Must be 1 or -1 to traverse forward or backward |
 
-<a name="traverseToNextViewInListOrder"></a>
+<a name="module_view/MainViewManager..traverseToNextViewInListOrder"></a>
 
-## traverseToNextViewInListOrder(direction) ⇒ <code>Object</code>
+### view/MainViewManager.traverseToNextViewInListOrder(direction) ⇒ <code>Object</code>
 Get the next or previous file in list order.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>Object</code> - The File object of the next item in the traversal order or null if there aren't any files to traverse.
                                       May return current file if there are no other files to traverse.  
 
@@ -372,26 +407,26 @@ Get the next or previous file in list order.
 | --- | --- | --- |
 | direction | <code>number</code> | Must be 1 or -1 to traverse forward or backward |
 
-<a name="beginTraversal"></a>
+<a name="module_view/MainViewManager..beginTraversal"></a>
 
-## beginTraversal()
+### view/MainViewManager.beginTraversal()
 Indicates that traversal has begun.
 Can be called any number of times.
 
-**Kind**: global function  
-<a name="endTraversal"></a>
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..endTraversal"></a>
 
-## endTraversal()
+### view/MainViewManager.endTraversal()
 Un-freezes the MRU list after one or more beginTraversal() calls.
 Whatever file is current is bumped to the front of the MRU list.
 
-**Kind**: global function  
-<a name="setLayoutScheme"></a>
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..setLayoutScheme"></a>
 
-## setLayoutScheme(rows, columns)
+### view/MainViewManager.setLayoutScheme(rows, columns)
 Changes the layout scheme
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Summay**: Rows or Columns may be 1 or 2 but both cannot be 2. 1x2, 2x1 or 1x1 are the legal values  
 
 | Param | Type | Description |
@@ -399,10 +434,10 @@ Changes the layout scheme
 | rows | <code>number</code> | (may be 1 or 2) |
 | columns | <code>number</code> | (may be 1 or 2) |
 
-<a name="getLayoutScheme"></a>
+<a name="module_view/MainViewManager..getLayoutScheme"></a>
 
-## getLayoutScheme() ⇒ <code>Object</code>
+### view/MainViewManager.getLayoutScheme() ⇒ <code>Object</code>
 Retrieves the current layout scheme.
 
-**Kind**: global function  
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
 **Returns**: <code>Object</code> - - An object containing the number of rows and columns in the layout.  

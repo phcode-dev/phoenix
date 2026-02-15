@@ -148,6 +148,7 @@
  *
  *  Optional Notification callback called when the view's vsibility changes.  The view can perform any synchronization or
  *  state update it needs to do when its visiblity state changes.
+ *  @module view/Pane
  */
 define(function (require, exports, module) {
 

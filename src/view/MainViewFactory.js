@@ -59,6 +59,7 @@
  *          return createIconView(file, pane);
  *      }
  *```
+ * @module view/MainViewFactory
  */
 define(function (require, exports, module) {
 

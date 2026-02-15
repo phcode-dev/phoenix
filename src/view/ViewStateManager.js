@@ -31,6 +31,7 @@
  *
  * Views or View Factories are responsible for restoring the view state when the view of that file is created
  * by recalling the cached state.  Views determine what data is store in the view state and how to restore it.
+ * @module view/ViewStateManager
  */
 define(function (require, exports, module) {
 

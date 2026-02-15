@@ -31,6 +31,7 @@
  * `workspaceUpdateLayout` When workspace size changes for any reason (including panel show/hide panel resize, or the window resize).
  *              The 2nd arg is the available workspace height.
  *              The 3rd arg is a refreshHint flag for internal use (passed in to recomputeLayout)
+ * @module view/WorkspaceManager
  */
 define(function (require, exports, module) {
 
