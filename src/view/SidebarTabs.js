@@ -18,6 +18,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * SidebarTabs manages multiple tab panes within the sidebar. It inserts a
  * `#navTabBar` element after `#mainNavBar` and provides an API for registering
@@ -31,6 +33,7 @@
  * Tab switching works purely by toggling the `.sidebar-tab-hidden` CSS class
  * (`display: none !important`). No DOM reparenting or detaching occurs, so
  * cached jQuery/DOM references held by extensions remain valid.
+ * @module view/SidebarTabs
  */
 define(function (require, exports, module) {
 
@@ -67,16 +70,19 @@ define(function (require, exports, module) {
 
     // --- Private state -------------------------------------------------------
 
-    /** @type {jQuery} */
+    /** @type {jQuery}
+     * @private */
     let $navTabBar;
 
-    /** @type {jQuery} */
+    /** @type {jQuery}
+     * @private*/
     let $sidebar;
 
     /**
      * Ordered array of registered tab descriptors.
      * Each entry: { id, label, iconClass, priority, $tabItem }
      * @type {Array}
+     * @private
      */
     const _tabs = [];
 
@@ -84,6 +90,7 @@ define(function (require, exports, module) {
      * Map from tabId -> array of DOM elements (not jQuery) associated with
      * that tab via `addToTab`.
      * @type {Object.<string, Array.<Element>>}
+     * @private
      */
     const _tabContent = {};
 
@@ -92,12 +99,14 @@ define(function (require, exports, module) {
      * they were NOT already children of #sidebar). Used so `removeFromTab` can
      * decide whether to also detach the node from the DOM.
      * @type {Set.<Element>}
+     * @private
      */
     const _appendedNodes = new Set();
 
     /**
      * Currently active tab id.
      * @type {string}
+     * @private
      */
     let _activeTabId = SIDEBAR_TAB_FILES;
 
@@ -108,6 +117,7 @@ define(function (require, exports, module) {
     /**
      * CSS classes that mark structural/resizer elements which must never be
      * hidden by tab switching.
+     * @private
      */
     const _EXCLUDED_CLASSES = ["horz-resizer", "vert-resizer"];
 
@@ -116,6 +126,7 @@ define(function (require, exports, module) {
     /**
      * Returns true if a sidebar child node should never be touched by tab
      * switching (e.g. nav bars, resizer handles).
+     * @private
      */
     function _isExcludedNode(node) {
         if (_EXCLUDED_IDS[node.id]) {
@@ -131,6 +142,7 @@ define(function (require, exports, module) {
 
     /**
      * Rebuild the tab bar DOM to reflect current _tabs (sorted by priority).
+     * @private
      */
     function _rebuildTabBar() {
         $navTabBar.empty();
@@ -158,6 +170,7 @@ define(function (require, exports, module) {
     /**
      * Returns true if the given node is explicitly associated with the
      * specified tab.
+     * @private
      */
     function _isNodeInTab(node, tabId) {
         return _tabContent[tabId] && _tabContent[tabId].indexOf(node) !== -1;
@@ -166,6 +179,7 @@ define(function (require, exports, module) {
     /**
      * Returns true if the given node is explicitly associated with ANY
      * registered tab.
+     * @private
      */
     function _isNodeInAnyTab(node) {
         const tabIds = Object.keys(_tabContent);
@@ -184,6 +198,7 @@ define(function (require, exports, module) {
      * A node can be associated with multiple tabs. It is visible if any of
      * its associated tabs is the active tab. Unassociated nodes default to
      * the files tab.
+     * @private
      */
     function _applyTabVisibility() {
         if (!$sidebar || !$sidebar.length) {

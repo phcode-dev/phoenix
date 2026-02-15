@@ -73,6 +73,7 @@
  *
  * To listen for events, do something like this: (see EventDispatcher for details on this pattern)
  *    `MainViewManager.on("eventname", handler);`
+ * @module view/MainViewManager
  */
 define(function (require, exports, module) {
 
@@ -677,8 +678,8 @@ define(function (require, exports, module) {
 
 
     /**
-     * Returns the pane IDs and editors (if present) of the given file in any open and viewable pane. 
-     * If the same file is open in multiple panes, all matching panes will be returned. 
+     * Returns the pane IDs and editors (if present) of the given file in any open and viewable pane.
+     * If the same file is open in multiple panes, all matching panes will be returned.
      * If not found in any panes, an empty array will be returned.
      * @param {string} fullPath - The full path of the file to search for.
      * @return {{paneId: string, editor: ?Editor}} An array of objects, each containing the pane ID and the corresponding editor, if present.
@@ -1432,7 +1433,7 @@ define(function (require, exports, module) {
      * @param {!File} file - The file to close.
      * @param {Object} [optionsIn] - Optional parameters for the close operation.
      * @param {boolean} [optionsIn.noOpenNextFile] - If set to true, prevents opening the next file after closing.
-     * 
+     *
      * This function does not fail if the file is not open.
      */
     function _close(paneId, file, optionsIn) {
