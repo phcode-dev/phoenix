@@ -27,6 +27,7 @@ export function createWSControlServer(port) {
                     clientName = msg.name || ("Unknown-" + (++unknownCounter));
 
                     // If same name reconnects (e.g. tab reload), close old connection
+                    // but preserve the existing log buffer so logs survive across reloads
                     const existing = clients.get(clientName);
                     if (existing) {
                         try {
@@ -34,13 +35,18 @@ export function createWSControlServer(port) {
                         } catch {
                             // ignore
                         }
+                        clients.set(clientName, {
+                            ws: ws,
+                            logs: existing.logs,
+                            isAlive: true
+                        });
+                    } else {
+                        clients.set(clientName, {
+                            ws: ws,
+                            logs: new LogBuffer(),
+                            isAlive: true
+                        });
                     }
-
-                    clients.set(clientName, {
-                        ws: ws,
-                        logs: new LogBuffer(),
-                        isAlive: true
-                    });
                     break;
                 }
 
@@ -59,6 +65,15 @@ export function createWSControlServer(port) {
                     if (pending) {
                         pendingRequests.delete(msg.id);
                         pending.resolve(msg.data);
+                    }
+                    break;
+                }
+
+                case "get_logs_response": {
+                    const pending4 = pendingRequests.get(msg.id);
+                    if (pending4) {
+                        pendingRequests.delete(msg.id);
+                        pending4.resolve(msg.entries || []);
                     }
                     break;
                 }
@@ -232,6 +247,41 @@ export function createWSControlServer(port) {
         });
     }
 
+    function requestLogs(instanceName) {
+        return new Promise((resolve, reject) => {
+            const resolved = _resolveClient(instanceName);
+            if (resolved.error) {
+                reject(new Error(resolved.error));
+                return;
+            }
+
+            const { client } = resolved;
+            if (client.ws.readyState !== 1) {
+                reject(new Error("Phoenix client \"" + resolved.name + "\" is not connected"));
+                return;
+            }
+
+            const id = ++requestIdCounter;
+            const timeout = setTimeout(() => {
+                pendingRequests.delete(id);
+                reject(new Error("Log request timed out (10s)"));
+            }, 10000);
+
+            pendingRequests.set(id, {
+                resolve: (data) => {
+                    clearTimeout(timeout);
+                    resolve(data);
+                },
+                reject: (err) => {
+                    clearTimeout(timeout);
+                    reject(err);
+                }
+            });
+
+            client.ws.send(JSON.stringify({ type: "get_logs_request", id }));
+        });
+    }
+
     function getBrowserLogs(sinceLast, instanceName) {
         const resolved = _resolveClient(instanceName);
         if (resolved.error) {
@@ -281,6 +331,7 @@ export function createWSControlServer(port) {
     return {
         requestScreenshot,
         requestReload,
+        requestLogs,
         getBrowserLogs,
         clearBrowserLogs,
         isClientConnected,

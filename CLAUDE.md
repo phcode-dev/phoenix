@@ -11,3 +11,4 @@
 - Brace style: (`if (x) {`), single-line blocks allowed.
 - Always use curly braces for `if`/`else`/`for`/`while`.
 - No trailing whitespace.
+- Use `const` and `let` instead of `var`.
