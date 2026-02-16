@@ -1,5 +1,20 @@
 import { z } from "zod";
 
+const DEFAULT_MAX_CHARS = 10000;
+
+function _trimToCharBudget(lines, maxChars) {
+    let total = 0;
+    // Walk backwards (newest first) to keep the most recent entries
+    let startIdx = lines.length;
+    for (let i = lines.length - 1; i >= 0; i--) {
+        const cost = lines[i].length + 1; // +1 for newline
+        if (total + cost > maxChars) { break; }
+        total += cost;
+        startIdx = i;
+    }
+    return { lines: lines.slice(startIdx), trimmed: startIdx };
+}
+
 export function registerTools(server, processManager, wsControlServer, phoenixDesktopPath) {
     server.tool(
         "start_phoenix",
@@ -67,9 +82,18 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
 
     server.tool(
         "get_terminal_logs",
-        "Get stdout/stderr output from the Electron process. By default returns new logs since last call; set clear=true to get all logs and clear the buffer.",
-        { clear: z.boolean().default(false).describe("If true, return all logs and clear the buffer. If false, return only new logs since last read.") },
-        async ({ clear }) => {
+        "Get stdout/stderr output from the Electron process. Returns last 50 entries by default. " +
+        "USAGE: Start with default tail=50. Use filter (regex) to narrow results (e.g. filter='error|warn'). " +
+        "Use before=N (from previous totalEntries) to page back. Avoid tail=0 unless necessary — " +
+        "prefer filter + small tail to keep responses compact.",
+        {
+            clear: z.boolean().default(false).describe("If true, return all logs and clear the buffer. If false, return only new logs since last read."),
+            tail: z.number().default(50).describe("Return last N entries. 0 = all."),
+            before: z.number().optional().describe("Cursor: return entries before this totalEntries position. Use the totalEntries value from a previous response to page back stably."),
+            filter: z.string().optional().describe("Optional regex to filter log entries by text content. Applied before tail/before."),
+            maxChars: z.number().default(DEFAULT_MAX_CHARS).describe("Max character budget for log content. Oldest entries are dropped first to fit. 0 = unlimited.")
+        },
+        async ({ clear, tail, before, filter, maxChars }) => {
             let logs;
             if (clear) {
                 logs = processManager.getTerminalLogs(false);
@@ -77,11 +101,58 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
             } else {
                 logs = processManager.getTerminalLogs(true);
             }
-            const text = logs.map(e => `[${e.stream}] ${e.text}`).join("");
+            const totalEntries = processManager.getTerminalLogsTotalPushed();
+            let filterRe;
+            if (filter) {
+                try {
+                    filterRe = new RegExp(filter, "i");
+                } catch (e) {
+                    return {
+                        content: [{
+                            type: "text",
+                            text: `Invalid filter regex: ${e.message}`
+                        }]
+                    };
+                }
+                logs = logs.filter(e => filterRe.test(e.text));
+            }
+            const matchedEntries = logs.length;
+            const endIdx = before != null ? Math.max(0, Math.min(matchedEntries, before)) : matchedEntries;
+            if (tail > 0) {
+                const startIdx = Math.max(0, endIdx - tail);
+                logs = logs.slice(startIdx, endIdx);
+            } else {
+                logs = logs.slice(0, endIdx);
+            }
+            let lines = logs.map(e => `[${e.stream}] ${e.text}`);
+            let trimmed = 0;
+            if (maxChars > 0) {
+                const result = _trimToCharBudget(lines, maxChars);
+                lines = result.lines;
+                trimmed = result.trimmed;
+            }
+            const showing = lines.length;
+            const rangeEnd = endIdx;
+            const rangeStart = rangeEnd - logs.length;
+            const actualStart = rangeStart + trimmed;
+            const hasMore = actualStart > 0;
+            let header = `[Logs: ${totalEntries} total`;
+            if (filter) {
+                header += `, ${matchedEntries} matched /${filter}/i`;
+            }
+            header += `, showing ${actualStart}-${rangeEnd} (${showing} entries).`;
+            if (trimmed > 0) {
+                header += ` ${trimmed} entries trimmed to fit maxChars=${maxChars}.`;
+            }
+            if (hasMore) {
+                header += ` hasMore=true, use before=${actualStart} to page back.`;
+            }
+            header += `]`;
+            const text = lines.join("");
             return {
                 content: [{
                     type: "text",
-                    text: text || "(no terminal logs)"
+                    text: text ? header + "\n" + text : "(no terminal logs)"
                 }]
             };
         }
@@ -89,17 +160,60 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
 
     server.tool(
         "get_browser_console_logs",
-        "Get console logs captured from the Phoenix browser runtime from boot time. Fetches the full retained log buffer directly from the browser instance.",
+        "Get console logs from the Phoenix browser runtime. Returns last 50 entries by default. " +
+        "USAGE: Start with default tail=50. Use filter (regex) to narrow results (e.g. filter='error|warn'). " +
+        "Use before=N (from previous totalEntries) to page back. Avoid tail=0 unless necessary — " +
+        "prefer filter + small tail to keep responses compact.",
         {
-            instance: z.string().optional().describe("Target a specific Phoenix instance by name (e.g. 'Phoenix-a3f2'). Required when multiple instances are connected.")
+            instance: z.string().optional().describe("Target a specific Phoenix instance by name (e.g. 'Phoenix-a3f2'). Required when multiple instances are connected."),
+            tail: z.number().default(50).describe("Return last N entries. 0 = all."),
+            before: z.number().optional().describe("Cursor: return entries before this totalEntries position. Use the totalEntries value from a previous response to page back stably."),
+            filter: z.string().optional().describe("Optional regex to filter log entries by message content. Applied before tail/before."),
+            maxChars: z.number().default(DEFAULT_MAX_CHARS).describe("Max character budget for log content. Oldest entries are dropped first to fit. 0 = unlimited.")
         },
-        async ({ instance }) => {
+        async ({ instance, tail, before, filter, maxChars }) => {
             try {
-                const logs = await wsControlServer.requestLogs(instance);
+                const result = await wsControlServer.requestLogs(instance, { tail, before, filter });
+                const entries = result.entries || [];
+                const totalEntries = result.totalEntries || entries.length;
+                const matchedEntries = result.matchedEntries != null ? result.matchedEntries : entries.length;
+                const rangeEnd = result.rangeEnd != null ? result.rangeEnd : matchedEntries;
+                let lines = entries.map(e => `[${e.level}] ${e.message}`);
+                let trimmed = 0;
+                if (maxChars > 0) {
+                    const trimResult = _trimToCharBudget(lines, maxChars);
+                    lines = trimResult.lines;
+                    trimmed = trimResult.trimmed;
+                }
+                const showing = lines.length;
+                const rangeStart = rangeEnd - entries.length;
+                const actualStart = rangeStart + trimmed;
+                const hasMore = actualStart > 0;
+                let header = `[Logs: ${totalEntries} total`;
+                if (filter) {
+                    header += `, ${matchedEntries} matched /${filter}/i`;
+                }
+                header += `, showing ${actualStart}-${rangeEnd} (${showing} entries).`;
+                if (trimmed > 0) {
+                    header += ` ${trimmed} entries trimmed to fit maxChars=${maxChars}.`;
+                }
+                if (hasMore) {
+                    header += ` hasMore=true, use before=${actualStart} to page back.`;
+                }
+                header += `]`;
+                if (showing === 0) {
+                    return {
+                        content: [{
+                            type: "text",
+                            text: "(no browser logs)"
+                        }]
+                    };
+                }
+                const text = lines.join("\n");
                 return {
                     content: [{
                         type: "text",
-                        text: JSON.stringify(logs.length > 0 ? logs : "(no browser logs)")
+                        text: header + "\n" + text
                     }]
                 };
             } catch (err) {

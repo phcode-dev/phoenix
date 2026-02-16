@@ -112,12 +112,17 @@ export function createProcessManager() {
         terminalLogs.clear();
     }
 
+    function getTerminalLogsTotalPushed() {
+        return terminalLogs.totalPushed();
+    }
+
     return {
         start,
         stop,
         isRunning,
         getPid,
         getTerminalLogs,
-        clearTerminalLogs
+        clearTerminalLogs,
+        getTerminalLogsTotalPushed
     };
 }

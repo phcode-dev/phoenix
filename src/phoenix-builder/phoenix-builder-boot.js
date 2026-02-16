@@ -49,6 +49,7 @@
     let ws = null;
     let logBuffer = [];
     const capturedLogs = [];
+    let totalLogsPushed = 0;
     let flushTimer = null;
     let reconnectTimer = null;
     let reconnectDelay = RECONNECT_BASE_MS;
@@ -133,6 +134,7 @@
         };
         logBuffer.push(entry);
         capturedLogs.push(entry);
+        totalLogsPushed++;
         // Cap buffer size — drop oldest entries to prevent unbounded memory growth
         if (logBuffer.length > MAX_BUFFER_SIZE) {
             logBuffer = logBuffer.slice(logBuffer.length - MAX_BUFFER_SIZE);
@@ -309,10 +311,35 @@
     // --- Register built-in handler for get_logs_request ---
     // Returns the full capturedLogs buffer to the MCP server on demand.
     registerHandler("get_logs_request", function (msg) {
+        const tail = typeof msg.tail === "number" ? msg.tail : 50;
+        const before = typeof msg.before === "number" ? msg.before : null;
+        const filterStr = msg.filter || null;
+        let source = capturedLogs;
+        if (filterStr) {
+            try {
+                const re = new RegExp(filterStr, "i");
+                source = capturedLogs.filter(function (e) { return re.test(e.message); });
+            } catch (e) {
+                // invalid regex — skip filtering
+                source = capturedLogs;
+            }
+        }
+        const matchedEntries = source.length;
+        const endIdx = before != null ? Math.max(0, Math.min(matchedEntries, before)) : matchedEntries;
+        let entries;
+        if (tail === 0) {
+            entries = source.slice(0, endIdx);
+        } else {
+            const startIdx = Math.max(0, endIdx - tail);
+            entries = source.slice(startIdx, endIdx);
+        }
         _sendMessage({
             type: "get_logs_response",
             id: msg.id,
-            entries: capturedLogs.slice()
+            entries: entries,
+            totalEntries: totalLogsPushed,
+            matchedEntries: matchedEntries,
+            rangeEnd: endIdx
         });
     });
 

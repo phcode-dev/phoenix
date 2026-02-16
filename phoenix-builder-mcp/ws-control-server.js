@@ -73,7 +73,12 @@ export function createWSControlServer(port) {
                     const pending4 = pendingRequests.get(msg.id);
                     if (pending4) {
                         pendingRequests.delete(msg.id);
-                        pending4.resolve(msg.entries || []);
+                        pending4.resolve({
+                            entries: msg.entries || [],
+                            totalEntries: msg.totalEntries || (msg.entries ? msg.entries.length : 0),
+                            matchedEntries: msg.matchedEntries,
+                            rangeEnd: msg.rangeEnd
+                        });
                     }
                     break;
                 }
@@ -260,7 +265,7 @@ export function createWSControlServer(port) {
         });
     }
 
-    function requestLogs(instanceName) {
+    function requestLogs(instanceName, { tail = 50, before, filter } = {}) {
         return new Promise((resolve, reject) => {
             const resolved = _resolveClient(instanceName);
             if (resolved.error) {
@@ -291,7 +296,14 @@ export function createWSControlServer(port) {
                 }
             });
 
-            client.ws.send(JSON.stringify({ type: "get_logs_request", id }));
+            const msg = { type: "get_logs_request", id, tail };
+            if (before != null) {
+                msg.before = before;
+            }
+            if (filter) {
+                msg.filter = filter;
+            }
+            client.ws.send(JSON.stringify(msg));
         });
     }
 
