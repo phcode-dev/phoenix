@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "Phoenix Code Screenshot",
+    "version": "1.0.0",
+    "description": "Enables screenshot capture in Phoenix Code when running in the browser.",
+    "permissions": [],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://localhost/*",
+                "https://phcode.dev/*",
+                "https://*.phcode.dev/*"
+            ],
+            "js": ["page-script.js"],
+            "run_at": "document_start",
+            "all_frames": false,
+            "world": "MAIN"
+        },
+        {
+            "matches": [
+                "http://localhost/*",
+                "https://phcode.dev/*",
+                "https://*.phcode.dev/*"
+            ],
+            "js": ["content-script.js"],
+            "run_at": "document_start",
+            "all_frames": false
+        }
+    ]
+}
