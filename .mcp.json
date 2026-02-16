@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "phoenix-builder": {
+            "command": "node",
+            "args": ["phoenix-builder-mcp/index.js"],
+            "env": {
+                "PHOENIX_DESKTOP_PATH": "../phoenix-desktop"
+            }
+        }
+    }
+}

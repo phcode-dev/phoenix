@@ -42,6 +42,7 @@
         "lmdb": "^3.5.1"
     },
     "scripts": {
+        "postinstall": "npm install --prefix phoenix-builder-mcp",
         "lint": "eslint --quiet src test",
         "lint:fix": "eslint --quiet --fix src test",
         "prepare": "husky install",

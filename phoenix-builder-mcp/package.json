@@ -1,0 +1,12 @@
+{
+    "name": "phoenix-builder-mcp",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "main": "index.js",
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "latest",
+        "ws": "^8.0.0",
+        "zod": "^3.25.0"
+    }
+}
