@@ -19,7 +19,7 @@
  *
  */
 
-/*globals path, logger, Phoenix*/
+/*globals path, logger, Phoenix, AppConfig*/
 /*jslint regexp: true */
 
 define(function (require, exports, module) {
@@ -828,7 +828,9 @@ define(function (require, exports, module) {
     diagnosticsSubmenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
     CommandManager.register(Strings.CMD_BUILD_TESTS, DEBUG_BUILD_TESTS, TestBuilder.toggleTestBuilder);
     diagnosticsSubmenu.addMenuItem(DEBUG_BUILD_TESTS);
-    diagnosticsSubmenu.addMenuItem("debug.phoenixBuilderConnect");
+    if (AppConfig.config.environment === "dev") {
+        diagnosticsSubmenu.addMenuItem("debug.phoenixBuilderConnect");
+    }
     diagnosticsSubmenu.addMenuDivider();
     diagnosticsSubmenu.addMenuItem(DEBUG_ENABLE_LOGGING);
     diagnosticsSubmenu.addMenuItem(DEBUG_ENABLE_PHNODE_INSPECTOR, undefined, undefined, undefined, {

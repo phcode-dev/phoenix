@@ -1,37 +1,42 @@
 <div class="phoenix-builder-connect modal">
     <div class="modal-header">
         <h1 class="dialog-title">Phoenix Builder MCP</h1>
+        <ul class="nav nav-tabs no-focus" style="margin-bottom: 0;">
+            <li class="active"><a href="#builder-settings" data-toggle="tab">Settings</a></li>
+            <li><a href="#builder-logs" data-toggle="tab">Console Logs</a></li>
+        </ul>
     </div>
-    <div class="modal-body">
-        <p class="dialog-message">Connect to the Phoenix Builder MCP server for automated testing with Claude Code.</p>
-        <div style="margin-bottom: 10px; padding: 6px 10px; background: var(--list-highlight-bg); border-radius: 4px;">
-            <span style="font-weight: bold;">Instance:</span>
-            <code style="margin-left: 4px;">{{instanceName}}</code>
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label>
-                <input type="checkbox" class="builder-enable" {{#enabled}}checked{{/enabled}}>
-                Enable Connection
-            </label>
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label>WebSocket URL</label>
-            <input type="text" class="builder-url" value="{{url}}" style="width: 100%; margin-top: 4px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <span class="builder-status" style="font-weight: bold;">
-                {{#connected}}
-                    <span style="color: green;">&#9679; Connected</span>
-                {{/connected}}
-                {{^connected}}
-                    <span style="color: red;">&#9679; Disconnected</span>
-                {{/connected}}
-            </span>
-        </div>
-        <details style="margin-top: 10px; padding: 8px; border: 1px solid var(--item-border-color); border-radius: 4px;">
-            <summary style="cursor: pointer; font-weight: bold;">Claude Code Configuration</summary>
-            <p style="margin-top: 8px;">Add the following to your Claude Code MCP settings (.claude/settings.json):</p>
-            <pre class="builder-config-code" style="padding: 8px; border: 1px solid var(--item-border-color); border-radius: 4px; overflow-x: auto; font-size: 12px; cursor: pointer;" title="Click to copy">{
+    <div class="modal-body tab-content">
+        <div id="builder-settings" class="tab-pane active">
+            <p class="dialog-message">Connect to the Phoenix Builder MCP server for automated testing with Claude Code.</p>
+            <div style="margin-bottom: 10px; padding: 6px 10px; background: var(--list-highlight-bg); border-radius: 4px;">
+                <span style="font-weight: bold;">Instance:</span>
+                <code style="margin-left: 4px;">{{instanceName}}</code>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label>
+                    <input type="checkbox" class="builder-enable" {{#enabled}}checked{{/enabled}}>
+                    Enable Connection
+                </label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label>WebSocket URL</label>
+                <input type="text" class="builder-url" value="{{url}}" style="width: 100%; margin-top: 4px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <span class="builder-status" style="font-weight: bold;">
+                    {{#connected}}
+                        <span style="color: green;">&#9679; Connected</span>
+                    {{/connected}}
+                    {{^connected}}
+                        <span style="color: red;">&#9679; Disconnected</span>
+                    {{/connected}}
+                </span>
+            </div>
+            <details style="margin-top: 10px; padding: 8px; border: 1px solid var(--item-border-color); border-radius: 4px;">
+                <summary style="cursor: pointer; font-weight: bold;">Claude Code Configuration</summary>
+                <p style="margin-top: 8px;">Add the following to your Claude Code MCP settings (.claude/settings.json):</p>
+                <pre class="builder-config-code" style="padding: 8px; border: 1px solid var(--item-border-color); border-radius: 4px; overflow-x: auto; font-size: 12px; cursor: pointer;" title="Click to copy">{
     "mcpServers": {
         "phoenix-builder": {
             "command": "node",
@@ -42,10 +47,20 @@
         }
     }
 }</pre>
-            <p style="font-size: 12px; opacity: 0.7;">
-                Replace <code>&lt;path-to-phoenix&gt;</code> and <code>&lt;path-to-phoenix-desktop&gt;</code> with actual paths. Restart Claude Code after adding the config.
-            </p>
-        </details>
+                <p style="font-size: 12px; opacity: 0.7;">
+                    Replace <code>&lt;path-to-phoenix&gt;</code> and <code>&lt;path-to-phoenix-desktop&gt;</code> with actual paths. Restart Claude Code after adding the config.
+                </p>
+            </details>
+        </div>
+        <div id="builder-logs" class="tab-pane">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <span class="builder-log-count" style="font-size: 12px; opacity: 0.7;">0 entries</span>
+                <button class="btn btn-small builder-log-refresh" style="margin-left: auto;">Refresh</button>
+            </div>
+            <div class="builder-log-container" style="overflow-y: auto; max-height: 350px; font-family: monospace; font-size: 12px; border: 1px solid var(--item-border-color); border-radius: 4px; padding: 4px;">
+                <span style="opacity: 0.5;">No logs captured yet.</span>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button class="dialog-button btn primary" data-button-id="ok">Done</button>

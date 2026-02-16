@@ -89,40 +89,27 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
 
     server.tool(
         "get_browser_console_logs",
-        "Get console logs forwarded from the Phoenix browser runtime via WebSocket. By default returns new logs since last call; set clear=true to get all logs and clear the buffer.",
+        "Get console logs captured from the Phoenix browser runtime from boot time. Fetches the full retained log buffer directly from the browser instance.",
         {
-            clear: z.boolean().default(false).describe("If true, return all logs and clear the buffer. If false, return only new logs since last read."),
             instance: z.string().optional().describe("Target a specific Phoenix instance by name (e.g. 'Phoenix-a3f2'). Required when multiple instances are connected.")
         },
-        async ({ clear, instance }) => {
-            let logs;
-            if (clear) {
-                logs = wsControlServer.getBrowserLogs(false, instance);
-                if (logs && logs.error) {
-                    return {
-                        content: [{ type: "text", text: JSON.stringify(logs) }]
-                    };
-                }
-                const clearResult = wsControlServer.clearBrowserLogs(instance);
-                if (clearResult && clearResult.error) {
-                    return {
-                        content: [{ type: "text", text: JSON.stringify(clearResult) }]
-                    };
-                }
-            } else {
-                logs = wsControlServer.getBrowserLogs(true, instance);
-                if (logs && logs.error) {
-                    return {
-                        content: [{ type: "text", text: JSON.stringify(logs) }]
-                    };
-                }
+        async ({ instance }) => {
+            try {
+                const logs = await wsControlServer.requestLogs(instance);
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify(logs.length > 0 ? logs : "(no browser logs)")
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ error: err.message })
+                    }]
+                };
             }
-            return {
-                content: [{
-                    type: "text",
-                    text: JSON.stringify(logs.length > 0 ? logs : "(no browser logs)")
-                }]
-            };
         }
     );
 
