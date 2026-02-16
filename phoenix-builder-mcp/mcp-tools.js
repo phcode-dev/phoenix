@@ -346,6 +346,8 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
         "Auto-opens the live preview panel if it is not already visible. " +
         "Code is evaluated via eval() in the global scope of the previewed page. " +
         "Note: eval() is synchronous — async/await is NOT supported. " +
+        "Only available when an HTML file is selected in the live preview — " +
+        "does not work for markdown or other non-HTML file types. " +
         "Use this to inspect or manipulate the user's live-previewed web page (e.g. document.title, DOM queries).",
         {
             code: z.string().describe("JavaScript code to execute in the live preview iframe"),
