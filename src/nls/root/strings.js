@@ -947,6 +947,7 @@ define({
     "CMD_SWITCH_LANGUAGE": "Switch Language\u2026",
     "CMD_RUN_UNIT_TESTS": "Run {APP_NAME} Tests",
     "CMD_BUILD_TESTS": "Build Editor Tests",
+    "CMD_PHOENIX_BUILDER_CONNECT": "Phoenix Builder MCP\u2026",
     "CMD_SHOW_PERF_DATA": "Show Performance Data",
     "CMD_ENABLE_LOGGING": "Enable Detailed Logs",
     "CMD_ENABLE_PHNODE_INSPECTOR": "Enable PhNode Inspector",
