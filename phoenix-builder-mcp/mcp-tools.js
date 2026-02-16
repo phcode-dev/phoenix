@@ -341,6 +341,37 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
     );
 
     server.tool(
+        "exec_js_in_live_preview",
+        "Execute JavaScript in the live preview iframe (the page being previewed), NOT in Phoenix itself. " +
+        "Auto-opens the live preview panel if it is not already visible. " +
+        "Code is evaluated via eval() in the global scope of the previewed page. " +
+        "Note: eval() is synchronous — async/await is NOT supported. " +
+        "Use this to inspect or manipulate the user's live-previewed web page (e.g. document.title, DOM queries).",
+        {
+            code: z.string().describe("JavaScript code to execute in the live preview iframe"),
+            instance: z.string().optional().describe("Target a specific Phoenix instance by name (e.g. 'Phoenix-a3f2'). Required when multiple instances are connected.")
+        },
+        async ({ code, instance }) => {
+            try {
+                const result = await wsControlServer.requestExecJsLivePreview(code, instance);
+                return {
+                    content: [{
+                        type: "text",
+                        text: result !== undefined ? String(result) : "(undefined)"
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ error: err.message })
+                    }]
+                };
+            }
+        }
+    );
+
+    server.tool(
         "get_phoenix_status",
         "Check the status of the Phoenix process and WebSocket connection.",
         {},
