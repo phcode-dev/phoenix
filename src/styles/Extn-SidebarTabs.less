@@ -27,6 +27,7 @@
     height: 2rem;
     overflow: hidden;
     user-select: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
     &.has-tabs {
         display: flex;
@@ -42,8 +43,7 @@
     cursor: pointer;
     position: relative;
     color: @project-panel-text-2;
-    font-size: 0.8rem;
-    letter-spacing: 0.3px;
+    font-size: 0.85rem;
     transition: color 0.15s ease, background-color 0.15s ease;
 
     i {
@@ -57,6 +57,7 @@
 
     &.active {
         color: @project-panel-text-1;
+        background-color: rgba(255, 255, 255, 0.04);
 
         &::after {
             content: "";
@@ -65,7 +66,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background-color: @project-panel-text-2;
+            background-color: @project-panel-text-1;
         }
     }
 }

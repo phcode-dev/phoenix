@@ -39,7 +39,7 @@ define(function (require, exports, module) {
     let _hasReceivedContent = false; // tracks if we've received any text/tool in current response
 
     // DOM references
-    let $panel, $messages, $status, $statusText, $textarea, $sendBtn;
+    let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn;
 
     const PANEL_HTML =
         '<div class="ai-chat-panel">' +
@@ -58,7 +58,10 @@ define(function (require, exports, module) {
                 '<div class="ai-chat-input-wrap">' +
                     '<textarea class="ai-chat-textarea" placeholder="Ask Claude..." rows="1"></textarea>' +
                     '<button class="ai-send-btn" title="Send message">' +
-                        '<i class="fa-solid fa-arrow-up"></i>' +
+                        '<i class="fa-solid fa-paper-plane"></i>' +
+                    '</button>' +
+                    '<button class="ai-stop-btn" title="Stop generation (Esc)" style="display:none">' +
+                        '<i class="fa-solid fa-stop"></i>' +
                     '</button>' +
                 '</div>' +
             '</div>' +
@@ -143,10 +146,15 @@ define(function (require, exports, module) {
         $statusText = $panel.find(".ai-status-text");
         $textarea = $panel.find(".ai-chat-textarea");
         $sendBtn = $panel.find(".ai-send-btn");
+        $stopBtn = $panel.find(".ai-stop-btn");
 
         // Event handlers
         $sendBtn.on("click", _sendMessage);
+        $stopBtn.on("click", _cancelQuery);
         $panel.find(".ai-new-session-btn").on("click", _newSession);
+
+        // Hide "+ New" button initially (no conversation yet)
+        $panel.find(".ai-new-session-btn").hide();
 
         $textarea.on("keydown", function (e) {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -197,6 +205,9 @@ define(function (require, exports, module) {
         if (!text || _isStreaming) {
             return;
         }
+
+        // Show "+ New" button once a conversation starts
+        $panel.find(".ai-new-session-btn").show();
 
         // Append user message
         _appendUserMessage(text);
@@ -254,6 +265,10 @@ define(function (require, exports, module) {
         _isStreaming = false;
         if ($messages) {
             $messages.empty();
+        }
+        // Hide "+ New" button since we're back to empty state
+        if ($panel) {
+            $panel.find(".ai-new-session-btn").hide();
         }
         if ($status) {
             $status.removeClass("active");
@@ -607,8 +622,14 @@ define(function (require, exports, module) {
                 $textarea[0].focus({ preventScroll: true });
             }
         }
-        if ($sendBtn) {
-            $sendBtn.prop("disabled", streaming);
+        if ($sendBtn && $stopBtn) {
+            if (streaming) {
+                $sendBtn.hide();
+                $stopBtn.show();
+            } else {
+                $stopBtn.hide();
+                $sendBtn.show();
+            }
         }
         if (!streaming && $messages) {
             // Clean up thinking indicator if still present

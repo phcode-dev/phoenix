@@ -157,6 +157,8 @@ exports.cancelQuery = async function () {
     if (currentAbortController) {
         currentAbortController.abort();
         currentAbortController = null;
+        // Clear session so next query starts fresh instead of resuming a killed session
+        currentSessionId = null;
         return { success: true };
     }
     return { success: false };
@@ -376,11 +378,15 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         });
 
     } catch (err) {
-        if (signal.aborted) {
-            // Query was cancelled, not an error
+        const errMsg = err.message || String(err);
+        const isAbort = signal.aborted || /abort/i.test(errMsg);
+
+        if (isAbort) {
+            // Query was cancelled — clear session so next query starts fresh
+            currentSessionId = null;
             nodeConnector.triggerPeer("aiComplete", {
                 requestId: requestId,
-                sessionId: currentSessionId
+                sessionId: null
             });
             return;
         }
@@ -395,7 +401,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
 
         nodeConnector.triggerPeer("aiError", {
             requestId: requestId,
-            error: err.message || String(err)
+            error: errMsg
+        });
+
+        // Always send aiComplete after aiError so the UI exits streaming state
+        nodeConnector.triggerPeer("aiComplete", {
+            requestId: requestId,
+            sessionId: currentSessionId
         });
     }
 }
