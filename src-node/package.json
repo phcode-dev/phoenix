@@ -27,6 +27,7 @@
         "mime-types": "^2.1.35",
         "cross-spawn": "^7.0.6",
         "which": "^2.0.1",
-        "@expo/sudo-prompt": "^9.3.2"
+        "@expo/sudo-prompt": "^9.3.2",
+        "@anthropic-ai/claude-code": "^1.0.0"
     }
 }
