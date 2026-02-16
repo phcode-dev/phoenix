@@ -329,6 +329,26 @@
         }, 100);
     });
 
+    // --- Register built-in handler for exec_js_request ---
+    // Evaluates arbitrary JS in the page context and returns the result.
+    registerHandler("exec_js_request", function (msg) {
+        const AsyncFunction = (async function () {}).constructor;
+        const fn = new AsyncFunction(msg.code);
+        fn().then(function (result) {
+            _sendMessage({
+                type: "exec_js_response",
+                id: msg.id,
+                result: _serializeArg(result)
+            });
+        }).catch(function (err) {
+            _sendMessage({
+                type: "exec_js_response",
+                id: msg.id,
+                error: (err && err.stack) || (err && err.message) || String(err)
+            });
+        });
+    });
+
     // --- Expose API for AMD module ---
     window._phoenixBuilder = {
         connect: connect,
