@@ -188,10 +188,85 @@ function _resolveRect(rectOrNodeOrSelector) {
     };
 }
 
-async function _capturePageBinary(rectOrNodeOrSelector) {
-    if (!Phoenix.isNativeApp) {
-        throw new Error("Screenshot capture is not supported in browsers");
+function _dataUrlToUint8Array(dataUrl) {
+    const base64 = dataUrl.split(",")[1];
+    const binaryString = atob(base64);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
     }
+    return bytes;
+}
+
+function _cropDataUrlToRect(dataUrl, rect) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = function () {
+            try {
+                const dpr = window.devicePixelRatio || 1;
+                const canvas = document.createElement("canvas");
+                const sx = Math.round(rect.x * dpr);
+                const sy = Math.round(rect.y * dpr);
+                const sw = Math.round(rect.width * dpr);
+                const sh = Math.round(rect.height * dpr);
+                canvas.width = sw;
+                canvas.height = sh;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+                canvas.toBlob(function (blob) {
+                    if (!blob) {
+                        reject(new Error("Failed to crop screenshot to blob"));
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                        resolve(new Uint8Array(reader.result));
+                    };
+                    reader.onerror = function () {
+                        reject(new Error("Failed to read cropped screenshot blob"));
+                    };
+                    reader.readAsArrayBuffer(blob);
+                }, "image/png");
+            } catch (e) {
+                reject(e);
+            }
+        };
+        img.onerror = function () {
+            reject(new Error("Failed to load screenshot image for cropping"));
+        };
+        img.src = dataUrl;
+    });
+}
+
+let _screenshotRequestId = 0;
+function _requestExtensionScreenshot() {
+    return new Promise((resolve, reject) => {
+        const id = ++_screenshotRequestId;
+        const TIMEOUT_MS = 30000;
+        let timeoutHandle;
+        function onMessage(event) {
+            if (event.source !== window || !event.data ||
+                event.data.type !== "phoenix_screenshot_response" || event.data.id !== id) {
+                return;
+            }
+            window.removeEventListener("message", onMessage);
+            clearTimeout(timeoutHandle);
+            if (event.data.success) {
+                resolve(event.data.dataUrl);
+            } else {
+                reject(new Error(event.data.error || "Screenshot capture failed"));
+            }
+        }
+        window.addEventListener("message", onMessage);
+        timeoutHandle = setTimeout(() => {
+            window.removeEventListener("message", onMessage);
+            reject(new Error("Screenshot capture timed out after 30 seconds"));
+        }, TIMEOUT_MS);
+        window.postMessage({ type: "phoenix_screenshot_request", id }, "*");
+    });
+}
+
+async function _capturePageBinary(rectOrNodeOrSelector) {
     const rect = _resolveRect(rectOrNodeOrSelector);
     if (rect !== undefined) {
         if (rect.x === undefined || rect.y === undefined ||
@@ -225,6 +300,13 @@ async function _capturePageBinary(rectOrNodeOrSelector) {
     if (window.__ELECTRON__) {
         return window.electronAPI.capturePage(rect);
     }
+    if (window._phoenixScreenshotExtensionAvailable) {
+        const dataUrl = await _requestExtensionScreenshot();
+        return rect ? _cropDataUrlToRect(dataUrl, rect) : _dataUrlToUint8Array(dataUrl);
+    }
+    throw new Error("Screenshot capture is not supported in browsers. Install the Phoenix Code" +
+        " Screenshot extension for Chrome: load it as an unpacked extension from" +
+        " phoenix-builder-mcp/chrome_extension/ in chrome://extensions with Developer mode enabled.");
 }
 
 Phoenix.app = {

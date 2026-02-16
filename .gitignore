@@ -18,6 +18,13 @@ Thumbs.db
 # ignore node_modules inside phoenix-builder-mcp
 /phoenix-builder-mcp/node_modules
 
+# ignore MCP server runtime files
+/phoenix-builder-mcp/.mcp-server.pid
+
+# ignore chrome extension build artifacts
+/phoenix-builder-mcp/chrome_extension/build/
+/phoenix-builder-mcp/chrome_extension/*.zip
+
 # ignore node_modules inside src
 /src/node_modules
 /src-node/node_modules
