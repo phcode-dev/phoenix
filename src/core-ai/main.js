@@ -19,26 +19,28 @@
  */
 
 /**
- * Registers a placeholder AI sidebar tab. This serves as a starting point for
- * AI assistant integration. The tab displays a placeholder message until an AI
- * provider extension is installed.
+ * AI sidebar tab integration. Sets up a NodeConnector to the claude-code-agent
+ * running in the node process and initializes the AIChatPanel UI.
+ *
+ * In non-native (browser) builds, shows a placeholder message instead.
  */
 define(function (require, exports, module) {
 
-    var AppInit      = require("utils/AppInit"),
-        SidebarTabs  = require("view/SidebarTabs");
+    var AppInit        = require("utils/AppInit"),
+        SidebarTabs    = require("view/SidebarTabs"),
+        NodeConnector  = require("NodeConnector"),
+        AIChatPanel    = require("core-ai/AIChatPanel");
+
+    var AI_CONNECTOR_ID = "ph_ai_claude";
 
     AppInit.appReady(function () {
         SidebarTabs.addTab("ai", "AI", "fa-solid fa-wand-magic-sparkles", { priority: 200 });
 
-        var $content = $(
-            '<div class="ai-tab-placeholder">' +
-                '<div class="ai-tab-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>' +
-                '<div class="ai-tab-title">AI Assistant</div>' +
-                '<div class="ai-tab-message">Please add an AI provider to start using AI</div>' +
-            '</div>'
-        );
-
-        SidebarTabs.addToTab("ai", $content);
+        if (Phoenix.isNativeApp) {
+            var nodeConnector = NodeConnector.createNodeConnector(AI_CONNECTOR_ID, exports);
+            AIChatPanel.init(nodeConnector);
+        } else {
+            AIChatPanel.initPlaceholder();
+        }
     });
 });
