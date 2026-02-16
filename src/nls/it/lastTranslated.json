@@ -258,6 +258,7 @@
   "CMD_OPEN_VFS": "Open Virtual File System",
   "CMD_OPEN_VIRTUAL_SERVER": "Open Virtual Server",
   "CMD_PASTE": "Paste",
+  "CMD_PHOENIX_BUILDER_CONNECT": "Phoenix Builder MCP…",
   "CMD_PREV_DOC": "Previous Document",
   "CMD_PREV_DOC_LIST_ORDER": "Previous Document in List",
   "CMD_PROJECT_NEW": "Start Project…",
