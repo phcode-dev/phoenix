@@ -194,6 +194,39 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
     );
 
     server.tool(
+        "exec_js",
+        "Execute JavaScript in the Phoenix Code browser runtime and return the result. " +
+        "Code runs async in the page context with access to: " +
+        "$ (jQuery) for DOM queries/clicks, " +
+        "brackets.test.CommandManager, brackets.test.EditorManager, brackets.test.ProjectManager, " +
+        "brackets.test.DocumentManager, brackets.test.FileSystem, brackets.test.FileUtils, " +
+        "and 50+ other modules on brackets.test.* — " +
+        "supports await.",
+        {
+            code: z.string().describe("JavaScript code to execute in Phoenix"),
+            instance: z.string().optional().describe("Target a specific Phoenix instance by name (e.g. 'Phoenix-a3f2'). Required when multiple instances are connected.")
+        },
+        async ({ code, instance }) => {
+            try {
+                const result = await wsControlServer.requestExecJs(code, instance);
+                return {
+                    content: [{
+                        type: "text",
+                        text: result !== undefined ? String(result) : "(undefined)"
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ error: err.message })
+                    }]
+                };
+            }
+        }
+    );
+
+    server.tool(
         "get_phoenix_status",
         "Check the status of the Phoenix process and WebSocket connection.",
         {},

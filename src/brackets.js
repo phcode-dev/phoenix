@@ -328,7 +328,9 @@ define(function (require, exports, module) {
         ViewCommandHandlers.restoreFontSize();
         ProjectManager.getStartupProjectPath().then((initialProjectPath)=>{
             ProjectManager.openProject(initialProjectPath).always(function () {
-                _initTest();
+                if (Phoenix.isTestWindow || window._phoenixBuilder) {
+                    _initTest();
+                }
 
                 // If this is the first launch, and we have an index.html file in the project folder (which should be
                 // the samples folder on first launch), open it automatically. (We explicitly check for the

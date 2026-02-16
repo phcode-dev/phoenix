@@ -78,6 +78,19 @@ export function createWSControlServer(port) {
                     break;
                 }
 
+                case "exec_js_response": {
+                    const pending5 = pendingRequests.get(msg.id);
+                    if (pending5) {
+                        pendingRequests.delete(msg.id);
+                        if (msg.error) {
+                            pending5.reject(new Error(msg.error));
+                        } else {
+                            pending5.resolve(msg.result);
+                        }
+                    }
+                    break;
+                }
+
                 case "reload_response": {
                     const pending3 = pendingRequests.get(msg.id);
                     if (pending3) {
@@ -282,6 +295,41 @@ export function createWSControlServer(port) {
         });
     }
 
+    function requestExecJs(code, instanceName) {
+        return new Promise((resolve, reject) => {
+            const resolved = _resolveClient(instanceName);
+            if (resolved.error) {
+                reject(new Error(resolved.error));
+                return;
+            }
+
+            const { client } = resolved;
+            if (client.ws.readyState !== 1) {
+                reject(new Error("Phoenix client \"" + resolved.name + "\" is not connected"));
+                return;
+            }
+
+            const id = ++requestIdCounter;
+            const timeout = setTimeout(() => {
+                pendingRequests.delete(id);
+                reject(new Error("exec_js request timed out (30s)"));
+            }, 30000);
+
+            pendingRequests.set(id, {
+                resolve: (data) => {
+                    clearTimeout(timeout);
+                    resolve(data);
+                },
+                reject: (err) => {
+                    clearTimeout(timeout);
+                    reject(err);
+                }
+            });
+
+            client.ws.send(JSON.stringify({ type: "exec_js_request", id, code }));
+        });
+    }
+
     function getBrowserLogs(sinceLast, instanceName) {
         const resolved = _resolveClient(instanceName);
         if (resolved.error) {
@@ -332,6 +380,7 @@ export function createWSControlServer(port) {
         requestScreenshot,
         requestReload,
         requestLogs,
+        requestExecJs,
         getBrowserLogs,
         clearBrowserLogs,
         isClientConnected,
