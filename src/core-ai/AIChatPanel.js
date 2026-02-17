@@ -39,6 +39,7 @@ define(function (require, exports, module) {
     let _autoScroll = true;
     let _hasReceivedContent = false; // tracks if we've received any text/tool in current response
     const _previousContentMap = {}; // filePath → previous content before edit, for undo support
+    let _currentEdits = [];          // edits in current response, for summary card
 
     // --- AI event trace logging (compact, non-flooding) ---
     let _traceTextChunks = 0;
@@ -110,7 +111,7 @@ define(function (require, exports, module) {
         _nodeConnector.on("aiProgress", _onProgress);
         _nodeConnector.on("aiToolInfo", _onToolInfo);
         _nodeConnector.on("aiToolStream", _onToolStream);
-        _nodeConnector.on("aiEditResult", _onEditResult);
+        _nodeConnector.on("aiToolEdit", _onToolEdit);
         _nodeConnector.on("aiError", _onError);
         _nodeConnector.on("aiComplete", _onComplete);
 
@@ -229,6 +230,7 @@ define(function (require, exports, module) {
         // Reset segment tracking and show thinking indicator
         _segmentText = "";
         _hasReceivedContent = false;
+        _currentEdits = [];
         _appendThinkingIndicator();
 
         // Get project path
@@ -457,13 +459,109 @@ define(function (require, exports, module) {
         return preview;
     }
 
-    function _onEditResult(_event, data) {
-        console.log("[AI UI]", "EditResult:", (data.edits || []).length, "edits");
-        if (data.edits && data.edits.length > 0) {
-            data.edits.forEach(function (edit) {
-                _appendEditCard(edit);
+    function _onToolEdit(_event, data) {
+        const edit = data.edit;
+        const uniqueToolId = (_currentRequestId || "") + "-" + data.toolId;
+        console.log("[AI UI]", "ToolEdit:", edit.file.split("/").pop(), "#" + data.toolId);
+
+        // Track for summary card
+        const oldLines = edit.oldText ? edit.oldText.split("\n").length : 0;
+        const newLines = edit.newText ? edit.newText.split("\n").length : 0;
+        _currentEdits.push({
+            file: edit.file,
+            linesAdded: newLines,
+            linesRemoved: oldLines
+        });
+
+        // Find the oldest Edit/Write tool indicator for this file that doesn't
+        // already have edit actions. This is more robust than matching by toolId
+        // because the SDK with includePartialMessages may re-emit tool_use blocks
+        // as phantom indicators, causing toolId mismatches.
+        const fileName = edit.file.split("/").pop();
+        const $tool = $messages.find('.ai-msg-tool').filter(function () {
+            const label = $(this).find(".ai-tool-label").text();
+            const hasActions = $(this).find(".ai-tool-edit-actions").length > 0;
+            return !hasActions && (label.includes("Edit " + fileName) || label.includes("Write " + fileName));
+        }).first();
+        if (!$tool.length) {
+            return;
+        }
+
+        // Remove any existing edit actions (in case of duplicate events)
+        $tool.find(".ai-tool-edit-actions").remove();
+
+        // Build the inline edit actions
+        const $actions = $('<div class="ai-tool-edit-actions"></div>');
+
+        // Undo/Redo toggle button
+        let isUndone = false;
+        const $undoBtn = $('<button class="ai-tool-undo-btn">Undo</button>');
+        $undoBtn.on("click", function () {
+            if ($undoBtn.prop("disabled")) {
+                return;
+            }
+            $undoBtn.prop("disabled", true);
+            if (!isUndone) {
+                // Undo
+                const undoOp = (edit.oldText === null)
+                    ? _undoEdit(edit.file, _previousContentMap[edit.file] || "")
+                    : _applySingleEdit({ file: edit.file, oldText: edit.newText, newText: edit.oldText });
+                undoOp
+                    .done(function () {
+                        isUndone = true;
+                        $undoBtn.text("Redo").removeClass("undone").addClass("redo");
+                        $undoBtn.prop("disabled", false);
+                    })
+                    .fail(function (err) {
+                        $tool.append($('<div class="ai-tool-edit-error"></div>').text(err.message || String(err)));
+                        $undoBtn.prop("disabled", false);
+                    });
+            } else {
+                // Redo — re-apply the original edit
+                const redoOp = (edit.oldText === null)
+                    ? _applySingleEdit({ file: edit.file, oldText: null, newText: edit.newText })
+                    : _applySingleEdit({ file: edit.file, oldText: edit.oldText, newText: edit.newText });
+                redoOp
+                    .done(function () {
+                        isUndone = false;
+                        $undoBtn.text("Undo").removeClass("redo");
+                        $undoBtn.prop("disabled", false);
+                    })
+                    .fail(function (err) {
+                        $tool.append($('<div class="ai-tool-edit-error"></div>').text(err.message || String(err)));
+                        $undoBtn.prop("disabled", false);
+                    });
+            }
+        });
+
+        // Diff toggle
+        const $diffToggle = $('<button class="ai-tool-diff-toggle">Show diff</button>');
+        const $diff = $('<div class="ai-tool-diff"></div>');
+
+        if (edit.oldText) {
+            edit.oldText.split("\n").forEach(function (line) {
+                $diff.append($('<div class="ai-diff-old"></div>').text("- " + line));
+            });
+            edit.newText.split("\n").forEach(function (line) {
+                $diff.append($('<div class="ai-diff-new"></div>').text("+ " + line));
+            });
+        } else {
+            // Write (new file) — show all as new
+            edit.newText.split("\n").forEach(function (line) {
+                $diff.append($('<div class="ai-diff-new"></div>').text("+ " + line));
             });
         }
+
+        $diffToggle.on("click", function () {
+            $diff.toggleClass("expanded");
+            $diffToggle.text($diff.hasClass("expanded") ? "Hide diff" : "Show diff");
+        });
+
+        $actions.append($undoBtn);
+        $actions.append($diffToggle);
+        $tool.append($actions);
+        $tool.append($diff);
+        _scrollToBottom();
     }
 
     function _onError(_event, data) {
@@ -478,7 +576,61 @@ define(function (require, exports, module) {
         // Reset trace counters for next query
         _traceTextChunks = 0;
         _traceToolStreamCounts = {};
+
+        // Append edit summary if there were edits
+        if (_currentEdits.length > 0) {
+            _appendEditSummary();
+        }
+
         _setStreaming(false);
+    }
+
+    /**
+     * Append a compact summary card showing all files modified during this response.
+     */
+    function _appendEditSummary() {
+        // Aggregate per-file stats
+        const fileStats = {};
+        const fileOrder = [];
+        _currentEdits.forEach(function (e) {
+            if (!fileStats[e.file]) {
+                fileStats[e.file] = { added: 0, removed: 0 };
+                fileOrder.push(e.file);
+            }
+            fileStats[e.file].added += e.linesAdded;
+            fileStats[e.file].removed += e.linesRemoved;
+        });
+
+        const fileCount = fileOrder.length;
+        const $summary = $('<div class="ai-msg ai-msg-edit-summary"></div>');
+        $summary.append(
+            '<div class="ai-edit-summary-header">' +
+                fileCount + (fileCount === 1 ? " file" : " files") + " changed" +
+            '</div>'
+        );
+
+        fileOrder.forEach(function (filePath) {
+            const stats = fileStats[filePath];
+            const displayName = filePath.split("/").pop();
+            const $file = $(
+                '<div class="ai-edit-summary-file" data-path="' + _escapeAttr(filePath) + '">' +
+                    '<span class="ai-edit-summary-name"></span>' +
+                    '<span class="ai-edit-summary-stats">' +
+                        '<span class="ai-edit-summary-add">+' + stats.added + '</span>' +
+                        '<span class="ai-edit-summary-del">-' + stats.removed + '</span>' +
+                    '</span>' +
+                '</div>'
+            );
+            $file.find(".ai-edit-summary-name").text(displayName);
+            $file.on("click", function () {
+                const vfsPath = _realToVfsPath(filePath);
+                CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
+            });
+            $summary.append($file);
+        });
+
+        $messages.append($summary);
+        _scrollToBottom();
     }
 
     // --- DOM helpers ---
@@ -711,85 +863,6 @@ define(function (require, exports, module) {
         });
     }
 
-    function _appendEditCard(edit) {
-        const fileName = edit.file;
-        // Show just the filename, not full path
-        const displayName = fileName.split("/").pop();
-
-        const $card = $('<div class="ai-msg ai-msg-edit"></div>');
-        const $header = $(
-            '<div class="ai-edit-header">' +
-                '<span class="ai-edit-file" title="' + _escapeAttr(fileName) + '"></span>' +
-                '<button class="ai-edit-apply-btn ai-edit-undo-btn">Undo</button>' +
-            '</div>'
-        );
-        $header.find(".ai-edit-file").text(displayName);
-
-        // Click filename to open file in editor
-        $header.find(".ai-edit-file").on("click", function () {
-            const vfsPath = _realToVfsPath(fileName);
-            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
-        });
-
-        const $toggle = $('<button class="ai-edit-toggle">Show diff</button>');
-        const $diff = $('<div class="ai-edit-diff"></div>');
-
-        // Build diff content
-        if (edit.oldText) {
-            const oldLines = edit.oldText.split("\n");
-            const newLines = edit.newText.split("\n");
-            oldLines.forEach(function (line) {
-                $diff.append($('<div class="ai-diff-old"></div>').text("- " + line));
-            });
-            newLines.forEach(function (line) {
-                $diff.append($('<div class="ai-diff-new"></div>').text("+ " + line));
-            });
-        } else {
-            // Write (new file) — show all as new
-            edit.newText.split("\n").forEach(function (line) {
-                $diff.append($('<div class="ai-diff-new"></div>').text("+ " + line));
-            });
-        }
-
-        $toggle.on("click", function () {
-            $diff.toggleClass("expanded");
-            $toggle.text($diff.hasClass("expanded") ? "Hide diff" : "Show diff");
-        });
-
-        // Undo button — restores previous content
-        $header.find(".ai-edit-undo-btn").on("click", function () {
-            const $btn = $(this);
-            if ($btn.hasClass("undone")) {
-                return;
-            }
-            if (edit.oldText === null) {
-                // Write (new file) — undo by restoring previous content
-                _undoEdit(edit.file, _previousContentMap[edit.file] || "")
-                    .done(function () {
-                        $btn.text("Undone").addClass("undone");
-                    })
-                    .fail(function (err) {
-                        $card.append($('<div class="ai-edit-error"></div>').text(err.message || String(err)));
-                    });
-            } else {
-                // Edit — undo by reversing the replacement
-                const reverseEdit = { file: edit.file, oldText: edit.newText, newText: edit.oldText };
-                _applySingleEdit(reverseEdit)
-                    .done(function () {
-                        $btn.text("Undone").addClass("undone");
-                    })
-                    .fail(function (err) {
-                        $card.append($('<div class="ai-edit-error"></div>').text(err.message || String(err)));
-                    });
-            }
-        });
-
-        $card.append($header);
-        $card.append($toggle);
-        $card.append($diff);
-        $messages.append($card);
-        _scrollToBottom();
-    }
 
     function _appendErrorMessage(text) {
         const $msg = $(
@@ -896,15 +969,23 @@ define(function (require, exports, module) {
         }
 
         if (edit.oldText === null) {
-            // Write — file may not exist yet. Create it on disk first so
-            // getDocumentForPath succeeds, then set content in the buffer.
+            // Write — file may not exist yet. Only create on disk if it doesn't
+            // already exist, to avoid triggering "external change" warnings.
             const file = FileSystem.getFileForPath(vfsPath);
-            file.write("", function (err) {
-                if (err) {
-                    result.reject(new Error("Could not create file: " + err));
-                    return;
+            file.exists(function (existErr, exists) {
+                if (exists) {
+                    // File exists — just open and set content, no disk write
+                    _applyToDoc();
+                } else {
+                    // New file — create on disk first so getDocumentForPath works
+                    file.write("", function (writeErr) {
+                        if (writeErr) {
+                            result.reject(new Error("Could not create file: " + writeErr));
+                            return;
+                        }
+                        _applyToDoc();
+                    });
                 }
-                _applyToDoc();
             });
         } else {
             // Edit — file must already exist
