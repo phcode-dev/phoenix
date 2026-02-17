@@ -89,13 +89,20 @@ define(function (require, exports, module) {
     function _hidePanelsIfRequired() {
         var panelIDs = WorkspaceManager.getAllPanelIDs();
         _previouslyOpenPanelIDs = [];
-        panelIDs.forEach(function (panelID) {
-            var panel = WorkspaceManager.getPanelForID(panelID);
-            if (panel && panel.isVisible()) {
-                panel.hide();
-                _previouslyOpenPanelIDs.push(panelID);
+        // Loop until no visible panels remain. In a tabbed system, hiding the
+        // active tab may reveal the next tab, so we must iterate.
+        let hiddenSomething = true;
+        while (hiddenSomething) {
+            hiddenSomething = false;
+            for (let i = 0; i < panelIDs.length; i++) {
+                let panel = WorkspaceManager.getPanelForID(panelIDs[i]);
+                if (panel && panel.isVisible()) {
+                    panel.hide();
+                    _previouslyOpenPanelIDs.push(panelIDs[i]);
+                    hiddenSomething = true;
+                }
             }
-        });
+        }
     }
 
     /**

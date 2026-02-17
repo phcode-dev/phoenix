@@ -123,6 +123,36 @@ define(function (require, exports, module) {
     let lastHiddenBottomPanelStack = [],
         lastShownBottomPanelStack = [];
 
+    // --- Bottom panel tabbed container state ---
+
+    /** @type {jQueryObject} The single container wrapping all bottom panels */
+    let $bottomPanelContainer;
+
+    /** @type {jQueryObject} The tab bar inside the container */
+    let $bottomPanelTabBar;
+
+    /** @type {string[]} Ordered list of currently open (tabbed) panel IDs */
+    let _openBottomPanelIds = [];
+
+    /** @type {string|null} The panel ID of the currently visible (active) tab */
+    let _activeBottomPanelId = null;
+
+    /** @type {Object} Map of panelID -> minSize for bottom panels */
+    let _panelMinSizes = {};
+
+    /** Fallback title map for panels that don't have a .toolbar .title element */
+    const _KNOWN_PANEL_TITLES = {
+        "errors": "Problems",
+        "problems-panel": "Problems",
+        "search-results": "Search Results",
+        "find-in-files-results": "Search Results",
+        "references-panel": "References",
+        "git-panel": "Git",
+        "keyboard-shortcuts-panel": "Keyboard Shortcuts",
+        "custom-snippets-panel": "Custom Snippets",
+        "test-builder-panel": "Test Builder"
+    };
+
 
     /**
      * Calculates the available height for the full-size Editor (or the no-editor placeholder),
@@ -226,6 +256,104 @@ define(function (require, exports, module) {
         });
     }
 
+    // --- Bottom panel tab helpers ---
+
+    /**
+     * Resolve the display title for a bottom panel tab.
+     * First looks for a .toolbar .title element within the panel DOM,
+     * then falls back to the _KNOWN_PANEL_TITLES map using the panel's DOM id.
+     * @param {string} id  The panel registration ID
+     * @param {jQueryObject} $panel  The panel's jQuery element
+     * @return {string}
+     * @private
+     */
+    function _getPanelTitle(id, $panel) {
+        let $titleEl = $panel.find(".toolbar .title");
+        if ($titleEl.length && $.trim($titleEl.text())) {
+            return $.trim($titleEl.text());
+        }
+        let domId = $panel.attr("id") || "";
+        if (_KNOWN_PANEL_TITLES[domId]) {
+            return _KNOWN_PANEL_TITLES[domId];
+        }
+        if (_KNOWN_PANEL_TITLES[id]) {
+            return _KNOWN_PANEL_TITLES[id];
+        }
+        // Last resort: humanize the id
+        let label = (domId || id).replace(/[-_]/g, " ");
+        return label.charAt(0).toUpperCase() + label.slice(1);
+    }
+
+    /**
+     * Rebuild the tab bar DOM from _openBottomPanelIds.
+     * @private
+     */
+    function _updateBottomPanelTabBar() {
+        if (!$bottomPanelTabBar) {
+            return;
+        }
+        $bottomPanelTabBar.empty();
+        _openBottomPanelIds.forEach(function (panelId) {
+            let panel = panelIDMap[panelId];
+            if (!panel) {
+                return;
+            }
+            let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
+            let isActive = (panelId === _activeBottomPanelId);
+            let $tab = $('<div class="bottom-panel-tab' + (isActive ? ' active' : '') + '" data-panel-id="' + panelId + '">' +
+                '<span class="bottom-panel-tab-title">' + $("<span>").text(title).html() + '</span>' +
+                '<span class="bottom-panel-tab-close">&times;</span>' +
+                '</div>');
+            $bottomPanelTabBar.append($tab);
+        });
+    }
+
+    /**
+     * Update the container's dynamic minSize to match the active panel's minSize.
+     * @private
+     */
+    function _updateContainerMinSize() {
+        if (!$bottomPanelContainer) {
+            return;
+        }
+        let activeMinSize = _panelMinSizes[_activeBottomPanelId] || 100;
+        // Add tab bar height (28px) to the panel's minSize
+        $bottomPanelContainer.data("currentMinSize", activeMinSize + 28);
+    }
+
+    /**
+     * Switch the active tab to the given panel. Does not show/hide the container.
+     * @param {string} panelId
+     * @private
+     */
+    function _switchToTab(panelId) {
+        if (_activeBottomPanelId === panelId) {
+            return;
+        }
+        // Remove active class from current
+        if (_activeBottomPanelId) {
+            let prevPanel = panelIDMap[_activeBottomPanelId];
+            if (prevPanel) {
+                prevPanel.$panel.removeClass("active-bottom-panel");
+            }
+        }
+        // Set new active
+        _activeBottomPanelId = panelId;
+        let newPanel = panelIDMap[panelId];
+        if (newPanel) {
+            newPanel.$panel.addClass("active-bottom-panel");
+        }
+        _updateContainerMinSize();
+        _updateBottomPanelTabBar();
+    }
+
+    /**
+     * Returns a copy of the currently open bottom panel IDs in tab order.
+     * @return {string[]}
+     */
+    function getOpenBottomPanelIDs() {
+        return _openBottomPanelIds.slice();
+    }
 
     /**
      * Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
@@ -238,16 +366,102 @@ define(function (require, exports, module) {
      * @return {!Panel}
      */
     function createBottomPanel(id, $panel, minSize) {
-        $panel.insertBefore("#status-bar");
+        // Insert panel into the tabbed container instead of before #status-bar
+        $bottomPanelContainer.append($panel);
         $panel.hide();
-        updateResizeLimits();  // initialize panel's max size
+        updateResizeLimits();
+
+        // Store minSize for dynamic container minSize
+        _panelMinSizes[id] = minSize || 100;
 
         let bottomPanel = new PanelView.Panel($panel, id);
         panelIDMap[id] = bottomPanel;
 
-        Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize,
-            false, undefined, true);
-        listenToResize($panel);
+        // Cache the tab title at creation time
+        bottomPanel._tabTitle = _getPanelTitle(id, $panel);
+
+        // Do NOT call Resizer.makeResizable on individual panels.
+        // The container handles resizing.
+
+        // --- Override show/hide/isVisible on the Panel instance ---
+
+        bottomPanel.show = function () {
+            if (!this.canBeShown()) {
+                return;
+            }
+            let panelId = this.panelID;
+            let isOpen = _openBottomPanelIds.indexOf(panelId) !== -1;
+            let isActive = (_activeBottomPanelId === panelId);
+
+            if (isOpen && isActive) {
+                // Already open and active - no-op
+                return;
+            }
+            if (isOpen && !isActive) {
+                // Open but not active - just switch tab
+                _switchToTab(panelId);
+                PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, panelId);
+                triggerUpdateLayout();
+                return;
+            }
+            // Not open: add to open set
+            _openBottomPanelIds.push(panelId);
+
+            // Show container if it was hidden
+            if (!$bottomPanelContainer.is(":visible")) {
+                Resizer.show($bottomPanelContainer[0]);
+            }
+
+            _switchToTab(panelId);
+            PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, panelId);
+            triggerUpdateLayout();
+        };
+
+        bottomPanel.hide = function () {
+            let panelId = this.panelID;
+            let idx = _openBottomPanelIds.indexOf(panelId);
+            if (idx === -1) {
+                // Not open - no-op
+                return;
+            }
+
+            // Remove from open set
+            _openBottomPanelIds.splice(idx, 1);
+            this.$panel.removeClass("active-bottom-panel");
+
+            let wasActive = (_activeBottomPanelId === panelId);
+
+            if (wasActive) {
+                if (_openBottomPanelIds.length > 0) {
+                    // Activate the next tab (or previous if this was the last)
+                    let nextIdx = Math.min(idx, _openBottomPanelIds.length - 1);
+                    let nextId = _openBottomPanelIds[nextIdx];
+                    _activeBottomPanelId = null; // clear so _switchToTab runs
+                    _switchToTab(nextId);
+                    PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, nextId);
+                } else {
+                    // No more tabs - hide the container
+                    _activeBottomPanelId = null;
+                    Resizer.hide($bottomPanelContainer[0]);
+                    _updateBottomPanelTabBar();
+                }
+            } else {
+                _updateBottomPanelTabBar();
+            }
+
+            PanelView.trigger(PanelView.EVENT_PANEL_HIDDEN, panelId);
+            triggerUpdateLayout();
+        };
+
+        bottomPanel.isVisible = function () {
+            return (_activeBottomPanelId === this.panelID) &&
+                $bottomPanelContainer.is(":visible");
+        };
+
+        bottomPanel.setTitle = function (newTitle) {
+            this._tabTitle = newTitle;
+            _updateBottomPanelTabBar();
+        };
 
         return bottomPanel;
     }
@@ -323,6 +537,37 @@ define(function (require, exports, module) {
         $mainToolbar = $("#main-toolbar");
         $mainPluginPanel = $("#main-plugin-panel");
         $pluginIconsBar = $("#plugin-icons-bar");
+
+        // --- Create the bottom panel tabbed container ---
+        $bottomPanelContainer = $('<div id="bottom-panel-container" class="vert-resizable top-resizer"></div>');
+        $bottomPanelTabBar = $('<div id="bottom-panel-tab-bar"></div>');
+        $bottomPanelContainer.append($bottomPanelTabBar);
+        $bottomPanelContainer.insertBefore("#status-bar");
+        $bottomPanelContainer.hide();
+
+        // Make the container resizable (not individual panels)
+        Resizer.makeResizable($bottomPanelContainer[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP,
+            100, false, undefined, true);
+        listenToResize($bottomPanelContainer);
+
+        // Tab bar click handlers
+        $bottomPanelTabBar.on("click", ".bottom-panel-tab-close", function (e) {
+            e.stopPropagation();
+            let panelId = $(this).closest(".bottom-panel-tab").data("panel-id");
+            let panel = panelIDMap[panelId];
+            if (panel) {
+                panel.hide();
+            }
+        });
+
+        $bottomPanelTabBar.on("click", ".bottom-panel-tab", function (e) {
+            let panelId = $(this).data("panel-id");
+            if (panelId && panelId !== _activeBottomPanelId) {
+                _switchToTab(panelId);
+                PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, panelId);
+                triggerUpdateLayout();
+            }
+        });
 
         // Sidebar is a special case: it isn't a Panel, and is not created dynamically. Need to explicitly
         // listen for resize here.
@@ -572,6 +817,7 @@ define(function (require, exports, module) {
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
+    exports.getOpenBottomPanelIDs           = getOpenBottomPanelIDs;
     exports.addEscapeKeyEventHandler        = addEscapeKeyEventHandler;
     exports.removeEscapeKeyEventHandler     = removeEscapeKeyEventHandler;
     exports._setMockDOM                     = _setMockDOM;
