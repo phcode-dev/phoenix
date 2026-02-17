@@ -411,9 +411,8 @@ define(function (require, exports, module) {
             if(initialSize){
                 elementSize = elementPrefs.size || initialSize;
             }
-            let effectiveMinSize = $element.data("currentMinSize") || minSize;
-            if(elementSize<effectiveMinSize){
-                elementSize = effectiveMinSize;
+            if(elementSize<minSize){
+                elementSize = minSize;
             }
             if(contentSize<elementSize){
                 contentSize = elementSize;
@@ -539,8 +538,7 @@ define(function (require, exports, module) {
             function onMouseMove(e) {
                 // calculate newSize adding to startSize the difference
                 // between starting and current position, capped at minSize
-                let effectiveMinSize = $element.data("currentMinSize") || minSize;
-                newSize = Math.max(startSize + directionIncrement * (startPosition - e[directionProperty]), effectiveMinSize);
+                newSize = Math.max(startSize + directionIncrement * (startPosition - e[directionProperty]), minSize);
 
                 // respect max size if one provided (e.g. by WorkspaceManager)
                 var maxSize = $element.data("maxsize");
