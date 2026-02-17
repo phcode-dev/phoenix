@@ -557,8 +557,7 @@ define(function (require, exports, module) {
         const config = TOOL_CONFIG[toolName] || { icon: "fa-solid fa-gear", color: "#adb9bd", label: toolName };
         const detail = _getToolDetail(toolName, toolInput);
 
-        // Mark as done: replace spinner with colored icon
-        $tool.addClass("ai-tool-done");
+        // Replace spinner with colored icon immediately
         $tool.find(".ai-tool-spinner").replaceWith(
             '<span class="ai-tool-icon" style="color:' + config.color + '">' +
                 '<i class="' + config.icon + '"></i>' +
@@ -592,6 +591,14 @@ define(function (require, exports, module) {
                 CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
             }).css("cursor", "pointer").addClass("ai-tool-label-clickable");
         }
+
+        // Delay marking as done so the streaming preview stays visible briefly.
+        // The ai-tool-done class hides the preview via CSS; deferring it lets the
+        // browser paint the preview before it disappears.
+        setTimeout(function () {
+            $tool.addClass("ai-tool-done");
+            $tool.find(".ai-tool-preview").text("");
+        }, 1500);
 
         _scrollToBottom();
     }
