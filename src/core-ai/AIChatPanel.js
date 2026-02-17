@@ -40,6 +40,10 @@ define(function (require, exports, module) {
     let _hasReceivedContent = false; // tracks if we've received any text/tool in current response
     const _previousContentMap = {}; // filePath → previous content before edit, for undo support
 
+    // --- AI event trace logging (compact, non-flooding) ---
+    let _traceTextChunks = 0;
+    let _traceToolStreamCounts = {}; // toolId → count
+
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn;
 
@@ -230,12 +234,17 @@ define(function (require, exports, module) {
         // Get project path
         const projectPath = _getProjectRealPath();
 
+        _traceTextChunks = 0;
+        _traceToolStreamCounts = {};
+        console.log("[AI UI] Sending prompt:", text.slice(0, 60));
+
         _nodeConnector.execPeer("sendPrompt", {
             prompt: text,
             projectPath: projectPath,
             sessionAction: "continue"
         }).then(function (result) {
             _currentRequestId = result.requestId;
+            console.log("[AI UI] RequestId:", result.requestId);
         }).catch(function (err) {
             _setStreaming(false);
             _appendErrorMessage("Failed to send message: " + (err.message || String(err)));
@@ -288,6 +297,11 @@ define(function (require, exports, module) {
     // --- Event handlers for node-side events ---
 
     function _onTextStream(_event, data) {
+        _traceTextChunks++;
+        if (_traceTextChunks === 1) {
+            console.log("[AI UI]", "First text chunk");
+        }
+
         // Remove thinking indicator on first content
         if (!_hasReceivedContent) {
             _hasReceivedContent = true;
@@ -315,6 +329,7 @@ define(function (require, exports, module) {
     };
 
     function _onProgress(_event, data) {
+        console.log("[AI UI]", "Progress:", data.phase, data.toolName ? data.toolName + " #" + data.toolId : "");
         if ($statusText) {
             const toolName = data.toolName || "";
             const config = TOOL_CONFIG[toolName];
@@ -326,11 +341,17 @@ define(function (require, exports, module) {
     }
 
     function _onToolInfo(_event, data) {
+        const uid = (_currentRequestId || "") + "-" + data.toolId;
+        const streamCount = _traceToolStreamCounts[uid] || 0;
+        console.log("[AI UI]", "ToolInfo:", data.toolName, "#" + data.toolId,
+            "file=" + (data.toolInput && data.toolInput.file_path || "?").split("/").pop(),
+            "streamEvents=" + streamCount);
         _updateToolIndicator(data.toolId, data.toolName, data.toolInput);
     }
 
     function _onToolStream(_event, data) {
         const uniqueToolId = (_currentRequestId || "") + "-" + data.toolId;
+        _traceToolStreamCounts[uniqueToolId] = (_traceToolStreamCounts[uniqueToolId] || 0) + 1;
         const $tool = $messages.find('.ai-msg-tool[data-tool-id="' + uniqueToolId + '"]');
         if (!$tool.length) {
             return;
@@ -348,6 +369,10 @@ define(function (require, exports, module) {
         }
 
         const preview = _extractToolPreview(data.toolName, data.partialJson);
+        if (_traceToolStreamCounts[uniqueToolId] === 1) {
+            console.log("[AI UI]", "ToolStream first:", data.toolName, "#" + data.toolId,
+                "json=" + (data.partialJson || "").length + "ch");
+        }
         if (preview) {
             $tool.find(".ai-tool-preview").text(preview);
             _scrollToBottom();
@@ -389,7 +414,8 @@ define(function (require, exports, module) {
         if (!partialJson) {
             return "";
         }
-        // Map tool names to the key whose value we want to preview
+        // Map tool names to the key whose value we want to preview.
+        // Tools not listed here get no streaming preview.
         const interestingKey = {
             Write: "content",
             Edit: "new_string",
@@ -398,19 +424,21 @@ define(function (require, exports, module) {
             Glob: "pattern"
         }[toolName];
 
+        if (!interestingKey) {
+            return "";
+        }
+
         let raw = "";
-        if (interestingKey) {
-            // Find the interesting key and grab everything after it
-            const keyPattern = '"' + interestingKey + '":';
-            const idx = partialJson.indexOf(keyPattern);
-            if (idx !== -1) {
-                raw = partialJson.slice(idx + keyPattern.length).slice(-120);
-            }
-            // If the interesting key hasn't appeared yet, show nothing
-            // rather than raw JSON noise like {"file_path":...
-        } else {
-            // No interesting key defined for this tool — use the tail
-            raw = partialJson.slice(-120);
+        // Find the interesting key and grab everything after it
+        const keyPattern = '"' + interestingKey + '":';
+        const idx = partialJson.indexOf(keyPattern);
+        if (idx !== -1) {
+            raw = partialJson.slice(idx + keyPattern.length).slice(-120);
+        }
+        // If the interesting key hasn't appeared yet, show a byte counter
+        // so the user sees streaming activity during the file_path phase
+        if (!raw && partialJson.length > 3) {
+            return "receiving " + partialJson.length + " bytes...";
         }
         if (!raw) {
             return "";
@@ -430,6 +458,7 @@ define(function (require, exports, module) {
     }
 
     function _onEditResult(_event, data) {
+        console.log("[AI UI]", "EditResult:", (data.edits || []).length, "edits");
         if (data.edits && data.edits.length > 0) {
             data.edits.forEach(function (edit) {
                 _appendEditCard(edit);
@@ -438,11 +467,17 @@ define(function (require, exports, module) {
     }
 
     function _onError(_event, data) {
+        console.log("[AI UI]", "Error:", (data.error || "").slice(0, 200));
         _appendErrorMessage(data.error);
         // Don't stop streaming — the node side may continue (partial results)
     }
 
     function _onComplete(_event, data) {
+        console.log("[AI UI]", "Complete. textChunks=" + _traceTextChunks,
+            "toolStreams=" + JSON.stringify(_traceToolStreamCounts));
+        // Reset trace counters for next query
+        _traceTextChunks = 0;
+        _traceToolStreamCounts = {};
         _setStreaming(false);
     }
 
@@ -654,10 +689,17 @@ define(function (require, exports, module) {
 
     /**
      * Mark all active (non-done) tool indicators as finished.
+     * Tools that already received _updateToolIndicator (spinner replaced with
+     * .ai-tool-icon) are skipped — their delayed timeout will add .ai-tool-done.
+     * This only force-finishes tools that never got a toolInfo (e.g. interrupted).
      */
     function _finishActiveTools() {
         $messages.find(".ai-msg-tool:not(.ai-tool-done)").each(function () {
             const $prev = $(this);
+            // _updateToolIndicator already ran — let the delayed timeout handle it
+            if ($prev.find(".ai-tool-icon").length) {
+                return;
+            }
             $prev.addClass("ai-tool-done");
             const iconClass = $prev.attr("data-tool-icon") || "fa-solid fa-check";
             const color = $prev.css("--tool-color") || "#adb9bd";
