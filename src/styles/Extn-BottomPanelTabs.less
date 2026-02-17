@@ -18,7 +18,8 @@
  *
  */
 
-/* Bottom panel tab bar — switches between tabbed bottom panels */
+/* Bottom panel tab bar — switches between tabbed bottom panels.
+ * Visual style mirrors the file tab bar (Extn-TabBar.less) for consistency. */
 
 #bottom-panel-container {
     background-color: @bc-panel-bg;
@@ -48,20 +49,24 @@
 #bottom-panel-tab-bar {
     display: flex;
     align-items: center;
-    height: 28px;
-    min-height: 28px;
-    background-color: @bc-panel-bg-promoted;
-    border-bottom: @bc-panel-separator;
-    overflow-x: auto;
-    overflow-y: hidden;
+    height: 1.5rem;
+    min-height: 1.5rem;
+    background-color: #f5f5f5;
+    border-bottom: none;
+    overflow: hidden;
     user-select: none;
-    box-shadow: inset 0 1px 0 @bc-highlight-hard, 0 -1px 3px @bc-shadow-small;
 
     .dark & {
-        background-color: @dark-bc-panel-bg-promoted;
-        border-bottom: @dark-bc-panel-separator;
-        box-shadow: inset 0 1px 0 @dark-bc-highlight, 0 -1px 3px @dark-bc-shadow-small;
+        background-color: #1E1E1E;
     }
+}
+
+.bottom-panel-tabs-overflow {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100%;
 
     /* Hide scrollbar but allow scrolling */
     &::-webkit-scrollbar {
@@ -74,51 +79,54 @@
 .bottom-panel-tab {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 0 10px;
+    padding: 0 0.4rem 0 0.8rem;
     height: 100%;
     cursor: pointer;
     position: relative;
-    color: @bc-text-quiet;
-    font-size: 12px;
+    flex: 0 0 auto;
+    min-width: fit-content;
+    color: #555;
+    background-color: #f1f1f1;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.8rem;
+    letter-spacing: 0.4px;
     white-space: nowrap;
-    flex-shrink: 0;
-    transition: color 0.15s ease, background-color 0.15s ease;
+    transition: color 0.12s ease-out, background-color 0.12s ease-out;
 
     .dark & {
-        color: @dark-bc-text-quiet;
+        color: #aaa;
+        background-color: #292929;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     &:hover {
-        color: @bc-text;
-        background-color: rgba(0, 0, 0, 0.04);
+        background-color: #e0e0e0;
 
         .dark & {
-            color: @dark-bc-text;
-            background-color: rgba(255, 255, 255, 0.06);
+            background-color: #3b3a3a;
         }
     }
 
     &.active {
-        color: @bc-text;
-        background-color: @bc-panel-bg;
+        color: #333;
+        background-color: #fff;
 
         .dark & {
-            color: @dark-bc-text;
-            background-color: @dark-bc-panel-bg;
+            color: #dedede;
+            background-color: #1D1F21;
         }
 
         &::after {
             content: "";
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background-color: @bc-primary-btn-bg;
+            height: 0.1rem;
+            background-color: #0078D7;
 
             .dark & {
-                background-color: @dark-bc-primary-btn-bg;
+                background-color: #75BEFF;
             }
         }
     }
@@ -128,28 +136,48 @@
     pointer-events: none;
 }
 
-.bottom-panel-tab-close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    font-size: 14px;
-    line-height: 1;
+.bottom-panel-tab-close-btn {
+    margin-left: 0.4rem;
     border-radius: 3px;
+    cursor: pointer;
+    color: #999;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0 3px;
+    line-height: 1;
     opacity: 0;
-    transition: opacity 0.15s ease, background-color 0.15s ease;
+    transition: opacity 0.12s ease, color 0.12s ease, background-color 0.12s ease;
+
+    .dark & {
+        color: #666;
+    }
 
     .bottom-panel-tab:hover & {
-        opacity: 0.6;
+        opacity: 1;
+        color: #666;
+
+        .dark & {
+            color: #888;
+        }
+    }
+
+    .bottom-panel-tab.active & {
+        opacity: 1;
+        color: #666;
+
+        .dark & {
+            color: #888;
+        }
     }
 
     &:hover {
-        opacity: 1 !important;
+        opacity: 1;
+        color: #333;
         background-color: rgba(0, 0, 0, 0.1);
 
         .dark & {
-            background-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.12);
         }
     }
 }
