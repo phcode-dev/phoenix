@@ -273,6 +273,11 @@ define(function (require, exports, module) {
      * Rebuild the tab bar DOM from _openBottomPanelIds.
      * @private
      */
+    /**
+     * Full rebuild of the tab bar DOM from _openBottomPanelIds.
+     * Call this when tabs are added, removed, or renamed.
+     * @private
+     */
     function _updateBottomPanelTabBar() {
         if (!$bottomPanelTabBar) {
             return;
@@ -295,6 +300,24 @@ define(function (require, exports, module) {
             $tabsOverflow.append($tab);
         });
         $bottomPanelTabBar.append($tabsOverflow);
+    }
+
+    /**
+     * Swap the .active class on the tab bar without rebuilding the DOM.
+     * @private
+     */
+    function _updateActiveTabHighlight() {
+        if (!$bottomPanelTabBar) {
+            return;
+        }
+        $bottomPanelTabBar.find(".bottom-panel-tab").each(function () {
+            let $tab = $(this);
+            if ($tab.data("panel-id") === _activeBottomPanelId) {
+                $tab.addClass("active");
+            } else {
+                $tab.removeClass("active");
+            }
+        });
     }
 
     /**
@@ -334,7 +357,7 @@ define(function (require, exports, module) {
             newPanel.$panel.addClass("active-bottom-panel");
         }
         _updateContainerMinSize();
-        _updateBottomPanelTabBar();
+        _updateActiveTabHighlight();
     }
 
     /**
@@ -404,6 +427,7 @@ define(function (require, exports, module) {
             }
 
             _switchToTab(panelId);
+            _updateBottomPanelTabBar();
             PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, panelId);
             triggerUpdateLayout();
         };
@@ -422,23 +446,19 @@ define(function (require, exports, module) {
 
             let wasActive = (_activeBottomPanelId === panelId);
 
-            if (wasActive) {
-                if (_openBottomPanelIds.length > 0) {
-                    // Activate the next tab (or previous if this was the last)
-                    let nextIdx = Math.min(idx, _openBottomPanelIds.length - 1);
-                    let nextId = _openBottomPanelIds[nextIdx];
-                    _activeBottomPanelId = null; // clear so _switchToTab runs
-                    _switchToTab(nextId);
-                    PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, nextId);
-                } else {
-                    // No more tabs - hide the container
-                    _activeBottomPanelId = null;
-                    Resizer.hide($bottomPanelContainer[0]);
-                    _updateBottomPanelTabBar();
-                }
-            } else {
-                _updateBottomPanelTabBar();
+            // Tab was removed — rebuild tab bar, then activate next if needed
+            if (wasActive && _openBottomPanelIds.length > 0) {
+                let nextIdx = Math.min(idx, _openBottomPanelIds.length - 1);
+                let nextId = _openBottomPanelIds[nextIdx];
+                _activeBottomPanelId = null; // clear so _switchToTab runs
+                _switchToTab(nextId);
+                PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, nextId);
+            } else if (wasActive) {
+                // No more tabs - hide the container
+                _activeBottomPanelId = null;
+                Resizer.hide($bottomPanelContainer[0]);
             }
+            _updateBottomPanelTabBar();
 
             PanelView.trigger(PanelView.EVENT_PANEL_HIDDEN, panelId);
             triggerUpdateLayout();
