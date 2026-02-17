@@ -248,15 +248,21 @@ define(function (require, exports, module) {
 
     /**
      * Resolve the display title for a bottom panel tab.
-     * Uses the explicit title if provided, otherwise humanizes the panel id.
+     * Uses the explicit title if provided, then checks for a .toolbar .title
+     * DOM element in the panel, and finally derives a name from the panel id.
      * @param {string} id  The panel registration ID
+     * @param {jQueryObject} $panel  The panel's jQuery element
      * @param {string=} title  Explicit title passed to createBottomPanel
      * @return {string}
      * @private
      */
-    function _getPanelTitle(id, title) {
+    function _getPanelTitle(id, $panel, title) {
         if (title) {
             return title;
+        }
+        let $titleEl = $panel.find(".toolbar .title");
+        if ($titleEl.length && $.trim($titleEl.text())) {
+            return $.trim($titleEl.text());
         }
         let label = id.replace(new RegExp("[-_.]", "g"), " ").split(" ")[0];
         return label.charAt(0).toUpperCase() + label.slice(1);
@@ -279,7 +285,7 @@ define(function (require, exports, module) {
             if (!panel) {
                 return;
             }
-            let title = panel._tabTitle || _getPanelTitle(panelId);
+            let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
             let isActive = (panelId === _activeBottomPanelId);
             let $tab = $('<div class="bottom-panel-tab' + (isActive ? ' active' : '') + '" data-panel-id="' + panelId + '">' +
                 '<span class="bottom-panel-tab-title">' + $("<span>").text(title).html() + '</span>' +
@@ -362,7 +368,7 @@ define(function (require, exports, module) {
         panelIDMap[id] = bottomPanel;
 
         // Cache the tab title at creation time
-        bottomPanel._tabTitle = _getPanelTitle(id, title);
+        bottomPanel._tabTitle = _getPanelTitle(id, $panel, title);
 
         // Do NOT call Resizer.makeResizable on individual panels.
         // The container handles resizing.
