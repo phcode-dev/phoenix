@@ -381,10 +381,19 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     }
                 }
 
-                // Tool block complete — parse input and send details
+                // Tool block complete — flush final stream preview and send details
                 if (event.type === "content_block_stop" &&
                     event.index === activeToolIndex &&
                     activeToolName) {
+                    // Final flush of tool stream (bypasses throttle)
+                    if (activeToolInputJson) {
+                        nodeConnector.triggerPeer("aiToolStream", {
+                            requestId: requestId,
+                            toolId: toolCounter,
+                            toolName: activeToolName,
+                            partialJson: activeToolInputJson
+                        });
+                    }
                     let toolInput = {};
                     try {
                         toolInput = JSON.parse(activeToolInputJson);

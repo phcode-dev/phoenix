@@ -161,6 +161,7 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
     server.tool(
         "get_browser_console_logs",
         "Get console logs from the Phoenix browser runtime. Returns last 50 entries by default. " +
+        "This includes both browser-side console logs and Node.js (PhNode) logs, which are prefixed with 'PhNode:'. " +
         "USAGE: Start with default tail=50. Use filter (regex) to narrow results (e.g. filter='error|warn'). " +
         "Use before=N (from previous totalEntries) to page back. Avoid tail=0 unless necessary — " +
         "prefer filter + small tail to keep responses compact.",
