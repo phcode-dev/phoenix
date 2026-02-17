@@ -18,16 +18,20 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, awaitsFor */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, awaitsFor, awaitsForDone, jsPromise */
 
 define(function (require, exports, module) {
 
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     let SidebarTabs,
+        SidebarView,
+        CommandManager,
+        Commands,
         testWindow,
         brackets,
-        _$;
+        _$,
+        originalSidebarWidth;
 
     // Test tab constants
     const TEST_TAB_ID = "sidebar-tab-test";
@@ -39,23 +43,22 @@ define(function (require, exports, module) {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             brackets = testWindow.brackets;
             SidebarTabs = brackets.test.SidebarTabs;
+            SidebarView = brackets.test.SidebarView;
+            CommandManager = brackets.test.CommandManager;
+            Commands = brackets.test.Commands;
             _$ = testWindow.$;
+            originalSidebarWidth = SidebarView.getWidth();
         }, 30000);
 
         afterAll(async function () {
-            // Reset to files tab
+            // Reset to files tab and restore original sidebar width
             SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
-
-            // Remove any test tabs that may still exist
-            const allTabs = SidebarTabs.getAllTabs();
-            allTabs.forEach(function (tab) {
-                if (tab.id !== SidebarTabs.SIDEBAR_TAB_FILES) {
-                    // Clear content first so removeTab succeeds
-                    // (skip tabs that have content - they belong to other extensions)
-                }
-            });
+            SidebarView.resize(originalSidebarWidth);
 
             SidebarTabs = null;
+            SidebarView = null;
+            CommandManager = null;
+            Commands = null;
             testWindow = null;
             brackets = null;
             _$ = null;
@@ -452,6 +455,86 @@ define(function (require, exports, module) {
 
                 // has-tabs should accurately reflect whether >= 2 tabs remain
                 expect($navTabBar.hasClass("has-tabs")).toBe(countAfterRemove >= 2);
+            });
+        });
+
+        describe("Show in File Tree command", function () {
+            const testProjectPath = SpecRunnerUtils.getTestPath("/spec/DocumentCommandHandlers-test-files");
+
+            beforeAll(async function () {
+                await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
+            }, 30000);
+
+            afterAll(async function () {
+                // Close all files opened during these tests
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close all files"
+                );
+            }, 30000);
+
+            it("should switch to files tab when executed from a non-files tab", async function () {
+                // Open a file so handleShowInTree has an activeFile
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["test.js"]),
+                    "open test file"
+                );
+
+                SidebarTabs.addTab(TEST_TAB_ID, "Test Tab", "fa-solid fa-flask");
+                SidebarTabs.setActiveTab(TEST_TAB_ID);
+                expect(SidebarTabs.getActiveTab()).toBe(TEST_TAB_ID);
+
+                await awaitsForDone(
+                    CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE),
+                    "show in file tree"
+                );
+
+                expect(SidebarTabs.getActiveTab()).toBe(SidebarTabs.SIDEBAR_TAB_FILES);
+            });
+
+            it("should remain on files tab when already on files tab", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["test.js"]),
+                    "open test file"
+                );
+                expect(SidebarTabs.getActiveTab()).toBe(SidebarTabs.SIDEBAR_TAB_FILES);
+
+                await awaitsForDone(
+                    CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE),
+                    "show in file tree"
+                );
+
+                expect(SidebarTabs.getActiveTab()).toBe(SidebarTabs.SIDEBAR_TAB_FILES);
+            });
+        });
+
+        describe("SidebarView resize", function () {
+            let SidebarView, originalWidth;
+
+            beforeAll(function () {
+                SidebarView = brackets.test.SidebarView;
+                originalWidth = SidebarView.getWidth();
+            });
+
+            afterAll(function () {
+                SidebarView.resize(originalWidth);
+            });
+
+            it("should change the sidebar width", function () {
+                SidebarView.resize(400);
+                expect(SidebarView.getWidth()).toBe(400);
+            });
+
+            it("should update the .content left offset", function () {
+                SidebarView.resize(350);
+                expect(parseInt(_$(".content").css("left"), 10)).toBe(350);
+            });
+
+            it("should persist the width in view state", function () {
+                const PreferencesManager = testWindow.brackets.test.PreferencesManager;
+                SidebarView.resize(380);
+                const prefs = PreferencesManager.getViewState("sidebar");
+                expect(prefs.size).toBe(380);
             });
         });
     });

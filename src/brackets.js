@@ -294,6 +294,7 @@ define(function (require, exports, module) {
             SearchResultsView: require("search/SearchResultsView"),
             ScrollTrackMarkers: require("search/ScrollTrackMarkers"),
             SidebarTabs: require("view/SidebarTabs"),
+            SidebarView: require("project/SidebarView"),
             WorkingSetView: require("project/WorkingSetView"),
             doneLoading: false
         };

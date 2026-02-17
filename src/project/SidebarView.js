@@ -326,9 +326,45 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_SHOW_SIDEBAR, Commands.SHOW_SIDEBAR, show);
     CommandManager.register(Strings.CMD_HIDE_SIDEBAR, Commands.HIDE_SIDEBAR, hide);
 
+    /**
+     * Programmatically resize the sidebar to the given width. Persists
+     * the new size so it is restored on reload, resyncs the drag handle,
+     * and fires `panelResizeEnd`.
+     *
+     * @param {number} width  Desired sidebar width in pixels
+     */
+    function resize(width) {
+        if (!$sidebar || !$sidebar.length) {
+            return;
+        }
+        width = Math.round(width);
+        $sidebar.width(width);
+        $(".content").css("left", width);
+        Resizer.resyncSizer($sidebar);
+        var sidebarPrefs = PreferencesManager.getViewState("sidebar") || {};
+        sidebarPrefs.size = width;
+        PreferencesManager.setViewState("sidebar", sidebarPrefs);
+        $sidebar.trigger("panelResizeEnd", [width]);
+    }
+
+    /**
+     * Get the current sidebar width in pixels. Returns the CSS width
+     * even if the sidebar is hidden (so the value can be restored later).
+     *
+     * @return {number}
+     */
+    function getWidth() {
+        if (!$sidebar || !$sidebar.length) {
+            return 0;
+        }
+        return $sidebar.width();
+    }
+
     // Define public API
     exports.toggle      = toggle;
     exports.show        = show;
     exports.hide        = hide;
     exports.isVisible   = isVisible;
+    exports.resize      = resize;
+    exports.getWidth    = getWidth;
 });
