@@ -137,11 +137,6 @@ define(function (require, exports, module) {
     /** @type {string|null} The panel ID of the currently visible (active) tab */
     let _activeBottomPanelId = null;
 
-    /** @type {Object} Map of panelID -> minSize for bottom panels */
-    let _panelMinSizes = {};
-
-
-
     /**
      * Calculates the available height for the full-size Editor (or the no-editor placeholder),
      * accounting for the current size of all visible panels, toolbar, & status bar.
@@ -320,20 +315,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Update the container's dynamic minSize to match the active panel's minSize.
-     * @private
-     */
-    function _updateContainerMinSize() {
-        if (!$bottomPanelContainer) {
-            return;
-        }
-        let activeMinSize = _panelMinSizes[_activeBottomPanelId] || 100;
-        // Add tab bar height to the panel's minSize
-        let tabBarHeight = $bottomPanelTabBar ? $bottomPanelTabBar.outerHeight() : 34;
-        $bottomPanelContainer.data("currentMinSize", activeMinSize + tabBarHeight);
-    }
-
-    /**
      * Switch the active tab to the given panel. Does not show/hide the container.
      * @param {string} panelId
      * @private
@@ -355,7 +336,6 @@ define(function (require, exports, module) {
         if (newPanel) {
             newPanel.$panel.addClass("active-bottom-panel");
         }
-        _updateContainerMinSize();
         _updateActiveTabHighlight();
     }
 
@@ -374,7 +354,7 @@ define(function (require, exports, module) {
      * @param {!string} id  Unique id for this panel. Use package-style naming, e.g. "myextension.feature.panelname"
      * @param {!jQueryObject} $panel  DOM content to use as the panel. Need not be in the document yet. Must have an id
      *      attribute, for use as a preferences key.
-     * @param {number=} minSize  Minimum height of panel in px.
+     * @param {number=} minSize  @deprecated No longer used. Pass `undefined`.
      * @param {string=} title  Display title shown in the bottom panel tab bar.
      * @return {!Panel}
      */
@@ -383,9 +363,6 @@ define(function (require, exports, module) {
         $bottomPanelContainer.append($panel);
         $panel.hide();
         updateResizeLimits();
-
-        // Store minSize for dynamic container minSize
-        _panelMinSizes[id] = minSize || 100;
 
         let bottomPanel = new PanelView.Panel($panel, id);
         panelIDMap[id] = bottomPanel;
@@ -557,7 +534,7 @@ define(function (require, exports, module) {
 
         // Make the container resizable (not individual panels)
         Resizer.makeResizable($bottomPanelContainer[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP,
-            100, false, undefined, true);
+            200, false, undefined, true);
         listenToResize($bottomPanelContainer);
 
         // Tab bar click handlers
