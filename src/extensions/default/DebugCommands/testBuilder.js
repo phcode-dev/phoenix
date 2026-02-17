@@ -38,7 +38,7 @@ define(function (require, exports, module) {
     function toggleTestBuilder() {
         if(!$panel){
             $panel = $(panelHTML);
-            builderPanel = WorkspaceManager.createBottomPanel("phcode-test-builder-panel", $panel, 100);
+            builderPanel = WorkspaceManager.createBottomPanel("phcode-test-builder-panel", $panel, 100, "Test Builder");
             builderPanel.hide();
             _setupPanel().then(()=>{
                 builderPanel.setVisible(!builderPanel.isVisible());
@@ -177,7 +177,7 @@ define(function (require, exports, module) {
             return;
         }
         $panel = $(panelHTML);
-        builderPanel = WorkspaceManager.createBottomPanel("phcode-test-builder-panel", $panel, 100);
+        builderPanel = WorkspaceManager.createBottomPanel("phcode-test-builder-panel", $panel, 100, "Test Builder");
         builderPanel.hide();
         _setupPanel();
     });
