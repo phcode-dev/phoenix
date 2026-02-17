@@ -76,12 +76,13 @@ define(function (require, exports, module) {
      * @param {string} panelID The CSS ID to use for the panel.
      * @param {string} panelName The name to use for the panel, as passed to WorkspaceManager.createBottomPanel().
      * @param {string} type type to identify if it is reference search or string match serach
+     * @param {string=} title Display title for the panel tab.
      */
-    function SearchResultsView(model, panelID, panelName, type) {
+    function SearchResultsView(model, panelID, panelName, type, title) {
         const self = this;
         let panelHtml  = Mustache.render(searchPanelTemplate, {panelID: panelID});
 
-        this._panel    = WorkspaceManager.createBottomPanel(panelName, $(panelHtml), 100);
+        this._panel    = WorkspaceManager.createBottomPanel(panelName, $(panelHtml), 100, title);
         this._$summary = this._panel.$panel.find(".title");
         this._$table   = this._panel.$panel.find(".table-container");
         this._$previewEditor   = this._panel.$panel.find(".search-editor-preview");

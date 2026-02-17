@@ -140,18 +140,6 @@ define(function (require, exports, module) {
     /** @type {Object} Map of panelID -> minSize for bottom panels */
     let _panelMinSizes = {};
 
-    /** Fallback title map for panels that don't have a .toolbar .title element */
-    const _KNOWN_PANEL_TITLES = {
-        "errors": "Problems",
-        "problems-panel": "Problems",
-        "search-results": "Search Results",
-        "find-in-files-results": "Search Results",
-        "references-panel": "References",
-        "git-panel": "Git",
-        "keyboard-shortcuts-panel": "Keyboard Shortcuts",
-        "custom-snippets-panel": "Custom Snippets",
-        "test-builder-panel": "Test Builder"
-    };
 
 
     /**
@@ -260,27 +248,17 @@ define(function (require, exports, module) {
 
     /**
      * Resolve the display title for a bottom panel tab.
-     * First looks for a .toolbar .title element within the panel DOM,
-     * then falls back to the _KNOWN_PANEL_TITLES map using the panel's DOM id.
+     * Uses the explicit title if provided, otherwise humanizes the panel id.
      * @param {string} id  The panel registration ID
-     * @param {jQueryObject} $panel  The panel's jQuery element
+     * @param {string=} title  Explicit title passed to createBottomPanel
      * @return {string}
      * @private
      */
-    function _getPanelTitle(id, $panel) {
-        let $titleEl = $panel.find(".toolbar .title");
-        if ($titleEl.length && $.trim($titleEl.text())) {
-            return $.trim($titleEl.text());
+    function _getPanelTitle(id, title) {
+        if (title) {
+            return title;
         }
-        let domId = $panel.attr("id") || "";
-        if (_KNOWN_PANEL_TITLES[domId]) {
-            return _KNOWN_PANEL_TITLES[domId];
-        }
-        if (_KNOWN_PANEL_TITLES[id]) {
-            return _KNOWN_PANEL_TITLES[id];
-        }
-        // Last resort: humanize the id
-        let label = (domId || id).replace(/[-_]/g, " ");
+        let label = id.replace(new RegExp("[-_.]", "g"), " ").split(" ")[0];
         return label.charAt(0).toUpperCase() + label.slice(1);
     }
 
@@ -301,7 +279,7 @@ define(function (require, exports, module) {
             if (!panel) {
                 return;
             }
-            let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
+            let title = panel._tabTitle || _getPanelTitle(panelId);
             let isActive = (panelId === _activeBottomPanelId);
             let $tab = $('<div class="bottom-panel-tab' + (isActive ? ' active' : '') + '" data-panel-id="' + panelId + '">' +
                 '<span class="bottom-panel-tab-title">' + $("<span>").text(title).html() + '</span>' +
@@ -368,9 +346,10 @@ define(function (require, exports, module) {
      * @param {!jQueryObject} $panel  DOM content to use as the panel. Need not be in the document yet. Must have an id
      *      attribute, for use as a preferences key.
      * @param {number=} minSize  Minimum height of panel in px.
+     * @param {string=} title  Display title shown in the bottom panel tab bar.
      * @return {!Panel}
      */
-    function createBottomPanel(id, $panel, minSize) {
+    function createBottomPanel(id, $panel, minSize, title) {
         // Insert panel into the tabbed container instead of before #status-bar
         $bottomPanelContainer.append($panel);
         $panel.hide();
@@ -383,7 +362,7 @@ define(function (require, exports, module) {
         panelIDMap[id] = bottomPanel;
 
         // Cache the tab title at creation time
-        bottomPanel._tabTitle = _getPanelTitle(id, $panel);
+        bottomPanel._tabTitle = _getPanelTitle(id, title);
 
         // Do NOT call Resizer.makeResizable on individual panels.
         // The container handles resizing.

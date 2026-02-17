@@ -1249,6 +1249,8 @@ define({
     "REFERENCES_IN_FILES": "references",
     "REFERENCE_IN_FILES": "reference",
     "REFERENCES_NO_RESULTS": "No References available for current cursor position",
+    "REFERENCES_PANEL_TITLE": "References",
+    "SEARCH_RESULTS_PANEL_TITLE": "Search Results",
 
     "CMD_FIND_DOCUMENT_SYMBOLS": "Find Document Symbols",
     "CMD_FIND_PROJECT_SYMBOLS": "Find Project Symbols",
@@ -1396,6 +1398,7 @@ define({
     "BUTTON_CANCEL": "Cancel",
     "CHECKOUT_COMMIT": "Checkout",
     "CHECKOUT_COMMIT_DETAIL": "<b>Commit Message:</b> {0} <br><b>Commit hash:</b> {1}",
+    "GIT_PANEL_TITLE": "Git",
     "GIT_CLONE": "Clone",
     "BUTTON_CLOSE": "Close",
     "BUTTON_COMMIT": "Commit",

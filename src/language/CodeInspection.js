@@ -1263,7 +1263,7 @@ define(function (require, exports, module) {
         Editor.registerGutter(CODE_INSPECTION_GUTTER, CODE_INSPECTION_GUTTER_PRIORITY);
         // Create bottom panel to list error details
         var panelHtml = Mustache.render(PanelTemplate, Strings);
-        problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
+        problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100, Strings.CMD_VIEW_TOGGLE_PROBLEMS);
         $problemsPanel = $("#problems-panel");
         $fixAllBtn = $problemsPanel.find(".problems-fix-all-btn");
         $fixAllBtn.click(()=>{

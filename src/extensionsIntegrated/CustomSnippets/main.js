@@ -58,7 +58,8 @@ define(function (require, exports, module) {
      * @private
      */
     function _createPanel() {
-        customSnippetsPanel = WorkspaceManager.createBottomPanel(PANEL_ID, $snippetsPanel, PANEL_MIN_SIZE);
+        customSnippetsPanel = WorkspaceManager.createBottomPanel(PANEL_ID, $snippetsPanel, PANEL_MIN_SIZE,
+            Strings.CUSTOM_SNIPPETS_PANEL_TITLE);
         customSnippetsPanel.show();
 
         // also register the handlers
