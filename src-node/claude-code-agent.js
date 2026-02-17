@@ -202,6 +202,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         maxTurns: 10,
         allowedTools: ["Read", "Edit", "Write", "Glob", "Grep"],
         permissionMode: "acceptEdits",
+        appendSystemPrompt:
+            "When modifying an existing file, always prefer the Edit tool " +
+            "(find-and-replace) instead of the Write tool. The Write tool should ONLY be used " +
+            "to create brand new files that do not exist yet. For existing files, always use " +
+            "multiple Edit calls to make targeted changes rather than rewriting the entire " +
+            "file with Write. This is critical because Write replaces the entire file content " +
+            "which is slow and loses undo history.",
         includePartialMessages: true,
         abortController: currentAbortController,
         hooks: {
@@ -318,7 +325,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         queryOptions.resume = currentSessionId;
     }
 
+    const _log = (...args) => console.log("[AI]", ...args);
+
     try {
+        _log("Query start:", JSON.stringify(prompt).slice(0, 80), "cwd=" + (projectPath || "?"));
+
         const result = queryFn({
             prompt: prompt,
             options: queryOptions
@@ -334,15 +345,23 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         let toolCounter = 0;
         let lastToolStreamTime = 0;
 
+        // Trace counters (logged at tool/query completion, not per-delta)
+        let toolDeltaCount = 0;
+        let toolStreamSendCount = 0;
+        let textDeltaCount = 0;
+        let textStreamSendCount = 0;
+
         for await (const message of result) {
             // Check abort
             if (signal.aborted) {
+                _log("Aborted");
                 break;
             }
 
             // Capture session_id from first message
             if (message.session_id && !currentSessionId) {
                 currentSessionId = message.session_id;
+                _log("Session:", currentSessionId);
             }
 
             // Handle streaming events
@@ -356,6 +375,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     activeToolIndex = event.index;
                     activeToolInputJson = "";
                     toolCounter++;
+                    toolDeltaCount = 0;
+                    toolStreamSendCount = 0;
+                    lastToolStreamTime = 0;
+                    _log("Tool start:", activeToolName, "#" + toolCounter);
                     nodeConnector.triggerPeer("aiProgress", {
                         requestId: requestId,
                         toolName: activeToolName,
@@ -369,9 +392,12 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     event.delta?.type === "input_json_delta" &&
                     event.index === activeToolIndex) {
                     activeToolInputJson += event.delta.partial_json;
+                    toolDeltaCount++;
                     const now = Date.now();
-                    if (now - lastToolStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                    if (activeToolInputJson &&
+                        now - lastToolStreamTime >= TEXT_STREAM_THROTTLE_MS) {
                         lastToolStreamTime = now;
+                        toolStreamSendCount++;
                         nodeConnector.triggerPeer("aiToolStream", {
                             requestId: requestId,
                             toolId: toolCounter,
@@ -387,6 +413,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     activeToolName) {
                     // Final flush of tool stream (bypasses throttle)
                     if (activeToolInputJson) {
+                        toolStreamSendCount++;
                         nodeConnector.triggerPeer("aiToolStream", {
                             requestId: requestId,
                             toolId: toolCounter,
@@ -400,6 +427,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     } catch (e) {
                         // ignore parse errors
                     }
+                    _log("Tool done:", activeToolName, "#" + toolCounter,
+                        "deltas=" + toolDeltaCount, "sent=" + toolStreamSendCount,
+                        "json=" + activeToolInputJson.length + "ch");
                     nodeConnector.triggerPeer("aiToolInfo", {
                         requestId: requestId,
                         toolName: activeToolName,
@@ -415,9 +445,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                 if (event.type === "content_block_delta" &&
                     event.delta?.type === "text_delta") {
                     accumulatedText += event.delta.text;
+                    textDeltaCount++;
                     const now = Date.now();
                     if (now - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
                         lastStreamTime = now;
+                        textStreamSendCount++;
                         nodeConnector.triggerPeer("aiTextStream", {
                             requestId: requestId,
                             text: accumulatedText
@@ -430,6 +462,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
 
         // Flush any remaining accumulated text
         if (accumulatedText) {
+            textStreamSendCount++;
             nodeConnector.triggerPeer("aiTextStream", {
                 requestId: requestId,
                 text: accumulatedText
@@ -444,6 +477,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
             });
         }
 
+        _log("Complete: tools=" + toolCounter, "edits=" + collectedEdits.length,
+            "textDeltas=" + textDeltaCount, "textSent=" + textStreamSendCount);
+
         // Signal completion
         nodeConnector.triggerPeer("aiComplete", {
             requestId: requestId,
@@ -455,6 +491,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         const isAbort = signal.aborted || /abort/i.test(errMsg);
 
         if (isAbort) {
+            _log("Cancelled");
             // Query was cancelled — clear session so next query starts fresh
             currentSessionId = null;
             nodeConnector.triggerPeer("aiComplete", {
@@ -463,6 +500,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
             });
             return;
         }
+
+        _log("Error:", errMsg.slice(0, 200));
 
         // If we collected edits before error, send them
         if (collectedEdits.length > 0) {

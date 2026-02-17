@@ -179,7 +179,16 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
                 const totalEntries = result.totalEntries || entries.length;
                 const matchedEntries = result.matchedEntries != null ? result.matchedEntries : entries.length;
                 const rangeEnd = result.rangeEnd != null ? result.rangeEnd : matchedEntries;
-                let lines = entries.map(e => `[${e.level}] ${e.message}`);
+                let lines = entries.map(e => {
+                    let ts = "";
+                    if (e.timestamp) {
+                        // Show HH:MM:SS.mmm for compact display
+                        const d = new Date(e.timestamp);
+                        ts = d.toTimeString().slice(0, 8) + "." +
+                            String(d.getMilliseconds()).padStart(3, "0") + " ";
+                    }
+                    return `[${ts}${e.level}] ${e.message}`;
+                });
                 let trimmed = 0;
                 if (maxChars > 0) {
                     const trimResult = _trimToCharBudget(lines, maxChars);
