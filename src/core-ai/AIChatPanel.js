@@ -422,8 +422,10 @@ define(function (require, exports, module) {
 
         const config = TOOL_CONFIG[toolName] || { icon: "fa-solid fa-gear", color: "#adb9bd", label: toolName };
 
+        // Use requestId + toolId to ensure globally unique data-tool-id
+        const uniqueToolId = (_currentRequestId || "") + "-" + toolId;
         const $tool = $(
-            '<div class="ai-msg ai-msg-tool" data-tool-id="' + toolId + '">' +
+            '<div class="ai-msg ai-msg-tool" data-tool-id="' + uniqueToolId + '">' +
                 '<div class="ai-tool-header">' +
                     '<span class="ai-tool-spinner"></span>' +
                     '<span class="ai-tool-label"></span>' +
@@ -441,7 +443,8 @@ define(function (require, exports, module) {
      * Update an existing tool indicator with details once tool input is known.
      */
     function _updateToolIndicator(toolId, toolName, toolInput) {
-        const $tool = $messages.find('.ai-msg-tool[data-tool-id="' + toolId + '"]');
+        const uniqueToolId = (_currentRequestId || "") + "-" + toolId;
+        const $tool = $messages.find('.ai-msg-tool[data-tool-id="' + uniqueToolId + '"]');
         if (!$tool.length) {
             return;
         }
