@@ -98,6 +98,8 @@
         word-wrap: break-word;
         overflow-wrap: anywhere;
         min-width: 0;
+        user-select: text;
+        cursor: text;
     }
 }
 
@@ -265,6 +267,11 @@
         font-size: 11px;
         color: @project-panel-text-2;
         line-height: 1.3;
+
+        &.ai-tool-label-clickable:hover {
+            color: @project-panel-text-1;
+            text-decoration: underline;
+        }
     }
 
     .ai-tool-detail {
@@ -282,7 +289,28 @@
         word-break: break-all;
     }
 
+    .ai-tool-preview {
+        font-size: 10px;
+        font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+        color: @project-panel-text-2;
+        opacity: 0.5;
+        padding: 0 8px 4px 28px;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+
+        &:empty {
+            display: none;
+        }
+    }
+
     &.ai-tool-done {
+        .ai-tool-preview {
+            display: none;
+        }
+
         .ai-tool-label {
             opacity: 0.75;
         }
@@ -351,6 +379,12 @@
             white-space: nowrap;
             flex: 1;
             margin-right: 6px;
+            cursor: pointer;
+
+            &:hover {
+                color: @project-panel-text-1;
+                text-decoration: underline;
+            }
         }
 
         .ai-edit-apply-btn {
@@ -372,6 +406,21 @@
                 border-color: rgba(100, 200, 100, 0.15);
                 color: rgba(100, 200, 100, 0.4);
                 cursor: default;
+            }
+
+            &.ai-edit-undo-btn {
+                border-color: rgba(200, 160, 80, 0.3);
+                color: rgba(220, 180, 100, 0.9);
+
+                &:hover {
+                    background-color: rgba(200, 160, 80, 0.08);
+                }
+
+                &.undone {
+                    border-color: rgba(200, 160, 80, 0.15);
+                    color: rgba(200, 160, 80, 0.4);
+                    cursor: default;
+                }
             }
         }
     }

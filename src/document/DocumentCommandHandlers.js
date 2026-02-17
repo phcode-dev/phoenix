@@ -60,6 +60,7 @@ define(function (require, exports, module) {
         NodeConnector = require("NodeConnector"),
         NodeUtils           = require("utils/NodeUtils"),
         ChangeHelper        = require("editor/EditorHelper/ChangeHelper"),
+        SidebarTabs         = require("view/SidebarTabs"),
         _                   = require("thirdparty/lodash");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -1955,6 +1956,7 @@ define(function (require, exports, module) {
     function handleShowInTree() {
         let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         if(activeFile){
+            SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
             ProjectManager.showInTree(activeFile);
         }
     }

@@ -211,18 +211,65 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Edit tool");
-                            collectedEdits.push({
+                            const edit = {
                                 file: input.tool_input.file_path,
                                 oldText: input.tool_input.old_string,
                                 newText: input.tool_input.new_string
-                            });
+                            };
+                            collectedEdits.push(edit);
+                            try {
+                                await nodeConnector.execPeer("applyEditToBuffer", edit);
+                            } catch (err) {
+                                console.warn("[Phoenix AI] Failed to apply edit to buffer:", err.message);
+                            }
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
-                                    permissionDecisionReason: "Edit delegated to Phoenix editor"
+                                    permissionDecisionReason: "Edit applied successfully via Phoenix editor."
                                 }
                             };
+                        }
+                    ]
+                },
+                {
+                    matcher: "Read",
+                    hooks: [
+                        async (input) => {
+                            const filePath = input.tool_input.file_path;
+                            if (!filePath) {
+                                return undefined;
+                            }
+                            try {
+                                const result = await nodeConnector.execPeer("getFileContent", { filePath });
+                                if (result && result.isDirty && result.content !== null) {
+                                    const MAX_LINES = 2000;
+                                    const MAX_LINE_LENGTH = 2000;
+                                    const lines = result.content.split("\n");
+                                    const offset = input.tool_input.offset || 0;
+                                    const limit = input.tool_input.limit || MAX_LINES;
+                                    const selected = lines.slice(offset, offset + limit);
+                                    let formatted = selected.map((line, i) => {
+                                        const truncated = line.length > MAX_LINE_LENGTH
+                                            ? line.slice(0, MAX_LINE_LENGTH) + "..."
+                                            : line;
+                                        return String(offset + i + 1).padStart(6) + "\t" + truncated;
+                                    }).join("\n");
+                                    formatted = filePath + " (unsaved editor content, " +
+                                        lines.length + " lines total)\n\n" + formatted;
+                                    console.log("[Phoenix AI] Serving dirty file content for:", filePath);
+                                    return {
+                                        hookSpecificOutput: {
+                                            hookEventName: "PreToolUse",
+                                            permissionDecision: "deny",
+                                            permissionDecisionReason: formatted
+                                        }
+                                    };
+                                }
+                            } catch (err) {
+                                console.warn("[Phoenix AI] Failed to check dirty state:", filePath, err.message);
+                            }
+                            return undefined;
                         }
                     ]
                 },
@@ -231,16 +278,22 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
-                            collectedEdits.push({
+                            const edit = {
                                 file: input.tool_input.file_path,
                                 oldText: null,
                                 newText: input.tool_input.content
-                            });
+                            };
+                            collectedEdits.push(edit);
+                            try {
+                                await nodeConnector.execPeer("applyEditToBuffer", edit);
+                            } catch (err) {
+                                console.warn("[Phoenix AI] Failed to apply write to buffer:", err.message);
+                            }
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
-                                    permissionDecisionReason: "Write delegated to Phoenix editor"
+                                    permissionDecisionReason: "Write applied successfully via Phoenix editor."
                                 }
                             };
                         }
@@ -279,6 +332,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         let activeToolIndex = null;
         let activeToolInputJson = "";
         let toolCounter = 0;
+        let lastToolStreamTime = 0;
 
         for await (const message of result) {
             // Check abort
@@ -310,11 +364,21 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     });
                 }
 
-                // Accumulate tool input JSON
+                // Accumulate tool input JSON and stream preview
                 if (event.type === "content_block_delta" &&
                     event.delta?.type === "input_json_delta" &&
                     event.index === activeToolIndex) {
                     activeToolInputJson += event.delta.partial_json;
+                    const now = Date.now();
+                    if (now - lastToolStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                        lastToolStreamTime = now;
+                        nodeConnector.triggerPeer("aiToolStream", {
+                            requestId: requestId,
+                            toolId: toolCounter,
+                            toolName: activeToolName,
+                            partialJson: activeToolInputJson
+                        });
+                    }
                 }
 
                 // Tool block complete — parse input and send details

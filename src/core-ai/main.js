@@ -33,6 +33,14 @@ define(function (require, exports, module) {
 
     var AI_CONNECTOR_ID = "ph_ai_claude";
 
+    exports.getFileContent = async function (params) {
+        return AIChatPanel.getFileContent(params);
+    };
+
+    exports.applyEditToBuffer = async function (params) {
+        return AIChatPanel.applyEditToBuffer(params);
+    };
+
     AppInit.appReady(function () {
         SidebarTabs.addTab("ai", "AI", "fa-solid fa-wand-magic-sparkles", { priority: 200 });
 
