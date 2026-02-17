@@ -194,7 +194,8 @@ define(function (require, exports, module) {
             searchModel,
             "reference-in-files-results",
             "reference-in-files.results",
-            "reference"
+            "reference",
+            Strings.REFERENCES_PANEL_TITLE
         );
         if(_resultsView) {
             _resultsView
