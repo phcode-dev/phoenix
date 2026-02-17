@@ -293,6 +293,9 @@ define(function (require, exports, module) {
             return;
         }
         $bottomPanelTabBar.empty();
+
+        // Scrollable tabs area
+        let $tabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
         _openBottomPanelIds.forEach(function (panelId) {
             let panel = panelIDMap[panelId];
             if (!panel) {
@@ -302,10 +305,11 @@ define(function (require, exports, module) {
             let isActive = (panelId === _activeBottomPanelId);
             let $tab = $('<div class="bottom-panel-tab' + (isActive ? ' active' : '') + '" data-panel-id="' + panelId + '">' +
                 '<span class="bottom-panel-tab-title">' + $("<span>").text(title).html() + '</span>' +
-                '<span class="bottom-panel-tab-close">&times;</span>' +
+                '<span class="bottom-panel-tab-close-btn" title="Close">&times;</span>' +
                 '</div>');
-            $bottomPanelTabBar.append($tab);
+            $tabsOverflow.append($tab);
         });
+        $bottomPanelTabBar.append($tabsOverflow);
     }
 
     /**
@@ -317,8 +321,9 @@ define(function (require, exports, module) {
             return;
         }
         let activeMinSize = _panelMinSizes[_activeBottomPanelId] || 100;
-        // Add tab bar height (28px) to the panel's minSize
-        $bottomPanelContainer.data("currentMinSize", activeMinSize + 28);
+        // Add tab bar height to the panel's minSize
+        let tabBarHeight = $bottomPanelTabBar ? $bottomPanelTabBar.outerHeight() : 34;
+        $bottomPanelContainer.data("currentMinSize", activeMinSize + tabBarHeight);
     }
 
     /**
@@ -551,12 +556,14 @@ define(function (require, exports, module) {
         listenToResize($bottomPanelContainer);
 
         // Tab bar click handlers
-        $bottomPanelTabBar.on("click", ".bottom-panel-tab-close", function (e) {
+        $bottomPanelTabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
             e.stopPropagation();
             let panelId = $(this).closest(".bottom-panel-tab").data("panel-id");
-            let panel = panelIDMap[panelId];
-            if (panel) {
-                panel.hide();
+            if (panelId) {
+                let panel = panelIDMap[panelId];
+                if (panel) {
+                    panel.hide();
+                }
             }
         });
 
