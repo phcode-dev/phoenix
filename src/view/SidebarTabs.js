@@ -37,8 +37,9 @@
  */
 define(function (require, exports, module) {
 
-    const AppInit          = require("utils/AppInit"),
-        EventDispatcher  = require("utils/EventDispatcher");
+    const AppInit              = require("utils/AppInit"),
+        EventDispatcher      = require("utils/EventDispatcher"),
+        PreferencesManager   = require("preferences/PreferencesManager");
 
     // --- Constants -----------------------------------------------------------
 
@@ -47,6 +48,16 @@ define(function (require, exports, module) {
      * @const {string}
      */
     const SIDEBAR_TAB_FILES = "sidebar-tab-files";
+
+    /**
+     * Preferred sidebar width (px) when a non-files tab (e.g. AI) is
+     * first activated. Applied once if the current width is narrower.
+     * @const {number}
+     */
+    const AI_TAB_GOOD_WIDTH = 370;
+
+    /** Preference key used to track whether the initial width bump has been applied. */
+    const PREF_AI_WIDTH_SET_INITIAL = "aiTabWidthSetInitial";
 
     // --- Events --------------------------------------------------------------
 
@@ -422,6 +433,17 @@ define(function (require, exports, module) {
         $navTabBar.find('.sidebar-tab[data-tab-id="' + id + '"]').addClass("active");
 
         _applyTabVisibility();
+
+        // One-time sidebar width bump when switching to a non-files tab
+        if (id !== SIDEBAR_TAB_FILES && $sidebar && $sidebar.length) {
+            if (!PreferencesManager.getViewState(PREF_AI_WIDTH_SET_INITIAL)) {
+                const SidebarView = require("project/SidebarView");
+                if (SidebarView.getWidth() < AI_TAB_GOOD_WIDTH) {
+                    SidebarView.resize(AI_TAB_GOOD_WIDTH);
+                }
+                PreferencesManager.setViewState(PREF_AI_WIDTH_SET_INITIAL, true);
+            }
+        }
 
         if (previousTabId !== id) {
             exports.trigger(EVENT_TAB_CHANGED, id, previousTabId);
