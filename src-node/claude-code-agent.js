@@ -122,7 +122,7 @@ exports.checkAvailability = async function () {
  * Called from browser via execPeer("sendPrompt", {prompt, projectPath, sessionAction, model}).
  *
  * Returns immediately with a requestId. Results are sent as events:
- *   aiProgress, aiTextStream, aiEditResult, aiError, aiComplete
+ *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
     const { prompt, projectPath, sessionAction, model } = params;
@@ -177,7 +177,8 @@ exports.destroySession = async function () {
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
 async function _runQuery(requestId, prompt, projectPath, model, signal) {
-    const collectedEdits = [];
+    let editCount = 0;
+    let toolCounter = 0;
     let queryFn;
 
     try {
@@ -218,17 +219,23 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Edit tool");
+                            const myToolId = toolCounter; // capture before any await
                             const edit = {
                                 file: input.tool_input.file_path,
                                 oldText: input.tool_input.old_string,
                                 newText: input.tool_input.new_string
                             };
-                            collectedEdits.push(edit);
+                            editCount++;
                             try {
                                 await nodeConnector.execPeer("applyEditToBuffer", edit);
                             } catch (err) {
                                 console.warn("[Phoenix AI] Failed to apply edit to buffer:", err.message);
                             }
+                            nodeConnector.triggerPeer("aiToolEdit", {
+                                requestId: requestId,
+                                toolId: myToolId,
+                                edit: edit
+                            });
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
@@ -285,17 +292,23 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
+                            const myToolId = toolCounter; // capture before any await
                             const edit = {
                                 file: input.tool_input.file_path,
                                 oldText: null,
                                 newText: input.tool_input.content
                             };
-                            collectedEdits.push(edit);
+                            editCount++;
                             try {
                                 await nodeConnector.execPeer("applyEditToBuffer", edit);
                             } catch (err) {
                                 console.warn("[Phoenix AI] Failed to apply write to buffer:", err.message);
                             }
+                            nodeConnector.triggerPeer("aiToolEdit", {
+                                requestId: requestId,
+                                toolId: myToolId,
+                                edit: edit
+                            });
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
@@ -342,7 +355,6 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         let activeToolName = null;
         let activeToolIndex = null;
         let activeToolInputJson = "";
-        let toolCounter = 0;
         let lastToolStreamTime = 0;
 
         // Trace counters (logged at tool/query completion, not per-delta)
@@ -469,15 +481,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
             });
         }
 
-        // Send collected edits if any
-        if (collectedEdits.length > 0) {
-            nodeConnector.triggerPeer("aiEditResult", {
-                requestId: requestId,
-                edits: collectedEdits
-            });
-        }
-
-        _log("Complete: tools=" + toolCounter, "edits=" + collectedEdits.length,
+        _log("Complete: tools=" + toolCounter, "edits=" + editCount,
             "textDeltas=" + textDeltaCount, "textSent=" + textStreamSendCount);
 
         // Signal completion
@@ -502,14 +506,6 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
         }
 
         _log("Error:", errMsg.slice(0, 200));
-
-        // If we collected edits before error, send them
-        if (collectedEdits.length > 0) {
-            nodeConnector.triggerPeer("aiEditResult", {
-                requestId: requestId,
-                edits: collectedEdits
-            });
-        }
 
         nodeConnector.triggerPeer("aiError", {
             requestId: requestId,
