@@ -29,6 +29,7 @@ define(function (require, exports, module) {
         CommandManager   = require("command/CommandManager"),
         Commands         = require("command/Commands"),
         ProjectManager   = require("project/ProjectManager"),
+        FileSystem       = require("filesystem/FileSystem"),
         marked           = require("thirdparty/marked.min");
 
     let _nodeConnector = null;
@@ -37,6 +38,7 @@ define(function (require, exports, module) {
     let _segmentText = "";       // text for the current segment only
     let _autoScroll = true;
     let _hasReceivedContent = false; // tracks if we've received any text/tool in current response
+    const _previousContentMap = {}; // filePath → previous content before edit, for undo support
 
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn;
@@ -103,6 +105,7 @@ define(function (require, exports, module) {
         _nodeConnector.on("aiTextStream", _onTextStream);
         _nodeConnector.on("aiProgress", _onProgress);
         _nodeConnector.on("aiToolInfo", _onToolInfo);
+        _nodeConnector.on("aiToolStream", _onToolStream);
         _nodeConnector.on("aiEditResult", _onEditResult);
         _nodeConnector.on("aiError", _onError);
         _nodeConnector.on("aiComplete", _onComplete);
@@ -307,7 +310,8 @@ define(function (require, exports, module) {
         Read:  { icon: "fa-solid fa-file-lines", color: "#6bc76b", label: "Read" },
         Edit:  { icon: "fa-solid fa-pen", color: "#e8a838", label: "Edit" },
         Write: { icon: "fa-solid fa-file-pen", color: "#e8a838", label: "Write" },
-        Bash:  { icon: "fa-solid fa-terminal", color: "#c084fc", label: "Run command" }
+        Bash:  { icon: "fa-solid fa-terminal", color: "#c084fc", label: "Run command" },
+        Skill: { icon: "fa-solid fa-puzzle-piece", color: "#e0c060", label: "Skill" }
     };
 
     function _onProgress(_event, data) {
@@ -323,6 +327,106 @@ define(function (require, exports, module) {
 
     function _onToolInfo(_event, data) {
         _updateToolIndicator(data.toolId, data.toolName, data.toolInput);
+    }
+
+    function _onToolStream(_event, data) {
+        const uniqueToolId = (_currentRequestId || "") + "-" + data.toolId;
+        const $tool = $messages.find('.ai-msg-tool[data-tool-id="' + uniqueToolId + '"]');
+        if (!$tool.length) {
+            return;
+        }
+
+        // Update label with filename as soon as file_path is available
+        if (!$tool.data("labelUpdated")) {
+            const filePath = _extractJsonStringValue(data.partialJson, "file_path");
+            if (filePath) {
+                const fileName = filePath.split("/").pop();
+                const config = TOOL_CONFIG[data.toolName] || {};
+                $tool.find(".ai-tool-label").text((config.label || data.toolName) + " " + fileName + "...");
+                $tool.data("labelUpdated", true);
+            }
+        }
+
+        const preview = _extractToolPreview(data.toolName, data.partialJson);
+        if (preview) {
+            $tool.find(".ai-tool-preview").text(preview);
+            _scrollToBottom();
+        }
+    }
+
+    /**
+     * Extract a complete string value for a given key from partial JSON.
+     * Returns null if the key isn't found or the value isn't complete yet.
+     */
+    function _extractJsonStringValue(partialJson, key) {
+        // Try both with and without space after colon: "key":"val" or "key": "val"
+        let pattern = '"' + key + '":"';
+        let idx = partialJson.indexOf(pattern);
+        if (idx === -1) {
+            pattern = '"' + key + '": "';
+            idx = partialJson.indexOf(pattern);
+        }
+        if (idx === -1) {
+            return null;
+        }
+        const start = idx + pattern.length;
+        // Find the closing quote (not escaped)
+        let end = start;
+        while (end < partialJson.length) {
+            if (partialJson[end] === '"' && partialJson[end - 1] !== '\\') {
+                return partialJson.slice(start, end).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+            }
+            end++;
+        }
+        return null; // value not complete yet
+    }
+
+    /**
+     * Extract a readable one-line preview from partial tool input JSON.
+     * Looks for the "interesting" key per tool type (e.g. content for Write).
+     */
+    function _extractToolPreview(toolName, partialJson) {
+        if (!partialJson) {
+            return "";
+        }
+        // Map tool names to the key whose value we want to preview
+        const interestingKey = {
+            Write: "content",
+            Edit: "new_string",
+            Bash: "command",
+            Grep: "pattern",
+            Glob: "pattern"
+        }[toolName];
+
+        let raw = "";
+        if (interestingKey) {
+            // Find the interesting key and grab everything after it
+            const keyPattern = '"' + interestingKey + '":';
+            const idx = partialJson.indexOf(keyPattern);
+            if (idx !== -1) {
+                raw = partialJson.slice(idx + keyPattern.length).slice(-120);
+            }
+            // If the interesting key hasn't appeared yet, show nothing
+            // rather than raw JSON noise like {"file_path":...
+        } else {
+            // No interesting key defined for this tool — use the tail
+            raw = partialJson.slice(-120);
+        }
+        if (!raw) {
+            return "";
+        }
+        // Clean up JSON syntax noise into readable text
+        let preview = raw
+            .replace(/\\n/g, " ")
+            .replace(/\\t/g, " ")
+            .replace(/\\"/g, '"')
+            .replace(/\s+/g, " ")
+            .trim();
+        // Strip leading JSON artifacts (quotes, whitespace)
+        preview = preview.replace(/^[\s"]+/, "");
+        // Strip trailing incomplete JSON artifacts
+        preview = preview.replace(/["{}\[\]]*$/, "").trim();
+        return preview;
     }
 
     function _onEditResult(_event, data) {
@@ -430,6 +534,7 @@ define(function (require, exports, module) {
                     '<span class="ai-tool-spinner"></span>' +
                     '<span class="ai-tool-label"></span>' +
                 '</div>' +
+                '<div class="ai-tool-preview"></div>' +
             '</div>'
         );
         $tool.find(".ai-tool-label").text(config.label + "...");
@@ -477,6 +582,17 @@ define(function (require, exports, module) {
             }).css("cursor", "pointer");
         }
 
+        // For file-related tools, make label clickable to open the file
+        if (toolInput && toolInput.file_path &&
+            (toolName === "Read" || toolName === "Write" || toolName === "Edit")) {
+            const filePath = toolInput.file_path;
+            $tool.find(".ai-tool-label").on("click", function (e) {
+                e.stopPropagation();
+                const vfsPath = _realToVfsPath(filePath);
+                CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
+            }).css("cursor", "pointer").addClass("ai-tool-label-clickable");
+        }
+
         _scrollToBottom();
     }
 
@@ -519,6 +635,11 @@ define(function (require, exports, module) {
                 summary: "Ran command",
                 lines: input.command ? [input.command] : []
             };
+        case "Skill":
+            return {
+                summary: input.skill ? "Skill: " + input.skill : "Skill",
+                lines: input.args ? [input.args] : []
+            };
         default:
             return { summary: toolName, lines: [] };
         }
@@ -550,10 +671,16 @@ define(function (require, exports, module) {
         const $header = $(
             '<div class="ai-edit-header">' +
                 '<span class="ai-edit-file" title="' + _escapeAttr(fileName) + '"></span>' +
-                '<button class="ai-edit-apply-btn">Apply</button>' +
+                '<button class="ai-edit-apply-btn ai-edit-undo-btn">Undo</button>' +
             '</div>'
         );
         $header.find(".ai-edit-file").text(displayName);
+
+        // Click filename to open file in editor
+        $header.find(".ai-edit-file").on("click", function () {
+            const vfsPath = _realToVfsPath(fileName);
+            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
+        });
 
         const $toggle = $('<button class="ai-edit-toggle">Show diff</button>');
         const $diff = $('<div class="ai-edit-diff"></div>');
@@ -580,19 +707,32 @@ define(function (require, exports, module) {
             $toggle.text($diff.hasClass("expanded") ? "Hide diff" : "Show diff");
         });
 
-        $header.find(".ai-edit-apply-btn").on("click", function () {
+        // Undo button — restores previous content
+        $header.find(".ai-edit-undo-btn").on("click", function () {
             const $btn = $(this);
-            if ($btn.hasClass("applied")) {
+            if ($btn.hasClass("undone")) {
                 return;
             }
-            _applySingleEdit(edit)
-                .then(function () {
-                    $btn.text("Applied").addClass("applied");
-                })
-                .catch(function (err) {
-                    const $err = $('<div class="ai-edit-error"></div>').text(err.message || String(err));
-                    $card.append($err);
-                });
+            if (edit.oldText === null) {
+                // Write (new file) — undo by restoring previous content
+                _undoEdit(edit.file, _previousContentMap[edit.file] || "")
+                    .done(function () {
+                        $btn.text("Undone").addClass("undone");
+                    })
+                    .fail(function (err) {
+                        $card.append($('<div class="ai-edit-error"></div>').text(err.message || String(err)));
+                    });
+            } else {
+                // Edit — undo by reversing the replacement
+                const reverseEdit = { file: edit.file, oldText: edit.newText, newText: edit.oldText };
+                _applySingleEdit(reverseEdit)
+                    .done(function () {
+                        $btn.text("Undone").addClass("undone");
+                    })
+                    .fail(function (err) {
+                        $card.append($('<div class="ai-edit-error"></div>').text(err.message || String(err)));
+                    });
+            }
         });
 
         $card.append($header);
@@ -660,45 +800,93 @@ define(function (require, exports, module) {
     // --- Edit application ---
 
     /**
-     * Apply a single edit to a document.
+     * Apply a single edit to a document buffer (makes it a dirty tab).
+     * Called immediately when Claude's Write/Edit is intercepted, so
+     * subsequent Reads see the new content via the dirty-file hook.
      * @param {Object} edit - {file, oldText, newText}
-     * @return {$.Promise}
+     * @return {$.Promise} resolves with {previousContent} for undo support
      */
     function _applySingleEdit(edit) {
         const result = new $.Deferred();
         const vfsPath = _realToVfsPath(edit.file);
 
+        function _applyToDoc() {
+            DocumentManager.getDocumentForPath(vfsPath)
+                .done(function (doc) {
+                    try {
+                        const previousContent = doc.getText();
+                        if (edit.oldText === null) {
+                            // Write (new file or full replacement)
+                            doc.setText(edit.newText);
+                        } else {
+                            // Edit — find oldText and replace
+                            const docText = doc.getText();
+                            const idx = docText.indexOf(edit.oldText);
+                            if (idx === -1) {
+                                result.reject(new Error("Text not found in file — it may have changed"));
+                                return;
+                            }
+                            const startPos = doc._masterEditor ?
+                                doc._masterEditor._codeMirror.posFromIndex(idx) :
+                                _indexToPos(docText, idx);
+                            const endPos = doc._masterEditor ?
+                                doc._masterEditor._codeMirror.posFromIndex(idx + edit.oldText.length) :
+                                _indexToPos(docText, idx + edit.oldText.length);
+                            doc.replaceRange(edit.newText, startPos, endPos);
+                        }
+                        // Open the file in the editor
+                        CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
+                        result.resolve({ previousContent: previousContent });
+                    } catch (err) {
+                        result.reject(err);
+                    }
+                })
+                .fail(function (err) {
+                    result.reject(err || new Error("Could not open document"));
+                });
+        }
+
+        if (edit.oldText === null) {
+            // Write — file may not exist yet. Create it on disk first so
+            // getDocumentForPath succeeds, then set content in the buffer.
+            const file = FileSystem.getFileForPath(vfsPath);
+            file.write("", function (err) {
+                if (err) {
+                    result.reject(new Error("Could not create file: " + err));
+                    return;
+                }
+                _applyToDoc();
+            });
+        } else {
+            // Edit — file must already exist
+            _applyToDoc();
+        }
+
+        return result.promise();
+    }
+
+    /**
+     * Undo a previously applied edit by restoring the document content.
+     * For new files (previousContent is empty string), closes the document.
+     * @param {string} filePath - real filesystem path
+     * @param {string} previousContent - content to restore
+     * @return {$.Promise}
+     */
+    function _undoEdit(filePath, previousContent) {
+        const result = new $.Deferred();
+        const vfsPath = _realToVfsPath(filePath);
+
         DocumentManager.getDocumentForPath(vfsPath)
             .done(function (doc) {
                 try {
-                    if (edit.oldText === null) {
-                        // Write (new file or full replacement)
-                        doc.setText(edit.newText);
-                    } else {
-                        // Edit — find oldText and replace
-                        const docText = doc.getText();
-                        const idx = docText.indexOf(edit.oldText);
-                        if (idx === -1) {
-                            result.reject(new Error("Text not found in file — it may have changed"));
-                            return;
-                        }
-                        const startPos = doc._masterEditor ?
-                            doc._masterEditor._codeMirror.posFromIndex(idx) :
-                            _indexToPos(docText, idx);
-                        const endPos = doc._masterEditor ?
-                            doc._masterEditor._codeMirror.posFromIndex(idx + edit.oldText.length) :
-                            _indexToPos(docText, idx + edit.oldText.length);
-                        doc.replaceRange(edit.newText, startPos, endPos);
-                    }
-                    // Open the file in the editor
-                    CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
+                    doc.setText(previousContent);
                     result.resolve();
                 } catch (err) {
                     result.reject(err);
                 }
             })
             .fail(function (err) {
-                result.reject(err || new Error("Could not open document"));
+                result.reject(err || new Error("Could not open document for undo"));
             });
 
         return result.promise();
@@ -753,7 +941,43 @@ define(function (require, exports, module) {
         return realPath;
     }
 
+    /**
+     * Check if a file has unsaved changes in the editor and return its content.
+     * Used by the node-side Read hook to serve dirty buffer content to Claude.
+     */
+    function getFileContent(params) {
+        const vfsPath = _realToVfsPath(params.filePath);
+        const doc = DocumentManager.getOpenDocumentForPath(vfsPath);
+        if (doc && doc.isDirty) {
+            return { isDirty: true, content: doc.getText() };
+        }
+        return { isDirty: false, content: null };
+    }
+
+    /**
+     * Apply an edit to the editor buffer immediately (called by node-side hooks).
+     * The file appears as a dirty tab so subsequent Reads see the new content.
+     * @param {Object} params - {file, oldText, newText}
+     * @return {Promise<{applied: boolean, error?: string}>}
+     */
+    function applyEditToBuffer(params) {
+        const deferred = new $.Deferred();
+        _applySingleEdit(params)
+            .done(function (result) {
+                if (result && result.previousContent !== undefined) {
+                    _previousContentMap[params.file] = result.previousContent;
+                }
+                deferred.resolve({ applied: true });
+            })
+            .fail(function (err) {
+                deferred.resolve({ applied: false, error: err.message || String(err) });
+            });
+        return deferred.promise();
+    }
+
     // Public API
     exports.init = init;
     exports.initPlaceholder = initPlaceholder;
+    exports.getFileContent = getFileContent;
+    exports.applyEditToBuffer = applyEditToBuffer;
 });
