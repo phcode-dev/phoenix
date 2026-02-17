@@ -255,7 +255,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
                                             : line;
                                         return String(offset + i + 1).padStart(6) + "\t" + truncated;
                                     }).join("\n");
-                                    formatted = filePath + " (unsaved editor content, " +
+                                    formatted = filePath + " (" +
                                         lines.length + " lines total)\n\n" + formatted;
                                     console.log("[Phoenix AI] Serving dirty file content for:", filePath);
                                     return {
