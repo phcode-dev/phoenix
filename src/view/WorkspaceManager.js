@@ -144,6 +144,9 @@ define(function (require, exports, module) {
     /** @type {string|null} The panel ID of the currently visible (active) tab */
     let _activeBottomPanelId = null;
 
+    /** @type {boolean} True while the status bar toggle button is handling a click */
+    let _statusBarToggleInProgress = false;
+
     /**
      * Calculates the available height for the full-size Editor (or the no-editor placeholder),
      * accounting for the current size of all visible panels, toolbar, & status bar.
@@ -548,13 +551,14 @@ define(function (require, exports, module) {
 
         // Create status bar chevron toggle for bottom panel
         $statusBarPanelToggle = $(
-            '<div id="status-panel-toggle" class="indicator global-indicator" title="Toggle Bottom Panel">' +
+            '<div id="status-panel-toggle" class="indicator global-indicator" title="Show Bottom Panel">' +
             '<i class="fa-solid fa-chevron-up"></i>' +
             '</div>'
         );
-        $("#status-indicators").append($statusBarPanelToggle);
+        $("#status-indicators").prepend($statusBarPanelToggle);
 
         $statusBarPanelToggle.on("click", function () {
+            _statusBarToggleInProgress = true;
             if ($bottomPanelContainer.is(":visible")) {
                 Resizer.hide($bottomPanelContainer[0]);
                 triggerUpdateLayout();
@@ -564,6 +568,7 @@ define(function (require, exports, module) {
             } else {
                 _showLastHiddenPanelIfPossible();
             }
+            _statusBarToggleInProgress = false;
         });
 
         // Make the container resizable (not individual panels)
@@ -575,13 +580,20 @@ define(function (require, exports, module) {
             $statusBarPanelToggle.find("i")
                 .removeClass("fa-chevron-down")
                 .addClass("fa-chevron-up");
-            AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 1500);
+            $statusBarPanelToggle.attr("title", "Show Bottom Panel");
+            if (!_statusBarToggleInProgress) {
+                AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
+            }
         });
 
         $bottomPanelContainer.on("panelExpanded", function () {
             $statusBarPanelToggle.find("i")
                 .removeClass("fa-chevron-up")
                 .addClass("fa-chevron-down");
+            $statusBarPanelToggle.attr("title", "Hide Bottom Panel");
+            if (!_statusBarToggleInProgress) {
+                AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
+            }
         });
 
         // Tab bar click handlers
