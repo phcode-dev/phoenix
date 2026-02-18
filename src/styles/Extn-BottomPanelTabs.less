@@ -46,6 +46,10 @@
 
         .toolbar {
             box-shadow: none;
+
+            .close {
+                display: none;
+            }
         }
     }
 }
@@ -61,7 +65,7 @@
     user-select: none;
 
     .dark & {
-        background-color: #1E1E1E;
+        background-color: #222222;
     }
 }
 
@@ -177,6 +181,43 @@
 
     &:hover {
         opacity: 1;
+        color: #333;
+        background-color: rgba(0, 0, 0, 0.1);
+
+        .dark & {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+    }
+}
+
+.bottom-panel-tab-bar-actions {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: auto;
+    padding: 0 0.25rem;
+    flex: 0 0 auto;
+}
+
+.bottom-panel-close-all-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #777;
+    font-size: 1.3rem;
+    line-height: 1;
+    transition: color 0.12s ease, background-color 0.12s ease;
+
+    .dark & {
+        color: #777;
+    }
+
+    &:hover {
         color: #333;
         background-color: rgba(0, 0, 0, 0.1);
 

@@ -131,6 +131,9 @@ define(function (require, exports, module) {
     /** @type {jQueryObject} The tab bar inside the container */
     let $bottomPanelTabBar;
 
+    /** @type {jQueryObject} Scrollable area holding the tab elements */
+    let $bottomPanelTabsOverflow;
+
     /** @type {string[]} Ordered list of currently open (tabbed) panel IDs */
     let _openBottomPanelIds = [];
 
@@ -270,13 +273,11 @@ define(function (require, exports, module) {
      * @private
      */
     function _updateBottomPanelTabBar() {
-        if (!$bottomPanelTabBar) {
+        if (!$bottomPanelTabsOverflow) {
             return;
         }
-        $bottomPanelTabBar.empty();
+        $bottomPanelTabsOverflow.empty();
 
-        // Scrollable tabs area
-        let $tabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
         _openBottomPanelIds.forEach(function (panelId) {
             let panel = panelIDMap[panelId];
             if (!panel) {
@@ -288,9 +289,8 @@ define(function (require, exports, module) {
                 '<span class="bottom-panel-tab-title">' + $("<span>").text(title).html() + '</span>' +
                 '<span class="bottom-panel-tab-close-btn" title="Close">&times;</span>' +
                 '</div>');
-            $tabsOverflow.append($tab);
+            $bottomPanelTabsOverflow.append($tab);
         });
-        $bottomPanelTabBar.append($tabsOverflow);
     }
 
     /**
@@ -381,12 +381,19 @@ define(function (require, exports, module) {
             let isActive = (_activeBottomPanelId === panelId);
 
             if (isOpen && isActive) {
-                // Already open and active - no-op
+                // Already open and active — just ensure container is visible
+                if (!$bottomPanelContainer.is(":visible")) {
+                    Resizer.show($bottomPanelContainer[0]);
+                    triggerUpdateLayout();
+                }
                 return;
             }
             if (isOpen && !isActive) {
-                // Open but not active - just switch tab
+                // Open but not active - switch tab and ensure container is visible
                 _switchToTab(panelId);
+                if (!$bottomPanelContainer.is(":visible")) {
+                    Resizer.show($bottomPanelContainer[0]);
+                }
                 PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, panelId);
                 triggerUpdateLayout();
                 return;
@@ -525,6 +532,13 @@ define(function (require, exports, module) {
         // --- Create the bottom panel tabbed container ---
         $bottomPanelContainer = $('<div id="bottom-panel-container" class="vert-resizable top-resizer"></div>');
         $bottomPanelTabBar = $('<div id="bottom-panel-tab-bar"></div>');
+        $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
+        let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
+        $tabBarActions.append(
+            '<span class="bottom-panel-close-all-btn" title="Close Panel">&times;</span>'
+        );
+        $bottomPanelTabBar.append($bottomPanelTabsOverflow);
+        $bottomPanelTabBar.append($tabBarActions);
         $bottomPanelContainer.append($bottomPanelTabBar);
         $bottomPanelContainer.insertBefore("#status-bar");
         $bottomPanelContainer.hide();
@@ -551,6 +565,15 @@ define(function (require, exports, module) {
             if (panelId && panelId !== _activeBottomPanelId) {
                 _switchToTab(panelId);
                 PanelView.trigger(PanelView.EVENT_PANEL_SHOWN, panelId);
+                triggerUpdateLayout();
+            }
+        });
+
+        // Close-panel button collapses the container but keeps tabs intact
+        $bottomPanelTabBar.on("click", ".bottom-panel-close-all-btn", function (e) {
+            e.stopPropagation();
+            if ($bottomPanelContainer.is(":visible")) {
+                Resizer.hide($bottomPanelContainer[0]);
                 triggerUpdateLayout();
             }
         });
