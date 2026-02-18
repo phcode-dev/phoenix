@@ -1212,7 +1212,7 @@ define(function (require, exports) {
             return;
         }
         const mainToolbarWidth = $mainToolbar.width();
-        let overFlowWidth = 565;
+        let overFlowWidth = 540;
         const breakpoints = [
             { width: overFlowWidth, className: "hide-when-small" },
             { width: 400, className: "hide-when-x-small" }
@@ -1246,7 +1246,6 @@ define(function (require, exports) {
         resizeObserver.observe($gitPanel[0]);
         $mainToolbar = $gitPanel.find(".mainToolbar");
         $gitPanel
-            .on("click", ".close", toggle)
             .on("click", ".check-all", function () {
                 if ($(this).is(":checked")) {
                     return Git.stageAll().then(function () {
