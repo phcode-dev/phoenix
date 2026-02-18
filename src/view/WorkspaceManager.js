@@ -264,10 +264,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Rebuild the tab bar DOM from _openBottomPanelIds.
-     * @private
-     */
-    /**
      * Full rebuild of the tab bar DOM from _openBottomPanelIds.
      * Call this when tabs are added, removed, or renamed.
      * @private
