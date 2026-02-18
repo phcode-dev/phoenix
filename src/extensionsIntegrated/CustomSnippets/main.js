@@ -60,6 +60,7 @@ define(function (require, exports, module) {
     function _createPanel() {
         customSnippetsPanel = WorkspaceManager.createBottomPanel(PANEL_ID, $snippetsPanel, PANEL_MIN_SIZE,
             Strings.CUSTOM_SNIPPETS_PANEL_TITLE);
+        UIHelper.init(customSnippetsPanel);
         customSnippetsPanel.show();
 
         // also register the handlers
@@ -130,7 +131,6 @@ define(function (require, exports, module) {
      * @private
      */
     function _registerHandlers() {
-        const $closePanelBtn = $("#close-custom-snippets-panel-btn");
         const $saveCustomSnippetBtn = $("#save-custom-snippet-btn");
         const $cancelCustomSnippetBtn = $("#cancel-custom-snippet-btn");
         const $abbrInput = $("#abbr-box");
@@ -160,10 +160,6 @@ define(function (require, exports, module) {
         $backToListMenuBtn.on("click", function () {
             UIHelper.showSnippetListMenu();
             SnippetsList.showSnippetsList();
-        });
-
-        $closePanelBtn.on("click", function () {
-            _hidePanel();
         });
 
         $saveCustomSnippetBtn.on("click", function () {
