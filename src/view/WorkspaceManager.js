@@ -534,7 +534,7 @@ define(function (require, exports, module) {
         $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
         let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
         $tabBarActions.append(
-            '<span class="bottom-panel-close-all-btn" title="Close Panel">&times;</span>'
+            '<span class="bottom-panel-hide-btn" title="Hide Panel"><i class="fa-solid fa-chevron-down"></i></span>'
         );
         $bottomPanelTabBar.append($bottomPanelTabsOverflow);
         $bottomPanelTabBar.append($tabBarActions);
@@ -568,8 +568,8 @@ define(function (require, exports, module) {
             }
         });
 
-        // Close-panel button collapses the container but keeps tabs intact
-        $bottomPanelTabBar.on("click", ".bottom-panel-close-all-btn", function (e) {
+        // Hide-panel button collapses the container but keeps tabs intact
+        $bottomPanelTabBar.on("click", ".bottom-panel-hide-btn", function (e) {
             e.stopPropagation();
             if ($bottomPanelContainer.is(":visible")) {
                 Resizer.hide($bottomPanelContainer[0]);
