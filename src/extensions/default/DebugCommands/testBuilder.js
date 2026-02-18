@@ -49,23 +49,19 @@ define(function (require, exports, module) {
     }
     const panelHTML = `
 <div id="test-builder-panel-phcode" class="bottom-panel vert-resizable top-resizer">
-    <div class="toolbar" style="display: flex; justify-content: space-between;">
-      <div style="display: flex">
-         <div class="title">Test Builder</div>
+    <div class="toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 5px 8px;">
+      <div style="display: flex; gap: 4px;">
          <button class="btn btn-mini no-focus save-test-builder">Save</button>
          <button class="btn btn-mini primary no-focus run-test-builder">Run</button>
          <button class="btn btn-mini no-focus run-selected">Run Selected</button>
       </div>
-      <div>
+      <div style="display: flex; gap: 4px;">
          <button class="btn btn-mini no-focus mark-validate" title="Validate marks at cursor">Marks</button>
          <button class="btn btn-mini no-focus cursor-locate">cursor</button>
-         <button class="btn btn-mini no-focus text-validate" title="validate text" style="margin-right: 20px;">
-            Text</button>
-         <a href="#" class="close" style="right: 0;margin-right: 10px;">&times;</a>
-      </div>  
+         <button class="btn btn-mini no-focus text-validate" title="validate text">Text</button>
+      </div>
     </div>
     <div style="display: flex; height: 100%; overflow: scroll;">
-<!--27 px is status bar height. If this is not set, the preview code mirror editor gives weird layout issues at times-->
         <div class="test_builder-editor" style="width: 100%; height: 100%;"></div>
     </div>
 </div>`;
@@ -161,7 +157,6 @@ define(function (require, exports, module) {
             builderEditor && builderEditor.updateLayout();
         }).observe($panel[0]);
 
-        $panel.find(".close").click(toggleTestBuilder);
         $panel.find(".save-test-builder").click(saveFile);
         $panel.find(".run-test-builder").click(()=>{
             runTests();
