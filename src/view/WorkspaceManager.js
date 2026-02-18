@@ -40,6 +40,7 @@ define(function (require, exports, module) {
         EventDispatcher         = require("utils/EventDispatcher"),
         KeyBindingManager = require("command/KeyBindingManager"),
         Resizer                 = require("utils/Resizer"),
+        AnimationUtils          = require("utils/AnimationUtils"),
         PluginPanelView         = require("view/PluginPanelView"),
         PanelView               = require("view/PanelView"),
         EditorManager           = require("editor/EditorManager"),
@@ -133,6 +134,9 @@ define(function (require, exports, module) {
 
     /** @type {jQueryObject} Scrollable area holding the tab elements */
     let $bottomPanelTabsOverflow;
+
+    /** @type {jQueryObject} Chevron toggle in the status bar */
+    let $statusBarPanelToggle;
 
     /** @type {string[]} Ordered list of currently open (tabbed) panel IDs */
     let _openBottomPanelIds = [];
@@ -542,10 +546,43 @@ define(function (require, exports, module) {
         $bottomPanelContainer.insertBefore("#status-bar");
         $bottomPanelContainer.hide();
 
+        // Create status bar chevron toggle for bottom panel
+        $statusBarPanelToggle = $(
+            '<div id="status-panel-toggle" class="indicator global-indicator" title="Toggle Bottom Panel">' +
+            '<i class="fa-solid fa-chevron-up"></i>' +
+            '</div>'
+        );
+        $("#status-indicators").append($statusBarPanelToggle);
+
+        $statusBarPanelToggle.on("click", function () {
+            if ($bottomPanelContainer.is(":visible")) {
+                Resizer.hide($bottomPanelContainer[0]);
+                triggerUpdateLayout();
+            } else if (_openBottomPanelIds.length > 0) {
+                Resizer.show($bottomPanelContainer[0]);
+                triggerUpdateLayout();
+            } else {
+                _showLastHiddenPanelIfPossible();
+            }
+        });
+
         // Make the container resizable (not individual panels)
         Resizer.makeResizable($bottomPanelContainer[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP,
             200, false, undefined, true);
         listenToResize($bottomPanelContainer);
+
+        $bottomPanelContainer.on("panelCollapsed", function () {
+            $statusBarPanelToggle.find("i")
+                .removeClass("fa-chevron-down")
+                .addClass("fa-chevron-up");
+            AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 1500);
+        });
+
+        $bottomPanelContainer.on("panelExpanded", function () {
+            $statusBarPanelToggle.find("i")
+                .removeClass("fa-chevron-up")
+                .addClass("fa-chevron-down");
+        });
 
         // Tab bar click handlers
         $bottomPanelTabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
