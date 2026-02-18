@@ -41,6 +41,7 @@ define(function (require, exports, module) {
         KeyBindingManager = require("command/KeyBindingManager"),
         Resizer                 = require("utils/Resizer"),
         AnimationUtils          = require("utils/AnimationUtils"),
+        Strings                 = require("strings"),
         PluginPanelView         = require("view/PluginPanelView"),
         PanelView               = require("view/PanelView"),
         EditorManager           = require("editor/EditorManager"),
@@ -293,7 +294,7 @@ define(function (require, exports, module) {
             let isActive = (panelId === _activeBottomPanelId);
             let $tab = $('<div class="bottom-panel-tab' + (isActive ? ' active' : '') + '" data-panel-id="' + panelId + '">' +
                 '<span class="bottom-panel-tab-title">' + $("<span>").text(title).html() + '</span>' +
-                '<span class="bottom-panel-tab-close-btn" title="Close">&times;</span>' +
+                '<span class="bottom-panel-tab-close-btn" title="' + Strings.CLOSE + '">&times;</span>' +
                 '</div>');
             $bottomPanelTabsOverflow.append($tab);
         });
@@ -541,7 +542,7 @@ define(function (require, exports, module) {
         $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
         let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
         $tabBarActions.append(
-            '<span class="bottom-panel-hide-btn" title="Hide Panel"><i class="fa-solid fa-chevron-down"></i></span>'
+            '<span class="bottom-panel-hide-btn" title="' + Strings.BOTTOM_PANEL_HIDE + '"><i class="fa-solid fa-chevron-down"></i></span>'
         );
         $bottomPanelTabBar.append($bottomPanelTabsOverflow);
         $bottomPanelTabBar.append($tabBarActions);
@@ -551,7 +552,7 @@ define(function (require, exports, module) {
 
         // Create status bar chevron toggle for bottom panel
         $statusBarPanelToggle = $(
-            '<div id="status-panel-toggle" class="indicator global-indicator" title="Show Bottom Panel">' +
+            '<div id="status-panel-toggle" class="indicator global-indicator" title="' + Strings.BOTTOM_PANEL_SHOW + '">' +
             '<i class="fa-solid fa-chevron-up"></i>' +
             '</div>'
         );
@@ -580,7 +581,7 @@ define(function (require, exports, module) {
             $statusBarPanelToggle.find("i")
                 .removeClass("fa-chevron-down")
                 .addClass("fa-chevron-up");
-            $statusBarPanelToggle.attr("title", "Show Bottom Panel");
+            $statusBarPanelToggle.attr("title", Strings.BOTTOM_PANEL_SHOW);
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
             }
@@ -590,7 +591,7 @@ define(function (require, exports, module) {
             $statusBarPanelToggle.find("i")
                 .removeClass("fa-chevron-up")
                 .addClass("fa-chevron-down");
-            $statusBarPanelToggle.attr("title", "Hide Bottom Panel");
+            $statusBarPanelToggle.attr("title", Strings.BOTTOM_PANEL_HIDE_TOGGLE);
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
             }

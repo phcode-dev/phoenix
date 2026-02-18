@@ -1251,6 +1251,9 @@ define({
     "REFERENCES_NO_RESULTS": "No References available for current cursor position",
     "REFERENCES_PANEL_TITLE": "References",
     "SEARCH_RESULTS_PANEL_TITLE": "Search Results",
+    "BOTTOM_PANEL_HIDE": "Hide Panel",
+    "BOTTOM_PANEL_SHOW": "Show Bottom Panel",
+    "BOTTOM_PANEL_HIDE_TOGGLE": "Hide Bottom Panel",
 
     "CMD_FIND_DOCUMENT_SYMBOLS": "Find Document Symbols",
     "CMD_FIND_PROJECT_SYMBOLS": "Find Project Symbols",
