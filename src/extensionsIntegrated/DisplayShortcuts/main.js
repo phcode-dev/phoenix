@@ -506,10 +506,6 @@ define(function (require, exports, module) {
             }
         });
 
-        $shortcutsPanel.find(".close").click(function () {
-            CommandManager.execute(TOGGLE_SHORTCUTS_ID);
-        });
-
         $shortcutsPanel.find(".reset-to-default").click(function () {
             Dialogs.showConfirmDialog(
                 Strings.KEYBOARD_SHORTCUT_RESET_DIALOG_TITLE,
