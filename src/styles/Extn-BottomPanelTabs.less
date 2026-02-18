@@ -46,10 +46,6 @@
 
         .toolbar {
             box-shadow: none;
-
-            .close {
-                display: none;
-            }
         }
     }
 }
@@ -200,29 +196,29 @@
     flex: 0 0 auto;
 }
 
-.bottom-panel-close-all-btn {
+.bottom-panel-hide-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 1.6rem;
     height: 1.6rem;
+    margin-right: 0.3rem;
     border-radius: 3px;
     cursor: pointer;
-    color: #777;
-    font-size: 1.3rem;
+    color: #333;
+    font-size: 0.8rem;
+    -webkit-text-stroke: 0.4px;
     line-height: 1;
-    transition: color 0.12s ease, background-color 0.12s ease;
+    transition: background-color 0.12s ease;
 
     .dark & {
-        color: #777;
+        color: #fff;
     }
 
     &:hover {
-        color: #333;
         background-color: rgba(0, 0, 0, 0.1);
 
         .dark & {
-            color: #fff;
             background-color: rgba(255, 255, 255, 0.12);
         }
     }
