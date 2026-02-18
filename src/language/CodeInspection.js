@@ -1354,11 +1354,6 @@ define(function (require, exports, module) {
                 }
             });
 
-        $("#problems-panel .close").click(function () {
-            toggleCollapsed(true);
-            MainViewManager.focusActivePane();
-        });
-
         // Status bar indicator - icon & tooltip updated by run()
         var statusIconHtml = Mustache.render("<div id=\"status-inspection\">&nbsp;</div>", Strings);
         StatusBar.addIndicator(INDICATOR_ID, $(statusIconHtml), true, "", "", "status-indent");
