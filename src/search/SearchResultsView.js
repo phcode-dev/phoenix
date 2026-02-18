@@ -329,12 +329,6 @@ define(function (require, exports, module) {
         var self = this;
         this._panel.$panel
             .off(".searchResults")  // Remove the old events
-            .on("dblclick.searchResults", ".toolbar", function() {
-                self._panel.hide();
-            })
-            .on("click.searchResults", ".close", function () {
-                self._panel.hide();
-            })
             // The link to go the first page
             .on("click.searchResults", ".first-page:not(.disabled)", function () {
                 self._currentStart = 0;
