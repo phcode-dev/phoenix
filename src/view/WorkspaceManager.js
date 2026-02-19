@@ -47,6 +47,13 @@ define(function (require, exports, module) {
         EditorManager           = require("editor/EditorManager"),
         KeyEvent                = require("utils/KeyEvent");
 
+    /**
+     * Panel ID for the default launcher panel shown when no other panels are open.
+     * @const
+     * @private
+     */
+    const DEFAULT_PANEL_ID = "workspace.defaultPanel";
+
 
     /**
      * Event triggered when the workspace layout updates.
@@ -122,8 +129,7 @@ define(function (require, exports, module) {
      */
     var windowResizing = false;
 
-    let lastHiddenBottomPanelStack = [],
-        lastShownBottomPanelStack = [];
+    let lastShownBottomPanelStack = [];
 
     /** @type {jQueryObject} The single container wrapping all bottom panels */
     let $bottomPanelContainer;
@@ -360,7 +366,7 @@ define(function (require, exports, module) {
                 Resizer.show($bottomPanelContainer[0]);
                 triggerUpdateLayout();
             } else {
-                _showLastHiddenPanelIfPossible();
+                _showDefaultPanel();
             }
             _statusBarToggleInProgress = false;
         });
@@ -378,15 +384,12 @@ define(function (require, exports, module) {
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
             }
-            // When the container collapses while tabs are still open (e.g. chevron
-            // click or status-bar toggle), move those panels from the "shown" stack
-            // to the "hidden" stack so the Escape-key handler doesn't silently close
-            // tabs that the user can't even see.
+            // When the container collapses while tabs are still open, clear the
+            // shown stack so the Escape-key handler doesn't silently close tabs
+            // that the user can't even see.
             let openIds = PanelView.getOpenBottomPanelIDs();
             for (let i = 0; i < openIds.length; i++) {
                 lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== openIds[i]);
-                lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== openIds[i]);
-                lastHiddenBottomPanelStack.push(openIds[i]);
             }
         });
 
@@ -398,11 +401,9 @@ define(function (require, exports, module) {
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
             }
-            // When the container re-expands, move the open panels back from
-            // the "hidden" stack to the "shown" stack.
+            // When the container re-expands, add the open panels to the shown stack.
             let openIds = PanelView.getOpenBottomPanelIDs();
             for (let i = 0; i < openIds.length; i++) {
-                lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== openIds[i]);
                 lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== openIds[i]);
                 lastShownBottomPanelStack.push(openIds[i]);
             }
@@ -435,15 +436,12 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     PanelView.on(PanelView.EVENT_PANEL_SHOWN, (event, panelID)=>{
-        lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== panelID);
         lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== panelID);
         lastShownBottomPanelStack.push(panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
         triggerUpdateLayout();
     });
     PanelView.on(PanelView.EVENT_PANEL_HIDDEN, (event, panelID)=>{
-        lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== panelID);
-        lastHiddenBottomPanelStack.push(panelID);
         lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
         triggerUpdateLayout();
@@ -578,46 +576,37 @@ define(function (require, exports, module) {
         return false;
     }
 
-    function _showLastHiddenPanelIfPossible() {
-        while(lastHiddenBottomPanelStack.length > 0){
-            let panelToShow = getPanelForID(lastHiddenBottomPanelStack.pop());
-            if(panelToShow.canBeShown()){
-                panelToShow.show();
-                return true;
-            }
+    /**
+     * Shows the default launcher panel when no other panels are open.
+     * @private
+     */
+    function _showDefaultPanel() {
+        let defaultPanel = panelIDMap[DEFAULT_PANEL_ID];
+        if (defaultPanel) {
+            defaultPanel.show();
         }
-        return false;
     }
 
     function _handleEscapeKey() {
-        let allPanelsIDs = getAllPanelIDs();
-        // first we see if there is any least recently shown panel
+        // Hide the most recently shown bottom panel
         if (lastShownBottomPanelStack.length > 0) {
             let panelToHide = getPanelForID(lastShownBottomPanelStack.pop());
-            // Guard: only hide if the panel is actually visible.  When the
-            // container is collapsed the stacks are updated via panelCollapsed,
-            // but this acts as a safety net against stale entries.
+            // Guard: only hide if the panel is actually visible.
             if (panelToHide && panelToHide.isVisible()) {
                 panelToHide.hide();
                 return true;
             }
         }
-        // if not, see if there is any open panels that are not yet tracked in the least recently used stacks.
-        for(let panelID of allPanelsIDs){
+        // Fallback: hide any visible bottom panel not tracked in the stack.
+        let allPanelsIDs = getAllPanelIDs();
+        for (let panelID of allPanelsIDs) {
             let panel = getPanelForID(panelID);
-            if(panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL && panel.isVisible()){
+            if (panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL && panel.isVisible()) {
                 panel.hide();
-                lastHiddenBottomPanelStack.push(panelID);
                 return true;
             }
         }
-        // no panels hidden, we will toggle the last hidden panel with succeeding escape key presses
-        return _showLastHiddenPanelIfPossible();
-    }
-
-    function _handleShiftEscapeKey() {
-        // show hidden panels one by one
-        return _showLastHiddenPanelIfPossible();
+        return false;
     }
 
     // pressing escape when focused on editor will toggle the last opened bottom panel
@@ -644,9 +633,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE  && event.shiftKey) {
-            _handleShiftEscapeKey();
-        } else if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
             _handleEscapeKey();
         }
 
@@ -671,6 +658,7 @@ define(function (require, exports, module) {
     exports.EVENT_WORKSPACE_UPDATE_LAYOUT   = EVENT_WORKSPACE_UPDATE_LAYOUT;
     exports.EVENT_WORKSPACE_PANEL_SHOWN     = EVENT_WORKSPACE_PANEL_SHOWN;
     exports.EVENT_WORKSPACE_PANEL_HIDDEN    = EVENT_WORKSPACE_PANEL_HIDDEN;
+    exports.DEFAULT_PANEL_ID                = DEFAULT_PANEL_ID;
 
     /**
      * Constant representing the type of bottom panel

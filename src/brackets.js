@@ -135,6 +135,7 @@ define(function (require, exports, module) {
     require("utils/NodeUtils");
     require("utils/ColorUtils");
     require("view/ThemeManager");
+    require("view/DefaultPanelView");
     require("thirdparty/lodash");
     require("language/XMLUtils");
     require("language/JSONUtils");
