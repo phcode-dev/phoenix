@@ -22,6 +22,10 @@
  * AI Snapshot Store — content-addressable store and snapshot/restore logic
  * for tracking file states across AI responses. Extracted from AIChatPanel
  * to separate data/logic concerns from the DOM/UI layer.
+ *
+ * Content is stored in memory during an AI turn and flushed to disk at
+ * finalizeResponse() time. Reads check memory first, then fall back to disk.
+ * A per-instance heartbeat + GC mechanism cleans up stale instance data.
  */
 define(function (require, exports, module) {
 
@@ -30,8 +34,23 @@ define(function (require, exports, module) {
         Commands         = require("command/Commands"),
         FileSystem       = require("filesystem/FileSystem");
 
+    // --- Constants ---
+    const HEARTBEAT_INTERVAL_MS = 60 * 1000;
+    const STALE_THRESHOLD_MS = 20 * 60 * 1000;
+
+    // --- Disk store state ---
+    let _instanceDir;           // "<appSupportDir>/instanceData/<instanceId>/"
+    let _aiSnapDir;             // "<appSupportDir>/instanceData/<instanceId>/aiSnap/"
+    let _heartbeatIntervalId = null;
+    let _diskReady = false;
+    let _diskReadyResolve;
+    const _diskReadyPromise = new Promise(function (resolve) {
+        _diskReadyResolve = resolve;
+    });
+
     // --- Private state ---
-    const _contentStore = {};        // hash → content string (content-addressable dedup)
+    const _memoryBuffer = {};       // hash → content (in-memory during AI turn)
+    const _writtenHashes = new Set(); // hashes confirmed on disk
     let _snapshots = [];             // flat: _snapshots[i] = { filePath: hash|null }
     let _pendingBeforeSnap = {};     // built during current response: filePath → hash|null
 
@@ -65,8 +84,66 @@ define(function (require, exports, module) {
 
     function storeContent(content) {
         const hash = _hashContent(content);
-        _contentStore[hash] = content;
+        if (!_writtenHashes.has(hash) && !_memoryBuffer[hash]) {
+            _memoryBuffer[hash] = content;
+        }
         return hash;
+    }
+
+    // --- Disk store ---
+
+    function _initDiskStore() {
+        const appSupportDir = Phoenix.VFS.getAppSupportDir();
+        const instanceId = Phoenix.PHOENIX_INSTANCE_ID;
+        _instanceDir = appSupportDir + "instanceData/" + instanceId + "/";
+        _aiSnapDir = _instanceDir + "aiSnap/";
+        Phoenix.VFS.ensureExistsDirAsync(_aiSnapDir)
+            .then(function () {
+                _diskReady = true;
+                _diskReadyResolve();
+            })
+            .catch(function (err) {
+                console.error("[AISnapshotStore] Failed to init disk store:", err);
+                // _diskReadyPromise stays pending — heartbeat/GC never fire
+            });
+    }
+
+    function _flushToDisk() {
+        if (!_diskReady) {
+            return;
+        }
+        const hashes = Object.keys(_memoryBuffer);
+        hashes.forEach(function (hash) {
+            const content = _memoryBuffer[hash];
+            const file = FileSystem.getFileForPath(_aiSnapDir + hash);
+            file.write(content, {blind: true}, function (err) {
+                if (err) {
+                    console.error("[AISnapshotStore] Flush failed for hash " + hash + ":", err);
+                    // Keep in _memoryBuffer so reads still work
+                } else {
+                    _writtenHashes.add(hash);
+                    delete _memoryBuffer[hash];
+                }
+            });
+        });
+    }
+
+    function _readContent(hash) {
+        // Check memory buffer first (content may not have flushed yet)
+        if (_memoryBuffer[hash]) {
+            return Promise.resolve(_memoryBuffer[hash]);
+        }
+        // Read from disk
+        return new Promise(function (resolve, reject) {
+            const file = FileSystem.getFileForPath(_aiSnapDir + hash);
+            file.read(function (err, data) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
     }
 
     // --- File operations ---
@@ -181,27 +258,30 @@ define(function (require, exports, module) {
 
     /**
      * Apply a snapshot to files. hash=null means delete the file.
+     * Reads content from memory buffer first, then disk.
      * @param {Object} snapshot - { filePath: hash|null }
-     * @return {$.Promise} resolves with errorCount
+     * @return {Promise<number>} resolves with errorCount
      */
-    function _applySnapshot(snapshot) {
-        const result = new $.Deferred();
+    async function _applySnapshot(snapshot) {
         const filePaths = Object.keys(snapshot);
-        const promises = [];
-        let errorCount = 0;
-        filePaths.forEach(function (fp) {
-            const hash = snapshot[fp];
-            const p = hash === null
-                ? _closeAndDeleteFile(fp)
-                : _createOrUpdateFile(fp, _contentStore[hash]);
-            p.fail(function () { errorCount++; });
-            promises.push(p);
-        });
-        if (promises.length === 0) {
-            return result.resolve(0).promise();
+        if (filePaths.length === 0) {
+            return 0;
         }
-        $.when.apply($, promises).always(function () { result.resolve(errorCount); });
-        return result.promise();
+        const promises = filePaths.map(function (fp) {
+            const hash = snapshot[fp];
+            if (hash === null) {
+                return _closeAndDeleteFile(fp);
+            }
+            return _readContent(hash).then(function (content) {
+                return _createOrUpdateFile(fp, content);
+            });
+        });
+        const results = await Promise.allSettled(promises);
+        let errorCount = 0;
+        results.forEach(function (r) {
+            if (r.status === "rejected") { errorCount++; }
+        });
+        return errorCount;
     }
 
     // --- Public API ---
@@ -240,6 +320,7 @@ define(function (require, exports, module) {
      * Finalize snapshot state when a response completes.
      * Builds an "after" snapshot from current document content for edited files,
      * pushes it, and resets transient tracking variables.
+     * Flushes in-memory content to disk for long-term storage.
      * @return {number} the after-snapshot index, or -1 if no edits happened
      */
     function finalizeResponse() {
@@ -258,6 +339,7 @@ define(function (require, exports, module) {
             afterIndex = _snapshots.length - 1;
         }
         _pendingBeforeSnap = {};
+        _flushToDisk();
         return afterIndex;
     }
 
@@ -266,14 +348,13 @@ define(function (require, exports, module) {
      * @param {number} index - index into _snapshots
      * @param {Function} onComplete - callback(errorCount)
      */
-    function restoreToSnapshot(index, onComplete) {
+    async function restoreToSnapshot(index, onComplete) {
         if (index < 0 || index >= _snapshots.length) {
             onComplete(0);
             return;
         }
-        _applySnapshot(_snapshots[index]).done(function (errorCount) {
-            onComplete(errorCount);
-        });
+        const errorCount = await _applySnapshot(_snapshots[index]);
+        onComplete(errorCount);
     }
 
     /**
@@ -285,12 +366,107 @@ define(function (require, exports, module) {
 
     /**
      * Clear all snapshot state. Called when starting a new session.
+     * Also deletes and recreates the aiSnap directory on disk.
      */
     function reset() {
-        Object.keys(_contentStore).forEach(function (k) { delete _contentStore[k]; });
+        Object.keys(_memoryBuffer).forEach(function (k) { delete _memoryBuffer[k]; });
+        _writtenHashes.clear();
         _snapshots = [];
         _pendingBeforeSnap = {};
+
+        // Delete and recreate aiSnap directory
+        if (_diskReady && _aiSnapDir) {
+            const dir = FileSystem.getDirectoryForPath(_aiSnapDir);
+            dir.unlink(function (err) {
+                if (err) {
+                    console.error("[AISnapshotStore] Failed to delete aiSnap dir:", err);
+                }
+                Phoenix.VFS.ensureExistsDirAsync(_aiSnapDir).catch(function (e) {
+                    console.error("[AISnapshotStore] Failed to recreate aiSnap dir:", e);
+                });
+            });
+        }
     }
+
+    // --- Heartbeat ---
+
+    function _writeHeartbeat() {
+        if (!_diskReady || !_instanceDir) {
+            return;
+        }
+        const file = FileSystem.getFileForPath(_instanceDir + "heartbeat");
+        file.write(String(Date.now()), {blind: true}, function (err) {
+            if (err) {
+                console.error("[AISnapshotStore] Heartbeat write failed:", err);
+            }
+        });
+    }
+
+    function _startHeartbeat() {
+        _diskReadyPromise.then(function () {
+            _writeHeartbeat();
+            _heartbeatIntervalId = setInterval(_writeHeartbeat, HEARTBEAT_INTERVAL_MS);
+        });
+    }
+
+    function _stopHeartbeat() {
+        if (_heartbeatIntervalId !== null) {
+            clearInterval(_heartbeatIntervalId);
+            _heartbeatIntervalId = null;
+        }
+    }
+
+    // --- Garbage Collection ---
+
+    function _runGarbageCollection() {
+        _diskReadyPromise.then(function () {
+            const appSupportDir = Phoenix.VFS.getAppSupportDir();
+            const instanceDataBaseDir = appSupportDir + "instanceData/";
+            const ownId = Phoenix.PHOENIX_INSTANCE_ID;
+            const baseDir = FileSystem.getDirectoryForPath(instanceDataBaseDir);
+            baseDir.getContents(function (err, entries) {
+                if (err) {
+                    console.error("[AISnapshotStore] GC: failed to list instanceData:", err);
+                    return;
+                }
+                const now = Date.now();
+                entries.forEach(function (entry) {
+                    if (!entry.isDirectory || entry.name === ownId) {
+                        return;
+                    }
+                    const heartbeatFile = FileSystem.getFileForPath(
+                        instanceDataBaseDir + entry.name + "/heartbeat"
+                    );
+                    heartbeatFile.read(function (readErr, data) {
+                        let isStale = false;
+                        if (readErr) {
+                            // No heartbeat file — treat as stale
+                            isStale = true;
+                        } else {
+                            const ts = parseInt(data, 10);
+                            if (isNaN(ts) || (now - ts) > STALE_THRESHOLD_MS) {
+                                isStale = true;
+                            }
+                        }
+                        if (isStale) {
+                            entry.unlink(function (unlinkErr) {
+                                if (unlinkErr) {
+                                    console.error("[AISnapshotStore] GC: failed to remove stale dir "
+                                        + entry.name + ":", unlinkErr);
+                                }
+                            });
+                        }
+                    });
+                });
+            }, true); // true = filterNothing
+        });
+    }
+
+    // --- Module init ---
+    _initDiskStore();
+    _startHeartbeat();
+    _runGarbageCollection();
+    window.addEventListener("beforeunload", _stopHeartbeat);
 
     exports.realToVfsPath = realToVfsPath;
     exports.saveDocToDisk = saveDocToDisk;

@@ -23,8 +23,14 @@ _snapshots[2] = after R2 edits
 ## State Variables
 
 ### AISnapshotStore (pure data layer)
+- `_memoryBuffer`: `hash → content` map holding content in memory during an AI turn; flushed to disk at `finalizeResponse()` time
+- `_writtenHashes`: `Set` of hashes confirmed written to disk (reads skip disk check for these)
 - `_snapshots[]`: flat array of `{ filePath: hash|null }` snapshots. `getSnapshotCount() > 0` replaces the old `_initialSnapshotCreated` flag.
 - `_pendingBeforeSnap`: per-file pre-edit tracking during current response (dedup guard for first-edit-per-file + file list for `finalizeResponse`)
+- `_instanceDir` / `_aiSnapDir`: per-instance disk paths under `<appSupportDir>/instanceData/<instanceId>/`
+- `_diskReady` / `_diskReadyDeferred`: gate for disk I/O; resolved once `_aiSnapDir` is created
+- Heartbeat: writes `Date.now()` to `_instanceDir + "heartbeat"` every 60s; stopped on `beforeunload`
+- GC: on module init, scans sibling instance dirs; removes any with missing or stale (>20 min) heartbeat
 
 ### AIChatPanel (UI state)
 - `_undoApplied`: whether undo/restore has been clicked on any card (UI control for button labels)
