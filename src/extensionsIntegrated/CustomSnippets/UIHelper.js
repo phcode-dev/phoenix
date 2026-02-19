@@ -21,7 +21,6 @@
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
     const StringUtils = require("utils/StringUtils");
-    const Global = require("./global");
     const Strings = require("strings");
 
     /** @type {Object} Reference to the panel instance, set via init() */
@@ -150,7 +149,9 @@ define(function (require, exports, module) {
         $addNewSnippetBtn.removeClass("hidden");
         $filterSnippetsPanel.removeClass("hidden");
 
-        _updateListTabTitle();
+        if (_panel) {
+            _panel.setTitle(Strings.CUSTOM_SNIPPETS_PANEL_TITLE);
+        }
 
         $("#filter-snippets-input").val("");
     }
@@ -211,24 +212,13 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Updates the tab title to show the list view format: "Custom Snippets (N)"
-     * @private
-     */
-    function _updateListTabTitle() {
-        if (!_panel) {
-            return;
-        }
-        const snippetCount = Global.SnippetHintsList.length;
-        const countText = snippetCount > 0 ? ` (${snippetCount})` : "";
-        _panel.setTitle(Strings.CUSTOM_SNIPPETS_PANEL_TITLE + countText);
-    }
-
-    /**
-     * Initializes the tab title for the list view.
-     * This is called when the panel is first opened to ensure the snippet count is displayed.
+     * Resets the tab title back to the default list view title.
+     * Called when the panel is first opened or toggled visible.
      */
     function initializeListViewToolbarTitle() {
-        _updateListTabTitle();
+        if (_panel) {
+            _panel.setTitle(Strings.CUSTOM_SNIPPETS_PANEL_TITLE);
+        }
     }
 
     /**
