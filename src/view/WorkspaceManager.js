@@ -664,6 +664,7 @@ define(function (require, exports, module) {
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
     exports.getOpenBottomPanelIDs           = PanelView.getOpenBottomPanelIDs;
+    exports.hideAllOpenBottomPanels         = PanelView.hideAllOpenPanels;
     exports.addEscapeKeyEventHandler        = addEscapeKeyEventHandler;
     exports.removeEscapeKeyEventHandler     = removeEscapeKeyEventHandler;
     exports._setMockDOM                     = _setMockDOM;

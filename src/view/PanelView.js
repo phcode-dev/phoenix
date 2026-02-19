@@ -376,12 +376,52 @@ define(function (require, exports, module) {
         return _openIds.slice();
     }
 
+    /**
+     * Hides every open bottom panel tab in a single batch
+     * @return {string[]} The IDs of panels that were open (useful for restoring later).
+     */
+    function hideAllOpenPanels() {
+        if (_openIds.length === 0) {
+            return [];
+        }
+        let closedIds = _openIds.slice();
+
+        // Remove visual active state from every panel
+        for (let i = 0; i < closedIds.length; i++) {
+            let panel = _panelMap[closedIds[i]];
+            if (panel) {
+                panel.$panel.removeClass("active-bottom-panel");
+            }
+        }
+
+        // Clear internal state BEFORE hiding the container so the
+        // panelCollapsed handler sees an empty _openIds and doesn't
+        // redundantly update the stacks.
+        _openIds = [];
+        _activeId = null;
+
+        if (_$container && _$container.is(":visible")) {
+            Resizer.hide(_$container[0]);
+        }
+
+        _updateBottomPanelTabBar();
+
+        // Fire one EVENT_PANEL_HIDDEN per panel for stack tracking.
+        // No intermediate EVENT_PANEL_SHOWN events are emitted.
+        for (let i = 0; i < closedIds.length; i++) {
+            exports.trigger(EVENT_PANEL_HIDDEN, closedIds[i]);
+        }
+
+        return closedIds;
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
 
     // Public API
     exports.Panel = Panel;
     exports.init = init;
     exports.getOpenBottomPanelIDs = getOpenBottomPanelIDs;
+    exports.hideAllOpenPanels = hideAllOpenPanels;
     //events
     exports.EVENT_PANEL_HIDDEN = EVENT_PANEL_HIDDEN;
     exports.EVENT_PANEL_SHOWN = EVENT_PANEL_SHOWN;
