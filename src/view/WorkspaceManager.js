@@ -378,6 +378,16 @@ define(function (require, exports, module) {
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
             }
+            // When the container collapses while tabs are still open (e.g. chevron
+            // click or status-bar toggle), move those panels from the "shown" stack
+            // to the "hidden" stack so the Escape-key handler doesn't silently close
+            // tabs that the user can't even see.
+            let openIds = PanelView.getOpenBottomPanelIDs();
+            for (let i = 0; i < openIds.length; i++) {
+                lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== openIds[i]);
+                lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== openIds[i]);
+                lastHiddenBottomPanelStack.push(openIds[i]);
+            }
         });
 
         $bottomPanelContainer.on("panelExpanded", function () {
@@ -387,6 +397,14 @@ define(function (require, exports, module) {
             $statusBarPanelToggle.attr("title", Strings.BOTTOM_PANEL_HIDE_TOGGLE);
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
+            }
+            // When the container re-expands, move the open panels back from
+            // the "hidden" stack to the "shown" stack.
+            let openIds = PanelView.getOpenBottomPanelIDs();
+            for (let i = 0; i < openIds.length; i++) {
+                lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== openIds[i]);
+                lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== openIds[i]);
+                lastShownBottomPanelStack.push(openIds[i]);
             }
         });
 
@@ -574,10 +592,15 @@ define(function (require, exports, module) {
     function _handleEscapeKey() {
         let allPanelsIDs = getAllPanelIDs();
         // first we see if there is any least recently shown panel
-        if(lastShownBottomPanelStack.length > 0){
+        if (lastShownBottomPanelStack.length > 0) {
             let panelToHide = getPanelForID(lastShownBottomPanelStack.pop());
-            panelToHide.hide();
-            return true;
+            // Guard: only hide if the panel is actually visible.  When the
+            // container is collapsed the stacks are updated via panelCollapsed,
+            // but this acts as a safety net against stale entries.
+            if (panelToHide && panelToHide.isVisible()) {
+                panelToHide.hide();
+                return true;
+            }
         }
         // if not, see if there is any open panels that are not yet tracked in the least recently used stacks.
         for(let panelID of allPanelsIDs){
