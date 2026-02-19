@@ -311,7 +311,10 @@ define(function (require, exports, module) {
      */
     Panel.prototype.setTitle = function (newTitle) {
         this._tabTitle = newTitle;
-        _updateBottomPanelTabBar();
+        if (_$tabsOverflow) {
+            _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + this.panelID + '"] .bottom-panel-tab-title')
+                .text(newTitle);
+        }
     };
 
     /**
