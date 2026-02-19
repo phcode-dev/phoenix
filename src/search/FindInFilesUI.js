@@ -111,7 +111,7 @@ define(function (require, exports, module) {
                     }
 
                 } else {
-                    _resultsView.close();
+                    _resultsView.showNoResults();
 
                     if (_findBar) {
                         var showMessage = false;
