@@ -234,6 +234,7 @@ define(function (require, exports, module) {
             // Already open and active — just ensure container is visible
             if (!_$container.is(":visible")) {
                 Resizer.show(_$container[0]);
+                exports.trigger(EVENT_PANEL_SHOWN, panelId);
             }
             return;
         }
