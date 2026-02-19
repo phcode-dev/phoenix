@@ -1365,6 +1365,14 @@ define(function (require, exports, module) {
             }
         });
 
+        // When the panel tab is closed externally (e.g. via the × button),
+        // update the collapsed state so the panel doesn't auto-reopen.
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
+            if (panelID === "errors") {
+                _collapsed = true;
+            }
+        });
+
         // Set initial UI state
         toggleEnabled(prefs.get(PREF_ENABLED), true);
         toggleCollapsed(prefs.get(PREF_COLLAPSED), true);

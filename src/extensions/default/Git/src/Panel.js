@@ -1501,6 +1501,17 @@ define(function (require, exports) {
         handleGitCommit(lastCommitMessage[ProjectManager.getProjectRoot().fullPath], false, COMMIT_MODE.DEFAULT);
     });
 
+    // When the panel tab is closed externally (e.g. via the × button),
+    // update the toolbar icon and menu checked state to stay in sync.
+    WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
+        if (panelID === "main-git.panel" && gitPanel) {
+            Main.$icon.toggleClass("on", false);
+            Main.$icon.toggleClass("selected-button", false);
+            CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(false);
+            Preferences.set("panelEnabled", false);
+        }
+    });
+
     exports.init = init;
     exports.refresh = refresh;
     exports.toggle = toggle;

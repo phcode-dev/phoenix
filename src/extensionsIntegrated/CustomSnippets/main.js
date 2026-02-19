@@ -255,6 +255,14 @@ define(function (require, exports, module) {
         });
     }
 
+    // When the panel tab is closed externally (e.g. via the × button),
+    // update the menu checked state to stay in sync.
+    WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
+        if (panelID === PANEL_ID && customSnippetsPanel) {
+            CommandManager.get(MY_COMMAND_ID).setChecked(false);
+        }
+    });
+
     AppInit.appReady(function () {
         CommandManager.register(MENU_ITEM_NAME, MY_COMMAND_ID, showCustomSnippetsPanel);
         // Render template with localized strings
