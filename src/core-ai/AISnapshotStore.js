@@ -33,10 +33,7 @@ define(function (require, exports, module) {
     // --- Private state ---
     const _contentStore = {};        // hash → content string (content-addressable dedup)
     let _snapshots = [];             // flat: _snapshots[i] = { filePath: hash|null }
-    let _lastSnapshotAfter = {};     // cumulative state after last completed response
     let _pendingBeforeSnap = {};     // built during current response: filePath → hash|null
-    let _initialSnapshotCreated = false;  // has the initial (pre-AI) snapshot been pushed?
-    let _undoApplied = false;
 
     // --- Path utility ---
 
@@ -226,10 +223,6 @@ define(function (require, exports, module) {
                     snap[filePath] = hash;
                 }
             });
-            // Also back-fill _lastSnapshotAfter
-            if (_lastSnapshotAfter[filePath] === undefined) {
-                _lastSnapshotAfter[filePath] = hash;
-            }
         }
     }
 
@@ -239,17 +232,8 @@ define(function (require, exports, module) {
      * @return {number} the snapshot index (always 0)
      */
     function createInitialSnapshot() {
-        const snap = Object.assign({}, _lastSnapshotAfter);
-        _snapshots.push(snap);
-        _initialSnapshotCreated = true;
+        _snapshots.push({});
         return 0;
-    }
-
-    /**
-     * @return {boolean} whether the initial snapshot has been created this session
-     */
-    function isInitialSnapshotCreated() {
-        return _initialSnapshotCreated;
     }
 
     /**
@@ -261,8 +245,8 @@ define(function (require, exports, module) {
     function finalizeResponse() {
         let afterIndex = -1;
         if (Object.keys(_pendingBeforeSnap).length > 0) {
-            // Build "after" snapshot = current _lastSnapshotAfter + current content of edited files
-            const afterSnap = Object.assign({}, _lastSnapshotAfter);
+            // Build "after" snapshot = last snapshot + current content of edited files
+            const afterSnap = Object.assign({}, _snapshots[_snapshots.length - 1]);
             Object.keys(_pendingBeforeSnap).forEach(function (fp) {
                 const vfsPath = realToVfsPath(fp);
                 const openDoc = DocumentManager.getOpenDocumentForPath(vfsPath);
@@ -271,11 +255,9 @@ define(function (require, exports, module) {
                 }
             });
             _snapshots.push(afterSnap);
-            _lastSnapshotAfter = afterSnap;
             afterIndex = _snapshots.length - 1;
         }
         _pendingBeforeSnap = {};
-        _undoApplied = false;
         return afterIndex;
     }
 
@@ -295,20 +277,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @return {boolean} whether undo has been applied (latest summary clicked)
-     */
-    function isUndoApplied() {
-        return _undoApplied;
-    }
-
-    /**
-     * @param {boolean} val
-     */
-    function setUndoApplied(val) {
-        _undoApplied = val;
-    }
-
-    /**
      * @return {number} number of snapshots
      */
     function getSnapshotCount() {
@@ -321,10 +289,7 @@ define(function (require, exports, module) {
     function reset() {
         Object.keys(_contentStore).forEach(function (k) { delete _contentStore[k]; });
         _snapshots = [];
-        _lastSnapshotAfter = {};
         _pendingBeforeSnap = {};
-        _initialSnapshotCreated = false;
-        _undoApplied = false;
     }
 
     exports.realToVfsPath = realToVfsPath;
@@ -332,11 +297,8 @@ define(function (require, exports, module) {
     exports.storeContent = storeContent;
     exports.recordFileBeforeEdit = recordFileBeforeEdit;
     exports.createInitialSnapshot = createInitialSnapshot;
-    exports.isInitialSnapshotCreated = isInitialSnapshotCreated;
     exports.finalizeResponse = finalizeResponse;
     exports.restoreToSnapshot = restoreToSnapshot;
-    exports.isUndoApplied = isUndoApplied;
-    exports.setUndoApplied = setUndoApplied;
     exports.getSnapshotCount = getSnapshotCount;
     exports.reset = reset;
 });

@@ -42,6 +42,7 @@ define(function (require, exports, module) {
     const _previousContentMap = {}; // filePath → previous content before edit, for undo support
     let _currentEdits = [];          // edits in current response, for summary card
     let _firstEditInResponse = true; // tracks first edit per response for initial PUC
+    let _undoApplied = false;        // whether undo/restore has been clicked on any card
     // --- AI event trace logging (compact, non-flooding) ---
     let _traceTextChunks = 0;
     let _traceToolStreamCounts = {}; // toolId → count
@@ -292,6 +293,7 @@ define(function (require, exports, module) {
         _hasReceivedContent = false;
         _isStreaming = false;
         _firstEditInResponse = true;
+        _undoApplied = false;
         SnapshotStore.reset();
         Object.keys(_previousContentMap).forEach(function (key) {
             delete _previousContentMap[key];
@@ -493,15 +495,16 @@ define(function (require, exports, module) {
             linesRemoved: oldLines
         });
 
-        // Capture pre-edit content into pending snapshot and back-fill
+        // Capture pre-edit content for snapshot tracking
         const previousContent = _previousContentMap[edit.file];
         const isNewFile = (edit.oldText === null && (previousContent === undefined || previousContent === ""));
-        SnapshotStore.recordFileBeforeEdit(edit.file, previousContent, isNewFile);
 
-        // On first edit per response, insert initial PUC if needed
+        // On first edit per response, insert initial PUC if needed.
+        // Create initial snapshot *before* recordFileBeforeEdit so it pushes
+        // an empty {} that recordFileBeforeEdit will back-fill directly.
         if (_firstEditInResponse) {
             _firstEditInResponse = false;
-            if (!SnapshotStore.isInitialSnapshotCreated()) {
+            if (SnapshotStore.getSnapshotCount() === 0) {
                 const initialIndex = SnapshotStore.createInitialSnapshot();
                 // Insert initial restore point PUC before the current tool indicator
                 const $puc = $(
@@ -524,6 +527,9 @@ define(function (require, exports, module) {
                 }
             }
         }
+
+        // Record pre-edit content into pending snapshot and back-fill
+        SnapshotStore.recordFileBeforeEdit(edit.file, previousContent, isNewFile);
 
         // Find the oldest Edit/Write tool indicator for this file that doesn't
         // already have edit actions. This is more robust than matching by toolId
@@ -601,6 +607,7 @@ define(function (require, exports, module) {
     function _appendEditSummary() {
         // Finalize snapshot and get the after-snapshot index
         const afterIndex = SnapshotStore.finalizeResponse();
+        _undoApplied = false;
 
         // Aggregate per-file stats
         const fileStats = {};
@@ -630,7 +637,7 @@ define(function (require, exports, module) {
                 .attr("title", "Restore files to this point");
 
             // Determine button label: "Undo" if not undone, else "Restore to this point"
-            const isUndo = !SnapshotStore.isUndoApplied();
+            const isUndo = !_undoApplied;
             const label = isUndo ? "Undo" : "Restore to this point";
             const title = isUndo ? "Undo changes from this response" : "Restore files to this point";
 
@@ -687,7 +694,7 @@ define(function (require, exports, module) {
         $msgs.find(".ai-restore-highlighted").removeClass("ai-restore-highlighted");
 
         // Once any "Restore to this point" is clicked, undo is no longer applicable
-        SnapshotStore.setUndoApplied(true);
+        _undoApplied = true;
 
         // Reset all buttons to "Restore to this point"
         $msgs.find('.ai-edit-restore-btn').each(function () {
@@ -718,7 +725,7 @@ define(function (require, exports, module) {
      */
     function _onUndoClick(afterIndex) {
         const $msgs = _$msgs();
-        SnapshotStore.setUndoApplied(true);
+        _undoApplied = true;
         const targetIndex = afterIndex - 1;
 
         // Reset all buttons to "Restore to this point"
