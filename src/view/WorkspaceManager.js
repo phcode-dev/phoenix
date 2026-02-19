@@ -588,28 +588,16 @@ define(function (require, exports, module) {
     }
 
     function _handleEscapeKey() {
-        // Hide the most recently shown bottom panel
-        if (lastShownBottomPanelStack.length > 0) {
-            let panelToHide = getPanelForID(lastShownBottomPanelStack.pop());
-            // Guard: only hide if the panel is actually visible.
-            if (panelToHide && panelToHide.isVisible()) {
-                panelToHide.hide();
-                return true;
-            }
-        }
-        // Fallback: hide any visible bottom panel not tracked in the stack.
-        let allPanelsIDs = getAllPanelIDs();
-        for (let panelID of allPanelsIDs) {
-            let panel = getPanelForID(panelID);
-            if (panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL && panel.isVisible()) {
-                panel.hide();
-                return true;
-            }
+        // Collapse the entire bottom panel container, keeping all tabs intact
+        if ($bottomPanelContainer && $bottomPanelContainer.is(":visible")) {
+            Resizer.hide($bottomPanelContainer[0]);
+            triggerUpdateLayout();
+            return true;
         }
         return false;
     }
 
-    // pressing escape when focused on editor will toggle the last opened bottom panel
+    // pressing escape when focused on editor will hide the bottom panel container
     function _handleKeydown(event) {
         if(event.keyCode !== KeyEvent.DOM_VK_ESCAPE || KeyBindingManager.isInOverlayMode()){
             return;
