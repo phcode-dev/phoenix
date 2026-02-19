@@ -33,11 +33,8 @@ define(function (require, exports, module) {
         WorkspaceManager = require("view/WorkspaceManager"),
         PanelView = require("view/PanelView");
 
-    const DOCS_URL = "https://docs.phcode.dev";
-
     /**
      * Descriptors for each launcher button.
-     * `commandID` may be undefined if the command is registered later (e.g. Git).
      */
     const _panelButtons = [
         {
@@ -100,11 +97,6 @@ define(function (require, exports, module) {
         });
 
         $content.append($buttonsRow);
-
-        let $readMore = $('<a class="default-panel-read-more" target="_blank"></a>')
-            .attr("href", DOCS_URL)
-            .text(Strings.BOTTOM_PANEL_DEFAULT_READ_MORE + " \u2192");
-        $content.append($readMore);
 
         $panel.append($content);
         return $panel;
