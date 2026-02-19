@@ -22,11 +22,12 @@ _snapshots[2] = after R2 edits
 
 ## State Variables
 
-- `_snapshots[]`: flat array of `{ filePath: hash|null }` snapshots
-- `_lastSnapshotAfter`: cumulative state after last completed response
-- `_pendingBeforeSnap`: per-file pre-edit tracking during current response
-- `_initialSnapshotCreated`: whether snapshot 0 has been pushed
-- `_undoApplied`: whether undo/restore has been clicked on any card
+### AISnapshotStore (pure data layer)
+- `_snapshots[]`: flat array of `{ filePath: hash|null }` snapshots. `getSnapshotCount() > 0` replaces the old `_initialSnapshotCreated` flag.
+- `_pendingBeforeSnap`: per-file pre-edit tracking during current response (dedup guard for first-edit-per-file + file list for `finalizeResponse`)
+
+### AIChatPanel (UI state)
+- `_undoApplied`: whether undo/restore has been clicked on any card (UI control for button labels)
 
 ## DOM Layout Example
 
@@ -49,18 +50,18 @@ _snapshots[2] = after R2 edits
 ### AISnapshotStore
 
 - `recordFileBeforeEdit(filePath, previousContent, isNewFile)`: tracks pre-edit state, back-fills all existing snapshots
-- `createInitialSnapshot()`: pushes snapshot 0 from `_lastSnapshotAfter`, returns index 0
-- `isInitialSnapshotCreated()`: returns whether snapshot 0 exists
-- `finalizeResponse()`: builds after-snapshot from current doc content, pushes it, resets `_undoApplied`, returns index (or -1)
+- `createInitialSnapshot()`: pushes empty `{}` as snapshot 0, returns index 0. Must be called *before* `recordFileBeforeEdit` so the back-fill populates it.
+- `getSnapshotCount()`: returns `_snapshots.length` (replaces `isInitialSnapshotCreated()`)
+- `finalizeResponse()`: builds after-snapshot from `_snapshots[last]` + current doc content, pushes it, returns index (or -1)
 - `restoreToSnapshot(index, callback)`: applies `_snapshots[index]` to files, calls `callback(errorCount)`
-- `isUndoApplied()` / `setUndoApplied(val)`: getter/setter for undo state
 - `reset()`: clears all state for new session
 
 ### AIChatPanel
 
 - `_$msgs()`: live DOM query helper — returns `$(".ai-chat-messages")` to avoid stale cached `$messages` reference (see Implementation Notes)
-- `_onToolEdit()`: on first edit per response, inserts initial PUC if not yet created. Diff toggle only (no per-edit undo).
-- `_appendEditSummary()`: calls `finalizeResponse()`, creates summary card with "Undo" or "Restore to this point" button
+- `_undoApplied`: local module state — reset to `false` in `_appendEditSummary()` (after `finalizeResponse()`) and `_newSession()`; set to `true` in `_onRestoreClick()` and `_onUndoClick()`
+- `_onToolEdit()`: on first edit per response, creates initial snapshot (if none) *then* records pre-edit state. Inserts initial PUC. Diff toggle only (no per-edit undo).
+- `_appendEditSummary()`: calls `finalizeResponse()`, resets `_undoApplied`, creates summary card with "Undo" or "Restore to this point" button
 - `_onUndoClick(afterIndex)`: sets `_undoApplied`, resets all buttons to "Restore to this point", restores to `afterIndex - 1`, highlights target element as "Restored", scrolls to it
 - `_onRestoreClick(snapshotIndex)`: sets `_undoApplied`, resets all buttons to "Restore to this point", restores to the given snapshot, marks clicked element as "Restored"
 - `_setStreaming(streaming)`: disables/enables all restore buttons during AI streaming
