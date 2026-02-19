@@ -538,5 +538,15 @@ define(function (require, exports, module) {
         KeyBindingManager.on(KeyBindingManager.EVENT_KEY_BINDING_REMOVED, _updateKeyBindings);
         KeyBindingManager.on(KeyBindingManager.EVENT_NEW_PRESET, _updatePresets);
         KeyBindingManager.on(KeyBindingManager.EVENT_PRESET_CHANGED, _updatePresets);
+
+        // When the panel tab is closed externally (e.g. via the × button),
+        // update the menu checked state and clean up resources.
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
+            if (panelID === TOGGLE_SHORTCUTS_ID && panel) {
+                destroyKeyList();
+                _clearSortingEventHandlers();
+                CommandManager.get(TOGGLE_SHORTCUTS_ID).setChecked(false);
+            }
+        });
     });
 });
