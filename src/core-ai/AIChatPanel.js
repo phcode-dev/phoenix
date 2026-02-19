@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         Commands         = require("command/Commands"),
         ProjectManager   = require("project/ProjectManager"),
         FileSystem       = require("filesystem/FileSystem"),
+        SnapshotStore    = require("core-ai/AISnapshotStore"),
         marked           = require("thirdparty/marked.min");
 
     let _nodeConnector = null;
@@ -40,13 +41,20 @@ define(function (require, exports, module) {
     let _hasReceivedContent = false; // tracks if we've received any text/tool in current response
     const _previousContentMap = {}; // filePath → previous content before edit, for undo support
     let _currentEdits = [];          // edits in current response, for summary card
-
+    let _firstEditInResponse = true; // tracks first edit per response for initial PUC
     // --- AI event trace logging (compact, non-flooding) ---
     let _traceTextChunks = 0;
     let _traceToolStreamCounts = {}; // toolId → count
 
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn;
+
+    // Live DOM query for $messages — the cached $messages reference can become stale
+    // after SidebarTabs reparents the panel. Use this for any deferred operations
+    // (click handlers, callbacks) where the cached reference may no longer be in the DOM.
+    function _$msgs() {
+        return $(".ai-chat-messages");
+    }
 
     const PANEL_HTML =
         '<div class="ai-chat-panel">' +
@@ -231,17 +239,23 @@ define(function (require, exports, module) {
         _segmentText = "";
         _hasReceivedContent = false;
         _currentEdits = [];
+        _firstEditInResponse = true;
         _appendThinkingIndicator();
+
+        // Remove restore highlights from previous interactions
+        _$msgs().find(".ai-restore-highlighted").removeClass("ai-restore-highlighted");
 
         // Get project path
         const projectPath = _getProjectRealPath();
 
         _traceTextChunks = 0;
         _traceToolStreamCounts = {};
+
+        const prompt = text;
         console.log("[AI UI] Sending prompt:", text.slice(0, 60));
 
         _nodeConnector.execPeer("sendPrompt", {
-            prompt: text,
+            prompt: prompt,
             projectPath: projectPath,
             sessionAction: "continue"
         }).then(function (result) {
@@ -277,6 +291,11 @@ define(function (require, exports, module) {
         _segmentText = "";
         _hasReceivedContent = false;
         _isStreaming = false;
+        _firstEditInResponse = true;
+        SnapshotStore.reset();
+        Object.keys(_previousContentMap).forEach(function (key) {
+            delete _previousContentMap[key];
+        });
         if ($messages) {
             $messages.empty();
         }
@@ -371,7 +390,8 @@ define(function (require, exports, module) {
         }
 
         const preview = _extractToolPreview(data.toolName, data.partialJson);
-        if (_traceToolStreamCounts[uniqueToolId] === 1) {
+        const count = _traceToolStreamCounts[uniqueToolId];
+        if (count === 1) {
             console.log("[AI UI]", "ToolStream first:", data.toolName, "#" + data.toolId,
                 "json=" + (data.partialJson || "").length + "ch");
         }
@@ -473,6 +493,38 @@ define(function (require, exports, module) {
             linesRemoved: oldLines
         });
 
+        // Capture pre-edit content into pending snapshot and back-fill
+        const previousContent = _previousContentMap[edit.file];
+        const isNewFile = (edit.oldText === null && (previousContent === undefined || previousContent === ""));
+        SnapshotStore.recordFileBeforeEdit(edit.file, previousContent, isNewFile);
+
+        // On first edit per response, insert initial PUC if needed
+        if (_firstEditInResponse) {
+            _firstEditInResponse = false;
+            if (!SnapshotStore.isInitialSnapshotCreated()) {
+                const initialIndex = SnapshotStore.createInitialSnapshot();
+                // Insert initial restore point PUC before the current tool indicator
+                const $puc = $(
+                    '<div class="ai-msg ai-msg-restore-point" data-snapshot-index="' + initialIndex + '">' +
+                        '<button class="ai-restore-point-btn" disabled>Restore to this point</button>' +
+                    '</div>'
+                );
+                $puc.find(".ai-restore-point-btn").on("click", function () {
+                    if (!_isStreaming) {
+                        _onRestoreClick(initialIndex);
+                    }
+                });
+                // Find the last tool indicator and insert the PUC right before it
+                const $liveMsg = _$msgs();
+                const $lastTool = $liveMsg.find(".ai-msg-tool").last();
+                if ($lastTool.length) {
+                    $lastTool.before($puc);
+                } else {
+                    $liveMsg.append($puc);
+                }
+            }
+        }
+
         // Find the oldest Edit/Write tool indicator for this file that doesn't
         // already have edit actions. This is more robust than matching by toolId
         // because the SDK with includePartialMessages may re-emit tool_use blocks
@@ -490,49 +542,8 @@ define(function (require, exports, module) {
         // Remove any existing edit actions (in case of duplicate events)
         $tool.find(".ai-tool-edit-actions").remove();
 
-        // Build the inline edit actions
+        // Build the inline edit actions (diff toggle only — undo is on summary card)
         const $actions = $('<div class="ai-tool-edit-actions"></div>');
-
-        // Undo/Redo toggle button
-        let isUndone = false;
-        const $undoBtn = $('<button class="ai-tool-undo-btn">Undo</button>');
-        $undoBtn.on("click", function () {
-            if ($undoBtn.prop("disabled")) {
-                return;
-            }
-            $undoBtn.prop("disabled", true);
-            if (!isUndone) {
-                // Undo
-                const undoOp = (edit.oldText === null)
-                    ? _undoEdit(edit.file, _previousContentMap[edit.file] || "")
-                    : _applySingleEdit({ file: edit.file, oldText: edit.newText, newText: edit.oldText });
-                undoOp
-                    .done(function () {
-                        isUndone = true;
-                        $undoBtn.text("Redo").removeClass("undone").addClass("redo");
-                        $undoBtn.prop("disabled", false);
-                    })
-                    .fail(function (err) {
-                        $tool.append($('<div class="ai-tool-edit-error"></div>').text(err.message || String(err)));
-                        $undoBtn.prop("disabled", false);
-                    });
-            } else {
-                // Redo — re-apply the original edit
-                const redoOp = (edit.oldText === null)
-                    ? _applySingleEdit({ file: edit.file, oldText: null, newText: edit.newText })
-                    : _applySingleEdit({ file: edit.file, oldText: edit.oldText, newText: edit.newText });
-                redoOp
-                    .done(function () {
-                        isUndone = false;
-                        $undoBtn.text("Undo").removeClass("redo");
-                        $undoBtn.prop("disabled", false);
-                    })
-                    .fail(function (err) {
-                        $tool.append($('<div class="ai-tool-edit-error"></div>').text(err.message || String(err)));
-                        $undoBtn.prop("disabled", false);
-                    });
-            }
-        });
 
         // Diff toggle
         const $diffToggle = $('<button class="ai-tool-diff-toggle">Show diff</button>');
@@ -557,7 +568,6 @@ define(function (require, exports, module) {
             $diffToggle.text($diff.hasClass("expanded") ? "Hide diff" : "Show diff");
         });
 
-        $actions.append($undoBtn);
         $actions.append($diffToggle);
         $tool.append($actions);
         $tool.append($diff);
@@ -577,7 +587,7 @@ define(function (require, exports, module) {
         _traceTextChunks = 0;
         _traceToolStreamCounts = {};
 
-        // Append edit summary if there were edits
+        // Append edit summary if there were edits (finalizeResponse called inside)
         if (_currentEdits.length > 0) {
             _appendEditSummary();
         }
@@ -589,6 +599,9 @@ define(function (require, exports, module) {
      * Append a compact summary card showing all files modified during this response.
      */
     function _appendEditSummary() {
+        // Finalize snapshot and get the after-snapshot index
+        const afterIndex = SnapshotStore.finalizeResponse();
+
         // Aggregate per-file stats
         const fileStats = {};
         const fileOrder = [];
@@ -602,12 +615,43 @@ define(function (require, exports, module) {
         });
 
         const fileCount = fileOrder.length;
-        const $summary = $('<div class="ai-msg ai-msg-edit-summary"></div>');
-        $summary.append(
+        const $summary = $('<div class="ai-msg ai-msg-edit-summary" data-snapshot-index="' + afterIndex + '"></div>');
+        const $header = $(
             '<div class="ai-edit-summary-header">' +
-                fileCount + (fileCount === 1 ? " file" : " files") + " changed" +
+                '<span class="ai-edit-summary-title">' +
+                    fileCount + (fileCount === 1 ? " file" : " files") + " changed" +
+                '</span>' +
             '</div>'
         );
+
+        if (afterIndex >= 0) {
+            // Update any previous summary card buttons to say "Restore to this point"
+            _$msgs().find('.ai-edit-restore-btn').text("Restore to this point")
+                .attr("title", "Restore files to this point");
+
+            // Determine button label: "Undo" if not undone, else "Restore to this point"
+            const isUndo = !SnapshotStore.isUndoApplied();
+            const label = isUndo ? "Undo" : "Restore to this point";
+            const title = isUndo ? "Undo changes from this response" : "Restore files to this point";
+
+            const $restoreBtn = $(
+                '<button class="ai-edit-restore-btn" data-snapshot-index="' + afterIndex + '" ' +
+                'title="' + title + '">' + label + '</button>'
+            );
+            $restoreBtn.on("click", function (e) {
+                e.stopPropagation();
+                if (_isStreaming) {
+                    return;
+                }
+                if ($(this).text() === "Undo") {
+                    _onUndoClick(afterIndex);
+                } else {
+                    _onRestoreClick(afterIndex);
+                }
+            });
+            $header.append($restoreBtn);
+        }
+        $summary.append($header);
 
         fileOrder.forEach(function (filePath) {
             const stats = fileStats[filePath];
@@ -623,7 +667,7 @@ define(function (require, exports, module) {
             );
             $file.find(".ai-edit-summary-name").text(displayName);
             $file.on("click", function () {
-                const vfsPath = _realToVfsPath(filePath);
+                const vfsPath = SnapshotStore.realToVfsPath(filePath);
                 CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
             });
             $summary.append($file);
@@ -631,6 +675,76 @@ define(function (require, exports, module) {
 
         $messages.append($summary);
         _scrollToBottom();
+    }
+
+    /**
+     * Handle "Restore to this point" click on any restore point element.
+     * @param {number} snapshotIndex - index into the snapshots array
+     */
+    function _onRestoreClick(snapshotIndex) {
+        const $msgs = _$msgs();
+        // Remove all existing highlights
+        $msgs.find(".ai-restore-highlighted").removeClass("ai-restore-highlighted");
+
+        // Once any "Restore to this point" is clicked, undo is no longer applicable
+        SnapshotStore.setUndoApplied(true);
+
+        // Reset all buttons to "Restore to this point"
+        $msgs.find('.ai-edit-restore-btn').each(function () {
+            $(this).text("Restore to this point")
+                .attr("title", "Restore files to this point");
+        });
+        $msgs.find('.ai-restore-point-btn').text("Restore to this point");
+
+        SnapshotStore.restoreToSnapshot(snapshotIndex, function (errorCount) {
+            if (errorCount > 0) {
+                console.warn("[AI UI] Restore had", errorCount, "errors");
+            }
+
+            // Mark the clicked element as "Restored"
+            const $m = _$msgs();
+            const $target = $m.find('[data-snapshot-index="' + snapshotIndex + '"]');
+            if ($target.length) {
+                $target.addClass("ai-restore-highlighted");
+                const $btn = $target.find(".ai-edit-restore-btn, .ai-restore-point-btn");
+                $btn.text("Restored");
+            }
+        });
+    }
+
+    /**
+     * Handle "Undo" click on the latest summary card.
+     * @param {number} afterIndex - snapshot index of the latest after-snapshot
+     */
+    function _onUndoClick(afterIndex) {
+        const $msgs = _$msgs();
+        SnapshotStore.setUndoApplied(true);
+        const targetIndex = afterIndex - 1;
+
+        // Reset all buttons to "Restore to this point"
+        $msgs.find('.ai-edit-restore-btn').each(function () {
+            $(this).text("Restore to this point")
+                .attr("title", "Restore files to this point");
+        });
+        $msgs.find('.ai-restore-point-btn').text("Restore to this point");
+
+        SnapshotStore.restoreToSnapshot(targetIndex, function (errorCount) {
+            if (errorCount > 0) {
+                console.warn("[AI UI] Undo had", errorCount, "errors");
+            }
+
+            // Find the DOM element for the target snapshot and highlight it
+            const $m = _$msgs();
+            const $target = $m.find('[data-snapshot-index="' + targetIndex + '"]');
+            if ($target.length) {
+                $m.find(".ai-restore-highlighted").removeClass("ai-restore-highlighted");
+                $target.addClass("ai-restore-highlighted");
+                $target[0].scrollIntoView({ behavior: "smooth", block: "center" });
+                // Mark the target as "Restored"
+                const $btn = $target.find(".ai-edit-restore-btn, .ai-restore-point-btn");
+                $btn.text("Restored");
+            }
+        });
     }
 
     // --- DOM helpers ---
@@ -774,7 +888,7 @@ define(function (require, exports, module) {
             const filePath = toolInput.file_path;
             $tool.find(".ai-tool-label").on("click", function (e) {
                 e.stopPropagation();
-                const vfsPath = _realToVfsPath(filePath);
+                const vfsPath = SnapshotStore.realToVfsPath(filePath);
                 CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
             }).css("cursor", "pointer").addClass("ai-tool-label-clickable");
         }
@@ -896,6 +1010,9 @@ define(function (require, exports, module) {
                 $sendBtn.show();
             }
         }
+        // Disable/enable all restore buttons during streaming (use live query)
+        _$msgs().find(".ai-restore-point-btn, .ai-edit-restore-btn")
+            .prop("disabled", streaming);
         if (!streaming && $messages) {
             // Clean up thinking indicator if still present
             $messages.find(".ai-thinking").remove();
@@ -922,15 +1039,15 @@ define(function (require, exports, module) {
     // --- Edit application ---
 
     /**
-     * Apply a single edit to a document buffer (makes it a dirty tab).
+     * Apply a single edit to a document buffer and save to disk.
      * Called immediately when Claude's Write/Edit is intercepted, so
-     * subsequent Reads see the new content via the dirty-file hook.
+     * subsequent Reads see the new content both in the buffer and on disk.
      * @param {Object} edit - {file, oldText, newText}
      * @return {$.Promise} resolves with {previousContent} for undo support
      */
     function _applySingleEdit(edit) {
         const result = new $.Deferred();
-        const vfsPath = _realToVfsPath(edit.file);
+        const vfsPath = SnapshotStore.realToVfsPath(edit.file);
 
         function _applyToDoc() {
             DocumentManager.getDocumentForPath(vfsPath)
@@ -956,9 +1073,11 @@ define(function (require, exports, module) {
                                 _indexToPos(docText, idx + edit.oldText.length);
                             doc.replaceRange(edit.newText, startPos, endPos);
                         }
-                        // Open the file in the editor
+                        // Open the file in the editor and save to disk
                         CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
-                        result.resolve({ previousContent: previousContent });
+                        SnapshotStore.saveDocToDisk(doc).always(function () {
+                            result.resolve({ previousContent: previousContent });
+                        });
                     } catch (err) {
                         result.reject(err);
                     }
@@ -991,33 +1110,6 @@ define(function (require, exports, module) {
             // Edit — file must already exist
             _applyToDoc();
         }
-
-        return result.promise();
-    }
-
-    /**
-     * Undo a previously applied edit by restoring the document content.
-     * For new files (previousContent is empty string), closes the document.
-     * @param {string} filePath - real filesystem path
-     * @param {string} previousContent - content to restore
-     * @return {$.Promise}
-     */
-    function _undoEdit(filePath, previousContent) {
-        const result = new $.Deferred();
-        const vfsPath = _realToVfsPath(filePath);
-
-        DocumentManager.getDocumentForPath(vfsPath)
-            .done(function (doc) {
-                try {
-                    doc.setText(previousContent);
-                    result.resolve();
-                } catch (err) {
-                    result.reject(err);
-                }
-            })
-            .fail(function (err) {
-                result.reject(err || new Error("Could not open document for undo"));
-            });
 
         return result.promise();
     }
@@ -1057,26 +1149,11 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Convert a real filesystem path back to a VFS path that Phoenix understands.
-     */
-    function _realToVfsPath(realPath) {
-        // If it already looks like a VFS path, return as-is
-        if (realPath.startsWith("/tauri/") || realPath.startsWith("/mnt/")) {
-            return realPath;
-        }
-        // Desktop builds use /tauri/ prefix
-        if (Phoenix.isNativeApp) {
-            return "/tauri" + realPath;
-        }
-        return realPath;
-    }
-
-    /**
      * Check if a file has unsaved changes in the editor and return its content.
      * Used by the node-side Read hook to serve dirty buffer content to Claude.
      */
     function getFileContent(params) {
-        const vfsPath = _realToVfsPath(params.filePath);
+        const vfsPath = SnapshotStore.realToVfsPath(params.filePath);
         const doc = DocumentManager.getOpenDocumentForPath(vfsPath);
         if (doc && doc.isDirty) {
             return { isDirty: true, content: doc.getText() };
