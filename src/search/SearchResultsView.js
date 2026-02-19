@@ -97,12 +97,10 @@ define(function (require, exports, module) {
         }).observe(this._panel.$panel[0]);
 
         function _showPanelIfResultsAvailable(_e, shownPanelID) {
-            if(self._model.numMatches === 0){
-                self._panel.hide();
-            }
-            if(shownPanelID === self._panel.panelID && !self._model.isReplace){
-                // If it is replace, _handleModelChange will close the find bar as we dont
-                // do replace if there is a model change. So we wont enter this flow if it is a replace operation
+            if (shownPanelID === self._panel.panelID && self._model.numMatches > 0 && !self._model.isReplace) {
+                // Refresh results when the tab is re-activated (they may have changed
+                // while the panel was in a background tab). Skip when numMatches is 0
+                // so the "no results" state isn't disturbed.
                 self._handleModelChange();
             }
         }
@@ -525,18 +523,18 @@ define(function (require, exports, module) {
         let self = this;
         let count     = self._model.countFilesMatches(),
             lastIndex = self._getLastIndex(count.matches),
-            typeStr = (count.matches > 1) ? Strings.FIND_IN_FILES_MATCHES : Strings.FIND_IN_FILES_MATCH,
+            typeStr = (count.matches !== 1) ? Strings.FIND_IN_FILES_MATCHES : Strings.FIND_IN_FILES_MATCH,
             filesStr,
             summary;
 
         if(this._searchResultsType === "reference") {
-            typeStr = (count.matches > 1) ? Strings.REFERENCES_IN_FILES : Strings.REFERENCE_IN_FILES;
+            typeStr = (count.matches !== 1) ? Strings.REFERENCES_IN_FILES : Strings.REFERENCE_IN_FILES;
         }
 
         filesStr = StringUtils.format(
             Strings.FIND_NUM_FILES,
             count.files,
-            (count.files > 1 ? Strings.FIND_IN_FILES_FILES : Strings.FIND_IN_FILES_FILE)
+            (count.files !== 1 ? Strings.FIND_IN_FILES_FILES : Strings.FIND_IN_FILES_FILE)
         );
 
         // This text contains some formatting, so all the strings are assumed to be already escaped
@@ -571,8 +569,15 @@ define(function (require, exports, module) {
      * Shows the current set of results.
      */
     SearchResultsView.prototype._render = function () {
+        let count = this._model.countFilesMatches();
+        if (count.matches === 0) {
+            this.showNoResults();
+            return;
+        }
+
+        this._panel.$panel.removeClass("search-no-results");
+
         let searchItems, match, i, item, multiLine,
-            count            = this._model.countFilesMatches(),
             searchFiles      = this._model.prioritizeOpenFile(this._initialFilePath),
             lastIndex        = this._getLastIndex(count.matches),
             matchesCounter   = 0,
@@ -819,11 +824,37 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Opens the panel and displays a "no results" message instead of closing it.
+     * Keeps the tab visible so the user gets clear feedback without jarring tab switches.
+     * @param {string=} message  Optional message to display. Defaults to Strings.FIND_NO_RESULTS.
+     */
+    SearchResultsView.prototype.showNoResults = function (message) {
+        this._currentStart = 0;
+        this._$selectedRow = null;
+        this._allChecked = false;
+
+        this._$table.empty();
+        this._closePreviewEditor();
+
+        this._panel.$panel.addClass("search-no-results");
+        this._showSummary();
+        this._$table.append(
+            $('<div class="search-no-results-message"></div>').text(message || Strings.FIND_NO_RESULTS)
+        );
+
+        this._panel.$panel.off(".searchResults");
+        this._model.off("change.SearchResultsView");
+
+        this._panel.show();
+    };
+
+    /**
      * Hides the Search Results Panel and unregisters listeners.
      */
     SearchResultsView.prototype.close = function () {
         if (this._panel && this._panel.isVisible()) {
             this._$table.empty();
+            this._panel.$panel.removeClass("search-no-results");
             this._panel.hide();
             this._panel.$panel.off(".searchResults");
             this._model.off("change.SearchResultsView");
