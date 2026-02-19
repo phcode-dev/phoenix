@@ -87,20 +87,20 @@ define(function (require, exports, module) {
      * hide all open panels
      */
     function _hidePanelsIfRequired() {
-        var panelIDs = WorkspaceManager.getAllPanelIDs();
         _previouslyOpenPanelIDs = [];
-        // Loop until no visible panels remain. In a tabbed system, hiding the
-        // active tab may reveal the next tab, so we must iterate.
-        let hiddenSomething = true;
-        while (hiddenSomething) {
-            hiddenSomething = false;
-            for (let i = 0; i < panelIDs.length; i++) {
-                let panel = WorkspaceManager.getPanelForID(panelIDs[i]);
-                if (panel && panel.isVisible()) {
-                    panel.hide();
-                    _previouslyOpenPanelIDs.push(panelIDs[i]);
-                    hiddenSomething = true;
-                }
+
+        // Batch-hide all open bottom panel tabs in one pass, avoiding O(n)
+        // intermediate tab activations and layout recalcs.
+        let hiddenBottomPanels = WorkspaceManager.hideAllOpenBottomPanels();
+        _previouslyOpenPanelIDs = hiddenBottomPanels;
+
+        // Hide any remaining visible panels (e.g. plugin side-panels)
+        let panelIDs = WorkspaceManager.getAllPanelIDs();
+        for (let i = 0; i < panelIDs.length; i++) {
+            let panel = WorkspaceManager.getPanelForID(panelIDs[i]);
+            if (panel && panel.isVisible()) {
+                panel.hide();
+                _previouslyOpenPanelIDs.push(panelIDs[i]);
             }
         }
     }
