@@ -22,6 +22,8 @@ cached jQuery/DOM references held by extensions remain valid.
 
 * [view/SidebarTabs](#module_view/SidebarTabs)
     * [.SIDEBAR_TAB_FILES](#module_view/SidebarTabs..SIDEBAR_TAB_FILES) : <code>string</code>
+    * [.AI_TAB_GOOD_WIDTH](#module_view/SidebarTabs..AI_TAB_GOOD_WIDTH) : <code>number</code>
+    * [.PREF_AI_WIDTH_SET_INITIAL](#module_view/SidebarTabs..PREF_AI_WIDTH_SET_INITIAL)
     * [.EVENT_TAB_ADDED](#module_view/SidebarTabs..EVENT_TAB_ADDED) : <code>string</code>
     * [.EVENT_TAB_REMOVED](#module_view/SidebarTabs..EVENT_TAB_REMOVED) : <code>string</code>
     * [.EVENT_TAB_CHANGED](#module_view/SidebarTabs..EVENT_TAB_CHANGED) : <code>string</code>
@@ -37,6 +39,19 @@ cached jQuery/DOM references held by extensions remain valid.
 
 ### view/SidebarTabs.SIDEBAR\_TAB\_FILES : <code>string</code>
 The built-in Files tab id.
+
+**Kind**: inner constant of [<code>view/SidebarTabs</code>](#module_view/SidebarTabs)  
+<a name="module_view/SidebarTabs..AI_TAB_GOOD_WIDTH"></a>
+
+### view/SidebarTabs.AI\_TAB\_GOOD\_WIDTH : <code>number</code>
+Preferred sidebar width (px) when a non-files tab (e.g. AI) is
+first activated. Applied once if the current width is narrower.
+
+**Kind**: inner constant of [<code>view/SidebarTabs</code>](#module_view/SidebarTabs)  
+<a name="module_view/SidebarTabs..PREF_AI_WIDTH_SET_INITIAL"></a>
+
+### view/SidebarTabs.PREF\_AI\_WIDTH\_SET\_INITIAL
+Preference key used to track whether the initial width bump has been applied.
 
 **Kind**: inner constant of [<code>view/SidebarTabs</code>](#module_view/SidebarTabs)  
 <a name="module_view/SidebarTabs..EVENT_TAB_ADDED"></a>

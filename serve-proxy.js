@@ -270,6 +270,31 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // Handle getPhoenixPath API for Tauri dev mode
+    if (parsedUrl.pathname === '/api/getPhoenixPath') {
+        const response = {
+            phoenixPath: config.root
+        };
+
+        if (!config.silent) {
+            console.log(`[API] ${req.method} ${parsedUrl.pathname} -> ${JSON.stringify(response)}`);
+        }
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        if (config.cors) {
+            headers['Access-Control-Allow-Origin'] = '*';
+            headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+            headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control';
+        }
+
+        res.writeHead(200, headers);
+        res.end(JSON.stringify(response));
+        return;
+    }
+
     // Handle proxy config request
     if (parsedUrl.pathname === '/proxy/config') {
         const configResponse = {

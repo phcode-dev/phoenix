@@ -635,18 +635,34 @@ function nodeLoader() {
             nodeErrorLogCount = 0;
         }, NODE_ERROR_LOGS_RESET_INTERVAL);
 
-        async function _tauriNodeSetup() {
-            let nodeSrcPath = await window.__TAURI__.path.resolveResource("src-node/index.js");
+        async function _resolveSrcNodePath() {
+            // Check if running from localhost dev server
+            if (window.location.hostname === 'localhost') {
+                // Fetch phoenix path from dev server API to use local src-node
+                const response = await fetch('/api/getPhoenixPath');
+                const pathInfo = await response.json();
+                const srcNodePath = `${pathInfo.phoenixPath}/src-node/index.js`;
+                console.log('PhNode: Using dev server src-node path:', srcNodePath);
+                return srcNodePath;
+            }
+
+            // Production Tauri path resolution
+            let srcNodePath = await window.__TAURI__.path.resolveResource("src-node/index.js");
             // Strip Windows UNC prefix (\\?\) that Tauri adds on Windows
             // Node 24 doesn't handle UNC paths correctly in module resolution
-            if (Phoenix.platform === "win" && nodeSrcPath.startsWith('\\\\?\\')) {
-                nodeSrcPath = nodeSrcPath.slice(4);
+            if (Phoenix.platform === "win" && srcNodePath.startsWith('\\\\?\\')) {
+                srcNodePath = srcNodePath.slice(4);
             }
-            if(Phoenix.platform === "linux") {
+            if (Phoenix.platform === "linux") {
                 // in linux installed distributions, src-node is present in the same dir as the executable.
                 const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
-                nodeSrcPath = `${window.path.dirname(cliArgs[0])}/src-node/index.js`;
+                srcNodePath = `${window.path.dirname(cliArgs[0])}/src-node/index.js`;
             }
+            return srcNodePath;
+        }
+
+        async function _tauriNodeSetup() {
+            const nodeSrcPath = await _resolveSrcNodePath();
             // node is designed such that it is not required at boot time to lower startup time.
             // Keep this so to increase boot speed.
             const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
