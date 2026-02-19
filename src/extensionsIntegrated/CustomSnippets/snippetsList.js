@@ -180,8 +180,6 @@ define(function (require, exports, module) {
                     console.error("failed to delete custom snippet correctly:", error);
                 });
 
-            // update the snippets count in toolbar
-            Helper.updateSnippetsCount();
             // Refresh the entire list to properly handle filtering
             showSnippetsList();
         }
