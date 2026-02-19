@@ -72,6 +72,9 @@ define(function (require, exports, module) {
     /** @type {Panel} The default panel instance */
     let _panel;
 
+    /** @type {jQueryObject} The panel DOM element */
+    let _$panel;
+
     /**
      * Build the panel DOM.
      * @return {jQueryObject}
@@ -89,6 +92,7 @@ define(function (require, exports, module) {
         _panelButtons.forEach(function (btn) {
             let $button = $('<button class="default-panel-btn"></button>')
                 .attr("data-command", btn.commandID)
+                .attr("data-btn-id", btn.id)
                 .attr("title", btn.label);
             let $icon = $('<i></i>').addClass(btn.icon);
             let $label = $('<span class="default-panel-btn-label"></span>').text(btn.label);
@@ -103,21 +107,77 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Check whether Git is available for the current project.
+     * The Git extension hides its toolbar icon with the "forced-hidden" class
+     * when Git is not available (no binary, not a repo, extension disabled, etc.).
+     * @return {boolean}
+     * @private
+     */
+    function _isGitAvailable() {
+        const $gitIcon = $("#git-toolbar-icon");
+        return $gitIcon.length > 0 && !$gitIcon.hasClass("forced-hidden");
+    }
+
+    /**
+     * Check whether there are currently lint errors/warnings.
+     * The status bar indicator gets the "inspection-errors" class when problems exist.
+     * @return {boolean}
+     * @private
+     */
+    function _hasProblems() {
+        const $indicator = $("#status-inspection");
+        return $indicator.length > 0 && $indicator.hasClass("inspection-errors");
+    }
+
+    /**
+     * Show or hide the Git and Problems buttons based on current state.
+     * @private
+     */
+    function _updateButtonVisibility() {
+        if (!_$panel) {
+            return;
+        }
+        _$panel.find('.default-panel-btn[data-btn-id="git"]').toggle(_isGitAvailable());
+        _$panel.find('.default-panel-btn[data-btn-id="problems"]').toggle(_hasProblems());
+    }
+
+    /**
+     * Set up MutationObservers on the Git toolbar icon and status-inspection
+     * indicator so that button visibility updates live.
+     * @private
+     */
+    function _observeStateChanges() {
+        // Watch Git toolbar icon for class changes (forced-hidden added/removed)
+        const gitIcon = document.getElementById("git-toolbar-icon");
+        if (gitIcon) {
+            const gitObserver = new MutationObserver(_updateButtonVisibility);
+            gitObserver.observe(gitIcon, {attributes: true, attributeFilter: ["class"]});
+        }
+
+        // Watch status-inspection indicator for class changes (inspection-errors)
+        const statusInspection = document.getElementById("status-inspection");
+        if (statusInspection) {
+            const inspectionObserver = new MutationObserver(_updateButtonVisibility);
+            inspectionObserver.observe(statusInspection, {attributes: true, attributeFilter: ["class"]});
+        }
+    }
+
+    /**
      * Initialise the default panel. Called once at appReady.
      * @private
      */
     function _init() {
-        let $panel = _buildPanelHTML();
+        _$panel = _buildPanelHTML();
         _panel = WorkspaceManager.createBottomPanel(
             WorkspaceManager.DEFAULT_PANEL_ID,
-            $panel,
+            _$panel,
             undefined,
             Strings.BOTTOM_PANEL_DEFAULT_TITLE
         );
 
         // Button click handler: execute the command to open the target panel.
         // The auto-hide listener (EVENT_PANEL_SHOWN) will close the default panel.
-        $panel.on("click", ".default-panel-btn", function () {
+        _$panel.on("click", ".default-panel-btn", function () {
             let commandID = $(this).attr("data-command");
             if (commandID) {
                 CommandManager.execute(commandID);
@@ -130,7 +190,14 @@ define(function (require, exports, module) {
             if (panelID !== WorkspaceManager.DEFAULT_PANEL_ID) {
                 _panel.hide();
             }
+            if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
+                _updateButtonVisibility();
+            }
         });
+
+        // Initial visibility update and set up live observers
+        _updateButtonVisibility();
+        _observeStateChanges();
     }
 
     AppInit.appReady(_init);
