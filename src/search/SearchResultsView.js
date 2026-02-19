@@ -570,7 +570,9 @@ define(function (require, exports, module) {
      */
     SearchResultsView.prototype._render = function () {
         let count = this._model.countFilesMatches();
-        if (count.matches === 0) {
+        if (count.matches === 0 && this._model.queryInfo) {
+            // Only redirect to showNoResults() when the model has a valid query
+            // (i.e. this is a real "no results" state, not a transient clear).
             this.showNoResults();
             return;
         }
@@ -832,6 +834,11 @@ define(function (require, exports, module) {
         this._currentStart = 0;
         this._$selectedRow = null;
         this._allChecked = false;
+
+        if (this._timeoutID) {
+            window.clearTimeout(this._timeoutID);
+            this._timeoutID = null;
+        }
 
         this._$table.empty();
         this._closePreviewEditor();
