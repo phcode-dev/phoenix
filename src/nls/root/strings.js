@@ -1256,7 +1256,6 @@ define({
     "BOTTOM_PANEL_HIDE_TOGGLE": "Hide Bottom Panel",
     "BOTTOM_PANEL_DEFAULT_TITLE": "Quick Access",
     "BOTTOM_PANEL_DEFAULT_HEADING": "Open a Panel",
-    "BOTTOM_PANEL_DEFAULT_READ_MORE": "Read More",
 
     "CMD_FIND_DOCUMENT_SYMBOLS": "Find Document Symbols",
     "CMD_FIND_PROJECT_SYMBOLS": "Find Project Symbols",
