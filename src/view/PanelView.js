@@ -112,10 +112,11 @@ define(function (require, exports, module) {
             }
             let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
             let isActive = (panelId === _activeId);
-            let $tab = $('<div class="bottom-panel-tab' + (isActive ? ' active' : '') + '" data-panel-id="' + panelId + '">' +
-                '<span class="bottom-panel-tab-title">' + $("<span>").text(title).html() + '</span>' +
-                '<span class="bottom-panel-tab-close-btn" title="' + Strings.CLOSE + '">&times;</span>' +
-                '</div>');
+            let $tab = $('<div class="bottom-panel-tab"></div>')
+                .toggleClass('active', isActive)
+                .attr('data-panel-id', panelId);
+            $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
+            $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
             _$tabsOverflow.append($tab);
         });
     }
