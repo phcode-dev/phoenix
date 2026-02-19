@@ -1981,6 +1981,31 @@ a, img {
     }
 }
 
+.search-results.search-no-results {
+    .table-container {
+        width: 100% !important;
+    }
+    .search-editor-preview {
+        display: none !important;
+    }
+}
+
+.search-no-results-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #888;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+    user-select: none;
+
+    .dark & {
+        color: #999;
+    }
+}
+
 .search-results .disclosure-triangle,
 #problems-panel .disclosure-triangle {
     .expand-collapse-triangle();
