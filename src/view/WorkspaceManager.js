@@ -334,7 +334,8 @@ define(function (require, exports, module) {
         let $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
         let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
         $tabBarActions.append(
-            '<span class="bottom-panel-hide-btn" title="' + Strings.BOTTOM_PANEL_HIDE + '"><i class="fa-solid fa-chevron-down"></i></span>'
+            $('<span class="bottom-panel-hide-btn"><i class="fa-solid fa-chevron-down"></i></span>')
+                .attr('title', Strings.BOTTOM_PANEL_HIDE)
         );
         $bottomPanelTabBar.append($bottomPanelTabsOverflow);
         $bottomPanelTabBar.append($tabBarActions);
@@ -346,11 +347,8 @@ define(function (require, exports, module) {
         PanelView.init($bottomPanelContainer, $bottomPanelTabBar, $bottomPanelTabsOverflow);
 
         // Create status bar chevron toggle for bottom panel
-        $statusBarPanelToggle = $(
-            '<div id="status-panel-toggle" class="indicator global-indicator" title="' + Strings.BOTTOM_PANEL_SHOW + '">' +
-            '<i class="fa-solid fa-chevron-up"></i>' +
-            '</div>'
-        );
+        $statusBarPanelToggle = $('<div id="status-panel-toggle" class="indicator global-indicator"><i class="fa-solid fa-chevron-up"></i></div>')
+            .attr('title', Strings.BOTTOM_PANEL_SHOW);
         $("#status-indicators").prepend($statusBarPanelToggle);
 
         $statusBarPanelToggle.on("click", function () {
