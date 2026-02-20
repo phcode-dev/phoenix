@@ -1844,6 +1844,9 @@ define({
     "AI_CHAT_LABEL_CLAUDE": "Claude",
     "AI_CHAT_SEND_ERROR": "Failed to send message: {0}",
     "AI_CHAT_EDIT_NOT_FOUND": "Text not found in file \u2014 it may have changed",
+    "AI_CHAT_WORKING": "Working...",
+    "AI_CHAT_WRITING": "Writing...",
+    "AI_CHAT_PROCESSING": "Processing...",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",
