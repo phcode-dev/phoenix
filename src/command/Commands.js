@@ -541,6 +541,9 @@ define(function (require, exports, module) {
     /** Toggles the git panel */
     exports.CMD_GIT_TOGGLE_PANEL = "git-toggle-panel";
 
+    /** Toggles the custom snippets panel */
+    exports.CMD_CUSTOM_SNIPPETS_PANEL = "custom_snippets";
+
     /** Goes to next git change */
     exports.CMD_GIT_GOTO_NEXT_CHANGE = "git-gotoNextChange";
 
