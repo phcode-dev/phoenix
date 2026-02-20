@@ -17,8 +17,24 @@ define(function (require, exports, module) {
         };
     }
 
+    // Guard against re-entrant event emissions. If a handler for event X synchronously
+    // emits event X again (directly or via a chain), it causes infinite recursion and a
+    // "Maximum call stack size exceeded" crash. This set tracks which events are currently
+    // being dispatched so we can block re-entrant calls.
+    const _activeEvents = new Set();
+
     function emit() {
-        emInstance.trigger(...arguments);
+        const eventName = arguments[0];
+        if (_activeEvents.has(eventName)) {
+            console.warn("EventEmitter: Blocked re-entrant emit for event: " + eventName);
+            return;
+        }
+        _activeEvents.add(eventName);
+        try {
+            emInstance.trigger(...arguments);
+        } finally {
+            _activeEvents.delete(eventName);
+        }
     }
 
     function on(eventName, callback) {
