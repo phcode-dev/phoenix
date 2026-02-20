@@ -22,10 +22,14 @@ Events:
         * [.PANEL_TYPE_BOTTOM_PANEL](#module_view/WorkspaceManager.PANEL_TYPE_BOTTOM_PANEL) : <code>string</code>
         * [.PANEL_TYPE_PLUGIN_PANEL](#module_view/WorkspaceManager.PANEL_TYPE_PLUGIN_PANEL) : <code>string</code>
     * _inner_
+        * [.$bottomPanelContainer](#module_view/WorkspaceManager..$bottomPanelContainer) : <code>jQueryObject</code>
+        * [.$statusBarPanelToggle](#module_view/WorkspaceManager..$statusBarPanelToggle) : <code>jQueryObject</code>
+        * [._statusBarToggleInProgress](#module_view/WorkspaceManager.._statusBarToggleInProgress) : <code>boolean</code>
         * [.EVENT_WORKSPACE_UPDATE_LAYOUT](#module_view/WorkspaceManager..EVENT_WORKSPACE_UPDATE_LAYOUT)
         * [.EVENT_WORKSPACE_PANEL_SHOWN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_SHOWN)
         * [.EVENT_WORKSPACE_PANEL_HIDDEN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_HIDDEN)
-        * [.createBottomPanel(id, $panel, [minSize])](#module_view/WorkspaceManager..createBottomPanel) ⇒ <code>Panel</code>
+        * [.createBottomPanel(id, $panel, [minSize], [title])](#module_view/WorkspaceManager..createBottomPanel) ⇒ <code>Panel</code>
+        * [.destroyBottomPanel(id)](#module_view/WorkspaceManager..destroyBottomPanel)
         * [.createPluginPanel(id, $panel, [minSize], $toolbarIcon, [initialSize])](#module_view/WorkspaceManager..createPluginPanel) ⇒ <code>Panel</code>
         * [.getAllPanelIDs()](#module_view/WorkspaceManager..getAllPanelIDs) ⇒ <code>Array</code>
         * [.getPanelForID(panelID)](#module_view/WorkspaceManager..getPanelForID) ⇒ <code>Object</code>
@@ -47,6 +51,24 @@ Constant representing the type of bottom panel
 Constant representing the type of plugin panel
 
 **Kind**: static property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
+<a name="module_view/WorkspaceManager..$bottomPanelContainer"></a>
+
+### view/WorkspaceManager.$bottomPanelContainer : <code>jQueryObject</code>
+The single container wrapping all bottom panels
+
+**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
+<a name="module_view/WorkspaceManager..$statusBarPanelToggle"></a>
+
+### view/WorkspaceManager.$statusBarPanelToggle : <code>jQueryObject</code>
+Chevron toggle in the status bar
+
+**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
+<a name="module_view/WorkspaceManager.._statusBarToggleInProgress"></a>
+
+### view/WorkspaceManager.\_statusBarToggleInProgress : <code>boolean</code>
+True while the status bar toggle button is handling a click
+
+**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
 <a name="module_view/WorkspaceManager..EVENT_WORKSPACE_UPDATE_LAYOUT"></a>
 
 ### view/WorkspaceManager.EVENT\_WORKSPACE\_UPDATE\_LAYOUT
@@ -67,7 +89,7 @@ Event triggered when a panel is hidden.
 **Kind**: inner constant of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 <a name="module_view/WorkspaceManager..createBottomPanel"></a>
 
-### view/WorkspaceManager.createBottomPanel(id, $panel, [minSize]) ⇒ <code>Panel</code>
+### view/WorkspaceManager.createBottomPanel(id, $panel, [minSize], [title]) ⇒ <code>Panel</code>
 Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
 The panel's size & visibility are automatically saved & restored as a view-state preference.
 
@@ -77,7 +99,20 @@ The panel's size & visibility are automatically saved & restored as a view-state
 | --- | --- | --- |
 | id | <code>string</code> | Unique id for this panel. Use package-style naming, e.g. "myextension.feature.panelname" |
 | $panel | <code>jQueryObject</code> | DOM content to use as the panel. Need not be in the document yet. Must have an id      attribute, for use as a preferences key. |
-| [minSize] | <code>number</code> | Minimum height of panel in px. |
+| [minSize] | <code>number</code> | @deprecated No longer used. Pass `undefined`. |
+| [title] | <code>string</code> | Display title shown in the bottom panel tab bar. |
+
+<a name="module_view/WorkspaceManager..destroyBottomPanel"></a>
+
+### view/WorkspaceManager.destroyBottomPanel(id)
+Destroys a bottom panel, removing it from internal registries, the tab bar, and the DOM.
+After calling this, the panel ID is no longer valid and the Panel instance should not be reused.
+
+**Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The panel ID that was passed to createBottomPanel. |
 
 <a name="module_view/WorkspaceManager..createPluginPanel"></a>
 
