@@ -36,7 +36,7 @@ define(function (require, exports, module) {
 
     // --- Constants ---
     const HEARTBEAT_INTERVAL_MS = 60 * 1000;
-    const STALE_THRESHOLD_MS = 20 * 60 * 1000;
+    const STALE_THRESHOLD_MS = 10 * 60 * 1000;
 
     // --- Disk store state ---
     let _instanceDir;           // "<appSupportDir>/instanceData/<instanceId>/"
