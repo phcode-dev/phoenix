@@ -125,7 +125,7 @@ exports.checkAvailability = async function () {
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model } = params;
+    const { prompt, projectPath, sessionAction, model, locale } = params;
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -142,7 +142,7 @@ exports.sendPrompt = async function (params) {
     currentAbortController = new AbortController();
 
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, prompt, projectPath, model, currentAbortController.signal)
+    _runQuery(requestId, prompt, projectPath, model, currentAbortController.signal, locale)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -176,7 +176,7 @@ exports.destroySession = async function () {
 /**
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
-async function _runQuery(requestId, prompt, projectPath, model, signal) {
+async function _runQuery(requestId, prompt, projectPath, model, signal, locale) {
     let editCount = 0;
     let toolCounter = 0;
     let queryFn;
@@ -209,7 +209,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal) {
             "to create brand new files that do not exist yet. For existing files, always use " +
             "multiple Edit calls to make targeted changes rather than rewriting the entire " +
             "file with Write. This is critical because Write replaces the entire file content " +
-            "which is slow and loses undo history.",
+            "which is slow and loses undo history." +
+            (locale && !locale.startsWith("en")
+                ? "\n\nThe user's display language is " + locale + ". " +
+                  "Respond in this language unless they write in a different language."
+                : ""),
         includePartialMessages: true,
         abortController: currentAbortController,
         hooks: {

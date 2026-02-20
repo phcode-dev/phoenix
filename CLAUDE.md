@@ -13,6 +13,14 @@
 - No trailing whitespace.
 - Use `const` and `let` instead of `var`.
 
+## Translations / i18n
+- All user-visible strings must go in `src/nls/root/strings.js` — never hardcode English in source files.
+- Use `const Strings = require("strings");` then `Strings.KEY_NAME`.
+- For parameterized strings use `StringUtils.format(Strings.KEY, arg0, arg1)` with `{0}`, `{1}` placeholders.
+- Keys use UPPER_SNAKE_CASE grouped by feature prefix (e.g. `AI_CHAT_*`).
+- Only `src/nls/root/strings.js` (English) needs manual edits — other locales are auto-translated by GitHub Actions.
+- Never compare `$(el).text()` against English strings for logic — use data attributes or CSS classes instead.
+
 ## Phoenix MCP (Desktop App Testing)
 
 Use `exec_js` to run JS in the Phoenix browser runtime. jQuery `$()` is global. `brackets.test.*` exposes internal modules (DocumentManager, CommandManager, ProjectManager, FileSystem, EditorManager). Always `return` a value from `exec_js` to see results. Prefer reusing an already-running Phoenix instance (`get_phoenix_status`) over launching a new one.
