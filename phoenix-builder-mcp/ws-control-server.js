@@ -109,6 +109,28 @@ export function createWSControlServer(port) {
                     break;
                 }
 
+                case "run_tests_response": {
+                    const pendingRt = pendingRequests.get(msg.id);
+                    if (pendingRt) {
+                        pendingRequests.delete(msg.id);
+                        if (msg.success) {
+                            pendingRt.resolve({ success: true, message: msg.message });
+                        } else {
+                            pendingRt.reject(new Error(msg.message || "run_tests failed"));
+                        }
+                    }
+                    break;
+                }
+
+                case "get_test_results_response": {
+                    const pendingTr = pendingRequests.get(msg.id);
+                    if (pendingTr) {
+                        pendingRequests.delete(msg.id);
+                        pendingTr.resolve(msg);
+                    }
+                    break;
+                }
+
                 case "reload_response": {
                     const pending3 = pendingRequests.get(msg.id);
                     if (pending3) {
@@ -390,6 +412,80 @@ export function createWSControlServer(port) {
         });
     }
 
+    function requestRunTests(category, spec, instanceName) {
+        return new Promise((resolve, reject) => {
+            const resolved = _resolveClient(instanceName);
+            if (resolved.error) {
+                reject(new Error(resolved.error));
+                return;
+            }
+
+            const { client } = resolved;
+            if (client.ws.readyState !== 1) {
+                reject(new Error("Phoenix client \"" + resolved.name + "\" is not connected"));
+                return;
+            }
+
+            const id = ++requestIdCounter;
+            const timeout = setTimeout(() => {
+                pendingRequests.delete(id);
+                reject(new Error("run_tests request timed out (30s)"));
+            }, 30000);
+
+            pendingRequests.set(id, {
+                resolve: (data) => {
+                    clearTimeout(timeout);
+                    resolve(data);
+                },
+                reject: (err) => {
+                    clearTimeout(timeout);
+                    reject(err);
+                }
+            });
+
+            const msg = { type: "run_tests_request", id, category };
+            if (spec) {
+                msg.spec = spec;
+            }
+            client.ws.send(JSON.stringify(msg));
+        });
+    }
+
+    function requestTestResults(instanceName) {
+        return new Promise((resolve, reject) => {
+            const resolved = _resolveClient(instanceName);
+            if (resolved.error) {
+                reject(new Error(resolved.error));
+                return;
+            }
+
+            const { client } = resolved;
+            if (client.ws.readyState !== 1) {
+                reject(new Error("Phoenix client \"" + resolved.name + "\" is not connected"));
+                return;
+            }
+
+            const id = ++requestIdCounter;
+            const timeout = setTimeout(() => {
+                pendingRequests.delete(id);
+                reject(new Error("get_test_results request timed out (30s)"));
+            }, 30000);
+
+            pendingRequests.set(id, {
+                resolve: (data) => {
+                    clearTimeout(timeout);
+                    resolve(data);
+                },
+                reject: (err) => {
+                    clearTimeout(timeout);
+                    reject(err);
+                }
+            });
+
+            client.ws.send(JSON.stringify({ type: "get_test_results_request", id }));
+        });
+    }
+
     function getBrowserLogs(sinceLast, instanceName) {
         const resolved = _resolveClient(instanceName);
         if (resolved.error) {
@@ -442,6 +538,8 @@ export function createWSControlServer(port) {
         requestLogs,
         requestExecJs,
         requestExecJsLivePreview,
+        requestRunTests,
+        requestTestResults,
         getBrowserLogs,
         clearBrowserLogs,
         isClientConnected,

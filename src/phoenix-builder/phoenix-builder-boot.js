@@ -90,7 +90,8 @@
         let name = sessionStorage.getItem(INSTANCE_NAME_KEY);
         if (!name) {
             const hex = Math.floor(Math.random() * 0x10000).toString(16).padStart(4, "0");
-            name = "phoenix-" + _getPlatformTag() + "-" + hex;
+            const prefix = window._phoenixBuilderNamePrefix || "phoenix";
+            name = prefix + "-" + _getPlatformTag() + "-" + hex;
             sessionStorage.setItem(INSTANCE_NAME_KEY, name);
         }
         return name;

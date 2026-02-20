@@ -484,6 +484,7 @@ define(function (require, exports, module) {
             // Create the reporter, which is really a model class that just gathers
             // spec and performance data.
             reporter = new UnitTestReporter(jasmineEnv, params.get("spec"), selectedCategories);
+            window._unitTestReporter = reporter;
             SpecRunnerUtils.setUnitTestReporter(reporter);
 
             // Optionally emit JUnit XML file for automated runs

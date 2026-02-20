@@ -384,6 +384,81 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
     );
 
     server.tool(
+        "run_tests",
+        "Run tests in the Phoenix test runner (SpecRunner.html). Reloads the test runner with the specified " +
+        "category and optional spec filter. The test runner must already be open in a browser with MCP enabled. " +
+        "Supported categories: unit, integration, LegacyInteg, livepreview, mainview. " +
+        "WARNING: Do NOT use 'all', 'performance', 'extension', or 'individualrun' categories — they are " +
+        "not actively supported and the full 'all' suite should never be run. " +
+        "To run all tests in a category, omit the spec parameter. " +
+        "To run a single suite, pass the suite name as spec (e.g. spec='unit: HTML Code Hinting'). " +
+        "Suite names are prefixed with the category and a colon, e.g. 'unit: Editor', 'unit: CSS Parsing'. " +
+        "You can also run individual specs by passing the full spec name, but note that individual specs " +
+        "may fail when run alone because suites often run tests in order with shared state — prefer " +
+        "running the full suite instead of individual specs. " +
+        "After calling run_tests, use get_test_results to poll for results.",
+        {
+            category: z.string().describe("Test category to run: unit, integration, LegacyInteg, livepreview, or mainview."),
+            spec: z.string().optional().describe("Optional suite or spec name to run within the category. " +
+                "Use the full name including category prefix, e.g. 'unit: CSS Parsing' for a suite. " +
+                "Prefer running full suites over individual specs, as specs may depend on suite execution order. " +
+                "Omit to run all tests in the category."),
+            instance: z.string().optional().describe("Target a specific test runner instance by name. Required when multiple instances are connected.")
+        },
+        async ({ category, spec, instance }) => {
+            try {
+                const result = await wsControlServer.requestRunTests(category, spec, instance);
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({
+                            success: true,
+                            message: result.message || "Test runner is reloading with category=" + category
+                        })
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ error: err.message })
+                    }]
+                };
+            }
+        }
+    );
+
+    server.tool(
+        "get_test_results",
+        "Get structured test results from the Phoenix test runner. Returns running status, pass/fail counts, " +
+        "failure details, and the currently executing spec. The test runner must already be open with MCP enabled.",
+        {
+            instance: z.string().optional().describe("Target a specific test runner instance by name. Required when multiple instances are connected.")
+        },
+        async ({ instance }) => {
+            try {
+                const result = await wsControlServer.requestTestResults(instance);
+                // Remove internal WS fields
+                delete result.type;
+                delete result.id;
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify(result, null, 2)
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ error: err.message })
+                    }]
+                };
+            }
+        }
+    );
+
+    server.tool(
         "get_phoenix_status",
         "Check the status of the Phoenix process and WebSocket connection.",
         {},
