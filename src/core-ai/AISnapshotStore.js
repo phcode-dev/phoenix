@@ -254,18 +254,42 @@ define(function (require, exports, module) {
                 });
         }
 
+        function _createThenSet() {
+            const file = FileSystem.getFileForPath(vfsPath);
+            file.write("", function (writeErr) {
+                if (writeErr) {
+                    result.reject(new Error("Could not create file: " + writeErr));
+                    return;
+                }
+                _setContent();
+            });
+        }
+
         const file = FileSystem.getFileForPath(vfsPath);
         file.exists(function (existErr, exists) {
             if (exists) {
-                _setContent();
+                // File may appear to exist due to stale FS cache after a
+                // delete+recreate cycle. Try opening first; if it fails,
+                // recreate the file on disk and retry.
+                DocumentManager.getDocumentForPath(vfsPath)
+                    .done(function (doc) {
+                        try {
+                            doc.setText(content);
+                            saveDocToDisk(doc).always(function () {
+                                CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath })
+                                    .always(function () {
+                                        result.resolve();
+                                    });
+                            });
+                        } catch (err) {
+                            result.reject(err);
+                        }
+                    })
+                    .fail(function () {
+                        _createThenSet();
+                    });
             } else {
-                file.write("", function (writeErr) {
-                    if (writeErr) {
-                        result.reject(new Error("Could not create file: " + writeErr));
-                        return;
-                    }
-                    _setContent();
-                });
+                _createThenSet();
             }
         });
 
