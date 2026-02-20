@@ -32,7 +32,8 @@ define(function (require, exports, module) {
     const DocumentManager = require("document/DocumentManager"),
         CommandManager   = require("command/CommandManager"),
         Commands         = require("command/Commands"),
-        FileSystem       = require("filesystem/FileSystem");
+        FileSystem       = require("filesystem/FileSystem"),
+        ProjectManager   = require("project/ProjectManager");
 
     // --- Constants ---
     const HEARTBEAT_INTERVAL_MS = 60 * 1000;
@@ -53,6 +54,9 @@ define(function (require, exports, module) {
     const _writtenHashes = new Set(); // hashes confirmed on disk
     let _snapshots = [];             // flat: _snapshots[i] = { filePath: hash|null }
     let _pendingBeforeSnap = {};     // built during current response: filePath → hash|null
+    const _pendingDeleted = new Set();   // file paths deleted during current response
+    const _readFiles = {};               // filePath → raw content string (files AI has read)
+    let _isTracking = false;             // true while AI is streaming
 
     // --- Path utility ---
 
@@ -130,7 +134,7 @@ define(function (require, exports, module) {
 
     function _readContent(hash) {
         // Check memory buffer first (content may not have flushed yet)
-        if (_memoryBuffer[hash]) {
+        if (_memoryBuffer.hasOwnProperty(hash)) {
             return Promise.resolve(_memoryBuffer[hash]);
         }
         // Read from disk
@@ -142,6 +146,15 @@ define(function (require, exports, module) {
                 } else {
                     resolve(data);
                 }
+            });
+        });
+    }
+
+    function _readFileFromDisk(vfsPath) {
+        return new Promise(function (resolve, reject) {
+            const file = FileSystem.getFileForPath(vfsPath);
+            file.read(function (err, data) {
+                if (err) { reject(err); } else { resolve(data); }
             });
         });
     }
@@ -180,29 +193,32 @@ define(function (require, exports, module) {
         const vfsPath = realToVfsPath(filePath);
         const file = FileSystem.getFileForPath(vfsPath);
 
+        function _unlinkFile() {
+            file.unlink(function (err) {
+                if (err) {
+                    // File already gone — desired state achieved, treat as success
+                    file.exists(function (_existErr, exists) {
+                        if (!exists) {
+                            result.resolve();
+                        } else {
+                            result.reject(err);
+                        }
+                    });
+                } else {
+                    result.resolve();
+                }
+            });
+        }
+
         const openDoc = DocumentManager.getOpenDocumentForPath(vfsPath);
         if (openDoc) {
             if (openDoc.isDirty) {
                 openDoc.setText("");
             }
             CommandManager.execute(Commands.FILE_CLOSE, { file: file, _forceClose: true })
-                .always(function () {
-                    file.unlink(function (err) {
-                        if (err) {
-                            result.reject(err);
-                        } else {
-                            result.resolve();
-                        }
-                    });
-                });
+                .always(_unlinkFile);
         } else {
-            file.unlink(function (err) {
-                if (err) {
-                    result.reject(err);
-                } else {
-                    result.resolve();
-                }
-            });
+            _unlinkFile();
         }
 
         return result.promise();
@@ -224,8 +240,10 @@ define(function (require, exports, module) {
                     try {
                         doc.setText(content);
                         saveDocToDisk(doc).always(function () {
-                            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
-                            result.resolve();
+                            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath })
+                                .always(function () {
+                                    result.resolve();
+                                });
                         });
                     } catch (err) {
                         result.reject(err);
@@ -307,6 +325,37 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Record a file the AI has read, storing its content hash for potential
+     * delete/rename tracking. If the file is later deleted, this content
+     * can be promoted into a snapshot for restore.
+     * @param {string} filePath - real filesystem path
+     * @param {string} content - file content at read time
+     */
+    function recordFileRead(filePath, content) {
+        _readFiles[filePath] = content;
+    }
+
+    /**
+     * Record that a file has been deleted during this response.
+     * If the file hasn't been tracked yet, its previousContent is stored
+     * and back-filled into existing snapshots.
+     * @param {string} filePath - real filesystem path
+     * @param {string} previousContent - content before deletion
+     */
+    function recordFileDeletion(filePath, previousContent) {
+        if (!_pendingBeforeSnap.hasOwnProperty(filePath)) {
+            const hash = storeContent(previousContent);
+            _pendingBeforeSnap[filePath] = hash;
+            _snapshots.forEach(function (snap) {
+                if (snap[filePath] === undefined) {
+                    snap[filePath] = hash;
+                }
+            });
+        }
+        _pendingDeleted.add(filePath);
+    }
+
+    /**
      * Create the initial snapshot (snapshot 0) capturing file state before any
      * AI edits. Called once per session on the first edit.
      * @return {number} the snapshot index (always 0)
@@ -321,24 +370,44 @@ define(function (require, exports, module) {
      * Builds an "after" snapshot from current document content for edited files,
      * pushes it, and resets transient tracking variables.
      * Flushes in-memory content to disk for long-term storage.
-     * @return {number} the after-snapshot index, or -1 if no edits happened
+     *
+     * Priority for each file:
+     * 1. If in _pendingDeleted → null
+     * 2. If doc is open → storeContent(openDoc.getText())
+     * 3. Fallback: read from disk → storeContent(content)
+     * 4. If disk read fails (file gone) → null
+     *
+     * @return {Promise<number>} the after-snapshot index, or -1 if no edits happened
      */
-    function finalizeResponse() {
+    async function finalizeResponse() {
         let afterIndex = -1;
         if (Object.keys(_pendingBeforeSnap).length > 0) {
-            // Build "after" snapshot = last snapshot + current content of edited files
             const afterSnap = Object.assign({}, _snapshots[_snapshots.length - 1]);
-            Object.keys(_pendingBeforeSnap).forEach(function (fp) {
+            const editedPaths = Object.keys(_pendingBeforeSnap);
+            for (let i = 0; i < editedPaths.length; i++) {
+                const fp = editedPaths[i];
+                if (_pendingDeleted.has(fp)) {
+                    afterSnap[fp] = null;
+                    continue;
+                }
                 const vfsPath = realToVfsPath(fp);
                 const openDoc = DocumentManager.getOpenDocumentForPath(vfsPath);
                 if (openDoc) {
                     afterSnap[fp] = storeContent(openDoc.getText());
+                } else {
+                    try {
+                        const content = await _readFileFromDisk(vfsPath);
+                        afterSnap[fp] = storeContent(content);
+                    } catch (e) {
+                        afterSnap[fp] = null;
+                    }
                 }
-            });
+            }
             _snapshots.push(afterSnap);
             afterIndex = _snapshots.length - 1;
         }
         _pendingBeforeSnap = {};
+        _pendingDeleted.clear();
         _flushToDisk();
         return afterIndex;
     }
@@ -357,6 +426,74 @@ define(function (require, exports, module) {
         onComplete(errorCount);
     }
 
+    // --- FS event tracking ---
+
+    function _onProjectFileChanged(_event, entry, addedInProject, removedInProject) {
+        if (!removedInProject || !removedInProject.length) { return; }
+        removedInProject.forEach(function (removedEntry) {
+            if (!removedEntry.isFile) { return; }
+            const fp = removedEntry.fullPath;
+            // Check if AI has edited this file (already in snapshots)
+            const isEdited = _pendingBeforeSnap.hasOwnProperty(fp) ||
+                _snapshots.some(function (snap) { return snap.hasOwnProperty(fp); });
+            if (isEdited) {
+                _pendingDeleted.add(fp);
+                return;
+            }
+            // Check if AI has read this file (raw content available)
+            if (_readFiles.hasOwnProperty(fp)) {
+                // Promote from read-tracked to snapshot-tracked, then mark deleted
+                const hash = storeContent(_readFiles[fp]);
+                _pendingBeforeSnap[fp] = hash;
+                _snapshots.forEach(function (snap) {
+                    if (snap[fp] === undefined) {
+                        snap[fp] = hash;
+                    }
+                });
+                _pendingDeleted.add(fp);
+            }
+        });
+    }
+
+    function _onProjectFileRenamed(_event, oldPath, newPath) {
+        // Update _pendingBeforeSnap
+        if (_pendingBeforeSnap.hasOwnProperty(oldPath)) {
+            _pendingBeforeSnap[newPath] = _pendingBeforeSnap[oldPath];
+            delete _pendingBeforeSnap[oldPath];
+        }
+        // Update _pendingDeleted
+        if (_pendingDeleted.has(oldPath)) {
+            _pendingDeleted.delete(oldPath);
+            _pendingDeleted.add(newPath);
+        }
+        // Update all snapshots
+        _snapshots.forEach(function (snap) {
+            if (snap.hasOwnProperty(oldPath)) {
+                snap[newPath] = snap[oldPath];
+                delete snap[oldPath];
+            }
+        });
+        // Update _readFiles
+        if (_readFiles.hasOwnProperty(oldPath)) {
+            _readFiles[newPath] = _readFiles[oldPath];
+            delete _readFiles[oldPath];
+        }
+    }
+
+    function startTracking() {
+        if (_isTracking) { return; }
+        _isTracking = true;
+        ProjectManager.on("projectFileChanged", _onProjectFileChanged);
+        ProjectManager.on("projectFileRenamed", _onProjectFileRenamed);
+    }
+
+    function stopTracking() {
+        if (!_isTracking) { return; }
+        _isTracking = false;
+        ProjectManager.off("projectFileChanged", _onProjectFileChanged);
+        ProjectManager.off("projectFileRenamed", _onProjectFileRenamed);
+    }
+
     /**
      * @return {number} number of snapshots
      */
@@ -373,6 +510,9 @@ define(function (require, exports, module) {
         _writtenHashes.clear();
         _snapshots = [];
         _pendingBeforeSnap = {};
+        _pendingDeleted.clear();
+        Object.keys(_readFiles).forEach(function (k) { delete _readFiles[k]; });
+        stopTracking();
 
         // Delete and recreate aiSnap directory
         if (_diskReady && _aiSnapDir) {
@@ -472,9 +612,13 @@ define(function (require, exports, module) {
     exports.saveDocToDisk = saveDocToDisk;
     exports.storeContent = storeContent;
     exports.recordFileBeforeEdit = recordFileBeforeEdit;
+    exports.recordFileRead = recordFileRead;
+    exports.recordFileDeletion = recordFileDeletion;
     exports.createInitialSnapshot = createInitialSnapshot;
     exports.finalizeResponse = finalizeResponse;
     exports.restoreToSnapshot = restoreToSnapshot;
     exports.getSnapshotCount = getSnapshotCount;
+    exports.startTracking = startTracking;
+    exports.stopTracking = stopTracking;
     exports.reset = reset;
 });
