@@ -241,6 +241,7 @@ define(function (require, exports, module) {
         _hasReceivedContent = false;
         _currentEdits = [];
         _firstEditInResponse = true;
+        SnapshotStore.startTracking();
         _appendThinkingIndicator();
 
         // Remove restore highlights from previous interactions
@@ -370,6 +371,23 @@ define(function (require, exports, module) {
             "file=" + (data.toolInput && data.toolInput.file_path || "?").split("/").pop(),
             "streamEvents=" + streamCount);
         _updateToolIndicator(data.toolId, data.toolName, data.toolInput);
+
+        // Capture content of files the AI reads (for snapshot delete tracking)
+        if (data.toolName === "Read" && data.toolInput && data.toolInput.file_path) {
+            const filePath = data.toolInput.file_path;
+            const vfsPath = SnapshotStore.realToVfsPath(filePath);
+            const openDoc = DocumentManager.getOpenDocumentForPath(vfsPath);
+            if (openDoc) {
+                SnapshotStore.recordFileRead(filePath, openDoc.getText());
+            } else {
+                const file = FileSystem.getFileForPath(vfsPath);
+                file.read(function (err, readData) {
+                    if (!err && readData) {
+                        SnapshotStore.recordFileRead(filePath, readData);
+                    }
+                });
+            }
+        }
     }
 
     function _onToolStream(_event, data) {
@@ -586,7 +604,7 @@ define(function (require, exports, module) {
         // Don't stop streaming — the node side may continue (partial results)
     }
 
-    function _onComplete(_event, data) {
+    async function _onComplete(_event, data) {
         console.log("[AI UI]", "Complete. textChunks=" + _traceTextChunks,
             "toolStreams=" + JSON.stringify(_traceToolStreamCounts));
         // Reset trace counters for next query
@@ -595,18 +613,19 @@ define(function (require, exports, module) {
 
         // Append edit summary if there were edits (finalizeResponse called inside)
         if (_currentEdits.length > 0) {
-            _appendEditSummary();
+            await _appendEditSummary();
         }
 
+        SnapshotStore.stopTracking();
         _setStreaming(false);
     }
 
     /**
      * Append a compact summary card showing all files modified during this response.
      */
-    function _appendEditSummary() {
+    async function _appendEditSummary() {
         // Finalize snapshot and get the after-snapshot index
-        const afterIndex = SnapshotStore.finalizeResponse();
+        const afterIndex = await SnapshotStore.finalizeResponse();
         _undoApplied = false;
 
         // Aggregate per-file stats
