@@ -149,6 +149,15 @@ define(function (require, exports, module) {
             }, name + " to be deleted", 5000);
         }
 
+        function unlinkFile(name) {
+            return new Promise(function (resolve, reject) {
+                const file = FileSystem.getFileForPath(toVfsPath(name));
+                file.unlink(function (err) {
+                    if (err) { reject(err); } else { resolve(); }
+                });
+            });
+        }
+
         function beginResponse() {
             if (AISnapshotStore.getSnapshotCount() === 0) {
                 AISnapshotStore.createInitialSnapshot();
@@ -208,7 +217,7 @@ define(function (require, exports, module) {
                 beginResponse();
                 AISnapshotStore.recordFileBeforeEdit(doc.file.fullPath, "", true);
                 doc.setText("new content");
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // Snapshot 0 has null → restore deletes file
                 const errorCount = await restoreToSnapshot(0);
@@ -225,7 +234,7 @@ define(function (require, exports, module) {
                 doc.setText("v1");
                 // Second call with different content should be ignored (first-edit-wins)
                 AISnapshotStore.recordFileBeforeEdit(doc.file.fullPath, "v1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // Restore to snapshot 0 should give v0, not v1
                 const errorCount = await restoreToSnapshot(0);
@@ -238,9 +247,9 @@ define(function (require, exports, module) {
         // --- finalizeResponse ---
 
         describe("finalizeResponse", function () {
-            it("should return -1 when no pending edits", function () {
+            it("should return -1 when no pending edits", async function () {
                 beginResponse();
-                const idx = AISnapshotStore.finalizeResponse();
+                const idx = await AISnapshotStore.finalizeResponse();
                 expect(idx).toBe(-1);
             });
 
@@ -250,7 +259,7 @@ define(function (require, exports, module) {
 
                 beginResponse();
                 simulateEdit(doc, "after", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // Snapshot 1 should have "after"
                 const errorCount = await restoreToSnapshot(1);
@@ -266,7 +275,7 @@ define(function (require, exports, module) {
                 beginResponse();
                 simulateEdit(doc, "v1", false);
                 expect(AISnapshotStore.getSnapshotCount()).toBe(1);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
                 expect(AISnapshotStore.getSnapshotCount()).toBe(2);
             });
 
@@ -276,10 +285,68 @@ define(function (require, exports, module) {
 
                 beginResponse();
                 simulateEdit(doc, "v1", false);
-                const idx = AISnapshotStore.finalizeResponse();
+                const idx = await AISnapshotStore.finalizeResponse();
                 expect(idx).toBe(1);
-                const idx2 = AISnapshotStore.finalizeResponse();
+                const idx2 = await AISnapshotStore.finalizeResponse();
                 expect(idx2).toBe(-1);
+            });
+
+            it("should capture closed doc content from disk", async function () {
+                await createFile("a.txt", "on-disk-content");
+                const doc = await openDoc("a.txt");
+
+                beginResponse();
+                simulateEdit(doc, "edited", false);
+
+                // Save to disk then close the tab
+                const file = doc.file;
+                await new Promise(function (resolve) {
+                    file.write("edited", function () { resolve(); });
+                });
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE,
+                        { file: file, _forceClose: true }),
+                    "close a.txt"
+                );
+
+                await AISnapshotStore.finalizeResponse();
+
+                // After-snapshot should have captured "edited" from disk fallback
+                const err = await restoreToSnapshot(1);
+                expect(err).toBe(0);
+                expect(await readFile("a.txt")).toBe("edited");
+            });
+
+            it("should capture deleted file as null in after-snapshot", async function () {
+                await createFile("a.txt", "content");
+                const doc = await openDoc("a.txt");
+
+                beginResponse();
+                simulateEdit(doc, "modified", false);
+
+                // Close tab and delete the file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE,
+                        { file: doc.file, _forceClose: true }),
+                    "close a.txt"
+                );
+                await unlinkFile("a.txt");
+
+                await AISnapshotStore.finalizeResponse();
+
+                expect(AISnapshotStore.getSnapshotCount()).toBe(2);
+
+                // snap 0 has original content; restore recreates the file
+                let err = await restoreToSnapshot(0);
+                expect(err).toBe(0);
+                expect(await readFile("a.txt")).toBe("content");
+
+                // snap 1 was captured as null (disk read failed → null fallback)
+                // Explicitly open to ensure doc is in working set (avoids CMD_OPEN race)
+                await openDoc("a.txt");
+                err = await restoreToSnapshot(1);
+                expect(err).toBe(0);
+                await expectFileDeleted("a.txt");
             });
         });
 
@@ -298,7 +365,7 @@ define(function (require, exports, module) {
                 beginResponse();
                 simulateEdit(docA, "a1", false);
                 simulateEdit(docB, "b1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 expect(AISnapshotStore.getSnapshotCount()).toBe(2);
 
@@ -323,11 +390,11 @@ define(function (require, exports, module) {
                 // R1
                 beginResponse();
                 simulateEdit(doc, "v1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // R2
                 simulateEdit(doc, "v2", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 expect(AISnapshotStore.getSnapshotCount()).toBe(3);
 
@@ -352,15 +419,15 @@ define(function (require, exports, module) {
                 // R1
                 beginResponse();
                 simulateEdit(doc, "v1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // R2
                 simulateEdit(doc, "v2", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // R3
                 simulateEdit(doc, "v3", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 expect(AISnapshotStore.getSnapshotCount()).toBe(4);
 
@@ -382,12 +449,12 @@ define(function (require, exports, module) {
                 // R1: edit A only
                 beginResponse();
                 simulateEdit(docA, "a1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // R2: edit B only
                 const docB = await openDoc("b.txt");
                 simulateEdit(docB, "b1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 expect(AISnapshotStore.getSnapshotCount()).toBe(3);
 
@@ -413,11 +480,11 @@ define(function (require, exports, module) {
                 // R1: create file A
                 beginResponse();
                 const docA = await simulateCreateFile("a.txt", "new");
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // R2: edit A
                 simulateEdit(docA, "edited", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 expect(AISnapshotStore.getSnapshotCount()).toBe(3);
 
@@ -445,11 +512,11 @@ define(function (require, exports, module) {
                 // R1: edit A
                 beginResponse();
                 simulateEdit(docA, "a1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 // R2: create B
                 const docB = await simulateCreateFile("b.txt", "new");
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
 
                 expect(AISnapshotStore.getSnapshotCount()).toBe(3);
 
@@ -470,12 +537,127 @@ define(function (require, exports, module) {
                 expect(await readFile("b.txt")).toBe("new");
             });
 
-            // Case 9: Response with no edits
-            it("should return -1 for response with no edits", function () {
+            // File created and document closed in same turn — disk fallback reads empty content
+            it("should handle file created and closed in same turn", async function () {
+                await createFile("a.txt", "a0");
+                const docA = await openDoc("a.txt");
+
+                // R1: edit A, create B then close B's document
                 beginResponse();
-                const idx = AISnapshotStore.finalizeResponse();
+                simulateEdit(docA, "a1", false);
+                const docB = await simulateCreateFile("b.txt", "created");
+                // Close B — simulates file created then removed in same turn
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE,
+                        { file: docB.file, _forceClose: true }),
+                    "close b.txt"
+                );
+                await AISnapshotStore.finalizeResponse();
+
+                expect(AISnapshotStore.getSnapshotCount()).toBe(2);
+
+                // snap 0: A="a0", B=null (isNewFile). B still on disk from simulateCreateFile.
+                let err = await restoreToSnapshot(0);
+                expect(err).toBe(0);
+                expect(await readFile("a.txt")).toBe("a0");
+                await expectFileDeleted("b.txt");
+
+                // snap 1 (after): A="a1", B read from disk fallback (createFile wrote "")
+                err = await restoreToSnapshot(1);
+                expect(await readFile("a.txt")).toBe("a1");
+                // Disk fallback reads the empty string that createFile wrote
+                expect(await readFile("b.txt")).toBe("");
+            });
+
+            // Delete → recreate → delete round-trip
+            it("should handle delete-restore-delete round-trip", async function () {
+                // R1: create file A
+                beginResponse();
+                await simulateCreateFile("a.txt", "content");
+                await AISnapshotStore.finalizeResponse();
+
+                expect(AISnapshotStore.getSnapshotCount()).toBe(2);
+
+                // snap 0 → A=null → file deleted
+                let err = await restoreToSnapshot(0);
+                expect(err).toBe(0);
+                await expectFileDeleted("a.txt");
+
+                // snap 1 → A="content" → file recreated from deleted state
+                err = await restoreToSnapshot(1);
+                expect(err).toBe(0);
+                expect(await readFile("a.txt")).toBe("content");
+            });
+
+            // Case 9: Response with no edits
+            it("should return -1 for response with no edits", async function () {
+                beginResponse();
+                const idx = await AISnapshotStore.finalizeResponse();
                 expect(idx).toBe(-1);
                 expect(AISnapshotStore.getSnapshotCount()).toBe(1);
+            });
+        });
+
+        // --- recordFileDeletion ---
+
+        describe("recordFileDeletion", function () {
+            it("should track explicit deletion with before-content and null after", async function () {
+                await createFile("a.txt", "original");
+                const doc = await openDoc("a.txt");
+
+                beginResponse();
+                // Record deletion with known previous content
+                AISnapshotStore.recordFileDeletion(doc.file.fullPath, "original");
+                await AISnapshotStore.finalizeResponse();
+
+                expect(AISnapshotStore.getSnapshotCount()).toBe(2);
+
+                // snap 1 has null — doc still open from openDoc(), close+delete works
+                let err = await restoreToSnapshot(1);
+                expect(err).toBe(0);
+                await expectFileDeleted("a.txt");
+
+                // snap 0 has "original" (back-filled before content) — recreates file
+                err = await restoreToSnapshot(0);
+                expect(err).toBe(0);
+                expect(await readFile("a.txt")).toBe("original");
+            });
+        });
+
+        // --- recordFileRead ---
+
+        describe("recordFileRead", function () {
+            it("should enable restore when read-tracked file is later deleted", async function () {
+                await createFile("a.txt", "a0");
+                await createFile("b.txt", "b-content");
+                const docA = await openDoc("a.txt");
+
+                // Record that AI has read b.txt
+                AISnapshotStore.recordFileRead(toVfsPath("b.txt"), "b-content");
+
+                beginResponse();
+                // Edit a.txt (so we have at least one pending edit)
+                simulateEdit(docA, "a1", false);
+
+                // Simulate deletion of the read file by calling recordFileDeletion
+                // (mirrors what _onProjectFileChanged would do after promoting from _readFiles)
+                AISnapshotStore.recordFileDeletion(toVfsPath("b.txt"), "b-content");
+
+                await AISnapshotStore.finalizeResponse();
+
+                expect(AISnapshotStore.getSnapshotCount()).toBe(2);
+
+                // snap 1: A="a1", B=null (deleted) — b.txt still on disk, delete first
+                let err = await restoreToSnapshot(1);
+                expect(err).toBe(0);
+                expect(await readFile("a.txt")).toBe("a1");
+                await expectFileDeleted("b.txt");
+
+                // snap 0: A="a0", B="b-content" — recreates b.txt
+                err = await restoreToSnapshot(0);
+                expect(err).toBe(0);
+                expect(await readFile("a.txt")).toBe("a0");
+                expect(await readFile("b.txt")).toBe("b-content");
             });
         });
 
@@ -495,7 +677,7 @@ define(function (require, exports, module) {
 
                 beginResponse();
                 simulateEdit(doc, "v1", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
                 expect(AISnapshotStore.getSnapshotCount()).toBe(2);
 
                 AISnapshotStore.reset();
@@ -504,7 +686,7 @@ define(function (require, exports, module) {
                 // Start fresh
                 beginResponse();
                 simulateEdit(doc, "v2", false);
-                AISnapshotStore.finalizeResponse();
+                await AISnapshotStore.finalizeResponse();
                 expect(AISnapshotStore.getSnapshotCount()).toBe(2);
 
                 const err = await restoreToSnapshot(0);
