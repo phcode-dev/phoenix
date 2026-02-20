@@ -21,7 +21,7 @@ Dispatches the following events_
 ### new Handles the search results panel.
 Dispatches the following events:
      replaceBatch - when the Replace button is clicked.
-     close - when the panel is closed.(model, panelID, panelName, type)
+     close - when the panel is closed.(model, panelID, panelName, type, [title])
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -29,4 +29,5 @@ Dispatches the following events:
 | panelID | <code>string</code> | The CSS ID to use for the panel. |
 | panelName | <code>string</code> | The name to use for the panel, as passed to WorkspaceManager.createBottomPanel(). |
 | type | <code>string</code> | type to identify if it is reference search or string match serach |
+| [title] | <code>string</code> | Display title for the panel tab. |
 
