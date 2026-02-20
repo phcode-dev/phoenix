@@ -296,6 +296,7 @@ define(function (require, exports, module) {
             SidebarTabs: require("view/SidebarTabs"),
             SidebarView: require("project/SidebarView"),
             WorkingSetView: require("project/WorkingSetView"),
+            AISnapshotStore: require("core-ai/AISnapshotStore"),
             doneLoading: false
         };
 
