@@ -48,6 +48,8 @@ define(function (require, exports, module) {
     // --- AI event trace logging (compact, non-flooding) ---
     let _traceTextChunks = 0;
     let _traceToolStreamCounts = {}; // toolId → count
+    let _toolStreamStaleTimer = null;    // timer to start rotating activity text
+    let _toolStreamRotateTimer = null;   // interval for cycling activity phrases
 
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn;
@@ -420,6 +422,32 @@ define(function (require, exports, module) {
             $tool.find(".ai-tool-preview").text(preview);
             _scrollToBottom();
         }
+
+        // Reset staleness timer — if no new stream event arrives within 2s,
+        // rotate through activity phrases so the user sees something is happening.
+        clearTimeout(_toolStreamStaleTimer);
+        clearInterval(_toolStreamRotateTimer);
+        _toolStreamStaleTimer = setTimeout(function () {
+            const phrases = [
+                Strings.AI_CHAT_WORKING,
+                Strings.AI_CHAT_WRITING,
+                Strings.AI_CHAT_PROCESSING
+            ];
+            let idx = 0;
+            const $livePreview = $tool.find(".ai-tool-preview");
+            if ($livePreview.length && !$tool.hasClass("ai-tool-done")) {
+                $livePreview.text(phrases[idx]);
+            }
+            _toolStreamRotateTimer = setInterval(function () {
+                idx = (idx + 1) % phrases.length;
+                const $p = $tool.find(".ai-tool-preview");
+                if ($p.length && !$tool.hasClass("ai-tool-done")) {
+                    $p.text(phrases[idx]);
+                } else {
+                    clearInterval(_toolStreamRotateTimer);
+                }
+            }, 3000);
+        }, 2000);
     }
 
     /**
@@ -924,6 +952,10 @@ define(function (require, exports, module) {
                 CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
             }).css("cursor", "pointer").addClass("ai-tool-label-clickable");
         }
+
+        // Clear any stale-preview timers now that tool info arrived
+        clearTimeout(_toolStreamStaleTimer);
+        clearInterval(_toolStreamRotateTimer);
 
         // Delay marking as done so the streaming preview stays visible briefly.
         // The ai-tool-done class hides the preview via CSS; deferring it lets the
