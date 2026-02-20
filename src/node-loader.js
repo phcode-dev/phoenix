@@ -637,7 +637,7 @@ function nodeLoader() {
 
         async function _resolveSrcNodePath() {
             // Check if running from localhost dev server
-            if (window.location.hostname === 'localhost') {
+            if (window.location.href.startsWith('http://localhost:')) {
                 // Fetch phoenix path from dev server API to use local src-node
                 const response = await fetch('/api/getPhoenixPath');
                 const pathInfo = await response.json();
