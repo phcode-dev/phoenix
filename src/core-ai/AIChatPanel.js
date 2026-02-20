@@ -31,6 +31,8 @@ define(function (require, exports, module) {
         ProjectManager   = require("project/ProjectManager"),
         FileSystem       = require("filesystem/FileSystem"),
         SnapshotStore    = require("core-ai/AISnapshotStore"),
+        Strings          = require("strings"),
+        StringUtils      = require("utils/StringUtils"),
         marked           = require("thirdparty/marked.min");
 
     let _nodeConnector = null;
@@ -60,23 +62,23 @@ define(function (require, exports, module) {
     const PANEL_HTML =
         '<div class="ai-chat-panel">' +
             '<div class="ai-chat-header">' +
-                '<span class="ai-chat-title">AI Assistant</span>' +
-                '<button class="ai-new-session-btn" title="Start a new conversation">' +
-                    '<i class="fa-solid fa-plus"></i> New' +
+                '<span class="ai-chat-title">' + Strings.AI_CHAT_TITLE + '</span>' +
+                '<button class="ai-new-session-btn" title="' + Strings.AI_CHAT_NEW_SESSION_TITLE + '">' +
+                    '<i class="fa-solid fa-plus"></i> ' + Strings.AI_CHAT_NEW_BTN +
                 '</button>' +
             '</div>' +
             '<div class="ai-chat-messages"></div>' +
             '<div class="ai-chat-status">' +
                 '<span class="ai-status-spinner"></span>' +
-                '<span class="ai-status-text">Thinking...</span>' +
+                '<span class="ai-status-text">' + Strings.AI_CHAT_THINKING + '</span>' +
             '</div>' +
             '<div class="ai-chat-input-area">' +
                 '<div class="ai-chat-input-wrap">' +
-                    '<textarea class="ai-chat-textarea" placeholder="Ask Claude..." rows="1"></textarea>' +
-                    '<button class="ai-send-btn" title="Send message">' +
+                    '<textarea class="ai-chat-textarea" placeholder="' + Strings.AI_CHAT_PLACEHOLDER + '" rows="1"></textarea>' +
+                    '<button class="ai-send-btn" title="' + Strings.AI_CHAT_SEND_TITLE + '">' +
                         '<i class="fa-solid fa-paper-plane"></i>' +
                     '</button>' +
-                    '<button class="ai-stop-btn" title="Stop generation (Esc)" style="display:none">' +
+                    '<button class="ai-stop-btn" title="' + Strings.AI_CHAT_STOP_TITLE + '" style="display:none">' +
                         '<i class="fa-solid fa-stop"></i>' +
                     '</button>' +
                 '</div>' +
@@ -87,13 +89,11 @@ define(function (require, exports, module) {
         '<div class="ai-chat-panel">' +
             '<div class="ai-unavailable">' +
                 '<div class="ai-unavailable-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>' +
-                '<div class="ai-unavailable-title">Claude CLI Not Found</div>' +
+                '<div class="ai-unavailable-title">' + Strings.AI_CHAT_CLI_NOT_FOUND + '</div>' +
                 '<div class="ai-unavailable-message">' +
-                    'Install the Claude CLI to use AI features:<br>' +
-                    '<code>npm install -g @anthropic-ai/claude-code</code><br><br>' +
-                    'Then run <code>claude login</code> to authenticate.' +
+                    Strings.AI_CHAT_CLI_INSTALL_MSG +
                 '</div>' +
-                '<button class="ai-retry-btn">Retry</button>' +
+                '<button class="ai-retry-btn">' + Strings.AI_CHAT_RETRY + '</button>' +
             '</div>' +
         '</div>';
 
@@ -101,9 +101,9 @@ define(function (require, exports, module) {
         '<div class="ai-chat-panel">' +
             '<div class="ai-unavailable">' +
                 '<div class="ai-unavailable-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>' +
-                '<div class="ai-unavailable-title">AI Assistant</div>' +
+                '<div class="ai-unavailable-title">' + Strings.AI_CHAT_TITLE + '</div>' +
                 '<div class="ai-unavailable-message">' +
-                    'AI features require the Phoenix desktop app.' +
+                    Strings.AI_CHAT_DESKTOP_ONLY +
                 '</div>' +
             '</div>' +
         '</div>';
@@ -259,13 +259,14 @@ define(function (require, exports, module) {
         _nodeConnector.execPeer("sendPrompt", {
             prompt: prompt,
             projectPath: projectPath,
-            sessionAction: "continue"
+            sessionAction: "continue",
+            locale: brackets.getLocale()
         }).then(function (result) {
             _currentRequestId = result.requestId;
             console.log("[AI UI] RequestId:", result.requestId);
         }).catch(function (err) {
             _setStreaming(false);
-            _appendErrorMessage("Failed to send message: " + (err.message || String(err)));
+            _appendErrorMessage(StringUtils.format(Strings.AI_CHAT_SEND_ERROR, err.message || String(err)));
         });
     }
 
@@ -343,13 +344,13 @@ define(function (require, exports, module) {
 
     // Tool type configuration: icon, color, label
     const TOOL_CONFIG = {
-        Glob:  { icon: "fa-solid fa-magnifying-glass", color: "#6b9eff", label: "Search files" },
-        Grep:  { icon: "fa-solid fa-magnifying-glass-location", color: "#6b9eff", label: "Search code" },
-        Read:  { icon: "fa-solid fa-file-lines", color: "#6bc76b", label: "Read" },
-        Edit:  { icon: "fa-solid fa-pen", color: "#e8a838", label: "Edit" },
-        Write: { icon: "fa-solid fa-file-pen", color: "#e8a838", label: "Write" },
-        Bash:  { icon: "fa-solid fa-terminal", color: "#c084fc", label: "Run command" },
-        Skill: { icon: "fa-solid fa-puzzle-piece", color: "#e0c060", label: "Skill" }
+        Glob:  { icon: "fa-solid fa-magnifying-glass", color: "#6b9eff", label: Strings.AI_CHAT_TOOL_SEARCH_FILES },
+        Grep:  { icon: "fa-solid fa-magnifying-glass-location", color: "#6b9eff", label: Strings.AI_CHAT_TOOL_SEARCH_CODE },
+        Read:  { icon: "fa-solid fa-file-lines", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_READ },
+        Edit:  { icon: "fa-solid fa-pen", color: "#e8a838", label: Strings.AI_CHAT_TOOL_EDIT },
+        Write: { icon: "fa-solid fa-file-pen", color: "#e8a838", label: Strings.AI_CHAT_TOOL_WRITE },
+        Bash:  { icon: "fa-solid fa-terminal", color: "#c084fc", label: Strings.AI_CHAT_TOOL_RUN_CMD },
+        Skill: { icon: "fa-solid fa-puzzle-piece", color: "#e0c060", label: Strings.AI_CHAT_TOOL_SKILL }
     };
 
     function _onProgress(_event, data) {
@@ -357,7 +358,7 @@ define(function (require, exports, module) {
         if ($statusText) {
             const toolName = data.toolName || "";
             const config = TOOL_CONFIG[toolName];
-            $statusText.text(config ? config.label + "..." : "Thinking...");
+            $statusText.text(config ? config.label + "..." : Strings.AI_CHAT_THINKING);
         }
         if (data.phase === "tool_use") {
             _appendToolIndicator(data.toolName, data.toolId);
@@ -480,7 +481,7 @@ define(function (require, exports, module) {
         // If the interesting key hasn't appeared yet, show a byte counter
         // so the user sees streaming activity during the file_path phase
         if (!raw && partialJson.length > 3) {
-            return "receiving " + partialJson.length + " bytes...";
+            return StringUtils.format(Strings.AI_CHAT_RECEIVING_BYTES, partialJson.length);
         }
         if (!raw) {
             return "";
@@ -527,7 +528,7 @@ define(function (require, exports, module) {
                 // Insert initial restore point PUC before the current tool indicator
                 const $puc = $(
                     '<div class="ai-msg ai-msg-restore-point" data-snapshot-index="' + initialIndex + '">' +
-                        '<button class="ai-restore-point-btn" disabled>Restore to this point</button>' +
+                        '<button class="ai-restore-point-btn" disabled>' + Strings.AI_CHAT_RESTORE_POINT + '</button>' +
                     '</div>'
                 );
                 $puc.find(".ai-restore-point-btn").on("click", function () {
@@ -570,7 +571,7 @@ define(function (require, exports, module) {
         const $actions = $('<div class="ai-tool-edit-actions"></div>');
 
         // Diff toggle
-        const $diffToggle = $('<button class="ai-tool-diff-toggle">Show diff</button>');
+        const $diffToggle = $('<button class="ai-tool-diff-toggle">' + Strings.AI_CHAT_SHOW_DIFF + '</button>');
         const $diff = $('<div class="ai-tool-diff"></div>');
 
         if (edit.oldText) {
@@ -589,7 +590,7 @@ define(function (require, exports, module) {
 
         $diffToggle.on("click", function () {
             $diff.toggleClass("expanded");
-            $diffToggle.text($diff.hasClass("expanded") ? "Hide diff" : "Show diff");
+            $diffToggle.text($diff.hasClass("expanded") ? Strings.AI_CHAT_HIDE_DIFF : Strings.AI_CHAT_SHOW_DIFF);
         });
 
         $actions.append($diffToggle);
@@ -645,31 +646,34 @@ define(function (require, exports, module) {
         const $header = $(
             '<div class="ai-edit-summary-header">' +
                 '<span class="ai-edit-summary-title">' +
-                    fileCount + (fileCount === 1 ? " file" : " files") + " changed" +
+                    StringUtils.format(Strings.AI_CHAT_FILES_CHANGED, fileCount,
+                        fileCount === 1 ? Strings.AI_CHAT_FILE_SINGULAR : Strings.AI_CHAT_FILE_PLURAL) +
                 '</span>' +
             '</div>'
         );
 
         if (afterIndex >= 0) {
             // Update any previous summary card buttons to say "Restore to this point"
-            _$msgs().find('.ai-edit-restore-btn').text("Restore to this point")
-                .attr("title", "Restore files to this point");
+            _$msgs().find('.ai-edit-restore-btn').text(Strings.AI_CHAT_RESTORE_POINT)
+                .attr("title", Strings.AI_CHAT_RESTORE_TITLE)
+                .data("action", "restore");
 
             // Determine button label: "Undo" if not undone, else "Restore to this point"
             const isUndo = !_undoApplied;
-            const label = isUndo ? "Undo" : "Restore to this point";
-            const title = isUndo ? "Undo changes from this response" : "Restore files to this point";
+            const label = isUndo ? Strings.AI_CHAT_UNDO : Strings.AI_CHAT_RESTORE_POINT;
+            const title = isUndo ? Strings.AI_CHAT_UNDO_TITLE : Strings.AI_CHAT_RESTORE_TITLE;
 
             const $restoreBtn = $(
                 '<button class="ai-edit-restore-btn" data-snapshot-index="' + afterIndex + '" ' +
                 'title="' + title + '">' + label + '</button>'
             );
+            $restoreBtn.data("action", isUndo ? "undo" : "restore");
             $restoreBtn.on("click", function (e) {
                 e.stopPropagation();
                 if (_isStreaming) {
                     return;
                 }
-                if ($(this).text() === "Undo") {
+                if ($(this).data("action") === "undo") {
                     _onUndoClick(afterIndex);
                 } else {
                     _onRestoreClick(afterIndex);
@@ -717,10 +721,11 @@ define(function (require, exports, module) {
 
         // Reset all buttons to "Restore to this point"
         $msgs.find('.ai-edit-restore-btn').each(function () {
-            $(this).text("Restore to this point")
-                .attr("title", "Restore files to this point");
+            $(this).text(Strings.AI_CHAT_RESTORE_POINT)
+                .attr("title", Strings.AI_CHAT_RESTORE_TITLE)
+                .data("action", "restore");
         });
-        $msgs.find('.ai-restore-point-btn').text("Restore to this point");
+        $msgs.find('.ai-restore-point-btn').text(Strings.AI_CHAT_RESTORE_POINT);
 
         SnapshotStore.restoreToSnapshot(snapshotIndex, function (errorCount) {
             if (errorCount > 0) {
@@ -733,7 +738,7 @@ define(function (require, exports, module) {
             if ($target.length) {
                 $target.addClass("ai-restore-highlighted");
                 const $btn = $target.find(".ai-edit-restore-btn, .ai-restore-point-btn");
-                $btn.text("Restored");
+                $btn.text(Strings.AI_CHAT_RESTORED);
             }
         });
     }
@@ -749,10 +754,11 @@ define(function (require, exports, module) {
 
         // Reset all buttons to "Restore to this point"
         $msgs.find('.ai-edit-restore-btn').each(function () {
-            $(this).text("Restore to this point")
-                .attr("title", "Restore files to this point");
+            $(this).text(Strings.AI_CHAT_RESTORE_POINT)
+                .attr("title", Strings.AI_CHAT_RESTORE_TITLE)
+                .data("action", "restore");
         });
-        $msgs.find('.ai-restore-point-btn').text("Restore to this point");
+        $msgs.find('.ai-restore-point-btn').text(Strings.AI_CHAT_RESTORE_POINT);
 
         SnapshotStore.restoreToSnapshot(targetIndex, function (errorCount) {
             if (errorCount > 0) {
@@ -768,7 +774,7 @@ define(function (require, exports, module) {
                 $target[0].scrollIntoView({ behavior: "smooth", block: "center" });
                 // Mark the target as "Restored"
                 const $btn = $target.find(".ai-edit-restore-btn, .ai-restore-point-btn");
-                $btn.text("Restored");
+                $btn.text(Strings.AI_CHAT_RESTORED);
             }
         });
     }
@@ -778,7 +784,7 @@ define(function (require, exports, module) {
     function _appendUserMessage(text) {
         const $msg = $(
             '<div class="ai-msg ai-msg-user">' +
-                '<div class="ai-msg-label">You</div>' +
+                '<div class="ai-msg-label">' + Strings.AI_CHAT_LABEL_YOU + '</div>' +
                 '<div class="ai-msg-content"></div>' +
             '</div>'
         );
@@ -793,7 +799,7 @@ define(function (require, exports, module) {
     function _appendThinkingIndicator() {
         const $thinking = $(
             '<div class="ai-msg ai-msg-assistant ai-thinking">' +
-                '<div class="ai-msg-label">Claude</div>' +
+                '<div class="ai-msg-label">' + Strings.AI_CHAT_LABEL_CLAUDE + '</div>' +
                 '<div class="ai-msg-content">' +
                     '<span class="ai-thinking-dots">' +
                         '<span></span><span></span><span></span>' +
@@ -940,38 +946,40 @@ define(function (require, exports, module) {
         switch (toolName) {
         case "Glob":
             return {
-                summary: "Searched: " + (input.pattern || ""),
-                lines: input.path ? ["in " + input.path] : []
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_SEARCHED, input.pattern || ""),
+                lines: input.path ? [StringUtils.format(Strings.AI_CHAT_TOOL_IN_PATH, input.path)] : []
             };
         case "Grep":
             return {
-                summary: "Grep: " + (input.pattern || ""),
-                lines: [input.path ? "in " + input.path : "", input.include ? "include " + input.include : ""]
-                    .filter(Boolean)
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_GREP, input.pattern || ""),
+                lines: [
+                    input.path ? StringUtils.format(Strings.AI_CHAT_TOOL_IN_PATH, input.path) : "",
+                    input.include ? StringUtils.format(Strings.AI_CHAT_TOOL_INCLUDE, input.include) : ""
+                ].filter(Boolean)
             };
         case "Read":
             return {
-                summary: "Read " + (input.file_path || "").split("/").pop(),
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_READ_FILE, (input.file_path || "").split("/").pop()),
                 lines: [input.file_path || ""]
             };
         case "Edit":
             return {
-                summary: "Edit " + (input.file_path || "").split("/").pop(),
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_EDIT_FILE, (input.file_path || "").split("/").pop()),
                 lines: [input.file_path || ""]
             };
         case "Write":
             return {
-                summary: "Write " + (input.file_path || "").split("/").pop(),
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_WRITE_FILE, (input.file_path || "").split("/").pop()),
                 lines: [input.file_path || ""]
             };
         case "Bash":
             return {
-                summary: "Ran command",
+                summary: Strings.AI_CHAT_TOOL_RAN_CMD,
                 lines: input.command ? [input.command] : []
             };
         case "Skill":
             return {
-                summary: input.skill ? "Skill: " + input.skill : "Skill",
+                summary: input.skill ? StringUtils.format(Strings.AI_CHAT_TOOL_SKILL_NAME, input.skill) : Strings.AI_CHAT_TOOL_SKILL,
                 lines: input.args ? [input.args] : []
             };
         default:
@@ -1088,7 +1096,7 @@ define(function (require, exports, module) {
                             const docText = doc.getText();
                             const idx = docText.indexOf(edit.oldText);
                             if (idx === -1) {
-                                result.reject(new Error("Text not found in file — it may have changed"));
+                                result.reject(new Error(Strings.AI_CHAT_EDIT_NOT_FOUND));
                                 return;
                             }
                             const startPos = doc._masterEditor ?
