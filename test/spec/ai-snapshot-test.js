@@ -143,8 +143,15 @@ define(function (require, exports, module) {
 
         async function expectFileDeleted(name) {
             let gone = false;
+            let checking = false;
             await awaitsFor(function () {
-                fileExists(name).then(function (e) { gone = !e; });
+                if (!checking && !gone) {
+                    checking = true;
+                    fileExists(name).then(function (e) {
+                        gone = !e;
+                        checking = false;
+                    });
+                }
                 return gone;
             }, name + " to be deleted", 5000);
         }
