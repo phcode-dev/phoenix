@@ -140,6 +140,43 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Append a single tab to the tab bar for the given panel.
+     * Use instead of _updateBottomPanelTabBar() when adding one tab.
+     * @param {string} panelId
+     * @private
+     */
+    function _addTabToBar(panelId) {
+        if (!_$tabsOverflow) {
+            return;
+        }
+        let panel = _panelMap[panelId];
+        if (!panel) {
+            return;
+        }
+        let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
+        let isActive = (panelId === _activeId);
+        let $tab = $('<div class="bottom-panel-tab"></div>')
+            .toggleClass('active', isActive)
+            .attr('data-panel-id', panelId);
+        $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
+        $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
+        _$tabsOverflow.append($tab);
+    }
+
+    /**
+     * Remove a single tab from the tab bar by panel ID.
+     * Use instead of _updateBottomPanelTabBar() when removing one tab.
+     * @param {string} panelId
+     * @private
+     */
+    function _removeTabFromBar(panelId) {
+        if (!_$tabsOverflow) {
+            return;
+        }
+        _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + panelId + '"]').remove();
+    }
+
+    /**
      * Switch the active tab to the given panel. Does not show/hide the container.
      * @param {string} panelId
      * @private
@@ -223,7 +260,7 @@ define(function (require, exports, module) {
      * Shows the panel
      */
     Panel.prototype.show = function () {
-        if (!this.canBeShown()) {
+        if (!this.canBeShown() || !_$container) {
             return;
         }
         let panelId = this.panelID;
@@ -256,7 +293,7 @@ define(function (require, exports, module) {
         }
 
         _switchToTab(panelId);
-        _updateBottomPanelTabBar();
+        _addTabToBar(panelId);
         exports.trigger(EVENT_PANEL_SHOWN, panelId);
     };
 
@@ -276,22 +313,30 @@ define(function (require, exports, module) {
         this.$panel.removeClass("active-bottom-panel");
 
         let wasActive = (_activeId === panelId);
+        let activatedId = null;
 
-        // Tab was removed — rebuild tab bar, then activate next if needed
         if (wasActive && _openIds.length > 0) {
             let nextIdx = Math.min(idx, _openIds.length - 1);
-            let nextId = _openIds[nextIdx];
+            activatedId = _openIds[nextIdx];
             _activeId = null; // clear so _switchToTab runs
-            _switchToTab(nextId);
-            exports.trigger(EVENT_PANEL_SHOWN, nextId);
+            _switchToTab(activatedId);
         } else if (wasActive) {
             // No more tabs - hide the container
             _activeId = null;
-            Resizer.hide(_$container[0]);
+            if (_$container) {
+                Resizer.hide(_$container[0]);
+            }
         }
-        _updateBottomPanelTabBar();
 
+        _removeTabFromBar(panelId);
+
+        // Always fire HIDDEN for the closed panel first
         exports.trigger(EVENT_PANEL_HIDDEN, panelId);
+
+        // Then fire SHOWN for the newly activated tab, if any
+        if (activatedId) {
+            exports.trigger(EVENT_PANEL_SHOWN, activatedId);
+        }
     };
 
     /**
@@ -316,6 +361,18 @@ define(function (require, exports, module) {
             _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + this.panelID + '"] .bottom-panel-tab-title')
                 .text(newTitle);
         }
+    };
+
+    /**
+     * Destroys the panel, removing it from the tab bar, internal maps, and the DOM.
+     * After calling this, the Panel instance should not be reused.
+     */
+    Panel.prototype.destroy = function () {
+        if (_openIds.indexOf(this.panelID) !== -1) {
+            this.hide();
+        }
+        delete _panelMap[this.panelID];
+        this.$panel.remove();
     };
 
     /**

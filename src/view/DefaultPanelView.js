@@ -59,7 +59,7 @@ define(function (require, exports, module) {
             id: "snippets",
             icon: "fa-solid fa-code",
             label: Strings.CUSTOM_SNIPPETS_PANEL_TITLE || "Custom Snippets",
-            commandID: "custom_snippets"
+            commandID: Commands.CMD_CUSTOM_SNIPPETS_PANEL
         },
         {
             id: "shortcuts",
@@ -189,8 +189,7 @@ define(function (require, exports, module) {
         PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (event, panelID) {
             if (panelID !== WorkspaceManager.DEFAULT_PANEL_ID) {
                 _panel.hide();
-            }
-            if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
+            } else {
                 _updateButtonVisibility();
             }
         });

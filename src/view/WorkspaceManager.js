@@ -263,6 +263,23 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Destroys a bottom panel, removing it from internal registries, the tab bar, and the DOM.
+     * After calling this, the panel ID is no longer valid and the Panel instance should not be reused.
+     *
+     * @param {!string} id  The panel ID that was passed to createBottomPanel.
+     */
+    function destroyBottomPanel(id) {
+        let panel = panelIDMap[id];
+        if (!panel) {
+            return;
+        }
+        if (typeof panel.destroy === 'function') {
+            panel.destroy();
+        }
+        delete panelIDMap[id];
+    }
+
+    /**
      * Creates a new resizable plugin panel associated with the given toolbar icon. Panel is initially invisible.
      * The panel's size & visibility are automatically saved & restored. Only one panel can be associated with a
      * toolbar icon.
@@ -632,6 +649,7 @@ define(function (require, exports, module) {
 
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
+    exports.destroyBottomPanel              = destroyBottomPanel;
     exports.createPluginPanel               = createPluginPanel;
     exports.isPanelVisible                  = isPanelVisible;
     exports.setPluginPanelWidth             = setPluginPanelWidth;
