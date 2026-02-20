@@ -133,12 +133,10 @@ define(function (require, exports, module) {
         }
 
         async function fileExists(name) {
-            return new Promise(function (resolve) {
-                const file = FileSystem.getFileForPath(toVfsPath(name));
-                file.exists(function (err, exists) {
-                    resolve(exists);
-                });
-            });
+            // Use FileSystem.existsAsync which bypasses the cached _stat on
+            // File objects — file.exists() can return stale true when
+            // _handleDirectoryChange re-populates _stat from a racing readdir.
+            return FileSystem.existsAsync(toVfsPath(name));
         }
 
         async function expectFileDeleted(name) {
