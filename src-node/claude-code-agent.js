@@ -28,6 +28,7 @@
 
 const { execSync } = require("child_process");
 const path = require("path");
+const { createEditorMcpServer } = require("./mcp-editor-tools");
 
 const CONNECTOR_ID = "ph_ai_claude";
 
@@ -39,6 +40,9 @@ let currentSessionId = null;
 
 // Active query state
 let currentAbortController = null;
+
+// Lazily-initialized in-process MCP server for editor context
+let editorMcpServer = null;
 
 // Streaming throttle
 const TEXT_STREAM_THROTTLE_MS = 50;
@@ -183,6 +187,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
 
     try {
         queryFn = await getQueryFn();
+        if (!editorMcpServer) {
+            editorMcpServer = createEditorMcpServer(queryModule, nodeConnector);
+        }
     } catch (err) {
         nodeConnector.triggerPeer("aiError", {
             requestId: requestId,
@@ -201,7 +208,12 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
     const queryOptions = {
         cwd: projectPath || process.cwd(),
         maxTurns: 10,
-        allowedTools: ["Read", "Edit", "Write", "Glob", "Grep"],
+        allowedTools: [
+            "Read", "Edit", "Write", "Glob", "Grep",
+            "mcp__phoenix-editor__getEditorState",
+            "mcp__phoenix-editor__takeScreenshot"
+        ],
+        mcpServers: { "phoenix-editor": editorMcpServer },
         permissionMode: "acceptEdits",
         appendSystemPrompt:
             "When modifying an existing file, always prefer the Edit tool " +

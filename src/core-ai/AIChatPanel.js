@@ -24,16 +24,17 @@
  */
 define(function (require, exports, module) {
 
-    const SidebarTabs      = require("view/SidebarTabs"),
-        DocumentManager  = require("document/DocumentManager"),
-        CommandManager   = require("command/CommandManager"),
-        Commands         = require("command/Commands"),
-        ProjectManager   = require("project/ProjectManager"),
-        FileSystem       = require("filesystem/FileSystem"),
-        SnapshotStore    = require("core-ai/AISnapshotStore"),
-        Strings          = require("strings"),
-        StringUtils      = require("utils/StringUtils"),
-        marked           = require("thirdparty/marked.min");
+    const SidebarTabs         = require("view/SidebarTabs"),
+        DocumentManager     = require("document/DocumentManager"),
+        CommandManager      = require("command/CommandManager"),
+        Commands            = require("command/Commands"),
+        ProjectManager      = require("project/ProjectManager"),
+        FileSystem          = require("filesystem/FileSystem"),
+        SnapshotStore       = require("core-ai/AISnapshotStore"),
+        PhoenixConnectors   = require("core-ai/aiPhoenixConnectors"),
+        Strings             = require("strings"),
+        StringUtils         = require("utils/StringUtils"),
+        marked              = require("thirdparty/marked.min");
 
     let _nodeConnector = null;
     let _isStreaming = false;
@@ -41,7 +42,6 @@ define(function (require, exports, module) {
     let _segmentText = "";       // text for the current segment only
     let _autoScroll = true;
     let _hasReceivedContent = false; // tracks if we've received any text/tool in current response
-    const _previousContentMap = {}; // filePath → previous content before edit, for undo support
     let _currentEdits = [];          // edits in current response, for summary card
     let _firstEditInResponse = true; // tracks first edit per response for initial PUC
     let _undoApplied = false;        // whether undo/restore has been clicked on any card
@@ -299,9 +299,7 @@ define(function (require, exports, module) {
         _firstEditInResponse = true;
         _undoApplied = false;
         SnapshotStore.reset();
-        Object.keys(_previousContentMap).forEach(function (key) {
-            delete _previousContentMap[key];
-        });
+        PhoenixConnectors.clearPreviousContentMap();
         if ($messages) {
             $messages.empty();
         }
@@ -543,7 +541,7 @@ define(function (require, exports, module) {
         });
 
         // Capture pre-edit content for snapshot tracking
-        const previousContent = _previousContentMap[edit.file];
+        const previousContent = PhoenixConnectors.getPreviousContent(edit.file);
         const isNewFile = (edit.oldText === null && (previousContent === undefined || previousContent === ""));
 
         // On first edit per response, insert initial PUC if needed.
@@ -1102,100 +1100,6 @@ define(function (require, exports, module) {
         return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    // --- Edit application ---
-
-    /**
-     * Apply a single edit to a document buffer and save to disk.
-     * Called immediately when Claude's Write/Edit is intercepted, so
-     * subsequent Reads see the new content both in the buffer and on disk.
-     * @param {Object} edit - {file, oldText, newText}
-     * @return {$.Promise} resolves with {previousContent} for undo support
-     */
-    function _applySingleEdit(edit) {
-        const result = new $.Deferred();
-        const vfsPath = SnapshotStore.realToVfsPath(edit.file);
-
-        function _applyToDoc() {
-            DocumentManager.getDocumentForPath(vfsPath)
-                .done(function (doc) {
-                    try {
-                        const previousContent = doc.getText();
-                        if (edit.oldText === null) {
-                            // Write (new file or full replacement)
-                            doc.setText(edit.newText);
-                        } else {
-                            // Edit — find oldText and replace
-                            const docText = doc.getText();
-                            const idx = docText.indexOf(edit.oldText);
-                            if (idx === -1) {
-                                result.reject(new Error(Strings.AI_CHAT_EDIT_NOT_FOUND));
-                                return;
-                            }
-                            const startPos = doc._masterEditor ?
-                                doc._masterEditor._codeMirror.posFromIndex(idx) :
-                                _indexToPos(docText, idx);
-                            const endPos = doc._masterEditor ?
-                                doc._masterEditor._codeMirror.posFromIndex(idx + edit.oldText.length) :
-                                _indexToPos(docText, idx + edit.oldText.length);
-                            doc.replaceRange(edit.newText, startPos, endPos);
-                        }
-                        // Open the file in the editor and save to disk
-                        CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath });
-                        SnapshotStore.saveDocToDisk(doc).always(function () {
-                            result.resolve({ previousContent: previousContent });
-                        });
-                    } catch (err) {
-                        result.reject(err);
-                    }
-                })
-                .fail(function (err) {
-                    result.reject(err || new Error("Could not open document"));
-                });
-        }
-
-        if (edit.oldText === null) {
-            // Write — file may not exist yet. Only create on disk if it doesn't
-            // already exist, to avoid triggering "external change" warnings.
-            const file = FileSystem.getFileForPath(vfsPath);
-            file.exists(function (existErr, exists) {
-                if (exists) {
-                    // File exists — just open and set content, no disk write
-                    _applyToDoc();
-                } else {
-                    // New file — create on disk first so getDocumentForPath works
-                    file.write("", function (writeErr) {
-                        if (writeErr) {
-                            result.reject(new Error("Could not create file: " + writeErr));
-                            return;
-                        }
-                        _applyToDoc();
-                    });
-                }
-            });
-        } else {
-            // Edit — file must already exist
-            _applyToDoc();
-        }
-
-        return result.promise();
-    }
-
-    /**
-     * Convert a character index in text to a {line, ch} position.
-     */
-    function _indexToPos(text, index) {
-        let line = 0, ch = 0;
-        for (let i = 0; i < index; i++) {
-            if (text[i] === "\n") {
-                line++;
-                ch = 0;
-            } else {
-                ch++;
-            }
-        }
-        return { line: line, ch: ch };
-    }
-
     // --- Path utilities ---
 
     /**
@@ -1214,43 +1118,7 @@ define(function (require, exports, module) {
         return fullPath;
     }
 
-    /**
-     * Check if a file has unsaved changes in the editor and return its content.
-     * Used by the node-side Read hook to serve dirty buffer content to Claude.
-     */
-    function getFileContent(params) {
-        const vfsPath = SnapshotStore.realToVfsPath(params.filePath);
-        const doc = DocumentManager.getOpenDocumentForPath(vfsPath);
-        if (doc && doc.isDirty) {
-            return { isDirty: true, content: doc.getText() };
-        }
-        return { isDirty: false, content: null };
-    }
-
-    /**
-     * Apply an edit to the editor buffer immediately (called by node-side hooks).
-     * The file appears as a dirty tab so subsequent Reads see the new content.
-     * @param {Object} params - {file, oldText, newText}
-     * @return {Promise<{applied: boolean, error?: string}>}
-     */
-    function applyEditToBuffer(params) {
-        const deferred = new $.Deferred();
-        _applySingleEdit(params)
-            .done(function (result) {
-                if (result && result.previousContent !== undefined) {
-                    _previousContentMap[params.file] = result.previousContent;
-                }
-                deferred.resolve({ applied: true });
-            })
-            .fail(function (err) {
-                deferred.resolve({ applied: false, error: err.message || String(err) });
-            });
-        return deferred.promise();
-    }
-
     // Public API
     exports.init = init;
     exports.initPlaceholder = initPlaceholder;
-    exports.getFileContent = getFileContent;
-    exports.applyEditToBuffer = applyEditToBuffer;
 });
