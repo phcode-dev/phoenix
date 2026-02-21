@@ -364,7 +364,7 @@ define(function (require, exports, module) {
         let $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
         let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
         $tabBarActions.append(
-            $('<span class="bottom-panel-maximize-btn"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>')
+            $('<span class="bottom-panel-maximize-btn"><i class="fa-solid fa-expand"></i></span>')
                 .attr('title', Strings.BOTTOM_PANEL_MAXIMIZE)
         );
         $tabBarActions.append(
