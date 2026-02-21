@@ -19,15 +19,16 @@
     },
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
+        "@anthropic-ai/claude-code": "^1.0.0",
+        "@expo/sudo-prompt": "^9.3.2",
         "@phcode/fs": "^4.0.2",
-        "open": "^10.1.0",
-        "npm": "11.8.0",
-        "ws": "^8.17.1",
+        "cross-spawn": "^7.0.6",
         "lmdb": "^3.5.1",
         "mime-types": "^2.1.35",
-        "cross-spawn": "^7.0.6",
+        "npm": "11.8.0",
+        "open": "^10.1.0",
         "which": "^2.0.1",
-        "@expo/sudo-prompt": "^9.3.2",
-        "@anthropic-ai/claude-code": "^1.0.0"
+        "ws": "^8.17.1",
+        "zod": "^3.25.76"
     }
 }

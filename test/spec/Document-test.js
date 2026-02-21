@@ -235,5 +235,72 @@ define(function (require, exports, module) {
             });
 
         });
+
+        describe("posFromIndex", function () {
+            var myEditor, myDocument;
+
+            beforeEach(function () {
+                var mocks = SpecRunnerUtils.createMockEditor("line0\nline1\nline2\n", "unknown");
+                myDocument = mocks.doc;
+                myEditor = mocks.editor;
+            });
+
+            afterEach(function () {
+                if (myEditor) {
+                    SpecRunnerUtils.destroyMockEditor(myDocument);
+                    myEditor = null;
+                    myDocument = null;
+                }
+            });
+
+            it("should return {0,0} for index 0", function () {
+                var pos = myDocument.posFromIndex(0);
+                expect(pos.line).toBe(0);
+                expect(pos.ch).toBe(0);
+            });
+
+            it("should return correct position within first line", function () {
+                // "line0" — index 3 is 'e'
+                var pos = myDocument.posFromIndex(3);
+                expect(pos.line).toBe(0);
+                expect(pos.ch).toBe(3);
+            });
+
+            it("should return start of second line after newline", function () {
+                // "line0\n" is 6 chars, so index 6 is start of line 1
+                var pos = myDocument.posFromIndex(6);
+                expect(pos.line).toBe(1);
+                expect(pos.ch).toBe(0);
+            });
+
+            it("should return correct position on third line", function () {
+                // "line0\nline1\n" is 12 chars, index 14 is 'n' in "line2"
+                var pos = myDocument.posFromIndex(14);
+                expect(pos.line).toBe(2);
+                expect(pos.ch).toBe(2);
+            });
+
+            it("should work without a master editor (text-only fallback)", function () {
+                // Destroy the editor so _masterEditor becomes null and
+                // the document falls back to its internal _text string
+                SpecRunnerUtils.destroyMockEditor(myDocument);
+                myEditor = null;
+
+                // Content is "line0\nline1\nline2\n" — same as beforeEach
+                expect(myDocument._masterEditor).toBe(null);
+
+                var pos = myDocument.posFromIndex(0);
+                expect(pos.line).toBe(0);
+                expect(pos.ch).toBe(0);
+
+                pos = myDocument.posFromIndex(6);
+                expect(pos.line).toBe(1);
+                expect(pos.ch).toBe(0);
+
+                pos = myDocument.posFromIndex(14);
+                expect(pos.line).toBe(2);
+                expect(pos.ch).toBe(2);
+            });
+        });
     });
 });

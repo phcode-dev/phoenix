@@ -493,6 +493,30 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Given a character index within the document text (assuming \n newlines),
+     * returns the corresponding {line, ch} position. Works whether or not
+     * a master editor is attached.
+     * @param {number} index - Zero-based character offset
+     * @return {{line: number, ch: number}}
+     */
+    Document.prototype.posFromIndex = function (index) {
+        if (this._masterEditor) {
+            return this._masterEditor._codeMirror.posFromIndex(index);
+        }
+        var text = this._text || "";
+        var line = 0, ch = 0;
+        for (var i = 0; i < index && i < text.length; i++) {
+            if (text[i] === "\n") {
+                line++;
+                ch = 0;
+            } else {
+                ch++;
+            }
+        }
+        return {line: line, ch: ch};
+    };
+
+    /**
      * Batches a series of related Document changes. Repeated calls to replaceRange() should be wrapped in a
      * batch for efficiency. Begins the batch, calls doOperation(), ends the batch, and then returns.
      * @param {function()} doOperation
