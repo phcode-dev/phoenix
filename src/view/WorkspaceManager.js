@@ -40,10 +40,19 @@ define(function (require, exports, module) {
         EventDispatcher         = require("utils/EventDispatcher"),
         KeyBindingManager = require("command/KeyBindingManager"),
         Resizer                 = require("utils/Resizer"),
+        AnimationUtils          = require("utils/AnimationUtils"),
+        Strings                 = require("strings"),
         PluginPanelView         = require("view/PluginPanelView"),
         PanelView               = require("view/PanelView"),
         EditorManager           = require("editor/EditorManager"),
         KeyEvent                = require("utils/KeyEvent");
+
+    /**
+     * Panel ID for the default launcher panel shown when no other panels are open.
+     * @const
+     * @private
+     */
+    const DEFAULT_PANEL_ID = "workspace.defaultPanel";
 
 
     /**
@@ -120,9 +129,16 @@ define(function (require, exports, module) {
      */
     var windowResizing = false;
 
-    let lastHiddenBottomPanelStack = [],
-        lastShownBottomPanelStack = [];
+    let lastShownBottomPanelStack = [];
 
+    /** @type {jQueryObject} The single container wrapping all bottom panels */
+    let $bottomPanelContainer;
+
+    /** @type {jQueryObject} Chevron toggle in the status bar */
+    let $statusBarPanelToggle;
+
+    /** @type {boolean} True while the status bar toggle button is handling a click */
+    let _statusBarToggleInProgress = false;
 
     /**
      * Calculates the available height for the full-size Editor (or the no-editor placeholder),
@@ -198,6 +214,13 @@ define(function (require, exports, module) {
         // FIXME (issue #4564) Workaround https://github.com/codemirror/CodeMirror/issues/1787
         triggerUpdateLayout();
 
+        // Re-apply maximize height when the window resizes so the panel stays maximized
+        if (PanelView.isMaximized() && $bottomPanelContainer && $bottomPanelContainer.is(":visible")) {
+            let maxHeight = $editorHolder.height() + $bottomPanelContainer.height();
+            $bottomPanelContainer.height(maxHeight);
+            triggerUpdateLayout();
+        }
+
         if (!windowResizing) {
             windowResizing = true;
 
@@ -226,7 +249,6 @@ define(function (require, exports, module) {
         });
     }
 
-
     /**
      * Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
      * The panel's size & visibility are automatically saved & restored as a view-state preference.
@@ -234,22 +256,34 @@ define(function (require, exports, module) {
      * @param {!string} id  Unique id for this panel. Use package-style naming, e.g. "myextension.feature.panelname"
      * @param {!jQueryObject} $panel  DOM content to use as the panel. Need not be in the document yet. Must have an id
      *      attribute, for use as a preferences key.
-     * @param {number=} minSize  Minimum height of panel in px.
+     * @param {number=} minSize  @deprecated No longer used. Pass `undefined`.
+     * @param {string=} title  Display title shown in the bottom panel tab bar.
      * @return {!Panel}
      */
-    function createBottomPanel(id, $panel, minSize) {
-        $panel.insertBefore("#status-bar");
+    function createBottomPanel(id, $panel, minSize, title) {
+        $bottomPanelContainer.append($panel);
         $panel.hide();
-        updateResizeLimits();  // initialize panel's max size
-
-        let bottomPanel = new PanelView.Panel($panel, id);
+        updateResizeLimits();
+        let bottomPanel = new PanelView.Panel($panel, id, title);
         panelIDMap[id] = bottomPanel;
-
-        Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize,
-            false, undefined, true);
-        listenToResize($panel);
-
         return bottomPanel;
+    }
+
+    /**
+     * Destroys a bottom panel, removing it from internal registries, the tab bar, and the DOM.
+     * After calling this, the panel ID is no longer valid and the Panel instance should not be reused.
+     *
+     * @param {!string} id  The panel ID that was passed to createBottomPanel.
+     */
+    function destroyBottomPanel(id) {
+        let panel = panelIDMap[id];
+        if (!panel) {
+            return;
+        }
+        if (typeof panel.destroy === 'function') {
+            panel.destroy();
+        }
+        delete panelIDMap[id];
     }
 
     /**
@@ -324,6 +358,101 @@ define(function (require, exports, module) {
         $mainPluginPanel = $("#main-plugin-panel");
         $pluginIconsBar = $("#plugin-icons-bar");
 
+        // --- Create the bottom panel tabbed container ---
+        $bottomPanelContainer = $('<div id="bottom-panel-container" class="vert-resizable top-resizer"></div>');
+        let $bottomPanelTabBar = $('<div id="bottom-panel-tab-bar"></div>');
+        let $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
+        let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
+        $tabBarActions.append(
+            $('<span class="bottom-panel-maximize-btn"><i class="fa-solid fa-expand"></i></span>')
+                .attr('title', Strings.BOTTOM_PANEL_MAXIMIZE)
+        );
+        $tabBarActions.append(
+            $('<span class="bottom-panel-hide-btn"><i class="fa-solid fa-chevron-down"></i></span>')
+                .attr('title', Strings.BOTTOM_PANEL_HIDE)
+        );
+        $bottomPanelTabBar.append($bottomPanelTabsOverflow);
+        $bottomPanelTabBar.append($tabBarActions);
+        $bottomPanelContainer.append($bottomPanelTabBar);
+        $bottomPanelContainer.insertBefore("#status-bar");
+        $bottomPanelContainer.hide();
+
+        // Initialize PanelView with container DOM references and tab bar click handlers
+        PanelView.init($bottomPanelContainer, $bottomPanelTabBar, $bottomPanelTabsOverflow,
+            $editorHolder, recomputeLayout);
+
+        // Create status bar chevron toggle for bottom panel
+        $statusBarPanelToggle = $('<div id="status-panel-toggle" class="indicator global-indicator"><i class="fa-solid fa-chevron-up"></i></div>')
+            .attr('title', Strings.BOTTOM_PANEL_SHOW);
+        $("#status-indicators").prepend($statusBarPanelToggle);
+
+        $statusBarPanelToggle.on("click", function () {
+            _statusBarToggleInProgress = true;
+            if ($bottomPanelContainer.is(":visible")) {
+                PanelView.restoreIfMaximized();
+                Resizer.hide($bottomPanelContainer[0]);
+                triggerUpdateLayout();
+            } else if (PanelView.getOpenBottomPanelIDs().length > 0) {
+                Resizer.show($bottomPanelContainer[0]);
+                triggerUpdateLayout();
+            } else {
+                _showDefaultPanel();
+            }
+            _statusBarToggleInProgress = false;
+        });
+
+        // Make the container resizable (not individual panels)
+        Resizer.makeResizable($bottomPanelContainer[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP,
+            200, false, undefined, true);
+        listenToResize($bottomPanelContainer);
+
+        // Track maximize state live during drag-resize so the icon updates
+        // immediately rather than waiting for mouseup. panelResizeUpdate fires
+        // after listenToResize's handler has already called triggerUpdateLayout(),
+        // so $editorHolder height is up-to-date at this point.
+        $bottomPanelContainer.on("panelResizeUpdate panelResizeEnd", function () {
+            let editorHeight = $editorHolder.height();
+            if (PanelView.isMaximized() && editorHeight > PanelView.MAXIMIZE_THRESHOLD) {
+                PanelView.exitMaximizeOnResize();
+            } else if (!PanelView.isMaximized() && editorHeight <= PanelView.MAXIMIZE_THRESHOLD) {
+                PanelView.enterMaximizeOnResize();
+            }
+        });
+
+        $bottomPanelContainer.on("panelCollapsed", function () {
+            PanelView.exitMaximizeOnResize();
+            $statusBarPanelToggle.find("i")
+                .removeClass("fa-chevron-down")
+                .addClass("fa-chevron-up");
+            $statusBarPanelToggle.attr("title", Strings.BOTTOM_PANEL_SHOW);
+            if (!_statusBarToggleInProgress) {
+                AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
+            }
+            // When the container collapses while tabs are still open, clear the
+            // shown stack so the Escape-key handler doesn't silently close tabs
+            // that the user can't even see.
+            let openIds = PanelView.getOpenBottomPanelIDs();
+            for (let i = 0; i < openIds.length; i++) {
+                lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== openIds[i]);
+            }
+        });
+
+        $bottomPanelContainer.on("panelExpanded", function () {
+            $statusBarPanelToggle.find("i")
+                .removeClass("fa-chevron-up")
+                .addClass("fa-chevron-down");
+            $statusBarPanelToggle.attr("title", Strings.BOTTOM_PANEL_HIDE_TOGGLE);
+            if (!_statusBarToggleInProgress) {
+                AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
+            }
+            // When the container re-expands, add the open panels to the shown stack.
+            let openIds = PanelView.getOpenBottomPanelIDs();
+            for (let i = 0; i < openIds.length; i++) {
+                lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== openIds[i]);
+                lastShownBottomPanelStack.push(openIds[i]);
+            }
+        });
+
         // Sidebar is a special case: it isn't a Panel, and is not created dynamically. Need to explicitly
         // listen for resize here.
         listenToResize($("#sidebar"));
@@ -351,16 +480,15 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     PanelView.on(PanelView.EVENT_PANEL_SHOWN, (event, panelID)=>{
-        lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== panelID);
         lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== panelID);
         lastShownBottomPanelStack.push(panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
+        triggerUpdateLayout();
     });
     PanelView.on(PanelView.EVENT_PANEL_HIDDEN, (event, panelID)=>{
-        lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== panelID);
-        lastHiddenBottomPanelStack.push(panelID);
         lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
+        triggerUpdateLayout();
     });
 
     let currentlyShownPanel = null,
@@ -492,44 +620,29 @@ define(function (require, exports, module) {
         return false;
     }
 
-    function _showLastHiddenPanelIfPossible() {
-        while(lastHiddenBottomPanelStack.length > 0){
-            let panelToShow = getPanelForID(lastHiddenBottomPanelStack.pop());
-            if(panelToShow.canBeShown()){
-                panelToShow.show();
-                return true;
-            }
+    /**
+     * Shows the default launcher panel when no other panels are open.
+     * @private
+     */
+    function _showDefaultPanel() {
+        let defaultPanel = panelIDMap[DEFAULT_PANEL_ID];
+        if (defaultPanel) {
+            defaultPanel.show();
+        }
+    }
+
+    function _handleEscapeKey() {
+        // Collapse the entire bottom panel container, keeping all tabs intact
+        if ($bottomPanelContainer && $bottomPanelContainer.is(":visible")) {
+            PanelView.restoreIfMaximized();
+            Resizer.hide($bottomPanelContainer[0]);
+            triggerUpdateLayout();
+            return true;
         }
         return false;
     }
 
-    function _handleEscapeKey() {
-        let allPanelsIDs = getAllPanelIDs();
-        // first we see if there is any least recently shown panel
-        if(lastShownBottomPanelStack.length > 0){
-            let panelToHide = getPanelForID(lastShownBottomPanelStack.pop());
-            panelToHide.hide();
-            return true;
-        }
-        // if not, see if there is any open panels that are not yet tracked in the least recently used stacks.
-        for(let panelID of allPanelsIDs){
-            let panel = getPanelForID(panelID);
-            if(panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL && panel.isVisible()){
-                panel.hide();
-                lastHiddenBottomPanelStack.push(panelID);
-                return true;
-            }
-        }
-        // no panels hidden, we will toggle the last hidden panel with succeeding escape key presses
-        return _showLastHiddenPanelIfPossible();
-    }
-
-    function _handleShiftEscapeKey() {
-        // show hidden panels one by one
-        return _showLastHiddenPanelIfPossible();
-    }
-
-    // pressing escape when focused on editor will toggle the last opened bottom panel
+    // pressing escape when focused on editor will hide the bottom panel container
     function _handleKeydown(event) {
         if(event.keyCode !== KeyEvent.DOM_VK_ESCAPE || KeyBindingManager.isInOverlayMode()){
             return;
@@ -553,9 +666,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE  && event.shiftKey) {
-            _handleShiftEscapeKey();
-        } else if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
             _handleEscapeKey();
         }
 
@@ -566,18 +677,22 @@ define(function (require, exports, module) {
 
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
+    exports.destroyBottomPanel              = destroyBottomPanel;
     exports.createPluginPanel               = createPluginPanel;
     exports.isPanelVisible                  = isPanelVisible;
     exports.setPluginPanelWidth             = setPluginPanelWidth;
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
+    exports.getOpenBottomPanelIDs           = PanelView.getOpenBottomPanelIDs;
+    exports.hideAllOpenBottomPanels         = PanelView.hideAllOpenPanels;
     exports.addEscapeKeyEventHandler        = addEscapeKeyEventHandler;
     exports.removeEscapeKeyEventHandler     = removeEscapeKeyEventHandler;
     exports._setMockDOM                     = _setMockDOM;
     exports.EVENT_WORKSPACE_UPDATE_LAYOUT   = EVENT_WORKSPACE_UPDATE_LAYOUT;
     exports.EVENT_WORKSPACE_PANEL_SHOWN     = EVENT_WORKSPACE_PANEL_SHOWN;
     exports.EVENT_WORKSPACE_PANEL_HIDDEN    = EVENT_WORKSPACE_PANEL_HIDDEN;
+    exports.DEFAULT_PANEL_ID                = DEFAULT_PANEL_ID;
 
     /**
      * Constant representing the type of bottom panel

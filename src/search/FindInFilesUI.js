@@ -111,7 +111,7 @@ define(function (require, exports, module) {
                     }
 
                 } else {
-                    _resultsView.close();
+                    _resultsView.showNoResults();
 
                     if (_findBar) {
                         var showMessage = false;
@@ -536,7 +536,8 @@ define(function (require, exports, module) {
     // Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         var model = FindInFiles.searchModel;
-        _resultsView = new SearchResultsView(model, "find-in-files-results", "find-in-files.results");
+        _resultsView = new SearchResultsView(model, "find-in-files-results", "find-in-files.results",
+            undefined, Strings.SEARCH_RESULTS_PANEL_TITLE);
         _resultsView
             .on("replaceBatch", function () {
                 _finishReplaceBatch(model);

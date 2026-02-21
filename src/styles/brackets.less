@@ -47,6 +47,7 @@
 @import "Extn-CustomSnippets.less";
 @import "Extn-CollapseFolders.less";
 @import "Extn-SidebarTabs.less";
+@import "Extn-BottomPanelTabs.less";
 @import "Extn-AIChatPanel.less";
 @import "UserProfile.less";
 @import "phoenix-pro.less";
@@ -645,6 +646,14 @@ a, img {
 
 #status-overwrite.flash {
     animation: brightenFade 2s ease-in-out;
+}
+
+#status-panel-toggle {
+    cursor: pointer;
+}
+
+#status-panel-toggle.flash {
+    animation: brightenFade 800ms ease-in-out;
 }
 
 @keyframes brightenFade {
@@ -1899,11 +1908,14 @@ a, img {
 
 /* Find in Files results panel - temporary UI, to be replaced with a richer search feature later */
 
+.search-results .toolbar {
+    padding: 5px 8px;
+}
 .search-results .title {
     .sane-box-model;
-    padding-right: 20px;
+    margin-left: 4px;
     width: 100%;
-    line-height: 25px;
+    line-height: 26px;
 
     .flex-box;
     .contracting-col {
@@ -1966,6 +1978,31 @@ a, img {
     .disabled:active {
         background-color: transparent;
         opacity: 0.3;
+    }
+}
+
+.search-results.search-no-results {
+    .table-container {
+        width: 100% !important;
+    }
+    .search-editor-preview {
+        display: none !important;
+    }
+}
+
+.search-no-results-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #888;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+    user-select: none;
+
+    .dark & {
+        color: #999;
     }
 }
 
@@ -2365,6 +2402,7 @@ a, img {
 
     .search-input-container {
         display: inline-flex;
+        vertical-align: top;
     }
     .filter-container{
         margin-left: -11px;
@@ -3032,6 +3070,12 @@ textarea.exclusions-editor {
 
 #problems-panel {
     .user-select(text);  // allow selecting error messages for easy web searching
+    .toolbar {
+        padding: 9px 8px;
+    }
+    .title {
+        margin-left: 4px;
+    }
     .line {
         text-align: right;  // make line number line up with editor line numbers
     }

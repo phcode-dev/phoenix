@@ -58,7 +58,9 @@ define(function (require, exports, module) {
      * @private
      */
     function _createPanel() {
-        customSnippetsPanel = WorkspaceManager.createBottomPanel(PANEL_ID, $snippetsPanel, PANEL_MIN_SIZE);
+        customSnippetsPanel = WorkspaceManager.createBottomPanel(PANEL_ID, $snippetsPanel, PANEL_MIN_SIZE,
+            Strings.CUSTOM_SNIPPETS_PANEL_TITLE);
+        UIHelper.init(customSnippetsPanel);
         customSnippetsPanel.show();
 
         // also register the handlers
@@ -129,7 +131,6 @@ define(function (require, exports, module) {
      * @private
      */
     function _registerHandlers() {
-        const $closePanelBtn = $("#close-custom-snippets-panel-btn");
         const $saveCustomSnippetBtn = $("#save-custom-snippet-btn");
         const $cancelCustomSnippetBtn = $("#cancel-custom-snippet-btn");
         const $abbrInput = $("#abbr-box");
@@ -159,10 +160,6 @@ define(function (require, exports, module) {
         $backToListMenuBtn.on("click", function () {
             UIHelper.showSnippetListMenu();
             SnippetsList.showSnippetsList();
-        });
-
-        $closePanelBtn.on("click", function () {
-            _hidePanel();
         });
 
         $saveCustomSnippetBtn.on("click", function () {
@@ -257,6 +254,14 @@ define(function (require, exports, module) {
             SnippetsList.showSnippetsList();
         });
     }
+
+    // When the panel tab is closed externally (e.g. via the × button),
+    // update the menu checked state to stay in sync.
+    WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
+        if (panelID === PANEL_ID && customSnippetsPanel) {
+            CommandManager.get(MY_COMMAND_ID).setChecked(false);
+        }
+    });
 
     AppInit.appReady(function () {
         CommandManager.register(MENU_ITEM_NAME, MY_COMMAND_ID, showCustomSnippetsPanel);

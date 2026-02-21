@@ -86,9 +86,12 @@ define(function (require, exports, module) {
             }, "search bar open");
         }
 
-        function closeSearchBar() {
+        async function closeSearchBar() {
             let $searchField = $(".modal-bar #find-group textarea");
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
+            await awaitsFor(function () {
+                return $(".modal-bar").length === 0;
+            }, "search bar close");
         }
 
         async function executeSearch(searchString) {
@@ -250,12 +253,15 @@ define(function (require, exports, module) {
                 // Error message displayed
                 expect($modalBar.find(".scope-group div.error-filter").is(":visible")).toBeTruthy();
 
-                // Search panel not showing
-                expect($("#find-in-files-results").is(":visible")).toBeFalsy();
+                // Search panel shows "no results" state
+                expect($("#find-in-files-results").is(":visible")).toBeTruthy();
 
                 // Close search bar
                 let $searchField = $modalBar.find("#find-group textarea");
-                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
+                await awaitsFor(function () {
+                    return $(".modal-bar").length === 0;
+                }, "search bar close");
             }, 30000);
 
             it("should respect filter when editing code", async function () {

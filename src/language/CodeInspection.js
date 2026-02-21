@@ -111,7 +111,6 @@ define(function (require, exports, module) {
      * @private
      */
     const PREF_ENABLED            = "enabled",
-        PREF_COLLAPSED          = "collapsed",
         PREF_ASYNC_TIMEOUT      = "asyncTimeout",
         PREF_PREFER_PROVIDERS   = "prefer",
         PREF_PREFERRED_ONLY     = "usePreferredOnly";
@@ -120,18 +119,10 @@ define(function (require, exports, module) {
 
     /**
      * When disabled, the errors panel is closed and the status bar icon is grayed out.
-     * Takes precedence over _collapsed.
      * @private
      * @type {boolean}
      */
     var _enabled = false;
-
-    /**
-     * When collapsed, the errors panel is closed but the status bar icon is kept up to date.
-     * @private
-     * @type {boolean}
-     */
-    var _collapsed = false;
 
     /**
      * @private
@@ -467,7 +458,7 @@ define(function (require, exports, module) {
             .addClass(CODE_INSPECTION_GUTTER);
         $marker.click(function (){
             editor.setCursorPos(line, ch);
-            toggleCollapsed(false);
+            _showProblemsPanel();
             scrollToProblem(line);
         });
         $marker.find('span')
@@ -601,7 +592,7 @@ define(function (require, exports, module) {
                         // shouldnt open the problems panel
                         return;
                     }
-                    toggleCollapsed(false);
+                    _showProblemsPanel();
                     scrollToProblem(pos.line);
                     // todo strobe effect
                 });
@@ -711,21 +702,24 @@ define(function (require, exports, module) {
     const scrollPositionMap = new Map();
 
     function _noProviderReturnedResults(currentDoc, fullFilePath) {
-        // No provider for current file
+        // No provider for current file — update content but never hide the panel.
         _hasErrors = false;
         _currentPromise = null;
-        updatePanelTitleAndStatusBar(0, [], false,
-            fullFilePath ? path.basename(fullFilePath) : Strings.ERRORS_NO_FILE);
-        if(problemsPanel){
-            problemsPanel.hide();
-        }
+
+        let message;
         const language = currentDoc && LanguageManager.getLanguageForPath(currentDoc.file.fullPath);
         if (language) {
-            StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-disabled",
-                StringUtils.format(Strings.NO_LINT_AVAILABLE, language.getName()));
+            message = StringUtils.format(Strings.NO_LINT_AVAILABLE, language.getName());
         } else {
-            StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-disabled", Strings.NOTHING_TO_LINT);
+            message = Strings.NOTHING_TO_LINT;
         }
+
+        // Update panel content to show the "no linter" message
+        $problemsPanel.find(".title").text(message);
+        $problemsPanelTable.empty();
+        $fixAllBtn.addClass("forced-hidden");
+
+        StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-disabled", message);
         setGotoEnabled(false);
     }
 
@@ -742,7 +736,11 @@ define(function (require, exports, module) {
         if (!_enabled) {
             _hasErrors = false;
             _currentPromise = null;
-            problemsPanel.hide();
+            // Update status bar to show linting is disabled, but do NOT hide the panel.
+            // The panel content will be cleared and the status bar updated.
+            $problemsPanel.find(".title").text(Strings.LINT_DISABLED);
+            $problemsPanelTable.empty();
+            $fixAllBtn.addClass("forced-hidden");
             StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-disabled", Strings.LINT_DISABLED);
             setGotoEnabled(false);
             return;
@@ -794,12 +792,15 @@ define(function (require, exports, module) {
                 _hasErrors = Boolean(errors);
 
                 if (!errors) {
-                    problemsPanel.hide();
-
+                    // No errors found — update panel content but never hide the panel.
                     var message = Strings.NO_ERRORS_MULTIPLE_PROVIDER;
                     if (providerList.length === 1) {
                         message = StringUtils.format(Strings.NO_ERRORS, providerList[0].name);
                     }
+
+                    $problemsPanel.find(".title").text(message);
+                    $problemsPanelTable.empty();
+                    $fixAllBtn.addClass("forced-hidden");
 
                     StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-valid", message);
 
@@ -858,10 +859,6 @@ define(function (require, exports, module) {
                 $problemsPanelTable
                     .empty()
                     .append(html);  // otherwise scroll pos from previous contents is remembered
-
-                if (!_collapsed) {
-                    problemsPanel.show();
-                }
 
                 updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted,
                     path.basename(fullFilePath));
@@ -1038,7 +1035,14 @@ define(function (require, exports, module) {
     }
 
     function toggleProblems() {
-        toggleCollapsed();
+        if (!problemsPanel) {
+            return;
+        }
+        if (problemsPanel.isVisible()) {
+            problemsPanel.hide();
+        } else {
+            problemsPanel.show();
+        }
     }
 
     let lastRunTime;
@@ -1060,34 +1064,14 @@ define(function (require, exports, module) {
     });
 
     /**
-     * Toggle the collapsed state for the panel. This explicitly collapses the panel (as opposed to
-     * the auto collapse due to files with no errors & filetypes with no provider). When explicitly
-     * collapsed, the panel will not reopen automatically on switch files or save.
+     * Show the problems panel. Used by gutter marker clicks and QuickView
+     * clicks to ensure the panel is visible when the user interacts with
+     * an error indicator.
      * @private
-     * @param {?boolean} collapsed Collapsed state. If omitted, the state is toggled.
-     * @param {?boolean} doNotSave true if the preference should not be saved to user settings. This is generally for events triggered by project-level settings.
      */
-    function toggleCollapsed(collapsed, doNotSave) {
-        if (collapsed === undefined) {
-            collapsed = !_collapsed;
-        }
-
-        if (collapsed === _collapsed) {
-            return;
-        }
-
-        _collapsed = collapsed;
-        if (!doNotSave) {
-            prefs.set(PREF_COLLAPSED, _collapsed);
-            prefs.save();
-        }
-
-        if (_collapsed) {
-            problemsPanel.hide();
-        } else {
-            if (_hasErrors) {
-                problemsPanel.show();
-            }
+    function _showProblemsPanel() {
+        if (problemsPanel && !problemsPanel.isVisible()) {
+            problemsPanel.show();
         }
     }
 
@@ -1183,13 +1167,6 @@ define(function (require, exports, module) {
             toggleEnabled(prefs.get(PREF_ENABLED), true);
         });
 
-    prefs.definePreference(PREF_COLLAPSED, "boolean", false, {
-        description: Strings.DESCRIPTION_LINTING_COLLAPSED
-    })
-        .on("change", function (e, data) {
-            toggleCollapsed(prefs.get(PREF_COLLAPSED), true);
-        });
-
     prefs.definePreference(PREF_ASYNC_TIMEOUT, "number", 10000, {
         description: Strings.DESCRIPTION_ASYNC_TIMEOUT
     });
@@ -1263,7 +1240,7 @@ define(function (require, exports, module) {
         Editor.registerGutter(CODE_INSPECTION_GUTTER, CODE_INSPECTION_GUTTER_PRIORITY);
         // Create bottom panel to list error details
         var panelHtml = Mustache.render(PanelTemplate, Strings);
-        problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
+        problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100, Strings.CMD_VIEW_TOGGLE_PROBLEMS);
         $problemsPanel = $("#problems-panel");
         $fixAllBtn = $problemsPanel.find(".problems-fix-all-btn");
         $fixAllBtn.click(()=>{
@@ -1354,25 +1331,17 @@ define(function (require, exports, module) {
                 }
             });
 
-        $("#problems-panel .close").click(function () {
-            toggleCollapsed(true);
-            MainViewManager.focusActivePane();
-        });
-
         // Status bar indicator - icon & tooltip updated by run()
         var statusIconHtml = Mustache.render("<div id=\"status-inspection\">&nbsp;</div>", Strings);
         StatusBar.addIndicator(INDICATOR_ID, $(statusIconHtml), true, "", "", "status-indent");
 
         $("#status-inspection").click(function () {
-            // Clicking indicator toggles error panel, if any errors in current file
-            if (_hasErrors) {
-                toggleCollapsed();
-            }
+            // Clicking indicator always toggles the problems panel
+            toggleProblems();
         });
 
         // Set initial UI state
         toggleEnabled(prefs.get(PREF_ENABLED), true);
-        toggleCollapsed(prefs.get(PREF_COLLAPSED), true);
 
         QuickViewManager.registerQuickViewProvider({
             getQuickView,

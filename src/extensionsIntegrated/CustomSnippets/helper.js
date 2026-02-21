@@ -570,20 +570,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Updates the snippets count which is displayed in the toolbar at the left side
-     * @private
-     */
-    function updateSnippetsCount() {
-        const count = Global.SnippetHintsList.length;
-        const $countSpan = $("#snippets-count");
-        if (count > 0) {
-            $countSpan.text(`(${count})`);
-        } else {
-            $countSpan.text("");
-        }
-    }
-
-    /**
      * validates and sanitizes file extension input
      *
      * @param {string} value - The input value to sanitize
@@ -932,7 +918,6 @@ define(function (require, exports, module) {
     exports.isSnippetSupportedInFile = isSnippetSupportedInFile;
     exports.hasExactMatchingSnippet = hasExactMatchingSnippet;
     exports.getMatchingSnippets = getMatchingSnippets;
-    exports.updateSnippetsCount = updateSnippetsCount;
     exports.sanitizeFileExtensionInput = sanitizeFileExtensionInput;
     exports.handleFileExtensionInput = handleFileExtensionInput;
     exports.handleFileExtensionKeypress = handleFileExtensionKeypress;

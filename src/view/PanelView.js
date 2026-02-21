@@ -26,8 +26,9 @@
 define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher"),
-        Resizer = require("utils/Resizer");
-    
+        Resizer = require("utils/Resizer"),
+        Strings = require("strings");
+
     /**
      * Event when panel is hidden
      * @type {string}
@@ -49,15 +50,200 @@ define(function (require, exports, module) {
      */
     const PANEL_TYPE_BOTTOM_PANEL = 'bottomPanel';
 
+    // --- Module-level tab state ---
+
+    /** @type {Object.<string, Panel>} Maps panel ID to Panel instance */
+    let _panelMap = {};
+
+    /** @type {jQueryObject} The single container wrapping all bottom panels */
+    let _$container;
+
+    /** @type {jQueryObject} The tab bar inside the container */
+    let _$tabBar;
+
+    /** @type {jQueryObject} Scrollable area holding the tab elements */
+    let _$tabsOverflow;
+
+    /** @type {string[]} Ordered list of currently open (tabbed) panel IDs */
+    let _openIds = [];
+
+    /** @type {string|null} The panel ID of the currently visible (active) tab */
+    let _activeId = null;
+
+    /** @type {boolean} Whether the bottom panel is currently maximized */
+    let _isMaximized = false;
+
+    /**
+     * Pixel threshold for detecting near-maximize state during resize.
+     * If the editor holder height is within this many pixels of zero, the
+     * panel is treated as maximized. Keeps the maximize icon responsive
+     * during drag without being overly sensitive.
+     * @const
+     * @type {number}
+     */
+    const MAXIMIZE_THRESHOLD = 2;
+
+    /**
+     * Minimum panel height (matches Resizer minSize) used as a floor
+     * when computing a sensible restore height.
+     * @const
+     * @type {number}
+     */
+    const MIN_PANEL_HEIGHT = 200;
+
+    /** @type {number|null} The panel height before maximize, for restore */
+    let _preMaximizeHeight = null;
+
+    /** @type {jQueryObject} The editor holder element, passed from WorkspaceManager */
+    let _$editorHolder = null;
+
+    /** @type {function} recomputeLayout callback from WorkspaceManager */
+    let _recomputeLayout = null;
+
+    // --- Tab helper functions ---
+
+    /**
+     * Resolve the display title for a bottom panel tab.
+     * Uses the explicit title if provided, then checks for a .toolbar .title
+     * DOM element in the panel, and finally derives a name from the panel id.
+     * @param {string} id  The panel registration ID
+     * @param {jQueryObject} $panel  The panel's jQuery element
+     * @param {string=} title  Explicit title passed to createBottomPanel
+     * @return {string}
+     * @private
+     */
+    function _getPanelTitle(id, $panel, title) {
+        if (title) {
+            return title;
+        }
+        let $titleEl = $panel.find(".toolbar .title");
+        if ($titleEl.length && $.trim($titleEl.text())) {
+            return $.trim($titleEl.text());
+        }
+        let label = id.replace(new RegExp("[-_.]", "g"), " ").split(" ")[0];
+        return label.charAt(0).toUpperCase() + label.slice(1);
+    }
+
+    /**
+     * Full rebuild of the tab bar DOM from _openIds.
+     * Call this when tabs are added, removed, or renamed.
+     * @private
+     */
+    function _updateBottomPanelTabBar() {
+        if (!_$tabsOverflow) {
+            return;
+        }
+        _$tabsOverflow.empty();
+
+        _openIds.forEach(function (panelId) {
+            let panel = _panelMap[panelId];
+            if (!panel) {
+                return;
+            }
+            let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
+            let isActive = (panelId === _activeId);
+            let $tab = $('<div class="bottom-panel-tab"></div>')
+                .toggleClass('active', isActive)
+                .attr('data-panel-id', panelId);
+            $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
+            $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
+            _$tabsOverflow.append($tab);
+        });
+    }
+
+    /**
+     * Swap the .active class on the tab bar without rebuilding the DOM.
+     * @private
+     */
+    function _updateActiveTabHighlight() {
+        if (!_$tabBar) {
+            return;
+        }
+        _$tabBar.find(".bottom-panel-tab").each(function () {
+            let $tab = $(this);
+            if ($tab.data("panel-id") === _activeId) {
+                $tab.addClass("active");
+            } else {
+                $tab.removeClass("active");
+            }
+        });
+    }
+
+    /**
+     * Append a single tab to the tab bar for the given panel.
+     * Use instead of _updateBottomPanelTabBar() when adding one tab.
+     * @param {string} panelId
+     * @private
+     */
+    function _addTabToBar(panelId) {
+        if (!_$tabsOverflow) {
+            return;
+        }
+        let panel = _panelMap[panelId];
+        if (!panel) {
+            return;
+        }
+        let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
+        let isActive = (panelId === _activeId);
+        let $tab = $('<div class="bottom-panel-tab"></div>')
+            .toggleClass('active', isActive)
+            .attr('data-panel-id', panelId);
+        $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
+        $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
+        _$tabsOverflow.append($tab);
+    }
+
+    /**
+     * Remove a single tab from the tab bar by panel ID.
+     * Use instead of _updateBottomPanelTabBar() when removing one tab.
+     * @param {string} panelId
+     * @private
+     */
+    function _removeTabFromBar(panelId) {
+        if (!_$tabsOverflow) {
+            return;
+        }
+        _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + panelId + '"]').remove();
+    }
+
+    /**
+     * Switch the active tab to the given panel. Does not show/hide the container.
+     * @param {string} panelId
+     * @private
+     */
+    function _switchToTab(panelId) {
+        if (_activeId === panelId) {
+            return;
+        }
+        // Remove active class from current
+        if (_activeId) {
+            let prevPanel = _panelMap[_activeId];
+            if (prevPanel) {
+                prevPanel.$panel.removeClass("active-bottom-panel");
+            }
+        }
+        // Set new active
+        _activeId = panelId;
+        let newPanel = _panelMap[panelId];
+        if (newPanel) {
+            newPanel.$panel.addClass("active-bottom-panel");
+        }
+        _updateActiveTabHighlight();
+    }
+
 
     /**
      * Represents a panel below the editor area (a child of ".content").
      * @constructor
      * @param {!jQueryObject} $panel  The entire panel, including any chrome, already in the DOM.
+     * @param {string} id  Unique panel identifier.
+     * @param {string=} title  Optional display title for the tab bar.
      */
-    function Panel($panel, id) {
+    function Panel($panel, id, title) {
         this.$panel = $panel;
         this.panelID = id;
+        this._tabTitle = _getPanelTitle(id, $panel, title);
+        _panelMap[id] = this;
     }
 
     /**
@@ -71,7 +257,7 @@ define(function (require, exports, module) {
      * @return {boolean} true if visible, false if not
      */
     Panel.prototype.isVisible = function () {
-        return this.$panel.is(":visible");
+        return (_activeId === this.panelID) && _$container && _$container.is(":visible");
     };
 
     /**
@@ -104,19 +290,83 @@ define(function (require, exports, module) {
      * Shows the panel
      */
     Panel.prototype.show = function () {
-        if(!this.isVisible() && this.canBeShown()){
-            Resizer.show(this.$panel[0]);
-            exports.trigger(EVENT_PANEL_SHOWN, this.panelID);
+        if (!this.canBeShown() || !_$container) {
+            return;
         }
+        let panelId = this.panelID;
+        let isOpen = _openIds.indexOf(panelId) !== -1;
+        let isActive = (_activeId === panelId);
+
+        if (isOpen && isActive) {
+            // Already open and active — just ensure container is visible
+            if (!_$container.is(":visible")) {
+                Resizer.show(_$container[0]);
+                exports.trigger(EVENT_PANEL_SHOWN, panelId);
+            }
+            return;
+        }
+        if (isOpen && !isActive) {
+            // Open but not active - switch tab and ensure container is visible
+            _switchToTab(panelId);
+            if (!_$container.is(":visible")) {
+                Resizer.show(_$container[0]);
+            }
+            exports.trigger(EVENT_PANEL_SHOWN, panelId);
+            return;
+        }
+        // Not open: add to open set
+        _openIds.push(panelId);
+
+        // Show container if it was hidden
+        if (!_$container.is(":visible")) {
+            Resizer.show(_$container[0]);
+        }
+
+        _switchToTab(panelId);
+        _addTabToBar(panelId);
+        exports.trigger(EVENT_PANEL_SHOWN, panelId);
     };
 
     /**
      * Hides the panel
      */
     Panel.prototype.hide = function () {
-        if(this.isVisible()){
-            Resizer.hide(this.$panel[0]);
-            exports.trigger(EVENT_PANEL_HIDDEN, this.panelID);
+        let panelId = this.panelID;
+        let idx = _openIds.indexOf(panelId);
+        if (idx === -1) {
+            // Not open - no-op
+            return;
+        }
+
+        // Remove from open set
+        _openIds.splice(idx, 1);
+        this.$panel.removeClass("active-bottom-panel");
+
+        let wasActive = (_activeId === panelId);
+        let activatedId = null;
+
+        if (wasActive && _openIds.length > 0) {
+            let nextIdx = Math.min(idx, _openIds.length - 1);
+            activatedId = _openIds[nextIdx];
+            _activeId = null; // clear so _switchToTab runs
+            _switchToTab(activatedId);
+        } else if (wasActive) {
+            // No more tabs - hide the container
+            _activeId = null;
+            if (_$container) {
+                restoreIfMaximized();
+                Resizer.hide(_$container[0]);
+            }
+        }
+
+        _removeTabFromBar(panelId);
+
+        // Always fire HIDDEN for the closed panel first
+        exports.trigger(EVENT_PANEL_HIDDEN, panelId);
+
+        // Then fire SHOWN for the newly activated tab, if any
+        if (activatedId) {
+            exports.trigger(EVENT_PANEL_SHOWN, activatedId);
         }
     };
 
@@ -133,6 +383,30 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Updates the display title shown in the tab bar for this panel.
+     * @param {string} newTitle  The new title to display.
+     */
+    Panel.prototype.setTitle = function (newTitle) {
+        this._tabTitle = newTitle;
+        if (_$tabsOverflow) {
+            _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + this.panelID + '"] .bottom-panel-tab-title')
+                .text(newTitle);
+        }
+    };
+
+    /**
+     * Destroys the panel, removing it from the tab bar, internal maps, and the DOM.
+     * After calling this, the Panel instance should not be reused.
+     */
+    Panel.prototype.destroy = function () {
+        if (_openIds.indexOf(this.panelID) !== -1) {
+            this.hide();
+        }
+        delete _panelMap[this.panelID];
+        this.$panel.remove();
+    };
+
+    /**
      * gets the Panel's type
      * @return {string}
      */
@@ -140,10 +414,286 @@ define(function (require, exports, module) {
         return PANEL_TYPE_BOTTOM_PANEL;
     };
 
+    /**
+     * Initializes the PanelView module with references to the bottom panel container DOM elements.
+     * Called by WorkspaceManager during htmlReady.
+     * @param {jQueryObject} $container  The bottom panel container element.
+     * @param {jQueryObject} $tabBar  The tab bar element inside the container.
+     * @param {jQueryObject} $tabsOverflow  The scrollable area holding tab elements.
+     * @param {jQueryObject} $editorHolder  The editor holder element (for maximize height calculation).
+     * @param {function} recomputeLayoutFn  Callback to trigger workspace layout recomputation.
+     */
+    function init($container, $tabBar, $tabsOverflow, $editorHolder, recomputeLayoutFn) {
+        _$container = $container;
+        _$tabBar = $tabBar;
+        _$tabsOverflow = $tabsOverflow;
+        _$editorHolder = $editorHolder;
+        _recomputeLayout = recomputeLayoutFn;
+
+        // Tab bar click handlers
+        _$tabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
+            e.stopPropagation();
+            let panelId = $(this).closest(".bottom-panel-tab").data("panel-id");
+            if (panelId) {
+                let panel = _panelMap[panelId];
+                if (panel) {
+                    panel.hide();
+                }
+            }
+        });
+
+        _$tabBar.on("click", ".bottom-panel-tab", function (e) {
+            let panelId = $(this).data("panel-id");
+            if (panelId && panelId !== _activeId) {
+                let panel = _panelMap[panelId];
+                if (panel) {
+                    panel.show();
+                }
+            }
+        });
+
+        // Hide-panel button collapses the container but keeps tabs intact
+        _$tabBar.on("click", ".bottom-panel-hide-btn", function (e) {
+            e.stopPropagation();
+            if (_$container.is(":visible")) {
+                restoreIfMaximized();
+                Resizer.hide(_$container[0]);
+            }
+        });
+
+        // Maximize/restore toggle button
+        _$tabBar.on("click", ".bottom-panel-maximize-btn", function (e) {
+            e.stopPropagation();
+            _toggleMaximize();
+        });
+
+        // Double-click on tab bar toggles maximize (exclude action buttons)
+        _$tabBar.on("dblclick", function (e) {
+            if ($(e.target).closest(".bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn").length) {
+                return;
+            }
+            _toggleMaximize();
+        });
+    }
+
+    /**
+     * Toggle maximize/restore of the bottom panel.
+     * @private
+     */
+    function _toggleMaximize() {
+        if (!_$container || !_$container.is(":visible")) {
+            return;
+        }
+        if (_isMaximized) {
+            _restorePanel();
+        } else {
+            _maximizePanel();
+        }
+    }
+
+    /**
+     * Maximize the bottom panel to fill all available vertical space.
+     * @private
+     */
+    function _maximizePanel() {
+        _preMaximizeHeight = _$container.height();
+        let maxHeight = _$editorHolder.height() + _$container.height();
+        _$container.height(maxHeight);
+        _isMaximized = true;
+        _updateMaximizeButton();
+        if (_recomputeLayout) {
+            _recomputeLayout();
+        }
+    }
+
+    /**
+     * Compute a sensible panel height for restore when the saved height is
+     * missing or indistinguishable from the maximized height.
+     * Returns roughly one-third of the total available space, floored at
+     * MIN_PANEL_HEIGHT so the panel never restores too small.
+     * @return {number}
+     * @private
+     */
+    function _getDefaultRestoreHeight() {
+        let totalHeight = (_$editorHolder ? _$editorHolder.height() : 0) +
+            (_$container ? _$container.height() : 0);
+        return Math.max(MIN_PANEL_HEIGHT, Math.round(totalHeight / 3));
+    }
+
+    /**
+     * Return true if the given height is effectively the same as the
+     * maximized height (within MAXIMIZE_THRESHOLD).
+     * @param {number} height
+     * @return {boolean}
+     * @private
+     */
+    function _isNearMaxHeight(height) {
+        let totalHeight = (_$editorHolder ? _$editorHolder.height() : 0) +
+            (_$container ? _$container.height() : 0);
+        return (totalHeight - height) <= MAXIMIZE_THRESHOLD;
+    }
+
+    /**
+     * Restore the bottom panel to its pre-maximize height.
+     * If the saved height is missing (e.g. maximize was triggered by
+     * drag-to-max) or was essentially the same as the maximized height,
+     * a sensible default (≈ 1/3 of available space) is used instead so
+     * that the restore feels like a visible change.
+     * @private
+     */
+    function _restorePanel() {
+        let restoreHeight;
+        if (_preMaximizeHeight !== null && !_isNearMaxHeight(_preMaximizeHeight)) {
+            restoreHeight = _preMaximizeHeight;
+        } else {
+            restoreHeight = _getDefaultRestoreHeight();
+        }
+        _$container.height(restoreHeight);
+        _isMaximized = false;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+        if (_recomputeLayout) {
+            _recomputeLayout();
+        }
+    }
+
+    /**
+     * Update the maximize button icon and tooltip based on current state.
+     * @private
+     */
+    function _updateMaximizeButton() {
+        if (!_$tabBar) {
+            return;
+        }
+        let $btn = _$tabBar.find(".bottom-panel-maximize-btn");
+        let $icon = $btn.find("i");
+        if (_isMaximized) {
+            $icon.removeClass("fa-expand")
+                .addClass("fa-compress");
+            $btn.attr("title", Strings.BOTTOM_PANEL_RESTORE);
+        } else {
+            $icon.removeClass("fa-compress")
+                .addClass("fa-expand");
+            $btn.attr("title", Strings.BOTTOM_PANEL_MAXIMIZE);
+        }
+    }
+
+    /**
+     * Exit maximize state without resizing (for external callers like drag-resize).
+     * Clears internal maximize state and resets the button icon.
+     */
+    function exitMaximizeOnResize() {
+        if (!_isMaximized) {
+            return;
+        }
+        _isMaximized = false;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+    }
+
+    /**
+     * Enter maximize state during a drag-resize that reaches the maximum
+     * height. No pre-maximize height is stored because the user arrived
+     * here via continuous dragging; a sensible default will be computed if
+     * they later click the Restore button.
+     */
+    function enterMaximizeOnResize() {
+        if (_isMaximized) {
+            return;
+        }
+        _isMaximized = true;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+    }
+
+    /**
+     * Restore the container's CSS height to the pre-maximize value and clear maximize state.
+     * Must be called BEFORE Resizer.hide() so the Resizer reads the correct height.
+     * If not maximized, this is a no-op.
+     * When the saved height is near-max or unknown, a sensible default is used.
+     */
+    function restoreIfMaximized() {
+        if (!_isMaximized) {
+            return;
+        }
+        if (_preMaximizeHeight !== null && !_isNearMaxHeight(_preMaximizeHeight)) {
+            _$container.height(_preMaximizeHeight);
+        } else {
+            _$container.height(_getDefaultRestoreHeight());
+        }
+        _isMaximized = false;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+    }
+
+    /**
+     * Returns true if the bottom panel is currently maximized.
+     * @return {boolean}
+     */
+    function isMaximized() {
+        return _isMaximized;
+    }
+
+    /**
+     * Returns a copy of the currently open bottom panel IDs in tab order.
+     * @return {string[]}
+     */
+    function getOpenBottomPanelIDs() {
+        return _openIds.slice();
+    }
+
+    /**
+     * Hides every open bottom panel tab in a single batch
+     * @return {string[]} The IDs of panels that were open (useful for restoring later).
+     */
+    function hideAllOpenPanels() {
+        if (_openIds.length === 0) {
+            return [];
+        }
+        let closedIds = _openIds.slice();
+
+        // Remove visual active state from every panel
+        for (let i = 0; i < closedIds.length; i++) {
+            let panel = _panelMap[closedIds[i]];
+            if (panel) {
+                panel.$panel.removeClass("active-bottom-panel");
+            }
+        }
+
+        // Clear internal state BEFORE hiding the container so the
+        // panelCollapsed handler sees an empty _openIds and doesn't
+        // redundantly update the stacks.
+        _openIds = [];
+        _activeId = null;
+
+        if (_$container && _$container.is(":visible")) {
+            restoreIfMaximized();
+            Resizer.hide(_$container[0]);
+        }
+
+        _updateBottomPanelTabBar();
+
+        // Fire one EVENT_PANEL_HIDDEN per panel for stack tracking.
+        // No intermediate EVENT_PANEL_SHOWN events are emitted.
+        for (let i = 0; i < closedIds.length; i++) {
+            exports.trigger(EVENT_PANEL_HIDDEN, closedIds[i]);
+        }
+
+        return closedIds;
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
 
     // Public API
     exports.Panel = Panel;
+    exports.init = init;
+    exports.getOpenBottomPanelIDs = getOpenBottomPanelIDs;
+    exports.hideAllOpenPanels = hideAllOpenPanels;
+    exports.exitMaximizeOnResize = exitMaximizeOnResize;
+    exports.enterMaximizeOnResize = enterMaximizeOnResize;
+    exports.restoreIfMaximized = restoreIfMaximized;
+    exports.isMaximized = isMaximized;
+    exports.MAXIMIZE_THRESHOLD = MAXIMIZE_THRESHOLD;
     //events
     exports.EVENT_PANEL_HIDDEN = EVENT_PANEL_HIDDEN;
     exports.EVENT_PANEL_SHOWN = EVENT_PANEL_SHOWN;

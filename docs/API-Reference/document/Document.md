@@ -27,6 +27,7 @@ const Document = brackets.getModule("document/Document")
         * [.replaceRange(text, start, end, origin)](#Document+replaceRange)
         * [.getRange(start, end)](#Document+getRange) ⇒ <code>string</code>
         * [.getLine(Zero-based)](#Document+getLine) ⇒ <code>string</code>
+        * [.posFromIndex(index)](#Document+posFromIndex) ⇒ <code>Object</code>
         * [.batchOperation(doOperation)](#Document+batchOperation)
         * [.notifySaved()](#Document+notifySaved)
         * [.adjustPosForChange(pos, textLines, start, end)](#Document+adjustPosForChange) ⇒ <code>Object</code>
@@ -239,6 +240,19 @@ Returns the text of the given line (excluding any line ending characters)
 | Param | Type | Description |
 | --- | --- | --- |
 | Zero-based | <code>number</code> | line number |
+
+<a name="Document+posFromIndex"></a>
+
+### document.posFromIndex(index) ⇒ <code>Object</code>
+Given a character index within the document text (assuming \n newlines),
+returns the corresponding {line, ch} position. Works whether or not
+a master editor is attached.
+
+**Kind**: instance method of [<code>Document</code>](#Document)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| index | <code>number</code> | Zero-based character offset |
 
 <a name="Document+batchOperation"></a>
 

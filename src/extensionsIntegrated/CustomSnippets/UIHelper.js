@@ -21,8 +21,10 @@
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
     const StringUtils = require("utils/StringUtils");
-    const Global = require("./global");
     const Strings = require("strings");
+
+    /** @type {Object} Reference to the panel instance, set via init() */
+    let _panel;
 
     /**
      * this is a generic function to show error messages for input fields
@@ -113,7 +115,6 @@ define(function (require, exports, module) {
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $filterSnippetsPanel = $("#filter-snippets-panel");
-        const $toolbarTitle = $(".toolbar-title");
 
         $addSnippetMenu.removeClass("hidden");
         $snippetListMenu.addClass("hidden");
@@ -122,7 +123,9 @@ define(function (require, exports, module) {
         $addNewSnippetBtn.addClass("hidden");
         $filterSnippetsPanel.addClass("hidden");
 
-        $toolbarTitle.html(`${Strings.CUSTOM_SNIPPETS_ADD_PANEL_TITLE} <span id="snippets-count" class="snippets-count"></span>`);
+        if (_panel) {
+            _panel.setTitle(Strings.CUSTOM_SNIPPETS_ADD_PANEL_TITLE);
+        }
     }
 
     /**
@@ -137,7 +140,6 @@ define(function (require, exports, module) {
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $filterSnippetsPanel = $("#filter-snippets-panel");
-        const $toolbarTitle = $(".toolbar-title");
 
         $addSnippetMenu.addClass("hidden");
         $editSnippetMenu.addClass("hidden");
@@ -147,12 +149,9 @@ define(function (require, exports, module) {
         $addNewSnippetBtn.removeClass("hidden");
         $filterSnippetsPanel.removeClass("hidden");
 
-        // add the snippet count in the toolbar (the no. of snippets added)
-        const snippetCount = Global.SnippetHintsList.length;
-        const countText = snippetCount > 0 ? `(${snippetCount})` : "";
-        $toolbarTitle.html(
-            `${Strings.CUSTOM_SNIPPETS_PANEL_TITLE} <span id="snippets-count" class="snippets-count">${countText}</span>`
-        );
+        if (_panel) {
+            _panel.setTitle(Strings.CUSTOM_SNIPPETS_PANEL_TITLE);
+        }
 
         $("#filter-snippets-input").val("");
     }
@@ -167,7 +166,6 @@ define(function (require, exports, module) {
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $filterSnippetsPanel = $("#filter-snippets-panel");
-        const $toolbarTitle = $(".toolbar-title");
 
         $editSnippetMenu.removeClass("hidden");
         $snippetListMenu.addClass("hidden");
@@ -176,8 +174,9 @@ define(function (require, exports, module) {
         $addNewSnippetBtn.addClass("hidden");
         $filterSnippetsPanel.addClass("hidden");
 
-        // Update toolbar title
-        $toolbarTitle.html(`${Strings.CUSTOM_SNIPPETS_EDIT_PANEL_TITLE} <span id="snippets-count" class="snippets-count"></span>`);
+        if (_panel) {
+            _panel.setTitle(Strings.CUSTOM_SNIPPETS_EDIT_PANEL_TITLE);
+        }
     }
 
     /**
@@ -213,18 +212,24 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Initializes the toolbar title for the list view
-     * This is called when the panel is first opened to ensure the snippet count is displayed
+     * Resets the tab title back to the default list view title.
+     * Called when the panel is first opened or toggled visible.
      */
     function initializeListViewToolbarTitle() {
-        const $toolbarTitle = $(".toolbar-title");
-        const snippetCount = Global.SnippetHintsList.length;
-        const countText = snippetCount > 0 ? `(${snippetCount})` : "";
-        $toolbarTitle.html(
-            `${Strings.CUSTOM_SNIPPETS_PANEL_TITLE} <span id="snippets-count" class="snippets-count">${countText}</span>`
-        );
+        if (_panel) {
+            _panel.setTitle(Strings.CUSTOM_SNIPPETS_PANEL_TITLE);
+        }
     }
 
+    /**
+     * Sets the panel reference so UIHelper can update the tab title.
+     * @param {Object} panel  The Panel instance returned by WorkspaceManager.createBottomPanel
+     */
+    function init(panel) {
+        _panel = panel;
+    }
+
+    exports.init = init;
     exports.showEmptySnippetMessage = showEmptySnippetMessage;
     exports.showSnippetsList = showSnippetsList;
     exports.clearSnippetsList = clearSnippetsList;

@@ -87,15 +87,22 @@ define(function (require, exports, module) {
      * hide all open panels
      */
     function _hidePanelsIfRequired() {
-        var panelIDs = WorkspaceManager.getAllPanelIDs();
         _previouslyOpenPanelIDs = [];
-        panelIDs.forEach(function (panelID) {
-            var panel = WorkspaceManager.getPanelForID(panelID);
+
+        // Batch-hide all open bottom panel tabs in one pass, avoiding O(n)
+        // intermediate tab activations and layout recalcs.
+        let hiddenBottomPanels = WorkspaceManager.hideAllOpenBottomPanels();
+        _previouslyOpenPanelIDs = hiddenBottomPanels;
+
+        // Hide any remaining visible panels (e.g. plugin side-panels)
+        let panelIDs = WorkspaceManager.getAllPanelIDs();
+        for (let i = 0; i < panelIDs.length; i++) {
+            let panel = WorkspaceManager.getPanelForID(panelIDs[i]);
             if (panel && panel.isVisible()) {
                 panel.hide();
-                _previouslyOpenPanelIDs.push(panelID);
+                _previouslyOpenPanelIDs.push(panelIDs[i]);
             }
-        });
+        }
     }
 
     /**

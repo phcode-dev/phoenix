@@ -30,7 +30,9 @@ define(function (require, exports, module) {
         let testProjectsFolder = SpecRunnerUtils.getTestPath("/spec/JSHintExtensionTest-files/"),
             testWindow,
             $,
-            CodeInspection;
+            CodeInspection,
+            CommandManager,
+            Commands;
 
         var toggleJSLintResults = function () {
             $("#status-inspection").triggerHandler("click");
@@ -41,6 +43,8 @@ define(function (require, exports, module) {
             // Load module instances from brackets.test
             $ = testWindow.$;
             CodeInspection = testWindow.brackets.test.CodeInspection;
+            CommandManager = testWindow.brackets.test.CommandManager;
+            Commands = testWindow.brackets.test.Commands;
             CodeInspection.toggleEnabled(true);
             await awaitsFor(()=>testWindow._JsHintExtensionReadyToIntegTest,
                 "JsHint extension to be loaded", 10000);
@@ -49,12 +53,20 @@ define(function (require, exports, module) {
         afterAll(async function () {
             testWindow    = null;
             $             = null;
+            CommandManager = null;
+            Commands       = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
         it("status icon should toggle Errors panel when errors present", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "valid-config-error");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file with error");
+            await awaitsFor(()=>{
+                return $("#status-inspection").hasClass("inspection-errors");
+            }, "Lint errors to be detected");
+            if (!$("#problems-panel").is(":visible")) {
+                CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
+            }
             await awaitsFor(()=>{
                 return $("#problems-panel").is(":visible");
             }, "Problems panel to be visible");
@@ -74,6 +86,12 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "invalid-config");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["no-errors.js"]), "open test file");
             await awaitsFor(()=>{
+                return $("#status-inspection").hasClass("inspection-errors");
+            }, "Lint errors to be detected");
+            if (!$("#problems-panel").is(":visible")) {
+                CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
+            }
+            await awaitsFor(()=>{
                 return $("#problems-panel").is(":visible");
             }, "Problems panel to be visible");
         });
@@ -85,14 +103,14 @@ define(function (require, exports, module) {
 
             await awaits(100);
             await awaitsFor(()=>{
-                return !$("#problems-panel").is(":visible");
-            }, "Problems panel to be hidden");
+                return $("#status-inspection").hasClass("inspection-valid");
+            }, "No lint errors for es6.js");
 
             // using es8 async feature in es6 jshint mode should have errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file es8.js");
             await awaitsFor(()=>{
-                return $("#problems-panel").is(":visible");
-            }, "Problems panel to be visible");
+                return $("#status-inspection").hasClass("inspection-errors");
+            }, "Lint errors detected for es8.js");
         });
 
         it("should extend valid es6 .jshintrc in project", async function () {
@@ -102,19 +120,25 @@ define(function (require, exports, module) {
 
             await awaits(100);
             await awaitsFor(()=>{
-                return !$("#problems-panel").is(":visible");
-            }, "Problems panel to be hidden");
+                return $("#status-inspection").hasClass("inspection-valid");
+            }, "No lint errors for es6.js");
 
             // using es8 async feature in es6 jshint mode should have errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file es8.js");
             await awaitsFor(()=>{
-                return $("#problems-panel").is(":visible");
-            }, "Problems panel to be visible");
+                return $("#status-inspection").hasClass("inspection-errors");
+            }, "Lint errors detected for es8.js");
         });
 
         it("should show errors if invalid .jshintrc extend file detected", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "invalid-config-extend");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["no-errors.js"]), "open test file");
+            await awaitsFor(()=>{
+                return $("#status-inspection").hasClass("inspection-errors");
+            }, "Lint errors to be detected");
+            if (!$("#problems-panel").is(":visible")) {
+                CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
+            }
             await awaitsFor(()=>{
                 return $("#problems-panel").is(":visible");
             }, "Problems panel to be visible");

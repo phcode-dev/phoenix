@@ -1,0 +1,317 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/* Bottom panel tab bar — switches between tabbed bottom panels.
+ * Visual style mirrors the file tab bar (Extn-TabBar.less) for consistency. */
+
+#bottom-panel-container {
+    background-color: @bc-panel-bg;
+    border-top: 1px solid @bc-panel-border;
+    display: flex;
+    flex-direction: column;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+        border-top: 1px solid @dark-bc-panel-border;
+    }
+
+    .bottom-panel {
+        display: none !important;
+        flex: 1;
+        min-height: 0;
+        border-top: none;
+        height: auto !important;
+
+        &.active-bottom-panel {
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        .toolbar {
+            box-shadow: none;
+        }
+
+        .resizable-content {
+            flex: 1;
+            min-height: 0;
+            height: auto !important;
+        }
+    }
+}
+
+#bottom-panel-tab-bar {
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    min-height: 2rem;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #d6d6d6;
+    overflow: hidden;
+    user-select: none;
+
+    .dark & {
+        background-color: #222222;
+        border-bottom: 1px solid #333;
+    }
+}
+
+.bottom-panel-tabs-overflow {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100%;
+
+    /* Hide scrollbar but allow scrolling */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.bottom-panel-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.4rem 0 0.8rem;
+    height: 100%;
+    cursor: pointer;
+    position: relative;
+    flex: 0 0 auto;
+    min-width: fit-content;
+    color: #555;
+    background-color: #f1f1f1;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    transition: color 0.12s ease-out, background-color 0.12s ease-out;
+
+    .dark & {
+        color: #aaa;
+        background-color: #292929;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    &:hover {
+        background-color: #e0e0e0;
+
+        .dark & {
+            background-color: #3b3a3a;
+        }
+    }
+
+    &.active {
+        color: #333;
+        background-color: #fff;
+
+        .dark & {
+            color: #dedede;
+            background-color: #1D1F21;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 0.1rem;
+            background-color: #0078D7;
+
+            .dark & {
+                background-color: #75BEFF;
+            }
+        }
+    }
+}
+
+.bottom-panel-tab-title {
+    pointer-events: none;
+}
+
+.bottom-panel-tab-close-btn {
+    margin-left: 0.55rem;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #999;
+    font-size: 1.25rem;
+    font-weight: 500;
+    padding: 0 4px;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.12s ease, color 0.12s ease, background-color 0.12s ease;
+
+    .dark & {
+        color: #666;
+    }
+
+    .bottom-panel-tab:hover & {
+        opacity: 1;
+        color: #666;
+
+        .dark & {
+            color: #888;
+        }
+    }
+
+    .bottom-panel-tab.active & {
+        opacity: 1;
+        color: #666;
+
+        .dark & {
+            color: #888;
+        }
+    }
+
+    &:hover {
+        opacity: 1;
+        color: #333;
+        background-color: rgba(0, 0, 0, 0.1);
+
+        .dark & {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+    }
+}
+
+.bottom-panel-tab-bar-actions {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: auto;
+    margin-right: 6px;
+    gap: 6px;
+    flex: 0 0 auto;
+}
+
+.bottom-panel-maximize-btn,
+.bottom-panel-hide-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 2rem;
+    cursor: pointer;
+    color: #666;
+    font-size: 0.88rem;
+    transition: color 0.12s ease, background-color 0.12s ease;
+
+    .dark & {
+        color: #aaa;
+    }
+
+    &:hover {
+        background-color: #e0e0e0;
+        color: #333;
+
+        .dark & {
+            background-color: #333;
+            color: #eee;
+        }
+    }
+}
+
+.default-panel-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 16px;
+    gap: 12px;
+    user-select: none;
+}
+
+.default-panel-heading {
+    font-size: 14px;
+    letter-spacing: 0.6px;
+    word-spacing: 1px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 4px;
+
+    .dark & {
+        color: #bbb;
+    }
+}
+
+.default-panel-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.default-panel-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 120px;
+    height: 72px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.03);
+    color: #444;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+
+    i {
+        font-size: 20px;
+    }
+
+    .default-panel-btn-label {
+        font-size: 11px;
+        text-align: center;
+        line-height: 1.2;
+        max-width: 110px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.07);
+        border-color: rgba(0, 0, 0, 0.25);
+    }
+
+    &:active {
+        background: rgba(0, 0, 0, 0.12);
+    }
+
+    .dark & {
+        border-color: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.05);
+        color: #ccc;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        &:active {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    }
+}

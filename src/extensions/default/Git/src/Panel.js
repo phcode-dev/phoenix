@@ -1212,7 +1212,7 @@ define(function (require, exports) {
             return;
         }
         const mainToolbarWidth = $mainToolbar.width();
-        let overFlowWidth = 565;
+        let overFlowWidth = 540;
         const breakpoints = [
             { width: overFlowWidth, className: "hide-when-small" },
             { width: 400, className: "hide-when-x-small" }
@@ -1240,13 +1240,12 @@ define(function (require, exports) {
         var $panelHtml = $(panelHtml);
         $panelHtml.find(".git-available, .git-not-available").hide();
 
-        gitPanel = WorkspaceManager.createBottomPanel("main-git.panel", $panelHtml, 100);
+        gitPanel = WorkspaceManager.createBottomPanel("main-git.panel", $panelHtml, 100, Strings.GIT_PANEL_TITLE);
         $gitPanel = gitPanel.$panel;
         const resizeObserver = new ResizeObserver(_panelResized);
         resizeObserver.observe($gitPanel[0]);
         $mainToolbar = $gitPanel.find(".mainToolbar");
         $gitPanel
-            .on("click", ".close", toggle)
             .on("click", ".check-all", function () {
                 if ($(this).is(":checked")) {
                     return Git.stageAll().then(function () {
@@ -1500,6 +1499,17 @@ define(function (require, exports) {
 
     EventEmitter.on(Events.HANDLE_GIT_COMMIT, function () {
         handleGitCommit(lastCommitMessage[ProjectManager.getProjectRoot().fullPath], false, COMMIT_MODE.DEFAULT);
+    });
+
+    // When the panel tab is closed externally (e.g. via the × button),
+    // update the toolbar icon and menu checked state to stay in sync.
+    WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
+        if (panelID === "main-git.panel" && gitPanel) {
+            Main.$icon.toggleClass("on", false);
+            Main.$icon.toggleClass("selected-button", false);
+            CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(false);
+            Preferences.set("panelEnabled", false);
+        }
     });
 
     exports.init = init;
