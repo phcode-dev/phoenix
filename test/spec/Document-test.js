@@ -32,10 +32,10 @@ define(function (require, exports, module) {
         describe("doMultipleEdits", function () {
             // Even though these are Document unit tests, we need to create an editor in order to
             // be able to test actual edit ops.
-            var myEditor, myDocument, initialContentLines;
+            let myEditor, myDocument, initialContentLines;
 
             function makeDummyLines(num) {
-                var content = [], i;
+                let content = [], i;
                 for (i = 0; i < num; i++) {
                     content.push("this is line " + i);
                 }
@@ -45,7 +45,7 @@ define(function (require, exports, module) {
             beforeEach(function () {
                 // Each line from 0-9 is 14 chars long, each line from 10-19 is 15 chars long
                 initialContentLines = makeDummyLines(20);
-                var mocks = SpecRunnerUtils.createMockEditor(initialContentLines.join("\n"), "unknown");
+                const mocks = SpecRunnerUtils.createMockEditor(initialContentLines.join("\n"), "unknown");
                 myDocument = mocks.doc;
                 myEditor = mocks.editor;
             });
@@ -59,7 +59,7 @@ define(function (require, exports, module) {
             });
 
             function _verifySingleEdit() {
-                var result = myDocument.doMultipleEdits([{edit: {text: "new content", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}},
+                const result = myDocument.doMultipleEdits([{edit: {text: "new content", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}},
                     selection: {start: {line: 2, ch: 4}, end: {line: 2, ch: 4}, reversed: true, isBeforeEdit: true}}]);
                 initialContentLines[2] = "new content";
                 expect(myDocument.getText()).toEqual(initialContentLines.join("\n"));
@@ -83,7 +83,7 @@ define(function (require, exports, module) {
             });
 
             it("should do a single edit, leaving a non-beforeEdit selection untouched and preserving reversed flag", function () {
-                var result = myDocument.doMultipleEdits([{edit: {text: "new content", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}},
+                const result = myDocument.doMultipleEdits([{edit: {text: "new content", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}},
                     selection: {start: {line: 2, ch: 4}, end: {line: 2, ch: 4}, reversed: true}}]);
                 initialContentLines[2] = "new content";
                 expect(myDocument.getText()).toEqual(initialContentLines.join("\n"));
@@ -96,7 +96,7 @@ define(function (require, exports, module) {
             });
 
             it("should do multiple edits, fixing up isBeforeEdit selections with respect to both edits and preserving other selection attributes", function () {
-                var result = myDocument.doMultipleEdits([
+                const result = myDocument.doMultipleEdits([
                     {edit: {text: "modified line 2\n", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}},
                         selection: {start: {line: 2, ch: 4}, end: {line: 2, ch: 4}, isBeforeEdit: true, primary: true}},
                     {edit: {text: "modified line 4\n", start: {line: 4, ch: 0}, end: {line: 4, ch: 14}},
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
             });
 
             it("should do multiple edits, fixing up non-isBeforeEdit selections only with respect to other edits", function () {
-                var result = myDocument.doMultipleEdits([
+                const result = myDocument.doMultipleEdits([
                     {edit: {text: "modified line 2\n", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}},
                         selection: {start: {line: 2, ch: 4}, end: {line: 2, ch: 4}, primary: true}},
                     {edit: {text: "modified line 4\n", start: {line: 4, ch: 0}, end: {line: 4, ch: 14}},
@@ -146,7 +146,7 @@ define(function (require, exports, module) {
             });
 
             it("should perform multiple changes/track multiple selections within a single edit, selections specified as isBeforeEdit", function () {
-                var result = myDocument.doMultipleEdits([
+                const result = myDocument.doMultipleEdits([
                     {edit: [{text: "modified line 1", start: {line: 1, ch: 0}, end: {line: 1, ch: 14}},
                             {text: "modified line 2\n", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}}],
                         selection: [{start: {line: 1, ch: 4}, end: {line: 1, ch: 4}, isBeforeEdit: true},
@@ -179,7 +179,7 @@ define(function (require, exports, module) {
             });
 
             it("should perform multiple changes/track multiple selections within a single edit, selections not specified as isBeforeEdit", function () {
-                var result = myDocument.doMultipleEdits([
+                const result = myDocument.doMultipleEdits([
                     {edit: [{text: "modified line 1", start: {line: 1, ch: 0}, end: {line: 1, ch: 14}},
                             {text: "modified line 2\n", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}}],
                         selection: [{start: {line: 1, ch: 4}, end: {line: 1, ch: 4}},
@@ -237,10 +237,10 @@ define(function (require, exports, module) {
         });
 
         describe("posFromIndex", function () {
-            var myEditor, myDocument;
+            let myEditor, myDocument;
 
             beforeEach(function () {
-                var mocks = SpecRunnerUtils.createMockEditor("line0\nline1\nline2\n", "unknown");
+                const mocks = SpecRunnerUtils.createMockEditor("line0\nline1\nline2\n", "unknown");
                 myDocument = mocks.doc;
                 myEditor = mocks.editor;
             });
@@ -254,28 +254,28 @@ define(function (require, exports, module) {
             });
 
             it("should return {0,0} for index 0", function () {
-                var pos = myDocument.posFromIndex(0);
+                const pos = myDocument.posFromIndex(0);
                 expect(pos.line).toBe(0);
                 expect(pos.ch).toBe(0);
             });
 
             it("should return correct position within first line", function () {
                 // "line0" — index 3 is 'e'
-                var pos = myDocument.posFromIndex(3);
+                const pos = myDocument.posFromIndex(3);
                 expect(pos.line).toBe(0);
                 expect(pos.ch).toBe(3);
             });
 
             it("should return start of second line after newline", function () {
                 // "line0\n" is 6 chars, so index 6 is start of line 1
-                var pos = myDocument.posFromIndex(6);
+                const pos = myDocument.posFromIndex(6);
                 expect(pos.line).toBe(1);
                 expect(pos.ch).toBe(0);
             });
 
             it("should return correct position on third line", function () {
                 // "line0\nline1\n" is 12 chars, index 14 is 'n' in "line2"
-                var pos = myDocument.posFromIndex(14);
+                const pos = myDocument.posFromIndex(14);
                 expect(pos.line).toBe(2);
                 expect(pos.ch).toBe(2);
             });
@@ -289,7 +289,7 @@ define(function (require, exports, module) {
                 // Content is "line0\nline1\nline2\n" — same as beforeEach
                 expect(myDocument._masterEditor).toBe(null);
 
-                var pos = myDocument.posFromIndex(0);
+                let pos = myDocument.posFromIndex(0);
                 expect(pos.line).toBe(0);
                 expect(pos.ch).toBe(0);
 
