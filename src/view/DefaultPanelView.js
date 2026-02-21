@@ -119,18 +119,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Check whether there are currently lint errors/warnings.
-     * The status bar indicator gets the "inspection-errors" class when problems exist.
-     * @return {boolean}
-     * @private
-     */
-    function _hasProblems() {
-        const $indicator = $("#status-inspection");
-        return $indicator.length > 0 && $indicator.hasClass("inspection-errors");
-    }
-
-    /**
-     * Show or hide the Git and Problems buttons based on current state.
+     * Show or hide buttons based on current state.
+     * The Problems button is always shown since the panel now displays
+     * meaningful content regardless of error state.
      * @private
      */
     function _updateButtonVisibility() {
@@ -138,12 +129,11 @@ define(function (require, exports, module) {
             return;
         }
         _$panel.find('.default-panel-btn[data-btn-id="git"]').toggle(_isGitAvailable());
-        _$panel.find('.default-panel-btn[data-btn-id="problems"]').toggle(_hasProblems());
     }
 
     /**
-     * Set up MutationObservers on the Git toolbar icon and status-inspection
-     * indicator so that button visibility updates live.
+     * Set up MutationObservers on the Git toolbar icon so that
+     * button visibility updates live.
      * @private
      */
     function _observeStateChanges() {
@@ -152,13 +142,6 @@ define(function (require, exports, module) {
         if (gitIcon) {
             const gitObserver = new MutationObserver(_updateButtonVisibility);
             gitObserver.observe(gitIcon, {attributes: true, attributeFilter: ["class"]});
-        }
-
-        // Watch status-inspection indicator for class changes (inspection-errors)
-        const statusInspection = document.getElementById("status-inspection");
-        if (statusInspection) {
-            const inspectionObserver = new MutationObserver(_updateButtonVisibility);
-            inspectionObserver.observe(statusInspection, {attributes: true, attributeFilter: ["class"]});
         }
     }
 
