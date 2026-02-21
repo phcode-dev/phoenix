@@ -248,7 +248,7 @@ Given a character index within the document text (assuming \n newlines),
 returns the corresponding {line, ch} position. Works whether or not
 a master editor is attached.
 
-**Kind**: instance method of [<code>Document</code>](#Document)  
+**Kind**: instance method of [<code>Document</code>](#Document)
 
 | Param | Type | Description |
 | --- | --- | --- |
