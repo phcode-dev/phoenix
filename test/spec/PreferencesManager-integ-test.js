@@ -104,7 +104,6 @@ define(function (require, exports, module) {
 
             // there will be an error in problems panel if both present
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".phcode.json"));
-            // The panel no longer auto-shows; ensure it is visible to check content
             await awaitsFor(()=>{
                 return testWindow.$("#status-inspection").hasClass("inspection-errors");
             }, "lint errors detected on .phcode.json");
@@ -116,7 +115,6 @@ define(function (require, exports, module) {
             }, "problem panel on .phcode.json");
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles("test.json"));
-            // The panel no longer auto-hides; check status bar for no-errors state instead
             await awaitsFor(()=>{
                 return !testWindow.$("#status-inspection").hasClass("inspection-errors");
             }, "no lint errors for normal test.json file");
