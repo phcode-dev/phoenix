@@ -237,10 +237,11 @@ define(function (require, exports, module) {
         });
 
         describe("posFromIndex", function () {
+            const TEST_CONTENT = "line0\nline1\nline2\n";
             let myEditor, myDocument;
 
             beforeEach(function () {
-                const mocks = SpecRunnerUtils.createMockEditor("line0\nline1\nline2\n", "unknown");
+                const mocks = SpecRunnerUtils.createMockEditor(TEST_CONTENT, "unknown");
                 myDocument = mocks.doc;
                 myEditor = mocks.editor;
             });
@@ -253,29 +254,36 @@ define(function (require, exports, module) {
                 }
             });
 
+            // Verify the character at a given index matches the char at the returned position
+            function expectCharAtIndex(index, expectedChar) {
+                const pos = myDocument.posFromIndex(index);
+                const actualChar = myDocument.getLine(pos.line).charAt(pos.ch);
+                expect(actualChar).toBe(expectedChar);
+                return pos;
+            }
+
             it("should return {0,0} for index 0", function () {
-                const pos = myDocument.posFromIndex(0);
+                const pos = expectCharAtIndex(0, "l");
                 expect(pos.line).toBe(0);
                 expect(pos.ch).toBe(0);
             });
 
             it("should return correct position within first line", function () {
-                // "line0" — index 3 is 'e'
-                const pos = myDocument.posFromIndex(3);
+                const pos = expectCharAtIndex(3, "e");
                 expect(pos.line).toBe(0);
                 expect(pos.ch).toBe(3);
             });
 
             it("should return start of second line after newline", function () {
-                // "line0\n" is 6 chars, so index 6 is start of line 1
-                const pos = myDocument.posFromIndex(6);
+                // "line0\n" is 6 chars, so index 6 is 'l' at start of "line1"
+                const pos = expectCharAtIndex(6, "l");
                 expect(pos.line).toBe(1);
                 expect(pos.ch).toBe(0);
             });
 
             it("should return correct position on third line", function () {
                 // "line0\nline1\n" is 12 chars, index 14 is 'n' in "line2"
-                const pos = myDocument.posFromIndex(14);
+                const pos = expectCharAtIndex(14, "n");
                 expect(pos.line).toBe(2);
                 expect(pos.ch).toBe(2);
             });
@@ -286,20 +294,23 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.destroyMockEditor(myDocument);
                 myEditor = null;
 
-                // Content is "line0\nline1\nline2\n" — same as beforeEach
                 expect(myDocument._masterEditor).toBe(null);
 
+                // Verify against raw string since getLine is unavailable without editor
                 let pos = myDocument.posFromIndex(0);
                 expect(pos.line).toBe(0);
                 expect(pos.ch).toBe(0);
+                expect(TEST_CONTENT[0]).toBe("l");
 
                 pos = myDocument.posFromIndex(6);
                 expect(pos.line).toBe(1);
                 expect(pos.ch).toBe(0);
+                expect(TEST_CONTENT[6]).toBe("l");
 
                 pos = myDocument.posFromIndex(14);
                 expect(pos.line).toBe(2);
                 expect(pos.ch).toBe(2);
+                expect(TEST_CONTENT[14]).toBe("n");
             });
         });
     });
