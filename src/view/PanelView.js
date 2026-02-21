@@ -70,6 +70,18 @@ define(function (require, exports, module) {
     /** @type {string|null} The panel ID of the currently visible (active) tab */
     let _activeId = null;
 
+    /** @type {boolean} Whether the bottom panel is currently maximized */
+    let _isMaximized = false;
+
+    /** @type {number|null} The panel height before maximize, for restore */
+    let _preMaximizeHeight = null;
+
+    /** @type {jQueryObject} The editor holder element, passed from WorkspaceManager */
+    let _$editorHolder = null;
+
+    /** @type {function} recomputeLayout callback from WorkspaceManager */
+    let _recomputeLayout = null;
+
     // --- Tab helper functions ---
 
     /**
@@ -324,6 +336,7 @@ define(function (require, exports, module) {
             // No more tabs - hide the container
             _activeId = null;
             if (_$container) {
+                restoreIfMaximized();
                 Resizer.hide(_$container[0]);
             }
         }
@@ -389,11 +402,15 @@ define(function (require, exports, module) {
      * @param {jQueryObject} $container  The bottom panel container element.
      * @param {jQueryObject} $tabBar  The tab bar element inside the container.
      * @param {jQueryObject} $tabsOverflow  The scrollable area holding tab elements.
+     * @param {jQueryObject} $editorHolder  The editor holder element (for maximize height calculation).
+     * @param {function} recomputeLayoutFn  Callback to trigger workspace layout recomputation.
      */
-    function init($container, $tabBar, $tabsOverflow) {
+    function init($container, $tabBar, $tabsOverflow, $editorHolder, recomputeLayoutFn) {
         _$container = $container;
         _$tabBar = $tabBar;
         _$tabsOverflow = $tabsOverflow;
+        _$editorHolder = $editorHolder;
+        _recomputeLayout = recomputeLayoutFn;
 
         // Tab bar click handlers
         _$tabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
@@ -421,9 +438,129 @@ define(function (require, exports, module) {
         _$tabBar.on("click", ".bottom-panel-hide-btn", function (e) {
             e.stopPropagation();
             if (_$container.is(":visible")) {
+                restoreIfMaximized();
                 Resizer.hide(_$container[0]);
             }
         });
+
+        // Maximize/restore toggle button
+        _$tabBar.on("click", ".bottom-panel-maximize-btn", function (e) {
+            e.stopPropagation();
+            _toggleMaximize();
+        });
+
+        // Double-click on tab bar toggles maximize (exclude action buttons)
+        _$tabBar.on("dblclick", function (e) {
+            if ($(e.target).closest(".bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn").length) {
+                return;
+            }
+            _toggleMaximize();
+        });
+    }
+
+    /**
+     * Toggle maximize/restore of the bottom panel.
+     * @private
+     */
+    function _toggleMaximize() {
+        if (!_$container || !_$container.is(":visible")) {
+            return;
+        }
+        if (_isMaximized) {
+            _restorePanel();
+        } else {
+            _maximizePanel();
+        }
+    }
+
+    /**
+     * Maximize the bottom panel to fill all available vertical space.
+     * @private
+     */
+    function _maximizePanel() {
+        _preMaximizeHeight = _$container.height();
+        let maxHeight = _$editorHolder.height() + _$container.height();
+        _$container.height(maxHeight);
+        _isMaximized = true;
+        _updateMaximizeButton();
+        if (_recomputeLayout) {
+            _recomputeLayout();
+        }
+    }
+
+    /**
+     * Restore the bottom panel to its pre-maximize height.
+     * @private
+     */
+    function _restorePanel() {
+        if (_preMaximizeHeight !== null) {
+            _$container.height(_preMaximizeHeight);
+        }
+        _isMaximized = false;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+        if (_recomputeLayout) {
+            _recomputeLayout();
+        }
+    }
+
+    /**
+     * Update the maximize button icon and tooltip based on current state.
+     * @private
+     */
+    function _updateMaximizeButton() {
+        if (!_$tabBar) {
+            return;
+        }
+        let $btn = _$tabBar.find(".bottom-panel-maximize-btn");
+        let $icon = $btn.find("i");
+        if (_isMaximized) {
+            $icon.removeClass("fa-up-right-and-down-left-from-center")
+                .addClass("fa-down-left-and-up-right-to-center");
+            $btn.attr("title", Strings.BOTTOM_PANEL_RESTORE);
+        } else {
+            $icon.removeClass("fa-down-left-and-up-right-to-center")
+                .addClass("fa-up-right-and-down-left-from-center");
+            $btn.attr("title", Strings.BOTTOM_PANEL_MAXIMIZE);
+        }
+    }
+
+    /**
+     * Exit maximize state without resizing (for external callers like drag-resize).
+     * Clears internal maximize state and resets the button icon.
+     */
+    function exitMaximizeOnResize() {
+        if (!_isMaximized) {
+            return;
+        }
+        _isMaximized = false;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+    }
+
+    /**
+     * Restore the container's CSS height to the pre-maximize value and clear maximize state.
+     * Must be called BEFORE Resizer.hide() so the Resizer reads the correct height.
+     * If not maximized, this is a no-op.
+     */
+    function restoreIfMaximized() {
+        if (!_isMaximized) {
+            return;
+        }
+        if (_preMaximizeHeight !== null) {
+            _$container.height(_preMaximizeHeight);
+        }
+        _isMaximized = false;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+    }
+
+    /**
+     * Returns true if the bottom panel is currently maximized.
+     * @return {boolean}
+     */
+    function isMaximized() {
+        return _isMaximized;
     }
 
     /**
@@ -459,6 +596,7 @@ define(function (require, exports, module) {
         _activeId = null;
 
         if (_$container && _$container.is(":visible")) {
+            restoreIfMaximized();
             Resizer.hide(_$container[0]);
         }
 
@@ -480,6 +618,9 @@ define(function (require, exports, module) {
     exports.init = init;
     exports.getOpenBottomPanelIDs = getOpenBottomPanelIDs;
     exports.hideAllOpenPanels = hideAllOpenPanels;
+    exports.exitMaximizeOnResize = exitMaximizeOnResize;
+    exports.restoreIfMaximized = restoreIfMaximized;
+    exports.isMaximized = isMaximized;
     //events
     exports.EVENT_PANEL_HIDDEN = EVENT_PANEL_HIDDEN;
     exports.EVENT_PANEL_SHOWN = EVENT_PANEL_SHOWN;
