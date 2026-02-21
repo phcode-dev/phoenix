@@ -406,9 +406,17 @@ define(function (require, exports, module) {
             200, false, undefined, true);
         listenToResize($bottomPanelContainer);
 
-        // Exit maximize state when the user manually drags the resizer
-        $bottomPanelContainer.on("panelResizeEnd", function () {
-            PanelView.exitMaximizeOnResize();
+        // Track maximize state live during drag-resize so the icon updates
+        // immediately rather than waiting for mouseup. panelResizeUpdate fires
+        // after listenToResize's handler has already called triggerUpdateLayout(),
+        // so $editorHolder height is up-to-date at this point.
+        $bottomPanelContainer.on("panelResizeUpdate panelResizeEnd", function () {
+            let editorHeight = $editorHolder.height();
+            if (PanelView.isMaximized() && editorHeight > PanelView.MAXIMIZE_THRESHOLD) {
+                PanelView.exitMaximizeOnResize();
+            } else if (!PanelView.isMaximized() && editorHeight <= PanelView.MAXIMIZE_THRESHOLD) {
+                PanelView.enterMaximizeOnResize();
+            }
         });
 
         $bottomPanelContainer.on("panelCollapsed", function () {
