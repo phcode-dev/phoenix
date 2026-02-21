@@ -135,6 +135,10 @@ define(function (require, exports, module) {
 
         async function _openProjectFile(fileName) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]), "opening "+ fileName);
+
+            if (!$("#problems-panel").is(":visible")) {
+                CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
+            }
         }
 
         it("should run test linter when a vbscript document opens show fix buttons in the panel", async function () {

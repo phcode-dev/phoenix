@@ -85,14 +85,14 @@ define(function (require, exports, module) {
 
             await awaits(100);
             await awaitsFor(()=>{
-                return !$("#problems-panel").is(":visible");
-            }, "Problems panel to be hidden");
+                return $("#status-inspection").hasClass("inspection-valid");
+            }, "No lint errors for es6.js");
 
             // using es8 async feature in es6 jshint mode should have errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file es8.js");
             await awaitsFor(()=>{
-                return $("#problems-panel").is(":visible");
-            }, "Problems panel to be visible");
+                return $("#status-inspection").hasClass("inspection-errors");
+            }, "Lint errors detected for es8.js");
         });
 
         it("should extend valid es6 .jshintrc in project", async function () {
@@ -102,14 +102,14 @@ define(function (require, exports, module) {
 
             await awaits(100);
             await awaitsFor(()=>{
-                return !$("#problems-panel").is(":visible");
-            }, "Problems panel to be hidden");
+                return $("#status-inspection").hasClass("inspection-valid");
+            }, "No lint errors for es6.js");
 
             // using es8 async feature in es6 jshint mode should have errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file es8.js");
             await awaitsFor(()=>{
-                return $("#problems-panel").is(":visible");
-            }, "Problems panel to be visible");
+                return $("#status-inspection").hasClass("inspection-errors");
+            }, "Lint errors detected for es8.js");
         });
 
         it("should show errors if invalid .jshintrc extend file detected", async function () {
