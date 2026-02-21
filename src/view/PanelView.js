@@ -73,6 +73,24 @@ define(function (require, exports, module) {
     /** @type {boolean} Whether the bottom panel is currently maximized */
     let _isMaximized = false;
 
+    /**
+     * Pixel threshold for detecting near-maximize state during resize.
+     * If the editor holder height is within this many pixels of zero, the
+     * panel is treated as maximized. Keeps the maximize icon responsive
+     * during drag without being overly sensitive.
+     * @const
+     * @type {number}
+     */
+    const MAXIMIZE_THRESHOLD = 2;
+
+    /**
+     * Minimum panel height (matches Resizer minSize) used as a floor
+     * when computing a sensible restore height.
+     * @const
+     * @type {number}
+     */
+    const MIN_PANEL_HEIGHT = 200;
+
     /** @type {number|null} The panel height before maximize, for restore */
     let _preMaximizeHeight = null;
 
@@ -489,13 +507,48 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Compute a sensible panel height for restore when the saved height is
+     * missing or indistinguishable from the maximized height.
+     * Returns roughly one-third of the total available space, floored at
+     * MIN_PANEL_HEIGHT so the panel never restores too small.
+     * @return {number}
+     * @private
+     */
+    function _getDefaultRestoreHeight() {
+        let totalHeight = (_$editorHolder ? _$editorHolder.height() : 0) +
+            (_$container ? _$container.height() : 0);
+        return Math.max(MIN_PANEL_HEIGHT, Math.round(totalHeight / 3));
+    }
+
+    /**
+     * Return true if the given height is effectively the same as the
+     * maximized height (within MAXIMIZE_THRESHOLD).
+     * @param {number} height
+     * @return {boolean}
+     * @private
+     */
+    function _isNearMaxHeight(height) {
+        let totalHeight = (_$editorHolder ? _$editorHolder.height() : 0) +
+            (_$container ? _$container.height() : 0);
+        return (totalHeight - height) <= MAXIMIZE_THRESHOLD;
+    }
+
+    /**
      * Restore the bottom panel to its pre-maximize height.
+     * If the saved height is missing (e.g. maximize was triggered by
+     * drag-to-max) or was essentially the same as the maximized height,
+     * a sensible default (≈ 1/3 of available space) is used instead so
+     * that the restore feels like a visible change.
      * @private
      */
     function _restorePanel() {
-        if (_preMaximizeHeight !== null) {
-            _$container.height(_preMaximizeHeight);
+        let restoreHeight;
+        if (_preMaximizeHeight !== null && !_isNearMaxHeight(_preMaximizeHeight)) {
+            restoreHeight = _preMaximizeHeight;
+        } else {
+            restoreHeight = _getDefaultRestoreHeight();
         }
+        _$container.height(restoreHeight);
         _isMaximized = false;
         _preMaximizeHeight = null;
         _updateMaximizeButton();
@@ -539,16 +592,34 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Enter maximize state during a drag-resize that reaches the maximum
+     * height. No pre-maximize height is stored because the user arrived
+     * here via continuous dragging; a sensible default will be computed if
+     * they later click the Restore button.
+     */
+    function enterMaximizeOnResize() {
+        if (_isMaximized) {
+            return;
+        }
+        _isMaximized = true;
+        _preMaximizeHeight = null;
+        _updateMaximizeButton();
+    }
+
+    /**
      * Restore the container's CSS height to the pre-maximize value and clear maximize state.
      * Must be called BEFORE Resizer.hide() so the Resizer reads the correct height.
      * If not maximized, this is a no-op.
+     * When the saved height is near-max or unknown, a sensible default is used.
      */
     function restoreIfMaximized() {
         if (!_isMaximized) {
             return;
         }
-        if (_preMaximizeHeight !== null) {
+        if (_preMaximizeHeight !== null && !_isNearMaxHeight(_preMaximizeHeight)) {
             _$container.height(_preMaximizeHeight);
+        } else {
+            _$container.height(_getDefaultRestoreHeight());
         }
         _isMaximized = false;
         _preMaximizeHeight = null;
@@ -619,8 +690,10 @@ define(function (require, exports, module) {
     exports.getOpenBottomPanelIDs = getOpenBottomPanelIDs;
     exports.hideAllOpenPanels = hideAllOpenPanels;
     exports.exitMaximizeOnResize = exitMaximizeOnResize;
+    exports.enterMaximizeOnResize = enterMaximizeOnResize;
     exports.restoreIfMaximized = restoreIfMaximized;
     exports.isMaximized = isMaximized;
+    exports.MAXIMIZE_THRESHOLD = MAXIMIZE_THRESHOLD;
     //events
     exports.EVENT_PANEL_HIDDEN = EVENT_PANEL_HIDDEN;
     exports.EVENT_PANEL_SHOWN = EVENT_PANEL_SHOWN;
