@@ -227,17 +227,21 @@ define(function (require, exports, module) {
             }
             if (newEditor) {
                 newEditor.off("cursorActivity.aiContext");
-                newEditor.on("cursorActivity.aiContext", _updateSelectionChip);
+                newEditor.on("cursorActivity.aiContext", function (_evt, editor) {
+                    _updateSelectionChip(editor);
+                });
             }
-            _updateSelectionChip();
+            _updateSelectionChip(newEditor);
         });
         // Bind to current editor if already active
         const currentEditor = EditorManager.getActiveEditor();
         if (currentEditor) {
             currentEditor.off("cursorActivity.aiContext");
-            currentEditor.on("cursorActivity.aiContext", _updateSelectionChip);
+            currentEditor.on("cursorActivity.aiContext", function (_evt, editor) {
+                _updateSelectionChip(editor);
+            });
         }
-        _updateSelectionChip();
+        _updateSelectionChip(currentEditor);
 
         // Track live preview status — listen to both LiveDev status changes
         // and panel show/hide events so the chip updates when the panel is closed
@@ -253,6 +257,16 @@ define(function (require, exports, module) {
         WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN + ".aiChat");
         WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN + ".aiChat", _updateLivePreviewChip);
         _updateLivePreviewChip();
+
+        // Refresh context bar when the AI tab becomes active (DOM updates
+        // are deferred while the tab is hidden to avoid layout interference)
+        SidebarTabs.off("tabChanged.aiChat");
+        SidebarTabs.on("tabChanged.aiChat", function (_event, tabId) {
+            if (tabId === "ai") {
+                _updateSelectionChip();
+                _updateLivePreviewChip();
+            }
+        });
 
         // When a screenshot is captured, attach the image to the awaiting tool indicator
         PhoenixConnectors.off("screenshotCaptured.aiChat");
@@ -301,9 +315,17 @@ define(function (require, exports, module) {
 
     /**
      * Update the selection/cursor chip based on the active editor state.
+     * Skipped when the AI tab isn't active — calling getSelection()/getSelectedText()
+     * from both activeEditorChange and cursorActivity during inline editor operations
+     * interferes with the inline editor's cursor position tracking.
      */
-    function _updateSelectionChip() {
-        const editor = EditorManager.getActiveEditor();
+    function _updateSelectionChip(editor) {
+        if (SidebarTabs.getActiveTab() !== "ai") {
+            return;
+        }
+        if (!editor) {
+            editor = EditorManager.getActiveEditor();
+        }
         if (!editor) {
             _lastSelectionInfo = null;
             _lastCursorLine = null;
@@ -360,6 +382,9 @@ define(function (require, exports, module) {
      * Update the live preview chip based on panel visibility.
      */
     function _updateLivePreviewChip() {
+        if (SidebarTabs.getActiveTab() !== "ai") {
+            return;
+        }
         const panel = WorkspaceManager.getPanelForID("live-preview-panel");
         const wasActive = _livePreviewActive;
         _livePreviewActive = !!(panel && panel.isVisible());
