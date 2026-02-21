@@ -28,7 +28,7 @@
     overflow: hidden;
     background-color: @bc-sidebar-bg;
     color: @project-panel-text-1;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
@@ -42,7 +42,7 @@
 
     .ai-chat-title {
         font-weight: 400;
-        font-size: 15px;
+        font-size: @label-font-size;
         color: @project-panel-text-2;
         line-height: 19px;
     }
@@ -54,7 +54,7 @@
         background: none;
         border: none;
         color: @project-panel-text-2;
-        font-size: 13px;
+        font-size: @menu-item-font-size;
         padding: 0 8px;
         border-radius: 3px;
         cursor: pointer;
@@ -84,7 +84,7 @@
     max-width: 100%;
 
     .ai-msg-label {
-        font-size: 10px;
+        font-size: 11px;
         color: @project-panel-text-2;
         margin-bottom: 3px;
         font-weight: 600;
@@ -92,7 +92,7 @@
     }
 
     .ai-msg-content {
-        font-size: 12px;
+        font-size: 13px;
         line-height: 1.55;
         white-space: normal;
         word-wrap: break-word;
@@ -152,7 +152,7 @@
             background-color: rgba(255, 255, 255, 0.08);
             padding: 1px 4px;
             border-radius: 3px;
-            font-size: 11px;
+            font-size: 12px;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         }
 
@@ -168,7 +168,7 @@
                 background: none;
                 padding: 0;
                 border-radius: 0;
-                font-size: 11px;
+                font-size: 12px;
                 line-height: 1.5;
                 color: @project-panel-text-1;
             }
@@ -195,16 +195,16 @@
             color: @project-panel-text-1;
         }
 
-        h1 { font-size: 14px; margin: 12px 0 4px 0; }
-        h2 { font-size: 13px; margin: 10px 0 4px 0; }
-        h3 { font-size: 12px; margin: 8px 0 3px 0; }
-        h4 { font-size: 12px; margin: 6px 0 2px 0; opacity: 0.85; }
+        h1 { font-size: @label-font-size; margin: 12px 0 4px 0; }
+        h2 { font-size: @menu-item-font-size; margin: 10px 0 4px 0; }
+        h3 { font-size: 13px; margin: 8px 0 3px 0; }
+        h4 { font-size: 13px; margin: 6px 0 2px 0; opacity: 0.85; }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 6px 0;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         th, td {
@@ -217,7 +217,7 @@
             font-weight: 600;
             color: @project-panel-text-2;
             border-bottom-color: rgba(255, 255, 255, 0.1);
-            font-size: 10px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
@@ -246,7 +246,7 @@
     }
 
     .ai-tool-icon {
-        font-size: 10px;
+        font-size: 11px;
         width: 14px;
         text-align: center;
         flex-shrink: 0;
@@ -264,7 +264,7 @@
     }
 
     .ai-tool-label {
-        font-size: 11px;
+        font-size: 12px;
         color: @project-panel-text-2;
         line-height: 1.3;
 
@@ -296,7 +296,7 @@
     }
 
     .ai-tool-detail-line {
-        font-size: 10px;
+        font-size: 11px;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         color: @project-panel-text-2;
         opacity: 0.7;
@@ -306,7 +306,7 @@
     }
 
     .ai-tool-preview {
-        font-size: 10px;
+        font-size: 11px;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         color: @project-panel-text-2;
         opacity: 0.5;
@@ -352,7 +352,7 @@
     .ai-tool-diff-toggle {
         background: none;
         border: none;
-        font-size: 10px;
+        font-size: 11px;
         color: @project-panel-text-2;
         padding: 1px 4px;
         cursor: pointer;
@@ -367,7 +367,7 @@
     .ai-tool-diff {
         display: none;
         padding: 4px 8px 4px 28px;
-        font-size: 11px;
+        font-size: 12px;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         line-height: 1.5;
         overflow-x: auto;
@@ -389,13 +389,13 @@
     }
 
     .ai-tool-edit-error {
-        font-size: 11px;
+        font-size: 12px;
         color: #e88;
         padding: 3px 8px 3px 28px;
     }
 
     .ai-tool-elapsed {
-        font-size: 10px;
+        font-size: 11px;
         color: @project-panel-text-2;
         opacity: 0.5;
         margin-left: auto;
@@ -412,14 +412,14 @@
     align-items: flex-start;
     gap: 6px;
     padding: 2px 0;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .ai-todo-icon {
     width: 14px;
     text-align: center;
     flex-shrink: 0;
-    font-size: 10px;
+    font-size: 11px;
 
     &.completed { color: #66bb6a; }
     &.in_progress { color: #e8a838; }
@@ -477,7 +477,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 600;
         color: @project-panel-text-2;
         margin-bottom: 4px;
@@ -487,7 +487,7 @@
         background: none;
         border: 1px solid rgba(200, 160, 80, 0.3);
         color: rgba(220, 180, 100, 0.9);
-        font-size: 10px;
+        font-size: 11px;
         padding: 1px 8px;
         border-radius: 3px;
         cursor: pointer;
@@ -517,7 +517,7 @@
         }
 
         .ai-edit-summary-name {
-            font-size: 11px;
+            font-size: 12px;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
             color: @project-panel-text-2;
             overflow: hidden;
@@ -535,7 +535,7 @@
         .ai-edit-summary-stats {
             display: flex;
             gap: 6px;
-            font-size: 10px;
+            font-size: 11px;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
             flex-shrink: 0;
         }
@@ -561,7 +561,7 @@
         background: none;
         border: 1px dashed rgba(200, 160, 80, 0.3);
         color: rgba(220, 180, 100, 0.7);
-        font-size: 10px;
+        font-size: 11px;
         padding: 2px 14px;
         border-radius: 3px;
         cursor: pointer;
@@ -611,7 +611,7 @@
         color: #e88;
         border-left: 2px solid rgba(255, 80, 80, 0.4);
         padding: 4px 8px;
-        font-size: 11px;
+        font-size: 12px;
         background-color: rgba(255, 80, 80, 0.04);
         border-radius: 0 3px 3px 0;
     }
@@ -623,7 +623,7 @@
     align-items: center;
     gap: 6px;
     padding: 4px 10px;
-    font-size: 11px;
+    font-size: 12px;
     color: @project-panel-text-2;
     flex-shrink: 0;
     opacity: 0.6;
@@ -681,7 +681,7 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        font-size: 10px;
+        font-size: 11px;
         line-height: 1;
         padding: 3px 6px;
         border-radius: 3px;
@@ -693,7 +693,7 @@
 
         .ai-context-chip-icon {
             flex-shrink: 0;
-            font-size: 9px;
+            font-size: 10px;
             opacity: 0.7;
         }
 
@@ -708,7 +708,7 @@
             background: none;
             border: none;
             color: @project-panel-text-2;
-            font-size: 11px;
+            font-size: 12px;
             line-height: 1;
             padding: 0 0 0 2px;
             cursor: pointer;
@@ -736,7 +736,7 @@
         background: none;
         border: none !important;
         color: @project-panel-text-1;
-        font-size: 12px;
+        font-size: 13px;
         font-family: inherit;
         padding: 7px 0 7px 10px;
         margin: 0;
@@ -778,7 +778,7 @@
         }
 
         i {
-            font-size: 12px;
+            font-size: 13px;
         }
     }
 
@@ -802,7 +802,7 @@
         }
 
         i {
-            font-size: 12px;
+            font-size: 13px;
         }
     }
 }
@@ -825,14 +825,14 @@
     }
 
     .ai-unavailable-title {
-        font-size: 13px;
+        font-size: @menu-item-font-size;
         font-weight: 600;
         color: @project-panel-text-1;
         margin-bottom: 6px;
     }
 
     .ai-unavailable-message {
-        font-size: 11px;
+        font-size: 12px;
         line-height: 1.5;
         margin-bottom: 12px;
         opacity: 0.6;
@@ -842,7 +842,7 @@
         background: none;
         border: 1px solid rgba(255, 255, 255, 0.12);
         color: @project-panel-text-2;
-        font-size: 11px;
+        font-size: 12px;
         padding: 3px 12px;
         border-radius: 3px;
         cursor: pointer;
