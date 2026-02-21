@@ -393,6 +393,47 @@
         color: #e88;
         padding: 3px 8px 3px 28px;
     }
+
+    .ai-tool-elapsed {
+        font-size: 10px;
+        color: @project-panel-text-2;
+        opacity: 0.5;
+        margin-left: auto;
+    }
+}
+
+/* ── TodoWrite task list widget ────────────────────────────────────── */
+.ai-todo-list {
+    padding: 2px 8px 4px 28px;
+}
+
+.ai-todo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 2px 0;
+    font-size: 11px;
+}
+
+.ai-todo-icon {
+    width: 14px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: 10px;
+
+    &.completed { color: #66bb6a; }
+    &.in_progress { color: #e8a838; }
+    &.pending { color: @project-panel-text-2; opacity: 0.4; }
+}
+
+.ai-todo-content {
+    color: @project-panel-text-2;
+    line-height: 1.4;
+
+    &.completed {
+        text-decoration: line-through;
+        opacity: 0.6;
+    }
 }
 
 @keyframes ai-spin {

@@ -54,6 +54,10 @@ define(function (require, exports, module) {
         return PhoenixConnectors.execJsInLivePreview(params);
     };
 
+    exports.controlEditor = async function (params) {
+        return PhoenixConnectors.controlEditor(params);
+    };
+
     AppInit.appReady(function () {
         SidebarTabs.addTab("ai", "AI", "fa-solid fa-wand-magic-sparkles", { priority: 200 });
 

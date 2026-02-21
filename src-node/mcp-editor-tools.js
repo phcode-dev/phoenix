@@ -123,9 +123,54 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         }
     );
 
+    const controlEditorTool = sdkModule.tool(
+        "controlEditor",
+        "Control the Phoenix editor: open/close files, navigate to lines, and select text ranges. " +
+        "Accepts an array of operations to batch multiple actions in one call. " +
+        "All line and ch (column) parameters are 1-based.\n\n" +
+        "Operations:\n" +
+        "- open: Open a file in the active pane. Params: filePath\n" +
+        "- close: Close a file (force, no save prompt). Params: filePath\n" +
+        "- openInWorkingSet: Open a file and pin it to the working set. Params: filePath\n" +
+        "- setSelection: Open a file and select a range. Params: filePath, startLine, startCh, endLine, endCh\n" +
+        "- setCursorPos: Open a file and set cursor position. Params: filePath, line, ch",
+        {
+            operations: z.array(z.object({
+                operation: z.enum(["open", "close", "openInWorkingSet", "setSelection", "setCursorPos"]),
+                filePath: z.string().describe("Absolute path to the file"),
+                startLine: z.number().optional().describe("Start line (1-based) for setSelection"),
+                startCh: z.number().optional().describe("Start column (1-based) for setSelection"),
+                endLine: z.number().optional().describe("End line (1-based) for setSelection"),
+                endCh: z.number().optional().describe("End column (1-based) for setSelection"),
+                line: z.number().optional().describe("Line number (1-based) for setCursorPos"),
+                ch: z.number().optional().describe("Column (1-based) for setCursorPos")
+            })).describe("Array of editor operations to execute sequentially")
+        },
+        async function (args) {
+            const results = [];
+            let hasError = false;
+            for (const op of args.operations) {
+                try {
+                    const result = await nodeConnector.execPeer("controlEditor", op);
+                    results.push(result);
+                    if (!result.success) {
+                        hasError = true;
+                    }
+                } catch (err) {
+                    results.push({ success: false, error: err.message });
+                    hasError = true;
+                }
+            }
+            return {
+                content: [{ type: "text", text: JSON.stringify(results) }],
+                isError: hasError
+            };
+        }
+    );
+
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool]
+        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool, controlEditorTool]
     });
 }
 

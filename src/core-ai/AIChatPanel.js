@@ -596,7 +596,9 @@ define(function (require, exports, module) {
         Skill: { icon: "fa-solid fa-puzzle-piece", color: "#e0c060", label: Strings.AI_CHAT_TOOL_SKILL },
         "mcp__phoenix-editor__getEditorState":     { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_EDITOR_STATE },
         "mcp__phoenix-editor__takeScreenshot":     { icon: "fa-solid fa-camera", color: "#c084fc", label: Strings.AI_CHAT_TOOL_SCREENSHOT },
-        "mcp__phoenix-editor__execJsInLivePreview": { icon: "fa-solid fa-eye", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS }
+        "mcp__phoenix-editor__execJsInLivePreview": { icon: "fa-solid fa-eye", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS },
+        "mcp__phoenix-editor__controlEditor":       { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_CONTROL_EDITOR },
+        TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS }
     };
 
     function _onProgress(_event, data) {
@@ -635,6 +637,42 @@ define(function (require, exports, module) {
                 });
             }
         }
+    }
+
+    /**
+     * Start an elapsed-time counter on a tool indicator. Called when the tool's
+     * stale timer fires (no streaming activity for 2s).
+     */
+    function _startElapsedTimer($tool) {
+        if ($tool.data("elapsedTimer")) {
+            return; // already running
+        }
+        const startTime = $tool.data("startTime") || Date.now();
+        const $header = $tool.find(".ai-tool-header");
+        let $elapsed = $header.find(".ai-tool-elapsed");
+        if (!$elapsed.length) {
+            $elapsed = $('<span class="ai-tool-elapsed"></span>');
+            $header.append($elapsed);
+        }
+        function update() {
+            const secs = Math.floor((Date.now() - startTime) / 1000);
+            if (secs < 60) {
+                $elapsed.text(secs + "s");
+            } else {
+                const m = Math.floor(secs / 60);
+                const s = secs % 60;
+                $elapsed.text(m + "m " + (s < 10 ? "0" : "") + s + "s");
+            }
+        }
+        update();
+        const timerId = setInterval(function () {
+            if ($tool.hasClass("ai-tool-done")) {
+                clearInterval(timerId);
+                return;
+            }
+            update();
+        }, 1000);
+        $tool.data("elapsedTimer", timerId);
     }
 
     function _onToolStream(_event, data) {
@@ -682,6 +720,7 @@ define(function (require, exports, module) {
             if ($livePreview.length && !$tool.hasClass("ai-tool-done")) {
                 $livePreview.text(phrases[idx]);
             }
+            _startElapsedTimer($tool);
             _toolStreamRotateTimer = setInterval(function () {
                 idx = (idx + 1) % phrases.length;
                 const $p = $tool.find(".ai-tool-preview");
@@ -1146,6 +1185,7 @@ define(function (require, exports, module) {
         $tool.find(".ai-tool-label").text(config.label + "...");
         $tool.css("--tool-color", config.color);
         $tool.attr("data-tool-icon", config.icon);
+        $tool.data("startTime", Date.now());
         $messages.append($tool);
         _scrollToBottom();
     }
@@ -1173,9 +1213,38 @@ define(function (require, exports, module) {
         // Update label to include summary
         $tool.find(".ai-tool-label").text(detail.summary);
 
-        // For screenshot tools, add a detail container that will be populated
-        // when the screenshot capture completes (via screenshotCaptured event)
-        if (toolName === "mcp__phoenix-editor__takeScreenshot") {
+        // For TodoWrite, render a mini task-list widget and auto-expand
+        if (toolName === "TodoWrite" && toolInput && toolInput.todos) {
+            const $detail = $('<div class="ai-tool-detail"></div>');
+            const $todoList = $('<div class="ai-todo-list"></div>');
+            toolInput.todos.forEach(function (todo) {
+                let iconClass, statusClass;
+                if (todo.status === "completed") {
+                    iconClass = "fa-solid fa-circle-check";
+                    statusClass = "completed";
+                } else if (todo.status === "in_progress") {
+                    iconClass = "fa-solid fa-spinner fa-spin";
+                    statusClass = "in_progress";
+                } else {
+                    iconClass = "fa-regular fa-circle";
+                    statusClass = "pending";
+                }
+                const $item = $(
+                    '<div class="ai-todo-item">' +
+                        '<span class="ai-todo-icon ' + statusClass + '"><i class="' + iconClass + '"></i></span>' +
+                        '<span class="ai-todo-content ' + (todo.status === "completed" ? "completed" : "") + '"></span>' +
+                    '</div>'
+                );
+                $item.find(".ai-todo-content").text(todo.content);
+                $todoList.append($item);
+            });
+            $detail.append($todoList);
+            $tool.append($detail);
+            $tool.addClass("ai-tool-expanded");
+            $tool.find(".ai-tool-header").on("click", function () {
+                $tool.toggleClass("ai-tool-expanded");
+            }).css("cursor", "pointer");
+        } else if (toolName === "mcp__phoenix-editor__takeScreenshot") {
             const $detail = $('<div class="ai-tool-detail"></div>');
             $tool.append($detail);
             $tool.data("awaitingScreenshot", true);
@@ -1210,6 +1279,14 @@ define(function (require, exports, module) {
         // Clear any stale-preview timers now that tool info arrived
         clearTimeout(_toolStreamStaleTimer);
         clearInterval(_toolStreamRotateTimer);
+
+        // Stop the elapsed timer and remove the element
+        const elapsedTimer = $tool.data("elapsedTimer");
+        if (elapsedTimer) {
+            clearInterval(elapsedTimer);
+            $tool.removeData("elapsedTimer");
+        }
+        $tool.find(".ai-tool-elapsed").remove();
 
         // Delay marking as done so the streaming preview stays visible briefly.
         // The ai-tool-done class hides the preview via CSS; deferring it lets the
@@ -1289,6 +1366,79 @@ define(function (require, exports, module) {
                 summary: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS,
                 lines: input.code ? input.code.split("\n").slice(0, 20) : []
             };
+        case "TodoWrite": {
+            const todos = input.todos || [];
+            const completed = todos.filter(function (t) { return t.status === "completed"; }).length;
+            return {
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_TASKS_SUMMARY, completed, todos.length),
+                lines: []
+            };
+        }
+        case "mcp__phoenix-editor__controlEditor": {
+            // Multi-operation batch format
+            if (input.operations && input.operations.length) {
+                if (input.operations.length === 1) {
+                    // Single operation — show its detail
+                    const op = input.operations[0];
+                    const fn = (op.filePath || "").split("/").pop();
+                    let opSummary;
+                    switch (op.operation) {
+                    case "open":
+                    case "openInWorkingSet":
+                        opSummary = "Open " + fn;
+                        break;
+                    case "close":
+                        opSummary = "Close " + fn;
+                        break;
+                    case "setCursorPos":
+                        opSummary = "Go to L" + (op.line || "?") + " in " + fn;
+                        break;
+                    case "setSelection":
+                        opSummary = "Select L" + (op.startLine || "?") + "-L" + (op.endLine || "?") + " in " + fn;
+                        break;
+                    default:
+                        opSummary = Strings.AI_CHAT_TOOL_CONTROL_EDITOR;
+                    }
+                    return { summary: opSummary, lines: [op.filePath || ""] };
+                }
+                // Multiple operations — summarize
+                const count = input.operations.length;
+                const opTypes = {};
+                input.operations.forEach(function (op) {
+                    const t = op.operation || "open";
+                    opTypes[t] = (opTypes[t] || 0) + 1;
+                });
+                const parts = Object.keys(opTypes).map(function (t) {
+                    const label = (t === "open" || t === "openInWorkingSet") ? "Open" :
+                        t === "close" ? "Close" :
+                            t === "setCursorPos" ? "Navigate" :
+                                t === "setSelection" ? "Select" : t;
+                    return label + " " + opTypes[t];
+                });
+                return { summary: parts.join(", ") + " files", lines: [] };
+            }
+            // Legacy single-operation format
+            const fileName = (input.filePath || "").split("/").pop();
+            let opSummary;
+            switch (input.operation) {
+            case "open":
+            case "openInWorkingSet":
+                opSummary = "Open " + fileName;
+                break;
+            case "close":
+                opSummary = "Close " + fileName;
+                break;
+            case "setCursorPos":
+                opSummary = "Go to L" + (input.line || "?") + " in " + fileName;
+                break;
+            case "setSelection":
+                opSummary = "Select L" + (input.startLine || "?") + "-L" + (input.endLine || "?") + " in " + fileName;
+                break;
+            default:
+                opSummary = Strings.AI_CHAT_TOOL_CONTROL_EDITOR;
+            }
+            return { summary: opSummary, lines: [input.filePath || ""] };
+        }
         default: {
             // Fallback: use TOOL_CONFIG label if available
             const cfg = TOOL_CONFIG[toolName];
@@ -1306,6 +1456,13 @@ define(function (require, exports, module) {
     function _finishActiveTools() {
         $messages.find(".ai-msg-tool:not(.ai-tool-done)").each(function () {
             const $prev = $(this);
+            // Clear any running elapsed timer
+            const et = $prev.data("elapsedTimer");
+            if (et) {
+                clearInterval(et);
+                $prev.removeData("elapsedTimer");
+            }
+            $prev.find(".ai-tool-elapsed").remove();
             // _updateToolIndicator already ran — let the delayed timeout handle it
             if ($prev.find(".ai-tool-icon").length) {
                 return;
