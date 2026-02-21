@@ -403,7 +403,7 @@ define(function (require, exports, module) {
                 expect($(".modal-bar").length).toBe(1);
             });
 
-            it("should keep dialog and not show panel when there are no results", async function () {
+            it("should keep dialog and show no-results panel when there are no results", async function () {
                 var filePath = testPath + "/bar.txt",
                     fileEntry = FileSystem.getFileForPath(filePath);
 
@@ -424,7 +424,8 @@ define(function (require, exports, module) {
                 }
                 expect(resultFound).toBe(false);
 
-                expect($("#find-in-files-results").is(":visible")).toBeFalsy();
+                expect($("#find-in-files-results").is(":visible")).toBeTruthy();
+                expect($("#find-in-files-results").hasClass("search-no-results")).toBeTrue();
                 expect($(".modal-bar").length).toBe(1);
 
                 // Close search bar
