@@ -392,6 +392,78 @@ define(function (require, exports, module) {
         return deferred.promise();
     }
 
+    // --- Editor control ---
+
+    /**
+     * Control the editor: open/close files, set cursor, set selection.
+     * Called from the node-side MCP server via execPeer.
+     * @param {Object} params - { operation, filePath, startLine, startCh, endLine, endCh, line, ch }
+     * @return {$.Promise} resolves with { success: true } or { success: false, error: "..." }
+     */
+    function controlEditor(params) {
+        const deferred = new $.Deferred();
+        const vfsPath = SnapshotStore.realToVfsPath(params.filePath);
+
+        switch (params.operation) {
+        case "open":
+            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath })
+                .done(function () { deferred.resolve({ success: true }); })
+                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+            break;
+
+        case "close": {
+            const file = FileSystem.getFileForPath(vfsPath);
+            CommandManager.execute(Commands.FILE_CLOSE, { file: file, _forceClose: true })
+                .done(function () { deferred.resolve({ success: true }); })
+                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+            break;
+        }
+
+        case "openInWorkingSet":
+            CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: vfsPath })
+                .done(function () { deferred.resolve({ success: true }); })
+                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+            break;
+
+        case "setSelection":
+            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath })
+                .done(function () {
+                    const editor = EditorManager.getActiveEditor();
+                    if (editor) {
+                        editor.setSelection(
+                            { line: params.startLine - 1, ch: params.startCh - 1 },
+                            { line: params.endLine - 1, ch: params.endCh - 1 },
+                            true
+                        );
+                        deferred.resolve({ success: true });
+                    } else {
+                        deferred.resolve({ success: false, error: "No active editor after opening file" });
+                    }
+                })
+                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+            break;
+
+        case "setCursorPos":
+            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath })
+                .done(function () {
+                    const editor = EditorManager.getActiveEditor();
+                    if (editor) {
+                        editor.setCursorPos(params.line - 1, params.ch - 1, true);
+                        deferred.resolve({ success: true });
+                    } else {
+                        deferred.resolve({ success: false, error: "No active editor after opening file" });
+                    }
+                })
+                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+            break;
+
+        default:
+            deferred.resolve({ success: false, error: "Unknown operation: " + params.operation });
+        }
+
+        return deferred.promise();
+    }
+
     exports.getEditorState = getEditorState;
     exports.takeScreenshot = takeScreenshot;
     exports.getFileContent = getFileContent;
@@ -400,6 +472,7 @@ define(function (require, exports, module) {
     exports.clearPreviousContentMap = clearPreviousContentMap;
     exports.getLastScreenshot = getLastScreenshot;
     exports.execJsInLivePreview = execJsInLivePreview;
+    exports.controlEditor = controlEditor;
 
     EventDispatcher.makeEventDispatcher(exports);
 });

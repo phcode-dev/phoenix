@@ -221,7 +221,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
             "Read", "Edit", "Write", "Glob", "Grep",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__takeScreenshot",
-            "mcp__phoenix-editor__execJsInLivePreview"
+            "mcp__phoenix-editor__execJsInLivePreview",
+            "mcp__phoenix-editor__controlEditor"
         ],
         mcpServers: { "phoenix-editor": editorMcpServer },
         permissionMode: "acceptEdits",
