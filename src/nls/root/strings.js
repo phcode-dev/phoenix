@@ -1820,6 +1820,12 @@ define({
     "AI_CHAT_TOOL_WRITE": "Write",
     "AI_CHAT_TOOL_RUN_CMD": "Run command",
     "AI_CHAT_TOOL_SKILL": "Skill",
+    "AI_CHAT_TOOL_EDITOR_STATE": "Editor state",
+    "AI_CHAT_TOOL_SCREENSHOT": "Screenshot",
+    "AI_CHAT_TOOL_SCREENSHOT_OF": "Screenshot of {0}",
+    "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "live preview",
+    "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "full page",
+    "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Live Preview JS",
     "AI_CHAT_TOOL_SEARCHED": "Searched: {0}",
     "AI_CHAT_TOOL_GREP": "Grep: {0}",
     "AI_CHAT_TOOL_READ_FILE": "Read {0}",
@@ -1847,6 +1853,9 @@ define({
     "AI_CHAT_WORKING": "Working...",
     "AI_CHAT_WRITING": "Writing...",
     "AI_CHAT_PROCESSING": "Processing...",
+    "AI_CHAT_CONTEXT_SELECTION": "Selection L{0}-L{1}",
+    "AI_CHAT_CONTEXT_CURSOR": "Line {0}",
+    "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Preview",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",

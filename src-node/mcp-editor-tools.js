@@ -21,9 +21,10 @@
 /**
  * MCP server factory for exposing Phoenix editor context to Claude Code.
  *
- * Provides two tools:
+ * Provides three tools:
  *   - getEditorState: returns active file, working set, and live preview file
  *   - takeScreenshot: captures a screenshot of the Phoenix window as base64 PNG
+ *   - execJsInLivePreview: executes JS in the live preview iframe
  *
  * Uses the Claude Code SDK's in-process MCP server support (createSdkMcpServer / tool).
  */
@@ -40,7 +41,9 @@ const { z } = require("zod");
 function createEditorMcpServer(sdkModule, nodeConnector) {
     const getEditorStateTool = sdkModule.tool(
         "getEditorState",
-        "Get the current Phoenix editor state: active file, working set (open files), and live preview file.",
+        "Get the current Phoenix editor state: active file, working set (open files), live preview file, " +
+        "and cursor/selection info (current line text with surrounding context, or selected text). " +
+        "Long lines are trimmed to 200 chars and selections to 10K chars — use the Read tool for full content.",
         {},
         async function () {
             try {
@@ -59,8 +62,12 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
 
     const takeScreenshotTool = sdkModule.tool(
         "takeScreenshot",
-        "Take a screenshot of the Phoenix Code editor window. Returns a PNG image.",
-        { selector: z.string().optional().describe("Optional CSS selector to capture a specific element") },
+        "Take a screenshot of the Phoenix Code editor window. Returns a PNG image. " +
+        "Prefer capturing specific regions instead of the full page: " +
+        "use selector '#panel-live-preview-frame' for the live preview content, " +
+        "or '.editor-holder' for the code editor area. " +
+        "Only omit the selector when you need to see the full application layout.",
+        { selector: z.string().optional().describe("CSS selector to capture a specific element. Use '#panel-live-preview-frame' for the live preview, '.editor-holder' for the code editor.") },
         async function (args) {
             try {
                 const result = await nodeConnector.execPeer("takeScreenshot", {
@@ -84,9 +91,41 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         }
     );
 
+    const execJsInLivePreviewTool = sdkModule.tool(
+        "execJsInLivePreview",
+        "Execute JavaScript in the live preview iframe (the page being previewed), NOT in Phoenix itself. " +
+        "Auto-opens the live preview panel if it is not already visible. Code is evaluated via eval() in " +
+        "the global scope of the previewed page. Note: eval() is synchronous — async/await is NOT supported. " +
+        "Only available when an HTML file is selected in the live preview — does not work for markdown or " +
+        "other non-HTML file types. Use this to inspect or manipulate the user's live-previewed web page " +
+        "(e.g. document.title, DOM queries).",
+        { code: z.string().describe("JavaScript code to execute in the live preview iframe") },
+        async function (args) {
+            try {
+                const result = await nodeConnector.execPeer("execJsInLivePreview", {
+                    code: args.code
+                });
+                if (result.error) {
+                    return {
+                        content: [{ type: "text", text: "Error: " + result.error }],
+                        isError: true
+                    };
+                }
+                return {
+                    content: [{ type: "text", text: result.result || "undefined" }]
+                };
+            } catch (err) {
+                return {
+                    content: [{ type: "text", text: "Error executing JS in live preview: " + err.message }],
+                    isError: true
+                };
+            }
+        }
+    );
+
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, takeScreenshotTool]
+        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool]
     });
 }
 

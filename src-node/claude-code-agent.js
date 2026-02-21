@@ -129,7 +129,7 @@ exports.checkAvailability = async function () {
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale } = params;
+    const { prompt, projectPath, sessionAction, model, locale, selectionContext } = params;
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -145,8 +145,17 @@ exports.sendPrompt = async function (params) {
 
     currentAbortController = new AbortController();
 
+    // Prepend selection context to the prompt if available
+    let enrichedPrompt = prompt;
+    if (selectionContext && selectionContext.selectedText) {
+        enrichedPrompt =
+            "The user has selected the following text in " + selectionContext.filePath +
+            " (lines " + selectionContext.startLine + "-" + selectionContext.endLine + "):\n" +
+            "```\n" + selectionContext.selectedText + "\n```\n\n" + prompt;
+    }
+
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, prompt, projectPath, model, currentAbortController.signal, locale)
+    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -207,11 +216,12 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
 
     const queryOptions = {
         cwd: projectPath || process.cwd(),
-        maxTurns: 10,
+        maxTurns: undefined,
         allowedTools: [
             "Read", "Edit", "Write", "Glob", "Grep",
             "mcp__phoenix-editor__getEditorState",
-            "mcp__phoenix-editor__takeScreenshot"
+            "mcp__phoenix-editor__takeScreenshot",
+            "mcp__phoenix-editor__execJsInLivePreview"
         ],
         mcpServers: { "phoenix-editor": editorMcpServer },
         permissionMode: "acceptEdits",

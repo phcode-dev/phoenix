@@ -29,7 +29,10 @@ define(function (require, exports, module) {
         CommandManager      = require("command/CommandManager"),
         Commands            = require("command/Commands"),
         ProjectManager      = require("project/ProjectManager"),
+        EditorManager       = require("editor/EditorManager"),
         FileSystem          = require("filesystem/FileSystem"),
+        LiveDevMain         = require("LiveDevelopment/main"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
         SnapshotStore       = require("core-ai/AISnapshotStore"),
         PhoenixConnectors   = require("core-ai/aiPhoenixConnectors"),
         Strings             = require("strings"),
@@ -50,6 +53,17 @@ define(function (require, exports, module) {
     let _traceToolStreamCounts = {}; // toolId → count
     let _toolStreamStaleTimer = null;    // timer to start rotating activity text
     let _toolStreamRotateTimer = null;   // interval for cycling activity phrases
+
+    // Context bar state
+    let _selectionDismissed = false;    // user dismissed selection chip
+    let _lastSelectionInfo = null;      // {filePath, fileName, startLine, endLine, selectedText}
+    let _lastCursorLine = null;         // cursor line when no selection
+    let _lastCursorFile = null;         // file name for cursor chip
+    let _cursorDismissed = false;       // user dismissed cursor chip
+    let _cursorDismissedLine = null;    // line that was dismissed
+    let _livePreviewActive = false;     // live preview panel is open
+    let _livePreviewDismissed = false;  // user dismissed live preview chip
+    let $contextBar;                    // DOM ref
 
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn;
@@ -75,6 +89,7 @@ define(function (require, exports, module) {
                 '<span class="ai-status-text">' + Strings.AI_CHAT_THINKING + '</span>' +
             '</div>' +
             '<div class="ai-chat-input-area">' +
+                '<div class="ai-chat-context-bar"></div>' +
                 '<div class="ai-chat-input-wrap">' +
                     '<textarea class="ai-chat-textarea" placeholder="' + Strings.AI_CHAT_PLACEHOLDER + '" rows="1"></textarea>' +
                     '<button class="ai-send-btn" title="' + Strings.AI_CHAT_SEND_TITLE + '">' +
@@ -201,6 +216,72 @@ define(function (require, exports, module) {
             _autoScroll = (el.scrollHeight - el.scrollTop - el.clientHeight) < 50;
         });
 
+        // Context bar
+        $contextBar = $panel.find(".ai-chat-context-bar");
+
+        // Track editor selection/cursor for context chips
+        EditorManager.off("activeEditorChange.aiChat");
+        EditorManager.on("activeEditorChange.aiChat", function (_event, newEditor, oldEditor) {
+            if (oldEditor) {
+                oldEditor.off("cursorActivity.aiContext");
+            }
+            if (newEditor) {
+                newEditor.off("cursorActivity.aiContext");
+                newEditor.on("cursorActivity.aiContext", _updateSelectionChip);
+            }
+            _updateSelectionChip();
+        });
+        // Bind to current editor if already active
+        const currentEditor = EditorManager.getActiveEditor();
+        if (currentEditor) {
+            currentEditor.off("cursorActivity.aiContext");
+            currentEditor.on("cursorActivity.aiContext", _updateSelectionChip);
+        }
+        _updateSelectionChip();
+
+        // Track live preview status — listen to both LiveDev status changes
+        // and panel show/hide events so the chip updates when the panel is closed
+        LiveDevMain.off("statusChange.aiChat");
+        LiveDevMain.on("statusChange.aiChat", _updateLivePreviewChip);
+        LiveDevMain.off(LiveDevMain.EVENT_OPEN_PREVIEW_URL + ".aiChat");
+        LiveDevMain.on(LiveDevMain.EVENT_OPEN_PREVIEW_URL + ".aiChat", function () {
+            _livePreviewDismissed = false;
+            _updateLivePreviewChip();
+        });
+        WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN + ".aiChat");
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN + ".aiChat", _updateLivePreviewChip);
+        WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN + ".aiChat");
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN + ".aiChat", _updateLivePreviewChip);
+        _updateLivePreviewChip();
+
+        // When a screenshot is captured, attach the image to the awaiting tool indicator
+        PhoenixConnectors.off("screenshotCaptured.aiChat");
+        PhoenixConnectors.on("screenshotCaptured.aiChat", function (_event, base64) {
+            const $tool = _$msgs().find('.ai-msg-tool').filter(function () {
+                return $(this).data("awaitingScreenshot");
+            }).last();
+            if ($tool.length) {
+                $tool.data("awaitingScreenshot", false);
+                const $detail = $tool.find(".ai-tool-detail");
+                const $img = $('<img class="ai-tool-screenshot" src="data:image/png;base64,' + base64 + '">');
+                $img.on("click", function (e) {
+                    e.stopPropagation();
+                    $img.toggleClass("expanded");
+                    _scrollToBottom();
+                });
+                $img.on("load", function () {
+                    // Force scroll — the image load changes height after insertion,
+                    // which can cause the scroll listener to clear _autoScroll
+                    if ($messages && $messages.length) {
+                        $messages[0].scrollTop = $messages[0].scrollHeight;
+                    }
+                });
+                $detail.html($img);
+                $tool.addClass("ai-tool-expanded");
+                _scrollToBottom();
+            }
+        });
+
         SidebarTabs.addToTab("ai", $panel);
     }
 
@@ -214,6 +295,145 @@ define(function (require, exports, module) {
             _checkAvailability();
         });
         SidebarTabs.addToTab("ai", $unavailable);
+    }
+
+    // --- Context bar chip management ---
+
+    /**
+     * Update the selection/cursor chip based on the active editor state.
+     */
+    function _updateSelectionChip() {
+        const editor = EditorManager.getActiveEditor();
+        if (!editor) {
+            _lastSelectionInfo = null;
+            _lastCursorLine = null;
+            _lastCursorFile = null;
+            _renderContextBar();
+            return;
+        }
+
+        let filePath = editor.document.file.fullPath;
+        if (filePath.startsWith("/tauri/")) {
+            filePath = filePath.replace("/tauri", "");
+        }
+        const fileName = filePath.split("/").pop();
+
+        if (editor.hasSelection()) {
+            const sel = editor.getSelection();
+            const startLine = sel.start.line + 1;
+            const endLine = sel.end.line + 1;
+            const selectedText = editor.getSelectedText();
+
+            // Reset dismissed flag when selection changes
+            if (!_lastSelectionInfo ||
+                _lastSelectionInfo.startLine !== startLine ||
+                _lastSelectionInfo.endLine !== endLine ||
+                _lastSelectionInfo.filePath !== filePath) {
+                _selectionDismissed = false;
+            }
+
+            _lastSelectionInfo = {
+                filePath: filePath,
+                fileName: fileName,
+                startLine: startLine,
+                endLine: endLine,
+                selectedText: selectedText
+            };
+            _lastCursorLine = null;
+            _lastCursorFile = null;
+        } else {
+            const cursor = editor.getCursorPos();
+            const cursorLine = cursor.line + 1;
+            // Reset cursor dismissed when cursor moves to a different line
+            if (_cursorDismissed && _cursorDismissedLine !== cursorLine) {
+                _cursorDismissed = false;
+            }
+            _lastSelectionInfo = null;
+            _lastCursorLine = cursorLine;
+            _lastCursorFile = fileName;
+        }
+
+        _renderContextBar();
+    }
+
+    /**
+     * Update the live preview chip based on panel visibility.
+     */
+    function _updateLivePreviewChip() {
+        const panel = WorkspaceManager.getPanelForID("live-preview-panel");
+        const wasActive = _livePreviewActive;
+        _livePreviewActive = !!(panel && panel.isVisible());
+        // Reset dismissed when live preview is re-opened
+        if (_livePreviewActive && !wasActive) {
+            _livePreviewDismissed = false;
+        }
+        _renderContextBar();
+    }
+
+    /**
+     * Rebuild the context bar chips from current state.
+     */
+    function _renderContextBar() {
+        if (!$contextBar) {
+            return;
+        }
+        $contextBar.empty();
+
+        // Live preview chip
+        if (_livePreviewActive && !_livePreviewDismissed) {
+            const $lpChip = $(
+                '<span class="ai-context-chip ai-context-chip-livepreview">' +
+                    '<span class="ai-context-chip-icon"><i class="fa-solid fa-eye"></i></span>' +
+                    '<span class="ai-context-chip-label">' + Strings.AI_CHAT_CONTEXT_LIVE_PREVIEW + '</span>' +
+                    '<button class="ai-context-chip-close">&times;</button>' +
+                '</span>'
+            );
+            $lpChip.find(".ai-context-chip-close").on("click", function () {
+                _livePreviewDismissed = true;
+                _renderContextBar();
+            });
+            $contextBar.append($lpChip);
+        }
+
+        // Selection or cursor chip
+        if (_lastSelectionInfo && !_selectionDismissed) {
+            const label = StringUtils.format(Strings.AI_CHAT_CONTEXT_SELECTION,
+                _lastSelectionInfo.startLine, _lastSelectionInfo.endLine) +
+                " in " + _lastSelectionInfo.fileName;
+            const $chip = $(
+                '<span class="ai-context-chip ai-context-chip-selection">' +
+                    '<span class="ai-context-chip-icon"><i class="fa-solid fa-i-cursor"></i></span>' +
+                    '<span class="ai-context-chip-label"></span>' +
+                    '<button class="ai-context-chip-close">&times;</button>' +
+                '</span>'
+            );
+            $chip.find(".ai-context-chip-label").text(label);
+            $chip.find(".ai-context-chip-close").on("click", function () {
+                _selectionDismissed = true;
+                _renderContextBar();
+            });
+            $contextBar.append($chip);
+        } else if (_lastCursorLine !== null && !_lastSelectionInfo && !_cursorDismissed) {
+            const label = StringUtils.format(Strings.AI_CHAT_CONTEXT_CURSOR, _lastCursorLine) +
+                " in " + _lastCursorFile;
+            const $cursorChip = $(
+                '<span class="ai-context-chip ai-context-chip-selection">' +
+                    '<span class="ai-context-chip-icon"><i class="fa-solid fa-i-cursor"></i></span>' +
+                    '<span class="ai-context-chip-label"></span>' +
+                    '<button class="ai-context-chip-close">&times;</button>' +
+                '</span>'
+            );
+            $cursorChip.find(".ai-context-chip-label").text(label);
+            $cursorChip.find(".ai-context-chip-close").on("click", function () {
+                _cursorDismissed = true;
+                _cursorDismissedLine = _lastCursorLine;
+                _renderContextBar();
+            });
+            $contextBar.append($cursorChip);
+        }
+
+        // Toggle visibility
+        $contextBar.toggleClass("has-chips", $contextBar.children().length > 0);
     }
 
     /**
@@ -258,11 +478,27 @@ define(function (require, exports, module) {
         const prompt = text;
         console.log("[AI UI] Sending prompt:", text.slice(0, 60));
 
+        // Gather selection context if available and not dismissed
+        let selectionContext = null;
+        if (_lastSelectionInfo && !_selectionDismissed && _lastSelectionInfo.selectedText) {
+            let selectedText = _lastSelectionInfo.selectedText;
+            if (selectedText.length > 10000) {
+                selectedText = selectedText.slice(0, 10000);
+            }
+            selectionContext = {
+                filePath: _lastSelectionInfo.filePath,
+                startLine: _lastSelectionInfo.startLine,
+                endLine: _lastSelectionInfo.endLine,
+                selectedText: selectedText
+            };
+        }
+
         _nodeConnector.execPeer("sendPrompt", {
             prompt: prompt,
             projectPath: projectPath,
             sessionAction: "continue",
-            locale: brackets.getLocale()
+            locale: brackets.getLocale(),
+            selectionContext: selectionContext
         }).then(function (result) {
             _currentRequestId = result.requestId;
             console.log("[AI UI] RequestId:", result.requestId);
@@ -298,6 +534,13 @@ define(function (require, exports, module) {
         _isStreaming = false;
         _firstEditInResponse = true;
         _undoApplied = false;
+        _selectionDismissed = false;
+        _lastSelectionInfo = null;
+        _lastCursorLine = null;
+        _lastCursorFile = null;
+        _cursorDismissed = false;
+        _cursorDismissedLine = null;
+        _livePreviewDismissed = false;
         SnapshotStore.reset();
         PhoenixConnectors.clearPreviousContentMap();
         if ($messages) {
@@ -350,7 +593,10 @@ define(function (require, exports, module) {
         Edit:  { icon: "fa-solid fa-pen", color: "#e8a838", label: Strings.AI_CHAT_TOOL_EDIT },
         Write: { icon: "fa-solid fa-file-pen", color: "#e8a838", label: Strings.AI_CHAT_TOOL_WRITE },
         Bash:  { icon: "fa-solid fa-terminal", color: "#c084fc", label: Strings.AI_CHAT_TOOL_RUN_CMD },
-        Skill: { icon: "fa-solid fa-puzzle-piece", color: "#e0c060", label: Strings.AI_CHAT_TOOL_SKILL }
+        Skill: { icon: "fa-solid fa-puzzle-piece", color: "#e0c060", label: Strings.AI_CHAT_TOOL_SKILL },
+        "mcp__phoenix-editor__getEditorState":     { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_EDITOR_STATE },
+        "mcp__phoenix-editor__takeScreenshot":     { icon: "fa-solid fa-camera", color: "#c084fc", label: Strings.AI_CHAT_TOOL_SCREENSHOT },
+        "mcp__phoenix-editor__execJsInLivePreview": { icon: "fa-solid fa-eye", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS }
     };
 
     function _onProgress(_event, data) {
@@ -490,7 +736,8 @@ define(function (require, exports, module) {
             Edit: "new_string",
             Bash: "command",
             Grep: "pattern",
-            Glob: "pattern"
+            Glob: "pattern",
+            "mcp__phoenix-editor__execJsInLivePreview": "code"
         }[toolName];
 
         if (!interestingKey) {
@@ -926,8 +1173,17 @@ define(function (require, exports, module) {
         // Update label to include summary
         $tool.find(".ai-tool-label").text(detail.summary);
 
-        // Add expandable detail if available
-        if (detail.lines && detail.lines.length) {
+        // For screenshot tools, add a detail container that will be populated
+        // when the screenshot capture completes (via screenshotCaptured event)
+        if (toolName === "mcp__phoenix-editor__takeScreenshot") {
+            const $detail = $('<div class="ai-tool-detail"></div>');
+            $tool.append($detail);
+            $tool.data("awaitingScreenshot", true);
+            $tool.find(".ai-tool-header").on("click", function () {
+                $tool.toggleClass("ai-tool-expanded");
+            }).css("cursor", "pointer");
+        } else if (detail.lines && detail.lines.length) {
+            // Add expandable detail if available
             const $detail = $('<div class="ai-tool-detail"></div>');
             detail.lines.forEach(function (line) {
                 $detail.append($('<div class="ai-tool-detail-line"></div>').text(line));
@@ -1012,8 +1268,32 @@ define(function (require, exports, module) {
                 summary: input.skill ? StringUtils.format(Strings.AI_CHAT_TOOL_SKILL_NAME, input.skill) : Strings.AI_CHAT_TOOL_SKILL,
                 lines: input.args ? [input.args] : []
             };
-        default:
-            return { summary: toolName, lines: [] };
+        case "mcp__phoenix-editor__getEditorState":
+            return { summary: Strings.AI_CHAT_TOOL_EDITOR_STATE, lines: [] };
+        case "mcp__phoenix-editor__takeScreenshot": {
+            let screenshotTarget = Strings.AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE;
+            if (input.selector) {
+                if (input.selector.indexOf("live-preview") !== -1 || input.selector.indexOf("panel-live-preview") !== -1) {
+                    screenshotTarget = Strings.AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW;
+                } else {
+                    screenshotTarget = input.selector;
+                }
+            }
+            return {
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_SCREENSHOT_OF, screenshotTarget),
+                lines: input.selector ? [input.selector] : []
+            };
+        }
+        case "mcp__phoenix-editor__execJsInLivePreview":
+            return {
+                summary: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS,
+                lines: input.code ? input.code.split("\n").slice(0, 20) : []
+            };
+        default: {
+            // Fallback: use TOOL_CONFIG label if available
+            const cfg = TOOL_CONFIG[toolName];
+            return { summary: cfg ? cfg.label : toolName, lines: [] };
+        }
         }
     }
 

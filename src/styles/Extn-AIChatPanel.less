@@ -279,6 +279,22 @@
         padding: 0 8px 4px 28px;
     }
 
+    .ai-tool-screenshot {
+        max-width: 100%;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 4px;
+        max-height: 120px;
+        object-fit: cover;
+        object-position: top left;
+        cursor: pointer;
+        transition: max-height 0.2s ease;
+    }
+
+    &.ai-tool-expanded .ai-tool-screenshot.expanded {
+        max-height: none;
+    }
+
     .ai-tool-detail-line {
         font-size: 10px;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
@@ -607,6 +623,70 @@
         &.disabled {
             opacity: 0.5;
         }
+    }
+
+    .ai-chat-context-bar {
+        display: none;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 0 4px 4px 4px;
+
+        &.has-chips {
+            display: flex;
+        }
+    }
+
+    .ai-context-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        line-height: 1;
+        padding: 3px 6px;
+        border-radius: 3px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: @project-panel-text-2;
+        background: rgba(255, 255, 255, 0.04);
+        max-width: 100%;
+        overflow: hidden;
+
+        .ai-context-chip-icon {
+            flex-shrink: 0;
+            font-size: 9px;
+            opacity: 0.7;
+        }
+
+        .ai-context-chip-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ai-context-chip-close {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            color: @project-panel-text-2;
+            font-size: 11px;
+            line-height: 1;
+            padding: 0 0 0 2px;
+            cursor: pointer;
+            opacity: 0.5;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    .ai-context-chip-livepreview {
+        border-color: rgba(76, 175, 80, 0.3);
+        .ai-context-chip-icon { color: #66bb6a; }
+    }
+
+    .ai-context-chip-selection {
+        border-color: rgba(107, 158, 255, 0.3);
+        .ai-context-chip-icon { color: #6b9eff; }
     }
 
     .ai-chat-textarea {

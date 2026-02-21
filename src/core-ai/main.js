@@ -50,6 +50,10 @@ define(function (require, exports, module) {
         return PhoenixConnectors.takeScreenshot(params);
     };
 
+    exports.execJsInLivePreview = async function (params) {
+        return PhoenixConnectors.execJsInLivePreview(params);
+    };
+
     AppInit.appReady(function () {
         SidebarTabs.addTab("ai", "AI", "fa-solid fa-wand-magic-sparkles", { priority: 200 });
 
