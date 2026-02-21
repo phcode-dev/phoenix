@@ -477,6 +477,10 @@ define(function (require, exports, module) {
             beforeEach(function () {
                 CodeInspection._unregisterAll();
                 CodeInspection.toggleEnabled(true);
+                // Ensure problems panel starts hidden for each test
+                if ($("#problems-panel").is(":visible")) {
+                    CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
+                }
             });
 
             // Utility to create an async provider where the testcase can control when each async result resolves
@@ -512,7 +516,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
 
-                expect($("#problems-panel").is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
                 var $statusBar = $("#status-inspection");
                 expect($statusBar.is(":visible")).toBe(true);
             });
@@ -523,7 +527,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
 
-                expect($("#problems-panel").is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
                 let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
                 expect(marks.length).toBe(1);
                 expect(marks[0].className).toBe("editor-text-fragment-warn");
@@ -535,7 +539,8 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
 
-                expect($("#problems-panel").is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors") ||
+                       $("#status-inspection").hasClass("inspection-repair")).toBe(true);
                 let marks = EditorManager.getActiveEditor().getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER);
                 expect(marks.title).toBe('Some errors here and there at column: 4');
                 marks = $(marks);
@@ -594,7 +599,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
-                expect($("#problems-panel").is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
                 let marks = $(EditorManager.getActiveEditor()
                     .getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER));
                 expect(marks.find('span').hasClass('line-icon-problem_type_info')).toBeTrue();
@@ -633,7 +638,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
-                expect($("#problems-panel").is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
                 let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
                 expect(marks.length).toBe(numMarksExpected);
 
@@ -716,7 +721,8 @@ define(function (require, exports, module) {
                 // Finish new (current) linting session - verify results are shown
                 asyncProvider.futures[noErrorsJS][1].resolve(failLintResult());
                 await awaits(100);
-                expect($("#problems-panel").is(":visible")).toBe(true);
+
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
             });
 
             it("should ignore async results from previous run in same file - finishing reverse order", async function () {
@@ -740,12 +746,14 @@ define(function (require, exports, module) {
                 // Finish new (current) linting session - verify results are shown
                 asyncProvider.futures[noErrorsJS][1].resolve(failLintResult());
                 await awaits(100);
-                expect($("#problems-panel").is(":visible")).toBe(true);
+
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
 
                 // Finish old (stale) linting session - verify results don't replace current results
                 asyncProvider.futures[noErrorsJS][0].resolve(successfulLintResult());
                 await awaits(100);
-                expect($("#problems-panel").is(":visible")).toBe(true);
+                // Status bar should still show errors (stale success result should be ignored)
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
             });
 
             it("should ignore async results after linting disabled", async function () {
@@ -792,7 +800,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
 
-                expect($("#problems-panel").is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
                 var $statusBar = $("#status-inspection");
                 expect($statusBar.is(":visible")).toBe(true);
 
@@ -866,6 +874,9 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
 
+                expect($("#status-inspection").hasClass("inspection-errors") ||
+                       $("#status-inspection").hasClass("inspection-repair")).toBe(true);
+                CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
                 expect($("#problems-panel").is(":visible")).toBe(true);
                 expect($(".inspector-section").is(":visible")).toBeFalsy();
             }
@@ -890,6 +901,8 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
 
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
+                CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
                 expect($("#problems-panel").is(":visible")).toBe(true);
 
                 var $inspectorSections = $(".inspector-section");
@@ -904,17 +917,18 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
-                toggleJSLintResults(false);
                 toggleJSLintResults(true);
+                toggleJSLintResults(false);
             });
 
-            it("status icon should not toggle Errors panel when no errors present", async function () {
+            it("status icon should toggle Errors panel even when no errors present", async function () {
                 var codeInspector = createCodeInspector("javascript linter", successfulLintResult());
                 CodeInspection.register("javascript", codeInspector);
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["no-errors.js"]), "open test file");
 
-                toggleJSLintResults(false);
+                // Status bar click always toggles the panel regardless of error state
+                toggleJSLintResults(true);
                 toggleJSLintResults(false);
             });
 
@@ -1307,8 +1321,7 @@ define(function (require, exports, module) {
 
                 await awaits(prefs.get(CodeInspection._PREF_ASYNC_TIMEOUT) + 20);
 
-                var $problemsPanel = $("#problems-panel");
-                expect($problemsPanel.is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
 
                 var $problemsPanelTitle = $("#problems-panel .title").text();
                 expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, "SlowAsyncLinter", "errors.js"));
@@ -1337,8 +1350,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
-                var $problemsPanel = $("#problems-panel");
-                expect($problemsPanel.is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
 
                 var $problemsPanelTitle = $("#problems-panel .title").text();
                 expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, providerName, "errors.js"));
@@ -1363,8 +1375,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
-                var $problemsPanel = $("#problems-panel");
-                expect($problemsPanel.is(":visible")).toBe(true);
+                expect($("#status-inspection").hasClass("inspection-errors")).toBe(true);
 
                 var $problemsPanelTitle = $("#problems-panel .title").text();
                 expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, providerName, "errors.js"));
