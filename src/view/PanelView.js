@@ -515,12 +515,12 @@ define(function (require, exports, module) {
         let $btn = _$tabBar.find(".bottom-panel-maximize-btn");
         let $icon = $btn.find("i");
         if (_isMaximized) {
-            $icon.removeClass("fa-up-right-and-down-left-from-center")
-                .addClass("fa-down-left-and-up-right-to-center");
+            $icon.removeClass("fa-expand")
+                .addClass("fa-compress");
             $btn.attr("title", Strings.BOTTOM_PANEL_RESTORE);
         } else {
-            $icon.removeClass("fa-down-left-and-up-right-to-center")
-                .addClass("fa-up-right-and-down-left-from-center");
+            $icon.removeClass("fa-compress")
+                .addClass("fa-expand");
             $btn.attr("title", Strings.BOTTOM_PANEL_MAXIMIZE);
         }
     }
