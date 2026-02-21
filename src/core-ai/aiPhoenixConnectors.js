@@ -32,12 +32,20 @@ define(function (require, exports, module) {
         CommandManager   = require("command/CommandManager"),
         Commands         = require("command/Commands"),
         MainViewManager  = require("view/MainViewManager"),
+        EditorManager    = require("editor/EditorManager"),
         FileSystem       = require("filesystem/FileSystem"),
+        LiveDevProtocol  = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
+        LiveDevMain      = require("LiveDevelopment/main"),
+        WorkspaceManager = require("view/WorkspaceManager"),
         SnapshotStore    = require("core-ai/AISnapshotStore"),
+        EventDispatcher  = require("utils/EventDispatcher"),
         Strings          = require("strings");
 
     // filePath → previous content before edit, for undo/snapshot support
     const _previousContentMap = {};
+
+    // Last screenshot base64 data, for displaying in tool indicators
+    let _lastScreenshotBase64 = null;
 
     // --- Editor state ---
 
@@ -74,11 +82,63 @@ define(function (require, exports, module) {
             }
         }
 
-        return {
+        const result = {
             activeFile: activeFilePath,
             workingSet: workingSetPaths,
             livePreviewFile: livePreviewFile
         };
+
+        // Include cursor/selection info from the active editor
+        const editor = EditorManager.getActiveEditor();
+        if (editor) {
+            const doc = editor.document;
+            const totalLines = doc.getLine(doc.getText().split("\n").length - 1) !== undefined
+                ? doc.getText().split("\n").length : 0;
+
+            if (editor.hasSelection()) {
+                const sel = editor.getSelection();
+                let selectedText = editor.getSelectedText();
+                if (selectedText.length > 10000) {
+                    selectedText = selectedText.slice(0, 10000) + "...(truncated, use Read tool for full content)";
+                }
+                result.cursorInfo = {
+                    hasSelection: true,
+                    startLine: sel.start.line + 1,
+                    endLine: sel.end.line + 1,
+                    selectedText: selectedText,
+                    totalLines: totalLines
+                };
+            } else {
+                const cursor = editor.getCursorPos();
+                const lineNum = cursor.line;
+                const lineText = doc.getLine(lineNum) || "";
+                // Include a few surrounding lines for context
+                const contextStart = Math.max(0, lineNum - 2);
+                const contextEnd = Math.min(totalLines - 1, lineNum + 2);
+                const MAX_LINE_LEN = 200;
+                const contextLines = [];
+                for (let i = contextStart; i <= contextEnd; i++) {
+                    const prefix = (i === lineNum) ? "> " : "  ";
+                    let text = doc.getLine(i) || "";
+                    if (text.length > MAX_LINE_LEN) {
+                        text = text.slice(0, MAX_LINE_LEN) + "...";
+                    }
+                    contextLines.push(prefix + (i + 1) + ": " + text);
+                }
+                const trimmedLineText = lineText.length > MAX_LINE_LEN
+                    ? lineText.slice(0, MAX_LINE_LEN) + "..." : lineText;
+                result.cursorInfo = {
+                    hasSelection: false,
+                    line: lineNum + 1,
+                    column: cursor.ch + 1,
+                    lineText: trimmedLineText,
+                    context: contextLines.join("\n"),
+                    totalLines: totalLines
+                };
+            }
+        }
+
+        return result;
     }
 
     // --- Screenshot ---
@@ -104,6 +164,8 @@ define(function (require, exports, module) {
                     binary += String.fromCharCode.apply(null, chunk);
                 }
                 const base64 = btoa(binary);
+                _lastScreenshotBase64 = base64;
+                exports.trigger("screenshotCaptured", base64);
                 deferred.resolve({ base64: base64 });
             })
             .catch(function (err) {
@@ -242,10 +304,102 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Get the last captured screenshot as base64 PNG.
+     * @return {string|null}
+     */
+    function getLastScreenshot() {
+        return _lastScreenshotBase64;
+    }
+
+    // --- Live preview JS execution ---
+
+    /**
+     * Execute JavaScript in the live preview iframe.
+     * Reuses the pattern from phoenix-builder-client.js: fast path if connected,
+     * otherwise auto-opens live preview and waits for connection.
+     * @param {Object} params - { code: string }
+     * @return {$.Promise} resolves with { result } or { error }
+     */
+    function execJsInLivePreview(params) {
+        const deferred = new $.Deferred();
+
+        function _evaluate() {
+            LiveDevProtocol.evaluate(params.code)
+                .done(function (evalResult) {
+                    deferred.resolve({ result: JSON.stringify(evalResult) });
+                })
+                .fail(function (err) {
+                    deferred.resolve({ error: (err && err.message) || String(err) || "evaluate() failed" });
+                });
+        }
+
+        // Fast path: already connected
+        if (LiveDevProtocol.getConnectionIds().length > 0) {
+            _evaluate();
+            return deferred.promise();
+        }
+
+        // Need to ensure live preview is open and connected
+        const panel = WorkspaceManager.getPanelForID("live-preview-panel");
+        if (!panel || !panel.isVisible()) {
+            CommandManager.execute("file.liveFilePreview");
+        } else {
+            LiveDevMain.openLivePreview();
+        }
+
+        // Wait for a live preview connection (up to 30s)
+        const TIMEOUT = 30000;
+        const POLL_INTERVAL = 500;
+        let settled = false;
+        let pollTimer = null;
+
+        function cleanup() {
+            settled = true;
+            if (pollTimer) {
+                clearInterval(pollTimer);
+                pollTimer = null;
+            }
+            LiveDevProtocol.off("ConnectionConnect.aiExecJsLivePreview");
+        }
+
+        const timeoutTimer = setTimeout(function () {
+            if (settled) { return; }
+            cleanup();
+            deferred.resolve({ error: "Timed out waiting for live preview connection (30s)" });
+        }, TIMEOUT);
+
+        function onConnected() {
+            if (settled) { return; }
+            cleanup();
+            clearTimeout(timeoutTimer);
+            _evaluate();
+        }
+
+        LiveDevProtocol.on("ConnectionConnect.aiExecJsLivePreview", onConnected);
+
+        // Safety-net poll in case the event was missed
+        pollTimer = setInterval(function () {
+            if (settled) {
+                clearInterval(pollTimer);
+                return;
+            }
+            if (LiveDevProtocol.getConnectionIds().length > 0) {
+                onConnected();
+            }
+        }, POLL_INTERVAL);
+
+        return deferred.promise();
+    }
+
     exports.getEditorState = getEditorState;
     exports.takeScreenshot = takeScreenshot;
     exports.getFileContent = getFileContent;
     exports.applyEditToBuffer = applyEditToBuffer;
     exports.getPreviousContent = getPreviousContent;
     exports.clearPreviousContentMap = clearPreviousContentMap;
+    exports.getLastScreenshot = getLastScreenshot;
+    exports.execJsInLivePreview = execJsInLivePreview;
+
+    EventDispatcher.makeEventDispatcher(exports);
 });
