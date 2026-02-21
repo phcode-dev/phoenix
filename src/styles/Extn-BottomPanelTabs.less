@@ -203,6 +203,36 @@
     flex: 0 0 auto;
 }
 
+.bottom-panel-maximize-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.4rem;
+    margin-right: 0.15rem;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #666;
+    font-size: 0.7rem;
+    -webkit-text-stroke: 0.4px;
+    line-height: 1;
+    transition: color 0.12s ease, background-color 0.12s ease;
+
+    .dark & {
+        color: #aaa;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        color: #333;
+
+        .dark & {
+            background-color: rgba(255, 255, 255, 0.12);
+            color: #eee;
+        }
+    }
+}
+
 .bottom-panel-hide-btn {
     display: flex;
     align-items: center;
