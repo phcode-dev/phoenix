@@ -201,16 +201,21 @@
         h4 { font-size: @sidebar-content-font-size; margin: 6px 0 2px 0; opacity: 0.85; }
 
         table {
-            width: 100%;
+            display: block;
+            overflow-x: auto;
             border-collapse: collapse;
             margin: 6px 0;
             font-size: @sidebar-small-font-size;
+            cursor: default;
         }
 
         th, td {
             padding: 4px 8px;
             text-align: left;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            max-width: 50%;
+            white-space: nowrap;
+            overflow-wrap: normal;
         }
 
         th {
@@ -458,6 +463,25 @@
         &:nth-child(2) { animation-delay: 0.2s; }
         &:nth-child(3) { animation-delay: 0.4s; }
     }
+}
+
+/* ── Inline color swatch ───────────────────────────────────────────── */
+.ai-color-swatch {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+    font-size: @sidebar-small-font-size;
+}
+
+.ai-color-swatch-preview {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background-color: var(--swatch-color);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
 }
 
 @keyframes ai-dot-pulse {

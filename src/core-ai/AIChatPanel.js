@@ -1173,11 +1173,71 @@ define(function (require, exports, module) {
         if ($target.length) {
             try {
                 $target.html(marked.parse(_segmentText, { breaks: true, gfm: true }));
+                _enhanceColorCodes($target);
             } catch (e) {
                 $target.text(_segmentText);
             }
             _scrollToBottom();
         }
+    }
+
+    const HEX_COLOR_RE = /#[a-f0-9]{3,8}\b/gi;
+
+    /**
+     * Scan text nodes inside an element for hex color codes and wrap each
+     * with an inline swatch element showing the actual color.
+     */
+    function _enhanceColorCodes($el) {
+        // Walk text nodes inside the element, but skip <pre> blocks and already-enhanced swatches
+        const walker = document.createTreeWalker(
+            $el[0],
+            NodeFilter.SHOW_TEXT,
+            {
+                acceptNode: function (node) {
+                    const parent = node.parentNode;
+                    if (parent.closest && parent.closest("pre, .ai-color-swatch")) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    return HEX_COLOR_RE.test(node.nodeValue)
+                        ? NodeFilter.FILTER_ACCEPT
+                        : NodeFilter.FILTER_REJECT;
+                }
+            }
+        );
+
+        const textNodes = [];
+        let n;
+        while ((n = walker.nextNode())) {
+            textNodes.push(n);
+        }
+
+        textNodes.forEach(function (textNode) {
+            const text = textNode.nodeValue;
+            HEX_COLOR_RE.lastIndex = 0;
+            const frag = document.createDocumentFragment();
+            let lastIndex = 0;
+            let match;
+            while ((match = HEX_COLOR_RE.exec(text)) !== null) {
+                // Append any text before the match
+                if (match.index > lastIndex) {
+                    frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+                }
+                const color = match[0];
+                const swatch = document.createElement("span");
+                swatch.className = "ai-color-swatch";
+                swatch.style.setProperty("--swatch-color", color);
+                const preview = document.createElement("span");
+                preview.className = "ai-color-swatch-preview";
+                swatch.appendChild(preview);
+                swatch.appendChild(document.createTextNode(color));
+                frag.appendChild(swatch);
+                lastIndex = HEX_COLOR_RE.lastIndex;
+            }
+            if (lastIndex < text.length) {
+                frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+            }
+            textNode.parentNode.replaceChild(frag, textNode);
+        });
     }
 
     function _appendToolIndicator(toolName, toolId) {
