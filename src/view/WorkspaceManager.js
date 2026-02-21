@@ -214,6 +214,13 @@ define(function (require, exports, module) {
         // FIXME (issue #4564) Workaround https://github.com/codemirror/CodeMirror/issues/1787
         triggerUpdateLayout();
 
+        // Re-apply maximize height when the window resizes so the panel stays maximized
+        if (PanelView.isMaximized() && $bottomPanelContainer && $bottomPanelContainer.is(":visible")) {
+            let maxHeight = $editorHolder.height() + $bottomPanelContainer.height();
+            $bottomPanelContainer.height(maxHeight);
+            triggerUpdateLayout();
+        }
+
         if (!windowResizing) {
             windowResizing = true;
 
@@ -357,6 +364,10 @@ define(function (require, exports, module) {
         let $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
         let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
         $tabBarActions.append(
+            $('<span class="bottom-panel-maximize-btn"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>')
+                .attr('title', Strings.BOTTOM_PANEL_MAXIMIZE)
+        );
+        $tabBarActions.append(
             $('<span class="bottom-panel-hide-btn"><i class="fa-solid fa-chevron-down"></i></span>')
                 .attr('title', Strings.BOTTOM_PANEL_HIDE)
         );
@@ -367,7 +378,8 @@ define(function (require, exports, module) {
         $bottomPanelContainer.hide();
 
         // Initialize PanelView with container DOM references and tab bar click handlers
-        PanelView.init($bottomPanelContainer, $bottomPanelTabBar, $bottomPanelTabsOverflow);
+        PanelView.init($bottomPanelContainer, $bottomPanelTabBar, $bottomPanelTabsOverflow,
+            $editorHolder, recomputeLayout);
 
         // Create status bar chevron toggle for bottom panel
         $statusBarPanelToggle = $('<div id="status-panel-toggle" class="indicator global-indicator"><i class="fa-solid fa-chevron-up"></i></div>')
@@ -377,6 +389,7 @@ define(function (require, exports, module) {
         $statusBarPanelToggle.on("click", function () {
             _statusBarToggleInProgress = true;
             if ($bottomPanelContainer.is(":visible")) {
+                PanelView.restoreIfMaximized();
                 Resizer.hide($bottomPanelContainer[0]);
                 triggerUpdateLayout();
             } else if (PanelView.getOpenBottomPanelIDs().length > 0) {
@@ -393,7 +406,13 @@ define(function (require, exports, module) {
             200, false, undefined, true);
         listenToResize($bottomPanelContainer);
 
+        // Exit maximize state when the user manually drags the resizer
+        $bottomPanelContainer.on("panelResizeEnd", function () {
+            PanelView.exitMaximizeOnResize();
+        });
+
         $bottomPanelContainer.on("panelCollapsed", function () {
+            PanelView.exitMaximizeOnResize();
             $statusBarPanelToggle.find("i")
                 .removeClass("fa-chevron-down")
                 .addClass("fa-chevron-up");
@@ -607,6 +626,7 @@ define(function (require, exports, module) {
     function _handleEscapeKey() {
         // Collapse the entire bottom panel container, keeping all tabs intact
         if ($bottomPanelContainer && $bottomPanelContainer.is(":visible")) {
+            PanelView.restoreIfMaximized();
             Resizer.hide($bottomPanelContainer[0]);
             triggerUpdateLayout();
             return true;
