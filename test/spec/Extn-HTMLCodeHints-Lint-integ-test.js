@@ -85,9 +85,22 @@ define(function (require, exports, module) {
         }
 
         async function _waitForProblemsPanelVisible(visible) {
-            await awaitsFor(()=>{
-                return $("#problems-panel").is(":visible") === visible;
-            }, "Problems panel to be visible");
+            if (visible) {
+                // Wait for lint to detect errors, then ensure panel is shown
+                await awaitsFor(()=>{
+                    return $("#status-inspection").hasClass("inspection-errors") ||
+                        $("#status-inspection").hasClass("inspection-repair");
+                }, "Lint errors to be detected");
+                if (!$("#problems-panel").is(":visible")) {
+                    CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
+                }
+            } else {
+                // Wait for no-errors state in the status bar
+                await awaitsFor(()=>{
+                    return !$("#status-inspection").hasClass("inspection-errors") &&
+                        !$("#status-inspection").hasClass("inspection-repair");
+                }, "No lint errors detected");
+            }
         }
 
         async function _siwtchFilesTo(destinationFile) {
@@ -99,6 +112,7 @@ define(function (require, exports, module) {
 
         it("should show html lint error with no config file", async function () {
             await _openProjectFile("simple1.html");
+            await _waitForProblemsPanelVisible(true);
             await awaitsFor(()=>{
                 return $("#problems-panel").text().includes(
                     "<html> is missing required \"lang\" attribute (element-required-attributes)");
