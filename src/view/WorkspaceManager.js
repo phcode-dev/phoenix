@@ -160,7 +160,8 @@ define(function (require, exports, module) {
             }
         });
 
-        $mainToolbar.data("maxsize", window.innerWidth*.75);
+        var sidebarWidth = $("#sidebar").outerWidth() || 0;
+        $mainToolbar.data("maxsize", Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100));
     }
 
 
@@ -442,7 +443,8 @@ define(function (require, exports, module) {
         // Respect min/max constraints
         var minSize = currentlyShownPanel.minWidth || 0;
         var minToolbarWidth = minSize + pluginIconsBarWidth;
-        var maxToolbarWidth = window.innerWidth * 0.75;
+        var sidebarWidth = $("#sidebar").outerWidth() || 0;
+        var maxToolbarWidth = Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100);
         newToolbarWidth = Math.max(newToolbarWidth, minToolbarWidth);
         newToolbarWidth = Math.min(newToolbarWidth, maxToolbarWidth);
 
