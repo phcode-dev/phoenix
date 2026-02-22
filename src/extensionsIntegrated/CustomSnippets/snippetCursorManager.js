@@ -529,4 +529,6 @@ define(function (require, exports, module) {
     exports.handleCursorActivity = handleCursorActivity;
     exports.endSnippetSession = endSnippetSession;
     exports.registerHandlers = registerHandlers;
+    exports.navigateToNextTabStop = navigateToNextTabStop; // exposed for integration testing
+    exports.navigateToPreviousTabStop = navigateToPreviousTabStop; // exposed for integration testing
 });

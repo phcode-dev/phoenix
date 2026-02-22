@@ -116,7 +116,7 @@ define(function (require, exports, module) {
                     );
                     if (matchedSnippet) {
                         // Get current editor from EditorManager since it's not passed
-                        const editor = EditorManager.getFocusedEditor();
+                        const editor = EditorManager.getActiveEditor();
 
                         if (editor) {
                             // to track the usage metrics
@@ -154,4 +154,5 @@ define(function (require, exports, module) {
     }
 
     exports.init = init;
+    exports._CustomSnippetsHandler = CustomSnippetsHandler; // exposed for integration testing
 });
