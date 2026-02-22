@@ -48,7 +48,7 @@
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_INCLUDE": "include {0}",
   "AI_CHAT_TOOL_IN_PATH": "in {0}",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Live Preview JS",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecting preview",
   "AI_CHAT_TOOL_RAN_CMD": "Ran command",
   "AI_CHAT_TOOL_READ": "Read",
   "AI_CHAT_TOOL_READ_FILE": "Read {0}",
