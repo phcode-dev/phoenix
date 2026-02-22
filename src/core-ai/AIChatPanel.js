@@ -640,6 +640,7 @@ define(function (require, exports, module) {
         "mcp__phoenix-editor__execJsInLivePreview": { icon: "fa-solid fa-eye", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS },
         "mcp__phoenix-editor__controlEditor":       { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_CONTROL_EDITOR },
         "mcp__phoenix-editor__resizeLivePreview":   { icon: "fa-solid fa-arrows-left-right", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW },
+        "mcp__phoenix-editor__wait":                { icon: "fa-solid fa-hourglass-half", color: "#adb9bd", label: Strings.AI_CHAT_TOOL_WAIT },
         TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS }
     };
 
@@ -1376,6 +1377,20 @@ define(function (require, exports, module) {
             $tool.find(".ai-tool-header").on("click", function () {
                 $tool.toggleClass("ai-tool-expanded");
             }).css("cursor", "pointer");
+        } else if (toolName === "mcp__phoenix-editor__wait" && toolInput && toolInput.seconds) {
+            // Countdown timer: update label every second
+            const totalSec = Math.ceil(toolInput.seconds);
+            let remaining = totalSec;
+            const $label = $tool.find(".ai-tool-label");
+            const countdownId = setInterval(function () {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(countdownId);
+                    $label.text(StringUtils.format(Strings.AI_CHAT_TOOL_WAITED, totalSec));
+                } else {
+                    $label.text(StringUtils.format(Strings.AI_CHAT_TOOL_WAITING, remaining));
+                }
+            }, 1000);
         } else if (toolName === "mcp__phoenix-editor__takeScreenshot") {
             const $detail = $('<div class="ai-tool-detail"></div>');
             $tool.append($detail);
@@ -1502,6 +1517,11 @@ define(function (require, exports, module) {
             return {
                 summary: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW,
                 lines: input.width ? [input.width + "px"] : []
+            };
+        case "mcp__phoenix-editor__wait":
+            return {
+                summary: StringUtils.format(Strings.AI_CHAT_TOOL_WAITING, input.seconds || "?"),
+                lines: []
             };
         case "TodoWrite": {
             const todos = input.todos || [];

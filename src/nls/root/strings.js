@@ -1862,6 +1862,9 @@ define({
     "AI_CHAT_CONTEXT_SELECTION": "Selection L{0}-L{1}",
     "AI_CHAT_CONTEXT_CURSOR": "Line {0}",
     "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Preview",
+    "AI_CHAT_TOOL_WAIT": "Wait",
+    "AI_CHAT_TOOL_WAITING": "Waiting {0}s",
+    "AI_CHAT_TOOL_WAITED": "Done waiting {0}s",
     "AI_CHAT_COPY_CODE": "Copy",
     "AI_CHAT_COPIED_CODE": "Copied!",
 
