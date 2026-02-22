@@ -1238,6 +1238,39 @@ define(function (require, exports, module) {
                     expect(panelContentWidth).toEqual(targetWidth);
                 });
             });
+
+            it("should preserve at least 100px for the editor area", function () {
+                pluginPanel.show();
+
+                // Request an absurdly large width that would squeeze the editor to near-zero
+                WorkspaceManager.setPluginPanelWidth(testWindow.innerWidth);
+
+                const $mainToolbar = _$("#main-toolbar");
+                const sidebarWidth = _$("#sidebar").outerWidth() || 0;
+                const toolbarWidth = $mainToolbar.width();
+                const editorWidth = testWindow.innerWidth - sidebarWidth - toolbarWidth;
+
+                // Editor area must retain at least 100px
+                expect(editorWidth).toBeGreaterThanOrEqual(100);
+            });
+
+            it("should set drag-based maxsize to preserve at least 100px for the editor", function () {
+                pluginPanel.show();
+
+                // Trigger a layout recompute so updateResizeLimits runs
+                WorkspaceManager.recomputeLayout(true);
+
+                const $mainToolbar = _$("#main-toolbar");
+                const sidebarWidth = _$("#sidebar").outerWidth() || 0;
+                const maxSize = $mainToolbar.data("maxsize");
+
+                // maxSize must leave at least 100px for the editor
+                const editorWidthAtMax = testWindow.innerWidth - sidebarWidth - maxSize;
+                expect(editorWidthAtMax).toBeGreaterThanOrEqual(100);
+
+                // maxSize should also not exceed 75% of window width
+                expect(maxSize).toBeLessThanOrEqual(testWindow.innerWidth * 0.75);
+            });
         });
     });
 });
