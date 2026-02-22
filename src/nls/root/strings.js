@@ -1825,7 +1825,7 @@ define({
     "AI_CHAT_TOOL_SCREENSHOT_OF": "Screenshot of {0}",
     "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "live preview",
     "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "full page",
-    "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Live Preview JS",
+    "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecting preview",
     "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
     "AI_CHAT_TOOL_TASKS": "Tasks",
     "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} of {1} tasks done",
