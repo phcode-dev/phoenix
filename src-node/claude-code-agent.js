@@ -147,11 +147,25 @@ exports.sendPrompt = async function (params) {
 
     // Prepend selection context to the prompt if available
     let enrichedPrompt = prompt;
-    if (selectionContext && selectionContext.selectedText) {
-        enrichedPrompt =
-            "The user has selected the following text in " + selectionContext.filePath +
-            " (lines " + selectionContext.startLine + "-" + selectionContext.endLine + "):\n" +
-            "```\n" + selectionContext.selectedText + "\n```\n\n" + prompt;
+    if (selectionContext) {
+        if (selectionContext.selectedText) {
+            enrichedPrompt =
+                "The user has selected the following text in " + selectionContext.filePath +
+                " (lines " + selectionContext.startLine + "-" + selectionContext.endLine + "):\n" +
+                "```\n" + selectionContext.selectedText + "\n```\n\n" + prompt;
+        } else {
+            let previewSnippet = "";
+            if (selectionContext.selectionPreview) {
+                previewSnippet = "\nPreview of selection:\n```\n" +
+                    selectionContext.selectionPreview + "\n```\n";
+            }
+            enrichedPrompt =
+                "The user has selected lines " + selectionContext.startLine + "-" +
+                selectionContext.endLine + " in " + selectionContext.filePath +
+                ". Use the Read tool with offset=" + (selectionContext.startLine - 1) +
+                " and limit=" + (selectionContext.endLine - selectionContext.startLine + 1) +
+                " to read the selected content if needed." + previewSnippet + "\n" + prompt;
+        }
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
