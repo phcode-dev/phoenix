@@ -506,15 +506,31 @@ define(function (require, exports, module) {
         // Gather selection context if available and not dismissed
         let selectionContext = null;
         if (_lastSelectionInfo && !_selectionDismissed && _lastSelectionInfo.selectedText) {
+            const MAX_INLINE_SELECTION = 500;
+            const MAX_PREVIEW_LINES = 3;
+            const MAX_PREVIEW_LINE_LEN = 80;
             let selectedText = _lastSelectionInfo.selectedText;
-            if (selectedText.length > 10000) {
-                selectedText = selectedText.slice(0, 10000);
+            let selectionPreview = null;
+            if (selectedText.length > MAX_INLINE_SELECTION) {
+                const lines = selectedText.split("\n");
+                const headLines = lines.slice(0, MAX_PREVIEW_LINES).map(function (l) {
+                    return l.length > MAX_PREVIEW_LINE_LEN ? l.slice(0, MAX_PREVIEW_LINE_LEN) + "..." : l;
+                });
+                const tailLines = lines.length > MAX_PREVIEW_LINES * 2
+                    ? lines.slice(-MAX_PREVIEW_LINES).map(function (l) {
+                        return l.length > MAX_PREVIEW_LINE_LEN ? l.slice(0, MAX_PREVIEW_LINE_LEN) + "..." : l;
+                    })
+                    : [];
+                selectionPreview = headLines.join("\n") +
+                    (tailLines.length ? "\n...\n" + tailLines.join("\n") : "");
+                selectedText = null;
             }
             selectionContext = {
                 filePath: _lastSelectionInfo.filePath,
                 startLine: _lastSelectionInfo.startLine,
                 endLine: _lastSelectionInfo.endLine,
-                selectedText: selectedText
+                selectedText: selectedText,
+                selectionPreview: selectionPreview
             };
         }
 
