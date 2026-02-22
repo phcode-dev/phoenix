@@ -1862,6 +1862,8 @@ define({
     "AI_CHAT_CONTEXT_SELECTION": "Selection L{0}-L{1}",
     "AI_CHAT_CONTEXT_CURSOR": "Line {0}",
     "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Preview",
+    "AI_CHAT_COPY_CODE": "Copy",
+    "AI_CHAT_COPIED_CODE": "Copied!",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",

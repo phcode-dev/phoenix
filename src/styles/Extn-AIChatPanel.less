@@ -163,6 +163,7 @@
             border-radius: 4px;
             overflow-x: auto;
             margin: 6px 0;
+            position: relative;
 
             code {
                 background: none;
@@ -171,6 +172,31 @@
                 font-size: @sidebar-small-font-size;
                 line-height: 1.5;
                 color: @project-panel-text-1;
+            }
+
+            .ai-copy-btn {
+                position: absolute;
+                top: 4px;
+                right: 4px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                color: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+                padding: 2px 6px;
+                font-size: 12px;
+                line-height: 1;
+                opacity: 0;
+                transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                    color: rgba(255, 255, 255, 0.85);
+                }
+            }
+
+            &:hover .ai-copy-btn {
+                opacity: 1;
             }
         }
 

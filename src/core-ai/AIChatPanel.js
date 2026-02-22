@@ -1191,6 +1191,7 @@ define(function (require, exports, module) {
             try {
                 $target.html(marked.parse(_segmentText, { breaks: true, gfm: true }));
                 _enhanceColorCodes($target);
+                _addCopyButtons($target);
             } catch (e) {
                 $target.text(_segmentText);
             }
@@ -1254,6 +1255,35 @@ define(function (require, exports, module) {
                 frag.appendChild(document.createTextNode(text.slice(lastIndex)));
             }
             textNode.parentNode.replaceChild(frag, textNode);
+        });
+    }
+
+    /**
+     * Inject a copy-to-clipboard button into each <pre> block inside the given container.
+     * Idempotent: skips <pre> elements that already have a .ai-copy-btn.
+     */
+    function _addCopyButtons($container) {
+        $container.find("pre").each(function () {
+            const $pre = $(this);
+            if ($pre.find(".ai-copy-btn").length) {
+                return;
+            }
+            const $btn = $('<button class="ai-copy-btn" title="' + Strings.AI_CHAT_COPY_CODE + '">' +
+                '<i class="fa-solid fa-copy"></i></button>');
+            $btn.on("click", function (e) {
+                e.stopPropagation();
+                const $code = $pre.find("code");
+                const text = ($code.length ? $code[0] : $pre[0]).textContent;
+                Phoenix.app.copyToClipboard(text);
+                const $icon = $btn.find("i");
+                $icon.removeClass("fa-copy").addClass("fa-check");
+                $btn.attr("title", Strings.AI_CHAT_COPIED_CODE);
+                setTimeout(function () {
+                    $icon.removeClass("fa-check").addClass("fa-copy");
+                    $btn.attr("title", Strings.AI_CHAT_COPY_CODE);
+                }, 1500);
+            });
+            $pre.append($btn);
         });
     }
 
@@ -1627,6 +1657,9 @@ define(function (require, exports, module) {
 
             // Finalize: remove ai-stream-target class so future messages get their own container
             $messages.find(".ai-stream-target").removeClass("ai-stream-target");
+
+            // Ensure copy buttons are present on all code blocks
+            _addCopyButtons($messages);
 
             // Mark all active tool indicators as done
             _finishActiveTools();
