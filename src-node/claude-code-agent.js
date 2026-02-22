@@ -378,11 +378,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
         let accumulatedText = "";
         let lastStreamTime = 0;
 
-        // Tool input tracking
+        // Tool input tracking (parent-level)
         let activeToolName = null;
         let activeToolIndex = null;
         let activeToolInputJson = "";
         let lastToolStreamTime = 0;
+
+        // Sub-agent tool tracking
+        let subagentToolName = null;
+        let subagentToolIndex = null;
+        let subagentToolInputJson = "";
+        let lastSubagentToolStreamTime = 0;
 
         // Trace counters (logged at tool/query completion, not per-delta)
         let toolDeltaCount = 0;
@@ -406,94 +412,184 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
             // Handle streaming events
             if (message.type === "stream_event") {
                 const event = message.event;
+                const isSubagent = !!message.parent_tool_use_id;
 
-                // Tool use start — send initial indicator
-                if (event.type === "content_block_start" &&
-                    event.content_block?.type === "tool_use") {
-                    activeToolName = event.content_block.name;
-                    activeToolIndex = event.index;
-                    activeToolInputJson = "";
-                    toolCounter++;
-                    toolDeltaCount = 0;
-                    toolStreamSendCount = 0;
-                    lastToolStreamTime = 0;
-                    _log("Tool start:", activeToolName, "#" + toolCounter);
-                    nodeConnector.triggerPeer("aiProgress", {
-                        requestId: requestId,
-                        toolName: activeToolName,
-                        toolId: toolCounter,
-                        phase: "tool_use"
-                    });
-                }
+                if (isSubagent) {
+                    // --- Sub-agent events ---
 
-                // Accumulate tool input JSON and stream preview
-                if (event.type === "content_block_delta" &&
-                    event.delta?.type === "input_json_delta" &&
-                    event.index === activeToolIndex) {
-                    activeToolInputJson += event.delta.partial_json;
-                    toolDeltaCount++;
-                    const now = Date.now();
-                    if (activeToolInputJson &&
-                        now - lastToolStreamTime >= TEXT_STREAM_THROTTLE_MS) {
-                        lastToolStreamTime = now;
-                        toolStreamSendCount++;
-                        nodeConnector.triggerPeer("aiToolStream", {
+                    // Sub-agent tool use start
+                    if (event.type === "content_block_start" &&
+                        event.content_block?.type === "tool_use") {
+                        subagentToolName = event.content_block.name;
+                        subagentToolIndex = event.index;
+                        subagentToolInputJson = "";
+                        toolCounter++;
+                        lastSubagentToolStreamTime = 0;
+                        _log("Subagent tool start:", subagentToolName, "#" + toolCounter);
+                        nodeConnector.triggerPeer("aiProgress", {
                             requestId: requestId,
+                            toolName: subagentToolName,
                             toolId: toolCounter,
-                            toolName: activeToolName,
-                            partialJson: activeToolInputJson
+                            phase: "tool_use"
                         });
                     }
-                }
 
-                // Tool block complete — flush final stream preview and send details
-                if (event.type === "content_block_stop" &&
-                    event.index === activeToolIndex &&
-                    activeToolName) {
-                    // Final flush of tool stream (bypasses throttle)
-                    if (activeToolInputJson) {
-                        toolStreamSendCount++;
-                        nodeConnector.triggerPeer("aiToolStream", {
+                    // Sub-agent tool input streaming
+                    if (event.type === "content_block_delta" &&
+                        event.delta?.type === "input_json_delta" &&
+                        event.index === subagentToolIndex) {
+                        subagentToolInputJson += event.delta.partial_json;
+                        const now = Date.now();
+                        if (subagentToolInputJson &&
+                            now - lastSubagentToolStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                            lastSubagentToolStreamTime = now;
+                            nodeConnector.triggerPeer("aiToolStream", {
+                                requestId: requestId,
+                                toolId: toolCounter,
+                                toolName: subagentToolName,
+                                partialJson: subagentToolInputJson
+                            });
+                        }
+                    }
+
+                    // Sub-agent tool block complete
+                    if (event.type === "content_block_stop" &&
+                        event.index === subagentToolIndex &&
+                        subagentToolName) {
+                        if (subagentToolInputJson) {
+                            nodeConnector.triggerPeer("aiToolStream", {
+                                requestId: requestId,
+                                toolId: toolCounter,
+                                toolName: subagentToolName,
+                                partialJson: subagentToolInputJson
+                            });
+                        }
+                        let toolInput = {};
+                        try {
+                            toolInput = JSON.parse(subagentToolInputJson);
+                        } catch (e) {
+                            // ignore parse errors
+                        }
+                        _log("Subagent tool done:", subagentToolName, "#" + toolCounter,
+                            "json=" + subagentToolInputJson.length + "ch");
+                        nodeConnector.triggerPeer("aiToolInfo", {
                             requestId: requestId,
+                            toolName: subagentToolName,
                             toolId: toolCounter,
-                            toolName: activeToolName,
-                            partialJson: activeToolInputJson
+                            toolInput: toolInput
                         });
+                        subagentToolName = null;
+                        subagentToolIndex = null;
+                        subagentToolInputJson = "";
                     }
-                    let toolInput = {};
-                    try {
-                        toolInput = JSON.parse(activeToolInputJson);
-                    } catch (e) {
-                        // ignore parse errors
-                    }
-                    _log("Tool done:", activeToolName, "#" + toolCounter,
-                        "deltas=" + toolDeltaCount, "sent=" + toolStreamSendCount,
-                        "json=" + activeToolInputJson.length + "ch");
-                    nodeConnector.triggerPeer("aiToolInfo", {
-                        requestId: requestId,
-                        toolName: activeToolName,
-                        toolId: toolCounter,
-                        toolInput: toolInput
-                    });
-                    activeToolName = null;
-                    activeToolIndex = null;
-                    activeToolInputJson = "";
-                }
 
-                // Stream text deltas (throttled)
-                if (event.type === "content_block_delta" &&
-                    event.delta?.type === "text_delta") {
-                    accumulatedText += event.delta.text;
-                    textDeltaCount++;
-                    const now = Date.now();
-                    if (now - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
-                        lastStreamTime = now;
-                        textStreamSendCount++;
-                        nodeConnector.triggerPeer("aiTextStream", {
+                    // Sub-agent text deltas — stream as regular text
+                    if (event.type === "content_block_delta" &&
+                        event.delta?.type === "text_delta") {
+                        accumulatedText += event.delta.text;
+                        textDeltaCount++;
+                        const now = Date.now();
+                        if (now - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                            lastStreamTime = now;
+                            textStreamSendCount++;
+                            nodeConnector.triggerPeer("aiTextStream", {
+                                requestId: requestId,
+                                text: accumulatedText
+                            });
+                            accumulatedText = "";
+                        }
+                    }
+                } else {
+                    // --- Parent-level events (unchanged) ---
+
+                    // Tool use start — send initial indicator
+                    if (event.type === "content_block_start" &&
+                        event.content_block?.type === "tool_use") {
+                        activeToolName = event.content_block.name;
+                        activeToolIndex = event.index;
+                        activeToolInputJson = "";
+                        toolCounter++;
+                        toolDeltaCount = 0;
+                        toolStreamSendCount = 0;
+                        lastToolStreamTime = 0;
+                        _log("Tool start:", activeToolName, "#" + toolCounter);
+                        nodeConnector.triggerPeer("aiProgress", {
                             requestId: requestId,
-                            text: accumulatedText
+                            toolName: activeToolName,
+                            toolId: toolCounter,
+                            phase: "tool_use"
                         });
-                        accumulatedText = "";
+                    }
+
+                    // Accumulate tool input JSON and stream preview
+                    if (event.type === "content_block_delta" &&
+                        event.delta?.type === "input_json_delta" &&
+                        event.index === activeToolIndex) {
+                        activeToolInputJson += event.delta.partial_json;
+                        toolDeltaCount++;
+                        const now = Date.now();
+                        if (activeToolInputJson &&
+                            now - lastToolStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                            lastToolStreamTime = now;
+                            toolStreamSendCount++;
+                            nodeConnector.triggerPeer("aiToolStream", {
+                                requestId: requestId,
+                                toolId: toolCounter,
+                                toolName: activeToolName,
+                                partialJson: activeToolInputJson
+                            });
+                        }
+                    }
+
+                    // Tool block complete — flush final stream preview and send details
+                    if (event.type === "content_block_stop" &&
+                        event.index === activeToolIndex &&
+                        activeToolName) {
+                        // Final flush of tool stream (bypasses throttle)
+                        if (activeToolInputJson) {
+                            toolStreamSendCount++;
+                            nodeConnector.triggerPeer("aiToolStream", {
+                                requestId: requestId,
+                                toolId: toolCounter,
+                                toolName: activeToolName,
+                                partialJson: activeToolInputJson
+                            });
+                        }
+                        let toolInput = {};
+                        try {
+                            toolInput = JSON.parse(activeToolInputJson);
+                        } catch (e) {
+                            // ignore parse errors
+                        }
+                        _log("Tool done:", activeToolName, "#" + toolCounter,
+                            "deltas=" + toolDeltaCount, "sent=" + toolStreamSendCount,
+                            "json=" + activeToolInputJson.length + "ch");
+                        nodeConnector.triggerPeer("aiToolInfo", {
+                            requestId: requestId,
+                            toolName: activeToolName,
+                            toolId: toolCounter,
+                            toolInput: toolInput
+                        });
+                        activeToolName = null;
+                        activeToolIndex = null;
+                        activeToolInputJson = "";
+                    }
+
+                    // Stream text deltas (throttled)
+                    if (event.type === "content_block_delta" &&
+                        event.delta?.type === "text_delta") {
+                        accumulatedText += event.delta.text;
+                        textDeltaCount++;
+                        const now = Date.now();
+                        if (now - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                            lastStreamTime = now;
+                            textStreamSendCount++;
+                            nodeConnector.triggerPeer("aiTextStream", {
+                                requestId: requestId,
+                                text: accumulatedText
+                            });
+                            accumulatedText = "";
+                        }
                     }
                 }
             }
