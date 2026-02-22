@@ -200,9 +200,27 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         }
     );
 
+    const waitTool = sdkModule.tool(
+        "wait",
+        "Wait for a specified number of seconds before continuing. " +
+        "Useful for waiting after DOM changes, animations, live preview updates, or resize operations " +
+        "before taking a screenshot or inspecting state. Maximum 60 seconds.",
+        {
+            seconds: z.number().min(0.1).max(60).describe("Number of seconds to wait (0.1–60)")
+        },
+        async function (args) {
+            const ms = Math.round(args.seconds * 1000);
+            await new Promise(function (resolve) { setTimeout(resolve, ms); });
+            return {
+                content: [{ type: "text", text: "Waited " + args.seconds + " seconds." }]
+            };
+        }
+    );
+
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool, controlEditorTool, resizeLivePreviewTool]
+        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool, controlEditorTool,
+            resizeLivePreviewTool, waitTool]
     });
 }
 

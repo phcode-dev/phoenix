@@ -153,6 +153,11 @@ define(function (require, exports, module) {
     function _onExecJsStart() {
         _activeExecJsCount++;
         if (_activeExecJsCount === 1) {
+            // Cancel any pending auto-hide from a previous exec batch
+            if (_bannerAutoHideTimer) {
+                clearTimeout(_bannerAutoHideTimer);
+                _bannerAutoHideTimer = null;
+            }
             _savedLivePreviewMode = LiveDevMain.getCurrentMode();
             if (_savedLivePreviewMode !== LivePreviewConstants.LIVE_PREVIEW_MODE) {
                 LiveDevMain.setMode(LivePreviewConstants.LIVE_PREVIEW_MODE);
@@ -173,7 +178,14 @@ define(function (require, exports, module) {
                 LiveDevMain.setMode(_savedLivePreviewMode);
             }
             _savedLivePreviewMode = null;
-            _hideBanner();
+            // Keep the banner visible briefly so the user can read it
+            if (_bannerAutoHideTimer) {
+                clearTimeout(_bannerAutoHideTimer);
+            }
+            _bannerAutoHideTimer = setTimeout(function () {
+                _hideBanner();
+                _bannerAutoHideTimer = null;
+            }, 5000);
         }
     }
 
@@ -670,7 +682,7 @@ define(function (require, exports, module) {
             _bannerAutoHideTimer = setTimeout(function () {
                 _hideBanner();
                 _bannerAutoHideTimer = null;
-            }, 3000);
+            }, 5000);
 
             const result = { actualWidth: actualWidth };
             if (actualWidth !== targetWidth) {
