@@ -548,7 +548,7 @@ function RemoteFunctions(config = {}) {
                 if (this.trigger) {
                     _trigger(this.elements[i], "highlight", 0);
                 }
-                clearElementBackground(this.elements[i]);
+                clearElementHoverHighlight(this.elements[i]);
             }
 
             this.elements = [];
@@ -583,19 +583,12 @@ function RemoteFunctions(config = {}) {
         return getHighlightMode() !== "click";
     }
 
-    // helper function to clear element background highlighting
-    function clearElementBackground(element) {
-        if (element._originalBackgroundColor !== undefined) {
-            element.style.backgroundColor = element._originalBackgroundColor;
-        } else {
-            // only clear background if it's currently a highlight color, not if it's an original user style
-            const currentBg = element.style.backgroundColor;
-            if (currentBg === "rgba(0, 162, 255, 0.2)" || currentBg.includes("rgba(0, 162, 255")) {
-                element.style.backgroundColor = "";
-            }
-            // if it's some other color, we just leave it as is - it's likely a user-defined style
+    // helper function to clear element hover outline highlighting
+    function clearElementHoverHighlight(element) {
+        if (element._originalHoverOutline !== undefined) {
+            element.style.outline = element._originalHoverOutline;
         }
-        delete element._originalBackgroundColor;
+        delete element._originalHoverOutline;
     }
 
     function onElementHover(event) {
@@ -622,9 +615,10 @@ function RemoteFunctions(config = {}) {
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
 
-            // Store original background color to restore on hover out
-            element._originalBackgroundColor = element.style.backgroundColor;
-            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+            // Store original outline to restore on hover out, then apply a blue border
+            element._originalHoverOutline = element.style.outline;
+            const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+            element.style.outline = `1px solid ${outlineColor}`;
 
             _hoverHighlight.add(element, false);
 
@@ -646,7 +640,7 @@ function RemoteFunctions(config = {}) {
             // this is to check the user's settings, if they want to show the elements highlights on hover or click
             if (_hoverHighlight && shouldShowHighlightOnHover()) {
                 _hoverHighlight.clear();
-                clearElementBackground(element);
+                clearElementHoverHighlight(element);
                 // dismiss the info box
                 const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
                 if (infoBoxHandler) {
