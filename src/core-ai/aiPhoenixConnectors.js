@@ -36,9 +36,11 @@ define(function (require, exports, module) {
         FileSystem       = require("filesystem/FileSystem"),
         LiveDevProtocol  = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         LiveDevMain      = require("LiveDevelopment/main"),
+        LivePreviewConstants = require("LiveDevelopment/LivePreviewConstants"),
         WorkspaceManager = require("view/WorkspaceManager"),
         SnapshotStore    = require("core-ai/AISnapshotStore"),
         EventDispatcher  = require("utils/EventDispatcher"),
+        StringUtils      = require("utils/StringUtils"),
         Strings          = require("strings");
 
     // filePath → previous content before edit, for undo/snapshot support
@@ -46,6 +48,134 @@ define(function (require, exports, module) {
 
     // Last screenshot base64 data, for displaying in tool indicators
     let _lastScreenshotBase64 = null;
+
+    // Banner / live preview mode state
+    let _activeExecJsCount = 0;
+    let _savedLivePreviewMode = null;
+    let _bannerDismissed = false;
+    let _bannerEl = null;
+    let _bannerStyleInjected = false;
+    let _bannerAutoHideTimer = null;
+
+    /**
+     * Inject banner CSS once into the document head.
+     */
+    function _injectBannerStyles() {
+        if (_bannerStyleInjected) {
+            return;
+        }
+        _bannerStyleInjected = true;
+        const style = document.createElement("style");
+        style.textContent =
+            "@keyframes ai-banner-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }" +
+            ".ai-lp-banner {" +
+            "  position: absolute; top: 0; left: 0; right: 0; bottom: 0;" +
+            "  display: flex; align-items: center; justify-content: center; gap: 8px;" +
+            "  background: rgba(24,24,28,0.52);" +
+            "  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" +
+            "  z-index: 10; border-radius: 3px;" +
+            "  font-size: 12px; color: #e0e0e0; pointer-events: auto;" +
+            "  transition: opacity 0.3s ease;" +
+            "}" +
+            ".ai-lp-banner .ai-lp-banner-icon {" +
+            "  color: #66bb6a; animation: ai-banner-pulse 1.5s ease-in-out infinite;" +
+            "}" +
+            ".ai-lp-banner .ai-lp-banner-close {" +
+            "  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);" +
+            "  background: none; border: none; color: #aaa; cursor: pointer;" +
+            "  font-size: 14px; padding: 2px 5px; line-height: 1;" +
+            "}" +
+            ".ai-lp-banner .ai-lp-banner-close:hover { color: #fff; }";
+        document.head.appendChild(style);
+    }
+
+    /**
+     * Show a banner overlay on the live preview toolbar.
+     * @param {string} text - Banner message text
+     */
+    function _showBanner(text) {
+        if (_bannerDismissed) {
+            return;
+        }
+        _injectBannerStyles();
+        const toolbar = document.getElementById("live-preview-plugin-toolbar");
+        if (!toolbar) {
+            return;
+        }
+        // Ensure toolbar can host absolutely positioned children
+        if (getComputedStyle(toolbar).position === "static") {
+            toolbar.style.position = "relative";
+        }
+        if (_bannerEl && _bannerEl.parentNode) {
+            // Update text on existing banner
+            const textSpan = _bannerEl.querySelector(".ai-lp-banner-text");
+            if (textSpan) {
+                textSpan.textContent = text;
+            }
+            _bannerEl.style.opacity = "1";
+            return;
+        }
+        const banner = document.createElement("div");
+        banner.className = "ai-lp-banner";
+        banner.innerHTML =
+            '<i class="fa-solid fa-eye ai-lp-banner-icon"></i>' +
+            '<span class="ai-lp-banner-text">' + text.replace(/</g, "&lt;") + '</span>' +
+            '<button class="ai-lp-banner-close" title="Dismiss">&times;</button>';
+        banner.querySelector(".ai-lp-banner-close").addEventListener("click", function () {
+            _bannerDismissed = true;
+            _hideBanner();
+        });
+        toolbar.appendChild(banner);
+        _bannerEl = banner;
+    }
+
+    /**
+     * Hide and remove the banner overlay with a fade-out transition.
+     */
+    function _hideBanner() {
+        if (!_bannerEl) {
+            return;
+        }
+        _bannerEl.style.opacity = "0";
+        const el = _bannerEl;
+        setTimeout(function () {
+            if (el.parentNode) {
+                el.parentNode.removeChild(el);
+            }
+        }, 300);
+        _bannerEl = null;
+    }
+
+    /**
+     * Called when an execJsInLivePreview call starts. Increments the active
+     * count, saves mode and shows banner on first call.
+     */
+    function _onExecJsStart() {
+        _activeExecJsCount++;
+        if (_activeExecJsCount === 1) {
+            _savedLivePreviewMode = LiveDevMain.getCurrentMode();
+            if (_savedLivePreviewMode !== LivePreviewConstants.LIVE_PREVIEW_MODE) {
+                LiveDevMain.setMode(LivePreviewConstants.LIVE_PREVIEW_MODE);
+            }
+            _bannerDismissed = false;
+            _showBanner(Strings.AI_LIVE_PREVIEW_BANNER_TEXT);
+        }
+    }
+
+    /**
+     * Called when an execJsInLivePreview call finishes. Decrements the count
+     * and restores mode / hides banner when all calls are done.
+     */
+    function _onExecJsDone() {
+        _activeExecJsCount = Math.max(0, _activeExecJsCount - 1);
+        if (_activeExecJsCount === 0) {
+            if (_savedLivePreviewMode && _savedLivePreviewMode !== LivePreviewConstants.LIVE_PREVIEW_MODE) {
+                LiveDevMain.setMode(_savedLivePreviewMode);
+            }
+            _savedLivePreviewMode = null;
+            _hideBanner();
+        }
+    }
 
     // --- Editor state ---
 
@@ -354,13 +484,16 @@ define(function (require, exports, module) {
      */
     function execJsInLivePreview(params) {
         const deferred = new $.Deferred();
+        _onExecJsStart();
 
         function _evaluate() {
             LiveDevProtocol.evaluate(params.code)
                 .done(function (evalResult) {
+                    _onExecJsDone();
                     deferred.resolve({ result: JSON.stringify(evalResult) });
                 })
                 .fail(function (err) {
+                    _onExecJsDone();
                     deferred.resolve({ error: (err && err.message) || String(err) || "evaluate() failed" });
                 });
         }
@@ -397,6 +530,7 @@ define(function (require, exports, module) {
         const timeoutTimer = setTimeout(function () {
             if (settled) { return; }
             cleanup();
+            _onExecJsDone();
             deferred.resolve({ error: "Timed out waiting for live preview connection (30s)" });
         }, TIMEOUT);
 
@@ -495,6 +629,62 @@ define(function (require, exports, module) {
         return deferred.promise();
     }
 
+    // --- Live preview resize ---
+
+    /**
+     * Resize the live preview panel to a specific width in pixels.
+     * @param {Object} params - { width: number }
+     * @return {$.Promise} resolves with { actualWidth } or { error }
+     */
+    function resizeLivePreview(params) {
+        const deferred = new $.Deferred();
+
+        if (!params.width) {
+            deferred.resolve({ error: "Provide 'width' as a number in pixels" });
+            return deferred.promise();
+        }
+
+        const targetWidth = params.width;
+        const label = targetWidth + "px";
+
+        // Ensure live preview panel is open
+        const panel = WorkspaceManager.getPanelForID("live-preview-panel");
+        if (!panel || !panel.isVisible()) {
+            CommandManager.execute("file.liveFilePreview");
+        }
+
+        // Give the panel a moment to open, then resize
+        setTimeout(function () {
+            WorkspaceManager.setPluginPanelWidth(targetWidth);
+
+            // Read back actual width from the toolbar
+            const toolbar = document.getElementById("live-preview-plugin-toolbar");
+            const actualWidth = toolbar ? toolbar.offsetWidth : targetWidth;
+
+            // Show brief banner
+            _bannerDismissed = false;
+            _showBanner(StringUtils.format(Strings.AI_LIVE_PREVIEW_BANNER_RESIZE, label));
+            if (_bannerAutoHideTimer) {
+                clearTimeout(_bannerAutoHideTimer);
+            }
+            _bannerAutoHideTimer = setTimeout(function () {
+                _hideBanner();
+                _bannerAutoHideTimer = null;
+            }, 3000);
+
+            const result = { actualWidth: actualWidth };
+            if (actualWidth !== targetWidth) {
+                result.clamped = true;
+                result.note = "Requested " + targetWidth + "px but the editor window can only " +
+                    "accommodate " + actualWidth + "px. The user needs to increase the editor " +
+                    "window size to allow a wider preview.";
+            }
+            deferred.resolve(result);
+        }, 100);
+
+        return deferred.promise();
+    }
+
     exports.getEditorState = getEditorState;
     exports.takeScreenshot = takeScreenshot;
     exports.getFileContent = getFileContent;
@@ -504,6 +694,7 @@ define(function (require, exports, module) {
     exports.getLastScreenshot = getLastScreenshot;
     exports.execJsInLivePreview = execJsInLivePreview;
     exports.controlEditor = controlEditor;
+    exports.resizeLivePreview = resizeLivePreview;
 
     EventDispatcher.makeEventDispatcher(exports);
 });

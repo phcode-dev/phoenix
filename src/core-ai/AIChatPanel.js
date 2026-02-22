@@ -639,6 +639,7 @@ define(function (require, exports, module) {
         "mcp__phoenix-editor__takeScreenshot":     { icon: "fa-solid fa-camera", color: "#c084fc", label: Strings.AI_CHAT_TOOL_SCREENSHOT },
         "mcp__phoenix-editor__execJsInLivePreview": { icon: "fa-solid fa-eye", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS },
         "mcp__phoenix-editor__controlEditor":       { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_CONTROL_EDITOR },
+        "mcp__phoenix-editor__resizeLivePreview":   { icon: "fa-solid fa-arrows-left-right", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW },
         TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS }
     };
 
@@ -1466,6 +1467,11 @@ define(function (require, exports, module) {
             return {
                 summary: Strings.AI_CHAT_TOOL_LIVE_PREVIEW_JS,
                 lines: input.code ? input.code.split("\n").slice(0, 20) : []
+            };
+        case "mcp__phoenix-editor__resizeLivePreview":
+            return {
+                summary: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW,
+                lines: input.width ? [input.width + "px"] : []
             };
         case "TodoWrite": {
             const todos = input.todos || [];

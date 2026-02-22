@@ -170,9 +170,39 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         }
     );
 
+    const resizeLivePreviewTool = sdkModule.tool(
+        "resizeLivePreview",
+        "Resize the live preview panel to a specific width for responsive testing. " +
+        "Provide a width in pixels based on the target device (e.g. 390 for a phone, 768 for a tablet, 1440 for desktop).",
+        {
+            width: z.number().describe("Target width in pixels")
+        },
+        async function (args) {
+            try {
+                const result = await nodeConnector.execPeer("resizeLivePreview", {
+                    width: args.width
+                });
+                if (result.error) {
+                    return {
+                        content: [{ type: "text", text: "Error: " + result.error }],
+                        isError: true
+                    };
+                }
+                return {
+                    content: [{ type: "text", text: JSON.stringify(result) }]
+                };
+            } catch (err) {
+                return {
+                    content: [{ type: "text", text: "Error resizing live preview: " + err.message }],
+                    isError: true
+                };
+            }
+        }
+    );
+
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool, controlEditorTool]
+        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool, controlEditorTool, resizeLivePreviewTool]
     });
 }
 
