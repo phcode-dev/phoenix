@@ -267,7 +267,7 @@ define(function (require, exports, module) {
         CodeHintIntegration.init();
 
         // load snippets from file storage
-        SnippetsState.loadSnippetsFromState()
+        const _snippetsLoadedPromise = SnippetsState.loadSnippetsFromState()
             .then(function () {
                 // track boot-time snippet count (only if user has snippets)
                 const snippetCount = Global.SnippetHintsList.length;
@@ -281,5 +281,15 @@ define(function (require, exports, module) {
             });
 
         SnippetCursorManager.registerHandlers();
+
+        // Expose modules for integration testing
+        if (brackets.test) {
+            brackets.test.CustomSnippetsGlobal = Global;
+            brackets.test.CustomSnippetsHelper = Helper;
+            brackets.test.CustomSnippetsCursorManager = SnippetCursorManager;
+            brackets.test.CustomSnippetsCodeHintHandler = CodeHintIntegration._CustomSnippetsHandler;
+            brackets.test.CustomSnippetsDriver = Driver;
+            brackets.test._customSnippetsLoadedPromise = _snippetsLoadedPromise;
+        }
     });
 });
