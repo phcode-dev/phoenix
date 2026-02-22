@@ -54,6 +54,7 @@ define(function (require, exports, module) {
      * Called from the node-side MCP server via execPeer.
      */
     function getEditorState() {
+        const deferred = new $.Deferred();
         const activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         const workingSet = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
 
@@ -138,7 +139,37 @@ define(function (require, exports, module) {
             }
         }
 
-        return result;
+        // If live preview is connected, query the selected element (best-effort)
+        if (LiveDevProtocol.getConnectionIds().length > 0) {
+            const LP_SELECTED_EL_JS =
+                "(function(){" +
+                "var el=window.__current_ph_lp_selected;" +
+                "if(!el||!el.isConnected)return null;" +
+                "var tag=el.tagName.toLowerCase();" +
+                "var id=el.id?'#'+el.id:'';" +
+                "var cls=el.className&&typeof el.className==='string'?" +
+                "'.'+el.className.trim().split(/\\s+/).join('.'):" +
+                "'';" +
+                "var text=el.textContent||'';" +
+                "if(text.length>80)text=text.slice(0,80)+'...';" +
+                "text=text.replace(/\\n/g,' ').trim();" +
+                "return{tag:tag,selector:tag+id+cls,textPreview:text};" +
+                "})()";
+            LiveDevProtocol.evaluate(LP_SELECTED_EL_JS)
+                .done(function (evalResult) {
+                    if (evalResult && evalResult.tag) {
+                        result.livePreviewSelectedElement = evalResult;
+                    }
+                    deferred.resolve(result);
+                })
+                .fail(function () {
+                    deferred.resolve(result);
+                });
+        } else {
+            deferred.resolve(result);
+        }
+
+        return deferred.promise();
     }
 
     // --- Screenshot ---

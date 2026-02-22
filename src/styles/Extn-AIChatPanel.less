@@ -409,7 +409,7 @@
 
 /* ── TodoWrite task list widget ────────────────────────────────────── */
 .ai-todo-list {
-    padding: 2px 8px 4px 28px;
+    padding: 2px 8px 4px 0;
 }
 
 .ai-todo-item {
@@ -434,6 +434,9 @@
 .ai-todo-content {
     color: @project-panel-text-2;
     line-height: 1.4;
+    white-space: normal;
+    overflow-wrap: break-word;
+    min-width: 0;
 
     &.completed {
         text-decoration: line-through;
