@@ -269,21 +269,26 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
                                 newText: input.tool_input.new_string
                             };
                             editCount++;
+                            let editResult;
                             try {
-                                await nodeConnector.execPeer("applyEditToBuffer", edit);
+                                editResult = await nodeConnector.execPeer("applyEditToBuffer", edit);
                             } catch (err) {
                                 console.warn("[Phoenix AI] Failed to apply edit to buffer:", err.message);
+                                editResult = { applied: false, error: err.message };
                             }
                             nodeConnector.triggerPeer("aiToolEdit", {
                                 requestId: requestId,
                                 toolId: myToolId,
                                 edit: edit
                             });
+                            const reason = (editResult && editResult.applied === false)
+                                ? "Edit FAILED: " + (editResult.error || "unknown error")
+                                : "Edit applied successfully via Phoenix editor.";
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
-                                    permissionDecisionReason: "Edit applied successfully via Phoenix editor."
+                                    permissionDecisionReason: reason
                                 }
                             };
                         }
