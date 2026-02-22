@@ -42,7 +42,9 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
     const getEditorStateTool = sdkModule.tool(
         "getEditorState",
         "Get the current Phoenix editor state: active file, working set (open files), live preview file, " +
-        "and cursor/selection info (current line text with surrounding context, or selected text). " +
+        "cursor/selection info (current line text with surrounding context, or selected text), " +
+        "and the currently selected element in the live preview (tag, selector, text preview) if any. " +
+        "The live preview selected element may differ from the editor cursor — use execJsInLivePreview to inspect it further. " +
         "Long lines are trimmed to 200 chars and selections to 10K chars — use the Read tool for full content.",
         {},
         async function () {
