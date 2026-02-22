@@ -905,7 +905,7 @@ define(function (require, exports, module) {
                 _testPanelDoesntToggleBlocked();
             });
 
-            async function _testPanelToggleSuccess() {
+            async function _testPanelHideSuccess() {
                 panel1.show();
                 expect(panel1.isVisible()).toBeTrue();
 
@@ -915,12 +915,10 @@ define(function (require, exports, module) {
 
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeFalse();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel1.isVisible()).toBeTrue();
             }
 
-            it("should bottom panel toggle visibility on escape on focus in code editor", async function () {
-                await _testPanelToggleSuccess();
+            it("should escape hide bottom panel when editor is focused", async function () {
+                await _testPanelHideSuccess();
             });
 
             it("should bottom panel not toggle visibility on escape if modal dialog shown", async function () {
@@ -994,7 +992,7 @@ define(function (require, exports, module) {
             it("should dismiss panel if EscapeKeyEventHandler returns false", async function () {
                 function escapeHandler() {return false;}
                 expect(WorkspaceManager.addEscapeKeyEventHandler("x", escapeHandler)).toBeTrue();
-                await _testPanelToggleSuccess();
+                await _testPanelHideSuccess();
 
                 // cleanup
                 expect(WorkspaceManager.removeEscapeKeyEventHandler("x")).toBeTrue();
@@ -1031,7 +1029,7 @@ define(function (require, exports, module) {
                 expect(panel1.isVisible()).toBeTrue();
             });
 
-            it("should escape close bottom panel one by one", async function () {
+            it("should escape collapse entire bottom panel container", async function () {
                 panel1.show();
                 expect(panel1.isVisible()).toBeTrue();
                 panel2.show();
@@ -1043,13 +1041,10 @@ define(function (require, exports, module) {
 
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel2.isVisible()).toBeFalse();
-                expect(panel1.isVisible()).toBeTrue();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel2.isVisible()).toBeFalse();
                 expect(panel1.isVisible()).toBeFalse();
             });
 
-            it("should escape toggle bottom panel if there is only one shown", async function () {
+            it("should not toggle bottom panel back on subsequent escape", async function () {
                 panel1.show();
                 expect(panel1.isVisible()).toBeTrue();
 
@@ -1060,14 +1055,13 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeFalse();
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel1.isVisible()).toBeTrue();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeFalse();
             });
 
-            it("should show closed bottom panel one by one in LRU order if shift-escape is pressed", async function () {
-                panel1.show(); panel2.show();
-                panel1.hide(); panel2.hide();
+            it("should shift-escape also collapse bottom panel", async function () {
+                panel1.show();
+                expect(panel1.isVisible()).toBeTrue();
+
                 expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
                 promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
                 await awaitsForDone(promise, "MainViewManager.doOpen");
@@ -1075,26 +1069,11 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0], {
                     shiftKey: true
                 });
-                expect(panel2.isVisible()).toBeTrue();
                 expect(panel1.isVisible()).toBeFalse();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0], {
-                    shiftKey: true
-                });
-                expect(panel2.isVisible()).toBeTrue();
-                expect(panel1.isVisible()).toBeTrue();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0], {
-                    shiftKey: true
-                });
-                expect(panel2.isVisible()).toBeTrue();
-                expect(panel1.isVisible()).toBeTrue();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel1.isVisible()).toBeFalse();
-                expect(panel2.isVisible()).toBeTrue();
             });
 
-            it("should show closed bottom panel only if it can be shown if shift-escape is pressed", async function () {
-                panel1.show(); panel2.show();
-                panel1.hide(); panel2.hide();
+            it("should shift-escape collapse bottom panel regardless of canBeShown", async function () {
+                panel1.show();
                 panel2.registerCanBeShownHandler(function () {
                     return false;
                 });
@@ -1106,19 +1085,12 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0], {
                     shiftKey: true
                 });
-                expect(panel2.isVisible()).toBeFalse();
-                expect(panel1.isVisible()).toBeTrue();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0], {
-                    shiftKey: true
-                });
-                expect(panel2.isVisible()).toBeFalse();
-                expect(panel1.isVisible()).toBeTrue();
+                expect(panel1.isVisible()).toBeFalse();
                 panel2.registerCanBeShownHandler(null);
             });
 
-            it("should toggle closed bottom panel only if it can be shown if escape is pressed", async function () {
-                panel1.show(); panel2.show();
-                panel1.hide(); panel2.hide();
+            it("should escape collapse bottom panel regardless of canBeShown", async function () {
+                panel1.show();
                 panel2.registerCanBeShownHandler(function () {
                     return false;
                 });
@@ -1128,14 +1100,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(promise, "MainViewManager.doOpen");
 
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel2.isVisible()).toBeFalse();
-                expect(panel1.isVisible()).toBeTrue();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel2.isVisible()).toBeFalse();
                 expect(panel1.isVisible()).toBeFalse();
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel2.isVisible()).toBeFalse();
-                expect(panel1.isVisible()).toBeTrue();
                 panel2.registerCanBeShownHandler(null);
             });
         });
