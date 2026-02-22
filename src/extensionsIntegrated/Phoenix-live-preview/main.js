@@ -901,12 +901,14 @@ define(function (require, exports, module) {
 
         if (isExploreProject) {
             // Always use highlight mode for explore project
-            LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_HIGHLIGHT_MODE);
+            LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE);
         } else if (isProEditUser) {
             // Pro users: auto-switch to edit mode on regular projects
             LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE);
+        } else {
+            // Non-pro users on regular projects: keep current mode (no change)
+            LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_HIGHLIGHT_MODE);
         }
-        // Non-pro users on regular projects: keep current mode (no change)
     }
 
     let startupFilesLoadHandled = false;
