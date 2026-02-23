@@ -49,6 +49,7 @@ define(function (require, exports, module) {
     let _currentEdits = [];          // edits in current response, for summary card
     let _firstEditInResponse = true; // tracks first edit per response for initial PUC
     let _undoApplied = false;        // whether undo/restore has been clicked on any card
+    let _sessionError = false;       // set when aiError fires; cleared on new send or new session
     // --- AI event trace logging (compact, non-flooding) ---
     let _traceTextChunks = 0;
     let _traceToolStreamCounts = {}; // toolId → count
@@ -767,6 +768,7 @@ define(function (require, exports, module) {
         $textarea.css("height", "auto");
 
         // Set streaming state
+        _sessionError = false;
         _setStreaming(true);
 
         // Reset segment tracking and show thinking indicator
@@ -870,6 +872,7 @@ define(function (require, exports, module) {
         _segmentText = "";
         _hasReceivedContent = false;
         _isStreaming = false;
+        _sessionError = false;
         _queuedMessage = null;
         _removeQueueBubble();
         _firstEditInResponse = true;
@@ -1260,6 +1263,7 @@ define(function (require, exports, module) {
 
     function _onError(_event, data) {
         console.log("[AI UI]", "Error:", (data.error || "").slice(0, 200));
+        _sessionError = true;
         _appendErrorMessage(data.error);
         // Don't stop streaming — the node side may continue (partial results)
     }
@@ -1278,6 +1282,46 @@ define(function (require, exports, module) {
 
         SnapshotStore.stopTracking();
         _setStreaming(false);
+
+        // Fatal error (e.g. process exit code 1) — disable inputs, show "New Chat"
+        if (_sessionError && !data.sessionId) {
+            $textarea.prop("disabled", true);
+            $textarea.closest(".ai-chat-input-wrap").addClass("disabled");
+            $sendBtn.prop("disabled", true);
+            // Move queued text back to textarea for user to reuse after new session
+            if (_queuedMessage) {
+                $textarea.val(_queuedMessage.text);
+                _attachedImages = _queuedMessage.images;
+                _renderImagePreview();
+                _queuedMessage = null;
+                _removeQueueBubble();
+            }
+            // Append inline "New Chat" button below the error
+            const $newChat = $(
+                '<div class="ai-msg ai-msg-new-chat">' +
+                    '<button class="ai-error-new-chat-btn">' +
+                        '<i class="fa-solid fa-plus"></i> ' + Strings.AI_CHAT_NEW_BTN +
+                    '</button>' +
+                '</div>'
+            );
+            $newChat.find(".ai-error-new-chat-btn").on("click", function () {
+                // Preserve textarea content and images across the new session
+                const savedText = $textarea.val();
+                const savedImages = _attachedImages.slice();
+                $newChat.remove();
+                _newSession();
+                $textarea.prop("disabled", false);
+                $textarea.closest(".ai-chat-input-wrap").removeClass("disabled");
+                $sendBtn.prop("disabled", false);
+                $textarea.val(savedText);
+                _attachedImages = savedImages;
+                _renderImagePreview();
+                $textarea[0].focus({ preventScroll: true });
+            });
+            $messages.append($newChat);
+            _scrollToBottom();
+            return;
+        }
 
         // If user had a queued message, auto-send it as the next turn
         if (_queuedMessage) {
