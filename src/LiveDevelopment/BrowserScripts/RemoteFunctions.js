@@ -41,9 +41,11 @@ function RemoteFunctions(config = {}) {
     // Expose the currently selected element globally for external access
     window.__current_ph_lp_selected = null;
 
-    const HIGHLIGHT_COLORS = {
-        padding: "rgba(147, 196, 125, 0.55)",
-        margin: "rgba(246, 178, 107, 0.66)"
+    const COLORS = {
+        highlightPadding: "rgba(147, 196, 125, 0.55)",
+        highlightMargin: "rgba(246, 178, 107, 0.66)",
+        outlineEditable: "#4285F4",
+        outlineNonEditable: "#3C3F41"
     };
 
     // the following fucntions can be in the handler and live preview will call those functions when the below
@@ -372,17 +374,22 @@ function RemoteFunctions(config = {}) {
                 div.appendChild(r);
             }
 
-            // Padding rects (non-overlapping: top/bottom full width, left/right content height)
-            makeRect({ top: "0", left: "0", width: innerW + "px", height: pt + "px" }, HIGHLIGHT_COLORS.padding);
-            makeRect({ bottom: "0", left: "0", width: innerW + "px", height: pb + "px" }, HIGHLIGHT_COLORS.padding);
-            makeRect({ top: pt + "px", left: "0", width: pl + "px", height: contentH + "px" }, HIGHLIGHT_COLORS.padding);
-            makeRect({ top: pt + "px", right: "0", width: pr + "px", height: contentH + "px" }, HIGHLIGHT_COLORS.padding);
+            // Padding rects (top/bottom full width, left/right content height)
+            const padColor = COLORS.highlightPadding;
+            makeRect({ top: "0", left: "0", width: innerW + "px", height: pt + "px" }, padColor);
+            makeRect({ bottom: "0", left: "0", width: innerW + "px", height: pb + "px" }, padColor);
+            makeRect({ top: pt + "px", left: "0", width: pl + "px", height: contentH + "px" }, padColor);
+            makeRect({ top: pt + "px", right: "0", width: pr + "px", height: contentH + "px" }, padColor);
 
-            // Margin rects (top/bottom span element width, left/right span full height)
-            makeRect({ top: -(mt + bt) + "px", left: -bl + "px", width: outerW + "px", height: mt + "px" }, HIGHLIGHT_COLORS.margin);
-            makeRect({ bottom: -(mb + bb) + "px", left: -bl + "px", width: outerW + "px", height: mb + "px" }, HIGHLIGHT_COLORS.margin);
-            makeRect({ top: -(mt + bt) + "px", left: -(ml + bl) + "px", width: ml + "px", height: (outerH + mt + mb) + "px" }, HIGHLIGHT_COLORS.margin);
-            makeRect({ top: -(mt + bt) + "px", right: -(mr + br) + "px", width: mr + "px", height: (outerH + mt + mb) + "px" }, HIGHLIGHT_COLORS.margin);
+            // Margin rects (top/bottom element width, left/right full height)
+            const margColor = COLORS.highlightMargin;
+            const mTop = -(mt + bt) + "px";
+            const mBot = -(mb + bb) + "px";
+            const fullH = (outerH + mt + mb) + "px";
+            makeRect({ top: mTop, left: -bl + "px", width: outerW + "px", height: mt + "px" }, margColor);
+            makeRect({ bottom: mBot, left: -bl + "px", width: outerW + "px", height: mb + "px" }, margColor);
+            makeRect({ top: mTop, left: -(ml + bl) + "px", width: ml + "px", height: fullH }, margColor);
+            makeRect({ top: mTop, right: -(mr + br) + "px", width: mr + "px", height: fullH }, margColor);
 
             window.document.body.appendChild(div);
             this._divs.push(div);
@@ -433,9 +440,10 @@ function RemoteFunctions(config = {}) {
             _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
 
-            // Store original outline to restore on hover out, then apply a blue border
+            // Store original outline to restore on hover out, then apply a border
             element._originalHoverOutline = element.style.outline;
-            const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+            const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
             element.style.outline = `1px solid ${outlineColor}`;
 
             _hoverHighlight.add(element);
@@ -516,7 +524,8 @@ function RemoteFunctions(config = {}) {
         }
 
         element._originalOutline = element.style.outline;
-        const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+        const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
         element.style.outline = `1px solid ${outlineColor}`;
 
         if (!_clickHighlight) {
@@ -1085,7 +1094,8 @@ function RemoteFunctions(config = {}) {
         } else {
             // Suppression is active - re-apply outline since attrChange may have wiped it
             if (previouslySelectedElement && previouslySelectedElement.isConnected) {
-                const outlineColor = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+                const isEditable = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
                 previouslySelectedElement.style.outline = `1px solid ${outlineColor}`;
             }
         }
