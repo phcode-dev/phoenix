@@ -858,6 +858,78 @@
     }
 }
 
+/* ── Queued clarification bubble (static, above input) ─────────────── */
+.ai-queued-msg {
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin: 0 0 4px 0;
+    background-color: rgba(255, 255, 255, 0.04);
+
+    .ai-queued-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2px;
+    }
+
+    .ai-queued-label {
+        font-size: @sidebar-xs-font-size;
+        color: @project-panel-text-2;
+        font-weight: 600;
+        opacity: 0.6;
+    }
+
+    .ai-queued-edit-btn {
+        background: none;
+        border: none;
+        font-size: @sidebar-xs-font-size;
+        color: @project-panel-text-2;
+        padding: 0 4px;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.15s ease;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .ai-queued-images {
+        display: none;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-bottom: 4px;
+
+        &:not(:empty) {
+            display: flex;
+        }
+
+        img {
+            max-width: 48px;
+            max-height: 36px;
+            object-fit: cover;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .ai-queued-text {
+        font-size: @sidebar-content-font-size;
+        color: @project-panel-text-2;
+        line-height: 1.4;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        max-height: 60px;
+        overflow-y: auto;
+
+        &:empty {
+            display: none;
+        }
+    }
+}
+
 /* ── Error message ──────────────────────────────────────────────────── */
 .ai-msg-error {
     .ai-msg-content {

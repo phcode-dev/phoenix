@@ -93,7 +93,7 @@ Sets the panel's visibility state
 ### panel.setTitle(newTitle)
 Updates the display title shown in the tab bar for this panel.
 
-**Kind**: instance method of [<code>Panel</code>](#Panel)
+**Kind**: instance method of [<code>Panel</code>](#Panel)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -105,7 +105,7 @@ Updates the display title shown in the tab bar for this panel.
 Destroys the panel, removing it from the tab bar, internal maps, and the DOM.
 After calling this, the Panel instance should not be reused.
 
-**Kind**: instance method of [<code>Panel</code>](#Panel)
+**Kind**: instance method of [<code>Panel</code>](#Panel)  
 <a name="Panel+getPanelType"></a>
 
 ### panel.getPanelType() ⇒ <code>string</code>
@@ -117,37 +117,61 @@ gets the Panel's type
 ## \_panelMap : <code>Object.&lt;string, Panel&gt;</code>
 Maps panel ID to Panel instance
 
-**Kind**: global variable
+**Kind**: global variable  
 <a name="_$container"></a>
 
 ## \_$container : <code>jQueryObject</code>
 The single container wrapping all bottom panels
 
-**Kind**: global variable
+**Kind**: global variable  
 <a name="_$tabBar"></a>
 
 ## \_$tabBar : <code>jQueryObject</code>
 The tab bar inside the container
 
-**Kind**: global variable
+**Kind**: global variable  
 <a name="_$tabsOverflow"></a>
 
 ## \_$tabsOverflow : <code>jQueryObject</code>
 Scrollable area holding the tab elements
 
-**Kind**: global variable
+**Kind**: global variable  
 <a name="_openIds"></a>
 
 ## \_openIds : <code>Array.&lt;string&gt;</code>
 Ordered list of currently open (tabbed) panel IDs
 
-**Kind**: global variable
+**Kind**: global variable  
 <a name="_activeId"></a>
 
 ## \_activeId : <code>string</code> \| <code>null</code>
 The panel ID of the currently visible (active) tab
 
-**Kind**: global variable
+**Kind**: global variable  
+<a name="_isMaximized"></a>
+
+## \_isMaximized : <code>boolean</code>
+Whether the bottom panel is currently maximized
+
+**Kind**: global variable  
+<a name="_preMaximizeHeight"></a>
+
+## \_preMaximizeHeight : <code>number</code> \| <code>null</code>
+The panel height before maximize, for restore
+
+**Kind**: global variable  
+<a name="_$editorHolder"></a>
+
+## \_$editorHolder : <code>jQueryObject</code>
+The editor holder element, passed from WorkspaceManager
+
+**Kind**: global variable  
+<a name="_recomputeLayout"></a>
+
+## \_recomputeLayout : <code>function</code>
+recomputeLayout callback from WorkspaceManager
+
+**Kind**: global variable  
 <a name="EVENT_PANEL_HIDDEN"></a>
 
 ## EVENT\_PANEL\_HIDDEN : <code>string</code>
@@ -166,30 +190,79 @@ Event when panel is shown
 type for bottom panel
 
 **Kind**: global constant  
+<a name="MAXIMIZE_THRESHOLD"></a>
+
+## MAXIMIZE\_THRESHOLD : <code>number</code>
+Pixel threshold for detecting near-maximize state during resize.
+If the editor holder height is within this many pixels of zero, the
+panel is treated as maximized. Keeps the maximize icon responsive
+during drag without being overly sensitive.
+
+**Kind**: global constant  
+<a name="MIN_PANEL_HEIGHT"></a>
+
+## MIN\_PANEL\_HEIGHT : <code>number</code>
+Minimum panel height (matches Resizer minSize) used as a floor
+when computing a sensible restore height.
+
+**Kind**: global constant  
 <a name="init"></a>
 
-## init($container, $tabBar, $tabsOverflow)
+## init($container, $tabBar, $tabsOverflow, $editorHolder, recomputeLayoutFn)
 Initializes the PanelView module with references to the bottom panel container DOM elements.
 Called by WorkspaceManager during htmlReady.
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | $container | <code>jQueryObject</code> | The bottom panel container element. |
 | $tabBar | <code>jQueryObject</code> | The tab bar element inside the container. |
 | $tabsOverflow | <code>jQueryObject</code> | The scrollable area holding tab elements. |
+| $editorHolder | <code>jQueryObject</code> | The editor holder element (for maximize height calculation). |
+| recomputeLayoutFn | <code>function</code> | Callback to trigger workspace layout recomputation. |
 
+<a name="exitMaximizeOnResize"></a>
+
+## exitMaximizeOnResize()
+Exit maximize state without resizing (for external callers like drag-resize).
+Clears internal maximize state and resets the button icon.
+
+**Kind**: global function  
+<a name="enterMaximizeOnResize"></a>
+
+## enterMaximizeOnResize()
+Enter maximize state during a drag-resize that reaches the maximum
+height. No pre-maximize height is stored because the user arrived
+here via continuous dragging; a sensible default will be computed if
+they later click the Restore button.
+
+**Kind**: global function  
+<a name="restoreIfMaximized"></a>
+
+## restoreIfMaximized()
+Restore the container's CSS height to the pre-maximize value and clear maximize state.
+Must be called BEFORE Resizer.hide() so the Resizer reads the correct height.
+If not maximized, this is a no-op.
+When the saved height is near-max or unknown, a sensible default is used.
+
+**Kind**: global function  
+<a name="isMaximized"></a>
+
+## isMaximized() ⇒ <code>boolean</code>
+Returns true if the bottom panel is currently maximized.
+
+**Kind**: global function  
 <a name="getOpenBottomPanelIDs"></a>
 
 ## getOpenBottomPanelIDs() ⇒ <code>Array.&lt;string&gt;</code>
 Returns a copy of the currently open bottom panel IDs in tab order.
 
-**Kind**: global function
+**Kind**: global function  
 <a name="hideAllOpenPanels"></a>
 
 ## hideAllOpenPanels() ⇒ <code>Array.&lt;string&gt;</code>
 Hides every open bottom panel tab in a single batch
 
-**Kind**: global function
-**Returns**: <code>Array.&lt;string&gt;</code> - The IDs of panels that were open (useful for restoring later).
+**Kind**: global function  
+**Returns**: <code>Array.&lt;string&gt;</code> - The IDs of panels that were open (useful for restoring later).  

@@ -56,19 +56,19 @@ Constant representing the type of plugin panel
 ### view/WorkspaceManager.$bottomPanelContainer : <code>jQueryObject</code>
 The single container wrapping all bottom panels
 
-**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
+**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 <a name="module_view/WorkspaceManager..$statusBarPanelToggle"></a>
 
 ### view/WorkspaceManager.$statusBarPanelToggle : <code>jQueryObject</code>
 Chevron toggle in the status bar
 
-**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
+**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 <a name="module_view/WorkspaceManager.._statusBarToggleInProgress"></a>
 
 ### view/WorkspaceManager.\_statusBarToggleInProgress : <code>boolean</code>
 True while the status bar toggle button is handling a click
 
-**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
+**Kind**: inner property of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 <a name="module_view/WorkspaceManager..EVENT_WORKSPACE_UPDATE_LAYOUT"></a>
 
 ### view/WorkspaceManager.EVENT\_WORKSPACE\_UPDATE\_LAYOUT
@@ -108,7 +108,7 @@ The panel's size & visibility are automatically saved & restored as a view-state
 Destroys a bottom panel, removing it from internal registries, the tab bar, and the DOM.
 After calling this, the panel ID is no longer valid and the Panel instance should not be reused.
 
-**Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)
+**Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
