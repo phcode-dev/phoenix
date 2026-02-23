@@ -33,6 +33,13 @@
     if (!window.AppConfig || AppConfig.config.environment !== "dev") {
         return;
     }
+    // Skip MCP in test windows (the embedded Phoenix iframe inside SpecRunner).
+    // Only the SpecRunner itself and the normal Phoenix app should connect to MCP.
+    // Phoenix.isTestWindow is true for both SpecRunner and the test iframe,
+    // but Phoenix.isSpecRunnerWindow is only true for the SpecRunner itself.
+    if (window.Phoenix && window.Phoenix.isTestWindow && !window.Phoenix.isSpecRunnerWindow) {
+        return;
+    }
 
     // --- Constants ---
     const LOG_TO_CONSOLE_KEY = "logToConsole";

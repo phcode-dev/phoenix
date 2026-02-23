@@ -185,4 +185,44 @@
         };
     }
 
+    // --- exec_js_in_test_iframe_request ---
+    // When the SpecRunner has an embedded test iframe, forward exec_js to it
+    // so MCP tools can operate on the test Phoenix instance inside the iframe.
+    // Falls back to the SpecRunner context if no iframe is present (e.g. unit tests).
+    builder.registerHandler("exec_js_in_test_iframe_request", function (msg) {
+        var iframe = document.querySelector(".phoenixIframe");
+        if (!iframe || !iframe.contentWindow) {
+            builder.sendMessage({
+                type: "exec_js_in_test_iframe_response",
+                id: msg.id,
+                error: "No test iframe present. The embedded Phoenix instance is not currently loaded."
+            });
+            return;
+        }
+        var targetWindow = iframe.contentWindow;
+        // Create the async function in the target window's context so globals
+        // like $, brackets, etc. resolve to the iframe's scope.
+        var AsyncFunction = targetWindow.eval("(async function(){}).constructor");
+        var fn = new AsyncFunction(msg.code);
+        fn().then(function (result) {
+            var text;
+            try {
+                text = (result !== undefined && result !== null) ? JSON.stringify(result) : "(undefined)";
+            } catch (e) {
+                text = String(result);
+            }
+            builder.sendMessage({
+                type: "exec_js_in_test_iframe_response",
+                id: msg.id,
+                result: text
+            });
+        }).catch(function (err) {
+            builder.sendMessage({
+                type: "exec_js_in_test_iframe_response",
+                id: msg.id,
+                error: (err && err.stack) || (err && err.message) || String(err)
+            });
+        });
+    });
+
 }());
