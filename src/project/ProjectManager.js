@@ -1349,11 +1349,33 @@ define(function (require, exports, module) {
             return (new $.Deferred()).resolve().promise();
         }
 
-        // About to close current project (if any)
+        // About to close current project (if any) — collect async veto promises
         if (model.projectRoot) {
-            exports.trigger(EVENT_PROJECT_BEFORE_CLOSE, model.projectRoot);
+            const vetoPromises = [];
+            exports.trigger(EVENT_PROJECT_BEFORE_CLOSE, model.projectRoot, vetoPromises);
+            if (vetoPromises.length > 0) {
+                const deferred = new $.Deferred();
+                Promise.all(vetoPromises)
+                    .then(function () {
+                        _continueLoadProject(rootPath)
+                            .done(deferred.resolve)
+                            .fail(deferred.reject);
+                    })
+                    .catch(function () {
+                        // A handler vetoed the project close
+                        deferred.reject();
+                    });
+                return deferred.promise();
+            }
         }
 
+        return _continueLoadProject(rootPath);
+    }
+
+    /**
+     * Internal: continue loading a project after beforeProjectClose handlers have resolved.
+     */
+    function _continueLoadProject(rootPath) {
         // close all the old files
         MainViewManager._closeAll(MainViewManager.ALL_PANES);
 

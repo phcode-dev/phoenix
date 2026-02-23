@@ -1887,6 +1887,17 @@ define({
     "AI_CHAT_QUEUED": "Queued",
     "AI_CHAT_QUEUED_EDIT": "Edit",
     "AI_CHAT_TOOL_CLARIFICATION": "Reading your follow-up",
+    "AI_CHAT_HISTORY_TITLE": "Session history",
+    "AI_CHAT_HISTORY_EMPTY": "No previous sessions",
+    "AI_CHAT_SESSION_RESUMED": "Resumed session",
+    "AI_CHAT_HISTORY_JUST_NOW": "just now",
+    "AI_CHAT_HISTORY_MINS_AGO": "{0}m ago",
+    "AI_CHAT_HISTORY_HOURS_AGO": "{0}h ago",
+    "AI_CHAT_HISTORY_DAYS_AGO": "{0}d ago",
+    "AI_CHAT_HISTORY_CLEAR_ALL": "Clear all",
+    "AI_CHAT_HISTORY_DELETE_CONFIRM": "Delete this session?",
+    "AI_CHAT_SWITCH_PROJECT_TITLE": "AI is working",
+    "AI_CHAT_SWITCH_PROJECT_MSG": "AI is currently working on a task. Switching projects will stop it. Continue?",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",

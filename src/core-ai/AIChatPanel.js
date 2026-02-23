@@ -33,8 +33,10 @@ define(function (require, exports, module) {
         FileSystem          = require("filesystem/FileSystem"),
         LiveDevMain         = require("LiveDevelopment/main"),
         WorkspaceManager    = require("view/WorkspaceManager"),
+        Dialogs             = require("widgets/Dialogs"),
         SnapshotStore       = require("core-ai/AISnapshotStore"),
         PhoenixConnectors   = require("core-ai/aiPhoenixConnectors"),
+        AIChatHistory       = require("core-ai/AIChatHistory"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
         marked              = require("thirdparty/marked.min");
@@ -75,6 +77,13 @@ define(function (require, exports, module) {
         "image/png", "image/jpeg", "image/gif", "image/webp", "image/svg+xml"
     ];
 
+    // Chat history recording state
+    let _chatHistory = [];          // Array of message records for current session
+    let _firstUserMessage = null;   // Captured on first send, used as session title
+    let _currentSessionId = null;   // Browser-side session ID tracker
+    let _isResumedSession = false;  // Whether current session was resumed from history
+    let _lastQuestions = null;      // Last AskUserQuestion questions, for recording
+
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn, $imagePreview;
 
@@ -89,10 +98,16 @@ define(function (require, exports, module) {
         '<div class="ai-chat-panel">' +
             '<div class="ai-chat-header">' +
                 '<span class="ai-chat-title">' + Strings.AI_CHAT_TITLE + '</span>' +
-                '<button class="ai-new-session-btn" title="' + Strings.AI_CHAT_NEW_SESSION_TITLE + '">' +
-                    '<i class="fa-solid fa-plus"></i> ' + Strings.AI_CHAT_NEW_BTN +
-                '</button>' +
+                '<div class="ai-chat-header-actions">' +
+                    '<button class="ai-history-btn" title="' + Strings.AI_CHAT_HISTORY_TITLE + '">' +
+                        '<i class="fa-solid fa-clock-rotate-left"></i>' +
+                    '</button>' +
+                    '<button class="ai-new-session-btn" title="' + Strings.AI_CHAT_NEW_SESSION_TITLE + '">' +
+                        '<i class="fa-solid fa-plus"></i> ' + Strings.AI_CHAT_NEW_BTN +
+                    '</button>' +
+                '</div>' +
             '</div>' +
+            '<div class="ai-session-history-dropdown"></div>' +
             '<div class="ai-chat-messages"></div>' +
             '<div class="ai-chat-status">' +
                 '<span class="ai-status-spinner"></span>' +
@@ -159,6 +174,14 @@ define(function (require, exports, module) {
             _removeQueueBubble();
             if (data.text || images.length > 0) {
                 _appendUserMessage(data.text, images);
+                // Record clarification in chat history
+                _chatHistory.push({
+                    type: "user",
+                    text: data.text,
+                    images: images.map(function (img) {
+                        return { dataUrl: img.dataUrl, mediaType: img.mediaType };
+                    })
+                });
             }
         });
 
@@ -214,6 +237,9 @@ define(function (require, exports, module) {
         });
         $stopBtn.on("click", _cancelQuery);
         $panel.find(".ai-new-session-btn").on("click", _newSession);
+        $panel.find(".ai-history-btn").on("click", function () {
+            _toggleHistoryDropdown();
+        });
 
         // Hide "+ New" button initially (no conversation yet)
         $panel.find(".ai-new-session-btn").hide();
@@ -362,6 +388,35 @@ define(function (require, exports, module) {
                 $tool.addClass("ai-tool-expanded");
                 _scrollToBottom();
             }
+        });
+
+        // When switching projects, warn the user if AI is currently working
+        // and cancel the query before proceeding.
+        ProjectManager.off("beforeProjectClose.aiChat");
+        ProjectManager.on("beforeProjectClose.aiChat", function (_event, _projectRoot, vetoPromises) {
+            if (_isStreaming && vetoPromises) {
+                const vetoPromise = new Promise(function (resolve, reject) {
+                    Dialogs.showConfirmDialog(
+                        Strings.AI_CHAT_SWITCH_PROJECT_TITLE,
+                        Strings.AI_CHAT_SWITCH_PROJECT_MSG
+                    ).done(function (btnId) {
+                        if (btnId === Dialogs.DIALOG_BTN_OK) {
+                            _cancelQuery();
+                            _setStreaming(false);
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    });
+                });
+                vetoPromises.push(vetoPromise);
+            }
+        });
+
+        // When a new project opens, reset the AI chat to a blank state
+        ProjectManager.off("projectOpen.aiChat");
+        ProjectManager.on("projectOpen.aiChat", function () {
+            _newSession();
         });
 
         SidebarTabs.addToTab("ai", $panel);
@@ -752,6 +807,11 @@ define(function (require, exports, module) {
         // Show "+ New" button once a conversation starts
         $panel.find(".ai-new-session-btn").show();
 
+        // Capture first user message for session title
+        if (!_currentSessionId && !_isResumedSession && !_firstUserMessage) {
+            _firstUserMessage = text;
+        }
+
         // Capture attached images before clearing
         const imagesForDisplay = _attachedImages.slice();
         const imagesPayload = _attachedImages.map(function (img) {
@@ -762,6 +822,15 @@ define(function (require, exports, module) {
 
         // Append user message
         _appendUserMessage(text, imagesForDisplay);
+
+        // Record user message in chat history
+        _chatHistory.push({
+            type: "user",
+            text: text,
+            images: imagesForDisplay.map(function (img) {
+                return { dataUrl: img.dataUrl, mediaType: img.mediaType };
+            })
+        });
 
         // Clear input
         $textarea.val("");
@@ -877,6 +946,11 @@ define(function (require, exports, module) {
         _removeQueueBubble();
         _firstEditInResponse = true;
         _undoApplied = false;
+        _currentSessionId = null;
+        _isResumedSession = false;
+        _firstUserMessage = null;
+        _chatHistory = [];
+        _lastQuestions = null;
         _selectionDismissed = false;
         _lastSelectionInfo = null;
         _lastCursorLine = null;
@@ -891,8 +965,11 @@ define(function (require, exports, module) {
         if ($messages) {
             $messages.empty();
         }
-        // Hide "+ New" button since we're back to empty state
+        // Close history dropdown and hide "+ New" button since we're back to empty state
         if ($panel) {
+            $panel.find(".ai-session-history-dropdown").removeClass("open");
+            $panel.find(".ai-history-btn").removeClass("active");
+            $panel.removeClass("ai-history-open");
             $panel.find(".ai-new-session-btn").hide();
         }
         if ($status) {
@@ -1176,6 +1253,14 @@ define(function (require, exports, module) {
             linesRemoved: oldLines
         });
 
+        // Record tool edit in chat history
+        _chatHistory.push({
+            type: "tool_edit",
+            file: edit.file,
+            linesAdded: newLines,
+            linesRemoved: oldLines
+        });
+
         // Capture pre-edit content for snapshot tracking
         const previousContent = PhoenixConnectors.getPreviousContent(edit.file);
         const isNewFile = (edit.oldText === null && (previousContent === undefined || previousContent === ""));
@@ -1265,6 +1350,8 @@ define(function (require, exports, module) {
         console.log("[AI UI]", "Error:", (data.error || "").slice(0, 200));
         _sessionError = true;
         _appendErrorMessage(data.error);
+        // Record error in chat history
+        _chatHistory.push({ type: "error", text: data.error });
         // Don't stop streaming — the node side may continue (partial results)
     }
 
@@ -1275,13 +1362,59 @@ define(function (require, exports, module) {
         _traceTextChunks = 0;
         _traceToolStreamCounts = {};
 
+        // Record finalized text segment before completing
+        if (_segmentText) {
+            const isFirst = !_chatHistory.some(function (m) { return m.type === "assistant"; });
+            _chatHistory.push({ type: "assistant", markdown: _segmentText, isFirst: isFirst });
+        }
+
         // Append edit summary if there were edits (finalizeResponse called inside)
         if (_currentEdits.length > 0) {
+            // Record edit summary in chat history
+            const fileStats = {};
+            const fileOrder = [];
+            _currentEdits.forEach(function (e) {
+                if (!fileStats[e.file]) {
+                    fileStats[e.file] = { added: 0, removed: 0 };
+                    fileOrder.push(e.file);
+                }
+                fileStats[e.file].added += e.linesAdded;
+                fileStats[e.file].removed += e.linesRemoved;
+            });
+            _chatHistory.push({
+                type: "edit_summary",
+                files: fileOrder.map(function (f) {
+                    return { file: f, added: fileStats[f].added, removed: fileStats[f].removed };
+                })
+            });
             await _appendEditSummary();
         }
 
         SnapshotStore.stopTracking();
         _setStreaming(false);
+
+        // Save session to history
+        if (data.sessionId) {
+            _currentSessionId = data.sessionId;
+            const firstUserMsg = _chatHistory.find(function (m) { return m.type === "user"; });
+            const sessionTitle = (firstUserMsg && firstUserMsg.text)
+                ? firstUserMsg.text.slice(0, AIChatHistory.SESSION_TITLE_MAX_LEN)
+                : "Untitled";
+            // Record/update metadata (moves to top of history list)
+            AIChatHistory.recordSessionMetadata(data.sessionId, sessionTitle);
+            _firstUserMessage = null;
+            // Remove any trailing "complete" markers before adding new one
+            while (_chatHistory.length > 0 && _chatHistory[_chatHistory.length - 1].type === "complete") {
+                _chatHistory.pop();
+            }
+            _chatHistory.push({ type: "complete" });
+            AIChatHistory.saveChatHistory(data.sessionId, {
+                id: data.sessionId,
+                title: sessionTitle,
+                timestamp: Date.now(),
+                messages: _chatHistory
+            });
+        }
 
         // Fatal error (e.g. process exit code 1) — disable inputs, show "New Chat"
         if (_sessionError && !data.sessionId) {
@@ -1502,6 +1635,9 @@ define(function (require, exports, module) {
             return;
         }
 
+        // Capture questions for history recording (answers recorded in _sendQuestionAnswers)
+        _lastQuestions = questions;
+
         // Remove thinking indicator on first content
         if (!_hasReceivedContent) {
             _hasReceivedContent = true;
@@ -1630,6 +1766,15 @@ define(function (require, exports, module) {
      * Send collected question answers to the node side.
      */
     function _sendQuestionAnswers(answers) {
+        // Record question + answers in chat history
+        if (_lastQuestions) {
+            _chatHistory.push({
+                type: "question",
+                questions: _lastQuestions,
+                answers: answers
+            });
+            _lastQuestions = null;
+        }
         _nodeConnector.execPeer("answerQuestion", { answers: answers }).catch(function (err) {
             console.warn("[AI UI] Failed to send question answer:", err.message);
         });
@@ -1808,6 +1953,12 @@ define(function (require, exports, module) {
             $messages.find(".ai-thinking").remove();
         }
 
+        // Record finalized text segment before clearing
+        if (_segmentText) {
+            const isFirst = !_chatHistory.some(function (m) { return m.type === "assistant"; });
+            _chatHistory.push({ type: "assistant", markdown: _segmentText, isFirst: isFirst });
+        }
+
         // Finalize the current text segment so tool appears after it, not at the end
         $messages.find(".ai-stream-target").removeClass("ai-stream-target");
         _segmentText = "";
@@ -1848,6 +1999,15 @@ define(function (require, exports, module) {
 
         const config = TOOL_CONFIG[toolName] || { icon: "fa-solid fa-gear", color: "#adb9bd", label: toolName };
         const detail = _getToolDetail(toolName, toolInput);
+
+        // Record tool in chat history
+        _chatHistory.push({
+            type: "tool",
+            toolName: toolName,
+            summary: detail.summary,
+            icon: config.icon,
+            color: config.color
+        });
 
         // Replace spinner with colored icon immediately
         $tool.find(".ai-tool-spinner").replaceWith(
@@ -2241,6 +2401,171 @@ define(function (require, exports, module) {
 
     function _escapeAttr(str) {
         return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // --- Session History ---
+
+    /**
+     * Toggle the history dropdown open/closed.
+     */
+    function _toggleHistoryDropdown() {
+        const $dropdown = $panel.find(".ai-session-history-dropdown");
+        const $btn = $panel.find(".ai-history-btn");
+        const isOpen = $dropdown.hasClass("open");
+        if (isOpen) {
+            $dropdown.removeClass("open");
+            $btn.removeClass("active");
+            $panel.removeClass("ai-history-open");
+        } else {
+            _renderHistoryDropdown();
+            $dropdown.addClass("open");
+            $btn.addClass("active");
+            $panel.addClass("ai-history-open");
+        }
+    }
+
+    /**
+     * Render the history dropdown contents from stored session metadata.
+     */
+    function _renderHistoryDropdown() {
+        const $dropdown = $panel.find(".ai-session-history-dropdown");
+        $dropdown.empty();
+
+        const history = AIChatHistory.loadSessionHistory();
+        if (!history.length) {
+            $dropdown.append(
+                '<div class="ai-history-empty">' + Strings.AI_CHAT_HISTORY_EMPTY + '</div>'
+            );
+            return;
+        }
+
+        history.forEach(function (session) {
+            const $item = $(
+                '<div class="ai-history-item" data-session-id="' + _escapeAttr(session.id) + '">' +
+                    '<div class="ai-history-item-info">' +
+                        '<div class="ai-history-item-title"></div>' +
+                        '<div class="ai-history-item-time"></div>' +
+                    '</div>' +
+                    '<button class="ai-history-item-delete" title="' + Strings.AI_CHAT_HISTORY_DELETE_CONFIRM + '">' +
+                        '<i class="fa-solid fa-trash-can"></i>' +
+                    '</button>' +
+                '</div>'
+            );
+            $item.find(".ai-history-item-title").text(session.title || "Untitled");
+            $item.find(".ai-history-item-time").text(AIChatHistory.formatRelativeTime(session.timestamp));
+
+            if (_currentSessionId === session.id) {
+                $item.addClass("ai-history-active");
+            }
+
+            // Click to resume session
+            $item.find(".ai-history-item-info").on("click", function () {
+                _resumeSession(session.id, session.title);
+            });
+
+            // Delete button
+            $item.find(".ai-history-item-delete").on("click", function (e) {
+                e.stopPropagation();
+                AIChatHistory.deleteSession(session.id, function () {
+                    _renderHistoryDropdown();
+                });
+            });
+
+            $dropdown.append($item);
+        });
+
+        // Clear all link
+        const $clearAll = $('<div class="ai-history-clear-all">' + Strings.AI_CHAT_HISTORY_CLEAR_ALL + '</div>');
+        $clearAll.on("click", function () {
+            AIChatHistory.clearAllHistory(function () {
+                $panel.find(".ai-session-history-dropdown").removeClass("open");
+                $panel.find(".ai-history-btn").removeClass("active");
+                $panel.removeClass("ai-history-open");
+            });
+        });
+        $dropdown.append($clearAll);
+    }
+
+    /**
+     * Resume a past session: load history, restore visual state, tell node side.
+     */
+    function _resumeSession(sessionId, title) {
+        // Close dropdown
+        $panel.find(".ai-session-history-dropdown").removeClass("open");
+        $panel.find(".ai-history-btn").removeClass("active");
+        $panel.removeClass("ai-history-open");
+
+        // Cancel any in-flight query
+        if (_isStreaming) {
+            _cancelQuery();
+        }
+
+        // Tell node side to set session ID for resume
+        _nodeConnector.execPeer("resumeSession", { sessionId: sessionId }).catch(function (err) {
+            console.warn("[AI UI] Failed to resume session:", err.message);
+        });
+
+        // Load chat history from disk
+        AIChatHistory.loadChatHistory(sessionId, function (err, data) {
+            if (err) {
+                console.warn("[AI UI] Failed to load chat history:", err);
+                // Remove stale metadata entry
+                AIChatHistory.deleteSession(sessionId);
+                return;
+            }
+
+            // Reset state (similar to _newSession but keep session ID)
+            _currentRequestId = null;
+            _segmentText = "";
+            _hasReceivedContent = false;
+            _isStreaming = false;
+            _sessionError = false;
+            _queuedMessage = null;
+            _removeQueueBubble();
+            _firstEditInResponse = true;
+            _undoApplied = false;
+            _firstUserMessage = null;
+            _lastQuestions = null;
+            _attachedImages = [];
+            _renderImagePreview();
+            SnapshotStore.reset();
+            PhoenixConnectors.clearPreviousContentMap();
+
+            // Clear messages and render restored chat
+            $messages.empty();
+
+            // Show "Resumed session" indicator
+            const $indicator = $(
+                '<div class="ai-session-resumed-indicator">' +
+                    '<i class="fa-solid fa-clock-rotate-left"></i> ' +
+                    Strings.AI_CHAT_SESSION_RESUMED +
+                '</div>'
+            );
+            $messages.append($indicator);
+
+            // Render restored messages
+            AIChatHistory.renderRestoredChat(data.messages, $messages, $panel);
+
+            // Set state for continued conversation
+            _currentSessionId = sessionId;
+            _isResumedSession = true;
+            _chatHistory = data.messages ? data.messages.slice() : [];
+
+            // Show "+ New" button, enable input
+            $panel.find(".ai-new-session-btn").show();
+            if ($status) {
+                $status.removeClass("active");
+            }
+            $textarea.prop("disabled", false);
+            $textarea.closest(".ai-chat-input-wrap").removeClass("disabled");
+            $sendBtn.prop("disabled", false);
+            $textarea[0].focus({ preventScroll: true });
+
+            // Scroll to bottom
+            if ($messages && $messages.length) {
+                $messages[0].scrollTop = $messages[0].scrollHeight;
+            }
+        });
     }
 
     // --- Path utilities ---

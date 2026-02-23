@@ -221,6 +221,21 @@ exports.answerQuestion = async function (params) {
 };
 
 /**
+ * Resume a previous session by setting the session ID.
+ * The next sendPrompt call will use queryOptions.resume with this session ID.
+ */
+exports.resumeSession = async function (params) {
+    if (currentAbortController) {
+        currentAbortController.abort();
+        currentAbortController = null;
+    }
+    _questionResolve = null;
+    _queuedClarification = null;
+    currentSessionId = params.sessionId;
+    return { success: true };
+};
+
+/**
  * Destroy the current session (clear session ID).
  */
 exports.destroySession = async function () {
@@ -832,11 +847,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
 
         if (isAbort) {
             _log("Cancelled");
-            // Query was cancelled — clear session so next query starts fresh
+            // Send sessionId so browser side can save partial history for later resume
+            const cancelledSessionId = currentSessionId;
+            // Clear session so next query starts fresh
             currentSessionId = null;
             nodeConnector.triggerPeer("aiComplete", {
                 requestId: requestId,
-                sessionId: null
+                sessionId: cancelledSessionId
             });
             return;
         }
