@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Schermafbeelding van {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "live voorvertoning",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "volledige pagina",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Preview inspecteren",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Taken",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} van {1} taken voltooid",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Selectie L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Regel {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Voorbeeld",
+  "AI_CHAT_COPY_CODE": "Kopierën",
   "DEMO_SECTION1_TITLE": "Bewerk in Live Preview",
   "DEMO_SECTION1_SUBTITLE": "Bewerk je pagina visueel -&nbsp; <b>Je HTML wordt direct bijgewerkt</b>",
   "DEMO_GET_STARTED_BUTTON": "Aan de slag",
@@ -1737,5 +1739,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Preview inspecteren"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Voorbeeldformaat wijzigen",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspecteert het live voorbeeld",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI heeft de voorbeeldgrootte aangepast naar {0}",
+  "AI_CHAT_TOOL_WAIT": "Wacht",
+  "AI_CHAT_TOOL_WAITING": "{0}s wachten",
+  "AI_CHAT_TOOL_WAITED": "{0}s gewacht"
 });

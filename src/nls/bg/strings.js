@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Екранна снимка на {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Преглед на живо",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Цяла страница",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Инспектиране на преглед",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Редактор",
   "AI_CHAT_TOOL_TASKS": "Задачи",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} от {1} изпълнени задачи",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Селекция Р{0}-Р{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Ред {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Преглед на живо",
+  "AI_CHAT_COPY_CODE": "Копиране",
   "DEMO_SECTION1_TITLE": "Редактиране с преглед на живо",
   "DEMO_SECTION1_SUBTITLE": "Редактирайте страницата си визуално -&nbsp; <b>Вашият HTML се обновява незабавно</b>",
   "DEMO_GET_STARTED_BUTTON": "Започнете",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Инспектиране на преглед"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Оразмеряване на прегледа",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI инспектира прегледа на живо",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI оразмери прегледа на {0}",
+  "AI_CHAT_TOOL_WAIT": "Изчакайте",
+  "AI_CHAT_TOOL_WAITING": "Изчакване {0} с",
+  "AI_CHAT_TOOL_WAITED": "Изчакано {0} с",
+  "AI_CHAT_COPIED_CODE": "Копирано"
 });

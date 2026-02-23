@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Snímka obrazovky {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "živý náhľad",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "celá stránka",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Skúmanie náhľadu",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Úlohy",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Hotovo {0} z {1} úloh",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Výber L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Riadok {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Živý náhľad",
+  "AI_CHAT_COPY_CODE": "Kopírovať",
   "DEMO_SECTION1_TITLE": "Úprava v živom náhľade",
   "DEMO_SECTION1_SUBTITLE": "Vizuálne upravujte svoju stránku -&nbsp; <b>Váš HTML kód sa okamžite aktualizuje</b>",
   "DEMO_GET_STARTED_BUTTON": "Začať",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Skúmanie náhľadu"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Zmeniť veľkosť náhľadu",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI kontroluje živý náhľad",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI zmenila veľkosť náhľadu na {0}",
+  "AI_CHAT_TOOL_WAIT": "Počkať",
+  "AI_CHAT_TOOL_WAITING": "Čaká sa {0} s",
+  "AI_CHAT_TOOL_WAITED": "Počkalo sa {0} s",
+  "AI_CHAT_COPIED_CODE": "Skopírované"
 });

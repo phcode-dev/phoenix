@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0} ekrānuzņēmums",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Tiešraides priekšskatījums",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Pilna lapa",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pārbauda priekšskatījumu",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Redaktors",
   "AI_CHAT_TOOL_TASKS": "Uzdevumi",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Paveikti {0} no {1} uzdevumiem",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Atlase L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Rinda {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Tiešais priekšskatījums",
+  "AI_CHAT_COPY_CODE": "Kopēt",
   "DEMO_SECTION1_TITLE": "Rediģēt tiešraides priekšskatījumā",
   "DEMO_SECTION1_SUBTITLE": "Rediģējiet savu lapu vizuāli -&nbsp; <b>Jūsu HTML tiek atjaunināts nekavējoties</b>",
   "DEMO_GET_STARTED_BUTTON": "Sākt darbu",
@@ -1737,5 +1739,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pārbauda priekšskatījumu"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Mainīt priekšskatījuma izmēru",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI pārbauda tiešraides priekšskatījumu",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI mainīja priekšskatījuma izmēru uz {0}",
+  "AI_CHAT_TOOL_WAIT": "Gaidīt",
+  "AI_CHAT_TOOL_WAITING": "Gaida {0} s",
+  "AI_CHAT_TOOL_WAITED": "Nogaidīja {0} s"
 });

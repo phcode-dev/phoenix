@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Screenshot di {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "anteprima in tempo reale",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "pagina intera",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Ispezionando anteprima",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Attività",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} di {1} attività completate",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Selezione L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Riga {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Anteprima Live",
+  "AI_CHAT_COPY_CODE": "Copia",
   "DEMO_SECTION1_TITLE": "Modifica in Anteprima dal vivo",
   "DEMO_SECTION1_SUBTITLE": "Modifica la tua pagina visivamente -&nbsp; <b>Il tuo HTML si aggiorna istantaneamente</b>",
   "DEMO_GET_STARTED_BUTTON": "Inizia",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Ispezionando anteprima"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Ridimensiona anteprima",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "L'IA sta ispezionando l'anteprima dal vivo",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "L'IA ha ridimensionato l'anteprima a {0}",
+  "AI_CHAT_TOOL_WAIT": "Attendi",
+  "AI_CHAT_TOOL_WAITING": "In attesa per {0} s",
+  "AI_CHAT_TOOL_WAITED": "Attesa di {0} s completata",
+  "AI_CHAT_COPIED_CODE": "Copiato"
 });

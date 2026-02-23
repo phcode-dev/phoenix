@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Snimka zaslona od {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "pregled uživo",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "cijela stranica",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pregledavanje pretpregleda",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Uređivač",
   "AI_CHAT_TOOL_TASKS": "Zadaci",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} od {1} zadataka dovršeno",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Selekcija L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Linija {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Prikaz uživo",
+  "AI_CHAT_COPY_CODE": "Kopiraj",
   "DEMO_SECTION1_TITLE": "Uređivanje u pregledu uživo",
   "DEMO_SECTION1_SUBTITLE": "Vizualno uredite svoju stranicu -&nbsp; <b>Vaš HTML se trenutno ažurira</b>",
   "DEMO_GET_STARTED_BUTTON": "Započnite",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pregledavanje pretpregleda"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Promijeni veličinu pretpregleda",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI pregledava pretpregled uživo",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI je promijenio veličinu pretpregleda na {0}",
+  "AI_CHAT_TOOL_WAIT": "Pričekaj",
+  "AI_CHAT_TOOL_WAITING": "Čeka se {0}s",
+  "AI_CHAT_TOOL_WAITED": "Pričekano {0}s",
+  "AI_CHAT_COPIED_CODE": "Kopirano"
 });

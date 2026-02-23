@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Skärmdump av {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "direktförhandsgranskning",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "hela sidan",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Granskar förhandsgranskning",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Redigerare",
   "AI_CHAT_TOOL_TASKS": "Uppgifter",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} av {1} uppgifter klara",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Markering L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Rad {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Förhandsvisning",
+  "AI_CHAT_COPY_CODE": "Kopiera",
   "DEMO_SECTION1_TITLE": "Redigera i live-förhandsvisning",
   "DEMO_SECTION1_SUBTITLE": "Redigera din sida visuellt -&nbsp; <b>Din HTML uppdateras omedelbart</b>",
   "DEMO_GET_STARTED_BUTTON": "Kom igång",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Granskar förhandsgranskning"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Ändra storlek på förhandsgranskning",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI granskar live-förhandsgranskningen",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI ändrade storlek på förhandsgranskningen till {0}",
+  "AI_CHAT_TOOL_WAIT": "Vänta",
+  "AI_CHAT_TOOL_WAITING": "Väntar {0} s",
+  "AI_CHAT_TOOL_WAITED": "Väntat i {0} s",
+  "AI_CHAT_COPIED_CODE": "Kopierat"
 });

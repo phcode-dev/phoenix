@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "اسکرین‌شات از {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "پیش‌نمایش زنده",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "صفحه کامل",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "در حال بررسی پیش‌نمایش",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "ویرایشگر",
   "AI_CHAT_TOOL_TASKS": "وظایف",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} از {1} وظیفه انجام شده",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "انتخاب L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "خط {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "پیش نمایش زنده",
+  "AI_CHAT_COPY_CODE": "رونوشت",
   "DEMO_SECTION1_TITLE": "ویرایش در پیش‌نمایش زنده",
   "DEMO_SECTION1_SUBTITLE": "صفحه خود را به صورت بصری ویرایش کنید -&nbsp; <b>کد HTML شما فوراً به‌روز می‌شود</b>",
   "DEMO_GET_STARTED_BUTTON": "شروع کنید",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "در حال بررسی پیش‌نمایش"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "تغییر اندازه پیش‌نمایش",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "هوش مصنوعی در حال بررسی پیش‌نمایش زنده است",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "هوش مصنوعی اندازه پیش‌نمایش را به {0} تغییر داد",
+  "AI_CHAT_TOOL_WAIT": "صبر کنید",
+  "AI_CHAT_TOOL_WAITING": "در حال انتظار برای {0} ثانیه",
+  "AI_CHAT_TOOL_WAITED": "انتظار {0} ثانیه‌ای به پایان رسید",
+  "AI_CHAT_COPIED_CODE": "کپی شد"
 });

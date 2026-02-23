@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0} کا اسکرین شاٹ",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "لائیو پیش منظر",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "مکمل صفحہ",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "پیش نظارہ کا معائنہ جاری ہے",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "ایڈیٹر",
   "AI_CHAT_TOOL_TASKS": "ٹاسکس",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} میں سے {0} ٹاسکس مکمل",
@@ -1737,5 +1738,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "پیش نظارہ کا معائنہ جاری ہے"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "پیش منظر کا سائز تبدیل کریں",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI لائیو پیش منظر کا معائنہ کر رہا ہے",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI نے پیش منظر کا سائز {0} کر دیا",
+  "AI_CHAT_TOOL_WAIT": "انتظار کریں",
+  "AI_CHAT_TOOL_WAITING": "{0} سیکنڈ انتظار ہو رہا ہے",
+  "AI_CHAT_TOOL_WAITED": "{0} سیکنڈ کا انتظار مکمل ہوا",
+  "AI_CHAT_COPY_CODE": "کاپی کریں",
+  "AI_CHAT_COPIED_CODE": "کاپی ہو گیا"
 });

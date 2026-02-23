@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Captura de pantalla de {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Vista previa en vivo",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Página completa",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspeccionando la vista previa",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Tareas",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} de {1} tareas completadas",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Selección L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Línea {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Vista previa dinámica",
+  "AI_CHAT_COPY_CODE": "Copiar",
   "DEMO_SECTION1_TITLE": "Editar en Vista Previa en Vivo",
   "DEMO_SECTION1_SUBTITLE": "Edita tu página visualmente -&nbsp; <b>Tu HTML se actualiza al instante</b>",
   "DEMO_GET_STARTED_BUTTON": "Empezar",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspeccionando la vista previa"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Redimensionar vista previa",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "La IA está inspeccionando la vista previa en vivo",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "La IA ha redimensionado la vista previa a {0}",
+  "AI_CHAT_TOOL_WAIT": "Esperar",
+  "AI_CHAT_TOOL_WAITING": "Esperando {0} s",
+  "AI_CHAT_TOOL_WAITED": "Espera de {0} s finalizada",
+  "AI_CHAT_COPIED_CODE": "¡Copiado"
 });

@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Screenshot von {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Live-Vorschau",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Ganze Seite",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspiziere Vorschau",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Aufgaben",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} von {1} Aufgaben erledigt",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Auswahl Z{0}-Z{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Zeile {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live-Vorschau",
+  "AI_CHAT_COPY_CODE": "Kopieren",
   "DEMO_SECTION1_TITLE": "In Live-Vorschau bearbeiten",
   "DEMO_SECTION1_SUBTITLE": "Bearbeite deine Seite visuell -&nbsp; <b>Dein HTML aktualisiert sich sofort</b>",
   "DEMO_GET_STARTED_BUTTON": "Los geht's",
@@ -1737,5 +1739,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspiziere Vorschau"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Vorschaugröße ändern",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "KI untersucht die Live-Vorschau",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "KI hat die Vorschaugröße auf {0} geändert",
+  "AI_CHAT_TOOL_WAIT": "Warten",
+  "AI_CHAT_TOOL_WAITING": "Warte {0} s",
+  "AI_CHAT_TOOL_WAITED": "{0} s gewartet"
 });
