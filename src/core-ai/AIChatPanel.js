@@ -643,7 +643,8 @@ define(function (require, exports, module) {
         "mcp__phoenix-editor__resizeLivePreview":   { icon: "fa-solid fa-arrows-left-right", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW },
         "mcp__phoenix-editor__wait":                { icon: "fa-solid fa-hourglass-half", color: "#adb9bd", label: Strings.AI_CHAT_TOOL_WAIT },
         TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS },
-        AskUserQuestion: { icon: "fa-solid fa-circle-question", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_QUESTION }
+        AskUserQuestion: { icon: "fa-solid fa-circle-question", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_QUESTION },
+        Task: { icon: "fa-solid fa-diagram-project", color: "#6b9eff", label: Strings.AI_CHAT_TOOL_TASK }
     };
 
     function _onProgress(_event, data) {
@@ -1542,6 +1543,17 @@ define(function (require, exports, module) {
             $tool.find(".ai-tool-header").on("click", function () {
                 $tool.toggleClass("ai-tool-expanded");
             }).css("cursor", "pointer");
+        } else if (toolName === "Task" && toolInput) {
+            const $detail = $('<div class="ai-tool-detail"></div>');
+            const desc = toolInput.description || toolInput.prompt || "";
+            if (desc) {
+                $detail.append($('<div class="ai-tool-detail-line"></div>').text(desc.slice(0, 200)));
+            }
+            $tool.append($detail);
+            $tool.addClass("ai-tool-expanded");
+            $tool.find(".ai-tool-header").on("click", function () {
+                $tool.toggleClass("ai-tool-expanded");
+            }).css("cursor", "pointer");
         } else if (detail.lines && detail.lines.length) {
             // Add expandable detail if available
             const $detail = $('<div class="ai-tool-detail"></div>');
@@ -1672,6 +1684,17 @@ define(function (require, exports, module) {
             return {
                 summary: Strings.AI_CHAT_TOOL_QUESTION,
                 lines: qs.map(function (q) { return q.question; })
+            };
+        }
+        case "Task": {
+            const desc = input.description || input.prompt || "";
+            const agentType = input.subagent_type || "";
+            const summary = agentType
+                ? StringUtils.format(Strings.AI_CHAT_TOOL_TASK_NAME, agentType)
+                : Strings.AI_CHAT_TOOL_TASK;
+            return {
+                summary: summary,
+                lines: desc ? [desc.split("\n")[0].slice(0, 120)] : []
             };
         }
         case "TodoWrite": {
