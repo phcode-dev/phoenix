@@ -41,6 +41,9 @@ define(function (require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         marked              = require("thirdparty/marked.min");
 
+    // Capture at module load time — window.KernalModeTrust is deleted before extensions load
+    const _KernalModeTrust = window.KernalModeTrust;
+
     let _nodeConnector = null;
     let _isStreaming = false;
     let _queuedMessage = null;  // text queued by user while AI is streaming
@@ -86,6 +89,7 @@ define(function (require, exports, module) {
 
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn, $imagePreview;
+    let $aiTabContainer = null;
 
     // Live DOM query for $messages — the cached $messages reference can become stale
     // after SidebarTabs reparents the panel. Use this for any deferred operations
@@ -148,6 +152,7 @@ define(function (require, exports, module) {
                 '<div class="ai-unavailable-message">' +
                     Strings.AI_CHAT_DESKTOP_ONLY +
                 '</div>' +
+                '<button class="ai-upsell-btn ai-download-btn">' + Strings.AI_CHAT_DOWNLOAD_BTN + '</button>' +
             '</div>' +
         '</div>';
 
@@ -185,16 +190,138 @@ define(function (require, exports, module) {
             }
         });
 
-        // Check availability and render appropriate UI
-        _checkAvailability();
+        // Create container once, add to AI tab
+        $aiTabContainer = $('<div class="ai-tab-container"></div>');
+        SidebarTabs.addToTab("ai", $aiTabContainer);
+
+        // Listen for entitlement changes to refresh UI on login/logout
+        const EntitlementsManager = _KernalModeTrust && _KernalModeTrust.EntitlementsManager;
+        if (EntitlementsManager) {
+            EntitlementsManager.on(EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED, _checkEntitlementAndInit);
+        }
+
+        // Check entitlements and render appropriate UI
+        _checkEntitlementAndInit();
     }
 
     /**
      * Show placeholder UI for non-native (browser) builds.
      */
     function initPlaceholder() {
+        $aiTabContainer = $('<div class="ai-tab-container"></div>');
+        SidebarTabs.addToTab("ai", $aiTabContainer);
         const $placeholder = $(PLACEHOLDER_HTML);
-        SidebarTabs.addToTab("ai", $placeholder);
+        $placeholder.find(".ai-download-btn").on("click", function () {
+            window.open("https://phcode.io", "_blank");
+        });
+        $aiTabContainer.empty().append($placeholder);
+    }
+
+    /**
+     * Remove any existing panel content from the AI tab container.
+     */
+    function _removeCurrentPanel() {
+        if ($aiTabContainer) {
+            $aiTabContainer.empty();
+        }
+        // Clear cached DOM references so stale jQuery objects aren't reused
+        $panel = null;
+        $messages = null;
+        $status = null;
+        $statusText = null;
+        $textarea = null;
+        $sendBtn = null;
+        $stopBtn = null;
+        $imagePreview = null;
+    }
+
+    /**
+     * Gate AI UI behind entitlement checks. Shows login screen if not logged in,
+     * upsell screen if no AI plan, or proceeds to CLI availability check if entitled.
+     */
+    function _checkEntitlementAndInit() {
+        _removeCurrentPanel();
+        const EntitlementsManager = _KernalModeTrust && _KernalModeTrust.EntitlementsManager;
+        if (!EntitlementsManager) {
+            // No entitlement system (test env or dev) — skip straight to CLI check
+            _checkAvailability();
+            return;
+        }
+        EntitlementsManager.getAIEntitlement().then(function (entitlement) {
+            if (entitlement.aiDisabledByAdmin) {
+                _renderAdminDisabledUI();
+            } else if (entitlement.activated) {
+                _checkAvailability();
+            } else if (entitlement.needsLogin) {
+                _renderLoginUI();
+            } else {
+                _renderUpsellUI(entitlement);
+            }
+        }).catch(function () {
+            _checkAvailability(); // fallback on error
+        });
+    }
+
+    /**
+     * Render the login prompt UI (user not signed in).
+     */
+    function _renderLoginUI() {
+        const html =
+            '<div class="ai-chat-panel">' +
+                '<div class="ai-unavailable">' +
+                    '<div class="ai-unavailable-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>' +
+                    '<div class="ai-unavailable-title">' + Strings.AI_CHAT_LOGIN_TITLE + '</div>' +
+                    '<div class="ai-unavailable-message">' +
+                        Strings.AI_CHAT_LOGIN_MESSAGE +
+                    '</div>' +
+                    '<button class="ai-retry-btn ai-login-btn">' + Strings.AI_CHAT_LOGIN_BTN + '</button>' +
+                '</div>' +
+            '</div>';
+        const $login = $(html);
+        $login.find(".ai-login-btn").on("click", function () {
+            _KernalModeTrust.EntitlementsManager.loginToAccount();
+        });
+        $aiTabContainer.empty().append($login);
+    }
+
+    /**
+     * Render the upsell UI (user logged in but no AI plan).
+     */
+    function _renderUpsellUI(entitlement) {
+        const html =
+            '<div class="ai-chat-panel">' +
+                '<div class="ai-unavailable">' +
+                    '<div class="ai-unavailable-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>' +
+                    '<div class="ai-unavailable-title">' + Strings.AI_CHAT_UPSELL_TITLE + '</div>' +
+                    '<div class="ai-unavailable-message">' +
+                        Strings.AI_CHAT_UPSELL_MESSAGE +
+                    '</div>' +
+                    '<button class="ai-upsell-btn">' + Strings.AI_CHAT_UPSELL_BTN + '</button>' +
+                '</div>' +
+            '</div>';
+        const $upsell = $(html);
+        $upsell.find(".ai-upsell-btn").on("click", function () {
+            const url = (entitlement && entitlement.buyURL) || brackets.config.purchase_url;
+            Phoenix.app.openURLInDefaultBrowser(url);
+        });
+        $aiTabContainer.empty().append($upsell);
+    }
+
+    /**
+     * Render the admin-disabled UI (AI turned off by system administrator).
+     */
+    function _renderAdminDisabledUI() {
+        const html =
+            '<div class="ai-chat-panel">' +
+                '<div class="ai-unavailable">' +
+                    '<div class="ai-unavailable-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>' +
+                    '<div class="ai-unavailable-title">' + Strings.AI_CHAT_ADMIN_DISABLED_TITLE + '</div>' +
+                    '<div class="ai-unavailable-message">' +
+                        Strings.AI_CHAT_ADMIN_DISABLED_MESSAGE +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        $aiTabContainer.empty().append($(html));
     }
 
     /**
@@ -419,7 +546,7 @@ define(function (require, exports, module) {
             _newSession();
         });
 
-        SidebarTabs.addToTab("ai", $panel);
+        $aiTabContainer.empty().append($panel);
     }
 
     /**
@@ -428,10 +555,9 @@ define(function (require, exports, module) {
     function _renderUnavailableUI(error) {
         const $unavailable = $(UNAVAILABLE_HTML);
         $unavailable.find(".ai-retry-btn").on("click", function () {
-            $unavailable.remove();
             _checkAvailability();
         });
-        SidebarTabs.addToTab("ai", $unavailable);
+        $aiTabContainer.empty().append($unavailable);
     }
 
     // --- Context bar chip management ---
