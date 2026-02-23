@@ -942,6 +942,32 @@
     }
 }
 
+/* ── New Chat button after fatal error ─────────────────────────────── */
+.ai-msg-new-chat {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0;
+
+    .ai-error-new-chat-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: none;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: @project-panel-text-2;
+        font-size: @sidebar-small-font-size;
+        padding: 4px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+            color: @project-panel-text-1;
+        }
+    }
+}
+
 /* ── Status bar ─────────────────────────────────────────────────────── */
 .ai-chat-status {
     display: none;
