@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Screenshot of {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "live preview",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "full page",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecting preview",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Tasks",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} of {1} tasks done",
@@ -1737,5 +1738,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecting preview"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Resize preview",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI is inspecting the live preview",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI resized preview to {0}",
+  "AI_CHAT_TOOL_WAIT": "Wait",
+  "AI_CHAT_TOOL_WAITING": "Waiting {0}s",
+  "AI_CHAT_TOOL_WAITED": "Done waiting {0}s",
+  "AI_CHAT_COPY_CODE": "Copy",
+  "AI_CHAT_COPIED_CODE": "Copied"
 });

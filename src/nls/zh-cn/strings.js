@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0}的截图",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "实时预览",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "整页",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "正在检查预览",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "编辑器",
   "AI_CHAT_TOOL_TASKS": "任务",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} 项任务已完成 {0} 项",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "选中内容 L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "第 {0} 行",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "实时预览",
+  "AI_CHAT_COPY_CODE": "复制",
   "DEMO_SECTION1_TITLE": "在实时预览中编辑",
   "DEMO_SECTION1_SUBTITLE": "可视化编辑页面 -&nbsp; <b>HTML 代码即时更新</b>",
   "DEMO_GET_STARTED_BUTTON": "开始使用",
@@ -1737,5 +1739,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "正在检查预览"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "调整预览大小",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI 正在检查实时预览",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI 已将预览大小调整为 {0}",
+  "AI_CHAT_TOOL_WAIT": "等待",
+  "AI_CHAT_TOOL_WAITING": "正在等待 {0} 秒",
+  "AI_CHAT_TOOL_WAITED": "已等待 {0} 秒"
 });

@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Tangkapan layar dari {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "pratinjau langsung",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "halaman penuh",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Menginspeksi pratinjau",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Tugas",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} dari {1} tugas selesai",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Seleksi L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Baris {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Tinjauan Langsung",
+  "AI_CHAT_COPY_CODE": "Salin",
   "DEMO_SECTION1_TITLE": "Edit di Pratinjau Langsung",
   "DEMO_SECTION1_SUBTITLE": "Edit halaman Anda secara visual -&nbsp; <b>HTML Anda langsung diperbarui</b>",
   "DEMO_GET_STARTED_BUTTON": "Mulai",
@@ -1737,5 +1739,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Menginspeksi pratinjau"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Ubah ukuran pratinjau",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI sedang memeriksa pratinjau langsung",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI mengubah ukuran pratinjau menjadi {0}",
+  "AI_CHAT_TOOL_WAIT": "Tunggu",
+  "AI_CHAT_TOOL_WAITING": "Menunggu {0} detik",
+  "AI_CHAT_TOOL_WAITED": "Selesai menunggu {0} detik"
 });

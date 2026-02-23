@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0}-ന്റെ സ്ക്രീൻഷോട്ട്",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "തത്സമയ പ്രിവ്യൂ",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "മുഴുവൻ പേജ്",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "പ്രിവ്യൂ പരിശോധിക്കുന്നു",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "എഡിറ്റർ",
   "AI_CHAT_TOOL_TASKS": "ടാസ്ക്കുകൾ",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} ടാസ്ക്കുകളിൽ {0} എണ്ണം പൂർത്തിയായി",
@@ -1737,5 +1738,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "പ്രിവ്യൂ പരിശോധിക്കുന്നു"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "പ്രിവ്യൂവിന്റെ വലുപ്പം മാറ്റുക",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI ലൈവ് പ്രിവ്യൂ പരിശോധിക്കുന്നു",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI പ്രിവ്യൂവിന്റെ വലുപ്പം {0} ആക്കി മാറ്റി",
+  "AI_CHAT_TOOL_WAIT": "കാത്തിരിക്കുക",
+  "AI_CHAT_TOOL_WAITING": "{0} സെക്കൻഡ് കാത്തിരിക്കുന്നു",
+  "AI_CHAT_TOOL_WAITED": "{0} സെക്കൻഡ് കാത്തിരിപ്പ് കഴിഞ്ഞു",
+  "AI_CHAT_COPY_CODE": "പകർത്തുക",
+  "AI_CHAT_COPIED_CODE": "പകർത്തി"
 });

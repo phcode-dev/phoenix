@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Снимак екрана {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Преглед уживо",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Цела страница",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Проверавање прегледа",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Уређивач",
   "AI_CHAT_TOOL_TASKS": "Задаци",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Завршено {0} од {1} задатака",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Селекција Л{0}-Л{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Линија {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Живи приказ",
+  "AI_CHAT_COPY_CODE": "Копирај",
   "DEMO_SECTION1_TITLE": "Уреди у прегледу уживо",
   "DEMO_SECTION1_SUBTITLE": "Визуелно уредите своју страницу -&nbsp; <b>Ваш HTML се тренутно ажурира</b>",
   "DEMO_GET_STARTED_BUTTON": "Започни",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Проверавање прегледа"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Промени величину прегледа",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI анализира преглед уживо",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI је променио величину прегледа на {0}",
+  "AI_CHAT_TOOL_WAIT": "Сачекај",
+  "AI_CHAT_TOOL_WAITING": "Чекање {0} с",
+  "AI_CHAT_TOOL_WAITED": "Сачекано {0} с",
+  "AI_CHAT_COPIED_CODE": "Копирано"
 });

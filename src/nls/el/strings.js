@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Στιγμιότυπο οθόνης του {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Ζωντανή προεπισκόπηση",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Πλήρης σελίδα",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Εξέταση προεπισκόπησης",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Επεξεργαστής",
   "AI_CHAT_TOOL_TASKS": "Εργασίες",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} από {1} εργασίες ολοκληρώθηκαν",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Επιλογή L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Γραμμή {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Preview",
+  "AI_CHAT_COPY_CODE": "Αντιγραφή",
   "DEMO_SECTION1_TITLE": "Επεξεργασία σε Ζωντανή Προεπισκόπηση",
   "DEMO_SECTION1_SUBTITLE": "Επεξεργαστείτε τη σελίδα σας οπτικά -&nbsp; <b>Ο κώδικας HTML ενημερώνεται άμεσα</b>",
   "DEMO_GET_STARTED_BUTTON": "Ξεκινήστε",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Εξέταση προεπισκόπησης"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Αλλαγή μεγέθους προεπισκόπησης",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "Η AI εξετάζει τη ζωντανή προεπισκόπηση",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "Η AI άλλαξε το μέγεθος της προεπισκόπησης σε {0}",
+  "AI_CHAT_TOOL_WAIT": "Αναμονή",
+  "AI_CHAT_TOOL_WAITING": "Αναμονή {0}δ",
+  "AI_CHAT_TOOL_WAITED": "Η αναμονή {0}δ ολοκληρώθηκε",
+  "AI_CHAT_COPIED_CODE": "Αντιγράφηκε"
 });

@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0}のスクリーンショット",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "ライブプレビュー",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "フルページ",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "プレビューを検査中",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "エディター",
   "AI_CHAT_TOOL_TASKS": "タスク",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1}件中{0}件のタスクが完了",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "選択範囲 L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "行 {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "ライブプレビュー",
+  "AI_CHAT_COPY_CODE": "コピー",
   "DEMO_SECTION1_TITLE": "ライブプレビューで編集",
   "DEMO_SECTION1_SUBTITLE": "ページをビジュアルに編集&nbsp;—&nbsp;<b>HTMLが瞬時に更新されます</b>",
   "DEMO_GET_STARTED_BUTTON": "開始する",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "プレビューを検査中"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "プレビューをリサイズ",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AIがライブプレビューを確認しています",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AIがプレビューを{0}にリサイズしました",
+  "AI_CHAT_TOOL_WAIT": "待機",
+  "AI_CHAT_TOOL_WAITING": "{0}秒待機中",
+  "AI_CHAT_TOOL_WAITED": "{0}秒間待機しました",
+  "AI_CHAT_COPIED_CODE": "コピーしました！"
 });

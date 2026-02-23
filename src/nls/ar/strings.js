@@ -1736,5 +1736,14 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "شيء آخر",
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "جاري فحص المعاينة",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "تغيير حجم المعاينة",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "الذكاء الاصطناعي يفحص المعاينة المباشرة",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "قام الذكاء الاصطناعي بتغيير حجم المعاينة إلى {0}",
+  "AI_CHAT_TOOL_WAIT": "انتظر",
+  "AI_CHAT_TOOL_WAITING": "جاري الانتظار {0} ث",
+  "AI_CHAT_TOOL_WAITED": "تم الانتظار {0} ث",
+  "AI_CHAT_COPY_CODE": "نسخ",
+  "AI_CHAT_COPIED_CODE": "تم النسخ"
 });

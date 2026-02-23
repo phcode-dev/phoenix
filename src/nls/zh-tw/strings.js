@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0} 的螢幕截圖",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "即時預覽",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "完整頁面",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "檢視預覽",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "編輯器",
   "AI_CHAT_TOOL_TASKS": "任務",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "已完成 {0}/{1} 項任務",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "選取範圍 L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "第 {0} 行",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "即時預覽",
+  "AI_CHAT_COPY_CODE": "複製",
   "DEMO_SECTION1_TITLE": "即時預覽編輯",
   "DEMO_SECTION1_SUBTITLE": "視覺化編輯頁面 -&nbsp; <b>HTML 即時更新</b>",
   "DEMO_GET_STARTED_BUTTON": "開始使用",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "檢視預覽"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "調整預覽大小",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI 正在檢視即時預覽",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI 已將預覽大小調整為 {0}",
+  "AI_CHAT_TOOL_WAIT": "等待",
+  "AI_CHAT_TOOL_WAITING": "等待中 {0} 秒",
+  "AI_CHAT_TOOL_WAITED": "已等待 {0} 秒",
+  "AI_CHAT_COPIED_CODE": "已複製！"
 });

@@ -1613,6 +1613,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Captură de ecran a {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Previzualizare live",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Pagină întreagă",
+  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Se inspectează previzualizarea",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Sarcini",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} din {1} sarcini finalizate",
@@ -1646,6 +1647,7 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Selecție L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Rândul {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Previzualizare interactivă",
+  "AI_CHAT_COPY_CODE": "Copiază",
   "DEMO_SECTION1_TITLE": "Editează în Previzualizare Live",
   "DEMO_SECTION1_SUBTITLE": "Editează-ți pagina vizual -&nbsp; <b>HTML-ul tău se actualizează instantaneu</b>",
   "DEMO_GET_STARTED_BUTTON": "Începe",
@@ -1737,5 +1739,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Se inspectează previzualizarea"
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Redimensionează previzualizarea",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspectează previzualizarea live",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI a redimensionat previzualizarea la {0}",
+  "AI_CHAT_TOOL_WAIT": "Așteaptă",
+  "AI_CHAT_TOOL_WAITING": "Se așteaptă {0}s",
+  "AI_CHAT_TOOL_WAITED": "S-a așteptat {0}s",
+  "AI_CHAT_COPIED_CODE": "Copiat"
 });
