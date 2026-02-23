@@ -1,0 +1,24 @@
+{
+    "id": "other-ans-sess",
+    "title": "Configure the build",
+    "timestamp": 1700000000000,
+    "messages": [
+        { "type": "user", "text": "Configure the build" },
+        {
+            "type": "question",
+            "questions": [
+                {
+                    "question": "Which bundler?",
+                    "options": [
+                        { "label": "Webpack", "description": "Established bundler" },
+                        { "label": "Vite", "description": "Fast dev server" }
+                    ]
+                }
+            ],
+            "answers": {
+                "Which bundler?": "Rollup with custom plugins"
+            }
+        },
+        { "type": "complete" }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "id": "simple-sess",
+    "title": "What is 2+2?",
+    "timestamp": 1700000000000,
+    "messages": [
+        { "type": "user", "text": "What is 2+2?" },
+        { "type": "assistant", "markdown": "The answer is **4**.", "isFirst": true },
+        { "type": "complete" }
+    ]
+}

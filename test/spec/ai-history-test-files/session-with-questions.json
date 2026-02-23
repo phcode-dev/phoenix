@@ -1,0 +1,37 @@
+{
+    "id": "q-sess",
+    "title": "Set up authentication",
+    "timestamp": 1700000000000,
+    "messages": [
+        { "type": "user", "text": "Set up authentication" },
+        { "type": "assistant", "markdown": "I have a few questions before I start.", "isFirst": true },
+        {
+            "type": "question",
+            "questions": [
+                {
+                    "question": "Which auth method do you prefer?",
+                    "options": [
+                        { "label": "JWT", "description": "Stateless token-based auth" },
+                        { "label": "Session", "description": "Server-side session storage" },
+                        { "label": "OAuth", "description": "Third-party provider auth" }
+                    ]
+                },
+                {
+                    "question": "Which database?",
+                    "options": [
+                        { "label": "PostgreSQL", "description": "Relational database" },
+                        { "label": "MongoDB", "description": "Document database" }
+                    ]
+                }
+            ],
+            "answers": {
+                "Which auth method do you prefer?": "JWT",
+                "Which database?": "PostgreSQL"
+            }
+        },
+        { "type": "assistant", "markdown": "Great, I'll set up JWT auth with PostgreSQL." },
+        { "type": "tool", "toolName": "Write", "summary": "Writing auth/jwt.js", "icon": "fa-solid fa-file-pen", "color": "#e8a838", "elapsed": 0.8 },
+        { "type": "tool_edit", "file": "/src/auth/jwt.js", "linesAdded": 45, "linesRemoved": 0 },
+        { "type": "complete" }
+    ]
+}

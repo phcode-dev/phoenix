@@ -298,6 +298,7 @@ define(function (require, exports, module) {
             SidebarView: require("project/SidebarView"),
             WorkingSetView: require("project/WorkingSetView"),
             AISnapshotStore: require("core-ai/AISnapshotStore"),
+            AIChatHistory: require("core-ai/AIChatHistory"),
             doneLoading: false
         };
 
