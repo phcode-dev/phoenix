@@ -247,13 +247,27 @@ define(function (require, exports, module) {
             _checkAvailability();
             return;
         }
-        EntitlementsManager.getAIEntitlement().then(function (entitlement) {
-            if (entitlement.aiDisabledByAdmin) {
-                _renderAdminDisabledUI();
-            } else if (entitlement.activated) {
+        if (!EntitlementsManager.isLoggedIn()) {
+            _renderLoginUI();
+            return;
+        }
+        // TODO: Switch to EntitlementsManager.getAIEntitlement() once AI entitlement is
+        // implemented in the backend. For now, reuse liveEdit entitlement as a proxy for
+        // "has Pro plan". Once AI entitlement is available, the check should be:
+        //   EntitlementsManager.getAIEntitlement().then(function (entitlement) {
+        //       if (entitlement.aiDisabledByAdmin) {
+        //           _renderAdminDisabledUI();
+        //       } else if (entitlement.activated) {
+        //           _checkAvailability();
+        //       } else if (entitlement.needsLogin) {
+        //           _renderLoginUI();
+        //       } else {
+        //           _renderUpsellUI(entitlement);
+        //       }
+        //   });
+        EntitlementsManager.getLiveEditEntitlement().then(function (entitlement) {
+            if (entitlement.activated) {
                 _checkAvailability();
-            } else if (entitlement.needsLogin) {
-                _renderLoginUI();
             } else {
                 _renderUpsellUI(entitlement);
             }
