@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Oczekiwanie {0}s",
   "AI_CHAT_TOOL_WAITED": "Poczekano {0}s",
   "AI_CHAT_COPY_CODE": "Kopiuj",
+  "AI_CHAT_COPIED_CODE": "Skopiowano",
   "DEMO_SECTION1_TITLE": "Edytuj w podglądzie na żywo",
   "DEMO_SECTION1_SUBTITLE": "Edytuj stronę wizualnie -&nbsp; <b>Twój kod HTML aktualizuje się natychmiast</b>",
   "DEMO_GET_STARTED_BUTTON": "Rozpocznij",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_COPIED_CODE": "Skopiowano"
+  "REFERENCES_PANEL_TITLE": "Odwołania",
+  "SEARCH_RESULTS_PANEL_TITLE": "Wyniki wyszukiwania",
+  "BOTTOM_PANEL_HIDE": "Ukryj panel",
+  "BOTTOM_PANEL_SHOW": "Pokaż panel dolny",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Ukryj panel dolny",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Szybki dostęp",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Otwórz panel",
+  "BOTTOM_PANEL_MAXIMIZE": "Maksymalizuj panel",
+  "BOTTOM_PANEL_RESTORE": "Przywróć rozmiar panelu",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Dodaj"
 });

@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Várakozás: {0} mp",
   "AI_CHAT_TOOL_WAITED": "Várakozás befejezve: {0} mp",
   "AI_CHAT_COPY_CODE": "Másolás",
+  "AI_CHAT_COPIED_CODE": "Másolva!",
   "DEMO_SECTION1_TITLE": "Szerkesztés élő előnézetben",
   "DEMO_SECTION1_SUBTITLE": "Szerkessze oldalát vizuálisan -&nbsp; <b>A HTML-kód azonnal frissül</b>",
   "DEMO_GET_STARTED_BUTTON": "Kezdés",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_COPIED_CODE": "Másolva!"
+  "REFERENCES_PANEL_TITLE": "Hivatkozások",
+  "SEARCH_RESULTS_PANEL_TITLE": "Keresési eredmények",
+  "BOTTOM_PANEL_HIDE": "Panel elrejtése",
+  "BOTTOM_PANEL_SHOW": "Alsó panel megjelenítése",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Alsó panel elrejtése",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Gyorselérés",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Panel megnyitása",
+  "BOTTOM_PANEL_MAXIMIZE": "Panel maximalizálása",
+  "BOTTOM_PANEL_RESTORE": "Panelméret visszaállítása",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Hozzáadás"
 });

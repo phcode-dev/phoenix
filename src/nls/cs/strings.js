@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Čeká se {0} s",
   "AI_CHAT_TOOL_WAITED": "Počkáno {0} s",
   "AI_CHAT_COPY_CODE": "Kopírovat",
+  "AI_CHAT_COPIED_CODE": "Zkopírováno!",
   "DEMO_SECTION1_TITLE": "Upravit v živém náhledu",
   "DEMO_SECTION1_SUBTITLE": "Upravujte svou stránku vizuálně -&nbsp; <b>Váš kód HTML se okamžitě aktualizuje</b>",
   "DEMO_GET_STARTED_BUTTON": "Začít",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_COPIED_CODE": "Zkopírováno!"
+  "REFERENCES_PANEL_TITLE": "Reference",
+  "SEARCH_RESULTS_PANEL_TITLE": "Výsledky vyhledávání",
+  "BOTTOM_PANEL_HIDE": "Skrýt panel",
+  "BOTTOM_PANEL_SHOW": "Zobrazit spodní panel",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Skrýt spodní panel",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Rychlý přístup",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Otevřít panel",
+  "BOTTOM_PANEL_MAXIMIZE": "Maximalizovat panel",
+  "BOTTOM_PANEL_RESTORE": "Obnovit velikost panelu",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Přidat"
 });

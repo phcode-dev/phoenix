@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "{0}초 대기 중",
   "AI_CHAT_TOOL_WAITED": "{0}초 대기 완료",
   "AI_CHAT_COPY_CODE": "복사하기",
+  "AI_CHAT_COPIED_CODE": "복사되었습니다",
   "DEMO_SECTION1_TITLE": "라이브 프리뷰로 편집",
   "DEMO_SECTION1_SUBTITLE": "페이지를 시각적으로 편집하세요 -&nbsp; <b>HTML이 즉시 업데이트됩니다</b>",
   "DEMO_GET_STARTED_BUTTON": "시작하기",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_COPIED_CODE": "복사되었습니다"
+  "REFERENCES_PANEL_TITLE": "참조",
+  "SEARCH_RESULTS_PANEL_TITLE": "검색 결과",
+  "BOTTOM_PANEL_HIDE": "패널 숨기기",
+  "BOTTOM_PANEL_SHOW": "하단 패널 표시",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "하단 패널 숨기기",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "빠른 액세스",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "패널 열기",
+  "BOTTOM_PANEL_MAXIMIZE": "패널 최대화",
+  "BOTTOM_PANEL_RESTORE": "패널 크기 복원",
+  "GIT_PANEL_TITLE": "깃",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "추가"
 });

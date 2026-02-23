@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Venter i {0} s",
   "AI_CHAT_TOOL_WAITED": "Ferdig med å vente i {0} s",
   "AI_CHAT_COPY_CODE": "Kopier",
+  "AI_CHAT_COPIED_CODE": "Kopiert",
   "DEMO_SECTION1_TITLE": "Rediger i sanntids forhåndsvisning",
   "DEMO_SECTION1_SUBTITLE": "Rediger siden din visuelt -&nbsp; <b>HTML-koden din oppdateres umiddelbart</b>",
   "DEMO_GET_STARTED_BUTTON": "Kom i gang",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_COPIED_CODE": "Kopiert"
+  "REFERENCES_PANEL_TITLE": "Referanser",
+  "SEARCH_RESULTS_PANEL_TITLE": "Søkeresultater",
+  "BOTTOM_PANEL_HIDE": "Skjul panel",
+  "BOTTOM_PANEL_SHOW": "Vis bunnpanelet",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Skjul bunnpanelet",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Hurtigtilgang",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Åpne et panel",
+  "BOTTOM_PANEL_MAXIMIZE": "Maksimer panel",
+  "BOTTOM_PANEL_RESTORE": "Gjenopprett panelstørrelse",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Legg til"
 });
