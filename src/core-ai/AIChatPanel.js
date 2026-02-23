@@ -905,6 +905,9 @@ define(function (require, exports, module) {
         // Record pre-edit content into pending snapshot and back-fill
         SnapshotStore.recordFileBeforeEdit(edit.file, previousContent, isNewFile);
 
+        // Reload live preview so the user sees the edit reflected immediately
+        CommandManager.execute(Commands.CMD_RELOAD_LIVE_PREVIEW);
+
         // Find the oldest Edit/Write tool indicator for this file that doesn't
         // already have edit actions. This is more robust than matching by toolId
         // because the SDK with includePartialMessages may re-emit tool_use blocks
