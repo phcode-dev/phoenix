@@ -47,6 +47,38 @@
         line-height: 19px;
     }
 
+    .ai-chat-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .ai-history-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: @project-panel-text-2;
+        font-size: @menu-item-font-size;
+        width: 26px;
+        height: 26px;
+        border-radius: 3px;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.15s ease, background-color 0.15s ease;
+
+        &:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+
+        &.active {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+    }
+
     .ai-new-session-btn {
         display: flex;
         align-items: center;
@@ -65,6 +97,131 @@
             opacity: 1;
             background-color: rgba(255, 255, 255, 0.06);
         }
+    }
+}
+
+/* ── Session history dropdown ──────────────────────────────────────── */
+/* When history is open, hide chat content and show the dropdown instead */
+.ai-chat-panel.ai-history-open {
+    > .ai-chat-messages,
+    > .ai-chat-status,
+    > .ai-chat-input-area {
+        display: none !important;
+    }
+}
+
+.ai-session-history-dropdown {
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.15);
+    flex-shrink: 1;
+    min-height: 0;
+
+    &.open {
+        display: flex;
+        flex: 1;
+    }
+}
+
+.ai-history-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    border-left: 2px solid transparent;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    &.ai-history-active {
+        border-left-color: rgba(76, 175, 80, 0.5);
+        background-color: rgba(76, 175, 80, 0.04);
+    }
+
+    .ai-history-item-info {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .ai-history-item-title {
+        font-size: @sidebar-content-font-size;
+        color: @project-panel-text-1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ai-history-item-time {
+        font-size: @sidebar-xs-font-size;
+        color: @project-panel-text-2;
+        opacity: 0.6;
+    }
+
+    .ai-history-item-delete {
+        background: none;
+        border: none;
+        color: @project-panel-text-2;
+        font-size: @sidebar-small-font-size;
+        padding: 2px 4px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.15s ease, color 0.15s ease;
+        flex-shrink: 0;
+
+        &:hover {
+            opacity: 1;
+            color: #e88;
+        }
+    }
+
+    &:hover .ai-history-item-delete {
+        opacity: 0.6;
+    }
+}
+
+.ai-history-empty {
+    padding: 16px 10px;
+    text-align: center;
+    font-size: @sidebar-small-font-size;
+    color: @project-panel-text-2;
+    opacity: 0.6;
+}
+
+.ai-history-clear-all {
+    display: block;
+    padding: 6px 10px;
+    text-align: center;
+    font-size: @sidebar-xs-font-size;
+    color: @project-panel-text-2;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+/* ── Session resumed indicator ─────────────────────────────────────── */
+.ai-session-resumed-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: @sidebar-xs-font-size;
+    color: @project-panel-text-2;
+    opacity: 0.6;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+    i {
+        font-size: 10px;
     }
 }
 
