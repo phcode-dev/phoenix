@@ -31,14 +31,34 @@
 
 const { z } = require("zod");
 
+const CLARIFICATION_HINT =
+    "IMPORTANT: The user has typed a follow-up clarification while you were working." +
+    " Call the getUserClarification tool to read it before proceeding.";
+
+/**
+ * Append a clarification hint to an MCP tool result if the user has queued a message.
+ */
+function _maybeAppendHint(result, hasClarification) {
+    if (hasClarification && hasClarification()) {
+        if (result && result.content && Array.isArray(result.content)) {
+            result.content.push({ type: "text", text: CLARIFICATION_HINT });
+        }
+    }
+    return result;
+}
+
 /**
  * Create an in-process MCP server exposing editor context tools.
  *
  * @param {Object} sdkModule - The imported @anthropic-ai/claude-code ESM module
  * @param {Object} nodeConnector - The NodeConnector instance for communicating with the browser
+ * @param {Object} [clarificationAccessors] - Optional accessors for user clarification queue
+ * @param {Function} clarificationAccessors.hasClarification - Returns true if a clarification is queued
+ * @param {Function} clarificationAccessors.getAndClearClarification - Returns {text} and clears the queue
  * @returns {McpSdkServerConfigWithInstance} MCP server config ready for queryOptions.mcpServers
  */
-function createEditorMcpServer(sdkModule, nodeConnector) {
+function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors) {
+    const hasClarification = clarificationAccessors && clarificationAccessors.hasClarification;
     const getEditorStateTool = sdkModule.tool(
         "getEditorState",
         "Get the current Phoenix editor state: active file, working set (open files), live preview file, " +
@@ -48,17 +68,19 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         "Long lines are trimmed to 200 chars and selections to 10K chars — use the Read tool for full content.",
         {},
         async function () {
+            let result;
             try {
                 const state = await nodeConnector.execPeer("getEditorState", {});
-                return {
+                result = {
                     content: [{ type: "text", text: JSON.stringify(state) }]
                 };
             } catch (err) {
-                return {
+                result = {
                     content: [{ type: "text", text: "Error getting editor state: " + err.message }],
                     isError: true
                 };
             }
+            return _maybeAppendHint(result, hasClarification);
         }
     );
 
@@ -76,26 +98,29 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
             purePreview: z.boolean().optional().describe("When true, temporarily switches to preview mode to hide element highlight overlays and toolboxes before capturing, then restores the previous mode.")
         },
         async function (args) {
+            let toolResult;
             try {
                 const result = await nodeConnector.execPeer("takeScreenshot", {
                     selector: args.selector || undefined,
                     purePreview: args.purePreview || false
                 });
                 if (result.base64) {
-                    return {
+                    toolResult = {
                         content: [{ type: "image", data: result.base64, mimeType: "image/png" }]
                     };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: result.error || "Screenshot failed" }],
+                        isError: true
+                    };
                 }
-                return {
-                    content: [{ type: "text", text: result.error || "Screenshot failed" }],
-                    isError: true
-                };
             } catch (err) {
-                return {
+                toolResult = {
                     content: [{ type: "text", text: "Error taking screenshot: " + err.message }],
                     isError: true
                 };
             }
+            return _maybeAppendHint(toolResult, hasClarification);
         }
     );
 
@@ -109,25 +134,28 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         "(e.g. document.title, DOM queries).",
         { code: z.string().describe("JavaScript code to execute in the live preview iframe") },
         async function (args) {
+            let toolResult;
             try {
                 const result = await nodeConnector.execPeer("execJsInLivePreview", {
                     code: args.code
                 });
                 if (result.error) {
-                    return {
+                    toolResult = {
                         content: [{ type: "text", text: "Error: " + result.error }],
                         isError: true
                     };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: result.result || "undefined" }]
+                    };
                 }
-                return {
-                    content: [{ type: "text", text: result.result || "undefined" }]
-                };
             } catch (err) {
-                return {
+                toolResult = {
                     content: [{ type: "text", text: "Error executing JS in live preview: " + err.message }],
                     isError: true
                 };
             }
+            return _maybeAppendHint(toolResult, hasClarification);
         }
     );
 
@@ -174,10 +202,11 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
                     console.error("[Phoenix AI] controlEditor error:", op.operation, op.filePath, err.message);
                 }
             }
-            return {
+            const toolResult = {
                 content: [{ type: "text", text: JSON.stringify(results) }],
                 isError: hasError
             };
+            return _maybeAppendHint(toolResult, hasClarification);
         }
     );
 
@@ -189,25 +218,28 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
             width: z.number().describe("Target width in pixels")
         },
         async function (args) {
+            let toolResult;
             try {
                 const result = await nodeConnector.execPeer("resizeLivePreview", {
                     width: args.width
                 });
                 if (result.error) {
-                    return {
+                    toolResult = {
                         content: [{ type: "text", text: "Error: " + result.error }],
                         isError: true
                     };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: JSON.stringify(result) }]
+                    };
                 }
-                return {
-                    content: [{ type: "text", text: JSON.stringify(result) }]
-                };
             } catch (err) {
-                return {
+                toolResult = {
                     content: [{ type: "text", text: "Error resizing live preview: " + err.message }],
                     isError: true
                 };
             }
+            return _maybeAppendHint(toolResult, hasClarification);
         }
     );
 
@@ -222,8 +254,45 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         async function (args) {
             const ms = Math.round(args.seconds * 1000);
             await new Promise(function (resolve) { setTimeout(resolve, ms); });
-            return {
+            const toolResult = {
                 content: [{ type: "text", text: "Waited " + args.seconds + " seconds." }]
+            };
+            return _maybeAppendHint(toolResult, hasClarification);
+        }
+    );
+
+    const getUserClarificationTool = sdkModule.tool(
+        "getUserClarification",
+        "Retrieve a follow-up clarification message the user typed while you were working. " +
+        "Returns the clarification text and clears the queue. Only call this when a tool response " +
+        "indicates the user has typed a clarification.",
+        {},
+        async function () {
+            if (clarificationAccessors && clarificationAccessors.getAndClearClarification) {
+                const result = await clarificationAccessors.getAndClearClarification();
+                if (result && (result.text || (result.images && result.images.length > 0))) {
+                    // Notify browser with the text so it can show it as a user message bubble
+                    nodeConnector.triggerPeer("aiClarificationRead", {
+                        text: result.text || ""
+                    });
+                    const content = [];
+                    if (result.text) {
+                        content.push({ type: "text", text: "User clarification: " + result.text });
+                    }
+                    if (result.images && result.images.length > 0) {
+                        result.images.forEach(function (img) {
+                            content.push({
+                                type: "image",
+                                data: img.base64Data,
+                                mimeType: img.mediaType
+                            });
+                        });
+                    }
+                    return { content: content };
+                }
+            }
+            return {
+                content: [{ type: "text", text: "No clarification queued." }]
             };
         }
     );
@@ -231,7 +300,7 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
         tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool, controlEditorTool,
-            resizeLivePreviewTool, waitTool]
+            resizeLivePreviewTool, waitTool, getUserClarificationTool]
     });
 }
 

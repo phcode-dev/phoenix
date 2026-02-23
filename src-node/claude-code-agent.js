@@ -32,6 +32,10 @@ const { createEditorMcpServer } = require("./mcp-editor-tools");
 
 const CONNECTOR_ID = "ph_ai_claude";
 
+const CLARIFICATION_HINT =
+    " IMPORTANT: The user has typed a follow-up clarification while you were working." +
+    " Call the getUserClarification tool to read it before proceeding.";
+
 // Lazy-loaded ESM module reference
 let queryModule = null;
 
@@ -49,6 +53,10 @@ const TEXT_STREAM_THROTTLE_MS = 50;
 
 // Pending question resolver — used by AskUserQuestion hook
 let _questionResolve = null;
+
+// Queued clarification from the user (typed while AI is streaming)
+// Shape: { text: string, images: [{mediaType, base64Data}] } or null
+let _queuedClarification = null;
 
 const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
 
@@ -191,6 +199,7 @@ exports.cancelQuery = async function () {
         currentSessionId = null;
         // Clear any pending question
         _questionResolve = null;
+        _queuedClarification = null;
         return { success: true };
     }
     return { success: false };
@@ -214,6 +223,46 @@ exports.answerQuestion = async function (params) {
 exports.destroySession = async function () {
     currentSessionId = null;
     currentAbortController = null;
+    _queuedClarification = null;
+    return { success: true };
+};
+
+/**
+ * Queue a clarification message from the user (typed while AI is streaming).
+ * If text is already queued, appends with a newline.
+ */
+exports.queueClarification = async function (params) {
+    const newImages = params.images || [];
+    if (_queuedClarification) {
+        if (params.text) {
+            _queuedClarification.text += "\n" + params.text;
+        }
+        _queuedClarification.images = _queuedClarification.images.concat(newImages);
+    } else {
+        _queuedClarification = {
+            text: params.text || "",
+            images: newImages
+        };
+    }
+    return { success: true };
+};
+
+/**
+ * Get and clear the queued clarification (text + images).
+ * Called by the getUserClarification MCP tool.
+ */
+exports.getAndClearClarification = async function () {
+    const result = _queuedClarification;
+    _queuedClarification = null;
+    return result || { text: null, images: [] };
+};
+
+/**
+ * Clear any queued clarification without reading it.
+ * Used when the user clicks Edit on the queue bubble.
+ */
+exports.clearClarification = async function () {
+    _queuedClarification = null;
     return { success: true };
 };
 
@@ -228,7 +277,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     try {
         queryFn = await getQueryFn();
         if (!editorMcpServer) {
-            editorMcpServer = createEditorMcpServer(queryModule, nodeConnector);
+            editorMcpServer = createEditorMcpServer(queryModule, nodeConnector, {
+                hasClarification: function () { return !!_queuedClarification; },
+                getAndClearClarification: exports.getAndClearClarification
+            });
         }
     } catch (err) {
         nodeConnector.triggerPeer("aiError", {
@@ -258,7 +310,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "mcp__phoenix-editor__execJsInLivePreview",
             "mcp__phoenix-editor__controlEditor",
             "mcp__phoenix-editor__resizeLivePreview",
-            "mcp__phoenix-editor__wait"
+            "mcp__phoenix-editor__wait",
+            "mcp__phoenix-editor__getUserClarification"
         ],
         agents: {
             "researcher": {
@@ -292,6 +345,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "multiple Edit calls to make targeted changes rather than rewriting the entire " +
             "file with Write. This is critical because Write replaces the entire file content " +
             "which is slow and loses undo history." +
+            "\n\nWhen a tool response mentions the user has typed a clarification, immediately " +
+            "call getUserClarification to read it and incorporate the user's feedback into your current work." +
             (locale && !locale.startsWith("en")
                 ? "\n\nThe user's display language is " + locale + ". " +
                   "Respond in this language unless they write in a different language."
@@ -334,6 +389,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         " Reload when ready with execJsInLivePreview: `location.reload()`";
                                 }
                             }
+                            if (_queuedClarification) {
+                                reason += CLARIFICATION_HINT;
+                            }
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
@@ -370,6 +428,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     formatted = filePath + " (" +
                                         lines.length + " lines total)\n\n" + formatted;
                                     console.log("[Phoenix AI] Serving dirty file content for:", filePath);
+                                    if (_queuedClarification) {
+                                        formatted += CLARIFICATION_HINT;
+                                    }
                                     return {
                                         hookSpecificOutput: {
                                             hookEventName: "PreToolUse",
@@ -418,6 +479,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     reason += " The written file is part of the active live preview." +
                                         " Reload when ready with execJsInLivePreview: `location.reload()`";
                                 }
+                            }
+                            if (_queuedClarification) {
+                                reason += CLARIFICATION_HINT;
                             }
                             return {
                                 hookSpecificOutput: {

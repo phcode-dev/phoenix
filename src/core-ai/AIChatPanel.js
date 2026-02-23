@@ -41,6 +41,7 @@ define(function (require, exports, module) {
 
     let _nodeConnector = null;
     let _isStreaming = false;
+    let _queuedMessage = null;  // text queued by user while AI is streaming
     let _currentRequestId = null;
     let _segmentText = "";       // text for the current segment only
     let _autoScroll = true;
@@ -150,6 +151,15 @@ define(function (require, exports, module) {
         _nodeConnector.on("aiError", _onError);
         _nodeConnector.on("aiComplete", _onComplete);
         _nodeConnector.on("aiQuestion", _onQuestion);
+        _nodeConnector.on("aiClarificationRead", function (_event, data) {
+            // Claude consumed the queued clarification — show it as a user message and remove the bubble
+            const images = _queuedMessage ? _queuedMessage.images : [];
+            _queuedMessage = null;
+            _removeQueueBubble();
+            if (data.text || images.length > 0) {
+                _appendUserMessage(data.text, images);
+            }
+        });
 
         // Check availability and render appropriate UI
         _checkAvailability();
@@ -194,7 +204,13 @@ define(function (require, exports, module) {
         $imagePreview = $panel.find(".ai-chat-image-preview");
 
         // Event handlers
-        $sendBtn.on("click", _sendMessage);
+        $sendBtn.on("click", function () {
+            if (_isStreaming) {
+                _queueMessage();
+            } else {
+                _sendMessage();
+            }
+        });
         $stopBtn.on("click", _cancelQuery);
         $panel.find(".ai-new-session-btn").on("click", _newSession);
 
@@ -204,7 +220,11 @@ define(function (require, exports, module) {
         $textarea.on("keydown", function (e) {
             if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                _sendMessage();
+                if (_isStreaming) {
+                    _queueMessage();
+                } else {
+                    _sendMessage();
+                }
             }
             if (e.key === "Escape") {
                 if (_isStreaming) {
@@ -607,6 +627,119 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Queue a clarification message while AI is streaming.
+     * Places a static bubble above the input area and captures any attached images.
+     */
+    function _queueMessage() {
+        const text = $textarea.val().trim();
+        if (!text && _attachedImages.length === 0) {
+            return;
+        }
+
+        // Capture images for the clarification
+        const queuedImages = _attachedImages.slice();
+        const imagesPayload = _attachedImages.map(function (img) {
+            return { mediaType: img.mediaType, base64Data: img.base64Data };
+        });
+        _attachedImages = [];
+        _renderImagePreview();
+
+        // Append to existing queued text or start new
+        if (_queuedMessage) {
+            if (text) {
+                _queuedMessage.text += "\n" + text;
+            }
+            _queuedMessage.images = _queuedMessage.images.concat(queuedImages);
+            _queuedMessage.imagesPayload = _queuedMessage.imagesPayload.concat(imagesPayload);
+        } else {
+            _queuedMessage = {
+                text: text,
+                images: queuedImages,
+                imagesPayload: imagesPayload
+            };
+        }
+
+        // Send to node side (text + images)
+        _nodeConnector.execPeer("queueClarification", {
+            text: text,
+            images: imagesPayload.length > 0 ? imagesPayload : undefined
+        }).catch(function (err) {
+            console.warn("[AI UI] Failed to queue clarification:", err.message);
+        });
+
+        // Update or create queue bubble in the input area
+        const $inputArea = $textarea.closest(".ai-chat-input-area");
+        let $bubble = $inputArea.find(".ai-queued-msg");
+        if ($bubble.length) {
+            $bubble.find(".ai-queued-text").text(_queuedMessage.text);
+            // Re-render image thumbs
+            const $thumbs = $bubble.find(".ai-queued-images");
+            $thumbs.empty();
+            _queuedMessage.images.forEach(function (img) {
+                $thumbs.append($('<img>').attr("src", img.dataUrl));
+            });
+            if (_queuedMessage.images.length > 0) {
+                $thumbs.show();
+            }
+        } else {
+            $bubble = $(
+                '<div class="ai-queued-msg">' +
+                    '<div class="ai-queued-header">' +
+                        '<span class="ai-queued-label">' + Strings.AI_CHAT_QUEUED + '</span>' +
+                        '<button class="ai-queued-edit-btn">' + Strings.AI_CHAT_QUEUED_EDIT + '</button>' +
+                    '</div>' +
+                    '<div class="ai-queued-images"></div>' +
+                    '<div class="ai-queued-text"></div>' +
+                '</div>'
+            );
+            $bubble.find(".ai-queued-text").text(_queuedMessage.text);
+            if (_queuedMessage.images.length > 0) {
+                const $thumbs = $bubble.find(".ai-queued-images");
+                _queuedMessage.images.forEach(function (img) {
+                    $thumbs.append($('<img>').attr("src", img.dataUrl));
+                });
+                $thumbs.show();
+            }
+            $bubble.find(".ai-queued-edit-btn").on("click", _editQueuedMessage);
+            $inputArea.prepend($bubble);
+        }
+
+        // Clear textarea
+        $textarea.val("");
+        $textarea.css("height", "auto");
+    }
+
+    /**
+     * Remove the queue bubble from the UI.
+     */
+    function _removeQueueBubble() {
+        const $inputArea = $textarea ? $textarea.closest(".ai-chat-input-area") : null;
+        if ($inputArea) {
+            $inputArea.find(".ai-queued-msg").remove();
+        }
+    }
+
+    /**
+     * Edit the queued message: move text back to textarea, restore images, and clear the queue.
+     */
+    function _editQueuedMessage() {
+        if (_queuedMessage) {
+            $textarea.val(_queuedMessage.text);
+            $textarea.css("height", "auto");
+            $textarea[0].style.height = Math.min($textarea[0].scrollHeight, 96) + "px";
+            $textarea[0].focus({ preventScroll: true });
+            // Restore images
+            _attachedImages = _queuedMessage.images;
+            _renderImagePreview();
+        }
+        _queuedMessage = null;
+        _removeQueueBubble();
+        _nodeConnector.execPeer("clearClarification").catch(function () {
+            // ignore
+        });
+    }
+
+    /**
      * Send the current input as a message to Claude.
      */
     function _sendMessage() {
@@ -712,6 +845,16 @@ define(function (require, exports, module) {
                 // ignore cancel errors
             });
         }
+        // Move queued text and images back to textarea on cancel
+        if (_queuedMessage) {
+            $textarea.val(_queuedMessage.text);
+            $textarea.css("height", "auto");
+            $textarea[0].style.height = Math.min($textarea[0].scrollHeight, 96) + "px";
+            _attachedImages = _queuedMessage.images;
+            _renderImagePreview();
+            _queuedMessage = null;
+            _removeQueueBubble();
+        }
     }
 
     /**
@@ -727,6 +870,8 @@ define(function (require, exports, module) {
         _segmentText = "";
         _hasReceivedContent = false;
         _isStreaming = false;
+        _queuedMessage = null;
+        _removeQueueBubble();
         _firstEditInResponse = true;
         _undoApplied = false;
         _selectionDismissed = false;
@@ -797,6 +942,7 @@ define(function (require, exports, module) {
         "mcp__phoenix-editor__controlEditor":       { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_CONTROL_EDITOR },
         "mcp__phoenix-editor__resizeLivePreview":   { icon: "fa-solid fa-arrows-left-right", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW },
         "mcp__phoenix-editor__wait":                { icon: "fa-solid fa-hourglass-half", color: "#adb9bd", label: Strings.AI_CHAT_TOOL_WAIT },
+        "mcp__phoenix-editor__getUserClarification": { icon: "fa-solid fa-comment-dots", color: "#e8a838", label: Strings.AI_CHAT_TOOL_CLARIFICATION },
         TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS },
         AskUserQuestion: { icon: "fa-solid fa-circle-question", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_QUESTION },
         Task: { icon: "fa-solid fa-diagram-project", color: "#6b9eff", label: Strings.AI_CHAT_TOOL_TASK }
@@ -1132,6 +1278,17 @@ define(function (require, exports, module) {
 
         SnapshotStore.stopTracking();
         _setStreaming(false);
+
+        // If user had a queued message, auto-send it as the next turn
+        if (_queuedMessage) {
+            const pending = _queuedMessage;
+            _queuedMessage = null;
+            _removeQueueBubble();
+            $textarea.val(pending.text);
+            _attachedImages = pending.images;
+            _renderImagePreview();
+            _sendMessage();
+        }
     }
 
     /**
@@ -1846,6 +2003,11 @@ define(function (require, exports, module) {
                 summary: StringUtils.format(Strings.AI_CHAT_TOOL_WAITING, input.seconds || "?"),
                 lines: []
             };
+        case "mcp__phoenix-editor__getUserClarification":
+            return {
+                summary: Strings.AI_CHAT_TOOL_CLARIFICATION,
+                lines: []
+            };
         case "AskUserQuestion": {
             const qs = input.questions || [];
             return {
@@ -1994,8 +2156,7 @@ define(function (require, exports, module) {
             $status.toggleClass("active", streaming);
         }
         if ($textarea) {
-            $textarea.prop("disabled", streaming);
-            $textarea.closest(".ai-chat-input-wrap").toggleClass("disabled", streaming);
+            // Keep textarea enabled during streaming so users can type a queued clarification
             if (!streaming) {
                 $textarea[0].focus({ preventScroll: true });
             }

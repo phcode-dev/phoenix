@@ -992,7 +992,7 @@ Performs a mixed reset
 ## CMD\_GIT\_TOGGLE\_PANEL
 Toggles the git panel
 
-**Kind**: global variable
+**Kind**: global variable  
 <a name="CMD_CUSTOM_SNIPPETS_PANEL"></a>
 
 ## CMD\_CUSTOM\_SNIPPETS\_PANEL
