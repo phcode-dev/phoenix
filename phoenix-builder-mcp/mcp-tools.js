@@ -384,6 +384,39 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
     );
 
     server.tool(
+        "exec_js_in_test_iframe",
+        "Execute JavaScript in the embedded test Phoenix iframe inside the SpecRunner, NOT in the SpecRunner itself. " +
+        "The iframe is usually not present during unit tests, but for other categories tests may spawn it as needed — " +
+        "it can come and go at any time. " +
+        "Code runs async in the iframe's page context with access to the test Phoenix instance's globals " +
+        "(jQuery $, brackets.test.*, etc.). " +
+        "Returns an error if no iframe is present. " +
+        "Use exec_js to control the SpecRunner (run tests, get results); use this tool to inspect the test Phoenix instance.",
+        {
+            code: z.string().describe("JavaScript code to execute in the test Phoenix iframe"),
+            instance: z.string().optional().describe("Target a specific test runner instance by name. Required when multiple instances are connected.")
+        },
+        async ({ code, instance }) => {
+            try {
+                const result = await wsControlServer.requestExecJsInTestIframe(code, instance);
+                return {
+                    content: [{
+                        type: "text",
+                        text: result !== undefined ? String(result) : "(undefined)"
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ error: err.message })
+                    }]
+                };
+            }
+        }
+    );
+
+    server.tool(
         "run_tests",
         "Run tests in the Phoenix test runner (SpecRunner.html). Reloads the test runner with the specified " +
         "category and optional spec filter. The test runner must already be open in a browser with MCP enabled. " +
