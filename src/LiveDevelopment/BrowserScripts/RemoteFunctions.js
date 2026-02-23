@@ -41,19 +41,10 @@ function RemoteFunctions(config = {}) {
     // Expose the currently selected element globally for external access
     window.__current_ph_lp_selected = null;
 
-    var req, timeout;
-    function animateHighlight(time) {
-        if(req) {
-            window.cancelAnimationFrame(req);
-            window.clearTimeout(timeout);
-        }
-        req = window.requestAnimationFrame(redrawHighlights);
-
-        timeout = setTimeout(function () {
-            window.cancelAnimationFrame(req);
-            req = null;
-        }, time * 1000);
-    }
+    const HIGHLIGHT_COLORS = {
+        padding: "rgba(147, 196, 125, 0.55)",
+        margin: "rgba(246, 178, 107, 0.66)"
+    };
 
     // the following fucntions can be in the handler and live preview will call those functions when the below
     // events happen
@@ -265,310 +256,136 @@ function RemoteFunctions(config = {}) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
     }
 
-    function Highlight(color, trigger) {
-        this.color = color;
+    function Highlight(trigger) {
         this.trigger = !!trigger;
         this.elements = [];
         this.selector = "";
+        this._divs = [];
     }
 
     Highlight.prototype = {
-        _elementExists: function (element) {
-            var i;
-            for (i in this.elements) {
-                if (this.elements[i] === element) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        _makeHighlightDiv: function (element, doAnimation) {
-            const remoteHighlight = {
-                animateStartValue: {
-                    "background-color": "rgba(0, 162, 255, 0.5)",
-                    "opacity": 0
-                },
-                animateEndValue: {
-                    "background-color": "rgba(0, 162, 255, 0)",
-                    "opacity": 0.6
-                },
-                paddingStyling: {
-                    "background-color": "rgba(200, 249, 197, 0.7)"
-                },
-                marginStyling: {
-                    "background-color": "rgba(249, 204, 157, 0.7)"
-                },
-                borderColor: "rgba(200, 249, 197, 0.85)",
-                showPaddingMargin: true
-            };
-            var elementBounds = element.getBoundingClientRect(),
-                highlightDiv = window.document.createElement("div"),
-                elementStyling = window.getComputedStyle(element),
-                transitionDuration = parseFloat(elementStyling.getPropertyValue('transition-duration')),
-                animationDuration = parseFloat(elementStyling.getPropertyValue('animation-duration'));
-
-            highlightDiv.trackingElement = element; // save which node are we highlighting
-
-            if (doAnimation) {
-                if (transitionDuration) {
-                    animateHighlight(transitionDuration);
-                }
-
-                if (animationDuration) {
-                    animateHighlight(animationDuration);
-                }
-            }
-
-            // Don't highlight elements with 0 width & height
-            if (elementBounds.width === 0 && elementBounds.height === 0) {
-                return;
-            }
-
-            var realElBorder = {
-                right: elementStyling.getPropertyValue('border-right-width'),
-                left: elementStyling.getPropertyValue('border-left-width'),
-                top: elementStyling.getPropertyValue('border-top-width'),
-                bottom: elementStyling.getPropertyValue('border-bottom-width')
-            };
-
-            var borderBox = elementStyling.boxSizing === 'border-box';
-
-            var innerWidth = parseFloat(elementStyling.width),
-                innerHeight = parseFloat(elementStyling.height),
-                outerHeight = innerHeight,
-                outerWidth = innerWidth;
-
-            if (!borderBox) {
-                innerWidth += parseFloat(elementStyling.paddingLeft) + parseFloat(elementStyling.paddingRight);
-                innerHeight += parseFloat(elementStyling.paddingTop) + parseFloat(elementStyling.paddingBottom);
-                outerWidth = innerWidth + parseFloat(realElBorder.right) +
-                parseFloat(realElBorder.left),
-                outerHeight = innerHeight + parseFloat(realElBorder.bottom) + parseFloat(realElBorder.top);
-            }
-
-
-            var visualisations = {
-                horizontal: "left, right",
-                vertical: "top, bottom"
-            };
-
-            var drawPaddingRect = function (side) {
-                var elStyling = {};
-
-                if (visualisations.horizontal.indexOf(side) >= 0) {
-                    elStyling["width"] = elementStyling.getPropertyValue("padding-" + side);
-                    elStyling["height"] = innerHeight + "px";
-                    elStyling["top"] = 0;
-
-                    if (borderBox) {
-                        elStyling["height"] =
-                            innerHeight - parseFloat(realElBorder.top) - parseFloat(realElBorder.bottom) + "px";
-                    }
-                } else {
-                    elStyling["height"] = elementStyling.getPropertyValue("padding-" + side);
-                    elStyling["width"] = innerWidth + "px";
-                    elStyling["left"] = 0;
-
-                    if (borderBox) {
-                        elStyling["width"] =
-                            innerWidth - parseFloat(realElBorder.left) - parseFloat(realElBorder.right) + "px";
-                    }
-                }
-
-                elStyling[side] = 0;
-                elStyling["position"] = "absolute";
-
-                return elStyling;
-            };
-
-            var drawMarginRect = function (side) {
-                var elStyling = {};
-
-                var margin = [];
-                margin["right"] = parseFloat(elementStyling.getPropertyValue("margin-right"));
-                margin["top"] = parseFloat(elementStyling.getPropertyValue("margin-top"));
-                margin["bottom"] = parseFloat(elementStyling.getPropertyValue("margin-bottom"));
-                margin["left"] = parseFloat(elementStyling.getPropertyValue("margin-left"));
-
-                if (visualisations["horizontal"].indexOf(side) >= 0) {
-                    elStyling["width"] = elementStyling.getPropertyValue("margin-" + side);
-                    elStyling["height"] = outerHeight + margin["top"] + margin["bottom"] + "px";
-                    elStyling["top"] = "-" + (margin["top"] + parseFloat(realElBorder.top)) + "px";
-                } else {
-                    elStyling["height"] = elementStyling.getPropertyValue("margin-" + side);
-                    elStyling["width"] = outerWidth + "px";
-                    elStyling["left"] = "-" + realElBorder.left;
-                }
-
-                elStyling[side] = "-" + (margin[side] + parseFloat(realElBorder[side])) + "px";
-                elStyling["position"] = "absolute";
-
-                return elStyling;
-            };
-
-            var setVisibility = function (el) {
-                if (
-                    !remoteHighlight.showPaddingMargin ||
-                    parseInt(el.height, 10) <= 0 ||
-                    parseInt(el.width, 10) <= 0
-                ) {
-                    el.display = 'none';
-                } else {
-                    el.display = 'block';
-                }
-            };
-
-            var paddingVisualisations = [
-                drawPaddingRect("top"),
-                drawPaddingRect("right"),
-                drawPaddingRect("bottom"),
-                drawPaddingRect("left")
-            ];
-
-            var marginVisualisations = [
-                drawMarginRect("top"),
-                drawMarginRect("right"),
-                drawMarginRect("bottom"),
-                drawMarginRect("left")
-            ];
-
-            var setupVisualisations = function (arr, visualConfig) {
-                var i;
-                for (i = 0; i < arr.length; i++) {
-                    setVisibility(arr[i]);
-
-                    // Applies to every visualisationElement (padding or margin div)
-                    arr[i]["transform"] = "none";
-                    var el = window.document.createElement("div"),
-                        styles = Object.assign({}, visualConfig, arr[i]);
-
-                    _setStyleValues(styles, el.style);
-
-                    highlightDiv.appendChild(el);
-                }
-            };
-
-            setupVisualisations(
-                marginVisualisations,
-                remoteHighlight.marginStyling
-            );
-            setupVisualisations(
-                paddingVisualisations,
-                remoteHighlight.paddingStyling
-            );
-
-            highlightDiv.className = GLOBALS.HIGHLIGHT_CLASSNAME;
-
-            var offset = LivePreviewView.screenOffset(element);
-
-            // some code to find element left/top was removed here. This seems to be relevant to box model
-            // live highlights. firether reading: https://github.com/adobe/brackets/pull/13357/files
-            // we removed this in phoenix because it was throwing the rendering of live highlight boxes in phonix
-            // default project at improper places. Some other cases might fail as the above code said they
-            // introduces that removed computation for fixing some box-model regression. If you are here to fix a
-            // related bug, check history of this changes in git.
-
-            var stylesToSet = {
-                "left": offset.left + "px",
-                "top": offset.top + "px",
-                "width": elementBounds.width + "px",
-                "height": elementBounds.height + "px",
-                "z-index": 2147483645,
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "pointer-events": "none",
-                "box-shadow": "0 0 1px #fff",
-                "box-sizing": elementStyling.getPropertyValue('box-sizing'),
-                "border-right": elementStyling.getPropertyValue('border-right'),
-                "border-left": elementStyling.getPropertyValue('border-left'),
-                "border-top": elementStyling.getPropertyValue('border-top'),
-                "border-bottom": elementStyling.getPropertyValue('border-bottom'),
-                "border-color": remoteHighlight.borderColor
-            };
-
-            var mergedStyles = Object.assign({}, stylesToSet,  remoteHighlight.stylesToSet);
-
-            var animateStartValues = remoteHighlight.animateStartValue;
-
-            var animateEndValues = remoteHighlight.animateEndValue;
-
-            var transitionValues = {
-                "transition-property": "opacity, background-color, transform",
-                "transition-duration": "300ms, 2.3s"
-            };
-
-            function _setStyleValues(styleValues, obj) {
-                var prop;
-
-                for (prop in styleValues) {
-                    obj.setProperty(prop, styleValues[prop]);
-                }
-            }
-
-            _setStyleValues(mergedStyles, highlightDiv.style);
-            _setStyleValues(
-                doAnimation ? animateStartValues : animateEndValues,
-                highlightDiv.style
-            );
-
-
-            if (doAnimation) {
-                _setStyleValues(transitionValues, highlightDiv.style);
-
-                window.setTimeout(function () {
-                    _setStyleValues(animateEndValues, highlightDiv.style);
-                }, 20);
-            }
-
-            window.document.body.appendChild(highlightDiv);
-        },
-
-        add: function (element, doAnimation) {
-            if (this._elementExists(element) || element === window.document) {
+        add: function (element) {
+            if (this.elements.includes(element) || element === window.document) {
                 return;
             }
             if (this.trigger) {
                 _trigger(element, "highlight", 1);
             }
-
             this.elements.push(element);
-            this._makeHighlightDiv(element, doAnimation);
+            this._createOverlay(element);
         },
 
         clear: function () {
-            var i, highlights = window.document.querySelectorAll("." + GLOBALS.HIGHLIGHT_CLASSNAME),
-                body = window.document.body;
-
-            for (i = 0; i < highlights.length; i++) {
-                body.removeChild(highlights[i]);
-            }
-
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.trigger) {
-                    _trigger(this.elements[i], "highlight", 0);
+            this._divs.forEach(function (div) {
+                if (div.parentNode) {
+                    div.parentNode.removeChild(div);
                 }
-                clearElementHoverHighlight(this.elements[i]);
-            }
+            });
+            this._divs = [];
 
+            if (this.trigger) {
+                this.elements.forEach(function (el) {
+                    _trigger(el, "highlight", 0);
+                });
+            }
             this.elements = [];
         },
 
         redraw: function () {
-            var i, highlighted;
-
-            // When redrawing a selector-based highlight, run a new selector
-            // query to ensure we have the latest set of elements to highlight.
-            if (this.selector) {
-                highlighted = window.document.querySelectorAll(this.selector);
-            } else {
-                highlighted = this.elements.slice(0);
-            }
-
+            const elements = this.selector
+                ? Array.from(window.document.querySelectorAll(this.selector))
+                : this.elements.slice();
             this.clear();
-            for (i = 0; i < highlighted.length; i++) {
-                this.add(highlighted[i], false);
+            elements.forEach(function (el) { this.add(el); }, this);
+        },
+
+        _createOverlay: function (element) {
+            const bounds = element.getBoundingClientRect();
+            if (bounds.width === 0 && bounds.height === 0) { return; }
+
+            const cs = window.getComputedStyle(element);
+            const div = window.document.createElement("div");
+            div.className = GLOBALS.HIGHLIGHT_CLASSNAME;
+            div.trackingElement = element;
+
+            // Parse box model values
+            const bt = parseFloat(cs.borderTopWidth) || 0,
+                br = parseFloat(cs.borderRightWidth) || 0,
+                bb = parseFloat(cs.borderBottomWidth) || 0,
+                bl = parseFloat(cs.borderLeftWidth) || 0;
+            const pt = parseFloat(cs.paddingTop) || 0,
+                pr = parseFloat(cs.paddingRight) || 0,
+                pb = parseFloat(cs.paddingBottom) || 0,
+                pl = parseFloat(cs.paddingLeft) || 0;
+            const mt = parseFloat(cs.marginTop) || 0,
+                mr = parseFloat(cs.marginRight) || 0,
+                mb = parseFloat(cs.marginBottom) || 0,
+                ml = parseFloat(cs.marginLeft) || 0;
+
+            const isBorderBox = cs.boxSizing === "border-box";
+            const w = parseFloat(cs.width) || 0;
+            const h = parseFloat(cs.height) || 0;
+
+            // Dimensions inside border
+            let innerW, innerH;
+            if (isBorderBox) {
+                innerW = w - bl - br;
+                innerH = h - bt - bb;
+            } else {
+                innerW = w + pl + pr;
+                innerH = h + pt + pb;
             }
+            const contentH = innerH - pt - pb;
+            const outerW = innerW + bl + br;
+            const outerH = innerH + bt + bb;
+
+            // Position the overlay to match the element
+            const offset = LivePreviewView.screenOffset(element);
+            const divStyle = div.style;
+            divStyle.position = "absolute";
+            divStyle.left = offset.left + "px";
+            divStyle.top = offset.top + "px";
+            divStyle.width = bounds.width + "px";
+            divStyle.height = bounds.height + "px";
+            divStyle.zIndex = 2147483645;
+            divStyle.margin = "0";
+            divStyle.padding = "0";
+            divStyle.pointerEvents = "none";
+            divStyle.boxSizing = cs.boxSizing;
+            divStyle.borderTopWidth = bt + "px";
+            divStyle.borderRightWidth = br + "px";
+            divStyle.borderBottomWidth = bb + "px";
+            divStyle.borderLeftWidth = bl + "px";
+            divStyle.borderStyle = "solid";
+            divStyle.borderColor = "transparent";
+
+            // Helper to create a colored rect
+            function makeRect(styles, color) {
+                if (parseFloat(styles.width) <= 0 || parseFloat(styles.height) <= 0) { return; }
+                const r = window.document.createElement("div");
+                r.style.position = "absolute";
+                r.style.backgroundColor = color;
+                r.style.transform = "none";
+                for (const prop in styles) {
+                    r.style[prop] = styles[prop];
+                }
+                div.appendChild(r);
+            }
+
+            // Padding rects (non-overlapping: top/bottom full width, left/right content height)
+            makeRect({ top: "0", left: "0", width: innerW + "px", height: pt + "px" }, HIGHLIGHT_COLORS.padding);
+            makeRect({ bottom: "0", left: "0", width: innerW + "px", height: pb + "px" }, HIGHLIGHT_COLORS.padding);
+            makeRect({ top: pt + "px", left: "0", width: pl + "px", height: contentH + "px" }, HIGHLIGHT_COLORS.padding);
+            makeRect({ top: pt + "px", right: "0", width: pr + "px", height: contentH + "px" }, HIGHLIGHT_COLORS.padding);
+
+            // Margin rects (top/bottom span element width, left/right span full height)
+            makeRect({ top: -(mt + bt) + "px", left: -bl + "px", width: outerW + "px", height: mt + "px" }, HIGHLIGHT_COLORS.margin);
+            makeRect({ bottom: -(mb + bb) + "px", left: -bl + "px", width: outerW + "px", height: mb + "px" }, HIGHLIGHT_COLORS.margin);
+            makeRect({ top: -(mt + bt) + "px", left: -(ml + bl) + "px", width: ml + "px", height: (outerH + mt + mb) + "px" }, HIGHLIGHT_COLORS.margin);
+            makeRect({ top: -(mt + bt) + "px", right: -(mr + br) + "px", width: mr + "px", height: (outerH + mt + mb) + "px" }, HIGHLIGHT_COLORS.margin);
+
+            window.document.body.appendChild(div);
+            this._divs.push(div);
         }
     };
 
@@ -608,11 +425,12 @@ function RemoteFunctions(config = {}) {
 
         // if _hoverHighlight is uninitialized, initialize it
         if (!_hoverHighlight && shouldShowHighlightOnHover()) {
-            _hoverHighlight = new Highlight("#c8f9c5", true);
+            _hoverHighlight = new Highlight(true);
         }
 
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
+            _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
 
             // Store original outline to restore on hover out, then apply a blue border
@@ -620,7 +438,7 @@ function RemoteFunctions(config = {}) {
             const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
             element.style.outline = `1px solid ${outlineColor}`;
 
-            _hoverHighlight.add(element, false);
+            _hoverHighlight.add(element);
 
             // create the info box for the hovered element
             const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
@@ -674,7 +492,7 @@ function RemoteFunctions(config = {}) {
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
 
-        if(!LivePreviewView.isElementInspectable(element)) {
+        if(!LivePreviewView.isElementInspectable(element, true)) {
             return false;
         }
 
@@ -702,10 +520,10 @@ function RemoteFunctions(config = {}) {
         element.style.outline = `1px solid ${outlineColor}`;
 
         if (!_clickHighlight) {
-            _clickHighlight = new Highlight("#cfc");
+            _clickHighlight = new Highlight();
         }
         _clickHighlight.clear();
-        _clickHighlight.add(element, true);
+        _clickHighlight.add(element);
 
         previouslySelectedElement = element;
         window.__current_ph_lp_selected = element;
@@ -812,10 +630,13 @@ function RemoteFunctions(config = {}) {
         clearCssSelectorHighlight();
 
         // Create new temporary highlight for all matching elements
-        _cssSelectorHighlight = new Highlight("#cfc");
-        for (var i = 0; i < nodes.length; i++) {
-            if (LivePreviewView.isElementInspectable(nodes[i], true) && nodes[i].nodeType === Node.ELEMENT_NODE) {
-                _cssSelectorHighlight.add(nodes[i], true);
+        // Skip the selected element since it already has a click highlight
+        _cssSelectorHighlight = new Highlight();
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i] !== previouslySelectedElement &&
+                LivePreviewView.isElementInspectable(nodes[i], true) &&
+                nodes[i].nodeType === Node.ELEMENT_NODE) {
+                _cssSelectorHighlight.add(nodes[i]);
             }
         }
         _cssSelectorHighlight.selector = rule;
@@ -831,6 +652,7 @@ function RemoteFunctions(config = {}) {
             _clickHighlight = null;
         }
         if (_hoverHighlight) {
+            _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
             _hoverHighlight = null;
         }
@@ -840,13 +662,13 @@ function RemoteFunctions(config = {}) {
     // highlight an element
     function highlight(element, clear) {
         if (!_clickHighlight) {
-            _clickHighlight = new Highlight("#cfc");
+            _clickHighlight = new Highlight();
         }
         if (clear) {
             _clickHighlight.clear();
         }
         if (LivePreviewView.isElementInspectable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
-            _clickHighlight.add(element, true);
+            _clickHighlight.add(element);
         }
     }
 
@@ -1380,11 +1202,8 @@ function RemoteFunctions(config = {}) {
         });
 
         if (config.mode === 'edit') {
-            // Initialize hover highlight with Chrome-like colors
-            _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
-
-            // Initialize click highlight with animation
-            _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
+            _hoverHighlight = new Highlight(true);
+            _clickHighlight = new Highlight(true);
 
             // register the event handlers
             enableHoverListeners();
