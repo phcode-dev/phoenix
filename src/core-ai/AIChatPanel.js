@@ -942,7 +942,7 @@ define(function (require, exports, module) {
         "mcp__phoenix-editor__controlEditor":       { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_CONTROL_EDITOR },
         "mcp__phoenix-editor__resizeLivePreview":   { icon: "fa-solid fa-arrows-left-right", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW },
         "mcp__phoenix-editor__wait":                { icon: "fa-solid fa-hourglass-half", color: "#adb9bd", label: Strings.AI_CHAT_TOOL_WAIT },
-        "mcp__phoenix-editor__getUserClarification": { icon: "fa-solid fa-comment-dots", color: "#e8a838", label: Strings.AI_CHAT_TOOL_CLARIFICATION },
+        "mcp__phoenix-editor__getUserClarification": { icon: "fa-solid fa-comment-dots", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_CLARIFICATION },
         TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS },
         AskUserQuestion: { icon: "fa-solid fa-circle-question", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_QUESTION },
         Task: { icon: "fa-solid fa-diagram-project", color: "#6b9eff", label: Strings.AI_CHAT_TOOL_TASK }
