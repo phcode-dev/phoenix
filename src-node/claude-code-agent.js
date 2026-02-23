@@ -281,9 +281,16 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
                                 toolId: myToolId,
                                 edit: edit
                             });
-                            const reason = (editResult && editResult.applied === false)
-                                ? "Edit FAILED: " + (editResult.error || "unknown error")
-                                : "Edit applied successfully via Phoenix editor.";
+                            let reason;
+                            if (editResult && editResult.applied === false) {
+                                reason = "Edit FAILED: " + (editResult.error || "unknown error");
+                            } else {
+                                reason = "Edit applied successfully via Phoenix editor.";
+                                if (editResult && editResult.isLivePreviewRelated) {
+                                    reason += " The edited file is part of the active live preview." +
+                                        " Reload when ready with execJsInLivePreview: `location.reload()`";
+                                }
+                            }
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
@@ -347,21 +354,33 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
                                 newText: input.tool_input.content
                             };
                             editCount++;
+                            let writeResult;
                             try {
-                                await nodeConnector.execPeer("applyEditToBuffer", edit);
+                                writeResult = await nodeConnector.execPeer("applyEditToBuffer", edit);
                             } catch (err) {
                                 console.warn("[Phoenix AI] Failed to apply write to buffer:", err.message);
+                                writeResult = { applied: false, error: err.message };
                             }
                             nodeConnector.triggerPeer("aiToolEdit", {
                                 requestId: requestId,
                                 toolId: myToolId,
                                 edit: edit
                             });
+                            let reason;
+                            if (writeResult && writeResult.applied === false) {
+                                reason = "Write FAILED: " + (writeResult.error || "unknown error");
+                            } else {
+                                reason = "Write applied successfully via Phoenix editor.";
+                                if (writeResult && writeResult.isLivePreviewRelated) {
+                                    reason += " The written file is part of the active live preview." +
+                                        " Reload when ready with execJsInLivePreview: `location.reload()`";
+                                }
+                            }
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
-                                    permissionDecisionReason: "Write applied successfully via Phoenix editor."
+                                    permissionDecisionReason: reason
                                 }
                             };
                         }
