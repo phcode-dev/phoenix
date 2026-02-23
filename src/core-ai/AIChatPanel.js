@@ -140,6 +140,7 @@ define(function (require, exports, module) {
         _nodeConnector.on("aiToolEdit", _onToolEdit);
         _nodeConnector.on("aiError", _onError);
         _nodeConnector.on("aiComplete", _onComplete);
+        _nodeConnector.on("aiQuestion", _onQuestion);
 
         // Check availability and render appropriate UI
         _checkAvailability();
@@ -641,7 +642,8 @@ define(function (require, exports, module) {
         "mcp__phoenix-editor__controlEditor":       { icon: "fa-solid fa-code", color: "#6bc76b", label: Strings.AI_CHAT_TOOL_CONTROL_EDITOR },
         "mcp__phoenix-editor__resizeLivePreview":   { icon: "fa-solid fa-arrows-left-right", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_RESIZE_PREVIEW },
         "mcp__phoenix-editor__wait":                { icon: "fa-solid fa-hourglass-half", color: "#adb9bd", label: Strings.AI_CHAT_TOOL_WAIT },
-        TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS }
+        TodoWrite: { icon: "fa-solid fa-list-check", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_TASKS },
+        AskUserQuestion: { icon: "fa-solid fa-circle-question", color: "#66bb6a", label: Strings.AI_CHAT_TOOL_QUESTION }
     };
 
     function _onProgress(_event, data) {
@@ -1134,6 +1136,148 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Handle an AskUserQuestion tool call — render interactive question UI.
+     */
+    function _onQuestion(_event, data) {
+        const questions = data.questions || [];
+        if (!questions.length) {
+            return;
+        }
+
+        // Remove thinking indicator on first content
+        if (!_hasReceivedContent) {
+            _hasReceivedContent = true;
+            $messages.find(".ai-thinking").remove();
+        }
+
+        // Finalize current text segment so question appears after it
+        $messages.find(".ai-stream-target").removeClass("ai-stream-target");
+        _segmentText = "";
+
+        const answers = {};
+        const totalQuestions = questions.length;
+        let answeredCount = 0;
+
+        const $container = $('<div class="ai-msg ai-msg-question"></div>');
+
+        questions.forEach(function (q) {
+            const $qBlock = $('<div class="ai-question-block"></div>');
+            const $qText = $('<div class="ai-question-text"></div>');
+            $qText.text(q.question);
+            $qBlock.append($qText);
+
+            const $options = $('<div class="ai-question-options"></div>');
+
+            q.options.forEach(function (opt) {
+                const $opt = $('<button class="ai-question-option"></button>');
+                const $label = $('<span class="ai-question-option-label"></span>');
+                $label.text(opt.label);
+                $opt.append($label);
+                if (opt.description) {
+                    const $desc = $('<span class="ai-question-option-desc"></span>');
+                    $desc.text(opt.description);
+                    $opt.append($desc);
+                }
+
+                $opt.on("click", function () {
+                    if ($qBlock.data("answered")) {
+                        return;
+                    }
+                    if (q.multiSelect) {
+                        $opt.toggleClass("selected");
+                    } else {
+                        // Single select — answer immediately
+                        $qBlock.data("answered", true);
+                        $options.find(".ai-question-option").prop("disabled", true);
+                        $opt.addClass("selected");
+                        $qBlock.find(".ai-question-other").hide();
+                        answers[q.question] = opt.label;
+                        answeredCount++;
+                        if (answeredCount >= totalQuestions) {
+                            _sendQuestionAnswers(answers);
+                        }
+                    }
+                });
+                $options.append($opt);
+            });
+
+            // Multi-select submit button
+            if (q.multiSelect) {
+                const $submit = $('<button class="ai-question-submit">' +
+                    '<i class="fa-solid fa-paper-plane"></i></button>');
+                $submit.on("click", function () {
+                    if ($qBlock.data("answered")) {
+                        return;
+                    }
+                    const selected = [];
+                    $options.find(".ai-question-option.selected").each(function () {
+                        selected.push($(this).find(".ai-question-option-label").text());
+                    });
+                    if (!selected.length) {
+                        return;
+                    }
+                    $qBlock.data("answered", true);
+                    $options.find(".ai-question-option").prop("disabled", true);
+                    $submit.prop("disabled", true);
+                    $qBlock.find(".ai-question-other").hide();
+                    answers[q.question] = selected.join(", ");
+                    answeredCount++;
+                    if (answeredCount >= totalQuestions) {
+                        _sendQuestionAnswers(answers);
+                    }
+                });
+                $options.append($submit);
+            }
+
+            $qBlock.append($options);
+
+            // "Other" free-text input
+            const $other = $('<div class="ai-question-other"></div>');
+            const $input = $('<input type="text" class="ai-question-other-input" ' +
+                'placeholder="' + Strings.AI_CHAT_QUESTION_OTHER + '">');
+            const $sendOther = $('<button class="ai-question-other-submit">' +
+                '<i class="fa-solid fa-paper-plane"></i></button>');
+            function submitOther() {
+                const val = $input.val().trim();
+                if (!val || $qBlock.data("answered")) {
+                    return;
+                }
+                $qBlock.data("answered", true);
+                $options.find(".ai-question-option").prop("disabled", true);
+                $input.prop("disabled", true);
+                $sendOther.prop("disabled", true);
+                answers[q.question] = val;
+                answeredCount++;
+                if (answeredCount >= totalQuestions) {
+                    _sendQuestionAnswers(answers);
+                }
+            }
+            $sendOther.on("click", submitOther);
+            $input.on("keydown", function (e) {
+                if (e.key === "Enter") {
+                    submitOther();
+                }
+            });
+            $other.append($input).append($sendOther);
+            $qBlock.append($other);
+
+            $container.append($qBlock);
+        });
+
+        $messages.append($container);
+        _scrollToBottom();
+    }
+
+    /**
+     * Send collected question answers to the node side.
+     */
+    function _sendQuestionAnswers(answers) {
+        _nodeConnector.execPeer("answerQuestion", { answers: answers }).catch(function (err) {
+            console.warn("[AI UI] Failed to send question answer:", err.message);
+        });
+    }
+
     // --- DOM helpers ---
 
     function _appendUserMessage(text) {
@@ -1523,6 +1667,13 @@ define(function (require, exports, module) {
                 summary: StringUtils.format(Strings.AI_CHAT_TOOL_WAITING, input.seconds || "?"),
                 lines: []
             };
+        case "AskUserQuestion": {
+            const qs = input.questions || [];
+            return {
+                summary: Strings.AI_CHAT_TOOL_QUESTION,
+                lines: qs.map(function (q) { return q.question; })
+            };
+        }
         case "TodoWrite": {
             const todos = input.todos || [];
             const completed = todos.filter(function (t) { return t.status === "completed"; }).length;

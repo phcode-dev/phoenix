@@ -1878,6 +1878,8 @@ define({
     "AI_CHAT_TOOL_WAITED": "Done waiting {0}s",
     "AI_CHAT_COPY_CODE": "Copy",
     "AI_CHAT_COPIED_CODE": "Copied!",
+    "AI_CHAT_TOOL_QUESTION": "Question",
+    "AI_CHAT_QUESTION_OTHER": "Type a custom answer\u2026",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",

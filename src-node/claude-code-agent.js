@@ -47,6 +47,9 @@ let editorMcpServer = null;
 // Streaming throttle
 const TEXT_STREAM_THROTTLE_MS = 50;
 
+// Pending question resolver — used by AskUserQuestion hook
+let _questionResolve = null;
+
 const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
 
 /**
@@ -186,9 +189,23 @@ exports.cancelQuery = async function () {
         currentAbortController = null;
         // Clear session so next query starts fresh instead of resuming a killed session
         currentSessionId = null;
+        // Clear any pending question
+        _questionResolve = null;
         return { success: true };
     }
     return { success: false };
+};
+
+/**
+ * Receive the user's answer to an AskUserQuestion prompt.
+ * Called from browser via execPeer("answerQuestion", {answers}).
+ */
+exports.answerQuestion = async function (params) {
+    if (_questionResolve) {
+        _questionResolve(params);
+        _questionResolve = null;
+    }
+    return { success: true };
 };
 
 /**
@@ -233,6 +250,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
         maxTurns: undefined,
         allowedTools: [
             "Read", "Edit", "Write", "Glob", "Grep",
+            "AskUserQuestion",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
@@ -381,6 +399,48 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
                                     permissionDecisionReason: reason
+                                }
+                            };
+                        }
+                    ]
+                },
+                {
+                    matcher: "AskUserQuestion",
+                    hooks: [
+                        async (input) => {
+                            console.log("[Phoenix AI] Intercepted AskUserQuestion");
+                            const questions = input.tool_input.questions || [];
+                            nodeConnector.triggerPeer("aiQuestion", {
+                                requestId: requestId,
+                                questions: questions
+                            });
+                            // Wait for the user's answer from the browser UI
+                            const answer = await new Promise((resolve, reject) => {
+                                _questionResolve = resolve;
+                                if (signal.aborted) {
+                                    _questionResolve = null;
+                                    reject(new Error("Aborted"));
+                                    return;
+                                }
+                                const onAbort = () => {
+                                    _questionResolve = null;
+                                    reject(new Error("Aborted"));
+                                };
+                                signal.addEventListener("abort", onAbort, { once: true });
+                            });
+                            // Format answers as readable text for the AI
+                            let answerText = "";
+                            if (answer.answers) {
+                                const keys = Object.keys(answer.answers);
+                                keys.forEach(function (q) {
+                                    answerText += "Q: " + q + "\nA: " + answer.answers[q] + "\n\n";
+                                });
+                            }
+                            return {
+                                hookSpecificOutput: {
+                                    hookEventName: "PreToolUse",
+                                    permissionDecision: "deny",
+                                    permissionDecisionReason: answerText.trim() || "No answer provided"
                                 }
                             };
                         }
