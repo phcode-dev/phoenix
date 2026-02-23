@@ -148,6 +148,9 @@ exports.sendPrompt = async function (params) {
         currentSessionId = null;
     }
 
+    // Clear any stale clarification from a previous turn
+    _queuedClarification = null;
+
     // Cancel any in-flight query
     if (currentAbortController) {
         currentAbortController.abort();
