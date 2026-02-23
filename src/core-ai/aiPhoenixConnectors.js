@@ -442,6 +442,19 @@ define(function (require, exports, module) {
      * @param {Object} params - {file, oldText, newText}
      * @return {Promise<{applied: boolean, error?: string}>}
      */
+    function _isFileInLivePreview(filePath) {
+        const liveDetails = LiveDevMain.getLivePreviewDetails();
+        if (!liveDetails || !liveDetails.liveDocument) {
+            return false;
+        }
+        const vfsPath = SnapshotStore.realToVfsPath(filePath);
+        const liveDocPath = liveDetails.liveDocument.doc.file.fullPath;
+        if (vfsPath === liveDocPath) {
+            return true;
+        }
+        return !!(liveDetails.liveDocument.isRelated && liveDetails.liveDocument.isRelated(vfsPath));
+    }
+
     function applyEditToBuffer(params) {
         const deferred = new $.Deferred();
         _applySingleEdit(params)
@@ -449,7 +462,10 @@ define(function (require, exports, module) {
                 if (result && result.previousContent !== undefined) {
                     _previousContentMap[params.file] = result.previousContent;
                 }
-                deferred.resolve({ applied: true });
+                deferred.resolve({
+                    applied: true,
+                    isLivePreviewRelated: _isFileInLivePreview(params.file)
+                });
             })
             .fail(function (err) {
                 deferred.resolve({ applied: false, error: err.message || String(err) });
