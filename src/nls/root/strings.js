@@ -1882,6 +1882,8 @@ define({
     "AI_CHAT_TOOL_TASK": "Subagent",
     "AI_CHAT_TOOL_TASK_NAME": "Subagent: {0}",
     "AI_CHAT_QUESTION_OTHER": "Type a custom answer\u2026",
+    "AI_CHAT_IMAGE_LIMIT": "Maximum {0} images allowed",
+    "AI_CHAT_IMAGE_REMOVE": "Remove image",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",

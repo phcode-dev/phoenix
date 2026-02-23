@@ -65,8 +65,16 @@ define(function (require, exports, module) {
     let _livePreviewDismissed = false;  // user dismissed live preview chip
     let $contextBar;                    // DOM ref
 
+    // Image paste state
+    let _attachedImages = [];  // [{dataUrl, mediaType, base64Data}]
+    const MAX_IMAGES = 10;
+    const MAX_IMAGE_BASE64_SIZE = 200 * 1024; // ~200KB base64
+    const ALLOWED_IMAGE_TYPES = [
+        "image/png", "image/jpeg", "image/gif", "image/webp", "image/svg+xml"
+    ];
+
     // DOM references
-    let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn;
+    let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn, $imagePreview;
 
     // Live DOM query for $messages — the cached $messages reference can become stale
     // after SidebarTabs reparents the panel. Use this for any deferred operations
@@ -89,6 +97,7 @@ define(function (require, exports, module) {
                 '<span class="ai-status-text">' + Strings.AI_CHAT_THINKING + '</span>' +
             '</div>' +
             '<div class="ai-chat-input-area">' +
+                '<div class="ai-chat-image-preview"></div>' +
                 '<div class="ai-chat-context-bar"></div>' +
                 '<div class="ai-chat-input-wrap">' +
                     '<textarea class="ai-chat-textarea" placeholder="' + Strings.AI_CHAT_PLACEHOLDER + '" rows="1"></textarea>' +
@@ -182,6 +191,7 @@ define(function (require, exports, module) {
         $textarea = $panel.find(".ai-chat-textarea");
         $sendBtn = $panel.find(".ai-send-btn");
         $stopBtn = $panel.find(".ai-stop-btn");
+        $imagePreview = $panel.find(".ai-chat-image-preview");
 
         // Event handlers
         $sendBtn.on("click", _sendMessage);
@@ -209,6 +219,43 @@ define(function (require, exports, module) {
         $textarea.on("input", function () {
             this.style.height = "auto";
             this.style.height = Math.min(this.scrollHeight, 96) + "px"; // max ~6rem
+        });
+
+        // Paste handler for images
+        $textarea.on("paste", function (e) {
+            const items = (e.originalEvent || e).clipboardData && (e.originalEvent || e).clipboardData.items;
+            if (!items) {
+                return;
+            }
+            let imageFound = false;
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (item.kind === "file" && ALLOWED_IMAGE_TYPES.indexOf(item.type) !== -1) {
+                    if (_attachedImages.length >= MAX_IMAGES) {
+                        break;
+                    }
+                    imageFound = true;
+                    const blob = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        const dataUrl = ev.target.result;
+                        const commaIdx = dataUrl.indexOf(",");
+                        const base64Data = dataUrl.slice(commaIdx + 1);
+                        if (base64Data.length > MAX_IMAGE_BASE64_SIZE) {
+                            // Resize oversized images via canvas
+                            _resizeImage(dataUrl, function (resized) {
+                                _addImageIfUnique(resized.dataUrl, resized.mediaType, resized.base64Data);
+                            });
+                        } else {
+                            _addImageIfUnique(dataUrl, item.type, base64Data);
+                        }
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+            if (imageFound) {
+                e.preventDefault();
+            }
         });
 
         // Track scroll position for auto-scroll
@@ -281,8 +328,7 @@ define(function (require, exports, module) {
                 const $img = $('<img class="ai-tool-screenshot" src="data:image/png;base64,' + base64 + '">');
                 $img.on("click", function (e) {
                     e.stopPropagation();
-                    $img.toggleClass("expanded");
-                    _scrollToBottom();
+                    _showImageLightbox($img.attr("src"));
                 });
                 $img.on("load", function () {
                     // Force scroll — the image load changes height after insertion,
@@ -463,6 +509,104 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Add an image to _attachedImages if it's not a duplicate.
+     */
+    function _addImageIfUnique(dataUrl, mediaType, base64Data) {
+        const isDuplicate = _attachedImages.some(function (existing) {
+            return existing.base64Data === base64Data;
+        });
+        if (!isDuplicate && _attachedImages.length < MAX_IMAGES) {
+            _attachedImages.push({dataUrl: dataUrl, mediaType: mediaType, base64Data: base64Data});
+            _renderImagePreview();
+        }
+    }
+
+    /**
+     * Resize an image so its base64 data stays under MAX_IMAGE_BASE64_SIZE.
+     * Two-phase strategy using WebP for better quality-per-byte:
+     *   Phase 1 — reduce quality at original dimensions.
+     *   Phase 2 — scale dimensions down (75%, then 50%) and retry quality steps.
+     */
+    function _resizeImage(dataUrl, callback) {
+        const img = new Image();
+        img.onload = function () {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            const qualitySteps = [0.92, 0.85, 0.75, 0.6, 0.45];
+            const scaleSteps = [1, 0.75, 0.5];
+            let result;
+
+            for (let s = 0; s < scaleSteps.length; s++) {
+                const scale = scaleSteps[s];
+                canvas.width = Math.round(img.width * scale);
+                canvas.height = Math.round(img.height * scale);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                for (let q = 0; q < qualitySteps.length; q++) {
+                    result = canvas.toDataURL("image/webp", qualitySteps[q]);
+                    if (result.split(",")[1].length <= MAX_IMAGE_BASE64_SIZE) {
+                        const base64 = result.split(",")[1];
+                        callback({dataUrl: result, mediaType: "image/webp", base64Data: base64});
+                        return;
+                    }
+                }
+            }
+
+            // Last resort: use the smallest result we got
+            const base64 = result.split(",")[1];
+            callback({dataUrl: result, mediaType: "image/webp", base64Data: base64});
+        };
+        img.src = dataUrl;
+    }
+
+    /**
+     * Show a lightbox overlay with the full-size image.
+     */
+    function _showImageLightbox(src) {
+        const $overlay = $(
+            '<div class="ai-image-lightbox">' +
+                '<img />' +
+            '</div>'
+        );
+        $overlay.find("img").attr("src", src);
+        $overlay.on("click", function () {
+            $overlay.remove();
+        });
+        $panel.append($overlay);
+    }
+
+    /**
+     * Render the image preview strip from _attachedImages.
+     */
+    function _renderImagePreview() {
+        if (!$imagePreview) {
+            return;
+        }
+        $imagePreview.empty();
+        if (_attachedImages.length === 0) {
+            $imagePreview.removeClass("has-images");
+            return;
+        }
+        $imagePreview.addClass("has-images");
+        _attachedImages.forEach(function (img, idx) {
+            const $thumb = $(
+                '<span class="ai-image-thumb">' +
+                    '<img />' +
+                    '<button class="ai-image-remove" title="' + Strings.AI_CHAT_IMAGE_REMOVE + '">&times;</button>' +
+                '</span>'
+            );
+            $thumb.find("img").attr("src", img.dataUrl).on("click", function () {
+                _showImageLightbox(img.dataUrl);
+            });
+            $thumb.find(".ai-image-remove").on("click", function () {
+                _attachedImages.splice(idx, 1);
+                _renderImagePreview();
+            });
+            $imagePreview.append($thumb);
+        });
+    }
+
+    /**
      * Send the current input as a message to Claude.
      */
     function _sendMessage() {
@@ -474,8 +618,16 @@ define(function (require, exports, module) {
         // Show "+ New" button once a conversation starts
         $panel.find(".ai-new-session-btn").show();
 
+        // Capture attached images before clearing
+        const imagesForDisplay = _attachedImages.slice();
+        const imagesPayload = _attachedImages.map(function (img) {
+            return {mediaType: img.mediaType, base64Data: img.base64Data};
+        });
+        _attachedImages = [];
+        _renderImagePreview();
+
         // Append user message
-        _appendUserMessage(text);
+        _appendUserMessage(text, imagesForDisplay);
 
         // Clear input
         $textarea.val("");
@@ -540,7 +692,8 @@ define(function (require, exports, module) {
             projectPath: projectPath,
             sessionAction: "continue",
             locale: brackets.getLocale(),
-            selectionContext: selectionContext
+            selectionContext: selectionContext,
+            images: imagesPayload.length > 0 ? imagesPayload : undefined
         }).then(function (result) {
             _currentRequestId = result.requestId;
             console.log("[AI UI] RequestId:", result.requestId);
@@ -583,6 +736,8 @@ define(function (require, exports, module) {
         _cursorDismissed = false;
         _cursorDismissedLine = null;
         _livePreviewDismissed = false;
+        _attachedImages = [];
+        _renderImagePreview();
         SnapshotStore.reset();
         PhoenixConnectors.clearPreviousContentMap();
         if ($messages) {
@@ -1281,7 +1436,7 @@ define(function (require, exports, module) {
 
     // --- DOM helpers ---
 
-    function _appendUserMessage(text) {
+    function _appendUserMessage(text, images) {
         const $msg = $(
             '<div class="ai-msg ai-msg-user">' +
                 '<div class="ai-msg-label">' + Strings.AI_CHAT_LABEL_YOU + '</div>' +
@@ -1289,6 +1444,18 @@ define(function (require, exports, module) {
             '</div>'
         );
         $msg.find(".ai-msg-content").text(text);
+        if (images && images.length > 0) {
+            const $imgDiv = $('<div class="ai-user-images"></div>');
+            images.forEach(function (img) {
+                const $thumb = $('<img class="ai-user-image-thumb" />');
+                $thumb.attr("src", img.dataUrl);
+                $thumb.on("click", function () {
+                    _showImageLightbox(img.dataUrl);
+                });
+                $imgDiv.append($thumb);
+            });
+            $msg.find(".ai-msg-content").append($imgDiv);
+        }
         $messages.append($msg);
         _scrollToBottom();
     }

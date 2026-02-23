@@ -132,7 +132,7 @@ exports.checkAvailability = async function () {
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale, selectionContext } = params;
+    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images } = params;
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -172,7 +172,7 @@ exports.sendPrompt = async function (params) {
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale)
+    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -220,7 +220,7 @@ exports.destroySession = async function () {
 /**
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
-async function _runQuery(requestId, prompt, projectPath, model, signal, locale) {
+async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images) {
     let editCount = 0;
     let toolCounter = 0;
     let queryFn;
@@ -249,8 +249,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
         cwd: projectPath || process.cwd(),
         maxTurns: undefined,
         allowedTools: [
-            "Read", "Edit", "Write", "Glob", "Grep",
+            "Read", "Edit", "Write", "Glob", "Grep", "Bash",
             "AskUserQuestion", "Task",
+            "TodoRead", "TodoWrite",
+            "WebFetch", "WebSearch",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
@@ -483,6 +485,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
         queryOptions.model = model;
     }
 
+
     // Resume session if we have an existing one (already cleared if sessionAction was "new")
     if (currentSessionId) {
         queryOptions.resume = currentSessionId;
@@ -493,8 +496,28 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
     try {
         _log("Query start:", JSON.stringify(prompt).slice(0, 80), "cwd=" + (projectPath || "?"));
 
+        // Build prompt: multi-modal with images, or plain string
+        let sdkPrompt = prompt;
+        if (images && images.length > 0) {
+            const contentBlocks = [{ type: "text", text: prompt }];
+            images.forEach(function (img) {
+                contentBlocks.push({
+                    type: "image",
+                    source: { type: "base64", media_type: img.mediaType, data: img.base64Data }
+                });
+            });
+            sdkPrompt = (async function* () {
+                yield {
+                    type: "user",
+                    session_id: currentSessionId || "",
+                    message: { role: "user", content: contentBlocks },
+                    parent_tool_use_id: null
+                };
+            })();
+        }
+
         const result = queryFn({
-            prompt: prompt,
+            prompt: sdkPrompt,
             options: queryOptions
         });
 
@@ -753,6 +776,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
 
         _log("Error:", errMsg.slice(0, 200));
 
+        // Clear session after error to prevent cascading failures from resuming a broken session
+        currentSessionId = null;
+
         nodeConnector.triggerPeer("aiError", {
             requestId: requestId,
             error: errMsg
@@ -761,7 +787,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
         // Always send aiComplete after aiError so the UI exits streaming state
         nodeConnector.triggerPeer("aiComplete", {
             requestId: requestId,
-            sessionId: currentSessionId
+            sessionId: null
         });
     }
 }
