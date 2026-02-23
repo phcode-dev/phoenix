@@ -250,7 +250,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
         maxTurns: undefined,
         allowedTools: [
             "Read", "Edit", "Write", "Glob", "Grep",
-            "AskUserQuestion",
+            "AskUserQuestion", "Task",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
@@ -258,6 +258,29 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale) 
             "mcp__phoenix-editor__resizeLivePreview",
             "mcp__phoenix-editor__wait"
         ],
+        agents: {
+            "researcher": {
+                description: "Explores the codebase, reads files, and searches" +
+                    " for patterns. Use for research tasks.",
+                prompt: "You are a code research assistant. Search and read" +
+                    " files to answer questions. Do not modify files.",
+                tools: ["Read", "Glob", "Grep",
+                    "mcp__phoenix-editor__getEditorState",
+                    "mcp__phoenix-editor__takeScreenshot",
+                    "mcp__phoenix-editor__execJsInLivePreview"]
+            },
+            "coder": {
+                description: "Reads, edits, and writes code files." +
+                    " Use for implementation tasks.",
+                prompt: "You are a coding assistant. Implement the requested" +
+                    " changes using Edit for existing files and Write" +
+                    " only for new files.",
+                tools: ["Read", "Edit", "Write", "Glob", "Grep",
+                    "mcp__phoenix-editor__getEditorState",
+                    "mcp__phoenix-editor__takeScreenshot",
+                    "mcp__phoenix-editor__execJsInLivePreview"]
+            }
+        },
         mcpServers: { "phoenix-editor": editorMcpServer },
         permissionMode: "acceptEdits",
         appendSystemPrompt:
