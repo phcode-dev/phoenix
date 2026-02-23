@@ -20,10 +20,20 @@
 
 /* AI Chat Panel — sidebar chat UI for Claude Code integration */
 
+.ai-tab-container {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 1;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
 .ai-chat-panel {
     display: flex;
     flex-direction: column;
     -webkit-box-flex: 1;
+    flex: 1;
     min-height: 0;
     overflow: hidden;
     background-color: @bc-sidebar-bg;
@@ -1407,6 +1417,22 @@
         &:hover {
             background-color: rgba(255, 255, 255, 0.06);
             color: @project-panel-text-1;
+        }
+    }
+
+    .ai-upsell-btn {
+        background: #FF9900;
+        border: none;
+        color: #000;
+        font-weight: 600;
+        font-size: @sidebar-small-font-size;
+        padding: 3px 12px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+            background: #FFa820;
         }
     }
 }
