@@ -1614,6 +1614,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "élő előnézet",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "teljes oldal",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Előnézet vizsgálata",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Előnézet átméretezése",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "A MI az élő előnézetet vizsgálja",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "A MI átméretezte az előnézetet erre: {0}",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Szerkesztő",
   "AI_CHAT_TOOL_TASKS": "Feladatok",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} feladatból {0} kész",
@@ -1647,6 +1650,9 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Kijelölés: L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Sor {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Élő Előnézet",
+  "AI_CHAT_TOOL_WAIT": "Várakozás",
+  "AI_CHAT_TOOL_WAITING": "Várakozás: {0} mp",
+  "AI_CHAT_TOOL_WAITED": "Várakozás befejezve: {0} mp",
   "AI_CHAT_COPY_CODE": "Másolás",
   "DEMO_SECTION1_TITLE": "Szerkesztés élő előnézetben",
   "DEMO_SECTION1_SUBTITLE": "Szerkessze oldalát vizuálisan -&nbsp; <b>A HTML-kód azonnal frissül</b>",
@@ -1739,10 +1745,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Előnézet átméretezése",
-  "AI_LIVE_PREVIEW_BANNER_TEXT": "A MI az élő előnézetet vizsgálja",
-  "AI_LIVE_PREVIEW_BANNER_RESIZE": "A MI átméretezte az előnézetet erre: {0}",
-  "AI_CHAT_TOOL_WAIT": "Várakozás",
-  "AI_CHAT_TOOL_WAITING": "Várakozás: {0} mp",
-  "AI_CHAT_TOOL_WAITED": "Várakozás befejezve: {0} mp"
+  "AI_CHAT_COPIED_CODE": "Másolva!"
 });

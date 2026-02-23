@@ -18,6 +18,7 @@
   "AI_CHAT_CONTEXT_CURSOR": "Line {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Preview",
   "AI_CHAT_CONTEXT_SELECTION": "Selection L{0}-L{1}",
+  "AI_CHAT_COPIED_CODE": "Copied!",
   "AI_CHAT_COPY_CODE": "Copy",
   "AI_CHAT_DESKTOP_ONLY": "AI features require the Phoenix desktop app.",
   "AI_CHAT_EDIT_NOT_FOUND": "Text not found in file — it may have changed",

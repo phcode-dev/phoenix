@@ -1614,6 +1614,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "reaaliaikainen esikatselu",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "koko sivu",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Tarkastetaan esikatselua",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Muuta esikatselun kokoa",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "Tekoäly tutkii reaaliaikaista esikatselua",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "Tekoäly muutti esikatselun kokoon {0}",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editori",
   "AI_CHAT_TOOL_TASKS": "Tehtävät",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0}/{1} tehtävää tehty",
@@ -1647,6 +1650,9 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Valinta L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Rivi {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Esikatselu",
+  "AI_CHAT_TOOL_WAIT": "Odota",
+  "AI_CHAT_TOOL_WAITING": "Odotetaan {0} s",
+  "AI_CHAT_TOOL_WAITED": "Odotettu {0} s",
   "AI_CHAT_COPY_CODE": "Kopioi",
   "DEMO_SECTION1_TITLE": "Muokkaa live-esikatselussa",
   "DEMO_SECTION1_SUBTITLE": "Muokkaa sivuasi visuaalisesti -&nbsp; <b>HTML-koodisi päivittyy välittömästi</b>",
@@ -1739,10 +1745,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Muuta esikatselun kokoa",
-  "AI_LIVE_PREVIEW_BANNER_TEXT": "Tekoäly tutkii reaaliaikaista esikatselua",
-  "AI_LIVE_PREVIEW_BANNER_RESIZE": "Tekoäly muutti esikatselun kokoon {0}",
-  "AI_CHAT_TOOL_WAIT": "Odota",
-  "AI_CHAT_TOOL_WAITING": "Odotetaan {0} s",
-  "AI_CHAT_TOOL_WAITED": "Odotettu {0} s"
+  "AI_CHAT_COPIED_CODE": "Kopioitu"
 });

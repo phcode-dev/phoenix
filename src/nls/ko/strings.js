@@ -1614,6 +1614,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "라이브 미리보기",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "전체 페이지",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "미리보기 검사 중",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "미리보기 크기 조정",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI가 실시간 미리보기를 검사하고 있습니다",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI가 미리보기를 {0}으로 크기 조정했습니다",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "에디터",
   "AI_CHAT_TOOL_TASKS": "작업",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "총 {1}개 작업 중 {0}개 완료",
@@ -1647,6 +1650,9 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "선택 영역 L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "줄 {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "실시간 미리보기",
+  "AI_CHAT_TOOL_WAIT": "대기",
+  "AI_CHAT_TOOL_WAITING": "{0}초 대기 중",
+  "AI_CHAT_TOOL_WAITED": "{0}초 대기 완료",
   "AI_CHAT_COPY_CODE": "복사하기",
   "DEMO_SECTION1_TITLE": "라이브 프리뷰로 편집",
   "DEMO_SECTION1_SUBTITLE": "페이지를 시각적으로 편집하세요 -&nbsp; <b>HTML이 즉시 업데이트됩니다</b>",
@@ -1739,10 +1745,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_TOOL_RESIZE_PREVIEW": "미리보기 크기 조정",
-  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI가 실시간 미리보기를 검사하고 있습니다",
-  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI가 미리보기를 {0}으로 크기 조정했습니다",
-  "AI_CHAT_TOOL_WAIT": "대기",
-  "AI_CHAT_TOOL_WAITING": "{0}초 대기 중",
-  "AI_CHAT_TOOL_WAITED": "{0}초 대기 완료"
+  "AI_CHAT_COPIED_CODE": "복사되었습니다"
 });

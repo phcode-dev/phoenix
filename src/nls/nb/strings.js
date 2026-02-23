@@ -1614,6 +1614,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "direkte forhåndsvisning",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "hele siden",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspiserer forhåndsvisning",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Endre størrelse på forhåndsvisning",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspiserer direkteforhåndsvisningen",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI endret størrelsen på forhåndsvisningen til {0}",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Redigeringsprogram",
   "AI_CHAT_TOOL_TASKS": "Oppgaver",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} av {1} oppgaver fullført",
@@ -1647,6 +1650,9 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Markering L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Linje {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Preview",
+  "AI_CHAT_TOOL_WAIT": "Vent",
+  "AI_CHAT_TOOL_WAITING": "Venter i {0} s",
+  "AI_CHAT_TOOL_WAITED": "Ferdig med å vente i {0} s",
   "AI_CHAT_COPY_CODE": "Kopier",
   "DEMO_SECTION1_TITLE": "Rediger i sanntids forhåndsvisning",
   "DEMO_SECTION1_SUBTITLE": "Rediger siden din visuelt -&nbsp; <b>HTML-koden din oppdateres umiddelbart</b>",
@@ -1739,10 +1745,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Endre størrelse på forhåndsvisning",
-  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspiserer direkteforhåndsvisningen",
-  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI endret størrelsen på forhåndsvisningen til {0}",
-  "AI_CHAT_TOOL_WAIT": "Vent",
-  "AI_CHAT_TOOL_WAITING": "Venter i {0} s",
-  "AI_CHAT_TOOL_WAITED": "Ferdig med å vente i {0} s"
+  "AI_CHAT_COPIED_CODE": "Kopiert"
 });

@@ -1614,6 +1614,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "перегляд наживо",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "уся сторінка",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Перевірка попереднього перегляду",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Змінити розмір перегляду",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "ШІ аналізує перегляд наживо",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "ШІ змінив розмір перегляду до {0}",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Редактор",
   "AI_CHAT_TOOL_TASKS": "Завдання",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Виконано {0} з {1} завдань",
@@ -1647,6 +1650,9 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Виділення Р{0}-Р{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Рядок {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live Preview",
+  "AI_CHAT_TOOL_WAIT": "Чекати",
+  "AI_CHAT_TOOL_WAITING": "Очікування {0} с",
+  "AI_CHAT_TOOL_WAITED": "Очікування {0} с завершено",
   "AI_CHAT_COPY_CODE": "Копіювати",
   "DEMO_SECTION1_TITLE": "Редагувати в режимі живого перегляду",
   "DEMO_SECTION1_SUBTITLE": "Редагуйте свою сторінку візуально -&nbsp; <b>Ваш HTML оновлюється миттєво</b>",
@@ -1739,10 +1745,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Змінити розмір перегляду",
-  "AI_LIVE_PREVIEW_BANNER_TEXT": "ШІ аналізує перегляд наживо",
-  "AI_LIVE_PREVIEW_BANNER_RESIZE": "ШІ змінив розмір перегляду до {0}",
-  "AI_CHAT_TOOL_WAIT": "Чекати",
-  "AI_CHAT_TOOL_WAITING": "Очікування {0} с",
-  "AI_CHAT_TOOL_WAITED": "Очікування {0} с завершено"
+  "AI_CHAT_COPIED_CODE": "Скопійовано"
 });
