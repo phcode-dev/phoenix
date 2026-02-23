@@ -473,6 +473,7 @@
   "CUSTOM_SNIPPETS_ABBREVIATION_LABEL": "Abbreviation:",
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet.",
   "CUSTOM_SNIPPETS_ABBR_LENGTH_ERROR": "Abbreviation cannot be more than 30 characters.",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Add",
   "CUSTOM_SNIPPETS_ADD_DESC_TOOLTIP": "Click to add description",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Add new snippet",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Add Snippet",
