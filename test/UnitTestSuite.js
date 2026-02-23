@@ -63,6 +63,7 @@ define(function (require, exports, module) {
     require("spec/LanguageManager-test");
     require("spec/LanguageManager-integ-test");
     require("spec/ai-snapshot-test");
+    require("spec/ai-history-test");
     require("spec/LowLevelFileIO-test");
     require("spec/Metrics-test");
     require("spec/MultiRangeInlineEditor-test");

@@ -1,0 +1,17 @@
+{
+    "id": "img-sess",
+    "title": "Check this screenshot",
+    "timestamp": 1700000000000,
+    "messages": [
+        {
+            "type": "user",
+            "text": "Check this screenshot",
+            "images": [
+                { "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg==", "mediaType": "image/png" },
+                { "dataUrl": "data:image/jpeg;base64,/9j/4AAQSkZJRg==", "mediaType": "image/jpeg" }
+            ]
+        },
+        { "type": "assistant", "markdown": "I can see two images in your screenshot.", "isFirst": true },
+        { "type": "complete" }
+    ]
+}

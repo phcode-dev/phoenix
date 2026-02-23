@@ -1,0 +1,14 @@
+{
+    "id": "err-sess",
+    "title": "Run the tests",
+    "timestamp": 1700000000000,
+    "messages": [
+        { "type": "user", "text": "Run the tests" },
+        { "type": "assistant", "markdown": "I'll run the test suite.", "isFirst": true },
+        { "type": "tool", "toolName": "Bash", "summary": "Running npm test", "icon": "fa-solid fa-terminal", "color": "#c084fc", "elapsed": 5.2 },
+        { "type": "error", "text": "Process exited with code 1: Tests failed" },
+        { "type": "assistant", "markdown": "The tests failed. Let me investigate." },
+        { "type": "tool", "toolName": "Read", "summary": "Reading test output", "icon": "fa-solid fa-file-lines", "color": "#6bc76b", "elapsed": 0.3 },
+        { "type": "complete" }
+    ]
+}

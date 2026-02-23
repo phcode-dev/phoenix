@@ -1,0 +1,26 @@
+{
+    "id": "multi-tool-sess",
+    "title": "Refactor the utils module",
+    "timestamp": 1700000000000,
+    "messages": [
+        { "type": "user", "text": "Refactor the utils module" },
+        { "type": "assistant", "markdown": "I'll analyze the code first.", "isFirst": true },
+        { "type": "tool", "toolName": "Glob", "summary": "Finding utils files", "icon": "fa-solid fa-magnifying-glass", "color": "#6b9eff", "elapsed": 0.2 },
+        { "type": "tool", "toolName": "Read", "summary": "Reading utils/index.js", "icon": "fa-solid fa-file-lines", "color": "#6bc76b", "elapsed": 0.4 },
+        { "type": "tool", "toolName": "Read", "summary": "Reading utils/helpers.js", "icon": "fa-solid fa-file-lines", "color": "#6bc76b", "elapsed": 0.3 },
+        { "type": "assistant", "markdown": "I see several opportunities for improvement." },
+        { "type": "tool", "toolName": "Edit", "summary": "Editing utils/index.js", "icon": "fa-solid fa-pen", "color": "#e8a838", "elapsed": 1.1 },
+        { "type": "tool_edit", "file": "/src/utils/index.js", "linesAdded": 15, "linesRemoved": 8 },
+        { "type": "tool", "toolName": "Edit", "summary": "Editing utils/helpers.js", "icon": "fa-solid fa-pen", "color": "#e8a838", "elapsed": 0.9 },
+        { "type": "tool_edit", "file": "/src/utils/helpers.js", "linesAdded": 7, "linesRemoved": 12 },
+        { "type": "assistant", "markdown": "Refactoring complete! I've:\n- Extracted shared logic\n- Removed duplicate code\n- Added proper types" },
+        {
+            "type": "edit_summary",
+            "files": [
+                { "file": "/src/utils/index.js", "added": 15, "removed": 8 },
+                { "file": "/src/utils/helpers.js", "added": 7, "removed": 12 }
+            ]
+        },
+        { "type": "complete" }
+    ]
+}
