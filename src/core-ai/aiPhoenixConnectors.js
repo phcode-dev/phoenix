@@ -322,13 +322,9 @@ define(function (require, exports, module) {
      * @param {Object} params - { selector?: string }
      * @return {{ base64: string|null, error?: string }}
      */
-    function takeScreenshot(params) {
+    function _captureScreenshot(selector) {
         const deferred = new $.Deferred();
-        if (!Phoenix || !Phoenix.app || !Phoenix.app.screenShotBinary) {
-            deferred.resolve({ base64: null, error: "Screenshot API not available" });
-            return deferred.promise();
-        }
-        Phoenix.app.screenShotBinary(params.selector || undefined)
+        Phoenix.app.screenShotBinary(selector || undefined)
             .then(function (bytes) {
                 let binary = "";
                 const chunkSize = 8192;
@@ -344,6 +340,32 @@ define(function (require, exports, module) {
             .catch(function (err) {
                 deferred.resolve({ base64: null, error: err.message || String(err) });
             });
+        return deferred.promise();
+    }
+
+    function takeScreenshot(params) {
+        const deferred = new $.Deferred();
+        if (!Phoenix || !Phoenix.app || !Phoenix.app.screenShotBinary) {
+            deferred.resolve({ base64: null, error: "Screenshot API not available" });
+            return deferred.promise();
+        }
+
+        if (params.purePreview) {
+            const previousMode = LiveDevMain.getCurrentMode();
+            LiveDevMain.setMode(LivePreviewConstants.LIVE_PREVIEW_MODE);
+            // Allow time for the mode change to propagate to the live preview iframe
+            setTimeout(function () {
+                _captureScreenshot(params.selector)
+                    .done(function (result) {
+                        LiveDevMain.setMode(previousMode);
+                        deferred.resolve(result);
+                    });
+            }, 150);
+        } else {
+            _captureScreenshot(params.selector)
+                .done(function (result) { deferred.resolve(result); });
+        }
+
         return deferred.promise();
     }
 
@@ -596,26 +618,34 @@ define(function (require, exports, module) {
     function controlEditor(params) {
         const deferred = new $.Deferred();
         const vfsPath = SnapshotStore.realToVfsPath(params.filePath);
+        console.log("controlEditor:", params.operation, params.filePath, "-> vfs:", vfsPath);
+
+        function _resolve(result) {
+            if (!result.success) {
+                console.error("controlEditor failed:", params.operation, vfsPath, result.error);
+            }
+            deferred.resolve(result);
+        }
 
         switch (params.operation) {
         case "open":
             CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath })
-                .done(function () { deferred.resolve({ success: true }); })
-                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+                .done(function () { _resolve({ success: true }); })
+                .fail(function (err) { _resolve({ success: false, error: String(err) }); });
             break;
 
         case "close": {
             const file = FileSystem.getFileForPath(vfsPath);
             CommandManager.execute(Commands.FILE_CLOSE, { file: file, _forceClose: true })
-                .done(function () { deferred.resolve({ success: true }); })
-                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+                .done(function () { _resolve({ success: true }); })
+                .fail(function (err) { _resolve({ success: false, error: String(err) }); });
             break;
         }
 
         case "openInWorkingSet":
             CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: vfsPath })
-                .done(function () { deferred.resolve({ success: true }); })
-                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+                .done(function () { _resolve({ success: true }); })
+                .fail(function (err) { _resolve({ success: false, error: String(err) }); });
             break;
 
         case "setSelection":
@@ -628,12 +658,12 @@ define(function (require, exports, module) {
                             { line: params.endLine - 1, ch: params.endCh - 1 },
                             true
                         );
-                        deferred.resolve({ success: true });
+                        _resolve({ success: true });
                     } else {
-                        deferred.resolve({ success: false, error: "No active editor after opening file" });
+                        _resolve({ success: false, error: "No active editor after opening file" });
                     }
                 })
-                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+                .fail(function (err) { _resolve({ success: false, error: String(err) }); });
             break;
 
         case "setCursorPos":
@@ -642,16 +672,16 @@ define(function (require, exports, module) {
                     const editor = EditorManager.getActiveEditor();
                     if (editor) {
                         editor.setCursorPos(params.line - 1, params.ch - 1, true);
-                        deferred.resolve({ success: true });
+                        _resolve({ success: true });
                     } else {
-                        deferred.resolve({ success: false, error: "No active editor after opening file" });
+                        _resolve({ success: false, error: "No active editor after opening file" });
                     }
                 })
-                .fail(function (err) { deferred.resolve({ success: false, error: String(err) }); });
+                .fail(function (err) { _resolve({ success: false, error: String(err) }); });
             break;
 
         default:
-            deferred.resolve({ success: false, error: "Unknown operation: " + params.operation });
+            _resolve({ success: false, error: "Unknown operation: " + params.operation });
         }
 
         return deferred.promise();

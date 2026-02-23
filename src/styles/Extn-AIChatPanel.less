@@ -122,6 +122,47 @@
     }
 }
 
+/* ── User message image thumbnails ──────────────────────────────────── */
+.ai-user-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+    justify-content: flex-end;
+
+    .ai-user-image-thumb {
+        max-width: 80px;
+        max-height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+    }
+}
+
+/* ── Image lightbox overlay ────────────────────────────────────────── */
+.ai-image-lightbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 6px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    }
+}
+
 /* ── Assistant message — markdown content ───────────────────────────── */
 .ai-msg-assistant {
     .ai-msg-content {
@@ -320,11 +361,6 @@
         object-fit: cover;
         object-position: top left;
         cursor: pointer;
-        transition: max-height 0.2s ease;
-    }
-
-    &.ai-tool-expanded .ai-tool-screenshot.expanded {
-        max-height: none;
     }
 
     .ai-tool-detail-line {
@@ -945,6 +981,54 @@
     .ai-context-chip-selection {
         border-color: rgba(107, 158, 255, 0.3);
         .ai-context-chip-icon { color: #6b9eff; }
+    }
+
+    /* ── Image preview strip (between context bar and textarea) ──────── */
+    .ai-chat-image-preview {
+        display: none;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 6px 8px;
+
+        &.has-images {
+            display: flex;
+        }
+
+        .ai-image-thumb {
+            position: relative;
+
+            img {
+                display: block;
+                max-width: 60px;
+                max-height: 48px;
+                object-fit: cover;
+                border-radius: 4px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                cursor: pointer;
+            }
+
+            .ai-image-remove {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: rgba(0, 0, 0, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: @project-panel-text-2;
+                font-size: 11px;
+                padding: 0;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            &:hover .ai-image-remove {
+                display: flex;
+            }
+        }
     }
 
     .ai-chat-textarea {

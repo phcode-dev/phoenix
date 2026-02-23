@@ -68,12 +68,18 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
         "Prefer capturing specific regions instead of the full page: " +
         "use selector '#panel-live-preview-frame' for the live preview content, " +
         "or '.editor-holder' for the code editor area. " +
-        "Only omit the selector when you need to see the full application layout.",
-        { selector: z.string().optional().describe("CSS selector to capture a specific element. Use '#panel-live-preview-frame' for the live preview, '.editor-holder' for the code editor.") },
+        "Only omit the selector when you need to see the full application layout. " +
+        "Note: live preview screenshots may include Phoenix toolbox overlays on selected elements " +
+        "and other editor UI elements. Use purePreview=true to temporarily hide these overlays.",
+        {
+            selector: z.string().optional().describe("CSS selector to capture a specific element. Use '#panel-live-preview-frame' for the live preview, '.editor-holder' for the code editor."),
+            purePreview: z.boolean().optional().describe("When true, temporarily switches to preview mode to hide element highlight overlays and toolboxes before capturing, then restores the previous mode.")
+        },
         async function (args) {
             try {
                 const result = await nodeConnector.execPeer("takeScreenshot", {
-                    selector: args.selector || undefined
+                    selector: args.selector || undefined,
+                    purePreview: args.purePreview || false
                 });
                 if (result.base64) {
                     return {
@@ -152,15 +158,20 @@ function createEditorMcpServer(sdkModule, nodeConnector) {
             const results = [];
             let hasError = false;
             for (const op of args.operations) {
+                console.log("[Phoenix AI] controlEditor:", op.operation, op.filePath);
                 try {
                     const result = await nodeConnector.execPeer("controlEditor", op);
                     results.push(result);
                     if (!result.success) {
                         hasError = true;
+                        console.warn("[Phoenix AI] controlEditor failed:", op.operation, op.filePath, result.error);
+                    } else {
+                        console.log("[Phoenix AI] controlEditor success:", op.operation, op.filePath);
                     }
                 } catch (err) {
                     results.push({ success: false, error: err.message });
                     hasError = true;
+                    console.error("[Phoenix AI] controlEditor error:", op.operation, op.filePath, err.message);
                 }
             }
             return {
