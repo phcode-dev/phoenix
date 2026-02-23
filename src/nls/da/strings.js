@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Venter {0} s",
   "AI_CHAT_TOOL_WAITED": "Ventede {0} s",
   "AI_CHAT_COPY_CODE": "Kopiér",
+  "AI_CHAT_COPIED_CODE": "Kopieret",
   "DEMO_SECTION1_TITLE": "Rediger i Live-forhåndsvisning",
   "DEMO_SECTION1_SUBTITLE": "Rediger din side visuelt -&nbsp; <b>Din HTML opdateres øjeblikkeligt</b>",
   "DEMO_GET_STARTED_BUTTON": "Kom i gang",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_COPIED_CODE": "Kopieret"
+  "REFERENCES_PANEL_TITLE": "Referencer",
+  "SEARCH_RESULTS_PANEL_TITLE": "Søgeresultater",
+  "BOTTOM_PANEL_HIDE": "Skjul panel",
+  "BOTTOM_PANEL_SHOW": "Vis bundpanel",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Skjul bundpanel",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Hurtig adgang",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Åbn et panel",
+  "BOTTOM_PANEL_MAXIMIZE": "Maksimer panel",
+  "BOTTOM_PANEL_RESTORE": "Gendan panelstørrelse",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Tilføj"
 });

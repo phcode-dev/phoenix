@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Очікування {0} с",
   "AI_CHAT_TOOL_WAITED": "Очікування {0} с завершено",
   "AI_CHAT_COPY_CODE": "Копіювати",
+  "AI_CHAT_COPIED_CODE": "Скопійовано",
   "DEMO_SECTION1_TITLE": "Редагувати в режимі живого перегляду",
   "DEMO_SECTION1_SUBTITLE": "Редагуйте свою сторінку візуально -&nbsp; <b>Ваш HTML оновлюється миттєво</b>",
   "DEMO_GET_STARTED_BUTTON": "Почати",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_COPIED_CODE": "Скопійовано"
+  "REFERENCES_PANEL_TITLE": "Посилання",
+  "SEARCH_RESULTS_PANEL_TITLE": "Результати пошуку",
+  "BOTTOM_PANEL_HIDE": "Приховати панель",
+  "BOTTOM_PANEL_SHOW": "Показати нижню панель",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Приховати нижню панель",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Швидкий доступ",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Відкрити панель",
+  "BOTTOM_PANEL_MAXIMIZE": "Розгорнути панель",
+  "BOTTOM_PANEL_RESTORE": "Відновити розмір панелі",
+  "GIT_PANEL_TITLE": "Гіт",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Додати"
 });

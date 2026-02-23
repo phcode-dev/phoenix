@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Odotetaan {0} s",
   "AI_CHAT_TOOL_WAITED": "Odotettu {0} s",
   "AI_CHAT_COPY_CODE": "Kopioi",
+  "AI_CHAT_COPIED_CODE": "Kopioitu",
   "DEMO_SECTION1_TITLE": "Muokkaa live-esikatselussa",
   "DEMO_SECTION1_SUBTITLE": "Muokkaa sivuasi visuaalisesti -&nbsp; <b>HTML-koodisi päivittyy välittömästi</b>",
   "DEMO_GET_STARTED_BUTTON": "Aloita",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_COPIED_CODE": "Kopioitu"
+  "REFERENCES_PANEL_TITLE": "Viittaukset",
+  "SEARCH_RESULTS_PANEL_TITLE": "Hakutulokset",
+  "BOTTOM_PANEL_HIDE": "Piilota paneeli",
+  "BOTTOM_PANEL_SHOW": "Näytä alapaneeli",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Piilota alapaneeli",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Pikakäyttö",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Avaa paneeli",
+  "BOTTOM_PANEL_MAXIMIZE": "Maksimoi paneeli",
+  "BOTTOM_PANEL_RESTORE": "Palauta paneelin koko",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Lisää"
 });

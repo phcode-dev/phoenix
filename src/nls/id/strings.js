@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Menunggu {0} detik",
   "AI_CHAT_TOOL_WAITED": "Selesai menunggu {0} detik",
   "AI_CHAT_COPY_CODE": "Salin",
+  "AI_CHAT_COPIED_CODE": "Disalin",
   "DEMO_SECTION1_TITLE": "Edit di Pratinjau Langsung",
   "DEMO_SECTION1_SUBTITLE": "Edit halaman Anda secara visual -&nbsp; <b>HTML Anda langsung diperbarui</b>",
   "DEMO_GET_STARTED_BUTTON": "Mulai",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_COPIED_CODE": "Disalin"
+  "REFERENCES_PANEL_TITLE": "Referensi",
+  "SEARCH_RESULTS_PANEL_TITLE": "Hasil Pencarian",
+  "BOTTOM_PANEL_HIDE": "Sembunyikan Panel",
+  "BOTTOM_PANEL_SHOW": "Tampilkan Panel Bawah",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Sembunyikan Panel Bawah",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Akses Cepat",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Buka Panel",
+  "BOTTOM_PANEL_MAXIMIZE": "Maksimalkan Panel",
+  "BOTTOM_PANEL_RESTORE": "Pulihkan Ukuran Panel",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Tambah"
 });

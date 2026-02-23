@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "En attente pendant {0} s",
   "AI_CHAT_TOOL_WAITED": "Attente de {0} s terminée",
   "AI_CHAT_COPY_CODE": "Copier",
+  "AI_CHAT_COPIED_CODE": "Copié",
   "DEMO_SECTION1_TITLE": "Édition en aperçu en direct",
   "DEMO_SECTION1_SUBTITLE": "Modifiez votre page visuellement -&nbsp; <b>Votre HTML se met à jour instantanément</b>",
   "DEMO_GET_STARTED_BUTTON": "Commencer",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "AI_CHAT_COPIED_CODE": "Copié"
+  "REFERENCES_PANEL_TITLE": "Références",
+  "SEARCH_RESULTS_PANEL_TITLE": "Résultats de la recherche",
+  "BOTTOM_PANEL_HIDE": "Masquer le panneau",
+  "BOTTOM_PANEL_SHOW": "Afficher le panneau inférieur",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Masquer le panneau inférieur",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Accès rapide",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Ouvrir un panneau",
+  "BOTTOM_PANEL_MAXIMIZE": "Agrandir le panneau",
+  "BOTTOM_PANEL_RESTORE": "Restaurer la taille du panneau",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Ajouter"
 });

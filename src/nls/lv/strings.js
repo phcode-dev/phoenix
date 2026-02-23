@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Gaida {0} s",
   "AI_CHAT_TOOL_WAITED": "Nogaidīja {0} s",
   "AI_CHAT_COPY_CODE": "Kopēt",
+  "AI_CHAT_COPIED_CODE": "Nokopēts",
   "DEMO_SECTION1_TITLE": "Rediģēt tiešraides priekšskatījumā",
   "DEMO_SECTION1_SUBTITLE": "Rediģējiet savu lapu vizuāli -&nbsp; <b>Jūsu HTML tiek atjaunināts nekavējoties</b>",
   "DEMO_GET_STARTED_BUTTON": "Sākt darbu",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_COPIED_CODE": "Nokopēts"
+  "REFERENCES_PANEL_TITLE": "Atsauces",
+  "SEARCH_RESULTS_PANEL_TITLE": "Meklēšanas rezultāti",
+  "BOTTOM_PANEL_HIDE": "Paslēpt paneli",
+  "BOTTOM_PANEL_SHOW": "Parādīt apakšējo paneli",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Paslēpt apakšējo paneli",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Ātrā piekļuve",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Atvērt paneli",
+  "BOTTOM_PANEL_MAXIMIZE": "Maksimizēt paneli",
+  "BOTTOM_PANEL_RESTORE": "Atjaunot paneļa izmēru",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Pievienot"
 });

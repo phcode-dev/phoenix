@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "Warte {0} s",
   "AI_CHAT_TOOL_WAITED": "{0} s gewartet",
   "AI_CHAT_COPY_CODE": "Kopieren",
+  "AI_CHAT_COPIED_CODE": "Kopiert",
   "DEMO_SECTION1_TITLE": "In Live-Vorschau bearbeiten",
   "DEMO_SECTION1_SUBTITLE": "Bearbeite deine Seite visuell -&nbsp; <b>Dein HTML aktualisiert sich sofort</b>",
   "DEMO_GET_STARTED_BUTTON": "Los geht's",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_COPIED_CODE": "Kopiert"
+  "REFERENCES_PANEL_TITLE": "Referenzen",
+  "SEARCH_RESULTS_PANEL_TITLE": "Suchergebnisse",
+  "BOTTOM_PANEL_HIDE": "Panel ausblenden",
+  "BOTTOM_PANEL_SHOW": "Unteres Panel anzeigen",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Unteres Panel ausblenden",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Schnellzugriff",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Ein Panel öffnen",
+  "BOTTOM_PANEL_MAXIMIZE": "Panel maximieren",
+  "BOTTOM_PANEL_RESTORE": "Panelgröße wiederherstellen",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Hinzufügen"
 });

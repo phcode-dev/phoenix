@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "正在等待 {0} 秒",
   "AI_CHAT_TOOL_WAITED": "已等待 {0} 秒",
   "AI_CHAT_COPY_CODE": "复制",
+  "AI_CHAT_COPIED_CODE": "已复制！",
   "DEMO_SECTION1_TITLE": "在实时预览中编辑",
   "DEMO_SECTION1_SUBTITLE": "可视化编辑页面 -&nbsp; <b>HTML 代码即时更新</b>",
   "DEMO_GET_STARTED_BUTTON": "开始使用",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_COPIED_CODE": "已复制！"
+  "REFERENCES_PANEL_TITLE": "引用",
+  "SEARCH_RESULTS_PANEL_TITLE": "搜索结果",
+  "BOTTOM_PANEL_HIDE": "隐藏面板",
+  "BOTTOM_PANEL_SHOW": "显示底部面板",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "隐藏底部面板",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "快速访问",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "打开一个面板",
+  "BOTTOM_PANEL_MAXIMIZE": "最大化面板",
+  "BOTTOM_PANEL_RESTORE": "还原面板大小",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "添加"
 });

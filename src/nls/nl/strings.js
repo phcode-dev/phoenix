@@ -1654,6 +1654,7 @@ define({
   "AI_CHAT_TOOL_WAITING": "{0}s wachten",
   "AI_CHAT_TOOL_WAITED": "{0}s gewacht",
   "AI_CHAT_COPY_CODE": "Kopierën",
+  "AI_CHAT_COPIED_CODE": "Gekopieerd!",
   "DEMO_SECTION1_TITLE": "Bewerk in Live Preview",
   "DEMO_SECTION1_SUBTITLE": "Bewerk je pagina visueel -&nbsp; <b>Je HTML wordt direct bijgewerkt</b>",
   "DEMO_GET_STARTED_BUTTON": "Aan de slag",
@@ -1745,5 +1746,15 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_COPIED_CODE": "Gekopieerd!"
+  "REFERENCES_PANEL_TITLE": "Referenties",
+  "SEARCH_RESULTS_PANEL_TITLE": "Zoekresultaten",
+  "BOTTOM_PANEL_HIDE": "Paneel verbergen",
+  "BOTTOM_PANEL_SHOW": "Onderste paneel tonen",
+  "BOTTOM_PANEL_HIDE_TOGGLE": "Onderste paneel verbergen",
+  "BOTTOM_PANEL_DEFAULT_TITLE": "Snelle toegang",
+  "BOTTOM_PANEL_DEFAULT_HEADING": "Open een paneel",
+  "BOTTOM_PANEL_MAXIMIZE": "Paneel maximaliseren",
+  "BOTTOM_PANEL_RESTORE": "Paneelgrootte herstellen",
+  "GIT_PANEL_TITLE": "Git",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "Toevoegen"
 });
