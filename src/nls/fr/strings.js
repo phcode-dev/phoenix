@@ -1614,6 +1614,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Aperçu en direct",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Page entière",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspection de l'aperçu",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Redimensionner l'aperçu",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "L'IA inspecte l'aperçu en direct",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "L'IA a redimensionné l'aperçu à {0}",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Éditeur",
   "AI_CHAT_TOOL_TASKS": "Tâches",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} sur {1} tâches terminées",
@@ -1647,6 +1650,9 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Sélection L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Ligne {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Aperçu en direct",
+  "AI_CHAT_TOOL_WAIT": "Attendre",
+  "AI_CHAT_TOOL_WAITING": "En attente pendant {0} s",
+  "AI_CHAT_TOOL_WAITED": "Attente de {0} s terminée",
   "AI_CHAT_COPY_CODE": "Copier",
   "DEMO_SECTION1_TITLE": "Édition en aperçu en direct",
   "DEMO_SECTION1_SUBTITLE": "Modifiez votre page visuellement -&nbsp; <b>Votre HTML se met à jour instantanément</b>",
@@ -1739,10 +1745,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Redimensionner l'aperçu",
-  "AI_LIVE_PREVIEW_BANNER_TEXT": "L'IA inspecte l'aperçu en direct",
-  "AI_LIVE_PREVIEW_BANNER_RESIZE": "L'IA a redimensionné l'aperçu à {0}",
-  "AI_CHAT_TOOL_WAIT": "Attendre",
-  "AI_CHAT_TOOL_WAITING": "En attente pendant {0} s",
-  "AI_CHAT_TOOL_WAITED": "Attente de {0} s terminée"
+  "AI_CHAT_COPIED_CODE": "Copié"
 });

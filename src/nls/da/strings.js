@@ -1614,6 +1614,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Direkte forhåndsvisning",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "Hele siden",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspicerer forhåndsvisning",
+  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Tilpas størrelse på forhåndsvisning",
+  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspicerer live-forhåndsvisningen",
+  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI ændrede forhåndsvisningens størrelse til {0}",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Opgaver",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} af {1} opgaver udført",
@@ -1647,6 +1650,9 @@ define({
   "AI_CHAT_CONTEXT_SELECTION": "Markering L{0}-L{1}",
   "AI_CHAT_CONTEXT_CURSOR": "Linje {0}",
   "AI_CHAT_CONTEXT_LIVE_PREVIEW": "Live-Forhåndsvisning",
+  "AI_CHAT_TOOL_WAIT": "Vent",
+  "AI_CHAT_TOOL_WAITING": "Venter {0} s",
+  "AI_CHAT_TOOL_WAITED": "Ventede {0} s",
   "AI_CHAT_COPY_CODE": "Kopiér",
   "DEMO_SECTION1_TITLE": "Rediger i Live-forhåndsvisning",
   "DEMO_SECTION1_SUBTITLE": "Rediger din side visuelt -&nbsp; <b>Din HTML opdateres øjeblikkeligt</b>",
@@ -1739,10 +1745,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_TOOL_RESIZE_PREVIEW": "Tilpas størrelse på forhåndsvisning",
-  "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspicerer live-forhåndsvisningen",
-  "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI ændrede forhåndsvisningens størrelse til {0}",
-  "AI_CHAT_TOOL_WAIT": "Vent",
-  "AI_CHAT_TOOL_WAITING": "Venter {0} s",
-  "AI_CHAT_TOOL_WAITED": "Ventede {0} s"
+  "AI_CHAT_COPIED_CODE": "Kopieret"
 });
