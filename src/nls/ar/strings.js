@@ -1502,6 +1502,7 @@ define({
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "إضافة مقتطف برمجي",
   "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "تعديل مقتطف برمجي",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "إضافة مقتطف جديد",
+  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "إضافة",
   "CUSTOM_SNIPPETS_BACK_TO_LIST_TITLE": "الرجوع إلى قائمة المقتطفات",
   "CUSTOM_SNIPPETS_BACK": "رجوع",
   "CUSTOM_SNIPPETS_FILTER_PLACEHOLDER": "بحث...",
@@ -1756,5 +1757,13 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "CUSTOM_SNIPPETS_ADD_BTN_LABEL": "إضافة"
+  "AI_CHAT_TOOL_QUESTION": "سؤال",
+  "AI_CHAT_TOOL_TASK": "وكيل فرعي",
+  "AI_CHAT_TOOL_TASK_NAME": "وكيل فرعي: {0}",
+  "AI_CHAT_QUESTION_OTHER": "اكتب إجابة مخصصة...",
+  "AI_CHAT_IMAGE_LIMIT": "يُسمح بـ {0} صور كحد أقصى",
+  "AI_CHAT_IMAGE_REMOVE": "إزالة الصورة",
+  "AI_CHAT_QUEUED": "في قائمة الانتظار",
+  "AI_CHAT_QUEUED_EDIT": "تعديل",
+  "AI_CHAT_TOOL_CLARIFICATION": "جاري قراءة متابعتك"
 });
