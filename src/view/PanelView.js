@@ -505,11 +505,11 @@ define(function (require, exports, module) {
             }
         });
 
-        // Hide-panel button collapses the container but keeps tabs intact
+        // Hide-panel button collapses the container but keeps tabs intact.
+        // Maximize state is preserved so the panel re-opens maximized.
         _$tabBar.on("click", ".bottom-panel-hide-btn", function (e) {
             e.stopPropagation();
             if (_$container.is(":visible")) {
-                restoreIfMaximized();
                 Resizer.hide(_$container[0]);
             }
         });
@@ -526,6 +526,19 @@ define(function (require, exports, module) {
                 return;
             }
             _toggleMaximize();
+        });
+
+        // When the container re-expands after being minimized, re-apply
+        // maximize if the user had maximized before minimizing.
+        // The Resizer restores the saved (maximized) height automatically,
+        // so we only need to update the button icon and recompute layout.
+        _$container.on("panelExpanded", function () {
+            if (_isMaximized) {
+                _updateMaximizeButton();
+                if (_recomputeLayout) {
+                    _recomputeLayout();
+                }
+            }
         });
     }
 

@@ -390,7 +390,6 @@ define(function (require, exports, module) {
         $statusBarPanelToggle.on("click", function () {
             _statusBarToggleInProgress = true;
             if ($bottomPanelContainer.is(":visible")) {
-                PanelView.restoreIfMaximized();
                 Resizer.hide($bottomPanelContainer[0]);
                 triggerUpdateLayout();
             } else if (PanelView.getOpenBottomPanelIDs().length > 0) {
@@ -421,7 +420,6 @@ define(function (require, exports, module) {
         });
 
         $bottomPanelContainer.on("panelCollapsed", function () {
-            PanelView.exitMaximizeOnResize();
             $statusBarPanelToggle.find("i")
                 .removeClass("fa-chevron-down")
                 .addClass("fa-chevron-up");
@@ -634,9 +632,9 @@ define(function (require, exports, module) {
     }
 
     function _handleEscapeKey() {
-        // Collapse the entire bottom panel container, keeping all tabs intact
+        // Collapse the entire bottom panel container, keeping all tabs intact.
+        // Maximize state is preserved so the panel re-opens maximized.
         if ($bottomPanelContainer && $bottomPanelContainer.is(":visible")) {
-            PanelView.restoreIfMaximized();
             Resizer.hide($bottomPanelContainer[0]);
             triggerUpdateLayout();
             return true;
