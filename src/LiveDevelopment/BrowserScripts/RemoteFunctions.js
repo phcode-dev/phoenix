@@ -441,13 +441,19 @@ function RemoteFunctions(config = {}) {
             _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
 
-            // Store original outline to restore on hover out, then apply a border
-            element._originalHoverOutline = element.style.outline;
-            const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-            element.style.outline = `1px solid ${outlineColor}`;
+            // Skip hover outline and overlay for the currently click-selected element.
+            // It already has its own outline and overlay from the click/selection flow.
+            // Adding hover state on top would corrupt _originalHoverOutline (it would capture
+            // the click outline instead of the true original) and stack duplicate overlays.
+            if (element !== previouslySelectedElement) {
+                // Store original outline to restore on hover out, then apply a border
+                element._originalHoverOutline = element.style.outline;
+                const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+                element.style.outline = `1px solid ${outlineColor}`;
 
-            _hoverHighlight.add(element);
+                _hoverHighlight.add(element);
+            }
 
             // create the info box for the hovered element
             const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
@@ -1151,6 +1157,10 @@ function RemoteFunctions(config = {}) {
      */
     function cleanupPreviousElementState() {
         if (previouslySelectedElement) {
+            // Safety net: clear any stale hover outline tracking before hideHighlight runs.
+            // This prevents clearElementHoverHighlight from re-applying a captured click outline
+            // in edge cases where _originalHoverOutline was set on the selected element.
+            delete previouslySelectedElement._originalHoverOutline;
             if (previouslySelectedElement._originalOutline !== undefined) {
                 previouslySelectedElement.style.outline = previouslySelectedElement._originalOutline;
             } else {
