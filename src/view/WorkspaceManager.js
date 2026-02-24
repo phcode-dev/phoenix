@@ -363,8 +363,6 @@ define(function (require, exports, module) {
         $bottomPanelContainer = $('<div id="bottom-panel-container" class="vert-resizable top-resizer"></div>');
         let $bottomPanelTabBar = $('<div id="bottom-panel-tab-bar"></div>');
         let $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
-        let $addPanelBtn = $('<span class="bottom-panel-add-btn"><i class="fa-solid fa-plus"></i></span>')
-            .attr('title', Strings.BOTTOM_PANEL_OPEN_PANEL);
         let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
         $tabBarActions.append(
             $('<span class="bottom-panel-hide-btn"><i class="fa-solid fa-minus"></i></span>')
@@ -375,7 +373,6 @@ define(function (require, exports, module) {
                 .attr('title', Strings.BOTTOM_PANEL_MAXIMIZE)
         );
         $bottomPanelTabBar.append($bottomPanelTabsOverflow);
-        $bottomPanelTabBar.append($addPanelBtn);
         $bottomPanelTabBar.append($tabBarActions);
         $bottomPanelContainer.append($bottomPanelTabBar);
         $bottomPanelContainer.insertBefore("#status-bar");
@@ -383,7 +380,7 @@ define(function (require, exports, module) {
 
         // Initialize PanelView with container DOM references and tab bar click handlers
         PanelView.init($bottomPanelContainer, $bottomPanelTabBar, $bottomPanelTabsOverflow,
-            $editorHolder, recomputeLayout);
+            $editorHolder, recomputeLayout, DEFAULT_PANEL_ID);
 
         // Create status bar chevron toggle for bottom panel
         $statusBarPanelToggle = $('<div id="status-panel-toggle" class="indicator global-indicator"><i class="fa-solid fa-chevron-up"></i></div>')
@@ -403,11 +400,6 @@ define(function (require, exports, module) {
                 _showDefaultPanel();
             }
             _statusBarToggleInProgress = false;
-        });
-
-        // "+" button opens the quick access / default panel
-        $addPanelBtn.on("click", function () {
-            _showDefaultPanel();
         });
 
         // Make the container resizable (not individual panels)
