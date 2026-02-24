@@ -194,6 +194,33 @@
     }
 }
 
+.bottom-panel-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 2rem;
+    cursor: pointer;
+    color: #888;
+    font-size: 0.82rem;
+    flex: 0 0 auto;
+    transition: color 0.12s ease, background-color 0.12s ease;
+
+    .dark & {
+        color: #777;
+    }
+
+    &:hover {
+        background-color: #e0e0e0;
+        color: #333;
+
+        .dark & {
+            background-color: #333;
+            color: #eee;
+        }
+    }
+}
+
 .bottom-panel-tab-bar-actions {
     display: flex;
     align-items: center;

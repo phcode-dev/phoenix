@@ -363,16 +363,19 @@ define(function (require, exports, module) {
         $bottomPanelContainer = $('<div id="bottom-panel-container" class="vert-resizable top-resizer"></div>');
         let $bottomPanelTabBar = $('<div id="bottom-panel-tab-bar"></div>');
         let $bottomPanelTabsOverflow = $('<div class="bottom-panel-tabs-overflow"></div>');
+        let $addPanelBtn = $('<span class="bottom-panel-add-btn"><i class="fa-solid fa-plus"></i></span>')
+            .attr('title', Strings.BOTTOM_PANEL_OPEN_PANEL);
         let $tabBarActions = $('<div class="bottom-panel-tab-bar-actions"></div>');
         $tabBarActions.append(
-            $('<span class="bottom-panel-maximize-btn"><i class="fa-solid fa-expand"></i></span>')
-                .attr('title', Strings.BOTTOM_PANEL_MAXIMIZE)
+            $('<span class="bottom-panel-hide-btn"><i class="fa-solid fa-minus"></i></span>')
+                .attr('title', Strings.BOTTOM_PANEL_MINIMIZE)
         );
         $tabBarActions.append(
-            $('<span class="bottom-panel-hide-btn"><i class="fa-solid fa-chevron-down"></i></span>')
-                .attr('title', Strings.BOTTOM_PANEL_HIDE)
+            $('<span class="bottom-panel-maximize-btn"><i class="fa-regular fa-square"></i></span>')
+                .attr('title', Strings.BOTTOM_PANEL_MAXIMIZE)
         );
         $bottomPanelTabBar.append($bottomPanelTabsOverflow);
+        $bottomPanelTabBar.append($addPanelBtn);
         $bottomPanelTabBar.append($tabBarActions);
         $bottomPanelContainer.append($bottomPanelTabBar);
         $bottomPanelContainer.insertBefore("#status-bar");
@@ -400,6 +403,11 @@ define(function (require, exports, module) {
                 _showDefaultPanel();
             }
             _statusBarToggleInProgress = false;
+        });
+
+        // "+" button opens the quick access / default panel
+        $addPanelBtn.on("click", function () {
+            _showDefaultPanel();
         });
 
         // Make the container resizable (not individual panels)

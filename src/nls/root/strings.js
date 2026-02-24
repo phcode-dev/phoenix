@@ -1251,11 +1251,12 @@ define({
     "REFERENCES_NO_RESULTS": "No References available for current cursor position",
     "REFERENCES_PANEL_TITLE": "References",
     "SEARCH_RESULTS_PANEL_TITLE": "Search Results",
-    "BOTTOM_PANEL_HIDE": "Hide Panel",
+    "BOTTOM_PANEL_MINIMIZE": "Minimize Panel",
     "BOTTOM_PANEL_SHOW": "Show Bottom Panel",
     "BOTTOM_PANEL_HIDE_TOGGLE": "Hide Bottom Panel",
     "BOTTOM_PANEL_DEFAULT_TITLE": "Quick Access",
     "BOTTOM_PANEL_DEFAULT_HEADING": "Open a Panel",
+    "BOTTOM_PANEL_OPEN_PANEL": "Open a Panel",
     "BOTTOM_PANEL_MAXIMIZE": "Maximize Panel",
     "BOTTOM_PANEL_RESTORE": "Restore Panel Size",
 
