@@ -61,7 +61,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
     const hasClarification = clarificationAccessors && clarificationAccessors.hasClarification;
     const getEditorStateTool = sdkModule.tool(
         "getEditorState",
-        "Get the current Phoenix editor state: active file, working set (open files), live preview file, " +
+        "Get the current Phoenix editor state: active file, working set (open files with isDirty flag), live preview file, " +
         "cursor/selection info (current line text with surrounding context, or selected text), " +
         "and the currently selected element in the live preview (tag, selector, text preview) if any. " +
         "The live preview selected element may differ from the editor cursor — use execJsInLivePreview to inspect it further. " +
