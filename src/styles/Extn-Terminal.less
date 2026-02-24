@@ -228,14 +228,20 @@
     position: relative;
 }
 
-.terminal-flyout-new-btn,
-.terminal-flyout-dropdown-btn {
+/* New terminal row: + button fills, dropdown chevron on the right */
+.terminal-flyout-new-row {
+    display: flex;
+    align-items: center;
+    height: 28px;
+}
+
+.terminal-flyout-new-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    height: 28px;
-    width: 100%;
+    flex: 1;
+    height: 100%;
     padding: 0;
     cursor: pointer;
     color: var(--terminal-tab-text);
@@ -246,24 +252,41 @@
     white-space: nowrap;
 }
 
-.terminal-flyout-new-btn:hover,
-.terminal-flyout-dropdown-btn:hover {
+.terminal-flyout-new-btn:hover {
     background: rgba(255, 255, 255, 0.05);
     color: var(--terminal-tab-active-text);
 }
 
+/* Dropdown chevron: hidden in collapsed mode, shown inline when expanded */
 .terminal-flyout-dropdown-btn {
-    border-top: 1px solid var(--terminal-border);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 100%;
+    padding: 0;
+    cursor: pointer;
+    color: var(--terminal-tab-text);
+    font-size: 9px;
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--terminal-border);
+    flex-shrink: 0;
+}
+
+.terminal-tab-flyout:hover .terminal-flyout-dropdown-btn {
+    display: flex;
+}
+
+.terminal-flyout-dropdown-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--terminal-tab-active-text);
 }
 
 /* Icon in action buttons */
 .terminal-flyout-btn-icon {
     font-size: 12px;
     flex-shrink: 0;
-}
-
-.terminal-flyout-dropdown-btn .terminal-flyout-btn-icon {
-    font-size: 10px;
 }
 
 /* Hide button labels in collapsed mode; show when expanded */
