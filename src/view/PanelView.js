@@ -467,9 +467,9 @@ define(function (require, exports, module) {
             _toggleMaximize();
         });
 
-        // Double-click on tab bar toggles maximize (exclude action buttons)
+        // Double-click on tab bar toggles maximize (exclude action buttons and add button)
         _$tabBar.on("dblclick", function (e) {
-            if ($(e.target).closest(".bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn").length) {
+            if ($(e.target).closest(".bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn, .bottom-panel-add-btn").length) {
                 return;
             }
             _toggleMaximize();
@@ -568,12 +568,12 @@ define(function (require, exports, module) {
         let $btn = _$tabBar.find(".bottom-panel-maximize-btn");
         let $icon = $btn.find("i");
         if (_isMaximized) {
-            $icon.removeClass("fa-expand")
-                .addClass("fa-compress");
+            $icon.removeClass("fa-regular fa-square")
+                .addClass("fa-solid fa-window-restore");
             $btn.attr("title", Strings.BOTTOM_PANEL_RESTORE);
         } else {
-            $icon.removeClass("fa-compress")
-                .addClass("fa-expand");
+            $icon.removeClass("fa-solid fa-window-restore")
+                .addClass("fa-regular fa-square");
             $btn.attr("title", Strings.BOTTOM_PANEL_MAXIMIZE);
         }
     }
