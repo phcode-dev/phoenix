@@ -649,10 +649,10 @@ define(function (require, exports, module) {
         let $icon = $btn.find("i");
         if (_isMaximized) {
             $icon.removeClass("fa-regular fa-square")
-                .addClass("fa-solid fa-window-restore");
+                .addClass("fa-regular fa-window-restore");
             $btn.attr("title", Strings.BOTTOM_PANEL_RESTORE);
         } else {
-            $icon.removeClass("fa-solid fa-window-restore")
+            $icon.removeClass("fa-regular fa-window-restore")
                 .addClass("fa-regular fa-square");
             $btn.attr("title", Strings.BOTTOM_PANEL_MAXIMIZE);
         }
