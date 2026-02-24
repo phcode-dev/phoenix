@@ -88,14 +88,194 @@
     background: var(--terminal-toolbar-bg);
 }
 
-/* New terminal dropdown wrapper (in tab bar) */
-.terminal-new-dropdown-wrapper {
-    position: relative;
+/* Body: content + tab bar spacer */
+.terminal-body {
     display: flex;
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+/* Tab bar: 30px flex spacer, flyout sits inside absolutely */
+.terminal-tab-bar {
+    position: relative;
+    width: 30px;
+    min-width: 30px;
+    overflow: visible;
+}
+
+/* ─── Unified flyout: collapses to 30px, expands on hover ─── */
+.terminal-tab-flyout {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30px;
+    background: var(--terminal-tab-bg);
+    border-left: 1px solid var(--terminal-border);
+    z-index: 20;
     flex-direction: column;
+    transition: width 0.08s ease;
+}
+
+.terminal-tab-flyout:hover {
+    width: 160px;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Flyout list: scrollable, scrollbar hidden in collapsed mode */
+.terminal-tab-flyout .terminal-flyout-list {
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.terminal-tab-flyout:hover .terminal-flyout-list {
+    scrollbar-width: auto;
+    &::-webkit-scrollbar {
+        display: block;
+    }
+}
+
+/* Flyout item */
+.terminal-flyout-item {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    min-height: 28px;
+    cursor: pointer;
+    color: var(--terminal-tab-text);
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.terminal-flyout-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.terminal-flyout-item.active {
+    background: var(--terminal-tab-active-bg);
+    color: var(--terminal-tab-active-text);
+    box-shadow: inset 2px 0 0 #007acc;
+}
+
+/* Icon column: fixed 30px slot, always visible in collapsed mode */
+.terminal-flyout-icon {
+    width: 30px;
+    min-width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+/* Title: fills remaining space */
+.terminal-flyout-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* CWD basename shown on the right */
+.terminal-flyout-cwd {
+    font-size: 11px;
+    color: var(--terminal-tab-text);
+    flex-shrink: 1;
+    min-width: 0;
+    max-width: 50%;
+    margin-left: 4px;
+    opacity: 0.6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Close button: visible only on item hover */
+.terminal-flyout-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    color: var(--terminal-tab-text);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-right: 4px;
+    visibility: hidden;
+}
+
+.terminal-flyout-item:hover .terminal-flyout-close {
+    visibility: visible;
+}
+
+.terminal-flyout-close:hover {
+    color: var(--terminal-tab-active-text);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Flyout bottom actions ─── */
+.terminal-flyout-actions {
+    border-top: 1px solid var(--terminal-border);
+    position: relative;
+}
+
+.terminal-flyout-new-btn,
+.terminal-flyout-dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 28px;
+    width: 100%;
+    padding: 0;
+    cursor: pointer;
+    color: var(--terminal-tab-text);
+    font-size: 11px;
+    background: transparent;
+    border: none;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.terminal-flyout-new-btn:hover,
+.terminal-flyout-dropdown-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--terminal-tab-active-text);
+}
+
+.terminal-flyout-dropdown-btn {
     border-top: 1px solid var(--terminal-border);
 }
 
+/* Icon in action buttons */
+.terminal-flyout-btn-icon {
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.terminal-flyout-dropdown-btn .terminal-flyout-btn-icon {
+    font-size: 10px;
+}
+
+/* Hide button labels in collapsed mode; show when expanded */
+.terminal-tab-flyout .terminal-btn-label {
+    display: none;
+}
+
+.terminal-tab-flyout:hover .terminal-btn-label {
+    display: inline;
+}
+
+/* ─── Shell dropdown (pops left of flyout actions) ─── */
 .terminal-shell-dropdown {
     position: absolute;
     bottom: 0;
@@ -138,130 +318,7 @@
     flex-shrink: 0;
 }
 
-/* Body: tab bar + content */
-.terminal-body {
-    display: flex;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-}
-
-/* Vertical Tab Bar */
-.terminal-tab-bar {
-    display: flex;
-    flex-direction: column;
-    width: 30px;
-    min-width: 30px;
-    background: var(--terminal-tab-bg);
-    border-left: 1px solid var(--terminal-border);
-    overflow: hidden;
-}
-
-.terminal-tabs-list {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none; /* Firefox */
-    &::-webkit-scrollbar {
-        display: none; /* Chrome/Safari */
-    }
-}
-
-.terminal-tab {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 31px;
-    height: 28px;
-    min-height: 28px;
-    cursor: pointer;
-    color: var(--terminal-tab-text);
-    border-left: 2px solid transparent;
-    user-select: none;
-    box-sizing: border-box;
-}
-
-.terminal-tab:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.terminal-tab.active {
-    background: var(--terminal-tab-active-bg);
-    color: var(--terminal-tab-active-text);
-    border-left-color: #007acc;
-}
-
-.terminal-tab .terminal-tab-icon {
-    font-size: 11px;
-    line-height: 1;
-}
-
-.terminal-tab .terminal-tab-close {
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    color: var(--terminal-tab-text);
-    line-height: 1;
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-}
-
-.terminal-tab:hover .terminal-tab-close {
-    display: flex;
-}
-
-.terminal-tab .terminal-tab-close:hover {
-    color: var(--terminal-tab-active-text);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* New terminal button at bottom of tab bar */
-.terminal-tab-new-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 0;
-    cursor: pointer;
-    color: var(--terminal-tab-text);
-    font-size: 12px;
-    background: transparent;
-    border: none;
-}
-
-.terminal-tab-new-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--terminal-tab-active-text);
-}
-
-/* Dropdown chevron button */
-.terminal-tab-dropdown-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 0;
-    cursor: pointer;
-    color: var(--terminal-tab-text);
-    font-size: 10px;
-    background: transparent;
-    border: none;
-    border-top: 1px solid var(--terminal-border);
-}
-
-.terminal-tab-dropdown-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--terminal-tab-active-text);
-}
-
-/* Terminal Content Area */
+/* ─── Terminal Content Area ─── */
 .terminal-content-area {
     flex: 1;
     position: relative;
@@ -294,7 +351,7 @@
     background-color: var(--terminal-background) !important;
 }
 
-/* Toolbar icon in right sidebar */
+/* ─── Toolbar icon in right sidebar ─── */
 #toolbar-terminal {
     display: flex !important;
     align-items: center;
