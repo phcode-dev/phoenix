@@ -26,6 +26,7 @@
 define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher"),
+        PreferencesManager = require("preferences/PreferencesManager"),
         Resizer = require("utils/Resizer"),
         Strings = require("strings");
 
@@ -90,6 +91,9 @@ define(function (require, exports, module) {
      * @type {number}
      */
     const MIN_PANEL_HEIGHT = 200;
+
+    /** Preference key for persisting the maximize state across reloads. */
+    const PREF_BOTTOM_PANEL_MAXIMIZED = "bottomPanelMaximized";
 
     /** @type {number|null} The panel height before maximize, for restore */
     let _preMaximizeHeight = null;
@@ -528,16 +532,24 @@ define(function (require, exports, module) {
             _toggleMaximize();
         });
 
-        // When the container re-expands after being minimized, re-apply
-        // maximize if the user had maximized before minimizing.
-        // The Resizer restores the saved (maximized) height automatically,
-        // so we only need to update the button icon and recompute layout.
+        // Restore maximize state from preferences (survives reload).
+        _isMaximized = PreferencesManager.getViewState(PREF_BOTTOM_PANEL_MAXIMIZED) === true;
+
+        // When the container expands, re-apply maximize if the preference
+        // says we were maximized (covers both minimize→show and reload).
         _$container.on("panelExpanded", function () {
             if (_isMaximized) {
-                _updateMaximizeButton();
-                if (_recomputeLayout) {
-                    _recomputeLayout();
-                }
+                // Defer to let all synchronous panelExpanded handlers
+                // (including WorkspaceManager's recomputeLayout) finish first.
+                setTimeout(function () {
+                    let maxHeight = (_$editorHolder ? _$editorHolder.height() : 0) +
+                        _$container.height();
+                    _$container.height(maxHeight);
+                    _updateMaximizeButton();
+                    if (_recomputeLayout) {
+                        _recomputeLayout();
+                    }
+                }, 0);
             }
         });
     }
@@ -566,6 +578,7 @@ define(function (require, exports, module) {
         let maxHeight = _$editorHolder.height() + _$container.height();
         _$container.height(maxHeight);
         _isMaximized = true;
+        PreferencesManager.setViewState(PREF_BOTTOM_PANEL_MAXIMIZED, true);
         _updateMaximizeButton();
         if (_recomputeLayout) {
             _recomputeLayout();
@@ -617,6 +630,7 @@ define(function (require, exports, module) {
         _$container.height(restoreHeight);
         _isMaximized = false;
         _preMaximizeHeight = null;
+        PreferencesManager.setViewState(PREF_BOTTOM_PANEL_MAXIMIZED, false);
         _updateMaximizeButton();
         if (_recomputeLayout) {
             _recomputeLayout();
@@ -654,6 +668,7 @@ define(function (require, exports, module) {
         }
         _isMaximized = false;
         _preMaximizeHeight = null;
+        PreferencesManager.setViewState(PREF_BOTTOM_PANEL_MAXIMIZED, false);
         _updateMaximizeButton();
     }
 
@@ -669,6 +684,7 @@ define(function (require, exports, module) {
         }
         _isMaximized = true;
         _preMaximizeHeight = null;
+        PreferencesManager.setViewState(PREF_BOTTOM_PANEL_MAXIMIZED, true);
         _updateMaximizeButton();
     }
 
@@ -689,6 +705,7 @@ define(function (require, exports, module) {
         }
         _isMaximized = false;
         _preMaximizeHeight = null;
+        PreferencesManager.setViewState(PREF_BOTTOM_PANEL_MAXIMIZED, false);
         _updateMaximizeButton();
     }
 
