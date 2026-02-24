@@ -2,15 +2,18 @@
     <div class="terminal-body">
         <div class="terminal-content-area"></div>
         <div class="terminal-tab-bar">
-            <div class="terminal-tabs-list"></div>
-            <div class="terminal-new-dropdown-wrapper">
-                <button class="terminal-tab-new-btn" title="{{Strings.CMD_NEW_TERMINAL}}">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <button class="terminal-tab-dropdown-btn" title="Select Default Shell">
-                    <i class="fa-solid fa-chevron-up"></i>
-                </button>
-                <div class="terminal-shell-dropdown forced-hidden"></div>
+            <div class="terminal-tab-flyout">
+                <div class="terminal-flyout-list"></div>
+                <div class="terminal-flyout-actions">
+                    <button class="terminal-flyout-new-btn" title="{{Strings.CMD_NEW_TERMINAL}}">
+                        <span class="terminal-flyout-btn-icon"><i class="fa-solid fa-plus"></i></span>
+                        <span class="terminal-btn-label">New Terminal</span>
+                    </button>
+                    <button class="terminal-flyout-dropdown-btn" title="Select Default Shell">
+                        <span class="terminal-flyout-btn-icon"><i class="fa-solid fa-chevron-up"></i></span>
+                    </button>
+                    <div class="terminal-shell-dropdown forced-hidden"></div>
+                </div>
             </div>
         </div>
     </div>

@@ -36,6 +36,9 @@ define(function (require, exports, module) {
     const ExtensionUtils = require("utils/ExtensionUtils");
     const NodeConnector = require("NodeConnector");
     const Mustache = require("thirdparty/mustache/mustache");
+    const Dialogs = require("widgets/Dialogs");
+    const Strings = require("strings");
+    const StringUtils = require("utils/StringUtils");
 
     const TerminalInstance = require("./TerminalInstance");
     const ShellProfiles = require("./ShellProfiles");
@@ -50,12 +53,31 @@ define(function (require, exports, module) {
     const PANEL_ID = "terminal-panel";
     const PANEL_MIN_SIZE = 100;
 
+    // Shell process names — if the foreground process is one of these, no child is running
+    const SHELL_NAMES = new Set([
+        "bash", "zsh", "fish", "sh", "dash", "ksh", "csh", "tcsh",
+        "pwsh", "powershell", "cmd.exe", "nu", "elvish", "xonsh",
+        "login"
+    ]);
+
+    /**
+     * Check if a process name is a shell (handles full paths like /bin/bash)
+     */
+    function _isShellProcess(processName) {
+        if (!processName) {
+            return true;
+        }
+        const basename = processName.split("/").pop().split("\\").pop();
+        return SHELL_NAMES.has(basename);
+    }
+
     // State
     let panel = null;
     let nodeConnector = null;
     let terminalInstances = [];   // All terminal instances
     let activeTerminalId = null;  // Currently visible terminal
-    let $panel, $tabsList, $contentArea, $shellDropdown;
+    let processInfo = {};         // id -> processName from PTY
+    let $panel, $contentArea, $shellDropdown, $flyoutList;
 
     /**
      * Create a new NodeConnector for terminal communication
@@ -81,18 +103,21 @@ define(function (require, exports, module) {
         panel = WorkspaceManager.createBottomPanel(PANEL_ID, $panel, PANEL_MIN_SIZE);
 
         // Cache DOM references
-        $tabsList = $panel.find(".terminal-tabs-list");
         $contentArea = $panel.find(".terminal-content-area");
         $shellDropdown = $panel.find(".terminal-shell-dropdown");
+        $flyoutList = $panel.find(".terminal-flyout-list");
 
-        // "+" button always creates a new terminal with the default shell
-        $panel.find(".terminal-tab-new-btn").on("click", function (e) {
+        // "+" button creates a new terminal with the default shell
+        $panel.find(".terminal-flyout-new-btn").on("click", function (e) {
             e.stopPropagation();
             _createNewTerminal();
         });
 
         // Dropdown chevron button toggles shell selector
-        $panel.find(".terminal-tab-dropdown-btn").on("click", _onDropdownButtonClick);
+        $panel.find(".terminal-flyout-dropdown-btn").on("click", _onDropdownButtonClick);
+
+        // Refresh process info when user hovers over the flyout
+        $panel.find(".terminal-tab-flyout").on("mouseenter", _refreshAllProcesses);
 
         // Listen for panel resize
         WorkspaceManager.on("workspaceUpdateLayout", _handleResize);
@@ -204,10 +229,7 @@ define(function (require, exports, module) {
         // Add to list
         terminalInstances.push(instance);
 
-        // Create tab
-        _createTab(instance);
-
-        // Activate this terminal
+        // Activate this terminal (also updates flyout)
         _activateTerminal(instance.id);
 
         // Show panel if hidden
@@ -221,37 +243,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Create a tab element for a terminal instance
-     */
-    function _createTab(instance) {
-        const $tab = $('<div class="terminal-tab" data-terminal-id="' + instance.id + '" title="' + _escapeHtml(instance.title) + '">' +
-            '<i class="fa-solid fa-terminal terminal-tab-icon"></i>' +
-            '<span class="terminal-tab-close"><i class="fa-solid fa-xmark"></i></span>' +
-            '</div>');
-
-        $tab.on("click", function (e) {
-            if (!$(e.target).closest(".terminal-tab-close").length) {
-                _activateTerminal(instance.id);
-            }
-        });
-
-        $tab.find(".terminal-tab-close").on("click", function (e) {
-            e.stopPropagation();
-            _closeTerminal(instance.id);
-        });
-
-        $tabsList.append($tab);
-    }
-
-    /**
      * Activate a terminal tab (show it, hide others)
      */
     function _activateTerminal(id) {
         activeTerminalId = id;
-
-        // Update tabs
-        $tabsList.find(".terminal-tab").removeClass("active");
-        $tabsList.find('.terminal-tab[data-terminal-id="' + id + '"]').addClass("active");
 
         // Show/hide terminal containers
         for (const inst of terminalInstances) {
@@ -261,23 +256,46 @@ define(function (require, exports, module) {
                 inst.hide();
             }
         }
+
+        _updateFlyout();
     }
 
     /**
-     * Close a terminal instance
+     * Close a terminal instance, confirming first if a child process is running
      */
-    function _closeTerminal(id) {
+    async function _closeTerminal(id) {
         const idx = terminalInstances.findIndex(t => t.id === id);
         if (idx === -1) {
             return;
         }
 
         const instance = terminalInstances[idx];
+
+        // Check for active child process before closing
+        if (instance.isAlive) {
+            try {
+                const result = await nodeConnector.execPeer("getTerminalProcess", {id});
+                const processName = result.process || "";
+                if (processName && !_isShellProcess(processName)) {
+                    const message = StringUtils.format(
+                        Strings.TERMINAL_CLOSE_CONFIRM_MSG, _escapeHtml(processName)
+                    );
+                    const dialog = Dialogs.showConfirmDialog(
+                        Strings.TERMINAL_CLOSE_CONFIRM_TITLE, message
+                    );
+                    const buttonId = await dialog.getPromise();
+                    if (buttonId !== Dialogs.DIALOG_BTN_OK) {
+                        return;
+                    }
+                }
+            } catch (e) {
+                // Terminal may already be dead; proceed with close
+            }
+        }
+
         instance.dispose();
         terminalInstances.splice(idx, 1);
-
-        // Remove tab
-        $tabsList.find('.terminal-tab[data-terminal-id="' + id + '"]').remove();
+        delete processInfo[id];
 
         // If we closed the active terminal, activate another
         if (activeTerminalId === id) {
@@ -294,6 +312,8 @@ define(function (require, exports, module) {
             panel.hide();
             _updateToolbarIcon(false);
         }
+
+        _updateFlyout();
     }
 
     /**
@@ -326,20 +346,105 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Handle terminal title change
+     * Handle terminal title change — also fetches and displays the foreground process
      */
     function _onTerminalTitleChanged(id, title) {
-        const $tab = $tabsList.find('.terminal-tab[data-terminal-id="' + id + '"]');
-        $tab.attr("title", title);
+        _updateFlyout();
+        _updateTabProcess(id);
+    }
+
+    /**
+     * Fetch and display the foreground process for a terminal tab
+     */
+    function _updateTabProcess(id) {
+        const instance = terminalInstances.find(t => t.id === id);
+        if (!instance || !instance.isAlive) {
+            return;
+        }
+        nodeConnector.execPeer("getTerminalProcess", {id}).then(function (result) {
+            const newProc = result.process || "";
+            if (processInfo[id] !== newProc) {
+                processInfo[id] = newProc;
+                _updateFlyout();
+            }
+        }).catch(function () {
+            // Terminal may have been closed; ignore
+        });
+    }
+
+    /**
+     * Refresh process info for all alive terminals.
+     * Called on flyout hover so the tab bar is up-to-date when the user looks.
+     */
+    function _refreshAllProcesses() {
+        for (const inst of terminalInstances) {
+            if (inst.isAlive) {
+                _updateTabProcess(inst.id);
+            }
+        }
+    }
+
+    /**
+     * Rebuild the flyout panel to reflect current tabs
+     */
+    /**
+     * Extract the last directory name from a terminal title.
+     * Title format is typically "user@host: /path/to/dir" or "user@host: ~/path/to/dir".
+     */
+    function _extractCwdBasename(title) {
+        const colonIdx = title.indexOf(": ");
+        const pathPart = colonIdx >= 0 ? title.slice(colonIdx + 2) : title;
+        const trimmed = pathPart.replace(/\/+$/, "");
+        const lastSlash = trimmed.lastIndexOf("/");
+        return lastSlash >= 0 ? trimmed.slice(lastSlash + 1) : trimmed;
+    }
+
+    function _updateFlyout() {
+        $flyoutList.empty();
+        for (const inst of terminalInstances) {
+            const proc = processInfo[inst.id] || "";
+            const basename = proc ? proc.split("/").pop().split("\\").pop() : "";
+
+            // Label: process basename; right side: cwd basename; tooltip: full title
+            const label = basename || "Terminal";
+            const cwdName = _extractCwdBasename(inst.title);
+
+            const $item = $('<div class="terminal-flyout-item"></div>')
+                .attr("data-terminal-id", inst.id)
+                .attr("title", inst.title)
+                .toggleClass("active", inst.id === activeTerminalId);
+
+            if (!inst.isAlive) {
+                $item.css("opacity", "0.6");
+            }
+
+            $item.append('<span class="terminal-flyout-icon"><i class="fa-solid fa-terminal"></i></span>');
+            $item.append($('<span class="terminal-flyout-title"></span>').text(label));
+            if (cwdName) {
+                $item.append($('<span class="terminal-flyout-cwd"></span>').text(cwdName));
+            }
+            $item.append('<span class="terminal-flyout-close"><i class="fa-solid fa-xmark"></i></span>');
+
+            $item.on("click", function (e) {
+                if (!$(e.target).closest(".terminal-flyout-close").length) {
+                    _activateTerminal(inst.id);
+                }
+            });
+            $item.find(".terminal-flyout-close").on("click", function (e) {
+                e.stopPropagation();
+                _closeTerminal(inst.id);
+            });
+
+            $flyoutList.append($item);
+        }
     }
 
     /**
      * Handle terminal process exit
      */
     function _onTerminalProcessExit(id, exitCode) {
-        // Update tab styling to indicate dead process
-        const $tab = $tabsList.find('.terminal-tab[data-terminal-id="' + id + '"]');
-        $tab.css("opacity", "0.6");
+        delete processInfo[id];
+        _updateFlyout();
     }
 
     /**
@@ -412,6 +517,7 @@ define(function (require, exports, module) {
             inst.dispose();
         }
         terminalInstances = [];
+        processInfo = {};
     }
 
     // Register commands
@@ -443,7 +549,7 @@ define(function (require, exports, module) {
         ShellProfiles.init(nodeConnector).then(function () {
             const shells = ShellProfiles.getShells();
             if (shells.length <= 1) {
-                $panel.find(".terminal-tab-dropdown-btn").addClass("forced-hidden");
+                $panel.find(".terminal-flyout-dropdown-btn").addClass("forced-hidden");
             }
             _populateShellDropdown();
         });

@@ -1484,6 +1484,8 @@ define({
     "ERROR_NOTHING_SELECTED": "Nothing is selected!",
     "ERROR_SAVE_FIRST": "Save the document first!",
     "ERROR_TERMINAL_NOT_FOUND": "Terminal was not found for your OS, you can define a custom Terminal command in the settings",
+    "TERMINAL_CLOSE_CONFIRM_TITLE": "Active Process Running",
+    "TERMINAL_CLOSE_CONFIRM_MSG": "Terminal has an active process running: <b>{0}</b>.<br>Are you sure you want to close it?",
     "EXTENDED_COMMIT_MESSAGE": "EXTENDED",
     "GETTING_STAGED_DIFF_PROGRESS": "Getting diff of staged files\u2026",
     "GIT_COMMIT": "Git commit\u2026",
