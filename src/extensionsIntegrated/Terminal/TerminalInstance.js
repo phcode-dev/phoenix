@@ -24,21 +24,21 @@
  */
 define(function (require, exports, module) {
 
-    const KeyBindingManager = brackets.getModule("command/KeyBindingManager");
-    const CommandManager = brackets.getModule("command/CommandManager");
+    const KeyBindingManager = require("command/KeyBindingManager");
+    const CommandManager = require("command/CommandManager");
 
     // xterm.js and addons (loaded as AMD modules from thirdparty)
     const xtermModule = require("thirdparty/xterm/xterm");
     const FitAddonModule = require("thirdparty/xterm/addon-fit");
     const WebLinksAddonModule = require("thirdparty/xterm/addon-web-links");
     const SearchAddonModule = require("thirdparty/xterm/addon-search");
-    const CanvasAddonModule = require("thirdparty/xterm/addon-canvas");
+    const WebglAddonModule = require("thirdparty/xterm/addon-webgl");
 
     const Terminal = xtermModule.Terminal;
     const FitAddon = FitAddonModule.FitAddon;
     const WebLinksAddon = WebLinksAddonModule.WebLinksAddon;
     const SearchAddon = SearchAddonModule.SearchAddon;
-    const CanvasAddon = CanvasAddonModule.CanvasAddon;
+    const WebglAddon = WebglAddonModule.WebglAddon;
 
     let _nextId = 0;
 
@@ -146,11 +146,11 @@ define(function (require, exports, module) {
         // Open terminal in DOM
         this.terminal.open(this.$container[0]);
 
-        // Load canvas renderer for better performance
+        // Load WebGL renderer for better performance
         try {
-            this.terminal.loadAddon(new CanvasAddon());
+            this.terminal.loadAddon(new WebglAddon());
         } catch (e) {
-            console.warn("Terminal: CanvasAddon failed to load, using default renderer:", e);
+            console.warn("Terminal: WebglAddon failed to load, using default renderer:", e);
         }
 
         // Fit to container
