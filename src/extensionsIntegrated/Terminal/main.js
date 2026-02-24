@@ -36,7 +36,6 @@ define(function (require, exports, module) {
     const ExtensionUtils = require("utils/ExtensionUtils");
     const NodeConnector = require("NodeConnector");
     const Mustache = require("thirdparty/mustache/mustache");
-    const Strings = require("strings");
 
     const TerminalInstance = require("./TerminalInstance");
     const ShellProfiles = require("./ShellProfiles");
@@ -225,7 +224,7 @@ define(function (require, exports, module) {
      * Create a tab element for a terminal instance
      */
     function _createTab(instance) {
-        const $tab = $('<div class="terminal-tab" data-terminal-id="' + instance.id + '">' +
+        const $tab = $('<div class="terminal-tab" data-terminal-id="' + instance.id + '" title="' + _escapeHtml(instance.title) + '">' +
             '<i class="fa-solid fa-terminal terminal-tab-icon"></i>' +
             '<span class="terminal-tab-name">' + _escapeHtml(instance.title) + '</span>' +
             '<span class="terminal-tab-close"><i class="fa-solid fa-xmark"></i></span>' +
@@ -333,6 +332,7 @@ define(function (require, exports, module) {
     function _onTerminalTitleChanged(id, title) {
         const $tab = $tabsList.find('.terminal-tab[data-terminal-id="' + id + '"]');
         $tab.find(".terminal-tab-name").text(title);
+        $tab.attr("title", title);
     }
 
     /**
@@ -443,6 +443,10 @@ define(function (require, exports, module) {
 
         // Detect shells
         ShellProfiles.init(nodeConnector).then(function () {
+            const shells = ShellProfiles.getShells();
+            if (shells.length <= 1) {
+                $panel.find(".terminal-tab-dropdown-btn").addClass("forced-hidden");
+            }
             _populateShellDropdown();
         });
 
