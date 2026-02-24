@@ -45,6 +45,7 @@ define(function (require, exports, module) {
     const _KernalModeTrust = window.KernalModeTrust;
 
     let _nodeConnector = null;
+    let _currentEntitlementState = null; // "chat" | "login" | "upsell" | "adminDisabled" | null
     let _isStreaming = false;
     let _queuedMessage = null;  // text queued by user while AI is streaming
     let _currentRequestId = null;
@@ -240,15 +241,20 @@ define(function (require, exports, module) {
      * upsell screen if no AI plan, or proceeds to CLI availability check if entitled.
      */
     function _checkEntitlementAndInit() {
-        _removeCurrentPanel();
         const EntitlementsManager = _KernalModeTrust && _KernalModeTrust.EntitlementsManager;
         if (!EntitlementsManager) {
             // No entitlement system (test env or dev) — skip straight to CLI check
-            _checkAvailability();
+            if (_currentEntitlementState !== "chat") {
+                _removeCurrentPanel();
+                _checkAvailability();
+            }
             return;
         }
         if (!EntitlementsManager.isLoggedIn()) {
-            _renderLoginUI();
+            if (_currentEntitlementState !== "login") {
+                _removeCurrentPanel();
+                _renderLoginUI();
+            }
             return;
         }
         // TODO: Switch to EntitlementsManager.getAIEntitlement() once AI entitlement is
@@ -267,12 +273,21 @@ define(function (require, exports, module) {
         //   });
         EntitlementsManager.getLiveEditEntitlement().then(function (entitlement) {
             if (entitlement.activated) {
-                _checkAvailability();
+                if (_currentEntitlementState !== "chat") {
+                    _removeCurrentPanel();
+                    _checkAvailability();
+                }
             } else {
-                _renderUpsellUI(entitlement);
+                if (_currentEntitlementState !== "upsell") {
+                    _removeCurrentPanel();
+                    _renderUpsellUI(entitlement);
+                }
             }
         }).catch(function () {
-            _checkAvailability(); // fallback on error
+            if (_currentEntitlementState !== "chat") {
+                _removeCurrentPanel();
+                _checkAvailability(); // fallback on error
+            }
         });
     }
 
@@ -280,6 +295,7 @@ define(function (require, exports, module) {
      * Render the login prompt UI (user not signed in).
      */
     function _renderLoginUI() {
+        _currentEntitlementState = "login";
         const html =
             '<div class="ai-chat-panel">' +
                 '<div class="ai-unavailable">' +
@@ -302,6 +318,7 @@ define(function (require, exports, module) {
      * Render the upsell UI (user logged in but no AI plan).
      */
     function _renderUpsellUI(entitlement) {
+        _currentEntitlementState = "upsell";
         const html =
             '<div class="ai-chat-panel">' +
                 '<div class="ai-unavailable">' +
@@ -325,6 +342,7 @@ define(function (require, exports, module) {
      * Render the admin-disabled UI (AI turned off by system administrator).
      */
     function _renderAdminDisabledUI() {
+        _currentEntitlementState = "adminDisabled";
         const html =
             '<div class="ai-chat-panel">' +
                 '<div class="ai-unavailable">' +
@@ -359,6 +377,7 @@ define(function (require, exports, module) {
      * Render the full chat UI.
      */
     function _renderChatUI() {
+        _currentEntitlementState = "chat";
         $panel = $(PANEL_HTML);
         $messages = $panel.find(".ai-chat-messages");
         $status = $panel.find(".ai-chat-status");
@@ -567,6 +586,7 @@ define(function (require, exports, module) {
      * Render the unavailable UI (CLI not found).
      */
     function _renderUnavailableUI(error) {
+        _currentEntitlementState = "chat";
         const $unavailable = $(UNAVAILABLE_HTML);
         $unavailable.find(".ai-retry-btn").on("click", function () {
             _checkAvailability();

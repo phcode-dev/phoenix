@@ -363,6 +363,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "multiple Edit calls to make targeted changes rather than rewriting the entire " +
             "file with Write. This is critical because Write replaces the entire file content " +
             "which is slow and loses undo history." +
+            "\n\nAlways use full absolute paths for all file operations (Read, Edit, Write, " +
+            "controlEditor). Never use relative paths." +
             "\n\nWhen a tool response mentions the user has typed a clarification, immediately " +
             "call getUserClarification to read it and incorporate the user's feedback into your current work." +
             (locale && !locale.startsWith("en")
