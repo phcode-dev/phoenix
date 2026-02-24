@@ -24,9 +24,6 @@
  */
 define(function (require, exports, module) {
 
-    const KeyBindingManager = require("command/KeyBindingManager");
-    const CommandManager = require("command/CommandManager");
-
     // xterm.js and addons (loaded as AMD modules from thirdparty)
     const xtermModule = require("thirdparty/xterm/xterm");
     const FitAddonModule = require("thirdparty/xterm/addon-fit");
