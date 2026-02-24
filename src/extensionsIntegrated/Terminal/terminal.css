@@ -1,0 +1,294 @@
+/* Terminal Extension Styles */
+
+/* Dark theme (default) */
+.dark .terminal-panel-container,
+.darkTheme .terminal-panel-container {
+    --terminal-background: #1e1e1e;
+    --terminal-foreground: #cccccc;
+    --terminal-cursor: #ffffff;
+    --terminal-selection: rgba(255, 255, 255, 0.2);
+    --terminal-border: #333333;
+    --terminal-toolbar-bg: #1e1e1e;
+    --terminal-tab-bg: #181818;
+    --terminal-tab-text: #999999;
+    --terminal-tab-active-bg: rgba(255, 255, 255, 0.05);
+    --terminal-tab-active-text: #cccccc;
+    --terminal-ansi-black: #000000;
+    --terminal-ansi-red: #cd3131;
+    --terminal-ansi-green: #0dbc79;
+    --terminal-ansi-yellow: #e5e510;
+    --terminal-ansi-blue: #2472c8;
+    --terminal-ansi-magenta: #bc3fbc;
+    --terminal-ansi-cyan: #11a8cd;
+    --terminal-ansi-white: #e5e5e5;
+    --terminal-ansi-bright-black: #666666;
+    --terminal-ansi-bright-red: #f14c4c;
+    --terminal-ansi-bright-green: #23d18b;
+    --terminal-ansi-bright-yellow: #f5f543;
+    --terminal-ansi-bright-blue: #3b8eea;
+    --terminal-ansi-bright-magenta: #d670d6;
+    --terminal-ansi-bright-cyan: #29b8db;
+    --terminal-ansi-bright-white: #ffffff;
+}
+
+/* Light theme */
+.terminal-panel-container {
+    --terminal-background: #ffffff;
+    --terminal-foreground: #383a42;
+    --terminal-cursor: #383a42;
+    --terminal-selection: rgba(0, 0, 0, 0.12);
+    --terminal-border: #e0e0e0;
+    --terminal-toolbar-bg: #f5f5f5;
+    --terminal-tab-bg: #eeeeee;
+    --terminal-tab-text: #666666;
+    --terminal-tab-active-bg: rgba(0, 0, 0, 0.05);
+    --terminal-tab-active-text: #333333;
+    --terminal-ansi-black: #383a42;
+    --terminal-ansi-red: #e45649;
+    --terminal-ansi-green: #50a14f;
+    --terminal-ansi-yellow: #c18401;
+    --terminal-ansi-blue: #4078f2;
+    --terminal-ansi-magenta: #a626a4;
+    --terminal-ansi-cyan: #0184bc;
+    --terminal-ansi-white: #a0a1a7;
+    --terminal-ansi-bright-black: #4f525e;
+    --terminal-ansi-bright-red: #e06c75;
+    --terminal-ansi-bright-green: #98c379;
+    --terminal-ansi-bright-yellow: #d19a66;
+    --terminal-ansi-bright-blue: #61afef;
+    --terminal-ansi-bright-magenta: #c678dd;
+    --terminal-ansi-bright-cyan: #56b6c2;
+    --terminal-ansi-bright-white: #ffffff;
+}
+
+.terminal-panel-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--terminal-toolbar-bg);
+}
+
+/* New terminal dropdown wrapper (in tab bar) */
+.terminal-new-dropdown-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid var(--terminal-border);
+}
+
+.terminal-shell-dropdown {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    min-width: 180px;
+    background: var(--terminal-tab-bg);
+    border: 1px solid var(--terminal-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    padding: 4px 0;
+}
+
+.terminal-shell-dropdown .shell-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: var(--terminal-tab-text);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.terminal-shell-dropdown .shell-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--terminal-tab-active-text);
+}
+
+.terminal-shell-dropdown .shell-option .shell-default-badge {
+    font-size: 10px;
+    opacity: 0.5;
+    margin-left: auto;
+}
+
+.terminal-shell-dropdown .shell-option .shell-check {
+    width: 14px;
+    font-size: 11px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Body: tab bar + content */
+.terminal-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Vertical Tab Bar */
+.terminal-tab-bar {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    min-width: 80px;
+    background: var(--terminal-tab-bg);
+    border-left: 1px solid var(--terminal-border);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.terminal-tabs-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.terminal-tab {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    color: var(--terminal-tab-text);
+    font-size: 12px;
+    border-left: 2px solid transparent;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.terminal-tab:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.terminal-tab.active {
+    background: var(--terminal-tab-active-bg);
+    color: var(--terminal-tab-active-text);
+    border-left-color: #007acc;
+}
+
+.terminal-tab .terminal-tab-icon {
+    display: none;
+}
+
+.terminal-tab .terminal-tab-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.terminal-tab .terminal-tab-close {
+    opacity: 0;
+    margin-left: 4px;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: var(--terminal-tab-text);
+}
+
+.terminal-tab:hover .terminal-tab-close {
+    opacity: 0.6;
+}
+
+.terminal-tab .terminal-tab-close:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* New terminal button at bottom of tab bar */
+.terminal-tab-new-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 0;
+    cursor: pointer;
+    color: var(--terminal-tab-text);
+    font-size: 12px;
+    background: transparent;
+    border: none;
+}
+
+.terminal-tab-new-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--terminal-tab-active-text);
+}
+
+/* Dropdown chevron button */
+.terminal-tab-dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    padding: 6px 0;
+    cursor: pointer;
+    color: var(--terminal-tab-text);
+    font-size: 10px;
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--terminal-border);
+}
+
+.terminal-tab-dropdown-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--terminal-tab-active-text);
+}
+
+/* Terminal Content Area */
+.terminal-content-area {
+    flex: 1;
+    position: relative;
+    background: var(--terminal-background);
+    min-width: 0;
+}
+
+.terminal-instance-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    box-sizing: border-box;
+}
+
+.terminal-instance-container.active {
+    display: block;
+}
+
+/* xterm.js overrides */
+.terminal-instance-container .xterm {
+    height: 100%;
+    padding-left: 4px;
+}
+
+.terminal-instance-container .xterm-viewport {
+    overflow-y: auto;
+}
+
+/* Toolbar icon in right sidebar */
+#toolbar-terminal {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+#toolbar-terminal > i {
+    font-size: 14px;
+    line-height: 24px;
+    color: #bbb;
+}
+
+#toolbar-terminal:hover > i {
+    color: #fff;
+}
+
+/* Empty state */
+.terminal-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--terminal-tab-text);
+    font-size: 13px;
+}

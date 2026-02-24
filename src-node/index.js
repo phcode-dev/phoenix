@@ -68,6 +68,7 @@ const NodeConnector = require("./node-connector");
 const LivePreview = require("./live-preview");
 require("./test-connection");
 require("./utils");
+require("./terminal");
 require("./git/cli");
 require("./claude-code-agent");
 function randomNonce(byteLength) {

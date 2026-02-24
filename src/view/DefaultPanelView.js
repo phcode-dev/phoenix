@@ -66,6 +66,13 @@ define(function (require, exports, module) {
             icon: "fa-solid fa-keyboard",
             label: Strings.KEYBOARD_SHORTCUT_PANEL_TITLE || "Keyboard Shortcuts",
             commandID: Commands.HELP_TOGGLE_SHORTCUTS_PANEL
+        },
+        {
+            id: "terminal",
+            icon: "fa-solid fa-terminal",
+            label: "Terminal",
+            commandID: "terminal.toggle",
+            nativeOnly: true
         }
     ];
 
@@ -90,6 +97,9 @@ define(function (require, exports, module) {
         let $buttonsRow = $('<div class="default-panel-buttons"></div>');
 
         _panelButtons.forEach(function (btn) {
+            if (btn.nativeOnly && !Phoenix.isNativeApp) {
+                return;
+            }
             let $button = $('<button class="default-panel-btn"></button>')
                 .attr("data-command", btn.commandID)
                 .attr("data-btn-id", btn.id)
