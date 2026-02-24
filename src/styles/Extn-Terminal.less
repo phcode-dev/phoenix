@@ -145,6 +145,7 @@
 
 /* Flyout item */
 .terminal-flyout-item {
+    position: relative;
     display: flex;
     align-items: center;
     height: 28px;
@@ -166,7 +167,8 @@
     box-shadow: inset 2px 0 0 #007acc;
 }
 
-/* Icon column: fixed 30px slot, always visible in collapsed mode */
+/* Icon column: fixed 30px slot, always visible in collapsed mode.
+   In expanded mode, CSS order moves it to the right end. */
 .terminal-flyout-icon {
     width: 30px;
     min-width: 30px;
@@ -193,28 +195,42 @@
     min-width: 0;
     max-width: 50%;
     margin-left: 4px;
+    margin-right: 2px;
     opacity: 0.6;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Close button: visible only on item hover */
-.terminal-flyout-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    font-size: 10px;
-    color: var(--terminal-tab-text);
-    border-radius: 3px;
-    flex-shrink: 0;
-    margin-right: 4px;
-    visibility: hidden;
+/* Expanded mode: reorder so icon is at the right end,
+   add left padding for close button area */
+.terminal-tab-flyout:hover .terminal-flyout-item {
+    padding-left: 30px;
 }
 
-.terminal-flyout-item:hover .terminal-flyout-close {
-    visibility: visible;
+.terminal-tab-flyout:hover .terminal-flyout-icon {
+    order: 99;
+}
+
+/* Close button: overlays left padding area, visible only when
+   flyout is expanded AND the specific item is hovered */
+.terminal-flyout-close {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--terminal-tab-text);
+    background: var(--terminal-tab-bg);
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.terminal-tab-flyout:hover .terminal-flyout-item:hover .terminal-flyout-close {
+    display: flex;
 }
 
 .terminal-flyout-close:hover {
