@@ -207,6 +207,12 @@ Initial project path is stored in prefs, which defaults to the welcome project o
 first launch.
 
 **Kind**: global function  
+<a name="_continueLoadProject"></a>
+
+## \_continueLoadProject()
+Internal: continue loading a project after beforeProjectClose handlers have resolved.
+
+**Kind**: global function  
 <a name="refreshFileTree"></a>
 
 ## refreshFileTree()

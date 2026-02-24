@@ -68,6 +68,7 @@ test/thirdparty/jasmine-reporters
 /src/thirdparty/bugsnag-performance.min.js
 /src/thirdparty/bugsnag-performance.min.js.map
 /src/thirdparty/no-minify/
+/src/thirdparty/xterm
 
 # ignore files copied from node_modules to src/thirdparty
 # https://github.com/phcode-dev/phoenix/issues/10

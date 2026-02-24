@@ -37,9 +37,9 @@
         "jasmine-core": "^4.2.0",
         "jasmine-reporters": "^2.5.0",
         "jsdoc-to-markdown": "^9.1.1",
+        "lmdb": "^3.5.1",
         "readable-stream": "^3.6.0",
-        "through2": "^4.0.2",
-        "lmdb": "^3.5.1"
+        "through2": "^4.0.2"
     },
     "scripts": {
         "postinstall": "npm install --prefix phoenix-builder-mcp",
@@ -121,6 +121,12 @@
         "requirejs": "^2.3.7",
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
-        "underscore": "^1.13.4"
+        "underscore": "^1.13.4",
+        "xterm": "^5.3.0",
+        "xterm-addon-canvas": "^0.5.0",
+        "xterm-addon-fit": "^0.8.0",
+        "xterm-addon-search": "^0.13.0",
+        "xterm-addon-web-links": "^0.9.0",
+        "xterm-addon-webgl": "^0.16.0"
     }
 }
