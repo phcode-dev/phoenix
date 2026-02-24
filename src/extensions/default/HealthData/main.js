@@ -57,7 +57,9 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        initTest();
+        if (brackets.test) {
+            initTest();
+        }
     });
 
     addCommand();
