@@ -245,31 +245,27 @@ let copyThirdPartyLibs = series(
     copyLicence.bind(copyLicence, 'node_modules/jasmine-reporters/LICENSE', 'jasmine-reporters'),
     // lmdb
     copyLicence.bind(copyLicence, 'node_modules/lmdb/LICENSE', 'lmdb'),
-    // xterm.js terminal emulator
-    copyFiles.bind(copyFiles, ['node_modules/xterm/lib/xterm.js',
-        'node_modules/xterm/lib/xterm.js.map'], 'src/thirdparty/xterm'),
-    copyFiles.bind(copyFiles, ['node_modules/xterm/css/xterm.css'], 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-fit/lib/xterm-addon-fit.js',
+    // xterm.js terminal emulator (@xterm/* scoped packages, v6)
+    copyFiles.bind(copyFiles, ['node_modules/@xterm/xterm/lib/xterm.js',
+        'node_modules/@xterm/xterm/lib/xterm.js.map'], 'src/thirdparty/xterm'),
+    copyFiles.bind(copyFiles, ['node_modules/@xterm/xterm/css/xterm.css'], 'src/thirdparty/xterm'),
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-fit/lib/addon-fit.js',
         'addon-fit.js', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-fit/lib/xterm-addon-fit.js.map',
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-fit/lib/addon-fit.js.map',
         'addon-fit.js.map', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-canvas/lib/xterm-addon-canvas.js',
-        'addon-canvas.js', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-canvas/lib/xterm-addon-canvas.js.map',
-        'addon-canvas.js.map', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-search/lib/xterm-addon-search.js',
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-search/lib/addon-search.js',
         'addon-search.js', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-search/lib/xterm-addon-search.js.map',
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-search/lib/addon-search.js.map',
         'addon-search.js.map', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-web-links/lib/xterm-addon-web-links.js',
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-web-links/lib/addon-web-links.js',
         'addon-web-links.js', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-web-links/lib/xterm-addon-web-links.js.map',
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-web-links/lib/addon-web-links.js.map',
         'addon-web-links.js.map', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-webgl/lib/xterm-addon-webgl.js',
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-webgl/lib/addon-webgl.js',
         'addon-webgl.js', 'src/thirdparty/xterm'),
-    renameFile.bind(renameFile, 'node_modules/xterm-addon-webgl/lib/xterm-addon-webgl.js.map',
+    renameFile.bind(renameFile, 'node_modules/@xterm/addon-webgl/lib/addon-webgl.js.map',
         'addon-webgl.js.map', 'src/thirdparty/xterm'),
-    copyLicence.bind(copyLicence, 'node_modules/xterm/LICENSE', 'xterm')
+    copyLicence.bind(copyLicence, 'node_modules/@xterm/xterm/LICENSE', 'xterm')
 
 );
 

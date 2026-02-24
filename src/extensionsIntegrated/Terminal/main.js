@@ -34,7 +34,7 @@ define(function (require, exports, module) {
     const WorkspaceManager = require("view/WorkspaceManager");
     const ProjectManager = require("project/ProjectManager");
     const ExtensionUtils = require("utils/ExtensionUtils");
-    const NodeConnector = brackets.getModule("NodeConnector");
+    const NodeConnector = require("NodeConnector");
     const Mustache = require("thirdparty/mustache/mustache");
     const Strings = require("strings");
 
@@ -42,10 +42,7 @@ define(function (require, exports, module) {
     const ShellProfiles = require("./ShellProfiles");
     const panelHTML = require("text!./terminal-panel.html");
 
-    // Load CSS
-    ExtensionUtils.loadStyleSheet(module, "terminal.css");
-
-    // Load xterm.css
+    // Load xterm.css (terminal panel styles are in src/styles/Extn-Terminal.less)
     ExtensionUtils.loadStyleSheet(module, "../../thirdparty/xterm/xterm.css");
 
     // Constants
