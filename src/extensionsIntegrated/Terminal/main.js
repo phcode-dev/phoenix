@@ -418,12 +418,12 @@ define(function (require, exports, module) {
                 $item.css("opacity", "0.6");
             }
 
+            $item.append('<span class="terminal-flyout-close"><i class="fa-solid fa-xmark"></i></span>');
             $item.append('<span class="terminal-flyout-icon"><i class="fa-solid fa-terminal"></i></span>');
             $item.append($('<span class="terminal-flyout-title"></span>').text(label));
             if (cwdName) {
                 $item.append($('<span class="terminal-flyout-cwd"></span>').text(cwdName));
             }
-            $item.append('<span class="terminal-flyout-close"><i class="fa-solid fa-xmark"></i></span>');
 
             $item.on("click", function (e) {
                 if (!$(e.target).closest(".terminal-flyout-close").length) {
