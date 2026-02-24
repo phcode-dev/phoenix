@@ -618,18 +618,18 @@ define(function (require, exports, module) {
     function controlEditor(params) {
         const deferred = new $.Deferred();
         const vfsPath = SnapshotStore.realToVfsPath(params.filePath);
-        console.log("controlEditor:", params.operation, params.filePath, "-> vfs:", vfsPath);
+        console.log("[AI Control] controlEditor:", params.operation, params.filePath, "-> vfs:", vfsPath);
 
         function _resolve(result) {
             if (!result.success) {
-                console.error("controlEditor failed:", params.operation, vfsPath, result.error);
+                console.error("[AI Control] controlEditor failed:", params.operation, vfsPath, result.error);
             }
             deferred.resolve(result);
         }
 
         switch (params.operation) {
         case "open":
-            CommandManager.execute(Commands.CMD_OPEN, { fullPath: vfsPath })
+            CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: vfsPath })
                 .done(function () { _resolve({ success: true }); })
                 .fail(function (err) { _resolve({ success: false, error: String(err) }); });
             break;
