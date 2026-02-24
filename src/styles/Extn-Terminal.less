@@ -164,6 +164,10 @@
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
 }
 
 .terminal-tab {
@@ -197,14 +201,18 @@
 }
 
 .terminal-tab .terminal-tab-close {
+    position: absolute;
+    top: 1px;
+    right: 1px;
     display: none;
-    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
     color: var(--terminal-tab-text);
     line-height: 1;
-}
-
-.terminal-tab:hover .terminal-tab-icon {
-    display: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
 }
 
 .terminal-tab:hover .terminal-tab-close {
@@ -213,6 +221,7 @@
 
 .terminal-tab .terminal-tab-close:hover {
     color: var(--terminal-tab-active-text);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 /* New terminal button at bottom of tab bar */
