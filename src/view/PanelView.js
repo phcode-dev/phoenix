@@ -100,6 +100,12 @@ define(function (require, exports, module) {
     /** @type {function} recomputeLayout callback from WorkspaceManager */
     let _recomputeLayout = null;
 
+    /** @type {string|null} The default/quick-access panel ID */
+    let _defaultPanelId = null;
+
+    /** @type {jQueryObject} The "+" button inside the tab overflow area */
+    let _$addBtn = null;
+
     // --- Tab helper functions ---
 
     /**
@@ -149,6 +155,12 @@ define(function (require, exports, module) {
             $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
             _$tabsOverflow.append($tab);
         });
+
+        // Re-append the "+" button at the end (after all tabs)
+        if (_$addBtn) {
+            _$tabsOverflow.append(_$addBtn);
+            _updateAddButtonVisibility();
+        }
     }
 
     /**
@@ -190,7 +202,14 @@ define(function (require, exports, module) {
             .attr('data-panel-id', panelId);
         $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
         $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
-        _$tabsOverflow.append($tab);
+
+        // Insert before the "+" button so it stays at the end
+        if (_$addBtn && _$addBtn.parent().length) {
+            _$addBtn.before($tab);
+        } else {
+            _$tabsOverflow.append($tab);
+        }
+        _updateAddButtonVisibility();
     }
 
     /**
@@ -204,6 +223,24 @@ define(function (require, exports, module) {
             return;
         }
         _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + panelId + '"]').remove();
+        _updateAddButtonVisibility();
+    }
+
+    /**
+     * Show or hide the "+" button based on whether the default panel is active.
+     * The button is hidden when the default panel is the active tab (since
+     * clicking "+" would be a no-op) and shown otherwise.
+     * @private
+     */
+    function _updateAddButtonVisibility() {
+        if (!_$addBtn) {
+            return;
+        }
+        if (_defaultPanelId && _activeId === _defaultPanelId) {
+            _$addBtn.hide();
+        } else {
+            _$addBtn.show();
+        }
     }
 
     /**
@@ -229,6 +266,7 @@ define(function (require, exports, module) {
             newPanel.$panel.addClass("active-bottom-panel");
         }
         _updateActiveTabHighlight();
+        _updateAddButtonVisibility();
     }
 
 
@@ -422,13 +460,20 @@ define(function (require, exports, module) {
      * @param {jQueryObject} $tabsOverflow  The scrollable area holding tab elements.
      * @param {jQueryObject} $editorHolder  The editor holder element (for maximize height calculation).
      * @param {function} recomputeLayoutFn  Callback to trigger workspace layout recomputation.
+     * @param {string} defaultPanelId  The ID of the default/quick-access panel.
      */
-    function init($container, $tabBar, $tabsOverflow, $editorHolder, recomputeLayoutFn) {
+    function init($container, $tabBar, $tabsOverflow, $editorHolder, recomputeLayoutFn, defaultPanelId) {
         _$container = $container;
         _$tabBar = $tabBar;
         _$tabsOverflow = $tabsOverflow;
         _$editorHolder = $editorHolder;
         _recomputeLayout = recomputeLayoutFn;
+        _defaultPanelId = defaultPanelId;
+
+        // Create the "+" button inside the tabs overflow area (after all tabs)
+        _$addBtn = $('<span class="bottom-panel-add-btn"><i class="fa-solid fa-plus"></i></span>')
+            .attr('title', Strings.BOTTOM_PANEL_OPEN_PANEL);
+        _$tabsOverflow.append(_$addBtn);
 
         // Tab bar click handlers
         _$tabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
@@ -449,6 +494,14 @@ define(function (require, exports, module) {
                 if (panel) {
                     panel.show();
                 }
+            }
+        });
+
+        // "+" button opens the default/quick-access panel
+        _$addBtn.on("click", function (e) {
+            e.stopPropagation();
+            if (_defaultPanelId && _panelMap[_defaultPanelId]) {
+                _panelMap[_defaultPanelId].show();
             }
         });
 
