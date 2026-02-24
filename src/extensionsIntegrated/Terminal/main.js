@@ -226,7 +226,6 @@ define(function (require, exports, module) {
     function _createTab(instance) {
         const $tab = $('<div class="terminal-tab" data-terminal-id="' + instance.id + '" title="' + _escapeHtml(instance.title) + '">' +
             '<i class="fa-solid fa-terminal terminal-tab-icon"></i>' +
-            '<span class="terminal-tab-name">' + _escapeHtml(instance.title) + '</span>' +
             '<span class="terminal-tab-close"><i class="fa-solid fa-xmark"></i></span>' +
             '</div>');
 
@@ -331,7 +330,6 @@ define(function (require, exports, module) {
      */
     function _onTerminalTitleChanged(id, title) {
         const $tab = $tabsList.find('.terminal-tab[data-terminal-id="' + id + '"]');
-        $tab.find(".terminal-tab-name").text(title);
         $tab.attr("title", title);
     }
 

@@ -156,11 +156,14 @@ exports.createTerminal = async function ({id, shell, args, cwd, cols, rows, env}
     });
 
     ptyProcess.onExit(function ({exitCode, signal}) {
-        // Flush any remaining buffered output
-        clearTimeout(terminals[id].flushTimer);
-        terminals[id].flushTimer = null;
-        _flushBuffer(id);
-        delete terminals[id];
+        const exitingTerm = terminals[id];
+        if (exitingTerm) {
+            // Flush any remaining buffered output
+            clearTimeout(exitingTerm.flushTimer);
+            exitingTerm.flushTimer = null;
+            _flushBuffer(id);
+            delete terminals[id];
+        }
         nodeConnector.triggerPeer("terminalExit", {id, exitCode, signal});
     });
 
@@ -211,6 +214,7 @@ exports.killTerminal = async function ({id}) {
     if (!term) {
         return {ok: true}; // already dead
     }
+    // Just kill the process; the onExit handler will clean up the terminal entry
     try {
         if (process.platform === "win32") {
             // On Windows, use taskkill for process tree kill
@@ -224,13 +228,11 @@ exports.killTerminal = async function ({id}) {
             term.pty.kill();
         }
     } catch (e) {
-        // Process may already be dead
+        // Process may already be dead — ensure cleanup still happens
+        clearTimeout(term.flushTimer);
+        term.flushTimer = null;
+        delete terminals[id];
     }
-    // Clean up
-    clearTimeout(term.flushTimer);
-    term.flushTimer = null;
-    _flushBuffer(id);
-    delete terminals[id];
     return {ok: true};
 };
 
