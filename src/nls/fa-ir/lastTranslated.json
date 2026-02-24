@@ -61,6 +61,7 @@
   "AI_CHAT_SESSION_RESUMED": "Resumed session",
   "AI_CHAT_SHOW_DIFF": "Show diff",
   "AI_CHAT_STOP_TITLE": "Stop generation (Esc)",
+  "AI_CHAT_SWITCH_PROJECT_MSG": "AI is currently working on a task. Switching projects will stop it. Continue?",
   "AI_CHAT_SWITCH_PROJECT_TITLE": "AI is working",
   "AI_CHAT_THINKING": "Thinking...",
   "AI_CHAT_TITLE": "AI Assistant",
