@@ -213,7 +213,9 @@ define(function (require, exports, module) {
             if (p.startsWith("/tauri/")) {
                 p = p.replace("/tauri", "");
             }
-            return p;
+            const doc = DocumentManager.getOpenDocumentForPath(file.fullPath);
+            const isDirty = doc ? doc.isDirty : false;
+            return { path: p, isDirty: isDirty };
         });
 
         let livePreviewFile = null;
@@ -338,6 +340,7 @@ define(function (require, exports, module) {
                 deferred.resolve({ base64: base64 });
             })
             .catch(function (err) {
+                console.error("[AI Control] Screenshot failed:", err);
                 deferred.resolve({ base64: null, error: err.message || String(err) });
             });
         return deferred.promise();
@@ -350,6 +353,14 @@ define(function (require, exports, module) {
             return deferred.promise();
         }
 
+        function _onResult(result) {
+            if (result.base64) {
+                console.log("[AI Control] Screenshot taken:", params.selector || "full window",
+                    params.purePreview ? "(pure preview)" : "");
+            }
+            deferred.resolve(result);
+        }
+
         if (params.purePreview) {
             const previousMode = LiveDevMain.getCurrentMode();
             LiveDevMain.setMode(LivePreviewConstants.LIVE_PREVIEW_MODE);
@@ -358,12 +369,12 @@ define(function (require, exports, module) {
                 _captureScreenshot(params.selector)
                     .done(function (result) {
                         LiveDevMain.setMode(previousMode);
-                        deferred.resolve(result);
+                        _onResult(result);
                     });
             }, 150);
         } else {
             _captureScreenshot(params.selector)
-                .done(function (result) { deferred.resolve(result); });
+                .done(function (result) { _onResult(result); });
         }
 
         return deferred.promise();
@@ -490,6 +501,7 @@ define(function (require, exports, module) {
                 });
             })
             .fail(function (err) {
+                console.error("[AI Control] applyEditToBuffer failed:", err);
                 deferred.resolve({ applied: false, error: err.message || String(err) });
             });
         return deferred.promise();
@@ -544,6 +556,7 @@ define(function (require, exports, module) {
                 })
                 .fail(function (err) {
                     _onExecJsDone();
+                    console.error("[AI Control] execJsInLivePreview failed:", err);
                     deferred.resolve({ error: (err && err.message) || String(err) || "evaluate() failed" });
                 });
         }
@@ -581,6 +594,7 @@ define(function (require, exports, module) {
             if (settled) { return; }
             cleanup();
             _onExecJsDone();
+            console.error("[AI Control] Timed out waiting for live preview connection (30s)");
             deferred.resolve({ error: "Timed out waiting for live preview connection (30s)" });
         }, TIMEOUT);
 
