@@ -92,14 +92,14 @@
 .terminal-new-dropdown-wrapper {
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border-top: 1px solid var(--terminal-border);
 }
 
 .terminal-shell-dropdown {
     position: absolute;
-    bottom: 100%;
-    left: 0;
+    bottom: 0;
+    right: 100%;
     min-width: 180px;
     background: var(--terminal-tab-bg);
     border: 1px solid var(--terminal-border);
@@ -150,31 +150,35 @@
 .terminal-tab-bar {
     display: flex;
     flex-direction: column;
-    width: 80px;
-    min-width: 80px;
+    width: 30px;
+    min-width: 30px;
     background: var(--terminal-tab-bg);
     border-left: 1px solid var(--terminal-border);
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .terminal-tabs-list {
     flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .terminal-tab {
+    position: relative;
     display: flex;
     align-items: center;
-    padding: 6px 8px;
+    justify-content: center;
+    width: 31px;
+    height: 28px;
+    min-height: 28px;
     cursor: pointer;
     color: var(--terminal-tab-text);
-    font-size: 12px;
     border-left: 2px solid transparent;
     user-select: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    box-sizing: border-box;
 }
 
 .terminal-tab:hover {
@@ -188,36 +192,31 @@
 }
 
 .terminal-tab .terminal-tab-icon {
-    display: none;
-}
-
-.terminal-tab .terminal-tab-name {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 11px;
+    line-height: 1;
 }
 
 .terminal-tab .terminal-tab-close {
-    opacity: 0;
-    margin-left: 4px;
-    font-size: 10px;
-    padding: 2px 4px;
-    border-radius: 3px;
+    display: none;
+    font-size: 14px;
     color: var(--terminal-tab-text);
+    line-height: 1;
+}
+
+.terminal-tab:hover .terminal-tab-icon {
+    display: none;
 }
 
 .terminal-tab:hover .terminal-tab-close {
-    opacity: 0.6;
+    display: flex;
 }
 
 .terminal-tab .terminal-tab-close:hover {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--terminal-tab-active-text);
 }
 
 /* New terminal button at bottom of tab bar */
 .terminal-tab-new-btn {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -236,7 +235,6 @@
 
 /* Dropdown chevron button */
 .terminal-tab-dropdown-btn {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -246,7 +244,7 @@
     font-size: 10px;
     background: transparent;
     border: none;
-    border-left: 1px solid var(--terminal-border);
+    border-top: 1px solid var(--terminal-border);
 }
 
 .terminal-tab-dropdown-btn:hover {
