@@ -1289,7 +1289,16 @@ function RemoteFunctions(config = {}) {
         "dismissUIAndCleanupState": dismissUIAndCleanupState,
         "escapeKeyPressInEditor": _handleEscapeKeyPress,
         "getMode": function() { return config.mode; },
-        "suppressDOMEditDismissal": suppressDOMEditDismissal
+        "suppressDOMEditDismissal": suppressDOMEditDismissal,
+        "setHotCornerHidden": function(hidden) {
+            if (SHARED_STATE._hotCorner && SHARED_STATE._hotCorner.hotCorner) {
+                if (hidden) {
+                    SHARED_STATE._hotCorner.hotCorner.classList.add('hc-hidden');
+                } else {
+                    SHARED_STATE._hotCorner.hotCorner.classList.remove('hc-hidden');
+                }
+            }
+        }
     };
 
     // the below code comment is replaced by added scripts for extensibility
