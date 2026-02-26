@@ -236,7 +236,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Custom key event handler - intercept editor shortcuts
+     * Custom key event handler - intercept editor shortcuts and clipboard keys
      * Returns true to allow xterm to handle, false to prevent
      */
     TerminalInstance.prototype._customKeyHandler = function (event) {
@@ -246,6 +246,11 @@ define(function (require, exports, module) {
         }
 
         const ctrlOrMeta = event.ctrlKey || event.metaKey;
+
+        // Ctrl+C with a selection should copy to clipboard, not send SIGINT
+        if (ctrlOrMeta && !event.shiftKey && event.key.toLowerCase() === "c" && this.terminal.hasSelection()) {
+            return false;
+        }
 
         for (const shortcut of EDITOR_SHORTCUTS) {
             const ctrlMatch = shortcut.ctrlKey ? ctrlOrMeta : !ctrlOrMeta;

@@ -200,18 +200,19 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Get project root as cwd, stripping VFS prefix for native path
+        // Get project root as cwd, converting VFS path to native platform path
         const projectRoot = ProjectManager.getProjectRoot();
         let cwd;
         if (projectRoot) {
-            cwd = projectRoot.fullPath;
-            // Strip Phoenix VFS prefix (/tauri/) to get native filesystem path
+            const fullPath = projectRoot.fullPath;
             const tauriPrefix = Phoenix.VFS.getTauriDir();
-            if (cwd.startsWith(tauriPrefix)) {
-                cwd = "/" + cwd.slice(tauriPrefix.length);
+            if (fullPath.startsWith(tauriPrefix)) {
+                cwd = Phoenix.fs.getTauriPlatformPath(fullPath);
+            } else {
+                cwd = fullPath;
             }
-            // Remove trailing slash (posix_spawnp can fail with trailing slashes)
-            if (cwd.length > 1 && cwd.endsWith("/")) {
+            // Remove trailing slash/backslash (posix_spawnp can fail with trailing slashes)
+            if (cwd.length > 1 && (cwd.endsWith("/") || cwd.endsWith("\\"))) {
                 cwd = cwd.slice(0, -1);
             }
         }
