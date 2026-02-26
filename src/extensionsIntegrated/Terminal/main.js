@@ -30,7 +30,6 @@ define(function (require, exports, module) {
 
     const AppInit = require("utils/AppInit");
     const CommandManager = require("command/CommandManager");
-    const Menus = require("command/Menus");
     const WorkspaceManager = require("view/WorkspaceManager");
     const ProjectManager = require("project/ProjectManager");
     const ExtensionUtils = require("utils/ExtensionUtils");
@@ -40,6 +39,7 @@ define(function (require, exports, module) {
     const Strings = require("strings");
     const StringUtils = require("utils/StringUtils");
 
+    const Commands = require("command/Commands");
     const TerminalInstance = require("./TerminalInstance");
     const ShellProfiles = require("./ShellProfiles");
     const panelHTML = require("text!./terminal-panel.html");
@@ -48,7 +48,7 @@ define(function (require, exports, module) {
     ExtensionUtils.loadStyleSheet(module, "../../thirdparty/xterm/xterm.css");
 
     // Constants
-    const CMD_TOGGLE_TERMINAL = "terminal.toggle";
+    const CMD_VIEW_TERMINAL = Commands.VIEW_TERMINAL;
     const CMD_NEW_TERMINAL = "terminal.new";
     const PANEL_ID = "terminal-panel";
     const PANEL_MIN_SIZE = 100;
@@ -254,7 +254,7 @@ define(function (require, exports, module) {
         // Show panel if hidden
         if (!panel.isVisible()) {
             panel.show();
-            _updateToolbarIcon(true);
+
         }
 
         // Spawn PTY process
@@ -329,7 +329,7 @@ define(function (require, exports, module) {
         // If no terminals left, hide the panel
         if (terminalInstances.length === 0) {
             panel.hide();
-            _updateToolbarIcon(false);
+
         }
 
         _updateFlyout();
@@ -467,23 +467,28 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Toggle the terminal panel visibility
+     * Show the terminal panel. Creates a new terminal if none exist.
+     * If the panel is visible and the active terminal is focused and there
+     * are 2+ terminals, cycles to the next one. Otherwise just shows and
+     * focuses the active terminal.
      */
-    function _togglePanel() {
-        if (panel.isVisible()) {
-            panel.hide();
-            _updateToolbarIcon(false);
+    function _showTerminal() {
+        if (terminalInstances.length === 0) {
+            _createNewTerminal();
+            return;
+        }
+        const active = _getActiveTerminal();
+        const terminalHasFocus = active && active.$container &&
+            active.$container[0].contains(document.activeElement);
+        if (terminalInstances.length >= 2 && panel.isVisible() && terminalHasFocus) {
+            const activeIdx = terminalInstances.findIndex(t => t.id === activeTerminalId);
+            const nextIdx = (activeIdx + 1) % terminalInstances.length;
+            _activateTerminal(terminalInstances[nextIdx].id);
         } else {
-            if (terminalInstances.length === 0) {
-                _createNewTerminal();
-            } else {
-                panel.show();
-                _updateToolbarIcon(true);
-                const active = _getActiveTerminal();
-                if (active) {
-                    active.handleResize();
-                    active.focus();
-                }
+            panel.show();
+            if (active) {
+                active.handleResize();
+                active.focus();
             }
         }
     }
@@ -504,18 +509,6 @@ define(function (require, exports, module) {
     function _updateAllThemes() {
         for (const inst of terminalInstances) {
             inst.updateTheme();
-        }
-    }
-
-    /**
-     * Update toolbar icon active state
-     */
-    function _updateToolbarIcon(isActive) {
-        const $icon = $("#toolbar-terminal");
-        if (isActive) {
-            $icon.addClass("selected-button");
-        } else {
-            $icon.removeClass("selected-button");
         }
     }
 
@@ -541,13 +534,7 @@ define(function (require, exports, module) {
 
     // Register commands
     CommandManager.register("New Terminal", CMD_NEW_TERMINAL, _createNewTerminal);
-    CommandManager.register("Toggle Terminal", CMD_TOGGLE_TERMINAL, _togglePanel);
-
-    // Add menu item
-    const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
-    if (fileMenu) {
-        fileMenu.addMenuItem(CMD_NEW_TERMINAL, null, Menus.AFTER, "file.close");
-    }
+    CommandManager.register(Strings.CMD_VIEW_TERMINAL, CMD_VIEW_TERMINAL, _showTerminal);
 
     // Initialize on app ready
     AppInit.appReady(function () {
@@ -557,12 +544,6 @@ define(function (require, exports, module) {
 
         _initNodeConnector();
         _createPanel();
-
-        // Set up toolbar icon click handler
-        const $toolbarIcon = $("#toolbar-terminal");
-        $toolbarIcon.html('<i class="fa-solid fa-terminal"></i>');
-        $toolbarIcon.removeClass("forced-hidden");
-        $toolbarIcon.on("click", _togglePanel);
 
         // Detect shells
         ShellProfiles.init(nodeConnector).then(function () {
@@ -581,6 +562,6 @@ define(function (require, exports, module) {
     });
 
     // Export for testing
-    exports.CMD_TOGGLE_TERMINAL = CMD_TOGGLE_TERMINAL;
+    exports.CMD_VIEW_TERMINAL = CMD_VIEW_TERMINAL;
     exports.CMD_NEW_TERMINAL = CMD_NEW_TERMINAL;
 });

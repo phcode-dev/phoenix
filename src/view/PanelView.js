@@ -765,12 +765,31 @@ define(function (require, exports, module) {
         return closedIds;
     }
 
+    /**
+     * Cycle to the next open bottom panel tab. If the container is hidden
+     * or no panels are open, does nothing and returns false.
+     * @return {boolean} true if a panel switch occurred
+     */
+    function showNextPanel() {
+        if (_openIds.length <= 0) {
+            return false;
+        }
+        const currentIdx = _activeId ? _openIds.indexOf(_activeId) : -1;
+        const nextIdx = (currentIdx + 1) % _openIds.length;
+        const nextPanel = _panelMap[_openIds[nextIdx]];
+        if (nextPanel) {
+            nextPanel.show();
+        }
+        return true;
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
 
     // Public API
     exports.Panel = Panel;
     exports.init = init;
     exports.getOpenBottomPanelIDs = getOpenBottomPanelIDs;
+    exports.showNextPanel = showNextPanel;
     exports.hideAllOpenPanels = hideAllOpenPanels;
     exports.exitMaximizeOnResize = exitMaximizeOnResize;
     exports.enterMaximizeOnResize = enterMaximizeOnResize;

@@ -231,6 +231,7 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.TOGGLE_RULERS);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.VIEW_TOGGLE_PROBLEMS);
+        menu.addMenuItem(Commands.VIEW_TERMINAL);
         menu.addMenuItem(Commands.VIEW_TOGGLE_INSPECTION);
 
         /*

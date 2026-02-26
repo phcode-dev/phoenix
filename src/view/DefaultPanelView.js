@@ -71,7 +71,7 @@ define(function (require, exports, module) {
             id: "terminal",
             icon: "fa-solid fa-terminal",
             label: "Terminal",
-            commandID: "terminal.toggle",
+            commandID: Commands.VIEW_TERMINAL,
             nativeOnly: true
         }
     ];
