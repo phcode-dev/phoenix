@@ -297,6 +297,9 @@ define(function (require, exports, module) {
     /** Toggles problems panel visibility */
     exports.VIEW_TOGGLE_PROBLEMS        = "view.toggleProblems";        // CodeInspection.js            toggleProblems()
 
+    /** Opens the terminal panel */
+    exports.VIEW_TERMINAL               = "view.terminal";              // Terminal/main.js              _showTerminal()
+
     /** Toggles line numbers visibility */
     exports.TOGGLE_LINE_NUMBERS         = "view.toggleLineNumbers";     // EditorOptionHandlers.js      _getToggler()
 

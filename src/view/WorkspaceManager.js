@@ -389,15 +389,7 @@ define(function (require, exports, module) {
 
         $statusBarPanelToggle.on("click", function () {
             _statusBarToggleInProgress = true;
-            if ($bottomPanelContainer.is(":visible")) {
-                Resizer.hide($bottomPanelContainer[0]);
-                triggerUpdateLayout();
-            } else if (PanelView.getOpenBottomPanelIDs().length > 0) {
-                Resizer.show($bottomPanelContainer[0]);
-                triggerUpdateLayout();
-            } else {
-                _showDefaultPanel();
-            }
+            _togglePanels();
             _statusBarToggleInProgress = false;
         });
 
@@ -631,15 +623,28 @@ define(function (require, exports, module) {
         }
     }
 
-    function _handleEscapeKey() {
-        // Collapse the entire bottom panel container, keeping all tabs intact.
-        // Maximize state is preserved so the panel re-opens maximized.
-        if ($bottomPanelContainer && $bottomPanelContainer.is(":visible")) {
-            Resizer.hide($bottomPanelContainer[0]);
-            triggerUpdateLayout();
-            return true;
+    /**
+     * Toggle the bottom panel container: hide if visible, show if there are
+     * open panels, or show the default panel when nothing is open.
+     * @return {boolean} true if the toggle was handled
+     */
+    function _togglePanels() {
+        if (!$bottomPanelContainer) {
+            return false;
         }
-        return false;
+        if ($bottomPanelContainer.is(":visible")) {
+            Resizer.hide($bottomPanelContainer[0]);
+        } else if (PanelView.getOpenBottomPanelIDs().length > 0) {
+            Resizer.show($bottomPanelContainer[0]);
+        } else {
+            _showDefaultPanel();
+        }
+        triggerUpdateLayout();
+        return true;
+    }
+
+    function _handleEscapeKey() {
+        return _togglePanels();
     }
 
     // pressing escape when focused on editor will hide the bottom panel container
@@ -666,7 +671,10 @@ define(function (require, exports, module) {
             return;
         }
 
-        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+        if (event.shiftKey) {
+            // Shift+Escape: cycle through open bottom panels
+            PanelView.showNextPanel();
+        } else {
             _handleEscapeKey();
         }
 
