@@ -22,6 +22,7 @@ const pty = require("node-pty");
 const os = require("os");
 const path = require("path");
 const which = require("which");
+const {execFile} = require("child_process");
 const NodeConnector = require("./node-connector");
 
 const CONNECTOR_ID = "phoenix_terminal";
@@ -146,6 +147,7 @@ exports.createTerminal = async function ({id, shell, args, cwd, cols, rows, env}
 
     terminals[id] = {
         pty: ptyProcess,
+        shellPath: shell,
         buffer: "",
         flushTimer: null,
         paused: false
@@ -342,6 +344,65 @@ exports.getDefaultShells = async function () {
 };
 
 /**
+ * On Windows, node-pty's .process returns the terminal name (e.g. "xterm-256color")
+ * instead of the actual foreground process. This helper queries the process tree
+ * via PowerShell's Get-CimInstance to find the deepest child process name.
+ * Falls back gracefully if PowerShell is unavailable or returns unexpected output.
+ * @param {number} pid - The shell PID to look up children for
+ * @returns {Promise<string>} The leaf child process name, or empty string
+ */
+function _getWindowsForegroundProcess(pid) {
+    return new Promise((resolve) => {
+        const psCommand = `Get-CimInstance Win32_Process -Filter 'ParentProcessId=${pid}'` +
+            ` | Select-Object Name,ProcessId | ConvertTo-Json -Compress`;
+        let settled = false;
+        function done(val) {
+            if (!settled) {
+                settled = true;
+                resolve(val);
+            }
+        }
+
+        // Hard 2-second deadline — don't block the UI waiting for PowerShell
+        const deadline = setTimeout(() => done(""), 2000);
+
+        let child;
+        try {
+            child = execFile("powershell.exe", [
+                "-NoProfile", "-NoLogo", "-Command", psCommand
+            ], {timeout: 2000, windowsHide: true}, (err, stdout) => {
+                clearTimeout(deadline);
+                if (err || !stdout || !stdout.trim()) {
+                    done("");
+                    return;
+                }
+                try {
+                    let parsed = JSON.parse(stdout.trim());
+                    // PowerShell returns a single object if one result, an array if multiple
+                    if (!Array.isArray(parsed)) {
+                        parsed = [parsed];
+                    }
+                    const leaf = parsed.length > 0 ? parsed[parsed.length - 1] : null;
+                    done(leaf && typeof leaf.Name === "string" ? leaf.Name : "");
+                } catch (e) {
+                    done("");
+                }
+            });
+        } catch (e) {
+            // powershell.exe not found or execFile threw synchronously
+            clearTimeout(deadline);
+            done("");
+            return;
+        }
+
+        child.on("error", () => {
+            clearTimeout(deadline);
+            done("");
+        });
+    });
+}
+
+/**
  * Get foreground process info for a terminal
  * @param {Object} params
  * @param {string} params.id - Terminal ID
@@ -352,9 +413,23 @@ exports.getTerminalProcess = async function ({id}) {
     if (!term) {
         throw new Error(`Terminal ${id} not found`);
     }
+
+    // On Mac/Linux, node-pty .process returns the actual foreground process name
+    if (process.platform !== "win32") {
+        return {
+            process: term.pty.process,
+            pid: term.pty.pid
+        };
+    }
+
+    // On Windows, resolve the actual process from the PID tree
+    const shellPid = term.pty.pid;
+    const childName = await _getWindowsForegroundProcess(shellPid);
+    // If a child process exists, return it; otherwise return the shell executable name
+    const processName = childName || path.basename(term.shellPath || "");
     return {
-        process: term.pty.process,
-        pid: term.pty.pid
+        process: processName,
+        pid: shellPid
     };
 };
 
