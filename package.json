@@ -42,7 +42,7 @@
         "through2": "^4.0.2"
     },
     "scripts": {
-        "postinstall": "npm install --prefix phoenix-builder-mcp",
+        "postinstall": "cd phoenix-builder-mcp && npm install",
         "lint": "eslint --quiet src test",
         "lint:fix": "eslint --quiet --fix src test",
         "prepare": "husky install",
