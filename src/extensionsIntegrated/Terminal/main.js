@@ -150,9 +150,21 @@ define(function (require, exports, module) {
                 _hideShellDropdown();
                 ShellProfiles.setDefaultShell(shell.name);
                 _populateShellDropdown();
+                _updateNewTerminalButtonLabel();
+                _createNewTerminalWithShell(shell);
             });
             $shellDropdown.append($item);
         }
+    }
+
+    /**
+     * Update the "+ New Terminal" button label to show the default shell name
+     */
+    function _updateNewTerminalButtonLabel() {
+        const defaultShell = ShellProfiles.getDefaultShell();
+        const label = defaultShell ? defaultShell.name : "New Terminal";
+        $panel.find(".terminal-new-btn-label").text(label);
+        $panel.find(".terminal-flyout-new-btn").attr("title", label);
     }
 
     /**
@@ -553,6 +565,7 @@ define(function (require, exports, module) {
                 $panel.find(".terminal-flyout-dropdown-btn").addClass("forced-hidden");
             }
             _populateShellDropdown();
+            _updateNewTerminalButtonLabel();
         });
 
         // Clean up on window unload
