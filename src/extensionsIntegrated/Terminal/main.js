@@ -57,7 +57,10 @@ define(function (require, exports, module) {
     const SHELL_NAMES = new Set([
         "bash", "zsh", "fish", "sh", "dash", "ksh", "csh", "tcsh",
         "pwsh", "powershell", "cmd.exe", "nu", "elvish", "xonsh",
-        "login"
+        "login",
+        // Windows shell executables (returned with .exe suffix)
+        "bash.exe", "pwsh.exe", "powershell.exe", "nu.exe",
+        "fish.exe", "elvish.exe", "xonsh.exe", "wsl.exe"
     ]);
 
     /**
