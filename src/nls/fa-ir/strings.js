@@ -1078,7 +1078,6 @@ define({
   "REFERENCES_NO_RESULTS": "هیچ مرجعی برای مکان‌نما فعلی یافت نشد",
   "REFERENCES_PANEL_TITLE": "ارجاعات",
   "SEARCH_RESULTS_PANEL_TITLE": "نتایج جستجو",
-  "BOTTOM_PANEL_HIDE": "پنهان کردن پنل",
   "BOTTOM_PANEL_SHOW": "نمایش پنل پایینی",
   "BOTTOM_PANEL_HIDE_TOGGLE": "پنهان کردن پنل پایینی",
   "BOTTOM_PANEL_DEFAULT_TITLE": "دسترسی سریع",
@@ -1694,6 +1693,7 @@ define({
   "AI_CHAT_HISTORY_CLEAR_ALL": "پاک کردن همه",
   "AI_CHAT_HISTORY_DELETE_CONFIRM": "این گفتگو حذف شود؟",
   "AI_CHAT_SWITCH_PROJECT_TITLE": "هوش مصنوعی در حال کار است",
+  "AI_CHAT_SWITCH_PROJECT_MSG": "هوش مصنوعی در حال انجام یک کار است. تغییر پروژه باعث توقف آن می‌شود. آیا ادامه می‌دهید؟",
   "DEMO_SECTION1_TITLE": "ویرایش در پیش‌نمایش زنده",
   "DEMO_SECTION1_SUBTITLE": "صفحه خود را به صورت بصری ویرایش کنید -&nbsp; <b>کد HTML شما فوراً به‌روز می‌شود</b>",
   "DEMO_GET_STARTED_BUTTON": "شروع کنید",
@@ -1785,5 +1785,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_SWITCH_PROJECT_MSG": "هوش مصنوعی در حال انجام یک کار است. تغییر پروژه باعث توقف آن می‌شود. آیا ادامه می‌دهید؟"
+  "BOTTOM_PANEL_MINIMIZE": "کوچک کردن پنل",
+  "BOTTOM_PANEL_OPEN_PANEL": "باز کردن پنل",
+  "TERMINAL_CLOSE_CONFIRM_TITLE": "فرایند فعال در حال اجرا",
+  "TERMINAL_CLOSE_CONFIRM_MSG": "ترمینال یک فرایند فعال در حال اجرا دارد: <b>{0}</b>.<br>آیا مطمئن هستید که می‌خواهید آن را ببندید؟"
 });
