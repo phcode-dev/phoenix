@@ -166,7 +166,7 @@ define(function (require, exports, module) {
         const defaultShell = ShellProfiles.getDefaultShell();
         const isOriginal = defaultShell && defaultShell.name === originalDefaultShellName;
         const label = !defaultShell || isOriginal ? "Terminal" : defaultShell.name;
-        $panel.find(".terminal-new-btn-label").text(label);
+        $panel.find(".terminal-btn-label").text(label);
         $panel.find(".terminal-flyout-new-btn").attr("title", label);
     }
 
