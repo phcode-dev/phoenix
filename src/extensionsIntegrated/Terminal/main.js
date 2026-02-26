@@ -77,6 +77,7 @@ define(function (require, exports, module) {
     let terminalInstances = [];   // All terminal instances
     let activeTerminalId = null;  // Currently visible terminal
     let processInfo = {};         // id -> processName from PTY
+    let originalDefaultShellName = null; // System-detected default shell name
     let $panel, $contentArea, $shellDropdown, $flyoutList;
 
     /**
@@ -158,11 +159,13 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Update the "+ New Terminal" button label to show the default shell name
+     * Update the "+ New Terminal" button label.
+     * Shows "Terminal" when using the system default, or the shell name when user switched.
      */
     function _updateNewTerminalButtonLabel() {
         const defaultShell = ShellProfiles.getDefaultShell();
-        const label = defaultShell ? defaultShell.name : "New Terminal";
+        const isOriginal = defaultShell && defaultShell.name === originalDefaultShellName;
+        const label = !defaultShell || isOriginal ? "Terminal" : defaultShell.name;
         $panel.find(".terminal-new-btn-label").text(label);
         $panel.find(".terminal-flyout-new-btn").attr("title", label);
     }
@@ -561,6 +564,8 @@ define(function (require, exports, module) {
         // Detect shells
         ShellProfiles.init(nodeConnector).then(function () {
             const shells = ShellProfiles.getShells();
+            const systemDefault = ShellProfiles.getDefaultShell();
+            originalDefaultShellName = systemDefault ? systemDefault.name : null;
             if (shells.length <= 1) {
                 $panel.find(".terminal-flyout-dropdown-btn").addClass("forced-hidden");
             }
