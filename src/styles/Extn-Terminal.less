@@ -399,3 +399,49 @@
     color: var(--terminal-tab-text);
     font-size: 13px;
 }
+
+/* Focus hint toast */
+.terminal-focus-toast {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.75);
+    color: #e0e0e0;
+}
+
+.terminal-focus-toast.visible {
+    opacity: 1;
+}
+
+.terminal-focus-toast kbd {
+    display: inline-block;
+    padding: 1px 5px;
+    margin: 0 2px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Light theme toast */
+.terminal-panel-container .terminal-focus-toast {
+    background: rgba(0, 0, 0, 0.7);
+    color: #f0f0f0;
+}
+
+.terminal-panel-container .terminal-focus-toast kbd {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
