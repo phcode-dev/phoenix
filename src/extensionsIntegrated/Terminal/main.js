@@ -81,6 +81,7 @@ define(function (require, exports, module) {
     let activeTerminalId = null;  // Currently visible terminal
     let processInfo = {};         // id -> processName from PTY
     let originalDefaultShellName = null; // System-detected default shell name
+    let _focusToastShown = false;       // Show focus hint toast only once per session
     let $panel, $contentArea, $shellDropdown, $flyoutList;
 
     /**
@@ -145,6 +146,7 @@ define(function (require, exports, module) {
                     active.handleResize();
                     active.focus();
                 }
+                _showFocusHintToast();
             }
         });
 
@@ -531,6 +533,35 @@ define(function (require, exports, module) {
         for (const inst of terminalInstances) {
             inst.updateTheme();
         }
+    }
+
+    /**
+     * Show a one-time toast hint about Shift+Escape to switch focus
+     */
+    function _showFocusHintToast() {
+        if (_focusToastShown) {
+            return;
+        }
+        _focusToastShown = true;
+
+        const shortcutKey = '<kbd>Shift+Esc</kbd>';
+        const message = StringUtils.format(Strings.TERMINAL_FOCUS_HINT, shortcutKey);
+        const $toast = $('<div class="terminal-focus-toast"></div>')
+            .html('<span class="terminal-toast-text">' + message + '</span>');
+        $contentArea.append($toast);
+
+        // Fade in
+        setTimeout(function () {
+            $toast.addClass("visible");
+        }, 100);
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(function () {
+            $toast.removeClass("visible");
+            setTimeout(function () {
+                $toast.remove();
+            }, 300);
+        }, 5000);
     }
 
     /**
