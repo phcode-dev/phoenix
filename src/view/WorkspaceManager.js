@@ -213,6 +213,11 @@ define(function (require, exports, module) {
             return;
         }
 
+        // Clamp plugin panel toolbar width so it doesn't encroach into the sidebar/content area
+        if (currentlyShownPanel && $mainToolbar.is(":visible")) {
+            _clampPluginPanelWidth(currentlyShownPanel);
+        }
+
         // FIXME (issue #4564) Workaround https://github.com/codemirror/CodeMirror/issues/1787
         triggerUpdateLayout();
 
@@ -496,12 +501,28 @@ define(function (require, exports, module) {
         return panel.initialSize;
     }
 
+    function _clampPluginPanelWidth(panelBeingShown) {
+        let sidebarWidth = $("#sidebar").outerWidth() || 0;
+        let pluginIconsBarWidth = $pluginIconsBar.outerWidth();
+        let minToolbarWidth = (panelBeingShown.minWidth || 0) + pluginIconsBarWidth;
+        let maxToolbarWidth = Math.max(
+            minToolbarWidth,
+            Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100)
+        );
+        if ($mainToolbar.width() > maxToolbarWidth) {
+            $mainToolbar.width(maxToolbarWidth);
+            $windowContent.css("right", maxToolbarWidth);
+            Resizer.resyncSizer($mainToolbar[0]);
+        }
+    }
+
     function _showPluginSidePanel(panelID) {
         let panelBeingShown = getPanelForID(panelID);
         Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT,
             panelBeingShown.minWidth, false, undefined, true,
             undefined, $windowContent, undefined, _getInitialSize(panelBeingShown));
         Resizer.show($mainToolbar[0]);
+        _clampPluginPanelWidth(panelBeingShown);
         recomputeLayout(true);
     }
 

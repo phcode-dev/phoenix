@@ -1237,5 +1237,102 @@ define(function (require, exports, module) {
                 expect(maxSize).toBeLessThanOrEqual(testWindow.innerWidth * 0.75);
             });
         });
+
+        describe("Plugin panel clamping on window resize", function () {
+            let pluginPanel, $toolbarIcon;
+            const MIN_WIDTH = 200;
+
+            beforeAll(function () {
+                $toolbarIcon = _$('<a id="test-clamp-icon" href="#"></a>');
+                _$("#plugin-icons-bar").append($toolbarIcon);
+
+                let panelTemplate = '<div id="test-clamp-panel">Test Panel</div>';
+                pluginPanel = WorkspaceManager.createPluginPanel(
+                    "test-clamp-panel", _$(panelTemplate), MIN_WIDTH, $toolbarIcon
+                );
+            });
+
+            afterAll(function () {
+                if (pluginPanel) {
+                    pluginPanel.hide();
+                }
+                $toolbarIcon.remove();
+            });
+
+            afterEach(function () {
+                pluginPanel.hide();
+            });
+
+            it("should clamp plugin panel when window resizes smaller", function () {
+                pluginPanel.show();
+                WorkspaceManager.setPluginPanelWidth(600);
+
+                const $mainToolbar = _$("#main-toolbar");
+                const widthBefore = $mainToolbar.width();
+
+                // Simulate a narrow window resize
+                const sidebarWidth = _$("#sidebar").outerWidth() || 0;
+                const maxAllowed = Math.min(
+                    testWindow.innerWidth * 0.75,
+                    testWindow.innerWidth - sidebarWidth - 100
+                );
+
+                // Only expect clamping if the panel was wider than max
+                if (widthBefore > maxAllowed) {
+                    testWindow.dispatchEvent(new testWindow.Event("resize"));
+                    expect($mainToolbar.width()).toBeLessThanOrEqual(maxAllowed);
+                } else {
+                    // Panel fits, dispatch resize and verify it stays unchanged
+                    testWindow.dispatchEvent(new testWindow.Event("resize"));
+                    expect($mainToolbar.width()).toEqual(widthBefore);
+                }
+            });
+
+            it("should not let toolbar disappear on window resize", function () {
+                pluginPanel.show();
+
+                const $mainToolbar = _$("#main-toolbar");
+                const $pluginIconsBar = _$("#plugin-icons-bar");
+
+                testWindow.dispatchEvent(new testWindow.Event("resize"));
+
+                // Toolbar must remain at least as wide as the icons bar + panel minWidth
+                const minToolbarWidth = MIN_WIDTH + $pluginIconsBar.outerWidth();
+                expect($mainToolbar.width()).toBeGreaterThanOrEqual(minToolbarWidth);
+            });
+
+            it("should clamp panel width when shown after window was resized", function () {
+                // Panel is hidden; compute what the max toolbar width would be
+                const sidebarWidth = _$("#sidebar").outerWidth() || 0;
+                const $pluginIconsBar = _$("#plugin-icons-bar");
+                const maxToolbarWidth = Math.min(
+                    testWindow.innerWidth * 0.75,
+                    testWindow.innerWidth - sidebarWidth - 100
+                );
+
+                // Now show the panel — it should be clamped to maxToolbarWidth
+                pluginPanel.show();
+
+                const $mainToolbar = _$("#main-toolbar");
+                expect($mainToolbar.width()).toBeLessThanOrEqual(maxToolbarWidth);
+
+                // And content area should match
+                const $windowContent = _$(".content");
+                const rightOffset = parseInt($windowContent.css("right"), 10);
+                expect(rightOffset).toEqual($mainToolbar.width());
+            });
+
+            it("should keep content right offset in sync after resize clamp", function () {
+                pluginPanel.show();
+                WorkspaceManager.setPluginPanelWidth(600);
+
+                testWindow.dispatchEvent(new testWindow.Event("resize"));
+
+                const $mainToolbar = _$("#main-toolbar");
+                const $windowContent = _$(".content");
+                const rightOffset = parseInt($windowContent.css("right"), 10);
+                expect(rightOffset).toEqual($mainToolbar.width());
+            });
+        });
     });
 });
