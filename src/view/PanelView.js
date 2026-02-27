@@ -329,6 +329,35 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Registers an async handler that is called before the panel is closed via user interaction (e.g. clicking the
+     * tab close button). The handler should return `true` to allow the close, or `false` to prevent it.
+     * @param {function|null} handler An async function returning a boolean, or null to clear the handler.
+     */
+    Panel.prototype.registerOnCloseRequestedHandler = function (handler) {
+        if (this._onCloseRequestedHandler && handler) {
+            console.warn(`onCloseRequestedHandler already registered for panel: ${this.panelID}. will be overwritten`);
+        }
+        this._onCloseRequestedHandler = handler;
+    };
+
+    /**
+     * Requests the panel to hide, invoking the registered onCloseRequested handler first (if any).
+     * If the handler returns false, the panel stays open. If it returns true or no handler is
+     * registered, `hide()` is called.
+     * @return {Promise<boolean>} Resolves to true if the panel was hidden, false if prevented.
+     */
+    Panel.prototype.requestClose = async function () {
+        if (this._onCloseRequestedHandler) {
+            const allowed = await this._onCloseRequestedHandler();
+            if (!allowed) {
+                return false;
+            }
+        }
+        this.hide();
+        return true;
+    };
+
+    /**
      * Shows the panel
      */
     Panel.prototype.show = function () {
@@ -495,7 +524,7 @@ define(function (require, exports, module) {
             if (panelId) {
                 let panel = _panelMap[panelId];
                 if (panel) {
-                    panel.hide();
+                    panel.requestClose();
                 }
             }
         });

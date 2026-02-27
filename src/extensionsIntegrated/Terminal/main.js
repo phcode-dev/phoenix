@@ -586,6 +586,48 @@ define(function (require, exports, module) {
         _initNodeConnector();
         _createPanel();
 
+        // Gate user-initiated panel close (X button): confirm if needed, then
+        // dispose all terminals. Programmatic hide() just collapses the panel
+        // without disposing terminals.
+        panel.registerOnCloseRequestedHandler(async function () {
+            const activeProcesses = [];
+            for (const inst of terminalInstances) {
+                if (!inst.isAlive) {
+                    continue;
+                }
+                try {
+                    const result = await nodeConnector.execPeer("getTerminalProcess", {id: inst.id});
+                    if (result.process && !_isShellProcess(result.process)) {
+                        activeProcesses.push(result.process);
+                    }
+                } catch (e) {
+                    // terminal may be dead
+                }
+            }
+
+            if (terminalInstances.length > 1 || activeProcesses.length > 0) {
+                const msgKey = activeProcesses.length > 0
+                    ? Strings.TERMINAL_CLOSE_ALL_MSG_PROCESS
+                    : Strings.TERMINAL_CLOSE_ALL_MSG;
+                const message = StringUtils.format(
+                    msgKey, terminalInstances.length, activeProcesses.length
+                );
+                const dialog = Dialogs.showConfirmDialog(
+                    Strings.TERMINAL_CLOSE_ALL_TITLE, message
+                );
+                const buttonId = await dialog.getPromise();
+                if (buttonId !== Dialogs.DIALOG_BTN_OK) {
+                    return false;
+                }
+            }
+
+            // User confirmed (or single idle terminal) — dispose everything
+            _disposeAll();
+            activeTerminalId = null;
+            _updateFlyout();
+            return true;
+        });
+
         // Detect shells
         ShellProfiles.init(nodeConnector).then(function () {
             const shells = ShellProfiles.getShells();
