@@ -398,8 +398,91 @@ define(function (require, exports, module) {
         return notification;
     }
 
+    /**
+     * Shows a small, transient inline toast notification inside a given DOM container.
+     * The toast is centered at the bottom of the container and auto-dismisses.
+     *
+     * ```js
+     * NotificationUI.showToastOn(document.getElementById("my-panel"), "Hello!", {
+     *     autoCloseTimeS: 5,
+     *     dismissOnClick: true
+     * });
+     * ```
+     *
+     * @param {Element|string} containerOrSelector A DOM element or CSS selector for the parent container.
+     *   The container should have `position: relative` or `absolute` so the toast is positioned correctly.
+     * @param {string|Element} template HTML string or DOM Element for the toast content.
+     * @param {Object} [options] optional, supported options:
+     *   * `autoCloseTimeS` - Time in seconds after which the toast auto-closes. Default is 5.
+     *   * `dismissOnClick` - If true, clicking the toast dismisses it. Default is true.
+     * @return {Notification} Object with a done handler that resolves when the toast closes.
+     * @type {function}
+     */
+    function showToastOn(containerOrSelector, template, options = {}) {
+        const autoCloseTimeS = options.autoCloseTimeS !== undefined ? options.autoCloseTimeS : 5;
+        const dismissOnClick = options.dismissOnClick !== undefined ? options.dismissOnClick : true;
+
+        const $container = $(containerOrSelector);
+        const $toast = $('<div class="inline-toast"></div>');
+        if (typeof template === "string") {
+            $toast.html(template);
+        } else {
+            $toast.append($(template));
+        }
+        $container.append($toast);
+
+        const notification = new Notification($toast, "inlineToast");
+
+        // Fade in on next frame
+        requestAnimationFrame(function () {
+            $toast.addClass("visible");
+        });
+
+        function closeToast(reason) {
+            let cleaned = false;
+            function cleanup() {
+                if (cleaned) {
+                    return;
+                }
+                cleaned = true;
+                $toast.remove();
+                notification._result.resolve(reason);
+            }
+            $toast.removeClass("visible");
+            $toast.one("transitionend transitioncancel", cleanup);
+            // Safety fallback in case transition events don't fire
+            setTimeout(cleanup, 500);
+        }
+
+        notification.close = function (closeType) {
+            if (!this.$notification) {
+                return this;
+            }
+            this.$notification = null;
+            closeToast(closeType || CLOSE_REASON.CLICK_DISMISS);
+            return this;
+        };
+
+        if (autoCloseTimeS) {
+            setTimeout(function () {
+                if (notification.$notification) {
+                    notification.close(CLOSE_REASON.TIMEOUT);
+                }
+            }, autoCloseTimeS * 1000);
+        }
+
+        if (dismissOnClick) {
+            $toast.on("click", function () {
+                notification.close(CLOSE_REASON.CLICK_DISMISS);
+            });
+        }
+
+        return notification;
+    }
+
     exports.createFromTemplate = createFromTemplate;
     exports.createToastFromTemplate = createToastFromTemplate;
+    exports.showToastOn = showToastOn;
     exports.CLOSE_REASON = CLOSE_REASON;
     exports.NOTIFICATION_STYLES_CSS_CLASS = NOTIFICATION_STYLES_CSS_CLASS;
 });

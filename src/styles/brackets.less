@@ -3381,6 +3381,40 @@ label input {
     }
 }
 
+/* Inline toast: positioned inside a relative/absolute container */
+.inline-toast {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.75);
+    color: #e0e0e0;
+}
+
+.inline-toast.visible {
+    opacity: 1;
+}
+
+.inline-toast kbd {
+    display: inline-block;
+    padding: 1px 5px;
+    margin: 0 2px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
 .github-stars-button {
     .starContainer {
         --fa-style-family-brands: "Font Awesome 6 Brands";
