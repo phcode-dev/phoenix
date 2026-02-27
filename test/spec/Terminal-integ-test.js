@@ -55,38 +55,14 @@ define(function (require, exports, module) {
         afterAll(async function () {
             // Dispose all terminal PTY processes before teardown.
             // panel.hide() keeps terminals alive by design, so we
-            // must explicitly kill them. On Windows, a shell whose
-            // cwd is the temp directory locks it and prevents
-            // cleanup by the next test run.
+            // must explicitly kill them.
             if (testWindow) {
                 try {
                     const termModule = testWindow.brackets.getModule(
                         "extensionsIntegrated/Terminal/main"
                     );
                     if (termModule && termModule._disposeAll) {
-                        // _disposeAll is async — awaits all kill
-                        // commands so PTYs are signalled before
-                        // the test window is torn down.
                         await termModule._disposeAll();
-                    }
-                    // Wait for terminals to fully exit. On Windows,
-                    // taskkill is async and the shell process may
-                    // hold the cwd lock for several seconds after
-                    // the kill signal is sent.
-                    if (IS_WINDOWS) {
-                        await awaitsFor(function () {
-                            return testWindow.$(
-                                ".terminal-flyout-item"
-                            ).length === 0;
-                        }, "terminals to be disposed", 5000);
-                        // taskkill returns before the process fully
-                        // exits — the directory lock can persist for
-                        // a few more seconds. Wait for the OS to
-                        // release the lock so the next test run's
-                        // getTempTestDirectory can clean up.
-                        await new Promise(function (resolve) {
-                            setTimeout(resolve, 5000);
-                        });
                     }
                 } catch (e) {
                     // test window may already be torn down

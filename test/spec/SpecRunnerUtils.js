@@ -54,6 +54,21 @@ define(function (require, exports, module) {
 
     MainViewManager._initialize($("#mock-main-view"));
 
+    // When the test runner page reloads (e.g. switching test
+    // categories), terminate the test window's Node engine so
+    // its phnode.exe process and children (ESLint runners,
+    // terminal shells) don't become orphans that hold directory
+    // locks on Windows.
+    window.addEventListener("beforeunload", function () {
+        if (_testWindow && _testWindow.PhNodeEngine) {
+            try {
+                _testWindow.PhNodeEngine.terminateNode();
+            } catch (e) {
+                // ignore — test window may already be torn down
+            }
+        }
+    });
+
     function _getFileSystem() {
         return FileSystem;
     }
