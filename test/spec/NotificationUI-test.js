@@ -114,5 +114,109 @@ define(function (require, exports, module) {
             await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.DANGER);
             await verifyToast("custom-class-name");
         }, 10000);
+
+        describe("showToastOn", function () {
+            let $container;
+
+            beforeAll(function () {
+                $container = $(
+                    '<div id="inline-toast-test-container" style="position:relative;width:200px;height:200px;"></div>');
+                $("body").append($container);
+            });
+
+            afterAll(function () {
+                $container.remove();
+            });
+
+            it("Should show an inline toast inside a container", async function () {
+                let notification = NotificationUI.showToastOn($container[0], "Hello inline toast");
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 1;
+                }, "waiting for inline toast to appear");
+                expect($container.find(".inline-toast").text()).toBe("Hello inline toast");
+                notification.close();
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 0;
+                }, "waiting for inline toast to close");
+            });
+
+            it("Should auto-close after autoCloseTimeS", async function () {
+                NotificationUI.showToastOn($container[0], "Auto close", {
+                    autoCloseTimeS: 1
+                });
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 1;
+                }, "waiting for inline toast to appear");
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 0;
+                }, "waiting for inline toast to auto-close", 3000);
+            });
+
+            it("Should dismiss on click by default", async function () {
+                NotificationUI.showToastOn($container[0], "Click me");
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast.visible").length === 1;
+                }, "waiting for inline toast to be visible");
+                $container.find(".inline-toast").click();
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 0;
+                }, "waiting for inline toast to close on click");
+            });
+
+            it("Should not dismiss on click when dismissOnClick is false", async function () {
+                let notification = NotificationUI.showToastOn($container[0], "No dismiss", {
+                    dismissOnClick: false,
+                    autoCloseTimeS: 0
+                });
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast.visible").length === 1;
+                }, "waiting for inline toast to be visible");
+                $container.find(".inline-toast").click();
+                await awaits(250);
+                expect($container.find(".inline-toast").length).toBe(1);
+                notification.close("manual");
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 0;
+                }, "waiting for inline toast to close manually");
+            });
+
+            it("Should accept a jQuery selector string as container", async function () {
+                NotificationUI.showToastOn("#inline-toast-test-container", "Selector toast");
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 1;
+                }, "waiting for inline toast via selector");
+                $container.find(".inline-toast").click();
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 0;
+                }, "waiting for inline toast to close");
+            });
+
+            it("Should resolve done callback with close reason", async function () {
+                let closeReason;
+                let notification = NotificationUI.showToastOn($container[0], "Done test");
+                notification.done(function (reason) {
+                    closeReason = reason;
+                });
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast.visible").length === 1;
+                }, "waiting for inline toast to be visible");
+                notification.close("testReason");
+                await awaitsFor(function () {
+                    return closeReason === "testReason";
+                }, "waiting for done callback");
+            });
+
+            it("Should accept HTML template with elements", async function () {
+                NotificationUI.showToastOn($container[0], '<b>Bold</b> text');
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 1;
+                }, "waiting for inline toast");
+                expect($container.find(".inline-toast b").length).toBe(1);
+                $container.find(".inline-toast").click();
+                await awaitsFor(function () {
+                    return $container.find(".inline-toast").length === 0;
+                }, "waiting for inline toast to close");
+            });
+        });
     });
 });

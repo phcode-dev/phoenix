@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     const StringUtils = require("utils/StringUtils");
 
     const Commands = require("command/Commands");
+    const NotificationUI = require("widgets/NotificationUI");
     const TerminalInstance = require("./TerminalInstance");
     const ShellProfiles = require("./ShellProfiles");
     const panelHTML = require("text!./terminal-panel.html");
@@ -546,22 +547,10 @@ define(function (require, exports, module) {
 
         const shortcutKey = '<kbd>Shift+Esc</kbd>';
         const message = StringUtils.format(Strings.TERMINAL_FOCUS_HINT, shortcutKey);
-        const $toast = $('<div class="terminal-focus-toast"></div>')
-            .html('<span class="terminal-toast-text">' + message + '</span>');
-        $contentArea.append($toast);
-
-        // Fade in
-        setTimeout(function () {
-            $toast.addClass("visible");
-        }, 100);
-
-        // Auto-dismiss after 5 seconds
-        setTimeout(function () {
-            $toast.removeClass("visible");
-            setTimeout(function () {
-                $toast.remove();
-            }, 300);
-        }, 5000);
+        NotificationUI.showToastOn($contentArea[0], message, {
+            autoCloseTimeS: 5,
+            dismissOnClick: true
+        });
     }
 
     /**
