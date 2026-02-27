@@ -67,6 +67,15 @@ define(function (require, exports, module) {
                 // ignore — test window may already be torn down
             }
         }
+        // Also terminate the SpecRunner's own PhNode process so it
+        // doesn't become an orphan on page reload.
+        if (window.PhNodeEngine) {
+            try {
+                window.PhNodeEngine.terminateNode();
+            } catch (e) {
+                // ignore
+            }
+        }
     });
 
     function _getFileSystem() {
