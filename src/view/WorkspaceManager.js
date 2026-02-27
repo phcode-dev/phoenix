@@ -45,6 +45,7 @@ define(function (require, exports, module) {
         PluginPanelView         = require("view/PluginPanelView"),
         PanelView               = require("view/PanelView"),
         EditorManager           = require("editor/EditorManager"),
+        MainViewManager         = require("view/MainViewManager"),
         KeyEvent                = require("utils/KeyEvent");
 
     /**
@@ -647,9 +648,41 @@ define(function (require, exports, module) {
         return _togglePanels();
     }
 
-    // pressing escape when focused on editor will hide the bottom panel container
+    /**
+     * Shift+Escape: toggle focus between editor and active bottom panel
+     * @param event
+     * @returns {boolean}
+     * @private
+     */
+    function _handleShiftEscape(event) {
+        if (!event.shiftKey) {
+            return false;
+        }
+        if (EditorManager.getFocusedEditor()) {
+            // Editor has focus — focus the panel
+            const activePanel = PanelView.getActiveBottomPanel();
+            if(!activePanel || !activePanel.isVisible()){
+                _togglePanels();
+            }
+            activePanel.focus();
+        } else {
+            // Focus is elsewhere (panel, sidebar, etc.) — focus the editor
+            MainViewManager.focusActivePane();
+        }
+        event.stopPropagation();
+        event.preventDefault();
+        return true;
+    }
+
+    // pressing escape when focused on editor will toggle the bottom panel container
+    // pressing shift+escape toggles focus between editor and active bottom panel
     function _handleKeydown(event) {
         if(event.keyCode !== KeyEvent.DOM_VK_ESCAPE || KeyBindingManager.isInOverlayMode()){
+            return;
+        }
+
+        // Shift+Escape: toggle focus between editor and active bottom panel
+        if (_handleShiftEscape(event)) {
             return;
         }
 
@@ -671,12 +704,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        if (event.shiftKey) {
-            // Shift+Escape: cycle through open bottom panels
-            PanelView.showNextPanel();
-        } else {
-            _handleEscapeKey();
-        }
+        _handleEscapeKey();
 
         event.stopPropagation();
         event.preventDefault();
