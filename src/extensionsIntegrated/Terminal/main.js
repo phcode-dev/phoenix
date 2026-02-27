@@ -36,6 +36,7 @@ define(function (require, exports, module) {
     const NodeConnector = require("NodeConnector");
     const Mustache = require("thirdparty/mustache/mustache");
     const Dialogs = require("widgets/Dialogs");
+    const DefaultDialogs = require("widgets/DefaultDialogs");
     const Strings = require("strings");
     const StringUtils = require("utils/StringUtils");
 
@@ -605,23 +606,48 @@ define(function (require, exports, module) {
                 }
             }
 
-            if (terminalInstances.length > 1 || activeProcesses.length > 0) {
-                const msgKey = activeProcesses.length > 0
-                    ? Strings.TERMINAL_CLOSE_ALL_MSG_PROCESS
-                    : Strings.TERMINAL_CLOSE_ALL_MSG;
-                const message = StringUtils.format(
-                    msgKey, terminalInstances.length, activeProcesses.length
-                );
-                const dialog = Dialogs.showConfirmDialog(
-                    Strings.TERMINAL_CLOSE_ALL_TITLE, message
-                );
-                const buttonId = await dialog.getPromise();
-                if (buttonId !== Dialogs.DIALOG_BTN_OK) {
-                    return false;
-                }
+            let title, message, confirmText;
+            const count = terminalInstances.length;
+            const procCount = activeProcesses.length;
+
+            if (count === 1 && procCount > 0) {
+                // Single terminal with an active process
+                title = Strings.TERMINAL_CLOSE_SINGLE_TITLE;
+                message = Strings.TERMINAL_CLOSE_SINGLE_MSG;
+                confirmText = Strings.TERMINAL_CLOSE_SINGLE_BTN;
+            } else if (count > 1 && procCount === 0) {
+                // Multiple terminals, no active processes
+                title = Strings.TERMINAL_CLOSE_ALL_TITLE;
+                message = Strings.TERMINAL_CLOSE_ALL_MSG;
+                confirmText = Strings.TERMINAL_CLOSE_ALL_BTN;
+            } else if (count > 1 && procCount > 0) {
+                // Multiple terminals, some with active processes
+                title = Strings.TERMINAL_CLOSE_ALL_TITLE;
+                message = procCount === 1
+                    ? Strings.TERMINAL_CLOSE_ALL_MSG_PROCESS_ONE
+                    : StringUtils.format(Strings.TERMINAL_CLOSE_ALL_MSG_PROCESS_MANY, procCount);
+                confirmText = Strings.TERMINAL_CLOSE_ALL_STOP_BTN;
+            } else {
+                // Single idle terminal — no confirmation needed
+                _disposeAll();
+                activeTerminalId = null;
+                _updateFlyout();
+                return true;
             }
 
-            // User confirmed (or single idle terminal) — dispose everything
+            const buttons = [
+                {className: Dialogs.DIALOG_BTN_CLASS_NORMAL, id: Dialogs.DIALOG_BTN_CANCEL, text: Strings.CANCEL},
+                {className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: Dialogs.DIALOG_BTN_OK, text: confirmText}
+            ];
+            const dialog = Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_INFO, title, message, buttons
+            );
+            const buttonId = await dialog.getPromise();
+            if (buttonId !== Dialogs.DIALOG_BTN_OK) {
+                return false;
+            }
+
+            // User confirmed — dispose everything
             _disposeAll();
             activeTerminalId = null;
             _updateFlyout();
