@@ -247,6 +247,11 @@ define(function (require, exports, module) {
 
         const ctrlOrMeta = event.ctrlKey || event.metaKey;
 
+        // Shift+Escape should focus the active editor
+        if (event.shiftKey && event.key === "Escape") {
+            return false;
+        }
+
         // Ctrl+C with a selection should copy to clipboard, not send SIGINT
         if (ctrlOrMeta && !event.shiftKey && event.key.toLowerCase() === "c" && this.terminal.hasSelection()) {
             return false;

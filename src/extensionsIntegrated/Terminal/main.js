@@ -106,6 +106,16 @@ define(function (require, exports, module) {
         $panel = $(Mustache.render(panelHTML, templateVars));
         panel = WorkspaceManager.createBottomPanel(PANEL_ID, $panel, PANEL_MIN_SIZE);
 
+        // Override focus() so Shift+Escape can transfer focus to the terminal
+        panel.focus = function () {
+            const active = _getActiveTerminal();
+            if (active) {
+                active.focus();
+                return true;
+            }
+            return false;
+        };
+
         // Cache DOM references
         $contentArea = $panel.find(".terminal-content-area");
         $shellDropdown = $panel.find(".terminal-shell-dropdown");

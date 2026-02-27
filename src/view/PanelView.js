@@ -413,6 +413,15 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Attempts to focus the panel. Override this in panels that support focus
+     * (e.g. terminal). The default implementation returns false.
+     * @return {boolean} true if the panel accepted focus, false otherwise
+     */
+    Panel.prototype.focus = function () {
+        return false;
+    };
+
+    /**
      * Sets the panel's visibility state
      * @param {boolean} visible true to show, false to hide
      */
@@ -766,6 +775,17 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Returns the currently active (visible) bottom panel, or null if none.
+     * @return {Panel|null}
+     */
+    function getActiveBottomPanel() {
+        if (_activeId && _panelMap[_activeId]) {
+            return _panelMap[_activeId];
+        }
+        return null;
+    }
+
+    /**
      * Cycle to the next open bottom panel tab. If the container is hidden
      * or no panels are open, does nothing and returns false.
      * @return {boolean} true if a panel switch occurred
@@ -789,6 +809,7 @@ define(function (require, exports, module) {
     exports.Panel = Panel;
     exports.init = init;
     exports.getOpenBottomPanelIDs = getOpenBottomPanelIDs;
+    exports.getActiveBottomPanel = getActiveBottomPanel;
     exports.showNextPanel = showNextPanel;
     exports.hideAllOpenPanels = hideAllOpenPanels;
     exports.exitMaximizeOnResize = exitMaximizeOnResize;
