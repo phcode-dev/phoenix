@@ -14,6 +14,8 @@ const PluginPanelView = brackets.getModule("view/PluginPanelView")
     * [.isVisible()](#Panel+isVisible) ⇒ <code>boolean</code>
     * [.registerCanBeShownHandler(canShowHandlerFn)](#Panel+registerCanBeShownHandler) ⇒ <code>boolean</code>
     * [.canBeShown()](#Panel+canBeShown) ⇒ <code>boolean</code>
+    * [.registerOnCloseRequestedHandler(handler)](#Panel+registerOnCloseRequestedHandler)
+    * [.requestClose()](#Panel+requestClose) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.show()](#Panel+show)
     * [.hide()](#Panel+hide)
     * [.setVisible(visible)](#Panel+setVisible)
@@ -49,8 +51,7 @@ Determines if the panel is visible
 <a name="Panel+registerCanBeShownHandler"></a>
 
 ### panel.registerCanBeShownHandler(canShowHandlerFn) ⇒ <code>boolean</code>
-Registers a call back function that will be called just before panel is shown. The handler should return true
-if the panel can be shown, else return false and the panel will not be shown.
+Registers a call back function that will be called just before panel is shown. The handler should return trueif the panel can be shown, else return false and the panel will not be shown.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 **Returns**: <code>boolean</code> - true if visible, false if not  
@@ -65,6 +66,24 @@ if the panel can be shown, else return false and the panel will not be shown.
 Returns true if th panel can be shown, else false.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
+<a name="Panel+registerOnCloseRequestedHandler"></a>
+
+### panel.registerOnCloseRequestedHandler(handler)
+Registers an async handler that is called before the panel is closed via user interaction.The handler should return `true` to allow the close, or `false` to prevent it.
+
+**Kind**: instance method of [<code>Panel</code>](#Panel)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handler | <code>function</code> \| <code>null</code> | An async function returning a boolean, or null to clear the handler. |
+
+<a name="Panel+requestClose"></a>
+
+### panel.requestClose() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Requests the panel to hide, invoking the registered onCloseRequested handler first (if any).If the handler returns false, the panel stays open. If it returns true or no handler isregistered, `hide()` is called.
+
+**Kind**: instance method of [<code>Panel</code>](#Panel)  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - Resolves to true if the panel was hidden, false if prevented.  
 <a name="Panel+show"></a>
 
 ### panel.show()

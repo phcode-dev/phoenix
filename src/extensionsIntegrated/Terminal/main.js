@@ -564,7 +564,8 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Clean up all terminals (on app quit)
+     * Clean up all terminals (on app quit).
+     * Fire-and-forget — PTY kills are not awaited.
      */
     function _disposeAll() {
         for (const inst of terminalInstances) {
@@ -572,6 +573,22 @@ define(function (require, exports, module) {
         }
         terminalInstances = [];
         processInfo = {};
+    }
+
+    /**
+     * Async version: awaits all PTY kill commands so the
+     * caller can be sure the kill signals have been sent
+     * and acknowledged by the Node side.
+     */
+    async function _disposeAllAsync() {
+        const killPromises = terminalInstances
+            .filter(function (inst) { return inst.isAlive && !inst._disposed; })
+            .map(function (inst) {
+                return nodeConnector.execPeer("killTerminal", {id: inst.id})
+                    .catch(function () {});
+            });
+        _disposeAll();
+        await Promise.all(killPromises);
     }
 
     // Register commands
@@ -591,18 +608,16 @@ define(function (require, exports, module) {
         // dispose all terminals. Programmatic hide() just collapses the panel
         // without disposing terminals.
         panel.registerOnCloseRequestedHandler(async function () {
+            // Query all terminals in parallel to avoid sequential 2s waits on Windows
+            const aliveInstances = terminalInstances.filter(inst => inst.isAlive);
+            const results = await Promise.all(aliveInstances.map(function (inst) {
+                return nodeConnector.execPeer("getTerminalProcess", {id: inst.id})
+                    .catch(function () { return {process: ""}; });
+            }));
             const activeProcesses = [];
-            for (const inst of terminalInstances) {
-                if (!inst.isAlive) {
-                    continue;
-                }
-                try {
-                    const result = await nodeConnector.execPeer("getTerminalProcess", {id: inst.id});
-                    if (result.process && !_isShellProcess(result.process)) {
-                        activeProcesses.push(result.process);
-                    }
-                } catch (e) {
-                    // terminal may be dead
+            for (const result of results) {
+                if (result.process && !_isShellProcess(result.process)) {
+                    activeProcesses.push(result.process);
                 }
             }
 
@@ -629,7 +644,7 @@ define(function (require, exports, module) {
                 confirmText = Strings.TERMINAL_CLOSE_ALL_STOP_BTN;
             } else {
                 // Single idle terminal — no confirmation needed
-                _disposeAll();
+                await _disposeAllAsync();
                 activeTerminalId = null;
                 _updateFlyout();
                 return true;
@@ -648,7 +663,7 @@ define(function (require, exports, module) {
             }
 
             // User confirmed — dispose everything
-            _disposeAll();
+            await _disposeAllAsync();
             activeTerminalId = null;
             _updateFlyout();
             return true;
@@ -687,5 +702,16 @@ define(function (require, exports, module) {
         return nodeConnector.execPeer("writeTerminal", {
             id: active.id, data
         });
+    };
+
+    /**
+     * Dispose all terminal instances. Test-only helper.
+     * Awaits all PTY kill commands so the caller can be
+     * sure processes have been signalled before the test
+     * window is torn down.
+     */
+    exports._disposeAll = async function () {
+        await _disposeAllAsync();
+        activeTerminalId = null;
     };
 });

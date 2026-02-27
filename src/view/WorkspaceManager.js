@@ -648,6 +648,7 @@ define(function (require, exports, module) {
     /**
      * Toggle the bottom panel container: hide if visible, show if there are
      * open panels, or show the default panel when nothing is open.
+     * @private
      * @return {boolean} true if the toggle was handled
      */
     function _togglePanels() {
