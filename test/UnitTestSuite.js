@@ -140,6 +140,7 @@ define(function (require, exports, module) {
     require("spec/Extn-HTMLCodeHints-Lint-integ-test");
     require("spec/Extn-HtmlTagSyncEdit-integ-test");
     require("spec/Extn-Git-integ-test");
+    require("spec/Terminal-integ-test");
     // Node Tests
     require("spec/NodeConnection-test");
     // pro test suite optional components

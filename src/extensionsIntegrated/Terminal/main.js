@@ -673,4 +673,19 @@ define(function (require, exports, module) {
     // Export for testing
     exports.CMD_VIEW_TERMINAL = CMD_VIEW_TERMINAL;
     exports.CMD_NEW_TERMINAL = CMD_NEW_TERMINAL;
+
+    /**
+     * Write data to the active terminal's PTY. Test-only helper.
+     * @param {string} data The text to send to the terminal.
+     * @return {Promise}
+     */
+    exports._writeToActiveTerminal = function (data) {
+        const active = _getActiveTerminal();
+        if (!active || !active.isAlive) {
+            return Promise.reject(new Error("No active terminal"));
+        }
+        return nodeConnector.execPeer("writeTerminal", {
+            id: active.id, data
+        });
+    };
 });
