@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaits */
+/*global describe, it, expect, beforeAll, afterAll, awaitsFor */
 
 define(function (require, exports, module) {
 
@@ -103,6 +103,47 @@ define(function (require, exports, module) {
         }
 
         /**
+         * Trigger a flyout process refresh so tab titles
+         * reflect the current foreground process.
+         */
+        function triggerFlyoutRefresh() {
+            testWindow.$(".terminal-tab-flyout")
+                .trigger("mouseenter");
+        }
+
+        /**
+         * Wait for the active terminal's shell to initialize.
+         * The flyout title text changes from "Terminal" to the
+         * shell name (e.g. "bash") once process info is fetched.
+         */
+        async function waitForShellReady() {
+            await awaitsFor(function () {
+                triggerFlyoutRefresh();
+                const title = testWindow.$(
+                    ".terminal-flyout-item.active "
+                    + ".terminal-flyout-title"
+                ).text();
+                return title && title !== "Terminal";
+            }, "shell to initialize", 10000);
+        }
+
+        /**
+         * Wait for a child process (e.g. "node") to appear as
+         * the active terminal's foreground process in the flyout.
+         */
+        async function waitForActiveProcess(processName) {
+            await awaitsFor(function () {
+                triggerFlyoutRefresh();
+                const title = testWindow.$(
+                    ".terminal-flyout-item.active "
+                    + ".terminal-flyout-title"
+                ).text();
+                return title && title.indexOf(processName) !== -1;
+            }, processName + " process to appear in flyout",
+            15000);
+        }
+
+        /**
          * Write data to the active terminal's PTY via the
          * terminal extension's test helper.
          */
@@ -150,29 +191,25 @@ define(function (require, exports, module) {
                         .is(":visible")).toBeTrue();
                     expect(getTerminalCount()).toBe(1);
 
-                    // Wait for shell to start, then run `pwd`/`cd`
-                    // to verify cwd. Use node for cross-platform.
-                    await awaits(2000);
-
-                    // Use node to print cwd — works on all platforms
-                    await writeToTerminal(
-                        'node -e "process.stdout.write(process.cwd())"\r'
-                    );
-                    await awaits(1000);
-
-                    // The terminal title typically contains the cwd.
-                    // Also verify via the flyout tooltip which holds
-                    // the full terminal title.
+                    // The shell sets its title to include the cwd
+                    // (e.g. "user@host: /path/to/project").
+                    // Wait for the flyout tooltip to contain the
+                    // project directory name.
                     const expectedPath = getNativeProjectPath();
+                    const projectDirName = expectedPath
+                        .split("/").pop().split("\\").pop();
+
+                    await awaitsFor(function () {
+                        const title = testWindow.$(
+                            ".terminal-flyout-item.active"
+                        ).attr("title") || "";
+                        return title.indexOf(projectDirName) !== -1;
+                    }, "terminal title to contain project dir",
+                    10000);
+
                     const flyoutTitle = testWindow.$(
                         ".terminal-flyout-item.active"
                     ).attr("title") || "";
-
-                    // The title format is "user@host: /path" — the
-                    // path portion should end with our project dir.
-                    // Extract last path component for a robust check.
-                    const projectDirName = expectedPath.split("/").pop()
-                        .split("\\").pop();
                     expect(flyoutTitle).toContain(projectDirName);
                 });
 
@@ -186,7 +223,7 @@ define(function (require, exports, module) {
                         return getTerminalCount() === 1;
                     }, "single terminal to exist", 5000);
 
-                    await awaits(1000);
+                    await waitForShellReady();
 
                     clickPanelCloseButton();
 
@@ -214,7 +251,7 @@ define(function (require, exports, module) {
                             return getTerminalCount() === 2;
                         }, "second terminal", 10000);
 
-                        await awaits(1000);
+                        await waitForShellReady();
 
                         clickPanelCloseButton();
 
@@ -266,13 +303,13 @@ define(function (require, exports, module) {
                         return getTerminalCount() === 1;
                     }, "terminal to be created", 10000);
 
-                    await awaits(2000);
+                    await waitForShellReady();
 
                     // Start a long-running node process
                     await writeToTerminal(
                         'node -e "setTimeout(()=>{},60000)"\r'
                     );
-                    await awaits(2000);
+                    await waitForActiveProcess("node");
 
                     clickPanelCloseButton();
 
@@ -322,12 +359,12 @@ define(function (require, exports, module) {
                         return getTerminalCount() === 2;
                     }, "second terminal", 10000);
 
-                    await awaits(2000);
+                    await waitForShellReady();
 
                     await writeToTerminal(
                         'node -e "setTimeout(()=>{},60000)"\r'
                     );
-                    await awaits(2000);
+                    await waitForActiveProcess("node");
 
                     clickPanelCloseButton();
 
