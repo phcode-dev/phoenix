@@ -29,6 +29,8 @@ define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
     const Strings = require("strings");
 
+    const IS_WINDOWS = Phoenix.platform === "win";
+
     describe("integration:Terminal", function () {
         let testWindow,
             __PR,
@@ -51,8 +53,48 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterAll(async function () {
-            // Ensure terminal panel is closed before teardown
-            const panel = WorkspaceManager.getPanelForID(PANEL_ID);
+            // Dispose all terminal PTY processes before teardown.
+            // panel.hide() keeps terminals alive by design, so we
+            // must explicitly kill them. On Windows, a shell whose
+            // cwd is the temp directory locks it and prevents
+            // cleanup by the next test run.
+            if (testWindow) {
+                try {
+                    const termModule = testWindow.brackets.getModule(
+                        "extensionsIntegrated/Terminal/main"
+                    );
+                    if (termModule && termModule._disposeAll) {
+                        // _disposeAll is async — awaits all kill
+                        // commands so PTYs are signalled before
+                        // the test window is torn down.
+                        await termModule._disposeAll();
+                    }
+                    // Wait for terminals to fully exit. On Windows,
+                    // taskkill is async and the shell process may
+                    // hold the cwd lock for several seconds after
+                    // the kill signal is sent.
+                    if (IS_WINDOWS) {
+                        await awaitsFor(function () {
+                            return testWindow.$(
+                                ".terminal-flyout-item"
+                            ).length === 0;
+                        }, "terminals to be disposed", 5000);
+                        // taskkill returns before the process fully
+                        // exits — the directory lock can persist for
+                        // a few more seconds. Wait for the OS to
+                        // release the lock so the next test run's
+                        // getTempTestDirectory can clean up.
+                        await new Promise(function (resolve) {
+                            setTimeout(resolve, 5000);
+                        });
+                    }
+                } catch (e) {
+                    // test window may already be torn down
+                }
+            }
+            const panel = WorkspaceManager
+                ? WorkspaceManager.getPanelForID(PANEL_ID)
+                : null;
             if (panel && panel.isVisible()) {
                 panel.hide();
             }
@@ -191,26 +233,37 @@ define(function (require, exports, module) {
                         .is(":visible")).toBeTrue();
                     expect(getTerminalCount()).toBe(1);
 
-                    // The shell sets its title to include the cwd
-                    // (e.g. "user@host: /path/to/project").
-                    // Wait for the flyout tooltip to contain the
-                    // project directory name.
-                    const expectedPath = getNativeProjectPath();
-                    const projectDirName = expectedPath
-                        .split("/").pop().split("\\").pop();
-
-                    await awaitsFor(function () {
-                        const title = testWindow.$(
+                    if (IS_WINDOWS) {
+                        // On Windows, PowerShell/cmd set the title to
+                        // their own executable path rather than
+                        // "user@host: /path/to/cwd". Verify the shell
+                        // started and updated its title from the default
+                        // profile name.
+                        await waitForShellReady();
+                        const flyoutTitle = testWindow.$(
                             ".terminal-flyout-item.active"
                         ).attr("title") || "";
-                        return title.indexOf(projectDirName) !== -1;
-                    }, "terminal title to contain project dir",
-                    10000);
+                        expect(flyoutTitle).not.toBe("");
+                    } else {
+                        // On Linux/macOS, bash/zsh set the title to
+                        // include the cwd (e.g. "user@host: /path").
+                        const expectedPath = getNativeProjectPath();
+                        const projectDirName = expectedPath
+                            .split("/").pop().split("\\").pop();
 
-                    const flyoutTitle = testWindow.$(
-                        ".terminal-flyout-item.active"
-                    ).attr("title") || "";
-                    expect(flyoutTitle).toContain(projectDirName);
+                        await awaitsFor(function () {
+                            const title = testWindow.$(
+                                ".terminal-flyout-item.active"
+                            ).attr("title") || "";
+                            return title.indexOf(projectDirName) !== -1;
+                        }, "terminal title to contain project dir",
+                        10000);
+
+                        const flyoutTitle = testWindow.$(
+                            ".terminal-flyout-item.active"
+                        ).attr("title") || "";
+                        expect(flyoutTitle).toContain(projectDirName);
+                    }
                 });
 
             it("should close single idle terminal without dialog",

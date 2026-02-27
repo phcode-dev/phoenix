@@ -531,6 +531,12 @@ Toggles code inspection
 Toggles problems panel visibility
 
 **Kind**: global variable  
+<a name="VIEW_TERMINAL"></a>
+
+## VIEW\_TERMINAL
+Opens the terminal panel
+
+**Kind**: global variable  
 <a name="TOGGLE_LINE_NUMBERS"></a>
 
 ## TOGGLE\_LINE\_NUMBERS

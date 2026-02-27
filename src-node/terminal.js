@@ -221,6 +221,7 @@ exports.killTerminal = async function ({id}) {
         if (process.platform === "win32") {
             // On Windows, use taskkill for process tree kill
             const {execSync} = require("child_process");
+            delete _processCache[term.pty.pid];
             try {
                 execSync(`taskkill /pid ${term.pty.pid} /T /F`, {stdio: "ignore"});
             } catch (e) {
@@ -343,15 +344,52 @@ exports.getDefaultShells = async function () {
     return {shells};
 };
 
+// Cache for Windows process lookups: pid -> {name, timestamp, pending}
+// Avoids spawning hundreds of PowerShell processes when the UI polls rapidly.
+const _processCache = {};
+const PROCESS_CACHE_TTL = 2000; // 2 seconds
+
 /**
  * On Windows, node-pty's .process returns the terminal name (e.g. "xterm-256color")
  * instead of the actual foreground process. This helper queries the process tree
  * via PowerShell's Get-CimInstance to find the deepest child process name.
  * Falls back gracefully if PowerShell is unavailable or returns unexpected output.
+ *
+ * Results are cached for PROCESS_CACHE_TTL ms per PID so that rapid polling
+ * (e.g. from the flyout hover handler) does not spawn a new PowerShell process
+ * on every call.
  * @param {number} pid - The shell PID to look up children for
  * @returns {Promise<string>} The leaf child process name, or empty string
  */
 function _getWindowsForegroundProcess(pid) {
+    const now = Date.now();
+    const cached = _processCache[pid];
+    if (cached) {
+        // Return cached result if still fresh
+        if (cached.timestamp && (now - cached.timestamp) < PROCESS_CACHE_TTL) {
+            return Promise.resolve(cached.name);
+        }
+        // If a query is already in flight, piggyback on it
+        if (cached.pending) {
+            return cached.pending;
+        }
+    }
+
+    const pending = _getWindowsForegroundProcessUncached(pid).then(function (name) {
+        _processCache[pid] = {name, timestamp: Date.now(), pending: null};
+        return name;
+    }, function () {
+        _processCache[pid] = {name: "", timestamp: Date.now(), pending: null};
+        return "";
+    });
+    _processCache[pid] = {name: cached ? cached.name : "", timestamp: 0, pending};
+    return pending;
+}
+
+/**
+ * Uncached implementation: spawns PowerShell to query child processes.
+ */
+function _getWindowsForegroundProcessUncached(pid) {
     return new Promise((resolve) => {
         const psCommand = `Get-CimInstance Win32_Process -Filter 'ParentProcessId=${pid}'` +
             ` | Select-Object Name,ProcessId | ConvertTo-Json -Compress`;

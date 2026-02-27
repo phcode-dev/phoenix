@@ -6,43 +6,12 @@ const NotificationUI = brackets.getModule("widgets/NotificationUI")
 <a name="module_widgets/NotificationUI"></a>
 
 ## widgets/NotificationUI
-The global NotificationUI can be used to create popup notifications over dom elements or generics app notifications.
-
-A global `window.EventManager` object is made available in phoenix that can be called anytime after AppStart.
-This global can be triggered from anywhere without using require context.
-
-## Usage
-### Simple example
-For Eg. Let's say we have to create a popup notification over the HTML element with ID `showInfileTree`.
-We can do this with the following
+The global NotificationUI can be used to create popup notifications over dom elements or generics app notifications.A global `window.EventManager` object is made available in phoenix that can be called anytime after AppStart.This global can be triggered from anywhere without using require context.## Usage### Simple exampleFor Eg. Let's say we have to create a popup notification over the HTML element with ID `showInfileTree`.We can do this with the following
 
 **Example**  
-```js
-const NotificationUI = brackets.getModule("widgets/NotificationUI");
-// or use window.NotificationUI global object has the same effect.
-let notification = NotificationUI.createFromTemplate("Click me to locate the file in file tree", "showInfileTree",{});
-notification.done(()=>{
-    console.log("notification is closed in ui.");
-})
-```
-### Advanced example
-Another advanced example where you can specify html and interactive components in the notification
+```jsconst NotificationUI = brackets.getModule("widgets/NotificationUI");// or use window.NotificationUI global object has the same effect.let notification = NotificationUI.createFromTemplate("Click me to locate the file in file tree", "showInfileTree",{});notification.done(()=>{    console.log("notification is closed in ui.");})```### Advanced exampleAnother advanced example where you can specify html and interactive components in the notification
 **Example**  
-```js
-// note that you can even provide an HTML Element node with
-// custom event handlers directly here instead of HTML text.
-let notification1 = NotificationUI.createFromTemplate(
-  "<div>Click me to locate the file in file tree</div>", "showInfileTree",{
-      allowedPlacements: ['top', 'bottom'],
-      dismissOnClick: false,
-      autoCloseTimeS: 300 // auto close the popup after 5 minutes
-  });
-// do stuff
-notification1.done((closeReason)=>{
-    console.log("notification is closed in ui reason:", closeReason);
-})
-```
-The `createFromTemplate` API can be configured with numerous options. See API options below.
+```js// note that you can even provide an HTML Element node with// custom event handlers directly here instead of HTML text.let notification1 = NotificationUI.createFromTemplate(  "<div>Click me to locate the file in file tree</div>", "showInfileTree",{      allowedPlacements: ['top', 'bottom'],      dismissOnClick: false,      autoCloseTimeS: 300 // auto close the popup after 5 minutes  });// do stuffnotification1.done((closeReason)=>{    console.log("notification is closed in ui reason:", closeReason);})```The `createFromTemplate` API can be configured with numerous options. See API options below.
 
 * [widgets/NotificationUI](#module_widgets/NotificationUI)
     * [.API](#module_widgets/NotificationUI..API)
@@ -50,6 +19,7 @@ The `createFromTemplate` API can be configured with numerous options. See API op
     * [.CLOSE_REASON](#module_widgets/NotificationUI..CLOSE_REASON) : <code>enum</code>
     * [.createFromTemplate(title, template, [elementID], [options])](#module_widgets/NotificationUI..createFromTemplate) ⇒ <code>Notification</code>
     * [.createToastFromTemplate(title, template, [options])](#module_widgets/NotificationUI..createToastFromTemplate) ⇒ <code>Notification</code>
+    * [.showToastOn(containerOrSelector, template, [options])](#module_widgets/NotificationUI..showToastOn) ⇒ <code>Notification</code>
 
 <a name="module_widgets/NotificationUI..API"></a>
 
@@ -90,21 +60,7 @@ Closing notification reason.
 <a name="module_widgets/NotificationUI..createFromTemplate"></a>
 
 ### widgets/NotificationUI.createFromTemplate(title, template, [elementID], [options]) ⇒ <code>Notification</code>
-Creates a new notification popup from given template.
-The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
-
-Creating a notification popup
-
-```js
-// note that you can even provide an HTML Element node with
-// custom event handlers directly here instead of HTML text.
-let notification1 = NotificationUI.createFromTemplate(
-  "<div>Click me to locate the file in file tree</div>", "showInfileTree",{
-      allowedPlacements: ['top', 'bottom'],
-      dismissOnClick: false,
-      autoCloseTimeS: 300 // auto close the popup after 5 minutes
-  });
-```
+Creates a new notification popup from given template.The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.Creating a notification popup```js// note that you can even provide an HTML Element node with// custom event handlers directly here instead of HTML text.let notification1 = NotificationUI.createFromTemplate(  "<div>Click me to locate the file in file tree</div>", "showInfileTree",{      allowedPlacements: ['top', 'bottom'],      dismissOnClick: false,      autoCloseTimeS: 300 // auto close the popup after 5 minutes  });```
 
 **Kind**: inner method of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
 **Returns**: <code>Notification</code> - Object with a done handler that resolves when the notification closes.  
@@ -119,20 +75,7 @@ let notification1 = NotificationUI.createFromTemplate(
 <a name="module_widgets/NotificationUI..createToastFromTemplate"></a>
 
 ### widgets/NotificationUI.createToastFromTemplate(title, template, [options]) ⇒ <code>Notification</code>
-Creates a new toast notification popup from given title and html message.
-The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
-
-Creating a toast notification popup
-
-```js
-// note that you can even provide an HTML Element node with
-// custom event handlers directly here instead of HTML text.
-let notification1 = NotificationUI.createToastFromTemplate( "Title here",
-  "<div>Click me to locate the file in file tree</div>", {
-      dismissOnClick: false,
-      autoCloseTimeS: 300 // auto close the popup after 5 minutes
-  });
-```
+Creates a new toast notification popup from given title and html message.The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.Creating a toast notification popup```js// note that you can even provide an HTML Element node with// custom event handlers directly here instead of HTML text.let notification1 = NotificationUI.createToastFromTemplate( "Title here",  "<div>Click me to locate the file in file tree</div>", {      dismissOnClick: false,      autoCloseTimeS: 300 // auto close the popup after 5 minutes  });```
 
 **Kind**: inner method of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
 **Returns**: <code>Notification</code> - Object with a done handler that resolves when the notification closes.  
@@ -142,4 +85,18 @@ let notification1 = NotificationUI.createToastFromTemplate( "Title here",
 | title | <code>string</code> | The title for the notification. |
 | template | <code>string</code> \| <code>Element</code> | A string template or HTML Element to use as the dialog HTML. |
 | [options] | <code>Object</code> | optional, supported   * options are:   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.   * `instantOpen` - To instantly open the popup without any open animation delays |
+
+<a name="module_widgets/NotificationUI..showToastOn"></a>
+
+### widgets/NotificationUI.showToastOn(containerOrSelector, template, [options]) ⇒ <code>Notification</code>
+Shows a small, transient inline toast notification inside a given DOM container.The toast is centered at the bottom of the container and auto-dismisses.```jsNotificationUI.showToastOn(document.getElementById("my-panel"), "Hello!", {    autoCloseTimeS: 5,    dismissOnClick: true});```
+
+**Kind**: inner method of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
+**Returns**: <code>Notification</code> - Object with a done handler that resolves when the toast closes.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| containerOrSelector | <code>Element</code> \| <code>string</code> | A DOM element or CSS selector for the parent container.   The container should have `position: relative` or `absolute` so the toast is positioned correctly. |
+| template | <code>string</code> \| <code>Element</code> | HTML string or DOM Element for the toast content. |
+| [options] | <code>Object</code> | optional, supported options:   * `autoCloseTimeS` - Time in seconds after which the toast auto-closes. Default is 5.   * `dismissOnClick` - If true, clicking the toast dismisses it. Default is true. |
 
