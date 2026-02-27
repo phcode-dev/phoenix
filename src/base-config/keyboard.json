@@ -290,6 +290,9 @@
     "view.toggleProblems":  [
         "Ctrl-Shift-M"
     ],
+    "view.terminal":  [
+        "F4"
+    ],
     "navigate.jumptoDefinition":  [
         "Ctrl-J"
     ],

@@ -136,6 +136,18 @@ define(function (require, exports, module) {
         // Listen for panel resize
         WorkspaceManager.on("workspaceUpdateLayout", _handleResize);
 
+        // Focus terminal when the panel becomes visible
+        const PanelView = require("view/PanelView");
+        PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (_event, panelId) {
+            if (panelId === PANEL_ID) {
+                const active = _getActiveTerminal();
+                if (active) {
+                    active.handleResize();
+                    active.focus();
+                }
+            }
+        });
+
         // Listen for theme changes via MutationObserver on body class
         const observer = new MutationObserver(function () {
             _updateAllThemes();
@@ -264,7 +276,6 @@ define(function (require, exports, module) {
         // Show panel if hidden
         if (!panel.isVisible()) {
             panel.show();
-
         }
 
         // Spawn PTY process
