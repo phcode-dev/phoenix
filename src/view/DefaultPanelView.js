@@ -178,8 +178,26 @@ define(function (require, exports, module) {
             }
         });
 
-        // Create the app-drawer toolbar icon above the profile button
         const iconURL = ExtensionUtils.getModulePath(module, "../styles/images/app-drawer.svg");
+
+        /**
+         * Inject the app-drawer icon into the Quick Access tab title.
+         * Called each time the panel is shown because the tab DOM is rebuilt.
+         */
+        function _addTabIcon() {
+            const $tabTitle = $('#bottom-panel-tab-bar .bottom-panel-tab[data-panel-id="'
+                + WorkspaceManager.DEFAULT_PANEL_ID + '"] .bottom-panel-tab-title');
+            if ($tabTitle.length && !$tabTitle.find(".app-drawer-tab-icon").length) {
+                $tabTitle.prepend($('<img class="app-drawer-tab-icon">').attr("src", iconURL).css({
+                    "width": "12px",
+                    "height": "12px",
+                    "vertical-align": "middle",
+                    "margin-right": "4px"
+                }));
+            }
+        }
+
+        // Create the app-drawer toolbar icon above the profile button
         const $drawerBtn = $("<a>")
             .attr({
                 id: "app-drawer-button",
@@ -207,6 +225,7 @@ define(function (require, exports, module) {
                 _panel.hide();
             } else {
                 _updateButtonVisibility();
+                _addTabIcon();
             }
             $drawerBtn.toggleClass("selected-button", panelID === WorkspaceManager.DEFAULT_PANEL_ID);
         });
