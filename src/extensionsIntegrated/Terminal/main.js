@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     const Strings = require("strings");
     const StringUtils = require("utils/StringUtils");
 
+    const Menus = require("command/Menus");
     const Commands = require("command/Commands");
     const NotificationUI = require("widgets/NotificationUI");
     const TerminalInstance = require("./TerminalInstance");
@@ -52,6 +53,10 @@ define(function (require, exports, module) {
     // Constants
     const CMD_VIEW_TERMINAL = Commands.VIEW_TERMINAL;
     const CMD_NEW_TERMINAL = "terminal.new";
+    const CMD_TERMINAL_COPY = "terminal.copy";
+    const CMD_TERMINAL_PASTE = "terminal.paste";
+    const CMD_TERMINAL_CLEAR = "terminal.clear";
+    const TERMINAL_CONTEXT_MENU_ID = "terminal-context-menu";
     const PANEL_ID = "terminal-panel";
     const PANEL_MIN_SIZE = 100;
 
@@ -124,6 +129,12 @@ define(function (require, exports, module) {
         $contentArea = $panel.find(".terminal-content-area");
         $shellDropdown = $panel.find(".terminal-shell-dropdown");
         $flyoutList = $panel.find(".terminal-flyout-list");
+
+        // Right-click context menu for terminal content area
+        $contentArea.on("contextmenu", function (e) {
+            e.preventDefault();
+            terminalContextMenu.open(e);
+        });
 
         // "+" button creates a new terminal with the default shell
         $panel.find(".terminal-flyout-new-btn").on("click", function (e) {
@@ -615,6 +626,49 @@ define(function (require, exports, module) {
     // Register commands
     CommandManager.register("New Terminal", CMD_NEW_TERMINAL, _createNewTerminal);
     CommandManager.register(Strings.CMD_VIEW_TERMINAL, CMD_VIEW_TERMINAL, _showTerminal);
+
+    // Terminal context menu commands
+    CommandManager.register(Strings.CMD_COPY, CMD_TERMINAL_COPY, function () {
+        const active = _getActiveTerminal();
+        if (active && active.terminal.hasSelection()) {
+            navigator.clipboard.writeText(active.terminal.getSelection());
+            active.focus();
+        }
+    });
+    CommandManager.register(Strings.CMD_PASTE, CMD_TERMINAL_PASTE, function () {
+        const active = _getActiveTerminal();
+        if (active && active.isAlive) {
+            active.focus();
+            navigator.clipboard.readText().then(function (text) {
+                if (text) {
+                    nodeConnector.execPeer("writeTerminal", {id: active.id, data: text});
+                }
+            });
+        }
+    });
+    CommandManager.register(Strings.TERMINAL_CLEAR, CMD_TERMINAL_CLEAR, function () {
+        _clearActiveTerminal();
+        const active = _getActiveTerminal();
+        if (active) {
+            active.focus();
+        }
+    });
+
+    // Register terminal context menu
+    const terminalContextMenu = Menus.registerContextMenu(TERMINAL_CONTEXT_MENU_ID);
+    terminalContextMenu.addMenuItem(CMD_TERMINAL_COPY);
+    terminalContextMenu.addMenuItem(CMD_TERMINAL_PASTE);
+    terminalContextMenu.addMenuDivider();
+    terminalContextMenu.addMenuItem(CMD_TERMINAL_CLEAR);
+
+    // Enable/disable Copy based on terminal selection
+    terminalContextMenu.on(Menus.EVENT_BEFORE_CONTEXT_MENU_OPEN, function () {
+        const active = _getActiveTerminal();
+        const hasSelection = active && active.terminal.hasSelection();
+        CommandManager.get(CMD_TERMINAL_COPY).setEnabled(hasSelection);
+        CommandManager.get(CMD_TERMINAL_PASTE).setEnabled(active && active.isAlive);
+        CommandManager.get(CMD_TERMINAL_CLEAR).setEnabled(!!active);
+    });
 
     // Initialize on app ready
     AppInit.appReady(function () {

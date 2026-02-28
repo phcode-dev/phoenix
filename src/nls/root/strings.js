@@ -1498,6 +1498,7 @@ define({
     "TERMINAL_CLOSE_ALL_MSG_PROCESS_MANY": "All terminals will be closed.<br>{0} active processes will be stopped.<br><br>Continue?",
     "TERMINAL_CLOSE_ALL_STOP_BTN": "Close All & Stop Processes",
     "TERMINAL_FOCUS_HINT": "Press {0} to switch between editor and terminal",
+    "TERMINAL_CLEAR": "Clear Terminal",
     "EXTENDED_COMMIT_MESSAGE": "EXTENDED",
     "GETTING_STAGED_DIFF_PROGRESS": "Getting diff of staged files\u2026",
     "GIT_COMMIT": "Git commit\u2026",
