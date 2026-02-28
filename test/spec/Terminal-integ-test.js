@@ -224,6 +224,11 @@ define(function (require, exports, module) {
                     } else {
                         // On Linux, bash/zsh set the title to
                         // include the cwd (e.g. "user@host: /path").
+                        // Wait for shell ready first, then trigger
+                        // a prompt refresh so PS1 title escapes fire.
+                        await waitForShellReady();
+                        await writeToTerminal("echo\r");
+
                         const expectedPath = getNativeProjectPath();
                         const projectDirName = expectedPath
                             .split("/").pop().split("\\").pop();

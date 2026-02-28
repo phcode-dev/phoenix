@@ -391,9 +391,14 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Handle terminal title change — also fetches and displays the foreground process
+     * Handle terminal title change — also fetches and displays the foreground process.
+     * Clears the stale-title flag since the shell has provided its own title.
      */
     function _onTerminalTitleChanged(id, title) {
+        const instance = terminalInstances.find(t => t.id === id);
+        if (instance) {
+            instance._titleStale = false;
+        }
         _updateFlyout();
         _updateTabProcess(id);
     }
@@ -409,17 +414,18 @@ define(function (require, exports, module) {
         nodeConnector.execPeer("getTerminalProcess", {id}).then(function (result) {
             const newProc = result.process || "";
             if (processInfo[id] !== newProc) {
+                const oldProc = processInfo[id];
                 processInfo[id] = newProc;
-                // When a child process (e.g. "claude") exits and the
-                // shell regains foreground, the child may have set a
-                // custom terminal title via escape sequences. Shells
-                // like zsh on macOS do not emit a title reset, so
-                // inst.title stays stale. Reset it only when the
-                // foreground process returns to the shell. If the
-                // shell does emit a title change, onTitleChange will
-                // overwrite this immediately.
-                if (_isShellProcess(newProc)) {
-                    instance.title = instance.shellProfile.name;
+                // When a child process exits and the shell regains
+                // foreground, the child may have set a custom title
+                // via escape sequences. Some shells (e.g. zsh on
+                // macOS) don't emit a title reset, leaving inst.title
+                // stale. Mark it so _updateFlyout can fall back to
+                // the profile name. If the shell DOES emit a title
+                // change (e.g. bash on Linux), _onTerminalTitleChanged
+                // clears this flag immediately.
+                if (oldProc && !_isShellProcess(oldProc) && _isShellProcess(newProc)) {
+                    instance._titleStale = true;
                 }
                 _updateFlyout();
             }
@@ -461,13 +467,16 @@ define(function (require, exports, module) {
             const proc = processInfo[inst.id] || "";
             const basename = proc ? proc.split("/").pop().split("\\").pop() : "";
 
-            // Label: process basename; right side: cwd basename; tooltip: full title
+            // Label: process basename; right side: cwd basename; tooltip: full title.
+            // If the title is stale (child set it and the shell didn't reset it),
+            // fall back to the shell profile name.
             const label = basename || "Terminal";
-            const cwdName = _extractCwdBasename(inst.title);
+            const displayTitle = inst._titleStale ? inst.shellProfile.name : inst.title;
+            const cwdName = _extractCwdBasename(displayTitle);
 
             const $item = $('<div class="terminal-flyout-item"></div>')
                 .attr("data-terminal-id", inst.id)
-                .attr("title", inst.title)
+                .attr("title", displayTitle)
                 .toggleClass("active", inst.id === activeTerminalId);
 
             if (!inst.isAlive) {
