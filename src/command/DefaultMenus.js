@@ -315,6 +315,7 @@ define(function (require, exports, module) {
             let subMenu = workingset_cmenu.addSubMenu(Strings.CMD_OPEN_IN, Commands.OPEN_IN_SUBMENU_WS);
             subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
             subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_TERMINAL);
+            subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL);
             if (brackets.platform === "win") {
                 subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_POWERSHELL);
             }
@@ -358,6 +359,7 @@ define(function (require, exports, module) {
             let subMenu = project_cmenu.addSubMenu(Strings.CMD_OPEN_IN, Commands.OPEN_IN_SUBMENU);
             subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
             subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_TERMINAL);
+            subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL);
             if (brackets.platform === "win") {
                 subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_POWERSHELL);
             }

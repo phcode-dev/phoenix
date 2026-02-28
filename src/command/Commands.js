@@ -348,6 +348,8 @@ define(function (require, exports, module) {
 
     /** Shows current file in OS Terminal */
     exports.NAVIGATE_OPEN_IN_TERMINAL         = "navigate.openInTerminal";
+    /** Opens integrated terminal at the selected file/folder path */
+    exports.NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL = "navigate.openInIntegratedTerminal";
 
     /** Shows current file in open powershell in Windows os */
     exports.NAVIGATE_OPEN_IN_POWERSHELL         = "navigate.openInPowerShell";
