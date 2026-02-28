@@ -207,10 +207,16 @@ define(function (require, exports, module) {
             }
 
             it("should exclude files from search", async function () {
-                await openSearchBar();
+                // Set the exclusion filter before opening the search bar to avoid
+                // a race where opening the bar triggers an unfiltered search that
+                // populates the worker cache with all files (including *.css).
                 await setExcludeCSSFiles();
                 await openSearchBar();
-                await executeCleanSearch("{1}");
+                await awaitsFor(async ()=>{
+                    await executeCleanSearch("{1}");
+                    return !FindInFiles.searchModel.results[testPath + "/test1.css"];
+                    // retry as instant/deferred searches can race with the explicit search
+                }, "Search to exclude css results", 7000, 300);
                 // *.css should have been excluded this time
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
@@ -219,7 +225,6 @@ define(function (require, exports, module) {
 
             it("should respect filter when searching folder", async function () {
                 let dirEntry = FileSystem.getDirectoryForPath(testPath);
-                await openSearchBar(dirEntry);
                 await setExcludeCSSFiles();
                 await openSearchBar(dirEntry);
                 await executeCleanSearch("{1}");
@@ -265,8 +270,8 @@ define(function (require, exports, module) {
             }, 30000);
 
             it("should respect filter when editing code", async function () {
-                await openSearchBar();
                 await setExcludeCSSFiles();
+                await openSearchBar();
                 await executeCleanSearch("{1}");
                 let promise = testWindow.brackets.test.DocumentManager.getDocumentForPath(testPath + "/test1.css");
                 await awaitsForDone(promise);
@@ -322,7 +327,11 @@ define(function (require, exports, module) {
             it("should search exclude files", async function () {
                 await openSearchBar();
                 _setExcludeFiles("*.css");
-                await executeCleanSearch("{1}");
+                await awaitsFor(async ()=>{
+                    await executeCleanSearch("{1}");
+                    return !FindInFiles.searchModel.results[testPath + "/test1.css"];
+                    // retry as instant/deferred searches can race with the explicit search
+                }, "Search to exclude css results", 7000, 300);
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
                 await closeSearchBar();
