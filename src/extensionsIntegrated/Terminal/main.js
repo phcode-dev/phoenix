@@ -394,7 +394,7 @@ define(function (require, exports, module) {
      * Handle terminal title change — also fetches and displays the foreground process.
      * Clears the stale-title flag since the shell has provided its own title.
      */
-    function _onTerminalTitleChanged(id, title) {
+    function _onTerminalTitleChanged(id) {
         const instance = terminalInstances.find(t => t.id === id);
         if (instance) {
             instance._titleStale = false;
