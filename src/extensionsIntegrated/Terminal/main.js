@@ -788,29 +788,33 @@ define(function (require, exports, module) {
     exports.CMD_VIEW_TERMINAL = CMD_VIEW_TERMINAL;
     exports.CMD_NEW_TERMINAL = CMD_NEW_TERMINAL;
 
-    /**
-     * Write data to the active terminal's PTY. Test-only helper.
-     * @param {string} data The text to send to the terminal.
-     * @return {Promise}
-     */
-    exports._writeToActiveTerminal = function (data) {
-        const active = _getActiveTerminal();
-        if (!active || !active.isAlive) {
-            return Promise.reject(new Error("No active terminal"));
-        }
-        return nodeConnector.execPeer("writeTerminal", {
-            id: active.id, data
-        });
-    };
+    if (Phoenix.isTestWindow) {
+        exports._getActiveTerminal = _getActiveTerminal;
 
-    /**
-     * Dispose all terminal instances. Test-only helper.
-     * Awaits all PTY kill commands so the caller can be
-     * sure processes have been signalled before the test
-     * window is torn down.
-     */
-    exports._disposeAll = async function () {
-        await _disposeAllAsync();
-        activeTerminalId = null;
-    };
+        /**
+         * Write data to the active terminal's PTY. Test-only helper.
+         * @param {string} data The text to send to the terminal.
+         * @return {Promise}
+         */
+        exports._writeToActiveTerminal = function (data) {
+            const active = _getActiveTerminal();
+            if (!active || !active.isAlive) {
+                return Promise.reject(new Error("No active terminal"));
+            }
+            return nodeConnector.execPeer("writeTerminal", {
+                id: active.id, data
+            });
+        };
+
+        /**
+         * Dispose all terminal instances. Test-only helper.
+         * Awaits all PTY kill commands so the caller can be
+         * sure processes have been signalled before the test
+         * window is torn down.
+         */
+        exports._disposeAll = async function () {
+            await _disposeAllAsync();
+            activeTerminalId = null;
+        };
+    }
 });
