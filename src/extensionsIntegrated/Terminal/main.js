@@ -242,34 +242,46 @@ define(function (require, exports, module) {
     /**
      * Create a new terminal with the default shell
      */
-    async function _createNewTerminal() {
+    async function _createNewTerminal(cwdOverride) {
         const shell = ShellProfiles.getDefaultShell();
-        return _createNewTerminalWithShell(shell);
+        return _createNewTerminalWithShell(shell, cwdOverride);
+    }
+
+    /**
+     * Convert a VFS path to a native platform path suitable for use as cwd.
+     * Strips trailing slashes (posix_spawnp can fail with them).
+     */
+    function _toNativePath(vfsPath) {
+        let cwd = vfsPath;
+        const tauriPrefix = Phoenix.VFS.getTauriDir();
+        if (cwd.startsWith(tauriPrefix)) {
+            cwd = Phoenix.fs.getTauriPlatformPath(cwd);
+        }
+        if (cwd.length > 1 && (cwd.endsWith("/") || cwd.endsWith("\\"))) {
+            cwd = cwd.slice(0, -1);
+        }
+        return cwd;
     }
 
     /**
      * Create a new terminal with a specific shell profile
+     * @param {Object} shell - Shell profile to use
+     * @param {string} [cwdOverride] - Optional VFS path to use as cwd instead of project root
      */
-    async function _createNewTerminalWithShell(shell) {
+    async function _createNewTerminalWithShell(shell, cwdOverride) {
         if (!shell) {
             console.error("Terminal: No shell available");
             return;
         }
 
-        // Get project root as cwd, converting VFS path to native platform path
-        const projectRoot = ProjectManager.getProjectRoot();
+        // Get cwd: use override if provided, otherwise fall back to project root
         let cwd;
-        if (projectRoot) {
-            const fullPath = projectRoot.fullPath;
-            const tauriPrefix = Phoenix.VFS.getTauriDir();
-            if (fullPath.startsWith(tauriPrefix)) {
-                cwd = Phoenix.fs.getTauriPlatformPath(fullPath);
-            } else {
-                cwd = fullPath;
-            }
-            // Remove trailing slash/backslash (posix_spawnp can fail with trailing slashes)
-            if (cwd.length > 1 && (cwd.endsWith("/") || cwd.endsWith("\\"))) {
-                cwd = cwd.slice(0, -1);
+        if (cwdOverride) {
+            cwd = _toNativePath(cwdOverride);
+        } else {
+            const projectRoot = ProjectManager.getProjectRoot();
+            if (projectRoot) {
+                cwd = _toNativePath(projectRoot.fullPath);
             }
         }
 
@@ -626,6 +638,18 @@ define(function (require, exports, module) {
     // Register commands
     CommandManager.register("New Terminal", CMD_NEW_TERMINAL, _createNewTerminal);
     CommandManager.register(Strings.CMD_VIEW_TERMINAL, CMD_VIEW_TERMINAL, _showTerminal);
+    CommandManager.register(Strings.CMD_OPEN_IN_INTEGRATED_TERMINAL,
+        Commands.NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL, function () {
+            const entry = ProjectManager.getSelectedItem();
+            let cwdPath;
+            if (entry) {
+                cwdPath = entry.isDirectory ? entry.fullPath : entry.parentPath;
+            } else {
+                const projectRoot = ProjectManager.getProjectRoot();
+                cwdPath = projectRoot ? projectRoot.fullPath : undefined;
+            }
+            _createNewTerminal(cwdPath);
+        });
 
     // Terminal context menu commands
     CommandManager.register(Strings.CMD_COPY, CMD_TERMINAL_COPY, function () {
