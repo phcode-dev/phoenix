@@ -52,7 +52,8 @@ Determines if the panel is visible
 <a name="Panel+registerCanBeShownHandler"></a>
 
 ### panel.registerCanBeShownHandler(canShowHandlerFn) ⇒ <code>boolean</code>
-Registers a call back function that will be called just before panel is shown. The handler should return trueif the panel can be shown, else return false and the panel will not be shown.
+Registers a call back function that will be called just before panel is shown. The handler should return true
+if the panel can be shown, else return false and the panel will not be shown.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 **Returns**: <code>boolean</code> - true if visible, false if not  
@@ -70,7 +71,8 @@ Returns true if th panel can be shown, else false.
 <a name="Panel+registerOnCloseRequestedHandler"></a>
 
 ### panel.registerOnCloseRequestedHandler(handler)
-Registers an async handler that is called before the panel is closed via user interaction (e.g. clicking thetab close button). The handler should return `true` to allow the close, or `false` to prevent it.
+Registers an async handler that is called before the panel is closed via user interaction (e.g. clicking the
+tab close button). The handler should return `true` to allow the close, or `false` to prevent it.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 
@@ -81,7 +83,9 @@ Registers an async handler that is called before the panel is closed via user in
 <a name="Panel+requestClose"></a>
 
 ### panel.requestClose() ⇒ <code>Promise.&lt;boolean&gt;</code>
-Requests the panel to hide, invoking the registered onCloseRequested handler first (if any).If the handler returns false, the panel stays open. If it returns true or no handler isregistered, `hide()` is called.
+Requests the panel to hide, invoking the registered onCloseRequested handler first (if any).
+If the handler returns false, the panel stays open. If it returns true or no handler is
+registered, `hide()` is called.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - Resolves to true if the panel was hidden, false if prevented.  
@@ -100,7 +104,8 @@ Hides the panel
 <a name="Panel+focus"></a>
 
 ### panel.focus() ⇒ <code>boolean</code>
-Attempts to focus the panel. Override this in panels that support focus(e.g. terminal). The default implementation returns false.
+Attempts to focus the panel. Override this in panels that support focus
+(e.g. terminal). The default implementation returns false.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 **Returns**: <code>boolean</code> - true if the panel accepted focus, false otherwise  
@@ -129,7 +134,8 @@ Updates the display title shown in the tab bar for this panel.
 <a name="Panel+destroy"></a>
 
 ### panel.destroy()
-Destroys the panel, removing it from the tab bar, internal maps, and the DOM.After calling this, the Panel instance should not be reused.
+Destroys the panel, removing it from the tab bar, internal maps, and the DOM.
+After calling this, the Panel instance should not be reused.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 <a name="Panel+getPanelType"></a>
@@ -197,6 +203,18 @@ The editor holder element, passed from WorkspaceManager
 ## \_recomputeLayout : <code>function</code>
 recomputeLayout callback from WorkspaceManager
 
+**Kind**: global variable
+<a name="_defaultPanelId"></a>
+
+## \_defaultPanelId : <code>string</code> \| <code>null</code>
+The default/quick-access panel ID
+
+**Kind**: global variable
+<a name="_$addBtn"></a>
+
+## \_$addBtn : <code>jQueryObject</code>
+The "+" button inside the tab overflow area
+
 **Kind**: global variable  
 <a name="_defaultPanelId"></a>
 
@@ -231,15 +249,25 @@ type for bottom panel
 <a name="MAXIMIZE_THRESHOLD"></a>
 
 ## MAXIMIZE\_THRESHOLD : <code>number</code>
-Pixel threshold for detecting near-maximize state during resize.If the editor holder height is within this many pixels of zero, thepanel is treated as maximized. Keeps the maximize icon responsiveduring drag without being overly sensitive.
+Pixel threshold for detecting near-maximize state during resize.
+If the editor holder height is within this many pixels of zero, the
+panel is treated as maximized. Keeps the maximize icon responsive
+during drag without being overly sensitive.
 
 **Kind**: global constant  
 <a name="MIN_PANEL_HEIGHT"></a>
 
 ## MIN\_PANEL\_HEIGHT : <code>number</code>
-Minimum panel height (matches Resizer minSize) used as a floorwhen computing a sensible restore height.
+Minimum panel height (matches Resizer minSize) used as a floor
+when computing a sensible restore height.
 
 **Kind**: global constant  
+<a name="PREF_BOTTOM_PANEL_MAXIMIZED"></a>
+
+## PREF\_BOTTOM\_PANEL\_MAXIMIZED
+Preference key for persisting the maximize state across reloads.
+
+**Kind**: global constant
 <a name="PREF_BOTTOM_PANEL_MAXIMIZED"></a>
 
 ## PREF\_BOTTOM\_PANEL\_MAXIMIZED
@@ -249,7 +277,8 @@ Preference key for persisting the maximize state across reloads.
 <a name="init"></a>
 
 ## init($container, $tabBar, $tabsOverflow, $editorHolder, recomputeLayoutFn, defaultPanelId)
-Initializes the PanelView module with references to the bottom panel container DOM elements.Called by WorkspaceManager during htmlReady.
+Initializes the PanelView module with references to the bottom panel container DOM elements.
+Called by WorkspaceManager during htmlReady.
 
 **Kind**: global function  
 
@@ -265,19 +294,26 @@ Initializes the PanelView module with references to the bottom panel container D
 <a name="exitMaximizeOnResize"></a>
 
 ## exitMaximizeOnResize()
-Exit maximize state without resizing (for external callers like drag-resize).Clears internal maximize state and resets the button icon.
+Exit maximize state without resizing (for external callers like drag-resize).
+Clears internal maximize state and resets the button icon.
 
 **Kind**: global function  
 <a name="enterMaximizeOnResize"></a>
 
 ## enterMaximizeOnResize()
-Enter maximize state during a drag-resize that reaches the maximumheight. No pre-maximize height is stored because the user arrivedhere via continuous dragging; a sensible default will be computed ifthey later click the Restore button.
+Enter maximize state during a drag-resize that reaches the maximum
+height. No pre-maximize height is stored because the user arrived
+here via continuous dragging; a sensible default will be computed if
+they later click the Restore button.
 
 **Kind**: global function  
 <a name="restoreIfMaximized"></a>
 
 ## restoreIfMaximized()
-Restore the container's CSS height to the pre-maximize value and clear maximize state.Must be called BEFORE Resizer.hide() so the Resizer reads the correct height.If not maximized, this is a no-op.When the saved height is near-max or unknown, a sensible default is used.
+Restore the container's CSS height to the pre-maximize value and clear maximize state.
+Must be called BEFORE Resizer.hide() so the Resizer reads the correct height.
+If not maximized, this is a no-op.
+When the saved height is near-max or unknown, a sensible default is used.
 
 **Kind**: global function  
 <a name="isMaximized"></a>
@@ -308,7 +344,8 @@ Returns the currently active (visible) bottom panel, or null if none.
 <a name="showNextPanel"></a>
 
 ## showNextPanel() ⇒ <code>boolean</code>
-Cycle to the next open bottom panel tab. If the container is hiddenor no panels are open, does nothing and returns false.
+Cycle to the next open bottom panel tab. If the container is hidden
+or no panels are open, does nothing and returns false.
 
 **Kind**: global function  
 **Returns**: <code>boolean</code> - true if a panel switch occurred  
