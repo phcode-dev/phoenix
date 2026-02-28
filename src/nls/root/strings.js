@@ -1255,7 +1255,7 @@ define({
     "BOTTOM_PANEL_MINIMIZE": "Minimize Panel",
     "BOTTOM_PANEL_SHOW": "Show Bottom Panel",
     "BOTTOM_PANEL_HIDE_TOGGLE": "Hide Bottom Panel",
-    "BOTTOM_PANEL_DEFAULT_TITLE": "Quick Access",
+    "BOTTOM_PANEL_DEFAULT_TITLE": "Tools",
     "BOTTOM_PANEL_DEFAULT_HEADING": "Open a Panel",
     "BOTTOM_PANEL_OPEN_PANEL": "Open a Panel",
     "BOTTOM_PANEL_MAXIMIZE": "Maximize Panel",
