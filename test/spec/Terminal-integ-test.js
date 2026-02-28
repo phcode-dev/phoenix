@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor */
+/*global describe, it, expect, beforeAll, afterAll, awaitsFor, spyOn */
 
 define(function (require, exports, module) {
 
@@ -536,6 +536,185 @@ define(function (require, exports, module) {
                     ).text();
                     expect(label).not.toBe("");
                     expect(label).not.toContain("node");
+
+                    // Clean up
+                    clickPanelCloseButton();
+                    await awaitsFor(function () {
+                        return !testWindow.$("#terminal-panel")
+                            .is(":visible");
+                    }, "terminal panel to close", 5000);
+                });
+        });
+
+        describe("Context menu commands", function () {
+            let CommandManager;
+
+            function getActiveTerminal() {
+                const mod = testWindow.brackets.getModule(
+                    "extensionsIntegrated/Terminal/main"
+                );
+                return mod._getActiveTerminal();
+            }
+
+            /**
+             * Check whether a marker string appears anywhere
+             * in the active terminal's buffer.
+             */
+            function bufferContains(marker) {
+                const active = getActiveTerminal();
+                if (!active) {
+                    return false;
+                }
+                const buffer = active.terminal.buffer.active;
+                for (let i = 0; i < buffer.length; i++) {
+                    const line = buffer.getLine(i);
+                    if (line && line.translateToString()
+                        .indexOf(marker) !== -1) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            beforeAll(function () {
+                CommandManager =
+                    testWindow.brackets.test.CommandManager;
+            });
+
+            it("should clear the terminal screen",
+                async function () {
+                    await openTerminal();
+                    await waitForShellReady();
+
+                    // Write some output so the terminal has content
+                    await writeToTerminal("echo cleartest\r");
+                    await awaitsFor(function () {
+                        return bufferContains("cleartest");
+                    }, "echo output to appear", 10000);
+
+                    // Execute the clear command
+                    await CommandManager.execute("terminal.clear");
+
+                    // After clear, the marker should no longer be
+                    // in the buffer (xterm.clear() wipes scrollback).
+                    await awaitsFor(function () {
+                        return !bufferContains("cleartest");
+                    }, "terminal to be cleared", 5000);
+
+                    // Clean up
+                    clickPanelCloseButton();
+                    await awaitsFor(function () {
+                        return !testWindow.$("#terminal-panel")
+                            .is(":visible");
+                    }, "terminal panel to close", 5000);
+                });
+
+            it("should copy selected terminal text to clipboard",
+                async function () {
+                    await openTerminal();
+                    await waitForShellReady();
+
+                    // Write a unique marker string
+                    await writeToTerminal("echo COPYMARKER123\r");
+                    await awaitsFor(function () {
+                        return bufferContains("COPYMARKER123");
+                    }, "echo output to appear", 10000);
+
+                    // Select all text in xterm
+                    const active = getActiveTerminal();
+                    active.terminal.selectAll();
+                    expect(active.terminal.hasSelection())
+                        .toBeTrue();
+                    const selection = active.terminal.getSelection();
+                    expect(selection).toContain("COPYMARKER123");
+
+                    // The copy command writes to the system clipboard
+                    // via navigator.clipboard.writeText(). In the test
+                    // iframe clipboard writes may be denied (no focus),
+                    // so we verify the command reads the right text by
+                    // spying on writeText.
+                    const clipboard = testWindow.navigator.clipboard;
+                    let copiedText = null;
+                    spyOn(clipboard, "writeText").and.callFake(
+                        function (text) {
+                            copiedText = text;
+                            return testWindow.Promise.resolve();
+                        }
+                    );
+                    await CommandManager.execute("terminal.copy");
+                    expect(copiedText).toContain("COPYMARKER123");
+
+                    // Clean up
+                    clickPanelCloseButton();
+                    await awaitsFor(function () {
+                        return !testWindow.$("#terminal-panel")
+                            .is(":visible");
+                    }, "terminal panel to close", 5000);
+                });
+
+            it("should paste clipboard text into terminal",
+                async function () {
+                    await openTerminal();
+                    await waitForShellReady();
+
+                    // Mock clipboard.readText to return a known string,
+                    // since the test iframe may not have clipboard
+                    // permission (no window focus).
+                    const pasteText = "PASTEMARKER456";
+                    const clipboard = testWindow.navigator.clipboard;
+                    spyOn(clipboard, "readText").and.returnValue(
+                        testWindow.Promise.resolve(pasteText)
+                    );
+
+                    // Execute the paste command
+                    await CommandManager.execute("terminal.paste");
+
+                    // The pasted text should appear in the terminal
+                    // buffer (written to PTY input → echoed back).
+                    await awaitsFor(function () {
+                        return bufferContains(pasteText);
+                    }, "pasted text to appear in terminal", 10000);
+
+                    // Clean up: press Enter then close
+                    await writeToTerminal("\r");
+                    clickPanelCloseButton();
+                    await awaitsFor(function () {
+                        return !testWindow.$("#terminal-panel")
+                            .is(":visible");
+                    }, "terminal panel to close", 5000);
+                });
+
+            it("should disable copy when there is no selection",
+                async function () {
+                    await openTerminal();
+                    await waitForShellReady();
+
+                    const active = getActiveTerminal();
+                    // Ensure no selection
+                    active.terminal.clearSelection();
+                    expect(active.terminal.hasSelection())
+                        .toBeFalse();
+
+                    // Open context menu to trigger
+                    // beforeContextMenuOpen event
+                    const Menus = testWindow.brackets.test.Menus;
+                    const ctxMenu = Menus.getContextMenu(
+                        "terminal-context-menu"
+                    );
+                    ctxMenu.open({pageX: 100, pageY: 100});
+
+                    const copyCmd =
+                        CommandManager.get("terminal.copy");
+                    expect(copyCmd.getEnabled()).toBeFalse();
+
+                    // Close menu
+                    ctxMenu.close();
+
+                    // Now select text and re-open
+                    active.terminal.selectAll();
+                    ctxMenu.open({pageX: 100, pageY: 100});
+                    expect(copyCmd.getEnabled()).toBeTrue();
+                    ctxMenu.close();
 
                     // Clean up
                     clickPanelCloseButton();
