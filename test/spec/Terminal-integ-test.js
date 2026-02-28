@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     const Strings = require("strings");
 
     const IS_WINDOWS = Phoenix.platform === "win";
+    const IS_MAC = Phoenix.platform === "mac";
 
     describe("integration:Terminal", function () {
         let testWindow,
@@ -209,19 +210,19 @@ define(function (require, exports, module) {
                         .is(":visible")).toBeTrue();
                     expect(getTerminalCount()).toBe(1);
 
-                    if (IS_WINDOWS) {
+                    if (IS_WINDOWS || IS_MAC) {
                         // On Windows, PowerShell/cmd set the title to
-                        // their own executable path rather than
-                        // "user@host: /path/to/cwd". Verify the shell
-                        // started and updated its title from the default
-                        // profile name.
+                        // their own executable path. On macOS, zsh does
+                        // not emit title escape sequences by default.
+                        // Just verify the shell started and updated its
+                        // title from the default profile name.
                         await waitForShellReady();
                         const flyoutTitle = testWindow.$(
                             ".terminal-flyout-item.active"
                         ).attr("title") || "";
                         expect(flyoutTitle).not.toBe("");
                     } else {
-                        // On Linux/macOS, bash/zsh set the title to
+                        // On Linux, bash/zsh set the title to
                         // include the cwd (e.g. "user@host: /path").
                         const expectedPath = getNativeProjectPath();
                         const projectDirName = expectedPath
@@ -427,6 +428,116 @@ define(function (require, exports, module) {
                     }, "panel to close after confirm", 5000);
 
                     expect(getTerminalCount()).toBe(0);
+                });
+        });
+
+        describe("Terminal title management", function () {
+            it("should retain custom title while child process runs",
+                async function () {
+                    await openTerminal();
+                    await awaitsFor(function () {
+                        return getTerminalCount() === 1;
+                    }, "terminal to be created", 10000);
+
+                    await waitForShellReady();
+
+                    // Start a long-running node process that sets a
+                    // custom terminal title via escape sequence.
+                    await writeToTerminal(
+                        'node -e "process.stdout.write('
+                        + "'\\x1b]0;MyAppTitle\\x07'"
+                        + ');setTimeout(()=>{},60000)"\r'
+                    );
+                    await waitForActiveProcess("node");
+
+                    // Verify the custom title appears
+                    await awaitsFor(function () {
+                        triggerFlyoutRefresh();
+                        const title = testWindow.$(
+                            ".terminal-flyout-item.active"
+                        ).attr("title") || "";
+                        return title.indexOf("MyAppTitle") !== -1;
+                    }, "custom title to appear", 10000);
+
+                    // Trigger several flyout refreshes — the title
+                    // must remain stable while the process runs.
+                    triggerFlyoutRefresh();
+                    const title = testWindow.$(
+                        ".terminal-flyout-item.active"
+                    ).attr("title") || "";
+                    expect(title).toContain("MyAppTitle");
+
+                    // Kill the node process so next test starts clean
+                    await writeToTerminal("\x03"); // Ctrl+C
+                    await awaitsFor(function () {
+                        triggerFlyoutRefresh();
+                        const label = testWindow.$(
+                            ".terminal-flyout-item.active "
+                            + ".terminal-flyout-title"
+                        ).text();
+                        return label && label.indexOf("node") === -1;
+                    }, "node process to exit", 10000);
+
+                    // Clean up
+                    clickPanelCloseButton();
+                    await awaitsFor(function () {
+                        return !testWindow.$("#terminal-panel")
+                            .is(":visible");
+                    }, "terminal panel to close", 5000);
+                });
+
+            it("should clear stale title after child process exits",
+                async function () {
+                    await openTerminal();
+                    await awaitsFor(function () {
+                        return getTerminalCount() === 1;
+                    }, "terminal to be created", 10000);
+
+                    await waitForShellReady();
+
+                    // Start a node process that sets a custom title
+                    // then exits after a short delay.
+                    await writeToTerminal(
+                        'node -e "process.stdout.write('
+                        + "'\\x1b]0;TestCustomTitle\\x07'"
+                        + ');setTimeout(()=>{},3000)"\r'
+                    );
+                    await waitForActiveProcess("node");
+
+                    // Verify the custom title appears in the flyout
+                    await awaitsFor(function () {
+                        triggerFlyoutRefresh();
+                        const title = testWindow.$(
+                            ".terminal-flyout-item.active"
+                        ).attr("title") || "";
+                        return title.indexOf("TestCustomTitle") !== -1;
+                    }, "custom title to appear", 10000);
+
+                    // Wait for the node process to exit (3s timeout)
+                    // and the flyout to reflect the shell again.
+                    await awaitsFor(function () {
+                        triggerFlyoutRefresh();
+                        const title = testWindow.$(
+                            ".terminal-flyout-item.active"
+                        ).attr("title") || "";
+                        return title.indexOf("TestCustomTitle") === -1;
+                    }, "stale title to be cleared after exit", 15000);
+
+                    // The flyout label should be back to the shell
+                    triggerFlyoutRefresh();
+                    const label = testWindow.$(
+                        ".terminal-flyout-item.active "
+                        + ".terminal-flyout-title"
+                    ).text();
+                    expect(label).not.toBe("");
+                    expect(label).not.toContain("node");
+
+                    // Clean up
+                    clickPanelCloseButton();
+                    await awaitsFor(function () {
+                        return !testWindow.$("#terminal-panel")
+                            .is(":visible");
+                    }, "terminal panel to close", 5000);
                 });
         });
 

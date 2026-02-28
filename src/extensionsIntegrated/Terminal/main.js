@@ -72,7 +72,8 @@ define(function (require, exports, module) {
         if (!processName) {
             return true;
         }
-        const basename = processName.split("/").pop().split("\\").pop();
+        // Strip path and leading "-" for login shells (e.g. "-zsh")
+        const basename = processName.split("/").pop().split("\\").pop().replace(/^-/, "");
         return SHELL_NAMES.has(basename);
     }
 
@@ -409,6 +410,17 @@ define(function (require, exports, module) {
             const newProc = result.process || "";
             if (processInfo[id] !== newProc) {
                 processInfo[id] = newProc;
+                // When a child process (e.g. "claude") exits and the
+                // shell regains foreground, the child may have set a
+                // custom terminal title via escape sequences. Shells
+                // like zsh on macOS do not emit a title reset, so
+                // inst.title stays stale. Reset it only when the
+                // foreground process returns to the shell. If the
+                // shell does emit a title change, onTitleChange will
+                // overwrite this immediately.
+                if (_isShellProcess(newProc)) {
+                    instance.title = instance.shellProfile.name;
+                }
                 _updateFlyout();
             }
         }).catch(function () {
