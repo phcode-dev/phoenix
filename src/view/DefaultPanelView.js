@@ -31,7 +31,8 @@ define(function (require, exports, module) {
         CommandManager = require("command/CommandManager"),
         Strings = require("strings"),
         WorkspaceManager = require("view/WorkspaceManager"),
-        PanelView = require("view/PanelView");
+        PanelView = require("view/PanelView"),
+        ExtensionUtils = require("utils/ExtensionUtils");
 
     /**
      * Descriptors for each launcher button.
@@ -177,13 +178,42 @@ define(function (require, exports, module) {
             }
         });
 
-        // Auto-hide when any other panel is shown.
-        // hide() is a no-op if the panel is already closed, so no guard needed.
+        // Create the app-drawer toolbar icon above the profile button
+        const iconURL = ExtensionUtils.getModulePath(module, "../styles/images/app-drawer.svg");
+        const $drawerBtn = $("<a>")
+            .attr({
+                id: "app-drawer-button",
+                href: "#",
+                title: Strings.BOTTOM_PANEL_DEFAULT_TITLE
+            })
+            .css({
+                "background-image": "url('" + iconURL + "')",
+                "background-position": "center",
+                "background-size": "16px"
+            })
+            .prependTo($("#main-toolbar .bottom-buttons"));
+
+        $drawerBtn.on("click", function () {
+            if (_panel.isVisible()) {
+                _panel.hide();
+            } else {
+                _panel.show();
+            }
+        });
+
+        // Auto-hide when any other panel is shown; update drawer button state.
         PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (event, panelID) {
             if (panelID !== WorkspaceManager.DEFAULT_PANEL_ID) {
                 _panel.hide();
             } else {
                 _updateButtonVisibility();
+            }
+            $drawerBtn.toggleClass("selected-button", panelID === WorkspaceManager.DEFAULT_PANEL_ID);
+        });
+
+        PanelView.on(PanelView.EVENT_PANEL_HIDDEN, function (event, panelID) {
+            if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
+                $drawerBtn.removeClass("selected-button");
             }
         });
 

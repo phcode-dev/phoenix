@@ -1304,7 +1304,6 @@ define(function (require, exports, module) {
             it("should clamp panel width when shown after window was resized", function () {
                 // Panel is hidden; compute what the max toolbar width would be
                 const sidebarWidth = _$("#sidebar").outerWidth() || 0;
-                const $pluginIconsBar = _$("#plugin-icons-bar");
                 const maxToolbarWidth = Math.min(
                     testWindow.innerWidth * 0.75,
                     testWindow.innerWidth - sidebarWidth - 100
@@ -1332,6 +1331,76 @@ define(function (require, exports, module) {
                 const $windowContent = _$(".content");
                 const rightOffset = parseInt($windowContent.css("right"), 10);
                 expect(rightOffset).toEqual($mainToolbar.width());
+            });
+        });
+
+        describe("Quick Access panel (app drawer button)", function () {
+            const DEFAULT_PANEL_ID = "workspace.defaultPanel";
+
+            function getDrawerButton() {
+                return _$("#app-drawer-button");
+            }
+
+            function isDefaultPanelVisible() {
+                return _$("#default-panel").is(":visible");
+            }
+
+            function isDrawerSelected() {
+                return getDrawerButton().hasClass("selected-button");
+            }
+
+            beforeEach(function () {
+                // Ensure a clean state: hide any open panels
+                const panel = WorkspaceManager.getPanelForID(DEFAULT_PANEL_ID);
+                if (panel && panel.isVisible()) {
+                    panel.hide();
+                }
+            });
+
+            it("should have the app-drawer button in the toolbar", function () {
+                expect(getDrawerButton().length).toBe(1);
+            });
+
+            it("should open Quick Access panel on drawer button click", function () {
+                expect(isDefaultPanelVisible()).toBeFalse();
+
+                getDrawerButton().click();
+
+                expect(isDefaultPanelVisible()).toBeTrue();
+            });
+
+            it("should show selected state when panel is open", function () {
+                expect(isDrawerSelected()).toBeFalse();
+
+                getDrawerButton().click();
+
+                expect(isDrawerSelected()).toBeTrue();
+            });
+
+            it("should close Quick Access panel on second click", function () {
+                getDrawerButton().click();
+                expect(isDefaultPanelVisible()).toBeTrue();
+                expect(isDrawerSelected()).toBeTrue();
+
+                getDrawerButton().click();
+
+                expect(isDefaultPanelVisible()).toBeFalse();
+                expect(isDrawerSelected()).toBeFalse();
+            });
+
+            it("should deselect drawer when another panel opens", async function () {
+                getDrawerButton().click();
+                expect(isDefaultPanelVisible()).toBeTrue();
+                expect(isDrawerSelected()).toBeTrue();
+
+                // Open a different panel (Problems)
+                await CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
+
+                expect(isDefaultPanelVisible()).toBeFalse();
+                expect(isDrawerSelected()).toBeFalse();
+
+                // Clean up: close Problems panel
+                await CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
             });
         });
     });
