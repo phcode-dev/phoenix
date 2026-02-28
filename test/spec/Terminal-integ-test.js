@@ -528,8 +528,20 @@ define(function (require, exports, module) {
                         return title.indexOf("TestCustomTitle") === -1;
                     }, "stale title to be cleared after exit", 15000);
 
+                    // Wait for the process info to update (async)
+                    // so the flyout label reflects the shell, not the
+                    // exited child process.
+                    await awaitsFor(function () {
+                        triggerFlyoutRefresh();
+                        const lbl = testWindow.$(
+                            ".terminal-flyout-item.active "
+                            + ".terminal-flyout-title"
+                        ).text();
+                        return lbl && lbl.indexOf("node") === -1;
+                    }, "flyout label to show shell instead of node",
+                    15000);
+
                     // The flyout label should be back to the shell
-                    triggerFlyoutRefresh();
                     const label = testWindow.$(
                         ".terminal-flyout-item.active "
                         + ".terminal-flyout-title"
