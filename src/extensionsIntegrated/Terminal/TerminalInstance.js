@@ -104,6 +104,10 @@ define(function (require, exports, module) {
         this.searchAddon = null;
         this.$container = null;
         this._resizeTimeout = null;
+        this._resizeObserver = null;
+        this._lastCols = 0;
+        this._lastRows = 0;
+        this._suppressPtyResize = false;
         this._disposed = false;
 
         // Bound event handlers for cleanup
@@ -153,6 +157,12 @@ define(function (require, exports, module) {
         // Fit to container
         this._fit();
 
+        // Use ResizeObserver for reliable resize detection
+        this._resizeObserver = new ResizeObserver(() => {
+            this.handleResize();
+        });
+        this._resizeObserver.observe(this.$container[0]);
+
         // Set up custom key handler to intercept editor shortcuts
         this.terminal.attachCustomKeyEventHandler(this._customKeyHandler.bind(this));
 
@@ -165,9 +175,9 @@ define(function (require, exports, module) {
             }
         });
 
-        // Wire resize: terminal -> PTY
+        // Wire resize: terminal -> PTY (suppressed during _fit to control timing)
         this.terminal.onResize(({cols, rows}) => {
-            if (this.isAlive) {
+            if (this.isAlive && !this._suppressPtyResize) {
                 this.nodeConnector.execPeer("resizeTerminal", {id: this.id, cols, rows}).catch((err) => {
                     console.error("Terminal: resize error:", err);
                 });
@@ -271,12 +281,43 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Fit the terminal to its container
+     * Fit the terminal to its container.
+     * Suppresses the automatic PTY resize during fit() and clears the
+     * prompt area to avoid garbled output caused by readline redrawing
+     * the prompt on top of xterm's reflowed buffer.
+     * Historical output above the prompt is preserved.
      */
     TerminalInstance.prototype._fit = function () {
         if (this.fitAddon && this.$container && this.$container.is(":visible")) {
             try {
+                const dims = this.fitAddon.proposeDimensions();
+                if (!dims || (dims.cols === this._lastCols && dims.rows === this._lastRows)) {
+                    return;
+                }
+
+                this._lastCols = dims.cols;
+                this._lastRows = dims.rows;
+
+                // Suppress automatic PTY resize from onResize handler
+                this._suppressPtyResize = true;
                 this.fitAddon.fit();
+                this._suppressPtyResize = false;
+
+                if (this.isAlive) {
+                    // After reflow, clear only the prompt line and below to
+                    // remove garbled content from the reflow/SIGWINCH conflict.
+                    // Use cursor position after reflow — the cursor sits at the
+                    // end of the (possibly garbled) prompt. Clearing from the
+                    // start of the cursor row preserves all output above.
+                    const cursorY = this.terminal.buffer.active.cursorY;
+                    this.terminal.write("\x1b[" + (cursorY + 1) + ";1H\x1b[J");
+
+                    this.nodeConnector.execPeer("resizeTerminal", {
+                        id: this.id, cols: dims.cols, rows: dims.rows
+                    }).catch((err) => {
+                        console.error("Terminal: resize error:", err);
+                    });
+                }
             } catch (e) {
                 // Container might not be visible yet
             }
@@ -290,7 +331,7 @@ define(function (require, exports, module) {
         clearTimeout(this._resizeTimeout);
         this._resizeTimeout = setTimeout(() => {
             this._fit();
-        }, 50);
+        }, 150);
     };
 
     /**
@@ -361,8 +402,12 @@ define(function (require, exports, module) {
             this.isAlive = false;
         }
 
-        // Dispose xterm
+        // Dispose resize observer and xterm
         clearTimeout(this._resizeTimeout);
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = null;
+        }
         if (this.terminal) {
             this.terminal.dispose();
             this.terminal = null;
