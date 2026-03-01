@@ -1,6 +1,7 @@
 # Claude Code Instructions
 
 ## Git Commits
+- **Never commit unless the user explicitly asks you to commit or grants autocommit permission.** Only exception: if a commit is technically required for the current task to work (e.g. testing a CI pipeline).
 - Use Conventional Commits format: `type(scope): description` (e.g. `fix: ...`, `feat: ...`, `chore: ...`).
 - Keep commit subject lines concise; use the body for detail.
 - Never include `Co-Authored-By` lines in commit messages.
