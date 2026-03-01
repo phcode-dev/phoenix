@@ -455,12 +455,12 @@ function RemoteFunctions(config = {}) {
                 _hoverHighlight.add(element);
             }
 
-            // create the info box for the hovered element
-            const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
-            if (infoBoxHandler) {
-                infoBoxHandler.dismiss();
-                infoBoxHandler.createInfoBox(element);
-            }
+            // commented out for unified box redesign
+            // const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
+            // if (infoBoxHandler) {
+            //     infoBoxHandler.dismiss();
+            //     infoBoxHandler.createInfoBox(element);
+            // }
         }
     }
 
@@ -772,23 +772,24 @@ function RemoteFunctions(config = {}) {
 
     // recreate UI boxes so that they are placed properly
     function redrawUIBoxes() {
-        if (SHARED_STATE._toolBox) {
-            const element = SHARED_STATE._toolBox.element;
-            const toolBoxHandler = LivePreviewView.getToolHandler("ToolBox");
-            if (toolBoxHandler) {
-                toolBoxHandler.dismiss();
-                toolBoxHandler.createToolBox(element);
-            }
-        }
+        // commented out for unified box redesign
+        // if (SHARED_STATE._toolBox) {
+        //     const element = SHARED_STATE._toolBox.element;
+        //     const toolBoxHandler = LivePreviewView.getToolHandler("ToolBox");
+        //     if (toolBoxHandler) {
+        //         toolBoxHandler.dismiss();
+        //         toolBoxHandler.createToolBox(element);
+        //     }
+        // }
 
-        if (SHARED_STATE._infoBox) {
-            const element = SHARED_STATE._infoBox.element;
-            const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
-            if (infoBoxHandler) {
-                infoBoxHandler.dismiss();
-                infoBoxHandler.createInfoBox(element);
-            }
-        }
+        // if (SHARED_STATE._infoBox) {
+        //     const element = SHARED_STATE._infoBox.element;
+        //     const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
+        //     if (infoBoxHandler) {
+        //         infoBoxHandler.dismiss();
+        //         infoBoxHandler.createInfoBox(element);
+        //     }
+        // }
     }
 
     // redraw active highlights
@@ -1140,7 +1141,25 @@ function RemoteFunctions(config = {}) {
             _handleConfigurationChange();
         }
 
+        // Preserve the currently selected element across re-registration
+        // so that toggling options (e.g. show measurements, show spacing handles)
+        // doesn't clear the element highlighting.
+        const selectedBeforeReregister = previouslySelectedElement;
         registerHandlers();
+        if (!isModeChanged && !highlightModeChanged && selectedBeforeReregister
+            && config.mode === 'edit') {
+            // Restore the click highlight for the previously selected element
+            if (!_clickHighlight) {
+                _clickHighlight = new Highlight(true);
+            }
+            _clickHighlight.add(selectedBeforeReregister);
+            previouslySelectedElement = selectedBeforeReregister;
+            window.__current_ph_lp_selected = selectedBeforeReregister;
+            // Restore the outline
+            const isEditable = selectedBeforeReregister.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+            selectedBeforeReregister.style.outline = `1px solid ${outlineColor}`;
+        }
         return JSON.stringify(config);
     }
 
