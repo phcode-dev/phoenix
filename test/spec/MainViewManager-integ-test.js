@@ -1013,10 +1013,11 @@ define(function (require, exports, module) {
                 expect(panel1.isVisible()).toBeTrue();
 
                 expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
-                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.html"));
                 await awaitsForDone(promise, "MainViewManager.doOpen");
                 let editor = EditorManager.getActiveEditor();
-                editor.setCursorPos(0, 0);
+                // Position cursor inside the <p tag name to trigger HTML tag hints
+                editor.setCursorPos(8, 1);
                 await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS));
                 await awaitsFor(function () {
                     return testWindow.$(".codehint-menu").is(":visible");
@@ -1146,6 +1147,7 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown",
                     _$("#editor-holder")[0], { shiftKey: true });
                 expect(EditorManager.getFocusedEditor()).toBeTruthy();
+                expect(testWindow.document.activeElement).not.toBe(_$("#focus-test-input")[0]);
 
                 focusPanel.hide();
                 WorkspaceManager.destroyBottomPanel("focusTestPanel");
