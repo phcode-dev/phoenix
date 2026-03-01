@@ -197,19 +197,9 @@ define(function (require, exports, module) {
             }
         }
 
-        // Create the app-drawer toolbar icon above the profile button
-        const $drawerBtn = $("<a>")
-            .attr({
-                id: "app-drawer-button",
-                href: "#",
-                title: Strings.BOTTOM_PANEL_DEFAULT_TITLE
-            })
-            .css({
-                "background-image": "url('" + iconURL + "')",
-                "background-position": "center",
-                "background-size": "16px"
-            })
-            .prependTo($("#main-toolbar .bottom-buttons"));
+        // The app-drawer button is defined in index.html; set its title here.
+        const $drawerBtn = $("#app-drawer-button")
+            .attr("title", Strings.BOTTOM_PANEL_DEFAULT_TITLE);
 
         $drawerBtn.on("click", function () {
             if (_panel.isVisible()) {

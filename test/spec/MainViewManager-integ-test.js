@@ -1044,7 +1044,7 @@ define(function (require, exports, module) {
                 expect(panel1.isVisible()).toBeFalse();
             });
 
-            it("should not toggle bottom panel back on subsequent escape", async function () {
+            it("should toggle bottom panel back on subsequent escape", async function () {
                 panel1.show();
                 expect(panel1.isVisible()).toBeTrue();
 
@@ -1055,13 +1055,19 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeFalse();
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
-                expect(panel1.isVisible()).toBeFalse();
+                expect(panel1.isVisible()).toBeTrue();
             });
 
-            it("should shift-escape also collapse bottom panel", async function () {
+            it("should shift-escape focus active panel instead of collapsing", async function () {
                 panel1.show();
                 expect(panel1.isVisible()).toBeTrue();
 
+                let focusCalled = false;
+                panel1.focus = function () {
+                    focusCalled = true;
+                    return true;
+                };
+
                 expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
                 promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
                 await awaitsForDone(promise, "MainViewManager.doOpen");
@@ -1069,14 +1075,34 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0], {
                     shiftKey: true
                 });
-                expect(panel1.isVisible()).toBeFalse();
+                // Shift+Escape should focus the panel, not collapse it
+                expect(panel1.isVisible()).toBeTrue();
+                expect(focusCalled).toBeTrue();
+                delete panel1.focus;
             });
 
-            it("should shift-escape collapse bottom panel regardless of canBeShown", async function () {
+            it("should shift-escape from panel focus the editor", async function () {
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
                 panel1.show();
-                panel2.registerCanBeShownHandler(function () {
-                    return false;
-                });
+                expect(panel1.isVisible()).toBeTrue();
+
+                // Blur the editor so getFocusedEditor() returns null
+                _$("#some-panel1")[0].setAttribute("tabindex", "-1");
+                _$("#some-panel1")[0].focus();
+                expect(EditorManager.getFocusedEditor()).toBeFalsy();
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown",
+                    _$("#editor-holder")[0], { shiftKey: true });
+                // Editor should regain focus
+                expect(EditorManager.getFocusedEditor()).toBeTruthy();
+            });
+
+            it("should shift-escape open default panel when no panel is visible", async function () {
+                panel1.hide();
+                panel2.hide();
 
                 expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
                 promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
@@ -1085,8 +1111,62 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0], {
                     shiftKey: true
                 });
-                expect(panel1.isVisible()).toBeFalse();
-                panel2.registerCanBeShownHandler(null);
+                // A panel should now be visible (the default/quick access panel)
+                let defaultPanel = WorkspaceManager.getPanelForID(WorkspaceManager.DEFAULT_PANEL_ID);
+                expect(defaultPanel.isVisible()).toBeTrue();
+                defaultPanel.hide();
+            });
+
+            it("should shift-escape focus panel with custom focus handler", async function () {
+                // Create a panel with a text input that accepts focus
+                let focusPanelTemplate = `<div id="focus-test-panel" class="bottom-panel vert-resizable top-resizer">
+                    <input id="focus-test-input" type="text" />
+                </div>`;
+                let focusPanel = WorkspaceManager.createBottomPanel("focusTestPanel",
+                    _$(focusPanelTemplate), 100);
+
+                focusPanel.focus = function () {
+                    _$("#focus-test-input")[0].focus();
+                    return true;
+                };
+
+                focusPanel.show();
+                expect(focusPanel.isVisible()).toBeTrue();
+
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
+                // Shift+Escape from editor should focus the panel's text input
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown",
+                    _$("#editor-holder")[0], { shiftKey: true });
+                expect(testWindow.document.activeElement).toBe(_$("#focus-test-input")[0]);
+
+                // Shift+Escape from panel should focus the editor
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown",
+                    _$("#editor-holder")[0], { shiftKey: true });
+                expect(EditorManager.getFocusedEditor()).toBeTruthy();
+
+                focusPanel.hide();
+                WorkspaceManager.destroyBottomPanel("focusTestPanel");
+            });
+
+            it("should app-drawer-button toggle the default panel", async function () {
+                panel1.hide();
+                panel2.hide();
+                let defaultPanel = WorkspaceManager.getPanelForID(WorkspaceManager.DEFAULT_PANEL_ID);
+                if (defaultPanel.isVisible()) {
+                    defaultPanel.hide();
+                }
+                expect(defaultPanel.isVisible()).toBeFalse();
+
+                // Click app-drawer-button to show the default panel
+                _$("#app-drawer-button").click();
+                expect(defaultPanel.isVisible()).toBeTrue();
+
+                // Click again to hide it
+                _$("#app-drawer-button").click();
+                expect(defaultPanel.isVisible()).toBeFalse();
             });
 
             it("should escape collapse bottom panel regardless of canBeShown", async function () {
