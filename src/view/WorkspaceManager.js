@@ -509,17 +509,21 @@ define(function (require, exports, module) {
             minToolbarWidth,
             Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100)
         );
-        if ($mainToolbar.width() > maxToolbarWidth) {
-            $mainToolbar.width(maxToolbarWidth);
-            $windowContent.css("right", maxToolbarWidth);
+        let currentWidth = $mainToolbar.width();
+        if (currentWidth > maxToolbarWidth || currentWidth < minToolbarWidth) {
+            let clampedWidth = Math.max(minToolbarWidth, Math.min(currentWidth, maxToolbarWidth));
+            $mainToolbar.width(clampedWidth);
+            $windowContent.css("right", clampedWidth);
             Resizer.resyncSizer($mainToolbar[0]);
         }
     }
 
     function _showPluginSidePanel(panelID) {
         let panelBeingShown = getPanelForID(panelID);
+        let pluginIconsBarWidth = $pluginIconsBar.outerWidth();
+        let minToolbarWidth = (panelBeingShown.minWidth || 0) + pluginIconsBarWidth;
         Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT,
-            panelBeingShown.minWidth, false, undefined, true,
+            minToolbarWidth, false, undefined, true,
             undefined, $windowContent, undefined, _getInitialSize(panelBeingShown));
         Resizer.show($mainToolbar[0]);
         _clampPluginPanelWidth(panelBeingShown);
@@ -682,9 +686,10 @@ define(function (require, exports, module) {
         }
         if (EditorManager.getFocusedEditor()) {
             // Editor has focus — focus the panel
-            const activePanel = PanelView.getActiveBottomPanel();
+            let activePanel = PanelView.getActiveBottomPanel();
             if(!activePanel || !activePanel.isVisible()){
                 _togglePanels();
+                activePanel = PanelView.getActiveBottomPanel();
             }
             activePanel.focus();
         } else {
