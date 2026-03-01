@@ -104,10 +104,6 @@ define(function (require, exports, module) {
         this.searchAddon = null;
         this.$container = null;
         this._resizeTimeout = null;
-        this._resizeObserver = null;
-        this._lastCols = 0;
-        this._lastRows = 0;
-        this._suppressPtyResize = false;
         this._disposed = false;
 
         // Bound event handlers for cleanup
@@ -157,12 +153,6 @@ define(function (require, exports, module) {
         // Fit to container
         this._fit();
 
-        // Use ResizeObserver for reliable resize detection
-        this._resizeObserver = new ResizeObserver(() => {
-            this.handleResize();
-        });
-        this._resizeObserver.observe(this.$container[0]);
-
         // Set up custom key handler to intercept editor shortcuts
         this.terminal.attachCustomKeyEventHandler(this._customKeyHandler.bind(this));
 
@@ -175,9 +165,9 @@ define(function (require, exports, module) {
             }
         });
 
-        // Wire resize: terminal -> PTY (suppressed during _fit to control timing)
+        // Wire resize: terminal -> PTY
         this.terminal.onResize(({cols, rows}) => {
-            if (this.isAlive && !this._suppressPtyResize) {
+            if (this.isAlive) {
                 this.nodeConnector.execPeer("resizeTerminal", {id: this.id, cols, rows}).catch((err) => {
                     console.error("Terminal: resize error:", err);
                 });
@@ -282,56 +272,70 @@ define(function (require, exports, module) {
 
     /**
      * Fit the terminal to its container.
-     * Suppresses the automatic PTY resize during fit() and clears the
-     * prompt area to avoid garbled output caused by readline redrawing
-     * the prompt on top of xterm's reflowed buffer.
-     * Historical output above the prompt is preserved.
+     *
+     * Before reflowing, the prompt area is cleared so that stale wrapped
+     * text does not survive the reflow as a "ghost" line.  xterm.js
+     * defaults to reflowCursorLine: false, meaning the cursor row is
+     * excluded from reflow.  When the terminal widens, a multi-line
+     * wrapped prompt cannot merge back into one line; the first part
+     * remains as a visible ghost.  By erasing the prompt region first
+     * (walking up through isWrapped lines), the reflow has nothing
+     * stale to preserve, and readline's SIGWINCH redraw writes a
+     * clean prompt at the new width.
      */
     TerminalInstance.prototype._fit = function () {
-        if (this.fitAddon && this.$container && this.$container.is(":visible")) {
-            try {
-                const dims = this.fitAddon.proposeDimensions();
-                if (!dims || (dims.cols === this._lastCols && dims.rows === this._lastRows)) {
-                    return;
+        if (!this.fitAddon || !this.$container || !this.$container.is(":visible")) {
+            return;
+        }
+
+        try {
+            // Clear the prompt region before reflow to prevent ghost lines.
+            // xterm.js write() is asynchronous, so we must wait for the
+            // clear to be processed before calling fit().
+            if (this.terminal && this.isAlive) {
+                const buf = this.terminal.buffer.active;
+                let promptStart = buf.cursorY;
+
+                // Walk upward through wrapped lines to find prompt start
+                while (promptStart > 0) {
+                    const line = buf.getLine(buf.baseY + promptStart);
+                    if (!line || !line.isWrapped) {
+                        break;
+                    }
+                    promptStart--;
                 }
 
-                this._lastCols = dims.cols;
-                this._lastRows = dims.rows;
-
-                // Suppress automatic PTY resize from onResize handler
-                this._suppressPtyResize = true;
-                this.fitAddon.fit();
-                this._suppressPtyResize = false;
-
-                if (this.isAlive) {
-                    // After reflow, clear only the prompt line and below to
-                    // remove garbled content from the reflow/SIGWINCH conflict.
-                    // Use cursor position after reflow — the cursor sits at the
-                    // end of the (possibly garbled) prompt. Clearing from the
-                    // start of the cursor row preserves all output above.
-                    const cursorY = this.terminal.buffer.active.cursorY;
-                    this.terminal.write("\x1b[" + (cursorY + 1) + ";1H\x1b[J");
-
-                    this.nodeConnector.execPeer("resizeTerminal", {
-                        id: this.id, cols: dims.cols, rows: dims.rows
-                    }).catch((err) => {
-                        console.error("Terminal: resize error:", err);
-                    });
-                }
-            } catch (e) {
-                // Container might not be visible yet
+                // Erase from prompt start to end of screen, then fit
+                // once the erase has been applied to the buffer.
+                this.terminal.write(
+                    "\x1b[" + (promptStart + 1) + ";1H\x1b[J",
+                    () => {
+                        try {
+                            this.fitAddon.fit();
+                        } catch (e) {
+                            // Container might not be visible yet
+                        }
+                    }
+                );
+                return;
             }
+
+            this.fitAddon.fit();
+        } catch (e) {
+            // Container might not be visible yet
         }
     };
 
     /**
-     * Handle container resize - debounced
+     * Handle container resize — debounced so that only the final size
+     * triggers a reflow + PTY resize. This avoids garbled prompts from
+     * intermediate SIGWINCH signals during continuous drag-resizing.
      */
     TerminalInstance.prototype.handleResize = function () {
         clearTimeout(this._resizeTimeout);
         this._resizeTimeout = setTimeout(() => {
             this._fit();
-        }, 150);
+        }, 300);
     };
 
     /**
@@ -402,12 +406,8 @@ define(function (require, exports, module) {
             this.isAlive = false;
         }
 
-        // Dispose resize observer and xterm
+        // Dispose xterm
         clearTimeout(this._resizeTimeout);
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = null;
-        }
         if (this.terminal) {
             this.terminal.dispose();
             this.terminal = null;
