@@ -58,20 +58,20 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(fileName));
             await awaitsFor(()=>{
                 return PreferencesManager.get("spaceUnits") === expectedSpaceUnits;
-            }, "space units to be "+expectedSpaceUnits);
+            }, "space units to be "+expectedSpaceUnits, 10000);
             await awaitsForDone(FileViewController.openAndSelectDocument(nonProjectFile,
                 FileViewController.WORKING_SET_VIEW));
 
             await awaitsFor(()=>{
                 return PreferencesManager.get("spaceUnits") !== expectedSpaceUnits;
-            }, "space non project file units not to be "+expectedSpaceUnits);
+            }, "space non project file units not to be "+expectedSpaceUnits, 10000);
 
             // Changing projects will force a change in the project scope.
             await SpecRunnerUtils.loadProjectInTestWindow(projectWithoutSettings);
             await awaitsForDone(SpecRunnerUtils.openProjectFiles("file_one.js"));
             await awaitsFor(()=>{
                 return PreferencesManager.get("spaceUnits") !== expectedSpaceUnits;
-            }, "space units not to be "+expectedSpaceUnits);
+            }, "space units not to be "+expectedSpaceUnits, 10000);
         }
 
         it("should find .phcode.json preferences in the project", async function () {

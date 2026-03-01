@@ -222,29 +222,40 @@ define(function (require, exports, module) {
                         ).attr("title") || "";
                         expect(flyoutTitle).not.toBe("");
                     } else {
-                        // On Linux, bash/zsh set the title to
-                        // include the cwd (e.g. "user@host: /path").
-                        // Wait for shell ready first, then trigger
-                        // a prompt refresh so PS1 title escapes fire.
+                        // On Linux, verify the cwd by running `pwd`
+                        // and checking the terminal buffer. This is
+                        // more reliable than checking the terminal
+                        // title, which depends on the shell's PS1
+                        // including title-setting escape sequences.
                         await waitForShellReady();
-                        await writeToTerminal("echo\r");
+                        await writeToTerminal("pwd\r");
 
                         const expectedPath = getNativeProjectPath();
                         const projectDirName = expectedPath
                             .split("/").pop().split("\\").pop();
 
+                        const termModule = testWindow.brackets
+                            .getModule(
+                                "extensionsIntegrated/Terminal/main"
+                            );
                         await awaitsFor(function () {
-                            const title = testWindow.$(
-                                ".terminal-flyout-item.active"
-                            ).attr("title") || "";
-                            return title.indexOf(projectDirName) !== -1;
-                        }, "terminal title to contain project dir",
-                        10000);
-
-                        const flyoutTitle = testWindow.$(
-                            ".terminal-flyout-item.active"
-                        ).attr("title") || "";
-                        expect(flyoutTitle).toContain(projectDirName);
+                            const active =
+                                termModule._getActiveTerminal();
+                            if (!active) {
+                                return false;
+                            }
+                            const buffer =
+                                active.terminal.buffer.active;
+                            for (let i = 0; i < buffer.length; i++) {
+                                const line = buffer.getLine(i);
+                                if (line && line.translateToString()
+                                    .indexOf(projectDirName) !== -1) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }, "pwd output to contain project dir",
+                        15000);
                     }
                 });
 
