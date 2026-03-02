@@ -541,9 +541,9 @@ define(function (require, exports, module) {
      * are 2+ terminals, cycles to the next one. Otherwise just shows and
      * focuses the active terminal.
      */
-    function _showTerminal() {
+    async function _showTerminal() {
         if (terminalInstances.length === 0) {
-            _createNewTerminal();
+            await _createNewTerminal();
             return;
         }
         const active = _getActiveTerminal();
