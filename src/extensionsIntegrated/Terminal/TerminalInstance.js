@@ -289,35 +289,43 @@ define(function (require, exports, module) {
         }
 
         try {
-            // Clear the prompt region before reflow to prevent ghost lines.
-            // xterm.js write() is asynchronous, so we must wait for the
-            // clear to be processed before calling fit().
+            // Only clear the prompt region when dimensions are actually
+            // changing — i.e. a real reflow will happen.  When dimensions
+            // are unchanged (e.g. tab switch, panel re-focus) clearing
+            // would erase the prompt without a subsequent SIGWINCH to
+            // make the shell redraw it.
             if (this.terminal && this.isAlive) {
-                const buf = this.terminal.buffer.active;
-                let promptStart = buf.cursorY;
+                const proposed = this.fitAddon.proposeDimensions();
+                const dimensionsChanged = proposed &&
+                    (proposed.cols !== this.terminal.cols || proposed.rows !== this.terminal.rows);
 
-                // Walk upward through wrapped lines to find prompt start
-                while (promptStart > 0) {
-                    const line = buf.getLine(buf.baseY + promptStart);
-                    if (!line || !line.isWrapped) {
-                        break;
-                    }
-                    promptStart--;
-                }
+                if (dimensionsChanged) {
+                    const buf = this.terminal.buffer.active;
+                    let promptStart = buf.cursorY;
 
-                // Erase from prompt start to end of screen, then fit
-                // once the erase has been applied to the buffer.
-                this.terminal.write(
-                    "\x1b[" + (promptStart + 1) + ";1H\x1b[J",
-                    () => {
-                        try {
-                            this.fitAddon.fit();
-                        } catch (e) {
-                            // Container might not be visible yet
+                    // Walk upward through wrapped lines to find prompt start
+                    while (promptStart > 0) {
+                        const line = buf.getLine(buf.baseY + promptStart);
+                        if (!line || !line.isWrapped) {
+                            break;
                         }
+                        promptStart--;
                     }
-                );
-                return;
+
+                    // Erase from prompt start to end of screen, then fit
+                    // once the erase has been applied to the buffer.
+                    this.terminal.write(
+                        "\x1b[" + (promptStart + 1) + ";1H\x1b[J",
+                        () => {
+                            try {
+                                this.fitAddon.fit();
+                            } catch (e) {
+                                // Container might not be visible yet
+                            }
+                        }
+                    );
+                    return;
+                }
             }
 
             this.fitAddon.fit();
