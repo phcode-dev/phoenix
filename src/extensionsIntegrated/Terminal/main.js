@@ -306,6 +306,13 @@ define(function (require, exports, module) {
             panel.show();
         }
 
+        // Fit the terminal now that the panel is visible so xterm
+        // has the correct dimensions before the PTY is spawned.
+        // Without this, xterm stays at default 80x24 while the PTY
+        // is created at the actual container size, causing a later
+        // _fit() to erase the prompt without a real resize/SIGWINCH.
+        try { instance.fitAddon.fit(); } catch (e) { /* not ready */ }
+
         // Spawn PTY process
         await instance.spawn();
     }
