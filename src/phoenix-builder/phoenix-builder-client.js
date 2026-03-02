@@ -76,7 +76,8 @@ define(function (require, exports, module) {
                     id: msg.id,
                     success: true
                 });
-                setTimeout(function () {
+                setTimeout(async function () {
+                    await boot.dismantleTrustRing();
                     location.reload();
                 }, 100);
             })
