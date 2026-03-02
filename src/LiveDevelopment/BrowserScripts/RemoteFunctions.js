@@ -54,6 +54,7 @@ function RemoteFunctions(config = {}) {
         "dismiss", // when handler gets this event, it should dismiss all ui it renders in the live preview
         "createToolBox",
         "createInfoBox",
+        "createHoverBox",
         "createMoreOptionsDropdown",
         // render an icon or html when the selected element toolbox appears in edit mode.
         "renderToolBoxItem",
@@ -455,12 +456,14 @@ function RemoteFunctions(config = {}) {
                 _hoverHighlight.add(element);
             }
 
-            // commented out for unified box redesign
-            // const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
-            // if (infoBoxHandler) {
-            //     infoBoxHandler.dismiss();
-            //     infoBoxHandler.createInfoBox(element);
-            // }
+            // Show minimal hover tooltip (tag + dimensions)
+            const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
+            if (hoverBoxHandler) {
+                hoverBoxHandler.dismiss();
+                if (element !== previouslySelectedElement) {
+                    hoverBoxHandler.createHoverBox(element);
+                }
+            }
         }
     }
 
@@ -469,15 +472,17 @@ function RemoteFunctions(config = {}) {
         if (SHARED_STATE.isAutoScrolling) { return; }
 
         const element = event.target;
-        if(LivePreviewView.isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE) {
+        // Use isElementInspectable (not isElementEditable) so that JS-rendered
+        // elements also get their hover highlight and hover box properly dismissed.
+        if(LivePreviewView.isElementInspectable(element) && element.nodeType === Node.ELEMENT_NODE) {
             // this is to check the user's settings, if they want to show the elements highlights on hover or click
             if (_hoverHighlight && shouldShowHighlightOnHover()) {
                 _hoverHighlight.clear();
                 clearElementHoverHighlight(element);
-                // dismiss the info box
-                const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
-                if (infoBoxHandler) {
-                    infoBoxHandler.dismiss();
+                // dismiss the hover box
+                const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
+                if (hoverBoxHandler) {
+                    hoverBoxHandler.dismiss();
                 }
             }
         }
