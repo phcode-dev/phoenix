@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor, spyOn */
+/*global describe, it, expect, beforeAll, afterAll, afterEach, awaitsFor, spyOn */
 
 define(function (require, exports, module) {
 
@@ -81,6 +81,22 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
+        afterEach(async function () {
+            // If a test failed and left a dialog open, dismiss it
+            // so the next test starts from a clean state.
+            if (testWindow && isDialogOpen()) {
+                testWindow.$(".modal.instance .dialog-button")
+                    .last().click();
+                try {
+                    await awaitsFor(function () {
+                        return !isDialogOpen();
+                    }, "dialog to close", 3000);
+                } catch (e) {
+                    // ignore — best-effort cleanup
+                }
+            }
+        });
+
         // --- Helpers ---
 
         async function openTerminal() {
@@ -136,6 +152,16 @@ define(function (require, exports, module) {
          * shell name (e.g. "bash") once process info is fetched.
          */
         async function waitForShellReady() {
+            const termModule = testWindow.brackets.getModule(
+                "extensionsIntegrated/Terminal/main"
+            );
+            // Fail fast if the PTY never started
+            await awaitsFor(function () {
+                const active = termModule._getActiveTerminal();
+                return active && active.isAlive;
+            }, "terminal PTY to be alive", 10000);
+
+            // Then wait for process info
             await awaitsFor(function () {
                 triggerFlyoutRefresh();
                 const title = testWindow.$(
