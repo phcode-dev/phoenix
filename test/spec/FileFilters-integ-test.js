@@ -214,7 +214,8 @@ define(function (require, exports, module) {
                 await openSearchBar();
                 await awaitsFor(async ()=>{
                     await executeCleanSearch("{1}");
-                    return !FindInFiles.searchModel.results[testPath + "/test1.css"];
+                    return !FindInFiles.searchModel.results[testPath + "/test1.css"] &&
+                        !!FindInFiles.searchModel.results[testPath + "/test1.html"];
                     // retry as instant/deferred searches can race with the explicit search
                 }, "Search to exclude css results", 7000, 300);
                 // *.css should have been excluded this time
@@ -329,7 +330,8 @@ define(function (require, exports, module) {
                 _setExcludeFiles("*.css");
                 await awaitsFor(async ()=>{
                     await executeCleanSearch("{1}");
-                    return !FindInFiles.searchModel.results[testPath + "/test1.css"];
+                    return !FindInFiles.searchModel.results[testPath + "/test1.css"] &&
+                        !!FindInFiles.searchModel.results[testPath + "/test1.html"];
                     // retry as instant/deferred searches can race with the explicit search
                 }, "Search to exclude css results", 7000, 300);
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
