@@ -52,6 +52,26 @@
     const RECONNECT_MAX_MS = 5000;
     const DEFAULT_WS_URL = "ws://localhost:38571";
 
+    // --- Trust ring reference (set later via setKernalModeTrust) ---
+    let _kernalModeTrust = null;
+
+    /**
+     * Dismantle the trust ring before reload. Awaits up to 5s, ignores errors.
+     * @return {Promise<void>}
+     */
+    async function _dismantleTrustRing() {
+        try {
+            if (_kernalModeTrust && _kernalModeTrust.dismantleKeyring) {
+                await Promise.race([
+                    _kernalModeTrust.dismantleKeyring(),
+                    new Promise(resolve => setTimeout(resolve, 5000))
+                ]);
+            }
+        } catch (e) {
+            console.error("Error dismantling trust ring before reload:", e);
+        }
+    }
+
     // --- State ---
     let ws = null;
     let logBuffer = [];
@@ -359,7 +379,8 @@
             id: msg.id,
             success: true
         });
-        setTimeout(function () {
+        setTimeout(async function () {
+            await _dismantleTrustRing();
             location.reload();
         }, 100);
     });
@@ -385,6 +406,9 @@
     });
 
     // --- Expose API for AMD module ---
+    // Phoenix builder should never be in prod builds as it exposes the kernal mode trust.
+    // for prod mcp controls, we need to expose this with another framework that has
+    // restricted access to the trust framework.
     window._phoenixBuilder = {
         connect: connect,
         disconnect: disconnect,
@@ -392,7 +416,14 @@
         getInstanceName: getInstanceName,
         sendMessage: sendMessage,
         registerHandler: registerHandler,
-        getLogBuffer: function () { return capturedLogs.slice(); }
+        getLogBuffer: function () { return capturedLogs.slice(); },
+        dismantleTrustRing: _dismantleTrustRing,
+        // Called once by trust_ring.js to pass the trust ring reference
+        // before it is nuked from window. Set-only, no getter.
+        setKernalModeTrust: function (trust) {
+            _kernalModeTrust = trust;
+            delete window._phoenixBuilder.setKernalModeTrust;
+        }
     };
 
     // --- Auto-connect ---

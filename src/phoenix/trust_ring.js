@@ -420,6 +420,11 @@ window.KernalModeTrust = {
     validateDataSignature,
     reinstallCreds
 };
+// Pass the trust ring reference to phoenix-builder (MCP) before it is
+// nuked from window.  The builder needs dismantleKeyring() for reload.
+if (window._phoenixBuilder && window._phoenixBuilder.setKernalModeTrust) {
+    window._phoenixBuilder.setKernalModeTrust(window.KernalModeTrust);
+}
 if(Phoenix.isSpecRunnerWindow){
     window.specRunnerTestKernalModeTrust = window.KernalModeTrust;
 }
