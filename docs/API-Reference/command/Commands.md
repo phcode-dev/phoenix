@@ -627,6 +627,12 @@ Shows current file in OS file explorer
 Shows current file in OS Terminal
 
 **Kind**: global variable  
+<a name="NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL"></a>
+
+## NAVIGATE\_OPEN\_IN\_INTEGRATED\_TERMINAL
+Opens integrated terminal at the selected file/folder path
+
+**Kind**: global variable  
 <a name="NAVIGATE_OPEN_IN_POWERSHELL"></a>
 
 ## NAVIGATE\_OPEN\_IN\_POWERSHELL

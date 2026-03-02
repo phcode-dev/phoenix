@@ -1757,10 +1757,10 @@ define(function (require, exports, module) {
     }
 
     function newPhoenixWindow(cliArgsArray = null, cwd=null) {
-        // Electron needs outerWidth/outerHeight (includes window chrome).
-        // Tauri needs innerWidth/innerHeight.
-        let width = window.__ELECTRON__ ? window.outerWidth : window.innerWidth;
-        let height = window.__ELECTRON__ ? window.outerHeight : window.innerHeight;
+        // Both Electron and Tauri need outerWidth/outerHeight (includes window chrome)
+        // so the new window matches the current window's total size.
+        let width = (window.__ELECTRON__ || window.__TAURI__) ? window.outerWidth : window.innerWidth;
+        let height = (window.__ELECTRON__ || window.__TAURI__) ? window.outerHeight : window.innerHeight;
         Phoenix.app.openNewPhoenixEditorWindow(width, height, cliArgsArray, cwd);
     }
 
