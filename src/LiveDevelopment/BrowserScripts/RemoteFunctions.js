@@ -618,7 +618,8 @@ function RemoteFunctions(config = {}) {
         }
 
         // send cursor movement message to editor so cursor jumps to clicked element
-        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
+        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) &&
+            config.syncSourceAndPreview !== false) {
             MessageBroker.send({
                 "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
                 "nodeID": element.id,
@@ -1314,6 +1315,7 @@ function RemoteFunctions(config = {}) {
         "dismissUIAndCleanupState": dismissUIAndCleanupState,
         "escapeKeyPressInEditor": _handleEscapeKeyPress,
         "getMode": function() { return config.mode; },
+        "isSyncEnabled": function() { return config.syncSourceAndPreview !== false; },
         "suppressDOMEditDismissal": suppressDOMEditDismissal,
         "setHotCornerHidden": function(hidden) {
             if (SHARED_STATE._hotCorner && SHARED_STATE._hotCorner.hotCorner) {
