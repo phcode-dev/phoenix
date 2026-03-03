@@ -192,7 +192,8 @@ define(function (require, exports, module) {
         if (!this.editor) {
             return;
         }
-        if(!_disableHighlightOnCursor){
+        if(!_disableHighlightOnCursor &&
+            PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC) !== false){
             this.updateHighlight();
         }
     };
