@@ -353,11 +353,9 @@ define(function (require, exports, module) {
             items.push(Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW);
         }
 
-        // Only add edit highlight option if edit features are active
-        if (isEditFeaturesActive) {
-            if (!isNotPreviewMode) {
-                items.push("---");
-            }
+        // Only add edit-specific options when in edit mode and edit features are active
+        const isEditMode = currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE;
+        if (isEditFeaturesActive && isEditMode) {
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
             items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
             items.push(Strings.LIVE_PREVIEW_SHOW_SPACING_HANDLES);
