@@ -116,6 +116,12 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE
     });
 
+    // live preview sync source and preview preference
+    const PREFERENCE_LIVE_PREVIEW_SYNC = CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC;
+    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_SYNC, "boolean", true, {
+        description: Strings.LIVE_DEV_SETTINGS_SYNC_SOURCE_AND_PREVIEW_PREFERENCE
+    });
+
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -333,21 +339,29 @@ define(function (require, exports, module) {
 
     function _showModeSelectionDropdown(event) {
         const isEditFeaturesActive = isProEditUser;
+        const currentMode = LiveDevelopment.getCurrentMode();
+        const isNotPreviewMode = currentMode !== LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE;
         const items = [
             Strings.LIVE_PREVIEW_MODE_PREVIEW,
             Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
             Strings.LIVE_PREVIEW_MODE_EDIT
         ];
 
+        // Add sync toggle for highlight and edit modes
+        if (isNotPreviewMode) {
+            items.push("---");
+            items.push(Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW);
+        }
+
         // Only add edit highlight option if edit features are active
         if (isEditFeaturesActive) {
-            items.push("---");
+            if (!isNotPreviewMode) {
+                items.push("---");
+            }
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
             items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
             items.push(Strings.LIVE_PREVIEW_SHOW_SPACING_HANDLES);
         }
-
-        const currentMode = LiveDevelopment.getCurrentMode();
 
         $dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
             if (item === Strings.LIVE_PREVIEW_MODE_PREVIEW) {
@@ -366,6 +380,12 @@ define(function (require, exports, module) {
                     html: `${checkmark}${item}${crownIcon}`,
                     enabled: true
                 };
+            } else if (item === Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW) {
+                const isEnabled = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_SYNC) !== false;
+                if(isEnabled) {
+                    return `✓ ${Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW}`;
+                }
+                return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW}`;
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 const isHoverMode =
                     PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) === CONSTANTS.HIGHLIGHT_HOVER;
@@ -422,6 +442,11 @@ define(function (require, exports, module) {
                         Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "proUpsellDlg", "fail");
                     }
                 }
+            } else if (item === Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW) {
+                // Toggle sync source and preview on/off
+                const currentValue = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_SYNC);
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_SYNC, currentValue === false);
+                return; // Don't dismiss for this option
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 // Don't allow edit highlight toggle if edit features are not active
                 if (!isEditFeaturesActive) {
@@ -1252,11 +1277,15 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_SPACING_HANDLES, function() {
             LiveDevelopment.updateSpacingHandlesConfig();
         });
+        PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_SYNC, function() {
+            LiveDevelopment.updateSyncConfig();
+        });
 
-        // Initialize element highlight, ruler lines, and spacing handles config on startup
+        // Initialize element highlight, ruler lines, spacing handles, and sync config on startup
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
         LiveDevelopment.updateSpacingHandlesConfig();
+        LiveDevelopment.updateSyncConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
