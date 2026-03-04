@@ -517,29 +517,14 @@ define(function (require, exports, module) {
         const notification = new Notification($hud, "hud");
         _activeHUD = notification;
 
-        // Fade in on next frame
-        requestAnimationFrame(function () {
-            $hud.addClass("visible");
-        });
-
-        function closeHUD(reason) {
-            if (!notification.$notification) {
-                return;
-            }
-            notification.$notification = null;
-            _activeHUD = null;
-            $hud.removeClass("visible");
-            function cleanup() {
-                $hud.remove();
-                notification._result.resolve(reason);
-            }
-            $hud.one("transitionend transitioncancel", cleanup);
-            // Safety fallback
-            setTimeout(cleanup, 600);
-        }
-
         notification.close = function (closeType) {
-            closeHUD(closeType || CLOSE_REASON.CLICK_DISMISS);
+            if (!this.$notification) {
+                return this;
+            }
+            this.$notification = null;
+            _activeHUD = null;
+            $hud.remove();
+            this._result.resolve(closeType || CLOSE_REASON.CLICK_DISMISS);
             return this;
         };
 
