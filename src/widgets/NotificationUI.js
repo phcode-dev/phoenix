@@ -480,9 +480,84 @@ define(function (require, exports, module) {
         return notification;
     }
 
+    let _activeHUD = null;
+
+    /**
+     * Shows a large, centered HUD overlay (like macOS volume/brightness indicator) with an icon and label.
+     * The HUD fades in/out and auto-dismisses. Only one HUD is shown at a time — calling this while a
+     * previous HUD is visible replaces it instantly.
+     *
+     * ```js
+     * NotificationUI.showHUD("fa-solid fa-magnifying-glass-plus", "110%");
+     * ```
+     *
+     * @param {string} iconClass Font Awesome class string for the icon (e.g. "fa-solid fa-magnifying-glass-plus").
+     * @param {string} label Text to display below the icon (e.g. "110%").
+     * @param {Object} [options] optional, supported options:
+     *   * `autoCloseTimeS` - Time in seconds after which the HUD auto-closes. Default is 1.
+     * @return {Notification} Object with a done handler that resolves when the HUD closes.
+     * @type {function}
+     */
+    function showHUD(iconClass, label, options = {}) {
+        const autoCloseTimeS = options.autoCloseTimeS !== undefined ? options.autoCloseTimeS : 1;
+
+        // Close any existing HUD immediately
+        if (_activeHUD && _activeHUD.$notification) {
+            _activeHUD.$notification.remove();
+            _activeHUD._result.resolve(CLOSE_REASON.TIMEOUT);
+            _activeHUD.$notification = null;
+        }
+
+        const $hud = $('<div class="hud-overlay">' +
+            '<i class="' + iconClass + '"></i>' +
+            '<div class="hud-label">' + label + '</div>' +
+            '</div>');
+        $("body").append($hud);
+
+        const notification = new Notification($hud, "hud");
+        _activeHUD = notification;
+
+        // Fade in on next frame
+        requestAnimationFrame(function () {
+            $hud.addClass("visible");
+        });
+
+        function closeHUD(reason) {
+            if (!notification.$notification) {
+                return;
+            }
+            notification.$notification = null;
+            _activeHUD = null;
+            $hud.removeClass("visible");
+            function cleanup() {
+                $hud.remove();
+                notification._result.resolve(reason);
+            }
+            $hud.one("transitionend transitioncancel", cleanup);
+            // Safety fallback
+            setTimeout(cleanup, 600);
+        }
+
+        notification.close = function (closeType) {
+            closeHUD(closeType || CLOSE_REASON.CLICK_DISMISS);
+            return this;
+        };
+
+        if (autoCloseTimeS) {
+            setTimeout(function () {
+                if (notification.$notification) {
+                    notification.close(CLOSE_REASON.TIMEOUT);
+                }
+            }, autoCloseTimeS * 1000);
+        }
+
+        return notification;
+    }
+
     exports.createFromTemplate = createFromTemplate;
     exports.createToastFromTemplate = createToastFromTemplate;
     exports.showToastOn = showToastOn;
+    exports.showHUD = showHUD;
     exports.CLOSE_REASON = CLOSE_REASON;
     exports.NOTIFICATION_STYLES_CSS_CLASS = NOTIFICATION_STYLES_CSS_CLASS;
 });
