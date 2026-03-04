@@ -1756,11 +1756,8 @@ define(function (require, exports, module) {
         );
     }
 
-    function newPhoenixWindow(cliArgsArray = null, cwd=null) {
-        // Both Electron and Tauri need outerWidth/outerHeight (includes window chrome)
-        // so the new window matches the current window's total size.
-        let width = (window.__ELECTRON__ || window.__TAURI__) ? window.outerWidth : window.innerWidth;
-        let height = (window.__ELECTRON__ || window.__TAURI__) ? window.outerHeight : window.innerHeight;
+    async function newPhoenixWindow(cliArgsArray = null, cwd=null) {
+        const {width, height} = await brackets.app.getWindowSize();
         Phoenix.app.openNewPhoenixEditorWindow(width, height, cliArgsArray, cwd);
     }
 
@@ -1864,7 +1861,7 @@ define(function (require, exports, module) {
                 return;
             }
         }
-        newPhoenixWindow(args, cwd);
+        await newPhoenixWindow(args, cwd);
     }
 
     function handleFileNewWindow() {

@@ -881,6 +881,34 @@ Phoenix.app = {
             return window.electronAPI.zoomWindow(scaleFactor);
         }
     },
+    getZoomFactor: function () {
+        return (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
+    },
+    /**
+     * Returns the logical outer size of the current window (includes title bar and window chrome).
+     * @return {Promise<{width: number, height: number}>}
+     */
+    getWindowSize: async function () {
+        if(window.__TAURI__) {
+            const currentWindow = window.__TAURI__.window.getCurrent();
+            const outerSize = await currentWindow.outerSize();
+            const scaleFactor = await currentWindow.scaleFactor();
+            return {
+                width: Math.round(outerSize.width / scaleFactor),
+                height: Math.round(outerSize.height / scaleFactor)
+            };
+        }
+        if(window.__ELECTRON__) {
+            return {
+                width: window.outerWidth,
+                height: window.outerHeight
+            };
+        }
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+    },
     _openUrlInBrowserWin: function (url, browser) {
         // private API for internal use only. May be removed at any time.
         // Please use NodeUtils.openUrlInBrowser for a platform independent equivalent of this.
