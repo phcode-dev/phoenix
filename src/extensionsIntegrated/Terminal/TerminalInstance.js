@@ -105,6 +105,8 @@ define(function (require, exports, module) {
         this.$container = null;
         this._resizeTimeout = null;
         this._disposed = false;
+        this._webglAddon = null;
+        this._lastDpr = null;
 
         // Bound event handlers for cleanup
         this._onTerminalData = this._onTerminalData.bind(this);
@@ -144,11 +146,7 @@ define(function (require, exports, module) {
         this.terminal.open(this.$container[0]);
 
         // Load WebGL renderer for better performance
-        try {
-            this.terminal.loadAddon(new WebglAddon());
-        } catch (e) {
-            console.warn("Terminal: WebglAddon failed to load, using default renderer:", e);
-        }
+        this._loadWebGLAddon();
 
         // Fit to container
         this._fit();
@@ -271,6 +269,22 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Load (or reload) the WebGL renderer addon, recording the current DPR
+     * so we can detect changes later and recreate the addon at the correct
+     * resolution (e.g. after a zoom change).
+     */
+    TerminalInstance.prototype._loadWebGLAddon = function () {
+        try {
+            this._webglAddon = new WebglAddon();
+            this.terminal.loadAddon(this._webglAddon);
+            this._lastDpr = window.devicePixelRatio;
+        } catch (e) {
+            console.warn("Terminal: WebglAddon failed to load, using default renderer:", e);
+            this._webglAddon = null;
+        }
+    };
+
+    /**
      * Fit the terminal to its container.
      *
      * Before reflowing, the prompt area is cleared so that stale wrapped
@@ -286,6 +300,15 @@ define(function (require, exports, module) {
     TerminalInstance.prototype._fit = function () {
         if (!this.fitAddon || !this.$container || !this.$container.is(":visible")) {
             return;
+        }
+
+        // When the effective DPR changes (e.g. after a webview zoom change),
+        // clear the glyph texture atlas so the WebGL renderer rebuilds it at
+        // the new resolution. The subsequent fit() will resize the canvas.
+        const currentDpr = window.devicePixelRatio;
+        if (this._lastDpr !== null && this._lastDpr !== currentDpr) {
+            this._lastDpr = currentDpr;
+            this.terminal.clearTextureAtlas();
         }
 
         try {
@@ -416,6 +439,10 @@ define(function (require, exports, module) {
 
         // Dispose xterm
         clearTimeout(this._resizeTimeout);
+        if (this._webglAddon) {
+            this._webglAddon.dispose();
+            this._webglAddon = null;
+        }
         if (this.terminal) {
             this.terminal.dispose();
             this.terminal = null;

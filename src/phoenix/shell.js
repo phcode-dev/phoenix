@@ -203,7 +203,7 @@ function _cropDataUrlToRect(dataUrl, rect) {
         const img = new Image();
         img.onload = function () {
             try {
-                const dpr = window.devicePixelRatio || 1;
+                const dpr = window._origDevicePixelRatio || window.devicePixelRatio || 1;
                 const canvas = document.createElement("canvas");
                 const sx = Math.round(rect.x * dpr);
                 const sy = Math.round(rect.y * dpr);
@@ -859,6 +859,17 @@ Phoenix.app = {
         if(scaleFactor < .1 || scaleFactor > 2) {
             throw new Error("zoomWebView scale factor should be between .1 and 2");
         }
+        // Native webview zoom (Tauri/Electron) does not update
+        // window.devicePixelRatio, causing canvas-based renderers
+        // (e.g. xterm.js WebGL) to render at the wrong resolution.
+        // Override the getter so it reflects the effective DPR.
+        if(window._origDevicePixelRatio === undefined) {
+            window._origDevicePixelRatio = window.devicePixelRatio;
+        }
+        Object.defineProperty(window, 'devicePixelRatio', {
+            get() { return window._origDevicePixelRatio * scaleFactor; },
+            configurable: true
+        });
         if(window.__TAURI__) {
             return window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: scaleFactor});
         }
