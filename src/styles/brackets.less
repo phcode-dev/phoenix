@@ -3409,6 +3409,41 @@ label input {
     opacity: 1;
 }
 
+/* HUD overlay: centered macOS-style notification (zoom, volume, etc.) */
+.hud-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 120px;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.85);
+    color: #e0e0e0;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    user-select: none;
+    i {
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+    .hud-label {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+}
+.hud-overlay.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
 .inline-toast kbd {
     display: inline-block;
     padding: 1px 5px;

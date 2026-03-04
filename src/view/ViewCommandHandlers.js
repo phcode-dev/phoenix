@@ -49,7 +49,8 @@ define(function (require, exports, module) {
         KeyBindingManager   = require("command/KeyBindingManager"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         _                   = require("thirdparty/lodash"),
-        FontRuleTemplate    = require("text!view/fontrules/font-based-rules.less");
+        FontRuleTemplate    = require("text!view/fontrules/font-based-rules.less"),
+        NotificationUI      = require("widgets/NotificationUI");
 
     var prefs = PreferencesManager.getExtensionPrefs("fonts");
 
@@ -370,14 +371,26 @@ define(function (require, exports, module) {
         }
     }
 
+    function _showZoomHUD(zoomFactor, zoomingIn) {
+        const pct = Math.round(zoomFactor * 100);
+        const icon = zoomingIn
+            ? "fa-solid fa-magnifying-glass-plus"
+            : "fa-solid fa-magnifying-glass-minus";
+        NotificationUI.showHUD(icon, pct + "%", {
+            autoCloseTimeS: 1
+        });
+    }
+
     function _handleZoomIn(event) {
         if(!Phoenix.isNativeApp) {
             return _handleBrowserZoom(event);
         }
         const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
         if(currentZoom < MAX_ZOOM_SCALE){
-            prefs.set(PREF_DESKTOP_ZOOM_SCALE, currentZoom + 0.1);
-            PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, currentZoom + 0.1);
+            const newZoom = currentZoom + 0.1;
+            prefs.set(PREF_DESKTOP_ZOOM_SCALE, newZoom);
+            PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, newZoom);
+            _showZoomHUD(newZoom, true);
         }
     }
 
@@ -387,8 +400,10 @@ define(function (require, exports, module) {
         }
         const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
         if(currentZoom > MIN_ZOOM_SCALE){
-            prefs.set(PREF_DESKTOP_ZOOM_SCALE, currentZoom - 0.1);
-            PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, currentZoom - 0.1);
+            const newZoom = currentZoom - 0.1;
+            prefs.set(PREF_DESKTOP_ZOOM_SCALE, newZoom);
+            PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, newZoom);
+            _showZoomHUD(newZoom, false);
         }
     }
 
