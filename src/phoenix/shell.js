@@ -892,10 +892,15 @@ Phoenix.app = {
         if(window.__TAURI__) {
             const currentWindow = window.__TAURI__.window.getCurrent();
             const outerSize = await currentWindow.outerSize();
+            const innerSize = await currentWindow.innerSize();
+            let size = outerSize;
+            if(Phoenix.platform !== 'mac'){
+                size = innerSize;
+            }
             const scaleFactor = await currentWindow.scaleFactor();
             return {
-                width: Math.round(outerSize.width / scaleFactor),
-                height: Math.round(outerSize.height / scaleFactor)
+                width: Math.round(size.width / scaleFactor),
+                height: Math.round(size.height / scaleFactor)
             };
         }
         if(window.__ELECTRON__) {
