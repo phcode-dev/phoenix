@@ -859,17 +859,21 @@ Phoenix.app = {
         if(scaleFactor < .1 || scaleFactor > 2) {
             throw new Error("zoomWebView scale factor should be between .1 and 2");
         }
-        // Native webview zoom (Tauri/Electron) does not update
+        // On macOS + Tauri, native webview zoom does not update
         // window.devicePixelRatio, causing canvas-based renderers
         // (e.g. xterm.js WebGL) to render at the wrong resolution.
         // Override the getter so it reflects the effective DPR.
-        if(window._origDevicePixelRatio === undefined) {
-            window._origDevicePixelRatio = window.devicePixelRatio;
+        // Limited to macOS Tauri — Electron and other platforms
+        // handle DPR correctly or conflict with this override.
+        if(window.__TAURI__ && Phoenix.platform === "mac") {
+            if(window._origDevicePixelRatio === undefined) {
+                window._origDevicePixelRatio = window.devicePixelRatio;
+            }
+            Object.defineProperty(window, 'devicePixelRatio', {
+                get() { return window._origDevicePixelRatio * scaleFactor; },
+                configurable: true
+            });
         }
-        Object.defineProperty(window, 'devicePixelRatio', {
-            get() { return window._origDevicePixelRatio * scaleFactor; },
-            configurable: true
-        });
         if(window.__TAURI__) {
             return window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: scaleFactor});
         }
