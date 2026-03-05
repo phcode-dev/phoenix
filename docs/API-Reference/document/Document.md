@@ -27,11 +27,11 @@ const Document = brackets.getModule("document/Document")
         * [.replaceRange(text, start, end, origin)](#Document+replaceRange)
         * [.getRange(start, end)](#Document+getRange) ⇒ <code>string</code>
         * [.getLine(Zero-based)](#Document+getLine) ⇒ <code>string</code>
-        * [.posFromIndex(index)](#Document+posFromIndex) ⇒ <code>Object</code>
+        * [.posFromIndex(index)](#Document+posFromIndex) ⇒ [<code>TextPosition</code>](#TextPosition)
         * [.batchOperation(doOperation)](#Document+batchOperation)
         * [.notifySaved()](#Document+notifySaved)
-        * [.adjustPosForChange(pos, textLines, start, end)](#Document+adjustPosForChange) ⇒ <code>Object</code>
-        * [.doMultipleEdits(edits, origin)](#Document+doMultipleEdits) ⇒ <code>Object</code>
+        * [.adjustPosForChange(pos, textLines, start, end)](#Document+adjustPosForChange) ⇒ [<code>TextPosition</code>](#TextPosition)
+        * [.doMultipleEdits(edits, origin)](#Document+doMultipleEdits) ⇒ [<code>Array.&lt;SelectionRange&gt;</code>](#SelectionRange)
         * [.getLanguage()](#Document+getLanguage) ⇒ <code>Language</code>
         * [.isUntitled()](#Document+isUntitled) ⇒ <code>boolean</code>
         * [.reload()](#Document+reload) ⇒ <code>promise</code>
@@ -48,7 +48,7 @@ Document dispatches these events:
 
 __change__ -- When the text of the editor changes (including due to undo/redo).
 
-Passes ({'Document'}, {'ChangeList'}), where ChangeList is an array
+Passes (`Document`, `ChangeList`), where ChangeList is an array
 of change record objects. Each change record looks like:
 ```js
     { from: start of change, expressed as {line: <line number>, ch: <character offset>},
@@ -214,8 +214,8 @@ fixed when we migrate to use CodeMirror's native document-linking functionality.
 | Param | Type | Description |
 | --- | --- | --- |
 | text | <code>string</code> | Text to insert or replace the range with |
-| start | <code>Object</code> | Start of range, inclusive (if 'to' specified) or insertion point (if not) |
-| end | <code>Object</code> | End of range, exclusive; optional |
+| start | [<code>TextPosition</code>](#TextPosition) | Start of range, inclusive (if 'to' specified) or insertion point (if not) |
+| end | [<code>TextPosition</code>](#TextPosition) | End of range, exclusive; optional |
 | origin | <code>string</code> | Optional string used to batch consecutive edits for undo.     If origin starts with "+", then consecutive edits with the same origin will be batched for undo if     they are close enough together in time.     If origin starts with "*", then all consecutive edit with the same origin will be batched for     undo.     Edits with origins starting with other characters will not be batched.     (Note that this is a higher level of batching than batchOperation(), which already batches all     edits within it for undo. Origin batching works across operations.) |
 
 <a name="Document+getRange"></a>
@@ -227,8 +227,8 @@ Returns the characters in the given range. Line endings are normalized to '\n'.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| start | <code>Object</code> | Start of range, inclusive |
-| end | <code>Object</code> | End of range, exclusive |
+| start | [<code>TextPosition</code>](#TextPosition) | Start of range, inclusive |
+| end | [<code>TextPosition</code>](#TextPosition) | End of range, exclusive |
 
 <a name="Document+getLine"></a>
 
@@ -243,9 +243,9 @@ Returns the text of the given line (excluding any line ending characters)
 
 <a name="Document+posFromIndex"></a>
 
-### document.posFromIndex(index) ⇒ <code>Object</code>
+### document.posFromIndex(index) ⇒ [<code>TextPosition</code>](#TextPosition)
 Given a character index within the document text (assuming \n newlines),
-returns the corresponding {line, ch} position. Works whether or not
+returns the corresponding `{line, ch}` position. Works whether or not
 a master editor is attached.
 
 **Kind**: instance method of [<code>Document</code>](#Document)  
@@ -275,7 +275,7 @@ document not dirty and notifies listeners of the save.
 **Kind**: instance method of [<code>Document</code>](#Document)  
 <a name="Document+adjustPosForChange"></a>
 
-### document.adjustPosForChange(pos, textLines, start, end) ⇒ <code>Object</code>
+### document.adjustPosForChange(pos, textLines, start, end) ⇒ [<code>TextPosition</code>](#TextPosition)
 Adjusts a given position taking a given replaceRange-type edit into account.
 If the position is within the original edit range (start and end inclusive),
 it gets pushed to the end of the content that replaced the range. Otherwise,
@@ -283,18 +283,18 @@ if it's after the edit, it gets adjusted so it refers to the same character
 it did before the edit.
 
 **Kind**: instance method of [<code>Document</code>](#Document)  
-**Returns**: <code>Object</code> - The adjusted position.  
+**Returns**: [<code>TextPosition</code>](#TextPosition) - The adjusted position.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| pos | <code>Object</code> | The position to adjust. |
+| pos | [<code>TextPosition</code>](#TextPosition) | The position to adjust. |
 | textLines | <code>Array.&lt;string&gt;</code> | The text of the change, split into an array of lines. |
-| start | <code>Object</code> | The start of the edit. |
-| end | <code>Object</code> | The end of the edit. |
+| start | [<code>TextPosition</code>](#TextPosition) | The start of the edit. |
+| end | [<code>TextPosition</code>](#TextPosition) | The end of the edit. |
 
 <a name="Document+doMultipleEdits"></a>
 
-### document.doMultipleEdits(edits, origin) ⇒ <code>Object</code>
+### document.doMultipleEdits(edits, origin) ⇒ [<code>Array.&lt;SelectionRange&gt;</code>](#SelectionRange)
 Helper function for edit operations that operate on multiple selections. Takes an "edit list"
 that specifies a list of replaceRanges that should occur, but where all the positions are with
 respect to the document state before all the edits (i.e., you don't have to figure out how to fix
@@ -312,11 +312,11 @@ then this function will adjust them as necessary for the effects of other edits,
 flat list of all the selections, suitable for passing to `setSelections()`.
 
 **Kind**: instance method of [<code>Document</code>](#Document)  
-**Returns**: <code>Object</code> - The list of passed selections adjusted for the performed edits, if any.  
+**Returns**: [<code>Array.&lt;SelectionRange&gt;</code>](#SelectionRange) - The list of passed selections adjusted for the performed edits, if any.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| edits | <code>Object</code> | Specifies the list of edits to perform in a manner similar to CodeMirror's `replaceRange`. This array     will be mutated.     `edit` is the edit to perform:         `text` will replace the current contents of the range between `start` and `end`.         If `end` is unspecified, the text is inserted at `start`.         `start` and `end` should be positions relative to the document *ignoring* all other edit descriptions         (i.e., as if you were only performing this one edit on the document).     If any of the edits overlap, an error will be thrown.     If `selection` is specified, it should be a selection associated with this edit.          If `isBeforeEdit` is set on the selection, the selection will be fixed up for this edit.          If not, it won't be fixed up for this edit, meaning it should be expressed in terms of          the document state after this individual edit is performed (ignoring any other edits).          Note that if you were planning on just specifying `isBeforeEdit` for every selection, you can          accomplish the same thing by simply not passing any selections and letting the editor update          the existing selections automatically.     Note that `edit` and `selection` can each be either an individual edit/selection, or a group of     edits/selections to apply in order. This can be useful if you need to perform multiple edits in a row     and then specify a resulting selection that shouldn't be fixed up for any of those edits (but should be     fixed up for edits related to other selections). It can also be useful if you have several selections     that should ignore the effects of a given edit because you've fixed them up already (this commonly happens     with line-oriented edits where multiple cursors on the same line should be ignored, but still tracked).     Within an edit group, edit positions must be specified relative to previous edits within that group. Also,     the total bounds of edit groups must not overlap (e.g. edits in one group can't surround an edit from another group). |
+| edits | <code>Array.&lt;Object&gt;</code> | Specifies the list of edits to perform in a manner similar to CodeMirror's `replaceRange`. This array     will be mutated.     `edit` is the edit to perform:         `text` will replace the current contents of the range between `start` and `end`.         If `end` is unspecified, the text is inserted at `start`.         `start` and `end` should be positions relative to the document *ignoring* all other edit descriptions         (i.e., as if you were only performing this one edit on the document).     If any of the edits overlap, an error will be thrown.     If `selection` is specified, it should be a selection associated with this edit.          If `isBeforeEdit` is set on the selection, the selection will be fixed up for this edit.          If not, it won't be fixed up for this edit, meaning it should be expressed in terms of          the document state after this individual edit is performed (ignoring any other edits).          Note that if you were planning on just specifying `isBeforeEdit` for every selection, you can          accomplish the same thing by simply not passing any selections and letting the editor update          the existing selections automatically.     Note that `edit` and `selection` can each be either an individual edit/selection, or a group of     edits/selections to apply in order. This can be useful if you need to perform multiple edits in a row     and then specify a resulting selection that shouldn't be fixed up for any of those edits (but should be     fixed up for edits related to other selections). It can also be useful if you have several selections     that should ignore the effects of a given edit because you've fixed them up already (this commonly happens     with line-oriented edits where multiple cursors on the same line should be ignored, but still tracked).     Within an edit group, edit positions must be specified relative to previous edits within that group. Also,     the total bounds of edit groups must not overlap (e.g. edits in one group can't surround an edit from another group). |
 | origin | <code>string</code> | An optional edit origin that's passed through to each replaceRange(). |
 
 <a name="Document+getLanguage"></a>
@@ -347,3 +347,27 @@ Reloads the document from FileSystem
 Normalizes line endings the same way CodeMirror would
 
 **Kind**: static method of [<code>Document</code>](#Document)  
+<a name="TextPosition"></a>
+
+## TextPosition : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| line | <code>number</code> | Zero-based line number |
+| ch | <code>number</code> | Zero-based character offset |
+
+<a name="SelectionRange"></a>
+
+## SelectionRange : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| start | [<code>TextPosition</code>](#TextPosition) | Start of the selection |
+| end | [<code>TextPosition</code>](#TextPosition) | End of the selection |
+| primary | <code>boolean</code> | Whether this is the primary selection |
+| reversed | <code>boolean</code> | Whether the selection is reversed |
+
