@@ -34,6 +34,20 @@ define(function (require, exports, module) {
         _ = require("thirdparty/lodash");
 
     /**
+     * @typedef {Object} TextPosition
+     * @property {number} line - Zero-based line number
+     * @property {number} ch - Zero-based character offset
+     */
+
+    /**
+     * @typedef {Object} SelectionRange
+     * @property {TextPosition} start - Start of the selection
+     * @property {TextPosition} end - End of the selection
+     * @property {boolean} primary - Whether this is the primary selection
+     * @property {boolean} reversed - Whether the selection is reversed
+     */
+
+    /**
      * Model for the contents of a single file and its current modification state.
      * See DocumentManager documentation for important usage notes.
      *
@@ -41,7 +55,7 @@ define(function (require, exports, module) {
      *
      * __change__ -- When the text of the editor changes (including due to undo/redo).
      *
-     * Passes ({'Document'}, {'ChangeList'}), where ChangeList is an array
+     * Passes (`Document`, `ChangeList`), where ChangeList is an array
      * of change record objects. Each change record looks like:
      *```js
      *     { from: start of change, expressed as {line: <line number>, ch: <character offset>},
@@ -454,8 +468,8 @@ define(function (require, exports, module) {
      * fixed when we migrate to use CodeMirror's native document-linking functionality.
      *
      * @param {!string} text  Text to insert or replace the range with
-     * @param {!{line:number, ch:number}} start  Start of range, inclusive (if 'to' specified) or insertion point (if not)
-     * @param {?{line:number, ch:number}} end  End of range, exclusive; optional
+     * @param {!TextPosition} start  Start of range, inclusive (if 'to' specified) or insertion point (if not)
+     * @param {?TextPosition} end  End of range, exclusive; optional
      * @param {?string} origin  Optional string used to batch consecutive edits for undo.
      *     If origin starts with "+", then consecutive edits with the same origin will be batched for undo if
      *     they are close enough together in time.
@@ -473,8 +487,8 @@ define(function (require, exports, module) {
 
     /**
      * Returns the characters in the given range. Line endings are normalized to '\n'.
-     * @param {!{line:number, ch:number}} start  Start of range, inclusive
-     * @param {!{line:number, ch:number}} end  End of range, exclusive
+     * @param {!TextPosition} start  Start of range, inclusive
+     * @param {!TextPosition} end  End of range, exclusive
      * @return {!string}
      */
     Document.prototype.getRange = function (start, end) {
@@ -494,10 +508,10 @@ define(function (require, exports, module) {
 
     /**
      * Given a character index within the document text (assuming \n newlines),
-     * returns the corresponding {line, ch} position. Works whether or not
+     * returns the corresponding `{line, ch}` position. Works whether or not
      * a master editor is attached.
      * @param {number} index - Zero-based character offset
-     * @return {{line: number, ch: number}}
+     * @return {TextPosition}
      */
     Document.prototype.posFromIndex = function (index) {
         if (this._masterEditor) {
@@ -607,11 +621,11 @@ define(function (require, exports, module) {
      * it gets pushed to the end of the content that replaced the range. Otherwise,
      * if it's after the edit, it gets adjusted so it refers to the same character
      * it did before the edit.
-     * @param {!{line:number, ch: number}} pos The position to adjust.
+     * @param {!TextPosition} pos The position to adjust.
      * @param {!Array.<string>} textLines The text of the change, split into an array of lines.
-     * @param {!{line: number, ch: number}} start The start of the edit.
-     * @param {!{line: number, ch: number}} end The end of the edit.
-     * @return {{line: number, ch: number}} The adjusted position.
+     * @param {!TextPosition} start The start of the edit.
+     * @param {!TextPosition} end The end of the edit.
+     * @return {TextPosition} The adjusted position.
      */
     Document.prototype.adjustPosForChange = function (pos, textLines, start, end) {
         // Same as CodeMirror.adjustForChange(), but that's a private function
@@ -662,10 +676,7 @@ define(function (require, exports, module) {
      * then this function will adjust them as necessary for the effects of other edits, and then return a
      * flat list of all the selections, suitable for passing to `setSelections()`.
      *
-     * @param {!{edit: {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined}
-    *                        | {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined},
-    *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number},
-    *                              primary:boolean, reversed: boolean, isBeforeEdit: boolean} | undefined}} edits
+     * @param {!Array.<Object>} edits
     *     Specifies the list of edits to perform in a manner similar to CodeMirror's `replaceRange`. This array
     *     will be mutated.
     *
@@ -694,7 +705,7 @@ define(function (require, exports, module) {
     *     the total bounds of edit groups must not overlap (e.g. edits in one group can't surround an edit from another group).
     *
     * @param {?string} origin An optional edit origin that's passed through to each replaceRange().
-    * @return {{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean[]}}
+    * @return {Array.<SelectionRange>}
     *     The list of passed selections adjusted for the performed edits, if any.
     */
 
