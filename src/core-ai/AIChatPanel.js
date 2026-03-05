@@ -443,6 +443,10 @@ define(function (require, exports, module) {
                     }
                     imageFound = true;
                     const blob = item.getAsFile();
+                    // Capture mediaType synchronously — DataTransferItem properties
+                    // become invalid after the paste event handler returns, but
+                    // the File object's type persists across the async boundary.
+                    const mediaType = blob.type || item.type;
                     const reader = new FileReader();
                     reader.onload = function (ev) {
                         const dataUrl = ev.target.result;
@@ -454,7 +458,7 @@ define(function (require, exports, module) {
                                 _addImageIfUnique(resized.dataUrl, resized.mediaType, resized.base64Data);
                             });
                         } else {
-                            _addImageIfUnique(dataUrl, item.type, base64Data);
+                            _addImageIfUnique(dataUrl, mediaType, base64Data);
                         }
                     };
                     reader.readAsDataURL(blob);
