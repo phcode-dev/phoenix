@@ -318,6 +318,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     const queryOptions = {
         cwd: projectPath || process.cwd(),
         maxTurns: undefined,
+        stderr: (data) => console.log("[AI stderr]", data),
         allowedTools: [
             "Read", "Edit", "Write", "Glob", "Grep", "Bash",
             "AskUserQuestion", "Task",
@@ -584,10 +585,27 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         let sdkPrompt = prompt;
         if (images && images.length > 0) {
             const contentBlocks = [{ type: "text", text: prompt }];
-            images.forEach(function (img) {
+            images.forEach(function (img, idx) {
+                // Infer media type from base64 header if missing
+                let mediaType = img.mediaType;
+                if (!mediaType && img.base64Data) {
+                    if (img.base64Data.startsWith("iVBOR")) {
+                        mediaType = "image/png";
+                    } else if (img.base64Data.startsWith("/9j/")) {
+                        mediaType = "image/jpeg";
+                    } else if (img.base64Data.startsWith("R0lGOD")) {
+                        mediaType = "image/gif";
+                    } else if (img.base64Data.startsWith("UklGR")) {
+                        mediaType = "image/webp";
+                    } else {
+                        mediaType = "image/png";
+                    }
+                }
+                _log("Image[" + idx + "]:", "mediaType=" + mediaType,
+                    "base64Len=" + (img.base64Data ? img.base64Data.length : "null"));
                 contentBlocks.push({
                     type: "image",
-                    source: { type: "base64", media_type: img.mediaType, data: img.base64Data }
+                    source: { type: "base64", media_type: mediaType, data: img.base64Data }
                 });
             });
             sdkPrompt = (async function* () {
