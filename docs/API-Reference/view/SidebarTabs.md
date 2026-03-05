@@ -33,7 +33,7 @@ cached jQuery/DOM references held by extensions remain valid.
     * [.removeTab(id)](#module_view/SidebarTabs..removeTab) ⇒ <code>boolean</code>
     * [.setActiveTab(id)](#module_view/SidebarTabs..setActiveTab)
     * [.getActiveTab()](#module_view/SidebarTabs..getActiveTab) ⇒ <code>string</code>
-    * [.getAllTabs()](#module_view/SidebarTabs..getAllTabs) ⇒ <code>Array.&lt;{id: string, label: string, iconClass: string, priority: number}&gt;</code>
+    * [.TabDescriptor](#module_view/SidebarTabs..TabDescriptor) ⇒ <code>Array.&lt;TabDescriptor&gt;</code>
 
 <a name="module_view/SidebarTabs..SIDEBAR_TAB_FILES"></a>
 
@@ -146,9 +146,18 @@ tab, hides all others.
 Get the currently active tab id.
 
 **Kind**: inner method of [<code>view/SidebarTabs</code>](#module_view/SidebarTabs)  
-<a name="module_view/SidebarTabs..getAllTabs"></a>
+<a name="module_view/SidebarTabs..TabDescriptor"></a>
 
-### view/SidebarTabs.getAllTabs() ⇒ <code>Array.&lt;{id: string, label: string, iconClass: string, priority: number}&gt;</code>
+### view/SidebarTabs.TabDescriptor ⇒ <code>Array.&lt;TabDescriptor&gt;</code>
 Get an array of all registered tab descriptors.
 
-**Kind**: inner method of [<code>view/SidebarTabs</code>](#module_view/SidebarTabs)  
+**Kind**: inner typedef of [<code>view/SidebarTabs</code>](#module_view/SidebarTabs)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | Unique tab identifier |
+| label | <code>string</code> | Display text shown in the tab bar |
+| iconClass | <code>string</code> | Icon class string |
+| priority | <code>number</code> | Sort priority (lower = further left) |
+

@@ -460,7 +460,13 @@ define(function (require, exports, module) {
 
     /**
      * Get an array of all registered tab descriptors.
-     * @return {Array.<{id: string, label: string, iconClass: string, priority: number}>}
+     * @typedef {Object} TabDescriptor
+     * @property {string} id - Unique tab identifier
+     * @property {string} label - Display text shown in the tab bar
+     * @property {string} iconClass - Icon class string
+     * @property {number} priority - Sort priority (lower = further left)
+     *
+     * @return {Array<TabDescriptor>}
      */
     function getAllTabs() {
         return _tabs.map(function (tab) {
