@@ -85,6 +85,18 @@
     }
 }
 
+/* Show scrollbar on all sidebar children when hovering anywhere on the sidebar */
+.quiet-scrollbars#sidebar:hover {
+    .open-files-container::-webkit-scrollbar-thumb,
+    #project-files-container::-webkit-scrollbar-thumb,
+    .ai-chat-messages::-webkit-scrollbar-thumb,
+    .ai-session-history-dropdown::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.6) inset;
+        border: 2px solid transparent;
+    }
+}
+
 .platform-linux, .platform-mac {
     // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
 
