@@ -24,6 +24,7 @@ define(function (require, exports, module) {
 
     const ThemeManager = require("view/ThemeManager"),
         NativeApp = require("utils/NativeApp"),
+        EditorManager = require("editor/EditorManager"),
         utils = require("./utils");
 
     let _active = false;
@@ -35,11 +36,14 @@ define(function (require, exports, module) {
     let _syncingFromIframe = false;
     let _iframeReady = false;
     let _debounceTimer = null;
+    let _scrollSyncTimer = null;
     let _messageHandler = null;
     let _docChangeHandler = null;
     let _themeChangeHandler = null;
+    let _cursorHandler = null;
 
     const DEBOUNCE_TO_IFRAME_MS = 150;
+    const SCROLL_SYNC_DEBOUNCE_MS = 100;
 
     /**
      * Start syncing for the given document and iframe.
@@ -86,11 +90,25 @@ define(function (require, exports, module) {
             case "mdviewrContentChanged":
                 _onIframeContentChanged(data);
                 break;
+            case "mdviewrUndo":
+                _handleUndo();
+                break;
+            case "mdviewrRedo":
+                _handleRedo();
+                break;
             case "mdviewrEditModeChanged":
                 // Could be used to sync edit mode UI state in Phoenix if needed
                 break;
             case "embeddedIframeFocusEditor":
+                if (data.sourceLine != null) {
+                    _scrollCMToLine(data.sourceLine);
+                }
                 utils.focusActiveEditorIfFocusInLivePreview();
+                break;
+            case "mdviewrScrollSync":
+                if (data.sourceLine != null) {
+                    _scrollCMToLine(data.sourceLine);
+                }
                 break;
             case "embeddedIframeHrefClick":
                 _handleHrefClick(data);
@@ -123,6 +141,21 @@ define(function (require, exports, module) {
         };
         ThemeManager.on("themeChange", _themeChangeHandler);
 
+        // Listen for cursor activity in CM5 for scroll sync (CM5 → iframe)
+        _cursorHandler = function () {
+            if (_syncingFromIframe || !_iframeReady) {
+                return;
+            }
+            clearTimeout(_scrollSyncTimer);
+            _scrollSyncTimer = setTimeout(function () {
+                _syncScrollToIframe();
+            }, SCROLL_SYNC_DEBOUNCE_MS);
+        };
+        const cm = _getCM();
+        if (cm) {
+            cm.on("cursorActivity", _cursorHandler);
+        }
+
         // If iframe is already ready (reusing same iframe), send content immediately
         if (_iframeReady) {
             _sendContent();
@@ -140,6 +173,14 @@ define(function (require, exports, module) {
         }
 
         clearTimeout(_debounceTimer);
+        clearTimeout(_scrollSyncTimer);
+
+        if (_cursorHandler) {
+            const cm = _getCM();
+            if (cm) {
+                cm.off("cursorActivity", _cursorHandler);
+            }
+        }
 
         if (_doc && _docChangeHandler) {
             _doc.off("change", _docChangeHandler);
@@ -160,6 +201,7 @@ define(function (require, exports, module) {
         _docChangeHandler = null;
         _messageHandler = null;
         _themeChangeHandler = null;
+        _cursorHandler = null;
     }
 
     /**
@@ -248,6 +290,46 @@ define(function (require, exports, module) {
 
     // --- iframe → Phoenix ---
 
+    /**
+     * Apply new text to the CM5 editor using a minimal diff so that the undo stack
+     * records only the changed region instead of a full-document replacement.
+     */
+    function _applyDiffToEditor(newText) {
+        const cm = _getCM();
+        if (!cm) {
+            return;
+        }
+
+        const oldText = cm.getValue();
+        if (oldText === newText) {
+            return;
+        }
+
+        // Find first differing character
+        let prefixLen = 0;
+        const minLen = Math.min(oldText.length, newText.length);
+        while (prefixLen < minLen && oldText[prefixLen] === newText[prefixLen]) {
+            prefixLen++;
+        }
+
+        // Find last differing character (from the end)
+        let oldSuffix = oldText.length;
+        let newSuffix = newText.length;
+        while (oldSuffix > prefixLen && newSuffix > prefixLen &&
+               oldText[oldSuffix - 1] === newText[newSuffix - 1]) {
+            oldSuffix--;
+            newSuffix--;
+        }
+
+        const fromPos = cm.posFromIndex(prefixLen);
+        const toPos = cm.posFromIndex(oldSuffix);
+        const replacement = newText.substring(prefixLen, newSuffix);
+
+        _syncingFromIframe = true;
+        cm.replaceRange(replacement, fromPos, toPos, "+mdviewr");
+        _syncingFromIframe = false;
+    }
+
     function _onIframeContentChanged(data) {
         if (!_active || !_doc) {
             return;
@@ -264,9 +346,27 @@ define(function (require, exports, module) {
             _lastReceivedSyncId = remoteSyncId;
         }
 
-        _syncingFromIframe = true;
-        _doc.setText(markdown);
-        _syncingFromIframe = false;
+        _applyDiffToEditor(markdown);
+    }
+
+    function _handleUndo() {
+        if (!_active) {
+            return;
+        }
+        const cm = _getCM();
+        if (cm) {
+            cm.undo();
+        }
+    }
+
+    function _handleRedo() {
+        if (!_active) {
+            return;
+        }
+        const cm = _getCM();
+        if (cm) {
+            cm.redo();
+        }
     }
 
     function _handleHrefClick(data) {
@@ -277,6 +377,67 @@ define(function (require, exports, module) {
         NativeApp.openURLInDefaultBrowser(href);
     }
 
+    // --- Scroll sync ---
+
+    /**
+     * Send the current CM5 cursor line to the iframe so it can scroll to the
+     * corresponding rendered element (only if it's not already visible).
+     */
+    function _syncScrollToIframe() {
+        if (!_active || !_iframeReady) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        if (!iframeWindow) {
+            return;
+        }
+        const cm = _getCM();
+        if (!cm) {
+            return;
+        }
+        // CM5 cursor line is 0-based; source lines in markdown are 1-based
+        const line = cm.getCursor().line + 1;
+        iframeWindow.postMessage({
+            type: "MDVIEWR_SCROLL_TO_LINE",
+            line: line
+        }, "*");
+    }
+
+    /**
+     * Move the CM5 cursor to the given source line (1-based) and scroll
+     * the editor to show it if it's not already visible.
+     */
+    function _scrollCMToLine(sourceLine) {
+        const cm = _getCM();
+        if (!cm) {
+            return;
+        }
+        // Convert 1-based source line to 0-based CM5 line
+        const cmLine = Math.max(0, sourceLine - 1);
+        const lineCount = cm.lineCount();
+        if (cmLine >= lineCount) {
+            return;
+        }
+
+        // Set cursor to the clicked line (suppress scroll-sync echo back)
+        _syncingFromIframe = true;
+        cm.setCursor({ line: cmLine, ch: 0 });
+        _syncingFromIframe = false;
+
+        // Scroll only if line is not already visible
+        const scrollInfo = cm.getScrollInfo();
+        const lineTop = cm.charCoords({ line: cmLine, ch: 0 }, "local").top;
+        const lineBottom = cm.charCoords({ line: cmLine, ch: 0 }, "local").bottom;
+        const viewTop = scrollInfo.top;
+        const viewBottom = scrollInfo.top + scrollInfo.clientHeight;
+
+        if (lineTop < viewTop || lineBottom > viewBottom) {
+            // Centre the line vertically in the editor
+            const targetScrollTop = lineTop - (scrollInfo.clientHeight / 2);
+            cm.scrollTo(null, targetScrollTop);
+        }
+    }
+
     // --- Helpers ---
 
     function _getIframeWindow() {
@@ -284,6 +445,13 @@ define(function (require, exports, module) {
             return null;
         }
         return _$iframe[0].contentWindow;
+    }
+
+    function _getCM() {
+        if (!_doc || !_doc._masterEditor) {
+            return null;
+        }
+        return _doc._masterEditor._codeMirror;
     }
 
     exports.activate = activate;

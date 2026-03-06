@@ -12,6 +12,7 @@ src/**/*-min.js
 src/**/*.min.js
 src/virtual-server-main.js
 src/service-worker.js
+src/mdViewer/**
 
 test/perf/*-files/**/*.js
 test/spec/*-files/**/*.js
