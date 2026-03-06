@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "เปิดไฟล์",
+    "theme": "สลับธีม",
+    "toc": "สารบัญ",
+    "search": "ค้นหา",
+    "focus": "โหมดโฟกัส",
+    "zoom_in": "ซูมเข้า",
+    "zoom_out": "ซูมออก",
+    "zoom_reset": "รีเซ็ตซูม",
+    "save": "บันทึก",
+    "edit": "แก้ไข",
+    "new_file": "ไฟล์ใหม่",
+    "split_view": "มุมมองแบ่ง",
+    "export_pdf": "ส่งออก PDF",
+    "settings": "ตั้งค่า",
+    "more": "เพิ่มเติม"
+  },
+  "sidebar": {
+    "toc": "สารบัญ",
+    "recent": "ไฟล์ล่าสุด",
+    "no_headings": "ไม่พบหัวข้อ"
+  },
+  "search": {
+    "placeholder": "ค้นหาในเอกสาร...",
+    "count": "รายการที่ตรงกัน",
+    "no_results": "ไม่พบผลลัพธ์"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "โปรแกรมดู Markdown ที่สวยงาม",
+    "new_button": "ไฟล์ใหม่",
+    "open_button": "เปิดไฟล์",
+    "drop_hint": "หรือลากและวางไฟล์ .md"
+  },
+  "viewer": {
+    "copy": "คัดลอก",
+    "copied": "คัดลอกแล้ว!"
+  },
+  "settings": {
+    "theme": "ธีม",
+    "theme_light": "สว่าง",
+    "theme_dark": "มืด",
+    "theme_system": "ระบบ",
+    "language": "ภาษา"
+  },
+  "common": {
+    "close": "ปิด",
+    "open": "เปิด",
+    "file": "ไฟล์"
+  },
+  "format": {
+    "paragraph": "ย่อหน้า",
+    "heading1": "หัวข้อ 1",
+    "heading2": "หัวข้อ 2",
+    "heading3": "หัวข้อ 3",
+    "bold": "ตัวหนา ({mod}+B)",
+    "italic": "ตัวเอียง ({mod}+I)",
+    "strikethrough": "ขีดฆ่า ({mod}+Shift+X)",
+    "code": "โค้ดอินไลน์ ({mod}+E)",
+    "link": "ลิงก์ ({mod}+K)",
+    "bullet_list": "รายการสัญลักษณ์",
+    "numbered_list": "รายการตัวเลข",
+    "task_list": "รายการงาน",
+    "blockquote": "บล็อกอ้างอิง",
+    "divider": "เส้นแบ่ง",
+    "table": "ตาราง",
+    "code_block": "บล็อกโค้ด"
+  },
+  "slash": {
+    "paragraph": "ย่อหน้า",
+    "paragraph_desc": "ข้อความปกติ",
+    "heading1": "หัวข้อ 1",
+    "heading1_desc": "หัวข้อใหญ่",
+    "heading2": "หัวข้อ 2",
+    "heading2_desc": "หัวข้อกลาง",
+    "heading3": "หัวข้อ 3",
+    "heading3_desc": "หัวข้อเล็ก",
+    "bullet_list": "รายการสัญลักษณ์",
+    "bullet_list_desc": "รายการไม่เรียงลำดับ",
+    "numbered_list": "รายการตัวเลข",
+    "numbered_list_desc": "รายการเรียงลำดับ",
+    "task_list": "รายการงาน",
+    "task_list_desc": "เช็คลิสต์",
+    "blockquote": "บล็อกอ้างอิง",
+    "blockquote_desc": "บล็อกคำพูด",
+    "code_block": "บล็อกโค้ด",
+    "code_block_desc": "โค้ดแบบล้อมรั้ว",
+    "table": "ตาราง",
+    "table_desc": "ตาราง 3×3",
+    "divider": "เส้นแบ่ง",
+    "divider_desc": "เส้นแนวนอน",
+    "no_results": "ไม่พบผลลัพธ์"
+  },
+  "link": {
+    "edit": "แก้ไข",
+    "edit_link": "แก้ไขลิงก์",
+    "remove_link": "ลบลิงก์",
+    "text": "ข้อความ",
+    "text_placeholder": "ข้อความแสดง (ไม่บังคับ)",
+    "display_text": "ข้อความแสดง",
+    "url": "URL",
+    "url_placeholder": "วาง URL หรือพิมพ์...",
+    "apply": "ใช้ลิงก์",
+    "cancel": "ยกเลิก"
+  },
+  "table": {
+    "header": "หัวตาราง",
+    "new_row": "+ แถวใหม่",
+    "row_options": "ตัวเลือกแถว {n}",
+    "col_options": "ตัวเลือกคอลัมน์ {n}",
+    "insert_row_above": "แทรกแถวด้านบน",
+    "insert_row_below": "แทรกแถวด้านล่าง",
+    "delete_row": "ลบแถว",
+    "insert_col_left": "แทรกคอลัมน์ด้านซ้าย",
+    "insert_col_right": "แทรกคอลัมน์ด้านขวา",
+    "delete_col": "ลบคอลัมน์",
+    "add_row_above": "เพิ่มแถวด้านบน",
+    "add_row_below": "เพิ่มแถวด้านล่าง",
+    "add_col_left": "เพิ่มคอลัมน์ด้านซ้าย",
+    "add_col_right": "เพิ่มคอลัมน์ด้านขวา"
+  },
+  "dialog": {
+    "unsaved_title": "การเปลี่ยนแปลงที่ยังไม่บันทึก",
+    "unsaved_exit_edit": "มีการเปลี่ยนแปลงที่ยังไม่บันทึก คุณต้องการบันทึกก่อนออกจากโหมดแก้ไขหรือไม่?",
+    "unsaved_new_file": "มีการเปลี่ยนแปลงที่ยังไม่บันทึก คุณต้องการบันทึกก่อนสร้างไฟล์ใหม่หรือไม่?",
+    "unsaved_open_file": "มีการเปลี่ยนแปลงที่ยังไม่บันทึก คุณต้องการบันทึกก่อนเปิดไฟล์ใหม่หรือไม่?",
+    "save": "บันทึก",
+    "discard": "ทิ้ง",
+    "dont_save": "ไม่บันทึก",
+    "cancel": "ยกเลิก",
+    "unsaved_close": "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก ต้องการบันทึกก่อนปิดหรือไม่?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "กรองภาษา...",
+    "filter_label": "กรองภาษา",
+    "plain_text": "ข้อความธรรมดา"
+  },
+  "a11y": {
+    "skip_to_content": "ข้ามไปที่เนื้อหา",
+    "main_toolbar": "แถบเครื่องมือหลัก",
+    "sidebar": "แถบด้านข้าง",
+    "search_text": "ค้นหาข้อความ",
+    "previous_match": "รายการก่อนหน้า",
+    "next_match": "รายการถัดไป",
+    "close_search": "ปิดการค้นหา",
+    "format_text": "จัดรูปแบบข้อความ",
+    "edit_link": "แก้ไขลิงก์",
+    "insert_block": "แทรกบล็อก",
+    "select_language": "เลือกภาษา",
+    "search_in_document": "ค้นหาในเอกสาร"
+  },
+  "drop_zone": {
+    "text": "วางไฟล์ Markdown ของคุณที่นี่"
+  },
+  "help": {
+    "getting_started": "เริ่มต้นใช้งาน",
+    "editing": "การแก้ไข",
+    "shortcuts": "แป้นพิมพ์ลัด",
+    "features": "คุณสมบัติ",
+    "fallback_notice": "หน้านี้ยังไม่มีในภาษาของคุณ กำลังแสดงเวอร์ชันภาษาอังกฤษ"
+  },
+  "recovery": {
+    "title": "กู้คืนการเปลี่ยนแปลงที่ไม่ได้บันทึก?",
+    "message": "Kern พบการเปลี่ยนแปลงที่ไม่ได้บันทึกจากเซสชันก่อนหน้า คุณต้องการกู้คืนหรือไม่?",
+    "restore": "กู้คืน",
+    "discard": "ละทิ้ง"
+  },
+  "export": {
+    "success": "ส่งออก PDF สำเร็จ",
+    "open": "เปิด"
+  },
+  "context": {
+    "cut": "ตัด",
+    "copy": "คัดลอก",
+    "paste": "วาง",
+    "paste_plain": "วางเป็นข้อความธรรมดา",
+    "select_all": "เลือกทั้งหมด",
+    "copy_link": "คัดลอกลิงก์",
+    "open_link": "เปิดลิงก์",
+    "copy_image_address": "คัดลอกที่อยู่รูปภาพ"
+  },
+  "trial": {
+    "days_remaining": "เหลืออีก {days} วันในช่วงทดลองใช้",
+    "expired_message": "ช่วงทดลองใช้ของคุณหมดอายุแล้ว ซื้อ Kern เพื่อแก้ไขต่อ",
+    "purchase_button": "ซื้อ Kern",
+    "purchase_title": "ปลดล็อก Kern",
+    "purchase_desc": "เข้าถึงฟีเจอร์แก้ไขและส่งออกทั้งหมดด้วยการซื้อครั้งเดียว",
+    "feature_edit": "แก้ไข Markdown ด้วย WYSIWYG และมุมมองแบ่ง",
+    "feature_save": "บันทึกและสร้างไฟล์ใหม่",
+    "feature_export": "ส่งออกเป็น PDF",
+    "restore_purchases": "กู้คืนการซื้อ",
+    "one_time_purchase": "ซื้อครั้งเดียว ไม่มีการสมัครสมาชิก",
+    "purchasing": "กำลังซื้อ...",
+    "restoring": "กำลังกู้คืน..."
+  }
+}

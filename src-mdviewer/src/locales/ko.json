@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "파일 열기",
+    "theme": "테마 전환",
+    "toc": "목차",
+    "search": "검색",
+    "focus": "집중 모드",
+    "zoom_in": "확대",
+    "zoom_out": "축소",
+    "zoom_reset": "배율 초기화",
+    "save": "저장",
+    "edit": "편집",
+    "new_file": "새 파일",
+    "split_view": "분할 보기",
+    "export_pdf": "PDF 내보내기",
+    "settings": "설정",
+    "more": "더보기"
+  },
+  "sidebar": {
+    "toc": "목차",
+    "recent": "최근 파일",
+    "no_headings": "제목을 찾을 수 없습니다"
+  },
+  "search": {
+    "placeholder": "문서에서 검색...",
+    "count": "일치",
+    "no_results": "결과 없음"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "아름다운 마크다운 뷰어",
+    "new_button": "새 파일",
+    "open_button": "파일 열기",
+    "drop_hint": "또는 .md 파일을 끌어다 놓으세요"
+  },
+  "viewer": {
+    "copy": "복사",
+    "copied": "복사됨!"
+  },
+  "settings": {
+    "theme": "테마",
+    "theme_light": "라이트",
+    "theme_dark": "다크",
+    "theme_system": "시스템",
+    "language": "언어"
+  },
+  "common": {
+    "close": "닫기",
+    "open": "열기",
+    "file": "파일"
+  },
+  "format": {
+    "paragraph": "본문",
+    "heading1": "제목 1",
+    "heading2": "제목 2",
+    "heading3": "제목 3",
+    "bold": "굵게 ({mod}+B)",
+    "italic": "기울임 ({mod}+I)",
+    "strikethrough": "취소선 ({mod}+Shift+X)",
+    "code": "인라인 코드 ({mod}+E)",
+    "link": "링크 ({mod}+K)",
+    "bullet_list": "글머리 기호 목록",
+    "numbered_list": "번호 목록",
+    "task_list": "작업 목록",
+    "blockquote": "인용",
+    "divider": "구분선",
+    "table": "표",
+    "code_block": "코드 블록"
+  },
+  "slash": {
+    "paragraph": "본문",
+    "paragraph_desc": "일반 텍스트",
+    "heading1": "제목 1",
+    "heading1_desc": "큰 제목",
+    "heading2": "제목 2",
+    "heading2_desc": "중간 제목",
+    "heading3": "제목 3",
+    "heading3_desc": "작은 제목",
+    "bullet_list": "글머리 기호 목록",
+    "bullet_list_desc": "순서 없는 목록",
+    "numbered_list": "번호 목록",
+    "numbered_list_desc": "순서 있는 목록",
+    "task_list": "작업 목록",
+    "task_list_desc": "체크리스트",
+    "blockquote": "인용",
+    "blockquote_desc": "인용 블록",
+    "code_block": "코드 블록",
+    "code_block_desc": "펜스드 코드",
+    "table": "표",
+    "table_desc": "3×3 표",
+    "divider": "구분선",
+    "divider_desc": "수평선",
+    "no_results": "결과 없음"
+  },
+  "link": {
+    "edit": "편집",
+    "edit_link": "링크 편집",
+    "remove_link": "링크 제거",
+    "text": "텍스트",
+    "text_placeholder": "표시 텍스트 (선택사항)",
+    "display_text": "표시 텍스트",
+    "url": "URL",
+    "url_placeholder": "URL을 붙여넣거나 입력하세요...",
+    "apply": "링크 적용",
+    "cancel": "취소"
+  },
+  "table": {
+    "header": "헤더",
+    "new_row": "+ 새 행",
+    "row_options": "행 {n} 옵션",
+    "col_options": "열 {n} 옵션",
+    "insert_row_above": "위에 행 삽입",
+    "insert_row_below": "아래에 행 삽입",
+    "delete_row": "행 삭제",
+    "insert_col_left": "왼쪽에 열 삽입",
+    "insert_col_right": "오른쪽에 열 삽입",
+    "delete_col": "열 삭제",
+    "add_row_above": "위에 행 추가",
+    "add_row_below": "아래에 행 추가",
+    "add_col_left": "왼쪽에 열 추가",
+    "add_col_right": "오른쪽에 열 추가"
+  },
+  "dialog": {
+    "unsaved_title": "저장되지 않은 변경사항",
+    "unsaved_exit_edit": "저장되지 않은 변경사항이 있습니다. 편집 모드를 종료하기 전에 저장하시겠습니까?",
+    "unsaved_new_file": "저장되지 않은 변경사항이 있습니다. 새 파일을 만들기 전에 저장하시겠습니까?",
+    "unsaved_open_file": "저장되지 않은 변경사항이 있습니다. 새 파일을 열기 전에 저장하시겠습니까?",
+    "save": "저장",
+    "discard": "버리기",
+    "dont_save": "저장 안 함",
+    "cancel": "취소",
+    "unsaved_close": "저장되지 않은 변경사항이 있습니다. 닫기 전에 저장하시겠습니까?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "언어 필터...",
+    "filter_label": "언어 필터",
+    "plain_text": "일반 텍스트"
+  },
+  "a11y": {
+    "skip_to_content": "콘텐츠로 건너뛰기",
+    "main_toolbar": "메인 도구 모음",
+    "sidebar": "사이드바",
+    "search_text": "텍스트 검색",
+    "previous_match": "이전 일치",
+    "next_match": "다음 일치",
+    "close_search": "검색 닫기",
+    "format_text": "텍스트 서식",
+    "edit_link": "링크 편집",
+    "insert_block": "블록 삽입",
+    "select_language": "언어 선택",
+    "search_in_document": "문서에서 검색"
+  },
+  "drop_zone": {
+    "text": "마크다운 파일을 여기에 놓으세요"
+  },
+  "help": {
+    "getting_started": "시작하기",
+    "editing": "편집",
+    "shortcuts": "키보드 단축키",
+    "features": "기능",
+    "fallback_notice": "이 페이지는 아직 사용자의 언어로 제공되지 않습니다. 영어 버전을 표시합니다."
+  },
+  "recovery": {
+    "title": "저장되지 않은 변경사항을 복구하시겠습니까?",
+    "message": "Kern이 이전 세션에서 저장되지 않은 변경사항을 발견했습니다. 복구하시겠습니까?",
+    "restore": "복구",
+    "discard": "버리기"
+  },
+  "export": {
+    "success": "PDF 내보내기 완료",
+    "open": "열기"
+  },
+  "context": {
+    "cut": "잘라내기",
+    "copy": "복사",
+    "paste": "붙여넣기",
+    "paste_plain": "일반 텍스트로 붙여넣기",
+    "select_all": "모두 선택",
+    "copy_link": "링크 복사",
+    "open_link": "링크 열기",
+    "copy_image_address": "이미지 주소 복사"
+  },
+  "trial": {
+    "days_remaining": "체험판 {days}일 남음",
+    "expired_message": "체험 기간이 만료되었습니다. 편집을 계속하려면 Kern을 구매하세요.",
+    "purchase_button": "Kern 구매",
+    "purchase_title": "Kern 잠금 해제",
+    "purchase_desc": "일회성 구매로 모든 편집 및 내보내기 기능을 이용할 수 있습니다.",
+    "feature_edit": "WYSIWYG 및 분할 보기로 Markdown 편집",
+    "feature_save": "파일 저장 및 새 파일 만들기",
+    "feature_export": "PDF로 내보내기",
+    "restore_purchases": "구매 복원",
+    "one_time_purchase": "일회성 구매. 구독 없음.",
+    "purchasing": "구매 중...",
+    "restoring": "복원 중..."
+  }
+}

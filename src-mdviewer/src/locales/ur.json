@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "فائل کھولیں",
+    "theme": "تھیم تبدیل کریں",
+    "toc": "فہرست مضامین",
+    "search": "تلاش",
+    "focus": "فوکس موڈ",
+    "zoom_in": "زوم ان",
+    "zoom_out": "زوم آؤٹ",
+    "zoom_reset": "زوم ری سیٹ",
+    "save": "محفوظ کریں",
+    "edit": "ترمیم",
+    "new_file": "نئی فائل",
+    "split_view": "تقسیم نظارہ",
+    "export_pdf": "PDF برآمد کریں",
+    "settings": "ترتیبات",
+    "more": "مزید"
+  },
+  "sidebar": {
+    "toc": "فہرست مضامین",
+    "recent": "حالیہ فائلیں",
+    "no_headings": "کوئی سرخیاں نہیں ملیں"
+  },
+  "search": {
+    "placeholder": "دستاویز میں تلاش کریں...",
+    "count": "نتائج",
+    "no_results": "کوئی نتائج نہیں"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
+    "new_button": "نئی فائل",
+    "open_button": "فائل کھولیں",
+    "drop_hint": "یا .md فائل کو ڈریگ اور ڈراپ کریں"
+  },
+  "viewer": {
+    "copy": "کاپی",
+    "copied": "کاپی ہو گیا!"
+  },
+  "settings": {
+    "theme": "تھیم",
+    "theme_light": "ہلکا",
+    "theme_dark": "گہرا",
+    "theme_system": "سسٹم",
+    "language": "زبان"
+  },
+  "common": {
+    "close": "بند کریں",
+    "open": "کھولیں",
+    "file": "فائل"
+  },
+  "format": {
+    "paragraph": "پیراگراف",
+    "heading1": "سرخی 1",
+    "heading2": "سرخی 2",
+    "heading3": "سرخی 3",
+    "bold": "بولڈ ({mod}+B)",
+    "italic": "اٹیلک ({mod}+I)",
+    "strikethrough": "سٹرائیک تھرو ({mod}+Shift+X)",
+    "code": "ان لائن کوڈ ({mod}+E)",
+    "link": "لنک ({mod}+K)",
+    "bullet_list": "بلٹ فہرست",
+    "numbered_list": "نمبر فہرست",
+    "task_list": "ٹاسک فہرست",
+    "blockquote": "بلاک کوٹ",
+    "divider": "تقسیم کار",
+    "table": "ٹیبل",
+    "code_block": "کوڈ بلاک"
+  },
+  "slash": {
+    "paragraph": "پیراگراف",
+    "paragraph_desc": "سادہ متن",
+    "heading1": "سرخی 1",
+    "heading1_desc": "بڑی سرخی",
+    "heading2": "سرخی 2",
+    "heading2_desc": "درمیانی سرخی",
+    "heading3": "سرخی 3",
+    "heading3_desc": "چھوٹی سرخی",
+    "bullet_list": "بلٹ فہرست",
+    "bullet_list_desc": "غیر ترتیب فہرست",
+    "numbered_list": "نمبر فہرست",
+    "numbered_list_desc": "ترتیب فہرست",
+    "task_list": "ٹاسک فہرست",
+    "task_list_desc": "چیک لسٹ",
+    "blockquote": "بلاک کوٹ",
+    "blockquote_desc": "اقتباس بلاک",
+    "code_block": "کوڈ بلاک",
+    "code_block_desc": "فینسڈ کوڈ",
+    "table": "ٹیبل",
+    "table_desc": "3×3 ٹیبل",
+    "divider": "تقسیم کار",
+    "divider_desc": "افقی لکیر",
+    "no_results": "کوئی نتائج نہیں"
+  },
+  "link": {
+    "edit": "ترمیم",
+    "edit_link": "لنک میں ترمیم کریں",
+    "remove_link": "لنک ہٹائیں",
+    "text": "متن",
+    "text_placeholder": "ڈسپلے متن (اختیاری)",
+    "display_text": "ڈسپلے متن",
+    "url": "URL",
+    "url_placeholder": "URL پیسٹ یا ٹائپ کریں...",
+    "apply": "لنک لاگو کریں",
+    "cancel": "منسوخ"
+  },
+  "table": {
+    "header": "ہیڈر",
+    "new_row": "+ نئی قطار",
+    "row_options": "قطار {n} اختیارات",
+    "col_options": "کالم {n} اختیارات",
+    "insert_row_above": "اوپر قطار شامل کریں",
+    "insert_row_below": "نیچے قطار شامل کریں",
+    "delete_row": "قطار حذف کریں",
+    "insert_col_left": "بائیں کالم شامل کریں",
+    "insert_col_right": "دائیں کالم شامل کریں",
+    "delete_col": "کالم حذف کریں",
+    "add_row_above": "اوپر قطار شامل کریں",
+    "add_row_below": "نیچے قطار شامل کریں",
+    "add_col_left": "بائیں کالم شامل کریں",
+    "add_col_right": "دائیں کالم شامل کریں"
+  },
+  "dialog": {
+    "unsaved_title": "غیر محفوظ تبدیلیاں",
+    "unsaved_exit_edit": "غیر محفوظ تبدیلیاں ہیں۔ ترمیمی موڈ سے نکلنے سے پہلے محفوظ کرنا چاہتے ہیں؟",
+    "unsaved_new_file": "غیر محفوظ تبدیلیاں ہیں۔ نئی فائل بنانے سے پہلے محفوظ کرنا چاہتے ہیں؟",
+    "unsaved_open_file": "غیر محفوظ تبدیلیاں ہیں۔ نئی فائل کھولنے سے پہلے محفوظ کرنا چاہتے ہیں؟",
+    "save": "محفوظ کریں",
+    "discard": "رد کریں",
+    "dont_save": "محفوظ نہ کریں",
+    "cancel": "منسوخ",
+    "unsaved_close": "آپ کے پاس غیر محفوظ تبدیلیاں ہیں۔ بند کرنے سے پہلے محفوظ کرنا چاہتے ہیں؟"
+  },
+  "lang_picker": {
+    "filter_placeholder": "زبانیں فلٹر کریں...",
+    "filter_label": "زبانیں فلٹر کریں",
+    "plain_text": "سادہ متن"
+  },
+  "a11y": {
+    "skip_to_content": "مواد پر جائیں",
+    "main_toolbar": "اصل ٹول بار",
+    "sidebar": "سائیڈ بار",
+    "search_text": "متن تلاش کریں",
+    "previous_match": "پچھلا نتیجہ",
+    "next_match": "اگلا نتیجہ",
+    "close_search": "تلاش بند کریں",
+    "format_text": "متن فارمیٹ",
+    "edit_link": "لنک میں ترمیم کریں",
+    "insert_block": "بلاک شامل کریں",
+    "select_language": "زبان منتخب کریں",
+    "search_in_document": "دستاویز میں تلاش کریں"
+  },
+  "drop_zone": {
+    "text": "اپنی مارک ڈاؤن فائل یہاں چھوڑیں"
+  },
+  "help": {
+    "getting_started": "شروع کریں",
+    "editing": "ترمیم",
+    "shortcuts": "کیبورڈ شارٹ کٹ",
+    "features": "خصوصیات",
+    "fallback_notice": "یہ صفحہ ابھی آپ کی زبان میں دستیاب نہیں ہے۔ انگریزی ورژن دکھایا جا رہا ہے۔"
+  },
+  "recovery": {
+    "title": "غیر محفوظ تبدیلیاں بحال کریں؟",
+    "message": "Kern نے پچھلے سیشن سے غیر محفوظ تبدیلیاں پائیں۔ کیا آپ انہیں بحال کرنا چاہتے ہیں؟",
+    "restore": "بحال کریں",
+    "discard": "چھوڑ دیں"
+  },
+  "export": {
+    "success": "PDF کامیابی سے برآمد ہوئی",
+    "open": "کھولیں"
+  },
+  "context": {
+    "cut": "کاٹیں",
+    "copy": "کاپی کریں",
+    "paste": "پیسٹ کریں",
+    "paste_plain": "سادہ متن کے طور پر پیسٹ کریں",
+    "select_all": "سب منتخب کریں",
+    "copy_link": "لنک کاپی کریں",
+    "open_link": "لنک کھولیں",
+    "copy_image_address": "تصویر کا پتہ کاپی کریں"
+  },
+  "trial": {
+    "days_remaining": "آزمائشی مدت میں {days} دن باقی",
+    "expired_message": "آپ کی آزمائشی مدت ختم ہو گئی ہے۔ ترمیم جاری رکھنے کے لیے Kern خریدیں۔",
+    "purchase_button": "Kern خریدیں",
+    "purchase_title": "Kern کھولیں",
+    "purchase_desc": "ایک بار کی خریداری سے تمام ترمیمی اور برآمدی خصوصیات تک مکمل رسائی حاصل کریں۔",
+    "feature_edit": "WYSIWYG اور تقسیم نظارے سے Markdown میں ترمیم کریں",
+    "feature_save": "فائلیں محفوظ کریں اور نئی بنائیں",
+    "feature_export": "PDF میں برآمد کریں",
+    "restore_purchases": "خریداریاں بحال کریں",
+    "one_time_purchase": "ایک بار کی خریداری۔ کوئی سبسکرپشن نہیں۔",
+    "purchasing": "خریداری ہو رہی ہے...",
+    "restoring": "بحالی ہو رہی ہے..."
+  }
+}

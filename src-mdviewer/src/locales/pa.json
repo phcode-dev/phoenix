@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "ਫਾਈਲ ਖੋਲ੍ਹੋ",
+    "theme": "ਥੀਮ ਬਦਲੋ",
+    "toc": "ਵਿਸ਼ਾ ਸੂਚੀ",
+    "search": "ਖੋਜੋ",
+    "focus": "ਫੋਕਸ ਮੋਡ",
+    "zoom_in": "ਜ਼ੂਮ ਇਨ",
+    "zoom_out": "ਜ਼ੂਮ ਆਊਟ",
+    "zoom_reset": "ਜ਼ੂਮ ਰੀਸੈੱਟ",
+    "save": "ਸੇਵ",
+    "edit": "ਸੰਪਾਦਨ",
+    "new_file": "ਨਵੀਂ ਫਾਈਲ",
+    "split_view": "ਵੰਡਿਆ ਦ੍ਰਿਸ਼",
+    "export_pdf": "PDF ਨਿਰਯਾਤ ਕਰੋ",
+    "settings": "ਸੈਟਿੰਗਾਂ",
+    "more": "ਹੋਰ"
+  },
+  "sidebar": {
+    "toc": "ਵਿਸ਼ਾ ਸੂਚੀ",
+    "recent": "ਹਾਲ ਦੀਆਂ ਫਾਈਲਾਂ",
+    "no_headings": "ਕੋਈ ਸਿਰਲੇਖ ਨਹੀਂ ਮਿਲੇ"
+  },
+  "search": {
+    "placeholder": "ਦਸਤਾਵੇਜ਼ ਵਿੱਚ ਖੋਜੋ...",
+    "count": "ਮੇਲ",
+    "no_results": "ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "ਇੱਕ ਸੁੰਦਰ ਮਾਰਕਡਾਊਨ ਵਿਊਅਰ",
+    "new_button": "ਨਵੀਂ ਫਾਈਲ",
+    "open_button": "ਫਾਈਲ ਖੋਲ੍ਹੋ",
+    "drop_hint": "ਜਾਂ .md ਫਾਈਲ ਖਿੱਚ ਕੇ ਛੱਡੋ"
+  },
+  "viewer": {
+    "copy": "ਕਾਪੀ",
+    "copied": "ਕਾਪੀ ਹੋ ਗਿਆ!"
+  },
+  "settings": {
+    "theme": "ਥੀਮ",
+    "theme_light": "ਹਲਕਾ",
+    "theme_dark": "ਗੂੜ੍ਹਾ",
+    "theme_system": "ਸਿਸਟਮ",
+    "language": "ਭਾਸ਼ਾ"
+  },
+  "common": {
+    "close": "ਬੰਦ",
+    "open": "ਖੋਲ੍ਹੋ",
+    "file": "ਫਾਈਲ"
+  },
+  "format": {
+    "paragraph": "ਪੈਰਾ",
+    "heading1": "ਸਿਰਲੇਖ 1",
+    "heading2": "ਸਿਰਲੇਖ 2",
+    "heading3": "ਸਿਰਲੇਖ 3",
+    "bold": "ਬੋਲਡ ({mod}+B)",
+    "italic": "ਇਟੈਲਿਕ ({mod}+I)",
+    "strikethrough": "ਸਟ੍ਰਾਈਕਥਰੂ ({mod}+Shift+X)",
+    "code": "ਇਨਲਾਈਨ ਕੋਡ ({mod}+E)",
+    "link": "ਲਿੰਕ ({mod}+K)",
+    "bullet_list": "ਬੁਲੇਟ ਸੂਚੀ",
+    "numbered_list": "ਨੰਬਰ ਸੂਚੀ",
+    "task_list": "ਕੰਮ ਸੂਚੀ",
+    "blockquote": "ਬਲਾਕਕੋਟ",
+    "divider": "ਵੰਡਣ ਵਾਲਾ",
+    "table": "ਟੇਬਲ",
+    "code_block": "ਕੋਡ ਬਲਾਕ"
+  },
+  "slash": {
+    "paragraph": "ਪੈਰਾ",
+    "paragraph_desc": "ਸਾਦਾ ਟੈਕਸਟ",
+    "heading1": "ਸਿਰਲੇਖ 1",
+    "heading1_desc": "ਵੱਡਾ ਸਿਰਲੇਖ",
+    "heading2": "ਸਿਰਲੇਖ 2",
+    "heading2_desc": "ਮੱਧਮ ਸਿਰਲੇਖ",
+    "heading3": "ਸਿਰਲੇਖ 3",
+    "heading3_desc": "ਛੋਟਾ ਸਿਰਲੇਖ",
+    "bullet_list": "ਬੁਲੇਟ ਸੂਚੀ",
+    "bullet_list_desc": "ਬੇਤਰਤੀਬ ਸੂਚੀ",
+    "numbered_list": "ਨੰਬਰ ਸੂਚੀ",
+    "numbered_list_desc": "ਤਰਤੀਬ ਸੂਚੀ",
+    "task_list": "ਕੰਮ ਸੂਚੀ",
+    "task_list_desc": "ਚੈੱਕਲਿਸਟ",
+    "blockquote": "ਬਲਾਕਕੋਟ",
+    "blockquote_desc": "ਹਵਾਲਾ ਬਲਾਕ",
+    "code_block": "ਕੋਡ ਬਲਾਕ",
+    "code_block_desc": "ਫੈਂਸਡ ਕੋਡ",
+    "table": "ਟੇਬਲ",
+    "table_desc": "3×3 ਟੇਬਲ",
+    "divider": "ਵੰਡਣ ਵਾਲਾ",
+    "divider_desc": "ਲੇਟਵੀਂ ਲਾਈਨ",
+    "no_results": "ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ"
+  },
+  "link": {
+    "edit": "ਸੰਪਾਦਨ",
+    "edit_link": "ਲਿੰਕ ਸੰਪਾਦਿਤ ਕਰੋ",
+    "remove_link": "ਲਿੰਕ ਹਟਾਓ",
+    "text": "ਟੈਕਸਟ",
+    "text_placeholder": "ਡਿਸਪਲੇ ਟੈਕਸਟ (ਵਿਕਲਪਿਕ)",
+    "display_text": "ਡਿਸਪਲੇ ਟੈਕਸਟ",
+    "url": "URL",
+    "url_placeholder": "URL ਪੇਸਟ ਕਰੋ ਜਾਂ ਟਾਈਪ ਕਰੋ...",
+    "apply": "ਲਿੰਕ ਲਾਗੂ ਕਰੋ",
+    "cancel": "ਰੱਦ ਕਰੋ"
+  },
+  "table": {
+    "header": "ਹੈੱਡਰ",
+    "new_row": "+ ਨਵੀਂ ਕਤਾਰ",
+    "row_options": "ਕਤਾਰ {n} ਵਿਕਲਪ",
+    "col_options": "ਕਾਲਮ {n} ਵਿਕਲਪ",
+    "insert_row_above": "ਉੱਪਰ ਕਤਾਰ ਪਾਓ",
+    "insert_row_below": "ਹੇਠਾਂ ਕਤਾਰ ਪਾਓ",
+    "delete_row": "ਕਤਾਰ ਮਿਟਾਓ",
+    "insert_col_left": "ਖੱਬੇ ਕਾਲਮ ਪਾਓ",
+    "insert_col_right": "ਸੱਜੇ ਕਾਲਮ ਪਾਓ",
+    "delete_col": "ਕਾਲਮ ਮਿਟਾਓ",
+    "add_row_above": "ਉੱਪਰ ਕਤਾਰ ਜੋੜੋ",
+    "add_row_below": "ਹੇਠਾਂ ਕਤਾਰ ਜੋੜੋ",
+    "add_col_left": "ਖੱਬੇ ਕਾਲਮ ਜੋੜੋ",
+    "add_col_right": "ਸੱਜੇ ਕਾਲਮ ਜੋੜੋ"
+  },
+  "dialog": {
+    "unsaved_title": "ਸੇਵ ਨਾ ਕੀਤੇ ਬਦਲਾਅ",
+    "unsaved_exit_edit": "ਸੇਵ ਨਾ ਕੀਤੇ ਬਦਲਾਅ ਹਨ। ਸੰਪਾਦਨ ਮੋਡ ਤੋਂ ਬਾਹਰ ਆਉਣ ਤੋਂ ਪਹਿਲਾਂ ਸੇਵ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+    "unsaved_new_file": "ਸੇਵ ਨਾ ਕੀਤੇ ਬਦਲਾਅ ਹਨ। ਨਵੀਂ ਫਾਈਲ ਬਣਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਸੇਵ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+    "unsaved_open_file": "ਸੇਵ ਨਾ ਕੀਤੇ ਬਦਲਾਅ ਹਨ। ਨਵੀਂ ਫਾਈਲ ਖੋਲ੍ਹਣ ਤੋਂ ਪਹਿਲਾਂ ਸੇਵ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+    "save": "ਸੇਵ",
+    "discard": "ਰੱਦ ਕਰੋ",
+    "dont_save": "ਸੇਵ ਨਾ ਕਰੋ",
+    "cancel": "ਰੱਦ ਕਰੋ",
+    "unsaved_close": "ਤੁਹਾਡੇ ਕੋਲ ਸੁਰੱਖਿਅਤ ਨਾ ਕੀਤੇ ਬਦਲਾਅ ਹਨ। ਬੰਦ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਸੁਰੱਖਿਅਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "ਭਾਸ਼ਾਵਾਂ ਫਿਲਟਰ ਕਰੋ...",
+    "filter_label": "ਭਾਸ਼ਾਵਾਂ ਫਿਲਟਰ ਕਰੋ",
+    "plain_text": "ਸਾਦਾ ਟੈਕਸਟ"
+  },
+  "a11y": {
+    "skip_to_content": "ਸਮੱਗਰੀ ਤੇ ਜਾਓ",
+    "main_toolbar": "ਮੁੱਖ ਟੂਲਬਾਰ",
+    "sidebar": "ਸਾਈਡਬਾਰ",
+    "search_text": "ਟੈਕਸਟ ਖੋਜੋ",
+    "previous_match": "ਪਿਛਲਾ ਮੇਲ",
+    "next_match": "ਅਗਲਾ ਮੇਲ",
+    "close_search": "ਖੋਜ ਬੰਦ ਕਰੋ",
+    "format_text": "ਟੈਕਸਟ ਫਾਰਮੈਟ",
+    "edit_link": "ਲਿੰਕ ਸੰਪਾਦਿਤ ਕਰੋ",
+    "insert_block": "ਬਲਾਕ ਪਾਓ",
+    "select_language": "ਭਾਸ਼ਾ ਚੁਣੋ",
+    "search_in_document": "ਦਸਤਾਵੇਜ਼ ਵਿੱਚ ਖੋਜੋ"
+  },
+  "drop_zone": {
+    "text": "ਆਪਣੀ ਮਾਰਕਡਾਊਨ ਫਾਈਲ ਇੱਥੇ ਛੱਡੋ"
+  },
+  "help": {
+    "getting_started": "ਸ਼ੁਰੂ ਕਰੋ",
+    "editing": "ਸੰਪਾਦਨ",
+    "shortcuts": "ਕੀਬੋਰਡ ਸ਼ਾਰਟਕੱਟ",
+    "features": "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
+    "fallback_notice": "ਇਹ ਪੰਨਾ ਅਜੇ ਤੁਹਾਡੀ ਭਾਸ਼ਾ ਵਿੱਚ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਅੰਗਰੇਜ਼ੀ ਸੰਸਕਰਨ ਦਿਖਾਇਆ ਜਾ ਰਿਹਾ ਹੈ।"
+  },
+  "recovery": {
+    "title": "ਸੁਰੱਖਿਅਤ ਨਾ ਕੀਤੇ ਬਦਲਾਅ ਮੁੜ-ਪ੍ਰਾਪਤ ਕਰੋ?",
+    "message": "Kern ਨੇ ਪਿਛਲੇ ਸੈਸ਼ਨ ਤੋਂ ਸੁਰੱਖਿਅਤ ਨਾ ਕੀਤੇ ਬਦਲਾਅ ਲੱਭੇ। ਕੀ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਬਹਾਲ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+    "restore": "ਬਹਾਲ ਕਰੋ",
+    "discard": "ਰੱਦ ਕਰੋ"
+  },
+  "export": {
+    "success": "PDF ਸਫਲਤਾਪੂਰਵਕ ਨਿਰਯਾਤ ਹੋਈ",
+    "open": "ਖੋਲੋ"
+  },
+  "context": {
+    "cut": "ਕੱਟੋ",
+    "copy": "ਕਾਪੀ ਕਰੋ",
+    "paste": "ਪੇਸਟ ਕਰੋ",
+    "paste_plain": "ਸਾਦੇ ਟੈਕਸਟ ਵਜੋਂ ਪੇਸਟ ਕਰੋ",
+    "select_all": "ਸਭ ਚੁਣੋ",
+    "copy_link": "ਲਿੰਕ ਕਾਪੀ ਕਰੋ",
+    "open_link": "ਲਿੰਕ ਖੋਲੋ",
+    "copy_image_address": "ਚਿੱਤਰ ਦਾ ਪਤਾ ਕਾਪੀ ਕਰੋ"
+  },
+  "trial": {
+    "days_remaining": "ਟ੍ਰਾਇਲ ਵਿੱਚ {days} ਦਿਨ ਬਾਕੀ",
+    "expired_message": "ਤੁਹਾਡਾ ਟ੍ਰਾਇਲ ਖ਼ਤਮ ਹੋ ਗਿਆ ਹੈ। ਸੰਪਾਦਨ ਜਾਰੀ ਰੱਖਣ ਲਈ Kern ਖਰੀਦੋ।",
+    "purchase_button": "Kern ਖਰੀਦੋ",
+    "purchase_title": "Kern ਅਨਲੌਕ ਕਰੋ",
+    "purchase_desc": "ਇੱਕ ਵਾਰ ਦੀ ਖਰੀਦ ਨਾਲ ਸਾਰੀਆਂ ਸੰਪਾਦਨ ਅਤੇ ਨਿਰਯਾਤ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਤੱਕ ਪੂਰੀ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋ।",
+    "feature_edit": "WYSIWYG ਅਤੇ ਵੰਡੇ ਦ੍ਰਿਸ਼ ਨਾਲ Markdown ਸੰਪਾਦਿਤ ਕਰੋ",
+    "feature_save": "ਫਾਈਲਾਂ ਸੇਵ ਕਰੋ ਅਤੇ ਨਵੀਆਂ ਬਣਾਓ",
+    "feature_export": "PDF ਵਿੱਚ ਨਿਰਯਾਤ ਕਰੋ",
+    "restore_purchases": "ਖਰੀਦਾਂ ਬਹਾਲ ਕਰੋ",
+    "one_time_purchase": "ਇੱਕ ਵਾਰ ਦੀ ਖਰੀਦ। ਕੋਈ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਨਹੀਂ।",
+    "purchasing": "ਖਰੀਦ ਹੋ ਰਹੀ ਹੈ...",
+    "restoring": "ਬਹਾਲ ਹੋ ਰਿਹਾ ਹੈ..."
+  }
+}
