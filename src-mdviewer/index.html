@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script type="module" src="/src/embedded-main.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="app-toolbar" id="toolbar" role="toolbar"></header>
+        <main class="app-viewer" id="app-viewer" role="main">
+            <div class="markdown-body" id="viewer-content" style="display:none"></div>
+        </main>
+    </div>
+    <div class="format-bar" id="format-bar" role="toolbar"></div>
+    <div class="link-popover" id="link-popover" role="dialog"></div>
+    <div class="context-menu" id="context-menu" role="menu"></div>
+    <div class="table-context-menu" id="table-context-menu" role="menu"></div>
+    <div class="slash-menu" id="slash-menu" role="listbox"></div>
+    <div class="lang-picker" id="lang-picker" role="dialog"></div>
+</body>
+</html>

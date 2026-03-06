@@ -1,0 +1,26 @@
+{
+    "name": "phoenix-mdviewer",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@tailwindcss/typography": "^0.5",
+        "@tailwindcss/vite": "^4",
+        "tailwindcss": "^4",
+        "vite": "^6"
+    },
+    "dependencies": {
+        "lucide": "^0.474.0",
+        "marked": "^17.0.2",
+        "medium-zoom": "^1.1.0",
+        "mermaid": "^11.12.2",
+        "mitt": "^3.0.1",
+        "prismjs": "^1.29.0",
+        "turndown": "^7.2.0",
+        "turndown-plugin-gfm": "^1.0.2"
+    }
+}
