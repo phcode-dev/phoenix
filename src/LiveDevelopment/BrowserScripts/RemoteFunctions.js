@@ -1114,8 +1114,67 @@ function RemoteFunctions(config = {}) {
                 redrawEverything();
             }
         } else {
-            // Suppression is active - re-apply outline since attrChange may have wiped it
-            if (previouslySelectedElement && previouslySelectedElement.isConnected) {
+            // Suppression is active (e.g., control box initiated a source edit)
+            if (previouslySelectedElement && !previouslySelectedElement.isConnected) {
+                let freshElement = null;
+
+                // Strategy 1: Tree path (most reliable — works even with duplicate
+                // text content and tag changes). Stored when suppression was activated.
+                if (SHARED_STATE._suppressedElementPath) {
+                    freshElement = _getElementByTreePath(SHARED_STATE._suppressedElementPath);
+                }
+
+                // Strategy 2: brackets-id (works when IDs are preserved)
+                if (!freshElement) {
+                    const bracketsId = previouslySelectedElement.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                    if (bracketsId) {
+                        freshElement = document.querySelector(
+                            '[' + GLOBALS.DATA_BRACKETS_ID_ATTR + '="' + bracketsId + '"]'
+                        );
+                    }
+                }
+
+                // Strategy 3: Text + tag match (fallback — search reverse for deepest match)
+                if (!freshElement) {
+                    const oldText = previouslySelectedElement.textContent;
+                    const oldTag = previouslySelectedElement.tagName;
+                    let candidates = document.querySelectorAll(
+                        oldTag.toLowerCase() + '[' + GLOBALS.DATA_BRACKETS_ID_ATTR + ']'
+                    );
+                    for (let i = candidates.length - 1; i >= 0; i--) {
+                        if (candidates[i].textContent === oldText) {
+                            freshElement = candidates[i];
+                            break;
+                        }
+                    }
+                    // Broaden if tag changed (e.g. h2→footer)
+                    if (!freshElement) {
+                        candidates = document.querySelectorAll('[' + GLOBALS.DATA_BRACKETS_ID_ATTR + ']');
+                        for (let i = candidates.length - 1; i >= 0; i--) {
+                            if (candidates[i].textContent === oldText) {
+                                freshElement = candidates[i];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (freshElement) {
+                    freshElement._originalOutline = freshElement.style.outline;
+                    const isEditable = freshElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                    const outlineColor = isEditable
+                        ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+                    freshElement.style.outline = `1px solid ${outlineColor}`;
+                    if (_clickHighlight) {
+                        _clickHighlight.clear();
+                        _clickHighlight.add(freshElement);
+                    }
+                    previouslySelectedElement = freshElement;
+                    window.__current_ph_lp_selected = freshElement;
+                    redrawEverything();
+                }
+            } else if (previouslySelectedElement && previouslySelectedElement.isConnected) {
+                // Re-apply outline since attrChange may have wiped it
                 const isEditable = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
                 const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
                 previouslySelectedElement.style.outline = `1px solid ${outlineColor}`;
@@ -1217,6 +1276,43 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * Compute the tree path of an element as an array of child indices
+     * from <html> down. Used to re-locate the element after re-instrumentation
+     * when data-brackets-id changes and text matching is ambiguous.
+     * E.g. [1, 0, 0, 1] means html > 2nd child > 1st child > 1st child > 2nd child.
+     */
+    function _getTreePath(element) {
+        const path = [];
+        let el = element;
+        while (el && el.parentElement) {
+            const parent = el.parentElement;
+            const children = parent.children;
+            for (let i = 0; i < children.length; i++) {
+                if (children[i] === el) {
+                    path.unshift(i);
+                    break;
+                }
+            }
+            el = parent;
+        }
+        return path;
+    }
+
+    /**
+     * Find an element by its tree path (array of child indices from <html>).
+     */
+    function _getElementByTreePath(path) {
+        let el = document.documentElement;
+        for (let i = 0; i < path.length; i++) {
+            if (!el || !el.children || !el.children[path[i]]) {
+                return null;
+            }
+            el = el.children[path[i]];
+        }
+        return el;
+    }
+
+    /**
      * Temporarily suppress the DOM edit dismissal check in apply()
      * Used when source is modified from UI panels to prevent
      * the panel from being dismissed when the DOM is updated.
@@ -1228,9 +1324,14 @@ function RemoteFunctions(config = {}) {
             clearTimeout(SHARED_STATE._suppressDOMEditDismissalTimeout);
         }
         SHARED_STATE._suppressDOMEditDismissal = true;
+        // Store the tree path while the element is still connected
+        if (previouslySelectedElement && previouslySelectedElement.isConnected) {
+            SHARED_STATE._suppressedElementPath = _getTreePath(previouslySelectedElement);
+        }
         SHARED_STATE._suppressDOMEditDismissalTimeout = setTimeout(function() {
             SHARED_STATE._suppressDOMEditDismissal = false;
             SHARED_STATE._suppressDOMEditDismissalTimeout = null;
+            SHARED_STATE._suppressedElementPath = null;
         }, durationMs);
     }
 
