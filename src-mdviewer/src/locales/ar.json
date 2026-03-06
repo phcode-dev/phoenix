@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "فتح ملف",
+    "theme": "تبديل السمة",
+    "toc": "جدول المحتويات",
+    "search": "بحث",
+    "focus": "وضع التركيز",
+    "zoom_in": "تكبير",
+    "zoom_out": "تصغير",
+    "zoom_reset": "إعادة تعيين التكبير",
+    "save": "حفظ",
+    "edit": "تحرير",
+    "new_file": "ملف جديد",
+    "split_view": "عرض مقسّم",
+    "export_pdf": "تصدير PDF",
+    "settings": "الإعدادات",
+    "more": "المزيد"
+  },
+  "sidebar": {
+    "toc": "جدول المحتويات",
+    "recent": "الملفات الأخيرة",
+    "no_headings": "لم يتم العثور على عناوين"
+  },
+  "search": {
+    "placeholder": "البحث في المستند...",
+    "count": "نتيجة",
+    "no_results": "لا توجد نتائج"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "عارض ماركداون أنيق",
+    "new_button": "ملف جديد",
+    "open_button": "فتح ملف",
+    "drop_hint": "أو اسحب وأفلت ملف .md"
+  },
+  "viewer": {
+    "copy": "نسخ",
+    "copied": "تم النسخ!"
+  },
+  "settings": {
+    "theme": "السمة",
+    "theme_light": "فاتح",
+    "theme_dark": "داكن",
+    "theme_system": "النظام",
+    "language": "اللغة"
+  },
+  "common": {
+    "close": "إغلاق",
+    "open": "فتح",
+    "file": "ملف"
+  },
+  "format": {
+    "paragraph": "فقرة",
+    "heading1": "عنوان 1",
+    "heading2": "عنوان 2",
+    "heading3": "عنوان 3",
+    "bold": "غامق ({mod}+B)",
+    "italic": "مائل ({mod}+I)",
+    "strikethrough": "يتوسطه خط ({mod}+Shift+X)",
+    "code": "رمز سطري ({mod}+E)",
+    "link": "رابط ({mod}+K)",
+    "bullet_list": "قائمة نقطية",
+    "numbered_list": "قائمة مرقّمة",
+    "task_list": "قائمة مهام",
+    "blockquote": "اقتباس",
+    "divider": "فاصل",
+    "table": "جدول",
+    "code_block": "كتلة رمز"
+  },
+  "slash": {
+    "paragraph": "فقرة",
+    "paragraph_desc": "نص عادي",
+    "heading1": "عنوان 1",
+    "heading1_desc": "عنوان كبير",
+    "heading2": "عنوان 2",
+    "heading2_desc": "عنوان متوسط",
+    "heading3": "عنوان 3",
+    "heading3_desc": "عنوان صغير",
+    "bullet_list": "قائمة نقطية",
+    "bullet_list_desc": "قائمة غير مرتّبة",
+    "numbered_list": "قائمة مرقّمة",
+    "numbered_list_desc": "قائمة مرتّبة",
+    "task_list": "قائمة مهام",
+    "task_list_desc": "قائمة تحقّق",
+    "blockquote": "اقتباس",
+    "blockquote_desc": "كتلة اقتباس",
+    "code_block": "كتلة رمز",
+    "code_block_desc": "رمز محاط بسياج",
+    "table": "جدول",
+    "table_desc": "جدول 3×3",
+    "divider": "فاصل",
+    "divider_desc": "خط أفقي",
+    "no_results": "لا توجد نتائج"
+  },
+  "link": {
+    "edit": "تحرير",
+    "edit_link": "تحرير الرابط",
+    "remove_link": "إزالة الرابط",
+    "text": "النص",
+    "text_placeholder": "نص العرض (اختياري)",
+    "display_text": "نص العرض",
+    "url": "الرابط",
+    "url_placeholder": "الصق أو اكتب رابطًا...",
+    "apply": "تطبيق الرابط",
+    "cancel": "إلغاء"
+  },
+  "table": {
+    "header": "ترويسة",
+    "new_row": "+ صف جديد",
+    "row_options": "خيارات الصف {n}",
+    "col_options": "خيارات العمود {n}",
+    "insert_row_above": "إدراج صف أعلى",
+    "insert_row_below": "إدراج صف أسفل",
+    "delete_row": "حذف الصف",
+    "insert_col_left": "إدراج عمود يسارًا",
+    "insert_col_right": "إدراج عمود يمينًا",
+    "delete_col": "حذف العمود",
+    "add_row_above": "إضافة صف أعلى",
+    "add_row_below": "إضافة صف أسفل",
+    "add_col_left": "إضافة عمود يسارًا",
+    "add_col_right": "إضافة عمود يمينًا"
+  },
+  "dialog": {
+    "unsaved_title": "تغييرات غير محفوظة",
+    "unsaved_exit_edit": "لديك تغييرات غير محفوظة. هل تريد الحفظ قبل الخروج من وضع التحرير؟",
+    "unsaved_new_file": "لديك تغييرات غير محفوظة. هل تريد الحفظ قبل إنشاء ملف جديد؟",
+    "unsaved_open_file": "لديك تغييرات غير محفوظة. هل تريد الحفظ قبل فتح ملف جديد؟",
+    "save": "حفظ",
+    "discard": "تجاهل",
+    "dont_save": "عدم الحفظ",
+    "cancel": "إلغاء",
+    "unsaved_close": "لديك تغييرات غير محفوظة. هل تريد الحفظ قبل الإغلاق؟"
+  },
+  "lang_picker": {
+    "filter_placeholder": "تصفية اللغات...",
+    "filter_label": "تصفية اللغات",
+    "plain_text": "نص عادي"
+  },
+  "a11y": {
+    "skip_to_content": "تخطّي إلى المحتوى",
+    "main_toolbar": "شريط الأدوات الرئيسي",
+    "sidebar": "الشريط الجانبي",
+    "search_text": "نص البحث",
+    "previous_match": "النتيجة السابقة",
+    "next_match": "النتيجة التالية",
+    "close_search": "إغلاق البحث",
+    "format_text": "تنسيق النص",
+    "edit_link": "تحرير الرابط",
+    "insert_block": "إدراج كتلة",
+    "select_language": "اختيار اللغة",
+    "search_in_document": "البحث في المستند"
+  },
+  "drop_zone": {
+    "text": "أفلت ملف ماركداون هنا"
+  },
+  "help": {
+    "getting_started": "البدء",
+    "editing": "التحرير",
+    "shortcuts": "اختصارات لوحة المفاتيح",
+    "features": "الميزات",
+    "fallback_notice": "هذه الصفحة غير متوفرة بلغتك بعد. يتم عرض النسخة الإنجليزية."
+  },
+  "recovery": {
+    "title": "استعادة التغييرات غير المحفوظة؟",
+    "message": "عثر Kern على تغييرات غير محفوظة من جلسة سابقة. هل تريد استعادتها؟",
+    "restore": "استعادة",
+    "discard": "تجاهل"
+  },
+  "export": {
+    "success": "تم تصدير PDF بنجاح",
+    "open": "فتح"
+  },
+  "context": {
+    "cut": "قص",
+    "copy": "نسخ",
+    "paste": "لصق",
+    "paste_plain": "لصق كنص عادي",
+    "select_all": "تحديد الكل",
+    "copy_link": "نسخ الرابط",
+    "open_link": "فتح الرابط",
+    "copy_image_address": "نسخ عنوان الصورة"
+  },
+  "trial": {
+    "days_remaining": "باقي {days} يوم في الفترة التجريبية",
+    "expired_message": "انتهت الفترة التجريبية. قم بشراء Kern لمتابعة التحرير.",
+    "purchase_button": "شراء Kern",
+    "purchase_title": "فتح Kern",
+    "purchase_desc": "احصل على وصول كامل لجميع ميزات التحرير والتصدير بعملية شراء واحدة.",
+    "feature_edit": "تحرير Markdown بواجهة WYSIWYG والعرض المقسّم",
+    "feature_save": "حفظ وإنشاء ملفات جديدة",
+    "feature_export": "تصدير إلى PDF",
+    "restore_purchases": "استعادة المشتريات",
+    "one_time_purchase": "شراء لمرة واحدة. بدون اشتراك.",
+    "purchasing": "جارٍ الشراء...",
+    "restoring": "جارٍ الاستعادة..."
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "ಫೈಲ್ ತೆರೆಯಿರಿ",
+    "theme": "ಥೀಮ್ ಬದಲಿಸಿ",
+    "toc": "ವಿಷಯ ಸೂಚಿ",
+    "search": "ಹುಡುಕಿ",
+    "focus": "ಫೋಕಸ್ ಮೋಡ್",
+    "zoom_in": "ಜೂಮ್ ಇನ್",
+    "zoom_out": "ಜೂಮ್ ಔಟ್",
+    "zoom_reset": "ಜೂಮ್ ರೀಸೆಟ್",
+    "save": "ಉಳಿಸಿ",
+    "edit": "ಸಂಪಾದಿಸಿ",
+    "new_file": "ಹೊಸ ಫೈಲ್",
+    "split_view": "ವಿಭಜಿತ ನೋಟ",
+    "export_pdf": "PDF ರಫ್ತು ಮಾಡಿ",
+    "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    "more": "ಇನ್ನಷ್ಟು"
+  },
+  "sidebar": {
+    "toc": "ವಿಷಯ ಸೂಚಿ",
+    "recent": "ಇತ್ತೀಚಿನ ಫೈಲ್‌ಗಳು",
+    "no_headings": "ಯಾವುದೇ ಶೀರ್ಷಿಕೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ"
+  },
+  "search": {
+    "placeholder": "ಡಾಕ್ಯುಮೆಂಟ್‌ನಲ್ಲಿ ಹುಡುಕಿ...",
+    "count": "ಹೊಂದಾಣಿಕೆಗಳು",
+    "no_results": "ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "ಒಂದು ಸುಂದರ ಮಾರ್ಕ್‌ಡೌನ್ ವೀಕ್ಷಕ",
+    "new_button": "ಹೊಸ ಫೈಲ್",
+    "open_button": "ಫೈಲ್ ತೆರೆಯಿರಿ",
+    "drop_hint": "ಅಥವಾ .md ಫೈಲ್ ಅನ್ನು ಎಳೆದು ಬಿಡಿ"
+  },
+  "viewer": {
+    "copy": "ನಕಲಿಸಿ",
+    "copied": "ನಕಲಿಸಲಾಗಿದೆ!"
+  },
+  "settings": {
+    "theme": "ಥೀಮ್",
+    "theme_light": "ಲೈಟ್",
+    "theme_dark": "ಡಾರ್ಕ್",
+    "theme_system": "ಸಿಸ್ಟಮ್",
+    "language": "ಭಾಷೆ"
+  },
+  "common": {
+    "close": "ಮುಚ್ಚಿ",
+    "open": "ತೆರೆಯಿರಿ",
+    "file": "ಫೈಲ್"
+  },
+  "format": {
+    "paragraph": "ಪ್ಯಾರಾಗ್ರಾಫ್",
+    "heading1": "ಶೀರ್ಷಿಕೆ ೧",
+    "heading2": "ಶೀರ್ಷಿಕೆ ೨",
+    "heading3": "ಶೀರ್ಷಿಕೆ ೩",
+    "bold": "ಬೋಲ್ಡ್ ({mod}+B)",
+    "italic": "ಇಟಾಲಿಕ್ ({mod}+I)",
+    "strikethrough": "ಸ್ಟ್ರೈಕ್‌ಥ್ರೂ ({mod}+Shift+X)",
+    "code": "ಇನ್‌ಲೈನ್ ಕೋಡ್ ({mod}+E)",
+    "link": "ಲಿಂಕ್ ({mod}+K)",
+    "bullet_list": "ಬುಲೆಟ್ ಪಟ್ಟಿ",
+    "numbered_list": "ಸಂಖ್ಯಾ ಪಟ್ಟಿ",
+    "task_list": "ಕಾರ್ಯ ಪಟ್ಟಿ",
+    "blockquote": "ಬ್ಲಾಕ್‌ಕೋಟ್",
+    "divider": "ವಿಭಜಕ",
+    "table": "ಕೋಷ್ಟಕ",
+    "code_block": "ಕೋಡ್ ಬ್ಲಾಕ್"
+  },
+  "slash": {
+    "paragraph": "ಪ್ಯಾರಾಗ್ರಾಫ್",
+    "paragraph_desc": "ಸಾಮಾನ್ಯ ಪಠ್ಯ",
+    "heading1": "ಶೀರ್ಷಿಕೆ ೧",
+    "heading1_desc": "ದೊಡ್ಡ ಶೀರ್ಷಿಕೆ",
+    "heading2": "ಶೀರ್ಷಿಕೆ ೨",
+    "heading2_desc": "ಮಧ್ಯಮ ಶೀರ್ಷಿಕೆ",
+    "heading3": "ಶೀರ್ಷಿಕೆ ೩",
+    "heading3_desc": "ಸಣ್ಣ ಶೀರ್ಷಿಕೆ",
+    "bullet_list": "ಬುಲೆಟ್ ಪಟ್ಟಿ",
+    "bullet_list_desc": "ಅಕ್ರಮ ಪಟ್ಟಿ",
+    "numbered_list": "ಸಂಖ್ಯಾ ಪಟ್ಟಿ",
+    "numbered_list_desc": "ಕ್ರಮ ಪಟ್ಟಿ",
+    "task_list": "ಕಾರ್ಯ ಪಟ್ಟಿ",
+    "task_list_desc": "ಚೆಕ್‌ಲಿಸ್ಟ್",
+    "blockquote": "ಬ್ಲಾಕ್‌ಕೋಟ್",
+    "blockquote_desc": "ಉಲ್ಲೇಖ ಬ್ಲಾಕ್",
+    "code_block": "ಕೋಡ್ ಬ್ಲಾಕ್",
+    "code_block_desc": "ಫೆನ್ಸ್ಡ್ ಕೋಡ್",
+    "table": "ಕೋಷ್ಟಕ",
+    "table_desc": "೩×೩ ಕೋಷ್ಟಕ",
+    "divider": "ವಿಭಜಕ",
+    "divider_desc": "ಅಡ್ಡ ಗೆರೆ",
+    "no_results": "ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ"
+  },
+  "link": {
+    "edit": "ಸಂಪಾದಿಸಿ",
+    "edit_link": "ಲಿಂಕ್ ಸಂಪಾದಿಸಿ",
+    "remove_link": "ಲಿಂಕ್ ತೆಗೆಯಿರಿ",
+    "text": "ಪಠ್ಯ",
+    "text_placeholder": "ಪ್ರದರ್ಶನ ಪಠ್ಯ (ಐಚ್ಛಿಕ)",
+    "display_text": "ಪ್ರದರ್ಶನ ಪಠ್ಯ",
+    "url": "URL",
+    "url_placeholder": "URL ಅಂಟಿಸಿ ಅಥವಾ ಟೈಪ್ ಮಾಡಿ...",
+    "apply": "ಲಿಂಕ್ ಅನ್ವಯಿಸಿ",
+    "cancel": "ರದ್ದುಮಾಡಿ"
+  },
+  "table": {
+    "header": "ಹೆಡರ್",
+    "new_row": "+ ಹೊಸ ಸಾಲು",
+    "row_options": "ಸಾಲು {n} ಆಯ್ಕೆಗಳು",
+    "col_options": "ಕಾಲಮ್ {n} ಆಯ್ಕೆಗಳು",
+    "insert_row_above": "ಮೇಲೆ ಸಾಲು ಸೇರಿಸಿ",
+    "insert_row_below": "ಕೆಳಗೆ ಸಾಲು ಸೇರಿಸಿ",
+    "delete_row": "ಸಾಲು ಅಳಿಸಿ",
+    "insert_col_left": "ಎಡಕ್ಕೆ ಕಾಲಮ್ ಸೇರಿಸಿ",
+    "insert_col_right": "ಬಲಕ್ಕೆ ಕಾಲಮ್ ಸೇರಿಸಿ",
+    "delete_col": "ಕಾಲಮ್ ಅಳಿಸಿ",
+    "add_row_above": "ಮೇಲೆ ಸಾಲು ಸೇರಿಸಿ",
+    "add_row_below": "ಕೆಳಗೆ ಸಾಲು ಸೇರಿಸಿ",
+    "add_col_left": "ಎಡಕ್ಕೆ ಕಾಲಮ್ ಸೇರಿಸಿ",
+    "add_col_right": "ಬಲಕ್ಕೆ ಕಾಲಮ್ ಸೇರಿಸಿ"
+  },
+  "dialog": {
+    "unsaved_title": "ಉಳಿಸದ ಬದಲಾವಣೆಗಳು",
+    "unsaved_exit_edit": "ಉಳಿಸದ ಬದಲಾವಣೆಗಳಿವೆ. ಸಂಪಾದನೆ ಮೋಡ್ ನಿಂದ ನಿರ್ಗಮಿಸುವ ಮೊದಲು ಉಳಿಸಲು ಬಯಸುತ್ತೀರಾ?",
+    "unsaved_new_file": "ಉಳಿಸದ ಬದಲಾವಣೆಗಳಿವೆ. ಹೊಸ ಫೈಲ್ ರಚಿಸುವ ಮೊದಲು ಉಳಿಸಲು ಬಯಸುತ್ತೀರಾ?",
+    "unsaved_open_file": "ಉಳಿಸದ ಬದಲಾವಣೆಗಳಿವೆ. ಹೊಸ ಫೈಲ್ ತೆರೆಯುವ ಮೊದಲು ಉಳಿಸಲು ಬಯಸುತ್ತೀರಾ?",
+    "save": "ಉಳಿಸಿ",
+    "discard": "ತ್ಯಜಿಸಿ",
+    "dont_save": "ಉಳಿಸಬೇಡಿ",
+    "cancel": "ರದ್ದುಮಾಡಿ",
+    "unsaved_close": "ಉಳಿಸದ ಬದಲಾವಣೆಗಳಿವೆ. ಮುಚ್ಚುವ ಮೊದಲು ಉಳಿಸಲು ಬಯಸುವಿರಾ?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "ಭಾಷೆಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ...",
+    "filter_label": "ಭಾಷೆಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ",
+    "plain_text": "ಸಾದಾ ಪಠ್ಯ"
+  },
+  "a11y": {
+    "skip_to_content": "ವಿಷಯಕ್ಕೆ ಹೋಗಿ",
+    "main_toolbar": "ಮುಖ್ಯ ಟೂಲ್‌ಬಾರ್",
+    "sidebar": "ಸೈಡ್‌ಬಾರ್",
+    "search_text": "ಪಠ್ಯ ಹುಡುಕಿ",
+    "previous_match": "ಹಿಂದಿನ ಹೊಂದಾಣಿಕೆ",
+    "next_match": "ಮುಂದಿನ ಹೊಂದಾಣಿಕೆ",
+    "close_search": "ಹುಡುಕಾಟ ಮುಚ್ಚಿ",
+    "format_text": "ಪಠ್ಯ ಸ್ವರೂಪ",
+    "edit_link": "ಲಿಂಕ್ ಸಂಪಾದಿಸಿ",
+    "insert_block": "ಬ್ಲಾಕ್ ಸೇರಿಸಿ",
+    "select_language": "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ",
+    "search_in_document": "ಡಾಕ್ಯುಮೆಂಟ್‌ನಲ್ಲಿ ಹುಡುಕಿ"
+  },
+  "drop_zone": {
+    "text": "ನಿಮ್ಮ ಮಾರ್ಕ್‌ಡೌನ್ ಫೈಲ್ ಅನ್ನು ಇಲ್ಲಿ ಬಿಡಿ"
+  },
+  "help": {
+    "getting_started": "ಪ್ರಾರಂಭಿಸಿ",
+    "editing": "ಸಂಪಾದನೆ",
+    "shortcuts": "ಕೀಬೋರ್ಡ್ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳು",
+    "features": "ವೈಶಿಷ್ಟ್ಯಗಳು",
+    "fallback_notice": "ಈ ಪುಟವು ಇನ್ನೂ ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ. ಇಂಗ್ಲಿಷ್ ಆವೃತ್ತಿಯನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ."
+  },
+  "recovery": {
+    "title": "ಉಳಿಸದ ಬದಲಾವಣೆಗಳನ್ನು ಮರುಪಡೆಯುವುದೇ?",
+    "message": "Kern ಹಿಂದಿನ ಅಧಿವೇಶನದಿಂದ ಉಳಿಸದ ಬದಲಾವಣೆಗಳನ್ನು ಕಂಡುಕೊಂಡಿದೆ. ಅವುಗಳನ್ನು ಪುನಃಸ್ಥಾಪಿಸಲು ಬಯಸುವಿರಾ?",
+    "restore": "ಪುನಃಸ್ಥಾಪಿಸಿ",
+    "discard": "ತ್ಯಜಿಸಿ"
+  },
+  "export": {
+    "success": "PDF ಯಶಸ್ವಿಯಾಗಿ ರಫ್ತಾಗಿದೆ",
+    "open": "ತೆರೆಯಿರಿ"
+  },
+  "context": {
+    "cut": "ಕತ್ತರಿಸಿ",
+    "copy": "ನಕಲಿಸಿ",
+    "paste": "ಅಂಟಿಸಿ",
+    "paste_plain": "ಸರಳ ಪಠ್ಯವಾಗಿ ಅಂಟಿಸಿ",
+    "select_all": "ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆಮಾಡಿ",
+    "copy_link": "ಲಿಂಕ್ ನಕಲಿಸಿ",
+    "open_link": "ಲಿಂಕ್ ತೆರೆಯಿರಿ",
+    "copy_image_address": "ಚಿತ್ರದ ವಿಳಾಸ ನಕಲಿಸಿ"
+  },
+  "trial": {
+    "days_remaining": "ಪ್ರಯೋಗದಲ್ಲಿ {days} ದಿನಗಳು ಉಳಿದಿವೆ",
+    "expired_message": "ನಿಮ್ಮ ಪ್ರಯೋಗ ಅವಧಿ ಮುಗಿದಿದೆ. ಸಂಪಾದನೆ ಮುಂದುವರಿಸಲು Kern ಖರೀದಿಸಿ.",
+    "purchase_button": "Kern ಖರೀದಿಸಿ",
+    "purchase_title": "Kern ಅನ್‌ಲಾಕ್ ಮಾಡಿ",
+    "purchase_desc": "ಒಂದು ಬಾರಿಯ ಖರೀದಿಯೊಂದಿಗೆ ಎಲ್ಲಾ ಸಂಪಾದನೆ ಮತ್ತು ರಫ್ತು ವೈಶಿಷ್ಟ್ಯಗಳಿಗೆ ಸಂಪೂರ್ಣ ಪ್ರವೇಶ ಪಡೆಯಿರಿ.",
+    "feature_edit": "WYSIWYG ಮತ್ತು ವಿಭಜಿತ ನೋಟದೊಂದಿಗೆ Markdown ಸಂಪಾದಿಸಿ",
+    "feature_save": "ಫೈಲ್‌ಗಳನ್ನು ಉಳಿಸಿ ಮತ್ತು ಹೊಸದನ್ನು ರಚಿಸಿ",
+    "feature_export": "PDF ಗೆ ರಫ್ತು ಮಾಡಿ",
+    "restore_purchases": "ಖರೀದಿಗಳನ್ನು ಪುನಃಸ್ಥಾಪಿಸಿ",
+    "one_time_purchase": "ಒಂದು ಬಾರಿಯ ಖರೀದಿ. ಚಂದಾದಾರಿಕೆ ಇಲ್ಲ.",
+    "purchasing": "ಖರೀದಿಸಲಾಗುತ್ತಿದೆ...",
+    "restoring": "ಪುನಃಸ್ಥಾಪಿಸಲಾಗುತ್ತಿದೆ..."
+  }
+}
