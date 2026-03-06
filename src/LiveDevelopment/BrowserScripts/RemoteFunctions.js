@@ -507,8 +507,11 @@ function RemoteFunctions(config = {}) {
     /**
      * this function is responsible to select an element in the live preview
      * @param {Element} element - The DOM element to select
+     * @param {boolean} [fromEditor] - If true, this is an editor-cursor-driven selection;
+     *   only lightweight highlights (outline + margin/padding) are shown, not interactive
+     *   UI like control box, spacing handles, or measurements.
      */
-    function selectElement(element) {
+    function selectElement(element, fromEditor) {
         dismissUIAndCleanupState();
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
@@ -517,23 +520,27 @@ function RemoteFunctions(config = {}) {
             return false;
         }
 
-        // when user clicks on a non-editable element
-        if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
-            getAllToolHandlers().forEach(handler => {
-                if (handler.onNonEditableElementClick) {
-                    handler.onNonEditableElementClick(element);
-                }
-            });
-        }
+        // Only invoke tool handlers for user-initiated clicks in the live preview,
+        // not for editor cursor movements which should only show lightweight highlights
+        if (!fromEditor) {
+            // when user clicks on a non-editable element
+            if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
+                getAllToolHandlers().forEach(handler => {
+                    if (handler.onNonEditableElementClick) {
+                        handler.onNonEditableElementClick(element);
+                    }
+                });
+            }
 
-        // make sure that the element is actually visible to the user
-        if (isElementVisible(element)) {
-            // Notify handlers about element selection
-            getAllToolHandlers().forEach(handler => {
-                if (handler.onElementSelected) {
-                    handler.onElementSelected(element);
-                }
-            });
+            // make sure that the element is actually visible to the user
+            if (isElementVisible(element)) {
+                // Notify handlers about element selection
+                getAllToolHandlers().forEach(handler => {
+                    if (handler.onElementSelected) {
+                        handler.onElementSelected(element);
+                    }
+                });
+            }
         }
 
         element._originalOutline = element.style.outline;
@@ -764,7 +771,7 @@ function RemoteFunctions(config = {}) {
 
         if (!skipSelection) {
             if (element) {
-                selectElement(element);
+                selectElement(element, true);
             } else {
                 // No valid element found, dismiss UI
                 dismissUIAndCleanupState();
