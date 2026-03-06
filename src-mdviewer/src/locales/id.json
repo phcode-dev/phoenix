@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "Buka File",
+    "theme": "Ganti Tema",
+    "toc": "Daftar Isi",
+    "search": "Cari",
+    "focus": "Mode Fokus",
+    "zoom_in": "Perbesar",
+    "zoom_out": "Perkecil",
+    "zoom_reset": "Atur Ulang Zoom",
+    "save": "Simpan",
+    "edit": "Edit",
+    "new_file": "File Baru",
+    "split_view": "Tampilan Terpisah",
+    "export_pdf": "Ekspor PDF",
+    "settings": "Pengaturan",
+    "more": "Lainnya"
+  },
+  "sidebar": {
+    "toc": "Daftar Isi",
+    "recent": "File Terbaru",
+    "no_headings": "Tidak ada judul ditemukan"
+  },
+  "search": {
+    "placeholder": "Cari di dokumen...",
+    "count": "kecocokan",
+    "no_results": "Tidak ada hasil"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "Penampil Markdown yang indah",
+    "new_button": "File Baru",
+    "open_button": "Buka File",
+    "drop_hint": "atau seret dan lepas file .md"
+  },
+  "viewer": {
+    "copy": "Salin",
+    "copied": "Tersalin!"
+  },
+  "settings": {
+    "theme": "Tema",
+    "theme_light": "Terang",
+    "theme_dark": "Gelap",
+    "theme_system": "Sistem",
+    "language": "Bahasa"
+  },
+  "common": {
+    "close": "Tutup",
+    "open": "Buka",
+    "file": "File"
+  },
+  "format": {
+    "paragraph": "Paragraf",
+    "heading1": "Judul 1",
+    "heading2": "Judul 2",
+    "heading3": "Judul 3",
+    "bold": "Tebal ({mod}+B)",
+    "italic": "Miring ({mod}+I)",
+    "strikethrough": "Coret ({mod}+Shift+X)",
+    "code": "Kode inline ({mod}+E)",
+    "link": "Tautan ({mod}+K)",
+    "bullet_list": "Daftar poin",
+    "numbered_list": "Daftar bernomor",
+    "task_list": "Daftar tugas",
+    "blockquote": "Kutipan",
+    "divider": "Pemisah",
+    "table": "Tabel",
+    "code_block": "Blok kode"
+  },
+  "slash": {
+    "paragraph": "Paragraf",
+    "paragraph_desc": "Teks biasa",
+    "heading1": "Judul 1",
+    "heading1_desc": "Judul besar",
+    "heading2": "Judul 2",
+    "heading2_desc": "Judul sedang",
+    "heading3": "Judul 3",
+    "heading3_desc": "Judul kecil",
+    "bullet_list": "Daftar poin",
+    "bullet_list_desc": "Daftar tak berurut",
+    "numbered_list": "Daftar bernomor",
+    "numbered_list_desc": "Daftar berurut",
+    "task_list": "Daftar tugas",
+    "task_list_desc": "Daftar centang",
+    "blockquote": "Kutipan",
+    "blockquote_desc": "Blok kutipan",
+    "code_block": "Blok kode",
+    "code_block_desc": "Kode berpagar",
+    "table": "Tabel",
+    "table_desc": "Tabel 3×3",
+    "divider": "Pemisah",
+    "divider_desc": "Garis horizontal",
+    "no_results": "Tidak ada hasil"
+  },
+  "link": {
+    "edit": "Edit",
+    "edit_link": "Edit tautan",
+    "remove_link": "Hapus tautan",
+    "text": "Teks",
+    "text_placeholder": "Teks tampilan (opsional)",
+    "display_text": "Teks tampilan",
+    "url": "URL",
+    "url_placeholder": "Tempel atau ketik URL...",
+    "apply": "Terapkan tautan",
+    "cancel": "Batal"
+  },
+  "table": {
+    "header": "Header",
+    "new_row": "+ Baris baru",
+    "row_options": "Opsi baris {n}",
+    "col_options": "Opsi kolom {n}",
+    "insert_row_above": "Sisipkan baris di atas",
+    "insert_row_below": "Sisipkan baris di bawah",
+    "delete_row": "Hapus baris",
+    "insert_col_left": "Sisipkan kolom di kiri",
+    "insert_col_right": "Sisipkan kolom di kanan",
+    "delete_col": "Hapus kolom",
+    "add_row_above": "Tambah baris di atas",
+    "add_row_below": "Tambah baris di bawah",
+    "add_col_left": "Tambah kolom di kiri",
+    "add_col_right": "Tambah kolom di kanan"
+  },
+  "dialog": {
+    "unsaved_title": "Perubahan Belum Disimpan",
+    "unsaved_exit_edit": "Ada perubahan yang belum disimpan. Apakah Anda ingin menyimpan sebelum keluar dari mode edit?",
+    "unsaved_new_file": "Ada perubahan yang belum disimpan. Apakah Anda ingin menyimpan sebelum membuat file baru?",
+    "unsaved_open_file": "Ada perubahan yang belum disimpan. Apakah Anda ingin menyimpan sebelum membuka file baru?",
+    "save": "Simpan",
+    "discard": "Buang",
+    "dont_save": "Jangan Simpan",
+    "cancel": "Batal",
+    "unsaved_close": "Anda memiliki perubahan yang belum disimpan. Apakah ingin menyimpan sebelum menutup?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "Filter bahasa...",
+    "filter_label": "Filter bahasa",
+    "plain_text": "Teks biasa"
+  },
+  "a11y": {
+    "skip_to_content": "Langsung ke konten",
+    "main_toolbar": "Bilah alat utama",
+    "sidebar": "Bilah samping",
+    "search_text": "Cari teks",
+    "previous_match": "Kecocokan sebelumnya",
+    "next_match": "Kecocokan berikutnya",
+    "close_search": "Tutup pencarian",
+    "format_text": "Format teks",
+    "edit_link": "Edit tautan",
+    "insert_block": "Sisipkan blok",
+    "select_language": "Pilih bahasa",
+    "search_in_document": "Cari di dokumen"
+  },
+  "drop_zone": {
+    "text": "Lepaskan file Markdown Anda di sini"
+  },
+  "help": {
+    "getting_started": "Memulai",
+    "editing": "Pengeditan",
+    "shortcuts": "Pintasan Keyboard",
+    "features": "Fitur",
+    "fallback_notice": "Halaman ini belum tersedia dalam bahasa Anda. Menampilkan versi bahasa Inggris."
+  },
+  "recovery": {
+    "title": "Pulihkan perubahan yang belum disimpan?",
+    "message": "Kern menemukan perubahan yang belum disimpan dari sesi sebelumnya. Apakah Anda ingin memulihkannya?",
+    "restore": "Pulihkan",
+    "discard": "Buang"
+  },
+  "export": {
+    "success": "PDF berhasil diekspor",
+    "open": "Buka"
+  },
+  "context": {
+    "cut": "Potong",
+    "copy": "Salin",
+    "paste": "Tempel",
+    "paste_plain": "Tempel sebagai teks biasa",
+    "select_all": "Pilih semua",
+    "copy_link": "Salin tautan",
+    "open_link": "Buka tautan",
+    "copy_image_address": "Salin alamat gambar"
+  },
+  "trial": {
+    "days_remaining": "{days} hari tersisa dalam uji coba",
+    "expired_message": "Masa uji coba Anda telah berakhir. Beli Kern untuk melanjutkan pengeditan.",
+    "purchase_button": "Beli Kern",
+    "purchase_title": "Buka Kern",
+    "purchase_desc": "Dapatkan akses penuh ke semua fitur pengeditan dan ekspor dengan pembelian sekali bayar.",
+    "feature_edit": "Edit Markdown dengan WYSIWYG dan tampilan terpisah",
+    "feature_save": "Simpan dan buat file baru",
+    "feature_export": "Ekspor ke PDF",
+    "restore_purchases": "Pulihkan Pembelian",
+    "one_time_purchase": "Pembelian sekali bayar. Tanpa langganan.",
+    "purchasing": "Membeli...",
+    "restoring": "Memulihkan..."
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "Datei öffnen",
+    "theme": "Thema wechseln",
+    "toc": "Inhaltsverzeichnis",
+    "search": "Suchen",
+    "focus": "Fokusmodus",
+    "zoom_in": "Vergrößern",
+    "zoom_out": "Verkleinern",
+    "zoom_reset": "Zoom zurücksetzen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "new_file": "Neue Datei",
+    "split_view": "Geteilte Ansicht",
+    "export_pdf": "Als PDF exportieren",
+    "settings": "Einstellungen",
+    "more": "Mehr"
+  },
+  "sidebar": {
+    "toc": "Inhaltsverzeichnis",
+    "recent": "Letzte Dateien",
+    "no_headings": "Keine Überschriften gefunden"
+  },
+  "search": {
+    "placeholder": "Im Dokument suchen...",
+    "count": "Treffer",
+    "no_results": "Keine Ergebnisse"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "Ein schöner Markdown-Betrachter",
+    "new_button": "Neue Datei",
+    "open_button": "Datei öffnen",
+    "drop_hint": "oder eine .md-Datei hierher ziehen"
+  },
+  "viewer": {
+    "copy": "Kopieren",
+    "copied": "Kopiert!"
+  },
+  "settings": {
+    "theme": "Thema",
+    "theme_light": "Hell",
+    "theme_dark": "Dunkel",
+    "theme_system": "System",
+    "language": "Sprache"
+  },
+  "common": {
+    "close": "Schließen",
+    "open": "Öffnen",
+    "file": "Datei"
+  },
+  "format": {
+    "paragraph": "Absatz",
+    "heading1": "Überschrift 1",
+    "heading2": "Überschrift 2",
+    "heading3": "Überschrift 3",
+    "bold": "Fett ({mod}+B)",
+    "italic": "Kursiv ({mod}+I)",
+    "strikethrough": "Durchgestrichen ({mod}+Umschalt+X)",
+    "code": "Inline-Code ({mod}+E)",
+    "link": "Link ({mod}+K)",
+    "bullet_list": "Aufzählungsliste",
+    "numbered_list": "Nummerierte Liste",
+    "task_list": "Aufgabenliste",
+    "blockquote": "Zitat",
+    "divider": "Trennlinie",
+    "table": "Tabelle",
+    "code_block": "Codeblock"
+  },
+  "slash": {
+    "paragraph": "Absatz",
+    "paragraph_desc": "Normaler Text",
+    "heading1": "Überschrift 1",
+    "heading1_desc": "Große Überschrift",
+    "heading2": "Überschrift 2",
+    "heading2_desc": "Mittlere Überschrift",
+    "heading3": "Überschrift 3",
+    "heading3_desc": "Kleine Überschrift",
+    "bullet_list": "Aufzählungsliste",
+    "bullet_list_desc": "Unsortierte Liste",
+    "numbered_list": "Nummerierte Liste",
+    "numbered_list_desc": "Sortierte Liste",
+    "task_list": "Aufgabenliste",
+    "task_list_desc": "Checkliste",
+    "blockquote": "Zitat",
+    "blockquote_desc": "Zitatblock",
+    "code_block": "Codeblock",
+    "code_block_desc": "Codebereich",
+    "table": "Tabelle",
+    "table_desc": "3×3-Tabelle",
+    "divider": "Trennlinie",
+    "divider_desc": "Horizontale Linie",
+    "no_results": "Keine Ergebnisse"
+  },
+  "link": {
+    "edit": "Bearbeiten",
+    "edit_link": "Link bearbeiten",
+    "remove_link": "Link entfernen",
+    "text": "Text",
+    "text_placeholder": "Anzeigetext (optional)",
+    "display_text": "Anzeigetext",
+    "url": "URL",
+    "url_placeholder": "URL einfügen oder eingeben...",
+    "apply": "Link anwenden",
+    "cancel": "Abbrechen"
+  },
+  "table": {
+    "header": "Kopfzeile",
+    "new_row": "+ Neue Zeile",
+    "row_options": "Optionen für Zeile {n}",
+    "col_options": "Optionen für Spalte {n}",
+    "insert_row_above": "Zeile darüber einfügen",
+    "insert_row_below": "Zeile darunter einfügen",
+    "delete_row": "Zeile löschen",
+    "insert_col_left": "Spalte links einfügen",
+    "insert_col_right": "Spalte rechts einfügen",
+    "delete_col": "Spalte löschen",
+    "add_row_above": "Zeile darüber hinzufügen",
+    "add_row_below": "Zeile darunter hinzufügen",
+    "add_col_left": "Spalte links hinzufügen",
+    "add_col_right": "Spalte rechts hinzufügen"
+  },
+  "dialog": {
+    "unsaved_title": "Ungespeicherte Änderungen",
+    "unsaved_exit_edit": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Verlassen des Bearbeitungsmodus speichern?",
+    "unsaved_new_file": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Erstellen einer neuen Datei speichern?",
+    "unsaved_open_file": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Öffnen einer neuen Datei speichern?",
+    "save": "Speichern",
+    "discard": "Verwerfen",
+    "dont_save": "Nicht speichern",
+    "cancel": "Abbrechen",
+    "unsaved_close": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Schließen speichern?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "Sprachen filtern...",
+    "filter_label": "Sprachen filtern",
+    "plain_text": "Klartext"
+  },
+  "a11y": {
+    "skip_to_content": "Zum Inhalt springen",
+    "main_toolbar": "Hauptsymbolleiste",
+    "sidebar": "Seitenleiste",
+    "search_text": "Text suchen",
+    "previous_match": "Vorheriger Treffer",
+    "next_match": "Nächster Treffer",
+    "close_search": "Suche schließen",
+    "format_text": "Text formatieren",
+    "edit_link": "Link bearbeiten",
+    "insert_block": "Block einfügen",
+    "select_language": "Sprache auswählen",
+    "search_in_document": "Im Dokument suchen"
+  },
+  "drop_zone": {
+    "text": "Markdown-Datei hier ablegen"
+  },
+  "help": {
+    "getting_started": "Erste Schritte",
+    "editing": "Bearbeitung",
+    "shortcuts": "Tastenkürzel",
+    "features": "Funktionen",
+    "fallback_notice": "Diese Seite ist noch nicht in Ihrer Sprache verfügbar. Die englische Version wird angezeigt."
+  },
+  "recovery": {
+    "title": "Ungespeicherte Änderungen wiederherstellen?",
+    "message": "Kern hat ungespeicherte Änderungen aus einer vorherigen Sitzung gefunden. Möchten Sie diese wiederherstellen?",
+    "restore": "Wiederherstellen",
+    "discard": "Verwerfen"
+  },
+  "export": {
+    "success": "PDF erfolgreich exportiert",
+    "open": "Öffnen"
+  },
+  "context": {
+    "cut": "Ausschneiden",
+    "copy": "Kopieren",
+    "paste": "Einfügen",
+    "paste_plain": "Als reinen Text einfügen",
+    "select_all": "Alles auswählen",
+    "copy_link": "Link kopieren",
+    "open_link": "Link öffnen",
+    "copy_image_address": "Bildadresse kopieren"
+  },
+  "trial": {
+    "days_remaining": "Noch {days} Tage in der Testversion",
+    "expired_message": "Ihre Testversion ist abgelaufen. Kaufen Sie Kern, um weiter zu bearbeiten.",
+    "purchase_button": "Kern kaufen",
+    "purchase_title": "Kern freischalten",
+    "purchase_desc": "Erhalten Sie vollen Zugriff auf alle Bearbeitungs- und Exportfunktionen mit einem einmaligen Kauf.",
+    "feature_edit": "Markdown mit WYSIWYG und geteilter Ansicht bearbeiten",
+    "feature_save": "Dateien speichern und neu erstellen",
+    "feature_export": "Als PDF exportieren",
+    "restore_purchases": "Käufe wiederherstellen",
+    "one_time_purchase": "Einmaliger Kauf. Kein Abonnement.",
+    "purchasing": "Kauf wird durchgeführt...",
+    "restoring": "Wiederherstellung..."
+  }
+}

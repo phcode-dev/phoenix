@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "फ़ाइल खोलें",
+    "theme": "थीम बदलें",
+    "toc": "विषय सूची",
+    "search": "खोजें",
+    "focus": "फ़ोकस मोड",
+    "zoom_in": "ज़ूम इन",
+    "zoom_out": "ज़ूम आउट",
+    "zoom_reset": "ज़ूम रीसेट",
+    "save": "सहेजें",
+    "edit": "संपादित करें",
+    "new_file": "नई फ़ाइल",
+    "split_view": "विभाजित दृश्य",
+    "export_pdf": "PDF निर्यात करें",
+    "settings": "सेटिंग्स",
+    "more": "अधिक"
+  },
+  "sidebar": {
+    "toc": "विषय सूची",
+    "recent": "हाल की फ़ाइलें",
+    "no_headings": "कोई शीर्षक नहीं मिला"
+  },
+  "search": {
+    "placeholder": "दस्तावेज़ में खोजें...",
+    "count": "परिणाम",
+    "no_results": "कोई परिणाम नहीं"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "एक सुंदर मार्कडाउन व्यूअर",
+    "new_button": "नई फ़ाइल",
+    "open_button": "फ़ाइल खोलें",
+    "drop_hint": "या .md फ़ाइल खींचकर छोड़ें"
+  },
+  "viewer": {
+    "copy": "कॉपी करें",
+    "copied": "कॉपी हो गया!"
+  },
+  "settings": {
+    "theme": "थीम",
+    "theme_light": "लाइट",
+    "theme_dark": "डार्क",
+    "theme_system": "सिस्टम",
+    "language": "भाषा"
+  },
+  "common": {
+    "close": "बंद करें",
+    "open": "खोलें",
+    "file": "फ़ाइल"
+  },
+  "format": {
+    "paragraph": "अनुच्छेद",
+    "heading1": "शीर्षक 1",
+    "heading2": "शीर्षक 2",
+    "heading3": "शीर्षक 3",
+    "bold": "बोल्ड ({mod}+B)",
+    "italic": "इटैलिक ({mod}+I)",
+    "strikethrough": "स्ट्राइकथ्रू ({mod}+Shift+X)",
+    "code": "इनलाइन कोड ({mod}+E)",
+    "link": "लिंक ({mod}+K)",
+    "bullet_list": "बुलेट सूची",
+    "numbered_list": "क्रमांकित सूची",
+    "task_list": "कार्य सूची",
+    "blockquote": "उद्धरण",
+    "divider": "विभाजक",
+    "table": "तालिका",
+    "code_block": "कोड ब्लॉक"
+  },
+  "slash": {
+    "paragraph": "अनुच्छेद",
+    "paragraph_desc": "सामान्य पाठ",
+    "heading1": "शीर्षक 1",
+    "heading1_desc": "बड़ा शीर्षक",
+    "heading2": "शीर्षक 2",
+    "heading2_desc": "मध्यम शीर्षक",
+    "heading3": "शीर्षक 3",
+    "heading3_desc": "छोटा शीर्षक",
+    "bullet_list": "बुलेट सूची",
+    "bullet_list_desc": "अक्रमित सूची",
+    "numbered_list": "क्रमांकित सूची",
+    "numbered_list_desc": "क्रमित सूची",
+    "task_list": "कार्य सूची",
+    "task_list_desc": "चेकलिस्ट",
+    "blockquote": "उद्धरण",
+    "blockquote_desc": "उद्धरण ब्लॉक",
+    "code_block": "कोड ब्लॉक",
+    "code_block_desc": "फ़ेंस्ड कोड",
+    "table": "तालिका",
+    "table_desc": "3×3 तालिका",
+    "divider": "विभाजक",
+    "divider_desc": "क्षैतिज रेखा",
+    "no_results": "कोई परिणाम नहीं"
+  },
+  "link": {
+    "edit": "संपादित करें",
+    "edit_link": "लिंक संपादित करें",
+    "remove_link": "लिंक हटाएँ",
+    "text": "टेक्स्ट",
+    "text_placeholder": "प्रदर्शन टेक्स्ट (वैकल्पिक)",
+    "display_text": "प्रदर्शन टेक्स्ट",
+    "url": "URL",
+    "url_placeholder": "URL चिपकाएँ या टाइप करें...",
+    "apply": "लिंक लागू करें",
+    "cancel": "रद्द करें"
+  },
+  "table": {
+    "header": "शीर्षलेख",
+    "new_row": "+ नई पंक्ति",
+    "row_options": "पंक्ति {n} विकल्प",
+    "col_options": "स्तंभ {n} विकल्प",
+    "insert_row_above": "ऊपर पंक्ति जोड़ें",
+    "insert_row_below": "नीचे पंक्ति जोड़ें",
+    "delete_row": "पंक्ति हटाएँ",
+    "insert_col_left": "बाईं ओर स्तंभ जोड़ें",
+    "insert_col_right": "दाईं ओर स्तंभ जोड़ें",
+    "delete_col": "स्तंभ हटाएँ",
+    "add_row_above": "ऊपर पंक्ति जोड़ें",
+    "add_row_below": "नीचे पंक्ति जोड़ें",
+    "add_col_left": "बाईं ओर स्तंभ जोड़ें",
+    "add_col_right": "दाईं ओर स्तंभ जोड़ें"
+  },
+  "dialog": {
+    "unsaved_title": "असहेजे परिवर्तन",
+    "unsaved_exit_edit": "आपके असहेजे परिवर्तन हैं। क्या आप संपादन मोड से बाहर निकलने से पहले सहेजना चाहते हैं?",
+    "unsaved_new_file": "आपके असहेजे परिवर्तन हैं। क्या आप नई फ़ाइल बनाने से पहले सहेजना चाहते हैं?",
+    "unsaved_open_file": "आपके असहेजे परिवर्तन हैं। क्या आप नई फ़ाइल खोलने से पहले सहेजना चाहते हैं?",
+    "save": "सहेजें",
+    "discard": "छोड़ें",
+    "dont_save": "सहेजें नहीं",
+    "cancel": "रद्द करें",
+    "unsaved_close": "आपके पास सहेजे नहीं गए परिवर्तन हैं। बंद करने से पहले सहेजना चाहते हैं?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "भाषाएँ फ़िल्टर करें...",
+    "filter_label": "भाषाएँ फ़िल्टर करें",
+    "plain_text": "सादा टेक्स्ट"
+  },
+  "a11y": {
+    "skip_to_content": "सामग्री पर जाएँ",
+    "main_toolbar": "मुख्य टूलबार",
+    "sidebar": "साइडबार",
+    "search_text": "टेक्स्ट खोजें",
+    "previous_match": "पिछला परिणाम",
+    "next_match": "अगला परिणाम",
+    "close_search": "खोज बंद करें",
+    "format_text": "टेक्स्ट फ़ॉर्मेट करें",
+    "edit_link": "लिंक संपादित करें",
+    "insert_block": "ब्लॉक डालें",
+    "select_language": "भाषा चुनें",
+    "search_in_document": "दस्तावेज़ में खोजें"
+  },
+  "drop_zone": {
+    "text": "अपनी मार्कडाउन फ़ाइल यहाँ छोड़ें"
+  },
+  "help": {
+    "getting_started": "शुरू करें",
+    "editing": "संपादन",
+    "shortcuts": "कीबोर्ड शॉर्टकट",
+    "features": "विशेषताएँ",
+    "fallback_notice": "यह पृष्ठ अभी आपकी भाषा में उपलब्ध नहीं है। अंग्रेज़ी संस्करण दिखाया जा रहा है।"
+  },
+  "recovery": {
+    "title": "सहेजे नहीं गए परिवर्तन पुनर्प्राप्त करें?",
+    "message": "Kern को पिछले सत्र से सहेजे नहीं गए परिवर्तन मिले। क्या आप उन्हें पुनर्स्थापित करना चाहते हैं?",
+    "restore": "पुनर्स्थापित करें",
+    "discard": "छोड़ें"
+  },
+  "export": {
+    "success": "PDF सफलतापूर्वक निर्यात किया गया",
+    "open": "खोलें"
+  },
+  "context": {
+    "cut": "काटें",
+    "copy": "कॉपी करें",
+    "paste": "चिपकाएँ",
+    "paste_plain": "सादे पाठ के रूप में चिपकाएँ",
+    "select_all": "सभी चुनें",
+    "copy_link": "लिंक कॉपी करें",
+    "open_link": "लिंक खोलें",
+    "copy_image_address": "छवि पता कॉपी करें"
+  },
+  "trial": {
+    "days_remaining": "ट्रायल में {days} दिन शेष",
+    "expired_message": "आपका ट्रायल समाप्त हो गया है। संपादन जारी रखने के लिए Kern खरीदें।",
+    "purchase_button": "Kern खरीदें",
+    "purchase_title": "Kern अनलॉक करें",
+    "purchase_desc": "एक बार की खरीदारी के साथ सभी संपादन और निर्यात सुविधाओं तक पूर्ण पहुँच प्राप्त करें।",
+    "feature_edit": "WYSIWYG और विभाजित दृश्य के साथ Markdown संपादित करें",
+    "feature_save": "फ़ाइलें सहेजें और नई बनाएँ",
+    "feature_export": "PDF में निर्यात करें",
+    "restore_purchases": "खरीदारी पुनर्स्थापित करें",
+    "one_time_purchase": "एक बार की खरीदारी। कोई सदस्यता नहीं।",
+    "purchasing": "खरीदारी हो रही है...",
+    "restoring": "पुनर्स्थापित हो रहा है..."
+  }
+}

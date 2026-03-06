@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "फाइल उघडा",
+    "theme": "थीम बदला",
+    "toc": "अनुक्रमणिका",
+    "search": "शोधा",
+    "focus": "फोकस मोड",
+    "zoom_in": "झूम इन",
+    "zoom_out": "झूम आउट",
+    "zoom_reset": "झूम रीसेट",
+    "save": "जतन करा",
+    "edit": "संपादन",
+    "new_file": "नवीन फाइल",
+    "split_view": "विभाजित दृश्य",
+    "export_pdf": "PDF निर्यात करा",
+    "settings": "सेटिंग्ज",
+    "more": "अधिक"
+  },
+  "sidebar": {
+    "toc": "अनुक्रमणिका",
+    "recent": "अलीकडील फाइल्स",
+    "no_headings": "शीर्षके सापडली नाहीत"
+  },
+  "search": {
+    "placeholder": "दस्तऐवजात शोधा...",
+    "count": "जुळणी",
+    "no_results": "कोणतेही परिणाम नाहीत"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "एक सुंदर मार्कडाउन व्ह्यूअर",
+    "new_button": "नवीन फाइल",
+    "open_button": "फाइल उघडा",
+    "drop_hint": "किंवा .md फाइल ड्रॅग आणि ड्रॉप करा"
+  },
+  "viewer": {
+    "copy": "कॉपी",
+    "copied": "कॉपी झाले!"
+  },
+  "settings": {
+    "theme": "थीम",
+    "theme_light": "लाइट",
+    "theme_dark": "डार्क",
+    "theme_system": "सिस्टम",
+    "language": "भाषा"
+  },
+  "common": {
+    "close": "बंद करा",
+    "open": "उघडा",
+    "file": "फाइल"
+  },
+  "format": {
+    "paragraph": "परिच्छेद",
+    "heading1": "शीर्षक १",
+    "heading2": "शीर्षक २",
+    "heading3": "शीर्षक ३",
+    "bold": "ठळक ({mod}+B)",
+    "italic": "तिरपे ({mod}+I)",
+    "strikethrough": "स्ट्राइकथ्रू ({mod}+Shift+X)",
+    "code": "इनलाइन कोड ({mod}+E)",
+    "link": "दुवा ({mod}+K)",
+    "bullet_list": "बुलेट यादी",
+    "numbered_list": "क्रमांकित यादी",
+    "task_list": "कार्य यादी",
+    "blockquote": "ब्लॉककोट",
+    "divider": "विभाजक",
+    "table": "तक्ता",
+    "code_block": "कोड ब्लॉक"
+  },
+  "slash": {
+    "paragraph": "परिच्छेद",
+    "paragraph_desc": "साधा मजकूर",
+    "heading1": "शीर्षक १",
+    "heading1_desc": "मोठे शीर्षक",
+    "heading2": "शीर्षक २",
+    "heading2_desc": "मध्यम शीर्षक",
+    "heading3": "शीर्षक ३",
+    "heading3_desc": "लहान शीर्षक",
+    "bullet_list": "बुलेट यादी",
+    "bullet_list_desc": "अक्रमित यादी",
+    "numbered_list": "क्रमांकित यादी",
+    "numbered_list_desc": "क्रमित यादी",
+    "task_list": "कार्य यादी",
+    "task_list_desc": "चेकलिस्ट",
+    "blockquote": "ब्लॉककोट",
+    "blockquote_desc": "उद्धरण ब्लॉक",
+    "code_block": "कोड ब्लॉक",
+    "code_block_desc": "फेन्स्ड कोड",
+    "table": "तक्ता",
+    "table_desc": "३×३ तक्ता",
+    "divider": "विभाजक",
+    "divider_desc": "आडवी रेषा",
+    "no_results": "कोणतेही परिणाम नाहीत"
+  },
+  "link": {
+    "edit": "संपादन",
+    "edit_link": "दुवा संपादित करा",
+    "remove_link": "दुवा काढा",
+    "text": "मजकूर",
+    "text_placeholder": "प्रदर्शन मजकूर (पर्यायी)",
+    "display_text": "प्रदर्शन मजकूर",
+    "url": "URL",
+    "url_placeholder": "URL पेस्ट करा किंवा टाइप करा...",
+    "apply": "दुवा लागू करा",
+    "cancel": "रद्द करा"
+  },
+  "table": {
+    "header": "हेडर",
+    "new_row": "+ नवीन ओळ",
+    "row_options": "ओळ {n} पर्याय",
+    "col_options": "स्तंभ {n} पर्याय",
+    "insert_row_above": "वर ओळ घाला",
+    "insert_row_below": "खाली ओळ घाला",
+    "delete_row": "ओळ हटवा",
+    "insert_col_left": "डावीकडे स्तंभ घाला",
+    "insert_col_right": "उजवीकडे स्तंभ घाला",
+    "delete_col": "स्तंभ हटवा",
+    "add_row_above": "वर ओळ जोडा",
+    "add_row_below": "खाली ओळ जोडा",
+    "add_col_left": "डावीकडे स्तंभ जोडा",
+    "add_col_right": "उजवीकडे स्तंभ जोडा"
+  },
+  "dialog": {
+    "unsaved_title": "न जतन केलेले बदल",
+    "unsaved_exit_edit": "न जतन केलेले बदल आहेत. संपादन मोड सोडण्यापूर्वी जतन करायचे का?",
+    "unsaved_new_file": "न जतन केलेले बदल आहेत. नवीन फाइल तयार करण्यापूर्वी जतन करायचे का?",
+    "unsaved_open_file": "न जतन केलेले बदल आहेत. नवीन फाइल उघडण्यापूर्वी जतन करायचे का?",
+    "save": "जतन करा",
+    "discard": "टाकून द्या",
+    "dont_save": "जतन करू नका",
+    "cancel": "रद्द करा",
+    "unsaved_close": "जतन न केलेले बदल आहेत. बंद करण्यापूर्वी जतन करायचे आहे का?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "भाषा फिल्टर करा...",
+    "filter_label": "भाषा फिल्टर करा",
+    "plain_text": "साधा मजकूर"
+  },
+  "a11y": {
+    "skip_to_content": "मजकुराकडे जा",
+    "main_toolbar": "मुख्य टूलबार",
+    "sidebar": "साइडबार",
+    "search_text": "मजकूर शोधा",
+    "previous_match": "मागील जुळणी",
+    "next_match": "पुढील जुळणी",
+    "close_search": "शोध बंद करा",
+    "format_text": "मजकूर स्वरूपित करा",
+    "edit_link": "दुवा संपादित करा",
+    "insert_block": "ब्लॉक घाला",
+    "select_language": "भाषा निवडा",
+    "search_in_document": "दस्तऐवजात शोधा"
+  },
+  "drop_zone": {
+    "text": "तुमची मार्कडाउन फाइल इथे ड्रॉप करा"
+  },
+  "help": {
+    "getting_started": "सुरुवात करा",
+    "editing": "संपादन",
+    "shortcuts": "कीबोर्ड शॉर्टकट",
+    "features": "वैशिष्ट्ये",
+    "fallback_notice": "हे पृष्ठ अद्याप तुमच्या भाषेत उपलब्ध नाही. इंग्रजी आवृत्ती दाखवली जात आहे."
+  },
+  "recovery": {
+    "title": "जतन न केलेले बदल पुनर्प्राप्त करायचे?",
+    "message": "Kern ला मागील सत्रातील जतन न केलेले बदल सापडले. ते पुनर्स्थापित करायचे आहेत का?",
+    "restore": "पुनर्स्थापित करा",
+    "discard": "टाकून द्या"
+  },
+  "export": {
+    "success": "PDF यशस्वीरित्या निर्यात झाले",
+    "open": "उघडा"
+  },
+  "context": {
+    "cut": "कापा",
+    "copy": "कॉपी करा",
+    "paste": "पेस्ट करा",
+    "paste_plain": "साधा मजकूर म्हणून पेस्ट करा",
+    "select_all": "सर्व निवडा",
+    "copy_link": "दुवा कॉपी करा",
+    "open_link": "दुवा उघडा",
+    "copy_image_address": "प्रतिमा पत्ता कॉपी करा"
+  },
+  "trial": {
+    "days_remaining": "चाचणीत {days} दिवस शिल्लक",
+    "expired_message": "तुमची चाचणी संपली आहे. संपादन सुरू ठेवण्यासाठी Kern खरेदी करा.",
+    "purchase_button": "Kern खरेदी करा",
+    "purchase_title": "Kern अनलॉक करा",
+    "purchase_desc": "एकदाच खरेदी करून सर्व संपादन आणि निर्यात वैशिष्ट्यांना पूर्ण प्रवेश मिळवा.",
+    "feature_edit": "WYSIWYG आणि विभाजित दृश्यासह Markdown संपादित करा",
+    "feature_save": "फाइल्स जतन करा आणि नवीन तयार करा",
+    "feature_export": "PDF मध्ये निर्यात करा",
+    "restore_purchases": "खरेदी पुनर्स्थापित करा",
+    "one_time_purchase": "एकदाच खरेदी. सदस्यता नाही.",
+    "purchasing": "खरेदी होत आहे...",
+    "restoring": "पुनर्स्थापित होत आहे..."
+  }
+}

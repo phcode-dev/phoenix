@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "Mở tệp",
+    "theme": "Chuyển giao diện",
+    "toc": "Mục lục",
+    "search": "Tìm kiếm",
+    "focus": "Chế độ tập trung",
+    "zoom_in": "Phóng to",
+    "zoom_out": "Thu nhỏ",
+    "zoom_reset": "Đặt lại thu phóng",
+    "save": "Lưu",
+    "edit": "Chỉnh sửa",
+    "new_file": "Tệp mới",
+    "split_view": "Chia đôi màn hình",
+    "export_pdf": "Xuất PDF",
+    "settings": "Cài đặt",
+    "more": "Thêm"
+  },
+  "sidebar": {
+    "toc": "Mục lục",
+    "recent": "Tệp gần đây",
+    "no_headings": "Không tìm thấy tiêu đề"
+  },
+  "search": {
+    "placeholder": "Tìm trong tài liệu...",
+    "count": "kết quả",
+    "no_results": "Không có kết quả"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "Trình xem Markdown đẹp mắt",
+    "new_button": "Tệp mới",
+    "open_button": "Mở tệp",
+    "drop_hint": "hoặc kéo thả tệp .md vào đây"
+  },
+  "viewer": {
+    "copy": "Sao chép",
+    "copied": "Đã sao chép!"
+  },
+  "settings": {
+    "theme": "Giao diện",
+    "theme_light": "Sáng",
+    "theme_dark": "Tối",
+    "theme_system": "Hệ thống",
+    "language": "Ngôn ngữ"
+  },
+  "common": {
+    "close": "Đóng",
+    "open": "Mở",
+    "file": "Tệp"
+  },
+  "format": {
+    "paragraph": "Đoạn văn",
+    "heading1": "Tiêu đề 1",
+    "heading2": "Tiêu đề 2",
+    "heading3": "Tiêu đề 3",
+    "bold": "In đậm ({mod}+B)",
+    "italic": "In nghiêng ({mod}+I)",
+    "strikethrough": "Gạch ngang ({mod}+Shift+X)",
+    "code": "Mã nội tuyến ({mod}+E)",
+    "link": "Liên kết ({mod}+K)",
+    "bullet_list": "Danh sách dấu đầu dòng",
+    "numbered_list": "Danh sách đánh số",
+    "task_list": "Danh sách công việc",
+    "blockquote": "Trích dẫn",
+    "divider": "Đường phân cách",
+    "table": "Bảng",
+    "code_block": "Khối mã"
+  },
+  "slash": {
+    "paragraph": "Đoạn văn",
+    "paragraph_desc": "Văn bản thuần",
+    "heading1": "Tiêu đề 1",
+    "heading1_desc": "Tiêu đề lớn",
+    "heading2": "Tiêu đề 2",
+    "heading2_desc": "Tiêu đề vừa",
+    "heading3": "Tiêu đề 3",
+    "heading3_desc": "Tiêu đề nhỏ",
+    "bullet_list": "Danh sách dấu đầu dòng",
+    "bullet_list_desc": "Danh sách không thứ tự",
+    "numbered_list": "Danh sách đánh số",
+    "numbered_list_desc": "Danh sách có thứ tự",
+    "task_list": "Danh sách công việc",
+    "task_list_desc": "Danh sách kiểm tra",
+    "blockquote": "Trích dẫn",
+    "blockquote_desc": "Khối trích dẫn",
+    "code_block": "Khối mã",
+    "code_block_desc": "Mã có hàng rào",
+    "table": "Bảng",
+    "table_desc": "Bảng 3×3",
+    "divider": "Đường phân cách",
+    "divider_desc": "Đường ngang",
+    "no_results": "Không có kết quả"
+  },
+  "link": {
+    "edit": "Chỉnh sửa",
+    "edit_link": "Sửa liên kết",
+    "remove_link": "Xóa liên kết",
+    "text": "Văn bản",
+    "text_placeholder": "Văn bản hiển thị (tùy chọn)",
+    "display_text": "Văn bản hiển thị",
+    "url": "URL",
+    "url_placeholder": "Dán hoặc nhập URL...",
+    "apply": "Áp dụng liên kết",
+    "cancel": "Hủy"
+  },
+  "table": {
+    "header": "Tiêu đề",
+    "new_row": "+ Hàng mới",
+    "row_options": "Tùy chọn hàng {n}",
+    "col_options": "Tùy chọn cột {n}",
+    "insert_row_above": "Chèn hàng phía trên",
+    "insert_row_below": "Chèn hàng phía dưới",
+    "delete_row": "Xóa hàng",
+    "insert_col_left": "Chèn cột bên trái",
+    "insert_col_right": "Chèn cột bên phải",
+    "delete_col": "Xóa cột",
+    "add_row_above": "Thêm hàng phía trên",
+    "add_row_below": "Thêm hàng phía dưới",
+    "add_col_left": "Thêm cột bên trái",
+    "add_col_right": "Thêm cột bên phải"
+  },
+  "dialog": {
+    "unsaved_title": "Thay đổi chưa lưu",
+    "unsaved_exit_edit": "Có thay đổi chưa lưu. Bạn có muốn lưu trước khi thoát chế độ chỉnh sửa không?",
+    "unsaved_new_file": "Có thay đổi chưa lưu. Bạn có muốn lưu trước khi tạo tệp mới không?",
+    "unsaved_open_file": "Có thay đổi chưa lưu. Bạn có muốn lưu trước khi mở tệp mới không?",
+    "save": "Lưu",
+    "discard": "Bỏ qua",
+    "dont_save": "Không lưu",
+    "cancel": "Hủy",
+    "unsaved_close": "Bạn có thay đổi chưa lưu. Bạn có muốn lưu trước khi đóng không?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "Lọc ngôn ngữ...",
+    "filter_label": "Lọc ngôn ngữ",
+    "plain_text": "Văn bản thuần"
+  },
+  "a11y": {
+    "skip_to_content": "Chuyển đến nội dung",
+    "main_toolbar": "Thanh công cụ chính",
+    "sidebar": "Thanh bên",
+    "search_text": "Tìm văn bản",
+    "previous_match": "Kết quả trước",
+    "next_match": "Kết quả tiếp",
+    "close_search": "Đóng tìm kiếm",
+    "format_text": "Định dạng văn bản",
+    "edit_link": "Sửa liên kết",
+    "insert_block": "Chèn khối",
+    "select_language": "Chọn ngôn ngữ",
+    "search_in_document": "Tìm trong tài liệu"
+  },
+  "drop_zone": {
+    "text": "Thả tệp Markdown của bạn vào đây"
+  },
+  "help": {
+    "getting_started": "Bắt đầu",
+    "editing": "Chỉnh sửa",
+    "shortcuts": "Phím tắt",
+    "features": "Tính năng",
+    "fallback_notice": "Trang này chưa có sẵn bằng ngôn ngữ của bạn. Đang hiển thị phiên bản tiếng Anh."
+  },
+  "recovery": {
+    "title": "Khôi phục thay đổi chưa lưu?",
+    "message": "Kern đã tìm thấy các thay đổi chưa lưu từ phiên trước. Bạn có muốn khôi phục không?",
+    "restore": "Khôi phục",
+    "discard": "Bỏ qua"
+  },
+  "export": {
+    "success": "Xuất PDF thành công",
+    "open": "Mở"
+  },
+  "context": {
+    "cut": "Cắt",
+    "copy": "Sao chép",
+    "paste": "Dán",
+    "paste_plain": "Dán dưới dạng văn bản thuần",
+    "select_all": "Chọn tất cả",
+    "copy_link": "Sao chép liên kết",
+    "open_link": "Mở liên kết",
+    "copy_image_address": "Sao chép địa chỉ hình ảnh"
+  },
+  "trial": {
+    "days_remaining": "Còn {days} ngày dùng thử",
+    "expired_message": "Thời gian dùng thử của bạn đã hết. Mua Kern để tiếp tục chỉnh sửa.",
+    "purchase_button": "Mua Kern",
+    "purchase_title": "Mở khóa Kern",
+    "purchase_desc": "Truy cập đầy đủ tất cả tính năng chỉnh sửa và xuất file với một lần mua duy nhất.",
+    "feature_edit": "Chỉnh sửa Markdown với WYSIWYG và chia đôi màn hình",
+    "feature_save": "Lưu và tạo tệp mới",
+    "feature_export": "Xuất sang PDF",
+    "restore_purchases": "Khôi phục giao dịch mua",
+    "one_time_purchase": "Mua một lần. Không cần đăng ký.",
+    "purchasing": "Đang mua...",
+    "restoring": "Đang khôi phục..."
+  }
+}

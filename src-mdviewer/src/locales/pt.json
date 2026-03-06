@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "Abrir arquivo",
+    "theme": "Alternar tema",
+    "toc": "Sumário",
+    "search": "Pesquisar",
+    "focus": "Modo foco",
+    "zoom_in": "Aumentar zoom",
+    "zoom_out": "Diminuir zoom",
+    "zoom_reset": "Redefinir zoom",
+    "save": "Salvar",
+    "edit": "Editar",
+    "new_file": "Novo arquivo",
+    "split_view": "Vista dividida",
+    "export_pdf": "Exportar PDF",
+    "settings": "Configurações",
+    "more": "Mais"
+  },
+  "sidebar": {
+    "toc": "Sumário",
+    "recent": "Arquivos recentes",
+    "no_headings": "Nenhum título encontrado"
+  },
+  "search": {
+    "placeholder": "Pesquisar no documento...",
+    "count": "resultados",
+    "no_results": "Sem resultados"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "Um belo visualizador Markdown",
+    "new_button": "Novo arquivo",
+    "open_button": "Abrir arquivo",
+    "drop_hint": "ou arraste e solte um arquivo .md"
+  },
+  "viewer": {
+    "copy": "Copiar",
+    "copied": "Copiado!"
+  },
+  "settings": {
+    "theme": "Tema",
+    "theme_light": "Claro",
+    "theme_dark": "Escuro",
+    "theme_system": "Sistema",
+    "language": "Idioma"
+  },
+  "common": {
+    "close": "Fechar",
+    "open": "Abrir",
+    "file": "Arquivo"
+  },
+  "format": {
+    "paragraph": "Parágrafo",
+    "heading1": "Título 1",
+    "heading2": "Título 2",
+    "heading3": "Título 3",
+    "bold": "Negrito ({mod}+B)",
+    "italic": "Itálico ({mod}+I)",
+    "strikethrough": "Tachado ({mod}+Shift+X)",
+    "code": "Código inline ({mod}+E)",
+    "link": "Link ({mod}+K)",
+    "bullet_list": "Lista com marcadores",
+    "numbered_list": "Lista numerada",
+    "task_list": "Lista de tarefas",
+    "blockquote": "Citação",
+    "divider": "Divisor",
+    "table": "Tabela",
+    "code_block": "Bloco de código"
+  },
+  "slash": {
+    "paragraph": "Parágrafo",
+    "paragraph_desc": "Texto simples",
+    "heading1": "Título 1",
+    "heading1_desc": "Título grande",
+    "heading2": "Título 2",
+    "heading2_desc": "Título médio",
+    "heading3": "Título 3",
+    "heading3_desc": "Título pequeno",
+    "bullet_list": "Lista com marcadores",
+    "bullet_list_desc": "Lista não ordenada",
+    "numbered_list": "Lista numerada",
+    "numbered_list_desc": "Lista ordenada",
+    "task_list": "Lista de tarefas",
+    "task_list_desc": "Checklist",
+    "blockquote": "Citação",
+    "blockquote_desc": "Bloco de citação",
+    "code_block": "Bloco de código",
+    "code_block_desc": "Código delimitado",
+    "table": "Tabela",
+    "table_desc": "Tabela 3×3",
+    "divider": "Divisor",
+    "divider_desc": "Linha horizontal",
+    "no_results": "Sem resultados"
+  },
+  "link": {
+    "edit": "Editar",
+    "edit_link": "Editar link",
+    "remove_link": "Remover link",
+    "text": "Texto",
+    "text_placeholder": "Texto de exibição (opcional)",
+    "display_text": "Texto de exibição",
+    "url": "URL",
+    "url_placeholder": "Cole ou digite a URL...",
+    "apply": "Aplicar link",
+    "cancel": "Cancelar"
+  },
+  "table": {
+    "header": "Cabeçalho",
+    "new_row": "+ Nova linha",
+    "row_options": "Opções da linha {n}",
+    "col_options": "Opções da coluna {n}",
+    "insert_row_above": "Inserir linha acima",
+    "insert_row_below": "Inserir linha abaixo",
+    "delete_row": "Excluir linha",
+    "insert_col_left": "Inserir coluna à esquerda",
+    "insert_col_right": "Inserir coluna à direita",
+    "delete_col": "Excluir coluna",
+    "add_row_above": "Adicionar linha acima",
+    "add_row_below": "Adicionar linha abaixo",
+    "add_col_left": "Adicionar coluna à esquerda",
+    "add_col_right": "Adicionar coluna à direita"
+  },
+  "dialog": {
+    "unsaved_title": "Alterações não salvas",
+    "unsaved_exit_edit": "Você tem alterações não salvas. Deseja salvar antes de sair do modo de edição?",
+    "unsaved_new_file": "Você tem alterações não salvas. Deseja salvar antes de criar um novo arquivo?",
+    "unsaved_open_file": "Você tem alterações não salvas. Deseja salvar antes de abrir um novo arquivo?",
+    "save": "Salvar",
+    "discard": "Descartar",
+    "dont_save": "Não salvar",
+    "cancel": "Cancelar",
+    "unsaved_close": "Você tem alterações não salvas. Deseja salvar antes de fechar?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "Filtrar linguagens...",
+    "filter_label": "Filtrar linguagens",
+    "plain_text": "Texto simples"
+  },
+  "a11y": {
+    "skip_to_content": "Pular para o conteúdo",
+    "main_toolbar": "Barra de ferramentas principal",
+    "sidebar": "Barra lateral",
+    "search_text": "Pesquisar texto",
+    "previous_match": "Resultado anterior",
+    "next_match": "Próximo resultado",
+    "close_search": "Fechar pesquisa",
+    "format_text": "Formatar texto",
+    "edit_link": "Editar link",
+    "insert_block": "Inserir bloco",
+    "select_language": "Selecionar linguagem",
+    "search_in_document": "Pesquisar no documento"
+  },
+  "drop_zone": {
+    "text": "Solte seu arquivo Markdown aqui"
+  },
+  "help": {
+    "getting_started": "Primeiros passos",
+    "editing": "Edição",
+    "shortcuts": "Atalhos de teclado",
+    "features": "Funcionalidades",
+    "fallback_notice": "Esta página ainda não está disponível no seu idioma. Exibindo a versão em inglês."
+  },
+  "recovery": {
+    "title": "Recuperar alterações não salvas?",
+    "message": "O Kern encontrou alterações não salvas de uma sessão anterior. Deseja restaurá-las?",
+    "restore": "Restaurar",
+    "discard": "Descartar"
+  },
+  "export": {
+    "success": "PDF exportado com sucesso",
+    "open": "Abrir"
+  },
+  "context": {
+    "cut": "Recortar",
+    "copy": "Copiar",
+    "paste": "Colar",
+    "paste_plain": "Colar como texto simples",
+    "select_all": "Selecionar tudo",
+    "copy_link": "Copiar link",
+    "open_link": "Abrir link",
+    "copy_image_address": "Copiar endereço da imagem"
+  },
+  "trial": {
+    "days_remaining": "{days} dias restantes no período de teste",
+    "expired_message": "Seu período de teste expirou. Compre o Kern para continuar editando.",
+    "purchase_button": "Comprar Kern",
+    "purchase_title": "Desbloquear Kern",
+    "purchase_desc": "Tenha acesso completo a todos os recursos de edição e exportação com uma compra única.",
+    "feature_edit": "Edite Markdown com WYSIWYG e vista dividida",
+    "feature_save": "Salve e crie novos arquivos",
+    "feature_export": "Exportar para PDF",
+    "restore_purchases": "Restaurar compras",
+    "one_time_purchase": "Compra única. Sem assinatura.",
+    "purchasing": "Comprando...",
+    "restoring": "Restaurando..."
+  }
+}

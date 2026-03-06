@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "ফাইল খুলুন",
+    "theme": "থিম পরিবর্তন",
+    "toc": "সূচিপত্র",
+    "search": "অনুসন্ধান",
+    "focus": "ফোকাস মোড",
+    "zoom_in": "জুম ইন",
+    "zoom_out": "জুম আউট",
+    "zoom_reset": "জুম রিসেট",
+    "save": "সংরক্ষণ",
+    "edit": "সম্পাদনা",
+    "new_file": "নতুন ফাইল",
+    "split_view": "বিভক্ত দৃশ্য",
+    "export_pdf": "PDF রপ্তানি করুন",
+    "settings": "সেটিংস",
+    "more": "আরও"
+  },
+  "sidebar": {
+    "toc": "সূচিপত্র",
+    "recent": "সাম্প্রতিক ফাইল",
+    "no_headings": "কোনো শিরোনাম পাওয়া যায়নি"
+  },
+  "search": {
+    "placeholder": "নথিতে অনুসন্ধান...",
+    "count": "মিল",
+    "no_results": "কোনো ফলাফল নেই"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "একটি সুন্দর মার্কডাউন ভিউয়ার",
+    "new_button": "নতুন ফাইল",
+    "open_button": "ফাইল খুলুন",
+    "drop_hint": "অথবা একটি .md ফাইল টেনে আনুন"
+  },
+  "viewer": {
+    "copy": "কপি",
+    "copied": "কপি হয়েছে!"
+  },
+  "settings": {
+    "theme": "থিম",
+    "theme_light": "হালকা",
+    "theme_dark": "গাঢ়",
+    "theme_system": "সিস্টেম",
+    "language": "ভাষা"
+  },
+  "common": {
+    "close": "বন্ধ",
+    "open": "খুলুন",
+    "file": "ফাইল"
+  },
+  "format": {
+    "paragraph": "অনুচ্ছেদ",
+    "heading1": "শিরোনাম ১",
+    "heading2": "শিরোনাম ২",
+    "heading3": "শিরোনাম ৩",
+    "bold": "বোল্ড ({mod}+B)",
+    "italic": "ইটালিক ({mod}+I)",
+    "strikethrough": "স্ট্রাইকথ্রু ({mod}+Shift+X)",
+    "code": "ইনলাইন কোড ({mod}+E)",
+    "link": "লিংক ({mod}+K)",
+    "bullet_list": "বুলেট তালিকা",
+    "numbered_list": "সংখ্যা তালিকা",
+    "task_list": "কাজের তালিকা",
+    "blockquote": "ব্লককোট",
+    "divider": "বিভাজক",
+    "table": "টেবিল",
+    "code_block": "কোড ব্লক"
+  },
+  "slash": {
+    "paragraph": "অনুচ্ছেদ",
+    "paragraph_desc": "সাধারণ পাঠ্য",
+    "heading1": "শিরোনাম ১",
+    "heading1_desc": "বড় শিরোনাম",
+    "heading2": "শিরোনাম ২",
+    "heading2_desc": "মাঝারি শিরোনাম",
+    "heading3": "শিরোনাম ৩",
+    "heading3_desc": "ছোট শিরোনাম",
+    "bullet_list": "বুলেট তালিকা",
+    "bullet_list_desc": "অক্রমিক তালিকা",
+    "numbered_list": "সংখ্যা তালিকা",
+    "numbered_list_desc": "ক্রমিক তালিকা",
+    "task_list": "কাজের তালিকা",
+    "task_list_desc": "চেকলিস্ট",
+    "blockquote": "ব্লককোট",
+    "blockquote_desc": "উদ্ধৃতি ব্লক",
+    "code_block": "কোড ব্লক",
+    "code_block_desc": "ফেন্সড কোড",
+    "table": "টেবিল",
+    "table_desc": "৩×৩ টেবিল",
+    "divider": "বিভাজক",
+    "divider_desc": "অনুভূমিক রেখা",
+    "no_results": "কোনো ফলাফল নেই"
+  },
+  "link": {
+    "edit": "সম্পাদনা",
+    "edit_link": "লিংক সম্পাদনা",
+    "remove_link": "লিংক সরান",
+    "text": "টেক্সট",
+    "text_placeholder": "প্রদর্শন টেক্সট (ঐচ্ছিক)",
+    "display_text": "প্রদর্শন টেক্সট",
+    "url": "URL",
+    "url_placeholder": "URL পেস্ট বা টাইপ করুন...",
+    "apply": "লিংক প্রয়োগ",
+    "cancel": "বাতিল"
+  },
+  "table": {
+    "header": "হেডার",
+    "new_row": "+ নতুন সারি",
+    "row_options": "সারি {n} বিকল্প",
+    "col_options": "কলাম {n} বিকল্প",
+    "insert_row_above": "উপরে সারি যোগ",
+    "insert_row_below": "নিচে সারি যোগ",
+    "delete_row": "সারি মুছুন",
+    "insert_col_left": "বামে কলাম যোগ",
+    "insert_col_right": "ডানে কলাম যোগ",
+    "delete_col": "কলাম মুছুন",
+    "add_row_above": "উপরে সারি যোগ",
+    "add_row_below": "নিচে সারি যোগ",
+    "add_col_left": "বামে কলাম যোগ",
+    "add_col_right": "ডানে কলাম যোগ"
+  },
+  "dialog": {
+    "unsaved_title": "অসংরক্ষিত পরিবর্তন",
+    "unsaved_exit_edit": "আপনার অসংরক্ষিত পরিবর্তন আছে। সম্পাদনা মোড থেকে বের হওয়ার আগে সংরক্ষণ করতে চান?",
+    "unsaved_new_file": "আপনার অসংরক্ষিত পরিবর্তন আছে। নতুন ফাইল তৈরি করার আগে সংরক্ষণ করতে চান?",
+    "unsaved_open_file": "আপনার অসংরক্ষিত পরিবর্তন আছে। নতুন ফাইল খোলার আগে সংরক্ষণ করতে চান?",
+    "save": "সংরক্ষণ",
+    "discard": "বাতিল করুন",
+    "dont_save": "সংরক্ষণ করবেন না",
+    "cancel": "বাতিল",
+    "unsaved_close": "আপনার অসংরক্ষিত পরিবর্তন আছে। বন্ধ করার আগে সংরক্ষণ করতে চান?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "ভাষা ফিল্টার...",
+    "filter_label": "ভাষা ফিল্টার",
+    "plain_text": "সাধারণ টেক্সট"
+  },
+  "a11y": {
+    "skip_to_content": "বিষয়বস্তুতে যান",
+    "main_toolbar": "প্রধান টুলবার",
+    "sidebar": "সাইডবার",
+    "search_text": "টেক্সট অনুসন্ধান",
+    "previous_match": "পূর্ববর্তী মিল",
+    "next_match": "পরবর্তী মিল",
+    "close_search": "অনুসন্ধান বন্ধ",
+    "format_text": "টেক্সট ফরম্যাট",
+    "edit_link": "লিংক সম্পাদনা",
+    "insert_block": "ব্লক সন্নিবেশ",
+    "select_language": "ভাষা নির্বাচন",
+    "search_in_document": "নথিতে অনুসন্ধান"
+  },
+  "drop_zone": {
+    "text": "আপনার মার্কডাউন ফাইল এখানে ড্রপ করুন"
+  },
+  "help": {
+    "getting_started": "শুরু করুন",
+    "editing": "সম্পাদনা",
+    "shortcuts": "কীবোর্ড শর্টকাট",
+    "features": "বৈশিষ্ট্য",
+    "fallback_notice": "এই পৃষ্ঠাটি এখনও আপনার ভাষায় উপলব্ধ নয়। ইংরেজি সংস্করণ দেখানো হচ্ছে।"
+  },
+  "recovery": {
+    "title": "অসংরক্ষিত পরিবর্তন পুনরুদ্ধার করবেন?",
+    "message": "Kern পূর্ববর্তী সেশন থেকে অসংরক্ষিত পরিবর্তন খুঁজে পেয়েছে। আপনি কি সেগুলো পুনরুদ্ধার করতে চান?",
+    "restore": "পুনরুদ্ধার",
+    "discard": "বাতিল"
+  },
+  "export": {
+    "success": "PDF সফলভাবে রপ্তানি হয়েছে",
+    "open": "খুলুন"
+  },
+  "context": {
+    "cut": "কাটুন",
+    "copy": "কপি করুন",
+    "paste": "পেস্ট করুন",
+    "paste_plain": "সাধারণ পাঠ্য হিসাবে পেস্ট করুন",
+    "select_all": "সবগুলি নির্বাচন করুন",
+    "copy_link": "লিঙ্ক কপি করুন",
+    "open_link": "লিঙ্ক খুলুন",
+    "copy_image_address": "ছবির ঠিকানা কপি করুন"
+  },
+  "trial": {
+    "days_remaining": "ট্রায়ালে {days} দিন বাকি",
+    "expired_message": "আপনার ট্রায়াল মেয়াদ শেষ হয়েছে। সম্পাদনা চালিয়ে যেতে Kern কিনুন।",
+    "purchase_button": "Kern কিনুন",
+    "purchase_title": "Kern আনলক করুন",
+    "purchase_desc": "একবারের কেনাকাটায় সমস্ত সম্পাদনা এবং রপ্তানি বৈশিষ্ট্যে সম্পূর্ণ অ্যাক্সেস পান।",
+    "feature_edit": "WYSIWYG এবং বিভক্ত দৃশ্যে Markdown সম্পাদনা করুন",
+    "feature_save": "ফাইল সংরক্ষণ এবং নতুন ফাইল তৈরি করুন",
+    "feature_export": "PDF-এ রপ্তানি করুন",
+    "restore_purchases": "কেনাকাটা পুনরুদ্ধার করুন",
+    "one_time_purchase": "একবারের কেনাকাটা। কোনো সাবস্ক্রিপশন নেই।",
+    "purchasing": "কেনা হচ্ছে...",
+    "restoring": "পুনরুদ্ধার হচ্ছে..."
+  }
+}
