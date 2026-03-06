@@ -67,6 +67,7 @@ define(function (require, exports, module) {
         DropdownButton     = require("widgets/DropdownButton"),
         BrowserStaticServer  = require("./BrowserStaticServer"),
         NodeStaticServer  = require("./NodeStaticServer"),
+        MarkdownSync  = require("./MarkdownSync"),
         LivePreviewSettings  = require("./LivePreviewSettings"),
         NodeUtils = require("utils/NodeUtils"),
         TrustProjectHTML    = require("text!./trust-project.html"),
@@ -546,7 +547,8 @@ define(function (require, exports, module) {
         urlPinned,
         currentLivePreviewURL = "",
         currentPreviewFile = '',
-        _loadGeneration = 0;
+        _loadGeneration = 0,
+        _isMdviewrActive = false;
 
     function _blankIframe() {
         // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
@@ -789,6 +791,47 @@ define(function (require, exports, module) {
         _initOverlay();
     }
 
+    function _loadMdviewrPreview(previewDetails, force) {
+        const currentDoc = DocumentManager.getCurrentDocument();
+        if (!currentDoc) {
+            return;
+        }
+
+        const mdFileURL = encodeURI(previewDetails.URL);
+        const baseURL = mdFileURL.substring(0, mdFileURL.lastIndexOf("/") + 1);
+
+        currentPreviewFile = previewDetails.fullPath;
+        if (!urlPinned) {
+            currentLivePreviewURL = mdFileURL;
+        }
+        let relativeOrFullPath = ProjectManager.makeProjectRelativeIfPossible(previewDetails.fullPath);
+        relativeOrFullPath = Phoenix.app.getDisplayPath(relativeOrFullPath);
+        _setTitle(relativeOrFullPath, currentPreviewFile, "");
+
+        if (_isMdviewrActive) {
+            // Mdviewr iframe already loaded, just update the sync for the new document
+            MarkdownSync.activate(currentDoc, $iframe, baseURL);
+            return;
+        }
+
+        // Create mdviewr iframe
+        const mdviewrURL = StaticServer.getMdviewrURL();
+        if (panel.isVisible()) {
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            newIframe.insertAfter($iframe);
+            $iframe.remove();
+            $iframe = newIframe;
+            if (_isProjectPreviewTrusted()) {
+                $iframe.attr('src', mdviewrURL);
+            }
+        }
+
+        _isMdviewrActive = true;
+        MarkdownSync.activate(currentDoc, $iframe, baseURL);
+
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "mdviewr");
+    }
+
     async function _loadPreview(force, isReload) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
@@ -804,6 +847,16 @@ define(function (require, exports, module) {
         }
         if(urlPinned && !force) {
             return;
+        }
+        // Use mdviewr for markdown files (unless custom server is configured)
+        if(previewDetails.isMarkdownFile && !previewDetails.isCustomServer && !previewDetails.isNoPreview) {
+            _loadMdviewrPreview(previewDetails, force);
+            return;
+        }
+        // Switching away from mdviewr to non-markdown preview
+        if(_isMdviewrActive) {
+            MarkdownSync.deactivate();
+            _isMdviewrActive = false;
         }
         let newSrc = encodeURI(previewDetails.URL);
         if($iframe.attr('src') === newSrc && !force){
@@ -859,6 +912,10 @@ define(function (require, exports, module) {
     }
 
     async function _projectFileChanges(evt, changedFile) {
+        if(_isMdviewrActive) {
+            // MarkdownSync handles live content updates for markdown files
+            return;
+        }
         if(changedFile && changedFile.isFile && (utils.isPreviewableFile(changedFile.fullPath) ||
             utils.isServerRenderedFile(changedFile.fullPath))){
             // we are getting this change event somehow.
@@ -913,6 +970,11 @@ define(function (require, exports, module) {
 
     let startupFilesLoadHandled = false;
     async function _projectOpened() {
+        // Deactivate mdviewr on project switch
+        if(_isMdviewrActive) {
+            MarkdownSync.deactivate();
+            _isMdviewrActive = false;
+        }
         _switchToEditModeIfNeeded();
         customLivePreviewBannerShown = false;
         $panel.find(".live-preview-custom-banner").addClass("forced-hidden");

@@ -93,6 +93,10 @@ define(function (require, exports, module) {
                 +`"details":"${message}"}`);
     }
 
+    function getMdviewrURL() {
+        return `${window.Phoenix.baseURL}mdViewer/index.html`;
+    }
+
     async function tabLoaderOnline(data) {
         window.logger.livePreview.log("Live Preview navigator channel: tabLoaderOnline: ", data);
         livePreviewTabs.set(data.pageLoaderID, {
@@ -798,6 +802,7 @@ define(function (require, exports, module) {
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
     exports.getNoPreviewURL = getNoPreviewURL;
+    exports.getMdviewrURL = getMdviewrURL;
     exports.getPreviewDetails = getPreviewDetails;
     exports.getRemoteTransportScript = getRemoteTransportScript;
     // node apis
