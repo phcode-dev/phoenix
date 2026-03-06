@@ -120,6 +120,10 @@ define(function (require, exports, module) {
                 +`"details":"${message}"}`);
     }
 
+    function getMdviewrURL() {
+        return `${window.Phoenix.baseURL}mdViewer/index.html`;
+    }
+
     function _isLivePreviewSupported() {
         // in safari, service workers are disabled in third party iframes. We use phcode.live for secure sandboxing
         // live previews into its own domain apart from phcode.dev. Since safari doesn't support this, we are left
@@ -782,6 +786,7 @@ define(function (require, exports, module) {
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
     exports.getNoPreviewURL = getNoPreviewURL;
+    exports.getMdviewrURL = getMdviewrURL;
     exports.getRemoteTransportScript = getRemoteTransportScript;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
