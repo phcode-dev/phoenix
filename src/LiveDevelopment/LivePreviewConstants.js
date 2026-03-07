@@ -41,4 +41,7 @@ define(function main(require, exports, module) {
     exports.HIGHLIGHT_CLICK = "click";
 
     exports.PREFERENCE_SHOW_RULER_LINES = "livePreviewShowMeasurements";
+    exports.PREFERENCE_SHOW_SPACING_HANDLES = "livePreviewShowSpacingHandles";
+
+    exports.PREFERENCE_LIVE_PREVIEW_SYNC = "livePreviewSyncSourceAndPreview";
 });

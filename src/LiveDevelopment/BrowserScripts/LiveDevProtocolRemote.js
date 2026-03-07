@@ -539,6 +539,13 @@
                     // as a live select.
                     return;
                 }
+                if (window._LD && !window._LD.isSyncEnabled()) {
+                    // When sync is disabled, highlight the element directly in the browser
+                    // without doing a round-trip through the editor (which would move the cursor)
+                    var tagId = element.getAttribute('data-brackets-id');
+                    window._LD.highlightRule("[data-brackets-id='" + tagId + "']");
+                    return;
+                }
                 MessageBroker.send({
                     "tagId": element.getAttribute('data-brackets-id'),
                     "nodeID": element.id,

@@ -41,19 +41,12 @@ function RemoteFunctions(config = {}) {
     // Expose the currently selected element globally for external access
     window.__current_ph_lp_selected = null;
 
-    var req, timeout;
-    function animateHighlight(time) {
-        if(req) {
-            window.cancelAnimationFrame(req);
-            window.clearTimeout(timeout);
-        }
-        req = window.requestAnimationFrame(redrawHighlights);
-
-        timeout = setTimeout(function () {
-            window.cancelAnimationFrame(req);
-            req = null;
-        }, time * 1000);
-    }
+    const COLORS = {
+        highlightPadding: "rgba(147, 196, 125, 0.55)",
+        highlightMargin: "rgba(246, 178, 107, 0.66)",
+        outlineEditable: "#4285F4",
+        outlineNonEditable: "#3C3F41"
+    };
 
     // the following fucntions can be in the handler and live preview will call those functions when the below
     // events happen
@@ -61,6 +54,7 @@ function RemoteFunctions(config = {}) {
         "dismiss", // when handler gets this event, it should dismiss all ui it renders in the live preview
         "createToolBox",
         "createInfoBox",
+        "createHoverBox",
         "createMoreOptionsDropdown",
         // render an icon or html when the selected element toolbox appears in edit mode.
         "renderToolBoxItem",
@@ -181,7 +175,9 @@ function RemoteFunctions(config = {}) {
         handleElementClick: handleElementClick,
         cleanupPreviousElementState: cleanupPreviousElementState,
         disableHoverListeners: disableHoverListeners,
-        enableHoverListeners: enableHoverListeners
+        enableHoverListeners: enableHoverListeners,
+        redrawHighlights: redrawHighlights,
+        redrawEverything: redrawEverything
     };
 
     /**
@@ -265,310 +261,141 @@ function RemoteFunctions(config = {}) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
     }
 
-    function Highlight(color, trigger) {
-        this.color = color;
+    function Highlight(trigger) {
         this.trigger = !!trigger;
         this.elements = [];
         this.selector = "";
+        this._divs = [];
     }
 
     Highlight.prototype = {
-        _elementExists: function (element) {
-            var i;
-            for (i in this.elements) {
-                if (this.elements[i] === element) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        _makeHighlightDiv: function (element, doAnimation) {
-            const remoteHighlight = {
-                animateStartValue: {
-                    "background-color": "rgba(0, 162, 255, 0.5)",
-                    "opacity": 0
-                },
-                animateEndValue: {
-                    "background-color": "rgba(0, 162, 255, 0)",
-                    "opacity": 0.6
-                },
-                paddingStyling: {
-                    "background-color": "rgba(200, 249, 197, 0.7)"
-                },
-                marginStyling: {
-                    "background-color": "rgba(249, 204, 157, 0.7)"
-                },
-                borderColor: "rgba(200, 249, 197, 0.85)",
-                showPaddingMargin: true
-            };
-            var elementBounds = element.getBoundingClientRect(),
-                highlightDiv = window.document.createElement("div"),
-                elementStyling = window.getComputedStyle(element),
-                transitionDuration = parseFloat(elementStyling.getPropertyValue('transition-duration')),
-                animationDuration = parseFloat(elementStyling.getPropertyValue('animation-duration'));
-
-            highlightDiv.trackingElement = element; // save which node are we highlighting
-
-            if (doAnimation) {
-                if (transitionDuration) {
-                    animateHighlight(transitionDuration);
-                }
-
-                if (animationDuration) {
-                    animateHighlight(animationDuration);
-                }
-            }
-
-            // Don't highlight elements with 0 width & height
-            if (elementBounds.width === 0 && elementBounds.height === 0) {
-                return;
-            }
-
-            var realElBorder = {
-                right: elementStyling.getPropertyValue('border-right-width'),
-                left: elementStyling.getPropertyValue('border-left-width'),
-                top: elementStyling.getPropertyValue('border-top-width'),
-                bottom: elementStyling.getPropertyValue('border-bottom-width')
-            };
-
-            var borderBox = elementStyling.boxSizing === 'border-box';
-
-            var innerWidth = parseFloat(elementStyling.width),
-                innerHeight = parseFloat(elementStyling.height),
-                outerHeight = innerHeight,
-                outerWidth = innerWidth;
-
-            if (!borderBox) {
-                innerWidth += parseFloat(elementStyling.paddingLeft) + parseFloat(elementStyling.paddingRight);
-                innerHeight += parseFloat(elementStyling.paddingTop) + parseFloat(elementStyling.paddingBottom);
-                outerWidth = innerWidth + parseFloat(realElBorder.right) +
-                parseFloat(realElBorder.left),
-                outerHeight = innerHeight + parseFloat(realElBorder.bottom) + parseFloat(realElBorder.top);
-            }
-
-
-            var visualisations = {
-                horizontal: "left, right",
-                vertical: "top, bottom"
-            };
-
-            var drawPaddingRect = function (side) {
-                var elStyling = {};
-
-                if (visualisations.horizontal.indexOf(side) >= 0) {
-                    elStyling["width"] = elementStyling.getPropertyValue("padding-" + side);
-                    elStyling["height"] = innerHeight + "px";
-                    elStyling["top"] = 0;
-
-                    if (borderBox) {
-                        elStyling["height"] =
-                            innerHeight - parseFloat(realElBorder.top) - parseFloat(realElBorder.bottom) + "px";
-                    }
-                } else {
-                    elStyling["height"] = elementStyling.getPropertyValue("padding-" + side);
-                    elStyling["width"] = innerWidth + "px";
-                    elStyling["left"] = 0;
-
-                    if (borderBox) {
-                        elStyling["width"] =
-                            innerWidth - parseFloat(realElBorder.left) - parseFloat(realElBorder.right) + "px";
-                    }
-                }
-
-                elStyling[side] = 0;
-                elStyling["position"] = "absolute";
-
-                return elStyling;
-            };
-
-            var drawMarginRect = function (side) {
-                var elStyling = {};
-
-                var margin = [];
-                margin["right"] = parseFloat(elementStyling.getPropertyValue("margin-right"));
-                margin["top"] = parseFloat(elementStyling.getPropertyValue("margin-top"));
-                margin["bottom"] = parseFloat(elementStyling.getPropertyValue("margin-bottom"));
-                margin["left"] = parseFloat(elementStyling.getPropertyValue("margin-left"));
-
-                if (visualisations["horizontal"].indexOf(side) >= 0) {
-                    elStyling["width"] = elementStyling.getPropertyValue("margin-" + side);
-                    elStyling["height"] = outerHeight + margin["top"] + margin["bottom"] + "px";
-                    elStyling["top"] = "-" + (margin["top"] + parseFloat(realElBorder.top)) + "px";
-                } else {
-                    elStyling["height"] = elementStyling.getPropertyValue("margin-" + side);
-                    elStyling["width"] = outerWidth + "px";
-                    elStyling["left"] = "-" + realElBorder.left;
-                }
-
-                elStyling[side] = "-" + (margin[side] + parseFloat(realElBorder[side])) + "px";
-                elStyling["position"] = "absolute";
-
-                return elStyling;
-            };
-
-            var setVisibility = function (el) {
-                if (
-                    !remoteHighlight.showPaddingMargin ||
-                    parseInt(el.height, 10) <= 0 ||
-                    parseInt(el.width, 10) <= 0
-                ) {
-                    el.display = 'none';
-                } else {
-                    el.display = 'block';
-                }
-            };
-
-            var paddingVisualisations = [
-                drawPaddingRect("top"),
-                drawPaddingRect("right"),
-                drawPaddingRect("bottom"),
-                drawPaddingRect("left")
-            ];
-
-            var marginVisualisations = [
-                drawMarginRect("top"),
-                drawMarginRect("right"),
-                drawMarginRect("bottom"),
-                drawMarginRect("left")
-            ];
-
-            var setupVisualisations = function (arr, visualConfig) {
-                var i;
-                for (i = 0; i < arr.length; i++) {
-                    setVisibility(arr[i]);
-
-                    // Applies to every visualisationElement (padding or margin div)
-                    arr[i]["transform"] = "none";
-                    var el = window.document.createElement("div"),
-                        styles = Object.assign({}, visualConfig, arr[i]);
-
-                    _setStyleValues(styles, el.style);
-
-                    highlightDiv.appendChild(el);
-                }
-            };
-
-            setupVisualisations(
-                marginVisualisations,
-                remoteHighlight.marginStyling
-            );
-            setupVisualisations(
-                paddingVisualisations,
-                remoteHighlight.paddingStyling
-            );
-
-            highlightDiv.className = GLOBALS.HIGHLIGHT_CLASSNAME;
-
-            var offset = LivePreviewView.screenOffset(element);
-
-            // some code to find element left/top was removed here. This seems to be relevant to box model
-            // live highlights. firether reading: https://github.com/adobe/brackets/pull/13357/files
-            // we removed this in phoenix because it was throwing the rendering of live highlight boxes in phonix
-            // default project at improper places. Some other cases might fail as the above code said they
-            // introduces that removed computation for fixing some box-model regression. If you are here to fix a
-            // related bug, check history of this changes in git.
-
-            var stylesToSet = {
-                "left": offset.left + "px",
-                "top": offset.top + "px",
-                "width": elementBounds.width + "px",
-                "height": elementBounds.height + "px",
-                "z-index": 2147483645,
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "pointer-events": "none",
-                "box-shadow": "0 0 1px #fff",
-                "box-sizing": elementStyling.getPropertyValue('box-sizing'),
-                "border-right": elementStyling.getPropertyValue('border-right'),
-                "border-left": elementStyling.getPropertyValue('border-left'),
-                "border-top": elementStyling.getPropertyValue('border-top'),
-                "border-bottom": elementStyling.getPropertyValue('border-bottom'),
-                "border-color": remoteHighlight.borderColor
-            };
-
-            var mergedStyles = Object.assign({}, stylesToSet,  remoteHighlight.stylesToSet);
-
-            var animateStartValues = remoteHighlight.animateStartValue;
-
-            var animateEndValues = remoteHighlight.animateEndValue;
-
-            var transitionValues = {
-                "transition-property": "opacity, background-color, transform",
-                "transition-duration": "300ms, 2.3s"
-            };
-
-            function _setStyleValues(styleValues, obj) {
-                var prop;
-
-                for (prop in styleValues) {
-                    obj.setProperty(prop, styleValues[prop]);
-                }
-            }
-
-            _setStyleValues(mergedStyles, highlightDiv.style);
-            _setStyleValues(
-                doAnimation ? animateStartValues : animateEndValues,
-                highlightDiv.style
-            );
-
-
-            if (doAnimation) {
-                _setStyleValues(transitionValues, highlightDiv.style);
-
-                window.setTimeout(function () {
-                    _setStyleValues(animateEndValues, highlightDiv.style);
-                }, 20);
-            }
-
-            window.document.body.appendChild(highlightDiv);
-        },
-
-        add: function (element, doAnimation) {
-            if (this._elementExists(element) || element === window.document) {
+        add: function (element) {
+            if (this.elements.includes(element) || element === window.document) {
                 return;
             }
             if (this.trigger) {
                 _trigger(element, "highlight", 1);
             }
-
             this.elements.push(element);
-            this._makeHighlightDiv(element, doAnimation);
+            this._createOverlay(element);
         },
 
         clear: function () {
-            var i, highlights = window.document.querySelectorAll("." + GLOBALS.HIGHLIGHT_CLASSNAME),
-                body = window.document.body;
-
-            for (i = 0; i < highlights.length; i++) {
-                body.removeChild(highlights[i]);
-            }
-
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.trigger) {
-                    _trigger(this.elements[i], "highlight", 0);
+            this._divs.forEach(function (div) {
+                if (div.parentNode) {
+                    div.parentNode.removeChild(div);
                 }
-                clearElementHoverHighlight(this.elements[i]);
-            }
+            });
+            this._divs = [];
 
+            if (this.trigger) {
+                this.elements.forEach(function (el) {
+                    _trigger(el, "highlight", 0);
+                });
+            }
             this.elements = [];
         },
 
         redraw: function () {
-            var i, highlighted;
-
-            // When redrawing a selector-based highlight, run a new selector
-            // query to ensure we have the latest set of elements to highlight.
-            if (this.selector) {
-                highlighted = window.document.querySelectorAll(this.selector);
-            } else {
-                highlighted = this.elements.slice(0);
-            }
-
+            const elements = this.selector
+                ? Array.from(window.document.querySelectorAll(this.selector))
+                : this.elements.slice();
             this.clear();
-            for (i = 0; i < highlighted.length; i++) {
-                this.add(highlighted[i], false);
+            elements.forEach(function (el) { this.add(el); }, this);
+        },
+
+        _createOverlay: function (element) {
+            const bounds = element.getBoundingClientRect();
+            if (bounds.width === 0 && bounds.height === 0) { return; }
+
+            const cs = window.getComputedStyle(element);
+            const div = window.document.createElement("div");
+            div.className = GLOBALS.HIGHLIGHT_CLASSNAME;
+            div.trackingElement = element;
+
+            // Parse box model values
+            const bt = parseFloat(cs.borderTopWidth) || 0,
+                br = parseFloat(cs.borderRightWidth) || 0,
+                bb = parseFloat(cs.borderBottomWidth) || 0,
+                bl = parseFloat(cs.borderLeftWidth) || 0;
+            const pt = parseFloat(cs.paddingTop) || 0,
+                pr = parseFloat(cs.paddingRight) || 0,
+                pb = parseFloat(cs.paddingBottom) || 0,
+                pl = parseFloat(cs.paddingLeft) || 0;
+            const mt = parseFloat(cs.marginTop) || 0,
+                mr = parseFloat(cs.marginRight) || 0,
+                mb = parseFloat(cs.marginBottom) || 0,
+                ml = parseFloat(cs.marginLeft) || 0;
+
+            const isBorderBox = cs.boxSizing === "border-box";
+            const w = parseFloat(cs.width) || 0;
+            const h = parseFloat(cs.height) || 0;
+
+            // Dimensions inside border
+            let innerW, innerH;
+            if (isBorderBox) {
+                innerW = w - bl - br;
+                innerH = h - bt - bb;
+            } else {
+                innerW = w + pl + pr;
+                innerH = h + pt + pb;
             }
+            const contentH = innerH - pt - pb;
+            const outerW = innerW + bl + br;
+            const outerH = innerH + bt + bb;
+
+            // Position the overlay to match the element
+            const offset = LivePreviewView.screenOffset(element);
+            const divStyle = div.style;
+            divStyle.position = "absolute";
+            divStyle.left = offset.left + "px";
+            divStyle.top = offset.top + "px";
+            divStyle.width = bounds.width + "px";
+            divStyle.height = bounds.height + "px";
+            divStyle.zIndex = 2147483645;
+            divStyle.margin = "0";
+            divStyle.padding = "0";
+            divStyle.pointerEvents = "none";
+            divStyle.boxSizing = cs.boxSizing;
+            divStyle.borderTopWidth = bt + "px";
+            divStyle.borderRightWidth = br + "px";
+            divStyle.borderBottomWidth = bb + "px";
+            divStyle.borderLeftWidth = bl + "px";
+            divStyle.borderStyle = "solid";
+            divStyle.borderColor = "transparent";
+
+            // Helper to create a colored rect
+            function makeRect(styles, color) {
+                if (parseFloat(styles.width) <= 0 || parseFloat(styles.height) <= 0) { return; }
+                const r = window.document.createElement("div");
+                r.style.position = "absolute";
+                r.style.backgroundColor = color;
+                r.style.transform = "none";
+                for (const prop in styles) {
+                    r.style[prop] = styles[prop];
+                }
+                div.appendChild(r);
+            }
+
+            // Padding rects (top/bottom full width, left/right content height)
+            const padColor = COLORS.highlightPadding;
+            makeRect({ top: "0", left: "0", width: innerW + "px", height: pt + "px" }, padColor);
+            makeRect({ bottom: "0", left: "0", width: innerW + "px", height: pb + "px" }, padColor);
+            makeRect({ top: pt + "px", left: "0", width: pl + "px", height: contentH + "px" }, padColor);
+            makeRect({ top: pt + "px", right: "0", width: pr + "px", height: contentH + "px" }, padColor);
+
+            // Margin rects (top/bottom element width, left/right full height)
+            const margColor = COLORS.highlightMargin;
+            const mTop = -(mt + bt) + "px";
+            const mBot = -(mb + bb) + "px";
+            const fullH = (outerH + mt + mb) + "px";
+            makeRect({ top: mTop, left: -bl + "px", width: outerW + "px", height: mt + "px" }, margColor);
+            makeRect({ bottom: mBot, left: -bl + "px", width: outerW + "px", height: mb + "px" }, margColor);
+            makeRect({ top: mTop, left: -(ml + bl) + "px", width: ml + "px", height: fullH }, margColor);
+            makeRect({ top: mTop, right: -(mr + br) + "px", width: mr + "px", height: fullH }, margColor);
+
+            window.document.body.appendChild(div);
+            this._divs.push(div);
         }
     };
 
@@ -608,25 +435,35 @@ function RemoteFunctions(config = {}) {
 
         // if _hoverHighlight is uninitialized, initialize it
         if (!_hoverHighlight && shouldShowHighlightOnHover()) {
-            _hoverHighlight = new Highlight("#c8f9c5", true);
+            _hoverHighlight = new Highlight(true);
         }
 
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
+            _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
 
-            // Store original outline to restore on hover out, then apply a blue border
-            element._originalHoverOutline = element.style.outline;
-            const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
-            element.style.outline = `1px solid ${outlineColor}`;
+            // Skip hover outline and overlay for the currently click-selected element.
+            // It already has its own outline and overlay from the click/selection flow.
+            // Adding hover state on top would corrupt _originalHoverOutline (it would capture
+            // the click outline instead of the true original) and stack duplicate overlays.
+            if (element !== previouslySelectedElement) {
+                // Store original outline to restore on hover out, then apply a border
+                element._originalHoverOutline = element.style.outline;
+                const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+                element.style.outline = `1px solid ${outlineColor}`;
 
-            _hoverHighlight.add(element, false);
+                _hoverHighlight.add(element);
+            }
 
-            // create the info box for the hovered element
-            const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
-            if (infoBoxHandler) {
-                infoBoxHandler.dismiss();
-                infoBoxHandler.createInfoBox(element);
+            // Show minimal hover tooltip (tag + dimensions)
+            const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
+            if (hoverBoxHandler) {
+                hoverBoxHandler.dismiss();
+                if (element !== previouslySelectedElement) {
+                    hoverBoxHandler.createHoverBox(element);
+                }
             }
         }
     }
@@ -636,15 +473,17 @@ function RemoteFunctions(config = {}) {
         if (SHARED_STATE.isAutoScrolling) { return; }
 
         const element = event.target;
-        if(LivePreviewView.isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE) {
+        // Use isElementInspectable (not isElementEditable) so that JS-rendered
+        // elements also get their hover highlight and hover box properly dismissed.
+        if(LivePreviewView.isElementInspectable(element) && element.nodeType === Node.ELEMENT_NODE) {
             // this is to check the user's settings, if they want to show the elements highlights on hover or click
             if (_hoverHighlight && shouldShowHighlightOnHover()) {
                 _hoverHighlight.clear();
                 clearElementHoverHighlight(element);
-                // dismiss the info box
-                const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
-                if (infoBoxHandler) {
-                    infoBoxHandler.dismiss();
+                // dismiss the hover box
+                const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
+                if (hoverBoxHandler) {
+                    hoverBoxHandler.dismiss();
                 }
             }
         }
@@ -668,44 +507,52 @@ function RemoteFunctions(config = {}) {
     /**
      * this function is responsible to select an element in the live preview
      * @param {Element} element - The DOM element to select
+     * @param {boolean} [fromEditor] - If true, this is an editor-cursor-driven selection;
+     *   only lightweight highlights (outline + margin/padding) are shown, not interactive
+     *   UI like control box, spacing handles, or measurements.
      */
-    function selectElement(element) {
+    function selectElement(element, fromEditor) {
         dismissUIAndCleanupState();
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
 
-        if(!LivePreviewView.isElementInspectable(element)) {
+        if(!LivePreviewView.isElementInspectable(element, true)) {
             return false;
         }
 
-        // when user clicks on a non-editable element
-        if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
-            getAllToolHandlers().forEach(handler => {
-                if (handler.onNonEditableElementClick) {
-                    handler.onNonEditableElementClick(element);
-                }
-            });
-        }
+        // Only invoke tool handlers for user-initiated clicks in the live preview,
+        // not for editor cursor movements which should only show lightweight highlights
+        if (!fromEditor) {
+            // when user clicks on a non-editable element
+            if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
+                getAllToolHandlers().forEach(handler => {
+                    if (handler.onNonEditableElementClick) {
+                        handler.onNonEditableElementClick(element);
+                    }
+                });
+            }
 
-        // make sure that the element is actually visible to the user
-        if (isElementVisible(element)) {
-            // Notify handlers about element selection
-            getAllToolHandlers().forEach(handler => {
-                if (handler.onElementSelected) {
-                    handler.onElementSelected(element);
-                }
-            });
+            // make sure that the element is actually visible to the user
+            if (isElementVisible(element)) {
+                // Notify handlers about element selection
+                getAllToolHandlers().forEach(handler => {
+                    if (handler.onElementSelected) {
+                        handler.onElementSelected(element);
+                    }
+                });
+            }
         }
 
         element._originalOutline = element.style.outline;
-        const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+        const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
         element.style.outline = `1px solid ${outlineColor}`;
 
         if (!_clickHighlight) {
-            _clickHighlight = new Highlight("#cfc");
+            _clickHighlight = new Highlight();
         }
         _clickHighlight.clear();
-        _clickHighlight.add(element, true);
+        _clickHighlight.add(element);
 
         previouslySelectedElement = element;
         window.__current_ph_lp_selected = element;
@@ -778,7 +625,8 @@ function RemoteFunctions(config = {}) {
         }
 
         // send cursor movement message to editor so cursor jumps to clicked element
-        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
+        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) &&
+            config.syncSourceAndPreview !== false) {
             MessageBroker.send({
                 "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
                 "nodeID": element.id,
@@ -812,10 +660,13 @@ function RemoteFunctions(config = {}) {
         clearCssSelectorHighlight();
 
         // Create new temporary highlight for all matching elements
-        _cssSelectorHighlight = new Highlight("#cfc");
-        for (var i = 0; i < nodes.length; i++) {
-            if (LivePreviewView.isElementInspectable(nodes[i], true) && nodes[i].nodeType === Node.ELEMENT_NODE) {
-                _cssSelectorHighlight.add(nodes[i], true);
+        // Skip the selected element since it already has a click highlight
+        _cssSelectorHighlight = new Highlight();
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i] !== previouslySelectedElement &&
+                LivePreviewView.isElementInspectable(nodes[i], true) &&
+                nodes[i].nodeType === Node.ELEMENT_NODE) {
+                _cssSelectorHighlight.add(nodes[i]);
             }
         }
         _cssSelectorHighlight.selector = rule;
@@ -831,6 +682,7 @@ function RemoteFunctions(config = {}) {
             _clickHighlight = null;
         }
         if (_hoverHighlight) {
+            _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
             _hoverHighlight = null;
         }
@@ -840,13 +692,13 @@ function RemoteFunctions(config = {}) {
     // highlight an element
     function highlight(element, clear) {
         if (!_clickHighlight) {
-            _clickHighlight = new Highlight("#cfc");
+            _clickHighlight = new Highlight();
         }
         if (clear) {
             _clickHighlight.clear();
         }
         if (LivePreviewView.isElementInspectable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
-            _clickHighlight.add(element, true);
+            _clickHighlight.add(element);
         }
     }
 
@@ -919,7 +771,7 @@ function RemoteFunctions(config = {}) {
 
         if (!skipSelection) {
             if (element) {
-                selectElement(element);
+                selectElement(element, true);
             } else {
                 // No valid element found, dismiss UI
                 dismissUIAndCleanupState();
@@ -934,23 +786,24 @@ function RemoteFunctions(config = {}) {
 
     // recreate UI boxes so that they are placed properly
     function redrawUIBoxes() {
-        if (SHARED_STATE._toolBox) {
-            const element = SHARED_STATE._toolBox.element;
-            const toolBoxHandler = LivePreviewView.getToolHandler("ToolBox");
-            if (toolBoxHandler) {
-                toolBoxHandler.dismiss();
-                toolBoxHandler.createToolBox(element);
-            }
-        }
+        // commented out for unified box redesign
+        // if (SHARED_STATE._toolBox) {
+        //     const element = SHARED_STATE._toolBox.element;
+        //     const toolBoxHandler = LivePreviewView.getToolHandler("ToolBox");
+        //     if (toolBoxHandler) {
+        //         toolBoxHandler.dismiss();
+        //         toolBoxHandler.createToolBox(element);
+        //     }
+        // }
 
-        if (SHARED_STATE._infoBox) {
-            const element = SHARED_STATE._infoBox.element;
-            const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
-            if (infoBoxHandler) {
-                infoBoxHandler.dismiss();
-                infoBoxHandler.createInfoBox(element);
-            }
-        }
+        // if (SHARED_STATE._infoBox) {
+        //     const element = SHARED_STATE._infoBox.element;
+        //     const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
+        //     if (infoBoxHandler) {
+        //         infoBoxHandler.dismiss();
+        //         infoBoxHandler.createInfoBox(element);
+        //     }
+        // }
     }
 
     // redraw active highlights
@@ -1261,9 +1114,69 @@ function RemoteFunctions(config = {}) {
                 redrawEverything();
             }
         } else {
-            // Suppression is active - re-apply outline since attrChange may have wiped it
-            if (previouslySelectedElement && previouslySelectedElement.isConnected) {
-                const outlineColor = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+            // Suppression is active (e.g., control box initiated a source edit)
+            if (previouslySelectedElement && !previouslySelectedElement.isConnected) {
+                let freshElement = null;
+
+                // Strategy 1: Tree path (most reliable — works even with duplicate
+                // text content and tag changes). Stored when suppression was activated.
+                if (SHARED_STATE._suppressedElementPath) {
+                    freshElement = _getElementByTreePath(SHARED_STATE._suppressedElementPath);
+                }
+
+                // Strategy 2: brackets-id (works when IDs are preserved)
+                if (!freshElement) {
+                    const bracketsId = previouslySelectedElement.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                    if (bracketsId) {
+                        freshElement = document.querySelector(
+                            '[' + GLOBALS.DATA_BRACKETS_ID_ATTR + '="' + bracketsId + '"]'
+                        );
+                    }
+                }
+
+                // Strategy 3: Text + tag match (fallback — search reverse for deepest match)
+                if (!freshElement) {
+                    const oldText = previouslySelectedElement.textContent;
+                    const oldTag = previouslySelectedElement.tagName;
+                    let candidates = document.querySelectorAll(
+                        oldTag.toLowerCase() + '[' + GLOBALS.DATA_BRACKETS_ID_ATTR + ']'
+                    );
+                    for (let i = candidates.length - 1; i >= 0; i--) {
+                        if (candidates[i].textContent === oldText) {
+                            freshElement = candidates[i];
+                            break;
+                        }
+                    }
+                    // Broaden if tag changed (e.g. h2→footer)
+                    if (!freshElement) {
+                        candidates = document.querySelectorAll('[' + GLOBALS.DATA_BRACKETS_ID_ATTR + ']');
+                        for (let i = candidates.length - 1; i >= 0; i--) {
+                            if (candidates[i].textContent === oldText) {
+                                freshElement = candidates[i];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (freshElement) {
+                    freshElement._originalOutline = freshElement.style.outline;
+                    const isEditable = freshElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                    const outlineColor = isEditable
+                        ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+                    freshElement.style.outline = `1px solid ${outlineColor}`;
+                    if (_clickHighlight) {
+                        _clickHighlight.clear();
+                        _clickHighlight.add(freshElement);
+                    }
+                    previouslySelectedElement = freshElement;
+                    window.__current_ph_lp_selected = freshElement;
+                    redrawEverything();
+                }
+            } else if (previouslySelectedElement && previouslySelectedElement.isConnected) {
+                // Re-apply outline since attrChange may have wiped it
+                const isEditable = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
                 previouslySelectedElement.style.outline = `1px solid ${outlineColor}`;
             }
         }
@@ -1301,7 +1214,25 @@ function RemoteFunctions(config = {}) {
             _handleConfigurationChange();
         }
 
+        // Preserve the currently selected element across re-registration
+        // so that toggling options (e.g. show measurements, show spacing handles)
+        // doesn't clear the element highlighting.
+        const selectedBeforeReregister = previouslySelectedElement;
         registerHandlers();
+        if (!isModeChanged && !highlightModeChanged && selectedBeforeReregister
+            && config.mode === 'edit') {
+            // Restore the click highlight for the previously selected element
+            if (!_clickHighlight) {
+                _clickHighlight = new Highlight(true);
+            }
+            _clickHighlight.add(selectedBeforeReregister);
+            previouslySelectedElement = selectedBeforeReregister;
+            window.__current_ph_lp_selected = selectedBeforeReregister;
+            // Restore the outline
+            const isEditable = selectedBeforeReregister.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+            selectedBeforeReregister.style.outline = `1px solid ${outlineColor}`;
+        }
         return JSON.stringify(config);
     }
 
@@ -1318,6 +1249,10 @@ function RemoteFunctions(config = {}) {
      */
     function cleanupPreviousElementState() {
         if (previouslySelectedElement) {
+            // Safety net: clear any stale hover outline tracking before hideHighlight runs.
+            // This prevents clearElementHoverHighlight from re-applying a captured click outline
+            // in edge cases where _originalHoverOutline was set on the selected element.
+            delete previouslySelectedElement._originalHoverOutline;
             if (previouslySelectedElement._originalOutline !== undefined) {
                 previouslySelectedElement.style.outline = previouslySelectedElement._originalOutline;
             } else {
@@ -1341,6 +1276,43 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * Compute the tree path of an element as an array of child indices
+     * from <html> down. Used to re-locate the element after re-instrumentation
+     * when data-brackets-id changes and text matching is ambiguous.
+     * E.g. [1, 0, 0, 1] means html > 2nd child > 1st child > 1st child > 2nd child.
+     */
+    function _getTreePath(element) {
+        const path = [];
+        let el = element;
+        while (el && el.parentElement) {
+            const parent = el.parentElement;
+            const children = parent.children;
+            for (let i = 0; i < children.length; i++) {
+                if (children[i] === el) {
+                    path.unshift(i);
+                    break;
+                }
+            }
+            el = parent;
+        }
+        return path;
+    }
+
+    /**
+     * Find an element by its tree path (array of child indices from <html>).
+     */
+    function _getElementByTreePath(path) {
+        let el = document.documentElement;
+        for (let i = 0; i < path.length; i++) {
+            if (!el || !el.children || !el.children[path[i]]) {
+                return null;
+            }
+            el = el.children[path[i]];
+        }
+        return el;
+    }
+
+    /**
      * Temporarily suppress the DOM edit dismissal check in apply()
      * Used when source is modified from UI panels to prevent
      * the panel from being dismissed when the DOM is updated.
@@ -1352,9 +1324,14 @@ function RemoteFunctions(config = {}) {
             clearTimeout(SHARED_STATE._suppressDOMEditDismissalTimeout);
         }
         SHARED_STATE._suppressDOMEditDismissal = true;
+        // Store the tree path while the element is still connected
+        if (previouslySelectedElement && previouslySelectedElement.isConnected) {
+            SHARED_STATE._suppressedElementPath = _getTreePath(previouslySelectedElement);
+        }
         SHARED_STATE._suppressDOMEditDismissalTimeout = setTimeout(function() {
             SHARED_STATE._suppressDOMEditDismissal = false;
             SHARED_STATE._suppressDOMEditDismissalTimeout = null;
+            SHARED_STATE._suppressedElementPath = null;
         }, durationMs);
     }
 
@@ -1380,11 +1357,8 @@ function RemoteFunctions(config = {}) {
         });
 
         if (config.mode === 'edit') {
-            // Initialize hover highlight with Chrome-like colors
-            _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
-
-            // Initialize click highlight with animation
-            _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
+            _hoverHighlight = new Highlight(true);
+            _clickHighlight = new Highlight(true);
 
             // register the event handlers
             enableHoverListeners();
@@ -1449,7 +1423,17 @@ function RemoteFunctions(config = {}) {
         "dismissUIAndCleanupState": dismissUIAndCleanupState,
         "escapeKeyPressInEditor": _handleEscapeKeyPress,
         "getMode": function() { return config.mode; },
-        "suppressDOMEditDismissal": suppressDOMEditDismissal
+        "isSyncEnabled": function() { return config.syncSourceAndPreview !== false; },
+        "suppressDOMEditDismissal": suppressDOMEditDismissal,
+        "setHotCornerHidden": function(hidden) {
+            if (SHARED_STATE._hotCorner && SHARED_STATE._hotCorner.hotCorner) {
+                if (hidden) {
+                    SHARED_STATE._hotCorner.hotCorner.classList.add('hc-hidden');
+                } else {
+                    SHARED_STATE._hotCorner.hotCorner.classList.remove('hc-hidden');
+                }
+            }
+        }
     };
 
     // the below code comment is replaced by added scripts for extensibility
