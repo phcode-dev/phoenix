@@ -203,18 +203,6 @@ The editor holder element, passed from WorkspaceManager
 ## \_recomputeLayout : <code>function</code>
 recomputeLayout callback from WorkspaceManager
 
-**Kind**: global variable
-<a name="_defaultPanelId"></a>
-
-## \_defaultPanelId : <code>string</code> \| <code>null</code>
-The default/quick-access panel ID
-
-**Kind**: global variable
-<a name="_$addBtn"></a>
-
-## \_$addBtn : <code>jQueryObject</code>
-The "+" button inside the tab overflow area
-
 **Kind**: global variable  
 <a name="_defaultPanelId"></a>
 
@@ -262,12 +250,6 @@ Minimum panel height (matches Resizer minSize) used as a floor
 when computing a sensible restore height.
 
 **Kind**: global constant  
-<a name="PREF_BOTTOM_PANEL_MAXIMIZED"></a>
-
-## PREF\_BOTTOM\_PANEL\_MAXIMIZED
-Preference key for persisting the maximize state across reloads.
-
-**Kind**: global constant
 <a name="PREF_BOTTOM_PANEL_MAXIMIZED"></a>
 
 ## PREF\_BOTTOM\_PANEL\_MAXIMIZED
