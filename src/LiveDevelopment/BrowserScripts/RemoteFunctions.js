@@ -649,6 +649,13 @@ function RemoteFunctions(config = {}) {
             _cssSelectorHighlightTimer = null;
         }
         if (_cssSelectorHighlight) {
+            // Restore original outlines on highlighted elements
+            _cssSelectorHighlight.elements.forEach(function (el) {
+                if (el._originalCssSelectorOutline !== undefined) {
+                    el.style.outline = el._originalCssSelectorOutline;
+                    delete el._originalCssSelectorOutline;
+                }
+            });
             _cssSelectorHighlight.clear();
             _cssSelectorHighlight = null;
         }
@@ -667,6 +674,12 @@ function RemoteFunctions(config = {}) {
                 LivePreviewView.isElementInspectable(nodes[i], true) &&
                 nodes[i].nodeType === Node.ELEMENT_NODE) {
                 _cssSelectorHighlight.add(nodes[i]);
+                // Apply outline to all matching elements so they are visible
+                // even when they have no margin/padding
+                nodes[i]._originalCssSelectorOutline = nodes[i].style.outline;
+                const isEditable = nodes[i].hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+                nodes[i].style.outline = `1px solid ${outlineColor}`;
             }
         }
         _cssSelectorHighlight.selector = rule;
