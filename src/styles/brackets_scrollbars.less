@@ -19,15 +19,14 @@
  *
  */
 
-/* Temporary fix for issue#10150 for weird project tree scrollbar behaviour on mac. Scrollbar not appearing on hover. Forcing the project tree div to render displays the scrollbar. So setting transparent background color of div on hover.
-*/
+/* Fix for issue#10150 for weird project tree scrollbar behaviour. Scrollbar not appearing on hover.
+   Forcing the div to render displays the scrollbar. So setting transparent background color on hover. */
 
-.platform-mac
-{
-    .open-files-container:hover,
-    #project-files-container:hover {
-        background-color: rgba(128, 128, 128, 0);
-    }
+.open-files-container:hover,
+#project-files-container:hover,
+.ai-chat-messages:hover,
+.ai-session-history-dropdown:hover {
+    background-color: rgba(128, 128, 128, 0);
 }
 
 /* Temporary implementation of unobtrusive scrollbars.
@@ -85,17 +84,6 @@
     }
 }
 
-/* Show scrollbar on all sidebar children when hovering anywhere on the sidebar */
-.quiet-scrollbars#sidebar:hover {
-    .open-files-container::-webkit-scrollbar-thumb,
-    #project-files-container::-webkit-scrollbar-thumb,
-    .ai-chat-messages::-webkit-scrollbar-thumb,
-    .ai-session-history-dropdown::-webkit-scrollbar-thumb {
-        border-radius: 999px;
-        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.6) inset;
-        border: 2px solid transparent;
-    }
-}
 
 .platform-linux, .platform-mac {
     // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
