@@ -755,6 +755,17 @@ function RemoteFunctions(config = {}) {
      */
     function highlightRule(rule) {
         hideHighlight();
+
+        // Filter out the universal selector (*) from the rule - highlighting everything
+        // is not useful, similar to how we skip html/body in isElementInspectable.
+        // The rule can be a comma-separated list of selectors (from multi-cursor),
+        // so we filter out any standalone * segments and keep valid ones.
+        rule = rule.split(",").map(s => s.trim()).filter(s => s !== "*").join(",");
+        if (!rule) {
+            dismissUIAndCleanupState();
+            return;
+        }
+
         const nodes = window.document.querySelectorAll(rule);
 
         // Highlight all matching nodes
