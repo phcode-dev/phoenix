@@ -33,7 +33,7 @@ function RemoteFunctions(config = {}) {
     let _clickHighlight;
     let _cssSelectorHighlight; // temporary highlight for CSS selector matches in edit mode
     let _hoverLockTimer = null;
-    let _cssSelectorHighlightTimer = null; // timer for clearing temporary CSS selector highlights
+    let _cssSelectorHighlightTimer = null;
 
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
@@ -642,7 +642,7 @@ function RemoteFunctions(config = {}) {
         selectElement(element);
     }
 
-    // clear temporary CSS selector highlights
+    // clear CSS selector highlights
     function clearCssSelectorHighlight() {
         if (_cssSelectorHighlightTimer) {
             clearTimeout(_cssSelectorHighlightTimer);
@@ -661,21 +661,19 @@ function RemoteFunctions(config = {}) {
         }
     }
 
-    // create temporary CSS selector highlights for edit mode
+    // create CSS selector highlights for edit mode
     function createCssSelectorHighlight(nodes, rule) {
-        // Clear any existing temporary highlights
+        // Clear any existing highlights
         clearCssSelectorHighlight();
 
-        // Create new temporary highlight for all matching elements
-        // Skip the selected element since it already has a click highlight
+        // Highlight all matching elements except the selected one
+        // (it already has a click highlight)
         _cssSelectorHighlight = new Highlight();
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] !== previouslySelectedElement &&
                 LivePreviewView.isElementInspectable(nodes[i], true) &&
                 nodes[i].nodeType === Node.ELEMENT_NODE) {
                 _cssSelectorHighlight.add(nodes[i]);
-                // Apply outline to all matching elements so they are visible
-                // even when they have no margin/padding
                 nodes[i]._originalCssSelectorOutline = nodes[i].style.outline;
                 const isEditable = nodes[i].hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
                 const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
@@ -683,9 +681,6 @@ function RemoteFunctions(config = {}) {
             }
         }
         _cssSelectorHighlight.selector = rule;
-
-        // Clear temporary highlights after 2 seconds
-        _cssSelectorHighlightTimer = setTimeout(clearCssSelectorHighlight, 2000);
     }
 
     // remove active highlights
