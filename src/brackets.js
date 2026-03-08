@@ -127,7 +127,6 @@ define(function (require, exports, module) {
     require("file/FileUtils");
     require("project/SidebarView");
     require("view/SidebarTabs");
-    require("core-ai/main");
     require("utils/Resizer");
     require("LiveDevelopment/main");
     require("utils/NodeConnection");
@@ -297,8 +296,8 @@ define(function (require, exports, module) {
             SidebarTabs: require("view/SidebarTabs"),
             SidebarView: require("project/SidebarView"),
             WorkingSetView: require("project/WorkingSetView"),
-            AISnapshotStore: require("core-ai/AISnapshotStore"),
-            AIChatHistory: require("core-ai/AIChatHistory"),
+            AISnapshotStore: require("extensionsIntegrated/phoenix-pro/core-ai/AISnapshotStore"),
+            AIChatHistory: require("extensionsIntegrated/phoenix-pro/core-ai/AIChatHistory"),
             doneLoading: false
         };
 
