@@ -296,8 +296,6 @@ define(function (require, exports, module) {
             SidebarTabs: require("view/SidebarTabs"),
             SidebarView: require("project/SidebarView"),
             WorkingSetView: require("project/WorkingSetView"),
-            AISnapshotStore: require("extensionsIntegrated/phoenix-pro/core-ai/AISnapshotStore"),
-            AIChatHistory: require("extensionsIntegrated/phoenix-pro/core-ai/AIChatHistory"),
             doneLoading: false
         };
 
