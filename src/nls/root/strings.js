@@ -1914,6 +1914,8 @@ define({
     "AI_CHAT_QUESTION_OTHER": "Type a custom answer\u2026",
     "AI_CHAT_IMAGE_LIMIT": "Maximum {0} images allowed",
     "AI_CHAT_IMAGE_REMOVE": "Remove image",
+    "AI_CHAT_ATTACH_FILE": "Attach files",
+    "AI_CHAT_FILE_REMOVE": "Remove file",
     "AI_CHAT_QUEUED": "Queued",
     "AI_CHAT_QUEUED_EDIT": "Edit",
     "AI_CHAT_TOOL_CLARIFICATION": "Reading your follow-up",
