@@ -169,17 +169,19 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "- close: Close a file (force, no save prompt). Params: filePath\n" +
         "- openInWorkingSet: Open a file and pin it to the working set. Params: filePath\n" +
         "- setSelection: Open a file and select a range. Params: filePath, startLine, startCh, endLine, endCh\n" +
-        "- setCursorPos: Open a file and set cursor position. Params: filePath, line, ch",
+        "- setCursorPos: Open a file and set cursor position. Params: filePath, line, ch\n" +
+        "- toggleLivePreview: Show or hide the live preview panel. Params: show (boolean)",
         {
             operations: z.array(z.object({
-                operation: z.enum(["open", "close", "openInWorkingSet", "setSelection", "setCursorPos"]),
-                filePath: z.string().describe("Absolute path to the file"),
+                operation: z.enum(["open", "close", "openInWorkingSet", "setSelection", "setCursorPos", "toggleLivePreview"]),
+                filePath: z.string().optional().describe("Absolute path to the file (not required for toggleLivePreview)"),
                 startLine: z.number().optional().describe("Start line (1-based) for setSelection"),
                 startCh: z.number().optional().describe("Start column (1-based) for setSelection"),
                 endLine: z.number().optional().describe("End line (1-based) for setSelection"),
                 endCh: z.number().optional().describe("End column (1-based) for setSelection"),
                 line: z.number().optional().describe("Line number (1-based) for setCursorPos"),
-                ch: z.number().optional().describe("Column (1-based) for setCursorPos")
+                ch: z.number().optional().describe("Column (1-based) for setCursorPos"),
+                showPreview: z.boolean().optional().describe("true to show, false to hide live preview (for toggleLivePreview)")
             })).describe("Array of editor operations to execute sequentially")
         },
         async function (args) {
