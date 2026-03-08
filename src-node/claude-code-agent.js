@@ -430,9 +430,12 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     matcher: "Read",
                     hooks: [
                         async (input) => {
+                            if (!input || !input.tool_input) {
+                                return {};
+                            }
                             const filePath = input.tool_input.file_path;
                             if (!filePath) {
-                                return undefined;
+                                return {};
                             }
                             try {
                                 const result = await nodeConnector.execPeer("getFileContent", { filePath });
@@ -466,7 +469,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             } catch (err) {
                                 console.warn("[Phoenix AI] Failed to check dirty state:", filePath, err.message);
                             }
-                            return undefined;
+                            return {};
                         }
                     ]
                 },
