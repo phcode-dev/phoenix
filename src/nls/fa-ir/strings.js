@@ -1301,6 +1301,9 @@ define({
   "TERMINAL_CLOSE_ALL_BTN": "بستن همه",
   "TERMINAL_CLOSE_ALL_MSG_PROCESS_ONE": "همه‌ی ترمینال‌ها بسته خواهند شد.<br>۱ فرآیند فعال متوقف خواهد شد.<br><br>ادامه می‌دهید؟",
   "TERMINAL_CLOSE_ALL_MSG_PROCESS_MANY": "همه‌ی ترمینال‌ها بسته خواهند شد.<br>{0} فرآیند فعال متوقف خواهند شد.<br><br>ادامه می‌دهید؟",
+  "TERMINAL_CLOSE_ALL_STOP_BTN": "بستن همه و توقف فرآیندها",
+  "TERMINAL_FOCUS_HINT": "برای جابجایی بین ویرایشگر و ترمینال، کلید {0} را فشار دهید",
+  "TERMINAL_CLEAR": "پاک کردن ترمینال",
   "EXTENDED_COMMIT_MESSAGE": "گسترش‌یافته",
   "GETTING_STAGED_DIFF_PROGRESS": "دریافت تفاوت فایل‌های مرحله‌بندی شده…",
   "GIT_COMMIT": "کامیت گیت…",
@@ -1799,7 +1802,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "TERMINAL_CLOSE_ALL_STOP_BTN": "بستن همه و توقف فرآیندها",
-  "TERMINAL_FOCUS_HINT": "برای جابجایی بین ویرایشگر و ترمینال، کلید {0} را فشار دهید",
-  "TERMINAL_CLEAR": "پاک کردن ترمینال"
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} از {1} چت روزانه استفاده شده",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} از {1} چت ماهانه استفاده شده",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "شما از تمام {0} چت روزانه خود استفاده کرده‌اید. فردا بازنشانی می‌شود.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "شما از تمام {0} چت ماهانه خود استفاده کرده‌اید.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "برای چت نامحدود، Phoenix Pro را دریافت کنید"
 });
