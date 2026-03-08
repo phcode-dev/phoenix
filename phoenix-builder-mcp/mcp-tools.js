@@ -322,10 +322,12 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
         "Execute JavaScript in the Phoenix Code browser runtime and return the result. " +
         "Code runs async in the page context with access to: " +
         "$ (jQuery) for DOM queries/clicks, " +
-        "brackets.test.CommandManager, brackets.test.EditorManager, brackets.test.ProjectManager, " +
-        "brackets.test.DocumentManager, brackets.test.FileSystem, brackets.test.FileUtils, " +
-        "and 50+ other modules on brackets.test.* — " +
-        "supports await.",
+        "brackets.test.CommandManager, brackets.test.EditorManager, " +
+        "brackets.test.ProjectManager, brackets.test.DocumentManager, " +
+        "brackets.test.FileSystem, brackets.test.FileUtils, " +
+        "and 50+ other modules on brackets.test.* — supports await. " +
+        "__kernalModeTrust is available as a parameter " +
+        "(deleted from window after boot, preserved here for dev/test).",
         {
             code: z.string().describe("JavaScript code to execute in Phoenix"),
             instance: z.string().optional().describe("Target a specific Phoenix instance by name (e.g. 'Phoenix-a3f2'). Required when multiple instances are connected.")
