@@ -1130,6 +1130,13 @@ function RemoteFunctions(config = {}) {
             if (previouslySelectedElement && !previouslySelectedElement.isConnected) {
                 dismissUIAndCleanupState();
             } else {
+                // Re-apply outline since attrChange may have wiped it
+                // (e.g. user edited the style attribute in source)
+                if (previouslySelectedElement && previouslySelectedElement.isConnected) {
+                    const isEditable = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                    const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+                    previouslySelectedElement.style.outline = `1px solid ${outlineColor}`;
+                }
                 redrawEverything();
             }
         } else {
@@ -1432,7 +1439,7 @@ function RemoteFunctions(config = {}) {
     customReturns = { // we have to do this else the minifier will strip the customReturns variable
         ...customReturns,
         "DOMEditHandler": DOMEditHandler,
-        "hideHighlight": hideHighlight,
+        "hideHighlight": dismissUIAndCleanupState,
         "highlight": highlight,
         "highlightRule": highlightRule,
         "redrawHighlights": redrawHighlights,
