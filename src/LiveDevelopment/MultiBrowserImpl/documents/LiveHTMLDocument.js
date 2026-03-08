@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         _                   = require("thirdparty/lodash"),
         LiveDocument        = require("LiveDevelopment/MultiBrowserImpl/documents/LiveDocument"),
         HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
+        HTMLUtils            = require("language/HTMLUtils"),
         CSSUtils            = require("language/CSSUtils");
 
     /**
@@ -161,19 +162,28 @@ define(function (require, exports, module) {
             selectors = [];
 
         // check if the cursor is in a stylesheet context (internal styles)
+        // but skip CSS selector lookup for inline style attributes (style="...")
+        // since they have no selector — the element itself should be highlighted instead
         if (mode === "css" || mode === "text/x-scss" || mode === "text/x-less") {
-            // find the css selector
-            _.each(this.editor.getSelections(), function (sel) {
-                let selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
-                if (selector) {
-                    selectors.push(selector);
-                }
-            });
+            var primarySel = editor.getSelection();
+            var tagInfo = HTMLUtils.getTagInfo(editor, primarySel.start, true);
+            var isInlineStyle = tagInfo.position.tokenType === HTMLUtils.ATTR_VALUE &&
+                tagInfo.attr.name.toLowerCase() === "style";
 
-            if (selectors.length) {
-                // to highlight the elements that match the css selectors
-                this.highlightRule(selectors.join(","));
-                return;
+            if (!isInlineStyle) {
+                // find the css selector
+                _.each(this.editor.getSelections(), function (sel) {
+                    let selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
+                    if (selector) {
+                        selectors.push(selector);
+                    }
+                });
+
+                if (selectors.length) {
+                    // to highlight the elements that match the css selectors
+                    this.highlightRule(selectors.join(","));
+                    return;
+                }
             }
         }
 
