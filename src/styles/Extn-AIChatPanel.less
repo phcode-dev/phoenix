@@ -293,6 +293,34 @@
     }
 }
 
+/* ── User message file chips ────────────────────────────────────────── */
+.ai-user-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+    justify-content: flex-end;
+
+    .ai-user-file-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        font-size: 11px;
+        color: @project-panel-text-2;
+        max-width: 180px;
+
+        .ai-file-chip-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+}
+
 /* ── User message image thumbnails ──────────────────────────────────── */
 .ai-user-images {
     display: flex;
@@ -1351,6 +1379,73 @@
             &:hover .ai-image-remove {
                 display: flex;
             }
+        }
+
+        .ai-file-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+            font-size: 11px;
+            color: @project-panel-text-2;
+            max-width: 150px;
+            position: relative;
+
+            .ai-file-chip-name {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .ai-file-remove {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: rgba(0, 0, 0, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: @project-panel-text-2;
+                font-size: 11px;
+                padding: 0;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            &:hover .ai-file-remove {
+                display: flex;
+            }
+        }
+    }
+
+    .ai-attach-btn {
+        background: none;
+        border: none;
+        color: @project-panel-text-2;
+        width: 28px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        align-self: stretch;
+        border-radius: 7px 0 0 7px;
+        opacity: 0.5;
+        transition: opacity 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            opacity: 1;
+            color: @project-panel-text-1;
+        }
+
+        i {
+            font-size: @sidebar-content-font-size;
         }
     }
 
