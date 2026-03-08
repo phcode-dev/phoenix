@@ -88,6 +88,10 @@ define(function (require, exports, module) {
     let _isResumedSession = false;  // Whether current session was resumed from history
     let _lastQuestions = null;      // Last AskUserQuestion questions, for recording
 
+    // Quota state
+    let _cachedAIEntitlement = null;
+    let _quotaBarDismissed = false;
+
     // DOM references
     let $panel, $messages, $status, $statusText, $textarea, $sendBtn, $stopBtn, $imagePreview;
     let $aiTabContainer = null;
@@ -118,6 +122,7 @@ define(function (require, exports, module) {
                 '<span class="ai-status-spinner"></span>' +
                 '<span class="ai-status-text">' + Strings.AI_CHAT_THINKING + '</span>' +
             '</div>' +
+            '<div class="ai-chat-quota-bar" style="display:none"></div>' +
             '<div class="ai-chat-input-area">' +
                 '<div class="ai-chat-image-preview"></div>' +
                 '<div class="ai-chat-context-bar"></div>' +
@@ -257,26 +262,32 @@ define(function (require, exports, module) {
             }
             return;
         }
-        // TODO: Switch to EntitlementsManager.getAIEntitlement() once AI entitlement is
-        // implemented in the backend. For now, reuse liveEdit entitlement as a proxy for
-        // "has Pro plan". Once AI entitlement is available, the check should be:
-        //   EntitlementsManager.getAIEntitlement().then(function (entitlement) {
-        //       if (entitlement.aiDisabledByAdmin) {
-        //           _renderAdminDisabledUI();
-        //       } else if (entitlement.activated) {
-        //           _checkAvailability();
-        //       } else if (entitlement.needsLogin) {
-        //           _renderLoginUI();
-        //       } else {
-        //           _renderUpsellUI(entitlement);
-        //       }
-        //   });
-        EntitlementsManager.getLiveEditEntitlement().then(function (entitlement) {
-            if (entitlement.activated) {
+        EntitlementsManager.getAIEntitlement().then(function (entitlement) {
+            if (entitlement.aiDisabledByAdmin) {
+                if (_currentEntitlementState !== "adminDisabled") {
+                    _removeCurrentPanel();
+                    _renderAdminDisabledUI();
+                }
+            } else if (entitlement.needsLogin) {
+                if (_currentEntitlementState !== "login") {
+                    _removeCurrentPanel();
+                    _renderLoginUI();
+                }
+            } else if (entitlement.activated && entitlement.quotaLocal === null) {
+                // Pro user — unlimited access
+                _cachedAIEntitlement = entitlement;
                 if (_currentEntitlementState !== "chat") {
                     _removeCurrentPanel();
                     _checkAvailability();
                 }
+            } else if (entitlement.quotaLocal || !entitlement.activated) {
+                // Quota-limited user — allow chat with limits
+                _cachedAIEntitlement = entitlement;
+                if (_currentEntitlementState !== "chat") {
+                    _removeCurrentPanel();
+                    _checkAvailability();
+                }
+                _updateQuotaBar();
             } else {
                 if (_currentEntitlementState !== "upsell") {
                     _removeCurrentPanel();
@@ -354,6 +365,105 @@ define(function (require, exports, module) {
                 '</div>' +
             '</div>';
         $aiTabContainer.empty().append($(html));
+    }
+
+    /**
+     * Update the quota usage bar in the chat panel.
+     * Shows daily or monthly usage — whichever is closer to its limit.
+     * Only visible when >50% of a limit is used. User can dismiss it.
+     */
+    function _updateQuotaBar() {
+        const EntitlementsManager = _KernalModeTrust && _KernalModeTrust.EntitlementsManager;
+        if (!EntitlementsManager) {
+            return;
+        }
+        EntitlementsManager.getAIQuotaStatus().then(function (quota) {
+            const $quotaBar = $(".ai-chat-quota-bar");
+            if (!$quotaBar.length || !quota || quota.unlimited) {
+                $quotaBar.hide();
+                return;
+            }
+            if (_quotaBarDismissed) {
+                // User dismissed, but still block if fully exhausted
+                if (quota.monthlyUsed >= quota.monthlyLimit) {
+                    _quotaBarDismissed = false; // force show exhausted
+                } else if (quota.dailyUsed >= quota.dailyLimit) {
+                    _quotaBarDismissed = false;
+                } else {
+                    $quotaBar.hide();
+                    return;
+                }
+            }
+
+            const dailyPct = quota.dailyLimit ? quota.dailyUsed / quota.dailyLimit : 0;
+            const monthlyPct = quota.monthlyLimit ? quota.monthlyUsed / quota.monthlyLimit : 0;
+            const monthlyExhausted = quota.monthlyUsed >= quota.monthlyLimit;
+            const dailyExhausted = quota.dailyUsed >= quota.dailyLimit;
+
+            // Determine which message to show:
+            // Show monthly if exhausted, or if >90% used and closer to limit than daily
+            // Show daily if >50% used
+            // Show whichever is closest to being fully used
+            let statusText = "";
+            let isExhausted = false;
+            const buyURL = (_cachedAIEntitlement && _cachedAIEntitlement.buyURL) ||
+                brackets.config.purchase_url;
+
+            if (monthlyExhausted) {
+                statusText = StringUtils.format(
+                    Strings.AI_CHAT_QUOTA_MONTHLY_EXHAUSTED, quota.monthlyLimit);
+                isExhausted = true;
+            } else if (dailyExhausted) {
+                statusText = StringUtils.format(
+                    Strings.AI_CHAT_QUOTA_DAILY_EXHAUSTED, quota.dailyLimit);
+                isExhausted = true;
+            } else if (monthlyPct > 0.9 && monthlyPct >= dailyPct) {
+                statusText = StringUtils.format(
+                    Strings.AI_CHAT_QUOTA_MONTHLY_STATUS,
+                    quota.monthlyUsed, quota.monthlyLimit);
+            } else if (dailyPct > 0.5) {
+                statusText = StringUtils.format(
+                    Strings.AI_CHAT_QUOTA_DAILY_STATUS,
+                    quota.dailyUsed, quota.dailyLimit);
+            } else if (monthlyPct > 0.5) {
+                statusText = StringUtils.format(
+                    Strings.AI_CHAT_QUOTA_MONTHLY_STATUS,
+                    quota.monthlyUsed, quota.monthlyLimit);
+            } else {
+                $quotaBar.hide();
+                return;
+            }
+
+            let html = '<div class="ai-quota-content">' +
+                '<span class="ai-quota-text">' + statusText + '</span>';
+            if (isExhausted) {
+                html += '<a class="ai-quota-upgrade-link" href="#">' +
+                    Strings.AI_CHAT_QUOTA_UPGRADE_BTN + '</a>';
+            }
+            html += '</div>';
+            if (!isExhausted) {
+                html += '<button class="ai-quota-dismiss" title="Dismiss">' +
+                    '<i class="fa-solid fa-xmark"></i></button>';
+            }
+            $quotaBar.html(html).show();
+            $quotaBar.find(".ai-quota-dismiss").on("click", function () {
+                _quotaBarDismissed = true;
+                $quotaBar.hide();
+            });
+            $quotaBar.find(".ai-quota-upgrade-link").on("click", function (e) {
+                e.preventDefault();
+                Phoenix.app.openURLInDefaultBrowser(buyURL);
+            });
+
+            // Disable input when exhausted
+            if (isExhausted && $textarea) {
+                $textarea.prop("disabled", true);
+                $sendBtn.prop("disabled", true);
+            } else if ($textarea) {
+                $textarea.prop("disabled", false);
+                $sendBtn.prop("disabled", false);
+            }
+        });
     }
 
     /**
@@ -967,6 +1077,10 @@ define(function (require, exports, module) {
         if (!text || _isStreaming) {
             return;
         }
+        // Block sending if textarea is disabled (quota exhausted)
+        if ($textarea.prop("disabled")) {
+            return;
+        }
 
         // Show "+ New" button once a conversation starts
         $panel.find(".ai-new-session-btn").show();
@@ -1146,6 +1260,7 @@ define(function (require, exports, module) {
         if ($sendBtn) {
             $sendBtn.prop("disabled", false);
         }
+        _updateQuotaBar();
     }
 
     // --- Event handlers for node-side events ---
@@ -1556,6 +1671,15 @@ define(function (require, exports, module) {
 
         SnapshotStore.stopTracking();
         _setStreaming(false);
+
+        // Consume one AI chat quota unit and refresh quota bar
+        const EntitlementsManager = _KernalModeTrust && _KernalModeTrust.EntitlementsManager;
+        if (EntitlementsManager) {
+            EntitlementsManager.aiChatDone().then(function () {
+                _quotaBarDismissed = false;
+                _updateQuotaBar();
+            });
+        }
 
         // Save session to history
         if (data.sessionId) {
@@ -2724,6 +2848,7 @@ define(function (require, exports, module) {
             $textarea.closest(".ai-chat-input-wrap").removeClass("disabled");
             $sendBtn.prop("disabled", false);
             $textarea[0].focus({ preventScroll: true });
+            _updateQuotaBar();
 
             // Scroll to bottom
             if ($messages && $messages.length) {
