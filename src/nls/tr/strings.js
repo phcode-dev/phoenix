@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Pro Edinin",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "Yapay Zeka Devre Dışı",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Yapay zeka özellikleri sistem yöneticiniz tarafından devre dışı bırakıldı.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} günlük sohbet kullanıldı",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} aylık sohbet kullanıldı",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "{0} günlük sohbet hakkınızın tamamını kullandınız. Yarın yenilenir.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "{0} aylık sohbet hakkınızın tamamını kullandınız.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Sınırsız sohbet için Phoenix Pro edinin",
   "AI_CHAT_TOOL_SEARCH_FILES": "Dosyaları ara",
   "AI_CHAT_TOOL_SEARCH_CODE": "Kod ara",
   "AI_CHAT_TOOL_READ": "Oku",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} günlük sohbet kullanıldı",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} aylık sohbet kullanıldı",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "{0} günlük sohbet hakkınızın tamamını kullandınız. Yarın yenilenir.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "{0} aylık sohbet hakkınızın tamamını kullandınız.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Sınırsız sohbet için Phoenix Pro edinin"
+  "AI_CHAT_ATTACH_FILE": "Dosya ekle",
+  "AI_CHAT_FILE_REMOVE": "Dosyayı kaldır"
 });

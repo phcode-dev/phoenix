@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Pro beszerzése",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "MI letiltva",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Az MI-funkciókat a rendszergazdája letiltotta.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} napi csevegés felhasználva",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} havi csevegés felhasználva",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Elhasználtad mind a(z) {0} napi csevegésedet. Holnap visszaáll.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Elhasználtad mind a(z) {0} havi csevegésedet.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Válts Phoenix Pro-ra a korlátlan csevegésért",
   "AI_CHAT_TOOL_SEARCH_FILES": "Fájlok keresése",
   "AI_CHAT_TOOL_SEARCH_CODE": "Kód keresése",
   "AI_CHAT_TOOL_READ": "Olvasás",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} napi csevegés felhasználva",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} havi csevegés felhasználva",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Elhasználtad mind a(z) {0} napi csevegésedet. Holnap visszaáll.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Elhasználtad mind a(z) {0} havi csevegésedet.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Válts Phoenix Pro-ra a korlátlan csevegésért"
+  "AI_CHAT_ATTACH_FILE": "Fájlok csatolása",
+  "AI_CHAT_FILE_REMOVE": "Fájl eltávolítása"
 });

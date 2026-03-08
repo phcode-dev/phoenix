@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Pro erwerben",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "KI deaktiviert",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "KI-Funktionen wurden von Ihrem Systemadministrator deaktiviert.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} tägliche Chats verwendet",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} monatliche Chats verwendet",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Du hast alle {0} täglichen Chats aufgebraucht. Wird morgen zurückgesetzt.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Du hast alle {0} monatlichen Chats aufgebraucht.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Hol dir Phoenix Pro für unbegrenzte Chats",
   "AI_CHAT_TOOL_SEARCH_FILES": "Dateien suchen",
   "AI_CHAT_TOOL_SEARCH_CODE": "Code suchen",
   "AI_CHAT_TOOL_READ": "Lesen",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} tägliche Chats verwendet",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} monatliche Chats verwendet",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Du hast alle {0} täglichen Chats aufgebraucht. Wird morgen zurückgesetzt.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Du hast alle {0} monatlichen Chats aufgebraucht.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Hol dir Phoenix Pro für unbegrenzte Chats"
+  "AI_CHAT_ATTACH_FILE": "Dateien anhängen",
+  "AI_CHAT_FILE_REMOVE": "Datei entfernen"
 });

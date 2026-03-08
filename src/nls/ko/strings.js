@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Pro 시작하기",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI 비활성화됨",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "시스템 관리자가 AI 기능을 비활성화했습니다.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "일일 채팅 {0}/{1}회 사용",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "월간 채팅 {0}/{1}회 사용",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "일일 채팅 {0}개를 모두 사용하셨습니다. 내일 초기화됩니다.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "월간 채팅 {0}개를 모두 사용하셨습니다.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Phoenix Pro로 무제한 채팅 이용하기",
   "AI_CHAT_TOOL_SEARCH_FILES": "파일 검색",
   "AI_CHAT_TOOL_SEARCH_CODE": "코드 검색",
   "AI_CHAT_TOOL_READ": "읽기",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "일일 채팅 {0}/{1}회 사용",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "월간 채팅 {0}/{1}회 사용",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "일일 채팅 {0}개를 모두 사용하셨습니다. 내일 초기화됩니다.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "월간 채팅 {0}개를 모두 사용하셨습니다.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Phoenix Pro로 무제한 채팅 이용하기"
+  "AI_CHAT_ATTACH_FILE": "파일 첨부",
+  "AI_CHAT_FILE_REMOVE": "파일 제거"
 });

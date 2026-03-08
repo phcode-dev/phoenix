@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Proを入手",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "ＡＩが無効です",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "ＡＩ機能はシステム管理者によって無効にされています。",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "本日分のチャット使用数：{0}／{1}",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "月間チャット使用数：{0}／{1}",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "本日分のチャット{0}回をすべて使用しました。明日リセットされます。",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "月間チャットの上限{0}回に達しました。",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Phoenix Proでチャットが無制限に",
   "AI_CHAT_TOOL_SEARCH_FILES": "ファイルを検索",
   "AI_CHAT_TOOL_SEARCH_CODE": "コードを検索",
   "AI_CHAT_TOOL_READ": "読み取り",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "本日分のチャット使用数：{0}／{1}",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "月間チャット使用数：{0}／{1}",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "本日分のチャット{0}回をすべて使用しました。明日リセットされます。",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "月間チャットの上限{0}回に達しました。",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Phoenix Proでチャットが無制限に"
+  "AI_CHAT_ATTACH_FILE": "ファイルを添付",
+  "AI_CHAT_FILE_REMOVE": "ファイルを削除"
 });

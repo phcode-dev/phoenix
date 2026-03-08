@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Pro प्राप्त करें",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "एआई अक्षम",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "एआई सुविधाएँ आपके सिस्टम एडमिनिस्ट्रेटर द्वारा अक्षम कर दी गई हैं।",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} दैनिक चैट इस्तेमाल हुए",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} मासिक चैट इस्तेमाल हुए",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "आपने अपनी सभी {0} दैनिक चैट इस्तेमाल कर ली हैं। कल रीसेट होगा।",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "आपने अपनी सभी {0} मासिक चैट इस्तेमाल कर ली हैं।",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "असीमित चैट के लिए Phoenix Pro प्राप्त करें",
   "AI_CHAT_TOOL_SEARCH_FILES": "फ़ाइलें खोजें",
   "AI_CHAT_TOOL_SEARCH_CODE": "कोड खोजें",
   "AI_CHAT_TOOL_READ": "पढ़ें",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} दैनिक चैट इस्तेमाल हुए",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} मासिक चैट इस्तेमाल हुए",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "आपने अपनी सभी {0} दैनिक चैट इस्तेमाल कर ली हैं। कल रीसेट होगा।",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "आपने अपनी सभी {0} मासिक चैट इस्तेमाल कर ली हैं।",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "असीमित चैट के लिए Phoenix Pro प्राप्त करें"
+  "AI_CHAT_ATTACH_FILE": "फ़ाइलें संलग्न करें",
+  "AI_CHAT_FILE_REMOVE": "फ़ाइल हटाएँ"
 });

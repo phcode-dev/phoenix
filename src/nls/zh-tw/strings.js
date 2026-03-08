@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "取得 Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI 已停用",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI 功能已被您的系統管理員停用。",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "每日聊天已使用：{0} / {1}",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "每月聊天已使用：{0} / {1}",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "您已用完 {0} 次每日聊天額度，將於明日重設。",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "您已用完 {0} 次每月聊天額度。",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "升級至 Phoenix Pro，享無限次聊天",
   "AI_CHAT_TOOL_SEARCH_FILES": "搜尋檔案",
   "AI_CHAT_TOOL_SEARCH_CODE": "搜尋程式碼",
   "AI_CHAT_TOOL_READ": "讀取",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "每日聊天已使用：{0} / {1}",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "每月聊天已使用：{0} / {1}",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "您已用完 {0} 次每日聊天額度，將於明日重設。",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "您已用完 {0} 次每月聊天額度。",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "升級至 Phoenix Pro，享無限次聊天"
+  "AI_CHAT_ATTACH_FILE": "附加檔案",
+  "AI_CHAT_FILE_REMOVE": "移除檔案"
 });

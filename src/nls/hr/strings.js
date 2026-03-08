@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Nabavite Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI onemogućen",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI značajke onemogućene su od strane vašeg administratora sustava.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} iskorištenih dnevnih razgovora",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} iskorištenih mjesečnih razgovora",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Iskoristili ste svih {0} dnevnih razgovora. Kvota se obnavlja sutra.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Iskoristili ste svih {0} mjesečnih razgovora.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Nabavite Phoenix Pro za neograničene razgovore",
   "AI_CHAT_TOOL_SEARCH_FILES": "Pretraži datoteke",
   "AI_CHAT_TOOL_SEARCH_CODE": "Pretraži kôd",
   "AI_CHAT_TOOL_READ": "Čitaj",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} iskorištenih dnevnih razgovora",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} iskorištenih mjesečnih razgovora",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Iskoristili ste svih {0} dnevnih razgovora. Kvota se obnavlja sutra.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Iskoristili ste svih {0} mjesečnih razgovora.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Nabavite Phoenix Pro za neograničene razgovore"
+  "AI_CHAT_ATTACH_FILE": "Priloži datoteke",
+  "AI_CHAT_FILE_REMOVE": "Ukloni datoteku"
 });

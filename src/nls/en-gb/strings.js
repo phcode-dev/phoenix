@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Get Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI Disabled",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI features have been disabled by your system administrator.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} daily chats used",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} monthly chats used",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "You've used all {0} of your daily chats. This resets tomorrow.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "You've used all {0} of your monthly chats.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Get Phoenix Pro for unlimited chats",
   "AI_CHAT_TOOL_SEARCH_FILES": "Search files",
   "AI_CHAT_TOOL_SEARCH_CODE": "Search code",
   "AI_CHAT_TOOL_READ": "Read",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} daily chats used",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} monthly chats used",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "You've used all {0} of your daily chats. This resets tomorrow.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "You've used all {0} of your monthly chats.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Get Phoenix Pro for unlimited chats"
+  "AI_CHAT_ATTACH_FILE": "Attach files",
+  "AI_CHAT_FILE_REMOVE": "Remove file"
 });

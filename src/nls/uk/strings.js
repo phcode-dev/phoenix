@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Отримати Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "ШІ вимкнено",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Функції ШІ були вимкнені вашим системним адміністратором.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} щоденних чатів використано",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} щомісячних чатів використано",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Ви вичерпали всі {0} щоденних чатів. Ліміт оновиться завтра.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Ви вичерпали всі {0} щомісячних чатів.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Отримайте Phoenix Pro для безлімітних чатів",
   "AI_CHAT_TOOL_SEARCH_FILES": "Пошук файлів",
   "AI_CHAT_TOOL_SEARCH_CODE": "Пошук коду",
   "AI_CHAT_TOOL_READ": "Читати",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} щоденних чатів використано",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} щомісячних чатів використано",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Ви вичерпали всі {0} щоденних чатів. Ліміт оновиться завтра.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Ви вичерпали всі {0} щомісячних чатів.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Отримайте Phoenix Pro для безлімітних чатів"
+  "AI_CHAT_ATTACH_FILE": "Прикріпити файли",
+  "AI_CHAT_FILE_REMOVE": "Видалити файл"
 });

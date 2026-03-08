@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Αποκτήστε το Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI απενεργοποιημένο",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Οι λειτουργίες AI έχουν απενεργοποιηθεί από τον διαχειριστή του συστήματός σας.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} ημερήσιες συνομιλίες",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} μηνιαίες συνομιλίες",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Έχετε χρησιμοποιήσει και τις {0} ημερήσιες συνομιλίες. Το όριο ανανεώνεται αύριο.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Έχετε χρησιμοποιήσει και τις {0} μηνιαίες συνομιλίες.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Αποκτήστε το Phoenix Pro για απεριόριστες συνομιλίες",
   "AI_CHAT_TOOL_SEARCH_FILES": "Αναζήτηση αρχείων",
   "AI_CHAT_TOOL_SEARCH_CODE": "Αναζήτηση κώδικα",
   "AI_CHAT_TOOL_READ": "Ανάγνωση",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} ημερήσιες συνομιλίες",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} μηνιαίες συνομιλίες",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Έχετε χρησιμοποιήσει και τις {0} ημερήσιες συνομιλίες. Το όριο ανανεώνεται αύριο.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Έχετε χρησιμοποιήσει και τις {0} μηνιαίες συνομιλίες.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Αποκτήστε το Phoenix Pro για απεριόριστες συνομιλίες"
+  "AI_CHAT_ATTACH_FILE": "Επισύναψη αρχείων",
+  "AI_CHAT_FILE_REMOVE": "Αφαίρεση αρχείου"
 });

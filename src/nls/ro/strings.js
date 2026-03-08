@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Obțineți Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI dezactivat",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Funcționalitățile AI au fost dezactivate de către administratorul dumneavoastră de sistem.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} conversații zilnice utilizate",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} conversații lunare utilizate",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Ați utilizat toate cele {0} conversații zilnice. Se resetează mâine.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Ați utilizat toate cele {0} conversații lunare.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Obțineți Phoenix Pro pentru conversații nelimitate",
   "AI_CHAT_TOOL_SEARCH_FILES": "Căutare fișiere",
   "AI_CHAT_TOOL_SEARCH_CODE": "Căutare cod",
   "AI_CHAT_TOOL_READ": "Citire",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} conversații zilnice utilizate",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} conversații lunare utilizate",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Ați utilizat toate cele {0} conversații zilnice. Se resetează mâine.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Ați utilizat toate cele {0} conversații lunare.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Obțineți Phoenix Pro pentru conversații nelimitate"
+  "AI_CHAT_ATTACH_FILE": "Atașează fișiere",
+  "AI_CHAT_FILE_REMOVE": "Elimină fișierul"
 });

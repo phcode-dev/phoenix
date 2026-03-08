@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Iegūt Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "MI atspējots",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Jūsu sistēmas administrators ir atspējojis MI funkcijas.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} izmantotas dienas tērzēšanas reizes",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} izmantotas mēneša tērzēšanas reizes",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Jūs esat izmantojuši visas {0} dienas tērzēšanas reizes. Limits atjaunosies rīt.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Jūs esat izmantojuši visas {0} mēneša tērzēšanas reizes.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Iegūstiet Phoenix Pro neierobežotai tērzēšanai",
   "AI_CHAT_TOOL_SEARCH_FILES": "Meklēt failus",
   "AI_CHAT_TOOL_SEARCH_CODE": "Meklēt kodu",
   "AI_CHAT_TOOL_READ": "Lasīt",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} izmantotas dienas tērzēšanas reizes",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} izmantotas mēneša tērzēšanas reizes",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Jūs esat izmantojuši visas {0} dienas tērzēšanas reizes. Limits atjaunosies rīt.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Jūs esat izmantojuši visas {0} mēneša tērzēšanas reizes.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Iegūstiet Phoenix Pro neierobežotai tērzēšanai"
+  "AI_CHAT_ATTACH_FILE": "Pievienot failus",
+  "AI_CHAT_FILE_REMOVE": "Noņemt failu"
 });
