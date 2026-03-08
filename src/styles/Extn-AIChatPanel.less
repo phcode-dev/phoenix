@@ -1166,6 +1166,59 @@
     }
 }
 
+/* ── Quota bar ──────────────────────────────────────────────────────── */
+.ai-chat-quota-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    margin: 0 8px;
+    border-radius: 6px;
+    background-color: rgba(255, 200, 50, 0.10);
+    border: 1px solid rgba(255, 200, 50, 0.20);
+    font-size: 12px;
+    color: @project-panel-text-1;
+
+    .ai-quota-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ai-quota-text {
+        opacity: 0.85;
+    }
+
+    .ai-quota-upgrade-link {
+        color: @bc-text-link;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .ai-quota-dismiss {
+        background: none;
+        border: none;
+        color: @project-panel-text-1;
+        opacity: 0.5;
+        cursor: pointer;
+        padding: 2px 4px;
+        margin-left: 6px;
+        font-size: 12px;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
 /* ── Input area ─────────────────────────────────────────────────────── */
 .ai-chat-input-area {
     flex-shrink: 0;
