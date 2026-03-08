@@ -86,7 +86,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
 
     const takeScreenshotTool = sdkModule.tool(
         "takeScreenshot",
-        "Take a screenshot of the Phoenix Code editor window. Returns a PNG image. " +
+        "Take a screenshot of the Phoenix Code editor window. " +
+        "By default returns the screenshot as a PNG image inline. " +
+        "If filePath is specified, saves the screenshot to that file and returns the file path instead. " +
         "Prefer capturing specific regions instead of the full page: " +
         "use selector '#panel-live-preview-frame' for the live preview content, " +
         "or '.editor-holder' for the code editor area. " +
@@ -95,16 +97,22 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "and other editor UI elements. Use purePreview=true to temporarily hide these overlays.",
         {
             selector: z.string().optional().describe("CSS selector to capture a specific element. Use '#panel-live-preview-frame' for the live preview, '.editor-holder' for the code editor."),
-            purePreview: z.boolean().optional().describe("When true, temporarily switches to preview mode to hide element highlight overlays and toolboxes before capturing, then restores the previous mode.")
+            purePreview: z.boolean().optional().describe("When true, temporarily switches to preview mode to hide element highlight overlays and toolboxes before capturing, then restores the previous mode."),
+            filePath: z.string().optional().describe("Absolute path to save the screenshot as a PNG file. If specified, returns the file path instead of inline image data.")
         },
         async function (args) {
             let toolResult;
             try {
                 const result = await nodeConnector.execPeer("takeScreenshot", {
                     selector: args.selector || undefined,
-                    purePreview: args.purePreview || false
+                    purePreview: args.purePreview || false,
+                    filePath: args.filePath || undefined
                 });
-                if (result.base64) {
+                if (result.filePath) {
+                    toolResult = {
+                        content: [{ type: "text", text: "Screenshot saved to: " + result.filePath }]
+                    };
+                } else if (result.base64) {
                     toolResult = {
                         content: [{ type: "image", data: result.base64, mimeType: "image/png" }]
                     };
