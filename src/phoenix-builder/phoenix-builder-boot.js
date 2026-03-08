@@ -387,10 +387,11 @@
 
     // --- Register built-in handler for exec_js_request ---
     // Evaluates arbitrary JS in the page context and returns the result.
+    // `__kernalModeTrust` is available inside exec_js code for dev/test access.
     registerHandler("exec_js_request", function (msg) {
         const AsyncFunction = (async function () {}).constructor;
-        const fn = new AsyncFunction(msg.code);
-        fn().then(function (result) {
+        const fn = new AsyncFunction("__kernalModeTrust", msg.code);
+        fn(_kernalModeTrust).then(function (result) {
             _sendMessage({
                 type: "exec_js_response",
                 id: msg.id,
