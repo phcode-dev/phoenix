@@ -139,7 +139,9 @@ define(function (require, exports, module) {
         this.searchAddon = new SearchAddon();
 
         this.terminal.loadAddon(this.fitAddon);
-        this.terminal.loadAddon(new WebLinksAddon());
+        this.terminal.loadAddon(new WebLinksAddon(function (_event, uri) {
+            Phoenix.app.openURLInDefaultBrowser(uri);
+        }));
         this.terminal.loadAddon(this.searchAddon);
 
         // Open terminal in DOM
