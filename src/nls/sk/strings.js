@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Získať Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI zakázané",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Funkcie AI boli zakázané správcom vášho systému.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} použitých denných chatov",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} použitých mesačných chatov",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Minuli ste všetkých {0} denných chatov. Limit sa zajtra obnoví.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Minuli ste všetkých {0} mesačných chatov.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Získajte Phoenix Pro pre neobmedzený počet chatov",
   "AI_CHAT_TOOL_SEARCH_FILES": "Hľadať súbory",
   "AI_CHAT_TOOL_SEARCH_CODE": "Hľadať v kóde",
   "AI_CHAT_TOOL_READ": "Čítať",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} použitých denných chatov",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} použitých mesačných chatov",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Minuli ste všetkých {0} denných chatov. Limit sa zajtra obnoví.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Minuli ste všetkých {0} mesačných chatov.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Získajte Phoenix Pro pre neobmedzený počet chatov"
+  "AI_CHAT_ATTACH_FILE": "Pripojiť súbory",
+  "AI_CHAT_FILE_REMOVE": "Odstrániť súbor"
 });

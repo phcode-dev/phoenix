@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Obter Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "IA desactivada",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "As funcións de IA foron desactivadas polo administrador do seu sistema.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} conversas diarias usadas",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} conversas mensuais usadas",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Esgotaches as {0} conversas diarias. Restablécese mañá.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Esgotaches as {0} conversas mensuais.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Obtén Phoenix Pro para ter conversas ilimitadas",
   "AI_CHAT_TOOL_SEARCH_FILES": "Buscar ficheiros",
   "AI_CHAT_TOOL_SEARCH_CODE": "Buscar código",
   "AI_CHAT_TOOL_READ": "Ler",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} conversas diarias usadas",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} conversas mensuais usadas",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Esgotaches as {0} conversas diarias. Restablécese mañá.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Esgotaches as {0} conversas mensuais.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Obtén Phoenix Pro para ter conversas ilimitadas"
+  "AI_CHAT_ATTACH_FILE": "Adxuntar ficheiros",
+  "AI_CHAT_FILE_REMOVE": "Eliminar ficheiro"
 });

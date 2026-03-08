@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Neem Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI uitgeschakeld",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI-functies zijn uitgeschakeld door uw systeembeheerder.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} dagelijkse chats gebruikt",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} maandelijkse chats gebruikt",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Je hebt alle {0} dagelijkse chats gebruikt. De teller wordt morgen gereset.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Je hebt alle {0} maandelijkse chats gebruikt.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Neem Phoenix Pro voor onbeperkte chats",
   "AI_CHAT_TOOL_SEARCH_FILES": "Bestanden zoeken",
   "AI_CHAT_TOOL_SEARCH_CODE": "Code zoeken",
   "AI_CHAT_TOOL_READ": "Lezen",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} dagelijkse chats gebruikt",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} maandelijkse chats gebruikt",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Je hebt alle {0} dagelijkse chats gebruikt. De teller wordt morgen gereset.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Je hebt alle {0} maandelijkse chats gebruikt.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Neem Phoenix Pro voor onbeperkte chats"
+  "AI_CHAT_ATTACH_FILE": "Bestanden bijvoegen",
+  "AI_CHAT_FILE_REMOVE": "Bestand verwijderen"
 });

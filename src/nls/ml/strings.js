@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Pro നേടുക",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "എഐ പ്രവർത്തനരഹിതമാണ്",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "നിങ്ങളുടെ സിസ്റ്റം അഡ്മിനിസ്ട്രേറ്റർ എഐ ഫീച്ചറുകൾ പ്രവർത്തനരഹിതമാക്കിയിരിക്കുന്നു.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} ദിവസേനയുള്ള ചാറ്റുകൾ ഉപയോഗിച്ചു",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} മാസേനയുള്ള ചാറ്റുകൾ ഉപയോഗിച്ചു",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "നിങ്ങൾ ദിവസേനയുള്ള {0} ചാറ്റുകളും ഉപയോഗിച്ചു കഴിഞ്ഞു. നാളെ റീസെറ്റ് ആകും.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "നിങ്ങൾ മാസേനയുള്ള {0} ചാറ്റുകളും ഉപയോഗിച്ചു കഴിഞ്ഞു.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "പരിധിയില്ലാത്ത ചാറ്റുകൾക്കായി Phoenix Pro നേടുക",
   "AI_CHAT_TOOL_SEARCH_FILES": "ഫയലുകൾ തിരയുക",
   "AI_CHAT_TOOL_SEARCH_CODE": "കോഡ് തിരയുക",
   "AI_CHAT_TOOL_READ": "വായിക്കുക",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} ദിവസേനയുള്ള ചാറ്റുകൾ ഉപയോഗിച്ചു",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} മാസേനയുള്ള ചാറ്റുകൾ ഉപയോഗിച്ചു",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "നിങ്ങൾ ദിവസേനയുള്ള {0} ചാറ്റുകളും ഉപയോഗിച്ചു കഴിഞ്ഞു. നാളെ റീസെറ്റ് ആകും.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "നിങ്ങൾ മാസേനയുള്ള {0} ചാറ്റുകളും ഉപയോഗിച്ചു കഴിഞ്ഞു.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "പരിധിയില്ലാത്ത ചാറ്റുകൾക്കായി Phoenix Pro നേടുക"
+  "AI_CHAT_ATTACH_FILE": "ഫയലുകൾ അറ്റാച്ചുചെയ്യുക",
+  "AI_CHAT_FILE_REMOVE": "ഫയൽ നീക്കംചെയ്യുക"
 });

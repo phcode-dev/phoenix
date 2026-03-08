@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Hanki Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "Tekoäly poistettu käytöstä",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Järjestelmänvalvojasi on poistanut tekoälyominaisuudet käytöstä.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} päivittäistä keskustelua käytetty",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} kuukausittaista keskustelua käytetty",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Olet käyttänyt kaikki {0} päivittäistä keskustelua. Nollautuu huomenna.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Olet käyttänyt kaikki {0} kuukausittaista keskustelua.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Hanki Phoenix Pro saadaksesi rajattomasti keskusteluja",
   "AI_CHAT_TOOL_SEARCH_FILES": "Hae tiedostoja",
   "AI_CHAT_TOOL_SEARCH_CODE": "Hae koodia",
   "AI_CHAT_TOOL_READ": "Lue",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} päivittäistä keskustelua käytetty",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} kuukausittaista keskustelua käytetty",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Olet käyttänyt kaikki {0} päivittäistä keskustelua. Nollautuu huomenna.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Olet käyttänyt kaikki {0} kuukausittaista keskustelua.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Hanki Phoenix Pro saadaksesi rajattomasti keskusteluja"
+  "AI_CHAT_ATTACH_FILE": "Liitä tiedostoja",
+  "AI_CHAT_FILE_REMOVE": "Poista tiedosto"
 });

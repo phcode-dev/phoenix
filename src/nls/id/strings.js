@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Dapatkan Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI Dinonaktifkan",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "Fitur AI telah dinonaktifkan oleh administrator sistem Anda.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} obrolan harian digunakan",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} obrolan bulanan digunakan",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Anda telah menggunakan semua {0} obrolan harian. Akan direset besok.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Anda telah menggunakan semua {0} obrolan bulanan.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Dapatkan Phoenix Pro untuk obrolan tanpa batas",
   "AI_CHAT_TOOL_SEARCH_FILES": "Cari file",
   "AI_CHAT_TOOL_SEARCH_CODE": "Cari kode",
   "AI_CHAT_TOOL_READ": "Baca",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} obrolan harian digunakan",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} obrolan bulanan digunakan",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Anda telah menggunakan semua {0} obrolan harian. Akan direset besok.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Anda telah menggunakan semua {0} obrolan bulanan.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Dapatkan Phoenix Pro untuk obrolan tanpa batas"
+  "AI_CHAT_ATTACH_FILE": "Lampirkan file",
+  "AI_CHAT_FILE_REMOVE": "Hapus file"
 });

@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Набавите Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI је онемогућен",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI функције је онемогућио ваш администратор система.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} искоришћених дневних ћаскања",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} искоришћених месечних ћаскања",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Искористили сте дневни лимит од {0} ћаскања. Ресетује се сутра.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Искористили сте месечни лимит од {0} ћаскања.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Набавите Phoenix Pro за неограничена ћаскања",
   "AI_CHAT_TOOL_SEARCH_FILES": "Претражи датотеке",
   "AI_CHAT_TOOL_SEARCH_CODE": "Претражи кôд",
   "AI_CHAT_TOOL_READ": "Прочитај",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} искоришћених дневних ћаскања",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} искоришћених месечних ћаскања",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Искористили сте дневни лимит од {0} ћаскања. Ресетује се сутра.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Искористили сте месечни лимит од {0} ћаскања.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Набавите Phoenix Pro за неограничена ћаскања"
+  "AI_CHAT_ATTACH_FILE": "Приложи датотеке",
+  "AI_CHAT_FILE_REMOVE": "Уклони датотеку"
 });

@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Вземете Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI е деактивиран",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI функциите са деактивирани от вашия системен администратор.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} използвани дневни чата",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} използвани месечни чата",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Използвали сте всички {0} дневни чата. Нулират се утре.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Използвали сте всички {0} месечни чата.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Вземете Phoenix Pro за неограничени чатове",
   "AI_CHAT_TOOL_SEARCH_FILES": "Търсене на файлове",
   "AI_CHAT_TOOL_SEARCH_CODE": "Търсене в код",
   "AI_CHAT_TOOL_READ": "Четене",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} използвани дневни чата",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} използвани месечни чата",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Използвали сте всички {0} дневни чата. Нулират се утре.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Използвали сте всички {0} месечни чата.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Вземете Phoenix Pro за неограничени чатове"
+  "AI_CHAT_ATTACH_FILE": "Прикачване на файлове",
+  "AI_CHAT_FILE_REMOVE": "Премахване на файл"
 });

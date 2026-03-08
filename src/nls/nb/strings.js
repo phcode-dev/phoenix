@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Skaff deg Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI deaktivert",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI-funksjoner har blitt deaktivert av systemadministratoren din.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} daglige chatter brukt",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} månedlige chatter brukt",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Du har brukt alle {0} daglige chatter. Tilbakestilles i morgen.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Du har brukt alle {0} månedlige chatter.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "Få Phoenix Pro for ubegrensede chatter",
   "AI_CHAT_TOOL_SEARCH_FILES": "Søk i filer",
   "AI_CHAT_TOOL_SEARCH_CODE": "Søk i kode",
   "AI_CHAT_TOOL_READ": "Les",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} daglige chatter brukt",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} månedlige chatter brukt",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "Du har brukt alle {0} daglige chatter. Tilbakestilles i morgen.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "Du har brukt alle {0} månedlige chatter.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "Få Phoenix Pro for ubegrensede chatter"
+  "AI_CHAT_ATTACH_FILE": "Legg ved filer",
+  "AI_CHAT_FILE_REMOVE": "Fjern fil"
 });

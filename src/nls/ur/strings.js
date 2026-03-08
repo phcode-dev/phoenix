@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "Phoenix Pro حاصل کریں",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "AI غیر فعال",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "AI کی خصوصیات کو آپ کے سسٹم ایڈمنسٹریٹر نے غیر فعال کر دیا ہے۔",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} روزانہ چیٹس استعمال شدہ",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} ماہانہ چیٹس استعمال شدہ",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "آپ اپنی تمام {0} روزانہ چیٹس استعمال کر چکے ہیں۔ یہ کل ری سیٹ ہو جائیں گی۔",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "آپ اپنی تمام {0} ماہانہ چیٹس استعمال کر چکے ہیں۔",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "لامحدود چیٹس کے لیے Phoenix Pro حاصل کریں۔",
   "AI_CHAT_TOOL_SEARCH_FILES": "فائلیں تلاش کریں",
   "AI_CHAT_TOOL_SEARCH_CODE": "کوڈ تلاش کریں",
   "AI_CHAT_TOOL_READ": "پڑھیں",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} / {1} روزانہ چیٹس استعمال شدہ",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} / {1} ماہانہ چیٹس استعمال شدہ",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "آپ اپنی تمام {0} روزانہ چیٹس استعمال کر چکے ہیں۔ یہ کل ری سیٹ ہو جائیں گی۔",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "آپ اپنی تمام {0} ماہانہ چیٹس استعمال کر چکے ہیں۔",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "لامحدود چیٹس کے لیے Phoenix Pro حاصل کریں۔"
+  "AI_CHAT_ATTACH_FILE": "فائلیں منسلک کریں",
+  "AI_CHAT_FILE_REMOVE": "فائل ہٹائیں"
 });

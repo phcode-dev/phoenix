@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "دریافت Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "هوش مصنوعی غیرفعال",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "ویژگی‌های هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} از {1} چت روزانه استفاده شده",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} از {1} چت ماهانه استفاده شده",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "شما از تمام {0} چت روزانه خود استفاده کرده‌اید. فردا بازنشانی می‌شود.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "شما از تمام {0} چت ماهانه خود استفاده کرده‌اید.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "برای چت نامحدود، Phoenix Pro را دریافت کنید",
   "AI_CHAT_TOOL_SEARCH_FILES": "جستجوی فایل‌ها",
   "AI_CHAT_TOOL_SEARCH_CODE": "جستجوی کد",
   "AI_CHAT_TOOL_READ": "خواندن",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "{0} از {1} چت روزانه استفاده شده",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "{0} از {1} چت ماهانه استفاده شده",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "شما از تمام {0} چت روزانه خود استفاده کرده‌اید. فردا بازنشانی می‌شود.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "شما از تمام {0} چت ماهانه خود استفاده کرده‌اید.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "برای چت نامحدود، Phoenix Pro را دریافت کنید"
+  "AI_CHAT_ATTACH_FILE": "پیوست کردن فایل‌ها",
+  "AI_CHAT_FILE_REMOVE": "حذف فایل"
 });

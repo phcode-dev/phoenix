@@ -1637,6 +1637,11 @@ define({
   "AI_CHAT_UPSELL_BTN": "احصل على Phoenix Pro",
   "AI_CHAT_ADMIN_DISABLED_TITLE": "الذكاء الاصطناعي معطّل",
   "AI_CHAT_ADMIN_DISABLED_MESSAGE": "تم تعطيل ميزات الذكاء الاصطناعي من قبل مسؤول النظام.",
+  "AI_CHAT_QUOTA_DAILY_STATUS": "‏{0} / {1} من المحادثات اليومية المستخدمة",
+  "AI_CHAT_QUOTA_MONTHLY_STATUS": "‏{0} / {1} من المحادثات الشهرية المستخدمة",
+  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "لقد استنفدت جميع محادثاتك اليومية البالغ عددها {0}. يتم التجديد غدًا.",
+  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "لقد استنفدت جميع محادثاتك الشهرية البالغ عددها {0}.",
+  "AI_CHAT_QUOTA_UPGRADE_BTN": "احصل على Phoenix Pro لمحادثات غير محدودة",
   "AI_CHAT_TOOL_SEARCH_FILES": "بحث في الملفات",
   "AI_CHAT_TOOL_SEARCH_CODE": "بحث في الكود",
   "AI_CHAT_TOOL_READ": "قراءة",
@@ -1802,9 +1807,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_QUOTA_DAILY_STATUS": "‏{0} / {1} من المحادثات اليومية المستخدمة",
-  "AI_CHAT_QUOTA_MONTHLY_STATUS": "‏{0} / {1} من المحادثات الشهرية المستخدمة",
-  "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "لقد استنفدت جميع محادثاتك اليومية البالغ عددها {0}. يتم التجديد غدًا.",
-  "AI_CHAT_QUOTA_MONTHLY_EXHAUSTED": "لقد استنفدت جميع محادثاتك الشهرية البالغ عددها {0}.",
-  "AI_CHAT_QUOTA_UPGRADE_BTN": "احصل على Phoenix Pro لمحادثات غير محدودة"
+  "AI_CHAT_ATTACH_FILE": "إرفاق ملفات",
+  "AI_CHAT_FILE_REMOVE": "إزالة الملف"
 });
