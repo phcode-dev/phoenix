@@ -156,6 +156,52 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("AESEncryptString and AESDecryptString", function () {
+            it("should encrypt then decrypt roundtrip returning original string", async function () {
+                const {key, iv} = TrustRing.generateRandomKeyAndIV();
+                const original = "hello world";
+                const encrypted = await TrustRing.AESEncryptString(original, key, iv);
+                const decrypted = await TrustRing.AESDecryptString(encrypted, key, iv);
+                expect(decrypted).toBe(original);
+            });
+
+            it("should produce a hex string output", async function () {
+                const {key, iv} = TrustRing.generateRandomKeyAndIV();
+                const encrypted = await TrustRing.AESEncryptString("test", key, iv);
+                expect(encrypted).toMatch(/^[a-f0-9]+$/);
+            });
+
+            it("should produce different ciphertext for different plaintext", async function () {
+                const {key, iv} = TrustRing.generateRandomKeyAndIV();
+                const enc1 = await TrustRing.AESEncryptString("plaintext1", key, iv);
+                const enc2 = await TrustRing.AESEncryptString("plaintext2", key, iv);
+                expect(enc1).not.toBe(enc2);
+            });
+
+            it("should work with empty string", async function () {
+                const {key, iv} = TrustRing.generateRandomKeyAndIV();
+                const encrypted = await TrustRing.AESEncryptString("", key, iv);
+                const decrypted = await TrustRing.AESDecryptString(encrypted, key, iv);
+                expect(decrypted).toBe("");
+            });
+
+            it("should work with unicode characters", async function () {
+                const {key, iv} = TrustRing.generateRandomKeyAndIV();
+                const original = "测试数据 with émojis 🔒🔑";
+                const encrypted = await TrustRing.AESEncryptString(original, key, iv);
+                const decrypted = await TrustRing.AESDecryptString(encrypted, key, iv);
+                expect(decrypted).toBe(original);
+            });
+
+            it("should work with large strings", async function () {
+                const {key, iv} = TrustRing.generateRandomKeyAndIV();
+                const original = "x".repeat(10000);
+                const encrypted = await TrustRing.AESEncryptString(original, key, iv);
+                const decrypted = await TrustRing.AESDecryptString(encrypted, key, iv);
+                expect(decrypted).toBe(original);
+            });
+        });
+
         describe("generateDataSignature and validateDataSignature integration", function () {
             it("should work with JSON data like entitlements", async function () {
                 const entitlements = {
