@@ -144,7 +144,8 @@ function makeJSDist() {
     return src(['src/**/*.js', '!src/**/unittest-files/**/*', "!src/thirdparty/prettier/**/*",
         "!src/thirdparty/no-minify/**/*", "!src/thirdparty/xterm/**/*",
         "!src/LiveDevelopment/BrowserScripts/RemoteFunctions.js",
-        "!src/extensionsIntegrated/phoenix-pro/onboarding/**/*"])
+        "!src/extensionsIntegrated/phoenix-pro/onboarding/**/*",
+        "!src/extensionsIntegrated/phoenix-pro/unit-tests/**/*"])
         .pipe(minify({
             ext:{
                 min:'.js'
@@ -178,7 +179,8 @@ function makeNonMinifyDist() {
     return src(["src/thirdparty/no-minify/**/*",
         "src/thirdparty/xterm/**/*",
         "src/LiveDevelopment/BrowserScripts/RemoteFunctions.js",
-        "src/extensionsIntegrated/phoenix-pro/onboarding/**/*"], {base: 'src'})
+        "src/extensionsIntegrated/phoenix-pro/onboarding/**/*",
+        "src/extensionsIntegrated/phoenix-pro/unit-tests/**/*"], {base: 'src'})
         .pipe(dest('dist'));
 }
 
@@ -549,6 +551,10 @@ function listAllJsFilesRecursively(dirPath) {
 
         // Check if the file is a directory.
         if (fs.statSync(filePath).isDirectory()) {
+            // Skip unit-tests folders in phoenix-pro - they should not be concatenated or minified
+            if (filePath.includes('phoenix-pro') && file === 'unit-tests') {
+                return;
+            }
             // Recursively list all JS files in the directory.
             const nestedFiles = listAllJsFilesRecursively(filePath);
             allFiles.push(...nestedFiles);
@@ -670,7 +676,7 @@ function inlineTextRequire(file, content, srcDir, isDevBuild = true) {
             if((requirePath.endsWith(".js") && !requirePath.includes("./") && !requirePath.includes("../")) // js files that are relative paths are ok
                 || excludeSuffixPathsInlining.some(ext => requirePath.endsWith(ext))) {
                 console.warn("Not inlining JS/JSON file:", requirePath, filePath);
-                if(filePath.includes("phoenix-pro")) {
+                if(filePath.includes("phoenix-pro") && !filePath.includes("unit-tests")) {
                     // this is needed as we will delete the extension sources when packaging for release.
                     // so non inlined content will not be available in the extension. throw early to detect that.
                     throw new Error(`All Files in phoenix pro extension should be inlineable!: failed for ${filePath}`);
