@@ -140,7 +140,7 @@ exports.checkAvailability = async function () {
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images } = params;
+    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images, envOverrides } = params;
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -183,7 +183,7 @@ exports.sendPrompt = async function (params) {
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images)
+    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -287,10 +287,11 @@ exports.clearClarification = async function () {
 /**
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
-async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images) {
+async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides) {
     let editCount = 0;
     let toolCounter = 0;
     let queryFn;
+    let connectionTimer = null;
 
     try {
         queryFn = await getQueryFn();
@@ -315,10 +316,24 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         phase: "start"
     });
 
+    if (envOverrides) {
+        const keys = Object.keys(envOverrides);
+        console.log("[AI] Using env overrides:", keys.map(k => k + "=" + (k.includes("TOKEN") || k.includes("KEY") ? "***" : envOverrides[k])).join(", "));
+    }
+
+    let _lastStderrLines = [];
+    const MAX_STDERR_LINES = 20;
+
     const queryOptions = {
         cwd: projectPath || process.cwd(),
         maxTurns: undefined,
-        stderr: (data) => console.log("[AI stderr]", data),
+        stderr: (data) => {
+            console.log("[AI stderr]", data);
+            _lastStderrLines.push(data);
+            if (_lastStderrLines.length > MAX_STDERR_LINES) {
+                _lastStderrLines.shift();
+            }
+        },
         allowedTools: [
             "Read", "Edit", "Write", "Glob", "Grep", "Bash",
             "AskUserQuestion", "Task",
@@ -377,6 +392,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 : ""),
         includePartialMessages: true,
         abortController: currentAbortController,
+        env: envOverrides ? Object.assign({}, process.env, envOverrides) : undefined,
         hooks: {
             PreToolUse: [
                 {
@@ -650,7 +666,37 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         let textDeltaCount = 0;
         let textStreamSendCount = 0;
 
+        // Connection timeout — abort if no messages within 60s
+        let receivedFirstMessage = false;
+        const CONNECTION_TIMEOUT_MS = 60000;
+        connectionTimer = setTimeout(() => {
+            if (!receivedFirstMessage && !signal.aborted) {
+                _log("Connection timeout — no response in " + (CONNECTION_TIMEOUT_MS / 1000) + "s");
+                const stderrHint = _lastStderrLines
+                    .filter(line => !line.startsWith("Spawning Claude Code"))
+                    .join("\n").trim();
+                let timeoutMsg = "Connection timed out — no response from API after " +
+                    (CONNECTION_TIMEOUT_MS / 1000) + " seconds.";
+                if (envOverrides && envOverrides.ANTHROPIC_BASE_URL) {
+                    timeoutMsg += " Check that the Base URL (" + envOverrides.ANTHROPIC_BASE_URL +
+                        ") is correct and reachable.";
+                }
+                if (stderrHint) {
+                    timeoutMsg += "\n" + stderrHint;
+                }
+                nodeConnector.triggerPeer("aiError", {
+                    requestId: requestId,
+                    error: timeoutMsg
+                });
+                currentAbortController.abort();
+            }
+        }, CONNECTION_TIMEOUT_MS);
+
         for await (const message of result) {
+            if (!receivedFirstMessage) {
+                receivedFirstMessage = true;
+                clearTimeout(connectionTimer);
+            }
             // Check abort
             if (signal.aborted) {
                 _log("Aborted");
@@ -858,6 +904,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             });
         }
 
+        clearTimeout(connectionTimer);
         _log("Complete: tools=" + toolCounter, "edits=" + editCount,
             "textDeltas=" + textDeltaCount, "textSent=" + textStreamSendCount);
 
@@ -868,6 +915,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         });
 
     } catch (err) {
+        clearTimeout(connectionTimer);
         const errMsg = err.message || String(err);
         const isAbort = signal.aborted || /abort/i.test(errMsg);
 
@@ -886,12 +934,31 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
 
         _log("Error:", errMsg.slice(0, 200));
 
+        // Build a detailed error message including stderr context
+        let detailedError = errMsg;
+        const stderrContext = _lastStderrLines
+            .filter(line => !line.startsWith("Spawning Claude Code"))
+            .join("\n").trim();
+        if (stderrContext) {
+            detailedError += "\n" + stderrContext;
+        }
+        // Add hint for custom API settings when process exits with code 1
+        if (/exited with code 1/.test(errMsg) && envOverrides) {
+            if (envOverrides.ANTHROPIC_AUTH_TOKEN) {
+                detailedError += "\nThis may be caused by an invalid API key. " +
+                    "Check your API key in Claude Code Settings.";
+            }
+            if (envOverrides.ANTHROPIC_BASE_URL) {
+                detailedError += "\nCustom Base URL: " + envOverrides.ANTHROPIC_BASE_URL;
+            }
+        }
+
         // Clear session after error to prevent cascading failures from resuming a broken session
         currentSessionId = null;
 
         nodeConnector.triggerPeer("aiError", {
             requestId: requestId,
-            error: errMsg
+            error: detailedError
         });
 
         // Always send aiComplete after aiError so the UI exits streaming state

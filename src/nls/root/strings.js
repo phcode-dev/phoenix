@@ -1930,6 +1930,16 @@ define({
     "AI_CHAT_HISTORY_DELETE_CONFIRM": "Delete this session?",
     "AI_CHAT_SWITCH_PROJECT_TITLE": "AI is working",
     "AI_CHAT_SWITCH_PROJECT_MSG": "AI is currently working on a task. Switching projects will stop it. Continue?",
+    "AI_CHAT_SETTINGS_TITLE": "Claude Code Settings",
+    "AI_SETTINGS_API_KEY": "API Key",
+    "AI_SETTINGS_BASE_URL": "Base URL",
+    "AI_SETTINGS_API_TIMEOUT": "API Timeout (ms)",
+    "AI_SETTINGS_API_KEY_PLACEHOLDER": "Enter your Anthropic API key",
+    "AI_SETTINGS_BASE_URL_PLACEHOLDER": "Leave blank for default",
+    "AI_SETTINGS_API_TIMEOUT_PLACEHOLDER": "Leave blank for default",
+    "AI_SETTINGS_SAVE": "Save",
+    "AI_SETTINGS_RESET": "Reset",
+    "AI_SETTINGS_CUSTOM_ENDPOINT_NOTICE": "Using custom API endpoint: {0}",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",
