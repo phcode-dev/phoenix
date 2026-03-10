@@ -1631,52 +1631,9 @@
         }
     }
 
-    .ai-settings-select-wrapper {
-        position: relative;
-    }
-
     .ai-settings-active-select {
         width: 100%;
-        box-sizing: border-box;
-        padding: 6px 28px 6px 10px;
-        height: 30px;
-        border: 1px solid @bc-panel-border;
-        border-radius: @bc-border-radius;
-        background: @bc-input-bg;
-        color: @bc-text;
-        font-size: 13px;
-        outline: none;
-        appearance: none;
-        -webkit-appearance: none;
-        cursor: pointer;
-
-        &:focus {
-            border-color: @bc-btn-border-focused;
-        }
-
-        .dark & {
-            border-color: @dark-bc-panel-border;
-            background: @dark-bc-input-bg;
-            color: @dark-bc-text;
-
-            &:focus {
-                border-color: @dark-bc-btn-border-focused;
-            }
-        }
-    }
-
-    .ai-settings-select-arrow {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        font-size: 10px;
-        line-height: 1;
-        color: @bc-text-quiet;
-        pointer-events: none;
-
-        .dark & {
-            color: @dark-bc-text-quiet;
-        }
+        line-height: normal;
     }
 
     .ai-settings-divider {
