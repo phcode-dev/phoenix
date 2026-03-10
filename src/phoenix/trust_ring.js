@@ -369,6 +369,65 @@ async function _portCredentials() {
     }
 }
 
+const FALLBACK_SALT = 'fallback-salt-2f309322-b32d-4d59-85b4-2baef666a9f4';
+let currentSalt;
+
+/**
+ * Attempt to get or create the trusted key (salt) from the credential store.
+ * Returns the salt string on success, or null if getCredential throws.
+ */
+async function _getTrustedKeyInternal() {
+    try {
+        let salt = await getCredential(SIGNATURE_SALT_KEY);
+        if (!salt) {
+            // Generate and store new salt
+            salt = crypto.randomUUID();
+            await setCredential(SIGNATURE_SALT_KEY, salt);
+        }
+        return salt;
+    } catch (error) {
+        console.error("Error in _getTrustedKeyInternal:", error);
+        return null;
+    }
+}
+
+const MAX_SALT_RETRIES = 2;
+
+/**
+ * Get per-user trusted key (salt) for signature generation, creating and persisting one if it doesn't exist.
+ * Used for signing cached data to prevent tampering.
+ */
+async function getTrustedKey() {
+    if (currentSalt) {
+        return currentSalt;
+    }
+
+    if (Phoenix.isNativeApp) {
+        // Native app: use credential store with retries
+        let salt = await _getTrustedKeyInternal();
+        const Metrics = window.Metrics;
+        for (let i = 0; i < MAX_SALT_RETRIES && !salt; i++) {
+            console.warn(`Retrying _getTrustedKeyInternal (attempt ${i + 2})`);
+            Metrics && Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "saltGet", "retry");
+            salt = await _getTrustedKeyInternal();
+        }
+        if (salt) {
+            currentSalt = salt;
+            return salt;
+        }
+        // All retries exhausted, fall back
+        console.error("All salt retrieval attempts failed, using fallback salt");
+        Metrics && Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "saltGet", "Err");
+        currentSalt = FALLBACK_SALT;
+        return FALLBACK_SALT;
+    }
+
+    // In browser app, there is no way to securely store salt without extensions being able to
+    // read it. Return a static salt for basic integrity checking.
+    currentSalt = FALLBACK_SALT;
+    return FALLBACK_SALT;
+}
+
 /**
  * Generates an SHA-256 hash signature of the provided data string combined with a salt.
  *
@@ -418,7 +477,8 @@ window.KernalModeTrust = {
     dismantleKeyring,
     generateDataSignature,
     validateDataSignature,
-    reinstallCreds
+    reinstallCreds,
+    getTrustedKey
 };
 // Pass the trust ring reference to phoenix-builder (MCP) before it is
 // nuked from window.  The builder needs dismantleKeyring() for reload.
