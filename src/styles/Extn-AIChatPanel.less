@@ -89,6 +89,28 @@
         }
     }
 
+    .ai-settings-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: @project-panel-text-2;
+        font-size: @menu-item-font-size;
+        width: 26px;
+        height: 26px;
+        border-radius: 3px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.15s ease, background-color 0.15s ease;
+        pointer-events: none;
+
+        &:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+    }
+
     .ai-new-session-btn {
         display: flex;
         align-items: center;
@@ -108,6 +130,12 @@
             background-color: rgba(255, 255, 255, 0.06);
         }
     }
+}
+
+/* Show settings gear on tab container hover */
+.ai-tab-container:hover .ai-settings-btn {
+    opacity: 0.7;
+    pointer-events: auto;
 }
 
 /* ── Session history dropdown ──────────────────────────────────────── */
@@ -1588,4 +1616,69 @@
             background: #FFa820;
         }
     }
+}
+
+/* ── AI Settings Dialog ────────────────────────────────────────────── */
+.ai-settings-dialog {
+    .ai-settings-form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 4px 0;
+    }
+
+    .ai-settings-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            color: @project-panel-text-2;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px 10px;
+            height: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.2);
+            color: @project-panel-text-1;
+            font-size: 13px;
+            outline: none;
+
+            &:focus {
+                border-color: rgba(76, 175, 80, 0.5);
+            }
+
+            &::placeholder {
+                color: @project-panel-text-2;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .ai-settings-footer {
+        display: flex;
+        align-items: center;
+    }
+
+    .ai-settings-footer-spacer {
+        flex: 1;
+    }
+}
+
+/* ── Custom endpoint notice ────────────────────────────────────────── */
+.ai-custom-endpoint-notice {
+    padding: 6px 10px;
+    margin: 0 8px 4px 8px;
+    background: rgba(76, 175, 80, 0.08);
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    border-radius: 4px;
+    font-size: @sidebar-xs-font-size;
+    color: @project-panel-text-2;
+    text-align: center;
 }
