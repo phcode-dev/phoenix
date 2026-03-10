@@ -119,6 +119,47 @@ function generateRandomKeyAndIV() {
     return { key, iv };
 }
 
+async function AESEncryptString(val, key, iv) {
+    // Encode string to UTF-8 bytes
+    const data = new TextEncoder().encode(val);
+
+    // Convert hex key to bytes
+    const keyBytes = new Uint8Array(key.length / 2);
+    for (let i = 0; i < key.length; i += 2) {
+        keyBytes[i / 2] = parseInt(key.substr(i, 2), 16);
+    }
+
+    // Convert hex IV to bytes
+    const ivBytes = new Uint8Array(iv.length / 2);
+    for (let i = 0; i < iv.length; i += 2) {
+        ivBytes[i / 2] = parseInt(iv.substr(i, 2), 16);
+    }
+
+    // Import the AES key
+    const cryptoKey = await crypto.subtle.importKey(
+        'raw',
+        keyBytes,
+        { name: 'AES-GCM' },
+        false,
+        ['encrypt']
+    );
+
+    // Encrypt the data
+    const encryptedBuffer = await crypto.subtle.encrypt(
+        {
+            name: 'AES-GCM',
+            iv: ivBytes
+        },
+        cryptoKey,
+        data
+    );
+
+    // Convert encrypted bytes to hex string
+    return Array.from(new Uint8Array(encryptedBuffer))
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');
+}
+
 async function AESDecryptString(val, key, iv) {
     // Convert hex strings to ArrayBuffers
     const encryptedData = new Uint8Array(val.length / 2);
@@ -472,6 +513,7 @@ window.KernalModeTrust = {
     setCredential,
     getCredential,
     removeCredential,
+    AESEncryptString,
     AESDecryptString,
     generateRandomKeyAndIV,
     dismantleKeyring,
