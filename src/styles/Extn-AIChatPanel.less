@@ -1620,11 +1620,171 @@
 
 /* ── AI Settings Dialog ────────────────────────────────────────────── */
 .ai-settings-dialog {
-    .ai-settings-form {
+    .ai-settings-section-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: @bc-text-medium;
+        margin-bottom: 6px;
+
+        .dark & {
+            color: @dark-bc-text-medium;
+        }
+    }
+
+    .ai-settings-select-wrapper {
+        position: relative;
+    }
+
+    .ai-settings-active-select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 6px 28px 6px 10px;
+        height: 30px;
+        border: 1px solid @bc-panel-border;
+        border-radius: @bc-border-radius;
+        background: @bc-input-bg;
+        color: @bc-text;
+        font-size: 13px;
+        outline: none;
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+
+        &:focus {
+            border-color: @bc-btn-border-focused;
+        }
+
+        .dark & {
+            border-color: @dark-bc-panel-border;
+            background: @dark-bc-input-bg;
+            color: @dark-bc-text;
+
+            &:focus {
+                border-color: @dark-bc-btn-border-focused;
+            }
+        }
+    }
+
+    .ai-settings-select-arrow {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 10px;
+        line-height: 1;
+        color: @bc-text-quiet;
+        pointer-events: none;
+
+        .dark & {
+            color: @dark-bc-text-quiet;
+        }
+    }
+
+    .ai-settings-divider {
+        border: none;
+        border-top: 1px solid @bc-panel-separator;
+        margin: 14px 0;
+
+        .dark & {
+            border-top-color: @dark-bc-panel-separator;
+        }
+    }
+
+    .ai-settings-provider-list {
         display: flex;
         flex-direction: column;
-        gap: 14px;
-        padding: 4px 0;
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    .ai-settings-provider-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border: 1px solid @bc-panel-border;
+        border-radius: @bc-border-radius;
+        background: @bc-panel-bg-alt;
+
+        .dark & {
+            border-color: @dark-bc-panel-border;
+            background: @dark-bc-panel-bg-alt;
+        }
+    }
+
+    .ai-settings-provider-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .ai-settings-provider-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: @bc-text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+
+    .ai-settings-provider-url {
+        font-size: 11px;
+        color: @bc-text-quiet;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .dark & {
+            color: @dark-bc-text-quiet;
+        }
+    }
+
+    .ai-settings-provider-actions {
+        display: flex;
+        gap: 4px;
+        margin-left: 10px;
+        flex-shrink: 0;
+    }
+
+    .ai-settings-add-btn {
+        margin-bottom: 10px;
+    }
+
+    .ai-settings-edit-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+        border: 1px solid @bc-btn-border-focused;
+        border-radius: @bc-border-radius;
+        background: @bc-panel-bg-alt;
+        margin-bottom: 10px;
+
+        .dark & {
+            border-color: @dark-bc-btn-border-focused;
+            background: @dark-bc-panel-bg-alt;
+        }
+    }
+
+    .ai-settings-edit-error {
+        font-size: 12px;
+        color: @bc-error;
+        min-height: 0;
+
+        &:not(:empty) {
+            min-height: 16px;
+        }
+    }
+
+    .ai-settings-edit-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
     }
 
     .ai-settings-field {
@@ -1635,7 +1795,11 @@
         label {
             font-size: 12px;
             font-weight: 600;
-            color: @project-panel-text-2;
+            color: @bc-text-medium;
+
+            .dark & {
+                color: @dark-bc-text-medium;
+            }
         }
 
         input {
@@ -1643,20 +1807,35 @@
             box-sizing: border-box;
             padding: 8px 10px;
             height: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 3px;
-            background: rgba(0, 0, 0, 0.2);
-            color: @project-panel-text-1;
+            border: 1px solid @bc-panel-border;
+            border-radius: @bc-border-radius;
+            background: @bc-input-bg;
+            color: @bc-text;
             font-size: 13px;
             outline: none;
 
             &:focus {
-                border-color: rgba(76, 175, 80, 0.5);
+                border-color: @bc-btn-border-focused;
             }
 
             &::placeholder {
-                color: @project-panel-text-2;
-                opacity: 0.5;
+                color: @bc-text-quiet;
+                opacity: 0.7;
+            }
+
+            .dark & {
+                border-color: @dark-bc-panel-border;
+                background: @dark-bc-input-bg;
+                color: @dark-bc-text;
+
+                &:focus {
+                    border-color: @dark-bc-btn-border-focused;
+                }
+
+                &::placeholder {
+                    color: @dark-bc-text-quiet;
+                    opacity: 0.7;
+                }
             }
         }
     }
