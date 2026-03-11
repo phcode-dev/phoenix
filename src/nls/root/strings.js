@@ -273,6 +273,7 @@ define({
     "LIVE_DEV_CB_TIP_BORDER": "Border",
     "LIVE_DEV_CB_TIP_EFFECTS": "Effects",
     "LIVE_DEV_CB_TIP_LAYOUT": "Layout",
+    "LIVE_DEV_CB_TIP_POSITION": "Position",
     "LIVE_DEV_CB_TIP_OBJECT_FIT": "Object Fit",
     "LIVE_DEV_CB_TIP_IMAGE": "Image",
     "LIVE_DEV_CB_CHANGE_IMAGE": "Change Image",
