@@ -266,7 +266,6 @@ function RemoteFunctions(config = {}) {
         this.elements = [];
         this.selector = "";
         this._divs = [];
-        this._originalOutlines = new Map();
     }
 
     Highlight.prototype = {
@@ -277,12 +276,6 @@ function RemoteFunctions(config = {}) {
             if (this.trigger) {
                 _trigger(element, "highlight", 1);
             }
-
-            // Save original outline and apply highlight outline
-            this._originalOutlines.set(element, element.style.outline);
-            const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-            element.style.outline = `1px solid ${outlineColor}`;
 
             this.elements.push(element);
             this._createOverlay(element);
@@ -302,14 +295,6 @@ function RemoteFunctions(config = {}) {
                 });
             }
 
-            // Restore original outlines
-            this.elements.forEach(function (el) {
-                if (this._originalOutlines.has(el)) {
-                    el.style.outline = this._originalOutlines.get(el);
-                }
-            }, this);
-            this._originalOutlines = new Map();
-
             this.elements = [];
         },
 
@@ -326,11 +311,8 @@ function RemoteFunctions(config = {}) {
             if (bounds.width === 0 && bounds.height === 0) { return; }
 
             const cs = window.getComputedStyle(element);
-            const div = window.document.createElement("div");
-            div.className = GLOBALS.HIGHLIGHT_CLASSNAME;
-            div.trackingElement = element;
 
-            // Parse box model values
+            // Parse box model values (getComputedStyle always resolves to px)
             const bt = parseFloat(cs.borderTopWidth) || 0,
                 br = parseFloat(cs.borderRightWidth) || 0,
                 bb = parseFloat(cs.borderBottomWidth) || 0,
@@ -344,72 +326,107 @@ function RemoteFunctions(config = {}) {
                 mb = parseFloat(cs.marginBottom) || 0,
                 ml = parseFloat(cs.marginLeft) || 0;
 
-            const isBorderBox = cs.boxSizing === "border-box";
-            const w = parseFloat(cs.width) || 0;
-            const h = parseFloat(cs.height) || 0;
+            // Compute the 4 absolute boxes exactly like dev tools:
+            // getBoundingClientRect() always returns the border box regardless of box-sizing.
+            const scroll = LivePreviewView.screenOffset(element);
+            const borderBox = {
+                left: scroll.left,
+                top: scroll.top,
+                width: bounds.width,
+                height: bounds.height
+            };
+            const paddingBox = {
+                left: borderBox.left + bl,
+                top: borderBox.top + bt,
+                width: borderBox.width - bl - br,
+                height: borderBox.height - bt - bb
+            };
+            const contentBox = {
+                left: paddingBox.left + pl,
+                top: paddingBox.top + pt,
+                width: paddingBox.width - pl - pr,
+                height: paddingBox.height - pt - pb
+            };
+            const marginBox = {
+                left: borderBox.left - ml,
+                top: borderBox.top - mt,
+                width: borderBox.width + ml + mr,
+                height: borderBox.height + mt + mb
+            };
 
-            // Dimensions inside border
-            let innerW, innerH;
-            if (isBorderBox) {
-                innerW = w - bl - br;
-                innerH = h - bt - bb;
-            } else {
-                innerW = w + pl + pr;
-                innerH = h + pt + pb;
-            }
-            const contentH = innerH - pt - pb;
-            const outerW = innerW + bl + br;
-            const outerH = innerH + bt + bb;
-
-            // Position the overlay to match the element
-            const offset = LivePreviewView.screenOffset(element);
+            // Container div — sized to the margin box so all rects fit inside it
+            const div = window.document.createElement("div");
+            div.className = GLOBALS.HIGHLIGHT_CLASSNAME;
+            div.trackingElement = element;
             const divStyle = div.style;
             divStyle.position = "absolute";
-            divStyle.left = offset.left + "px";
-            divStyle.top = offset.top + "px";
-            divStyle.width = bounds.width + "px";
-            divStyle.height = bounds.height + "px";
+            divStyle.left = marginBox.left + "px";
+            divStyle.top = marginBox.top + "px";
+            divStyle.width = marginBox.width + "px";
+            divStyle.height = marginBox.height + "px";
             divStyle.zIndex = 2147483645;
             divStyle.margin = "0";
             divStyle.padding = "0";
+            divStyle.border = "none";
             divStyle.pointerEvents = "none";
-            divStyle.boxSizing = cs.boxSizing;
-            divStyle.borderTopWidth = bt + "px";
-            divStyle.borderRightWidth = br + "px";
-            divStyle.borderBottomWidth = bb + "px";
-            divStyle.borderLeftWidth = bl + "px";
-            divStyle.borderStyle = "solid";
-            divStyle.borderColor = "transparent";
+            divStyle.boxSizing = "border-box";
 
-            // Helper to create a colored rect
-            function makeRect(styles, color) {
-                if (parseFloat(styles.width) <= 0 || parseFloat(styles.height) <= 0) { return; }
+            // Helper to create a colored rect at absolute page coordinates, offset by the container origin
+            function makeRect(left, top, width, height, color) {
+                if (width <= 0 || height <= 0) { return; }
                 const r = window.document.createElement("div");
                 r.style.position = "absolute";
+                r.style.left = (left - marginBox.left) + "px";
+                r.style.top = (top - marginBox.top) + "px";
+                r.style.width = width + "px";
+                r.style.height = height + "px";
                 r.style.backgroundColor = color;
-                r.style.transform = "none";
-                for (const prop in styles) {
-                    r.style[prop] = styles[prop];
-                }
                 div.appendChild(r);
             }
 
-            // Padding rects (top/bottom full width, left/right content height)
+            // Padding region: 4 rects filling paddingBox minus contentBox
             const padColor = COLORS.highlightPadding;
-            makeRect({ top: "0", left: "0", width: innerW + "px", height: pt + "px" }, padColor);
-            makeRect({ bottom: "0", left: "0", width: innerW + "px", height: pb + "px" }, padColor);
-            makeRect({ top: pt + "px", left: "0", width: pl + "px", height: contentH + "px" }, padColor);
-            makeRect({ top: pt + "px", right: "0", width: pr + "px", height: contentH + "px" }, padColor);
+            // top padding
+            makeRect(paddingBox.left, paddingBox.top,
+                paddingBox.width, pt, padColor);
+            // bottom padding
+            makeRect(paddingBox.left, contentBox.top + contentBox.height,
+                paddingBox.width, pb, padColor);
+            // left padding
+            makeRect(paddingBox.left, contentBox.top,
+                pl, contentBox.height, padColor);
+            // right padding
+            makeRect(contentBox.left + contentBox.width, contentBox.top,
+                pr, contentBox.height, padColor);
 
-            // Margin rects (top/bottom element width, left/right full height)
+            // Margin region: 4 rects filling marginBox minus borderBox
             const margColor = COLORS.highlightMargin;
-            const mTop = -(mt + bt) + "px";
-            const mBot = -(mb + bb) + "px";
-            const fullH = (outerH + mt + mb) + "px";
-            makeRect({ top: mTop, left: -bl + "px", width: outerW + "px", height: mt + "px" }, margColor);
-            makeRect({ bottom: mBot, left: -bl + "px", width: outerW + "px", height: mb + "px" }, margColor);
-            makeRect({ top: mTop, left: -(ml + bl) + "px", width: ml + "px", height: fullH }, margColor);
-            makeRect({ top: mTop, right: -(mr + br) + "px", width: mr + "px", height: fullH }, margColor);
+            // top margin
+            makeRect(marginBox.left, marginBox.top,
+                marginBox.width, mt, margColor);
+            // bottom margin
+            makeRect(marginBox.left, borderBox.top + borderBox.height,
+                marginBox.width, mb, margColor);
+            // left margin
+            makeRect(marginBox.left, borderBox.top,
+                ml, borderBox.height, margColor);
+            // right margin
+            makeRect(borderBox.left + borderBox.width, borderBox.top,
+                mr, borderBox.height, margColor);
+
+            // Selection outline: 1px border at the border-box edge (drawn inside the border area)
+            const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+            const outlineDiv = window.document.createElement("div");
+            outlineDiv.style.position = "absolute";
+            outlineDiv.style.left = (borderBox.left - marginBox.left) + "px";
+            outlineDiv.style.top = (borderBox.top - marginBox.top) + "px";
+            outlineDiv.style.width = borderBox.width + "px";
+            outlineDiv.style.height = borderBox.height + "px";
+            outlineDiv.style.border = `1px solid ${outlineColor}`;
+            outlineDiv.style.boxSizing = "border-box";
+            outlineDiv.style.pointerEvents = "none";
+            div.appendChild(outlineDiv);
 
             window.document.body.appendChild(div);
             this._divs.push(div);
@@ -451,8 +468,8 @@ function RemoteFunctions(config = {}) {
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
 
-            // Skip hover outline and overlay for the currently click-selected element.
-            // It already has its own outline and overlay from the click/selection flow,
+            // Skip hover overlay for the currently click-selected element.
+            // It already has its own overlay from the click/selection flow,
             // and adding hover state on top would stack duplicate overlays.
             if (element !== previouslySelectedElement) {
                 _hoverHighlight.add(element);
@@ -508,7 +525,7 @@ function RemoteFunctions(config = {}) {
      * this function is responsible to select an element in the live preview
      * @param {Element} element - The DOM element to select
      * @param {boolean} [fromEditor] - If true, this is an editor-cursor-driven selection;
-     *   only lightweight highlights (outline + margin/padding) are shown, not interactive
+     *   only lightweight highlights (outline, margin/padding overlay) are shown, not interactive
      *   UI like control box, spacing handles, or measurements.
      */
     function selectElement(element, fromEditor) {
@@ -1113,13 +1130,6 @@ function RemoteFunctions(config = {}) {
             if (previouslySelectedElement && !previouslySelectedElement.isConnected) {
                 dismissUIAndCleanupState();
             } else {
-                // Re-apply outline since attrChange may have wiped it
-                // (e.g. user edited the style attribute in source)
-                if (previouslySelectedElement && previouslySelectedElement.isConnected) {
-                    const isEditable = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-                    const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-                    previouslySelectedElement.style.outline = `1px solid ${outlineColor}`;
-                }
                 redrawEverything();
             }
         } else {
@@ -1177,11 +1187,6 @@ function RemoteFunctions(config = {}) {
                     window.__current_ph_lp_selected = freshElement;
                     redrawEverything();
                 }
-            } else if (previouslySelectedElement && previouslySelectedElement.isConnected) {
-                // Re-apply outline since attrChange may have wiped it
-                const isEditable = previouslySelectedElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-                previouslySelectedElement.style.outline = `1px solid ${outlineColor}`;
             }
         }
     };
@@ -1253,7 +1258,7 @@ function RemoteFunctions(config = {}) {
             window.__current_ph_lp_selected = null;
         }
 
-        // Highlight.clear() handles both outline restoration and overlay removal
+        // Highlight.clear() removes all overlay divs (outline + margin/padding rects)
         hideHighlight();
 
         if (config.mode === 'edit') {
