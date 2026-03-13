@@ -1590,7 +1590,7 @@ define(function (require, exports, module) {
     function findSelectorAtDocumentPos(editor, pos) {
         var cm = editor._codeMirror;
         var ctx = TokenUtils.getInitialContext(cm, $.extend({}, pos));
-        var selector = "", foundChars = false;
+        var selector = "", foundChars = false, encounteredSemicolon = false;
         var isPreprocessorDoc = isCSSPreprocessorFile(editor.document.file.fullPath);
         var selectorArray = [];
 
@@ -1687,6 +1687,12 @@ define(function (require, exports, module) {
                         break;
                     }
                 } else {
+                    // Track semicolons encountered before any selector content.
+                    // A ; at the top level (e.g. after @import) means the cursor
+                    // is after a complete statement, not inside a selector.
+                    if (!isPreprocessorDoc && ctx.token.string === ";" && !foundChars) {
+                        encounteredSemicolon = true;
+                    }
                     if (!isPreprocessorDoc && _hasNonWhitespace(ctx.token.string)) {
                         foundChars = true;
                     }
@@ -1698,6 +1704,22 @@ define(function (require, exports, module) {
         } while (!TokenUtils.isAtStart(ctx));
 
         selector = _stripAtRules(selector);
+
+        // If no selector found and cursor is on a line that contains only },
+        // find the rule that this } closes. The backward scan may have missed
+        // } when the cursor is at ch:0 (getTokenAt returns an empty token),
+        // or it may have hit } and broken without parsing.
+        if (!selector && !isPreprocessorDoc) {
+            var closingLineText = cm.getLine(pos.line).trim();
+            if (closingLineText === "}") {
+                var braceCtx = TokenUtils.getInitialContext(cm,
+                    {line: pos.line, ch: cm.getLine(pos.line).indexOf("}") + 1});
+                _skipToOpeningBracket(braceCtx, "}");
+                if (braceCtx.token.string === "{") {
+                    selector = _stripAtRules(_parseSelector(braceCtx));
+                }
+            }
+        }
 
         // Reset the context to original scan position
         ctx = TokenUtils.getInitialContext(cm, $.extend({}, pos));
@@ -1718,7 +1740,11 @@ define(function (require, exports, module) {
         // scanning, assume we are in the middle of a selector. For a preprocessor
         // document we also need to collect the current selector if the cursor is
         // within the selector or whitespaces immediately before or after it.
-        if ((!selector || isPreprocessorDoc) && foundChars) {
+        // However, if the backward scan encountered a ; before any selector content
+        // and the cursor is on an empty/whitespace-only line, we are between
+        // statements (e.g. after @import;), not inside a selector.
+        if ((!selector || isPreprocessorDoc) && foundChars &&
+            (!encounteredSemicolon || _hasNonWhitespace(cm.getLine(pos.line)))) {
             // scan forward to see if the cursor is in a selector
             while (true) {
                 if (ctx.token.type !== "comment") {
