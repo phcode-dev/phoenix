@@ -266,6 +266,7 @@ function RemoteFunctions(config = {}) {
         this.elements = [];
         this.selector = "";
         this._divs = [];
+        this._originalOutlines = new Map();
     }
 
     Highlight.prototype = {
@@ -276,6 +277,13 @@ function RemoteFunctions(config = {}) {
             if (this.trigger) {
                 _trigger(element, "highlight", 1);
             }
+
+            // Save original outline and apply highlight outline
+            this._originalOutlines.set(element, element.style.outline);
+            const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
+            element.style.outline = `1px solid ${outlineColor}`;
+
             this.elements.push(element);
             this._createOverlay(element);
         },
@@ -293,6 +301,15 @@ function RemoteFunctions(config = {}) {
                     _trigger(el, "highlight", 0);
                 });
             }
+
+            // Restore original outlines
+            this.elements.forEach(function (el) {
+                if (this._originalOutlines.has(el)) {
+                    el.style.outline = this._originalOutlines.get(el);
+                }
+            }, this);
+            this._originalOutlines = new Map();
+
             this.elements = [];
         },
 
@@ -410,14 +427,6 @@ function RemoteFunctions(config = {}) {
         return getHighlightMode() !== "click";
     }
 
-    // helper function to clear element hover outline highlighting
-    function clearElementHoverHighlight(element) {
-        if (element._originalHoverOutline !== undefined) {
-            element.style.outline = element._originalHoverOutline;
-        }
-        delete element._originalHoverOutline;
-    }
-
     function onElementHover(event) {
         // don't want highlighting and stuff when auto scrolling or when dragging (svgs)
         // for dragging normal html elements its already taken care of...so we just add svg drag checking
@@ -440,20 +449,12 @@ function RemoteFunctions(config = {}) {
 
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
-            _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
 
             // Skip hover outline and overlay for the currently click-selected element.
-            // It already has its own outline and overlay from the click/selection flow.
-            // Adding hover state on top would corrupt _originalHoverOutline (it would capture
-            // the click outline instead of the true original) and stack duplicate overlays.
+            // It already has its own outline and overlay from the click/selection flow,
+            // and adding hover state on top would stack duplicate overlays.
             if (element !== previouslySelectedElement) {
-                // Store original outline to restore on hover out, then apply a border
-                element._originalHoverOutline = element.style.outline;
-                const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-                element.style.outline = `1px solid ${outlineColor}`;
-
                 _hoverHighlight.add(element);
             }
 
@@ -479,7 +480,6 @@ function RemoteFunctions(config = {}) {
             // this is to check the user's settings, if they want to show the elements highlights on hover or click
             if (_hoverHighlight && shouldShowHighlightOnHover()) {
                 _hoverHighlight.clear();
-                clearElementHoverHighlight(element);
                 // dismiss the hover box
                 const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
                 if (hoverBoxHandler) {
@@ -542,11 +542,6 @@ function RemoteFunctions(config = {}) {
                 });
             }
         }
-
-        element._originalOutline = element.style.outline;
-        const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-        const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-        element.style.outline = `1px solid ${outlineColor}`;
 
         if (!_clickHighlight) {
             _clickHighlight = new Highlight();
@@ -649,13 +644,6 @@ function RemoteFunctions(config = {}) {
             _cssSelectorHighlightTimer = null;
         }
         if (_cssSelectorHighlight) {
-            // Restore original outlines on highlighted elements
-            _cssSelectorHighlight.elements.forEach(function (el) {
-                if (el._originalCssSelectorOutline !== undefined) {
-                    el.style.outline = el._originalCssSelectorOutline;
-                    delete el._originalCssSelectorOutline;
-                }
-            });
             _cssSelectorHighlight.clear();
             _cssSelectorHighlight = null;
         }
@@ -674,10 +662,6 @@ function RemoteFunctions(config = {}) {
                 LivePreviewView.isElementInspectable(nodes[i], true) &&
                 nodes[i].nodeType === Node.ELEMENT_NODE) {
                 _cssSelectorHighlight.add(nodes[i]);
-                nodes[i]._originalCssSelectorOutline = nodes[i].style.outline;
-                const isEditable = nodes[i].hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-                const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-                nodes[i].style.outline = `1px solid ${outlineColor}`;
             }
         }
         _cssSelectorHighlight.selector = rule;
@@ -690,7 +674,6 @@ function RemoteFunctions(config = {}) {
             _clickHighlight = null;
         }
         if (_hoverHighlight) {
-            _hoverHighlight.elements.forEach(clearElementHoverHighlight);
             _hoverHighlight.clear();
             _hoverHighlight = null;
         }
@@ -1186,11 +1169,6 @@ function RemoteFunctions(config = {}) {
                 }
 
                 if (freshElement) {
-                    freshElement._originalOutline = freshElement.style.outline;
-                    const isEditable = freshElement.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-                    const outlineColor = isEditable
-                        ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-                    freshElement.style.outline = `1px solid ${outlineColor}`;
                     if (_clickHighlight) {
                         _clickHighlight.clear();
                         _clickHighlight.add(freshElement);
@@ -1275,23 +1253,14 @@ function RemoteFunctions(config = {}) {
      */
     function cleanupPreviousElementState() {
         if (previouslySelectedElement) {
-            // Safety net: clear any stale hover outline tracking before hideHighlight runs.
-            // This prevents clearElementHoverHighlight from re-applying a captured click outline
-            // in edge cases where _originalHoverOutline was set on the selected element.
-            delete previouslySelectedElement._originalHoverOutline;
-            if (previouslySelectedElement._originalOutline !== undefined) {
-                previouslySelectedElement.style.outline = previouslySelectedElement._originalOutline;
-            } else {
-                previouslySelectedElement.style.outline = "";
-            }
-            delete previouslySelectedElement._originalOutline;
             previouslySelectedElement = null;
             window.__current_ph_lp_selected = null;
         }
 
-        if (config.mode === 'edit') {
-            hideHighlight();
+        // Highlight.clear() handles both outline restoration and overlay removal
+        hideHighlight();
 
+        if (config.mode === 'edit') {
             // Notify handlers about cleanup
             getAllToolHandlers().forEach(handler => {
                 if (handler.onElementCleanup) {
