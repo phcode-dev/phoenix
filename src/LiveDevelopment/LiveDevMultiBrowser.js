@@ -737,9 +737,27 @@ define(function (require, exports, module) {
      * Update configuration in the remote browser
      */
     function updateConfig(config) {
+        const previousConfig = _config;
         _config = config;
         _updateVirtualServerScripts();
         refreshConfig();
+        // Clear the highlight cache only when mode or highlight-mode changes.
+        // These changes wipe browser-side highlights (via _handleConfigurationChange),
+        // so the editor-side cache must be reset too, otherwise highlightRule()
+        // skips re-highlighting the same element on the next cursor activity.
+        // We intentionally skip this for other config changes (e.g. toggling
+        // measurements) where the selected element is preserved
+        const modeChanged = !previousConfig || previousConfig.mode !== config.mode;
+        const oldHighlights = previousConfig && previousConfig.elemHighlights
+            ? previousConfig.elemHighlights.toLowerCase() : "hover";
+        const newHighlights = config.elemHighlights
+            ? config.elemHighlights.toLowerCase() : "hover";
+        if (modeChanged || oldHighlights !== newHighlights) {
+            const doc = getLiveDocForEditor(EditorManager.getActiveEditor());
+            if (doc) {
+                doc._lastHighlight = null;
+            }
+        }
     }
 
     /**

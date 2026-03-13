@@ -1232,10 +1232,6 @@ function RemoteFunctions(config = {}) {
             _clickHighlight.add(selectedBeforeReregister);
             previouslySelectedElement = selectedBeforeReregister;
             window.__current_ph_lp_selected = selectedBeforeReregister;
-            // Restore the outline
-            const isEditable = selectedBeforeReregister.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-            const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
-            selectedBeforeReregister.style.outline = `1px solid ${outlineColor}`;
         }
         return JSON.stringify(config);
     }
