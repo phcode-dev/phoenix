@@ -119,14 +119,12 @@ function findGlobalClaudeCli() {
 exports.checkAvailability = async function () {
     try {
         const claudePath = findGlobalClaudeCli();
-        if (claudePath) {
-            // Also verify the SDK can be imported
-            await getQueryFn();
-            return { available: true, claudePath: claudePath };
+        if (!claudePath) {
+            return { available: false, claudePath: null, error: "Claude Code CLI not found" };
         }
-        // No global CLI found — try importing SDK anyway (it might find its own)
+        // Verify the SDK can be imported
         await getQueryFn();
-        return { available: true, claudePath: null };
+        return { available: true, claudePath: claudePath };
     } catch (err) {
         return { available: false, claudePath: null, error: err.message };
     }
