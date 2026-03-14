@@ -122,8 +122,6 @@ exports.checkAvailability = async function () {
         if (!claudePath) {
             return { available: false, claudePath: null, error: "Claude Code CLI not found" };
         }
-        // Verify the SDK can be imported
-        await getQueryFn();
         // Check if user is logged in
         let loggedIn = false;
         try {
