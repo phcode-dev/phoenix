@@ -45,10 +45,29 @@
 .ai-chat-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    position: relative;
     padding: 10px 10px 9px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     flex-shrink: 0;
+
+    .ai-chat-title-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .ai-chat-title-icon {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 5px;
+        opacity: 0.6;
+        color: @project-panel-text-2;
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
 
     .ai-chat-title {
         font-weight: 400;
@@ -58,6 +77,8 @@
     }
 
     .ai-chat-header-actions {
+        position: absolute;
+        right: 10px;
         display: flex;
         align-items: center;
         gap: 2px;
@@ -1564,6 +1585,8 @@
     padding: 2rem;
     text-align: center;
     color: @project-panel-text-2;
+    overflow: hidden;
+    min-width: 0;
 
     .ai-unavailable-icon {
         font-size: 2rem;
@@ -1583,6 +1606,7 @@
         line-height: 1.5;
         margin-bottom: 12px;
         opacity: 0.6;
+        white-space: normal;
     }
 
     .ai-retry-btn {
@@ -1615,6 +1639,24 @@
         &:hover {
             background: #FFa820;
         }
+    }
+}
+
+.ai-install-screen {
+    .ai-install-icon {
+        display: inline-flex;
+        margin-bottom: 12px;
+        opacity: 0.5;
+        color: @project-panel-text-2;
+
+        svg {
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    .ai-install-btn {
+        margin-bottom: 8px;
     }
 }
 
