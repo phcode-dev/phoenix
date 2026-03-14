@@ -1843,7 +1843,7 @@ define({
     "AI_CHAT_CLI_INSTALLING_MSG": "Installing Claude Code, please wait. This may take a while...",
     "AI_CHAT_CLI_RESTART_NOTE": "Restart {APP_NAME} after installation completes.",
     "AI_CHAT_CLAUDE_LOGIN_TITLE": "Setup Claude Code",
-    "AI_CHAT_CLAUDE_LOGIN_MSG": "Claude Code is installed but needs to be configured.",
+    "AI_CHAT_CLAUDE_LOGIN_MSG": "Claude Code is installed but needs to be configured. <a class='ai-learn-more-link' href='#'>Learn more</a>",
     "AI_CHAT_CLAUDE_LOGIN_BTN": "Setup Claude Code",
     "AI_CHAT_ADD_PROVIDER_BTN": "Add Custom Provider",
     "AI_CHAT_RETRY": "Retry",
