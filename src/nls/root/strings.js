@@ -1841,6 +1841,7 @@ define({
     "AI_CHAT_CLI_INSTALL_BTN": "Install Claude Code",
     "AI_CHAT_CLI_INSTALLING": "Installing…",
     "AI_CHAT_CLI_INSTALLING_MSG": "Installing Claude Code, please wait. This may take a while...",
+    "AI_CHAT_CLI_RESTART_NOTE": "Restart {APP_NAME} after installation completes.",
     "AI_CHAT_RETRY": "Retry",
     "AI_CHAT_DESKTOP_ONLY": "AI features require the Phoenix desktop app. Download it to get started.",
     "AI_CHAT_DOWNLOAD_BTN": "Download Desktop App",
