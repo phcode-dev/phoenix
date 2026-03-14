@@ -1837,7 +1837,7 @@ define({
     "AI_CHAT_SEND_TITLE": "Send message",
     "AI_CHAT_STOP_TITLE": "Stop generation (Esc)",
     "AI_CHAT_CLI_NOT_FOUND": "Claude Code Not Installed",
-    "AI_CHAT_CLI_INSTALL_MSG": "Install Claude Code to use AI features. Claude Code is Anthropic's agentic coding tool that powers the AI features in {APP_NAME}.",
+    "AI_CHAT_CLI_INSTALL_MSG": "Claude Code CLI must be installed on your system to use AI features in {APP_NAME}. <a class='ai-learn-more-link' href='#'>Learn more</a>",
     "AI_CHAT_CLI_INSTALL_BTN": "Install Claude Code",
     "AI_CHAT_RETRY": "Retry",
     "AI_CHAT_DESKTOP_ONLY": "AI features require the Phoenix desktop app. Download it to get started.",
