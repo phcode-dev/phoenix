@@ -124,7 +124,19 @@ exports.checkAvailability = async function () {
         }
         // Verify the SDK can be imported
         await getQueryFn();
-        return { available: true, claudePath: claudePath };
+        // Check if user is logged in
+        let loggedIn = false;
+        try {
+            const authOutput = execSync(claudePath + " auth status", {
+                encoding: "utf8",
+                timeout: 10000
+            });
+            const authStatus = JSON.parse(authOutput);
+            loggedIn = authStatus.loggedIn === true;
+        } catch (e) {
+            // auth status failed — treat as not logged in
+        }
+        return { available: true, claudePath: claudePath, loggedIn: loggedIn };
     } catch (err) {
         return { available: false, claudePath: null, error: err.message };
     }
