@@ -547,8 +547,23 @@ define(function (require, exports, module) {
      * If the panel is visible and the active terminal is focused and there
      * are 2+ terminals, cycles to the next one. Otherwise just shows and
      * focuses the active terminal.
+     *
+     * @param {Object} [options] - Optional settings
+     * @param {string} [options.shellCommand] - A shell command to execute in a new terminal.
+     *   When provided, always creates a fresh terminal and types the command into it.
      */
-    async function _showTerminal() {
+    async function _showTerminal(options) {
+        if (options && options.shellCommand) {
+            await _createNewTerminal();
+            const active = _getActiveTerminal();
+            if (active && active.isAlive) {
+                nodeConnector.execPeer("writeTerminal", {
+                    id: active.id,
+                    data: options.shellCommand + "\n"
+                });
+            }
+            return;
+        }
         if (terminalInstances.length === 0) {
             await _createNewTerminal();
             return;
