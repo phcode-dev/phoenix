@@ -27,8 +27,11 @@
  */
 
 const { execSync } = require("child_process");
+const fs = require("fs");
 const path = require("path");
 const { createEditorMcpServer } = require("./mcp-editor-tools");
+
+const isWindows = process.platform === "win32";
 
 const CONNECTOR_ID = "ph_ai_claude";
 
@@ -71,9 +74,45 @@ async function getQueryFn() {
 }
 
 /**
- * Find the user's globally installed Claude CLI, skipping node_modules copies.
+ * Find the user's globally installed Claude CLI on Windows.
  */
-function findGlobalClaudeCli() {
+function _findGlobalClaudeCliWin() {
+    const userHome = process.env.USERPROFILE || process.env.HOME || "";
+    const locations = [
+        path.join(userHome, ".local", "bin", "claude.exe"),
+        path.join(process.env.APPDATA || "", "npm", "claude.cmd"),
+        path.join(process.env.LOCALAPPDATA || "", "Programs", "claude", "claude.exe")
+    ];
+
+    // Try 'where claude' first to find claude in PATH
+    try {
+        const allPaths = execSync("where claude", { encoding: "utf8" })
+            .trim()
+            .split("\r\n")
+            .filter(p => p && !p.includes("node_modules"));
+        if (allPaths.length > 0) {
+            console.log("[Phoenix AI] Found global Claude CLI at:", allPaths[0]);
+            return allPaths[0];
+        }
+    } catch {
+        // where failed, try manual locations
+    }
+
+    // Check common Windows locations
+    for (const loc of locations) {
+        if (loc && fs.existsSync(loc)) {
+            console.log("[Phoenix AI] Found global Claude CLI at:", loc);
+            return loc;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Find the user's globally installed Claude CLI on macOS/Linux.
+ */
+function _findGlobalClaudeCliLinuxMac() {
     const locations = [
         "/usr/local/bin/claude",
         "/usr/bin/claude",
@@ -108,8 +147,18 @@ function findGlobalClaudeCli() {
         }
     }
 
-    console.log("[Phoenix AI] Global Claude CLI not found");
     return null;
+}
+
+/**
+ * Find the user's globally installed Claude CLI, skipping node_modules copies.
+ */
+function findGlobalClaudeCli() {
+    const claudePath = isWindows ? _findGlobalClaudeCliWin() : _findGlobalClaudeCliLinuxMac();
+    if (!claudePath) {
+        console.log("[Phoenix AI] Global Claude CLI not found");
+    }
+    return claudePath;
 }
 
 /**
