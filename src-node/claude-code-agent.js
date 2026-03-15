@@ -57,6 +57,18 @@ const TEXT_STREAM_THROTTLE_MS = 50;
 // Pending question resolver — used by AskUserQuestion hook
 let _questionResolve = null;
 
+// Pending plan resolver — used by ExitPlanMode stream interception
+let _planResolve = null;
+
+// Stores rejection feedback when user rejects a plan
+let _planRejectionFeedback = null;
+
+// Stores the last plan content written to .claude/plans/
+let _lastPlanContent = null;
+
+// Flag set when user approves a plan
+let _planApproved = false;
+
 // Queued clarification from the user (typed while AI is streaming)
 // Shape: { text: string, images: [{mediaType, base64Data}] } or null
 let _queuedClarification = null;
@@ -257,8 +269,9 @@ exports.cancelQuery = async function () {
         currentAbortController = null;
         // Clear session so next query starts fresh instead of resuming a killed session
         currentSessionId = null;
-        // Clear any pending question
+        // Clear any pending question or plan
         _questionResolve = null;
+        _planResolve = null;
         _queuedClarification = null;
         return { success: true };
     }
@@ -278,6 +291,18 @@ exports.answerQuestion = async function (params) {
 };
 
 /**
+ * Receive the user's response to a proposed plan.
+ * Called from browser via execPeer("answerPlan", {approved, feedback}).
+ */
+exports.answerPlan = async function (params) {
+    if (_planResolve) {
+        _planResolve(params);
+        _planResolve = null;
+    }
+    return { success: true };
+};
+
+/**
  * Resume a previous session by setting the session ID.
  * The next sendPrompt call will use queryOptions.resume with this session ID.
  */
@@ -287,6 +312,7 @@ exports.resumeSession = async function (params) {
         currentAbortController = null;
     }
     _questionResolve = null;
+    _planResolve = null;
     _queuedClarification = null;
     currentSessionId = params.sessionId;
     return { success: true };
@@ -396,6 +422,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "AskUserQuestion", "Task",
             "TodoRead", "TodoWrite",
             "WebFetch", "WebSearch",
+            "EnterPlanMode", "ExitPlanMode",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
@@ -551,6 +578,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
+                            // Capture plan content when writing to .claude/plans/
+                            const writePath = input.tool_input.file_path || "";
+                            if (writePath.includes("/.claude/plans/")) {
+                                _lastPlanContent = input.tool_input.content || "";
+                                console.log("[Phoenix AI] Captured plan content:",
+                                    _lastPlanContent.length + "ch");
+                            }
                             const myToolId = toolCounter; // capture before any await
                             const edit = {
                                 file: input.tool_input.file_path,
@@ -927,6 +961,45 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             toolId: toolCounter,
                             toolInput: toolInput
                         });
+
+                        // ExitPlanMode: show plan to user and wait for approval
+                        // Plan text comes from a prior Write to .claude/plans/ (captured in hook)
+                        if (activeToolName === "ExitPlanMode") {
+                            const planText = toolInput.plan || _lastPlanContent || "";
+                            _lastPlanContent = null;
+                            if (planText) {
+                                _log("ExitPlanMode plan detected (" + planText.length + "ch), sending to browser");
+                                nodeConnector.triggerPeer("aiPlanProposed", {
+                                    requestId: requestId,
+                                    plan: planText
+                                });
+                                // Pause stream processing until user approves/rejects
+                                const planResponse = await new Promise((resolve, reject) => {
+                                    _planResolve = resolve;
+                                    if (signal.aborted) {
+                                        _planResolve = null;
+                                        reject(new Error("Aborted"));
+                                        return;
+                                    }
+                                    const onAbort = () => {
+                                        _planResolve = null;
+                                        reject(new Error("Aborted"));
+                                    };
+                                    signal.addEventListener("abort", onAbort, { once: true });
+                                });
+                                if (!planResponse.approved) {
+                                    _log("Plan rejected by user, aborting");
+                                    currentAbortController.abort();
+                                    _planRejectionFeedback = planResponse.feedback || "";
+                                } else {
+                                    _log("Plan approved by user, will send proceed prompt");
+                                    _planApproved = true;
+                                }
+                            } else {
+                                _log("ExitPlanMode with no plan content, skipping UI");
+                            }
+                        }
+
                         activeToolName = null;
                         activeToolIndex = null;
                         activeToolInputJson = "";
@@ -965,6 +1038,32 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         _log("Complete: tools=" + toolCounter, "edits=" + editCount,
             "textDeltas=" + textDeltaCount, "textSent=" + textStreamSendCount);
 
+        // Check if plan was approved — send follow-up to proceed with implementation
+        if (_planApproved) {
+            _planApproved = false;
+            _log("Plan approved, sending proceed prompt");
+            nodeConnector.triggerPeer("aiComplete", {
+                requestId: requestId,
+                sessionId: currentSessionId,
+                planApproved: true
+            });
+            return;
+        }
+
+        // Check if stream ended due to plan rejection (abort + break)
+        if (_planRejectionFeedback !== null) {
+            const feedback = _planRejectionFeedback;
+            _planRejectionFeedback = null;
+            _log("Plan rejected, sending revision request");
+            nodeConnector.triggerPeer("aiComplete", {
+                requestId: requestId,
+                sessionId: currentSessionId,
+                planRejected: true,
+                planFeedback: feedback
+            });
+            return;
+        }
+
         // Signal completion
         nodeConnector.triggerPeer("aiComplete", {
             requestId: requestId,
@@ -977,6 +1076,20 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         const isAbort = signal.aborted || /abort/i.test(errMsg);
 
         if (isAbort) {
+            // Check if this was a plan rejection — if so, send feedback as follow-up
+            if (_planRejectionFeedback !== null) {
+                const feedback = _planRejectionFeedback;
+                _planRejectionFeedback = null;
+                _log("Plan rejected, sending revision request");
+                // Don't clear session — resume with feedback
+                nodeConnector.triggerPeer("aiComplete", {
+                    requestId: requestId,
+                    sessionId: currentSessionId,
+                    planRejected: true,
+                    planFeedback: feedback
+                });
+                return;
+            }
             _log("Cancelled");
             // Send sessionId so browser side can save partial history for later resume
             const cancelledSessionId = currentSessionId;
