@@ -39,6 +39,7 @@
     background-color: @bc-sidebar-bg;
     color: @project-panel-text-1;
     font-size: @sidebar-content-font-size;
+    container-type: inline-size;
 }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
@@ -87,71 +88,27 @@
         transition: opacity 0.5s ease;
     }
 
-    .ai-history-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: none;
-        border: none;
-        color: @project-panel-text-2;
-        font-size: @menu-item-font-size;
-        width: 26px;
-        height: 26px;
-        border-radius: 3px;
-        cursor: pointer;
-        opacity: 0.7;
-        transition: opacity 0.15s ease, background-color 0.15s ease;
-
-        &:hover {
-            opacity: 1;
-            background-color: rgba(255, 255, 255, 0.06);
-        }
-
-        &.active {
-            opacity: 1;
-            background-color: rgba(255, 255, 255, 0.08);
-        }
-    }
-
+    .ai-history-btn,
     .ai-settings-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: none;
-        border: none;
         color: @project-panel-text-2;
         font-size: @menu-item-font-size;
         width: 26px;
         height: 26px;
-        border-radius: 3px;
         cursor: pointer;
-        opacity: 0.7;
-        transition: opacity 0.15s ease, background-color 0.15s ease;
-
-        &:hover {
-            opacity: 1;
-            background-color: rgba(255, 255, 255, 0.06);
-        }
     }
 
     .ai-new-session-btn {
         display: flex;
         align-items: center;
         gap: 4px;
-        background: none;
-        border: none;
         color: @project-panel-text-2;
         font-size: @menu-item-font-size;
+        height: 26px;
         padding: 0 8px;
-        border-radius: 3px;
         cursor: pointer;
-        opacity: 0.7;
-        transition: opacity 0.15s ease, background-color 0.15s ease;
-
-        &:hover {
-            opacity: 1;
-            background-color: rgba(255, 255, 255, 0.06);
-        }
     }
 }
 
@@ -162,6 +119,13 @@
     transition: opacity 0.15s ease;
 }
 
+
+/* Left-align title when sidebar is narrow to free space for action buttons */
+@container (max-width: 380px) {
+    .ai-chat-header {
+        justify-content: flex-start;
+    }
+}
 
 /* ── Session history dropdown ──────────────────────────────────────── */
 /* When history is open, hide chat content and show the dropdown instead */
