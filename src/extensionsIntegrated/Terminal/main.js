@@ -557,9 +557,11 @@ define(function (require, exports, module) {
             await _createNewTerminal();
             const active = _getActiveTerminal();
             if (active && active.isAlive) {
+                // Wait for the shell to output its prompt before sending the command.
+                await active.firstDataReceived;
                 nodeConnector.execPeer("writeTerminal", {
                     id: active.id,
-                    data: options.shellCommand + "\n"
+                    data: options.shellCommand + "\r"
                 });
             }
             return;
