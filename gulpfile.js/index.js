@@ -610,13 +610,9 @@ function containsRegExpExcludingEmpty(str) {
 const minifyablePaths = [
     'src/extensionsIntegrated/phoenix-pro/browser-context'
 ];
-const noMinifyFiles = [
-    'src/extensionsIntegrated/phoenix-pro/browser-context/control-box.js'
-];
-
 function _minifyBrowserContextFile(fileContent) {
     const minified = terser.minify(fileContent, {
-        mangle: true,
+        mangle: false,
         compress: {
             unused: false
         },
@@ -639,9 +635,6 @@ function _minifyBrowserContextFile(fileContent) {
 
 function _isMinifyablePath(filePath) {
     const normalizedFilePath = path.normalize(filePath);
-    if (noMinifyFiles.some(f => normalizedFilePath.endsWith(path.normalize(f)))) {
-        return false;
-    }
     return minifyablePaths.some(minifyPath =>
         normalizedFilePath.startsWith(path.normalize(minifyPath))
     );
