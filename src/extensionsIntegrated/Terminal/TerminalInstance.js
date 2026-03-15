@@ -108,6 +108,12 @@ define(function (require, exports, module) {
         this._webglAddon = null;
         this._lastDpr = null;
 
+        // Promise that resolves when the shell sends its first output (prompt ready)
+        this._firstDataResolve = null;
+        this.firstDataReceived = new Promise(function (resolve) {
+            this._firstDataResolve = resolve;
+        }.bind(this));
+
         // Bound event handlers for cleanup
         this._onTerminalData = this._onTerminalData.bind(this);
         this._onTerminalExit = this._onTerminalExit.bind(this);
@@ -217,6 +223,10 @@ define(function (require, exports, module) {
     TerminalInstance.prototype._onTerminalData = function (_event, eventData) {
         if (eventData.id === this.id && this.terminal) {
             this.terminal.write(eventData.data);
+            if (this._firstDataResolve) {
+                this._firstDataResolve();
+                this._firstDataResolve = null;
+            }
         }
     };
 
