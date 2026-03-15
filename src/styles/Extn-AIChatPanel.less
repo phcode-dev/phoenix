@@ -1076,6 +1076,182 @@
     }
 }
 
+/* ── Plan card (ExitPlanMode) ───────────────────────────────────────── */
+.ai-msg-plan {
+    margin-bottom: 8px;
+    border: 1px solid rgba(107, 158, 255, 0.25);
+    border-radius: 6px;
+    background-color: rgba(107, 158, 255, 0.04);
+    overflow: hidden;
+}
+
+.ai-plan-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background-color: rgba(107, 158, 255, 0.08);
+    border-bottom: 1px solid rgba(107, 158, 255, 0.15);
+    color: #6b9eff;
+    font-size: @sidebar-content-font-size;
+    font-weight: 600;
+}
+
+.ai-plan-body {
+    padding: 10px 12px;
+    font-size: @sidebar-content-font-size;
+    color: @project-panel-text-1;
+    line-height: 1.5;
+    white-space: normal;
+    word-wrap: break-word;
+    max-height: 400px;
+    overflow-y: auto;
+
+    p, ul, ol, pre {
+        margin-bottom: 8px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    code {
+        background: rgba(255, 255, 255, 0.06);
+        padding: 1px 4px;
+        border-radius: 3px;
+        font-size: 0.9em;
+    }
+
+    pre {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 8px;
+        border-radius: 4px;
+        overflow-x: auto;
+
+        code {
+            background: none;
+            padding: 0;
+        }
+    }
+}
+
+.ai-plan-actions {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    border-top: 1px solid rgba(107, 158, 255, 0.1);
+}
+
+.ai-plan-approve-btn {
+    background: rgba(76, 175, 80, 0.15);
+    border: 1px solid rgba(76, 175, 80, 0.35);
+    color: #4caf50;
+    font-size: @sidebar-content-font-size;
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: rgba(76, 175, 80, 0.25);
+    }
+
+    &.selected {
+        background: rgba(76, 175, 80, 0.2);
+        border-color: rgba(76, 175, 80, 0.5);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+}
+
+.ai-plan-revise-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: @project-panel-text-2;
+    font-size: @sidebar-content-font-size;
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    &.selected {
+        background: rgba(107, 158, 255, 0.1);
+        border-color: rgba(107, 158, 255, 0.3);
+        color: #6b9eff;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+}
+
+.ai-plan-feedback {
+    padding: 8px 12px;
+    border-top: 1px solid rgba(107, 158, 255, 0.1);
+    display: flex;
+    gap: 6px;
+    align-items: stretch;
+}
+
+.ai-plan-feedback-input {
+    flex: 1;
+    min-width: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 4px;
+    color: @project-panel-text-1;
+    font-size: @sidebar-content-font-size;
+    padding: 6px 10px !important;
+    margin: 0 !important;
+    line-height: 1.4;
+    height: auto !important;
+    min-height: 32px;
+    max-height: 80px;
+    resize: vertical;
+    box-sizing: content-box;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:focus {
+        border-color: @bc-btn-border-focused !important;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.ai-plan-feedback-send {
+    background: rgba(107, 158, 255, 0.15);
+    border: 1px solid rgba(107, 158, 255, 0.3);
+    color: #6b9eff;
+    padding: 0 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: rgba(107, 158, 255, 0.25);
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: default;
+    }
+}
+
 /* ── Queued clarification bubble (static, above input) ─────────────── */
 .ai-queued-msg {
     border: 1px dashed rgba(255, 255, 255, 0.15);
