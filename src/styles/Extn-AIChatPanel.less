@@ -82,6 +82,9 @@
         display: flex;
         align-items: center;
         gap: 2px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
     }
 
     .ai-history-btn {
@@ -122,9 +125,8 @@
         height: 26px;
         border-radius: 3px;
         cursor: pointer;
-        opacity: 0;
+        opacity: 0.7;
         transition: opacity 0.15s ease, background-color 0.15s ease;
-        pointer-events: none;
 
         &:hover {
             opacity: 1;
@@ -153,11 +155,13 @@
     }
 }
 
-/* Show settings gear on tab container hover */
-.ai-tab-container:hover .ai-settings-btn {
-    opacity: 0.7;
+/* Show header actions on tab container hover */
+.ai-tab-container:hover .ai-chat-header-actions {
+    opacity: 1;
     pointer-events: auto;
+    transition: opacity 0.15s ease;
 }
+
 
 /* ── Session history dropdown ──────────────────────────────────────── */
 /* When history is open, hide chat content and show the dropdown instead */
