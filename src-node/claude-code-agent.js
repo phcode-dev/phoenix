@@ -470,9 +470,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "controlEditor). Never use relative paths." +
             "\n\nWhen a tool response mentions the user has typed a clarification, immediately " +
             "call getUserClarification to read it and incorporate the user's feedback into your current work." +
-            "\n\nWhen planning, include a verification step. Use takeScreenshot to visually " +
-            "verify the editor state at any time. For HTML/CSS/JS work with live preview, " +
-            "also use execJsInLivePreview to run JS in the browser and confirm behavior." +
+            "\n\nWhen planning, consider if verification is needed. takeScreenshot can " +
+            "visually verify the editor state. For HTML/CSS/JS with live preview, " +
+            "execJsInLivePreview can run JS in the browser to confirm behavior." +
             (locale && !locale.startsWith("en")
                 ? "\n\nThe user's display language is " + locale + ". " +
                   "Respond in this language unless they write in a different language."
