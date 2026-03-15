@@ -579,11 +579,29 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
                             // Capture plan content when writing to .claude/plans/
+                            // Don't open plan files in editor — shown in plan card UI
                             const writePath = input.tool_input.file_path || "";
                             if (writePath.includes("/.claude/plans/")) {
                                 _lastPlanContent = input.tool_input.content || "";
                                 console.log("[Phoenix AI] Captured plan content:",
                                     _lastPlanContent.length + "ch");
+                                if (_queuedClarification) {
+                                    return {
+                                        hookSpecificOutput: {
+                                            hookEventName: "PreToolUse",
+                                            permissionDecision: "deny",
+                                            permissionDecisionReason:
+                                                "Plan file saved." + CLARIFICATION_HINT
+                                        }
+                                    };
+                                }
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "deny",
+                                        permissionDecisionReason: "Plan file saved."
+                                    }
+                                };
                             }
                             const myToolId = toolCounter; // capture before any await
                             const edit = {
