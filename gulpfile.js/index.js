@@ -610,6 +610,9 @@ function containsRegExpExcludingEmpty(str) {
 const minifyablePaths = [
     'src/extensionsIntegrated/phoenix-pro/browser-context'
 ];
+const noMinifyFiles = [
+    'src/extensionsIntegrated/phoenix-pro/browser-context/control-box.js'
+];
 
 function _minifyBrowserContextFile(fileContent) {
     const minified = terser.minify(fileContent, {
@@ -636,6 +639,9 @@ function _minifyBrowserContextFile(fileContent) {
 
 function _isMinifyablePath(filePath) {
     const normalizedFilePath = path.normalize(filePath);
+    if (noMinifyFiles.some(f => normalizedFilePath.endsWith(path.normalize(f)))) {
+        return false;
+    }
     return minifyablePaths.some(minifyPath =>
         normalizedFilePath.startsWith(path.normalize(minifyPath))
     );
@@ -690,7 +696,9 @@ function inlineTextRequire(file, content, srcDir, isDevBuild = true) {
                     throw `Error inlining ${requireStatement} in ${file}: Regex: ${detectedRegEx}`+
                     "\nRegular expression of the form /*/ is not allowed for minification please use RegEx constructor";
                 }
-                content = content.replaceAll(requireStatement, `${JSON.stringify(textContent)}`);
+                // Escape $ in replacement to prevent special replacement patterns ($&, $1, etc.)
+                const safeReplacement = JSON.stringify(textContent).replaceAll("$", "$$$$");
+                content = content.replaceAll(requireStatement, safeReplacement);
             }
         }
 
