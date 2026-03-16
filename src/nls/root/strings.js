@@ -1931,6 +1931,8 @@ define({
     "AI_CHAT_CODE_EXPAND": "Expand",
     "AI_CHAT_CODE_EXPAND_LINES": "Click to expand - {0} lines",
     "AI_CHAT_CODE_COLLAPSE_FOOTER": "Click to collapse",
+    "AI_CHAT_PREVIEW_OPEN": "Preview",
+    "AI_CHAT_PREVIEW_VIEWING": "Previewing",
     "AI_CHAT_QUESTION_OTHER": "Type a custom answer\u2026",
     "AI_CHAT_IMAGE_LIMIT": "Maximum {0} images allowed",
     "AI_CHAT_IMAGE_REMOVE": "Remove image",

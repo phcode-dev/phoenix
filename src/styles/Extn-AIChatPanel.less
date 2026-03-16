@@ -847,6 +847,42 @@
     }
 }
 
+.ai-edit-preview-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    background: rgba(102, 187, 106, 0.1);
+    border: 1px solid rgba(102, 187, 106, 0.25);
+    color: #66bb6a;
+    font-size: @sidebar-small-font-size;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover:not(.active) {
+        background: rgba(102, 187, 106, 0.18);
+        border-color: rgba(102, 187, 106, 0.4);
+    }
+
+    &.active {
+        background: rgba(102, 187, 106, 0.15);
+        border-color: rgba(102, 187, 106, 0.3);
+        color: #66bb6a;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(102, 187, 106, 0.1);
+            border-color: rgba(102, 187, 106, 0.2);
+        }
+    }
+
+    i {
+        font-size: 11px;
+    }
+}
+
 /* ── Initial restore point (PUC) ────────────────────────────────────── */
 .ai-msg-restore-point {
     display: flex;
