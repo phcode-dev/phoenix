@@ -1829,6 +1829,7 @@ define({
     "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered {0}. To proceed, you’ll need an AI subscription or credits.",
 
     // AI CHAT PANEL
+    "AI_CHAT_TITLE_NO_AI": "Phoenix Code AI",
     "AI_CHAT_TITLE": "Claude Code",
     "AI_CHAT_NEW_SESSION_TITLE": "Start a new conversation",
     "AI_CHAT_NEW_BTN": "New",
