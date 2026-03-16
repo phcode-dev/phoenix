@@ -423,6 +423,12 @@
             margin: 6px 0;
             position: relative;
 
+            &.collapsed code {
+                display: block;
+                max-height: 7.5em; // ~5 lines at 1.5 line-height
+                overflow: hidden;
+            }
+
             code {
                 background: none;
                 padding: 0;
@@ -430,31 +436,6 @@
                 font-size: 1em;
                 line-height: 1.5;
                 color: @project-panel-text-1;
-            }
-
-            .ai-copy-btn {
-                position: absolute;
-                top: 4px;
-                right: 4px;
-                background: rgba(255, 255, 255, 0.08);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 4px;
-                color: rgba(255, 255, 255, 0.5);
-                cursor: pointer;
-                padding: 2px 6px;
-                font-size: 12px;
-                line-height: 1;
-                opacity: 0;
-                transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
-
-                &:hover {
-                    background: rgba(255, 255, 255, 0.15);
-                    color: rgba(255, 255, 255, 0.85);
-                }
-            }
-
-            &:hover .ai-copy-btn {
-                opacity: 1;
             }
         }
 
@@ -1084,6 +1065,83 @@
     }
 }
 
+/* ── Code block title bar ──────────────────────────────────────────── */
+.ai-code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: -8px -10px 6px -10px;
+    padding: 4px 8px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px 3px 0 0;
+    font-size: @sidebar-small-font-size;
+    user-select: none;
+}
+
+.ai-code-lang {
+    color: @project-panel-text-2;
+    text-transform: lowercase;
+}
+
+.ai-code-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.ai-code-copy-btn,
+.ai-code-collapse-btn {
+    background: none;
+    border: none;
+    color: @project-panel-text-2;
+    cursor: pointer;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: @sidebar-small-font-size;
+    line-height: 1;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: @project-panel-text-1;
+    }
+
+    i {
+        font-size: 11px;
+    }
+}
+
+.ai-code-copy-btn span {
+    margin-left: 2px;
+}
+
+.ai-code-footer {
+    display: flex;
+    justify-content: center;
+    margin: 6px -10px -8px -10px;
+    padding: 3px 8px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0 0 3px 3px;
+}
+
+.ai-code-expand-btn {
+    background: none;
+    border: none;
+    color: @project-panel-text-2;
+    cursor: pointer;
+    font-size: @sidebar-small-font-size;
+    padding: 1px 8px;
+    border-radius: 3px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: @project-panel-text-1;
+    }
+}
+
 /* ── Plan card (ExitPlanMode) ───────────────────────────────────────── */
 .ai-msg-plan {
     margin-bottom: 8px;
@@ -1172,6 +1230,10 @@
         overflow-x: auto;
         position: relative;
 
+        &.collapsed code {
+            display: none;
+        }
+
         code {
             background: none;
             padding: 0;
@@ -1179,31 +1241,6 @@
             font-size: 1em;
             line-height: 1.5;
             color: @project-panel-text-1;
-        }
-
-        .ai-copy-btn {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            padding: 2px 6px;
-            font-size: 12px;
-            line-height: 1;
-            opacity: 0;
-            transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
-
-            &:hover {
-                background: rgba(255, 255, 255, 0.15);
-                color: rgba(255, 255, 255, 0.85);
-            }
-        }
-
-        &:hover .ai-copy-btn {
-            opacity: 1;
         }
     }
 
