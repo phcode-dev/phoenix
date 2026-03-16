@@ -586,27 +586,33 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
                             // Capture plan content when writing to .claude/plans/
-                            // Don't open plan files in editor — shown in plan card UI
+                            // Plan files: capture content for plan card, write to disk
+                            // but don't open in editor
                             const writePath = input.tool_input.file_path || "";
-                            if (writePath.includes("/.claude/plans/")) {
+                            const normalizedPath = writePath.replace(/\\/g, "/");
+                            if (normalizedPath.includes("/.claude/plans/")) {
                                 _lastPlanContent = input.tool_input.content || "";
                                 console.log("[Phoenix AI] Captured plan content:",
                                     _lastPlanContent.length + "ch");
+                                // Write to disk so Claude can read it back later
+                                try {
+                                    const dir = path.dirname(writePath);
+                                    if (!fs.existsSync(dir)) {
+                                        fs.mkdirSync(dir, { recursive: true });
+                                    }
+                                    fs.writeFileSync(writePath, input.tool_input.content || "", "utf8");
+                                } catch (err) {
+                                    console.warn("[Phoenix AI] Failed to write plan file:", err.message);
+                                }
+                                let planReason = "Plan file saved.";
                                 if (_queuedClarification) {
-                                    return {
-                                        hookSpecificOutput: {
-                                            hookEventName: "PreToolUse",
-                                            permissionDecision: "deny",
-                                            permissionDecisionReason:
-                                                "Plan file saved." + CLARIFICATION_HINT
-                                        }
-                                    };
+                                    planReason += CLARIFICATION_HINT;
                                 }
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
                                         permissionDecision: "deny",
-                                        permissionDecisionReason: "Plan file saved."
+                                        permissionDecisionReason: planReason
                                     }
                                 };
                             }
