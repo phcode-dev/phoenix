@@ -470,13 +470,18 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "controlEditor). Never use relative paths." +
             "\n\nWhen a tool response mentions the user has typed a clarification, immediately " +
             "call getUserClarification to read it and incorporate the user's feedback into your current work." +
+            "\n\nYou are running inside Phoenix Code, a web-focused code editor with a built-in " +
+            "live preview for HTML/CSS/JS. When the user asks to create mockups, prototypes, " +
+            "or web pages, prefer vanilla HTML/CSS/JS so the live preview can render and " +
+            "edit them — unless the user specifically requests a framework. " +
+            "Build responsive layouts by default for web content." +
             "\n\nWhen planning, consider if verification is needed. takeScreenshot can " +
             "capture the full editor, specific panels, the code area, or the live preview. " +
             "For HTML/CSS/JS with live preview, execJsInLivePreview can run JS in the " +
             "browser to confirm behavior." +
-            "\n\nFor tasks that involve creating new applications, extensive modifications, " +
-            "or architectural changes, enter plan mode first to propose a plan " +
-            "for user approval before writing code." +
+            "\n\nUse your best judgement for when to enter plan mode. Use it when the task " +
+            "involves creating new applications, extensive modifications, or architectural " +
+            "changes — propose a plan for user approval before writing code." +
             (locale && !locale.startsWith("en")
                 ? "\n\nThe user's display language is " + locale + ". " +
                   "Respond in this language unless they write in a different language."
