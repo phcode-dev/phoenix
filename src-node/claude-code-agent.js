@@ -474,6 +474,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "capture the full editor, specific panels, the code area, or the live preview. " +
             "For HTML/CSS/JS with live preview, execJsInLivePreview can run JS in the " +
             "browser to confirm behavior." +
+            "\n\nFor complex tasks involving multiple files or significant architecture, " +
+            "enter plan mode to propose a plan before implementing." +
             (locale && !locale.startsWith("en")
                 ? "\n\nThe user's display language is " + locale + ". " +
                   "Respond in this language unless they write in a different language."
