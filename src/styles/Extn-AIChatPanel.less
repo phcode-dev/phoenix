@@ -410,7 +410,7 @@
             color: @project-panel-text-1;
             padding: 1px 4px;
             border-radius: 3px;
-            font-size: @sidebar-small-font-size;
+            font-size: @sidebar-md-code-font-size;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         }
 
@@ -427,7 +427,7 @@
                 background: none;
                 padding: 0;
                 border-radius: 0;
-                font-size: @sidebar-small-font-size;
+                font-size: 1em;
                 line-height: 1.5;
                 color: @project-panel-text-1;
             }
@@ -475,14 +475,22 @@
         }
 
         h1, h2, h3, h4 {
-            font-weight: 600;
             color: @project-panel-text-1;
+            line-height: 1.25em;
         }
 
-        h1 { font-size: @label-font-size; margin: 12px 0 4px 0; }
-        h2 { font-size: @menu-item-font-size; margin: 10px 0 4px 0; }
-        h3 { font-size: @sidebar-content-font-size; margin: 8px 0 3px 0; }
-        h4 { font-size: @sidebar-content-font-size; margin: 6px 0 2px 0; opacity: 0.85; }
+        h1 {
+            font-size: @sidebar-md-h1-font-size;
+            margin: 12px 0 4px 0;
+            padding-bottom: .3em;
+        }
+        h2 {
+            font-size: @sidebar-md-h2-font-size;
+            margin: 10px 0 4px 0;
+            padding-bottom: .3em;
+        }
+        h3 { font-size: @sidebar-md-h3-font-size; margin: 8px 0 4px 0; }
+        h4 { font-size: @sidebar-md-h4-font-size; margin: 6px 0 4px 0; opacity: 0.85; }
 
         table {
             display: block;
@@ -1115,14 +1123,22 @@
     }
 
     h1, h2, h3, h4 {
-        font-weight: 600;
         color: @project-panel-text-1;
+        line-height: 1.25em;
     }
 
-    h1 { font-size: @label-font-size; margin: 12px 0 4px 0; }
-    h2 { font-size: @menu-item-font-size; margin: 10px 0 4px 0; }
-    h3 { font-size: @sidebar-content-font-size; margin: 8px 0 3px 0; }
-    h4 { font-size: @sidebar-content-font-size; margin: 6px 0 2px 0; opacity: 0.85; }
+    h1 {
+        font-size: @sidebar-md-h1-font-size;
+        margin: 12px 0 4px 0;
+        padding-bottom: .3em;
+    }
+    h2 {
+        font-size: @sidebar-md-h2-font-size;
+        margin: 10px 0 4px 0;
+        padding-bottom: .3em;
+    }
+    h3 { font-size: @sidebar-md-h3-font-size; margin: 8px 0 4px 0; }
+    h4 { font-size: @sidebar-md-h4-font-size; margin: 6px 0 4px 0; opacity: 0.85; }
 
     strong {
         color: @project-panel-text-1;
@@ -1144,7 +1160,7 @@
         color: @project-panel-text-1;
         padding: 1px 4px;
         border-radius: 3px;
-        font-size: @sidebar-small-font-size;
+        font-size: @sidebar-md-code-font-size;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
     }
 
@@ -1160,7 +1176,7 @@
             background: none;
             padding: 0;
             border-radius: 0;
-            font-size: @sidebar-small-font-size;
+            font-size: 1em;
             line-height: 1.5;
             color: @project-panel-text-1;
         }
