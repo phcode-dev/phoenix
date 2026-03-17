@@ -785,20 +785,20 @@ function RemoteFunctions(config = {}) {
             _clickHighlight.selector = rule;
         }
 
-        // Find and select the best element
-        const { element, skipSelection } = findBestElementToSelect(nodes, rule);
-
-        if (!skipSelection) {
-            if (element) {
-                selectElement(element, true);
-            } else {
-                // No valid element found, dismiss UI
-                dismissUIAndCleanupState();
-            }
-        }
-
-        // In edit mode, create temporary highlights AFTER selection to avoid clearing
+        // In edit mode, select the best element and create temporary highlights for the rest.
+        // In highlight mode, skip selection so all matching elements stay highlighted equally.
         if (config.mode === 'edit') {
+            const { element, skipSelection } = findBestElementToSelect(nodes, rule);
+
+            if (!skipSelection) {
+                if (element) {
+                    selectElement(element, true);
+                } else {
+                    // No valid element found, dismiss UI
+                    dismissUIAndCleanupState();
+                }
+            }
+
             createCssSelectorHighlight(nodes, rule);
         }
     }
