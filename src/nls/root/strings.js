@@ -1926,6 +1926,8 @@ define({
     "AI_CHAT_PLAN_REVISE": "Revise",
     "AI_CHAT_PLAN_FEEDBACK_PLACEHOLDER": "What would you like changed?",
     "AI_CHAT_PLAN_REVISE_DEFAULT": "Please revise the plan.",
+    "AI_CHAT_MODE_PLAN": "Plan Mode",
+    "AI_CHAT_MODE_FULL_AUTO": "Full Auto",
     "AI_CHAT_CODE_DEFAULT_LANG": "text",
     "AI_CHAT_CODE_COLLAPSE": "Collapse",
     "AI_CHAT_CODE_EXPAND": "Expand",
