@@ -60,6 +60,9 @@ let _questionResolve = null;
 // Pending plan resolver — used by ExitPlanMode stream interception
 let _planResolve = null;
 
+// Pending bash confirmation resolver — used by Bash PreToolUse hook (Edit Mode)
+let _bashConfirmResolve = null;
+
 // Stores rejection feedback when user rejects a plan
 let _planRejectionFeedback = null;
 
@@ -272,6 +275,7 @@ exports.cancelQuery = async function () {
         // Clear any pending question or plan
         _questionResolve = null;
         _planResolve = null;
+        _bashConfirmResolve = null;
         _queuedClarification = null;
         return { success: true };
     }
@@ -303,6 +307,18 @@ exports.answerPlan = async function (params) {
 };
 
 /**
+ * Receive the user's response to a bash confirmation prompt (Edit Mode).
+ * Called from browser via execPeer("answerBashConfirm", {allowed}).
+ */
+exports.answerBashConfirm = async function (params) {
+    if (_bashConfirmResolve) {
+        _bashConfirmResolve(params);
+        _bashConfirmResolve = null;
+    }
+    return { success: true };
+};
+
+/**
  * Resume a previous session by setting the session ID.
  * The next sendPrompt call will use queryOptions.resume with this session ID.
  */
@@ -313,6 +329,7 @@ exports.resumeSession = async function (params) {
     }
     _questionResolve = null;
     _planResolve = null;
+    _bashConfirmResolve = null;
     _queuedClarification = null;
     currentSessionId = params.sessionId;
     return { success: true };
@@ -691,6 +708,48 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
                                     permissionDecisionReason: reason
+                                }
+                            };
+                        }
+                    ]
+                },
+                {
+                    matcher: "Bash",
+                    hooks: [
+                        async (input) => {
+                            if (permissionMode !== "acceptEdits") {
+                                // Plan mode: SDK handles. Full Auto: allow freely.
+                                return {};
+                            }
+                            // Edit Mode: ask user confirmation before running bash
+                            const command = input.tool_input.command || "";
+                            console.log("[Phoenix AI] Bash confirmation requested:", command.slice(0, 80));
+                            nodeConnector.triggerPeer("aiBashConfirm", {
+                                requestId: requestId,
+                                command: command,
+                                toolId: toolCounter
+                            });
+                            const response = await new Promise((resolve, reject) => {
+                                _bashConfirmResolve = resolve;
+                                if (signal.aborted) {
+                                    _bashConfirmResolve = null;
+                                    reject(new Error("Aborted"));
+                                    return;
+                                }
+                                const onAbort = () => {
+                                    _bashConfirmResolve = null;
+                                    reject(new Error("Aborted"));
+                                };
+                                signal.addEventListener("abort", onAbort, { once: true });
+                            });
+                            if (response.allowed) {
+                                return {};
+                            }
+                            return {
+                                hookSpecificOutput: {
+                                    hookEventName: "PreToolUse",
+                                    permissionDecision: "deny",
+                                    permissionDecisionReason: "User denied this command."
                                 }
                             };
                         }
