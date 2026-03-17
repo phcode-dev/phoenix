@@ -1747,6 +1747,22 @@
             color: @project-panel-text-2;
             line-height: 1;
         }
+
+        .ai-permission-info {
+            display: none;
+            margin-left: auto;
+            font-size: 11px;
+            line-height: 1;
+            pointer-events: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: @project-panel-text-2;
+        }
+
+        &:hover .ai-permission-info {
+            display: inline;
+        }
     }
 
     .ai-chat-context-bar {
