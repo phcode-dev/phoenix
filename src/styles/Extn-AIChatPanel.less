@@ -1412,6 +1412,92 @@
     }
 }
 
+/* ── Bash confirmation card ─────────────────────────────────────────── */
+.ai-bash-confirm {
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    border-radius: 8px;
+    background: rgba(243, 156, 18, 0.06);
+    margin: 8px 0;
+    overflow: hidden;
+
+    .ai-bash-confirm-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        font-weight: 600;
+        font-size: @sidebar-content-font-size;
+        color: #f39c12;
+        border-bottom: 1px solid rgba(243, 156, 18, 0.15);
+    }
+
+    .ai-bash-confirm-body {
+        padding: 8px 12px;
+
+        pre {
+            margin: 0;
+            padding: 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #e0e0e0;
+            font-size: @sidebar-content-font-size;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    }
+
+    .ai-bash-confirm-actions {
+        display: flex;
+        gap: 8px;
+        padding: 8px 12px;
+        border-top: 1px solid rgba(243, 156, 18, 0.15);
+    }
+
+    .ai-bash-allow-btn {
+        background: rgba(76, 175, 80, 0.15);
+        border: 1px solid rgba(76, 175, 80, 0.35);
+        color: #81c784;
+        padding: 4px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: @sidebar-xs-font-size;
+
+        &:hover {
+            background: rgba(76, 175, 80, 0.25);
+        }
+    }
+
+    .ai-bash-deny-btn {
+        background: rgba(231, 76, 60, 0.15);
+        border: 1px solid rgba(231, 76, 60, 0.35);
+        color: #e57373;
+        padding: 4px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: @sidebar-xs-font-size;
+
+        &:hover {
+            background: rgba(231, 76, 60, 0.25);
+        }
+    }
+
+}
+
+.ai-bash-result {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: @sidebar-xs-font-size;
+    margin: 4px 0;
+
+    &.ai-bash-result-allowed {
+        color: #81c784;
+    }
+
+    &.ai-bash-result-denied {
+        color: #e57373;
+    }
+}
+
 /* ── Queued clarification bubble (static, above input) ─────────────── */
 .ai-queued-msg {
     border: 1px dashed rgba(255, 255, 255, 0.15);
@@ -1645,6 +1731,10 @@
 
             &.mode-auto {
                 background-color: #e74c3c;
+            }
+
+            &.mode-edit {
+                background-color: #f39c12;
             }
 
             &.mode-plan {
