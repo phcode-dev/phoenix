@@ -1936,6 +1936,7 @@ define({
     "AI_CHAT_PREVIEW_OPEN": "Preview",
     "AI_CHAT_PREVIEW_VIEWING": "Previewing",
     "AI_CHAT_QUESTION_OTHER": "Type a custom answer\u2026",
+    "AI_CHAT_QUESTION_SUBMIT": "Submit",
     "AI_CHAT_IMAGE_LIMIT": "Maximum {0} images allowed",
     "AI_CHAT_IMAGE_REMOVE": "Remove image",
     "AI_CHAT_ATTACH_FILE": "Attach files",

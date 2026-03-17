@@ -1022,7 +1022,10 @@
 }
 
 .ai-question-submit {
-    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
     background: none;
     border: 1px solid rgba(76, 175, 80, 0.3);
     color: rgba(76, 175, 80, 0.85);
@@ -1088,6 +1091,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 5px;
     transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover:not(:disabled) {
