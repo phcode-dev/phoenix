@@ -1620,11 +1620,46 @@
         }
     }
 
+    .ai-permission-bar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+        }
+
+        .ai-permission-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+
+            &.mode-auto {
+                background-color: #e74c3c;
+            }
+
+            &.mode-plan {
+                background-color: #3498db;
+            }
+        }
+
+        .ai-permission-label {
+            font-size: @sidebar-xs-font-size;
+            color: @project-panel-text-2;
+            line-height: 1;
+        }
+    }
+
     .ai-chat-context-bar {
         display: none;
         flex-wrap: wrap;
-        gap: 4px;
-        padding: 0 4px 4px 4px;
+        gap: 6px;
+        padding: 0 4px 6px 4px;
 
         &.has-chips {
             display: flex;

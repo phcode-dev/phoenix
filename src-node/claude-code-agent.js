@@ -209,7 +209,7 @@ exports.checkAvailability = async function () {
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images, envOverrides } = params;
+    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images, envOverrides, permissionMode } = params;
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -252,7 +252,7 @@ exports.sendPrompt = async function (params) {
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides)
+    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides, permissionMode)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -370,7 +370,7 @@ exports.clearClarification = async function () {
 /**
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
-async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides) {
+async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode) {
     let editCount = 0;
     let toolCounter = 0;
     let queryFn;
@@ -455,7 +455,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             }
         },
         mcpServers: { "phoenix-editor": editorMcpServer },
-        permissionMode: "acceptEdits",
+        permissionMode: permissionMode || "acceptEdits",
         appendSystemPrompt:
             "When modifying an existing file, always prefer the Edit tool " +
             "(find-and-replace) instead of the Write tool. The Write tool should ONLY be used " +
@@ -496,6 +496,39 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Edit tool");
+                            // Plan file edits: capture content, write to disk, skip editor
+                            const editPath = (input.tool_input.file_path || "").replace(/\\/g, "/");
+                            if (editPath.includes("/.claude/plans/")) {
+                                try {
+                                    let content = "";
+                                    if (fs.existsSync(input.tool_input.file_path)) {
+                                        content = fs.readFileSync(input.tool_input.file_path, "utf8");
+                                    }
+                                    if (input.tool_input.old_string && input.tool_input.new_string) {
+                                        content = content.replace(input.tool_input.old_string, input.tool_input.new_string);
+                                    }
+                                    const dir = path.dirname(input.tool_input.file_path);
+                                    if (!fs.existsSync(dir)) {
+                                        fs.mkdirSync(dir, { recursive: true });
+                                    }
+                                    fs.writeFileSync(input.tool_input.file_path, content, "utf8");
+                                    _lastPlanContent = content;
+                                    console.log("[Phoenix AI] Captured plan edit content:", content.length + "ch");
+                                } catch (err) {
+                                    console.warn("[Phoenix AI] Failed to edit plan file:", err.message);
+                                }
+                                let planReason = "Plan file updated.";
+                                if (_queuedClarification) {
+                                    planReason += CLARIFICATION_HINT;
+                                }
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "deny",
+                                        permissionDecisionReason: planReason
+                                    }
+                                };
+                            }
                             const myToolId = toolCounter; // capture before any await
                             const edit = {
                                 file: input.tool_input.file_path,
