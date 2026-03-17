@@ -79,6 +79,7 @@
   "AI_CHAT_PREVIEW_VIEWING": "Previewing",
   "AI_CHAT_PROCESSING": "Processing...",
   "AI_CHAT_QUESTION_OTHER": "Type a custom answer…",
+  "AI_CHAT_QUESTION_SUBMIT": "Submit",
   "AI_CHAT_QUEUED": "Queued",
   "AI_CHAT_QUEUED_EDIT": "Edit",
   "AI_CHAT_QUOTA_DAILY_EXHAUSTED": "You've used all {0} daily chats. Resets tomorrow.",

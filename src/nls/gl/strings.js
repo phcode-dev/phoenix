@@ -1714,6 +1714,14 @@ define({
   "AI_CHAT_PLAN_REVISE": "Revisar",
   "AI_CHAT_PLAN_FEEDBACK_PLACEHOLDER": "Que che gustaría cambiar?",
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Por favor, revisa o plan.",
+  "AI_CHAT_MODE_PLAN": "Modo de planificación",
+  "AI_CHAT_MODE_EDIT": "Modo de edición",
+  "AI_CHAT_MODE_FULL_AUTO": "Totalmente automático",
+  "AI_CHAT_BASH_CONFIRM_TITLE": "Permitir o comando?",
+  "AI_CHAT_BASH_ALLOW": "Permitir",
+  "AI_CHAT_BASH_DENY": "Denegar",
+  "AI_CHAT_BASH_ALLOWED": "Comando permitido",
+  "AI_CHAT_BASH_DENIED": "Comando denegado",
   "AI_CHAT_CODE_DEFAULT_LANG": "Texto",
   "AI_CHAT_CODE_COLLAPSE": "Contraer",
   "AI_CHAT_CODE_EXPAND": "Expandir",
@@ -1855,12 +1863,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_MODE_PLAN": "Modo de planificación",
-  "AI_CHAT_MODE_EDIT": "Modo de edición",
-  "AI_CHAT_MODE_FULL_AUTO": "Totalmente automático",
-  "AI_CHAT_BASH_CONFIRM_TITLE": "Permitir o comando?",
-  "AI_CHAT_BASH_ALLOW": "Permitir",
-  "AI_CHAT_BASH_DENY": "Denegar",
-  "AI_CHAT_BASH_ALLOWED": "Comando permitido",
-  "AI_CHAT_BASH_DENIED": "Comando denegado"
+  "AI_CHAT_QUESTION_SUBMIT": "Enviar"
 });

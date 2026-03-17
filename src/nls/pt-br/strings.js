@@ -1714,6 +1714,14 @@ define({
   "AI_CHAT_PLAN_REVISE": "Revisar",
   "AI_CHAT_PLAN_FEEDBACK_PLACEHOLDER": "O que você gostaria de mudar?",
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Por favor, revise o plano.",
+  "AI_CHAT_MODE_PLAN": "Modo de Planejamento",
+  "AI_CHAT_MODE_EDIT": "Modo de Edição",
+  "AI_CHAT_MODE_FULL_AUTO": "Totalmente Automático",
+  "AI_CHAT_BASH_CONFIRM_TITLE": "Permitir comando?",
+  "AI_CHAT_BASH_ALLOW": "Permitir",
+  "AI_CHAT_BASH_DENY": "Negar",
+  "AI_CHAT_BASH_ALLOWED": "Comando permitido",
+  "AI_CHAT_BASH_DENIED": "Comando negado",
   "AI_CHAT_CODE_DEFAULT_LANG": "Texto",
   "AI_CHAT_CODE_COLLAPSE": "Recolher",
   "AI_CHAT_CODE_EXPAND": "Expandir",
@@ -1855,12 +1863,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "AI_CHAT_MODE_PLAN": "Modo de Planejamento",
-  "AI_CHAT_MODE_EDIT": "Modo de Edição",
-  "AI_CHAT_MODE_FULL_AUTO": "Totalmente Automático",
-  "AI_CHAT_BASH_CONFIRM_TITLE": "Permitir comando?",
-  "AI_CHAT_BASH_ALLOW": "Permitir",
-  "AI_CHAT_BASH_DENY": "Negar",
-  "AI_CHAT_BASH_ALLOWED": "Comando permitido",
-  "AI_CHAT_BASH_DENIED": "Comando negado"
+  "AI_CHAT_QUESTION_SUBMIT": "Enviar"
 });
