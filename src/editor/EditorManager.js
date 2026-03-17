@@ -495,7 +495,6 @@ define(function (require, exports, module) {
      * removed. For example, after a dialog with editable text is closed.
      */
     function focusEditor() {
-        DeprecationWarning.deprecationWarning("Use MainViewManager.focusActivePane() instead of EditorManager.focusEditor().", true);
         MainViewManager.focusActivePane();
     }
 
