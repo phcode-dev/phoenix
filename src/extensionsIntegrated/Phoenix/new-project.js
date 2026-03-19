@@ -85,7 +85,7 @@ define(function (require, exports, module) {
             newProjectURL: `${window.Phoenix.baseURL}assets/new-project/code-editor.html`
         };
         let dialogueContents = Mustache.render(newProjectTemplate, templateVars);
-        newProjectDialogueObj = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);
+        newProjectDialogueObj = Dialogs.showModalDialogUsingTemplate(dialogueContents, true, "#newProject");
         _focusContentWindow();
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         return newProjectDialogueObj;

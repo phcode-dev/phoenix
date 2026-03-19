@@ -127,10 +127,51 @@ define(function (require, exports, module) {
      */
     function _dismissDialog($dlg, buttonId) {
         $dlg.data("buttonId", buttonId);
-        $dlg.modal("hide");
 
-        if(!_isAnyDialogShown() && EditorManager.getActiveEditor()){
-            EditorManager.getActiveEditor().focus();
+        let closeToElement = $dlg.data("closeToElement");
+        let $target = closeToElement ? $(closeToElement) : null;
+
+        if ($target && $target.length && $target.is(":visible")) {
+            let targetRect = $target[0].getBoundingClientRect();
+            let targetCenterX = targetRect.left + targetRect.width / 2;
+            let targetCenterY = targetRect.top + targetRect.height / 2;
+
+            let $modal = $dlg;
+            let modalRect = $modal[0].getBoundingClientRect();
+            let modalCenterX = modalRect.left + modalRect.width / 2;
+            let modalCenterY = modalRect.top + modalRect.height / 2;
+
+            let translateX = targetCenterX - modalCenterX;
+            let translateY = targetCenterY - modalCenterY;
+
+            $modal.css({
+                "animation": "none",
+                "transition": "transform 300ms ease-in, opacity 300ms ease-in",
+                "transform": `translate(${translateX}px, ${translateY}px) scale(0.05)`,
+                "opacity": "0"
+            });
+
+            let $backdrop = $modal.next(".modal-backdrop");
+            $backdrop.css({
+                "transition": "opacity 300ms ease-in",
+                "opacity": "0"
+            });
+
+            setTimeout(function () {
+                $dlg.modal("hide");
+                if (!_isAnyDialogShown() && EditorManager.getActiveEditor()) {
+                    EditorManager.getActiveEditor().focus();
+                }
+                $target.addClass("dialog-woosh-land");
+                setTimeout(function () {
+                    $target.removeClass("dialog-woosh-land");
+                }, 600);
+            }, 300);
+        } else {
+            $dlg.modal("hide");
+            if (!_isAnyDialogShown() && EditorManager.getActiveEditor()) {
+                EditorManager.getActiveEditor().focus();
+            }
         }
     }
 
@@ -361,9 +402,12 @@ define(function (require, exports, module) {
      * @param {boolean=} autoDismiss Whether to automatically dismiss the dialog when one of the buttons
      *      is clicked. Default true. If false, you'll need to manually handle button clicks and the Esc
      *      key, and dismiss the dialog yourself when ready by calling `close()` on the returned dialog.
+     * @param {string=} closeToElement A CSS selector for a target element. If specified, the dialog
+     *      will animate open from and close toward the target element (a "woosh" effect). If the target
+     *      is not found or not visible, the dialog opens/closes normally.
      * @return {Dialog}
      */
-    function showModalDialogUsingTemplate(template, autoDismiss) {
+    function showModalDialogUsingTemplate(template, autoDismiss, closeToElement) {
         if (autoDismiss === undefined) {
             autoDismiss = true;
         }
@@ -381,6 +425,10 @@ define(function (require, exports, module) {
 
         // Save the dialog promise for unit tests
         $dlg.data("promise", promise);
+
+        if (closeToElement) {
+            $dlg.data("closeToElement", closeToElement);
+        }
 
         let keydownHook = function (e) {
             return _keydownHook.call($dlg, e, autoDismiss);
@@ -435,6 +483,51 @@ define(function (require, exports, module) {
 
             // Push our global keydown handler onto the global stack of handlers.
             KeyBindingManager.addGlobalKeydownHook(keydownHook);
+
+            // Animate open from target element if closeToElement is set
+            let openFromEl = $dlg.data("closeToElement");
+            let $openTarget = openFromEl ? $(openFromEl) : null;
+            if ($openTarget && $openTarget.length && $openTarget.is(":visible")) {
+                let targetRect = $openTarget[0].getBoundingClientRect();
+                let targetCenterX = targetRect.left + targetRect.width / 2;
+                let targetCenterY = targetRect.top + targetRect.height / 2;
+
+                let modalRect = $dlg[0].getBoundingClientRect();
+                let modalCenterX = modalRect.left + modalRect.width / 2;
+                let modalCenterY = modalRect.top + modalRect.height / 2;
+
+                let translateX = targetCenterX - modalCenterX;
+                let translateY = targetCenterY - modalCenterY;
+
+                // Disable the default modal CSS animation so our woosh takes over
+                // Start at the target position, scaled down
+                $dlg.css({
+                    "animation": "none",
+                    "transition": "none",
+                    "transform": `translate(${translateX}px, ${translateY}px) scale(0.05)`,
+                    "opacity": "0"
+                });
+
+                let $backdrop = $dlg.next(".modal-backdrop");
+                $backdrop.css({
+                    "transition": "none",
+                    "opacity": "0"
+                });
+
+                // Force reflow then animate to natural position
+                // eslint-disable-next-line no-unused-expressions
+                $dlg[0].offsetHeight;
+
+                $dlg.css({
+                    "transition": "transform 300ms ease-out, opacity 300ms ease-out",
+                    "transform": "translate(0, 0) scale(1)",
+                    "opacity": "1"
+                });
+                $backdrop.css({
+                    "transition": "opacity 300ms ease-out",
+                    "opacity": ""
+                });
+            }
         });
 
         // Click handler for buttons
