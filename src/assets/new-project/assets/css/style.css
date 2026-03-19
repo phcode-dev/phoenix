@@ -30,7 +30,7 @@ body {
 }
 
 #download-phcode-banner {
-    background-color: #2e3031;
+    background-color: #1e1e1e;
     color: white;
     border-radius: 10px;
     margin-top: 26px;
@@ -40,7 +40,7 @@ body {
 }
 
 #download-phcode-banner:hover {
-    background-color: #505357;
+    background-color: #333333;
 }
 
 p {
@@ -87,7 +87,7 @@ img {
 }
 
 .side-nav {
-    background: #5D5F60;
+    background: #252525;
     height: 100vh;
     position: fixed;
     right: 0;
@@ -134,7 +134,7 @@ img {
     outline: 0;
     height: 100%;
     overflow-y: auto;
-    background: #3C3F41;
+    background: #252525;
     box-shadow: -61px 0px 93px 8px rgb(0 0 0 / 51%);
     border-radius: 20px 0px 0px 20px;
     padding: 30px 50px;
@@ -173,14 +173,14 @@ img {
 
 .modal-nav-tabs .nav-item.show .nav-link, .modal-nav-tabs .nav-link.active {
     color: #fff;
-    background-color: #2E3031;
+    background-color: #1e1e1e;
     border-color: #dee2e6 #dee2e6 #fff;
     border-bottom: 2px solid #016DC4 !important;
 
 }
 
 .ex-input input {
-    background: #555555;
+    background: #333333;
     border-radius: 4px;
     height: 46px;
     width: calc(100% - 20px);
@@ -287,7 +287,7 @@ img {
 
 .ex-tabs .nav-item.show .nav-link, .ex-tabs .nav-link.active {
     color: #fff;
-    background-color: #2E3031;
+    background-color: #1e1e1e;
     border-color: #016DC4;
 }
 
@@ -304,7 +304,7 @@ img {
 }
 
 .project-card {
-    background: #333535;
+    background: #2a2a2a;
     border-radius: 5px;
     padding: 20px 15px;
     height: 220px;
@@ -314,11 +314,11 @@ img {
 }
 
 .project-card:hover {
-    background: #292b2b;
+    background: #1e1e1e;
 }
 
 .project-card-active {
-    background: #292b2b;
+    background: #1e1e1e;
 }
 
 .project-list {
@@ -401,7 +401,7 @@ img {
 .btn-remove {
     width: 74px;
     height: 26px;
-    background: #3F3F3F;
+    background: #2a2a2a;
     border-radius: 3px;
     font-weight: 600;
     font-size: 12px;
@@ -646,7 +646,7 @@ img {
 }
 
 .code-editor-card {
-    background: #3C3F41;
+    background: #252525;
     box-shadow: 0px 0px 93px rgba(0, 0, 0, 0.51);
     padding: 35px 50px;
     height: 100%;
@@ -679,7 +679,7 @@ img {
 .close-btn {
     width: 35px;
     height: 35px;
-    background: #3F3F3F;
+    background: #2a2a2a;
     border: 1px solid #202020;
     border-radius: 4px;
     padding: 5px;
@@ -754,7 +754,7 @@ img {
 
 .project-type-list li a.active {
     color: #fff;
-    background-color: #2E3031;
+    background-color: #1e1e1e;
     border-color: #016DC4;
 }
 
@@ -769,14 +769,14 @@ img {
 }
 
 .recent-project-card {
-    background: #2E3031;
+    background: #1e1e1e;
     border-radius: 10px;
     max-height: 370px;
     padding: 20px 30px;
 }
 
 .no-project-card {
-    background: #2E3031;
+    background: #1e1e1e;
     border-radius: 10px;
     max-height: 370px;
     padding: 20px 30px;
@@ -854,7 +854,7 @@ img {
 }
 
 .recent-project-list li:hover {
-    background: #3F3F3F;
+    background: #2a2a2a;
     cursor: pointer;
 }
 
@@ -949,7 +949,7 @@ img {
 }
 
 .website-detail input {
-    background: #555555;
+    background: #333333;
     border: 1px solid transparent;
     border-radius: 2px;
     height: 48px;
@@ -991,7 +991,7 @@ img {
 }
 
 .create-btn:disabled {
-    background: #555555;
+    background: #333333;
     cursor: unset;
 }
 
@@ -1010,7 +1010,7 @@ img {
 }
 
 .preview-box {
-    background: #2E3031;
+    background: #1e1e1e;
     border-radius: 5px;
     width: 100%;
     height: 95%;
