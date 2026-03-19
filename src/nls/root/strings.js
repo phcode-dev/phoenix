@@ -1336,7 +1336,6 @@ define({
     "PREVIEW": "Preview",
     "BUILD_WEBSITE": "Build Website",
     "VIEW_MORE": "View More...",
-    "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `Start Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">",
     "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to beautify code. </br> <img src=\"styles/images/beautify.gif\">",
     "DEFAULT_PROJECT_NOTIFICATION": "Open the <b>Default Project</b> in {APP_NAME} to get started quickly (ideal as a scratch pad).</br></br>Or, open a folder from your computer with the <strong>Open Folder</strong> icon below.<br><a href='#' style='float:right;'>ok</a>",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",

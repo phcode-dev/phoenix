@@ -89,31 +89,6 @@ define(function (require, exports, module) {
         editorContextMenu.on(Menus.EVENT_BEFORE_CONTEXT_MENU_OPEN, _showNotification);
     }
 
-    // 3. When user changes file by clicking on files panel, we show "click here to open new project window"
-    // Only shown once.
-    function _showNewProjectNotification() {
-        if(userAlreadyDidAction.newProjectShown){
-            return;
-        }
-        if(currentlyShowingNotification){
-            setTimeout(_showNewProjectNotification, NOTIFICATION_BACKOFF);
-            return;
-        }
-        userAlreadyDidAction.newProjectShown =  true;
-        PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "newProj");
-        currentlyShowingNotification = NotificationUI.createFromTemplate(
-            Strings.START_PROJECT, Strings.NEW_PROJECT_NOTIFICATION,
-            "newProject", {
-                allowedPlacements: ['top', 'bottom'],
-                autoCloseTimeS: 15,
-                dismissOnClick: true}
-        );
-        currentlyShowingNotification.done(()=>{
-            currentlyShowingNotification = null;
-        });
-    }
-
     function _showFirstUseSurvey(surveyURL, delayOverride, title,  useDialog) {
         let surveyVersion = 6; // increment this if you want to show this again
         if(userAlreadyDidAction.generalSurveyShownVersion === surveyVersion) {
@@ -302,7 +277,6 @@ define(function (require, exports, module) {
             return;
         }
         tourStarted = true;
-        _showNewProjectNotification();
         _showBeautifyNotification();
         _showSurveys();
     };
