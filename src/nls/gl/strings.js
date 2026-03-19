@@ -1730,6 +1730,7 @@ define({
   "AI_CHAT_PREVIEW_OPEN": "Vista previa",
   "AI_CHAT_PREVIEW_VIEWING": "Previsualizando",
   "AI_CHAT_QUESTION_OTHER": "Escriba unha resposta personalizada…",
+  "AI_CHAT_QUESTION_SUBMIT": "Enviar",
   "AI_CHAT_IMAGE_LIMIT": "Permítese un máximo de {0} imaxes",
   "AI_CHAT_IMAGE_REMOVE": "Eliminar imaxe",
   "AI_CHAT_ATTACH_FILE": "Adxuntar ficheiros",
@@ -1863,5 +1864,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_QUESTION_SUBMIT": "Enviar"
+  "AI_CHAT_MODE_INFO_PLAN": "A IA proporá un plan antes de facer cambios",
+  "AI_CHAT_MODE_INFO_EDIT": "A IA pode editar ficheiros. Os comandos de shell precisan aprobación",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "A IA pode editar ficheiros e executar comandos sen aprobación",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Maiús+Tab para cambiar)"
 });
