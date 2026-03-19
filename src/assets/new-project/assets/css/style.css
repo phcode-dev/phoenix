@@ -20,6 +20,7 @@ body {
     overflow: hidden;
     background-color: #fff;
     height: 100%;
+    color: #cccccc;
 }
 
 .even-layout {
