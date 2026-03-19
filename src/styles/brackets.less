@@ -268,6 +268,8 @@ a, img {
         left: @sidebar-width;  // changed dynamically via Resizer
         right: @main-toolbar-width;
         z-index: @z-index-brackets-main-content;
+        border-left: 2px solid rgba(255, 255, 255, 0.10);
+        border-right: 2px solid rgba(255, 255, 255, 0.10);
     }
 
     .force-right-zero {
@@ -1198,7 +1200,7 @@ a, img {
 /* Project panel */
 
 #working-set-list-container {
-    background: @bc-sidebar-bg;
+    background: @bc-working-set-bg;
     display: block;
 
     > div:last-child ul {
@@ -1214,19 +1216,19 @@ a, img {
     position: relative;
     height: 19px;
     padding: 10px 0 9px 12px;
-    background: @bc-sidebar-bg;
+    background: @bc-working-set-bg;
     color: @project-panel-text-2;
     text-shadow: none;
     overflow: hidden;
 
     > span {
-        background: @bc-sidebar-bg;
+        background: @bc-working-set-bg;
         position: relative;
         z-index: 9;
     }
 
     > div {
-        background-color: @dark-bc-sidebar-bg;
+        background-color: @bc-working-set-bg;
         opacity: 1;
     }
 }
@@ -1385,15 +1387,16 @@ a, img {
 #project-files-header {
     display: flex;
     align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: none;
     padding: 6px 0 6px 12px;
     font-size: 15px;
     color: @project-panel-text-2;
+    background-color: @bc-project-files-bg;
     overflow: hidden;
     gap: .5em;
 
     .btn-alt-quiet {
-        background-color: #47484b;
+        background-color: transparent;
 
         // relative positioning plus z-index make sure that the splitview button flows under the left aligned buttons in the project pane when there are no working set files
         position: relative;
@@ -1466,8 +1469,8 @@ a, img {
 
 .sidebar-selection, .filetree-selection {
     background: @bc-sidebar-selection;
-    border-top: 1px solid @bc-shadow-small;
-    border-bottom: 1px solid @bc-highlight;
+    border-top: none;
+    border-bottom: none;
     box-sizing: border-box;
     height: 23px;
     width: 100%;
@@ -1476,8 +1479,8 @@ a, img {
 
 .sidebar-selection-extension, .filetree-selection-extension {
     background: @bc-sidebar-selection;
-    border-top: 1px solid @bc-shadow-small;
-    border-bottom: 1px solid @bc-highlight;
+    border-top: none;
+    border-bottom: none;
     box-sizing: border-box;
     height: 23px;
     width: 9px; /* quiet scrollbar width */
@@ -1511,6 +1514,7 @@ a, img {
 
 #project-files-container {
     .box-flex(1);
+    background-color: @bc-project-files-bg;
 
     div > ul {
         padding-bottom: 24px;
@@ -1521,20 +1525,20 @@ a, img {
 .scroller-shadow {
     background-size: 100%;
     background-repeat: no-repeat;
-    height: 5px;
+    height: 8px;
     position: fixed;
     z-index: @z-index-brackets-scroller-shadow;
     pointer-events: none; // serves as a "click through", so clicks go to the file tree behind (see #12684)
 
     &.top {
-        #gradient > .vertical(rgba(0,0,0,0.1), rgba(0,0,0,0));
-        background-position: 0 -5px;
+        #gradient > .vertical(rgba(0,0,0,0.18), rgba(0,0,0,0));
+        background-position: 0 -8px;
         background-color: transparent; /* override background-color: @endColor from #gradient.vertical */
     }
 
     &.bottom {
-        #gradient > .vertical(rgba(0,0,0,0), rgba(0,0,0,0.1));
-        background-position: 0 5px;
+        #gradient > .vertical(rgba(0,0,0,0), rgba(0,0,0,0.12));
+        background-position: 0 8px;
         background-color: transparent; /* override background-color: @endColor from #gradient.vertical */
     }
 }
