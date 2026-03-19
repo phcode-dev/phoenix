@@ -36,7 +36,7 @@
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    background-color: @bc-sidebar-bg;
+    background-color: @bc-ai-sidebar-bg;
     color: @project-panel-text-1;
     font-size: @sidebar-content-font-size;
     container-type: inline-size;
@@ -263,6 +263,7 @@
     -webkit-user-select: text;
     user-select: text;
     cursor: default;
+    background-color: @bc-ai-sidebar-bg;
 }
 
 /* ── Individual messages ────────────────────────────────────────────── */
@@ -1695,14 +1696,15 @@
     .ai-chat-input-wrap {
         display: flex;
         align-items: flex-end;
-        background-color: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: @bc-ai-input-bg;
+        border: 1px solid @bc-ai-input-border;
         border-radius: 8px;
         transition: border-color 0.15s ease;
         overflow: hidden;
 
         &:focus-within {
-            border-color: @bc-btn-border-focused;
+            background-color: @bc-ai-input-bg-focused;
+            border-color: @bc-ai-input-border-focus;
         }
 
         &.disabled {
@@ -1947,7 +1949,7 @@
     .ai-chat-textarea {
         flex: 1;
         min-width: 0;
-        background: none;
+        background: transparent !important;
         border: none !important;
         color: @project-panel-text-1;
         font-size: @sidebar-content-font-size;

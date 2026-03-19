@@ -160,9 +160,9 @@
     overflow: hidden;
     white-space: nowrap;
     cursor: pointer;
-    background: #3C3F41;
+    background: transparent;
     box-shadow: none;
-    border: 1px solid #3C3F41;
+    border: 1px solid transparent;
     box-sizing: border-box;
     color: #a0a0a0;
     font-size: 14px;
