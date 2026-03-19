@@ -85,6 +85,51 @@
 }
 
 
+/* Always-visible scrollbar — same style as quiet-scrollbars but always shown.
+   Add element classes here to opt in. */
+.visible-scrollbars,
+.ai-plan-body {
+    &::-webkit-scrollbar {
+        width: 9px;
+        height: 9px;
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.6) inset !important;
+        border: 2px solid transparent !important;
+    }
+
+    .dark & {
+        &::-webkit-scrollbar-thumb {
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3) inset !important;
+        }
+    }
+}
+
+/* Dropdown overflow menu needs track bg to match its popup background */
+.dropdown-overflow-menu {
+    &::-webkit-scrollbar {
+        width: 9px;
+        height: 9px;
+        background-color: @bc-menu-bg !important;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.3) inset !important;
+        border: 2px solid transparent !important;
+    }
+
+    .dark & {
+        &::-webkit-scrollbar {
+            background-color: @dark-bc-menu-bg !important;
+        }
+        &::-webkit-scrollbar-thumb {
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3) inset !important;
+        }
+    }
+}
+
 .platform-linux, .platform-mac {
     // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
 
