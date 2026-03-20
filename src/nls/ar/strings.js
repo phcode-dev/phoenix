@@ -1891,6 +1891,12 @@ define({
   "AI_CHAT_IMAGE_LIMIT": "يُسمح بـ {0} صور كحد أقصى",
   "AI_CHAT_IMAGE_REMOVE": "إزالة الصورة",
   "AI_CHAT_ATTACH_FILE": "إرفاق ملفات",
+  "AI_CHAT_SCREENSHOT_TITLE": "التقاط لقطة شاشة",
+  "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "معاينة مباشرة",
+  "AI_CHAT_SCREENSHOT_AREA": "تحديد منطقة",
+  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "المحرر بالكامل",
+  "AI_CHAT_SCREENSHOT_CAPTURE": "التقاط",
+  "AI_CHAT_SCREENSHOT_CANCEL": "إلغاء",
   "AI_CHAT_FILE_REMOVE": "إزالة الملف",
   "AI_CHAT_QUEUED": "في قائمة الانتظار",
   "AI_CHAT_QUEUED_EDIT": "تعديل",
@@ -2021,10 +2027,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_SCREENSHOT_TITLE": "التقاط لقطة شاشة",
-  "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "معاينة مباشرة",
-  "AI_CHAT_SCREENSHOT_AREA": "تحديد منطقة",
-  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "المحرر بالكامل",
-  "AI_CHAT_SCREENSHOT_CAPTURE": "التقاط",
-  "AI_CHAT_SCREENSHOT_CANCEL": "إلغاء"
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "معاينة مباشرة للتحديد",
+  "AI_CHAT_PRIVACY_TITLE": "بدء محادثة الذكاء الاصطناعي مع Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "لتقديم الردود، ترسل هذه الميزة طلباتك والسياق ذي الصلة إلى Claude Code.<br><br><a class='ai-privacy-link'>تعرّف على المزيد وأدر إعدادات خصوصيتك</a>.",
+  "AI_CHAT_PRIVACY_OK": "موافق"
 });

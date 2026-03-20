@@ -1891,8 +1891,13 @@ define({
   "AI_CHAT_IMAGE_LIMIT": "Επιτρέπονται έως {0} εικόνες",
   "AI_CHAT_IMAGE_REMOVE": "Αφαίρεση εικόνας",
   "AI_CHAT_ATTACH_FILE": "Επισύναψη αρχείων",
+  "AI_CHAT_SCREENSHOT_TITLE": "Λήψη στιγμιότυπου οθόνης",
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Preview",
+  "AI_CHAT_SCREENSHOT_AREA": "Επιλογή περιοχής",
+  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Πλήρης επεξεργαστής",
+  "AI_CHAT_SCREENSHOT_CAPTURE": "Λήψη",
   "AI_CHAT_SCREENSHOT_CANCEL": "Ακύρωση",
+  "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Αφαίρεση αρχείου",
   "AI_CHAT_QUEUED": "Σε αναμονή",
   "AI_CHAT_QUEUED_EDIT": "Επεξεργασία",
@@ -2023,8 +2028,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_SCREENSHOT_TITLE": "Λήψη στιγμιότυπου οθόνης",
-  "AI_CHAT_SCREENSHOT_AREA": "Επιλογή περιοχής",
-  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Πλήρης επεξεργαστής",
-  "AI_CHAT_SCREENSHOT_CAPTURE": "Λήψη"
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Ζωντανή προεπισκόπηση επιλογής",
+  "AI_CHAT_PRIVACY_TITLE": "Έναρξη συνομιλίας AI με το Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Για την παροχή απαντήσεων, αυτή η λειτουργία αποστέλλει τις προτροπές σας και το σχετικό περιεχόμενο στο Claude Code.<br><br><a class='ai-privacy-link'>Μάθετε περισσότερα και διαχειριστείτε τις ρυθμίσεις απορρήτου σας</a>."
 });
