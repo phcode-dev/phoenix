@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Priekšskatījums",
   "BUILD_WEBSITE": "Izveidot vietni",
   "VIEW_MORE": "Skatīt vairāk...",
-  "NEW_PROJECT_NOTIFICATION": "Noklikšķiniet uz šīs ikonas, lai vēlreiz atvērtu logu `Sākt projektu`.</br> Skatiet nesenus projektus, atveriet mapi vai sāciet projektus no veidnēm.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Noklikšķiniet šeit vai nospiediet <b>`{0}`</b>, lai formatētu kodu. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Atveriet <b>Noklusējuma projektu</b> programmā {APP_NAME}, lai ātri sāktu darbu (ideāli piemērots kā piekrastes blociņš).</br></br>Vai arī atveriet mapi no sava datora, izmantojot zemāk redzamo ikonu <strong>Atvērt mapi</strong>.<br><a href='#' style='float:right;'>labi</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Izvēlētā mape <span class='dialog-filename'>{0}</span> nav tukša. Vai tiešām vēlaties aizstāt mapes saturu ar projektu?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Plānošanas režīms",
   "AI_CHAT_MODE_EDIT": "Rediģēšanas režīms",
   "AI_CHAT_MODE_FULL_AUTO": "Pilnībā automātisks",
+  "AI_CHAT_MODE_INFO_PLAN": "AI piedāvās plānu, pirms veiks izmaiņas.",
+  "AI_CHAT_MODE_INFO_EDIT": "AI var rediģēt failus. Shell komandām nepieciešams apstiprinājums.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI var rediģēt failus un izpildīt komandas bez apstiprinājuma.",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab, lai pārslēgtos)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Atļaut komandu?",
   "AI_CHAT_BASH_ALLOW": "Atļaut",
   "AI_CHAT_BASH_DENY": "Aizliegt",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Vēl viena lieta",
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_MODE_INFO_PLAN": "AI piedāvās plānu, pirms veiks izmaiņas.",
-  "AI_CHAT_MODE_INFO_EDIT": "AI var rediģēt failus. Shell komandām nepieciešams apstiprinājums.",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI var rediģēt failus un izpildīt komandas bez apstiprinājuma.",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab, lai pārslēgtos)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts"
 });

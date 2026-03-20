@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Voorbeeldweergave",
   "BUILD_WEBSITE": "Website bouwen",
   "VIEW_MORE": "Meer bekijken...",
-  "NEW_PROJECT_NOTIFICATION": "Klik op dit pictogram om het venster `Project starten` opnieuw te openen.</br> Bekijk Recente Projecten, Open Map of start projecten vanuit sjablonen.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klik hier of druk op <b>`{0}`</b> om code op te maken. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Open het <b>Standaardproject</b> in {APP_NAME} om snel aan de slag te gaan (ideaal als kladblok).</br></br>Of open een map van uw computer met het pictogram <strong>Map openen</strong> hieronder.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "De geselecteerde map <span class='dialog-filename'>{0}</span> is niet leeg. Weet u zeker dat u de inhoud van de map wilt vervangen door het project?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Planmodus",
   "AI_CHAT_MODE_EDIT": "Bewerkingsmodus",
   "AI_CHAT_MODE_FULL_AUTO": "Volautomatisch",
+  "AI_CHAT_MODE_INFO_PLAN": "AI stelt een plan voor alvorens wijzigingen aan te brengen.",
+  "AI_CHAT_MODE_INFO_EDIT": "AI kan bestanden bewerken. Shell-commando's vereisen goedkeuring.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan bestanden bewerken en commando's uitvoeren zonder goedkeuring.",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab om te wisselen)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Commando toestaan?",
   "AI_CHAT_BASH_ALLOW": "Toestaan",
   "AI_CHAT_BASH_DENY": "Weigeren",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Nog één ding",
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_MODE_INFO_PLAN": "AI stelt een plan voor alvorens wijzigingen aan te brengen.",
-  "AI_CHAT_MODE_INFO_EDIT": "AI kan bestanden bewerken. Shell-commando's vereisen goedkeuring.",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan bestanden bewerken en commando's uitvoeren zonder goedkeuring.",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab om te wisselen)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd"
 });

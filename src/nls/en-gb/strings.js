@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Preview",
   "BUILD_WEBSITE": "Build website",
   "VIEW_MORE": "See more…",
-  "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `Start Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to format code. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Open the <b>Default Project</b> in {APP_NAME} to get started quickly (ideal as a scratchpad).</br></br>Or, open a folder from your computer with the <strong>Open Folder</strong> icon below.<br><a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Plan Mode",
   "AI_CHAT_MODE_EDIT": "Edit Mode",
   "AI_CHAT_MODE_FULL_AUTO": "Full Auto",
+  "AI_CHAT_MODE_INFO_PLAN": "AI will propose a plan before making changes",
+  "AI_CHAT_MODE_INFO_EDIT": "AI can edit files. Shell commands need approval",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI can edit files and run commands without approval",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab to switch)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Allow command?",
   "AI_CHAT_BASH_ALLOW": "Allow",
   "AI_CHAT_BASH_DENY": "Deny",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "One more thing",
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_CHAT_MODE_INFO_PLAN": "AI will propose a plan before making changes",
-  "AI_CHAT_MODE_INFO_EDIT": "AI can edit files. Shell commands need approval",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI can edit files and run commands without approval",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab to switch)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted"
 });

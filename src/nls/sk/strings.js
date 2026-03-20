@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Náhľad",
   "BUILD_WEBSITE": "Vytvoriť webovú stránku",
   "VIEW_MORE": "Zobraziť viac...",
-  "NEW_PROJECT_NOTIFICATION": "Kliknite na túto ikonu a znova otvorte okno `Spustiť projekt`.</br> Pozrite si Nedávne projekty, Otvorte priečinok alebo spustite projekty zo šablón.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kliknite sem alebo stlačte <b>`{0}`</b> pre skrášlenie kódu. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Otvorte si <b>Predvolený projekt</b> v {APP_NAME} pre rýchly štart (ideálne ako poznámkový blok).</br></br>Prípadne otvorte priečinok z vášho počítača pomocou ikony <strong>Otvoriť priečinok</strong> nižšie.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraný priečinok <span class='dialog-filename'>{0}</span> nie je prázdny. Ste si istý, že chcete nahradiť obsah priečinka projektom?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Režim plánovania",
   "AI_CHAT_MODE_EDIT": "Režim úprav",
   "AI_CHAT_MODE_FULL_AUTO": "Plná automatika",
+  "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán pred vykonaním zmien",
+  "AI_CHAT_MODE_INFO_EDIT": "AI môže upravovať súbory. Príkazy shellu vyžadujú schválenie",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI môže upravovať súbory a spúšťať príkazy bez schválenia",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab na prepnutie)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Povoliť príkaz?",
   "AI_CHAT_BASH_ALLOW": "Povoliť",
   "AI_CHAT_BASH_DENY": "Zamietnuť",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Ešte jedna vec",
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán pred vykonaním zmien",
-  "AI_CHAT_MODE_INFO_EDIT": "AI môže upravovať súbory. Príkazy shellu vyžadujú schválenie",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI môže upravovať súbory a spúšťať príkazy bez schválenia",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab na prepnutie)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené"
 });

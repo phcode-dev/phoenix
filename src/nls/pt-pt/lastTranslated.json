@@ -1481,7 +1481,6 @@
   "NEW_FILE_FILTER": "New Exclusion Set…",
   "NEW_HTML": "New HTML Project",
   "NEW_PROJECT_FROM_GIT": "New Project from Git",
-  "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `Start Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">",
   "NORMALIZE_LINE_ENDINGS": "Normalize line endings (to \\n)",
   "NOTHING_TO_COMMIT": "Nothing to commit, working directory clean.",
   "NOTHING_TO_LINT": "Nothing to lint",

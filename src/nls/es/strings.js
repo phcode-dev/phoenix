@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Vista previa",
   "BUILD_WEBSITE": "Crear sitio web",
   "VIEW_MORE": "Ver más...",
-  "NEW_PROJECT_NOTIFICATION": "Haga clic en este icono para abrir la ventana `Iniciar proyecto` nuevamente.</br> Vea Proyectos recientes, Abrir carpeta o inicie proyectos desde plantillas.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Haga clic aquí o presione <b>`{0}`</b> para embellecer el código. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Abre el <b>Proyecto predeterminado</b> en {APP_NAME} para empezar rápidamente (ideal como bloc de notas).</br></br>O bien, abre una carpeta de tu ordenador con el icono <strong>Abrir carpeta</strong> que se muestra a continuación.<br><a href='#' style='float:right;'>Aceptar</a>",
   "DIRECTORY_REPLACE_MESSAGE": "La carpeta seleccionada <span class='dialog-filename'>{0}</span> no está vacía. ¿Está seguro de que desea reemplazar el contenido de la carpeta con el proyecto?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Modo de planificación",
   "AI_CHAT_MODE_EDIT": "Modo de edición",
   "AI_CHAT_MODE_FULL_AUTO": "Automático total",
+  "AI_CHAT_MODE_INFO_PLAN": "La IA propondrá un plan antes de realizar cambios",
+  "AI_CHAT_MODE_INFO_EDIT": "La IA puede editar archivos. Los comandos de shell necesitan aprobación",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "La IA puede editar archivos y ejecutar comandos sin aprobación",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Mayús+Tab para cambiar)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "¿Permitir comando?",
   "AI_CHAT_BASH_ALLOW": "Permitir",
   "AI_CHAT_BASH_DENY": "Denegar",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Una cosa más",
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_MODE_INFO_PLAN": "La IA propondrá un plan antes de realizar cambios",
-  "AI_CHAT_MODE_INFO_EDIT": "La IA puede editar archivos. Los comandos de shell necesitan aprobación",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "La IA puede editar archivos y ejecutar comandos sin aprobación",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Mayús+Tab para cambiar)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado"
 });

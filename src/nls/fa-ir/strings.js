@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "پیش‌نمایش",
   "BUILD_WEBSITE": "ساخت وب‌سایت",
   "VIEW_MORE": "مشاهده بیشتر...",
-  "NEW_PROJECT_NOTIFICATION": "برای باز کردن مجدد پنجره «شروع پروژه» روی این آیکون کلیک کنید.</br> پروژه‌های اخیر را ببینید، پوشه را باز کنید یا پروژه‌ها را از روی قالب‌ها شروع کنید.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "برای قالب‌بندی کد، اینجا کلیک کنید یا <b>`{0}`</b> را فشار دهید. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "برای شروع سریع، <b>پروژه پیش‌فرض</b> را در {APP_NAME} باز کنید (به عنوان یک برگه یادداشت ایده‌آل است).</br></br>یا، با استفاده از آیکون <strong>باز کردن پوشه</strong> در پایین، یک پوشه از رایانه خود باز کنید.<br><a href='#' style='float:right;'>تأیید</a>",
   "DIRECTORY_REPLACE_MESSAGE": "پوشه انتخاب شده <span class='dialog-filename'>{0}</span> خالی نیست. آیا مطمئن هستید که می‌خواهید محتوای پوشه را با پروژه جایگزین کنید؟",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "حالت طرح‌ریزی",
   "AI_CHAT_MODE_EDIT": "حالت ویرایش",
   "AI_CHAT_MODE_FULL_AUTO": "کاملاً خودکار",
+  "AI_CHAT_MODE_INFO_PLAN": "هوش مصنوعی پیش از اعمال تغییرات، یک طرح پیشنهاد می‌کند.",
+  "AI_CHAT_MODE_INFO_EDIT": "هوش مصنوعی می‌تواند فایل‌ها را ویرایش کند. دستورات شل نیازمند تأیید هستند.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "هوش مصنوعی می‌تواند فایل‌ها را ویرایش و دستورات را بدون نیاز به تأیید اجرا کند.",
+  "AI_CHAT_MODE_SWITCH_HINT": "(برای جابجایی Shift+Tab)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "اجازه اجرای دستور؟",
   "AI_CHAT_BASH_ALLOW": "اجازه دادن",
   "AI_CHAT_BASH_DENY": "رد کردن",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "یک نکته دیگر",
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_MODE_INFO_PLAN": "هوش مصنوعی پیش از اعمال تغییرات، یک طرح پیشنهاد می‌کند.",
-  "AI_CHAT_MODE_INFO_EDIT": "هوش مصنوعی می‌تواند فایل‌ها را ویرایش کند. دستورات شل نیازمند تأیید هستند.",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "هوش مصنوعی می‌تواند فایل‌ها را ویرایش و دستورات را بدون نیاز به تأیید اجرا کند.",
-  "AI_CHAT_MODE_SWITCH_HINT": "(برای جابجایی Shift+Tab)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد"
 });

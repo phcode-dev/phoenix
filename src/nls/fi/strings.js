@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Esikatselu",
   "BUILD_WEBSITE": "Rakenna verkkosivusto",
   "VIEW_MORE": "Näytä lisää...",
-  "NEW_PROJECT_NOTIFICATION": "Napsauta tätä kuvaketta avataksesi `Aloita projekti` -ikkunan uudelleen.</br> Katso Viimeaikaiset projektit, Avaa kansio tai aloita projekteja mallipohjista.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Napsauta tästä tai paina <b>`{0}`</b> muotoillaksesi koodin. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Avaa <b>oletusprojekti</b> {APP_NAME}:ssa päästäksesi nopeasti alkuun (sopii hyvin muistioksi).</br></br>Voit myös avata kansion tietokoneeltasi alla olevalla <strong>Avaa kansio</strong> -kuvakkeella.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Valittu kansio <span class='dialog-filename'>{0}</span> ei ole tyhjä. Oletko varma, että haluat korvata kansion sisällön projektilla?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Suunnittelutila",
   "AI_CHAT_MODE_EDIT": "Muokkaustila",
   "AI_CHAT_MODE_FULL_AUTO": "Täysautomaattinen",
+  "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä",
+  "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Shell-komennot vaativat hyväksynnän",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Vaihda painamalla Shift+Tab)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Sallitaanko komento?",
   "AI_CHAT_BASH_ALLOW": "Salli",
   "AI_CHAT_BASH_DENY": "Kiellä",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Vielä yksi asia",
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä",
-  "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Shell-komennot vaativat hyväksynnän",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Vaihda painamalla Shift+Tab)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu"
 });

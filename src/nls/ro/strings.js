@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Previzualizare",
   "BUILD_WEBSITE": "Creează site web",
   "VIEW_MORE": "Vezi mai mult...",
-  "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a deschide din nou fereastra `Începeți proiect`. </br> Vedeți Proiecte recente, Deschideți folder sau începeți proiecte din șabloane. </br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Faceți clic aici sau apăsați <b>`{0}`</b> pentru a formata codul. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Deschideți <b>Proiectul Implicit</b> în {APP_NAME} pentru a începe rapid (ideal ca blocnotes).</br></br>Sau, deschideți un dosar de pe computer utilizând pictograma <strong>Deschidere Dosar</strong> de mai jos.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Directorul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul directorului cu proiectul?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Mod Planificare",
   "AI_CHAT_MODE_EDIT": "Mod Editare",
   "AI_CHAT_MODE_FULL_AUTO": "Automat Complet",
+  "AI_CHAT_MODE_INFO_PLAN": "AI va propune un plan înainte de a face modificări",
+  "AI_CHAT_MODE_INFO_EDIT": "AI poate edita fișiere. Comenzile shell necesită aprobare",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI poate edita fișiere și rula comenzi fără aprobare",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab pentru a comuta)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Permiteți comanda?",
   "AI_CHAT_BASH_ALLOW": "Permiteți",
   "AI_CHAT_BASH_DENY": "Refuzați",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Încă ceva",
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_MODE_INFO_PLAN": "AI va propune un plan înainte de a face modificări",
-  "AI_CHAT_MODE_INFO_EDIT": "AI poate edita fișiere. Comenzile shell necesită aprobare",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI poate edita fișiere și rula comenzi fără aprobare",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab pentru a comuta)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters"
 });

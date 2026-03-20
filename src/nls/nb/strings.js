@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Forhåndsvisning",
   "BUILD_WEBSITE": "Bygg nettsted",
   "VIEW_MORE": "Vis mer...",
-  "NEW_PROJECT_NOTIFICATION": "Klikk på dette ikonet for å åpne `Start prosjekt`-vinduet igjen.</br> Se Nylige prosjekter, Åpne mappe eller start prosjekter fra maler.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klikk her eller trykk <b>`{0}`</b> for å pynte kode. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Åpne <b>Standardprosjektet</b> i {APP_NAME} for å komme raskt i gang (ideelt som et kladdeark).</br></br>Eller åpne en mappe fra datamaskinen din med <strong>Åpne mappe</strong>-ikonet nedenfor.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valgte mappen <span class='dialog-filename'>{0}</span> er ikke tom. Er du sikker på at du vil erstatte mappeinnholdet med prosjektet?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Planmodus",
   "AI_CHAT_MODE_EDIT": "Redigeringsmodus",
   "AI_CHAT_MODE_FULL_AUTO": "Helautomatisk",
+  "AI_CHAT_MODE_INFO_PLAN": "KI vil foreslå en plan før den gjør endringer",
+  "AI_CHAT_MODE_INFO_EDIT": "KI kan redigere filer. Skallkommandoer krever godkjenning",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kan redigere filer og kjøre kommandoer uten godkjenning",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab for å bytte)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Tillate kommando?",
   "AI_CHAT_BASH_ALLOW": "Tillat",
   "AI_CHAT_BASH_DENY": "Nekt",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Én ting til",
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_MODE_INFO_PLAN": "KI vil foreslå en plan før den gjør endringer",
-  "AI_CHAT_MODE_INFO_EDIT": "KI kan redigere filer. Skallkommandoer krever godkjenning",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kan redigere filer og kjøre kommandoer uten godkjenning",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab for å bytte)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet"
 });

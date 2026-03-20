@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Előnézet",
   "BUILD_WEBSITE": "Weboldal létrehozása",
   "VIEW_MORE": "Továbbiak...",
-  "NEW_PROJECT_NOTIFICATION": "Kattintson erre az ikonra a `Projekt indítása` ablak újbóli megnyitásához.</br> Tekintse meg a Legutóbbi projekteket, nyisson meg egy mappát, vagy indítson projekteket sablonokból.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kattintson ide vagy nyomja meg a <b>`{0}`</b> billentyűt a kód formázásához. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Nyissa meg az <b>Alapértelmezett projektet</b> az {APP_NAME} alkalmazásban a gyors kezdéshez (ideális vázlatfüzetként).</br></br>Vagy nyisson meg egy mappát a számítógépéről az alábbi <strong>Mappa megnyitása</strong> ikonnal.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A kiválasztott mappa <span class='dialog-filename'>{0}</span> nem üres. Biztosan felül akarja írni a mappa tartalmát a projekttel?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Terv mód",
   "AI_CHAT_MODE_EDIT": "Szerkesztő mód",
   "AI_CHAT_MODE_FULL_AUTO": "Teljesen automata",
+  "AI_CHAT_MODE_INFO_PLAN": "Az MI tervet javasol, mielőtt módosításokat végezne",
+  "AI_CHAT_MODE_INFO_EDIT": "Az MI szerkeszthet fájlokat. A shell-parancsokhoz jóváhagyás szükséges",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Az MI jóváhagyás nélkül szerkeszthet fájlokat és futtathat parancsokat",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab a váltáshoz)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Engedélyezi a parancsot?",
   "AI_CHAT_BASH_ALLOW": "Engedélyezés",
   "AI_CHAT_BASH_DENY": "Elutasítás",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Még valami",
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_MODE_INFO_PLAN": "Az MI tervet javasol, mielőtt módosításokat végezne",
-  "AI_CHAT_MODE_INFO_EDIT": "Az MI szerkeszthet fájlokat. A shell-parancsokhoz jóváhagyás szükséges",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Az MI jóváhagyás nélkül szerkeszthet fájlokat és futtathat parancsokat",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab a váltáshoz)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve"
 });

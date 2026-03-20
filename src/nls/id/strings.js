@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Pratinjau",
   "BUILD_WEBSITE": "Bangun Situs Web",
   "VIEW_MORE": "Lihat Selengkapnya...",
-  "NEW_PROJECT_NOTIFICATION": "Klik ikon ini untuk membuka jendela `Mulai Proyek` lagi.</br> Lihat Proyek Terbaru, Buka Folder atau mulai proyek dari template.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klik di sini atau tekan <b>`{0}`</b> untuk mempercantik kode. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Buka <b>Proyek Default</b> di {APP_NAME} untuk memulai dengan cepat (ideal sebagai catatan sementara).</br></br>Atau, buka folder dari komputer Anda dengan ikon <strong>Buka Folder</strong> di bawah ini.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Folder yang dipilih <span class='dialog-filename'>{0}</span> tidak kosong. Apakah Anda yakin ingin mengganti isi folder dengan proyek ini?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Mode Rencana",
   "AI_CHAT_MODE_EDIT": "Mode Edit",
   "AI_CHAT_MODE_FULL_AUTO": "Otomatis Penuh",
+  "AI_CHAT_MODE_INFO_PLAN": "AI akan mengusulkan rencana sebelum membuat perubahan",
+  "AI_CHAT_MODE_INFO_EDIT": "AI dapat mengedit file. Perintah shell memerlukan persetujuan",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI dapat mengedit file dan menjalankan perintah tanpa persetujuan",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab untuk beralih)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Izinkan perintah?",
   "AI_CHAT_BASH_ALLOW": "Izinkan",
   "AI_CHAT_BASH_DENY": "Tolak",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Satu hal lagi",
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_MODE_INFO_PLAN": "AI akan mengusulkan rencana sebelum membuat perubahan",
-  "AI_CHAT_MODE_INFO_EDIT": "AI dapat mengedit file. Perintah shell memerlukan persetujuan",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI dapat mengedit file dan menjalankan perintah tanpa persetujuan",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab untuk beralih)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus"
 });

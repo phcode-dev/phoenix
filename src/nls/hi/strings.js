@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "पूर्वावलोकन",
   "BUILD_WEBSITE": "वेबसाइट बनाएँ",
   "VIEW_MORE": "और देखें...",
-  "NEW_PROJECT_NOTIFICATION": "इस आइकन पर क्लिक करके `प्रोजेक्ट शुरू करें` विंडो फिर से खोलें।</br> हाल के प्रोजेक्ट देखें, फ़ोल्डर खोलें या टेम्प्लेट से प्रोजेक्ट शुरू करें।</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "कोड को सुंदर बनाने के लिए यहां क्लिक करें या <b>`{0}`</b> दबाएं। </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "आरंभ करने के लिए {APP_NAME} में <b>डिफ़ॉल्ट प्रोजेक्ट</b> खोलें (स्क्रैच पैड के रूप में आदर्श)।</br></br>या, नीचे दिए गए <strong>फ़ोल्डर खोलें</strong> आइकन से अपने कंप्यूटर से एक फ़ोल्डर खोलें।<br><a href='#' style='float:right;'>ठीक है</a>",
   "DIRECTORY_REPLACE_MESSAGE": "चयनित फ़ोल्डर <span class='dialog-filename'>{0}</span> खाली नहीं है। क्या आप वाकई फ़ोल्डर की सामग्री को प्रोजेक्ट से बदलना चाहते हैं?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "योजना मोड",
   "AI_CHAT_MODE_EDIT": "संपादन मोड",
   "AI_CHAT_MODE_FULL_AUTO": "पूर्ण स्वचालित",
+  "AI_CHAT_MODE_INFO_PLAN": "एआई बदलाव करने से पहले एक योजना प्रस्तावित करेगा",
+  "AI_CHAT_MODE_INFO_EDIT": "एआई फ़ाइलें संपादित कर सकता है। शेल कमांड के लिए अनुमोदन की आवश्यकता है",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "एआई बिना अनुमोदन के फ़ाइलें संपादित और कमांड चला सकता है",
+  "AI_CHAT_MODE_SWITCH_HINT": "(स्विच करने के लिए Shift+Tab)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "कमांड की अनुमति दें?",
   "AI_CHAT_BASH_ALLOW": "अनुमति दें",
   "AI_CHAT_BASH_DENY": "अस्वीकार करें",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "एक और बात",
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_MODE_INFO_PLAN": "एआई बदलाव करने से पहले एक योजना प्रस्तावित करेगा",
-  "AI_CHAT_MODE_INFO_EDIT": "एआई फ़ाइलें संपादित कर सकता है। शेल कमांड के लिए अनुमोदन की आवश्यकता है",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "एआई बिना अनुमोदन के फ़ाइलें संपादित और कमांड चला सकता है",
-  "AI_CHAT_MODE_SWITCH_HINT": "(स्विच करने के लिए Shift+Tab)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया"
 });

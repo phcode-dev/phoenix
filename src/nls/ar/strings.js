@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "معاينة",
   "BUILD_WEBSITE": "إنشاء موقع ويب",
   "VIEW_MORE": "عرض المزيد...",
-  "NEW_PROJECT_NOTIFICATION": "انقر على هذا الرمز لفتح نافذة `بدء مشروع` مرة أخرى.</br> شاهد المشاريع الأخيرة، أو افتح مجلدًا أو ابدأ مشاريع من قوالب.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "انقر هنا أو اضغط على <b>`{0}`</b> لتحسين تنسيق الشفرة. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "افتح <b>المشروع الافتراضي</b> في {APP_NAME} للبدء بسرعة (مثالي كمسودة).<br><br>أو افتح مجلدًا من جهاز الكمبيوتر الخاص بك باستخدام رمز <strong>فتح مجلد</strong> أدناه.<br><a href='#' style='float:right;'>موافق</a>",
   "DIRECTORY_REPLACE_MESSAGE": "المجلد المحدد <span class='dialog-filename'>{0}</span> ليس فارغًا. هل أنت متأكد أنك تريد استبدال محتويات المجلد بالمشروع؟",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "وضع الخطة",
   "AI_CHAT_MODE_EDIT": "وضع التحرير",
   "AI_CHAT_MODE_FULL_AUTO": "تلقائي بالكامل",
+  "AI_CHAT_MODE_INFO_PLAN": "سيقترح الذكاء الاصطناعي خطة قبل إجراء التغييرات",
+  "AI_CHAT_MODE_INFO_EDIT": "يمكن للذكاء الاصطناعي تعديل الملفات. تحتاج أوامر Shell إلى موافقة",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "يمكن للذكاء الاصطناعي تعديل الملفات وتشغيل الأوامر دون الحاجة إلى موافقة",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab للتبديل)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "السماح بالأمر؟",
   "AI_CHAT_BASH_ALLOW": "سماح",
   "AI_CHAT_BASH_DENY": "رفض",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "شيء آخر",
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_MODE_INFO_PLAN": "سيقترح الذكاء الاصطناعي خطة قبل إجراء التغييرات",
-  "AI_CHAT_MODE_INFO_EDIT": "يمكن للذكاء الاصطناعي تعديل الملفات. تحتاج أوامر Shell إلى موافقة",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "يمكن للذكاء الاصطناعي تعديل الملفات وتشغيل الأوامر دون الحاجة إلى موافقة",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab للتبديل)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف"
 });

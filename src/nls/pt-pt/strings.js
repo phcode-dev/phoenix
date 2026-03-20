@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Pré-visualização",
   "BUILD_WEBSITE": "Criar Website",
   "VIEW_MORE": "Ver Mais...",
-  "NEW_PROJECT_NOTIFICATION": "Clique neste ícone para abrir novamente a janela `Iniciar Projeto`.</br> Veja Projetos Recentes, Abrir Pasta ou inicie projetos a partir de modelos.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Clique aqui ou pressione <b>`{0}`</b> para embelezar o código. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Abra o <b>Projeto Padrão</b> no {APP_NAME} para começar rapidamente (ideal como um bloco de notas).</br></br>Ou abra uma pasta do seu computador com o ícone <strong>Abrir Pasta</strong> abaixo.<br><a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A pasta selecionada <span class='dialog-filename'>{0}</span> não está vazia. Tem a certeza de que pretende substituir o conteúdo da pasta com o projeto?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Modo de Plano",
   "AI_CHAT_MODE_EDIT": "Modo de Edição",
   "AI_CHAT_MODE_FULL_AUTO": "Automático Completo",
+  "AI_CHAT_MODE_INFO_PLAN": "A IA irá propor um plano antes de efetuar alterações",
+  "AI_CHAT_MODE_INFO_EDIT": "A IA pode editar ficheiros. Os comandos da shell necessitam de aprovação",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "A IA pode editar ficheiros e executar comandos sem aprovação",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab para alternar)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Permitir comando?",
   "AI_CHAT_BASH_ALLOW": "Permitir",
   "AI_CHAT_BASH_DENY": "Negar",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Mais uma coisa",
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_MODE_INFO_PLAN": "A IA irá propor um plano antes de efetuar alterações",
-  "AI_CHAT_MODE_INFO_EDIT": "A IA pode editar ficheiros. Os comandos da shell necessitam de aprovação",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "A IA pode editar ficheiros e executar comandos sem aprovação",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab para alternar)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado"
 });

@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "預覽",
   "BUILD_WEBSITE": "建置網站",
   "VIEW_MORE": "查看更多…",
-  "NEW_PROJECT_NOTIFICATION": "按一下此圖示即可再次開啟「開始專案」視窗。</br> 查看最近的專案、開啟資料夾或從範本開始專案。</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "按一下此處或按下 <b>`{0}`</b> 以美化程式碼。</br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "在 {APP_NAME} 中開啟<b>預設專案</b>即可快速上手（適合做為草稿區）。</br></br>或者，使用下方的<strong>開啟資料夾</strong>圖示從您的電腦開啟資料夾。<br><a href='#' style='float:right;'>確定</a>",
   "DIRECTORY_REPLACE_MESSAGE": "所選資料夾 <span class='dialog-filename'>{0}</span> 並非空的。您確定要用專案取代資料夾內容嗎？",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "計畫模式",
   "AI_CHAT_MODE_EDIT": "編輯模式",
   "AI_CHAT_MODE_FULL_AUTO": "全自動",
+  "AI_CHAT_MODE_INFO_PLAN": "AI 會在進行變更前提出計畫",
+  "AI_CHAT_MODE_INFO_EDIT": "AI 可以編輯檔案。Shell 指令需要批准",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以編輯檔案並執行指令，無須批准",
+  "AI_CHAT_MODE_SWITCH_HINT": "(按 Shift+Tab 切換)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "允許指令？",
   "AI_CHAT_BASH_ALLOW": "允許",
   "AI_CHAT_BASH_DENY": "拒絕",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "還有一件事",
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_MODE_INFO_PLAN": "AI 會在進行變更前提出計畫",
-  "AI_CHAT_MODE_INFO_EDIT": "AI 可以編輯檔案。Shell 指令需要批准",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以編輯檔案並執行指令，無須批准",
-  "AI_CHAT_MODE_SWITCH_HINT": "(按 Shift+Tab 切換)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除"
 });

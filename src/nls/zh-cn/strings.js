@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "预览",
   "BUILD_WEBSITE": "构建网站",
   "VIEW_MORE": "查看更多...",
-  "NEW_PROJECT_NOTIFICATION": "点击此图标可再次打开“新建项目”窗口。</br>查看最近项目、打开文件夹或从模板启动项目。</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "点击此处或按 <b>`{0}`</b> 美化代码。</br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "在 {APP_NAME} 中打开<b>默认项目</b>即可快速开始（非常适合用作暂存板）。</br></br>或者，使用下面的<strong>打开文件夹</strong>图标从您的计算机打开一个文件夹。<br><a href='#' style='float:right;'>确定</a>",
   "DIRECTORY_REPLACE_MESSAGE": "所选文件夹 <span class='dialog-filename'>{0}</span> 不为空。您确定要用项目替换文件夹内容吗？",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "计划模式",
   "AI_CHAT_MODE_EDIT": "编辑模式",
   "AI_CHAT_MODE_FULL_AUTO": "全自动",
+  "AI_CHAT_MODE_INFO_PLAN": "AI 会在做出更改前提出计划",
+  "AI_CHAT_MODE_INFO_EDIT": "AI 可以编辑文件。Shell 命令需要批准",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以编辑文件和运行命令，无需批准",
+  "AI_CHAT_MODE_SWITCH_HINT": "（Shift+Tab 切换）",
   "AI_CHAT_BASH_CONFIRM_TITLE": "允许命令？",
   "AI_CHAT_BASH_ALLOW": "允许",
   "AI_CHAT_BASH_DENY": "拒绝",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "还有一件事",
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_MODE_INFO_PLAN": "AI 会在做出更改前提出计划",
-  "AI_CHAT_MODE_INFO_EDIT": "AI 可以编辑文件。Shell 命令需要批准",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以编辑文件和运行命令，无需批准",
-  "AI_CHAT_MODE_SWITCH_HINT": "（Shift+Tab 切换）"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除"
 });

@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Aperçu",
   "BUILD_WEBSITE": "Générer le site web",
   "VIEW_MORE": "Voir plus…",
-  "NEW_PROJECT_NOTIFICATION": "Cliquez sur cette icône pour ouvrir à nouveau la fenêtre « Démarrer un projet ».<br> Consultez les projets récents, ouvrez un dossier ou démarrez des projets à partir de modèles.<br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Cliquez ici ou appuyez sur <b>`{0}`</b> pour embellir le code. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Ouvrez le <b>Projet par défaut</b> dans {APP_NAME} pour commencer rapidement (idéal comme bloc-notes).</br></br>Ou, ouvrez un dossier de votre ordinateur avec l'icône <strong>Ouvrir un dossier</strong> ci-dessous.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Le dossier sélectionné <span class='dialog-filename'>{0}</span> n'est pas vide. Êtes-vous sûr de vouloir remplacer le contenu du dossier par le projet ?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Mode Plan",
   "AI_CHAT_MODE_EDIT": "Mode Édition",
   "AI_CHAT_MODE_FULL_AUTO": "Mode Automatique",
+  "AI_CHAT_MODE_INFO_PLAN": "L'IA proposera un plan avant d'apporter des modifications",
+  "AI_CHAT_MODE_INFO_EDIT": "L'IA peut modifier des fichiers. Les commandes shell nécessitent une approbation",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA peut modifier des fichiers et exécuter des commandes sans approbation",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Maj+Tab pour basculer)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Autoriser la commande ?",
   "AI_CHAT_BASH_ALLOW": "Autoriser",
   "AI_CHAT_BASH_DENY": "Refuser",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Une dernière chose",
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "AI_CHAT_MODE_INFO_PLAN": "L'IA proposera un plan avant d'apporter des modifications",
-  "AI_CHAT_MODE_INFO_EDIT": "L'IA peut modifier des fichiers. Les commandes shell nécessitent une approbation",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA peut modifier des fichiers et exécuter des commandes sans approbation",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Maj+Tab pour basculer)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé"
 });

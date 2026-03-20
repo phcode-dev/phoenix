@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Náhled",
   "BUILD_WEBSITE": "Vytvořit web",
   "VIEW_MORE": "Zobrazit více...",
-  "NEW_PROJECT_NOTIFICATION": "Klikněte na tuto ikonu pro opětovné otevření okna `Spustit projekt`.</br> Zobrazte si Nedávné projekty, Otevřít složku nebo spusťte projekty ze šablon.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klikněte sem nebo stiskněte <b>`{0}`</b> pro formátování kódu. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Otevřete <b>Výchozí projekt</b> v aplikaci {APP_NAME} pro rychlý start (ideální jako poznámkový blok).</br></br>Nebo otevřete složku z počítače pomocí ikony <strong>Otevřít složku</strong> níže.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraná složka <span class='dialog-filename'>{0}</span> není prázdná. Jste si jisti, že chcete nahradit obsah složky projektem?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Režim plánování",
   "AI_CHAT_MODE_EDIT": "Režim úprav",
   "AI_CHAT_MODE_FULL_AUTO": "Plně automatický",
+  "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán před provedením změn",
+  "AI_CHAT_MODE_INFO_EDIT": "AI může upravovat soubory. Příkazy shellu vyžadují schválení",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI může upravovat soubory a spouštět příkazy bez schválení",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab pro přepnutí)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Povolit příkaz?",
   "AI_CHAT_BASH_ALLOW": "Povolit",
   "AI_CHAT_BASH_DENY": "Odmítnout",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Ještě jedna věc",
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán před provedením změn",
-  "AI_CHAT_MODE_INFO_EDIT": "AI může upravovat soubory. Příkazy shellu vyžadují schválení",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI může upravovat soubory a spouštět příkazy bez schválení",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab pro přepnutí)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno"
 });

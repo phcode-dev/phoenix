@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Vorschau",
   "BUILD_WEBSITE": "Webseite erstellen",
   "VIEW_MORE": "Mehr anzeigen...",
-  "NEW_PROJECT_NOTIFICATION": "Klicken Sie auf dieses Symbol, um das Fenster „Projekt starten“ erneut zu öffnen.</br> Sehen Sie sich kürzlich bearbeitete Projekte an, öffnen Sie einen Ordner oder starten Sie Projekte aus Vorlagen.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klicken Sie hier oder drücken Sie <b>`{0}`</b>, um Code zu verschönern. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Öffnen Sie das <b>Standardprojekt</b> in {APP_NAME}, um schnell zu starten (ideal als Notizblock).</br></br>Oder öffnen Sie einen Ordner von Ihrem Computer mit dem Symbol <strong>Ordner öffnen</strong> unten.<br><a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Der ausgewählte Ordner <span class='dialog-filename'>{0}</span> ist nicht leer. Möchten Sie den Ordnerinhalt wirklich mit dem Projekt ersetzen?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Plan-Modus",
   "AI_CHAT_MODE_EDIT": "Bearbeitungsmodus",
   "AI_CHAT_MODE_FULL_AUTO": "Vollautomatik",
+  "AI_CHAT_MODE_INFO_PLAN": "Die KI schlägt einen Plan vor, bevor sie Änderungen vornimmt",
+  "AI_CHAT_MODE_INFO_EDIT": "KI kann Dateien bearbeiten. Shell-Befehle müssen genehmigt werden",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kann Dateien bearbeiten und Befehle ohne Genehmigung ausführen",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab zum Wechseln)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Befehl zulassen?",
   "AI_CHAT_BASH_ALLOW": "Zulassen",
   "AI_CHAT_BASH_DENY": "Ablehnen",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Eine Sache noch",
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_MODE_INFO_PLAN": "Die KI schlägt einen Plan vor, bevor sie Änderungen vornimmt",
-  "AI_CHAT_MODE_INFO_EDIT": "KI kann Dateien bearbeiten. Shell-Befehle müssen genehmigt werden",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kann Dateien bearbeiten und Befehle ohne Genehmigung ausführen",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab zum Wechseln)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht"
 });

@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Προεπισκόπηση",
   "BUILD_WEBSITE": "Δημιουργία Ιστοσελίδας",
   "VIEW_MORE": "Δείτε Περισσότερα...",
-  "NEW_PROJECT_NOTIFICATION": "Κάντε κλικ σε αυτό το εικονίδιο για να ανοίξετε ξανά το παράθυρο `Έναρξη Έργου`.</br> Δείτε τα Πρόσφατα Έργα, ανοίξτε Φάκελο ή ξεκινήστε έργα από πρότυπα.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Κάντε κλικ εδώ ή πατήστε <b>`{0}`</b> για να ομορφύνετε τον κώδικα. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Ανοίξτε το <b>Προεπιλεγμένο Έργο</b> στο {APP_NAME} για να ξεκινήσετε γρήγορα (ιδανικό ως πρόχειρο).</br></br>Ή, ανοίξτε έναν φάκελο από τον υπολογιστή σας με το εικονίδιο <strong>Άνοιγμα Φακέλου</strong> παρακάτω.<br><a href='#' style='float:right;'>εντάξει</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Ο επιλεγμένος φάκελος <span class='dialog-filename'>{0}</span> δεν είναι κενός. Είστε σίγουροι ότι θέλετε να αντικαταστήσετε τα περιεχόμενα του φακέλου με το έργο;",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Λειτουργία σχεδιασμού",
   "AI_CHAT_MODE_EDIT": "Λειτουργία επεξεργασίας",
   "AI_CHAT_MODE_FULL_AUTO": "Πλήρως αυτόματο",
+  "AI_CHAT_MODE_INFO_PLAN": "Η AI θα προτείνει ένα σχέδιο πριν κάνει αλλαγές",
+  "AI_CHAT_MODE_INFO_EDIT": "Η AI μπορεί να επεξεργαστεί αρχεία. Οι εντολές shell απαιτούν έγκριση",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Η AI μπορεί να επεξεργαστεί αρχεία και να εκτελέσει εντολές χωρίς έγκριση",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab για εναλλαγή)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Να επιτραπεί η εντολή;",
   "AI_CHAT_BASH_ALLOW": "Αποδοχή",
   "AI_CHAT_BASH_DENY": "Άρνηση",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Κάτι ακόμα",
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_MODE_INFO_PLAN": "Η AI θα προτείνει ένα σχέδιο πριν κάνει αλλαγές",
-  "AI_CHAT_MODE_INFO_EDIT": "Η AI μπορεί να επεξεργαστεί αρχεία. Οι εντολές shell απαιτούν έγκριση",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Η AI μπορεί να επεξεργαστεί αρχεία και να εκτελέσει εντολές χωρίς έγκριση",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab για εναλλαγή)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε"
 });

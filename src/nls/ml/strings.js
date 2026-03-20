@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "പ്രിവ്യൂ",
   "BUILD_WEBSITE": "വെബ്‌സൈറ്റ് നിർമ്മിക്കുക",
   "VIEW_MORE": "കൂടുതൽ കാണുക...",
-  "NEW_PROJECT_NOTIFICATION": "ഈ ഐക്കണിൽ ക്ലിക്ക് ചെയ്‌ത് `പ്രോജക്റ്റ് ആരംഭിക്കുക` വിൻഡോ വീണ്ടും തുറക്കുക.</br> സമീപകാല പ്രോജക്റ്റുകൾ കാണുക, ഫോൾഡർ തുറക്കുക അല്ലെങ്കിൽ ടെംപ്ലേറ്റുകളിൽ നിന്ന് പ്രോജക്റ്റുകൾ ആരംഭിക്കുക.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "കോഡ് മനോഹരമാക്കാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക അല്ലെങ്കിൽ <b>`{0}`</b> അമർത്തുക. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "വേഗത്തിൽ ആരംഭിക്കുന്നതിന് {APP_NAME} ലെ <b>സ്വതവെയുള്ള പ്രോജക്റ്റ്</b> തുറക്കുക (ഒരു സ്ക്രാച്ച് പാഡ് ആയി ഉത്തമം).</br></br>അല്ലെങ്കിൽ, താഴെയുള്ള <strong>ഫോൾഡർ തുറക്കുക</strong> ഐക്കൺ ഉപയോഗിച്ച് നിങ്ങളുടെ കമ്പ്യൂട്ടറിൽ നിന്ന് ഒരു ഫോൾഡർ തുറക്കുക.<br><a href='#' style='float:right;'>ശരി</a>",
   "DIRECTORY_REPLACE_MESSAGE": "തെരഞ്ഞെടുത്ത ഫോൾഡർ <span class='dialog-filename'>{0}</span> ശൂന്യമല്ല. ഫോൾഡറിന്റെ ഉള്ളടക്കങ്ങൾ പ്രോജക്റ്റ് ഉപയോഗിച്ച് മാറ്റിസ്ഥാപിക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "പ്ലാൻ മോഡ്",
   "AI_CHAT_MODE_EDIT": "എഡിറ്റ് മോഡ്",
   "AI_CHAT_MODE_FULL_AUTO": "ഫുൾ ഓട്ടോ",
+  "AI_CHAT_MODE_INFO_PLAN": "മാറ്റങ്ങൾ വരുത്തുന്നതിന് മുമ്പ് എഐ ഒരു പ്ലാൻ നിർദ്ദേശിക്കും",
+  "AI_CHAT_MODE_INFO_EDIT": "എഐക്ക് ഫയലുകൾ എഡിറ്റ് ചെയ്യാൻ കഴിയും. ഷെൽ കമാൻഡുകൾക്ക് അംഗീകാരം ആവശ്യമാണ്",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "അംഗീകാരമില്ലാതെ എഐക്ക് ഫയലുകൾ എഡിറ്റ് ചെയ്യാനും കമാൻഡുകൾ പ്രവർത്തിപ്പിക്കാനും കഴിയും",
+  "AI_CHAT_MODE_SWITCH_HINT": "(മാറാൻ Shift+Tab)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "കമാൻഡ് അനുവദിക്കണോ?",
   "AI_CHAT_BASH_ALLOW": "അനുവദിക്കുക",
   "AI_CHAT_BASH_DENY": "നിരസിക്കുക",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "ഒരു കാര്യം കൂടി",
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_MODE_INFO_PLAN": "മാറ്റങ്ങൾ വരുത്തുന്നതിന് മുമ്പ് എഐ ഒരു പ്ലാൻ നിർദ്ദേശിക്കും",
-  "AI_CHAT_MODE_INFO_EDIT": "എഐക്ക് ഫയലുകൾ എഡിറ്റ് ചെയ്യാൻ കഴിയും. ഷെൽ കമാൻഡുകൾക്ക് അംഗീകാരം ആവശ്യമാണ്",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "അംഗീകാരമില്ലാതെ എഐക്ക് ഫയലുകൾ എഡിറ്റ് ചെയ്യാനും കമാൻഡുകൾ പ്രവർത്തിപ്പിക്കാനും കഴിയും",
-  "AI_CHAT_MODE_SWITCH_HINT": "(മാറാൻ Shift+Tab)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി"
 });
