@@ -441,9 +441,28 @@
     let alertQueue = [], confirmCalled = false, promptCalled = false;
     let addToQueue = true;
     window.__PHOENIX_APP_INFO = {isTauri, platform};
+    const _embeddedInfoCallbacks = [];
     if(!isExternalBrowser){
         // this is an embedded iframe we always take hold of the alert api for better ux within the live preivew frame.
-        window.__PHOENIX_EMBED_INFO = {isTauri, platform};
+        // __PHOENIX_EMBED_INFO will be present in browser popped out windows as its actually an embedded
+        // iframe inside phcode.live server, so to detect if its a truly embedded iframe within phoenix code
+        // itself, rely on the isEmbeddedIframe which will be set with `WHO_AM_I_RESPONSE` handshake
+        window.__PHOENIX_EMBED_INFO = {isTauri, platform, isPhoenixEmbeddedIframe: undefined};
+        /**
+         * Register a callback to be notified when `isPhoenixEmbeddedIframe` is resolved.
+         * The callback is guaranteed to fire in embedded iframes, but NOT guaranteed to fire
+         * in non-embedded (popped out) frames. Do not rely on this to confirm non-embedded state;
+         * instead, assume non-embedded by default and use this only to detect embedded iframes.
+         * If `isPhoenixEmbeddedIframe` is already determined, the callback fires immediately.
+         * @param {function(boolean): void} callback - receives `true` if embedded, `false` if popped out.
+         */
+        window.__PHOENIX_EMBED_INFO.onPhoenixEmbeddedInfoAvailable = function (callback) {
+            if (window.__PHOENIX_EMBED_INFO.isPhoenixEmbeddedIframe !== undefined) {
+                callback(window.__PHOENIX_EMBED_INFO.isPhoenixEmbeddedIframe);
+            } else {
+                _embeddedInfoCallbacks.push(callback);
+            }
+        };
         const shouldPatchAlert = (isTauri && platform === "mac");
         if(shouldPatchAlert){
             // In Mac embedded live preview iframe in tauri, alert, prompt, and confirm apis
@@ -493,6 +512,13 @@
                 // this is set from transport config. We should be here
                 console.error("Expected window.__PHOENIX_EMBED_INFO to be set, but not???");
             }
+            // all embedded iframes will have this set to distinguish between embedded iframes and popped out iframes
+            const isPhoenixEmbeddedIframe = !!event.data.isPhoenixEmbeddedIframe;
+            window.__PHOENIX_EMBED_INFO.isPhoenixEmbeddedIframe = isPhoenixEmbeddedIframe;
+            for (let i = 0; i < _embeddedInfoCallbacks.length; i++) {
+                _embeddedInfoCallbacks[i](isPhoenixEmbeddedIframe);
+            }
+            _embeddedInfoCallbacks.length = 0;
         }
     });
     if(window.self !== window.parent){

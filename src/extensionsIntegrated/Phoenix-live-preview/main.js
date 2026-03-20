@@ -194,7 +194,8 @@ define(function (require, exports, module) {
             iframeDom.contentWindow.postMessage({
                 type: "WHO_AM_I_RESPONSE",
                 isTauri: Phoenix.isNativeApp,
-                platform: Phoenix.platform
+                platform: Phoenix.platform,
+                isPhoenixEmbeddedIframe: true
             }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
         }
     });
