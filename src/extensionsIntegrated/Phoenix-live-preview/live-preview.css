@@ -109,17 +109,20 @@
     align-items: center;
     margin: 3.5px 4px 0 3px;
     cursor: pointer;
-    background: #3C3F41;
+    background: transparent;
     box-shadow: none;
-    border: 1px solid #3C3F41;
+    border: 1px solid transparent;
     box-sizing: border-box;
     color: #a0a0a0;
     padding: 0 0.35em;
 }
 
-.lp-device-size-icon:hover {
-    border: 1px solid rgba(0, 0, 0, 0.24) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+.lp-device-size-icon:hover,
+.lp-device-size-icon:focus,
+.lp-device-size-icon:active {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
 }
 
 #deviceSizeBtn.btn-dropdown::after {
@@ -178,9 +181,12 @@
     padding: 0 0.35em;
 }
 
-#livePreviewModeBtn:hover {
-    border: 1px solid rgba(0, 0, 0, 0.24) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+#livePreviewModeBtn:hover,
+#livePreviewModeBtn:focus,
+#livePreviewModeBtn:active {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
 }
 
 #livePreviewModeBtn.btn-dropdown::after {
