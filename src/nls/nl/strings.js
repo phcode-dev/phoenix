@@ -1745,6 +1745,8 @@ define({
   "AI_CHAT_IMAGE_LIMIT": "Maximaal {0} afbeeldingen toegestaan",
   "AI_CHAT_IMAGE_REMOVE": "Verwijder afbeelding",
   "AI_CHAT_ATTACH_FILE": "Bestanden bijvoegen",
+  "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Voorbeeld",
+  "AI_CHAT_SCREENSHOT_CANCEL": "Annuleren",
   "AI_CHAT_FILE_REMOVE": "Bestand verwijderen",
   "AI_CHAT_QUEUED": "In de wachtrij",
   "AI_CHAT_QUEUED_EDIT": "Bewerken",

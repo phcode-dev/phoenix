@@ -1745,6 +1745,8 @@ define({
   "AI_CHAT_IMAGE_LIMIT": "Дозвољено је максимално {0} слика",
   "AI_CHAT_IMAGE_REMOVE": "Уклони слику",
   "AI_CHAT_ATTACH_FILE": "Приложи датотеке",
+  "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Живи приказ",
+  "AI_CHAT_SCREENSHOT_CANCEL": "Откажи",
   "AI_CHAT_FILE_REMOVE": "Уклони датотеку",
   "AI_CHAT_QUEUED": "На чекању",
   "AI_CHAT_QUEUED_EDIT": "Уреди",
