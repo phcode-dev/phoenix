@@ -2107,6 +2107,7 @@ define({
     "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Preview",
     "AI_CHAT_SCREENSHOT_AREA": "Select Area",
     "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Full Editor",
+    "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live Preview Selection",
     "AI_CHAT_SCREENSHOT_CAPTURE": "Capture",
     "AI_CHAT_SCREENSHOT_CANCEL": "Cancel",
     "AI_CHAT_FILE_REMOVE": "Remove file",
