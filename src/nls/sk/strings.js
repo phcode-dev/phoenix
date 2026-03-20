@@ -1735,6 +1735,8 @@ define({
   "AI_CHAT_IMAGE_LIMIT": "Je povolených maximálne {0} obrázkov",
   "AI_CHAT_IMAGE_REMOVE": "Odstrániť obrázok",
   "AI_CHAT_ATTACH_FILE": "Pripojiť súbory",
+  "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Živý náhľad",
+  "AI_CHAT_SCREENSHOT_CANCEL": "Zrušiť",
   "AI_CHAT_FILE_REMOVE": "Odstrániť súbor",
   "AI_CHAT_QUEUED": "V poradí",
   "AI_CHAT_QUEUED_EDIT": "Upraviť",
