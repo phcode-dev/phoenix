@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Podgląd",
   "BUILD_WEBSITE": "Stwórz stronę internetową",
   "VIEW_MORE": "Zobacz więcej...",
-  "NEW_PROJECT_NOTIFICATION": "Kliknij tę ikonę, aby ponownie otworzyć okno `Rozpocznij projekt`.</br> Zobacz Ostatnie projekty, Otwórz folder lub rozpocznij projekty z szablonów.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kliknij tutaj lub naciśnij <b>`{0}`</b>, aby upiększyć kod. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Otwórz <b>Domyślny projekt</b> w {APP_NAME}, aby szybko rozpocząć (idealny jako brudnopis).</br></br>Możesz też otworzyć folder z komputera za pomocą ikony <strong>Otwórz folder</strong> poniżej.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Wybrany folder <span class='dialog-filename'>{0}</span> nie jest pusty. Czy na pewno chcesz zastąpić zawartość folderu projektem?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Tryb planowania",
   "AI_CHAT_MODE_EDIT": "Tryb edycji",
   "AI_CHAT_MODE_FULL_AUTO": "Pełna automatyzacja",
+  "AI_CHAT_MODE_INFO_PLAN": "AI zaproponuje plan przed wprowadzeniem zmian",
+  "AI_CHAT_MODE_INFO_EDIT": "AI może edytować pliki. Polecenia powłoki wymagają zatwierdzenia",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI może edytować pliki i wykonywać polecenia bez zatwierdzenia",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab, aby przełączyć)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Zezwolić na wykonanie polecenia?",
   "AI_CHAT_BASH_ALLOW": "Zezwól",
   "AI_CHAT_BASH_DENY": "Odmów",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Jeszcze jedno",
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_MODE_INFO_PLAN": "AI zaproponuje plan przed wprowadzeniem zmian",
-  "AI_CHAT_MODE_INFO_EDIT": "AI może edytować pliki. Polecenia powłoki wymagają zatwierdzenia",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI może edytować pliki i wykonywać polecenia bez zatwierdzenia",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab, aby przełączyć)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto"
 });

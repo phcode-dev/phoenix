@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Предпросмотр",
   "BUILD_WEBSITE": "Создать сайт",
   "VIEW_MORE": "Подробнее...",
-  "NEW_PROJECT_NOTIFICATION": "Нажмите на этот значок, чтобы снова открыть окно «Начать проект».</br> Смотрите Недавние проекты, Открыть папку или начните проекты из шаблонов.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Нажмите здесь или <b>`{0}`</b> для форматирования кода. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Откройте <b>Стандартный проект</b> в {APP_NAME} для быстрого начала работы (идеально подходит в качестве черновика).</br></br>Или откройте папку с вашего компьютера с помощью значка <strong>Открыть папку</strong> ниже.<br><a href='#' style='float:right;'>ок</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Выбранная папка <span class='dialog-filename'>{0}</span> не пуста. Вы уверены, что хотите заменить содержимое папки проектом?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Режим плана",
   "AI_CHAT_MODE_EDIT": "Режим редактирования",
   "AI_CHAT_MODE_FULL_AUTO": "Полностью автоматический",
+  "AI_CHAT_MODE_INFO_PLAN": "ИИ предложит план перед внесением изменений",
+  "AI_CHAT_MODE_INFO_EDIT": "ИИ может редактировать файлы. Команды оболочки требуют подтверждения",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "ИИ может редактировать файлы и выполнять команды без подтверждения",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab для переключения)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Разрешить команду?",
   "AI_CHAT_BASH_ALLOW": "Разрешить",
   "AI_CHAT_BASH_DENY": "Запретить",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Еще кое-что",
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_CHAT_MODE_INFO_PLAN": "ИИ предложит план перед внесением изменений",
-  "AI_CHAT_MODE_INFO_EDIT": "ИИ может редактировать файлы. Команды оболочки требуют подтверждения",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "ИИ может редактировать файлы и выполнять команды без подтверждения",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab для переключения)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено"
 });

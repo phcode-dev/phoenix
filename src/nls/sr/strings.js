@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Преглед",
   "BUILD_WEBSITE": "Направи веб-сајт",
   "VIEW_MORE": "Види више...",
-  "NEW_PROJECT_NOTIFICATION": "Кликните на ову икону да бисте поново отворили прозор „Покрени пројекат”.</br> Погледајте Скорије пројекте, Отворите фасциклу или покрените пројекте из шаблона.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Кликните овде или притисните <b>`{0}`</b> да бисте улепшали код. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Отворите <b>Подразумевани пројекат</b> у {APP_NAME} да бисте брзо почели (идеално као бележница).</br></br>Или отворите фасциклу са вашег рачунара помоћу иконе <strong>Отвори фасциклу</strong> испод.<br><a href='#' style='float:right;'>ок</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Изабрана фасцикла <span class='dialog-filename'>{0}</span> није празна. Да ли сте сигурни да желите да замените садржај фасцикле са пројектом?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Режим планирања",
   "AI_CHAT_MODE_EDIT": "Режим уређивања",
   "AI_CHAT_MODE_FULL_AUTO": "Потпуно аутоматски",
+  "AI_CHAT_MODE_INFO_PLAN": "AI ће предложити план пре него што направи измене",
+  "AI_CHAT_MODE_INFO_EDIT": "AI може да уређује датотеке. Команде у терминалу захтевају одобрење",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI може да уређује датотеке и покреће команде без одобрења",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab за пребацивање)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Дозволити команду?",
   "AI_CHAT_BASH_ALLOW": "Дозволи",
   "AI_CHAT_BASH_DENY": "Одбиј",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Још једна ствар",
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_MODE_INFO_PLAN": "AI ће предложити план пре него што направи измене",
-  "AI_CHAT_MODE_INFO_EDIT": "AI може да уређује датотеке. Команде у терминалу захтевају одобрење",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI може да уређује датотеке и покреће команде без одобрења",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab за пребацивање)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано"
 });

@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "پیش نظارہ",
   "BUILD_WEBSITE": "ویب سائٹ بنائیں",
   "VIEW_MORE": "مزید دیکھیں۔۔۔",
-  "NEW_PROJECT_NOTIFICATION": "اس آئیکن پر کلک کریں تاکہ `اسٹارٹ پروجیکٹ` ونڈو دوبارہ کھل جائے۔</br> حالیہ پروجیکٹس دیکھیں، فولڈر کھولیں یا ٹیمپلیٹس سے پروجیکٹس شروع کریں۔</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "کوڈ کو خوبصورت بنانے کے لیے یہاں کلک کریں یا <b>`{0}`</b> دبائیں۔ </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "جلدی شروع کرنے کے لیے {APP_NAME} میں <b>ڈیفالٹ پراجیکٹ</b> کھولیں (اسکریچ پیڈ کے طور پر بہترین)۔</br></br> یا، نیچے دیے گئے <strong>فولڈر کھولیں</strong> آئیکن سے اپنے کمپیوٹر سے ایک فولڈر کھولیں۔<br><a href='#' style='float:right;'>ٹھیک ہے</a>",
   "DIRECTORY_REPLACE_MESSAGE": "منتخب کردہ فولڈر <span class='dialog-filename'>{0}</span> خالی نہیں ہے۔ کیا آپ واقعی فولڈر کے مندرجات کو اس منصوبے سے تبدیل کرنا چاہتے ہیں؟",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "پلان موڈ",
   "AI_CHAT_MODE_EDIT": "ترمیم موڈ",
   "AI_CHAT_MODE_FULL_AUTO": "مکمل خودکار",
+  "AI_CHAT_MODE_INFO_PLAN": "AI تبدیلیاں کرنے سے پہلے ایک منصوبہ تجویز کرے گا۔",
+  "AI_CHAT_MODE_INFO_EDIT": "AI فائلیں ترمیم کر سکتا ہے۔ شیل کمانڈز کے لیے منظوری درکار ہے۔",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI بغیر منظوری کے فائلیں ترمیم اور کمانڈز چلا سکتا ہے۔",
+  "AI_CHAT_MODE_SWITCH_HINT": "(تبدیل کرنے کے لیے Shift+Tab)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "کمانڈ کی اجازت؟",
   "AI_CHAT_BASH_ALLOW": "اجازت دیں",
   "AI_CHAT_BASH_DENY": "انکار کریں",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "ایک اور بات",
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_MODE_INFO_PLAN": "AI تبدیلیاں کرنے سے پہلے ایک منصوبہ تجویز کرے گا۔",
-  "AI_CHAT_MODE_INFO_EDIT": "AI فائلیں ترمیم کر سکتا ہے۔ شیل کمانڈز کے لیے منظوری درکار ہے۔",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI بغیر منظوری کے فائلیں ترمیم اور کمانڈز چلا سکتا ہے۔",
-  "AI_CHAT_MODE_SWITCH_HINT": "(تبدیل کرنے کے لیے Shift+Tab)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ"
 });

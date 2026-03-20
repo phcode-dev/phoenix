@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Преглед",
   "BUILD_WEBSITE": "Създаване на уебсайт",
   "VIEW_MORE": "Виж още...",
-  "NEW_PROJECT_NOTIFICATION": "Щракнете върху тази икона, за да отворите отново прозореца „Стартиране на проект“.</br> Вижте Последни проекти, Отваряне на папка или стартирайте проекти от шаблони.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Щракнете тук или натиснете <b>`{0}`</b>, за да форматирате кода. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Отворете <b>Примерния проект</b> в {APP_NAME} за бърз старт (идеален е като чернова).</br></br>Или отворете папка от вашия компютър с иконата <strong>Отваряне на папка</strong> по-долу.<br><a href='#' style='float:right;'>ок</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Избраната папка <span class='dialog-filename'>{0}</span> не е празна. Сигурни ли сте, че искате да замените съдържанието на папката с проекта?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Режим на планиране",
   "AI_CHAT_MODE_EDIT": "Режим на редактиране",
   "AI_CHAT_MODE_FULL_AUTO": "Пълен автоматичен",
+  "AI_CHAT_MODE_INFO_PLAN": "ИИ ще предложи план, преди да извърши промени",
+  "AI_CHAT_MODE_INFO_EDIT": "ИИ може да редактира файлове. Командите в конзолата изискват одобрение",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "ИИ може да редактира файлове и да изпълнява команди без одобрение",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab за превключване)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Да се разреши ли командата?",
   "AI_CHAT_BASH_ALLOW": "Разреши",
   "AI_CHAT_BASH_DENY": "Откажи",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Още нещо",
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_MODE_INFO_PLAN": "ИИ ще предложи план, преди да извърши промени",
-  "AI_CHAT_MODE_INFO_EDIT": "ИИ може да редактира файлове. Командите в конзолата изискват одобрение",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "ИИ може да редактира файлове и да изпълнява команди без одобрение",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab за превключване)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит"
 });

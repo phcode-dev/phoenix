@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "미리보기",
   "BUILD_WEBSITE": "웹사이트 빌드",
   "VIEW_MORE": "더 보기...",
-  "NEW_PROJECT_NOTIFICATION": "이 아이콘을 클릭하면 `프로젝트 시작` 창이 다시 열립니다.</br> 최근 프로젝트 보기, 폴더 열기 또는 템플릿에서 프로젝트 시작하기.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "여기를 클릭하거나 <b>`{0}`</b>을 눌러 코드를 정리하세요. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "시작하기 안내를 위해 {APP_NAME}에서 <b>기본 프로젝트</b>를 열어보세요(메모장으로 적합).</br></br>또는 아래의 <strong>폴더 열기</strong> 아이콘을 사용하여 컴퓨터에서 폴더를 열 수 있습니다.<br><a href='#' style='float:right;'>확인</a>",
   "DIRECTORY_REPLACE_MESSAGE": "선택한 폴더 <span class='dialog-filename'>{0}</span>이 비어 있지 않습니다. 폴더 내용을 프로젝트로 바꾸시겠습니까?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "계획 모드",
   "AI_CHAT_MODE_EDIT": "편집 모드",
   "AI_CHAT_MODE_FULL_AUTO": "완전 자동",
+  "AI_CHAT_MODE_INFO_PLAN": "AI가 변경하기 전에 계획을 제안합니다.",
+  "AI_CHAT_MODE_INFO_EDIT": "AI가 파일을 수정할 수 있습니다. 셸 명령어는 승인이 필요합니다.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI가 승인 없이 파일을 수정하고 명령어를 실행할 수 있습니다.",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab으로 전환)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "명령을 허용하시겠습니까?",
   "AI_CHAT_BASH_ALLOW": "허용",
   "AI_CHAT_BASH_DENY": "거부",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "한 가지 더",
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_MODE_INFO_PLAN": "AI가 변경하기 전에 계획을 제안합니다.",
-  "AI_CHAT_MODE_INFO_EDIT": "AI가 파일을 수정할 수 있습니다. 셸 명령어는 승인이 필요합니다.",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI가 승인 없이 파일을 수정하고 명령어를 실행할 수 있습니다.",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab으로 전환)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨"
 });

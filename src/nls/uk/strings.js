@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Попередній перегляд",
   "BUILD_WEBSITE": "Створити вебсайт",
   "VIEW_MORE": "Дивитися більше...",
-  "NEW_PROJECT_NOTIFICATION": "Натисніть цю піктограму, щоб знову відкрити вікно `Почати проєкт`.</br> Перегляньте Останні проєкти, Відкрийте папку або почніть проєкти з шаблонів.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Натисніть тут або натисніть <b>`{0}`</b>, щоб покращити форматування коду. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Відкрийте <b>Типовий проєкт</b> в {APP_NAME} для швидкого старту (ідеально як чернетка).</br></br>Або відкрийте папку з вашого комп'ютера за допомогою значка <strong>Відкрити папку</strong> нижче.<br><a href='#' style='float:right;'>гаразд</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Вибрана папка <span class='dialog-filename'>{0}</span> не пуста. Ви впевнені, що хочете замінити вміст папки проєктом?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Режим планування",
   "AI_CHAT_MODE_EDIT": "Режим редагування",
   "AI_CHAT_MODE_FULL_AUTO": "Повний авторежим",
+  "AI_CHAT_MODE_INFO_PLAN": "ШІ запропонує план перед внесенням змін",
+  "AI_CHAT_MODE_INFO_EDIT": "ШІ може редагувати файли. Команди оболонки потребують підтвердження",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "ШІ може редагувати файли та виконувати команди без підтвердження",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab, щоб перемкнути)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Дозволити команду?",
   "AI_CHAT_BASH_ALLOW": "Дозволити",
   "AI_CHAT_BASH_DENY": "Відхилити",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Ще дещо",
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_MODE_INFO_PLAN": "ШІ запропонує план перед внесенням змін",
-  "AI_CHAT_MODE_INFO_EDIT": "ШІ може редагувати файли. Команди оболонки потребують підтвердження",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "ШІ може редагувати файли та виконувати команди без підтвердження",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab, щоб перемкнути)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено"
 });

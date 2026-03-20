@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Önizleme",
   "BUILD_WEBSITE": "Web Sitesi Oluştur",
   "VIEW_MORE": "Daha Fazla...",
-  "NEW_PROJECT_NOTIFICATION": "Bu simgeye tıklayarak `Proje Başlat` penceresini tekrar açın.</br> Son Projelere bakın, Klasör Açın veya şablonlardan projeler başlatın.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kodu güzelleştirmek için buraya tıklayın veya <b>`{0}`</b> tuşuna basın. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Hızlı başlangıç için {APP_NAME} uygulamasında <b>Varsayılan Proje</b>'yi açın (not defteri olarak idealdir).</br></br>Veya, aşağıdaki <strong>Klasör Aç</strong> simgesiyle bilgisayarınızdan bir klasör açın.<br><a href='#' style='float:right;'>tamam</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Seçilen klasör <span class='dialog-filename'>{0}</span> boş değil. Klasör içeriğini proje ile değiştirmek istediğinizden emin misiniz?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Plan Modu",
   "AI_CHAT_MODE_EDIT": "Düzenleme Modu",
   "AI_CHAT_MODE_FULL_AUTO": "Tam Otomatik",
+  "AI_CHAT_MODE_INFO_PLAN": "Yapay Zeka, değişiklik yapmadan önce bir plan önerecektir",
+  "AI_CHAT_MODE_INFO_EDIT": "Yapay Zeka dosyaları düzenleyebilir. Shell komutları onay gerektirir",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Yapay Zeka, onay almadan dosyaları düzenleyebilir ve komutları çalıştırabilir",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Geçiş yapmak için Shift+Tab)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Komuta izin verilsin mi?",
   "AI_CHAT_BASH_ALLOW": "İzin Ver",
   "AI_CHAT_BASH_DENY": "Reddet",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Bir şey daha",
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_MODE_INFO_PLAN": "Yapay Zeka, değişiklik yapmadan önce bir plan önerecektir",
-  "AI_CHAT_MODE_INFO_EDIT": "Yapay Zeka dosyaları düzenleyebilir. Shell komutları onay gerektirir",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Yapay Zeka, onay almadan dosyaları düzenleyebilir ve komutları çalıştırabilir",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Geçiş yapmak için Shift+Tab)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi"
 });

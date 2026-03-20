@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Anteprima",
   "BUILD_WEBSITE": "Crea sito web",
   "VIEW_MORE": "Vedi altro...",
-  "NEW_PROJECT_NOTIFICATION": "Fai clic su questa icona per aprire nuovamente la finestra `Avvia progetto`.</br> Visualizza i progetti recenti, apri una cartella o avvia progetti da modelli.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Fai clic qui o premi <b>`{0}`</b> per formattare il codice. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Apri il <b>Progetto predefinito</b> in {APP_NAME} per iniziare rapidamente (ideale come blocco note).</br></br>Oppure, apri una cartella dal tuo computer con l'icona <strong>Apri cartella</strong> qui sotto.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "La cartella selezionata <span class='dialog-filename'>{0}</span> non è vuota. Sei sicuro di voler sostituire il contenuto della cartella con il progetto?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Modalità Pianificazione",
   "AI_CHAT_MODE_EDIT": "Modalità Modifica",
   "AI_CHAT_MODE_FULL_AUTO": "Completamente Automatico",
+  "AI_CHAT_MODE_INFO_PLAN": "L'IA proporrà un piano prima di apportare modifiche",
+  "AI_CHAT_MODE_INFO_EDIT": "L'IA può modificare i file. I comandi shell richiedono approvazione",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA può modificare i file ed eseguire comandi senza approvazione",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab per passare)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Consentire il comando?",
   "AI_CHAT_BASH_ALLOW": "Consenti",
   "AI_CHAT_BASH_DENY": "Nega",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Un'ultima cosa",
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "AI_CHAT_MODE_INFO_PLAN": "L'IA proporrà un piano prima di apportare modifiche",
-  "AI_CHAT_MODE_INFO_EDIT": "L'IA può modificare i file. I comandi shell richiedono approvazione",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA può modificare i file ed eseguire comandi senza approvazione",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab per passare)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato"
 });

@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Forhåndsvisning",
   "BUILD_WEBSITE": "Opbyg website",
   "VIEW_MORE": "Se mere...",
-  "NEW_PROJECT_NOTIFICATION": "Klik på dette ikon for at åbne vinduet `Start projekt` igen.</br> Se Seneste Projekter, Åbn Mappe eller start projekter fra skabeloner.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klik her eller tryk på <b>`{0}`</b> for at formattere kode. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Åbn <b>Standardprojektet</b> i {APP_NAME} for at komme hurtigt i gang (ideelt som et kladde).</br></br>Eller åbn en mappe fra din computer med ikonet <strong>Åbn mappe</strong> nedenfor.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valgte mappe <span class='dialog-filename'>{0}</span> er ikke tom. Er du sikker på, at du vil erstatte mappeindholdet med projektet?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Plantilstand",
   "AI_CHAT_MODE_EDIT": "Redigeringstilstand",
   "AI_CHAT_MODE_FULL_AUTO": "Fuldautomatisk",
+  "AI_CHAT_MODE_INFO_PLAN": "AI vil foreslå en plan, før den foretager ændringer",
+  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigere filer. Shell-kommandoer kræver godkendelse",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigere filer og køre kommandoer uden godkendelse",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab for at skifte)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Tillad kommando?",
   "AI_CHAT_BASH_ALLOW": "Tillad",
   "AI_CHAT_BASH_DENY": "Afvis",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "En ting mere",
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_MODE_INFO_PLAN": "AI vil foreslå en plan, før den foretager ændringer",
-  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigere filer. Shell-kommandoer kræver godkendelse",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigere filer og køre kommandoer uden godkendelse",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab for at skifte)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet"
 });

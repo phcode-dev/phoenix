@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Förhandsgranska",
   "BUILD_WEBSITE": "Skapa webbplats",
   "VIEW_MORE": "Visa mer...",
-  "NEW_PROJECT_NOTIFICATION": "Klicka på den här ikonen för att öppna fönstret `Starta projekt` igen.</br> Se Senaste projekt, Öppna mapp eller starta projekt från mallar.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klicka här eller tryck på <b>`{0}`</b> för att snygga till koden. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Öppna <b>Standardprojektet</b> i {APP_NAME} för att komma igång snabbt (perfekt som ett kladdblock).</br></br>Eller öppna en mapp från din dator med ikonen <strong>Öppna mapp</strong> nedan.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valda mappen <span class='dialog-filename'>{0}</span> är inte tom. Är du säker på att du vill ersätta mappens innehåll med projektet?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Planeringsläge",
   "AI_CHAT_MODE_EDIT": "Redigeringsläge",
   "AI_CHAT_MODE_FULL_AUTO": "Helautomatiskt",
+  "AI_CHAT_MODE_INFO_PLAN": "AI föreslår en plan innan den gör ändringar",
+  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigera filer. Skalkommandon kräver godkännande",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigera filer och köra kommandon utan godkännande",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab för att växla)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Tillåt kommando?",
   "AI_CHAT_BASH_ALLOW": "Tillåt",
   "AI_CHAT_BASH_DENY": "Neka",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "En sak till",
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_MODE_INFO_PLAN": "AI föreslår en plan innan den gör ändringar",
-  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigera filer. Skalkommandon kräver godkännande",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigera filer och köra kommandon utan godkännande",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab för att växla)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat"
 });

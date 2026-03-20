@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "プレビュー",
   "BUILD_WEBSITE": "ウェブサイトをビルド",
   "VIEW_MORE": "もっと見る…",
-  "NEW_PROJECT_NOTIFICATION": "このアイコンをクリックすると、「プロジェクトを開始」ウィンドウが再び開きます。</br> 最近のプロジェクトの表示、フォルダを開く、またはテンプレートからプロジェクトを開始できます。</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "ここをクリックするか、<b>`{0}`</b>を押してコードを整形します。</br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "{APP_NAME}で<b>デフォルトプロジェクト</b>を開くとすぐに作業を開始できます（メモ帳として最適です）。</br></br>または、下の<strong>フォルダを開く</strong>アイコンをクリックしてコンピュータからフォルダを開きます。<br><a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選択したフォルダ <span class='dialog-filename'>{0}</span> は空ではありません。本当にフォルダの内容をプロジェクトで置き換えますか？",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "計画モード",
   "AI_CHAT_MODE_EDIT": "編集モード",
   "AI_CHAT_MODE_FULL_AUTO": "フルオート",
+  "AI_CHAT_MODE_INFO_PLAN": "ＡＩが変更前にプランを提案します",
+  "AI_CHAT_MODE_INFO_EDIT": "ＡＩはファイルを編集できます。シェルコマンドには承認が必要です",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "ＡＩは承認なしでファイルを編集し、コマンドを実行できます",
+  "AI_CHAT_MODE_SWITCH_HINT": "（Shift+Tabで切り替え）",
   "AI_CHAT_BASH_CONFIRM_TITLE": "コマンドを許可しますか？",
   "AI_CHAT_BASH_ALLOW": "許可",
   "AI_CHAT_BASH_DENY": "拒否",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "最後にもう一つ",
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_MODE_INFO_PLAN": "ＡＩが変更前にプランを提案します",
-  "AI_CHAT_MODE_INFO_EDIT": "ＡＩはファイルを編集できます。シェルコマンドには承認が必要です",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "ＡＩは承認なしでファイルを編集し、コマンドを実行できます",
-  "AI_CHAT_MODE_SWITCH_HINT": "（Shift+Tabで切り替え）"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み"
 });

@@ -1151,7 +1151,6 @@ define({
   "PREVIEW": "Pregled",
   "BUILD_WEBSITE": "Izradi web-stranicu",
   "VIEW_MORE": "Prikaži više...",
-  "NEW_PROJECT_NOTIFICATION": "Kliknite ovu ikonu da biste ponovno otvorili prozor `Pokreni projekt`.</br> Pogledajte Nedavne projekte, Otvorite mapu ili pokrenite projekte iz predložaka.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kliknite ovdje ili pritisnite <b>`{0}`</b> za uljepšavanje koda. </br> <img src=\"styles/images/beautify.gif\">",
   "DEFAULT_PROJECT_NOTIFICATION": "Otvorite <b>Zadani projekt</b> u {APP_NAME} za brzi početak (idealno kao radna bilježnica).</br></br>Ili otvorite mapu s računala pomoću ikone <strong>Otvori mapu</strong> ispod.<br><a href='#' style='float:right;'>u redu</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Odabrana mapa <span class='dialog-filename'>{0}</span> nije prazna. Jeste li sigurni da želite zamijeniti sadržaj mape s projektom?",
@@ -1717,6 +1716,10 @@ define({
   "AI_CHAT_MODE_PLAN": "Način planiranja",
   "AI_CHAT_MODE_EDIT": "Način uređivanja",
   "AI_CHAT_MODE_FULL_AUTO": "Potpuno automatski",
+  "AI_CHAT_MODE_INFO_PLAN": "AI će predložiti plan prije unošenja izmjena",
+  "AI_CHAT_MODE_INFO_EDIT": "AI može uređivati datoteke. Naredbe ljuske zahtijevaju odobrenje",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI može uređivati datoteke i izvršavati naredbe bez odobrenja",
+  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab za prebacivanje)",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Dopustiti naredbu?",
   "AI_CHAT_BASH_ALLOW": "Dopusti",
   "AI_CHAT_BASH_DENY": "Odbij",
@@ -1863,9 +1866,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Još jedna stvar",
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_CHAT_MODE_INFO_PLAN": "AI će predložiti plan prije unošenja izmjena",
-  "AI_CHAT_MODE_INFO_EDIT": "AI može uređivati datoteke. Naredbe ljuske zahtijevaju odobrenje",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI može uređivati datoteke i izvršavati naredbe bez odobrenja",
-  "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab za prebacivanje)"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano"
 });
