@@ -1891,6 +1891,12 @@ define({
   "AI_CHAT_IMAGE_LIMIT": "Maximum {0} images allowed",
   "AI_CHAT_IMAGE_REMOVE": "Remove image",
   "AI_CHAT_ATTACH_FILE": "Attach files",
+  "AI_CHAT_SCREENSHOT_TITLE": "Take Screenshot",
+  "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Preview",
+  "AI_CHAT_SCREENSHOT_AREA": "Select Area",
+  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Full Editor",
+  "AI_CHAT_SCREENSHOT_CAPTURE": "Capture",
+  "AI_CHAT_SCREENSHOT_CANCEL": "Cancel",
   "AI_CHAT_FILE_REMOVE": "Remove file",
   "AI_CHAT_QUEUED": "Queued",
   "AI_CHAT_QUEUED_EDIT": "Edit",
@@ -2021,10 +2027,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_CHAT_SCREENSHOT_TITLE": "Take Screenshot",
-  "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Preview",
-  "AI_CHAT_SCREENSHOT_AREA": "Select Area",
-  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Full Editor",
-  "AI_CHAT_SCREENSHOT_CAPTURE": "Capture",
-  "AI_CHAT_SCREENSHOT_CANCEL": "Cancel"
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live Preview Selection",
+  "AI_CHAT_PRIVACY_TITLE": "Start AI Chat with Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "To provide responses, this feature sends your prompts and relevant context to Claude Code.<br><br><a class='ai-privacy-link'>Learn more and manage your privacy settings</a>.",
+  "AI_CHAT_PRIVACY_OK": "OK"
 });

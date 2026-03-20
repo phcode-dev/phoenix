@@ -1891,8 +1891,13 @@ define({
   "AI_CHAT_IMAGE_LIMIT": "Enintään {0} kuvaa sallittu",
   "AI_CHAT_IMAGE_REMOVE": "Poista kuva",
   "AI_CHAT_ATTACH_FILE": "Liitä tiedostoja",
+  "AI_CHAT_SCREENSHOT_TITLE": "Ota näyttökuva",
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Esikatselu",
+  "AI_CHAT_SCREENSHOT_AREA": "Valitse alue",
+  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Koko editori",
+  "AI_CHAT_SCREENSHOT_CAPTURE": "Kaappaa",
   "AI_CHAT_SCREENSHOT_CANCEL": "Peruuta",
+  "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Poista tiedosto",
   "AI_CHAT_QUEUED": "Jonossa",
   "AI_CHAT_QUEUED_EDIT": "Muokkaa",
@@ -2023,8 +2028,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_SCREENSHOT_TITLE": "Ota näyttökuva",
-  "AI_CHAT_SCREENSHOT_AREA": "Valitse alue",
-  "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Koko editori",
-  "AI_CHAT_SCREENSHOT_CAPTURE": "Kaappaa"
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Valinnan reaaliaikainen esikatselu",
+  "AI_CHAT_PRIVACY_TITLE": "Aloita tekoälykeskustelu Claude Codella",
+  "AI_CHAT_PRIVACY_BODY": "Vastausten antamiseksi tämä ominaisuus lähettää kehotteesi ja asiaankuuluvan kontekstin Claude Code -palveluun.<br><br><a class='ai-privacy-link'>Lue lisää ja hallinnoi tietosuoja-asetuksiasi</a>."
 });
