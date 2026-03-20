@@ -1862,15 +1862,21 @@
                 width: 16px;
                 height: 16px;
                 border-radius: 50%;
-                background: rgba(0, 0, 0, 0.7);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                color: @project-panel-text-2;
+                background: rgba(255, 255, 255, 0.12);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                color: rgba(255, 255, 255, 0.7);
                 font-size: 11px;
                 padding: 0;
                 display: none;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
+                transition: background 150ms, color 150ms;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.22);
+                    color: #fff;
+                }
             }
 
             &:hover .ai-image-remove {
@@ -1904,15 +1910,21 @@
                 width: 16px;
                 height: 16px;
                 border-radius: 50%;
-                background: rgba(0, 0, 0, 0.7);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                color: @project-panel-text-2;
+                background: rgba(255, 255, 255, 0.12);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                color: rgba(255, 255, 255, 0.7);
                 font-size: 11px;
                 padding: 0;
                 display: none;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
+                transition: background 150ms, color 150ms;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.22);
+                    color: #fff;
+                }
             }
 
             &:hover .ai-file-remove {
