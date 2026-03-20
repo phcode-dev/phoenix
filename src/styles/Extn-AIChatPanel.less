@@ -1690,6 +1690,7 @@
 
 /* ── Input area ─────────────────────────────────────────────────────── */
 .ai-chat-input-area {
+    position: relative;
     flex-shrink: 0;
     padding: 6px 8px 8px 8px;
 
@@ -1980,6 +1981,30 @@
         }
     }
 
+    .ai-screenshot-btn {
+        background: none;
+        border: none;
+        color: @project-panel-text-2;
+        width: 28px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        align-self: stretch;
+        opacity: 0.5;
+        transition: opacity 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            opacity: 1;
+            color: @project-panel-text-1;
+        }
+
+        i {
+            font-size: @sidebar-content-font-size;
+        }
+    }
+
     .ai-send-btn {
         background: none;
         border: none;
@@ -2031,6 +2056,89 @@
 
         i {
             font-size: @sidebar-content-font-size;
+        }
+    }
+
+    .ai-screenshot-dropup {
+        position: fixed;
+        background: @bc-ai-input-bg;
+        border: 1px solid @bc-ai-input-border;
+        border-radius: 8px;
+        padding: 4px 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+        min-width: 200px;
+
+        .ai-screenshot-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            color: @project-panel-text-1;
+            font-size: @sidebar-content-font-size;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            i {
+                width: 16px;
+                text-align: center;
+                opacity: 0.7;
+            }
+        }
+    }
+}
+
+/* ── Screenshot area selection overlay ─────────────────────────────── */
+.ai-screenshot-overlay {
+    position: fixed;
+    z-index: 10000;
+    cursor: crosshair;
+
+    .ai-screenshot-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .ai-screenshot-toolbar {
+        position: absolute;
+        display: flex;
+        gap: 8px;
+        padding: 6px;
+        background: rgba(30, 30, 30, 0.9);
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+        button {
+            border: none;
+            border-radius: 4px;
+            padding: 4px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        .ai-screenshot-capture-btn {
+            background: #4fc3f7;
+            color: #000;
+
+            &:hover {
+                background: #81d4fa;
+            }
+        }
+
+        .ai-screenshot-cancel-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ccc;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
         }
     }
 }
