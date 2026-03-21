@@ -2086,6 +2086,7 @@ define({
     "AI_CHAT_MODE_INFO_EDIT": "AI can edit files. Shell commands need approval",
     "AI_CHAT_MODE_INFO_FULL_AUTO": "AI can edit files and run commands without approval",
     "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab to switch)",
+    "AI_CHAT_INPUT_HINT": "Press {0} to send · {1} for new line",
     "AI_CHAT_BASH_CONFIRM_TITLE": "Allow command?",
     "AI_CHAT_BASH_ALLOW": "Allow",
     "AI_CHAT_BASH_DENY": "Deny",
