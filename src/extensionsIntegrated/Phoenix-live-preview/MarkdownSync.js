@@ -451,12 +451,12 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Set cursor to the clicked line (suppress scroll-sync echo back)
+        // Set cursor without CM's default scroll, then center manually
         _syncingFromIframe = true;
-        cm.setCursor({ line: cmLine, ch: 0 });
+        cm.setCursor({ line: cmLine, ch: 0 }, null, { scroll: false });
         _syncingFromIframe = false;
 
-        // Scroll only if line is not already visible
+        // Always center the cursor line in the editor
         const scrollInfo = cm.getScrollInfo();
         const lineTop = cm.charCoords({ line: cmLine, ch: 0 }, "local").top;
         const lineBottom = cm.charCoords({ line: cmLine, ch: 0 }, "local").bottom;
@@ -464,7 +464,6 @@ define(function (require, exports, module) {
         const viewBottom = scrollInfo.top + scrollInfo.clientHeight;
 
         if (lineTop < viewTop || lineBottom > viewBottom) {
-            // Centre the line vertically in the editor
             const targetScrollTop = lineTop - (scrollInfo.clientHeight / 2);
             cm.scrollTo(null, targetScrollTop);
         }
