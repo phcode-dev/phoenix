@@ -2,7 +2,11 @@
  * Minimal embedded toolbar for Phoenix live preview.
  * Read mode: "Edit" button
  * Edit mode: Format row + "Done" button
- * Responsive: collapses into dropdown groups when narrow.
+ * Responsive: progressively collapses groups into dropdowns as width shrinks.
+ *   Level 0: all expanded
+ *   Level 1: block elements collapse
+ *   Level 2: block elements + lists collapse
+ *   Level 3: all groups collapse
  */
 import {
     createIcons,
@@ -30,10 +34,12 @@ import { t, tp } from "../core/i18n.js";
 
 let toolbar = null;
 let resizeObserver = null;
-let isCollapsed = false;
+let collapseLevel = 0; // 0=expanded, 1=blocks, 2=blocks+lists, 3=all
 
-// Minimum width needed for the expanded toolbar (block-type-select ~90 + 15 buttons*24 + dividers + done ~50)
-const COLLAPSE_WIDTH = 520;
+// Width thresholds for progressive collapse
+const THRESHOLD_BLOCKS = 480;  // collapse block elements first
+const THRESHOLD_LISTS = 390;   // then lists
+const THRESHOLD_TEXT = 300;    // finally text formatting
 
 const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
     ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil };
@@ -59,7 +65,7 @@ function render() {
     }
 
     if (state.editMode) {
-        renderEditMode(isCollapsed);
+        renderEditMode(collapseLevel);
         setupResponsiveToggle();
     } else {
         renderReadMode();
@@ -85,7 +91,18 @@ function renderReadMode() {
     }
 }
 
-function renderEditMode(collapsed) {
+function btn(id, icon, tooltip) {
+    return `<button class="toolbar-btn format-btn" id="${id}" data-tooltip="${tooltip}" aria-pressed="false"><i data-lucide="${icon}"></i></button>`;
+}
+
+function dropdown(group, triggerIcon, tooltip, content) {
+    return `<div class="toolbar-dropdown" data-group="${group}">
+        <button class="toolbar-btn toolbar-dropdown-trigger" data-tooltip="${tooltip}"><i data-lucide="${triggerIcon}"></i><i data-lucide="chevron-down" class="dropdown-chevron"></i></button>
+        <div class="toolbar-dropdown-panel">${content}</div>
+    </div>`;
+}
+
+function renderEditMode(level) {
     const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
     const mod = isMac ? "\u2318" : "Ctrl";
 
@@ -96,9 +113,6 @@ function renderEditMode(collapsed) {
             <option value="<h2>">${t("slash.heading2") || "Heading 2"}</option>
             <option value="<h3>">${t("slash.heading3") || "Heading 3"}</option>
         </select>`;
-
-    const btn = (id, icon, tooltip) =>
-        `<button class="toolbar-btn format-btn" id="${id}" data-tooltip="${tooltip}" aria-pressed="false"><i data-lucide="${icon}"></i></button>`;
 
     const textBtns = [
         btn("emb-bold", "bold", tp("format.bold", { mod }) || "Bold"),
@@ -122,37 +136,31 @@ function renderEditMode(collapsed) {
         btn("emb-codeblock", "file-code", t("format.code_block") || "Code block")
     ].join("");
 
-    let formatRow;
-    if (collapsed) {
-        formatRow = `
+    // Build the text section (inline or dropdown)
+    const textSection = level >= 3
+        ? dropdown("text", "type", t("format.text_formatting") || "Text formatting", textBtns)
+        : textBtns;
+
+    // Build the list section (inline or dropdown)
+    const listSection = level >= 2
+        ? dropdown("lists", "list", t("format.lists") || "Lists", listBtns)
+        : listBtns;
+
+    // Build the block section (inline or dropdown)
+    const blockSection = level >= 1
+        ? dropdown("blocks", "more-horizontal", t("format.more_elements") || "More", blockBtns)
+        : blockBtns;
+
+    const formatRow = `
         <div class="format-row">
             ${blockTypeSelect}
             <div class="toolbar-divider"></div>
-            <div class="toolbar-dropdown" data-group="text">
-                <button class="toolbar-btn toolbar-dropdown-trigger" data-tooltip="${t("format.text_formatting") || "Text formatting"}"><i data-lucide="type"></i><i data-lucide="chevron-down" class="dropdown-chevron"></i></button>
-                <div class="toolbar-dropdown-panel">${textBtns}</div>
-            </div>
-            <div class="toolbar-dropdown" data-group="lists">
-                <button class="toolbar-btn toolbar-dropdown-trigger" data-tooltip="${t("format.lists") || "Lists"}"><i data-lucide="list"></i><i data-lucide="chevron-down" class="dropdown-chevron"></i></button>
-                <div class="toolbar-dropdown-panel">${listBtns}</div>
-            </div>
-            <div class="toolbar-dropdown" data-group="blocks">
-                <button class="toolbar-btn toolbar-dropdown-trigger" data-tooltip="${t("format.more_elements") || "More"}"><i data-lucide="more-horizontal"></i><i data-lucide="chevron-down" class="dropdown-chevron"></i></button>
-                <div class="toolbar-dropdown-panel">${blockBtns}</div>
-            </div>
+            ${textSection}
+            <div class="toolbar-divider"></div>
+            ${listSection}
+            <div class="toolbar-divider"></div>
+            ${blockSection}
         </div>`;
-    } else {
-        formatRow = `
-        <div class="format-row">
-            ${blockTypeSelect}
-            <div class="toolbar-divider"></div>
-            ${textBtns}
-            <div class="toolbar-divider"></div>
-            ${listBtns}
-            <div class="toolbar-divider"></div>
-            ${blockBtns}
-        </div>`;
-    }
 
     toolbar.innerHTML = `<div class="embedded-toolbar">
         ${formatRow}
@@ -166,7 +174,7 @@ function renderEditMode(collapsed) {
 
     wireFormatButtons();
     wireBlockTypeSelect();
-    if (collapsed) {
+    if (level > 0) {
         wireDropdowns();
     }
     wireDoneButton();
@@ -250,15 +258,20 @@ function wireDoneButton() {
     }
 }
 
+function widthToCollapseLevel(width) {
+    if (width < THRESHOLD_TEXT) return 3;
+    if (width < THRESHOLD_LISTS) return 2;
+    if (width < THRESHOLD_BLOCKS) return 1;
+    return 0;
+}
+
 function setupResponsiveToggle() {
-    // Observe the #toolbar element (grid-constrained) not .embedded-toolbar (can overflow)
     function checkWidth() {
         const width = toolbar.offsetWidth;
-        const shouldCollapse = width < COLLAPSE_WIDTH;
-        if (shouldCollapse !== isCollapsed) {
-            isCollapsed = shouldCollapse;
-            renderEditMode(isCollapsed);
-            // Re-attach observer after re-render
+        const newLevel = widthToCollapseLevel(width);
+        if (newLevel !== collapseLevel) {
+            collapseLevel = newLevel;
+            renderEditMode(collapseLevel);
             resizeObserver.observe(toolbar);
         }
     }
