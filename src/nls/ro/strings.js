@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Previzualizare interactivă",
   "AI_CHAT_SCREENSHOT_AREA": "Selectează zona",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Editorul complet",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Previzualizare live selecție",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Capturează",
   "AI_CHAT_SCREENSHOT_CANCEL": "Revocare",
+  "AI_CHAT_PRIVACY_TITLE": "Începeți chatul AI cu Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Pentru a oferi răspunsuri, această funcționalitate trimite prompturile dvs. și contextul relevant către Claude Code.<br><br><a class='ai-privacy-link'>Aflați mai multe și gestionați-vă setările de confidențialitate</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Elimină fișierul",
   "AI_CHAT_QUEUED": "În coadă",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Previzualizare live selecție",
-  "AI_CHAT_PRIVACY_TITLE": "Începeți chatul AI cu Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Pentru a oferi răspunsuri, această funcționalitate trimite prompturile dvs. și contextul relevant către Claude Code.<br><br><a class='ai-privacy-link'>Aflați mai multe și gestionați-vă setările de confidențialitate</a>."
+  "AI_CHAT_INPUT_HINT": "Apăsați {0} pentru a trimite · {1} pentru linie nouă"
 });

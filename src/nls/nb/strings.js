@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Preview",
   "AI_CHAT_SCREENSHOT_AREA": "Velg område",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Hele redigeringsprogrammet",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Direkte forhåndsvisning av markering",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Ta bilde",
   "AI_CHAT_SCREENSHOT_CANCEL": "Avbryt",
+  "AI_CHAT_PRIVACY_TITLE": "Start AI-chat med Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "For å gi svar, sender denne funksjonen dine ledetekster og relevant kontekst til Claude Code.<br><br><a class='ai-privacy-link'>Les mer og administrer dine personverninnstillinger</a>.",
   "AI_CHAT_PRIVACY_OK": "Ok",
   "AI_CHAT_FILE_REMOVE": "Fjern fil",
   "AI_CHAT_QUEUED": "I kø",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Direkte forhåndsvisning av markering",
-  "AI_CHAT_PRIVACY_TITLE": "Start AI-chat med Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "For å gi svar, sender denne funksjonen dine ledetekster og relevant kontekst til Claude Code.<br><br><a class='ai-privacy-link'>Les mer og administrer dine personverninnstillinger</a>."
+  "AI_CHAT_INPUT_HINT": "Trykk {0} for å sende · {1} for ny linje"
 });

@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "실시간 미리보기",
   "AI_CHAT_SCREENSHOT_AREA": "영역 선택",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "전체 편집기",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "선택 영역 실시간 미리보기",
   "AI_CHAT_SCREENSHOT_CAPTURE": "캡처",
   "AI_CHAT_SCREENSHOT_CANCEL": "취소",
+  "AI_CHAT_PRIVACY_TITLE": "클로드 코드로 AI 채팅 시작",
+  "AI_CHAT_PRIVACY_BODY": "응답을 제공하기 위해 이 기능은 사용자의 프롬프트와 관련 컨텍스트를 클로드 코드에 전송합니다.<br><br><a class='ai-privacy-link'>자세히 알아보고 개인정보 설정 관리하기</a>.",
   "AI_CHAT_PRIVACY_OK": "확인",
   "AI_CHAT_FILE_REMOVE": "파일 제거",
   "AI_CHAT_QUEUED": "대기 중",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "선택 영역 실시간 미리보기",
-  "AI_CHAT_PRIVACY_TITLE": "클로드 코드로 AI 채팅 시작",
-  "AI_CHAT_PRIVACY_BODY": "응답을 제공하기 위해 이 기능은 사용자의 프롬프트와 관련 컨텍스트를 클로드 코드에 전송합니다.<br><br><a class='ai-privacy-link'>자세히 알아보고 개인정보 설정 관리하기</a>."
+  "AI_CHAT_INPUT_HINT": "{0}를 눌러 전송 · {1}로 줄 바꿈"
 });

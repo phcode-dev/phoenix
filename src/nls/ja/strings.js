@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "ライブプレビュー",
   "AI_CHAT_SCREENSHOT_AREA": "領域を選択",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "エディター全体",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "ライブプレビューの選択要素",
   "AI_CHAT_SCREENSHOT_CAPTURE": "キャプチャ",
   "AI_CHAT_SCREENSHOT_CANCEL": "キャンセル",
+  "AI_CHAT_PRIVACY_TITLE": "Claude CodeとのAIチャットを開始",
+  "AI_CHAT_PRIVACY_BODY": "この機能は、回答を生成するために、お客様のプロンプトと関連コンテキストをClaude Codeに送信します。<br><br><a class='ai-privacy-link'>詳細を確認してプライバシー設定を管理</a>。",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "ファイルを削除",
   "AI_CHAT_QUEUED": "待機中",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "ライブプレビューの選択要素",
-  "AI_CHAT_PRIVACY_TITLE": "Claude CodeとのAIチャットを開始",
-  "AI_CHAT_PRIVACY_BODY": "この機能は、回答を生成するために、お客様のプロンプトと関連コンテキストをClaude Codeに送信します。<br><br><a class='ai-privacy-link'>詳細を確認してプライバシー設定を管理</a>。"
+  "AI_CHAT_INPUT_HINT": "`{0}`を押して送信・`{1}`で改行"
 });

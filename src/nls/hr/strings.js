@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Prikaz uživo",
   "AI_CHAT_SCREENSHOT_AREA": "Odaberi područje",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Cijeli uređivač",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Pregled uživo odabira",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Snimi",
   "AI_CHAT_SCREENSHOT_CANCEL": "Otkaži",
+  "AI_CHAT_PRIVACY_TITLE": "Započni AI chat s Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Kako bi pružila odgovore, ova značajka šalje vaše upite i relevantan kontekst servisu Claude Code.<br><br><a class='ai-privacy-link'>Saznajte više i upravljajte svojim postavkama privatnosti</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Ukloni datoteku",
   "AI_CHAT_QUEUED": "Na čekanju",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Pregled uživo odabira",
-  "AI_CHAT_PRIVACY_TITLE": "Započni AI chat s Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Kako bi pružila odgovore, ova značajka šalje vaše upite i relevantan kontekst servisu Claude Code.<br><br><a class='ai-privacy-link'>Saznajte više i upravljajte svojim postavkama privatnosti</a>."
+  "AI_CHAT_INPUT_HINT": "Pritisnite {0} za slanje · {1} za novi redak"
 });

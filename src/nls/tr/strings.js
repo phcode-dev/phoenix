@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Canlı Önizleme",
   "AI_CHAT_SCREENSHOT_AREA": "Alan Seç",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Tüm Düzenleyici",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Seçimin Canlı Önizlemesi",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Yakala",
   "AI_CHAT_SCREENSHOT_CANCEL": "İptal",
+  "AI_CHAT_PRIVACY_TITLE": "Claude Code ile Yapay Zeka Sohbeti",
+  "AI_CHAT_PRIVACY_BODY": "Yanıt vermek için bu özellik, isteklerinizi ve ilgili bağlamı Claude Code'a gönderir.<br><br><a class='ai-privacy-link'>Daha fazla bilgi edinin ve gizlilik ayarlarınızı yönetin</a>.",
   "AI_CHAT_PRIVACY_OK": "Tamam",
   "AI_CHAT_FILE_REMOVE": "Dosyayı kaldır",
   "AI_CHAT_QUEUED": "Sırada",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Seçimin Canlı Önizlemesi",
-  "AI_CHAT_PRIVACY_TITLE": "Claude Code ile Yapay Zeka Sohbeti",
-  "AI_CHAT_PRIVACY_BODY": "Yanıt vermek için bu özellik, isteklerinizi ve ilgili bağlamı Claude Code'a gönderir.<br><br><a class='ai-privacy-link'>Daha fazla bilgi edinin ve gizlilik ayarlarınızı yönetin</a>."
+  "AI_CHAT_INPUT_HINT": "Göndermek için {0} · Yeni satır için {1}"
 });

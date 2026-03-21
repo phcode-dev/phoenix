@@ -1895,8 +1895,12 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "لائیو پیش منظر",
   "AI_CHAT_SCREENSHOT_AREA": "علاقہ منتخب کریں",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "مکمل ایڈیٹر",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "لائیو پیش منظر انتخاب",
   "AI_CHAT_SCREENSHOT_CAPTURE": "کیپچر کریں",
   "AI_CHAT_SCREENSHOT_CANCEL": "منسوخ کریں",
+  "AI_CHAT_PRIVACY_TITLE": "Claude Code کے ساتھ AI چیٹ شروع کریں",
+  "AI_CHAT_PRIVACY_BODY": "جوابات فراہم کرنے کے لیے، یہ فیچر آپ کے پرامپٹس اور متعلقہ سیاق و سباق Claude Code کو بھیجتا ہے۔<br><br><a class='ai-privacy-link'>مزید جانیں اور اپنی پرائیویسی سیٹنگز کا نظم کریں</a>۔",
+  "AI_CHAT_PRIVACY_OK": "ٹھیک ہے",
   "AI_CHAT_FILE_REMOVE": "فائل ہٹائیں",
   "AI_CHAT_QUEUED": "قطار میں",
   "AI_CHAT_QUEUED_EDIT": "ترمیم کریں",
@@ -2027,8 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "لائیو پیش منظر انتخاب",
-  "AI_CHAT_PRIVACY_TITLE": "Claude Code کے ساتھ AI چیٹ شروع کریں",
-  "AI_CHAT_PRIVACY_BODY": "جوابات فراہم کرنے کے لیے، یہ فیچر آپ کے پرامپٹس اور متعلقہ سیاق و سباق Claude Code کو بھیجتا ہے۔<br><br><a class='ai-privacy-link'>مزید جانیں اور اپنی پرائیویسی سیٹنگز کا نظم کریں</a>۔",
-  "AI_CHAT_PRIVACY_OK": "ٹھیک ہے"
+  "AI_CHAT_INPUT_HINT": "بھیجنے کے لیے {0} دبائیں · نئی لائن کے لیے {1}"
 });

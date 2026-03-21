@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Preview",
   "AI_CHAT_SCREENSHOT_AREA": "Выбрать область",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Весь редактор",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Предпросмотр выделения",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Сделать снимок",
   "AI_CHAT_SCREENSHOT_CANCEL": "Отмена",
+  "AI_CHAT_PRIVACY_TITLE": "Начать чат с ИИ Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Для предоставления ответов эта функция отправляет ваши запросы и соответствующий контекст в Claude Code.<br><br><a class='ai-privacy-link'>Узнайте больше и управляйте настройками конфиденциальности</a>.",
   "AI_CHAT_PRIVACY_OK": "ОК",
   "AI_CHAT_FILE_REMOVE": "Удалить файл",
   "AI_CHAT_QUEUED": "В очереди",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Предпросмотр выделения",
-  "AI_CHAT_PRIVACY_TITLE": "Начать чат с ИИ Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Для предоставления ответов эта функция отправляет ваши запросы и соответствующий контекст в Claude Code.<br><br><a class='ai-privacy-link'>Узнайте больше и управляйте настройками конфиденциальности</a>."
+  "AI_CHAT_INPUT_HINT": "Нажмите {0}, чтобы отправить · {1} для новой строки"
 });

@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Živý náhľad",
   "AI_CHAT_SCREENSHOT_AREA": "Vybrať oblasť",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Celý editor",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Živý náhľad výberu",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Zachytiť",
   "AI_CHAT_SCREENSHOT_CANCEL": "Zrušiť",
+  "AI_CHAT_PRIVACY_TITLE": "Spustiť AI chat s Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Na poskytovanie odpovedí táto funkcia odosiela vaše výzvy a relevantný kontext do Claude Code.<br><br><a class='ai-privacy-link'>Zistite viac a spravujte svoje nastavenia ochrany súkromia</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Odstrániť súbor",
   "AI_CHAT_QUEUED": "V poradí",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Živý náhľad výberu",
-  "AI_CHAT_PRIVACY_TITLE": "Spustiť AI chat s Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Na poskytovanie odpovedí táto funkcia odosiela vaše výzvy a relevantný kontext do Claude Code.<br><br><a class='ai-privacy-link'>Zistite viac a spravujte svoje nastavenia ochrany súkromia</a>."
+  "AI_CHAT_INPUT_HINT": "Stlačte {0} na odoslanie · {1} pre nový riadok"
 });
