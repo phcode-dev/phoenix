@@ -4,12 +4,9 @@ Prism.manual = true;
 import "../core/prism-languages.js";
 import "../styles/syntax/prism-light.css";
 import "../styles/syntax/prism-dark.css";
-import mediumZoom from "medium-zoom";
 import { on } from "../core/events.js";
 import { getState } from "../core/state.js";
 import { t } from "../core/i18n.js";
-
-let zoom = null;
 
 const devLog = import.meta.env.DEV ? console.log.bind(console, "[viewer]") : () => {};
 
@@ -68,7 +65,6 @@ export function initViewer() {
             });
         } else {
             addCopyButtons();
-            initImageZoom();
         }
     });
 
@@ -79,7 +75,6 @@ export function initViewer() {
 
         if (!getState().editMode) {
             addCopyButtons();
-            initImageZoom();
         }
     });
 
@@ -187,13 +182,3 @@ function addCopyButtons() {
     });
 }
 
-function initImageZoom() {
-    if (zoom) {
-        zoom.detach();
-    }
-
-    zoom = mediumZoom("#viewer-content .markdown-body img", {
-        margin: 24,
-        background: "var(--color-bg)"
-    });
-}
