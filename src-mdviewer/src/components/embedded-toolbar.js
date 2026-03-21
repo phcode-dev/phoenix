@@ -50,7 +50,7 @@ function render() {
 function renderReadMode() {
     toolbar.innerHTML = `<div class="embedded-toolbar">
         <div class="toolbar-spacer"></div>
-        <button class="edit-toggle-btn" id="emb-edit-btn" title="${t("toolbar.edit") || "Edit"}">
+        <button class="edit-toggle-btn" id="emb-edit-btn">
             <i data-lucide="pencil"></i>
             <span>${t("toolbar.edit") || "Edit"}</span>
         </button>
