@@ -430,9 +430,9 @@
   line-height: 1.5;
 }
 
-/* Smooth scroll for heading navigation */
+/* Instant scroll for cursor sync; heading navigation uses JS scrollIntoView */
 .markdown-body {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 /* ===== Mermaid diagrams ===== */

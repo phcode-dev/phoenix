@@ -321,7 +321,7 @@ function handleScrollToLine(data) {
 
     const isVisible = elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
     if (!isVisible) {
-        bestEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        bestEl.scrollIntoView({ behavior: "instant", block: "center" });
     }
 }
 
