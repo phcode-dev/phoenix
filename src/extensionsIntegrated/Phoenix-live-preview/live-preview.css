@@ -100,14 +100,14 @@
     height: 22px;
     padding: 1px 6px;
     flex-shrink: 0;
-    margin-top: 3.5px;
+    margin-top: 0;
 }
 
 .lp-device-size-icon {
     min-width: fit-content;
     display: flex;
     align-items: center;
-    margin: 3.5px 4px 0 3px;
+    margin: 0 4px 0 3px;
     cursor: pointer;
     background: transparent;
     box-shadow: none;
@@ -165,7 +165,7 @@
     min-width: fit-content;
     display: flex;
     align-items: center;
-    margin: 3.5px 4px 0 3px;
+    margin: 0 4px 0 3px;
     max-width: 80%;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -197,7 +197,7 @@
 
 #reloadLivePreviewButton {
     margin-left: 3px;
-    margin-top: 3.5px;
+    margin-top: 0;
     width: 30px;
     height: 22px;
     flex-shrink: 0;
@@ -206,7 +206,7 @@
 #previewModeLivePreviewButton {
     color: #a0a0a0;
     margin-left: 3px;
-    margin-top: 3.3px;
+    margin-top: 0;
     width: 30px;
     height: 22px;
     flex-shrink: 0;
