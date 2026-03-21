@@ -157,7 +157,7 @@
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  animation: tooltip-fade 150ms ease-out 300ms forwards;
+  animation: tooltip-fade 150ms ease-out 800ms forwards;
   z-index: 400;
 }
 
@@ -182,6 +182,13 @@
   transform: translateY(4px);
   transition: opacity 150ms ease-out, transform 150ms ease-out;
   will-change: opacity, transform;
+}
+
+.format-bar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: nowrap;
 }
 
 .format-bar.visible {

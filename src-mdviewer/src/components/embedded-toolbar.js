@@ -2,6 +2,7 @@
  * Minimal embedded toolbar for Phoenix live preview.
  * Read mode: "Edit" button
  * Edit mode: Format row + "Done" button
+ * Responsive: collapses into dropdown groups when narrow.
  */
 import {
     createIcons,
@@ -9,6 +10,7 @@ import {
     Bold,
     Italic,
     Strikethrough,
+    Underline,
     Code,
     Link,
     List,
@@ -17,13 +19,24 @@ import {
     Quote,
     Minus,
     Table,
-    FileCode
+    FileCode,
+    ChevronDown,
+    Type,
+    MoreHorizontal
 } from "lucide";
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
 import { t, tp } from "../core/i18n.js";
 
 let toolbar = null;
+let resizeObserver = null;
+let isCollapsed = false;
+
+// Minimum width needed for the expanded toolbar (block-type-select ~90 + 15 buttons*24 + dividers + done ~50)
+const COLLAPSE_WIDTH = 520;
+
+const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
+    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil };
 
 export function initEmbeddedToolbar() {
     toolbar = document.getElementById("toolbar");
@@ -40,8 +53,14 @@ function render() {
     if (!toolbar) return;
     const state = getState();
 
+    if (resizeObserver) {
+        resizeObserver.disconnect();
+        resizeObserver = null;
+    }
+
     if (state.editMode) {
-        renderEditMode();
+        renderEditMode(isCollapsed);
+        setupResponsiveToggle();
     } else {
         renderReadMode();
     }
@@ -56,10 +75,7 @@ function renderReadMode() {
         </button>
     </div>`;
 
-    createIcons({
-        icons: { Pencil },
-        attrs: { class: "" }
-    });
+    createIcons({ icons: { Pencil }, attrs: { class: "" } });
 
     const editBtn = document.getElementById("emb-edit-btn");
     if (editBtn) {
@@ -69,72 +85,122 @@ function renderReadMode() {
     }
 }
 
-function renderEditMode() {
+function renderEditMode(collapsed) {
     const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
     const mod = isMac ? "\u2318" : "Ctrl";
 
-    toolbar.innerHTML = `<div class="embedded-toolbar">
+    const blockTypeSelect = `
+        <select class="block-type-select" id="emb-block-type" title="${t("format.block_type") || "Block type"}">
+            <option value="<p>">${t("slash.paragraph") || "Paragraph"}</option>
+            <option value="<h1>">${t("slash.heading1") || "Heading 1"}</option>
+            <option value="<h2>">${t("slash.heading2") || "Heading 2"}</option>
+            <option value="<h3>">${t("slash.heading3") || "Heading 3"}</option>
+        </select>`;
+
+    const btn = (id, icon, tooltip) =>
+        `<button class="toolbar-btn format-btn" id="${id}" data-tooltip="${tooltip}" aria-pressed="false"><i data-lucide="${icon}"></i></button>`;
+
+    const textBtns = [
+        btn("emb-bold", "bold", tp("format.bold", { mod }) || "Bold"),
+        btn("emb-italic", "italic", tp("format.italic", { mod }) || "Italic"),
+        btn("emb-strike", "strikethrough", tp("format.strikethrough", { mod }) || "Strikethrough"),
+        btn("emb-underline", "underline", tp("format.underline", { mod }) || "Underline"),
+        btn("emb-code", "code", t("format.code") || "Code"),
+        btn("emb-link", "link", tp("format.link", { mod }) || "Link")
+    ].join("");
+
+    const listBtns = [
+        btn("emb-ul", "list", t("format.bullet_list") || "Bullet list"),
+        btn("emb-ol", "list-ordered", t("format.numbered_list") || "Numbered list"),
+        btn("emb-task", "list-checks", t("format.task_list") || "Task list")
+    ].join("");
+
+    const blockBtns = [
+        btn("emb-quote", "quote", t("format.blockquote") || "Quote"),
+        btn("emb-hr", "minus", t("format.divider") || "Divider"),
+        btn("emb-table", "table", t("format.table") || "Table"),
+        btn("emb-codeblock", "file-code", t("format.code_block") || "Code block")
+    ].join("");
+
+    let formatRow;
+    if (collapsed) {
+        formatRow = `
         <div class="format-row">
-            <select class="block-type-select" id="emb-block-type" title="${t("format.block_type") || "Block type"}">
-                <option value="<p>">${t("slash.paragraph") || "Paragraph"}</option>
-                <option value="<h1>">${t("slash.heading1") || "Heading 1"}</option>
-                <option value="<h2>">${t("slash.heading2") || "Heading 2"}</option>
-                <option value="<h3>">${t("slash.heading3") || "Heading 3"}</option>
-            </select>
+            ${blockTypeSelect}
             <div class="toolbar-divider"></div>
-            <button class="toolbar-btn format-btn" id="emb-bold" data-tooltip="${tp("format.bold", { mod }) || "Bold"}" aria-pressed="false"><i data-lucide="bold"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-italic" data-tooltip="${tp("format.italic", { mod }) || "Italic"}" aria-pressed="false"><i data-lucide="italic"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-strike" data-tooltip="${tp("format.strikethrough", { mod }) || "Strikethrough"}" aria-pressed="false"><i data-lucide="strikethrough"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-code" data-tooltip="${t("format.code") || "Code"}" aria-pressed="false"><i data-lucide="code"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-link" data-tooltip="${tp("format.link", { mod }) || "Link"}" aria-pressed="false"><i data-lucide="link"></i></button>
+            <div class="toolbar-dropdown" data-group="text">
+                <button class="toolbar-btn toolbar-dropdown-trigger" data-tooltip="${t("format.text_formatting") || "Text formatting"}"><i data-lucide="type"></i><i data-lucide="chevron-down" class="dropdown-chevron"></i></button>
+                <div class="toolbar-dropdown-panel">${textBtns}</div>
+            </div>
+            <div class="toolbar-dropdown" data-group="lists">
+                <button class="toolbar-btn toolbar-dropdown-trigger" data-tooltip="${t("format.lists") || "Lists"}"><i data-lucide="list"></i><i data-lucide="chevron-down" class="dropdown-chevron"></i></button>
+                <div class="toolbar-dropdown-panel">${listBtns}</div>
+            </div>
+            <div class="toolbar-dropdown" data-group="blocks">
+                <button class="toolbar-btn toolbar-dropdown-trigger" data-tooltip="${t("format.more_elements") || "More"}"><i data-lucide="more-horizontal"></i><i data-lucide="chevron-down" class="dropdown-chevron"></i></button>
+                <div class="toolbar-dropdown-panel">${blockBtns}</div>
+            </div>
+        </div>`;
+    } else {
+        formatRow = `
+        <div class="format-row">
+            ${blockTypeSelect}
             <div class="toolbar-divider"></div>
-            <button class="toolbar-btn format-btn" id="emb-ul" data-tooltip="${t("format.bullet_list") || "Bullet list"}" aria-pressed="false"><i data-lucide="list"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-ol" data-tooltip="${t("format.numbered_list") || "Numbered list"}" aria-pressed="false"><i data-lucide="list-ordered"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-task" data-tooltip="${t("format.task_list") || "Task list"}"><i data-lucide="list-checks"></i></button>
+            ${textBtns}
             <div class="toolbar-divider"></div>
-            <button class="toolbar-btn format-btn" id="emb-quote" data-tooltip="${t("format.blockquote") || "Quote"}"><i data-lucide="quote"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-hr" data-tooltip="${t("format.divider") || "Divider"}"><i data-lucide="minus"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-table" data-tooltip="${t("format.table") || "Table"}"><i data-lucide="table"></i></button>
-            <button class="toolbar-btn format-btn" id="emb-codeblock" data-tooltip="${t("format.code_block") || "Code block"}"><i data-lucide="file-code"></i></button>
-        </div>
+            ${listBtns}
+            <div class="toolbar-divider"></div>
+            ${blockBtns}
+        </div>`;
+    }
+
+    toolbar.innerHTML = `<div class="embedded-toolbar">
+        ${formatRow}
         <div class="toolbar-spacer"></div>
         <button class="done-btn" id="emb-done-btn">
             <span>${t("toolbar.done") || "Done"}</span>
         </button>
     </div>`;
 
-    createIcons({
-        icons: { Bold, Italic, Strikethrough, Code, Link, List, ListOrdered, ListChecks, Quote, Minus, Table, FileCode },
-        attrs: { class: "" }
-    });
+    createIcons({ icons: allIcons, attrs: { class: "" } });
 
-    // Wire up format buttons
-    const formatBindings = [
-        { id: "emb-bold", command: "bold" },
-        { id: "emb-italic", command: "italic" },
-        { id: "emb-strike", command: "strikethrough" },
-        { id: "emb-code", command: "code" },
-        { id: "emb-link", command: "createLink" },
-        { id: "emb-ul", command: "insertUnorderedList" },
-        { id: "emb-ol", command: "insertOrderedList" },
-        { id: "emb-task", command: "taskList" },
-        { id: "emb-quote", command: "formatBlock", value: "<blockquote>" },
-        { id: "emb-hr", command: "insertHorizontalRule" },
-        { id: "emb-table", command: "table" },
-        { id: "emb-codeblock", command: "codeBlock" }
-    ];
+    wireFormatButtons();
+    wireBlockTypeSelect();
+    if (collapsed) {
+        wireDropdowns();
+    }
+    wireDoneButton();
+}
 
+const formatBindings = [
+    { id: "emb-bold", command: "bold" },
+    { id: "emb-italic", command: "italic" },
+    { id: "emb-strike", command: "strikethrough" },
+    { id: "emb-underline", command: "underline" },
+    { id: "emb-code", command: "code" },
+    { id: "emb-link", command: "createLink" },
+    { id: "emb-ul", command: "insertUnorderedList" },
+    { id: "emb-ol", command: "insertOrderedList" },
+    { id: "emb-task", command: "taskList" },
+    { id: "emb-quote", command: "formatBlock", value: "<blockquote>" },
+    { id: "emb-hr", command: "insertHorizontalRule" },
+    { id: "emb-table", command: "table" },
+    { id: "emb-codeblock", command: "codeBlock" }
+];
+
+function wireFormatButtons() {
     for (const binding of formatBindings) {
         const el = document.getElementById(binding.id);
         if (el) {
             el.addEventListener("mousedown", (e) => {
-                e.preventDefault(); // keep selection
+                e.preventDefault();
                 emit("action:format", { command: binding.command, value: binding.value });
             });
         }
     }
+}
 
-    // Block type selector
+function wireBlockTypeSelect() {
     const blockTypeSelect = document.getElementById("emb-block-type");
     if (blockTypeSelect) {
         blockTypeSelect.addEventListener("change", (e) => {
@@ -142,14 +208,63 @@ function renderEditMode() {
             e.target.blur();
         });
     }
+}
 
-    // Done button
+function wireDropdowns() {
+    const dropdowns = toolbar.querySelectorAll(".toolbar-dropdown");
+    for (const dropdown of dropdowns) {
+        const trigger = dropdown.querySelector(".toolbar-dropdown-trigger");
+        if (!trigger) continue;
+
+        trigger.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const wasOpen = dropdown.classList.contains("open");
+            closeAllDropdowns();
+            if (!wasOpen) {
+                dropdown.classList.add("open");
+            }
+        });
+    }
+
+    document.addEventListener("mousedown", (e) => {
+        if (!e.target.closest(".toolbar-dropdown")) {
+            closeAllDropdowns();
+        }
+    });
+}
+
+function closeAllDropdowns() {
+    const openDropdowns = toolbar.querySelectorAll(".toolbar-dropdown.open");
+    for (const d of openDropdowns) {
+        d.classList.remove("open");
+    }
+}
+
+function wireDoneButton() {
     const doneBtn = document.getElementById("emb-done-btn");
     if (doneBtn) {
         doneBtn.addEventListener("click", () => {
             setState({ editMode: false });
         });
     }
+}
+
+function setupResponsiveToggle() {
+    // Observe the #toolbar element (grid-constrained) not .embedded-toolbar (can overflow)
+    function checkWidth() {
+        const width = toolbar.offsetWidth;
+        const shouldCollapse = width < COLLAPSE_WIDTH;
+        if (shouldCollapse !== isCollapsed) {
+            isCollapsed = shouldCollapse;
+            renderEditMode(isCollapsed);
+            // Re-attach observer after re-render
+            resizeObserver.observe(toolbar);
+        }
+    }
+
+    resizeObserver = new ResizeObserver(() => checkWidth());
+    resizeObserver.observe(toolbar);
 }
 
 function updateFormatState(state) {
@@ -159,6 +274,7 @@ function updateFormatState(state) {
         { id: "emb-bold", key: "bold" },
         { id: "emb-italic", key: "italic" },
         { id: "emb-strike", key: "strikethrough" },
+        { id: "emb-underline", key: "underline" },
         { id: "emb-code", key: "isCode" },
         { id: "emb-link", key: "isLink" },
         { id: "emb-ul", key: "unorderedList" },
@@ -174,7 +290,6 @@ function updateFormatState(state) {
         }
     }
 
-    // Block type selector
     const blockTypeSelect = document.getElementById("emb-block-type");
     if (blockTypeSelect && state.blockType) {
         const tagToValue = {
