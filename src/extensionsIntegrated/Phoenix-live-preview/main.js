@@ -1072,6 +1072,7 @@ define(function (require, exports, module) {
             if (mdIframeWindow) {
                 mdIframeWindow.postMessage({ type: "MDVIEWR_CLEAR_CACHE" }, "*");
             }
+            $mdviewrIframe.hide();
         }
         _switchToEditModeIfNeeded();
         customLivePreviewBannerShown = false;
@@ -1085,6 +1086,12 @@ define(function (require, exports, module) {
         }
         if(urlPinned){
             _togglePinUrl();
+        }
+        // Ensure $iframe points to a visible HTML iframe, not the hidden md iframe
+        if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            $mdviewrIframe.after(newIframe);
+            $iframe = newIframe;
         }
         $iframe.attr('src', StaticServer.getNoPreviewURL());
         if(!panelShownAtStartup && !isBrowser && ProjectManager.isStartupFilesLoaded()){
