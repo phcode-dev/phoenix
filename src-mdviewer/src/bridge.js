@@ -126,6 +126,9 @@ export function initBridge() {
             case "MDVIEWR_SCROLL_TO_LINE":
                 handleScrollToLine(data);
                 break;
+            case "MDVIEWR_HIGHLIGHT_SELECTION":
+                handleHighlightSelection(data);
+                break;
         }
     });
 
@@ -170,6 +173,14 @@ export function initBridge() {
             sendToParent("embeddedIframeFocusEditor", { sourceLine });
         }
     }, true);
+
+    // Listen for selection changes to sync selection back to CM
+    document.addEventListener("selectionchange", () => {
+        if (!getState().editMode) {
+            return;
+        }
+        _sendSelectionToParent();
+    });
 
     // Listen for content changes from editor (debounced by editor.js)
     on("bridge:contentChanged", ({ markdown }) => {
@@ -323,6 +334,94 @@ function handleScrollToLine(data) {
     if (!isVisible) {
         bestEl.scrollIntoView({ behavior: "instant", block: "center" });
     }
+}
+
+/**
+ * Highlight elements in the viewer that correspond to the CM selection range.
+ * Uses data-source-line to find matching blocks, then tries text-level matching.
+ */
+function _clearSelectionHighlight() {
+    const viewer = document.getElementById("viewer-content");
+    if (!viewer) return;
+    viewer.querySelectorAll(".cm-selection-highlight").forEach(el => {
+        el.classList.remove("cm-selection-highlight");
+    });
+}
+
+function handleHighlightSelection(data) {
+    _clearSelectionHighlight();
+
+    const { fromLine, toLine, selectedText } = data;
+    if (fromLine == null || toLine == null || !selectedText) {
+        return;
+    }
+
+    const viewer = document.getElementById("viewer-content");
+    if (!viewer) return;
+
+    const elements = viewer.querySelectorAll("[data-source-line]");
+    const matchingEls = [];
+
+    for (const el of elements) {
+        const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+        if (srcLine >= fromLine && srcLine <= toLine) {
+            matchingEls.push(el);
+        }
+    }
+
+    // If no exact line match, find closest block that contains the from line
+    if (matchingEls.length === 0) {
+        let bestEl = null;
+        let bestLine = -1;
+        for (const el of elements) {
+            const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+            if (srcLine <= fromLine && srcLine > bestLine) {
+                bestLine = srcLine;
+                bestEl = el;
+            }
+        }
+        if (bestEl) {
+            matchingEls.push(bestEl);
+        }
+    }
+
+    for (const el of matchingEls) {
+        el.classList.add("cm-selection-highlight");
+    }
+}
+
+/**
+ * Send the user's selection in the mdviewer back to Phoenix for CM selection sync.
+ * Debounced via a timer.
+ */
+let _selectionSendTimer = null;
+function _sendSelectionToParent() {
+    clearTimeout(_selectionSendTimer);
+    _selectionSendTimer = setTimeout(() => {
+        const selection = window.getSelection();
+        if (!selection || !selection.rangeCount) {
+            return;
+        }
+
+        const anchorNode = selection.anchorNode;
+        const el = anchorNode && (anchorNode.nodeType === Node.ELEMENT_NODE
+            ? anchorNode : anchorNode.parentElement);
+        const sourceLine = _getSourceLineFromElement(el);
+
+        if (selection.isCollapsed || selection.toString().length < 2) {
+            // Cursor moved without selection — clear CM selection and local highlight
+            _clearSelectionHighlight();
+            if (sourceLine != null) {
+                sendToParent("mdviewrSelectionSync", { sourceLine, selectedText: null });
+            }
+            return;
+        }
+
+        const selectedText = selection.toString();
+        if (sourceLine != null) {
+            sendToParent("mdviewrSelectionSync", { sourceLine, selectedText });
+        }
+    }, 200);
 }
 
 function sendToParent(eventName, payload) {
