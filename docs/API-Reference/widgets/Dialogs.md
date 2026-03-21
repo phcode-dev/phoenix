@@ -59,7 +59,7 @@ Left-aligned button class name
 **Kind**: global constant  
 <a name="showModalDialogUsingTemplate"></a>
 
-## showModalDialogUsingTemplate(template, [autoDismiss]) ⇒ [<code>Dialog</code>](#new_Dialog_new)
+## showModalDialogUsingTemplate(template, [autoDismiss], [closeToElement]) ⇒ [<code>Dialog</code>](#new_Dialog_new)
 Creates a new modal dialog from a given template.
 The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
 
@@ -69,6 +69,7 @@ The template can either be a string or a jQuery object representing a DOM node t
 | --- | --- | --- |
 | template | <code>string</code> | A string template or jQuery object to use as the dialog HTML. |
 | [autoDismiss] | <code>boolean</code> | Whether to automatically dismiss the dialog when one of the buttons      is clicked. Default true. If false, you'll need to manually handle button clicks and the Esc      key, and dismiss the dialog yourself when ready by calling `close()` on the returned dialog. |
+| [closeToElement] | <code>string</code> | A CSS selector for a target element. If specified, the dialog      will animate open from and close toward the target element (a "woosh" effect). If the target      is not found or not visible, the dialog opens/closes normally. |
 
 <a name="showModalDialog"></a>
 
