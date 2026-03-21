@@ -50,8 +50,8 @@ html, body {
   grid-area: toolbar;
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding: 0 var(--space-md);
+  gap: var(--space-xs);
+  padding: 0 var(--space-sm);
   height: var(--toolbar-height);
   background: var(--color-toolbar-bg);
   border-bottom: 1px solid var(--color-toolbar-border);
@@ -78,8 +78,8 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: none;
   background: transparent;
@@ -100,15 +100,15 @@ html, body {
 }
 
 .toolbar-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
 }
 
 .toolbar-divider {
   width: 1px;
-  height: 20px;
+  height: 16px;
   background: var(--color-border);
-  margin: 0 var(--space-xs);
+  margin: 0 2px;
 }
 
 /* ===== Viewer ===== */
@@ -143,8 +143,8 @@ html, body {
 .embedded-toolbar {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding: 0 var(--space-sm);
+  gap: var(--space-xs);
+  padding: 0 var(--space-xs);
   width: 100%;
 }
 
@@ -159,49 +159,52 @@ html, body {
 .embedded-toolbar .done-btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
-  border-radius: var(--radius-sm);
+  gap: 4px;
+  padding: 1px 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: 3px;
   cursor: pointer;
-  font-size: var(--font-size-sm);
+  font-size: 13px;
   font-family: var(--font-body);
   white-space: nowrap;
-  transition: background var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.embedded-toolbar .edit-toggle-btn svg,
+.embedded-toolbar .done-btn svg {
+  width: 14px;
+  height: 14px;
 }
 
 .embedded-toolbar .edit-toggle-btn:hover,
 .embedded-toolbar .done-btn:hover {
+  border-color: var(--color-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.embedded-toolbar .edit-toggle-btn:active,
+.embedded-toolbar .done-btn:active {
   background: var(--color-surface-hover);
-}
-
-.embedded-toolbar .done-btn {
-  background: var(--color-accent);
-  color: #fff;
-  border-color: var(--color-accent);
-}
-
-.embedded-toolbar .done-btn:hover {
-  background: var(--color-accent-hover);
+  border-color: var(--color-border);
 }
 
 .embedded-toolbar .format-btn {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
 }
 
 .embedded-toolbar .format-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .embedded-toolbar .block-type-select {
   appearance: none;
   -webkit-appearance: none;
-  padding: var(--space-xs) var(--space-sm);
-  padding-right: 24px;
+  padding: 2px var(--space-sm);
+  padding-right: 20px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background-color: var(--color-bg);
