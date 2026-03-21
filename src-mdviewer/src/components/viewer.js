@@ -58,7 +58,12 @@ export function initViewer() {
         wrapTables();
         await renderAfterHTML(content, parseResult);
 
-        if (!getState().editMode) {
+        if (getState().editMode) {
+            // Enable task list checkboxes (marked renders them disabled)
+            content.querySelectorAll('input[type="checkbox"][disabled]').forEach(cb => {
+                cb.removeAttribute("disabled");
+            });
+        } else {
             addCopyButtons();
             initImageZoom();
         }
