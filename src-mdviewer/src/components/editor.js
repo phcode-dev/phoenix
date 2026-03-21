@@ -18,6 +18,7 @@ let inputHandler = null;
 let codeHighlightTimer = null;
 let keydownHandler = null;
 let pasteHandler = null;
+let checkboxHandler = null;
 let selectionHandler = null;
 let selectionFallbackMouseUp = null;
 let selectionFallbackKeyUp = null;
@@ -1076,7 +1077,7 @@ function createTurndown() {
         filter(node) {
             return node.nodeName === "INPUT" &&
                 node.getAttribute("type") === "checkbox" &&
-                node.closest(".task-list-item") !== null;
+                node.closest("li") !== null;
         },
         replacement(content, node) {
             return node.checked ? "[x] " : "[ ] ";
@@ -1091,6 +1092,15 @@ function createTurndown() {
  * Works on a clone to avoid mutating the live DOM.
  */
 export function convertToMarkdown(contentEl) {
+    // Sync checkbox checked property → attribute before cloning,
+    // because cloneNode copies attributes but not DOM properties.
+    contentEl.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        if (cb.checked) {
+            cb.setAttribute("checked", "");
+        } else {
+            cb.removeAttribute("checked");
+        }
+    });
     const clone = contentEl.cloneNode(true);
     clone.querySelectorAll(".code-copy-btn").forEach((btn) => btn.remove());
     clone.querySelectorAll(".table-row-handles, .table-col-handles, .table-add-row-btn, .table-col-add-btn").forEach((el) => el.remove());
@@ -1236,6 +1246,21 @@ function enterEditMode(content) {
 
     pasteHandler = (e) => handlePaste(e, content);
     content.addEventListener("paste", pasteHandler);
+
+    // Enable task list checkboxes (marked renders them disabled by default)
+    content.querySelectorAll('input[type="checkbox"][disabled]').forEach(cb => {
+        cb.removeAttribute("disabled");
+    });
+
+    // Checkbox clicks don't fire 'input' on the contenteditable, so handle them explicitly
+    checkboxHandler = (e) => {
+        if (e.target.matches('input[type="checkbox"]')) {
+            pushUndoEntry(content);
+            setState({ isDirty: true });
+            emitContentChange(content);
+        }
+    };
+    content.addEventListener("click", checkboxHandler);
 
     keydownHandler = (e) => {
         const mod = isModKey(e);
@@ -1397,6 +1422,10 @@ function cleanupEditMode(content) {
     if (pasteHandler) {
         content.removeEventListener("paste", pasteHandler);
         pasteHandler = null;
+    }
+    if (checkboxHandler) {
+        content.removeEventListener("click", checkboxHandler);
+        checkboxHandler = null;
     }
     if (selectionHandler) {
         document.removeEventListener("selectionchange", selectionHandler);
