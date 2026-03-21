@@ -957,7 +957,10 @@ define(function (require, exports, module) {
             }
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
-            $iframe.remove();
+            // Don't remove the md iframe — it's persistent and already hidden
+            if (!$mdviewrIframe || $iframe[0] !== $mdviewrIframe[0]) {
+                $iframe.remove();
+            }
             $iframe = newIframe;
             if(_isProjectPreviewTrusted()){
                 $iframe.attr('src', currentLivePreviewURL);
