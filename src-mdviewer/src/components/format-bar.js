@@ -3,6 +3,7 @@ import {
   Bold,
   Italic,
   Strikethrough,
+  Underline,
   Code,
   Link,
 } from "lucide";
@@ -23,6 +24,7 @@ const buttons = [
   { id: "fb-bold", icon: "bold", command: "bold", tooltipKey: "format.bold", stateKey: "bold" },
   { id: "fb-italic", icon: "italic", command: "italic", tooltipKey: "format.italic", stateKey: "italic" },
   { id: "fb-strike", icon: "strikethrough", command: "strikethrough", tooltipKey: "format.strikethrough", stateKey: "strikethrough" },
+  { id: "fb-underline", icon: "underline", command: "underline", tooltipKey: "format.underline", stateKey: "underline" },
   null, // divider
   { id: "fb-code", icon: "code", command: "code", tooltipKey: "format.code", stateKey: "isCode" },
   { id: "fb-link", icon: "link", command: "createLink", tooltipKey: "format.link", stateKey: "isLink" },
@@ -52,7 +54,7 @@ function buildBar() {
   bar.innerHTML = html;
 
   createIcons({
-    icons: { Bold, Italic, Strikethrough, Code, Link },
+    icons: { Bold, Italic, Strikethrough, Underline, Code, Link },
     attrs: { class: "" },
   });
 

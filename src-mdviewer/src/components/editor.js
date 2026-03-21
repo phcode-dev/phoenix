@@ -223,6 +223,7 @@ function broadcastSelectionState() {
             bold: document.queryCommandState("bold"),
             italic: document.queryCommandState("italic"),
             strikethrough: document.queryCommandState("strikethrough"),
+            underline: document.queryCommandState("underline"),
             unorderedList: document.queryCommandState("insertUnorderedList"),
             orderedList: document.queryCommandState("insertOrderedList"),
             blockType: getBlockType(),
@@ -271,6 +272,7 @@ export function executeFormat(contentEl, command, value) {
         case "bold":
         case "italic":
         case "strikethrough":
+        case "underline":
             document.execCommand(command, false, null);
             break;
         case "formatBlock":

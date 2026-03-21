@@ -58,6 +58,7 @@ html, body {
   z-index: var(--z-toolbar);
   user-select: none;
   overflow-x: clip;
+  min-width: 0;
 }
 
 .app-toolbar:empty {
@@ -146,6 +147,7 @@ html, body {
   gap: var(--space-xs);
   padding: 0 var(--space-xs);
   width: 100%;
+  min-width: 0;
 }
 
 .embedded-toolbar .format-row {
@@ -220,4 +222,43 @@ html, body {
 .embedded-toolbar .block-type-select:focus {
   border-color: var(--color-accent);
   outline: none;
+}
+
+/* ===== Toolbar dropdown groups ===== */
+.toolbar-dropdown {
+  position: relative;
+}
+
+.toolbar-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  width: auto !important;
+  padding: 0 2px !important;
+}
+
+.toolbar-dropdown-trigger .dropdown-chevron {
+  width: 10px;
+  height: 10px;
+  opacity: 0.5;
+}
+
+.toolbar-dropdown-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  padding: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: calc(var(--z-toolbar) + 10);
+  gap: 2px;
+  flex-direction: row;
+}
+
+.toolbar-dropdown.open .toolbar-dropdown-panel {
+  display: flex;
 }
