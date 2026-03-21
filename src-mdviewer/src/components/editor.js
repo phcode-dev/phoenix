@@ -1181,14 +1181,6 @@ function enterEditMode(content) {
     // Remove copy buttons
     content.querySelectorAll(".code-copy-btn").forEach((btn) => btn.remove());
 
-    // Detach medium-zoom
-    const images = content.querySelectorAll("img");
-    images.forEach((img) => {
-        img.classList.remove("medium-zoom-image");
-        const clone = img.cloneNode(true);
-        img.parentNode.replaceChild(clone, img);
-    });
-
     resetUndoHistory(content);
 
     beforeInputHandler = (e) => {
