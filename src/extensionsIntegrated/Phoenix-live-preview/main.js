@@ -594,15 +594,24 @@ define(function (require, exports, module) {
         currentLivePreviewURL = "",
         currentPreviewFile = '',
         _loadGeneration = 0,
-        _isMdviewrActive = false;
+        _isMdviewrActive = false,
+        $mdviewrIframe = null; // persistent md iframe, survives HTML preview switches
 
     function _blankIframe() {
         // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
         // src. so we delete the node itself to eb thorough.
-        let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
-        newIframe.insertAfter($iframe);
-        $iframe.remove();
-        $iframe = newIframe;
+        // Don't destroy the persistent md iframe — just hide it
+        if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            $mdviewrIframe.hide();
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            $mdviewrIframe.after(newIframe);
+            $iframe = newIframe;
+        } else {
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            newIframe.insertAfter($iframe);
+            $iframe.remove();
+            $iframe = newIframe;
+        }
     }
 
     let panelShownAtStartup;
@@ -860,13 +869,22 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Create mdviewr iframe
-        const mdviewrURL = StaticServer.getMdviewrURL();
-        if (panel.isVisible()) {
+        // Reuse persistent md iframe if it exists (e.g. returning from HTML preview)
+        if ($mdviewrIframe && $mdviewrIframe[0].parentNode) {
+            // Hide the current HTML iframe and show the md iframe
+            if ($iframe[0] !== $mdviewrIframe[0]) {
+                $iframe.remove();
+            }
+            $mdviewrIframe.show();
+            $iframe = $mdviewrIframe;
+        } else if (panel.isVisible()) {
+            // First time: create the md iframe
+            const mdviewrURL = StaticServer.getMdviewrURL();
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
             $iframe.remove();
             $iframe = newIframe;
+            $mdviewrIframe = newIframe;
             if (_isProjectPreviewTrusted()) {
                 $iframe.attr('src', mdviewrURL);
             }
@@ -900,9 +918,13 @@ define(function (require, exports, module) {
             return;
         }
         // Switching away from mdviewr to non-markdown preview
+        // Hide the md iframe instead of destroying it so cache is preserved
         if(_isMdviewrActive) {
             MarkdownSync.deactivate();
             _isMdviewrActive = false;
+            if ($mdviewrIframe) {
+                $mdviewrIframe.hide();
+            }
         }
         let newSrc = encodeURI(previewDetails.URL);
         if($iframe.attr('src') === newSrc && !force){
@@ -1015,11 +1037,38 @@ define(function (require, exports, module) {
     }
 
     let startupFilesLoadHandled = false;
+    /**
+     * Send the current working set of markdown files to the mdviewr iframe.
+     */
+    function _syncWorkingSetToMdviewr() {
+        if (!$mdviewrIframe) {
+            return;
+        }
+        const mdIframeWindow = $mdviewrIframe[0].contentWindow;
+        if (!mdIframeWindow) {
+            return;
+        }
+        const workingSet = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
+        const mdPaths = workingSet
+            .filter(file => utils.isMarkdownFile(file.fullPath))
+            .map(file => file.fullPath);
+        mdIframeWindow.postMessage({
+            type: "MDVIEWR_WORKING_SET_CHANGED",
+            paths: mdPaths
+        }, "*");
+    }
+
     async function _projectOpened() {
-        // Deactivate mdviewr on project switch
+        // Deactivate mdviewr on project switch — keep iframe alive but clear cache
         if(_isMdviewrActive) {
             MarkdownSync.deactivate();
             _isMdviewrActive = false;
+        }
+        if ($mdviewrIframe) {
+            const mdIframeWindow = $mdviewrIframe[0].contentWindow;
+            if (mdIframeWindow) {
+                mdIframeWindow.postMessage({ type: "MDVIEWR_CLEAR_CACHE" }, "*");
+            }
         }
         _switchToEditModeIfNeeded();
         customLivePreviewBannerShown = false;
@@ -1298,6 +1347,12 @@ define(function (require, exports, module) {
             // change listener in macos for a second to give some time for the os event to reach.
             fileChangeListenerStartDelay = 600;
         }
+        // Sync working set changes to md iframe for cache management
+        MainViewManager.on("workingSetAdd", _syncWorkingSetToMdviewr);
+        MainViewManager.on("workingSetAddList", _syncWorkingSetToMdviewr);
+        MainViewManager.on("workingSetRemove", _syncWorkingSetToMdviewr);
+        MainViewManager.on("workingSetRemoveList", _syncWorkingSetToMdviewr);
+
         setTimeout(()=>{
             MainViewManager.on("currentFileChange", _currentFileChanged);
             if(Phoenix.isNativeApp && Phoenix.platform === "mac" && MainViewManager.getCurrentlyViewedFile()) {

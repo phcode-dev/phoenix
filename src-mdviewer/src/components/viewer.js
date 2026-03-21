@@ -13,6 +13,10 @@ let zoom = null;
 
 const devLog = import.meta.env.DEV ? console.log.bind(console, "[viewer]") : () => {};
 
+function getContentEl() {
+    return document.getElementById("viewer-content");
+}
+
 export function normalizeCodeLanguages(container) {
     let normalized = 0;
     container.querySelectorAll('pre > code[class*="language-"]').forEach((code) => {
@@ -47,19 +51,18 @@ export async function renderAfterHTML(container, parseResult) {
 }
 
 export function initViewer() {
-    const content = document.getElementById("viewer-content");
+    // Use the #app-viewer for delegated click handling (works across cached DOMs)
+    const appViewer = document.getElementById("app-viewer");
 
     on("file:rendered", async (parseResult) => {
         devLog("file:rendered, has_mermaid:", parseResult?.has_mermaid);
-        content.style.display = "block";
-        content.innerHTML = parseResult.html;
-        content.dir = "auto";
+        const content = getContentEl();
+        if (!content) return;
 
         wrapTables();
         await renderAfterHTML(content, parseResult);
 
         if (getState().editMode) {
-            // Enable task list checkboxes (marked renders them disabled)
             content.querySelectorAll('input[type="checkbox"][disabled]').forEach(cb => {
                 cb.removeAttribute("disabled");
             });
@@ -69,27 +72,36 @@ export function initViewer() {
         }
     });
 
-    // Intercept link clicks in rendered markdown
-    content.addEventListener("click", (e) => {
-        // In edit mode, link-popover handles links
+    // file:switched fires when a cached DOM is shown (no re-render needed)
+    on("file:switched", () => {
+        const content = getContentEl();
+        if (!content) return;
+
+        if (!getState().editMode) {
+            addCopyButtons();
+            initImageZoom();
+        }
+    });
+
+    // Intercept link clicks via delegation on the viewer container
+    appViewer.addEventListener("click", (e) => {
         if (getState().editMode) return;
 
         const anchor = e.target.closest("a[href]");
-        if (!anchor || !content.contains(anchor)) return;
+        const content = getContentEl();
+        if (!anchor || !content || !content.contains(anchor)) return;
 
         const href = anchor.getAttribute("href");
         if (!href) return;
 
         e.preventDefault();
 
-        // In-page anchor links — scroll to target
         if (href.startsWith("#")) {
             const target = document.getElementById(href.slice(1));
             if (target) target.scrollIntoView({ behavior: "smooth" });
             return;
         }
 
-        // External links — notify Phoenix to open
         window.parent.postMessage({
             type: "MDVIEWR_EVENT",
             eventName: "embeddedIframeHrefClick",
@@ -98,12 +110,17 @@ export function initViewer() {
     });
 
     on("file:closed", () => {
-        content.style.display = "none";
-        content.innerHTML = "";
+        const content = getContentEl();
+        if (content) {
+            content.style.display = "none";
+            content.innerHTML = "";
+        }
     });
 
     // Re-render mermaid diagrams on theme change
     on("state:theme", async () => {
+        const content = getContentEl();
+        if (!content) return;
         const diagrams = content.querySelectorAll(".mermaid-diagram[data-mermaid-source]");
         if (diagrams.length === 0) return;
         const { reRenderMermaidBlocks } = await import("../core/mermaid-render.js");
@@ -121,8 +138,6 @@ function wrapTables() {
 }
 
 export function highlightCode() {
-    // Sync data-language on <pre> to class on <code>
-    // Skip mermaid blocks
     document.querySelectorAll('#viewer-content pre[data-language]:not([data-language="mermaid"])').forEach((pre) => {
         const lang = pre.getAttribute("data-language");
         if (!lang) return;

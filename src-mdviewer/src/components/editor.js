@@ -1125,12 +1125,16 @@ function emitContentChange(contentEl) {
     }, CONTENT_CHANGE_DEBOUNCE);
 }
 
+function getContentEl() {
+    return document.getElementById("viewer-content");
+}
+
 export function initEditor() {
     turndown = createTurndown();
 
-    const content = document.getElementById("viewer-content");
-
     on("state:editMode", (editing) => {
+        const content = getContentEl();
+        if (!content) return;
         if (editing) {
             enterEditMode(content);
         } else {
@@ -1141,6 +1145,8 @@ export function initEditor() {
     // Handle format actions from toolbar/format-bar/slash-menu
     on("action:format", ({ command, value }) => {
         if (!getState().editMode) return;
+        const content = getContentEl();
+        if (!content) return;
         scrollSelectionIntoView(content);
         flushSnapshot(content);
         executeFormat(content, command, value);
@@ -1150,12 +1156,16 @@ export function initEditor() {
 
     on("action:undo", () => {
         if (!getState().editMode) return;
+        const content = getContentEl();
+        if (!content) return;
         performUndo(content);
         setState({ isDirty: undoStack.length > 0 });
     });
 
     on("action:redo", () => {
         if (!getState().editMode) return;
+        const content = getContentEl();
+        if (!content) return;
         performRedo(content);
         setState({ isDirty: true });
     });

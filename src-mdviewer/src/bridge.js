@@ -1,11 +1,13 @@
 /**
  * PostMessage bridge between Phoenix parent window and mdviewr iframe.
  * Handles bidirectional communication for content sync, theme, locale, and edit mode.
+ * Integrates with doc-cache for instant file switching.
  */
 import { on, emit } from "./core/events.js";
 import { getState, setState } from "./core/state.js";
 import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
+import * as docCache from "./core/doc-cache.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -50,8 +52,6 @@ function _annotateTokenLines(tokens) {
 }
 
 // Custom renderer that injects data-source-line attributes into block-level elements.
-// We store references to the prototype methods, then call them with the real `this`
-// (which has `this.parser`) inside marked.use() renderer overrides.
 const _proto = marked.Renderer.prototype;
 
 function _withSourceLine(protoFn, tagRegex) {
@@ -79,10 +79,8 @@ marked.use({
 /**
  * Parse markdown to HTML with mermaid detection and source line annotations.
  */
-function parseMarkdownToHTML(markdown) {
+export function parseMarkdownToHTML(markdown) {
     const has_mermaid = /```mermaid/i.test(markdown);
-    // Use lexer + manual walkTokens + parser so we can annotate source lines.
-    // marked.parser() does NOT invoke walkTokens, so we resolve URLs manually.
     const tokens = marked.lexer(markdown);
     _annotateTokenLines(tokens);
     marked.walkTokens(tokens, (token) => {
@@ -102,6 +100,8 @@ const _isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
  * Initialize the postMessage bridge.
  */
 export function initBridge() {
+    docCache.initDocCache();
+
     // Listen for messages from Phoenix parent
     window.addEventListener("message", (event) => {
         const data = event.data;
@@ -113,6 +113,18 @@ export function initBridge() {
                 break;
             case "MDVIEWR_UPDATE_CONTENT":
                 handleUpdateContent(data);
+                break;
+            case "MDVIEWR_SWITCH_FILE":
+                handleSwitchFile(data);
+                break;
+            case "MDVIEWR_CLEAR_CACHE":
+                handleClearCache();
+                break;
+            case "MDVIEWR_WORKING_SET_CHANGED":
+                handleWorkingSetChanged(data);
+                break;
+            case "MDVIEWR_CLOSE_FILE":
+                handleCloseFile(data);
                 break;
             case "MDVIEWR_SET_THEME":
                 handleSetTheme(data);
@@ -162,7 +174,6 @@ export function initBridge() {
     document.addEventListener("click", (e) => {
         const sourceLine = _getSourceLineFromElement(e.target);
         if (getState().editMode) {
-            // In edit mode, sync cursor position but keep focus in the iframe
             if (sourceLine != null) {
                 sendToParent("mdviewrScrollSync", { sourceLine });
             }
@@ -186,6 +197,14 @@ export function initBridge() {
     on("bridge:contentChanged", ({ markdown }) => {
         if (_suppressContentChange) return;
         _syncId++;
+        // Update the cache entry's mdSrc so it stays in sync
+        const activePath = docCache.getActiveFilePath();
+        if (activePath) {
+            const entry = docCache.getEntry(activePath);
+            if (entry) {
+                entry.mdSrc = markdown;
+            }
+        }
         sendToParent("mdviewrContentChanged", { markdown, _syncId });
     });
 
@@ -198,17 +217,29 @@ export function initBridge() {
     sendToParent("mdviewrReady", {});
 }
 
+// --- Content handlers ---
+
 function handleSetContent(data) {
     const { markdown, baseURL, filePath } = data;
 
-    // Store base URL for resolving relative image/link paths in markdown
     if (baseURL) {
         _baseURL = baseURL;
     }
 
-    // Parse and render
     _suppressContentChange = true;
     const parseResult = parseMarkdownToHTML(markdown);
+
+    if (filePath) {
+        // Cache-aware: create/update entry and switch to it
+        const existing = docCache.getEntry(filePath);
+        if (existing) {
+            docCache.updateEntry(filePath, markdown, parseResult);
+        } else {
+            docCache.createEntry(filePath, markdown, parseResult);
+        }
+        docCache.switchTo(filePath);
+    }
+
     setState({
         currentContent: markdown,
         parseResult: parseResult
@@ -218,9 +249,8 @@ function handleSetContent(data) {
 }
 
 function handleUpdateContent(data) {
-    const { markdown, _syncId: remoteSyncId } = data;
+    const { markdown, _syncId: remoteSyncId, filePath } = data;
 
-    // Ignore stale updates (echo from our own changes)
     if (remoteSyncId !== undefined && remoteSyncId <= _lastReceivedSyncId) {
         return;
     }
@@ -230,28 +260,142 @@ function handleUpdateContent(data) {
 
     _suppressContentChange = true;
 
-    const state = getState();
-    if (state.editMode) {
-        // In edit mode, we need to update the content without losing cursor
-        // For now, re-render (this will be improved with more granular updates)
+    // If update is for a background (non-active) file, just update cache
+    const activePath = docCache.getActiveFilePath();
+    if (filePath && activePath && filePath !== activePath) {
         const parseResult = parseMarkdownToHTML(markdown);
+        docCache.updateEntry(filePath, markdown, parseResult);
+        _suppressContentChange = false;
+        return;
+    }
+
+    const parseResult = parseMarkdownToHTML(markdown);
+
+    if (filePath) {
+        const entry = docCache.getEntry(filePath);
+        if (entry) {
+            entry.mdSrc = markdown;
+            entry.parseResult = parseResult;
+            // Don't replace innerHTML — let file:rendered handle it
+            // since the editor may be active
+        }
+    }
+
+    setState({
+        currentContent: markdown,
+        parseResult: parseResult
+    });
+    emit("file:rendered", parseResult);
+
+    _suppressContentChange = false;
+}
+
+/**
+ * Cache-aware file switch. This is the core optimization:
+ * - Cache hit + same content → just show cached DOM (instant)
+ * - Cache hit + changed content → re-render in place
+ * - Cache miss → parse, create entry, render
+ */
+function handleSwitchFile(data) {
+    const { filePath, markdown, baseURL } = data;
+
+    if (baseURL) {
+        _baseURL = baseURL;
+    }
+
+    _suppressContentChange = true;
+
+    // Save state for outgoing document
+    const outgoingPath = docCache.getActiveFilePath();
+    if (outgoingPath) {
+        docCache.saveActiveScrollPos();
+        // Save edit mode state in cache entry
+        const outEntry = docCache.getEntry(outgoingPath);
+        if (outEntry) {
+            outEntry._editMode = getState().editMode;
+        }
+    }
+
+    // Exit edit mode before switching DOM if currently editing
+    if (getState().editMode) {
+        emit("doc:beforeSwitch", { fromPath: outgoingPath, toPath: filePath });
+        setState({ editMode: false });
+    }
+
+    const existing = docCache.getEntry(filePath);
+
+    if (existing && existing.mdSrc === markdown) {
+        // Cache hit, content unchanged — instant switch
+        docCache.switchTo(filePath);
+
+        setState({
+            currentContent: markdown,
+            parseResult: existing.parseResult
+        });
+
+        // Restore edit mode for this document
+        if (existing._editMode) {
+            setState({ editMode: true });
+        }
+
+        emit("file:switched", { filePath });
+    } else if (existing) {
+        // Cache hit, content changed — re-render in place
+        const parseResult = parseMarkdownToHTML(markdown);
+        docCache.updateEntry(filePath, markdown, parseResult);
+        docCache.switchTo(filePath);
+
         setState({
             currentContent: markdown,
             parseResult: parseResult
         });
+
+        // Restore edit mode for this document
+        if (existing._editMode) {
+            setState({ editMode: true });
+        }
+
         emit("file:rendered", parseResult);
     } else {
-        // In read mode, just re-render
+        // Cache miss — create new entry
         const parseResult = parseMarkdownToHTML(markdown);
+        docCache.createEntry(filePath, markdown, parseResult);
+        docCache.switchTo(filePath);
+
         setState({
             currentContent: markdown,
             parseResult: parseResult
         });
+
         emit("file:rendered", parseResult);
     }
 
     _suppressContentChange = false;
 }
+
+function handleClearCache() {
+    // Exit edit mode if active
+    if (getState().editMode) {
+        setState({ editMode: false });
+    }
+    docCache.clearAll();
+}
+
+function handleWorkingSetChanged(data) {
+    const { paths } = data;
+    if (Array.isArray(paths)) {
+        docCache.setWorkingSet(paths);
+    }
+}
+
+function handleCloseFile(data) {
+    const { filePath } = data;
+    if (filePath) {
+        docCache.removeEntry(filePath);
+    }
+}
+
+// --- Theme, edit mode, locale ---
 
 function handleSetTheme(data) {
     const { theme } = data;
@@ -276,10 +420,8 @@ function handleSetLocale(data) {
     }
 }
 
-/**
- * Walk up the DOM from an element to find the nearest data-source-line attribute.
- * Returns the line number or null.
- */
+// --- Scroll sync ---
+
 function _getSourceLineFromElement(el) {
     while (el && el !== document.body) {
         const attr = el.getAttribute && el.getAttribute("data-source-line");
@@ -291,22 +433,13 @@ function _getSourceLineFromElement(el) {
     return null;
 }
 
-/**
- * Scroll the preview to show the element nearest to the given source line.
- * Only scrolls if the target element is not already visible in the viewport.
- */
 function handleScrollToLine(data) {
     const { line } = data;
-    if (line == null) {
-        return;
-    }
+    if (line == null) return;
 
     const viewer = document.getElementById("viewer-content");
-    if (!viewer) {
-        return;
-    }
+    if (!viewer) return;
 
-    // Find the element with data-source-line closest to (but not exceeding) the target line
     const elements = viewer.querySelectorAll("[data-source-line]");
     let bestEl = null;
     let bestLine = -1;
@@ -318,15 +451,10 @@ function handleScrollToLine(data) {
         }
     }
 
-    if (!bestEl) {
-        return;
-    }
+    if (!bestEl) return;
 
-    // Only scroll if the element is not visible in the scrollable container
     const container = document.getElementById("app-viewer");
-    if (!container) {
-        return;
-    }
+    if (!container) return;
     const containerRect = container.getBoundingClientRect();
     const elRect = bestEl.getBoundingClientRect();
 
@@ -336,10 +464,8 @@ function handleScrollToLine(data) {
     }
 }
 
-/**
- * Highlight elements in the viewer that correspond to the CM selection range.
- * Uses data-source-line to find matching blocks, then tries text-level matching.
- */
+// --- Selection sync ---
+
 function _clearSelectionHighlight() {
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
@@ -352,9 +478,7 @@ function handleHighlightSelection(data) {
     _clearSelectionHighlight();
 
     const { fromLine, toLine, selectedText } = data;
-    if (fromLine == null || toLine == null || !selectedText) {
-        return;
-    }
+    if (fromLine == null || toLine == null || !selectedText) return;
 
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
@@ -369,7 +493,6 @@ function handleHighlightSelection(data) {
         }
     }
 
-    // If no exact line match, find closest block that contains the from line
     if (matchingEls.length === 0) {
         let bestEl = null;
         let bestLine = -1;
@@ -390,18 +513,12 @@ function handleHighlightSelection(data) {
     }
 }
 
-/**
- * Send the user's selection in the mdviewer back to Phoenix for CM selection sync.
- * Debounced via a timer.
- */
 let _selectionSendTimer = null;
 function _sendSelectionToParent() {
     clearTimeout(_selectionSendTimer);
     _selectionSendTimer = setTimeout(() => {
         const selection = window.getSelection();
-        if (!selection || !selection.rangeCount) {
-            return;
-        }
+        if (!selection || !selection.rangeCount) return;
 
         const anchorNode = selection.anchorNode;
         const el = anchorNode && (anchorNode.nodeType === Node.ELEMENT_NODE
@@ -409,7 +526,6 @@ function _sendSelectionToParent() {
         const sourceLine = _getSourceLineFromElement(el);
 
         if (selection.isCollapsed || selection.toString().length < 2) {
-            // Cursor moved without selection — clear CM selection and local highlight
             _clearSelectionHighlight();
             if (sourceLine != null) {
                 sendToParent("mdviewrSelectionSync", { sourceLine, selectedText: null });

@@ -165,9 +165,9 @@ define(function (require, exports, module) {
             cm.on("cursorActivity", _cursorHandler);
         }
 
-        // If iframe is already ready (reusing same iframe), send content immediately
+        // If iframe is already ready (reusing same iframe), switch file using cache
         if (_iframeReady) {
-            _sendContent();
+            _switchFile();
             _sendTheme();
             _sendLocale();
         }
@@ -232,6 +232,27 @@ define(function (require, exports, module) {
 
     // --- Phoenix → iframe ---
 
+    /**
+     * Send a cache-aware file switch message. The iframe decides whether
+     * to use its cached DOM or re-render based on content comparison.
+     */
+    function _switchFile() {
+        if (!_active || !_iframeReady || !_doc) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        if (!iframeWindow) {
+            return;
+        }
+
+        iframeWindow.postMessage({
+            type: "MDVIEWR_SWITCH_FILE",
+            markdown: _doc.getText(),
+            baseURL: _baseURL,
+            filePath: _doc.file.fullPath
+        }, "*");
+    }
+
     function _sendContent() {
         if (!_active || !_iframeReady || !_doc) {
             return;
@@ -262,6 +283,7 @@ define(function (require, exports, module) {
         iframeWindow.postMessage({
             type: "MDVIEWR_UPDATE_CONTENT",
             markdown: _doc.getText(),
+            filePath: _doc.file.fullPath,
             _syncId: _syncId
         }, "*");
     }
