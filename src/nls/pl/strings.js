@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Podgląd na żywo",
   "AI_CHAT_SCREENSHOT_AREA": "Zaznacz obszar",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Cały edytor",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Podgląd na żywo zaznaczenia",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Przechwyć",
   "AI_CHAT_SCREENSHOT_CANCEL": "Anuluj",
+  "AI_CHAT_PRIVACY_TITLE": "Rozpocznij czat AI z Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Aby udzielać odpowiedzi, ta funkcja wysyła twoje polecenia i odpowiedni kontekst do Claude Code.<br><br><a class='ai-privacy-link'>Dowiedz się więcej i zarządzaj swoimi ustawieniami prywatności</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Usuń plik",
   "AI_CHAT_QUEUED": "W kolejce",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Podgląd na żywo zaznaczenia",
-  "AI_CHAT_PRIVACY_TITLE": "Rozpocznij czat AI z Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Aby udzielać odpowiedzi, ta funkcja wysyła twoje polecenia i odpowiedni kontekst do Claude Code.<br><br><a class='ai-privacy-link'>Dowiedz się więcej i zarządzaj swoimi ustawieniami prywatności</a>."
+  "AI_CHAT_INPUT_HINT": "Naciśnij {0}, aby wysłać · {1} dla nowej linii"
 });

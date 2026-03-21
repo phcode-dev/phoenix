@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Tiešais priekšskatījums",
   "AI_CHAT_SCREENSHOT_AREA": "Atlasīt apgabalu",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Viss redaktors",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Atlases tiešraides priekšskatījums",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Uzņemt",
   "AI_CHAT_SCREENSHOT_CANCEL": "Atcelt",
+  "AI_CHAT_PRIVACY_TITLE": "Sākt MI tērzēšanu ar Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Lai sniegtu atbildes, šī funkcija nosūta jūsu uzvednes un atbilstošo kontekstu uz Claude Code.<br><br><a class='ai-privacy-link'>Uzziniet vairāk un pārvaldiet savus konfidencialitātes iestatījumus</a>.",
   "AI_CHAT_PRIVACY_OK": "Labi",
   "AI_CHAT_FILE_REMOVE": "Noņemt failu",
   "AI_CHAT_QUEUED": "Rindā",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Atlases tiešraides priekšskatījums",
-  "AI_CHAT_PRIVACY_TITLE": "Sākt MI tērzēšanu ar Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Lai sniegtu atbildes, šī funkcija nosūta jūsu uzvednes un atbilstošo kontekstu uz Claude Code.<br><br><a class='ai-privacy-link'>Uzziniet vairāk un pārvaldiet savus konfidencialitātes iestatījumus</a>."
+  "AI_CHAT_INPUT_HINT": "Nospiediet {0}, lai nosūtītu · {1} jaunai rindai"
 });

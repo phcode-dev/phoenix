@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Tinjauan Langsung",
   "AI_CHAT_SCREENSHOT_AREA": "Pilih Area",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Editor Penuh",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Pratinjau Langsung Seleksi",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Tangkap",
   "AI_CHAT_SCREENSHOT_CANCEL": "Batal",
+  "AI_CHAT_PRIVACY_TITLE": "Mulai Obrolan AI dengan Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Untuk memberikan respons, fitur ini mengirimkan prompt Anda dan konteks yang relevan ke Claude Code.<br><br><a class='ai-privacy-link'>Pelajari lebih lanjut dan kelola pengaturan privasi Anda</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Hapus file",
   "AI_CHAT_QUEUED": "Dalam antrean",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Pratinjau Langsung Seleksi",
-  "AI_CHAT_PRIVACY_TITLE": "Mulai Obrolan AI dengan Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Untuk memberikan respons, fitur ini mengirimkan prompt Anda dan konteks yang relevan ke Claude Code.<br><br><a class='ai-privacy-link'>Pelajari lebih lanjut dan kelola pengaturan privasi Anda</a>."
+  "AI_CHAT_INPUT_HINT": "Tekan {0} untuk mengirim · {1} untuk baris baru"
 });

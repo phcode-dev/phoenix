@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Voorbeeld",
   "AI_CHAT_SCREENSHOT_AREA": "Gebied selecteren",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Volledige editor",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live voorbeeld van selectie",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Vastleggen",
   "AI_CHAT_SCREENSHOT_CANCEL": "Annuleren",
+  "AI_CHAT_PRIVACY_TITLE": "Start AI-chat met Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "Om antwoorden te geven, stuurt deze functie uw prompts en relevante context naar Claude Code.<br><br><a class='ai-privacy-link'>Lees meer en beheer uw privacyinstellingen</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Bestand verwijderen",
   "AI_CHAT_QUEUED": "In de wachtrij",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live voorbeeld van selectie",
-  "AI_CHAT_PRIVACY_TITLE": "Start AI-chat met Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "Om antwoorden te geven, stuurt deze functie uw prompts en relevante context naar Claude Code.<br><br><a class='ai-privacy-link'>Lees meer en beheer uw privacyinstellingen</a>."
+  "AI_CHAT_INPUT_HINT": "Druk op {0} om te verzenden · {1} voor een nieuwe regel"
 });

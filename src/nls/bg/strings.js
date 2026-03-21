@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Преглед на живо",
   "AI_CHAT_SCREENSHOT_AREA": "Избери област",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Цял редактор",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Преглед на живо на селекцията",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Заснеми",
   "AI_CHAT_SCREENSHOT_CANCEL": "Отказ",
+  "AI_CHAT_PRIVACY_TITLE": "Стартиране на AI чат с Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "За да предоставя отговори, тази функция изпраща вашите запитвания и съответния контекст към Claude Code.<br><br><a class='ai-privacy-link'>Научете повече и управлявайте вашите настройки за поверителност</a>.",
   "AI_CHAT_PRIVACY_OK": "Добре",
   "AI_CHAT_FILE_REMOVE": "Премахване на файл",
   "AI_CHAT_QUEUED": "В опашката",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Преглед на живо на селекцията",
-  "AI_CHAT_PRIVACY_TITLE": "Стартиране на AI чат с Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "За да предоставя отговори, тази функция изпраща вашите запитвания и съответния контекст към Claude Code.<br><br><a class='ai-privacy-link'>Научете повече и управлявайте вашите настройки за поверителност</a>."
+  "AI_CHAT_INPUT_HINT": "Натиснете {0} за изпращане · {1} за нов ред"
 });

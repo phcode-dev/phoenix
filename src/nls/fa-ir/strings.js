@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "پیش نمایش زنده",
   "AI_CHAT_SCREENSHOT_AREA": "انتخاب ناحیه",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "کل ویرایشگر",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "پیش‌نمایش زنده بخش انتخاب‌شده",
   "AI_CHAT_SCREENSHOT_CAPTURE": "ثبت",
   "AI_CHAT_SCREENSHOT_CANCEL": "لغو",
+  "AI_CHAT_PRIVACY_TITLE": "شروع گفتگوی هوش مصنوعی با Claude Code",
+  "AI_CHAT_PRIVACY_BODY": "برای ارائه پاسخ، این قابلیت درخواست‌های شما و زمینه مرتبط را به Claude Code ارسال می‌کند.<br><br><a class='ai-privacy-link'>بیشتر بدانید و تنظیمات حریم خصوصی خود را مدیریت کنید</a>.",
   "AI_CHAT_PRIVACY_OK": "تائید",
   "AI_CHAT_FILE_REMOVE": "حذف فایل",
   "AI_CHAT_QUEUED": "در صف",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "پیش‌نمایش زنده بخش انتخاب‌شده",
-  "AI_CHAT_PRIVACY_TITLE": "شروع گفتگوی هوش مصنوعی با Claude Code",
-  "AI_CHAT_PRIVACY_BODY": "برای ارائه پاسخ، این قابلیت درخواست‌های شما و زمینه مرتبط را به Claude Code ارسال می‌کند.<br><br><a class='ai-privacy-link'>بیشتر بدانید و تنظیمات حریم خصوصی خود را مدیریت کنید</a>."
+  "AI_CHAT_INPUT_HINT": "برای ارسال {0} را فشار دهید · {1} برای خط جدید"
 });

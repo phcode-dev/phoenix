@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live-Vorschau",
   "AI_CHAT_SCREENSHOT_AREA": "Bereich auswählen",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Gesamter Editor",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live-Vorschau der Auswahl",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Aufnehmen",
   "AI_CHAT_SCREENSHOT_CANCEL": "Abbrechen",
+  "AI_CHAT_PRIVACY_TITLE": "KI-Chat mit Claude Code starten",
+  "AI_CHAT_PRIVACY_BODY": "Um Antworten bereitzustellen, sendet diese Funktion Ihre Eingabeaufforderungen und relevanten Kontext an Claude Code.<br><br><a class='ai-privacy-link'>Erfahren Sie mehr und verwalten Sie Ihre Datenschutzeinstellungen</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Datei entfernen",
   "AI_CHAT_QUEUED": "Eingereiht",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live-Vorschau der Auswahl",
-  "AI_CHAT_PRIVACY_TITLE": "KI-Chat mit Claude Code starten",
-  "AI_CHAT_PRIVACY_BODY": "Um Antworten bereitzustellen, sendet diese Funktion Ihre Eingabeaufforderungen und relevanten Kontext an Claude Code.<br><br><a class='ai-privacy-link'>Erfahren Sie mehr und verwalten Sie Ihre Datenschutzeinstellungen</a>."
+  "AI_CHAT_INPUT_HINT": "{0} zum Senden · {1} für neue Zeile"
 });

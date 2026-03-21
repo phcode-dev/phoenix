@@ -1895,8 +1895,12 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "लाइव प्रीव्यू",
   "AI_CHAT_SCREENSHOT_AREA": "क्षेत्र चुनें",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "पूरा एडिटर",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "चयनित का लाइव पूर्वावलोकन",
   "AI_CHAT_SCREENSHOT_CAPTURE": "कैप्चर",
   "AI_CHAT_SCREENSHOT_CANCEL": "रद्द करें",
+  "AI_CHAT_PRIVACY_TITLE": "Claude Code के साथ AI चैट शुरू करें",
+  "AI_CHAT_PRIVACY_BODY": "जवाब देने के लिए, यह सुविधा आपके प्रॉम्प्ट और प्रासंगिक संदर्भ को Claude Code को भेजती है।<br><br><a class='ai-privacy-link'>और जानें और अपनी गोपनीयता सेटिंग्स प्रबंधित करें</a>।",
+  "AI_CHAT_PRIVACY_OK": "ठीक है",
   "AI_CHAT_FILE_REMOVE": "फ़ाइल हटाएँ",
   "AI_CHAT_QUEUED": "कतार में",
   "AI_CHAT_QUEUED_EDIT": "संपादित करें",
@@ -2027,8 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "चयनित का लाइव पूर्वावलोकन",
-  "AI_CHAT_PRIVACY_TITLE": "Claude Code के साथ AI चैट शुरू करें",
-  "AI_CHAT_PRIVACY_BODY": "जवाब देने के लिए, यह सुविधा आपके प्रॉम्प्ट और प्रासंगिक संदर्भ को Claude Code को भेजती है।<br><br><a class='ai-privacy-link'>और जानें और अपनी गोपनीयता सेटिंग्स प्रबंधित करें</a>।",
-  "AI_CHAT_PRIVACY_OK": "ठीक है"
+  "AI_CHAT_INPUT_HINT": "भेजने के लिए {0} दबाएँ · नई लाइन के लिए {1}"
 });

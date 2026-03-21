@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Élő Előnézet",
   "AI_CHAT_SCREENSHOT_AREA": "Terület kijelölése",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "Teljes szerkesztő",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Kijelölés élő előnézete",
   "AI_CHAT_SCREENSHOT_CAPTURE": "Rögzítés",
   "AI_CHAT_SCREENSHOT_CANCEL": "Mégsem",
+  "AI_CHAT_PRIVACY_TITLE": "AI-csevegés indítása a Claude Code-dal",
+  "AI_CHAT_PRIVACY_BODY": "A válaszadáshoz ez a funkció elküldi az Ön utasításait és a releváns kontextust a Claude Code-nak.<br><br><a class='ai-privacy-link'>Tudjon meg többet, és kezelje adatvédelmi beállításait</a>.",
   "AI_CHAT_PRIVACY_OK": "OK",
   "AI_CHAT_FILE_REMOVE": "Fájl eltávolítása",
   "AI_CHAT_QUEUED": "Várólistán",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Kijelölés élő előnézete",
-  "AI_CHAT_PRIVACY_TITLE": "AI-csevegés indítása a Claude Code-dal",
-  "AI_CHAT_PRIVACY_BODY": "A válaszadáshoz ez a funkció elküldi az Ön utasításait és a releváns kontextust a Claude Code-nak.<br><br><a class='ai-privacy-link'>Tudjon meg többet, és kezelje adatvédelmi beállításait</a>."
+  "AI_CHAT_INPUT_HINT": "{0} a küldéshez · {1} új sorhoz"
 });

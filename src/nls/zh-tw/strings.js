@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "即時預覽",
   "AI_CHAT_SCREENSHOT_AREA": "選取區域",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "整個編輯器",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "即時預覽選取內容",
   "AI_CHAT_SCREENSHOT_CAPTURE": "擷取",
   "AI_CHAT_SCREENSHOT_CANCEL": "取消",
+  "AI_CHAT_PRIVACY_TITLE": "與 Claude Code 開始 AI 聊天",
+  "AI_CHAT_PRIVACY_BODY": "為提供回應，此功能會將您的提示與相關內容傳送給 Claude Code。<br><br><a class='ai-privacy-link'>了解更多並管理您的隱私權設定</a>。",
   "AI_CHAT_PRIVACY_OK": "確定",
   "AI_CHAT_FILE_REMOVE": "移除檔案",
   "AI_CHAT_QUEUED": "已排入佇列",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "即時預覽選取內容",
-  "AI_CHAT_PRIVACY_TITLE": "與 Claude Code 開始 AI 聊天",
-  "AI_CHAT_PRIVACY_BODY": "為提供回應，此功能會將您的提示與相關內容傳送給 Claude Code。<br><br><a class='ai-privacy-link'>了解更多並管理您的隱私權設定</a>。"
+  "AI_CHAT_INPUT_HINT": "按下 {0} 傳送 · {1} 換行"
 });

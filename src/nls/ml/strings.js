@@ -1895,8 +1895,12 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "ലൈവ് പ്രിവ്യൂ",
   "AI_CHAT_SCREENSHOT_AREA": "ഏരിയ തിരഞ്ഞെടുക്കുക",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "മുഴുവൻ എഡിറ്റർ",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "ലൈവ് പ്രിവ്യൂ സെലക്ഷൻ",
   "AI_CHAT_SCREENSHOT_CAPTURE": "പകർത്തുക",
   "AI_CHAT_SCREENSHOT_CANCEL": "റദ്ദാക്കുക",
+  "AI_CHAT_PRIVACY_TITLE": "ക്ലോഡ് കോഡ് ഉപയോഗിച്ച് AI ചാറ്റ് ആരംഭിക്കുക",
+  "AI_CHAT_PRIVACY_BODY": "പ്രതികരണങ്ങൾ നൽകുന്നതിനായി, ഈ ഫീച്ചർ നിങ്ങളുടെ നിർദ്ദേശങ്ങളും പ്രസക്തമായ സന്ദർഭവും ക്ലോഡ് കോഡിലേക്ക് അയയ്ക്കുന്നു.<br><br><a class='ai-privacy-link'>കൂടുതലറിയുക, നിങ്ങളുടെ സ്വകാര്യതാ ക്രമീകരണങ്ങൾ നിയന്ത്രിക്കുക</a>.",
+  "AI_CHAT_PRIVACY_OK": "ശരി",
   "AI_CHAT_FILE_REMOVE": "ഫയൽ നീക്കംചെയ്യുക",
   "AI_CHAT_QUEUED": "ക്യൂവിൽ",
   "AI_CHAT_QUEUED_EDIT": "എഡിറ്റ് ചെയ്യുക",
@@ -2027,8 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "ലൈവ് പ്രിവ്യൂ സെലക്ഷൻ",
-  "AI_CHAT_PRIVACY_TITLE": "ക്ലോഡ് കോഡ് ഉപയോഗിച്ച് AI ചാറ്റ് ആരംഭിക്കുക",
-  "AI_CHAT_PRIVACY_BODY": "പ്രതികരണങ്ങൾ നൽകുന്നതിനായി, ഈ ഫീച്ചർ നിങ്ങളുടെ നിർദ്ദേശങ്ങളും പ്രസക്തമായ സന്ദർഭവും ക്ലോഡ് കോഡിലേക്ക് അയയ്ക്കുന്നു.<br><br><a class='ai-privacy-link'>കൂടുതലറിയുക, നിങ്ങളുടെ സ്വകാര്യതാ ക്രമീകരണങ്ങൾ നിയന്ത്രിക്കുക</a>.",
-  "AI_CHAT_PRIVACY_OK": "ശരി"
+  "AI_CHAT_INPUT_HINT": "അയയ്‌ക്കാൻ {0} അമർത്തുക · പുതിയ വരിക്ക് {1}"
 });

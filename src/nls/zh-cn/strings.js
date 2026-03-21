@@ -1895,8 +1895,11 @@ define({
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "实时预览",
   "AI_CHAT_SCREENSHOT_AREA": "选择区域",
   "AI_CHAT_SCREENSHOT_FULL_EDITOR": "整个编辑器",
+  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "实时预览选区",
   "AI_CHAT_SCREENSHOT_CAPTURE": "捕获",
   "AI_CHAT_SCREENSHOT_CANCEL": "取消",
+  "AI_CHAT_PRIVACY_TITLE": "与 Claude Code 开始 AI 聊天",
+  "AI_CHAT_PRIVACY_BODY": "为提供响应，此功能会将您的提示词和相关上下文发送至 Claude Code。<br><br><a class='ai-privacy-link'>了解更多并管理您的隐私设置</a>。",
   "AI_CHAT_PRIVACY_OK": "确认",
   "AI_CHAT_FILE_REMOVE": "移除文件",
   "AI_CHAT_QUEUED": "排队中",
@@ -2028,7 +2031,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "实时预览选区",
-  "AI_CHAT_PRIVACY_TITLE": "与 Claude Code 开始 AI 聊天",
-  "AI_CHAT_PRIVACY_BODY": "为提供响应，此功能会将您的提示词和相关上下文发送至 Claude Code。<br><br><a class='ai-privacy-link'>了解更多并管理您的隐私设置</a>。"
+  "AI_CHAT_INPUT_HINT": "按下 {0} 发送 · {1} 换行"
 });
