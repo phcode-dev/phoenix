@@ -1405,6 +1405,11 @@ function cleanupEditMode(content) {
         w.classList.remove("table-active");
     });
 
+    // Disable checkboxes in read mode
+    content.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.setAttribute("disabled", "");
+    });
+
     content.removeAttribute("contenteditable");
     content.classList.remove("editing");
     if (beforeInputHandler) {
