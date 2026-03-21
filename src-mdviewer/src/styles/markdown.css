@@ -435,6 +435,17 @@
   scroll-behavior: auto;
 }
 
+/* ===== Selection highlight from CodeMirror ===== */
+.cm-selection-highlight {
+  background-color: rgba(100, 150, 255, 0.12);
+  border-radius: 2px;
+  transition: background-color 150ms ease;
+}
+
+[data-theme="light"] .cm-selection-highlight {
+  background-color: rgba(50, 100, 220, 0.1);
+}
+
 /* ===== Mermaid diagrams ===== */
 
 .mermaid-diagram {

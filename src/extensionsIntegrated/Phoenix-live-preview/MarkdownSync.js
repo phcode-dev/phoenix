@@ -37,6 +37,7 @@ define(function (require, exports, module) {
     let _iframeReady = false;
     let _debounceTimer = null;
     let _scrollSyncTimer = null;
+    let _selectionSyncTimer = null;
     let _messageHandler = null;
     let _docChangeHandler = null;
     let _themeChangeHandler = null;
@@ -44,6 +45,7 @@ define(function (require, exports, module) {
 
     const DEBOUNCE_TO_IFRAME_MS = 150;
     const SCROLL_SYNC_DEBOUNCE_MS = 100;
+    const SELECTION_SYNC_DEBOUNCE_MS = 200;
 
     /**
      * Start syncing for the given document and iframe.
@@ -110,6 +112,9 @@ define(function (require, exports, module) {
                     _scrollCMToLine(data.sourceLine);
                 }
                 break;
+            case "mdviewrSelectionSync":
+                _handleSelectionFromIframe(data);
+                break;
             case "embeddedIframeHrefClick":
                 _handleHrefClick(data);
                 break;
@@ -141,7 +146,7 @@ define(function (require, exports, module) {
         };
         ThemeManager.on("themeChange", _themeChangeHandler);
 
-        // Listen for cursor activity in CM5 for scroll sync (CM5 → iframe)
+        // Listen for cursor activity in CM5 for scroll sync and selection sync (CM5 → iframe)
         _cursorHandler = function () {
             if (_syncingFromIframe || !_iframeReady) {
                 return;
@@ -150,6 +155,10 @@ define(function (require, exports, module) {
             _scrollSyncTimer = setTimeout(function () {
                 _syncScrollToIframe();
             }, SCROLL_SYNC_DEBOUNCE_MS);
+            clearTimeout(_selectionSyncTimer);
+            _selectionSyncTimer = setTimeout(function () {
+                _syncSelectionToIframe();
+            }, SELECTION_SYNC_DEBOUNCE_MS);
         };
         const cm = _getCM();
         if (cm) {
@@ -174,6 +183,7 @@ define(function (require, exports, module) {
 
         clearTimeout(_debounceTimer);
         clearTimeout(_scrollSyncTimer);
+        clearTimeout(_selectionSyncTimer);
 
         if (_cursorHandler) {
             const cm = _getCM();
@@ -436,6 +446,114 @@ define(function (require, exports, module) {
             const targetScrollTop = lineTop - (scrollInfo.clientHeight / 2);
             cm.scrollTo(null, targetScrollTop);
         }
+    }
+
+    // --- Selection sync ---
+
+    /**
+     * Send the current CM5 selection range to the iframe so it can highlight
+     * the corresponding rendered elements.
+     */
+    function _syncSelectionToIframe() {
+        if (!_active || !_iframeReady) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        const cm = _getCM();
+        if (!iframeWindow || !cm) {
+            return;
+        }
+
+        const from = cm.getCursor("from");
+        const to = cm.getCursor("to");
+        const hasSelection = from.line !== to.line || from.ch !== to.ch;
+
+        if (hasSelection) {
+            const selectedText = cm.getSelection();
+            iframeWindow.postMessage({
+                type: "MDVIEWR_HIGHLIGHT_SELECTION",
+                fromLine: from.line + 1, // convert to 1-based
+                toLine: to.line + 1,
+                selectedText: selectedText
+            }, "*");
+        } else {
+            // Clear highlight when no selection
+            iframeWindow.postMessage({
+                type: "MDVIEWR_HIGHLIGHT_SELECTION",
+                fromLine: null,
+                toLine: null,
+                selectedText: null
+            }, "*");
+        }
+    }
+
+    /**
+     * Handle a selection coming from the iframe. Finds the corresponding text
+     * in CM5 and sets the selection there.
+     */
+    function _handleSelectionFromIframe(data) {
+        const cm = _getCM();
+        if (!cm || !_active) {
+            return;
+        }
+
+        const { sourceLine, selectedText } = data;
+        if (!sourceLine) {
+            return;
+        }
+
+        const cmLine = Math.max(0, sourceLine - 1);
+        const lineCount = cm.lineCount();
+        if (cmLine >= lineCount) {
+            return;
+        }
+
+        _syncingFromIframe = true;
+
+        if (!selectedText) {
+            // No selection — just move cursor to clear any existing selection
+            cm.setCursor({ line: cmLine, ch: 0 });
+            _syncingFromIframe = false;
+            return;
+        }
+
+        // Search for the selected text starting from the source line
+        const searchStart = Math.max(0, cmLine);
+        const searchEnd = Math.min(lineCount, cmLine + 20);
+        let found = false;
+
+        for (let line = searchStart; line < searchEnd && !found; line++) {
+            const lineText = cm.getLine(line);
+            const idx = lineText.indexOf(selectedText);
+            if (idx !== -1 && selectedText.indexOf("\n") === -1) {
+                // Single-line match
+                cm.setSelection(
+                    { line: line, ch: idx },
+                    { line: line, ch: idx + selectedText.length }
+                );
+                found = true;
+            }
+        }
+
+        if (!found) {
+            // Multi-line or not found in single line — try searching the full text
+            const fullText = cm.getValue();
+            const startIndex = cm.indexFromPos({ line: searchStart, ch: 0 });
+            const matchIdx = fullText.indexOf(selectedText, startIndex);
+            if (matchIdx !== -1) {
+                const fromPos = cm.posFromIndex(matchIdx);
+                const toPos = cm.posFromIndex(matchIdx + selectedText.length);
+                cm.setSelection(fromPos, toPos);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            // Fallback: just move cursor to the source line
+            cm.setCursor({ line: cmLine, ch: 0 });
+        }
+
+        _syncingFromIframe = false;
     }
 
     // --- Helpers ---
