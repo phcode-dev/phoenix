@@ -602,6 +602,8 @@ define(function (require, exports, module) {
         // src. so we delete the node itself to eb thorough.
         // Don't destroy the persistent md iframe — just hide it
         if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            MarkdownSync.deactivate();
+            _isMdviewrActive = false;
             $mdviewrIframe.hide();
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             $mdviewrIframe.after(newIframe);
