@@ -153,5 +153,17 @@
   "welcome.new_button": "പുതിയ ഫയൽ",
   "welcome.open_button": "ഫയൽ തുറക്കുക",
   "welcome.subtitle": "ഒരു മനോഹരമായ മാർക്ക്ഡൗൺ വ്യൂവർ",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "ബ്ലോക്ക് തരം",
+  "format.lists": "ലിസ്റ്റുകൾ",
+  "format.more_elements": "കൂടുതൽ",
+  "format.text_formatting": "ടെക്സ്റ്റ് ഫോർമാറ്റിംഗ്",
+  "format.underline": "അടിവര",
+  "mermaid.done": "പൂർത്തിയായി",
+  "mermaid.edit": "എഡിറ്റ് ചെയ്യുക",
+  "mermaid.error_prefix": "സിന്റാക്സ് പിശക്",
+  "mermaid.stale": "പ്രിവ്യൂ കാലഹരണപ്പെട്ടു",
+  "slash.mermaid": "Mermaid ഡയഗ്രം",
+  "slash.mermaid_desc": "ഡയഗ്രം ചേർക്കുക",
+  "toolbar.done": "പൂർത്തിയായി"
 }

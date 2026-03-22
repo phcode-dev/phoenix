@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Luk søgning",
+    "edit_link": "Rediger link",
+    "format_text": "Formater tekst",
+    "insert_block": "Indsæt blok",
+    "main_toolbar": "Hovedværktøjslinje",
+    "next_match": "Næste match",
+    "previous_match": "Forrige match",
+    "search_in_document": "Søg i dokumentet",
+    "search_text": "Søgetekst",
+    "select_language": "Vælg sprog",
+    "sidebar": "Sidepanel",
+    "skip_to_content": "Spring til indhold"
+  },
+  "common": {
+    "close": "Luk",
+    "file": "Fil",
+    "open": "Åbn"
+  },
+  "context": {
+    "copy": "Kopiér",
+    "copy_image_address": "Kopiér billedadresse",
+    "copy_link": "Kopiér link",
+    "cut": "Klip",
+    "open_link": "Åbn link",
+    "paste": "Sæt ind",
+    "paste_plain": "Sæt ind som ren tekst",
+    "select_all": "Markér alt"
+  },
+  "dialog": {
+    "cancel": "Annuller",
+    "discard": "Kassér",
+    "dont_save": "Gem ikke",
+    "save": "Gem",
+    "unsaved_close": "Du har ikke-gemte ændringer. Vil du gemme, før du lukker?",
+    "unsaved_exit_edit": "Du har ikke-gemte ændringer. Vil du gemme, før du forlader redigeringstilstand?",
+    "unsaved_new_file": "Du har ikke-gemte ændringer. Vil du gemme, før du opretter en ny fil?",
+    "unsaved_open_file": "Du har ugemte ændringer. Vil du gemme, før du åbner en ny fil?",
+    "unsaved_title": "Ugemte ændringer"
+  },
+  "drop_zone": {
+    "text": "Træk din Markdown-fil hertil"
+  },
+  "export": {
+    "open": "Åbn",
+    "success": "PDF-filen blev eksporteret med succes"
+  },
+  "format": {
+    "block_type": "Bloktype",
+    "blockquote": "Blokcitat",
+    "bold": "Fed ({mod}+B)",
+    "bullet_list": "Punktopstilling",
+    "code": "Indlejret kode ({mod}+E)",
+    "code_block": "Kodeblok",
+    "divider": "Skillelinje",
+    "heading1": "Overskrift 1",
+    "heading2": "Overskrift 2",
+    "heading3": "Overskrift 3",
+    "italic": "Kursiv ({mod}+I)",
+    "link": "Link ({mod}+K)",
+    "lists": "Lister",
+    "more_elements": "Mere",
+    "numbered_list": "Nummereret liste",
+    "paragraph": "Afsnit",
+    "strikethrough": "Gennemstreget ({mod}+Shift+X)",
+    "table": "Tabel",
+    "task_list": "Opgaveliste",
+    "text_formatting": "Tekstformatering",
+    "underline": "Understregning"
+  },
+  "help": {
+    "editing": "Redigering",
+    "fallback_notice": "Denne side er endnu ikke tilgængelig på dit sprog. Viser den engelske version.",
+    "features": "Funktioner",
+    "getting_started": "Kom i gang",
+    "shortcuts": "Tastaturgenveje"
+  },
+  "lang_picker": {
+    "filter_label": "Filtrer sprog",
+    "filter_placeholder": "Filtrer sprog...",
+    "plain_text": "Almindelig tekst"
+  },
+  "link": {
+    "apply": "Anvend link",
+    "cancel": "Annuller",
+    "display_text": "Vist tekst",
+    "edit": "Rediger",
+    "edit_link": "Rediger link",
+    "remove_link": "Fjern link",
+    "text": "Tekst",
+    "text_placeholder": "Vist tekst (valgfri)",
+    "url": "URL",
+    "url_placeholder": "Indsæt eller skriv URL..."
+  },
+  "mermaid": {
+    "done": "Færdig",
+    "edit": "Rediger",
+    "error_prefix": "Syntaksfejl",
+    "stale": "Forhåndsvisning forældet"
+  },
+  "recovery": {
+    "discard": "Kassér",
+    "message": "Kern fandt ikke-gemte ændringer fra en tidligere session. Vil du gendanne dem?",
+    "restore": "Gendan",
+    "title": "Gendan ugemte ændringer?"
+  },
+  "search": {
+    "count": "resultater",
+    "no_results": "Ingen resultater",
+    "placeholder": "Søg i dokument..."
+  },
+  "settings": {
+    "language": "Sprog",
+    "theme": "Tema",
+    "theme_dark": "Mørk",
+    "theme_light": "Lys",
+    "theme_system": "System"
+  },
+  "sidebar": {
+    "no_headings": "Ingen overskrifter fundet",
+    "recent": "Seneste filer",
+    "toc": "Indholdsfortegnelse"
+  },
+  "slash": {
+    "blockquote": "Citatblok",
+    "blockquote_desc": "Citatblok",
+    "bullet_list": "Punktopstilling",
+    "bullet_list_desc": "Uordnet liste",
+    "code_block": "Kodeblok",
+    "code_block_desc": "Kodeblok",
+    "divider": "Skillelinje",
+    "divider_desc": "Vandret streg",
+    "heading1": "Overskrift 1",
+    "heading1_desc": "Stor overskrift",
+    "heading2": "Overskrift 2",
+    "heading2_desc": "Mellemstor overskrift",
+    "heading3": "Overskrift 3",
+    "heading3_desc": "Lille overskrift",
+    "mermaid": "Mermaid-diagram",
+    "mermaid_desc": "Indsæt et diagram",
+    "no_results": "Ingen resultater",
+    "numbered_list": "Nummereret liste",
+    "numbered_list_desc": "Ordnet liste",
+    "paragraph": "Afsnit",
+    "paragraph_desc": "Almindelig tekst",
+    "table": "Tabel",
+    "table_desc": "3×3 tabel",
+    "task_list": "Opgaveliste",
+    "task_list_desc": "Tjekliste"
+  },
+  "table": {
+    "add_col_left": "Tilføj kolonne til venstre",
+    "add_col_right": "Tilføj kolonne til højre",
+    "add_row_above": "Tilføj række ovenfor",
+    "add_row_below": "Tilføj række nedenfor",
+    "col_options": "Kolonne {n} indstillinger",
+    "delete_col": "Slet kolonne",
+    "delete_row": "Slet række",
+    "header": "Overskrift",
+    "insert_col_left": "Indsæt kolonne til venstre",
+    "insert_col_right": "Indsæt kolonne til højre",
+    "insert_row_above": "Indsæt række ovenfor",
+    "insert_row_below": "Indsæt række nedenfor",
+    "new_row": "+ Ny række",
+    "row_options": "Indstillinger for række {n}"
+  },
+  "toolbar": {
+    "done": "Færdig",
+    "edit": "Rediger",
+    "export_pdf": "Eksporter PDF",
+    "focus": "Fokustilstand",
+    "more": "Mere",
+    "new_file": "Ny fil",
+    "open": "Åbn fil",
+    "save": "Gem",
+    "search": "Søg",
+    "settings": "Indstillinger",
+    "split_view": "Opdelt visning",
+    "theme": "Skift tema",
+    "toc": "Indholdsfortegnelse",
+    "zoom_in": "Zoom ind",
+    "zoom_out": "Zoom ud",
+    "zoom_reset": "Nulstil zoom"
+  },
+  "trial": {
+    "days_remaining": "{days} dage tilbage af prøveperioden",
+    "expired_message": "Din prøveperiode er udløbet. Køb Kern for at fortsætte med at redigere.",
+    "feature_edit": "Rediger Markdown med WYSIWYG og delt visning",
+    "feature_export": "Eksporter til PDF",
+    "feature_save": "Gem og opret nye filer",
+    "one_time_purchase": "Engangskøb. Intet abonnement.",
+    "purchase_button": "Køb Kern",
+    "purchase_desc": "Få fuld adgang til alle redigerings- og eksportfunktioner med et engangskøb.",
+    "purchase_title": "Lås Kern op",
+    "purchasing": "Køber...",
+    "restore_purchases": "Gendan køb",
+    "restoring": "Gendanner..."
+  },
+  "viewer": {
+    "copied": "Kopieret!",
+    "copy": "Kopiér"
+  },
+  "welcome": {
+    "drop_hint": "eller træk og slip en .md-fil",
+    "new_button": "Ny fil",
+    "open_button": "Åbn fil",
+    "subtitle": "En smuk Markdown-fremviser",
+    "title": "Kern"
+  }
+}

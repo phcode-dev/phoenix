@@ -153,5 +153,17 @@
   "welcome.new_button": "نئی فائل",
   "welcome.open_button": "فائل کھولیں",
   "welcome.subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "بلاک کی قسم",
+  "format.lists": "فہرستیں",
+  "format.more_elements": "مزید",
+  "format.text_formatting": "ٹیکسٹ فارمیٹنگ",
+  "format.underline": "انڈر لائن",
+  "mermaid.done": "مکمل",
+  "mermaid.edit": "ترمیم کریں",
+  "mermaid.error_prefix": "سنٹیکس کی خرابی",
+  "mermaid.stale": "پریویو پرانا ہو گیا",
+  "slash.mermaid": "Mermaid ڈایاگرام",
+  "slash.mermaid_desc": "ڈایاگرام داخل کریں",
+  "toolbar.done": "مکمل"
 }

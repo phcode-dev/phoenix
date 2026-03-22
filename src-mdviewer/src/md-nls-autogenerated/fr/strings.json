@@ -153,5 +153,17 @@
   "welcome.new_button": "Nouveau fichier",
   "welcome.open_button": "Ouvrir un fichier",
   "welcome.subtitle": "Un beau visualiseur Markdown",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "Type de bloc",
+  "format.lists": "Listes",
+  "format.more_elements": "Plus",
+  "format.text_formatting": "Mise en forme du texte",
+  "format.underline": "Souligné",
+  "mermaid.done": "Terminé",
+  "mermaid.edit": "Modifier",
+  "mermaid.error_prefix": "Erreur de syntaxe",
+  "mermaid.stale": "Aperçu non à jour",
+  "slash.mermaid": "Diagramme Mermaid",
+  "slash.mermaid_desc": "Insérer un diagramme",
+  "toolbar.done": "Terminé"
 }

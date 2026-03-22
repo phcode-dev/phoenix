@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Pechar busca",
+    "edit_link": "Editar ligazón",
+    "format_text": "Formatar texto",
+    "insert_block": "Inserir bloque",
+    "main_toolbar": "Barra de ferramentas principal",
+    "next_match": "Seguinte coincidencia",
+    "previous_match": "Coincidencia anterior",
+    "search_in_document": "Buscar no documento",
+    "search_text": "Buscar texto",
+    "select_language": "Seleccionar idioma",
+    "sidebar": "Barra lateral",
+    "skip_to_content": "Saltar ao contido"
+  },
+  "common": {
+    "close": "Pechar",
+    "file": "Ficheiro",
+    "open": "Abrir"
+  },
+  "context": {
+    "copy": "Copiar",
+    "copy_image_address": "Copiar o enderezo da imaxe",
+    "copy_link": "Copiar a ligazón",
+    "cut": "Cortar",
+    "open_link": "Abrir a ligazón",
+    "paste": "Pegar",
+    "paste_plain": "Pegar como texto simple",
+    "select_all": "Seleccionar todo"
+  },
+  "dialog": {
+    "cancel": "Cancelar",
+    "discard": "Descartar",
+    "dont_save": "Non gardar",
+    "save": "Gardar",
+    "unsaved_close": "Ten cambios sen gardar. Desexa gardar antes de pechar?",
+    "unsaved_exit_edit": "Ten cambios sen gardar. Desexa gardar antes de saír do modo de edición?",
+    "unsaved_new_file": "Ten cambios sen gardar. Desexa gardar antes de crear un novo ficheiro?",
+    "unsaved_open_file": "Ten cambios sen gardar. Quere gardar antes de abrir un novo ficheiro?",
+    "unsaved_title": "Cambios sen gardar"
+  },
+  "drop_zone": {
+    "text": "Solte aquí o seu ficheiro Markdown"
+  },
+  "export": {
+    "open": "Abrir",
+    "success": "PDF exportado con éxito"
+  },
+  "format": {
+    "block_type": "Tipo de bloque",
+    "blockquote": "Cita en bloque",
+    "bold": "Negra ({mod}+B)",
+    "bullet_list": "Lista de viñetas",
+    "code": "Código en liña ({mod}+E)",
+    "code_block": "Bloque de código",
+    "divider": "Divisor",
+    "heading1": "Encabezado 1",
+    "heading2": "Encabezado 2",
+    "heading3": "Encabezado 3",
+    "italic": "Cursiva ({mod}+I)",
+    "link": "Ligazón ({mod}+K)",
+    "lists": "Listas",
+    "more_elements": "Máis",
+    "numbered_list": "Lista numerada",
+    "paragraph": "Parágrafo",
+    "strikethrough": "Riscado ({mod}+Maiús+X)",
+    "table": "Táboa",
+    "task_list": "Lista de tarefas",
+    "text_formatting": "Formato do texto",
+    "underline": "Subliñado"
+  },
+  "help": {
+    "editing": "Edición",
+    "fallback_notice": "Esta páxina aínda non está dispoñible no seu idioma. Amosando a versión en inglés.",
+    "features": "Funcionalidades",
+    "getting_started": "Primeiros pasos",
+    "shortcuts": "Atallos de teclado"
+  },
+  "lang_picker": {
+    "filter_label": "Filtrar linguas",
+    "filter_placeholder": "Filtrar linguas...",
+    "plain_text": "Texto plano"
+  },
+  "link": {
+    "apply": "Aplicar",
+    "cancel": "Cancelar",
+    "display_text": "Texto a amosar",
+    "edit": "Editar",
+    "edit_link": "Editar ligazón",
+    "remove_link": "Eliminar ligazón",
+    "text": "Texto",
+    "text_placeholder": "Texto para mostrar (opcional)",
+    "url": "URL",
+    "url_placeholder": "Pegue ou escriba un URL..."
+  },
+  "mermaid": {
+    "done": "Feito",
+    "edit": "Editar",
+    "error_prefix": "Erro de sintaxe",
+    "stale": "Previsualización desactualizada"
+  },
+  "recovery": {
+    "discard": "Descartar",
+    "message": "Kern atopou cambios sen gardar dunha sesión anterior. Quere restauralos?",
+    "restore": "Restaurar",
+    "title": "Recuperar os cambios non gardados?"
+  },
+  "search": {
+    "count": "coincidencias",
+    "no_results": "Sen resultados",
+    "placeholder": "Buscar no documento..."
+  },
+  "settings": {
+    "language": "Idioma",
+    "theme": "Tema",
+    "theme_dark": "Escuro",
+    "theme_light": "Claro",
+    "theme_system": "Sistema"
+  },
+  "sidebar": {
+    "no_headings": "Non se atoparon cabeceiras",
+    "recent": "Ficheiros recentes",
+    "toc": "Índice de contidos"
+  },
+  "slash": {
+    "blockquote": "Cita en bloque",
+    "blockquote_desc": "Bloque de cita",
+    "bullet_list": "Lista de viñetas",
+    "bullet_list_desc": "Lista non ordenada",
+    "code_block": "Bloque de código",
+    "code_block_desc": "Código delimitado",
+    "divider": "Divisor",
+    "divider_desc": "Regra horizontal",
+    "heading1": "Título 1",
+    "heading1_desc": "Título grande",
+    "heading2": "Título 2",
+    "heading2_desc": "Título mediano",
+    "heading3": "Título 3",
+    "heading3_desc": "Título pequeno",
+    "mermaid": "Diagrama Mermaid",
+    "mermaid_desc": "Inserir un diagrama",
+    "no_results": "Sen resultados",
+    "numbered_list": "Lista numerada",
+    "numbered_list_desc": "Lista ordenada",
+    "paragraph": "Parágrafo",
+    "paragraph_desc": "Texto simple",
+    "table": "Táboa",
+    "table_desc": "Táboa de 3×3",
+    "task_list": "Lista de tarefas",
+    "task_list_desc": "Lista de verificación"
+  },
+  "table": {
+    "add_col_left": "Engadir columna á esquerda",
+    "add_col_right": "Engadir columna á dereita",
+    "add_row_above": "Engadir fila enriba",
+    "add_row_below": "Engadir fila debaixo",
+    "col_options": "Opcións da columna {n}",
+    "delete_col": "Eliminar columna",
+    "delete_row": "Eliminar fila",
+    "header": "Cabeceira",
+    "insert_col_left": "Inserir columna á esquerda",
+    "insert_col_right": "Inserir columna á dereita",
+    "insert_row_above": "Inserir fila enriba",
+    "insert_row_below": "Inserir fila debaixo",
+    "new_row": "+ Nova fila",
+    "row_options": "Opcións da fila {n}"
+  },
+  "toolbar": {
+    "done": "Feito",
+    "edit": "Editar",
+    "export_pdf": "Exportar a PDF",
+    "focus": "Modo de concentración",
+    "more": "Máis",
+    "new_file": "Novo ficheiro",
+    "open": "Abrir ficheiro",
+    "save": "Gardar",
+    "search": "Buscar",
+    "settings": "Configuración",
+    "split_view": "Vista dividida",
+    "theme": "Alternar tema",
+    "toc": "Índice de contidos",
+    "zoom_in": "Achegar",
+    "zoom_out": "Afastar",
+    "zoom_reset": "Restablecer o zoom"
+  },
+  "trial": {
+    "days_remaining": "Quedan {days} días de proba",
+    "expired_message": "O seu período de proba caducou. Compre Kern para continuar editando.",
+    "feature_edit": "Editar Markdown con WYSIWYG e vista dividida",
+    "feature_export": "Exportar a PDF",
+    "feature_save": "Gardar e crear ficheiros novos",
+    "one_time_purchase": "Compra única. Sen subscrición.",
+    "purchase_button": "Comprar Kern",
+    "purchase_desc": "Obtén acceso completo a todas as funcións de edición e exportación cunha compra única.",
+    "purchase_title": "Desbloquear Kern",
+    "purchasing": "Comprando...",
+    "restore_purchases": "Restaurar compras",
+    "restoring": "Restaurando..."
+  },
+  "viewer": {
+    "copied": "Copiado!",
+    "copy": "Copiar"
+  },
+  "welcome": {
+    "drop_hint": "ou arrastra e solta un ficheiro .md",
+    "new_button": "Novo ficheiro",
+    "open_button": "Abrir ficheiro",
+    "subtitle": "Un fermoso visor de Markdown",
+    "title": "Kern"
+  }
+}

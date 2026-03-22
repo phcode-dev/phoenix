@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "关闭搜索",
+    "edit_link": "编辑链接",
+    "format_text": "格式化文本",
+    "insert_block": "插入块",
+    "main_toolbar": "主工具栏",
+    "next_match": "下一个匹配",
+    "previous_match": "上一个匹配",
+    "search_in_document": "在文档中搜索",
+    "search_text": "搜索文本",
+    "select_language": "选择语言",
+    "sidebar": "侧边栏",
+    "skip_to_content": "跳转到内容"
+  },
+  "common": {
+    "close": "关闭",
+    "file": "文件",
+    "open": "打开"
+  },
+  "context": {
+    "copy": "复制",
+    "copy_image_address": "复制图片地址",
+    "copy_link": "复制链接",
+    "cut": "剪切",
+    "open_link": "打开链接",
+    "paste": "粘贴",
+    "paste_plain": "粘贴为纯文本",
+    "select_all": "全选"
+  },
+  "dialog": {
+    "cancel": "取消",
+    "discard": "放弃",
+    "dont_save": "不保存",
+    "save": "保存",
+    "unsaved_close": "您有未保存的更改。是否在关闭前保存？",
+    "unsaved_exit_edit": "您有未保存的更改。是否在退出编辑模式前保存？",
+    "unsaved_new_file": "您有未保存的更改。是否在新建文件前保存？",
+    "unsaved_open_file": "您有未保存的更改。是否在打开新文件前保存？",
+    "unsaved_title": "未保存的更改"
+  },
+  "drop_zone": {
+    "text": "将 Markdown 文件拖放到此处"
+  },
+  "export": {
+    "open": "打开",
+    "success": "PDF 导出成功"
+  },
+  "format": {
+    "blockquote": "引用",
+    "bold": "粗体 ({mod}+B)",
+    "bullet_list": "无序列表",
+    "code": "行内代码 ({mod}+E)",
+    "code_block": "代码块",
+    "divider": "分隔线",
+    "heading1": "一级标题",
+    "heading2": "二级标题",
+    "heading3": "三级标题",
+    "italic": "斜体 ({mod}+I)",
+    "link": "链接 ({mod}+K)",
+    "numbered_list": "有序列表",
+    "paragraph": "正文",
+    "strikethrough": "删除线 ({mod}+Shift+X)",
+    "table": "表格",
+    "task_list": "任务列表",
+    "block_type": "块类型",
+    "lists": "列表",
+    "more_elements": "更多",
+    "text_formatting": "文本格式",
+    "underline": "下划线"
+  },
+  "help": {
+    "editing": "编辑",
+    "fallback_notice": "此页面尚未提供您的语言版本。正在显示英文版本。",
+    "features": "功能",
+    "getting_started": "快速入门",
+    "shortcuts": "键盘快捷键"
+  },
+  "lang_picker": {
+    "filter_label": "筛选语言",
+    "filter_placeholder": "筛选语言...",
+    "plain_text": "纯文本"
+  },
+  "link": {
+    "apply": "应用链接",
+    "cancel": "取消",
+    "display_text": "显示文本",
+    "edit": "编辑",
+    "edit_link": "编辑链接",
+    "remove_link": "移除链接",
+    "text": "文本",
+    "text_placeholder": "显示文本（可选）",
+    "url": "URL",
+    "url_placeholder": "粘贴或输入 URL..."
+  },
+  "recovery": {
+    "discard": "放弃",
+    "message": "Kern 发现了上次会话中未保存的更改。是否恢复？",
+    "restore": "恢复",
+    "title": "恢复未保存的更改？"
+  },
+  "search": {
+    "count": "个匹配",
+    "no_results": "无结果",
+    "placeholder": "在文档中搜索..."
+  },
+  "settings": {
+    "language": "语言",
+    "theme": "主题",
+    "theme_dark": "深色",
+    "theme_light": "浅色",
+    "theme_system": "跟随系统"
+  },
+  "sidebar": {
+    "no_headings": "未找到标题",
+    "recent": "最近文件",
+    "toc": "目录"
+  },
+  "slash": {
+    "blockquote": "引用",
+    "blockquote_desc": "引用块",
+    "bullet_list": "无序列表",
+    "bullet_list_desc": "项目符号列表",
+    "code_block": "代码块",
+    "code_block_desc": "围栏代码",
+    "divider": "分隔线",
+    "divider_desc": "水平分隔线",
+    "heading1": "一级标题",
+    "heading1_desc": "大标题",
+    "heading2": "二级标题",
+    "heading2_desc": "中标题",
+    "heading3": "三级标题",
+    "heading3_desc": "小标题",
+    "no_results": "无结果",
+    "numbered_list": "有序列表",
+    "numbered_list_desc": "编号列表",
+    "paragraph": "正文",
+    "paragraph_desc": "纯文本",
+    "table": "表格",
+    "table_desc": "3×3 表格",
+    "task_list": "任务列表",
+    "task_list_desc": "清单",
+    "mermaid": "Mermaid 图表",
+    "mermaid_desc": "插入图表"
+  },
+  "table": {
+    "add_col_left": "在左侧添加列",
+    "add_col_right": "在右侧添加列",
+    "add_row_above": "在上方添加行",
+    "add_row_below": "在下方添加行",
+    "col_options": "第 {n} 列选项",
+    "delete_col": "删除列",
+    "delete_row": "删除行",
+    "header": "表头",
+    "insert_col_left": "在左侧插入列",
+    "insert_col_right": "在右侧插入列",
+    "insert_row_above": "在上方插入行",
+    "insert_row_below": "在下方插入行",
+    "new_row": "+ 新增行",
+    "row_options": "第 {n} 行选项"
+  },
+  "toolbar": {
+    "edit": "编辑",
+    "export_pdf": "导出 PDF",
+    "focus": "专注模式",
+    "more": "更多",
+    "new_file": "新建文件",
+    "open": "打开文件",
+    "save": "保存",
+    "search": "搜索",
+    "settings": "设置",
+    "split_view": "分屏视图",
+    "theme": "切换主题",
+    "toc": "目录",
+    "zoom_in": "放大",
+    "zoom_out": "缩小",
+    "zoom_reset": "重置缩放",
+    "done": "完成"
+  },
+  "trial": {
+    "days_remaining": "试用期剩余 {days} 天",
+    "expired_message": "您的试用期已结束。购买 Kern 以继续编辑。",
+    "feature_edit": "使用 WYSIWYG 和分屏视图编辑 Markdown",
+    "feature_export": "导出为 PDF",
+    "feature_save": "保存和新建文件",
+    "one_time_purchase": "一次性购买，无需订阅。",
+    "purchase_button": "购买 Kern",
+    "purchase_desc": "一次购买即可完整使用所有编辑和导出功能。",
+    "purchase_title": "解锁 Kern",
+    "purchasing": "购买中...",
+    "restore_purchases": "恢复购买",
+    "restoring": "恢复中..."
+  },
+  "viewer": {
+    "copied": "已复制！",
+    "copy": "复制"
+  },
+  "welcome": {
+    "drop_hint": "或拖放 .md 文件到此处",
+    "new_button": "新建文件",
+    "open_button": "打开文件",
+    "subtitle": "优雅的 Markdown 阅读器",
+    "title": "Kern"
+  },
+  "mermaid": {
+    "done": "完成",
+    "edit": "编辑",
+    "error_prefix": "语法错误",
+    "stale": "预览已过时"
+  }
+}

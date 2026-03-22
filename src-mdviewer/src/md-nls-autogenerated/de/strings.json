@@ -153,5 +153,17 @@
   "welcome.new_button": "Neue Datei",
   "welcome.open_button": "Datei öffnen",
   "welcome.subtitle": "Ein schöner Markdown-Betrachter",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "Blocktyp",
+  "format.lists": "Listen",
+  "format.more_elements": "Mehr",
+  "format.text_formatting": "Textformatierung",
+  "format.underline": "Unterstrichen",
+  "mermaid.done": "Fertig",
+  "mermaid.edit": "Bearbeiten",
+  "mermaid.error_prefix": "Syntaxfehler",
+  "mermaid.stale": "Vorschau veraltet",
+  "slash.mermaid": "Mermaid-Diagramm",
+  "slash.mermaid_desc": "Ein Diagramm einfügen",
+  "toolbar.done": "Fertig"
 }

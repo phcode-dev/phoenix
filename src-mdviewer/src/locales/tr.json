@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Aramayı kapat",
+    "edit_link": "Bağlantıyı düzenle",
+    "format_text": "Metni biçimlendir",
+    "insert_block": "Blok ekle",
+    "main_toolbar": "Ana araç çubuğu",
+    "next_match": "Sonraki eşleşme",
+    "previous_match": "Önceki eşleşme",
+    "search_in_document": "Belgede ara",
+    "search_text": "Metin ara",
+    "select_language": "Dil seç",
+    "sidebar": "Kenar Çubuğu",
+    "skip_to_content": "İçeriğe atla"
+  },
+  "common": {
+    "close": "Kapat",
+    "file": "Dosya",
+    "open": "Aç"
+  },
+  "context": {
+    "copy": "Kopyala",
+    "copy_image_address": "Resim Adresini Kopyala",
+    "copy_link": "Bağlantıyı Kopyala",
+    "cut": "Kes",
+    "open_link": "Bağlantıyı Aç",
+    "paste": "Yapıştır",
+    "paste_plain": "Düz Metin Olarak Yapıştır",
+    "select_all": "Tümünü Seç"
+  },
+  "dialog": {
+    "cancel": "İptal",
+    "discard": "Vazgeç",
+    "dont_save": "Kaydetme",
+    "save": "Kaydet",
+    "unsaved_close": "Kaydedilmemiş değişiklikleriniz var. Kapatmadan önce kaydetmek ister misiniz?",
+    "unsaved_exit_edit": "Kaydedilmemiş değişiklikleriniz var. Düzenleme modundan çıkmadan önce kaydetmek ister misiniz?",
+    "unsaved_new_file": "Kaydedilmemiş değişiklikleriniz var. Yeni bir dosya oluşturmadan önce kaydetmek ister misiniz?",
+    "unsaved_open_file": "Kaydedilmemiş değişiklikleriniz var. Yeni bir dosya açmadan önce kaydetmek ister misiniz?",
+    "unsaved_title": "Kaydedilmemiş Değişiklikler"
+  },
+  "drop_zone": {
+    "text": "Markdown dosyanızı buraya bırakın"
+  },
+  "export": {
+    "open": "Aç",
+    "success": "PDF başarıyla dışa aktarıldı"
+  },
+  "format": {
+    "block_type": "Blok türü",
+    "blockquote": "Alıntı bloku",
+    "bold": "Kalın ({mod}+B)",
+    "bullet_list": "Madde işaretli liste",
+    "code": "Satır içi kod ({mod}+E)",
+    "code_block": "Kod bloğu",
+    "divider": "Ayırıcı",
+    "heading1": "Başlık 1",
+    "heading2": "Başlık 2",
+    "heading3": "Başlık 3",
+    "italic": "İtalik ({mod}+I)",
+    "link": "Bağlantı ({mod}+K)",
+    "lists": "Listeler",
+    "more_elements": "Daha fazla",
+    "numbered_list": "Numaralı liste",
+    "paragraph": "Paragraf",
+    "strikethrough": "Üstü çizili ({mod}+Shift+X)",
+    "table": "Tablo",
+    "task_list": "Görev listesi",
+    "text_formatting": "Metin biçimlendirme",
+    "underline": "Altı çizili"
+  },
+  "help": {
+    "editing": "Düzenleme",
+    "fallback_notice": "Bu sayfa henüz dilinizde mevcut değil. İngilizce sürüm gösteriliyor.",
+    "features": "Özellikler",
+    "getting_started": "Başlarken",
+    "shortcuts": "Klavye Kısayolları"
+  },
+  "lang_picker": {
+    "filter_label": "Dilleri filtrele",
+    "filter_placeholder": "Dilleri filtrele...",
+    "plain_text": "Düz metin"
+  },
+  "link": {
+    "apply": "Bağlantıyı uygula",
+    "cancel": "İptal",
+    "display_text": "Görünen metin",
+    "edit": "Düzenle",
+    "edit_link": "Bağlantıyı düzenle",
+    "remove_link": "Bağlantıyı kaldır",
+    "text": "Metin",
+    "text_placeholder": "Görüntülenecek metin (isteğe bağlı)",
+    "url": "URL",
+    "url_placeholder": "URL'yi yapıştırın veya yazın..."
+  },
+  "mermaid": {
+    "done": "Bitti",
+    "edit": "Düzenle",
+    "error_prefix": "Söz dizimi hatası",
+    "stale": "Önizleme güncel değil"
+  },
+  "recovery": {
+    "discard": "Vazgeç",
+    "message": "Kern, önceki bir oturumdan kaydedilmemiş değişiklikler buldu. Bunları geri yüklemek ister misiniz?",
+    "restore": "Geri Yükle",
+    "title": "Kaydedilmemiş değişiklikler kurtarılsın mı?"
+  },
+  "search": {
+    "count": "eşleşme",
+    "no_results": "Sonuç bulunamadı",
+    "placeholder": "Belgede ara..."
+  },
+  "settings": {
+    "language": "Dil",
+    "theme": "Tema",
+    "theme_dark": "Koyu",
+    "theme_light": "Açık",
+    "theme_system": "Sistem"
+  },
+  "sidebar": {
+    "no_headings": "Başlık bulunamadı",
+    "recent": "Son Dosyalar",
+    "toc": "İçindekiler"
+  },
+  "slash": {
+    "blockquote": "Alıntı",
+    "blockquote_desc": "Alıntı bloku",
+    "bullet_list": "Maddeli liste",
+    "bullet_list_desc": "Sırasız liste",
+    "code_block": "Kod bloku",
+    "code_block_desc": "Çerçeveli kod",
+    "divider": "Ayırıcı",
+    "divider_desc": "Yatay çizgi",
+    "heading1": "Başlık 1",
+    "heading1_desc": "Büyük başlık",
+    "heading2": "Başlık 2",
+    "heading2_desc": "Orta boy başlık",
+    "heading3": "Başlık 3",
+    "heading3_desc": "Küçük başlık",
+    "mermaid": "Mermaid diyagramı",
+    "mermaid_desc": "Bir diyagram ekle",
+    "no_results": "Sonuç bulunamadı",
+    "numbered_list": "Numaralı liste",
+    "numbered_list_desc": "Sıralı liste",
+    "paragraph": "Paragraf",
+    "paragraph_desc": "Düz metin",
+    "table": "Tablo",
+    "table_desc": "3×3 tablo",
+    "task_list": "Görev listesi",
+    "task_list_desc": "Kontrol listesi"
+  },
+  "table": {
+    "add_col_left": "Sola sütun ekle",
+    "add_col_right": "Sağa sütun ekle",
+    "add_row_above": "Yukarıya satır ekle",
+    "add_row_below": "Aşağıya satır ekle",
+    "col_options": "Sütun {n} seçenekleri",
+    "delete_col": "Sütunu sil",
+    "delete_row": "Satırı sil",
+    "header": "Başlık",
+    "insert_col_left": "Sola sütun ekle",
+    "insert_col_right": "Sağa sütun ekle",
+    "insert_row_above": "Yukarıya satır ekle",
+    "insert_row_below": "Aşağıya satır ekle",
+    "new_row": "+ Yeni satır",
+    "row_options": "{n}. satır seçenekleri"
+  },
+  "toolbar": {
+    "done": "Bitti",
+    "edit": "Düzenle",
+    "export_pdf": "PDF Dışa Aktar",
+    "focus": "Odak Modu",
+    "more": "Daha Fazla",
+    "new_file": "Yeni Dosya",
+    "open": "Dosya Aç",
+    "save": "Kaydet",
+    "search": "Ara",
+    "settings": "Ayarlar",
+    "split_view": "Bölünmüş Görünüm",
+    "theme": "Temayı Değiştir",
+    "toc": "İçindekiler",
+    "zoom_in": "Yakınlaştır",
+    "zoom_out": "Uzaklaştır",
+    "zoom_reset": "Yakınlaştırmayı Sıfırla"
+  },
+  "trial": {
+    "days_remaining": "Deneme süresinin bitmesine {days} gün kaldı",
+    "expired_message": "Deneme süreniz sona erdi. Düzenlemeye devam etmek için Kern'i satın alın.",
+    "feature_edit": "WYSIWYG ve bölünmüş görünüm ile Markdown düzenleyin",
+    "feature_export": "PDF'e Dışa Aktar",
+    "feature_save": "Kaydedin ve yeni dosyalar oluşturun",
+    "one_time_purchase": "Tek seferlik satın alım. Abonelik yok.",
+    "purchase_button": "Kern'i Satın Alın",
+    "purchase_desc": "Tek seferlik satın alımla tüm düzenleme ve dışa aktarma özelliklerine tam erişim elde edin.",
+    "purchase_title": "Kern'in Kilidini Açın",
+    "purchasing": "Satın alınıyor...",
+    "restore_purchases": "Satın Alımları Geri Yükle",
+    "restoring": "Geri yükleniyor..."
+  },
+  "viewer": {
+    "copied": "Kopyalandı!",
+    "copy": "Kopyala"
+  },
+  "welcome": {
+    "drop_hint": "veya bir .md dosyasını sürükleyip bırakın",
+    "new_button": "Yeni Dosya",
+    "open_button": "Dosya Aç",
+    "subtitle": "Harika bir Markdown görüntüleyici",
+    "title": "Kern"
+  }
+}

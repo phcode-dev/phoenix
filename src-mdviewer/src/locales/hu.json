@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Keresés bezárása",
+    "edit_link": "Link szerkesztése",
+    "format_text": "Szöveg formázása",
+    "insert_block": "Blokk beillesztése",
+    "main_toolbar": "Fő eszköztár",
+    "next_match": "Következő találat",
+    "previous_match": "Előző találat",
+    "search_in_document": "Keresés a dokumentumban",
+    "search_text": "Szöveg keresése",
+    "select_language": "Nyelv kiválasztása",
+    "sidebar": "Oldalsáv",
+    "skip_to_content": "Ugrás a tartalomra"
+  },
+  "common": {
+    "close": "Bezárás",
+    "file": "Fájl",
+    "open": "Megnyitás"
+  },
+  "context": {
+    "copy": "Másolás",
+    "copy_image_address": "Kép címének másolása",
+    "copy_link": "Hivatkozás másolása",
+    "cut": "Kivágás",
+    "open_link": "Hivatkozás megnyitása",
+    "paste": "Beillesztés",
+    "paste_plain": "Beillesztés egyszerű szövegként",
+    "select_all": "Összes kijelölése"
+  },
+  "dialog": {
+    "cancel": "Mégse",
+    "discard": "Elvetés",
+    "dont_save": "Ne mentse",
+    "save": "Mentés",
+    "unsaved_close": "Nem mentett módosításai vannak. Szeretné menteni a bezárás előtt?",
+    "unsaved_exit_edit": "Nem mentett módosításai vannak. Szeretné menteni a szerkesztőmódból való kilépés előtt?",
+    "unsaved_new_file": "Nem mentett módosításai vannak. Szeretné menteni egy új fájl létrehozása előtt?",
+    "unsaved_open_file": "Mentetlen változtatásai vannak. Szeretné menteni a módosításokat, mielőtt új fájlt nyitna meg?",
+    "unsaved_title": "Mentetlen változtatások"
+  },
+  "drop_zone": {
+    "text": "Húzza ide a Markdown fájlt"
+  },
+  "export": {
+    "open": "Megnyitás",
+    "success": "A PDF exportálása sikeres."
+  },
+  "format": {
+    "block_type": "Blokk típusa",
+    "blockquote": "Idézetblokk",
+    "bold": "Félkövér ({mod}+B)",
+    "bullet_list": "Felsorolás",
+    "code": "Soron belüli kód ({mod}+E)",
+    "code_block": "Kódblokk",
+    "divider": "Elválasztó",
+    "heading1": "Címsor 1",
+    "heading2": "Címsor 2",
+    "heading3": "Címsor 3",
+    "italic": "Dőlt ({mod}+I)",
+    "link": "Hivatkozás ({mod}+K)",
+    "lists": "Listák",
+    "more_elements": "Továbbiak",
+    "numbered_list": "Számozott lista",
+    "paragraph": "Bekezdés",
+    "strikethrough": "Áthúzott ({mod}+Shift+X)",
+    "table": "Táblázat",
+    "task_list": "Feladatlista",
+    "text_formatting": "Szövegformázás",
+    "underline": "Aláhúzott"
+  },
+  "help": {
+    "editing": "Szerkesztés",
+    "fallback_notice": "Ez az oldal még nem érhető el az Ön nyelvén. Az angol nyelvű változatot jelenítjük meg.",
+    "features": "Funkciók",
+    "getting_started": "Első lépések",
+    "shortcuts": "Billentyűparancsok"
+  },
+  "lang_picker": {
+    "filter_label": "Nyelvek szűrése",
+    "filter_placeholder": "Nyelvek szűrése...",
+    "plain_text": "Egyszerű szöveg"
+  },
+  "link": {
+    "apply": "Alkalmaz",
+    "cancel": "Mégse",
+    "display_text": "Megjelenítendő szöveg",
+    "edit": "Szerkesztés",
+    "edit_link": "Hivatkozás szerkesztése",
+    "remove_link": "Hivatkozás eltávolítása",
+    "text": "Szöveg",
+    "text_placeholder": "Megjelenítendő szöveg (opcionális)",
+    "url": "URL",
+    "url_placeholder": "URL beillesztése vagy beírása..."
+  },
+  "mermaid": {
+    "done": "Kész",
+    "edit": "Szerkesztés",
+    "error_prefix": "Szintaktikai hiba",
+    "stale": "Az előnézet elavult"
+  },
+  "recovery": {
+    "discard": "Elvetés",
+    "message": "A Kern nem mentett változtatásokat talált egy korábbi munkamenetből. Szeretné visszaállítani őket?",
+    "restore": "Visszaállítás",
+    "title": "Nem mentett változások helyreállítása?"
+  },
+  "search": {
+    "count": "találat",
+    "no_results": "Nincs találat",
+    "placeholder": "Keresés a dokumentumban..."
+  },
+  "settings": {
+    "language": "Nyelv",
+    "theme": "Téma",
+    "theme_dark": "Sötét",
+    "theme_light": "Világos",
+    "theme_system": "Rendszer"
+  },
+  "sidebar": {
+    "no_headings": "Nincsenek címsorok",
+    "recent": "Legutóbbi fájlok",
+    "toc": "Tartalomjegyzék"
+  },
+  "slash": {
+    "blockquote": "Idézetblokk",
+    "blockquote_desc": "Idézetblokk",
+    "bullet_list": "Felsorolás",
+    "bullet_list_desc": "Rendezetlen lista",
+    "code_block": "Kódblokk",
+    "code_block_desc": "Elkerített kódblokk",
+    "divider": "Elválasztó",
+    "divider_desc": "Vízszintes elválasztó",
+    "heading1": "Címsor 1",
+    "heading1_desc": "Nagy címsor",
+    "heading2": "Címsor 2",
+    "heading2_desc": "Közepes címsor",
+    "heading3": "Címsor 3",
+    "heading3_desc": "Kis címsor",
+    "mermaid": "Mermaid diagram",
+    "mermaid_desc": "Diagram beillesztése",
+    "no_results": "Nincs találat",
+    "numbered_list": "Számozott lista",
+    "numbered_list_desc": "Rendezett lista",
+    "paragraph": "Bekezdés",
+    "paragraph_desc": "Egyszerű szöveg",
+    "table": "Táblázat",
+    "table_desc": "3×3-as táblázat",
+    "task_list": "Feladatlista",
+    "task_list_desc": "Ellenőrzőlista"
+  },
+  "table": {
+    "add_col_left": "Oszlop beszúrása balra",
+    "add_col_right": "Oszlop beszúrása jobbra",
+    "add_row_above": "Sor hozzáadása fölé",
+    "add_row_below": "Sor hozzáadása alá",
+    "col_options": "{n}. oszlop beállításai",
+    "delete_col": "Oszlop törlése",
+    "delete_row": "Sor törlése",
+    "header": "Fejléc",
+    "insert_col_left": "Oszlop beszúrása balra",
+    "insert_col_right": "Oszlop beszúrása jobbra",
+    "insert_row_above": "Sor beszúrása fölé",
+    "insert_row_below": "Sor beszúrása alá",
+    "new_row": "+ Új sor",
+    "row_options": "{n}. sor beállításai"
+  },
+  "toolbar": {
+    "done": "Kész",
+    "edit": "Szerkesztés",
+    "export_pdf": "Exportálás PDF-ként",
+    "focus": "Fókusz mód",
+    "more": "Továbbiak",
+    "new_file": "Új fájl",
+    "open": "Fájl megnyitása",
+    "save": "Mentés",
+    "search": "Keresés",
+    "settings": "Beállítások",
+    "split_view": "Osztott nézet",
+    "theme": "Téma váltása",
+    "toc": "Tartalomjegyzék",
+    "zoom_in": "Nagyítás",
+    "zoom_out": "Kicsinyítés",
+    "zoom_reset": "Nagyítás visszaállítása"
+  },
+  "trial": {
+    "days_remaining": "{days} nap van hátra a próbaidőszakból",
+    "expired_message": "A próbaidőszak lejárt. A szerkesztés folytatásához vásárolja meg a Kern-t.",
+    "feature_edit": "Markdown szerkesztése WYSIWYG és osztott nézetben",
+    "feature_export": "Exportálás PDF-be",
+    "feature_save": "Mentés és új fájlok létrehozása",
+    "one_time_purchase": "Egyszeri vásárlás. Nincs előfizetés.",
+    "purchase_button": "A Kern megvásárlása",
+    "purchase_desc": "Szerezzen teljes hozzáférést az összes szerkesztési és exportálási funkcióhoz egy egyszeri vásárlással.",
+    "purchase_title": "A Kern feloldása",
+    "purchasing": "Vásárlás...",
+    "restore_purchases": "Vásárlások visszaállítása",
+    "restoring": "Visszaállítás..."
+  },
+  "viewer": {
+    "copied": "Másolva!",
+    "copy": "Másolás"
+  },
+  "welcome": {
+    "drop_hint": "vagy húzzon ide egy .md fájlt",
+    "new_button": "Új fájl",
+    "open_button": "Fájl megnyitása",
+    "subtitle": "Egy gyönyörű Markdown megjelenítő",
+    "title": "Kern"
+  }
+}

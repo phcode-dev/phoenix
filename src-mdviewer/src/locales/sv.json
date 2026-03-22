@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Stäng sökning",
+    "edit_link": "Redigera länk",
+    "format_text": "Formatera text",
+    "insert_block": "Infoga block",
+    "main_toolbar": "Huvudverktygsfält",
+    "next_match": "Nästa träff",
+    "previous_match": "Föregående träff",
+    "search_in_document": "Sök i dokument",
+    "search_text": "Söktext",
+    "select_language": "Välj språk",
+    "sidebar": "Sidofält",
+    "skip_to_content": "Hoppa till innehåll"
+  },
+  "common": {
+    "close": "Stäng",
+    "file": "Fil",
+    "open": "Öppna"
+  },
+  "context": {
+    "copy": "Kopiera",
+    "copy_image_address": "Kopiera bildadress",
+    "copy_link": "Kopiera länk",
+    "cut": "Klipp ut",
+    "open_link": "Öppna länk",
+    "paste": "Klistra in",
+    "paste_plain": "Klistra in som oformaterad text",
+    "select_all": "Markera allt"
+  },
+  "dialog": {
+    "cancel": "Avbryt",
+    "discard": "Ignorera",
+    "dont_save": "Spara inte",
+    "save": "Spara",
+    "unsaved_close": "Du har osparade ändringar. Vill du spara innan du stänger?",
+    "unsaved_exit_edit": "Du har osparade ändringar. Vill du spara innan du lämnar redigeringsläget?",
+    "unsaved_new_file": "Du har osparade ändringar. Vill du spara innan du skapar en ny fil?",
+    "unsaved_open_file": "Du har osparade ändringar. Vill du spara innan du öppnar en ny fil?",
+    "unsaved_title": "Osparade ändringar"
+  },
+  "drop_zone": {
+    "text": "Släpp din Markdown-fil här"
+  },
+  "export": {
+    "open": "Öppna",
+    "success": "PDF-filen har exporterats"
+  },
+  "format": {
+    "block_type": "Blocktyp",
+    "blockquote": "Citatblock",
+    "bold": "Fet ({mod}+B)",
+    "bullet_list": "Punktlista",
+    "code": "Infogad kod ({mod}+E)",
+    "code_block": "Kodblock",
+    "divider": "Avdelare",
+    "heading1": "Rubrik 1",
+    "heading2": "Rubrik 2",
+    "heading3": "Rubrik 3",
+    "italic": "Kursiv ({mod}+I)",
+    "link": "Länk ({mod}+K)",
+    "lists": "Listor",
+    "more_elements": "Mer",
+    "numbered_list": "Numrerad lista",
+    "paragraph": "Stycke",
+    "strikethrough": "Genomstruken ({mod}+Shift+X)",
+    "table": "Tabell",
+    "task_list": "Att göra-lista",
+    "text_formatting": "Textformatering",
+    "underline": "Understruken"
+  },
+  "help": {
+    "editing": "Redigering",
+    "fallback_notice": "Den här sidan är inte tillgänglig på ditt språk än. Den engelska versionen visas.",
+    "features": "Funktioner",
+    "getting_started": "Komma igång",
+    "shortcuts": "Kortkommandon"
+  },
+  "lang_picker": {
+    "filter_label": "Filtrera språk",
+    "filter_placeholder": "Filtrera språk...",
+    "plain_text": "Oformaterad text"
+  },
+  "link": {
+    "apply": "Verkställ länk",
+    "cancel": "Avbryt",
+    "display_text": "Visningstext",
+    "edit": "Redigera",
+    "edit_link": "Redigera länk",
+    "remove_link": "Ta bort länk",
+    "text": "Text",
+    "text_placeholder": "Visningstext (valfritt)",
+    "url": "URL",
+    "url_placeholder": "Klistra in eller skriv URL..."
+  },
+  "mermaid": {
+    "done": "Klar",
+    "edit": "Redigera",
+    "error_prefix": "Syntaxfel",
+    "stale": "Förhandsgranskning inaktuell"
+  },
+  "recovery": {
+    "discard": "Förkasta",
+    "message": "Kern hittade osparade ändringar från en tidigare session. Vill du återställa dem?",
+    "restore": "Återställ",
+    "title": "Återställa osparade ändringar?"
+  },
+  "search": {
+    "count": "träffar",
+    "no_results": "Inga resultat",
+    "placeholder": "Sök i dokumentet..."
+  },
+  "settings": {
+    "language": "Språk",
+    "theme": "Tema",
+    "theme_dark": "Mörkt",
+    "theme_light": "Ljust",
+    "theme_system": "System"
+  },
+  "sidebar": {
+    "no_headings": "Inga rubriker hittades",
+    "recent": "Senaste filer",
+    "toc": "Innehållsförteckning"
+  },
+  "slash": {
+    "blockquote": "Citatblock",
+    "blockquote_desc": "Citatblock",
+    "bullet_list": "Punktlista",
+    "bullet_list_desc": "Osorterad lista",
+    "code_block": "Kodblock",
+    "code_block_desc": "Inhägnad kod",
+    "divider": "Avdelare",
+    "divider_desc": "Horisontell linje",
+    "heading1": "Rubrik 1",
+    "heading1_desc": "Stor rubrik",
+    "heading2": "Rubrik 2",
+    "heading2_desc": "Mellanstor rubrik",
+    "heading3": "Rubrik 3",
+    "heading3_desc": "Liten rubrik",
+    "mermaid": "Mermaid-diagram",
+    "mermaid_desc": "Infoga ett diagram",
+    "no_results": "Inga resultat",
+    "numbered_list": "Numrerad lista",
+    "numbered_list_desc": "Ordnad lista",
+    "paragraph": "Stycke",
+    "paragraph_desc": "Vanlig text",
+    "table": "Tabell",
+    "table_desc": "3×3-tabell",
+    "task_list": "Uppgiftslista",
+    "task_list_desc": "Checklista"
+  },
+  "table": {
+    "add_col_left": "Lägg till kolumn till vänster",
+    "add_col_right": "Lägg till kolumn till höger",
+    "add_row_above": "Lägg till rad ovanför",
+    "add_row_below": "Lägg till rad nedanför",
+    "col_options": "Alternativ för kolumn {n}",
+    "delete_col": "Ta bort kolumn",
+    "delete_row": "Ta bort rad",
+    "header": "Rubrik",
+    "insert_col_left": "Infoga kolumn till vänster",
+    "insert_col_right": "Infoga kolumn till höger",
+    "insert_row_above": "Infoga rad ovanför",
+    "insert_row_below": "Infoga rad nedanför",
+    "new_row": "+ Ny rad",
+    "row_options": "Alternativ för rad {n}"
+  },
+  "toolbar": {
+    "done": "Klar",
+    "edit": "Redigera",
+    "export_pdf": "Exportera PDF",
+    "focus": "Fokusläge",
+    "more": "Mer",
+    "new_file": "Ny fil",
+    "open": "Öppna fil",
+    "save": "Spara",
+    "search": "Sök",
+    "settings": "Inställningar",
+    "split_view": "Delad vy",
+    "theme": "Växla tema",
+    "toc": "Innehållsförteckning",
+    "zoom_in": "Zooma in",
+    "zoom_out": "Zooma ut",
+    "zoom_reset": "Återställ zoom"
+  },
+  "trial": {
+    "days_remaining": "{days} dagar kvar av provperioden",
+    "expired_message": "Din provperiod har gått ut. Köp Kern för att fortsätta redigera.",
+    "feature_edit": "Redigera Markdown med WYSIWYG och delad vy",
+    "feature_export": "Exportera till PDF",
+    "feature_save": "Spara och skapa nya filer",
+    "one_time_purchase": "Engångsköp. Ingen prenumeration.",
+    "purchase_button": "Köp Kern",
+    "purchase_desc": "Få fullständig åtkomst till alla redigerings- och exportfunktioner med ett engångsköp.",
+    "purchase_title": "Lås upp Kern",
+    "purchasing": "Köper...",
+    "restore_purchases": "Återställ köp",
+    "restoring": "Återställer..."
+  },
+  "viewer": {
+    "copied": "Kopierat!",
+    "copy": "Kopiera"
+  },
+  "welcome": {
+    "drop_hint": "eller dra och släpp en .md-fil",
+    "new_button": "Ny fil",
+    "open_button": "Öppna fil",
+    "subtitle": "En vacker Markdown-visare",
+    "title": "Kern"
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Aizvērt meklēšanu",
+    "edit_link": "Rediģēt saiti",
+    "format_text": "Formatēt tekstu",
+    "insert_block": "Ievietot bloku",
+    "main_toolbar": "Galvenā rīkjosla",
+    "next_match": "Nākamā atbilstība",
+    "previous_match": "Iepriekšējā atbilstība",
+    "search_in_document": "Meklēt dokumentā",
+    "search_text": "Meklēt tekstu",
+    "select_language": "Izvēlēties valodu",
+    "sidebar": "Sānjosla",
+    "skip_to_content": "Pāriet uz saturu"
+  },
+  "common": {
+    "close": "Aizvērt",
+    "file": "Fails",
+    "open": "Atvērt"
+  },
+  "context": {
+    "copy": "Kopēt",
+    "copy_image_address": "Kopēt attēla adresi",
+    "copy_link": "Kopēt saiti",
+    "cut": "Izgriezt",
+    "open_link": "Atvērt saiti",
+    "paste": "Ielīmēt",
+    "paste_plain": "Ielīmēt kā vienkāršu tekstu",
+    "select_all": "Atlasīt visu"
+  },
+  "dialog": {
+    "cancel": "Atcelt",
+    "discard": "Atmest",
+    "dont_save": "Nesaglabāt",
+    "save": "Saglabāt",
+    "unsaved_close": "Jums ir nesaglabātas izmaiņas. Vai vēlaties saglabāt pirms aizvēršanas?",
+    "unsaved_exit_edit": "Jums ir nesaglabātas izmaiņas. Vai vēlaties saglabāt pirms iziešanas no rediģēšanas režīma?",
+    "unsaved_new_file": "Jums ir nesaglabātas izmaiņas. Vai vēlaties saglabāt pirms jauna faila izveides?",
+    "unsaved_open_file": "Jums ir nesaglabātas izmaiņas. Vai vēlaties tās saglabāt pirms jauna faila atvēršanas?",
+    "unsaved_title": "Nesaglabātas izmaiņas"
+  },
+  "drop_zone": {
+    "text": "Ievelciet savu Markdown failu šeit"
+  },
+  "export": {
+    "open": "Atvērt",
+    "success": "PDF veiksmīgi eksportēts"
+  },
+  "format": {
+    "block_type": "Bloka tips",
+    "blockquote": "Citāta bloks",
+    "bold": "Treknraksts ({mod}+B)",
+    "bullet_list": "Aizzīmēts saraksts",
+    "code": "Iekļautais kods ({mod}+E)",
+    "code_block": "Koda bloks",
+    "divider": "Atdalītājs",
+    "heading1": "Virsraksts 1",
+    "heading2": "Virsraksts 2",
+    "heading3": "Virsraksts 3",
+    "italic": "Slīpraksts ({mod}+I)",
+    "link": "Saite ({mod}+K)",
+    "lists": "Saraksti",
+    "more_elements": "Vairāk",
+    "numbered_list": "Numurēts saraksts",
+    "paragraph": "Rindkopa",
+    "strikethrough": "Pārsvītrojums ({mod}+Shift+X)",
+    "table": "Tabula",
+    "task_list": "Uzdevumu saraksts",
+    "text_formatting": "Teksta formatēšana",
+    "underline": "Pasvītrojums"
+  },
+  "help": {
+    "editing": "Rediģēšana",
+    "fallback_notice": "Šī lapa vēl nav pieejama jūsu valodā. Tiek rādīta versija angļu valodā.",
+    "features": "Funkcijas",
+    "getting_started": "Darba sākšana",
+    "shortcuts": "Tastatūras saīsnes"
+  },
+  "lang_picker": {
+    "filter_label": "Filtrēt valodas",
+    "filter_placeholder": "Filtrēt valodas...",
+    "plain_text": "Vienkāršs teksts"
+  },
+  "link": {
+    "apply": "Lietot saiti",
+    "cancel": "Atcelt",
+    "display_text": "Attēlotais teksts",
+    "edit": "Rediģēt",
+    "edit_link": "Rediģēt saiti",
+    "remove_link": "Noņemt saiti",
+    "text": "Teksts",
+    "text_placeholder": "Rādāmais teksts (neobligāts)",
+    "url": "URL",
+    "url_placeholder": "Ielīmējiet vai ierakstiet URL..."
+  },
+  "mermaid": {
+    "done": "Gatavs",
+    "edit": "Rediģēt",
+    "error_prefix": "Sintakses kļūda",
+    "stale": "Priekšskatījums novecojis"
+  },
+  "recovery": {
+    "discard": "Atmest",
+    "message": "Kern atrada nesaglabātas izmaiņas no iepriekšējās sesijas. Vai vēlaties tās atjaunot?",
+    "restore": "Atjaunot",
+    "title": "Atgūt nesaglabātās izmaiņas?"
+  },
+  "search": {
+    "count": "atbilstības",
+    "no_results": "Nav rezultātu",
+    "placeholder": "Meklēt dokumentā..."
+  },
+  "settings": {
+    "language": "Valoda",
+    "theme": "Tēma",
+    "theme_dark": "Tumšā",
+    "theme_light": "Gaišā",
+    "theme_system": "Sistēmas"
+  },
+  "sidebar": {
+    "no_headings": "Virsraksti nav atrasti",
+    "recent": "Pēdējie faili",
+    "toc": "Satura rādītājs"
+  },
+  "slash": {
+    "blockquote": "Citāts",
+    "blockquote_desc": "Citāta bloks",
+    "bullet_list": "Aizzīmēts saraksts",
+    "bullet_list_desc": "Nenumurēts saraksts",
+    "code_block": "Koda bloks",
+    "code_block_desc": "Ierobežots kods",
+    "divider": "Atdalītājs",
+    "divider_desc": "Horizontālā līnija",
+    "heading1": "Virsraksts 1",
+    "heading1_desc": "Liels virsraksts",
+    "heading2": "Virsraksts 2",
+    "heading2_desc": "Vidējs virsraksts",
+    "heading3": "Virsraksts 3",
+    "heading3_desc": "Mazs virsraksts",
+    "mermaid": "Mermaid diagramma",
+    "mermaid_desc": "Ievietot diagrammu",
+    "no_results": "Nav rezultātu",
+    "numbered_list": "Numurēts saraksts",
+    "numbered_list_desc": "Sakārtots saraksts",
+    "paragraph": "Rindkopa",
+    "paragraph_desc": "Vienkāršs teksts",
+    "table": "Tabula",
+    "table_desc": "3×3 tabula",
+    "task_list": "Uzdevumu saraksts",
+    "task_list_desc": "Kontrolsaraksts"
+  },
+  "table": {
+    "add_col_left": "Pievienot kolonnu pa kreisi",
+    "add_col_right": "Pievienot kolonnu pa labi",
+    "add_row_above": "Pievienot rindu virs",
+    "add_row_below": "Pievienot rindu zem",
+    "col_options": "{n}. kolonnas opcijas",
+    "delete_col": "Dzēst kolonnu",
+    "delete_row": "Dzēst rindu",
+    "header": "Galvene",
+    "insert_col_left": "Ievietot kolonnu pa kreisi",
+    "insert_col_right": "Ievietot kolonnu pa labi",
+    "insert_row_above": "Ievietot rindu virs",
+    "insert_row_below": "Ievietot rindu zem",
+    "new_row": "+ Jauna rinda",
+    "row_options": "Rindas {n} opcijas"
+  },
+  "toolbar": {
+    "done": "Gatavs",
+    "edit": "Rediģēt",
+    "export_pdf": "Eksportēt PDF",
+    "focus": "Fokusa režīms",
+    "more": "Vairāk",
+    "new_file": "Jauns fails",
+    "open": "Atvērt failu",
+    "save": "Saglabāt",
+    "search": "Meklēt",
+    "settings": "Iestatījumi",
+    "split_view": "Dalīts skats",
+    "theme": "Pārslēgt tēmu",
+    "toc": "Satura rādītājs",
+    "zoom_in": "Tuvināt",
+    "zoom_out": "Tālināt",
+    "zoom_reset": "Atiestatīt tālummaiņu"
+  },
+  "trial": {
+    "days_remaining": "Atlikušas {days} dienas izmēģinājuma periodā",
+    "expired_message": "Jūsu izmēģinājuma periods ir beidzies. Iegādājieties Kern, lai turpinātu rediģēšanu.",
+    "feature_edit": "Rediģējiet Markdown ar WYSIWYG un dalīto skatu",
+    "feature_export": "Eksportēt uz PDF",
+    "feature_save": "Saglabāt un izveidot jaunus failus",
+    "one_time_purchase": "Vienreizējs pirkums. Bez abonementa.",
+    "purchase_button": "Iegādāties Kern",
+    "purchase_desc": "Iegūstiet pilnu piekļuvi visām rediģēšanas un eksportēšanas funkcijām ar vienreizēju pirkumu.",
+    "purchase_title": "Atslēgt Kern",
+    "purchasing": "Notiek pirkšana...",
+    "restore_purchases": "Atjaunot pirkumus",
+    "restoring": "Notiek atjaunošana..."
+  },
+  "viewer": {
+    "copied": "Nokopēts!",
+    "copy": "Kopēt"
+  },
+  "welcome": {
+    "drop_hint": "vai ievelciet .md failu",
+    "new_button": "Jauns fails",
+    "open_button": "Atvērt failu",
+    "subtitle": "Skaists Markdown skatītājs",
+    "title": "Kern"
+  }
+}

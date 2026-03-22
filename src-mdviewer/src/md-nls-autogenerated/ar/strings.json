@@ -153,5 +153,17 @@
   "welcome.new_button": "ملف جديد",
   "welcome.open_button": "فتح ملف",
   "welcome.subtitle": "عارض ماركداون أنيق",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "نوع الكتلة",
+  "format.lists": "قوائم",
+  "format.more_elements": "المزيد",
+  "format.text_formatting": "تنسيق النص",
+  "format.underline": "تسطير",
+  "mermaid.done": "تم",
+  "mermaid.edit": "تحرير",
+  "mermaid.error_prefix": "خطأ في الصياغة",
+  "mermaid.stale": "المعاينة غير محدّثة",
+  "slash.mermaid": "مخطط Mermaid",
+  "slash.mermaid_desc": "إدراج مخطط",
+  "toolbar.done": "تم"
 }

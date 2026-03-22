@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Zamknij wyszukiwanie",
+    "edit_link": "Edytuj link",
+    "format_text": "Formatuj tekst",
+    "insert_block": "Wstaw blok",
+    "main_toolbar": "Główny pasek narzędzi",
+    "next_match": "Następny wynik",
+    "previous_match": "Poprzedni wynik",
+    "search_in_document": "Szukaj w dokumencie",
+    "search_text": "Wyszukaj tekst",
+    "select_language": "Wybierz język",
+    "sidebar": "Pasek boczny",
+    "skip_to_content": "Przejdź do treści"
+  },
+  "common": {
+    "close": "Zamknij",
+    "file": "Plik",
+    "open": "Otwórz"
+  },
+  "context": {
+    "copy": "Kopiuj",
+    "copy_image_address": "Kopiuj adres obrazka",
+    "copy_link": "Kopiuj link",
+    "cut": "Wytnij",
+    "open_link": "Otwórz link",
+    "paste": "Wklej",
+    "paste_plain": "Wklej jako zwykły tekst",
+    "select_all": "Zaznacz wszystko"
+  },
+  "dialog": {
+    "cancel": "Anuluj",
+    "discard": "Odrzuć",
+    "dont_save": "Nie zapisuj",
+    "save": "Zapisz",
+    "unsaved_close": "Masz niezapisane zmiany. Czy chcesz je zapisać przed zamknięciem?",
+    "unsaved_exit_edit": "Masz niezapisane zmiany. Czy chcesz je zapisać przed wyjściem z trybu edycji?",
+    "unsaved_new_file": "Masz niezapisane zmiany. Czy chcesz je zapisać przed utworzeniem nowego pliku?",
+    "unsaved_open_file": "Masz niezapisane zmiany. Czy chcesz je zapisać przed otwarciem nowego pliku?",
+    "unsaved_title": "Niezapisane zmiany"
+  },
+  "drop_zone": {
+    "text": "Upuść tutaj swój plik Markdown"
+  },
+  "export": {
+    "open": "Otwórz",
+    "success": "Plik PDF został pomyślnie wyeksportowany"
+  },
+  "format": {
+    "block_type": "Typ bloku",
+    "blockquote": "Cytat blokowy",
+    "bold": "Pogrubienie ({mod}+B)",
+    "bullet_list": "Lista wypunktowana",
+    "code": "Kod w tekście ({mod}+E)",
+    "code_block": "Blok kodu",
+    "divider": "Separator",
+    "heading1": "Nagłówek 1",
+    "heading2": "Nagłówek 2",
+    "heading3": "Nagłówek 3",
+    "italic": "Kursywa ({mod}+I)",
+    "link": "Link ({mod}+K)",
+    "lists": "Listy",
+    "more_elements": "Więcej",
+    "numbered_list": "Lista numerowana",
+    "paragraph": "Akapit",
+    "strikethrough": "Przekreślenie ({mod}+Shift+X)",
+    "table": "Tabela",
+    "task_list": "Lista zadań",
+    "text_formatting": "Formatowanie tekstu",
+    "underline": "Podkreślenie"
+  },
+  "help": {
+    "editing": "Edycja",
+    "fallback_notice": "Ta strona nie jest jeszcze dostępna w Twoim języku. Wyświetlana jest wersja angielska.",
+    "features": "Funkcje",
+    "getting_started": "Pierwsze kroki",
+    "shortcuts": "Skróty klawiszowe"
+  },
+  "lang_picker": {
+    "filter_label": "Filtruj języki",
+    "filter_placeholder": "Filtruj języki...",
+    "plain_text": "Zwykły tekst"
+  },
+  "link": {
+    "apply": "Zastosuj",
+    "cancel": "Anuluj",
+    "display_text": "Wyświetlany tekst",
+    "edit": "Edytuj",
+    "edit_link": "Edytuj link",
+    "remove_link": "Usuń link",
+    "text": "Tekst",
+    "text_placeholder": "Wyświetlany tekst (opcjonalnie)",
+    "url": "URL",
+    "url_placeholder": "Wklej lub wpisz adres URL..."
+  },
+  "mermaid": {
+    "done": "Gotowe",
+    "edit": "Edytuj",
+    "error_prefix": "Błąd składni",
+    "stale": "Podgląd nieaktualny"
+  },
+  "recovery": {
+    "discard": "Odrzuć",
+    "message": "Aplikacja Kern znalazła niezapisane zmiany z poprzedniej sesji. Czy chcesz je przywrócić?",
+    "restore": "Przywróć",
+    "title": "Przywrócić niezapisane zmiany?"
+  },
+  "search": {
+    "count": "wyników",
+    "no_results": "Brak wyników",
+    "placeholder": "Szukaj w dokumencie..."
+  },
+  "settings": {
+    "language": "Język",
+    "theme": "Motyw",
+    "theme_dark": "Ciemny",
+    "theme_light": "Jasny",
+    "theme_system": "Systemowy"
+  },
+  "sidebar": {
+    "no_headings": "Nie znaleziono nagłówków",
+    "recent": "Ostatnie pliki",
+    "toc": "Spis treści"
+  },
+  "slash": {
+    "blockquote": "Cytat blokowy",
+    "blockquote_desc": "Blok cytatu",
+    "bullet_list": "Lista wypunktowana",
+    "bullet_list_desc": "Lista nieuporządkowana",
+    "code_block": "Blok kodu",
+    "code_block_desc": "Kod sformatowany",
+    "divider": "Linia pozioma",
+    "divider_desc": "Linia pozioma",
+    "heading1": "Nagłówek 1",
+    "heading1_desc": "Duży nagłówek",
+    "heading2": "Nagłówek 2",
+    "heading2_desc": "Średni nagłówek",
+    "heading3": "Nagłówek 3",
+    "heading3_desc": "Mały nagłówek",
+    "mermaid": "Diagram Mermaid",
+    "mermaid_desc": "Wstaw diagram",
+    "no_results": "Brak wyników",
+    "numbered_list": "Lista numerowana",
+    "numbered_list_desc": "Lista uporządkowana",
+    "paragraph": "Akapit",
+    "paragraph_desc": "Zwykły tekst",
+    "table": "Tabela",
+    "table_desc": "Tabela 3×3",
+    "task_list": "Lista zadań",
+    "task_list_desc": "Lista kontrolna"
+  },
+  "table": {
+    "add_col_left": "Dodaj kolumnę po lewej",
+    "add_col_right": "Dodaj kolumnę po prawej",
+    "add_row_above": "Dodaj wiersz powyżej",
+    "add_row_below": "Dodaj wiersz poniżej",
+    "col_options": "Opcje kolumny {n}",
+    "delete_col": "Usuń kolumnę",
+    "delete_row": "Usuń wiersz",
+    "header": "Nagłówek",
+    "insert_col_left": "Wstaw kolumnę po lewej",
+    "insert_col_right": "Wstaw kolumnę po prawej",
+    "insert_row_above": "Wstaw wiersz powyżej",
+    "insert_row_below": "Wstaw wiersz poniżej",
+    "new_row": "+ Nowy wiersz",
+    "row_options": "Opcje wiersza {n}"
+  },
+  "toolbar": {
+    "done": "Gotowe",
+    "edit": "Edytuj",
+    "export_pdf": "Eksportuj PDF",
+    "focus": "Tryb skupienia",
+    "more": "Więcej",
+    "new_file": "Nowy plik",
+    "open": "Otwórz plik",
+    "save": "Zapisz",
+    "search": "Szukaj",
+    "settings": "Ustawienia",
+    "split_view": "Widok podzielony",
+    "theme": "Przełącz motyw",
+    "toc": "Spis treści",
+    "zoom_in": "Powiększ",
+    "zoom_out": "Pomniejsz",
+    "zoom_reset": "Resetuj powiększenie"
+  },
+  "trial": {
+    "days_remaining": "Pozostało {days} dni okresu próbnego",
+    "expired_message": "Twój okres próbny wygasł. Kup Kern, aby kontynuować edycję.",
+    "feature_edit": "Edytuj Markdown w trybie WYSIWYG i widoku podzielonym",
+    "feature_export": "Eksport do PDF",
+    "feature_save": "Zapisuj i twórz nowe pliki",
+    "one_time_purchase": "Jednorazowy zakup. Bez subskrypcji.",
+    "purchase_button": "Kup Kern",
+    "purchase_desc": "Uzyskaj pełny dostęp do wszystkich funkcji edycji i eksportu dzięki jednorazowemu zakupowi.",
+    "purchase_title": "Odblokuj Kern",
+    "purchasing": "Kupowanie...",
+    "restore_purchases": "Przywróć zakupy",
+    "restoring": "Przywracanie..."
+  },
+  "viewer": {
+    "copied": "Skopiowano!",
+    "copy": "Kopiuj"
+  },
+  "welcome": {
+    "drop_hint": "lub przeciągnij i upuść plik .md",
+    "new_button": "Nowy plik",
+    "open_button": "Otwórz plik",
+    "subtitle": "Piękna przeglądarka Markdown",
+    "title": "Kern"
+  }
+}

@@ -1,197 +1,211 @@
 {
-  "toolbar": {
-    "open": "ファイルを開く",
-    "theme": "テーマ切替",
-    "toc": "目次",
-    "search": "検索",
-    "focus": "集中モード",
-    "zoom_in": "拡大",
-    "zoom_out": "縮小",
-    "zoom_reset": "ズームをリセット",
-    "save": "保存",
-    "edit": "編集",
-    "new_file": "新規ファイル",
-    "split_view": "分割表示",
-    "export_pdf": "PDF にエクスポート",
-    "settings": "設定",
-    "more": "その他"
-  },
-  "sidebar": {
-    "toc": "目次",
-    "recent": "最近のファイル",
-    "no_headings": "見出しが見つかりません"
-  },
-  "search": {
-    "placeholder": "ドキュメント内を検索...",
-    "count": "件一致",
-    "no_results": "結果なし"
-  },
-  "welcome": {
-    "title": "Kern",
-    "subtitle": "美しいMarkdownビューア",
-    "new_button": "新規ファイル",
-    "open_button": "ファイルを開く",
-    "drop_hint": "または .md ファイルをドラッグ＆ドロップ"
-  },
-  "viewer": {
-    "copy": "コピー",
-    "copied": "コピーしました！"
-  },
-  "settings": {
-    "theme": "テーマ",
-    "theme_light": "ライト",
-    "theme_dark": "ダーク",
-    "theme_system": "システム",
-    "language": "言語"
+  "a11y": {
+    "close_search": "検索を閉じる",
+    "edit_link": "リンクを編集",
+    "format_text": "テキストの書式設定",
+    "insert_block": "ブロックを挿入",
+    "main_toolbar": "メインツールバー",
+    "next_match": "次の一致",
+    "previous_match": "前の一致",
+    "search_in_document": "ドキュメント内を検索",
+    "search_text": "テキスト検索",
+    "select_language": "言語を選択",
+    "sidebar": "サイドバー",
+    "skip_to_content": "コンテンツへスキップ"
   },
   "common": {
     "close": "閉じる",
+    "file": "ファイル",
+    "open": "開く"
+  },
+  "context": {
+    "copy": "コピー",
+    "copy_image_address": "画像アドレスをコピー",
+    "copy_link": "リンクをコピー",
+    "cut": "切り取り",
+    "open_link": "リンクを開く",
+    "paste": "貼り付け",
+    "paste_plain": "プレーンテキストとして貼り付け",
+    "select_all": "すべて選択"
+  },
+  "dialog": {
+    "cancel": "キャンセル",
+    "discard": "破棄",
+    "dont_save": "保存しない",
+    "save": "保存",
+    "unsaved_close": "未保存の変更があります。閉じる前に保存しますか？",
+    "unsaved_exit_edit": "未保存の変更があります。編集モードを終了する前に保存しますか？",
+    "unsaved_new_file": "未保存の変更があります。新規ファイルを作成する前に保存しますか？",
+    "unsaved_open_file": "未保存の変更があります。新しいファイルを開く前に保存しますか？",
+    "unsaved_title": "未保存の変更"
+  },
+  "drop_zone": {
+    "text": "Markdownファイルをここにドロップ"
+  },
+  "export": {
     "open": "開く",
-    "file": "ファイル"
+    "success": "PDFのエクスポートが完了しました"
   },
   "format": {
-    "paragraph": "段落",
+    "blockquote": "引用",
+    "bold": "太字 ({mod}+B)",
+    "bullet_list": "箇条書き",
+    "code": "インラインコード ({mod}+E)",
+    "code_block": "コードブロック",
+    "divider": "区切り線",
     "heading1": "見出し1",
     "heading2": "見出し2",
     "heading3": "見出し3",
-    "bold": "太字 ({mod}+B)",
     "italic": "斜体 ({mod}+I)",
-    "strikethrough": "取り消し線 ({mod}+Shift+X)",
-    "code": "インラインコード ({mod}+E)",
     "link": "リンク ({mod}+K)",
-    "bullet_list": "箇条書き",
     "numbered_list": "番号付きリスト",
-    "task_list": "タスクリスト",
-    "blockquote": "引用",
-    "divider": "区切り線",
+    "paragraph": "段落",
+    "strikethrough": "取り消し線 ({mod}+Shift+X)",
     "table": "テーブル",
-    "code_block": "コードブロック"
+    "task_list": "タスクリスト",
+    "block_type": "ブロックタイプ",
+    "lists": "リスト",
+    "more_elements": "その他",
+    "text_formatting": "テキスト書式設定",
+    "underline": "下線"
+  },
+  "help": {
+    "editing": "編集",
+    "fallback_notice": "このページはまだお使いの言語では利用できません。英語版を表示しています。",
+    "features": "機能",
+    "getting_started": "はじめに",
+    "shortcuts": "キーボードショートカット"
+  },
+  "lang_picker": {
+    "filter_label": "言語を絞り込み",
+    "filter_placeholder": "言語を絞り込み...",
+    "plain_text": "プレーンテキスト"
+  },
+  "link": {
+    "apply": "リンクを適用",
+    "cancel": "キャンセル",
+    "display_text": "表示テキスト",
+    "edit": "編集",
+    "edit_link": "リンクを編集",
+    "remove_link": "リンクを削除",
+    "text": "テキスト",
+    "text_placeholder": "表示テキスト（任意）",
+    "url": "URL",
+    "url_placeholder": "URLを貼り付けまたは入力..."
+  },
+  "recovery": {
+    "discard": "破棄",
+    "message": "Kern は前回のセッションの未保存の変更を見つけました。復元しますか？",
+    "restore": "復元",
+    "title": "未保存の変更を復元しますか？"
+  },
+  "search": {
+    "count": "件一致",
+    "no_results": "結果なし",
+    "placeholder": "ドキュメント内を検索..."
+  },
+  "settings": {
+    "language": "言語",
+    "theme": "テーマ",
+    "theme_dark": "ダーク",
+    "theme_light": "ライト",
+    "theme_system": "システム"
+  },
+  "sidebar": {
+    "no_headings": "見出しが見つかりません",
+    "recent": "最近のファイル",
+    "toc": "目次"
   },
   "slash": {
-    "paragraph": "段落",
-    "paragraph_desc": "本文テキスト",
+    "blockquote": "引用",
+    "blockquote_desc": "引用ブロック",
+    "bullet_list": "箇条書き",
+    "bullet_list_desc": "順序なしリスト",
+    "code_block": "コードブロック",
+    "code_block_desc": "フェンス付きコード",
+    "divider": "区切り線",
+    "divider_desc": "水平線",
     "heading1": "見出し1",
     "heading1_desc": "大見出し",
     "heading2": "見出し2",
     "heading2_desc": "中見出し",
     "heading3": "見出し3",
     "heading3_desc": "小見出し",
-    "bullet_list": "箇条書き",
-    "bullet_list_desc": "順序なしリスト",
+    "no_results": "結果なし",
     "numbered_list": "番号付きリスト",
     "numbered_list_desc": "順序付きリスト",
-    "task_list": "タスクリスト",
-    "task_list_desc": "チェックリスト",
-    "blockquote": "引用",
-    "blockquote_desc": "引用ブロック",
-    "code_block": "コードブロック",
-    "code_block_desc": "フェンス付きコード",
+    "paragraph": "段落",
+    "paragraph_desc": "本文テキスト",
     "table": "テーブル",
     "table_desc": "3×3テーブル",
-    "divider": "区切り線",
-    "divider_desc": "水平線",
-    "no_results": "結果なし"
-  },
-  "link": {
-    "edit": "編集",
-    "edit_link": "リンクを編集",
-    "remove_link": "リンクを削除",
-    "text": "テキスト",
-    "text_placeholder": "表示テキスト（任意）",
-    "display_text": "表示テキスト",
-    "url": "URL",
-    "url_placeholder": "URLを貼り付けまたは入力...",
-    "apply": "リンクを適用",
-    "cancel": "キャンセル"
+    "task_list": "タスクリスト",
+    "task_list_desc": "チェックリスト",
+    "mermaid": "マーメイドダイアグラム",
+    "mermaid_desc": "ダイアグラムを挿入"
   },
   "table": {
-    "header": "ヘッダー",
-    "new_row": "+ 新しい行",
-    "row_options": "行 {n} のオプション",
-    "col_options": "列 {n} のオプション",
-    "insert_row_above": "上に行を挿入",
-    "insert_row_below": "下に行を挿入",
-    "delete_row": "行を削除",
-    "insert_col_left": "左に列を挿入",
-    "insert_col_right": "右に列を挿入",
-    "delete_col": "列を削除",
+    "add_col_left": "左に列を追加",
+    "add_col_right": "右に列を追加",
     "add_row_above": "上に行を追加",
     "add_row_below": "下に行を追加",
-    "add_col_left": "左に列を追加",
-    "add_col_right": "右に列を追加"
+    "col_options": "列 {n} のオプション",
+    "delete_col": "列を削除",
+    "delete_row": "行を削除",
+    "header": "ヘッダー",
+    "insert_col_left": "左に列を挿入",
+    "insert_col_right": "右に列を挿入",
+    "insert_row_above": "上に行を挿入",
+    "insert_row_below": "下に行を挿入",
+    "new_row": "+ 新しい行",
+    "row_options": "行 {n} のオプション"
   },
-  "dialog": {
-    "unsaved_title": "未保存の変更",
-    "unsaved_exit_edit": "未保存の変更があります。編集モードを終了する前に保存しますか？",
-    "unsaved_new_file": "未保存の変更があります。新規ファイルを作成する前に保存しますか？",
-    "unsaved_open_file": "未保存の変更があります。新しいファイルを開く前に保存しますか？",
+  "toolbar": {
+    "edit": "編集",
+    "export_pdf": "PDF にエクスポート",
+    "focus": "集中モード",
+    "more": "その他",
+    "new_file": "新規ファイル",
+    "open": "ファイルを開く",
     "save": "保存",
-    "discard": "破棄",
-    "dont_save": "保存しない",
-    "cancel": "キャンセル",
-    "unsaved_close": "未保存の変更があります。閉じる前に保存しますか？"
-  },
-  "lang_picker": {
-    "filter_placeholder": "言語を絞り込み...",
-    "filter_label": "言語を絞り込み",
-    "plain_text": "プレーンテキスト"
-  },
-  "a11y": {
-    "skip_to_content": "コンテンツへスキップ",
-    "main_toolbar": "メインツールバー",
-    "sidebar": "サイドバー",
-    "search_text": "テキスト検索",
-    "previous_match": "前の一致",
-    "next_match": "次の一致",
-    "close_search": "検索を閉じる",
-    "format_text": "テキストの書式設定",
-    "edit_link": "リンクを編集",
-    "insert_block": "ブロックを挿入",
-    "select_language": "言語を選択",
-    "search_in_document": "ドキュメント内を検索"
-  },
-  "drop_zone": {
-    "text": "Markdownファイルをここにドロップ"
-  },
-  "help": {
-    "getting_started": "はじめに",
-    "editing": "編集",
-    "shortcuts": "キーボードショートカット",
-    "features": "機能",
-    "fallback_notice": "このページはまだお使いの言語では利用できません。英語版を表示しています。"
-  },
-  "recovery": {
-    "title": "未保存の変更を復元しますか？",
-    "message": "Kern は前回のセッションの未保存の変更を見つけました。復元しますか？",
-    "restore": "復元",
-    "discard": "破棄"
-  },
-  "export": {
-    "success": "PDFのエクスポートが完了しました",
-    "open": "開く"
-  },
-  "context": {
-    "cut": "切り取り",
-    "copy": "コピー",
-    "paste": "貼り付け",
-    "paste_plain": "プレーンテキストとして貼り付け",
-    "select_all": "すべて選択",
-    "copy_link": "リンクをコピー",
-    "open_link": "リンクを開く",
-    "copy_image_address": "画像アドレスをコピー"
+    "search": "検索",
+    "settings": "設定",
+    "split_view": "分割表示",
+    "theme": "テーマ切替",
+    "toc": "目次",
+    "zoom_in": "拡大",
+    "zoom_out": "縮小",
+    "zoom_reset": "ズームをリセット",
+    "done": "完了"
   },
   "trial": {
     "days_remaining": "試用期間の残り {days} 日",
     "expired_message": "試用期間が終了しました。編集を続けるには Kern を購入してください。",
-    "purchase_button": "Kern を購入",
-    "purchase_title": "Kern のロックを解除",
-    "purchase_desc": "買い切りですべての編集・エクスポート機能にフルアクセスできます。",
     "feature_edit": "WYSIWYG と分割表示で Markdown を編集",
-    "feature_save": "ファイルの保存と新規作成",
     "feature_export": "PDF にエクスポート",
-    "restore_purchases": "購入を復元",
+    "feature_save": "ファイルの保存と新規作成",
     "one_time_purchase": "買い切り。サブスクリプション不要。",
+    "purchase_button": "Kern を購入",
+    "purchase_desc": "買い切りですべての編集・エクスポート機能にフルアクセスできます。",
+    "purchase_title": "Kern のロックを解除",
     "purchasing": "購入処理中...",
+    "restore_purchases": "購入を復元",
     "restoring": "復元中..."
+  },
+  "viewer": {
+    "copied": "コピーしました！",
+    "copy": "コピー"
+  },
+  "welcome": {
+    "drop_hint": "または .md ファイルをドラッグ＆ドロップ",
+    "new_button": "新規ファイル",
+    "open_button": "ファイルを開く",
+    "subtitle": "美しいMarkdownビューア",
+    "title": "Kern"
+  },
+  "mermaid": {
+    "done": "完了",
+    "edit": "編集",
+    "error_prefix": "構文エラー",
+    "stale": "プレビューが古くなっています"
   }
 }
