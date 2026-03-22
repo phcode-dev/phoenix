@@ -309,19 +309,17 @@ function handleSwitchFile(data) {
 
     _suppressContentChange = true;
 
+    // Edit mode is global for the md editor frame — preserve it across file switches
+    const wasEditMode = getState().editMode;
+
     // Save state for outgoing document
     const outgoingPath = docCache.getActiveFilePath();
     if (outgoingPath) {
         docCache.saveActiveScrollPos();
-        // Save edit mode state in cache entry
-        const outEntry = docCache.getEntry(outgoingPath);
-        if (outEntry) {
-            outEntry._editMode = getState().editMode;
-        }
     }
 
-    // Exit edit mode before switching DOM if currently editing
-    if (getState().editMode) {
+    // Exit edit mode before switching DOM to detach handlers from outgoing element
+    if (wasEditMode) {
         emit("doc:beforeSwitch", { fromPath: outgoingPath, toPath: filePath });
         setState({ editMode: false });
     }
@@ -337,11 +335,6 @@ function handleSwitchFile(data) {
             parseResult: existing.parseResult
         });
 
-        // Restore edit mode for this document
-        if (existing._editMode) {
-            setState({ editMode: true });
-        }
-
         emit("file:switched", { filePath });
     } else if (existing) {
         // Cache hit, content changed — re-render in place
@@ -353,11 +346,6 @@ function handleSwitchFile(data) {
             currentContent: markdown,
             parseResult: parseResult
         });
-
-        // Restore edit mode for this document
-        if (existing._editMode) {
-            setState({ editMode: true });
-        }
 
         emit("file:rendered", parseResult);
     } else {
@@ -371,9 +359,7 @@ function handleSwitchFile(data) {
             const entry = docCache.getEntry(filePath);
             if (entry) {
                 entry._scrollSourceLine = _pendingReloadScroll.scrollSourceLine;
-                entry._editMode = _pendingReloadScroll.editMode;
             }
-            const restoreEditMode = _pendingReloadScroll.editMode;
             _pendingReloadScroll = null;
 
             setState({
@@ -394,10 +380,6 @@ function handleSwitchFile(data) {
                     }
                 });
             }
-
-            if (restoreEditMode) {
-                setState({ editMode: true });
-            }
         } else {
             setState({
                 currentContent: markdown,
@@ -405,6 +387,11 @@ function handleSwitchFile(data) {
             });
             emit("file:rendered", parseResult);
         }
+    }
+
+    // Re-enter edit mode on the new DOM if the frame was in edit mode
+    if (wasEditMode) {
+        setState({ editMode: true });
     }
 
     _suppressContentChange = false;
@@ -438,11 +425,11 @@ function handleCloseFile(data) {
  */
 function handleReloadFile(data) {
     const { filePath } = data;
-    if (!filePath) return;
+    if (!filePath) {
+        return;
+    }
 
     const entry = docCache.getEntry(filePath);
-    const savedScrollPos = entry ? entry.scrollPos : 0;
-    const wasEditMode = entry ? entry._editMode : false;
 
     // If this is the active file, save current scroll
     if (docCache.getActiveFilePath() === filePath) {
@@ -454,7 +441,7 @@ function handleReloadFile(data) {
                 setState({ editMode: false });
             }
             docCache.removeEntry(filePath);
-            _pendingReloadScroll = { filePath, scrollSourceLine, editMode: wasEditMode };
+            _pendingReloadScroll = { filePath, scrollSourceLine };
         }
     } else {
         docCache.removeEntry(filePath);

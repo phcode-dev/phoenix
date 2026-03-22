@@ -58,7 +58,7 @@
     "bold": "Bold ({mod}+B)",
     "italic": "Italic ({mod}+I)",
     "strikethrough": "Strikethrough ({mod}+Shift+X)",
-    "underline": "Underline",
+    "underline": "Underline ({mod}+U)",
     "code": "Inline code ({mod}+E)",
     "link": "Link ({mod}+K)",
     "bullet_list": "Bullet list",
