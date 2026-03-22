@@ -37,11 +37,13 @@ async function loadLocale(locale) {
 }
 
 export async function setLocale(locale) {
-    translations = await loadLocale(locale);
-    setState({ locale });
+    // Strip region code (e.g. "en-US" → "en") since locale files use base language
+    const baseLocale = locale.split("-")[0].split("_")[0];
+    translations = await loadLocale(baseLocale);
+    setState({ locale: baseLocale });
     applyTranslations();
-    document.documentElement.lang = locale;
-    document.documentElement.dir = RTL_LOCALES.has(locale) ? "rtl" : "ltr";
+    document.documentElement.lang = baseLocale;
+    document.documentElement.dir = RTL_LOCALES.has(baseLocale) ? "rtl" : "ltr";
 }
 
 export function t(key) {
