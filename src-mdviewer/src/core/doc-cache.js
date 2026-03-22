@@ -148,8 +148,18 @@ export function switchTo(filePath) {
 
     activeFilePath = filePath;
 
-    // Restore scroll position after layout
+    // Restore scroll position after layout using source-line element if available
     requestAnimationFrame(() => {
+        if (entry._scrollSourceLine) {
+            const elements = entry.dom.querySelectorAll("[data-source-line]");
+            for (const el of elements) {
+                if (parseInt(el.getAttribute("data-source-line"), 10) === entry._scrollSourceLine) {
+                    el.scrollIntoView({ behavior: "instant", block: "start" });
+                    return;
+                }
+            }
+        }
+        // Fallback to pixel position
         viewerContainer.scrollTop = entry.scrollPos;
     });
 
@@ -158,12 +168,30 @@ export function switchTo(filePath) {
 
 /**
  * Save the current scroll position for the active document.
+ * Saves both pixel position and the source line visible at the top of the viewport,
+ * so scroll can be restored even when images haven't loaded yet.
  */
 export function saveActiveScrollPos() {
     if (!activeFilePath) return;
     const entry = cache.get(activeFilePath);
-    if (entry) {
-        entry.scrollPos = viewerContainer.scrollTop;
+    if (!entry) return;
+
+    entry.scrollPos = viewerContainer.scrollTop;
+
+    // Find the source line element closest to the top of the viewport
+    const elements = entry.dom.querySelectorAll("[data-source-line]");
+    const containerTop = viewerContainer.getBoundingClientRect().top;
+    let bestEl = null;
+    let bestDist = Infinity;
+    for (const el of elements) {
+        const dist = Math.abs(el.getBoundingClientRect().top - containerTop);
+        if (dist < bestDist) {
+            bestDist = dist;
+            bestEl = el;
+        }
+    }
+    if (bestEl) {
+        entry._scrollSourceLine = parseInt(bestEl.getAttribute("data-source-line"), 10);
     }
 }
 

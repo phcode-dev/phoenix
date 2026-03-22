@@ -13,6 +13,7 @@ let _syncId = 0;
 let _lastReceivedSyncId = -1;
 let _suppressContentChange = false;
 let _baseURL = "";
+let _pendingReloadScroll = null; // { filePath, scrollPos, editMode } for scroll restore after reload
 
 /**
  * Check if a URL is absolute (not relative to the document).
@@ -125,6 +126,9 @@ export function initBridge() {
                 break;
             case "MDVIEWR_CLOSE_FILE":
                 handleCloseFile(data);
+                break;
+            case "MDVIEWR_RELOAD_FILE":
+                handleReloadFile(data);
                 break;
             case "MDVIEWR_SET_THEME":
                 handleSetTheme(data);
@@ -362,12 +366,45 @@ function handleSwitchFile(data) {
         docCache.createEntry(filePath, markdown, parseResult);
         docCache.switchTo(filePath);
 
-        setState({
-            currentContent: markdown,
-            parseResult: parseResult
-        });
+        // Restore scroll position from reload if applicable
+        if (_pendingReloadScroll && _pendingReloadScroll.filePath === filePath) {
+            const entry = docCache.getEntry(filePath);
+            if (entry) {
+                entry._scrollSourceLine = _pendingReloadScroll.scrollSourceLine;
+                entry._editMode = _pendingReloadScroll.editMode;
+            }
+            const restoreEditMode = _pendingReloadScroll.editMode;
+            _pendingReloadScroll = null;
 
-        emit("file:rendered", parseResult);
+            setState({
+                currentContent: markdown,
+                parseResult: parseResult
+            });
+            emit("file:rendered", parseResult);
+
+            // Scroll to source line element after render
+            if (entry && entry._scrollSourceLine) {
+                requestAnimationFrame(() => {
+                    const els = entry.dom.querySelectorAll("[data-source-line]");
+                    for (const el of els) {
+                        if (parseInt(el.getAttribute("data-source-line"), 10) === entry._scrollSourceLine) {
+                            el.scrollIntoView({ behavior: "instant", block: "start" });
+                            break;
+                        }
+                    }
+                });
+            }
+
+            if (restoreEditMode) {
+                setState({ editMode: true });
+            }
+        } else {
+            setState({
+                currentContent: markdown,
+                parseResult: parseResult
+            });
+            emit("file:rendered", parseResult);
+        }
     }
 
     _suppressContentChange = false;
@@ -391,6 +428,35 @@ function handleWorkingSetChanged(data) {
 function handleCloseFile(data) {
     const { filePath } = data;
     if (filePath) {
+        docCache.removeEntry(filePath);
+    }
+}
+
+/**
+ * Reload a specific file: save scroll position, clear its cache entry,
+ * so the next SWITCH_FILE will re-render from scratch.
+ */
+function handleReloadFile(data) {
+    const { filePath } = data;
+    if (!filePath) return;
+
+    const entry = docCache.getEntry(filePath);
+    const savedScrollPos = entry ? entry.scrollPos : 0;
+    const wasEditMode = entry ? entry._editMode : false;
+
+    // If this is the active file, save current scroll
+    if (docCache.getActiveFilePath() === filePath) {
+        docCache.saveActiveScrollPos();
+        const activeEntry = docCache.getEntry(filePath);
+        if (activeEntry) {
+            const scrollSourceLine = activeEntry._scrollSourceLine;
+            if (getState().editMode) {
+                setState({ editMode: false });
+            }
+            docCache.removeEntry(filePath);
+            _pendingReloadScroll = { filePath, scrollSourceLine, editMode: wasEditMode };
+        }
+    } else {
         docCache.removeEntry(filePath);
     }
 }
