@@ -865,6 +865,10 @@ define(function (require, exports, module) {
 
         if (_isMdviewrActive) {
             // Mdviewr iframe already loaded, just update the sync for the new document
+            if (force) {
+                // Reload: clear this file's cache and force re-render
+                MarkdownSync.reloadCurrentFile();
+            }
             MarkdownSync.activate(currentDoc, $iframe, baseURL);
             return;
         }

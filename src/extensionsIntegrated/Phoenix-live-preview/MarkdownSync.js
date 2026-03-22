@@ -593,7 +593,26 @@ define(function (require, exports, module) {
         return _doc._masterEditor._codeMirror;
     }
 
+    /**
+     * Clear the current file's cache in the mdviewer iframe and force re-render.
+     * Called on reload button click.
+     */
+    function reloadCurrentFile() {
+        if (!_active || !_iframeReady || !_doc) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        if (!iframeWindow) {
+            return;
+        }
+        iframeWindow.postMessage({
+            type: "MDVIEWR_RELOAD_FILE",
+            filePath: _doc.file.fullPath
+        }, "*");
+    }
+
     exports.activate = activate;
     exports.deactivate = deactivate;
     exports.isActive = isActive;
+    exports.reloadCurrentFile = reloadCurrentFile;
 });
