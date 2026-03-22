@@ -27,23 +27,33 @@ export async function initI18n() {
 }
 
 async function loadLocale(locale) {
+    // Normalize: lowercase and use hyphens (e.g. "en_US" → "en-us", "zh-CN" → "zh-cn")
+    const normalized = locale.toLowerCase().replace(/_/g, "-");
+    // Try full locale first (e.g. "zh-cn"), then base language (e.g. "zh")
     try {
-        const module = await import(`../locales/${locale}.json`);
+        const module = await import(`../locales/${normalized}.json`);
         return module.default || module;
-    } catch (e) {
+    } catch {
+        const base = normalized.split("-")[0];
+        if (base !== normalized) {
+            try {
+                const module = await import(`../locales/${base}.json`);
+                return module.default || module;
+            } catch { /* fall through */ }
+        }
         console.warn(`Failed to load locale '${locale}', falling back to English`);
         return {};
     }
 }
 
 export async function setLocale(locale) {
-    // Strip region code (e.g. "en-US" → "en") since locale files use base language
-    const baseLocale = locale.split("-")[0].split("_")[0];
-    translations = await loadLocale(baseLocale);
-    setState({ locale: baseLocale });
+    const normalized = locale.toLowerCase().replace(/_/g, "-");
+    translations = await loadLocale(normalized);
+    setState({ locale: normalized });
     applyTranslations();
-    document.documentElement.lang = baseLocale;
-    document.documentElement.dir = RTL_LOCALES.has(baseLocale) ? "rtl" : "ltr";
+    document.documentElement.lang = normalized;
+    const base = normalized.split("-")[0];
+    document.documentElement.dir = RTL_LOCALES.has(base) ? "rtl" : "ltr";
 }
 
 export function t(key) {

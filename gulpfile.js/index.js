@@ -428,6 +428,7 @@ function releaseProd() {
 function translateStrings() {
     return new Promise(async (resolve)=>{ // eslint-disable-line
         await Translate.translate();
+        await Translate.translateMdviewer();
         resolve();
     });
 }
