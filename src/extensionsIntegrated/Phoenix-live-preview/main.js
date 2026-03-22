@@ -840,6 +840,9 @@ define(function (require, exports, module) {
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
+            if (_isMdviewrActive) {
+                MarkdownSync.reloadCurrentFile();
+            }
             _loadPreview(true, true);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
@@ -867,10 +870,6 @@ define(function (require, exports, module) {
 
         if (_isMdviewrActive) {
             // Mdviewr iframe already loaded, just update the sync for the new document
-            if (force) {
-                // Reload: clear this file's cache and force re-render
-                MarkdownSync.reloadCurrentFile();
-            }
             MarkdownSync.activate(currentDoc, $iframe, baseURL);
             return;
         }
