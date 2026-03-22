@@ -14,7 +14,8 @@
     "split_view": "Split View",
     "export_pdf": "Export PDF",
     "settings": "Settings",
-    "more": "More"
+    "more": "More",
+    "done": "Done"
   },
   "sidebar": {
     "toc": "Table of Contents",
@@ -57,6 +58,7 @@
     "bold": "Bold ({mod}+B)",
     "italic": "Italic ({mod}+I)",
     "strikethrough": "Strikethrough ({mod}+Shift+X)",
+    "underline": "Underline",
     "code": "Inline code ({mod}+E)",
     "link": "Link ({mod}+K)",
     "bullet_list": "Bullet list",
@@ -65,7 +67,11 @@
     "blockquote": "Blockquote",
     "divider": "Divider",
     "table": "Table",
-    "code_block": "Code block"
+    "code_block": "Code block",
+    "block_type": "Block type",
+    "text_formatting": "Text formatting",
+    "lists": "Lists",
+    "more_elements": "More"
   },
   "slash": {
     "paragraph": "Paragraph",
