@@ -153,5 +153,17 @@
   "welcome.new_button": "Nuevo archivo",
   "welcome.open_button": "Abrir archivo",
   "welcome.subtitle": "Un hermoso visor de Markdown",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "Tipo de bloque",
+  "format.lists": "Listas",
+  "format.more_elements": "Más",
+  "format.text_formatting": "Formato de texto",
+  "format.underline": "Subrayado",
+  "mermaid.done": "Hecho",
+  "mermaid.edit": "Editar",
+  "mermaid.error_prefix": "Error de sintaxis",
+  "mermaid.stale": "Vista previa desactualizada",
+  "slash.mermaid": "Diagrama de Mermaid",
+  "slash.mermaid_desc": "Insertar un diagrama",
+  "toolbar.done": "Hecho"
 }

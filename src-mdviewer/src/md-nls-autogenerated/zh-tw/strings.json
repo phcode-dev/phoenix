@@ -153,5 +153,17 @@
   "welcome.new_button": "新檔案",
   "welcome.open_button": "開啟檔案",
   "welcome.subtitle": "精美的 Markdown 檢視器",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "區塊類型",
+  "format.lists": "清單",
+  "format.more_elements": "更多",
+  "format.text_formatting": "文字格式",
+  "format.underline": "底線",
+  "mermaid.done": "完成",
+  "mermaid.edit": "編輯",
+  "mermaid.error_prefix": "語法錯誤",
+  "mermaid.stale": "預覽已過期",
+  "slash.mermaid": "Mermaid 圖表",
+  "slash.mermaid_desc": "插入圖表",
+  "toolbar.done": "完成"
 }

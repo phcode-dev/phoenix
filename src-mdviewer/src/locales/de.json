@@ -1,197 +1,211 @@
 {
-  "toolbar": {
-    "open": "Datei öffnen",
-    "theme": "Thema wechseln",
-    "toc": "Inhaltsverzeichnis",
-    "search": "Suchen",
-    "focus": "Fokusmodus",
-    "zoom_in": "Vergrößern",
-    "zoom_out": "Verkleinern",
-    "zoom_reset": "Zoom zurücksetzen",
-    "save": "Speichern",
-    "edit": "Bearbeiten",
-    "new_file": "Neue Datei",
-    "split_view": "Geteilte Ansicht",
-    "export_pdf": "Als PDF exportieren",
-    "settings": "Einstellungen",
-    "more": "Mehr"
-  },
-  "sidebar": {
-    "toc": "Inhaltsverzeichnis",
-    "recent": "Letzte Dateien",
-    "no_headings": "Keine Überschriften gefunden"
-  },
-  "search": {
-    "placeholder": "Im Dokument suchen...",
-    "count": "Treffer",
-    "no_results": "Keine Ergebnisse"
-  },
-  "welcome": {
-    "title": "Kern",
-    "subtitle": "Ein schöner Markdown-Betrachter",
-    "new_button": "Neue Datei",
-    "open_button": "Datei öffnen",
-    "drop_hint": "oder eine .md-Datei hierher ziehen"
-  },
-  "viewer": {
-    "copy": "Kopieren",
-    "copied": "Kopiert!"
-  },
-  "settings": {
-    "theme": "Thema",
-    "theme_light": "Hell",
-    "theme_dark": "Dunkel",
-    "theme_system": "System",
-    "language": "Sprache"
+  "a11y": {
+    "close_search": "Suche schließen",
+    "edit_link": "Link bearbeiten",
+    "format_text": "Text formatieren",
+    "insert_block": "Block einfügen",
+    "main_toolbar": "Hauptsymbolleiste",
+    "next_match": "Nächster Treffer",
+    "previous_match": "Vorheriger Treffer",
+    "search_in_document": "Im Dokument suchen",
+    "search_text": "Text suchen",
+    "select_language": "Sprache auswählen",
+    "sidebar": "Seitenleiste",
+    "skip_to_content": "Zum Inhalt springen"
   },
   "common": {
     "close": "Schließen",
+    "file": "Datei",
+    "open": "Öffnen"
+  },
+  "context": {
+    "copy": "Kopieren",
+    "copy_image_address": "Bildadresse kopieren",
+    "copy_link": "Link kopieren",
+    "cut": "Ausschneiden",
+    "open_link": "Link öffnen",
+    "paste": "Einfügen",
+    "paste_plain": "Als reinen Text einfügen",
+    "select_all": "Alles auswählen"
+  },
+  "dialog": {
+    "cancel": "Abbrechen",
+    "discard": "Verwerfen",
+    "dont_save": "Nicht speichern",
+    "save": "Speichern",
+    "unsaved_close": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Schließen speichern?",
+    "unsaved_exit_edit": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Verlassen des Bearbeitungsmodus speichern?",
+    "unsaved_new_file": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Erstellen einer neuen Datei speichern?",
+    "unsaved_open_file": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Öffnen einer neuen Datei speichern?",
+    "unsaved_title": "Ungespeicherte Änderungen"
+  },
+  "drop_zone": {
+    "text": "Markdown-Datei hier ablegen"
+  },
+  "export": {
     "open": "Öffnen",
-    "file": "Datei"
+    "success": "PDF erfolgreich exportiert"
   },
   "format": {
-    "paragraph": "Absatz",
+    "blockquote": "Zitat",
+    "bold": "Fett ({mod}+B)",
+    "bullet_list": "Aufzählungsliste",
+    "code": "Inline-Code ({mod}+E)",
+    "code_block": "Codeblock",
+    "divider": "Trennlinie",
     "heading1": "Überschrift 1",
     "heading2": "Überschrift 2",
     "heading3": "Überschrift 3",
-    "bold": "Fett ({mod}+B)",
     "italic": "Kursiv ({mod}+I)",
-    "strikethrough": "Durchgestrichen ({mod}+Umschalt+X)",
-    "code": "Inline-Code ({mod}+E)",
     "link": "Link ({mod}+K)",
-    "bullet_list": "Aufzählungsliste",
     "numbered_list": "Nummerierte Liste",
-    "task_list": "Aufgabenliste",
-    "blockquote": "Zitat",
-    "divider": "Trennlinie",
+    "paragraph": "Absatz",
+    "strikethrough": "Durchgestrichen ({mod}+Umschalt+X)",
     "table": "Tabelle",
-    "code_block": "Codeblock"
+    "task_list": "Aufgabenliste",
+    "block_type": "Blocktyp",
+    "lists": "Listen",
+    "more_elements": "Mehr",
+    "text_formatting": "Textformatierung",
+    "underline": "Unterstrichen"
+  },
+  "help": {
+    "editing": "Bearbeitung",
+    "fallback_notice": "Diese Seite ist noch nicht in Ihrer Sprache verfügbar. Die englische Version wird angezeigt.",
+    "features": "Funktionen",
+    "getting_started": "Erste Schritte",
+    "shortcuts": "Tastenkürzel"
+  },
+  "lang_picker": {
+    "filter_label": "Sprachen filtern",
+    "filter_placeholder": "Sprachen filtern...",
+    "plain_text": "Klartext"
+  },
+  "link": {
+    "apply": "Link anwenden",
+    "cancel": "Abbrechen",
+    "display_text": "Anzeigetext",
+    "edit": "Bearbeiten",
+    "edit_link": "Link bearbeiten",
+    "remove_link": "Link entfernen",
+    "text": "Text",
+    "text_placeholder": "Anzeigetext (optional)",
+    "url": "URL",
+    "url_placeholder": "URL einfügen oder eingeben..."
+  },
+  "recovery": {
+    "discard": "Verwerfen",
+    "message": "Kern hat ungespeicherte Änderungen aus einer vorherigen Sitzung gefunden. Möchten Sie diese wiederherstellen?",
+    "restore": "Wiederherstellen",
+    "title": "Ungespeicherte Änderungen wiederherstellen?"
+  },
+  "search": {
+    "count": "Treffer",
+    "no_results": "Keine Ergebnisse",
+    "placeholder": "Im Dokument suchen..."
+  },
+  "settings": {
+    "language": "Sprache",
+    "theme": "Thema",
+    "theme_dark": "Dunkel",
+    "theme_light": "Hell",
+    "theme_system": "System"
+  },
+  "sidebar": {
+    "no_headings": "Keine Überschriften gefunden",
+    "recent": "Letzte Dateien",
+    "toc": "Inhaltsverzeichnis"
   },
   "slash": {
-    "paragraph": "Absatz",
-    "paragraph_desc": "Normaler Text",
+    "blockquote": "Zitat",
+    "blockquote_desc": "Zitatblock",
+    "bullet_list": "Aufzählungsliste",
+    "bullet_list_desc": "Unsortierte Liste",
+    "code_block": "Codeblock",
+    "code_block_desc": "Codebereich",
+    "divider": "Trennlinie",
+    "divider_desc": "Horizontale Linie",
     "heading1": "Überschrift 1",
     "heading1_desc": "Große Überschrift",
     "heading2": "Überschrift 2",
     "heading2_desc": "Mittlere Überschrift",
     "heading3": "Überschrift 3",
     "heading3_desc": "Kleine Überschrift",
-    "bullet_list": "Aufzählungsliste",
-    "bullet_list_desc": "Unsortierte Liste",
+    "no_results": "Keine Ergebnisse",
     "numbered_list": "Nummerierte Liste",
     "numbered_list_desc": "Sortierte Liste",
-    "task_list": "Aufgabenliste",
-    "task_list_desc": "Checkliste",
-    "blockquote": "Zitat",
-    "blockquote_desc": "Zitatblock",
-    "code_block": "Codeblock",
-    "code_block_desc": "Codebereich",
+    "paragraph": "Absatz",
+    "paragraph_desc": "Normaler Text",
     "table": "Tabelle",
     "table_desc": "3×3-Tabelle",
-    "divider": "Trennlinie",
-    "divider_desc": "Horizontale Linie",
-    "no_results": "Keine Ergebnisse"
-  },
-  "link": {
-    "edit": "Bearbeiten",
-    "edit_link": "Link bearbeiten",
-    "remove_link": "Link entfernen",
-    "text": "Text",
-    "text_placeholder": "Anzeigetext (optional)",
-    "display_text": "Anzeigetext",
-    "url": "URL",
-    "url_placeholder": "URL einfügen oder eingeben...",
-    "apply": "Link anwenden",
-    "cancel": "Abbrechen"
+    "task_list": "Aufgabenliste",
+    "task_list_desc": "Checkliste",
+    "mermaid": "Mermaid-Diagramm",
+    "mermaid_desc": "Ein Diagramm einfügen"
   },
   "table": {
-    "header": "Kopfzeile",
-    "new_row": "+ Neue Zeile",
-    "row_options": "Optionen für Zeile {n}",
-    "col_options": "Optionen für Spalte {n}",
-    "insert_row_above": "Zeile darüber einfügen",
-    "insert_row_below": "Zeile darunter einfügen",
-    "delete_row": "Zeile löschen",
-    "insert_col_left": "Spalte links einfügen",
-    "insert_col_right": "Spalte rechts einfügen",
-    "delete_col": "Spalte löschen",
+    "add_col_left": "Spalte links hinzufügen",
+    "add_col_right": "Spalte rechts hinzufügen",
     "add_row_above": "Zeile darüber hinzufügen",
     "add_row_below": "Zeile darunter hinzufügen",
-    "add_col_left": "Spalte links hinzufügen",
-    "add_col_right": "Spalte rechts hinzufügen"
+    "col_options": "Optionen für Spalte {n}",
+    "delete_col": "Spalte löschen",
+    "delete_row": "Zeile löschen",
+    "header": "Kopfzeile",
+    "insert_col_left": "Spalte links einfügen",
+    "insert_col_right": "Spalte rechts einfügen",
+    "insert_row_above": "Zeile darüber einfügen",
+    "insert_row_below": "Zeile darunter einfügen",
+    "new_row": "+ Neue Zeile",
+    "row_options": "Optionen für Zeile {n}"
   },
-  "dialog": {
-    "unsaved_title": "Ungespeicherte Änderungen",
-    "unsaved_exit_edit": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Verlassen des Bearbeitungsmodus speichern?",
-    "unsaved_new_file": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Erstellen einer neuen Datei speichern?",
-    "unsaved_open_file": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Öffnen einer neuen Datei speichern?",
+  "toolbar": {
+    "edit": "Bearbeiten",
+    "export_pdf": "Als PDF exportieren",
+    "focus": "Fokusmodus",
+    "more": "Mehr",
+    "new_file": "Neue Datei",
+    "open": "Datei öffnen",
     "save": "Speichern",
-    "discard": "Verwerfen",
-    "dont_save": "Nicht speichern",
-    "cancel": "Abbrechen",
-    "unsaved_close": "Sie haben ungespeicherte Änderungen. Möchten Sie vor dem Schließen speichern?"
-  },
-  "lang_picker": {
-    "filter_placeholder": "Sprachen filtern...",
-    "filter_label": "Sprachen filtern",
-    "plain_text": "Klartext"
-  },
-  "a11y": {
-    "skip_to_content": "Zum Inhalt springen",
-    "main_toolbar": "Hauptsymbolleiste",
-    "sidebar": "Seitenleiste",
-    "search_text": "Text suchen",
-    "previous_match": "Vorheriger Treffer",
-    "next_match": "Nächster Treffer",
-    "close_search": "Suche schließen",
-    "format_text": "Text formatieren",
-    "edit_link": "Link bearbeiten",
-    "insert_block": "Block einfügen",
-    "select_language": "Sprache auswählen",
-    "search_in_document": "Im Dokument suchen"
-  },
-  "drop_zone": {
-    "text": "Markdown-Datei hier ablegen"
-  },
-  "help": {
-    "getting_started": "Erste Schritte",
-    "editing": "Bearbeitung",
-    "shortcuts": "Tastenkürzel",
-    "features": "Funktionen",
-    "fallback_notice": "Diese Seite ist noch nicht in Ihrer Sprache verfügbar. Die englische Version wird angezeigt."
-  },
-  "recovery": {
-    "title": "Ungespeicherte Änderungen wiederherstellen?",
-    "message": "Kern hat ungespeicherte Änderungen aus einer vorherigen Sitzung gefunden. Möchten Sie diese wiederherstellen?",
-    "restore": "Wiederherstellen",
-    "discard": "Verwerfen"
-  },
-  "export": {
-    "success": "PDF erfolgreich exportiert",
-    "open": "Öffnen"
-  },
-  "context": {
-    "cut": "Ausschneiden",
-    "copy": "Kopieren",
-    "paste": "Einfügen",
-    "paste_plain": "Als reinen Text einfügen",
-    "select_all": "Alles auswählen",
-    "copy_link": "Link kopieren",
-    "open_link": "Link öffnen",
-    "copy_image_address": "Bildadresse kopieren"
+    "search": "Suchen",
+    "settings": "Einstellungen",
+    "split_view": "Geteilte Ansicht",
+    "theme": "Thema wechseln",
+    "toc": "Inhaltsverzeichnis",
+    "zoom_in": "Vergrößern",
+    "zoom_out": "Verkleinern",
+    "zoom_reset": "Zoom zurücksetzen",
+    "done": "Fertig"
   },
   "trial": {
     "days_remaining": "Noch {days} Tage in der Testversion",
     "expired_message": "Ihre Testversion ist abgelaufen. Kaufen Sie Kern, um weiter zu bearbeiten.",
-    "purchase_button": "Kern kaufen",
-    "purchase_title": "Kern freischalten",
-    "purchase_desc": "Erhalten Sie vollen Zugriff auf alle Bearbeitungs- und Exportfunktionen mit einem einmaligen Kauf.",
     "feature_edit": "Markdown mit WYSIWYG und geteilter Ansicht bearbeiten",
-    "feature_save": "Dateien speichern und neu erstellen",
     "feature_export": "Als PDF exportieren",
-    "restore_purchases": "Käufe wiederherstellen",
+    "feature_save": "Dateien speichern und neu erstellen",
     "one_time_purchase": "Einmaliger Kauf. Kein Abonnement.",
+    "purchase_button": "Kern kaufen",
+    "purchase_desc": "Erhalten Sie vollen Zugriff auf alle Bearbeitungs- und Exportfunktionen mit einem einmaligen Kauf.",
+    "purchase_title": "Kern freischalten",
     "purchasing": "Kauf wird durchgeführt...",
+    "restore_purchases": "Käufe wiederherstellen",
     "restoring": "Wiederherstellung..."
+  },
+  "viewer": {
+    "copied": "Kopiert!",
+    "copy": "Kopieren"
+  },
+  "welcome": {
+    "drop_hint": "oder eine .md-Datei hierher ziehen",
+    "new_button": "Neue Datei",
+    "open_button": "Datei öffnen",
+    "subtitle": "Ein schöner Markdown-Betrachter",
+    "title": "Kern"
+  },
+  "mermaid": {
+    "done": "Fertig",
+    "edit": "Bearbeiten",
+    "error_prefix": "Syntaxfehler",
+    "stale": "Vorschau veraltet"
   }
 }

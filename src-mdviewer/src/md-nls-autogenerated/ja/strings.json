@@ -153,5 +153,17 @@
   "welcome.new_button": "新規ファイル",
   "welcome.open_button": "ファイルを開く",
   "welcome.subtitle": "美しいMarkdownビューア",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "ブロックタイプ",
+  "format.lists": "リスト",
+  "format.more_elements": "その他",
+  "format.text_formatting": "テキスト書式設定",
+  "format.underline": "下線",
+  "mermaid.done": "完了",
+  "mermaid.edit": "編集",
+  "mermaid.error_prefix": "構文エラー",
+  "mermaid.stale": "プレビューが古くなっています",
+  "slash.mermaid": "マーメイドダイアグラム",
+  "slash.mermaid_desc": "ダイアグラムを挿入",
+  "toolbar.done": "完了"
 }

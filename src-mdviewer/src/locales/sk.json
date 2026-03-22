@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Zavrieť vyhľadávanie",
+    "edit_link": "Upraviť odkaz",
+    "format_text": "Formátovať text",
+    "insert_block": "Vložiť blok",
+    "main_toolbar": "Hlavný panel s nástrojmi",
+    "next_match": "Ďalšia zhoda",
+    "previous_match": "Predchádzajúca zhoda",
+    "search_in_document": "Hľadať v dokumente",
+    "search_text": "Hľadať text",
+    "select_language": "Vybrať jazyk",
+    "sidebar": "Bočný panel",
+    "skip_to_content": "Preskočiť na obsah"
+  },
+  "common": {
+    "close": "Zavrieť",
+    "file": "Súbor",
+    "open": "Otvoriť"
+  },
+  "context": {
+    "copy": "Kopírovať",
+    "copy_image_address": "Kopírovať adresu obrázka",
+    "copy_link": "Kopírovať odkaz",
+    "cut": "Vystrihnúť",
+    "open_link": "Otvoriť odkaz",
+    "paste": "Prilepiť",
+    "paste_plain": "Prilepiť ako čistý text",
+    "select_all": "Vybrať všetko"
+  },
+  "dialog": {
+    "cancel": "Zrušiť",
+    "discard": "Zahodiť",
+    "dont_save": "Neuložiť",
+    "save": "Uložiť",
+    "unsaved_close": "Máte neuložené zmeny. Chcete ich uložiť pred zatvorením?",
+    "unsaved_exit_edit": "Máte neuložené zmeny. Chcete ich uložiť pred opustením režimu úprav?",
+    "unsaved_new_file": "Máte neuložené zmeny. Chcete ich uložiť pred vytvorením nového súboru?",
+    "unsaved_open_file": "Máte neuložené zmeny. Chcete ich uložiť pred otvorením nového súboru?",
+    "unsaved_title": "Neuložené zmeny"
+  },
+  "drop_zone": {
+    "text": "Sem presuňte svoj Markdown súbor"
+  },
+  "export": {
+    "open": "Otvoriť",
+    "success": "PDF bolo úspešne exportované"
+  },
+  "format": {
+    "block_type": "Typ bloku",
+    "blockquote": "Citácia",
+    "bold": "Tučné ({mod}+B)",
+    "bullet_list": "Zoznam s odrážkami",
+    "code": "Vložený kód ({mod}+E)",
+    "code_block": "Blok kódu",
+    "divider": "Oddeľovač",
+    "heading1": "Nadpis 1",
+    "heading2": "Nadpis 2",
+    "heading3": "Nadpis 3",
+    "italic": "Kurzíva ({mod}+I)",
+    "link": "Odkaz ({mod}+K)",
+    "lists": "Zoznamy",
+    "more_elements": "Viac",
+    "numbered_list": "Číslovaný zoznam",
+    "paragraph": "Odsek",
+    "strikethrough": "Prečiarknuté ({mod}+Shift+X)",
+    "table": "Tabuľka",
+    "task_list": "Zoznam úloh",
+    "text_formatting": "Formátovanie textu",
+    "underline": "Podčiarknuté"
+  },
+  "help": {
+    "editing": "Úpravy",
+    "fallback_notice": "Táto stránka zatiaľ nie je dostupná vo vašom jazyku. Zobrazuje sa anglická verzia.",
+    "features": "Funkcie",
+    "getting_started": "Ako začať",
+    "shortcuts": "Klávesové skratky"
+  },
+  "lang_picker": {
+    "filter_label": "Filtrovať jazyky",
+    "filter_placeholder": "Filtrovať jazyky...",
+    "plain_text": "Obyčajný text"
+  },
+  "link": {
+    "apply": "Použiť odkaz",
+    "cancel": "Zrušiť",
+    "display_text": "Zobrazený text",
+    "edit": "Upraviť",
+    "edit_link": "Upraviť odkaz",
+    "remove_link": "Odstrániť odkaz",
+    "text": "Text",
+    "text_placeholder": "Zobrazený text (voliteľné)",
+    "url": "URL",
+    "url_placeholder": "Vložte alebo napíšte URL..."
+  },
+  "mermaid": {
+    "done": "Hotovo",
+    "edit": "Upraviť",
+    "error_prefix": "Syntaktická chyba",
+    "stale": "Neaktuálny náhľad"
+  },
+  "recovery": {
+    "discard": "Zahodiť",
+    "message": "Kern našiel neuložené zmeny z predchádzajúcej relácie. Chcete ich obnoviť?",
+    "restore": "Obnoviť",
+    "title": "Obnoviť neuložené zmeny?"
+  },
+  "search": {
+    "count": "zhody",
+    "no_results": "Žiadne výsledky",
+    "placeholder": "Hľadať v dokumente..."
+  },
+  "settings": {
+    "language": "Jazyk",
+    "theme": "Téma",
+    "theme_dark": "Tmavá",
+    "theme_light": "Svetlá",
+    "theme_system": "Systém"
+  },
+  "sidebar": {
+    "no_headings": "Nenašli sa žiadne nadpisy",
+    "recent": "Nedávne súbory",
+    "toc": "Obsah"
+  },
+  "slash": {
+    "blockquote": "Citácia",
+    "blockquote_desc": "Blok s citáciou",
+    "bullet_list": "Zoznam s odrážkami",
+    "bullet_list_desc": "Neusporiadaný zoznam",
+    "code_block": "Blok kódu",
+    "code_block_desc": "Ohraničený kód",
+    "divider": "Oddeľovač",
+    "divider_desc": "Vodorovná čiara",
+    "heading1": "Nadpis 1",
+    "heading1_desc": "Veľký nadpis",
+    "heading2": "Nadpis 2",
+    "heading2_desc": "Stredný nadpis",
+    "heading3": "Nadpis 3",
+    "heading3_desc": "Malý nadpis",
+    "mermaid": "Mermaid diagram",
+    "mermaid_desc": "Vložiť diagram",
+    "no_results": "Žiadne výsledky",
+    "numbered_list": "Číslovaný zoznam",
+    "numbered_list_desc": "Usporiadaný zoznam",
+    "paragraph": "Odsek",
+    "paragraph_desc": "Obyčajný text",
+    "table": "Tabuľka",
+    "table_desc": "Tabuľka 3×3",
+    "task_list": "Zoznam úloh",
+    "task_list_desc": "Kontrolný zoznam"
+  },
+  "table": {
+    "add_col_left": "Pridať stĺpec vľavo",
+    "add_col_right": "Pridať stĺpec vpravo",
+    "add_row_above": "Pridať riadok nad",
+    "add_row_below": "Pridať riadok pod",
+    "col_options": "Možnosti stĺpca {n}",
+    "delete_col": "Odstrániť stĺpec",
+    "delete_row": "Odstrániť riadok",
+    "header": "Hlavička",
+    "insert_col_left": "Vložiť stĺpec vľavo",
+    "insert_col_right": "Vložiť stĺpec vpravo",
+    "insert_row_above": "Vložiť riadok nad",
+    "insert_row_below": "Vložiť riadok pod",
+    "new_row": "+ Nový riadok",
+    "row_options": "Možnosti riadka {n}"
+  },
+  "toolbar": {
+    "done": "Hotovo",
+    "edit": "Upraviť",
+    "export_pdf": "Exportovať PDF",
+    "focus": "Režim sústredenia",
+    "more": "Viac",
+    "new_file": "Nový súbor",
+    "open": "Otvoriť súbor",
+    "save": "Uložiť",
+    "search": "Hľadať",
+    "settings": "Nastavenia",
+    "split_view": "Rozdelené zobrazenie",
+    "theme": "Prepnúť tému",
+    "toc": "Obsah",
+    "zoom_in": "Priblížiť",
+    "zoom_out": "Oddialiť",
+    "zoom_reset": "Obnoviť priblíženie"
+  },
+  "trial": {
+    "days_remaining": "Zostáva {days} dní v skúšobnej verzii",
+    "expired_message": "Vaša skúšobná verzia vypršala. Ak chcete pokračovať v úpravách, zakúpte si Kern.",
+    "feature_edit": "Úprava Markdownu s WYSIWYG a rozdeleným zobrazením",
+    "feature_export": "Export do PDF",
+    "feature_save": "Ukladanie a vytváranie nových súborov",
+    "one_time_purchase": "Jednorazový nákup. Žiadne predplatné.",
+    "purchase_button": "Zakúpiť Kern",
+    "purchase_desc": "Získajte plný prístup ku všetkým funkciám úprav a exportu jednorazovým nákupom.",
+    "purchase_title": "Odomknite Kern",
+    "purchasing": "Prebieha nákup...",
+    "restore_purchases": "Obnoviť nákupy",
+    "restoring": "Obnovuje sa..."
+  },
+  "viewer": {
+    "copied": "Skopírované!",
+    "copy": "Kopírovať"
+  },
+  "welcome": {
+    "drop_hint": "alebo presuňte súbor .md",
+    "new_button": "Nový súbor",
+    "open_button": "Otvoriť súbor",
+    "subtitle": "Krásny prehliadač Markdownu",
+    "title": "Kern"
+  }
+}

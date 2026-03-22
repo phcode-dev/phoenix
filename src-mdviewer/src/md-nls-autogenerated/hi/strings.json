@@ -153,5 +153,17 @@
   "welcome.new_button": "नई फ़ाइल",
   "welcome.open_button": "फ़ाइल खोलें",
   "welcome.subtitle": "एक सुंदर मार्कडाउन व्यूअर",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "ब्लॉक प्रकार",
+  "format.lists": "सूचियाँ",
+  "format.more_elements": "अधिक",
+  "format.text_formatting": "टेक्स्ट फ़ॉर्मेटिंग",
+  "format.underline": "रेखांकित",
+  "mermaid.done": "हो गया",
+  "mermaid.edit": "संपादित करें",
+  "mermaid.error_prefix": "सिंटैक्स त्रुटि",
+  "mermaid.stale": "प्रीव्यू पुराना है",
+  "slash.mermaid": "Mermaid आरेख",
+  "slash.mermaid_desc": "एक आरेख डालें",
+  "toolbar.done": "हो गया"
 }

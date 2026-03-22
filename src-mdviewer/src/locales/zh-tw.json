@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "關閉搜尋",
+    "edit_link": "編輯連結",
+    "format_text": "格式化文字",
+    "insert_block": "插入區塊",
+    "main_toolbar": "主工具列",
+    "next_match": "下一個符合",
+    "previous_match": "上一個符合",
+    "search_in_document": "在文件中搜尋",
+    "search_text": "搜尋文字",
+    "select_language": "選擇語言",
+    "sidebar": "側邊欄",
+    "skip_to_content": "跳至內容"
+  },
+  "common": {
+    "close": "關閉",
+    "file": "檔案",
+    "open": "開啟"
+  },
+  "context": {
+    "copy": "複製",
+    "copy_image_address": "複製圖片位址",
+    "copy_link": "複製連結",
+    "cut": "剪下",
+    "open_link": "開啟連結",
+    "paste": "貼上",
+    "paste_plain": "貼上為純文字",
+    "select_all": "全選"
+  },
+  "dialog": {
+    "cancel": "取消",
+    "discard": "捨棄",
+    "dont_save": "不儲存",
+    "save": "儲存",
+    "unsaved_close": "您有未儲存的變更。要在關閉前儲存嗎？",
+    "unsaved_exit_edit": "您有未儲存的變更。要在離開編輯模式前儲存嗎？",
+    "unsaved_new_file": "您有未儲存的變更。要在建立新檔案前儲存嗎？",
+    "unsaved_open_file": "您有未儲存的變更。要在開啟新檔案前儲存嗎？",
+    "unsaved_title": "未儲存的變更"
+  },
+  "drop_zone": {
+    "text": "將您的 Markdown 檔案拖放至此"
+  },
+  "export": {
+    "open": "開啟",
+    "success": "PDF 匯出成功"
+  },
+  "format": {
+    "blockquote": "引用",
+    "bold": "粗體 ({mod}+B)",
+    "bullet_list": "項目符號清單",
+    "code": "行內程式碼 ({mod}+E)",
+    "code_block": "程式碼區塊",
+    "divider": "分隔線",
+    "heading1": "標題 1",
+    "heading2": "標題 2",
+    "heading3": "標題 3",
+    "italic": "斜體 ({mod}+I)",
+    "link": "連結 ({mod}+K)",
+    "numbered_list": "編號清單",
+    "paragraph": "段落",
+    "strikethrough": "刪除線 ({mod}+Shift+X)",
+    "table": "表格",
+    "task_list": "工作清單",
+    "block_type": "區塊類型",
+    "lists": "清單",
+    "more_elements": "更多",
+    "text_formatting": "文字格式",
+    "underline": "底線"
+  },
+  "help": {
+    "editing": "編輯",
+    "fallback_notice": "此頁面尚未提供您的語言版本。正在顯示英文版本。",
+    "features": "功能",
+    "getting_started": "快速入門",
+    "shortcuts": "鍵盤快捷鍵"
+  },
+  "lang_picker": {
+    "filter_label": "篩選語言",
+    "filter_placeholder": "篩選語言...",
+    "plain_text": "純文字"
+  },
+  "link": {
+    "apply": "套用連結",
+    "cancel": "取消",
+    "display_text": "顯示文字",
+    "edit": "編輯",
+    "edit_link": "編輯連結",
+    "remove_link": "移除連結",
+    "text": "文字",
+    "text_placeholder": "顯示文字（選填）",
+    "url": "URL",
+    "url_placeholder": "貼上或輸入 URL..."
+  },
+  "recovery": {
+    "discard": "捨棄",
+    "message": "Kern 發現了上次工作階段中未儲存的變更。要復原嗎？",
+    "restore": "復原",
+    "title": "復原未儲存的變更？"
+  },
+  "search": {
+    "count": "個符合",
+    "no_results": "沒有結果",
+    "placeholder": "在文件中搜尋..."
+  },
+  "settings": {
+    "language": "語言",
+    "theme": "主題",
+    "theme_dark": "深色",
+    "theme_light": "淺色",
+    "theme_system": "系統"
+  },
+  "sidebar": {
+    "no_headings": "找不到標題",
+    "recent": "最近的檔案",
+    "toc": "目錄"
+  },
+  "slash": {
+    "blockquote": "引用",
+    "blockquote_desc": "引用區塊",
+    "bullet_list": "項目符號清單",
+    "bullet_list_desc": "無序清單",
+    "code_block": "程式碼區塊",
+    "code_block_desc": "圍欄程式碼",
+    "divider": "分隔線",
+    "divider_desc": "水平線",
+    "heading1": "標題 1",
+    "heading1_desc": "大標題",
+    "heading2": "標題 2",
+    "heading2_desc": "中標題",
+    "heading3": "標題 3",
+    "heading3_desc": "小標題",
+    "no_results": "沒有結果",
+    "numbered_list": "編號清單",
+    "numbered_list_desc": "有序清單",
+    "paragraph": "段落",
+    "paragraph_desc": "純文字",
+    "table": "表格",
+    "table_desc": "3×3 表格",
+    "task_list": "工作清單",
+    "task_list_desc": "核取清單",
+    "mermaid": "Mermaid 圖表",
+    "mermaid_desc": "插入圖表"
+  },
+  "table": {
+    "add_col_left": "在左方新增欄",
+    "add_col_right": "在右方新增欄",
+    "add_row_above": "在上方新增列",
+    "add_row_below": "在下方新增列",
+    "col_options": "第 {n} 欄選項",
+    "delete_col": "刪除欄",
+    "delete_row": "刪除列",
+    "header": "標頭",
+    "insert_col_left": "在左方插入欄",
+    "insert_col_right": "在右方插入欄",
+    "insert_row_above": "在上方插入列",
+    "insert_row_below": "在下方插入列",
+    "new_row": "+ 新增列",
+    "row_options": "第 {n} 列選項"
+  },
+  "toolbar": {
+    "edit": "編輯",
+    "export_pdf": "匯出 PDF",
+    "focus": "專注模式",
+    "more": "更多",
+    "new_file": "新檔案",
+    "open": "開啟檔案",
+    "save": "儲存",
+    "search": "搜尋",
+    "settings": "設定",
+    "split_view": "分割檢視",
+    "theme": "切換主題",
+    "toc": "目錄",
+    "zoom_in": "放大",
+    "zoom_out": "縮小",
+    "zoom_reset": "重設縮放",
+    "done": "完成"
+  },
+  "trial": {
+    "days_remaining": "試用期剩餘 {days} 天",
+    "expired_message": "您的試用期已結束。購買 Kern 以繼續編輯。",
+    "feature_edit": "使用 WYSIWYG 和分割檢視編輯 Markdown",
+    "feature_export": "匯出為 PDF",
+    "feature_save": "儲存和建立新檔案",
+    "one_time_purchase": "一次性購買，無需訂閱。",
+    "purchase_button": "購買 Kern",
+    "purchase_desc": "一次購買即可完整使用所有編輯和匯出功能。",
+    "purchase_title": "解鎖 Kern",
+    "purchasing": "購買中...",
+    "restore_purchases": "恢復購買",
+    "restoring": "恢復中..."
+  },
+  "viewer": {
+    "copied": "已複製！",
+    "copy": "複製"
+  },
+  "welcome": {
+    "drop_hint": "或拖放 .md 檔案",
+    "new_button": "新檔案",
+    "open_button": "開啟檔案",
+    "subtitle": "精美的 Markdown 檢視器",
+    "title": "Kern"
+  },
+  "mermaid": {
+    "done": "完成",
+    "edit": "編輯",
+    "error_prefix": "語法錯誤",
+    "stale": "預覽已過期"
+  }
+}

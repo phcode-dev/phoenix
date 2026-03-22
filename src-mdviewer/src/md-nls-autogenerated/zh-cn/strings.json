@@ -153,5 +153,17 @@
   "welcome.new_button": "新建文件",
   "welcome.open_button": "打开文件",
   "welcome.subtitle": "优雅的 Markdown 阅读器",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "块类型",
+  "format.lists": "列表",
+  "format.more_elements": "更多",
+  "format.text_formatting": "文本格式",
+  "format.underline": "下划线",
+  "mermaid.done": "完成",
+  "mermaid.edit": "编辑",
+  "mermaid.error_prefix": "语法错误",
+  "mermaid.stale": "预览已过时",
+  "slash.mermaid": "Mermaid 图表",
+  "slash.mermaid_desc": "插入图表",
+  "toolbar.done": "完成"
 }

@@ -153,5 +153,17 @@
   "welcome.new_button": "새 파일",
   "welcome.open_button": "파일 열기",
   "welcome.subtitle": "아름다운 마크다운 뷰어",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "블록 유형",
+  "format.lists": "목록",
+  "format.more_elements": "더 보기",
+  "format.text_formatting": "텍스트 서식",
+  "format.underline": "밑줄",
+  "mermaid.done": "완료",
+  "mermaid.edit": "편집",
+  "mermaid.error_prefix": "구문 오류",
+  "mermaid.stale": "미리보기가 오래됨",
+  "slash.mermaid": "Mermaid 다이어그램",
+  "slash.mermaid_desc": "다이어그램 삽입",
+  "toolbar.done": "완료"
 }

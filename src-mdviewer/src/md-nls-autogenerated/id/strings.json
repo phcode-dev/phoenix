@@ -153,5 +153,17 @@
   "welcome.new_button": "File Baru",
   "welcome.open_button": "Buka File",
   "welcome.subtitle": "Penampil Markdown yang indah",
-  "welcome.title": "Kern"
+  "welcome.title": "Kern",
+  "format.block_type": "Tipe blok",
+  "format.lists": "Daftar",
+  "format.more_elements": "Lainnya",
+  "format.text_formatting": "Pemformatan teks",
+  "format.underline": "Garis bawah",
+  "mermaid.done": "Selesai",
+  "mermaid.edit": "Edit",
+  "mermaid.error_prefix": "Kesalahan sintaks",
+  "mermaid.stale": "Pratinjau kedaluwarsa",
+  "slash.mermaid": "Diagram Mermaid",
+  "slash.mermaid_desc": "Sisipkan diagram",
+  "toolbar.done": "Selesai"
 }

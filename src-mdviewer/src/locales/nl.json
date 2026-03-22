@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Zoeken sluiten",
+    "edit_link": "Link bewerken",
+    "format_text": "Tekst opmaken",
+    "insert_block": "Blok invoegen",
+    "main_toolbar": "Hoofdwerkbalk",
+    "next_match": "Volgende overeenkomst",
+    "previous_match": "Vorige overeenkomst",
+    "search_in_document": "Zoeken in document",
+    "search_text": "Tekst zoeken",
+    "select_language": "Taal selecteren",
+    "sidebar": "Zijbalk",
+    "skip_to_content": "Ga direct naar de inhoud"
+  },
+  "common": {
+    "close": "Sluiten",
+    "file": "Bestand",
+    "open": "Openen"
+  },
+  "context": {
+    "copy": "Kopiëren",
+    "copy_image_address": "Afbeeldingsadres kopiëren",
+    "copy_link": "Link kopiëren",
+    "cut": "Knippen",
+    "open_link": "Link openen",
+    "paste": "Plakken",
+    "paste_plain": "Plakken als platte tekst",
+    "select_all": "Alles selecteren"
+  },
+  "dialog": {
+    "cancel": "Annuleren",
+    "discard": "Verwerpen",
+    "dont_save": "Niet opslaan",
+    "save": "Opslaan",
+    "unsaved_close": "U heeft niet-opgeslagen wijzigingen. Wilt u opslaan voordat u sluit?",
+    "unsaved_exit_edit": "U heeft niet-opgeslagen wijzigingen. Wilt u opslaan voordat u de bewerkingsmodus verlaat?",
+    "unsaved_new_file": "U heeft niet-opgeslagen wijzigingen. Wilt u opslaan voordat u een nieuw bestand aanmaakt?",
+    "unsaved_open_file": "U heeft niet-opgeslagen wijzigingen. Wilt u opslaan voordat u een nieuw bestand opent?",
+    "unsaved_title": "Niet-opgeslagen wijzigingen"
+  },
+  "drop_zone": {
+    "text": "Sleep uw Markdown-bestand hierheen"
+  },
+  "export": {
+    "open": "Openen",
+    "success": "PDF succesvol geëxporteerd"
+  },
+  "format": {
+    "block_type": "Bloktype",
+    "blockquote": "Blokcitaat",
+    "bold": "Vet ({mod}+B)",
+    "bullet_list": "Opsommingslijst",
+    "code": "Inline code ({mod}+E)",
+    "code_block": "Codeblok",
+    "divider": "Scheidingslijn",
+    "heading1": "Kop 1",
+    "heading2": "Kop 2",
+    "heading3": "Kop 3",
+    "italic": "Cursief ({mod}+I)",
+    "link": "Link ({mod}+K)",
+    "lists": "Lijsten",
+    "more_elements": "Meer",
+    "numbered_list": "Genummerde lijst",
+    "paragraph": "Paragraaf",
+    "strikethrough": "Doorhalen ({mod}+Shift+X)",
+    "table": "Tabel",
+    "task_list": "Takenlijst",
+    "text_formatting": "Tekstopmaak",
+    "underline": "Onderstrepen"
+  },
+  "help": {
+    "editing": "Bewerken",
+    "fallback_notice": "Deze pagina is nog niet beschikbaar in uw taal. De Engelse versie wordt getoond.",
+    "features": "Functies",
+    "getting_started": "Aan de slag",
+    "shortcuts": "Sneltoetsen"
+  },
+  "lang_picker": {
+    "filter_label": "Talen filteren",
+    "filter_placeholder": "Talen filteren...",
+    "plain_text": "Platte tekst"
+  },
+  "link": {
+    "apply": "Link toepassen",
+    "cancel": "Annuleren",
+    "display_text": "Weergavetekst",
+    "edit": "Bewerken",
+    "edit_link": "Link bewerken",
+    "remove_link": "Link verwijderen",
+    "text": "Tekst",
+    "text_placeholder": "Weergavetekst (optioneel)",
+    "url": "URL",
+    "url_placeholder": "Plak of typ een URL..."
+  },
+  "mermaid": {
+    "done": "Klaar",
+    "edit": "Bewerken",
+    "error_prefix": "Syntaxfout",
+    "stale": "Voorbeeld verouderd"
+  },
+  "recovery": {
+    "discard": "Verwerpen",
+    "message": "Kern heeft niet-opgeslagen wijzigingen van een vorige sessie gevonden. Wilt u deze herstellen?",
+    "restore": "Herstellen",
+    "title": "Niet-opgeslagen wijzigingen herstellen?"
+  },
+  "search": {
+    "count": "resultaten",
+    "no_results": "Geen resultaten",
+    "placeholder": "Zoeken in document..."
+  },
+  "settings": {
+    "language": "Taal",
+    "theme": "Thema",
+    "theme_dark": "Donker",
+    "theme_light": "Licht",
+    "theme_system": "Systeem"
+  },
+  "sidebar": {
+    "no_headings": "Geen koppen gevonden",
+    "recent": "Recente bestanden",
+    "toc": "Inhoudsopgave"
+  },
+  "slash": {
+    "blockquote": "Citaatblok",
+    "blockquote_desc": "Citaatblok",
+    "bullet_list": "Opsommingslijst",
+    "bullet_list_desc": "Ongesorteerde lijst",
+    "code_block": "Codeblok",
+    "code_block_desc": "Afgebakende code",
+    "divider": "Scheidingslijn",
+    "divider_desc": "Horizontale lijn",
+    "heading1": "Kop 1",
+    "heading1_desc": "Grote kop",
+    "heading2": "Kop 2",
+    "heading2_desc": "Middelgrote kop",
+    "heading3": "Kop 3",
+    "heading3_desc": "Kleine kop",
+    "mermaid": "Mermaid-diagram",
+    "mermaid_desc": "Voeg een diagram in",
+    "no_results": "Geen resultaten",
+    "numbered_list": "Genummerde lijst",
+    "numbered_list_desc": "Geordende lijst",
+    "paragraph": "Paragraaf",
+    "paragraph_desc": "Platte tekst",
+    "table": "Tabel",
+    "table_desc": "3×3 tabel",
+    "task_list": "Takenlijst",
+    "task_list_desc": "Checklist"
+  },
+  "table": {
+    "add_col_left": "Kolom links toevoegen",
+    "add_col_right": "Kolom rechts toevoegen",
+    "add_row_above": "Rij boven toevoegen",
+    "add_row_below": "Rij onder toevoegen",
+    "col_options": "Kolom {n} opties",
+    "delete_col": "Kolom verwijderen",
+    "delete_row": "Rij verwijderen",
+    "header": "Koptekst",
+    "insert_col_left": "Kolom links invoegen",
+    "insert_col_right": "Kolom rechts invoegen",
+    "insert_row_above": "Rij boven invoegen",
+    "insert_row_below": "Rij onder invoegen",
+    "new_row": "+ Nieuwe rij",
+    "row_options": "Opties voor rij {n}"
+  },
+  "toolbar": {
+    "done": "Klaar",
+    "edit": "Bewerken",
+    "export_pdf": "Exporteer PDF",
+    "focus": "Focusmodus",
+    "more": "Meer",
+    "new_file": "Nieuw bestand",
+    "open": "Bestand openen",
+    "save": "Opslaan",
+    "search": "Zoeken",
+    "settings": "Instellingen",
+    "split_view": "Gesplitste weergave",
+    "theme": "Thema wisselen",
+    "toc": "Inhoudsopgave",
+    "zoom_in": "Inzoomen",
+    "zoom_out": "Uitzoomen",
+    "zoom_reset": "Zoom herstellen"
+  },
+  "trial": {
+    "days_remaining": "Nog {days} dagen in proefperiode",
+    "expired_message": "Uw proefperiode is verlopen. Koop Kern om door te gaan met bewerken.",
+    "feature_edit": "Markdown bewerken met WYSIWYG en gesplitste weergave",
+    "feature_export": "Exporteren naar PDF",
+    "feature_save": "Bestanden opslaan en aanmaken",
+    "one_time_purchase": "Eenmalige aankoop. Geen abonnement.",
+    "purchase_button": "Koop Kern",
+    "purchase_desc": "Krijg volledige toegang tot alle bewerkings- en exportfuncties met een eenmalige aankoop.",
+    "purchase_title": "Ontgrendel Kern",
+    "purchasing": "Aankopen...",
+    "restore_purchases": "Aankopen herstellen",
+    "restoring": "Herstellen..."
+  },
+  "viewer": {
+    "copied": "Gekopieerd!",
+    "copy": "Kopiëren"
+  },
+  "welcome": {
+    "drop_hint": "of sleep een .md-bestand hierheen",
+    "new_button": "Nieuw bestand",
+    "open_button": "Bestand openen",
+    "subtitle": "Een prachtige Markdown-viewer",
+    "title": "Kern"
+  }
+}
