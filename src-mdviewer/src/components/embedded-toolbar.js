@@ -26,7 +26,8 @@ import {
     FileCode,
     ChevronDown,
     Type,
-    MoreHorizontal
+    MoreHorizontal,
+    BookOpen
 } from "lucide";
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
@@ -37,12 +38,12 @@ let resizeObserver = null;
 let collapseLevel = 0; // 0=expanded, 1=blocks, 2=blocks+lists, 3=all
 
 // Width thresholds for progressive collapse
-const THRESHOLD_BLOCKS = 480;  // collapse block elements first
-const THRESHOLD_LISTS = 390;   // then lists
-const THRESHOLD_TEXT = 300;    // finally text formatting
+const THRESHOLD_BLOCKS = 640;  // collapse block elements first
+const THRESHOLD_LISTS = 520;   // then lists
+const THRESHOLD_TEXT = 420;    // finally text formatting
 
 const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
-    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil };
+    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen };
 
 export function initEmbeddedToolbar() {
     toolbar = document.getElementById("toolbar");
@@ -75,7 +76,7 @@ function render() {
 function renderReadMode() {
     toolbar.innerHTML = `<div class="embedded-toolbar">
         <div class="toolbar-spacer"></div>
-        <button class="edit-toggle-btn" id="emb-edit-btn">
+        <button class="edit-toggle-btn" id="emb-edit-btn" title="${t("toolbar.switch_to_edit") || "Switch to edit mode"}">
             <i data-lucide="pencil"></i>
             <span>${t("toolbar.edit") || "Edit"}</span>
         </button>
@@ -165,8 +166,9 @@ function renderEditMode(level) {
     toolbar.innerHTML = `<div class="embedded-toolbar">
         ${formatRow}
         <div class="toolbar-spacer"></div>
-        <button class="done-btn" id="emb-done-btn">
-            <span>${t("toolbar.done") || "Done"}</span>
+        <button class="done-btn" id="emb-done-btn" title="${t("toolbar.switch_to_reader") || "Switch to reader mode"}">
+            <i data-lucide="book-open"></i>
+            <span>${t("toolbar.reader") || "Reader"}</span>
         </button>
     </div>`;
 
