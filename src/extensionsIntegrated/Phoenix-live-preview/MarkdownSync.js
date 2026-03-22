@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     let _active = false;
     let _doc = null;
     let _$iframe = null;
+    let _mdIframeRef = null; // persistent reference to the md iframe DOM element, survives deactivate
     let _baseURL = "";
     let _syncId = 0;
     let _lastReceivedSyncId = -1;
@@ -57,17 +58,18 @@ define(function (require, exports, module) {
      * @param {string} baseURL - Base URL for resolving relative image/resource paths
      */
     function activate(doc, $iframe, baseURL) {
-        const sameIframe = _$iframe && $iframe && _$iframe[0] === $iframe[0];
-
         if (_active) {
             deactivate();
         }
 
         _doc = doc;
+        // Check if this is the same iframe we've used before (persistent md iframe)
+        const reusingIframe = _mdIframeRef && $iframe[0] === _mdIframeRef;
         _$iframe = $iframe;
+        _mdIframeRef = $iframe[0];
         _baseURL = baseURL;
         _active = true;
-        _iframeReady = sameIframe; // If reusing iframe, it's already ready
+        _iframeReady = reusingIframe;
         _syncId = 0;
         _lastReceivedSyncId = -1;
 
