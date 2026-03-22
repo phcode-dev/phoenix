@@ -15,7 +15,9 @@
     "export_pdf": "Export PDF",
     "settings": "Settings",
     "more": "More",
-    "done": "Done"
+    "reader": "Reader",
+    "switch_to_reader": "Switch to reader mode",
+    "switch_to_edit": "Switch to edit mode"
   },
   "sidebar": {
     "toc": "Table of Contents",
