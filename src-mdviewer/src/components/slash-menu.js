@@ -378,11 +378,15 @@ function handleKeydown(e) {
     e.stopImmediatePropagation();
     selectedIndex = (selectedIndex + 1) % filteredItems.length;
     renderItems();
+    const sel = menu.querySelector(".slash-menu-item.selected");
+    if (sel) sel.scrollIntoView({ block: "nearest" });
   } else if (e.key === "ArrowUp") {
     e.preventDefault();
     e.stopImmediatePropagation();
     selectedIndex = (selectedIndex - 1 + filteredItems.length) % filteredItems.length;
     renderItems();
+    const sel = menu.querySelector(".slash-menu-item.selected");
+    if (sel) sel.scrollIntoView({ block: "nearest" });
   } else if (e.key === "Enter") {
     e.preventDefault();
     e.stopImmediatePropagation();

@@ -156,10 +156,23 @@ export function initBridge() {
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-            // Don't forward Escape to Phoenix if search bar or other UI is open
-            const searchBar = document.getElementById("search-bar");
-            if (searchBar && searchBar.classList.contains("open")) {
-                return; // let search handle it
+            // Don't forward Escape to Phoenix if any popup/overlay is open
+            const popupSelectors = [
+                "#search-bar.open",
+                "#slash-menu.visible",
+                "#lang-picker.visible",
+                "#link-popover.visible"
+            ];
+            const hasOpenPopup = popupSelectors.some(sel => document.querySelector(sel));
+            if (hasOpenPopup) {
+                // Let the popup handle Escape, then refocus editor
+                setTimeout(() => {
+                    const content = document.getElementById("viewer-content");
+                    if (content && getState().editMode) {
+                        content.focus({ preventScroll: true });
+                    }
+                }, 0);
+                return;
             }
             sendToParent("embeddedEscapeKeyPressed", {});
             return;
