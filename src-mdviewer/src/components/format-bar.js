@@ -57,6 +57,7 @@ function buildBar() {
     icons: { Bold, Italic, Strikethrough, Underline, Code, Link },
     attrs: { class: "" },
   });
+  bar.querySelectorAll("svg[data-lucide]").forEach(svg => svg.removeAttribute("data-lucide"));
 
   // Button click handlers
   for (const btn of buttons) {

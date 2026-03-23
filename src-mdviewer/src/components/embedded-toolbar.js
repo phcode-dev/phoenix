@@ -89,7 +89,9 @@ function renderReadMode() {
         </button>
     </div>`;
 
-    createIcons({ icons: { Pencil, Link2, Link2Off }, attrs: { class: "" } });
+    createIcons({ icons: allIcons, attrs: { class: "" } });
+    // Remove data-lucide from replaced SVGs to prevent warnings on subsequent createIcons calls
+    toolbar.querySelectorAll("svg[data-lucide]").forEach(svg => svg.removeAttribute("data-lucide"));
 
     wireCursorSyncButton();
 
@@ -186,6 +188,8 @@ function renderEditMode(level) {
     </div>`;
 
     createIcons({ icons: allIcons, attrs: { class: "" } });
+    // Remove data-lucide from replaced SVGs to prevent warnings on subsequent createIcons calls
+    toolbar.querySelectorAll("svg[data-lucide]").forEach(svg => svg.removeAttribute("data-lucide"));
 
     wireFormatButtons();
     wireBlockTypeSelect();
