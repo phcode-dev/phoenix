@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "lucide": "^0.474.0",
+        "mark.js": "^8.11.1",
         "marked": "^17.0.2",
         "medium-zoom": "^1.1.0",
         "mermaid": "^11.12.2",

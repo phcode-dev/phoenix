@@ -156,6 +156,11 @@ export function initBridge() {
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
+            // Don't forward Escape to Phoenix if search bar or other UI is open
+            const searchBar = document.getElementById("search-bar");
+            if (searchBar && searchBar.classList.contains("open")) {
+                return; // let search handle it
+            }
             sendToParent("embeddedEscapeKeyPressed", {});
             return;
         }
@@ -174,6 +179,14 @@ export function initBridge() {
             e.preventDefault();
             e.stopImmediatePropagation();
             sendToParent("mdviewrRedo", {});
+            return;
+        }
+
+        // Ctrl/Cmd+F — open in-document search
+        if (e.key === "f" && !e.shiftKey) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            emit("action:toggle-search");
             return;
         }
 

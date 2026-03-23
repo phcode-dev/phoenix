@@ -90,3 +90,19 @@
 - [ ] No "Failed to load locale" console warnings for valid locales
 - [ ] gulp translateStrings translates both Phoenix NLS and mdviewer locales
 - [ ] Translated locale files copied back to src-mdviewer/src/locales/
+
+## In-Document Search (Ctrl+F)
+- [ ] Ctrl+F opens search bar in md viewer (both edit and reader mode)
+- [ ] Ctrl+F with text selected pre-fills search and highlights closest match as active
+- [ ] Typing in search input highlights matches with debounce (300ms)
+- [ ] Match count shows "N/total" format
+- [ ] Enter / Arrow Down navigates to next match
+- [ ] Shift+Enter / Arrow Up navigates to previous match
+- [ ] Navigation wraps around (last → first, first → last)
+- [ ] Active match scrolls into view (instant, centered)
+- [ ] Escape closes search bar and restores cursor to previous position
+- [ ] Escape in search does NOT forward to Phoenix (no focus steal)
+- [ ] Closing search clears all mark.js highlights
+- [ ] Search works across cached document DOMs (uses #viewer-content)
+- [ ] × button closes search
+- [ ] Search with <2 characters shows no results

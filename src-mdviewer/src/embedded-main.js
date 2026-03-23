@@ -8,6 +8,7 @@ import { initViewer } from "./components/viewer.js";
 import { initEditor } from "./components/editor.js";
 import { initEmbeddedToolbar } from "./components/embedded-toolbar.js";
 import { initContextMenu } from "./components/context-menu.js";
+import { initSearch } from "./components/search.js";
 import { initBridge } from "./bridge.js";
 
 async function init() {
@@ -19,6 +20,7 @@ async function init() {
     initEditor();
     initEmbeddedToolbar();
     initContextMenu();
+    initSearch();
 
     // Initialize bridge (sends ready signal to Phoenix)
     initBridge();
