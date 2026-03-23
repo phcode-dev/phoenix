@@ -118,7 +118,7 @@ define(function (require, exports, module) {
                 _forwardKeyboardShortcut(data);
                 break;
             case "embeddedIframeFocusEditor":
-                if (data.sourceLine != null) {
+                if (_cursorSyncEnabled && data.sourceLine != null) {
                     _scrollCMToLine(data.sourceLine);
                 }
                 utils.focusActiveEditorIfFocusInLivePreview();

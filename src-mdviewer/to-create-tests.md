@@ -36,6 +36,8 @@
 - [ ] Cursor sync toggle button disables/enables bidirectional sync
 - [ ] Cursor sync toggle state preserved across toolbar re-renders (file switch, mode toggle)
 - [ ] Content sync still works when cursor sync is disabled
+- [ ] Cursor sync toggle works in both reader and edit mode
+- [ ] Disabling cursor sync in reader mode prevents CM scroll on click
 
 ## Edit Mode & Entitlement Gating
 - [ ] Free user sees Edit button → clicking shows upsell dialog
