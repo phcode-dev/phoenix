@@ -165,6 +165,21 @@ export function initBridge() {
             return;
         }
 
+        // Forward function keys to Phoenix
+        if (e.key.startsWith("F") && e.key.length >= 2 && !isNaN(e.key.slice(1))) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            sendToParent("mdviewrKeyboardShortcut", {
+                key: e.key,
+                code: e.code,
+                ctrlKey: e.ctrlKey,
+                metaKey: e.metaKey,
+                shiftKey: e.shiftKey,
+                altKey: e.altKey
+            });
+            return;
+        }
+
         const isMod = _isMac ? e.metaKey : e.ctrlKey;
         if (!isMod) return;
 
