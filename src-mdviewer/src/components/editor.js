@@ -261,7 +261,33 @@ function broadcastSelectionState() {
                 }
             }
         }
+
+        // Show "Type / to insert" hint on the empty paragraph at cursor
+        updateEmptyLineHint(contentEl);
     });
+}
+
+function updateEmptyLineHint(contentEl) {
+    // Remove existing hint
+    const prev = contentEl.querySelector(".cursor-empty-hint");
+    if (prev) prev.classList.remove("cursor-empty-hint");
+
+    const sel = window.getSelection();
+    if (!sel || !sel.isCollapsed || !sel.anchorNode) return;
+
+    // Find the block-level parent (p, h1-h6, li, etc.)
+    let block = sel.anchorNode;
+    if (block.nodeType === Node.TEXT_NODE) block = block.parentElement;
+    while (block && block !== contentEl && !["P", "H1", "H2", "H3", "H4", "H5", "H6"].includes(block.tagName)) {
+        block = block.parentElement;
+    }
+    if (!block || block === contentEl) return;
+
+    // Check if block is empty (no text, or only a <br>)
+    const text = block.textContent.replace(/\u200B/g, "").trim();
+    if (text === "" && block.tagName === "P") {
+        block.classList.add("cursor-empty-hint");
+    }
 }
 
 // ——— Formatting engine ———

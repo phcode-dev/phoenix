@@ -18,7 +18,8 @@
     "reader": "Reader",
     "switch_to_reader": "Switch to reader mode",
     "switch_to_edit": "Switch to edit mode",
-    "cursor_sync": "Toggle cursor sync"
+    "cursor_sync": "Toggle cursor sync",
+    "empty_line_hint": "Type / to insert"
   },
   "sidebar": {
     "toc": "Table of Contents",

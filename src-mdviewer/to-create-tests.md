@@ -78,6 +78,12 @@
 - [ ] Escape in slash menu only dismisses menu, refocuses editor
 - [ ] Escape in lang picker only dismisses picker, refocuses editor
 
+## Empty Line Placeholder
+- [ ] Empty paragraph in edit mode shows "Type / for commands" hint text
+- [ ] Hint disappears as soon as user types
+- [ ] Hint only shows in edit mode, not reader mode
+- [ ] Hint shows on paragraphs with only a `<br>` child
+
 ## Slash Menu (/ command)
 - [ ] Arrow down/up scrolls selected item into view when outside viewport
 - [ ] Escape dismisses slash menu without forwarding to Phoenix

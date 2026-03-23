@@ -435,6 +435,21 @@
   line-height: 1.5;
 }
 
+/* Empty line placeholder hint — shown only at cursor position */
+.markdown-body.editing .cursor-empty-hint {
+  position: relative;
+}
+
+.markdown-body.editing .cursor-empty-hint::after {
+  content: "Type / to insert";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 /* Instant scroll for cursor sync; heading navigation uses JS scrollIntoView */
 .markdown-body {
   scroll-behavior: auto;
