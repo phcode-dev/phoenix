@@ -182,7 +182,20 @@ define(function (require, exports, module) {
     async function _entitlementsChanged() {
         try {
             const entitlement = await _getLiveEditEntitlement();
+            const wasProEditUser = isProEditUser;
             isProEditUser = entitlement && entitlement.activated;
+            // Sync edit mode with md iframe on entitlement change
+            if (_isMdviewrActive && $iframe && $iframe[0] && $iframe[0].contentWindow) {
+                if (isProEditUser && !wasProEditUser) {
+                    // Just got pro — switch to edit mode
+                    $iframe[0].contentWindow.postMessage(
+                        { type: "MDVIEWR_SET_EDIT_MODE", editMode: true }, "*");
+                } else if (!isProEditUser && wasProEditUser) {
+                    // Lost pro — switch to reader mode
+                    $iframe[0].contentWindow.postMessage(
+                        { type: "MDVIEWR_SET_EDIT_MODE", editMode: false }, "*");
+                }
+            }
         } catch (error) {
             console.error("Error updating pro user status:", error);
             isProEditUser = false;
@@ -897,6 +910,8 @@ define(function (require, exports, module) {
 
         _isMdviewrActive = true;
         MarkdownSync.activate(currentDoc, $iframe, baseURL);
+        // Set initial edit mode based on entitlement (for reuse case where iframe is already ready)
+        MarkdownSync.setEditMode(isProEditUser);
 
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "mdviewr");
     }
@@ -1495,6 +1510,42 @@ define(function (require, exports, module) {
                 _startOrStopLivePreviewIfRequired();
             }
         }, 1000);
+        // Handle edit mode requests from mdviewer iframe — gate on entitlement
+        MarkdownSync.setEditModeRequestHandler(function () {
+            if (isProEditUser) {
+                // Entitled — send edit mode to iframe
+                if ($iframe && $iframe[0] && $iframe[0].contentWindow) {
+                    $iframe[0].contentWindow.postMessage(
+                        { type: "MDVIEWR_SET_EDIT_MODE", editMode: true }, "*");
+                }
+            } else {
+                // Not entitled — show upsell dialog
+                const buttonGetProText = StringUtils.format(Strings.PROMO_UPGRADE_APP_UPSELL_BUTTON,
+                    brackets.config.main_pro_plan_short);
+                const buttons = [
+                    { className: Dialogs.DIALOG_BTN_CLASS_NORMAL, id: Dialogs.DIALOG_BTN_CANCEL,
+                        text: Strings.GET_PRO_NOT_NOW },
+                    { className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: "get_pro",
+                        text: buttonGetProText }
+                ];
+                Metrics.countEvent(Metrics.EVENT_TYPE.LP_EDIT, "mdEditUpsell", "show");
+                Dialogs.showModalDialog(Dialogs.DIALOG_ID_INFO,
+                    Strings.AVAILABLE_IN_PRO_TITLE,
+                    Strings.MD_EDIT_UPSELL_MESSAGE, buttons)
+                    .done(function (id) {
+                        Metrics.countEvent(Metrics.EVENT_TYPE.LP_EDIT, "mdEditUpsell", id);
+                        if (id === "get_pro") {
+                            Phoenix.app.openURLInDefaultBrowser(brackets.config.purchase_url);
+                        }
+                    });
+            }
+        });
+
+        // When iframe first loads, send initial edit mode based on entitlement
+        MarkdownSync.setIframeReadyHandler(function () {
+            MarkdownSync.setEditMode(isProEditUser);
+        });
+
         _projectOpened();
         if(!Phoenix.isSpecRunnerWindow){
             _entitlementsChanged();

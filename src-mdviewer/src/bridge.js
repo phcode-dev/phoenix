@@ -217,6 +217,11 @@ export function initBridge() {
         sendToParent("mdviewrEditModeChanged", { editMode });
     });
 
+    // Edit mode request — ask Phoenix for permission (entitlement check)
+    on("request:editMode", () => {
+        sendToParent("mdviewrRequestEditMode", {});
+    });
+
     // Notify parent that iframe is ready
     sendToParent("mdviewrReady", {});
 }

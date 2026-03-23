@@ -43,6 +43,8 @@ define(function (require, exports, module) {
     let _docChangeHandler = null;
     let _themeChangeHandler = null;
     let _cursorHandler = null;
+    let _onEditModeRequest = null;
+    let _onIframeReadyCallback = null;
 
     const DEBOUNCE_TO_IFRAME_MS = 150;
     const SCROLL_SYNC_DEBOUNCE_MS = 100;
@@ -102,6 +104,11 @@ define(function (require, exports, module) {
                 break;
             case "mdviewrEditModeChanged":
                 // Could be used to sync edit mode UI state in Phoenix if needed
+                break;
+            case "mdviewrRequestEditMode":
+                if (_onEditModeRequest) {
+                    _onEditModeRequest();
+                }
                 break;
             case "embeddedIframeFocusEditor":
                 if (data.sourceLine != null) {
@@ -230,6 +237,9 @@ define(function (require, exports, module) {
         _sendContent();
         _sendTheme();
         _sendLocale();
+        if (_onIframeReadyCallback) {
+            _onIframeReadyCallback();
+        }
     }
 
     // --- Phoenix → iframe ---
@@ -613,8 +623,39 @@ define(function (require, exports, module) {
         }, "*");
     }
 
+    /**
+     * Set a callback for when the iframe requests edit mode.
+     * The callback should check entitlements and approve/deny.
+     */
+    function setEditModeRequestHandler(handler) {
+        _onEditModeRequest = handler;
+    }
+
+    /**
+     * Send edit mode state to the iframe.
+     */
+    function setEditMode(editMode) {
+        if (!_active || !_iframeReady) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        if (iframeWindow) {
+            iframeWindow.postMessage({ type: "MDVIEWR_SET_EDIT_MODE", editMode: editMode }, "*");
+        }
+    }
+
+    /**
+     * Set a callback for when the iframe signals it's ready (first load only).
+     */
+    function setIframeReadyHandler(handler) {
+        _onIframeReadyCallback = handler;
+    }
+
     exports.activate = activate;
     exports.deactivate = deactivate;
     exports.isActive = isActive;
     exports.reloadCurrentFile = reloadCurrentFile;
+    exports.setEditModeRequestHandler = setEditModeRequestHandler;
+    exports.setEditMode = setEditMode;
+    exports.setIframeReadyHandler = setIframeReadyHandler;
 });

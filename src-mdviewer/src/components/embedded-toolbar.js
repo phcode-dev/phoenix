@@ -87,7 +87,7 @@ function renderReadMode() {
     const editBtn = document.getElementById("emb-edit-btn");
     if (editBtn) {
         editBtn.addEventListener("click", () => {
-            setState({ editMode: true });
+            emit("request:editMode");
         });
     }
 }
