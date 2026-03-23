@@ -85,9 +85,20 @@
 - [ ] Hint shows on paragraphs with only a `<br>` child
 
 ## Slash Menu (/ command)
+- [ ] Slash menu appears at the / cursor position (not at top of page)
+- [ ] Slash menu opens below cursor when space available
+- [ ] Slash menu opens above cursor when near bottom of viewport
+- [ ] Slash menu has gap between cursor line and menu (not overlapping)
+- [ ] Typing after / filters the menu items (e.g. /h1 shows Heading 1)
 - [ ] Arrow down/up scrolls selected item into view when outside viewport
 - [ ] Escape dismisses slash menu without forwarding to Phoenix
+- [ ] Escape refocuses the md editor after dismissing slash menu
 - [ ] Selected item wraps around (last → first, first → last)
+- [ ] Slash menu works at bottom of a long scrolled document
+
+## Keyboard Shortcut Focus
+- [ ] Ctrl+S saves file and keeps focus in md editor (not CM)
+- [ ] Forwarded shortcuts refocus md editor after Phoenix handles them
 
 ## Scroll Behavior
 - [ ] Cursor sync scroll is instant (not smooth animated)
