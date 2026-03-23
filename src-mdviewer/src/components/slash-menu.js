@@ -23,6 +23,7 @@ let visible = false;
 let selectedIndex = 0;
 let query = "";
 let slashRange = null;
+let _savedSlashRect = null;
 let filteredItems = [];
 let overflowCount = 0;
 let inputListener = null;
@@ -206,33 +207,54 @@ function renderItems() {
 }
 
 function show() {
-  const rect = getSelectionRect();
-  if (!rect) return;
+  if (!_savedSlashRect) return;
+  const rect = _savedSlashRect;
+  const anchor = document.getElementById("slash-menu-anchor");
+  if (!anchor) return;
 
-  menu.style.left = rect.left + "px";
-  menu.style.top = rect.bottom + 4 + "px";
+  // Position anchor below the cursor line with gap
+  const lineHeight = rect.bottom - rect.top;
+  anchor.style.left = rect.left + "px";
+  anchor.style.top = rect.bottom + 4 + "px";
 
-  // Clamp to viewport
+  anchor.classList.add("visible");
+  menu.scrollTop = 0;
+  visible = true;
+
+  // Position menu below or above based on available space
   requestAnimationFrame(() => {
+    const spaceBelow = window.innerHeight - rect.bottom - 4;
+    const menuHeight = Math.min(300, menu.scrollHeight);
+
+    if (spaceBelow >= menuHeight || spaceBelow >= rect.top) {
+      // Below cursor
+      menu.style.top = "0";
+      menu.style.bottom = "";
+    } else {
+      // Above cursor — move anchor above the line
+      anchor.style.top = (rect.top - 4) + "px";
+      menu.style.top = "";
+      menu.style.bottom = "0";
+    }
+
+    // Clamp horizontal
     const menuRect = menu.getBoundingClientRect();
     if (menuRect.right > window.innerWidth - 8) {
       menu.style.left = Math.max(8, window.innerWidth - menuRect.width - 8) + "px";
     }
-    if (menuRect.bottom > window.innerHeight - 8) {
-      menu.style.top = Math.max(8, rect.top - menuRect.height - 4) + "px";
-    }
   });
-
-  menu.classList.add("visible");
-  visible = true;
 }
 
 function hide() {
-  menu.classList.remove("visible");
+  const anchor = document.getElementById("slash-menu-anchor");
+  if (anchor) {
+    anchor.classList.remove("visible");
+  }
   visible = false;
   query = "";
   selectedIndex = 0;
   slashRange = null;
+  _savedSlashRect = null;
   pendingEnterIndex = -1;
   overflowCount = 0;
 }
@@ -358,6 +380,21 @@ function handleInput() {
     // offset === 1, check if it's at block start
     if (!isAtBlockStart()) return;
   }
+
+  // Save the caret rect at the / position for menu positioning.
+  // Insert a temp marker, measure, remove — do this before creating slashRange.
+  const marker = document.createElement("span");
+  marker.textContent = "\u200b";
+  range.insertNode(marker);
+  const markerRect = marker.getBoundingClientRect();
+  _savedSlashRect = { top: markerRect.top, bottom: markerRect.bottom, left: markerRect.left };
+  marker.parentNode.removeChild(marker);
+  // Restore selection after marker removal
+  sel.removeAllRanges();
+  const restored = document.createRange();
+  restored.setStart(node, offset);
+  restored.collapse(true);
+  sel.addRange(restored);
 
   // Save the slash range
   slashRange = document.createRange();

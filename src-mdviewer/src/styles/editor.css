@@ -338,8 +338,23 @@
 }
 
 /* ===== Slash command menu ===== */
-.slash-menu {
+.slash-menu-anchor {
   position: fixed;
+  display: none;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 350;
+}
+
+.slash-menu-anchor.visible {
+  display: flex;
+}
+
+.slash-menu {
+  position: absolute;
+  left: 0;
   min-width: 240px;
   max-height: 300px;
   overflow-y: auto;
@@ -348,12 +363,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
-  z-index: 350;
-  display: none;
-}
-
-.slash-menu.visible {
-  display: block;
+  pointer-events: auto;
   animation: menu-enter 120ms ease-out;
 }
 

@@ -159,7 +159,7 @@ export function initBridge() {
             // Don't forward Escape to Phoenix if any popup/overlay is open
             const popupSelectors = [
                 "#search-bar.open",
-                "#slash-menu.visible",
+                "#slash-menu-anchor.visible",
                 "#lang-picker.visible",
                 "#link-popover.visible"
             ];
@@ -234,6 +234,14 @@ export function initBridge() {
                     shiftKey: e.shiftKey,
                     altKey: e.altKey
                 });
+                // Refocus md editor after Phoenix handles the shortcut
+                // (some commands like Save focus the CM editor)
+                setTimeout(() => {
+                    const content = document.getElementById("viewer-content");
+                    if (content && getState().editMode) {
+                        content.focus({ preventScroll: true });
+                    }
+                }, 100);
             }
         }
     }, true);
