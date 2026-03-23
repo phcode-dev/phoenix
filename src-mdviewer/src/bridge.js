@@ -150,6 +150,10 @@ export function initBridge() {
 
     // Intercept keyboard shortcuts in capture phase before the mdviewr editor handles them.
     // Undo/redo is routed through CM5's undo stack so both editors stay in sync.
+    // Unhandled modifier shortcuts are forwarded to Phoenix's keybinding manager.
+    const _mdEditorHandledKeys = new Set(["b", "i", "k", "u", "z", "y", "a", "c", "v", "x"]); // Ctrl/Cmd + key
+    const _mdEditorHandledShiftKeys = new Set(["x", "X", "z"]); // Ctrl/Cmd + Shift + key
+
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
             sendToParent("embeddedEscapeKeyPressed", {});
@@ -170,6 +174,26 @@ export function initBridge() {
             e.preventDefault();
             e.stopImmediatePropagation();
             sendToParent("mdviewrRedo", {});
+            return;
+        }
+
+        // Forward unhandled modifier shortcuts to Phoenix keybinding manager
+        if (getState().editMode) {
+            const isHandled = e.shiftKey
+                ? _mdEditorHandledShiftKeys.has(e.key)
+                : _mdEditorHandledKeys.has(e.key);
+            if (!isHandled) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                sendToParent("mdviewrKeyboardShortcut", {
+                    key: e.key,
+                    code: e.code,
+                    ctrlKey: e.ctrlKey,
+                    metaKey: e.metaKey,
+                    shiftKey: e.shiftKey,
+                    altKey: e.altKey
+                });
+            }
         }
     }, true);
 

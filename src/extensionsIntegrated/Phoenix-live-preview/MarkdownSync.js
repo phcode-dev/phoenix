@@ -114,6 +114,9 @@ define(function (require, exports, module) {
             case "mdviewrCursorSyncToggle":
                 _cursorSyncEnabled = !!data.enabled;
                 break;
+            case "mdviewrKeyboardShortcut":
+                _forwardKeyboardShortcut(data);
+                break;
             case "embeddedIframeFocusEditor":
                 if (data.sourceLine != null) {
                     _scrollCMToLine(data.sourceLine);
@@ -593,6 +596,27 @@ define(function (require, exports, module) {
         }
 
         _syncingFromIframe = false;
+    }
+
+    // --- Keyboard shortcut forwarding ---
+
+    /**
+     * Forward an unhandled keyboard shortcut from the mdviewer iframe to Phoenix's
+     * keybinding manager by dispatching a synthetic KeyboardEvent on the document.
+     */
+    function _forwardKeyboardShortcut(data) {
+        const event = new KeyboardEvent("keydown", {
+            key: data.key,
+            code: data.code,
+            ctrlKey: data.ctrlKey,
+            metaKey: data.metaKey,
+            shiftKey: data.shiftKey,
+            altKey: data.altKey,
+            bubbles: true,
+            cancelable: true
+        });
+        // KeyBindingManager listens on document.body, not document
+        document.body.dispatchEvent(event);
     }
 
     // --- Helpers ---
