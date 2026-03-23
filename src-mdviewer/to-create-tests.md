@@ -11,6 +11,7 @@
 - [ ] Ctrl+A/C/V/X in edit mode work natively (select all, copy, paste, cut)
 - [ ] Escape in edit mode sends focus back to Phoenix editor
 - [ ] F-key shortcuts (e.g. F8 for live preview toggle) work in edit mode
+- [ ] F-key shortcuts work in reader mode
 
 ## Document Cache & File Switching
 - [ ] Switching between two MD files is instant (no re-render, DOM cached)
@@ -73,6 +74,14 @@
 - [ ] Link popover appears when clicking a link in edit mode
 - [ ] Link popover URL opens in default browser (not Electron window)
 - [ ] Link popover dismissed on scroll
+- [ ] Escape in link popover only dismisses popover, refocuses editor
+- [ ] Escape in slash menu only dismisses menu, refocuses editor
+- [ ] Escape in lang picker only dismisses picker, refocuses editor
+
+## Slash Menu (/ command)
+- [ ] Arrow down/up scrolls selected item into view when outside viewport
+- [ ] Escape dismisses slash menu without forwarding to Phoenix
+- [ ] Selected item wraps around (last → first, first → last)
 
 ## Scroll Behavior
 - [ ] Cursor sync scroll is instant (not smooth animated)
