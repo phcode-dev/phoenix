@@ -51,8 +51,9 @@
   --color-table-row-alt: #252526;
   --color-table-row-hover: #2D2D2D;
 
-  /* Selection */
-  --color-selection-bg: #539bf533;
+  /* Selection — match Phoenix CodeMirror selection colors */
+  --color-selection-bg: #0050a0;
+  --color-selection-bg-unfocused: #333f48;
 
   /* Search highlight */
   --color-highlight: #ae7c1426;

@@ -265,6 +265,17 @@ export function initBridge() {
         sendToParent("mdviewrCursorSyncToggle", { enabled });
     });
 
+    // Toggle selection color class based on iframe focus
+    // (::selection + :focus doesn't work in WebKit)
+    window.addEventListener("focus", () => {
+        const content = document.getElementById("viewer-content");
+        if (content) content.classList.add("content-focused");
+    });
+    window.addEventListener("blur", () => {
+        const content = document.getElementById("viewer-content");
+        if (content) content.classList.remove("content-focused");
+    });
+
     // Notify parent that iframe is ready
     sendToParent("mdviewrReady", {});
 }

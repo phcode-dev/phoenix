@@ -412,8 +412,14 @@
   margin-bottom: var(--space-sm);
 }
 
-/* Selection */
+/* Selection — match Phoenix editor selection colors.
+   Toggled via .content-focused class on window focus/blur since
+   ::selection + :focus doesn't work in WebKit. */
 .markdown-body ::selection {
+  background-color: var(--color-selection-bg-unfocused);
+}
+
+.markdown-body.content-focused ::selection {
   background-color: var(--color-selection-bg);
 }
 
