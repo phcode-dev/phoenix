@@ -107,3 +107,4 @@
 - [ ] × button closes search
 - [ ] Search starts from 1 character
 - [ ] Switching documents with search open re-runs search on new document
+- [ ] Switching back to previous document restores search match index (e.g. was on 3/5, returns to 3/5)
