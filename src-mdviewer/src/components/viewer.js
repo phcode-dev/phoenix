@@ -56,6 +56,9 @@ export function initViewer() {
         const content = getContentEl();
         if (!content) return;
 
+        content.innerHTML = parseResult.html;
+        content.dir = "auto";
+
         wrapTables();
         await renderAfterHTML(content, parseResult);
 

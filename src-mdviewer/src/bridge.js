@@ -321,6 +321,9 @@ export function initBridge() {
 function handleSetContent(data) {
     const { markdown, baseURL, filePath } = data;
 
+    // Reset sync tracking — Phoenix resets its counter on activate
+    _lastReceivedSyncId = -1;
+
     if (baseURL) {
         _baseURL = baseURL;
     }
@@ -397,6 +400,10 @@ function handleUpdateContent(data) {
  */
 function handleSwitchFile(data) {
     const { filePath, markdown, baseURL } = data;
+
+    // Reset sync tracking — Phoenix resets its counter on activate
+    _lastReceivedSyncId = -1;
+    _syncId = 0;
 
     if (baseURL) {
         _baseURL = baseURL;
