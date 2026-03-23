@@ -49,6 +49,17 @@ function buildPopover() {
   urlText.className = "link-popover-url";
   urlText.target = "_blank";
   urlText.rel = "noopener noreferrer";
+  urlText.addEventListener("click", (e) => {
+    e.preventDefault();
+    const href = urlText.getAttribute("href");
+    if (href) {
+      window.parent.postMessage({
+        type: "MDVIEWR_EVENT",
+        eventName: "embeddedIframeHrefClick",
+        href: href
+      }, "*");
+    }
+  });
   viewDiv.appendChild(urlText);
 
   const editBtn = document.createElement("button");
