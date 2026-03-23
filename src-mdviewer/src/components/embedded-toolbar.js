@@ -37,6 +37,7 @@ import { t, tp } from "../core/i18n.js";
 
 let toolbar = null;
 let resizeObserver = null;
+let cursorSyncEnabled = true;
 let collapseLevel = 0; // 0=expanded, 1=blocks, 2=blocks+lists, 3=all
 
 // Width thresholds for progressive collapse
@@ -78,9 +79,9 @@ function render() {
 function renderReadMode() {
     toolbar.innerHTML = `<div class="embedded-toolbar">
         <div class="toolbar-spacer"></div>
-        <button class="toolbar-btn cursor-sync-btn active" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="true">
-            <i data-lucide="link-2" class="sync-on-icon"></i>
-            <i data-lucide="link-2-off" class="sync-off-icon" style="display:none"></i>
+        <button class="toolbar-btn cursor-sync-btn${cursorSyncEnabled ? " active" : ""}" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="${cursorSyncEnabled}">
+            <i data-lucide="link-2" class="sync-on-icon"${cursorSyncEnabled ? "" : ' style="display:none"'}></i>
+            <i data-lucide="link-2-off" class="sync-off-icon"${cursorSyncEnabled ? ' style="display:none"' : ""}></i>
         </button>
         <button class="edit-toggle-btn" id="emb-edit-btn" title="${t("toolbar.switch_to_edit") || "Switch to edit mode"}">
             <i data-lucide="pencil"></i>
@@ -174,9 +175,9 @@ function renderEditMode(level) {
     toolbar.innerHTML = `<div class="embedded-toolbar">
         ${formatRow}
         <div class="toolbar-spacer"></div>
-        <button class="toolbar-btn cursor-sync-btn active" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="true">
-            <i data-lucide="link-2" class="sync-on-icon"></i>
-            <i data-lucide="link-2-off" class="sync-off-icon" style="display:none"></i>
+        <button class="toolbar-btn cursor-sync-btn${cursorSyncEnabled ? " active" : ""}" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="${cursorSyncEnabled}">
+            <i data-lucide="link-2" class="sync-on-icon"${cursorSyncEnabled ? "" : ' style="display:none"'}></i>
+            <i data-lucide="link-2-off" class="sync-off-icon"${cursorSyncEnabled ? ' style="display:none"' : ""}></i>
         </button>
         <button class="done-btn" id="emb-done-btn" title="${t("toolbar.switch_to_reader") || "Switch to reader mode"}">
             <i data-lucide="book-open"></i>
@@ -268,13 +269,14 @@ function wireCursorSyncButton() {
     const syncBtn = document.getElementById("emb-cursor-sync");
     if (syncBtn) {
         syncBtn.addEventListener("click", () => {
-            const isActive = syncBtn.classList.toggle("active");
-            syncBtn.setAttribute("aria-pressed", String(isActive));
+            cursorSyncEnabled = !cursorSyncEnabled;
+            syncBtn.classList.toggle("active", cursorSyncEnabled);
+            syncBtn.setAttribute("aria-pressed", String(cursorSyncEnabled));
             const onIcon = syncBtn.querySelector(".sync-on-icon");
             const offIcon = syncBtn.querySelector(".sync-off-icon");
-            if (onIcon) onIcon.style.display = isActive ? "" : "none";
-            if (offIcon) offIcon.style.display = isActive ? "none" : "";
-            emit("toggle:cursorSync", { enabled: isActive });
+            if (onIcon) onIcon.style.display = cursorSyncEnabled ? "" : "none";
+            if (offIcon) offIcon.style.display = cursorSyncEnabled ? "none" : "";
+            emit("toggle:cursorSync", { enabled: cursorSyncEnabled });
         });
     }
 }
