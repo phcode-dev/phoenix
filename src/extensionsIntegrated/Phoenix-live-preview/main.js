@@ -1555,6 +1555,10 @@ define(function (require, exports, module) {
         // When iframe first loads, send initial edit mode based on entitlement
         MarkdownSync.setIframeReadyHandler(function () {
             _updateLPControlsForMdviewer();
+            // Pro users default to edit mode on first load
+            if (isProEditUser) {
+                MarkdownSync.setEditMode(true);
+            }
         });
 
         _projectOpened();
