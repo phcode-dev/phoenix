@@ -8,6 +8,7 @@ import { getState, setState } from "./core/state.js";
 import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
+import { getCursorOffset, restoreCursor } from "./components/editor.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -152,7 +153,7 @@ export function initBridge() {
     // Undo/redo is routed through CM5's undo stack so both editors stay in sync.
     // Unhandled modifier shortcuts are forwarded to Phoenix's keybinding manager.
     const _mdEditorHandledKeys = new Set(["b", "i", "k", "u", "z", "y", "a", "c", "v", "x"]); // Ctrl/Cmd + key
-    const _mdEditorHandledShiftKeys = new Set(["x", "X", "z"]); // Ctrl/Cmd + Shift + key
+    const _mdEditorHandledShiftKeys = new Set(["x", "X", "z", "Z"]); // Ctrl/Cmd + Shift + key
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
@@ -196,14 +197,14 @@ export function initBridge() {
         const isMod = _isMac ? e.metaKey : e.ctrlKey;
         if (!isMod) return;
 
-        if (e.key === "z" && !e.shiftKey) {
+        if ((e.key === "z" || e.key === "Z") && !e.shiftKey) {
             e.preventDefault();
             e.stopImmediatePropagation();
             sendToParent("mdviewrUndo", {});
             return;
         }
 
-        if ((e.key === "z" && e.shiftKey) || e.key === "y") {
+        if (((e.key === "z" || e.key === "Z") && e.shiftKey) || e.key === "y") {
             e.preventDefault();
             e.stopImmediatePropagation();
             sendToParent("mdviewrRedo", {});
@@ -378,8 +379,6 @@ function handleUpdateContent(data) {
         if (entry) {
             entry.mdSrc = markdown;
             entry.parseResult = parseResult;
-            // Don't replace innerHTML — let file:rendered handle it
-            // since the editor may be active
         }
     }
 
@@ -387,7 +386,19 @@ function handleUpdateContent(data) {
         currentContent: markdown,
         parseResult: parseResult
     });
+
+    // In edit mode, save/restore cursor around re-render
+    const content = document.getElementById("viewer-content");
+    let savedCursorOffset = null;
+    if (getState().editMode && content && document.activeElement === content) {
+        savedCursorOffset = getCursorOffset(content);
+    }
+
     emit("file:rendered", parseResult);
+
+    if (savedCursorOffset !== null && content) {
+        restoreCursor(content, savedCursorOffset);
+    }
 
     _suppressContentChange = false;
 }

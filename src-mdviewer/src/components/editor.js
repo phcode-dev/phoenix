@@ -42,7 +42,7 @@ let lastChangeType = "";
 let currentInputType = "";
 let isPerformingUndoRedo = false;
 
-function getCursorOffset(el) {
+export function getCursorOffset(el) {
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return 0;
     const range = sel.getRangeAt(0);
@@ -52,7 +52,7 @@ function getCursorOffset(el) {
     return pre.toString().length;
 }
 
-function restoreCursor(el, offset) {
+export function restoreCursor(el, offset) {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
     let remaining = offset;
     let node;
@@ -1308,7 +1308,7 @@ function enterEditMode(content) {
             setState({ isDirty: undoStack.length > 0 });
             return;
         }
-        if (mod && ((e.key === "z" && e.shiftKey) || e.key === "y")) {
+        if (mod && (((e.key === "z" || e.key === "Z") && e.shiftKey) || e.key === "y")) {
             e.preventDefault();
             performRedo(content);
             setState({ isDirty: true });
