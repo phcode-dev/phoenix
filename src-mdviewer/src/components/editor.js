@@ -1294,7 +1294,11 @@ function enterEditMode(content) {
         const mod = isModKey(e);
 
         if (isSlashMenuVisible() || isLangPickerDropdownOpen()) {
-            e.preventDefault();
+            // Let regular character input through for slash menu filtering
+            // Only block modifier shortcuts that could interfere
+            if (isModKey(e)) {
+                e.preventDefault();
+            }
             return;
         }
 
