@@ -23,6 +23,29 @@ export function initSearch() {
 
     if (!searchBar || !searchInput) return;
 
+    // Save/restore search index per document
+    const _searchIndexPerDoc = new Map();
+
+    on("doc:beforeSwitch", (data) => {
+        if (data.fromPath && searchBar.classList.contains("open") && currentIndex >= 0) {
+            _searchIndexPerDoc.set(data.fromPath, currentIndex);
+        }
+    });
+
+    // Re-run search on file switch if search bar is open
+    on("file:switched", (data) => {
+        if (searchBar.classList.contains("open") && searchInput.value) {
+            const savedIdx = data.filePath ? _searchIndexPerDoc.get(data.filePath) : undefined;
+            performSearch(searchInput.value, savedIdx);
+        }
+    });
+
+    on("file:rendered", () => {
+        if (searchBar.classList.contains("open") && searchInput.value) {
+            performSearch(searchInput.value);
+        }
+    });
+
     on("action:toggle-search", () => {
         if (searchBar.classList.contains("open")) {
             closeSearch();
@@ -103,7 +126,7 @@ export function initSearch() {
         }
     }
 
-    function performSearch(query) {
+    function performSearch(query, restoreIndex) {
         clearHighlights();
 
         if (!query) {
@@ -139,8 +162,12 @@ export function initSearch() {
                         currentIndex = bestIdx;
                         matches[currentIndex].classList.add("active");
                         updateCount();
+                    } else if (restoreIndex !== undefined && restoreIndex < matches.length) {
+                        currentIndex = restoreIndex;
+                        matches[currentIndex].classList.add("active");
+                        matches[currentIndex].scrollIntoView({ behavior: "instant", block: "center" });
+                        updateCount();
                     } else {
-                        searchCount.textContent = `${count} ${t("search.count")}`;
                         navigateNext();
                     }
                 } else {

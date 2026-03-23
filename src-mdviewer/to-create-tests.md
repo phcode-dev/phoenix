@@ -106,3 +106,4 @@
 - [ ] Search works across cached document DOMs (uses #viewer-content)
 - [ ] × button closes search
 - [ ] Search starts from 1 character
+- [ ] Switching documents with search open re-runs search on new document
