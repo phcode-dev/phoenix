@@ -105,4 +105,4 @@
 - [ ] Closing search clears all mark.js highlights
 - [ ] Search works across cached document DOMs (uses #viewer-content)
 - [ ] × button closes search
-- [ ] Search with <2 characters shows no results
+- [ ] Search starts from 1 character

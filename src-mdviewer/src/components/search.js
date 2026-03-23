@@ -106,7 +106,7 @@ export function initSearch() {
     function performSearch(query) {
         clearHighlights();
 
-        if (!query || query.length < 2) {
+        if (!query) {
             searchCount.textContent = "";
             return;
         }
