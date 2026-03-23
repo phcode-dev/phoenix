@@ -258,6 +258,11 @@ export function initFormatBar(editorEl) {
   // Fallback for WebKitGTK
   contentEl.addEventListener("mouseup", updatePosition);
   contentEl.addEventListener("keyup", updatePosition);
+  // Dismiss on scroll
+  const appViewer = document.getElementById("app-viewer");
+  if (appViewer) {
+    appViewer.addEventListener("scroll", hide);
+  }
   on("editor:selection-state", onSelectionState);
 
   on("state:locale", () => {

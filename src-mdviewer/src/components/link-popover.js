@@ -377,6 +377,11 @@ export function initLinkPopover(editorEl) {
   document.addEventListener("selectionchange", updatePosition);
   contentEl.addEventListener("mouseup", updatePosition);
   contentEl.addEventListener("keyup", updatePosition);
+  // Dismiss on scroll
+  const appViewer = document.getElementById("app-viewer");
+  if (appViewer) {
+    appViewer.addEventListener("scroll", hide);
+  }
 
   showLinkInputHandler = () => {
     // If cursor is inside a link, show popover in edit mode
