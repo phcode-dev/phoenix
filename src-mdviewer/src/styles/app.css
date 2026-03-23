@@ -100,6 +100,12 @@ html, body {
   background: var(--color-accent-subtle);
 }
 
+.cursor-sync-btn,
+.cursor-sync-btn.active {
+  color: var(--color-text-secondary);
+  background: transparent;
+}
+
 .toolbar-btn svg {
   width: 14px;
   height: 14px;

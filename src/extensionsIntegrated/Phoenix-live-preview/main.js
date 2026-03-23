@@ -324,9 +324,19 @@ define(function (require, exports, module) {
     }
 
     /**
-     * update the mode button text in the live preview toolbar UI based on the current mode
-     * @param {String} mode - The current mode ("preview", "highlight", or "edit")
+     * Hide the play button and mode dropdown when mdviewer is active,
+     * since MD files have their own Edit/Reader toggle in the iframe toolbar.
+     * Does not hide in custom server mode (handled by _isMdviewrActive being false).
      */
+    function _updateLPControlsForMdviewer() {
+        if ($previewBtn) {
+            $previewBtn.toggle(!_isMdviewrActive);
+        }
+        if ($modeBtn) {
+            $modeBtn.toggle(!_isMdviewrActive);
+        }
+    }
+
     function _updateModeButton(mode) {
         if ($modeBtn) {
             if (mode === "highlight") {
@@ -910,8 +920,8 @@ define(function (require, exports, module) {
 
         _isMdviewrActive = true;
         MarkdownSync.activate(currentDoc, $iframe, baseURL);
-        // Set initial edit mode based on entitlement (for reuse case where iframe is already ready)
-        MarkdownSync.setEditMode(isProEditUser);
+        // Sync preview mode and edit mode for reuse case where iframe is already ready
+        _updateLPControlsForMdviewer();
 
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "mdviewr");
     }
@@ -945,6 +955,7 @@ define(function (require, exports, module) {
             if ($mdviewrIframe) {
                 $mdviewrIframe.hide();
             }
+            _updateLPControlsForMdviewer();
         }
         let newSrc = encodeURI(previewDetails.URL);
         if($iframe.attr('src') === newSrc && !force){
@@ -1543,7 +1554,7 @@ define(function (require, exports, module) {
 
         // When iframe first loads, send initial edit mode based on entitlement
         MarkdownSync.setIframeReadyHandler(function () {
-            MarkdownSync.setEditMode(isProEditUser);
+            _updateLPControlsForMdviewer();
         });
 
         _projectOpened();

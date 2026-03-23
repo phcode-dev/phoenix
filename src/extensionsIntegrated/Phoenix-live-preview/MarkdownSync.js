@@ -45,6 +45,7 @@ define(function (require, exports, module) {
     let _cursorHandler = null;
     let _onEditModeRequest = null;
     let _onIframeReadyCallback = null;
+    let _cursorSyncEnabled = true;
 
     const DEBOUNCE_TO_IFRAME_MS = 150;
     const SCROLL_SYNC_DEBOUNCE_MS = 100;
@@ -110,6 +111,9 @@ define(function (require, exports, module) {
                     _onEditModeRequest();
                 }
                 break;
+            case "mdviewrCursorSyncToggle":
+                _cursorSyncEnabled = !!data.enabled;
+                break;
             case "embeddedIframeFocusEditor":
                 if (data.sourceLine != null) {
                     _scrollCMToLine(data.sourceLine);
@@ -117,12 +121,14 @@ define(function (require, exports, module) {
                 utils.focusActiveEditorIfFocusInLivePreview();
                 break;
             case "mdviewrScrollSync":
-                if (data.sourceLine != null) {
+                if (_cursorSyncEnabled && data.sourceLine != null) {
                     _scrollCMToLine(data.sourceLine);
                 }
                 break;
             case "mdviewrSelectionSync":
-                _handleSelectionFromIframe(data);
+                if (_cursorSyncEnabled) {
+                    _handleSelectionFromIframe(data);
+                }
                 break;
             case "embeddedIframeHrefClick":
                 _handleHrefClick(data);
@@ -157,7 +163,7 @@ define(function (require, exports, module) {
 
         // Listen for cursor activity in CM5 for scroll sync and selection sync (CM5 → iframe)
         _cursorHandler = function () {
-            if (_syncingFromIframe || !_iframeReady) {
+            if (_syncingFromIframe || !_iframeReady || !_cursorSyncEnabled) {
                 return;
             }
             clearTimeout(_scrollSyncTimer);
@@ -651,6 +657,14 @@ define(function (require, exports, module) {
         _onIframeReadyCallback = handler;
     }
 
+    /**
+     * Enable or disable cursor/scroll sync between CM and mdviewer.
+     * Content sync still works regardless.
+     */
+    function setCursorSyncEnabled(enabled) {
+        _cursorSyncEnabled = enabled;
+    }
+
     exports.activate = activate;
     exports.deactivate = deactivate;
     exports.isActive = isActive;
@@ -658,4 +672,5 @@ define(function (require, exports, module) {
     exports.setEditModeRequestHandler = setEditModeRequestHandler;
     exports.setEditMode = setEditMode;
     exports.setIframeReadyHandler = setIframeReadyHandler;
+    exports.setCursorSyncEnabled = setCursorSyncEnabled;
 });

@@ -17,7 +17,8 @@
     "more": "More",
     "reader": "Reader",
     "switch_to_reader": "Switch to reader mode",
-    "switch_to_edit": "Switch to edit mode"
+    "switch_to_edit": "Switch to edit mode",
+    "cursor_sync": "Toggle cursor sync"
   },
   "sidebar": {
     "toc": "Table of Contents",

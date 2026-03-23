@@ -13,7 +13,7 @@ let _syncId = 0;
 let _lastReceivedSyncId = -1;
 let _suppressContentChange = false;
 let _baseURL = "";
-let _pendingReloadScroll = null; // { filePath, scrollPos, editMode } for scroll restore after reload
+let _pendingReloadScroll = null; // { filePath, scrollSourceLine } for scroll restore after reload
 
 /**
  * Check if a URL is absolute (not relative to the document).
@@ -175,6 +175,7 @@ export function initBridge() {
 
     // Detect source line from data-source-line attributes for scroll sync.
     // In read mode, also refocus CM5 unless the user has a text selection.
+    // Disabled in preview mode (no cursor sync).
     document.addEventListener("click", (e) => {
         const sourceLine = _getSourceLineFromElement(e.target);
         if (getState().editMode) {
@@ -220,6 +221,11 @@ export function initBridge() {
     // Edit mode request — ask Phoenix for permission (entitlement check)
     on("request:editMode", () => {
         sendToParent("mdviewrRequestEditMode", {});
+    });
+
+    // Cursor sync toggle
+    on("toggle:cursorSync", ({ enabled }) => {
+        sendToParent("mdviewrCursorSyncToggle", { enabled });
     });
 
     // Notify parent that iframe is ready
@@ -359,12 +365,13 @@ function handleSwitchFile(data) {
         docCache.createEntry(filePath, markdown, parseResult);
         docCache.switchTo(filePath);
 
-        // Restore scroll position from reload if applicable
+        // Restore scroll position and edit mode from reload if applicable
         if (_pendingReloadScroll && _pendingReloadScroll.filePath === filePath) {
             const entry = docCache.getEntry(filePath);
             if (entry) {
                 entry._scrollSourceLine = _pendingReloadScroll.scrollSourceLine;
             }
+            const restoreEditMode = _pendingReloadScroll.editMode;
             _pendingReloadScroll = null;
 
             setState({
@@ -384,6 +391,10 @@ function handleSwitchFile(data) {
                         }
                     }
                 });
+            }
+
+            if (restoreEditMode) {
+                setState({ editMode: true });
             }
         } else {
             setState({
@@ -442,11 +453,12 @@ function handleReloadFile(data) {
         const activeEntry = docCache.getEntry(filePath);
         if (activeEntry) {
             const scrollSourceLine = activeEntry._scrollSourceLine;
-            if (getState().editMode) {
+            const wasEditMode = getState().editMode;
+            if (wasEditMode) {
                 setState({ editMode: false });
             }
             docCache.removeEntry(filePath);
-            _pendingReloadScroll = { filePath, scrollSourceLine };
+            _pendingReloadScroll = { filePath, scrollSourceLine, editMode: wasEditMode };
         }
     } else {
         docCache.removeEntry(filePath);
@@ -470,6 +482,7 @@ function handleSetEditMode(data) {
     const { editMode } = data;
     setState({ editMode });
 }
+
 
 function handleSetLocale(data) {
     const { locale } = data;
