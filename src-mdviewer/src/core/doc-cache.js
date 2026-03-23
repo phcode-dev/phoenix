@@ -148,18 +148,8 @@ export function switchTo(filePath) {
 
     activeFilePath = filePath;
 
-    // Restore scroll position after layout using source-line element if available
+    // Restore exact pixel scroll position — DOM is cached so no layout shift
     requestAnimationFrame(() => {
-        if (entry._scrollSourceLine) {
-            const elements = entry.dom.querySelectorAll("[data-source-line]");
-            for (const el of elements) {
-                if (parseInt(el.getAttribute("data-source-line"), 10) === entry._scrollSourceLine) {
-                    el.scrollIntoView({ behavior: "instant", block: "start" });
-                    return;
-                }
-            }
-        }
-        // Fallback to pixel position
         viewerContainer.scrollTop = entry.scrollPos;
     });
 
@@ -168,8 +158,8 @@ export function switchTo(filePath) {
 
 /**
  * Save the current scroll position for the active document.
- * Saves both pixel position and the source line visible at the top of the viewport,
- * so scroll can be restored even when images haven't loaded yet.
+ * Saves pixel position for exact restore on cached DOM switch,
+ * and source line for reload (where DOM is rebuilt).
  */
 export function saveActiveScrollPos() {
     if (!activeFilePath) return;
@@ -178,7 +168,7 @@ export function saveActiveScrollPos() {
 
     entry.scrollPos = viewerContainer.scrollTop;
 
-    // Find the source line element closest to the top of the viewport
+    // Also save source line for reload scenarios (DOM rebuilt, pixel pos unreliable)
     const elements = entry.dom.querySelectorAll("[data-source-line]");
     const containerTop = viewerContainer.getBoundingClientRect().top;
     let bestEl = null;
