@@ -8,12 +8,13 @@ import { getState, setState } from "./core/state.js";
 import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
-import { getCursorOffset, restoreCursor } from "./components/editor.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
 let _suppressContentChange = false;
 let _baseURL = "";
+let _cursorPosBeforeEdit = null; // cursor position before current edit batch
+let _cursorPosDirty = false; // true after content changes, reset when emitted
 let _pendingReloadScroll = null; // { filePath, scrollSourceLine } for scroll restore after reload
 
 /**
@@ -265,12 +266,25 @@ export function initBridge() {
     }, true);
 
     // Listen for selection changes to sync selection back to CM
+    // Also track cursor position for undo/redo restore
     document.addEventListener("selectionchange", () => {
         if (!getState().editMode) {
             return;
         }
+        // Only update cursor position if we're not mid-edit
+        // (once content changes, freeze position until emitted)
+        if (!_cursorPosDirty) {
+            _cursorPosBeforeEdit = _getCursorPosition();
+        }
         _sendSelectionToParent();
     });
+
+    // Freeze cursor position on first input (before debounce fires)
+    document.addEventListener("input", () => {
+        if (getState().editMode) {
+            _cursorPosDirty = true;
+        }
+    }, true);
 
     // Listen for content changes from editor (debounced by editor.js)
     on("bridge:contentChanged", ({ markdown }) => {
@@ -284,7 +298,9 @@ export function initBridge() {
                 entry.mdSrc = markdown;
             }
         }
-        sendToParent("mdviewrContentChanged", { markdown, _syncId });
+        // Send cursor position BEFORE the edit for undo restore
+        sendToParent("mdviewrContentChanged", { markdown, _syncId, cursorPos: _cursorPosBeforeEdit });
+        _cursorPosDirty = false; // allow cursor tracking again
     });
 
     // Listen for edit mode changes from toolbar
@@ -387,17 +403,14 @@ function handleUpdateContent(data) {
         parseResult: parseResult
     });
 
-    // In edit mode, save/restore cursor around re-render
-    const content = document.getElementById("viewer-content");
-    let savedCursorOffset = null;
-    if (getState().editMode && content && document.activeElement === content) {
-        savedCursorOffset = getCursorOffset(content);
-    }
-
     emit("file:rendered", parseResult);
 
-    if (savedCursorOffset !== null && content) {
-        restoreCursor(content, savedCursorOffset);
+    // Restore cursor on undo/redo using source line + offset within block
+    if (data.cursorPos && getState().editMode) {
+        const content = document.getElementById("viewer-content");
+        if (content) {
+            _restoreCursorPosition(content, data.cursorPos);
+        }
     }
 
     _suppressContentChange = false;
@@ -594,6 +607,81 @@ function handleSetLocale(data) {
 }
 
 // --- Scroll sync ---
+
+/**
+ * Get the cursor position as { sourceLine, offsetInBlock }.
+ * sourceLine: the data-source-line of the containing block (stable across re-renders)
+ * offsetInBlock: character offset within that block (precise within a small element)
+ */
+function _getCursorPosition() {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return null;
+    const range = sel.getRangeAt(0);
+
+    // Find the source-line block element
+    let blockEl = sel.anchorNode;
+    if (blockEl && blockEl.nodeType === Node.TEXT_NODE) blockEl = blockEl.parentElement;
+    while (blockEl && !blockEl.getAttribute?.("data-source-line")) {
+        blockEl = blockEl.parentElement;
+    }
+    if (!blockEl) return null;
+
+    const sourceLine = parseInt(blockEl.getAttribute("data-source-line"), 10);
+
+    // Calculate character offset within this block
+    const pre = document.createRange();
+    pre.setStart(blockEl, 0);
+    pre.setEnd(range.startContainer, range.startOffset);
+    const offsetInBlock = pre.toString().length;
+
+    return { sourceLine, offsetInBlock };
+}
+
+/**
+ * Restore cursor to a position defined by { sourceLine, offsetInBlock }.
+ */
+function _restoreCursorPosition(contentEl, pos) {
+    if (!pos || !pos.sourceLine) return;
+
+    // Find the block element matching the source line
+    const elements = contentEl.querySelectorAll("[data-source-line]");
+    let bestEl = null;
+    let bestLine = -1;
+    for (const el of elements) {
+        const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+        if (srcLine <= pos.sourceLine && srcLine > bestLine) {
+            bestLine = srcLine;
+            bestEl = el;
+        }
+    }
+    if (!bestEl) return;
+
+    // Walk text nodes within the block to find the exact offset
+    const offset = pos.offsetInBlock || 0;
+    const walker = document.createTreeWalker(bestEl, NodeFilter.SHOW_TEXT);
+    let remaining = offset;
+    let node;
+    while ((node = walker.nextNode())) {
+        if (remaining <= node.textContent.length) {
+            const range = document.createRange();
+            range.setStart(node, remaining);
+            range.collapse(true);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            return;
+        }
+        remaining -= node.textContent.length;
+    }
+
+    // Fallback: place at start of element
+    const range = document.createRange();
+    range.selectNodeContents(bestEl);
+    range.collapse(true);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
 
 function _getSourceLineFromElement(el) {
     while (el && el !== document.body) {

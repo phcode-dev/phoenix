@@ -36,6 +36,13 @@ let redoStack = [];
 let lastHTML = "";
 let lastCursor = 0;
 let beforeInputCursor = 0;
+
+export function getLastUndoCursor() {
+    if (undoStack.length > 0) {
+        return undoStack[undoStack.length - 1].cursor;
+    }
+    return 0;
+}
 let beforeInputHandler = null;
 let lastPushTime = 0;
 let lastChangeType = "";

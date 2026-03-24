@@ -46,6 +46,9 @@ define(function (require, exports, module) {
     let _onEditModeRequest = null;
     let _onIframeReadyCallback = null;
     let _cursorSyncEnabled = true;
+    // Stacks of cursor positions { sourceLine, offsetInBlock } for undo/redo restore
+    let _cursorUndoStack = [];
+    let _cursorRedoStack = [];
 
     const DEBOUNCE_TO_IFRAME_MS = 150;
     const SCROLL_SYNC_DEBOUNCE_MS = 100;
@@ -144,6 +147,7 @@ define(function (require, exports, module) {
         window.addEventListener("message", _messageHandler);
 
         // Listen for CM5 document changes (Phoenix → iframe)
+        let _lastChangeOrigin = null;
         _docChangeHandler = function () {
             if (_syncingFromIframe) {
                 return;
@@ -153,7 +157,8 @@ define(function (require, exports, module) {
             }
             clearTimeout(_debounceTimer);
             _debounceTimer = setTimeout(function () {
-                _sendUpdate();
+                _sendUpdate(_lastChangeOrigin);
+                _lastChangeOrigin = null;
             }, DEBOUNCE_TO_IFRAME_MS);
         };
         _doc.on("change", _docChangeHandler);
@@ -181,6 +186,12 @@ define(function (require, exports, module) {
         const cm = _getCM();
         if (cm) {
             cm.on("cursorActivity", _cursorHandler);
+            // Listen for change origin (undo/redo detection)
+            cm.on("change", function (_cm, changeObj) {
+                if (changeObj) {
+                    _lastChangeOrigin = changeObj.origin;
+                }
+            });
         }
 
         // If iframe is already ready (reusing same iframe), switch file using cache
@@ -291,7 +302,7 @@ define(function (require, exports, module) {
         }, "*");
     }
 
-    function _sendUpdate() {
+    function _sendUpdate(changeOrigin) {
         if (!_active || !_iframeReady || !_doc) {
             return;
         }
@@ -301,12 +312,20 @@ define(function (require, exports, module) {
         }
 
         _syncId++;
-        iframeWindow.postMessage({
+        const msg = {
             type: "MDVIEWR_UPDATE_CONTENT",
             markdown: _doc.getText(),
             filePath: _doc.file.fullPath,
             _syncId: _syncId
-        }, "*");
+        };
+
+        // Include cursor position for undo/redo restore
+        if (_pendingCursorPos !== undefined) {
+            msg.cursorPos = _pendingCursorPos;
+            _pendingCursorPos = undefined;
+        }
+
+        iframeWindow.postMessage(msg, "*");
     }
 
     function _sendTheme() {
@@ -400,7 +419,15 @@ define(function (require, exports, module) {
         }
 
         _applyDiffToEditor(markdown);
+
+        // Push cursor position for undo/redo restore
+        if (data.cursorPos) {
+            _cursorUndoStack.push(data.cursorPos);
+            _cursorRedoStack = [];
+        }
     }
+
+    let _pendingCursorPos = undefined;
 
     function _handleUndo() {
         if (!_active) {
@@ -408,6 +435,11 @@ define(function (require, exports, module) {
         }
         const cm = _getCM();
         if (cm) {
+            const pos = _cursorUndoStack.pop();
+            if (pos) {
+                _cursorRedoStack.push(pos);
+                _pendingCursorPos = pos;
+            }
             cm.undo();
         }
     }
@@ -418,6 +450,11 @@ define(function (require, exports, module) {
         }
         const cm = _getCM();
         if (cm) {
+            const pos = _cursorRedoStack.pop();
+            if (pos) {
+                _cursorUndoStack.push(pos);
+                _pendingCursorPos = pos;
+            }
             cm.redo();
         }
     }
