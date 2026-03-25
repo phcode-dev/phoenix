@@ -248,6 +248,13 @@
   padding: 8px 16px;
   border-bottom: 1px solid var(--color-table-border);
   vertical-align: top;
+  min-height: calc(1em * var(--line-height) + 16px);
+}
+
+/* Ensure empty cells keep their height in edit mode */
+.markdown-body table td:empty,
+.markdown-body table td:has(> br:only-child) {
+  height: calc(1em * var(--line-height) + 16px);
 }
 
 .markdown-body table th + th,
