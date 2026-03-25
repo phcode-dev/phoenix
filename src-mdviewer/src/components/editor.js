@@ -1137,6 +1137,11 @@ export function convertToMarkdown(contentEl) {
     const clone = contentEl.cloneNode(true);
     clone.querySelectorAll(".code-copy-btn").forEach((btn) => btn.remove());
     clone.querySelectorAll(".table-row-handles, .table-col-handles, .table-add-row-btn, .table-col-add-btn").forEach((el) => el.remove());
+    // Remove <br> from table cells — browsers insert <br> in empty contenteditable cells,
+    // which Turndown converts to \n, breaking the markdown table row across lines
+    clone.querySelectorAll("td > br:only-child, th > br:only-child").forEach((br) => {
+        br.remove();
+    });
     clone.querySelectorAll(".mermaid-editor-toolbar, .mermaid-source-editor, .mermaid-error-bar, .mermaid-edit-overlay").forEach((el) => el.remove());
     clone.querySelectorAll("mark[data-markjs]").forEach((mark) => {
         const parent = mark.parentNode;
