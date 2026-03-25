@@ -1485,13 +1485,11 @@ function enterEditMode(content) {
                     ? sel3.anchorNode.parentElement?.closest("li")
                     : sel3?.anchorNode?.closest("li");
                 if (li) {
-                    // Save cursor
-                    const savedSel = window.getSelection();
-                    const savedRange = savedSel.rangeCount ? savedSel.getRangeAt(0).cloneRange() : null;
+                    // Save cursor as text offset within the li
+                    const savedOffset = getCursorOffset(li);
 
                     flushSnapshot(content);
                     if (e.shiftKey) {
-                        // Outdent: move li out of nested list
                         const parentList = li.parentElement;
                         const grandLi = parentList?.parentElement?.closest("li");
                         if (grandLi) {
@@ -1499,7 +1497,6 @@ function enterEditMode(content) {
                             if (parentList.children.length === 0) parentList.remove();
                         }
                     } else {
-                        // Indent: nest li inside previous sibling's sub-list
                         const prevLi = li.previousElementSibling;
                         if (prevLi) {
                             let subList = prevLi.querySelector("ul, ol");
@@ -1510,13 +1507,8 @@ function enterEditMode(content) {
                             subList.appendChild(li);
                         }
                     }
-                    // Restore cursor
-                    if (savedRange) {
-                        try {
-                            savedSel.removeAllRanges();
-                            savedSel.addRange(savedRange);
-                        } catch { /* range may be detached */ }
-                    }
+                    // Restore cursor within the moved li
+                    restoreCursor(li, savedOffset);
                     content.dispatchEvent(new Event("input", { bubbles: true }));
                 }
                 return;
