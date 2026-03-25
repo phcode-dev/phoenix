@@ -100,6 +100,25 @@
 - [ ] Ctrl+S saves file and keeps focus in md editor (not CM)
 - [ ] Forwarded shortcuts refocus md editor after Phoenix handles them
 
+## Table Editing
+- [ ] Clearing a table cell with backspace produces valid markdown (no broken pipe rows)
+- [ ] Empty table cell renders as `|  |` in markdown source
+- [ ] Table cell with `<br>` only-child is treated as empty (br stripped before conversion)
+- [ ] Table cell with actual content + `<br>` preserves the line break
+- [ ] Tab navigation between table cells works
+- [ ] Adding new row via Tab at last cell works
+- [ ] Delete row / delete column via context menu works and syncs to CM
+- [ ] Table header editing syncs correctly to CM
+
+## Undo/Redo
+- [ ] Ctrl+Z undoes change in both md editor and CM (single undo stack)
+- [ ] Ctrl+Shift+Z / Ctrl+Y redoes change in both
+- [ ] Cursor restored to correct block element (source-line) after undo
+- [ ] Cursor restored to correct offset within block after undo
+- [ ] Undo/redo cursor works when editing at different positions in document
+- [ ] Typing in CM and undoing in CM doesn't interfere with md editor
+- [ ] Multiple rapid edits can be undone one by one
+
 ## Scroll Behavior
 - [ ] Cursor sync scroll is instant (not smooth animated)
 - [ ] Scroll restore on file switch uses exact pixel position (no jump)
