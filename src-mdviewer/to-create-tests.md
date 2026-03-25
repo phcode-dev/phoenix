@@ -109,6 +109,13 @@
 - [ ] Adding new row via Tab at last cell works
 - [ ] Delete row / delete column via context menu works and syncs to CM
 - [ ] Table header editing syncs correctly to CM
+- [ ] Enter key blocked in table cells (no paragraph/line break insertion)
+- [ ] Shift+Enter blocked in table cells
+- [ ] Block-level format buttons hidden when cursor is in table (quote, hr, table, codeblock, lists)
+- [ ] Block type selector (Paragraph/H1/H2/H3) hidden when cursor is in table
+- [ ] Dropdown groups for lists and blocks hidden when cursor is in table
+- [ ] Pasting multi-line text in table cell converts to single line (newlines → spaces)
+- [ ] Moving cursor out of table restores all toolbar buttons
 
 ## Undo/Redo
 - [ ] Ctrl+Z undoes change in both md editor and CM (single undo stack)

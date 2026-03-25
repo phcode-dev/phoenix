@@ -339,7 +339,23 @@ function updateFormatState(state) {
         }
     }
 
+    // Hide block-level controls when inside a table (not valid in markdown table cells)
+    const blockLevelIds = ["emb-quote", "emb-hr", "emb-table", "emb-codeblock", "emb-ul", "emb-ol", "emb-task"];
+    const blockDropdowns = toolbar.querySelectorAll('.toolbar-dropdown[data-group="blocks"], .toolbar-dropdown[data-group="lists"]');
+    const inTable = !!state.inTable;
+    for (const id of blockLevelIds) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = inTable ? "none" : "";
+    }
+    for (const dd of blockDropdowns) {
+        dd.style.display = inTable ? "none" : "";
+    }
+    // Also hide block type selector in tables
     const blockTypeSelect = document.getElementById("emb-block-type");
+    if (blockTypeSelect) {
+        blockTypeSelect.style.display = inTable ? "none" : "";
+    }
+
     if (blockTypeSelect && state.blockType) {
         const tagToValue = {
             "H1": "<h1>", "H2": "<h2>", "H3": "<h3>",

@@ -236,7 +236,8 @@ function broadcastSelectionState() {
             orderedList: document.queryCommandState("insertOrderedList"),
             blockType: getBlockType(),
             isLink: isInsideTag("A"),
-            isCode: isInsideTag("CODE")
+            isCode: isInsideTag("CODE"),
+            inTable: isInsideTag("TABLE")
         };
         emit("editor:selection-state", state);
 
@@ -887,6 +888,14 @@ function sanitizePastedHTML(html) {
 function handlePaste(e, contentEl) {
     const mod = isModKey(e);
 
+    // Inside table cells: paste as single line plain text (newlines break tables)
+    if (isInsideTag("TABLE")) {
+        e.preventDefault();
+        const text = e.clipboardData.getData("text/plain").replace(/[\r\n]+/g, " ").trim();
+        document.execCommand("insertText", false, text);
+        return;
+    }
+
     if (mod && e.shiftKey) {
         e.preventDefault();
         const text = e.clipboardData.getData("text/plain");
@@ -1226,6 +1235,11 @@ function enterEditMode(content) {
             e.preventDefault();
             return;
         }
+        // Block line breaks inside table cells — newlines break markdown tables
+        if ((e.inputType === "insertParagraph" || e.inputType === "insertLineBreak") && isInsideTag("TABLE")) {
+            e.preventDefault();
+            return;
+        }
         beforeInputCursor = getCursorOffset(content);
         currentInputType = e.inputType || "";
     };
@@ -1407,9 +1421,16 @@ function enterEditMode(content) {
             return;
         }
 
-        if (e.key === "Enter" && !e.shiftKey && !mod) {
-            handleMarkdownShortcutOnEnter(e, content);
-            return;
+        if (e.key === "Enter") {
+            // Block Enter inside table cells — newlines break markdown tables
+            if (isInsideTag("TABLE")) {
+                e.preventDefault();
+                return;
+            }
+            if (!e.shiftKey && !mod) {
+                handleMarkdownShortcutOnEnter(e, content);
+                return;
+            }
         }
     };
     content.addEventListener("keydown", keydownHandler);
