@@ -1490,10 +1490,29 @@ function enterEditMode(content) {
 
                     flushSnapshot(content);
                     if (e.shiftKey) {
-                        const parentList = li.parentElement;
+                        const parentList = li.parentElement; // the nested ul/ol
                         const grandLi = parentList?.parentElement?.closest("li");
                         if (grandLi) {
+                            // Collect siblings after the current li (they stay nested)
+                            const afterSiblings = [];
+                            let next = li.nextElementSibling;
+                            while (next) {
+                                afterSiblings.push(next);
+                                next = next.nextElementSibling;
+                            }
+
+                            // Move li to parent level (after grandLi)
                             grandLi.parentElement.insertBefore(li, grandLi.nextSibling);
+
+                            // If there are remaining siblings, create a new nested list under the moved li
+                            if (afterSiblings.length > 0) {
+                                const newSubList = document.createElement(parentList.tagName);
+                                for (const sib of afterSiblings) {
+                                    newSubList.appendChild(sib);
+                                }
+                                li.appendChild(newSubList);
+                            }
+
                             if (parentList.children.length === 0) parentList.remove();
                         }
                     } else {
