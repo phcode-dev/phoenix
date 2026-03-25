@@ -300,7 +300,8 @@
 }
 
 .markdown-body li > p {
-  margin-top: var(--space-md);
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /* Task lists */

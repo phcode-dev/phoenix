@@ -1179,6 +1179,15 @@ export function convertToMarkdown(contentEl) {
     const clone = contentEl.cloneNode(true);
     clone.querySelectorAll(".code-copy-btn").forEach((btn) => btn.remove());
     clone.querySelectorAll(".table-row-handles, .table-col-handles, .table-add-row-btn, .table-col-add-btn").forEach((el) => el.remove());
+    // Unwrap <p> inside <li> — marked renders "loose" lists with <p> wrapping,
+    // but Turndown converts that to blank lines between items. Unwrapping makes tight lists.
+    clone.querySelectorAll("li > p").forEach((p) => {
+        const li = p.parentElement;
+        while (p.firstChild) {
+            li.insertBefore(p.firstChild, p);
+        }
+        p.remove();
+    });
     // Remove <br> from table cells — browsers insert <br> in empty contenteditable cells,
     // which Turndown converts to \n, breaking the markdown table row across lines
     clone.querySelectorAll("td > br:only-child, th > br:only-child").forEach((br) => {
@@ -1433,37 +1442,92 @@ function enterEditMode(content) {
         }
 
         // Tab navigation in tables
-        if (e.key === "Tab" && !mod) {
-            const ctx = getTableContext();
-            if (ctx) {
-                e.preventDefault();
-                const { table, tr, td, colIdx } = ctx;
-                const isLastCol = colIdx === tr.children.length - 1;
-                const tbody = table.querySelector("tbody");
-                const isLastRow = tr === (tbody || table).lastElementChild;
+        if (e.key === "Tab") {
+            // Table: navigate cells
+            if (!mod) {
+                const ctx = getTableContext();
+                if (ctx) {
+                    e.preventDefault();
+                    const { table, tr, td, colIdx } = ctx;
+                    const isLastCol = colIdx === tr.children.length - 1;
+                    const tbody = table.querySelector("tbody");
+                    const isLastRow = tr === (tbody || table).lastElementChild;
 
-                if (e.shiftKey) {
-                    const prevCell = td.previousElementSibling
-                        || tr.previousElementSibling?.lastElementChild;
-                    if (prevCell) focusCell(prevCell);
-                } else if (isLastCol && isLastRow) {
-                    flushSnapshot(content);
-                    addTableRow(table, null);
-                    dispatchInputEvent(content);
-                    const wrapper = table.closest(".table-wrapper");
-                    if (wrapper) {
-                        const rh = wrapper.querySelector(".table-row-handles");
-                        const ch = wrapper.querySelector(".table-col-handles");
-                        const acb = wrapper.querySelector(".table-col-add-btn");
-                        if (rh && ch && acb) rebuildHandles(wrapper, table, rh, ch, acb);
+                    if (e.shiftKey) {
+                        const prevCell = td.previousElementSibling
+                            || tr.previousElementSibling?.lastElementChild;
+                        if (prevCell) focusCell(prevCell);
+                    } else if (isLastCol && isLastRow) {
+                        flushSnapshot(content);
+                        addTableRow(table, null);
+                        dispatchInputEvent(content);
+                        const wrapper = table.closest(".table-wrapper");
+                        if (wrapper) {
+                            const rh = wrapper.querySelector(".table-row-handles");
+                            const ch = wrapper.querySelector(".table-col-handles");
+                            const acb = wrapper.querySelector(".table-col-add-btn");
+                            if (rh && ch && acb) rebuildHandles(wrapper, table, rh, ch, acb);
+                        }
+                    } else {
+                        const nextCell = td.nextElementSibling
+                            || tr.nextElementSibling?.firstElementChild;
+                        if (nextCell) focusCell(nextCell);
                     }
-                } else {
-                    const nextCell = td.nextElementSibling
-                        || tr.nextElementSibling?.firstElementChild;
-                    if (nextCell) focusCell(nextCell);
+                    return;
+                }
+            }
+
+            // Lists: indent/outdent by nesting/unnesting
+            if (isInsideTag("LI")) {
+                e.preventDefault();
+                const sel3 = window.getSelection();
+                const li = sel3?.anchorNode?.nodeType === Node.TEXT_NODE
+                    ? sel3.anchorNode.parentElement?.closest("li")
+                    : sel3?.anchorNode?.closest("li");
+                if (li) {
+                    // Save cursor
+                    const savedSel = window.getSelection();
+                    const savedRange = savedSel.rangeCount ? savedSel.getRangeAt(0).cloneRange() : null;
+
+                    flushSnapshot(content);
+                    if (e.shiftKey) {
+                        // Outdent: move li out of nested list
+                        const parentList = li.parentElement;
+                        const grandLi = parentList?.parentElement?.closest("li");
+                        if (grandLi) {
+                            grandLi.parentElement.insertBefore(li, grandLi.nextSibling);
+                            if (parentList.children.length === 0) parentList.remove();
+                        }
+                    } else {
+                        // Indent: nest li inside previous sibling's sub-list
+                        const prevLi = li.previousElementSibling;
+                        if (prevLi) {
+                            let subList = prevLi.querySelector("ul, ol");
+                            if (!subList) {
+                                subList = document.createElement(li.parentElement.tagName);
+                                prevLi.appendChild(subList);
+                            }
+                            subList.appendChild(li);
+                        }
+                    }
+                    // Restore cursor
+                    if (savedRange) {
+                        try {
+                            savedSel.removeAllRanges();
+                            savedSel.addRange(savedRange);
+                        } catch { /* range may be detached */ }
+                    }
+                    content.dispatchEvent(new Event("input", { bubbles: true }));
                 }
                 return;
             }
+
+            // Regular text: insert 4 spaces
+            e.preventDefault();
+            if (!e.shiftKey) {
+                document.execCommand("insertText", false, "    ");
+            }
+            return;
         }
 
         // Right/Down arrow at end of last table cell → move below table
@@ -1543,21 +1607,19 @@ function enterEditMode(content) {
                 }
                 return;
             }
-            if (!e.shiftKey && !mod) {
+            if (!mod) {
                 // Context-aware Enter:
-                // - Headings: create new <p> after heading (exit heading context)
-                // - Empty paragraph: create new <p> (for slash menu hint)
-                // - Paragraph with content: insert <br> (single line down)
                 const blockType = getBlockType();
                 const sel2 = window.getSelection();
                 const block2 = sel2?.anchorNode?.nodeType === Node.TEXT_NODE
                     ? sel2.anchorNode.parentElement : sel2?.anchorNode;
                 const blockEl = block2?.closest("p, h1, h2, h3, h4, h5, h6, li, blockquote");
-                const isEmpty = blockEl && blockEl.textContent.replace(/\u200B/g, "").trim() === "";
+                const listItem = block2?.closest("li");
+                const isEmpty = (listItem || blockEl) && (listItem || blockEl).textContent.replace(/\u200B/g, "").trim() === "";
                 const isHeading = ["H1", "H2", "H3", "H4", "H5", "H6"].includes(blockType);
-                const isList = ["LI"].includes(blockEl?.tagName);
+                const isList = !!listItem;
 
-                if (isHeading) {
+                if (isHeading && !e.shiftKey) {
                     // Exit heading — create new <p> after the heading
                     e.preventDefault();
                     const newP = document.createElement("p");
@@ -1569,10 +1631,59 @@ function enterEditMode(content) {
                     window.getSelection().removeAllRanges();
                     window.getSelection().addRange(r);
                     content.dispatchEvent(new Event("input", { bubbles: true }));
-                } else if (isList || isEmpty) {
-                    // List continuation or empty line
+                } else if (isList) {
+                    e.preventDefault();
+                    if (e.shiftKey) {
+                        // Shift+Enter in list: new line within same bullet
+                        document.execCommand("insertLineBreak");
+                    } else if (isEmpty) {
+                        // Enter on empty bullet: exit list, create paragraph after
+                        const list = listItem.closest("ul, ol");
+                        if (list) {
+                            const newP = document.createElement("p");
+                            newP.innerHTML = "<br>";
+                            list.parentNode.insertBefore(newP, list.nextSibling);
+                            listItem.remove();
+                            if (list.children.length === 0) list.remove();
+                            const r = document.createRange();
+                            r.setStart(newP, 0);
+                            r.collapse(true);
+                            window.getSelection().removeAllRanges();
+                            window.getSelection().addRange(r);
+                        }
+                    } else {
+                        // Enter in list: split at cursor, move trailing content to new bullet
+                        const range2 = sel2.getRangeAt(0);
+                        // Select from cursor to end of list item content
+                        const endRange = document.createRange();
+                        endRange.setStart(range2.startContainer, range2.startOffset);
+                        endRange.setEndAfter(listItem.lastChild);
+                        // Extract trailing content
+                        const fragment = endRange.extractContents();
+                        // Create new li with the extracted content
+                        const newLi = document.createElement("li");
+                        if (fragment.textContent.trim() === "") {
+                            newLi.innerHTML = "<br>";
+                        } else {
+                            newLi.appendChild(fragment);
+                        }
+                        listItem.parentNode.insertBefore(newLi, listItem.nextSibling);
+                        // If original li is now empty, add <br>
+                        if (listItem.textContent.trim() === "") {
+                            listItem.innerHTML = "<br>";
+                        }
+                        const r = document.createRange();
+                        r.setStart(newLi, 0);
+                        r.collapse(true);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(r);
+                    }
+                    content.dispatchEvent(new Event("input", { bubbles: true }));
+                    return;
+                } else if (isEmpty && !e.shiftKey) {
+                    // Empty paragraph — let browser create new <p>
                     handleMarkdownShortcutOnEnter(e, content);
-                } else {
+                } else if (!e.shiftKey) {
                     // Single line break within paragraph
                     e.preventDefault();
                     document.execCommand("insertLineBreak");
