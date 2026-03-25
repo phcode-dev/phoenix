@@ -232,7 +232,8 @@
 
 /* Tables */
 .markdown-body .table-wrapper {
-  overflow: visible;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 .markdown-body table {

@@ -561,6 +561,8 @@
   padding-right: 28px;
   margin-left: -24px;
   margin-right: -28px;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 /* --- Row handles (left gutter) --- */
@@ -640,8 +642,7 @@
 /* --- "+ New column" button (right side, full height) --- */
 .table-col-add-btn {
   position: absolute;
-  right: 0;
-  top: 0;
+  top: 22px;
   bottom: 0;
   width: 24px;
   display: flex;
@@ -657,6 +658,7 @@
   visibility: hidden;
   padding: 0;
   transition: color 0.15s, background 0.15s, border-color 0.15s;
+  /* left is set dynamically by JS based on table width */
 }
 
 .table-col-add-btn:hover {
@@ -980,9 +982,7 @@
   isolation: isolate;         /* contain sticky headers within this panel */
 }
 
-.edit-mode.split-view .table-wrapper {
-  overflow-x: auto;
-}
+/* overflow-x: auto is now on .table-wrapper directly */
 
 .edit-mode.split-view .raw-editor-panel {
   min-width: 0;

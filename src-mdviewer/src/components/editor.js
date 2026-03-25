@@ -639,7 +639,9 @@ function rebuildHandles(wrapper, table, rowHandles, colHandles, addColBtn) {
         });
     }
 
-    // addColBtn is appended to wrapper directly (positioned on right edge)
+    // Position add-col button at right edge of table (not wrapper) so it
+    // doesn't overlap content when the table is wider than the viewport.
+    addColBtn.style.left = (24 + table.offsetWidth) + "px";
 }
 
 function showHandleMenu(anchor, type, ctx, contentEl, wrapper, clickX) {
