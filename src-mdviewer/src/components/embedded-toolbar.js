@@ -339,21 +339,31 @@ function updateFormatState(state) {
         }
     }
 
-    // Hide block-level controls when inside a table (not valid in markdown table cells)
-    const blockLevelIds = ["emb-quote", "emb-hr", "emb-table", "emb-codeblock", "emb-ul", "emb-ol", "emb-task"];
-    const blockDropdowns = toolbar.querySelectorAll('.toolbar-dropdown[data-group="blocks"], .toolbar-dropdown[data-group="lists"]');
-    const inTable = !!state.inTable;
+    // Hide block-level controls when inside a table or list
+    const hideBlocks = !!state.inTable || !!state.inList;
+    const blockLevelIds = ["emb-quote", "emb-hr", "emb-table", "emb-codeblock"];
+    const blockDropdowns = toolbar.querySelectorAll('.toolbar-dropdown[data-group="blocks"]');
     for (const id of blockLevelIds) {
         const el = document.getElementById(id);
-        if (el) el.style.display = inTable ? "none" : "";
+        if (el) el.style.display = hideBlocks ? "none" : "";
     }
     for (const dd of blockDropdowns) {
-        dd.style.display = inTable ? "none" : "";
+        dd.style.display = hideBlocks ? "none" : "";
     }
-    // Also hide block type selector in tables
+    // Hide list buttons only in tables (they're useful in lists for switching UL/OL)
+    const listIds = ["emb-ul", "emb-ol", "emb-task"];
+    const listDropdowns = toolbar.querySelectorAll('.toolbar-dropdown[data-group="lists"]');
+    for (const id of listIds) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = state.inTable ? "none" : "";
+    }
+    for (const dd of listDropdowns) {
+        dd.style.display = state.inTable ? "none" : "";
+    }
+    // Hide block type selector in tables and lists
     const blockTypeSelect = document.getElementById("emb-block-type");
     if (blockTypeSelect) {
-        blockTypeSelect.style.display = inTable ? "none" : "";
+        blockTypeSelect.style.display = (state.inTable || state.inList) ? "none" : "";
     }
 
     if (blockTypeSelect && state.blockType) {

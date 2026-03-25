@@ -287,7 +287,8 @@ function broadcastSelectionState() {
             blockType: getBlockType(),
             isLink: isInsideTag("A"),
             isCode: isInsideTag("CODE"),
-            inTable: isInsideTableOrWrapper()
+            inTable: isInsideTableOrWrapper(),
+            inList: isInsideTag("LI")
         };
         emit("editor:selection-state", state);
 
@@ -372,18 +373,22 @@ export function executeFormat(contentEl, command, value) {
         case "insertOrderedList": {
             const targetTag = command === "insertUnorderedList" ? "UL" : "OL";
             const nearestList = _nearestListType();
-            if (nearestList && nearestList !== targetTag) {
-                // Switch list type by replacing the nearest list element tag
-                const sel = window.getSelection();
-                let listEl = sel?.anchorNode;
-                while (listEl && listEl.tagName !== nearestList) listEl = listEl.parentElement;
-                if (listEl) {
-                    const newList = document.createElement(targetTag);
-                    while (listEl.firstChild) newList.appendChild(listEl.firstChild);
-                    listEl.parentNode.replaceChild(newList, listEl);
-                    break;
+            if (nearestList) {
+                if (nearestList !== targetTag) {
+                    // Switch list type by replacing the nearest list element tag
+                    const sel = window.getSelection();
+                    let listEl = sel?.anchorNode;
+                    while (listEl && listEl.tagName !== nearestList) listEl = listEl.parentElement;
+                    if (listEl) {
+                        const newList = document.createElement(targetTag);
+                        while (listEl.firstChild) newList.appendChild(listEl.firstChild);
+                        listEl.parentNode.replaceChild(newList, listEl);
+                    }
                 }
+                // Already the right type — do nothing
+                break;
             }
+            // Not in a list — use execCommand to create one
             document.execCommand(command, false, null);
             break;
         }
