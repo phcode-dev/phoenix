@@ -242,6 +242,22 @@ function isInsideTableOrWrapper() {
     return false;
 }
 
+/**
+ * Returns "UL", "OL", or null — the nearest list parent of the cursor.
+ */
+function _nearestListType() {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return null;
+    let node = sel.anchorNode;
+    while (node) {
+        if (node.nodeType === 1 && (node.tagName === "UL" || node.tagName === "OL")) {
+            return node.tagName;
+        }
+        node = node.parentNode;
+    }
+    return null;
+}
+
 function isInsideTag(tag) {
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return false;
@@ -266,8 +282,8 @@ function broadcastSelectionState() {
             italic: document.queryCommandState("italic"),
             strikethrough: document.queryCommandState("strikethrough"),
             underline: document.queryCommandState("underline"),
-            unorderedList: document.queryCommandState("insertUnorderedList"),
-            orderedList: document.queryCommandState("insertOrderedList"),
+            unorderedList: _nearestListType() === "UL",
+            orderedList: _nearestListType() === "OL",
             blockType: getBlockType(),
             isLink: isInsideTag("A"),
             isCode: isInsideTag("CODE"),
@@ -353,7 +369,24 @@ export function executeFormat(contentEl, command, value) {
             break;
         }
         case "insertUnorderedList":
-        case "insertOrderedList":
+        case "insertOrderedList": {
+            const targetTag = command === "insertUnorderedList" ? "UL" : "OL";
+            const nearestList = _nearestListType();
+            if (nearestList && nearestList !== targetTag) {
+                // Switch list type by replacing the nearest list element tag
+                const sel = window.getSelection();
+                let listEl = sel?.anchorNode;
+                while (listEl && listEl.tagName !== nearestList) listEl = listEl.parentElement;
+                if (listEl) {
+                    const newList = document.createElement(targetTag);
+                    while (listEl.firstChild) newList.appendChild(listEl.firstChild);
+                    listEl.parentNode.replaceChild(newList, listEl);
+                    break;
+                }
+            }
+            document.execCommand(command, false, null);
+            break;
+        }
         case "insertHorizontalRule":
             document.execCommand(command, false, null);
             break;
