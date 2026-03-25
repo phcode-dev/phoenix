@@ -310,14 +310,12 @@ function broadcastSelectionState() {
 }
 
 function updateEmptyLineHint(contentEl) {
-    // Remove existing hint
     const prev = contentEl.querySelector(".cursor-empty-hint");
     if (prev) prev.classList.remove("cursor-empty-hint");
 
     const sel = window.getSelection();
     if (!sel || !sel.isCollapsed || !sel.anchorNode) return;
 
-    // Find the block-level parent (p, h1-h6, li, etc.)
     let block = sel.anchorNode;
     if (block.nodeType === Node.TEXT_NODE) block = block.parentElement;
     while (block && block !== contentEl && !["P", "H1", "H2", "H3", "H4", "H5", "H6"].includes(block.tagName)) {
@@ -325,26 +323,9 @@ function updateEmptyLineHint(contentEl) {
     }
     if (!block || block === contentEl || block.tagName !== "P") return;
 
-    // Show hint on empty paragraphs or on empty lines after <br>
     const text = block.textContent.replace(/\u200B/g, "").trim();
     if (text === "") {
         block.classList.add("cursor-empty-hint");
-        return;
-    }
-
-    // Check if cursor is on an empty line after <br> (at end of block)
-    const node = sel.anchorNode;
-    const offset = sel.anchorOffset;
-    if (node === block && offset > 0) {
-        const prevChild = block.childNodes[offset - 1];
-        const nextChild = block.childNodes[offset];
-        if (prevChild?.nodeName === "BR" && (!nextChild || (nextChild.nodeName === "BR"))) {
-            block.classList.add("cursor-empty-hint");
-        }
-    } else if (node.nodeType === Node.TEXT_NODE && node.textContent.replace(/\u200B/g, "").trim() === "") {
-        if (node.previousSibling?.nodeName === "BR") {
-            block.classList.add("cursor-empty-hint");
-        }
     }
 }
 
