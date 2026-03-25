@@ -1740,16 +1740,36 @@ function enterEditMode(content) {
                 const isList = !!listItem;
 
                 if (isHeading && !e.shiftKey) {
-                    // Exit heading — create new <p> after the heading
                     e.preventDefault();
+                    const range2 = sel2.getRangeAt(0);
+                    // Check if cursor is at the very start of the heading
+                    const atStart = range2.startOffset === 0 &&
+                        (range2.startContainer === blockEl ||
+                         (range2.startContainer === blockEl.firstChild && range2.startOffset === 0) ||
+                         (range2.startContainer.nodeType === Node.TEXT_NODE &&
+                          range2.startOffset === 0 &&
+                          !range2.startContainer.previousSibling));
+
                     const newP = document.createElement("p");
                     newP.innerHTML = "<br>";
-                    blockEl.parentNode.insertBefore(newP, blockEl.nextSibling);
-                    const r = document.createRange();
-                    r.setStart(newP, 0);
-                    r.collapse(true);
-                    window.getSelection().removeAllRanges();
-                    window.getSelection().addRange(r);
+
+                    if (atStart) {
+                        // Insert empty line ABOVE heading, keep cursor on heading
+                        blockEl.parentNode.insertBefore(newP, blockEl);
+                        const r = document.createRange();
+                        r.setStart(blockEl, 0);
+                        r.collapse(true);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(r);
+                    } else {
+                        // Exit heading — create new <p> after the heading
+                        blockEl.parentNode.insertBefore(newP, blockEl.nextSibling);
+                        const r = document.createRange();
+                        r.setStart(newP, 0);
+                        r.collapse(true);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(r);
+                    }
                     content.dispatchEvent(new Event("input", { bubbles: true }));
                 } else if (isList) {
                     e.preventDefault();
