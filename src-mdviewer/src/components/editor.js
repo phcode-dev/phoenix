@@ -644,6 +644,27 @@ function rebuildHandles(wrapper, table, rowHandles, colHandles, addColBtn) {
     addColBtn.style.left = (24 + table.offsetWidth) + "px";
 }
 
+/** Lightweight re-sync of handle sizes without rebuilding DOM (for resize). */
+function resyncHandleSizes(wrapper, table, rowHandles, colHandles, addColBtn) {
+    const rows = table.querySelectorAll("tr");
+    const rowBtns = rowHandles.children;
+    rows.forEach((row, idx) => {
+        if (rowBtns[idx]) {
+            rowBtns[idx].style.height = row.offsetHeight + "px";
+        }
+    });
+    const firstRow = rows[0];
+    if (firstRow) {
+        const colBtns = colHandles.children;
+        Array.from(firstRow.children).forEach((cell, idx) => {
+            if (colBtns[idx]) {
+                colBtns[idx].style.width = cell.offsetWidth + "px";
+            }
+        });
+    }
+    addColBtn.style.left = (24 + table.offsetWidth) + "px";
+}
+
 function showHandleMenu(anchor, type, ctx, contentEl, wrapper, clickX) {
     const menu = document.getElementById("table-context-menu");
     if (!menu) return;
@@ -776,6 +797,13 @@ function attachTableHandles(wrapper) {
         dispatchInputEvent(contentEl);
         rebuildHandles(wrapper, table, rowHandles, colHandles, addColBtn);
     });
+
+    // Re-sync handle positions when the table resizes (e.g. panel resize)
+    const ro = new ResizeObserver(() => {
+        resyncHandleSizes(wrapper, table, rowHandles, colHandles, addColBtn);
+    });
+    ro.observe(table);
+    wrapper._tableResizeObserver = ro;
 }
 
 // ——— Table context menu ———
@@ -900,6 +928,13 @@ function showTableContextMenu(x, y, ctx, contentEl) {
 }
 
 function reattachAllTableHandles(contentEl) {
+    // Disconnect any existing resize observers before removing handles
+    contentEl.querySelectorAll(".table-wrapper").forEach((w) => {
+        if (w._tableResizeObserver) {
+            w._tableResizeObserver.disconnect();
+            w._tableResizeObserver = null;
+        }
+    });
     contentEl.querySelectorAll(".table-row-handles, .table-col-handles, .table-add-row-btn, .table-col-add-btn").forEach(el => el.remove());
     contentEl.querySelectorAll(":scope > table").forEach((table) => {
         const wrapper = document.createElement("div");
