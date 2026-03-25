@@ -208,6 +208,40 @@ function getBlockType() {
     return "P";
 }
 
+function _exitTableBelow(tableEl, contentEl) {
+    const wrapper = tableEl.closest(".table-wrapper") || tableEl;
+    // Use existing next sibling if it's a block element, otherwise create a <p>
+    let next = wrapper.nextElementSibling;
+    if (!next || next.classList?.contains("table-wrapper")) {
+        next = document.createElement("p");
+        next.innerHTML = "<br>";
+        wrapper.parentNode.insertBefore(next, wrapper.nextSibling);
+    }
+    const range = document.createRange();
+    range.selectNodeContents(next);
+    range.collapse(true);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    if (contentEl) {
+        contentEl.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+}
+
+function isInsideTableOrWrapper() {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return false;
+    let node = sel.anchorNode;
+    while (node) {
+        if (node.nodeType === 1) {
+            if (node.tagName === "TABLE") return true;
+            if (node.classList && node.classList.contains("table-wrapper")) return true;
+        }
+        node = node.parentNode;
+    }
+    return false;
+}
+
 function isInsideTag(tag) {
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return false;
@@ -237,7 +271,7 @@ function broadcastSelectionState() {
             blockType: getBlockType(),
             isLink: isInsideTag("A"),
             isCode: isInsideTag("CODE"),
-            inTable: isInsideTag("TABLE")
+            inTable: isInsideTableOrWrapper()
         };
         emit("editor:selection-state", state);
 
@@ -246,7 +280,7 @@ function broadcastSelectionState() {
 
         const contentEl = document.getElementById("viewer-content");
         if (contentEl) {
-            const inTable = isInsideTag("TABLE");
+            const inTable = isInsideTableOrWrapper();
             contentEl.querySelectorAll(".table-wrapper.table-active").forEach((w) => {
                 w.classList.remove("table-active");
             });
@@ -889,7 +923,7 @@ function handlePaste(e, contentEl) {
     const mod = isModKey(e);
 
     // Inside table cells: paste as single line plain text (newlines break tables)
-    if (isInsideTag("TABLE")) {
+    if (isInsideTableOrWrapper()) {
         e.preventDefault();
         const text = e.clipboardData.getData("text/plain").replace(/[\r\n]+/g, " ").trim();
         document.execCommand("insertText", false, text);
@@ -1235,10 +1269,27 @@ function enterEditMode(content) {
             e.preventDefault();
             return;
         }
-        // Block line breaks inside table cells — newlines break markdown tables
-        if ((e.inputType === "insertParagraph" || e.inputType === "insertLineBreak") && isInsideTag("TABLE")) {
-            e.preventDefault();
-            return;
+        // Block line breaks and text insertion outside cells in tables
+        if (isInsideTableOrWrapper()) {
+            if (e.inputType === "insertParagraph" || e.inputType === "insertLineBreak") {
+                e.preventDefault();
+                return;
+            }
+            // Block all input when cursor is in table but outside any cell
+            const sel = window.getSelection();
+            let inCell = false;
+            if (sel && sel.anchorNode) {
+                let n = sel.anchorNode;
+                while (n) {
+                    if (n.nodeType === 1 && (n.tagName === "TD" || n.tagName === "TH")) { inCell = true; break; }
+                    if (n.nodeType === 1 && n.tagName === "TABLE") break;
+                    n = n.parentNode;
+                }
+            }
+            if (!inCell) {
+                e.preventDefault();
+                return;
+            }
         }
         beforeInputCursor = getCursorOffset(content);
         currentInputType = e.inputType || "";
@@ -1416,15 +1467,81 @@ function enterEditMode(content) {
             }
         }
 
+        // Right/Down arrow at end of last table cell → move below table
+        if ((e.key === "ArrowRight" || e.key === "ArrowDown") && isInsideTableOrWrapper()) {
+            const ctx = getTableContext();
+            if (ctx) {
+                const tbody = ctx.table.querySelector("tbody") || ctx.table;
+                const lastRow = tbody.lastElementChild;
+                const isLastCell = ctx.tr === lastRow && ctx.td === ctx.tr.lastElementChild;
+                if (isLastCell) {
+                    // Check if cursor is at end of cell
+                    const sel = window.getSelection();
+                    const range = sel.getRangeAt(0);
+                    let atEnd = false;
+                    if (range.collapsed) {
+                        if (range.startContainer.nodeType === Node.TEXT_NODE) {
+                            atEnd = range.startOffset >= range.startContainer.textContent.length;
+                        } else {
+                            atEnd = range.startOffset >= range.startContainer.childNodes.length;
+                        }
+                    }
+                    if (atEnd || e.key === "ArrowDown") {
+                        e.preventDefault();
+                        _exitTableBelow(ctx.table, content);
+                        return;
+                    }
+                }
+            } else {
+                // Cursor in wrapper but not in cell — exit
+                e.preventDefault();
+                const wrapper = (() => {
+                    let n = window.getSelection()?.anchorNode;
+                    if (n?.nodeType === Node.TEXT_NODE) n = n.parentElement;
+                    while (n) {
+                        if (n.classList?.contains("table-wrapper")) return n;
+                        if (n.tagName === "TABLE") return n.closest(".table-wrapper") || n;
+                        n = n.parentElement;
+                    }
+                    return null;
+                })();
+                if (wrapper) {
+                    const tbl = wrapper.querySelector("table") || wrapper;
+                    _exitTableBelow(tbl, content);
+                }
+                return;
+            }
+        }
+
         if (e.key === " ") {
             handleMarkdownShortcutOnSpace(e, content);
             return;
         }
 
         if (e.key === "Enter") {
-            // Block Enter inside table cells — newlines break markdown tables
-            if (isInsideTag("TABLE")) {
+            // Inside table: block Enter except on last cell or outside cells where it exits
+            if (isInsideTableOrWrapper()) {
                 e.preventDefault();
+                const ctx = getTableContext();
+                const shouldExit = !ctx || // cursor outside any cell (in table wrapper)
+                    (ctx.tr === (ctx.table.querySelector("tbody") || ctx.table).lastElementChild &&
+                     ctx.td === ctx.tr.lastElementChild); // last cell
+
+                if (shouldExit) {
+                    const tableEl = ctx ? ctx.table : (() => {
+                        let n = window.getSelection()?.anchorNode;
+                        if (n?.nodeType === Node.TEXT_NODE) n = n.parentElement;
+                        while (n) {
+                            if (n.tagName === "TABLE") return n;
+                            if (n.classList?.contains("table-wrapper")) return n.querySelector("table");
+                            n = n.parentElement;
+                        }
+                        return null;
+                    })();
+                    if (tableEl) {
+                        _exitTableBelow(tableEl, content);
+                    }
+                }
                 return;
             }
             if (!e.shiftKey && !mod) {

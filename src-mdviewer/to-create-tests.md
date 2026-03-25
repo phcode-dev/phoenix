@@ -116,6 +116,14 @@
 - [ ] Dropdown groups for lists and blocks hidden when cursor is in table
 - [ ] Pasting multi-line text in table cell converts to single line (newlines → spaces)
 - [ ] Moving cursor out of table restores all toolbar buttons
+- [ ] ArrowRight at end of last cell exits table to paragraph below
+- [ ] ArrowDown from last cell exits table to paragraph below
+- [ ] Enter in last cell exits table to paragraph below
+- [ ] If no paragraph exists below table, one is created on exit
+- [ ] If paragraph exists below table, cursor moves into it (no duplicate)
+- [ ] Cursor in table wrapper gap (outside cells) + Enter exits table
+- [ ] Cursor in table wrapper gap (outside cells) + typing is blocked
+- [ ] Table rows don't visually expand when cursor is in wrapper gap
 
 ## Undo/Redo
 - [ ] Ctrl+Z undoes change in both md editor and CM (single undo stack)
