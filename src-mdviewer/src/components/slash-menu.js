@@ -363,22 +363,33 @@ function handleInput() {
   const range = sel.getRangeAt(0);
   if (!range.collapsed) return;
 
-  const node = range.startContainer;
-  if (node.nodeType !== 3) return; // text node only
+  let node = range.startContainer;
+  let offset = range.startOffset;
 
-  const offset = range.startOffset;
+  // If cursor is at an element node, resolve to the child text node
+  if (node.nodeType !== 3) {
+    const child = node.childNodes[offset - 1];
+    if (child && child.nodeType === 3) {
+      node = child;
+      offset = node.textContent.length;
+    } else {
+      return;
+    }
+  }
   if (offset < 1) return;
 
   const char = node.textContent[offset - 1];
   if (char !== "/") return;
 
-  // Check that it's preceded by start of block or whitespace
+  // Check that it's preceded by start of block, whitespace, or <br>
   if (offset > 1) {
     const prev = node.textContent[offset - 2];
     if (prev && prev !== " " && prev !== "\n" && prev !== "\t") return;
   } else {
-    // offset === 1, check if it's at block start
-    if (!isAtBlockStart()) return;
+    // offset === 1: check if preceded by <br> (line start after Enter) or at block start
+    const prevSibling = node.previousSibling;
+    const afterBr = prevSibling && prevSibling.nodeName === "BR";
+    if (!afterBr && !isAtBlockStart()) return;
   }
 
   // Save the caret rect at the / position for menu positioning.

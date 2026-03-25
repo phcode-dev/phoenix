@@ -323,12 +323,28 @@ function updateEmptyLineHint(contentEl) {
     while (block && block !== contentEl && !["P", "H1", "H2", "H3", "H4", "H5", "H6"].includes(block.tagName)) {
         block = block.parentElement;
     }
-    if (!block || block === contentEl) return;
+    if (!block || block === contentEl || block.tagName !== "P") return;
 
-    // Check if block is empty (no text, or only a <br>)
+    // Show hint on empty paragraphs or on empty lines after <br>
     const text = block.textContent.replace(/\u200B/g, "").trim();
-    if (text === "" && block.tagName === "P") {
+    if (text === "") {
         block.classList.add("cursor-empty-hint");
+        return;
+    }
+
+    // Check if cursor is on an empty line after <br> (at end of block)
+    const node = sel.anchorNode;
+    const offset = sel.anchorOffset;
+    if (node === block && offset > 0) {
+        const prevChild = block.childNodes[offset - 1];
+        const nextChild = block.childNodes[offset];
+        if (prevChild?.nodeName === "BR" && (!nextChild || (nextChild.nodeName === "BR"))) {
+            block.classList.add("cursor-empty-hint");
+        }
+    } else if (node.nodeType === Node.TEXT_NODE && node.textContent.replace(/\u200B/g, "").trim() === "") {
+        if (node.previousSibling?.nodeName === "BR") {
+            block.classList.add("cursor-empty-hint");
+        }
     }
 }
 
@@ -1547,7 +1563,39 @@ function enterEditMode(content) {
                 return;
             }
             if (!e.shiftKey && !mod) {
-                handleMarkdownShortcutOnEnter(e, content);
+                // Context-aware Enter:
+                // - Headings: create new <p> after heading (exit heading context)
+                // - Empty paragraph: create new <p> (for slash menu hint)
+                // - Paragraph with content: insert <br> (single line down)
+                const blockType = getBlockType();
+                const sel2 = window.getSelection();
+                const block2 = sel2?.anchorNode?.nodeType === Node.TEXT_NODE
+                    ? sel2.anchorNode.parentElement : sel2?.anchorNode;
+                const blockEl = block2?.closest("p, h1, h2, h3, h4, h5, h6, li, blockquote");
+                const isEmpty = blockEl && blockEl.textContent.replace(/\u200B/g, "").trim() === "";
+                const isHeading = ["H1", "H2", "H3", "H4", "H5", "H6"].includes(blockType);
+                const isList = ["LI"].includes(blockEl?.tagName);
+
+                if (isHeading) {
+                    // Exit heading — create new <p> after the heading
+                    e.preventDefault();
+                    const newP = document.createElement("p");
+                    newP.innerHTML = "<br>";
+                    blockEl.parentNode.insertBefore(newP, blockEl.nextSibling);
+                    const r = document.createRange();
+                    r.setStart(newP, 0);
+                    r.collapse(true);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(r);
+                    content.dispatchEvent(new Event("input", { bubbles: true }));
+                } else if (isList || isEmpty) {
+                    // List continuation or empty line
+                    handleMarkdownShortcutOnEnter(e, content);
+                } else {
+                    // Single line break within paragraph
+                    e.preventDefault();
+                    document.execCommand("insertLineBreak");
+                }
                 return;
             }
         }
