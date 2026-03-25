@@ -576,7 +576,7 @@ function rebuildHandles(wrapper, table, rowHandles, colHandles, addColBtn) {
         });
     }
 
-    colHandles.appendChild(addColBtn);
+    // addColBtn is appended to wrapper directly (positioned on right edge)
 }
 
 function showHandleMenu(anchor, type, ctx, contentEl, wrapper, clickX) {
@@ -686,6 +686,8 @@ function attachTableHandles(wrapper) {
 
     wrapper.appendChild(rowHandles);
     wrapper.appendChild(colHandles);
+
+    wrapper.appendChild(addColBtn);
     wrapper.appendChild(addRowBar);
 
     addRowBar.addEventListener("mousedown", (e) => {

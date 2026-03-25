@@ -556,23 +556,22 @@
 /* ===== Table editing handles (Coda-style) ===== */
 .table-wrapper {
   position: relative;
-  padding-left: 0;
-  padding-top: 0;
-}
-
-.table-wrapper.table-active {
-  padding-left: 28px;
-  padding-top: 24px;
+  padding-left: 24px;
+  padding-top: 22px;
+  padding-right: 28px;
+  margin-left: -24px;
+  margin-right: -28px;
 }
 
 /* --- Row handles (left gutter) --- */
 .table-row-handles {
   position: absolute;
   left: 0;
-  top: 24px;
-  width: 28px;
-  display: none;
+  top: 22px;
+  width: 24px;
+  display: flex;
   flex-direction: column;
+  visibility: hidden;
   z-index: 2;
 }
 
@@ -580,7 +579,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
+  width: 20px;
   margin-left: 2px;
   border: none;
   background: transparent;
@@ -604,11 +603,12 @@
 .table-col-handles {
   position: absolute;
   top: 0;
-  left: 28px;
-  height: 24px;
-  display: none;
+  left: 24px;
+  height: 22px;
+  display: flex;
   flex-direction: row;
   align-items: stretch;
+  visibility: hidden;
   z-index: 2;
 }
 
@@ -637,14 +637,16 @@
 }
 
 /* --- "+" column append button --- */
+/* --- "+ New column" button (right side, full height) --- */
 .table-col-add-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 20px;
-  margin-top: 2px;
-  margin-left: 2px;
   border: 1px dashed var(--color-border);
   background: transparent;
   color: var(--color-text-tertiary);
@@ -652,8 +654,25 @@
   font-size: 14px;
   line-height: 1;
   border-radius: var(--radius-sm);
+  visibility: hidden;
   padding: 0;
   transition: color 0.15s, background 0.15s, border-color 0.15s;
+  opacity: 0;
+}
+
+.table-wrapper.table-active .table-col-add-btn {
+  visibility: visible;
+}
+
+.table-wrapper.table-active:hover .table-col-add-btn {
+  opacity: 0.5;
+}
+
+.table-col-add-btn:hover {
+  opacity: 1 !important;
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
 .table-col-add-btn:hover {
@@ -664,8 +683,8 @@
 
 /* --- "+ New row" bar (bottom) --- */
 .table-add-row-btn {
-  display: none;
   width: 100%;
+  visibility: hidden;
   padding: 4px 0;
   margin-top: 2px;
   margin-bottom: 4px;
@@ -689,19 +708,15 @@
 .table-wrapper.table-active .table-row-handles,
 .table-wrapper.table-active .table-col-handles,
 .table-wrapper.table-active .table-add-row-btn {
-  display: flex;
+  visibility: visible;
 }
 
 /* Hide gutters when not editing */
-#viewer-content:not(.editing) .table-wrapper {
-  padding-left: 0;
-  padding-top: 0;
-}
-
 #viewer-content:not(.editing) .table-row-handles,
 #viewer-content:not(.editing) .table-col-handles,
-#viewer-content:not(.editing) .table-add-row-btn {
-  display: none !important;
+#viewer-content:not(.editing) .table-add-row-btn,
+#viewer-content:not(.editing) .table-col-add-btn {
+  visibility: hidden !important;
 }
 
 /* ===== Context menu (shared base) ===== */

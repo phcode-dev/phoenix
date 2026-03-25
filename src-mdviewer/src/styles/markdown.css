@@ -233,15 +233,14 @@
 /* Tables */
 .markdown-body .table-wrapper {
   overflow-x: auto;
-  margin-bottom: var(--space-md);
-  border: 1px solid var(--color-table-border);
-  border-radius: 6px;
 }
 
 .markdown-body table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
+  border: 1px solid var(--color-table-border);
+  border-radius: 6px;
 }
 
 .markdown-body table th,
