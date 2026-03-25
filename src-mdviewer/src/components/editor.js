@@ -552,6 +552,34 @@ function deleteTableColumn(table, colIdx) {
     });
 }
 
+function deleteTable(table) {
+    const wrapper = table.closest(".table-wrapper");
+    const target = wrapper || table;
+    const parent = target.parentNode;
+    if (!parent) return;
+    // Place cursor in next sibling or create a new paragraph
+    const next = target.nextElementSibling;
+    target.remove();
+    if (next) {
+        const range = document.createRange();
+        range.selectNodeContents(next);
+        range.collapse(true);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else {
+        const p = document.createElement("p");
+        p.innerHTML = "<br>";
+        parent.appendChild(p);
+        const range = document.createRange();
+        range.selectNodeContents(p);
+        range.collapse(true);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+}
+
 function focusCell(cell) {
     if (!cell) return;
     const range = document.createRange();
@@ -624,14 +652,18 @@ function showHandleMenu(anchor, type, ctx, contentEl, wrapper, clickX) {
             { label: t("table.insert_row_above"), action: () => { flushSnapshot(contentEl); addTableRow(ctx.table, null, ctx.tr); dispatchInputEvent(contentEl); } },
             { label: t("table.insert_row_below"), action: () => { flushSnapshot(contentEl); addTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
             { divider: true },
-            { label: t("table.delete_row"), destructive: true, disabled: ctx.isHeader, action: () => { flushSnapshot(contentEl); deleteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } }
+            { label: t("table.delete_row"), destructive: true, disabled: ctx.isHeader, action: () => { flushSnapshot(contentEl); deleteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
+            { divider: true },
+            { label: t("table.delete_table"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTable(ctx.table); dispatchInputEvent(contentEl); } }
         ];
     } else {
         items = [
             { label: t("table.insert_col_left"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx - 1); dispatchInputEvent(contentEl); } },
             { label: t("table.insert_col_right"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
             { divider: true },
-            { label: t("table.delete_col"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } }
+            { label: t("table.delete_col"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
+            { divider: true },
+            { label: t("table.delete_table"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTable(ctx.table); dispatchInputEvent(contentEl); } }
         ];
     }
 
@@ -810,7 +842,9 @@ function showTableContextMenu(x, y, ctx, contentEl) {
         { label: t("table.add_col_right"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
         { divider: true },
         { label: t("table.delete_row"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
-        { label: t("table.delete_col"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } }
+        { label: t("table.delete_col"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
+        { divider: true },
+        { label: t("table.delete_table"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTable(ctx.table); dispatchInputEvent(contentEl); } }
     ];
 
     menu.innerHTML = "";

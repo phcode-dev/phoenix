@@ -124,6 +124,42 @@
 - [ ] Cursor in table wrapper gap (outside cells) + Enter exits table
 - [ ] Cursor in table wrapper gap (outside cells) + typing is blocked
 - [ ] Table rows don't visually expand when cursor is in wrapper gap
+- [ ] "Delete table" option appears in table right-click context menu
+- [ ] "Delete table" option appears in row handle menu
+- [ ] "Delete table" option appears in column handle menu
+- [ ] Deleting table removes entire table-wrapper from DOM
+- [ ] Deleting table places cursor in next sibling element
+- [ ] Deleting table at end of document creates new empty paragraph
+- [ ] Deleting table syncs removal to CM source
+- [ ] Deleting table creates undo entry (Ctrl+Z restores table)
+- [ ] Add-column button (+) has visible dashed border matching add-row button style
+- [ ] Add-column button visible when table is active (cursor inside)
+
+## List Editing
+- [ ] Enter in a list item splits content at cursor into two `<li>` elements
+- [ ] Enter on empty list item exits list and creates paragraph below
+- [ ] Shift+Enter in list item inserts `<br>` (line break within same bullet)
+- [ ] Tab in list item indents it (nests inside sub-list under previous sibling)
+- [ ] Shift+Tab in list item outdents it to parent level
+- [ ] Shift+Tab outdent preserves trailing siblings as sub-list of moved item
+- [ ] Tab at first list item (no previous sibling) does nothing
+- [ ] Cursor position preserved after Tab indent
+- [ ] Cursor position preserved after Shift+Tab outdent
+- [ ] Enter in list creates proper `<li>` that syncs to markdown `- ` or `1. ` in CM
+- [ ] Nested list indentation syncs correctly to markdown (2 or 4 space indent)
+
+## UL/OL Toggle (List Type Switching)
+- [ ] Clicking UL button when in OL switches nearest parent list to `<ul>`
+- [ ] Clicking OL button when in UL switches nearest parent list to `<ol>`
+- [ ] UL/OL toggle only affects nearest parent list (not all ancestor lists)
+- [ ] UL/OL toggle preserves list content and nesting
+- [ ] UL/OL toggle syncs to CM (e.g. `1. item` → `- item`)
+- [ ] Toolbar UL button shows active state when cursor is in UL
+- [ ] Toolbar OL button shows active state when cursor is in OL
+- [ ] Block-level buttons (quote, hr, table, codeblock) hidden when cursor is in list
+- [ ] Block type selector (Paragraph/H1/H2/H3) hidden when cursor is in list
+- [ ] List buttons remain visible when cursor is in list (for UL/OL switching)
+- [ ] Moving cursor out of list restores all toolbar buttons
 
 ## Undo/Redo
 - [ ] Ctrl+Z undoes change in both md editor and CM (single undo stack)

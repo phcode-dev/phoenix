@@ -657,22 +657,6 @@
   visibility: hidden;
   padding: 0;
   transition: color 0.15s, background 0.15s, border-color 0.15s;
-  opacity: 0;
-}
-
-.table-wrapper.table-active .table-col-add-btn {
-  visibility: visible;
-}
-
-.table-wrapper.table-active:hover .table-col-add-btn {
-  opacity: 0.5;
-}
-
-.table-col-add-btn:hover {
-  opacity: 1 !important;
-  background: var(--color-accent-subtle);
-  color: var(--color-accent);
-  border-color: var(--color-accent);
 }
 
 .table-col-add-btn:hover {
@@ -707,7 +691,8 @@
 /* --- Visibility: show only when active (cursor inside table) --- */
 .table-wrapper.table-active .table-row-handles,
 .table-wrapper.table-active .table-col-handles,
-.table-wrapper.table-active .table-add-row-btn {
+.table-wrapper.table-active .table-add-row-btn,
+.table-wrapper.table-active .table-col-add-btn {
   visibility: visible;
 }
 
