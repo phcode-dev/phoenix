@@ -107,10 +107,16 @@ define(function (require, exports, module) {
                 _handleRedo();
                 break;
             case "mdviewrEditModeChanged":
-                // When switching to reader, send CM content back so the iframe
+                // When switching to reader, send CM content so the iframe
                 // can re-render with accurate data-source-line for cursor sync.
                 if (!data.editMode && _doc) {
-                    setEditMode(false);
+                    const iframeWindow = _getIframeWindow();
+                    if (iframeWindow) {
+                        iframeWindow.postMessage({
+                            type: "MDVIEWR_RERENDER_CONTENT",
+                            markdown: _doc.getText()
+                        }, "*");
+                    }
                 }
                 break;
             case "mdviewrRequestEditMode":
@@ -711,13 +717,7 @@ define(function (require, exports, module) {
         }
         const iframeWindow = _getIframeWindow();
         if (iframeWindow) {
-            const msg = { type: "MDVIEWR_SET_EDIT_MODE", editMode: editMode };
-            // When switching to reader, include current CM content so the iframe
-            // can re-render with accurate data-source-line attributes for cursor sync.
-            if (!editMode && _doc) {
-                msg.markdown = _doc.getText();
-            }
-            iframeWindow.postMessage(msg, "*");
+            iframeWindow.postMessage({ type: "MDVIEWR_SET_EDIT_MODE", editMode: editMode }, "*");
         }
     }
 

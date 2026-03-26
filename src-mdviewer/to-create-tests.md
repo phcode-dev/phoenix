@@ -39,6 +39,10 @@
 - [ ] Content sync still works when cursor sync is disabled
 - [ ] Cursor sync toggle works in both reader and edit mode
 - [ ] Disabling cursor sync in reader mode prevents CM scroll on click
+- [ ] Cursor sync works on newly edited elements after edit→reader switch
+- [ ] Edit→reader switch re-renders from CM content (data-source-line attrs refreshed)
+- [ ] Switching MD files preserves current edit/reader mode
+- [ ] Edit mode not reset when switching between MD files
 
 ## Edit Mode & Entitlement Gating
 - [ ] Free user sees Edit button → clicking shows upsell dialog

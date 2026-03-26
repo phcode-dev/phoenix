@@ -147,6 +147,9 @@ export function initBridge() {
             case "MDVIEWR_HIGHLIGHT_SELECTION":
                 handleHighlightSelection(data);
                 break;
+            case "MDVIEWR_RERENDER_CONTENT":
+                handleRerenderContent(data);
+                break;
         }
     });
 
@@ -596,16 +599,20 @@ function handleSetTheme(data) {
 }
 
 function handleSetEditMode(data) {
-    const { editMode, markdown } = data;
+    const { editMode } = data;
     setState({ editMode });
+}
 
-    // When switching to reader, re-render from CM's current markdown
-    // so all elements get fresh data-source-line attributes for cursor sync.
-    if (!editMode && markdown) {
-        const parseResult = parseMarkdownToHTML(markdown);
-        setState({ currentContent: markdown, parseResult });
-        emit("file:rendered", parseResult);
-    }
+/**
+ * Re-render content from CM's authoritative markdown.
+ * Called when switching edit→reader so data-source-line attributes are accurate.
+ */
+function handleRerenderContent(data) {
+    const { markdown } = data;
+    if (!markdown) return;
+    const parseResult = parseMarkdownToHTML(markdown);
+    setState({ currentContent: markdown, parseResult });
+    emit("file:rendered", parseResult);
 }
 
 
