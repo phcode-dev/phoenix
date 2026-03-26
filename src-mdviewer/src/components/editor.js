@@ -208,6 +208,24 @@ function getBlockType() {
     return "P";
 }
 
+function _exitBlockBelow(blockEl, contentEl) {
+    let next = blockEl.nextElementSibling;
+    if (!next || next.tagName === "PRE" || next.classList?.contains("table-wrapper")) {
+        next = document.createElement("p");
+        next.innerHTML = "<br>";
+        blockEl.parentNode.insertBefore(next, blockEl.nextSibling);
+    }
+    const range = document.createRange();
+    range.selectNodeContents(next);
+    range.collapse(true);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    if (contentEl) {
+        contentEl.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+}
+
 function _exitTableBelow(tableEl, contentEl) {
     const wrapper = tableEl.closest(".table-wrapper") || tableEl;
     // Use existing next sibling if it's a block element, otherwise create a <p>
@@ -1696,6 +1714,41 @@ function enterEditMode(content) {
             }
         }
 
+        // ArrowDown at end of code block → exit to paragraph below
+        if (e.key === "ArrowDown" && !mod) {
+            const sel = window.getSelection();
+            if (sel && sel.rangeCount) {
+                let node = sel.anchorNode;
+                if (node?.nodeType === Node.TEXT_NODE) node = node.parentElement;
+                const pre = node?.closest("pre");
+                if (pre && pre.closest("#viewer-content")) {
+                    const range = sel.getRangeAt(0);
+                    if (range.collapsed) {
+                        const code = pre.querySelector("code") || pre;
+                        // Check if cursor is on the last line
+                        const textContent = code.textContent || "";
+                        const lastNewline = textContent.lastIndexOf("\n");
+                        // Get cursor offset within code
+                        let cursorOffset = 0;
+                        const tw = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+                        let n;
+                        while ((n = tw.nextNode())) {
+                            if (n === range.startContainer) {
+                                cursorOffset += range.startOffset;
+                                break;
+                            }
+                            cursorOffset += n.textContent.length;
+                        }
+                        if (cursorOffset >= lastNewline) {
+                            e.preventDefault();
+                            _exitBlockBelow(pre, content);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
         if (e.key === " ") {
             handleMarkdownShortcutOnSpace(e, content);
             return;
@@ -1738,6 +1791,39 @@ function enterEditMode(content) {
         }
 
         if (e.key === "Enter") {
+            // Shift+Enter on last line of code block → exit to paragraph below
+            if (e.shiftKey) {
+                const sel = window.getSelection();
+                if (sel && sel.rangeCount) {
+                    let node = sel.anchorNode;
+                    if (node?.nodeType === Node.TEXT_NODE) node = node.parentElement;
+                    const pre = node?.closest("pre");
+                    if (pre && pre.closest("#viewer-content")) {
+                        const code = pre.querySelector("code") || pre;
+                        const range = sel.getRangeAt(0);
+                        if (range.collapsed) {
+                            const textContent = code.textContent || "";
+                            const lastNewline = textContent.lastIndexOf("\n");
+                            let cursorOffset = 0;
+                            const tw = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+                            let n;
+                            while ((n = tw.nextNode())) {
+                                if (n === range.startContainer) {
+                                    cursorOffset += range.startOffset;
+                                    break;
+                                }
+                                cursorOffset += n.textContent.length;
+                            }
+                            if (cursorOffset >= lastNewline) {
+                                e.preventDefault();
+                                _exitBlockBelow(pre, content);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             // Inside table: block Enter except on last cell or outside cells where it exits
             if (isInsideTableOrWrapper()) {
                 e.preventDefault();
