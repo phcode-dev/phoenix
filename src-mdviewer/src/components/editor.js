@@ -1861,7 +1861,19 @@ function enterEditMode(content) {
                 const isHeading = ["H1", "H2", "H3", "H4", "H5", "H6"].includes(blockType);
                 const isList = !!listItem;
 
-                if (isHeading && !e.shiftKey) {
+                if (isHeading && e.shiftKey) {
+                    // Shift+Enter in heading: create new empty <p> below, move cursor there
+                    e.preventDefault();
+                    const newP = document.createElement("p");
+                    newP.innerHTML = "<br>";
+                    blockEl.parentNode.insertBefore(newP, blockEl.nextSibling);
+                    const r = document.createRange();
+                    r.setStart(newP, 0);
+                    r.collapse(true);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(r);
+                    content.dispatchEvent(new Event("input", { bubbles: true }));
+                } else if (isHeading && !e.shiftKey) {
                     e.preventDefault();
                     const range2 = sel2.getRangeAt(0);
                     // Check if cursor is at the very start of the heading
@@ -1872,11 +1884,10 @@ function enterEditMode(content) {
                           range2.startOffset === 0 &&
                           !range2.startContainer.previousSibling));
 
-                    const newP = document.createElement("p");
-                    newP.innerHTML = "<br>";
-
                     if (atStart) {
                         // Insert empty line ABOVE heading, keep cursor on heading
+                        const newP = document.createElement("p");
+                        newP.innerHTML = "<br>";
                         blockEl.parentNode.insertBefore(newP, blockEl);
                         const r = document.createRange();
                         r.setStart(blockEl, 0);
@@ -1884,7 +1895,35 @@ function enterEditMode(content) {
                         window.getSelection().removeAllRanges();
                         window.getSelection().addRange(r);
                     } else {
-                        // Exit heading — create new <p> after the heading
+                        // Check if cursor is at the end of the heading
+                        const atEnd = (range2.startContainer.nodeType === Node.TEXT_NODE &&
+                            range2.startOffset >= range2.startContainer.textContent.length &&
+                            !range2.startContainer.nextSibling) ||
+                            (range2.startContainer === blockEl &&
+                             range2.startOffset >= blockEl.childNodes.length);
+
+                        const newP = document.createElement("p");
+
+                        if (atEnd) {
+                            // At end: just create empty <p> below
+                            newP.innerHTML = "<br>";
+                        } else {
+                            // In middle: split — move trailing content into <p>
+                            const splitRange = document.createRange();
+                            splitRange.setStart(range2.startContainer, range2.startOffset);
+                            splitRange.setEndAfter(blockEl.lastChild);
+                            const fragment = splitRange.extractContents();
+                            if (fragment.textContent.trim() || fragment.childNodes.length > 0) {
+                                newP.appendChild(fragment);
+                            }
+                            if (!newP.firstChild) {
+                                newP.innerHTML = "<br>";
+                            }
+                            // If heading is now empty, add <br> placeholder
+                            if (!blockEl.textContent.trim() && !blockEl.querySelector("br")) {
+                                blockEl.innerHTML = "<br>";
+                            }
+                        }
                         blockEl.parentNode.insertBefore(newP, blockEl.nextSibling);
                         const r = document.createRange();
                         r.setStart(newP, 0);

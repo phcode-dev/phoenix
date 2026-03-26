@@ -175,8 +175,11 @@
 
 ## Heading Editing
 - [ ] Enter at start of heading (|Heading) inserts empty `<p>` above, heading shifts down
-- [ ] Enter in middle of heading creates new `<p>` below with trailing content
-- [ ] Enter at end of heading creates new empty `<p>` below
+- [ ] Enter in middle of heading splits: text before stays heading, text after becomes `<p>`
+- [ ] Enter at end of heading creates new empty `<p>` below (no content split)
+- [ ] Enter in middle syncs correctly to CM (heading line + new paragraph line)
+- [ ] Shift+Enter in heading creates empty `<p>` below without moving content
+- [ ] Shift+Enter moves cursor to new `<p>`, heading text untouched
 - [ ] Backspace at start of heading converts heading to `<p>` (strips ### prefix in CM)
 - [ ] Backspace at start of heading preserves content and cursor position
 - [ ] Backspace at start of heading updates toolbar from "Heading N" to "Paragraph"
