@@ -100,6 +100,18 @@
 - [ ] Ctrl+S saves file and keeps focus in md editor (not CM)
 - [ ] Forwarded shortcuts refocus md editor after Phoenix handles them
 
+## Code Block Editing
+- [ ] ArrowDown on last line of code block exits to paragraph below
+- [ ] ArrowDown on last line creates new `<p>` if none exists below
+- [ ] ArrowDown on last line moves to existing next sibling if present
+- [ ] ArrowDown on non-last line navigates normally within code block
+- [ ] Shift+Enter on last line of code block exits to paragraph below
+- [ ] Shift+Enter on non-last line does NOT exit (normal behavior)
+- [ ] Enter inside code block creates new line (not exit)
+- [ ] Code block exit syncs new paragraph to CM source
+- [ ] Intermediate code blocks: Shift+Enter exits on last line
+- [ ] Last code block in document: ArrowDown creates `<p>` and exits
+
 ## Table Editing
 - [ ] Clearing a table cell with backspace produces valid markdown (no broken pipe rows)
 - [ ] Empty table cell renders as `|  |` in markdown source
