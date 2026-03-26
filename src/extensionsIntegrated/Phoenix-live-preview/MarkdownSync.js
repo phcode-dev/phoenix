@@ -107,7 +107,11 @@ define(function (require, exports, module) {
                 _handleRedo();
                 break;
             case "mdviewrEditModeChanged":
-                // Could be used to sync edit mode UI state in Phoenix if needed
+                // When switching to reader, send CM content back so the iframe
+                // can re-render with accurate data-source-line for cursor sync.
+                if (!data.editMode && _doc) {
+                    setEditMode(false);
+                }
                 break;
             case "mdviewrRequestEditMode":
                 if (_onEditModeRequest) {
@@ -707,7 +711,13 @@ define(function (require, exports, module) {
         }
         const iframeWindow = _getIframeWindow();
         if (iframeWindow) {
-            iframeWindow.postMessage({ type: "MDVIEWR_SET_EDIT_MODE", editMode: editMode }, "*");
+            const msg = { type: "MDVIEWR_SET_EDIT_MODE", editMode: editMode };
+            // When switching to reader, include current CM content so the iframe
+            // can re-render with accurate data-source-line attributes for cursor sync.
+            if (!editMode && _doc) {
+                msg.markdown = _doc.getText();
+            }
+            iframeWindow.postMessage(msg, "*");
         }
     }
 

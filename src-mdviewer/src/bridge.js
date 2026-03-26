@@ -290,6 +290,8 @@ export function initBridge() {
     on("bridge:contentChanged", ({ markdown }) => {
         if (_suppressContentChange) return;
         _syncId++;
+        // Keep state.currentContent in sync so edit→reader re-render has latest content
+        setState({ currentContent: markdown });
         // Update the cache entry's mdSrc so it stays in sync
         const activePath = docCache.getActiveFilePath();
         if (activePath) {
@@ -594,8 +596,16 @@ function handleSetTheme(data) {
 }
 
 function handleSetEditMode(data) {
-    const { editMode } = data;
+    const { editMode, markdown } = data;
     setState({ editMode });
+
+    // When switching to reader, re-render from CM's current markdown
+    // so all elements get fresh data-source-line attributes for cursor sync.
+    if (!editMode && markdown) {
+        const parseResult = parseMarkdownToHTML(markdown);
+        setState({ currentContent: markdown, parseResult });
+        emit("file:rendered", parseResult);
+    }
 }
 
 
