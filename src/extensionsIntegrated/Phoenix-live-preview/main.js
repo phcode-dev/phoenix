@@ -125,11 +125,27 @@ define(function (require, exports, module) {
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
+    const _sandboxAttr = Phoenix.isTestWindow ? "" :
+        'sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-modals allow-pointer-lock"';
     const LIVE_PREVIEW_IFRAME_HTML = `
     <iframe id="${LIVE_PREVIEW_IFRAME_ID}" title="Live Preview" style="border: none"
              width="100%" height="100%" seamless="true"
              src='about:blank'
-             sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-modals allow-pointer-lock">
+             ${_sandboxAttr}>
+    </iframe>
+    `;
+
+    // Mdviewer renders untrusted markdown — tighter sandbox than live preview:
+    // no allow-same-origin (prevents malicious scripts from accessing Phoenix context),
+    // no allow-forms, allow-modals, allow-pointer-lock (not needed for markdown editing).
+    // Communication works via MarkdownSync's own message handler (bypasses EventManager origin check).
+    const _mdSandboxAttr = Phoenix.isTestWindow ? "" :
+        'sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"';
+    const MDVIEWR_IFRAME_HTML = `
+    <iframe id="${LIVE_PREVIEW_IFRAME_ID}" title="Live Preview" style="border: none"
+             width="100%" height="100%" seamless="true"
+             src='about:blank'
+             ${_mdSandboxAttr}>
     </iframe>
     `;
 
@@ -906,9 +922,9 @@ define(function (require, exports, module) {
             $mdviewrIframe.show();
             $iframe = $mdviewrIframe;
         } else if (panel.isVisible()) {
-            // First time: create the md iframe
+            // First time: create the md iframe (tighter sandbox for untrusted content)
             const mdviewrURL = StaticServer.getMdviewrURL();
-            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            let newIframe = $(MDVIEWR_IFRAME_HTML);
             newIframe.insertAfter($iframe);
             $iframe.remove();
             $iframe = newIframe;

@@ -79,12 +79,14 @@ function fuzzyScore(query, text) {
 const FRECENCY_KEY = "mdviewr-slash-frecency";
 const DECAY_DAYS = 7;
 
+// In-memory frecency store (localStorage unavailable in sandboxed iframe without allow-same-origin)
+let _frecencyData = {};
+
 function loadFrecency() {
-  try { return JSON.parse(localStorage.getItem(FRECENCY_KEY)) || {}; }
-  catch { return {}; }
+  return _frecencyData;
 }
 function saveFrecency(data) {
-  try { localStorage.setItem(FRECENCY_KEY, JSON.stringify(data)); } catch {}
+  _frecencyData = data;
 }
 function recordUsage(id) {
   const d = loadFrecency();
