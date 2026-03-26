@@ -1701,6 +1701,42 @@ function enterEditMode(content) {
             return;
         }
 
+        // Backspace at start of heading → convert to paragraph
+        if (e.key === "Backspace" && !mod) {
+            const sel2 = window.getSelection();
+            if (sel2 && sel2.rangeCount) {
+                const range2 = sel2.getRangeAt(0);
+                const block2 = range2.startContainer.nodeType === Node.TEXT_NODE
+                    ? range2.startContainer.parentElement : range2.startContainer;
+                const heading = block2?.closest("h1, h2, h3, h4, h5, h6");
+                if (heading && heading.closest("#viewer-content")) {
+                    const atStart = range2.collapsed &&
+                        range2.startOffset === 0 &&
+                        (range2.startContainer === heading ||
+                         range2.startContainer === heading.firstChild ||
+                         (range2.startContainer.nodeType === Node.TEXT_NODE &&
+                          !range2.startContainer.previousSibling));
+                    if (atStart) {
+                        e.preventDefault();
+                        // Convert heading to <p>, preserving content
+                        const p = document.createElement("p");
+                        while (heading.firstChild) {
+                            p.appendChild(heading.firstChild);
+                        }
+                        heading.parentNode.replaceChild(p, heading);
+                        // Restore cursor at start of new <p>
+                        const r = document.createRange();
+                        r.setStart(p, 0);
+                        r.collapse(true);
+                        sel2.removeAllRanges();
+                        sel2.addRange(r);
+                        content.dispatchEvent(new Event("input", { bubbles: true }));
+                        return;
+                    }
+                }
+            }
+        }
+
         if (e.key === "Enter") {
             // Inside table: block Enter except on last cell or outside cells where it exits
             if (isInsideTableOrWrapper()) {

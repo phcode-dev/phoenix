@@ -161,6 +161,16 @@
 - [ ] List buttons remain visible when cursor is in list (for UL/OL switching)
 - [ ] Moving cursor out of list restores all toolbar buttons
 
+## Heading Editing
+- [ ] Enter at start of heading (|Heading) inserts empty `<p>` above, heading shifts down
+- [ ] Enter in middle of heading creates new `<p>` below with trailing content
+- [ ] Enter at end of heading creates new empty `<p>` below
+- [ ] Backspace at start of heading converts heading to `<p>` (strips ### prefix in CM)
+- [ ] Backspace at start of heading preserves content and cursor position
+- [ ] Backspace at start of heading updates toolbar from "Heading N" to "Paragraph"
+- [ ] Heading-to-paragraph conversion syncs correctly to CM source
+- [ ] Backspace in middle of heading works normally (deletes character)
+
 ## Undo/Redo
 - [ ] Ctrl+Z undoes change in both md editor and CM (single undo stack)
 - [ ] Ctrl+Shift+Z / Ctrl+Y redoes change in both
