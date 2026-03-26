@@ -3,6 +3,8 @@ import {
   Heading1,
   Heading2,
   Heading3,
+  Heading4,
+  Heading5,
   List,
   ListOrdered,
   ListChecks,
@@ -37,6 +39,8 @@ const menuItems = [
   { labelKey: "slash.heading1", descKey: "slash.heading1_desc", icon: "heading-1", command: "formatBlock", value: "<h1>" },
   { labelKey: "slash.heading2", descKey: "slash.heading2_desc", icon: "heading-2", command: "formatBlock", value: "<h2>" },
   { labelKey: "slash.heading3", descKey: "slash.heading3_desc", icon: "heading-3", command: "formatBlock", value: "<h3>" },
+  { labelKey: "slash.heading4", descKey: "slash.heading4_desc", icon: "heading-4", command: "formatBlock", value: "<h4>" },
+  { labelKey: "slash.heading5", descKey: "slash.heading5_desc", icon: "heading-5", command: "formatBlock", value: "<h5>" },
   { labelKey: "slash.bullet_list", descKey: "slash.bullet_list_desc", icon: "list", command: "insertUnorderedList" },
   { labelKey: "slash.numbered_list", descKey: "slash.numbered_list_desc", icon: "list-ordered", command: "insertOrderedList" },
   { labelKey: "slash.task_list", descKey: "slash.task_list_desc", icon: "list-checks", command: "taskList" },
@@ -101,7 +105,7 @@ function getFrecencyScore(id) {
 }
 
 const shortcutHints = {
-  "slash.heading1": "# ", "slash.heading2": "## ", "slash.heading3": "### ",
+  "slash.heading1": "# ", "slash.heading2": "## ", "slash.heading3": "### ", "slash.heading4": "#### ", "slash.heading5": "##### ",
   "slash.bullet_list": "- ", "slash.numbered_list": "1. ",
   "slash.task_list": "- [ ] ", "slash.blockquote": "> ",
   "slash.code_block": "```", "slash.divider": "---",
@@ -189,7 +193,7 @@ function renderItems() {
   menu.innerHTML = html;
 
   createIcons({
-    icons: { Pilcrow, Heading1, Heading2, Heading3, List, ListOrdered, ListChecks, Quote, FileCode, Table, Minus, Workflow },
+    icons: { Pilcrow, Heading1, Heading2, Heading3, Heading4, Heading5, List, ListOrdered, ListChecks, Quote, FileCode, Table, Minus, Workflow },
     attrs: { class: "" },
   });
 

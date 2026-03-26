@@ -1121,6 +1121,8 @@ function handleMarkdownShortcutOnSpace(e, contentEl) {
         { regex: /^#$/, command: "formatBlock", value: "<h1>" },
         { regex: /^##$/, command: "formatBlock", value: "<h2>" },
         { regex: /^###$/, command: "formatBlock", value: "<h3>" },
+        { regex: /^####$/, command: "formatBlock", value: "<h4>" },
+        { regex: /^#####$/, command: "formatBlock", value: "<h5>" },
         { regex: /^[-*]$/, command: "insertUnorderedList" },
         { regex: /^1\.$/, command: "insertOrderedList" },
         { regex: /^>$/, command: "formatBlock", value: "<blockquote>" },

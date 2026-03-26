@@ -124,6 +124,8 @@ function renderEditMode(level) {
             <option value="<h1>">${t("slash.heading1") || "Heading 1"}</option>
             <option value="<h2>">${t("slash.heading2") || "Heading 2"}</option>
             <option value="<h3>">${t("slash.heading3") || "Heading 3"}</option>
+            <option value="<h4>">${t("slash.heading4") || "Heading 4"}</option>
+            <option value="<h5>">${t("slash.heading5") || "Heading 5"}</option>
         </select>`;
 
     const textBtns = [
@@ -368,7 +370,7 @@ function updateFormatState(state) {
 
     if (blockTypeSelect && state.blockType) {
         const tagToValue = {
-            "H1": "<h1>", "H2": "<h2>", "H3": "<h3>",
+            "H1": "<h1>", "H2": "<h2>", "H3": "<h3>", "H4": "<h4>", "H5": "<h5>",
             "P": "<p>", "DIV": "<p>"
         };
         const val = tagToValue[state.blockType] || "<p>";
