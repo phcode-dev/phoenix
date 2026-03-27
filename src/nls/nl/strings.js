@@ -358,6 +358,7 @@ define({
   "LIVE_DEV_CB_ID_PLACEHOLDER": "geen",
   "LIVE_DEV_CB_ALL_WEIGHTS": "Alle gewichten",
   "LIVE_DEV_CB_ALL_STYLES": "Alle stijlen",
+  "LIVE_DEV_HB_TIME": "Tijd",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element niet bewerkbaar - gegenereerd door script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element gekopieerd. Gebruik 'Plakken' om het na het geselecteerde element toe te voegen.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrolt niet mee met de pagina - bewerkingsvakken verborgen",
@@ -1874,6 +1875,7 @@ define({
   "AI_CHAT_MODE_INFO_EDIT": "AI kan bestanden bewerken. Shell-commando's vereisen goedkeuring.",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan bestanden bewerken en commando's uitvoeren zonder goedkeuring.",
   "AI_CHAT_MODE_SWITCH_HINT": "(Shift+Tab om te wisselen)",
+  "AI_CHAT_INPUT_HINT": "Druk op {0} om te verzenden · {1} voor een nieuwe regel",
   "AI_CHAT_BASH_CONFIRM_TITLE": "Commando toestaan?",
   "AI_CHAT_BASH_ALLOW": "Toestaan",
   "AI_CHAT_BASH_DENY": "Weigeren",
@@ -2030,6 +2032,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Nog één ding",
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_INPUT_HINT": "Druk op {0} om te verzenden · {1} voor een nieuwe regel"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd"
 });
