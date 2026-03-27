@@ -1487,6 +1487,7 @@
   "LIVE_DEV_FORMAT_ITALIC": "Italic",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Strikethrough",
   "LIVE_DEV_FORMAT_UNDERLINE": "Underline",
+  "LIVE_DEV_HB_TIME": "Time",
   "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
   "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opens in new tab",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
