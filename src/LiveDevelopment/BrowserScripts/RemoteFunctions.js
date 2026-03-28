@@ -357,6 +357,7 @@ function RemoteFunctions(config = {}) {
             // Container div — sized to the margin box so all rects fit inside it
             const div = window.document.createElement("div");
             div.className = GLOBALS.HIGHLIGHT_CLASSNAME;
+            div.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
             div.trackingElement = element;
             const divStyle = div.style;
             divStyle.position = "absolute";
