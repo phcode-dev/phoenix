@@ -140,7 +140,7 @@ define(function (require, exports, module) {
     // no allow-forms, allow-modals, allow-pointer-lock (not needed for markdown editing).
     // Communication works via MarkdownSync's own message handler (bypasses EventManager origin check).
     const _mdSandboxAttr = Phoenix.isTestWindow ? "" :
-        'sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"';
+        'sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-modals"';
     const MDVIEWR_IFRAME_HTML = `
     <iframe id="${LIVE_PREVIEW_IFRAME_ID}" title="Live Preview" style="border: none"
              width="100%" height="100%" seamless="true"

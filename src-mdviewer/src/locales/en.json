@@ -19,6 +19,7 @@
     "switch_to_reader": "Switch to reader mode",
     "switch_to_edit": "Switch to edit mode",
     "cursor_sync": "Toggle cursor sync",
+    "print": "Print",
     "empty_line_hint": "Type / to insert"
   },
   "sidebar": {

@@ -29,7 +29,8 @@ import {
     MoreHorizontal,
     BookOpen,
     Link2,
-    Link2Off
+    Link2Off,
+    Printer
 } from "lucide";
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
@@ -46,7 +47,7 @@ const THRESHOLD_LISTS = 520;   // then lists
 const THRESHOLD_TEXT = 420;    // finally text formatting
 
 const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
-    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off };
+    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer };
 
 export function initEmbeddedToolbar() {
     toolbar = document.getElementById("toolbar");
@@ -79,6 +80,9 @@ function render() {
 function renderReadMode() {
     toolbar.innerHTML = `<div class="embedded-toolbar">
         <div class="toolbar-spacer"></div>
+        <button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
+            <i data-lucide="printer"></i>
+        </button>
         <button class="toolbar-btn cursor-sync-btn${cursorSyncEnabled ? " active" : ""}" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="${cursorSyncEnabled}">
             <i data-lucide="link-2" class="sync-on-icon"${cursorSyncEnabled ? "" : ' style="display:none"'}></i>
             <i data-lucide="link-2-off" class="sync-off-icon"${cursorSyncEnabled ? ' style="display:none"' : ""}></i>
@@ -94,6 +98,7 @@ function renderReadMode() {
     toolbar.querySelectorAll("svg[data-lucide]").forEach(svg => svg.removeAttribute("data-lucide"));
 
     wireCursorSyncButton();
+    wirePrintButton();
 
     const editBtn = document.getElementById("emb-edit-btn");
     if (editBtn) {
@@ -179,6 +184,9 @@ function renderEditMode(level) {
     toolbar.innerHTML = `<div class="embedded-toolbar">
         ${formatRow}
         <div class="toolbar-spacer"></div>
+        <button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
+            <i data-lucide="printer"></i>
+        </button>
         <button class="toolbar-btn cursor-sync-btn${cursorSyncEnabled ? " active" : ""}" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="${cursorSyncEnabled}">
             <i data-lucide="link-2" class="sync-on-icon"${cursorSyncEnabled ? "" : ' style="display:none"'}></i>
             <i data-lucide="link-2-off" class="sync-off-icon"${cursorSyncEnabled ? ' style="display:none"' : ""}></i>
@@ -199,6 +207,7 @@ function renderEditMode(level) {
         wireDropdowns();
     }
     wireCursorSyncButton();
+    wirePrintButton();
     wireDoneButton();
 }
 
@@ -283,6 +292,15 @@ function wireCursorSyncButton() {
             if (onIcon) onIcon.style.display = cursorSyncEnabled ? "" : "none";
             if (offIcon) offIcon.style.display = cursorSyncEnabled ? "none" : "";
             emit("toggle:cursorSync", { enabled: cursorSyncEnabled });
+        });
+    }
+}
+
+function wirePrintButton() {
+    const printBtn = document.getElementById("emb-print-btn");
+    if (printBtn) {
+        printBtn.addEventListener("click", () => {
+            window.print();
         });
     }
 }

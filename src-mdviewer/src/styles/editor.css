@@ -1243,6 +1243,41 @@
 
 /* ===== Print ===== */
 @media print {
+  @page {
+    margin: 20mm 25mm;
+  }
+
+  /* Force light theme colors for print */
+  :root, [data-theme] {
+    --color-bg: #ffffff !important;
+    --color-bg-secondary: #f6f8fa !important;
+    --color-bg-tertiary: #eaeef2 !important;
+    --color-surface: #ffffff !important;
+    --color-text: #1f2328 !important;
+    --color-text-secondary: #656d76 !important;
+    --color-text-tertiary: #8b949e !important;
+    --color-accent: #0969da !important;
+    --color-border: #d0d7de !important;
+    --color-border-subtle: #e8ecf0 !important;
+    --color-code-bg: #f6f8fa !important;
+    --color-code-text: #1f2328 !important;
+    --color-code-border: #d0d7de !important;
+    --color-link: #0969da !important;
+    --color-alert-note: #0969da !important;
+    --color-alert-note-bg: #ddf4ff !important;
+    --color-alert-tip: #1a7f37 !important;
+    --color-alert-tip-bg: #dafbe1 !important;
+    --color-alert-important: #8250df !important;
+    --color-alert-important-bg: #fbefff !important;
+    --color-alert-warning: #9a6700 !important;
+    --color-alert-warning-bg: #fff8c5 !important;
+    --color-alert-caution: #d1242f !important;
+    --color-alert-caution-bg: #ffebe9 !important;
+    --color-table-border: #d0d7de !important;
+    --color-table-row-alt: #f6f8fa !important;
+  }
+
+  #toolbar,
   .raw-editor-panel,
   .raw-editor-panel .cm-editor,
   .toolbar-edit-group,
@@ -1265,5 +1300,29 @@
   .mermaid-error-bar,
   .toast {
     display: none !important;
+  }
+
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #app {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .app-viewer {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  #viewer-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
   }
 }
