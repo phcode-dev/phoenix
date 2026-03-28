@@ -110,11 +110,11 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
     });
 
-    // live preview spacing handles preference (show/hide spacing handles on element selection)
-    const PREFERENCE_SHOW_SPACING_HANDLES = CONSTANTS.PREFERENCE_SHOW_SPACING_HANDLES;
-    PreferencesManager.definePreference(PREFERENCE_SHOW_SPACING_HANDLES, "boolean", true, {
-        description: Strings.LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE
-    });
+    // Spacing handles preference disabled for this release (incomplete feature).
+    // const PREFERENCE_SHOW_SPACING_HANDLES = CONSTANTS.PREFERENCE_SHOW_SPACING_HANDLES;
+    // PreferencesManager.definePreference(PREFERENCE_SHOW_SPACING_HANDLES, "boolean", true, {
+    //     description: Strings.LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE
+    // });
 
     // live preview sync source and preview preference
     const PREFERENCE_LIVE_PREVIEW_SYNC = CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC;
@@ -359,7 +359,6 @@ define(function (require, exports, module) {
         if (isEditFeaturesActive && isEditMode) {
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
             items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
-            items.push(Strings.LIVE_PREVIEW_SHOW_SPACING_HANDLES);
         }
 
         $dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
@@ -398,12 +397,6 @@ define(function (require, exports, module) {
                     return `✓ ${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
                 }
                 return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
-            } else if (item === Strings.LIVE_PREVIEW_SHOW_SPACING_HANDLES) {
-                const isEnabled = PreferencesManager.get(PREFERENCE_SHOW_SPACING_HANDLES);
-                if(isEnabled) {
-                    return `✓ ${Strings.LIVE_PREVIEW_SHOW_SPACING_HANDLES}`;
-                }
-                return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_SHOW_SPACING_HANDLES}`;
             }
             return item;
         });
@@ -465,15 +458,6 @@ define(function (require, exports, module) {
                 // Toggle ruler lines on/off
                 const currentValue = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
                 PreferencesManager.set(PREFERENCE_SHOW_RULER_LINES, !currentValue);
-                return; // Don't dismiss highlights for this option
-            } else if (item === Strings.LIVE_PREVIEW_SHOW_SPACING_HANDLES) {
-                // Don't allow spacing handles toggle if edit features are not active
-                if (!isEditFeaturesActive) {
-                    return;
-                }
-                // Toggle spacing handles on/off
-                const currentValue = PreferencesManager.get(PREFERENCE_SHOW_SPACING_HANDLES);
-                PreferencesManager.set(PREFERENCE_SHOW_SPACING_HANDLES, !currentValue);
                 return; // Don't dismiss highlights for this option
             }
         });
@@ -1273,17 +1257,13 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
             LiveDevelopment.updateRulerLinesConfig();
         });
-        PreferencesManager.on("change", PREFERENCE_SHOW_SPACING_HANDLES, function() {
-            LiveDevelopment.updateSpacingHandlesConfig();
-        });
         PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_SYNC, function() {
             LiveDevelopment.updateSyncConfig();
         });
 
-        // Initialize element highlight, ruler lines, spacing handles, and sync config on startup
+        // Initialize element highlight, ruler lines, and sync config on startup
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
-        LiveDevelopment.updateSpacingHandlesConfig();
         LiveDevelopment.updateSyncConfig();
 
         LiveDevelopment.openLivePreview();
