@@ -116,10 +116,10 @@ define(function (require, exports, module) {
     //     description: Strings.LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE
     // });
 
-    // live preview sync source and preview preference
+    // live preview link editor and preview preference
     const PREFERENCE_LIVE_PREVIEW_SYNC = CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC;
     PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_SYNC, "boolean", true, {
-        description: Strings.LIVE_DEV_SETTINGS_SYNC_SOURCE_AND_PREVIEW_PREFERENCE
+        description: Strings.LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE
     });
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
@@ -341,22 +341,16 @@ define(function (require, exports, module) {
     function _showModeSelectionDropdown(event) {
         const isEditFeaturesActive = isProEditUser;
         const currentMode = LiveDevelopment.getCurrentMode();
-        const isNotPreviewMode = currentMode !== LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE;
         const items = [
             Strings.LIVE_PREVIEW_MODE_PREVIEW,
             Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
             Strings.LIVE_PREVIEW_MODE_EDIT
         ];
 
-        // Add sync toggle for highlight and edit modes
-        if (isNotPreviewMode) {
-            items.push("---");
-            items.push(Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW);
-        }
-
         // Only add edit-specific options when in edit mode and edit features are active
         const isEditMode = currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE;
         if (isEditFeaturesActive && isEditMode) {
+            items.push("---");
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
             items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
         }
@@ -378,12 +372,6 @@ define(function (require, exports, module) {
                     html: `${checkmark}${item}${crownIcon}`,
                     enabled: true
                 };
-            } else if (item === Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW) {
-                const isEnabled = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_SYNC) !== false;
-                if(isEnabled) {
-                    return `✓ ${Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW}`;
-                }
-                return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW}`;
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 const isHoverMode =
                     PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) === CONSTANTS.HIGHLIGHT_HOVER;
@@ -434,11 +422,6 @@ define(function (require, exports, module) {
                         Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "proUpsellDlg", "fail");
                     }
                 }
-            } else if (item === Strings.LIVE_PREVIEW_SYNC_SOURCE_AND_PREVIEW) {
-                // Toggle sync source and preview on/off
-                const currentValue = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_SYNC);
-                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_SYNC, currentValue === false);
-                return; // Don't dismiss for this option
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 // Don't allow edit highlight toggle if edit features are not active
                 if (!isEditFeaturesActive) {
