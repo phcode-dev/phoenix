@@ -32,12 +32,47 @@ define(function (require, exports, module) {
 
     describe("livepreview:MultiBrowser Live Preview", function () {
 
+        function _getLivePreviewIFrame() {
+            return testWindow.document.getElementById("panel-live-preview-frame");
+        }
+
+        function _getMdPreviewIFrame() {
+            return testWindow.document.getElementById("panel-md-preview-frame");
+        }
+
+        function _getPreviewIFrame() {
+            return _getMdPreviewIFrame() || _getLivePreviewIFrame();
+        }
+
+        function _ensureMdReaderMode() {
+            const mdIFrame = _getMdPreviewIFrame();
+            if (mdIFrame && mdIFrame.contentWindow) {
+                mdIFrame.contentWindow.postMessage({
+                    type: "MDVIEWR_SET_EDIT_MODE",
+                    editMode: false
+                }, "*");
+            }
+        }
+
         async function _waitForIframeSrc(name) {
             await awaitsFor(() => {
-                let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                if (name.endsWith(".md")) {
+                    // For markdown files, check the md iframe is visible with mdViewer loaded
+                    let mdIFrame = _getMdPreviewIFrame();
+                    return mdIFrame && mdIFrame.style.display !== "none" &&
+                        mdIFrame.src && mdIFrame.src.includes("mdViewer");
+                }
+                // For HTML/SVG files, check the live preview iframe src
+                let outerIFrame = _getLivePreviewIFrame();
+                if (!outerIFrame || !outerIFrame.src) { return false; }
                 let srcURL = new URL(outerIFrame.src);
                 return srcURL.pathname.endsWith(name) === true;
             }, "waiting for name- " + name);
+            // Ensure md viewer is in reader mode for tests
+            if (name.endsWith(".md")) {
+                _ensureMdReaderMode();
+                await awaits(100);
+            }
         }
 
         if (Phoenix.isTestWindowPlaywright && !Phoenix.browser.desktop.isChromeBased) {
@@ -873,13 +908,15 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md");
             await awaits(300);
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith("readme.md")).toBeTrue();
+            _ensureMdReaderMode();
+            await awaits(100);
+            let mdIFrame = _getMdPreviewIFrame();
+            expect(mdIFrame && mdIFrame.src && mdIFrame.src.includes("mdViewer")).toBeTrue();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
                 SVG_IMAGE_PATH);
             await awaits(500);
-            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let iFrame = _getLivePreviewIFrame();
             let srcURL = new URL(iFrame.src);
             expect(srcURL.pathname.endsWith(SVG_IMAGE_PATH)).toBeTrue();
 
@@ -988,7 +1025,7 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
 
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let iFrame = _getLivePreviewIFrame();
             expect(iFrame.src.endsWith("simple1.html")).toBeTrue();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md");
@@ -996,8 +1033,10 @@ define(function (require, exports, module) {
             // now make the active editor loose focus and click on the markdown md for it to
             // trigger focus.
             await awaits(300);
-            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(outerIFrame.src.endsWith("readme.md")).toBeTrue();
+            _ensureMdReaderMode();
+            await awaits(100);
+            let outerIFrame = _getMdPreviewIFrame();
+            expect(outerIFrame && outerIFrame.src && outerIFrame.src.includes("mdViewer")).toBeTrue();
             outerIFrame.focus();
             expect(testWindow.document.activeElement).toEqual(outerIFrame);
             outerIFrame.contentWindow.postMessage({
@@ -1022,7 +1061,7 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
 
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let iFrame = _getLivePreviewIFrame();
             expect(iFrame.src.endsWith("simple1.html")).toBeTrue();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md");
@@ -1030,8 +1069,8 @@ define(function (require, exports, module) {
             // now make the active editor loose focus and click on the markdown md for it to
             // trigger focus.
             await awaits(300);
-            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(outerIFrame.src.endsWith("readme.md")).toBeTrue();
+            let outerIFrame = _getMdPreviewIFrame();
+            expect(outerIFrame && outerIFrame.src && outerIFrame.src.includes("mdViewer")).toBeTrue();
             outerIFrame.focus();
             expect(testWindow.document.activeElement).toEqual(outerIFrame);
             // now select some /all text in the markdown and click
@@ -1070,8 +1109,8 @@ define(function (require, exports, module) {
                 "readme.md");
 
             await awaits(300);
-            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(outerIFrame.src.endsWith("readme.md")).toBeTrue();
+            let outerIFrame = _getMdPreviewIFrame();
+            expect(outerIFrame && outerIFrame.src && outerIFrame.src.includes("mdViewer")).toBeTrue();
 
             // todo check hrefs in markdown. currently we do not have mechanism to exec code image and markdown previews
             // in future we should do this check too.
@@ -1174,8 +1213,8 @@ define(function (require, exports, module) {
                 "external proj/test.md");
 
             await awaits(300);
-            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(outerIFrame.src.endsWith("test.md")).toBeTrue();
+            let outerIFrame = _getMdPreviewIFrame();
+            expect(outerIFrame && outerIFrame.src && outerIFrame.src.includes("mdViewer")).toBeTrue();
             await endPreviewSession();
         }, 30000);
 

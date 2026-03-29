@@ -156,6 +156,22 @@ export function initBridge() {
             case "MDVIEWR_IMAGE_UPLOAD_RESULT":
                 _handleImageUploadResult(data);
                 break;
+            case "_TEST_FOCUS_CLICK":
+                document.body.click();
+                break;
+            case "_TEST_SELECT_TEXT_AND_CLICK": {
+                const selection = window.getSelection();
+                const range = document.createRange();
+                range.selectNodeContents(document.body);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                document.body.click();
+                break;
+            }
+            case "_TEST_UNSELECT_TEXT_AND_CLICK":
+                window.getSelection().removeAllRanges();
+                document.body.click();
+                break;
         }
     });
 
