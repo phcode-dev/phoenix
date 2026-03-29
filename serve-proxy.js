@@ -10,6 +10,7 @@ const httpProxy = require('http-proxy');
 const ACCOUNT_PROD = 'https://account.phcode.dev';
 const ACCOUNT_STAGING = 'https://account-stage.phcode.dev';
 const ACCOUNT_DEV = 'http://localhost:5000';
+const ASSETS_SERVER = 'https://assets.phcode.dev';
 
 // Account server configuration - switch between local and production
 let accountServer = ACCOUNT_PROD; // Production
@@ -91,9 +92,11 @@ proxy.on('proxyReq', (proxyReq, req) => {
     const originalReferer = req.headers.referer;
     const originalOrigin = req.headers.origin;
 
-    // Set target host
-    const accountHost = new URL(accountServer).hostname;
-    proxyReq.setHeader('Host', accountHost);
+    // Set target host based on which proxy route is being used
+    const targetHost = req._proxyTarget
+        ? new URL(req._proxyTarget).hostname
+        : new URL(accountServer).hostname;
+    proxyReq.setHeader('Host', targetHost);
 
     // Transform referer from localhost:8000 to phcode.dev
     if (originalReferer && originalReferer.includes('localhost:8000')) {
@@ -328,6 +331,7 @@ const server = http.createServer((req, res) => {
 
         // Modify the request URL for the proxy
         req.url = targetPath + (parsedUrl.search || '');
+        req._proxyTarget = accountServer;
 
         if (!config.silent) {
             console.log(`[PROXY] ${req.method} ${originalUrl} -> ${accountServer}${req.url}`);
@@ -336,6 +340,24 @@ const server = http.createServer((req, res) => {
         // Proxy the request
         proxy.web(req, res, {
             target: accountServer,
+            changeOrigin: true,
+            secure: true
+        });
+        return;
+    }
+
+    if (parsedUrl.pathname.startsWith('/proxy/assets')) {
+        const targetPath = parsedUrl.pathname.replace('/proxy/assets', '');
+        const originalUrl = req.url;
+        req.url = targetPath + (parsedUrl.search || '');
+        req._proxyTarget = ASSETS_SERVER;
+
+        if (!config.silent) {
+            console.log(`[PROXY] ${req.method} ${originalUrl} -> ${ASSETS_SERVER}${req.url}`);
+        }
+
+        proxy.web(req, res, {
+            target: ASSETS_SERVER,
             changeOrigin: true,
             secure: true
         });
@@ -385,6 +407,7 @@ server.listen(config.port, config.host, () => {
         console.log(`  http://${config.host === '0.0.0.0' ? 'localhost' : config.host}:${config.port}`);
         console.log(`Proxy routes:`);
         console.log(`  /proxy/accounts/* -> ${accountServer}/*`);
+        console.log(`  /proxy/assets/* -> ${ASSETS_SERVER}/*`);
         console.log('Hit CTRL-C to stop the server');
     }
 });
