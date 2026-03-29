@@ -30,7 +30,9 @@ import {
     BookOpen,
     Link2,
     Link2Off,
-    Printer
+    Printer,
+    Image as ImageIcon,
+    Upload
 } from "lucide";
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
@@ -42,12 +44,12 @@ let cursorSyncEnabled = true;
 let collapseLevel = 0; // 0=expanded, 1=blocks, 2=blocks+lists, 3=all
 
 // Width thresholds for progressive collapse
-const THRESHOLD_BLOCKS = 640;  // collapse block elements first
+const THRESHOLD_BLOCKS = 640;  // collapse block elements + image first
 const THRESHOLD_LISTS = 520;   // then lists
-const THRESHOLD_TEXT = 420;    // finally text formatting
+const THRESHOLD_TEXT = 500;    // finally text formatting (all dropdowns collapsed)
 
 const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
-    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer };
+    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer, Image: ImageIcon, Upload };
 
 export function initEmbeddedToolbar() {
     toolbar = document.getElementById("toolbar");
@@ -155,6 +157,10 @@ function renderEditMode(level) {
         btn("emb-codeblock", "file-code", t("format.code_block") || "Code block")
     ].join("");
 
+    const imageBtns = `
+        <button class="toolbar-btn toolbar-menu-item" id="emb-image-url"><i data-lucide="link"></i><span>${t("format.image_url") || "Image URL"}</span></button>
+        <button class="toolbar-btn toolbar-menu-item" id="emb-image-upload"><i data-lucide="upload"></i><span>${t("format.image_upload") || "Upload from Computer"}</span></button>`;
+
     // Build the text section (inline or dropdown)
     const textSection = level >= 3
         ? dropdown("text", "type", t("format.text_formatting") || "Text formatting", textBtns)
@@ -170,6 +176,9 @@ function renderEditMode(level) {
         ? dropdown("blocks", "more-horizontal", t("format.more_elements") || "More", blockBtns)
         : blockBtns;
 
+    // Image section is always a dropdown (two options inside)
+    const imageSection = dropdown("image", "image", t("format.image") || "Image", imageBtns);
+
     const formatRow = `
         <div class="format-row">
             ${blockTypeSelect}
@@ -179,6 +188,8 @@ function renderEditMode(level) {
             ${listSection}
             <div class="toolbar-divider"></div>
             ${blockSection}
+            <div class="toolbar-divider"></div>
+            ${imageSection}
         </div>`;
 
     toolbar.innerHTML = `<div class="embedded-toolbar">
@@ -224,7 +235,9 @@ const formatBindings = [
     { id: "emb-quote", command: "formatBlock", value: "<blockquote>" },
     { id: "emb-hr", command: "insertHorizontalRule" },
     { id: "emb-table", command: "table" },
-    { id: "emb-codeblock", command: "codeBlock" }
+    { id: "emb-codeblock", command: "codeBlock" },
+    { id: "emb-image-url", command: "imageFromUrl" },
+    { id: "emb-image-upload", command: "imageUpload" }
 ];
 
 function wireFormatButtons() {

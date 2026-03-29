@@ -127,6 +127,9 @@ define(function (require, exports, module) {
             case "mdviewrCursorSyncToggle":
                 _cursorSyncEnabled = !!data.enabled;
                 break;
+            case "mdviewrImageUploadRequest":
+                _handleImageUploadFromIframe(data);
+                break;
             case "mdviewrKeyboardShortcut":
                 _forwardKeyboardShortcut(data);
                 break;
@@ -651,6 +654,102 @@ define(function (require, exports, module) {
      * Forward an unhandled keyboard shortcut from the mdviewer iframe to Phoenix's
      * keybinding manager by dispatching a synthetic KeyboardEvent on the document.
      */
+
+    /**
+     * Handle image upload request from the mdviewer iframe.
+     * Reconstructs the blob from ArrayBuffer, uploads via ImageUploadManager,
+     * and sends the result back to the iframe.
+     */
+    function _handleImageUploadFromIframe(data) {
+        const ImageUploadManager = require("features/ImageUploadManager");
+        const Dialogs = require("widgets/Dialogs");
+        const Strings = require("strings");
+
+        const { arrayBuffer, mimeType, filename, uploadId } = data;
+        const iframeWindow = _getIframeWindow();
+
+        if (!ImageUploadManager.isImageUploadAvailable()) {
+            if (iframeWindow) {
+                iframeWindow.postMessage({
+                    type: "MDVIEWR_IMAGE_UPLOAD_RESULT",
+                    uploadId,
+                    error: "not_available"
+                }, "*");
+            }
+            return;
+        }
+
+        const blob = new Blob([arrayBuffer], { type: mimeType });
+        const provider = ImageUploadManager.getImageUploadProvider();
+
+        provider.uploadImage(blob, filename).then(function (result) {
+            if (iframeWindow) {
+                if (result.embedURL) {
+                    iframeWindow.postMessage({
+                        type: "MDVIEWR_IMAGE_UPLOAD_RESULT",
+                        uploadId,
+                        embedURL: result.embedURL
+                    }, "*");
+                } else if (result.error === "login_required") {
+                    iframeWindow.postMessage({
+                        type: "MDVIEWR_IMAGE_UPLOAD_RESULT",
+                        uploadId,
+                        error: "login_required"
+                    }, "*");
+                    const dialog = Dialogs.showModalDialog(
+                        "",
+                        Strings.IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE,
+                        Strings.IMAGE_UPLOAD_LOGIN_REQUIRED_MSG,
+                        [
+                            { className: Dialogs.DIALOG_BTN_CLASS_NORMAL, id: Dialogs.DIALOG_BTN_CANCEL,
+                                text: Strings.CANCEL },
+                            { className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: "login",
+                                text: Strings.IMAGE_UPLOAD_LOGIN_BTN }
+                        ]
+                    );
+                    dialog.done(function (id) {
+                        if (id === "login") {
+                            const profileBtn = document.getElementById("user-profile-button");
+                            if (profileBtn) {
+                                profileBtn.click();
+                            }
+                        }
+                    });
+                } else if (result.error !== "cancelled") {
+                    iframeWindow.postMessage({
+                        type: "MDVIEWR_IMAGE_UPLOAD_RESULT",
+                        uploadId,
+                        error: result.error
+                    }, "*");
+                    if (result.errorCode === "UPGRADE_TO_PRO") {
+                        const ProDialogs = require("extensionsIntegrated/phoenix-pro/services/pro-dialogs");
+                        if (ProDialogs && ProDialogs.showUpsellDialog) {
+                            ProDialogs.showUpsellDialog(Strings.IMAGE_UPLOAD_LIMIT_TITLE, result.errorLoc, "imgUpload");
+                        }
+                    } else {
+                        Dialogs.showModalDialog("", Strings.IMAGE_UPLOAD_FAILED, result.errorLoc || Strings.IMAGE_UPLOAD_FAILED);
+                    }
+                } else {
+                    // cancelled — remove placeholder
+                    iframeWindow.postMessage({
+                        type: "MDVIEWR_IMAGE_UPLOAD_RESULT",
+                        uploadId,
+                        error: "cancelled"
+                    }, "*");
+                }
+            }
+        }).catch(function (err) {
+            console.error("Image upload from iframe failed:", err);
+            if (iframeWindow) {
+                iframeWindow.postMessage({
+                    type: "MDVIEWR_IMAGE_UPLOAD_RESULT",
+                    uploadId,
+                    error: "upload_failed"
+                }, "*");
+            }
+        });
+    }
+
     function _forwardKeyboardShortcut(data) {
         const event = new KeyboardEvent("keydown", {
             key: data.key,

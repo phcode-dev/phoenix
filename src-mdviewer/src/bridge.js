@@ -150,6 +150,9 @@ export function initBridge() {
             case "MDVIEWR_RERENDER_CONTENT":
                 handleRerenderContent(data);
                 break;
+            case "MDVIEWR_IMAGE_UPLOAD_RESULT":
+                _handleImageUploadResult(data);
+                break;
         }
     });
 
@@ -316,6 +319,17 @@ export function initBridge() {
     // Edit mode request — ask Phoenix for permission (entitlement check)
     on("request:editMode", () => {
         sendToParent("mdviewrRequestEditMode", {});
+    });
+
+    // Forward image upload request from editor to Phoenix
+    on("bridge:uploadImage", async ({ blob, filename, uploadId }) => {
+        const arrayBuffer = await blob.arrayBuffer();
+        sendToParent("mdviewrImageUploadRequest", {
+            arrayBuffer,
+            mimeType: blob.type,
+            filename,
+            uploadId
+        });
     });
 
     // Cursor sync toggle
@@ -613,6 +627,23 @@ function handleRerenderContent(data) {
     const parseResult = parseMarkdownToHTML(markdown);
     setState({ currentContent: markdown, parseResult });
     emit("file:rendered", parseResult);
+}
+
+function _handleImageUploadResult(data) {
+    const { uploadId, embedURL, error } = data;
+    const content = document.getElementById("viewer-content");
+    if (!content || !uploadId) return;
+    const placeholder = content.querySelector(`img[data-upload-id="${uploadId}"]`);
+    if (!placeholder) return;
+
+    if (embedURL) {
+        placeholder.src = embedURL;
+        placeholder.alt = placeholder.alt === "Uploading..." ? "" : placeholder.alt;
+        placeholder.removeAttribute("data-upload-id");
+    } else {
+        placeholder.remove();
+    }
+    content.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
 

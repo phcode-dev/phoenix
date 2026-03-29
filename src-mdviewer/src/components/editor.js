@@ -428,6 +428,12 @@ export function executeFormat(contentEl, command, value) {
         case "mermaidBlock":
             insertMermaidBlock(contentEl);
             break;
+        case "imageFromUrl":
+            showImageUrlDialog(contentEl);
+            break;
+        case "imageUpload":
+            openImageFilePicker(contentEl);
+            break;
     }
 
     broadcastSelectionState();
@@ -493,6 +499,114 @@ function insertCodeBlock(contentEl) {
             sel.addRange(r);
         }
     });
+}
+
+const UPLOAD_PLACEHOLDER_SRC = "https://user-cdn.phcode.site/images/uploading.svg";
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
+
+function showImageUrlDialog(contentEl) {
+    // Create a simple overlay dialog for entering image URL and alt text
+    const backdrop = document.createElement("div");
+    backdrop.className = "confirm-dialog-backdrop";
+    backdrop.innerHTML = `
+        <div class="confirm-dialog">
+            <h3 class="confirm-dialog-title">${t("image_dialog.title") || "Insert Image URL"}</h3>
+            <div style="margin-bottom: 12px;">
+                <input type="text" id="img-url-input" placeholder="${t("image_dialog.url_placeholder") || "https://example.com/image.png"}"
+                    style="width: 100%; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-bg); color: var(--color-text); margin-bottom: 8px;" />
+                <input type="text" id="img-alt-input" placeholder="${t("image_dialog.alt_placeholder") || "Image description"}"
+                    style="width: 100%; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-bg); color: var(--color-text);" />
+            </div>
+            <div class="confirm-dialog-buttons">
+                <button class="confirm-dialog-btn confirm-dialog-btn-cancel" id="img-dialog-cancel">${t("dialog.cancel") || "Cancel"}</button>
+                <button class="confirm-dialog-btn confirm-dialog-btn-save" id="img-dialog-insert">${t("image_dialog.insert") || "Insert"}</button>
+            </div>
+        </div>`;
+    document.body.appendChild(backdrop);
+
+    const urlInput = backdrop.querySelector("#img-url-input");
+    const altInput = backdrop.querySelector("#img-alt-input");
+    urlInput.focus();
+
+    function close() {
+        backdrop.remove();
+        contentEl.focus({ preventScroll: true });
+    }
+
+    backdrop.querySelector("#img-dialog-cancel").addEventListener("click", close);
+    backdrop.querySelector("#img-dialog-insert").addEventListener("click", () => {
+        const url = urlInput.value.trim();
+        const alt = altInput.value.trim();
+        if (url) {
+            close();
+            const imgHtml = `<img src="${url}" alt="${alt}">`;
+            document.execCommand("insertHTML", false, imgHtml);
+            contentEl.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+    });
+
+    // Enter key inserts, Escape cancels
+    backdrop.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            backdrop.querySelector("#img-dialog-insert").click();
+        } else if (e.key === "Escape") {
+            e.preventDefault();
+            close();
+        }
+    });
+
+    // Click on backdrop closes
+    backdrop.addEventListener("mousedown", (e) => {
+        if (e.target === backdrop) {
+            close();
+        }
+    });
+}
+
+function _insertUploadPlaceholder(contentEl) {
+    const uploadId = crypto.randomUUID();
+    const imgHtml = `<img src="${UPLOAD_PLACEHOLDER_SRC}" alt="Uploading..." data-upload-id="${uploadId}">`;
+    document.execCommand("insertHTML", false, imgHtml);
+    contentEl.dispatchEvent(new Event("input", { bubbles: true }));
+    return uploadId;
+}
+
+function openImageFilePicker(contentEl) {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.addEventListener("change", () => {
+        const file = input.files && input.files[0];
+        if (!file || !ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            return;
+        }
+        const uploadId = _insertUploadPlaceholder(contentEl);
+        emit("bridge:uploadImage", { blob: file, filename: file.name, uploadId });
+    });
+    input.click();
+}
+
+/**
+ * Handle image paste in the mdviewer editor.
+ * @return {boolean} true if an image was found and handled
+ */
+function handleImagePaste(e, contentEl) {
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) {
+        return false;
+    }
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].kind === "file" && ALLOWED_IMAGE_TYPES.includes(items[i].type)) {
+            e.preventDefault();
+            const blob = items[i].getAsFile();
+            const fileName = blob.name || ("image." + blob.type.split("/")[1]);
+            const uploadId = _insertUploadPlaceholder(contentEl);
+            emit("bridge:uploadImage", { blob, filename: fileName, uploadId });
+            return true;
+        }
+    }
+    return false;
 }
 
 // ——— Table editing helpers ———
@@ -1046,6 +1160,11 @@ function sanitizePastedHTML(html) {
 }
 
 function handlePaste(e, contentEl) {
+    // Check for image paste first — upload to cloud
+    if (handleImagePaste(e, contentEl)) {
+        return;
+    }
+
     const mod = isModKey(e);
 
     // Inside table cells: paste as single line plain text (newlines break tables)

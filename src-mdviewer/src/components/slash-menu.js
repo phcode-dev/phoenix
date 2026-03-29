@@ -14,6 +14,8 @@ import {
   Minus,
   Pilcrow,
   Workflow,
+  Image as ImageIcon,
+  Upload,
 } from "lucide";
 import { emit } from "../core/events.js";
 import { getSelectionRect } from "./editor.js";
@@ -48,6 +50,8 @@ const menuItems = [
   { labelKey: "slash.code_block", descKey: "slash.code_block_desc", icon: "file-code", command: "codeBlock" },
   { labelKey: "slash.table", descKey: "slash.table_desc", icon: "table", command: "table" },
   { labelKey: "slash.divider", descKey: "slash.divider_desc", icon: "minus", command: "insertHorizontalRule" },
+  { labelKey: "slash.image_url", descKey: "slash.image_url_desc", icon: "image", command: "imageFromUrl" },
+  { labelKey: "slash.image_upload", descKey: "slash.image_upload_desc", icon: "image", command: "imageUpload" },
   { labelKey: "slash.mermaid", descKey: "slash.mermaid_desc", icon: "workflow", command: "mermaidBlock" },
 ];
 
@@ -193,7 +197,7 @@ function renderItems() {
   menu.innerHTML = html;
 
   createIcons({
-    icons: { Pilcrow, Heading1, Heading2, Heading3, Heading4, Heading5, List, ListOrdered, ListChecks, Quote, FileCode, Table, Minus, Workflow },
+    icons: { Pilcrow, Heading1, Heading2, Heading3, Heading4, Heading5, List, ListOrdered, ListChecks, Quote, FileCode, Table, Minus, Workflow, Image: ImageIcon, Upload },
     attrs: { class: "" },
   });
 

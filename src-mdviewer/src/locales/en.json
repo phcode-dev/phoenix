@@ -78,7 +78,10 @@
     "block_type": "Block type",
     "text_formatting": "Text formatting",
     "lists": "Lists",
-    "more_elements": "More"
+    "more_elements": "More",
+    "image": "Image",
+    "image_url": "Image URL",
+    "image_upload": "Upload from Computer"
   },
   "slash": {
     "paragraph": "Paragraph",
@@ -109,7 +112,17 @@
     "divider_desc": "Horizontal rule",
     "mermaid": "Mermaid diagram",
     "mermaid_desc": "Insert a diagram",
+    "image_url": "Image URL",
+    "image_url_desc": "Embed from URL",
+    "image_upload": "Upload Image",
+    "image_upload_desc": "Upload from computer",
     "no_results": "No results"
+  },
+  "image_dialog": {
+    "title": "Insert Image URL",
+    "url_placeholder": "https://example.com/image.png",
+    "alt_placeholder": "Image description",
+    "insert": "Insert"
   },
   "mermaid": {
     "edit": "Edit",

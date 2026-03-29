@@ -344,3 +344,30 @@ mark[data-markjs].active {
 .toolbar-dropdown.open .toolbar-dropdown-panel {
   display: flex;
 }
+
+/* Menu-style dropdown items with icon + text label */
+.toolbar-dropdown-panel .toolbar-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 12px;
+  white-space: nowrap;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+  text-align: left;
+}
+
+.toolbar-dropdown-panel .toolbar-menu-item:hover {
+  background: var(--color-surface-hover);
+}
+
+/* Image dropdown uses vertical layout, right-aligned to avoid overflow */
+.toolbar-dropdown[data-group="image"] .toolbar-dropdown-panel {
+  flex-direction: column;
+  min-width: 180px;
+  left: auto;
+  right: 0;
+  padding: 4px;
+}
