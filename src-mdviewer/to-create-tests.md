@@ -178,6 +178,16 @@
 - [ ] List buttons remain visible when cursor is in list (for UL/OL switching)
 - [ ] Moving cursor out of list restores all toolbar buttons
 
+## Image Handling
+- [ ] Images not reloaded when editing text in CM (DOM nodes preserved)
+- [ ] GIFs don't blink/restart when editing text elsewhere
+- [ ] Image upload placeholder (uploading.svg) is not preserved across updates
+- [ ] End key near image goes to end of current block (not end of file) on Win/Linux
+- [ ] Home key near image goes to start of current block (not start of file) on Win/Linux
+- [ ] Cmd+Right near image goes to end of block on Mac
+- [ ] Cmd+Left near image goes to start of block on Mac
+- [ ] End/Home work normally on lines without images
+
 ## Heading Editing
 - [ ] Enter at start of heading (|Heading) inserts empty `<p>` above, heading shifts down
 - [ ] Enter in middle of heading splits: text before stays heading, text after becomes `<p>`
