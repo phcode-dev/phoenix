@@ -1835,6 +1835,34 @@ function enterEditMode(content) {
             }
         }
 
+        // Fix End/Home key near images — contenteditable jumps to end/start of
+        // container instead of end/start of current block when cursor is near <img>.
+        // On Mac, Cmd+Right/Left is the equivalent of End/Home.
+        const isEndKey = e.key === "End" || (isMac && e.metaKey && e.key === "ArrowRight");
+        const isHomeKey = e.key === "Home" || (isMac && e.metaKey && e.key === "ArrowLeft");
+        if ((isEndKey || isHomeKey) && !(e.key === "End" && mod) && !(e.key === "Home" && mod)) {
+            const sel = window.getSelection();
+            if (sel && sel.rangeCount) {
+                let node = sel.anchorNode;
+                if (node?.nodeType === Node.TEXT_NODE) node = node.parentElement;
+                const block = node?.closest("p, h1, h2, h3, h4, h5, h6, li, blockquote, td, th");
+                if (block && block.querySelector("img")) {
+                    e.preventDefault();
+                    const range = document.createRange();
+                    if (isEndKey) {
+                        range.selectNodeContents(block);
+                        range.collapse(false);
+                    } else {
+                        range.selectNodeContents(block);
+                        range.collapse(true);
+                    }
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                    return;
+                }
+            }
+        }
+
         // ArrowDown at end of code block → exit to paragraph below
         if (e.key === "ArrowDown" && !mod) {
             const sel = window.getSelection();
