@@ -514,6 +514,7 @@ define({
     "IMAGE_UPLOAD_HOSTED_ON": "Images are hosted on user-cdn.phcode.site",
     "IMAGE_UPLOAD_BTN": "Upload & Embed",
     "IMAGE_UPLOAD_DONT_SHOW_AGAIN": "Always embed without asking",
+    "IMAGE_UPLOAD_UNSUPPORTED_TYPE": "Unsupported image type: {0}",
     "IMAGE_UPLOAD_LIMIT_TITLE": "Upload more images with Phoenix Pro",
     "IMAGE_SEARCH_LIMIT_TITLE": "Image search limit reached",
     "IMAGE_SEARCH_LIMIT_MESSAGE": "You’ve used all {0} image searches for this month.<br>Start a paid Phoenix Pro plan to remove trial limits and continue searching.",

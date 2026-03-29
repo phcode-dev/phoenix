@@ -1352,7 +1352,7 @@ define(function (require, exports, module) {
                 const loginHTML = `<div>
                     <p>${Strings.IMAGE_UPLOAD_LOGIN_REQUIRED_MSG}</p>
                     <div style="text-align: center;">
-                        <img src="${previewURL}" style="max-width: 300px; max-height: 200px; border: 1px solid #ccc; border-radius: 4px; margin: 12px 0;" />
+                        <img src="${previewURL}" style="max-width: 300px; max-height: 200px; border-radius: 4px; margin: 12px 0;" />
                     </div>
                 </div>`;
                 const dialog = Dialogs.showModalDialog(
