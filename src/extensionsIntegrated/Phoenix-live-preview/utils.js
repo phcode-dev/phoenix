@@ -37,6 +37,7 @@
 
 define(function (require, exports, module) {
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
+    const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
     const EditorManager      = require("editor/EditorManager");
     function getExtension(filePath) {
         filePath = filePath || '';
@@ -98,7 +99,8 @@ define(function (require, exports, module) {
         if(!editor){
             return;
         }
-        if (document.activeElement === document.getElementById(LIVE_PREVIEW_IFRAME_ID)) {
+        if (document.activeElement === document.getElementById(LIVE_PREVIEW_IFRAME_ID) ||
+            document.activeElement === document.getElementById(MDVIEWR_IFRAME_ID)) {
             editor.focus();
         }
     }
