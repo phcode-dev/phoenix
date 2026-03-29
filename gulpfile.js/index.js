@@ -145,7 +145,8 @@ function makeJSDist() {
         "!src/thirdparty/no-minify/**/*", "!src/thirdparty/xterm/**/*",
         "!src/LiveDevelopment/BrowserScripts/RemoteFunctions.js",
         "!src/extensionsIntegrated/phoenix-pro/onboarding/**/*",
-        "!src/extensionsIntegrated/phoenix-pro/unit-tests/**/*"])
+        "!src/extensionsIntegrated/phoenix-pro/unit-tests/**/*",
+        "!src/mdViewer/**/*"])
         .pipe(minify({
             ext:{
                 min:'.js'
@@ -180,7 +181,8 @@ function makeNonMinifyDist() {
         "src/thirdparty/xterm/**/*",
         "src/LiveDevelopment/BrowserScripts/RemoteFunctions.js",
         "src/extensionsIntegrated/phoenix-pro/onboarding/**/*",
-        "src/extensionsIntegrated/phoenix-pro/unit-tests/**/*"], {base: 'src'})
+        "src/extensionsIntegrated/phoenix-pro/unit-tests/**/*",
+        "src/mdViewer/**/*"], {base: 'src'})
         .pipe(dest('dist'));
 }
 
@@ -707,7 +709,7 @@ function _makeBracketsConcatJSInternal(isDevBuild = true) {
             `${srcDir}preferences/PreferencesImpl.js` // tests does require magic on prefs, so exclude
         ];
         const pathsToMerge = [];
-        const PathsToIgnore = ["assets", "thirdparty", "extensions"];
+        const PathsToIgnore = ["assets", "thirdparty", "extensions", "mdViewer"];
         for(let dir of fs.readdirSync(srcDir, {withFileTypes: true})){
             if(dir.isDirectory() && !PathsToIgnore.includes(dir.name)){
                 pathsToMerge.push(dir.name);
