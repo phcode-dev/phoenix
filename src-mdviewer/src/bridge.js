@@ -551,10 +551,6 @@ function handleSwitchFile(data) {
 }
 
 function handleClearCache() {
-    // Exit edit mode if active
-    if (getState().editMode) {
-        setState({ editMode: false });
-    }
     docCache.clearAll();
 }
 
