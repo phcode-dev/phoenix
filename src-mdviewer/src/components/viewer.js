@@ -4,6 +4,7 @@ Prism.manual = true;
 import "../core/prism-languages.js";
 import "../styles/syntax/prism-light.css";
 import "../styles/syntax/prism-dark.css";
+import morphdom from "morphdom";
 import { on } from "../core/events.js";
 import { getState } from "../core/state.js";
 import { t } from "../core/i18n.js";
@@ -56,7 +57,9 @@ export function initViewer() {
         const content = getContentEl();
         if (!content) return;
 
-        content.innerHTML = parseResult.html;
+        const newContent = document.createElement("div");
+        newContent.innerHTML = parseResult.html;
+        morphdom(content, newContent, { childrenOnly: true });
         content.dir = "auto";
 
         wrapTables();

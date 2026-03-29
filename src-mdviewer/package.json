@@ -20,6 +20,7 @@
         "medium-zoom": "^1.1.0",
         "mermaid": "^11.12.2",
         "mitt": "^3.0.1",
+        "morphdom": "^2.7.8",
         "prismjs": "^1.29.0",
         "turndown": "^7.2.0",
         "turndown-plugin-gfm": "^1.0.2"
