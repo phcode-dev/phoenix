@@ -926,6 +926,43 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        it("should hide play button and mode dropdown when previewing markdown file", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            // Play button and mode dropdown should be visible for HTML files
+            let $previewBtn = testWindow.$("#previewModeLivePreviewButton");
+            let $modeBtn = testWindow.$("#livePreviewModeBtn");
+            expect($previewBtn.is(":visible")).toBeTrue();
+            expect($modeBtn.is(":visible")).toBeTrue();
+
+            // Open a markdown file
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "readme.md");
+            await awaits(300);
+
+            // Play button and mode dropdown should be hidden for markdown files
+            await awaitsFor(() => {
+                return !testWindow.$("#previewModeLivePreviewButton").is(":visible") &&
+                    !testWindow.$("#livePreviewModeBtn").is(":visible");
+            }, "play button and mode dropdown to be hidden");
+
+            // Switch back to HTML file
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+            await awaits(300);
+
+            // Play button and mode dropdown should be visible again
+            await awaitsFor(() => {
+                return testWindow.$("#previewModeLivePreviewButton").is(":visible") &&
+                    testWindow.$("#livePreviewModeBtn").is(":visible");
+            }, "play button and mode dropdown to be visible again");
+
+            await endPreviewSession();
+        }, 30000);
+
         it("should not live preview binary image files", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
