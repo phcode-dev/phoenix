@@ -105,6 +105,9 @@ const _isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
 export function initBridge() {
     docCache.initDocCache();
 
+    // Expose active file path for test access (test iframes have no sandbox)
+    window.__getActiveFilePath = docCache.getActiveFilePath;
+
     // Listen for messages from Phoenix parent
     window.addEventListener("message", (event) => {
         const data = event.data;

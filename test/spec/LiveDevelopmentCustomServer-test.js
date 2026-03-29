@@ -266,7 +266,7 @@ define(function (require, exports, module) {
         async function _waitForIframeURL(url) {
             await awaitsFor(()=>{
                 let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-                return iFrame.src === url;
+                return iFrame && iFrame.src === url;
             }, "external preview server "+ url);
         }
 
@@ -494,8 +494,13 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md");
             await awaitsFor(()=>{
-                let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-                return iFrame.src.endsWith("readme.md");
+                let mdIFrame = testWindow.document.getElementById("panel-md-preview-frame");
+                if (!mdIFrame || !mdIFrame.contentWindow) { return false; }
+                try {
+                    const activeFile = mdIFrame.contentWindow.__getActiveFilePath
+                        && mdIFrame.contentWindow.__getActiveFilePath();
+                    return activeFile && activeFile.endsWith("readme.md");
+                } catch (e) { return false; }
             }, "readme.md live preview");
 
             // now do html, it should load from the custom server
@@ -663,7 +668,7 @@ define(function (require, exports, module) {
             testWindow.$("#toolbar-go-live").click();
             await awaitsFor(()=>{
                 let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-                if(!iFrame.src) {
+                if(!iFrame || !iFrame.src) {
                     return false;
                 }
                 const url = new URL(iFrame.src);
@@ -774,6 +779,7 @@ define(function (require, exports, module) {
         async function _forSVGLivePreview() {
             await awaitsFor(()=>{
                 let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                if (!iFrame || !iFrame.src) { return false; }
                 let srcURL = new URL(iFrame.src);
                 return srcURL.pathname.endsWith(SVG_IMAGE_PATH);
             }, "For svg image to be in live preview");
@@ -803,11 +809,22 @@ define(function (require, exports, module) {
         }, 30000);
 
         async function _waitForIframeMDFile(name) {
+            // The mdviewer uses a persistent iframe (panel-md-preview-frame) that loads mdViewer/index.html.
+            // Content is sent via postMessage, so we verify by checking the active file path inside the iframe.
             await awaitsFor(()=>{
-                let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-                let srcURL = new URL(outerIFrame.src);
-                return srcURL.pathname.endsWith(name) === true;
-            }, "waiting for name- " + name);
+                let mdIFrame = testWindow.document.getElementById("panel-md-preview-frame");
+                if (!mdIFrame || !mdIFrame.contentWindow) {
+                    return false;
+                }
+                try {
+                    // doc-cache.js exposes activeFilePath — check it ends with the expected name
+                    const activeFile = mdIFrame.contentWindow.__getActiveFilePath
+                        && mdIFrame.contentWindow.__getActiveFilePath();
+                    return activeFile && activeFile.endsWith(name);
+                } catch (e) {
+                    return false;
+                }
+            }, "waiting for md file: " + name);
         }
 
         it("should pin live previews pin markdown file", async function () {
