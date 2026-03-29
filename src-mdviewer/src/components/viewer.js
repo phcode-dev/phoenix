@@ -57,9 +57,31 @@ export function initViewer() {
         const content = getContentEl();
         if (!content) return;
 
-        const newContent = document.createElement("div");
-        newContent.innerHTML = parseResult.html;
-        morphdom(content, newContent, { childrenOnly: true });
+        // Save existing image nodes keyed by src before DOM replacement.
+        // After innerHTML update, find matching <img> by src and swap the
+        // new node with the saved one so the browser doesn't re-fetch.
+        const savedImgs = new Map();
+        content.querySelectorAll("img").forEach(img => {
+            if (img.src && !img.src.includes("uploading.svg")) {
+                savedImgs.set(img.src, img);
+            }
+        });
+
+        content.innerHTML = parseResult.html;
+
+        // Restore saved image nodes to prevent reload
+        if (savedImgs.size > 0) {
+            content.querySelectorAll("img").forEach(newImg => {
+                const saved = savedImgs.get(newImg.src);
+                if (saved) {
+                    // Copy over any changed attributes from the new element
+                    if (saved.alt !== newImg.alt) { saved.alt = newImg.alt; }
+                    if (saved.title !== newImg.title) { saved.title = newImg.title; }
+                    newImg.replaceWith(saved);
+                    savedImgs.delete(newImg.src);
+                }
+            });
+        }
         content.dir = "auto";
 
         wrapTables();
