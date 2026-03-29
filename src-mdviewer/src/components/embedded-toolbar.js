@@ -214,9 +214,7 @@ function renderEditMode(level) {
 
     wireFormatButtons();
     wireBlockTypeSelect();
-    if (level > 0) {
-        wireDropdowns();
-    }
+    wireDropdowns();
     wireCursorSyncButton();
     wirePrintButton();
     wireDoneButton();
