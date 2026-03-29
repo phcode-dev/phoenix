@@ -57,24 +57,30 @@ export function initViewer() {
         const content = getContentEl();
         if (!content) return;
 
-        // Save existing image nodes keyed by src before DOM replacement.
-        // After innerHTML update, find matching <img> by src and swap the
-        // new node with the saved one so the browser doesn't re-fetch.
+        // Save existing image nodes before DOM update. Replace each <img> with
+        // a lightweight placeholder <span> so morphdom doesn't destroy the node.
+        // After morphdom, swap saved images back in by matching src.
         const savedImgs = new Map();
+        const placeholders = new Map();
         content.querySelectorAll("img").forEach(img => {
             if (img.src && !img.src.includes("uploading.svg")) {
+                const placeholder = document.createElement("span");
+                placeholder.dataset.savedImgSrc = img.src;
+                img.replaceWith(placeholder);
                 savedImgs.set(img.src, img);
+                placeholders.set(img.src, placeholder);
             }
         });
 
-        content.innerHTML = parseResult.html;
+        const newContent = document.createElement("div");
+        newContent.innerHTML = parseResult.html;
+        morphdom(content, newContent, { childrenOnly: true });
 
-        // Restore saved image nodes to prevent reload
+        // Restore saved image nodes — find new <img> by src and swap
         if (savedImgs.size > 0) {
             content.querySelectorAll("img").forEach(newImg => {
                 const saved = savedImgs.get(newImg.src);
                 if (saved) {
-                    // Copy over any changed attributes from the new element
                     if (saved.alt !== newImg.alt) { saved.alt = newImg.alt; }
                     if (saved.title !== newImg.title) { saved.title = newImg.title; }
                     newImg.replaceWith(saved);
