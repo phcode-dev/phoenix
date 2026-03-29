@@ -19,7 +19,8 @@
 - [ ] Edit/reader mode preserved globally across file switches
 - [ ] Switching MD → HTML → MD reuses persistent md iframe (no reload)
 - [ ] Closing live preview panel and reopening preserves md iframe and cache
-- [ ] Project switch clears all cached documents
+- [ ] Project switch clears all cached documents but preserves edit/reader mode
+- [ ] Edit mode persists when switching projects (was in edit → open new project md → still edit)
 - [ ] Working set changes sync to iframe (files removed from working set go to LRU)
 - [ ] LRU cache evicts beyond 20 non-working-set files
 - [ ] Reload button (in LP toolbar) re-renders current file, preserves scroll and edit mode
