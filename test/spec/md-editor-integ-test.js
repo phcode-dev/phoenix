@@ -907,6 +907,47 @@ define(function (require, exports, module) {
                 expect(keys.some(k => k.endsWith("doc2.md"))).toBeTrue();
                 expect(keys.some(k => k.endsWith("doc3.md"))).toBeTrue();
             }, 15000);
+
+            it("should files removed from working set move to LRU cache (not evicted)", async function () {
+                const win = _getMdIFrameWin();
+
+                // Open doc1 and doc2 to put them in cache and working set
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 to load");
+
+                await _openMdFileAndWaitForPreview("doc2.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Two"),
+                    "doc2 to load");
+
+                // Both should be in cache and working set
+                await awaitsFor(() => {
+                    const cacheKeys = win.__getCacheKeys();
+                    const wsPaths = win.__getWorkingSetPaths();
+                    return cacheKeys.some(k => k.endsWith("doc1.md")) &&
+                        cacheKeys.some(k => k.endsWith("doc2.md")) &&
+                        wsPaths.some(p => p.endsWith("doc1.md")) &&
+                        wsPaths.some(p => p.endsWith("doc2.md"));
+                }, "doc1 and doc2 in cache and working set");
+
+                // Close doc2 from working set
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE),
+                    "close doc2");
+
+                // doc2 should still be in cache (moved to LRU) but not in working set
+                await awaitsFor(() => {
+                    const cacheKeys = win.__getCacheKeys();
+                    const wsPaths = win.__getWorkingSetPaths();
+                    return cacheKeys.some(k => k.endsWith("doc2.md")) &&
+                        !wsPaths.some(p => p.endsWith("doc2.md"));
+                }, "doc2 in cache (LRU) but not in working set");
+
+                // doc1 should still be in both cache and working set
+                const cacheKeys = win.__getCacheKeys();
+                const wsPaths = win.__getWorkingSetPaths();
+                expect(cacheKeys.some(k => k.endsWith("doc1.md"))).toBeTrue();
+                expect(wsPaths.some(p => p.endsWith("doc1.md"))).toBeTrue();
+            }, 15000);
         });
 
     });

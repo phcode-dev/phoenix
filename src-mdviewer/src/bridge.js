@@ -116,6 +116,9 @@ export function initBridge() {
     window.__getCacheKeys = function () {
         return docCache._getCacheKeysForTest();
     };
+    window.__getWorkingSetPaths = function () {
+        return docCache._getWorkingSetPathsForTest();
+    };
     window.__triggerContentSync = function () {
         const content = document.getElementById("viewer-content");
         if (content) {

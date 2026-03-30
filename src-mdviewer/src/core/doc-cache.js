@@ -48,6 +48,11 @@ export function _getCacheKeysForTest() {
     return Array.from(cache.keys());
 }
 
+/** For test access only — returns the working set paths. */
+export function _getWorkingSetPathsForTest() {
+    return Array.from(workingSetPaths);
+}
+
 /**
  * Get the currently active file path.
  */
