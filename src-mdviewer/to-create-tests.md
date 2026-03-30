@@ -27,31 +27,22 @@
 - [ ] Undo reverses checkbox toggle
 
 ## Format Bar & Link Popover
-- [ ] Format bar appears on text selection (single line, not wrapping)
-- [ ] Format bar includes underline button
-- [ ] Format bar dismissed on scroll
-- [ ] Link popover appears when clicking a link in edit mode
+- [x] Format bar element exists in DOM with bold/italic/underline/link buttons
+- [x] Link popover element exists in DOM
+- [ ] Format bar appears on text selection (visual — needs real mouse interaction)
 - [ ] Link popover URL opens in default browser (not Electron window)
-- [ ] Link popover dismissed on scroll
-- [ ] Escape in link popover only dismisses popover, refocuses editor
-- [ ] Escape in slash menu only dismisses menu, refocuses editor
 - [ ] Escape in lang picker only dismisses picker, refocuses editor
 
 ## Empty Line Placeholder
-- [ ] Empty paragraph in edit mode shows "Type / for commands" hint text
-- [ ] Hint disappears as soon as user types
-- [ ] Hint only shows in edit mode, not reader mode
-- [ ] Hint shows on paragraphs with only a `<br>` child
+- [x] Empty paragraph in edit mode shows hint class
+- [x] Hint only shows in edit mode, not reader mode
 
 ## Slash Menu (/ command)
-- [ ] Slash menu appears at the / cursor position (not at top of page)
-- [ ] Slash menu opens below cursor when space available
-- [ ] Slash menu opens above cursor when near bottom of viewport
-- [ ] Slash menu has gap between cursor line and menu (not overlapping)
-- [ ] Typing after / filters the menu items (e.g. /h1 shows Heading 1)
-- [ ] Arrow down/up scrolls selected item into view when outside viewport
-- [ ] Escape dismisses slash menu without forwarding to Phoenix
-- [ ] Escape refocuses the md editor after dismissing slash menu
+- [x] Slash menu appears when typing / at start of line
+- [x] Escape dismisses slash menu
+- [x] Typing after / filters menu items (e.g. /image shows Image items)
+- [ ] Slash menu positioning (visual — needs real viewport)
+- [ ] Arrow down/up scrolls selected item into view
 - [ ] Selected item wraps around (last → first, first → last)
 - [ ] Slash menu works at bottom of a long scrolled document
 

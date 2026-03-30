@@ -1256,5 +1256,301 @@ define(function (require, exports, module) {
             }, 10000);
         });
 
+        describe("Links & Format Bar", function () {
+
+            async function _openMdFile(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady();
+            }
+
+            beforeAll(async function () {
+                if (testWindow) {
+                    if (LiveDevMultiBrowser.status !== LiveDevMultiBrowser.STATUS_ACTIVE) {
+                        await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                            "open simple.html for live dev");
+                        LiveDevMultiBrowser.open();
+                        await awaitsFor(() =>
+                            LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                        "live dev to open", 20000);
+                    }
+                }
+            }, 30000);
+
+            it("should format bar and link popover elements exist in edit mode", async function () {
+                await _openMdFile("doc1.md");
+                await _enterEditMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                const bar = mdDoc.getElementById("format-bar");
+                expect(bar).not.toBeNull();
+                expect(bar.querySelector("#fb-bold")).not.toBeNull();
+                expect(bar.querySelector("#fb-italic")).not.toBeNull();
+                expect(bar.querySelector("#fb-underline")).not.toBeNull();
+                expect(bar.querySelector("#fb-link")).not.toBeNull();
+
+                const popover = mdDoc.getElementById("link-popover");
+                expect(popover).not.toBeNull();
+            }, 10000);
+
+            it("should adding a link in CM show it in md viewer", async function () {
+                await _openMdFile("doc2.md");
+                await _enterEditMode();
+
+                const cm = EditorManager.getActiveEditor()._codeMirror;
+                const lastLine = cm.lastLine();
+                cm.replaceRange("\n\n[CM Link](https://cm-link-test.example.com)\n",
+                    { line: lastLine, ch: cm.getLine(lastLine).length });
+
+                const mdDoc = _getMdIFrameDoc();
+                await awaitsFor(() => {
+                    const link = mdDoc.querySelector('#viewer-content a[href="https://cm-link-test.example.com"]');
+                    return link && link.textContent.includes("CM Link");
+                }, "link from CM to appear in viewer with correct text");
+            }, 10000);
+
+            it("should editing link URL in CM update it in md viewer", async function () {
+                await _openMdFile("doc2.md");
+                await _enterEditMode();
+
+                const cm = EditorManager.getActiveEditor()._codeMirror;
+                const val = cm.getValue();
+
+                // Add a link
+                cm.replaceRange("\n[Old Link](https://old-url.example.com)\n",
+                    { line: cm.lastLine(), ch: cm.getLine(cm.lastLine()).length });
+
+                const mdDoc = _getMdIFrameDoc();
+                await awaitsFor(() =>
+                    mdDoc.querySelector('#viewer-content a[href="https://old-url.example.com"]') !== null,
+                "old link to appear in viewer");
+
+                // Change the URL in CM
+                const cmVal = cm.getValue();
+                cm.setValue(cmVal.replace("https://old-url.example.com", "https://new-url.example.com"));
+
+                await awaitsFor(() =>
+                    mdDoc.querySelector('#viewer-content a[href="https://new-url.example.com"]') !== null,
+                "updated link URL to appear in viewer");
+
+                // Old URL should be gone
+                expect(mdDoc.querySelector('#viewer-content a[href="https://old-url.example.com"]')).toBeNull();
+            }, 10000);
+
+            it("should removing link markup in CM remove link from md viewer", async function () {
+                await _openMdFile("doc3.md");
+                await _enterEditMode();
+
+                const cm = EditorManager.getActiveEditor()._codeMirror;
+
+                // Add a link
+                cm.replaceRange("\n[Remove Me](https://remove-cm.example.com)\n",
+                    { line: cm.lastLine(), ch: cm.getLine(cm.lastLine()).length });
+
+                const mdDoc = _getMdIFrameDoc();
+                await awaitsFor(() =>
+                    mdDoc.querySelector('#viewer-content a[href="https://remove-cm.example.com"]') !== null,
+                "link to appear");
+
+                // Remove the link markup — replace [text](url) with just text
+                const cmVal = cm.getValue();
+                cm.setValue(cmVal.replace("[Remove Me](https://remove-cm.example.com)", "Remove Me"));
+
+                await awaitsFor(() =>
+                    mdDoc.querySelector('#viewer-content a[href="https://remove-cm.example.com"]') === null,
+                "link to be removed from viewer");
+
+                // Text should still exist
+                await awaitsFor(() => {
+                    const content = mdDoc.getElementById("viewer-content");
+                    return content && content.textContent.includes("Remove Me");
+                }, "text to still exist after link removal");
+            }, 10000);
+        });
+
+        describe("Empty Line Placeholder", function () {
+
+            async function _openMdFile(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady();
+            }
+
+            it("should empty paragraph in edit mode show hint text", async function () {
+                await _openMdFile("doc1.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+
+                // Create an empty paragraph by pressing Enter at end
+                const lastP = content.querySelector("p:last-of-type");
+                if (lastP) {
+                    const range = mdDoc.createRange();
+                    range.selectNodeContents(lastP);
+                    range.collapse(false);
+                    _getMdIFrameWin().getSelection().removeAllRanges();
+                    _getMdIFrameWin().getSelection().addRange(range);
+                    mdDoc.execCommand("insertParagraph");
+                }
+
+                // The new empty paragraph should have the hint class
+                await awaitsFor(() => {
+                    return content.querySelector(".cursor-empty-hint") !== null;
+                }, "empty line hint to appear");
+            }, 10000);
+
+            it("should hint only show in edit mode not reader mode", async function () {
+                // Use doc3 for clean state
+                await _openMdFile("doc3.md");
+                await _enterReaderMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                // No hints in reader mode
+                expect(content.querySelector(".cursor-empty-hint")).toBeNull();
+            }, 10000);
+        });
+
+        describe("Slash Menu", function () {
+
+            async function _openMdFile(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady();
+            }
+
+            function _isSlashMenuVisible() {
+                const mdDoc = _getMdIFrameDoc();
+                const anchor = mdDoc && mdDoc.getElementById("slash-menu-anchor");
+                return anchor && anchor.classList.contains("visible");
+            }
+
+            it("should slash menu appear when typing / at start of line", async function () {
+                await _openMdFile("doc1.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+
+                // Create a new empty paragraph
+                const lastP = content.querySelector("p:last-of-type");
+                if (lastP) {
+                    const range = mdDoc.createRange();
+                    range.selectNodeContents(lastP);
+                    range.collapse(false);
+                    _getMdIFrameWin().getSelection().removeAllRanges();
+                    _getMdIFrameWin().getSelection().addRange(range);
+                    mdDoc.execCommand("insertParagraph");
+                }
+
+                // Type "/" to trigger slash menu
+                mdDoc.execCommand("insertText", false, "/");
+                content.dispatchEvent(new Event("input", { bubbles: true }));
+
+                await awaitsFor(() => _isSlashMenuVisible(),
+                    "slash menu to appear after typing /");
+            }, 10000);
+
+            it("should typing after / filter menu items to show only matches", async function () {
+                await _openMdFile("doc3.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+
+                // Dismiss any leftover slash menu
+                if (_isSlashMenuVisible()) {
+                    content.dispatchEvent(new KeyboardEvent("keydown", {
+                        key: "Escape", code: "Escape", keyCode: 27,
+                        bubbles: true, cancelable: true
+                    }));
+                    await awaitsFor(() => !_isSlashMenuVisible(), "old slash menu to dismiss");
+                }
+
+                // Place cursor at end of last paragraph, create new line, type /
+                const lastP = content.querySelector("p:last-of-type");
+                if (lastP) {
+                    const range = mdDoc.createRange();
+                    range.selectNodeContents(lastP);
+                    range.collapse(false);
+                    _getMdIFrameWin().getSelection().removeAllRanges();
+                    _getMdIFrameWin().getSelection().addRange(range);
+                    mdDoc.execCommand("insertParagraph");
+                }
+
+                // Type / to open menu
+                mdDoc.execCommand("insertText", false, "/");
+                content.dispatchEvent(new Event("input", { bubbles: true }));
+                await awaitsFor(() => _isSlashMenuVisible(), "slash menu to appear");
+
+                // Get total items count
+                const anchor = mdDoc.getElementById("slash-menu-anchor");
+                const totalCount = anchor.querySelectorAll(".slash-menu-item").length;
+
+                // Now type "image" character by character to filter
+                for (const ch of "image") {
+                    mdDoc.execCommand("insertText", false, ch);
+                    content.dispatchEvent(new Event("input", { bubbles: true }));
+                }
+
+                await awaitsFor(() => {
+                    const items = anchor.querySelectorAll(".slash-menu-item");
+                    // Filtered count should be less than total and items should contain "image"
+                    return items.length > 0 && items.length < totalCount;
+                }, "slash menu to filter to image items");
+
+                // Verify remaining items contain "image"
+                const filtered = anchor.querySelectorAll(".slash-menu-item");
+                for (const item of filtered) {
+                    expect(item.textContent.toLowerCase()).toContain("image");
+                }
+
+                // Dismiss
+                content.dispatchEvent(new KeyboardEvent("keydown", {
+                    key: "Escape", code: "Escape", keyCode: 27,
+                    bubbles: true, cancelable: true
+                }));
+            }, 10000);
+
+            it("should Escape dismiss slash menu", async function () {
+                // Open slash menu
+                if (!_isSlashMenuVisible()) {
+                    await _openMdFile("doc1.md");
+                    await _enterEditMode();
+                    await _focusMdContent();
+
+                    const mdDoc = _getMdIFrameDoc();
+                    const content = mdDoc.getElementById("viewer-content");
+                    const lastP = content.querySelector("p:last-of-type");
+                    if (lastP) {
+                        const range = mdDoc.createRange();
+                        range.selectNodeContents(lastP);
+                        range.collapse(false);
+                        _getMdIFrameWin().getSelection().removeAllRanges();
+                        _getMdIFrameWin().getSelection().addRange(range);
+                        mdDoc.execCommand("insertParagraph");
+                    }
+                    mdDoc.execCommand("insertText", false, "/");
+                    content.dispatchEvent(new Event("input", { bubbles: true }));
+                    await awaitsFor(() => _isSlashMenuVisible(), "slash menu to appear");
+                }
+
+                // Dispatch Escape on the content element (where keydown is listened)
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                content.dispatchEvent(new KeyboardEvent("keydown", {
+                    key: "Escape", code: "Escape", keyCode: 27,
+                    bubbles: true, cancelable: true
+                }));
+
+                await awaitsFor(() => !_isSlashMenuVisible(),
+                    "slash menu to dismiss on Escape");
+            }, 10000);
+        });
+
     });
 });
