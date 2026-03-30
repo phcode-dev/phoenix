@@ -1,17 +1,18 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
 ## Keyboard Shortcut Forwarding
-- [ ] Ctrl+S in edit mode triggers Phoenix save (not consumed by md editor)
+- [x] Ctrl+S in edit mode triggers Phoenix save (not consumed by md editor)
 - [ ] Ctrl+P in edit mode opens Quick Open
-- [ ] Ctrl+Shift+F in edit mode opens Find in Files
-- [ ] Ctrl+B/I/U in edit mode applies bold/italic/underline (not forwarded)
-- [ ] Ctrl+K in edit mode opens link input (not forwarded)
-- [ ] Ctrl+Shift+X in edit mode applies strikethrough (not forwarded)
-- [ ] Ctrl+Z/Y in edit mode triggers undo/redo via CM (routed through Phoenix undo stack)
-- [ ] Ctrl+A/C/V/X in edit mode work natively (select all, copy, paste, cut)
-- [ ] Escape in edit mode sends focus back to Phoenix editor
-- [ ] F-key shortcuts (e.g. F8 for live preview toggle) work in edit mode
-- [ ] F-key shortcuts work in reader mode
+- [x] Ctrl+Shift+F in edit mode opens Find in Files
+- [x] Ctrl+B/I/U in edit mode applies bold/italic/underline (not forwarded)
+- [x] Ctrl+K in edit mode opens link input (not forwarded)
+- [x] Ctrl+Shift+X in edit mode applies strikethrough (not forwarded)
+- [x] Ctrl+Z/Y/Shift+Z in edit mode triggers undo/redo via CM (routed through Phoenix undo stack)
+- [x] Ctrl+A in edit mode selects all text natively (C/V/X not testable due to browser security)
+- [x] Escape in edit mode sends focus back to Phoenix editor
+- [x] F-key shortcuts (e.g. F8 for live preview toggle) work in edit mode
+- [x] F-key shortcuts work in reader mode
+- [ ] All of the above work in both reader and edit mode
 
 ## Document Cache & File Switching
 - [ ] Switching between two MD files is instant (no re-render, DOM cached)

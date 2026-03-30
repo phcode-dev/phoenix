@@ -1396,6 +1396,22 @@ function createTurndown() {
         }
     });
 
+    // Preserve <u> as HTML in markdown (no native markdown equivalent)
+    td.addRule("underline", {
+        filter: ["u"],
+        replacement(content) {
+            return "<u>" + content + "</u>";
+        }
+    });
+
+    // Preserve <s>/<strike>/<del> as ~~ strikethrough
+    td.addRule("strikethrough", {
+        filter: ["s", "strike", "del"],
+        replacement(content) {
+            return "~~" + content + "~~";
+        }
+    });
+
     td.addRule("taskListCheckbox", {
         filter(node) {
             return node.nodeName === "INPUT" &&

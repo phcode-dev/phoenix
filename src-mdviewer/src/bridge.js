@@ -105,8 +105,20 @@ const _isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
 export function initBridge() {
     docCache.initDocCache();
 
-    // Expose active file path for test access (test iframes have no sandbox)
+    // Expose helpers for test access (test iframes have no sandbox)
     window.__getActiveFilePath = docCache.getActiveFilePath;
+    window.__setEditModeForTest = function (editMode) {
+        setState({ editMode });
+    };
+    window.__isSuppressingContentChange = function () {
+        return _suppressContentChange;
+    };
+    window.__triggerContentSync = function () {
+        const content = document.getElementById("viewer-content");
+        if (content) {
+            content.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+    };
 
     // Listen for messages from Phoenix parent
     window.addEventListener("message", (event) => {
