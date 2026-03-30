@@ -403,6 +403,12 @@ export function initLinkPopover(editorEl) {
   document.addEventListener("selectionchange", updatePosition);
   contentEl.addEventListener("mouseup", updatePosition);
   contentEl.addEventListener("keyup", updatePosition);
+  // Dismiss on click outside the popover
+  document.addEventListener("mousedown", (e) => {
+    if (popover && popover.classList.contains("visible") && !popover.contains(e.target)) {
+      hide();
+    }
+  });
   // Dismiss on scroll
   const appViewer = document.getElementById("app-viewer");
   if (appViewer) {
