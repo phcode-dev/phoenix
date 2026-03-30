@@ -306,7 +306,9 @@ function broadcastSelectionState() {
             isLink: isInsideTag("A"),
             isCode: isInsideTag("CODE"),
             inTable: isInsideTableOrWrapper(),
-            inList: isInsideTag("LI")
+            inList: isInsideTag("LI"),
+            inHeading: isInsideTag("H1") || isInsideTag("H2") || isInsideTag("H3") ||
+                isInsideTag("H4") || isInsideTag("H5") || isInsideTag("H6")
         };
         emit("editor:selection-state", state);
 
@@ -368,6 +370,16 @@ function updateEmptyLineHint(contentEl) {
 
 export function executeFormat(contentEl, command, value) {
     contentEl.focus({ preventScroll: true });
+
+    // Block bold in headings (headings are inherently bold)
+    if (command === "bold") {
+        const sel = window.getSelection();
+        let node = sel?.anchorNode;
+        if (node?.nodeType === Node.TEXT_NODE) { node = node.parentElement; }
+        if (node?.closest("h1, h2, h3, h4, h5, h6")) {
+            return;
+        }
+    }
 
     switch (command) {
         case "bold":

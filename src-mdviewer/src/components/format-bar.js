@@ -248,6 +248,12 @@ function onSelectionState(state) {
     el.classList.toggle("active", active);
     el.setAttribute("aria-pressed", String(active));
   }
+  // Disable bold in headings (headings are already bold)
+  const boldBtn = document.getElementById("fb-bold");
+  if (boldBtn) {
+    boldBtn.style.opacity = state.inHeading ? "0.3" : "";
+    boldBtn.style.pointerEvents = state.inHeading ? "none" : "";
+  }
 }
 
 export function initFormatBar(editorEl) {

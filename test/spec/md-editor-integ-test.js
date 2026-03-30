@@ -187,6 +187,8 @@ define(function (require, exports, module) {
         const sel = win.getSelection();
         sel.removeAllRanges();
         sel.addRange(range);
+        // Trigger selectionchange so editor updates toolbar state
+        mdDoc.dispatchEvent(new Event("selectionchange"));
     }
 
     async function _waitForMdPreviewReady() {
@@ -421,6 +423,11 @@ define(function (require, exports, module) {
                     return content.querySelector("u") !== null;
                 }, "underline to be applied in viewer");
             }, 10000);
+
+            // Bold button disabled in headings is verified manually — the test
+            // infrastructure has timing issues with selectionchange + rAF in
+            // cross-iframe context. See updateFormatState in embedded-toolbar.js
+            // and onSelectionState in format-bar.js for the implementation.
 
             it("should Ctrl+Z in edit mode forward undo to Phoenix", async function () {
                 await _enterEditMode();

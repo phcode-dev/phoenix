@@ -391,6 +391,13 @@ function updateFormatState(state) {
     for (const dd of listDropdowns) {
         dd.style.display = state.inTable ? "none" : "";
     }
+    // Disable bold button in headings (headings are already bold)
+    const boldBtn = document.getElementById("emb-bold");
+    if (boldBtn) {
+        boldBtn.style.opacity = state.inHeading ? "0.3" : "";
+        boldBtn.style.pointerEvents = state.inHeading ? "none" : "";
+    }
+
     // Hide block type selector in tables and lists
     const blockTypeSelect = document.getElementById("emb-block-type");
     if (blockTypeSelect) {
