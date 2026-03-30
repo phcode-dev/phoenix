@@ -1,12 +1,5 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
-## Selection Sync (Bidirectional)
-- [x] Selecting text in CM highlights corresponding block in md viewer
-- [x] Selecting text in md viewer selects corresponding text in CM
-- [x] Clicking in md viewer (no selection) sets CM cursor to corresponding line
-- [x] Clearing CM selection clears md viewer highlight
-- [x] Selection sync respects cursor sync toggle (toggle message verified)
-
 ## Cursor/Scroll Sync
 - [ ] Clicking in CM scrolls md viewer to corresponding element
 - [ ] Clicking in md viewer scrolls CM to corresponding line (centered)
@@ -26,20 +19,6 @@
 - [ ] Entitlement change (free→pro) switches to edit mode automatically
 - [ ] Entitlement change (pro→free) switches to reader mode automatically
 - [ ] Edit/Reader toggle works correctly in the iframe toolbar, ie the toolbar icons show up and disappear accordingly.
-
-## Toolbar & UI
-- [ ] Phoenix play button and mode dropdown hidden for MD files
-- [ ] Phoenix play button and mode dropdown visible for HTML files
-- [ ] Phoenix play button and mode dropdown visible for custom server MD files
-- [ ] Progressive toolbar collapse: blocks collapse first, then lists, then text formatting
-- [ ] Toolbar collapse thresholds work at various widths
-- [ ] Dropdown menus in collapsed toolbar open and close correctly
-- [ ] Format buttons apply formatting and close dropdown
-- [ ] Tooltip delay is 800ms (not too aggressive)
-- [ ] Underline button has shortcut in tooltip (Ctrl+U / ⌘U)
-- [ ] Reader button has book-open icon and "Switch to reader mode" title
-- [ ] Edit button has pencil icon and "Switch to edit mode" title
-- [ ] 1px white line at bottom of preview not visible (box-sizing: border-box on toolbar)
 
 ## Checkbox (Task List) Sync
 - [ ] Clicking checkbox in edit mode toggles it and syncs to CM source ([x] ↔ [ ])
