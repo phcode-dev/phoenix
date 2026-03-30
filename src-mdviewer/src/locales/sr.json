@@ -67,7 +67,12 @@
     "table": "Табела",
     "task_list": "Листа задатака",
     "text_formatting": "Форматирање текста",
-    "underline": "Подвучено"
+    "heading4": "Наслов 4",
+    "heading5": "Наслов 5",
+    "image": "Слика",
+    "image_upload": "Отпреми са рачунара",
+    "image_url": "URL слике",
+    "underline": "Подвучено ({mod}+U)"
   },
   "help": {
     "editing": "Уређивање",
@@ -147,7 +152,15 @@
     "table": "Табела",
     "table_desc": "Табела 3×3",
     "task_list": "Листа задатака",
-    "task_list_desc": "Контролна листа"
+    "task_list_desc": "Контролна листа",
+    "heading4": "Наслов 4",
+    "heading4_desc": "Мањи наслов",
+    "heading5": "Наслов 5",
+    "heading5_desc": "Најмањи наслов",
+    "image_upload": "Отпреми слику",
+    "image_upload_desc": "Отпремање са рачунара",
+    "image_url": "URL слике",
+    "image_url_desc": "Угради са URL-а"
   },
   "table": {
     "add_col_left": "Додај колону лево",
@@ -163,10 +176,10 @@
     "insert_row_above": "Уметни ред изнад",
     "insert_row_below": "Уметни ред испод",
     "new_row": "+ Нови ред",
-    "row_options": "Опције реда {n}"
+    "row_options": "Опције реда {n}",
+    "delete_table": "Обриши табелу"
   },
   "toolbar": {
-    "done": "Готово",
     "edit": "Уреди",
     "export_pdf": "Извези PDF",
     "focus": "Режим фокуса",
@@ -181,7 +194,13 @@
     "toc": "Садржај",
     "zoom_in": "Увећај",
     "zoom_out": "Умањи",
-    "zoom_reset": "Ресетуј зум"
+    "zoom_reset": "Ресетуј зум",
+    "cursor_sync": "Укључи/искључи синхронизацију курсора",
+    "empty_line_hint": "Укуцајте / за уметање",
+    "print": "Штампај",
+    "reader": "Читач",
+    "switch_to_edit": "Пређи у режим за уређивање",
+    "switch_to_reader": "Пређи у режим за читање"
   },
   "trial": {
     "days_remaining": "{days} дана преостало у пробном периоду",
@@ -207,5 +226,11 @@
     "open_button": "Отвори датотеку",
     "subtitle": "Прелеп Markdown прегледач",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Опис слике",
+    "insert": "Уметни",
+    "title": "Уметни URL слике",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

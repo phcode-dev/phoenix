@@ -67,7 +67,12 @@
     "table": "Tabel",
     "task_list": "Takenlijst",
     "text_formatting": "Tekstopmaak",
-    "underline": "Onderstrepen"
+    "heading4": "Kop 4",
+    "heading5": "Kop 5",
+    "image": "Afbeelding",
+    "image_upload": "Uploaden vanaf computer",
+    "image_url": "Afbeeldings-URL",
+    "underline": "Onderstrepen ({mod}+U)"
   },
   "help": {
     "editing": "Bewerken",
@@ -147,7 +152,15 @@
     "table": "Tabel",
     "table_desc": "3×3 tabel",
     "task_list": "Takenlijst",
-    "task_list_desc": "Checklist"
+    "task_list_desc": "Checklist",
+    "heading4": "Kop 4",
+    "heading4_desc": "Kleinere kop",
+    "heading5": "Kop 5",
+    "heading5_desc": "Kleinste kop",
+    "image_upload": "Afbeelding uploaden",
+    "image_upload_desc": "Uploaden vanaf computer",
+    "image_url": "Afbeeldings-URL",
+    "image_url_desc": "Insluiten vanaf URL"
   },
   "table": {
     "add_col_left": "Kolom links toevoegen",
@@ -163,10 +176,10 @@
     "insert_row_above": "Rij boven invoegen",
     "insert_row_below": "Rij onder invoegen",
     "new_row": "+ Nieuwe rij",
-    "row_options": "Opties voor rij {n}"
+    "row_options": "Opties voor rij {n}",
+    "delete_table": "Tabel verwijderen"
   },
   "toolbar": {
-    "done": "Klaar",
     "edit": "Bewerken",
     "export_pdf": "Exporteer PDF",
     "focus": "Focusmodus",
@@ -181,7 +194,13 @@
     "toc": "Inhoudsopgave",
     "zoom_in": "Inzoomen",
     "zoom_out": "Uitzoomen",
-    "zoom_reset": "Zoom herstellen"
+    "zoom_reset": "Zoom herstellen",
+    "cursor_sync": "Cursorsynchronisatie in-/uitschakelen",
+    "empty_line_hint": "Typ / om in te voegen",
+    "print": "Afdrukken",
+    "reader": "Leesmodus",
+    "switch_to_edit": "Overschakelen naar bewerkmodus",
+    "switch_to_reader": "Overschakelen naar leesmodus"
   },
   "trial": {
     "days_remaining": "Nog {days} dagen in proefperiode",
@@ -207,5 +226,11 @@
     "open_button": "Bestand openen",
     "subtitle": "Een prachtige Markdown-viewer",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Afbeeldingsbeschrijving",
+    "insert": "Invoegen",
+    "title": "Afbeeldings-URL invoegen",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

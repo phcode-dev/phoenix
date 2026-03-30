@@ -67,7 +67,12 @@
     "table": "Таблица",
     "task_list": "Списък със задачи",
     "text_formatting": "Форматиране на текст",
-    "underline": "Подчертан текст"
+    "heading4": "Заглавие 4",
+    "heading5": "Заглавие 5",
+    "image": "Изображение",
+    "image_upload": "Качване от компютъра",
+    "image_url": "URL на изображението",
+    "underline": "Подчертаване ({mod}+U)"
   },
   "help": {
     "editing": "Редактиране",
@@ -147,7 +152,15 @@
     "table": "Таблица",
     "table_desc": "Таблица 3×3",
     "task_list": "Списък със задачи",
-    "task_list_desc": "Списък за проверка"
+    "task_list_desc": "Списък за проверка",
+    "heading4": "Заглавие 4",
+    "heading4_desc": "По-малко заглавие",
+    "heading5": "Заглавие 5",
+    "heading5_desc": "Най-малко заглавие",
+    "image_upload": "Качване на изображение",
+    "image_upload_desc": "Качване от компютъра",
+    "image_url": "URL на изображение",
+    "image_url_desc": "Вграждане от URL"
   },
   "table": {
     "add_col_left": "Добави колона вляво",
@@ -163,10 +176,10 @@
     "insert_row_above": "Вмъкни ред отгоре",
     "insert_row_below": "Вмъкни ред отдолу",
     "new_row": "+ Нов ред",
-    "row_options": "Опции за ред {n}"
+    "row_options": "Опции за ред {n}",
+    "delete_table": "Изтриване на таблица"
   },
   "toolbar": {
-    "done": "Готово",
     "edit": "Редактиране",
     "export_pdf": "Експорт в PDF",
     "focus": "Режим на фокус",
@@ -181,7 +194,13 @@
     "toc": "Съдържание",
     "zoom_in": "Увеличаване",
     "zoom_out": "Намаляване",
-    "zoom_reset": "Нулиране на мащаба"
+    "zoom_reset": "Нулиране на мащаба",
+    "cursor_sync": "Превключване на синхронизацията на курсора",
+    "empty_line_hint": "Въведете / за вмъкване",
+    "print": "Печат",
+    "reader": "Четец",
+    "switch_to_edit": "Премини към режим на редактиране",
+    "switch_to_reader": "Премини към режим на четене"
   },
   "trial": {
     "days_remaining": "Остават {days} дни от пробния период",
@@ -207,5 +226,11 @@
     "open_button": "Отвори файл",
     "subtitle": "Красив преглед на Markdown",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Описание на изображението",
+    "insert": "Вмъкване",
+    "title": "Вмъкване на URL на изображение",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

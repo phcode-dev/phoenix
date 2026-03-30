@@ -67,7 +67,12 @@
     "table": "جدول",
     "task_list": "فهرست کارها",
     "text_formatting": "قالب‌بندی متن",
-    "underline": "زیرخط"
+    "heading4": "سرتیتر ۴",
+    "heading5": "سرتیتر ۵",
+    "image": "تصویر",
+    "image_upload": "بارگذاری از رایانه",
+    "image_url": "URL تصویر",
+    "underline": "زیرخط ({mod}+U)"
   },
   "help": {
     "editing": "ویرایش",
@@ -147,7 +152,15 @@
     "table": "جدول",
     "table_desc": "جدول ۳×۳",
     "task_list": "فهرست وظایف",
-    "task_list_desc": "چک‌لیست"
+    "task_list_desc": "چک‌لیست",
+    "heading4": "سرتیتر ۴",
+    "heading4_desc": "سرتیتر کوچک‌تر",
+    "heading5": "سرتیتر ۵",
+    "heading5_desc": "کوچک‌ترین سرتیتر",
+    "image_upload": "بارگذاری تصویر",
+    "image_upload_desc": "بارگذاری از رایانه",
+    "image_url": "URL تصویر",
+    "image_url_desc": "جاسازی از آدرس اینترنتی"
   },
   "table": {
     "add_col_left": "افزودن ستون به چپ",
@@ -163,10 +176,10 @@
     "insert_row_above": "درج ردیف در بالا",
     "insert_row_below": "درج ردیف در پایین",
     "new_row": "+ سطر جدید",
-    "row_options": "گزینه‌های سطر {n}"
+    "row_options": "گزینه‌های سطر {n}",
+    "delete_table": "حذف جدول"
   },
   "toolbar": {
-    "done": "انجام شد",
     "edit": "ویرایش",
     "export_pdf": "خروجی PDF",
     "focus": "حالت تمرکز",
@@ -181,7 +194,13 @@
     "toc": "فهرست مطالب",
     "zoom_in": "بزرگ‌نمایی",
     "zoom_out": "کوچک‌نمایی",
-    "zoom_reset": "بازنشانی بزرگ‌نمایی"
+    "zoom_reset": "بازنشانی بزرگ‌نمایی",
+    "cursor_sync": "تغییر وضعیت همگام‌سازی نشانگر",
+    "empty_line_hint": "برای درج / را تایپ کنید",
+    "print": "چاپ",
+    "reader": "خواننده",
+    "switch_to_edit": "تغییر به حالت ویرایش",
+    "switch_to_reader": "تغییر به حالت خواننده"
   },
   "trial": {
     "days_remaining": "{days} روز از دوره آزمایشی باقی‌مانده",
@@ -207,5 +226,11 @@
     "open_button": "باز کردن فایل",
     "subtitle": "یک نمایشگر زیبای مارک‌داون",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "توضیحات تصویر",
+    "insert": "درج",
+    "title": "درج URL تصویر",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

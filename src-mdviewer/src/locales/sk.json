@@ -67,7 +67,12 @@
     "table": "Tabuľka",
     "task_list": "Zoznam úloh",
     "text_formatting": "Formátovanie textu",
-    "underline": "Podčiarknuté"
+    "heading4": "Nadpis 4",
+    "heading5": "Nadpis 5",
+    "image": "Obrázok",
+    "image_upload": "Nahrať z počítača",
+    "image_url": "URL obrázka",
+    "underline": "Podčiarknuté ({mod}+U)"
   },
   "help": {
     "editing": "Úpravy",
@@ -147,7 +152,15 @@
     "table": "Tabuľka",
     "table_desc": "Tabuľka 3×3",
     "task_list": "Zoznam úloh",
-    "task_list_desc": "Kontrolný zoznam"
+    "task_list_desc": "Kontrolný zoznam",
+    "heading4": "Nadpis 4",
+    "heading4_desc": "Menší nadpis",
+    "heading5": "Nadpis 5",
+    "heading5_desc": "Najmenší nadpis",
+    "image_upload": "Nahrať obrázok",
+    "image_upload_desc": "Nahrať z počítača",
+    "image_url": "URL obrázka",
+    "image_url_desc": "Vložiť z URL"
   },
   "table": {
     "add_col_left": "Pridať stĺpec vľavo",
@@ -163,10 +176,10 @@
     "insert_row_above": "Vložiť riadok nad",
     "insert_row_below": "Vložiť riadok pod",
     "new_row": "+ Nový riadok",
-    "row_options": "Možnosti riadka {n}"
+    "row_options": "Možnosti riadka {n}",
+    "delete_table": "Odstrániť tabuľku"
   },
   "toolbar": {
-    "done": "Hotovo",
     "edit": "Upraviť",
     "export_pdf": "Exportovať PDF",
     "focus": "Režim sústredenia",
@@ -181,7 +194,13 @@
     "toc": "Obsah",
     "zoom_in": "Priblížiť",
     "zoom_out": "Oddialiť",
-    "zoom_reset": "Obnoviť priblíženie"
+    "zoom_reset": "Obnoviť priblíženie",
+    "cursor_sync": "Prepnúť synchronizáciu kurzora",
+    "empty_line_hint": "Napíšte / pre vloženie",
+    "print": "Tlačiť",
+    "reader": "Čítačka",
+    "switch_to_edit": "Prepnúť do režimu úprav",
+    "switch_to_reader": "Prepnúť do režimu čítačky"
   },
   "trial": {
     "days_remaining": "Zostáva {days} dní v skúšobnej verzii",
@@ -207,5 +226,11 @@
     "open_button": "Otvoriť súbor",
     "subtitle": "Krásny prehliadač Markdownu",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Popis obrázka",
+    "insert": "Vložiť",
+    "title": "Vložiť URL obrázka",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

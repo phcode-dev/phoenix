@@ -67,7 +67,12 @@
     "table": "Tabel",
     "task_list": "Listă de sarcini",
     "text_formatting": "Formatare text",
-    "underline": "Subliniat"
+    "heading4": "Titlu 4",
+    "heading5": "Titlu 5",
+    "image": "Imagine",
+    "image_upload": "Încărcare de pe computer",
+    "image_url": "URL imagine",
+    "underline": "Subliniere ({mod}+U)"
   },
   "help": {
     "editing": "Editare",
@@ -147,7 +152,15 @@
     "table": "Tabel",
     "table_desc": "Tabel 3×3",
     "task_list": "Listă de sarcini",
-    "task_list_desc": "Listă de verificare"
+    "task_list_desc": "Listă de verificare",
+    "heading4": "Titlu 4",
+    "heading4_desc": "Titlu mai mic",
+    "heading5": "Titlu 5",
+    "heading5_desc": "Cel mai mic titlu",
+    "image_upload": "Încarcă imagine",
+    "image_upload_desc": "Încarcă de pe computer",
+    "image_url": "URL imagine",
+    "image_url_desc": "Încorporează de la URL"
   },
   "table": {
     "add_col_left": "Adaugă coloană la stânga",
@@ -163,10 +176,10 @@
     "insert_row_above": "Inserează rând deasupra",
     "insert_row_below": "Inserează rând dedesubt",
     "new_row": "+ Rând nou",
-    "row_options": "Opțiuni rând {n}"
+    "row_options": "Opțiuni rând {n}",
+    "delete_table": "Șterge tabelul"
   },
   "toolbar": {
-    "done": "Gata",
     "edit": "Editare",
     "export_pdf": "Exportare PDF",
     "focus": "Mod Concentrare",
@@ -181,7 +194,13 @@
     "toc": "Cuprins",
     "zoom_in": "Mărire",
     "zoom_out": "Micșorare",
-    "zoom_reset": "Resetare zoom"
+    "zoom_reset": "Resetare zoom",
+    "cursor_sync": "Comută sincronizarea cursorului",
+    "empty_line_hint": "Tastați / pentru a insera",
+    "print": "Imprimare",
+    "reader": "Citire",
+    "switch_to_edit": "Comutați la modul editare",
+    "switch_to_reader": "Comutați la modul citire"
   },
   "trial": {
     "days_remaining": "{days} zile rămase din perioada de probă",
@@ -207,5 +226,11 @@
     "open_button": "Deschide fișier",
     "subtitle": "Un vizualizator Markdown frumos",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Descriere imagine",
+    "insert": "Inserează",
+    "title": "Inserează URL imagine",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

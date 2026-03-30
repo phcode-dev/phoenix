@@ -47,6 +47,7 @@
     "success": "PDF വിജയകരമായി എക്സ്പോർട്ട് ചെയ്തു"
   },
   "format": {
+    "block_type": "ബ്ലോക്ക് തരം",
     "blockquote": "ബ്ലോക്ക്ക്വോട്ട്",
     "bold": "ബോൾഡ് ({mod}+B)",
     "bullet_list": "ബുള്ളറ്റ് ലിസ്റ്റ്",
@@ -58,16 +59,20 @@
     "heading3": "ശീർഷകം 3",
     "italic": "ഇറ്റാലിക് ({mod}+I)",
     "link": "ലിങ്ക് ({mod}+K)",
+    "lists": "ലിസ്റ്റുകൾ",
+    "more_elements": "കൂടുതൽ",
     "numbered_list": "നമ്പർ ലിസ്റ്റ്",
     "paragraph": "ഖണ്ഡിക",
     "strikethrough": "സ്ട്രൈക്ക്ത്രൂ ({mod}+Shift+X)",
     "table": "ടേബിൾ",
     "task_list": "ടാസ്ക് ലിസ്റ്റ്",
-    "block_type": "ബ്ലോക്ക് തരം",
-    "lists": "ലിസ്റ്റുകൾ",
-    "more_elements": "കൂടുതൽ",
     "text_formatting": "ടെക്സ്റ്റ് ഫോർമാറ്റിംഗ്",
-    "underline": "അടിവര"
+    "heading4": "തലക്കെട്ട് 4",
+    "heading5": "തലക്കെട്ട് 5",
+    "image": "ചിത്രം",
+    "image_upload": "കമ്പ്യൂട്ടറിൽ നിന്ന് അപ്‌ലോഡ് ചെയ്യുക",
+    "image_url": "ചിത്രത്തിന്റെ URL",
+    "underline": "അടിവര ({mod}+U)"
   },
   "help": {
     "editing": "എഡിറ്റിംഗ്",
@@ -92,6 +97,12 @@
     "text_placeholder": "ഡിസ്പ്ലേ ടെക്സ്റ്റ് (ഐച്ഛികം)",
     "url": "URL",
     "url_placeholder": "URL പേസ്റ്റ് ചെയ്യുക അല്ലെങ്കിൽ ടൈപ്പ് ചെയ്യുക..."
+  },
+  "mermaid": {
+    "done": "പൂർത്തിയായി",
+    "edit": "എഡിറ്റ് ചെയ്യുക",
+    "error_prefix": "സിന്റാക്സ് പിശക്",
+    "stale": "പ്രിവ്യൂ കാലഹരണപ്പെട്ടു"
   },
   "recovery": {
     "discard": "ഉപേക്ഷിക്കുക",
@@ -131,6 +142,8 @@
     "heading2_desc": "ഇടത്തരം ശീർഷകം",
     "heading3": "ശീർഷകം 3",
     "heading3_desc": "ചെറിയ ശീർഷകം",
+    "mermaid": "Mermaid ഡയഗ്രം",
+    "mermaid_desc": "ഡയഗ്രം ചേർക്കുക",
     "no_results": "ഫലങ്ങളില്ല",
     "numbered_list": "നമ്പർ ലിസ്റ്റ്",
     "numbered_list_desc": "ക്രമ ലിസ്റ്റ്",
@@ -140,8 +153,14 @@
     "table_desc": "3×3 ടേബിൾ",
     "task_list": "ടാസ്ക് ലിസ്റ്റ്",
     "task_list_desc": "ചെക്ക്ലിസ്റ്റ്",
-    "mermaid": "Mermaid ഡയഗ്രം",
-    "mermaid_desc": "ഡയഗ്രം ചേർക്കുക"
+    "heading4": "തലക്കെട്ട് 4",
+    "heading4_desc": "ചെറിയ തലക്കെട്ട്",
+    "heading5": "തലക്കെട്ട് 5",
+    "heading5_desc": "ഏറ്റവും ചെറിയ തലക്കെട്ട്",
+    "image_upload": "ചിത്രം അപ്‌ലോഡ് ചെയ്യുക",
+    "image_upload_desc": "കമ്പ്യൂട്ടറിൽ നിന്ന് അപ്‌ലോഡ് ചെയ്യുക",
+    "image_url": "ചിത്രത്തിന്റെ URL",
+    "image_url_desc": "URL-ൽ നിന്ന് ഉൾപ്പെടുത്തുക"
   },
   "table": {
     "add_col_left": "ഇടത്ത് കോളം ചേർക്കുക",
@@ -157,7 +176,8 @@
     "insert_row_above": "മുകളിൽ വരി ചേർക്കുക",
     "insert_row_below": "താഴെ വരി ചേർക്കുക",
     "new_row": "+ പുതിയ വരി",
-    "row_options": "വരി {n} ഓപ്ഷനുകൾ"
+    "row_options": "വരി {n} ഓപ്ഷനുകൾ",
+    "delete_table": "പട്ടിക നീക്കം ചെയ്യുക"
   },
   "toolbar": {
     "edit": "എഡിറ്റ്",
@@ -175,7 +195,12 @@
     "zoom_in": "സൂം ഇൻ",
     "zoom_out": "സൂം ഔട്ട്",
     "zoom_reset": "സൂം റീസെറ്റ്",
-    "done": "പൂർത്തിയായി"
+    "cursor_sync": "കേഴ്‌സർ സിങ്ക് ടോഗിൾ ചെയ്യുക",
+    "empty_line_hint": "ചേർക്കാൻ / ടൈപ്പ് ചെയ്യുക",
+    "print": "പ്രിന്റ്",
+    "reader": "റീഡർ",
+    "switch_to_edit": "എഡിറ്റ് മോഡിലേക്ക് മാറുക",
+    "switch_to_reader": "റീഡർ മോഡിലേക്ക് മാറുക"
   },
   "trial": {
     "days_remaining": "ട്രയലിൽ {days} ദിവസം ശേഷിക്കുന്നു",
@@ -202,10 +227,10 @@
     "subtitle": "ഒരു മനോഹരമായ മാർക്ക്ഡൗൺ വ്യൂവർ",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "പൂർത്തിയായി",
-    "edit": "എഡിറ്റ് ചെയ്യുക",
-    "error_prefix": "സിന്റാക്സ് പിശക്",
-    "stale": "പ്രിവ്യൂ കാലഹരണപ്പെട്ടു"
+  "image_dialog": {
+    "alt_placeholder": "ചിത്രത്തിന്റെ വിവരണം",
+    "insert": "ചേർക്കുക",
+    "title": "ചിത്രത്തിന്റെ URL ചേർക്കുക",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

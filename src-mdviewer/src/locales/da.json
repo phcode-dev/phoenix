@@ -67,7 +67,12 @@
     "table": "Tabel",
     "task_list": "Opgaveliste",
     "text_formatting": "Tekstformatering",
-    "underline": "Understregning"
+    "heading4": "Overskrift 4",
+    "heading5": "Overskrift 5",
+    "image": "Billede",
+    "image_upload": "Upload fra computer",
+    "image_url": "Billed-URL",
+    "underline": "Understreg ({mod}+U)"
   },
   "help": {
     "editing": "Redigering",
@@ -147,7 +152,15 @@
     "table": "Tabel",
     "table_desc": "3×3 tabel",
     "task_list": "Opgaveliste",
-    "task_list_desc": "Tjekliste"
+    "task_list_desc": "Tjekliste",
+    "heading4": "Overskrift 4",
+    "heading4_desc": "Mindre overskrift",
+    "heading5": "Overskrift 5",
+    "heading5_desc": "Mindste overskrift",
+    "image_upload": "Upload billede",
+    "image_upload_desc": "Upload fra computer",
+    "image_url": "Billed-URL",
+    "image_url_desc": "Indlejr fra URL"
   },
   "table": {
     "add_col_left": "Tilføj kolonne til venstre",
@@ -163,10 +176,10 @@
     "insert_row_above": "Indsæt række ovenfor",
     "insert_row_below": "Indsæt række nedenfor",
     "new_row": "+ Ny række",
-    "row_options": "Indstillinger for række {n}"
+    "row_options": "Indstillinger for række {n}",
+    "delete_table": "Slet tabel"
   },
   "toolbar": {
-    "done": "Færdig",
     "edit": "Rediger",
     "export_pdf": "Eksporter PDF",
     "focus": "Fokustilstand",
@@ -181,7 +194,13 @@
     "toc": "Indholdsfortegnelse",
     "zoom_in": "Zoom ind",
     "zoom_out": "Zoom ud",
-    "zoom_reset": "Nulstil zoom"
+    "zoom_reset": "Nulstil zoom",
+    "cursor_sync": "Skift cursorsynkronisering",
+    "empty_line_hint": "Skriv / for at indsætte",
+    "print": "Udskriv",
+    "reader": "Læser",
+    "switch_to_edit": "Skift til redigeringstilstand",
+    "switch_to_reader": "Skift til læsetilstand"
   },
   "trial": {
     "days_remaining": "{days} dage tilbage af prøveperioden",
@@ -207,5 +226,11 @@
     "open_button": "Åbn fil",
     "subtitle": "En smuk Markdown-fremviser",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Billedbeskrivelse",
+    "insert": "Indsæt",
+    "title": "Indsæt billed-URL",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

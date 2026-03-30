@@ -67,7 +67,12 @@
     "table": "Táblázat",
     "task_list": "Feladatlista",
     "text_formatting": "Szövegformázás",
-    "underline": "Aláhúzott"
+    "heading4": "Címsor 4",
+    "heading5": "Címsor 5",
+    "image": "Kép",
+    "image_upload": "Feltöltés számítógépről",
+    "image_url": "Kép URL",
+    "underline": "Aláhúzás ({mod}+U)"
   },
   "help": {
     "editing": "Szerkesztés",
@@ -147,7 +152,15 @@
     "table": "Táblázat",
     "table_desc": "3×3-as táblázat",
     "task_list": "Feladatlista",
-    "task_list_desc": "Ellenőrzőlista"
+    "task_list_desc": "Ellenőrzőlista",
+    "heading4": "Címsor 4",
+    "heading4_desc": "Kisebb címsor",
+    "heading5": "Címsor 5",
+    "heading5_desc": "Legkisebb címsor",
+    "image_upload": "Kép feltöltése",
+    "image_upload_desc": "Feltöltés a számítógépről",
+    "image_url": "Kép URL",
+    "image_url_desc": "Beágyazás URL-címről"
   },
   "table": {
     "add_col_left": "Oszlop beszúrása balra",
@@ -163,10 +176,10 @@
     "insert_row_above": "Sor beszúrása fölé",
     "insert_row_below": "Sor beszúrása alá",
     "new_row": "+ Új sor",
-    "row_options": "{n}. sor beállításai"
+    "row_options": "{n}. sor beállításai",
+    "delete_table": "Táblázat törlése"
   },
   "toolbar": {
-    "done": "Kész",
     "edit": "Szerkesztés",
     "export_pdf": "Exportálás PDF-ként",
     "focus": "Fókusz mód",
@@ -181,7 +194,13 @@
     "toc": "Tartalomjegyzék",
     "zoom_in": "Nagyítás",
     "zoom_out": "Kicsinyítés",
-    "zoom_reset": "Nagyítás visszaállítása"
+    "zoom_reset": "Nagyítás visszaállítása",
+    "cursor_sync": "Kurzor szinkronizálás váltása",
+    "empty_line_hint": "Gépelj / jelet a beillesztéshez",
+    "print": "Nyomtatás",
+    "reader": "Olvasó",
+    "switch_to_edit": "Váltás szerkesztő módra",
+    "switch_to_reader": "Váltás olvasó módra"
   },
   "trial": {
     "days_remaining": "{days} nap van hátra a próbaidőszakból",
@@ -207,5 +226,11 @@
     "open_button": "Fájl megnyitása",
     "subtitle": "Egy gyönyörű Markdown megjelenítő",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Kép leírása",
+    "insert": "Beszúrás",
+    "title": "Kép URL beszúrása",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

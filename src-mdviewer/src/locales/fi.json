@@ -67,7 +67,12 @@
     "table": "Taulukko",
     "task_list": "Tehtäväluettelo",
     "text_formatting": "Tekstin muotoilu",
-    "underline": "Alleviivaus"
+    "heading4": "Otsikko 4",
+    "heading5": "Otsikko 5",
+    "image": "Kuva",
+    "image_upload": "Lataa tietokoneelta",
+    "image_url": "Kuvan URL-osoite",
+    "underline": "Alleviivaus ({mod}+U)"
   },
   "help": {
     "editing": "Muokkaus",
@@ -147,7 +152,15 @@
     "table": "Taulukko",
     "table_desc": "3×3-taulukko",
     "task_list": "Tehtäväluettelo",
-    "task_list_desc": "Tarkistuslista"
+    "task_list_desc": "Tarkistuslista",
+    "heading4": "Otsikko 4",
+    "heading4_desc": "Pienempi otsikko",
+    "heading5": "Otsikko 5",
+    "heading5_desc": "Pienin otsikko",
+    "image_upload": "Lataa kuva",
+    "image_upload_desc": "Lataa tietokoneelta",
+    "image_url": "Kuvan URL",
+    "image_url_desc": "Upota URL-osoitteesta"
   },
   "table": {
     "add_col_left": "Lisää sarake vasemmalle",
@@ -163,10 +176,10 @@
     "insert_row_above": "Lisää rivi yläpuolelle",
     "insert_row_below": "Lisää rivi alapuolelle",
     "new_row": "+ Uusi rivi",
-    "row_options": "Rivin {n} asetukset"
+    "row_options": "Rivin {n} asetukset",
+    "delete_table": "Poista taulukko"
   },
   "toolbar": {
-    "done": "Valmis",
     "edit": "Muokkaa",
     "export_pdf": "Vie PDF",
     "focus": "Keskittymistila",
@@ -181,7 +194,13 @@
     "toc": "Sisällysluettelo",
     "zoom_in": "Lähennä",
     "zoom_out": "Loitonna",
-    "zoom_reset": "Nollaa zoomaus"
+    "zoom_reset": "Nollaa zoomaus",
+    "cursor_sync": "Kytke kohdistimen synkronointi",
+    "empty_line_hint": "Kirjoita / lisätäksesi",
+    "print": "Tulosta",
+    "reader": "Lukutila",
+    "switch_to_edit": "Vaihda muokkaustilaan",
+    "switch_to_reader": "Vaihda lukutilaan"
   },
   "trial": {
     "days_remaining": "{days} päivää kokeiluaikaa jäljellä",
@@ -207,5 +226,11 @@
     "open_button": "Avaa tiedosto",
     "subtitle": "Kaunis Markdown-katselin",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Kuvan kuvaus",
+    "insert": "Lisää",
+    "title": "Lisää kuva URL-osoitteella",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

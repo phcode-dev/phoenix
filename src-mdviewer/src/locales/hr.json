@@ -67,7 +67,12 @@
     "table": "Tablica",
     "task_list": "Popis zadataka",
     "text_formatting": "Oblikovanje teksta",
-    "underline": "Podcrtano"
+    "heading4": "Naslov 4",
+    "heading5": "Naslov 5",
+    "image": "Slika",
+    "image_upload": "Prijenos s računala",
+    "image_url": "URL slike",
+    "underline": "Podcrtano ({mod}+U)"
   },
   "help": {
     "editing": "Uređivanje",
@@ -147,7 +152,15 @@
     "table": "Tablica",
     "table_desc": "Tablica 3×3",
     "task_list": "Popis zadataka",
-    "task_list_desc": "Kontrolna lista"
+    "task_list_desc": "Kontrolna lista",
+    "heading4": "Naslov 4",
+    "heading4_desc": "Manji naslov",
+    "heading5": "Naslov 5",
+    "heading5_desc": "Najmanji naslov",
+    "image_upload": "Učitaj sliku",
+    "image_upload_desc": "Učitaj s računala",
+    "image_url": "URL slike",
+    "image_url_desc": "Ugradi s URL-a"
   },
   "table": {
     "add_col_left": "Dodaj stupac lijevo",
@@ -163,10 +176,10 @@
     "insert_row_above": "Umetni redak iznad",
     "insert_row_below": "Umetni redak ispod",
     "new_row": "+ Novi redak",
-    "row_options": "Opcije retka {n}"
+    "row_options": "Opcije retka {n}",
+    "delete_table": "Izbriši tablicu"
   },
   "toolbar": {
-    "done": "Gotovo",
     "edit": "Uredi",
     "export_pdf": "Izvezi PDF",
     "focus": "Fokusirani način rada",
@@ -181,7 +194,13 @@
     "toc": "Sadržaj",
     "zoom_in": "Povećaj",
     "zoom_out": "Smanji",
-    "zoom_reset": "Poništi zumiranje"
+    "zoom_reset": "Poništi zumiranje",
+    "cursor_sync": "Prebaci sinkronizaciju kursora",
+    "empty_line_hint": "Upišite / za umetanje",
+    "print": "Ispis",
+    "reader": "Čitač",
+    "switch_to_edit": "Prebaci u način za uređivanje",
+    "switch_to_reader": "Prebaci u način za čitanje"
   },
   "trial": {
     "days_remaining": "Preostalo {days} dana u probnom razdoblju",
@@ -207,5 +226,11 @@
     "open_button": "Otvori datoteku",
     "subtitle": "Prekrasan Markdown preglednik",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Opis slike",
+    "insert": "Umetni",
+    "title": "Umetni URL slike",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

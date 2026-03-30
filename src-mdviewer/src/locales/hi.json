@@ -47,6 +47,7 @@
     "success": "PDF सफलतापूर्वक निर्यात किया गया"
   },
   "format": {
+    "block_type": "ब्लॉक प्रकार",
     "blockquote": "उद्धरण",
     "bold": "बोल्ड ({mod}+B)",
     "bullet_list": "बुलेट सूची",
@@ -58,16 +59,20 @@
     "heading3": "शीर्षक 3",
     "italic": "इटैलिक ({mod}+I)",
     "link": "लिंक ({mod}+K)",
+    "lists": "सूचियाँ",
+    "more_elements": "अधिक",
     "numbered_list": "क्रमांकित सूची",
     "paragraph": "अनुच्छेद",
     "strikethrough": "स्ट्राइकथ्रू ({mod}+Shift+X)",
     "table": "तालिका",
     "task_list": "कार्य सूची",
-    "block_type": "ब्लॉक प्रकार",
-    "lists": "सूचियाँ",
-    "more_elements": "अधिक",
     "text_formatting": "टेक्स्ट फ़ॉर्मेटिंग",
-    "underline": "रेखांकित"
+    "heading4": "शीर्षक 4",
+    "heading5": "शीर्षक 5",
+    "image": "छवि",
+    "image_upload": "कंप्यूटर से अपलोड करें",
+    "image_url": "छवि यूआरएल",
+    "underline": "रेखांकित ({mod}+U)"
   },
   "help": {
     "editing": "संपादन",
@@ -92,6 +97,12 @@
     "text_placeholder": "प्रदर्शन टेक्स्ट (वैकल्पिक)",
     "url": "URL",
     "url_placeholder": "URL चिपकाएँ या टाइप करें..."
+  },
+  "mermaid": {
+    "done": "हो गया",
+    "edit": "संपादित करें",
+    "error_prefix": "सिंटैक्स त्रुटि",
+    "stale": "प्रीव्यू पुराना है"
   },
   "recovery": {
     "discard": "छोड़ें",
@@ -131,6 +142,8 @@
     "heading2_desc": "मध्यम शीर्षक",
     "heading3": "शीर्षक 3",
     "heading3_desc": "छोटा शीर्षक",
+    "mermaid": "Mermaid आरेख",
+    "mermaid_desc": "एक आरेख डालें",
     "no_results": "कोई परिणाम नहीं",
     "numbered_list": "क्रमांकित सूची",
     "numbered_list_desc": "क्रमित सूची",
@@ -140,8 +153,14 @@
     "table_desc": "3×3 तालिका",
     "task_list": "कार्य सूची",
     "task_list_desc": "चेकलिस्ट",
-    "mermaid": "Mermaid आरेख",
-    "mermaid_desc": "एक आरेख डालें"
+    "heading4": "हेडिंग 4",
+    "heading4_desc": "छोटा हेडिंग",
+    "heading5": "हेडिंग 5",
+    "heading5_desc": "सबसे छोटा हेडिंग",
+    "image_upload": "इमेज अपलोड",
+    "image_upload_desc": "कंप्यूटर से अपलोड करें",
+    "image_url": "इमेज यूआरएल",
+    "image_url_desc": "यूआरएल से एम्बेड करें"
   },
   "table": {
     "add_col_left": "बाईं ओर स्तंभ जोड़ें",
@@ -157,7 +176,8 @@
     "insert_row_above": "ऊपर पंक्ति जोड़ें",
     "insert_row_below": "नीचे पंक्ति जोड़ें",
     "new_row": "+ नई पंक्ति",
-    "row_options": "पंक्ति {n} विकल्प"
+    "row_options": "पंक्ति {n} विकल्प",
+    "delete_table": "टेबल हटाएँ"
   },
   "toolbar": {
     "edit": "संपादित करें",
@@ -175,7 +195,12 @@
     "zoom_in": "ज़ूम इन",
     "zoom_out": "ज़ूम आउट",
     "zoom_reset": "ज़ूम रीसेट",
-    "done": "हो गया"
+    "cursor_sync": "कर्सर सिंक टॉगल करें",
+    "empty_line_hint": "इन्सर्ट करने के लिए / टाइप करें",
+    "print": "प्रिंट",
+    "reader": "रीडर",
+    "switch_to_edit": "एडिट मोड में बदलें",
+    "switch_to_reader": "रीडर मोड में बदलें"
   },
   "trial": {
     "days_remaining": "ट्रायल में {days} दिन शेष",
@@ -202,10 +227,10 @@
     "subtitle": "एक सुंदर मार्कडाउन व्यूअर",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "हो गया",
-    "edit": "संपादित करें",
-    "error_prefix": "सिंटैक्स त्रुटि",
-    "stale": "प्रीव्यू पुराना है"
+  "image_dialog": {
+    "alt_placeholder": "छवि का विवरण",
+    "insert": "सम्मिलित करें",
+    "title": "छवि यूआरएल सम्मिलित करें",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

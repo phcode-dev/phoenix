@@ -67,7 +67,12 @@
     "table": "Tabell",
     "task_list": "Att göra-lista",
     "text_formatting": "Textformatering",
-    "underline": "Understruken"
+    "heading4": "Rubrik 4",
+    "heading5": "Rubrik 5",
+    "image": "Bild",
+    "image_upload": "Ladda upp från datorn",
+    "image_url": "Bild-URL",
+    "underline": "Understruken ({mod}+U)"
   },
   "help": {
     "editing": "Redigering",
@@ -147,7 +152,15 @@
     "table": "Tabell",
     "table_desc": "3×3-tabell",
     "task_list": "Uppgiftslista",
-    "task_list_desc": "Checklista"
+    "task_list_desc": "Checklista",
+    "heading4": "Rubrik 4",
+    "heading4_desc": "Mindre rubrik",
+    "heading5": "Rubrik 5",
+    "heading5_desc": "Minsta rubrik",
+    "image_upload": "Ladda upp bild",
+    "image_upload_desc": "Ladda upp från datorn",
+    "image_url": "Bild-URL",
+    "image_url_desc": "Bädda in från URL"
   },
   "table": {
     "add_col_left": "Lägg till kolumn till vänster",
@@ -163,10 +176,10 @@
     "insert_row_above": "Infoga rad ovanför",
     "insert_row_below": "Infoga rad nedanför",
     "new_row": "+ Ny rad",
-    "row_options": "Alternativ för rad {n}"
+    "row_options": "Alternativ för rad {n}",
+    "delete_table": "Ta bort tabell"
   },
   "toolbar": {
-    "done": "Klar",
     "edit": "Redigera",
     "export_pdf": "Exportera PDF",
     "focus": "Fokusläge",
@@ -181,7 +194,13 @@
     "toc": "Innehållsförteckning",
     "zoom_in": "Zooma in",
     "zoom_out": "Zooma ut",
-    "zoom_reset": "Återställ zoom"
+    "zoom_reset": "Återställ zoom",
+    "cursor_sync": "Växla markörsynkronisering",
+    "empty_line_hint": "Skriv / för att infoga",
+    "print": "Skriv ut",
+    "reader": "Läsläge",
+    "switch_to_edit": "Växla till redigeringsläge",
+    "switch_to_reader": "Växla till läsläge"
   },
   "trial": {
     "days_remaining": "{days} dagar kvar av provperioden",
@@ -207,5 +226,11 @@
     "open_button": "Öppna fil",
     "subtitle": "En vacker Markdown-visare",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Bildbeskrivning",
+    "insert": "Infoga",
+    "title": "Infoga bild-URL",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

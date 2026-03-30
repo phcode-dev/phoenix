@@ -47,6 +47,7 @@
     "success": "PDF 导出成功"
   },
   "format": {
+    "block_type": "块类型",
     "blockquote": "引用",
     "bold": "粗体 ({mod}+B)",
     "bullet_list": "无序列表",
@@ -58,16 +59,20 @@
     "heading3": "三级标题",
     "italic": "斜体 ({mod}+I)",
     "link": "链接 ({mod}+K)",
+    "lists": "列表",
+    "more_elements": "更多",
     "numbered_list": "有序列表",
     "paragraph": "正文",
     "strikethrough": "删除线 ({mod}+Shift+X)",
     "table": "表格",
     "task_list": "任务列表",
-    "block_type": "块类型",
-    "lists": "列表",
-    "more_elements": "更多",
     "text_formatting": "文本格式",
-    "underline": "下划线"
+    "heading4": "标题 4",
+    "heading5": "标题 5",
+    "image": "图片",
+    "image_upload": "从计算机上传",
+    "image_url": "图片 URL",
+    "underline": "下划线 ({mod}+U)"
   },
   "help": {
     "editing": "编辑",
@@ -92,6 +97,12 @@
     "text_placeholder": "显示文本（可选）",
     "url": "URL",
     "url_placeholder": "粘贴或输入 URL..."
+  },
+  "mermaid": {
+    "done": "完成",
+    "edit": "编辑",
+    "error_prefix": "语法错误",
+    "stale": "预览已过时"
   },
   "recovery": {
     "discard": "放弃",
@@ -131,6 +142,8 @@
     "heading2_desc": "中标题",
     "heading3": "三级标题",
     "heading3_desc": "小标题",
+    "mermaid": "Mermaid 图表",
+    "mermaid_desc": "插入图表",
     "no_results": "无结果",
     "numbered_list": "有序列表",
     "numbered_list_desc": "编号列表",
@@ -140,8 +153,14 @@
     "table_desc": "3×3 表格",
     "task_list": "任务列表",
     "task_list_desc": "清单",
-    "mermaid": "Mermaid 图表",
-    "mermaid_desc": "插入图表"
+    "heading4": "标题 4",
+    "heading4_desc": "较小标题",
+    "heading5": "标题 5",
+    "heading5_desc": "最小标题",
+    "image_upload": "上传图片",
+    "image_upload_desc": "从电脑上传",
+    "image_url": "图片链接",
+    "image_url_desc": "通过链接嵌入"
   },
   "table": {
     "add_col_left": "在左侧添加列",
@@ -157,7 +176,8 @@
     "insert_row_above": "在上方插入行",
     "insert_row_below": "在下方插入行",
     "new_row": "+ 新增行",
-    "row_options": "第 {n} 行选项"
+    "row_options": "第 {n} 行选项",
+    "delete_table": "删除表格"
   },
   "toolbar": {
     "edit": "编辑",
@@ -175,7 +195,12 @@
     "zoom_in": "放大",
     "zoom_out": "缩小",
     "zoom_reset": "重置缩放",
-    "done": "完成"
+    "cursor_sync": "切换光标同步",
+    "empty_line_hint": "输入 / 插入",
+    "print": "打印",
+    "reader": "阅读",
+    "switch_to_edit": "切换到编辑模式",
+    "switch_to_reader": "切换到阅读模式"
   },
   "trial": {
     "days_remaining": "试用期剩余 {days} 天",
@@ -202,10 +227,10 @@
     "subtitle": "优雅的 Markdown 阅读器",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "完成",
-    "edit": "编辑",
-    "error_prefix": "语法错误",
-    "stale": "预览已过时"
+  "image_dialog": {
+    "alt_placeholder": "图片描述",
+    "insert": "插入",
+    "title": "插入图片 URL",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

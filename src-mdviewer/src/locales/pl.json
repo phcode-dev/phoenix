@@ -67,7 +67,12 @@
     "table": "Tabela",
     "task_list": "Lista zadań",
     "text_formatting": "Formatowanie tekstu",
-    "underline": "Podkreślenie"
+    "heading4": "Nagłówek 4",
+    "heading5": "Nagłówek 5",
+    "image": "Obrazek",
+    "image_upload": "Prześlij z komputera",
+    "image_url": "Adres URL obrazka",
+    "underline": "Podkreślenie ({mod}+U)"
   },
   "help": {
     "editing": "Edycja",
@@ -147,7 +152,15 @@
     "table": "Tabela",
     "table_desc": "Tabela 3×3",
     "task_list": "Lista zadań",
-    "task_list_desc": "Lista kontrolna"
+    "task_list_desc": "Lista kontrolna",
+    "heading4": "Nagłówek 4",
+    "heading4_desc": "Mniejszy nagłówek",
+    "heading5": "Nagłówek 5",
+    "heading5_desc": "Najmniejszy nagłówek",
+    "image_upload": "Prześlij obraz",
+    "image_upload_desc": "Prześlij z komputera",
+    "image_url": "Obraz z URL",
+    "image_url_desc": "Osadź z adresu URL"
   },
   "table": {
     "add_col_left": "Dodaj kolumnę po lewej",
@@ -163,10 +176,10 @@
     "insert_row_above": "Wstaw wiersz powyżej",
     "insert_row_below": "Wstaw wiersz poniżej",
     "new_row": "+ Nowy wiersz",
-    "row_options": "Opcje wiersza {n}"
+    "row_options": "Opcje wiersza {n}",
+    "delete_table": "Usuń tabelę"
   },
   "toolbar": {
-    "done": "Gotowe",
     "edit": "Edytuj",
     "export_pdf": "Eksportuj PDF",
     "focus": "Tryb skupienia",
@@ -181,7 +194,13 @@
     "toc": "Spis treści",
     "zoom_in": "Powiększ",
     "zoom_out": "Pomniejsz",
-    "zoom_reset": "Resetuj powiększenie"
+    "zoom_reset": "Resetuj powiększenie",
+    "cursor_sync": "Przełącz synchronizację kursora",
+    "empty_line_hint": "Wpisz / aby wstawić",
+    "print": "Drukuj",
+    "reader": "Czytnik",
+    "switch_to_edit": "Przełącz na tryb edycji",
+    "switch_to_reader": "Przełącz na tryb czytnika"
   },
   "trial": {
     "days_remaining": "Pozostało {days} dni okresu próbnego",
@@ -207,5 +226,11 @@
     "open_button": "Otwórz plik",
     "subtitle": "Piękna przeglądarka Markdown",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Opis obrazka",
+    "insert": "Wstaw",
+    "title": "Wstaw obrazek z adresu URL",
+    "url_placeholder": "https://example.com/image.png"
   }
 }
