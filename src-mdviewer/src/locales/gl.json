@@ -67,7 +67,12 @@
     "table": "Táboa",
     "task_list": "Lista de tarefas",
     "text_formatting": "Formato do texto",
-    "underline": "Subliñado"
+    "heading4": "Encabezado 4",
+    "heading5": "Encabezado 5",
+    "image": "Imaxe",
+    "image_upload": "Cargar desde o ordenador",
+    "image_url": "URL da imaxe",
+    "underline": "Subliñado ({mod}+U)"
   },
   "help": {
     "editing": "Edición",
@@ -147,7 +152,15 @@
     "table": "Táboa",
     "table_desc": "Táboa de 3×3",
     "task_list": "Lista de tarefas",
-    "task_list_desc": "Lista de verificación"
+    "task_list_desc": "Lista de verificación",
+    "heading4": "Título 4",
+    "heading4_desc": "Título máis pequeno",
+    "heading5": "Título 5",
+    "heading5_desc": "O título máis pequeno",
+    "image_upload": "Cargar imaxe",
+    "image_upload_desc": "Cargar desde o ordenador",
+    "image_url": "URL da imaxe",
+    "image_url_desc": "Incrustar desde un URL"
   },
   "table": {
     "add_col_left": "Engadir columna á esquerda",
@@ -163,10 +176,10 @@
     "insert_row_above": "Inserir fila enriba",
     "insert_row_below": "Inserir fila debaixo",
     "new_row": "+ Nova fila",
-    "row_options": "Opcións da fila {n}"
+    "row_options": "Opcións da fila {n}",
+    "delete_table": "Eliminar táboa"
   },
   "toolbar": {
-    "done": "Feito",
     "edit": "Editar",
     "export_pdf": "Exportar a PDF",
     "focus": "Modo de concentración",
@@ -181,7 +194,13 @@
     "toc": "Índice de contidos",
     "zoom_in": "Achegar",
     "zoom_out": "Afastar",
-    "zoom_reset": "Restablecer o zoom"
+    "zoom_reset": "Restablecer o zoom",
+    "cursor_sync": "Alternar a sincronización do cursor",
+    "empty_line_hint": "Escribe / para inserir",
+    "print": "Imprimir",
+    "reader": "Lector",
+    "switch_to_edit": "Cambiar ao modo de edición",
+    "switch_to_reader": "Cambiar ao modo lector"
   },
   "trial": {
     "days_remaining": "Quedan {days} días de proba",
@@ -207,5 +226,11 @@
     "open_button": "Abrir ficheiro",
     "subtitle": "Un fermoso visor de Markdown",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Descrición da imaxe",
+    "insert": "Inserir",
+    "title": "Inserir URL da imaxe",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

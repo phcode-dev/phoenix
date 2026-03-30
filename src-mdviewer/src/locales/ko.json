@@ -47,6 +47,7 @@
     "success": "PDF 내보내기 완료"
   },
   "format": {
+    "block_type": "블록 유형",
     "blockquote": "인용",
     "bold": "굵게 ({mod}+B)",
     "bullet_list": "글머리 기호 목록",
@@ -58,16 +59,20 @@
     "heading3": "제목 3",
     "italic": "기울임 ({mod}+I)",
     "link": "링크 ({mod}+K)",
+    "lists": "목록",
+    "more_elements": "더 보기",
     "numbered_list": "번호 목록",
     "paragraph": "본문",
     "strikethrough": "취소선 ({mod}+Shift+X)",
     "table": "표",
     "task_list": "작업 목록",
-    "block_type": "블록 유형",
-    "lists": "목록",
-    "more_elements": "더 보기",
     "text_formatting": "텍스트 서식",
-    "underline": "밑줄"
+    "heading4": "제목 4",
+    "heading5": "제목 5",
+    "image": "이미지",
+    "image_upload": "컴퓨터에서 업로드",
+    "image_url": "이미지 URL",
+    "underline": "밑줄 ({mod}+U)"
   },
   "help": {
     "editing": "편집",
@@ -92,6 +97,12 @@
     "text_placeholder": "표시 텍스트 (선택사항)",
     "url": "URL",
     "url_placeholder": "URL을 붙여넣거나 입력하세요..."
+  },
+  "mermaid": {
+    "done": "완료",
+    "edit": "편집",
+    "error_prefix": "구문 오류",
+    "stale": "미리보기가 오래됨"
   },
   "recovery": {
     "discard": "버리기",
@@ -131,6 +142,8 @@
     "heading2_desc": "중간 제목",
     "heading3": "제목 3",
     "heading3_desc": "작은 제목",
+    "mermaid": "Mermaid 다이어그램",
+    "mermaid_desc": "다이어그램 삽입",
     "no_results": "결과 없음",
     "numbered_list": "번호 목록",
     "numbered_list_desc": "순서 있는 목록",
@@ -140,8 +153,14 @@
     "table_desc": "3×3 표",
     "task_list": "작업 목록",
     "task_list_desc": "체크리스트",
-    "mermaid": "Mermaid 다이어그램",
-    "mermaid_desc": "다이어그램 삽입"
+    "heading4": "제목 4",
+    "heading4_desc": "더 작은 제목",
+    "heading5": "제목 5",
+    "heading5_desc": "가장 작은 제목",
+    "image_upload": "이미지 업로드",
+    "image_upload_desc": "컴퓨터에서 업로드",
+    "image_url": "이미지 URL",
+    "image_url_desc": "URL로 삽입"
   },
   "table": {
     "add_col_left": "왼쪽에 열 추가",
@@ -157,7 +176,8 @@
     "insert_row_above": "위에 행 삽입",
     "insert_row_below": "아래에 행 삽입",
     "new_row": "+ 새 행",
-    "row_options": "행 {n} 옵션"
+    "row_options": "행 {n} 옵션",
+    "delete_table": "표 삭제"
   },
   "toolbar": {
     "edit": "편집",
@@ -175,7 +195,12 @@
     "zoom_in": "확대",
     "zoom_out": "축소",
     "zoom_reset": "배율 초기화",
-    "done": "완료"
+    "cursor_sync": "커서 동기화 전환",
+    "empty_line_hint": "삽입하려면 /를 입력하세요",
+    "print": "인쇄",
+    "reader": "리더",
+    "switch_to_edit": "편집 모드로 전환",
+    "switch_to_reader": "리더 모드로 전환"
   },
   "trial": {
     "days_remaining": "체험판 {days}일 남음",
@@ -202,10 +227,10 @@
     "subtitle": "아름다운 마크다운 뷰어",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "완료",
-    "edit": "편집",
-    "error_prefix": "구문 오류",
-    "stale": "미리보기가 오래됨"
+  "image_dialog": {
+    "alt_placeholder": "이미지 설명",
+    "insert": "삽입",
+    "title": "이미지 URL 삽입",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

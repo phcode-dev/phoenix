@@ -67,7 +67,12 @@
     "table": "Tabella",
     "task_list": "Elenco attività",
     "text_formatting": "Formattazione testo",
-    "underline": "Sottolineato"
+    "heading4": "Intestazione 4",
+    "heading5": "Intestazione 5",
+    "image": "Immagine",
+    "image_upload": "Carica dal computer",
+    "image_url": "URL immagine",
+    "underline": "Sottolineato ({mod}+U)"
   },
   "help": {
     "editing": "Modifica",
@@ -147,7 +152,15 @@
     "table": "Tabella",
     "table_desc": "Tabella 3×3",
     "task_list": "Elenco attività",
-    "task_list_desc": "Lista di controllo"
+    "task_list_desc": "Lista di controllo",
+    "heading4": "Intestazione 4",
+    "heading4_desc": "Intestazione più piccola",
+    "heading5": "Intestazione 5",
+    "heading5_desc": "Intestazione piccolissima",
+    "image_upload": "Carica immagine",
+    "image_upload_desc": "Carica dal computer",
+    "image_url": "URL immagine",
+    "image_url_desc": "Incorpora da URL"
   },
   "table": {
     "add_col_left": "Aggiungi colonna a sinistra",
@@ -163,10 +176,10 @@
     "insert_row_above": "Inserisci riga sopra",
     "insert_row_below": "Inserisci riga sotto",
     "new_row": "+ Nuova riga",
-    "row_options": "Opzioni riga {n}"
+    "row_options": "Opzioni riga {n}",
+    "delete_table": "Elimina tabella"
   },
   "toolbar": {
-    "done": "Fatto",
     "edit": "Modifica",
     "export_pdf": "Esporta PDF",
     "focus": "Modalità focus",
@@ -181,7 +194,13 @@
     "toc": "Indice",
     "zoom_in": "Ingrandisci",
     "zoom_out": "Riduci",
-    "zoom_reset": "Ripristina zoom"
+    "zoom_reset": "Ripristina zoom",
+    "cursor_sync": "Attiva/disattiva sincronizzazione cursore",
+    "empty_line_hint": "Digita / per inserire",
+    "print": "Stampa",
+    "reader": "Lettura",
+    "switch_to_edit": "Passa alla modalità modifica",
+    "switch_to_reader": "Passa alla modalità lettura"
   },
   "trial": {
     "days_remaining": "{days} giorni rimanenti di prova",
@@ -207,5 +226,11 @@
     "open_button": "Apri file",
     "subtitle": "Un bellissimo visualizzatore Markdown",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Descrizione immagine",
+    "insert": "Inserisci",
+    "title": "Inserisci URL immagine",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

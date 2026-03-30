@@ -47,6 +47,7 @@
     "success": "PDF کامیابی سے برآمد ہوئی"
   },
   "format": {
+    "block_type": "بلاک کی قسم",
     "blockquote": "بلاک کوٹ",
     "bold": "بولڈ ({mod}+B)",
     "bullet_list": "بلٹ فہرست",
@@ -58,16 +59,20 @@
     "heading3": "سرخی 3",
     "italic": "اٹیلک ({mod}+I)",
     "link": "لنک ({mod}+K)",
+    "lists": "فہرستیں",
+    "more_elements": "مزید",
     "numbered_list": "نمبر فہرست",
     "paragraph": "پیراگراف",
     "strikethrough": "سٹرائیک تھرو ({mod}+Shift+X)",
     "table": "ٹیبل",
     "task_list": "ٹاسک فہرست",
-    "block_type": "بلاک کی قسم",
-    "lists": "فہرستیں",
-    "more_elements": "مزید",
     "text_formatting": "ٹیکسٹ فارمیٹنگ",
-    "underline": "انڈر لائن"
+    "heading4": "سرخی ۴",
+    "heading5": "سرخی ۵",
+    "image": "تصویر",
+    "image_upload": "کمپیوٹر سے اپ لوڈ کریں",
+    "image_url": "تصویر کا یو آر ایل",
+    "underline": "انڈر لائن ({mod}+U)"
   },
   "help": {
     "editing": "ترمیم",
@@ -92,6 +97,12 @@
     "text_placeholder": "ڈسپلے متن (اختیاری)",
     "url": "URL",
     "url_placeholder": "URL پیسٹ یا ٹائپ کریں..."
+  },
+  "mermaid": {
+    "done": "مکمل",
+    "edit": "ترمیم کریں",
+    "error_prefix": "سنٹیکس کی خرابی",
+    "stale": "پریویو پرانا ہو گیا"
   },
   "recovery": {
     "discard": "چھوڑ دیں",
@@ -131,6 +142,8 @@
     "heading2_desc": "درمیانی سرخی",
     "heading3": "سرخی 3",
     "heading3_desc": "چھوٹی سرخی",
+    "mermaid": "Mermaid ڈایاگرام",
+    "mermaid_desc": "ڈایاگرام داخل کریں",
     "no_results": "کوئی نتائج نہیں",
     "numbered_list": "نمبر فہرست",
     "numbered_list_desc": "ترتیب فہرست",
@@ -140,8 +153,14 @@
     "table_desc": "3×3 ٹیبل",
     "task_list": "ٹاسک فہرست",
     "task_list_desc": "چیک لسٹ",
-    "mermaid": "Mermaid ڈایاگرام",
-    "mermaid_desc": "ڈایاگرام داخل کریں"
+    "heading4": "سرخی 4",
+    "heading4_desc": "چھوٹی سرخی",
+    "heading5": "سرخی 5",
+    "heading5_desc": "سب سے چھوٹی سرخی",
+    "image_upload": "تصویر اپلوڈ کریں",
+    "image_upload_desc": "کمپیوٹر سے اپلوڈ کریں",
+    "image_url": "تصویر کا یو آر ایل",
+    "image_url_desc": "یو آر ایل سے ایمبیڈ کریں"
   },
   "table": {
     "add_col_left": "بائیں کالم شامل کریں",
@@ -157,7 +176,8 @@
     "insert_row_above": "اوپر قطار شامل کریں",
     "insert_row_below": "نیچے قطار شامل کریں",
     "new_row": "+ نئی قطار",
-    "row_options": "قطار {n} اختیارات"
+    "row_options": "قطار {n} اختیارات",
+    "delete_table": "ٹیبل حذف کریں"
   },
   "toolbar": {
     "edit": "ترمیم",
@@ -175,7 +195,12 @@
     "zoom_in": "زوم ان",
     "zoom_out": "زوم آؤٹ",
     "zoom_reset": "زوم ری سیٹ",
-    "done": "مکمل"
+    "cursor_sync": "کرسر سنک ٹوگل کریں",
+    "empty_line_hint": "شامل کرنے کے لیے / ٹائپ کریں",
+    "print": "پرنٹ",
+    "reader": "ریڈر",
+    "switch_to_edit": "ترمیم موڈ پر سوئچ کریں",
+    "switch_to_reader": "ریڈر موڈ پر سوئچ کریں"
   },
   "trial": {
     "days_remaining": "آزمائشی مدت میں {days} دن باقی",
@@ -202,10 +227,10 @@
     "subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "مکمل",
-    "edit": "ترمیم کریں",
-    "error_prefix": "سنٹیکس کی خرابی",
-    "stale": "پریویو پرانا ہو گیا"
+  "image_dialog": {
+    "alt_placeholder": "تصویر کی تفصیل",
+    "insert": "داخل کریں",
+    "title": "تصویر کا یو آر ایل داخل کریں",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

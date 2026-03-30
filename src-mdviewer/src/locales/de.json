@@ -47,6 +47,7 @@
     "success": "PDF erfolgreich exportiert"
   },
   "format": {
+    "block_type": "Blocktyp",
     "blockquote": "Zitat",
     "bold": "Fett ({mod}+B)",
     "bullet_list": "Aufzählungsliste",
@@ -58,16 +59,20 @@
     "heading3": "Überschrift 3",
     "italic": "Kursiv ({mod}+I)",
     "link": "Link ({mod}+K)",
+    "lists": "Listen",
+    "more_elements": "Mehr",
     "numbered_list": "Nummerierte Liste",
     "paragraph": "Absatz",
     "strikethrough": "Durchgestrichen ({mod}+Umschalt+X)",
     "table": "Tabelle",
     "task_list": "Aufgabenliste",
-    "block_type": "Blocktyp",
-    "lists": "Listen",
-    "more_elements": "Mehr",
     "text_formatting": "Textformatierung",
-    "underline": "Unterstrichen"
+    "heading4": "Überschrift 4",
+    "heading5": "Überschrift 5",
+    "image": "Bild",
+    "image_upload": "Vom Computer hochladen",
+    "image_url": "Bild-URL",
+    "underline": "Unterstreichen ({mod}+U)"
   },
   "help": {
     "editing": "Bearbeitung",
@@ -92,6 +97,12 @@
     "text_placeholder": "Anzeigetext (optional)",
     "url": "URL",
     "url_placeholder": "URL einfügen oder eingeben..."
+  },
+  "mermaid": {
+    "done": "Fertig",
+    "edit": "Bearbeiten",
+    "error_prefix": "Syntaxfehler",
+    "stale": "Vorschau veraltet"
   },
   "recovery": {
     "discard": "Verwerfen",
@@ -131,6 +142,8 @@
     "heading2_desc": "Mittlere Überschrift",
     "heading3": "Überschrift 3",
     "heading3_desc": "Kleine Überschrift",
+    "mermaid": "Mermaid-Diagramm",
+    "mermaid_desc": "Ein Diagramm einfügen",
     "no_results": "Keine Ergebnisse",
     "numbered_list": "Nummerierte Liste",
     "numbered_list_desc": "Sortierte Liste",
@@ -140,8 +153,14 @@
     "table_desc": "3×3-Tabelle",
     "task_list": "Aufgabenliste",
     "task_list_desc": "Checkliste",
-    "mermaid": "Mermaid-Diagramm",
-    "mermaid_desc": "Ein Diagramm einfügen"
+    "heading4": "Überschrift 4",
+    "heading4_desc": "Kleinere Überschrift",
+    "heading5": "Überschrift 5",
+    "heading5_desc": "Kleinste Überschrift",
+    "image_upload": "Bild hochladen",
+    "image_upload_desc": "Vom Computer hochladen",
+    "image_url": "Bild-URL",
+    "image_url_desc": "Von URL einbetten"
   },
   "table": {
     "add_col_left": "Spalte links hinzufügen",
@@ -157,7 +176,8 @@
     "insert_row_above": "Zeile darüber einfügen",
     "insert_row_below": "Zeile darunter einfügen",
     "new_row": "+ Neue Zeile",
-    "row_options": "Optionen für Zeile {n}"
+    "row_options": "Optionen für Zeile {n}",
+    "delete_table": "Tabelle löschen"
   },
   "toolbar": {
     "edit": "Bearbeiten",
@@ -175,7 +195,12 @@
     "zoom_in": "Vergrößern",
     "zoom_out": "Verkleinern",
     "zoom_reset": "Zoom zurücksetzen",
-    "done": "Fertig"
+    "cursor_sync": "Cursor-Synchronisierung umschalten",
+    "empty_line_hint": "Tippen Sie /, um einzufügen",
+    "print": "Drucken",
+    "reader": "Lesemodus",
+    "switch_to_edit": "In den Bearbeitungsmodus wechseln",
+    "switch_to_reader": "In den Lesemodus wechseln"
   },
   "trial": {
     "days_remaining": "Noch {days} Tage in der Testversion",
@@ -202,10 +227,10 @@
     "subtitle": "Ein schöner Markdown-Betrachter",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "Fertig",
-    "edit": "Bearbeiten",
-    "error_prefix": "Syntaxfehler",
-    "stale": "Vorschau veraltet"
+  "image_dialog": {
+    "alt_placeholder": "Bildbeschreibung",
+    "insert": "Einfügen",
+    "title": "Bild-URL einfügen",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

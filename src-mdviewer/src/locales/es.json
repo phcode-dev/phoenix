@@ -47,6 +47,7 @@
     "success": "PDF exportado con éxito"
   },
   "format": {
+    "block_type": "Tipo de bloque",
     "blockquote": "Cita",
     "bold": "Negrita ({mod}+B)",
     "bullet_list": "Lista con viñetas",
@@ -58,16 +59,20 @@
     "heading3": "Encabezado 3",
     "italic": "Cursiva ({mod}+I)",
     "link": "Enlace ({mod}+K)",
+    "lists": "Listas",
+    "more_elements": "Más",
     "numbered_list": "Lista numerada",
     "paragraph": "Párrafo",
     "strikethrough": "Tachado ({mod}+Shift+X)",
     "table": "Tabla",
     "task_list": "Lista de tareas",
-    "block_type": "Tipo de bloque",
-    "lists": "Listas",
-    "more_elements": "Más",
     "text_formatting": "Formato de texto",
-    "underline": "Subrayado"
+    "heading4": "Título 4",
+    "heading5": "Título 5",
+    "image": "Imagen",
+    "image_upload": "Subir desde el ordenador",
+    "image_url": "URL de la imagen",
+    "underline": "Subrayado ({mod}+U)"
   },
   "help": {
     "editing": "Edición",
@@ -92,6 +97,12 @@
     "text_placeholder": "Texto a mostrar (opcional)",
     "url": "URL",
     "url_placeholder": "Pega o escribe una URL..."
+  },
+  "mermaid": {
+    "done": "Hecho",
+    "edit": "Editar",
+    "error_prefix": "Error de sintaxis",
+    "stale": "Vista previa desactualizada"
   },
   "recovery": {
     "discard": "Descartar",
@@ -131,6 +142,8 @@
     "heading2_desc": "Encabezado mediano",
     "heading3": "Encabezado 3",
     "heading3_desc": "Encabezado pequeño",
+    "mermaid": "Diagrama de Mermaid",
+    "mermaid_desc": "Insertar un diagrama",
     "no_results": "Sin resultados",
     "numbered_list": "Lista numerada",
     "numbered_list_desc": "Lista ordenada",
@@ -140,8 +153,14 @@
     "table_desc": "Tabla 3×3",
     "task_list": "Lista de tareas",
     "task_list_desc": "Lista de verificación",
-    "mermaid": "Diagrama de Mermaid",
-    "mermaid_desc": "Insertar un diagrama"
+    "heading4": "Encabezado 4",
+    "heading4_desc": "Encabezado pequeño",
+    "heading5": "Encabezado 5",
+    "heading5_desc": "Encabezado más pequeño",
+    "image_upload": "Subir imagen",
+    "image_upload_desc": "Subir desde el ordenador",
+    "image_url": "URL de la imagen",
+    "image_url_desc": "Incrustar desde URL"
   },
   "table": {
     "add_col_left": "Añadir columna a la izquierda",
@@ -157,7 +176,8 @@
     "insert_row_above": "Insertar fila arriba",
     "insert_row_below": "Insertar fila abajo",
     "new_row": "+ Nueva fila",
-    "row_options": "Opciones de fila {n}"
+    "row_options": "Opciones de fila {n}",
+    "delete_table": "Eliminar tabla"
   },
   "toolbar": {
     "edit": "Editar",
@@ -175,7 +195,12 @@
     "zoom_in": "Acercar",
     "zoom_out": "Alejar",
     "zoom_reset": "Restablecer zoom",
-    "done": "Hecho"
+    "cursor_sync": "Alternar sincronización del cursor",
+    "empty_line_hint": "Escribe / para insertar",
+    "print": "Imprimir",
+    "reader": "Lector",
+    "switch_to_edit": "Cambiar a modo de edición",
+    "switch_to_reader": "Cambiar a modo de lectura"
   },
   "trial": {
     "days_remaining": "{days} días restantes de prueba",
@@ -202,10 +227,10 @@
     "subtitle": "Un hermoso visor de Markdown",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "Hecho",
-    "edit": "Editar",
-    "error_prefix": "Error de sintaxis",
-    "stale": "Vista previa desactualizada"
+  "image_dialog": {
+    "alt_placeholder": "Descripción de la imagen",
+    "insert": "Insertar",
+    "title": "Insertar URL de la imagen",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

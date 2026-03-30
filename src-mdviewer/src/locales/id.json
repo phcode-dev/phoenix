@@ -47,6 +47,7 @@
     "success": "PDF berhasil diekspor"
   },
   "format": {
+    "block_type": "Tipe blok",
     "blockquote": "Kutipan",
     "bold": "Tebal ({mod}+B)",
     "bullet_list": "Daftar poin",
@@ -58,16 +59,20 @@
     "heading3": "Judul 3",
     "italic": "Miring ({mod}+I)",
     "link": "Tautan ({mod}+K)",
+    "lists": "Daftar",
+    "more_elements": "Lainnya",
     "numbered_list": "Daftar bernomor",
     "paragraph": "Paragraf",
     "strikethrough": "Coret ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Daftar tugas",
-    "block_type": "Tipe blok",
-    "lists": "Daftar",
-    "more_elements": "Lainnya",
     "text_formatting": "Pemformatan teks",
-    "underline": "Garis bawah"
+    "heading4": "Judul 4",
+    "heading5": "Judul 5",
+    "image": "Gambar",
+    "image_upload": "Unggah dari Komputer",
+    "image_url": "URL Gambar",
+    "underline": "Garis Bawah ({mod}+U)"
   },
   "help": {
     "editing": "Pengeditan",
@@ -92,6 +97,12 @@
     "text_placeholder": "Teks tampilan (opsional)",
     "url": "URL",
     "url_placeholder": "Tempel atau ketik URL..."
+  },
+  "mermaid": {
+    "done": "Selesai",
+    "edit": "Edit",
+    "error_prefix": "Kesalahan sintaks",
+    "stale": "Pratinjau kedaluwarsa"
   },
   "recovery": {
     "discard": "Buang",
@@ -131,6 +142,8 @@
     "heading2_desc": "Judul sedang",
     "heading3": "Judul 3",
     "heading3_desc": "Judul kecil",
+    "mermaid": "Diagram Mermaid",
+    "mermaid_desc": "Sisipkan diagram",
     "no_results": "Tidak ada hasil",
     "numbered_list": "Daftar bernomor",
     "numbered_list_desc": "Daftar berurut",
@@ -140,8 +153,14 @@
     "table_desc": "Tabel 3×3",
     "task_list": "Daftar tugas",
     "task_list_desc": "Daftar centang",
-    "mermaid": "Diagram Mermaid",
-    "mermaid_desc": "Sisipkan diagram"
+    "heading4": "Judul 4",
+    "heading4_desc": "Judul yang lebih kecil",
+    "heading5": "Judul 5",
+    "heading5_desc": "Judul terkecil",
+    "image_upload": "Unggah Gambar",
+    "image_upload_desc": "Unggah dari komputer",
+    "image_url": "URL Gambar",
+    "image_url_desc": "Sematkan dari URL"
   },
   "table": {
     "add_col_left": "Tambah kolom di kiri",
@@ -157,7 +176,8 @@
     "insert_row_above": "Sisipkan baris di atas",
     "insert_row_below": "Sisipkan baris di bawah",
     "new_row": "+ Baris baru",
-    "row_options": "Opsi baris {n}"
+    "row_options": "Opsi baris {n}",
+    "delete_table": "Hapus tabel"
   },
   "toolbar": {
     "edit": "Edit",
@@ -175,7 +195,12 @@
     "zoom_in": "Perbesar",
     "zoom_out": "Perkecil",
     "zoom_reset": "Atur Ulang Zoom",
-    "done": "Selesai"
+    "cursor_sync": "Alihkan sinkronisasi kursor",
+    "empty_line_hint": "Ketik / untuk menyisipkan",
+    "print": "Cetak",
+    "reader": "Baca",
+    "switch_to_edit": "Beralih ke mode sunting",
+    "switch_to_reader": "Beralih ke mode baca"
   },
   "trial": {
     "days_remaining": "{days} hari tersisa dalam uji coba",
@@ -202,10 +227,10 @@
     "subtitle": "Penampil Markdown yang indah",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "Selesai",
-    "edit": "Edit",
-    "error_prefix": "Kesalahan sintaks",
-    "stale": "Pratinjau kedaluwarsa"
+  "image_dialog": {
+    "alt_placeholder": "Deskripsi gambar",
+    "insert": "Sisipkan",
+    "title": "Sisipkan URL Gambar",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

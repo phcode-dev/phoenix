@@ -67,7 +67,12 @@
     "table": "Tabulka",
     "task_list": "Seznam úkolů",
     "text_formatting": "Formátování textu",
-    "underline": "Podtržení"
+    "heading4": "Nadpis 4",
+    "heading5": "Nadpis 5",
+    "image": "Obrázek",
+    "image_upload": "Nahrát z počítače",
+    "image_url": "URL obrázku",
+    "underline": "Podtržení ({mod}+U)"
   },
   "help": {
     "editing": "Úpravy",
@@ -147,7 +152,15 @@
     "table": "Tabulka",
     "table_desc": "Tabulka 3×3",
     "task_list": "Seznam úkolů",
-    "task_list_desc": "Kontrolní seznam"
+    "task_list_desc": "Kontrolní seznam",
+    "heading4": "Nadpis 4",
+    "heading4_desc": "Menší nadpis",
+    "heading5": "Nadpis 5",
+    "heading5_desc": "Nejmenší nadpis",
+    "image_upload": "Nahrát obrázek",
+    "image_upload_desc": "Nahrát z počítače",
+    "image_url": "URL obrázku",
+    "image_url_desc": "Vložit z URL"
   },
   "table": {
     "add_col_left": "Přidat sloupec vlevo",
@@ -163,10 +176,10 @@
     "insert_row_above": "Vložit řádek nad",
     "insert_row_below": "Vložit řádek pod",
     "new_row": "+ Nový řádek",
-    "row_options": "Možnosti řádku {n}"
+    "row_options": "Možnosti řádku {n}",
+    "delete_table": "Smazat tabulku"
   },
   "toolbar": {
-    "done": "Hotovo",
     "edit": "Upravit",
     "export_pdf": "Exportovat do PDF",
     "focus": "Režim soustředění",
@@ -181,7 +194,13 @@
     "toc": "Obsah",
     "zoom_in": "Přiblížit",
     "zoom_out": "Oddálit",
-    "zoom_reset": "Resetovat přiblížení"
+    "zoom_reset": "Resetovat přiblížení",
+    "cursor_sync": "Přepnout synchronizaci kurzorů",
+    "empty_line_hint": "Napište / pro vložení",
+    "print": "Tisk",
+    "reader": "Čtečka",
+    "switch_to_edit": "Přepnout do režimu úprav",
+    "switch_to_reader": "Přepnout do režimu čtení"
   },
   "trial": {
     "days_remaining": "Zbývá {days} dní zkušební verze",
@@ -207,5 +226,11 @@
     "open_button": "Otevřít soubor",
     "subtitle": "Krásný prohlížeč Markdownu",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Popis obrázku",
+    "insert": "Vložit",
+    "title": "Vložit URL obrázku",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

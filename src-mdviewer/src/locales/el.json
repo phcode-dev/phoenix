@@ -67,7 +67,12 @@
     "table": "Πίνακας",
     "task_list": "Λίστα εργασιών",
     "text_formatting": "Μορφοποίηση κειμένου",
-    "underline": "Υπογράμμιση"
+    "heading4": "Επικεφαλίδα 4",
+    "heading5": "Επικεφαλίδα 5",
+    "image": "Εικόνα",
+    "image_upload": "Μεταφόρτωση από τον υπολογιστή",
+    "image_url": "URL εικόνας",
+    "underline": "Υπογράμμιση ({mod}+U)"
   },
   "help": {
     "editing": "Επεξεργασία",
@@ -147,7 +152,15 @@
     "table": "Πίνακας",
     "table_desc": "Πίνακας 3×3",
     "task_list": "Λίστα εργασιών",
-    "task_list_desc": "Λίστα ελέγχου"
+    "task_list_desc": "Λίστα ελέγχου",
+    "heading4": "Επικεφαλίδα 4",
+    "heading4_desc": "Μικρότερη επικεφαλίδα",
+    "heading5": "Επικεφαλίδα 5",
+    "heading5_desc": "Η μικρότερη επικεφαλίδα",
+    "image_upload": "Μεταφόρτωση εικόνας",
+    "image_upload_desc": "Μεταφόρτωση από τον υπολογιστή",
+    "image_url": "URL εικόνας",
+    "image_url_desc": "Ενσωμάτωση από URL"
   },
   "table": {
     "add_col_left": "Προσθήκη στήλης αριστερά",
@@ -163,10 +176,10 @@
     "insert_row_above": "Εισαγωγή γραμμής επάνω",
     "insert_row_below": "Εισαγωγή γραμμής κάτω",
     "new_row": "+ Νέα γραμμή",
-    "row_options": "Επιλογές γραμμής {n}"
+    "row_options": "Επιλογές γραμμής {n}",
+    "delete_table": "Διαγραφή πίνακα"
   },
   "toolbar": {
-    "done": "Τέλος",
     "edit": "Επεξεργασία",
     "export_pdf": "Εξαγωγή PDF",
     "focus": "Λειτουργία Συγκέντρωσης",
@@ -181,7 +194,13 @@
     "toc": "Πίνακας περιεχομένων",
     "zoom_in": "Μεγέθυνση",
     "zoom_out": "Σμίκρυνση",
-    "zoom_reset": "Επαναφορά εστίασης"
+    "zoom_reset": "Επαναφορά εστίασης",
+    "cursor_sync": "Εναλλαγή συγχρονισμού δρομέα",
+    "empty_line_hint": "Πληκτρολογήστε / για εισαγωγή",
+    "print": "Εκτύπωση",
+    "reader": "Ανάγνωση",
+    "switch_to_edit": "Μετάβαση σε λειτουργία επεξεργασίας",
+    "switch_to_reader": "Μετάβαση σε λειτουργία ανάγνωσης"
   },
   "trial": {
     "days_remaining": "Απομένουν {days} ημέρες στη δοκιμαστική περίοδο",
@@ -207,5 +226,11 @@
     "open_button": "Άνοιγμα Αρχείου",
     "subtitle": "Ένα όμορφο πρόγραμμα προβολής Markdown",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Περιγραφή εικόνας",
+    "insert": "Εισαγωγή",
+    "title": "Εισαγωγή URL εικόνας",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

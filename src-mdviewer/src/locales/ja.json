@@ -47,6 +47,7 @@
     "success": "PDFのエクスポートが完了しました"
   },
   "format": {
+    "block_type": "ブロックタイプ",
     "blockquote": "引用",
     "bold": "太字 ({mod}+B)",
     "bullet_list": "箇条書き",
@@ -58,16 +59,20 @@
     "heading3": "見出し3",
     "italic": "斜体 ({mod}+I)",
     "link": "リンク ({mod}+K)",
+    "lists": "リスト",
+    "more_elements": "その他",
     "numbered_list": "番号付きリスト",
     "paragraph": "段落",
     "strikethrough": "取り消し線 ({mod}+Shift+X)",
     "table": "テーブル",
     "task_list": "タスクリスト",
-    "block_type": "ブロックタイプ",
-    "lists": "リスト",
-    "more_elements": "その他",
     "text_formatting": "テキスト書式設定",
-    "underline": "下線"
+    "heading4": "見出し4",
+    "heading5": "見出し5",
+    "image": "画像",
+    "image_upload": "コンピューターからアップロード",
+    "image_url": "画像URL",
+    "underline": "下線 ({mod}+U)"
   },
   "help": {
     "editing": "編集",
@@ -92,6 +97,12 @@
     "text_placeholder": "表示テキスト（任意）",
     "url": "URL",
     "url_placeholder": "URLを貼り付けまたは入力..."
+  },
+  "mermaid": {
+    "done": "完了",
+    "edit": "編集",
+    "error_prefix": "構文エラー",
+    "stale": "プレビューが古くなっています"
   },
   "recovery": {
     "discard": "破棄",
@@ -131,6 +142,8 @@
     "heading2_desc": "中見出し",
     "heading3": "見出し3",
     "heading3_desc": "小見出し",
+    "mermaid": "マーメイドダイアグラム",
+    "mermaid_desc": "ダイアグラムを挿入",
     "no_results": "結果なし",
     "numbered_list": "番号付きリスト",
     "numbered_list_desc": "順序付きリスト",
@@ -140,8 +153,14 @@
     "table_desc": "3×3テーブル",
     "task_list": "タスクリスト",
     "task_list_desc": "チェックリスト",
-    "mermaid": "マーメイドダイアグラム",
-    "mermaid_desc": "ダイアグラムを挿入"
+    "heading4": "見出し4",
+    "heading4_desc": "より小さい見出し",
+    "heading5": "見出し5",
+    "heading5_desc": "最も小さい見出し",
+    "image_upload": "画像をアップロード",
+    "image_upload_desc": "コンピューターからアップロード",
+    "image_url": "画像URL",
+    "image_url_desc": "URLから埋め込む"
   },
   "table": {
     "add_col_left": "左に列を追加",
@@ -157,7 +176,8 @@
     "insert_row_above": "上に行を挿入",
     "insert_row_below": "下に行を挿入",
     "new_row": "+ 新しい行",
-    "row_options": "行 {n} のオプション"
+    "row_options": "行 {n} のオプション",
+    "delete_table": "表を削除"
   },
   "toolbar": {
     "edit": "編集",
@@ -175,7 +195,12 @@
     "zoom_in": "拡大",
     "zoom_out": "縮小",
     "zoom_reset": "ズームをリセット",
-    "done": "完了"
+    "cursor_sync": "カーソル同期の切り替え",
+    "empty_line_hint": "「/」を入力して挿入",
+    "print": "印刷",
+    "reader": "リーダー",
+    "switch_to_edit": "編集モードに切り替え",
+    "switch_to_reader": "リーダーモードに切り替え"
   },
   "trial": {
     "days_remaining": "試用期間の残り {days} 日",
@@ -202,10 +227,10 @@
     "subtitle": "美しいMarkdownビューア",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "完了",
-    "edit": "編集",
-    "error_prefix": "構文エラー",
-    "stale": "プレビューが古くなっています"
+  "image_dialog": {
+    "alt_placeholder": "画像の説明",
+    "insert": "挿入",
+    "title": "画像URLを挿入",
+    "url_placeholder": "画像のURLを入力"
   }
 }

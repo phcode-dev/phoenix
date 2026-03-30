@@ -67,7 +67,12 @@
     "table": "Tablo",
     "task_list": "Görev listesi",
     "text_formatting": "Metin biçimlendirme",
-    "underline": "Altı çizili"
+    "heading4": "Başlık 4",
+    "heading5": "Başlık 5",
+    "image": "Resim",
+    "image_upload": "Bilgisayardan Yükle",
+    "image_url": "Resim URL'si",
+    "underline": "Altı Çizili ({mod}+U)"
   },
   "help": {
     "editing": "Düzenleme",
@@ -147,7 +152,15 @@
     "table": "Tablo",
     "table_desc": "3×3 tablo",
     "task_list": "Görev listesi",
-    "task_list_desc": "Kontrol listesi"
+    "task_list_desc": "Kontrol listesi",
+    "heading4": "Başlık 4",
+    "heading4_desc": "Daha küçük başlık",
+    "heading5": "Başlık 5",
+    "heading5_desc": "En küçük başlık",
+    "image_upload": "Resim Yükle",
+    "image_upload_desc": "Bilgisayardan yükle",
+    "image_url": "Resim URL'si",
+    "image_url_desc": "URL'den göm"
   },
   "table": {
     "add_col_left": "Sola sütun ekle",
@@ -163,10 +176,10 @@
     "insert_row_above": "Yukarıya satır ekle",
     "insert_row_below": "Aşağıya satır ekle",
     "new_row": "+ Yeni satır",
-    "row_options": "{n}. satır seçenekleri"
+    "row_options": "{n}. satır seçenekleri",
+    "delete_table": "Tabloyu sil"
   },
   "toolbar": {
-    "done": "Bitti",
     "edit": "Düzenle",
     "export_pdf": "PDF Dışa Aktar",
     "focus": "Odak Modu",
@@ -181,7 +194,13 @@
     "toc": "İçindekiler",
     "zoom_in": "Yakınlaştır",
     "zoom_out": "Uzaklaştır",
-    "zoom_reset": "Yakınlaştırmayı Sıfırla"
+    "zoom_reset": "Yakınlaştırmayı Sıfırla",
+    "cursor_sync": "İmleç senkronizasyonunu aç/kapat",
+    "empty_line_hint": "Eklemek için / yazın",
+    "print": "Yazdır",
+    "reader": "Okuyucu",
+    "switch_to_edit": "Düzenleme moduna geç",
+    "switch_to_reader": "Okuyucu moduna geç"
   },
   "trial": {
     "days_remaining": "Deneme süresinin bitmesine {days} gün kaldı",
@@ -207,5 +226,11 @@
     "open_button": "Dosya Aç",
     "subtitle": "Harika bir Markdown görüntüleyici",
     "title": "Kern"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Resim açıklaması",
+    "insert": "Ekle",
+    "title": "Resim URL'si Ekle",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

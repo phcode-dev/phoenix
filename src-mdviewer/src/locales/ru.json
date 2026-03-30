@@ -67,7 +67,12 @@
     "table": "Таблица",
     "task_list": "Список задач",
     "text_formatting": "Форматирование текста",
-    "underline": "Подчёркнутый"
+    "heading4": "Заголовок 4",
+    "heading5": "Заголовок 5",
+    "image": "Изображение",
+    "image_upload": "Загрузить с компьютера",
+    "image_url": "URL изображения",
+    "underline": "Подчеркнутый ({mod}+U)"
   },
   "help": {
     "editing": "Редактирование",
@@ -147,7 +152,15 @@
     "table": "Таблица",
     "table_desc": "Таблица 3×3",
     "task_list": "Список задач",
-    "task_list_desc": "Чек-лист"
+    "task_list_desc": "Чек-лист",
+    "heading4": "Заголовок 4",
+    "heading4_desc": "Заголовок поменьше",
+    "heading5": "Заголовок 5",
+    "heading5_desc": "Самый маленький заголовок",
+    "image_upload": "Загрузить изображение",
+    "image_upload_desc": "Загрузить с компьютера",
+    "image_url": "URL изображения",
+    "image_url_desc": "Вставить по URL"
   },
   "table": {
     "add_col_left": "Добавить столбец слева",
@@ -163,10 +176,10 @@
     "insert_row_above": "Вставить строку выше",
     "insert_row_below": "Вставить строку ниже",
     "new_row": "+ Новая строка",
-    "row_options": "Параметры строки {n}"
+    "row_options": "Параметры строки {n}",
+    "delete_table": "Удалить таблицу"
   },
   "toolbar": {
-    "done": "Готово",
     "edit": "Редактировать",
     "export_pdf": "Экспорт в PDF",
     "focus": "Режим фокусировки",
@@ -181,7 +194,13 @@
     "toc": "Оглавление",
     "zoom_in": "Увеличить",
     "zoom_out": "Уменьшить",
-    "zoom_reset": "Сбросить масштаб"
+    "zoom_reset": "Сбросить масштаб",
+    "cursor_sync": "Переключить синхронизацию курсоров",
+    "empty_line_hint": "Введите / для вставки",
+    "print": "Печать",
+    "reader": "Режим чтения",
+    "switch_to_edit": "Переключиться в режим редактирования",
+    "switch_to_reader": "Переключиться в режим чтения"
   },
   "trial": {
     "days_remaining": "Осталось {days} дней в пробной версии",
@@ -207,5 +226,11 @@
     "open_button": "Открыть файл",
     "subtitle": "Красивый просмотрщик Markdown",
     "title": "Керн"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Описание изображения",
+    "insert": "Вставить",
+    "title": "Вставить URL изображения",
+    "url_placeholder": "https://example.com/image.png"
   }
 }

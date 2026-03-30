@@ -47,6 +47,7 @@
     "success": "تم تصدير PDF بنجاح"
   },
   "format": {
+    "block_type": "نوع الكتلة",
     "blockquote": "اقتباس",
     "bold": "غامق ({mod}+B)",
     "bullet_list": "قائمة نقطية",
@@ -58,16 +59,20 @@
     "heading3": "عنوان 3",
     "italic": "مائل ({mod}+I)",
     "link": "رابط ({mod}+K)",
+    "lists": "قوائم",
+    "more_elements": "المزيد",
     "numbered_list": "قائمة مرقّمة",
     "paragraph": "فقرة",
     "strikethrough": "يتوسطه خط ({mod}+Shift+X)",
     "table": "جدول",
     "task_list": "قائمة مهام",
-    "block_type": "نوع الكتلة",
-    "lists": "قوائم",
-    "more_elements": "المزيد",
     "text_formatting": "تنسيق النص",
-    "underline": "تسطير"
+    "heading4": "عنوان 4",
+    "heading5": "عنوان 5",
+    "image": "صورة",
+    "image_upload": "تحميل من الحاسوب",
+    "image_url": "رابط الصورة",
+    "underline": "تسطير ({mod}+U)"
   },
   "help": {
     "editing": "التحرير",
@@ -92,6 +97,12 @@
     "text_placeholder": "نص العرض (اختياري)",
     "url": "الرابط",
     "url_placeholder": "الصق أو اكتب رابطًا..."
+  },
+  "mermaid": {
+    "done": "تم",
+    "edit": "تحرير",
+    "error_prefix": "خطأ في الصياغة",
+    "stale": "المعاينة غير محدّثة"
   },
   "recovery": {
     "discard": "تجاهل",
@@ -131,6 +142,8 @@
     "heading2_desc": "عنوان متوسط",
     "heading3": "عنوان 3",
     "heading3_desc": "عنوان صغير",
+    "mermaid": "مخطط Mermaid",
+    "mermaid_desc": "إدراج مخطط",
     "no_results": "لا توجد نتائج",
     "numbered_list": "قائمة مرقّمة",
     "numbered_list_desc": "قائمة مرتّبة",
@@ -140,8 +153,14 @@
     "table_desc": "جدول 3×3",
     "task_list": "قائمة مهام",
     "task_list_desc": "قائمة تحقّق",
-    "mermaid": "مخطط Mermaid",
-    "mermaid_desc": "إدراج مخطط"
+    "heading4": "عنوان 4",
+    "heading4_desc": "عنوان أصغر",
+    "heading5": "عنوان 5",
+    "heading5_desc": "أصغر عنوان",
+    "image_upload": "رفع صورة",
+    "image_upload_desc": "الرفع من الكمبيوتر",
+    "image_url": "رابط الصورة",
+    "image_url_desc": "تضمين من رابط"
   },
   "table": {
     "add_col_left": "إضافة عمود يسارًا",
@@ -157,7 +176,8 @@
     "insert_row_above": "إدراج صف أعلى",
     "insert_row_below": "إدراج صف أسفل",
     "new_row": "+ صف جديد",
-    "row_options": "خيارات الصف {n}"
+    "row_options": "خيارات الصف {n}",
+    "delete_table": "حذف الجدول"
   },
   "toolbar": {
     "edit": "تحرير",
@@ -175,7 +195,12 @@
     "zoom_in": "تكبير",
     "zoom_out": "تصغير",
     "zoom_reset": "إعادة تعيين التكبير",
-    "done": "تم"
+    "cursor_sync": "تبديل مزامنة المؤشر",
+    "empty_line_hint": "اكتب / للإدراج",
+    "print": "طباعة",
+    "reader": "قارئ",
+    "switch_to_edit": "التبديل إلى وضع التحرير",
+    "switch_to_reader": "التبديل إلى وضع القارئ"
   },
   "trial": {
     "days_remaining": "باقي {days} يوم في الفترة التجريبية",
@@ -202,10 +227,10 @@
     "subtitle": "عارض ماركداون أنيق",
     "title": "Kern"
   },
-  "mermaid": {
-    "done": "تم",
-    "edit": "تحرير",
-    "error_prefix": "خطأ في الصياغة",
-    "stale": "المعاينة غير محدّثة"
+  "image_dialog": {
+    "alt_placeholder": "وصف الصورة",
+    "insert": "إدراج",
+    "title": "إدراج رابط الصورة",
+    "url_placeholder": "https://example.com/image.png"
   }
 }
