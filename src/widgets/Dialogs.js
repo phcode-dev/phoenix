@@ -677,6 +677,8 @@ define(function (require, exports, module) {
     exports.DIALOG_BTN_CLASS_NORMAL      = DIALOG_BTN_CLASS_NORMAL;
     exports.DIALOG_BTN_CLASS_LEFT        = DIALOG_BTN_CLASS_LEFT;
 
+    exports.PRO_DIALOGS_EVENT_MANAGER    = "ph-pro-dialogs";
+
     exports.showModalDialog              = showModalDialog;
     exports.showConfirmDialog            = showConfirmDialog;
     exports.showInfoDialog               = showInfoDialog;

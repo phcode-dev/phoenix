@@ -722,10 +722,10 @@ define(function (require, exports, module) {
                         error: result.error
                     }, "*");
                     if (result.errorCode === "UPGRADE_TO_PRO") {
-                        const ProDialogs = require("extensionsIntegrated/phoenix-pro/services/pro-dialogs");
-                        if (ProDialogs && ProDialogs.showUpsellDialog) {
-                            ProDialogs.showUpsellDialog(Strings.IMAGE_UPLOAD_LIMIT_TITLE, result.errorLoc, "imgUpload");
-                        }
+                        const EventManager = require("utils/EventManager");
+                        EventManager.triggerEvent(Dialogs.PRO_DIALOGS_EVENT_MANAGER,
+                            "imageUploadUpgradeToPro",
+                            Strings.IMAGE_UPLOAD_LIMIT_TITLE, result.errorLoc);
                     } else {
                         Dialogs.showModalDialog("", Strings.IMAGE_UPLOAD_FAILED, result.errorLoc || Strings.IMAGE_UPLOAD_FAILED);
                     }
