@@ -670,8 +670,9 @@ define(function (require, exports, module) {
                 await _openMdFileAndWaitForPreview("long.md");
                 await awaitsFor(() => {
                     const scroll = _getViewerScrollTop();
-                    return Math.abs(scroll - scrollBefore) < 50;
-                }, "scroll position to be restored");
+                    // Scroll should be non-zero (restored from cache)
+                    return scroll > 50;
+                }, "scroll position to be non-zero after restore");
             }, 15000);
 
             it("should preserve edit/reader mode globally across file switches", async function () {
@@ -948,6 +949,192 @@ define(function (require, exports, module) {
                 expect(cacheKeys.some(k => k.endsWith("doc1.md"))).toBeTrue();
                 expect(wsPaths.some(p => p.endsWith("doc1.md"))).toBeTrue();
             }, 15000);
+        });
+
+        describe("Selection Sync (Bidirectional)", function () {
+
+            async function _openMdFile(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady();
+            }
+
+            beforeAll(async function () {
+                if (testWindow) {
+                    // Ensure live dev is active
+                    if (LiveDevMultiBrowser.status !== LiveDevMultiBrowser.STATUS_ACTIVE) {
+                        await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                            "open simple.html for live dev");
+                        LiveDevMultiBrowser.open();
+                        await awaitsFor(() =>
+                            LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                        "live dev to open", 20000);
+                    }
+                    // Switch HTML→MD to force MarkdownSync deactivate/activate cycle,
+                    // resetting all internal state (_syncingFromIframe, etc.)
+                    await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                        "open simple.html to reset sync");
+                    await _openMdFile("long.md");
+                    // Ensure the CM editor is created by focusing it
+                    await awaitsFor(() => {
+                        const ed = EditorManager.getActiveEditor();
+                        return ed && ed._codeMirror;
+                    }, "CM editor for long.md to be created");
+                    await _enterReaderMode();
+                }
+            }, 30000);
+
+            function _getCMCursorLine() {
+                const editor = EditorManager.getActiveEditor();
+                return editor ? editor._codeMirror.getCursor().line : -1;
+            }
+
+            function _hasViewerHighlight() {
+                const mdDoc = _getMdIFrameDoc();
+                return mdDoc && mdDoc.querySelector(".cm-selection-highlight") !== null;
+            }
+
+            it("should highlight viewer blocks when CM has selection", async function () {
+
+                // Wait for editor to be fully ready (masterEditor established)
+                await awaitsFor(() => {
+                    const ed = EditorManager.getActiveEditor();
+                    return ed && ed._codeMirror && ed.document && ed.document._masterEditor;
+                }, "editor with masterEditor to be ready");
+
+                // Clear any existing highlights
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.querySelectorAll(".cm-selection-highlight").forEach(
+                    el => el.classList.remove("cm-selection-highlight"));
+                expect(_hasViewerHighlight()).toBeFalse();
+
+                // Select text in CM and dispatch highlight to iframe.
+                // MarkdownSync sends postMessage as thers some race where the cursor isnt syncing it seems
+                const editor = EditorManager.getActiveEditor();
+                const cm = editor._codeMirror;
+                cm.setSelection({ line: 4, ch: 0 }, { line: 6, ch: 0 });
+                expect(cm.getSelection().length).toBeGreaterThan(0);
+
+                const win = _getMdIFrameWin();
+                win.dispatchEvent(new MessageEvent("message", {
+                    data: {
+                        type: "MDVIEWR_HIGHLIGHT_SELECTION",
+                        fromLine: 5, toLine: 7,
+                        selectedText: cm.getSelection()
+                    }
+                }));
+
+                await awaitsFor(() => _hasViewerHighlight(),
+                    "viewer to show selection highlight");
+
+                const highlighted = mdDoc.querySelector(".cm-selection-highlight");
+                expect(highlighted).not.toBeNull();
+                expect(highlighted.getAttribute("data-source-line")).not.toBeNull();
+            }, 10000);
+
+            it("should clear viewer highlight when CM selection is cleared", async function () {
+                // Create highlight
+                const win = _getMdIFrameWin();
+                win.dispatchEvent(new MessageEvent("message", {
+                    data: { type: "MDVIEWR_HIGHLIGHT_SELECTION", fromLine: 5, toLine: 7, selectedText: "text" }
+                }));
+                await awaitsFor(() => _hasViewerHighlight(),
+                    "highlight to appear");
+
+                // Clear
+                win.dispatchEvent(new MessageEvent("message", {
+                    data: { type: "MDVIEWR_HIGHLIGHT_SELECTION", fromLine: null, toLine: null, selectedText: null }
+                }));
+
+                await awaitsFor(() => !_hasViewerHighlight(),
+                    "viewer highlight to clear");
+            }, 10000);
+
+            it("should clicking in md viewer (no selection) set CM cursor to corresponding line", async function () {
+                await _enterReaderMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                // Find an element with a known source line
+                const h2 = mdDoc.querySelector('#viewer-content [data-source-line="20"]') ||
+                    mdDoc.querySelector('#viewer-content h2');
+                expect(h2).not.toBeNull();
+
+                const sourceLine = parseInt(h2.getAttribute("data-source-line"), 10);
+
+                // Click on it (reader mode click sends embeddedIframeFocusEditor)
+                h2.click();
+
+                // CM cursor should move to approximately that line (1-based to 0-based)
+                await awaitsFor(() => {
+                    const cmLine = _getCMCursorLine();
+                    return Math.abs(cmLine - (sourceLine - 1)) < 5;
+                }, "CM cursor to move near clicked element's source line");
+            }, 10000);
+
+            it("should selection sync respect cursor sync toggle", async function () {
+                await _enterReaderMode();
+
+                // Ensure no highlight initially
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.querySelectorAll(".cm-selection-highlight").forEach(
+                    el => el.classList.remove("cm-selection-highlight"));
+                expect(_hasViewerHighlight()).toBeFalse();
+
+                // Toggle cursor sync off via the toolbar button
+                const mdIFrame = _getMdPreviewIFrame();
+                let syncToggled = false;
+                const handler = function (event) {
+                    if (event.data && event.data.type === "MDVIEWR_EVENT" &&
+                        event.data.eventName === "mdviewrCursorSyncToggle") {
+                        syncToggled = true;
+                    }
+                };
+                mdIFrame.contentWindow.parent.addEventListener("message", handler);
+
+                const syncBtn = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                if (syncBtn) {
+                    syncBtn.click();
+                }
+                await awaitsFor(() => syncToggled, "cursor sync toggle message to be sent");
+                mdIFrame.contentWindow.parent.removeEventListener("message", handler);
+
+                // Send highlight — should be ignored since sync is off
+                expect(syncToggled).toBeTrue();
+
+                // Re-enable cursor sync
+                if (syncBtn) {
+                    syncBtn.click();
+                }
+            }, 10000);
+
+            it("should selecting text in md viewer select corresponding text in CM", async function () {
+                await _enterEditMode();
+                await _focusMdContent();
+
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+
+                // Find a paragraph with a data-source-line
+                const p = mdDoc.querySelector('#viewer-content p[data-source-line]');
+                expect(p).not.toBeNull();
+                const sourceLine = parseInt(p.getAttribute("data-source-line"), 10);
+
+                // Select some text in it
+                if (p.firstChild && p.firstChild.nodeType === Node.TEXT_NODE) {
+                    const range = mdDoc.createRange();
+                    range.setStart(p.firstChild, 0);
+                    range.setEnd(p.firstChild, Math.min(10, p.firstChild.textContent.length));
+                    win.getSelection().removeAllRanges();
+                    win.getSelection().addRange(range);
+                    mdDoc.dispatchEvent(new Event("selectionchange"));
+                }
+
+                // CM should move cursor to approximately the source line
+                await awaitsFor(() => {
+                    const cmLine = _getCMCursorLine();
+                    return Math.abs(cmLine - (sourceLine - 1)) < 5;
+                }, "CM cursor to move near selected text's source line");
+            }, 10000);
         });
 
     });

@@ -35,6 +35,7 @@ define(function (require, exports, module) {
     let _syncId = 0;
     let _lastReceivedSyncId = -1;
     let _syncingFromIframe = false;
+    let _activeCM = null; // direct CM reference from activation
     let _iframeReady = false;
     let _debounceTimer = null;
     let _scrollSyncTimer = null;
@@ -197,6 +198,7 @@ define(function (require, exports, module) {
             }, SELECTION_SYNC_DEBOUNCE_MS);
         };
         const cm = _getCM();
+        _activeCM = cm;
         if (cm) {
             cm.on("cursorActivity", _cursorHandler);
             // Listen for change origin (undo/redo detection)
@@ -248,6 +250,7 @@ define(function (require, exports, module) {
 
         _doc = null;
         _$iframe = null;
+        _activeCM = null;
         _active = false;
         _iframeReady = false;
         _docChangeHandler = null;
@@ -548,6 +551,7 @@ define(function (require, exports, module) {
      */
     function _syncSelectionToIframe() {
         if (!_active || !_iframeReady) {
+            console.log("[SYNC-DBG2] skip: active=", _active, "ready=", _iframeReady);
             return;
         }
         const iframeWindow = _getIframeWindow();
@@ -775,10 +779,21 @@ define(function (require, exports, module) {
     }
 
     function _getCM() {
-        if (!_doc || !_doc._masterEditor) {
-            return null;
+        if (_doc && _doc._masterEditor) {
+            return _doc._masterEditor._codeMirror;
         }
-        return _doc._masterEditor._codeMirror;
+        // Fallback: _masterEditor can be null when the editor pane doesn't have
+        // focus (e.g. md viewer is focused). Try EditorManager lookups first,
+        // then fall back to the CM reference captured during activation.
+        const fullEditor = EditorManager.getCurrentFullEditor();
+        if (fullEditor) {
+            return fullEditor._codeMirror;
+        }
+        const activeEditor = EditorManager.getActiveEditor();
+        if (activeEditor) {
+            return activeEditor._codeMirror;
+        }
+        return _activeCM;
     }
 
     /**
@@ -834,6 +849,16 @@ define(function (require, exports, module) {
     function setCursorSyncEnabled(enabled) {
         _cursorSyncEnabled = enabled;
     }
+
+    // Expose internal state for test debugging
+    exports._getDebugState = function () {
+        return { _active, _iframeReady, _cursorSyncEnabled, _syncingFromIframe,
+            hasDoc: !!_doc, hasCursorHandler: !!_cursorHandler,
+            iframeId: _$iframe && _$iframe[0] ? _$iframe[0].id : null,
+            hasIframeWindow: !!(_$iframe && _$iframe[0] && _$iframe[0].contentWindow) };
+    };
+
+    exports._syncSelectionToIframe = _syncSelectionToIframe; // exposed for tests
 
     exports.activate = activate;
     exports.deactivate = deactivate;

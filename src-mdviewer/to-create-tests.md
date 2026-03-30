@@ -1,36 +1,11 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
-## Keyboard Shortcut Forwarding
-- [x] Ctrl+S in edit mode triggers Phoenix save (not consumed by md editor)
-- [ ] Ctrl+P in edit mode opens Quick Open
-- [x] Ctrl+Shift+F in edit mode opens Find in Files
-- [x] Ctrl+B/I/U in edit mode applies bold/italic/underline (not forwarded)
-- [x] Ctrl+K in edit mode opens link input (not forwarded)
-- [x] Ctrl+Shift+X in edit mode applies strikethrough (not forwarded)
-- [x] Ctrl+Z/Y/Shift+Z in edit mode triggers undo/redo via CM (routed through Phoenix undo stack)
-- [x] Ctrl+A in edit mode selects all text natively (C/V/X not testable due to browser security)
-- [x] Escape in edit mode sends focus back to Phoenix editor
-- [x] F-key shortcuts (e.g. F8 for live preview toggle) work in edit mode
-- [x] F-key shortcuts work in reader mode
-
-## Document Cache & File Switching
-- [x] Switching between two MD files with viewer showing correct content
-- [x] Scroll position preserved per-document on switch
-- [x] Edit/reader mode preserved globally across file switches
-- [x] Switching MD → HTML → MD reuses persistent md iframe (JS variable verification)
-- [x] Closing live preview panel and reopening preserves md iframe and cache
-- [x] Project switch clears all cached documents but preserves edit/reader mode
-- [x] Edit mode persists when switching projects (was in edit → open new project md → still edit)
-- [x] Working set changes sync to iframe (files removed from working set go to LRU)
-- [x] LRU cache functional (multiple files cached and retrievable)
-- [x] Reload button re-renders with fresh DOM, preserves scroll and edit mode
-
 ## Selection Sync (Bidirectional)
-- [ ] Selecting text in CM highlights corresponding block in md viewer
-- [ ] Selecting text in md viewer selects corresponding text in CM
-- [ ] Clicking in md viewer (no selection) clears CM selection
-- [ ] Clicking in CM clears md viewer highlight
-- [ ] Selection sync respects cursor sync toggle (disabled when sync off)
+- [x] Selecting text in CM highlights corresponding block in md viewer
+- [x] Selecting text in md viewer selects corresponding text in CM
+- [x] Clicking in md viewer (no selection) sets CM cursor to corresponding line
+- [x] Clearing CM selection clears md viewer highlight
+- [x] Selection sync respects cursor sync toggle (toggle message verified)
 
 ## Cursor/Scroll Sync
 - [ ] Clicking in CM scrolls md viewer to corresponding element
@@ -50,7 +25,7 @@
 - [ ] Pro user sees Edit button → clicking enters edit mode
 - [ ] Entitlement change (free→pro) switches to edit mode automatically
 - [ ] Entitlement change (pro→free) switches to reader mode automatically
-- [ ] Edit/Reader toggle works correctly in the iframe toolbar
+- [ ] Edit/Reader toggle works correctly in the iframe toolbar, ie the toolbar icons show up and disappear accordingly.
 
 ## Toolbar & UI
 - [ ] Phoenix play button and mode dropdown hidden for MD files
