@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script type="module" src="/src/embedded-main.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="app-toolbar" id="toolbar" role="toolbar"></header>
+        <main class="app-viewer" id="app-viewer" role="main">
+            <div class="markdown-body" id="viewer-content" style="display:none"></div>
+        </main>
+    </div>
+    <div class="search-bar" id="search-bar" role="search">
+        <input type="text" class="search-input" id="search-input"
+               data-i18n-placeholder="search.placeholder" data-i18n-aria="a11y.search_text" />
+        <span class="search-count" id="search-count"></span>
+        <button class="search-btn" id="search-prev" data-i18n-aria="a11y.previous_match">&uarr;</button>
+        <button class="search-btn" id="search-next" data-i18n-aria="a11y.next_match">&darr;</button>
+        <button class="search-btn" id="search-close" data-i18n-aria="a11y.close_search">&times;</button>
+    </div>
+    <div class="format-bar" id="format-bar" role="toolbar"></div>
+    <div class="link-popover" id="link-popover" role="dialog"></div>
+    <div class="context-menu" id="context-menu" role="menu"></div>
+    <div class="table-context-menu" id="table-context-menu" role="menu"></div>
+    <div class="slash-menu-anchor" id="slash-menu-anchor">
+        <div class="slash-menu" id="slash-menu" role="listbox"></div>
+    </div>
+    <div class="lang-picker" id="lang-picker" role="dialog"></div>
+</body>
+</html>

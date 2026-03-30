@@ -167,6 +167,11 @@ define(function (require, exports, module) {
      */
     window.onmessage = function(event) {
         if(!(Phoenix.TRUSTED_ORIGINS[event.origin] || eventTrustedOrigins[event.origin])){
+            // Sandboxed iframes without allow-same-origin send "null" origin —
+            // silently ignore these as they communicate via their own message handlers.
+            if(event.origin === "null") {
+                return;
+            }
             console.error(`Ignoring event from untrusted origin (should be one of `
                 + `${Object.keys(Phoenix.TRUSTED_ORIGINS)}, ${Object.keys(eventTrustedOrigins)}) but got: `, event);
             console.error('Forgot to set window.Phoenix.TRUSTED_ORIGINS["http://<yourdomain.com>"]=true; ?');

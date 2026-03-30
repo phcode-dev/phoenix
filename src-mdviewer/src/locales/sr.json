@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Затвори претрагу",
+    "edit_link": "Уреди везу",
+    "format_text": "Форматирај текст",
+    "insert_block": "Уметни блок",
+    "main_toolbar": "Главна трака са алаткама",
+    "next_match": "Следеће подударање",
+    "previous_match": "Претходно подударање",
+    "search_in_document": "Претражи у документу",
+    "search_text": "Текст за претрагу",
+    "select_language": "Изабери језик",
+    "sidebar": "Бочна трака",
+    "skip_to_content": "Прескочи на садржај"
+  },
+  "common": {
+    "close": "Затвори",
+    "file": "Датотека",
+    "open": "Отвори"
+  },
+  "context": {
+    "copy": "Копирај",
+    "copy_image_address": "Копирај адресу слике",
+    "copy_link": "Копирај везу",
+    "cut": "Исеци",
+    "open_link": "Отвори везу",
+    "paste": "Налепи",
+    "paste_plain": "Налепи као обичан текст",
+    "select_all": "Изабери све"
+  },
+  "dialog": {
+    "cancel": "Откажи",
+    "discard": "Одбаци",
+    "dont_save": "Немој сачувати",
+    "save": "Сачувај",
+    "unsaved_close": "Имате несачуване промене. Да ли желите да их сачувате пре затварања?",
+    "unsaved_exit_edit": "Имате несачуване промене. Да ли желите да их сачувате пре изласка из режима уређивања?",
+    "unsaved_new_file": "Имате несачуване промене. Да ли желите да их сачувате пре креирања нове датотеке?",
+    "unsaved_open_file": "Имате несачуване измене. Да ли желите да их сачувате пре отварања нове датотеке?",
+    "unsaved_title": "Несачуване измене"
+  },
+  "drop_zone": {
+    "text": "Превуците своју Markdown датотеку овде"
+  },
+  "export": {
+    "open": "Отвори",
+    "success": "PDF је успешно извезен"
+  },
+  "format": {
+    "block_type": "Тип блока",
+    "blockquote": "Блок цитат",
+    "bold": "Подебљано ({mod}+B)",
+    "bullet_list": "Листа са ставкама",
+    "code": "Уметнути кôд ({mod}+E)",
+    "code_block": "Блок кода",
+    "divider": "Раздвајач",
+    "heading1": "Наслов 1",
+    "heading2": "Наслов 2",
+    "heading3": "Наслов 3",
+    "italic": "Курзив ({mod}+I)",
+    "link": "Веза ({mod}+K)",
+    "lists": "Листе",
+    "more_elements": "Више",
+    "numbered_list": "Нумерисана листа",
+    "paragraph": "Пасус",
+    "strikethrough": "Прецртано ({mod}+Shift+X)",
+    "table": "Табела",
+    "task_list": "Листа задатака",
+    "text_formatting": "Форматирање текста",
+    "underline": "Подвучено"
+  },
+  "help": {
+    "editing": "Уређивање",
+    "fallback_notice": "Ова страница још увек није доступна на вашем језику. Приказује се енглеска верзија.",
+    "features": "Функције",
+    "getting_started": "Први кораци",
+    "shortcuts": "Тастатурне пречице"
+  },
+  "lang_picker": {
+    "filter_label": "Филтрирај језике",
+    "filter_placeholder": "Филтрирај језике...",
+    "plain_text": "Обичан текст"
+  },
+  "link": {
+    "apply": "Примени линк",
+    "cancel": "Одустани",
+    "display_text": "Текст за приказ",
+    "edit": "Уреди",
+    "edit_link": "Уреди линк",
+    "remove_link": "Уклони линк",
+    "text": "Текст",
+    "text_placeholder": "Текст за приказ (опционо)",
+    "url": "URL",
+    "url_placeholder": "Налепите или унесите URL..."
+  },
+  "mermaid": {
+    "done": "Готово",
+    "edit": "Измени",
+    "error_prefix": "Синтаксна грешка",
+    "stale": "Преглед је застарео"
+  },
+  "recovery": {
+    "discard": "Одбаци",
+    "message": "Kern је пронашао несачуване промене из претходне сесије. Да ли желите да их вратите?",
+    "restore": "Врати",
+    "title": "Вратити несачуване промене?"
+  },
+  "search": {
+    "count": "погодака",
+    "no_results": "Нема резултата",
+    "placeholder": "Претрага у документу..."
+  },
+  "settings": {
+    "language": "Језик",
+    "theme": "Тема",
+    "theme_dark": "Тамна",
+    "theme_light": "Светла",
+    "theme_system": "Системска"
+  },
+  "sidebar": {
+    "no_headings": "Нема наслова",
+    "recent": "Недавне датотеке",
+    "toc": "Садржај"
+  },
+  "slash": {
+    "blockquote": "Блок цитат",
+    "blockquote_desc": "Блок за цитирање",
+    "bullet_list": "Листа са ставкама",
+    "bullet_list_desc": "Неуређена листа",
+    "code_block": "Блок кода",
+    "code_block_desc": "Ограђени код",
+    "divider": "Разделник",
+    "divider_desc": "Хоризонтална линија",
+    "heading1": "Наслов 1",
+    "heading1_desc": "Велики наслов",
+    "heading2": "Наслов 2",
+    "heading2_desc": "Средњи наслов",
+    "heading3": "Наслов 3",
+    "heading3_desc": "Мали наслов",
+    "mermaid": "Mermaid дијаграм",
+    "mermaid_desc": "Уметни дијаграм",
+    "no_results": "Нема резултата",
+    "numbered_list": "Нумерисана листа",
+    "numbered_list_desc": "Уређена листа",
+    "paragraph": "Пасус",
+    "paragraph_desc": "Обичан текст",
+    "table": "Табела",
+    "table_desc": "Табела 3×3",
+    "task_list": "Листа задатака",
+    "task_list_desc": "Контролна листа"
+  },
+  "table": {
+    "add_col_left": "Додај колону лево",
+    "add_col_right": "Додај колону десно",
+    "add_row_above": "Додај ред изнад",
+    "add_row_below": "Додај ред испод",
+    "col_options": "Опције колоне {n}",
+    "delete_col": "Обриши колону",
+    "delete_row": "Обриши ред",
+    "header": "Заглавље",
+    "insert_col_left": "Уметни колону лево",
+    "insert_col_right": "Уметни колону десно",
+    "insert_row_above": "Уметни ред изнад",
+    "insert_row_below": "Уметни ред испод",
+    "new_row": "+ Нови ред",
+    "row_options": "Опције реда {n}"
+  },
+  "toolbar": {
+    "done": "Готово",
+    "edit": "Уреди",
+    "export_pdf": "Извези PDF",
+    "focus": "Режим фокуса",
+    "more": "Више",
+    "new_file": "Нови фајл",
+    "open": "Отвори фајл",
+    "save": "Сачувај",
+    "search": "Претрага",
+    "settings": "Подешавања",
+    "split_view": "Подељени приказ",
+    "theme": "Промени тему",
+    "toc": "Садржај",
+    "zoom_in": "Увећај",
+    "zoom_out": "Умањи",
+    "zoom_reset": "Ресетуј зум"
+  },
+  "trial": {
+    "days_remaining": "{days} дана преостало у пробном периоду",
+    "expired_message": "Ваш пробни период је истекао. Купите Kern да бисте наставили са уређивањем.",
+    "feature_edit": "Уређивање Markdown-а уз WYSIWYG и подељени приказ",
+    "feature_export": "Извоз у PDF",
+    "feature_save": "Чување и креирање нових датотека",
+    "one_time_purchase": "Једнократна куповина. Без претплате.",
+    "purchase_button": "Купите Kern",
+    "purchase_desc": "Остварите пун приступ свим функцијама за уређивање и извоз једнократном куповином.",
+    "purchase_title": "Откључајте Kern",
+    "purchasing": "Куповина у току...",
+    "restore_purchases": "Обновите куповине",
+    "restoring": "Обнављање у току..."
+  },
+  "viewer": {
+    "copied": "Копирано!",
+    "copy": "Копирај"
+  },
+  "welcome": {
+    "drop_hint": "или превуците и отпустите .md датотеку",
+    "new_button": "Нова датотека",
+    "open_button": "Отвори датотеку",
+    "subtitle": "Прелеп Markdown прегледач",
+    "title": "Kern"
+  }
+}

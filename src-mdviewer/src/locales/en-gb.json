@@ -1,0 +1,211 @@
+{
+  "toolbar": {
+    "open": "Open File",
+    "theme": "Toggle Theme",
+    "toc": "Table of Contents",
+    "search": "Search",
+    "focus": "Focus Mode",
+    "zoom_in": "Zoom In",
+    "zoom_out": "Zoom Out",
+    "zoom_reset": "Reset Zoom",
+    "save": "Save",
+    "edit": "Edit",
+    "new_file": "New File",
+    "split_view": "Split View",
+    "export_pdf": "Export PDF",
+    "settings": "Settings",
+    "more": "More",
+    "done": "Done"
+  },
+  "sidebar": {
+    "toc": "Table of Contents",
+    "recent": "Recent Files",
+    "no_headings": "No headings found"
+  },
+  "search": {
+    "placeholder": "Search in document...",
+    "count": "matches",
+    "no_results": "No results"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "A beautiful Markdown viewer",
+    "new_button": "New File",
+    "open_button": "Open File",
+    "drop_hint": "or drag & drop a .md file"
+  },
+  "viewer": {
+    "copy": "Copy",
+    "copied": "Copied!"
+  },
+  "settings": {
+    "theme": "Theme",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "theme_system": "System",
+    "language": "Language"
+  },
+  "common": {
+    "close": "Close",
+    "open": "Open",
+    "file": "File"
+  },
+  "format": {
+    "paragraph": "Paragraph",
+    "heading1": "Heading 1",
+    "heading2": "Heading 2",
+    "heading3": "Heading 3",
+    "bold": "Bold ({mod}+B)",
+    "italic": "Italic ({mod}+I)",
+    "strikethrough": "Strikethrough ({mod}+Shift+X)",
+    "underline": "Underline ({mod}+U)",
+    "code": "Inline code ({mod}+E)",
+    "link": "Link ({mod}+K)",
+    "bullet_list": "Bullet list",
+    "numbered_list": "Numbered list",
+    "task_list": "Task list",
+    "blockquote": "Blockquote",
+    "divider": "Divider",
+    "table": "Table",
+    "code_block": "Code block",
+    "block_type": "Block type",
+    "text_formatting": "Text formatting",
+    "lists": "Lists",
+    "more_elements": "More"
+  },
+  "slash": {
+    "paragraph": "Paragraph",
+    "paragraph_desc": "Plain text",
+    "heading1": "Heading 1",
+    "heading1_desc": "Large heading",
+    "heading2": "Heading 2",
+    "heading2_desc": "Medium heading",
+    "heading3": "Heading 3",
+    "heading3_desc": "Small heading",
+    "bullet_list": "Bullet list",
+    "bullet_list_desc": "Unordered list",
+    "numbered_list": "Numbered list",
+    "numbered_list_desc": "Ordered list",
+    "task_list": "Task list",
+    "task_list_desc": "Checklist",
+    "blockquote": "Blockquote",
+    "blockquote_desc": "Quote block",
+    "code_block": "Code block",
+    "code_block_desc": "Fenced code",
+    "table": "Table",
+    "table_desc": "3×3 table",
+    "divider": "Divider",
+    "divider_desc": "Horizontal rule",
+    "mermaid": "Mermaid diagram",
+    "mermaid_desc": "Insert a diagram",
+    "no_results": "No results"
+  },
+  "mermaid": {
+    "edit": "Edit",
+    "done": "Done",
+    "error_prefix": "Syntax error",
+    "stale": "Preview outdated"
+  },
+  "link": {
+    "edit": "Edit",
+    "edit_link": "Edit link",
+    "remove_link": "Remove link",
+    "text": "Text",
+    "text_placeholder": "Display text (optional)",
+    "display_text": "Display text",
+    "url": "URL",
+    "url_placeholder": "Paste or type URL...",
+    "apply": "Apply link",
+    "cancel": "Cancel"
+  },
+  "table": {
+    "header": "Header",
+    "new_row": "+ New row",
+    "row_options": "Row {n} options",
+    "col_options": "Column {n} options",
+    "insert_row_above": "Insert row above",
+    "insert_row_below": "Insert row below",
+    "delete_row": "Delete row",
+    "insert_col_left": "Insert column left",
+    "insert_col_right": "Insert column right",
+    "delete_col": "Delete column",
+    "add_row_above": "Add row above",
+    "add_row_below": "Add row below",
+    "add_col_left": "Add column left",
+    "add_col_right": "Add column right"
+  },
+  "dialog": {
+    "unsaved_title": "Unsaved Changes",
+    "unsaved_exit_edit": "You have unsaved changes. Do you want to save before exiting edit mode?",
+    "unsaved_new_file": "You have unsaved changes. Do you want to save before creating a new file?",
+    "unsaved_open_file": "You have unsaved changes. Do you want to save before opening a new file?",
+    "save": "Save",
+    "discard": "Discard",
+    "dont_save": "Don't Save",
+    "cancel": "Cancel",
+    "unsaved_close": "You have unsaved changes. Do you want to save before closing?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "Filter languages...",
+    "filter_label": "Filter languages",
+    "plain_text": "Plain text"
+  },
+  "a11y": {
+    "skip_to_content": "Skip to content",
+    "main_toolbar": "Main toolbar",
+    "sidebar": "Sidebar",
+    "search_text": "Search text",
+    "previous_match": "Previous match",
+    "next_match": "Next match",
+    "close_search": "Close search",
+    "format_text": "Format text",
+    "edit_link": "Edit link",
+    "insert_block": "Insert block",
+    "select_language": "Select language",
+    "search_in_document": "Search in document"
+  },
+  "drop_zone": {
+    "text": "Drop your Markdown file here"
+  },
+  "help": {
+    "getting_started": "Getting Started",
+    "editing": "Editing",
+    "shortcuts": "Keyboard Shortcuts",
+    "features": "Features",
+    "fallback_notice": "This page is not yet available in your language. Showing the English version."
+  },
+  "recovery": {
+    "title": "Recover unsaved changes?",
+    "message": "Kern found unsaved changes from a previous session. Do you want to restore them?",
+    "restore": "Restore",
+    "discard": "Discard"
+  },
+  "export": {
+    "success": "PDF exported successfully",
+    "open": "Open"
+  },
+  "context": {
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "paste_plain": "Paste as Plain Text",
+    "select_all": "Select All",
+    "copy_link": "Copy Link",
+    "open_link": "Open Link",
+    "copy_image_address": "Copy Image Address"
+  },
+  "trial": {
+    "days_remaining": "{days} days left in trial",
+    "expired_message": "Your trial has expired. Purchase Kern to continue editing.",
+    "purchase_button": "Purchase Kern",
+    "purchase_title": "Unlock Kern",
+    "purchase_desc": "Get full access to all editing and export features with a one-time purchase.",
+    "feature_edit": "Edit Markdown with WYSIWYG and split view",
+    "feature_save": "Save and create new files",
+    "feature_export": "Export to PDF",
+    "restore_purchases": "Restore Purchases",
+    "one_time_purchase": "One-time purchase. No subscription.",
+    "purchasing": "Purchasing...",
+    "restoring": "Restoring..."
+  }
+}

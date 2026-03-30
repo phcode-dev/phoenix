@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Fechar pesquisa",
+    "edit_link": "Editar link",
+    "format_text": "Formatar texto",
+    "insert_block": "Inserir bloco",
+    "main_toolbar": "Barra de ferramentas principal",
+    "next_match": "Próximo resultado",
+    "previous_match": "Resultado anterior",
+    "search_in_document": "Pesquisar no documento",
+    "search_text": "Pesquisar texto",
+    "select_language": "Selecionar linguagem",
+    "sidebar": "Barra lateral",
+    "skip_to_content": "Pular para o conteúdo"
+  },
+  "common": {
+    "close": "Fechar",
+    "file": "Arquivo",
+    "open": "Abrir"
+  },
+  "context": {
+    "copy": "Copiar",
+    "copy_image_address": "Copiar endereço da imagem",
+    "copy_link": "Copiar link",
+    "cut": "Recortar",
+    "open_link": "Abrir link",
+    "paste": "Colar",
+    "paste_plain": "Colar como texto simples",
+    "select_all": "Selecionar tudo"
+  },
+  "dialog": {
+    "cancel": "Cancelar",
+    "discard": "Descartar",
+    "dont_save": "Não salvar",
+    "save": "Salvar",
+    "unsaved_close": "Você tem alterações não salvas. Deseja salvar antes de fechar?",
+    "unsaved_exit_edit": "Você tem alterações não salvas. Deseja salvar antes de sair do modo de edição?",
+    "unsaved_new_file": "Você tem alterações não salvas. Deseja salvar antes de criar um novo arquivo?",
+    "unsaved_open_file": "Você tem alterações não salvas. Deseja salvar antes de abrir um novo arquivo?",
+    "unsaved_title": "Alterações não salvas"
+  },
+  "drop_zone": {
+    "text": "Solte seu arquivo Markdown aqui"
+  },
+  "export": {
+    "open": "Abrir",
+    "success": "PDF exportado com sucesso"
+  },
+  "format": {
+    "blockquote": "Citação",
+    "bold": "Negrito ({mod}+B)",
+    "bullet_list": "Lista com marcadores",
+    "code": "Código inline ({mod}+E)",
+    "code_block": "Bloco de código",
+    "divider": "Divisor",
+    "heading1": "Título 1",
+    "heading2": "Título 2",
+    "heading3": "Título 3",
+    "italic": "Itálico ({mod}+I)",
+    "link": "Link ({mod}+K)",
+    "numbered_list": "Lista numerada",
+    "paragraph": "Parágrafo",
+    "strikethrough": "Tachado ({mod}+Shift+X)",
+    "table": "Tabela",
+    "task_list": "Lista de tarefas",
+    "block_type": "Tipo de bloco",
+    "lists": "Listas",
+    "more_elements": "Mais",
+    "text_formatting": "Formatação de texto",
+    "underline": "Sublinhado"
+  },
+  "help": {
+    "editing": "Edição",
+    "fallback_notice": "Esta página ainda não está disponível no seu idioma. Exibindo a versão em inglês.",
+    "features": "Funcionalidades",
+    "getting_started": "Primeiros passos",
+    "shortcuts": "Atalhos de teclado"
+  },
+  "lang_picker": {
+    "filter_label": "Filtrar linguagens",
+    "filter_placeholder": "Filtrar linguagens...",
+    "plain_text": "Texto simples"
+  },
+  "link": {
+    "apply": "Aplicar link",
+    "cancel": "Cancelar",
+    "display_text": "Texto de exibição",
+    "edit": "Editar",
+    "edit_link": "Editar link",
+    "remove_link": "Remover link",
+    "text": "Texto",
+    "text_placeholder": "Texto de exibição (opcional)",
+    "url": "URL",
+    "url_placeholder": "Cole ou digite a URL..."
+  },
+  "recovery": {
+    "discard": "Descartar",
+    "message": "O Kern encontrou alterações não salvas de uma sessão anterior. Deseja restaurá-las?",
+    "restore": "Restaurar",
+    "title": "Recuperar alterações não salvas?"
+  },
+  "search": {
+    "count": "resultados",
+    "no_results": "Sem resultados",
+    "placeholder": "Pesquisar no documento..."
+  },
+  "settings": {
+    "language": "Idioma",
+    "theme": "Tema",
+    "theme_dark": "Escuro",
+    "theme_light": "Claro",
+    "theme_system": "Sistema"
+  },
+  "sidebar": {
+    "no_headings": "Nenhum título encontrado",
+    "recent": "Arquivos recentes",
+    "toc": "Sumário"
+  },
+  "slash": {
+    "blockquote": "Citação",
+    "blockquote_desc": "Bloco de citação",
+    "bullet_list": "Lista com marcadores",
+    "bullet_list_desc": "Lista não ordenada",
+    "code_block": "Bloco de código",
+    "code_block_desc": "Código delimitado",
+    "divider": "Divisor",
+    "divider_desc": "Linha horizontal",
+    "heading1": "Título 1",
+    "heading1_desc": "Título grande",
+    "heading2": "Título 2",
+    "heading2_desc": "Título médio",
+    "heading3": "Título 3",
+    "heading3_desc": "Título pequeno",
+    "no_results": "Sem resultados",
+    "numbered_list": "Lista numerada",
+    "numbered_list_desc": "Lista ordenada",
+    "paragraph": "Parágrafo",
+    "paragraph_desc": "Texto simples",
+    "table": "Tabela",
+    "table_desc": "Tabela 3×3",
+    "task_list": "Lista de tarefas",
+    "task_list_desc": "Checklist",
+    "mermaid": "Diagrama Mermaid",
+    "mermaid_desc": "Inserir um diagrama"
+  },
+  "table": {
+    "add_col_left": "Adicionar coluna à esquerda",
+    "add_col_right": "Adicionar coluna à direita",
+    "add_row_above": "Adicionar linha acima",
+    "add_row_below": "Adicionar linha abaixo",
+    "col_options": "Opções da coluna {n}",
+    "delete_col": "Excluir coluna",
+    "delete_row": "Excluir linha",
+    "header": "Cabeçalho",
+    "insert_col_left": "Inserir coluna à esquerda",
+    "insert_col_right": "Inserir coluna à direita",
+    "insert_row_above": "Inserir linha acima",
+    "insert_row_below": "Inserir linha abaixo",
+    "new_row": "+ Nova linha",
+    "row_options": "Opções da linha {n}"
+  },
+  "toolbar": {
+    "edit": "Editar",
+    "export_pdf": "Exportar PDF",
+    "focus": "Modo foco",
+    "more": "Mais",
+    "new_file": "Novo arquivo",
+    "open": "Abrir arquivo",
+    "save": "Salvar",
+    "search": "Pesquisar",
+    "settings": "Configurações",
+    "split_view": "Vista dividida",
+    "theme": "Alternar tema",
+    "toc": "Sumário",
+    "zoom_in": "Aumentar zoom",
+    "zoom_out": "Diminuir zoom",
+    "zoom_reset": "Redefinir zoom",
+    "done": "Concluído"
+  },
+  "trial": {
+    "days_remaining": "{days} dias restantes no período de teste",
+    "expired_message": "Seu período de teste expirou. Compre o Kern para continuar editando.",
+    "feature_edit": "Edite Markdown com WYSIWYG e vista dividida",
+    "feature_export": "Exportar para PDF",
+    "feature_save": "Salve e crie novos arquivos",
+    "one_time_purchase": "Compra única. Sem assinatura.",
+    "purchase_button": "Comprar Kern",
+    "purchase_desc": "Tenha acesso completo a todos os recursos de edição e exportação com uma compra única.",
+    "purchase_title": "Desbloquear Kern",
+    "purchasing": "Comprando...",
+    "restore_purchases": "Restaurar compras",
+    "restoring": "Restaurando..."
+  },
+  "viewer": {
+    "copied": "Copiado!",
+    "copy": "Copiar"
+  },
+  "welcome": {
+    "drop_hint": "ou arraste e solte um arquivo .md",
+    "new_button": "Novo arquivo",
+    "open_button": "Abrir arquivo",
+    "subtitle": "Um belo visualizador Markdown",
+    "title": "Kern"
+  },
+  "mermaid": {
+    "done": "Concluído",
+    "edit": "Editar",
+    "error_prefix": "Erro de sintaxe",
+    "stale": "Pré-visualização desatualizada"
+  }
+}

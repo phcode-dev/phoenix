@@ -8,6 +8,11 @@
     transition: opacity 1s, visibility 0s linear 1s; /* Fade-out effect */
 }
 
+#live-preview-plugin-toolbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+}
+
 #live-preview-plugin-toolbar:hover .live-preview-browser-btn {
     opacity: 1;
     visibility: visible;
@@ -20,7 +25,8 @@
     height: 100%;
 }
 
-#panel-live-preview-frame{
+#panel-live-preview-frame,
+#panel-md-preview-frame {
     background-color: white;
     position: relative;
 }

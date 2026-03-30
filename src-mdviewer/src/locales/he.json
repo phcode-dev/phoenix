@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "פתח קובץ",
+    "theme": "החלף ערכת נושא",
+    "toc": "תוכן עניינים",
+    "search": "חיפוש",
+    "focus": "מצב מיקוד",
+    "zoom_in": "הגדל",
+    "zoom_out": "הקטן",
+    "zoom_reset": "אפס תקריב",
+    "save": "שמור",
+    "edit": "ערוך",
+    "new_file": "קובץ חדש",
+    "split_view": "תצוגה מפוצלת",
+    "export_pdf": "ייצוא PDF",
+    "settings": "הגדרות",
+    "more": "עוד"
+  },
+  "sidebar": {
+    "toc": "תוכן עניינים",
+    "recent": "קבצים אחרונים",
+    "no_headings": "לא נמצאו כותרות"
+  },
+  "search": {
+    "placeholder": "חיפוש במסמך...",
+    "count": "התאמות",
+    "no_results": "אין תוצאות"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "מציג Markdown יפהפה",
+    "new_button": "קובץ חדש",
+    "open_button": "פתח קובץ",
+    "drop_hint": "או גרור ושחרר קובץ .md"
+  },
+  "viewer": {
+    "copy": "העתק",
+    "copied": "הועתק!"
+  },
+  "settings": {
+    "theme": "ערכת נושא",
+    "theme_light": "בהיר",
+    "theme_dark": "כהה",
+    "theme_system": "מערכת",
+    "language": "שפה"
+  },
+  "common": {
+    "close": "סגור",
+    "open": "פתח",
+    "file": "קובץ"
+  },
+  "format": {
+    "paragraph": "פסקה",
+    "heading1": "כותרת 1",
+    "heading2": "כותרת 2",
+    "heading3": "כותרת 3",
+    "bold": "מודגש ({mod}+B)",
+    "italic": "נטוי ({mod}+I)",
+    "strikethrough": "קו חוצה ({mod}+Shift+X)",
+    "code": "קוד מוטבע ({mod}+E)",
+    "link": "קישור ({mod}+K)",
+    "bullet_list": "רשימת תבליטים",
+    "numbered_list": "רשימה ממוספרת",
+    "task_list": "רשימת משימות",
+    "blockquote": "ציטוט",
+    "divider": "קו מפריד",
+    "table": "טבלה",
+    "code_block": "בלוק קוד"
+  },
+  "slash": {
+    "paragraph": "פסקה",
+    "paragraph_desc": "טקסט רגיל",
+    "heading1": "כותרת 1",
+    "heading1_desc": "כותרת גדולה",
+    "heading2": "כותרת 2",
+    "heading2_desc": "כותרת בינונית",
+    "heading3": "כותרת 3",
+    "heading3_desc": "כותרת קטנה",
+    "bullet_list": "רשימת תבליטים",
+    "bullet_list_desc": "רשימה לא ממוינת",
+    "numbered_list": "רשימה ממוספרת",
+    "numbered_list_desc": "רשימה ממוינת",
+    "task_list": "רשימת משימות",
+    "task_list_desc": "רשימת סימון",
+    "blockquote": "ציטוט",
+    "blockquote_desc": "בלוק ציטוט",
+    "code_block": "בלוק קוד",
+    "code_block_desc": "קוד מגודר",
+    "table": "טבלה",
+    "table_desc": "טבלה 3×3",
+    "divider": "קו מפריד",
+    "divider_desc": "קו אופקי",
+    "no_results": "אין תוצאות"
+  },
+  "link": {
+    "edit": "ערוך",
+    "edit_link": "ערוך קישור",
+    "remove_link": "הסר קישור",
+    "text": "טקסט",
+    "text_placeholder": "טקסט תצוגה (אופציונלי)",
+    "display_text": "טקסט תצוגה",
+    "url": "URL",
+    "url_placeholder": "הדבק או הקלד URL...",
+    "apply": "החל קישור",
+    "cancel": "ביטול"
+  },
+  "table": {
+    "header": "כותרת",
+    "new_row": "+ שורה חדשה",
+    "row_options": "אפשרויות שורה {n}",
+    "col_options": "אפשרויות עמודה {n}",
+    "insert_row_above": "הוסף שורה מעל",
+    "insert_row_below": "הוסף שורה מתחת",
+    "delete_row": "מחק שורה",
+    "insert_col_left": "הוסף עמודה משמאל",
+    "insert_col_right": "הוסף עמודה מימין",
+    "delete_col": "מחק עמודה",
+    "add_row_above": "הוסף שורה מעל",
+    "add_row_below": "הוסף שורה מתחת",
+    "add_col_left": "הוסף עמודה משמאל",
+    "add_col_right": "הוסף עמודה מימין"
+  },
+  "dialog": {
+    "unsaved_title": "שינויים שלא נשמרו",
+    "unsaved_exit_edit": "יש שינויים שלא נשמרו. האם ברצונך לשמור לפני יציאה ממצב עריכה?",
+    "unsaved_new_file": "יש שינויים שלא נשמרו. האם ברצונך לשמור לפני יצירת קובץ חדש?",
+    "unsaved_open_file": "יש שינויים שלא נשמרו. האם ברצונך לשמור לפני פתיחת קובץ חדש?",
+    "save": "שמור",
+    "discard": "מחק",
+    "dont_save": "לא לשמור",
+    "cancel": "ביטול",
+    "unsaved_close": "יש שינויים שלא נשמרו. האם ברצונך לשמור לפני הסגירה?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "סנן שפות...",
+    "filter_label": "סנן שפות",
+    "plain_text": "טקסט רגיל"
+  },
+  "a11y": {
+    "skip_to_content": "דלג לתוכן",
+    "main_toolbar": "סרגל כלים ראשי",
+    "sidebar": "סרגל צד",
+    "search_text": "חפש טקסט",
+    "previous_match": "התאמה קודמת",
+    "next_match": "התאמה הבאה",
+    "close_search": "סגור חיפוש",
+    "format_text": "עיצוב טקסט",
+    "edit_link": "ערוך קישור",
+    "insert_block": "הוסף בלוק",
+    "select_language": "בחר שפה",
+    "search_in_document": "חפש במסמך"
+  },
+  "drop_zone": {
+    "text": "שחרר את קובץ ה-Markdown שלך כאן"
+  },
+  "help": {
+    "getting_started": "תחילת העבודה",
+    "editing": "עריכה",
+    "shortcuts": "קיצורי מקלדת",
+    "features": "תכונות",
+    "fallback_notice": "דף זה עדיין אינו זמין בשפה שלך. מוצגת הגרסה באנגלית."
+  },
+  "recovery": {
+    "title": "לשחזר שינויים שלא נשמרו?",
+    "message": "Kern מצא שינויים שלא נשמרו מהפעלה קודמת. האם ברצונך לשחזר אותם?",
+    "restore": "שחזור",
+    "discard": "מחק"
+  },
+  "export": {
+    "success": "ה-PDF יוצא בהצלחה",
+    "open": "פתח"
+  },
+  "context": {
+    "cut": "גזור",
+    "copy": "העתק",
+    "paste": "הדבק",
+    "paste_plain": "הדבק כטקסט רגיל",
+    "select_all": "בחר הכל",
+    "copy_link": "העתק קישור",
+    "open_link": "פתח קישור",
+    "copy_image_address": "העתק כתובת תמונה"
+  },
+  "trial": {
+    "days_remaining": "נותרו {days} ימים בתקופת הניסיון",
+    "expired_message": "תקופת הניסיון שלך הסתיימה. רכוש את Kern כדי להמשיך לערוך.",
+    "purchase_button": "רכוש את Kern",
+    "purchase_title": "פתח את Kern",
+    "purchase_desc": "קבל גישה מלאה לכל תכונות העריכה והייצוא ברכישה חד-פעמית.",
+    "feature_edit": "ערוך Markdown עם WYSIWYG ותצוגה מפוצלת",
+    "feature_save": "שמור וצור קבצים חדשים",
+    "feature_export": "ייצוא ל-PDF",
+    "restore_purchases": "שחזר רכישות",
+    "one_time_purchase": "רכישה חד-פעמית. ללא מנוי.",
+    "purchasing": "רוכש...",
+    "restoring": "משחזר..."
+  }
+}

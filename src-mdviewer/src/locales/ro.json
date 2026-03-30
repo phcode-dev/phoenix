@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Închide căutarea",
+    "edit_link": "Editează linkul",
+    "format_text": "Formatează textul",
+    "insert_block": "Inserează bloc",
+    "main_toolbar": "Bară de unelte principală",
+    "next_match": "Rezultatul următor",
+    "previous_match": "Rezultatul anterior",
+    "search_in_document": "Caută în document",
+    "search_text": "Caută text",
+    "select_language": "Selectează limba",
+    "sidebar": "Bară laterală",
+    "skip_to_content": "Sari la conținut"
+  },
+  "common": {
+    "close": "Închide",
+    "file": "Fișier",
+    "open": "Deschide"
+  },
+  "context": {
+    "copy": "Copiază",
+    "copy_image_address": "Copiază adresa imaginii",
+    "copy_link": "Copiază linkul",
+    "cut": "Taie",
+    "open_link": "Deschide linkul",
+    "paste": "Lipire",
+    "paste_plain": "Lipire ca text simplu",
+    "select_all": "Selectare totală"
+  },
+  "dialog": {
+    "cancel": "Anulare",
+    "discard": "Renunță",
+    "dont_save": "Nu salva",
+    "save": "Salvare",
+    "unsaved_close": "Aveți modificări nesalvate. Doriți să salvați înainte de a închide?",
+    "unsaved_exit_edit": "Aveți modificări nesalvate. Doriți să salvați înainte de a ieși din modul de editare?",
+    "unsaved_new_file": "Aveți modificări nesalvate. Doriți să salvați înainte de a crea un fișier nou?",
+    "unsaved_open_file": "Aveți modificări nesalvate. Doriți să salvați înainte de a deschide un fișier nou?",
+    "unsaved_title": "Modificări nesalvate"
+  },
+  "drop_zone": {
+    "text": "Trageți fișierul Markdown aici"
+  },
+  "export": {
+    "open": "Deschide",
+    "success": "PDF exportat cu succes"
+  },
+  "format": {
+    "block_type": "Tip de bloc",
+    "blockquote": "Citat bloc",
+    "bold": "Aldin ({mod}+B)",
+    "bullet_list": "Listă cu puncte",
+    "code": "Cod inline ({mod}+E)",
+    "code_block": "Bloc de cod",
+    "divider": "Separator",
+    "heading1": "Titlu 1",
+    "heading2": "Titlu 2",
+    "heading3": "Titlu 3",
+    "italic": "Cursiv ({mod}+I)",
+    "link": "Legătură ({mod}+K)",
+    "lists": "Liste",
+    "more_elements": "Mai multe",
+    "numbered_list": "Listă numerotată",
+    "paragraph": "Paragraf",
+    "strikethrough": "Tăiat ({mod}+Shift+X)",
+    "table": "Tabel",
+    "task_list": "Listă de sarcini",
+    "text_formatting": "Formatare text",
+    "underline": "Subliniat"
+  },
+  "help": {
+    "editing": "Editare",
+    "fallback_notice": "Această pagină nu este încă disponibilă în limba dumneavoastră. Se afișează versiunea în limba engleză.",
+    "features": "Funcționalități",
+    "getting_started": "Noțiuni introductive",
+    "shortcuts": "Scurtături de la tastatură"
+  },
+  "lang_picker": {
+    "filter_label": "Filtrează limbile",
+    "filter_placeholder": "Filtrează limbile...",
+    "plain_text": "Text simplu"
+  },
+  "link": {
+    "apply": "Aplică linkul",
+    "cancel": "Anulează",
+    "display_text": "Text afișat",
+    "edit": "Editează",
+    "edit_link": "Editează linkul",
+    "remove_link": "Elimină linkul",
+    "text": "Text",
+    "text_placeholder": "Text de afișat (opțional)",
+    "url": "URL",
+    "url_placeholder": "Lipiți sau tastați URL-ul..."
+  },
+  "mermaid": {
+    "done": "Gata",
+    "edit": "Editați",
+    "error_prefix": "Eroare de sintaxă",
+    "stale": "Previzualizare învechită"
+  },
+  "recovery": {
+    "discard": "Renunțați",
+    "message": "Kern a găsit modificări nesalvate dintr-o sesiune anterioară. Doriți să le restaurați?",
+    "restore": "Restaurează",
+    "title": "Recuperați modificările nesalvate?"
+  },
+  "search": {
+    "count": "potriviri",
+    "no_results": "Niciun rezultat",
+    "placeholder": "Căutați în document..."
+  },
+  "settings": {
+    "language": "Limbă",
+    "theme": "Temă",
+    "theme_dark": "Întunecat",
+    "theme_light": "Luminos",
+    "theme_system": "Sistem"
+  },
+  "sidebar": {
+    "no_headings": "Nu s-au găsit titluri",
+    "recent": "Fișiere recente",
+    "toc": "Cuprins"
+  },
+  "slash": {
+    "blockquote": "Citat",
+    "blockquote_desc": "Bloc de citat",
+    "bullet_list": "Listă cu puncte",
+    "bullet_list_desc": "Listă neordonată",
+    "code_block": "Bloc de cod",
+    "code_block_desc": "Cod delimitat",
+    "divider": "Separator",
+    "divider_desc": "Linie orizontală",
+    "heading1": "Titlu 1",
+    "heading1_desc": "Titlu mare",
+    "heading2": "Titlu 2",
+    "heading2_desc": "Titlu mediu",
+    "heading3": "Titlu 3",
+    "heading3_desc": "Titlu mic",
+    "mermaid": "Diagramă Mermaid",
+    "mermaid_desc": "Inserează o diagramă",
+    "no_results": "Niciun rezultat",
+    "numbered_list": "Listă numerotată",
+    "numbered_list_desc": "Listă ordonată",
+    "paragraph": "Paragraf",
+    "paragraph_desc": "Text simplu",
+    "table": "Tabel",
+    "table_desc": "Tabel 3×3",
+    "task_list": "Listă de sarcini",
+    "task_list_desc": "Listă de verificare"
+  },
+  "table": {
+    "add_col_left": "Adaugă coloană la stânga",
+    "add_col_right": "Adaugă coloană la dreapta",
+    "add_row_above": "Adaugă rând deasupra",
+    "add_row_below": "Adaugă rând dedesubt",
+    "col_options": "Opțiuni coloană {n}",
+    "delete_col": "Șterge coloana",
+    "delete_row": "Șterge rândul",
+    "header": "Antet",
+    "insert_col_left": "Inserează coloană la stânga",
+    "insert_col_right": "Inserează coloană la dreapta",
+    "insert_row_above": "Inserează rând deasupra",
+    "insert_row_below": "Inserează rând dedesubt",
+    "new_row": "+ Rând nou",
+    "row_options": "Opțiuni rând {n}"
+  },
+  "toolbar": {
+    "done": "Gata",
+    "edit": "Editare",
+    "export_pdf": "Exportare PDF",
+    "focus": "Mod Concentrare",
+    "more": "Mai multe",
+    "new_file": "Fișier nou",
+    "open": "Deschide fișier",
+    "save": "Salvare",
+    "search": "Căutare",
+    "settings": "Setări",
+    "split_view": "Vizualizare divizată",
+    "theme": "Comutare temă",
+    "toc": "Cuprins",
+    "zoom_in": "Mărire",
+    "zoom_out": "Micșorare",
+    "zoom_reset": "Resetare zoom"
+  },
+  "trial": {
+    "days_remaining": "{days} zile rămase din perioada de probă",
+    "expired_message": "Perioada de probă a expirat. Cumpărați Kern pentru a continua editarea.",
+    "feature_edit": "Editează Markdown cu WYSIWYG și vizualizare divizată",
+    "feature_export": "Exportă în PDF",
+    "feature_save": "Salvează și creează fișiere noi",
+    "one_time_purchase": "Achiziție unică. Fără abonament.",
+    "purchase_button": "Cumpără Kern",
+    "purchase_desc": "Obține acces complet la toate funcționalitățile de editare și export cu o achiziție unică.",
+    "purchase_title": "Deblochează Kern",
+    "purchasing": "Se achiziționează...",
+    "restore_purchases": "Restaurează achizițiile",
+    "restoring": "Se restaurează..."
+  },
+  "viewer": {
+    "copied": "Copiat!",
+    "copy": "Copiază"
+  },
+  "welcome": {
+    "drop_hint": "sau trageți și plasați un fișier .md",
+    "new_button": "Fișier nou",
+    "open_button": "Deschide fișier",
+    "subtitle": "Un vizualizator Markdown frumos",
+    "title": "Kern"
+  }
+}

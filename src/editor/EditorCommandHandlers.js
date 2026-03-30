@@ -37,7 +37,11 @@ define(function (require, exports, module) {
         TokenUtils = require("utils/TokenUtils"),
         CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
         _ = require("thirdparty/lodash"),
-        ChangeHelper = require("editor/EditorHelper/ChangeHelper");
+        ChangeHelper = require("editor/EditorHelper/ChangeHelper"),
+        LanguageManager = require("language/LanguageManager"),
+        ImageUploadManager = require("features/ImageUploadManager"),
+        Dialogs = require("widgets/Dialogs"),
+        AppInit = require("utils/AppInit");
 
     /**
      * List of constants
@@ -1261,6 +1265,159 @@ define(function (require, exports, module) {
             });
         return result.promise();
     }
+
+    // --- Image paste-to-upload for markdown files ---
+    const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
+
+    function _handleImagePaste(editor, cm, event) {
+        const items = event.clipboardData && event.clipboardData.items;
+        if (!items) {
+            return false;
+        }
+
+        // Find an image item in the clipboard
+        let imageItem = null;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].kind === "file" && ALLOWED_IMAGE_TYPES.indexOf(items[i].type) !== -1) {
+                imageItem = items[i];
+                break;
+            }
+        }
+        if (!imageItem) {
+            return false;
+        }
+
+        // Only handle in markdown files
+        const doc = editor.document;
+        if (!doc || !doc.file) {
+            return false;
+        }
+        const lang = LanguageManager.getLanguageForPath(doc.file.fullPath);
+        const langId = lang ? lang.getId() : "";
+        if (langId !== "markdown" && langId !== "gfm") {
+            return false;
+        }
+
+        // Check if upload provider is available
+        if (!ImageUploadManager.isImageUploadAvailable()) {
+            return false;
+        }
+
+        event.preventDefault();
+
+        const blob = imageItem.getAsFile();
+        const fileName = blob.name || ("image." + blob.type.split("/")[1]);
+        const provider = ImageUploadManager.getImageUploadProvider();
+        const cmDoc = cm.getDoc();
+
+        // Upload asynchronously — provider shows confirmation dialog before uploading.
+        // Placeholder is inserted only after confirmation via onUploadStart callback.
+        let marker = null;
+
+        function _clearPlaceholder() {
+            if (marker) {
+                const range = marker.find();
+                marker.clear();
+                if (range) {
+                    cmDoc.replaceRange("", range.from, range.to);
+                }
+                marker = null;
+            }
+        }
+
+        provider.uploadImage(blob, fileName, function onUploadStart() {
+            // Insert placeholder after user confirms (avoids dirtying the file on cancel)
+            const cursor = cmDoc.getCursor();
+            const placeholder = `![${Strings.IMAGE_UPLOADING} ${fileName}](https://user-cdn.phcode.site/images/uploading.svg)`;
+            cmDoc.replaceRange(placeholder, cursor);
+            const from = cursor;
+            const to = { line: cursor.line, ch: cursor.ch + placeholder.length };
+            marker = cmDoc.markText(from, to, { className: "image-uploading", clearWhenEmpty: false });
+        }).then(function (result) {
+            if (result.embedURL) {
+                // Success — replace placeholder with final embed
+                if (marker) {
+                    const range = marker.find();
+                    marker.clear();
+                    marker = null;
+                    if (range) {
+                        cmDoc.replaceRange(`![${fileName}](${result.embedURL})`, range.from, range.to);
+                    }
+                }
+            } else if (result.error === "cancelled") {
+                // User cancelled confirmation — nothing was inserted
+            } else if (result.error === "login_required") {
+                _clearPlaceholder();
+                const previewURL = URL.createObjectURL(blob);
+                const loginHTML = `<div>
+                    <p>${Strings.IMAGE_UPLOAD_LOGIN_REQUIRED_MSG}</p>
+                    <div style="text-align: center;">
+                        <img src="${previewURL}" style="max-width: 300px; max-height: 200px; border-radius: 4px; margin: 12px 0;" />
+                    </div>
+                </div>`;
+                const dialog = Dialogs.showModalDialog(
+                    "",
+                    Strings.IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE,
+                    loginHTML,
+                    [
+                        { className: Dialogs.DIALOG_BTN_CLASS_NORMAL, id: Dialogs.DIALOG_BTN_CANCEL,
+                            text: Strings.CANCEL },
+                        { className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: "login",
+                            text: Strings.IMAGE_UPLOAD_LOGIN_BTN }
+                    ]
+                );
+                dialog.done(function (id) {
+                    URL.revokeObjectURL(previewURL);
+                    if (id === "login") {
+                        const profileBtn = document.getElementById("user-profile-button");
+                        if (profileBtn) {
+                            profileBtn.click();
+                        }
+                    }
+                });
+            } else if (result.errorCode === "UPGRADE_TO_PRO") {
+                _clearPlaceholder();
+                const ProDialogs = brackets.getModule(
+                    "extensionsIntegrated/phoenix-pro/services/pro-dialogs"
+                );
+                if (ProDialogs && ProDialogs.showUpsellDialog) {
+                    ProDialogs.showUpsellDialog(
+                        Strings.IMAGE_UPLOAD_LIMIT_TITLE,
+                        result.errorLoc,
+                        "imgUpload"
+                    );
+                }
+            } else {
+                _clearPlaceholder();
+                console.error("Image upload failed:", result.error, result.errorLoc);
+                Dialogs.showModalDialog(
+                    "",
+                    Strings.IMAGE_UPLOAD_FAILED,
+                    result.errorLoc || Strings.IMAGE_UPLOAD_FAILED
+                );
+            }
+        }).catch(function (err) {
+            _clearPlaceholder();
+            console.error("Image upload error:", err);
+        });
+
+        return true;
+    }
+
+    // Listen for paste events on the editor holder (capture phase) so image pastes
+    // are intercepted even when CM doesn't fire its own "paste" event (e.g. image-only clipboard).
+    AppInit.appReady(function () {
+        const editorHolder = document.getElementById("editor-holder");
+        if (editorHolder) {
+            editorHolder.addEventListener("paste", function (e) {
+                const editor = EditorManager.getFocusedEditor();
+                if (!editor) {
+                    return;
+                }
+                _handleImagePaste(editor, editor._codeMirror, e);
+            }, true);
+        }
+    });
 
     // Register commands
     CommandManager.register(Strings.CMD_INDENT, Commands.EDIT_INDENT, indentText);

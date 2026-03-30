@@ -25,7 +25,7 @@ const glob = require('glob');
 
 // Size limits for development builds (in MB)
 const DEV_MAX_FILE_SIZE_MB = 6;
-const DEV_MAX_TOTAL_SIZE_MB = 90;
+const DEV_MAX_TOTAL_SIZE_MB = 100;
 // Custom size limits for known large files (size in MB) For development builds
 const LARGE_FILE_LIST_DEV = {
     'dist/thirdparty/no-minify/language-worker.js.map': 10,
@@ -37,7 +37,7 @@ const PROD_MAX_FILE_SIZE_MB = 2;
 const PROD_MAX_TOTAL_SIZE_MB = 70;
 // Custom size limits for known large files (size in MB) For staging/production builds
 const LARGE_FILE_LIST_PROD = {
-    'dist/brackets.js': 9, // this is the full minified file itself renamed in prod
+    'dist/brackets.js': 10, // this is the full minified file itself renamed in prod
     'dist/phoenix/virtualfs.js.map': 3
 };
 

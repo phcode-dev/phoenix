@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     const Commands = require("command/Commands");
     const KeyBindingManager = require("command/KeyBindingManager");
     const DocumentManager = require("document/DocumentManager");
+    const EditorManager = require("editor/EditorManager");
     const WorkspaceManager = require("view/WorkspaceManager");
     const Menus = require("command/Menus");
     const Strings = require("strings");
@@ -558,9 +559,25 @@ define(function (require, exports, module) {
                 MainViewManager.addToWorkingSet(paneId, fileObj);
             }
 
-            // clicked tab is already active, don't do anything
-            if (isPaneActive && currentFile && currentFile.fullPath === filePath) { return; }
-            CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId });
+            // clicked tab is already active, focus the editor
+            if (isPaneActive && currentFile && currentFile.fullPath === filePath) {
+                setTimeout(function () {
+                    const editor = EditorManager.getActiveEditor();
+                    if (editor) {
+                        editor.focus();
+                    }
+                }, 0);
+                return;
+            }
+            CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId })
+                .always(function () {
+                    setTimeout(function () {
+                        const editor = EditorManager.getActiveEditor();
+                        if (editor) {
+                            editor.focus();
+                        }
+                    }, 0);
+                });
         });
 
         // Add the contextmenu (right-click) handler

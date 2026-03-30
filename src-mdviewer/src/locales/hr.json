@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Zatvori pretraživanje",
+    "edit_link": "Uredi poveznicu",
+    "format_text": "Oblikuj tekst",
+    "insert_block": "Umetni blok",
+    "main_toolbar": "Glavna alatna traka",
+    "next_match": "Sljedeće podudaranje",
+    "previous_match": "Prethodno podudaranje",
+    "search_in_document": "Pretraži u dokumentu",
+    "search_text": "Pretraži tekst",
+    "select_language": "Odaberi jezik",
+    "sidebar": "Bočna traka",
+    "skip_to_content": "Preskoči na sadržaj"
+  },
+  "common": {
+    "close": "Zatvori",
+    "file": "Datoteka",
+    "open": "Otvori"
+  },
+  "context": {
+    "copy": "Kopiraj",
+    "copy_image_address": "Kopiraj adresu slike",
+    "copy_link": "Kopiraj poveznicu",
+    "cut": "Izreži",
+    "open_link": "Otvori poveznicu",
+    "paste": "Zalijepi",
+    "paste_plain": "Zalijepi kao običan tekst",
+    "select_all": "Odaberi sve"
+  },
+  "dialog": {
+    "cancel": "Odustani",
+    "discard": "Odbaci",
+    "dont_save": "Ne spremaj",
+    "save": "Spremi",
+    "unsaved_close": "Imate nespremljene promjene. Želite li spremiti prije zatvaranja?",
+    "unsaved_exit_edit": "Imate nespremljene promjene. Želite li spremiti prije izlaska iz načina uređivanja?",
+    "unsaved_new_file": "Imate nespremljene promjene. Želite li spremiti prije stvaranja nove datoteke?",
+    "unsaved_open_file": "Imate nespremljene promjene. Želite li spremiti prije otvaranja nove datoteke?",
+    "unsaved_title": "Nespremljene promjene"
+  },
+  "drop_zone": {
+    "text": "Ovdje ispustite svoju Markdown datoteku"
+  },
+  "export": {
+    "open": "Otvori",
+    "success": "PDF je uspješno izvezen"
+  },
+  "format": {
+    "block_type": "Vrsta bloka",
+    "blockquote": "Blok citat",
+    "bold": "Podebljano ({mod}+B)",
+    "bullet_list": "Popis s točkama",
+    "code": "Umetnuti kôd ({mod}+E)",
+    "code_block": "Blok koda",
+    "divider": "Razdjelnik",
+    "heading1": "Naslov 1",
+    "heading2": "Naslov 2",
+    "heading3": "Naslov 3",
+    "italic": "Kurziv ({mod}+I)",
+    "link": "Poveznica ({mod}+K)",
+    "lists": "Popisi",
+    "more_elements": "Više",
+    "numbered_list": "Numerirani popis",
+    "paragraph": "Odlomak",
+    "strikethrough": "Precrtano ({mod}+Shift+X)",
+    "table": "Tablica",
+    "task_list": "Popis zadataka",
+    "text_formatting": "Oblikovanje teksta",
+    "underline": "Podcrtano"
+  },
+  "help": {
+    "editing": "Uređivanje",
+    "fallback_notice": "Ova stranica još nije dostupna na vašem jeziku. Prikazuje se engleska verzija.",
+    "features": "Značajke",
+    "getting_started": "Početak rada",
+    "shortcuts": "Tipkovnički prečaci"
+  },
+  "lang_picker": {
+    "filter_label": "Filtriraj jezike",
+    "filter_placeholder": "Filtriraj jezike...",
+    "plain_text": "Običan tekst"
+  },
+  "link": {
+    "apply": "Primijeni poveznicu",
+    "cancel": "Odustani",
+    "display_text": "Tekst za prikaz",
+    "edit": "Uredi",
+    "edit_link": "Uredi poveznicu",
+    "remove_link": "Ukloni poveznicu",
+    "text": "Tekst",
+    "text_placeholder": "Tekst za prikaz (neobavezno)",
+    "url": "URL",
+    "url_placeholder": "Zalijepite ili upišite URL..."
+  },
+  "mermaid": {
+    "done": "Gotovo",
+    "edit": "Uredi",
+    "error_prefix": "Sintaktička pogreška",
+    "stale": "Pregled je zastario"
+  },
+  "recovery": {
+    "discard": "Odbaci",
+    "message": "Kern je pronašao nespremljene promjene iz prethodne sesije. Želite li ih vratiti?",
+    "restore": "Obnovi",
+    "title": "Oporaviti nespremljene promjene?"
+  },
+  "search": {
+    "count": "podudaranja",
+    "no_results": "Nema rezultata",
+    "placeholder": "Pretraži dokument..."
+  },
+  "settings": {
+    "language": "Jezik",
+    "theme": "Tema",
+    "theme_dark": "Tamna",
+    "theme_light": "Svijetla",
+    "theme_system": "Sistemska"
+  },
+  "sidebar": {
+    "no_headings": "Nema naslova",
+    "recent": "Nedavne datoteke",
+    "toc": "Sadržaj"
+  },
+  "slash": {
+    "blockquote": "Blok citat",
+    "blockquote_desc": "Citatni blok",
+    "bullet_list": "Popis s grafičkim oznakama",
+    "bullet_list_desc": "Nerazvrstani popis",
+    "code_block": "Blok koda",
+    "code_block_desc": "Ograđeni kod",
+    "divider": "Razdjelnik",
+    "divider_desc": "Vodoravna crta",
+    "heading1": "Naslov 1",
+    "heading1_desc": "Veliki naslov",
+    "heading2": "Naslov 2",
+    "heading2_desc": "Srednji naslov",
+    "heading3": "Naslov 3",
+    "heading3_desc": "Mali naslov",
+    "mermaid": "Mermaid dijagram",
+    "mermaid_desc": "Umetni dijagram",
+    "no_results": "Nema rezultata",
+    "numbered_list": "Numerirani popis",
+    "numbered_list_desc": "Uređeni popis",
+    "paragraph": "Odlomak",
+    "paragraph_desc": "Običan tekst",
+    "table": "Tablica",
+    "table_desc": "Tablica 3×3",
+    "task_list": "Popis zadataka",
+    "task_list_desc": "Kontrolna lista"
+  },
+  "table": {
+    "add_col_left": "Dodaj stupac lijevo",
+    "add_col_right": "Dodaj stupac desno",
+    "add_row_above": "Dodaj redak iznad",
+    "add_row_below": "Dodaj redak ispod",
+    "col_options": "Opcije stupca {n}",
+    "delete_col": "Izbriši stupac",
+    "delete_row": "Izbriši redak",
+    "header": "Zaglavlje",
+    "insert_col_left": "Umetni stupac lijevo",
+    "insert_col_right": "Umetni stupac desno",
+    "insert_row_above": "Umetni redak iznad",
+    "insert_row_below": "Umetni redak ispod",
+    "new_row": "+ Novi redak",
+    "row_options": "Opcije retka {n}"
+  },
+  "toolbar": {
+    "done": "Gotovo",
+    "edit": "Uredi",
+    "export_pdf": "Izvezi PDF",
+    "focus": "Fokusirani način rada",
+    "more": "Više",
+    "new_file": "Nova datoteka",
+    "open": "Otvori datoteku",
+    "save": "Spremi",
+    "search": "Pretraži",
+    "settings": "Postavke",
+    "split_view": "Podijeljeni prikaz",
+    "theme": "Promijeni temu",
+    "toc": "Sadržaj",
+    "zoom_in": "Povećaj",
+    "zoom_out": "Smanji",
+    "zoom_reset": "Poništi zumiranje"
+  },
+  "trial": {
+    "days_remaining": "Preostalo {days} dana u probnom razdoblju",
+    "expired_message": "Vaše probno razdoblje je isteklo. Kupite Kern kako biste nastavili s uređivanjem.",
+    "feature_edit": "Uređivanje Markdowna s WYSIWYG-om i podijeljenim prikazom",
+    "feature_export": "Izvoz u PDF",
+    "feature_save": "Spremanje i stvaranje novih datoteka",
+    "one_time_purchase": "Jednokratna kupnja. Bez pretplate.",
+    "purchase_button": "Kupite Kern",
+    "purchase_desc": "Ostvarite puni pristup svim značajkama za uređivanje i izvoz jednokratnom kupnjom.",
+    "purchase_title": "Otključajte Kern",
+    "purchasing": "Kupnja u tijeku...",
+    "restore_purchases": "Vratite kupnje",
+    "restoring": "Vraćanje u tijeku..."
+  },
+  "viewer": {
+    "copied": "Kopirano!",
+    "copy": "Kopiraj"
+  },
+  "welcome": {
+    "drop_hint": "ili povucite i ispustite .md datoteku",
+    "new_button": "Nova datoteka",
+    "open_button": "Otvori datoteku",
+    "subtitle": "Prekrasan Markdown preglednik",
+    "title": "Kern"
+  }
+}

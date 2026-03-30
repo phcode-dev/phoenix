@@ -67,6 +67,7 @@ define(function (require, exports, module) {
         DropdownButton     = require("widgets/DropdownButton"),
         BrowserStaticServer  = require("./BrowserStaticServer"),
         NodeStaticServer  = require("./NodeStaticServer"),
+        MarkdownSync  = require("./MarkdownSync"),
         LivePreviewSettings  = require("./LivePreviewSettings"),
         NodeUtils = require("utils/NodeUtils"),
         TrustProjectHTML    = require("text!./trust-project.html"),
@@ -124,11 +125,28 @@ define(function (require, exports, module) {
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
+    const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
+    const _sandboxAttr = Phoenix.isTestWindow ? "" :
+        'sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-modals allow-pointer-lock"';
     const LIVE_PREVIEW_IFRAME_HTML = `
     <iframe id="${LIVE_PREVIEW_IFRAME_ID}" title="Live Preview" style="border: none"
              width="100%" height="100%" seamless="true"
              src='about:blank'
-             sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-modals allow-pointer-lock">
+             ${_sandboxAttr}>
+    </iframe>
+    `;
+
+    // Mdviewer renders untrusted markdown — tighter sandbox than live preview:
+    // no allow-same-origin (prevents malicious scripts from accessing Phoenix context),
+    // no allow-forms, allow-pointer-lock (not needed for markdown editing).
+    // Communication works via MarkdownSync's own message handler (bypasses EventManager origin check).
+    const _mdSandboxAttr = Phoenix.isTestWindow ? "" :
+        'sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-modals"';
+    const MDVIEWR_IFRAME_HTML = `
+    <iframe id="${MDVIEWR_IFRAME_ID}" title="Markdown Preview" style="border: none"
+             width="100%" height="100%" seamless="true"
+             src='about:blank'
+             ${_mdSandboxAttr}>
     </iframe>
     `;
 
@@ -181,7 +199,20 @@ define(function (require, exports, module) {
     async function _entitlementsChanged() {
         try {
             const entitlement = await _getLiveEditEntitlement();
+            const wasProEditUser = isProEditUser;
             isProEditUser = entitlement && entitlement.activated;
+            // Sync edit mode with md iframe on entitlement change
+            if (_isMdviewrActive && $iframe && $iframe[0] && $iframe[0].contentWindow) {
+                if (isProEditUser && !wasProEditUser) {
+                    // Just got pro — switch to edit mode
+                    $iframe[0].contentWindow.postMessage(
+                        { type: "MDVIEWR_SET_EDIT_MODE", editMode: true }, "*");
+                } else if (!isProEditUser && wasProEditUser) {
+                    // Lost pro — switch to reader mode
+                    $iframe[0].contentWindow.postMessage(
+                        { type: "MDVIEWR_SET_EDIT_MODE", editMode: false }, "*");
+                }
+            }
         } catch (error) {
             console.error("Error updating pro user status:", error);
             isProEditUser = false;
@@ -310,9 +341,19 @@ define(function (require, exports, module) {
     }
 
     /**
-     * update the mode button text in the live preview toolbar UI based on the current mode
-     * @param {String} mode - The current mode ("preview", "highlight", or "edit")
+     * Hide the play button and mode dropdown when mdviewer is active,
+     * since MD files have their own Edit/Reader toggle in the iframe toolbar.
+     * Does not hide in custom server mode (handled by _isMdviewrActive being false).
      */
+    function _updateLPControlsForMdviewer() {
+        if ($previewBtn) {
+            $previewBtn.toggle(!_isMdviewrActive);
+        }
+        if ($modeBtn) {
+            $modeBtn.toggle(!_isMdviewrActive);
+        }
+    }
+
     function _updateModeButton(mode) {
         if ($modeBtn) {
             if (mode === "highlight") {
@@ -559,15 +600,27 @@ define(function (require, exports, module) {
         urlPinned,
         currentLivePreviewURL = "",
         currentPreviewFile = '',
-        _loadGeneration = 0;
+        _loadGeneration = 0,
+        _isMdviewrActive = false,
+        $mdviewrIframe = null; // persistent md iframe, survives HTML preview switches
 
     function _blankIframe() {
         // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
         // src. so we delete the node itself to eb thorough.
-        let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
-        newIframe.insertAfter($iframe);
-        $iframe.remove();
-        $iframe = newIframe;
+        // Don't destroy the persistent md iframe — just hide it
+        if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            MarkdownSync.deactivate();
+            _isMdviewrActive = false;
+            $mdviewrIframe.hide();
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            $mdviewrIframe.after(newIframe);
+            $iframe = newIframe;
+        } else {
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            newIframe.insertAfter($iframe);
+            $iframe.remove();
+            $iframe = newIframe;
+        }
     }
 
     let panelShownAtStartup;
@@ -794,12 +847,67 @@ define(function (require, exports, module) {
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
+            if (_isMdviewrActive) {
+                MarkdownSync.reloadCurrentFile();
+            }
             _loadPreview(true, true);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
 
         // init the status overlay
         _initOverlay();
+    }
+
+    function _loadMdviewrPreview(previewDetails, force) {
+        const currentDoc = DocumentManager.getCurrentDocument();
+        if (!currentDoc) {
+            return;
+        }
+
+        const mdFileURL = encodeURI(previewDetails.URL);
+        const baseURL = mdFileURL.substring(0, mdFileURL.lastIndexOf("/") + 1);
+
+        currentPreviewFile = previewDetails.fullPath;
+        if (!urlPinned) {
+            currentLivePreviewURL = mdFileURL;
+        }
+        let relativeOrFullPath = ProjectManager.makeProjectRelativeIfPossible(previewDetails.fullPath);
+        relativeOrFullPath = Phoenix.app.getDisplayPath(relativeOrFullPath);
+        _setTitle(relativeOrFullPath, currentPreviewFile, "");
+
+        if (_isMdviewrActive) {
+            // Mdviewr iframe already loaded, just update the sync for the new document
+            MarkdownSync.activate(currentDoc, $iframe, baseURL);
+            return;
+        }
+
+        // Reuse persistent md iframe if it exists (e.g. returning from HTML preview)
+        if ($mdviewrIframe && $mdviewrIframe[0].parentNode) {
+            // Hide the current HTML iframe and show the md iframe
+            if ($iframe[0] !== $mdviewrIframe[0]) {
+                $iframe.remove();
+            }
+            $mdviewrIframe.show();
+            $iframe = $mdviewrIframe;
+        } else if (panel.isVisible()) {
+            // First time: create the md iframe (tighter sandbox for untrusted content)
+            const mdviewrURL = StaticServer.getMdviewrURL();
+            let newIframe = $(MDVIEWR_IFRAME_HTML);
+            newIframe.insertAfter($iframe);
+            $iframe.remove();
+            $iframe = newIframe;
+            $mdviewrIframe = newIframe;
+            if (_isProjectPreviewTrusted()) {
+                $iframe.attr('src', mdviewrURL);
+            }
+        }
+
+        _isMdviewrActive = true;
+        MarkdownSync.activate(currentDoc, $iframe, baseURL);
+        // Sync preview mode and edit mode for reuse case where iframe is already ready
+        _updateLPControlsForMdviewer();
+
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "mdviewr");
     }
 
     async function _loadPreview(force, isReload) {
@@ -817,6 +925,21 @@ define(function (require, exports, module) {
         }
         if(urlPinned && !force) {
             return;
+        }
+        // Use mdviewr for markdown files (unless custom server is configured)
+        if(previewDetails.isMarkdownFile && !previewDetails.isCustomServer && !previewDetails.isNoPreview) {
+            _loadMdviewrPreview(previewDetails, force);
+            return;
+        }
+        // Switching away from mdviewr to non-markdown preview
+        // Hide the md iframe instead of destroying it so cache is preserved
+        if(_isMdviewrActive) {
+            MarkdownSync.deactivate();
+            _isMdviewrActive = false;
+            if ($mdviewrIframe) {
+                $mdviewrIframe.hide();
+            }
+            _updateLPControlsForMdviewer();
         }
         let newSrc = encodeURI(previewDetails.URL);
         if($iframe.attr('src') === newSrc && !force){
@@ -849,7 +972,10 @@ define(function (require, exports, module) {
             }
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
-            $iframe.remove();
+            // Don't remove the md iframe — it's persistent and already hidden
+            if (!$mdviewrIframe || $iframe[0] !== $mdviewrIframe[0]) {
+                $iframe.remove();
+            }
             $iframe = newIframe;
             if(_isProjectPreviewTrusted()){
                 $iframe.attr('src', currentLivePreviewURL);
@@ -872,6 +998,10 @@ define(function (require, exports, module) {
     }
 
     async function _projectFileChanges(evt, changedFile) {
+        if(_isMdviewrActive) {
+            // MarkdownSync handles live content updates for markdown files
+            return;
+        }
         if(changedFile && changedFile.isFile && (utils.isPreviewableFile(changedFile.fullPath) ||
             utils.isServerRenderedFile(changedFile.fullPath))){
             // we are getting this change event somehow.
@@ -925,7 +1055,40 @@ define(function (require, exports, module) {
     }
 
     let startupFilesLoadHandled = false;
+    /**
+     * Send the current working set of markdown files to the mdviewr iframe.
+     */
+    function _syncWorkingSetToMdviewr() {
+        if (!$mdviewrIframe) {
+            return;
+        }
+        const mdIframeWindow = $mdviewrIframe[0].contentWindow;
+        if (!mdIframeWindow) {
+            return;
+        }
+        const workingSet = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
+        const mdPaths = workingSet
+            .filter(file => utils.isMarkdownFile(file.fullPath))
+            .map(file => file.fullPath);
+        mdIframeWindow.postMessage({
+            type: "MDVIEWR_WORKING_SET_CHANGED",
+            paths: mdPaths
+        }, "*");
+    }
+
     async function _projectOpened() {
+        // Deactivate mdviewr on project switch — keep iframe alive but clear cache
+        if(_isMdviewrActive) {
+            MarkdownSync.deactivate();
+            _isMdviewrActive = false;
+        }
+        if ($mdviewrIframe) {
+            const mdIframeWindow = $mdviewrIframe[0].contentWindow;
+            if (mdIframeWindow) {
+                mdIframeWindow.postMessage({ type: "MDVIEWR_CLEAR_CACHE" }, "*");
+            }
+            $mdviewrIframe.hide();
+        }
         _switchToEditModeIfNeeded();
         customLivePreviewBannerShown = false;
         $panel.find(".live-preview-custom-banner").addClass("forced-hidden");
@@ -938,6 +1101,12 @@ define(function (require, exports, module) {
         }
         if(urlPinned){
             _togglePinUrl();
+        }
+        // Ensure $iframe points to a visible HTML iframe, not the hidden md iframe
+        if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            $mdviewrIframe.after(newIframe);
+            $iframe = newIframe;
         }
         $iframe.attr('src', StaticServer.getNoPreviewURL());
         if(!panelShownAtStartup && !isBrowser && ProjectManager.isStartupFilesLoaded()){
@@ -1203,6 +1372,12 @@ define(function (require, exports, module) {
             // change listener in macos for a second to give some time for the os event to reach.
             fileChangeListenerStartDelay = 600;
         }
+        // Sync working set changes to md iframe for cache management
+        MainViewManager.on("workingSetAdd", _syncWorkingSetToMdviewr);
+        MainViewManager.on("workingSetAddList", _syncWorkingSetToMdviewr);
+        MainViewManager.on("workingSetRemove", _syncWorkingSetToMdviewr);
+        MainViewManager.on("workingSetRemoveList", _syncWorkingSetToMdviewr);
+
         setTimeout(()=>{
             MainViewManager.on("currentFileChange", _currentFileChanged);
             if(Phoenix.isNativeApp && Phoenix.platform === "mac" && MainViewManager.getCurrentlyViewedFile()) {
@@ -1326,6 +1501,46 @@ define(function (require, exports, module) {
                 _startOrStopLivePreviewIfRequired();
             }
         }, 1000);
+        // Handle edit mode requests from mdviewer iframe — gate on entitlement
+        MarkdownSync.setEditModeRequestHandler(function () {
+            if (isProEditUser) {
+                // Entitled — send edit mode to iframe
+                if ($iframe && $iframe[0] && $iframe[0].contentWindow) {
+                    $iframe[0].contentWindow.postMessage(
+                        { type: "MDVIEWR_SET_EDIT_MODE", editMode: true }, "*");
+                }
+            } else {
+                // Not entitled — show upsell dialog
+                const buttonGetProText = StringUtils.format(Strings.PROMO_UPGRADE_APP_UPSELL_BUTTON,
+                    brackets.config.main_pro_plan_short);
+                const buttons = [
+                    { className: Dialogs.DIALOG_BTN_CLASS_NORMAL, id: Dialogs.DIALOG_BTN_CANCEL,
+                        text: Strings.GET_PRO_NOT_NOW },
+                    { className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: "get_pro",
+                        text: buttonGetProText }
+                ];
+                Metrics.countEvent(Metrics.EVENT_TYPE.LP_EDIT, "mdEditUpsell", "show");
+                Dialogs.showModalDialog(Dialogs.DIALOG_ID_INFO,
+                    Strings.AVAILABLE_IN_PRO_TITLE,
+                    Strings.MD_EDIT_UPSELL_MESSAGE, buttons)
+                    .done(function (id) {
+                        Metrics.countEvent(Metrics.EVENT_TYPE.LP_EDIT, "mdEditUpsell", id);
+                        if (id === "get_pro") {
+                            Phoenix.app.openURLInDefaultBrowser(brackets.config.purchase_url);
+                        }
+                    });
+            }
+        });
+
+        // When iframe first loads, send initial edit mode based on entitlement
+        MarkdownSync.setIframeReadyHandler(function () {
+            _updateLPControlsForMdviewer();
+            // Pro users default to edit mode on first load
+            if (isProEditUser) {
+                MarkdownSync.setEditMode(true);
+            }
+        });
+
         _projectOpened();
         if(!Phoenix.isSpecRunnerWindow){
             _entitlementsChanged();

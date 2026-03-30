@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "Sulje haku",
+    "edit_link": "Muokkaa linkkiä",
+    "format_text": "Muotoile tekstiä",
+    "insert_block": "Lisää lohko",
+    "main_toolbar": "Päätyökalupalkki",
+    "next_match": "Seuraava osuma",
+    "previous_match": "Edellinen osuma",
+    "search_in_document": "Hae asiakirjasta",
+    "search_text": "Hae tekstiä",
+    "select_language": "Valitse kieli",
+    "sidebar": "Sivupalkki",
+    "skip_to_content": "Siirry sisältöön"
+  },
+  "common": {
+    "close": "Sulje",
+    "file": "Tiedosto",
+    "open": "Avaa"
+  },
+  "context": {
+    "copy": "Kopioi",
+    "copy_image_address": "Kopioi kuvan osoite",
+    "copy_link": "Kopioi linkki",
+    "cut": "Leikkaa",
+    "open_link": "Avaa linkki",
+    "paste": "Liitä",
+    "paste_plain": "Liitä tavallisena tekstinä",
+    "select_all": "Valitse kaikki"
+  },
+  "dialog": {
+    "cancel": "Peruuta",
+    "discard": "Hylkää",
+    "dont_save": "Älä tallenna",
+    "save": "Tallenna",
+    "unsaved_close": "Sinulla on tallentamattomia muutoksia. Haluatko tallentaa ennen sulkemista?",
+    "unsaved_exit_edit": "Sinulla on tallentamattomia muutoksia. Haluatko tallentaa ennen muokkaustilasta poistumista?",
+    "unsaved_new_file": "Sinulla on tallentamattomia muutoksia. Haluatko tallentaa ennen uuden tiedoston luomista?",
+    "unsaved_open_file": "Sinulla on tallentamattomia muutoksia. Haluatko tallentaa ennen uuden tiedoston avaamista?",
+    "unsaved_title": "Tallentamattomat muutokset"
+  },
+  "drop_zone": {
+    "text": "Pudota Markdown-tiedostosi tähän"
+  },
+  "export": {
+    "open": "Avaa",
+    "success": "PDF vietiin onnistuneesti"
+  },
+  "format": {
+    "block_type": "Lohkotyyppi",
+    "blockquote": "Lainauslohko",
+    "bold": "Lihavointi ({mod}+B)",
+    "bullet_list": "Pisteluettelo",
+    "code": "Tekstinsisäinen koodi ({mod}+E)",
+    "code_block": "Koodilohko",
+    "divider": "Erotin",
+    "heading1": "Otsikko 1",
+    "heading2": "Otsikko 2",
+    "heading3": "Otsikko 3",
+    "italic": "Kursiivi ({mod}+I)",
+    "link": "Linkki ({mod}+K)",
+    "lists": "Listat",
+    "more_elements": "Lisää",
+    "numbered_list": "Numeroitu luettelo",
+    "paragraph": "Kappale",
+    "strikethrough": "Yliviivaus ({mod}+Shift+X)",
+    "table": "Taulukko",
+    "task_list": "Tehtäväluettelo",
+    "text_formatting": "Tekstin muotoilu",
+    "underline": "Alleviivaus"
+  },
+  "help": {
+    "editing": "Muokkaus",
+    "fallback_notice": "Tämä sivu ei ole vielä saatavilla kielelläsi. Näytetään englanninkielinen versio.",
+    "features": "Ominaisuudet",
+    "getting_started": "Käytön aloitus",
+    "shortcuts": "Pikanäppäimet"
+  },
+  "lang_picker": {
+    "filter_label": "Suodata kieliä",
+    "filter_placeholder": "Suodata kieliä...",
+    "plain_text": "Pelkkä teksti"
+  },
+  "link": {
+    "apply": "Käytä linkkiä",
+    "cancel": "Peruuta",
+    "display_text": "Näytettävä teksti",
+    "edit": "Muokkaa",
+    "edit_link": "Muokkaa linkkiä",
+    "remove_link": "Poista linkki",
+    "text": "Teksti",
+    "text_placeholder": "Näytettävä teksti (valinnainen)",
+    "url": "URL",
+    "url_placeholder": "Liitä tai kirjoita URL..."
+  },
+  "mermaid": {
+    "done": "Valmis",
+    "edit": "Muokkaa",
+    "error_prefix": "Syntaksivirhe",
+    "stale": "Esikatselu vanhentunut"
+  },
+  "recovery": {
+    "discard": "Hylkää",
+    "message": "Kern löysi tallentamattomia muutoksia edellisestä istunnosta. Haluatko palauttaa ne?",
+    "restore": "Palauta",
+    "title": "Palautetaanko tallentamattomat muutokset?"
+  },
+  "search": {
+    "count": "osumaa",
+    "no_results": "Ei tuloksia",
+    "placeholder": "Hae dokumentista..."
+  },
+  "settings": {
+    "language": "Kieli",
+    "theme": "Teema",
+    "theme_dark": "Tumma",
+    "theme_light": "Vaalea",
+    "theme_system": "Järjestelmä"
+  },
+  "sidebar": {
+    "no_headings": "Otsikoita ei löytynyt",
+    "recent": "Viimeisimmät tiedostot",
+    "toc": "Sisällysluettelo"
+  },
+  "slash": {
+    "blockquote": "Lainaus",
+    "blockquote_desc": "Lainauslohko",
+    "bullet_list": "Luettelomerkit",
+    "bullet_list_desc": "Järjestämätön lista",
+    "code_block": "Koodilohko",
+    "code_block_desc": "Aidattu koodilohko",
+    "divider": "Erotin",
+    "divider_desc": "Vaakaviiva",
+    "heading1": "Otsikko 1",
+    "heading1_desc": "Suuri otsikko",
+    "heading2": "Otsikko 2",
+    "heading2_desc": "Keskikokoinen otsikko",
+    "heading3": "Otsikko 3",
+    "heading3_desc": "Pieni otsikko",
+    "mermaid": "Mermaid-kaavio",
+    "mermaid_desc": "Lisää kaavio",
+    "no_results": "Ei tuloksia",
+    "numbered_list": "Numeroitu luettelo",
+    "numbered_list_desc": "Järjestetty luettelo",
+    "paragraph": "Kappale",
+    "paragraph_desc": "Normaali teksti",
+    "table": "Taulukko",
+    "table_desc": "3×3-taulukko",
+    "task_list": "Tehtäväluettelo",
+    "task_list_desc": "Tarkistuslista"
+  },
+  "table": {
+    "add_col_left": "Lisää sarake vasemmalle",
+    "add_col_right": "Lisää sarake oikealle",
+    "add_row_above": "Lisää rivi yläpuolelle",
+    "add_row_below": "Lisää rivi alapuolelle",
+    "col_options": "Sarakkeen {n} valinnat",
+    "delete_col": "Poista sarake",
+    "delete_row": "Poista rivi",
+    "header": "Otsikko",
+    "insert_col_left": "Lisää sarake vasemmalle",
+    "insert_col_right": "Lisää sarake oikealle",
+    "insert_row_above": "Lisää rivi yläpuolelle",
+    "insert_row_below": "Lisää rivi alapuolelle",
+    "new_row": "+ Uusi rivi",
+    "row_options": "Rivin {n} asetukset"
+  },
+  "toolbar": {
+    "done": "Valmis",
+    "edit": "Muokkaa",
+    "export_pdf": "Vie PDF",
+    "focus": "Keskittymistila",
+    "more": "Lisää",
+    "new_file": "Uusi tiedosto",
+    "open": "Avaa tiedosto",
+    "save": "Tallenna",
+    "search": "Haku",
+    "settings": "Asetukset",
+    "split_view": "Jaettu näkymä",
+    "theme": "Vaihda teema",
+    "toc": "Sisällysluettelo",
+    "zoom_in": "Lähennä",
+    "zoom_out": "Loitonna",
+    "zoom_reset": "Nollaa zoomaus"
+  },
+  "trial": {
+    "days_remaining": "{days} päivää kokeiluaikaa jäljellä",
+    "expired_message": "Kokeiluaikasi on päättynyt. Osta Kern jatkaaksesi muokkaamista.",
+    "feature_edit": "Muokkaa Markdownia WYSIWYG- ja jaetulla näkymällä",
+    "feature_export": "Vie PDF-muotoon",
+    "feature_save": "Tallenna ja luo uusia tiedostoja",
+    "one_time_purchase": "Kertamaksu. Ei tilausta.",
+    "purchase_button": "Osta Kern",
+    "purchase_desc": "Hanki täydet käyttöoikeudet kaikkiin muokkaus- ja vientiominaisuuksiin kertamaksulla.",
+    "purchase_title": "Avaa Kern",
+    "purchasing": "Ostetaan...",
+    "restore_purchases": "Palauta ostot",
+    "restoring": "Palautetaan..."
+  },
+  "viewer": {
+    "copied": "Kopioitu!",
+    "copy": "Kopioi"
+  },
+  "welcome": {
+    "drop_hint": "tai vedä ja pudota .md-tiedosto",
+    "new_button": "Uusi tiedosto",
+    "open_button": "Avaa tiedosto",
+    "subtitle": "Kaunis Markdown-katselin",
+    "title": "Kern"
+  }
+}

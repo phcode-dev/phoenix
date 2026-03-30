@@ -1,0 +1,539 @@
+/* Markdown content rendering */
+.markdown-body {
+  padding: var(--space-xl) var(--space-lg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-content);
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  word-wrap: break-word;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+}
+
+/* Headings — Confluence/Atlassian scale */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: normal;
+  line-height: var(--line-height-heading);
+  text-wrap: balance;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  letter-spacing: -0.015em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.markdown-body h2 {
+  font-size: 1.5em;
+  letter-spacing: -0.015em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.markdown-body h3 { font-size: 1.25em; }
+.markdown-body h4 { font-size: 1.125em; }
+.markdown-body h5 { font-size: 1em; }
+.markdown-body h6 { font-size: 0.875em; color: var(--color-text-secondary); }
+
+.markdown-body h1:first-child,
+.markdown-body h2:first-child,
+.markdown-body h3:first-child {
+  margin-top: 0;
+}
+
+/* Paragraphs */
+.markdown-body p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+/* Links */
+.markdown-body a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.markdown-body a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+}
+
+/* Images */
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-subtle);
+}
+
+/* Inline code */
+.markdown-body code:not(pre code) {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  font-family: var(--font-mono);
+  background-color: var(--color-code-bg);
+  border-radius: var(--radius-sm);
+  color: var(--color-code-text);
+}
+
+/* Code blocks */
+.markdown-body pre {
+  position: relative;
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  overflow: auto;
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+}
+
+.markdown-body pre code {
+  display: block;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+  font-family: var(--font-mono);
+}
+
+/* Language badge */
+.markdown-body pre[data-language]::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  padding: 2px var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  background-color: var(--color-bg-tertiary);
+  border-radius: 0 var(--radius-md) 0 var(--radius-sm);
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+[dir="rtl"] .markdown-body pre[data-language]::before {
+  border-radius: var(--radius-md) 0 var(--radius-sm) 0;
+}
+
+/* Copy button */
+.code-copy-btn {
+  position: absolute;
+  top: var(--space-sm);
+  inset-inline-end: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
+  z-index: 1;
+}
+
+.markdown-body pre:hover .code-copy-btn {
+  opacity: 1;
+}
+
+.code-copy-btn:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.code-copy-btn.copied {
+  color: var(--color-alert-tip);
+}
+
+/* When language badge is present, adjust copy button position */
+.markdown-body pre[data-language] .code-copy-btn {
+  top: calc(var(--font-size-xs) + var(--space-sm) + 4px);
+}
+
+/* Blockquotes */
+.markdown-body blockquote {
+  margin: 0 0 var(--space-md) 0;
+  padding: 0 1em;
+  color: var(--color-text-secondary);
+  border-inline-start: 4px solid var(--color-border);
+}
+
+.markdown-body blockquote > :first-child { margin-top: 0; }
+.markdown-body blockquote > :last-child { margin-bottom: 0; }
+
+/* GitHub Alerts */
+.markdown-alert {
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  border-inline-start: 4px solid;
+  border-radius: var(--radius-md);
+}
+
+.markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+
+.markdown-alert-icon {
+  font-size: 1.1em;
+}
+
+.markdown-alert-note {
+  border-color: var(--color-alert-note);
+  background: var(--color-alert-note-bg);
+}
+.markdown-alert-note .markdown-alert-title { color: var(--color-alert-note); }
+
+.markdown-alert-tip {
+  border-color: var(--color-alert-tip);
+  background: var(--color-alert-tip-bg);
+}
+.markdown-alert-tip .markdown-alert-title { color: var(--color-alert-tip); }
+
+.markdown-alert-important {
+  border-color: var(--color-alert-important);
+  background: var(--color-alert-important-bg);
+}
+.markdown-alert-important .markdown-alert-title { color: var(--color-alert-important); }
+
+.markdown-alert-warning {
+  border-color: var(--color-alert-warning);
+  background: var(--color-alert-warning-bg);
+}
+.markdown-alert-warning .markdown-alert-title { color: var(--color-alert-warning); }
+
+.markdown-alert-caution {
+  border-color: var(--color-alert-caution);
+  background: var(--color-alert-caution-bg);
+}
+.markdown-alert-caution .markdown-alert-title { color: var(--color-alert-caution); }
+
+/* Tables */
+.markdown-body .table-wrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid var(--color-table-border);
+  border-radius: 6px;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--color-table-border);
+  vertical-align: top;
+  min-height: calc(1em * var(--line-height) + 16px);
+}
+
+/* Ensure empty cells keep their height in edit mode */
+.markdown-body table td:empty,
+.markdown-body table td:has(> br:only-child) {
+  height: calc(1em * var(--line-height) + 16px);
+}
+
+.markdown-body table th + th,
+.markdown-body table td + td {
+  border-inline-start: 1px solid var(--color-table-border);
+}
+
+.markdown-body table th {
+  font-weight: 600;
+  background-color: var(--color-bg-secondary);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.markdown-body table thead tr {
+  border-bottom: 2px solid var(--color-table-border);
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: var(--color-table-row-alt);
+}
+
+.markdown-body table tbody tr:hover {
+  background-color: var(--color-table-row-hover);
+}
+
+.markdown-body table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Lists */
+.markdown-body ul,
+.markdown-body ol {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  padding-inline-start: 2em;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body li + li {
+  margin-top: 0.25em;
+}
+
+.markdown-body li > p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Task lists */
+.markdown-body .contains-task-list {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.markdown-body .task-list-item {
+  position: relative;
+  padding-inline-start: 1.75em;
+}
+
+.markdown-body .task-list-item input[type="checkbox"] {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.3em;
+  width: 1em;
+  height: 1em;
+  accent-color: var(--color-accent);
+  pointer-events: none;
+}
+
+/* Horizontal rule */
+.markdown-body hr {
+  height: 0;
+  margin: var(--space-xl) 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--color-border);
+}
+
+/* Definition lists */
+.markdown-body dt {
+  font-weight: 600;
+  margin-top: var(--space-md);
+}
+
+.markdown-body dd {
+  margin-inline-start: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+/* Footnotes */
+.markdown-body .footnote-ref {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.markdown-body .footnotes {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Strikethrough */
+.markdown-body del {
+  color: var(--color-text-secondary);
+}
+
+/* Mark / highlight */
+.markdown-body mark {
+  background-color: var(--color-highlight);
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+/* Superscript / Subscript */
+.markdown-body sup { font-size: 0.75em; }
+.markdown-body sub { font-size: 0.75em; }
+
+/* Spoiler */
+.markdown-body span[data-spoiler] {
+  background: var(--color-text);
+  color: transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  padding: 0 0.2em;
+}
+
+.markdown-body span[data-spoiler]:hover,
+.markdown-body span[data-spoiler].revealed {
+  background: transparent;
+  color: inherit;
+}
+
+/* Details / Summary */
+.markdown-body details {
+  margin-bottom: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.markdown-body details summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: var(--space-xs) 0;
+}
+
+.markdown-body details[open] summary {
+  margin-bottom: var(--space-sm);
+}
+
+/* Selection — match Phoenix editor selection colors.
+   Toggled via .content-focused class on window focus/blur since
+   ::selection + :focus doesn't work in WebKit. */
+.markdown-body ::selection {
+  background-color: var(--color-selection-bg-unfocused);
+}
+
+.markdown-body.content-focused ::selection {
+  background-color: var(--color-selection-bg);
+}
+
+/* Help fallback notice (shown when docs not available in user's language) */
+.help-fallback-notice {
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border-inline-start: 4px solid var(--color-alert-note);
+  border-radius: var(--radius-md);
+  background: var(--color-alert-note-bg);
+  color: var(--color-text-secondary);
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* Empty line placeholder hint — shown only at cursor position */
+.markdown-body.editing .cursor-empty-hint {
+  position: relative;
+}
+
+.markdown-body.editing .cursor-empty-hint::after {
+  content: "Type / to insert";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Instant scroll for cursor sync; heading navigation uses JS scrollIntoView */
+.markdown-body {
+  scroll-behavior: auto;
+}
+
+/* ===== Selection highlight from CodeMirror ===== */
+.cm-selection-highlight {
+  background-color: rgba(100, 150, 255, 0.12);
+  border-radius: 2px;
+  transition: background-color 150ms ease;
+}
+
+[data-theme="light"] .cm-selection-highlight {
+  background-color: rgba(50, 100, 220, 0.1);
+}
+
+/* ===== Mermaid diagrams ===== */
+
+.mermaid-diagram {
+  margin-bottom: var(--space-md);
+  text-align: center;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-secondary);
+  position: relative;
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Skeleton placeholder */
+.mermaid-skeleton {
+  min-height: 200px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  animation: mermaid-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes mermaid-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mermaid-skeleton { animation: none; opacity: 0.8; }
+}
+
+/* Error state */
+.mermaid-diagram.mermaid-error {
+  text-align: start;
+  border-color: var(--color-alert-caution);
+  padding: var(--space-md);
+  cursor: default;
+}
+
+.mermaid-error-message {
+  font-weight: 600;
+  color: var(--color-alert-caution);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.mermaid-error-source {
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.mermaid-error-source pre {
+  margin: var(--space-sm) 0 0;
+  font-size: var(--font-size-xs);
+}
+

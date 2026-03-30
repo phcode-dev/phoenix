@@ -1,0 +1,116 @@
+// Adapted i18n — receives locale from Phoenix via postMessage instead of Tauri
+import { getState, setState } from "./state.js";
+
+const RTL_LOCALES = new Set(["ar", "he", "ur"]);
+
+let translations = {};
+let fallback = {};
+
+export async function initI18n() {
+    // Load fallback (English) first
+    fallback = await loadLocale("en");
+
+    // Use navigator locale as default
+    let detectedLocale = "en";
+    try {
+        const navLocale = navigator.language;
+        if (navLocale) {
+            detectedLocale = navLocale.split("-")[0].split("_")[0];
+        }
+    } catch (e) {
+        // ignore
+    }
+
+    const state = getState();
+    const targetLocale = state.locale || detectedLocale;
+    await setLocale(targetLocale);
+}
+
+async function loadLocale(locale) {
+    // Normalize: lowercase and use hyphens (e.g. "en_US" → "en-us", "zh-CN" → "zh-cn")
+    const normalized = locale.toLowerCase().replace(/_/g, "-");
+    // Try full locale first (e.g. "zh-cn"), then base language (e.g. "zh")
+    try {
+        const module = await import(`../locales/${normalized}.json`);
+        return module.default || module;
+    } catch {
+        const base = normalized.split("-")[0];
+        if (base !== normalized) {
+            try {
+                const module = await import(`../locales/${base}.json`);
+                return module.default || module;
+            } catch { /* fall through */ }
+        }
+        console.warn(`Failed to load locale '${locale}', falling back to English`);
+        return {};
+    }
+}
+
+export async function setLocale(locale) {
+    const normalized = locale.toLowerCase().replace(/_/g, "-");
+    translations = await loadLocale(normalized);
+    setState({ locale: normalized });
+    applyTranslations();
+    document.documentElement.lang = normalized;
+    const base = normalized.split("-")[0];
+    document.documentElement.dir = RTL_LOCALES.has(base) ? "rtl" : "ltr";
+}
+
+export function t(key) {
+    const keys = key.split(".");
+    let value = translations;
+    let fb = fallback;
+
+    for (const k of keys) {
+        value = value?.[k];
+        fb = fb?.[k];
+    }
+
+    return value || fb || key;
+}
+
+export function tp(key, params = {}) {
+    let str = t(key);
+    for (const [k, v] of Object.entries(params)) {
+        str = str.replaceAll(`{${k}}`, v);
+    }
+    return str;
+}
+
+export function applyTranslations() {
+    const elements = document.querySelectorAll("[data-i18n]");
+    for (const el of elements) {
+        const key = el.getAttribute("data-i18n");
+        const translated = t(key);
+        if (translated !== key) {
+            el.textContent = translated;
+        }
+    }
+
+    const placeholders = document.querySelectorAll("[data-i18n-placeholder]");
+    for (const el of placeholders) {
+        const key = el.getAttribute("data-i18n-placeholder");
+        const translated = t(key);
+        if (translated !== key) {
+            el.placeholder = translated;
+        }
+    }
+
+    const ariaLabels = document.querySelectorAll("[data-i18n-aria]");
+    for (const el of ariaLabels) {
+        const key = el.getAttribute("data-i18n-aria");
+        const translated = t(key);
+        if (translated !== key) {
+            el.setAttribute("aria-label", translated);
+        }
+    }
+
+    const tooltips = document.querySelectorAll("[data-i18n-tooltip]");
+    for (const el of tooltips) {
+        const key = el.getAttribute("data-i18n-tooltip");
+        const translated = t(key);
+        if (translated !== key) {
+            el.setAttribute("data-tooltip", translated);
+        }
+    }
+}

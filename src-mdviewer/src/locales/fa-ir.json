@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "بستن جستجو",
+    "edit_link": "ویرایش پیوند",
+    "format_text": "قالب‌بندی متن",
+    "insert_block": "درج بلوک",
+    "main_toolbar": "نوار ابزار اصلی",
+    "next_match": "مورد بعدی",
+    "previous_match": "مورد قبلی",
+    "search_in_document": "جستجو در سند",
+    "search_text": "جستجوی متن",
+    "select_language": "انتخاب زبان",
+    "sidebar": "نوار کناری",
+    "skip_to_content": "پرش به محتوا"
+  },
+  "common": {
+    "close": "بستن",
+    "file": "فایل",
+    "open": "باز کردن"
+  },
+  "context": {
+    "copy": "کپی",
+    "copy_image_address": "کپی آدرس تصویر",
+    "copy_link": "کپی پیوند",
+    "cut": "برش",
+    "open_link": "باز کردن پیوند",
+    "paste": "چسباندن",
+    "paste_plain": "چسباندن به صورت متن ساده",
+    "select_all": "انتخاب همه"
+  },
+  "dialog": {
+    "cancel": "انصراف",
+    "discard": "نادیده گرفتن",
+    "dont_save": "ذخیره نکردن",
+    "save": "ذخیره",
+    "unsaved_close": "شما تغییرات ذخیره‌نشده دارید. آیا می‌خواهید قبل از بستن، ذخیره کنید؟",
+    "unsaved_exit_edit": "شما تغییرات ذخیره‌نشده دارید. آیا می‌خواهید قبل از خروج از حالت ویرایش، ذخیره کنید؟",
+    "unsaved_new_file": "شما تغییرات ذخیره‌نشده دارید. آیا می‌خواهید قبل از ایجاد فایل جدید، ذخیره کنید؟",
+    "unsaved_open_file": "شما تغییرات ذخیره‌نشده دارید. آیا می‌خواهید قبل از باز کردن فایل جدید، آن را ذخیره کنید؟",
+    "unsaved_title": "تغییرات ذخیره‌نشده"
+  },
+  "drop_zone": {
+    "text": "فایل مارک‌داون خود را اینجا رها کنید"
+  },
+  "export": {
+    "open": "باز کردن",
+    "success": "فایل PDF با موفقیت صادر شد"
+  },
+  "format": {
+    "block_type": "نوع بلوک",
+    "blockquote": "نقل‌قول",
+    "bold": "ضخیم ({mod}+B)",
+    "bullet_list": "فهرست موردی",
+    "code": "کد درون‌خطی ({mod}+E)",
+    "code_block": "بلوک کد",
+    "divider": "جداکننده",
+    "heading1": "سرتیتر ۱",
+    "heading2": "سرتیتر ۲",
+    "heading3": "سرتیتر ۳",
+    "italic": "ایتالیک ({mod}+I)",
+    "link": "پیوند ({mod}+K)",
+    "lists": "فهرست‌ها",
+    "more_elements": "بیشتر",
+    "numbered_list": "فهرست شماره‌دار",
+    "paragraph": "پاراگراف",
+    "strikethrough": "خط خورده ({mod}+Shift+X)",
+    "table": "جدول",
+    "task_list": "فهرست کارها",
+    "text_formatting": "قالب‌بندی متن",
+    "underline": "زیرخط"
+  },
+  "help": {
+    "editing": "ویرایش",
+    "fallback_notice": "این صفحه هنوز به زبان شما در دسترس نیست. نسخهٔ انگلیسی نمایش داده می‌شود.",
+    "features": "ویژگی‌ها",
+    "getting_started": "شروع به کار",
+    "shortcuts": "میانبرهای صفحه‌کلید"
+  },
+  "lang_picker": {
+    "filter_label": "فیلتر زبان‌ها",
+    "filter_placeholder": "فیلتر زبان‌ها...",
+    "plain_text": "متن ساده"
+  },
+  "link": {
+    "apply": "اعمال لینک",
+    "cancel": "انصراف",
+    "display_text": "متن نمایشی",
+    "edit": "ویرایش",
+    "edit_link": "ویرایش لینک",
+    "remove_link": "حذف لینک",
+    "text": "متن",
+    "text_placeholder": "متن نمایشی (اختیاری)",
+    "url": "URL",
+    "url_placeholder": "URL را جای‌گذاری یا تایپ کنید..."
+  },
+  "mermaid": {
+    "done": "تایید",
+    "edit": "ویرایش",
+    "error_prefix": "خطای نحوی",
+    "stale": "پیش‌نمایش به‌روز نیست"
+  },
+  "recovery": {
+    "discard": "صرف‌نظر",
+    "message": "Kern تغییرات ذخیره‌نشده‌ای از جلسهٔ قبل پیدا کرده است. آیا مایل به بازیابی آن‌ها هستید؟",
+    "restore": "بازیابی",
+    "title": "تغییرات ذخیره‌نشده بازیابی شوند؟"
+  },
+  "search": {
+    "count": "مورد",
+    "no_results": "نتیجه‌ای یافت نشد",
+    "placeholder": "جستجو در سند..."
+  },
+  "settings": {
+    "language": "زبان",
+    "theme": "پوسته",
+    "theme_dark": "تیره",
+    "theme_light": "روشن",
+    "theme_system": "سیستم"
+  },
+  "sidebar": {
+    "no_headings": "هیچ سرتیتری یافت نشد",
+    "recent": "فایل‌های اخیر",
+    "toc": "فهرست مطالب"
+  },
+  "slash": {
+    "blockquote": "نقل قول",
+    "blockquote_desc": "بلوک نقل قول",
+    "bullet_list": "لیست گلوله‌ای",
+    "bullet_list_desc": "لیست نامرتب",
+    "code_block": "بلوک کد",
+    "code_block_desc": "کد محصور",
+    "divider": "جداکننده",
+    "divider_desc": "خط افقی",
+    "heading1": "سرتیتر ۱",
+    "heading1_desc": "سرتیتر بزرگ",
+    "heading2": "سرتیتر ۲",
+    "heading2_desc": "سرتیتر متوسط",
+    "heading3": "سرتیتر ۳",
+    "heading3_desc": "سرتیتر کوچک",
+    "mermaid": "نمودار Mermaid",
+    "mermaid_desc": "درج نمودار",
+    "no_results": "نتیجه‌ای یافت نشد",
+    "numbered_list": "فهرست شماره‌دار",
+    "numbered_list_desc": "فهرست مرتب",
+    "paragraph": "پاراگراف",
+    "paragraph_desc": "متن ساده",
+    "table": "جدول",
+    "table_desc": "جدول ۳×۳",
+    "task_list": "فهرست وظایف",
+    "task_list_desc": "چک‌لیست"
+  },
+  "table": {
+    "add_col_left": "افزودن ستون به چپ",
+    "add_col_right": "افزودن ستون به راست",
+    "add_row_above": "افزودن ردیف در بالا",
+    "add_row_below": "افزودن ردیف در پایین",
+    "col_options": "گزینه‌های ستون {n}",
+    "delete_col": "حذف ستون",
+    "delete_row": "حذف ردیف",
+    "header": "سربرگ",
+    "insert_col_left": "درج ستون در سمت چپ",
+    "insert_col_right": "درج ستون در سمت راست",
+    "insert_row_above": "درج ردیف در بالا",
+    "insert_row_below": "درج ردیف در پایین",
+    "new_row": "+ سطر جدید",
+    "row_options": "گزینه‌های سطر {n}"
+  },
+  "toolbar": {
+    "done": "انجام شد",
+    "edit": "ویرایش",
+    "export_pdf": "خروجی PDF",
+    "focus": "حالت تمرکز",
+    "more": "بیشتر",
+    "new_file": "فایل جدید",
+    "open": "باز کردن فایل",
+    "save": "ذخیره",
+    "search": "جستجو",
+    "settings": "تنظیمات",
+    "split_view": "نمای تقسیم‌شده",
+    "theme": "تغییر پوسته",
+    "toc": "فهرست مطالب",
+    "zoom_in": "بزرگ‌نمایی",
+    "zoom_out": "کوچک‌نمایی",
+    "zoom_reset": "بازنشانی بزرگ‌نمایی"
+  },
+  "trial": {
+    "days_remaining": "{days} روز از دوره آزمایشی باقی‌مانده",
+    "expired_message": "دوره آزمایشی شما به پایان رسیده است. برای ادامه ویرایش، Kern را خریداری کنید.",
+    "feature_edit": "ویرایش مارک‌داون با WYSIWYG و نمای تقسیم‌شده",
+    "feature_export": "خروجی PDF",
+    "feature_save": "ذخیره و ایجاد فایل‌های جدید",
+    "one_time_purchase": "خرید یک‌باره. بدون اشتراک.",
+    "purchase_button": "خرید Kern",
+    "purchase_desc": "با یک‌بار خرید، به تمام قابلیت‌های ویرایش و خروجی دسترسی کامل پیدا کنید.",
+    "purchase_title": "باز کردن قفل Kern",
+    "purchasing": "در حال خرید...",
+    "restore_purchases": "بازیابی خریدها",
+    "restoring": "در حال بازیابی..."
+  },
+  "viewer": {
+    "copied": "کپی شد!",
+    "copy": "کپی"
+  },
+  "welcome": {
+    "drop_hint": "یا یک فایل .md را بکشید و رها کنید",
+    "new_button": "فایل جدید",
+    "open_button": "باز کردن فایل",
+    "subtitle": "یک نمایشگر زیبای مارک‌داون",
+    "title": "Kern"
+  }
+}

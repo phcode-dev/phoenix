@@ -110,6 +110,7 @@ define(function (require, exports, module) {
     require("spec/Template-for-integ-test");
     require("spec/LiveDevelopmentMultiBrowser-test");
     require("spec/LiveDevelopmentCustomServer-test");
+    require("spec/md-editor-integ-test");
     require("spec/NewFileContentManager-test");
     require("spec/InstallExtensionDialog-integ-test");
     require("spec/ExtensionInstallation-test");

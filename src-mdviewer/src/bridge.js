@@ -1,0 +1,886 @@
+/**
+ * PostMessage bridge between Phoenix parent window and mdviewr iframe.
+ * Handles bidirectional communication for content sync, theme, locale, and edit mode.
+ * Integrates with doc-cache for instant file switching.
+ */
+import { on, emit } from "./core/events.js";
+import { getState, setState } from "./core/state.js";
+import { setLocale } from "./core/i18n.js";
+import { marked } from "marked";
+import * as docCache from "./core/doc-cache.js";
+
+let _syncId = 0;
+let _lastReceivedSyncId = -1;
+let _suppressContentChange = false;
+let _baseURL = "";
+let _cursorPosBeforeEdit = null; // cursor position before current edit batch
+let _cursorPosDirty = false; // true after content changes, reset when emitted
+let _pendingReloadScroll = null; // { filePath, scrollSourceLine } for scroll restore after reload
+
+/**
+ * Check if a URL is absolute (not relative to the document).
+ */
+function _isAbsoluteURL(href) {
+    return /^(?:https?:\/\/|data:|\/\/|#|mailto:|tel:)/.test(href);
+}
+
+/**
+ * Resolve a relative URL against the current base URL.
+ */
+function _resolveURL(href) {
+    if (!href || !_baseURL || _isAbsoluteURL(href)) {
+        return href;
+    }
+    try {
+        return new URL(href, _baseURL).href;
+    } catch {
+        return href;
+    }
+}
+
+/**
+ * Annotate top-level tokens with their source line numbers.
+ * This allows mapping rendered HTML elements back to markdown source lines.
+ */
+function _annotateTokenLines(tokens) {
+    let line = 1;
+    for (const token of tokens) {
+        if (token.type !== "space") {
+            token._sourceLine = line;
+        }
+        if (token.raw) {
+            line += (token.raw.match(/\n/g) || []).length;
+        }
+    }
+}
+
+// Custom renderer that injects data-source-line attributes into block-level elements.
+const _proto = marked.Renderer.prototype;
+
+function _withSourceLine(protoFn, tagRegex) {
+    return function (token) {
+        const html = protoFn.call(this, token);
+        if (token._sourceLine != null) {
+            return html.replace(tagRegex, `$& data-source-line="${token._sourceLine}"`);
+        }
+        return html;
+    };
+}
+
+marked.use({
+    renderer: {
+        heading: _withSourceLine(_proto.heading, /^<h[1-6]/),
+        paragraph: _withSourceLine(_proto.paragraph, /^<p/),
+        list: _withSourceLine(_proto.list, /^<[ou]l/),
+        table: _withSourceLine(_proto.table, /^<table/),
+        blockquote: _withSourceLine(_proto.blockquote, /^<blockquote/),
+        code: _withSourceLine(_proto.code, /^<pre/),
+        hr: _withSourceLine(_proto.hr, /^<hr/)
+    }
+});
+
+/**
+ * Parse markdown to HTML with mermaid detection and source line annotations.
+ */
+export function parseMarkdownToHTML(markdown) {
+    const has_mermaid = /```mermaid/i.test(markdown);
+    const tokens = marked.lexer(markdown);
+    _annotateTokenLines(tokens);
+    marked.walkTokens(tokens, (token) => {
+        if (token.type === "image" && token.href) {
+            token.href = _resolveURL(token.href);
+        } else if (token.type === "link" && token.href) {
+            token.href = _resolveURL(token.href);
+        }
+    });
+    const html = marked.parser(tokens);
+    return { html, has_mermaid };
+}
+
+const _isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+
+/**
+ * Initialize the postMessage bridge.
+ */
+export function initBridge() {
+    docCache.initDocCache();
+
+    // Expose helpers for test access (test iframes have no sandbox)
+    window.__getActiveFilePath = docCache.getActiveFilePath;
+    window.__setEditModeForTest = function (editMode) {
+        setState({ editMode });
+    };
+    window.__isSuppressingContentChange = function () {
+        return _suppressContentChange;
+    };
+    window.__triggerContentSync = function () {
+        const content = document.getElementById("viewer-content");
+        if (content) {
+            content.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+    };
+
+    // Listen for messages from Phoenix parent
+    window.addEventListener("message", (event) => {
+        const data = event.data;
+        if (!data || !data.type) return;
+
+        switch (data.type) {
+            case "MDVIEWR_SET_CONTENT":
+                handleSetContent(data);
+                break;
+            case "MDVIEWR_UPDATE_CONTENT":
+                handleUpdateContent(data);
+                break;
+            case "MDVIEWR_SWITCH_FILE":
+                handleSwitchFile(data);
+                break;
+            case "MDVIEWR_CLEAR_CACHE":
+                handleClearCache();
+                break;
+            case "MDVIEWR_WORKING_SET_CHANGED":
+                handleWorkingSetChanged(data);
+                break;
+            case "MDVIEWR_CLOSE_FILE":
+                handleCloseFile(data);
+                break;
+            case "MDVIEWR_RELOAD_FILE":
+                handleReloadFile(data);
+                break;
+            case "MDVIEWR_SET_THEME":
+                handleSetTheme(data);
+                break;
+            case "MDVIEWR_SET_EDIT_MODE":
+                handleSetEditMode(data);
+                break;
+            case "MDVIEWR_SET_LOCALE":
+                handleSetLocale(data);
+                break;
+            case "MDVIEWR_SCROLL_TO_LINE":
+                handleScrollToLine(data);
+                break;
+            case "MDVIEWR_HIGHLIGHT_SELECTION":
+                handleHighlightSelection(data);
+                break;
+            case "MDVIEWR_RERENDER_CONTENT":
+                handleRerenderContent(data);
+                break;
+            case "MDVIEWR_IMAGE_UPLOAD_RESULT":
+                _handleImageUploadResult(data);
+                break;
+            case "_TEST_FOCUS_CLICK":
+                document.body.click();
+                break;
+            case "_TEST_SELECT_TEXT_AND_CLICK": {
+                const selection = window.getSelection();
+                const range = document.createRange();
+                range.selectNodeContents(document.body);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                document.body.click();
+                break;
+            }
+            case "_TEST_UNSELECT_TEXT_AND_CLICK":
+                window.getSelection().removeAllRanges();
+                document.body.click();
+                break;
+        }
+    });
+
+    // Intercept keyboard shortcuts in capture phase before the mdviewr editor handles them.
+    // Undo/redo is routed through CM5's undo stack so both editors stay in sync.
+    // Unhandled modifier shortcuts are forwarded to Phoenix's keybinding manager.
+    const _mdEditorHandledKeys = new Set(["b", "i", "k", "u", "z", "y", "a", "c", "v", "x"]); // Ctrl/Cmd + key
+    const _mdEditorHandledShiftKeys = new Set(["x", "X", "z", "Z"]); // Ctrl/Cmd + Shift + key
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            // Don't forward Escape to Phoenix if any popup/overlay is open
+            const popupSelectors = [
+                "#search-bar.open",
+                "#slash-menu-anchor.visible",
+                "#lang-picker.visible",
+                "#link-popover.visible"
+            ];
+            const hasOpenPopup = popupSelectors.some(sel => document.querySelector(sel));
+            if (hasOpenPopup) {
+                // Let the popup handle Escape, then refocus editor
+                setTimeout(() => {
+                    const content = document.getElementById("viewer-content");
+                    if (content && getState().editMode) {
+                        content.focus({ preventScroll: true });
+                    }
+                }, 0);
+                return;
+            }
+            sendToParent("embeddedEscapeKeyPressed", {});
+            return;
+        }
+
+        // Forward function keys to Phoenix
+        if (e.key.startsWith("F") && e.key.length >= 2 && !isNaN(e.key.slice(1))) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            sendToParent("mdviewrKeyboardShortcut", {
+                key: e.key,
+                code: e.code,
+                ctrlKey: e.ctrlKey,
+                metaKey: e.metaKey,
+                shiftKey: e.shiftKey,
+                altKey: e.altKey
+            });
+            return;
+        }
+
+        const isMod = _isMac ? e.metaKey : e.ctrlKey;
+        if (!isMod) return;
+
+        if ((e.key === "z" || e.key === "Z") && !e.shiftKey) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            sendToParent("mdviewrUndo", {});
+            return;
+        }
+
+        if (((e.key === "z" || e.key === "Z") && e.shiftKey) || e.key === "y") {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            sendToParent("mdviewrRedo", {});
+            return;
+        }
+
+        // Ctrl/Cmd+F — open in-document search
+        if (e.key === "f" && !e.shiftKey) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            emit("action:toggle-search");
+            return;
+        }
+
+        // Forward unhandled modifier shortcuts to Phoenix keybinding manager
+        if (getState().editMode) {
+            const isHandled = e.shiftKey
+                ? _mdEditorHandledShiftKeys.has(e.key)
+                : _mdEditorHandledKeys.has(e.key);
+            if (!isHandled) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                sendToParent("mdviewrKeyboardShortcut", {
+                    key: e.key,
+                    code: e.code,
+                    ctrlKey: e.ctrlKey,
+                    metaKey: e.metaKey,
+                    shiftKey: e.shiftKey,
+                    altKey: e.altKey
+                });
+                // Refocus md editor after Phoenix handles the shortcut
+                // (some commands like Save focus the CM editor)
+                setTimeout(() => {
+                    const content = document.getElementById("viewer-content");
+                    if (content && getState().editMode) {
+                        content.focus({ preventScroll: true });
+                    }
+                }, 100);
+            }
+        }
+    }, true);
+
+    // Detect source line from data-source-line attributes for scroll sync.
+    // In read mode, also refocus CM5 unless the user has a text selection.
+    // Disabled in preview mode (no cursor sync).
+    document.addEventListener("click", (e) => {
+        const sourceLine = _getSourceLineFromElement(e.target);
+        if (getState().editMode) {
+            if (sourceLine != null) {
+                sendToParent("mdviewrScrollSync", { sourceLine });
+            }
+            return;
+        }
+        const selection = window.getSelection();
+        if (!selection || selection.toString().length === 0) {
+            sendToParent("embeddedIframeFocusEditor", { sourceLine });
+        }
+    }, true);
+
+    // Listen for selection changes to sync selection back to CM
+    // Also track cursor position for undo/redo restore
+    document.addEventListener("selectionchange", () => {
+        if (!getState().editMode) {
+            return;
+        }
+        // Only update cursor position if we're not mid-edit
+        // (once content changes, freeze position until emitted)
+        if (!_cursorPosDirty) {
+            _cursorPosBeforeEdit = _getCursorPosition();
+        }
+        _sendSelectionToParent();
+    });
+
+    // Freeze cursor position on first input (before debounce fires)
+    document.addEventListener("input", () => {
+        if (getState().editMode) {
+            _cursorPosDirty = true;
+        }
+    }, true);
+
+    // Listen for content changes from editor (debounced by editor.js)
+    on("bridge:contentChanged", ({ markdown }) => {
+        if (_suppressContentChange) return;
+        _syncId++;
+        // Keep state.currentContent in sync so edit→reader re-render has latest content
+        setState({ currentContent: markdown });
+        // Update the cache entry's mdSrc so it stays in sync
+        const activePath = docCache.getActiveFilePath();
+        if (activePath) {
+            const entry = docCache.getEntry(activePath);
+            if (entry) {
+                entry.mdSrc = markdown;
+            }
+        }
+        // Send cursor position BEFORE the edit for undo restore
+        sendToParent("mdviewrContentChanged", { markdown, _syncId, cursorPos: _cursorPosBeforeEdit });
+        _cursorPosDirty = false; // allow cursor tracking again
+    });
+
+    // Listen for edit mode changes from toolbar
+    on("state:editMode", (editMode) => {
+        sendToParent("mdviewrEditModeChanged", { editMode });
+    });
+
+    // Edit mode request — ask Phoenix for permission (entitlement check)
+    on("request:editMode", () => {
+        sendToParent("mdviewrRequestEditMode", {});
+    });
+
+    // Forward image upload request from editor to Phoenix
+    on("bridge:uploadImage", async ({ blob, filename, uploadId }) => {
+        const arrayBuffer = await blob.arrayBuffer();
+        sendToParent("mdviewrImageUploadRequest", {
+            arrayBuffer,
+            mimeType: blob.type,
+            filename,
+            uploadId
+        });
+    });
+
+    // Cursor sync toggle
+    on("toggle:cursorSync", ({ enabled }) => {
+        sendToParent("mdviewrCursorSyncToggle", { enabled });
+    });
+
+    // Toggle selection color class based on iframe focus
+    // (::selection + :focus doesn't work in WebKit)
+    window.addEventListener("focus", () => {
+        const content = document.getElementById("viewer-content");
+        if (content) content.classList.add("content-focused");
+    });
+    window.addEventListener("blur", () => {
+        const content = document.getElementById("viewer-content");
+        if (content) content.classList.remove("content-focused");
+    });
+
+    // Notify parent that iframe is ready
+    sendToParent("mdviewrReady", {});
+}
+
+// --- Content handlers ---
+
+function handleSetContent(data) {
+    const { markdown, baseURL, filePath } = data;
+
+    // Reset sync tracking — Phoenix resets its counter on activate
+    _lastReceivedSyncId = -1;
+
+    if (baseURL) {
+        _baseURL = baseURL;
+    }
+
+    _suppressContentChange = true;
+    const parseResult = parseMarkdownToHTML(markdown);
+
+    if (filePath) {
+        // Cache-aware: create/update entry and switch to it
+        const existing = docCache.getEntry(filePath);
+        if (existing) {
+            docCache.updateEntry(filePath, markdown, parseResult);
+        } else {
+            docCache.createEntry(filePath, markdown, parseResult);
+        }
+        docCache.switchTo(filePath);
+    }
+
+    setState({
+        currentContent: markdown,
+        parseResult: parseResult
+    });
+    emit("file:rendered", parseResult);
+    _suppressContentChange = false;
+}
+
+function handleUpdateContent(data) {
+    const { markdown, _syncId: remoteSyncId, filePath } = data;
+
+    if (remoteSyncId !== undefined && remoteSyncId <= _lastReceivedSyncId) {
+        return;
+    }
+    if (remoteSyncId !== undefined) {
+        _lastReceivedSyncId = remoteSyncId;
+    }
+
+    _suppressContentChange = true;
+
+    // If update is for a background (non-active) file, just update cache
+    const activePath = docCache.getActiveFilePath();
+    if (filePath && activePath && filePath !== activePath) {
+        const parseResult = parseMarkdownToHTML(markdown);
+        docCache.updateEntry(filePath, markdown, parseResult);
+        _suppressContentChange = false;
+        return;
+    }
+
+    const parseResult = parseMarkdownToHTML(markdown);
+
+    if (filePath) {
+        const entry = docCache.getEntry(filePath);
+        if (entry) {
+            entry.mdSrc = markdown;
+            entry.parseResult = parseResult;
+        }
+    }
+
+    setState({
+        currentContent: markdown,
+        parseResult: parseResult
+    });
+
+    emit("file:rendered", parseResult);
+
+    // Restore cursor on undo/redo using source line + offset within block
+    if (data.cursorPos && getState().editMode) {
+        const content = document.getElementById("viewer-content");
+        if (content) {
+            _restoreCursorPosition(content, data.cursorPos);
+        }
+    }
+
+    _suppressContentChange = false;
+}
+
+/**
+ * Cache-aware file switch. This is the core optimization:
+ * - Cache hit + same content → just show cached DOM (instant)
+ * - Cache hit + changed content → re-render in place
+ * - Cache miss → parse, create entry, render
+ */
+function handleSwitchFile(data) {
+    const { filePath, markdown, baseURL } = data;
+
+    // Reset sync tracking — Phoenix resets its counter on activate
+    _lastReceivedSyncId = -1;
+    _syncId = 0;
+
+    if (baseURL) {
+        _baseURL = baseURL;
+    }
+
+    _suppressContentChange = true;
+
+    // Edit mode is global for the md editor frame — preserve it across file switches
+    const wasEditMode = getState().editMode;
+
+    // Save state for outgoing document
+    const outgoingPath = docCache.getActiveFilePath();
+    if (outgoingPath) {
+        docCache.saveActiveScrollPos();
+    }
+
+    // Exit edit mode before switching DOM to detach handlers from outgoing element
+    if (wasEditMode) {
+        emit("doc:beforeSwitch", { fromPath: outgoingPath, toPath: filePath });
+        setState({ editMode: false });
+    }
+
+    const existing = docCache.getEntry(filePath);
+
+    if (existing && existing.mdSrc === markdown) {
+        // Cache hit, content unchanged — instant switch
+        docCache.switchTo(filePath);
+
+        setState({
+            currentContent: markdown,
+            parseResult: existing.parseResult
+        });
+
+        emit("file:switched", { filePath });
+    } else if (existing) {
+        // Cache hit, content changed — re-render in place
+        const parseResult = parseMarkdownToHTML(markdown);
+        docCache.updateEntry(filePath, markdown, parseResult);
+        docCache.switchTo(filePath);
+
+        setState({
+            currentContent: markdown,
+            parseResult: parseResult
+        });
+
+        emit("file:rendered", parseResult);
+    } else {
+        // Cache miss — create new entry
+        const parseResult = parseMarkdownToHTML(markdown);
+        docCache.createEntry(filePath, markdown, parseResult);
+        docCache.switchTo(filePath);
+
+        // Restore scroll position and edit mode from reload if applicable
+        if (_pendingReloadScroll && _pendingReloadScroll.filePath === filePath) {
+            const entry = docCache.getEntry(filePath);
+            if (entry) {
+                entry._scrollSourceLine = _pendingReloadScroll.scrollSourceLine;
+            }
+            const restoreEditMode = _pendingReloadScroll.editMode;
+            _pendingReloadScroll = null;
+
+            setState({
+                currentContent: markdown,
+                parseResult: parseResult
+            });
+            emit("file:rendered", parseResult);
+
+            // Scroll to source line element after render
+            if (entry && entry._scrollSourceLine) {
+                requestAnimationFrame(() => {
+                    const els = entry.dom.querySelectorAll("[data-source-line]");
+                    for (const el of els) {
+                        if (parseInt(el.getAttribute("data-source-line"), 10) === entry._scrollSourceLine) {
+                            el.scrollIntoView({ behavior: "instant", block: "start" });
+                            break;
+                        }
+                    }
+                });
+            }
+
+            if (restoreEditMode) {
+                setState({ editMode: true });
+            }
+        } else {
+            setState({
+                currentContent: markdown,
+                parseResult: parseResult
+            });
+            emit("file:rendered", parseResult);
+        }
+    }
+
+    // Re-enter edit mode on the new DOM if the frame was in edit mode
+    if (wasEditMode) {
+        setState({ editMode: true });
+    }
+
+    _suppressContentChange = false;
+}
+
+function handleClearCache() {
+    docCache.clearAll();
+}
+
+function handleWorkingSetChanged(data) {
+    const { paths } = data;
+    if (Array.isArray(paths)) {
+        docCache.setWorkingSet(paths);
+    }
+}
+
+function handleCloseFile(data) {
+    const { filePath } = data;
+    if (filePath) {
+        docCache.removeEntry(filePath);
+    }
+}
+
+/**
+ * Reload a specific file: save scroll position, clear its cache entry,
+ * so the next SWITCH_FILE will re-render from scratch.
+ */
+function handleReloadFile(data) {
+    const { filePath } = data;
+    if (!filePath) {
+        return;
+    }
+
+    const entry = docCache.getEntry(filePath);
+
+    // If this is the active file, save current scroll
+    if (docCache.getActiveFilePath() === filePath) {
+        docCache.saveActiveScrollPos();
+        const activeEntry = docCache.getEntry(filePath);
+        if (activeEntry) {
+            const scrollSourceLine = activeEntry._scrollSourceLine;
+            const wasEditMode = getState().editMode;
+            if (wasEditMode) {
+                setState({ editMode: false });
+            }
+            docCache.removeEntry(filePath);
+            _pendingReloadScroll = { filePath, scrollSourceLine, editMode: wasEditMode };
+        }
+    } else {
+        docCache.removeEntry(filePath);
+    }
+}
+
+// --- Theme, edit mode, locale ---
+
+function handleSetTheme(data) {
+    const { theme } = data;
+    document.documentElement.setAttribute("data-theme", theme);
+    if (theme === "dark") {
+        document.documentElement.style.colorScheme = "dark";
+    } else {
+        document.documentElement.style.colorScheme = "light";
+    }
+    setState({ theme });
+}
+
+function handleSetEditMode(data) {
+    const { editMode } = data;
+    setState({ editMode });
+}
+
+/**
+ * Re-render content from CM's authoritative markdown.
+ * Called when switching edit→reader so data-source-line attributes are accurate.
+ */
+function handleRerenderContent(data) {
+    const { markdown } = data;
+    if (!markdown) return;
+    const parseResult = parseMarkdownToHTML(markdown);
+    setState({ currentContent: markdown, parseResult });
+    emit("file:rendered", parseResult);
+}
+
+function _handleImageUploadResult(data) {
+    const { uploadId, embedURL, error } = data;
+    const content = document.getElementById("viewer-content");
+    if (!content || !uploadId) return;
+    const placeholder = content.querySelector(`img[data-upload-id="${uploadId}"]`);
+    if (!placeholder) return;
+
+    if (embedURL) {
+        placeholder.src = embedURL;
+        placeholder.alt = placeholder.alt === "Uploading..." ? "" : placeholder.alt;
+        placeholder.removeAttribute("data-upload-id");
+    } else {
+        placeholder.remove();
+    }
+    content.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+
+function handleSetLocale(data) {
+    const { locale } = data;
+    if (locale) {
+        setLocale(locale);
+    }
+}
+
+// --- Scroll sync ---
+
+/**
+ * Get the cursor position as { sourceLine, offsetInBlock }.
+ * sourceLine: the data-source-line of the containing block (stable across re-renders)
+ * offsetInBlock: character offset within that block (precise within a small element)
+ */
+function _getCursorPosition() {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return null;
+    const range = sel.getRangeAt(0);
+
+    // Find the source-line block element
+    let blockEl = sel.anchorNode;
+    if (blockEl && blockEl.nodeType === Node.TEXT_NODE) blockEl = blockEl.parentElement;
+    while (blockEl && !blockEl.getAttribute?.("data-source-line")) {
+        blockEl = blockEl.parentElement;
+    }
+    if (!blockEl) return null;
+
+    const sourceLine = parseInt(blockEl.getAttribute("data-source-line"), 10);
+
+    // Calculate character offset within this block
+    const pre = document.createRange();
+    pre.setStart(blockEl, 0);
+    pre.setEnd(range.startContainer, range.startOffset);
+    const offsetInBlock = pre.toString().length;
+
+    return { sourceLine, offsetInBlock };
+}
+
+/**
+ * Restore cursor to a position defined by { sourceLine, offsetInBlock }.
+ */
+function _restoreCursorPosition(contentEl, pos) {
+    if (!pos || !pos.sourceLine) return;
+
+    // Find the block element matching the source line
+    const elements = contentEl.querySelectorAll("[data-source-line]");
+    let bestEl = null;
+    let bestLine = -1;
+    for (const el of elements) {
+        const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+        if (srcLine <= pos.sourceLine && srcLine > bestLine) {
+            bestLine = srcLine;
+            bestEl = el;
+        }
+    }
+    if (!bestEl) return;
+
+    // Walk text nodes within the block to find the exact offset
+    const offset = pos.offsetInBlock || 0;
+    const walker = document.createTreeWalker(bestEl, NodeFilter.SHOW_TEXT);
+    let remaining = offset;
+    let node;
+    while ((node = walker.nextNode())) {
+        if (remaining <= node.textContent.length) {
+            const range = document.createRange();
+            range.setStart(node, remaining);
+            range.collapse(true);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            return;
+        }
+        remaining -= node.textContent.length;
+    }
+
+    // Fallback: place at start of element
+    const range = document.createRange();
+    range.selectNodeContents(bestEl);
+    range.collapse(true);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
+function _getSourceLineFromElement(el) {
+    while (el && el !== document.body) {
+        const attr = el.getAttribute && el.getAttribute("data-source-line");
+        if (attr != null) {
+            return parseInt(attr, 10);
+        }
+        el = el.parentElement;
+    }
+    return null;
+}
+
+function handleScrollToLine(data) {
+    const { line } = data;
+    if (line == null) return;
+
+    const viewer = document.getElementById("viewer-content");
+    if (!viewer) return;
+
+    const elements = viewer.querySelectorAll("[data-source-line]");
+    let bestEl = null;
+    let bestLine = -1;
+    for (const el of elements) {
+        const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+        if (srcLine <= line && srcLine > bestLine) {
+            bestLine = srcLine;
+            bestEl = el;
+        }
+    }
+
+    if (!bestEl) return;
+
+    const container = document.getElementById("app-viewer");
+    if (!container) return;
+    const containerRect = container.getBoundingClientRect();
+    const elRect = bestEl.getBoundingClientRect();
+
+    const isVisible = elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
+    if (!isVisible) {
+        bestEl.scrollIntoView({ behavior: "instant", block: "center" });
+    }
+}
+
+// --- Selection sync ---
+
+function _clearSelectionHighlight() {
+    const viewer = document.getElementById("viewer-content");
+    if (!viewer) return;
+    viewer.querySelectorAll(".cm-selection-highlight").forEach(el => {
+        el.classList.remove("cm-selection-highlight");
+    });
+}
+
+function handleHighlightSelection(data) {
+    _clearSelectionHighlight();
+
+    const { fromLine, toLine, selectedText } = data;
+    if (fromLine == null || toLine == null || !selectedText) return;
+
+    const viewer = document.getElementById("viewer-content");
+    if (!viewer) return;
+
+    const elements = viewer.querySelectorAll("[data-source-line]");
+    const matchingEls = [];
+
+    for (const el of elements) {
+        const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+        if (srcLine >= fromLine && srcLine <= toLine) {
+            matchingEls.push(el);
+        }
+    }
+
+    if (matchingEls.length === 0) {
+        let bestEl = null;
+        let bestLine = -1;
+        for (const el of elements) {
+            const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+            if (srcLine <= fromLine && srcLine > bestLine) {
+                bestLine = srcLine;
+                bestEl = el;
+            }
+        }
+        if (bestEl) {
+            matchingEls.push(bestEl);
+        }
+    }
+
+    for (const el of matchingEls) {
+        el.classList.add("cm-selection-highlight");
+    }
+}
+
+let _selectionSendTimer = null;
+function _sendSelectionToParent() {
+    clearTimeout(_selectionSendTimer);
+    _selectionSendTimer = setTimeout(() => {
+        const selection = window.getSelection();
+        if (!selection || !selection.rangeCount) return;
+
+        const anchorNode = selection.anchorNode;
+        const el = anchorNode && (anchorNode.nodeType === Node.ELEMENT_NODE
+            ? anchorNode : anchorNode.parentElement);
+        const sourceLine = _getSourceLineFromElement(el);
+
+        if (selection.isCollapsed || selection.toString().length < 2) {
+            _clearSelectionHighlight();
+            if (sourceLine != null) {
+                sendToParent("mdviewrSelectionSync", { sourceLine, selectedText: null });
+            }
+            return;
+        }
+
+        const selectedText = selection.toString();
+        if (sourceLine != null) {
+            sendToParent("mdviewrSelectionSync", { sourceLine, selectedText });
+        }
+    }, 200);
+}
+
+function sendToParent(eventName, payload) {
+    if (!window.parent || window.parent === window) return;
+    window.parent.postMessage({
+        type: "MDVIEWR_EVENT",
+        eventName,
+        ...payload
+    }, "*");
+}

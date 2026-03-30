@@ -1,0 +1,197 @@
+{
+  "toolbar": {
+    "open": "ફાઇલ ખોલો",
+    "theme": "થીમ બદલો",
+    "toc": "વિષયસૂચિ",
+    "search": "શોધો",
+    "focus": "ફોકસ મોડ",
+    "zoom_in": "ઝૂમ ઇન",
+    "zoom_out": "ઝૂમ આઉટ",
+    "zoom_reset": "ઝૂમ રીસેટ",
+    "save": "સેવ",
+    "edit": "સંપાદન",
+    "new_file": "નવી ફાઇલ",
+    "split_view": "વિભાજિત દૃશ્ય",
+    "export_pdf": "PDF નિકાસ કરો",
+    "settings": "સેટિંગ્સ",
+    "more": "વધુ"
+  },
+  "sidebar": {
+    "toc": "વિષયસૂચિ",
+    "recent": "તાજેતરની ફાઇલો",
+    "no_headings": "કોઈ શીર્ષકો મળ્યા નથી"
+  },
+  "search": {
+    "placeholder": "દસ્તાવેજમાં શોધો...",
+    "count": "મેળ",
+    "no_results": "કોઈ પરિણામો નથી"
+  },
+  "welcome": {
+    "title": "Kern",
+    "subtitle": "એક સુંદર માર્કડાઉન વ્યૂઅર",
+    "new_button": "નવી ફાઇલ",
+    "open_button": "ફાઇલ ખોલો",
+    "drop_hint": "અથવા .md ફાઇલ ખેંચીને છોડો"
+  },
+  "viewer": {
+    "copy": "કૉપિ",
+    "copied": "કૉપિ થયું!"
+  },
+  "settings": {
+    "theme": "થીમ",
+    "theme_light": "લાઇટ",
+    "theme_dark": "ડાર્ક",
+    "theme_system": "સિસ્ટમ",
+    "language": "ભાષા"
+  },
+  "common": {
+    "close": "બંધ",
+    "open": "ખોલો",
+    "file": "ફાઇલ"
+  },
+  "format": {
+    "paragraph": "ફકરો",
+    "heading1": "શીર્ષક ૧",
+    "heading2": "શીર્ષક ૨",
+    "heading3": "શીર્ષક ૩",
+    "bold": "બોલ્ડ ({mod}+B)",
+    "italic": "ઇટાલિક ({mod}+I)",
+    "strikethrough": "સ્ટ્રાઇકથ્રૂ ({mod}+Shift+X)",
+    "code": "ઇનલાઇન કોડ ({mod}+E)",
+    "link": "લિંક ({mod}+K)",
+    "bullet_list": "બુલેટ યાદી",
+    "numbered_list": "ક્રમાંકિત યાદી",
+    "task_list": "કાર્ય યાદી",
+    "blockquote": "બ્લૉકકોટ",
+    "divider": "વિભાજક",
+    "table": "કોષ્ટક",
+    "code_block": "કોડ બ્લૉક"
+  },
+  "slash": {
+    "paragraph": "ફકરો",
+    "paragraph_desc": "સાદો ટેક્સ્ટ",
+    "heading1": "શીર્ષક ૧",
+    "heading1_desc": "મોટું શીર્ષક",
+    "heading2": "શીર્ષક ૨",
+    "heading2_desc": "મધ્યમ શીર્ષક",
+    "heading3": "શીર્ષક ૩",
+    "heading3_desc": "નાનું શીર્ષક",
+    "bullet_list": "બુલેટ યાદી",
+    "bullet_list_desc": "અક્રમિત યાદી",
+    "numbered_list": "ક્રમાંકિત યાદી",
+    "numbered_list_desc": "ક્રમિત યાદી",
+    "task_list": "કાર્ય યાદી",
+    "task_list_desc": "ચેકલિસ્ટ",
+    "blockquote": "બ્લૉકકોટ",
+    "blockquote_desc": "ઉદ્ધરણ બ્લૉક",
+    "code_block": "કોડ બ્લૉક",
+    "code_block_desc": "ફેન્સ્ડ કોડ",
+    "table": "કોષ્ટક",
+    "table_desc": "૩×૩ કોષ્ટક",
+    "divider": "વિભાજક",
+    "divider_desc": "આડી રેખા",
+    "no_results": "કોઈ પરિણામો નથી"
+  },
+  "link": {
+    "edit": "સંપાદન",
+    "edit_link": "લિંક સંપાદિત કરો",
+    "remove_link": "લિંક દૂર કરો",
+    "text": "ટેક્સ્ટ",
+    "text_placeholder": "પ્રદર્શન ટેક્સ્ટ (વૈકલ્પિક)",
+    "display_text": "પ્રદર્શન ટેક્સ્ટ",
+    "url": "URL",
+    "url_placeholder": "URL પેસ્ટ કરો અથવા ટાઇપ કરો...",
+    "apply": "લિંક લાગુ કરો",
+    "cancel": "રદ કરો"
+  },
+  "table": {
+    "header": "હેડર",
+    "new_row": "+ નવી પંક્તિ",
+    "row_options": "પંક્તિ {n} વિકલ્પો",
+    "col_options": "સ્તંભ {n} વિકલ્પો",
+    "insert_row_above": "ઉપર પંક્તિ ઉમેરો",
+    "insert_row_below": "નીચે પંક્તિ ઉમેરો",
+    "delete_row": "પંક્તિ કાઢો",
+    "insert_col_left": "ડાબે સ્તંભ ઉમેરો",
+    "insert_col_right": "જમણે સ્તંભ ઉમેરો",
+    "delete_col": "સ્તંભ કાઢો",
+    "add_row_above": "ઉપર પંક્તિ ઉમેરો",
+    "add_row_below": "નીચે પંક્તિ ઉમેરો",
+    "add_col_left": "ડાબે સ્તંભ ઉમેરો",
+    "add_col_right": "જમણે સ્તંભ ઉમેરો"
+  },
+  "dialog": {
+    "unsaved_title": "ન સેવ થયેલા ફેરફારો",
+    "unsaved_exit_edit": "ન સેવ થયેલા ફેરફારો છે. સંપાદન મોડ છોડતા પહેલા સેવ કરવા માંગો છો?",
+    "unsaved_new_file": "ન સેવ થયેલા ફેરફારો છે. નવી ફાઇલ બનાવતા પહેલા સેવ કરવા માંગો છો?",
+    "unsaved_open_file": "ન સેવ થયેલા ફેરફારો છે. નવી ફાઇલ ખોલતા પહેલા સેવ કરવા માંગો છો?",
+    "save": "સેવ",
+    "discard": "કાઢી નાખો",
+    "dont_save": "સાચવશો નહીં",
+    "cancel": "રદ કરો",
+    "unsaved_close": "તમારી પાસે સાચવ્યા વગરના ફેરફારો છે. બંધ કરતા પહેલાં સાચવવા માગો છો?"
+  },
+  "lang_picker": {
+    "filter_placeholder": "ભાષાઓ ફિલ્ટર કરો...",
+    "filter_label": "ભાષાઓ ફિલ્ટર કરો",
+    "plain_text": "સાદું ટેક્સ્ટ"
+  },
+  "a11y": {
+    "skip_to_content": "સામગ્રી પર જાઓ",
+    "main_toolbar": "મુખ્ય ટૂલબાર",
+    "sidebar": "સાઇડબાર",
+    "search_text": "ટેક્સ્ટ શોધો",
+    "previous_match": "પાછલો મેળ",
+    "next_match": "આગલો મેળ",
+    "close_search": "શોધ બંધ કરો",
+    "format_text": "ટેક્સ્ટ ફોર્મેટ",
+    "edit_link": "લિંક સંપાદિત કરો",
+    "insert_block": "બ્લૉક ઉમેરો",
+    "select_language": "ભાષા પસંદ કરો",
+    "search_in_document": "દસ્તાવેજમાં શોધો"
+  },
+  "drop_zone": {
+    "text": "તમારી માર્કડાઉન ફાઇલ અહીં છોડો"
+  },
+  "help": {
+    "getting_started": "શરૂઆત કરો",
+    "editing": "સંપાદન",
+    "shortcuts": "કીબોર્ડ શૉર્ટકટ",
+    "features": "વિશેષતાઓ",
+    "fallback_notice": "આ પૃષ્ઠ હજુ તમારી ભાષામાં ઉપલબ્ધ નથી. અંગ્રેજી સંસ્કરણ બતાવવામાં આવી રહ્યું છે."
+  },
+  "recovery": {
+    "title": "સાચવ્યા વગરના ફેરફારો પુનઃપ્રાપ્ત કરવા?",
+    "message": "Kern ને અગાઉના સત્રમાંથી સાચવ્યા વગરના ફેરફારો મળ્યા. તેમને પુનઃસ્થાપિત કરવા માગો છો?",
+    "restore": "પુનઃસ્થાપિત કરો",
+    "discard": "કાઢી નાખો"
+  },
+  "export": {
+    "success": "PDF સફળતાપૂર્વક નિકાસ થયું",
+    "open": "ખોલો"
+  },
+  "context": {
+    "cut": "કાપો",
+    "copy": "કૉપિ કરો",
+    "paste": "પેસ્ટ કરો",
+    "paste_plain": "સાદા ટેક્સ્ટ તરીકે પેસ્ટ કરો",
+    "select_all": "બધું પસંદ કરો",
+    "copy_link": "લિંક કૉપિ કરો",
+    "open_link": "લિંક ખોલો",
+    "copy_image_address": "છબીનું સરનામું કૉપિ કરો"
+  },
+  "trial": {
+    "days_remaining": "ટ્રાયલમાં {days} દિવસ બાકી",
+    "expired_message": "તમારી ટ્રાયલ સમાપ્ત થઈ ગઈ છે. સંપાદન ચાલુ રાખવા Kern ખરીદો.",
+    "purchase_button": "Kern ખરીદો",
+    "purchase_title": "Kern અનલૉક કરો",
+    "purchase_desc": "એક વખતની ખરીદી સાથે તમામ સંપાદન અને નિકાસ સુવિધાઓની સંપૂર્ણ ઍક્સેસ મેળવો.",
+    "feature_edit": "WYSIWYG અને વિભાજિત દૃશ્ય સાથે Markdown સંપાદિત કરો",
+    "feature_save": "ફાઇલો સેવ કરો અને નવી બનાવો",
+    "feature_export": "PDF માં નિકાસ કરો",
+    "restore_purchases": "ખરીદીઓ પુનઃસ્થાપિત કરો",
+    "one_time_purchase": "એક વખતની ખરીદી. કોઈ સબસ્ક્રિપ્શન નહીં.",
+    "purchasing": "ખરીદી ચાલુ છે...",
+    "restoring": "પુનઃસ્થાપિત થઈ રહ્યું છે..."
+  }
+}

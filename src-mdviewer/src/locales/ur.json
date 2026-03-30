@@ -1,0 +1,211 @@
+{
+  "a11y": {
+    "close_search": "تلاش بند کریں",
+    "edit_link": "لنک میں ترمیم کریں",
+    "format_text": "متن فارمیٹ",
+    "insert_block": "بلاک شامل کریں",
+    "main_toolbar": "اصل ٹول بار",
+    "next_match": "اگلا نتیجہ",
+    "previous_match": "پچھلا نتیجہ",
+    "search_in_document": "دستاویز میں تلاش کریں",
+    "search_text": "متن تلاش کریں",
+    "select_language": "زبان منتخب کریں",
+    "sidebar": "سائیڈ بار",
+    "skip_to_content": "مواد پر جائیں"
+  },
+  "common": {
+    "close": "بند کریں",
+    "file": "فائل",
+    "open": "کھولیں"
+  },
+  "context": {
+    "copy": "کاپی کریں",
+    "copy_image_address": "تصویر کا پتہ کاپی کریں",
+    "copy_link": "لنک کاپی کریں",
+    "cut": "کاٹیں",
+    "open_link": "لنک کھولیں",
+    "paste": "پیسٹ کریں",
+    "paste_plain": "سادہ متن کے طور پر پیسٹ کریں",
+    "select_all": "سب منتخب کریں"
+  },
+  "dialog": {
+    "cancel": "منسوخ",
+    "discard": "رد کریں",
+    "dont_save": "محفوظ نہ کریں",
+    "save": "محفوظ کریں",
+    "unsaved_close": "آپ کے پاس غیر محفوظ تبدیلیاں ہیں۔ بند کرنے سے پہلے محفوظ کرنا چاہتے ہیں؟",
+    "unsaved_exit_edit": "غیر محفوظ تبدیلیاں ہیں۔ ترمیمی موڈ سے نکلنے سے پہلے محفوظ کرنا چاہتے ہیں؟",
+    "unsaved_new_file": "غیر محفوظ تبدیلیاں ہیں۔ نئی فائل بنانے سے پہلے محفوظ کرنا چاہتے ہیں؟",
+    "unsaved_open_file": "غیر محفوظ تبدیلیاں ہیں۔ نئی فائل کھولنے سے پہلے محفوظ کرنا چاہتے ہیں؟",
+    "unsaved_title": "غیر محفوظ تبدیلیاں"
+  },
+  "drop_zone": {
+    "text": "اپنی مارک ڈاؤن فائل یہاں چھوڑیں"
+  },
+  "export": {
+    "open": "کھولیں",
+    "success": "PDF کامیابی سے برآمد ہوئی"
+  },
+  "format": {
+    "blockquote": "بلاک کوٹ",
+    "bold": "بولڈ ({mod}+B)",
+    "bullet_list": "بلٹ فہرست",
+    "code": "ان لائن کوڈ ({mod}+E)",
+    "code_block": "کوڈ بلاک",
+    "divider": "تقسیم کار",
+    "heading1": "سرخی 1",
+    "heading2": "سرخی 2",
+    "heading3": "سرخی 3",
+    "italic": "اٹیلک ({mod}+I)",
+    "link": "لنک ({mod}+K)",
+    "numbered_list": "نمبر فہرست",
+    "paragraph": "پیراگراف",
+    "strikethrough": "سٹرائیک تھرو ({mod}+Shift+X)",
+    "table": "ٹیبل",
+    "task_list": "ٹاسک فہرست",
+    "block_type": "بلاک کی قسم",
+    "lists": "فہرستیں",
+    "more_elements": "مزید",
+    "text_formatting": "ٹیکسٹ فارمیٹنگ",
+    "underline": "انڈر لائن"
+  },
+  "help": {
+    "editing": "ترمیم",
+    "fallback_notice": "یہ صفحہ ابھی آپ کی زبان میں دستیاب نہیں ہے۔ انگریزی ورژن دکھایا جا رہا ہے۔",
+    "features": "خصوصیات",
+    "getting_started": "شروع کریں",
+    "shortcuts": "کیبورڈ شارٹ کٹ"
+  },
+  "lang_picker": {
+    "filter_label": "زبانیں فلٹر کریں",
+    "filter_placeholder": "زبانیں فلٹر کریں...",
+    "plain_text": "سادہ متن"
+  },
+  "link": {
+    "apply": "لنک لاگو کریں",
+    "cancel": "منسوخ",
+    "display_text": "ڈسپلے متن",
+    "edit": "ترمیم",
+    "edit_link": "لنک میں ترمیم کریں",
+    "remove_link": "لنک ہٹائیں",
+    "text": "متن",
+    "text_placeholder": "ڈسپلے متن (اختیاری)",
+    "url": "URL",
+    "url_placeholder": "URL پیسٹ یا ٹائپ کریں..."
+  },
+  "recovery": {
+    "discard": "چھوڑ دیں",
+    "message": "Kern نے پچھلے سیشن سے غیر محفوظ تبدیلیاں پائیں۔ کیا آپ انہیں بحال کرنا چاہتے ہیں؟",
+    "restore": "بحال کریں",
+    "title": "غیر محفوظ تبدیلیاں بحال کریں؟"
+  },
+  "search": {
+    "count": "نتائج",
+    "no_results": "کوئی نتائج نہیں",
+    "placeholder": "دستاویز میں تلاش کریں..."
+  },
+  "settings": {
+    "language": "زبان",
+    "theme": "تھیم",
+    "theme_dark": "گہرا",
+    "theme_light": "ہلکا",
+    "theme_system": "سسٹم"
+  },
+  "sidebar": {
+    "no_headings": "کوئی سرخیاں نہیں ملیں",
+    "recent": "حالیہ فائلیں",
+    "toc": "فہرست مضامین"
+  },
+  "slash": {
+    "blockquote": "بلاک کوٹ",
+    "blockquote_desc": "اقتباس بلاک",
+    "bullet_list": "بلٹ فہرست",
+    "bullet_list_desc": "غیر ترتیب فہرست",
+    "code_block": "کوڈ بلاک",
+    "code_block_desc": "فینسڈ کوڈ",
+    "divider": "تقسیم کار",
+    "divider_desc": "افقی لکیر",
+    "heading1": "سرخی 1",
+    "heading1_desc": "بڑی سرخی",
+    "heading2": "سرخی 2",
+    "heading2_desc": "درمیانی سرخی",
+    "heading3": "سرخی 3",
+    "heading3_desc": "چھوٹی سرخی",
+    "no_results": "کوئی نتائج نہیں",
+    "numbered_list": "نمبر فہرست",
+    "numbered_list_desc": "ترتیب فہرست",
+    "paragraph": "پیراگراف",
+    "paragraph_desc": "سادہ متن",
+    "table": "ٹیبل",
+    "table_desc": "3×3 ٹیبل",
+    "task_list": "ٹاسک فہرست",
+    "task_list_desc": "چیک لسٹ",
+    "mermaid": "Mermaid ڈایاگرام",
+    "mermaid_desc": "ڈایاگرام داخل کریں"
+  },
+  "table": {
+    "add_col_left": "بائیں کالم شامل کریں",
+    "add_col_right": "دائیں کالم شامل کریں",
+    "add_row_above": "اوپر قطار شامل کریں",
+    "add_row_below": "نیچے قطار شامل کریں",
+    "col_options": "کالم {n} اختیارات",
+    "delete_col": "کالم حذف کریں",
+    "delete_row": "قطار حذف کریں",
+    "header": "ہیڈر",
+    "insert_col_left": "بائیں کالم شامل کریں",
+    "insert_col_right": "دائیں کالم شامل کریں",
+    "insert_row_above": "اوپر قطار شامل کریں",
+    "insert_row_below": "نیچے قطار شامل کریں",
+    "new_row": "+ نئی قطار",
+    "row_options": "قطار {n} اختیارات"
+  },
+  "toolbar": {
+    "edit": "ترمیم",
+    "export_pdf": "PDF برآمد کریں",
+    "focus": "فوکس موڈ",
+    "more": "مزید",
+    "new_file": "نئی فائل",
+    "open": "فائل کھولیں",
+    "save": "محفوظ کریں",
+    "search": "تلاش",
+    "settings": "ترتیبات",
+    "split_view": "تقسیم نظارہ",
+    "theme": "تھیم تبدیل کریں",
+    "toc": "فہرست مضامین",
+    "zoom_in": "زوم ان",
+    "zoom_out": "زوم آؤٹ",
+    "zoom_reset": "زوم ری سیٹ",
+    "done": "مکمل"
+  },
+  "trial": {
+    "days_remaining": "آزمائشی مدت میں {days} دن باقی",
+    "expired_message": "آپ کی آزمائشی مدت ختم ہو گئی ہے۔ ترمیم جاری رکھنے کے لیے Kern خریدیں۔",
+    "feature_edit": "WYSIWYG اور تقسیم نظارے سے Markdown میں ترمیم کریں",
+    "feature_export": "PDF میں برآمد کریں",
+    "feature_save": "فائلیں محفوظ کریں اور نئی بنائیں",
+    "one_time_purchase": "ایک بار کی خریداری۔ کوئی سبسکرپشن نہیں۔",
+    "purchase_button": "Kern خریدیں",
+    "purchase_desc": "ایک بار کی خریداری سے تمام ترمیمی اور برآمدی خصوصیات تک مکمل رسائی حاصل کریں۔",
+    "purchase_title": "Kern کھولیں",
+    "purchasing": "خریداری ہو رہی ہے...",
+    "restore_purchases": "خریداریاں بحال کریں",
+    "restoring": "بحالی ہو رہی ہے..."
+  },
+  "viewer": {
+    "copied": "کاپی ہو گیا!",
+    "copy": "کاپی"
+  },
+  "welcome": {
+    "drop_hint": "یا .md فائل کو ڈریگ اور ڈراپ کریں",
+    "new_button": "نئی فائل",
+    "open_button": "فائل کھولیں",
+    "subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
+    "title": "Kern"
+  },
+  "mermaid": {
+    "done": "مکمل",
+    "edit": "ترمیم کریں",
+    "error_prefix": "سنٹیکس کی خرابی",
+    "stale": "پریویو پرانا ہو گیا"
+  }
+}
