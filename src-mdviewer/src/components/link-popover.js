@@ -73,11 +73,13 @@ function buildPopover() {
   const unlinkBtn = document.createElement("button");
   unlinkBtn.className = "toolbar-btn link-popover-unlink-btn";
   unlinkBtn.setAttribute("aria-label", t("link.remove_link"));
-  unlinkBtn.innerHTML = "&times;";
+  unlinkBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>';
   unlinkBtn.addEventListener("mousedown", (e) => e.preventDefault());
   unlinkBtn.addEventListener("click", () => {
-    restoreSelection();
-    document.execCommand("unlink", false, null);
+    if (currentAnchor && currentAnchor.parentNode) {
+      const text = document.createTextNode(currentAnchor.textContent);
+      currentAnchor.parentNode.replaceChild(text, currentAnchor);
+    }
     hide();
     contentEl?.focus({ preventScroll: true });
     contentEl?.dispatchEvent(new Event("input", { bubbles: true }));
@@ -90,6 +92,18 @@ function buildPopover() {
   const editDiv = document.createElement("div");
   editDiv.className = "link-popover-edit";
   editDiv.style.display = "none";
+
+  // Top bar with close button
+  const topBar = document.createElement("div");
+  topBar.className = "link-popover-top-bar";
+  const cancelBtn = document.createElement("button");
+  cancelBtn.className = "toolbar-btn link-popover-cancel-btn";
+  cancelBtn.setAttribute("aria-label", t("link.cancel"));
+  cancelBtn.innerHTML = "&times;";
+  cancelBtn.addEventListener("mousedown", (e) => e.preventDefault());
+  cancelBtn.addEventListener("click", () => cancelEdit());
+  topBar.appendChild(cancelBtn);
+  editDiv.appendChild(topBar);
 
   // Text row
   const textRow = document.createElement("div");
@@ -128,15 +142,27 @@ function buildPopover() {
   confirmBtn.addEventListener("click", () => applyLink());
   urlRow.appendChild(confirmBtn);
 
-  const cancelBtn = document.createElement("button");
-  cancelBtn.className = "toolbar-btn link-popover-cancel-btn";
-  cancelBtn.setAttribute("aria-label", t("link.cancel"));
-  cancelBtn.innerHTML = "&times;";
-  cancelBtn.addEventListener("mousedown", (e) => e.preventDefault());
-  cancelBtn.addEventListener("click", () => cancelEdit());
-  urlRow.appendChild(cancelBtn);
-
   editDiv.appendChild(urlRow);
+
+  // Remove link button
+  const removeRow = document.createElement("div");
+  removeRow.className = "link-popover-remove-row";
+  const removeBtn = document.createElement("button");
+  removeBtn.className = "toolbar-btn link-popover-remove-btn";
+  removeBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg> <span>${t("link.remove_link")}</span>`;
+  removeBtn.addEventListener("mousedown", (e) => e.preventDefault());
+  removeBtn.addEventListener("click", () => {
+    // Remove the link by unwrapping the <a> — replace it with its text content
+    if (currentAnchor && currentAnchor.parentNode) {
+      const text = document.createTextNode(currentAnchor.textContent);
+      currentAnchor.parentNode.replaceChild(text, currentAnchor);
+    }
+    hide();
+    contentEl?.focus({ preventScroll: true });
+    contentEl?.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  removeRow.appendChild(removeBtn);
+  editDiv.appendChild(removeRow);
 
   const handleKeydown = (e) => {
     if (e.key === "Enter") {
