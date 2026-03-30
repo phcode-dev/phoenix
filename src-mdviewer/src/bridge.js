@@ -113,6 +113,9 @@ export function initBridge() {
     window.__isSuppressingContentChange = function () {
         return _suppressContentChange;
     };
+    window.__getCacheKeys = function () {
+        return docCache._getCacheKeysForTest();
+    };
     window.__triggerContentSync = function () {
         const content = document.getElementById("viewer-content");
         if (content) {

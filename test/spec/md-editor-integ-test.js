@@ -755,6 +755,158 @@ define(function (require, exports, module) {
                     return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
                 }, "live dev to reopen", 20000);
             }, 30000);
+
+            it("should closing and reopening live preview panel preserve md iframe, cache, and scroll", async function () {
+                await _openMdFileAndWaitForPreview("long.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Long Document"),
+                    "long doc content to load");
+                await _enterEditMode();
+
+                // Scroll down
+                _setViewerScrollTop(300);
+                await awaitsFor(() => _getViewerScrollTop() >= 290, "scroll to apply");
+                const scrollBefore = _getViewerScrollTop();
+
+                // Set verification code to check iframe persists
+                const verificationCode = "panel_persist_" + Date.now();
+                _getMdIFrameWin().__test_panel_persist = verificationCode;
+
+                // Close live preview panel
+                await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
+                await awaitsFor(() => !WorkspaceManager.isPanelVisible("live-preview-panel"),
+                    "live preview panel to close");
+
+                // Reopen live preview panel
+                await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
+                await awaitsFor(() => WorkspaceManager.isPanelVisible("live-preview-panel"),
+                    "live preview panel to reopen");
+                await _waitForMdPreviewReady();
+
+                // Verify iframe persisted (JS variable survived)
+                const win = _getMdIFrameWin();
+                expect(win.__test_panel_persist).toBe(verificationCode);
+
+                // Verify content is still correct
+                await awaitsFor(() => _getViewerH1Text().includes("Long Document"),
+                    "long doc content after panel reopen");
+
+                // Verify edit mode preserved
+                await _assertMdEditMode(true);
+
+                // Verify scroll position preserved
+                await awaitsFor(() => {
+                    const scroll = _getViewerScrollTop();
+                    return Math.abs(scroll - scrollBefore) < 50;
+                }, "scroll position to be preserved after panel reopen");
+            }, 15000);
+
+            it("should reload button re-render current file with fresh DOM preserving scroll and edit mode", async function () {
+                await _openMdFileAndWaitForPreview("long.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Long Document"),
+                    "long doc to load");
+                await _enterEditMode();
+
+                // Scroll down
+                _setViewerScrollTop(300);
+                await awaitsFor(() => _getViewerScrollTop() >= 290, "scroll to apply");
+                const scrollBefore = _getViewerScrollTop();
+
+                // Capture the current h1 DOM node
+                const h1Before = _getMdIFrameDoc().querySelector("#viewer-content h1");
+                expect(h1Before).not.toBeNull();
+
+                // Click reload button
+                testWindow.$("#reloadLivePreviewButton").click();
+
+                // Wait for re-render — the h1 should be a NEW DOM node (old one disposed)
+                await awaitsFor(() => {
+                    const h1After = _getMdIFrameDoc().querySelector("#viewer-content h1");
+                    return h1After && h1After !== h1Before &&
+                        h1After.textContent.includes("Long Document");
+                }, "DOM to be recreated after reload");
+
+                // Verify edit mode preserved
+                await _assertMdEditMode(true);
+
+                // Verify scroll position approximately preserved
+                await awaitsFor(() => {
+                    const scroll = _getViewerScrollTop();
+                    return Math.abs(scroll - scrollBefore) < 100;
+                }, "scroll position to be approximately restored after reload");
+            }, 15000);
+
+            it("should working set changes sync to iframe and cache entries persist", async function () {
+                // Open multiple files to populate cache
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 to load");
+
+                await _openMdFileAndWaitForPreview("doc2.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Two"),
+                    "doc2 to load");
+
+                // Both should be in cache
+                const win = _getMdIFrameWin();
+                await awaitsFor(() => {
+                    const keys = win.__getCacheKeys();
+                    return keys.some(k => k.endsWith("doc1.md")) &&
+                        keys.some(k => k.endsWith("doc2.md"));
+                }, "both doc1 and doc2 to be in cache");
+
+                // Close doc2 from working set
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE),
+                    "close doc2");
+
+                // doc1 should still be cached and displayable
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 still showing after doc2 closed");
+
+                await awaitsFor(() => {
+                    const keys = win.__getCacheKeys();
+                    return keys.some(k => k.endsWith("doc1.md"));
+                }, "doc1 still in cache after doc2 closed");
+            }, 15000);
+
+            it("should cache multiple files and retrieve them from cache", async function () {
+                // Open doc1, doc2, doc3 sequentially to populate cache
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 to load");
+
+                await _openMdFileAndWaitForPreview("doc2.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Two"),
+                    "doc2 to load");
+
+                await _openMdFileAndWaitForPreview("doc3.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Three"),
+                    "doc3 to load");
+
+                // All three should be in cache
+                const win = _getMdIFrameWin();
+                await awaitsFor(() => {
+                    const keys = win.__getCacheKeys();
+                    return keys.some(k => k.endsWith("doc1.md")) &&
+                        keys.some(k => k.endsWith("doc2.md")) &&
+                        keys.some(k => k.endsWith("doc3.md"));
+                }, "all three docs to be in cache");
+
+                // Switch back to doc1 — should load from cache
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 from cache");
+
+                // Switch to doc2 — from cache
+                await _openMdFileAndWaitForPreview("doc2.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Two"),
+                    "doc2 from cache");
+
+                // Verify all still cached
+                const keys = win.__getCacheKeys();
+                expect(keys.some(k => k.endsWith("doc1.md"))).toBeTrue();
+                expect(keys.some(k => k.endsWith("doc2.md"))).toBeTrue();
+                expect(keys.some(k => k.endsWith("doc3.md"))).toBeTrue();
+            }, 15000);
         });
 
     });

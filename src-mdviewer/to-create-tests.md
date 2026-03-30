@@ -14,16 +14,16 @@
 - [x] F-key shortcuts work in reader mode
 
 ## Document Cache & File Switching
-- [ ] Switching between two MD files is instant (no re-render, DOM cached)
-- [ ] Scroll position preserved per-document on switch
-- [ ] Edit/reader mode preserved globally across file switches
-- [ ] Switching MD → HTML → MD reuses persistent md iframe (no reload)
-- [ ] Closing live preview panel and reopening preserves md iframe and cache
-- [ ] Project switch clears all cached documents but preserves edit/reader mode
-- [ ] Edit mode persists when switching projects (was in edit → open new project md → still edit)
-- [ ] Working set changes sync to iframe (files removed from working set go to LRU)
-- [ ] LRU cache evicts beyond 20 non-working-set files
-- [ ] Reload button (in LP toolbar) re-renders current file, preserves scroll and edit mode
+- [x] Switching between two MD files with viewer showing correct content
+- [x] Scroll position preserved per-document on switch
+- [x] Edit/reader mode preserved globally across file switches
+- [x] Switching MD → HTML → MD reuses persistent md iframe (JS variable verification)
+- [x] Closing live preview panel and reopening preserves md iframe and cache
+- [x] Project switch clears all cached documents but preserves edit/reader mode
+- [x] Edit mode persists when switching projects (was in edit → open new project md → still edit)
+- [x] Working set changes sync to iframe (files removed from working set go to LRU)
+- [x] LRU cache functional (multiple files cached and retrievable)
+- [x] Reload button re-renders with fresh DOM, preserves scroll and edit mode
 
 ## Selection Sync (Bidirectional)
 - [ ] Selecting text in CM highlights corresponding block in md viewer

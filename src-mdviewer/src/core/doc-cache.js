@@ -43,6 +43,11 @@ export function getEntry(filePath) {
     return cache.get(filePath) || null;
 }
 
+/** For test access only — returns the cache keys. */
+export function _getCacheKeysForTest() {
+    return Array.from(cache.keys());
+}
+
 /**
  * Get the currently active file path.
  */
