@@ -205,6 +205,15 @@ define(function (require, exports, module) {
 
     describe("livepreview:Markdown Editor", function () {
 
+        if (Phoenix.browser.desktop.isFirefox ||
+            (Phoenix.isTestWindowPlaywright && !Phoenix.browser.desktop.isChromeBased)) {
+            it("Markdown editor tests are disabled in Firefox/non-Chrome playwright", function () {
+                // Firefox sandbox prevents service worker access from nested iframes.
+                // Non-Chrome playwright doesn't spawn virtual server needed for live preview.
+            });
+            return;
+        }
+
         let testFilePath;
 
         beforeAll(async function () {
