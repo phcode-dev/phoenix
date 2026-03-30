@@ -25,6 +25,7 @@ define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     const testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files");
+    const mdTestFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-Markdown-test-files");
 
     let testWindow, brackets, CommandManager, Commands, EditorManager, WorkspaceManager,
         LiveDevMultiBrowser;
@@ -244,11 +245,14 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterAll(async function () {
-            _setMdEditMode(false);
-            LiveDevMultiBrowser.close();
-            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
-                "closing all files");
-            await _cleanupTempFiles().catch(() => {});
+            // Final cleanup for the entire Markdown Editor test suite
+            if (LiveDevMultiBrowser) {
+                LiveDevMultiBrowser.close();
+            }
+            if (CommandManager) {
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "final close all files");
+            }
             testWindow = null;
             brackets = null;
             CommandManager = null;
@@ -557,5 +561,192 @@ define(function (require, exports, module) {
                 }, "link to be created");
             }, 10000);
         });
+
+        describe("Document Cache & File Switching", function () {
+
+            async function _switchToMdTestProject() {
+                await SpecRunnerUtils.loadProjectInTestWindow(mdTestFolder);
+                await SpecRunnerUtils.deletePathAsync(mdTestFolder + "/.phcode.json", true);
+            }
+
+            async function _openMdFileAndWaitForPreview(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady();
+            }
+
+            function _getViewerScrollTop() {
+                const mdDoc = _getMdIFrameDoc();
+                const viewer = mdDoc && mdDoc.querySelector(".app-viewer");
+                return viewer ? viewer.scrollTop : 0;
+            }
+
+            function _setViewerScrollTop(scrollTop) {
+                const mdDoc = _getMdIFrameDoc();
+                const viewer = mdDoc && mdDoc.querySelector(".app-viewer");
+                if (viewer) {
+                    viewer.scrollTop = scrollTop;
+                }
+            }
+
+            function _getViewerH1Text() {
+                const mdDoc = _getMdIFrameDoc();
+                const h1 = mdDoc && mdDoc.querySelector("#viewer-content h1");
+                return h1 ? h1.textContent : "";
+            }
+
+            async function _assertMdEditMode(shouldBeEditing) {
+                await awaitsFor(() => {
+                    const mdDoc = _getMdIFrameDoc();
+                    const content = mdDoc && mdDoc.getElementById("viewer-content");
+                    if (!content) { return false; }
+                    return shouldBeEditing
+                        ? content.classList.contains("editing")
+                        : !content.classList.contains("editing");
+                }, shouldBeEditing ? "md viewer to be in edit mode" : "md viewer to be in reader mode");
+            }
+
+            beforeAll(async function () {
+                // Switch to the md test project for these tests
+                if (testWindow) {
+                    _setMdEditMode(false);
+                    await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                        "close all before project switch");
+                    await _switchToMdTestProject();
+
+                    // Start live dev
+                    await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                        "open simple.html");
+                    if (!WorkspaceManager.isPanelVisible("live-preview-panel")) {
+                        await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
+                    }
+                    LiveDevMultiBrowser.open();
+                    await awaitsFor(() => {
+                        return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
+                    }, "live dev to open", 20000);
+                }
+            }, 30000);
+
+            it("should switch between MD files with viewer showing correct content", async function () {
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 heading to appear");
+
+                await _openMdFileAndWaitForPreview("doc2.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Two"),
+                    "doc2 heading to appear");
+
+                // Switch back to doc1 — should show doc1 content
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 heading to appear on switch back");
+            }, 15000);
+
+            it("should preserve scroll position per-document on switch", async function () {
+                // Open long doc, scroll down
+                await _openMdFileAndWaitForPreview("long.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Long Document"),
+                    "long doc heading to appear");
+
+                _setViewerScrollTop(300);
+                await awaitsFor(() => _getViewerScrollTop() >= 290, "scroll to apply");
+                const scrollBefore = _getViewerScrollTop();
+
+                // Switch to doc2
+                await _openMdFileAndWaitForPreview("doc2.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Two"),
+                    "doc2 heading to appear");
+
+                // Switch back to long doc — scroll should be restored
+                await _openMdFileAndWaitForPreview("long.md");
+                await awaitsFor(() => {
+                    const scroll = _getViewerScrollTop();
+                    return Math.abs(scroll - scrollBefore) < 50;
+                }, "scroll position to be restored");
+            }, 15000);
+
+            it("should preserve edit/reader mode globally across file switches", async function () {
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await _enterEditMode();
+
+                // Switch to another md file — should still be in edit mode
+                await _openMdFileAndWaitForPreview("doc2.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document Two"),
+                    "doc2 heading to appear");
+                await _assertMdEditMode(true);
+
+                // Switch to reader mode
+                await _enterReaderMode();
+                await _assertMdEditMode(false);
+
+                // Switch to doc1 — should still be in reader mode
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 heading to appear");
+                await _assertMdEditMode(false);
+            }, 15000);
+
+            it("should switch MD to HTML and back reusing persistent md iframe", async function () {
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 content to load");
+
+                // Set a verification code inside the md iframe to prove persistence
+                const verificationCode = "persist_" + Date.now();
+                _getMdIFrameWin().__test_verification = verificationCode;
+
+                // Switch to HTML file
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html");
+                await awaitsFor(() => {
+                    const lpFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                    return lpFrame && lpFrame.src && !lpFrame.src.includes("mdViewer");
+                }, "HTML preview to load");
+
+                // Switch back to md file
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await awaitsFor(() => _getViewerH1Text().includes("Document One"),
+                    "doc1 content to load after switch back");
+
+                // Verify iframe was NOT reloaded — our JS variable should survive
+                const win = _getMdIFrameWin();
+                expect(win.__test_verification).toBe(verificationCode);
+            }, 15000);
+
+            it("should preserve edit mode across project switches", async function () {
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await _enterEditMode();
+
+                // Switch to a different project
+                const otherProject = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files");
+                await SpecRunnerUtils.loadProjectInTestWindow(otherProject);
+
+                // Open an HTML file and start live dev in the other project
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "open simple1.html in other project");
+                LiveDevMultiBrowser.open();
+                await awaitsFor(() => {
+                    return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
+                }, "live dev active in other project", 20000);
+
+                // Now open an md file in the other project
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                    "open readme.md in other project");
+                await _waitForMdPreviewReady();
+
+                // Edit mode should be preserved
+                await _assertMdEditMode(true);
+
+                // Switch back to the md test project
+                await _switchToMdTestProject();
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "reopen simple.html");
+                LiveDevMultiBrowser.open();
+                await awaitsFor(() => {
+                    return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
+                }, "live dev to reopen", 20000);
+            }, 30000);
+        });
+
     });
 });

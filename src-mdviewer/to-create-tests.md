@@ -12,7 +12,6 @@
 - [x] Escape in edit mode sends focus back to Phoenix editor
 - [x] F-key shortcuts (e.g. F8 for live preview toggle) work in edit mode
 - [x] F-key shortcuts work in reader mode
-- [ ] All of the above work in both reader and edit mode
 
 ## Document Cache & File Switching
 - [ ] Switching between two MD files is instant (no re-render, DOM cached)
