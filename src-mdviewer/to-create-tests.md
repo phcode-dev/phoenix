@@ -46,19 +46,19 @@
 - [ ] End/Home work normally on lines without images
 
 ## In-Document Search (Ctrl+F)
-- [ ] Ctrl+F opens search bar in md viewer (both edit and reader mode)
+- [x] Ctrl+F opens search bar in md viewer (both edit and reader mode)
 - [ ] Ctrl+F with text selected pre-fills search and highlights closest match as active
-- [ ] Typing in search input highlights matches with debounce (300ms)
-- [ ] Match count shows "N/total" format
-- [ ] Enter / Arrow Down navigates to next match
-- [ ] Shift+Enter / Arrow Up navigates to previous match
-- [ ] Navigation wraps around (last → first, first → last)
+- [x] Typing in search input highlights matches with debounce (300ms)
+- [x] Match count shows "N/total" format
+- [x] Enter / Arrow Down navigates to next match
+- [x] Shift+Enter / Arrow Up navigates to previous match
+- [x] Navigation wraps around (last → first, first → last)
 - [ ] Active match scrolls into view (instant, centered)
-- [ ] Escape closes search bar and restores cursor to previous position
-- [ ] Escape in search does NOT forward to Phoenix (no focus steal)
-- [ ] Closing search clears all mark.js highlights
+- [x] Escape closes search bar and restores cursor to previous position
+- [x] Escape in search does NOT forward to Phoenix (no focus steal)
+- [x] Closing search clears all mark.js highlights
 - [ ] Search works across cached document DOMs (uses #viewer-content)
-- [ ] × button closes search
-- [ ] Search starts from 1 character
+- [x] × button closes search
+- [x] Search starts from 1 character
 - [ ] Switching documents with search open re-runs search on new document
 - [ ] Switching back to previous document restores search match index (e.g. was on 3/5, returns to 3/5)
