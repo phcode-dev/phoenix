@@ -5,35 +5,35 @@
 - [ ] Empty table cell renders as `|  |` in markdown source
 - [ ] Table cell with `<br>` only-child is treated as empty (br stripped before conversion)
 - [ ] Table cell with actual content + `<br>` preserves the line break
-- [ ] Tab navigation between table cells works
-- [ ] Adding new row via Tab at last cell works
+- [x] Tab navigation between table cells works
+- [x] Adding new row via Tab at last cell works
 - [ ] Delete row / delete column via context menu works and syncs to CM
-- [ ] Table header editing syncs correctly to CM
-- [ ] Enter key blocked in table cells (no paragraph/line break insertion)
-- [ ] Shift+Enter blocked in table cells
-- [ ] Block-level format buttons hidden when cursor is in table (quote, hr, table, codeblock, lists)
-- [ ] Block type selector (Paragraph/H1/H2/H3) hidden when cursor is in table
-- [ ] Dropdown groups for lists and blocks hidden when cursor is in table
+- [x] Table headers are editable in edit mode
+- [x] Enter key blocked in table cells (no paragraph/line break insertion)
+- [x] Shift+Enter blocked in table cells
+- [x] Block-level format buttons hidden when cursor is in table (quote, hr, table, codeblock, lists)
+- [x] Block type selector (Paragraph/H1/H2/H3) hidden when cursor is in table
+- [x] Dropdown groups for lists and blocks hidden when cursor is in table
 - [ ] Pasting multi-line text in table cell converts to single line (newlines → spaces)
-- [ ] Moving cursor out of table restores all toolbar buttons
-- [ ] ArrowRight at end of last cell exits table to paragraph below
-- [ ] ArrowDown from last cell exits table to paragraph below
-- [ ] Enter in last cell exits table to paragraph below
-- [ ] If no paragraph exists below table, one is created on exit
-- [ ] If paragraph exists below table, cursor moves into it (no duplicate)
+- [x] Moving cursor out of table restores all toolbar buttons
+- [x] ArrowRight at end of last cell exits table to paragraph below
+- [x] ArrowDown from last cell exits table to paragraph below
+- [x] Enter in last cell exits table to paragraph below
+- [x] If no paragraph exists below table, one is created on exit
+- [x] If paragraph exists below table, cursor moves into it (no duplicate)
 - [ ] Cursor in table wrapper gap (outside cells) + Enter exits table
 - [ ] Cursor in table wrapper gap (outside cells) + typing is blocked
 - [ ] Table rows don't visually expand when cursor is in wrapper gap
-- [ ] "Delete table" option appears in table right-click context menu
+- [x] "Delete table" option appears in table right-click context menu
 - [ ] "Delete table" option appears in row handle menu
 - [ ] "Delete table" option appears in column handle menu
-- [ ] Deleting table removes entire table-wrapper from DOM
-- [ ] Deleting table places cursor in next sibling element
-- [ ] Deleting table at end of document creates new empty paragraph
+- [x] Deleting table removes entire table-wrapper from DOM
+- [x] Deleting table places cursor outside table after deletion
+- [x] Deleting table at end of document creates new empty paragraph
 - [ ] Deleting table syncs removal to CM source
 - [ ] Deleting table creates undo entry (Ctrl+Z restores table)
 - [ ] Add-column button (+) has visible dashed border matching add-row button style
-- [ ] Add-column button visible when table is active (cursor inside)
+- [x] Add-column button visible when table is active (cursor inside)
 
 ## Image Handling
 - [ ] Images not reloaded when editing text in CM (DOM nodes preserved)

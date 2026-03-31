@@ -295,7 +295,17 @@ function broadcastSelectionState() {
     if (rafId) cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(() => {
         rafId = null;
-        const state = {
+        _emitSelectionState();
+    });
+}
+
+/** Synchronous version for test access — bypasses RAF. */
+export function broadcastSelectionStateSync() {
+    _emitSelectionState();
+}
+
+function _emitSelectionState() {
+    const state = {
             bold: document.queryCommandState("bold"),
             italic: document.queryCommandState("italic"),
             strikethrough: document.queryCommandState("strikethrough"),
@@ -343,7 +353,6 @@ function broadcastSelectionState() {
 
         // Show "Type / to insert" hint on the empty paragraph at cursor
         updateEmptyLineHint(contentEl);
-    });
 }
 
 function updateEmptyLineHint(contentEl) {
