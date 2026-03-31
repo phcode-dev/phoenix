@@ -626,5 +626,347 @@ define(function (require, exports, module) {
                     "force close");
             }, 10000);
         });
+
+        describe("List Editing", function () {
+
+            async function _openMdFile(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+            }
+
+            function _getListItems(selector) {
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc && mdDoc.getElementById("viewer-content");
+                if (!content) { return []; }
+                return Array.from(content.querySelectorAll(selector || "li"));
+            }
+
+            function _placeCursorInElement(el, offset) {
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+                const range = mdDoc.createRange();
+                const textNode = el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE
+                    ? el.firstChild : el;
+                if (textNode.nodeType === Node.TEXT_NODE) {
+                    range.setStart(textNode, Math.min(offset || 0, textNode.textContent.length));
+                } else {
+                    range.setStart(textNode, 0);
+                }
+                range.collapse(true);
+                const sel = win.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            function _placeCursorAtEnd(el) {
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+                const range = mdDoc.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                const sel = win.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            function _dispatchKey(key, options) {
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                content.dispatchEvent(new KeyboardEvent("keydown", {
+                    key: key,
+                    code: options && options.code || key,
+                    keyCode: options && options.keyCode || 0,
+                    shiftKey: !!(options && options.shiftKey),
+                    ctrlKey: false,
+                    metaKey: false,
+                    bubbles: true,
+                    cancelable: true
+                }));
+            }
+
+            function _getCursorElement() {
+                const win = _getMdIFrameWin();
+                const sel = win.getSelection();
+                if (!sel || !sel.rangeCount) { return null; }
+                let node = sel.anchorNode;
+                if (node && node.nodeType === Node.TEXT_NODE) { node = node.parentElement; }
+                return node;
+            }
+
+            it("should Enter in list item split content into two li elements", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                // Find "Second item with some text"
+                const items = _getListItems("ul > li");
+                let targetLi = null;
+                for (const li of items) {
+                    if (li.textContent.includes("Second item")) {
+                        targetLi = li;
+                        break;
+                    }
+                }
+                expect(targetLi).not.toBeNull();
+
+                const parentUl = targetLi.closest("ul");
+                const itemCountBefore = parentUl.querySelectorAll(":scope > li").length;
+
+                // Place cursor in the middle of "Second item with some text"
+                _placeCursorInElement(targetLi, 7); // after "Second "
+
+                // Press Enter
+                _dispatchKey("Enter");
+
+                // Should have one more li
+                await awaitsFor(() => {
+                    return parentUl.querySelectorAll(":scope > li").length > itemCountBefore;
+                }, "new li to be created after Enter");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Enter on empty list item exit list and create paragraph below", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                // Find a list and add an empty li at the end
+                const ul = content.querySelector("ul");
+                expect(ul).not.toBeNull();
+                const emptyLi = mdDoc.createElement("li");
+                emptyLi.innerHTML = "<br>";
+                ul.appendChild(emptyLi);
+
+                // Place cursor in the empty li
+                _placeCursorInElement(emptyLi, 0);
+
+                // Press Enter — should exit list
+                _dispatchKey("Enter");
+
+                // Cursor should now be in a paragraph after the list
+                await awaitsFor(() => {
+                    const el = _getCursorElement();
+                    return el && el.closest("p") && !el.closest("li");
+                }, "cursor to exit list to paragraph below");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Shift+Enter in list item insert line break within same bullet", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const items = _getListItems("ul > li");
+                let targetLi = null;
+                for (const li of items) {
+                    if (li.textContent.includes("First item")) {
+                        targetLi = li;
+                        break;
+                    }
+                }
+                expect(targetLi).not.toBeNull();
+
+                // Place cursor at end of first item
+                _placeCursorAtEnd(targetLi);
+
+                // Press Shift+Enter
+                _dispatchKey("Enter", { shiftKey: true });
+
+                // Should still be in the same li (not a new li)
+                const curEl = _getCursorElement();
+                expect(curEl && curEl.closest("li")).not.toBeNull();
+
+                // The li should contain a <br> (line break)
+                expect(targetLi.querySelector("br")).not.toBeNull();
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Tab indent list item under previous sibling", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const items = _getListItems("ul > li");
+                // Find "Third item" which has a previous sibling
+                let targetLi = null;
+                for (const li of items) {
+                    if (li.textContent.trim().startsWith("Third item")) {
+                        targetLi = li;
+                        break;
+                    }
+                }
+                expect(targetLi).not.toBeNull();
+                const prevLi = targetLi.previousElementSibling;
+                expect(prevLi).not.toBeNull();
+
+                // Place cursor in the target li
+                _placeCursorInElement(targetLi, 0);
+
+                // Press Tab
+                _dispatchKey("Tab", { code: "Tab", keyCode: 9 });
+
+                // The li should now be nested inside the previous sibling
+                await awaitsFor(() => {
+                    return targetLi.parentElement && targetLi.parentElement.closest("li") === prevLi;
+                }, "li to be indented under previous sibling");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Shift+Tab outdent nested list item to parent level", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                // Find a nested li (child under "Parent one")
+                const nestedItems = mdDoc.querySelectorAll("#viewer-content ul ul > li, #viewer-content ol ol > li");
+                expect(nestedItems.length).toBeGreaterThan(0);
+                const nestedLi = nestedItems[0];
+                const parentList = nestedLi.parentElement;
+                const grandLi = parentList.closest("li");
+                expect(grandLi).not.toBeNull();
+                const outerList = grandLi.parentElement;
+
+                // Place cursor in nested li
+                _placeCursorInElement(nestedLi, 0);
+
+                // Press Shift+Tab
+                _dispatchKey("Tab", { code: "Tab", keyCode: 9, shiftKey: true });
+
+                // The li should now be at the parent level (sibling of grandLi)
+                await awaitsFor(() => {
+                    return nestedLi.parentElement === outerList;
+                }, "nested li to be outdented to parent level");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Shift+Tab preserve trailing siblings as sub-list", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                // Find nested list with multiple children
+                const nestedLists = mdDoc.querySelectorAll("#viewer-content ul ul, #viewer-content ol ol");
+                let targetList = null;
+                for (const nl of nestedLists) {
+                    if (nl.children.length >= 2) {
+                        targetList = nl;
+                        break;
+                    }
+                }
+                expect(targetList).not.toBeNull();
+
+                // Outdent the first child — remaining siblings should become sub-list
+                const firstChild = targetList.children[0];
+                const siblingCount = targetList.children.length - 1;
+                _placeCursorInElement(firstChild, 0);
+
+                // Press Shift+Tab
+                _dispatchKey("Tab", { code: "Tab", keyCode: 9, shiftKey: true });
+
+                // The outdented item should have a sub-list with the trailing siblings
+                await awaitsFor(() => {
+                    const subList = firstChild.querySelector("ul, ol");
+                    return subList && subList.children.length === siblingCount;
+                }, "trailing siblings to be preserved as sub-list");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Tab on first list item with no previous sibling do nothing", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const items = _getListItems("ul > li");
+                expect(items.length).toBeGreaterThan(0);
+                const firstLi = items[0];
+                const parentBefore = firstLi.parentElement;
+
+                // Place cursor in first li
+                _placeCursorInElement(firstLi, 0);
+
+                // Press Tab — should do nothing (no previous sibling)
+                _dispatchKey("Tab", { code: "Tab", keyCode: 9 });
+
+                // Li should still be at the same level
+                expect(firstLi.parentElement).toBe(parentBefore);
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should cursor position be preserved after Tab indent", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const items = _getListItems("ul > li");
+                let targetLi = null;
+                for (const li of items) {
+                    if (li.textContent.trim().startsWith("Third item")) {
+                        targetLi = li;
+                        break;
+                    }
+                }
+                expect(targetLi).not.toBeNull();
+
+                // Place cursor at offset 3 in the li
+                _placeCursorInElement(targetLi, 3);
+
+                // Press Tab
+                _dispatchKey("Tab", { code: "Tab", keyCode: 9 });
+
+                // Cursor should still be in the same li
+                await awaitsFor(() => {
+                    const el = _getCursorElement();
+                    return el && el.closest("li") === targetLi;
+                }, "cursor to remain in indented li");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Enter in list create li that syncs to markdown bullet in CM", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const editor = EditorManager.getActiveEditor();
+                const items = _getListItems("ul > li");
+                let targetLi = null;
+                for (const li of items) {
+                    if (li.textContent.includes("First item")) {
+                        targetLi = li;
+                        break;
+                    }
+                }
+                expect(targetLi).not.toBeNull();
+
+                // Place cursor at end of first item
+                _placeCursorAtEnd(targetLi);
+
+                // Press Enter to split/create new li
+                _dispatchKey("Enter");
+
+                // Wait for CM to have an additional bullet line
+                await awaitsFor(() => {
+                    const cmText = editor.document.getText();
+                    // Count bullet lines (- ) — should have more than original
+                    const bullets = cmText.match(/^-\s+/gm) || [];
+                    return bullets.length > 4; // original has 4 unordered items
+                }, "new bullet to appear in CM source");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+        });
     });
 });
