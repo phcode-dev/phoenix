@@ -24,7 +24,6 @@ define(function (require, exports, module) {
 
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
-    const testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files");
     const mdTestFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-Markdown-test-files");
 
     let testWindow, brackets, CommandManager, Commands, EditorManager, WorkspaceManager,
@@ -249,6 +248,383 @@ define(function (require, exports, module) {
                     "force close checkbox-test.md");
             }, 15000);
 
+        });
+
+        describe("Code Block Editing", function () {
+
+            async function _openMdFile(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+            }
+
+            function _getCodeBlocks() {
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc && mdDoc.getElementById("viewer-content");
+                if (!content) { return []; }
+                return Array.from(content.querySelectorAll("pre"));
+            }
+
+            function _placeCursorInCodeBlock(pre, atEnd) {
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+                const code = pre.querySelector("code") || pre;
+                const range = mdDoc.createRange();
+
+                if (atEnd) {
+                    // Place cursor at end of last text node
+                    const tw = mdDoc.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+                    let lastText = null;
+                    let n;
+                    while ((n = tw.nextNode())) { lastText = n; }
+                    if (lastText) {
+                        range.setStart(lastText, lastText.textContent.length);
+                        range.collapse(true);
+                    }
+                } else {
+                    // Place cursor at start of first line
+                    const tw = mdDoc.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+                    const firstText = tw.nextNode();
+                    if (firstText) {
+                        range.setStart(firstText, 0);
+                        range.collapse(true);
+                    }
+                }
+                const sel = win.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            function _placeCursorOnMiddleLine(pre) {
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+                const code = pre.querySelector("code") || pre;
+                const textContent = code.textContent || "";
+                const lines = textContent.split("\n");
+                if (lines.length < 3) { return; }
+                // Place cursor at the start of the second line
+                const firstLineLen = lines[0].length + 1; // +1 for \n
+                const tw = mdDoc.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+                let offset = 0;
+                let n;
+                while ((n = tw.nextNode())) {
+                    if (offset + n.textContent.length >= firstLineLen) {
+                        const localOffset = firstLineLen - offset;
+                        const range = mdDoc.createRange();
+                        range.setStart(n, Math.min(localOffset, n.textContent.length));
+                        range.collapse(true);
+                        const sel = win.getSelection();
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                        return;
+                    }
+                    offset += n.textContent.length;
+                }
+            }
+
+            function _dispatchKey(key, options) {
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                content.dispatchEvent(new KeyboardEvent("keydown", {
+                    key: key,
+                    code: options && options.code || key,
+                    shiftKey: !!(options && options.shiftKey),
+                    ctrlKey: false,
+                    metaKey: false,
+                    bubbles: true,
+                    cancelable: true
+                }));
+            }
+
+            function _getCursorElement() {
+                const win = _getMdIFrameWin();
+                const sel = win.getSelection();
+                if (!sel || !sel.rangeCount) { return null; }
+                let node = sel.anchorNode;
+                if (node && node.nodeType === Node.TEXT_NODE) { node = node.parentElement; }
+                return node;
+            }
+
+            it("should ArrowDown on last line of code block exit to paragraph below", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const blocks = _getCodeBlocks();
+                expect(blocks.length).toBeGreaterThan(0);
+                const firstPre = blocks[0];
+
+                // Place cursor at end of code block (last line)
+                _placeCursorInCodeBlock(firstPre, true);
+
+                // Verify cursor is in the pre
+                let curEl = _getCursorElement();
+                expect(curEl && curEl.closest("pre")).toBe(firstPre);
+
+                // Press ArrowDown
+                _dispatchKey("ArrowDown");
+
+                // Cursor should now be outside the pre, in the next sibling
+                await awaitsFor(() => {
+                    const el = _getCursorElement();
+                    return el && !el.closest("pre");
+                }, "cursor to exit code block on ArrowDown");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should ArrowDown on non-last line navigate within code block", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const blocks = _getCodeBlocks();
+                expect(blocks.length).toBeGreaterThan(0);
+                const firstPre = blocks[0];
+
+                // Place cursor on a middle line
+                _placeCursorOnMiddleLine(firstPre);
+                let curEl = _getCursorElement();
+                expect(curEl && curEl.closest("pre")).toBe(firstPre);
+
+                // Press ArrowDown — should stay in code block
+                _dispatchKey("ArrowDown");
+
+                // Cursor should still be in the pre
+                const afterEl = _getCursorElement();
+                expect(afterEl && afterEl.closest("pre")).toBe(firstPre);
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should ArrowDown on last line move to existing next sibling", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const blocks = _getCodeBlocks();
+                expect(blocks.length).toBeGreaterThan(0);
+                const firstPre = blocks[0];
+
+                // There should be a paragraph after the first code block
+                const nextSibling = firstPre.nextElementSibling;
+                expect(nextSibling).not.toBeNull();
+                expect(nextSibling.tagName).toBe("P");
+
+                // Place cursor at end of code block
+                _placeCursorInCodeBlock(firstPre, true);
+
+                // Press ArrowDown
+                _dispatchKey("ArrowDown");
+
+                // Cursor should be in the next paragraph
+                await awaitsFor(() => {
+                    const el = _getCursorElement();
+                    return el && el.closest("p") === nextSibling;
+                }, "cursor to move to existing next sibling paragraph");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Shift+Enter on last line of code block exit to paragraph below", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const blocks = _getCodeBlocks();
+                expect(blocks.length).toBeGreaterThan(0);
+                const firstPre = blocks[0];
+
+                // Place cursor at end of code block
+                _placeCursorInCodeBlock(firstPre, true);
+
+                // Press Shift+Enter
+                _dispatchKey("Enter", { shiftKey: true });
+
+                // Cursor should exit to paragraph below
+                await awaitsFor(() => {
+                    const el = _getCursorElement();
+                    return el && !el.closest("pre");
+                }, "cursor to exit code block on Shift+Enter");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Shift+Enter on non-last line NOT exit code block", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const blocks = _getCodeBlocks();
+                expect(blocks.length).toBeGreaterThan(0);
+                const firstPre = blocks[0];
+
+                // Place cursor on middle line
+                _placeCursorOnMiddleLine(firstPre);
+
+                // Press Shift+Enter — should NOT exit
+                _dispatchKey("Enter", { shiftKey: true });
+
+                // Cursor should still be in the pre
+                const afterEl = _getCursorElement();
+                expect(afterEl && afterEl.closest("pre")).toBe(firstPre);
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should Enter inside code block create new line within the block", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const blocks = _getCodeBlocks();
+                expect(blocks.length).toBeGreaterThan(0);
+                const firstPre = blocks[0];
+                const code = firstPre.querySelector("code") || firstPre;
+                const linesBefore = (code.textContent || "").split("\n").length;
+
+                // Place cursor at end of last line (Enter on last line should still add a line)
+                _placeCursorInCodeBlock(firstPre, true);
+
+                // Press Enter (no shift) — should add a newline within the code block
+                _dispatchKey("Enter");
+
+                // Cursor should still be inside the pre
+                const afterEl = _getCursorElement();
+                expect(afterEl && afterEl.closest("pre")).toBe(firstPre);
+
+                // Code block should have one more line
+                const linesAfter = (code.textContent || "").split("\n").length;
+                expect(linesAfter).toBeGreaterThanOrEqual(linesBefore);
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should code block exit sync new paragraph to CM source", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const editor = EditorManager.getActiveEditor();
+                const blocks = _getCodeBlocks();
+                const lastPre = blocks[blocks.length - 1];
+
+                // Remove next sibling if exists to force <p> creation
+                let nextEl = lastPre.nextElementSibling;
+                if (nextEl && nextEl.tagName === "P") {
+                    nextEl.remove();
+                }
+
+                // Place cursor at end of last code block
+                _placeCursorInCodeBlock(lastPre, true);
+
+                // Press ArrowDown — should create new <p> and exit
+                _dispatchKey("ArrowDown");
+
+                // Verify new paragraph was created
+                await awaitsFor(() => {
+                    const next = lastPre.nextElementSibling;
+                    return next && next.tagName === "P";
+                }, "new paragraph to be created below last code block");
+
+                // Verify cursor is in the new paragraph
+                const curEl = _getCursorElement();
+                expect(curEl && !curEl.closest("pre")).toBeTrue();
+
+                // Verify CM source was synced (content change emitted)
+                await awaitsFor(() => {
+                    return editor.document.isDirty;
+                }, "document to become dirty after code block exit");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should last code block ArrowDown create new paragraph and exit", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const blocks = _getCodeBlocks();
+                const lastPre = blocks[blocks.length - 1];
+
+                // Remove everything after last code block
+                while (lastPre.nextElementSibling) {
+                    lastPre.nextElementSibling.remove();
+                }
+
+                // Place cursor at end of last code block
+                _placeCursorInCodeBlock(lastPre, true);
+
+                // Press ArrowDown
+                _dispatchKey("ArrowDown");
+
+                // New <p> should be created
+                await awaitsFor(() => {
+                    const next = lastPre.nextElementSibling;
+                    return next && next.tagName === "P";
+                }, "new <p> to be created after last code block");
+
+                // Cursor should be in the new paragraph
+                const curEl = _getCursorElement();
+                expect(curEl && !curEl.closest("pre")).toBeTrue();
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should editing code block content in CM sync to viewer", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const editor = EditorManager.getActiveEditor();
+                const cmText = editor.document.getText();
+
+                // Replace content inside the first code block
+                const newText = cmText.replace(
+                    'console.log("hello")',
+                    'console.log("world")'
+                );
+                editor.document.setText(newText);
+
+                // Verify the viewer code block updated
+                const mdDoc = _getMdIFrameDoc();
+                await awaitsFor(() => {
+                    const blocks = mdDoc.querySelectorAll("#viewer-content pre code");
+                    return blocks.length > 0 && blocks[0].textContent.includes("world");
+                }, "viewer code block to reflect CM edit");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should changing code block language in CM update viewer syntax class", async function () {
+                await _openMdFile("code-block-test.md");
+                await _enterEditMode();
+
+                const editor = EditorManager.getActiveEditor();
+                const cmText = editor.document.getText();
+
+                // Verify initial language class
+                const mdDoc = _getMdIFrameDoc();
+                await awaitsFor(() => {
+                    const code = mdDoc.querySelector("#viewer-content pre code");
+                    return code && (code.className.includes("javascript") ||
+                        code.className.includes("js"));
+                }, "initial code block to have javascript class");
+
+                // Change ```javascript to ```html in CM
+                const newText = cmText.replace("```javascript", "```html");
+                editor.document.setText(newText);
+
+                // Verify the viewer code block updated its language class
+                await awaitsFor(() => {
+                    const code = mdDoc.querySelector("#viewer-content pre code");
+                    return code && code.className.includes("html") &&
+                        !code.className.includes("javascript");
+                }, "viewer code block to reflect language change to html");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
         });
     });
 });
