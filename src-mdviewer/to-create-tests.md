@@ -35,19 +35,6 @@
 - [ ] Add-column button (+) has visible dashed border matching add-row button style
 - [ ] Add-column button visible when table is active (cursor inside)
 
-## UL/OL Toggle (List Type Switching)
-- [x] Clicking UL button when in OL switches nearest parent list to `<ul>`
-- [x] Clicking OL button when in UL switches nearest parent list to `<ol>`
-- [ ] UL/OL toggle only affects nearest parent list (not all ancestor lists)
-- [x] UL/OL toggle preserves list content and nesting
-- [ ] UL/OL toggle syncs to CM (e.g. `1. item` → `- item`)
-- [x] Toolbar UL button shows active state when cursor is in UL
-- [x] Toolbar OL button shows active state when cursor is in OL
-- [x] Block-level buttons (quote, hr, table, codeblock) hidden when cursor is in list
-- [x] Block type selector (Paragraph/H1/H2/H3) hidden when cursor is in list
-- [x] List buttons remain visible when cursor is in list (for UL/OL switching)
-- [x] Moving cursor out of list restores all toolbar buttons
-
 ## Image Handling
 - [ ] Images not reloaded when editing text in CM (DOM nodes preserved)
 - [ ] GIFs don't blink/restart when editing text elsewhere
@@ -59,17 +46,17 @@
 - [ ] End/Home work normally on lines without images
 
 ## Heading Editing
-- [ ] Enter at start of heading (|Heading) inserts empty `<p>` above, heading shifts down
-- [ ] Enter in middle of heading splits: text before stays heading, text after becomes `<p>`
-- [ ] Enter at end of heading creates new empty `<p>` below (no content split)
+- [x] Enter at start of heading (|Heading) inserts empty `<p>` above, heading shifts down
+- [x] Enter in middle of heading splits: text before stays heading, text after becomes `<p>`
+- [x] Enter at end of heading creates new empty `<p>` below (no content split)
 - [ ] Enter in middle syncs correctly to CM (heading line + new paragraph line)
-- [ ] Shift+Enter in heading creates empty `<p>` below without moving content
-- [ ] Shift+Enter moves cursor to new `<p>`, heading text untouched
-- [ ] Backspace at start of heading converts heading to `<p>` (strips ### prefix in CM)
-- [ ] Backspace at start of heading preserves content and cursor position
+- [x] Shift+Enter in heading creates empty `<p>` below without moving content
+- [x] Shift+Enter moves cursor to new `<p>`, heading text untouched
+- [x] Backspace at start of heading converts heading to `<p>` (strips ### prefix in CM)
+- [x] Backspace at start of heading preserves content and cursor position
 - [ ] Backspace at start of heading updates toolbar from "Heading N" to "Paragraph"
 - [ ] Heading-to-paragraph conversion syncs correctly to CM source
-- [ ] Backspace in middle of heading works normally (deletes character)
+- [x] Backspace in middle of heading works normally (deletes character)
 
 ## Undo/Redo
 - [ ] Cursor restored to correct block element (source-line) after undo

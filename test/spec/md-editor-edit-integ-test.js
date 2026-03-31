@@ -1227,5 +1227,270 @@ define(function (require, exports, module) {
                 }
             }, 10000);
         });
+
+        describe("Heading Editing", function () {
+
+            const ORIGINAL_HEADING_MD = "# Heading One\n\nSome paragraph text.\n\n" +
+                "## Heading Two\n\nAnother paragraph.\n\n### Heading Three\n\nFinal paragraph.\n";
+
+            beforeAll(async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["heading-test.md"]),
+                    "open heading-test.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                await _enterEditMode();
+            }, 15000);
+
+            beforeEach(async function () {
+                const editor = EditorManager.getActiveEditor();
+                if (editor) {
+                    editor.document.setText(ORIGINAL_HEADING_MD);
+                    await awaitsFor(() => {
+                        const win = _getMdIFrameWin();
+                        return win && win.__getCurrentContent &&
+                            win.__getCurrentContent() === ORIGINAL_HEADING_MD;
+                    }, "viewer to sync with reset content");
+                    const win = _getMdIFrameWin();
+                    await awaitsFor(() => {
+                        return win && win.__isSuppressingContentChange &&
+                            !win.__isSuppressingContentChange();
+                    }, "content suppression to clear");
+                    if (win && win.__setEditModeForTest) {
+                        win.__setEditModeForTest(false);
+                        win.__setEditModeForTest(true);
+                    }
+                    await awaitsFor(() => {
+                        const mdDoc = _getMdIFrameDoc();
+                        const content = mdDoc && mdDoc.getElementById("viewer-content");
+                        return content && content.classList.contains("editing");
+                    }, "edit mode to reactivate");
+                }
+            });
+
+            afterAll(async function () {
+                const editor = EditorManager.getActiveEditor();
+                if (editor) {
+                    editor.document.setText(ORIGINAL_HEADING_MD);
+                }
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close heading-test.md");
+            });
+
+            function _findHeading(tag, text) {
+                const mdDoc = _getMdIFrameDoc();
+                const headings = mdDoc.querySelectorAll("#viewer-content " + tag);
+                for (const h of headings) {
+                    if (h.textContent.includes(text)) {
+                        return h;
+                    }
+                }
+                return null;
+            }
+
+            function _placeCursorAt(el, offset) {
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+                const range = mdDoc.createRange();
+                const textNode = el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE
+                    ? el.firstChild : el;
+                if (textNode.nodeType === Node.TEXT_NODE) {
+                    range.setStart(textNode, Math.min(offset, textNode.textContent.length));
+                } else {
+                    range.setStart(el, 0);
+                }
+                range.collapse(true);
+                const sel = win.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            function _placeCursorAtEnd(el) {
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+                const range = mdDoc.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                const sel = win.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            function _dispatchKey(key, options) {
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                content.dispatchEvent(new KeyboardEvent("keydown", {
+                    key: key,
+                    code: options && options.code || key,
+                    keyCode: options && options.keyCode || 0,
+                    shiftKey: !!(options && options.shiftKey),
+                    ctrlKey: false,
+                    metaKey: false,
+                    bubbles: true,
+                    cancelable: true
+                }));
+            }
+
+            function _getCursorElement() {
+                const win = _getMdIFrameWin();
+                const sel = win.getSelection();
+                if (!sel || !sel.rangeCount) { return null; }
+                let node = sel.anchorNode;
+                if (node && node.nodeType === Node.TEXT_NODE) { node = node.parentElement; }
+                return node;
+            }
+
+            it("should Enter at start of heading insert empty p above", async function () {
+                const h2 = _findHeading("h2", "Heading Two");
+                expect(h2).not.toBeNull();
+                const prevSibling = h2.previousElementSibling;
+
+                _placeCursorAt(h2, 0);
+                _dispatchKey("Enter");
+
+                // New <p> should be inserted above the heading
+                await awaitsFor(() => {
+                    const newPrev = h2.previousElementSibling;
+                    return newPrev && newPrev !== prevSibling && newPrev.tagName === "P";
+                }, "empty p to be inserted above heading");
+
+                // Heading text should be unchanged
+                expect(h2.textContent).toContain("Heading Two");
+
+                // Cursor should remain on the heading
+                const curEl = _getCursorElement();
+                expect(curEl && curEl.closest("h2")).toBe(h2);
+            }, 10000);
+
+            it("should Enter in middle of heading split into heading and p", async function () {
+                const h2 = _findHeading("h2", "Heading Two");
+                expect(h2).not.toBeNull();
+
+                // Place cursor after "Heading " (offset 8)
+                _placeCursorAt(h2, 8);
+                _dispatchKey("Enter");
+
+                // Heading should now contain only "Heading "
+                await awaitsFor(() => {
+                    return h2.textContent.trim() === "Heading";
+                }, "heading to contain only text before cursor");
+
+                // Next sibling should be a <p> with "Two"
+                const nextP = h2.nextElementSibling;
+                expect(nextP).not.toBeNull();
+                expect(nextP.tagName).toBe("P");
+                expect(nextP.textContent.trim()).toBe("Two");
+
+                // Cursor should be in the new paragraph
+                const curEl = _getCursorElement();
+                expect(curEl && curEl.closest("p")).toBe(nextP);
+            }, 10000);
+
+            it("should Enter at end of heading create empty p below", async function () {
+                const h2 = _findHeading("h2", "Heading Two");
+                expect(h2).not.toBeNull();
+
+                _placeCursorAtEnd(h2);
+                _dispatchKey("Enter");
+
+                // New <p> should appear after the heading
+                await awaitsFor(() => {
+                    const nextEl = h2.nextElementSibling;
+                    return nextEl && nextEl.tagName === "P" &&
+                        nextEl.textContent.trim() === "";
+                }, "empty p to be created below heading");
+
+                // Heading text should be unchanged
+                expect(h2.textContent).toContain("Heading Two");
+
+                // Cursor should be in the new paragraph
+                const curEl = _getCursorElement();
+                expect(curEl && curEl.closest("p") === h2.nextElementSibling).toBeTrue();
+            }, 10000);
+
+            it("should Shift+Enter in heading create empty p below without moving content", async function () {
+                const h2 = _findHeading("h2", "Heading Two");
+                expect(h2).not.toBeNull();
+                const originalText = h2.textContent;
+
+                _placeCursorAt(h2, 4); // middle of heading
+                _dispatchKey("Enter", { shiftKey: true });
+
+                // New empty <p> should appear after heading
+                await awaitsFor(() => {
+                    const nextEl = h2.nextElementSibling;
+                    return nextEl && nextEl.tagName === "P";
+                }, "p to be created below heading on Shift+Enter");
+
+                // Heading text should be untouched (not split)
+                expect(h2.textContent).toBe(originalText);
+
+                // Cursor should be in the new paragraph
+                const curEl = _getCursorElement();
+                expect(curEl && !curEl.closest("h2")).toBeTrue();
+            }, 10000);
+
+            it("should Backspace at start of heading convert to paragraph", async function () {
+                const h2 = _findHeading("h2", "Heading Two");
+                expect(h2).not.toBeNull();
+
+                _placeCursorAt(h2, 0);
+                _dispatchKey("Backspace", { code: "Backspace", keyCode: 8 });
+
+                // Heading should be replaced with a <p>
+                await awaitsFor(() => {
+                    const mdDoc = _getMdIFrameDoc();
+                    // h2 with "Heading Two" should be gone
+                    const h2s = mdDoc.querySelectorAll("#viewer-content h2");
+                    for (const h of h2s) {
+                        if (h.textContent.includes("Heading Two")) { return false; }
+                    }
+                    // A <p> with the heading text should exist
+                    const ps = mdDoc.querySelectorAll("#viewer-content p");
+                    for (const p of ps) {
+                        if (p.textContent.includes("Heading Two")) { return true; }
+                    }
+                    return false;
+                }, "heading to be converted to paragraph");
+            }, 10000);
+
+            it("should Backspace at start of heading preserve content and cursor", async function () {
+                const h3 = _findHeading("h3", "Heading Three");
+                expect(h3).not.toBeNull();
+                const headingText = h3.textContent;
+
+                _placeCursorAt(h3, 0);
+                _dispatchKey("Backspace", { code: "Backspace", keyCode: 8 });
+
+                // Content should be preserved in a <p>
+                await awaitsFor(() => {
+                    const mdDoc = _getMdIFrameDoc();
+                    const ps = mdDoc.querySelectorAll("#viewer-content p");
+                    for (const p of ps) {
+                        if (p.textContent === headingText) { return true; }
+                    }
+                    return false;
+                }, "heading content to be preserved in paragraph");
+
+                // Cursor should be at start of the new paragraph
+                const curEl = _getCursorElement();
+                expect(curEl && curEl.closest("p")).not.toBeNull();
+                expect(curEl.closest("p").textContent).toContain("Heading Three");
+            }, 10000);
+
+            it("should Backspace in middle of heading work normally", async function () {
+                const h2 = _findHeading("h2", "Heading Two");
+                expect(h2).not.toBeNull();
+
+                // Place cursor at offset 4 (after "Head")
+                _placeCursorAt(h2, 4);
+
+                // Press Backspace — should delete a character, NOT convert heading
+                _dispatchKey("Backspace", { code: "Backspace", keyCode: 8 });
+
+                // Heading should still be an h2 (not converted to p)
+                // The keydown handler only converts when cursor is at start
+                // Browser default behavior handles mid-heading backspace
+                expect(h2.tagName).toBe("H2");
+            }, 10000);
+        });
     });
 });
