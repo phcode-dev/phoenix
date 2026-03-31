@@ -107,6 +107,9 @@ export function initBridge() {
 
     // Expose helpers for test access (test iframes have no sandbox)
     window.__getActiveFilePath = docCache.getActiveFilePath;
+    window.__getCurrentContent = function () {
+        return getState().currentContent;
+    };
     window.__setEditModeForTest = function (editMode) {
         setState({ editMode });
     };
