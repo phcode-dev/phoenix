@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, beforeAll, afterAll, awaitsFor, it, awaitsForDone, expect*/
+/*global describe, beforeAll, beforeEach, afterAll, awaitsFor, it, awaitsForDone, expect*/
 
 define(function (require, exports, module) {
 
@@ -43,15 +43,6 @@ define(function (require, exports, module) {
         return mdIFrame && mdIFrame.contentWindow;
     }
 
-    function _setMdEditMode(editMode) {
-        const mdIFrame = _getMdPreviewIFrame();
-        if (mdIFrame && mdIFrame.contentWindow) {
-            mdIFrame.contentWindow.postMessage({
-                type: "MDVIEWR_SET_EDIT_MODE",
-                editMode: editMode
-            }, "*");
-        }
-    }
 
     async function _enterEditMode() {
         const win = _getMdIFrameWin();
@@ -990,11 +981,57 @@ define(function (require, exports, module) {
 
         describe("UL/OL Toggle (List Type Switching)", function () {
 
-            async function _openMdFile(fileName) {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
-                    "open " + fileName);
+            const ORIGINAL_LIST_MD = "# List Test\n\n## Unordered List\n\n" +
+                "- First item\n- Second item with some text\n- Third item\n- Fourth item\n\n" +
+                "## Nested List\n\n- Parent one\n    - Child one\n    - Child two\n    - Child three\n" +
+                "- Parent two\n\n## Ordered List\n\n1. First ordered\n2. Second ordered\n3. Third ordered\n\n" +
+                "End of list test.\n";
+
+            beforeAll(async function () {
+                // Open file once — keep it open for all tests in this describe
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["list-test.md"]),
+                    "open list-test.md");
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());
-            }
+                await _enterEditMode();
+            }, 15000);
+
+            beforeEach(async function () {
+                // Reset CM content to original and wait for viewer to sync
+                const editor = EditorManager.getActiveEditor();
+                if (editor) {
+                    editor.document.setText(ORIGINAL_LIST_MD);
+                    await awaitsFor(() => {
+                        const win = _getMdIFrameWin();
+                        return win && win.__getCurrentContent &&
+                            win.__getCurrentContent() === ORIGINAL_LIST_MD;
+                    }, "viewer to sync with reset content");
+                    // Wait for content suppression to clear
+                    const win = _getMdIFrameWin();
+                    await awaitsFor(() => {
+                        return win && win.__isSuppressingContentChange &&
+                            !win.__isSuppressingContentChange();
+                    }, "content suppression to clear after reset");
+                    // Re-enter edit mode to reset lastHTML and reattach handlers
+                    if (win && win.__setEditModeForTest) {
+                        win.__setEditModeForTest(false);
+                        win.__setEditModeForTest(true);
+                    }
+                    await awaitsFor(() => {
+                        const mdDoc = _getMdIFrameDoc();
+                        const content = mdDoc && mdDoc.getElementById("viewer-content");
+                        return content && content.classList.contains("editing");
+                    }, "edit mode to reactivate after reset");
+                }
+            });
+
+            afterAll(async function () {
+                const editor = EditorManager.getActiveEditor();
+                if (editor) {
+                    editor.document.setText(ORIGINAL_LIST_MD);
+                }
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close list-test.md");
+            });
 
             function _placeCursorInElement(el, offset) {
                 const mdDoc = _getMdIFrameDoc();
@@ -1025,39 +1062,23 @@ define(function (require, exports, module) {
             }
 
             it("should clicking UL button when in OL switch list to unordered", async function () {
-                await _openMdFile("list-test.md");
-                await _enterReaderMode();
-                await _enterEditMode();
-
-                // Place cursor in an ordered list item
                 const olLi = _findLiByText("First ordered");
                 expect(olLi).not.toBeNull();
                 expect(olLi.closest("ol")).not.toBeNull();
                 _placeCursorInElement(olLi, 0);
 
-                // Trigger selectionchange so toolbar updates
                 const mdDoc = _getMdIFrameDoc();
                 mdDoc.dispatchEvent(new Event("selectionchange"));
 
-                // Click UL button
-                const ulBtn = mdDoc.getElementById("emb-ul");
-                expect(ulBtn).not.toBeNull();
-                ulBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+                mdDoc.getElementById("emb-ul").dispatchEvent(
+                    new MouseEvent("mousedown", { bubbles: true }));
 
-                // The list should now be a UL
                 await awaitsFor(() => {
                     return olLi.closest("ul") !== null && olLi.closest("ol") === null;
                 }, "ordered list to switch to unordered");
-
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close");
             }, 10000);
 
             it("should clicking OL button when in UL switch list to ordered", async function () {
-                await _openMdFile("list-test.md");
-                await _enterEditMode();
-
-                // Place cursor in an unordered list item
                 const ulLi = _findLiByText("First item");
                 expect(ulLi).not.toBeNull();
                 expect(ulLi.closest("ul")).not.toBeNull();
@@ -1066,81 +1087,53 @@ define(function (require, exports, module) {
                 const mdDoc = _getMdIFrameDoc();
                 mdDoc.dispatchEvent(new Event("selectionchange"));
 
-                // Click OL button
-                const olBtn = mdDoc.getElementById("emb-ol");
-                expect(olBtn).not.toBeNull();
-                olBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+                mdDoc.getElementById("emb-ol").dispatchEvent(
+                    new MouseEvent("mousedown", { bubbles: true }));
 
-                // The list should now be an OL
                 await awaitsFor(() => {
                     return ulLi.closest("ol") !== null && ulLi.closest("ul") === null;
                 }, "unordered list to switch to ordered");
-
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close");
             }, 10000);
 
-            it("should UL/OL toggle preserve list content and nesting", async function () {
-                await _openMdFile("list-test.md");
-                await _enterEditMode();
-
-                // Find ordered list and remember its content
+            it("should UL/OL toggle preserve list content", async function () {
                 const olLi = _findLiByText("First ordered");
                 expect(olLi).not.toBeNull();
                 const ol = olLi.closest("ol");
                 const itemTexts = Array.from(ol.querySelectorAll(":scope > li"))
                     .map(li => li.textContent.trim());
-                expect(itemTexts.length).toBeGreaterThan(0);
 
                 _placeCursorInElement(olLi, 0);
                 const mdDoc = _getMdIFrameDoc();
                 mdDoc.dispatchEvent(new Event("selectionchange"));
 
-                // Switch to UL
                 mdDoc.getElementById("emb-ul").dispatchEvent(
                     new MouseEvent("mousedown", { bubbles: true }));
 
                 await awaitsFor(() => olLi.closest("ul") !== null,
                     "list to switch to UL");
 
-                // Verify content preserved
                 const newList = olLi.closest("ul");
                 const newTexts = Array.from(newList.querySelectorAll(":scope > li"))
                     .map(li => li.textContent.trim());
                 expect(newTexts).toEqual(itemTexts);
-
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close");
             }, 10000);
 
-
             it("should toolbar UL button show active state when cursor in UL", async function () {
-                await _openMdFile("list-test.md");
-                await _enterEditMode();
-
                 const ulLi = _findLiByText("First item");
                 _placeCursorInElement(ulLi, 0);
 
                 const mdDoc = _getMdIFrameDoc();
                 mdDoc.dispatchEvent(new Event("selectionchange"));
 
-                // Wait for toolbar state update
                 await awaitsFor(() => {
                     const ulBtn = mdDoc.getElementById("emb-ul");
                     return ulBtn && ulBtn.getAttribute("aria-pressed") === "true";
                 }, "UL button to show active state");
 
-                const olBtn = mdDoc.getElementById("emb-ol");
-                expect(olBtn.getAttribute("aria-pressed")).toBe("false");
-
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close");
+                expect(mdDoc.getElementById("emb-ol").getAttribute("aria-pressed")).toBe("false");
             }, 10000);
 
             it("should toolbar OL button show active state when cursor in OL", async function () {
-                await _openMdFile("list-test.md");
-                await _enterEditMode();
-
                 const olLi = _findLiByText("First ordered");
                 _placeCursorInElement(olLi, 0);
 
@@ -1152,30 +1145,21 @@ define(function (require, exports, module) {
                     return olBtn && olBtn.getAttribute("aria-pressed") === "true";
                 }, "OL button to show active state");
 
-                const ulBtn = mdDoc.getElementById("emb-ul");
-                expect(ulBtn.getAttribute("aria-pressed")).toBe("false");
-
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close");
+                expect(mdDoc.getElementById("emb-ul").getAttribute("aria-pressed")).toBe("false");
             }, 10000);
 
             it("should block-level buttons be hidden when cursor is in list", async function () {
-                await _openMdFile("list-test.md");
-                await _enterEditMode();
-
                 const ulLi = _findLiByText("First item");
                 _placeCursorInElement(ulLi, 0);
 
                 const mdDoc = _getMdIFrameDoc();
                 mdDoc.dispatchEvent(new Event("selectionchange"));
 
-                // Wait for toolbar update
                 await awaitsFor(() => {
                     const quoteBtn = mdDoc.getElementById("emb-quote");
                     return quoteBtn && quoteBtn.style.display === "none";
                 }, "block buttons to be hidden in list");
 
-                // Block-level buttons should be hidden
                 const blockIds = ["emb-quote", "emb-hr", "emb-table", "emb-codeblock"];
                 for (const id of blockIds) {
                     const btn = mdDoc.getElementById(id);
@@ -1184,29 +1168,20 @@ define(function (require, exports, module) {
                     }
                 }
 
-                // Block type selector should be hidden
                 const blockTypeSelect = mdDoc.getElementById("emb-block-type");
                 if (blockTypeSelect) {
                     expect(blockTypeSelect.style.display).toBe("none");
                 }
 
                 // List buttons should remain visible
-                const ulBtn = mdDoc.getElementById("emb-ul");
-                const olBtn = mdDoc.getElementById("emb-ol");
-                expect(ulBtn.style.display).not.toBe("none");
-                expect(olBtn.style.display).not.toBe("none");
-
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close");
+                expect(mdDoc.getElementById("emb-ul").style.display).not.toBe("none");
+                expect(mdDoc.getElementById("emb-ol").style.display).not.toBe("none");
             }, 10000);
 
             it("should moving cursor out of list restore all toolbar buttons", async function () {
-                await _openMdFile("list-test.md");
-                await _enterEditMode();
-
                 const mdDoc = _getMdIFrameDoc();
 
-                // First place cursor in list — block buttons hidden
+                // First place cursor in list
                 const ulLi = _findLiByText("First item");
                 _placeCursorInElement(ulLi, 0);
                 mdDoc.dispatchEvent(new Event("selectionchange"));
@@ -1216,7 +1191,7 @@ define(function (require, exports, module) {
                     return quoteBtn && quoteBtn.style.display === "none";
                 }, "block buttons to be hidden in list");
 
-                // Now move cursor to a paragraph outside the list
+                // Move cursor to paragraph outside list
                 const paragraphs = mdDoc.querySelectorAll("#viewer-content > p");
                 let targetP = null;
                 for (const p of paragraphs) {
@@ -1233,7 +1208,6 @@ define(function (require, exports, module) {
                 _getMdIFrameWin().getSelection().addRange(range);
                 mdDoc.dispatchEvent(new Event("selectionchange"));
 
-                // Block buttons should be restored
                 await awaitsFor(() => {
                     const quoteBtn = mdDoc.getElementById("emb-quote");
                     return quoteBtn && quoteBtn.style.display !== "none";
@@ -1251,9 +1225,6 @@ define(function (require, exports, module) {
                 if (blockTypeSelect) {
                     expect(blockTypeSelect.style.display).not.toBe("none");
                 }
-
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close");
             }, 10000);
         });
     });
