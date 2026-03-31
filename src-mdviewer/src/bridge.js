@@ -8,6 +8,7 @@ import { getState, setState } from "./core/state.js";
 import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
+import { broadcastSelectionStateSync } from "./components/editor.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -124,6 +125,9 @@ export function initBridge() {
     };
     window.__resetCacheForTest = function () {
         docCache.clearAll();
+    };
+    window.__broadcastSelectionStateForTest = function () {
+        broadcastSelectionStateSync();
     };
     window.__triggerContentSync = function () {
         const content = document.getElementById("viewer-content");
