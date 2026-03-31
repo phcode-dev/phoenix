@@ -474,6 +474,16 @@
   background-color: rgba(50, 100, 220, 0.1);
 }
 
+/* Persistent cursor-sync highlight on the element corresponding to CM cursor */
+.cursor-sync-highlight {
+  background-color: rgba(100, 150, 255, 0.18);
+  border-radius: 2px;
+}
+
+[data-theme="light"] .cursor-sync-highlight {
+  background-color: rgba(50, 100, 220, 0.14);
+}
+
 /* ===== Mermaid diagrams ===== */
 
 .mermaid-diagram {
