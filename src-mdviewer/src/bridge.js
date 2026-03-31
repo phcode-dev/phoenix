@@ -128,6 +128,14 @@ export function initBridge() {
             content.dispatchEvent(new Event("input", { bubbles: true }));
         }
     };
+    window.__clickCheckboxForTest = function (index) {
+        const content = document.getElementById("viewer-content");
+        if (!content) { return false; }
+        const checkboxes = content.querySelectorAll('input[type="checkbox"]');
+        if (index >= checkboxes.length) { return false; }
+        checkboxes[index].click();
+        return checkboxes[index].checked;
+    };
 
     // Listen for messages from Phoenix parent
     window.addEventListener("message", (event) => {
