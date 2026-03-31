@@ -11,3 +11,5 @@ This is the second test document.
 ## Details
 
 More content in document two for testing.
+
+[Test Link](https://test-link-doc2.example.com)

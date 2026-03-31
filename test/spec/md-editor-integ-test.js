@@ -192,15 +192,31 @@ define(function (require, exports, module) {
         mdDoc.dispatchEvent(new Event("selectionchange"));
     }
 
-    async function _waitForMdPreviewReady() {
+    /**
+     * Wait for the md preview iframe to be fully ready and synced with the given editor.
+     * Verifies: iframe visible, bridge initialized, content rendered, suppression cleared,
+     * and the viewer's loaded markdown matches the editor's content.
+     * @param {Object} editor - The active Editor instance whose content should be synced to the viewer.
+     */
+    async function _waitForMdPreviewReady(editor) {
+        const expectedSrc = editor ? editor._codeMirror.getValue() : null;
         await awaitsFor(() => {
             const mdIFrame = _getMdPreviewIFrame();
             if (!mdIFrame || mdIFrame.style.display === "none") { return false; }
             if (!mdIFrame.src || !mdIFrame.src.includes("mdViewer")) { return false; }
-            // Wait for bridge to initialize (exposes test helpers)
             const win = mdIFrame.contentWindow;
-            return win && typeof win.__setEditModeForTest === "function";
-        }, "md preview to be ready with bridge initialized");
+            if (!win || typeof win.__setEditModeForTest !== "function") { return false; }
+            if (win.__isSuppressingContentChange && win.__isSuppressingContentChange()) { return false; }
+            const content = mdIFrame.contentDocument && mdIFrame.contentDocument.getElementById("viewer-content");
+            if (!content || content.children.length === 0) { return false; }
+            if (!EditorManager.getActiveEditor()) { return false; }
+            // Verify the viewer has synced with the editor's content
+            if (expectedSrc) {
+                const viewerSrc = win.__getCurrentContent && win.__getCurrentContent();
+                if (viewerSrc !== expectedSrc) { return false; }
+            }
+            return true;
+        }, "md preview synced with editor content");
     }
 
     describe("livepreview:Markdown Editor", function () {
@@ -248,7 +264,7 @@ define(function (require, exports, module) {
                 // Now open the test markdown file
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["test-shortcuts.md"]),
                     "open test-shortcuts.md");
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
                 testFilePath = testFolder + "/test-shortcuts.md";
             }
         }, 30000);
@@ -288,38 +304,6 @@ define(function (require, exports, module) {
                     return content && content.querySelector("h1") &&
                         content.querySelector("h1").textContent.includes("Test Shortcuts");
                 }, "viewer to sync with reset content");
-            }
-        }
-
-        let _tempFileCounter = 0;
-
-        /**
-         * Create a fresh temp .md file with clean content, open it, and wait for
-         * the md preview to be ready. Avoids CM→iframe re-render races.
-         */
-        async function _openFreshMdFile(content) {
-            content = content || ORIGINAL_MD_CONTENT;
-            _tempFileCounter++;
-            const tempPath = testFolder + "/_test_temp_" + _tempFileCounter + ".md";
-            await SpecRunnerUtils.createTextFileAsync(tempPath, content);
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["_test_temp_" + _tempFileCounter + ".md"]),
-                "open temp md file");
-            await _waitForMdPreviewReady();
-            // Wait for viewer to have the content rendered and settled
-            await awaitsFor(() => {
-                const win = _getMdIFrameWin();
-                const mdDoc = _getMdIFrameDoc();
-                const el = mdDoc && mdDoc.getElementById("viewer-content");
-                return el && el.querySelector("h1, p") &&
-                    win && win.__isSuppressingContentChange && !win.__isSuppressingContentChange();
-            }, "temp file content to render and settle");
-            return tempPath;
-        }
-
-        async function _cleanupTempFiles() {
-            for (let i = 1; i <= _tempFileCounter; i++) {
-                const p = testFolder + "/_test_temp_" + i + ".md";
-                await SpecRunnerUtils.deletePathAsync(p, true);
             }
         }
 
@@ -581,7 +565,7 @@ define(function (require, exports, module) {
             async function _openMdFileAndWaitForPreview(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
             }
 
             function _getViewerScrollTop() {
@@ -722,7 +706,7 @@ define(function (require, exports, module) {
                 // Now open an md file in the other project
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                     "open readme.md in other project");
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
 
                 // Edit mode should be preserved
                 await _assertMdEditMode(true);
@@ -761,7 +745,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
                 await awaitsFor(() => WorkspaceManager.isPanelVisible("live-preview-panel"),
                     "live preview panel to reopen");
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
 
                 // Verify iframe persisted (JS variable survived)
                 const win = _getMdIFrameWin();
@@ -936,7 +920,7 @@ define(function (require, exports, module) {
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
             }
 
             beforeAll(async function () {
@@ -1122,7 +1106,7 @@ define(function (require, exports, module) {
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
             }
 
             beforeAll(async function () {
@@ -1261,7 +1245,7 @@ define(function (require, exports, module) {
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
             }
 
             beforeAll(async function () {
@@ -1366,6 +1350,83 @@ define(function (require, exports, module) {
                     return content && content.textContent.includes("Remove Me");
                 }, "text to still exist after link removal");
             }, 10000);
+
+            it("should link popover allow editing link URL in viewer and sync to CM", async function () {
+                await _openMdFile("doc2.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                const link = content.querySelector("a[href*='test-link-doc2']");
+                expect(link).not.toBeNull();
+                const range = mdDoc.createRange();
+                range.selectNodeContents(link);
+                range.collapse(true);
+                _getMdIFrameWin().getSelection().removeAllRanges();
+                _getMdIFrameWin().getSelection().addRange(range);
+                content.dispatchEvent(new KeyboardEvent("keyup", {
+                    key: "ArrowRight", code: "ArrowRight", bubbles: true
+                }));
+
+                await awaitsFor(() => {
+                    const popover = mdDoc.getElementById("link-popover");
+                    return popover && popover.classList.contains("visible");
+                }, "link popover to appear");
+
+                // Edit via popover
+                const popover = mdDoc.getElementById("link-popover");
+                popover.querySelector(".link-popover-edit-btn").click();
+                popover.querySelector(".link-popover-input").value = "https://edited-popover.example.com";
+                popover.querySelector(".link-popover-confirm-btn").click();
+
+                await awaitsFor(() =>
+                    content.querySelector("a[href='https://edited-popover.example.com']") !== null,
+                "edited URL in viewer");
+
+                // Old URL should be gone
+                expect(content.querySelector("a[href*='test-link-doc2']")).toBeNull();
+
+                // Force close without saving
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close doc2.md");
+            }, 15000);
+
+            it("should link popover allow removing link in viewer and sync to CM", async function () {
+                await _openMdFile("doc3.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                const link = content.querySelector("a[href*='remove-link-doc3']");
+                expect(link).not.toBeNull();
+                const range = mdDoc.createRange();
+                range.selectNodeContents(link);
+                range.collapse(true);
+                _getMdIFrameWin().getSelection().removeAllRanges();
+                _getMdIFrameWin().getSelection().addRange(range);
+                content.dispatchEvent(new KeyboardEvent("keyup", {
+                    key: "ArrowRight", code: "ArrowRight", bubbles: true
+                }));
+
+                await awaitsFor(() => {
+                    const popover = mdDoc.getElementById("link-popover");
+                    return popover && popover.classList.contains("visible");
+                }, "link popover to appear");
+
+                mdDoc.getElementById("link-popover").querySelector(".link-popover-unlink-btn").click();
+
+                await awaitsFor(() =>
+                    content.querySelector("a[href*='remove-link-doc3']") === null,
+                "link removed from viewer via popover");
+
+                expect(content.textContent).toContain("Remove Link");
+
+                // Force close without saving
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close doc3.md");
+            }, 15000);
         });
 
         describe("Empty Line Placeholder", function () {
@@ -1373,7 +1434,7 @@ define(function (require, exports, module) {
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
             }
 
             it("should empty paragraph in edit mode show hint text", async function () {
@@ -1402,8 +1463,8 @@ define(function (require, exports, module) {
             }, 10000);
 
             it("should hint only show in edit mode not reader mode", async function () {
-                // Use doc3 for clean state
-                await _openMdFile("doc3.md");
+                // Use doc2 for clean state (not modified by previous tests)
+                await _openMdFile("doc2.md");
                 await _enterReaderMode();
 
                 const mdDoc = _getMdIFrameDoc();
@@ -1418,7 +1479,7 @@ define(function (require, exports, module) {
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
-                await _waitForMdPreviewReady();
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
             }
 
             function _isSlashMenuVisible() {
