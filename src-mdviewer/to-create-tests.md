@@ -1,29 +1,10 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
-## Edit Mode & Entitlement Gating
-- [ ] Free user sees Edit button → clicking shows upsell dialog
-- [ ] Pro user sees Edit button → clicking enters edit mode
-- [ ] Entitlement change (free→pro) switches to edit mode automatically
-- [ ] Entitlement change (pro→free) switches to reader mode automatically
-- [ ] Edit/Reader toggle works correctly in the iframe toolbar, ie the toolbar icons show up and disappear accordingly.
-
 ## Checkbox (Task List) Sync
 - [ ] Clicking checkbox in edit mode toggles it and syncs to CM source ([x] ↔ [ ])
 - [ ] Checkboxes enabled in edit mode, disabled in reader mode
 - [ ] Checkbox toggle creates an undo entry
 - [ ] Undo reverses checkbox toggle
-
-## Format Bar & Link Popover
-- [x] Format bar element exists in DOM with bold/italic/underline/link buttons
-- [x] Link popover element exists in DOM
-- [x] Adding link in CM shows it in md viewer
-- [x] Editing link URL in CM updates it in md viewer
-- [x] Removing link markup in CM removes link from md viewer
-- [ ] Format bar appears on text selection (visual — needs real mouse interaction)
-- [x] Link popover edit URL via popover syncs to CM
-- [x] Link popover remove link via popover syncs to CM
-- [x] Link popover URL opens in default browser (not Electron window)
-- [ ] Escape in lang picker only dismisses picker, refocuses editor
 
 ## Empty Line Placeholder
 - [x] Empty paragraph in edit mode shows hint class
