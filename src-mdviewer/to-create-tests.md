@@ -1,15 +1,15 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
 ## Cursor/Scroll Sync
-- [ ] Clicking in CM scrolls md viewer to corresponding element
+- [x] Clicking in CM scrolls md viewer to corresponding element
 - [x] Clicking in md viewer scrolls CM to corresponding line (centered)
 - [x] Cursor sync toggle button disables/enables bidirectional sync
-- [ ] Cursor sync toggle state preserved across toolbar re-renders (file switch, mode toggle)
-- [ ] Content sync still works when cursor sync is disabled
-- [ ] Cursor sync toggle works in both reader and edit mode
-- [ ] Disabling cursor sync in reader mode prevents CM scroll on click
-- [ ] Cursor sync works on newly edited elements after edit→reader switch
-- [ ] Edit→reader switch re-renders from CM content (data-source-line attrs refreshed)
+- [x] Cursor sync toggle state preserved across toolbar re-renders (file switch, mode toggle)
+- [x] Content sync still works when cursor sync is disabled
+- [x] Cursor sync toggle works in both reader and edit mode
+- [x] Disabling cursor sync in reader mode prevents CM scroll on click
+- [x] Cursor sync works on newly edited elements after edit→reader switch
+- [x] Edit→reader switch re-renders from CM content (data-source-line attrs refreshed)
 - [x] Switching MD files preserves current edit/reader mode
 - [x] Edit mode not reset when switching between MD files
 

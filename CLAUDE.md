@@ -34,6 +34,11 @@ Use `exec_js` to run JS in the Phoenix browser runtime. jQuery `$()` is global. 
 
 **Check logs:** `get_browser_console_logs` with `filter` regex (e.g. `"AI UI"`, `"error"`) and `tail` — includes both browser console and Node.js (PhNode) logs. Use `get_terminal_logs` for Electron process output (only available if Phoenix was launched via `start_phoenix`).
 
+## Writing Tests
+- **Never use `awaits(number)`** (fixed-time waits) in tests — they cause flaky failures. Always use `awaitsFor(condition)` to wait for a specific condition to become true.
+- Use `editor.*` APIs (e.g. `editor.document.getText()`, `editor.getCursorPos()`, `editor.setSelection()`) instead of accessing `editor._codeMirror` directly.
+- Tests should be independent — no shared mutable state between `it()` blocks. Use `FILE_CLOSE` with `{ _forceClose: true }` to clean up.
+
 ## Running Tests via MCP
 
 The test runner must be open as a separate Phoenix instance (it shows up as `phoenix-test-runner-*` in `get_phoenix_status`). Use `run_tests` to trigger test runs and `get_test_results` to poll for results. `take_screenshot` also works on the test runner.
