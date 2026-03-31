@@ -1,15 +1,5 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
-## Checkbox (Task List) Sync
-- [ ] Clicking checkbox in edit mode toggles it and syncs to CM source ([x] ↔ [ ])
-- [ ] Checkboxes enabled in edit mode, disabled in reader mode
-- [ ] Checkbox toggle creates an undo entry
-- [ ] Undo reverses checkbox toggle
-
-## Empty Line Placeholder
-- [x] Empty paragraph in edit mode shows hint class
-- [x] Hint only shows in edit mode, not reader mode
-
 ## Slash Menu (/ command)
 - [x] Slash menu appears when typing / at start of line
 - [x] Escape dismisses slash menu
