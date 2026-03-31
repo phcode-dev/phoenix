@@ -1356,3 +1356,64 @@
     height: auto !important;
   }
 }
+
+/* --- Image popover --- */
+
+#viewer-content.editing img {
+  cursor: pointer;
+}
+
+#viewer-content.editing img.image-selected {
+  outline: 2px solid var(--color-accent, #4285F4);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+.image-popover {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-xs);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: 350;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
+  will-change: opacity, transform;
+}
+
+.image-popover.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.image-popover-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.image-popover-btn:hover {
+  background: var(--color-hover);
+}
+
+.image-popover-btn-delete {
+  color: var(--color-danger, #f85149);
+}
+
+.image-popover-btn-delete:hover {
+  background: rgba(248, 81, 73, 0.15);
+}

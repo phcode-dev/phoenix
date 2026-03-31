@@ -8,6 +8,7 @@ import { t, tp } from "../core/i18n.js";
 import { initFormatBar, destroyFormatBar, focusFormatBar } from "./format-bar.js";
 import { initSlashMenu, destroySlashMenu, isSlashMenuVisible } from "./slash-menu.js";
 import { initLinkPopover, destroyLinkPopover } from "./link-popover.js";
+import { initImagePopover, destroyImagePopover } from "./image-popover.js";
 import { initLangPicker, destroyLangPicker, isLangPickerDropdownOpen } from "./lang-picker.js";
 import { highlightCode, renderAfterHTML, normalizeCodeLanguages } from "./viewer.js";
 import { initMermaidEditor, destroyMermaidEditor, insertMermaidBlock, attachOverlays } from "./mermaid-editor.js";
@@ -2191,6 +2192,7 @@ function enterEditMode(content) {
 
     initFormatBar(content);
     initLinkPopover(content);
+    initImagePopover(content);
     initLangPicker(content);
     initSlashMenu(content);
 
@@ -2208,6 +2210,7 @@ function cleanupEditMode(content) {
 
     destroyFormatBar();
     destroyLinkPopover();
+    destroyImagePopover();
     destroyLangPicker();
     destroySlashMenu();
     destroyMermaidEditor();

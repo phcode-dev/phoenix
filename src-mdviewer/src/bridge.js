@@ -223,6 +223,15 @@ export function initBridge() {
     const _mdEditorHandledShiftKeys = new Set(["x", "X", "z", "Z"]); // Ctrl/Cmd + Shift + key
 
     document.addEventListener("keydown", (e) => {
+        // Don't intercept shortcuts when focus is in any input/textarea (except Escape)
+        // This covers dialog inputs, search bar input, link popover input, etc.
+        const activeEl = document.activeElement;
+        if (e.key !== "Escape" && activeEl &&
+            (activeEl.tagName === "INPUT" || activeEl.tagName === "TEXTAREA") &&
+            !activeEl.closest("#viewer-content")) {
+            return;
+        }
+
         if (e.key === "Escape") {
             // Don't forward Escape to Phoenix if any popup/overlay is open
             const popupSelectors = [

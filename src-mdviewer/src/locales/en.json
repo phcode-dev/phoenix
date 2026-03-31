@@ -118,6 +118,10 @@
     "image_upload_desc": "Upload from computer",
     "no_results": "No results"
   },
+  "image": {
+    "edit": "Edit Image URL",
+    "delete": "Delete image"
+  },
   "image_dialog": {
     "title": "Insert Image URL",
     "url_placeholder": "https://example.com/image.png",
