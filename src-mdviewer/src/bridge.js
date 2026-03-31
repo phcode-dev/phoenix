@@ -13,6 +13,7 @@ import { broadcastSelectionStateSync } from "./components/editor.js";
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
 let _suppressContentChange = false;
+let _scrollFromCM = false;
 let _baseURL = "";
 let _cursorPosBeforeEdit = null; // cursor position before current edit batch
 let _cursorPosDirty = false; // true after content changes, reset when emitted
@@ -339,6 +340,37 @@ export function initBridge() {
             sendToParent("embeddedIframeFocusEditor", { sourceLine });
         }
     }, true);
+
+    // Scroll sync: when viewer scrolls, send first visible source line to CM
+    let _viewerScrollRAF = null;
+    const appViewer = document.getElementById("app-viewer");
+    if (appViewer) {
+        appViewer.addEventListener("scroll", () => {
+            if (_scrollFromCM) return;
+            if (_viewerScrollRAF) { cancelAnimationFrame(_viewerScrollRAF); }
+            _viewerScrollRAF = requestAnimationFrame(() => {
+                _viewerScrollRAF = null;
+                const viewer = document.getElementById("viewer-content");
+                if (!viewer) return;
+                const viewerRect = appViewer.getBoundingClientRect();
+                const elements = viewer.querySelectorAll("[data-source-line]");
+                let bestEl = null;
+                let bestDist = Infinity;
+                for (const el of elements) {
+                    const rect = el.getBoundingClientRect();
+                    const dist = Math.abs(rect.top - viewerRect.top);
+                    if (dist < bestDist) {
+                        bestDist = dist;
+                        bestEl = el;
+                    }
+                }
+                if (bestEl) {
+                    const sourceLine = parseInt(bestEl.getAttribute("data-source-line"), 10);
+                    sendToParent("mdviewrScrollSync", { sourceLine, fromScroll: true });
+                }
+            });
+        });
+    }
 
     // Listen for selection changes to sync selection back to CM
     // Also track cursor position for undo/redo restore
@@ -808,7 +840,7 @@ function _getSourceLineFromElement(el) {
 }
 
 function handleScrollToLine(data) {
-    const { line } = data;
+    const { line, fromScroll } = data;
     if (line == null) return;
 
     const viewer = document.getElementById("viewer-content");
@@ -832,9 +864,17 @@ function handleScrollToLine(data) {
     const containerRect = container.getBoundingClientRect();
     const elRect = bestEl.getBoundingClientRect();
 
-    const isVisible = elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
-    if (!isVisible) {
-        bestEl.scrollIntoView({ behavior: "instant", block: "center" });
+    if (fromScroll) {
+        // Sync scroll: always align to top, even if visible
+        _scrollFromCM = true;
+        bestEl.scrollIntoView({ behavior: "instant", block: "start" });
+        setTimeout(() => { _scrollFromCM = false; }, 200);
+    } else {
+        // Cursor-based scroll: only scroll if not visible, center it
+        const isVisible = elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
+        if (!isVisible) {
+            bestEl.scrollIntoView({ behavior: "instant", block: "center" });
+        }
     }
 
     // Persistent highlight on the element corresponding to the CM cursor.
