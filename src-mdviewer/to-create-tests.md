@@ -45,26 +45,6 @@
 - [ ] Cmd+Left near image goes to start of block on Mac
 - [ ] End/Home work normally on lines without images
 
-## Heading Editing
-- [x] Enter at start of heading (|Heading) inserts empty `<p>` above, heading shifts down
-- [x] Enter in middle of heading splits: text before stays heading, text after becomes `<p>`
-- [x] Enter at end of heading creates new empty `<p>` below (no content split)
-- [ ] Enter in middle syncs correctly to CM (heading line + new paragraph line)
-- [x] Shift+Enter in heading creates empty `<p>` below without moving content
-- [x] Shift+Enter moves cursor to new `<p>`, heading text untouched
-- [x] Backspace at start of heading converts heading to `<p>` (strips ### prefix in CM)
-- [x] Backspace at start of heading preserves content and cursor position
-- [ ] Backspace at start of heading updates toolbar from "Heading N" to "Paragraph"
-- [ ] Heading-to-paragraph conversion syncs correctly to CM source
-- [x] Backspace in middle of heading works normally (deletes character)
-
-## Undo/Redo
-- [ ] Cursor restored to correct block element (source-line) after undo
-- [ ] Cursor restored to correct offset within block after undo
-- [ ] Undo/redo cursor works when editing at different positions in document
-- [ ] Typing in CM and undoing in CM doesn't interfere with md editor
-- [ ] Multiple rapid edits can be undone one by one
-
 ## In-Document Search (Ctrl+F)
 - [ ] Ctrl+F opens search bar in md viewer (both edit and reader mode)
 - [ ] Ctrl+F with text selected pre-fills search and highlights closest match as active
