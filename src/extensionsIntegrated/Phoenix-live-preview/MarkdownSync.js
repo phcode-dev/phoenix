@@ -44,6 +44,8 @@ define(function (require, exports, module) {
     let _docChangeHandler = null;
     let _themeChangeHandler = null;
     let _cursorHandler = null;
+    let _focusHandler = null;
+    let _changeHandler = null;
     let _onEditModeRequest = null;
     let _onIframeReadyCallback = null;
     let _cursorSyncEnabled = true;
@@ -205,20 +207,26 @@ define(function (require, exports, module) {
         const cm = _getCM();
         _activeCM = cm;
         if (cm) {
-            cm.on("cursorActivity", _cursorHandler);
             // Clear sync highlight when CM gets focus (user is editing in CM)
-            cm.on("focus", function () {
+            _focusHandler = function () {
                 if (_highlightLineHandle) {
                     cm.removeLineClass(_highlightLineHandle, "background", "cm-cursor-sync-highlight");
                     _highlightLineHandle = null;
                 }
-            });
+            };
             // Listen for change origin (undo/redo detection)
-            cm.on("change", function (_cm, changeObj) {
+            _changeHandler = function (_cm, changeObj) {
                 if (changeObj) {
                     _lastChangeOrigin = changeObj.origin;
                 }
-            });
+            };
+            // off→on to prevent duplicate listeners on re-activation
+            cm.off("cursorActivity", _cursorHandler);
+            cm.on("cursorActivity", _cursorHandler);
+            cm.off("focus", _focusHandler);
+            cm.on("focus", _focusHandler);
+            cm.off("change", _changeHandler);
+            cm.on("change", _changeHandler);
         }
 
         // If iframe is already ready (reusing same iframe), switch file using cache
@@ -241,10 +249,20 @@ define(function (require, exports, module) {
         clearTimeout(_scrollSyncTimer);
         clearTimeout(_selectionSyncTimer);
 
-        if (_cursorHandler) {
-            const cm = _getCM();
-            if (cm) {
+        const cm = _getCM();
+        if (cm) {
+            if (_cursorHandler) {
                 cm.off("cursorActivity", _cursorHandler);
+            }
+            if (_focusHandler) {
+                cm.off("focus", _focusHandler);
+            }
+            if (_changeHandler) {
+                cm.off("change", _changeHandler);
+            }
+            if (_highlightLineHandle) {
+                cm.removeLineClass(_highlightLineHandle, "background", "cm-cursor-sync-highlight");
+                _highlightLineHandle = null;
             }
         }
 
@@ -269,6 +287,8 @@ define(function (require, exports, module) {
         _messageHandler = null;
         _themeChangeHandler = null;
         _cursorHandler = null;
+        _focusHandler = null;
+        _changeHandler = null;
     }
 
     /**
