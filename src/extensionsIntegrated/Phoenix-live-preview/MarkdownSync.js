@@ -183,9 +183,14 @@ define(function (require, exports, module) {
         };
         ThemeManager.on("themeChange", _themeChangeHandler);
 
-        // Listen for cursor activity in CM5 for scroll sync and selection sync (CM5 → iframe)
+        // Listen for cursor activity in CM5 for scroll sync, selection sync, and toolbar state (CM5 → iframe)
         _cursorHandler = function () {
-            if (_syncingFromIframe || !_iframeReady || !_cursorSyncEnabled) {
+            if (_syncingFromIframe || !_iframeReady) {
+                return;
+            }
+            // Toolbar state sync always runs (independent of cursor sync toggle)
+            _syncToolbarStateToIframe();
+            if (!_cursorSyncEnabled) {
                 return;
             }
             clearTimeout(_scrollSyncTimer);
@@ -506,6 +511,82 @@ define(function (require, exports, module) {
         iframeWindow.postMessage({
             type: "MDVIEWR_SCROLL_TO_LINE",
             line: line
+        }, "*");
+    }
+
+    /**
+     * Parse the current CM line to determine the block type and formatting context,
+     * then send it to the iframe so the toolbar can reflect CM cursor position.
+     */
+    function _syncToolbarStateToIframe() {
+        if (!_active || !_iframeReady) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        if (!iframeWindow) {
+            return;
+        }
+        const cm = _getCM();
+        if (!cm) {
+            return;
+        }
+        const cursor = cm.getCursor();
+        const lineText = cm.getLine(cursor.line) || "";
+        const trimmed = lineText.trimStart();
+
+        // Determine block type from markdown syntax
+        let blockType = "P";
+        if (/^#{1}\s/.test(trimmed)) { blockType = "H1"; }
+        else if (/^#{2}\s/.test(trimmed)) { blockType = "H2"; }
+        else if (/^#{3}\s/.test(trimmed)) { blockType = "H3"; }
+        else if (/^#{4}\s/.test(trimmed)) { blockType = "H4"; }
+        else if (/^#{5}\s/.test(trimmed)) { blockType = "H5"; }
+        else if (/^#{6}\s/.test(trimmed)) { blockType = "H6"; }
+
+        // Check context by scanning surrounding lines
+        let inList = /^\s*[-*+]\s/.test(lineText) || /^\s*\d+\.\s/.test(lineText);
+        let inTable = lineText.trim().startsWith("|") && lineText.trim().endsWith("|");
+        let inCodeBlock = false;
+
+        // Check if we're inside a fenced code block by counting ``` above
+        let fenceCount = 0;
+        for (let i = 0; i < cursor.line; i++) {
+            if (/^```/.test(cm.getLine(i).trimStart())) {
+                fenceCount++;
+            }
+        }
+        inCodeBlock = fenceCount % 2 === 1;
+
+        // Detect formatting around cursor
+        let bold = false;
+        let italic = false;
+        let underline = false;
+        let strikethrough = false;
+
+        // Simple inline format detection: check if cursor is within ** ** or * * etc.
+        const beforeCursor = lineText.substring(0, cursor.ch);
+        const afterCursor = lineText.substring(cursor.ch);
+        const fullContext = beforeCursor + afterCursor;
+        // Count unescaped markers before cursor
+        const boldBefore = (beforeCursor.match(/\*\*/g) || []).length;
+        const italicBefore = (beforeCursor.replace(/\*\*/g, "").match(/\*/g) || []).length;
+        bold = boldBefore % 2 === 1;
+        italic = italicBefore % 2 === 1;
+        strikethrough = (beforeCursor.match(/~~/g) || []).length % 2 === 1;
+
+        iframeWindow.postMessage({
+            type: "MDVIEWR_TOOLBAR_STATE",
+            state: {
+                blockType: blockType,
+                bold: bold,
+                italic: italic,
+                underline: underline,
+                strikethrough: strikethrough,
+                inTable: inTable,
+                inList: inList,
+                inCodeBlock: inCodeBlock,
+                inHeading: blockType !== "P"
+            }
         }, "*");
     }
 
