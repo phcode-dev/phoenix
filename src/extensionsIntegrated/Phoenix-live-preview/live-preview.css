@@ -248,3 +248,8 @@
 .live-preview-overlay-close:hover {
     color: #fff;
 }
+
+/* Persistent cursor-sync highlight on CM line corresponding to md viewer cursor */
+.cm-cursor-sync-highlight {
+    background-color: rgba(100, 150, 255, 0.18) !important;
+}

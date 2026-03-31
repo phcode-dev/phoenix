@@ -206,6 +206,13 @@ define(function (require, exports, module) {
         _activeCM = cm;
         if (cm) {
             cm.on("cursorActivity", _cursorHandler);
+            // Clear sync highlight when CM gets focus (user is editing in CM)
+            cm.on("focus", function () {
+                if (_highlightLineHandle) {
+                    cm.removeLineClass(_highlightLineHandle, "background", "cm-cursor-sync-highlight");
+                    _highlightLineHandle = null;
+                }
+            });
             // Listen for change origin (undo/redo detection)
             cm.on("change", function (_cm, changeObj) {
                 if (changeObj) {
@@ -622,6 +629,18 @@ define(function (require, exports, module) {
             const targetScrollTop = lineTop - (scrollInfo.clientHeight / 2);
             cm.scrollTo(null, targetScrollTop);
         }
+
+        // Brief flash on the CM line to show cursor sync feedback
+        _flashCMLine(cm, cmLine);
+    }
+
+    let _highlightLineHandle = null;
+
+    function _flashCMLine(cm, line) {
+        if (_highlightLineHandle) {
+            cm.removeLineClass(_highlightLineHandle, "background", "cm-cursor-sync-highlight");
+        }
+        _highlightLineHandle = cm.addLineClass(line, "background", "cm-cursor-sync-highlight");
     }
 
     // --- Selection sync ---
@@ -690,6 +709,7 @@ define(function (require, exports, module) {
         if (!selectedText) {
             // No selection — just move cursor to clear any existing selection
             cm.setCursor({ line: cmLine, ch: 0 });
+            _flashCMLine(cm, cmLine);
             _syncingFromIframe = false;
             return;
         }

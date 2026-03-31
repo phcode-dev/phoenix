@@ -836,7 +836,22 @@ function handleScrollToLine(data) {
     if (!isVisible) {
         bestEl.scrollIntoView({ behavior: "instant", block: "center" });
     }
+
+    // Persistent highlight on the element corresponding to the CM cursor.
+    // Only show when CM has focus (not when viewer has focus).
+    const prev = viewer.querySelector(".cursor-sync-highlight");
+    if (prev) { prev.classList.remove("cursor-sync-highlight"); }
+    bestEl.classList.add("cursor-sync-highlight");
 }
+
+// Clear viewer highlight when viewer gets focus (user is editing in viewer)
+document.addEventListener("focusin", (e) => {
+    const viewer = document.getElementById("viewer-content");
+    if (viewer && viewer.contains(e.target)) {
+        const prev = viewer.querySelector(".cursor-sync-highlight");
+        if (prev) { prev.classList.remove("cursor-sync-highlight"); }
+    }
+});
 
 // --- Selection sync ---
 
