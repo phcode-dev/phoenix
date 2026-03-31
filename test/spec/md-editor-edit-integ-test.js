@@ -59,9 +59,6 @@ define(function (require, exports, module) {
         // (attaches checkboxHandler, inputHandler, etc.)
         if (win && win.__setEditModeForTest) {
             win.__setEditModeForTest(false);
-        }
-        _setMdEditMode(true);
-        if (win && win.__setEditModeForTest) {
             win.__setEditModeForTest(true);
         }
         await awaitsFor(() => {
@@ -73,7 +70,6 @@ define(function (require, exports, module) {
     }
 
     async function _enterReaderMode() {
-        _setMdEditMode(false);
         const win = _getMdIFrameWin();
         if (win && win.__setEditModeForTest) {
             win.__setEditModeForTest(false);
@@ -990,6 +986,275 @@ define(function (require, exports, module) {
                     "force close");
             }, 10000);
 
+        });
+
+        describe("UL/OL Toggle (List Type Switching)", function () {
+
+            async function _openMdFile(fileName) {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                    "open " + fileName);
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+            }
+
+            function _placeCursorInElement(el, offset) {
+                const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
+                const range = mdDoc.createRange();
+                const textNode = el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE
+                    ? el.firstChild : el;
+                if (textNode.nodeType === Node.TEXT_NODE) {
+                    range.setStart(textNode, Math.min(offset || 0, textNode.textContent.length));
+                } else {
+                    range.setStart(textNode, 0);
+                }
+                range.collapse(true);
+                const sel = win.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            function _findLiByText(text) {
+                const mdDoc = _getMdIFrameDoc();
+                const items = mdDoc.querySelectorAll("#viewer-content li");
+                for (const li of items) {
+                    if (li.textContent.trim().includes(text)) {
+                        return li;
+                    }
+                }
+                return null;
+            }
+
+            it("should clicking UL button when in OL switch list to unordered", async function () {
+                await _openMdFile("list-test.md");
+                await _enterReaderMode();
+                await _enterEditMode();
+
+                // Place cursor in an ordered list item
+                const olLi = _findLiByText("First ordered");
+                expect(olLi).not.toBeNull();
+                expect(olLi.closest("ol")).not.toBeNull();
+                _placeCursorInElement(olLi, 0);
+
+                // Trigger selectionchange so toolbar updates
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                // Click UL button
+                const ulBtn = mdDoc.getElementById("emb-ul");
+                expect(ulBtn).not.toBeNull();
+                ulBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+                // The list should now be a UL
+                await awaitsFor(() => {
+                    return olLi.closest("ul") !== null && olLi.closest("ol") === null;
+                }, "ordered list to switch to unordered");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should clicking OL button when in UL switch list to ordered", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                // Place cursor in an unordered list item
+                const ulLi = _findLiByText("First item");
+                expect(ulLi).not.toBeNull();
+                expect(ulLi.closest("ul")).not.toBeNull();
+                _placeCursorInElement(ulLi, 0);
+
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                // Click OL button
+                const olBtn = mdDoc.getElementById("emb-ol");
+                expect(olBtn).not.toBeNull();
+                olBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+                // The list should now be an OL
+                await awaitsFor(() => {
+                    return ulLi.closest("ol") !== null && ulLi.closest("ul") === null;
+                }, "unordered list to switch to ordered");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should UL/OL toggle preserve list content and nesting", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                // Find ordered list and remember its content
+                const olLi = _findLiByText("First ordered");
+                expect(olLi).not.toBeNull();
+                const ol = olLi.closest("ol");
+                const itemTexts = Array.from(ol.querySelectorAll(":scope > li"))
+                    .map(li => li.textContent.trim());
+                expect(itemTexts.length).toBeGreaterThan(0);
+
+                _placeCursorInElement(olLi, 0);
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                // Switch to UL
+                mdDoc.getElementById("emb-ul").dispatchEvent(
+                    new MouseEvent("mousedown", { bubbles: true }));
+
+                await awaitsFor(() => olLi.closest("ul") !== null,
+                    "list to switch to UL");
+
+                // Verify content preserved
+                const newList = olLi.closest("ul");
+                const newTexts = Array.from(newList.querySelectorAll(":scope > li"))
+                    .map(li => li.textContent.trim());
+                expect(newTexts).toEqual(itemTexts);
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+
+            it("should toolbar UL button show active state when cursor in UL", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const ulLi = _findLiByText("First item");
+                _placeCursorInElement(ulLi, 0);
+
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                // Wait for toolbar state update
+                await awaitsFor(() => {
+                    const ulBtn = mdDoc.getElementById("emb-ul");
+                    return ulBtn && ulBtn.getAttribute("aria-pressed") === "true";
+                }, "UL button to show active state");
+
+                const olBtn = mdDoc.getElementById("emb-ol");
+                expect(olBtn.getAttribute("aria-pressed")).toBe("false");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should toolbar OL button show active state when cursor in OL", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const olLi = _findLiByText("First ordered");
+                _placeCursorInElement(olLi, 0);
+
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                await awaitsFor(() => {
+                    const olBtn = mdDoc.getElementById("emb-ol");
+                    return olBtn && olBtn.getAttribute("aria-pressed") === "true";
+                }, "OL button to show active state");
+
+                const ulBtn = mdDoc.getElementById("emb-ul");
+                expect(ulBtn.getAttribute("aria-pressed")).toBe("false");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should block-level buttons be hidden when cursor is in list", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const ulLi = _findLiByText("First item");
+                _placeCursorInElement(ulLi, 0);
+
+                const mdDoc = _getMdIFrameDoc();
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                // Wait for toolbar update
+                await awaitsFor(() => {
+                    const quoteBtn = mdDoc.getElementById("emb-quote");
+                    return quoteBtn && quoteBtn.style.display === "none";
+                }, "block buttons to be hidden in list");
+
+                // Block-level buttons should be hidden
+                const blockIds = ["emb-quote", "emb-hr", "emb-table", "emb-codeblock"];
+                for (const id of blockIds) {
+                    const btn = mdDoc.getElementById(id);
+                    if (btn) {
+                        expect(btn.style.display).toBe("none");
+                    }
+                }
+
+                // Block type selector should be hidden
+                const blockTypeSelect = mdDoc.getElementById("emb-block-type");
+                if (blockTypeSelect) {
+                    expect(blockTypeSelect.style.display).toBe("none");
+                }
+
+                // List buttons should remain visible
+                const ulBtn = mdDoc.getElementById("emb-ul");
+                const olBtn = mdDoc.getElementById("emb-ol");
+                expect(ulBtn.style.display).not.toBe("none");
+                expect(olBtn.style.display).not.toBe("none");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
+
+            it("should moving cursor out of list restore all toolbar buttons", async function () {
+                await _openMdFile("list-test.md");
+                await _enterEditMode();
+
+                const mdDoc = _getMdIFrameDoc();
+
+                // First place cursor in list — block buttons hidden
+                const ulLi = _findLiByText("First item");
+                _placeCursorInElement(ulLi, 0);
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                await awaitsFor(() => {
+                    const quoteBtn = mdDoc.getElementById("emb-quote");
+                    return quoteBtn && quoteBtn.style.display === "none";
+                }, "block buttons to be hidden in list");
+
+                // Now move cursor to a paragraph outside the list
+                const paragraphs = mdDoc.querySelectorAll("#viewer-content > p");
+                let targetP = null;
+                for (const p of paragraphs) {
+                    if (p.textContent.includes("End of list test")) {
+                        targetP = p;
+                        break;
+                    }
+                }
+                expect(targetP).not.toBeNull();
+                const range = mdDoc.createRange();
+                range.setStart(targetP.firstChild, 0);
+                range.collapse(true);
+                _getMdIFrameWin().getSelection().removeAllRanges();
+                _getMdIFrameWin().getSelection().addRange(range);
+                mdDoc.dispatchEvent(new Event("selectionchange"));
+
+                // Block buttons should be restored
+                await awaitsFor(() => {
+                    const quoteBtn = mdDoc.getElementById("emb-quote");
+                    return quoteBtn && quoteBtn.style.display !== "none";
+                }, "block buttons to be restored outside list");
+
+                const blockIds = ["emb-quote", "emb-hr", "emb-table", "emb-codeblock"];
+                for (const id of blockIds) {
+                    const btn = mdDoc.getElementById(id);
+                    if (btn) {
+                        expect(btn.style.display).not.toBe("none");
+                    }
+                }
+
+                const blockTypeSelect = mdDoc.getElementById("emb-block-type");
+                if (blockTypeSelect) {
+                    expect(blockTypeSelect.style.display).not.toBe("none");
+                }
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 10000);
         });
     });
 });

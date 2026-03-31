@@ -36,17 +36,17 @@
 - [ ] Add-column button visible when table is active (cursor inside)
 
 ## UL/OL Toggle (List Type Switching)
-- [ ] Clicking UL button when in OL switches nearest parent list to `<ul>`
-- [ ] Clicking OL button when in UL switches nearest parent list to `<ol>`
+- [x] Clicking UL button when in OL switches nearest parent list to `<ul>`
+- [x] Clicking OL button when in UL switches nearest parent list to `<ol>`
 - [ ] UL/OL toggle only affects nearest parent list (not all ancestor lists)
-- [ ] UL/OL toggle preserves list content and nesting
+- [x] UL/OL toggle preserves list content and nesting
 - [ ] UL/OL toggle syncs to CM (e.g. `1. item` → `- item`)
-- [ ] Toolbar UL button shows active state when cursor is in UL
-- [ ] Toolbar OL button shows active state when cursor is in OL
-- [ ] Block-level buttons (quote, hr, table, codeblock) hidden when cursor is in list
-- [ ] Block type selector (Paragraph/H1/H2/H3) hidden when cursor is in list
-- [ ] List buttons remain visible when cursor is in list (for UL/OL switching)
-- [ ] Moving cursor out of list restores all toolbar buttons
+- [x] Toolbar UL button shows active state when cursor is in UL
+- [x] Toolbar OL button shows active state when cursor is in OL
+- [x] Block-level buttons (quote, hr, table, codeblock) hidden when cursor is in list
+- [x] Block type selector (Paragraph/H1/H2/H3) hidden when cursor is in list
+- [x] List buttons remain visible when cursor is in list (for UL/OL switching)
+- [x] Moving cursor out of list restores all toolbar buttons
 
 ## Image Handling
 - [ ] Images not reloaded when editing text in CM (DOM nodes preserved)
