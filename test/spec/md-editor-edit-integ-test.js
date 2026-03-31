@@ -128,11 +128,6 @@ define(function (require, exports, module) {
                 await awaitsFor(() =>
                     LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
                 "live dev to open", 20000);
-
-                // Open the checkbox test md file
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["checkbox-test.md"]),
-                    "open checkbox-test.md");
-                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
             }
         }, 30000);
 
@@ -154,6 +149,12 @@ define(function (require, exports, module) {
         }, 30000);
 
         describe("Checkbox (Task List) Sync", function () {
+
+            beforeAll(async function () {
+                // Ensure clean md state by switching HTML→MD
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html to reset md state");
+            }, 10000);
 
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
@@ -238,6 +239,11 @@ define(function (require, exports, module) {
         });
 
         describe("Code Block Editing", function () {
+
+            beforeAll(async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html to reset md state");
+            }, 10000);
 
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
@@ -616,6 +622,11 @@ define(function (require, exports, module) {
 
         describe("List Editing", function () {
 
+            beforeAll(async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html to reset md state");
+            }, 10000);
+
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
@@ -988,7 +999,9 @@ define(function (require, exports, module) {
                 "End of list test.\n";
 
             beforeAll(async function () {
-                // Open file once — keep it open for all tests in this describe
+                // Reset md state then open file
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html to reset md state");
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["list-test.md"]),
                     "open list-test.md");
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());
@@ -1234,6 +1247,8 @@ define(function (require, exports, module) {
                 "## Heading Two\n\nAnother paragraph.\n\n### Heading Three\n\nFinal paragraph.\n";
 
             beforeAll(async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html to reset md state");
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["heading-test.md"]),
                     "open heading-test.md");
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());

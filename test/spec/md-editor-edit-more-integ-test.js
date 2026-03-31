@@ -170,8 +170,19 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["doc1.md"]),
                     "open doc1.md");
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                // Reset cache after iframe is ready (clears stale entries from prior suites)
+                const win = _getMdIFrameWin();
+                if (win && win.__resetCacheForTest) {
+                    win.__resetCacheForTest();
+                }
+                // Re-open to get a fresh render after cache reset
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html to reset");
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["doc1.md"]),
+                    "reopen doc1.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
                 await _enterEditMode();
-            }, 15000);
+            }, 20000);
 
             afterAll(async function () {
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),

@@ -266,6 +266,17 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["test-shortcuts.md"]),
                     "open test-shortcuts.md");
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                // Reset iframe doc cache for predictable test state
+                const win = _getMdIFrameWin();
+                if (win && win.__resetCacheForTest) {
+                    win.__resetCacheForTest();
+                }
+                // Re-open to get fresh render after cache reset
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "open simple1.html to reset");
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["test-shortcuts.md"]),
+                    "reopen test-shortcuts.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
                 testFilePath = testFolder + "/test-shortcuts.md";
             }
         }, 30000);
