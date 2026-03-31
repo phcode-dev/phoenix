@@ -413,6 +413,7 @@ export function executeFormat(contentEl, command, value) {
                         const newList = document.createElement(targetTag);
                         while (listEl.firstChild) newList.appendChild(listEl.firstChild);
                         listEl.parentNode.replaceChild(newList, listEl);
+                        contentEl.dispatchEvent(new Event("input", { bubbles: true }));
                     }
                 }
                 // Already the right type — do nothing
