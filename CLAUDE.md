@@ -38,6 +38,7 @@ Use `exec_js` to run JS in the Phoenix browser runtime. jQuery `$()` is global. 
 - **Never use `awaits(number)`** (fixed-time waits) in tests — they cause flaky failures. Always use `awaitsFor(condition)` to wait for a specific condition to become true.
 - Use `editor.*` APIs (e.g. `editor.document.getText()`, `editor.getCursorPos()`, `editor.setSelection()`) instead of accessing `editor._codeMirror` directly.
 - Tests should be independent — no shared mutable state between `it()` blocks. Use `FILE_CLOSE` with `{ _forceClose: true }` to clean up.
+- For markdown viewer/live preview architecture, test patterns, and debugging — see `src-mdviewer/CLAUDE-markdown-viewer.md`.
 
 ## Running Tests via MCP
 
