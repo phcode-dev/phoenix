@@ -842,7 +842,38 @@ function handleScrollToLine(data) {
     const prev = viewer.querySelector(".cursor-sync-highlight");
     if (prev) { prev.classList.remove("cursor-sync-highlight"); }
     bestEl.classList.add("cursor-sync-highlight");
+    _lastHighlightSourceLine = bestLine;
 }
+
+// Track last highlighted source line so we can re-apply after re-renders
+let _lastHighlightSourceLine = null;
+
+function _reapplyCursorSyncHighlight() {
+    if (_lastHighlightSourceLine == null) return;
+    const viewer = document.getElementById("viewer-content");
+    if (!viewer) return;
+    // Don't re-apply if viewer has focus (user is editing in viewer)
+    if (viewer.contains(document.activeElement)) return;
+    const elements = viewer.querySelectorAll("[data-source-line]");
+    let bestEl = null;
+    let bestLine = -1;
+    for (const el of elements) {
+        const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
+        if (srcLine <= _lastHighlightSourceLine && srcLine > bestLine) {
+            bestLine = srcLine;
+            bestEl = el;
+        }
+    }
+    if (bestEl) {
+        bestEl.classList.add("cursor-sync-highlight");
+    }
+}
+
+// Re-apply cursor sync highlight after content re-renders (e.g. typing in CM)
+on("file:rendered", () => {
+    // Small delay to let morphdom finish updating the DOM
+    requestAnimationFrame(_reapplyCursorSyncHighlight);
+});
 
 // Clear viewer highlight when viewer gets focus (user is editing in viewer)
 document.addEventListener("focusin", (e) => {
@@ -850,6 +881,7 @@ document.addEventListener("focusin", (e) => {
     if (viewer && viewer.contains(e.target)) {
         const prev = viewer.querySelector(".cursor-sync-highlight");
         if (prev) { prev.classList.remove("cursor-sync-highlight"); }
+        _lastHighlightSourceLine = null;
     }
 });
 
