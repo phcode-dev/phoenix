@@ -199,7 +199,7 @@ define(function (require, exports, module) {
      * @param {Object} editor - The active Editor instance whose content should be synced to the viewer.
      */
     async function _waitForMdPreviewReady(editor) {
-        const expectedSrc = editor ? editor._codeMirror.getValue() : null;
+        const expectedSrc = editor ? editor.document.getText() : null;
         await awaitsFor(() => {
             const mdIFrame = _getMdPreviewIFrame();
             if (!mdIFrame || mdIFrame.style.display === "none") { return false; }
@@ -294,8 +294,7 @@ define(function (require, exports, module) {
         async function _resetFileContent() {
             const editor = EditorManager.getActiveEditor();
             if (editor && editor.document) {
-                const cm = editor._codeMirror;
-                cm.setValue(ORIGINAL_MD_CONTENT);
+                editor.document.setText(ORIGINAL_MD_CONTENT);
                 await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE), "save after reset");
                 await awaitsFor(() => !editor.document.isDirty, "document to be clean after reset save");
                 await awaitsFor(() => {
@@ -333,16 +332,14 @@ define(function (require, exports, module) {
 
                 // Make a small edit in CM to dirty the document
                 const editor = EditorManager.getActiveEditor();
-                const cm = editor._codeMirror;
-                const doc = editor.document;
-                cm.replaceRange(" ", { line: 0, ch: 0 });
+                editor.replaceRange(" ", { line: 0, ch: 0 });
 
-                await awaitsFor(() => doc.isDirty, "document to become dirty");
+                await awaitsFor(() => editor.document.isDirty, "document to become dirty");
 
                 // Dispatch Ctrl+S in the md iframe — should trigger save
                 _dispatchKeyInMdIframe("s");
 
-                await awaitsFor(() => !doc.isDirty, "document to be saved (dirty flag cleared)");
+                await awaitsFor(() => !editor.document.isDirty, "document to be saved (dirty flag cleared)");
             }, 10000);
 
             it("should Ctrl+Shift+F in edit mode open Find in Files", async function () {
@@ -942,15 +939,15 @@ define(function (require, exports, module) {
                     // Ensure the CM editor is created by focusing it
                     await awaitsFor(() => {
                         const ed = EditorManager.getActiveEditor();
-                        return ed && ed._codeMirror;
-                    }, "CM editor for long.md to be created");
+                        return ed && ed.document;
+                    }, "editor for long.md to be created");
                     await _enterReaderMode();
                 }
             }, 30000);
 
             function _getCMCursorLine() {
                 const editor = EditorManager.getActiveEditor();
-                return editor ? editor._codeMirror.getCursor().line : -1;
+                return editor ? editor.getCursorPos().line : -1;
             }
 
             function _hasViewerHighlight() {
@@ -963,7 +960,7 @@ define(function (require, exports, module) {
                 // Wait for editor to be fully ready (masterEditor established)
                 await awaitsFor(() => {
                     const ed = EditorManager.getActiveEditor();
-                    return ed && ed._codeMirror && ed.document && ed.document._masterEditor;
+                    return ed && ed.document && ed.document._masterEditor;
                 }, "editor with masterEditor to be ready");
 
                 // Clear any existing highlights
@@ -975,16 +972,15 @@ define(function (require, exports, module) {
                 // Select text in CM and dispatch highlight to iframe.
                 // MarkdownSync sends postMessage as thers some race where the cursor isnt syncing it seems
                 const editor = EditorManager.getActiveEditor();
-                const cm = editor._codeMirror;
-                cm.setSelection({ line: 4, ch: 0 }, { line: 6, ch: 0 });
-                expect(cm.getSelection().length).toBeGreaterThan(0);
+                editor.setSelection({ line: 4, ch: 0 }, { line: 6, ch: 0 });
+                expect(editor.getSelectedText().length).toBeGreaterThan(0);
 
                 const win = _getMdIFrameWin();
                 win.dispatchEvent(new MessageEvent("message", {
                     data: {
                         type: "MDVIEWR_HIGHLIGHT_SELECTION",
                         fromLine: 5, toLine: 7,
-                        selectedText: cm.getSelection()
+                        selectedText: editor.getSelectedText()
                     }
                 }));
 
@@ -1281,10 +1277,10 @@ define(function (require, exports, module) {
                 await _openMdFile("doc2.md");
                 await _enterEditMode();
 
-                const cm = EditorManager.getActiveEditor()._codeMirror;
-                const lastLine = cm.lastLine();
-                cm.replaceRange("\n\n[CM Link](https://cm-link-test.example.com)\n",
-                    { line: lastLine, ch: cm.getLine(lastLine).length });
+                const editor = EditorManager.getActiveEditor();
+                const lastLine = editor.lineCount() - 1;
+                editor.replaceRange("\n\n[CM Link](https://cm-link-test.example.com)\n",
+                    { line: lastLine, ch: editor.getLine(lastLine).length });
 
                 const mdDoc = _getMdIFrameDoc();
                 await awaitsFor(() => {
@@ -1297,12 +1293,12 @@ define(function (require, exports, module) {
                 await _openMdFile("doc2.md");
                 await _enterEditMode();
 
-                const cm = EditorManager.getActiveEditor()._codeMirror;
-                const val = cm.getValue();
+                const editor = EditorManager.getActiveEditor();
 
                 // Add a link
-                cm.replaceRange("\n[Old Link](https://old-url.example.com)\n",
-                    { line: cm.lastLine(), ch: cm.getLine(cm.lastLine()).length });
+                const lastLine = editor.lineCount() - 1;
+                editor.replaceRange("\n[Old Link](https://old-url.example.com)\n",
+                    { line: lastLine, ch: editor.getLine(lastLine).length });
 
                 const mdDoc = _getMdIFrameDoc();
                 await awaitsFor(() =>
@@ -1310,8 +1306,8 @@ define(function (require, exports, module) {
                 "old link to appear in viewer");
 
                 // Change the URL in CM
-                const cmVal = cm.getValue();
-                cm.setValue(cmVal.replace("https://old-url.example.com", "https://new-url.example.com"));
+                const cmVal = editor.document.getText();
+                editor.document.setText(cmVal.replace("https://old-url.example.com", "https://new-url.example.com"));
 
                 await awaitsFor(() =>
                     mdDoc.querySelector('#viewer-content a[href="https://new-url.example.com"]') !== null,
@@ -1325,11 +1321,12 @@ define(function (require, exports, module) {
                 await _openMdFile("doc3.md");
                 await _enterEditMode();
 
-                const cm = EditorManager.getActiveEditor()._codeMirror;
+                const editor = EditorManager.getActiveEditor();
 
                 // Add a link
-                cm.replaceRange("\n[Remove Me](https://remove-cm.example.com)\n",
-                    { line: cm.lastLine(), ch: cm.getLine(cm.lastLine()).length });
+                const lastLine = editor.lineCount() - 1;
+                editor.replaceRange("\n[Remove Me](https://remove-cm.example.com)\n",
+                    { line: lastLine, ch: editor.getLine(lastLine).length });
 
                 const mdDoc = _getMdIFrameDoc();
                 await awaitsFor(() =>
@@ -1337,8 +1334,8 @@ define(function (require, exports, module) {
                 "link to appear");
 
                 // Remove the link markup — replace [text](url) with just text
-                const cmVal = cm.getValue();
-                cm.setValue(cmVal.replace("[Remove Me](https://remove-cm.example.com)", "Remove Me"));
+                const cmVal = editor.document.getText();
+                editor.document.setText(cmVal.replace("[Remove Me](https://remove-cm.example.com)", "Remove Me"));
 
                 await awaitsFor(() =>
                     mdDoc.querySelector('#viewer-content a[href="https://remove-cm.example.com"]') === null,
@@ -1390,7 +1387,7 @@ define(function (require, exports, module) {
                 // Verify CM source has the edited URL
                 const editor = EditorManager.getActiveEditor();
                 await awaitsFor(() => {
-                    const cmVal = editor._codeMirror.getValue();
+                    const cmVal = editor.document.getText();
                     return cmVal.includes("https://edited-popover.example.com") &&
                         !cmVal.includes("test-link-doc2.example.com");
                 }, "CM source to contain edited URL and not old URL");
@@ -1434,7 +1431,7 @@ define(function (require, exports, module) {
                 // Verify CM source has link text but no markdown link syntax
                 const editor = EditorManager.getActiveEditor();
                 await awaitsFor(() => {
-                    const cmVal = editor._codeMirror.getValue();
+                    const cmVal = editor.document.getText();
                     return cmVal.includes("Remove Link") &&
                         !cmVal.includes("[Remove Link](https://remove-link-doc3.example.com)");
                 }, "CM source to have plain text without link markdown");

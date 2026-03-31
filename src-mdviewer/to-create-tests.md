@@ -2,16 +2,16 @@
 
 ## Cursor/Scroll Sync
 - [ ] Clicking in CM scrolls md viewer to corresponding element
-- [ ] Clicking in md viewer scrolls CM to corresponding line (centered)
-- [ ] Cursor sync toggle button disables/enables bidirectional sync
+- [x] Clicking in md viewer scrolls CM to corresponding line (centered)
+- [x] Cursor sync toggle button disables/enables bidirectional sync
 - [ ] Cursor sync toggle state preserved across toolbar re-renders (file switch, mode toggle)
 - [ ] Content sync still works when cursor sync is disabled
 - [ ] Cursor sync toggle works in both reader and edit mode
 - [ ] Disabling cursor sync in reader mode prevents CM scroll on click
 - [ ] Cursor sync works on newly edited elements after edit→reader switch
 - [ ] Edit→reader switch re-renders from CM content (data-source-line attrs refreshed)
-- [ ] Switching MD files preserves current edit/reader mode
-- [ ] Edit mode not reset when switching between MD files
+- [x] Switching MD files preserves current edit/reader mode
+- [x] Edit mode not reset when switching between MD files
 
 ## Edit Mode & Entitlement Gating
 - [ ] Free user sees Edit button → clicking shows upsell dialog
@@ -29,7 +29,12 @@
 ## Format Bar & Link Popover
 - [x] Format bar element exists in DOM with bold/italic/underline/link buttons
 - [x] Link popover element exists in DOM
+- [x] Adding link in CM shows it in md viewer
+- [x] Editing link URL in CM updates it in md viewer
+- [x] Removing link markup in CM removes link from md viewer
 - [ ] Format bar appears on text selection (visual — needs real mouse interaction)
+- [x] Link popover edit URL via popover syncs to CM
+- [x] Link popover remove link via popover syncs to CM
 - [ ] Link popover URL opens in default browser (not Electron window)
 - [ ] Escape in lang picker only dismisses picker, refocuses editor
 
@@ -47,8 +52,8 @@
 - [ ] Slash menu works at bottom of a long scrolled document
 
 ## Keyboard Shortcut Focus
-- [ ] Ctrl+S saves file and keeps focus in md editor (not CM)
-- [ ] Forwarded shortcuts refocus md editor after Phoenix handles them
+- [x] Ctrl+S saves file and keeps focus in md editor (not CM)
+- [x] Forwarded shortcuts refocus md editor after Phoenix handles them
 
 ## Code Block Editing
 - [ ] ArrowDown on last line of code block exits to paragraph below
@@ -147,8 +152,8 @@
 - [ ] Backspace in middle of heading works normally (deletes character)
 
 ## Undo/Redo
-- [ ] Ctrl+Z undoes change in both md editor and CM (single undo stack)
-- [ ] Ctrl+Shift+Z / Ctrl+Y redoes change in both
+- [x] Ctrl+Z undoes change in both md editor and CM (single undo stack)
+- [x] Ctrl+Shift+Z / Ctrl+Y redoes change in both
 - [ ] Cursor restored to correct block element (source-line) after undo
 - [ ] Cursor restored to correct offset within block after undo
 - [ ] Undo/redo cursor works when editing at different positions in document
