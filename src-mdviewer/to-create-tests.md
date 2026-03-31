@@ -35,19 +35,6 @@
 - [ ] Add-column button (+) has visible dashed border matching add-row button style
 - [ ] Add-column button visible when table is active (cursor inside)
 
-## List Editing
-- [x] Enter in a list item splits content at cursor into two `<li>` elements
-- [x] Enter on empty list item exits list and creates paragraph below
-- [x] Shift+Enter in list item inserts `<br>` (line break within same bullet)
-- [x] Tab in list item indents it (nests inside sub-list under previous sibling)
-- [x] Shift+Tab in list item outdents it to parent level
-- [x] Shift+Tab outdent preserves trailing siblings as sub-list of moved item
-- [x] Tab at first list item (no previous sibling) does nothing
-- [x] Cursor position preserved after Tab indent
-- [ ] Cursor position preserved after Shift+Tab outdent
-- [x] Enter in list creates proper `<li>` that syncs to markdown `- ` or `1. ` in CM
-- [ ] Nested list indentation syncs correctly to markdown (2 or 4 space indent)
-
 ## UL/OL Toggle (List Type Switching)
 - [ ] Clicking UL button when in OL switches nearest parent list to `<ul>`
 - [ ] Clicking OL button when in UL switches nearest parent list to `<ol>`
