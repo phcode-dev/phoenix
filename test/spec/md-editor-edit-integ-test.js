@@ -718,10 +718,24 @@ define(function (require, exports, module) {
                 // Press Enter
                 _dispatchKey("Enter");
 
-                // Should have one more li
+                // Should have one more li with content split correctly
                 await awaitsFor(() => {
-                    return parentUl.querySelectorAll(":scope > li").length > itemCountBefore;
-                }, "new li to be created after Enter");
+                    const lis = Array.from(parentUl.querySelectorAll(":scope > li"));
+                    if (lis.length <= itemCountBefore) { return false; }
+                    // The original li should no longer contain the full unsplit text
+                    if (targetLi.textContent.includes("Second item with some text")) {
+                        return false;
+                    }
+                    // Find two consecutive lis: one ending with "Second" and next starting with "item"
+                    for (let i = 0; i < lis.length - 1; i++) {
+                        const cur = lis[i].textContent.trim();
+                        const next = lis[i + 1].textContent.trim();
+                        if (cur === "Second" && next.startsWith("item with some text")) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }, "li to split into consecutive 'Second' and 'item with some text'");
 
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close");
@@ -756,7 +770,7 @@ define(function (require, exports, module) {
                     "force close");
             }, 10000);
 
-            it("should Shift+Enter in list item insert line break within same bullet", async function () {
+            it("should Shift+Enter in list item insert line break without creating new bullet", async function () {
                 await _openMdFile("list-test.md");
                 await _enterEditMode();
 
@@ -770,18 +784,27 @@ define(function (require, exports, module) {
                 }
                 expect(targetLi).not.toBeNull();
 
+                const parentUl = targetLi.closest("ul");
+                const itemCountBefore = parentUl.querySelectorAll(":scope > li").length;
+
                 // Place cursor at end of first item
                 _placeCursorAtEnd(targetLi);
 
                 // Press Shift+Enter
                 _dispatchKey("Enter", { shiftKey: true });
 
-                // Should still be in the same li (not a new li)
-                const curEl = _getCursorElement();
-                expect(curEl && curEl.closest("li")).not.toBeNull();
+                // Li count should NOT increase (no new bullet created)
+                expect(parentUl.querySelectorAll(":scope > li").length).toBe(itemCountBefore);
 
-                // The li should contain a <br> (line break)
+                // Should still be in the same li
+                const curEl = _getCursorElement();
+                expect(curEl && curEl.closest("li")).toBe(targetLi);
+
+                // The li should contain a <br> (line break within same bullet)
                 expect(targetLi.querySelector("br")).not.toBeNull();
+
+                // The text content should still be in one li (not split)
+                expect(targetLi.textContent).toContain("First item");
 
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close");
