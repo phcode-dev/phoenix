@@ -35,7 +35,7 @@
 - [ ] Format bar appears on text selection (visual — needs real mouse interaction)
 - [x] Link popover edit URL via popover syncs to CM
 - [x] Link popover remove link via popover syncs to CM
-- [ ] Link popover URL opens in default browser (not Electron window)
+- [x] Link popover URL opens in default browser (not Electron window)
 - [ ] Escape in lang picker only dismisses picker, refocuses editor
 
 ## Empty Line Placeholder

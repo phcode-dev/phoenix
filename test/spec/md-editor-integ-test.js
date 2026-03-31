@@ -28,7 +28,7 @@ define(function (require, exports, module) {
     const mdTestFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-Markdown-test-files");
 
     let testWindow, brackets, CommandManager, Commands, EditorManager, WorkspaceManager,
-        LiveDevMultiBrowser;
+        LiveDevMultiBrowser, NativeApp;
 
     function _getMdPreviewIFrame() {
         return testWindow.document.getElementById("panel-md-preview-frame");
@@ -244,6 +244,7 @@ define(function (require, exports, module) {
                 EditorManager = brackets.test.EditorManager;
                 WorkspaceManager = brackets.test.WorkspaceManager;
                 LiveDevMultiBrowser = brackets.test.LiveDevMultiBrowser;
+                NativeApp = brackets.test.NativeApp;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
                 await SpecRunnerUtils.deletePathAsync(testFolder + "/.phcode.json", true);
@@ -1238,6 +1239,16 @@ define(function (require, exports, module) {
 
         describe("Links & Format Bar", function () {
 
+            let _originalOpenURL;
+
+            beforeAll(function () {
+                _originalOpenURL = NativeApp.openURLInDefaultBrowser;
+            });
+
+            afterAll(function () {
+                NativeApp.openURLInDefaultBrowser = _originalOpenURL;
+            });
+
             async function _openMdFile(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
@@ -1439,6 +1450,72 @@ define(function (require, exports, module) {
                 // Force close without saving
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close doc3.md");
+            }, 15000);
+
+            it("should clicking link in reader mode call openURLInDefaultBrowser", async function () {
+                await _openMdFile("doc2.md");
+                await _enterReaderMode();
+
+                let capturedURL = null;
+                NativeApp.openURLInDefaultBrowser = function (url) {
+                    capturedURL = url;
+                };
+
+                const mdDoc = _getMdIFrameDoc();
+                const link = mdDoc.querySelector('#viewer-content a[href*="test-link-doc2"]');
+                expect(link).not.toBeNull();
+                link.click();
+
+                await awaitsFor(() => capturedURL !== null,
+                    "openURLInDefaultBrowser to be called");
+                expect(capturedURL).toContain("test-link-doc2.example.com");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close doc2.md");
+            }, 10000);
+
+            it("should clicking link in edit mode popover call openURLInDefaultBrowser", async function () {
+                await _openMdFile("doc2.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                let capturedURL = null;
+                NativeApp.openURLInDefaultBrowser = function (url) {
+                    capturedURL = url;
+                };
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                const link = content.querySelector("a[href*='test-link-doc2']");
+                expect(link).not.toBeNull();
+
+                // Place cursor in link to trigger popover
+                const range = mdDoc.createRange();
+                range.selectNodeContents(link);
+                range.collapse(true);
+                _getMdIFrameWin().getSelection().removeAllRanges();
+                _getMdIFrameWin().getSelection().addRange(range);
+                content.dispatchEvent(new KeyboardEvent("keyup", {
+                    key: "ArrowRight", code: "ArrowRight", bubbles: true
+                }));
+
+                await awaitsFor(() => {
+                    const popover = mdDoc.getElementById("link-popover");
+                    return popover && popover.classList.contains("visible");
+                }, "link popover to appear");
+
+                // Click the URL link in the popover
+                const popover = mdDoc.getElementById("link-popover");
+                const popoverLink = popover.querySelector(".link-popover-url");
+                expect(popoverLink).not.toBeNull();
+                popoverLink.click();
+
+                await awaitsFor(() => capturedURL !== null,
+                    "openURLInDefaultBrowser to be called from popover");
+                expect(capturedURL).toContain("test-link-doc2.example.com");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close doc2.md");
             }, 15000);
         });
 
