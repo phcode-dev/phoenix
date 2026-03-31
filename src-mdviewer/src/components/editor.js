@@ -22,6 +22,10 @@ let pasteHandler = null;
 let checkboxHandler = null;
 let selectionHandler = null;
 let selectionFallbackMouseUp = null;
+let _dragScrollInterval = null;
+let _dragOverHandler = null;
+let _dragEndHandler = null;
+let _dragStartHandler = null;
 let selectionFallbackKeyUp = null;
 
 // Platform detection
@@ -2190,6 +2194,43 @@ function enterEditMode(content) {
     content.addEventListener("mouseup", selectionFallbackMouseUp);
     content.addEventListener("keyup", selectionFallbackKeyUp);
 
+    // Drag auto-scroll: scroll when dragging near top/bottom 5% of viewer
+    const appViewer = document.getElementById("app-viewer");
+    _dragStartHandler = (e) => {
+        // Clear image selection on drag start
+        content.querySelectorAll("img.image-selected").forEach(
+            el => el.classList.remove("image-selected"));
+    };
+    _dragOverHandler = (e) => {
+        if (!appViewer) return;
+        const rect = appViewer.getBoundingClientRect();
+        const threshold = rect.height * 0.05;
+        const y = e.clientY - rect.top;
+
+        clearInterval(_dragScrollInterval);
+        if (y < threshold) {
+            // Near top — scroll up
+            const speed = Math.max(2, Math.round((threshold - y) / threshold * 12));
+            _dragScrollInterval = setInterval(() => {
+                appViewer.scrollTop -= speed;
+            }, 16);
+        } else if (y > rect.height - threshold) {
+            // Near bottom — scroll down
+            const speed = Math.max(2, Math.round((y - (rect.height - threshold)) / threshold * 12));
+            _dragScrollInterval = setInterval(() => {
+                appViewer.scrollTop += speed;
+            }, 16);
+        }
+    };
+    _dragEndHandler = () => {
+        clearInterval(_dragScrollInterval);
+        _dragScrollInterval = null;
+    };
+    content.addEventListener("dragstart", _dragStartHandler);
+    content.addEventListener("dragover", _dragOverHandler);
+    content.addEventListener("dragend", _dragEndHandler);
+    content.addEventListener("drop", _dragEndHandler);
+
     initFormatBar(content);
     initLinkPopover(content);
     initImagePopover(content);
@@ -2207,6 +2248,23 @@ function cleanupEditMode(content) {
     codeHighlightTimer = null;
     clearTimeout(contentChangeTimer);
     contentChangeTimer = null;
+
+    // Clean up drag auto-scroll
+    clearInterval(_dragScrollInterval);
+    _dragScrollInterval = null;
+    if (_dragStartHandler) {
+        content.removeEventListener("dragstart", _dragStartHandler);
+        _dragStartHandler = null;
+    }
+    if (_dragOverHandler) {
+        content.removeEventListener("dragover", _dragOverHandler);
+        _dragOverHandler = null;
+    }
+    if (_dragEndHandler) {
+        content.removeEventListener("dragend", _dragEndHandler);
+        content.removeEventListener("drop", _dragEndHandler);
+        _dragEndHandler = null;
+    }
 
     destroyFormatBar();
     destroyLinkPopover();
