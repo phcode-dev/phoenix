@@ -1,26 +1,5 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
-## Slash Menu (/ command)
-- [x] Slash menu appears when typing / at start of line
-- [x] Escape dismisses slash menu
-- [x] Typing after / filters menu items (e.g. /image shows Image items)
-- [ ] Slash menu positioning (visual — needs real viewport)
-- [ ] Arrow down/up scrolls selected item into view
-- [ ] Selected item wraps around (last → first, first → last)
-- [ ] Slash menu works at bottom of a long scrolled document
-
-## Code Block Editing
-- [ ] ArrowDown on last line of code block exits to paragraph below
-- [ ] ArrowDown on last line creates new `<p>` if none exists below
-- [ ] ArrowDown on last line moves to existing next sibling if present
-- [ ] ArrowDown on non-last line navigates normally within code block
-- [ ] Shift+Enter on last line of code block exits to paragraph below
-- [ ] Shift+Enter on non-last line does NOT exit (normal behavior)
-- [ ] Enter inside code block creates new line (not exit)
-- [ ] Code block exit syncs new paragraph to CM source
-- [ ] Intermediate code blocks: Shift+Enter exits on last line
-- [ ] Last code block in document: ArrowDown creates `<p>` and exits
-
 ## Table Editing
 - [ ] Clearing a table cell with backspace produces valid markdown (no broken pipe rows)
 - [ ] Empty table cell renders as `|  |` in markdown source
