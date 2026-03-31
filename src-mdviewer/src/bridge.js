@@ -122,6 +122,9 @@ export function initBridge() {
     window.__getWorkingSetPaths = function () {
         return docCache._getWorkingSetPathsForTest();
     };
+    window.__resetCacheForTest = function () {
+        docCache.clearAll();
+    };
     window.__triggerContentSync = function () {
         const content = document.getElementById("viewer-content");
         if (content) {
