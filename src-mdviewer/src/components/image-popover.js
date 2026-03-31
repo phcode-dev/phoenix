@@ -6,6 +6,9 @@ import { emit, on } from "../core/events.js";
 import { t } from "../core/i18n.js";
 import { getState } from "../core/state.js";
 
+const UPLOAD_PLACEHOLDER_SRC = "https://user-cdn.phcode.site/images/uploading.svg";
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
+
 let popover = null;
 let currentImg = null;
 let contentEl = null;
@@ -199,9 +202,15 @@ function showEditDialog(imgEl, currentSrc, currentAlt) {
                 <input type="text" id="img-edit-alt-input" placeholder="${t("image_dialog.alt_placeholder") || "Image description"}"
                     style="width: 100%; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-bg); color: var(--color-text);" />
             </div>
-            <div class="confirm-dialog-buttons">
-                <button class="confirm-dialog-btn confirm-dialog-btn-cancel" id="img-edit-cancel">${t("dialog.cancel") || "Cancel"}</button>
-                <button class="confirm-dialog-btn confirm-dialog-btn-save" id="img-edit-save">${t("dialog.save") || "Save"}</button>
+            <div class="confirm-dialog-buttons" style="justify-content: space-between;">
+                <button class="confirm-dialog-btn" id="img-edit-upload" style="display: flex; align-items: center; gap: 4px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    ${t("format.image_upload") || "Upload"}
+                </button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="confirm-dialog-btn confirm-dialog-btn-cancel" id="img-edit-cancel">${t("dialog.cancel") || "Cancel"}</button>
+                    <button class="confirm-dialog-btn confirm-dialog-btn-save" id="img-edit-save">${t("dialog.save") || "Save"}</button>
+                </div>
             </div>
         </div>`;
     document.body.appendChild(backdrop);
@@ -232,6 +241,26 @@ function showEditDialog(imgEl, currentSrc, currentAlt) {
             }
         }
         close();
+    });
+
+    backdrop.querySelector("#img-edit-upload").addEventListener("click", () => {
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "image/*";
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files && fileInput.files[0];
+            if (!file || !ALLOWED_IMAGE_TYPES.includes(file.type)) {
+                return;
+            }
+            // Show uploading placeholder on the existing image
+            const origSrc = imgEl.getAttribute("src");
+            const uploadId = crypto.randomUUID();
+            imgEl.setAttribute("src", UPLOAD_PLACEHOLDER_SRC);
+            imgEl.setAttribute("data-upload-id", uploadId);
+            emit("bridge:uploadImage", { blob: file, filename: file.name, uploadId });
+            close();
+        });
+        fileInput.click();
     });
 
     backdrop.addEventListener("keydown", (e) => {
