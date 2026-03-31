@@ -1387,6 +1387,14 @@ define(function (require, exports, module) {
                 // Old URL should be gone
                 expect(content.querySelector("a[href*='test-link-doc2']")).toBeNull();
 
+                // Verify CM source has the edited URL
+                const editor = EditorManager.getActiveEditor();
+                await awaitsFor(() => {
+                    const cmVal = editor._codeMirror.getValue();
+                    return cmVal.includes("https://edited-popover.example.com") &&
+                        !cmVal.includes("test-link-doc2.example.com");
+                }, "CM source to contain edited URL and not old URL");
+
                 // Force close without saving
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close doc2.md");
@@ -1422,6 +1430,14 @@ define(function (require, exports, module) {
                 "link removed from viewer via popover");
 
                 expect(content.textContent).toContain("Remove Link");
+
+                // Verify CM source has link text but no markdown link syntax
+                const editor = EditorManager.getActiveEditor();
+                await awaitsFor(() => {
+                    const cmVal = editor._codeMirror.getValue();
+                    return cmVal.includes("Remove Link") &&
+                        !cmVal.includes("[Remove Link](https://remove-link-doc3.example.com)");
+                }, "CM source to have plain text without link markdown");
 
                 // Force close without saving
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
