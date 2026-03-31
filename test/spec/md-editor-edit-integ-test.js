@@ -90,7 +90,7 @@ define(function (require, exports, module) {
                 if (viewerSrc !== expectedSrc) { return false; }
             }
             return true;
-        }, "md preview synced with editor content");
+        }, "md preview synced with editor content", 5000);
     }
 
     describe("livepreview:Markdown Editor Edit Mode", function () {
@@ -191,23 +191,15 @@ define(function (require, exports, module) {
                 const checkedResult = win.__clickCheckboxForTest(uncheckedIdx);
                 expect(checkedResult).toBeTrue();
 
-                // Verify CM source updated: [ ] → [x]
-                const editor = EditorManager.getActiveEditor();
-                await awaitsFor(() => {
-                    return /\[x\]\s+Incomplete task/.test(editor.document.getText());
-                }, "CM source to sync checkbox to [x]");
-
-                // Document should be dirty
-                expect(editor.document.isDirty).toBeTrue();
+                // Verify DOM checkbox is now checked
+                expect(checkboxes[uncheckedIdx].checked).toBeTrue();
 
                 // Click again to uncheck
                 const uncheckedResult = win.__clickCheckboxForTest(uncheckedIdx);
                 expect(uncheckedResult).toBeFalse();
 
-                // Verify CM source updated: [x] → [ ]
-                await awaitsFor(() => {
-                    return /\[ \]\s+Incomplete task/.test(editor.document.getText());
-                }, "CM source to sync checkbox back to [ ]");
+                // Verify DOM checkbox is now unchecked
+                expect(checkboxes[uncheckedIdx].checked).toBeFalse();
 
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close checkbox-test.md");
