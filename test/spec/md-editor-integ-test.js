@@ -1768,6 +1768,77 @@ define(function (require, exports, module) {
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close doc2.md");
             }, 15000);
+
+            it("should Escape in link edit dialog dismiss dialog and keep focus in md editor", async function () {
+                await _openMdFile("doc2.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+
+                // Click on existing link to trigger popover
+                const link = content.querySelector("a[href*='test-link-doc2']");
+                expect(link).not.toBeNull();
+                const range = mdDoc.createRange();
+                range.selectNodeContents(link);
+                range.collapse(true);
+                _getMdIFrameWin().getSelection().removeAllRanges();
+                _getMdIFrameWin().getSelection().addRange(range);
+                content.dispatchEvent(new KeyboardEvent("keyup", {
+                    key: "ArrowRight", code: "ArrowRight", bubbles: true
+                }));
+
+                // Wait for link popover to appear
+                await awaitsFor(() => {
+                    const popover = mdDoc.getElementById("link-popover");
+                    return popover && popover.classList.contains("visible");
+                }, "link popover to appear");
+
+                // Click Edit button to enter edit mode in popover
+                const popover = mdDoc.getElementById("link-popover");
+                const editBtn = popover.querySelector(".link-popover-edit-btn");
+                expect(editBtn).not.toBeNull();
+                editBtn.click();
+
+                // Wait for edit inputs to be visible
+                await awaitsFor(() => {
+                    const editDiv = popover.querySelector(".link-popover-edit");
+                    return editDiv && editDiv.style.display !== "none";
+                }, "link popover edit mode to be active");
+
+                // Press Escape on the edit input — should dismiss dialog only
+                const popoverInput = popover.querySelector(".link-popover-input");
+                expect(popoverInput).not.toBeNull();
+                popoverInput.dispatchEvent(new KeyboardEvent("keydown", {
+                    key: "Escape", code: "Escape", bubbles: true
+                }));
+
+                // Popover should be dismissed
+                await awaitsFor(() => {
+                    return !popover.classList.contains("visible");
+                }, "link popover to be dismissed after Escape");
+
+                // Focus should remain in md editor, NOT switch to CM
+                await awaitsFor(() => {
+                    return mdDoc.activeElement === content || content.contains(mdDoc.activeElement);
+                }, "focus to remain in md editor after dismissing link dialog");
+
+                // Now press Escape again — this time focus should switch to CM editor
+                content.dispatchEvent(new KeyboardEvent("keydown", {
+                    key: "Escape", code: "Escape", bubbles: true
+                }));
+
+                await awaitsFor(() => {
+                    const activeEl = testWindow.document.activeElement;
+                    return activeEl && (activeEl.classList.contains("CodeMirror") ||
+                        activeEl.tagName === "TEXTAREA" ||
+                        (activeEl.closest && activeEl.closest(".CodeMirror")));
+                }, "focus to switch to CM editor after second Escape");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close doc2.md");
+            }, 15000);
         });
 
         describe("Empty Line Placeholder", function () {
