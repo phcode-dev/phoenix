@@ -970,20 +970,11 @@ define(function (require, exports, module) {
                     el => el.classList.remove("cm-selection-highlight"));
                 expect(_hasViewerHighlight()).toBeFalse();
 
-                // Select text in CM and dispatch highlight to iframe.
-                // MarkdownSync sends postMessage as thers some race where the cursor isnt syncing it seems
+                // Select text in CM — MarkdownSync's cursorActivity handler
+                // debounces and sends MDVIEWR_HIGHLIGHT_SELECTION to the iframe
                 const editor = EditorManager.getActiveEditor();
                 editor.setSelection({ line: 4, ch: 0 }, { line: 6, ch: 0 });
                 expect(editor.getSelectedText().length).toBeGreaterThan(0);
-
-                const win = _getMdIFrameWin();
-                win.dispatchEvent(new MessageEvent("message", {
-                    data: {
-                        type: "MDVIEWR_HIGHLIGHT_SELECTION",
-                        fromLine: 5, toLine: 7,
-                        selectedText: editor.getSelectedText()
-                    }
-                }));
 
                 await awaitsFor(() => _hasViewerHighlight(),
                     "viewer to show selection highlight");
@@ -994,18 +985,14 @@ define(function (require, exports, module) {
             }, 10000);
 
             it("should clear viewer highlight when CM selection is cleared", async function () {
-                // Create highlight
-                const win = _getMdIFrameWin();
-                win.dispatchEvent(new MessageEvent("message", {
-                    data: { type: "MDVIEWR_HIGHLIGHT_SELECTION", fromLine: 5, toLine: 7, selectedText: "text" }
-                }));
+                // Create highlight by selecting in CM
+                const editor = EditorManager.getActiveEditor();
+                editor.setSelection({ line: 4, ch: 0 }, { line: 6, ch: 0 });
                 await awaitsFor(() => _hasViewerHighlight(),
                     "highlight to appear");
 
-                // Clear
-                win.dispatchEvent(new MessageEvent("message", {
-                    data: { type: "MDVIEWR_HIGHLIGHT_SELECTION", fromLine: null, toLine: null, selectedText: null }
-                }));
+                // Clear selection in CM — should clear viewer highlight
+                editor.setCursorPos(0, 0);
 
                 await awaitsFor(() => !_hasViewerHighlight(),
                     "viewer highlight to clear");
@@ -1096,6 +1083,270 @@ define(function (require, exports, module) {
                     return Math.abs(cmLine - (sourceLine - 1)) < 5;
                 }, "CM cursor to move near selected text's source line");
             }, 10000);
+
+            it("should cursor sync toggle state preserve across file switch and mode toggle", async function () {
+                await _enterReaderMode();
+
+                // Disable cursor sync
+                const syncBtn = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                expect(syncBtn).not.toBeNull();
+                syncBtn.click();
+                await awaitsFor(() => !syncBtn.classList.contains("active"),
+                    "cursor sync button to become inactive");
+                expect(syncBtn.getAttribute("aria-pressed")).toBe("false");
+
+                // Switch to another file — toolbar re-renders
+                await _openMdFile("doc1.md");
+                const syncBtnAfterSwitch = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                expect(syncBtnAfterSwitch).not.toBeNull();
+                expect(syncBtnAfterSwitch.classList.contains("active")).toBeFalse();
+                expect(syncBtnAfterSwitch.getAttribute("aria-pressed")).toBe("false");
+
+                // Toggle to edit mode — toolbar re-renders again
+                await _enterEditMode();
+                const syncBtnAfterMode = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                expect(syncBtnAfterMode).not.toBeNull();
+                expect(syncBtnAfterMode.classList.contains("active")).toBeFalse();
+                expect(syncBtnAfterMode.getAttribute("aria-pressed")).toBe("false");
+
+                // Re-enable cursor sync and verify it persists across switch
+                syncBtnAfterMode.click();
+                await awaitsFor(() => syncBtnAfterMode.classList.contains("active"),
+                    "cursor sync button to become active again");
+
+                await _openMdFile("long.md");
+                const syncBtnFinal = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                expect(syncBtnFinal.classList.contains("active")).toBeTrue();
+                expect(syncBtnFinal.getAttribute("aria-pressed")).toBe("true");
+
+                // Force close doc1
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close");
+            }, 15000);
+
+            it("should content sync still work when cursor sync is disabled", async function () {
+                await _openMdFile("long.md");
+                await _enterEditMode();
+
+                // Disable cursor sync
+                const syncBtn = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                syncBtn.click();
+                await awaitsFor(() => !syncBtn.classList.contains("active"),
+                    "cursor sync to be disabled");
+
+                // Edit content in CM — should still sync to viewer
+                const editor = EditorManager.getActiveEditor();
+                const originalText = editor.document.getText();
+                editor.document.setText("# Sync Test\n\nContent sync works even without cursor sync.\n");
+
+                await awaitsFor(() => {
+                    const mdDoc = _getMdIFrameDoc();
+                    const h1 = mdDoc && mdDoc.querySelector("#viewer-content h1");
+                    return h1 && h1.textContent.includes("Sync Test");
+                }, "viewer to update with new content despite cursor sync off");
+
+                // Restore original content
+                editor.document.setText(originalText);
+                await awaitsFor(() => {
+                    const mdDoc = _getMdIFrameDoc();
+                    const h1 = mdDoc && mdDoc.querySelector("#viewer-content h1");
+                    return h1 && !h1.textContent.includes("Sync Test");
+                }, "viewer to restore original content");
+
+                // Re-enable cursor sync
+                syncBtn.click();
+                await awaitsFor(() => syncBtn.classList.contains("active"),
+                    "cursor sync to be re-enabled");
+            }, 10000);
+
+            it("should cursor sync toggle work in both reader and edit mode", async function () {
+                await _openMdFile("long.md");
+
+                // Test in reader mode
+                await _enterReaderMode();
+                let syncBtn = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                expect(syncBtn).not.toBeNull();
+                expect(syncBtn.classList.contains("active")).toBeTrue();
+
+                syncBtn.click();
+                await awaitsFor(() => !syncBtn.classList.contains("active"),
+                    "cursor sync to toggle off in reader mode");
+                expect(syncBtn.getAttribute("aria-pressed")).toBe("false");
+
+                syncBtn.click();
+                await awaitsFor(() => syncBtn.classList.contains("active"),
+                    "cursor sync to toggle on in reader mode");
+                expect(syncBtn.getAttribute("aria-pressed")).toBe("true");
+
+                // Test in edit mode
+                await _enterEditMode();
+                syncBtn = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                expect(syncBtn).not.toBeNull();
+                expect(syncBtn.classList.contains("active")).toBeTrue();
+
+                syncBtn.click();
+                await awaitsFor(() => !syncBtn.classList.contains("active"),
+                    "cursor sync to toggle off in edit mode");
+                expect(syncBtn.getAttribute("aria-pressed")).toBe("false");
+
+                syncBtn.click();
+                await awaitsFor(() => syncBtn.classList.contains("active"),
+                    "cursor sync to toggle on in edit mode");
+                expect(syncBtn.getAttribute("aria-pressed")).toBe("true");
+            }, 10000);
+
+            it("should disabling cursor sync in reader mode prevent CM cursor move on click", async function () {
+                await _openMdFile("long.md");
+                await _enterReaderMode();
+
+                // Set CM cursor to line 0 as baseline
+                const editor = EditorManager.getActiveEditor();
+                editor.setCursorPos(0, 0);
+                expect(_getCMCursorLine()).toBe(0);
+
+                // Disable cursor sync
+                const syncBtn = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                syncBtn.click();
+                await awaitsFor(() => !syncBtn.classList.contains("active"),
+                    "cursor sync to be disabled");
+
+                // Click a paragraph lower in the document
+                const mdDoc = _getMdIFrameDoc();
+                const paragraphs = mdDoc.querySelectorAll('#viewer-content p[data-source-line]');
+                let targetP = null;
+                for (const p of paragraphs) {
+                    const srcLine = parseInt(p.getAttribute("data-source-line"), 10);
+                    if (srcLine > 10) {
+                        targetP = p;
+                        break;
+                    }
+                }
+                expect(targetP).not.toBeNull();
+
+                // Click directly on the element — bridge.js click handler sends
+                // embeddedIframeFocusEditor which MarkdownSync should ignore (sync off)
+                targetP.click();
+
+                // Cursor should still be at 0 — the click while sync was off had no effect.
+                // Re-enable cursor sync first (re-query btn in case toolbar re-rendered).
+                const syncBtnAfter = _getMdIFrameDoc().getElementById("emb-cursor-sync");
+                syncBtnAfter.click();
+                await awaitsFor(() => syncBtnAfter.classList.contains("active"),
+                    "cursor sync to be re-enabled");
+                expect(_getCMCursorLine()).toBe(0);
+            }, 10000);
+
+            it("should changing CM cursor position scroll md viewer accordingly", async function () {
+                await _openMdFile("long.md");
+                await _enterReaderMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                const viewer = mdDoc.querySelector(".app-viewer");
+                const editor = EditorManager.getActiveEditor();
+
+                // Set cursor to line 0 — viewer should scroll to top
+                editor.setCursorPos(0, 0);
+                await awaitsFor(() => viewer.scrollTop < 50,
+                    "viewer to scroll near top when CM cursor at line 0");
+                const topScroll = viewer.scrollTop;
+
+                // Set cursor to last line — viewer should scroll down
+                const lastLine = editor.lineCount() - 1;
+                editor.setCursorPos(lastLine, 0);
+                await awaitsFor(() => viewer.scrollTop > topScroll + 100,
+                    "viewer to scroll down when CM cursor moves to last line");
+            }, 10000);
+
+            it("should edit to reader switch re-render with fresh data-source-line attrs", async function () {
+                await _openMdFile("long.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                // Add a new heading in edit mode via CM
+                const editor = EditorManager.getActiveEditor();
+                const originalText = editor.document.getText();
+                editor.document.setText("# Original Heading\n\n## Added In Edit\n\nSome new paragraph.\n\n" + originalText);
+
+                await awaitsFor(() => {
+                    const mdDoc = _getMdIFrameDoc();
+                    const h2 = mdDoc && mdDoc.querySelector('#viewer-content h2');
+                    return h2 && h2.textContent.includes("Added In Edit");
+                }, "new heading to appear in viewer");
+
+                // Switch to reader mode — should re-render from CM content
+                await _enterReaderMode();
+
+                // Verify data-source-line attributes are present and refreshed
+                const mdDoc = _getMdIFrameDoc();
+                const elements = mdDoc.querySelectorAll('#viewer-content [data-source-line]');
+                expect(elements.length).toBeGreaterThan(0);
+
+                // The new heading should have a data-source-line attribute
+                const addedH2 = mdDoc.querySelector('#viewer-content h2');
+                expect(addedH2).not.toBeNull();
+                expect(addedH2.textContent).toContain("Added In Edit");
+                expect(addedH2.hasAttribute("data-source-line")).toBeTrue();
+
+                // Restore original content
+                editor.document.setText(originalText);
+                await awaitsFor(() => {
+                    const h2 = _getMdIFrameDoc().querySelector('#viewer-content h2');
+                    return !h2 || !h2.textContent.includes("Added In Edit");
+                }, "viewer to restore after content reset");
+            }, 15000);
+
+            it("should cursor sync work on newly edited elements after edit to reader switch", async function () {
+                await _openMdFile("long.md");
+                await _enterEditMode();
+                await _focusMdContent();
+
+                // Add a distinctive paragraph at the top
+                const editor = EditorManager.getActiveEditor();
+                const originalText = editor.document.getText();
+                const newContent = "# Top Heading\n\nNewly added paragraph for sync test.\n\n" + originalText;
+                editor.document.setText(newContent);
+
+                await awaitsFor(() => {
+                    const mdDoc = _getMdIFrameDoc();
+                    const p = mdDoc && mdDoc.querySelector('#viewer-content p');
+                    return p && p.textContent.includes("Newly added paragraph");
+                }, "new paragraph to render");
+
+                // Switch to reader mode
+                await _enterReaderMode();
+
+                // Find the new paragraph and verify it has a source line for sync
+                const mdDoc = _getMdIFrameDoc();
+                const paragraphs = mdDoc.querySelectorAll('#viewer-content p[data-source-line]');
+                let newP = null;
+                for (const p of paragraphs) {
+                    if (p.textContent.includes("Newly added paragraph")) {
+                        newP = p;
+                        break;
+                    }
+                }
+                expect(newP).not.toBeNull();
+                const sourceLine = parseInt(newP.getAttribute("data-source-line"), 10);
+                expect(sourceLine).toBeGreaterThan(0);
+
+                // Move CM cursor far away so we can verify the click actually moves it
+                const editor2 = EditorManager.getActiveEditor();
+                const farLine = editor2.lineCount() - 1;
+                editor2.setCursorPos(farLine, 0);
+                expect(Math.abs(_getCMCursorLine() - (sourceLine - 1))).toBeGreaterThan(3);
+
+                // Click the new paragraph directly — bridge.js click handler
+                // sends embeddedIframeFocusEditor, MarkdownSync scrolls CM
+                newP.click();
+
+                await awaitsFor(() => {
+                    const cmLine = _getCMCursorLine();
+                    return Math.abs(cmLine - (sourceLine - 1)) < 3;
+                }, "CM cursor to move to newly edited element's source line");
+
+                // Restore
+                editor.document.setText(originalText);
+            }, 15000);
         });
 
         describe("Toolbar & UI", function () {
