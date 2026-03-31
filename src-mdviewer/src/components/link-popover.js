@@ -170,6 +170,7 @@ function buildPopover() {
       applyLink();
     } else if (e.key === "Escape") {
       e.preventDefault();
+      e.stopPropagation();
       cancelEdit();
     }
   };
@@ -227,18 +228,13 @@ function applyLink() {
 }
 
 function cancelEdit() {
-  if (createMode) {
-    hide();
-    restoreSelection();
-    contentEl?.focus({ preventScroll: true });
-  } else {
-    exitEditMode();
-  }
+  hide();
+  restoreSelection();
+  contentEl?.focus({ preventScroll: true });
 }
 
 function enterEditMode() {
   editMode = true;
-  saveSelection();
   const viewDiv = popover.querySelector(".link-popover-view");
   const editDiv = popover.querySelector(".link-popover-edit");
   const textInput = popover.querySelector(".link-popover-text-input");
@@ -274,6 +270,7 @@ function show(anchorEl) {
     urlText.href = href;
   }
   exitEditMode();
+  saveSelection();
   positionPopover(anchorEl);
   popover.classList.add("visible");
 }

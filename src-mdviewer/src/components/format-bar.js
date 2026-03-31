@@ -88,6 +88,7 @@ function buildBar() {
         exitLinkMode();
       } else if (e.key === "Escape") {
         e.preventDefault();
+        e.stopPropagation();
         exitLinkMode();
         contentEl?.focus({ preventScroll: true });
       }

@@ -1,18 +1,5 @@
 # Markdown Viewer/Editor — Integration Tests To Create
 
-## Cursor/Scroll Sync
-- [x] Clicking in CM scrolls md viewer to corresponding element
-- [x] Clicking in md viewer scrolls CM to corresponding line (centered)
-- [x] Cursor sync toggle button disables/enables bidirectional sync
-- [x] Cursor sync toggle state preserved across toolbar re-renders (file switch, mode toggle)
-- [x] Content sync still works when cursor sync is disabled
-- [x] Cursor sync toggle works in both reader and edit mode
-- [x] Disabling cursor sync in reader mode prevents CM scroll on click
-- [x] Cursor sync works on newly edited elements after edit→reader switch
-- [x] Edit→reader switch re-renders from CM content (data-source-line attrs refreshed)
-- [x] Switching MD files preserves current edit/reader mode
-- [x] Edit mode not reset when switching between MD files
-
 ## Edit Mode & Entitlement Gating
 - [ ] Free user sees Edit button → clicking shows upsell dialog
 - [ ] Pro user sees Edit button → clicking enters edit mode
@@ -50,10 +37,6 @@
 - [ ] Arrow down/up scrolls selected item into view
 - [ ] Selected item wraps around (last → first, first → last)
 - [ ] Slash menu works at bottom of a long scrolled document
-
-## Keyboard Shortcut Focus
-- [x] Ctrl+S saves file and keeps focus in md editor (not CM)
-- [x] Forwarded shortcuts refocus md editor after Phoenix handles them
 
 ## Code Block Editing
 - [ ] ArrowDown on last line of code block exits to paragraph below
@@ -152,8 +135,6 @@
 - [ ] Backspace in middle of heading works normally (deletes character)
 
 ## Undo/Redo
-- [x] Ctrl+Z undoes change in both md editor and CM (single undo stack)
-- [x] Ctrl+Shift+Z / Ctrl+Y redoes change in both
 - [ ] Cursor restored to correct block element (source-line) after undo
 - [ ] Cursor restored to correct offset within block after undo
 - [ ] Undo/redo cursor works when editing at different positions in document
