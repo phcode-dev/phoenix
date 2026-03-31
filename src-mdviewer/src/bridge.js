@@ -189,6 +189,11 @@ export function initBridge() {
             case "MDVIEWR_RERENDER_CONTENT":
                 handleRerenderContent(data);
                 break;
+            case "MDVIEWR_TOOLBAR_STATE":
+                if (data.state) {
+                    emit("editor:selection-state", data.state);
+                }
+                break;
             case "MDVIEWR_IMAGE_UPLOAD_RESULT":
                 _handleImageUploadResult(data);
                 break;
