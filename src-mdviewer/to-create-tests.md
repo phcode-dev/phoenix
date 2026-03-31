@@ -36,16 +36,16 @@
 - [ ] Add-column button visible when table is active (cursor inside)
 
 ## List Editing
-- [ ] Enter in a list item splits content at cursor into two `<li>` elements
-- [ ] Enter on empty list item exits list and creates paragraph below
-- [ ] Shift+Enter in list item inserts `<br>` (line break within same bullet)
-- [ ] Tab in list item indents it (nests inside sub-list under previous sibling)
-- [ ] Shift+Tab in list item outdents it to parent level
-- [ ] Shift+Tab outdent preserves trailing siblings as sub-list of moved item
-- [ ] Tab at first list item (no previous sibling) does nothing
-- [ ] Cursor position preserved after Tab indent
+- [x] Enter in a list item splits content at cursor into two `<li>` elements
+- [x] Enter on empty list item exits list and creates paragraph below
+- [x] Shift+Enter in list item inserts `<br>` (line break within same bullet)
+- [x] Tab in list item indents it (nests inside sub-list under previous sibling)
+- [x] Shift+Tab in list item outdents it to parent level
+- [x] Shift+Tab outdent preserves trailing siblings as sub-list of moved item
+- [x] Tab at first list item (no previous sibling) does nothing
+- [x] Cursor position preserved after Tab indent
 - [ ] Cursor position preserved after Shift+Tab outdent
-- [ ] Enter in list creates proper `<li>` that syncs to markdown `- ` or `1. ` in CM
+- [x] Enter in list creates proper `<li>` that syncs to markdown `- ` or `1. ` in CM
 - [ ] Nested list indentation syncs correctly to markdown (2 or 4 space indent)
 
 ## UL/OL Toggle (List Type Switching)
@@ -90,25 +90,6 @@
 - [ ] Undo/redo cursor works when editing at different positions in document
 - [ ] Typing in CM and undoing in CM doesn't interfere with md editor
 - [ ] Multiple rapid edits can be undone one by one
-
-## Scroll Behavior
-- [ ] Cursor sync scroll is instant (not smooth animated)
-- [ ] Scroll restore on file switch uses exact pixel position (no jump)
-- [ ] Scroll restore on reload uses source-line-based positioning
-- [ ] No progressive scroll-down on reload with many images (source-line approach)
-
-## Border & Styling
-- [ ] Subtle bottom border on #mainNavBar (rgba(255,255,255,0.08))
-- [ ] Subtle bottom border on #live-preview-plugin-toolbar (rgba(255,255,255,0.08))
-- [ ] No medium-zoom magnifying glass cursor on images
-- [ ] Cursor sync icon is subtle (secondary text color, not accent blue)
-
-## Translation (i18n)
-- [ ] en.json strings load correctly (toolbar.reader, format.underline, etc.)
-- [ ] Locale with region code (e.g. en-GB) falls back to base (en) if specific file missing
-- [ ] No "Failed to load locale" console warnings for valid locales
-- [ ] gulp translateStrings translates both Phoenix NLS and mdviewer locales
-- [ ] Translated locale files copied back to src-mdviewer/src/locales/
 
 ## In-Document Search (Ctrl+F)
 - [ ] Ctrl+F opens search bar in md viewer (both edit and reader mode)
