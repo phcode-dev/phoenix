@@ -46,6 +46,8 @@ define(function (require, exports, module) {
     let _cursorHandler = null;
     let _focusHandler = null;
     let _changeHandler = null;
+    let _scrollHandler = null;
+    let _scrollSyncFromIframe = false; // prevents feedback loops
     let _onEditModeRequest = null;
     let _onIframeReadyCallback = null;
     let _cursorSyncEnabled = true;
@@ -54,7 +56,7 @@ define(function (require, exports, module) {
     let _cursorRedoStack = [];
 
     const DEBOUNCE_TO_IFRAME_MS = 150;
-    const SCROLL_SYNC_DEBOUNCE_MS = 100;
+    const SCROLL_SYNC_DEBOUNCE_MS = 16;
     const SELECTION_SYNC_DEBOUNCE_MS = 200;
 
     /**
@@ -144,7 +146,11 @@ define(function (require, exports, module) {
                 break;
             case "mdviewrScrollSync":
                 if (_cursorSyncEnabled && data.sourceLine != null) {
-                    _scrollCMToLine(data.sourceLine);
+                    if (data.fromScroll) {
+                        _scrollCMToLineNoFeedback(data.sourceLine);
+                    } else {
+                        _scrollCMToLine(data.sourceLine);
+                    }
                 }
                 break;
             case "mdviewrSelectionSync":
@@ -227,6 +233,20 @@ define(function (require, exports, module) {
             cm.on("focus", _focusHandler);
             cm.off("change", _changeHandler);
             cm.on("change", _changeHandler);
+            // Scroll sync: scroll CM → scroll iframe to matching source line (real-time)
+            let _scrollRAF = null;
+            _scrollHandler = function () {
+                if (_syncingFromIframe || _scrollSyncFromIframe || !_cursorSyncEnabled || !_iframeReady) {
+                    return;
+                }
+                if (_scrollRAF) { cancelAnimationFrame(_scrollRAF); }
+                _scrollRAF = requestAnimationFrame(function () {
+                    _scrollRAF = null;
+                    _syncScrollPositionToIframe();
+                });
+            };
+            cm.off("scroll", _scrollHandler);
+            cm.on("scroll", _scrollHandler);
         }
 
         // If iframe is already ready (reusing same iframe), switch file using cache
@@ -260,6 +280,9 @@ define(function (require, exports, module) {
             if (_changeHandler) {
                 cm.off("change", _changeHandler);
             }
+            if (_scrollHandler) {
+                cm.off("scroll", _scrollHandler);
+            }
             if (_highlightLineHandle) {
                 cm.removeLineClass(_highlightLineHandle, "background", "cm-cursor-sync-highlight");
                 _highlightLineHandle = null;
@@ -289,6 +312,7 @@ define(function (require, exports, module) {
         _cursorHandler = null;
         _focusHandler = null;
         _changeHandler = null;
+        _scrollHandler = null;
     }
 
     /**
@@ -538,6 +562,50 @@ define(function (require, exports, module) {
         iframeWindow.postMessage({
             type: "MDVIEWR_SCROLL_TO_LINE",
             line: line
+        }, "*");
+    }
+
+    /**
+     * Scroll CM to a source line without triggering the CM scroll handler
+     * (prevents viewer→CM→viewer feedback loop).
+     */
+    function _scrollCMToLineNoFeedback(sourceLine) {
+        const cm = _getCM();
+        if (!cm) { return; }
+        const cmLine = Math.max(0, sourceLine - 1);
+        if (cmLine >= cm.lineCount()) { return; }
+
+        _scrollSyncFromIframe = true;
+        // Always scroll to align the line at the top of the editor
+        const lineTop = cm.charCoords({ line: cmLine, ch: 0 }, "local").top;
+        cm.scrollTo(null, lineTop);
+        setTimeout(function () { _scrollSyncFromIframe = false; }, 150);
+    }
+
+    /**
+     * Sync CM scroll position to iframe: find the first visible line in CM and
+     * tell the iframe to scroll the corresponding element into view.
+     */
+    function _syncScrollPositionToIframe() {
+        if (!_active || !_iframeReady) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        if (!iframeWindow) {
+            return;
+        }
+        const cm = _getCM();
+        if (!cm) {
+            return;
+        }
+        // Get the first visible line in the CM viewport
+        const scrollInfo = cm.getScrollInfo();
+        const firstVisiblePos = cm.coordsChar({ left: 0, top: scrollInfo.top }, "local");
+        const line = firstVisiblePos.line + 1; // 1-based source line
+        iframeWindow.postMessage({
+            type: "MDVIEWR_SCROLL_TO_LINE",
+            line: line,
+            fromScroll: true // flag to prevent re-triggering CM scroll
         }, "*");
     }
 
