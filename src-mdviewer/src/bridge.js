@@ -935,6 +935,7 @@ function handleScrollToLine(data) {
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
 
+
     const elements = viewer.querySelectorAll("[data-source-line]");
     let bestEl = null;
     let bestLine = -1;
@@ -953,11 +954,11 @@ function handleScrollToLine(data) {
     const containerRect = container.getBoundingClientRect();
     const elRect = bestEl.getBoundingClientRect();
 
+    // Suppress viewer→CM scroll feedback for any CM-initiated scroll
+    _scrollFromCM = true;
     if (fromScroll) {
         // Sync scroll: always align to top, even if visible
-        _scrollFromCM = true;
         bestEl.scrollIntoView({ behavior: "instant", block: "start" });
-        setTimeout(() => { _scrollFromCM = false; }, 200);
     } else {
         // Cursor-based scroll: only scroll if not visible, center it
         const isVisible = elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
@@ -965,6 +966,7 @@ function handleScrollToLine(data) {
             bestEl.scrollIntoView({ behavior: "instant", block: "center" });
         }
     }
+    setTimeout(() => { _scrollFromCM = false; }, 200);
 
     // Persistent highlight on the element corresponding to the CM cursor.
     // Only show when CM has focus (not when viewer has focus).
