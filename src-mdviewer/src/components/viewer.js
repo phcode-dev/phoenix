@@ -182,6 +182,80 @@ export function highlightCode() {
     blocks.forEach((block) => {
         Prism.highlightElement(block);
     });
+
+    // After Prism highlighting, add per-line data-source-line spans inside code blocks
+    _annotateCodeBlockLines();
+}
+
+/**
+ * Wrap each line in highlighted code blocks with a span that has data-source-line,
+ * enabling per-line cursor sync for code blocks.
+ * Must run AFTER Prism highlighting since Prism replaces innerHTML.
+ */
+function _annotateCodeBlockLines() {
+    const pres = document.querySelectorAll("#viewer-content pre[data-source-line]");
+    pres.forEach((pre) => {
+        const code = pre.querySelector("code");
+        if (!code) return;
+        const preSourceLine = parseInt(pre.getAttribute("data-source-line"), 10);
+        if (isNaN(preSourceLine)) return;
+        // Code content starts after the ``` line
+        const codeStartLine = preSourceLine + 1;
+
+        // Split the code's child nodes by newlines and wrap each line
+        const fragment = document.createDocumentFragment();
+        let currentLine = document.createElement("span");
+        currentLine.setAttribute("data-source-line", String(codeStartLine));
+        let lineIdx = 0;
+
+        function processNode(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.textContent;
+                const parts = text.split("\n");
+                for (let i = 0; i < parts.length; i++) {
+                    if (i > 0) {
+                        // Close current line span, start new one with the newline inside it
+                        fragment.appendChild(currentLine);
+                        lineIdx++;
+                        currentLine = document.createElement("span");
+                        currentLine.setAttribute("data-source-line", String(codeStartLine + lineIdx));
+                        currentLine.appendChild(document.createTextNode("\n"));
+                    }
+                    if (parts[i]) {
+                        currentLine.appendChild(document.createTextNode(parts[i]));
+                    }
+                }
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                // Check if this element contains newlines
+                const text = node.textContent;
+                if (!text.includes("\n")) {
+                    // No newlines — append the whole element to current line
+                    currentLine.appendChild(node.cloneNode(true));
+                } else {
+                    // Element spans multiple lines — process children
+                    for (const child of Array.from(node.childNodes)) {
+                        processNode(child);
+                    }
+                }
+            }
+        }
+
+        const children = Array.from(code.childNodes);
+        for (const child of children) {
+            processNode(child);
+        }
+        // Append the last line
+        if (currentLine.childNodes.length > 0) {
+            fragment.appendChild(currentLine);
+        }
+
+        code.innerHTML = "";
+        code.appendChild(fragment);
+
+        // Remove data-source-line from <pre> so clicking empty areas inside the
+        // code block doesn't fall through to the block's start line
+        pre.removeAttribute("data-source-line");
+    });
 }
 
 function addCopyButtons() {
