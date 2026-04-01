@@ -50,6 +50,93 @@ function _annotateTokenLines(tokens) {
         if (token.type !== "space") {
             token._sourceLine = line;
         }
+        // Recursively annotate children with their source lines
+        _annotateTokenChildren(token, line);
+        if (token.raw) {
+            line += (token.raw.match(/\n/g) || []).length;
+        }
+    }
+}
+
+function _annotateTokenChildren(token, startLine) {
+    // List items
+    if (token.type === "list" && token.items) {
+        let itemLine = startLine;
+        for (const item of token.items) {
+            item._sourceLine = itemLine;
+            if (item.tokens) {
+                _annotateNestedTokens(item.tokens, itemLine);
+            }
+            if (item.raw) {
+                itemLine += (item.raw.match(/\n/g) || []).length;
+            }
+        }
+    }
+    // Blockquote children
+    if (token.type === "blockquote" && token.tokens) {
+        _annotateNestedTokens(token.tokens, startLine);
+    }
+    // Table rows
+    if (token.type === "table") {
+        if (token.header) {
+            for (const cell of token.header) {
+                cell._sourceLine = startLine;
+            }
+        }
+        if (token.rows) {
+            let rowLine = startLine + 2;
+            for (const row of token.rows) {
+                for (const cell of row) {
+                    cell._sourceLine = rowLine;
+                }
+                rowLine++;
+            }
+        }
+    }
+}
+
+function _annotateNestedTokens(tokens, startLine) {
+    let line = startLine;
+    for (const token of tokens) {
+        if (token.type !== "space") {
+            token._sourceLine = line;
+        }
+        // Recurse into nested lists
+        if (token.type === "list" && token.items) {
+            let itemLine = line;
+            for (const item of token.items) {
+                item._sourceLine = itemLine;
+                if (item.tokens) {
+                    _annotateNestedTokens(item.tokens, itemLine);
+                }
+                if (item.raw) {
+                    itemLine += (item.raw.match(/\n/g) || []).length;
+                }
+            }
+        }
+        // Recurse into blockquote children
+        if (token.type === "blockquote" && token.tokens) {
+            _annotateNestedTokens(token.tokens, line);
+        }
+        // Annotate table rows
+        if (token.type === "table") {
+            // Header row
+            if (token.header) {
+                for (const cell of token.header) {
+                    cell._sourceLine = line;
+                }
+            }
+            // Body rows: each row is one line after header + separator (2 lines)
+            if (token.rows) {
+                let rowLine = line + 2; // skip header + separator lines
+                for (const row of token.rows) {
+                    for (const cell of row) {
+                        cell._sourceLine = rowLine;
+                    }
+                    rowLine++;
+                }
+            }
+        }
         if (token.raw) {
             line += (token.raw.match(/\n/g) || []).length;
         }
@@ -74,7 +161,9 @@ marked.use({
         heading: _withSourceLine(_proto.heading, /^<h[1-6]/),
         paragraph: _withSourceLine(_proto.paragraph, /^<p/),
         list: _withSourceLine(_proto.list, /^<[ou]l/),
+        listitem: _withSourceLine(_proto.listitem, /^<li/),
         table: _withSourceLine(_proto.table, /^<table/),
+        tablecell: _withSourceLine(_proto.tablecell, /^<t[dh]/),
         blockquote: _withSourceLine(_proto.blockquote, /^<blockquote/),
         code: _withSourceLine(_proto.code, /^<pre/),
         hr: _withSourceLine(_proto.hr, /^<hr/)
