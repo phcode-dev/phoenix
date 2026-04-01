@@ -183,6 +183,14 @@ export function highlightCode() {
         Prism.highlightElement(block);
     });
 
+    // Disable spellcheck and autocomplete inside code blocks
+    document.querySelectorAll("#viewer-content pre").forEach((pre) => {
+        pre.spellcheck = false;
+        pre.setAttribute("autocorrect", "off");
+        pre.setAttribute("autocomplete", "off");
+        pre.setAttribute("autocapitalize", "off");
+    });
+
     // After Prism highlighting, add per-line data-source-line spans inside code blocks
     _annotateCodeBlockLines();
 }
@@ -193,12 +201,33 @@ export function highlightCode() {
  * Must run AFTER Prism highlighting since Prism replaces innerHTML.
  */
 function _annotateCodeBlockLines() {
-    const pres = document.querySelectorAll("#viewer-content pre[data-source-line]");
+    // Process all pre elements, not just those with data-source-line
+    // (morphdom may strip the attr on first render)
+    const pres = document.querySelectorAll("#viewer-content pre");
     pres.forEach((pre) => {
         const code = pre.querySelector("code");
         if (!code) return;
-        const preSourceLine = parseInt(pre.getAttribute("data-source-line"), 10);
-        if (isNaN(preSourceLine)) return;
+        // Already annotated?
+        if (code.querySelector("span[data-source-line]")) return;
+
+        let preSourceLine = parseInt(pre.getAttribute("data-source-line"), 10);
+        if (isNaN(preSourceLine)) {
+            // Fallback: find the nearest preceding sibling with data-source-line
+            // and estimate this pre's line from it
+            let prev = pre.previousElementSibling;
+            while (prev && !prev.hasAttribute("data-source-line")) {
+                prev = prev.previousElementSibling;
+            }
+            if (prev) {
+                const prevLine = parseInt(prev.getAttribute("data-source-line"), 10);
+                // Rough estimate: count text lines in the previous element
+                const prevText = prev.textContent || "";
+                const prevLines = (prevText.match(/\n/g) || []).length + 1;
+                preSourceLine = prevLine + prevLines + 1; // +1 for blank line between
+            } else {
+                return; // Can't determine line, skip
+            }
+        }
         // Code content starts after the ``` line
         const codeStartLine = preSourceLine + 1;
 
