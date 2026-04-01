@@ -932,12 +932,11 @@ function _getSourceLineFromElement(el) {
 }
 
 function handleScrollToLine(data) {
-    const { line, fromScroll } = data;
+    const { line, fromScroll, tableCol } = data;
     if (line == null) return;
 
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
-
 
     const elements = viewer.querySelectorAll("[data-source-line]");
     let bestEl = null;
@@ -951,6 +950,15 @@ function handleScrollToLine(data) {
     }
 
     if (!bestEl) return;
+
+    // For table cells: if tableCol is specified, find the specific cell in the row
+    if (tableCol != null && bestEl.closest("tr")) {
+        const tr = bestEl.closest("tr");
+        const cells = tr.querySelectorAll("td, th");
+        if (tableCol < cells.length) {
+            bestEl = cells[tableCol];
+        }
+    }
 
     const container = document.getElementById("app-viewer");
     if (!container) return;
