@@ -567,10 +567,21 @@ define(function (require, exports, module) {
             return;
         }
         // CM5 cursor line is 0-based; source lines in markdown are 1-based
-        const line = cm.getCursor().line + 1;
+        const cursor = cm.getCursor();
+        const line = cursor.line + 1;
+        // For table rows, determine column by counting | before cursor
+        const lineText = cm.getLine(cursor.line) || "";
+        let tableCol = null;
+        if (lineText.trim().startsWith("|")) {
+            const beforeCursor = lineText.substring(0, cursor.ch);
+            // Count pipe characters (column separators) — first | is before col 0
+            const pipes = (beforeCursor.match(/\|/g) || []).length;
+            tableCol = Math.max(0, pipes - 1);
+        }
         iframeWindow.postMessage({
             type: "MDVIEWR_SCROLL_TO_LINE",
-            line: line
+            line: line,
+            tableCol: tableCol
         }, "*");
     }
 
