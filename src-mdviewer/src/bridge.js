@@ -9,7 +9,6 @@ import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
 import { broadcastSelectionStateSync } from "./components/editor.js";
-import { renderAfterHTML } from "./components/viewer.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -572,16 +571,11 @@ function handleSetContent(data) {
         docCache.switchTo(filePath);
     }
 
-    // Run post-render processing (Prism highlighting, code block line annotation)
-    const content = document.getElementById("viewer-content");
-    if (content) {
-        renderAfterHTML(content, parseResult);
-    }
-
     setState({
         currentContent: markdown,
         parseResult: parseResult
     });
+    // file:rendered triggers viewer.js handler which does morphdom + renderAfterHTML
     emit("file:rendered", parseResult);
     _suppressContentChange = false;
 }
@@ -675,13 +669,6 @@ function handleSwitchFile(data) {
         // Cache hit, content unchanged — instant switch
         docCache.switchTo(filePath);
 
-        // Ensure code blocks are highlighted and line-annotated (may be missing on first load)
-        const cachedContent = document.getElementById("viewer-content");
-        if (cachedContent && !cachedContent.querySelector("pre code span[data-source-line]") &&
-            cachedContent.querySelector("pre[data-source-line]")) {
-            renderAfterHTML(cachedContent, existing.parseResult);
-        }
-
         setState({
             currentContent: markdown,
             parseResult: existing.parseResult
@@ -705,12 +692,6 @@ function handleSwitchFile(data) {
         const parseResult = parseMarkdownToHTML(markdown);
         docCache.createEntry(filePath, markdown, parseResult);
         docCache.switchTo(filePath);
-
-        // Run post-render processing on newly created entry
-        const newContent = document.getElementById("viewer-content");
-        if (newContent) {
-            renderAfterHTML(newContent, parseResult);
-        }
 
         // Restore scroll position and edit mode from reload if applicable
         if (_pendingReloadScroll && _pendingReloadScroll.filePath === filePath) {
