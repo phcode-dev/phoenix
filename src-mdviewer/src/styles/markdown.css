@@ -484,6 +484,15 @@
   background-color: rgba(50, 100, 220, 0.14);
 }
 
+/* Stronger highlight inside code blocks (dark bg makes the default too faint) */
+pre .cursor-sync-highlight {
+  background-color: rgba(100, 150, 255, 0.25);
+}
+
+[data-theme="light"] pre .cursor-sync-highlight {
+  background-color: rgba(50, 100, 220, 0.18);
+}
+
 /* ===== Mermaid diagrams ===== */
 
 .mermaid-diagram {
