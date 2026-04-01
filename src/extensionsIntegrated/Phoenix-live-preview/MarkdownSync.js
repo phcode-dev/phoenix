@@ -153,6 +153,15 @@ define(function (require, exports, module) {
                     }
                 }
                 break;
+            case "mdviewrCursorLine":
+                // Fast path: just update CM line highlight, no scroll
+                if (_cursorSyncEnabled && data.sourceLine != null) {
+                    const cm = _getCM();
+                    if (cm) {
+                        _flashCMLine(cm, Math.max(0, data.sourceLine - 1));
+                    }
+                }
+                break;
             case "mdviewrSelectionSync":
                 if (_cursorSyncEnabled) {
                     _handleSelectionFromIframe(data);

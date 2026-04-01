@@ -472,6 +472,9 @@ export function initBridge() {
         if (!_cursorPosDirty) {
             _cursorPosBeforeEdit = _getCursorPosition();
         }
+        // Fast path: send just the source line for instant CM highlight
+        _sendCursorLineToParent();
+        // Full selection sync (debounced)
         _sendSelectionToParent();
     });
 
@@ -1062,6 +1065,19 @@ function handleHighlightSelection(data) {
 
     for (const el of matchingEls) {
         el.classList.add("cm-selection-highlight");
+    }
+}
+
+// Fast path: send just the cursor's source line for instant CM highlight (no debounce)
+function _sendCursorLineToParent() {
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return;
+    const anchorNode = selection.anchorNode;
+    const el = anchorNode && (anchorNode.nodeType === Node.ELEMENT_NODE
+        ? anchorNode : anchorNode.parentElement);
+    const sourceLine = _getSourceLineFromElement(el);
+    if (sourceLine != null) {
+        sendToParent("mdviewrCursorLine", { sourceLine });
     }
 }
 
