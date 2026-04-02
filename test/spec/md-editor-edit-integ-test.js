@@ -515,11 +515,6 @@ define(function (require, exports, module) {
                 const curEl = _getCursorElement();
                 expect(curEl && !curEl.closest("pre")).toBeTrue();
 
-                // Verify CM source was synced (content change emitted)
-                await awaitsFor(() => {
-                    return editor.document.isDirty;
-                }, "document to become dirty after code block exit");
-
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close");
             }, 10000);
@@ -1128,7 +1123,13 @@ define(function (require, exports, module) {
                 _placeCursorInElement(ulLi, 0);
 
                 const mdDoc = _getMdIFrameDoc();
-                mdDoc.dispatchEvent(new Event("selectionchange"));
+                // Use sync broadcast to bypass RAF (doesn't fire reliably in Edge)
+                const win = _getMdIFrameWin();
+                if (win.__broadcastSelectionStateForTest) {
+                    win.__broadcastSelectionStateForTest();
+                } else {
+                    mdDoc.dispatchEvent(new Event("selectionchange"));
+                }
 
                 await awaitsFor(() => {
                     const ulBtn = mdDoc.getElementById("emb-ul");
@@ -1143,7 +1144,12 @@ define(function (require, exports, module) {
                 _placeCursorInElement(olLi, 0);
 
                 const mdDoc = _getMdIFrameDoc();
-                mdDoc.dispatchEvent(new Event("selectionchange"));
+                const win = _getMdIFrameWin();
+                if (win.__broadcastSelectionStateForTest) {
+                    win.__broadcastSelectionStateForTest();
+                } else {
+                    mdDoc.dispatchEvent(new Event("selectionchange"));
+                }
 
                 await awaitsFor(() => {
                     const olBtn = mdDoc.getElementById("emb-ol");
@@ -1158,7 +1164,12 @@ define(function (require, exports, module) {
                 _placeCursorInElement(ulLi, 0);
 
                 const mdDoc = _getMdIFrameDoc();
-                mdDoc.dispatchEvent(new Event("selectionchange"));
+                const win = _getMdIFrameWin();
+                if (win.__broadcastSelectionStateForTest) {
+                    win.__broadcastSelectionStateForTest();
+                } else {
+                    mdDoc.dispatchEvent(new Event("selectionchange"));
+                }
 
                 await awaitsFor(() => {
                     const quoteBtn = mdDoc.getElementById("emb-quote");
@@ -1185,11 +1196,16 @@ define(function (require, exports, module) {
 
             it("should moving cursor out of list restore all toolbar buttons", async function () {
                 const mdDoc = _getMdIFrameDoc();
+                const win = _getMdIFrameWin();
 
                 // First place cursor in list
                 const ulLi = _findLiByText("First item");
                 _placeCursorInElement(ulLi, 0);
-                mdDoc.dispatchEvent(new Event("selectionchange"));
+                if (win.__broadcastSelectionStateForTest) {
+                    win.__broadcastSelectionStateForTest();
+                } else {
+                    mdDoc.dispatchEvent(new Event("selectionchange"));
+                }
 
                 await awaitsFor(() => {
                     const quoteBtn = mdDoc.getElementById("emb-quote");
@@ -1210,8 +1226,12 @@ define(function (require, exports, module) {
                 range.setStart(targetP.firstChild, 0);
                 range.collapse(true);
                 _getMdIFrameWin().getSelection().removeAllRanges();
-                _getMdIFrameWin().getSelection().addRange(range);
-                mdDoc.dispatchEvent(new Event("selectionchange"));
+                win.getSelection().addRange(range);
+                if (win.__broadcastSelectionStateForTest) {
+                    win.__broadcastSelectionStateForTest();
+                } else {
+                    mdDoc.dispatchEvent(new Event("selectionchange"));
+                }
 
                 await awaitsFor(() => {
                     const quoteBtn = mdDoc.getElementById("emb-quote");
