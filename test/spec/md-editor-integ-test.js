@@ -1638,6 +1638,7 @@ define(function (require, exports, module) {
                 content.dispatchEvent(new KeyboardEvent("keyup", {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
+                content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
 
                 await awaitsFor(() => {
                     const popover = mdDoc.getElementById("link-popover");
@@ -1687,6 +1688,7 @@ define(function (require, exports, module) {
                 content.dispatchEvent(new KeyboardEvent("keyup", {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
+                content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
 
                 await awaitsFor(() => {
                     const popover = mdDoc.getElementById("link-popover");
@@ -1737,7 +1739,7 @@ define(function (require, exports, module) {
             }, 10000);
 
             it("should clicking link in edit mode popover call openURLInDefaultBrowser", async function () {
-                await _openMdFile("doc2.md");
+                await _openMdFile("doc3.md");
                 await _enterEditMode();
                 await _focusMdContent();
 
@@ -1748,7 +1750,7 @@ define(function (require, exports, module) {
 
                 const mdDoc = _getMdIFrameDoc();
                 const content = mdDoc.getElementById("viewer-content");
-                const link = content.querySelector("a[href*='test-link-doc2']");
+                const link = content.querySelector("a[href*='remove-link-doc3']");
                 expect(link).not.toBeNull();
 
                 // Place cursor in link to trigger popover
@@ -1760,6 +1762,7 @@ define(function (require, exports, module) {
                 content.dispatchEvent(new KeyboardEvent("keyup", {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
+                content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
 
                 await awaitsFor(() => {
                     const popover = mdDoc.getElementById("link-popover");
@@ -1774,14 +1777,14 @@ define(function (require, exports, module) {
 
                 await awaitsFor(() => capturedURL !== null,
                     "openURLInDefaultBrowser to be called from popover");
-                expect(capturedURL).toContain("test-link-doc2.example.com");
+                expect(capturedURL).toContain("remove-link-doc3.example.com");
 
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close doc2.md");
+                    "force close doc3.md");
             }, 15000);
 
             it("should Escape in link edit dialog dismiss dialog and keep focus in md editor", async function () {
-                await _openMdFile("doc2.md");
+                await _openMdFile("doc3.md");
                 await _enterEditMode();
                 await _focusMdContent();
 
@@ -1789,22 +1792,24 @@ define(function (require, exports, module) {
                 const content = mdDoc.getElementById("viewer-content");
 
                 // Click on existing link to trigger popover
-                const link = content.querySelector("a[href*='test-link-doc2']");
+                const link = content.querySelector("a[href*='remove-link-doc3']");
                 expect(link).not.toBeNull();
                 const range = mdDoc.createRange();
                 range.selectNodeContents(link);
                 range.collapse(true);
                 _getMdIFrameWin().getSelection().removeAllRanges();
                 _getMdIFrameWin().getSelection().addRange(range);
+                // Dispatch keyup and mouseup to trigger popover across browsers
                 content.dispatchEvent(new KeyboardEvent("keyup", {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
+                content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
 
                 // Wait for link popover to appear
                 await awaitsFor(() => {
                     const popover = mdDoc.getElementById("link-popover");
                     return popover && popover.classList.contains("visible");
-                }, "link popover to appear");
+                }, "link popover to appear", 5000);
 
                 // Click Edit button to enter edit mode in popover
                 const popover = mdDoc.getElementById("link-popover");
@@ -1854,7 +1859,7 @@ define(function (require, exports, module) {
                 testWindow.removeEventListener("message", escHandler);
 
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "force close doc2.md");
+                    "force close doc3.md");
             }, 15000);
         });
 
