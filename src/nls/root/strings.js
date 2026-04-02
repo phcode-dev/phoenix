@@ -203,6 +203,8 @@ define({
     "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Search elements\u2026",
     "LIVE_DEV_INSERT_COMMON": "Common",
     "LIVE_DEV_INSERT_NO_RESULTS": "No matching elements",
+    "LIVE_DEV_INSERT_SEE_MORE": "See more",
+    "LIVE_DEV_INSERT_SHOW_LESS": "Show less",
     "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Download image",
     "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Choose image download folder",
     "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Search images\u2026",
