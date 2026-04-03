@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "ترچھا",
   "LIVE_DEV_FORMAT_UNDERLINE": "خط کشیدہ",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "قلم زد",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "سب اسکرپٹ",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "سپر اسکرپٹ",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "نمایاں",
+  "LIVE_DEV_FORMAT_CODE": "کوڈ",
+  "LIVE_DEV_FORMAT_SMALL": "چھوٹا",
+  "LIVE_DEV_FORMAT_MORE": "مزید فارمیٹنگ",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "عنصر کی خصوصیات",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "ٹیگ",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "سائز",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "سب اسکرپٹ",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "سپر اسکرپٹ",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "نمایاں",
-  "LIVE_DEV_FORMAT_CODE": "کوڈ",
-  "LIVE_DEV_FORMAT_SMALL": "چھوٹا",
-  "LIVE_DEV_FORMAT_MORE": "مزید فارمیٹنگ"
+  "LIVE_DEV_INSERT_SEE_MORE": "مزید دیکھیں",
+  "LIVE_DEV_INSERT_SHOW_LESS": "کم دکھائیں"
 });

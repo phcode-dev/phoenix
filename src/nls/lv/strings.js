@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Slīpraksts",
   "LIVE_DEV_FORMAT_UNDERLINE": "Pasvītrojums",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Pārsvītrojums",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Apakšraksts",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Augšraksts",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Iezīmēt",
+  "LIVE_DEV_FORMAT_CODE": "Kods",
+  "LIVE_DEV_FORMAT_SMALL": "Mazs",
+  "LIVE_DEV_FORMAT_MORE": "Vairāk formatēšanas",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Elementa īpašības",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Birkne",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Izmērs",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Apakšraksts",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Augšraksts",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Iezīmēt",
-  "LIVE_DEV_FORMAT_CODE": "Kods",
-  "LIVE_DEV_FORMAT_SMALL": "Mazs",
-  "LIVE_DEV_FORMAT_MORE": "Vairāk formatēšanas"
+  "LIVE_DEV_INSERT_SEE_MORE": "Skatīt vairāk",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Rādīt mazāk"
 });

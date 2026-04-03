@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Kurzíva",
   "LIVE_DEV_FORMAT_UNDERLINE": "Podčiarknuté",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Prečiarknuté",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Dolný index",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Horný index",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Zvýraznenie",
+  "LIVE_DEV_FORMAT_CODE": "Kód",
+  "LIVE_DEV_FORMAT_SMALL": "Malé",
+  "LIVE_DEV_FORMAT_MORE": "Ďalšie formátovanie",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Vlastnosti prvku",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Značka",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Veľkosť",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Dolný index",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Horný index",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Zvýraznenie",
-  "LIVE_DEV_FORMAT_CODE": "Kód",
-  "LIVE_DEV_FORMAT_SMALL": "Malé",
-  "LIVE_DEV_FORMAT_MORE": "Ďalšie formátovanie"
+  "LIVE_DEV_INSERT_SEE_MORE": "Zobraziť viac",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Zobraziť menej"
 });

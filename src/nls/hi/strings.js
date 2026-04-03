@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "इटैलिक",
   "LIVE_DEV_FORMAT_UNDERLINE": "रेखांकित",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "स्ट्राइकथ्रू",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "सबस्क्रिप्ट",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "सुपरस्क्रिप्ट",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "हाइलाइट",
+  "LIVE_DEV_FORMAT_CODE": "कोड",
+  "LIVE_DEV_FORMAT_SMALL": "छोटा",
+  "LIVE_DEV_FORMAT_MORE": "अधिक फ़ॉर्मेटिंग",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "एलिमेंट के गुण",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "टैग",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "आकार",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "सबस्क्रिप्ट",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "सुपरस्क्रिप्ट",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "हाइलाइट",
-  "LIVE_DEV_FORMAT_CODE": "कोड",
-  "LIVE_DEV_FORMAT_SMALL": "छोटा",
-  "LIVE_DEV_FORMAT_MORE": "अधिक फ़ॉर्मेटिंग"
+  "LIVE_DEV_INSERT_SEE_MORE": "और देखें",
+  "LIVE_DEV_INSERT_SHOW_LESS": "कम दिखाएँ"
 });

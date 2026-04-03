@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Dőlt",
   "LIVE_DEV_FORMAT_UNDERLINE": "Aláhúzott",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Áthúzott",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Alsó index",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Felső index",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Kiemelés",
+  "LIVE_DEV_FORMAT_CODE": "Kód",
+  "LIVE_DEV_FORMAT_SMALL": "Kicsi",
+  "LIVE_DEV_FORMAT_MORE": "További formázás",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Elem tulajdonságai",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Címke",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Méret",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Alsó index",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Felső index",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Kiemelés",
-  "LIVE_DEV_FORMAT_CODE": "Kód",
-  "LIVE_DEV_FORMAT_SMALL": "Kicsi",
-  "LIVE_DEV_FORMAT_MORE": "További formázás"
+  "LIVE_DEV_INSERT_SEE_MORE": "Több mutatása",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Kevesebb mutatása"
 });

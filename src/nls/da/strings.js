@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Kursiv",
   "LIVE_DEV_FORMAT_UNDERLINE": "Understregning",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Gennemstreget",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Sænket skrift",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Hævet skrift",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Fremhæv",
+  "LIVE_DEV_FORMAT_CODE": "Kode",
+  "LIVE_DEV_FORMAT_SMALL": "Lille",
+  "LIVE_DEV_FORMAT_MORE": "Mere formatering",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Elementegenskaber",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Tag",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Størrelse",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Sænket skrift",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Hævet skrift",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Fremhæv",
-  "LIVE_DEV_FORMAT_CODE": "Kode",
-  "LIVE_DEV_FORMAT_SMALL": "Lille",
-  "LIVE_DEV_FORMAT_MORE": "Mere formatering"
+  "LIVE_DEV_INSERT_SEE_MORE": "Se mere",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Vis mindre"
 });

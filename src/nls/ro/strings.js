@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Cursiv",
   "LIVE_DEV_FORMAT_UNDERLINE": "Subliniat",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Tăiat",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Indice",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Exponent",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Evidențiere",
+  "LIVE_DEV_FORMAT_CODE": "Cod",
+  "LIVE_DEV_FORMAT_SMALL": "Mic",
+  "LIVE_DEV_FORMAT_MORE": "Mai multă formatare",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Proprietăți element",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Etichetă",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Dimensiune",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Indice",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Exponent",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Evidențiere",
-  "LIVE_DEV_FORMAT_CODE": "Cod",
-  "LIVE_DEV_FORMAT_SMALL": "Mic",
-  "LIVE_DEV_FORMAT_MORE": "Mai multă formatare"
+  "LIVE_DEV_INSERT_SEE_MORE": "Vezi mai mult",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Afișează mai puțin"
 });

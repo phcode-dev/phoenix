@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Cursiva",
   "LIVE_DEV_FORMAT_UNDERLINE": "Subliñado",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Riscado",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Subíndice",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Superíndice",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Resaltado",
+  "LIVE_DEV_FORMAT_CODE": "Código",
+  "LIVE_DEV_FORMAT_SMALL": "Pequeno",
+  "LIVE_DEV_FORMAT_MORE": "Máis formatos",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Propiedades do elemento",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Etiqueta",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Tamaño",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Subíndice",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Superíndice",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Resaltado",
-  "LIVE_DEV_FORMAT_CODE": "Código",
-  "LIVE_DEV_FORMAT_SMALL": "Pequeno",
-  "LIVE_DEV_FORMAT_MORE": "Máis formatos"
+  "LIVE_DEV_INSERT_SEE_MORE": "Ver máis",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Amosar menos"
 });

@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "ایتالیک",
   "LIVE_DEV_FORMAT_UNDERLINE": "زیرخط",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "خط‌خورده",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "زیرنویس",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "بالانویس",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "برجسته‌سازی",
+  "LIVE_DEV_FORMAT_CODE": "کد",
+  "LIVE_DEV_FORMAT_SMALL": "کوچک",
+  "LIVE_DEV_FORMAT_MORE": "قالب‌بندی بیشتر",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "ویژگی‌های عنصر",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "تگ",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "اندازه",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "زیرنویس",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "بالانویس",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "برجسته‌سازی",
-  "LIVE_DEV_FORMAT_CODE": "کد",
-  "LIVE_DEV_FORMAT_SMALL": "کوچک",
-  "LIVE_DEV_FORMAT_MORE": "قالب‌بندی بیشتر"
+  "LIVE_DEV_INSERT_SEE_MORE": "مشاهده بیشتر",
+  "LIVE_DEV_INSERT_SHOW_LESS": "نمایش کمتر"
 });

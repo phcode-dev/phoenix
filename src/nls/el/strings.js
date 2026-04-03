@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Πλάγια",
   "LIVE_DEV_FORMAT_UNDERLINE": "Υπογράμμιση",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Διαγράμμιση",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Δείκτης",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Εκθέτης",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Επισήμανση",
+  "LIVE_DEV_FORMAT_CODE": "Κώδικας",
+  "LIVE_DEV_FORMAT_SMALL": "Μικρό",
+  "LIVE_DEV_FORMAT_MORE": "Περισσότερη μορφοποίηση",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Ιδιότητες Στοιχείου",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Ετικέτα",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Μέγεθος",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Δείκτης",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Εκθέτης",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Επισήμανση",
-  "LIVE_DEV_FORMAT_CODE": "Κώδικας",
-  "LIVE_DEV_FORMAT_SMALL": "Μικρό",
-  "LIVE_DEV_FORMAT_MORE": "Περισσότερη μορφοποίηση"
+  "LIVE_DEV_INSERT_SEE_MORE": "Εμφάνιση περισσότερων",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Εμφάνιση λιγότερων"
 });
