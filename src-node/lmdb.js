@@ -1,6 +1,7 @@
 const lmdb= require("lmdb");
 const path= require("path");
 const fs= require("fs");
+const { execFileSync } = require("child_process");
 const NodeConnector = require("./node-connector");
 
 const STORAGE_NODE_CONNECTOR = "ph_storage";
@@ -13,15 +14,99 @@ let changesToDumpAvailable = false;
 
 let storageDB,
     dumpFileLocation;
+/**
+ * Validates LMDB database integrity by attempting to open it in a child process.
+ * If the DB is corrupted, lmdb.open() can SIGSEGV the process (a native crash that
+ * try/catch cannot intercept). By running the check in a subprocess, we detect the
+ * crash without taking down the main phnode process.
+ *
+ * @param {string} lmdbDir - Path to the storageDB directory
+ * @returns {boolean} true if DB is valid or doesn't exist, false if corrupted
+ */
+function _validateDBIntegrity(lmdbDir) {
+    const dataFile = path.join(lmdbDir, "data.mdb");
+    if (!fs.existsSync(dataFile)) {
+        return true; // No DB yet, fresh start
+    }
+    try {
+        // Run a child process that opens the DB and reads a key.
+        // If the DB is corrupt, lmdb.open() can SIGSEGV the process — a native crash that
+        // try/catch cannot intercept. By running in a subprocess, we detect the crash safely.
+        const script = `
+            const lmdb = require("lmdb");
+            const db = lmdb.open({ path: ${JSON.stringify(lmdbDir)}, compression: false, readOnly: true });
+            db.getKeys({ limit: 1 }).next();
+            db.close();
+        `;
+        execFileSync(process.execPath, ["-e", script], {
+            timeout: 10000,
+            stdio: "pipe",
+            cwd: __dirname
+        });
+        return true;
+    } catch (err) {
+        console.error("storageDB: Database integrity check failed:", err.status, err.signal);
+        return false;
+    }
+}
+
+function _deleteCorruptDBFiles(lmdbDir) {
+    const dataFile = path.join(lmdbDir, "data.mdb");
+    const lockFile = path.join(lmdbDir, "lock.mdb");
+    try {
+        if (fs.existsSync(dataFile)) {
+            fs.unlinkSync(dataFile);
+            console.log("storageDB: Deleted corrupted data.mdb");
+        }
+        if (fs.existsSync(lockFile)) {
+            fs.unlinkSync(lockFile);
+            console.log("storageDB: Deleted stale lock.mdb");
+        }
+    } catch (deleteErr) {
+        console.error("storageDB: Failed to delete corrupted DB files:", deleteErr);
+    }
+}
+
+async function _restoreFromDump(lmdbDir) {
+    const dumpFile = path.join(lmdbDir, "storageDBDump.json");
+    if (!fs.existsSync(dumpFile)) {
+        console.warn("storageDB: No dump file found to restore from. Starting with empty database.");
+        return;
+    }
+    try {
+        const dumpData = JSON.parse(fs.readFileSync(dumpFile, "utf8"));
+        const keys = Object.keys(dumpData);
+        for (const key of keys) {
+            await storageDB.put(key, dumpData[key]);
+        }
+        await storageDB.flushed;
+        console.log(`storageDB: Restored ${keys.length} keys from dump file.`);
+    } catch (restoreErr) {
+        console.error("storageDB: Failed to restore from dump file:", restoreErr);
+    }
+}
+
 async function openDB(lmdbDir) {
     // see LMDB api docs in https://www.npmjs.com/package/lmdb?activeTab=readme
     lmdbDir = path.join(lmdbDir, "storageDB");
+    dumpFileLocation = path.join(lmdbDir, "storageDBDump.json");
+
+    const needsRecovery = !_validateDBIntegrity(lmdbDir);
+    if (needsRecovery) {
+        console.error("storageDB: Corrupt database detected, deleting and recreating from dump.");
+        _deleteCorruptDBFiles(lmdbDir);
+    }
+
     storageDB = lmdb.open({
         path: lmdbDir,
         compression: false
     });
+
+    if (needsRecovery) {
+        await _restoreFromDump(lmdbDir);
+    }
+
     console.log("storageDB location is :", lmdbDir);
-    dumpFileLocation = path.join(lmdbDir, "storageDBDump.json");
 }
 
 async function flushDB() {
