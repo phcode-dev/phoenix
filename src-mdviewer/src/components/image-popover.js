@@ -223,9 +223,30 @@ function showEditDialog(imgEl, currentSrc, currentAlt) {
     urlInput.select();
 
     function close() {
+        const appViewer = document.getElementById("app-viewer");
+        const scrollTop = appViewer ? appViewer.scrollTop : 0;
         backdrop.remove();
-        if (contentEl) {
+        // Place cursor near the image so focus doesn't reset to top
+        if (imgEl && imgEl.parentNode && contentEl) {
+            const block = imgEl.closest("p, div, li") || imgEl.parentNode;
+            const range = document.createRange();
+            if (block.nextSibling) {
+                range.setStartBefore(block.nextSibling);
+            } else {
+                range.selectNodeContents(block);
+                range.collapse(false);
+            }
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
             contentEl.focus({ preventScroll: true });
+        } else if (contentEl) {
+            contentEl.focus({ preventScroll: true });
+        }
+        // Restore scroll in case async handlers shifted it
+        if (appViewer) {
+            appViewer.scrollTop = scrollTop;
+            requestAnimationFrame(() => { appViewer.scrollTop = scrollTop; });
         }
     }
 
