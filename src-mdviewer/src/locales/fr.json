@@ -57,6 +57,11 @@
     "heading1": "Titre 1",
     "heading2": "Titre 2",
     "heading3": "Titre 3",
+    "heading4": "Titre 4",
+    "heading5": "Titre 5",
+    "image": "Image",
+    "image_upload": "Téléverser depuis l'ordinateur",
+    "image_url": "URL de l'image",
     "italic": "Italique ({mod}+I)",
     "link": "Lien ({mod}+K)",
     "lists": "Listes",
@@ -67,11 +72,6 @@
     "table": "Tableau",
     "task_list": "Liste de tâches",
     "text_formatting": "Mise en forme du texte",
-    "heading4": "Titre 4",
-    "heading5": "Titre 5",
-    "image": "Image",
-    "image_upload": "Téléverser depuis l'ordinateur",
-    "image_url": "URL de l'image",
     "underline": "Souligné ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Fonctionnalités",
     "getting_started": "Premiers pas",
     "shortcuts": "Raccourcis clavier"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Description de l'image",
+    "insert": "Insérer",
+    "title": "Insérer une image par URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrer les langages",
@@ -142,6 +148,14 @@
     "heading2_desc": "Titre moyen",
     "heading3": "Titre 3",
     "heading3_desc": "Petit titre",
+    "heading4": "Titre 4",
+    "heading4_desc": "Titre plus petit",
+    "heading5": "Titre 5",
+    "heading5_desc": "Le plus petit titre",
+    "image_upload": "Téléverser une image",
+    "image_upload_desc": "Téléverser depuis l'ordinateur",
+    "image_url": "URL de l'image",
+    "image_url_desc": "Intégrer depuis une URL",
     "mermaid": "Diagramme Mermaid",
     "mermaid_desc": "Insérer un diagramme",
     "no_results": "Aucun résultat",
@@ -152,15 +166,7 @@
     "table": "Tableau",
     "table_desc": "Tableau 3×3",
     "task_list": "Liste de tâches",
-    "task_list_desc": "Liste à cocher",
-    "heading4": "Titre 4",
-    "heading4_desc": "Titre plus petit",
-    "heading5": "Titre 5",
-    "heading5_desc": "Le plus petit titre",
-    "image_upload": "Téléverser une image",
-    "image_upload_desc": "Téléverser depuis l'ordinateur",
-    "image_url": "URL de l'image",
-    "image_url_desc": "Intégrer depuis une URL"
+    "task_list_desc": "Liste à cocher"
   },
   "table": {
     "add_col_left": "Ajouter une colonne à gauche",
@@ -170,37 +176,37 @@
     "col_options": "Options de la colonne {n}",
     "delete_col": "Supprimer la colonne",
     "delete_row": "Supprimer la ligne",
+    "delete_table": "Supprimer le tableau",
     "header": "En-tête",
     "insert_col_left": "Insérer une colonne à gauche",
     "insert_col_right": "Insérer une colonne à droite",
     "insert_row_above": "Insérer une ligne au-dessus",
     "insert_row_below": "Insérer une ligne en dessous",
     "new_row": "+ Nouvelle ligne",
-    "row_options": "Options de la ligne {n}",
-    "delete_table": "Supprimer le tableau"
+    "row_options": "Options de la ligne {n}"
   },
   "toolbar": {
+    "cursor_sync": "Basculer la synchronisation du curseur",
     "edit": "Modifier",
+    "empty_line_hint": "Taper / pour insérer",
     "export_pdf": "Exporter en PDF",
     "focus": "Mode concentration",
     "more": "Plus",
     "new_file": "Nouveau fichier",
     "open": "Ouvrir un fichier",
+    "print": "Imprimer",
+    "reader": "Lecture",
     "save": "Enregistrer",
     "search": "Rechercher",
     "settings": "Paramètres",
     "split_view": "Vue fractionnée",
+    "switch_to_edit": "Basculer en mode édition",
+    "switch_to_reader": "Basculer en mode lecture",
     "theme": "Changer le thème",
     "toc": "Table des matières",
     "zoom_in": "Zoom avant",
     "zoom_out": "Zoom arrière",
-    "zoom_reset": "Réinitialiser le zoom",
-    "cursor_sync": "Basculer la synchronisation du curseur",
-    "empty_line_hint": "Taper / pour insérer",
-    "print": "Imprimer",
-    "reader": "Lecture",
-    "switch_to_edit": "Basculer en mode édition",
-    "switch_to_reader": "Basculer en mode lecture"
+    "zoom_reset": "Réinitialiser le zoom"
   },
   "trial": {
     "days_remaining": "{days} jours restants d'essai",
@@ -227,10 +233,8 @@
     "subtitle": "Un beau visualiseur Markdown",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Description de l'image",
-    "insert": "Insérer",
-    "title": "Insérer une image par URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Supprimer l'image",
+    "edit": "Modifier l'URL de l'image"
   }
 }

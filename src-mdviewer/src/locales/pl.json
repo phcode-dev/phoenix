@@ -57,6 +57,11 @@
     "heading1": "Nagłówek 1",
     "heading2": "Nagłówek 2",
     "heading3": "Nagłówek 3",
+    "heading4": "Nagłówek 4",
+    "heading5": "Nagłówek 5",
+    "image": "Obrazek",
+    "image_upload": "Prześlij z komputera",
+    "image_url": "Adres URL obrazka",
     "italic": "Kursywa ({mod}+I)",
     "link": "Link ({mod}+K)",
     "lists": "Listy",
@@ -67,11 +72,6 @@
     "table": "Tabela",
     "task_list": "Lista zadań",
     "text_formatting": "Formatowanie tekstu",
-    "heading4": "Nagłówek 4",
-    "heading5": "Nagłówek 5",
-    "image": "Obrazek",
-    "image_upload": "Prześlij z komputera",
-    "image_url": "Adres URL obrazka",
     "underline": "Podkreślenie ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funkcje",
     "getting_started": "Pierwsze kroki",
     "shortcuts": "Skróty klawiszowe"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Opis obrazka",
+    "insert": "Wstaw",
+    "title": "Wstaw obrazek z adresu URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtruj języki",
@@ -142,6 +148,14 @@
     "heading2_desc": "Średni nagłówek",
     "heading3": "Nagłówek 3",
     "heading3_desc": "Mały nagłówek",
+    "heading4": "Nagłówek 4",
+    "heading4_desc": "Mniejszy nagłówek",
+    "heading5": "Nagłówek 5",
+    "heading5_desc": "Najmniejszy nagłówek",
+    "image_upload": "Prześlij obraz",
+    "image_upload_desc": "Prześlij z komputera",
+    "image_url": "Obraz z URL",
+    "image_url_desc": "Osadź z adresu URL",
     "mermaid": "Diagram Mermaid",
     "mermaid_desc": "Wstaw diagram",
     "no_results": "Brak wyników",
@@ -152,15 +166,7 @@
     "table": "Tabela",
     "table_desc": "Tabela 3×3",
     "task_list": "Lista zadań",
-    "task_list_desc": "Lista kontrolna",
-    "heading4": "Nagłówek 4",
-    "heading4_desc": "Mniejszy nagłówek",
-    "heading5": "Nagłówek 5",
-    "heading5_desc": "Najmniejszy nagłówek",
-    "image_upload": "Prześlij obraz",
-    "image_upload_desc": "Prześlij z komputera",
-    "image_url": "Obraz z URL",
-    "image_url_desc": "Osadź z adresu URL"
+    "task_list_desc": "Lista kontrolna"
   },
   "table": {
     "add_col_left": "Dodaj kolumnę po lewej",
@@ -170,37 +176,37 @@
     "col_options": "Opcje kolumny {n}",
     "delete_col": "Usuń kolumnę",
     "delete_row": "Usuń wiersz",
+    "delete_table": "Usuń tabelę",
     "header": "Nagłówek",
     "insert_col_left": "Wstaw kolumnę po lewej",
     "insert_col_right": "Wstaw kolumnę po prawej",
     "insert_row_above": "Wstaw wiersz powyżej",
     "insert_row_below": "Wstaw wiersz poniżej",
     "new_row": "+ Nowy wiersz",
-    "row_options": "Opcje wiersza {n}",
-    "delete_table": "Usuń tabelę"
+    "row_options": "Opcje wiersza {n}"
   },
   "toolbar": {
+    "cursor_sync": "Przełącz synchronizację kursora",
     "edit": "Edytuj",
+    "empty_line_hint": "Wpisz / aby wstawić",
     "export_pdf": "Eksportuj PDF",
     "focus": "Tryb skupienia",
     "more": "Więcej",
     "new_file": "Nowy plik",
     "open": "Otwórz plik",
+    "print": "Drukuj",
+    "reader": "Czytnik",
     "save": "Zapisz",
     "search": "Szukaj",
     "settings": "Ustawienia",
     "split_view": "Widok podzielony",
+    "switch_to_edit": "Przełącz na tryb edycji",
+    "switch_to_reader": "Przełącz na tryb czytnika",
     "theme": "Przełącz motyw",
     "toc": "Spis treści",
     "zoom_in": "Powiększ",
     "zoom_out": "Pomniejsz",
-    "zoom_reset": "Resetuj powiększenie",
-    "cursor_sync": "Przełącz synchronizację kursora",
-    "empty_line_hint": "Wpisz / aby wstawić",
-    "print": "Drukuj",
-    "reader": "Czytnik",
-    "switch_to_edit": "Przełącz na tryb edycji",
-    "switch_to_reader": "Przełącz na tryb czytnika"
+    "zoom_reset": "Resetuj powiększenie"
   },
   "trial": {
     "days_remaining": "Pozostało {days} dni okresu próbnego",
@@ -227,10 +233,8 @@
     "subtitle": "Piękna przeglądarka Markdown",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Opis obrazka",
-    "insert": "Wstaw",
-    "title": "Wstaw obrazek z adresu URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Usuń obrazek",
+    "edit": "Edytuj URL obrazka"
   }
 }

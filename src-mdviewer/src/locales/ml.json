@@ -57,6 +57,11 @@
     "heading1": "ശീർഷകം 1",
     "heading2": "ശീർഷകം 2",
     "heading3": "ശീർഷകം 3",
+    "heading4": "തലക്കെട്ട് 4",
+    "heading5": "തലക്കെട്ട് 5",
+    "image": "ചിത്രം",
+    "image_upload": "കമ്പ്യൂട്ടറിൽ നിന്ന് അപ്‌ലോഡ് ചെയ്യുക",
+    "image_url": "ചിത്രത്തിന്റെ URL",
     "italic": "ഇറ്റാലിക് ({mod}+I)",
     "link": "ലിങ്ക് ({mod}+K)",
     "lists": "ലിസ്റ്റുകൾ",
@@ -67,11 +72,6 @@
     "table": "ടേബിൾ",
     "task_list": "ടാസ്ക് ലിസ്റ്റ്",
     "text_formatting": "ടെക്സ്റ്റ് ഫോർമാറ്റിംഗ്",
-    "heading4": "തലക്കെട്ട് 4",
-    "heading5": "തലക്കെട്ട് 5",
-    "image": "ചിത്രം",
-    "image_upload": "കമ്പ്യൂട്ടറിൽ നിന്ന് അപ്‌ലോഡ് ചെയ്യുക",
-    "image_url": "ചിത്രത്തിന്റെ URL",
     "underline": "അടിവര ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "സവിശേഷതകൾ",
     "getting_started": "ആരംഭിക്കാം",
     "shortcuts": "കീബോർഡ് കുറുക്കുവഴികൾ"
+  },
+  "image_dialog": {
+    "alt_placeholder": "ചിത്രത്തിന്റെ വിവരണം",
+    "insert": "ചേർക്കുക",
+    "title": "ചിത്രത്തിന്റെ URL ചേർക്കുക",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "ഭാഷകൾ ഫിൽട്ടർ ചെയ്യുക",
@@ -142,6 +148,14 @@
     "heading2_desc": "ഇടത്തരം ശീർഷകം",
     "heading3": "ശീർഷകം 3",
     "heading3_desc": "ചെറിയ ശീർഷകം",
+    "heading4": "തലക്കെട്ട് 4",
+    "heading4_desc": "ചെറിയ തലക്കെട്ട്",
+    "heading5": "തലക്കെട്ട് 5",
+    "heading5_desc": "ഏറ്റവും ചെറിയ തലക്കെട്ട്",
+    "image_upload": "ചിത്രം അപ്‌ലോഡ് ചെയ്യുക",
+    "image_upload_desc": "കമ്പ്യൂട്ടറിൽ നിന്ന് അപ്‌ലോഡ് ചെയ്യുക",
+    "image_url": "ചിത്രത്തിന്റെ URL",
+    "image_url_desc": "URL-ൽ നിന്ന് ഉൾപ്പെടുത്തുക",
     "mermaid": "Mermaid ഡയഗ്രം",
     "mermaid_desc": "ഡയഗ്രം ചേർക്കുക",
     "no_results": "ഫലങ്ങളില്ല",
@@ -152,15 +166,7 @@
     "table": "ടേബിൾ",
     "table_desc": "3×3 ടേബിൾ",
     "task_list": "ടാസ്ക് ലിസ്റ്റ്",
-    "task_list_desc": "ചെക്ക്ലിസ്റ്റ്",
-    "heading4": "തലക്കെട്ട് 4",
-    "heading4_desc": "ചെറിയ തലക്കെട്ട്",
-    "heading5": "തലക്കെട്ട് 5",
-    "heading5_desc": "ഏറ്റവും ചെറിയ തലക്കെട്ട്",
-    "image_upload": "ചിത്രം അപ്‌ലോഡ് ചെയ്യുക",
-    "image_upload_desc": "കമ്പ്യൂട്ടറിൽ നിന്ന് അപ്‌ലോഡ് ചെയ്യുക",
-    "image_url": "ചിത്രത്തിന്റെ URL",
-    "image_url_desc": "URL-ൽ നിന്ന് ഉൾപ്പെടുത്തുക"
+    "task_list_desc": "ചെക്ക്ലിസ്റ്റ്"
   },
   "table": {
     "add_col_left": "ഇടത്ത് കോളം ചേർക്കുക",
@@ -170,37 +176,37 @@
     "col_options": "കോളം {n} ഓപ്ഷനുകൾ",
     "delete_col": "കോളം ഇല്ലാതാക്കുക",
     "delete_row": "വരി ഇല്ലാതാക്കുക",
+    "delete_table": "പട്ടിക നീക്കം ചെയ്യുക",
     "header": "ഹെഡർ",
     "insert_col_left": "ഇടത്ത് കോളം ചേർക്കുക",
     "insert_col_right": "വലത്ത് കോളം ചേർക്കുക",
     "insert_row_above": "മുകളിൽ വരി ചേർക്കുക",
     "insert_row_below": "താഴെ വരി ചേർക്കുക",
     "new_row": "+ പുതിയ വരി",
-    "row_options": "വരി {n} ഓപ്ഷനുകൾ",
-    "delete_table": "പട്ടിക നീക്കം ചെയ്യുക"
+    "row_options": "വരി {n} ഓപ്ഷനുകൾ"
   },
   "toolbar": {
+    "cursor_sync": "കേഴ്‌സർ സിങ്ക് ടോഗിൾ ചെയ്യുക",
     "edit": "എഡിറ്റ്",
+    "empty_line_hint": "ചേർക്കാൻ / ടൈപ്പ് ചെയ്യുക",
     "export_pdf": "PDF എക്സ്പോർട്ട്",
     "focus": "ഫോക്കസ് മോഡ്",
     "more": "കൂടുതൽ",
     "new_file": "പുതിയ ഫയൽ",
     "open": "ഫയൽ തുറക്കുക",
+    "print": "പ്രിന്റ്",
+    "reader": "റീഡർ",
     "save": "സേവ്",
     "search": "തിരയുക",
     "settings": "ക്രമീകരണങ്ങൾ",
     "split_view": "വിഭജിത കാഴ്ച",
+    "switch_to_edit": "എഡിറ്റ് മോഡിലേക്ക് മാറുക",
+    "switch_to_reader": "റീഡർ മോഡിലേക്ക് മാറുക",
     "theme": "തീം മാറ്റുക",
     "toc": "ഉള്ളടക്കം",
     "zoom_in": "സൂം ഇൻ",
     "zoom_out": "സൂം ഔട്ട്",
-    "zoom_reset": "സൂം റീസെറ്റ്",
-    "cursor_sync": "കേഴ്‌സർ സിങ്ക് ടോഗിൾ ചെയ്യുക",
-    "empty_line_hint": "ചേർക്കാൻ / ടൈപ്പ് ചെയ്യുക",
-    "print": "പ്രിന്റ്",
-    "reader": "റീഡർ",
-    "switch_to_edit": "എഡിറ്റ് മോഡിലേക്ക് മാറുക",
-    "switch_to_reader": "റീഡർ മോഡിലേക്ക് മാറുക"
+    "zoom_reset": "സൂം റീസെറ്റ്"
   },
   "trial": {
     "days_remaining": "ട്രയലിൽ {days} ദിവസം ശേഷിക്കുന്നു",
@@ -227,10 +233,8 @@
     "subtitle": "ഒരു മനോഹരമായ മാർക്ക്ഡൗൺ വ്യൂവർ",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "ചിത്രത്തിന്റെ വിവരണം",
-    "insert": "ചേർക്കുക",
-    "title": "ചിത്രത്തിന്റെ URL ചേർക്കുക",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "ചിത്രം നീക്കം ചെയ്യുക",
+    "edit": "ചിത്രത്തിന്റെ യുആർഎൽ തിരുത്തുക"
   }
 }

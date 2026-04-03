@@ -57,6 +57,11 @@
     "heading1": "Nadpis 1",
     "heading2": "Nadpis 2",
     "heading3": "Nadpis 3",
+    "heading4": "Nadpis 4",
+    "heading5": "Nadpis 5",
+    "image": "Obrázek",
+    "image_upload": "Nahrát z počítače",
+    "image_url": "URL obrázku",
     "italic": "Kurzíva ({mod}+I)",
     "link": "Odkaz ({mod}+K)",
     "lists": "Seznamy",
@@ -67,11 +72,6 @@
     "table": "Tabulka",
     "task_list": "Seznam úkolů",
     "text_formatting": "Formátování textu",
-    "heading4": "Nadpis 4",
-    "heading5": "Nadpis 5",
-    "image": "Obrázek",
-    "image_upload": "Nahrát z počítače",
-    "image_url": "URL obrázku",
     "underline": "Podtržení ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funkce",
     "getting_started": "Začínáme",
     "shortcuts": "Klávesové zkratky"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Popis obrázku",
+    "insert": "Vložit",
+    "title": "Vložit URL obrázku",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrovat jazyky",
@@ -142,6 +148,14 @@
     "heading2_desc": "Střední nadpis",
     "heading3": "Nadpis 3",
     "heading3_desc": "Malý nadpis",
+    "heading4": "Nadpis 4",
+    "heading4_desc": "Menší nadpis",
+    "heading5": "Nadpis 5",
+    "heading5_desc": "Nejmenší nadpis",
+    "image_upload": "Nahrát obrázek",
+    "image_upload_desc": "Nahrát z počítače",
+    "image_url": "URL obrázku",
+    "image_url_desc": "Vložit z URL",
     "mermaid": "Diagram Mermaid",
     "mermaid_desc": "Vložit diagram",
     "no_results": "Žádné výsledky",
@@ -152,15 +166,7 @@
     "table": "Tabulka",
     "table_desc": "Tabulka 3×3",
     "task_list": "Seznam úkolů",
-    "task_list_desc": "Kontrolní seznam",
-    "heading4": "Nadpis 4",
-    "heading4_desc": "Menší nadpis",
-    "heading5": "Nadpis 5",
-    "heading5_desc": "Nejmenší nadpis",
-    "image_upload": "Nahrát obrázek",
-    "image_upload_desc": "Nahrát z počítače",
-    "image_url": "URL obrázku",
-    "image_url_desc": "Vložit z URL"
+    "task_list_desc": "Kontrolní seznam"
   },
   "table": {
     "add_col_left": "Přidat sloupec vlevo",
@@ -170,37 +176,37 @@
     "col_options": "Možnosti sloupce {n}",
     "delete_col": "Odstranit sloupec",
     "delete_row": "Odstranit řádek",
+    "delete_table": "Smazat tabulku",
     "header": "Záhlaví",
     "insert_col_left": "Vložit sloupec vlevo",
     "insert_col_right": "Vložit sloupec vpravo",
     "insert_row_above": "Vložit řádek nad",
     "insert_row_below": "Vložit řádek pod",
     "new_row": "+ Nový řádek",
-    "row_options": "Možnosti řádku {n}",
-    "delete_table": "Smazat tabulku"
+    "row_options": "Možnosti řádku {n}"
   },
   "toolbar": {
+    "cursor_sync": "Přepnout synchronizaci kurzorů",
     "edit": "Upravit",
+    "empty_line_hint": "Napište / pro vložení",
     "export_pdf": "Exportovat do PDF",
     "focus": "Režim soustředění",
     "more": "Více",
     "new_file": "Nový soubor",
     "open": "Otevřít soubor",
+    "print": "Tisk",
+    "reader": "Čtečka",
     "save": "Uložit",
     "search": "Hledat",
     "settings": "Nastavení",
     "split_view": "Rozdělené zobrazení",
+    "switch_to_edit": "Přepnout do režimu úprav",
+    "switch_to_reader": "Přepnout do režimu čtení",
     "theme": "Přepnout motiv",
     "toc": "Obsah",
     "zoom_in": "Přiblížit",
     "zoom_out": "Oddálit",
-    "zoom_reset": "Resetovat přiblížení",
-    "cursor_sync": "Přepnout synchronizaci kurzorů",
-    "empty_line_hint": "Napište / pro vložení",
-    "print": "Tisk",
-    "reader": "Čtečka",
-    "switch_to_edit": "Přepnout do režimu úprav",
-    "switch_to_reader": "Přepnout do režimu čtení"
+    "zoom_reset": "Resetovat přiblížení"
   },
   "trial": {
     "days_remaining": "Zbývá {days} dní zkušební verze",
@@ -227,10 +233,8 @@
     "subtitle": "Krásný prohlížeč Markdownu",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Popis obrázku",
-    "insert": "Vložit",
-    "title": "Vložit URL obrázku",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Smazat obrázek",
+    "edit": "Upravit URL obrázku"
   }
 }

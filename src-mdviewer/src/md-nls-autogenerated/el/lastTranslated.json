@@ -65,6 +65,8 @@
   "help.features": "Features",
   "help.getting_started": "Getting Started",
   "help.shortcuts": "Keyboard Shortcuts",
+  "image.delete": "Delete image",
+  "image.edit": "Edit Image URL",
   "image_dialog.alt_placeholder": "Image description",
   "image_dialog.insert": "Insert",
   "image_dialog.title": "Insert Image URL",

@@ -57,6 +57,11 @@
     "heading1": "Заголовок 1",
     "heading2": "Заголовок 2",
     "heading3": "Заголовок 3",
+    "heading4": "Заголовок 4",
+    "heading5": "Заголовок 5",
+    "image": "Изображение",
+    "image_upload": "Загрузить с компьютера",
+    "image_url": "URL изображения",
     "italic": "Курсив ({mod}+I)",
     "link": "Ссылка ({mod}+K)",
     "lists": "Списки",
@@ -67,11 +72,6 @@
     "table": "Таблица",
     "task_list": "Список задач",
     "text_formatting": "Форматирование текста",
-    "heading4": "Заголовок 4",
-    "heading5": "Заголовок 5",
-    "image": "Изображение",
-    "image_upload": "Загрузить с компьютера",
-    "image_url": "URL изображения",
     "underline": "Подчеркнутый ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Возможности",
     "getting_started": "Начало работы",
     "shortcuts": "Сочетания клавиш"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Описание изображения",
+    "insert": "Вставить",
+    "title": "Вставить URL изображения",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Фильтр языков",
@@ -142,6 +148,14 @@
     "heading2_desc": "Средний заголовок",
     "heading3": "Заголовок 3",
     "heading3_desc": "Небольшой заголовок",
+    "heading4": "Заголовок 4",
+    "heading4_desc": "Заголовок поменьше",
+    "heading5": "Заголовок 5",
+    "heading5_desc": "Самый маленький заголовок",
+    "image_upload": "Загрузить изображение",
+    "image_upload_desc": "Загрузить с компьютера",
+    "image_url": "URL изображения",
+    "image_url_desc": "Вставить по URL",
     "mermaid": "Диаграмма Mermaid",
     "mermaid_desc": "Вставить диаграмму",
     "no_results": "Нет результатов",
@@ -152,15 +166,7 @@
     "table": "Таблица",
     "table_desc": "Таблица 3×3",
     "task_list": "Список задач",
-    "task_list_desc": "Чек-лист",
-    "heading4": "Заголовок 4",
-    "heading4_desc": "Заголовок поменьше",
-    "heading5": "Заголовок 5",
-    "heading5_desc": "Самый маленький заголовок",
-    "image_upload": "Загрузить изображение",
-    "image_upload_desc": "Загрузить с компьютера",
-    "image_url": "URL изображения",
-    "image_url_desc": "Вставить по URL"
+    "task_list_desc": "Чек-лист"
   },
   "table": {
     "add_col_left": "Добавить столбец слева",
@@ -170,37 +176,37 @@
     "col_options": "Настройки столбца {n}",
     "delete_col": "Удалить столбец",
     "delete_row": "Удалить строку",
+    "delete_table": "Удалить таблицу",
     "header": "Заголовок",
     "insert_col_left": "Вставить столбец слева",
     "insert_col_right": "Вставить столбец справа",
     "insert_row_above": "Вставить строку выше",
     "insert_row_below": "Вставить строку ниже",
     "new_row": "+ Новая строка",
-    "row_options": "Параметры строки {n}",
-    "delete_table": "Удалить таблицу"
+    "row_options": "Параметры строки {n}"
   },
   "toolbar": {
+    "cursor_sync": "Переключить синхронизацию курсоров",
     "edit": "Редактировать",
+    "empty_line_hint": "Введите / для вставки",
     "export_pdf": "Экспорт в PDF",
     "focus": "Режим фокусировки",
     "more": "Ещё",
     "new_file": "Новый файл",
     "open": "Открыть файл",
+    "print": "Печать",
+    "reader": "Режим чтения",
     "save": "Сохранить",
     "search": "Поиск",
     "settings": "Настройки",
     "split_view": "Разделенный режим",
+    "switch_to_edit": "Переключиться в режим редактирования",
+    "switch_to_reader": "Переключиться в режим чтения",
     "theme": "Сменить тему",
     "toc": "Оглавление",
     "zoom_in": "Увеличить",
     "zoom_out": "Уменьшить",
-    "zoom_reset": "Сбросить масштаб",
-    "cursor_sync": "Переключить синхронизацию курсоров",
-    "empty_line_hint": "Введите / для вставки",
-    "print": "Печать",
-    "reader": "Режим чтения",
-    "switch_to_edit": "Переключиться в режим редактирования",
-    "switch_to_reader": "Переключиться в режим чтения"
+    "zoom_reset": "Сбросить масштаб"
   },
   "trial": {
     "days_remaining": "Осталось {days} дней в пробной версии",
@@ -227,10 +233,8 @@
     "subtitle": "Красивый просмотрщик Markdown",
     "title": "Керн"
   },
-  "image_dialog": {
-    "alt_placeholder": "Описание изображения",
-    "insert": "Вставить",
-    "title": "Вставить URL изображения",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Удалить изображение",
+    "edit": "Изменить URL изображения"
   }
 }

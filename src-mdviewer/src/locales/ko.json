@@ -57,6 +57,11 @@
     "heading1": "제목 1",
     "heading2": "제목 2",
     "heading3": "제목 3",
+    "heading4": "제목 4",
+    "heading5": "제목 5",
+    "image": "이미지",
+    "image_upload": "컴퓨터에서 업로드",
+    "image_url": "이미지 URL",
     "italic": "기울임 ({mod}+I)",
     "link": "링크 ({mod}+K)",
     "lists": "목록",
@@ -67,11 +72,6 @@
     "table": "표",
     "task_list": "작업 목록",
     "text_formatting": "텍스트 서식",
-    "heading4": "제목 4",
-    "heading5": "제목 5",
-    "image": "이미지",
-    "image_upload": "컴퓨터에서 업로드",
-    "image_url": "이미지 URL",
     "underline": "밑줄 ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "기능",
     "getting_started": "시작하기",
     "shortcuts": "키보드 단축키"
+  },
+  "image_dialog": {
+    "alt_placeholder": "이미지 설명",
+    "insert": "삽입",
+    "title": "이미지 URL 삽입",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "언어 필터",
@@ -142,6 +148,14 @@
     "heading2_desc": "중간 제목",
     "heading3": "제목 3",
     "heading3_desc": "작은 제목",
+    "heading4": "제목 4",
+    "heading4_desc": "더 작은 제목",
+    "heading5": "제목 5",
+    "heading5_desc": "가장 작은 제목",
+    "image_upload": "이미지 업로드",
+    "image_upload_desc": "컴퓨터에서 업로드",
+    "image_url": "이미지 URL",
+    "image_url_desc": "URL로 삽입",
     "mermaid": "Mermaid 다이어그램",
     "mermaid_desc": "다이어그램 삽입",
     "no_results": "결과 없음",
@@ -152,15 +166,7 @@
     "table": "표",
     "table_desc": "3×3 표",
     "task_list": "작업 목록",
-    "task_list_desc": "체크리스트",
-    "heading4": "제목 4",
-    "heading4_desc": "더 작은 제목",
-    "heading5": "제목 5",
-    "heading5_desc": "가장 작은 제목",
-    "image_upload": "이미지 업로드",
-    "image_upload_desc": "컴퓨터에서 업로드",
-    "image_url": "이미지 URL",
-    "image_url_desc": "URL로 삽입"
+    "task_list_desc": "체크리스트"
   },
   "table": {
     "add_col_left": "왼쪽에 열 추가",
@@ -170,37 +176,37 @@
     "col_options": "열 {n} 옵션",
     "delete_col": "열 삭제",
     "delete_row": "행 삭제",
+    "delete_table": "표 삭제",
     "header": "헤더",
     "insert_col_left": "왼쪽에 열 삽입",
     "insert_col_right": "오른쪽에 열 삽입",
     "insert_row_above": "위에 행 삽입",
     "insert_row_below": "아래에 행 삽입",
     "new_row": "+ 새 행",
-    "row_options": "행 {n} 옵션",
-    "delete_table": "표 삭제"
+    "row_options": "행 {n} 옵션"
   },
   "toolbar": {
+    "cursor_sync": "커서 동기화 전환",
     "edit": "편집",
+    "empty_line_hint": "삽입하려면 /를 입력하세요",
     "export_pdf": "PDF 내보내기",
     "focus": "집중 모드",
     "more": "더보기",
     "new_file": "새 파일",
     "open": "파일 열기",
+    "print": "인쇄",
+    "reader": "리더",
     "save": "저장",
     "search": "검색",
     "settings": "설정",
     "split_view": "분할 보기",
+    "switch_to_edit": "편집 모드로 전환",
+    "switch_to_reader": "리더 모드로 전환",
     "theme": "테마 전환",
     "toc": "목차",
     "zoom_in": "확대",
     "zoom_out": "축소",
-    "zoom_reset": "배율 초기화",
-    "cursor_sync": "커서 동기화 전환",
-    "empty_line_hint": "삽입하려면 /를 입력하세요",
-    "print": "인쇄",
-    "reader": "리더",
-    "switch_to_edit": "편집 모드로 전환",
-    "switch_to_reader": "리더 모드로 전환"
+    "zoom_reset": "배율 초기화"
   },
   "trial": {
     "days_remaining": "체험판 {days}일 남음",
@@ -227,10 +233,8 @@
     "subtitle": "아름다운 마크다운 뷰어",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "이미지 설명",
-    "insert": "삽입",
-    "title": "이미지 URL 삽입",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "이미지 삭제",
+    "edit": "이미지 URL 수정"
   }
 }

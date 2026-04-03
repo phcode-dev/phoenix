@@ -57,6 +57,11 @@
     "heading1": "शीर्षक 1",
     "heading2": "शीर्षक 2",
     "heading3": "शीर्षक 3",
+    "heading4": "शीर्षक 4",
+    "heading5": "शीर्षक 5",
+    "image": "छवि",
+    "image_upload": "कंप्यूटर से अपलोड करें",
+    "image_url": "छवि यूआरएल",
     "italic": "इटैलिक ({mod}+I)",
     "link": "लिंक ({mod}+K)",
     "lists": "सूचियाँ",
@@ -67,11 +72,6 @@
     "table": "तालिका",
     "task_list": "कार्य सूची",
     "text_formatting": "टेक्स्ट फ़ॉर्मेटिंग",
-    "heading4": "शीर्षक 4",
-    "heading5": "शीर्षक 5",
-    "image": "छवि",
-    "image_upload": "कंप्यूटर से अपलोड करें",
-    "image_url": "छवि यूआरएल",
     "underline": "रेखांकित ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "विशेषताएँ",
     "getting_started": "शुरू करें",
     "shortcuts": "कीबोर्ड शॉर्टकट"
+  },
+  "image_dialog": {
+    "alt_placeholder": "छवि का विवरण",
+    "insert": "सम्मिलित करें",
+    "title": "छवि यूआरएल सम्मिलित करें",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "भाषाएँ फ़िल्टर करें",
@@ -142,6 +148,14 @@
     "heading2_desc": "मध्यम शीर्षक",
     "heading3": "शीर्षक 3",
     "heading3_desc": "छोटा शीर्षक",
+    "heading4": "हेडिंग 4",
+    "heading4_desc": "छोटा हेडिंग",
+    "heading5": "हेडिंग 5",
+    "heading5_desc": "सबसे छोटा हेडिंग",
+    "image_upload": "इमेज अपलोड",
+    "image_upload_desc": "कंप्यूटर से अपलोड करें",
+    "image_url": "इमेज यूआरएल",
+    "image_url_desc": "यूआरएल से एम्बेड करें",
     "mermaid": "Mermaid आरेख",
     "mermaid_desc": "एक आरेख डालें",
     "no_results": "कोई परिणाम नहीं",
@@ -152,15 +166,7 @@
     "table": "तालिका",
     "table_desc": "3×3 तालिका",
     "task_list": "कार्य सूची",
-    "task_list_desc": "चेकलिस्ट",
-    "heading4": "हेडिंग 4",
-    "heading4_desc": "छोटा हेडिंग",
-    "heading5": "हेडिंग 5",
-    "heading5_desc": "सबसे छोटा हेडिंग",
-    "image_upload": "इमेज अपलोड",
-    "image_upload_desc": "कंप्यूटर से अपलोड करें",
-    "image_url": "इमेज यूआरएल",
-    "image_url_desc": "यूआरएल से एम्बेड करें"
+    "task_list_desc": "चेकलिस्ट"
   },
   "table": {
     "add_col_left": "बाईं ओर स्तंभ जोड़ें",
@@ -170,37 +176,37 @@
     "col_options": "स्तंभ {n} विकल्प",
     "delete_col": "स्तंभ हटाएँ",
     "delete_row": "पंक्ति हटाएँ",
+    "delete_table": "टेबल हटाएँ",
     "header": "शीर्षलेख",
     "insert_col_left": "बाईं ओर स्तंभ जोड़ें",
     "insert_col_right": "दाईं ओर स्तंभ जोड़ें",
     "insert_row_above": "ऊपर पंक्ति जोड़ें",
     "insert_row_below": "नीचे पंक्ति जोड़ें",
     "new_row": "+ नई पंक्ति",
-    "row_options": "पंक्ति {n} विकल्प",
-    "delete_table": "टेबल हटाएँ"
+    "row_options": "पंक्ति {n} विकल्प"
   },
   "toolbar": {
+    "cursor_sync": "कर्सर सिंक टॉगल करें",
     "edit": "संपादित करें",
+    "empty_line_hint": "इन्सर्ट करने के लिए / टाइप करें",
     "export_pdf": "PDF निर्यात करें",
     "focus": "फ़ोकस मोड",
     "more": "अधिक",
     "new_file": "नई फ़ाइल",
     "open": "फ़ाइल खोलें",
+    "print": "प्रिंट",
+    "reader": "रीडर",
     "save": "सहेजें",
     "search": "खोजें",
     "settings": "सेटिंग्स",
     "split_view": "विभाजित दृश्य",
+    "switch_to_edit": "एडिट मोड में बदलें",
+    "switch_to_reader": "रीडर मोड में बदलें",
     "theme": "थीम बदलें",
     "toc": "विषय सूची",
     "zoom_in": "ज़ूम इन",
     "zoom_out": "ज़ूम आउट",
-    "zoom_reset": "ज़ूम रीसेट",
-    "cursor_sync": "कर्सर सिंक टॉगल करें",
-    "empty_line_hint": "इन्सर्ट करने के लिए / टाइप करें",
-    "print": "प्रिंट",
-    "reader": "रीडर",
-    "switch_to_edit": "एडिट मोड में बदलें",
-    "switch_to_reader": "रीडर मोड में बदलें"
+    "zoom_reset": "ज़ूम रीसेट"
   },
   "trial": {
     "days_remaining": "ट्रायल में {days} दिन शेष",
@@ -227,10 +233,8 @@
     "subtitle": "एक सुंदर मार्कडाउन व्यूअर",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "छवि का विवरण",
-    "insert": "सम्मिलित करें",
-    "title": "छवि यूआरएल सम्मिलित करें",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "छवि हटाएँ",
+    "edit": "छवि URL संपादित करें"
   }
 }

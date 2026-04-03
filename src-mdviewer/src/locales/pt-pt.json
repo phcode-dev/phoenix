@@ -57,6 +57,11 @@
     "heading1": "Título 1",
     "heading2": "Título 2",
     "heading3": "Título 3",
+    "heading4": "Título 4",
+    "heading5": "Título 5",
+    "image": "Imagem",
+    "image_upload": "Carregar do computador",
+    "image_url": "URL da imagem",
     "italic": "Itálico ({mod}+I)",
     "link": "Link ({mod}+K)",
     "lists": "Listas",
@@ -67,11 +72,6 @@
     "table": "Tabela",
     "task_list": "Lista de tarefas",
     "text_formatting": "Formatação de texto",
-    "heading4": "Título 4",
-    "heading5": "Título 5",
-    "image": "Imagem",
-    "image_upload": "Carregar do computador",
-    "image_url": "URL da imagem",
     "underline": "Sublinhado ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funcionalidades",
     "getting_started": "Primeiros passos",
     "shortcuts": "Atalhos de teclado"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Descrição da imagem",
+    "insert": "Inserir",
+    "title": "Inserir URL da imagem",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrar linguagens",
@@ -142,6 +148,14 @@
     "heading2_desc": "Título médio",
     "heading3": "Título 3",
     "heading3_desc": "Título pequeno",
+    "heading4": "Título 4",
+    "heading4_desc": "Título mais pequeno",
+    "heading5": "Título 5",
+    "heading5_desc": "O título mais pequeno",
+    "image_upload": "Carregar Imagem",
+    "image_upload_desc": "Carregar do computador",
+    "image_url": "URL da Imagem",
+    "image_url_desc": "Incorporar a partir do URL",
     "mermaid": "Diagrama Mermaid",
     "mermaid_desc": "Inserir um diagrama",
     "no_results": "Sem resultados",
@@ -152,15 +166,7 @@
     "table": "Tabela",
     "table_desc": "Tabela 3×3",
     "task_list": "Lista de tarefas",
-    "task_list_desc": "Checklist",
-    "heading4": "Título 4",
-    "heading4_desc": "Título mais pequeno",
-    "heading5": "Título 5",
-    "heading5_desc": "O título mais pequeno",
-    "image_upload": "Carregar Imagem",
-    "image_upload_desc": "Carregar do computador",
-    "image_url": "URL da Imagem",
-    "image_url_desc": "Incorporar a partir do URL"
+    "task_list_desc": "Checklist"
   },
   "table": {
     "add_col_left": "Adicionar coluna à esquerda",
@@ -170,37 +176,37 @@
     "col_options": "Opções da coluna {n}",
     "delete_col": "Excluir coluna",
     "delete_row": "Excluir linha",
+    "delete_table": "Eliminar tabela",
     "header": "Cabeçalho",
     "insert_col_left": "Inserir coluna à esquerda",
     "insert_col_right": "Inserir coluna à direita",
     "insert_row_above": "Inserir linha acima",
     "insert_row_below": "Inserir linha abaixo",
     "new_row": "+ Nova linha",
-    "row_options": "Opções da linha {n}",
-    "delete_table": "Eliminar tabela"
+    "row_options": "Opções da linha {n}"
   },
   "toolbar": {
+    "cursor_sync": "Alternar sincronização do cursor",
     "edit": "Editar",
+    "empty_line_hint": "Escreva / para inserir",
     "export_pdf": "Exportar PDF",
     "focus": "Modo foco",
     "more": "Mais",
     "new_file": "Novo arquivo",
     "open": "Abrir arquivo",
+    "print": "Imprimir",
+    "reader": "Leitura",
     "save": "Salvar",
     "search": "Pesquisar",
     "settings": "Configurações",
     "split_view": "Vista dividida",
+    "switch_to_edit": "Mudar para o modo de edição",
+    "switch_to_reader": "Mudar para o modo de leitura",
     "theme": "Alternar tema",
     "toc": "Sumário",
     "zoom_in": "Aumentar zoom",
     "zoom_out": "Diminuir zoom",
-    "zoom_reset": "Redefinir zoom",
-    "cursor_sync": "Alternar sincronização do cursor",
-    "empty_line_hint": "Escreva / para inserir",
-    "print": "Imprimir",
-    "reader": "Leitura",
-    "switch_to_edit": "Mudar para o modo de edição",
-    "switch_to_reader": "Mudar para o modo de leitura"
+    "zoom_reset": "Redefinir zoom"
   },
   "trial": {
     "days_remaining": "{days} dias restantes no período de teste",
@@ -227,10 +233,8 @@
     "subtitle": "Um belo visualizador Markdown",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Descrição da imagem",
-    "insert": "Inserir",
-    "title": "Inserir URL da imagem",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Eliminar imagem",
+    "edit": "Editar URL da imagem"
   }
 }

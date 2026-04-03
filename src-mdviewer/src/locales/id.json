@@ -57,6 +57,11 @@
     "heading1": "Judul 1",
     "heading2": "Judul 2",
     "heading3": "Judul 3",
+    "heading4": "Judul 4",
+    "heading5": "Judul 5",
+    "image": "Gambar",
+    "image_upload": "Unggah dari Komputer",
+    "image_url": "URL Gambar",
     "italic": "Miring ({mod}+I)",
     "link": "Tautan ({mod}+K)",
     "lists": "Daftar",
@@ -67,11 +72,6 @@
     "table": "Tabel",
     "task_list": "Daftar tugas",
     "text_formatting": "Pemformatan teks",
-    "heading4": "Judul 4",
-    "heading5": "Judul 5",
-    "image": "Gambar",
-    "image_upload": "Unggah dari Komputer",
-    "image_url": "URL Gambar",
     "underline": "Garis Bawah ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Fitur",
     "getting_started": "Memulai",
     "shortcuts": "Pintasan Keyboard"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Deskripsi gambar",
+    "insert": "Sisipkan",
+    "title": "Sisipkan URL Gambar",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filter bahasa",
@@ -142,6 +148,14 @@
     "heading2_desc": "Judul sedang",
     "heading3": "Judul 3",
     "heading3_desc": "Judul kecil",
+    "heading4": "Judul 4",
+    "heading4_desc": "Judul yang lebih kecil",
+    "heading5": "Judul 5",
+    "heading5_desc": "Judul terkecil",
+    "image_upload": "Unggah Gambar",
+    "image_upload_desc": "Unggah dari komputer",
+    "image_url": "URL Gambar",
+    "image_url_desc": "Sematkan dari URL",
     "mermaid": "Diagram Mermaid",
     "mermaid_desc": "Sisipkan diagram",
     "no_results": "Tidak ada hasil",
@@ -152,15 +166,7 @@
     "table": "Tabel",
     "table_desc": "Tabel 3×3",
     "task_list": "Daftar tugas",
-    "task_list_desc": "Daftar centang",
-    "heading4": "Judul 4",
-    "heading4_desc": "Judul yang lebih kecil",
-    "heading5": "Judul 5",
-    "heading5_desc": "Judul terkecil",
-    "image_upload": "Unggah Gambar",
-    "image_upload_desc": "Unggah dari komputer",
-    "image_url": "URL Gambar",
-    "image_url_desc": "Sematkan dari URL"
+    "task_list_desc": "Daftar centang"
   },
   "table": {
     "add_col_left": "Tambah kolom di kiri",
@@ -170,37 +176,37 @@
     "col_options": "Opsi kolom {n}",
     "delete_col": "Hapus kolom",
     "delete_row": "Hapus baris",
+    "delete_table": "Hapus tabel",
     "header": "Header",
     "insert_col_left": "Sisipkan kolom di kiri",
     "insert_col_right": "Sisipkan kolom di kanan",
     "insert_row_above": "Sisipkan baris di atas",
     "insert_row_below": "Sisipkan baris di bawah",
     "new_row": "+ Baris baru",
-    "row_options": "Opsi baris {n}",
-    "delete_table": "Hapus tabel"
+    "row_options": "Opsi baris {n}"
   },
   "toolbar": {
+    "cursor_sync": "Alihkan sinkronisasi kursor",
     "edit": "Edit",
+    "empty_line_hint": "Ketik / untuk menyisipkan",
     "export_pdf": "Ekspor PDF",
     "focus": "Mode Fokus",
     "more": "Lainnya",
     "new_file": "File Baru",
     "open": "Buka File",
+    "print": "Cetak",
+    "reader": "Baca",
     "save": "Simpan",
     "search": "Cari",
     "settings": "Pengaturan",
     "split_view": "Tampilan Terpisah",
+    "switch_to_edit": "Beralih ke mode sunting",
+    "switch_to_reader": "Beralih ke mode baca",
     "theme": "Ganti Tema",
     "toc": "Daftar Isi",
     "zoom_in": "Perbesar",
     "zoom_out": "Perkecil",
-    "zoom_reset": "Atur Ulang Zoom",
-    "cursor_sync": "Alihkan sinkronisasi kursor",
-    "empty_line_hint": "Ketik / untuk menyisipkan",
-    "print": "Cetak",
-    "reader": "Baca",
-    "switch_to_edit": "Beralih ke mode sunting",
-    "switch_to_reader": "Beralih ke mode baca"
+    "zoom_reset": "Atur Ulang Zoom"
   },
   "trial": {
     "days_remaining": "{days} hari tersisa dalam uji coba",
@@ -227,10 +233,8 @@
     "subtitle": "Penampil Markdown yang indah",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Deskripsi gambar",
-    "insert": "Sisipkan",
-    "title": "Sisipkan URL Gambar",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Hapus gambar",
+    "edit": "Edit URL Gambar"
   }
 }

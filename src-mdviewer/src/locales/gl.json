@@ -57,6 +57,11 @@
     "heading1": "Encabezado 1",
     "heading2": "Encabezado 2",
     "heading3": "Encabezado 3",
+    "heading4": "Encabezado 4",
+    "heading5": "Encabezado 5",
+    "image": "Imaxe",
+    "image_upload": "Cargar desde o ordenador",
+    "image_url": "URL da imaxe",
     "italic": "Cursiva ({mod}+I)",
     "link": "Ligazón ({mod}+K)",
     "lists": "Listas",
@@ -67,11 +72,6 @@
     "table": "Táboa",
     "task_list": "Lista de tarefas",
     "text_formatting": "Formato do texto",
-    "heading4": "Encabezado 4",
-    "heading5": "Encabezado 5",
-    "image": "Imaxe",
-    "image_upload": "Cargar desde o ordenador",
-    "image_url": "URL da imaxe",
     "underline": "Subliñado ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funcionalidades",
     "getting_started": "Primeiros pasos",
     "shortcuts": "Atallos de teclado"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Descrición da imaxe",
+    "insert": "Inserir",
+    "title": "Inserir URL da imaxe",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrar linguas",
@@ -142,6 +148,14 @@
     "heading2_desc": "Título mediano",
     "heading3": "Título 3",
     "heading3_desc": "Título pequeno",
+    "heading4": "Título 4",
+    "heading4_desc": "Título máis pequeno",
+    "heading5": "Título 5",
+    "heading5_desc": "O título máis pequeno",
+    "image_upload": "Cargar imaxe",
+    "image_upload_desc": "Cargar desde o ordenador",
+    "image_url": "URL da imaxe",
+    "image_url_desc": "Incrustar desde un URL",
     "mermaid": "Diagrama Mermaid",
     "mermaid_desc": "Inserir un diagrama",
     "no_results": "Sen resultados",
@@ -152,15 +166,7 @@
     "table": "Táboa",
     "table_desc": "Táboa de 3×3",
     "task_list": "Lista de tarefas",
-    "task_list_desc": "Lista de verificación",
-    "heading4": "Título 4",
-    "heading4_desc": "Título máis pequeno",
-    "heading5": "Título 5",
-    "heading5_desc": "O título máis pequeno",
-    "image_upload": "Cargar imaxe",
-    "image_upload_desc": "Cargar desde o ordenador",
-    "image_url": "URL da imaxe",
-    "image_url_desc": "Incrustar desde un URL"
+    "task_list_desc": "Lista de verificación"
   },
   "table": {
     "add_col_left": "Engadir columna á esquerda",
@@ -170,37 +176,37 @@
     "col_options": "Opcións da columna {n}",
     "delete_col": "Eliminar columna",
     "delete_row": "Eliminar fila",
+    "delete_table": "Eliminar táboa",
     "header": "Cabeceira",
     "insert_col_left": "Inserir columna á esquerda",
     "insert_col_right": "Inserir columna á dereita",
     "insert_row_above": "Inserir fila enriba",
     "insert_row_below": "Inserir fila debaixo",
     "new_row": "+ Nova fila",
-    "row_options": "Opcións da fila {n}",
-    "delete_table": "Eliminar táboa"
+    "row_options": "Opcións da fila {n}"
   },
   "toolbar": {
+    "cursor_sync": "Alternar a sincronización do cursor",
     "edit": "Editar",
+    "empty_line_hint": "Escribe / para inserir",
     "export_pdf": "Exportar a PDF",
     "focus": "Modo de concentración",
     "more": "Máis",
     "new_file": "Novo ficheiro",
     "open": "Abrir ficheiro",
+    "print": "Imprimir",
+    "reader": "Lector",
     "save": "Gardar",
     "search": "Buscar",
     "settings": "Configuración",
     "split_view": "Vista dividida",
+    "switch_to_edit": "Cambiar ao modo de edición",
+    "switch_to_reader": "Cambiar ao modo lector",
     "theme": "Alternar tema",
     "toc": "Índice de contidos",
     "zoom_in": "Achegar",
     "zoom_out": "Afastar",
-    "zoom_reset": "Restablecer o zoom",
-    "cursor_sync": "Alternar a sincronización do cursor",
-    "empty_line_hint": "Escribe / para inserir",
-    "print": "Imprimir",
-    "reader": "Lector",
-    "switch_to_edit": "Cambiar ao modo de edición",
-    "switch_to_reader": "Cambiar ao modo lector"
+    "zoom_reset": "Restablecer o zoom"
   },
   "trial": {
     "days_remaining": "Quedan {days} días de proba",
@@ -227,10 +233,8 @@
     "subtitle": "Un fermoso visor de Markdown",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Descrición da imaxe",
-    "insert": "Inserir",
-    "title": "Inserir URL da imaxe",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Eliminar imaxe",
+    "edit": "Editar URL da imaxe"
   }
 }

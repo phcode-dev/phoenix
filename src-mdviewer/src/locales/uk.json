@@ -57,6 +57,11 @@
     "heading1": "Заголовок 1",
     "heading2": "Заголовок 2",
     "heading3": "Заголовок 3",
+    "heading4": "Заголовок 4",
+    "heading5": "Заголовок 5",
+    "image": "Зображення",
+    "image_upload": "Завантажити з комп'ютера",
+    "image_url": "URL зображення",
     "italic": "Курсив ({mod}+I)",
     "link": "Посилання ({mod}+K)",
     "lists": "Списки",
@@ -67,11 +72,6 @@
     "table": "Таблиця",
     "task_list": "Список завдань",
     "text_formatting": "Форматування тексту",
-    "heading4": "Заголовок 4",
-    "heading5": "Заголовок 5",
-    "image": "Зображення",
-    "image_upload": "Завантажити з комп'ютера",
-    "image_url": "URL зображення",
     "underline": "Підкреслений ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Можливості",
     "getting_started": "Початок роботи",
     "shortcuts": "Клавіатурні скорочення"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Опис зображення",
+    "insert": "Вставити",
+    "title": "Вставити URL зображення",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Фільтрувати мови",
@@ -142,6 +148,14 @@
     "heading2_desc": "Середній заголовок",
     "heading3": "Заголовок 3",
     "heading3_desc": "Малий заголовок",
+    "heading4": "Заголовок 4",
+    "heading4_desc": "Менший заголовок",
+    "heading5": "Заголовок 5",
+    "heading5_desc": "Найменший заголовок",
+    "image_upload": "Завантажити зображення",
+    "image_upload_desc": "Завантажити з комп'ютера",
+    "image_url": "URL зображення",
+    "image_url_desc": "Вставити за URL-адресою",
     "mermaid": "Діаграма Mermaid",
     "mermaid_desc": "Вставити діаграму",
     "no_results": "Немає результатів",
@@ -152,15 +166,7 @@
     "table": "Таблиця",
     "table_desc": "Таблиця 3×3",
     "task_list": "Список завдань",
-    "task_list_desc": "Контрольний список",
-    "heading4": "Заголовок 4",
-    "heading4_desc": "Менший заголовок",
-    "heading5": "Заголовок 5",
-    "heading5_desc": "Найменший заголовок",
-    "image_upload": "Завантажити зображення",
-    "image_upload_desc": "Завантажити з комп'ютера",
-    "image_url": "URL зображення",
-    "image_url_desc": "Вставити за URL-адресою"
+    "task_list_desc": "Контрольний список"
   },
   "table": {
     "add_col_left": "Додати стовпець ліворуч",
@@ -170,37 +176,37 @@
     "col_options": "Параметри стовпця {n}",
     "delete_col": "Видалити стовпець",
     "delete_row": "Видалити рядок",
+    "delete_table": "Видалити таблицю",
     "header": "Заголовок",
     "insert_col_left": "Вставити стовпець ліворуч",
     "insert_col_right": "Вставити стовпець праворуч",
     "insert_row_above": "Вставити рядок вище",
     "insert_row_below": "Вставити рядок нижче",
     "new_row": "+ Новий рядок",
-    "row_options": "Параметри рядка {n}",
-    "delete_table": "Видалити таблицю"
+    "row_options": "Параметри рядка {n}"
   },
   "toolbar": {
+    "cursor_sync": "Перемкнути синхронізацію курсорів",
     "edit": "Редагувати",
+    "empty_line_hint": "Введіть / для вставки",
     "export_pdf": "Експортувати в PDF",
     "focus": "Режим фокусування",
     "more": "Ще",
     "new_file": "Новий файл",
     "open": "Відкрити файл",
+    "print": "Друк",
+    "reader": "Режим читання",
     "save": "Зберегти",
     "search": "Пошук",
     "settings": "Налаштування",
     "split_view": "Розділений вигляд",
+    "switch_to_edit": "Перейти в режим редагування",
+    "switch_to_reader": "Перейти в режим читання",
     "theme": "Перемкнути тему",
     "toc": "Зміст",
     "zoom_in": "Збільшити",
     "zoom_out": "Зменшити",
-    "zoom_reset": "Скинути масштаб",
-    "cursor_sync": "Перемкнути синхронізацію курсорів",
-    "empty_line_hint": "Введіть / для вставки",
-    "print": "Друк",
-    "reader": "Режим читання",
-    "switch_to_edit": "Перейти в режим редагування",
-    "switch_to_reader": "Перейти в режим читання"
+    "zoom_reset": "Скинути масштаб"
   },
   "trial": {
     "days_remaining": "{days} днів залишилося у пробній версії",
@@ -227,10 +233,8 @@
     "subtitle": "Гарний переглядач файлів Markdown",
     "title": "Керн"
   },
-  "image_dialog": {
-    "alt_placeholder": "Опис зображення",
-    "insert": "Вставити",
-    "title": "Вставити URL зображення",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Видалити зображення",
+    "edit": "Редагувати URL зображення"
   }
 }

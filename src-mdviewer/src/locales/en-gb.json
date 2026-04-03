@@ -57,6 +57,11 @@
     "heading1": "Heading 1",
     "heading2": "Heading 2",
     "heading3": "Heading 3",
+    "heading4": "Heading 4",
+    "heading5": "Heading 5",
+    "image": "Image",
+    "image_upload": "Upload from Computer",
+    "image_url": "Image URL",
     "italic": "Italic ({mod}+I)",
     "link": "Link ({mod}+K)",
     "lists": "Lists",
@@ -67,11 +72,6 @@
     "table": "Table",
     "task_list": "Task list",
     "text_formatting": "Text formatting",
-    "heading4": "Heading 4",
-    "heading5": "Heading 5",
-    "image": "Image",
-    "image_upload": "Upload from Computer",
-    "image_url": "Image URL",
     "underline": "Underline ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Features",
     "getting_started": "Getting Started",
     "shortcuts": "Keyboard Shortcuts"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Image description",
+    "insert": "Insert",
+    "title": "Insert Image URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filter languages",
@@ -142,6 +148,14 @@
     "heading2_desc": "Medium heading",
     "heading3": "Heading 3",
     "heading3_desc": "Small heading",
+    "heading4": "Heading 4",
+    "heading4_desc": "Smaller heading",
+    "heading5": "Heading 5",
+    "heading5_desc": "Smallest heading",
+    "image_upload": "Upload Image",
+    "image_upload_desc": "Upload from computer",
+    "image_url": "Image URL",
+    "image_url_desc": "Embed from URL",
     "mermaid": "Mermaid diagram",
     "mermaid_desc": "Insert a diagram",
     "no_results": "No results",
@@ -152,15 +166,7 @@
     "table": "Table",
     "table_desc": "3×3 table",
     "task_list": "Task list",
-    "task_list_desc": "Checklist",
-    "heading4": "Heading 4",
-    "heading4_desc": "Smaller heading",
-    "heading5": "Heading 5",
-    "heading5_desc": "Smallest heading",
-    "image_upload": "Upload Image",
-    "image_upload_desc": "Upload from computer",
-    "image_url": "Image URL",
-    "image_url_desc": "Embed from URL"
+    "task_list_desc": "Checklist"
   },
   "table": {
     "add_col_left": "Add column left",
@@ -170,37 +176,37 @@
     "col_options": "Column {n} options",
     "delete_col": "Delete column",
     "delete_row": "Delete row",
+    "delete_table": "Delete table",
     "header": "Header",
     "insert_col_left": "Insert column left",
     "insert_col_right": "Insert column right",
     "insert_row_above": "Insert row above",
     "insert_row_below": "Insert row below",
     "new_row": "+ New row",
-    "row_options": "Row {n} options",
-    "delete_table": "Delete table"
+    "row_options": "Row {n} options"
   },
   "toolbar": {
+    "cursor_sync": "Toggle cursor sync",
     "edit": "Edit",
+    "empty_line_hint": "Type / to insert",
     "export_pdf": "Export PDF",
     "focus": "Focus Mode",
     "more": "More",
     "new_file": "New File",
     "open": "Open File",
+    "print": "Print",
+    "reader": "Reader",
     "save": "Save",
     "search": "Search",
     "settings": "Settings",
     "split_view": "Split View",
+    "switch_to_edit": "Switch to edit mode",
+    "switch_to_reader": "Switch to reader mode",
     "theme": "Toggle Theme",
     "toc": "Table of Contents",
     "zoom_in": "Zoom In",
     "zoom_out": "Zoom Out",
-    "zoom_reset": "Reset Zoom",
-    "cursor_sync": "Toggle cursor sync",
-    "empty_line_hint": "Type / to insert",
-    "print": "Print",
-    "reader": "Reader",
-    "switch_to_edit": "Switch to edit mode",
-    "switch_to_reader": "Switch to reader mode"
+    "zoom_reset": "Reset Zoom"
   },
   "trial": {
     "days_remaining": "{days} days left in trial",
@@ -227,10 +233,8 @@
     "subtitle": "A beautiful Markdown viewer",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Image description",
-    "insert": "Insert",
-    "title": "Insert Image URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Delete image",
+    "edit": "Edit Image URL"
   }
 }

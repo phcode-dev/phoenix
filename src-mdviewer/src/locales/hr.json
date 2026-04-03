@@ -57,6 +57,11 @@
     "heading1": "Naslov 1",
     "heading2": "Naslov 2",
     "heading3": "Naslov 3",
+    "heading4": "Naslov 4",
+    "heading5": "Naslov 5",
+    "image": "Slika",
+    "image_upload": "Prijenos s računala",
+    "image_url": "URL slike",
     "italic": "Kurziv ({mod}+I)",
     "link": "Poveznica ({mod}+K)",
     "lists": "Popisi",
@@ -67,11 +72,6 @@
     "table": "Tablica",
     "task_list": "Popis zadataka",
     "text_formatting": "Oblikovanje teksta",
-    "heading4": "Naslov 4",
-    "heading5": "Naslov 5",
-    "image": "Slika",
-    "image_upload": "Prijenos s računala",
-    "image_url": "URL slike",
     "underline": "Podcrtano ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Značajke",
     "getting_started": "Početak rada",
     "shortcuts": "Tipkovnički prečaci"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Opis slike",
+    "insert": "Umetni",
+    "title": "Umetni URL slike",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtriraj jezike",
@@ -142,6 +148,14 @@
     "heading2_desc": "Srednji naslov",
     "heading3": "Naslov 3",
     "heading3_desc": "Mali naslov",
+    "heading4": "Naslov 4",
+    "heading4_desc": "Manji naslov",
+    "heading5": "Naslov 5",
+    "heading5_desc": "Najmanji naslov",
+    "image_upload": "Učitaj sliku",
+    "image_upload_desc": "Učitaj s računala",
+    "image_url": "URL slike",
+    "image_url_desc": "Ugradi s URL-a",
     "mermaid": "Mermaid dijagram",
     "mermaid_desc": "Umetni dijagram",
     "no_results": "Nema rezultata",
@@ -152,15 +166,7 @@
     "table": "Tablica",
     "table_desc": "Tablica 3×3",
     "task_list": "Popis zadataka",
-    "task_list_desc": "Kontrolna lista",
-    "heading4": "Naslov 4",
-    "heading4_desc": "Manji naslov",
-    "heading5": "Naslov 5",
-    "heading5_desc": "Najmanji naslov",
-    "image_upload": "Učitaj sliku",
-    "image_upload_desc": "Učitaj s računala",
-    "image_url": "URL slike",
-    "image_url_desc": "Ugradi s URL-a"
+    "task_list_desc": "Kontrolna lista"
   },
   "table": {
     "add_col_left": "Dodaj stupac lijevo",
@@ -170,37 +176,37 @@
     "col_options": "Opcije stupca {n}",
     "delete_col": "Izbriši stupac",
     "delete_row": "Izbriši redak",
+    "delete_table": "Izbriši tablicu",
     "header": "Zaglavlje",
     "insert_col_left": "Umetni stupac lijevo",
     "insert_col_right": "Umetni stupac desno",
     "insert_row_above": "Umetni redak iznad",
     "insert_row_below": "Umetni redak ispod",
     "new_row": "+ Novi redak",
-    "row_options": "Opcije retka {n}",
-    "delete_table": "Izbriši tablicu"
+    "row_options": "Opcije retka {n}"
   },
   "toolbar": {
+    "cursor_sync": "Prebaci sinkronizaciju kursora",
     "edit": "Uredi",
+    "empty_line_hint": "Upišite / za umetanje",
     "export_pdf": "Izvezi PDF",
     "focus": "Fokusirani način rada",
     "more": "Više",
     "new_file": "Nova datoteka",
     "open": "Otvori datoteku",
+    "print": "Ispis",
+    "reader": "Čitač",
     "save": "Spremi",
     "search": "Pretraži",
     "settings": "Postavke",
     "split_view": "Podijeljeni prikaz",
+    "switch_to_edit": "Prebaci u način za uređivanje",
+    "switch_to_reader": "Prebaci u način za čitanje",
     "theme": "Promijeni temu",
     "toc": "Sadržaj",
     "zoom_in": "Povećaj",
     "zoom_out": "Smanji",
-    "zoom_reset": "Poništi zumiranje",
-    "cursor_sync": "Prebaci sinkronizaciju kursora",
-    "empty_line_hint": "Upišite / za umetanje",
-    "print": "Ispis",
-    "reader": "Čitač",
-    "switch_to_edit": "Prebaci u način za uređivanje",
-    "switch_to_reader": "Prebaci u način za čitanje"
+    "zoom_reset": "Poništi zumiranje"
   },
   "trial": {
     "days_remaining": "Preostalo {days} dana u probnom razdoblju",
@@ -227,10 +233,8 @@
     "subtitle": "Prekrasan Markdown preglednik",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Opis slike",
-    "insert": "Umetni",
-    "title": "Umetni URL slike",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Izbriši sliku",
+    "edit": "Uredi URL slike"
   }
 }
