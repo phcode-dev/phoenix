@@ -57,6 +57,11 @@
     "heading1": "Overskrift 1",
     "heading2": "Overskrift 2",
     "heading3": "Overskrift 3",
+    "heading4": "Overskrift 4",
+    "heading5": "Overskrift 5",
+    "image": "Billede",
+    "image_upload": "Upload fra computer",
+    "image_url": "Billed-URL",
     "italic": "Kursiv ({mod}+I)",
     "link": "Link ({mod}+K)",
     "lists": "Lister",
@@ -67,11 +72,6 @@
     "table": "Tabel",
     "task_list": "Opgaveliste",
     "text_formatting": "Tekstformatering",
-    "heading4": "Overskrift 4",
-    "heading5": "Overskrift 5",
-    "image": "Billede",
-    "image_upload": "Upload fra computer",
-    "image_url": "Billed-URL",
     "underline": "Understreg ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funktioner",
     "getting_started": "Kom i gang",
     "shortcuts": "Tastaturgenveje"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Billedbeskrivelse",
+    "insert": "Indsæt",
+    "title": "Indsæt billed-URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrer sprog",
@@ -142,6 +148,14 @@
     "heading2_desc": "Mellemstor overskrift",
     "heading3": "Overskrift 3",
     "heading3_desc": "Lille overskrift",
+    "heading4": "Overskrift 4",
+    "heading4_desc": "Mindre overskrift",
+    "heading5": "Overskrift 5",
+    "heading5_desc": "Mindste overskrift",
+    "image_upload": "Upload billede",
+    "image_upload_desc": "Upload fra computer",
+    "image_url": "Billed-URL",
+    "image_url_desc": "Indlejr fra URL",
     "mermaid": "Mermaid-diagram",
     "mermaid_desc": "Indsæt et diagram",
     "no_results": "Ingen resultater",
@@ -152,15 +166,7 @@
     "table": "Tabel",
     "table_desc": "3×3 tabel",
     "task_list": "Opgaveliste",
-    "task_list_desc": "Tjekliste",
-    "heading4": "Overskrift 4",
-    "heading4_desc": "Mindre overskrift",
-    "heading5": "Overskrift 5",
-    "heading5_desc": "Mindste overskrift",
-    "image_upload": "Upload billede",
-    "image_upload_desc": "Upload fra computer",
-    "image_url": "Billed-URL",
-    "image_url_desc": "Indlejr fra URL"
+    "task_list_desc": "Tjekliste"
   },
   "table": {
     "add_col_left": "Tilføj kolonne til venstre",
@@ -170,37 +176,37 @@
     "col_options": "Kolonne {n} indstillinger",
     "delete_col": "Slet kolonne",
     "delete_row": "Slet række",
+    "delete_table": "Slet tabel",
     "header": "Overskrift",
     "insert_col_left": "Indsæt kolonne til venstre",
     "insert_col_right": "Indsæt kolonne til højre",
     "insert_row_above": "Indsæt række ovenfor",
     "insert_row_below": "Indsæt række nedenfor",
     "new_row": "+ Ny række",
-    "row_options": "Indstillinger for række {n}",
-    "delete_table": "Slet tabel"
+    "row_options": "Indstillinger for række {n}"
   },
   "toolbar": {
+    "cursor_sync": "Skift cursorsynkronisering",
     "edit": "Rediger",
+    "empty_line_hint": "Skriv / for at indsætte",
     "export_pdf": "Eksporter PDF",
     "focus": "Fokustilstand",
     "more": "Mere",
     "new_file": "Ny fil",
     "open": "Åbn fil",
+    "print": "Udskriv",
+    "reader": "Læser",
     "save": "Gem",
     "search": "Søg",
     "settings": "Indstillinger",
     "split_view": "Opdelt visning",
+    "switch_to_edit": "Skift til redigeringstilstand",
+    "switch_to_reader": "Skift til læsetilstand",
     "theme": "Skift tema",
     "toc": "Indholdsfortegnelse",
     "zoom_in": "Zoom ind",
     "zoom_out": "Zoom ud",
-    "zoom_reset": "Nulstil zoom",
-    "cursor_sync": "Skift cursorsynkronisering",
-    "empty_line_hint": "Skriv / for at indsætte",
-    "print": "Udskriv",
-    "reader": "Læser",
-    "switch_to_edit": "Skift til redigeringstilstand",
-    "switch_to_reader": "Skift til læsetilstand"
+    "zoom_reset": "Nulstil zoom"
   },
   "trial": {
     "days_remaining": "{days} dage tilbage af prøveperioden",
@@ -227,10 +233,8 @@
     "subtitle": "En smuk Markdown-fremviser",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Billedbeskrivelse",
-    "insert": "Indsæt",
-    "title": "Indsæt billed-URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Slet billede",
+    "edit": "Rediger billed-URL"
   }
 }

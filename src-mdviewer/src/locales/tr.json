@@ -57,6 +57,11 @@
     "heading1": "Başlık 1",
     "heading2": "Başlık 2",
     "heading3": "Başlık 3",
+    "heading4": "Başlık 4",
+    "heading5": "Başlık 5",
+    "image": "Resim",
+    "image_upload": "Bilgisayardan Yükle",
+    "image_url": "Resim URL'si",
     "italic": "İtalik ({mod}+I)",
     "link": "Bağlantı ({mod}+K)",
     "lists": "Listeler",
@@ -67,11 +72,6 @@
     "table": "Tablo",
     "task_list": "Görev listesi",
     "text_formatting": "Metin biçimlendirme",
-    "heading4": "Başlık 4",
-    "heading5": "Başlık 5",
-    "image": "Resim",
-    "image_upload": "Bilgisayardan Yükle",
-    "image_url": "Resim URL'si",
     "underline": "Altı Çizili ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Özellikler",
     "getting_started": "Başlarken",
     "shortcuts": "Klavye Kısayolları"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Resim açıklaması",
+    "insert": "Ekle",
+    "title": "Resim URL'si Ekle",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Dilleri filtrele",
@@ -142,6 +148,14 @@
     "heading2_desc": "Orta boy başlık",
     "heading3": "Başlık 3",
     "heading3_desc": "Küçük başlık",
+    "heading4": "Başlık 4",
+    "heading4_desc": "Daha küçük başlık",
+    "heading5": "Başlık 5",
+    "heading5_desc": "En küçük başlık",
+    "image_upload": "Resim Yükle",
+    "image_upload_desc": "Bilgisayardan yükle",
+    "image_url": "Resim URL'si",
+    "image_url_desc": "URL'den göm",
     "mermaid": "Mermaid diyagramı",
     "mermaid_desc": "Bir diyagram ekle",
     "no_results": "Sonuç bulunamadı",
@@ -152,15 +166,7 @@
     "table": "Tablo",
     "table_desc": "3×3 tablo",
     "task_list": "Görev listesi",
-    "task_list_desc": "Kontrol listesi",
-    "heading4": "Başlık 4",
-    "heading4_desc": "Daha küçük başlık",
-    "heading5": "Başlık 5",
-    "heading5_desc": "En küçük başlık",
-    "image_upload": "Resim Yükle",
-    "image_upload_desc": "Bilgisayardan yükle",
-    "image_url": "Resim URL'si",
-    "image_url_desc": "URL'den göm"
+    "task_list_desc": "Kontrol listesi"
   },
   "table": {
     "add_col_left": "Sola sütun ekle",
@@ -170,37 +176,37 @@
     "col_options": "Sütun {n} seçenekleri",
     "delete_col": "Sütunu sil",
     "delete_row": "Satırı sil",
+    "delete_table": "Tabloyu sil",
     "header": "Başlık",
     "insert_col_left": "Sola sütun ekle",
     "insert_col_right": "Sağa sütun ekle",
     "insert_row_above": "Yukarıya satır ekle",
     "insert_row_below": "Aşağıya satır ekle",
     "new_row": "+ Yeni satır",
-    "row_options": "{n}. satır seçenekleri",
-    "delete_table": "Tabloyu sil"
+    "row_options": "{n}. satır seçenekleri"
   },
   "toolbar": {
+    "cursor_sync": "İmleç senkronizasyonunu aç/kapat",
     "edit": "Düzenle",
+    "empty_line_hint": "Eklemek için / yazın",
     "export_pdf": "PDF Dışa Aktar",
     "focus": "Odak Modu",
     "more": "Daha Fazla",
     "new_file": "Yeni Dosya",
     "open": "Dosya Aç",
+    "print": "Yazdır",
+    "reader": "Okuyucu",
     "save": "Kaydet",
     "search": "Ara",
     "settings": "Ayarlar",
     "split_view": "Bölünmüş Görünüm",
+    "switch_to_edit": "Düzenleme moduna geç",
+    "switch_to_reader": "Okuyucu moduna geç",
     "theme": "Temayı Değiştir",
     "toc": "İçindekiler",
     "zoom_in": "Yakınlaştır",
     "zoom_out": "Uzaklaştır",
-    "zoom_reset": "Yakınlaştırmayı Sıfırla",
-    "cursor_sync": "İmleç senkronizasyonunu aç/kapat",
-    "empty_line_hint": "Eklemek için / yazın",
-    "print": "Yazdır",
-    "reader": "Okuyucu",
-    "switch_to_edit": "Düzenleme moduna geç",
-    "switch_to_reader": "Okuyucu moduna geç"
+    "zoom_reset": "Yakınlaştırmayı Sıfırla"
   },
   "trial": {
     "days_remaining": "Deneme süresinin bitmesine {days} gün kaldı",
@@ -227,10 +233,8 @@
     "subtitle": "Harika bir Markdown görüntüleyici",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Resim açıklaması",
-    "insert": "Ekle",
-    "title": "Resim URL'si Ekle",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Görseli sil",
+    "edit": "Görsel URL'sini Düzenle"
   }
 }

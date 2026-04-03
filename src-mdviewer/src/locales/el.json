@@ -57,6 +57,11 @@
     "heading1": "Επικεφαλίδα 1",
     "heading2": "Επικεφαλίδα 2",
     "heading3": "Επικεφαλίδα 3",
+    "heading4": "Επικεφαλίδα 4",
+    "heading5": "Επικεφαλίδα 5",
+    "image": "Εικόνα",
+    "image_upload": "Μεταφόρτωση από τον υπολογιστή",
+    "image_url": "URL εικόνας",
     "italic": "Πλάγια ({mod}+I)",
     "link": "Σύνδεσμος ({mod}+K)",
     "lists": "Λίστες",
@@ -67,11 +72,6 @@
     "table": "Πίνακας",
     "task_list": "Λίστα εργασιών",
     "text_formatting": "Μορφοποίηση κειμένου",
-    "heading4": "Επικεφαλίδα 4",
-    "heading5": "Επικεφαλίδα 5",
-    "image": "Εικόνα",
-    "image_upload": "Μεταφόρτωση από τον υπολογιστή",
-    "image_url": "URL εικόνας",
     "underline": "Υπογράμμιση ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Δυνατότητες",
     "getting_started": "Ξεκινώντας",
     "shortcuts": "Συντομεύσεις πληκτρολογίου"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Περιγραφή εικόνας",
+    "insert": "Εισαγωγή",
+    "title": "Εισαγωγή URL εικόνας",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Φιλτράρισμα γλωσσών",
@@ -142,6 +148,14 @@
     "heading2_desc": "Μεσαία επικεφαλίδα",
     "heading3": "Επικεφαλίδα 3",
     "heading3_desc": "Μικρή επικεφαλίδα",
+    "heading4": "Επικεφαλίδα 4",
+    "heading4_desc": "Μικρότερη επικεφαλίδα",
+    "heading5": "Επικεφαλίδα 5",
+    "heading5_desc": "Η μικρότερη επικεφαλίδα",
+    "image_upload": "Μεταφόρτωση εικόνας",
+    "image_upload_desc": "Μεταφόρτωση από τον υπολογιστή",
+    "image_url": "URL εικόνας",
+    "image_url_desc": "Ενσωμάτωση από URL",
     "mermaid": "Διάγραμμα Mermaid",
     "mermaid_desc": "Εισαγωγή διαγράμματος",
     "no_results": "Κανένα αποτέλεσμα",
@@ -152,15 +166,7 @@
     "table": "Πίνακας",
     "table_desc": "Πίνακας 3×3",
     "task_list": "Λίστα εργασιών",
-    "task_list_desc": "Λίστα ελέγχου",
-    "heading4": "Επικεφαλίδα 4",
-    "heading4_desc": "Μικρότερη επικεφαλίδα",
-    "heading5": "Επικεφαλίδα 5",
-    "heading5_desc": "Η μικρότερη επικεφαλίδα",
-    "image_upload": "Μεταφόρτωση εικόνας",
-    "image_upload_desc": "Μεταφόρτωση από τον υπολογιστή",
-    "image_url": "URL εικόνας",
-    "image_url_desc": "Ενσωμάτωση από URL"
+    "task_list_desc": "Λίστα ελέγχου"
   },
   "table": {
     "add_col_left": "Προσθήκη στήλης αριστερά",
@@ -170,37 +176,37 @@
     "col_options": "Επιλογές στήλης {n}",
     "delete_col": "Διαγραφή στήλης",
     "delete_row": "Διαγραφή γραμμής",
+    "delete_table": "Διαγραφή πίνακα",
     "header": "Κεφαλίδα",
     "insert_col_left": "Εισαγωγή στήλης αριστερά",
     "insert_col_right": "Εισαγωγή στήλης δεξιά",
     "insert_row_above": "Εισαγωγή γραμμής επάνω",
     "insert_row_below": "Εισαγωγή γραμμής κάτω",
     "new_row": "+ Νέα γραμμή",
-    "row_options": "Επιλογές γραμμής {n}",
-    "delete_table": "Διαγραφή πίνακα"
+    "row_options": "Επιλογές γραμμής {n}"
   },
   "toolbar": {
+    "cursor_sync": "Εναλλαγή συγχρονισμού δρομέα",
     "edit": "Επεξεργασία",
+    "empty_line_hint": "Πληκτρολογήστε / για εισαγωγή",
     "export_pdf": "Εξαγωγή PDF",
     "focus": "Λειτουργία Συγκέντρωσης",
     "more": "Περισσότερα",
     "new_file": "Νέο Αρχείο",
     "open": "Άνοιγμα Αρχείου",
+    "print": "Εκτύπωση",
+    "reader": "Ανάγνωση",
     "save": "Αποθήκευση",
     "search": "Αναζήτηση",
     "settings": "Ρυθμίσεις",
     "split_view": "Διαχωρισμός προβολής",
+    "switch_to_edit": "Μετάβαση σε λειτουργία επεξεργασίας",
+    "switch_to_reader": "Μετάβαση σε λειτουργία ανάγνωσης",
     "theme": "Εναλλαγή θέματος",
     "toc": "Πίνακας περιεχομένων",
     "zoom_in": "Μεγέθυνση",
     "zoom_out": "Σμίκρυνση",
-    "zoom_reset": "Επαναφορά εστίασης",
-    "cursor_sync": "Εναλλαγή συγχρονισμού δρομέα",
-    "empty_line_hint": "Πληκτρολογήστε / για εισαγωγή",
-    "print": "Εκτύπωση",
-    "reader": "Ανάγνωση",
-    "switch_to_edit": "Μετάβαση σε λειτουργία επεξεργασίας",
-    "switch_to_reader": "Μετάβαση σε λειτουργία ανάγνωσης"
+    "zoom_reset": "Επαναφορά εστίασης"
   },
   "trial": {
     "days_remaining": "Απομένουν {days} ημέρες στη δοκιμαστική περίοδο",
@@ -227,10 +233,8 @@
     "subtitle": "Ένα όμορφο πρόγραμμα προβολής Markdown",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Περιγραφή εικόνας",
-    "insert": "Εισαγωγή",
-    "title": "Εισαγωγή URL εικόνας",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Διαγραφή εικόνας",
+    "edit": "Επεξεργασία URL εικόνας"
   }
 }

@@ -57,6 +57,11 @@
     "heading1": "標題 1",
     "heading2": "標題 2",
     "heading3": "標題 3",
+    "heading4": "標題 4",
+    "heading5": "標題 5",
+    "image": "圖片",
+    "image_upload": "從電腦上傳",
+    "image_url": "圖片 URL",
     "italic": "斜體 ({mod}+I)",
     "link": "連結 ({mod}+K)",
     "lists": "清單",
@@ -67,11 +72,6 @@
     "table": "表格",
     "task_list": "工作清單",
     "text_formatting": "文字格式",
-    "heading4": "標題 4",
-    "heading5": "標題 5",
-    "image": "圖片",
-    "image_upload": "從電腦上傳",
-    "image_url": "圖片 URL",
     "underline": "底線 ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "功能",
     "getting_started": "快速入門",
     "shortcuts": "鍵盤快捷鍵"
+  },
+  "image_dialog": {
+    "alt_placeholder": "圖片說明",
+    "insert": "插入",
+    "title": "插入圖片 URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "篩選語言",
@@ -142,6 +148,14 @@
     "heading2_desc": "中標題",
     "heading3": "標題 3",
     "heading3_desc": "小標題",
+    "heading4": "標題 4",
+    "heading4_desc": "較小標題",
+    "heading5": "標題 5",
+    "heading5_desc": "最小標題",
+    "image_upload": "上傳圖片",
+    "image_upload_desc": "從電腦上傳",
+    "image_url": "圖片網址",
+    "image_url_desc": "從網址嵌入",
     "mermaid": "Mermaid 圖表",
     "mermaid_desc": "插入圖表",
     "no_results": "沒有結果",
@@ -152,15 +166,7 @@
     "table": "表格",
     "table_desc": "3×3 表格",
     "task_list": "工作清單",
-    "task_list_desc": "核取清單",
-    "heading4": "標題 4",
-    "heading4_desc": "較小標題",
-    "heading5": "標題 5",
-    "heading5_desc": "最小標題",
-    "image_upload": "上傳圖片",
-    "image_upload_desc": "從電腦上傳",
-    "image_url": "圖片網址",
-    "image_url_desc": "從網址嵌入"
+    "task_list_desc": "核取清單"
   },
   "table": {
     "add_col_left": "在左方新增欄",
@@ -170,37 +176,37 @@
     "col_options": "第 {n} 欄選項",
     "delete_col": "刪除欄",
     "delete_row": "刪除列",
+    "delete_table": "刪除表格",
     "header": "標頭",
     "insert_col_left": "在左方插入欄",
     "insert_col_right": "在右方插入欄",
     "insert_row_above": "在上方插入列",
     "insert_row_below": "在下方插入列",
     "new_row": "+ 新增列",
-    "row_options": "第 {n} 列選項",
-    "delete_table": "刪除表格"
+    "row_options": "第 {n} 列選項"
   },
   "toolbar": {
+    "cursor_sync": "切換游標同步",
     "edit": "編輯",
+    "empty_line_hint": "輸入 / 以插入",
     "export_pdf": "匯出 PDF",
     "focus": "專注模式",
     "more": "更多",
     "new_file": "新檔案",
     "open": "開啟檔案",
+    "print": "列印",
+    "reader": "閱讀模式",
     "save": "儲存",
     "search": "搜尋",
     "settings": "設定",
     "split_view": "分割檢視",
+    "switch_to_edit": "切換至編輯模式",
+    "switch_to_reader": "切換至閱讀模式",
     "theme": "切換主題",
     "toc": "目錄",
     "zoom_in": "放大",
     "zoom_out": "縮小",
-    "zoom_reset": "重設縮放",
-    "cursor_sync": "切換游標同步",
-    "empty_line_hint": "輸入 / 以插入",
-    "print": "列印",
-    "reader": "閱讀模式",
-    "switch_to_edit": "切換至編輯模式",
-    "switch_to_reader": "切換至閱讀模式"
+    "zoom_reset": "重設縮放"
   },
   "trial": {
     "days_remaining": "試用期剩餘 {days} 天",
@@ -227,10 +233,8 @@
     "subtitle": "精美的 Markdown 檢視器",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "圖片說明",
-    "insert": "插入",
-    "title": "插入圖片 URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "刪除圖片",
+    "edit": "編輯圖片 URL"
   }
 }

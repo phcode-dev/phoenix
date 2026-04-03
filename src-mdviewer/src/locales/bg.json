@@ -57,6 +57,11 @@
     "heading1": "Заглавие 1",
     "heading2": "Заглавие 2",
     "heading3": "Заглавие 3",
+    "heading4": "Заглавие 4",
+    "heading5": "Заглавие 5",
+    "image": "Изображение",
+    "image_upload": "Качване от компютъра",
+    "image_url": "URL на изображението",
     "italic": "Курсив ({mod}+I)",
     "link": "Връзка ({mod}+K)",
     "lists": "Списъци",
@@ -67,11 +72,6 @@
     "table": "Таблица",
     "task_list": "Списък със задачи",
     "text_formatting": "Форматиране на текст",
-    "heading4": "Заглавие 4",
-    "heading5": "Заглавие 5",
-    "image": "Изображение",
-    "image_upload": "Качване от компютъра",
-    "image_url": "URL на изображението",
     "underline": "Подчертаване ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Възможности",
     "getting_started": "Първи стъпки",
     "shortcuts": "Клавишни комбинации"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Описание на изображението",
+    "insert": "Вмъкване",
+    "title": "Вмъкване на URL на изображение",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Филтриране на езици",
@@ -142,6 +148,14 @@
     "heading2_desc": "Средно заглавие",
     "heading3": "Заглавие 3",
     "heading3_desc": "Малко заглавие",
+    "heading4": "Заглавие 4",
+    "heading4_desc": "По-малко заглавие",
+    "heading5": "Заглавие 5",
+    "heading5_desc": "Най-малко заглавие",
+    "image_upload": "Качване на изображение",
+    "image_upload_desc": "Качване от компютъра",
+    "image_url": "URL на изображение",
+    "image_url_desc": "Вграждане от URL",
     "mermaid": "Mermaid диаграма",
     "mermaid_desc": "Вмъкване на диаграма",
     "no_results": "Няма резултати",
@@ -152,15 +166,7 @@
     "table": "Таблица",
     "table_desc": "Таблица 3×3",
     "task_list": "Списък със задачи",
-    "task_list_desc": "Списък за проверка",
-    "heading4": "Заглавие 4",
-    "heading4_desc": "По-малко заглавие",
-    "heading5": "Заглавие 5",
-    "heading5_desc": "Най-малко заглавие",
-    "image_upload": "Качване на изображение",
-    "image_upload_desc": "Качване от компютъра",
-    "image_url": "URL на изображение",
-    "image_url_desc": "Вграждане от URL"
+    "task_list_desc": "Списък за проверка"
   },
   "table": {
     "add_col_left": "Добави колона вляво",
@@ -170,37 +176,37 @@
     "col_options": "Опции на колона {n}",
     "delete_col": "Изтрий колона",
     "delete_row": "Изтрий ред",
+    "delete_table": "Изтриване на таблица",
     "header": "Заглавка",
     "insert_col_left": "Вмъкни колона вляво",
     "insert_col_right": "Вмъкни колона вдясно",
     "insert_row_above": "Вмъкни ред отгоре",
     "insert_row_below": "Вмъкни ред отдолу",
     "new_row": "+ Нов ред",
-    "row_options": "Опции за ред {n}",
-    "delete_table": "Изтриване на таблица"
+    "row_options": "Опции за ред {n}"
   },
   "toolbar": {
+    "cursor_sync": "Превключване на синхронизацията на курсора",
     "edit": "Редактиране",
+    "empty_line_hint": "Въведете / за вмъкване",
     "export_pdf": "Експорт в PDF",
     "focus": "Режим на фокус",
     "more": "Още",
     "new_file": "Нов файл",
     "open": "Отваряне на файл",
+    "print": "Печат",
+    "reader": "Четец",
     "save": "Запазване",
     "search": "Търсене",
     "settings": "Настройки",
     "split_view": "Разделен изглед",
+    "switch_to_edit": "Премини към режим на редактиране",
+    "switch_to_reader": "Премини към режим на четене",
     "theme": "Превключване на темата",
     "toc": "Съдържание",
     "zoom_in": "Увеличаване",
     "zoom_out": "Намаляване",
-    "zoom_reset": "Нулиране на мащаба",
-    "cursor_sync": "Превключване на синхронизацията на курсора",
-    "empty_line_hint": "Въведете / за вмъкване",
-    "print": "Печат",
-    "reader": "Четец",
-    "switch_to_edit": "Премини към режим на редактиране",
-    "switch_to_reader": "Премини към режим на четене"
+    "zoom_reset": "Нулиране на мащаба"
   },
   "trial": {
     "days_remaining": "Остават {days} дни от пробния период",
@@ -227,10 +233,8 @@
     "subtitle": "Красив преглед на Markdown",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Описание на изображението",
-    "insert": "Вмъкване",
-    "title": "Вмъкване на URL на изображение",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Изтриване на изображение",
+    "edit": "Редактиране на URL на изображение"
   }
 }

@@ -57,6 +57,11 @@
     "heading1": "سرخی 1",
     "heading2": "سرخی 2",
     "heading3": "سرخی 3",
+    "heading4": "سرخی ۴",
+    "heading5": "سرخی ۵",
+    "image": "تصویر",
+    "image_upload": "کمپیوٹر سے اپ لوڈ کریں",
+    "image_url": "تصویر کا یو آر ایل",
     "italic": "اٹیلک ({mod}+I)",
     "link": "لنک ({mod}+K)",
     "lists": "فہرستیں",
@@ -67,11 +72,6 @@
     "table": "ٹیبل",
     "task_list": "ٹاسک فہرست",
     "text_formatting": "ٹیکسٹ فارمیٹنگ",
-    "heading4": "سرخی ۴",
-    "heading5": "سرخی ۵",
-    "image": "تصویر",
-    "image_upload": "کمپیوٹر سے اپ لوڈ کریں",
-    "image_url": "تصویر کا یو آر ایل",
     "underline": "انڈر لائن ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "خصوصیات",
     "getting_started": "شروع کریں",
     "shortcuts": "کیبورڈ شارٹ کٹ"
+  },
+  "image_dialog": {
+    "alt_placeholder": "تصویر کی تفصیل",
+    "insert": "داخل کریں",
+    "title": "تصویر کا یو آر ایل داخل کریں",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "زبانیں فلٹر کریں",
@@ -142,6 +148,14 @@
     "heading2_desc": "درمیانی سرخی",
     "heading3": "سرخی 3",
     "heading3_desc": "چھوٹی سرخی",
+    "heading4": "سرخی 4",
+    "heading4_desc": "چھوٹی سرخی",
+    "heading5": "سرخی 5",
+    "heading5_desc": "سب سے چھوٹی سرخی",
+    "image_upload": "تصویر اپلوڈ کریں",
+    "image_upload_desc": "کمپیوٹر سے اپلوڈ کریں",
+    "image_url": "تصویر کا یو آر ایل",
+    "image_url_desc": "یو آر ایل سے ایمبیڈ کریں",
     "mermaid": "Mermaid ڈایاگرام",
     "mermaid_desc": "ڈایاگرام داخل کریں",
     "no_results": "کوئی نتائج نہیں",
@@ -152,15 +166,7 @@
     "table": "ٹیبل",
     "table_desc": "3×3 ٹیبل",
     "task_list": "ٹاسک فہرست",
-    "task_list_desc": "چیک لسٹ",
-    "heading4": "سرخی 4",
-    "heading4_desc": "چھوٹی سرخی",
-    "heading5": "سرخی 5",
-    "heading5_desc": "سب سے چھوٹی سرخی",
-    "image_upload": "تصویر اپلوڈ کریں",
-    "image_upload_desc": "کمپیوٹر سے اپلوڈ کریں",
-    "image_url": "تصویر کا یو آر ایل",
-    "image_url_desc": "یو آر ایل سے ایمبیڈ کریں"
+    "task_list_desc": "چیک لسٹ"
   },
   "table": {
     "add_col_left": "بائیں کالم شامل کریں",
@@ -170,37 +176,37 @@
     "col_options": "کالم {n} اختیارات",
     "delete_col": "کالم حذف کریں",
     "delete_row": "قطار حذف کریں",
+    "delete_table": "ٹیبل حذف کریں",
     "header": "ہیڈر",
     "insert_col_left": "بائیں کالم شامل کریں",
     "insert_col_right": "دائیں کالم شامل کریں",
     "insert_row_above": "اوپر قطار شامل کریں",
     "insert_row_below": "نیچے قطار شامل کریں",
     "new_row": "+ نئی قطار",
-    "row_options": "قطار {n} اختیارات",
-    "delete_table": "ٹیبل حذف کریں"
+    "row_options": "قطار {n} اختیارات"
   },
   "toolbar": {
+    "cursor_sync": "کرسر سنک ٹوگل کریں",
     "edit": "ترمیم",
+    "empty_line_hint": "شامل کرنے کے لیے / ٹائپ کریں",
     "export_pdf": "PDF برآمد کریں",
     "focus": "فوکس موڈ",
     "more": "مزید",
     "new_file": "نئی فائل",
     "open": "فائل کھولیں",
+    "print": "پرنٹ",
+    "reader": "ریڈر",
     "save": "محفوظ کریں",
     "search": "تلاش",
     "settings": "ترتیبات",
     "split_view": "تقسیم نظارہ",
+    "switch_to_edit": "ترمیم موڈ پر سوئچ کریں",
+    "switch_to_reader": "ریڈر موڈ پر سوئچ کریں",
     "theme": "تھیم تبدیل کریں",
     "toc": "فہرست مضامین",
     "zoom_in": "زوم ان",
     "zoom_out": "زوم آؤٹ",
-    "zoom_reset": "زوم ری سیٹ",
-    "cursor_sync": "کرسر سنک ٹوگل کریں",
-    "empty_line_hint": "شامل کرنے کے لیے / ٹائپ کریں",
-    "print": "پرنٹ",
-    "reader": "ریڈر",
-    "switch_to_edit": "ترمیم موڈ پر سوئچ کریں",
-    "switch_to_reader": "ریڈر موڈ پر سوئچ کریں"
+    "zoom_reset": "زوم ری سیٹ"
   },
   "trial": {
     "days_remaining": "آزمائشی مدت میں {days} دن باقی",
@@ -227,10 +233,8 @@
     "subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "تصویر کی تفصیل",
-    "insert": "داخل کریں",
-    "title": "تصویر کا یو آر ایل داخل کریں",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "تصویر حذف کریں",
+    "edit": "تصویر کا یو آر ایل ترمیم کریں"
   }
 }

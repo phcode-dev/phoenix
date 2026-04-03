@@ -57,6 +57,11 @@
     "heading1": "Nadpis 1",
     "heading2": "Nadpis 2",
     "heading3": "Nadpis 3",
+    "heading4": "Nadpis 4",
+    "heading5": "Nadpis 5",
+    "image": "Obrázok",
+    "image_upload": "Nahrať z počítača",
+    "image_url": "URL obrázka",
     "italic": "Kurzíva ({mod}+I)",
     "link": "Odkaz ({mod}+K)",
     "lists": "Zoznamy",
@@ -67,11 +72,6 @@
     "table": "Tabuľka",
     "task_list": "Zoznam úloh",
     "text_formatting": "Formátovanie textu",
-    "heading4": "Nadpis 4",
-    "heading5": "Nadpis 5",
-    "image": "Obrázok",
-    "image_upload": "Nahrať z počítača",
-    "image_url": "URL obrázka",
     "underline": "Podčiarknuté ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funkcie",
     "getting_started": "Ako začať",
     "shortcuts": "Klávesové skratky"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Popis obrázka",
+    "insert": "Vložiť",
+    "title": "Vložiť URL obrázka",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrovať jazyky",
@@ -142,6 +148,14 @@
     "heading2_desc": "Stredný nadpis",
     "heading3": "Nadpis 3",
     "heading3_desc": "Malý nadpis",
+    "heading4": "Nadpis 4",
+    "heading4_desc": "Menší nadpis",
+    "heading5": "Nadpis 5",
+    "heading5_desc": "Najmenší nadpis",
+    "image_upload": "Nahrať obrázok",
+    "image_upload_desc": "Nahrať z počítača",
+    "image_url": "URL obrázka",
+    "image_url_desc": "Vložiť z URL",
     "mermaid": "Mermaid diagram",
     "mermaid_desc": "Vložiť diagram",
     "no_results": "Žiadne výsledky",
@@ -152,15 +166,7 @@
     "table": "Tabuľka",
     "table_desc": "Tabuľka 3×3",
     "task_list": "Zoznam úloh",
-    "task_list_desc": "Kontrolný zoznam",
-    "heading4": "Nadpis 4",
-    "heading4_desc": "Menší nadpis",
-    "heading5": "Nadpis 5",
-    "heading5_desc": "Najmenší nadpis",
-    "image_upload": "Nahrať obrázok",
-    "image_upload_desc": "Nahrať z počítača",
-    "image_url": "URL obrázka",
-    "image_url_desc": "Vložiť z URL"
+    "task_list_desc": "Kontrolný zoznam"
   },
   "table": {
     "add_col_left": "Pridať stĺpec vľavo",
@@ -170,37 +176,37 @@
     "col_options": "Možnosti stĺpca {n}",
     "delete_col": "Odstrániť stĺpec",
     "delete_row": "Odstrániť riadok",
+    "delete_table": "Odstrániť tabuľku",
     "header": "Hlavička",
     "insert_col_left": "Vložiť stĺpec vľavo",
     "insert_col_right": "Vložiť stĺpec vpravo",
     "insert_row_above": "Vložiť riadok nad",
     "insert_row_below": "Vložiť riadok pod",
     "new_row": "+ Nový riadok",
-    "row_options": "Možnosti riadka {n}",
-    "delete_table": "Odstrániť tabuľku"
+    "row_options": "Možnosti riadka {n}"
   },
   "toolbar": {
+    "cursor_sync": "Prepnúť synchronizáciu kurzora",
     "edit": "Upraviť",
+    "empty_line_hint": "Napíšte / pre vloženie",
     "export_pdf": "Exportovať PDF",
     "focus": "Režim sústredenia",
     "more": "Viac",
     "new_file": "Nový súbor",
     "open": "Otvoriť súbor",
+    "print": "Tlačiť",
+    "reader": "Čítačka",
     "save": "Uložiť",
     "search": "Hľadať",
     "settings": "Nastavenia",
     "split_view": "Rozdelené zobrazenie",
+    "switch_to_edit": "Prepnúť do režimu úprav",
+    "switch_to_reader": "Prepnúť do režimu čítačky",
     "theme": "Prepnúť tému",
     "toc": "Obsah",
     "zoom_in": "Priblížiť",
     "zoom_out": "Oddialiť",
-    "zoom_reset": "Obnoviť priblíženie",
-    "cursor_sync": "Prepnúť synchronizáciu kurzora",
-    "empty_line_hint": "Napíšte / pre vloženie",
-    "print": "Tlačiť",
-    "reader": "Čítačka",
-    "switch_to_edit": "Prepnúť do režimu úprav",
-    "switch_to_reader": "Prepnúť do režimu čítačky"
+    "zoom_reset": "Obnoviť priblíženie"
   },
   "trial": {
     "days_remaining": "Zostáva {days} dní v skúšobnej verzii",
@@ -227,10 +233,8 @@
     "subtitle": "Krásny prehliadač Markdownu",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Popis obrázka",
-    "insert": "Vložiť",
-    "title": "Vložiť URL obrázka",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Vymazať obrázok",
+    "edit": "Upraviť URL obrázka"
   }
 }

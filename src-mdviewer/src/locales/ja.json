@@ -57,6 +57,11 @@
     "heading1": "見出し1",
     "heading2": "見出し2",
     "heading3": "見出し3",
+    "heading4": "見出し4",
+    "heading5": "見出し5",
+    "image": "画像",
+    "image_upload": "コンピューターからアップロード",
+    "image_url": "画像URL",
     "italic": "斜体 ({mod}+I)",
     "link": "リンク ({mod}+K)",
     "lists": "リスト",
@@ -67,11 +72,6 @@
     "table": "テーブル",
     "task_list": "タスクリスト",
     "text_formatting": "テキスト書式設定",
-    "heading4": "見出し4",
-    "heading5": "見出し5",
-    "image": "画像",
-    "image_upload": "コンピューターからアップロード",
-    "image_url": "画像URL",
     "underline": "下線 ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "機能",
     "getting_started": "はじめに",
     "shortcuts": "キーボードショートカット"
+  },
+  "image_dialog": {
+    "alt_placeholder": "画像の説明",
+    "insert": "挿入",
+    "title": "画像URLを挿入",
+    "url_placeholder": "画像のURLを入力"
   },
   "lang_picker": {
     "filter_label": "言語を絞り込み",
@@ -142,6 +148,14 @@
     "heading2_desc": "中見出し",
     "heading3": "見出し3",
     "heading3_desc": "小見出し",
+    "heading4": "見出し4",
+    "heading4_desc": "より小さい見出し",
+    "heading5": "見出し5",
+    "heading5_desc": "最も小さい見出し",
+    "image_upload": "画像をアップロード",
+    "image_upload_desc": "コンピューターからアップロード",
+    "image_url": "画像URL",
+    "image_url_desc": "URLから埋め込む",
     "mermaid": "マーメイドダイアグラム",
     "mermaid_desc": "ダイアグラムを挿入",
     "no_results": "結果なし",
@@ -152,15 +166,7 @@
     "table": "テーブル",
     "table_desc": "3×3テーブル",
     "task_list": "タスクリスト",
-    "task_list_desc": "チェックリスト",
-    "heading4": "見出し4",
-    "heading4_desc": "より小さい見出し",
-    "heading5": "見出し5",
-    "heading5_desc": "最も小さい見出し",
-    "image_upload": "画像をアップロード",
-    "image_upload_desc": "コンピューターからアップロード",
-    "image_url": "画像URL",
-    "image_url_desc": "URLから埋め込む"
+    "task_list_desc": "チェックリスト"
   },
   "table": {
     "add_col_left": "左に列を追加",
@@ -170,37 +176,37 @@
     "col_options": "列 {n} のオプション",
     "delete_col": "列を削除",
     "delete_row": "行を削除",
+    "delete_table": "表を削除",
     "header": "ヘッダー",
     "insert_col_left": "左に列を挿入",
     "insert_col_right": "右に列を挿入",
     "insert_row_above": "上に行を挿入",
     "insert_row_below": "下に行を挿入",
     "new_row": "+ 新しい行",
-    "row_options": "行 {n} のオプション",
-    "delete_table": "表を削除"
+    "row_options": "行 {n} のオプション"
   },
   "toolbar": {
+    "cursor_sync": "カーソル同期の切り替え",
     "edit": "編集",
+    "empty_line_hint": "「/」を入力して挿入",
     "export_pdf": "PDF にエクスポート",
     "focus": "集中モード",
     "more": "その他",
     "new_file": "新規ファイル",
     "open": "ファイルを開く",
+    "print": "印刷",
+    "reader": "リーダー",
     "save": "保存",
     "search": "検索",
     "settings": "設定",
     "split_view": "分割表示",
+    "switch_to_edit": "編集モードに切り替え",
+    "switch_to_reader": "リーダーモードに切り替え",
     "theme": "テーマ切替",
     "toc": "目次",
     "zoom_in": "拡大",
     "zoom_out": "縮小",
-    "zoom_reset": "ズームをリセット",
-    "cursor_sync": "カーソル同期の切り替え",
-    "empty_line_hint": "「/」を入力して挿入",
-    "print": "印刷",
-    "reader": "リーダー",
-    "switch_to_edit": "編集モードに切り替え",
-    "switch_to_reader": "リーダーモードに切り替え"
+    "zoom_reset": "ズームをリセット"
   },
   "trial": {
     "days_remaining": "試用期間の残り {days} 日",
@@ -227,10 +233,8 @@
     "subtitle": "美しいMarkdownビューア",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "画像の説明",
-    "insert": "挿入",
-    "title": "画像URLを挿入",
-    "url_placeholder": "画像のURLを入力"
+  "image": {
+    "delete": "画像を削除",
+    "edit": "画像URLを編集"
   }
 }

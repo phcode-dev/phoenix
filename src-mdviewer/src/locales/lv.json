@@ -57,6 +57,11 @@
     "heading1": "Virsraksts 1",
     "heading2": "Virsraksts 2",
     "heading3": "Virsraksts 3",
+    "heading4": "Virsraksts 4",
+    "heading5": "Virsraksts 5",
+    "image": "Attēls",
+    "image_upload": "Augšupielādēt no datora",
+    "image_url": "Attēla URL",
     "italic": "Slīpraksts ({mod}+I)",
     "link": "Saite ({mod}+K)",
     "lists": "Saraksti",
@@ -67,11 +72,6 @@
     "table": "Tabula",
     "task_list": "Uzdevumu saraksts",
     "text_formatting": "Teksta formatēšana",
-    "heading4": "Virsraksts 4",
-    "heading5": "Virsraksts 5",
-    "image": "Attēls",
-    "image_upload": "Augšupielādēt no datora",
-    "image_url": "Attēla URL",
     "underline": "Pasvītrot ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funkcijas",
     "getting_started": "Darba sākšana",
     "shortcuts": "Tastatūras saīsnes"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Attēla apraksts",
+    "insert": "Ievietot",
+    "title": "Ievietot attēla URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrēt valodas",
@@ -142,6 +148,14 @@
     "heading2_desc": "Vidējs virsraksts",
     "heading3": "Virsraksts 3",
     "heading3_desc": "Mazs virsraksts",
+    "heading4": "Virsraksts 4",
+    "heading4_desc": "Mazāks virsraksts",
+    "heading5": "Virsraksts 5",
+    "heading5_desc": "Vismazākais virsraksts",
+    "image_upload": "Augšupielādēt attēlu",
+    "image_upload_desc": "Augšupielādēt no datora",
+    "image_url": "Attēla URL",
+    "image_url_desc": "Iegult no URL",
     "mermaid": "Mermaid diagramma",
     "mermaid_desc": "Ievietot diagrammu",
     "no_results": "Nav rezultātu",
@@ -152,15 +166,7 @@
     "table": "Tabula",
     "table_desc": "3×3 tabula",
     "task_list": "Uzdevumu saraksts",
-    "task_list_desc": "Kontrolsaraksts",
-    "heading4": "Virsraksts 4",
-    "heading4_desc": "Mazāks virsraksts",
-    "heading5": "Virsraksts 5",
-    "heading5_desc": "Vismazākais virsraksts",
-    "image_upload": "Augšupielādēt attēlu",
-    "image_upload_desc": "Augšupielādēt no datora",
-    "image_url": "Attēla URL",
-    "image_url_desc": "Iegult no URL"
+    "task_list_desc": "Kontrolsaraksts"
   },
   "table": {
     "add_col_left": "Pievienot kolonnu pa kreisi",
@@ -170,37 +176,37 @@
     "col_options": "{n}. kolonnas opcijas",
     "delete_col": "Dzēst kolonnu",
     "delete_row": "Dzēst rindu",
+    "delete_table": "Dzēst tabulu",
     "header": "Galvene",
     "insert_col_left": "Ievietot kolonnu pa kreisi",
     "insert_col_right": "Ievietot kolonnu pa labi",
     "insert_row_above": "Ievietot rindu virs",
     "insert_row_below": "Ievietot rindu zem",
     "new_row": "+ Jauna rinda",
-    "row_options": "Rindas {n} opcijas",
-    "delete_table": "Dzēst tabulu"
+    "row_options": "Rindas {n} opcijas"
   },
   "toolbar": {
+    "cursor_sync": "Pārslēgt kursoru sinhronizāciju",
     "edit": "Rediģēt",
+    "empty_line_hint": "Ierakstiet /, lai ievietotu",
     "export_pdf": "Eksportēt PDF",
     "focus": "Fokusa režīms",
     "more": "Vairāk",
     "new_file": "Jauns fails",
     "open": "Atvērt failu",
+    "print": "Drukāt",
+    "reader": "Lasītājs",
     "save": "Saglabāt",
     "search": "Meklēt",
     "settings": "Iestatījumi",
     "split_view": "Dalīts skats",
+    "switch_to_edit": "Pārslēgties uz rediģēšanas režīmu",
+    "switch_to_reader": "Pārslēgties uz lasīšanas režīmu",
     "theme": "Pārslēgt tēmu",
     "toc": "Satura rādītājs",
     "zoom_in": "Tuvināt",
     "zoom_out": "Tālināt",
-    "zoom_reset": "Atiestatīt tālummaiņu",
-    "cursor_sync": "Pārslēgt kursoru sinhronizāciju",
-    "empty_line_hint": "Ierakstiet /, lai ievietotu",
-    "print": "Drukāt",
-    "reader": "Lasītājs",
-    "switch_to_edit": "Pārslēgties uz rediģēšanas režīmu",
-    "switch_to_reader": "Pārslēgties uz lasīšanas režīmu"
+    "zoom_reset": "Atiestatīt tālummaiņu"
   },
   "trial": {
     "days_remaining": "Atlikušas {days} dienas izmēģinājuma periodā",
@@ -227,10 +233,8 @@
     "subtitle": "Skaists Markdown skatītājs",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Attēla apraksts",
-    "insert": "Ievietot",
-    "title": "Ievietot attēla URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Dzēst attēlu",
+    "edit": "Rediģēt attēla URL"
   }
 }

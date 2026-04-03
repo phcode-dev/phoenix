@@ -57,6 +57,11 @@
     "heading1": "عنوان 1",
     "heading2": "عنوان 2",
     "heading3": "عنوان 3",
+    "heading4": "عنوان 4",
+    "heading5": "عنوان 5",
+    "image": "صورة",
+    "image_upload": "تحميل من الحاسوب",
+    "image_url": "رابط الصورة",
     "italic": "مائل ({mod}+I)",
     "link": "رابط ({mod}+K)",
     "lists": "قوائم",
@@ -67,11 +72,6 @@
     "table": "جدول",
     "task_list": "قائمة مهام",
     "text_formatting": "تنسيق النص",
-    "heading4": "عنوان 4",
-    "heading5": "عنوان 5",
-    "image": "صورة",
-    "image_upload": "تحميل من الحاسوب",
-    "image_url": "رابط الصورة",
     "underline": "تسطير ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "الميزات",
     "getting_started": "البدء",
     "shortcuts": "اختصارات لوحة المفاتيح"
+  },
+  "image_dialog": {
+    "alt_placeholder": "وصف الصورة",
+    "insert": "إدراج",
+    "title": "إدراج رابط الصورة",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "تصفية اللغات",
@@ -142,6 +148,14 @@
     "heading2_desc": "عنوان متوسط",
     "heading3": "عنوان 3",
     "heading3_desc": "عنوان صغير",
+    "heading4": "عنوان 4",
+    "heading4_desc": "عنوان أصغر",
+    "heading5": "عنوان 5",
+    "heading5_desc": "أصغر عنوان",
+    "image_upload": "رفع صورة",
+    "image_upload_desc": "الرفع من الكمبيوتر",
+    "image_url": "رابط الصورة",
+    "image_url_desc": "تضمين من رابط",
     "mermaid": "مخطط Mermaid",
     "mermaid_desc": "إدراج مخطط",
     "no_results": "لا توجد نتائج",
@@ -152,15 +166,7 @@
     "table": "جدول",
     "table_desc": "جدول 3×3",
     "task_list": "قائمة مهام",
-    "task_list_desc": "قائمة تحقّق",
-    "heading4": "عنوان 4",
-    "heading4_desc": "عنوان أصغر",
-    "heading5": "عنوان 5",
-    "heading5_desc": "أصغر عنوان",
-    "image_upload": "رفع صورة",
-    "image_upload_desc": "الرفع من الكمبيوتر",
-    "image_url": "رابط الصورة",
-    "image_url_desc": "تضمين من رابط"
+    "task_list_desc": "قائمة تحقّق"
   },
   "table": {
     "add_col_left": "إضافة عمود يسارًا",
@@ -170,37 +176,37 @@
     "col_options": "خيارات العمود {n}",
     "delete_col": "حذف العمود",
     "delete_row": "حذف الصف",
+    "delete_table": "حذف الجدول",
     "header": "ترويسة",
     "insert_col_left": "إدراج عمود يسارًا",
     "insert_col_right": "إدراج عمود يمينًا",
     "insert_row_above": "إدراج صف أعلى",
     "insert_row_below": "إدراج صف أسفل",
     "new_row": "+ صف جديد",
-    "row_options": "خيارات الصف {n}",
-    "delete_table": "حذف الجدول"
+    "row_options": "خيارات الصف {n}"
   },
   "toolbar": {
+    "cursor_sync": "تبديل مزامنة المؤشر",
     "edit": "تحرير",
+    "empty_line_hint": "اكتب / للإدراج",
     "export_pdf": "تصدير PDF",
     "focus": "وضع التركيز",
     "more": "المزيد",
     "new_file": "ملف جديد",
     "open": "فتح ملف",
+    "print": "طباعة",
+    "reader": "قارئ",
     "save": "حفظ",
     "search": "بحث",
     "settings": "الإعدادات",
     "split_view": "عرض مقسّم",
+    "switch_to_edit": "التبديل إلى وضع التحرير",
+    "switch_to_reader": "التبديل إلى وضع القارئ",
     "theme": "تبديل السمة",
     "toc": "جدول المحتويات",
     "zoom_in": "تكبير",
     "zoom_out": "تصغير",
-    "zoom_reset": "إعادة تعيين التكبير",
-    "cursor_sync": "تبديل مزامنة المؤشر",
-    "empty_line_hint": "اكتب / للإدراج",
-    "print": "طباعة",
-    "reader": "قارئ",
-    "switch_to_edit": "التبديل إلى وضع التحرير",
-    "switch_to_reader": "التبديل إلى وضع القارئ"
+    "zoom_reset": "إعادة تعيين التكبير"
   },
   "trial": {
     "days_remaining": "باقي {days} يوم في الفترة التجريبية",
@@ -227,10 +233,8 @@
     "subtitle": "عارض ماركداون أنيق",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "وصف الصورة",
-    "insert": "إدراج",
-    "title": "إدراج رابط الصورة",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "حذف الصورة",
+    "edit": "تعديل رابط الصورة"
   }
 }

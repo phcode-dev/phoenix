@@ -57,6 +57,11 @@
     "heading1": "Rubrik 1",
     "heading2": "Rubrik 2",
     "heading3": "Rubrik 3",
+    "heading4": "Rubrik 4",
+    "heading5": "Rubrik 5",
+    "image": "Bild",
+    "image_upload": "Ladda upp från datorn",
+    "image_url": "Bild-URL",
     "italic": "Kursiv ({mod}+I)",
     "link": "Länk ({mod}+K)",
     "lists": "Listor",
@@ -67,11 +72,6 @@
     "table": "Tabell",
     "task_list": "Att göra-lista",
     "text_formatting": "Textformatering",
-    "heading4": "Rubrik 4",
-    "heading5": "Rubrik 5",
-    "image": "Bild",
-    "image_upload": "Ladda upp från datorn",
-    "image_url": "Bild-URL",
     "underline": "Understruken ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Funktioner",
     "getting_started": "Komma igång",
     "shortcuts": "Kortkommandon"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Bildbeskrivning",
+    "insert": "Infoga",
+    "title": "Infoga bild-URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Filtrera språk",
@@ -142,6 +148,14 @@
     "heading2_desc": "Mellanstor rubrik",
     "heading3": "Rubrik 3",
     "heading3_desc": "Liten rubrik",
+    "heading4": "Rubrik 4",
+    "heading4_desc": "Mindre rubrik",
+    "heading5": "Rubrik 5",
+    "heading5_desc": "Minsta rubrik",
+    "image_upload": "Ladda upp bild",
+    "image_upload_desc": "Ladda upp från datorn",
+    "image_url": "Bild-URL",
+    "image_url_desc": "Bädda in från URL",
     "mermaid": "Mermaid-diagram",
     "mermaid_desc": "Infoga ett diagram",
     "no_results": "Inga resultat",
@@ -152,15 +166,7 @@
     "table": "Tabell",
     "table_desc": "3×3-tabell",
     "task_list": "Uppgiftslista",
-    "task_list_desc": "Checklista",
-    "heading4": "Rubrik 4",
-    "heading4_desc": "Mindre rubrik",
-    "heading5": "Rubrik 5",
-    "heading5_desc": "Minsta rubrik",
-    "image_upload": "Ladda upp bild",
-    "image_upload_desc": "Ladda upp från datorn",
-    "image_url": "Bild-URL",
-    "image_url_desc": "Bädda in från URL"
+    "task_list_desc": "Checklista"
   },
   "table": {
     "add_col_left": "Lägg till kolumn till vänster",
@@ -170,37 +176,37 @@
     "col_options": "Alternativ för kolumn {n}",
     "delete_col": "Ta bort kolumn",
     "delete_row": "Ta bort rad",
+    "delete_table": "Ta bort tabell",
     "header": "Rubrik",
     "insert_col_left": "Infoga kolumn till vänster",
     "insert_col_right": "Infoga kolumn till höger",
     "insert_row_above": "Infoga rad ovanför",
     "insert_row_below": "Infoga rad nedanför",
     "new_row": "+ Ny rad",
-    "row_options": "Alternativ för rad {n}",
-    "delete_table": "Ta bort tabell"
+    "row_options": "Alternativ för rad {n}"
   },
   "toolbar": {
+    "cursor_sync": "Växla markörsynkronisering",
     "edit": "Redigera",
+    "empty_line_hint": "Skriv / för att infoga",
     "export_pdf": "Exportera PDF",
     "focus": "Fokusläge",
     "more": "Mer",
     "new_file": "Ny fil",
     "open": "Öppna fil",
+    "print": "Skriv ut",
+    "reader": "Läsläge",
     "save": "Spara",
     "search": "Sök",
     "settings": "Inställningar",
     "split_view": "Delad vy",
+    "switch_to_edit": "Växla till redigeringsläge",
+    "switch_to_reader": "Växla till läsläge",
     "theme": "Växla tema",
     "toc": "Innehållsförteckning",
     "zoom_in": "Zooma in",
     "zoom_out": "Zooma ut",
-    "zoom_reset": "Återställ zoom",
-    "cursor_sync": "Växla markörsynkronisering",
-    "empty_line_hint": "Skriv / för att infoga",
-    "print": "Skriv ut",
-    "reader": "Läsläge",
-    "switch_to_edit": "Växla till redigeringsläge",
-    "switch_to_reader": "Växla till läsläge"
+    "zoom_reset": "Återställ zoom"
   },
   "trial": {
     "days_remaining": "{days} dagar kvar av provperioden",
@@ -227,10 +233,8 @@
     "subtitle": "En vacker Markdown-visare",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Bildbeskrivning",
-    "insert": "Infoga",
-    "title": "Infoga bild-URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Ta bort bild",
+    "edit": "Redigera bild-URL"
   }
 }

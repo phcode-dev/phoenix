@@ -57,6 +57,11 @@
     "heading1": "一级标题",
     "heading2": "二级标题",
     "heading3": "三级标题",
+    "heading4": "标题 4",
+    "heading5": "标题 5",
+    "image": "图片",
+    "image_upload": "从计算机上传",
+    "image_url": "图片 URL",
     "italic": "斜体 ({mod}+I)",
     "link": "链接 ({mod}+K)",
     "lists": "列表",
@@ -67,11 +72,6 @@
     "table": "表格",
     "task_list": "任务列表",
     "text_formatting": "文本格式",
-    "heading4": "标题 4",
-    "heading5": "标题 5",
-    "image": "图片",
-    "image_upload": "从计算机上传",
-    "image_url": "图片 URL",
     "underline": "下划线 ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "功能",
     "getting_started": "快速入门",
     "shortcuts": "键盘快捷键"
+  },
+  "image_dialog": {
+    "alt_placeholder": "图片描述",
+    "insert": "插入",
+    "title": "插入图片 URL",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "筛选语言",
@@ -142,6 +148,14 @@
     "heading2_desc": "中标题",
     "heading3": "三级标题",
     "heading3_desc": "小标题",
+    "heading4": "标题 4",
+    "heading4_desc": "较小标题",
+    "heading5": "标题 5",
+    "heading5_desc": "最小标题",
+    "image_upload": "上传图片",
+    "image_upload_desc": "从电脑上传",
+    "image_url": "图片链接",
+    "image_url_desc": "通过链接嵌入",
     "mermaid": "Mermaid 图表",
     "mermaid_desc": "插入图表",
     "no_results": "无结果",
@@ -152,15 +166,7 @@
     "table": "表格",
     "table_desc": "3×3 表格",
     "task_list": "任务列表",
-    "task_list_desc": "清单",
-    "heading4": "标题 4",
-    "heading4_desc": "较小标题",
-    "heading5": "标题 5",
-    "heading5_desc": "最小标题",
-    "image_upload": "上传图片",
-    "image_upload_desc": "从电脑上传",
-    "image_url": "图片链接",
-    "image_url_desc": "通过链接嵌入"
+    "task_list_desc": "清单"
   },
   "table": {
     "add_col_left": "在左侧添加列",
@@ -170,37 +176,37 @@
     "col_options": "第 {n} 列选项",
     "delete_col": "删除列",
     "delete_row": "删除行",
+    "delete_table": "删除表格",
     "header": "表头",
     "insert_col_left": "在左侧插入列",
     "insert_col_right": "在右侧插入列",
     "insert_row_above": "在上方插入行",
     "insert_row_below": "在下方插入行",
     "new_row": "+ 新增行",
-    "row_options": "第 {n} 行选项",
-    "delete_table": "删除表格"
+    "row_options": "第 {n} 行选项"
   },
   "toolbar": {
+    "cursor_sync": "切换光标同步",
     "edit": "编辑",
+    "empty_line_hint": "输入 / 插入",
     "export_pdf": "导出 PDF",
     "focus": "专注模式",
     "more": "更多",
     "new_file": "新建文件",
     "open": "打开文件",
+    "print": "打印",
+    "reader": "阅读",
     "save": "保存",
     "search": "搜索",
     "settings": "设置",
     "split_view": "分屏视图",
+    "switch_to_edit": "切换到编辑模式",
+    "switch_to_reader": "切换到阅读模式",
     "theme": "切换主题",
     "toc": "目录",
     "zoom_in": "放大",
     "zoom_out": "缩小",
-    "zoom_reset": "重置缩放",
-    "cursor_sync": "切换光标同步",
-    "empty_line_hint": "输入 / 插入",
-    "print": "打印",
-    "reader": "阅读",
-    "switch_to_edit": "切换到编辑模式",
-    "switch_to_reader": "切换到阅读模式"
+    "zoom_reset": "重置缩放"
   },
   "trial": {
     "days_remaining": "试用期剩余 {days} 天",
@@ -227,10 +233,8 @@
     "subtitle": "优雅的 Markdown 阅读器",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "图片描述",
-    "insert": "插入",
-    "title": "插入图片 URL",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "删除图片",
+    "edit": "编辑图片 URL"
   }
 }

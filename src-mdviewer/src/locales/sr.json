@@ -57,6 +57,11 @@
     "heading1": "Наслов 1",
     "heading2": "Наслов 2",
     "heading3": "Наслов 3",
+    "heading4": "Наслов 4",
+    "heading5": "Наслов 5",
+    "image": "Слика",
+    "image_upload": "Отпреми са рачунара",
+    "image_url": "URL слике",
     "italic": "Курзив ({mod}+I)",
     "link": "Веза ({mod}+K)",
     "lists": "Листе",
@@ -67,11 +72,6 @@
     "table": "Табела",
     "task_list": "Листа задатака",
     "text_formatting": "Форматирање текста",
-    "heading4": "Наслов 4",
-    "heading5": "Наслов 5",
-    "image": "Слика",
-    "image_upload": "Отпреми са рачунара",
-    "image_url": "URL слике",
     "underline": "Подвучено ({mod}+U)"
   },
   "help": {
@@ -80,6 +80,12 @@
     "features": "Функције",
     "getting_started": "Први кораци",
     "shortcuts": "Тастатурне пречице"
+  },
+  "image_dialog": {
+    "alt_placeholder": "Опис слике",
+    "insert": "Уметни",
+    "title": "Уметни URL слике",
+    "url_placeholder": "https://example.com/image.png"
   },
   "lang_picker": {
     "filter_label": "Филтрирај језике",
@@ -142,6 +148,14 @@
     "heading2_desc": "Средњи наслов",
     "heading3": "Наслов 3",
     "heading3_desc": "Мали наслов",
+    "heading4": "Наслов 4",
+    "heading4_desc": "Мањи наслов",
+    "heading5": "Наслов 5",
+    "heading5_desc": "Најмањи наслов",
+    "image_upload": "Отпреми слику",
+    "image_upload_desc": "Отпремање са рачунара",
+    "image_url": "URL слике",
+    "image_url_desc": "Угради са URL-а",
     "mermaid": "Mermaid дијаграм",
     "mermaid_desc": "Уметни дијаграм",
     "no_results": "Нема резултата",
@@ -152,15 +166,7 @@
     "table": "Табела",
     "table_desc": "Табела 3×3",
     "task_list": "Листа задатака",
-    "task_list_desc": "Контролна листа",
-    "heading4": "Наслов 4",
-    "heading4_desc": "Мањи наслов",
-    "heading5": "Наслов 5",
-    "heading5_desc": "Најмањи наслов",
-    "image_upload": "Отпреми слику",
-    "image_upload_desc": "Отпремање са рачунара",
-    "image_url": "URL слике",
-    "image_url_desc": "Угради са URL-а"
+    "task_list_desc": "Контролна листа"
   },
   "table": {
     "add_col_left": "Додај колону лево",
@@ -170,37 +176,37 @@
     "col_options": "Опције колоне {n}",
     "delete_col": "Обриши колону",
     "delete_row": "Обриши ред",
+    "delete_table": "Обриши табелу",
     "header": "Заглавље",
     "insert_col_left": "Уметни колону лево",
     "insert_col_right": "Уметни колону десно",
     "insert_row_above": "Уметни ред изнад",
     "insert_row_below": "Уметни ред испод",
     "new_row": "+ Нови ред",
-    "row_options": "Опције реда {n}",
-    "delete_table": "Обриши табелу"
+    "row_options": "Опције реда {n}"
   },
   "toolbar": {
+    "cursor_sync": "Укључи/искључи синхронизацију курсора",
     "edit": "Уреди",
+    "empty_line_hint": "Укуцајте / за уметање",
     "export_pdf": "Извези PDF",
     "focus": "Режим фокуса",
     "more": "Више",
     "new_file": "Нови фајл",
     "open": "Отвори фајл",
+    "print": "Штампај",
+    "reader": "Читач",
     "save": "Сачувај",
     "search": "Претрага",
     "settings": "Подешавања",
     "split_view": "Подељени приказ",
+    "switch_to_edit": "Пређи у режим за уређивање",
+    "switch_to_reader": "Пређи у режим за читање",
     "theme": "Промени тему",
     "toc": "Садржај",
     "zoom_in": "Увећај",
     "zoom_out": "Умањи",
-    "zoom_reset": "Ресетуј зум",
-    "cursor_sync": "Укључи/искључи синхронизацију курсора",
-    "empty_line_hint": "Укуцајте / за уметање",
-    "print": "Штампај",
-    "reader": "Читач",
-    "switch_to_edit": "Пређи у режим за уређивање",
-    "switch_to_reader": "Пређи у режим за читање"
+    "zoom_reset": "Ресетуј зум"
   },
   "trial": {
     "days_remaining": "{days} дана преостало у пробном периоду",
@@ -227,10 +233,8 @@
     "subtitle": "Прелеп Markdown прегледач",
     "title": "Kern"
   },
-  "image_dialog": {
-    "alt_placeholder": "Опис слике",
-    "insert": "Уметни",
-    "title": "Уметни URL слике",
-    "url_placeholder": "https://example.com/image.png"
+  "image": {
+    "delete": "Обриши слику",
+    "edit": "Измени URL слике"
   }
 }
