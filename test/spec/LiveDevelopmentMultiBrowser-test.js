@@ -1764,20 +1764,36 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([`readme.md`]),
-                "SpecRunnerUtils.openProjectFiles simple1.html");
+                "SpecRunnerUtils.openProjectFiles readme.md");
 
             await _waitForIframeSrc(`readme.md`);
             let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
             pinURLBtn.click();
 
+            // Pin active on readme.md — switch to SVG, md viewer should stay
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
                 SVG_IMAGE_PATH);
-            await awaits(500);
             await _waitForIframeSrc(`readme.md`);
 
-            pinURLBtn.click();
+            // Switch to HTML file while md is pinned
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html while md pinned");
+            // Negative assertion: wait for async switch to settle, then verify it did NOT happen
+            await awaits(500);
+            let mdIFrame = _getMdPreviewIFrame();
+            expect(mdIFrame && mdIFrame.style.display !== "none").toBeTrue();
 
-            await _waitForIframeSrc(SVG_IMAGE_PATH);
+            // Switch to another md file while md is pinned
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sample.md"]),
+                "open sample.md while md pinned");
+            // Negative assertion: wait for async switch to settle, then verify it did NOT happen
+            await awaits(500);
+            mdIFrame = _getMdPreviewIFrame();
+            expect(mdIFrame && mdIFrame.style.display !== "none").toBeTrue();
+
+            // Unpin — should switch to current file (sample.md)
+            pinURLBtn.click();
+            await _waitForIframeSrc(`sample.md`);
 
             await endPreviewSession();
         }, 30000);

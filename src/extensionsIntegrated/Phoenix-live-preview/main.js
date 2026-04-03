@@ -876,6 +876,10 @@ define(function (require, exports, module) {
         _setTitle(relativeOrFullPath, currentPreviewFile, "");
 
         if (_isMdviewrActive) {
+            if (urlPinned && !force) {
+                // Pinned — don't switch the md viewer content
+                return;
+            }
             // Mdviewr iframe already loaded, just update the sync for the new document
             MarkdownSync.activate(currentDoc, $iframe, baseURL);
             return;
@@ -1160,6 +1164,10 @@ define(function (require, exports, module) {
     }
 
     function _activeDocChanged(event, focusedEditor, lostEditor) {
+        // When md viewer is pinned, don't open HTML live preview — keep the md viewer visible
+        if (_isMdviewrActive && urlPinned) {
+            return;
+        }
         if(!LivePreviewSettings.isUsingCustomServer() && !LiveDevelopment.isActive()
             && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
             // we do this only once after project switch if live preview for a doc is not active.
