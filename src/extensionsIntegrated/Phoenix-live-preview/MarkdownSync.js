@@ -1025,10 +1025,10 @@ define(function (require, exports, module) {
 
     /**
      * Re-send the current document's content to the iframe without clearing cache.
-     * Used when pinned to refresh the preview without losing the cached DOM.
+     * Uses cache-aware switch to preserve scroll position.
      */
     function resendContent() {
-        _sendContent();
+        _switchFile();
     }
 
     /**
