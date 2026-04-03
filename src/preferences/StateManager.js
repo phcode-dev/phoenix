@@ -2,6 +2,7 @@
  * GNU AGPL-3.0 License
  *
  * Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -18,284 +19,150 @@
  *
  */
 
-// @INCLUDE_IN_API_DOCS
-
-
 /*unittests: Preferences Manager */
-/*global fs*/
 
 /**
- * StateManager
+ * Manages the view state for the application.
  *
+ * The view state is stored in the preferences, but it is handled separately
+ * from the normal preferences.
+ *
+ * The view state is persisted in the file "state.json" in the user's appData directory.
+ *
+ * There are three contexts for view state:
+ *
+ * - global: This is for things that are not specific to a project.
+ * - project: This is for things that are specific to a project.
+ * - project-then-global: This is a read-only context that will first look for a
+ *   project-specific value, and if it is not found, it will look for a global value.
+ *
+ * When a value is set, it is stored in memory and the preferences file is
+ * saved to disk asynchronously.
  */
 define(function (require, exports, module) {
-    const _ = require("thirdparty/lodash"),
-        EventDispatcher = require("utils/EventDispatcher"),
-        ProjectManager = require("project/ProjectManager");
+    "use strict";
+
+    var PreferencesImpl = require("preferences/PreferencesImpl"),
+        FileSystem      = require("filesystem/FileSystem"),
+        FileUtils       = require("file/FileUtils"),
+        _               = require("thirdparty/lodash");
+
+    var _stateFile,
+        _data = {};
+
+    var PROJECT_CONTEXT = "project",
+        GLOBAL_CONTEXT = "global",
+        PROJECT_THEN_GLOBAL_CONTEXT = "project-then-global";
+
+    var _projectRoot,
+        _projectData;
 
     /**
-     * Project specific context
-     * @const
-     * @type {string}
+     * Asynchronously saves the view state to disk.
      */
-    const PROJECT_CONTEXT = "project";
-
-    /**
-     * Global context
-     * @const
-     * @type {string}
-     */
-    const GLOBAL_CONTEXT = "global";
-
-    /**
-     * Project or global context
-     * @const
-     * @type {string}
-     */
-    const PROJECT_THEN_GLOBAL_CONTEXT = "any";
-
-    const PHSTORE_STATEMANAGER_PREFIX = "STATE_";
-    const transformDotsInID = {};
-
-    const definedPreferences = {};
-
-    function _getKey(id, useProjectContext) {
-        if(useProjectContext){
-            const projectRootPath = ProjectManager.getProjectRoot().fullPath;
-            return `${PHSTORE_STATEMANAGER_PREFIX}${projectRootPath}${id}`; // STATE_/path/to/prj/root_ID
-        }
-        return `${PHSTORE_STATEMANAGER_PREFIX}${id}`; // STATE_ID
-    }
-
-    function _GET_CONTEXT_FROM_LEGACY_CONTEXT(context = null) {
-        if(_.get(context, "location.layer") === 'project'){
-            return PROJECT_CONTEXT;
-        }
-        return GLOBAL_CONTEXT;
-    }
-
-    function _getItemOrDefault(item, id) {
-        if((item === null || item === undefined) && definedPreferences[id]){
-            return definedPreferences[id].initial;
-        }
-        return item;
+    function _save() {
+        return FileUtils.writeText(_stateFile, JSON.stringify(_data, null, 4));
     }
 
     /**
-     * Convenience function that gets a view state
+     * Gets a value from the view state.
      *
-     * @param {string} id preference to get
-     * @param {(Object|string)?} [context] Optional additional information about the request, can be:
-     *  - ScopeManager.PROJECT_CONTEXT  if you want to get project specific value  or
-     *  - ScopeManager.GLOBAL_CONTEXT if you want to get it from global context and not the project context.
-     *  - null/undefined if you want to get from project context first, and then global context if not found in project context.
-     * @param {string?} [context.scope] Eg. user - deprecated, do not use
-     * @param {string?} [context.layer] Eg. project - deprecated, do not use
-     * @param {string?} [context.layerID] Eg. /tauri/path/to/project - deprecated, do not use
+     * @param {string} id The id of the value to get.
+     * @param {string=} context The context to get the value from. Defaults to GLOBAL_CONTEXT.
+     * @return {*} The value.
      */
-    function getVal(id, context= GLOBAL_CONTEXT) {
-        if(Phoenix.config.environment !== 'production' && typeof  context === 'object'){
-            console.warn("Use of context object in state is deprecated. Please migrate to StateManager");
-        }
-        if(transformDotsInID[id]){
-            // this is true if
-            id=id.replace(".", ":");
-        }
-        let item;
-        switch (context) {
-        case GLOBAL_CONTEXT:
-            item = PhStore.getItem(_getKey(id, false));
-            return _getItemOrDefault(item, id);
-        case PROJECT_CONTEXT:
-            item = PhStore.getItem(_getKey(id, true));
-            return _getItemOrDefault(item, id);
-        case PROJECT_THEN_GLOBAL_CONTEXT:
-            const val = PhStore.getItem(_getKey(id, true));
-            if(val){
-                return val;
+    function get(id, context) {
+        context = context || GLOBAL_CONTEXT;
+
+        var val;
+        if (context === PROJECT_THEN_GLOBAL_CONTEXT) {
+            if (_projectData) {
+                val = _projectData[id];
             }
-            item = PhStore.getItem(_getKey(id, false));
-            return _getItemOrDefault(item, id);
-        default:
-            if(Phoenix.config.environment !== 'production'){
-                console.warn("Use of context object in StateManager.get() is deprecated. Please migrate to StateManager");
+            if (val === undefined) {
+                val = _data[id];
             }
-            return getVal(id, _GET_CONTEXT_FROM_LEGACY_CONTEXT(context));
+        } else if (context === PROJECT_CONTEXT) {
+            if (_projectData) {
+                val = _projectData[id];
+            }
+        } else {
+            val = _data[id];
         }
+        return val;
     }
 
     /**
-     * Convenience function that sets a view state and then saves the file
+     * Sets a value in the view state.
      *
-     * @param {string} id preference to set
-     * @param {*} value new value for the preference
-     * @param {(Object|string)?} [context] Optional additional information about the request, can be:
-     *  ScopeManager.PROJECT_CONTEXT  if you want to get project specific value  or
-     *  ScopeManager.GLOBAL_CONTEXT or null if you want to set globally.
-     * @param {string?} [context.scope] Eg. user - deprecated, do not use
-     * @param {string?} [context.layer] Eg. project - deprecated, do not use
-     * @param {string?} [context.layerID] Eg. /tauri/path/to/project - deprecated, do not use
+     * @param {string} id The id of the value to set.
+     * @param {*} value The value to set.
+     * @param {string=} context The context to set the value in. Defaults to GLOBAL_CONTEXT.
+     * @return {$.Promise} A promise that is resolved when the state is saved.
      */
-    function setVal(id, value, context= GLOBAL_CONTEXT) {
-        if(transformDotsInID[id]){
-            // this is true if
-            id=id.replace(".", ":");
-        }
-        switch (context) {
-        case PROJECT_THEN_GLOBAL_CONTEXT:
-            throw new Error("Cannot use PROJECT_THEN_GLOBAL_CONTEXT with set");
-        case GLOBAL_CONTEXT:
-            PhStore.setItem(_getKey(id, false), value);
-            return;
-        case PROJECT_CONTEXT:
-            PhStore.setItem(_getKey(id, true), value);
-            return;
-        default:
-            if(Phoenix.config.environment !== 'production'){
-                console.warn("Use of context object in StateManager.set() is deprecated. Please migrate to StateManager");
+    function set(id, value, context) {
+        context = context || GLOBAL_CONTEXT;
+
+        if (context === PROJECT_CONTEXT) {
+            if (_projectData) {
+                _projectData[id] = value;
             }
-            setVal(id, value, _GET_CONTEXT_FROM_LEGACY_CONTEXT(context));
+        } else {
+            _data[id] = value;
         }
+        return _save();
     }
 
     /**
-     * returns a preference instance that can be listened `.on("change", cbfn(changeType))` . The callback fucntion will be called
-     * whenever there is a change in the supplied id with a changeType argument. The change type can be one of the two:
-     * CHANGE_TYPE_INTERNAL - if change is made within the current app window/browser tap
-     * CHANGE_TYPE_EXTERNAL - if change is made in a different app window/browser tab
+     * Sets the project root. This is used to determine which project-specific
+     * view state to use.
      *
-     * @param id
-     * @param type
-     * @param initial
-     * @param options
-     * @return {{}}
+     * @param {string} root The project root.
      */
-    function definePreferenceInternal(id, type, initial, options) {
-        if (definedPreferences[id]) {
-            throw new Error("Preference " + id + " was redefined");
-        }
-
-        if(id.includes(".")){
-            // this is a problem as our event Dispatcher treats . as event class names. so listening on is's that have
-            // a dot will fail as instead of listening to events on for Eg. `eventName.hello`, eventDispatcher will only
-            // listen to `eventName`. To mitigate this, we will try to change the id name by replacing `.` with `:`
-            transformDotsInID[id] = true;
-            id=id.replace(".", ":");
-            console.error(`StateManager.definePreference should not be called with an id ${id} that has a` +
-                " `.`- trying to continue...");
-        }
-
-        // change event processing on key
-        const key = _getKey(id, false);
-        const preference = {
-            watchExternalChanges: function () {
-                PhStore.watchExternalChanges(key);
-            },
-            unwatchExternalChanges: function () {
-                PhStore.unwatchExternalChanges(key);
+    function setProjectRoot(root) {
+        _projectRoot = root;
+        if (_projectRoot) {
+            if (!_data.projects) {
+                _data.projects = {};
             }
-        };
-        EventDispatcher.makeEventDispatcher(preference);
-        PhStore.on(key, (_event, changeType)=>{
-            preference.trigger("change", changeType);
+            if (!_data.projects[_projectRoot]) {
+                _data.projects[_projectRoot] = {};
+            }
+            _projectData = _data.projects[_projectRoot];
+        } else {
+            _projectData = null;
+        }
+    }
+
+    PreferencesImpl.manager.on("projectClose", function () {
+        setProjectRoot(null);
+    });
+
+    PreferencesImpl.manager.on("projectOpen", function (e, projectRoot) {
+        setProjectRoot(projectRoot.fullPath);
+    });
+
+    // Load the view state from disk.
+    PreferencesImpl.managerReady.always(function () {
+        var dir = path.dirname(PreferencesImpl.userPrefFile);
+        _stateFile = FileSystem.getFileForPath(dir + "/" + PreferencesImpl.STATE_FILENAME);
+        _stateFile.read(function (err, contents) {
+            if (!err) {
+                try {
+                    var loadedData = JSON.parse(contents);
+                    // Don't overwrite data that has been set since we were loaded
+                    _data = _.extend(loadedData, _data);
+                } catch (e) {
+                    console.error("Error parsing view state: " + e);
+                }
+            }
         });
-        definedPreferences[id]={ type, initial, options, preference};
-        return preference;
-    }
+    });
 
-    /**
-     * Get the preference instance for the given ID.
-     *
-     * @param {string} id
-     * @returns {{}}
-     */
-    function getPreferenceInternal(id) {
-        if(!definedPreferences[id]){
-            throw new Error("getPreference " + id + " no such preference defined.");
-        }
-        return definedPreferences[id].preference;
-    }
-
-    const knownExtensions = {};
-
-    /**
-     * create a state manager for an extension.
-     * ensure that the IDs are unique.
-     *
-     * @param {string} extensionID
-     * @returns {object} Object with methods to manage the extension's state and preferences.
-     * - `get(id, context)`: Get the value from the extension's state.
-     * - `set(id, value, context)`: Set the value in the extension's state.
-     * - `definePreference(id, type, initial, options)`: define a preference for the extension.
-     * - `getPreference(id)`: retrieve a defined preference.
-     * - `PROJECT_CONTEXT`, `GLOBAL_CONTEXT`, `PROJECT_THEN_GLOBAL_CONTEXT`: constant for context management.
-     */
-    function createExtensionStateManager(extensionID) {
-        let i=0;
-        if(extensionID.includes(".")){
-            // this is a problem as our event Dispatcher treats . as event class names. so listening on id's that have
-            // a dot will fail as instead of listening to events on for Eg. `eventName.hello`, eventDispatcher will only
-            // listen to `eventName`. To mitigate this, we will try to change the id name by replacing `.` with `:`
-            extensionID=extensionID.replace(".", ":");
-        }
-        let originalExtensionID = extensionID;
-        while(knownExtensions[extensionID]){
-            let newID = `${originalExtensionID}_${i++}`;
-            console.warn(`Another extension of the same id ${extensionID} exists in createExtensionStateManager.` +
-                ` Mitigating-Identifying a new free id to use... ${newID}`);
-            extensionID = newID;
-        }
-        knownExtensions[extensionID] = true;
-        const extPrefix = `EXT_${extensionID}`;
-        return {
-            get: function (id, context) {
-                return getVal(`${extPrefix}_${id}`, context);
-            },
-            set: function (id, value, context) {
-                return setVal(`${extPrefix}_${id}`, value, context);
-            },
-            definePreference: function (id, type, initial, options) {
-                return definePreferenceInternal(`${extPrefix}_${id}`, type, initial, options);
-            },
-            getPreference: function (id) {
-                return getPreferenceInternal(`${extPrefix}_${id}`);
-            },
-            PROJECT_CONTEXT,
-            GLOBAL_CONTEXT,
-            PROJECT_THEN_GLOBAL_CONTEXT
-        };
-    }
-
-    function save() {
-        console.warn("StateManager.save() is deprecated. Settings are auto saved to a high throughput Database");
-    }
-
-    function getPrefixedSystem(prefix) {
-        console.warn("StateManager.getPrefixedSystem() is deprecated. Use StateManager.createExtensionStateManager()");
-        return createExtensionStateManager(prefix);
-    }
-
-    // private api for internal use only
-    // All internal states must be registered here to prevent collisions in internal codebase state managers
-    const _INTERNAL_STATES = {
-        TAB_SPACES: "TAB_SPC_"
-    };
-    exports._INTERNAL_STATES = _INTERNAL_STATES;
-    exports._createInternalStateManager = createExtensionStateManager;
-
-    // public api
-    exports.get     = getVal;
-    exports.set     = setVal;
-    exports.definePreference = definePreferenceInternal;
-    exports.getPreference = getPreferenceInternal;
-    exports.createExtensionStateManager = createExtensionStateManager;
-    //deprecated APIs
-    exports.save = save;
-    exports.getPrefixedSystem = getPrefixedSystem;
-    // global exports
+    // Public API
+    exports.get = get;
+    exports.set = set;
     exports.PROJECT_CONTEXT = PROJECT_CONTEXT;
     exports.GLOBAL_CONTEXT = GLOBAL_CONTEXT;
     exports.PROJECT_THEN_GLOBAL_CONTEXT = PROJECT_THEN_GLOBAL_CONTEXT;
-    exports.CHANGE_TYPE_INTERNAL = PhStore.CHANGE_TYPE_INTERNAL;
-    exports.CHANGE_TYPE_EXTERNAL = PhStore.CHANGE_TYPE_EXTERNAL;
 });
