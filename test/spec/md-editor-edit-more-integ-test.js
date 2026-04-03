@@ -210,6 +210,18 @@ define(function (require, exports, module) {
                 _dispatchKeyInMdIframe("f");
             }
 
+            function _openSearch() {
+                if (brackets.platform === "mac") {
+                    // Mac: use direct event emit to bypass nested iframe focus issues
+                    const win = _getMdIFrameWin();
+                    if (win && win.__toggleSearchForTest) {
+                        win.__toggleSearchForTest();
+                        return;
+                    }
+                }
+                _openSearchWithCtrlF();
+            }
+
             function _typeInSearch(text) {
                 const input = _getMdIFrameDoc().getElementById("search-input");
                 input.value = text;
@@ -229,7 +241,17 @@ define(function (require, exports, module) {
 
             async function _closeSearch() {
                 if (_isSearchOpen()) {
-                    _pressKeyInSearch("Escape");
+                    if (brackets.platform === "mac") {
+                        // Mac: use toggle to avoid focus steal from Escape
+                        const win = _getMdIFrameWin();
+                        if (win && win.__toggleSearchForTest) {
+                            win.__toggleSearchForTest();
+                        } else {
+                            _pressKeyInSearch("Escape");
+                        }
+                    } else {
+                        _pressKeyInSearch("Escape");
+                    }
                     await awaitsFor(() => !_isSearchOpen(), "search bar to close");
                 }
             }
@@ -250,7 +272,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should typing in search highlight matches", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("Document");
@@ -262,7 +284,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should match count show N/total format", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("Document");
@@ -276,7 +298,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should Enter navigate to next match", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("Document");
@@ -296,7 +318,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should Shift+Enter navigate to previous match", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("Document");
@@ -319,7 +341,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should navigation wrap around", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("Document");
@@ -345,7 +367,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should Escape close search and restore focus", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("test");
@@ -364,7 +386,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should closing search clear all highlights", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("Document");
@@ -376,7 +398,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should close button close search", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("test");
@@ -389,7 +411,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should search start from 1 character", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         _typeInSearch("D");
@@ -400,7 +422,7 @@ define(function (require, exports, module) {
                     }, 10000);
 
                     it("should Escape in search NOT forward to Phoenix", async function () {
-                        _openSearchWithCtrlF();
+                        _openSearch();
                         await awaitsFor(() => _isSearchOpen(), "search bar to open");
 
                         let escapeSent = false;
