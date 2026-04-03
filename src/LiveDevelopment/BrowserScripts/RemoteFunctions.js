@@ -56,7 +56,7 @@ function RemoteFunctions(config = {}) {
         "dismiss", // when handler gets this event, it should dismiss all ui it renders in the live preview
         "createToolBox",
         "createInfoBox",
-        "createHoverBox",
+        "showHoverBox",
         "createMoreOptionsDropdown",
         // render an icon or html when the selected element toolbox appears in edit mode.
         "renderToolBoxItem",
@@ -470,7 +470,7 @@ function RemoteFunctions(config = {}) {
         if (element && element !== previouslySelectedElement) {
             _hoverHighlight.add(element);
             if (hoverBoxHandler) {
-                hoverBoxHandler.createHoverBox(element);
+                hoverBoxHandler.showHoverBox(element);
             }
         }
     }
@@ -494,10 +494,10 @@ function RemoteFunctions(config = {}) {
 
         const element = event.target;
         if(!LivePreviewView.isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
-            return false;
+            return;
         }
         if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
-            return false;
+            return;
         }
 
         // Same element as last hover — nothing changed, skip entirely
@@ -1291,6 +1291,14 @@ function RemoteFunctions(config = {}) {
         if (previouslySelectedElement) {
             previouslySelectedElement = null;
             window.__current_ph_lp_selected = null;
+        }
+
+        // Reset hover tracking so the same-element skip doesn't suppress
+        // re-highlighting after a full state cleanup (e.g. Escape, dismiss).
+        _lastHoverTarget = null;
+        if (_pendingHoverRAF) {
+            cancelAnimationFrame(_pendingHoverRAF);
+            _pendingHoverRAF = null;
         }
 
         // Highlight.clear() removes all overlay divs (outline + margin/padding rects)
