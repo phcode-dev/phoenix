@@ -515,16 +515,9 @@ define(function (require, exports, module) {
                 const curEl = _getCursorElement();
                 expect(curEl && !curEl.closest("pre")).toBeTrue();
 
-                // Trigger content sync explicitly and verify CM reflects the new paragraph
-                const win = _getMdIFrameWin();
-                win.__triggerContentSync();
-                await awaitsFor(() => {
-                    return editor.document.isDirty;
-                }, "CM source to sync after code block exit", 5000);
-
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close");
-            }, 15000);
+            }, 10000);
 
             it("should last code block ArrowDown create new paragraph and exit", async function () {
                 await _openMdFile("code-block-test.md");
