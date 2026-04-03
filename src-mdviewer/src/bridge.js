@@ -216,6 +216,9 @@ export function initBridge() {
     window.__resetCacheForTest = function () {
         docCache.clearAll();
     };
+    window.__toggleSearchForTest = function () {
+        emit("action:toggle-search");
+    };
     window.__broadcastSelectionStateForTest = function () {
         broadcastSelectionStateSync();
     };
