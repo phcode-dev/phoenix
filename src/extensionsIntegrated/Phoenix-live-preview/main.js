@@ -847,6 +847,12 @@ define(function (require, exports, module) {
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
+            if (_isMdviewrActive && urlPinned) {
+                // When pinned, just re-send the pinned document's content
+                MarkdownSync.resendContent();
+                Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
+                return;
+            }
             if (_isMdviewrActive) {
                 MarkdownSync.reloadCurrentFile();
             }
@@ -876,8 +882,7 @@ define(function (require, exports, module) {
         _setTitle(relativeOrFullPath, currentPreviewFile, "");
 
         if (_isMdviewrActive) {
-            if (urlPinned && !force) {
-                // Pinned — don't switch the md viewer content
+            if (urlPinned) {
                 return;
             }
             // Mdviewr iframe already loaded, just update the sync for the new document
@@ -930,6 +935,12 @@ define(function (require, exports, module) {
         if(urlPinned && !force) {
             return;
         }
+        // When md viewer is pinned, block ALL preview loads — the previewDetails
+        // would be for the current editor file, not the pinned file
+        if(urlPinned && _isMdviewrActive) {
+            return;
+        }
+
         // Use mdviewr for markdown files (unless custom server is configured)
         if(previewDetails.isMarkdownFile && !previewDetails.isCustomServer && !previewDetails.isNoPreview) {
             _loadMdviewrPreview(previewDetails, force);
@@ -1203,6 +1214,9 @@ define(function (require, exports, module) {
     async function _openLivePreviewURL(_event, previewDetails) {
         if(LivePreviewSettings.isUsingCustomServer()){
             _hideOverlay();
+            return;
+        }
+        if (_isMdviewrActive && urlPinned) {
             return;
         }
         _loadPreview(true);

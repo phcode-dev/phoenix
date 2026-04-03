@@ -1024,6 +1024,14 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Re-send the current document's content to the iframe without clearing cache.
+     * Used when pinned to refresh the preview without losing the cached DOM.
+     */
+    function resendContent() {
+        _sendContent();
+    }
+
+    /**
      * Set a callback for when the iframe requests edit mode.
      * The callback should check entitlements and approve/deny.
      */
@@ -1073,6 +1081,7 @@ define(function (require, exports, module) {
     exports.deactivate = deactivate;
     exports.isActive = isActive;
     exports.reloadCurrentFile = reloadCurrentFile;
+    exports.resendContent = resendContent;
     exports.setEditModeRequestHandler = setEditModeRequestHandler;
     exports.setEditMode = setEditMode;
     exports.setIframeReadyHandler = setIframeReadyHandler;
