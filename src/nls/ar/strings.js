@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "مائل",
   "LIVE_DEV_FORMAT_UNDERLINE": "تسطير",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "يتوسطه خط",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "نص سفلي",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "نص علوي",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "تمييز",
+  "LIVE_DEV_FORMAT_CODE": "كود",
+  "LIVE_DEV_FORMAT_SMALL": "صغير",
+  "LIVE_DEV_FORMAT_MORE": "المزيد من التنسيق",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "خصائص العنصر",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "وسم",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "الحجم",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "نص سفلي",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "نص علوي",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "تمييز",
-  "LIVE_DEV_FORMAT_CODE": "كود",
-  "LIVE_DEV_FORMAT_SMALL": "صغير",
-  "LIVE_DEV_FORMAT_MORE": "المزيد من التنسيق"
+  "LIVE_DEV_INSERT_SEE_MORE": "عرض المزيد",
+  "LIVE_DEV_INSERT_SHOW_LESS": "عرض أقل"
 });

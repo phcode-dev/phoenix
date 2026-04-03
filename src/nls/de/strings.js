@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Kursiv",
   "LIVE_DEV_FORMAT_UNDERLINE": "Unterstrichen",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Durchgestrichen",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Tiefgestellt",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Hochgestellt",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Hervorheben",
+  "LIVE_DEV_FORMAT_CODE": "Code",
+  "LIVE_DEV_FORMAT_SMALL": "Klein",
+  "LIVE_DEV_FORMAT_MORE": "Weitere Formatierungen",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Elementeigenschaften",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Tag",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Größe",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Tiefgestellt",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Hochgestellt",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Hervorheben",
-  "LIVE_DEV_FORMAT_CODE": "Code",
-  "LIVE_DEV_FORMAT_SMALL": "Klein",
-  "LIVE_DEV_FORMAT_MORE": "Weitere Formatierungen"
+  "LIVE_DEV_INSERT_SEE_MORE": "Mehr anzeigen",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Weniger anzeigen"
 });

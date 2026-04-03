@@ -1657,6 +1657,8 @@
   "LIVE_DEV_INSERT_INSIDE": "Inside",
   "LIVE_DEV_INSERT_NO_RESULTS": "No matching elements",
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Search elements…",
+  "LIVE_DEV_INSERT_SEE_MORE": "See more",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Show less",
   "LIVE_DEV_INSERT_WRAP": "Wrap",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Unable to load Live Preview page.",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Copy",

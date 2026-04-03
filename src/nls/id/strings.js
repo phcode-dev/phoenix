@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Miring",
   "LIVE_DEV_FORMAT_UNDERLINE": "Garis Bawah",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Coret",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Subskrip",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Superskrip",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Sorot",
+  "LIVE_DEV_FORMAT_CODE": "Kode",
+  "LIVE_DEV_FORMAT_SMALL": "Kecil",
+  "LIVE_DEV_FORMAT_MORE": "Pemformatan lainnya",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Properti Elemen",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Tag",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Ukuran",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Subskrip",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Superskrip",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Sorot",
-  "LIVE_DEV_FORMAT_CODE": "Kode",
-  "LIVE_DEV_FORMAT_SMALL": "Kecil",
-  "LIVE_DEV_FORMAT_MORE": "Pemformatan lainnya"
+  "LIVE_DEV_INSERT_SEE_MORE": "Lihat lebih banyak",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Tampilkan lebih sedikit"
 });

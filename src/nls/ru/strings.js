@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Курсив",
   "LIVE_DEV_FORMAT_UNDERLINE": "Подчёркнутый",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Зачёркнутый",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Подстрочный",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Надстрочный",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Подсветка",
+  "LIVE_DEV_FORMAT_CODE": "Код",
+  "LIVE_DEV_FORMAT_SMALL": "Мелкий",
+  "LIVE_DEV_FORMAT_MORE": "Дополнительное форматирование",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Свойства элемента",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Тег",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Размер",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Подстрочный",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Надстрочный",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Подсветка",
-  "LIVE_DEV_FORMAT_CODE": "Код",
-  "LIVE_DEV_FORMAT_SMALL": "Мелкий",
-  "LIVE_DEV_FORMAT_MORE": "Дополнительное форматирование"
+  "LIVE_DEV_INSERT_SEE_MORE": "Показать больше",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Показать меньше"
 });

@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Kursiivi",
   "LIVE_DEV_FORMAT_UNDERLINE": "Alleviivaus",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Yliviivaus",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Alaindeksi",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Yläindeksi",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Korostus",
+  "LIVE_DEV_FORMAT_CODE": "Koodi",
+  "LIVE_DEV_FORMAT_SMALL": "Pieni",
+  "LIVE_DEV_FORMAT_MORE": "Lisää muotoiluja",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Elementin ominaisuudet",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Tägi",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Koko",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Alaindeksi",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Yläindeksi",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Korostus",
-  "LIVE_DEV_FORMAT_CODE": "Koodi",
-  "LIVE_DEV_FORMAT_SMALL": "Pieni",
-  "LIVE_DEV_FORMAT_MORE": "Lisää muotoiluja"
+  "LIVE_DEV_INSERT_SEE_MORE": "Näytä lisää",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Näytä vähemmän"
 });

@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Kursiv",
   "LIVE_DEV_FORMAT_UNDERLINE": "Understruken",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Genomstruken",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Nedsänkt",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Upphöjd",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Markering",
+  "LIVE_DEV_FORMAT_CODE": "Kod",
+  "LIVE_DEV_FORMAT_SMALL": "Liten",
+  "LIVE_DEV_FORMAT_MORE": "Mer formatering",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Elementegenskaper",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Tagg",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Storlek",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Nedsänkt",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Upphöjd",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Markering",
-  "LIVE_DEV_FORMAT_CODE": "Kod",
-  "LIVE_DEV_FORMAT_SMALL": "Liten",
-  "LIVE_DEV_FORMAT_MORE": "Mer formatering"
+  "LIVE_DEV_INSERT_SEE_MORE": "Visa mer",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Visa mindre"
 });

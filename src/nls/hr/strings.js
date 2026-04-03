@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Kurziv",
   "LIVE_DEV_FORMAT_UNDERLINE": "Podcrtano",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Precrtano",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Indeks",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Eksponent",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Isticanje",
+  "LIVE_DEV_FORMAT_CODE": "Kod",
+  "LIVE_DEV_FORMAT_SMALL": "Malo",
+  "LIVE_DEV_FORMAT_MORE": "Više oblikovanja",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Svojstva elementa",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Oznaka",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Veličina",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Indeks",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Eksponent",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Isticanje",
-  "LIVE_DEV_FORMAT_CODE": "Kod",
-  "LIVE_DEV_FORMAT_SMALL": "Malo",
-  "LIVE_DEV_FORMAT_MORE": "Više oblikovanja"
+  "LIVE_DEV_INSERT_SEE_MORE": "Prikaži više",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Prikaži manje"
 });

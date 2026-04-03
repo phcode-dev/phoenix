@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "ഇറ്റാലിക്",
   "LIVE_DEV_FORMAT_UNDERLINE": "അടിവര",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "വെട്ട്",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "സബ്സ്ക്രിപ്റ്റ്",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "സൂപ്പർസ്ക്രിപ്റ്റ്",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "ഹൈലൈറ്റ്",
+  "LIVE_DEV_FORMAT_CODE": "കോഡ്",
+  "LIVE_DEV_FORMAT_SMALL": "ചെറുത്",
+  "LIVE_DEV_FORMAT_MORE": "കൂടുതൽ ഫോർമാറ്റിംഗ്",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "ഘടക സവിശേഷതകൾ",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "ടാഗ്",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "വലിപ്പം",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "സബ്സ്ക്രിപ്റ്റ്",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "സൂപ്പർസ്ക്രിപ്റ്റ്",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "ഹൈലൈറ്റ്",
-  "LIVE_DEV_FORMAT_CODE": "കോഡ്",
-  "LIVE_DEV_FORMAT_SMALL": "ചെറുത്",
-  "LIVE_DEV_FORMAT_MORE": "കൂടുതൽ ഫോർമാറ്റിംഗ്"
+  "LIVE_DEV_INSERT_SEE_MORE": "കൂടുതൽ കാണുക",
+  "LIVE_DEV_INSERT_SHOW_LESS": "ചുരുക്കുക"
 });

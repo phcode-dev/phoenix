@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "Курсив",
   "LIVE_DEV_FORMAT_UNDERLINE": "Подчертан",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Зачеркнат",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Долен индекс",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Горен индекс",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Маркиране",
+  "LIVE_DEV_FORMAT_CODE": "Код",
+  "LIVE_DEV_FORMAT_SMALL": "Малък",
+  "LIVE_DEV_FORMAT_MORE": "Още форматиране",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Свойства на елемента",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Таг",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Размер",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Долен индекс",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Горен индекс",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Маркиране",
-  "LIVE_DEV_FORMAT_CODE": "Код",
-  "LIVE_DEV_FORMAT_SMALL": "Малък",
-  "LIVE_DEV_FORMAT_MORE": "Още форматиране"
+  "LIVE_DEV_INSERT_SEE_MORE": "Покажи повече",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Покажи по-малко"
 });

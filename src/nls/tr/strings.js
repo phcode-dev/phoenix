@@ -229,6 +229,12 @@ define({
   "LIVE_DEV_FORMAT_ITALIC": "İtalik",
   "LIVE_DEV_FORMAT_UNDERLINE": "Altı çizili",
   "LIVE_DEV_FORMAT_STRIKETHROUGH": "Üstü çizili",
+  "LIVE_DEV_FORMAT_SUBSCRIPT": "Alt simge",
+  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Üst simge",
+  "LIVE_DEV_FORMAT_HIGHLIGHT": "Vurgu",
+  "LIVE_DEV_FORMAT_CODE": "Kod",
+  "LIVE_DEV_FORMAT_SMALL": "Küçük",
+  "LIVE_DEV_FORMAT_MORE": "Daha fazla biçimlendirme",
   "LIVE_DEV_ELEMENT_PROPS_TITLE": "Öğe Özellikleri",
   "LIVE_DEV_ELEMENT_PROPS_TAG": "Etiket",
   "LIVE_DEV_ELEMENT_PROPS_SIZE": "Boyut",
@@ -2155,10 +2161,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "LIVE_DEV_FORMAT_SUBSCRIPT": "Alt simge",
-  "LIVE_DEV_FORMAT_SUPERSCRIPT": "Üst simge",
-  "LIVE_DEV_FORMAT_HIGHLIGHT": "Vurgu",
-  "LIVE_DEV_FORMAT_CODE": "Kod",
-  "LIVE_DEV_FORMAT_SMALL": "Küçük",
-  "LIVE_DEV_FORMAT_MORE": "Daha fazla biçimlendirme"
+  "LIVE_DEV_INSERT_SEE_MORE": "Daha fazlasını gör",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Daha az göster"
 });
