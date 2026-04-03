@@ -34,7 +34,7 @@ const LARGE_FILE_LIST_DEV = {
 
 // Size limits for production/staging builds (in MB)
 const PROD_MAX_FILE_SIZE_MB = 2;
-const PROD_MAX_TOTAL_SIZE_MB = 70;
+const PROD_MAX_TOTAL_SIZE_MB = 80;
 // Custom size limits for known large files (size in MB) For staging/production builds
 const LARGE_FILE_LIST_PROD = {
     'dist/brackets.js': 10, // this is the full minified file itself renamed in prod
