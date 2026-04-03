@@ -34,6 +34,8 @@ function RemoteFunctions(config = {}) {
     let _cssSelectorHighlight; // temporary highlight for CSS selector matches in edit mode
     let _hoverLockTimer = null;
     let _cssSelectorHighlightTimer = null;
+    let _lastHoverTarget = null; // tracks the element currently under the mouse (for same-element skip)
+    let _pendingHoverRAF = null; // pending requestAnimationFrame ID for hover updates
 
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
@@ -445,6 +447,44 @@ function RemoteFunctions(config = {}) {
         return getHighlightMode() !== "click";
     }
 
+    /**
+     * Applies the current hover state in a single batched DOM update.
+     * Called once per animation frame via requestAnimationFrame.
+     * _lastHoverTarget holds the element to highlight (or null to clear).
+     */
+    function _applyHoverState() {
+        _pendingHoverRAF = null;
+
+        if (!_hoverHighlight || !shouldShowHighlightOnHover()) {
+            return;
+        }
+
+        _hoverHighlight.clear();
+        const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
+        if (hoverBoxHandler) {
+            hoverBoxHandler.dismiss();
+        }
+
+        const element = _lastHoverTarget;
+        // Show hover overlay + hover box only for non-selected elements
+        if (element && element !== previouslySelectedElement) {
+            _hoverHighlight.add(element);
+            if (hoverBoxHandler) {
+                hoverBoxHandler.createHoverBox(element);
+            }
+        }
+    }
+
+    /**
+     * Schedules a hover state update for the next animation frame.
+     * Multiple calls within one frame collapse into a single DOM update.
+     */
+    function _scheduleHoverUpdate() {
+        if (!_pendingHoverRAF) {
+            _pendingHoverRAF = requestAnimationFrame(_applyHoverState);
+        }
+    }
+
     function onElementHover(event) {
         // don't want highlighting and stuff when auto scrolling or when dragging (svgs)
         // for dragging normal html elements its already taken care of...so we just add svg drag checking
@@ -460,30 +500,19 @@ function RemoteFunctions(config = {}) {
             return false;
         }
 
+        // Same element as last hover — nothing changed, skip entirely
+        if (element === _lastHoverTarget) {
+            return;
+        }
+        _lastHoverTarget = element;
+
         // if _hoverHighlight is uninitialized, initialize it
         if (!_hoverHighlight && shouldShowHighlightOnHover()) {
             _hoverHighlight = new Highlight(true);
         }
 
-        // this is to check the user's settings, if they want to show the elements highlights on hover or click
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
-            _hoverHighlight.clear();
-
-            // Skip hover overlay for the currently click-selected element.
-            // It already has its own overlay from the click/selection flow,
-            // and adding hover state on top would stack duplicate overlays.
-            if (element !== previouslySelectedElement) {
-                _hoverHighlight.add(element);
-            }
-
-            // Show minimal hover tooltip (tag + dimensions)
-            const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
-            if (hoverBoxHandler) {
-                hoverBoxHandler.dismiss();
-                if (element !== previouslySelectedElement) {
-                    hoverBoxHandler.createHoverBox(element);
-                }
-            }
+            _scheduleHoverUpdate();
         }
     }
 
@@ -495,14 +524,9 @@ function RemoteFunctions(config = {}) {
         // Use isElementInspectable (not isElementEditable) so that JS-rendered
         // elements also get their hover highlight and hover box properly dismissed.
         if(LivePreviewView.isElementInspectable(element) && element.nodeType === Node.ELEMENT_NODE) {
-            // this is to check the user's settings, if they want to show the elements highlights on hover or click
             if (_hoverHighlight && shouldShowHighlightOnHover()) {
-                _hoverHighlight.clear();
-                // dismiss the hover box
-                const hoverBoxHandler = LivePreviewView.getToolHandler("HoverBox");
-                if (hoverBoxHandler) {
-                    hoverBoxHandler.dismiss();
-                }
+                _lastHoverTarget = null;
+                _scheduleHoverUpdate();
             }
         }
     }
@@ -574,6 +598,12 @@ function RemoteFunctions(config = {}) {
     function disableHoverListeners() {
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
+        // Cancel any pending rAF hover update so stale callbacks don't fire
+        if (_pendingHoverRAF) {
+            cancelAnimationFrame(_pendingHoverRAF);
+            _pendingHoverRAF = null;
+        }
+        _lastHoverTarget = null;
     }
 
     function enableHoverListeners() {
