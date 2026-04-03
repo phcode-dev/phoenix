@@ -79,6 +79,7 @@ export function initSearch() {
         }
         if (e.key === "Escape") {
             e.preventDefault();
+            e.stopPropagation();
             closeSearch();
         }
     });
