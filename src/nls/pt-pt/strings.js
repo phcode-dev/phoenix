@@ -2161,5 +2161,8 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Mais uma coisa",
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
+  "PROMO_UPGRADE_MESSAGE": "Desfrute de acesso gratuito a estas funcionalidades premium durante os próximos {0} dias:",
+  "PROMO_OPT_OUT_LINK": "Recusar?",
+  "PROMO_OPT_OUT_NOTE": "Pode cancelar a sua avaliação a qualquer momento ao selecionar `Ajuda > Cancelar Avaliação do Phoenix Pro`."
 });
