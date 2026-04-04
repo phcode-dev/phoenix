@@ -2046,7 +2046,7 @@ define({
 
     // promos
     "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
-    "PROMO_UPGRADE_MESSAGE": "Enjoy access to these premium features for the next {0} days:",
+    "PROMO_UPGRADE_MESSAGE": "Enjoy free access to these premium features for the next {0} days:",
     "PROMO_CARD_1": "Edit In Live Preview",
     "PROMO_CARD_1_MESSAGE": "Edit content and elements right in Live Preview - cut, copy, paste, duplicate, delete - without breaking your flow.",
     "PROMO_CARD_2": "Drag & Drop Elements",
@@ -2056,6 +2056,8 @@ define({
     "PROMO_CARD_4": "Inspect Element Layout",
     "PROMO_CARD_4_MESSAGE": "Design and inspect in one view - hover to see spacing, dimensions, and classes. Ruler guides for pixel-perfect alignment.",
     "PROMO_LEARN_MORE": "Learn More\u2026",
+    "PROMO_OPT_OUT_LINK": "Opt out?",
+    "PROMO_OPT_OUT_NOTE": "You can cancel your trial anytime by selecting `Help > Cancel Phoenix Pro Trial`.",
     "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Upgrade to {0}",
     "PROMO_PRO_ENDED_TITLE": "{0} trial ended",
     "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Thanks for trying Pro! <b>You're now on the Free Community Edition.</b> <br>Upgrade anytime to unlock these features:",
