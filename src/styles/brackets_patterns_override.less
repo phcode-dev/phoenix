@@ -211,6 +211,64 @@ a:focus {
             animation: none;
         }
     }
+    .nav .hamburger-menu {
+        float: left;
+        .hamburger-toggle, .hamburger-toggle:hover, .hamburger-toggle:focus {
+            padding: @menubar-top-padding @menubar-h-padding @menubar-bottom-padding;
+            border: 1px solid transparent;
+            font-size: 14px;
+            color: fadeout(@bc-menu-text, 25%);
+            background: transparent;
+            cursor: default;
+            outline: none;
+            .dark & {
+                color: fadeout(@dark-bc-menu-text, 25%);
+                background: transparent;
+            }
+        }
+        .hamburger-toggle:hover, &.hamburger-open .hamburger-toggle {
+            color: @bc-menu-text;
+            background: @bc-bg-highlight;
+            .dark & {
+                color: @dark-bc-menu-text;
+                background: @dark-bc-bg-highlight;
+            }
+        }
+        .hamburger-dropdown {
+            display: none;
+            min-width: 120px;
+            text-align: left;
+        }
+        &.hamburger-open .hamburger-dropdown {
+            display: block;
+        }
+        .hamburger-submenu-item {
+            a {
+                display: flex;
+                align-items: center;
+                padding: 2px 10px 0 6px;
+                white-space: nowrap;
+                cursor: default;
+                text-align: left;
+            }
+            .hamburger-submenu-arrow {
+                margin-left: auto;
+                padding-left: 12px;
+                font-size: 10px;
+                opacity: 0.7;
+            }
+            &.hamburger-submenu-open > a,
+            a:hover {
+                background: @bc-bg-highlight;
+                color: @bc-menu-text;
+                .dark & {
+                    background: @dark-bc-bg-highlight;
+                    color: @dark-bc-menu-text;
+                }
+            }
+        }
+    }
+
     .title {
         float: none;
         display: inline;  // must be an inline for JS to measure text size
