@@ -1762,12 +1762,287 @@ define(function (require, exports, module) {
         return cmenu;
     }
 
+    /**
+     * Hamburger menu: when the titlebar is too narrow to fit all menu items on one row,
+     * overflow items are hidden and a hamburger button appears with a dropdown listing them.
+     */
+    function _initHamburgerMenu() {
+        const $menubar = $("#titlebar .nav");
+        const $hamburger = $(`<li class="hamburger-menu" id="hamburger-menu" style="display:none;">
+            <a href="#" class="hamburger-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+            <ul class="dropdown-menu hamburger-dropdown"></ul>
+        </li>`);
+        $menubar.append($hamburger);
+        const $hamburgerDropdown = $hamburger.find(".dropdown-menu");
+        const $hamburgerToggle = $hamburger.find(".hamburger-toggle");
+        let _activeSubmenuId = null;
+
+        function _resetMenuItemStyles($menuItem) {
+            const menu = menuMap[$menuItem.attr("id")];
+            if (menu) {
+                menu.closeSubMenu();
+            }
+            $menuItem.removeClass("open").css({
+                display: "none",
+                position: "",
+                visibility: "",
+                pointerEvents: "",
+                width: "",
+                height: "",
+                overflow: ""
+            });
+            $menuItem.find("> .dropdown-menu").css({
+                display: "",
+                visibility: "",
+                pointerEvents: "",
+                position: "",
+                top: "",
+                left: "",
+                margin: ""
+            });
+        }
+
+        function _closeHamburgerSubmenus() {
+            $hamburgerDropdown.find(".hamburger-submenu-open").removeClass("hamburger-submenu-open");
+            // Reset the active flyout menu item
+            if (_activeSubmenuId) {
+                _resetMenuItemStyles($(`#${_activeSubmenuId}`));
+                _activeSubmenuId = null;
+            }
+            // Safety: also reset any overflow menu items that might still have
+            // inline styles from a flyout that wasn't properly closed
+            $menubar.children("li.dropdown:not(.hamburger-menu)").each(function () {
+                const $item = $(this);
+                if ($item.css("display") !== "none" && $item.find("> .dropdown-menu").css("position") === "fixed") {
+                    _resetMenuItemStyles($item);
+                }
+            });
+        }
+
+        function _closeHamburger() {
+            $hamburger.removeClass("hamburger-open");
+            _closeHamburgerSubmenus();
+        }
+
+        // Wire up hamburger click to toggle the dropdown
+        $hamburgerToggle.on("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const wasOpen = $hamburger.hasClass("hamburger-open");
+            closeAll();
+            _closeHamburger();
+            if (!wasOpen) {
+                $hamburger.addClass("hamburger-open");
+            }
+        });
+
+        // Close hamburger when clicking outside
+        $(document).on("mousedown", function (e) {
+            if (!$hamburger.hasClass("hamburger-open")) {
+                return;
+            }
+            // Check if click is inside hamburger
+            if ($(e.target).closest("#hamburger-menu").length) {
+                return;
+            }
+            // Check if click is inside the active flyout menu
+            if (_activeSubmenuId && $(e.target).closest(`#${_activeSubmenuId}`).length) {
+                return;
+            }
+            // Check if click is inside any open context menu (sub-submenus
+            // live in #context-menu-bar, not inside the flyout menu)
+            if ($(e.target).closest("#context-menu-bar .open").length) {
+                return;
+            }
+            _closeHamburger();
+        });
+
+        // Wire up hamburger toggle mouseenter like other menus
+        $hamburgerToggle.on("mouseenter", function () {
+            _closeAllSubMenus();
+            const $this = $(this);
+            if ($('#titlebar, #titlebar *').is(':focus')) {
+                $this.addClass('selected').focus();
+            } else {
+                $this.addClass('selected');
+            }
+        });
+        $hamburgerToggle.on("mouseleave", function () {
+            $(this).removeClass('selected');
+        });
+
+        // Close hamburger when ESC is pressed
+        $(document).on("keydown", function (e) {
+            if (e.key === "Escape" && $hamburger.hasClass("hamburger-open")) {
+                _closeHamburger();
+                e.stopPropagation();
+            }
+        });
+
+        // Close hamburger when window loses focus
+        $(window).on("blur", _closeHamburger);
+
+        // Close hamburger when a menu item in a flyout is clicked.
+        // Use setTimeout so the command executes before we hide the menu.
+        $menubar.on("click", ".dropdown:not(.hamburger-menu) .menuAnchor", function () {
+            setTimeout(_closeHamburger, 0);
+        });
+
+        // Also close on beforeExecuteCommand (e.g. keyboard shortcuts while open)
+        CommandManager.on("beforeExecuteCommand", function () {
+            _closeHamburger();
+        });
+
+        let _updateScheduled = false;
+
+        function _updateHamburgerMenu() {
+            _updateScheduled = false;
+            // Don't re-layout while a flyout submenu is active - showing the
+            // hidden menu li triggers ResizeObserver which would reset everything
+            if (_activeSubmenuId) {
+                return;
+            }
+            _closeHamburgerSubmenus();
+            const $items = $menubar.children("li.dropdown:not(.hamburger-menu)");
+            // First, show all items and hide hamburger to measure natural layout
+            $items.css({display: "", position: "", visibility: "", pointerEvents: ""});
+            $hamburger.hide();
+            $hamburgerDropdown.empty();
+
+            if ($items.length === 0) {
+                return;
+            }
+
+            const firstItemTop = $items.first()[0].offsetTop;
+            let overflowStartIndex = -1;
+
+            for (let i = 0; i < $items.length; i++) {
+                if ($items[i].offsetTop > firstItemTop) {
+                    overflowStartIndex = i;
+                    break;
+                }
+            }
+
+            if (overflowStartIndex === -1) {
+                // Everything fits on one row
+                return;
+            }
+
+            // Show hamburger, then re-check what fits with hamburger visible
+            $hamburger.css("display", "");
+
+            // Re-measure: with hamburger visible, even more items might overflow
+            for (let i = 0; i < $items.length; i++) {
+                if ($items[i].offsetTop > firstItemTop) {
+                    overflowStartIndex = i;
+                    break;
+                }
+            }
+
+            function _openFlyout($entry, menuId) {
+                if (_activeSubmenuId && _activeSubmenuId !== menuId) {
+                    _closeHamburgerSubmenus();
+                }
+                $hamburgerDropdown.find(".hamburger-submenu-open").removeClass("hamburger-submenu-open");
+                $entry.addClass("hamburger-submenu-open");
+                _activeSubmenuId = menuId;
+
+                const $menuItem = $(`#${menuId}`);
+                // Add 'open' class so sub-submenus (ContextMenus) can open properly.
+                // Keep the li itself invisible and out of flow.
+                $menuItem.addClass("open").css({
+                    display: "block",
+                    position: "absolute",
+                    visibility: "hidden",
+                    pointerEvents: "none",
+                    width: "0",
+                    height: "0",
+                    overflow: "visible"
+                });
+
+                const $realDropdown = $menuItem.find("> .dropdown-menu");
+                const entryRect = $entry[0].getBoundingClientRect();
+                const hamburgerRect = $hamburgerDropdown[0].getBoundingClientRect();
+                let flyoutLeft = hamburgerRect.right - 2;
+                if (flyoutLeft + 250 > window.innerWidth) {
+                    flyoutLeft = hamburgerRect.left - $realDropdown.outerWidth() + 2;
+                }
+                $realDropdown.css({
+                    display: "block",
+                    visibility: "visible",
+                    pointerEvents: "auto",
+                    position: "fixed",
+                    top: entryRect.top + "px",
+                    left: flyoutLeft + "px",
+                    margin: "0"
+                });
+            }
+
+            // Hide overflowing items and add them to hamburger dropdown as nested flyouts
+            for (let i = overflowStartIndex; i < $items.length; i++) {
+                const $item = $($items[i]);
+                const menuId = $item.attr("id");
+                const menuName = $item.find(".dropdown-toggle").text();
+                $item.css("display", "none");
+
+                const $entry = $(`<li class="hamburger-submenu-item">
+                    <a href="#" class="menuAnchor" data-menu-id="${menuId}">
+                        <span class="menu-name">${_.escape(menuName)}</span>
+                        <span class="hamburger-submenu-arrow">&#9656;</span>
+                    </a>
+                </li>`);
+
+                $entry.on("mouseenter", function () {
+                    _openFlyout($(this), menuId);
+                });
+
+                $hamburgerDropdown.append($entry);
+            }
+        }
+
+        function _scheduleUpdate() {
+            if (!_updateScheduled) {
+                _updateScheduled = true;
+                requestAnimationFrame(_updateHamburgerMenu);
+            }
+        }
+
+        // Observe titlebar resizes
+        const titlebar = document.getElementById("titlebar");
+        if (window.ResizeObserver) {
+            const resizeObserver = new ResizeObserver(_scheduleUpdate);
+            resizeObserver.observe(titlebar);
+        }
+        $(window).on("resize", _scheduleUpdate);
+
+        // Also update when menus are added/removed
+        exports.on(EVENT_MENU_ADDED, _scheduleUpdate);
+
+        // Initial check
+        _scheduleUpdate();
+    }
+
     AppInit.htmlReady(function () {
         $('#titlebar').on('focusin', function () {
             KeyBindingManager.addGlobalKeydownHook(menuKeyboardNavigationHandler);
         });
         $('#titlebar').on('focusout', function () {
             KeyBindingManager.removeGlobalKeydownHook(menuKeyboardNavigationHandler);
+        });
+        _initHamburgerMenu();
+
+        // Close all menus, context menus, and popups when window loses focus
+        $(window).on("blur", function () {
+            closeAll();
+            // Close all context menus (editor, file tree, working set, etc.)
+            _.forEach(contextMenuMap, function (contextMenu) {
+                if (contextMenu.isOpen()) {
+                    contextMenu.close();
+                }
+            });
+            PopUpManager.closeAllPopups();
         });
     });
 
