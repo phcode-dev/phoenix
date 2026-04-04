@@ -512,9 +512,12 @@ define(function (require, exports, module) {
         _recomputeLayout = recomputeLayoutFn;
         _defaultPanelId = defaultPanelId;
 
-        // Create the "+" button inside the tabs overflow area (after all tabs)
-        _$addBtn = $('<span class="bottom-panel-add-btn"><i class="fa-solid fa-plus"></i></span>')
-            .attr('title', Strings.BOTTOM_PANEL_OPEN_PANEL);
+        // Create the "Tools" button inside the tabs overflow area (after all tabs)
+        // This opens the default/quick-access panel when clicked.
+        _$addBtn = $('<span class="bottom-panel-add-btn" title="' + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '">'
+            + '<img class="app-drawer-tab-icon" src="styles/images/app-drawer.svg"'
+            + ' style="width:12px;height:12px;vertical-align:middle;margin-right:4px">'
+            + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '</span>');
         _$tabsOverflow.append(_$addBtn);
 
         // Tab bar click handlers

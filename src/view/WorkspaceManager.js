@@ -389,7 +389,7 @@ define(function (require, exports, module) {
             $editorHolder, recomputeLayout, DEFAULT_PANEL_ID);
 
         // Create status bar chevron toggle for bottom panel
-        $statusBarPanelToggle = $('<div id="status-panel-toggle" class="indicator global-indicator"><i class="fa-solid fa-chevron-up"></i></div>')
+        $statusBarPanelToggle = $('<div id="status-panel-toggle" class="indicator global-indicator"><i class="fa-solid fa-angles-up"></i></div>')
             .attr('title', Strings.BOTTOM_PANEL_SHOW);
         $("#status-indicators").prepend($statusBarPanelToggle);
 
@@ -419,8 +419,8 @@ define(function (require, exports, module) {
 
         $bottomPanelContainer.on("panelCollapsed", function () {
             $statusBarPanelToggle.find("i")
-                .removeClass("fa-chevron-down")
-                .addClass("fa-chevron-up");
+                .removeClass("fa-angles-down")
+                .addClass("fa-angles-up");
             $statusBarPanelToggle.attr("title", Strings.BOTTOM_PANEL_SHOW);
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
@@ -436,8 +436,8 @@ define(function (require, exports, module) {
 
         $bottomPanelContainer.on("panelExpanded", function () {
             $statusBarPanelToggle.find("i")
-                .removeClass("fa-chevron-up")
-                .addClass("fa-chevron-down");
+                .removeClass("fa-angles-up")
+                .addClass("fa-angles-down");
             $statusBarPanelToggle.attr("title", Strings.BOTTOM_PANEL_HIDE_TOGGLE);
             if (!_statusBarToggleInProgress) {
                 AnimationUtils.animateUsingClass($statusBarPanelToggle[0], "flash", 800);
