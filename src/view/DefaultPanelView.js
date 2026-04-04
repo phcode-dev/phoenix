@@ -31,8 +31,7 @@ define(function (require, exports, module) {
         CommandManager = require("command/CommandManager"),
         Strings = require("strings"),
         WorkspaceManager = require("view/WorkspaceManager"),
-        PanelView = require("view/PanelView"),
-        ExtensionUtils = require("utils/ExtensionUtils");
+        PanelView = require("view/PanelView");
 
     /**
      * Descriptors for each launcher button.
@@ -178,7 +177,8 @@ define(function (require, exports, module) {
             }
         });
 
-        const iconURL = ExtensionUtils.getModulePath(module, "../styles/images/app-drawer.svg");
+        const iconHTML = '<img class="app-drawer-tab-icon" src="styles/images/app-drawer.svg"'
+            + ' style="width:12px;height:12px;vertical-align:middle;margin-right:4px">';
 
         /**
          * Inject the app-drawer icon into the Quick Access tab title.
@@ -188,12 +188,7 @@ define(function (require, exports, module) {
             const $tabTitle = $('#bottom-panel-tab-bar .bottom-panel-tab[data-panel-id="'
                 + WorkspaceManager.DEFAULT_PANEL_ID + '"] .bottom-panel-tab-title');
             if ($tabTitle.length && !$tabTitle.find(".app-drawer-tab-icon").length) {
-                $tabTitle.prepend($('<img class="app-drawer-tab-icon">').attr("src", iconURL).css({
-                    "width": "12px",
-                    "height": "12px",
-                    "vertical-align": "middle",
-                    "margin-right": "4px"
-                }));
+                $tabTitle.prepend(iconHTML);
             }
         }
 
