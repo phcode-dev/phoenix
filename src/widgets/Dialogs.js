@@ -412,13 +412,14 @@ define(function (require, exports, module) {
             autoDismiss = true;
         }
 
-        $("body").append("<div class='modal-wrapper'><div class='modal-inner-wrapper'></div></div>");
+        let $wrapper = $("<div class='modal-wrapper'><div class='modal-inner-wrapper'></div></div>");
+        $("body").append($wrapper);
 
         let result  = new $.Deferred(),
             promise = result.promise(),
             $dlg    = $(template)
                 .addClass("instance")
-                .appendTo(".modal-inner-wrapper:last");
+                .appendTo($wrapper.find(".modal-inner-wrapper"));
 
         // Don't allow dialog to exceed viewport size
         setDialogMaxSize();
@@ -463,7 +464,7 @@ define(function (require, exports, module) {
             }
 
             //Remove wrapper
-            $(".modal-wrapper:last").remove();
+            $wrapper.remove();
         }).one("shown", function () {
             let $defaultOption   = $dlg.find(".default-option"),
                 $primaryBtn = $dlg.find(".primary:enabled"),
