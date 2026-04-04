@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "എലമെന്റുകൾക്കായി തിരയുക…",
   "LIVE_DEV_INSERT_COMMON": "സാധാരണം",
   "LIVE_DEV_INSERT_NO_RESULTS": "യോജിക്കുന്ന എലമെന്റുകൾ ഇല്ല",
+  "LIVE_DEV_INSERT_SEE_MORE": "കൂടുതൽ കാണുക",
+  "LIVE_DEV_INSERT_SHOW_LESS": "ചുരുക്കുക",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "ചിത്രം ഡൗൺലോഡ് ചെയ്യുക",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "ചിത്രം ഡൗൺലോഡ് ചെയ്യാനുള്ള ഫോൾഡർ തിരഞ്ഞെടുക്കുക",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "ചിത്രങ്ങൾ തിരയുക…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "സ്നിപ്പെറ്റ് ഇല്ലാതാക്കുക",
   "PROMO_UPGRADE_TITLE": "നിങ്ങൾ {0} ലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യപ്പെട്ടിരിക്കുന്നു",
-  "PROMO_UPGRADE_MESSAGE": "അടുത്ത {0} ദിവസത്തേക്ക് ഈ പ്രീമിയം ഫീച്ചറുകൾ ആസ്വദിക്കൂ:",
   "PROMO_CARD_1": "ലൈവ് പ്രിവ്യൂവിൽ എഡിറ്റ് ചെയ്യുക",
   "PROMO_CARD_1_MESSAGE": "ലൈവ് പ്രിവ്യൂവിൽ തന്നെ ഉള്ളടക്കവും ഘടകങ്ങളും എഡിറ്റ് ചെയ്യുക - കട്ട്, കോപ്പി, പേസ്റ്റ്, ഡ്യൂപ്ലിക്കേറ്റ്, ഡിലീറ്റ് ചെയ്യാം - നിങ്ങളുടെ പ്രവർത്തനങ്ങളെ തടസ്സപ്പെടുത്താതെ.",
   "PROMO_CARD_2": "ഘടകങ്ങൾ ഡ്രാഗ് & ഡ്രോപ്പ് ചെയ്യുക",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "LIVE_DEV_INSERT_SEE_MORE": "കൂടുതൽ കാണുക",
-  "LIVE_DEV_INSERT_SHOW_LESS": "ചുരുക്കുക"
+  "PROMO_UPGRADE_MESSAGE": "അടുത്ത {0} ദിവസത്തേക്ക് ഈ പ്രീമിയം ഫീച്ചറുകൾ സൗജന്യമായി ആസ്വദിക്കൂ:",
+  "PROMO_OPT_OUT_LINK": "പിന്മാറണോ?",
+  "PROMO_OPT_OUT_NOTE": "`Help > Cancel Phoenix Pro Trial` തിരഞ്ഞെടുക്കുന്നതിലൂടെ നിങ്ങൾക്ക് എപ്പോൾ വേണമെങ്കിലും നിങ്ങളുടെ ട്രയൽ റദ്ദാക്കാം."
 });

@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Hledat elementy…",
   "LIVE_DEV_INSERT_COMMON": "Běžné",
   "LIVE_DEV_INSERT_NO_RESULTS": "Žádné odpovídající elementy",
+  "LIVE_DEV_INSERT_SEE_MORE": "Zobrazit více",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Zobrazit méně",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Stáhnout obrázek",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Vybrat složku pro stažení obrázků",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Hledat obrázky…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstranit fragment",
   "PROMO_UPGRADE_TITLE": "Byli jste upgradováni na {0}",
-  "PROMO_UPGRADE_MESSAGE": "Užívejte si přístup k těmto prémiovým funkcím po dobu následujících {0} dní:",
   "PROMO_CARD_1": "Upravovat v živém náhledu",
   "PROMO_CARD_1_MESSAGE": "Upravujte obsah a prvky přímo v živém náhledu – vyjmout, kopírovat, vložit, duplikovat, smazat – bez narušení vašeho pracovního postupu.",
   "PROMO_CARD_2": "Přetahování prvků",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "LIVE_DEV_INSERT_SEE_MORE": "Zobrazit více",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Zobrazit méně"
+  "PROMO_UPGRADE_MESSAGE": "Užijte si bezplatný přístup k těmto prémiovým funkcím na dalších {0} dní:",
+  "PROMO_OPT_OUT_LINK": "Zrušit?",
+  "PROMO_OPT_OUT_NOTE": "Zkušební verzi můžete kdykoli zrušit výběrem položky `Nápověda > Zrušit zkušební verzi Phoenix Pro`."
 });

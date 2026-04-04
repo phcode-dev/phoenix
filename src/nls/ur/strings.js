@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "عناصر تلاش کریں…",
   "LIVE_DEV_INSERT_COMMON": "عام",
   "LIVE_DEV_INSERT_NO_RESULTS": "کوئی مماثل عناصر نہیں",
+  "LIVE_DEV_INSERT_SEE_MORE": "مزید دیکھیں",
+  "LIVE_DEV_INSERT_SHOW_LESS": "کم دکھائیں",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "تصویر ڈاؤن لوڈ کریں",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "امیج ڈاؤن لوڈ فولڈر منتخب کریں",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "تصاویر تلاش کریں…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "سنیپٹ حذف کریں",
   "PROMO_UPGRADE_TITLE": "آپ کو {0} میں اپ گریڈ کر دیا گیا ہے۔",
-  "PROMO_UPGRADE_MESSAGE": "اگلے {0} دنوں کے لیے ان پریمیم خصوصیات تک رسائی سے لطف اٹھائیں۔",
   "PROMO_CARD_1": "لائیو پیش منظر میں ترمیم کریں",
   "PROMO_CARD_1_MESSAGE": "مواد اور عناصر کی براہ راست لائیو پیش منظر میں ترمیم کریں - کٹ، کاپی، پیسٹ، ڈپلیکیٹ، ڈیلیٹ - اپنے کام کے تسلسل کو توڑے بغیر۔",
   "PROMO_CARD_2": "ڈریگ اینڈ ڈراپ عناصر",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "LIVE_DEV_INSERT_SEE_MORE": "مزید دیکھیں",
-  "LIVE_DEV_INSERT_SHOW_LESS": "کم دکھائیں"
+  "PROMO_UPGRADE_MESSAGE": "اگلے {0} دنوں کے لیے ان پریمیم خصوصیات تک مفت رسائی سے لطف اندوز ہوں:",
+  "PROMO_OPT_OUT_LINK": "دستبردار ہوں؟",
+  "PROMO_OPT_OUT_NOTE": "آپ کسی بھی وقت `Help > Cancel Phoenix Pro Trial` منتخب کر کے اپنا ٹرائل منسوخ کر سکتے ہیں۔"
 });

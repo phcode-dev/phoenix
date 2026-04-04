@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Hľadať prvky…",
   "LIVE_DEV_INSERT_COMMON": "Bežné",
   "LIVE_DEV_INSERT_NO_RESULTS": "Žiadne zodpovedajúce prvky",
+  "LIVE_DEV_INSERT_SEE_MORE": "Zobraziť viac",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Zobraziť menej",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Stiahnuť obrázok",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Vyberte priečinok na stiahnutie obrázkov",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Hľadať obrázky…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Prípona súboru",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstrániť úryvok",
   "PROMO_UPGRADE_TITLE": "Boli ste prejdení na {0}",
-  "PROMO_UPGRADE_MESSAGE": "Užite si prístup k týmto prémiovým funkciám počas nasledujúcich {0} dní:",
   "PROMO_CARD_1": "Editovať v živom náhľade",
   "PROMO_CARD_1_MESSAGE": "Editujte obsah a prvky priamo v živom náhľade – vystrihnúť, kopírovať, vložiť, duplikovať, odstrániť – bez prerušenia vašej práce.",
   "PROMO_CARD_2": "Presúvanie prvkov potiahnutím",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "LIVE_DEV_INSERT_SEE_MORE": "Zobraziť viac",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Zobraziť menej"
+  "PROMO_UPGRADE_MESSAGE": "Užite si bezplatný prístup k týmto prémiovým funkciám na nasledujúcich {0} dní:",
+  "PROMO_OPT_OUT_LINK": "Zrušiť?",
+  "PROMO_OPT_OUT_NOTE": "Svoju skúšobnú verziu môžete kedykoľvek zrušiť výberom `Pomoc > Zrušiť skúšobnú verziu Phoenix Pro`."
 });

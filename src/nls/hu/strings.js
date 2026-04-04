@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Elemek keresése…",
   "LIVE_DEV_INSERT_COMMON": "Gyakori",
   "LIVE_DEV_INSERT_NO_RESULTS": "Nincs egyező elem",
+  "LIVE_DEV_INSERT_SEE_MORE": "Több mutatása",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Kevesebb mutatása",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Kép letöltése",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Kép letöltési mappa kiválasztása",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Képek keresése…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kódrészlet törlése",
   "PROMO_UPGRADE_TITLE": "Átálltunk a(z) {0} verzióra",
-  "PROMO_UPGRADE_MESSAGE": "Élvezze a hozzáférést ezekhez a prémium funkciókhoz a következő {0} napig:",
   "PROMO_CARD_1": "Szerkesztés élő előnézetben",
   "PROMO_CARD_1_MESSAGE": "Szerkessze a tartalmat és az elemeket közvetlenül az élő előnézetben – kivágás, másolás, beillesztés, duplikálás, törlés – a munkafolyamat megszakítása nélkül.",
   "PROMO_CARD_2": "Elemek áthelyezése húzással",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "LIVE_DEV_INSERT_SEE_MORE": "Több mutatása",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Kevesebb mutatása"
+  "PROMO_UPGRADE_MESSAGE": "Élvezze az ingyenes hozzáférést ezekhez a prémium funkciókhoz a következő {0} napban:",
+  "PROMO_OPT_OUT_LINK": "Lemondás?",
+  "PROMO_OPT_OUT_NOTE": "A próbaidőszakot bármikor lemondhatja a `Help > Cancel Phoenix Pro Trial` menüpont kiválasztásával."
 });

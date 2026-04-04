@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Căutare elemente…",
   "LIVE_DEV_INSERT_COMMON": "Comune",
   "LIVE_DEV_INSERT_NO_RESULTS": "Nu s-au găsit elemente corespunzătoare",
+  "LIVE_DEV_INSERT_SEE_MORE": "Vezi mai mult",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Afișează mai puțin",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Descarcă imaginea",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Alegeți folderul de descărcare a imaginilor",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Caută imagini…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Șterge snippetul",
   "PROMO_UPGRADE_TITLE": "Ai fost upgradat la {0}",
-  "PROMO_UPGRADE_MESSAGE": "Bucură-te de acces la aceste funcționalități premium pentru următoarele {0} zile:",
   "PROMO_CARD_1": "Editează în Previzualizarea Live",
   "PROMO_CARD_1_MESSAGE": "Editează conținutul și elementele direct în Previzualizarea Live - taie, copiază, lipește, duplică, șterge - fără a-ți întrerupe fluxul de lucru.",
   "PROMO_CARD_2": "Trage și Plasează Elemente",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "LIVE_DEV_INSERT_SEE_MORE": "Vezi mai mult",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Afișează mai puțin"
+  "PROMO_UPGRADE_MESSAGE": "Bucură-te de acces gratuit la aceste funcționalități premium pentru următoarele {0} zile:",
+  "PROMO_OPT_OUT_LINK": "Renunți?",
+  "PROMO_OPT_OUT_NOTE": "Poți anula oricând perioada de probă selectând `Ajutor > Anulare perioadă de probă Phoenix Pro`."
 });

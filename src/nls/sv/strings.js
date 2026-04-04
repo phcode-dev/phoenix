@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Sök element...",
   "LIVE_DEV_INSERT_COMMON": "Vanliga",
   "LIVE_DEV_INSERT_NO_RESULTS": "Inga matchande element",
+  "LIVE_DEV_INSERT_SEE_MORE": "Visa mer",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Visa mindre",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Ladda ned bild",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Välj mapp för nedladdning av bilder",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Sök bilder…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Ta bort kodavsnitt",
   "PROMO_UPGRADE_TITLE": "Du har uppgraderats till {0}",
-  "PROMO_UPGRADE_MESSAGE": "Njut av tillgång till dessa premiumfunktioner under de kommande {0} dagarna:",
   "PROMO_CARD_1": "Redigera i Live Preview",
   "PROMO_CARD_1_MESSAGE": "Redigera innehåll och element direkt i Live Preview – klipp ut, kopiera, klistra in, duplicera, radera – utan att bryta ditt arbetsflöde.",
   "PROMO_CARD_2": "Dra och släpp element",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "LIVE_DEV_INSERT_SEE_MORE": "Visa mer",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Visa mindre"
+  "PROMO_UPGRADE_MESSAGE": "Få gratis tillgång till dessa premiumfunktioner under de kommande {0} dagarna:",
+  "PROMO_OPT_OUT_LINK": "Avbryta?",
+  "PROMO_OPT_OUT_NOTE": "Du kan när som helst avbryta din provperiod genom att välja `Hjälp > Avbryt Phoenix Pro-provperiod`."
 });

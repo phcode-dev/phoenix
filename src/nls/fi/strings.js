@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Etsi elementtejä…",
   "LIVE_DEV_INSERT_COMMON": "Yleiset",
   "LIVE_DEV_INSERT_NO_RESULTS": "Ei vastaavia elementtejä",
+  "LIVE_DEV_INSERT_SEE_MORE": "Näytä lisää",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Näytä vähemmän",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Lataa kuva",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Valitse kuvien latauskansio",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Hae kuvia…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Poista koodinpätkä",
   "PROMO_UPGRADE_TITLE": "Sinut on päivitetty {0}-tilaukseen",
-  "PROMO_UPGRADE_MESSAGE": "Nauti näiden premium-ominaisuuksien käytöstä seuraavien {0} päivän ajan:",
   "PROMO_CARD_1": "Muokkaa reaaliaikaisessa esikatselussa",
   "PROMO_CARD_1_MESSAGE": "Muokkaa sisältöä ja elementtejä suoraan reaaliaikaisessa esikatselussa – leikkaa, kopioi, liitä, monista, poista – työnkulkuasi keskeyttämättä.",
   "PROMO_CARD_2": "Vedä ja pudota elementtejä",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "LIVE_DEV_INSERT_SEE_MORE": "Näytä lisää",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Näytä vähemmän"
+  "PROMO_UPGRADE_MESSAGE": "Nauti näistä premium-ominaisuuksista ilmaiseksi seuraavan {0} päivän ajan:",
+  "PROMO_OPT_OUT_LINK": "Jättäydy pois?",
+  "PROMO_OPT_OUT_NOTE": "Voit peruuttaa kokeilujaksosi milloin tahansa valitsemalla `Ohje > Peruuta Phoenix Pro -kokeilu`."
 });

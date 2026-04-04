@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Αναζήτηση στοιχείων…",
   "LIVE_DEV_INSERT_COMMON": "Κοινά",
   "LIVE_DEV_INSERT_NO_RESULTS": "Δεν βρέθηκαν αντίστοιχα στοιχεία",
+  "LIVE_DEV_INSERT_SEE_MORE": "Εμφάνιση περισσότερων",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Εμφάνιση λιγότερων",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Λήψη εικόνας",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Επιλέξτε φάκελο λήψης εικόνων",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Αναζήτηση εικόνων…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Διαγραφή αποσπάσματος",
   "PROMO_UPGRADE_TITLE": "Έχετε αναβαθμιστεί σε {0}",
-  "PROMO_UPGRADE_MESSAGE": "Απολαύστε πρόσβαση σε αυτές τις premium λειτουργίες για τις επόμενες {0} ημέρες:",
   "PROMO_CARD_1": "Επεξεργασία σε Ζωντανή Προεπισκόπηση",
   "PROMO_CARD_1_MESSAGE": "Επεξεργαστείτε περιεχόμενο και στοιχεία απευθείας στη Ζωντανή Προεπισκόπηση - αποκοπή, αντιγραφή, επικόλληση, δημιουργία αντιγράφου, διαγραφή - χωρίς να διακόπτετε τη ροή εργασίας σας.",
   "PROMO_CARD_2": "Μεταφορά & Απόθεση Στοιχείων",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "LIVE_DEV_INSERT_SEE_MORE": "Εμφάνιση περισσότερων",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Εμφάνιση λιγότερων"
+  "PROMO_UPGRADE_MESSAGE": "Απολαύστε δωρεάν πρόσβαση σε αυτές τις premium λειτουργίες για τις επόμενες {0} ημέρες:",
+  "PROMO_OPT_OUT_LINK": "Εξαίρεση;",
+  "PROMO_OPT_OUT_NOTE": "Μπορείτε να ακυρώσετε τη δοκιμαστική σας περίοδο ανά πάσα στιγμή, επιλέγοντας `Βοήθεια > Ακύρωση δοκιμαστικής περιόδου Phoenix Pro`."
 });

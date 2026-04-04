@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Öğeleri ara…",
   "LIVE_DEV_INSERT_COMMON": "Yaygın",
   "LIVE_DEV_INSERT_NO_RESULTS": "Eşleşen öğe bulunamadı",
+  "LIVE_DEV_INSERT_SEE_MORE": "Daha fazlasını gör",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Daha az göster",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Görseli indir",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Resim indirme klasörünü seçin",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Resim ara…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kod Parçacığını Sil",
   "PROMO_UPGRADE_TITLE": "{0} sürümüne yükseltildiniz",
-  "PROMO_UPGRADE_MESSAGE": "Bu premium özelliklere önümüzdeki {0} gün boyunca erişimin keyfini çıkarın:",
   "PROMO_CARD_1": "Canlı Önizlemede Düzenle",
   "PROMO_CARD_1_MESSAGE": "İçeriği ve öğeleri doğrudan Canlı Önizlemede düzenleyin - kes, kopyala, yapıştır, çoğalt, sil - iş akışınızı bozmadan.",
   "PROMO_CARD_2": "Öğeleri Sürükle ve Bırak",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "LIVE_DEV_INSERT_SEE_MORE": "Daha fazlasını gör",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Daha az göster"
+  "PROMO_UPGRADE_MESSAGE": "Önümüzdeki {0} gün boyunca bu premium özelliklerden ücretsiz olarak yararlanın:",
+  "PROMO_OPT_OUT_LINK": "Vazgeç?",
+  "PROMO_OPT_OUT_NOTE": "Denemenizi dilediğiniz zaman `Help > Cancel Phoenix Pro Trial` seçeneğini belirleyerek iptal edebilirsiniz."
 });

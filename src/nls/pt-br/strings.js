@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Buscar elementos…",
   "LIVE_DEV_INSERT_COMMON": "Comum",
   "LIVE_DEV_INSERT_NO_RESULTS": "Nenhum elemento correspondente",
+  "LIVE_DEV_INSERT_SEE_MORE": "Ver mais",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Ver menos",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Baixar imagem",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Escolher pasta de download de imagens",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Pesquisar imagens…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão do Arquivo",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Excluir Snippet",
   "PROMO_UPGRADE_TITLE": "Você foi atualizado(a) para {0}",
-  "PROMO_UPGRADE_MESSAGE": "Aproveite o acesso a estes recursos premium pelos próximos {0} dias:",
   "PROMO_CARD_1": "Editar na Visualização ao Vivo",
   "PROMO_CARD_1_MESSAGE": "Edite conteúdo e elementos diretamente na Visualização ao Vivo — recorte, copie, cole, duplique, exclua — sem interromper seu fluxo de trabalho.",
   "PROMO_CARD_2": "Arrastar e Soltar Elementos",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "LIVE_DEV_INSERT_SEE_MORE": "Ver mais",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Ver menos"
+  "PROMO_UPGRADE_MESSAGE": "Aproveite o acesso gratuito a estes recursos premium pelos próximos {0} dias:",
+  "PROMO_OPT_OUT_LINK": "Cancelar?",
+  "PROMO_OPT_OUT_NOTE": "Você pode cancelar sua avaliação a qualquer momento selecionando `Ajuda > Cancelar Avaliação do Phoenix Pro`."
 });

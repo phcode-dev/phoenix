@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Search elements…",
   "LIVE_DEV_INSERT_COMMON": "Common",
   "LIVE_DEV_INSERT_NO_RESULTS": "No matching elements",
+  "LIVE_DEV_INSERT_SEE_MORE": "See more",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Show less",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Download image",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Choose image download folder",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Search images…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Delete Snippet",
   "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
-  "PROMO_UPGRADE_MESSAGE": "Enjoy access to these premium features for the next {0} days:",
   "PROMO_CARD_1": "Edit In Live Preview",
   "PROMO_CARD_1_MESSAGE": "Edit content and elements right in Live Preview - cut, copy, paste, duplicate, delete - without breaking your flow.",
   "PROMO_CARD_2": "Drag & Drop Elements",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "LIVE_DEV_INSERT_SEE_MORE": "See more",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Show less"
+  "PROMO_UPGRADE_MESSAGE": "Enjoy free access to these premium features for the next {0} days:",
+  "PROMO_OPT_OUT_LINK": "Opt out?",
+  "PROMO_OPT_OUT_NOTE": "You can cancel your trial anytime by selecting `Help > Cancel Phoenix Pro Trial`."
 });

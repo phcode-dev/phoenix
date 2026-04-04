@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Cari elemen…",
   "LIVE_DEV_INSERT_COMMON": "Umum",
   "LIVE_DEV_INSERT_NO_RESULTS": "Tidak ada elemen yang cocok",
+  "LIVE_DEV_INSERT_SEE_MORE": "Lihat lebih banyak",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Tampilkan lebih sedikit",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Unduh gambar",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Pilih folder unduhan gambar",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Cari gambar…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Hapus Snippet",
   "PROMO_UPGRADE_TITLE": "Anda telah diupgrade ke {0}",
-  "PROMO_UPGRADE_MESSAGE": "Nikmati akses ke fitur-fitur premium ini selama {0} hari ke depan:",
   "PROMO_CARD_1": "Edit di Pratinjau Langsung",
   "PROMO_CARD_1_MESSAGE": "Edit konten dan elemen langsung di Pratinjau Langsung - potong, salin, tempel, duplikat, hapus - tanpa mengganggu alur kerja Anda.",
   "PROMO_CARD_2": "Seret & Lepas Elemen",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "LIVE_DEV_INSERT_SEE_MORE": "Lihat lebih banyak",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Tampilkan lebih sedikit"
+  "PROMO_UPGRADE_MESSAGE": "Nikmati akses gratis ke fitur-fitur premium ini selama {0} hari ke depan:",
+  "PROMO_OPT_OUT_LINK": "Batal ikut serta?",
+  "PROMO_OPT_OUT_NOTE": "Anda dapat membatalkan uji coba Anda kapan saja dengan memilih `Help > Cancel Phoenix Pro Trial`."
 });

@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Procurar elementos…",
   "LIVE_DEV_INSERT_COMMON": "Comum",
   "LIVE_DEV_INSERT_NO_RESULTS": "Nenhum elemento correspondente",
+  "LIVE_DEV_INSERT_SEE_MORE": "Ver mais",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Mostrar menos",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Descarregar imagem",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Escolher pasta para descarregar a imagem",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Procurar imagens…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar Fragmento",
   "PROMO_UPGRADE_TITLE": "Foi atualizado(a) para {0}",
-  "PROMO_UPGRADE_MESSAGE": "Desfrute do acesso a estas funcionalidades premium durante os próximos {0} dias:",
   "PROMO_CARD_1": "Editar na Pré-visualização em Direto",
   "PROMO_CARD_1_MESSAGE": "Edite conteúdo e elementos diretamente na Pré-visualização em Direto - cortar, copiar, colar, duplicar, eliminar - sem interromper o seu fluxo de trabalho.",
   "PROMO_CARD_2": "Arrastar e Largar Elementos",
@@ -2160,7 +2161,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Mais uma coisa",
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_INSERT_SEE_MORE": "Ver mais",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Mostrar menos"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado"
 });

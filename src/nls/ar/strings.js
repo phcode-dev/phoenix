@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "ابحث عن عناصر...",
   "LIVE_DEV_INSERT_COMMON": "شائع",
   "LIVE_DEV_INSERT_NO_RESULTS": "لا توجد عناصر مطابقة",
+  "LIVE_DEV_INSERT_SEE_MORE": "عرض المزيد",
+  "LIVE_DEV_INSERT_SHOW_LESS": "عرض أقل",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "تنزيل الصورة",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "اختر مجلد تنزيل الصور",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "ابحث عن صور...",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف المقتطف",
   "PROMO_UPGRADE_TITLE": "تم ترقيتك إلى {0}",
-  "PROMO_UPGRADE_MESSAGE": "استمتع بالوصول إلى هذه الميزات المميزة للأيام الـ {0} القادمة:",
   "PROMO_CARD_1": "التعديل في المعاينة المباشرة",
   "PROMO_CARD_1_MESSAGE": "عدّل المحتوى والعناصر مباشرة في المعاينة المباشرة - قص، نسخ، لصق، تكرار، حذف - دون مقاطعة سير عملك.",
   "PROMO_CARD_2": "سحب وإفلات العناصر",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "LIVE_DEV_INSERT_SEE_MORE": "عرض المزيد",
-  "LIVE_DEV_INSERT_SHOW_LESS": "عرض أقل"
+  "PROMO_UPGRADE_MESSAGE": "استمتع بوصول مجاني إلى هذه الميزات المتميزة للأيام الـ {0} القادمة:",
+  "PROMO_OPT_OUT_LINK": "الانسحاب؟",
+  "PROMO_OPT_OUT_NOTE": "يمكنك إلغاء فترتك التجريبية في أي وقت عن طريق تحديد `مساعدة > إلغاء تجربة Phoenix Pro`."
 });

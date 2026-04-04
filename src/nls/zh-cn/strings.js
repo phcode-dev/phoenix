@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "搜索元素…",
   "LIVE_DEV_INSERT_COMMON": "常用",
   "LIVE_DEV_INSERT_NO_RESULTS": "无匹配元素",
+  "LIVE_DEV_INSERT_SEE_MORE": "查看更多",
+  "LIVE_DEV_INSERT_SHOW_LESS": "收起",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "下载图片",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "选择图片下载文件夹",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "搜索图片…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "删除片段",
   "PROMO_UPGRADE_TITLE": "您已升级到 {0}",
-  "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内畅享这些高级功能：",
   "PROMO_CARD_1": "实时预览编辑",
   "PROMO_CARD_1_MESSAGE": "直接在实时预览中编辑内容和元素 - 剪切、复制、粘贴、创建副本、删除 - 不会打断您的工作流程。",
   "PROMO_CARD_2": "拖放元素",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "LIVE_DEV_INSERT_SEE_MORE": "查看更多",
-  "LIVE_DEV_INSERT_SHOW_LESS": "收起"
+  "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内，免费畅享以下高级功能：",
+  "PROMO_OPT_OUT_LINK": "选择退出？",
+  "PROMO_OPT_OUT_NOTE": "您可以随时通过选择 `帮助 > 取消 Phoenix Pro 试用` 来取消试用。"
 });
