@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll*/
+/*global describe, it, expect, beforeAll, afterAll, afterEach*/
 
 define(function (require, exports, module) {
 
@@ -1149,6 +1149,273 @@ define(function (require, exports, module) {
 
                 hideCommand.setEnabled(true);
                 expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
+            });
+        });
+
+        describe("Hamburger Menu", function () {
+
+            function getHamburger() {
+                return testWindow.$("#hamburger-menu");
+            }
+
+            function getHamburgerDropdown() {
+                return testWindow.$("#hamburger-menu .hamburger-dropdown");
+            }
+
+            function getHiddenMenuItems() {
+                return testWindow.$("#titlebar .nav > li.dropdown:not(.hamburger-menu)").filter(function () {
+                    return testWindow.$(this).css("display") === "none";
+                });
+            }
+
+            function forceNarrowTitlebar() {
+                // Shrink the .content container so the titlebar becomes narrow
+                const $content = testWindow.$(".content");
+                $content.css({"right": "", "width": "200px"});
+                $content[0].offsetHeight;
+            }
+
+            function restoreTitlebar() {
+                const $content = testWindow.$(".content");
+                $content.css({"left": "", "right": "", "width": ""});
+                $content[0].offsetHeight;
+            }
+
+            function awaitsForCondition(conditionFn, message, timeout) {
+                timeout = timeout || 5000;
+                return new Promise(function (resolve, reject) {
+                    const startTime = Date.now();
+                    function check() {
+                        if (conditionFn()) {
+                            resolve();
+                        } else if (Date.now() - startTime > timeout) {
+                            reject(new Error("Timed out waiting for: " + (message || "condition")));
+                        } else {
+                            testWindow.requestAnimationFrame(check);
+                        }
+                    }
+                    check();
+                });
+            }
+
+            afterEach(function () {
+                // Clean up: close hamburger properly (clears _activeSubmenuId)
+                const $hamburger = getHamburger();
+                if ($hamburger.hasClass("hamburger-open")) {
+                    $hamburger.find(".hamburger-toggle").click();
+                }
+                Menus.closeAll();
+                restoreTitlebar();
+            });
+
+            it("should exist in the DOM", function () {
+                const $hamburger = getHamburger();
+                expect($hamburger.length).toBe(1);
+                expect($hamburger.find(".hamburger-toggle").length).toBe(1);
+                expect($hamburger.find(".hamburger-dropdown").length).toBe(1);
+            });
+
+            it("should be hidden when all menus fit on one row", async function () {
+                // The test window may have extra test menus from prior tests.
+                // Verify with a very wide container that hamburger hides.
+                const $content = testWindow.$(".content");
+                const $main = $content.parent();
+                $main.css("width", "4000px");
+                $content.css({"left": "0", "right": "0", "position": "relative", "width": "4000px"});
+                $content[0].offsetHeight;
+                await awaitsForCondition(function () {
+                    return getHamburger().is(":hidden");
+                }, "hamburger to be hidden");
+                $main.css("width", "");
+                $content.css({"left": "", "right": "", "position": "", "width": ""});
+            });
+
+            it("should appear when titlebar is too narrow", async function () {
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+                const $hidden = getHiddenMenuItems();
+                expect($hidden.length).toBeGreaterThan(0);
+                const $entries = getHamburgerDropdown().find(".hamburger-submenu-item");
+                expect($entries.length).toBe($hidden.length);
+            });
+
+            it("should open dropdown on click", async function () {
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+                const $hamburger = getHamburger();
+                expect($hamburger.hasClass("hamburger-open")).toBe(false);
+
+                $hamburger.find(".hamburger-toggle").click();
+                expect($hamburger.hasClass("hamburger-open")).toBe(true);
+
+                const $dropdown = getHamburgerDropdown();
+                expect($dropdown.css("display")).toBe("block");
+            });
+
+            it("should close dropdown on second click", async function () {
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+                const $hamburger = getHamburger();
+                const $toggle = $hamburger.find(".hamburger-toggle");
+
+                $toggle.click();
+                expect($hamburger.hasClass("hamburger-open")).toBe(true);
+
+                $toggle.click();
+                expect($hamburger.hasClass("hamburger-open")).toBe(false);
+            });
+
+            it("should open flyout submenu on entry hover", async function () {
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+                const $hamburger = getHamburger();
+                $hamburger.find(".hamburger-toggle").click();
+
+                const $entries = getHamburgerDropdown().find(".hamburger-submenu-item");
+                expect($entries.length).toBeGreaterThan(0);
+
+                const $firstEntry = $entries.first();
+                $firstEntry.trigger("mouseenter");
+
+                expect($firstEntry.hasClass("hamburger-submenu-open")).toBe(true);
+
+                const menuId = $firstEntry.find("a").attr("data-menu-id");
+                const $menuDropdown = testWindow.$("#" + menuId + " > .dropdown-menu");
+                expect($menuDropdown.css("visibility")).toBe("visible");
+                expect($menuDropdown.css("position")).toBe("fixed");
+            });
+
+            it("should restore all menus when titlebar expands", async function () {
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+                expect(getHiddenMenuItems().length).toBeGreaterThan(0);
+
+                // Expand wide enough for all menus
+                restoreTitlebar();
+                const $content = testWindow.$(".content");
+                const $main = $content.parent();
+                $main.css("width", "4000px");
+                $content.css({"left": "0", "right": "0", "position": "relative", "width": "4000px"});
+                $content[0].offsetHeight;
+                await awaitsForCondition(function () {
+                    return getHamburger().is(":hidden");
+                }, "hamburger to hide after expanding");
+                expect(getHiddenMenuItems().length).toBe(0);
+                $main.css("width", "");
+                $content.css({"left": "", "right": "", "position": "", "width": ""});
+            });
+
+            it("should execute command when clicking a flyout menu item", async function () {
+                // Register a test command and add it to a menu
+                let commandExecuted = false;
+                CommandManager.register("Hamburger Test Command", "Menu-test.hamburgerCmd1", function () {
+                    commandExecuted = true;
+                });
+                const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
+                fileMenu.addMenuItem("Menu-test.hamburgerCmd1");
+
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+
+                // Open hamburger and hover File menu entry
+                const $hamburger = getHamburger();
+                $hamburger.find(".hamburger-toggle").click();
+                const $entries = getHamburgerDropdown().find(".hamburger-submenu-item");
+                // Find the File menu entry
+                const $fileEntry = $entries.filter(function () {
+                    return testWindow.$(this).find("a").attr("data-menu-id") === "file-menu";
+                });
+                expect($fileEntry.length).toBe(1);
+                $fileEntry.trigger("mouseenter");
+
+                // Click the test command in the flyout
+                const $menuItem = testWindow.$("#file-menu-Menu-test\\.hamburgerCmd1");
+                expect($menuItem.length).toBe(1);
+                $menuItem.click();
+
+                await awaitsForCondition(function () {
+                    return commandExecuted;
+                }, "command to be executed");
+                await awaitsForCondition(function () {
+                    return !$hamburger.hasClass("hamburger-open");
+                }, "hamburger to close after command");
+            });
+
+            it("should execute command when clicking a flyout submenu item", async function () {
+                // Register a command, create a submenu in the File menu
+                let subCommandExecuted = false;
+                CommandManager.register("Hamburger SubMenu Test", "Menu-test.hamburgerSubCmd1", function () {
+                    subCommandExecuted = true;
+                });
+                const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
+                const subMenu = fileMenu.addSubMenu("Hamburger Sub", "hamburger-test-submenu1");
+                subMenu.addMenuItem("Menu-test.hamburgerSubCmd1");
+
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+
+                // Open hamburger and hover File menu entry
+                const $hamburger = getHamburger();
+                $hamburger.find(".hamburger-toggle").click();
+                const $entries = getHamburgerDropdown().find(".hamburger-submenu-item");
+                const $fileEntry = $entries.filter(function () {
+                    return testWindow.$(this).find("a").attr("data-menu-id") === "file-menu";
+                });
+                $fileEntry.trigger("mouseenter");
+
+                // Hover the submenu trigger to open it
+                const $subMenuTrigger = testWindow.$("#file-menu-hamburger-test-submenu1").closest("li");
+                expect($subMenuTrigger.length).toBe(1);
+                $subMenuTrigger.trigger("mouseenter");
+
+                // Wait for submenu to open
+                await awaitsForCondition(function () {
+                    return testWindow.$("#hamburger-test-submenu1").hasClass("open");
+                }, "submenu to open");
+
+                // Click the command in the submenu
+                const $subItem = testWindow.$("#hamburger-test-submenu1-Menu-test\\.hamburgerSubCmd1");
+                expect($subItem.length).toBe(1);
+                $subItem.closest("li").click();
+
+                await awaitsForCondition(function () {
+                    return subCommandExecuted;
+                }, "submenu command to be executed");
+            });
+
+            it("should close on ESC key", async function () {
+                forceNarrowTitlebar();
+                await awaitsForCondition(function () {
+                    return !getHamburger().is(":hidden");
+                }, "hamburger to appear");
+                const $hamburger = getHamburger();
+                $hamburger.find(".hamburger-toggle").click();
+                expect($hamburger.hasClass("hamburger-open")).toBe(true);
+
+                // Dispatch ESC keydown event
+                const escEvent = new testWindow.KeyboardEvent("keydown", {
+                    key: "Escape",
+                    keyCode: KeyEvent.DOM_VK_ESCAPE,
+                    bubbles: true,
+                    cancelable: true
+                });
+                testWindow.document.dispatchEvent(escEvent);
+
+                expect($hamburger.hasClass("hamburger-open")).toBe(false);
             });
         });
     });
