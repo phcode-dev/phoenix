@@ -1369,10 +1369,9 @@ define(function (require, exports, module) {
         $menuDropdownToggle.parent().removeClass('open');
         const menuID = $menuDropdownToggle.parent().get(0).id;
         const mainMenu = menuMap[menuID];
-        const $dropdownToggles = $('#titlebar .dropdown-toggle');
+        const $dropdownToggles = $('#titlebar .dropdown:not(.hamburger-menu):visible > .dropdown-toggle');
         let currentIndex = $dropdownToggles.index($menuDropdownToggle);
-        currentIndex = event.key === KEY.ARROW_LEFT ? currentIndex - 1 : currentIndex + 1;
-        let nextIndex = currentIndex;
+        let nextIndex = event.key === KEY.ARROW_LEFT ? currentIndex - 1 : currentIndex + 1;
         if (nextIndex < 0) {
             nextIndex = 0;
         } else if (nextIndex >= $dropdownToggles.length) {
@@ -1859,12 +1858,30 @@ define(function (require, exports, module) {
             _closeHamburger();
         });
 
-        // Wire up hamburger toggle mouseenter like other menus
+        // Close hamburger and open the hovered normal menu
+        $menubar.on("mouseenter", ".dropdown:not(.hamburger-menu) > .dropdown-toggle", function () {
+            if ($hamburger.hasClass("hamburger-open")) {
+                _closeHamburger();
+                // Open the hovered menu and focus its toggle so keyboard nav works
+                const $toggle = $(this);
+                $toggle.parent().addClass("open");
+                $toggle.focus();
+            }
+        });
+
+        // Wire up hamburger toggle mouseenter like other menus.
+        // If the titlebar has focus (meaning a menu is already open),
+        // auto-open the hamburger on hover - matching normal menu behavior.
         $hamburgerToggle.on("mouseenter", function () {
             _closeAllSubMenus();
             const $this = $(this);
             if ($('#titlebar, #titlebar *').is(':focus')) {
+                // Close any open normal menus first
+                closeAll();
                 $this.addClass('selected').focus();
+                if (!$hamburger.hasClass("hamburger-open")) {
+                    $hamburger.addClass("hamburger-open");
+                }
             } else {
                 $this.addClass('selected');
             }
@@ -1908,6 +1925,8 @@ define(function (require, exports, module) {
             const $items = $menubar.children("li.dropdown:not(.hamburger-menu)");
             // First, show all items and hide hamburger to measure natural layout
             $items.css({display: "", position: "", visibility: "", pointerEvents: ""});
+            // Ensure hamburger is always the last item in the menu bar
+            $menubar.append($hamburger);
             $hamburger.hide();
             $hamburgerDropdown.empty();
 
@@ -1930,11 +1949,17 @@ define(function (require, exports, module) {
                 return;
             }
 
-            // Show hamburger, then re-check what fits with hamburger visible
+            // Show hamburger, then keep hiding items from the end until
+            // both visible items and the hamburger fit on one row
             $hamburger.css("display", "");
 
-            // Re-measure: with hamburger visible, even more items might overflow
-            for (let i = 0; i < $items.length; i++) {
+            while (overflowStartIndex > 0 && $hamburger[0].offsetTop > firstItemTop) {
+                overflowStartIndex--;
+                $($items[overflowStartIndex]).css("display", "none");
+            }
+
+            // Also check if any remaining items wrapped
+            for (let i = 0; i < overflowStartIndex; i++) {
                 if ($items[i].offsetTop > firstItemTop) {
                     overflowStartIndex = i;
                     break;
