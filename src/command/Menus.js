@@ -1778,6 +1778,35 @@ define(function (require, exports, module) {
         const $hamburgerToggle = $hamburger.find(".hamburger-toggle");
         let _activeSubmenuId = null;
 
+        // Sidebar collapse/expand toggle button before the File menu
+        const $sidebarToggle = $(`<li class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+            <a href="#">
+                <i class="fa-solid fa-angles-left"></i>
+            </a>
+        </li>`);
+        $menubar.prepend($sidebarToggle);
+        const $sidebarIcon = $sidebarToggle.find("a");
+
+        function _updateSidebarToggleIcon() {
+            const isVisible = $("#sidebar").is(":visible");
+            if (isVisible) {
+                $sidebarIcon.html('<i class="fa-solid fa-angles-left"></i>');
+                $sidebarIcon.attr("title", Strings.CMD_HIDE_SIDEBAR);
+            } else {
+                $sidebarIcon.html('<i class="fa-solid fa-angles-right"></i>');
+                $sidebarIcon.attr("title", Strings.CMD_SHOW_SIDEBAR);
+            }
+        }
+
+        $sidebarIcon.on("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
+        });
+
+        $("#sidebar").on("panelCollapsed panelExpanded", _updateSidebarToggleIcon);
+        _updateSidebarToggleIcon();
+
         function _resetMenuItemStyles($menuItem) {
             const menu = menuMap[$menuItem.attr("id")];
             if (menu) {
