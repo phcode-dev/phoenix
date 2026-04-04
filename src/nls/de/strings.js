@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Elemente suchen …",
   "LIVE_DEV_INSERT_COMMON": "Häufig",
   "LIVE_DEV_INSERT_NO_RESULTS": "Keine passenden Elemente",
+  "LIVE_DEV_INSERT_SEE_MORE": "Mehr anzeigen",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Weniger anzeigen",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Bild herunterladen",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Download-Ordner für Bilder auswählen",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Bilder suchen…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet löschen",
   "PROMO_UPGRADE_TITLE": "Sie wurden auf {0} hochgestuft",
-  "PROMO_UPGRADE_MESSAGE": "Genießen Sie in den nächsten {0} Tagen den Zugriff auf diese Premium-Funktionen:",
   "PROMO_CARD_1": "In der Live-Vorschau bearbeiten",
   "PROMO_CARD_1_MESSAGE": "Bearbeiten Sie Inhalte und Elemente direkt in der Live-Vorschau – ausschneiden, kopieren, einfügen, duplizieren, löschen – ohne Ihren Arbeitsfluss zu unterbrechen.",
   "PROMO_CARD_2": "Drag & Drop von Elementen",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "LIVE_DEV_INSERT_SEE_MORE": "Mehr anzeigen",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Weniger anzeigen"
+  "PROMO_UPGRADE_MESSAGE": "Genießen Sie für die nächsten {0} Tage kostenlosen Zugriff auf diese Premium-Funktionen:",
+  "PROMO_OPT_OUT_LINK": "Abmelden?",
+  "PROMO_OPT_OUT_NOTE": "Sie können Ihre Testversion jederzeit abbrechen, indem Sie `Hilfe > Phoenix Pro-Testversion abbrechen` auswählen."
 });

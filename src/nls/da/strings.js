@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Søg efter elementer…",
   "LIVE_DEV_INSERT_COMMON": "Almindelige",
   "LIVE_DEV_INSERT_NO_RESULTS": "Ingen matchende elementer",
+  "LIVE_DEV_INSERT_SEE_MORE": "Se mere",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Vis mindre",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Download billede",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Vælg mappe til download af billeder",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Søg efter billeder…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtypenavn",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slet snippet",
   "PROMO_UPGRADE_TITLE": "Du er blevet opgraderet til {0}",
-  "PROMO_UPGRADE_MESSAGE": "Nyd adgang til disse premium-funktioner i de næste {0} dage:",
   "PROMO_CARD_1": "Rediger i Live-forhåndsvisning",
   "PROMO_CARD_1_MESSAGE": "Rediger indhold og elementer direkte i Live-forhåndsvisning - klip, kopiér, indsæt, duplikér, slet - uden at afbryde dit flow.",
   "PROMO_CARD_2": "Træk og slip-elementer",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_INSERT_SEE_MORE": "Se mere",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Vis mindre"
+  "PROMO_UPGRADE_MESSAGE": "Nyd gratis adgang til disse premium-funktioner i de næste {0} dage:",
+  "PROMO_OPT_OUT_LINK": "Afmeld?",
+  "PROMO_OPT_OUT_NOTE": "Du kan til enhver tid annullere din prøveperiode ved at vælge `Help > Cancel Phoenix Pro Trial`."
 });

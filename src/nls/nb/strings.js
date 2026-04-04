@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Søk etter elementer…",
   "LIVE_DEV_INSERT_COMMON": "Vanlige",
   "LIVE_DEV_INSERT_NO_RESULTS": "Ingen samsvarende elementer",
+  "LIVE_DEV_INSERT_SEE_MORE": "Se mer",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Vis mindre",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Last ned bilde",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Velg nedlastingsmappe for bilder",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Søk etter bilder …",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slett kodebit",
   "PROMO_UPGRADE_TITLE": "Du har blitt oppgradert til {0}",
-  "PROMO_UPGRADE_MESSAGE": "Få tilgang til disse premium-funksjonene i de neste {0} dagene:",
   "PROMO_CARD_1": "Rediger i direkte forhåndsvisning",
   "PROMO_CARD_1_MESSAGE": "Rediger innhold og elementer rett i direkte forhåndsvisning – klipp ut, kopier, lim inn, dupliser, slett – uten å bryte arbeidsflyten din.",
   "PROMO_CARD_2": "Dra og slipp elementer",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_INSERT_SEE_MORE": "Se mer",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Vis mindre"
+  "PROMO_UPGRADE_MESSAGE": "Få gratis tilgang til disse premium-funksjonene i de neste {0} dagene:",
+  "PROMO_OPT_OUT_LINK": "Meld deg av?",
+  "PROMO_OPT_OUT_NOTE": "Du kan avslutte prøveperioden din når som helst ved å velge `Hjelp > Cancel Phoenix Pro Trial`."
 });

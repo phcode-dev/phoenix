@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Поиск элементов…",
   "LIVE_DEV_INSERT_COMMON": "Общие",
   "LIVE_DEV_INSERT_NO_RESULTS": "Нет подходящих элементов",
+  "LIVE_DEV_INSERT_SEE_MORE": "Показать больше",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Показать меньше",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Скачать изображение",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Выберите папку для загрузки изображений",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Поиск изображений…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Удалить сниппет",
   "PROMO_UPGRADE_TITLE": "Вы перешли на тариф {0}",
-  "PROMO_UPGRADE_MESSAGE": "Наслаждайтесь доступом к этим премиум-функциям в течение следующих {0} дней:",
   "PROMO_CARD_1": "Редактирование в реальном времени",
   "PROMO_CARD_1_MESSAGE": "Редактируйте контент и элементы прямо в режиме реального времени — вырезайте, копируйте, вставляйте, дублируйте, удаляйте — не прерывая рабочий процесс.",
   "PROMO_CARD_2": "Перетаскивание элементов",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_INSERT_SEE_MORE": "Показать больше",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Показать меньше"
+  "PROMO_UPGRADE_MESSAGE": "Пользуйтесь бесплатным доступом к этим премиум-функциям в течение следующих {0} дней:",
+  "PROMO_OPT_OUT_LINK": "Отказаться?",
+  "PROMO_OPT_OUT_NOTE": "Вы можете в любое время отменить пробную версию, выбрав `Помощь > Отменить пробную версию Phoenix Pro`."
 });

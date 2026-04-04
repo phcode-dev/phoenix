@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "جستجوی عناصر…",
   "LIVE_DEV_INSERT_COMMON": "رایج",
   "LIVE_DEV_INSERT_NO_RESULTS": "عنصر منطبقی یافت نشد",
+  "LIVE_DEV_INSERT_SEE_MORE": "مشاهده بیشتر",
+  "LIVE_DEV_INSERT_SHOW_LESS": "نمایش کمتر",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "دانلود تصویر",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "انتخاب پوشه دانلود تصاویر",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "جستجوی تصاویر…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف اسنیپت",
   "PROMO_UPGRADE_TITLE": "حساب شما به {0} ارتقا یافت.",
-  "PROMO_UPGRADE_MESSAGE": "برای {0} روز آینده از این ویژگی‌های ممتاز بهره‌مند شوید:",
   "PROMO_CARD_1": "ویرایش در پیش‌نمایش زنده",
   "PROMO_CARD_1_MESSAGE": "محتوا و عناصر را مستقیماً در پیش‌نمایش زنده ویرایش کنید - برش، کپی، چسباندن، تکثیر، حذف - بدون آنکه روند کاری شما مختل شود.",
   "PROMO_CARD_2": "کشیدن و رها کردن عناصر",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "LIVE_DEV_INSERT_SEE_MORE": "مشاهده بیشتر",
-  "LIVE_DEV_INSERT_SHOW_LESS": "نمایش کمتر"
+  "PROMO_UPGRADE_MESSAGE": "از دسترسی رایگان به این ویژگی‌های ویژه برای {0} روز آینده لذت ببرید:",
+  "PROMO_OPT_OUT_LINK": "انصراف؟",
+  "PROMO_OPT_OUT_NOTE": "شما می‌توانید هر زمان با انتخاب `Help > Cancel Phoenix Pro Trial`، دورهٔ آزمایشی خود را لغو کنید."
 });

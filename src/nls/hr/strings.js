@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Pretraži elemente…",
   "LIVE_DEV_INSERT_COMMON": "Uobičajeno",
   "LIVE_DEV_INSERT_NO_RESULTS": "Nema podudarajućih elemenata",
+  "LIVE_DEV_INSERT_SEE_MORE": "Prikaži više",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Prikaži manje",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Preuzmi sliku",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Odaberite mapu za preuzimanje slika",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Pretraži slike…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Izbriši isječak",
   "PROMO_UPGRADE_TITLE": "Nadograđeni ste na {0}",
-  "PROMO_UPGRADE_MESSAGE": "Uživajte u pristupu ovim premium značajkama sljedećih {0} dana:",
   "PROMO_CARD_1": "Uređivanje u pregledu uživo",
   "PROMO_CARD_1_MESSAGE": "Uređujte sadržaj i elemente izravno u pregledu uživo – izrežite, kopirajte, zalijepite, duplicirajte, izbrišite – bez prekidanja tijeka rada.",
   "PROMO_CARD_2": "Povlačenje i ispuštanje elemenata",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "LIVE_DEV_INSERT_SEE_MORE": "Prikaži više",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Prikaži manje"
+  "PROMO_UPGRADE_MESSAGE": "Uživajte u besplatnom pristupu ovim premium značajkama sljedećih {0} dana:",
+  "PROMO_OPT_OUT_LINK": "Odustani?",
+  "PROMO_OPT_OUT_NOTE": "Probno razdoblje možete otkazati bilo kada odabirom `Pomoć > Otkaži probno razdoblje za Phoenix Pro`."
 });

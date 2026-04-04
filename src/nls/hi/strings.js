@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "एलिमेंट खोजें…",
   "LIVE_DEV_INSERT_COMMON": "सामान्य",
   "LIVE_DEV_INSERT_NO_RESULTS": "कोई मेल खाने वाले एलिमेंट नहीं",
+  "LIVE_DEV_INSERT_SEE_MORE": "और देखें",
+  "LIVE_DEV_INSERT_SHOW_LESS": "कम दिखाएँ",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "इमेज डाउनलोड करें",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "छवि डाउनलोड फ़ोल्डर चुनें",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "इमेज खोजें…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "स्निपेट हटाएँ",
   "PROMO_UPGRADE_TITLE": "आपको {0} में अपग्रेड कर दिया गया है",
-  "PROMO_UPGRADE_MESSAGE": "अगले {0} दिनों के लिए इन प्रीमियम सुविधाओं का लाभ उठाएँ:",
   "PROMO_CARD_1": "लाइव प्रीव्यू में संपादित करें",
   "PROMO_CARD_1_MESSAGE": "कंटेंट और एलिमेंट्स को सीधे लाइव प्रीव्यू में संपादित करें - कट, कॉपी, पेस्ट, डुप्लिकेट, डिलीट - अपने फ्लो को बिना बाधित किए।",
   "PROMO_CARD_2": "ड्रैग एंड ड्रॉप एलिमेंट्स",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "LIVE_DEV_INSERT_SEE_MORE": "और देखें",
-  "LIVE_DEV_INSERT_SHOW_LESS": "कम दिखाएँ"
+  "PROMO_UPGRADE_MESSAGE": "अगले {0} दिनों के लिए इन प्रीमियम सुविधाओं का मुफ़्त में आनंद लें:",
+  "PROMO_OPT_OUT_LINK": "बाहर निकलें?",
+  "PROMO_OPT_OUT_NOTE": "आप `Help > Cancel Phoenix Pro Trial` का चयन करके किसी भी समय अपना ट्रायल रद्द कर सकते हैं।"
 });

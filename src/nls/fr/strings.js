@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Rechercher des éléments…",
   "LIVE_DEV_INSERT_COMMON": "Communs",
   "LIVE_DEV_INSERT_NO_RESULTS": "Aucun élément correspondant",
+  "LIVE_DEV_INSERT_SEE_MORE": "Voir plus",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Voir moins",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Télécharger l'image",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Sélectionner le dossier de téléchargement des images",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Rechercher des images…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Supprimer le snippet",
   "PROMO_UPGRADE_TITLE": "Vous avez été surclassé(e) vers {0}",
-  "PROMO_UPGRADE_MESSAGE": "Profitez de l'accès à ces fonctionnalités premium pendant les {0} prochains jours :",
   "PROMO_CARD_1": "Modifier dans l'aperçu en direct",
   "PROMO_CARD_1_MESSAGE": "Modifiez le contenu et les éléments directement dans l'aperçu en direct (couper, copier, coller, dupliquer, supprimer) sans interrompre votre flux de travail.",
   "PROMO_CARD_2": "Glisser-déposer des éléments",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "LIVE_DEV_INSERT_SEE_MORE": "Voir plus",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Voir moins"
+  "PROMO_UPGRADE_MESSAGE": "Profitez d'un accès gratuit à ces fonctionnalités premium pendant les {0} prochains jours :",
+  "PROMO_OPT_OUT_LINK": "Annuler l'essai ?",
+  "PROMO_OPT_OUT_NOTE": "Vous pouvez annuler votre version d'essai à tout moment en sélectionnant `Aide > Annuler la version d'essai de Phoenix Pro`."
 });

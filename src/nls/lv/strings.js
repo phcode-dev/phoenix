@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Meklēt elementus…",
   "LIVE_DEV_INSERT_COMMON": "Biežāk lietotie",
   "LIVE_DEV_INSERT_NO_RESULTS": "Nav atbilstošu elementu",
+  "LIVE_DEV_INSERT_SEE_MORE": "Skatīt vairāk",
+  "LIVE_DEV_INSERT_SHOW_LESS": "Rādīt mazāk",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Lejupielādēt attēlu",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Izvēlieties attēlu lejupielādes mapi",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Meklēt attēlus…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Dzēst fragmentu",
   "PROMO_UPGRADE_TITLE": "Jūs esat jaunināts uz {0}",
-  "PROMO_UPGRADE_MESSAGE": "Izbaudiet piekļuvi šīm premium funkcijām nākamās {0} dienas:",
   "PROMO_CARD_1": "Rediģēšana tiešraides priekšskatījumā",
   "PROMO_CARD_1_MESSAGE": "Rediģējiet saturu un elementus tieši tiešraides priekšskatījumā - izgrieziet, kopējiet, ielīmējiet, dublējiet, dzēsiet - nepārtraucot savu darba plūsmu.",
   "PROMO_CARD_2": "Elementu vilkšana un nomešana",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "LIVE_DEV_INSERT_SEE_MORE": "Skatīt vairāk",
-  "LIVE_DEV_INSERT_SHOW_LESS": "Rādīt mazāk"
+  "PROMO_UPGRADE_MESSAGE": "Izbaudiet bezmaksas piekļuvi šīm premium funkcijām nākamās {0} dienas:",
+  "PROMO_OPT_OUT_LINK": "Atteikties?",
+  "PROMO_OPT_OUT_NOTE": "Jūs varat jebkurā laikā atcelt izmēģinājuma versiju, izvēloties `Help > Cancel Phoenix Pro Trial`."
 });

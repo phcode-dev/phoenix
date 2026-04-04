@@ -178,6 +178,8 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "요소 검색…",
   "LIVE_DEV_INSERT_COMMON": "일반",
   "LIVE_DEV_INSERT_NO_RESULTS": "일치하는 요소 없음",
+  "LIVE_DEV_INSERT_SEE_MORE": "더 보기",
+  "LIVE_DEV_INSERT_SHOW_LESS": "간략히 보기",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "이미지 다운로드",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "이미지 다운로드 폴더 선택",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "이미지 검색…",
@@ -1838,7 +1840,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "스니펫 삭제",
   "PROMO_UPGRADE_TITLE": "{0}(으)로 업그레이드되었습니다.",
-  "PROMO_UPGRADE_MESSAGE": "앞으로 {0}일 동안 다음 프리미엄 기능을 이용해 보세요:",
   "PROMO_CARD_1": "라이브 미리보기에서 편집",
   "PROMO_CARD_1_MESSAGE": "라이브 미리보기에서 바로 콘텐츠와 요소를 편집하세요. 작업 흐름을 방해하지 않고 자르기, 복사, 붙여넣기, 복제, 삭제를 할 수 있습니다.",
   "PROMO_CARD_2": "요소 드래그 앤 드롭",
@@ -2161,6 +2162,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "LIVE_DEV_INSERT_SEE_MORE": "더 보기",
-  "LIVE_DEV_INSERT_SHOW_LESS": "간략히 보기"
+  "PROMO_UPGRADE_MESSAGE": "다음 {0}일 동안 이 프리미엄 기능들을 무료로 이용해 보세요:",
+  "PROMO_OPT_OUT_LINK": "체험 취소?",
+  "PROMO_OPT_OUT_NOTE": "언제든지 `도움말 > Phoenix Pro 체험 취소`를 선택하여 체험을 취소할 수 있습니다."
 });
