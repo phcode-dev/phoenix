@@ -211,6 +211,28 @@ a:focus {
             animation: none;
         }
     }
+    .nav .sidebar-toggle-btn {
+        float: left;
+        a {
+            display: inline-block;
+            padding: @menubar-top-padding 6px @menubar-bottom-padding;
+            border: 1px solid transparent;
+            font-size: @menu-item-font-size;
+            color: fadeout(@bc-menu-text, 50%);
+            cursor: default;
+            outline: none;
+            .dark & {
+                color: fadeout(@dark-bc-menu-text, 50%);
+            }
+            &:hover {
+                color: @bc-menu-text;
+                .dark & {
+                    color: @dark-bc-menu-text;
+                }
+            }
+        }
+    }
+
     .nav .hamburger-menu {
         float: left;
         .hamburger-toggle, .hamburger-toggle:hover, .hamburger-toggle:focus {
