@@ -960,10 +960,15 @@ function handleScrollToLine(data) {
 
     // In edit mode, ignore scroll-based sync from CM to prevent feedback
     // loops (click in viewer → CM scroll → scroll sync back → viewer jumps).
-    // Only cursor-based sync (fromScroll=false) should reposition the viewer.
     if (fromScroll && getState().editMode) return;
 
     const viewer = document.getElementById("viewer-content");
+    if (!viewer) return;
+
+    // In edit mode, skip CM cursor sync when the viewer has focus — the user
+    // is actively editing and highlight span creation/removal would displace
+    // the cursor.
+    if (getState().editMode && viewer.contains(document.activeElement)) return;
     if (!viewer) return;
 
     const elements = viewer.querySelectorAll("[data-source-line]");

@@ -402,9 +402,33 @@ export function executeFormat(contentEl, command, value) {
         case "underline":
             document.execCommand(command, false, null);
             break;
-        case "formatBlock":
+        case "formatBlock": {
             document.execCommand("formatBlock", false, value);
+            // After formatBlock on an empty element, the browser may lose
+            // cursor position. Find the new block and place cursor inside it.
+            const sel2 = window.getSelection();
+            if (sel2 && sel2.rangeCount) {
+                let block = sel2.anchorNode;
+                if (block?.nodeType === Node.TEXT_NODE) block = block.parentElement;
+                // If cursor ended up outside the target block type, find it
+                const targetTag = value.replace(/[<>/]/g, "").toUpperCase();
+                if (block && block.tagName !== targetTag) {
+                    // Look for the newly created block near the cursor
+                    const allBlocks = contentEl.querySelectorAll(targetTag);
+                    for (const b of allBlocks) {
+                        if (b.textContent.trim() === "" || b.contains(sel2.anchorNode)) {
+                            const r = document.createRange();
+                            r.setStart(b, 0);
+                            r.collapse(true);
+                            sel2.removeAllRanges();
+                            sel2.addRange(r);
+                            break;
+                        }
+                    }
+                }
+            }
             break;
+        }
         case "createLink": {
             if (value) {
                 document.execCommand("createLink", false, value);
