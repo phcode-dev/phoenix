@@ -10,7 +10,7 @@
   --font-size-content: clamp(1rem, 0.925rem + 0.25vw, 1.125rem);
   --line-height: 1.6;
   --line-height-heading: 1.25;
-  --content-max-width: 1100px;
+  --content-max-width: 90ch;
   --letter-spacing: normal;
 
   /* Layout */
