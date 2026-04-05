@@ -612,6 +612,13 @@ Commands, which control a MenuItem's name, enabled state, and checked state.
 | --- | --- | --- |
 | id | <code>string</code> | unique identifier for context menu.      Core context menus in Brackets use a simple title as an id.      Extensions should use the following format: "author.myextension.mycontextmenu name" |
 
+<a name="_initHamburgerMenu"></a>
+
+## \_initHamburgerMenu()
+Hamburger menu: when the titlebar is too narrow to fit all menu items on one row,
+overflow items are hidden and a hamburger button appears with a dropdown listing them.
+
+**Kind**: global function  
 <a name="event_EVENT_BEFORE_CONTEXT_MENU_OPEN"></a>
 
 ## "EVENT_BEFORE_CONTEXT_MENU_OPEN"
