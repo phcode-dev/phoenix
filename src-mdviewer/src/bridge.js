@@ -936,14 +936,32 @@ function _getSourceLineFromElement(el) {
         const attr = el.getAttribute && el.getAttribute("data-source-line");
         if (attr != null) {
             let line = parseInt(attr, 10);
-            // For paragraphs with <br> (soft line breaks), count how many
-            // <br> elements precede the cursor to get the exact CM line.
-            if (el.tagName === "P" && cursorNode && el.querySelector("br")) {
-                const brs = el.querySelectorAll("br");
-                for (const br of brs) {
-                    const pos = br.compareDocumentPosition(cursorNode);
-                    if (pos & Node.DOCUMENT_POSITION_FOLLOWING || pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
-                        line++;
+            if (cursorNode) {
+                // For paragraphs with <br> (soft line breaks), count <br>
+                // elements before the cursor for the exact CM line.
+                if (el.tagName === "P" && el.querySelector("br")) {
+                    const brs = el.querySelectorAll("br");
+                    for (const br of brs) {
+                        const pos = br.compareDocumentPosition(cursorNode);
+                        if (pos & Node.DOCUMENT_POSITION_FOLLOWING || pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                            line++;
+                        }
+                    }
+                }
+                // For code blocks, count \n before cursor in textContent.
+                // data-source-line on <pre> points to the ``` fence line,
+                // so first code line = line + 1, each \n increments.
+                if (el.tagName === "PRE") {
+                    const code = el.querySelector("code") || el;
+                    try {
+                        const range = document.createRange();
+                        range.setStart(code, 0);
+                        range.setEnd(sel.getRangeAt(0).startContainer, sel.getRangeAt(0).startOffset);
+                        const textBefore = range.toString();
+                        const newlines = (textBefore.match(/\n/g) || []).length;
+                        line += 1 + newlines; // +1 for the ``` fence line
+                    } catch (_e) {
+                        line += 1; // fallback: first code line
                     }
                 }
             }
@@ -993,17 +1011,62 @@ function handleScrollToLine(data) {
         }
     }
 
-    // For paragraphs with <br> (soft line breaks), find the specific visual
-    // line within the paragraph by counting <br> elements. The target line
-    // minus the paragraph's start line gives the <br> offset.
+    // For multi-line blocks, find the specific visual line to scroll to.
     let scrollTarget = bestEl;
-    if (bestEl.tagName === "P" && bestLine < line) {
-        const brOffset = line - bestLine;
-        const brs = bestEl.querySelectorAll("br");
-        if (brOffset > 0 && brOffset <= brs.length) {
-            // Use the <br> element as scroll target — it's at the right
-            // vertical position for the specific line within the paragraph.
-            scrollTarget = brs[brOffset - 1];
+    if (bestLine < line) {
+        if (bestEl.tagName === "P") {
+            // Paragraphs with <br>: use the <br> element as scroll target.
+            const brOffset = line - bestLine;
+            const brs = bestEl.querySelectorAll("br");
+            if (brOffset > 0 && brOffset <= brs.length) {
+                scrollTarget = brs[brOffset - 1];
+            }
+        } else if (bestEl.tagName === "PRE") {
+            // Code blocks: find the text node containing the target \n
+            // and create a temporary span to scroll to.
+            const codeLineOffset = line - bestLine - 1; // -1 for ``` fence
+            const code = bestEl.querySelector("code") || bestEl;
+            const text = code.textContent;
+            let nlCount = 0;
+            let charIdx = 0;
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] === "\n") {
+                    if (nlCount === codeLineOffset) {
+                        charIdx = i + 1;
+                        break;
+                    }
+                    nlCount++;
+                }
+            }
+            // Walk text nodes to find the one containing charIdx
+            const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+            let offset = 0;
+            let targetNode = null;
+            while (walker.nextNode()) {
+                const len = walker.currentNode.textContent.length;
+                if (offset + len >= charIdx) {
+                    targetNode = walker.currentNode;
+                    break;
+                }
+                offset += len;
+            }
+            if (targetNode) {
+                // Insert a temporary marker to scroll to, then remove it
+                const marker = document.createElement("span");
+                const splitAt = charIdx - offset;
+                if (splitAt > 0 && splitAt < targetNode.textContent.length) {
+                    targetNode.splitText(splitAt);
+                    targetNode.parentNode.insertBefore(marker, targetNode.nextSibling);
+                } else {
+                    targetNode.parentNode.insertBefore(marker, targetNode);
+                }
+                scrollTarget = marker;
+                // Clean up after scroll
+                requestAnimationFrame(() => {
+                    marker.remove();
+                    code.normalize();
+                });
+            }
         }
     }
 
@@ -1059,6 +1122,63 @@ function handleScrollToLine(data) {
         } else {
             bestEl.classList.add("cursor-sync-highlight");
         }
+    } else if (bestEl.tagName === "PRE" && bestLine < line) {
+        // Code blocks: use a positioned overlay at the target line's height.
+        // We can't wrap text without breaking Prism token spans.
+        const code = bestEl.querySelector("code") || bestEl;
+        const codeLineOffset = line - bestLine - 1; // -1 for ``` fence
+        // Find the character position of the target line
+        const text = code.textContent;
+        let charPos = 0;
+        let nlCount = 0;
+        for (let i = 0; i < text.length && nlCount < codeLineOffset; i++) {
+            if (text[i] === "\n") nlCount++;
+            charPos = i + 1;
+        }
+        // Create a range spanning the target line to get its rect
+        try {
+            const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+            let offset = 0;
+            let startNode = null, startOff = 0, endNode = null, endOff = 0;
+            while (walker.nextNode()) {
+                const node = walker.currentNode;
+                const len = node.textContent.length;
+                if (!startNode && offset + len >= charPos) {
+                    startNode = node;
+                    startOff = charPos - offset;
+                }
+                // Find end of this line (next \n or end of text)
+                const lineEnd = text.indexOf("\n", charPos);
+                const endPos = lineEnd === -1 ? text.length : lineEnd;
+                if (!endNode && offset + len >= endPos) {
+                    endNode = node;
+                    endOff = endPos - offset;
+                }
+                if (startNode && endNode) break;
+                offset += len;
+            }
+            if (startNode && endNode) {
+                const lineRange = document.createRange();
+                lineRange.setStart(startNode, startOff);
+                lineRange.setEnd(endNode, endOff);
+                const lineRect = lineRange.getClientRects()[0];
+                if (lineRect) {
+                    const preRect = bestEl.getBoundingClientRect();
+                    const overlay = document.createElement("div");
+                    overlay.className = "cursor-sync-highlight cursor-sync-code-line";
+                    overlay.style.position = "absolute";
+                    overlay.style.left = "0";
+                    overlay.style.right = "0";
+                    overlay.style.top = (lineRect.top - preRect.top) + "px";
+                    overlay.style.height = lineRect.height + "px";
+                    overlay.style.pointerEvents = "none";
+                    bestEl.style.position = "relative";
+                    bestEl.appendChild(overlay);
+                }
+            }
+        } catch (_e) {
+            bestEl.classList.add("cursor-sync-highlight");
+        }
     } else {
         bestEl.classList.add("cursor-sync-highlight");
     }
@@ -1069,6 +1189,11 @@ function handleScrollToLine(data) {
 function _removeCursorHighlight(viewer) {
     const prev = viewer.querySelector(".cursor-sync-highlight");
     if (!prev) return;
+    // If highlight was a code block line overlay, just remove it
+    if (prev.classList.contains("cursor-sync-code-line")) {
+        prev.remove();
+        return;
+    }
     // If highlight was a wrapper span for a <br> line, unwrap it
     if (prev.classList.contains("cursor-sync-br-line")) {
         while (prev.firstChild) {
@@ -1085,52 +1210,13 @@ let _lastHighlightSourceLine = null;
 let _lastHighlightTargetLine = null;
 
 function _reapplyCursorSyncHighlight() {
-    if (_lastHighlightSourceLine == null) return;
+    if (_lastHighlightTargetLine == null) return;
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
-    // Don't re-apply if viewer has focus (user is editing in viewer)
     if (viewer.contains(document.activeElement)) return;
-    _removeCursorHighlight(viewer);
-    const elements = viewer.querySelectorAll("[data-source-line]");
-    let bestEl = null;
-    let bestLine = -1;
-    for (const el of elements) {
-        const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
-        if (srcLine <= _lastHighlightSourceLine && srcLine > bestLine) {
-            bestLine = srcLine;
-            bestEl = el;
-        }
-    }
-    if (!bestEl) return;
-    const targetLine = _lastHighlightTargetLine || _lastHighlightSourceLine;
-    // Handle <br> paragraph sub-line highlighting
-    if (bestEl.tagName === "P" && bestEl.querySelector("br")) {
-        const brOffset = targetLine - bestLine;
-        const brs = bestEl.querySelectorAll("br");
-        const span = document.createElement("span");
-        span.className = "cursor-sync-highlight cursor-sync-br-line";
-        if (brOffset === 0) {
-            let node = bestEl.firstChild;
-            while (node && !(node.nodeType === Node.ELEMENT_NODE && node.tagName === "BR")) {
-                const toMove = node;
-                node = node.nextSibling;
-                span.appendChild(toMove);
-            }
-            bestEl.insertBefore(span, bestEl.firstChild);
-            return;
-        } else if (brOffset > 0 && brOffset <= brs.length) {
-            const targetBr = brs[brOffset - 1];
-            let next = targetBr.nextSibling;
-            while (next && !(next.nodeType === Node.ELEMENT_NODE && next.tagName === "BR")) {
-                const toMove = next;
-                next = next.nextSibling;
-                span.appendChild(toMove);
-            }
-            targetBr.parentNode.insertBefore(span, targetBr.nextSibling);
-            return;
-        }
-    }
-    bestEl.classList.add("cursor-sync-highlight");
+    // Re-use handleScrollToLine to apply the highlight (no scroll needed
+    // since the element is already in view after a re-render).
+    handleScrollToLine({ line: _lastHighlightTargetLine, fromScroll: false });
 }
 
 // Re-apply cursor sync highlight after content re-renders (e.g. typing in CM)

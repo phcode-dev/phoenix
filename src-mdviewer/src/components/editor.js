@@ -10,7 +10,7 @@ import { initSlashMenu, destroySlashMenu, isSlashMenuVisible } from "./slash-men
 import { initLinkPopover, destroyLinkPopover } from "./link-popover.js";
 import { initImagePopover, destroyImagePopover } from "./image-popover.js";
 import { initLangPicker, destroyLangPicker, isLangPickerDropdownOpen } from "./lang-picker.js";
-import { highlightCode, renderAfterHTML, normalizeCodeLanguages, _annotateCodeBlockLines } from "./viewer.js";
+import { highlightCode, renderAfterHTML, normalizeCodeLanguages } from "./viewer.js";
 import { initMermaidEditor, destroyMermaidEditor, insertMermaidBlock, attachOverlays } from "./mermaid-editor.js";
 
 const devLog = import.meta.env.DEV ? console.log.bind(console, "[editor]") : () => {};
@@ -1531,21 +1531,14 @@ export function convertToMarkdown(contentEl) {
     const clone = contentEl.cloneNode(true);
     clone.querySelectorAll(".code-copy-btn").forEach((btn) => btn.remove());
     clone.querySelectorAll(".table-row-handles, .table-col-handles, .table-add-row-btn, .table-col-add-btn").forEach((el) => el.remove());
-    // Fix code blocks: replace <br> with \n and unwrap data-source-line spans.
+    // Fix code blocks: replace <br> with \n and flatten to plain text.
     // In contenteditable, Enter inside a span inserts <br> instead of \n.
     // Turndown needs plain text with \n for correct fenced code block output.
     clone.querySelectorAll("pre code").forEach((code) => {
         code.querySelectorAll("br").forEach((br) => {
             br.replaceWith("\n");
         });
-        // Unwrap data-source-line spans (inline them into the code element)
-        code.querySelectorAll("span[data-source-line]").forEach((span) => {
-            while (span.firstChild) {
-                span.parentNode.insertBefore(span.firstChild, span);
-            }
-            span.remove();
-        });
-        // Also unwrap any Prism token spans — get plain text for Turndown
+        // Unwrap Prism token spans — get plain text for Turndown
         code.textContent = code.textContent;
     });
     // Unwrap <p> inside <li> — marked renders "loose" lists with <p> wrapping,
@@ -1658,7 +1651,6 @@ export function initEditor() {
         const content = getContentEl();
         if (!content) return;
         _updateSourceLineAttrs(content, cmMarkdown);
-        _annotateCodeBlockLines();
     });
 
     on("state:editMode", (editing) => {
@@ -1798,9 +1790,7 @@ function enterEditMode(content) {
                     if (code.className.includes("language-")) {
                         Prism.highlightElement(code);
                     }
-                    // Step 4: re-annotate code block lines for scroll sync
-                    _annotateCodeBlockLines();
-                    // Step 5: restore cursor
+                    // Step 4: restore cursor
                     restoreCursor(content, off);
                 }, 500);
             }
