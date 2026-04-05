@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, beforeAll, afterAll, awaitsFor, it, awaitsForDone, expect, awaits*/
+/*global describe, beforeAll, beforeEach, afterAll, awaitsFor, it, awaitsForDone, expect, awaits*/
 
 define(function (require, exports, module) {
 
@@ -628,6 +628,13 @@ define(function (require, exports, module) {
                     }, "live dev to open", 20000);
                 }
             }, 30000);
+
+            beforeEach(async function () {
+                // Reset scroll and close files between tests to prevent state leakage
+                _setViewerScrollTop(0);
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close all between cache tests");
+            }, 10000);
 
             it("should switch between MD files with viewer showing correct content", async function () {
                 await _openMdFileAndWaitForPreview("doc1.md");

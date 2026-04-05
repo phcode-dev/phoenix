@@ -224,6 +224,13 @@ function updatePosition() {
       hide();
       return;
     }
+    // Skip if selection is inside a code block — formatting doesn't apply
+    const anchorEl = sel.anchorNode.nodeType === Node.ELEMENT_NODE
+      ? sel.anchorNode : sel.anchorNode.parentElement;
+    if (anchorEl && anchorEl.closest("pre")) {
+      hide();
+      return;
+    }
     // Require some meaningful selection length
     const text = sel.toString();
     if (text.length < 2) {

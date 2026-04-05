@@ -800,15 +800,11 @@ function handleReloadFile(data) {
 
 // --- Theme, edit mode, locale ---
 
-function handleSetTheme(data) {
+function handleSetTheme(_data) {
     // Force light theme for a paper-like appearance regardless of editor theme.
     // The theme infrastructure is preserved for future use.
-    const appliedTheme = "light";
-    // Skip if already applied to avoid reflows that can reset scroll position
-    if (document.documentElement.getAttribute("data-theme") === appliedTheme) return;
-    document.documentElement.setAttribute("data-theme", appliedTheme);
-    document.documentElement.style.colorScheme = "light";
-    setState({ theme: appliedTheme });
+    // Theme is set in index.html (data-theme="light") so no action needed here.
+    // Avoid setting attributes/styles to prevent reflows that reset scroll position.
 }
 
 function handleSetEditMode(data) {
