@@ -496,7 +496,7 @@
 .lang-picker.visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: none;
 }
 
 .lang-picker-trigger {

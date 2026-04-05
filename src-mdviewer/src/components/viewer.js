@@ -218,7 +218,11 @@ export function _annotateCodeBlockLines() {
             if (isNaN(preSourceLine)) return; // can't verify, keep existing
             const expectedFirst = String(preSourceLine + 1);
             if (existingSpan.getAttribute("data-source-line") === expectedFirst) {
-                return; // annotations are up to date
+                // Annotations are up to date — still remove data-source-line
+                // from <pre> so clicks on empty space don't report the block
+                // start line instead of the per-line annotation.
+                pre.removeAttribute("data-source-line");
+                return;
             }
             // Stale annotations — unwrap them before re-annotating
             code.querySelectorAll("span[data-source-line]").forEach((span) => {

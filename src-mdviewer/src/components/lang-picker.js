@@ -215,7 +215,17 @@ function openDropdown() {
   dropdownOpen = true;
   filterQuery = "";
   const dropdown = picker.querySelector(".lang-picker-dropdown");
-  if (dropdown) dropdown.classList.add("open");
+  if (dropdown) {
+    dropdown.classList.add("open");
+    // If picker + dropdown would be clipped below, move picker up
+    requestAnimationFrame(() => {
+      const pickerRect = picker.getBoundingClientRect();
+      if (pickerRect.bottom > window.innerHeight - 4) {
+        const overflow = pickerRect.bottom - window.innerHeight + 8;
+        picker.style.top = (parseFloat(picker.style.top) - overflow) + "px";
+      }
+    });
+  }
   updateSearchDisplay();
   populateList("");
 }
@@ -239,11 +249,12 @@ function show(preEl) {
 
   // Position near top-left of <pre>
   const rect = preEl.getBoundingClientRect();
+  const pickerH = picker.offsetHeight || 32;
   const pickerW = picker.offsetWidth || 180;
   let left = rect.left;
-  let top = rect.top - (picker.offsetHeight || 32) - 6;
+  let top = rect.top - pickerH - 6;
 
-  // If too close to top, show below the pre's top edge
+  // If not enough space above, show below the pre's top edge
   if (top < 4) {
     top = rect.top + 4;
   }
