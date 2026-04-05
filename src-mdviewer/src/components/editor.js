@@ -1553,6 +1553,9 @@ export function initEditor() {
 
 function enterEditMode(content) {
     content.setAttribute("contenteditable", "true");
+    content.setAttribute("spellcheck", "false");
+    content.setAttribute("autocorrect", "off");
+    content.setAttribute("autocapitalize", "off");
     content.classList.add("editing");
 
     document.execCommand("defaultParagraphSeparator", false, "p");
