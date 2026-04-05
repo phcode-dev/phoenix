@@ -11,6 +11,12 @@
   margin-inline: auto;
 }
 
+@media (min-width: 450px) {
+  .markdown-body {
+    padding-inline: 70px;
+  }
+}
+
 /* Headings — Confluence/Atlassian scale */
 .markdown-body h1,
 .markdown-body h2,
