@@ -14,6 +14,7 @@ let _syncId = 0;
 let _lastReceivedSyncId = -1;
 let _suppressContentChange = false;
 let _scrollFromCM = false;
+let _scrollFromViewer = false;
 let _baseURL = "";
 let _cursorPosBeforeEdit = null; // cursor position before current edit batch
 let _cursorPosDirty = false; // true after content changes, reset when emitted
@@ -426,6 +427,8 @@ export function initBridge() {
         const sourceLine = _getSourceLineFromElement(e.target);
         if (getState().editMode) {
             if (sourceLine != null) {
+                _scrollFromViewer = true;
+                setTimeout(() => { _scrollFromViewer = false; }, 500);
                 sendToParent("mdviewrScrollSync", { sourceLine });
             }
             return;
@@ -798,10 +801,11 @@ function handleReloadFile(data) {
 // --- Theme, edit mode, locale ---
 
 function handleSetTheme(data) {
-    const { theme } = data;
     // Force light theme for a paper-like appearance regardless of editor theme.
     // The theme infrastructure is preserved for future use.
     const appliedTheme = "light";
+    // Skip if already applied to avoid reflows that can reset scroll position
+    if (document.documentElement.getAttribute("data-theme") === appliedTheme) return;
     document.documentElement.setAttribute("data-theme", appliedTheme);
     document.documentElement.style.colorScheme = "light";
     setState({ theme: appliedTheme });
@@ -975,18 +979,14 @@ function handleScrollToLine(data) {
     const { line, fromScroll, tableCol } = data;
     if (line == null) return;
 
-    // In edit mode, ignore scroll-based sync from CM to prevent feedback
-    // loops (click in viewer → CM scroll → scroll sync back → viewer jumps).
-    if (fromScroll && getState().editMode) return;
+    // In edit mode, ignore scroll-based sync that originated from the viewer
+    // itself (feedback loop: viewer click → CM scroll → scroll sync back).
+    if (fromScroll && getState().editMode && _scrollFromViewer) return;
 
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
 
-    // In edit mode, skip CM cursor sync when the viewer has focus — the user
-    // is actively editing and highlight span creation/removal would displace
-    // the cursor.
-    if (getState().editMode && viewer.contains(document.activeElement)) return;
-    if (!viewer) return;
+    const skipHighlight = getState().editMode && viewer.contains(document.activeElement);
 
     const elements = viewer.querySelectorAll("[data-source-line]");
     let bestEl = null;
@@ -1089,7 +1089,8 @@ function handleScrollToLine(data) {
     setTimeout(() => { _scrollFromCM = false; }, 200);
 
     // Persistent highlight on the element corresponding to the CM cursor.
-    // Only show when CM has focus (not when viewer has focus).
+    // Skip highlight when viewer has focus to avoid cursor displacement.
+    if (skipHighlight) return;
     _removeCursorHighlight(viewer);
 
     // For <br> paragraphs, wrap only the specific line's content in a

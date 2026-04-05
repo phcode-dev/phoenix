@@ -329,6 +329,12 @@ export function isLangPickerDropdownOpen() {
   return dropdownOpen;
 }
 
+function onScroll() {
+  if (picker && picker.classList.contains("visible")) {
+    hide();
+  }
+}
+
 export function initLangPicker(editorEl) {
   contentEl = editorEl;
   buildPicker();
@@ -338,6 +344,7 @@ export function initLangPicker(editorEl) {
 
   document.addEventListener("selectionchange", updatePosition);
   contentEl.addEventListener("mouseup", updatePosition);
+  document.addEventListener("scroll", onScroll, true);
   contentEl.addEventListener("keyup", updatePosition);
   document.addEventListener("mousedown", onDocumentMousedown);
 }
@@ -351,6 +358,7 @@ export function destroyLangPicker() {
   }
   document.removeEventListener("selectionchange", updatePosition);
   document.removeEventListener("mousedown", onDocumentMousedown);
+  document.removeEventListener("scroll", onScroll, true);
   if (picker) picker.innerHTML = "";
   contentEl = null;
   currentPre = null;
