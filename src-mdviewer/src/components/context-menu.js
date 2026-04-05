@@ -8,6 +8,24 @@ let menu = null;
 let cleanupFns = [];
 let savedRange = null;
 
+// Detect clipboard API availability (blocked in Safari/Firefox sandboxed iframes)
+let _clipboardApiSupported = null;
+function _isClipboardApiAvailable() {
+    if (_clipboardApiSupported !== null) { return _clipboardApiSupported; }
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+        _clipboardApiSupported = false;
+        return false;
+    }
+    // Probe by calling readText — if permissions policy blocks it, it throws synchronously
+    // or rejects immediately. Cache the result after first context menu open.
+    navigator.clipboard.readText()
+        .then(() => { _clipboardApiSupported = true; })
+        .catch(() => { _clipboardApiSupported = false; });
+    // Optimistic for first open on Chromium; will correct on next open if blocked
+    _clipboardApiSupported = true;
+    return _clipboardApiSupported;
+}
+
 export function initContextMenu() {
     menu = document.getElementById("context-menu");
     if (!menu) return;
@@ -141,16 +159,20 @@ function buildItems(ctx) {
             });
         }
 
-        items.push({
-            label: t("context.paste"),
-            shortcut: `${modLabel}+V`,
-            action: () => pasteFromClipboard(false)
-        });
-        items.push({
-            label: t("context.paste_plain"),
-            shortcut: `${modLabel}+\u21E7+V`,
-            action: () => pasteFromClipboard(true)
-        });
+        // Clipboard API paste only works in Chromium with permissions policy.
+        // In Safari/Firefox sandboxed iframes, it's blocked. Users can still Ctrl/Cmd+V.
+        if (_isClipboardApiAvailable()) {
+            items.push({
+                label: t("context.paste"),
+                shortcut: `${modLabel}+V`,
+                action: () => pasteFromClipboard(false)
+            });
+            items.push({
+                label: t("context.paste_plain"),
+                shortcut: `${modLabel}+\u21E7+V`,
+                action: () => pasteFromClipboard(true)
+            });
+        }
 
         items.push({ divider: true });
 

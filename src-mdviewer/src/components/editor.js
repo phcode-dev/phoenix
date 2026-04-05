@@ -1024,7 +1024,44 @@ function showTableContextMenu(x, y, ctx, contentEl) {
     const menu = document.getElementById("table-context-menu");
     if (!menu) return;
 
-    const items = [
+    const sel = window.getSelection();
+    const hasSelection = sel && !sel.isCollapsed;
+
+    const items = [];
+
+    // Cut/Copy/Paste
+    if (hasSelection) {
+        items.push({
+            label: t("context.cut") || "Cut",
+            action: () => { document.execCommand("cut"); }
+        });
+        items.push({
+            label: t("context.copy") || "Copy",
+            action: () => { document.execCommand("copy"); }
+        });
+    }
+    if (navigator.clipboard && navigator.clipboard.readText) {
+        items.push({
+            label: t("context.paste") || "Paste",
+            action: async () => {
+                contentEl.focus({ preventScroll: true });
+                try {
+                    const text = await navigator.clipboard.readText();
+                    if (text) {
+                        document.execCommand("insertText", false, text.replace(/[\r\n]+/g, " ").trim());
+                    }
+                } catch {
+                    document.execCommand("paste");
+                }
+            }
+        });
+    }
+    if (hasSelection || (navigator.clipboard && navigator.clipboard.readText)) {
+        items.push({ divider: true });
+    }
+
+    // Table operations
+    items.push(
         { label: t("table.add_row_above"), action: () => { flushSnapshot(contentEl); addTableRow(ctx.table, null, ctx.tr); dispatchInputEvent(contentEl); } },
         { label: t("table.add_row_below"), action: () => { flushSnapshot(contentEl); addTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
         { label: t("table.add_col_left"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx - 1); dispatchInputEvent(contentEl); } },
@@ -1034,7 +1071,7 @@ function showTableContextMenu(x, y, ctx, contentEl) {
         { label: t("table.delete_col"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
         { divider: true },
         { label: t("table.delete_table"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTable(ctx.table); dispatchInputEvent(contentEl); } }
-    ];
+    );
 
     menu.innerHTML = "";
     items.forEach((item) => {
