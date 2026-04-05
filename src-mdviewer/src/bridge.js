@@ -799,13 +799,12 @@ function handleReloadFile(data) {
 
 function handleSetTheme(data) {
     const { theme } = data;
-    document.documentElement.setAttribute("data-theme", theme);
-    if (theme === "dark") {
-        document.documentElement.style.colorScheme = "dark";
-    } else {
-        document.documentElement.style.colorScheme = "light";
-    }
-    setState({ theme });
+    // Force light theme for a paper-like appearance regardless of editor theme.
+    // The theme infrastructure is preserved for future use.
+    const appliedTheme = "light";
+    document.documentElement.setAttribute("data-theme", appliedTheme);
+    document.documentElement.style.colorScheme = "light";
+    setState({ theme: appliedTheme });
 }
 
 function handleSetEditMode(data) {
@@ -994,7 +993,7 @@ function handleScrollToLine(data) {
     let bestLine = -1;
     for (const el of elements) {
         const srcLine = parseInt(el.getAttribute("data-source-line"), 10);
-        if (srcLine <= line && srcLine > bestLine) {
+        if (srcLine <= line && srcLine >= bestLine) {
             bestLine = srcLine;
             bestEl = el;
         }
