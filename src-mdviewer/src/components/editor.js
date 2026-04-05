@@ -10,7 +10,7 @@ import { initSlashMenu, destroySlashMenu, isSlashMenuVisible } from "./slash-men
 import { initLinkPopover, destroyLinkPopover } from "./link-popover.js";
 import { initImagePopover, destroyImagePopover } from "./image-popover.js";
 import { initLangPicker, destroyLangPicker, isLangPickerDropdownOpen } from "./lang-picker.js";
-import { highlightCode, renderAfterHTML, normalizeCodeLanguages } from "./viewer.js";
+import { highlightCode, renderAfterHTML, normalizeCodeLanguages, _annotateCodeBlockLines } from "./viewer.js";
 import { initMermaidEditor, destroyMermaidEditor, insertMermaidBlock, attachOverlays } from "./mermaid-editor.js";
 
 const devLog = import.meta.env.DEV ? console.log.bind(console, "[editor]") : () => {};
@@ -1507,6 +1507,23 @@ export function convertToMarkdown(contentEl) {
     const clone = contentEl.cloneNode(true);
     clone.querySelectorAll(".code-copy-btn").forEach((btn) => btn.remove());
     clone.querySelectorAll(".table-row-handles, .table-col-handles, .table-add-row-btn, .table-col-add-btn").forEach((el) => el.remove());
+    // Fix code blocks: replace <br> with \n and unwrap data-source-line spans.
+    // In contenteditable, Enter inside a span inserts <br> instead of \n.
+    // Turndown needs plain text with \n for correct fenced code block output.
+    clone.querySelectorAll("pre code").forEach((code) => {
+        code.querySelectorAll("br").forEach((br) => {
+            br.replaceWith("\n");
+        });
+        // Unwrap data-source-line spans (inline them into the code element)
+        code.querySelectorAll("span[data-source-line]").forEach((span) => {
+            while (span.firstChild) {
+                span.parentNode.insertBefore(span.firstChild, span);
+            }
+            span.remove();
+        });
+        // Also unwrap any Prism token spans — get plain text for Turndown
+        code.textContent = code.textContent;
+    });
     // Unwrap <p> inside <li> — marked renders "loose" lists with <p> wrapping,
     // but Turndown converts that to blank lines between items. Unwrapping makes tight lists.
     clone.querySelectorAll("li > p").forEach((p) => {
@@ -1534,6 +1551,67 @@ export function convertToMarkdown(contentEl) {
 let contentChangeTimer = null;
 const CONTENT_CHANGE_DEBOUNCE = 300;
 
+/**
+ * Re-compute data-source-line attributes on top-level block elements
+ * by walking the generated markdown and mapping line numbers back to DOM nodes.
+ * This keeps scroll sync working after edits in the viewer.
+ */
+function _updateSourceLineAttrs(contentEl, markdown) {
+    const mdLines = markdown.split("\n");
+    const children = contentEl.children;
+    let mdLineIdx = 0;
+
+    for (let i = 0; i < children.length; i++) {
+        const el = children[i];
+        // Skip UI elements (handles, overlays, etc.)
+        if (el.classList.contains("table-row-handles") ||
+            el.classList.contains("table-col-handles") ||
+            el.classList.contains("table-add-row-btn") ||
+            el.classList.contains("table-col-add-btn") ||
+            el.classList.contains("cursor-sync-highlight")) {
+            continue;
+        }
+
+        // Skip blank lines in markdown to find the next block
+        while (mdLineIdx < mdLines.length && mdLines[mdLineIdx].trim() === "") {
+            mdLineIdx++;
+        }
+        if (mdLineIdx >= mdLines.length) break;
+
+        // Assign line number (1-based)
+        el.setAttribute("data-source-line", String(mdLineIdx + 1));
+
+        // Advance past this element's markdown lines
+        const tag = el.tagName;
+        if (tag === "PRE" || (tag === "DIV" && el.classList.contains("table-wrapper"))) {
+            // Code blocks: find closing ``` or end of fenced block
+            // Tables: find end of table rows
+            const startLine = mdLineIdx;
+            mdLineIdx++;
+            if (tag === "PRE") {
+                // Skip to closing ```
+                while (mdLineIdx < mdLines.length && !mdLines[mdLineIdx].match(/^```\s*$/)) {
+                    mdLineIdx++;
+                }
+                mdLineIdx++; // skip the closing ```
+            } else {
+                // Table: skip while lines start with |
+                while (mdLineIdx < mdLines.length && mdLines[mdLineIdx].startsWith("|")) {
+                    mdLineIdx++;
+                }
+            }
+        } else {
+            // Single-line or multi-line block: advance to next blank line.
+            // Paragraphs with <br> (soft line breaks) are a single block —
+            // the data-source-line on the <p> points to the block's start.
+            mdLineIdx++;
+            while (mdLineIdx < mdLines.length && mdLines[mdLineIdx].trim() !== "") {
+                mdLineIdx++;
+            }
+        }
+    }
+}
+
 function emitContentChange(contentEl) {
     clearTimeout(contentChangeTimer);
     contentChangeTimer = setTimeout(() => {
@@ -1548,6 +1626,16 @@ function getContentEl() {
 
 export function initEditor() {
     turndown = createTurndown();
+
+    // When CM sends back its actual text after an edit, use it to update
+    // data-source-line attributes. This is more accurate than using the
+    // markdown from convertToMarkdown, which may differ in formatting.
+    on("editor:source-lines", (cmMarkdown) => {
+        const content = getContentEl();
+        if (!content) return;
+        _updateSourceLineAttrs(content, cmMarkdown);
+        _annotateCodeBlockLines();
+    });
 
     on("state:editMode", (editing) => {
         const content = getContentEl();
@@ -1666,19 +1754,30 @@ function enterEditMode(content) {
                 ? sel.anchorNode.closest("pre")
                 : sel.anchorNode.parentElement?.closest("pre");
             if (pre && content.contains(pre)) {
+                // Debounced re-highlighting for code blocks.
+                // First normalize <br> → \n (contenteditable inserts <br>
+                // for Enter, but Prism reads textContent which ignores <br>).
+                // Then re-run Prism with cursor preservation.
                 clearTimeout(codeHighlightTimer);
                 codeHighlightTimer = setTimeout(() => {
                     const code = pre.querySelector("code");
                     if (!code) return;
+                    // Step 1: normalize <br> → \n BEFORE anything else
+                    code.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+                    // Step 2: save cursor AFTER normalization
+                    const off = getCursorOffset(content);
+                    // Step 3: apply language class + Prism highlight
                     const lang = pre.getAttribute("data-language");
                     if (lang && !code.className.includes(`language-${lang}`)) {
                         code.className = `language-${lang}`;
                     }
                     if (code.className.includes("language-")) {
-                        const off = getCursorOffset(content);
                         Prism.highlightElement(code);
-                        restoreCursor(content, off);
                     }
+                    // Step 4: re-annotate code block lines for scroll sync
+                    _annotateCodeBlockLines();
+                    // Step 5: restore cursor
+                    restoreCursor(content, off);
                 }, 500);
             }
         }

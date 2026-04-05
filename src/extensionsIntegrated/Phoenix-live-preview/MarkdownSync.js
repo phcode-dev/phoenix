@@ -358,11 +358,16 @@ define(function (require, exports, module) {
             return;
         }
 
+        const mdText = _doc.getText();
         iframeWindow.postMessage({
             type: "MDVIEWR_SWITCH_FILE",
-            markdown: _doc.getText(),
+            markdown: mdText,
             baseURL: _baseURL,
             filePath: _doc.file.fullPath
+        }, "*");
+        iframeWindow.postMessage({
+            type: "MDVIEWR_SOURCE_LINES",
+            markdown: mdText
         }, "*");
     }
 
@@ -375,11 +380,18 @@ define(function (require, exports, module) {
             return;
         }
 
+        const mdText = _doc.getText();
         iframeWindow.postMessage({
             type: "MDVIEWR_SET_CONTENT",
-            markdown: _doc.getText(),
+            markdown: mdText,
             baseURL: _baseURL,
             filePath: _doc.file.fullPath
+        }, "*");
+        // Send source line mapping so the iframe can annotate sub-element
+        // lines (e.g. <br> within paragraphs) on first load.
+        iframeWindow.postMessage({
+            type: "MDVIEWR_SOURCE_LINES",
+            markdown: mdText
         }, "*");
     }
 
@@ -500,6 +512,18 @@ define(function (require, exports, module) {
         }
 
         _applyDiffToEditor(markdown);
+
+        // Send back the actual CM text so the iframe can compute accurate
+        // data-source-line attributes. The markdown from convertToMarkdown
+        // may differ slightly from CM's content (e.g. table formatting),
+        // causing line number drift if used directly.
+        const iframeWindow = _getIframeWindow();
+        if (iframeWindow && _doc) {
+            iframeWindow.postMessage({
+                type: "MDVIEWR_SOURCE_LINES",
+                markdown: _doc.getText()
+            }, "*");
+        }
 
         // Push cursor position for undo/redo restore
         if (data.cursorPos) {
