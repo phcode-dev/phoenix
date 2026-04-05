@@ -15,6 +15,7 @@ let _lastReceivedSyncId = -1;
 let _suppressContentChange = false;
 let _scrollFromCM = false;
 let _scrollFromViewer = false;
+let _suppressScrollToLine = false;
 let _baseURL = "";
 let _cursorPosBeforeEdit = null; // cursor position before current edit batch
 let _cursorPosDirty = false; // true after content changes, reset when emitted
@@ -657,6 +658,11 @@ function handleSwitchFile(data) {
 
     _suppressContentChange = true;
 
+    // Suppress scroll-to-line from CM during file switch — the doc cache
+    // restores the correct scroll position; CM cursor activity would override it.
+    _suppressScrollToLine = true;
+    setTimeout(() => { _suppressScrollToLine = false; }, 500);
+
     // Edit mode is global for the md editor frame — preserve it across file switches
     const wasEditMode = getState().editMode;
 
@@ -974,6 +980,9 @@ function _getSourceLineFromElement(el) {
 function handleScrollToLine(data) {
     const { line, fromScroll, tableCol } = data;
     if (line == null) return;
+
+    // Suppress during file switch — doc cache restores the correct scroll
+    if (_suppressScrollToLine) return;
 
     // In edit mode, ignore scroll-based sync that originated from the viewer
     // itself (feedback loop: viewer click → CM scroll → scroll sync back).
