@@ -358,16 +358,11 @@ define(function (require, exports, module) {
             return;
         }
 
-        const mdText = _doc.getText();
         iframeWindow.postMessage({
             type: "MDVIEWR_SWITCH_FILE",
-            markdown: mdText,
+            markdown: _doc.getText(),
             baseURL: _baseURL,
             filePath: _doc.file.fullPath
-        }, "*");
-        iframeWindow.postMessage({
-            type: "MDVIEWR_SOURCE_LINES",
-            markdown: mdText
         }, "*");
     }
 
@@ -380,18 +375,11 @@ define(function (require, exports, module) {
             return;
         }
 
-        const mdText = _doc.getText();
         iframeWindow.postMessage({
             type: "MDVIEWR_SET_CONTENT",
-            markdown: mdText,
+            markdown: _doc.getText(),
             baseURL: _baseURL,
             filePath: _doc.file.fullPath
-        }, "*");
-        // Send source line mapping so the iframe can annotate sub-element
-        // lines (e.g. <br> within paragraphs) on first load.
-        iframeWindow.postMessage({
-            type: "MDVIEWR_SOURCE_LINES",
-            markdown: mdText
         }, "*");
     }
 
