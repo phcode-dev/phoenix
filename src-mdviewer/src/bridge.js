@@ -958,6 +958,11 @@ function handleScrollToLine(data) {
     const { line, fromScroll, tableCol } = data;
     if (line == null) return;
 
+    // In edit mode, ignore scroll-based sync from CM to prevent feedback
+    // loops (click in viewer → CM scroll → scroll sync back → viewer jumps).
+    // Only cursor-based sync (fromScroll=false) should reposition the viewer.
+    if (fromScroll && getState().editMode) return;
+
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
 
@@ -983,35 +988,96 @@ function handleScrollToLine(data) {
         }
     }
 
+    // For paragraphs with <br> (soft line breaks), find the specific visual
+    // line within the paragraph by counting <br> elements. The target line
+    // minus the paragraph's start line gives the <br> offset.
+    let scrollTarget = bestEl;
+    if (bestEl.tagName === "P" && bestLine < line) {
+        const brOffset = line - bestLine;
+        const brs = bestEl.querySelectorAll("br");
+        if (brOffset > 0 && brOffset <= brs.length) {
+            // Use the <br> element as scroll target — it's at the right
+            // vertical position for the specific line within the paragraph.
+            scrollTarget = brs[brOffset - 1];
+        }
+    }
+
     const container = document.getElementById("app-viewer");
     if (!container) return;
     const containerRect = container.getBoundingClientRect();
-    const elRect = bestEl.getBoundingClientRect();
+    const elRect = scrollTarget.getBoundingClientRect();
 
     // Suppress viewer→CM scroll feedback for any CM-initiated scroll
     _scrollFromCM = true;
     if (fromScroll) {
         // Sync scroll: always align to top, even if visible
-        bestEl.scrollIntoView({ behavior: "instant", block: "start" });
+        scrollTarget.scrollIntoView({ behavior: "instant", block: "start" });
     } else {
         // Cursor-based scroll: only scroll if not visible, center it
         const isVisible = elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
         if (!isVisible) {
-            bestEl.scrollIntoView({ behavior: "instant", block: "center" });
+            scrollTarget.scrollIntoView({ behavior: "instant", block: "center" });
         }
     }
     setTimeout(() => { _scrollFromCM = false; }, 200);
 
     // Persistent highlight on the element corresponding to the CM cursor.
     // Only show when CM has focus (not when viewer has focus).
-    const prev = viewer.querySelector(".cursor-sync-highlight");
-    if (prev) { prev.classList.remove("cursor-sync-highlight"); }
-    bestEl.classList.add("cursor-sync-highlight");
+    _removeCursorHighlight(viewer);
+
+    // For <br> paragraphs, wrap only the specific line's content in a
+    // highlight span instead of highlighting the whole <p>.
+    if (bestEl.tagName === "P" && bestEl.querySelector("br")) {
+        const brOffset = line - bestLine;
+        const brs = bestEl.querySelectorAll("br");
+        const span = document.createElement("span");
+        span.className = "cursor-sync-highlight cursor-sync-br-line";
+        if (brOffset === 0) {
+            // First line: wrap nodes before the first <br>
+            let node = bestEl.firstChild;
+            while (node && !(node.nodeType === Node.ELEMENT_NODE && node.tagName === "BR")) {
+                const toMove = node;
+                node = node.nextSibling;
+                span.appendChild(toMove);
+            }
+            bestEl.insertBefore(span, bestEl.firstChild);
+        } else if (brOffset > 0 && brOffset <= brs.length) {
+            // Subsequent lines: wrap nodes after the target <br>
+            const targetBr = brs[brOffset - 1];
+            let next = targetBr.nextSibling;
+            while (next && !(next.nodeType === Node.ELEMENT_NODE && next.tagName === "BR")) {
+                const toMove = next;
+                next = next.nextSibling;
+                span.appendChild(toMove);
+            }
+            targetBr.parentNode.insertBefore(span, targetBr.nextSibling);
+        } else {
+            bestEl.classList.add("cursor-sync-highlight");
+        }
+    } else {
+        bestEl.classList.add("cursor-sync-highlight");
+    }
     _lastHighlightSourceLine = bestLine;
+    _lastHighlightTargetLine = line;
+}
+
+function _removeCursorHighlight(viewer) {
+    const prev = viewer.querySelector(".cursor-sync-highlight");
+    if (!prev) return;
+    // If highlight was a wrapper span for a <br> line, unwrap it
+    if (prev.classList.contains("cursor-sync-br-line")) {
+        while (prev.firstChild) {
+            prev.parentNode.insertBefore(prev.firstChild, prev);
+        }
+        prev.remove();
+    } else {
+        prev.classList.remove("cursor-sync-highlight");
+    }
 }
 
 // Track last highlighted source line so we can re-apply after re-renders
 let _lastHighlightSourceLine = null;
+let _lastHighlightTargetLine = null;
 
 function _reapplyCursorSyncHighlight() {
     if (_lastHighlightSourceLine == null) return;
@@ -1019,6 +1085,7 @@ function _reapplyCursorSyncHighlight() {
     if (!viewer) return;
     // Don't re-apply if viewer has focus (user is editing in viewer)
     if (viewer.contains(document.activeElement)) return;
+    _removeCursorHighlight(viewer);
     const elements = viewer.querySelectorAll("[data-source-line]");
     let bestEl = null;
     let bestLine = -1;
@@ -1029,9 +1096,36 @@ function _reapplyCursorSyncHighlight() {
             bestEl = el;
         }
     }
-    if (bestEl) {
-        bestEl.classList.add("cursor-sync-highlight");
+    if (!bestEl) return;
+    const targetLine = _lastHighlightTargetLine || _lastHighlightSourceLine;
+    // Handle <br> paragraph sub-line highlighting
+    if (bestEl.tagName === "P" && bestEl.querySelector("br")) {
+        const brOffset = targetLine - bestLine;
+        const brs = bestEl.querySelectorAll("br");
+        const span = document.createElement("span");
+        span.className = "cursor-sync-highlight cursor-sync-br-line";
+        if (brOffset === 0) {
+            let node = bestEl.firstChild;
+            while (node && !(node.nodeType === Node.ELEMENT_NODE && node.tagName === "BR")) {
+                const toMove = node;
+                node = node.nextSibling;
+                span.appendChild(toMove);
+            }
+            bestEl.insertBefore(span, bestEl.firstChild);
+            return;
+        } else if (brOffset > 0 && brOffset <= brs.length) {
+            const targetBr = brs[brOffset - 1];
+            let next = targetBr.nextSibling;
+            while (next && !(next.nodeType === Node.ELEMENT_NODE && next.tagName === "BR")) {
+                const toMove = next;
+                next = next.nextSibling;
+                span.appendChild(toMove);
+            }
+            targetBr.parentNode.insertBefore(span, targetBr.nextSibling);
+            return;
+        }
     }
+    bestEl.classList.add("cursor-sync-highlight");
 }
 
 // Re-apply cursor sync highlight after content re-renders (e.g. typing in CM)
@@ -1044,8 +1138,7 @@ on("file:rendered", () => {
 document.addEventListener("focusin", (e) => {
     const viewer = document.getElementById("viewer-content");
     if (viewer && viewer.contains(e.target)) {
-        const prev = viewer.querySelector(".cursor-sync-highlight");
-        if (prev) { prev.classList.remove("cursor-sync-highlight"); }
+        _removeCursorHighlight(viewer);
         _lastHighlightSourceLine = null;
     }
 });
