@@ -313,24 +313,32 @@
 }
 
 /* Task lists */
-.markdown-body .contains-task-list {
+/* Task list: target li elements that contain a checkbox directly,
+   since marked v17 does not add task-list-item/contains-task-list classes. */
+.markdown-body li:has(> input[type="checkbox"]) {
   list-style: none;
-  padding-inline-start: 0;
-}
-
-.markdown-body .task-list-item {
   position: relative;
   padding-inline-start: 1.75em;
+  margin-inline-start: -1.75em;
+  min-height: 1.5em;
 }
 
-.markdown-body .task-list-item input[type="checkbox"] {
+.markdown-body li > input[type="checkbox"] {
   position: absolute;
   inset-inline-start: 0;
   top: 0.3em;
   width: 1em;
   height: 1em;
+  margin: 0;
   accent-color: var(--color-accent);
   pointer-events: none;
+  cursor: default;
+}
+
+/* In edit mode, checkboxes are enabled */
+.markdown-body li > input[type="checkbox"]:not([disabled]) {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 /* Horizontal rule */

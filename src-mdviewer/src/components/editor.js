@@ -2099,6 +2099,32 @@ function enterEditMode(content) {
             return;
         }
 
+        // Backspace right after a checkbox → remove the checkbox
+        if (e.key === "Backspace" && !mod) {
+            const sel2 = window.getSelection();
+            if (sel2 && sel2.isCollapsed && sel2.rangeCount) {
+                const range2 = sel2.getRangeAt(0);
+                const li = (range2.startContainer.nodeType === Node.TEXT_NODE
+                    ? range2.startContainer.parentElement : range2.startContainer)?.closest("li");
+                if (li) {
+                    const cb = li.querySelector('input[type="checkbox"]');
+                    if (cb) {
+                        // Check if cursor is right after the checkbox
+                        const cbIdx = Array.from(li.childNodes).indexOf(cb);
+                        const isAfterCb = (range2.startContainer === li && range2.startOffset === cbIdx + 1) ||
+                            (range2.startContainer.nodeType === Node.TEXT_NODE &&
+                             range2.startOffset === 0 && range2.startContainer.previousSibling === cb);
+                        if (isAfterCb) {
+                            e.preventDefault();
+                            cb.remove();
+                            content.dispatchEvent(new Event("input", { bubbles: true }));
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
         // Backspace at start of heading → convert to paragraph
         if (e.key === "Backspace" && !mod) {
             const sel2 = window.getSelection();
@@ -2340,7 +2366,31 @@ function enterEditMode(content) {
     };
     content.addEventListener("keydown", keydownHandler);
 
-    selectionHandler = () => broadcastSelectionState();
+    selectionHandler = () => {
+        // Prevent cursor from being placed before a checkbox in task list items.
+        // In contenteditable, the caret can land at offset 0 in an <li> before
+        // the <input>, which looks wrong (cursor appears before the bullet).
+        const sel = window.getSelection();
+        if (sel && sel.isCollapsed && sel.anchorNode) {
+            const li = sel.anchorNode.nodeType === Node.ELEMENT_NODE
+                ? sel.anchorNode.closest("li")
+                : sel.anchorNode.parentElement?.closest("li");
+            if (li) {
+                const cb = li.querySelector('input[type="checkbox"]');
+                if (cb && (sel.anchorNode === li && sel.anchorOffset === 0 ||
+                    sel.anchorNode === cb || cb.contains(sel.anchorNode))) {
+                    const r = document.createRange();
+                    // Place cursor right after the checkbox
+                    const cbIdx = Array.from(li.childNodes).indexOf(cb);
+                    r.setStart(li, cbIdx + 1);
+                    r.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(r);
+                }
+            }
+        }
+        broadcastSelectionState();
+    };
     document.addEventListener("selectionchange", selectionHandler);
     selectionFallbackMouseUp = () => broadcastSelectionState();
     selectionFallbackKeyUp = () => broadcastSelectionState();
