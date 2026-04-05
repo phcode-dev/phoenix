@@ -869,6 +869,11 @@ define(function (require, exports, module) {
         if (!currentDoc) {
             return;
         }
+        // Only render markdown files — skip binary, json, and other non-markdown files
+        // (can happen when previewDetails is stale from async getPreviewDetails)
+        if (!utils.isMarkdownFile(currentDoc.file.fullPath)) {
+            return;
+        }
 
         const mdFileURL = encodeURI(previewDetails.URL);
         const baseURL = mdFileURL.substring(0, mdFileURL.lastIndexOf("/") + 1);
@@ -1179,6 +1184,7 @@ define(function (require, exports, module) {
         if (_isMdviewrActive && urlPinned) {
             return;
         }
+
         if(!LivePreviewSettings.isUsingCustomServer() && !LiveDevelopment.isActive()
             && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
             // we do this only once after project switch if live preview for a doc is not active.

@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, beforeAll, afterAll, awaitsFor, it, awaitsForDone, expect*/
+/*global describe, beforeAll, afterAll, awaitsFor, awaits, it, awaitsForDone, expect*/
 
 define(function (require, exports, module) {
 
@@ -446,6 +446,96 @@ define(function (require, exports, module) {
             // Run all search tests in both modes
             execSearchTests("edit", _enterEditMode);
             execSearchTests("reader", _enterReaderMode);
+        });
+
+        describe("Non-markdown file preview behavior", function () {
+
+            function _getMdPreviewH1() {
+                const mdDoc = _getMdIFrameDoc();
+                if (!mdDoc) { return null; }
+                const h1 = mdDoc.querySelector("#viewer-content h1");
+                return h1 ? h1.textContent : null;
+            }
+
+            it("should not render binary/json files in md viewer when switching from md", async function () {
+                // Open a markdown file first
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["doc1.md"]),
+                    "open doc1.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+
+                // Remember what the md viewer is showing
+                const mdH1Before = _getMdPreviewH1();
+                expect(mdH1Before).not.toBeNull();
+
+                // Switch to a JSON file (non-markdown, non-previewable)
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["test-data.json"]),
+                    "open test-data.json");
+                // Negative assertion: wait for any async switch to settle
+                await awaits(500);
+
+                // The md viewer should still show the last md file's content,
+                // NOT the json file's content
+                const mdH1After = _getMdPreviewH1();
+                expect(mdH1After).toBe(mdH1Before);
+
+                // The md viewer content should NOT contain json data
+                const mdDoc = _getMdIFrameDoc();
+                const viewerText = mdDoc.getElementById("viewer-content").textContent;
+                expect(viewerText).not.toContain('"name"');
+                expect(viewerText).not.toContain('"value"');
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close test-data.json");
+            }, 15000);
+
+            it("should resume md preview when switching back to md from non-md file", async function () {
+                // Open doc1.md
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["doc1.md"]),
+                    "open doc1.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                const doc1H1 = _getMdPreviewH1();
+
+                // Switch to JSON
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["test-data.json"]),
+                    "open test-data.json");
+                await awaits(500);
+
+                // Switch to doc2.md — should show doc2 content, not doc1 or json
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["doc2.md"]),
+                    "open doc2.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+
+                const doc2H1 = _getMdPreviewH1();
+                expect(doc2H1).not.toBeNull();
+                expect(doc2H1).not.toBe(doc1H1);
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close doc2.md");
+            }, 15000);
+
+            it("should keep last md preview when switching to HTML file", async function () {
+                // Open a markdown file
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["doc1.md"]),
+                    "open doc1.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                const mdH1 = _getMdPreviewH1();
+
+                // Switch to HTML — live preview should switch to HTML, hiding md viewer
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "open simple.html");
+                await awaits(500);
+
+                // MD iframe should be hidden (HTML live preview takes over)
+                const mdIFrame = _getMdPreviewIFrame();
+                const mdHidden = !mdIFrame || mdIFrame.style.display === "none";
+                // OR if md viewer stayed visible, its content should be the last md file
+                if (!mdHidden) {
+                    expect(_getMdPreviewH1()).toBe(mdH1);
+                }
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close simple.html");
+            }, 15000);
         });
     });
 });
