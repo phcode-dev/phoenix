@@ -282,6 +282,9 @@ export function initBridge() {
             case "MDVIEWR_RERENDER_CONTENT":
                 handleRerenderContent(data);
                 break;
+            case "MDVIEWR_SOURCE_LINES":
+                emit("editor:source-lines", data.markdown);
+                break;
             case "MDVIEWR_TOOLBAR_STATE":
                 if (data.state) {
                     emit("editor:selection-state", data.state);
@@ -925,10 +928,26 @@ function _restoreCursorPosition(contentEl, pos) {
 }
 
 function _getSourceLineFromElement(el) {
+    // Use the current selection to determine exact position within <br> paragraphs
+    const sel = window.getSelection();
+    const cursorNode = sel && sel.rangeCount ? sel.getRangeAt(0).startContainer : null;
+
     while (el && el !== document.body) {
         const attr = el.getAttribute && el.getAttribute("data-source-line");
         if (attr != null) {
-            return parseInt(attr, 10);
+            let line = parseInt(attr, 10);
+            // For paragraphs with <br> (soft line breaks), count how many
+            // <br> elements precede the cursor to get the exact CM line.
+            if (el.tagName === "P" && cursorNode && el.querySelector("br")) {
+                const brs = el.querySelectorAll("br");
+                for (const br of brs) {
+                    const pos = br.compareDocumentPosition(cursorNode);
+                    if (pos & Node.DOCUMENT_POSITION_FOLLOWING || pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                        line++;
+                    }
+                }
+            }
+            return line;
         }
         el = el.parentElement;
     }

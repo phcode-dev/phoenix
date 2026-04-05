@@ -74,6 +74,7 @@ export function initViewer() {
 
         const newContent = document.createElement("div");
         newContent.innerHTML = parseResult.html;
+
         morphdom(content, newContent, { childrenOnly: true });
 
         // Restore saved image nodes — find new <img> by src and swap
@@ -200,17 +201,34 @@ export function highlightCode() {
  * enabling per-line cursor sync for code blocks.
  * Must run AFTER Prism highlighting since Prism replaces innerHTML.
  */
-function _annotateCodeBlockLines() {
+export function _annotateCodeBlockLines() {
     // Process all pre elements, not just those with data-source-line
     // (morphdom may strip the attr on first render)
     const pres = document.querySelectorAll("#viewer-content pre");
     pres.forEach((pre) => {
         const code = pre.querySelector("code");
         if (!code) return;
-        // Already annotated?
-        if (code.querySelector("span[data-source-line]")) return;
 
         let preSourceLine = parseInt(pre.getAttribute("data-source-line"), 10);
+        // If already annotated, check if the line numbers are still correct.
+        // If pre has a data-source-line and annotations exist, compare the
+        // expected first line with the actual first annotation.
+        const existingSpan = code.querySelector("span[data-source-line]");
+        if (existingSpan) {
+            if (isNaN(preSourceLine)) return; // can't verify, keep existing
+            const expectedFirst = String(preSourceLine + 1);
+            if (existingSpan.getAttribute("data-source-line") === expectedFirst) {
+                return; // annotations are up to date
+            }
+            // Stale annotations — unwrap them before re-annotating
+            code.querySelectorAll("span[data-source-line]").forEach((span) => {
+                while (span.firstChild) {
+                    span.parentNode.insertBefore(span.firstChild, span);
+                }
+                span.remove();
+            });
+            code.normalize(); // merge adjacent text nodes
+        }
         if (isNaN(preSourceLine)) {
             // Fallback: find the nearest preceding sibling with data-source-line
             // and estimate this pre's line from it
@@ -243,12 +261,12 @@ function _annotateCodeBlockLines() {
                 const parts = text.split("\n");
                 for (let i = 0; i < parts.length; i++) {
                     if (i > 0) {
-                        // Close current line span, start new one with the newline inside it
+                        // Close current line: append \n to END of current span
+                        currentLine.appendChild(document.createTextNode("\n"));
                         fragment.appendChild(currentLine);
                         lineIdx++;
                         currentLine = document.createElement("span");
                         currentLine.setAttribute("data-source-line", String(codeStartLine + lineIdx));
-                        currentLine.appendChild(document.createTextNode("\n"));
                     }
                     if (parts[i]) {
                         currentLine.appendChild(document.createTextNode(parts[i]));
