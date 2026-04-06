@@ -263,6 +263,47 @@ function RemoteFunctions(config = {}) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
     }
 
+    // Shadow DOM host for highlight overlays — isolates our UI from user page CSS.
+    let _highlightShadowHost = null;
+    let _highlightShadowRoot = null;
+
+    const HIGHLIGHT_CSS = `:host {
+        all: initial !important;
+    }
+
+    .overlay-container {
+        position: absolute !important;
+        z-index: 2147483645 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        pointer-events: none !important;
+        box-sizing: border-box !important;
+    }
+
+    .rect {
+        position: absolute !important;
+    }
+
+    .outline {
+        position: absolute !important;
+        box-sizing: border-box !important;
+        pointer-events: none !important;
+    }`;
+
+    function _ensureHighlightShadowRoot() {
+        if (_highlightShadowRoot) {
+            return _highlightShadowRoot;
+        }
+        _highlightShadowHost = window.document.createElement("div");
+        _highlightShadowHost.className = GLOBALS.HIGHLIGHT_CLASSNAME;
+        _highlightShadowHost.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
+        _highlightShadowRoot = _highlightShadowHost.attachShadow({ mode: "open" });
+        _highlightShadowRoot.innerHTML = `<style>${HIGHLIGHT_CSS}</style>`;
+        window.document.body.appendChild(_highlightShadowHost);
+        return _highlightShadowRoot;
+    }
+
     function Highlight(trigger) {
         this.trigger = !!trigger;
         this.elements = [];
@@ -358,27 +399,18 @@ function RemoteFunctions(config = {}) {
 
             // Container div — sized to the margin box so all rects fit inside it
             const div = window.document.createElement("div");
-            div.className = GLOBALS.HIGHLIGHT_CLASSNAME;
-            div.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
+            div.className = "overlay-container";
             div.trackingElement = element;
-            const divStyle = div.style;
-            divStyle.position = "absolute";
-            divStyle.left = marginBox.left + "px";
-            divStyle.top = marginBox.top + "px";
-            divStyle.width = marginBox.width + "px";
-            divStyle.height = marginBox.height + "px";
-            divStyle.zIndex = 2147483645;
-            divStyle.margin = "0";
-            divStyle.padding = "0";
-            divStyle.border = "none";
-            divStyle.pointerEvents = "none";
-            divStyle.boxSizing = "border-box";
+            div.style.left = marginBox.left + "px";
+            div.style.top = marginBox.top + "px";
+            div.style.width = marginBox.width + "px";
+            div.style.height = marginBox.height + "px";
 
             // Helper to create a colored rect at absolute page coordinates, offset by the container origin
             function makeRect(left, top, width, height, color) {
                 if (width <= 0 || height <= 0) { return; }
                 const r = window.document.createElement("div");
-                r.style.position = "absolute";
+                r.className = "rect";
                 r.style.left = (left - marginBox.left) + "px";
                 r.style.top = (top - marginBox.top) + "px";
                 r.style.width = width + "px";
@@ -421,17 +453,15 @@ function RemoteFunctions(config = {}) {
             const isEditable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
             const outlineColor = isEditable ? COLORS.outlineEditable : COLORS.outlineNonEditable;
             const outlineDiv = window.document.createElement("div");
-            outlineDiv.style.position = "absolute";
+            outlineDiv.className = "outline";
             outlineDiv.style.left = (borderBox.left - marginBox.left) + "px";
             outlineDiv.style.top = (borderBox.top - marginBox.top) + "px";
             outlineDiv.style.width = borderBox.width + "px";
             outlineDiv.style.height = borderBox.height + "px";
             outlineDiv.style.border = `1px solid ${outlineColor}`;
-            outlineDiv.style.boxSizing = "border-box";
-            outlineDiv.style.pointerEvents = "none";
             div.appendChild(outlineDiv);
 
-            window.document.body.appendChild(div);
+            _ensureHighlightShadowRoot().appendChild(div);
             this._divs.push(div);
         }
     };
@@ -1464,6 +1494,25 @@ function RemoteFunctions(config = {}) {
         "getMode": function() { return config.mode; },
         "isSyncEnabled": function() { return config.syncSourceAndPreview !== false; },
         "suppressDOMEditDismissal": suppressDOMEditDismissal,
+        "getHighlightCount": function() {
+            if (!_highlightShadowRoot) { return 0; }
+            return _highlightShadowRoot.querySelectorAll('.overlay-container').length;
+        },
+        "getHighlightTrackingElement": function(index) {
+            if (!_highlightShadowRoot) { return null; }
+            const overlay = _highlightShadowRoot.querySelectorAll('.overlay-container')[index];
+            if (!overlay || !overlay.trackingElement) { return null; }
+            const el = overlay.trackingElement;
+            return {
+                id: el.id,
+                classList: Array.from(el.classList)
+            };
+        },
+        "getHighlightStyle": function(index, property) {
+            if (!_highlightShadowRoot) { return null; }
+            const overlay = _highlightShadowRoot.querySelectorAll('.overlay-container')[index];
+            return overlay ? overlay.style[property] : null;
+        },
         "setHotCornerHidden": function(hidden) {
             if (SHARED_STATE._hotCorner && SHARED_STATE._hotCorner.hotCorner) {
                 if (hidden) {
