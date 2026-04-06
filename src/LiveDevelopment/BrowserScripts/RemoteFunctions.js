@@ -1475,6 +1475,46 @@ function RemoteFunctions(config = {}) {
         });
     });
 
+    function getMode() {
+        return config.mode;
+    }
+
+    function isSyncEnabled() {
+        return config.syncSourceAndPreview !== false;
+    }
+
+    function getHighlightCount() {
+        if (!_highlightShadowRoot) { return 0; }
+        return _highlightShadowRoot.querySelectorAll('.overlay-container').length;
+    }
+
+    function getHighlightTrackingElement(index) {
+        if (!_highlightShadowRoot) { return null; }
+        const overlay = _highlightShadowRoot.querySelectorAll('.overlay-container')[index];
+        if (!overlay || !overlay.trackingElement) { return null; }
+        const el = overlay.trackingElement;
+        return {
+            id: el.id,
+            classList: Array.from(el.classList)
+        };
+    }
+
+    function getHighlightStyle(index, property) {
+        if (!_highlightShadowRoot) { return null; }
+        const overlay = _highlightShadowRoot.querySelectorAll('.overlay-container')[index];
+        return overlay ? overlay.style[property] : null;
+    }
+
+    function setHotCornerHidden(hidden) {
+        if (SHARED_STATE._hotCorner && SHARED_STATE._hotCorner.hotCorner) {
+            if (hidden) {
+                SHARED_STATE._hotCorner.hotCorner.classList.add('hc-hidden');
+            } else {
+                SHARED_STATE._hotCorner.hotCorner.classList.remove('hc-hidden');
+            }
+        }
+    }
+
     let customReturns = {};
     // only apis that needs to be called from phoenix js layer should be customReturns. APis that are shared within
     // the remote function context only should not be in customReturns and should be in
@@ -1491,37 +1531,13 @@ function RemoteFunctions(config = {}) {
         "updateConfig": updateConfig,
         "dismissUIAndCleanupState": dismissUIAndCleanupState,
         "escapeKeyPressInEditor": _handleEscapeKeyPress,
-        "getMode": function() { return config.mode; },
-        "isSyncEnabled": function() { return config.syncSourceAndPreview !== false; },
+        "getMode": getMode,
+        "isSyncEnabled": isSyncEnabled,
         "suppressDOMEditDismissal": suppressDOMEditDismissal,
-        "getHighlightCount": function() {
-            if (!_highlightShadowRoot) { return 0; }
-            return _highlightShadowRoot.querySelectorAll('.overlay-container').length;
-        },
-        "getHighlightTrackingElement": function(index) {
-            if (!_highlightShadowRoot) { return null; }
-            const overlay = _highlightShadowRoot.querySelectorAll('.overlay-container')[index];
-            if (!overlay || !overlay.trackingElement) { return null; }
-            const el = overlay.trackingElement;
-            return {
-                id: el.id,
-                classList: Array.from(el.classList)
-            };
-        },
-        "getHighlightStyle": function(index, property) {
-            if (!_highlightShadowRoot) { return null; }
-            const overlay = _highlightShadowRoot.querySelectorAll('.overlay-container')[index];
-            return overlay ? overlay.style[property] : null;
-        },
-        "setHotCornerHidden": function(hidden) {
-            if (SHARED_STATE._hotCorner && SHARED_STATE._hotCorner.hotCorner) {
-                if (hidden) {
-                    SHARED_STATE._hotCorner.hotCorner.classList.add('hc-hidden');
-                } else {
-                    SHARED_STATE._hotCorner.hotCorner.classList.remove('hc-hidden');
-                }
-            }
-        }
+        "getHighlightCount": getHighlightCount,
+        "getHighlightTrackingElement": getHighlightTrackingElement,
+        "getHighlightStyle": getHighlightStyle,
+        "setHotCornerHidden": setHotCornerHidden
     };
 
     // the below code comment is replaced by added scripts for extensibility
