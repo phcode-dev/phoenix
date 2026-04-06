@@ -1319,16 +1319,16 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 0, ch: 0 });
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 0;
             });
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 1;
             });
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.id`,
+            await forRemoteExec(`_LD.getHighlightTrackingElement(0).id`,
                 (result) => {
                     return result === 'testId';
                 });
@@ -1341,7 +1341,7 @@ define(function (require, exports, module) {
                 "SpecRunnerUtils.openProjectFiles simple2.html");
 
             await waitsForLiveDevelopmentToOpen();
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 0;
             });
 
@@ -1351,11 +1351,11 @@ define(function (require, exports, module) {
             editor.setCursorPos({ line: 2, ch: 6 });
 
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 3;
             });
             await forRemoteExec(
-                `document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.classList[0]`,
+                `_LD.getHighlightTrackingElement(0).classList[0]`,
                 (result) => {
                     return result === 'testClass';
                 });
@@ -1366,11 +1366,11 @@ define(function (require, exports, module) {
             editor.setCursorPos({ line: 0, ch: 1 });
 
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 2;
             });
             await forRemoteExec(
-                `document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.classList[0]`,
+                `_LD.getHighlightTrackingElement(0).classList[0]`,
                 (result) => {
                     return result === 'testClass2';
                 });
@@ -1385,30 +1385,30 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 0;
             });
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 1;
             });
             let originalWidth;
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result) => {
+            await forRemoteExec(`_LD.getHighlightStyle(0, 'width')`, (result) => {
                 originalWidth = result;
                 return true;
             });
 
             iFrame.style.width = "100px";
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result) => {
+            await forRemoteExec(`_LD.getHighlightStyle(0, 'width')`, (result) => {
                 return originalWidth !== result;
             });
             iFrame.style.width = "100%";
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result) => {
+            await forRemoteExec(`_LD.getHighlightStyle(0, 'width')`, (result) => {
                 return originalWidth === result;
             });
 
@@ -1423,16 +1423,16 @@ define(function (require, exports, module) {
             let editor = EditorManager.getActiveEditor();
 
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 0;
             });
             await forRemoteExec(`document.getElementById("testId2").click()`);
 
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 1;
             });
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.id`,
+            await forRemoteExec(`_LD.getHighlightTrackingElement(0).id`,
                 (result) => {
                     return result === 'testId2';
                 });
@@ -1575,7 +1575,7 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
 
             await awaits(1000);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 0;
             });
 
@@ -1593,10 +1593,10 @@ define(function (require, exports, module) {
             await forRemoteExec(`document.getElementById("testId").click()`);
             await awaits(1000);
 
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 1;
             });
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.id`,
+            await forRemoteExec(`_LD.getHighlightTrackingElement(0).id`,
                 (result) => {
                     return result === 'testId';
                 });
@@ -1615,7 +1615,7 @@ define(function (require, exports, module) {
             editor && editor.setCursorPos({ line: 0, ch: 0 });
 
             await awaits(500);
-            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result) => {
+            await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 0;
             });
             await forRemoteExec(`document.getElementById("testId2").click()`);
