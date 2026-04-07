@@ -314,11 +314,8 @@
     display: inline;
 }
 
-/* ─── Shell dropdown (pops above the actions row) ─── */
+/* ─── Shell dropdown (positioned on $panel to avoid flyout overflow clip) ─── */
 .terminal-shell-dropdown {
-    position: absolute;
-    bottom: 100%;
-    right: 0;
     min-width: 180px;
     background: var(--terminal-tab-bg);
     border: 1px solid var(--terminal-border);
