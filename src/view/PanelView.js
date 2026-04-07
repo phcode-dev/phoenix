@@ -172,13 +172,13 @@ define(function (require, exports, module) {
         if (!_$tabsOverflow) {
             return;
         }
+        // Detach the add button before emptying to preserve its event handlers
+        if (_$addBtn) {
+            _$addBtn.detach();
+        }
         _$tabsOverflow.empty();
 
         _openIds.forEach(function (panelId) {
-            // Default panel uses the external Tools button, not a tab
-            if (panelId === _defaultPanelId) {
-                return;
-            }
             let panel = _panelMap[panelId];
             if (!panel) {
                 return;
@@ -186,6 +186,10 @@ define(function (require, exports, module) {
             _$tabsOverflow.append(_buildTab(panel, panelId === _activeId));
         });
 
+        // Re-append the Tools button at the end
+        if (_$addBtn) {
+            _$tabsOverflow.append(_$addBtn);
+        }
         _updateAddButtonVisibility();
         _checkTabOverflow();
     }
@@ -218,17 +222,17 @@ define(function (require, exports, module) {
         if (!_$tabsOverflow) {
             return;
         }
-        // Default panel uses the external Tools button, not a tab
-        if (panelId === _defaultPanelId) {
-            _updateAddButtonVisibility();
-            return;
-        }
         let panel = _panelMap[panelId];
         if (!panel) {
             return;
         }
         let $tab = _buildTab(panel, panelId === _activeId);
-        _$tabsOverflow.append($tab);
+        // Insert before the Tools button so it stays at the end
+        if (_$addBtn && _$addBtn.parent().length) {
+            _$addBtn.before($tab);
+        } else {
+            _$tabsOverflow.append($tab);
+        }
         _updateAddButtonVisibility();
         _checkTabOverflow();
     }
@@ -241,10 +245,6 @@ define(function (require, exports, module) {
      */
     function _removeTabFromBar(panelId) {
         if (!_$tabsOverflow) {
-            return;
-        }
-        if (panelId === _defaultPanelId) {
-            _updateAddButtonVisibility();
             return;
         }
         _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + panelId + '"]').remove();
@@ -495,8 +495,11 @@ define(function (require, exports, module) {
         if (!_$addBtn) {
             return;
         }
-        // Highlight the Tools button as active when the default panel is shown
-        _$addBtn.toggleClass("active", _defaultPanelId && _activeId === _defaultPanelId);
+        if (_defaultPanelId && _activeId === _defaultPanelId) {
+            _$addBtn.hide();
+        } else {
+            _$addBtn.show();
+        }
     }
 
     /**
@@ -773,13 +776,12 @@ define(function (require, exports, module) {
         _recomputeLayout = recomputeLayoutFn;
         _defaultPanelId = defaultPanelId;
 
-        // Create the "Tools" button outside the scrollable tabs area
-        // so it's always visible even when tabs overflow.
+        // Create the "Tools" button inside the scrollable tabs area.
         _$addBtn = $('<span class="bottom-panel-add-btn" title="' + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '">'
             + '<img class="app-drawer-tab-icon" src="styles/images/app-drawer.svg"'
             + ' style="width:12px;height:12px;vertical-align:middle;margin-right:4px">'
             + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '</span>');
-        _$tabBar.find(".bottom-panel-tab-bar-actions").before(_$addBtn);
+        _$tabsOverflow.append(_$addBtn);
 
         // Tab bar click handlers
         _$tabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
