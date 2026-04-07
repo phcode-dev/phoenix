@@ -286,11 +286,6 @@ img.panel-titlebar-icon {
     align-items: center;
     justify-content: center;
     padding: 0 8px;
-    border-left: 1px solid rgba(0, 0, 0, 0.08);
-
-    .dark & {
-        border-left: 1px solid rgba(255, 255, 255, 0.08);
-    }
     height: 2rem;
     line-height: 2rem;
     overflow: hidden;
@@ -315,30 +310,6 @@ img.panel-titlebar-icon {
         }
     }
 
-    &.active {
-        color: #333;
-        background-color: #fff;
-        position: relative;
-
-        .dark & {
-            color: #dedede;
-            background-color: #1D1F21;
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 0.1rem;
-            background-color: #0078D7;
-
-            .dark & {
-                background-color: #75BEFF;
-            }
-        }
-    }
 }
 
 .bottom-panel-tab-bar-actions {
