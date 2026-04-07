@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Izbriši isječak",
   "PROMO_UPGRADE_TITLE": "Nadograđeni ste na {0}",
+  "PROMO_UPGRADE_MESSAGE": "Uživajte u besplatnom pristupu ovim premium značajkama sljedećih {0} dana:",
   "PROMO_CARD_1": "Uređivanje u pregledu uživo",
   "PROMO_CARD_1_MESSAGE": "Uređujte sadržaj i elemente izravno u pregledu uživo – izrežite, kopirajte, zalijepite, duplicirajte, izbrišite – bez prekidanja tijeka rada.",
   "PROMO_CARD_2": "Povlačenje i ispuštanje elemenata",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspekcija rasporeda elementa",
   "PROMO_CARD_4_MESSAGE": "Dizajnirajte i pregledavajte u jednom prikazu – zadržite pokazivač da biste vidjeli razmake, dimenzije i klase. Vodilice ravnala za poravnanje s preciznošću piksela.",
   "PROMO_LEARN_MORE": "Saznajte više…",
+  "PROMO_OPT_OUT_LINK": "Odustani?",
+  "PROMO_OPT_OUT_NOTE": "Probno razdoblje možete otkazati bilo kada odabirom `Pomoć > Otkaži probno razdoblje za Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Nadogradite na {0}",
   "PROMO_PRO_ENDED_TITLE": "Probno razdoblje za {0} je završilo",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Hvala što ste isprobali Pro! <b>Sada ste na besplatnoj Community verziji.</b> <br>Nadogradite u bilo kojem trenutku kako biste otključali ove značajke:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "PROMO_UPGRADE_MESSAGE": "Uživajte u besplatnom pristupu ovim premium značajkama sljedećih {0} dana:",
-  "PROMO_OPT_OUT_LINK": "Odustani?",
-  "PROMO_OPT_OUT_NOTE": "Probno razdoblje možete otkazati bilo kada odabirom `Pomoć > Otkaži probno razdoblje za Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Pritisnite {0} za čišćenje međuspremnika terminala"
 });

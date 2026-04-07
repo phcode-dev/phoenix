@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "स्निपेट हटाएँ",
   "PROMO_UPGRADE_TITLE": "आपको {0} में अपग्रेड कर दिया गया है",
+  "PROMO_UPGRADE_MESSAGE": "अगले {0} दिनों के लिए इन प्रीमियम सुविधाओं का मुफ़्त में आनंद लें:",
   "PROMO_CARD_1": "लाइव प्रीव्यू में संपादित करें",
   "PROMO_CARD_1_MESSAGE": "कंटेंट और एलिमेंट्स को सीधे लाइव प्रीव्यू में संपादित करें - कट, कॉपी, पेस्ट, डुप्लिकेट, डिलीट - अपने फ्लो को बिना बाधित किए।",
   "PROMO_CARD_2": "ड्रैग एंड ड्रॉप एलिमेंट्स",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "एलिमेंट लेआउट इंस्पेक्ट करें",
   "PROMO_CARD_4_MESSAGE": "एक ही व्यू में डिज़ाइन और इंस्पेक्ट करें - स्पेसिंग, डाइमेंशन और क्लास देखने के लिए होवर करें। पिक्सेल-परफेक्ट अलाइनमेंट के लिए रूलर गाइड।",
   "PROMO_LEARN_MORE": "और जानें…",
+  "PROMO_OPT_OUT_LINK": "बाहर निकलें?",
+  "PROMO_OPT_OUT_NOTE": "आप `Help > Cancel Phoenix Pro Trial` का चयन करके किसी भी समय अपना ट्रायल रद्द कर सकते हैं।",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0} में अपग्रेड करें",
   "PROMO_PRO_ENDED_TITLE": "{0} ट्रायल समाप्त हो गया",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "प्रो आज़माने के लिए धन्यवाद! <b>अब आप फ़्री कम्युनिटी एडिशन पर हैं।</b> <br>इन सुविधाओं को अनलॉक करने के लिए कभी भी अपग्रेड करें:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "PROMO_UPGRADE_MESSAGE": "अगले {0} दिनों के लिए इन प्रीमियम सुविधाओं का मुफ़्त में आनंद लें:",
-  "PROMO_OPT_OUT_LINK": "बाहर निकलें?",
-  "PROMO_OPT_OUT_NOTE": "आप `Help > Cancel Phoenix Pro Trial` का चयन करके किसी भी समय अपना ट्रायल रद्द कर सकते हैं।"
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 टर्मिनल बफ़र साफ़ करने के लिए {0} दबाएँ"
 });

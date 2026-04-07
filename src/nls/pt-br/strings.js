@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão do Arquivo",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Excluir Snippet",
   "PROMO_UPGRADE_TITLE": "Você foi atualizado(a) para {0}",
+  "PROMO_UPGRADE_MESSAGE": "Aproveite o acesso gratuito a estes recursos premium pelos próximos {0} dias:",
   "PROMO_CARD_1": "Editar na Visualização ao Vivo",
   "PROMO_CARD_1_MESSAGE": "Edite conteúdo e elementos diretamente na Visualização ao Vivo — recorte, copie, cole, duplique, exclua — sem interromper seu fluxo de trabalho.",
   "PROMO_CARD_2": "Arrastar e Soltar Elementos",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspecionar Layout de Elemento",
   "PROMO_CARD_4_MESSAGE": "Projete e inspecione em uma única visualização — passe o mouse para ver espaçamento, dimensões e classes. Guias de régua para um alinhamento perfeito em pixels.",
   "PROMO_LEARN_MORE": "Saiba mais…",
+  "PROMO_OPT_OUT_LINK": "Cancelar?",
+  "PROMO_OPT_OUT_NOTE": "Você pode cancelar sua avaliação a qualquer momento selecionando `Ajuda > Cancelar Avaliação do Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Faça o upgrade para o {0}",
   "PROMO_PRO_ENDED_TITLE": "A avaliação do {0} terminou",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Obrigado por experimentar o Phoenix Pro! <b>Agora você está na Edição Comunitária Gratuita.</b> <br>Faça o upgrade a qualquer momento para desbloquear estes recursos:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "PROMO_UPGRADE_MESSAGE": "Aproveite o acesso gratuito a estes recursos premium pelos próximos {0} dias:",
-  "PROMO_OPT_OUT_LINK": "Cancelar?",
-  "PROMO_OPT_OUT_NOTE": "Você pode cancelar sua avaliação a qualquer momento selecionando `Ajuda > Cancelar Avaliação do Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Pressione {0} para limpar o buffer do terminal"
 });

@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Poista koodinpätkä",
   "PROMO_UPGRADE_TITLE": "Sinut on päivitetty {0}-tilaukseen",
+  "PROMO_UPGRADE_MESSAGE": "Nauti näistä premium-ominaisuuksista ilmaiseksi seuraavan {0} päivän ajan:",
   "PROMO_CARD_1": "Muokkaa reaaliaikaisessa esikatselussa",
   "PROMO_CARD_1_MESSAGE": "Muokkaa sisältöä ja elementtejä suoraan reaaliaikaisessa esikatselussa – leikkaa, kopioi, liitä, monista, poista – työnkulkuasi keskeyttämättä.",
   "PROMO_CARD_2": "Vedä ja pudota elementtejä",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Tarkastele elementin asettelua",
   "PROMO_CARD_4_MESSAGE": "Suunnittele ja tarkastele yhdessä näkymässä – näe välit, mitat ja luokat viemällä hiiri päälle. Viivainohjaimet pikselintarkkaan kohdistukseen.",
   "PROMO_LEARN_MORE": "Lisätietoja…",
+  "PROMO_OPT_OUT_LINK": "Jättäydy pois?",
+  "PROMO_OPT_OUT_NOTE": "Voit peruuttaa kokeilujaksosi milloin tahansa valitsemalla `Ohje > Peruuta Phoenix Pro -kokeilu`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Päivitä versioon {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-kokeilujakso päättyi",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Kiitos, että kokeilit Pro-versiota! <b>Käytät nyt ilmaista Community Edition -versiota.</b> <br>Päivitä milloin tahansa saadaksesi nämä ominaisuudet käyttöösi:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "PROMO_UPGRADE_MESSAGE": "Nauti näistä premium-ominaisuuksista ilmaiseksi seuraavan {0} päivän ajan:",
-  "PROMO_OPT_OUT_LINK": "Jättäydy pois?",
-  "PROMO_OPT_OUT_NOTE": "Voit peruuttaa kokeilujaksosi milloin tahansa valitsemalla `Ohje > Peruuta Phoenix Pro -kokeilu`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Paina {0} tyhjentääksesi terminaalipuskurin"
 });
