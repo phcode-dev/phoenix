@@ -138,12 +138,14 @@ define(function (require, exports, module) {
         }
 
         /**
-         * Trigger a flyout process refresh so tab titles
+         * Trigger a process refresh so tab titles
          * reflect the current foreground process.
          */
         function triggerFlyoutRefresh() {
-            testWindow.$(".terminal-tab-flyout")
-                .trigger("mouseenter");
+            const termModule = testWindow.brackets.getModule(
+                "extensionsIntegrated/Terminal/main"
+            );
+            termModule._refreshAllProcesses();
         }
 
         /**

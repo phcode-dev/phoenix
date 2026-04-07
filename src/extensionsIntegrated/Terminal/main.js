@@ -179,6 +179,10 @@ define(function (require, exports, module) {
             return false;
         });
 
+        // Refresh process info when the tab bar gains focus or mouse enters
+        $panel.find(".terminal-tab-bar").on("mouseenter", _refreshAllProcesses);
+        $panel.find(".terminal-tab-bar").on("focusin", _refreshAllProcesses);
+
         // Listen for panel resize
         WorkspaceManager.on("workspaceUpdateLayout", _handleResize);
 
@@ -365,6 +369,7 @@ define(function (require, exports, module) {
         }
 
         _updateFlyout();
+        _refreshAllProcesses();
     }
 
     /**
@@ -873,6 +878,7 @@ define(function (require, exports, module) {
 
     if (Phoenix.isTestWindow) {
         exports._getActiveTerminal = _getActiveTerminal;
+        exports._refreshAllProcesses = _refreshAllProcesses;
 
         /**
          * Write data to the active terminal's PTY. Test-only helper.
