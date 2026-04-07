@@ -1389,11 +1389,6 @@ define(function (require, exports) {
             $gitPanel.find(".git-not-available").show();
             Utils.enableCommand(Constants.CMD_GIT_INIT, true);
             Utils.enableCommand(Constants.CMD_GIT_CLONE, true);
-            // On desktop, always show the git panel tab so users can
-            // init/clone even when the project is not a git repo.
-            if (Phoenix.isNativeApp) {
-                gitPanel.setVisible(true);
-            }
         } else {
             Main.$icon.addClass("warning");
             toggle(false);
