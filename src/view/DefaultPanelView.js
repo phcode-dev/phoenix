@@ -45,7 +45,7 @@ define(function (require, exports, module) {
         },
         {
             id: "git",
-            icon: "fa-solid fa-code-branch",
+            icon: "fa-brands fa-git-alt",
             label: Strings.GIT_PANEL_TITLE || "Git",
             commandID: Commands.CMD_GIT_TOGGLE_PANEL,
             nativeOnly: true
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
                 .attr("data-command", btn.commandID)
                 .attr("data-btn-id", btn.id)
                 .attr("title", btn.label);
-            let $icon = $('<i></i>').addClass(btn.icon);
+            let $icon = $('<i class="panel-titlebar-icon"></i>').addClass(btn.icon);
             let $label = $('<span class="default-panel-btn-label"></span>').text(btn.label);
             $button.append($icon).append($label);
             $buttonsRow.append($button);
@@ -161,7 +161,8 @@ define(function (require, exports, module) {
             WorkspaceManager.DEFAULT_PANEL_ID,
             _$panel,
             undefined,
-            Strings.BOTTOM_PANEL_DEFAULT_TITLE
+            Strings.BOTTOM_PANEL_DEFAULT_TITLE,
+            {iconSvg: "styles/images/app-drawer.svg"}
         );
 
         // Button click handler: execute the command to open the target panel.
@@ -172,21 +173,6 @@ define(function (require, exports, module) {
                 CommandManager.execute(commandID);
             }
         });
-
-        const iconHTML = '<img class="app-drawer-tab-icon" src="styles/images/app-drawer.svg"'
-            + ' style="width:12px;height:12px;vertical-align:middle;margin-right:4px">';
-
-        /**
-         * Inject the app-drawer icon into the Quick Access tab title.
-         * Called each time the panel is shown because the tab DOM is rebuilt.
-         */
-        function _addTabIcon() {
-            const $tabTitle = $('#bottom-panel-tab-bar .bottom-panel-tab[data-panel-id="'
-                + WorkspaceManager.DEFAULT_PANEL_ID + '"] .bottom-panel-tab-title');
-            if ($tabTitle.length && !$tabTitle.find(".app-drawer-tab-icon").length) {
-                $tabTitle.prepend(iconHTML);
-            }
-        }
 
         // The app-drawer button is defined in index.html; set its title here.
         const $drawerBtn = $("#app-drawer-button")
@@ -206,7 +192,6 @@ define(function (require, exports, module) {
                 _panel.hide();
             } else {
                 _updateButtonVisibility();
-                _addTabIcon();
             }
             $drawerBtn.toggleClass("selected-button", panelID === WorkspaceManager.DEFAULT_PANEL_ID);
         });
