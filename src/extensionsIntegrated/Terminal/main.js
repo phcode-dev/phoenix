@@ -147,50 +147,7 @@ define(function (require, exports, module) {
         // Dropdown chevron button toggles shell selector
         $panel.find(".terminal-flyout-dropdown-btn").on("click", _onDropdownButtonClick);
 
-        // When the terminal is focused, route all keyboard events to the
-        // terminal instead of letting Phoenix keybindings intercept them.
-        // Only a few essential shortcuts are passed back to Phoenix.
-        const PHOENIX_SHORTCUTS = [
-            {ctrlKey: true, key: "p"}, // Command Palette
-            {key: "f4"} // Switch terminals
-        ];
-        KeyBindingManager.addGlobalKeydownHook(function (event) {
-            if (event.type !== "keydown") {
-                return false;
-            }
-            // Only intercept when a terminal textarea is focused
-            const el = document.activeElement;
-            if (!el || !$contentArea[0].contains(el)) {
-                return false;
-            }
-
-            const ctrlOrMeta = event.ctrlKey || event.metaKey;
-            const key = event.key.toLowerCase();
-
-            // Ctrl+K (Cmd+K on mac): clear terminal scrollback
-            if (ctrlOrMeta && !event.shiftKey && key === "k") {
-                event.preventDefault();
-                _clearActiveTerminal();
-                return true;
-            }
-
-            // Show clear buffer hint on Ctrl+L
-            if (ctrlOrMeta && !event.shiftKey && key === "l") {
-                _showClearBufferHintToast();
-            }
-
-            // Let Phoenix handle these specific shortcuts
-            for (const shortcut of PHOENIX_SHORTCUTS) {
-                const ctrlMatch = shortcut.ctrlKey ? ctrlOrMeta : !ctrlOrMeta;
-                const shiftMatch = shortcut.shiftKey ? event.shiftKey : !event.shiftKey;
-                if (ctrlMatch && shiftMatch && key === shortcut.key.toLowerCase()) {
-                    return false; // Let Phoenix handle it
-                }
-            }
-
-            // Block Phoenix from handling everything else — let xterm get it
-            return true;
-        });
+        _setupPhoenixShortcuts();
 
         // Refresh process info when the tab bar gains focus or mouse enters
         $panel.find(".terminal-tab-bar").on("mouseenter", _refreshAllProcesses);
@@ -669,6 +626,69 @@ define(function (require, exports, module) {
             active.handleResize();
         }
         _refreshAllProcesses();
+    }
+
+    /**
+     * Set up keyboard shortcut routing so that when the terminal is focused,
+     * all keys go to the terminal except shortcuts bound to specific Phoenix
+     * commands (e.g. toggle terminal, keyboard nav overlay).
+     */
+    function _setupPhoenixShortcuts() {
+        // Commands whose shortcuts should pass through to Phoenix
+        // even when the terminal is focused.
+        const PASSTHROUGH_COMMANDS = [
+            Commands.VIEW_TERMINAL,
+            Commands.CMD_KEYBOARD_NAV_UI_OVERLAY
+        ];
+
+        // Build a set of shortcut strings, rebuilt when bindings change.
+        let passthroughShortcuts = new Set();
+        function rebuild() {
+            passthroughShortcuts = new Set();
+            for (const cmdId of PASSTHROUGH_COMMANDS) {
+                for (const binding of KeyBindingManager.getKeyBindings(cmdId)) {
+                    if (binding.key) {
+                        passthroughShortcuts.add(binding.key);
+                    }
+                }
+            }
+        }
+        rebuild();
+        KeyBindingManager.on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, rebuild);
+        KeyBindingManager.on(KeyBindingManager.EVENT_KEY_BINDING_REMOVED, rebuild);
+
+        KeyBindingManager.addGlobalKeydownHook(function (event, shortcut) {
+            if (event.type !== "keydown") {
+                return false;
+            }
+            const el = document.activeElement;
+            if (!el || !$contentArea[0].contains(el)) {
+                return false;
+            }
+
+            const ctrlOrMeta = event.ctrlKey || event.metaKey;
+            const key = event.key.toLowerCase();
+
+            // Ctrl+K (Cmd+K on mac): clear terminal scrollback
+            if (ctrlOrMeta && !event.shiftKey && key === "k") {
+                event.preventDefault();
+                _clearActiveTerminal();
+                return true;
+            }
+
+            // Show clear buffer hint on Ctrl+L
+            if (ctrlOrMeta && !event.shiftKey && key === "l") {
+                _showClearBufferHintToast();
+            }
+
+            // Let Phoenix handle shortcuts bound to passthrough commands
+            if (shortcut && passthroughShortcuts.has(shortcut)) {
+                return false;
+            }
+
+            // Block Phoenix from handling everything else — let xterm get it
+            return true;
+        });
     }
 
     /**
