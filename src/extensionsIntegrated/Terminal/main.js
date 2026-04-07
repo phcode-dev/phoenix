@@ -147,11 +147,13 @@ define(function (require, exports, module) {
         // Dropdown chevron button toggles shell selector
         $panel.find(".terminal-flyout-dropdown-btn").on("click", _onDropdownButtonClick);
 
-        // When the terminal is focused, prevent Phoenix keybindings from
-        // stealing keys that should go to the shell (e.g. Ctrl+L for clear).
-        // The EDITOR_SHORTCUTS list in TerminalInstance.js already defines which
-        // Ctrl combos should pass through to Phoenix; everything else should
-        // reach xterm/the PTY.
+        // When the terminal is focused, route all keyboard events to the
+        // terminal instead of letting Phoenix keybindings intercept them.
+        // Only a few essential shortcuts are passed back to Phoenix.
+        const PHOENIX_SHORTCUTS = [
+            {ctrlKey: true, key: "p"}, // Command Palette
+            {key: "f4"} // Switch terminals
+        ];
         KeyBindingManager.addGlobalKeydownHook(function (event) {
             if (event.type !== "keydown") {
                 return false;
@@ -161,22 +163,33 @@ define(function (require, exports, module) {
             if (!el || !$contentArea[0].contains(el)) {
                 return false;
             }
-            // Let the terminal handle Ctrl/Cmd key combos that aren't
-            // reserved for the editor (those are handled by TerminalInstance's
-            // _customKeyHandler which returns false for them).
+
             const ctrlOrMeta = event.ctrlKey || event.metaKey;
             const key = event.key.toLowerCase();
-            if (ctrlOrMeta && !event.shiftKey && key === "l") {
-                _showClearBufferHintToast();
-                return true; // Block Phoenix, let xterm handle Ctrl+L
-            }
+
             // Ctrl+K (Cmd+K on mac): clear terminal scrollback
             if (ctrlOrMeta && !event.shiftKey && key === "k") {
                 event.preventDefault();
                 _clearActiveTerminal();
                 return true;
             }
-            return false;
+
+            // Show clear buffer hint on Ctrl+L
+            if (ctrlOrMeta && !event.shiftKey && key === "l") {
+                _showClearBufferHintToast();
+            }
+
+            // Let Phoenix handle these specific shortcuts
+            for (const shortcut of PHOENIX_SHORTCUTS) {
+                const ctrlMatch = shortcut.ctrlKey ? ctrlOrMeta : !ctrlOrMeta;
+                const shiftMatch = shortcut.shiftKey ? event.shiftKey : !event.shiftKey;
+                if (ctrlMatch && shiftMatch && key === shortcut.key.toLowerCase()) {
+                    return false; // Let Phoenix handle it
+                }
+            }
+
+            // Block Phoenix from handling everything else — let xterm get it
+            return true;
         });
 
         // Refresh process info when the tab bar gains focus or mouse enters

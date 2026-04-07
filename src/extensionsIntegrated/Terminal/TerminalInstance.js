@@ -39,14 +39,6 @@ define(function (require, exports, module) {
 
     let _nextId = 0;
 
-    // Shortcuts that should be passed to the editor, not the terminal
-    const EDITOR_SHORTCUTS = [
-        {ctrlKey: true, shiftKey: true, key: "p"}, // Command Palette
-        {ctrlKey: true, key: "p"},                  // Quick Open
-        {ctrlKey: true, key: "b"},                  // Toggle sidebar
-        {ctrlKey: true, key: "Tab"},                // Next tab
-        {ctrlKey: true, shiftKey: true, key: "Tab"} // Previous tab
-    ];
 
     /**
      * Read terminal theme colors from CSS variables
@@ -265,16 +257,6 @@ define(function (require, exports, module) {
         // Ctrl+C with a selection should copy to clipboard, not send SIGINT
         if (ctrlOrMeta && !event.shiftKey && event.key.toLowerCase() === "c" && this.terminal.hasSelection()) {
             return false;
-        }
-
-        for (const shortcut of EDITOR_SHORTCUTS) {
-            const ctrlMatch = shortcut.ctrlKey ? ctrlOrMeta : !ctrlOrMeta;
-            const shiftMatch = shortcut.shiftKey ? event.shiftKey : !event.shiftKey;
-            const keyMatch = event.key.toLowerCase() === shortcut.key.toLowerCase();
-
-            if (ctrlMatch && shiftMatch && keyMatch) {
-                return false; // Don't let xterm handle it
-            }
         }
 
         return true; // Let xterm handle it
