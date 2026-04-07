@@ -153,8 +153,8 @@
     height: 28px;
     min-height: 28px;
     cursor: pointer;
-    color: var(--terminal-tab-text);
-    font-size: 11px;
+    color: var(--terminal-tab-active-text);
+    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -176,7 +176,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 12px;
     flex-shrink: 0;
 }
 
@@ -190,14 +190,14 @@
 }
 
 .terminal-flyout-cwd {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--terminal-tab-text);
     flex-shrink: 1;
     min-width: 0;
     max-width: 50%;
     margin-left: 4px;
     margin-right: 2px;
-    opacity: 0.6;
+    opacity: 0.8;
     overflow: hidden;
     text-overflow: ellipsis;
     display: none;
@@ -265,8 +265,8 @@
     height: 100%;
     padding: 0;
     cursor: pointer;
-    color: var(--terminal-tab-text);
-    font-size: 11px;
+    color: var(--terminal-tab-active-text);
+    font-size: 12px;
     background: transparent;
     border: none;
     overflow: hidden;
@@ -275,7 +275,6 @@
 
 .terminal-flyout-new-btn:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: var(--terminal-tab-active-text);
 }
 
 /* Dropdown chevron: visible in both modes */
