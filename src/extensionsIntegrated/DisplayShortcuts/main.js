@@ -479,7 +479,7 @@ define(function (require, exports, module) {
         // AppInit.htmlReady() has already executed before extensions are loaded
         // so, for now, we need to call this ourself
         panel = WorkspaceManager.createBottomPanel(TOGGLE_SHORTCUTS_ID, $(s), 300,
-            Strings.KEYBOARD_SHORTCUT_PANEL_TITLE);
+            Strings.KEYBOARD_SHORTCUT_PANEL_TITLE, {iconClass: "fa-solid fa-keyboard"});
         panel.hide();
 
         $shortcutsPanel = $("#shortcuts-panel");

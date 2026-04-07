@@ -82,7 +82,7 @@ define(function (require, exports, module) {
         const self = this;
         let panelHtml  = Mustache.render(searchPanelTemplate, {panelID: panelID});
 
-        this._panel    = WorkspaceManager.createBottomPanel(panelName, $(panelHtml), 100, title);
+        this._panel    = WorkspaceManager.createBottomPanel(panelName, $(panelHtml), 100, title, {iconClass: "fa-solid fa-magnifying-glass"});
         this._$summary = this._panel.$panel.find(".title");
         this._$table   = this._panel.$panel.find(".table-container");
         this._$previewEditor   = this._panel.$panel.find(".search-editor-preview");

@@ -265,13 +265,16 @@ define(function (require, exports, module) {
      *      attribute, for use as a preferences key.
      * @param {number=} minSize  @deprecated No longer used. Pass `undefined`.
      * @param {string=} title  Display title shown in the bottom panel tab bar.
+     * @param {Object=} options  Optional settings:
+     *   - {string} iconClass  FontAwesome class string (e.g. "fa-solid fa-terminal").
+     *   - {string} iconSvg   Path to an SVG icon (e.g. "styles/images/icon.svg").
      * @return {!Panel}
      */
-    function createBottomPanel(id, $panel, minSize, title) {
+    function createBottomPanel(id, $panel, minSize, title, options) {
         $bottomPanelContainer.append($panel);
         $panel.hide();
         updateResizeLimits();
-        let bottomPanel = new PanelView.Panel($panel, id, title);
+        let bottomPanel = new PanelView.Panel($panel, id, title, options);
         panelIDMap[id] = bottomPanel;
         return bottomPanel;
     }

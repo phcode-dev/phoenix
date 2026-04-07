@@ -139,6 +139,34 @@ define(function (require, exports, module) {
      * Call this when tabs are added, removed, or renamed.
      * @private
      */
+    /**
+     * Build a tab element for a panel.
+     * @param {Panel} panel
+     * @param {boolean} isActive
+     * @return {jQueryObject}
+     * @private
+     */
+    function _buildTab(panel, isActive) {
+        let title = panel._tabTitle || _getPanelTitle(panel.panelID, panel.$panel);
+        let $tab = $('<div class="bottom-panel-tab"></div>')
+            .toggleClass('active', isActive)
+            .attr('data-panel-id', panel.panelID);
+        const opts = panel._options;
+        if (opts.iconClass) {
+            $tab.append($('<i class="bottom-panel-tab-icon panel-titlebar-icon"></i>')
+                .addClass(opts.iconClass));
+        } else if (opts.iconSvg) {
+            $tab.append($('<img class="bottom-panel-tab-icon panel-titlebar-icon">')
+                .attr("src", opts.iconSvg));
+        } else {
+            // Fallback generic icon for panels without a custom icon
+            $tab.append($('<i class="bottom-panel-tab-icon panel-titlebar-icon fa-solid fa-window-maximize"></i>'));
+        }
+        $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
+        $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
+        return $tab;
+    }
+
     function _updateBottomPanelTabBar() {
         if (!_$tabsOverflow) {
             return;
@@ -150,14 +178,7 @@ define(function (require, exports, module) {
             if (!panel) {
                 return;
             }
-            let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
-            let isActive = (panelId === _activeId);
-            let $tab = $('<div class="bottom-panel-tab"></div>')
-                .toggleClass('active', isActive)
-                .attr('data-panel-id', panelId);
-            $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
-            $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
-            _$tabsOverflow.append($tab);
+            _$tabsOverflow.append(_buildTab(panel, panelId === _activeId));
         });
 
         // Re-append the "+" button at the end (after all tabs)
@@ -165,6 +186,7 @@ define(function (require, exports, module) {
             _$tabsOverflow.append(_$addBtn);
             _updateAddButtonVisibility();
         }
+        _checkTabOverflow();
     }
 
     /**
@@ -199,13 +221,7 @@ define(function (require, exports, module) {
         if (!panel) {
             return;
         }
-        let title = panel._tabTitle || _getPanelTitle(panelId, panel.$panel);
-        let isActive = (panelId === _activeId);
-        let $tab = $('<div class="bottom-panel-tab"></div>')
-            .toggleClass('active', isActive)
-            .attr('data-panel-id', panelId);
-        $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
-        $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
+        let $tab = _buildTab(panel, panelId === _activeId);
 
         // Insert before the "+" button so it stays at the end
         if (_$addBtn && _$addBtn.parent().length) {
@@ -214,6 +230,7 @@ define(function (require, exports, module) {
             _$tabsOverflow.append($tab);
         }
         _updateAddButtonVisibility();
+        _checkTabOverflow();
     }
 
     /**
@@ -228,6 +245,22 @@ define(function (require, exports, module) {
         }
         _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + panelId + '"]').remove();
         _updateAddButtonVisibility();
+        _checkTabOverflow();
+    }
+
+    /**
+     * Check if the tab bar is overflowing and collapse tabs to icons if so.
+     * Only collapses tabs that have an icon available.
+     * @private
+     */
+    function _checkTabOverflow() {
+        if (!_$tabBar) {
+            return;
+        }
+        // Remove collapsed state first to measure true width
+        _$tabBar.removeClass("bottom-panel-tabs-collapsed");
+        const isOverflowing = _$tabsOverflow[0].scrollWidth > _$tabsOverflow[0].clientWidth;
+        _$tabBar.toggleClass("bottom-panel-tabs-collapsed", isOverflowing);
     }
 
     /**
@@ -281,10 +314,19 @@ define(function (require, exports, module) {
      * @param {string} id  Unique panel identifier.
      * @param {string=} title  Optional display title for the tab bar.
      */
-    function Panel($panel, id, title) {
+    /**
+     * @param {jQueryObject} $panel
+     * @param {string} id
+     * @param {string=} title
+     * @param {Object=} options
+     * @param {string=} options.iconClass  FontAwesome class string (e.g. "fa-solid fa-terminal").
+     * @param {string=} options.iconSvg   Path to an SVG icon (e.g. "styles/images/icon.svg").
+     */
+    function Panel($panel, id, title, options) {
         this.$panel = $panel;
         this.panelID = id;
         this._tabTitle = _getPanelTitle(id, $panel, title);
+        this._options = options || {};
         _panelMap[id] = this;
     }
 
@@ -572,6 +614,10 @@ define(function (require, exports, module) {
             }
             _toggleMaximize();
         });
+
+        // Re-check tab overflow when the tab bar resizes (e.g. window resize)
+        const tabBarResizeObserver = new ResizeObserver(_checkTabOverflow);
+        tabBarResizeObserver.observe(_$tabsOverflow[0]);
 
         // Restore maximize state from preferences (survives reload).
         _isMaximized = PreferencesManager.getViewState(PREF_BOTTOM_PANEL_MAXIMIZED) === true;
