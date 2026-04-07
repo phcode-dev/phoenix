@@ -96,35 +96,44 @@
     position: relative;
 }
 
-/* Tab bar: 30px flex spacer, flyout sits inside absolutely */
+/* Tab bar: static sidebar, width switches via .terminal-tabs-expanded on container */
 .terminal-tab-bar {
     position: relative;
-    width: 30px;
-    min-width: 30px;
-    overflow: visible;
+    width: 60px;
+    min-width: 60px;
 }
 
-/* ─── Unified flyout: collapses to 30px, expands on hover ─── */
+.terminal-tabs-expanded .terminal-tab-bar {
+    width: 170px;
+    min-width: 170px;
+}
+
+/* ─── Tab sidebar: static, no flyout/hover ─── */
 .terminal-tab-flyout {
     display: flex;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 30px;
+    position: relative;
+    width: 100%;
+    height: 100%;
     background: var(--terminal-tab-bg);
     border-left: 1px solid var(--terminal-border);
-    z-index: 20;
     flex-direction: column;
-    transition: width 0.08s ease;
+    overflow: hidden;
 }
 
-.terminal-tab-flyout:hover {
-    width: 170px;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+/* Fade gradient at bottom of tab list to hint overflow */
+.terminal-tab-flyout::after {
+    content: '';
+    position: absolute;
+    bottom: 29px; /* sits above the actions row */
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, transparent, var(--terminal-tab-bg));
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* Flyout list: scrollable, scrollbar hidden in collapsed mode */
+/* Tab list: scrollable, scrollbar hidden, scroll via wheel/trackpad */
 .terminal-tab-flyout .terminal-flyout-list {
     flex: 1;
     min-height: 0;
@@ -133,13 +142,6 @@
     scrollbar-width: none;
     &::-webkit-scrollbar {
         display: none;
-    }
-}
-
-.terminal-tab-flyout:hover .terminal-flyout-list {
-    scrollbar-width: auto;
-    &::-webkit-scrollbar {
-        display: block;
     }
 }
 
@@ -167,8 +169,7 @@
     box-shadow: inset 2px 0 0 #007acc;
 }
 
-/* Icon column: fixed 30px slot, always visible in collapsed mode.
-   In expanded mode, CSS order moves it to the right end. */
+/* Icon column: fixed 30px slot */
 .terminal-flyout-icon {
     width: 30px;
     min-width: 30px;
@@ -179,15 +180,15 @@
     flex-shrink: 0;
 }
 
-/* Title: fills remaining space */
+/* Title & CWD: hidden in collapsed, shown in expanded */
 .terminal-flyout-title {
     flex: 1;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: none;
 }
 
-/* CWD basename shown on the right */
 .terminal-flyout-cwd {
     font-size: 11px;
     color: var(--terminal-tab-text);
@@ -199,26 +200,16 @@
     opacity: 0.6;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: none;
 }
 
-/* Expanded mode: reorder so icon is at the right end,
-   add left padding for close button area */
-.terminal-tab-flyout:hover .terminal-flyout-item {
-    padding-left: 30px;
-}
-
-.terminal-tab-flyout:hover .terminal-flyout-icon {
-    order: 99;
-}
-
-/* Close button: overlays left padding area, visible only when
-   flyout is expanded AND the specific item is hovered */
+/* Close button: absolutely positioned on the right, visible on item hover only */
 .terminal-flyout-close {
     position: absolute;
-    left: 0;
+    right: 0;
     top: 0;
     bottom: 0;
-    width: 30px;
+    width: 20px;
     display: none;
     align-items: center;
     justify-content: center;
@@ -228,7 +219,7 @@
     z-index: 1;
 }
 
-.terminal-tab-flyout:hover .terminal-flyout-item:hover .terminal-flyout-close {
+.terminal-flyout-item:hover .terminal-flyout-close {
     display: flex;
 }
 
@@ -236,6 +227,21 @@
     color: var(--terminal-tab-active-text);
     background: rgba(255, 255, 255, 0.1);
 }
+
+/* ─── Expanded mode ─── */
+.terminal-tabs-expanded .terminal-flyout-title {
+    display: block;
+}
+
+.terminal-tabs-expanded .terminal-flyout-cwd {
+    display: block;
+}
+
+/* Reserve space so cwd text doesn't sit under the close button */
+.terminal-tabs-expanded .terminal-flyout-cwd {
+    margin-right: 20px;
+}
+
 
 /* ─── Flyout bottom actions ─── */
 .terminal-flyout-actions {
@@ -272,9 +278,9 @@
     color: var(--terminal-tab-active-text);
 }
 
-/* Dropdown chevron: hidden in collapsed mode, shown inline when expanded */
+/* Dropdown chevron: visible in both modes */
 .terminal-flyout-dropdown-btn {
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 30px;
@@ -289,10 +295,6 @@
     flex-shrink: 0;
 }
 
-.terminal-tab-flyout:hover .terminal-flyout-dropdown-btn {
-    display: flex;
-}
-
 .terminal-flyout-dropdown-btn:hover {
     background: rgba(255, 255, 255, 0.05);
     color: var(--terminal-tab-active-text);
@@ -304,12 +306,12 @@
     flex-shrink: 0;
 }
 
-/* Hide button labels in collapsed mode; show when expanded */
-.terminal-tab-flyout .terminal-btn-label {
+/* Button labels: hidden in collapsed, shown in expanded */
+.terminal-btn-label {
     display: none;
 }
 
-.terminal-tab-flyout:hover .terminal-btn-label {
+.terminal-tabs-expanded .terminal-btn-label {
     display: inline;
 }
 
