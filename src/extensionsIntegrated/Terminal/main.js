@@ -42,6 +42,7 @@ define(function (require, exports, module) {
 
     const Menus = require("command/Menus");
     const Commands = require("command/Commands");
+    const KeyBindingManager = require("command/KeyBindingManager");
     const NotificationUI = require("widgets/NotificationUI");
     const TerminalInstance = require("./TerminalInstance");
     const ShellProfiles = require("./ShellProfiles");
@@ -90,6 +91,7 @@ define(function (require, exports, module) {
     let processInfo = {};         // id -> processName from PTY
     let originalDefaultShellName = null; // System-detected default shell name
     let _focusToastShown = false;       // Show focus hint toast only once per session
+    let _clearHintShown = false;        // Show clear buffer hint toast only once per session
     let $panel, $contentArea, $shellDropdown, $flyoutList;
 
     /**
@@ -144,6 +146,38 @@ define(function (require, exports, module) {
 
         // Dropdown chevron button toggles shell selector
         $panel.find(".terminal-flyout-dropdown-btn").on("click", _onDropdownButtonClick);
+
+        // When the terminal is focused, prevent Phoenix keybindings from
+        // stealing keys that should go to the shell (e.g. Ctrl+L for clear).
+        // The EDITOR_SHORTCUTS list in TerminalInstance.js already defines which
+        // Ctrl combos should pass through to Phoenix; everything else should
+        // reach xterm/the PTY.
+        KeyBindingManager.addGlobalKeydownHook(function (event) {
+            if (event.type !== "keydown") {
+                return false;
+            }
+            // Only intercept when a terminal textarea is focused
+            const el = document.activeElement;
+            if (!el || !$contentArea[0].contains(el)) {
+                return false;
+            }
+            // Let the terminal handle Ctrl/Cmd key combos that aren't
+            // reserved for the editor (those are handled by TerminalInstance's
+            // _customKeyHandler which returns false for them).
+            const ctrlOrMeta = event.ctrlKey || event.metaKey;
+            const key = event.key.toLowerCase();
+            if (ctrlOrMeta && !event.shiftKey && key === "l") {
+                _showClearBufferHintToast();
+                return true; // Block Phoenix, let xterm handle Ctrl+L
+            }
+            // Ctrl+K (Cmd+K on mac): clear terminal scrollback
+            if (ctrlOrMeta && !event.shiftKey && key === "k") {
+                event.preventDefault();
+                _clearActiveTerminal();
+                return true;
+            }
+            return false;
+        });
 
         // Listen for panel resize
         WorkspaceManager.on("workspaceUpdateLayout", _handleResize);
@@ -588,7 +622,7 @@ define(function (require, exports, module) {
      * Update the expanded/collapsed tab bar class based on panel width
      */
     function _updateTabBarMode() {
-        $panel.toggleClass("terminal-tabs-expanded", $panel.width() >= 750);
+        $panel.toggleClass("terminal-tabs-expanded", $panel.width() >= 840);
     }
 
     /**
@@ -623,6 +657,24 @@ define(function (require, exports, module) {
 
         const shortcutKey = '<kbd>Shift+Esc</kbd>';
         const message = StringUtils.format(Strings.TERMINAL_FOCUS_HINT, shortcutKey);
+        NotificationUI.showToastOn($contentArea[0], message, {
+            autoCloseTimeS: 5,
+            dismissOnClick: true
+        });
+    }
+
+    /**
+     * Show a one-time toast hint about Ctrl/Cmd+K to clear terminal buffer
+     */
+    function _showClearBufferHintToast() {
+        if (_clearHintShown) {
+            return;
+        }
+        _clearHintShown = true;
+
+        const isMac = brackets.platform === "mac";
+        const shortcutKey = isMac ? '<kbd>Cmd+K</kbd>' : '<kbd>Ctrl+K</kbd>';
+        const message = StringUtils.format(Strings.TERMINAL_CLEAR_BUFFER_HINT, shortcutKey);
         NotificationUI.showToastOn($contentArea[0], message, {
             autoCloseTimeS: 5,
             dismissOnClick: true
