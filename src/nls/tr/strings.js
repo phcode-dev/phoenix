@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kod Parçacığını Sil",
   "PROMO_UPGRADE_TITLE": "{0} sürümüne yükseltildiniz",
+  "PROMO_UPGRADE_MESSAGE": "Önümüzdeki {0} gün boyunca bu premium özelliklerden ücretsiz olarak yararlanın:",
   "PROMO_CARD_1": "Canlı Önizlemede Düzenle",
   "PROMO_CARD_1_MESSAGE": "İçeriği ve öğeleri doğrudan Canlı Önizlemede düzenleyin - kes, kopyala, yapıştır, çoğalt, sil - iş akışınızı bozmadan.",
   "PROMO_CARD_2": "Öğeleri Sürükle ve Bırak",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Öğe Düzenini İncele",
   "PROMO_CARD_4_MESSAGE": "Tek bir görünümde tasarlayın ve inceleyin - boşlukları, boyutları ve sınıfları görmek için üzerine gelin. Piksel düzeyinde mükemmel hizalama için cetvel kılavuzları.",
   "PROMO_LEARN_MORE": "Daha Fazla Bilgi Edinin…",
+  "PROMO_OPT_OUT_LINK": "Vazgeç?",
+  "PROMO_OPT_OUT_NOTE": "Denemenizi dilediğiniz zaman `Help > Cancel Phoenix Pro Trial` seçeneğini belirleyerek iptal edebilirsiniz.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0} sürümüne yükseltin",
   "PROMO_PRO_ENDED_TITLE": "{0} deneme süresi sona erdi",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Pro'yu denediğiniz için teşekkürler! <b>Artık Ücretsiz Topluluk Sürümü'nü kullanıyorsunuz.</b> <br>Bu özelliklerin kilidini açmak için dilediğiniz zaman yükseltin:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "PROMO_UPGRADE_MESSAGE": "Önümüzdeki {0} gün boyunca bu premium özelliklerden ücretsiz olarak yararlanın:",
-  "PROMO_OPT_OUT_LINK": "Vazgeç?",
-  "PROMO_OPT_OUT_NOTE": "Denemenizi dilediğiniz zaman `Help > Cancel Phoenix Pro Trial` seçeneğini belirleyerek iptal edebilirsiniz."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Terminal arabelleğini temizlemek için {0} tuşuna basın"
 });

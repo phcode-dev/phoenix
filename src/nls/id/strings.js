@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Hapus Snippet",
   "PROMO_UPGRADE_TITLE": "Anda telah diupgrade ke {0}",
+  "PROMO_UPGRADE_MESSAGE": "Nikmati akses gratis ke fitur-fitur premium ini selama {0} hari ke depan:",
   "PROMO_CARD_1": "Edit di Pratinjau Langsung",
   "PROMO_CARD_1_MESSAGE": "Edit konten dan elemen langsung di Pratinjau Langsung - potong, salin, tempel, duplikat, hapus - tanpa mengganggu alur kerja Anda.",
   "PROMO_CARD_2": "Seret & Lepas Elemen",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspeksi Tata Letak Elemen",
   "PROMO_CARD_4_MESSAGE": "Desain dan inspeksi dalam satu tampilan - arahkan kursor untuk melihat spasi, dimensi, dan kelas. Panduan penggaris untuk penyejajaran piksel-sempurna.",
   "PROMO_LEARN_MORE": "Pelajari Lebih Lanjut…",
+  "PROMO_OPT_OUT_LINK": "Batal ikut serta?",
+  "PROMO_OPT_OUT_NOTE": "Anda dapat membatalkan uji coba Anda kapan saja dengan memilih `Help > Cancel Phoenix Pro Trial`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Upgrade ke {0}",
   "PROMO_PRO_ENDED_TITLE": "Uji coba {0} berakhir",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Terima kasih telah mencoba Pro! <b>Anda sekarang menggunakan Edisi Komunitas Gratis.</b> <br>Upgrade kapan saja untuk membuka fitur-fitur ini:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "PROMO_UPGRADE_MESSAGE": "Nikmati akses gratis ke fitur-fitur premium ini selama {0} hari ke depan:",
-  "PROMO_OPT_OUT_LINK": "Batal ikut serta?",
-  "PROMO_OPT_OUT_NOTE": "Anda dapat membatalkan uji coba Anda kapan saja dengan memilih `Help > Cancel Phoenix Pro Trial`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Tekan {0} untuk membersihkan buffer terminal"
 });

@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Usuń fragment",
   "PROMO_UPGRADE_TITLE": "Zostałeś(-aś) ulepszony(-a) do {0}",
+  "PROMO_UPGRADE_MESSAGE": "Ciesz się bezpłatnym dostępem do tych funkcji premium przez następne {0} dni:",
   "PROMO_CARD_1": "Edytuj w podglądzie na żywo",
   "PROMO_CARD_1_MESSAGE": "Edytuj treść i elementy bezpośrednio w podglądzie na żywo – wycinaj, kopiuj, wklejaj, duplikuj, usuwaj – bez przerywania pracy.",
   "PROMO_CARD_2": "Przeciągnij i upuść elementy",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspekcja układu elementu",
   "PROMO_CARD_4_MESSAGE": "Projektuj i sprawdzaj w jednym widoku – najedź kursorem, aby zobaczyć odstępy, wymiary i klasy. Prowadnice linijki dla idealnego wyrównania co do piksela.",
   "PROMO_LEARN_MORE": "Dowiedz się więcej…",
+  "PROMO_OPT_OUT_LINK": "Zrezygnować?",
+  "PROMO_OPT_OUT_NOTE": "Możesz w dowolnym momencie anulować okres próbny, wybierając `Pomoc > Anuluj okres próbny Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Uaktualnij do {0}",
   "PROMO_PRO_ENDED_TITLE": "Zakończył się okres próbny {0}",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Dziękujemy za wypróbowanie wersji Pro! <b>Korzystasz teraz z darmowej wersji Community Edition.</b> <br>Uaktualnij w dowolnym momencie, aby odblokować te funkcje:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "PROMO_UPGRADE_MESSAGE": "Ciesz się bezpłatnym dostępem do tych funkcji premium przez następne {0} dni:",
-  "PROMO_OPT_OUT_LINK": "Zrezygnować?",
-  "PROMO_OPT_OUT_NOTE": "Możesz w dowolnym momencie anulować okres próbny, wybierając `Pomoc > Anuluj okres próbny Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Naciśnij {0}, aby wyczyścić bufor terminala"
 });

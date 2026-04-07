@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "スニペットを削除",
   "PROMO_UPGRADE_TITLE": "{0} にアップグレードされました",
+  "PROMO_UPGRADE_MESSAGE": "今後{0}日間、これらのプレミアム機能を無料でご利用いただけます：",
   "PROMO_CARD_1": "ライブプレビューで編集",
   "PROMO_CARD_1_MESSAGE": "ライブプレビューでコンテンツと要素を直接編集 - カット、コピー、ペースト、複製、削除 - フローを中断することなく操作できます。",
   "PROMO_CARD_2": "要素のドラッグ＆ドロップ",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "要素レイアウトのインスペクト",
   "PROMO_CARD_4_MESSAGE": "デザインとインスペクトを１つのビューで - ホバーで間隔、寸法、クラスを確認。ルーラーガイドでピクセルパーフェクトな配置が可能です。",
   "PROMO_LEARN_MORE": "詳細はこちら…",
+  "PROMO_OPT_OUT_LINK": "オプトアウトしますか？",
+  "PROMO_OPT_OUT_NOTE": "トライアルは、`ヘルプ > Phoenix Pro トライアルのキャンセル`を選択することで、いつでもキャンセルできます。",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0}にアップグレード",
   "PROMO_PRO_ENDED_TITLE": "{0}のトライアルは終了しました",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Proをお試しいただきありがとうございます！<b>無料のコミュニティ版に切り替わりました。</b><br>いつでもアップグレードして、以下の機能をご利用いただけます：",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "PROMO_UPGRADE_MESSAGE": "今後{0}日間、これらのプレミアム機能を無料でご利用いただけます：",
-  "PROMO_OPT_OUT_LINK": "オプトアウトしますか？",
-  "PROMO_OPT_OUT_NOTE": "トライアルは、`ヘルプ > Phoenix Pro トライアルのキャンセル`を選択することで、いつでもキャンセルできます。"
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡｛０｝でターミナルバッファーをクリア"
 });

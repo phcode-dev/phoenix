@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "删除片段",
   "PROMO_UPGRADE_TITLE": "您已升级到 {0}",
+  "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内，免费畅享以下高级功能：",
   "PROMO_CARD_1": "实时预览编辑",
   "PROMO_CARD_1_MESSAGE": "直接在实时预览中编辑内容和元素 - 剪切、复制、粘贴、创建副本、删除 - 不会打断您的工作流程。",
   "PROMO_CARD_2": "拖放元素",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "检查元素布局",
   "PROMO_CARD_4_MESSAGE": "在同一视图中进行设计和检查 - 悬停可查看间距、尺寸和类。标尺参考线可实现像素级完美对齐。",
   "PROMO_LEARN_MORE": "了解更多…",
+  "PROMO_OPT_OUT_LINK": "选择退出？",
+  "PROMO_OPT_OUT_NOTE": "您可以随时通过选择 `帮助 > 取消 Phoenix Pro 试用` 来取消试用。",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "升级到 {0}",
   "PROMO_PRO_ENDED_TITLE": "{0} 试用已结束",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "感谢您试用 Pro！<b>您现在使用的是免费社区版。</b><br>随时升级即可解锁以下功能：",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内，免费畅享以下高级功能：",
-  "PROMO_OPT_OUT_LINK": "选择退出？",
-  "PROMO_OPT_OUT_NOTE": "您可以随时通过选择 `帮助 > 取消 Phoenix Pro 试用` 来取消试用。"
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 按 {0} 清除终端缓冲区"
 });

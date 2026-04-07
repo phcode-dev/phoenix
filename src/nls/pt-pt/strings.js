@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar Fragmento",
   "PROMO_UPGRADE_TITLE": "Foi atualizado(a) para {0}",
+  "PROMO_UPGRADE_MESSAGE": "Desfrute de acesso gratuito a estas funcionalidades premium durante os próximos {0} dias:",
   "PROMO_CARD_1": "Editar na Pré-visualização em Direto",
   "PROMO_CARD_1_MESSAGE": "Edite conteúdo e elementos diretamente na Pré-visualização em Direto - cortar, copiar, colar, duplicar, eliminar - sem interromper o seu fluxo de trabalho.",
   "PROMO_CARD_2": "Arrastar e Largar Elementos",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspecionar o Layout do Elemento",
   "PROMO_CARD_4_MESSAGE": "Crie e inspecione numa única vista - passe o cursor para ver o espaçamento, as dimensões e as classes. Guias de régua para um alinhamento ao píxel.",
   "PROMO_LEARN_MORE": "Saiba mais…",
+  "PROMO_OPT_OUT_LINK": "Recusar?",
+  "PROMO_OPT_OUT_NOTE": "Pode cancelar a sua avaliação a qualquer momento ao selecionar `Ajuda > Cancelar Avaliação do Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Atualizar para {0}",
   "PROMO_PRO_ENDED_TITLE": "A versão de avaliação do {0} terminou",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Obrigado por experimentar o Pro! <b>Está agora a utilizar a Edição Comunitária Gratuita.</b> <br>Atualize a qualquer momento para desbloquear estas funcionalidades:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "PROMO_UPGRADE_MESSAGE": "Desfrute de acesso gratuito a estas funcionalidades premium durante os próximos {0} dias:",
-  "PROMO_OPT_OUT_LINK": "Recusar?",
-  "PROMO_OPT_OUT_NOTE": "Pode cancelar a sua avaliação a qualquer momento ao selecionar `Ajuda > Cancelar Avaliação do Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Pressione {0} para limpar o buffer do terminal"
 });

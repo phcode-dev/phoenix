@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف المقتطف",
   "PROMO_UPGRADE_TITLE": "تم ترقيتك إلى {0}",
+  "PROMO_UPGRADE_MESSAGE": "استمتع بوصول مجاني إلى هذه الميزات المتميزة للأيام الـ {0} القادمة:",
   "PROMO_CARD_1": "التعديل في المعاينة المباشرة",
   "PROMO_CARD_1_MESSAGE": "عدّل المحتوى والعناصر مباشرة في المعاينة المباشرة - قص، نسخ، لصق، تكرار، حذف - دون مقاطعة سير عملك.",
   "PROMO_CARD_2": "سحب وإفلات العناصر",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "فحص تخطيط العنصر",
   "PROMO_CARD_4_MESSAGE": "صمّم وافحص في عرض واحد - مرر الفأرة لرؤية التباعد والأبعاد والفئات. أدلة المسطرة لمحاذاة دقيقة بالبكسل.",
   "PROMO_LEARN_MORE": "تعرّف على المزيد…",
+  "PROMO_OPT_OUT_LINK": "الانسحاب؟",
+  "PROMO_OPT_OUT_NOTE": "يمكنك إلغاء فترتك التجريبية في أي وقت عن طريق تحديد `مساعدة > إلغاء تجربة Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "الترقية إلى {0}",
   "PROMO_PRO_ENDED_TITLE": "انتهت الفترة التجريبية لـ {0}",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "شكرًا لتجربتك إصدار Pro! <b>أنت الآن تستخدم الإصدار المجاني للمجتمع.</b> <br>قم بالترقية في أي وقت لإلغاء قفل هذه الميزات:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "PROMO_UPGRADE_MESSAGE": "استمتع بوصول مجاني إلى هذه الميزات المتميزة للأيام الـ {0} القادمة:",
-  "PROMO_OPT_OUT_LINK": "الانسحاب؟",
-  "PROMO_OPT_OUT_NOTE": "يمكنك إلغاء فترتك التجريبية في أي وقت عن طريق تحديد `مساعدة > إلغاء تجربة Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 اضغط على {0} لمسح مخزن الطرفية المؤقت"
 });

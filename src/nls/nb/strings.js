@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slett kodebit",
   "PROMO_UPGRADE_TITLE": "Du har blitt oppgradert til {0}",
+  "PROMO_UPGRADE_MESSAGE": "Få gratis tilgang til disse premium-funksjonene i de neste {0} dagene:",
   "PROMO_CARD_1": "Rediger i direkte forhåndsvisning",
   "PROMO_CARD_1_MESSAGE": "Rediger innhold og elementer rett i direkte forhåndsvisning – klipp ut, kopier, lim inn, dupliser, slett – uten å bryte arbeidsflyten din.",
   "PROMO_CARD_2": "Dra og slipp elementer",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspiser element-layout",
   "PROMO_CARD_4_MESSAGE": "Design og inspiser i én visning – hold over for å se avstand, dimensjoner og klasser. Linjalstøttelinjer for pikselperfekt justering.",
   "PROMO_LEARN_MORE": "Lær mer…",
+  "PROMO_OPT_OUT_LINK": "Meld deg av?",
+  "PROMO_OPT_OUT_NOTE": "Du kan avslutte prøveperioden din når som helst ved å velge `Hjelp > Cancel Phoenix Pro Trial`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Oppgrader til {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-prøveperioden er avsluttet",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Takk for at du prøvde Pro! <b>Du er nå på den gratis Community-utgaven.</b> <br>Oppgrader når som helst for å låse opp disse funksjonene:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "PROMO_UPGRADE_MESSAGE": "Få gratis tilgang til disse premium-funksjonene i de neste {0} dagene:",
-  "PROMO_OPT_OUT_LINK": "Meld deg av?",
-  "PROMO_OPT_OUT_NOTE": "Du kan avslutte prøveperioden din når som helst ved å velge `Hjelp > Cancel Phoenix Pro Trial`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Trykk {0} for å tømme terminalbufferen"
 });
