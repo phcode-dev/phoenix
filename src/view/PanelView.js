@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     const EventDispatcher = require("utils/EventDispatcher"),
         PreferencesManager = require("preferences/PreferencesManager"),
         Resizer = require("utils/Resizer"),
+        DropdownButton = require("widgets/DropdownButton"),
         Strings = require("strings");
 
     /**
@@ -171,13 +172,13 @@ define(function (require, exports, module) {
         if (!_$tabsOverflow) {
             return;
         }
-        // Detach the add button before emptying to preserve its event handlers
-        if (_$addBtn) {
-            _$addBtn.detach();
-        }
         _$tabsOverflow.empty();
 
         _openIds.forEach(function (panelId) {
+            // Default panel uses the external Tools button, not a tab
+            if (panelId === _defaultPanelId) {
+                return;
+            }
             let panel = _panelMap[panelId];
             if (!panel) {
                 return;
@@ -185,11 +186,7 @@ define(function (require, exports, module) {
             _$tabsOverflow.append(_buildTab(panel, panelId === _activeId));
         });
 
-        // Re-append the "+" button at the end (after all tabs)
-        if (_$addBtn) {
-            _$tabsOverflow.append(_$addBtn);
-            _updateAddButtonVisibility();
-        }
+        _updateAddButtonVisibility();
         _checkTabOverflow();
     }
 
@@ -221,18 +218,17 @@ define(function (require, exports, module) {
         if (!_$tabsOverflow) {
             return;
         }
+        // Default panel uses the external Tools button, not a tab
+        if (panelId === _defaultPanelId) {
+            _updateAddButtonVisibility();
+            return;
+        }
         let panel = _panelMap[panelId];
         if (!panel) {
             return;
         }
         let $tab = _buildTab(panel, panelId === _activeId);
-
-        // Insert before the "+" button so it stays at the end
-        if (_$addBtn && _$addBtn.parent().length) {
-            _$addBtn.before($tab);
-        } else {
-            _$tabsOverflow.append($tab);
-        }
+        _$tabsOverflow.append($tab);
         _updateAddButtonVisibility();
         _checkTabOverflow();
     }
@@ -245,6 +241,10 @@ define(function (require, exports, module) {
      */
     function _removeTabFromBar(panelId) {
         if (!_$tabsOverflow) {
+            return;
+        }
+        if (panelId === _defaultPanelId) {
+            _updateAddButtonVisibility();
             return;
         }
         _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + panelId + '"]').remove();
@@ -295,7 +295,7 @@ define(function (require, exports, module) {
         _$tabBar.on("dragstart", ".bottom-panel-tab", function (e) {
             draggedTab = this;
             e.originalEvent.dataTransfer.effectAllowed = "move";
-            e.originalEvent.dataTransfer.setData("text/plain", "panel-tab");
+            e.originalEvent.dataTransfer.setData("application/x-phoenix-panel-tab", "1");
             $(this).addClass("bottom-panel-tab-dragging");
         });
 
@@ -354,6 +354,9 @@ define(function (require, exports, module) {
      * Only collapses tabs that have an icon available.
      * @private
      */
+    /** @type {jQueryObject} Overflow dropdown button */
+    let _$overflowBtn = null;
+
     function _checkTabOverflow() {
         if (!_$tabBar) {
             return;
@@ -362,6 +365,16 @@ define(function (require, exports, module) {
         _$tabBar.removeClass("bottom-panel-tabs-collapsed");
         const isOverflowing = _$tabsOverflow[0].scrollWidth > _$tabsOverflow[0].clientWidth;
         _$tabBar.toggleClass("bottom-panel-tabs-collapsed", isOverflowing);
+
+        // Check if still overflowing after collapse
+        const stillOverflowing = isOverflowing &&
+            _$tabsOverflow[0].scrollWidth > _$tabsOverflow[0].clientWidth;
+
+        // Show/hide overflow button
+        if (_$overflowBtn) {
+            _$overflowBtn.toggle(stillOverflowing);
+        }
+
         // Show tooltip on hover only in collapsed mode (title text is hidden)
         _$tabBar.find(".bottom-panel-tab").each(function () {
             const $tab = $(this);
@@ -369,6 +382,105 @@ define(function (require, exports, module) {
                 $tab.attr("title", $tab.find(".bottom-panel-tab-title").text());
             } else {
                 $tab.removeAttr("title");
+            }
+        });
+    }
+
+    /**
+     * Get the list of hidden (not fully visible) panel tabs.
+     * @return {Array<{panelId: string, title: string}>}
+     * @private
+     */
+    function _getHiddenTabs() {
+        const hidden = [];
+        const barRect = _$tabsOverflow[0].getBoundingClientRect();
+        _$tabsOverflow.find(".bottom-panel-tab").each(function () {
+            const tabRect = this.getBoundingClientRect();
+            const isVisible = tabRect.left >= barRect.left &&
+                tabRect.right <= (barRect.right + 2);
+            if (!isVisible) {
+                const $tab = $(this);
+                hidden.push({
+                    panelId: $tab.data("panel-id"),
+                    title: $tab.find(".bottom-panel-tab-title").text()
+                });
+            }
+        });
+        return hidden;
+    }
+
+    /** @type {DropdownButton.DropdownButton} */
+    let _overflowDropdown = null;
+
+    /**
+     * Show a dropdown menu listing hidden panel tabs.
+     * Uses the same DropdownButton widget as the file tab bar overflow.
+     * @private
+     */
+    function _showOverflowMenu() {
+        // If dropdown is already open, close it (toggle behavior)
+        if (_overflowDropdown) {
+            _overflowDropdown.closeDropdown();
+            _overflowDropdown = null;
+            return;
+        }
+
+        const hidden = _getHiddenTabs();
+        if (!hidden.length) {
+            return;
+        }
+
+        _overflowDropdown = new DropdownButton.DropdownButton("", hidden, function (item) {
+            const panel = _panelMap[item.panelId];
+            let iconHtml = "";
+            if (panel && panel._options) {
+                if (panel._options.iconClass) {
+                    iconHtml = '<i class="panel-titlebar-icon ' + panel._options.iconClass
+                        + '" style="margin-right:6px"></i>';
+                } else if (panel._options.iconSvg) {
+                    iconHtml = '<img class="panel-titlebar-icon" src="' + panel._options.iconSvg
+                        + '" style="width:14px;height:14px;margin-right:6px;vertical-align:middle">';
+                }
+            }
+            const activeClass = item.panelId === _activeId ? ' style="font-weight:600"' : '';
+            return {
+                html: '<div class="dropdown-tab-item"' + activeClass + '>'
+                    + iconHtml + '<span>' + item.title + '</span></div>',
+                enabled: true
+            };
+        });
+
+        _overflowDropdown.dropdownExtraClasses = "dropdown-overflow-menu";
+
+        // Position at the overflow button
+        const btnRect = _$overflowBtn[0].getBoundingClientRect();
+        $("body").append(_overflowDropdown.$button);
+        _overflowDropdown.$button.css({
+            position: "absolute",
+            left: btnRect.left + "px",
+            top: (btnRect.top - 2) + "px",
+            zIndex: 1000
+        });
+
+        _overflowDropdown.showDropdown();
+
+        _overflowDropdown.on("select", function (e, item) {
+            const panel = _panelMap[item.panelId];
+            if (panel) {
+                panel.show();
+                // Scroll the newly active tab into view
+                const $tab = _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + item.panelId + '"]');
+                if ($tab.length) {
+                    $tab[0].scrollIntoView({inline: "nearest"});
+                }
+            }
+        });
+
+        // Clean up reference when dropdown closes
+        _overflowDropdown.on(DropdownButton.EVENT_DROPDOWN_CLOSED, function () {
+            if (_overflowDropdown) {
+                _overflowDropdown.$button.remove();
+                _overflowDropdown = null;
             }
         });
     }
@@ -383,11 +495,8 @@ define(function (require, exports, module) {
         if (!_$addBtn) {
             return;
         }
-        if (_defaultPanelId && _activeId === _defaultPanelId) {
-            _$addBtn.hide();
-        } else {
-            _$addBtn.show();
-        }
+        // Highlight the Tools button as active when the default panel is shown
+        _$addBtn.toggleClass("active", _defaultPanelId && _activeId === _defaultPanelId);
     }
 
     /**
@@ -664,13 +773,13 @@ define(function (require, exports, module) {
         _recomputeLayout = recomputeLayoutFn;
         _defaultPanelId = defaultPanelId;
 
-        // Create the "Tools" button inside the tabs overflow area (after all tabs)
-        // This opens the default/quick-access panel when clicked.
+        // Create the "Tools" button outside the scrollable tabs area
+        // so it's always visible even when tabs overflow.
         _$addBtn = $('<span class="bottom-panel-add-btn" title="' + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '">'
             + '<img class="app-drawer-tab-icon" src="styles/images/app-drawer.svg"'
             + ' style="width:12px;height:12px;vertical-align:middle;margin-right:4px">'
             + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '</span>');
-        _$tabsOverflow.append(_$addBtn);
+        _$tabBar.find(".bottom-panel-tab-bar-actions").before(_$addBtn);
 
         // Tab bar click handlers
         _$tabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
@@ -692,9 +801,21 @@ define(function (require, exports, module) {
                     panel.show();
                 }
             }
+            // Scroll clicked tab into view if partially hidden
+            this.scrollIntoView({inline: "nearest"});
         });
 
         _initDragAndDrop();
+
+        // Overflow button for hidden tabs (inserted between tabs and action buttons)
+        _$overflowBtn = $('<span class="bottom-panel-overflow-btn" title="' + Strings.TABBAR_SHOW_HIDDEN_TABS + '">'
+            + '<i class="fa-solid fa-chevron-down"></i></span>');
+        _$overflowBtn.hide();
+        _$tabBar.find(".bottom-panel-tab-bar-actions").before(_$overflowBtn);
+        _$overflowBtn.on("click", function (e) {
+            e.stopPropagation();
+            _showOverflowMenu();
+        });
 
         // "+" button opens the default/quick-access panel
         _$addBtn.on("click", function (e) {

@@ -180,6 +180,35 @@ img.panel-titlebar-icon {
     pointer-events: none;
 }
 
+/* Overflow button: shown when tabs overflow even after collapsing to icons */
+.bottom-panel-overflow-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 2rem;
+    cursor: pointer;
+    color: #666;
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+    transition: color 0.12s ease, background-color 0.12s ease;
+
+    .dark & {
+        color: #aaa;
+    }
+
+    &:hover {
+        background-color: #e0e0e0;
+        color: #333;
+
+        .dark & {
+            background-color: #333;
+            color: #eee;
+        }
+    }
+
+}
+
 /* Drag-and-drop tab reordering */
 .bottom-panel-tab-dragging {
     opacity: 0.5;
@@ -257,6 +286,11 @@ img.panel-titlebar-icon {
     align-items: center;
     justify-content: center;
     padding: 0 8px;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+
+    .dark & {
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+    }
     height: 2rem;
     line-height: 2rem;
     overflow: hidden;
@@ -278,6 +312,31 @@ img.panel-titlebar-icon {
         .dark & {
             background-color: #333;
             color: #eee;
+        }
+    }
+
+    &.active {
+        color: #333;
+        background-color: #fff;
+        position: relative;
+
+        .dark & {
+            color: #dedede;
+            background-color: #1D1F21;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 0.1rem;
+            background-color: #0078D7;
+
+            .dark & {
+                background-color: #75BEFF;
+            }
         }
     }
 }
