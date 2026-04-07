@@ -148,7 +148,7 @@ define(function (require, exports, module) {
      */
     function _buildTab(panel, isActive) {
         let title = panel._tabTitle || _getPanelTitle(panel.panelID, panel.$panel);
-        let $tab = $('<div class="bottom-panel-tab"></div>')
+        let $tab = $('<div class="bottom-panel-tab" draggable="true"></div>')
             .toggleClass('active', isActive)
             .attr('data-panel-id', panel.panelID);
         const opts = panel._options;
@@ -170,6 +170,10 @@ define(function (require, exports, module) {
     function _updateBottomPanelTabBar() {
         if (!_$tabsOverflow) {
             return;
+        }
+        // Detach the add button before emptying to preserve its event handlers
+        if (_$addBtn) {
+            _$addBtn.detach();
         }
         _$tabsOverflow.empty();
 
@@ -249,6 +253,103 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Set up drag-and-drop tab reordering on the bottom panel tab bar.
+     * Uses a vertical line indicator matching the file tab bar UX.
+     * @private
+     */
+    function _initDragAndDrop() {
+        let draggedTab = null;
+        let $indicator = $('<div class="tab-drag-indicator"></div>');
+        $("body").append($indicator);
+
+        function getDropPosition(targetTab, mouseX) {
+            const rect = targetTab.getBoundingClientRect();
+            return mouseX < rect.left + rect.width / 2;
+        }
+
+        function updateIndicator(targetTab, insertBefore) {
+            if (!targetTab) {
+                $indicator.hide();
+                return;
+            }
+            const rect = targetTab.getBoundingClientRect();
+            $indicator.css({
+                position: "fixed",
+                left: (insertBefore ? rect.left : rect.right) + "px",
+                top: rect.top + "px",
+                height: rect.height + "px",
+                width: "2px",
+                zIndex: 10001
+            }).show();
+        }
+
+        function cleanup() {
+            if (draggedTab) {
+                $(draggedTab).removeClass("bottom-panel-tab-dragging");
+            }
+            draggedTab = null;
+            $indicator.hide();
+            _$tabBar.find(".bottom-panel-tab").removeClass("drag-target");
+        }
+
+        _$tabBar.on("dragstart", ".bottom-panel-tab", function (e) {
+            draggedTab = this;
+            e.originalEvent.dataTransfer.effectAllowed = "move";
+            e.originalEvent.dataTransfer.setData("text/plain", "panel-tab");
+            $(this).addClass("bottom-panel-tab-dragging");
+        });
+
+        _$tabBar.on("dragend", ".bottom-panel-tab", function () {
+            setTimeout(cleanup, 50);
+        });
+
+        _$tabBar.on("dragover", ".bottom-panel-tab", function (e) {
+            if (!draggedTab || this === draggedTab) {
+                return;
+            }
+            e.preventDefault();
+            e.originalEvent.dataTransfer.dropEffect = "move";
+            _$tabBar.find(".bottom-panel-tab").removeClass("drag-target");
+            $(this).addClass("drag-target");
+            updateIndicator(this, getDropPosition(this, e.originalEvent.clientX));
+        });
+
+        _$tabBar.on("dragleave", ".bottom-panel-tab", function (e) {
+            const related = e.originalEvent.relatedTarget;
+            if (!$(this).is(related) && !$(this).has(related).length) {
+                $(this).removeClass("drag-target");
+            }
+        });
+
+        _$tabBar.on("drop", ".bottom-panel-tab", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!draggedTab || this === draggedTab) {
+                cleanup();
+                return;
+            }
+            let draggedId = $(draggedTab).data("panel-id");
+            let targetId = $(this).data("panel-id");
+            let fromIdx = _openIds.indexOf(draggedId);
+            let toIdx = _openIds.indexOf(targetId);
+            if (fromIdx === -1 || toIdx === -1) {
+                cleanup();
+                return;
+            }
+            const insertBefore = getDropPosition(this, e.originalEvent.clientX);
+            _openIds.splice(fromIdx, 1);
+            let newIdx = _openIds.indexOf(targetId);
+            if (!insertBefore) {
+                newIdx++;
+            }
+            _openIds.splice(newIdx, 0, draggedId);
+            cleanup();
+            _updateBottomPanelTabBar();
+            _updateActiveTabHighlight();
+        });
+    }
+
+    /**
      * Check if the tab bar is overflowing and collapse tabs to icons if so.
      * Only collapses tabs that have an icon available.
      * @private
@@ -261,6 +362,15 @@ define(function (require, exports, module) {
         _$tabBar.removeClass("bottom-panel-tabs-collapsed");
         const isOverflowing = _$tabsOverflow[0].scrollWidth > _$tabsOverflow[0].clientWidth;
         _$tabBar.toggleClass("bottom-panel-tabs-collapsed", isOverflowing);
+        // Show tooltip on hover only in collapsed mode (title text is hidden)
+        _$tabBar.find(".bottom-panel-tab").each(function () {
+            const $tab = $(this);
+            if (isOverflowing) {
+                $tab.attr("title", $tab.find(".bottom-panel-tab-title").text());
+            } else {
+                $tab.removeAttr("title");
+            }
+        });
     }
 
     /**
@@ -583,6 +693,8 @@ define(function (require, exports, module) {
                 }
             }
         });
+
+        _initDragAndDrop();
 
         // "+" button opens the default/quick-access panel
         _$addBtn.on("click", function (e) {
