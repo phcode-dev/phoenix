@@ -145,9 +145,6 @@ define(function (require, exports, module) {
         // Dropdown chevron button toggles shell selector
         $panel.find(".terminal-flyout-dropdown-btn").on("click", _onDropdownButtonClick);
 
-        // Refresh process info when user hovers over the flyout
-        $panel.find(".terminal-tab-flyout").on("mouseenter", _refreshAllProcesses);
-
         // Listen for panel resize
         WorkspaceManager.on("workspaceUpdateLayout", _handleResize);
 
@@ -155,6 +152,7 @@ define(function (require, exports, module) {
         const PanelView = require("view/PanelView");
         PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (_event, panelId) {
             if (panelId === PANEL_ID) {
+                _updateTabBarMode();
                 const active = _getActiveTerminal();
                 if (active) {
                     active.handleResize();
@@ -587,13 +585,22 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Update the expanded/collapsed tab bar class based on panel width
+     */
+    function _updateTabBarMode() {
+        $panel.toggleClass("terminal-tabs-expanded", $panel.width() >= 750);
+    }
+
+    /**
      * Handle workspace resize
      */
     function _handleResize() {
+        _updateTabBarMode();
         const active = _getActiveTerminal();
         if (active) {
             active.handleResize();
         }
+        _refreshAllProcesses();
     }
 
     /**
