@@ -188,12 +188,16 @@ img.panel-titlebar-icon {
     .bottom-panel-tab-icon ~ .bottom-panel-tab-title {
         display: none;
     }
-    /* Increase spacing between icon and close button to prevent accidental clicks */
+    /* Increase spacing in collapsed mode */
     .bottom-panel-tab {
         padding: 0 0.6rem 0 0.8rem;
     }
     .bottom-panel-tab-close-btn {
         margin-left: 0.8rem;
+    }
+    /* Only show close button on the active tab to prevent accidental clicks */
+    .bottom-panel-tab:not(.active) .bottom-panel-tab-close-btn {
+        visibility: hidden;
     }
 }
 
