@@ -251,6 +251,22 @@ define(function (require, exports, module) {
      * Show/hide the shell dropdown
      */
     function _showShellDropdown() {
+        // Move dropdown out of the flyout and append to the terminal body
+        // so it isn't clipped by the tab bar's overflow: hidden.
+        // Position it above the actions row, aligned to the right.
+        const $body = $panel.find(".terminal-body");
+        const $actions = $panel.find(".terminal-flyout-actions");
+        const actionsRect = $actions[0].getBoundingClientRect();
+        const bodyRect = $body[0].getBoundingClientRect();
+
+        $shellDropdown.appendTo($body);
+        $shellDropdown.css({
+            position: "absolute",
+            bottom: (bodyRect.bottom - actionsRect.top) + "px",
+            right: "0",
+            left: "auto",
+            top: "auto"
+        });
         $shellDropdown.removeClass("forced-hidden");
         // Close on outside click
         setTimeout(function () {

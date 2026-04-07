@@ -44,16 +44,11 @@ define(function (require, exports, module) {
             commandID: Commands.VIEW_TOGGLE_PROBLEMS
         },
         {
-            id: "search",
-            icon: "fa-solid fa-magnifying-glass",
-            label: Strings.CMD_FIND_IN_FILES || "Find in Files",
-            commandID: Commands.CMD_FIND_IN_FILES
-        },
-        {
             id: "git",
             icon: "fa-solid fa-code-branch",
             label: Strings.GIT_PANEL_TITLE || "Git",
-            commandID: Commands.CMD_GIT_TOGGLE_PANEL
+            commandID: Commands.CMD_GIT_TOGGLE_PANEL,
+            nativeOnly: true
         },
         {
             id: "snippets",
@@ -130,15 +125,16 @@ define(function (require, exports, module) {
 
     /**
      * Show or hide buttons based on current state.
-     * The Problems button is always shown since the panel now displays
-     * meaningful content regardless of error state.
+     * On desktop, Git is always shown. On browser, it depends on availability.
      * @private
      */
     function _updateButtonVisibility() {
         if (!_$panel) {
             return;
         }
-        _$panel.find('.default-panel-btn[data-btn-id="git"]').toggle(_isGitAvailable());
+        if (!Phoenix.isNativeApp) {
+            _$panel.find('.default-panel-btn[data-btn-id="git"]').toggle(_isGitAvailable());
+        }
     }
 
     /**
