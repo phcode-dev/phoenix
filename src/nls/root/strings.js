@@ -1784,6 +1784,7 @@ define({
     "TERMINAL_CLOSE_ALL_STOP_BTN": "Close All & Stop Processes",
     "TERMINAL_FOCUS_HINT": "Press {0} to switch between editor and terminal",
     "TERMINAL_CLEAR": "Clear Terminal",
+    "TERMINAL_CLEAR_BUFFER_HINT": "💡 Press {0} to clear terminal buffer",
     "EXTENDED_COMMIT_MESSAGE": "EXTENDED",
     "GETTING_STAGED_DIFF_PROGRESS": "Getting diff of staged files\u2026",
     "GIT_COMMIT": "Git commit\u2026",
