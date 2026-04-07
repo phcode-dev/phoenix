@@ -2096,8 +2096,14 @@ define(function (require, exports, module) {
 
         // Add support for moving items to root directory
         $projectTreeContainer.on("drop", function(e) {
-            var data = JSON.parse(e.originalEvent.dataTransfer.getData("text"));
-            actionCreator.moveItem(data.path, getProjectRoot().fullPath);
+            try {
+                var data = JSON.parse(e.originalEvent.dataTransfer.getData("text"));
+                if (data && data.path) {
+                    actionCreator.moveItem(data.path, getProjectRoot().fullPath);
+                }
+            } catch (err) {
+                console.error("ProjectManager: drop handler error:", err);
+            }
             e.stopPropagation();
         });
 

@@ -1213,8 +1213,14 @@ define(function (require, exports, module) {
         },
 
         handleDrop: function(e) {
-            var data = JSON.parse(e.dataTransfer.getData("text"));
-            this.props.actions.moveItem(data.path, this.props.parentPath);
+            try {
+                var data = JSON.parse(e.dataTransfer.getData("text"));
+                if (data && data.path) {
+                    this.props.actions.moveItem(data.path, this.props.parentPath);
+                }
+            } catch (err) {
+                console.error("FileTreeView: drop handler error:", err);
+            }
             e.stopPropagation();
         },
 
