@@ -2017,6 +2017,7 @@
   "TAG_NAME_PLACEHOLDER": "Enter tag name here…",
   "TARGET_BRANCH": "Target branch",
   "TERMINAL_CLEAR": "Clear Terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Press {0} to clear terminal buffer",
   "TERMINAL_CLOSE_ALL_BTN": "Close All",
   "TERMINAL_CLOSE_ALL_MSG": "All terminals will be closed.<br>No active processes are running.<br><br>Continue?",
   "TERMINAL_CLOSE_ALL_MSG_PROCESS_MANY": "All terminals will be closed.<br>{0} active processes will be stopped.<br><br>Continue?",

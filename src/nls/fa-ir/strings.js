@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف اسنیپت",
   "PROMO_UPGRADE_TITLE": "حساب شما به {0} ارتقا یافت.",
+  "PROMO_UPGRADE_MESSAGE": "از دسترسی رایگان به این ویژگی‌های ویژه برای {0} روز آینده لذت ببرید:",
   "PROMO_CARD_1": "ویرایش در پیش‌نمایش زنده",
   "PROMO_CARD_1_MESSAGE": "محتوا و عناصر را مستقیماً در پیش‌نمایش زنده ویرایش کنید - برش، کپی، چسباندن، تکثیر، حذف - بدون آنکه روند کاری شما مختل شود.",
   "PROMO_CARD_2": "کشیدن و رها کردن عناصر",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "بررسی چیدمان عنصر",
   "PROMO_CARD_4_MESSAGE": "طراحی و بررسی در یک نما - با نگه داشتن ماوس، فاصله‌گذاری، ابعاد و کلاس‌ها را ببینید. خطوط راهنمای خط‌کش برای ترازبندی دقیق پیکسلی.",
   "PROMO_LEARN_MORE": "اطلاعات بیشتر…",
+  "PROMO_OPT_OUT_LINK": "انصراف؟",
+  "PROMO_OPT_OUT_NOTE": "شما می‌توانید هر زمان با انتخاب `Help > Cancel Phoenix Pro Trial`، دورهٔ آزمایشی خود را لغو کنید.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "ارتقا به {0}",
   "PROMO_PRO_ENDED_TITLE": "نسخه آزمایشی {0} به پایان رسید",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "ممنون از اینکه نسخه Pro را امتحان کردید! <b>شما اکنون در نسخه رایگان انجمن هستید.</b> <br>برای باز کردن قفل این ویژگی‌ها، هر زمان که خواستید ارتقا دهید:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "PROMO_UPGRADE_MESSAGE": "از دسترسی رایگان به این ویژگی‌های ویژه برای {0} روز آینده لذت ببرید:",
-  "PROMO_OPT_OUT_LINK": "انصراف؟",
-  "PROMO_OPT_OUT_NOTE": "شما می‌توانید هر زمان با انتخاب `Help > Cancel Phoenix Pro Trial`، دورهٔ آزمایشی خود را لغو کنید."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 برای پاک کردن بافر ترمینال، {0} را بزنید."
 });

@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Supprimer le snippet",
   "PROMO_UPGRADE_TITLE": "Vous avez été surclassé(e) vers {0}",
+  "PROMO_UPGRADE_MESSAGE": "Profitez d'un accès gratuit à ces fonctionnalités premium pendant les {0} prochains jours :",
   "PROMO_CARD_1": "Modifier dans l'aperçu en direct",
   "PROMO_CARD_1_MESSAGE": "Modifiez le contenu et les éléments directement dans l'aperçu en direct (couper, copier, coller, dupliquer, supprimer) sans interrompre votre flux de travail.",
   "PROMO_CARD_2": "Glisser-déposer des éléments",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspecter la mise en page des éléments",
   "PROMO_CARD_4_MESSAGE": "Concevez et inspectez dans une seule vue. Survolez pour voir l'espacement, les dimensions et les classes. Des règles pour un alignement au pixel près.",
   "PROMO_LEARN_MORE": "En savoir plus…",
+  "PROMO_OPT_OUT_LINK": "Annuler l'essai ?",
+  "PROMO_OPT_OUT_NOTE": "Vous pouvez annuler votre version d'essai à tout moment en sélectionnant `Aide > Annuler la version d'essai de Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Passer à {0}",
   "PROMO_PRO_ENDED_TITLE": "Essai de {0} terminé",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Merci d'avoir essayé Pro ! <b>Vous utilisez maintenant l'édition communautaire gratuite.</b> <br>Passez à la version supérieure à tout moment pour débloquer ces fonctionnalités :",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "PROMO_UPGRADE_MESSAGE": "Profitez d'un accès gratuit à ces fonctionnalités premium pendant les {0} prochains jours :",
-  "PROMO_OPT_OUT_LINK": "Annuler l'essai ?",
-  "PROMO_OPT_OUT_NOTE": "Vous pouvez annuler votre version d'essai à tout moment en sélectionnant `Aide > Annuler la version d'essai de Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Appuyez sur {0} pour vider le tampon du terminal"
 });

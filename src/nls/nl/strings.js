@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet verwijderen",
   "PROMO_UPGRADE_TITLE": "Je bent geüpgraded naar {0}",
+  "PROMO_UPGRADE_MESSAGE": "Geniet van gratis toegang tot deze premium functies voor de komende {0} dagen:",
   "PROMO_CARD_1": "Bewerken in Live Preview",
   "PROMO_CARD_1_MESSAGE": "Bewerk content en elementen rechtstreeks in Live Preview - knippen, kopiëren, plakken, dupliceren, verwijderen - zonder uw flow te onderbreken.",
   "PROMO_CARD_2": "Elementen Slepen & Neerzetten",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Elementlay-out Inspecteren",
   "PROMO_CARD_4_MESSAGE": "Ontwerp en inspecteer in één weergave - hover om afstanden, afmetingen en klassen te zien. Linialen voor pixel-perfecte uitlijning.",
   "PROMO_LEARN_MORE": "Meer informatie…",
+  "PROMO_OPT_OUT_LINK": "Afmelden?",
+  "PROMO_OPT_OUT_NOTE": "U kunt uw proefperiode op elk moment annuleren door `Help > Cancel Phoenix Pro Trial` te selecteren.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Upgrade naar {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-proefperiode beëindigd",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Bedankt voor het uitproberen van Pro! <b>U gebruikt nu de gratis Community Edition.</b> <br>Upgrade op elk gewenst moment om deze functies te ontgrendelen:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "PROMO_UPGRADE_MESSAGE": "Geniet van gratis toegang tot deze premium functies voor de komende {0} dagen:",
-  "PROMO_OPT_OUT_LINK": "Afmelden?",
-  "PROMO_OPT_OUT_NOTE": "U kunt uw proefperiode op elk moment annuleren door `Help > Cancel Phoenix Pro Trial` te selecteren."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Druk op {0} om de terminalbuffer te wissen"
 });

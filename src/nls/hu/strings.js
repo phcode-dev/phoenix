@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kódrészlet törlése",
   "PROMO_UPGRADE_TITLE": "Átálltunk a(z) {0} verzióra",
+  "PROMO_UPGRADE_MESSAGE": "Élvezze az ingyenes hozzáférést ezekhez a prémium funkciókhoz a következő {0} napban:",
   "PROMO_CARD_1": "Szerkesztés élő előnézetben",
   "PROMO_CARD_1_MESSAGE": "Szerkessze a tartalmat és az elemeket közvetlenül az élő előnézetben – kivágás, másolás, beillesztés, duplikálás, törlés – a munkafolyamat megszakítása nélkül.",
   "PROMO_CARD_2": "Elemek áthelyezése húzással",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Elemelrendezés vizsgálata",
   "PROMO_CARD_4_MESSAGE": "Tervezés és vizsgálat egy nézetben – vigye fölé az egeret a térközök, méretek és osztályok megtekintéséhez. Vonalzó segédvonalak a pixelpontos igazításhoz.",
   "PROMO_LEARN_MORE": "Tudj meg többet…",
+  "PROMO_OPT_OUT_LINK": "Lemondás?",
+  "PROMO_OPT_OUT_NOTE": "A próbaidőszakot bármikor lemondhatja a `Help > Cancel Phoenix Pro Trial` menüpont kiválasztásával.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Frissítés {0} verzióra",
   "PROMO_PRO_ENDED_TITLE": "A(z) {0} próbaidőszak lejárt",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Köszönjük, hogy kipróbálta a Pro verziót! <b>Mostantól az ingyenes közösségi kiadást használja.</b> <br>Bármikor frissíthet a következő funkciók feloldásához:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "PROMO_UPGRADE_MESSAGE": "Élvezze az ingyenes hozzáférést ezekhez a prémium funkciókhoz a következő {0} napban:",
-  "PROMO_OPT_OUT_LINK": "Lemondás?",
-  "PROMO_OPT_OUT_NOTE": "A próbaidőszakot bármikor lemondhatja a `Help > Cancel Phoenix Pro Trial` menüpont kiválasztásával."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Nyomja meg a(z) {0} billentyűt a terminálpuffer törléséhez"
 });

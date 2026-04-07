@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "스니펫 삭제",
   "PROMO_UPGRADE_TITLE": "{0}(으)로 업그레이드되었습니다.",
+  "PROMO_UPGRADE_MESSAGE": "다음 {0}일 동안 이 프리미엄 기능들을 무료로 이용해 보세요:",
   "PROMO_CARD_1": "라이브 미리보기에서 편집",
   "PROMO_CARD_1_MESSAGE": "라이브 미리보기에서 바로 콘텐츠와 요소를 편집하세요. 작업 흐름을 방해하지 않고 자르기, 복사, 붙여넣기, 복제, 삭제를 할 수 있습니다.",
   "PROMO_CARD_2": "요소 드래그 앤 드롭",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "요소 레이아웃 검사",
   "PROMO_CARD_4_MESSAGE": "하나의 보기에서 디자인하고 검사하세요. 마우스를 올리면 간격, 크기, 클래스를 볼 수 있습니다. 눈금자 가이드로 픽셀 단위의 완벽한 정렬이 가능합니다.",
   "PROMO_LEARN_MORE": "자세히 알아보기…",
+  "PROMO_OPT_OUT_LINK": "체험 취소?",
+  "PROMO_OPT_OUT_NOTE": "언제든지 `도움말 > Phoenix Pro 체험 취소`를 선택하여 체험을 취소할 수 있습니다.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0}로 업그레이드",
   "PROMO_PRO_ENDED_TITLE": "{0} 체험판이 종료되었습니다",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Pro를 체험해 주셔서 감사합니다! <b>이제 무료 커뮤니티 에디션으로 전환되었습니다.</b> <br>언제든지 업그레이드하여 다음 기능을 잠금 해제하세요:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "PROMO_UPGRADE_MESSAGE": "다음 {0}일 동안 이 프리미엄 기능들을 무료로 이용해 보세요:",
-  "PROMO_OPT_OUT_LINK": "체험 취소?",
-  "PROMO_OPT_OUT_NOTE": "언제든지 `도움말 > Phoenix Pro 체험 취소`를 선택하여 체험을 취소할 수 있습니다."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 터미널 버퍼를 지우려면 {0} 키를 누르세요"
 });

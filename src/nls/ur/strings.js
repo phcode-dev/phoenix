@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "سنیپٹ حذف کریں",
   "PROMO_UPGRADE_TITLE": "آپ کو {0} میں اپ گریڈ کر دیا گیا ہے۔",
+  "PROMO_UPGRADE_MESSAGE": "اگلے {0} دنوں کے لیے ان پریمیم خصوصیات تک مفت رسائی سے لطف اندوز ہوں:",
   "PROMO_CARD_1": "لائیو پیش منظر میں ترمیم کریں",
   "PROMO_CARD_1_MESSAGE": "مواد اور عناصر کی براہ راست لائیو پیش منظر میں ترمیم کریں - کٹ، کاپی، پیسٹ، ڈپلیکیٹ، ڈیلیٹ - اپنے کام کے تسلسل کو توڑے بغیر۔",
   "PROMO_CARD_2": "ڈریگ اینڈ ڈراپ عناصر",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "عنصر لے آؤٹ کا معائنہ",
   "PROMO_CARD_4_MESSAGE": "ایک ہی منظر میں ڈیزائن اور معائنہ کریں - اسپیسنگ، ڈائمینشنز، اور کلاسز دیکھنے کے لیے ہوور کریں۔ پکسل-پرفیکٹ سیدھ بندی کے لیے رولر گائیڈز۔",
   "PROMO_LEARN_MORE": "مزید جانیے…",
+  "PROMO_OPT_OUT_LINK": "دستبردار ہوں؟",
+  "PROMO_OPT_OUT_NOTE": "آپ کسی بھی وقت `Help > Cancel Phoenix Pro Trial` منتخب کر کے اپنا ٹرائل منسوخ کر سکتے ہیں۔",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0} پر اپ گریڈ کریں",
   "PROMO_PRO_ENDED_TITLE": "{0} کا ٹرائل ختم ہو گیا",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "پرو آزمانے کا شکریہ! <b>اب آپ مفت کمیونٹی ایڈیشن پر ہیں۔</b> <br>ان خصوصیات کو غیر مقفل کرنے کے لیے کسی بھی وقت اپ گریڈ کریں:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "PROMO_UPGRADE_MESSAGE": "اگلے {0} دنوں کے لیے ان پریمیم خصوصیات تک مفت رسائی سے لطف اندوز ہوں:",
-  "PROMO_OPT_OUT_LINK": "دستبردار ہوں؟",
-  "PROMO_OPT_OUT_NOTE": "آپ کسی بھی وقت `Help > Cancel Phoenix Pro Trial` منتخب کر کے اپنا ٹرائل منسوخ کر سکتے ہیں۔"
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 ٹرمینل بفر صاف کرنے کے لیے {0} دبائیں۔"
 });

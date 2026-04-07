@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Șterge snippetul",
   "PROMO_UPGRADE_TITLE": "Ai fost upgradat la {0}",
+  "PROMO_UPGRADE_MESSAGE": "Bucură-te de acces gratuit la aceste funcționalități premium pentru următoarele {0} zile:",
   "PROMO_CARD_1": "Editează în Previzualizarea Live",
   "PROMO_CARD_1_MESSAGE": "Editează conținutul și elementele direct în Previzualizarea Live - taie, copiază, lipește, duplică, șterge - fără a-ți întrerupe fluxul de lucru.",
   "PROMO_CARD_2": "Trage și Plasează Elemente",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inspectează Aranjarea Elementului",
   "PROMO_CARD_4_MESSAGE": "Proiectează și inspectează într-o singură vizualizare - plasează cursorul pentru a vedea spațierea, dimensiunile și clasele. Ghidaje de riglă pentru o aliniere perfectă la pixel.",
   "PROMO_LEARN_MORE": "Află mai multe…",
+  "PROMO_OPT_OUT_LINK": "Renunți?",
+  "PROMO_OPT_OUT_NOTE": "Poți anula oricând perioada de probă selectând `Ajutor > Anulare perioadă de probă Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Treceți la {0}",
   "PROMO_PRO_ENDED_TITLE": "Perioada de probă {0} a expirat",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Vă mulțumim că ați încercat Pro! <b>Acum folosiți ediția gratuită Community.</b> <br>Treceți la o versiune superioară oricând pentru a debloca aceste funcționalități:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "PROMO_UPGRADE_MESSAGE": "Bucură-te de acces gratuit la aceste funcționalități premium pentru următoarele {0} zile:",
-  "PROMO_OPT_OUT_LINK": "Renunți?",
-  "PROMO_OPT_OUT_NOTE": "Poți anula oricând perioada de probă selectând `Ajutor > Anulare perioadă de probă Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Apăsați {0} pentru a goli bufferul terminalului"
 });

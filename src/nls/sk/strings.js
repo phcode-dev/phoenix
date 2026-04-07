@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Prípona súboru",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstrániť úryvok",
   "PROMO_UPGRADE_TITLE": "Boli ste prejdení na {0}",
+  "PROMO_UPGRADE_MESSAGE": "Užite si bezplatný prístup k týmto prémiovým funkciám na nasledujúcich {0} dní:",
   "PROMO_CARD_1": "Editovať v živom náhľade",
   "PROMO_CARD_1_MESSAGE": "Editujte obsah a prvky priamo v živom náhľade – vystrihnúť, kopírovať, vložiť, duplikovať, odstrániť – bez prerušenia vašej práce.",
   "PROMO_CARD_2": "Presúvanie prvkov potiahnutím",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Inšpekcia rozloženia prvku",
   "PROMO_CARD_4_MESSAGE": "Navrhujte a kontrolujte v jednom zobrazení – prejdením myšou zobrazíte medzery, rozmery a triedy. Vodiace pravítka pre zarovnanie s presnosťou na pixel.",
   "PROMO_LEARN_MORE": "Zistiť viac…",
+  "PROMO_OPT_OUT_LINK": "Zrušiť?",
+  "PROMO_OPT_OUT_NOTE": "Svoju skúšobnú verziu môžete kedykoľvek zrušiť výberom `Pomoc > Zrušiť skúšobnú verziu Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Prejsť na {0}",
   "PROMO_PRO_ENDED_TITLE": "Skúšobná verzia {0} skončila",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Ďakujeme, že ste vyskúšali verziu Pro! <b>Teraz používate bezplatnú verziu Community Edition.</b> <br>Inovujte kedykoľvek a odomknite tieto funkcie:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "PROMO_UPGRADE_MESSAGE": "Užite si bezplatný prístup k týmto prémiovým funkciám na nasledujúcich {0} dní:",
-  "PROMO_OPT_OUT_LINK": "Zrušiť?",
-  "PROMO_OPT_OUT_NOTE": "Svoju skúšobnú verziu môžete kedykoľvek zrušiť výberom `Pomoc > Zrušiť skúšobnú verziu Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Stlačte {0} na vyčistenie buffera terminálu"
 });

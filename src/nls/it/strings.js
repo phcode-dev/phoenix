@@ -1840,6 +1840,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File",
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Elimina snippet",
   "PROMO_UPGRADE_TITLE": "Sei passato a {0}",
+  "PROMO_UPGRADE_MESSAGE": "Goditi l'accesso gratuito a queste funzionalità premium per i prossimi {0} giorni:",
   "PROMO_CARD_1": "Modifica nell'anteprima in tempo reale",
   "PROMO_CARD_1_MESSAGE": "Modifica contenuti ed elementi direttamente nell'anteprima in tempo reale - taglia, copia, incolla, duplica, elimina - senza interrompere il tuo flusso di lavoro.",
   "PROMO_CARD_2": "Trascina e rilascia elementi",
@@ -1849,6 +1850,8 @@ define({
   "PROMO_CARD_4": "Ispezione layout elemento",
   "PROMO_CARD_4_MESSAGE": "Progetta e ispeziona in un'unica vista: passa il mouse per vedere spaziature, dimensioni e classi. Guide righello per un allineamento perfetto al pixel.",
   "PROMO_LEARN_MORE": "Scopri di più…",
+  "PROMO_OPT_OUT_LINK": "Rinunciare?",
+  "PROMO_OPT_OUT_NOTE": "Puoi annullare la tua prova in qualsiasi momento selezionando `Aiuto > Annulla prova Phoenix Pro`.",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Passa a {0}",
   "PROMO_PRO_ENDED_TITLE": "Prova di {0} terminata",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Grazie per aver provato la versione Pro! <b>Ora stai utilizzando la Free Community Edition.</b> <br>Esegui l'upgrade in qualsiasi momento per sbloccare queste funzionalità:",
@@ -2162,7 +2165,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "PROMO_UPGRADE_MESSAGE": "Goditi l'accesso gratuito a queste funzionalità premium per i prossimi {0} giorni:",
-  "PROMO_OPT_OUT_LINK": "Rinunciare?",
-  "PROMO_OPT_OUT_NOTE": "Puoi annullare la tua prova in qualsiasi momento selezionando `Aiuto > Annulla prova Phoenix Pro`."
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Premi {0} per pulire il buffer del terminale"
 });
