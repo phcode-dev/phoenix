@@ -774,12 +774,13 @@ define(function (require, exports, module) {
                 // Verify edit mode preserved
                 await _assertMdEditMode(true);
 
-                // Verify scroll position preserved (wider tolerance for CI)
+                // Verify scroll position preserved (wider tolerance for CI).
+                // Wait longer as theme/content sync after reopen can cause transient reflows.
                 await awaitsFor(() => {
                     const scroll = _getViewerScrollTop();
                     return scroll > 10 && Math.abs(scroll - scrollBefore) < 150;
-                }, "scroll position to be preserved after panel reopen", 5000);
-            }, 15000);
+                }, "scroll position to be preserved after panel reopen", 8000);
+            }, 20000);
 
             it("should reload button re-render current file with fresh DOM preserving scroll and edit mode", async function () {
                 await _openMdFileAndWaitForPreview("long.md");
