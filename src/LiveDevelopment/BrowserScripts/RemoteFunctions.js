@@ -961,7 +961,18 @@ function RemoteFunctions(config = {}) {
         });
     }
 
-    window.addEventListener("resize", redrawEverything);
+    // Throttle resize redraws to one per animation frame — avoids redundant
+    // layout reads when the browser fires multiple resize events per frame.
+    let _pendingResizeRAF = null;
+    function _onWindowResize() {
+        if (!_pendingResizeRAF) {
+            _pendingResizeRAF = requestAnimationFrame(function () {
+                _pendingResizeRAF = null;
+                redrawEverything();
+            });
+        }
+    }
+    window.addEventListener("resize", _onWindowResize);
 
     /**
      * Constructor
