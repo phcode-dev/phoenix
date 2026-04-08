@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self';
-                   script-src 'self';
-                   style-src 'self' 'unsafe-inline';
+          content="default-src 'self' http://localhost:* https://localhost:* phtauri: https://phtauri.localhost https://*.phcode.dev;
+                   script-src 'self' http://localhost:* https://localhost:* phtauri: https://phtauri.localhost https://*.phcode.dev;
+                   style-src 'self' 'unsafe-inline' http://localhost:* https://localhost:* phtauri: https://phtauri.localhost https://*.phcode.dev;
                    img-src 'self' blob: data: phtauri: https: http:;
-                   font-src 'self' data:;
-                   connect-src 'self';" />
+                   font-src 'self' data: http://localhost:* https://localhost:* phtauri: https://phtauri.localhost https://*.phcode.dev;
+                   connect-src 'self' http://localhost:* https://localhost:* ws://localhost:* wss://localhost:* phtauri: https://phtauri.localhost https://*.phcode.dev;" />
     <script type="module" src="/src/embedded-main.js"></script>
 </head>
 <body>
