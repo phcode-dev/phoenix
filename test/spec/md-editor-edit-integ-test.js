@@ -210,6 +210,8 @@ define(function (require, exports, module) {
 
                 // In reader mode: checkboxes should be disabled
                 await _enterReaderMode();
+                await awaitsFor(() => _getCheckboxes().length > 0,
+                    "checkboxes to appear in reader mode");
                 let checkboxes = _getCheckboxes();
                 expect(checkboxes.length).toBeGreaterThan(0);
                 for (const cb of checkboxes) {
@@ -218,6 +220,8 @@ define(function (require, exports, module) {
 
                 // In edit mode: checkboxes should be enabled
                 await _enterEditMode();
+                await awaitsFor(() => _getCheckboxes().length > 0,
+                    "checkboxes to appear in edit mode");
                 checkboxes = _getCheckboxes();
                 expect(checkboxes.length).toBeGreaterThan(0);
                 for (const cb of checkboxes) {
