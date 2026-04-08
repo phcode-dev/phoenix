@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Tutup Semua & Hentikan Proses",
   "TERMINAL_FOCUS_HINT": "Tekan {0} untuk beralih antara editor dan terminal",
   "TERMINAL_CLEAR": "Bersihkan Terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Tekan {0} untuk membersihkan buffer terminal",
   "EXTENDED_COMMIT_MESSAGE": "PESAN KOMIT LENGKAP",
   "GETTING_STAGED_DIFF_PROGRESS": "Mendapatkan perbedaan berkas yang sudah di-staging…",
   "GIT_COMMIT": "Commit Git…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Tekan {0} untuk membersihkan buffer terminal"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Pengindeksan File Ditangguhkan",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Cache file proyek telah mencapai {0} MB. Pengindeksan telah ditangguhkan untuk mencegah penggunaan memori yang tinggi. Fitur Cari di File dinonaktifkan untuk proyek ini. Untuk mengurangi ukuran pengindeksan, tambahkan folder dengan file besar atau file yang dibuat secara otomatis ke .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Ukuran maksimum dalam MB untuk cache file pencarian instan."
 });

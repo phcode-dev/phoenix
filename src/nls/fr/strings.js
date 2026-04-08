@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Tout fermer et arrêter les processus",
   "TERMINAL_FOCUS_HINT": "Appuyez sur {0} pour basculer entre l'éditeur et le terminal",
   "TERMINAL_CLEAR": "Effacer le terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Appuyez sur {0} pour effacer le tampon du terminal",
   "EXTENDED_COMMIT_MESSAGE": "ÉTENDU",
   "GETTING_STAGED_DIFF_PROGRESS": "Récupération des différences des fichiers indexés…",
   "GIT_COMMIT": "Commit Git…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Appuyez sur {0} pour effacer le tampon du terminal"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexation des fichiers suspendue",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Le cache des fichiers du projet a atteint {0} Mo. L'indexation a été suspendue pour éviter une utilisation élevée de la mémoire. La recherche dans les fichiers est désactivée pour ce projet. Pour réduire la taille de l'indexation, ajoutez les dossiers contenant des fichiers volumineux ou générés à .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Taille maximale en Mo pour le cache des fichiers de la recherche instantanée."
 });

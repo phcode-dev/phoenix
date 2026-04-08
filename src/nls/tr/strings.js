@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Tümünü Kapat ve İşlemleri Durdur",
   "TERMINAL_FOCUS_HINT": "Düzenleyici ve terminal arasında geçiş yapmak için {0} tuşuna basın",
   "TERMINAL_CLEAR": "Terminali Temizle",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Terminal arabelleğini temizlemek için {0} tuşuna basın",
   "EXTENDED_COMMIT_MESSAGE": "Genişletilmiş",
   "GETTING_STAGED_DIFF_PROGRESS": "Değişiklik listesi alınıyor…",
   "GIT_COMMIT": "Git gönder…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Terminal arabelleğini temizlemek için {0} tuşuna basın"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Dosya İndeksleme Askıya Alındı",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Proje dosya önbelleği {0} MB'a ulaştı. Yüksek bellek kullanımını önlemek için indeksleme askıya alındı. Bu proje için Dosyalarda Bul özelliği devre dışı bırakıldı. İndeksleme boyutunu küçültmek için büyük veya oluşturulmuş dosyaları içeren klasörleri .gitignore'a ekleyin.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Anlık arama dosya önbelleği için MB cinsinden maksimum boyut."
 });

@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Stäng alla och stoppa processer",
   "TERMINAL_FOCUS_HINT": "Tryck på {0} för att växla mellan redigeraren och terminalen",
   "TERMINAL_CLEAR": "Rensa terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Tryck på {0} för att rensa terminalbufferten",
   "EXTENDED_COMMIT_MESSAGE": "UTÖKAT",
   "GETTING_STAGED_DIFF_PROGRESS": "Hämtar diff för mellanlagrade filer…",
   "GIT_COMMIT": "Git-commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Tryck på {0} för att rensa terminalbufferten"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Filindexering pausad",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektets filcache har nått {0} MB. Indexeringen har pausats för att förhindra hög minnesanvändning. Sök i filer är inaktiverat för det här projektet. För att minska indexeringsstorleken, lägg till mappar med stora eller genererade filer i .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximal storlek i MB för filcachen för snabbsökning."
 });

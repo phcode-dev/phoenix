@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "سب بند کریں اور پروسیسز روکیں",
   "TERMINAL_FOCUS_HINT": "ایڈیٹر اور ٹرمینل کے درمیان سوئچ کرنے کے لیے {0} دبائیں",
   "TERMINAL_CLEAR": "ٹرمینل صاف کریں",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 ٹرمینل بفر صاف کرنے کے لیے {0} دبائیں۔",
   "EXTENDED_COMMIT_MESSAGE": "تفصیلی",
   "GETTING_STAGED_DIFF_PROGRESS": "اسٹیج کی گئی فائلوں کا فرق حاصل کر رہا ہے…",
   "GIT_COMMIT": "گٹ کمٹ…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 ٹرمینل بفر صاف کرنے کے لیے {0} دبائیں۔"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "فائل انڈیکسنگ معطل",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "پروجیکٹ فائل کیشے {0} MB تک پہنچ گیا ہے۔ میموری کے زیادہ استعمال کو روکنے کے لیے انڈیکسنگ معطل کر دی گئی ہے۔ اس پروجیکٹ کے لیے فائلوں میں تلاش غیر فعال ہے۔ انڈیکسنگ کا سائز کم کرنے کے لیے، بڑی یا جنریٹڈ فائلوں والے فولڈرز کو ‎.gitignore میں شامل کریں۔",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "فوری تلاش فائل کیشے کا زیادہ سے زیادہ سائز MB میں۔"
 });

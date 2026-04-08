@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "بستن همه و توقف فرآیندها",
   "TERMINAL_FOCUS_HINT": "برای جابجایی بین ویرایشگر و ترمینال، کلید {0} را فشار دهید",
   "TERMINAL_CLEAR": "پاک کردن ترمینال",
+  "TERMINAL_CLEAR_BUFFER_HINT": "`💡 برای پاک کردن بافر ترمینال، {0} را فشار دهید.`",
   "EXTENDED_COMMIT_MESSAGE": "گسترش‌یافته",
   "GETTING_STAGED_DIFF_PROGRESS": "دریافت تفاوت فایل‌های مرحله‌بندی شده…",
   "GIT_COMMIT": "کامیت گیت…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "TERMINAL_CLEAR_BUFFER_HINT": "`💡 برای پاک کردن بافر ترمینال، {0} را فشار دهید.`"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "نمایه‌سازی فایل‌ها متوقف شد",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "کش فایل پروژه به {0} مگابایت رسیده است. نمایه‌سازی برای جلوگیری از مصرف بالای حافظه متوقف شده است. قابلیت «جستجو در فایل‌ها» برای این پروژه غیرفعال است. برای کاهش حجم نمایه‌سازی، پوشه‌های حاوی فایل‌های حجیم یا تولیدشده را به ‎.gitignore اضافه کنید.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "حداکثر حجم (بر حسب مگابایت) برای کش فایل جستجوی فوری."
 });

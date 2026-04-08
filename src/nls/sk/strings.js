@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Zavrieť všetko a zastaviť procesy",
   "TERMINAL_FOCUS_HINT": "Stlačte {0} na prepnutie medzi editorom a terminálom",
   "TERMINAL_CLEAR": "Vyčistiť terminál",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Stlačením {0} vymažete vyrovnávaciu pamäť terminálu",
   "EXTENDED_COMMIT_MESSAGE": "ROZŠÍRENÉ",
   "GETTING_STAGED_DIFF_PROGRESS": "Získavanie diffu pre pripravené súbory…",
   "GIT_COMMIT": "Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Stlačením {0} vymažete vyrovnávaciu pamäť terminálu"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexovanie súborov pozastavené",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Vyrovnávacia pamäť súborov projektu dosiahla {0} MB. Indexovanie bolo pozastavené, aby sa predišlo vysokému využitiu pamäte. Funkcia Hľadať v súboroch je pre tento projekt vypnutá. Ak chcete zmenšiť veľkosť indexovania, pridajte priečinky s veľkými alebo generovanými súbormi do .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximálna veľkosť v MB pre vyrovnávaciu pamäť súborov okamžitého vyhľadávania."
 });

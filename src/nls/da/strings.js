@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Luk alle & stop processer",
   "TERMINAL_FOCUS_HINT": "Tryk på {0} for at skifte mellem editoren og terminalen",
   "TERMINAL_CLEAR": "Ryd terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Tryk på {0} for at tømme terminalbufferen",
   "EXTENDED_COMMIT_MESSAGE": "UDVIDET",
   "GETTING_STAGED_DIFF_PROGRESS": "Henter forskelle i stagede filer…",
   "GIT_COMMIT": "Git-commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Tryk på {0} for at tømme terminalbufferen"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Filindeksering suspenderet",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektets filcache har nået {0} MB. Indeksering er blevet suspenderet for at forhindre højt hukommelsesforbrug. Find i filer er deaktiveret for dette projekt. For at reducere indekseringsstørrelsen, tilføj mapper med store eller genererede filer til .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksimal størrelse i MB for filcachen til øjeblikkelig søgning."
 });

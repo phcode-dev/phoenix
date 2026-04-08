@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Chiudi tutto e arresta processi",
   "TERMINAL_FOCUS_HINT": "Premi {0} per passare tra editor e terminale",
   "TERMINAL_CLEAR": "Pulisci terminale",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Premi {0} per pulire il buffer del terminale",
   "EXTENDED_COMMIT_MESSAGE": "ESTESO",
   "GETTING_STAGED_DIFF_PROGRESS": "Ottenimento diff dei file in staging…",
   "GIT_COMMIT": "Commit Git…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Premi {0} per pulire il buffer del terminale"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indicizzazione file sospesa",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "La cache dei file del progetto ha raggiunto {0} MB. L'indicizzazione è stata sospesa per evitare un utilizzo elevato della memoria. La funzione Cerca nei file è disabilitata per questo progetto. Per ridurre le dimensioni dell'indicizzazione, aggiungi le cartelle con file di grandi dimensioni o generati a .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Dimensione massima in MB per la cache dei file della ricerca istantanea."
 });

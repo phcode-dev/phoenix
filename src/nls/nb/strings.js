@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Lukk alle og stopp prosesser",
   "TERMINAL_FOCUS_HINT": "Trykk {0} for å bytte mellom editor og terminal",
   "TERMINAL_CLEAR": "Tøm terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Trykk {0} for å tømme terminalbufferen",
   "EXTENDED_COMMIT_MESSAGE": "UTIDET",
   "GETTING_STAGED_DIFF_PROGRESS": "Henter diff av indekserte filer…",
   "GIT_COMMIT": "Git-commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Trykk {0} for å tømme terminalbufferen"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Filindeksering stanset",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Filcachen for prosjektet har nådd {0} MB. Indeksering er stanset for å forhindre høyt minnebruk. Søk i filer er deaktivert for dette prosjektet. For å redusere indekseringsstørrelsen, legg til mapper med store eller genererte filer i .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksimal størrelse i MB for filcachen for direktesøk."
 });

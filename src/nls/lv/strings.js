@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Aizvērt visus un apturēt procesus",
   "TERMINAL_FOCUS_HINT": "Nospiediet {0}, lai pārslēgtos starp redaktoru un termināli",
   "TERMINAL_CLEAR": "Notīrīt termināli",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Nospiediet {0}, lai notīrītu termināļa buferi",
   "EXTENDED_COMMIT_MESSAGE": "PAPLAŠINĀTS",
   "GETTING_STAGED_DIFF_PROGRESS": "Iegūst izmaiņu salīdzinājumu iestudētajiem failiem…",
   "GIT_COMMIT": "Git izveidot komitu…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Nospiediet {0}, lai notīrītu termināļa buferi"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Failu indeksēšana apturēta",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projekta failu kešatmiņa ir sasniegusi {0} MB. Indeksēšana ir apturēta, lai novērstu augstu atmiņas patēriņu. Meklēšana failos šim projektam ir atspējota. Lai samazinātu indeksēšanas apjomu, pievienojiet mapes ar lieliem vai ģenerētiem failiem failam .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Tūlītējās meklēšanas failu kešatmiņas maksimālais izmērs (MB)."
 });

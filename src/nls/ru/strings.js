@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Закрыть все и остановить процессы",
   "TERMINAL_FOCUS_HINT": "Нажмите {0}, чтобы переключиться между редактором и терминалом",
   "TERMINAL_CLEAR": "Очистить терминал",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Нажмите {0}, чтобы очистить буфер терминала",
   "EXTENDED_COMMIT_MESSAGE": "РАСШИРЕННЫЙ",
   "GETTING_STAGED_DIFF_PROGRESS": "Получение изменений индексированных файлов…",
   "GIT_COMMIT": "Git: коммит…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Нажмите {0}, чтобы очистить буфер терминала"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Индексация файлов приостановлена",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Кэш файлов проекта достиг {0} МБ. Индексация приостановлена во избежание высокого потребления памяти. Поиск по файлам отключён для этого проекта. Чтобы уменьшить размер индекса, добавьте папки с большими или сгенерированными файлами в .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Максимальный размер в МБ для кэша файлов мгновенного поиска."
 });

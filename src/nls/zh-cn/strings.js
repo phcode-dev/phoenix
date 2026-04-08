@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "关闭所有并停止进程",
   "TERMINAL_FOCUS_HINT": "按 {0} 在编辑器和终端之间切换",
   "TERMINAL_CLEAR": "清除终端",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 按 {0} 清除终端缓冲区",
   "EXTENDED_COMMIT_MESSAGE": "扩展",
   "GETTING_STAGED_DIFF_PROGRESS": "获取已暂存文件的差异…",
   "GIT_COMMIT": "Git 提交…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 按 {0} 清除终端缓冲区"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "文件索引已暂停",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "项目文件缓存已达到 {0} MB。为防止内存占用过高，已暂停索引。此项目的文件内查找功能已被禁用。要减小索引大小，请将包含大型文件或生成文件的文件夹添加到 .gitignore。",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "即时搜索文件缓存的最大大小 (MB)。"
 });

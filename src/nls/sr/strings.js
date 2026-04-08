@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Затвори све и заустави процесе",
   "TERMINAL_FOCUS_HINT": "Притисните {0} за пребацивање између уређивача и терминала",
   "TERMINAL_CLEAR": "Очисти терминал",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Притисните {0} да очистите бафер терминала",
   "EXTENDED_COMMIT_MESSAGE": "ПРОШИРЕНО",
   "GETTING_STAGED_DIFF_PROGRESS": "Добијање разлике између индексираних датотека…",
   "GIT_COMMIT": "Гит слање…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Притисните {0} да очистите бафер терминала"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Обустављено индексирање датотека",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Кеш меморија датотека пројекта је достигла {0} MB. Индексирање је обустављено да би се спречила велика потрошња меморије. Претрага у датотекама је онемогућена за овај пројекат. Да бисте смањили величину индексирања, додајте фасцикле са великим или генерисаним датотекама у .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Максимална величина у MB за кеш меморију датотека за тренутну претрагу."
 });

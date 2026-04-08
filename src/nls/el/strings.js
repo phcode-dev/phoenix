@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Κλείσιμο όλων & Τερματισμός διεργασιών",
   "TERMINAL_FOCUS_HINT": "Πατήστε {0} για εναλλαγή μεταξύ του επεξεργαστή κειμένου και του τερματικού",
   "TERMINAL_CLEAR": "Εκκαθάριση τερματικού",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Πατήστε {0} για εκκαθάριση του τερματικού.",
   "EXTENDED_COMMIT_MESSAGE": "ΕΠΕΚΤΕΙΝΟΜΕΝΟ",
   "GETTING_STAGED_DIFF_PROGRESS": "Λήψη διαφορών στα staged αρχεία…",
   "GIT_COMMIT": "Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Πατήστε {0} για εκκαθάριση του τερματικού."
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Αναστολή ευρετηρίασης αρχείων",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Η προσωρινή μνήμη αρχείων του έργου έφτασε τα {0} MB. Η ευρετηρίαση ανεστάλη για την αποφυγή υψηλής χρήσης μνήμης. Η λειτουργία «Εύρεση σε αρχεία» είναι απενεργοποιημένη για αυτό το έργο. Για να μειώσετε το μέγεθος της ευρετηρίασης, προσθέστε φακέλους με μεγάλα ή παραγόμενα αρχεία στο .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Μέγιστο μέγεθος σε MB για την προσωρινή μνήμη αρχείων της άμεσης αναζήτησης."
 });

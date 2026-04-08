@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Закрити все та зупинити процеси",
   "TERMINAL_FOCUS_HINT": "Натисніть {0}, щоб перемикатися між редактором і терміналом",
   "TERMINAL_CLEAR": "Очистити термінал",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Натисніть {0}, щоб очистити буфер термінала",
   "EXTENDED_COMMIT_MESSAGE": "РОЗШИРЕНИЙ",
   "GETTING_STAGED_DIFF_PROGRESS": "Отримання змін індексованих файлів…",
   "GIT_COMMIT": "Комміт Git…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Натисніть {0}, щоб очистити буфер термінала"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Індексування файлів призупинено",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Кеш файлів проєкту досяг {0} МБ. Індексування призупинено, щоб запобігти високому споживанню пам'яті. Функція «Пошук у файлах» вимкнена для цього проєкту. Щоб зменшити розмір індексу, додайте папки з великими або згенерованими файлами до .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Максимальний розмір у МБ для кешу файлів миттєвого пошуку."
 });

@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Zavřít vše a zastavit procesy",
   "TERMINAL_FOCUS_HINT": "Stiskněte {0} pro přepnutí mezi editorem a terminálem",
   "TERMINAL_CLEAR": "Vyčistit terminál",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Stiskněte {0} pro vyčištění terminálu",
   "EXTENDED_COMMIT_MESSAGE": "ROZŠÍŘENÉ",
   "GETTING_STAGED_DIFF_PROGRESS": "Získávání diffu připravených souborů…",
   "GIT_COMMIT": "Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Stiskněte {0} pro vyčištění terminálu"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexování souborů pozastaveno",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Mezipaměť souborů projektu dosáhla velikosti {0} MB. Indexování bylo pozastaveno, aby se zabránilo vysokému využití paměti. Funkce Najít v souborech je pro tento projekt zakázána. Chcete-li zmenšit velikost indexu, přidejte složky s velkými nebo generovanými soubory do souboru .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximální velikost v MB pro mezipaměť souborů okamžitého vyhledávání."
 });
