@@ -65,6 +65,8 @@
   "help.features": "Fitur",
   "help.getting_started": "Memulai",
   "help.shortcuts": "Pintasan Keyboard",
+  "image.delete": "Hapus gambar",
+  "image.edit": "Edit URL Gambar",
   "image_dialog.alt_placeholder": "Deskripsi gambar",
   "image_dialog.insert": "Sisipkan",
   "image_dialog.title": "Sisipkan URL Gambar",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Tampilan Terpisah",
   "toolbar.switch_to_edit": "Beralih ke mode sunting",
   "toolbar.switch_to_reader": "Beralih ke mode baca",
-  "toolbar.theme": "Ganti Tema",
   "toolbar.toc": "Daftar Isi",
   "toolbar.zoom_in": "Perbesar",
   "toolbar.zoom_out": "Perkecil",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Buka File",
   "welcome.subtitle": "Penampil Markdown yang indah",
   "welcome.title": "Kern",
-  "image.delete": "Hapus gambar",
-  "image.edit": "Edit URL Gambar"
+  "toolbar.theme": "Alihkan Tema Gelap/Terang"
 }

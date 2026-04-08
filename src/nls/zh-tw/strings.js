@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "正在搜尋檔案…",
   "FIND_IN_FILES_SEARCHING_IN": "在 {0} 中",
   "FIND_IN_FILES_INDEXING_PROGRESS": "正在為 {1} 個檔案中的 {0} 個檔案建立即時搜尋索引…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "檔案索引已暫停",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "專案檔案快取已達 {0} MB。為避免高記憶體用量，索引功能已暫停。此專案的「在檔案中尋找」功能已停用。若要縮減索引大小，請將包含大型檔案或生成檔案的資料夾新增至 .gitignore。",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "即時搜尋檔案快取的大小上限 (MB)。",
   "REPLACE_IN_FILES_ERRORS_TITLE": "取代錯誤",
   "REPLACE_IN_FILES_ERRORS": "下列檔案沒有被修改，可能是搜尋後又被變更或是無法寫入。",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "無法取得更新資訊",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "檔案索引已暫停",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "專案檔案快取已達 {0} MB。為避免高記憶體用量，索引功能已暫停。此專案的「在檔案中尋找」功能已停用。若要縮減索引大小，請將包含大型檔案或生成檔案的資料夾新增至 .gitignore。",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "即時搜尋檔案快取的大小上限 (MB)。"
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown 檢視器的主題（淺色或深色）"
 });

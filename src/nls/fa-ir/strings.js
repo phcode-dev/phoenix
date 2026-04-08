@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "در حال جستجو در فایل‌ها…",
   "FIND_IN_FILES_SEARCHING_IN": "در {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "در حال نمایه‌سازی {0} از {1} فایل برای جستجوی فوری…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "نمایه‌سازی فایل‌ها متوقف شد",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "کش فایل پروژه به {0} مگابایت رسیده است. نمایه‌سازی برای جلوگیری از مصرف بالای حافظه متوقف شده است. قابلیت «جستجو در فایل‌ها» برای این پروژه غیرفعال است. برای کاهش حجم نمایه‌سازی، پوشه‌های حاوی فایل‌های حجیم یا تولیدشده را به ‎.gitignore اضافه کنید.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "حداکثر حجم (بر حسب مگابایت) برای کش فایل جستجوی فوری.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "خطاهای جایگزینی مقادیر",
   "REPLACE_IN_FILES_ERRORS": "پرونده های زیر قابل ویرایش نبودن. علت می تواند از قابل نوشتن نبودن پرونده های و یا تغییر آن های بعد از جستجو باشد.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "درحال بروزرسانی اطلاعات خطا",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "نمایه‌سازی فایل‌ها متوقف شد",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "کش فایل پروژه به {0} مگابایت رسیده است. نمایه‌سازی برای جلوگیری از مصرف بالای حافظه متوقف شده است. قابلیت «جستجو در فایل‌ها» برای این پروژه غیرفعال است. برای کاهش حجم نمایه‌سازی، پوشه‌های حاوی فایل‌های حجیم یا تولیدشده را به ‎.gitignore اضافه کنید.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "حداکثر حجم (بر حسب مگابایت) برای کش فایل جستجوی فوری."
+  "MD_VIEWER_THEME_DESCRIPTION": "پوستهٔ نمایشگر مارک‌داون (روشن یا تیره)"
 });

@@ -65,6 +65,8 @@
   "help.features": "Funzionalità",
   "help.getting_started": "Per iniziare",
   "help.shortcuts": "Scorciatoie da tastiera",
+  "image.delete": "Elimina immagine",
+  "image.edit": "Modifica URL dell'immagine",
   "image_dialog.alt_placeholder": "Descrizione immagine",
   "image_dialog.insert": "Inserisci",
   "image_dialog.title": "Inserisci URL immagine",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Vista divisa",
   "toolbar.switch_to_edit": "Passa alla modalità modifica",
   "toolbar.switch_to_reader": "Passa alla modalità lettura",
-  "toolbar.theme": "Cambia tema",
   "toolbar.toc": "Indice",
   "toolbar.zoom_in": "Ingrandisci",
   "toolbar.zoom_out": "Riduci",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Apri file",
   "welcome.subtitle": "Un bellissimo visualizzatore Markdown",
   "welcome.title": "Kern",
-  "image.delete": "Elimina immagine",
-  "image.edit": "Modifica URL dell'immagine"
+  "toolbar.theme": "Alterna tema scuro/chiaro"
 }

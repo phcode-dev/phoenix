@@ -65,6 +65,8 @@
   "help.features": "Funktionen",
   "help.getting_started": "Erste Schritte",
   "help.shortcuts": "Tastenkürzel",
+  "image.delete": "Bild löschen",
+  "image.edit": "Bild-URL bearbeiten",
   "image_dialog.alt_placeholder": "Bildbeschreibung",
   "image_dialog.insert": "Einfügen",
   "image_dialog.title": "Bild-URL einfügen",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Geteilte Ansicht",
   "toolbar.switch_to_edit": "In den Bearbeitungsmodus wechseln",
   "toolbar.switch_to_reader": "In den Lesemodus wechseln",
-  "toolbar.theme": "Thema wechseln",
   "toolbar.toc": "Inhaltsverzeichnis",
   "toolbar.zoom_in": "Vergrößern",
   "toolbar.zoom_out": "Verkleinern",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Datei öffnen",
   "welcome.subtitle": "Ein schöner Markdown-Betrachter",
   "welcome.title": "Kern",
-  "image.delete": "Bild löschen",
-  "image.edit": "Bild-URL bearbeiten"
+  "toolbar.theme": "Dunkles/Helles Thema umschalten"
 }

@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Se caută în fișiere…",
   "FIND_IN_FILES_SEARCHING_IN": "În {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Se indexează {0} din {1} fișiere pentru Căutare Instantă…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexarea fișierelor suspendată",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Cache-ul de fișiere al proiectului a atins {0} MB. Indexarea a fost suspendată pentru a preveni utilizarea ridicată a memoriei. Funcția Căutare în fișiere este dezactivată pentru acest proiect. Pentru a reduce dimensiunea indexării, adăugați folderele cu fișiere mari sau generate în .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Dimensiunea maximă în MB pentru cache-ul de fișiere al căutării instantanee.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Erori la înlocuire",
   "REPLACE_IN_FILES_ERRORS": "Următoarele fișiere nu au fost modificate pentru că acestea au fost modificate după căutare sau nu pot fi rescrise.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Eroare la primirea informațiilor despre actualizare",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexarea fișierelor suspendată",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Cache-ul de fișiere al proiectului a atins {0} MB. Indexarea a fost suspendată pentru a preveni utilizarea ridicată a memoriei. Funcția Căutare în fișiere este dezactivată pentru acest proiect. Pentru a reduce dimensiunea indexării, adăugați folderele cu fișiere mari sau generate în .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Dimensiunea maximă în MB pentru cache-ul de fișiere al căutării instantanee."
+  "MD_VIEWER_THEME_DESCRIPTION": "Temă pentru vizualizatorul Markdown (deschisă sau închisă)"
 });

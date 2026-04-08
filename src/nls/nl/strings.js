@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Bestanden doorzoeken…",
   "FIND_IN_FILES_SEARCHING_IN": "In {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "{0} van {1} bestanden indexeren voor direct zoeken…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Bestandsindexering opgeschort",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "De projectbestandencache heeft {0} MB bereikt. Het indexeren is opgeschort om hoog geheugengebruik te voorkomen. Zoeken in bestanden is uitgeschakeld voor dit project. Voeg mappen met grote of gegenereerde bestanden toe aan .gitignore om de indexeringsgrootte te verminderen.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximale grootte in MB voor de bestandencache voor direct zoeken.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Vervang fouten",
   "REPLACE_IN_FILES_ERRORS": "De volgende bestanden zijn niet aangepast omdat deze na het zoeken zijn aangepast of niet bewerkt kunnen worden.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Probleem bij het ophalen van update-informatie",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Bestandsindexering opgeschort",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "De projectbestandencache heeft {0} MB bereikt. Het indexeren is opgeschort om hoog geheugengebruik te voorkomen. Zoeken in bestanden is uitgeschakeld voor dit project. Voeg mappen met grote of gegenereerde bestanden toe aan .gitignore om de indexeringsgrootte te verminderen.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximale grootte in MB voor de bestandencache voor direct zoeken."
+  "MD_VIEWER_THEME_DESCRIPTION": "Thema voor de Markdown-viewer (licht of donker)"
 });

@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Dateien werden durchsucht…",
   "FIND_IN_FILES_SEARCHING_IN": "In {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indiziere {0} von {1} Dateien für die Sofortsuche…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Dateiindizierung ausgesetzt",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Der Projektdatei-Cache hat {0} MB erreicht. Die Indizierung wurde ausgesetzt, um eine hohe Speicherauslastung zu vermeiden. „Suchen in Dateien“ ist für dieses Projekt deaktiviert. Um die Indizierungsgröße zu reduzieren, fügen Sie Ordner mit großen oder generierten Dateien zu .gitignore hinzu.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximale Größe in MB für den Dateicache der Sofortsuche.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Fehler beim Ersetzen",
   "REPLACE_IN_FILES_ERRORS": "Die folgenden Dateien wurden nicht verändert, weil sie nach der Suche geändert wurden oder nicht geschrieben werden konnten.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Fehler beim Abrufen der Update-Info",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Dateiindizierung ausgesetzt",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Der Projektdatei-Cache hat {0} MB erreicht. Die Indizierung wurde ausgesetzt, um eine hohe Speicherauslastung zu vermeiden. „Suchen in Dateien“ ist für dieses Projekt deaktiviert. Um die Indizierungsgröße zu reduzieren, fügen Sie Ordner mit großen oder generierten Dateien zu .gitignore hinzu.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximale Größe in MB für den Dateicache der Sofortsuche."
+  "MD_VIEWER_THEME_DESCRIPTION": "Thema für den Markdown-Viewer (hell oder dunkel)"
 });

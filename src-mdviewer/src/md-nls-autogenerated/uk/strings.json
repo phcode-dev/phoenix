@@ -65,6 +65,8 @@
   "help.features": "Можливості",
   "help.getting_started": "Початок роботи",
   "help.shortcuts": "Клавіатурні скорочення",
+  "image.delete": "Видалити зображення",
+  "image.edit": "Редагувати URL зображення",
   "image_dialog.alt_placeholder": "Опис зображення",
   "image_dialog.insert": "Вставити",
   "image_dialog.title": "Вставити URL зображення",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Розділений вигляд",
   "toolbar.switch_to_edit": "Перейти в режим редагування",
   "toolbar.switch_to_reader": "Перейти в режим читання",
-  "toolbar.theme": "Перемкнути тему",
   "toolbar.toc": "Зміст",
   "toolbar.zoom_in": "Збільшити",
   "toolbar.zoom_out": "Зменшити",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Відкрити файл",
   "welcome.subtitle": "Гарний переглядач файлів Markdown",
   "welcome.title": "Керн",
-  "image.delete": "Видалити зображення",
-  "image.edit": "Редагувати URL зображення"
+  "toolbar.theme": "Перемкнути темну/світлу тему"
 }

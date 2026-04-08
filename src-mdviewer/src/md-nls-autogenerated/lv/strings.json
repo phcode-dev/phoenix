@@ -65,6 +65,8 @@
   "help.features": "Funkcijas",
   "help.getting_started": "Darba sākšana",
   "help.shortcuts": "Tastatūras saīsnes",
+  "image.delete": "Dzēst attēlu",
+  "image.edit": "Rediģēt attēla URL",
   "image_dialog.alt_placeholder": "Attēla apraksts",
   "image_dialog.insert": "Ievietot",
   "image_dialog.title": "Ievietot attēla URL",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Dalīts skats",
   "toolbar.switch_to_edit": "Pārslēgties uz rediģēšanas režīmu",
   "toolbar.switch_to_reader": "Pārslēgties uz lasīšanas režīmu",
-  "toolbar.theme": "Pārslēgt tēmu",
   "toolbar.toc": "Satura rādītājs",
   "toolbar.zoom_in": "Tuvināt",
   "toolbar.zoom_out": "Tālināt",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Atvērt failu",
   "welcome.subtitle": "Skaists Markdown skatītājs",
   "welcome.title": "Kern",
-  "image.delete": "Dzēst attēlu",
-  "image.edit": "Rediģēt attēla URL"
+  "toolbar.theme": "Pārslēgt tumšo/gaišo tēmu"
 }

@@ -65,6 +65,8 @@
   "help.features": "Δυνατότητες",
   "help.getting_started": "Ξεκινώντας",
   "help.shortcuts": "Συντομεύσεις πληκτρολογίου",
+  "image.delete": "Διαγραφή εικόνας",
+  "image.edit": "Επεξεργασία URL εικόνας",
   "image_dialog.alt_placeholder": "Περιγραφή εικόνας",
   "image_dialog.insert": "Εισαγωγή",
   "image_dialog.title": "Εισαγωγή URL εικόνας",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Διαχωρισμός προβολής",
   "toolbar.switch_to_edit": "Μετάβαση σε λειτουργία επεξεργασίας",
   "toolbar.switch_to_reader": "Μετάβαση σε λειτουργία ανάγνωσης",
-  "toolbar.theme": "Εναλλαγή θέματος",
   "toolbar.toc": "Πίνακας περιεχομένων",
   "toolbar.zoom_in": "Μεγέθυνση",
   "toolbar.zoom_out": "Σμίκρυνση",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Άνοιγμα Αρχείου",
   "welcome.subtitle": "Ένα όμορφο πρόγραμμα προβολής Markdown",
   "welcome.title": "Kern",
-  "image.delete": "Διαγραφή εικόνας",
-  "image.edit": "Επεξεργασία URL εικόνας"
+  "toolbar.theme": "Εναλλαγή Σκοτεινού/Φωτεινού Θέματος"
 }

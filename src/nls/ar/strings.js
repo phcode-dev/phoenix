@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "البحث في الملفات…",
   "FIND_IN_FILES_SEARCHING_IN": "في {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "فهرسة {0} من {1} ملف للبحث الفوري…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "تم تعليق فهرسة الملفات",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "وصلت ذاكرة التخزين المؤقت لملفات المشروع إلى {0} ميجابايت. تم تعليق الفهرسة لمنع الاستخدام المرتفع للذاكرة. تم تعطيل البحث في الملفات لهذا المشروع. لتقليل حجم الفهرسة، أضف المجلدات التي تحتوي على ملفات كبيرة أو مُولَّدة إلى .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "الحجم الأقصى بالميجابايت لذاكرة التخزين المؤقت لملفات البحث الفوري.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "أخطاء الاستبدال",
   "REPLACE_IN_FILES_ERRORS": "لم يتم تعديل الملفات التالية لأنها تغيرت بعد البحث أو تعذر الكتابة فيها.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "خطأ في الحصول على معلومات التحديث",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "تم تعليق فهرسة الملفات",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "وصلت ذاكرة التخزين المؤقت لملفات المشروع إلى {0} ميجابايت. تم تعليق الفهرسة لمنع الاستخدام المرتفع للذاكرة. تم تعطيل البحث في الملفات لهذا المشروع. لتقليل حجم الفهرسة، أضف المجلدات التي تحتوي على ملفات كبيرة أو مُولَّدة إلى .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "الحجم الأقصى بالميجابايت لذاكرة التخزين المؤقت لملفات البحث الفوري."
+  "MD_VIEWER_THEME_DESCRIPTION": "سمة عارض Markdown (فاتح أو داكن)"
 });

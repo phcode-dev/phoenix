@@ -65,6 +65,8 @@
   "help.features": "Возможности",
   "help.getting_started": "Начало работы",
   "help.shortcuts": "Сочетания клавиш",
+  "image.delete": "Удалить изображение",
+  "image.edit": "Изменить URL изображения",
   "image_dialog.alt_placeholder": "Описание изображения",
   "image_dialog.insert": "Вставить",
   "image_dialog.title": "Вставить URL изображения",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Разделенный режим",
   "toolbar.switch_to_edit": "Переключиться в режим редактирования",
   "toolbar.switch_to_reader": "Переключиться в режим чтения",
-  "toolbar.theme": "Сменить тему",
   "toolbar.toc": "Оглавление",
   "toolbar.zoom_in": "Увеличить",
   "toolbar.zoom_out": "Уменьшить",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Открыть файл",
   "welcome.subtitle": "Красивый просмотрщик Markdown",
   "welcome.title": "Керн",
-  "image.delete": "Удалить изображение",
-  "image.edit": "Изменить URL изображения"
+  "toolbar.theme": "Переключить тёмную/светлую тему"
 }

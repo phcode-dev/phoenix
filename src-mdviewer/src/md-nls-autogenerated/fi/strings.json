@@ -65,6 +65,8 @@
   "help.features": "Ominaisuudet",
   "help.getting_started": "Käytön aloitus",
   "help.shortcuts": "Pikanäppäimet",
+  "image.delete": "Poista kuva",
+  "image.edit": "Muokkaa kuvan URL-osoitetta",
   "image_dialog.alt_placeholder": "Kuvan kuvaus",
   "image_dialog.insert": "Lisää",
   "image_dialog.title": "Lisää kuva URL-osoitteella",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Jaettu näkymä",
   "toolbar.switch_to_edit": "Vaihda muokkaustilaan",
   "toolbar.switch_to_reader": "Vaihda lukutilaan",
-  "toolbar.theme": "Vaihda teema",
   "toolbar.toc": "Sisällysluettelo",
   "toolbar.zoom_in": "Lähennä",
   "toolbar.zoom_out": "Loitonna",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Avaa tiedosto",
   "welcome.subtitle": "Kaunis Markdown-katselin",
   "welcome.title": "Kern",
-  "image.delete": "Poista kuva",
-  "image.edit": "Muokkaa kuvan URL-osoitetta"
+  "toolbar.theme": "Vaihda tumma/vaalea teema"
 }

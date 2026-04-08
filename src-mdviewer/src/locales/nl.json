@@ -81,6 +81,10 @@
     "getting_started": "Aan de slag",
     "shortcuts": "Sneltoetsen"
   },
+  "image": {
+    "delete": "Afbeelding verwijderen",
+    "edit": "Afbeeldings-URL bewerken"
+  },
   "image_dialog": {
     "alt_placeholder": "Afbeeldingsbeschrijving",
     "insert": "Invoegen",
@@ -202,11 +206,11 @@
     "split_view": "Gesplitste weergave",
     "switch_to_edit": "Overschakelen naar bewerkmodus",
     "switch_to_reader": "Overschakelen naar leesmodus",
-    "theme": "Thema wisselen",
     "toc": "Inhoudsopgave",
     "zoom_in": "Inzoomen",
     "zoom_out": "Uitzoomen",
-    "zoom_reset": "Zoom herstellen"
+    "zoom_reset": "Zoom herstellen",
+    "theme": "Schakel tussen donker/licht thema"
   },
   "trial": {
     "days_remaining": "Nog {days} dagen in proefperiode",
@@ -232,9 +236,5 @@
     "open_button": "Bestand openen",
     "subtitle": "Een prachtige Markdown-viewer",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Afbeelding verwijderen",
-    "edit": "Afbeeldings-URL bewerken"
   }
 }

@@ -65,6 +65,8 @@
   "help.features": "Funkciók",
   "help.getting_started": "Első lépések",
   "help.shortcuts": "Billentyűparancsok",
+  "image.delete": "Kép törlése",
+  "image.edit": "Kép URL szerkesztése",
   "image_dialog.alt_placeholder": "Kép leírása",
   "image_dialog.insert": "Beszúrás",
   "image_dialog.title": "Kép URL beszúrása",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Osztott nézet",
   "toolbar.switch_to_edit": "Váltás szerkesztő módra",
   "toolbar.switch_to_reader": "Váltás olvasó módra",
-  "toolbar.theme": "Téma váltása",
   "toolbar.toc": "Tartalomjegyzék",
   "toolbar.zoom_in": "Nagyítás",
   "toolbar.zoom_out": "Kicsinyítés",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Fájl megnyitása",
   "welcome.subtitle": "Egy gyönyörű Markdown megjelenítő",
   "welcome.title": "Kern",
-  "image.delete": "Kép törlése",
-  "image.edit": "Kép URL szerkesztése"
+  "toolbar.theme": "Sötét/Világos téma váltása"
 }

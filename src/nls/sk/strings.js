@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Vyhľadávanie v súboroch…",
   "FIND_IN_FILES_SEARCHING_IN": "V {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indexovanie {0} z {1} súborov pre okamžité vyhľadávanie…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexovanie súborov pozastavené",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Vyrovnávacia pamäť súborov projektu dosiahla {0} MB. Indexovanie bolo pozastavené, aby sa predišlo vysokému využitiu pamäte. Funkcia Hľadať v súboroch je pre tento projekt vypnutá. Ak chcete zmenšiť veľkosť indexovania, pridajte priečinky s veľkými alebo generovanými súbormi do .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximálna veľkosť v MB pre vyrovnávaciu pamäť súborov okamžitého vyhľadávania.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Chyby pri nahradzovaní",
   "REPLACE_IN_FILES_ERRORS": "Nasledujúce súbory neboli zmenené, pretože sa zmenili po vyhľadávaní alebo sa nedali zapísať.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Problém pri získavaní informácií o aktualizácii",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexovanie súborov pozastavené",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Vyrovnávacia pamäť súborov projektu dosiahla {0} MB. Indexovanie bolo pozastavené, aby sa predišlo vysokému využitiu pamäte. Funkcia Hľadať v súboroch je pre tento projekt vypnutá. Ak chcete zmenšiť veľkosť indexovania, pridajte priečinky s veľkými alebo generovanými súbormi do .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximálna veľkosť v MB pre vyrovnávaciu pamäť súborov okamžitého vyhľadávania."
+  "MD_VIEWER_THEME_DESCRIPTION": "Téma pre prehliadač Markdownu (svetlá alebo tmavá)"
 });

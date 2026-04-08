@@ -65,6 +65,8 @@
   "help.features": "Functies",
   "help.getting_started": "Aan de slag",
   "help.shortcuts": "Sneltoetsen",
+  "image.delete": "Afbeelding verwijderen",
+  "image.edit": "Afbeeldings-URL bewerken",
   "image_dialog.alt_placeholder": "Afbeeldingsbeschrijving",
   "image_dialog.insert": "Invoegen",
   "image_dialog.title": "Afbeeldings-URL invoegen",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Gesplitste weergave",
   "toolbar.switch_to_edit": "Overschakelen naar bewerkmodus",
   "toolbar.switch_to_reader": "Overschakelen naar leesmodus",
-  "toolbar.theme": "Thema wisselen",
   "toolbar.toc": "Inhoudsopgave",
   "toolbar.zoom_in": "Inzoomen",
   "toolbar.zoom_out": "Uitzoomen",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Bestand openen",
   "welcome.subtitle": "Een prachtige Markdown-viewer",
   "welcome.title": "Kern",
-  "image.delete": "Afbeelding verwijderen",
-  "image.edit": "Afbeeldings-URL bewerken"
+  "toolbar.theme": "Schakel tussen donker/licht thema"
 }

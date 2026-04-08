@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Ricerca nei file…",
   "FIND_IN_FILES_SEARCHING_IN": "In {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indicizzazione di {0} file su {1} per la ricerca istantanea…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indicizzazione file sospesa",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "La cache dei file del progetto ha raggiunto {0} MB. L'indicizzazione è stata sospesa per evitare un utilizzo elevato della memoria. La funzione Cerca nei file è disabilitata per questo progetto. Per ridurre le dimensioni dell'indicizzazione, aggiungi le cartelle con file di grandi dimensioni o generati a .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Dimensione massima in MB per la cache dei file della ricerca istantanea.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Sostituire errori",
   "REPLACE_IN_FILES_ERRORS": "I seguenti file non sono stati modificati perché hanno cambiato dopo la ricerca o non potevano essere scritti.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Si è verificato un errore nel recuperare le informazioni aggiornate",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indicizzazione file sospesa",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "La cache dei file del progetto ha raggiunto {0} MB. L'indicizzazione è stata sospesa per evitare un utilizzo elevato della memoria. La funzione Cerca nei file è disabilitata per questo progetto. Per ridurre le dimensioni dell'indicizzazione, aggiungi le cartelle con file di grandi dimensioni o generati a .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Dimensione massima in MB per la cache dei file della ricerca istantanea."
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema per il visualizzatore Markdown (chiaro o scuro)"
 });

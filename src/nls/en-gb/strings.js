@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Searching files…",
   "FIND_IN_FILES_SEARCHING_IN": "In {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indexing {0} of {1} files for instant search…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "File Indexing Suspended",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "The project file cache has reached {0} MB. Indexing has been suspended to prevent high memory usage. Find in Files is disabled for this project. To reduce indexing size, add folders with large or generated files to .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximum size in MB for the instant search file cache.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Replace errors",
   "REPLACE_IN_FILES_ERRORS": "The following files weren't modified because they changed after the search or couldn't be written.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Error Getting Update Info",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "File Indexing Suspended",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "The project file cache has reached {0} MB. Indexing has been suspended to prevent high memory usage. Find in Files is disabled for this project. To reduce indexing size, add folders with large or generated files to .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximum size in MB for the instant search file cache."
+  "MD_VIEWER_THEME_DESCRIPTION": "Theme for the Markdown viewer (light or dark)"
 });

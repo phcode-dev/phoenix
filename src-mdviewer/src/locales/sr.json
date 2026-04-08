@@ -81,6 +81,10 @@
     "getting_started": "Први кораци",
     "shortcuts": "Тастатурне пречице"
   },
+  "image": {
+    "delete": "Обриши слику",
+    "edit": "Измени URL слике"
+  },
   "image_dialog": {
     "alt_placeholder": "Опис слике",
     "insert": "Уметни",
@@ -202,11 +206,11 @@
     "split_view": "Подељени приказ",
     "switch_to_edit": "Пређи у режим за уређивање",
     "switch_to_reader": "Пређи у режим за читање",
-    "theme": "Промени тему",
     "toc": "Садржај",
     "zoom_in": "Увећај",
     "zoom_out": "Умањи",
-    "zoom_reset": "Ресетуј зум"
+    "zoom_reset": "Ресетуј зум",
+    "theme": "Промени тамну/светлу тему"
   },
   "trial": {
     "days_remaining": "{days} дана преостало у пробном периоду",
@@ -232,9 +236,5 @@
     "open_button": "Отвори датотеку",
     "subtitle": "Прелеп Markdown прегледач",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Обриши слику",
-    "edit": "Измени URL слике"
   }
 }

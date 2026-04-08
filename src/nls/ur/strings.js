@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "فائلز تلاش ہو رہی ہیں…",
   "FIND_IN_FILES_SEARCHING_IN": "{0} میں",
   "FIND_IN_FILES_INDEXING_PROGRESS": "فوری تلاش کیلئے {1} فائلز میں سے {0} کی انڈیکسنگ ہو رہی ہے…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "فائل انڈیکسنگ معطل",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "پروجیکٹ فائل کیشے {0} MB تک پہنچ گیا ہے۔ میموری کے زیادہ استعمال کو روکنے کے لیے انڈیکسنگ معطل کر دی گئی ہے۔ اس پروجیکٹ کے لیے فائلوں میں تلاش غیر فعال ہے۔ انڈیکسنگ کا سائز کم کرنے کے لیے، بڑی یا جنریٹڈ فائلوں والے فولڈرز کو ‎.gitignore میں شامل کریں۔",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "فوری تلاش فائل کیشے کا زیادہ سے زیادہ سائز MB میں۔",
   "REPLACE_IN_FILES_ERRORS_TITLE": "تبدیلی کی غلطیاں",
   "REPLACE_IN_FILES_ERRORS": "مندرجہ ذیل فائلز میں تبدیلی نہیں کی گئی کیونکہ وہ تلاش کے بعد تبدیل ہو گئیں یا انہیں لکھا نہیں جا سکا۔",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "اپ ڈیٹ کی معلومات حاصل کرنے میں خرابی",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "فائل انڈیکسنگ معطل",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "پروجیکٹ فائل کیشے {0} MB تک پہنچ گیا ہے۔ میموری کے زیادہ استعمال کو روکنے کے لیے انڈیکسنگ معطل کر دی گئی ہے۔ اس پروجیکٹ کے لیے فائلوں میں تلاش غیر فعال ہے۔ انڈیکسنگ کا سائز کم کرنے کے لیے، بڑی یا جنریٹڈ فائلوں والے فولڈرز کو ‎.gitignore میں شامل کریں۔",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "فوری تلاش فائل کیشے کا زیادہ سے زیادہ سائز MB میں۔"
+  "MD_VIEWER_THEME_DESCRIPTION": "مارک ڈاؤن ویور کے لیے تھیم (لائٹ یا ڈارک)"
 });

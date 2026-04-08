@@ -65,6 +65,8 @@
   "help.features": "Funkce",
   "help.getting_started": "Začínáme",
   "help.shortcuts": "Klávesové zkratky",
+  "image.delete": "Smazat obrázek",
+  "image.edit": "Upravit URL obrázku",
   "image_dialog.alt_placeholder": "Popis obrázku",
   "image_dialog.insert": "Vložit",
   "image_dialog.title": "Vložit URL obrázku",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Rozdělené zobrazení",
   "toolbar.switch_to_edit": "Přepnout do režimu úprav",
   "toolbar.switch_to_reader": "Přepnout do režimu čtení",
-  "toolbar.theme": "Přepnout motiv",
   "toolbar.toc": "Obsah",
   "toolbar.zoom_in": "Přiblížit",
   "toolbar.zoom_out": "Oddálit",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Otevřít soubor",
   "welcome.subtitle": "Krásný prohlížeč Markdownu",
   "welcome.title": "Kern",
-  "image.delete": "Smazat obrázek",
-  "image.edit": "Upravit URL obrázku"
+  "toolbar.theme": "Přepnout tmavý/světlý motiv"
 }

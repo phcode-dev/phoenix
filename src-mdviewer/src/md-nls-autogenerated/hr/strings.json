@@ -65,6 +65,8 @@
   "help.features": "Značajke",
   "help.getting_started": "Početak rada",
   "help.shortcuts": "Tipkovnički prečaci",
+  "image.delete": "Izbriši sliku",
+  "image.edit": "Uredi URL slike",
   "image_dialog.alt_placeholder": "Opis slike",
   "image_dialog.insert": "Umetni",
   "image_dialog.title": "Umetni URL slike",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Podijeljeni prikaz",
   "toolbar.switch_to_edit": "Prebaci u način za uređivanje",
   "toolbar.switch_to_reader": "Prebaci u način za čitanje",
-  "toolbar.theme": "Promijeni temu",
   "toolbar.toc": "Sadržaj",
   "toolbar.zoom_in": "Povećaj",
   "toolbar.zoom_out": "Smanji",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Otvori datoteku",
   "welcome.subtitle": "Prekrasan Markdown preglednik",
   "welcome.title": "Kern",
-  "image.delete": "Izbriši sliku",
-  "image.edit": "Uredi URL slike"
+  "toolbar.theme": "Prebaci tamnu/svijetlu temu"
 }

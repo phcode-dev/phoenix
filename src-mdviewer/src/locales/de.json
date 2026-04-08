@@ -81,6 +81,10 @@
     "getting_started": "Erste Schritte",
     "shortcuts": "Tastenkürzel"
   },
+  "image": {
+    "delete": "Bild löschen",
+    "edit": "Bild-URL bearbeiten"
+  },
   "image_dialog": {
     "alt_placeholder": "Bildbeschreibung",
     "insert": "Einfügen",
@@ -202,11 +206,11 @@
     "split_view": "Geteilte Ansicht",
     "switch_to_edit": "In den Bearbeitungsmodus wechseln",
     "switch_to_reader": "In den Lesemodus wechseln",
-    "theme": "Thema wechseln",
     "toc": "Inhaltsverzeichnis",
     "zoom_in": "Vergrößern",
     "zoom_out": "Verkleinern",
-    "zoom_reset": "Zoom zurücksetzen"
+    "zoom_reset": "Zoom zurücksetzen",
+    "theme": "Dunkles/Helles Thema umschalten"
   },
   "trial": {
     "days_remaining": "Noch {days} Tage in der Testversion",
@@ -232,9 +236,5 @@
     "open_button": "Datei öffnen",
     "subtitle": "Ein schöner Markdown-Betrachter",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Bild löschen",
-    "edit": "Bild-URL bearbeiten"
   }
 }

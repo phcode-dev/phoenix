@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Recherche dans les fichiers…",
   "FIND_IN_FILES_SEARCHING_IN": "Dans {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indexation de {0} fichiers sur {1} pour la recherche instantanée…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexation des fichiers suspendue",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Le cache des fichiers du projet a atteint {0} Mo. L'indexation a été suspendue pour éviter une utilisation élevée de la mémoire. La recherche dans les fichiers est désactivée pour ce projet. Pour réduire la taille de l'indexation, ajoutez les dossiers contenant des fichiers volumineux ou générés à .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Taille maximale en Mo pour le cache des fichiers de la recherche instantanée.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Erreurs de remplacement",
   "REPLACE_IN_FILES_ERRORS": "Les fichiers suivants n’ont pas été traités car ils ont été modifiés après l’opération de recherche ou ne sont pas accessibles en écriture.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Erreur de récupération des informations de mise à jour",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexation des fichiers suspendue",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Le cache des fichiers du projet a atteint {0} Mo. L'indexation a été suspendue pour éviter une utilisation élevée de la mémoire. La recherche dans les fichiers est désactivée pour ce projet. Pour réduire la taille de l'indexation, ajoutez les dossiers contenant des fichiers volumineux ou générés à .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Taille maximale en Mo pour le cache des fichiers de la recherche instantanée."
+  "MD_VIEWER_THEME_DESCRIPTION": "Thème pour la visionneuse Markdown (clair ou sombre)"
 });

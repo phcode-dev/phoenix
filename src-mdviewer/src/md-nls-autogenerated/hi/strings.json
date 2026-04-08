@@ -65,6 +65,8 @@
   "help.features": "विशेषताएँ",
   "help.getting_started": "शुरू करें",
   "help.shortcuts": "कीबोर्ड शॉर्टकट",
+  "image.delete": "छवि हटाएँ",
+  "image.edit": "छवि URL संपादित करें",
   "image_dialog.alt_placeholder": "छवि का विवरण",
   "image_dialog.insert": "सम्मिलित करें",
   "image_dialog.title": "छवि यूआरएल सम्मिलित करें",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "विभाजित दृश्य",
   "toolbar.switch_to_edit": "एडिट मोड में बदलें",
   "toolbar.switch_to_reader": "रीडर मोड में बदलें",
-  "toolbar.theme": "थीम बदलें",
   "toolbar.toc": "विषय सूची",
   "toolbar.zoom_in": "ज़ूम इन",
   "toolbar.zoom_out": "ज़ूम आउट",
@@ -189,6 +190,5 @@
   "welcome.open_button": "फ़ाइल खोलें",
   "welcome.subtitle": "एक सुंदर मार्कडाउन व्यूअर",
   "welcome.title": "Kern",
-  "image.delete": "छवि हटाएँ",
-  "image.edit": "छवि URL संपादित करें"
+  "toolbar.theme": "डार्क/लाइट थीम टॉगल करें"
 }

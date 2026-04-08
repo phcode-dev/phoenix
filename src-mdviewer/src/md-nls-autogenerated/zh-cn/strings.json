@@ -65,6 +65,8 @@
   "help.features": "功能",
   "help.getting_started": "快速入门",
   "help.shortcuts": "键盘快捷键",
+  "image.delete": "删除图片",
+  "image.edit": "编辑图片 URL",
   "image_dialog.alt_placeholder": "图片描述",
   "image_dialog.insert": "插入",
   "image_dialog.title": "插入图片 URL",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "分屏视图",
   "toolbar.switch_to_edit": "切换到编辑模式",
   "toolbar.switch_to_reader": "切换到阅读模式",
-  "toolbar.theme": "切换主题",
   "toolbar.toc": "目录",
   "toolbar.zoom_in": "放大",
   "toolbar.zoom_out": "缩小",
@@ -189,6 +190,5 @@
   "welcome.open_button": "打开文件",
   "welcome.subtitle": "优雅的 Markdown 阅读器",
   "welcome.title": "Kern",
-  "image.delete": "删除图片",
-  "image.edit": "编辑图片 URL"
+  "toolbar.theme": "切换深色/浅色主题"
 }

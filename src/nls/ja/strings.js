@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "ファイル検索中…",
   "FIND_IN_FILES_SEARCHING_IN": "{0} 内",
   "FIND_IN_FILES_INDEXING_PROGRESS": "インスタント検索用に {1} ファイル中 {0} ファイルのインデックスを作成中…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "ファイルインデックス作成の中断",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "プロジェクトのファイルキャッシュが {0} MB に達しました。メモリの大量消費を防ぐため、インデックス作成は中断されました。このプロジェクトでは「ファイル内を検索」機能は無効になっています。インデックス作成のサイズを削減するには、サイズの大きいファイルや生成されたファイルを含むフォルダーを .gitignore に追加してください。",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "インスタント検索ファイルキャッシュの最大サイズ (MB)。",
   "REPLACE_IN_FILES_ERRORS_TITLE": "置換エラー",
   "REPLACE_IN_FILES_ERRORS": "次のファイルは検索の後で変更されているか、書き込むことができないため、変更されていません。",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "更新情報を取得する際にエラーが発生しました。",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "ファイルインデックス作成の中断",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "プロジェクトのファイルキャッシュが {0} MB に達しました。メモリの大量消費を防ぐため、インデックス作成は中断されました。このプロジェクトでは「ファイル内を検索」機能は無効になっています。インデックス作成のサイズを削減するには、サイズの大きいファイルや生成されたファイルを含むフォルダーを .gitignore に追加してください。",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "インスタント検索ファイルキャッシュの最大サイズ (MB)。"
+  "MD_VIEWER_THEME_DESCRIPTION": "マークダウンビューアのテーマ（ライトまたはダーク）"
 });

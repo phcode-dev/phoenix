@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Prohledávání souborů…",
   "FIND_IN_FILES_SEARCHING_IN": "V {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indexování {0} z {1} souborů pro okamžité vyhledávání…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexování souborů pozastaveno",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Mezipaměť souborů projektu dosáhla velikosti {0} MB. Indexování bylo pozastaveno, aby se zabránilo vysokému využití paměti. Funkce Najít v souborech je pro tento projekt zakázána. Chcete-li zmenšit velikost indexu, přidejte složky s velkými nebo generovanými soubory do souboru .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximální velikost v MB pro mezipaměť souborů okamžitého vyhledávání.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Nahradit chyby",
   "REPLACE_IN_FILES_ERRORS": "Následující soubory nebyly změněny, protože se změnily po hledání nebo do nich nelze zapisovat.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Chyba při získávání informací o aktualizaci",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexování souborů pozastaveno",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Mezipaměť souborů projektu dosáhla velikosti {0} MB. Indexování bylo pozastaveno, aby se zabránilo vysokému využití paměti. Funkce Najít v souborech je pro tento projekt zakázána. Chcete-li zmenšit velikost indexu, přidejte složky s velkými nebo generovanými soubory do souboru .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximální velikost v MB pro mezipaměť souborů okamžitého vyhledávání."
+  "MD_VIEWER_THEME_DESCRIPTION": "Motiv pro prohlížeč Markdownu (světlý nebo tmavý)"
 });

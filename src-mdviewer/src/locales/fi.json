@@ -81,6 +81,10 @@
     "getting_started": "Käytön aloitus",
     "shortcuts": "Pikanäppäimet"
   },
+  "image": {
+    "delete": "Poista kuva",
+    "edit": "Muokkaa kuvan URL-osoitetta"
+  },
   "image_dialog": {
     "alt_placeholder": "Kuvan kuvaus",
     "insert": "Lisää",
@@ -202,11 +206,11 @@
     "split_view": "Jaettu näkymä",
     "switch_to_edit": "Vaihda muokkaustilaan",
     "switch_to_reader": "Vaihda lukutilaan",
-    "theme": "Vaihda teema",
     "toc": "Sisällysluettelo",
     "zoom_in": "Lähennä",
     "zoom_out": "Loitonna",
-    "zoom_reset": "Nollaa zoomaus"
+    "zoom_reset": "Nollaa zoomaus",
+    "theme": "Vaihda tumma/vaalea teema"
   },
   "trial": {
     "days_remaining": "{days} päivää kokeiluaikaa jäljellä",
@@ -232,9 +236,5 @@
     "open_button": "Avaa tiedosto",
     "subtitle": "Kaunis Markdown-katselin",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Poista kuva",
-    "edit": "Muokkaa kuvan URL-osoitetta"
   }
 }

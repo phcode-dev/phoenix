@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Söker i filer…",
   "FIND_IN_FILES_SEARCHING_IN": "I {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indexerar {0} av {1} filer för omedelbar sökning…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Filindexering pausad",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektets filcache har nått {0} MB. Indexeringen har pausats för att förhindra hög minnesanvändning. Sök i filer är inaktiverat för det här projektet. För att minska indexeringsstorleken, lägg till mappar med stora eller genererade filer i .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximal storlek i MB för filcachen för snabbsökning.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Ersättningsfel",
   "REPLACE_IN_FILES_ERRORS": "Följande filer ändrades inte eftersom de förändrats efter sökningen eller inte kunde skrivas till.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Fel vid hämtning av versioninformation",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Filindexering pausad",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektets filcache har nått {0} MB. Indexeringen har pausats för att förhindra hög minnesanvändning. Sök i filer är inaktiverat för det här projektet. För att minska indexeringsstorleken, lägg till mappar med stora eller genererade filer i .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximal storlek i MB för filcachen för snabbsökning."
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema för Markdown-granskaren (ljust eller mörkt)"
 });

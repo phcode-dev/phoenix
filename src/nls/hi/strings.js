@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "फ़ाइलों में खोज हो रही है…",
   "FIND_IN_FILES_SEARCHING_IN": "{0} में",
   "FIND_IN_FILES_INDEXING_PROGRESS": "तत्काल खोज के लिए {1} फ़ाइलों में से {0} का अनुक्रमण हो रहा है…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "फ़ाइल इंडेक्सिंग निलंबित",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "प्रोजेक्ट फ़ाइल कैश {0} MB तक पहुँच गया है। उच्च मेमोरी उपयोग को रोकने के लिए इंडेक्सिंग निलंबित कर दी गई है। इस प्रोजेक्ट के लिए फ़ाइलों में खोजें अक्षम है। इंडेक्सिंग का आकार कम करने के लिए, बड़ी या जेनरेट की गई फ़ाइलों वाले फ़ोल्डरों को .gitignore में जोड़ें।",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "तत्काल खोज फ़ाइल कैश के लिए MB में अधिकतम आकार।",
   "REPLACE_IN_FILES_ERRORS_TITLE": "प्रतिस्थापन त्रुटियाँ",
   "REPLACE_IN_FILES_ERRORS": "निम्नलिखित फ़ाइलों को संशोधित नहीं किया गया क्योंकि खोज के बाद वे बदल गईं या उन्हें लिखा नहीं जा सका।",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "अपडेट जानकारी प्राप्त करने में त्रुटि",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "फ़ाइल इंडेक्सिंग निलंबित",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "प्रोजेक्ट फ़ाइल कैश {0} MB तक पहुँच गया है। उच्च मेमोरी उपयोग को रोकने के लिए इंडेक्सिंग निलंबित कर दी गई है। इस प्रोजेक्ट के लिए फ़ाइलों में खोजें अक्षम है। इंडेक्सिंग का आकार कम करने के लिए, बड़ी या जेनरेट की गई फ़ाइलों वाले फ़ोल्डरों को .gitignore में जोड़ें।",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "तत्काल खोज फ़ाइल कैश के लिए MB में अधिकतम आकार।"
+  "MD_VIEWER_THEME_DESCRIPTION": "मार्कडाउन व्यूअर के लिए थीम (लाइट या डार्क)"
 });

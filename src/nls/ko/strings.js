@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "파일 검색 중…",
   "FIND_IN_FILES_SEARCHING_IN": "{0}에서",
   "FIND_IN_FILES_INDEXING_PROGRESS": "즉석 검색을 위해 {1}개 파일 중 {0}개 파일 색인 생성 중…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "파일 인덱싱 중단",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "프로젝트 파일 캐시가 {0}MB에 도달했습니다. 높은 메모리 사용을 방지하기 위해 인덱싱이 중단되었습니다. 이 프로젝트에서는 파일에서 찾기 기능이 비활성화되었습니다. 인덱싱 크기를 줄이려면 용량이 크거나 생성된 파일이 있는 폴더를 .gitignore에 추가하세요.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "빠른 검색 파일 캐시의 최대 크기(MB)",
   "REPLACE_IN_FILES_ERRORS_TITLE": "바꾸기 에러",
   "REPLACE_IN_FILES_ERRORS": "다음 파일은 검색 후에 변경되었거나 저장할 수 없는 파일이므로 수정할 수 없습니다.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "업데이트 정보를 검색하는 중 오류가 발생했습니다.",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "파일 인덱싱 중단",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "프로젝트 파일 캐시가 {0}MB에 도달했습니다. 높은 메모리 사용을 방지하기 위해 인덱싱이 중단되었습니다. 이 프로젝트에서는 파일에서 찾기 기능이 비활성화되었습니다. 인덱싱 크기를 줄이려면 용량이 크거나 생성된 파일이 있는 폴더를 .gitignore에 추가하세요.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "빠른 검색 파일 캐시의 최대 크기(MB)"
+  "MD_VIEWER_THEME_DESCRIPTION": "마크다운 뷰어용 테마 (라이트 또는 다크)"
 });

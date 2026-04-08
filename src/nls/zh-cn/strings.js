@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "正在搜索文件…",
   "FIND_IN_FILES_SEARCHING_IN": "在 {0} 中",
   "FIND_IN_FILES_INDEXING_PROGRESS": "正在为 {1} 个文件中的 {0} 个文件建立即时搜索索引…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "文件索引已暂停",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "项目文件缓存已达到 {0} MB。为防止内存占用过高，已暂停索引。此项目的文件内查找功能已被禁用。要减小索引大小，请将包含大型文件或生成文件的文件夹添加到 .gitignore。",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "即时搜索文件缓存的最大大小 (MB)。",
   "REPLACE_IN_FILES_ERRORS_TITLE": "替换出现错误",
   "REPLACE_IN_FILES_ERRORS": "以下文件未被修改，可能是搜索后发生变更或无法写入。",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "获取更新信息失败",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "文件索引已暂停",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "项目文件缓存已达到 {0} MB。为防止内存占用过高，已暂停索引。此项目的文件内查找功能已被禁用。要减小索引大小，请将包含大型文件或生成文件的文件夹添加到 .gitignore。",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "即时搜索文件缓存的最大大小 (MB)。"
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown 查看器的主题（浅色或深色）"
 });

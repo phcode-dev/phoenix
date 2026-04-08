@@ -65,6 +65,8 @@
   "help.features": "Özellikler",
   "help.getting_started": "Başlarken",
   "help.shortcuts": "Klavye Kısayolları",
+  "image.delete": "Görseli sil",
+  "image.edit": "Görsel URL'sini Düzenle",
   "image_dialog.alt_placeholder": "Resim açıklaması",
   "image_dialog.insert": "Ekle",
   "image_dialog.title": "Resim URL'si Ekle",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Bölünmüş Görünüm",
   "toolbar.switch_to_edit": "Düzenleme moduna geç",
   "toolbar.switch_to_reader": "Okuyucu moduna geç",
-  "toolbar.theme": "Temayı Değiştir",
   "toolbar.toc": "İçindekiler",
   "toolbar.zoom_in": "Yakınlaştır",
   "toolbar.zoom_out": "Uzaklaştır",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Dosya Aç",
   "welcome.subtitle": "Harika bir Markdown görüntüleyici",
   "welcome.title": "Kern",
-  "image.delete": "Görseli sil",
-  "image.edit": "Görsel URL'sini Düzenle"
+  "toolbar.theme": "Koyu/Açık Temayı Değiştir"
 }

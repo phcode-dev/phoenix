@@ -81,6 +81,10 @@
     "getting_started": "Kom i gang",
     "shortcuts": "Tastaturgenveje"
   },
+  "image": {
+    "delete": "Slet billede",
+    "edit": "Rediger billed-URL"
+  },
   "image_dialog": {
     "alt_placeholder": "Billedbeskrivelse",
     "insert": "Indsæt",
@@ -202,11 +206,11 @@
     "split_view": "Opdelt visning",
     "switch_to_edit": "Skift til redigeringstilstand",
     "switch_to_reader": "Skift til læsetilstand",
-    "theme": "Skift tema",
     "toc": "Indholdsfortegnelse",
     "zoom_in": "Zoom ind",
     "zoom_out": "Zoom ud",
-    "zoom_reset": "Nulstil zoom"
+    "zoom_reset": "Nulstil zoom",
+    "theme": "Skift mørkt/lyst tema"
   },
   "trial": {
     "days_remaining": "{days} dage tilbage af prøveperioden",
@@ -232,9 +236,5 @@
     "open_button": "Åbn fil",
     "subtitle": "En smuk Markdown-fremviser",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Slet billede",
-    "edit": "Rediger billed-URL"
   }
 }
