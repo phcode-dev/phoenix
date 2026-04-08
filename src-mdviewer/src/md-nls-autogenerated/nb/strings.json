@@ -65,6 +65,8 @@
   "help.features": "Funksjoner",
   "help.getting_started": "Kom i gang",
   "help.shortcuts": "Tastatursnarveier",
+  "image.delete": "Slett bilde",
+  "image.edit": "Rediger bilde-URL",
   "image_dialog.alt_placeholder": "Bildebeskrivelse",
   "image_dialog.insert": "Sett inn",
   "image_dialog.title": "Sett inn bilde-URL",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Delt visning",
   "toolbar.switch_to_edit": "Bytt til redigeringsmodus",
   "toolbar.switch_to_reader": "Bytt til lesermodus",
-  "toolbar.theme": "Bytt tema",
   "toolbar.toc": "Innholdsfortegnelse",
   "toolbar.zoom_in": "Zoom inn",
   "toolbar.zoom_out": "Zoom ut",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Åpne fil",
   "welcome.subtitle": "En vakker Markdown-fremviser",
   "welcome.title": "Kern",
-  "image.delete": "Slett bilde",
-  "image.edit": "Rediger bilde-URL"
+  "toolbar.theme": "Veksle mellom mørkt og lyst tema"
 }

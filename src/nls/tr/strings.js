@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Dosyalar aranıyor…",
   "FIND_IN_FILES_SEARCHING_IN": "{0} içinde",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Anında Arama için {1} dosyadan {0} tanesi indeksleniyor…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Dosya İndeksleme Askıya Alındı",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Proje dosya önbelleği {0} MB'a ulaştı. Yüksek bellek kullanımını önlemek için indeksleme askıya alındı. Bu proje için Dosyalarda Bul özelliği devre dışı bırakıldı. İndeksleme boyutunu küçültmek için büyük veya oluşturulmuş dosyaları içeren klasörleri .gitignore'a ekleyin.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Anlık arama dosya önbelleği için MB cinsinden maksimum boyut.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Değiştirme Hataları",
   "REPLACE_IN_FILES_ERRORS": "Aşağıdaki dosyalar, aramadan sonra değiştirildikleri veya yazılamadıkları için değiştirilmedi.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Versiyon bilgisi alınırken hata",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Dosya İndeksleme Askıya Alındı",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Proje dosya önbelleği {0} MB'a ulaştı. Yüksek bellek kullanımını önlemek için indeksleme askıya alındı. Bu proje için Dosyalarda Bul özelliği devre dışı bırakıldı. İndeksleme boyutunu küçültmek için büyük veya oluşturulmuş dosyaları içeren klasörleri .gitignore'a ekleyin.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Anlık arama dosya önbelleği için MB cinsinden maksimum boyut."
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown görüntüleyicisi için tema (açık veya koyu)"
 });

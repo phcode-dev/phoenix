@@ -81,6 +81,10 @@
     "getting_started": "Komma igång",
     "shortcuts": "Kortkommandon"
   },
+  "image": {
+    "delete": "Ta bort bild",
+    "edit": "Redigera bild-URL"
+  },
   "image_dialog": {
     "alt_placeholder": "Bildbeskrivning",
     "insert": "Infoga",
@@ -202,11 +206,11 @@
     "split_view": "Delad vy",
     "switch_to_edit": "Växla till redigeringsläge",
     "switch_to_reader": "Växla till läsläge",
-    "theme": "Växla tema",
     "toc": "Innehållsförteckning",
     "zoom_in": "Zooma in",
     "zoom_out": "Zooma ut",
-    "zoom_reset": "Återställ zoom"
+    "zoom_reset": "Återställ zoom",
+    "theme": "Växla mörkt/ljust tema"
   },
   "trial": {
     "days_remaining": "{days} dagar kvar av provperioden",
@@ -232,9 +236,5 @@
     "open_button": "Öppna fil",
     "subtitle": "En vacker Markdown-visare",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Ta bort bild",
-    "edit": "Redigera bild-URL"
   }
 }

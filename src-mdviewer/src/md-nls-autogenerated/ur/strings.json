@@ -65,6 +65,8 @@
   "help.features": "خصوصیات",
   "help.getting_started": "شروع کریں",
   "help.shortcuts": "کیبورڈ شارٹ کٹ",
+  "image.delete": "تصویر حذف کریں",
+  "image.edit": "تصویر کا یو آر ایل ترمیم کریں",
   "image_dialog.alt_placeholder": "تصویر کی تفصیل",
   "image_dialog.insert": "داخل کریں",
   "image_dialog.title": "تصویر کا یو آر ایل داخل کریں",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "تقسیم نظارہ",
   "toolbar.switch_to_edit": "ترمیم موڈ پر سوئچ کریں",
   "toolbar.switch_to_reader": "ریڈر موڈ پر سوئچ کریں",
-  "toolbar.theme": "تھیم تبدیل کریں",
   "toolbar.toc": "فہرست مضامین",
   "toolbar.zoom_in": "زوم ان",
   "toolbar.zoom_out": "زوم آؤٹ",
@@ -189,6 +190,5 @@
   "welcome.open_button": "فائل کھولیں",
   "welcome.subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
   "welcome.title": "Kern",
-  "image.delete": "تصویر حذف کریں",
-  "image.edit": "تصویر کا یو آر ایل ترمیم کریں"
+  "toolbar.theme": "تاریک/روشن تھیم بدلیں"
 }

@@ -81,6 +81,10 @@
     "getting_started": "快速入門",
     "shortcuts": "鍵盤快捷鍵"
   },
+  "image": {
+    "delete": "刪除圖片",
+    "edit": "編輯圖片 URL"
+  },
   "image_dialog": {
     "alt_placeholder": "圖片說明",
     "insert": "插入",
@@ -202,11 +206,11 @@
     "split_view": "分割檢視",
     "switch_to_edit": "切換至編輯模式",
     "switch_to_reader": "切換至閱讀模式",
-    "theme": "切換主題",
     "toc": "目錄",
     "zoom_in": "放大",
     "zoom_out": "縮小",
-    "zoom_reset": "重設縮放"
+    "zoom_reset": "重設縮放",
+    "theme": "切換深色／淺色主題"
   },
   "trial": {
     "days_remaining": "試用期剩餘 {days} 天",
@@ -232,9 +236,5 @@
     "open_button": "開啟檔案",
     "subtitle": "精美的 Markdown 檢視器",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "刪除圖片",
-    "edit": "編輯圖片 URL"
   }
 }

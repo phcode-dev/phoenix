@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Søger i filer…",
   "FIND_IN_FILES_SEARCHING_IN": "I {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indekserer {0} af {1} filer for øjeblikkelig søgning…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Filindeksering suspenderet",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektets filcache har nået {0} MB. Indeksering er blevet suspenderet for at forhindre højt hukommelsesforbrug. Find i filer er deaktiveret for dette projekt. For at reducere indekseringsstørrelsen, tilføj mapper med store eller genererede filer til .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksimal størrelse i MB for filcachen til øjeblikkelig søgning.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Fejl ved erstatning",
   "REPLACE_IN_FILES_ERRORS": "Følgende filer blev ikke behandlet, da de har ændret sig siden søgningen eller ikke kunne gemmes.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Fejl ved hentning af opdateringsinformation",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Filindeksering suspenderet",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektets filcache har nået {0} MB. Indeksering er blevet suspenderet for at forhindre højt hukommelsesforbrug. Find i filer er deaktiveret for dette projekt. For at reducere indekseringsstørrelsen, tilføj mapper med store eller genererede filer til .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksimal størrelse i MB for filcachen til øjeblikkelig søgning."
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema for Markdown-fremviseren (lys eller mørk)"
 });

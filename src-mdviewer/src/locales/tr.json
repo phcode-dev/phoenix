@@ -81,6 +81,10 @@
     "getting_started": "Başlarken",
     "shortcuts": "Klavye Kısayolları"
   },
+  "image": {
+    "delete": "Görseli sil",
+    "edit": "Görsel URL'sini Düzenle"
+  },
   "image_dialog": {
     "alt_placeholder": "Resim açıklaması",
     "insert": "Ekle",
@@ -202,11 +206,11 @@
     "split_view": "Bölünmüş Görünüm",
     "switch_to_edit": "Düzenleme moduna geç",
     "switch_to_reader": "Okuyucu moduna geç",
-    "theme": "Temayı Değiştir",
     "toc": "İçindekiler",
     "zoom_in": "Yakınlaştır",
     "zoom_out": "Uzaklaştır",
-    "zoom_reset": "Yakınlaştırmayı Sıfırla"
+    "zoom_reset": "Yakınlaştırmayı Sıfırla",
+    "theme": "Koyu/Açık Temayı Değiştir"
   },
   "trial": {
     "days_remaining": "Deneme süresinin bitmesine {days} gün kaldı",
@@ -232,9 +236,5 @@
     "open_button": "Dosya Aç",
     "subtitle": "Harika bir Markdown görüntüleyici",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Görseli sil",
-    "edit": "Görsel URL'sini Düzenle"
   }
 }

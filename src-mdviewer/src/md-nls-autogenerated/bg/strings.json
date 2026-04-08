@@ -65,6 +65,8 @@
   "help.features": "Възможности",
   "help.getting_started": "Първи стъпки",
   "help.shortcuts": "Клавишни комбинации",
+  "image.delete": "Изтриване на изображение",
+  "image.edit": "Редактиране на URL на изображение",
   "image_dialog.alt_placeholder": "Описание на изображението",
   "image_dialog.insert": "Вмъкване",
   "image_dialog.title": "Вмъкване на URL на изображение",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Разделен изглед",
   "toolbar.switch_to_edit": "Премини към режим на редактиране",
   "toolbar.switch_to_reader": "Премини към режим на четене",
-  "toolbar.theme": "Превключване на темата",
   "toolbar.toc": "Съдържание",
   "toolbar.zoom_in": "Увеличаване",
   "toolbar.zoom_out": "Намаляване",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Отвори файл",
   "welcome.subtitle": "Красив преглед на Markdown",
   "welcome.title": "Kern",
-  "image.delete": "Изтриване на изображение",
-  "image.edit": "Редактиране на URL на изображение"
+  "toolbar.theme": "Превключване на тъмна/светла тема"
 }

@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Wyszukiwanie w plikach…",
   "FIND_IN_FILES_SEARCHING_IN": "W {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indeksowanie {0} z {1} plików dla błyskawicznego wyszukiwania…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indeksowanie plików wstrzymane",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Pamięć podręczna plików projektu osiągnęła {0} MB. Indeksowanie zostało wstrzymane, aby zapobiec wysokiemu zużyciu pamięci. Funkcja „Znajdź w plikach” jest wyłączona dla tego projektu. Aby zmniejszyć rozmiar indeksowania, dodaj foldery z dużymi lub wygenerowanymi plikami do pliku .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksymalny rozmiar w MB dla pamięci podręcznej plików wyszukiwania błyskawicznego.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Zamień błędy",
   "REPLACE_IN_FILES_ERRORS": "Poniższe pliki nie zostały zmienione, ponieważ ich treść zmieniła się po zakończeniu wyszukiwania lub nie mogły być zapisane.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Błąd podczas pobierania informacji o aktualizacjach",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indeksowanie plików wstrzymane",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Pamięć podręczna plików projektu osiągnęła {0} MB. Indeksowanie zostało wstrzymane, aby zapobiec wysokiemu zużyciu pamięci. Funkcja „Znajdź w plikach” jest wyłączona dla tego projektu. Aby zmniejszyć rozmiar indeksowania, dodaj foldery z dużymi lub wygenerowanymi plikami do pliku .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksymalny rozmiar w MB dla pamięci podręcznej plików wyszukiwania błyskawicznego."
+  "MD_VIEWER_THEME_DESCRIPTION": "Motyw dla podglądu Markdown (jasny lub ciemny)"
 });

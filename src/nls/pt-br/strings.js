@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Buscando em Arquivos…",
   "FIND_IN_FILES_SEARCHING_IN": "Em {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indexando {0} de {1} arquivos para Busca Instantânea…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexação de Arquivos Suspensa",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "O cache de arquivos do projeto atingiu {0} MB. A indexação foi suspensa para evitar o alto uso de memória. A busca em arquivos está desativada para este projeto. Para reduzir o tamanho da indexação, adicione pastas com arquivos grandes ou gerados ao .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Tamanho máximo em MB para o cache de arquivos da busca instantânea.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Erro na substituição",
   "REPLACE_IN_FILES_ERRORS": "Os seguintes arquivos não foram modificados porque eles foram alterados antes da busca ou não puderam ser escritos.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Erro ao receber informações de atualização",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexação de Arquivos Suspensa",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "O cache de arquivos do projeto atingiu {0} MB. A indexação foi suspensa para evitar o alto uso de memória. A busca em arquivos está desativada para este projeto. Para reduzir o tamanho da indexação, adicione pastas com arquivos grandes ou gerados ao .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Tamanho máximo em MB para o cache de arquivos da busca instantânea."
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema para o visualizador de Markdown (claro ou escuro)"
 });

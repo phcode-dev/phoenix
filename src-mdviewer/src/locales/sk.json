@@ -81,6 +81,10 @@
     "getting_started": "Ako začať",
     "shortcuts": "Klávesové skratky"
   },
+  "image": {
+    "delete": "Vymazať obrázok",
+    "edit": "Upraviť URL obrázka"
+  },
   "image_dialog": {
     "alt_placeholder": "Popis obrázka",
     "insert": "Vložiť",
@@ -202,11 +206,11 @@
     "split_view": "Rozdelené zobrazenie",
     "switch_to_edit": "Prepnúť do režimu úprav",
     "switch_to_reader": "Prepnúť do režimu čítačky",
-    "theme": "Prepnúť tému",
     "toc": "Obsah",
     "zoom_in": "Priblížiť",
     "zoom_out": "Oddialiť",
-    "zoom_reset": "Obnoviť priblíženie"
+    "zoom_reset": "Obnoviť priblíženie",
+    "theme": "Prepnúť tmavú/svetlú tému"
   },
   "trial": {
     "days_remaining": "Zostáva {days} dní v skúšobnej verzii",
@@ -232,9 +236,5 @@
     "open_button": "Otvoriť súbor",
     "subtitle": "Krásny prehliadač Markdownu",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Vymazať obrázok",
-    "edit": "Upraviť URL obrázka"
   }
 }

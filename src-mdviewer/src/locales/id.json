@@ -81,6 +81,10 @@
     "getting_started": "Memulai",
     "shortcuts": "Pintasan Keyboard"
   },
+  "image": {
+    "delete": "Hapus gambar",
+    "edit": "Edit URL Gambar"
+  },
   "image_dialog": {
     "alt_placeholder": "Deskripsi gambar",
     "insert": "Sisipkan",
@@ -202,11 +206,11 @@
     "split_view": "Tampilan Terpisah",
     "switch_to_edit": "Beralih ke mode sunting",
     "switch_to_reader": "Beralih ke mode baca",
-    "theme": "Ganti Tema",
     "toc": "Daftar Isi",
     "zoom_in": "Perbesar",
     "zoom_out": "Perkecil",
-    "zoom_reset": "Atur Ulang Zoom"
+    "zoom_reset": "Atur Ulang Zoom",
+    "theme": "Alihkan Tema Gelap/Terang"
   },
   "trial": {
     "days_remaining": "{days} hari tersisa dalam uji coba",
@@ -232,9 +236,5 @@
     "open_button": "Buka File",
     "subtitle": "Penampil Markdown yang indah",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Hapus gambar",
-    "edit": "Edit URL Gambar"
   }
 }

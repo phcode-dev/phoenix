@@ -81,6 +81,10 @@
     "getting_started": "快速入门",
     "shortcuts": "键盘快捷键"
   },
+  "image": {
+    "delete": "删除图片",
+    "edit": "编辑图片 URL"
+  },
   "image_dialog": {
     "alt_placeholder": "图片描述",
     "insert": "插入",
@@ -202,11 +206,11 @@
     "split_view": "分屏视图",
     "switch_to_edit": "切换到编辑模式",
     "switch_to_reader": "切换到阅读模式",
-    "theme": "切换主题",
     "toc": "目录",
     "zoom_in": "放大",
     "zoom_out": "缩小",
-    "zoom_reset": "重置缩放"
+    "zoom_reset": "重置缩放",
+    "theme": "切换深色/浅色主题"
   },
   "trial": {
     "days_remaining": "试用期剩余 {days} 天",
@@ -232,9 +236,5 @@
     "open_button": "打开文件",
     "subtitle": "优雅的 Markdown 阅读器",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "删除图片",
-    "edit": "编辑图片 URL"
   }
 }

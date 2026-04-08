@@ -65,6 +65,8 @@
   "help.features": "Funktioner",
   "help.getting_started": "Komma igång",
   "help.shortcuts": "Kortkommandon",
+  "image.delete": "Ta bort bild",
+  "image.edit": "Redigera bild-URL",
   "image_dialog.alt_placeholder": "Bildbeskrivning",
   "image_dialog.insert": "Infoga",
   "image_dialog.title": "Infoga bild-URL",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Delad vy",
   "toolbar.switch_to_edit": "Växla till redigeringsläge",
   "toolbar.switch_to_reader": "Växla till läsläge",
-  "toolbar.theme": "Växla tema",
   "toolbar.toc": "Innehållsförteckning",
   "toolbar.zoom_in": "Zooma in",
   "toolbar.zoom_out": "Zooma ut",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Öppna fil",
   "welcome.subtitle": "En vacker Markdown-visare",
   "welcome.title": "Kern",
-  "image.delete": "Ta bort bild",
-  "image.edit": "Redigera bild-URL"
+  "toolbar.theme": "Växla mörkt/ljust tema"
 }

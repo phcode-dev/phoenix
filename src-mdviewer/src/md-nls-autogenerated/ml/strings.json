@@ -65,6 +65,8 @@
   "help.features": "സവിശേഷതകൾ",
   "help.getting_started": "ആരംഭിക്കാം",
   "help.shortcuts": "കീബോർഡ് കുറുക്കുവഴികൾ",
+  "image.delete": "ചിത്രം നീക്കം ചെയ്യുക",
+  "image.edit": "ചിത്രത്തിന്റെ യുആർഎൽ തിരുത്തുക",
   "image_dialog.alt_placeholder": "ചിത്രത്തിന്റെ വിവരണം",
   "image_dialog.insert": "ചേർക്കുക",
   "image_dialog.title": "ചിത്രത്തിന്റെ URL ചേർക്കുക",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "വിഭജിത കാഴ്ച",
   "toolbar.switch_to_edit": "എഡിറ്റ് മോഡിലേക്ക് മാറുക",
   "toolbar.switch_to_reader": "റീഡർ മോഡിലേക്ക് മാറുക",
-  "toolbar.theme": "തീം മാറ്റുക",
   "toolbar.toc": "ഉള്ളടക്കം",
   "toolbar.zoom_in": "സൂം ഇൻ",
   "toolbar.zoom_out": "സൂം ഔട്ട്",
@@ -189,6 +190,5 @@
   "welcome.open_button": "ഫയൽ തുറക്കുക",
   "welcome.subtitle": "ഒരു മനോഹരമായ മാർക്ക്ഡൗൺ വ്യൂവർ",
   "welcome.title": "Kern",
-  "image.delete": "ചിത്രം നീക്കം ചെയ്യുക",
-  "image.edit": "ചിത്രത്തിന്റെ യുആർഎൽ തിരുത്തുക"
+  "toolbar.theme": "ഡാർക്ക്/ലൈറ്റ് തീം മാറ്റുക"
 }

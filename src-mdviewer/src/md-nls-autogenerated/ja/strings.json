@@ -65,6 +65,8 @@
   "help.features": "機能",
   "help.getting_started": "はじめに",
   "help.shortcuts": "キーボードショートカット",
+  "image.delete": "画像を削除",
+  "image.edit": "画像URLを編集",
   "image_dialog.alt_placeholder": "画像の説明",
   "image_dialog.insert": "挿入",
   "image_dialog.title": "画像URLを挿入",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "分割表示",
   "toolbar.switch_to_edit": "編集モードに切り替え",
   "toolbar.switch_to_reader": "リーダーモードに切り替え",
-  "toolbar.theme": "テーマ切替",
   "toolbar.toc": "目次",
   "toolbar.zoom_in": "拡大",
   "toolbar.zoom_out": "縮小",
@@ -189,6 +190,5 @@
   "welcome.open_button": "ファイルを開く",
   "welcome.subtitle": "美しいMarkdownビューア",
   "welcome.title": "Kern",
-  "image.delete": "画像を削除",
-  "image.edit": "画像URLを編集"
+  "toolbar.theme": "ダーク／ライトテーマの切り替え"
 }

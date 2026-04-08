@@ -81,6 +81,10 @@
     "getting_started": "시작하기",
     "shortcuts": "키보드 단축키"
   },
+  "image": {
+    "delete": "이미지 삭제",
+    "edit": "이미지 URL 수정"
+  },
   "image_dialog": {
     "alt_placeholder": "이미지 설명",
     "insert": "삽입",
@@ -202,11 +206,11 @@
     "split_view": "분할 보기",
     "switch_to_edit": "편집 모드로 전환",
     "switch_to_reader": "리더 모드로 전환",
-    "theme": "테마 전환",
     "toc": "목차",
     "zoom_in": "확대",
     "zoom_out": "축소",
-    "zoom_reset": "배율 초기화"
+    "zoom_reset": "배율 초기화",
+    "theme": "어두운/밝은 테마 전환"
   },
   "trial": {
     "days_remaining": "체험판 {days}일 남음",
@@ -232,9 +236,5 @@
     "open_button": "파일 열기",
     "subtitle": "아름다운 마크다운 뷰어",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "이미지 삭제",
-    "edit": "이미지 URL 수정"
   }
 }

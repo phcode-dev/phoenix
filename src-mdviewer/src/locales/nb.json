@@ -81,6 +81,10 @@
     "getting_started": "Kom i gang",
     "shortcuts": "Tastatursnarveier"
   },
+  "image": {
+    "delete": "Slett bilde",
+    "edit": "Rediger bilde-URL"
+  },
   "image_dialog": {
     "alt_placeholder": "Bildebeskrivelse",
     "insert": "Sett inn",
@@ -202,11 +206,11 @@
     "split_view": "Delt visning",
     "switch_to_edit": "Bytt til redigeringsmodus",
     "switch_to_reader": "Bytt til lesermodus",
-    "theme": "Bytt tema",
     "toc": "Innholdsfortegnelse",
     "zoom_in": "Zoom inn",
     "zoom_out": "Zoom ut",
-    "zoom_reset": "Tilbakestill zoom"
+    "zoom_reset": "Tilbakestill zoom",
+    "theme": "Veksle mellom mørkt og lyst tema"
   },
   "trial": {
     "days_remaining": "{days} dager igjen av prøveperioden",
@@ -232,9 +236,5 @@
     "open_button": "Åpne fil",
     "subtitle": "En vakker Markdown-fremviser",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Slett bilde",
-    "edit": "Rediger bilde-URL"
   }
 }

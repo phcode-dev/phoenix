@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Fájlok keresése…",
   "FIND_IN_FILES_SEARCHING_IN": "A következőben: {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "{1} fájlból {0} indexelése az azonnali kereséshez…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Fájlindexelés felfüggesztve",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "A projekt fájlgyorsítótára elérte a(z) {0} MB-ot. A magas memóriahasználat megelőzése érdekében az indexelés fel lett függesztve. A „Keresés a fájlokban” funkció le van tiltva ennél a projektnél. Az indexelési méret csökkentéséhez adja hozzá a nagy vagy generált fájlokat tartalmazó mappákat a .gitignore fájlhoz.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Az azonnali keresés fájlgyorsítótárának maximális mérete MB-ban.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Cserehibák",
   "REPLACE_IN_FILES_ERRORS": "A következő fájlok nem lettek módosítva, mert a keresés után megváltoztak, vagy nem lehetett írni őket.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Hiba a frissítési infó lekérdezése közben",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Fájlindexelés felfüggesztve",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "A projekt fájlgyorsítótára elérte a(z) {0} MB-ot. A magas memóriahasználat megelőzése érdekében az indexelés fel lett függesztve. A „Keresés a fájlokban” funkció le van tiltva ennél a projektnél. Az indexelési méret csökkentéséhez adja hozzá a nagy vagy generált fájlokat tartalmazó mappákat a .gitignore fájlhoz.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Az azonnali keresés fájlgyorsítótárának maximális mérete MB-ban."
+  "MD_VIEWER_THEME_DESCRIPTION": "A Markdown-megjelenítő témája (világos vagy sötét)"
 });

@@ -81,6 +81,10 @@
     "getting_started": "Pierwsze kroki",
     "shortcuts": "Skróty klawiszowe"
   },
+  "image": {
+    "delete": "Usuń obrazek",
+    "edit": "Edytuj URL obrazka"
+  },
   "image_dialog": {
     "alt_placeholder": "Opis obrazka",
     "insert": "Wstaw",
@@ -202,11 +206,11 @@
     "split_view": "Widok podzielony",
     "switch_to_edit": "Przełącz na tryb edycji",
     "switch_to_reader": "Przełącz na tryb czytnika",
-    "theme": "Przełącz motyw",
     "toc": "Spis treści",
     "zoom_in": "Powiększ",
     "zoom_out": "Pomniejsz",
-    "zoom_reset": "Resetuj powiększenie"
+    "zoom_reset": "Resetuj powiększenie",
+    "theme": "Przełącz motyw ciemny/jasny"
   },
   "trial": {
     "days_remaining": "Pozostało {days} dni okresu próbnego",
@@ -232,9 +236,5 @@
     "open_button": "Otwórz plik",
     "subtitle": "Piękna przeglądarka Markdown",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Usuń obrazek",
-    "edit": "Edytuj URL obrazka"
   }
 }

@@ -81,6 +81,10 @@
     "getting_started": "Primeiros pasos",
     "shortcuts": "Atallos de teclado"
   },
+  "image": {
+    "delete": "Eliminar imaxe",
+    "edit": "Editar URL da imaxe"
+  },
   "image_dialog": {
     "alt_placeholder": "Descrición da imaxe",
     "insert": "Inserir",
@@ -202,11 +206,11 @@
     "split_view": "Vista dividida",
     "switch_to_edit": "Cambiar ao modo de edición",
     "switch_to_reader": "Cambiar ao modo lector",
-    "theme": "Alternar tema",
     "toc": "Índice de contidos",
     "zoom_in": "Achegar",
     "zoom_out": "Afastar",
-    "zoom_reset": "Restablecer o zoom"
+    "zoom_reset": "Restablecer o zoom",
+    "theme": "Alternar tema escuro/claro"
   },
   "trial": {
     "days_remaining": "Quedan {days} días de proba",
@@ -232,9 +236,5 @@
     "open_button": "Abrir ficheiro",
     "subtitle": "Un fermoso visor de Markdown",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Eliminar imaxe",
-    "edit": "Editar URL da imaxe"
   }
 }

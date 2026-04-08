@@ -81,6 +81,10 @@
     "getting_started": "Začínáme",
     "shortcuts": "Klávesové zkratky"
   },
+  "image": {
+    "delete": "Smazat obrázek",
+    "edit": "Upravit URL obrázku"
+  },
   "image_dialog": {
     "alt_placeholder": "Popis obrázku",
     "insert": "Vložit",
@@ -202,11 +206,11 @@
     "split_view": "Rozdělené zobrazení",
     "switch_to_edit": "Přepnout do režimu úprav",
     "switch_to_reader": "Přepnout do režimu čtení",
-    "theme": "Přepnout motiv",
     "toc": "Obsah",
     "zoom_in": "Přiblížit",
     "zoom_out": "Oddálit",
-    "zoom_reset": "Resetovat přiblížení"
+    "zoom_reset": "Resetovat přiblížení",
+    "theme": "Přepnout tmavý/světlý motiv"
   },
   "trial": {
     "days_remaining": "Zbývá {days} dní zkušební verze",
@@ -232,9 +236,5 @@
     "open_button": "Otevřít soubor",
     "subtitle": "Krásný prohlížeč Markdownu",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Smazat obrázek",
-    "edit": "Upravit URL obrázku"
   }
 }

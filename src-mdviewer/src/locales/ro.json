@@ -81,6 +81,10 @@
     "getting_started": "Noțiuni introductive",
     "shortcuts": "Scurtături de la tastatură"
   },
+  "image": {
+    "delete": "Șterge imaginea",
+    "edit": "Editează URL-ul imaginii"
+  },
   "image_dialog": {
     "alt_placeholder": "Descriere imagine",
     "insert": "Inserează",
@@ -202,11 +206,11 @@
     "split_view": "Vizualizare divizată",
     "switch_to_edit": "Comutați la modul editare",
     "switch_to_reader": "Comutați la modul citire",
-    "theme": "Comutare temă",
     "toc": "Cuprins",
     "zoom_in": "Mărire",
     "zoom_out": "Micșorare",
-    "zoom_reset": "Resetare zoom"
+    "zoom_reset": "Resetare zoom",
+    "theme": "Comutare temă întunecată/luminoasă"
   },
   "trial": {
     "days_remaining": "{days} zile rămase din perioada de probă",
@@ -232,9 +236,5 @@
     "open_button": "Deschide fișier",
     "subtitle": "Un vizualizator Markdown frumos",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Șterge imaginea",
-    "edit": "Editează URL-ul imaginii"
   }
 }

@@ -65,6 +65,8 @@
   "help.features": "Funkcje",
   "help.getting_started": "Pierwsze kroki",
   "help.shortcuts": "Skróty klawiszowe",
+  "image.delete": "Usuń obrazek",
+  "image.edit": "Edytuj URL obrazka",
   "image_dialog.alt_placeholder": "Opis obrazka",
   "image_dialog.insert": "Wstaw",
   "image_dialog.title": "Wstaw obrazek z adresu URL",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Widok podzielony",
   "toolbar.switch_to_edit": "Przełącz na tryb edycji",
   "toolbar.switch_to_reader": "Przełącz na tryb czytnika",
-  "toolbar.theme": "Przełącz motyw",
   "toolbar.toc": "Spis treści",
   "toolbar.zoom_in": "Powiększ",
   "toolbar.zoom_out": "Pomniejsz",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Otwórz plik",
   "welcome.subtitle": "Piękna przeglądarka Markdown",
   "welcome.title": "Kern",
-  "image.delete": "Usuń obrazek",
-  "image.edit": "Edytuj URL obrazka"
+  "toolbar.theme": "Przełącz motyw ciemny/jasny"
 }

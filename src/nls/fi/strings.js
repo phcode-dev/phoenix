@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Etsitään tiedostoista…",
   "FIND_IN_FILES_SEARCHING_IN": "Kohteesta {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indeksoidaan tiedostoa {0}/{1} pikakäyttöä varten…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Tiedostojen indeksointi keskeytetty",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektin tiedostovälimuisti on saavuttanut {0} MB. Indeksointi on keskeytetty suuren muistinkäytön estämiseksi. Etsi tiedostoista -toiminto on poistettu käytöstä tässä projektissa. Pienentääksesi indeksoinnin kokoa, lisää kansiot, joissa on suuria tai generoituja tiedostoja, .gitignore-tiedostoon.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Pikahaun tiedostovälimuistin enimmäiskoko (MB).",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Korvausvirheitä",
   "REPLACE_IN_FILES_ERRORS": "Seuraavia tiedostoja ei muokattu, koska ne olivat muuttuneet haun jälkeen tai niihin ei voitu kirjoittaa.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Virhe päivitystietojen haussa",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Tiedostojen indeksointi keskeytetty",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektin tiedostovälimuisti on saavuttanut {0} MB. Indeksointi on keskeytetty suuren muistinkäytön estämiseksi. Etsi tiedostoista -toiminto on poistettu käytöstä tässä projektissa. Pienentääksesi indeksoinnin kokoa, lisää kansiot, joissa on suuria tai generoituja tiedostoja, .gitignore-tiedostoon.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Pikahaun tiedostovälimuistin enimmäiskoko (MB)."
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown-esikatselun teema (vaalea tai tumma)"
 });

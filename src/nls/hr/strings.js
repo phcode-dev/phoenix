@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Pretraživanje datoteka…",
   "FIND_IN_FILES_SEARCHING_IN": "U {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Indeksiranje {0} od {1} datoteka za trenutno pretraživanje…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indeksiranje datoteka obustavljeno",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Predmemorija datoteka projekta dosegla je {0} MB. Indeksiranje je obustavljeno kako bi se spriječila velika potrošnja memorije. Pretraživanje u datotekama onemogućeno je za ovaj projekt. Kako biste smanjili veličinu indeksiranja, dodajte mape s velikim ili generiranim datotekama u .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksimalna veličina u MB za predmemoriju datoteka za trenutačno pretraživanje.",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Pogreške prilikom zamjene",
   "REPLACE_IN_FILES_ERRORS": "Sljedeće datoteke nisu izmijenjene jer su se promijenile nakon pretraživanja ili ih nije bilo moguće zapisati.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Greška prilikom učitavanja informacija o novoj verziji",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indeksiranje datoteka obustavljeno",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Predmemorija datoteka projekta dosegla je {0} MB. Indeksiranje je obustavljeno kako bi se spriječila velika potrošnja memorije. Pretraživanje u datotekama onemogućeno je za ovaj projekt. Kako biste smanjili veličinu indeksiranja, dodajte mape s velikim ili generiranim datotekama u .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksimalna veličina u MB za predmemoriju datoteka za trenutačno pretraživanje."
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema za preglednik Markdowna (svijetla ili tamna)"
 });

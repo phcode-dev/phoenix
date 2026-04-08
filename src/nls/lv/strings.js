@@ -600,6 +600,9 @@ define({
   "FIND_IN_FILES_SEARCHING": "Notiek failu meklēšana…",
   "FIND_IN_FILES_SEARCHING_IN": "Failā {0}",
   "FIND_IN_FILES_INDEXING_PROGRESS": "Notiek {0} no {1} failu indeksēšana tūlītējai meklēšanai…",
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Failu indeksēšana apturēta",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projekta failu kešatmiņa ir sasniegusi {0} MB. Indeksēšana ir apturēta, lai novērstu augstu atmiņas patēriņu. Meklēšana failos šim projektam ir atspējota. Lai samazinātu indeksēšanas apjomu, pievienojiet mapes ar lieliem vai ģenerētiem failiem failam .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Tūlītējās meklēšanas failu kešatmiņas maksimālais izmērs (MB).",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Aizstāt kļūdas",
   "REPLACE_IN_FILES_ERRORS": "Šīs datnes netika pārveidotas, jo tās mainījās pēc meklēšanas vai nevar tikt rakstītas.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Kļūda, saņemot informāciju par atjauninājumiem",
@@ -2166,7 +2169,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Failu indeksēšana apturēta",
-  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projekta failu kešatmiņa ir sasniegusi {0} MB. Indeksēšana ir apturēta, lai novērstu augstu atmiņas patēriņu. Meklēšana failos šim projektam ir atspējota. Lai samazinātu indeksēšanas apjomu, pievienojiet mapes ar lieliem vai ģenerētiem failiem failam .gitignore.",
-  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Tūlītējās meklēšanas failu kešatmiņas maksimālais izmērs (MB)."
+  "MD_VIEWER_THEME_DESCRIPTION": "Tēma Markdown skatītājam (gaišs vai tumšs)"
 });

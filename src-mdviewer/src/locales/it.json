@@ -81,6 +81,10 @@
     "getting_started": "Per iniziare",
     "shortcuts": "Scorciatoie da tastiera"
   },
+  "image": {
+    "delete": "Elimina immagine",
+    "edit": "Modifica URL dell'immagine"
+  },
   "image_dialog": {
     "alt_placeholder": "Descrizione immagine",
     "insert": "Inserisci",
@@ -202,11 +206,11 @@
     "split_view": "Vista divisa",
     "switch_to_edit": "Passa alla modalità modifica",
     "switch_to_reader": "Passa alla modalità lettura",
-    "theme": "Cambia tema",
     "toc": "Indice",
     "zoom_in": "Ingrandisci",
     "zoom_out": "Riduci",
-    "zoom_reset": "Ripristina zoom"
+    "zoom_reset": "Ripristina zoom",
+    "theme": "Alterna tema scuro/chiaro"
   },
   "trial": {
     "days_remaining": "{days} giorni rimanenti di prova",
@@ -232,9 +236,5 @@
     "open_button": "Apri file",
     "subtitle": "Un bellissimo visualizzatore Markdown",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Elimina immagine",
-    "edit": "Modifica URL dell'immagine"
   }
 }

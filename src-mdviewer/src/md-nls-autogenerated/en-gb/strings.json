@@ -65,6 +65,8 @@
   "help.features": "Features",
   "help.getting_started": "Getting Started",
   "help.shortcuts": "Keyboard Shortcuts",
+  "image.delete": "Delete image",
+  "image.edit": "Edit Image URL",
   "image_dialog.alt_placeholder": "Image description",
   "image_dialog.insert": "Insert",
   "image_dialog.title": "Insert Image URL",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Split View",
   "toolbar.switch_to_edit": "Switch to edit mode",
   "toolbar.switch_to_reader": "Switch to reader mode",
-  "toolbar.theme": "Toggle Theme",
   "toolbar.toc": "Table of Contents",
   "toolbar.zoom_in": "Zoom In",
   "toolbar.zoom_out": "Zoom Out",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Open File",
   "welcome.subtitle": "A beautiful Markdown viewer",
   "welcome.title": "Kern",
-  "image.delete": "Delete image",
-  "image.edit": "Edit Image URL"
+  "toolbar.theme": "Toggle Dark/Light Theme"
 }

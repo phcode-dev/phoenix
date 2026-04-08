@@ -65,6 +65,8 @@
   "help.features": "Funkcie",
   "help.getting_started": "Ako začať",
   "help.shortcuts": "Klávesové skratky",
+  "image.delete": "Vymazať obrázok",
+  "image.edit": "Upraviť URL obrázka",
   "image_dialog.alt_placeholder": "Popis obrázka",
   "image_dialog.insert": "Vložiť",
   "image_dialog.title": "Vložiť URL obrázka",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Rozdelené zobrazenie",
   "toolbar.switch_to_edit": "Prepnúť do režimu úprav",
   "toolbar.switch_to_reader": "Prepnúť do režimu čítačky",
-  "toolbar.theme": "Prepnúť tému",
   "toolbar.toc": "Obsah",
   "toolbar.zoom_in": "Priblížiť",
   "toolbar.zoom_out": "Oddialiť",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Otvoriť súbor",
   "welcome.subtitle": "Krásny prehliadač Markdownu",
   "welcome.title": "Kern",
-  "image.delete": "Vymazať obrázok",
-  "image.edit": "Upraviť URL obrázka"
+  "toolbar.theme": "Prepnúť tmavú/svetlú tému"
 }

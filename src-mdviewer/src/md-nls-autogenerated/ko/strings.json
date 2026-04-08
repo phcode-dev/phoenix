@@ -65,6 +65,8 @@
   "help.features": "기능",
   "help.getting_started": "시작하기",
   "help.shortcuts": "키보드 단축키",
+  "image.delete": "이미지 삭제",
+  "image.edit": "이미지 URL 수정",
   "image_dialog.alt_placeholder": "이미지 설명",
   "image_dialog.insert": "삽입",
   "image_dialog.title": "이미지 URL 삽입",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "분할 보기",
   "toolbar.switch_to_edit": "편집 모드로 전환",
   "toolbar.switch_to_reader": "리더 모드로 전환",
-  "toolbar.theme": "테마 전환",
   "toolbar.toc": "목차",
   "toolbar.zoom_in": "확대",
   "toolbar.zoom_out": "축소",
@@ -189,6 +190,5 @@
   "welcome.open_button": "파일 열기",
   "welcome.subtitle": "아름다운 마크다운 뷰어",
   "welcome.title": "Kern",
-  "image.delete": "이미지 삭제",
-  "image.edit": "이미지 URL 수정"
+  "toolbar.theme": "어두운/밝은 테마 전환"
 }

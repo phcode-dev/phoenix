@@ -65,6 +65,8 @@
   "help.features": "Funcționalități",
   "help.getting_started": "Noțiuni introductive",
   "help.shortcuts": "Scurtături de la tastatură",
+  "image.delete": "Șterge imaginea",
+  "image.edit": "Editează URL-ul imaginii",
   "image_dialog.alt_placeholder": "Descriere imagine",
   "image_dialog.insert": "Inserează",
   "image_dialog.title": "Inserează URL imagine",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "Vizualizare divizată",
   "toolbar.switch_to_edit": "Comutați la modul editare",
   "toolbar.switch_to_reader": "Comutați la modul citire",
-  "toolbar.theme": "Comutare temă",
   "toolbar.toc": "Cuprins",
   "toolbar.zoom_in": "Mărire",
   "toolbar.zoom_out": "Micșorare",
@@ -189,6 +190,5 @@
   "welcome.open_button": "Deschide fișier",
   "welcome.subtitle": "Un vizualizator Markdown frumos",
   "welcome.title": "Kern",
-  "image.delete": "Șterge imaginea",
-  "image.edit": "Editează URL-ul imaginii"
+  "toolbar.theme": "Comutare temă întunecată/luminoasă"
 }

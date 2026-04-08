@@ -65,6 +65,8 @@
   "help.features": "الميزات",
   "help.getting_started": "البدء",
   "help.shortcuts": "اختصارات لوحة المفاتيح",
+  "image.delete": "حذف الصورة",
+  "image.edit": "تعديل رابط الصورة",
   "image_dialog.alt_placeholder": "وصف الصورة",
   "image_dialog.insert": "إدراج",
   "image_dialog.title": "إدراج رابط الصورة",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "عرض مقسّم",
   "toolbar.switch_to_edit": "التبديل إلى وضع التحرير",
   "toolbar.switch_to_reader": "التبديل إلى وضع القارئ",
-  "toolbar.theme": "تبديل السمة",
   "toolbar.toc": "جدول المحتويات",
   "toolbar.zoom_in": "تكبير",
   "toolbar.zoom_out": "تصغير",
@@ -189,6 +190,5 @@
   "welcome.open_button": "فتح ملف",
   "welcome.subtitle": "عارض ماركداون أنيق",
   "welcome.title": "Kern",
-  "image.delete": "حذف الصورة",
-  "image.edit": "تعديل رابط الصورة"
+  "toolbar.theme": "تبديل المظهر الداكن/الفاتح"
 }

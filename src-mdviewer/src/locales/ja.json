@@ -81,6 +81,10 @@
     "getting_started": "はじめに",
     "shortcuts": "キーボードショートカット"
   },
+  "image": {
+    "delete": "画像を削除",
+    "edit": "画像URLを編集"
+  },
   "image_dialog": {
     "alt_placeholder": "画像の説明",
     "insert": "挿入",
@@ -202,11 +206,11 @@
     "split_view": "分割表示",
     "switch_to_edit": "編集モードに切り替え",
     "switch_to_reader": "リーダーモードに切り替え",
-    "theme": "テーマ切替",
     "toc": "目次",
     "zoom_in": "拡大",
     "zoom_out": "縮小",
-    "zoom_reset": "ズームをリセット"
+    "zoom_reset": "ズームをリセット",
+    "theme": "ダーク／ライトテーマの切り替え"
   },
   "trial": {
     "days_remaining": "試用期間の残り {days} 日",
@@ -232,9 +236,5 @@
     "open_button": "ファイルを開く",
     "subtitle": "美しいMarkdownビューア",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "画像を削除",
-    "edit": "画像URLを編集"
   }
 }

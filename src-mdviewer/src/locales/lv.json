@@ -81,6 +81,10 @@
     "getting_started": "Darba sākšana",
     "shortcuts": "Tastatūras saīsnes"
   },
+  "image": {
+    "delete": "Dzēst attēlu",
+    "edit": "Rediģēt attēla URL"
+  },
   "image_dialog": {
     "alt_placeholder": "Attēla apraksts",
     "insert": "Ievietot",
@@ -202,11 +206,11 @@
     "split_view": "Dalīts skats",
     "switch_to_edit": "Pārslēgties uz rediģēšanas režīmu",
     "switch_to_reader": "Pārslēgties uz lasīšanas režīmu",
-    "theme": "Pārslēgt tēmu",
     "toc": "Satura rādītājs",
     "zoom_in": "Tuvināt",
     "zoom_out": "Tālināt",
-    "zoom_reset": "Atiestatīt tālummaiņu"
+    "zoom_reset": "Atiestatīt tālummaiņu",
+    "theme": "Pārslēgt tumšo/gaišo tēmu"
   },
   "trial": {
     "days_remaining": "Atlikušas {days} dienas izmēģinājuma periodā",
@@ -232,9 +236,5 @@
     "open_button": "Atvērt failu",
     "subtitle": "Skaists Markdown skatītājs",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Dzēst attēlu",
-    "edit": "Rediģēt attēla URL"
   }
 }

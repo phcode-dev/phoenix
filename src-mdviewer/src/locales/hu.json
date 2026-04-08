@@ -81,6 +81,10 @@
     "getting_started": "Első lépések",
     "shortcuts": "Billentyűparancsok"
   },
+  "image": {
+    "delete": "Kép törlése",
+    "edit": "Kép URL szerkesztése"
+  },
   "image_dialog": {
     "alt_placeholder": "Kép leírása",
     "insert": "Beszúrás",
@@ -202,11 +206,11 @@
     "split_view": "Osztott nézet",
     "switch_to_edit": "Váltás szerkesztő módra",
     "switch_to_reader": "Váltás olvasó módra",
-    "theme": "Téma váltása",
     "toc": "Tartalomjegyzék",
     "zoom_in": "Nagyítás",
     "zoom_out": "Kicsinyítés",
-    "zoom_reset": "Nagyítás visszaállítása"
+    "zoom_reset": "Nagyítás visszaállítása",
+    "theme": "Sötét/Világos téma váltása"
   },
   "trial": {
     "days_remaining": "{days} nap van hátra a próbaidőszakból",
@@ -232,9 +236,5 @@
     "open_button": "Fájl megnyitása",
     "subtitle": "Egy gyönyörű Markdown megjelenítő",
     "title": "Kern"
-  },
-  "image": {
-    "delete": "Kép törlése",
-    "edit": "Kép URL szerkesztése"
   }
 }

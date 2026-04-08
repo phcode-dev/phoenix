@@ -65,6 +65,8 @@
   "help.features": "功能",
   "help.getting_started": "快速入門",
   "help.shortcuts": "鍵盤快捷鍵",
+  "image.delete": "刪除圖片",
+  "image.edit": "編輯圖片 URL",
   "image_dialog.alt_placeholder": "圖片說明",
   "image_dialog.insert": "插入",
   "image_dialog.title": "插入圖片 URL",
@@ -165,7 +167,6 @@
   "toolbar.split_view": "分割檢視",
   "toolbar.switch_to_edit": "切換至編輯模式",
   "toolbar.switch_to_reader": "切換至閱讀模式",
-  "toolbar.theme": "切換主題",
   "toolbar.toc": "目錄",
   "toolbar.zoom_in": "放大",
   "toolbar.zoom_out": "縮小",
@@ -189,6 +190,5 @@
   "welcome.open_button": "開啟檔案",
   "welcome.subtitle": "精美的 Markdown 檢視器",
   "welcome.title": "Kern",
-  "image.delete": "刪除圖片",
-  "image.edit": "編輯圖片 URL"
+  "toolbar.theme": "切換深色／淺色主題"
 }
