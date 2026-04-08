@@ -83,6 +83,10 @@ define(function (require, exports, module) {
 
     const StateManager = PreferencesManager.stateManager;
     const STATE_CUSTOM_SERVER_BANNER_ACK = "customServerBannerDone";
+    const PREF_MD_THEME = "mdViewerTheme";
+    PreferencesManager.definePreference(PREF_MD_THEME, "string", "light", {
+        description: Strings.MD_VIEWER_THEME_DESCRIPTION
+    });
     let customServerModalBar;
 
     const isBrowser = !Phoenix.isNativeApp;
@@ -788,6 +792,11 @@ define(function (require, exports, module) {
         $modeBtn = $panel.find("#livePreviewModeBtn");
         $previewBtn = $panel.find("#previewModeLivePreviewButton");
 
+        // Markdown theme toggle — persist user choice
+        MarkdownSync.setThemeToggleHandler((theme) => {
+            PreferencesManager.set(PREF_MD_THEME, theme);
+        });
+
         $panel.find(".live-preview-settings-banner-btn").on("click", ()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtnBanner", "click");
@@ -919,6 +928,9 @@ define(function (require, exports, module) {
 
         _isMdviewrActive = true;
         MarkdownSync.activate(currentDoc, $iframe, baseURL);
+        // Apply persisted theme preference
+        const savedTheme = PreferencesManager.get(PREF_MD_THEME) || "light";
+        MarkdownSync.sendThemeOverride(savedTheme);
         // Sync preview mode and edit mode for reuse case where iframe is already ready
         _updateLPControlsForMdviewer();
 

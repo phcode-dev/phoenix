@@ -161,6 +161,7 @@ define({
     "LIVE_DEV_OPEN_ERROR_TITLE": "Error Opening Live Preview in {0}",
     "LIVE_DEV_OPEN_ERROR_MESSAGE": "Make sure that {0} browser is installed and try again.",
     "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin or Unpin Preview Page",
+    "MD_VIEWER_THEME_DESCRIPTION": "Theme for the Markdown viewer (light or dark)",
     "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (not updating due to syntax error)",
     "LIVE_DEV_SETTINGS": "Live Preview Settings\u2026",
     "LIVE_DEV_SETTINGS_BANNER": "Set up a custom server to live preview `<b>{0}</b>` and other server-rendered files (PHP, JSP, etc.)",

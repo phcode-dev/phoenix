@@ -32,7 +32,9 @@ import {
     Link2Off,
     Printer,
     Image as ImageIcon,
-    Upload
+    Upload,
+    Sun,
+    Moon
 } from "lucide";
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
@@ -45,11 +47,11 @@ let collapseLevel = 0; // 0=expanded, 1=blocks, 2=blocks+lists, 3=all
 
 // Width thresholds for progressive collapse
 const THRESHOLD_BLOCKS = 640;  // collapse block elements + image first
-const THRESHOLD_LISTS = 520;   // then lists
-const THRESHOLD_TEXT = 500;    // finally text formatting (all dropdowns collapsed)
+const THRESHOLD_LISTS = 590;   // then lists
+const THRESHOLD_TEXT = 590;    // finally text formatting (all dropdowns collapsed)
 
 const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
-    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer, Image: ImageIcon, Upload };
+    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer, Image: ImageIcon, Upload, Sun, Moon };
 
 export function initEmbeddedToolbar() {
     toolbar = document.getElementById("toolbar");
@@ -58,6 +60,7 @@ export function initEmbeddedToolbar() {
     render();
 
     on("state:editMode", () => render());
+    on("state:theme", () => render());
     on("editor:selection-state", updateFormatState);
     on("state:locale", () => render());
 }
@@ -80,8 +83,12 @@ function render() {
 }
 
 function renderReadMode() {
+    const isDark = getState().theme === "dark";
     toolbar.innerHTML = `<div class="embedded-toolbar">
         <div class="toolbar-spacer"></div>
+        <button class="toolbar-btn theme-toggle-btn" id="emb-theme-toggle" data-tooltip="${t("toolbar.theme") || "Toggle theme"}">
+            <i data-lucide="${isDark ? "sun" : "moon"}"></i>
+        </button>
         <button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
             <i data-lucide="printer"></i>
         </button>
@@ -96,9 +103,9 @@ function renderReadMode() {
     </div>`;
 
     createIcons({ icons: allIcons, attrs: { class: "" } });
-    // Remove data-lucide from replaced SVGs to prevent warnings on subsequent createIcons calls
     toolbar.querySelectorAll("svg[data-lucide]").forEach(svg => svg.removeAttribute("data-lucide"));
 
+    wireThemeToggle();
     wireCursorSyncButton();
     wirePrintButton();
 
@@ -192,9 +199,13 @@ function renderEditMode(level) {
             ${imageSection}
         </div>`;
 
+    const isDark = getState().theme === "dark";
     toolbar.innerHTML = `<div class="embedded-toolbar">
         ${formatRow}
         <div class="toolbar-spacer"></div>
+        <button class="toolbar-btn theme-toggle-btn" id="emb-theme-toggle" data-tooltip="${t("toolbar.theme") || "Toggle theme"}">
+            <i data-lucide="${isDark ? "sun" : "moon"}"></i>
+        </button>
         <button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
             <i data-lucide="printer"></i>
         </button>
@@ -209,12 +220,12 @@ function renderEditMode(level) {
     </div>`;
 
     createIcons({ icons: allIcons, attrs: { class: "" } });
-    // Remove data-lucide from replaced SVGs to prevent warnings on subsequent createIcons calls
     toolbar.querySelectorAll("svg[data-lucide]").forEach(svg => svg.removeAttribute("data-lucide"));
 
     wireFormatButtons();
     wireBlockTypeSelect();
     wireDropdowns();
+    wireThemeToggle();
     wireCursorSyncButton();
     wirePrintButton();
     wireDoneButton();
@@ -303,6 +314,22 @@ function wireCursorSyncButton() {
             if (onIcon) onIcon.style.display = cursorSyncEnabled ? "" : "none";
             if (offIcon) offIcon.style.display = cursorSyncEnabled ? "none" : "";
             emit("toggle:cursorSync", { enabled: cursorSyncEnabled });
+        });
+    }
+}
+
+function wireThemeToggle() {
+    const toggleBtn = document.getElementById("emb-theme-toggle");
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+            const current = getState().theme || "light";
+            const newTheme = current === "light" ? "dark" : "light";
+            // Send to parent (Phoenix) for persistence
+            window.parent.postMessage({
+                type: "MDVIEWR_EVENT",
+                eventName: "mdviewrThemeToggle",
+                theme: newTheme
+            }, "*");
         });
     }
 }
