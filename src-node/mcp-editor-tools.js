@@ -88,18 +88,19 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "takeScreenshot",
         "Take a screenshot of the Phoenix Code editor application window or the live preview within it (not a web page). " +
         "The editor window contains: a toolbar at the top, a file tree sidebar on the left, " +
-        "the code editor area in the center, and optionally a live preview panel on the right " +
-        "that renders the HTML/CSS/JS output of the currently edited file in a browser view. " +
+        "the code editor area in the center, and optionally a live preview panel on the right. " +
+        "The preview panel shows either an HTML/CSS/JS browser view or a rendered markdown preview " +
+        "(when a markdown file is open, the panel shows a WYSIWYG markdown editor/viewer). " +
         "By default captures the entire editor window and returns the screenshot as an inline PNG image. " +
         "If filePath is specified, saves to that file and returns the path instead. " +
         "Prefer capturing specific regions using the selector parameter instead of the full window: " +
-        "use '#panel-live-preview-frame' to capture only the live preview content, " +
+        "use '#panel-live-preview-frame' to capture the preview panel (works for both HTML live preview and markdown preview), " +
         "or '.editor-holder' to capture only the code editor area. " +
         "Only omit the selector when you need to see the full editor application layout. " +
         "Note: live preview screenshots may include Phoenix toolbox overlays on selected elements. " +
         "Use purePreview=true to temporarily hide these overlays and render the page as it would appear in a real browser.",
         {
-            selector: z.string().optional().describe("CSS selector to capture a specific element. Use '#panel-live-preview-frame' for the live preview, '.editor-holder' for the code editor."),
+            selector: z.string().optional().describe("CSS selector to capture a specific element. Use '#panel-live-preview-frame' for the preview panel (HTML live preview or markdown preview), '.editor-holder' for the code editor."),
             purePreview: z.boolean().optional().describe("When true, temporarily switches to preview mode to hide element highlight overlays and toolboxes before capturing, then restores the previous mode."),
             filePath: z.string().optional().describe("Absolute path to save the screenshot as a PNG file. If specified, returns the file path instead of inline image data.")
         },

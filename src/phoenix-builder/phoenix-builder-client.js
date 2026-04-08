@@ -43,7 +43,15 @@ define(function (require, exports, module) {
             return;
         }
 
-        Phoenix.app.screenShotBinary(msg.selector || undefined)
+        // If targeting live preview frame and md viewer is active, redirect to md frame
+        let selector = msg.selector || undefined;
+        if (selector === "#panel-live-preview-frame") {
+            const mdFrame = document.getElementById("panel-md-preview-frame");
+            if (mdFrame && mdFrame.offsetParent) {
+                selector = "#panel-md-preview-frame";
+            }
+        }
+        Phoenix.app.screenShotBinary(selector)
             .then(function (bytes) {
                 let binary = "";
                 const chunkSize = 8192;
