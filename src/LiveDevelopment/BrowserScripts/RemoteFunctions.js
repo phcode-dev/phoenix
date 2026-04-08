@@ -1483,6 +1483,11 @@ function RemoteFunctions(config = {}) {
     function registerHandlers() {
         hideHighlight(); // clear previous highlighting
         disableHoverListeners(); // Always remove existing listeners first to avoid duplicates
+        // Cancel any pending resize RAF so stale callbacks don't fire after re-init
+        if (_pendingResizeRAF) {
+            cancelAnimationFrame(_pendingResizeRAF);
+            _pendingResizeRAF = null;
+        }
         getAllToolHandlers().forEach(handler => {
             if (handler.unregisterInteractionBlocker) {
                 handler.unregisterInteractionBlocker();
