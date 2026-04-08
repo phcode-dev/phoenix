@@ -132,6 +132,13 @@ define(function (require, exports, module) {
             case "mdviewrCursorSyncToggle":
                 _cursorSyncEnabled = !!data.enabled;
                 break;
+            case "mdviewrThemeToggle":
+                sendThemeOverride(data.theme);
+                // Persist via StateManager (accessed through main.js callback)
+                if (_onThemeToggle) {
+                    _onThemeToggle(data.theme);
+                }
+                break;
             case "mdviewrImageUploadRequest":
                 _handleImageUploadFromIframe(data);
                 break;
@@ -409,6 +416,10 @@ define(function (require, exports, module) {
         iframeWindow.postMessage(msg, "*");
     }
 
+    // User's explicit theme choice (null = use editor theme)
+    let _themeOverride = null;
+    let _onThemeToggle = null;
+
     function _sendTheme() {
         if (!_active || !_iframeReady) {
             return;
@@ -418,12 +429,22 @@ define(function (require, exports, module) {
             return;
         }
 
-        const currentTheme = ThemeManager.getCurrentTheme();
-        const isDark = currentTheme && currentTheme.dark;
+        let theme;
+        if (_themeOverride) {
+            theme = _themeOverride;
+        } else {
+            const currentTheme = ThemeManager.getCurrentTheme();
+            theme = (currentTheme && currentTheme.dark) ? "dark" : "light";
+        }
         iframeWindow.postMessage({
             type: "MDVIEWR_SET_THEME",
-            theme: isDark ? "dark" : "light"
+            theme: theme
         }, "*");
+    }
+
+    function sendThemeOverride(theme) {
+        _themeOverride = theme;
+        _sendTheme();
     }
 
     function _sendLocale() {
@@ -1098,4 +1119,6 @@ define(function (require, exports, module) {
     exports.setEditMode = setEditMode;
     exports.setIframeReadyHandler = setIframeReadyHandler;
     exports.setCursorSyncEnabled = setCursorSyncEnabled;
+    exports.sendThemeOverride = sendThemeOverride;
+    exports.setThemeToggleHandler = function(handler) { _onThemeToggle = handler; };
 });

@@ -21,11 +21,18 @@ Test Runner Window
 - `src-mdviewer/src/bridge.js` — postMessage bridge between Phoenix and md iframe. Handles file switching, content sync, keyboard shortcuts, edit mode.
 - `src-mdviewer/src/core/doc-cache.js` — Document DOM cache with LRU eviction for file switching.
 - `src-mdviewer/src/components/editor.js` — Contenteditable WYSIWYG editing, Turndown HTML→Markdown conversion.
-- `src-mdviewer/src/components/embedded-toolbar.js` — Reader/edit toggle, cursor sync, format buttons.
+- `src-mdviewer/src/components/embedded-toolbar.js` — Reader/edit toggle, cursor sync, theme toggle, format buttons.
 - `src-mdviewer/src/components/format-bar.js` — Floating format bar on text selection (bold, italic, underline, link).
 - `src-mdviewer/src/components/link-popover.js` — Link popover for editing/removing links in edit mode.
 - `src-mdviewer/src/components/viewer.js` — Reader mode click handling, link interception, copy buttons.
-- `src/extensionsIntegrated/Phoenix-live-preview/MarkdownSync.js` — Phoenix-side sync: CM↔iframe content, cursor, scroll, selection.
+- `src/extensionsIntegrated/Phoenix-live-preview/MarkdownSync.js` — Phoenix-side sync: CM↔iframe content, cursor, scroll, selection, theme.
+
+### Translations / i18n
+- The md viewer iframe has its **own** i18n system separate from Phoenix's `src/nls/` strings.
+- Root strings (English) are in `src-mdviewer/src/locales/en.json` — edit this file for new/changed strings.
+- Other locale files in `src-mdviewer/src/locales/` are **auto-translated by GitHub Actions** — do not edit them manually.
+- Use `t("key.subkey")` and `tp("key", { param })` from `src-mdviewer/src/core/i18n.js` for string lookups.
+- Phoenix-side strings (e.g. preference descriptions) still go in `src/nls/root/strings.js` as usual.
 
 ## Communication: postMessage (reliable in both directions)
 

@@ -1,7 +1,7 @@
 {
   "toolbar": {
     "open": "Open File",
-    "theme": "Toggle Theme",
+    "theme": "Toggle Dark/Light Theme",
     "toc": "Table of Contents",
     "search": "Search",
     "focus": "Focus Mode",

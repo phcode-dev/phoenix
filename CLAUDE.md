@@ -20,6 +20,7 @@
 - For parameterized strings use `StringUtils.format(Strings.KEY, arg0, arg1)` with `{0}`, `{1}` placeholders.
 - Keys use UPPER_SNAKE_CASE grouped by feature prefix (e.g. `AI_CHAT_*`).
 - Only `src/nls/root/strings.js` (English) needs manual edits — other locales are auto-translated by GitHub Actions.
+- **Exception — Markdown viewer iframe** (`src-mdviewer/`): Has its own i18n system. Strings go in `src-mdviewer/src/locales/en.json` (root), not `src/nls/`. Other locale files in that folder are auto-translated by GitHub Actions. Use `t("key")` / `tp("key", { param })` from `src-mdviewer/src/core/i18n.js`.
 - Never compare `$(el).text()` against English strings for logic — use data attributes or CSS classes instead.
 
 ## Phoenix MCP (Desktop App Testing)
