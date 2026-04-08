@@ -28,7 +28,7 @@ Events:
         * [.EVENT_WORKSPACE_UPDATE_LAYOUT](#module_view/WorkspaceManager..EVENT_WORKSPACE_UPDATE_LAYOUT)
         * [.EVENT_WORKSPACE_PANEL_SHOWN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_SHOWN)
         * [.EVENT_WORKSPACE_PANEL_HIDDEN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_HIDDEN)
-        * [.createBottomPanel(id, $panel, [minSize], [title])](#module_view/WorkspaceManager..createBottomPanel) ⇒ <code>Panel</code>
+        * [.createBottomPanel(id, $panel, [minSize], [title], [options])](#module_view/WorkspaceManager..createBottomPanel) ⇒ <code>Panel</code>
         * [.destroyBottomPanel(id)](#module_view/WorkspaceManager..destroyBottomPanel)
         * [.createPluginPanel(id, $panel, [minSize], $toolbarIcon, [initialSize])](#module_view/WorkspaceManager..createPluginPanel) ⇒ <code>Panel</code>
         * [.getAllPanelIDs()](#module_view/WorkspaceManager..getAllPanelIDs) ⇒ <code>Array</code>
@@ -89,7 +89,7 @@ Event triggered when a panel is hidden.
 **Kind**: inner constant of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 <a name="module_view/WorkspaceManager..createBottomPanel"></a>
 
-### view/WorkspaceManager.createBottomPanel(id, $panel, [minSize], [title]) ⇒ <code>Panel</code>
+### view/WorkspaceManager.createBottomPanel(id, $panel, [minSize], [title], [options]) ⇒ <code>Panel</code>
 Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
 The panel's size & visibility are automatically saved & restored as a view-state preference.
 
@@ -101,6 +101,7 @@ The panel's size & visibility are automatically saved & restored as a view-state
 | $panel | <code>jQueryObject</code> | DOM content to use as the panel. Need not be in the document yet. Must have an id      attribute, for use as a preferences key. |
 | [minSize] | <code>number</code> | @deprecated No longer used. Pass `undefined`. |
 | [title] | <code>string</code> | Display title shown in the bottom panel tab bar. |
+| [options] | <code>Object</code> | Optional settings:   - {string} iconClass  FontAwesome class string (e.g. "fa-solid fa-terminal").   - {string} iconSvg   Path to an SVG icon (e.g. "styles/images/icon.svg"). |
 
 <a name="module_view/WorkspaceManager..destroyBottomPanel"></a>
 

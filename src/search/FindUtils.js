@@ -44,6 +44,14 @@ define(function (require, exports, module) {
     let instantSearchDisabled = false;
 
     /**
+     * if indexing was suspended due to cache size limit
+     *
+     * @private
+     * @type {boolean}
+     */
+    let indexingSuspended = false;
+
+    /**
      * if indexing in progress, defaults to false
      *
      * @private
@@ -423,6 +431,25 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Set whether indexing has been suspended due to cache size limit
+     *
+     * @param {boolean} suspended true if indexing was suspended
+     */
+    function setIndexingSuspended(suspended) {
+        indexingSuspended = suspended;
+    }
+
+    /**
+     * Check if indexing was suspended due to cache size limit.
+     * When true, Find in Files should not perform searches.
+     *
+     * @return {boolean}
+     */
+    function isIndexingSuspended() {
+        return indexingSuspended;
+    }
+
+    /**
      * check if a search is progressing in worker
      *
      * @return {Boolean} true if search is processing in worker
@@ -477,8 +504,8 @@ define(function (require, exports, module) {
     /**
      * Notifies that a worker has started indexing the files
      */
-    function notifyIndexingProgress(progress, total) {
-        exports.trigger(exports.SEARCH_INDEXING_PROGRESS, progress, total);
+    function notifyIndexingProgress(progress, total, cacheSizeBytes) {
+        exports.trigger(exports.SEARCH_INDEXING_PROGRESS, progress, total, cacheSizeBytes);
     }
 
     /**
@@ -526,6 +553,8 @@ define(function (require, exports, module) {
     exports.getOpenFilePath = getOpenFilePath;
     exports.setInstantSearchDisabled = setInstantSearchDisabled;
     exports.isInstantSearchDisabled = isInstantSearchDisabled;
+    exports.setIndexingSuspended = setIndexingSuspended;
+    exports.isIndexingSuspended = isIndexingSuspended;
     exports.isWorkerSearchInProgress = isWorkerSearchInProgress;
     exports.isIndexingInProgress = isIndexingInProgress;
     exports.setCollapseResults = setCollapseResults;

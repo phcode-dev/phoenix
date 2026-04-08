@@ -3,13 +3,144 @@
 const PanelView = brackets.getModule("view/PanelView")
 ```
 
+<a name="_panelMap"></a>
+
+## \_panelMap : <code>Object.&lt;string, Panel&gt;</code>
+Maps panel ID to Panel instance
+
+**Kind**: global variable  
+<a name="_$container"></a>
+
+## \_$container : <code>jQueryObject</code>
+The single container wrapping all bottom panels
+
+**Kind**: global variable  
+<a name="_$tabBar"></a>
+
+## \_$tabBar : <code>jQueryObject</code>
+The tab bar inside the container
+
+**Kind**: global variable  
+<a name="_$tabsOverflow"></a>
+
+## \_$tabsOverflow : <code>jQueryObject</code>
+Scrollable area holding the tab elements
+
+**Kind**: global variable  
+<a name="_openIds"></a>
+
+## \_openIds : <code>Array.&lt;string&gt;</code>
+Ordered list of currently open (tabbed) panel IDs
+
+**Kind**: global variable  
+<a name="_activeId"></a>
+
+## \_activeId : <code>string</code> \| <code>null</code>
+The panel ID of the currently visible (active) tab
+
+**Kind**: global variable  
+<a name="_isMaximized"></a>
+
+## \_isMaximized : <code>boolean</code>
+Whether the bottom panel is currently maximized
+
+**Kind**: global variable  
+<a name="_preMaximizeHeight"></a>
+
+## \_preMaximizeHeight : <code>number</code> \| <code>null</code>
+The panel height before maximize, for restore
+
+**Kind**: global variable  
+<a name="_$editorHolder"></a>
+
+## \_$editorHolder : <code>jQueryObject</code>
+The editor holder element, passed from WorkspaceManager
+
+**Kind**: global variable  
+<a name="_recomputeLayout"></a>
+
+## \_recomputeLayout : <code>function</code>
+recomputeLayout callback from WorkspaceManager
+
+**Kind**: global variable  
+<a name="_defaultPanelId"></a>
+
+## \_defaultPanelId : <code>string</code> \| <code>null</code>
+The default/quick-access panel ID
+
+**Kind**: global variable  
+<a name="_$addBtn"></a>
+
+## \_$addBtn : <code>jQueryObject</code>
+The "+" button inside the tab overflow area
+
+**Kind**: global variable  
+<a name="_$overflowBtn"></a>
+
+## \_$overflowBtn : <code>jQueryObject</code>
+Overflow dropdown button
+
+**Kind**: global variable  
+<a name="_overflowDropdown"></a>
+
+## \_overflowDropdown : <code>DropdownButton.DropdownButton</code>
+**Kind**: global variable  
+<a name="EVENT_PANEL_HIDDEN"></a>
+
+## EVENT\_PANEL\_HIDDEN : <code>string</code>
+Event when panel is hidden
+
+**Kind**: global constant  
+<a name="EVENT_PANEL_SHOWN"></a>
+
+## EVENT\_PANEL\_SHOWN : <code>string</code>
+Event when panel is shown
+
+**Kind**: global constant  
+<a name="PANEL_TYPE_BOTTOM_PANEL"></a>
+
+## PANEL\_TYPE\_BOTTOM\_PANEL : <code>string</code>
+type for bottom panel
+
+**Kind**: global constant  
+<a name="MAXIMIZE_THRESHOLD"></a>
+
+## MAXIMIZE\_THRESHOLD : <code>number</code>
+Pixel threshold for detecting near-maximize state during resize.
+If the editor holder height is within this many pixels of zero, the
+panel is treated as maximized. Keeps the maximize icon responsive
+during drag without being overly sensitive.
+
+**Kind**: global constant  
+<a name="MIN_PANEL_HEIGHT"></a>
+
+## MIN\_PANEL\_HEIGHT : <code>number</code>
+Minimum panel height (matches Resizer minSize) used as a floor
+when computing a sensible restore height.
+
+**Kind**: global constant  
+<a name="PREF_BOTTOM_PANEL_MAXIMIZED"></a>
+
+## PREF\_BOTTOM\_PANEL\_MAXIMIZED
+Preference key for persisting the maximize state across reloads.
+
+**Kind**: global constant  
 <a name="Panel"></a>
 
-## Panel
-**Kind**: global class  
+## Panel($panel, id, [title], [options])
+**Kind**: global function  
 
-* [Panel](#Panel)
-    * [new Panel($panel, id, [title])](#new_Panel_new)
+| Param | Type | Description |
+| --- | --- | --- |
+| $panel | <code>jQueryObject</code> |  |
+| id | <code>string</code> |  |
+| [title] | <code>string</code> |  |
+| [options] | <code>Object</code> |  |
+| [options.iconClass] | <code>string</code> | FontAwesome class string (e.g. "fa-solid fa-terminal"). |
+| [options.iconSvg] | <code>string</code> | Path to an SVG icon (e.g. "styles/images/icon.svg"). |
+
+
+* [Panel($panel, id, [title], [options])](#Panel)
     * [.$panel](#Panel+$panel) : <code>jQueryObject</code>
     * [.isVisible()](#Panel+isVisible) ⇒ <code>boolean</code>
     * [.registerCanBeShownHandler(canShowHandlerFn)](#Panel+registerCanBeShownHandler) ⇒ <code>boolean</code>
@@ -23,18 +154,6 @@ const PanelView = brackets.getModule("view/PanelView")
     * [.setTitle(newTitle)](#Panel+setTitle)
     * [.destroy()](#Panel+destroy)
     * [.getPanelType()](#Panel+getPanelType) ⇒ <code>string</code>
-
-<a name="new_Panel_new"></a>
-
-### new Panel($panel, id, [title])
-Represents a panel below the editor area (a child of ".content").
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| $panel | <code>jQueryObject</code> | The entire panel, including any chrome, already in the DOM. |
-| id | <code>string</code> | Unique panel identifier. |
-| [title] | <code>string</code> | Optional display title for the tab bar. |
 
 <a name="Panel+$panel"></a>
 
@@ -144,118 +263,6 @@ After calling this, the Panel instance should not be reused.
 gets the Panel's type
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
-<a name="_panelMap"></a>
-
-## \_panelMap : <code>Object.&lt;string, Panel&gt;</code>
-Maps panel ID to Panel instance
-
-**Kind**: global variable  
-<a name="_$container"></a>
-
-## \_$container : <code>jQueryObject</code>
-The single container wrapping all bottom panels
-
-**Kind**: global variable  
-<a name="_$tabBar"></a>
-
-## \_$tabBar : <code>jQueryObject</code>
-The tab bar inside the container
-
-**Kind**: global variable  
-<a name="_$tabsOverflow"></a>
-
-## \_$tabsOverflow : <code>jQueryObject</code>
-Scrollable area holding the tab elements
-
-**Kind**: global variable  
-<a name="_openIds"></a>
-
-## \_openIds : <code>Array.&lt;string&gt;</code>
-Ordered list of currently open (tabbed) panel IDs
-
-**Kind**: global variable  
-<a name="_activeId"></a>
-
-## \_activeId : <code>string</code> \| <code>null</code>
-The panel ID of the currently visible (active) tab
-
-**Kind**: global variable  
-<a name="_isMaximized"></a>
-
-## \_isMaximized : <code>boolean</code>
-Whether the bottom panel is currently maximized
-
-**Kind**: global variable  
-<a name="_preMaximizeHeight"></a>
-
-## \_preMaximizeHeight : <code>number</code> \| <code>null</code>
-The panel height before maximize, for restore
-
-**Kind**: global variable  
-<a name="_$editorHolder"></a>
-
-## \_$editorHolder : <code>jQueryObject</code>
-The editor holder element, passed from WorkspaceManager
-
-**Kind**: global variable  
-<a name="_recomputeLayout"></a>
-
-## \_recomputeLayout : <code>function</code>
-recomputeLayout callback from WorkspaceManager
-
-**Kind**: global variable  
-<a name="_defaultPanelId"></a>
-
-## \_defaultPanelId : <code>string</code> \| <code>null</code>
-The default/quick-access panel ID
-
-**Kind**: global variable  
-<a name="_$addBtn"></a>
-
-## \_$addBtn : <code>jQueryObject</code>
-The "+" button inside the tab overflow area
-
-**Kind**: global variable  
-<a name="EVENT_PANEL_HIDDEN"></a>
-
-## EVENT\_PANEL\_HIDDEN : <code>string</code>
-Event when panel is hidden
-
-**Kind**: global constant  
-<a name="EVENT_PANEL_SHOWN"></a>
-
-## EVENT\_PANEL\_SHOWN : <code>string</code>
-Event when panel is shown
-
-**Kind**: global constant  
-<a name="PANEL_TYPE_BOTTOM_PANEL"></a>
-
-## PANEL\_TYPE\_BOTTOM\_PANEL : <code>string</code>
-type for bottom panel
-
-**Kind**: global constant  
-<a name="MAXIMIZE_THRESHOLD"></a>
-
-## MAXIMIZE\_THRESHOLD : <code>number</code>
-Pixel threshold for detecting near-maximize state during resize.
-If the editor holder height is within this many pixels of zero, the
-panel is treated as maximized. Keeps the maximize icon responsive
-during drag without being overly sensitive.
-
-**Kind**: global constant  
-<a name="MIN_PANEL_HEIGHT"></a>
-
-## MIN\_PANEL\_HEIGHT : <code>number</code>
-Minimum panel height (matches Resizer minSize) used as a floor
-when computing a sensible restore height.
-
-**Kind**: global constant  
-<a name="PREF_BOTTOM_PANEL_MAXIMIZED"></a>
-
-## PREF\_BOTTOM\_PANEL\_MAXIMIZED
-Preference key for persisting the maximize state across reloads.
-
-**Kind**: global constant  
 <a name="init"></a>
 
 ## init($container, $tabBar, $tabsOverflow, $editorHolder, recomputeLayoutFn, defaultPanelId)

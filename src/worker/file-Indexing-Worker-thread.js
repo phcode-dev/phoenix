@@ -52,7 +52,8 @@ let currentCrawlIndex = 0,
     crawlComplete = false,
     crawlEventSent = false,
     cacheStartTime = Date.now(),
-    cacheSize = 0;
+    cacheSize = 0,
+    maxCacheSizeBytes = 1024 * 1024 * 1024; // 1 GB default
 
 /**
  * Clears the cached file contents of the project
@@ -102,6 +103,21 @@ async function getFilesizeInBytes(fileName) {
 }
 
 /**
+ * Checks if file content appears to be binary by looking for null bytes
+ * in the first 8KB. This is the same heuristic used by git and grep.
+ * Null bytes (0x00) survive UTF-8 decoding as \u0000 characters.
+ * @param {string} content The file content read as utf8
+ * @return {boolean} True if the content appears to be binary
+ */
+function _isBinaryContent(content) {
+    if (!content) {
+        return false;
+    }
+    const nullIndex = content.indexOf('\0');
+    return nullIndex !== -1 && nullIndex < 8192;
+}
+
+/**
  * Get the contents of a file from cache given the path. Also adds the file contents to cache from disk if not cached.
  * Will not read/cache files greater than MAX_FILE_SIZE_TO_INDEX in size.
  * @param   {string} filePath full file path
@@ -114,7 +130,13 @@ async function getFileContentsForFile(filePath) {
     try {
         let fileSize = await getFilesizeInBytes(filePath);
         if ( fileSize <= MAX_FILE_SIZE_TO_INDEX) {
-            projectCache[filePath] = await _readFileAsync(filePath);
+            let contents = await _readFileAsync(filePath);
+            if (_isBinaryContent(contents)) {
+                console.log("file indexer: skipping binary file:", filePath);
+                projectCache[filePath] = "";
+            } else {
+                projectCache[filePath] = contents;
+            }
         } else {
             projectCache[filePath] = "";
         }
@@ -159,6 +181,21 @@ async function fileCrawler(crawlerID) {
         // So stop the current crawler as another crawler will be scheduled by the initCache fn.
         return;
     }
+    if (maxCacheSizeBytes > 0 && cacheSize >= maxCacheSizeBytes) {
+        // Cache size limit reached — stop indexing to prevent OOM
+        crawlComplete = true;
+        if (!crawlEventSent) {
+            crawlEventSent = true;
+            let crawlTime = Date.now() - cacheStartTime;
+            WorkerComm.triggerPeer("crawlComplete", {
+                numFilesCached: currentCrawlIndex,
+                cacheSizeBytes: cacheSize,
+                crawlTimeMs: crawlTime,
+                aborted: true
+            });
+        }
+        return;
+    }
     if (currentCrawlIndex < files.length) {
         crawlComplete = false;
         setTimeout(()=>fileCrawler(crawlerID));
@@ -181,7 +218,8 @@ function _crawlProgressMessenger() {
     if(!crawlComplete && files){
         WorkerComm.triggerPeer("crawlProgress", {
             processed: currentCrawlIndex,
-            total: files.length
+            total: files.length,
+            cacheSizeBytes: cacheSize
         });
     }
 }
@@ -279,6 +317,13 @@ function setTauriWsFS(nodeWSURL) {
     fs.forceUseNodeWSEndpoint(true);
 }
 
+function setCacheConfig(config) {
+    if (config.maxCacheSizeBytes !== undefined && config.maxCacheSizeBytes > 0) {
+        maxCacheSizeBytes = config.maxCacheSizeBytes;
+    }
+}
+
+WorkerComm.setExecHandler("setCacheConfig", setCacheConfig);
 WorkerComm.setExecHandler("setTauriFSWS", setTauriWsFS);
 WorkerComm.setExecHandler("initCache", initCache);
 WorkerComm.setExecHandler("filesChanged", addFilesToCache);

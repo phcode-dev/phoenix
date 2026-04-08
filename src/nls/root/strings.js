@@ -639,6 +639,9 @@ define({
     "FIND_IN_FILES_SEARCHING": "Searching Files\u2026",
     "FIND_IN_FILES_SEARCHING_IN": "In {0}",
     "FIND_IN_FILES_INDEXING_PROGRESS": "Indexing {0} of {1} files for Instant Search\u2026",
+    "FIND_IN_FILES_CACHE_LIMIT_TITLE": "File Indexing Suspended",
+    "FIND_IN_FILES_CACHE_LIMIT_MSG": "The project file cache has reached {0} MB. Indexing has been suspended to prevent high memory usage. Find in Files is disabled for this project. To reduce indexing size, add folders with large or generated files to .gitignore.",
+    "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximum size in MB for the instant search file cache.",
     "REPLACE_IN_FILES_ERRORS_TITLE": "Replace Errors",
     "REPLACE_IN_FILES_ERRORS": "The following files weren't modified because they changed after the search or couldn't be written.",
 
