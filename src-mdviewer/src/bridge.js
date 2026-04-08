@@ -808,10 +808,14 @@ function handleReloadFile(data) {
 
 function handleSetTheme(data) {
     const { theme } = data;
+    const newScheme = theme === "dark" ? "dark" : "light";
     // Skip if already applied to avoid reflows that can reset scroll position
-    if (document.documentElement.getAttribute("data-theme") === theme) return;
+    if (document.documentElement.getAttribute("data-theme") === theme &&
+        document.documentElement.style.colorScheme === newScheme) {
+        return;
+    }
     document.documentElement.setAttribute("data-theme", theme);
-    document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.style.colorScheme = newScheme;
     setState({ theme });
 }
 

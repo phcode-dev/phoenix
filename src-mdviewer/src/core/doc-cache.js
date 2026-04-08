@@ -176,6 +176,10 @@ export function saveActiveScrollPos() {
     const entry = cache.get(activeFilePath);
     if (!entry) return;
 
+    // Don't overwrite scroll position if viewer is hidden (e.g. panel closed)
+    // — hidden elements report scrollTop = 0 which would destroy the saved value.
+    if (!viewerContainer.offsetParent && viewerContainer.scrollTop === 0) return;
+
     entry.scrollPos = viewerContainer.scrollTop;
 
     // Also save source line for reload scenarios (DOM rebuilt, pixel pos unreliable)
