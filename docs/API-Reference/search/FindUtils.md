@@ -108,6 +108,24 @@ enable/disable instant search
 if instant search is disabled, this will return true we can only do instant search through worker
 
 **Kind**: global function  
+<a name="setIndexingSuspended"></a>
+
+## setIndexingSuspended(suspended)
+Set whether indexing has been suspended due to cache size limit
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| suspended | <code>boolean</code> | true if indexing was suspended |
+
+<a name="isIndexingSuspended"></a>
+
+## isIndexingSuspended() ⇒ <code>boolean</code>
+Check if indexing was suspended due to cache size limit.
+When true, Find in Files should not perform searches.
+
+**Kind**: global function  
 <a name="isWorkerSearchInProgress"></a>
 
 ## isWorkerSearchInProgress() ⇒ <code>Boolean</code>
