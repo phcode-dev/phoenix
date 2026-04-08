@@ -43,9 +43,17 @@ define(function (require, exports, module) {
         PerfUtils = require("utils/PerfUtils"),
         FindUtils = require("search/FindUtils"),
         Metrics = require("utils/Metrics"),
-        IndexingWorker = require("worker/IndexingWorker");
+        IndexingWorker = require("worker/IndexingWorker"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        NotificationUI = require("widgets/NotificationUI"),
+        Strings = require("strings");
 
     let projectIndexingComplete = false;
+
+    var MAX_CACHE_SIZE_MB_PREF = "maxFileCacheSizeMB";
+    PreferencesManager.definePreference(MAX_CACHE_SIZE_MB_PREF, "number", 1024, {
+        description: Strings.DESCRIPTION_MAX_FILE_CACHE_SIZE_MB
+    });
 
     IndexingWorker.loadScriptInWorker(`${Phoenix.baseURL}search/worker/search.js`);
 
@@ -125,12 +133,39 @@ define(function (require, exports, module) {
         let numFiles = data.numFilesCached,
             cacheSize = data.cacheSizeBytes,
             crawlTime = data.crawlTimeMs;
-        projectIndexingComplete = true;
         console.log(`file indexing worker cache complete: ${numFiles} files, size: ${cacheSize} B in ${crawlTime}ms`);
         if (/\/test\/SpecRunner\.html$/.test(window.location.pathname)) {
             // Ignore the event in the SpecRunner window
             return;
         }
+
+        if (data.aborted) {
+            // Cache limit reached — Find in Files is disabled for this project
+            projectIndexingComplete = false;
+            FindUtils.setIndexingSuspended(true);
+            var cacheSizeMB = Math.round(cacheSize / (1024 * 1024));
+            var message = StringUtils.format(Strings.FIND_IN_FILES_CACHE_LIMIT_MSG, cacheSizeMB);
+            var $content = $('<div>' + message +
+                '<div style="margin-top: 8px; display: flex; justify-content: flex-end;">' +
+                '<button class="btn primary btn-cache-ok">OK</button>' +
+                '</div></div>');
+            var notification = NotificationUI.createToastFromTemplate(
+                Strings.FIND_IN_FILES_CACHE_LIMIT_TITLE,
+                $content[0],
+                {
+                    dismissOnClick: false,
+                    toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.WARNING
+                }
+            );
+            $content.find('.btn-cache-ok').on('click', function () {
+                notification.close();
+            });
+            FindUtils.notifyIndexingFinished();
+            Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "aborted", 1);
+            return;
+        }
+
+        projectIndexingComplete = true;
 
         var projectRoot = ProjectManager.getProjectRoot(),
             projectName = projectRoot ? projectRoot.name : null;
@@ -509,6 +544,10 @@ define(function (require, exports, module) {
      *      Will be null if the query is invalid.
      */
     function _doSearch(queryInfo, candidateFilesPromise, filter, scope) {
+        if (FindUtils.isIndexingSuspended()) {
+            return new $.Deferred().resolve(ZERO_FILES_TO_SEARCH).promise();
+        }
+
         searchModel.filter = filter;
 
         var queryResult = searchModel.setQueryInfo(queryInfo);
@@ -958,6 +997,7 @@ define(function (require, exports, module) {
      */
     var _initCache = function () {
         projectIndexingComplete = false;
+        FindUtils.setIndexingSuspended(false);
         function filter(file) {
             return _isReadableFileType(file.fullPath);
         }
@@ -977,6 +1017,10 @@ define(function (require, exports, module) {
                     return entry.fullPath;
                 });
                 IndexingWorker.execPeer("initCache", files);
+                var maxMB = PreferencesManager.get(MAX_CACHE_SIZE_MB_PREF);
+                IndexingWorker.execPeer("setCacheConfig", {
+                    maxCacheSizeBytes: maxMB * 1024 * 1024
+                });
             });
         _searchScopeChanged();
     };
