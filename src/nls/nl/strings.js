@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Sluit alles & stop processen",
   "TERMINAL_FOCUS_HINT": "Druk op {0} om te wisselen tussen editor en terminal",
   "TERMINAL_CLEAR": "Terminal wissen",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Druk op {0} om de terminalbuffer te wissen",
   "EXTENDED_COMMIT_MESSAGE": "UITGEBREID",
   "GETTING_STAGED_DIFF_PROGRESS": "Verschillen van gestaged bestanden ophalen…",
   "GIT_COMMIT": "Git committen…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Druk op {0} om de terminalbuffer te wissen"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Bestandsindexering opgeschort",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "De projectbestandencache heeft {0} MB bereikt. Het indexeren is opgeschort om hoog geheugengebruik te voorkomen. Zoeken in bestanden is uitgeschakeld voor dit project. Voeg mappen met grote of gegenereerde bestanden toe aan .gitignore om de indexeringsgrootte te verminderen.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximale grootte in MB voor de bestandencache voor direct zoeken."
 });

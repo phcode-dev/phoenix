@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Close All & Stop Processes",
   "TERMINAL_FOCUS_HINT": "Press {0} to switch between editor and terminal",
   "TERMINAL_CLEAR": "Clear Terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Press {0} to clear terminal buffer",
   "EXTENDED_COMMIT_MESSAGE": "EXTENDED",
   "GETTING_STAGED_DIFF_PROGRESS": "Getting diff of staged files…",
   "GIT_COMMIT": "Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Press {0} to clear terminal buffer"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "File Indexing Suspended",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "The project file cache has reached {0} MB. Indexing has been suspended to prevent high memory usage. Find in Files is disabled for this project. To reduce indexing size, add folders with large or generated files to .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximum size in MB for the instant search file cache."
 });

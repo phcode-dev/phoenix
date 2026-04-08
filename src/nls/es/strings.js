@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Cerrar todo y detener procesos",
   "TERMINAL_FOCUS_HINT": "Presiona {0} para cambiar entre el editor y la terminal",
   "TERMINAL_CLEAR": "Limpiar terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Pulsa {0} para limpiar el búfer de la terminal",
   "EXTENDED_COMMIT_MESSAGE": "EXTENDIDO",
   "GETTING_STAGED_DIFF_PROGRESS": "Obteniendo diferencias de archivos en el área de preparación…",
   "GIT_COMMIT": "Confirmar en Git…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Pulsa {0} para limpiar el búfer de la terminal"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexación de archivos suspendida",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "La caché de archivos del proyecto ha alcanzado los {0} MB. La indexación se ha suspendido para evitar un alto uso de memoria. La Búsqueda en archivos está deshabilitada para este proyecto. Para reducir el tamaño de la indexación, agregue las carpetas con archivos grandes o generados a .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Tamaño máximo en MB para la caché de archivos de la búsqueda instantánea."
 });

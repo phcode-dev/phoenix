@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Închide toate și oprește procesele",
   "TERMINAL_FOCUS_HINT": "Apăsați {0} pentru a comuta între editor și terminal",
   "TERMINAL_CLEAR": "Curăță terminalul",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Apăsați {0} pentru a goli buffer-ul terminalului",
   "EXTENDED_COMMIT_MESSAGE": "EXTINS",
   "GETTING_STAGED_DIFF_PROGRESS": "Se obține diferența fișierelor pregătite…",
   "GIT_COMMIT": "Commit Git…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Apăsați {0} pentru a goli buffer-ul terminalului"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indexarea fișierelor suspendată",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Cache-ul de fișiere al proiectului a atins {0} MB. Indexarea a fost suspendată pentru a preveni utilizarea ridicată a memoriei. Funcția Căutare în fișiere este dezactivată pentru acest proiect. Pentru a reduce dimensiunea indexării, adăugați folderele cu fișiere mari sau generate în .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Dimensiunea maximă în MB pentru cache-ul de fișiere al căutării instantanee."
 });

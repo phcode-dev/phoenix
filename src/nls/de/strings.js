@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Alle schließen und Prozesse beenden",
   "TERMINAL_FOCUS_HINT": "Drücken Sie {0}, um zwischen Editor und Terminal zu wechseln",
   "TERMINAL_CLEAR": "Terminal leeren",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Drücke {0}, um den Terminal-Puffer zu leeren.",
   "EXTENDED_COMMIT_MESSAGE": "ERWEITERT",
   "GETTING_STAGED_DIFF_PROGRESS": "Diff der bereitgestellten Dateien wird ermittelt…",
   "GIT_COMMIT": "Git-Commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Drücke {0}, um den Terminal-Puffer zu leeren."
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Dateiindizierung ausgesetzt",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Der Projektdatei-Cache hat {0} MB erreicht. Die Indizierung wurde ausgesetzt, um eine hohe Speicherauslastung zu vermeiden. „Suchen in Dateien“ ist für dieses Projekt deaktiviert. Um die Indizierungsgröße zu reduzieren, fügen Sie Ordner mit großen oder generierten Dateien zu .gitignore hinzu.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maximale Größe in MB für den Dateicache der Sofortsuche."
 });

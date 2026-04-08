@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "सभी बंद करें और प्रक्रियाएँ रोकें",
   "TERMINAL_FOCUS_HINT": "एडिटर और टर्मिनल के बीच स्विच करने के लिए {0} दबाएँ",
   "TERMINAL_CLEAR": "टर्मिनल साफ़ करें",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 टर्मिनल बफ़र साफ़ करने के लिए {0} दबाएँ",
   "EXTENDED_COMMIT_MESSAGE": "विस्तृत",
   "GETTING_STAGED_DIFF_PROGRESS": "स्टेज की गई फ़ाइलों का अंतर प्राप्त कर रहा है…",
   "GIT_COMMIT": "Git कमिट…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 टर्मिनल बफ़र साफ़ करने के लिए {0} दबाएँ"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "फ़ाइल इंडेक्सिंग निलंबित",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "प्रोजेक्ट फ़ाइल कैश {0} MB तक पहुँच गया है। उच्च मेमोरी उपयोग को रोकने के लिए इंडेक्सिंग निलंबित कर दी गई है। इस प्रोजेक्ट के लिए फ़ाइलों में खोजें अक्षम है। इंडेक्सिंग का आकार कम करने के लिए, बड़ी या जेनरेट की गई फ़ाइलों वाले फ़ोल्डरों को .gitignore में जोड़ें।",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "तत्काल खोज फ़ाइल कैश के लिए MB में अधिकतम आकार।"
 });

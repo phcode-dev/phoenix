@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "すべて閉じてプロセスを停止",
   "TERMINAL_FOCUS_HINT": "{0} を押してエディターとターミナル間を切り替えます",
   "TERMINAL_CLEAR": "ターミナルをクリア",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡｛０｝でターミナルバッファーをクリア",
   "EXTENDED_COMMIT_MESSAGE": "詳細コミットメッセージ",
   "GETTING_STAGED_DIFF_PROGRESS": "インデックスに追加されたファイルの差分を取得中…",
   "GIT_COMMIT": "Git コミット…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡｛０｝でターミナルバッファーをクリア"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "ファイルインデックス作成の中断",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "プロジェクトのファイルキャッシュが {0} MB に達しました。メモリの大量消費を防ぐため、インデックス作成は中断されました。このプロジェクトでは「ファイル内を検索」機能は無効になっています。インデックス作成のサイズを削減するには、サイズの大きいファイルや生成されたファイルを含むフォルダーを .gitignore に追加してください。",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "インスタント検索ファイルキャッシュの最大サイズ (MB)。"
 });

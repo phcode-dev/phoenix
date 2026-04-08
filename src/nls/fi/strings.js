@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Sulje kaikki ja pysäytä prosessit",
   "TERMINAL_FOCUS_HINT": "Paina {0} vaihtaaksesi editorin ja terminaalin välillä",
   "TERMINAL_CLEAR": "Tyhjennä terminaali",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Paina {0} tyhjentääksesi terminaalipuskurin",
   "EXTENDED_COMMIT_MESSAGE": "LAAJENNETTU",
   "GETTING_STAGED_DIFF_PROGRESS": "Indeksoitujen tiedostojen eron hakeminen…",
   "GIT_COMMIT": "Git-commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Paina {0} tyhjentääksesi terminaalipuskurin"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Tiedostojen indeksointi keskeytetty",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Projektin tiedostovälimuisti on saavuttanut {0} MB. Indeksointi on keskeytetty suuren muistinkäytön estämiseksi. Etsi tiedostoista -toiminto on poistettu käytöstä tässä projektissa. Pienentääksesi indeksoinnin kokoa, lisää kansiot, joissa on suuria tai generoituja tiedostoja, .gitignore-tiedostoon.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Pikahaun tiedostovälimuistin enimmäiskoko (MB)."
 });

@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "모두 닫고 프로세스 중지",
   "TERMINAL_FOCUS_HINT": "{0} 키를 눌러 에디터와 터미널 간에 전환하세요",
   "TERMINAL_CLEAR": "터미널 지우기",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 터미널 버퍼를 지우려면 {0} 키를 누르세요",
   "EXTENDED_COMMIT_MESSAGE": "확장",
   "GETTING_STAGED_DIFF_PROGRESS": "스테이징된 파일 비교 중…",
   "GIT_COMMIT": "Git 커밋…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 터미널 버퍼를 지우려면 {0} 키를 누르세요"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "파일 인덱싱 중단",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "프로젝트 파일 캐시가 {0}MB에 도달했습니다. 높은 메모리 사용을 방지하기 위해 인덱싱이 중단되었습니다. 이 프로젝트에서는 파일에서 찾기 기능이 비활성화되었습니다. 인덱싱 크기를 줄이려면 용량이 크거나 생성된 파일이 있는 폴더를 .gitignore에 추가하세요.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "빠른 검색 파일 캐시의 최대 크기(MB)"
 });

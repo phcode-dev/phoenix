@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Zamknij wszystkie i zatrzymaj procesy",
   "TERMINAL_FOCUS_HINT": "Naciśnij {0}, aby przełączać się między edytorem a terminalem",
   "TERMINAL_CLEAR": "Wyczyść terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Naciśnij {0}, aby wyczyścić bufor terminala",
   "EXTENDED_COMMIT_MESSAGE": "ROZSZERZONY",
   "GETTING_STAGED_DIFF_PROGRESS": "Pobieranie różnic w plikach dodanych do zatwierdzenia…",
   "GIT_COMMIT": "Zatwierdzanie Git…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Naciśnij {0}, aby wyczyścić bufor terminala"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indeksowanie plików wstrzymane",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Pamięć podręczna plików projektu osiągnęła {0} MB. Indeksowanie zostało wstrzymane, aby zapobiec wysokiemu zużyciu pamięci. Funkcja „Znajdź w plikach” jest wyłączona dla tego projektu. Aby zmniejszyć rozmiar indeksowania, dodaj foldery z dużymi lub wygenerowanymi plikami do pliku .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksymalny rozmiar w MB dla pamięci podręcznej plików wyszukiwania błyskawicznego."
 });

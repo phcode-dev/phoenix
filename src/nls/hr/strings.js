@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Zatvori sve i zaustavi procese",
   "TERMINAL_FOCUS_HINT": "Pritisnite {0} za prebacivanje između uređivača i terminala",
   "TERMINAL_CLEAR": "Očisti terminal",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Pritisnite {0} za čišćenje međuspremnika terminala",
   "EXTENDED_COMMIT_MESSAGE": "PROŠIRENO",
   "GETTING_STAGED_DIFF_PROGRESS": "Dohvaćanje razlika spremljenih datoteka…",
   "GIT_COMMIT": "Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Pritisnite {0} za čišćenje međuspremnika terminala"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Indeksiranje datoteka obustavljeno",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Predmemorija datoteka projekta dosegla je {0} MB. Indeksiranje je obustavljeno kako bi se spriječila velika potrošnja memorije. Pretraživanje u datotekama onemogućeno je za ovaj projekt. Kako biste smanjili veličinu indeksiranja, dodajte mape s velikim ili generiranim datotekama u .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Maksimalna veličina u MB za predmemoriju datoteka za trenutačno pretraživanje."
 });

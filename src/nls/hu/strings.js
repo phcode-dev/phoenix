@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Az összes bezárása és a folyamatok leállítása",
   "TERMINAL_FOCUS_HINT": "A szerkesztő és a terminál közötti váltáshoz nyomja meg a {0} billentyűt.",
   "TERMINAL_CLEAR": "Terminál tisztítása",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 {0} a terminálpuffer törléséhez",
   "EXTENDED_COMMIT_MESSAGE": "BŐVÍTETT",
   "GETTING_STAGED_DIFF_PROGRESS": "Indexelt fájlok diffjének lekérése…",
   "GIT_COMMIT": "Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 {0} a terminálpuffer törléséhez"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Fájlindexelés felfüggesztve",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "A projekt fájlgyorsítótára elérte a(z) {0} MB-ot. A magas memóriahasználat megelőzése érdekében az indexelés fel lett függesztve. A „Keresés a fájlokban” funkció le van tiltva ennél a projektnél. Az indexelési méret csökkentéséhez adja hozzá a nagy vagy generált fájlokat tartalmazó mappákat a .gitignore fájlhoz.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Az azonnali keresés fájlgyorsítótárának maximális mérete MB-ban."
 });

@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "關閉全部並停止處理程序",
   "TERMINAL_FOCUS_HINT": "按下 {0} 可在編輯器與終端機之間切換",
   "TERMINAL_CLEAR": "清除終端機",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 按下 {0} 可清除終端機緩衝區",
   "EXTENDED_COMMIT_MESSAGE": "延伸說明",
   "GETTING_STAGED_DIFF_PROGRESS": "取得已暫存檔案的差異…",
   "GIT_COMMIT": "Git 送出…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 按下 {0} 可清除終端機緩衝區"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "檔案索引已暫停",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "專案檔案快取已達 {0} MB。為避免高記憶體用量，索引功能已暫停。此專案的「在檔案中尋找」功能已停用。若要縮減索引大小，請將包含大型檔案或生成檔案的資料夾新增至 .gitignore。",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "即時搜尋檔案快取的大小上限 (MB)。"
 });

@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "എല്ലാം ക്ലോസ് ചെയ്ത് പ്രോസസ്സുകൾ നിർത്തുക",
   "TERMINAL_FOCUS_HINT": "എഡിറ്ററും ടെർമിനലും തമ്മിൽ മാറുന്നതിന് {0} അമർത്തുക",
   "TERMINAL_CLEAR": "ടെർമിനൽ മായ്‌ക്കുക",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 ടെർമിനൽ ബഫർ മായ്‌ക്കാൻ {0} അമർത്തുക",
   "EXTENDED_COMMIT_MESSAGE": "വിപുലീകൃതം",
   "GETTING_STAGED_DIFF_PROGRESS": "സ്റ്റേജ് ചെയ്ത ഫയലുകളുടെ വ്യത്യാസം എടുക്കുന്നു…",
   "GIT_COMMIT": "ഗിറ്റ് കമ്മിറ്റ്…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 ടെർമിനൽ ബഫർ മായ്‌ക്കാൻ {0} അമർത്തുക"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "ഫയൽ ഇൻഡെക്സിംഗ് നിർത്തിവച്ചിരിക്കുന്നു",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "പ്രോജക്റ്റ് ഫയൽ കാഷെ {0} MB-യിൽ എത്തിയിരിക്കുന്നു. ഉയർന്ന മെമ്മറി ഉപയോഗം തടയുന്നതിനായി ഇൻഡെക്സിംഗ് നിർത്തിവച്ചിരിക്കുന്നു. ഈ പ്രോജക്റ്റിൽ ഫയലുകളിൽ കണ്ടെത്തൽ (Find in Files) പ്രവർത്തനരഹിതമാക്കിയിരിക്കുന്നു. ഇൻഡെക്സിംഗ് വലുപ്പം കുറയ്ക്കുന്നതിന്, വലിയതോ ജനറേറ്റ് ചെയ്തതോ ആയ ഫയലുകളുള്ള ഫോൾഡറുകൾ .gitignore-ലേക്ക് ചേർക്കുക.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "തത്സമയ തിരയൽ ഫയൽ കാഷെയുടെ MB-യിലുള്ള പരമാവധി വലുപ്പം."
 });

@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "إغلاق الكل وإيقاف العمليات",
   "TERMINAL_FOCUS_HINT": "اضغط على {0} للتبديل بين المحرر والوحدة الطرفية",
   "TERMINAL_CLEAR": "مسح الوحدة الطرفية",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 اضغط على {0} لمسح مخزن الطرفية المؤقت",
   "EXTENDED_COMMIT_MESSAGE": "موسّع",
   "GETTING_STAGED_DIFF_PROGRESS": "جارٍ الحصول على اختلافات الملفات المرحلية…",
   "GIT_COMMIT": "تنفيذ أمر Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 اضغط على {0} لمسح مخزن الطرفية المؤقت"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "تم تعليق فهرسة الملفات",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "وصلت ذاكرة التخزين المؤقت لملفات المشروع إلى {0} ميجابايت. تم تعليق الفهرسة لمنع الاستخدام المرتفع للذاكرة. تم تعطيل البحث في الملفات لهذا المشروع. لتقليل حجم الفهرسة، أضف المجلدات التي تحتوي على ملفات كبيرة أو مُولَّدة إلى .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "الحجم الأقصى بالميجابايت لذاكرة التخزين المؤقت لملفات البحث الفوري."
 });

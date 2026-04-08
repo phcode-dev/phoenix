@@ -1588,6 +1588,7 @@ define({
   "TERMINAL_CLOSE_ALL_STOP_BTN": "Затвори всички и спри процесите",
   "TERMINAL_FOCUS_HINT": "Натиснете {0} за превключване между редактора и терминала",
   "TERMINAL_CLEAR": "Изчисти терминала",
+  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Натиснете {0} за изчистване на буфера на терминала",
   "EXTENDED_COMMIT_MESSAGE": "РАЗШИРЕНО",
   "GETTING_STAGED_DIFF_PROGRESS": "Получаване на разлики в индексираните файлове…",
   "GIT_COMMIT": "Git commit…",
@@ -2165,5 +2166,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "TERMINAL_CLEAR_BUFFER_HINT": "💡 Натиснете {0} за изчистване на буфера на терминала"
+  "FIND_IN_FILES_CACHE_LIMIT_TITLE": "Преустановено индексиране на файлове",
+  "FIND_IN_FILES_CACHE_LIMIT_MSG": "Кешът с файлове на проекта достигна {0} МБ. Индексирането е преустановено, за да се предотврати голямо потребление на памет. Функцията „Търсене във файлове“ е деактивирана за този проект. За да намалите размера на индекса, добавете папки с големи или генерирани файлове към .gitignore.",
+  "DESCRIPTION_MAX_FILE_CACHE_SIZE_MB": "Максимален размер в МБ за кеша с файлове за незабавно търсене."
 });
