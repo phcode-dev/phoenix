@@ -152,17 +152,12 @@ define(function (require, exports, module) {
         let $tab = $('<div class="bottom-panel-tab" draggable="true"></div>')
             .toggleClass('active', isActive)
             .attr('data-panel-id', panel.panelID);
-        const opts = panel._options;
-        if (opts.iconClass) {
-            $tab.append($('<i class="bottom-panel-tab-icon panel-titlebar-icon"></i>')
-                .addClass(opts.iconClass));
-        } else if (opts.iconSvg) {
-            $tab.append($('<img class="bottom-panel-tab-icon panel-titlebar-icon">')
-                .attr("src", opts.iconSvg));
-        } else {
-            // Fallback generic icon for panels without a custom icon
-            $tab.append($('<i class="bottom-panel-tab-icon panel-titlebar-icon fa-solid fa-window-maximize"></i>'));
-        }
+        const iconSrc = panel._options.iconSvg || "styles/images/panel-icon-default.svg";
+        const $icon = $('<span class="bottom-panel-tab-icon panel-titlebar-icon"></span>');
+        const maskUrl = "url('" + iconSrc + "')";
+        $icon[0].style.maskImage = maskUrl;
+        $icon[0].style.webkitMaskImage = maskUrl;
+        $tab.append($icon);
         $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
         $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
         return $tab;
@@ -432,16 +427,11 @@ define(function (require, exports, module) {
 
         _overflowDropdown = new DropdownButton.DropdownButton("", hidden, function (item) {
             const panel = _panelMap[item.panelId];
-            let iconHtml = "";
-            if (panel && panel._options) {
-                if (panel._options.iconClass) {
-                    iconHtml = '<i class="panel-titlebar-icon ' + panel._options.iconClass
-                        + '" style="margin-right:6px"></i>';
-                } else if (panel._options.iconSvg) {
-                    iconHtml = '<img class="panel-titlebar-icon" src="' + panel._options.iconSvg
-                        + '" style="width:14px;height:14px;margin-right:6px;vertical-align:middle">';
-                }
-            }
+            const iconSrc = (panel && panel._options && panel._options.iconSvg)
+                || "styles/images/panel-icon-default.svg";
+            const iconStyle = "width:14px;height:14px;margin-right:6px;vertical-align:middle;"
+                + "mask-image:url('" + iconSrc + "');-webkit-mask-image:url('" + iconSrc + "')";
+            const iconHtml = '<span class="panel-titlebar-icon" style="' + iconStyle + '"></span>';
             const activeClass = item.panelId === _activeId ? ' style="font-weight:600"' : '';
             return {
                 html: '<div class="dropdown-tab-item"' + activeClass + '>'
@@ -541,7 +531,6 @@ define(function (require, exports, module) {
      * @param {string} id
      * @param {string=} title
      * @param {Object=} options
-     * @param {string=} options.iconClass  FontAwesome class string (e.g. "fa-solid fa-terminal").
      * @param {string=} options.iconSvg   Path to an SVG icon (e.g. "styles/images/icon.svg").
      */
     function Panel($panel, id, title, options) {

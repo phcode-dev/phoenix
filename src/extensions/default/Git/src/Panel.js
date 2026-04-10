@@ -1240,7 +1240,7 @@ define(function (require, exports) {
         var $panelHtml = $(panelHtml);
         $panelHtml.find(".git-available, .git-not-available").hide();
 
-        gitPanel = WorkspaceManager.createBottomPanel("main-git.panel", $panelHtml, 100, Strings.GIT_PANEL_TITLE, {iconClass: "fa-brands fa-git-alt"});
+        gitPanel = WorkspaceManager.createBottomPanel("main-git.panel", $panelHtml, 100, Strings.GIT_PANEL_TITLE, {iconSvg: "styles/images/panel-icon-git.svg"});
         $gitPanel = gitPanel.$panel;
         const resizeObserver = new ResizeObserver(_panelResized);
         resizeObserver.observe($gitPanel[0]);
