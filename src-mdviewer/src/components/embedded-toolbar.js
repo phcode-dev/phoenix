@@ -50,6 +50,12 @@ const THRESHOLD_BLOCKS = 640;  // collapse block elements + image first
 const THRESHOLD_LISTS = 590;   // then lists
 const THRESHOLD_TEXT = 590;    // finally text formatting (all dropdowns collapsed)
 
+// window.print() from inside an iframe is a no-op in WKWebView (Safari on macOS),
+// which is what Tauri uses for the Mac desktop build. Hide the button there.
+const _isMacWebKit = /Mac/.test(navigator.platform)
+    && /AppleWebKit/.test(navigator.userAgent)
+    && !/Chrome|CriOS|Edg|Firefox|FxiOS/.test(navigator.userAgent);
+
 const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
     ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer, Image: ImageIcon, Upload, Sun, Moon };
 
@@ -89,9 +95,9 @@ function renderReadMode() {
         <button class="toolbar-btn theme-toggle-btn" id="emb-theme-toggle" data-tooltip="${t("toolbar.theme") || "Toggle theme"}">
             <i data-lucide="${isDark ? "sun" : "moon"}"></i>
         </button>
-        <button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
+        ${_isMacWebKit ? "" : `<button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
             <i data-lucide="printer"></i>
-        </button>
+        </button>`}
         <button class="toolbar-btn cursor-sync-btn${cursorSyncEnabled ? " active" : ""}" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="${cursorSyncEnabled}">
             <i data-lucide="link-2" class="sync-on-icon"${cursorSyncEnabled ? "" : ' style="display:none"'}></i>
             <i data-lucide="link-2-off" class="sync-off-icon"${cursorSyncEnabled ? ' style="display:none"' : ""}></i>
@@ -206,9 +212,9 @@ function renderEditMode(level) {
         <button class="toolbar-btn theme-toggle-btn" id="emb-theme-toggle" data-tooltip="${t("toolbar.theme") || "Toggle theme"}">
             <i data-lucide="${isDark ? "sun" : "moon"}"></i>
         </button>
-        <button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
+        ${_isMacWebKit ? "" : `<button class="toolbar-btn print-btn" id="emb-print-btn" data-tooltip="${t("toolbar.print") || "Print"}">
             <i data-lucide="printer"></i>
-        </button>
+        </button>`}
         <button class="toolbar-btn cursor-sync-btn${cursorSyncEnabled ? " active" : ""}" id="emb-cursor-sync" data-tooltip="${t("toolbar.cursor_sync") || "Cursor sync"}" aria-pressed="${cursorSyncEnabled}">
             <i data-lucide="link-2" class="sync-on-icon"${cursorSyncEnabled ? "" : ' style="display:none"'}></i>
             <i data-lucide="link-2-off" class="sync-off-icon"${cursorSyncEnabled ? ' style="display:none"' : ""}></i>
