@@ -70,7 +70,6 @@ define(function main(require, exports, module) {
         mode: LIVE_HIGHLIGHT_MODE, // will be updated when we fetch entitlements
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
-        showSpacingHandles: true, // default value, this will get updated when the extension loads
         syncSourceAndPreview: true, // default value, this will get updated when the extension loads
         isPaidUser: false, // will be updated when we fetch entitlements
         isLoggedIn: false, // will be updated when we fetch entitlements
@@ -326,13 +325,6 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.updateConfig(config);
     }
 
-    function updateSpacingHandlesConfig() {
-        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_SHOW_SPACING_HANDLES);
-        const config = MultiBrowserLiveDev.getConfig();
-        config.showSpacingHandles = prefValue !== false;
-        MultiBrowserLiveDev.updateConfig(config);
-    }
-
     function updateSyncConfig() {
         const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC);
         const config = MultiBrowserLiveDev.getConfig();
@@ -363,7 +355,6 @@ define(function main(require, exports, module) {
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
-    exports.updateSpacingHandlesConfig = updateSpacingHandlesConfig;
     exports.updateSyncConfig = updateSyncConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;

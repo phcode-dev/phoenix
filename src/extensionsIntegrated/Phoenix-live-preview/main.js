@@ -115,11 +115,6 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
     });
 
-    const PREFERENCE_SHOW_SPACING_HANDLES = CONSTANTS.PREFERENCE_SHOW_SPACING_HANDLES;
-    PreferencesManager.definePreference(PREFERENCE_SHOW_SPACING_HANDLES, "boolean", true, {
-        description: Strings.LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE
-    });
-
     // live preview link editor and preview preference
     const PREFERENCE_LIVE_PREVIEW_SYNC = CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC;
     PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_SYNC, "boolean", true, {
@@ -1457,17 +1452,13 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
             LiveDevelopment.updateRulerLinesConfig();
         });
-        PreferencesManager.on("change", PREFERENCE_SHOW_SPACING_HANDLES, function() {
-            LiveDevelopment.updateSpacingHandlesConfig();
-        });
         PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_SYNC, function() {
             LiveDevelopment.updateSyncConfig();
         });
 
-        // Initialize element highlight, ruler lines, spacing handles, and sync config on startup
+        // Initialize element highlight, ruler lines, and sync config on startup
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
-        LiveDevelopment.updateSpacingHandlesConfig();
         LiveDevelopment.updateSyncConfig();
 
         LiveDevelopment.openLivePreview();
