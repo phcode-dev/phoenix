@@ -537,8 +537,6 @@ define({
     "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
     "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspect Element on Hover",
     "LIVE_PREVIEW_SHOW_RULER_LINES": "Show Measurements",
-    "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Show Spacing Handles",
-    "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Show spacing handles when elements are selected in live preview edit mode. Defaults to 'true'",
     "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Link Editor and Preview",
     "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Link editor cursor with live preview element highlighting. When enabled, moving the cursor in the editor highlights the corresponding element in the live preview, and clicking an element in the live preview jumps the cursor to its source code. Defaults to 'true'",
     "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' shows only the webpage, '{1}' connects the webpage to your code - click on elements to jump to their code and vice versa, '{2}' provides highlighting along with advanced element manipulation",

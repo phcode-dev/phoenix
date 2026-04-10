@@ -1353,7 +1353,7 @@ function RemoteFunctions(config = {}) {
         }
 
         // Preserve the currently selected element across re-registration
-        // so that toggling options (e.g. show measurements, show spacing handles)
+        // so that toggling options (e.g. show measurements)
         // doesn't clear the element highlighting.
         const selectedBeforeReregister = previouslySelectedElement;
         registerHandlers();
