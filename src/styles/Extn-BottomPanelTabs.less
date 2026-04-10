@@ -166,6 +166,13 @@
     display: none;
 }
 
+/* Default panel (Tools) tab: always show the icon alongside the title,
+   in both expanded and collapsed modes, active or inactive. */
+.bottom-panel-tab.bottom-panel-tab-default .bottom-panel-tab-icon {
+    display: inline-flex;
+    margin-right: 0.4rem;
+}
+
 .default-panel-btn .panel-titlebar-icon {
     width: 20px;
     height: 20px;
@@ -240,6 +247,15 @@
     .bottom-panel-tab:not(.active) .bottom-panel-tab-close-btn {
         display: none;
     }
+    /* Default panel (Tools) tab: keep natural width and show its title
+       even in collapsed mode (other tabs collapse to icon-only). */
+    .bottom-panel-tab.bottom-panel-tab-default {
+        min-width: auto;
+        justify-content: flex-start;
+    }
+    .bottom-panel-tab.bottom-panel-tab-default .bottom-panel-tab-title {
+        display: inline;
+    }
 }
 
 .bottom-panel-tab-close-btn {
@@ -301,7 +317,14 @@
     font-size: 0.82rem;
     flex: 0 0 auto;
     white-space: nowrap;
+    user-select: none;
+    -webkit-user-drag: none;
     transition: color 0.12s ease, background-color 0.12s ease;
+
+    img {
+        -webkit-user-drag: none;
+        pointer-events: none;
+    }
 
     .dark & {
         color: #777;
