@@ -39,32 +39,32 @@ define(function (require, exports, module) {
     const _panelButtons = [
         {
             id: "problems",
-            icon: "fa-solid fa-triangle-exclamation",
+            iconSvg: "styles/images/panel-icon-problems.svg",
             label: Strings.CMD_VIEW_TOGGLE_PROBLEMS || "Problems",
             commandID: Commands.VIEW_TOGGLE_PROBLEMS
         },
         {
             id: "git",
-            icon: "fa-brands fa-git-alt",
+            iconSvg: "styles/images/panel-icon-git.svg",
             label: Strings.GIT_PANEL_TITLE || "Git",
             commandID: Commands.CMD_GIT_TOGGLE_PANEL,
             nativeOnly: true
         },
         {
             id: "snippets",
-            icon: "fa-solid fa-code",
+            iconSvg: "styles/images/panel-icon-snippets.svg",
             label: Strings.CUSTOM_SNIPPETS_PANEL_TITLE || "Custom Snippets",
             commandID: Commands.CMD_CUSTOM_SNIPPETS_PANEL
         },
         {
             id: "shortcuts",
-            icon: "fa-solid fa-keyboard",
+            iconSvg: "styles/images/panel-icon-shortcuts.svg",
             label: Strings.KEYBOARD_SHORTCUT_PANEL_TITLE || "Keyboard Shortcuts",
             commandID: Commands.HELP_TOGGLE_SHORTCUTS_PANEL
         },
         {
             id: "terminal",
-            icon: "fa-solid fa-terminal",
+            iconSvg: "styles/images/panel-icon-terminal.svg",
             label: "Terminal",
             commandID: Commands.VIEW_TERMINAL,
             nativeOnly: true
@@ -99,7 +99,10 @@ define(function (require, exports, module) {
                 .attr("data-command", btn.commandID)
                 .attr("data-btn-id", btn.id)
                 .attr("title", btn.label);
-            let $icon = $('<i class="panel-titlebar-icon"></i>').addClass(btn.icon);
+            let $icon = $('<span class="panel-titlebar-icon"></span>');
+            const maskUrl = "url('" + btn.iconSvg + "')";
+            $icon[0].style.maskImage = maskUrl;
+            $icon[0].style.webkitMaskImage = maskUrl;
             let $label = $('<span class="default-panel-btn-label"></span>').text(btn.label);
             $button.append($icon).append($label);
             $buttonsRow.append($button);

@@ -144,31 +144,29 @@
     }
 }
 
-/* Tab icon: hidden by default, shown when tabs are collapsed */
-.bottom-panel-tab-icon {
-    display: none;
-    font-size: 1rem;
-    width: 1rem;
-    text-align: center;
-    pointer-events: none;
-}
-
-/* Override any FA class specificity (e.g. fa-brands sets font-size: 1.2em) */
-i.panel-titlebar-icon.panel-titlebar-icon {
-    font-size: 1rem;
-}
-
-img.panel-titlebar-icon {
+/* SVG icons rendered as masks so they inherit currentColor (works with light/dark themes).
+   The mask-image URL is set inline via JS (PanelView.js, DefaultPanelView.js). */
+.panel-titlebar-icon {
+    display: inline-block;
     width: 1rem;
     height: 1rem;
     vertical-align: middle;
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    pointer-events: none;
 }
 
-.default-panel-btn i.panel-titlebar-icon {
-    font-size: 20px;
+/* Tab icon: hidden by default, shown when tabs are collapsed */
+.bottom-panel-tab-icon {
+    display: none;
 }
 
-.default-panel-btn img.panel-titlebar-icon {
+.default-panel-btn .panel-titlebar-icon {
     width: 20px;
     height: 20px;
 }

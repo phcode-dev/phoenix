@@ -59,7 +59,7 @@ define(function (require, exports, module) {
      */
     function _createPanel() {
         customSnippetsPanel = WorkspaceManager.createBottomPanel(PANEL_ID, $snippetsPanel, PANEL_MIN_SIZE,
-            Strings.CUSTOM_SNIPPETS_PANEL_TITLE, {iconClass: "fa-solid fa-code"});
+            Strings.CUSTOM_SNIPPETS_PANEL_TITLE, {iconSvg: "styles/images/panel-icon-snippets.svg"});
         UIHelper.init(customSnippetsPanel);
         customSnippetsPanel.show();
 

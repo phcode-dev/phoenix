@@ -266,8 +266,8 @@ define(function (require, exports, module) {
      * @param {number=} minSize  @deprecated No longer used. Pass `undefined`.
      * @param {string=} title  Display title shown in the bottom panel tab bar.
      * @param {Object=} options  Optional settings:
-     *   - {string} iconClass  FontAwesome class string (e.g. "fa-solid fa-terminal").
-     *   - {string} iconSvg   Path to an SVG icon (e.g. "styles/images/icon.svg").
+     *   - {string} iconSvg   Path to an SVG icon for the panel tab (e.g. "styles/images/icon.svg").
+     *     If omitted, a generic default icon is used.
      * @return {!Panel}
      */
     function createBottomPanel(id, $panel, minSize, title, options) {
