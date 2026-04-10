@@ -842,9 +842,10 @@ define(function (require, exports, module) {
             _toggleMaximize();
         });
 
-        // Double-click on tab bar toggles maximize (exclude action buttons and add button)
+        // Double-click on empty tab bar area toggles maximize.
+        // Exclude tabs themselves, action buttons, and the add button.
         _$tabBar.on("dblclick", function (e) {
-            if ($(e.target).closest(".bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn, .bottom-panel-add-btn").length) {
+            if ($(e.target).closest(".bottom-panel-tab, .bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn, .bottom-panel-add-btn").length) {
                 return;
             }
             _toggleMaximize();
