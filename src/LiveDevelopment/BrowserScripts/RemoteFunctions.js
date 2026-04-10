@@ -70,6 +70,7 @@ function RemoteFunctions(config = {}) {
         "renderDropdownItems",
         // called when an item is selected from the more options dropdown
         "handleDropdownClick",
+        "updateContent", // in-place content refresh for control box etc. after drag
         "reRegisterEventHandlers",
         "handleClick", // handle click on an icon in the tool box.
         // when escape key is presses in the editor, we may need to dismiss the live edit boxes.
