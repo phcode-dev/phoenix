@@ -55,7 +55,7 @@ define(function (require, exports, module) {
     let _cursorUndoStack = [];
     let _cursorRedoStack = [];
 
-    const DEBOUNCE_TO_IFRAME_MS = 150;
+    const DEBOUNCE_TO_IFRAME_MS = 50;
     const SCROLL_SYNC_DEBOUNCE_MS = 16;
     const SELECTION_SYNC_DEBOUNCE_MS = 200;
 

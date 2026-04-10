@@ -1566,7 +1566,7 @@ export function convertToMarkdown(contentEl) {
 
 // Debounced content change emitter for bridge
 let contentChangeTimer = null;
-const CONTENT_CHANGE_DEBOUNCE = 300;
+const CONTENT_CHANGE_DEBOUNCE = 50;
 
 /**
  * Re-compute data-source-line attributes on top-level block elements
