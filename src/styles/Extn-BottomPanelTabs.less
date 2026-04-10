@@ -227,9 +227,18 @@
     .bottom-panel-tab-close-btn {
         margin-left: 0.8rem;
     }
-    /* Only show close button on the active tab to prevent accidental clicks */
+    /* Fix all collapsed tabs to the same width so the UI doesn't shake
+       when switching active tab. The width matches the active tab's
+       natural content (icon + close button) using fixed px since the
+       icon has a fixed size. The Tools button (.bottom-panel-add-btn)
+       is a separate element and keeps its natural "Tools" text width. */
+    .bottom-panel-tab {
+        min-width: 63px;
+        box-sizing: border-box;
+        justify-content: center;
+    }
     .bottom-panel-tab:not(.active) .bottom-panel-tab-close-btn {
-        visibility: hidden;
+        display: none;
     }
 }
 
@@ -283,10 +292,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 8px;
+    padding: 0 10px;
     height: 2rem;
+    min-width: 70px;
     line-height: 2rem;
-    overflow: hidden;
     cursor: pointer;
     color: #888;
     font-size: 0.82rem;
