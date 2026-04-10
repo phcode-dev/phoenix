@@ -537,6 +537,15 @@ export function initBridge() {
 
     // Cursor sync toggle
     on("toggle:cursorSync", ({ enabled }) => {
+        // Clear any existing highlights when cursor sync is disabled
+        if (!enabled) {
+            const viewer = document.getElementById("viewer-content");
+            if (viewer) {
+                _removeCursorHighlight(viewer);
+            }
+            _lastHighlightSourceLine = null;
+            _lastHighlightTargetLine = null;
+        }
         sendToParent("mdviewrCursorSyncToggle", { enabled });
     });
 
