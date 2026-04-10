@@ -149,7 +149,11 @@ define(function (require, exports, module) {
      */
     function _buildTab(panel, isActive) {
         let title = panel._tabTitle || _getPanelTitle(panel.panelID, panel.$panel);
-        let $tab = $('<div class="bottom-panel-tab" draggable="true"></div>')
+        // Default panel (Tools) tab is not draggable — it's a fixed slot, not a user tab
+        const isDefault = panel.panelID === _defaultPanelId;
+        let $tab = $('<div class="bottom-panel-tab"></div>')
+            .toggleClass('bottom-panel-tab-default', isDefault)
+            .attr('draggable', isDefault ? 'false' : 'true')
             .toggleClass('active', isActive)
             .attr('data-panel-id', panel.panelID);
         const iconSrc = panel._options.iconSvg || "styles/images/panel-icon-default.svg";
@@ -288,6 +292,11 @@ define(function (require, exports, module) {
         }
 
         _$tabBar.on("dragstart", ".bottom-panel-tab", function (e) {
+            // Default panel (Tools) tab is never draggable
+            if ($(this).data("panel-id") === _defaultPanelId) {
+                e.preventDefault();
+                return;
+            }
             draggedTab = this;
             e.originalEvent.dataTransfer.effectAllowed = "move";
             e.originalEvent.dataTransfer.setData("application/x-phoenix-panel-tab", "1");
@@ -300,6 +309,10 @@ define(function (require, exports, module) {
 
         _$tabBar.on("dragover", ".bottom-panel-tab", function (e) {
             if (!draggedTab || this === draggedTab) {
+                return;
+            }
+            // Don't allow dropping onto the default panel (Tools) tab
+            if ($(this).data("panel-id") === _defaultPanelId) {
                 return;
             }
             e.preventDefault();
@@ -766,8 +779,8 @@ define(function (require, exports, module) {
         _defaultPanelId = defaultPanelId;
 
         // Create the "Tools" button inside the scrollable tabs area.
-        _$addBtn = $('<span class="bottom-panel-add-btn" title="' + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '">'
-            + '<img class="app-drawer-tab-icon" src="styles/images/app-drawer.svg"'
+        _$addBtn = $('<span class="bottom-panel-add-btn" draggable="false" title="' + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '">'
+            + '<img class="app-drawer-tab-icon" draggable="false" src="styles/images/app-drawer.svg"'
             + ' style="width:12px;height:12px;vertical-align:middle;margin-right:4px">'
             + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '</span>');
         _$tabsOverflow.append(_$addBtn);
