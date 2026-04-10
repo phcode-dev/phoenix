@@ -615,6 +615,7 @@ define(function (require, exports, module) {
         if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
             MarkdownSync.deactivate();
             _isMdviewrActive = false;
+            _updateLPControlsForMdviewer();
             $mdviewrIframe.hide();
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             $mdviewrIframe.after(newIframe);
@@ -1113,6 +1114,7 @@ define(function (require, exports, module) {
         if(_isMdviewrActive) {
             MarkdownSync.deactivate();
             _isMdviewrActive = false;
+            _updateLPControlsForMdviewer();
         }
         if ($mdviewrIframe) {
             const mdIframeWindow = $mdviewrIframe[0].contentWindow;
