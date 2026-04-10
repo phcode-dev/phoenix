@@ -131,6 +131,14 @@ define(function (require, exports, module) {
                 break;
             case "mdviewrCursorSyncToggle":
                 _cursorSyncEnabled = !!data.enabled;
+                // Clear CM line highlight when cursor sync is disabled
+                if (!_cursorSyncEnabled) {
+                    const cm = _getCM();
+                    if (cm && _highlightLineHandle) {
+                        cm.removeLineClass(_highlightLineHandle, "background", "cm-cursor-sync-highlight");
+                        _highlightLineHandle = null;
+                    }
+                }
                 break;
             case "mdviewrThemeToggle":
                 sendThemeOverride(data.theme);
