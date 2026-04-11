@@ -161,6 +161,12 @@
     "add_row_below": "Add row below",
     "add_col_left": "Add column left",
     "add_col_right": "Add column right",
+    "copy_row": "Copy row",
+    "cut_row": "Cut row",
+    "paste_row": "Paste row below",
+    "copy_col": "Copy column",
+    "cut_col": "Cut column",
+    "paste_col": "Paste column right",
     "delete_table": "Delete table"
   },
   "dialog": {
