@@ -575,6 +575,10 @@ function RemoteFunctions(config = {}) {
         if (SHARED_STATE.isAutoScrolling || SHARED_STATE._isDraggingSVG) {
             return;
         }
+        if (customReturns.selectorBox && customReturns.selectorBox.isOpen &&
+                customReturns.selectorBox.isOpen()) {
+            return;
+        }
 
         const element = event.target;
         if(!LivePreviewView.isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
