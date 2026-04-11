@@ -735,6 +735,67 @@ function deleteTableColumn(table, colIdx) {
     });
 }
 
+// Module-level clipboard for table row/column copy-paste.
+// Stores the inner HTML of each cell so they can be re-inserted into other rows/cols.
+let _tableRowClipboard = null;   // { cells: [html, ...] }
+let _tableColClipboard = null;   // { cells: [html, ...] }  one per row in source table
+
+function copyTableRow(tr) {
+    _tableRowClipboard = {
+        cells: Array.from(tr.children).map(td => td.innerHTML)
+    };
+}
+
+function copyTableColumn(table, colIdx) {
+    const rows = table.querySelectorAll("tr");
+    _tableColClipboard = {
+        cells: Array.from(rows).map(row => {
+            const cell = row.children[colIdx];
+            return cell ? cell.innerHTML : "";
+        })
+    };
+}
+
+function pasteTableRow(table, afterRow) {
+    if (!_tableRowClipboard) return;
+    const tbody = table.querySelector("tbody") || table;
+    const refRow = afterRow || tbody.lastElementChild;
+    const colCount = refRow ? refRow.children.length : _tableRowClipboard.cells.length;
+    const newRow = document.createElement("tr");
+    for (let i = 0; i < colCount; i++) {
+        const td = document.createElement("td");
+        td.innerHTML = _tableRowClipboard.cells[i] != null ? _tableRowClipboard.cells[i] : "&nbsp;";
+        newRow.appendChild(td);
+    }
+    if (afterRow && afterRow.nextSibling) {
+        afterRow.parentNode.insertBefore(newRow, afterRow.nextSibling);
+    } else if (afterRow) {
+        afterRow.parentNode.appendChild(newRow);
+    } else {
+        tbody.appendChild(newRow);
+    }
+    focusCell(newRow.firstElementChild);
+    return newRow;
+}
+
+function pasteTableColumn(table, afterColIdx) {
+    if (!_tableColClipboard) return;
+    const rows = table.querySelectorAll("tr");
+    const insertIdx = afterColIdx != null ? afterColIdx + 1 : (rows[0]?.children.length || 0);
+    rows.forEach((row, rowIdx) => {
+        const isHeader = row.parentElement.tagName === "THEAD";
+        const cell = document.createElement(isHeader ? "th" : "td");
+        const html = _tableColClipboard.cells[rowIdx];
+        cell.innerHTML = (html != null && html !== "") ? html : (isHeader ? t("table.header") : "&nbsp;");
+        const refCell = row.children[insertIdx];
+        if (refCell) {
+            row.insertBefore(cell, refCell);
+        } else {
+            row.appendChild(cell);
+        }
+    });
+}
+
 function deleteTable(table) {
     const wrapper = table.closest(".table-wrapper");
     const target = wrapper || table;
@@ -858,6 +919,10 @@ function showHandleMenu(anchor, type, ctx, contentEl, wrapper, clickX) {
             { label: t("table.insert_row_above"), action: () => { flushSnapshot(contentEl); addTableRow(ctx.table, null, ctx.tr); dispatchInputEvent(contentEl); } },
             { label: t("table.insert_row_below"), action: () => { flushSnapshot(contentEl); addTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
             { divider: true },
+            { label: t("table.copy_row"), action: () => { copyTableRow(ctx.tr); } },
+            { label: t("table.cut_row"), disabled: ctx.isHeader, action: () => { flushSnapshot(contentEl); copyTableRow(ctx.tr); deleteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
+            ...(_tableRowClipboard ? [{ label: t("table.paste_row"), action: () => { flushSnapshot(contentEl); pasteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } }] : []),
+            { divider: true },
             { label: t("table.delete_row"), destructive: true, disabled: ctx.isHeader, action: () => { flushSnapshot(contentEl); deleteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
             { divider: true },
             { label: t("table.delete_table"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTable(ctx.table); dispatchInputEvent(contentEl); } }
@@ -866,6 +931,10 @@ function showHandleMenu(anchor, type, ctx, contentEl, wrapper, clickX) {
         items = [
             { label: t("table.insert_col_left"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx - 1); dispatchInputEvent(contentEl); } },
             { label: t("table.insert_col_right"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
+            { divider: true },
+            { label: t("table.copy_col"), action: () => { copyTableColumn(ctx.table, ctx.colIdx); } },
+            { label: t("table.cut_col"), action: () => { flushSnapshot(contentEl); copyTableColumn(ctx.table, ctx.colIdx); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
+            ...(_tableColClipboard ? [{ label: t("table.paste_col"), action: () => { flushSnapshot(contentEl); pasteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } }] : []),
             { divider: true },
             { label: t("table.delete_col"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
             { divider: true },
@@ -1090,6 +1159,14 @@ function showTableContextMenu(x, y, ctx, contentEl) {
         { label: t("table.add_row_below"), action: () => { flushSnapshot(contentEl); addTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
         { label: t("table.add_col_left"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx - 1); dispatchInputEvent(contentEl); } },
         { label: t("table.add_col_right"), action: () => { flushSnapshot(contentEl); addTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
+        { divider: true },
+        { label: t("table.copy_row"), action: () => { copyTableRow(ctx.tr); } },
+        { label: t("table.cut_row"), action: () => { flushSnapshot(contentEl); copyTableRow(ctx.tr); deleteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
+        ...(_tableRowClipboard ? [{ label: t("table.paste_row"), action: () => { flushSnapshot(contentEl); pasteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } }] : []),
+        { divider: true },
+        { label: t("table.copy_col"), action: () => { copyTableColumn(ctx.table, ctx.colIdx); } },
+        { label: t("table.cut_col"), action: () => { flushSnapshot(contentEl); copyTableColumn(ctx.table, ctx.colIdx); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
+        ...(_tableColClipboard ? [{ label: t("table.paste_col"), action: () => { flushSnapshot(contentEl); pasteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } }] : []),
         { divider: true },
         { label: t("table.delete_row"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableRow(ctx.table, ctx.tr); dispatchInputEvent(contentEl); } },
         { label: t("table.delete_col"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTableColumn(ctx.table, ctx.colIdx); dispatchInputEvent(contentEl); } },
