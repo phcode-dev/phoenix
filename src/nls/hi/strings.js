@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0} में लाइव पूर्वावलोकन खोलने में त्रुटि",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "सुनिश्चित करें कि {0} ब्राउज़र स्थापित है और पुनः प्रयास करें।",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "पूर्वावलोकन पृष्ठ को पिन या अनपिन करें",
+  "MD_VIEWER_THEME_DESCRIPTION": "मार्कडाउन व्यूअर के लिए थीम (लाइट या डार्क)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "लाइव पूर्वावलोकन (सिंटैक्स त्रुटि के कारण अपडेट नहीं हो रहा है)",
   "LIVE_DEV_SETTINGS": "लाइव पूर्वावलोकन सेटिंग्स…",
   "LIVE_DEV_SETTINGS_BANNER": "`<b>{0}</b>` और अन्य सर्वर-रेंडर की गई फ़ाइलों (PHP, JSP, आदि) का लाइव पूर्वावलोकन करने के लिए एक कस्टम सर्वर सेट अप करें।",
@@ -511,8 +512,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "संपादन मोड",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "होवर पर एलिमेंट का निरीक्षण",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "माप दिखाएँ",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "स्पेसिंग हैंडल दिखाएँ",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "लाइव प्रीव्यू एडिट मोड में एलिमेंट चुने जाने पर स्पेसिंग हैंडल दिखाएँ। डिफ़ॉल्ट रूप से 'true' है।",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "एडिटर और प्रीव्यू लिंक करें",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "एडिटर कर्सर को लाइव प्रीव्यू एलिमेंट हाइलाइटिंग के साथ लिंक करता है। सक्षम होने पर, एडिटर में कर्सर ले जाने पर लाइव प्रीव्यू में संबंधित एलिमेंट हाइलाइट हो जाता है, और लाइव प्रीव्यू में किसी एलिमेंट पर क्लिक करने पर कर्सर उसके सोर्स कोड पर चला जाता है। डिफ़ॉल्ट रूप से 'true' है।",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' सिर्फ़ वेबपेज दिखाता है, '{1}' वेबपेज को आपके कोड से जोड़ता है - एलिमेंट पर क्लिक करके उनके कोड पर जाएँ और इसके विपरीत भी, '{2}' उन्नत एलिमेंट मैनिपुलेशन के साथ हाइलाइटिंग प्रदान करता है।",
@@ -2169,5 +2168,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "MD_VIEWER_THEME_DESCRIPTION": "मार्कडाउन व्यूअर के लिए थीम (लाइट या डार्क)"
+  "LIVE_DEV_LP_SELBOX_TITLE": "बदलाव सहेजें",
+  "LIVE_DEV_LP_SELBOX_INLINE": "इनलाइन",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "मिलान वाले नियम खोजे जा रहे हैं…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "एम्बेडेड",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "चयनित लक्ष्य में बदलाव सहेजें (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "बदलाव वापस लें (Esc)"
 });

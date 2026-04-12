@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0} ലെ ലൈവ് പ്രിവ്യൂ തുറക്കുന്നതിൽ പിഴവ്",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0} ബ്രൗസർ ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടെന്ന് ഉറപ്പുവരുത്തി വീണ്ടും ശ്രമിക്കുക.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "പ്രിവ്യൂ പേജ് പിൻ ചെയ്യുക അല്ലെങ്കിൽ പിൻ ചെയ്യാതിരിക്കുക",
+  "MD_VIEWER_THEME_DESCRIPTION": "മാർക്ക്ഡൗൺ വ്യൂവറിനായുള്ള തീം (ലൈറ്റ് അല്ലെങ്കിൽ ഡാർക്ക്)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "ലൈവ് പ്രിവ്യൂ (സിന്റാക്സ് പിഴവ് കാരണം അപ്ഡേറ്റ് ചെയ്യുന്നില്ല)",
   "LIVE_DEV_SETTINGS": "ലൈവ് പ്രിവ്യൂ ക്രമീകരണങ്ങൾ…",
   "LIVE_DEV_SETTINGS_BANNER": "`<b>{0}</b>` ഉം മറ്റ് സെർവർ-റെൻഡർ ചെയ്ത ഫയലുകളും (PHP, JSP, തുടങ്ങിയവ) ലൈവ് പ്രിവ്യൂ ചെയ്യാൻ ഒരു കസ്റ്റം സെർവർ സജ്ജമാക്കുക",
@@ -511,8 +512,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "എഡിറ്റ് മോഡ്",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "ഹോവറിൽ ഘടകം പരിശോധിക്കുക",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "അളവുകൾ കാണിക്കുക",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "സ്പെയ്സിംഗ് ഹാൻഡിലുകൾ കാണിക്കുക",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "ലൈവ് പ്രിവ്യൂ എഡിറ്റ് മോഡിൽ എലമെൻ്റുകൾ തിരഞ്ഞെടുക്കുമ്പോൾ സ്പെയ്സിംഗ് ഹാൻഡിലുകൾ കാണിക്കുന്നു. ഡിഫോൾട്ടായി 'ട്രൂ' ആണ്.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "എഡിറ്ററും പ്രിവ്യൂവും ലിങ്ക് ചെയ്യുക",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "എഡിറ്റർ കഴ്‌സറും ലൈവ് പ്രിവ്യൂ എലമെന്റ് ഹൈലൈറ്റിംഗും തമ്മിൽ ബന്ധിപ്പിക്കുന്നു. ഇത് പ്രവർത്തനക്ഷമമാക്കുമ്പോൾ, എഡിറ്ററിൽ കഴ്‌സർ നീക്കുന്നത് ലൈവ് പ്രിവ്യൂവിലെ അനുബന്ധ എലമെന്റിനെ ഹൈലൈറ്റ് ചെയ്യുകയും, ലൈവ് പ്രിവ്യൂവിലെ ഒരു എലമെന്റിൽ ക്ലിക്ക് ചെയ്യുന്നത് കഴ്‌സറിനെ അതിന്റെ സോഴ്‌സ് കോഡിലേക്ക് എത്തിക്കുകയും ചെയ്യും. ഡിഫോൾട്ട് 'true' ആണ്",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' വെബ്പേജ് മാത്രം കാണിക്കുന്നു, '{1}' വെബ്പേജിനെ നിങ്ങളുടെ കോഡുമായി ബന്ധിപ്പിക്കുന്നു - എലമെന്റുകളിൽ ക്ലിക്ക് ചെയ്ത് അവയുടെ കോഡിലേക്കും തിരിച്ചും പോകാം, '{2}' ഹൈലൈറ്റിംഗും നൂതന എലമെന്റ് കൈകാര്യം ചെയ്യലും നൽകുന്നു",
@@ -2169,5 +2168,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "MD_VIEWER_THEME_DESCRIPTION": "മാർക്ക്ഡൗൺ വ്യൂവറിനായുള്ള തീം (ലൈറ്റ് അല്ലെങ്കിൽ ഡാർക്ക്)"
+  "LIVE_DEV_LP_SELBOX_TITLE": "മാറ്റങ്ങൾ സംരക്ഷിക്കുക",
+  "LIVE_DEV_LP_SELBOX_INLINE": "ഇൻലൈൻ",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "ചേരുന്ന നിയമങ്ങൾ കണ്ടെത്തുന്നു...",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "ഉൾച്ചേർത്തത്",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "തിരഞ്ഞെടുത്ത ടാർഗെറ്റിലെ മാറ്റങ്ങൾ സംരക്ഷിക്കുക (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "മാറ്റങ്ങൾ പഴയപടിയാക്കുക (Esc)"
 });

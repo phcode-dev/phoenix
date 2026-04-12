@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Erro ao Abrir a Pré-visualização em Tempo Real no {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Certifique-se de que o navegador {0} está instalado e tente novamente.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fixar ou Desafixar a Página de Pré-visualização",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema para o visualizador de Markdown (claro ou escuro)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Pré-visualização em Tempo Real (não atualiza devido a erro de sintaxe)",
   "LIVE_DEV_SETTINGS": "Definições da Pré-visualização em Tempo Real…",
   "LIVE_DEV_SETTINGS_BANNER": "Configure um servidor personalizado para pré-visualizar em tempo real `<b>{0}</b>` e outros ficheiros processados pelo servidor (PHP, JSP, etc.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "em {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obter Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Já utilizou {0}% das suas pesquisas de imagens gratuitas ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Guardar alterações",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de Estilos",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editar Estilos",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Adicionar",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Modo Edição",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspecionar elemento ao pairar",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Mostrar Medidas",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Mostrar controlos de espaçamento",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Mostrar os controlos de espaçamento quando os elementos são selecionados no modo de edição da pré-visualização em tempo real. O valor predefinido é 'verdadeiro'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Ligação entre Editor e Pré-visualização",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Associa o cursor do editor ao realce de elementos na pré-visualização em tempo real. Quando ativado, mover o cursor no editor realça o elemento correspondente na pré-visualização em tempo real, e clicar num elemento na pré-visualização em tempo real move o cursor para o seu código-fonte. O valor predefinido é 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' mostra apenas a página web, '{1}' liga a página web ao seu código - clique nos elementos para saltar para o respetivo código e vice-versa, '{2}' disponibiliza realce juntamente com manipulação avançada de elementos",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema para o visualizador de Markdown (claro ou escuro)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Em linha",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "A encontrar regras correspondentes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporado",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Guardar alterações no destino selecionado (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter alterações (Esc)"
 });

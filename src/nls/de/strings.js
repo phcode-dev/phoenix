@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fehler beim Öffnen der Live-Vorschau in {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Stellen Sie sicher, dass der Browser {0} installiert ist, und versuchen Sie es erneut.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Vorschauseite anheften oder lösen",
+  "MD_VIEWER_THEME_DESCRIPTION": "Thema für den Markdown-Viewer (hell oder dunkel)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Vorschau (Es wird aufgrund eines Syntax-Fehlers nicht aktualisiert)",
   "LIVE_DEV_SETTINGS": "Einstellungen für Live-Vorschau…",
   "LIVE_DEV_SETTINGS_BANNER": "Richten Sie einen benutzerdefinierten Server ein, um `<b>{0}</b>` und andere serverseitig gerenderte Dateien (PHP, JSP usw.) in der Live-Vorschau anzuzeigen.",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "auf {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro-Version holen",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Sie haben {0}% Ihrer kostenlosen Bildsuchen genutzt ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Änderungen speichern",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stil-Editor",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stile bearbeiten",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Hinzufügen",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Bearbeitungsmodus",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Element bei Hover untersuchen",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Maße anzeigen",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Abstandsgriffe anzeigen",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Zeigt Abstandsgriffe an, wenn Elemente im Live-Vorschau-Bearbeitungsmodus ausgewählt sind. Standardwert ist 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Editor und Vorschau verknüpfen",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Verknüpft den Editor-Cursor mit der Elementhervorhebung in der Live-Vorschau. Wenn aktiviert, hebt das Bewegen des Cursors im Editor das entsprechende Element in der Live-Vorschau hervor und ein Klick auf ein Element in der Live-Vorschau lässt den Cursor zum zugehörigen Quellcode springen. Standardwert ist 'true'.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' zeigt nur die Webseite an, '{1}' verbindet die Webseite mit Ihrem Code – klicken Sie auf Elemente, um zu deren Code zu springen und umgekehrt, '{2}' bietet Hervorhebungen sowie erweiterte Elementmanipulation.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "MD_VIEWER_THEME_DESCRIPTION": "Thema für den Markdown-Viewer (hell oder dunkel)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Suche nach passenden Regeln...",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "eingebettet",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Änderungen im ausgewählten Ziel speichern (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Änderungen verwerfen (Esc)"
 });

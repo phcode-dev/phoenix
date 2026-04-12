@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Błąd otwierania podglądu na żywo w {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Upewnij się, że przeglądarka {0} jest zainstalowana i spróbuj ponownie.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Przypnij lub odepnij stronę podglądu",
+  "MD_VIEWER_THEME_DESCRIPTION": "Motyw dla podglądu Markdown (jasny lub ciemny)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Podgląd na żywo (bez odświeżania - wystąpiły błędy składniowe)",
   "LIVE_DEV_SETTINGS": "Ustawienia podglądu na żywo…",
   "LIVE_DEV_SETTINGS_BANNER": "Skonfiguruj niestandardowy serwer, aby wyświetlić podgląd na żywo pliku `<b>{0}</b>` i innych plików renderowanych po stronie serwera (PHP, JSP itp.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Zdobądź Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Wykorzystano {0}% Twoich darmowych wyszukiwań obrazów ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Zapisz zmiany",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Edytor stylów",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Edytuj style",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Dodaj",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Tryb edycji",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Zbadaj element przy najechaniu",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Pokaż wymiary",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Pokaż uchwyty odstępów",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Pokazuje uchwyty odstępów, gdy elementy są zaznaczone w trybie edycji podglądu na żywo. Domyślnie włączone.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Połącz edytor i podgląd",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Łączy kursor edytora z podświetlaniem elementów w podglądzie na żywo. Gdy opcja jest włączona, poruszanie kursorem w edytorze podświetla odpowiedni element w podglądzie na żywo, a kliknięcie elementu w podglądzie na żywo przenosi kursor do jego kodu źródłowego. Wartość domyślna: 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' pokazuje tylko stronę internetową, '{1}' łączy stronę internetową z kodem - klikaj elementy, aby przejść do ich kodu i na odwrót, '{2}' zapewnia podświetlanie oraz zaawansowaną manipulację elementami",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "MD_VIEWER_THEME_DESCRIPTION": "Motyw dla podglądu Markdown (jasny lub ciemny)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "W linii",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Wyszukiwanie pasujących reguł…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Osadzony",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Zapisz zmiany w wybranym celu (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Cofnij zmiany (Esc)"
 });

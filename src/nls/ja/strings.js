@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0}でのライブプレビューのオープン中にエラーが発生しました",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0}ブラウザがインストールされていることを確認して、もう一度試してください。",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "プレビューページをピン留めまたはピン留め解除する",
+  "MD_VIEWER_THEME_DESCRIPTION": "マークダウンビューアのテーマ（ライトまたはダーク）",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "ライブプレビュー (シンタックスエラーのため更新されません)",
   "LIVE_DEV_SETTINGS": "ライブプレビュー設定…",
   "LIVE_DEV_SETTINGS_BANNER": "カスタムサーバーを設定して`<b>{0}</b>`やその他のサーバーレンダリングファイル（PHP、JSPなど）のライブプレビューを行います",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}にて",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Proを入手",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "無料の画像検索を{0}%使用しました ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "変更を保存",
   "LIVE_DEV_STYLES_PANEL_HEADER": "スタイルエディター",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "スタイルを編集",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 追加",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "編集モード",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "ホバーで要素を検証",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "寸法を表示",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "間隔ハンドルを表示",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "ライブプレビュー編集モードで要素が選択されたときに間隔ハンドルを表示します。デフォルトは「true」です。",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "エディターとプレビューをリンク",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "エディターのカーソルとライブプレビューの要素ハイライトを連携させます。有効にすると、エディターでカーソルを移動するとライブプレビュー内の対応する要素がハイライト表示され、ライブプレビュー内の要素をクリックするとエディターがそのソースコード箇所にジャンプします。デフォルトは「true」です。",
   "LIVE_PREVIEW_MODE_PREFERENCE": "「{0}」はウェブページのみを表示し、「{1}」はウェブページとコードを接続して要素とコード間をジャンプ可能にし、「{2}」はハイライト表示と高度な要素操作を提供します。",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "MD_VIEWER_THEME_DESCRIPTION": "マークダウンビューアのテーマ（ライトまたはダーク）"
+  "LIVE_DEV_LP_SELBOX_INLINE": "インライン",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "一致するルールを検索中…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "埋め込み",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "選択したターゲットへの変更を保存 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "変更を元に戻す (Esc)"
 });

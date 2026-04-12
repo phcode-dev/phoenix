@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0} میں لائیو پریویو کھولنے میں خرابی",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "یقینی بنائیں کہ {0} براؤزر انسٹال ہے اور دوبارہ کوشش کریں۔",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "پریویو پیج کو پن یا ان پن کریں",
+  "MD_VIEWER_THEME_DESCRIPTION": "مارک ڈاؤن ویور کے لیے تھیم (لائٹ یا ڈارک)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "لائیو پریویو (نحوی غلطی کی وجہ سے اپ ڈیٹ نہیں ہو رہا)",
   "LIVE_DEV_SETTINGS": "لائیو پریویو کی ترتیبات…",
   "LIVE_DEV_SETTINGS_BANNER": "`<b>{0}</b>` اور دیگر سرور پر رینڈر ہونے والی فائلوں (PHP، JSP، وغیرہ) کا لائیو پریویو دیکھنے کے لیے ایک کسٹم سرور سیٹ اپ کریں۔",
@@ -511,8 +512,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "ترمیم وضع",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "ہوور پر عنصر کا معائنہ",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "پیمائشیں دکھائیں",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "اسپیسنگ ہینڈلز دکھائیں",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "لائیو پیش منظر کے ایڈیٹ موڈ میں عناصر منتخب ہونے پر اسپیسنگ ہینڈلز دکھائیں۔ ڈیفالٹ 'true' ہے",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "ایڈیٹر اور پیش منظر کا ربط",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "ایڈیٹر کرسر کو لائیو پیش منظر میں عنصر نمایاں کرنے کے ساتھ جوڑتا ہے۔ جب فعال ہو، تو ایڈیٹر میں کرسر کو حرکت دینے سے لائیو پیش منظر میں متعلقہ عنصر نمایاں ہو جاتا ہے، اور لائیو پیش منظر میں کسی عنصر پر کلک کرنے سے کرسر اس کے سورس کوڈ پر چلا جاتا ہے۔ ڈیفالٹ 'true' پر ہے۔",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' صرف ویب پیج دکھاتا ہے، '{1}' ویب پیج کو آپ کے کوڈ سے جوڑتا ہے - عناصر پر کلک کر کے ان کے کوڈ پر جائیں اور اس کے برعکس، '{2}' جدید عنصر کی ہیرا پھیری کے ساتھ ہائی لائٹنگ فراہم کرتا ہے",
@@ -2169,5 +2168,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "MD_VIEWER_THEME_DESCRIPTION": "مارک ڈاؤن ویور کے لیے تھیم (لائٹ یا ڈارک)"
+  "LIVE_DEV_LP_SELBOX_TITLE": "تبدیلیاں محفوظ کریں",
+  "LIVE_DEV_LP_SELBOX_INLINE": "ان لائن",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "مطابقت پذیر اصول تلاش کیے جا رہے ہیں…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "مضمن",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "منتخب کردہ ہدف میں تبدیلیاں محفوظ کریں (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "تبدیلیاں واپس لائیں (Esc)"
 });

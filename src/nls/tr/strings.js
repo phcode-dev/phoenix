@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Canlı Önizleme {0}'da Açılamadı",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0} tarayıcısının yüklü olduğundan emin olun ve tekrar deneyin.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Önizleme Sayfasını Sabitle veya Sabitlemeyi Kaldır",
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown görüntüleyicisi için tema (açık veya koyu)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Canlı Önizleme (sözdizimi hatası nedeniyle güncellenmiyor)",
   "LIVE_DEV_SETTINGS": "Canlı Önizleme Ayarları…",
   "LIVE_DEV_SETTINGS_BANNER": "`<b>{0}</b>` ve diğer sunucu tarafından oluşturulan dosyaları (PHP, JSP, vb.) canlı önizlemek için özel bir sunucu ayarlayın.",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0} üzerinde",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro'ya Geçin",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ücretsiz görsel arama hakkınızın {0}%'lık kısmını kullandınız ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Değişiklikleri kaydet",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stil Düzenleyici",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stilleri Düzenle",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Ekle",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Düzenleme Modu",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Üzerine Gelindiğinde Öğeyi Denetle",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Ölçümleri Göster",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Aralık Tutamaçlarını Göster",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Canlı önizleme düzenleme modunda öğeler seçildiğinde aralık tutamaçlarını gösterir. Varsayılan olarak 'true' değerindedir.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Düzenleyici ve Önizlemeyi Bağla",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Düzenleyici imlecini canlı önizleme öğesi vurgulamasıyla bağlar. Etkinleştirildiğinde, düzenleyicide imleci hareket ettirmek canlı önizlemedeki ilgili öğeyi vurgular ve canlı önizlemede bir öğeye tıklamak imleci kaynak koduna atlatır. Varsayılan olarak 'true' değerindedir.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' yalnızca web sayfasını gösterir, '{1}' web sayfasını kodunuza bağlar - kodlarına atlamak için öğelere tıklayın ve tam tersi, '{2}' gelişmiş öğe manipülasyonu ile birlikte vurgulama sağlar",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "MD_VIEWER_THEME_DESCRIPTION": "Markdown görüntüleyicisi için tema (açık veya koyu)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Satır İçi",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Eşleşen kurallar bulunuyor…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "gömülü",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Seçilen hedefe değişiklikleri kaydet (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Değişiklikleri geri al (Esc)"
 });

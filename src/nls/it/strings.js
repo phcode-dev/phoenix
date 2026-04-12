@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Errore durante l'apertura dell'Anteprima Live in {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Assicurati che il browser {0} sia installato e riprova.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Aggiungi o rimuovi l'Anteprima dalla barra laterale",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema per il visualizzatore Markdown (chiaro o scuro)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Anteprima Live (non aggiorna a causa di un errore di sintassi)",
   "LIVE_DEV_SETTINGS": "Impostazioni Anteprima Live…",
   "LIVE_DEV_SETTINGS_BANNER": "Configura un server personalizzato per visualizzare in anteprima live `<b>{0}</b>` e altri file renderizzati dal server (PHP, JSP, ecc.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "su {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Passa a Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Hai utilizzato il {0}% delle tue ricerche di immagini gratuite ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Salva le modifiche",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor stili",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Modifica stili",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Aggiungi",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Modalità di modifica",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Ispeziona elemento al passaggio del mouse",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Mostra misurazioni",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Mostra maniglie di spaziatura",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Mostra le maniglie di spaziatura quando gli elementi sono selezionati nella modalità di modifica dell'anteprima dal vivo. L'impostazione predefinita è 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Collega editor e anteprima",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Collega il cursore dell'editor con l'evidenziazione degli elementi nell'anteprima dal vivo. Se abilitato, spostando il cursore nell'editor viene evidenziato l'elemento corrispondente nell'anteprima dal vivo e, facendo clic su un elemento nell'anteprima dal vivo, il cursore si sposta sul relativo codice sorgente. Impostazione predefinita: 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' mostra solo la pagina web, '{1}' collega la pagina web al tuo codice (fai clic sugli elementi per passare al codice corrispondente e viceversa), '{2}' fornisce l'evidenziazione e la manipolazione avanzata degli elementi.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema per il visualizzatore Markdown (chiaro o scuro)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Ricerca regole corrispondenti…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporato",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salva le modifiche nella destinazione selezionata (Invio)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Annulla le modifiche (Esc)"
 });

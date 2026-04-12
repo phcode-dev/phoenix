@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Pogreška pri otvaranju pregleda uživo u {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Provjerite je li preglednik {0} instaliran i pokušajte ponovno.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Prikvači ili otkvači stranicu pregleda",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema za preglednik Markdowna (svijetla ili tamna)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Prikaz uživo (ne osvježava se zbog greške u sintaksi)",
   "LIVE_DEV_SETTINGS": "Postavke pregleda uživo…",
   "LIVE_DEV_SETTINGS_BANNER": "Postavite prilagođeni poslužitelj za pregled uživo datoteke `<b>{0}</b>` i drugih datoteka koje se prikazuju na poslužitelju (PHP, JSP, itd.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Nabavite Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Iskoristili ste {0}% svojih besplatnih pretraživanja slika ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Sačuvaj promjene",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Uređivač stilova",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Uredi stilove",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Dodaj",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Uredi",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Pregledaj element pri prelasku mišem",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Prikaži mjere",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Prikaži ručice za razmak",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Prikazuje ručice za razmak kada su elementi odabrani u načinu uređivanja pregleda uživo. Zadana vrijednost je 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Poveži uređivač i pregled",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Povezuje pokazivač uređivača s isticanjem elemenata u pregledu uživo. Kada je omogućeno, pomicanje pokazivača u uređivaču ističe odgovarajući element u pregledu uživo, a klik na element u pregledu uživo premješta pokazivač na njegov izvorni kod. Zadana vrijednost je 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' prikazuje samo web-stranicu, '{1}' povezuje web-stranicu s vašim kodom - kliknite na elemente da biste skočili na njihov kod i obrnuto, '{2}' pruža isticanje zajedno s naprednom manipulacijom elemenata.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema za preglednik Markdowna (svijetla ili tamna)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "U retku",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Traženje odgovarajućih pravila...",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Ugrađeno",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Spremi promjene na odabrano odredište (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Poništi promjene (Esc)"
 });

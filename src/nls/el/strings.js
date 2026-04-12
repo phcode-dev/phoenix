@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Σφάλμα ανοίγματος Ζωντανής Προεπισκόπησης στο {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Βεβαιωθείτε ότι το πρόγραμμα περιήγησης {0} είναι εγκατεστημένο και δοκιμάστε ξανά.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Καρφίτσωμα ή Ξεκαρφίτσωμα Σελίδας Προεπισκόπησης",
+  "MD_VIEWER_THEME_DESCRIPTION": "Θέμα για τον προβολέα Markdown (φωτεινό ή σκούρο)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (αδυναμία ανανέωσης λόγο συντακτικού λάθους)",
   "LIVE_DEV_SETTINGS": "Ρυθμίσεις Ζωντανής Προεπισκόπησης…",
   "LIVE_DEV_SETTINGS_BANNER": "Ρυθμίστε έναν προσαρμοσμένο δια服务器 για ζωντανή προεπισκόπηση του `<b>{0}</b>` και άλλων αρχείων που αποδίδονται από τον διακομιστή (PHP, JSP, κ.λπ.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "στο {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Αποκτήστε το Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Έχετε χρησιμοποιήσει το {0}% των δωρεάν αναζητήσεων εικόνων σας ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Αποθήκευση Αλλαγών",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Επεξεργαστής Στυλ",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Επεξεργασία Στυλ",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Προσθήκη",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Λειτουργία Επεξεργασίας",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Επιθεώρηση στοιχείου κατά την αιώρηση",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Εμφάνιση μετρήσεων",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Εμφάνιση χειριστηρίων απόστασης",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Εμφανίζει τα χειριστήρια απόστασης όταν επιλέγονται στοιχεία στη λειτουργία επεξεργασίας ζωντανής προεπισκόπησης. Η προεπιλογή είναι «true».",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Σύνδεση Επεξεργαστή και Προεπισκόπησης",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Σύνδεση του δρομέα του επεξεργαστή με την επισήμανση στοιχείων στη ζωντανή προεπισκόπηση. Όταν είναι ενεργό, η μετακίνηση του δρομέα στον επεξεργαστή επισημαίνει το αντίστοιχο στοιχείο στη ζωντανή προεπισκόπηση, και το κλικ σε ένα στοιχείο στη ζωντανή προεπισκόπηση μεταφέρει τον δρομέα στον πηγαίο κώδικά του. Προεπιλογή: 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "Το '{0}' εμφανίζει μόνο την ιστοσελίδα, το '{1}' συνδέει την ιστοσελίδα με τον κώδικά σας - κάντε κλικ σε στοιχεία για να μεταβείτε στον κώδικά τους και αντίστροφα, το '{2}' παρέχει επισήμανση μαζί με προηγμένη διαχείριση στοιχείων",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "MD_VIEWER_THEME_DESCRIPTION": "Θέμα για τον προβολέα Markdown (φωτεινό ή σκούρο)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Ενσωματωμένο",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Εύρεση αντίστοιχων κανόνων…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "ενσωματωμένο",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Αποθήκευση αλλαγών στον επιλεγμένο στόχο (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Επαναφορά αλλαγών (Esc)"
 });

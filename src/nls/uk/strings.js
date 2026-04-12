@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Помилка відкриття попереднього перегляду у {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Переконайтеся, що браузер {0} встановлено, і спробуйте ще раз.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закріпити або відкріпити сторінку попереднього перегляду",
+  "MD_VIEWER_THEME_DESCRIPTION": "Тема для переглядача Markdown (світла або темна)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (не оновлюється, якщо є помилки)",
   "LIVE_DEV_SETTINGS": "Налаштування попереднього перегляду…",
   "LIVE_DEV_SETTINGS_BANNER": "Налаштуйте власний сервер для попереднього перегляду `<b>{0}</b>` та інших файлів, що обробляються на сервері (PHP, JSP тощо)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Отримати Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ви використали {0}% безкоштовних пошуків зображень ({1} з {2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Зберегти зміни",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Редактор стилів",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Редагувати стилі",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Додати",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Режим редагування",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Інспектувати елемент при наведенні",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Показати виміри",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Показати маркери відступів",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Показувати маркери відступів, коли елементи вибрано в режимі редагування перегляду наживо. За замовчуванням: 'true'",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Зв'язок редактора та живого перегляду",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Зв'язок курсора редактора з підсвічуванням елементів у режимі живого перегляду. Якщо ввімкнено, переміщення курсора в редакторі підсвічує відповідний елемент у режимі живого перегляду, а натискання на елемент у режимі живого перегляду переміщує курсор до його вихідного коду. Значення за замовчуванням: 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "«{0}» показує лише веб-сторінку, «{1}» з'єднує веб-сторінку з вашим кодом — натискайте на елементи, щоб перейти до їхнього коду, і навпаки, «{2}» забезпечує підсвічування та розширені маніпуляції з елементами.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "MD_VIEWER_THEME_DESCRIPTION": "Тема для переглядача Markdown (світла або темна)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Вбудований",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Пошук відповідних правил…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Вбудований",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Зберегти зміни у вибраному об'єкті (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Скасувати зміни (Esc)"
 });

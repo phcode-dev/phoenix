@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "خطا در باز کردن پیش‌نمایش زنده در {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "مطمئن شوید که مرورگر {0} نصب شده است و دوباره امتحان کنید.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "سنجاق کردن یا برداشتن سنجاق صفحه پیش‌نمایش",
+  "MD_VIEWER_THEME_DESCRIPTION": "پوستهٔ نمایشگر مارک‌داون (روشن یا تیره)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "پیش نمایش زنده (به دلیل خطا در سینتکس، بروزرسانی نشده است)",
   "LIVE_DEV_SETTINGS": "تنظیمات پیش‌نمایش زنده…",
   "LIVE_DEV_SETTINGS_BANNER": "برای پیش‌نمایش زنده `<b>{0}</b>` و سایر فایل‌های رندر شده توسط سرور (PHP، JSP و غیره) یک سرور سفارشی تنظیم کنید.",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "در {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "دریافت Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "شما از {0}٪ جستجوهای تصویر رایگان خود استفاده کرده‌اید ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "ذخیره تغییرات",
   "LIVE_DEV_STYLES_PANEL_HEADER": "ویرایشگر استایل",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "ویرایش استایل‌ها",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ افزودن",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "حالت ویرایش",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "بازرسی عنصر هنگام قرارگیری نشانگر",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "نمایش اندازه‌ها",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "نمایش دستگیره‌های فاصله‌گذاری",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "نمایش دستگیره‌های فاصله‌گذاری هنگام انتخاب عناصر در حالت ویرایش پیش‌نمایش زنده. به‌طور پیش‌فرض فعال است.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "اتصال ویرایشگر و پیش‌نمایش",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "مکان‌نمای ویرایشگر را با برجسته‌سازی عناصر در پیش‌نمایش زنده پیوند می‌دهد. وقتی فعال باشد، حرکت مکان‌نما در ویرایشگر، عنصر متناظر را در پیش‌نمایش زنده برجسته می‌کند و کلیک روی یک عنصر در پیش‌نمایش زنده، مکان‌نما را به کد منبع آن منتقل می‌کند. به‌طور پیش‌فرض 'true' است.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "«{0}» فقط صفحه وب را نمایش می‌دهد، «{1}» صفحه وب را به کد شما متصل می‌کند - برای پرش به کد عناصر و بالعکس روی آنها کلیک کنید، «{2}» امکان هایلایت کردن به همراه دستکاری پیشرفتهٔ عناصر را فراهم می‌کند.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "MD_VIEWER_THEME_DESCRIPTION": "پوستهٔ نمایشگر مارک‌داون (روشن یا تیره)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "درون‌خطی",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "در حال یافتن قواعد منطبق…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "جاسازی‌شده",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "ذخیره تغییرات در هدف انتخاب‌شده (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "بازگرداندن تغییرات (Esc)"
 });

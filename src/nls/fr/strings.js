@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Erreur lors de l'ouverture de l'aperçu en direct dans {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Assurez-vous que le navigateur {0} est installé et réessayez.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Épingler ou détacher la page d'aperçu",
+  "MD_VIEWER_THEME_DESCRIPTION": "Thème pour la visionneuse Markdown (clair ou sombre)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Aperçu en direct (échec de la mise à jour en raison d’une erreur de syntaxe)",
   "LIVE_DEV_SETTINGS": "Paramètres de l'aperçu en direct…",
   "LIVE_DEV_SETTINGS_BANNER": "Configurer un serveur personnalisé pour prévisualiser en direct `<b>{0}</b>` et d'autres fichiers rendus par le serveur (PHP, JSP, etc.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "sur {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Passer à Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Vous avez utilisé {0} % de vos recherches d'images gratuites ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Enregistrer les modifications",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Éditeur de styles",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Modifier les styles",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Ajouter",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Mode Édition",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspecter l'élément au survol",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Afficher les mesures",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Afficher les poignées d'espacement",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Affiche les poignées d'espacement lorsque des éléments sont sélectionnés en mode d'édition de l'aperçu en direct. Activé par défaut.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Liaison de l'éditeur et de l'aperçu",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Lie le curseur de l'éditeur à la mise en surbrillance des éléments de l'aperçu en direct. Lorsque cette option est activée, le déplacement du curseur dans l'éditeur met en surbrillance l'élément correspondant dans l'aperçu en direct, et un clic sur un élément dans l'aperçu en direct déplace le curseur vers son code source. Valeur par défaut : 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' affiche uniquement la page web, '{1}' connecte la page web à votre code - cliquez sur les éléments pour accéder à leur code et vice versa, '{2}' fournit une mise en surbrillance ainsi qu'une manipulation avancée des éléments.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "MD_VIEWER_THEME_DESCRIPTION": "Thème pour la visionneuse Markdown (clair ou sombre)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "En ligne",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Recherche de règles correspondantes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporé",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Enregistrer les modifications sur la cible sélectionnée (Entrée)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Annuler les modifications (Échap)"
 });

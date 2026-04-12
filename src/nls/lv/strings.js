@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Kļūda, atverot tiešraides priekšskatījumu programmā {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Pārliecinieties, vai pārlūkprogramma {0} ir instalēta, un mēģiniet vēlreiz.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Piespraust vai atspraust priekšskatījuma lapu",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tēma Markdown skatītājam (gaišs vai tumšs)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Tiešais priekšskatījums (netiek atjaunināts sintakses kļūdas dēļ)",
   "LIVE_DEV_SETTINGS": "Tiešraides priekšskatījuma iestatījumi…",
   "LIVE_DEV_SETTINGS_BANNER": "Iestatiet pielāgotu serveri, lai tiešraidē priekšskatītu `<b>{0}</b>` un citus servera renderētus failus (PHP, JSP, utt.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "vietnē {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Iegūt Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ir izmantoti {0}% no jūsu bezmaksas attēlu meklējumiem ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Saglabāt izmaiņas",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stilu redaktors",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Rediģēt stilus",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Pievienot",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Rediģēšanas režīms",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Pārbaudīt elementu, uzvirzoties",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Rādīt mērījumus",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Rādīt atstarpju rokturus",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Rādīt atstarpju rokturus, kad elementi ir atlasīti tiešsaistes priekšskatījuma rediģēšanas režīmā. Noklusējuma vērtība ir 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Saistīt redaktoru un priekšskatījumu",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Saista redaktora kursoru ar elementu izcelšanu tiešsaistes priekšskatījumā. Kad ieslēgts, pārvietojot kursoru redaktorā, tiek izcelts atbilstošais elements tiešsaistes priekšskatījumā, un, noklikšķinot uz elementa tiešsaistes priekšskatījumā, kursors pāriet uz tā pirmkodu. Noklusējuma vērtība ir 'true'.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' rāda tikai tīmekļa lapu, '{1}' savieno tīmekļa lapu ar jūsu kodu - noklikšķiniet uz elementiem, lai pārietu uz to kodu un otrādi, '{2}' nodrošina iezīmēšanu kopā ar paplašinātu elementu manipulāciju.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tēma Markdown skatītājam (gaišs vai tumšs)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Iekļauts",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Meklē atbilstošās kārtulas…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Iegults",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Saglabāt izmaiņas atlasītajā mērķī (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Atsaukt izmaiņas (Esc)"
 });

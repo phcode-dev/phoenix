@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "خطأ في فتح المعاينة المباشرة في {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "تأكد من تثبيت متصفح {0} وحاول مرة أخرى.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "تثبيت أو إلغاء تثبيت صفحة المعاينة",
+  "MD_VIEWER_THEME_DESCRIPTION": "سمة عارض Markdown (فاتح أو داكن)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "معاينة مباشرة (لا يتم التحديث بسبب خطأ في بناء الجملة)",
   "LIVE_DEV_SETTINGS": "إعدادات المعاينة المباشرة…",
   "LIVE_DEV_SETTINGS_BANNER": "قم بإعداد خادم مخصص لمعاينة `<b>{0}</b>` والملفات الأخرى التي يتم عرضها على الخادم (PHP وJSP، إلخ) بشكل مباشر.",
@@ -511,8 +512,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "وضع التحرير",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "فحص العنصر عند التمرير",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "إظهار القياسات",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "إظهار مقابض التباعد",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "إظهار مقابض التباعد عند تحديد العناصر في وضع تحرير المعاينة المباشرة. القيمة الافتراضية هي 'true'",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "ربط المحرر والمعاينة",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "ربط مؤشر المحرر بتمييز العناصر في المعاينة المباشرة. عند تفعيل هذا الخيار، فإن تحريك المؤشر في المحرر يميّز العنصر المقابل له في المعاينة المباشرة، كما أن النقر على أي عنصر في المعاينة المباشرة ينقل المؤشر إلى شيفرته المصدرية. القيمة الافتراضية هي 'true'.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "يعرض '{0}' صفحة الويب فقط، ويربط '{1}' صفحة الويب بالتعليمات البرمجية الخاصة بك - انقر فوق العناصر للانتقال إلى التعليمات البرمجية الخاصة بها والعكس صحيح، ويوفر '{2}' التمييز إلى جانب المعالجة المتقدمة للعناصر",
@@ -2169,5 +2168,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "MD_VIEWER_THEME_DESCRIPTION": "سمة عارض Markdown (فاتح أو داكن)"
+  "LIVE_DEV_LP_SELBOX_TITLE": "حفظ التغييرات",
+  "LIVE_DEV_LP_SELBOX_INLINE": "مضمن",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "جارٍ البحث عن القواعد المطابقة…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "مضمن",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "حفظ التغييرات في الهدف المحدد (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "التراجع عن التغييرات (Esc)"
 });

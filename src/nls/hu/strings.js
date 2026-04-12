@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Hiba az élő előnézet megnyitásakor a(z) {0} böngészőben",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Győződjön meg róla, hogy a(z) {0} böngésző telepítve van, és próbálja újra.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Előnézeti oldal rögzítése vagy rögzítésének feloldása",
+  "MD_VIEWER_THEME_DESCRIPTION": "A Markdown-megjelenítő témája (világos vagy sötét)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Élő előnézet (nem frissül szintaktikai hiba miatt)",
   "LIVE_DEV_SETTINGS": "Élő előnézet beállításai…",
   "LIVE_DEV_SETTINGS_BANNER": "Állítson be egyéni szervert a `<b>{0}</b>` és más szerveroldalon renderelt fájlok (PHP, JSP, stb.) élő előnézetéhez.",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "a(z) {0} felületen",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Válts Pro-ra",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Az ingyenes képkereséseid {0}%-át használtad fel ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Változtatások mentése",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stílusszerkesztő",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stílusok szerkesztése",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Hozzáadás",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Szerkesztő mód",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Elem vizsgálata rámutatáskor",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Méretek megjelenítése",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Térközfogantyúk megjelenítése",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Térközfogantyúk megjelenítése a kiválasztott elemeken az élő előnézet szerkesztési módjában. Alapértelmezett értéke: 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Szerkesztő és előnézet összekapcsolása",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Összekapcsolja a szerkesztő kurzorát az élő előnézet elemének kiemelésével. Ha engedélyezve van, a kurzor mozgatása a szerkesztőben kiemeli a megfelelő elemet az élő előnézetben, és egy elemre kattintva az élő előnézetben a kurzor a forráskódjához ugrik. Alapértelmezett értéke 'true'.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "A '{0}' csak a weboldalt jeleníti meg, a '{1}' összeköti a weboldalt a kóddal – kattintson az elemekre a kódjukhoz ugráshoz és fordítva, a '{2}' pedig kiemelést és haladó elemkezelést biztosít.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "MD_VIEWER_THEME_DESCRIPTION": "A Markdown-megjelenítő témája (világos vagy sötét)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Soron belüli",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Megfelelő szabályok keresése…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "beágyazott",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Módosítások mentése a kiválasztott célba (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Módosítások visszavonása (Esc)"
 });

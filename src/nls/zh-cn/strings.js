@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "在 {0} 中打开实时预览出错",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "请确保已安装 {0} 浏览器，然后重试。",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "固定或取消固定预览页面",
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown 查看器的主题（浅色或深色）",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "实时预览 (由于语法错误没有更新)",
   "LIVE_DEV_SETTINGS": "实时预览设置…",
   "LIVE_DEV_SETTINGS_BANNER": "设置自定义服务器以实时预览 `<b>{0}</b>` 和其他服务器渲染文件（PHP、JSP 等）",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "于 {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "获取 Pro 版",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "您已使用 {0}% 的免费图片搜索次数 ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "保存更新",
   "LIVE_DEV_STYLES_PANEL_HEADER": "样式编辑器",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "编辑样式",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 添加",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "编辑模式",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "悬停时检查元素",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "显示测量",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "显示间距控制柄",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "在实时预览编辑模式下选中元素时显示间距控制柄。默认启用",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "链接编辑器和预览",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "关联编辑器光标与实时预览的元素高亮。启用后，在编辑器中移动光标会高亮实时预览中的对应元素，点击实时预览中的元素可将光标跳转至其源代码。默认为 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' 仅显示网页，'{1}' 将网页与您的代码连接 - 点击元素可跳转到其代码，反之亦然，'{2}' 提供高亮显示和高级元素操作功能",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "MD_VIEWER_THEME_DESCRIPTION": "Markdown 查看器的主题（浅色或深色）"
+  "LIVE_DEV_LP_SELBOX_INLINE": "内联",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "正在查找匹配的规则…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "嵌入式",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "将更改保存到所选目标 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "撤销更改 (Esc)"
 });
