@@ -167,6 +167,7 @@
   "toolbar.split_view": "Gesplitste weergave",
   "toolbar.switch_to_edit": "Overschakelen naar bewerkmodus",
   "toolbar.switch_to_reader": "Overschakelen naar leesmodus",
+  "toolbar.theme": "Schakel tussen donker/licht thema",
   "toolbar.toc": "Inhoudsopgave",
   "toolbar.zoom_in": "Inzoomen",
   "toolbar.zoom_out": "Uitzoomen",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Bestand openen",
   "welcome.subtitle": "Een prachtige Markdown-viewer",
   "welcome.title": "Kern",
-  "toolbar.theme": "Schakel tussen donker/licht thema"
+  "table.copy_col": "Kolom kopiëren",
+  "table.copy_row": "Rij kopiëren",
+  "table.cut_col": "Kolom knippen",
+  "table.cut_row": "Rij knippen",
+  "table.paste_col": "Kolom rechts plakken",
+  "table.paste_row": "Rij onder plakken"
 }

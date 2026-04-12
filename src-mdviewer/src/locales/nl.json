@@ -187,7 +187,13 @@
     "insert_row_above": "Rij boven invoegen",
     "insert_row_below": "Rij onder invoegen",
     "new_row": "+ Nieuwe rij",
-    "row_options": "Opties voor rij {n}"
+    "row_options": "Opties voor rij {n}",
+    "copy_col": "Kolom kopiëren",
+    "copy_row": "Rij kopiëren",
+    "cut_col": "Kolom knippen",
+    "cut_row": "Rij knippen",
+    "paste_col": "Kolom rechts plakken",
+    "paste_row": "Rij onder plakken"
   },
   "toolbar": {
     "cursor_sync": "Cursorsynchronisatie in-/uitschakelen",
@@ -206,11 +212,11 @@
     "split_view": "Gesplitste weergave",
     "switch_to_edit": "Overschakelen naar bewerkmodus",
     "switch_to_reader": "Overschakelen naar leesmodus",
+    "theme": "Schakel tussen donker/licht thema",
     "toc": "Inhoudsopgave",
     "zoom_in": "Inzoomen",
     "zoom_out": "Uitzoomen",
-    "zoom_reset": "Zoom herstellen",
-    "theme": "Schakel tussen donker/licht thema"
+    "zoom_reset": "Zoom herstellen"
   },
   "trial": {
     "days_remaining": "Nog {days} dagen in proefperiode",

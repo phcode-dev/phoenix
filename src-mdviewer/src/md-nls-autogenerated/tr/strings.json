@@ -167,6 +167,7 @@
   "toolbar.split_view": "Bölünmüş Görünüm",
   "toolbar.switch_to_edit": "Düzenleme moduna geç",
   "toolbar.switch_to_reader": "Okuyucu moduna geç",
+  "toolbar.theme": "Koyu/Açık Temayı Değiştir",
   "toolbar.toc": "İçindekiler",
   "toolbar.zoom_in": "Yakınlaştır",
   "toolbar.zoom_out": "Uzaklaştır",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Dosya Aç",
   "welcome.subtitle": "Harika bir Markdown görüntüleyici",
   "welcome.title": "Kern",
-  "toolbar.theme": "Koyu/Açık Temayı Değiştir"
+  "table.copy_col": "Sütunu kopyala",
+  "table.copy_row": "Satırı kopyala",
+  "table.cut_col": "Sütunu kes",
+  "table.cut_row": "Satırı kes",
+  "table.paste_col": "Sağa sütun yapıştır",
+  "table.paste_row": "Aşağıya satır yapıştır"
 }

@@ -187,7 +187,13 @@
     "insert_row_above": "Lisää rivi yläpuolelle",
     "insert_row_below": "Lisää rivi alapuolelle",
     "new_row": "+ Uusi rivi",
-    "row_options": "Rivin {n} asetukset"
+    "row_options": "Rivin {n} asetukset",
+    "copy_col": "Kopioi sarake",
+    "copy_row": "Kopioi rivi",
+    "cut_col": "Leikkaa sarake",
+    "cut_row": "Leikkaa rivi",
+    "paste_col": "Liitä sarake oikealle",
+    "paste_row": "Liitä rivi alle"
   },
   "toolbar": {
     "cursor_sync": "Kytke kohdistimen synkronointi",
@@ -206,11 +212,11 @@
     "split_view": "Jaettu näkymä",
     "switch_to_edit": "Vaihda muokkaustilaan",
     "switch_to_reader": "Vaihda lukutilaan",
+    "theme": "Vaihda tumma/vaalea teema",
     "toc": "Sisällysluettelo",
     "zoom_in": "Lähennä",
     "zoom_out": "Loitonna",
-    "zoom_reset": "Nollaa zoomaus",
-    "theme": "Vaihda tumma/vaalea teema"
+    "zoom_reset": "Nollaa zoomaus"
   },
   "trial": {
     "days_remaining": "{days} päivää kokeiluaikaa jäljellä",

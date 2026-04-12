@@ -167,6 +167,7 @@
   "toolbar.split_view": "分屏视图",
   "toolbar.switch_to_edit": "切换到编辑模式",
   "toolbar.switch_to_reader": "切换到阅读模式",
+  "toolbar.theme": "切换深色/浅色主题",
   "toolbar.toc": "目录",
   "toolbar.zoom_in": "放大",
   "toolbar.zoom_out": "缩小",
@@ -190,5 +191,10 @@
   "welcome.open_button": "打开文件",
   "welcome.subtitle": "优雅的 Markdown 阅读器",
   "welcome.title": "Kern",
-  "toolbar.theme": "切换深色/浅色主题"
+  "table.copy_col": "复制列",
+  "table.copy_row": "复制行",
+  "table.cut_col": "剪切列",
+  "table.cut_row": "剪切行",
+  "table.paste_col": "在右侧粘贴列",
+  "table.paste_row": "在下方粘贴行"
 }

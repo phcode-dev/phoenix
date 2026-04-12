@@ -187,7 +187,13 @@
     "insert_row_above": "Wstaw wiersz powyżej",
     "insert_row_below": "Wstaw wiersz poniżej",
     "new_row": "+ Nowy wiersz",
-    "row_options": "Opcje wiersza {n}"
+    "row_options": "Opcje wiersza {n}",
+    "copy_col": "Kopiuj kolumnę",
+    "copy_row": "Kopiuj wiersz",
+    "cut_col": "Wytnij kolumnę",
+    "cut_row": "Wytnij wiersz",
+    "paste_col": "Wklej kolumnę po prawej",
+    "paste_row": "Wklej wiersz poniżej"
   },
   "toolbar": {
     "cursor_sync": "Przełącz synchronizację kursora",
@@ -206,11 +212,11 @@
     "split_view": "Widok podzielony",
     "switch_to_edit": "Przełącz na tryb edycji",
     "switch_to_reader": "Przełącz na tryb czytnika",
+    "theme": "Przełącz motyw ciemny/jasny",
     "toc": "Spis treści",
     "zoom_in": "Powiększ",
     "zoom_out": "Pomniejsz",
-    "zoom_reset": "Resetuj powiększenie",
-    "theme": "Przełącz motyw ciemny/jasny"
+    "zoom_reset": "Resetuj powiększenie"
   },
   "trial": {
     "days_remaining": "Pozostało {days} dni okresu próbnego",

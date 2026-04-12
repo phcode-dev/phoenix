@@ -167,6 +167,7 @@
   "toolbar.split_view": "Geteilte Ansicht",
   "toolbar.switch_to_edit": "In den Bearbeitungsmodus wechseln",
   "toolbar.switch_to_reader": "In den Lesemodus wechseln",
+  "toolbar.theme": "Dunkles/Helles Thema umschalten",
   "toolbar.toc": "Inhaltsverzeichnis",
   "toolbar.zoom_in": "Vergrößern",
   "toolbar.zoom_out": "Verkleinern",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Datei öffnen",
   "welcome.subtitle": "Ein schöner Markdown-Betrachter",
   "welcome.title": "Kern",
-  "toolbar.theme": "Dunkles/Helles Thema umschalten"
+  "table.copy_col": "Spalte kopieren",
+  "table.copy_row": "Zeile kopieren",
+  "table.cut_col": "Spalte ausschneiden",
+  "table.cut_row": "Zeile ausschneiden",
+  "table.paste_col": "Spalte rechts einfügen",
+  "table.paste_row": "Zeile unten einfügen"
 }

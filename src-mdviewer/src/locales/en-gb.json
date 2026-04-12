@@ -187,7 +187,13 @@
     "insert_row_above": "Insert row above",
     "insert_row_below": "Insert row below",
     "new_row": "+ New row",
-    "row_options": "Row {n} options"
+    "row_options": "Row {n} options",
+    "copy_col": "Copy column",
+    "copy_row": "Copy row",
+    "cut_col": "Cut column",
+    "cut_row": "Cut row",
+    "paste_col": "Paste column right",
+    "paste_row": "Paste row below"
   },
   "toolbar": {
     "cursor_sync": "Toggle cursor sync",
@@ -206,11 +212,11 @@
     "split_view": "Split View",
     "switch_to_edit": "Switch to edit mode",
     "switch_to_reader": "Switch to reader mode",
+    "theme": "Toggle Dark/Light Theme",
     "toc": "Table of Contents",
     "zoom_in": "Zoom In",
     "zoom_out": "Zoom Out",
-    "zoom_reset": "Reset Zoom",
-    "theme": "Toggle Dark/Light Theme"
+    "zoom_reset": "Reset Zoom"
   },
   "trial": {
     "days_remaining": "{days} days left in trial",

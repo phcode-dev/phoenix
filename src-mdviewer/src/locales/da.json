@@ -187,7 +187,13 @@
     "insert_row_above": "Indsæt række ovenfor",
     "insert_row_below": "Indsæt række nedenfor",
     "new_row": "+ Ny række",
-    "row_options": "Indstillinger for række {n}"
+    "row_options": "Indstillinger for række {n}",
+    "copy_col": "Kopiér kolonne",
+    "copy_row": "Kopiér række",
+    "cut_col": "Klip kolonne",
+    "cut_row": "Klip række",
+    "paste_col": "Indsæt kolonne til højre",
+    "paste_row": "Indsæt række under"
   },
   "toolbar": {
     "cursor_sync": "Skift cursorsynkronisering",
@@ -206,11 +212,11 @@
     "split_view": "Opdelt visning",
     "switch_to_edit": "Skift til redigeringstilstand",
     "switch_to_reader": "Skift til læsetilstand",
+    "theme": "Skift mørkt/lyst tema",
     "toc": "Indholdsfortegnelse",
     "zoom_in": "Zoom ind",
     "zoom_out": "Zoom ud",
-    "zoom_reset": "Nulstil zoom",
-    "theme": "Skift mørkt/lyst tema"
+    "zoom_reset": "Nulstil zoom"
   },
   "trial": {
     "days_remaining": "{days} dage tilbage af prøveperioden",

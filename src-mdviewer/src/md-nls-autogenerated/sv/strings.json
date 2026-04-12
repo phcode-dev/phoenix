@@ -167,6 +167,7 @@
   "toolbar.split_view": "Delad vy",
   "toolbar.switch_to_edit": "Växla till redigeringsläge",
   "toolbar.switch_to_reader": "Växla till läsläge",
+  "toolbar.theme": "Växla mörkt/ljust tema",
   "toolbar.toc": "Innehållsförteckning",
   "toolbar.zoom_in": "Zooma in",
   "toolbar.zoom_out": "Zooma ut",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Öppna fil",
   "welcome.subtitle": "En vacker Markdown-visare",
   "welcome.title": "Kern",
-  "toolbar.theme": "Växla mörkt/ljust tema"
+  "table.copy_col": "Kopiera kolumn",
+  "table.copy_row": "Kopiera rad",
+  "table.cut_col": "Klipp ut kolumn",
+  "table.cut_row": "Klipp ut rad",
+  "table.paste_col": "Klistra in kolumn till höger",
+  "table.paste_row": "Klistra in rad nedanför"
 }

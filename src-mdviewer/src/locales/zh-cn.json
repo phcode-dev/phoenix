@@ -187,7 +187,13 @@
     "insert_row_above": "在上方插入行",
     "insert_row_below": "在下方插入行",
     "new_row": "+ 新增行",
-    "row_options": "第 {n} 行选项"
+    "row_options": "第 {n} 行选项",
+    "copy_col": "复制列",
+    "copy_row": "复制行",
+    "cut_col": "剪切列",
+    "cut_row": "剪切行",
+    "paste_col": "在右侧粘贴列",
+    "paste_row": "在下方粘贴行"
   },
   "toolbar": {
     "cursor_sync": "切换光标同步",
@@ -206,11 +212,11 @@
     "split_view": "分屏视图",
     "switch_to_edit": "切换到编辑模式",
     "switch_to_reader": "切换到阅读模式",
+    "theme": "切换深色/浅色主题",
     "toc": "目录",
     "zoom_in": "放大",
     "zoom_out": "缩小",
-    "zoom_reset": "重置缩放",
-    "theme": "切换深色/浅色主题"
+    "zoom_reset": "重置缩放"
   },
   "trial": {
     "days_remaining": "试用期剩余 {days} 天",

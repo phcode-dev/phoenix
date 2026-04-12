@@ -167,6 +167,7 @@
   "toolbar.split_view": "Tampilan Terpisah",
   "toolbar.switch_to_edit": "Beralih ke mode sunting",
   "toolbar.switch_to_reader": "Beralih ke mode baca",
+  "toolbar.theme": "Alihkan Tema Gelap/Terang",
   "toolbar.toc": "Daftar Isi",
   "toolbar.zoom_in": "Perbesar",
   "toolbar.zoom_out": "Perkecil",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Buka File",
   "welcome.subtitle": "Penampil Markdown yang indah",
   "welcome.title": "Kern",
-  "toolbar.theme": "Alihkan Tema Gelap/Terang"
+  "table.copy_col": "Salin kolom",
+  "table.copy_row": "Salin baris",
+  "table.cut_col": "Potong kolom",
+  "table.cut_row": "Potong baris",
+  "table.paste_col": "Tempel kolom kanan",
+  "table.paste_row": "Tempel baris di bawah"
 }

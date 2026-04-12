@@ -167,6 +167,7 @@
   "toolbar.split_view": "분할 보기",
   "toolbar.switch_to_edit": "편집 모드로 전환",
   "toolbar.switch_to_reader": "리더 모드로 전환",
+  "toolbar.theme": "어두운/밝은 테마 전환",
   "toolbar.toc": "목차",
   "toolbar.zoom_in": "확대",
   "toolbar.zoom_out": "축소",
@@ -190,5 +191,10 @@
   "welcome.open_button": "파일 열기",
   "welcome.subtitle": "아름다운 마크다운 뷰어",
   "welcome.title": "Kern",
-  "toolbar.theme": "어두운/밝은 테마 전환"
+  "table.copy_col": "열 복사",
+  "table.copy_row": "행 복사",
+  "table.cut_col": "열 잘라내기",
+  "table.cut_row": "행 잘라내기",
+  "table.paste_col": "오른쪽에 열 붙여넣기",
+  "table.paste_row": "아래에 행 붙여넣기"
 }

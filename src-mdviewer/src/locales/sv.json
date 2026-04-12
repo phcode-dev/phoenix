@@ -187,7 +187,13 @@
     "insert_row_above": "Infoga rad ovanför",
     "insert_row_below": "Infoga rad nedanför",
     "new_row": "+ Ny rad",
-    "row_options": "Alternativ för rad {n}"
+    "row_options": "Alternativ för rad {n}",
+    "copy_col": "Kopiera kolumn",
+    "copy_row": "Kopiera rad",
+    "cut_col": "Klipp ut kolumn",
+    "cut_row": "Klipp ut rad",
+    "paste_col": "Klistra in kolumn till höger",
+    "paste_row": "Klistra in rad nedanför"
   },
   "toolbar": {
     "cursor_sync": "Växla markörsynkronisering",
@@ -206,11 +212,11 @@
     "split_view": "Delad vy",
     "switch_to_edit": "Växla till redigeringsläge",
     "switch_to_reader": "Växla till läsläge",
+    "theme": "Växla mörkt/ljust tema",
     "toc": "Innehållsförteckning",
     "zoom_in": "Zooma in",
     "zoom_out": "Zooma ut",
-    "zoom_reset": "Återställ zoom",
-    "theme": "Växla mörkt/ljust tema"
+    "zoom_reset": "Återställ zoom"
   },
   "trial": {
     "days_remaining": "{days} dagar kvar av provperioden",

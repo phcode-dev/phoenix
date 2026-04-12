@@ -187,7 +187,13 @@
     "insert_row_above": "Yukarıya satır ekle",
     "insert_row_below": "Aşağıya satır ekle",
     "new_row": "+ Yeni satır",
-    "row_options": "{n}. satır seçenekleri"
+    "row_options": "{n}. satır seçenekleri",
+    "copy_col": "Sütunu kopyala",
+    "copy_row": "Satırı kopyala",
+    "cut_col": "Sütunu kes",
+    "cut_row": "Satırı kes",
+    "paste_col": "Sağa sütun yapıştır",
+    "paste_row": "Aşağıya satır yapıştır"
   },
   "toolbar": {
     "cursor_sync": "İmleç senkronizasyonunu aç/kapat",
@@ -206,11 +212,11 @@
     "split_view": "Bölünmüş Görünüm",
     "switch_to_edit": "Düzenleme moduna geç",
     "switch_to_reader": "Okuyucu moduna geç",
+    "theme": "Koyu/Açık Temayı Değiştir",
     "toc": "İçindekiler",
     "zoom_in": "Yakınlaştır",
     "zoom_out": "Uzaklaştır",
-    "zoom_reset": "Yakınlaştırmayı Sıfırla",
-    "theme": "Koyu/Açık Temayı Değiştir"
+    "zoom_reset": "Yakınlaştırmayı Sıfırla"
   },
   "trial": {
     "days_remaining": "Deneme süresinin bitmesine {days} gün kaldı",

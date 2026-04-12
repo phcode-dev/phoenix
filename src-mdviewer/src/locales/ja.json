@@ -187,7 +187,13 @@
     "insert_row_above": "上に行を挿入",
     "insert_row_below": "下に行を挿入",
     "new_row": "+ 新しい行",
-    "row_options": "行 {n} のオプション"
+    "row_options": "行 {n} のオプション",
+    "copy_col": "列をコピー",
+    "copy_row": "行をコピー",
+    "cut_col": "列を切り取り",
+    "cut_row": "行を切り取り",
+    "paste_col": "列を右に貼り付け",
+    "paste_row": "行を下に貼り付け"
   },
   "toolbar": {
     "cursor_sync": "カーソル同期の切り替え",
@@ -206,11 +212,11 @@
     "split_view": "分割表示",
     "switch_to_edit": "編集モードに切り替え",
     "switch_to_reader": "リーダーモードに切り替え",
+    "theme": "ダーク／ライトテーマの切り替え",
     "toc": "目次",
     "zoom_in": "拡大",
     "zoom_out": "縮小",
-    "zoom_reset": "ズームをリセット",
-    "theme": "ダーク／ライトテーマの切り替え"
+    "zoom_reset": "ズームをリセット"
   },
   "trial": {
     "days_remaining": "試用期間の残り {days} 日",

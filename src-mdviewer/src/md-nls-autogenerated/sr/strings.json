@@ -167,6 +167,7 @@
   "toolbar.split_view": "Подељени приказ",
   "toolbar.switch_to_edit": "Пређи у режим за уређивање",
   "toolbar.switch_to_reader": "Пређи у режим за читање",
+  "toolbar.theme": "Промени тамну/светлу тему",
   "toolbar.toc": "Садржај",
   "toolbar.zoom_in": "Увећај",
   "toolbar.zoom_out": "Умањи",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Отвори датотеку",
   "welcome.subtitle": "Прелеп Markdown прегледач",
   "welcome.title": "Kern",
-  "toolbar.theme": "Промени тамну/светлу тему"
+  "table.copy_col": "Копирај колону",
+  "table.copy_row": "Копирај ред",
+  "table.cut_col": "Исеци колону",
+  "table.cut_row": "Исеци ред",
+  "table.paste_col": "Налепи колону десно",
+  "table.paste_row": "Налепи ред испод"
 }

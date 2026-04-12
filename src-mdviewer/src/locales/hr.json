@@ -187,7 +187,13 @@
     "insert_row_above": "Umetni redak iznad",
     "insert_row_below": "Umetni redak ispod",
     "new_row": "+ Novi redak",
-    "row_options": "Opcije retka {n}"
+    "row_options": "Opcije retka {n}",
+    "copy_col": "Kopiraj stupac",
+    "copy_row": "Kopiraj redak",
+    "cut_col": "Izreži stupac",
+    "cut_row": "Izreži redak",
+    "paste_col": "Zalijepi stupac desno",
+    "paste_row": "Zalijepi redak ispod"
   },
   "toolbar": {
     "cursor_sync": "Prebaci sinkronizaciju kursora",
@@ -206,11 +212,11 @@
     "split_view": "Podijeljeni prikaz",
     "switch_to_edit": "Prebaci u način za uređivanje",
     "switch_to_reader": "Prebaci u način za čitanje",
+    "theme": "Prebaci tamnu/svijetlu temu",
     "toc": "Sadržaj",
     "zoom_in": "Povećaj",
     "zoom_out": "Smanji",
-    "zoom_reset": "Poništi zumiranje",
-    "theme": "Prebaci tamnu/svijetlu temu"
+    "zoom_reset": "Poništi zumiranje"
   },
   "trial": {
     "days_remaining": "Preostalo {days} dana u probnom razdoblju",

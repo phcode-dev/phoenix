@@ -167,6 +167,7 @@
   "toolbar.split_view": "分割表示",
   "toolbar.switch_to_edit": "編集モードに切り替え",
   "toolbar.switch_to_reader": "リーダーモードに切り替え",
+  "toolbar.theme": "ダーク／ライトテーマの切り替え",
   "toolbar.toc": "目次",
   "toolbar.zoom_in": "拡大",
   "toolbar.zoom_out": "縮小",
@@ -190,5 +191,10 @@
   "welcome.open_button": "ファイルを開く",
   "welcome.subtitle": "美しいMarkdownビューア",
   "welcome.title": "Kern",
-  "toolbar.theme": "ダーク／ライトテーマの切り替え"
+  "table.copy_col": "列をコピー",
+  "table.copy_row": "行をコピー",
+  "table.cut_col": "列を切り取り",
+  "table.cut_row": "行を切り取り",
+  "table.paste_col": "列を右に貼り付け",
+  "table.paste_row": "行を下に貼り付け"
 }

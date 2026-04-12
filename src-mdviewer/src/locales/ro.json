@@ -187,7 +187,13 @@
     "insert_row_above": "Inserează rând deasupra",
     "insert_row_below": "Inserează rând dedesubt",
     "new_row": "+ Rând nou",
-    "row_options": "Opțiuni rând {n}"
+    "row_options": "Opțiuni rând {n}",
+    "copy_col": "Copiază coloana",
+    "copy_row": "Copiază rândul",
+    "cut_col": "Decupează coloana",
+    "cut_row": "Decupează rândul",
+    "paste_col": "Lipește coloana la dreapta",
+    "paste_row": "Lipește rândul dedesubt"
   },
   "toolbar": {
     "cursor_sync": "Comută sincronizarea cursorului",
@@ -206,11 +212,11 @@
     "split_view": "Vizualizare divizată",
     "switch_to_edit": "Comutați la modul editare",
     "switch_to_reader": "Comutați la modul citire",
+    "theme": "Comutare temă întunecată/luminoasă",
     "toc": "Cuprins",
     "zoom_in": "Mărire",
     "zoom_out": "Micșorare",
-    "zoom_reset": "Resetare zoom",
-    "theme": "Comutare temă întunecată/luminoasă"
+    "zoom_reset": "Resetare zoom"
   },
   "trial": {
     "days_remaining": "{days} zile rămase din perioada de probă",

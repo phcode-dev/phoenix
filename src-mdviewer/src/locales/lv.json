@@ -187,7 +187,13 @@
     "insert_row_above": "Ievietot rindu virs",
     "insert_row_below": "Ievietot rindu zem",
     "new_row": "+ Jauna rinda",
-    "row_options": "Rindas {n} opcijas"
+    "row_options": "Rindas {n} opcijas",
+    "copy_col": "Kopēt kolonnu",
+    "copy_row": "Kopēt rindu",
+    "cut_col": "Izgriezt kolonnu",
+    "cut_row": "Izgriezt rindu",
+    "paste_col": "Ielīmēt kolonnu pa labi",
+    "paste_row": "Ielīmēt rindu zemāk"
   },
   "toolbar": {
     "cursor_sync": "Pārslēgt kursoru sinhronizāciju",
@@ -206,11 +212,11 @@
     "split_view": "Dalīts skats",
     "switch_to_edit": "Pārslēgties uz rediģēšanas režīmu",
     "switch_to_reader": "Pārslēgties uz lasīšanas režīmu",
+    "theme": "Pārslēgt tumšo/gaišo tēmu",
     "toc": "Satura rādītājs",
     "zoom_in": "Tuvināt",
     "zoom_out": "Tālināt",
-    "zoom_reset": "Atiestatīt tālummaiņu",
-    "theme": "Pārslēgt tumšo/gaišo tēmu"
+    "zoom_reset": "Atiestatīt tālummaiņu"
   },
   "trial": {
     "days_remaining": "Atlikušas {days} dienas izmēģinājuma periodā",

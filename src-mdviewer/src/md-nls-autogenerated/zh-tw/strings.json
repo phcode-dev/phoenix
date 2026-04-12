@@ -167,6 +167,7 @@
   "toolbar.split_view": "分割檢視",
   "toolbar.switch_to_edit": "切換至編輯模式",
   "toolbar.switch_to_reader": "切換至閱讀模式",
+  "toolbar.theme": "切換深色／淺色主題",
   "toolbar.toc": "目錄",
   "toolbar.zoom_in": "放大",
   "toolbar.zoom_out": "縮小",
@@ -190,5 +191,10 @@
   "welcome.open_button": "開啟檔案",
   "welcome.subtitle": "精美的 Markdown 檢視器",
   "welcome.title": "Kern",
-  "toolbar.theme": "切換深色／淺色主題"
+  "table.copy_col": "複製欄",
+  "table.copy_row": "複製列",
+  "table.cut_col": "剪下欄",
+  "table.cut_row": "剪下列",
+  "table.paste_col": "向右貼上欄",
+  "table.paste_row": "在下方貼上列"
 }

@@ -167,6 +167,7 @@
   "toolbar.split_view": "Opdelt visning",
   "toolbar.switch_to_edit": "Skift til redigeringstilstand",
   "toolbar.switch_to_reader": "Skift til læsetilstand",
+  "toolbar.theme": "Skift mørkt/lyst tema",
   "toolbar.toc": "Indholdsfortegnelse",
   "toolbar.zoom_in": "Zoom ind",
   "toolbar.zoom_out": "Zoom ud",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Åbn fil",
   "welcome.subtitle": "En smuk Markdown-fremviser",
   "welcome.title": "Kern",
-  "toolbar.theme": "Skift mørkt/lyst tema"
+  "table.copy_col": "Kopiér kolonne",
+  "table.copy_row": "Kopiér række",
+  "table.cut_col": "Klip kolonne",
+  "table.cut_row": "Klip række",
+  "table.paste_col": "Indsæt kolonne til højre",
+  "table.paste_row": "Indsæt række under"
 }

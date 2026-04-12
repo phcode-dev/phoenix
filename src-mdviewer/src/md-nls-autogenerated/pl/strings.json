@@ -167,6 +167,7 @@
   "toolbar.split_view": "Widok podzielony",
   "toolbar.switch_to_edit": "Przełącz na tryb edycji",
   "toolbar.switch_to_reader": "Przełącz na tryb czytnika",
+  "toolbar.theme": "Przełącz motyw ciemny/jasny",
   "toolbar.toc": "Spis treści",
   "toolbar.zoom_in": "Powiększ",
   "toolbar.zoom_out": "Pomniejsz",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Otwórz plik",
   "welcome.subtitle": "Piękna przeglądarka Markdown",
   "welcome.title": "Kern",
-  "toolbar.theme": "Przełącz motyw ciemny/jasny"
+  "table.copy_col": "Kopiuj kolumnę",
+  "table.copy_row": "Kopiuj wiersz",
+  "table.cut_col": "Wytnij kolumnę",
+  "table.cut_row": "Wytnij wiersz",
+  "table.paste_col": "Wklej kolumnę po prawej",
+  "table.paste_row": "Wklej wiersz poniżej"
 }
