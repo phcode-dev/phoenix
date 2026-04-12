@@ -34,7 +34,8 @@ import {
     Image as ImageIcon,
     Upload,
     Sun,
-    Moon
+    Moon,
+    Crown
 } from "lucide";
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
@@ -57,7 +58,7 @@ const _isMacWebKit = /Mac/.test(navigator.platform)
     && !/Chrome|CriOS|Edg|Firefox|FxiOS/.test(navigator.userAgent);
 
 const allIcons = { Bold, Italic, Strikethrough, Underline, Code, Link, List, ListOrdered,
-    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer, Image: ImageIcon, Upload, Sun, Moon };
+    ListChecks, Quote, Minus, Table, FileCode, ChevronDown, Type, MoreHorizontal, Pencil, BookOpen, Link2, Link2Off, Printer, Image: ImageIcon, Upload, Sun, Moon, Crown };
 
 export function initEmbeddedToolbar() {
     toolbar = document.getElementById("toolbar");
@@ -67,6 +68,7 @@ export function initEmbeddedToolbar() {
 
     on("state:editMode", () => render());
     on("state:theme", () => render());
+    on("state:isPro", () => render());
     on("editor:selection-state", updateFormatState);
     on("state:locale", () => render());
 }
@@ -102,9 +104,10 @@ function renderReadMode() {
             <i data-lucide="link-2" class="sync-on-icon"${cursorSyncEnabled ? "" : ' style="display:none"'}></i>
             <i data-lucide="link-2-off" class="sync-off-icon"${cursorSyncEnabled ? ' style="display:none"' : ""}></i>
         </button>
-        <button class="edit-toggle-btn" id="emb-edit-btn" title="${t("toolbar.switch_to_edit") || "Switch to edit mode"}">
+        <button class="edit-toggle-btn${getState().isPro === false ? " pro-locked" : ""}" id="emb-edit-btn" title="${t("toolbar.switch_to_edit") || "Switch to edit mode"}">
             <i data-lucide="pencil"></i>
             <span>${t("toolbar.edit") || "Edit"}</span>
+            ${getState().isPro === false ? '<i data-lucide="crown" class="pro-crown-icon"></i>' : ""}
         </button>
     </div>`;
 

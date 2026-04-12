@@ -269,6 +269,9 @@ export function initBridge() {
             case "MDVIEWR_SET_THEME":
                 handleSetTheme(data);
                 break;
+            case "MDVIEWR_SET_PRO_STATUS":
+                setState({ isPro: !!data.isPro });
+                break;
             case "MDVIEWR_SET_EDIT_MODE":
                 handleSetEditMode(data);
                 break;
