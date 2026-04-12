@@ -167,6 +167,7 @@
   "toolbar.split_view": "Osztott nézet",
   "toolbar.switch_to_edit": "Váltás szerkesztő módra",
   "toolbar.switch_to_reader": "Váltás olvasó módra",
+  "toolbar.theme": "Sötét/Világos téma váltása",
   "toolbar.toc": "Tartalomjegyzék",
   "toolbar.zoom_in": "Nagyítás",
   "toolbar.zoom_out": "Kicsinyítés",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Fájl megnyitása",
   "welcome.subtitle": "Egy gyönyörű Markdown megjelenítő",
   "welcome.title": "Kern",
-  "toolbar.theme": "Sötét/Világos téma váltása"
+  "table.copy_col": "Oszlop másolása",
+  "table.copy_row": "Sor másolása",
+  "table.cut_col": "Oszlop kivágása",
+  "table.cut_row": "Sor kivágása",
+  "table.paste_col": "Oszlop beillesztése jobbra",
+  "table.paste_row": "Sor beillesztése alá"
 }

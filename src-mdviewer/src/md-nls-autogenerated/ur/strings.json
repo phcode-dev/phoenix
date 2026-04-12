@@ -167,6 +167,7 @@
   "toolbar.split_view": "تقسیم نظارہ",
   "toolbar.switch_to_edit": "ترمیم موڈ پر سوئچ کریں",
   "toolbar.switch_to_reader": "ریڈر موڈ پر سوئچ کریں",
+  "toolbar.theme": "تاریک/روشن تھیم بدلیں",
   "toolbar.toc": "فہرست مضامین",
   "toolbar.zoom_in": "زوم ان",
   "toolbar.zoom_out": "زوم آؤٹ",
@@ -190,5 +191,10 @@
   "welcome.open_button": "فائل کھولیں",
   "welcome.subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
   "welcome.title": "Kern",
-  "toolbar.theme": "تاریک/روشن تھیم بدلیں"
+  "table.copy_col": "کالم کاپی کریں",
+  "table.copy_row": "قطار کاپی کریں",
+  "table.cut_col": "کالم کٹ کریں",
+  "table.cut_row": "قطار کٹ کریں",
+  "table.paste_col": "کالم دائیں پیسٹ کریں",
+  "table.paste_row": "قطار نیچے پیسٹ کریں"
 }

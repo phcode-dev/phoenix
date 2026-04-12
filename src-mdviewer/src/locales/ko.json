@@ -187,7 +187,13 @@
     "insert_row_above": "위에 행 삽입",
     "insert_row_below": "아래에 행 삽입",
     "new_row": "+ 새 행",
-    "row_options": "행 {n} 옵션"
+    "row_options": "행 {n} 옵션",
+    "copy_col": "열 복사",
+    "copy_row": "행 복사",
+    "cut_col": "열 잘라내기",
+    "cut_row": "행 잘라내기",
+    "paste_col": "오른쪽에 열 붙여넣기",
+    "paste_row": "아래에 행 붙여넣기"
   },
   "toolbar": {
     "cursor_sync": "커서 동기화 전환",
@@ -206,11 +212,11 @@
     "split_view": "분할 보기",
     "switch_to_edit": "편집 모드로 전환",
     "switch_to_reader": "리더 모드로 전환",
+    "theme": "어두운/밝은 테마 전환",
     "toc": "목차",
     "zoom_in": "확대",
     "zoom_out": "축소",
-    "zoom_reset": "배율 초기화",
-    "theme": "어두운/밝은 테마 전환"
+    "zoom_reset": "배율 초기화"
   },
   "trial": {
     "days_remaining": "체험판 {days}일 남음",

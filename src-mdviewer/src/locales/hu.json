@@ -187,7 +187,13 @@
     "insert_row_above": "Sor beszúrása fölé",
     "insert_row_below": "Sor beszúrása alá",
     "new_row": "+ Új sor",
-    "row_options": "{n}. sor beállításai"
+    "row_options": "{n}. sor beállításai",
+    "copy_col": "Oszlop másolása",
+    "copy_row": "Sor másolása",
+    "cut_col": "Oszlop kivágása",
+    "cut_row": "Sor kivágása",
+    "paste_col": "Oszlop beillesztése jobbra",
+    "paste_row": "Sor beillesztése alá"
   },
   "toolbar": {
     "cursor_sync": "Kurzor szinkronizálás váltása",
@@ -206,11 +212,11 @@
     "split_view": "Osztott nézet",
     "switch_to_edit": "Váltás szerkesztő módra",
     "switch_to_reader": "Váltás olvasó módra",
+    "theme": "Sötét/Világos téma váltása",
     "toc": "Tartalomjegyzék",
     "zoom_in": "Nagyítás",
     "zoom_out": "Kicsinyítés",
-    "zoom_reset": "Nagyítás visszaállítása",
-    "theme": "Sötét/Világos téma váltása"
+    "zoom_reset": "Nagyítás visszaállítása"
   },
   "trial": {
     "days_remaining": "{days} nap van hátra a próbaidőszakból",

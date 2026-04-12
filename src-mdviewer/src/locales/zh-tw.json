@@ -187,7 +187,13 @@
     "insert_row_above": "在上方插入列",
     "insert_row_below": "在下方插入列",
     "new_row": "+ 新增列",
-    "row_options": "第 {n} 列選項"
+    "row_options": "第 {n} 列選項",
+    "copy_col": "複製欄",
+    "copy_row": "複製列",
+    "cut_col": "剪下欄",
+    "cut_row": "剪下列",
+    "paste_col": "向右貼上欄",
+    "paste_row": "在下方貼上列"
   },
   "toolbar": {
     "cursor_sync": "切換游標同步",
@@ -206,11 +212,11 @@
     "split_view": "分割檢視",
     "switch_to_edit": "切換至編輯模式",
     "switch_to_reader": "切換至閱讀模式",
+    "theme": "切換深色／淺色主題",
     "toc": "目錄",
     "zoom_in": "放大",
     "zoom_out": "縮小",
-    "zoom_reset": "重設縮放",
-    "theme": "切換深色／淺色主題"
+    "zoom_reset": "重設縮放"
   },
   "trial": {
     "days_remaining": "試用期剩餘 {days} 天",

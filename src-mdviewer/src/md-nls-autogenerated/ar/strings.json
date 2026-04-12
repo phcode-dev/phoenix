@@ -167,6 +167,7 @@
   "toolbar.split_view": "عرض مقسّم",
   "toolbar.switch_to_edit": "التبديل إلى وضع التحرير",
   "toolbar.switch_to_reader": "التبديل إلى وضع القارئ",
+  "toolbar.theme": "تبديل المظهر الداكن/الفاتح",
   "toolbar.toc": "جدول المحتويات",
   "toolbar.zoom_in": "تكبير",
   "toolbar.zoom_out": "تصغير",
@@ -190,5 +191,10 @@
   "welcome.open_button": "فتح ملف",
   "welcome.subtitle": "عارض ماركداون أنيق",
   "welcome.title": "Kern",
-  "toolbar.theme": "تبديل المظهر الداكن/الفاتح"
+  "table.copy_col": "نسخ العمود",
+  "table.copy_row": "نسخ الصف",
+  "table.cut_col": "قص العمود",
+  "table.cut_row": "قص الصف",
+  "table.paste_col": "لصق العمود يمينًا",
+  "table.paste_row": "لصق الصف أسفل"
 }

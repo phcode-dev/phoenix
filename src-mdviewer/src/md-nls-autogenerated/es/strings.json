@@ -167,6 +167,7 @@
   "toolbar.split_view": "Vista dividida",
   "toolbar.switch_to_edit": "Cambiar a modo de edición",
   "toolbar.switch_to_reader": "Cambiar a modo de lectura",
+  "toolbar.theme": "Alternar tema oscuro/claro",
   "toolbar.toc": "Tabla de contenidos",
   "toolbar.zoom_in": "Acercar",
   "toolbar.zoom_out": "Alejar",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Abrir archivo",
   "welcome.subtitle": "Un hermoso visor de Markdown",
   "welcome.title": "Kern",
-  "toolbar.theme": "Alternar tema oscuro/claro"
+  "table.copy_col": "Copiar columna",
+  "table.copy_row": "Copiar fila",
+  "table.cut_col": "Cortar columna",
+  "table.cut_row": "Cortar fila",
+  "table.paste_col": "Pegar columna a la derecha",
+  "table.paste_row": "Pegar fila debajo"
 }

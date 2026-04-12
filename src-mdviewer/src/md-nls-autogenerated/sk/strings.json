@@ -167,6 +167,7 @@
   "toolbar.split_view": "Rozdelené zobrazenie",
   "toolbar.switch_to_edit": "Prepnúť do režimu úprav",
   "toolbar.switch_to_reader": "Prepnúť do režimu čítačky",
+  "toolbar.theme": "Prepnúť tmavú/svetlú tému",
   "toolbar.toc": "Obsah",
   "toolbar.zoom_in": "Priblížiť",
   "toolbar.zoom_out": "Oddialiť",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Otvoriť súbor",
   "welcome.subtitle": "Krásny prehliadač Markdownu",
   "welcome.title": "Kern",
-  "toolbar.theme": "Prepnúť tmavú/svetlú tému"
+  "table.copy_col": "Kopírovať stĺpec",
+  "table.copy_row": "Kopírovať riadok",
+  "table.cut_col": "Vystrihnúť stĺpec",
+  "table.cut_row": "Vystrihnúť riadok",
+  "table.paste_col": "Vložiť stĺpec napravo",
+  "table.paste_row": "Vložiť riadok nižšie"
 }

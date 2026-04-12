@@ -167,6 +167,7 @@
   "toolbar.split_view": "വിഭജിത കാഴ്ച",
   "toolbar.switch_to_edit": "എഡിറ്റ് മോഡിലേക്ക് മാറുക",
   "toolbar.switch_to_reader": "റീഡർ മോഡിലേക്ക് മാറുക",
+  "toolbar.theme": "ഡാർക്ക്/ലൈറ്റ് തീം മാറ്റുക",
   "toolbar.toc": "ഉള്ളടക്കം",
   "toolbar.zoom_in": "സൂം ഇൻ",
   "toolbar.zoom_out": "സൂം ഔട്ട്",
@@ -190,5 +191,10 @@
   "welcome.open_button": "ഫയൽ തുറക്കുക",
   "welcome.subtitle": "ഒരു മനോഹരമായ മാർക്ക്ഡൗൺ വ്യൂവർ",
   "welcome.title": "Kern",
-  "toolbar.theme": "ഡാർക്ക്/ലൈറ്റ് തീം മാറ്റുക"
+  "table.copy_col": "കോളം പകർത്തുക",
+  "table.copy_row": "വരി പകർത്തുക",
+  "table.cut_col": "കോളം മുറിച്ചെടുക്കുക",
+  "table.cut_row": "വരി മുറിച്ചെടുക്കുക",
+  "table.paste_col": "കോളം വലതുവശത്ത് ഒട്ടിക്കുക",
+  "table.paste_row": "വരി താഴെ ഒട്ടിക്കുക"
 }

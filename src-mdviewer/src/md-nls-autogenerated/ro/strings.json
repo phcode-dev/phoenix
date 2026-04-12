@@ -167,6 +167,7 @@
   "toolbar.split_view": "Vizualizare divizată",
   "toolbar.switch_to_edit": "Comutați la modul editare",
   "toolbar.switch_to_reader": "Comutați la modul citire",
+  "toolbar.theme": "Comutare temă întunecată/luminoasă",
   "toolbar.toc": "Cuprins",
   "toolbar.zoom_in": "Mărire",
   "toolbar.zoom_out": "Micșorare",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Deschide fișier",
   "welcome.subtitle": "Un vizualizator Markdown frumos",
   "welcome.title": "Kern",
-  "toolbar.theme": "Comutare temă întunecată/luminoasă"
+  "table.copy_col": "Copiază coloana",
+  "table.copy_row": "Copiază rândul",
+  "table.cut_col": "Decupează coloana",
+  "table.cut_row": "Decupează rândul",
+  "table.paste_col": "Lipește coloana la dreapta",
+  "table.paste_row": "Lipește rândul dedesubt"
 }

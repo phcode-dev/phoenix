@@ -167,6 +167,7 @@
   "toolbar.split_view": "Podijeljeni prikaz",
   "toolbar.switch_to_edit": "Prebaci u način za uređivanje",
   "toolbar.switch_to_reader": "Prebaci u način za čitanje",
+  "toolbar.theme": "Prebaci tamnu/svijetlu temu",
   "toolbar.toc": "Sadržaj",
   "toolbar.zoom_in": "Povećaj",
   "toolbar.zoom_out": "Smanji",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Otvori datoteku",
   "welcome.subtitle": "Prekrasan Markdown preglednik",
   "welcome.title": "Kern",
-  "toolbar.theme": "Prebaci tamnu/svijetlu temu"
+  "table.copy_col": "Kopiraj stupac",
+  "table.copy_row": "Kopiraj redak",
+  "table.cut_col": "Izreži stupac",
+  "table.cut_row": "Izreži redak",
+  "table.paste_col": "Zalijepi stupac desno",
+  "table.paste_row": "Zalijepi redak ispod"
 }

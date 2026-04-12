@@ -187,7 +187,13 @@
     "insert_row_above": "Vložit řádek nad",
     "insert_row_below": "Vložit řádek pod",
     "new_row": "+ Nový řádek",
-    "row_options": "Možnosti řádku {n}"
+    "row_options": "Možnosti řádku {n}",
+    "copy_col": "Kopírovat sloupec",
+    "copy_row": "Kopírovat řádek",
+    "cut_col": "Vyjmout sloupec",
+    "cut_row": "Vyjmout řádek",
+    "paste_col": "Vložit sloupec vpravo",
+    "paste_row": "Vložit řádek pod"
   },
   "toolbar": {
     "cursor_sync": "Přepnout synchronizaci kurzorů",
@@ -206,11 +212,11 @@
     "split_view": "Rozdělené zobrazení",
     "switch_to_edit": "Přepnout do režimu úprav",
     "switch_to_reader": "Přepnout do režimu čtení",
+    "theme": "Přepnout tmavý/světlý motiv",
     "toc": "Obsah",
     "zoom_in": "Přiblížit",
     "zoom_out": "Oddálit",
-    "zoom_reset": "Resetovat přiblížení",
-    "theme": "Přepnout tmavý/světlý motiv"
+    "zoom_reset": "Resetovat přiblížení"
   },
   "trial": {
     "days_remaining": "Zbývá {days} dní zkušební verze",

@@ -167,6 +167,7 @@
   "toolbar.split_view": "Jaettu näkymä",
   "toolbar.switch_to_edit": "Vaihda muokkaustilaan",
   "toolbar.switch_to_reader": "Vaihda lukutilaan",
+  "toolbar.theme": "Vaihda tumma/vaalea teema",
   "toolbar.toc": "Sisällysluettelo",
   "toolbar.zoom_in": "Lähennä",
   "toolbar.zoom_out": "Loitonna",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Avaa tiedosto",
   "welcome.subtitle": "Kaunis Markdown-katselin",
   "welcome.title": "Kern",
-  "toolbar.theme": "Vaihda tumma/vaalea teema"
+  "table.copy_col": "Kopioi sarake",
+  "table.copy_row": "Kopioi rivi",
+  "table.cut_col": "Leikkaa sarake",
+  "table.cut_row": "Leikkaa rivi",
+  "table.paste_col": "Liitä sarake oikealle",
+  "table.paste_row": "Liitä rivi alle"
 }

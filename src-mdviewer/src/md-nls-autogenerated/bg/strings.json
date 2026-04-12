@@ -167,6 +167,7 @@
   "toolbar.split_view": "Разделен изглед",
   "toolbar.switch_to_edit": "Премини към режим на редактиране",
   "toolbar.switch_to_reader": "Премини към режим на четене",
+  "toolbar.theme": "Превключване на тъмна/светла тема",
   "toolbar.toc": "Съдържание",
   "toolbar.zoom_in": "Увеличаване",
   "toolbar.zoom_out": "Намаляване",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Отвори файл",
   "welcome.subtitle": "Красив преглед на Markdown",
   "welcome.title": "Kern",
-  "toolbar.theme": "Превключване на тъмна/светла тема"
+  "table.copy_col": "Копирай колона",
+  "table.copy_row": "Копирай ред",
+  "table.cut_col": "Изрежи колона",
+  "table.cut_row": "Изрежи ред",
+  "table.paste_col": "Постави колона вдясно",
+  "table.paste_row": "Постави ред отдолу"
 }

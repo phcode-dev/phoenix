@@ -167,6 +167,7 @@
   "toolbar.split_view": "Split View",
   "toolbar.switch_to_edit": "Switch to edit mode",
   "toolbar.switch_to_reader": "Switch to reader mode",
+  "toolbar.theme": "Toggle Dark/Light Theme",
   "toolbar.toc": "Table of Contents",
   "toolbar.zoom_in": "Zoom In",
   "toolbar.zoom_out": "Zoom Out",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Open File",
   "welcome.subtitle": "A beautiful Markdown viewer",
   "welcome.title": "Kern",
-  "toolbar.theme": "Toggle Dark/Light Theme"
+  "table.copy_col": "Copy column",
+  "table.copy_row": "Copy row",
+  "table.cut_col": "Cut column",
+  "table.cut_row": "Cut row",
+  "table.paste_col": "Paste column right",
+  "table.paste_row": "Paste row below"
 }

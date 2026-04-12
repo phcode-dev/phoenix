@@ -187,7 +187,13 @@
     "insert_row_above": "Zeile darüber einfügen",
     "insert_row_below": "Zeile darunter einfügen",
     "new_row": "+ Neue Zeile",
-    "row_options": "Optionen für Zeile {n}"
+    "row_options": "Optionen für Zeile {n}",
+    "copy_col": "Spalte kopieren",
+    "copy_row": "Zeile kopieren",
+    "cut_col": "Spalte ausschneiden",
+    "cut_row": "Zeile ausschneiden",
+    "paste_col": "Spalte rechts einfügen",
+    "paste_row": "Zeile unten einfügen"
   },
   "toolbar": {
     "cursor_sync": "Cursor-Synchronisierung umschalten",
@@ -206,11 +212,11 @@
     "split_view": "Geteilte Ansicht",
     "switch_to_edit": "In den Bearbeitungsmodus wechseln",
     "switch_to_reader": "In den Lesemodus wechseln",
+    "theme": "Dunkles/Helles Thema umschalten",
     "toc": "Inhaltsverzeichnis",
     "zoom_in": "Vergrößern",
     "zoom_out": "Verkleinern",
-    "zoom_reset": "Zoom zurücksetzen",
-    "theme": "Dunkles/Helles Thema umschalten"
+    "zoom_reset": "Zoom zurücksetzen"
   },
   "trial": {
     "days_remaining": "Noch {days} Tage in der Testversion",

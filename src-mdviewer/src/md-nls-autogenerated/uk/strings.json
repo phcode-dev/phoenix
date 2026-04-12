@@ -167,6 +167,7 @@
   "toolbar.split_view": "Розділений вигляд",
   "toolbar.switch_to_edit": "Перейти в режим редагування",
   "toolbar.switch_to_reader": "Перейти в режим читання",
+  "toolbar.theme": "Перемкнути темну/світлу тему",
   "toolbar.toc": "Зміст",
   "toolbar.zoom_in": "Збільшити",
   "toolbar.zoom_out": "Зменшити",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Відкрити файл",
   "welcome.subtitle": "Гарний переглядач файлів Markdown",
   "welcome.title": "Керн",
-  "toolbar.theme": "Перемкнути темну/світлу тему"
+  "table.copy_col": "Копіювати стовпець",
+  "table.copy_row": "Копіювати рядок",
+  "table.cut_col": "Вирізати стовпець",
+  "table.cut_row": "Вирізати рядок",
+  "table.paste_col": "Вставити стовпець праворуч",
+  "table.paste_row": "Вставити рядок нижче"
 }

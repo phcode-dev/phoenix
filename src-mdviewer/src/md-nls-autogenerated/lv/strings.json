@@ -167,6 +167,7 @@
   "toolbar.split_view": "Dalīts skats",
   "toolbar.switch_to_edit": "Pārslēgties uz rediģēšanas režīmu",
   "toolbar.switch_to_reader": "Pārslēgties uz lasīšanas režīmu",
+  "toolbar.theme": "Pārslēgt tumšo/gaišo tēmu",
   "toolbar.toc": "Satura rādītājs",
   "toolbar.zoom_in": "Tuvināt",
   "toolbar.zoom_out": "Tālināt",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Atvērt failu",
   "welcome.subtitle": "Skaists Markdown skatītājs",
   "welcome.title": "Kern",
-  "toolbar.theme": "Pārslēgt tumšo/gaišo tēmu"
+  "table.copy_col": "Kopēt kolonnu",
+  "table.copy_row": "Kopēt rindu",
+  "table.cut_col": "Izgriezt kolonnu",
+  "table.cut_row": "Izgriezt rindu",
+  "table.paste_col": "Ielīmēt kolonnu pa labi",
+  "table.paste_row": "Ielīmēt rindu zemāk"
 }

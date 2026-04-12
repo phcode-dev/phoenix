@@ -187,7 +187,13 @@
     "insert_row_above": "Sett inn rad over",
     "insert_row_below": "Sett inn rad under",
     "new_row": "+ Ny rad",
-    "row_options": "Alternativer for rad {n}"
+    "row_options": "Alternativer for rad {n}",
+    "copy_col": "Kopier kolonne",
+    "copy_row": "Kopier rad",
+    "cut_col": "Klipp ut kolonne",
+    "cut_row": "Klipp ut rad",
+    "paste_col": "Lim inn kolonne til høyre",
+    "paste_row": "Lim inn rad under"
   },
   "toolbar": {
     "cursor_sync": "Veksle markørsynk",
@@ -206,11 +212,11 @@
     "split_view": "Delt visning",
     "switch_to_edit": "Bytt til redigeringsmodus",
     "switch_to_reader": "Bytt til lesermodus",
+    "theme": "Veksle mellom mørkt og lyst tema",
     "toc": "Innholdsfortegnelse",
     "zoom_in": "Zoom inn",
     "zoom_out": "Zoom ut",
-    "zoom_reset": "Tilbakestill zoom",
-    "theme": "Veksle mellom mørkt og lyst tema"
+    "zoom_reset": "Tilbakestill zoom"
   },
   "trial": {
     "days_remaining": "{days} dager igjen av prøveperioden",

@@ -167,6 +167,7 @@
   "toolbar.split_view": "Разделенный режим",
   "toolbar.switch_to_edit": "Переключиться в режим редактирования",
   "toolbar.switch_to_reader": "Переключиться в режим чтения",
+  "toolbar.theme": "Переключить тёмную/светлую тему",
   "toolbar.toc": "Оглавление",
   "toolbar.zoom_in": "Увеличить",
   "toolbar.zoom_out": "Уменьшить",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Открыть файл",
   "welcome.subtitle": "Красивый просмотрщик Markdown",
   "welcome.title": "Керн",
-  "toolbar.theme": "Переключить тёмную/светлую тему"
+  "table.copy_col": "Копировать столбец",
+  "table.copy_row": "Копировать строку",
+  "table.cut_col": "Вырезать столбец",
+  "table.cut_row": "Вырезать строку",
+  "table.paste_col": "Вставить столбец справа",
+  "table.paste_row": "Вставить строку ниже"
 }

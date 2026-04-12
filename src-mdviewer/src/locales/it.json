@@ -187,7 +187,13 @@
     "insert_row_above": "Inserisci riga sopra",
     "insert_row_below": "Inserisci riga sotto",
     "new_row": "+ Nuova riga",
-    "row_options": "Opzioni riga {n}"
+    "row_options": "Opzioni riga {n}",
+    "copy_col": "Copia colonna",
+    "copy_row": "Copia riga",
+    "cut_col": "Taglia colonna",
+    "cut_row": "Taglia riga",
+    "paste_col": "Incolla colonna a destra",
+    "paste_row": "Incolla riga sotto"
   },
   "toolbar": {
     "cursor_sync": "Attiva/disattiva sincronizzazione cursore",
@@ -206,11 +212,11 @@
     "split_view": "Vista divisa",
     "switch_to_edit": "Passa alla modalità modifica",
     "switch_to_reader": "Passa alla modalità lettura",
+    "theme": "Alterna tema scuro/chiaro",
     "toc": "Indice",
     "zoom_in": "Ingrandisci",
     "zoom_out": "Riduci",
-    "zoom_reset": "Ripristina zoom",
-    "theme": "Alterna tema scuro/chiaro"
+    "zoom_reset": "Ripristina zoom"
   },
   "trial": {
     "days_remaining": "{days} giorni rimanenti di prova",

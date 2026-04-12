@@ -167,6 +167,7 @@
   "toolbar.split_view": "Διαχωρισμός προβολής",
   "toolbar.switch_to_edit": "Μετάβαση σε λειτουργία επεξεργασίας",
   "toolbar.switch_to_reader": "Μετάβαση σε λειτουργία ανάγνωσης",
+  "toolbar.theme": "Εναλλαγή Σκοτεινού/Φωτεινού Θέματος",
   "toolbar.toc": "Πίνακας περιεχομένων",
   "toolbar.zoom_in": "Μεγέθυνση",
   "toolbar.zoom_out": "Σμίκρυνση",
@@ -190,5 +191,10 @@
   "welcome.open_button": "Άνοιγμα Αρχείου",
   "welcome.subtitle": "Ένα όμορφο πρόγραμμα προβολής Markdown",
   "welcome.title": "Kern",
-  "toolbar.theme": "Εναλλαγή Σκοτεινού/Φωτεινού Θέματος"
+  "table.copy_col": "Αντιγραφή στήλης",
+  "table.copy_row": "Αντιγραφή γραμμής",
+  "table.cut_col": "Αποκοπή στήλης",
+  "table.cut_row": "Αποκοπή γραμμής",
+  "table.paste_col": "Επικόλληση στήλης δεξιά",
+  "table.paste_row": "Επικόλληση γραμμής κάτω"
 }

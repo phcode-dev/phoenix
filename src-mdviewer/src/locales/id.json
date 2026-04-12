@@ -187,7 +187,13 @@
     "insert_row_above": "Sisipkan baris di atas",
     "insert_row_below": "Sisipkan baris di bawah",
     "new_row": "+ Baris baru",
-    "row_options": "Opsi baris {n}"
+    "row_options": "Opsi baris {n}",
+    "copy_col": "Salin kolom",
+    "copy_row": "Salin baris",
+    "cut_col": "Potong kolom",
+    "cut_row": "Potong baris",
+    "paste_col": "Tempel kolom kanan",
+    "paste_row": "Tempel baris di bawah"
   },
   "toolbar": {
     "cursor_sync": "Alihkan sinkronisasi kursor",
@@ -206,11 +212,11 @@
     "split_view": "Tampilan Terpisah",
     "switch_to_edit": "Beralih ke mode sunting",
     "switch_to_reader": "Beralih ke mode baca",
+    "theme": "Alihkan Tema Gelap/Terang",
     "toc": "Daftar Isi",
     "zoom_in": "Perbesar",
     "zoom_out": "Perkecil",
-    "zoom_reset": "Atur Ulang Zoom",
-    "theme": "Alihkan Tema Gelap/Terang"
+    "zoom_reset": "Atur Ulang Zoom"
   },
   "trial": {
     "days_remaining": "{days} hari tersisa dalam uji coba",

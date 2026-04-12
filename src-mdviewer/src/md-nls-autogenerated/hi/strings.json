@@ -167,6 +167,7 @@
   "toolbar.split_view": "विभाजित दृश्य",
   "toolbar.switch_to_edit": "एडिट मोड में बदलें",
   "toolbar.switch_to_reader": "रीडर मोड में बदलें",
+  "toolbar.theme": "डार्क/लाइट थीम टॉगल करें",
   "toolbar.toc": "विषय सूची",
   "toolbar.zoom_in": "ज़ूम इन",
   "toolbar.zoom_out": "ज़ूम आउट",
@@ -190,5 +191,10 @@
   "welcome.open_button": "फ़ाइल खोलें",
   "welcome.subtitle": "एक सुंदर मार्कडाउन व्यूअर",
   "welcome.title": "Kern",
-  "toolbar.theme": "डार्क/लाइट थीम टॉगल करें"
+  "table.copy_col": "कॉलम कॉपी करें",
+  "table.copy_row": "पंक्ति कॉपी करें",
+  "table.cut_col": "कॉलम कट करें",
+  "table.cut_row": "पंक्ति कट करें",
+  "table.paste_col": "कॉलम दाएँ पेस्ट करें",
+  "table.paste_row": "पंक्ति नीचे पेस्ट करें"
 }
