@@ -455,6 +455,25 @@ define(function (require, exports, module) {
         _sendTheme();
     }
 
+    /**
+     * Push the Pro edit entitlement state to the iframe so it can show/hide
+     * the crown upsell indicator on the Edit button.
+     * @param {boolean} isPro
+     */
+    function sendProStatus(isPro) {
+        if (!_active || !_iframeReady) {
+            return;
+        }
+        const iframeWindow = _getIframeWindow();
+        if (!iframeWindow) {
+            return;
+        }
+        iframeWindow.postMessage({
+            type: "MDVIEWR_SET_PRO_STATUS",
+            isPro: !!isPro
+        }, "*");
+    }
+
     function _sendLocale() {
         if (!_active || !_iframeReady) {
             return;
@@ -1128,5 +1147,6 @@ define(function (require, exports, module) {
     exports.setIframeReadyHandler = setIframeReadyHandler;
     exports.setCursorSyncEnabled = setCursorSyncEnabled;
     exports.sendThemeOverride = sendThemeOverride;
+    exports.sendProStatus = sendProStatus;
     exports.setThemeToggleHandler = function(handler) { _onThemeToggle = handler; };
 });

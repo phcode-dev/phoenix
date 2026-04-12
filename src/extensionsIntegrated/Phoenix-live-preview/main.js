@@ -202,6 +202,8 @@ define(function (require, exports, module) {
             isProEditUser = entitlement && entitlement.activated;
             // Sync edit mode with md iframe on entitlement change
             if (_isMdviewrActive && $iframe && $iframe[0] && $iframe[0].contentWindow) {
+                // Push pro status to iframe so it can toggle the crown indicator
+                MarkdownSync.sendProStatus(isProEditUser);
                 if (isProEditUser && !wasProEditUser) {
                     // Just got pro — switch to edit mode
                     $iframe[0].contentWindow.postMessage(
@@ -1572,6 +1574,8 @@ define(function (require, exports, module) {
         // When iframe first loads, send initial edit mode based on entitlement
         MarkdownSync.setIframeReadyHandler(function () {
             _updateLPControlsForMdviewer();
+            // Push pro status so the iframe can show the crown upsell indicator
+            MarkdownSync.sendProStatus(isProEditUser);
             // Pro users default to edit mode on first load
             if (isProEditUser) {
                 MarkdownSync.setEditMode(true);
