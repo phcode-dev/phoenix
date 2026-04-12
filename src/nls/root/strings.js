@@ -519,7 +519,7 @@ define({
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
     "AVAILABLE_IN_PRO_TITLE": "Available in Phoenix Pro",
     "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro lets you preview your page at the screen sizes defined in your CSS.",
-    "MD_EDIT_UPSELL_MESSAGE": "Write Markdown like a document. Phoenix handles the formatting so you can stay focused on writing.",
+    "MD_EDIT_UPSELL_MESSAGE": "Write Markdown like a document. {APP_NAME} handles the formatting so you can stay focused on writing.",
     "IMAGE_UPLOADING": "Uploading",
     "IMAGE_UPLOAD_FAILED": "Failed to upload image",
     "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Log in to Embed Image",
