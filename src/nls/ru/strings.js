@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Ошибка открытия динамического просмотра в {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Убедитесь, что браузер {0} установлен, и попробуйте снова.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закрепить или открепить страницу предпросмотра",
+  "MD_VIEWER_THEME_DESCRIPTION": "Тема для просмотра Markdown (светлая или тёмная)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (Не обновляется из-за синтаксической ошибки)",
   "LIVE_DEV_SETTINGS": "Настройки динамического просмотра…",
   "LIVE_DEV_SETTINGS_BANNER": "Настройте пользовательский сервер для динамического просмотра `<b>{0}</b>` и других файлов, обрабатываемых на сервере (PHP, JSP и т. д.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Перейти на Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Вы использовали {0}% бесплатных поисков изображений ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Сохранить изменения",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Редактор стилей",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Редактировать стили",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Добавить",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Режим редактирования",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Инспектировать элемент при наведении",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Показать размеры",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Показывать маркеры отступов",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Показывать маркеры отступов при выборе элементов в режиме редактирования с интерактивным предпросмотром. По умолчанию включено.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Синхронизация редактора и предпросмотра",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Синхронизация курсора редактора с подсветкой элементов в предпросмотре. Когда включено, перемещение курсора в редакторе подсвечивает соответствующий элемент в предпросмотре, а нажатие на элемент в предпросмотре перемещает курсор к его исходному коду. По умолчанию: 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "«{0}» показывает только веб-страницу, «{1}» связывает веб-страницу с вашим кодом — нажимайте на элементы, чтобы перейти к их коду, и наоборот, «{2}» обеспечивает подсветку и расширенные возможности управления элементами.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "MD_VIEWER_THEME_DESCRIPTION": "Тема для просмотра Markdown (светлая или тёмная)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Инлайн",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "Стиль элемента",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Поиск подходящих правил…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Встроенный",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Сохранить изменения в выбранном назначении (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Отменить изменения (Esc)"
 });

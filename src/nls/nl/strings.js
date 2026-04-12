@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fout bij openen Live Voorbeeld in {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Zorg ervoor dat de {0} browser is geïnstalleerd en probeer het opnieuw.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Voorbeeldpagina vastzetten of losmaken",
+  "MD_VIEWER_THEME_DESCRIPTION": "Thema voor de Markdown-viewer (licht of donker)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Voorbeeld (niet bezig met updaten door een verkeerde syntax)",
   "LIVE_DEV_SETTINGS": "Instellingen Live Voorbeeld…",
   "LIVE_DEV_SETTINGS_BANNER": "Stel een aangepaste server in om `<b>{0}</b>` en andere server-gerenderde bestanden (PHP, JSP, etc.) live te bekijken.",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "op {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Neem Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "U heeft {0}% van uw gratis zoekopdrachten naar afbeeldingen gebruikt ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Opslaan van wijzigingen",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stijleditor",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stijlen bewerken",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Toevoegen",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Bewerken",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Element inspecteren bij hoveren",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Afmetingen weergeven",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Afstandsgrepen tonen",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Toon afstandsgrepen wanneer elementen zijn geselecteerd in de bewerkingsmodus van de live voorvertoning. Standaardwaarde is 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Koppel editor en voorbeeldweergave",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Koppelt de cursor van de editor aan de markering van elementen in de live voorbeeldweergave. Wanneer ingeschakeld, markeert het verplaatsen van de cursor in de editor het corresponderende element in de live voorbeeldweergave, en door op een element in de live voorbeeldweergave te klikken, springt de cursor naar de broncode ervan. Standaard ingesteld op 'true'.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' toont alleen de webpagina, '{1}' verbindt de webpagina met uw code - klik op elementen om naar hun code te springen en omgekeerd, '{2}' biedt markering en geavanceerde elementmanipulatie",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "MD_VIEWER_THEME_DESCRIPTION": "Thema voor de Markdown-viewer (licht of donker)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Passende regels zoeken…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "ingesloten",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Wijzigingen opslaan in het geselecteerde doel (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Wijzigingen terugdraaien (Esc)"
 });

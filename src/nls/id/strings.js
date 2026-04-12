@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Kesalahan Membuka Pratinjau Langsung di {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Pastikan browser {0} terpasang dan coba lagi.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Sematkan atau Lepaskan Sematan Halaman Pratinjau",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema untuk penampil Markdown (terang atau gelap)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Tinjauan Langsung (gagal memperbarui karena kesalahan sintaks)",
   "LIVE_DEV_SETTINGS": "Pengaturan Pratinjau Langsung…",
   "LIVE_DEV_SETTINGS_BANNER": "Atur server khusus untuk melihat pratinjau langsung `<b>{0}</b>` dan berkas lain yang dirender server (PHP, JSP, dll.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "di {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Dapatkan Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Anda telah menggunakan {0}% dari pencarian gambar gratis Anda ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Simpan Perubahan",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor Gaya",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Edit Gaya",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Tambah",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Mode Edit",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspeksi Elemen saat Melayang",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Tampilkan Ukuran",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Tampilkan Penanda Jarak",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Tampilkan penanda jarak saat elemen dipilih dalam mode edit pratinjau langsung. Defaultnya 'true'",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Tautkan Editor dan Pratinjau",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Tautkan kursor editor dengan penyorotan elemen pratinjau langsung. Saat diaktifkan, menggerakkan kursor di editor akan menyorot elemen yang sesuai di pratinjau langsung, dan mengeklik elemen di pratinjau langsung akan mengarahkan kursor ke kode sumbernya. Nilai default adalah 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' hanya menampilkan halaman web, '{1}' menghubungkan halaman web ke kode Anda - klik pada elemen untuk beralih ke kodenya dan sebaliknya, '{2}' menyediakan penyorotan beserta manipulasi elemen tingkat lanjut",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema untuk penampil Markdown (terang atau gelap)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Sebaris",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Mencari aturan yang cocok…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "tersemat",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Simpan perubahan ke target yang dipilih (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Batalkan perubahan (Esc)"
 });

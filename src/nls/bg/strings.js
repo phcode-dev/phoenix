@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Грешка при отваряне на преглед на живо в {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Уверете се, че браузърът {0} е инсталиран и опитайте отново.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закачи или откачи страницата за преглед",
+  "MD_VIEWER_THEME_DESCRIPTION": "Тема за Markdown визуализатора (светла или тъмна)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Преглед на живо (без обновяване, поради синтактична грешка)",
   "LIVE_DEV_SETTINGS": "Настройки на преглед на живо…",
   "LIVE_DEV_SETTINGS_BANNER": "Настройте персонализиран сървър за преглед на живо на `<b>{0}</b>` и други файлове, рендирани от сървър (PHP, JSP и др.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Вземете Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Използвали сте {0}% от вашите безплатни търсения на изображения ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Запазване на промените",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Редактор на стилове",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Редактиране на стилове",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Добави",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Режим на редактиране",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Инспектиране на елемент при посочване",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Показване на измервания",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Показване на манипулатори за разстояние",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Показва манипулатори за разстояние, когато са избрани елементи в режим на редактиране с преглед на живо. По подразбиране е „true“.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Свързване на редактора и прегледа",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Свързване на курсора в редактора с осветяването на елементи в прегледа на живо. Когато е активирано, преместването на курсора в редактора осветява съответния елемент в прегледа на живо, а щракването върху елемент в прегледа на живо премества курсора до неговия изходен код. По подразбиране е 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "„{0}“ показва само уеб страницата, „{1}“ свързва уеб страницата с вашия код – кликнете върху елементи, за да преминете към техния код и обратно, „{2}“ предоставя осветяване, както и разширено манипулиране на елементи",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "MD_VIEWER_THEME_DESCRIPTION": "Тема за Markdown визуализатора (светла или тъмна)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Вграден",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Търсене на съвпадащи правила…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "вграден",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Запазване на промените в избраната цел (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Отмяна на промените (Esc)"
 });

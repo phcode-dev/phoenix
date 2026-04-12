@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Chyba při otevírání živého náhledu v {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Ujistěte se, že máte nainstalovaný prohlížeč {0} a zkuste to znovu.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Připnout nebo odepnout stránku náhledu",
+  "MD_VIEWER_THEME_DESCRIPTION": "Motiv pro prohlížeč Markdownu (světlý nebo tmavý)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Živý náhled (neaktualizováno kvůli chybě v syntaxi)",
   "LIVE_DEV_SETTINGS": "Nastavení živého náhledu…",
   "LIVE_DEV_SETTINGS_BANNER": "Nastavte si vlastní server pro živý náhled `<b>{0}</b>` a dalších souborů renderovaných serverem (PHP, JSP atd.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Získat Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Využili jste {0} % vašich bezplatných vyhledávání obrázků ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Uložit změny",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor stylů",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Upravit styly",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Přidat",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Režim úprav",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Prozkoumat prvek při najetí",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Zobrazit rozměry",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Zobrazit úchyty pro odsazení",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Zobrazí úchyty pro odsazení u prvků vybraných v režimu úprav živého náhledu. Výchozí hodnota je 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Propojit editor a náhled",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Propojí kurzor editoru se zvýrazňováním prvků v živém náhledu. Je-li tato volba povolena, pohyb kurzoru v editoru zvýrazní odpovídající prvek v živém náhledu a kliknutí na prvek v živém náhledu přesune kurzor na jeho zdrojový kód. Výchozí hodnota je 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' zobrazuje pouze webovou stránku, '{1}' propojuje webovou stránku s vaším kódem – kliknutím na prvky přejdete na jejich kód a naopak, '{2}' poskytuje zvýraznění spolu s pokročilou manipulací s prvky.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "MD_VIEWER_THEME_DESCRIPTION": "Motiv pro prohlížeč Markdownu (světlý nebo tmavý)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Vložený",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Hledání odpovídajících pravidel…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Vložený",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Uložit změny do vybraného cíle (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Vrátit změny zpět (Esc)"
 });

@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fejl ved åbning af Live Preview i {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Sørg for, at {0} browseren er installeret, og prøv igen.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fastgør eller frigør forhåndsvisningsside",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema for Markdown-fremviseren (lys eller mørk)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Forhåndsvisning (opdatering standset grundet syntaksfejl)",
   "LIVE_DEV_SETTINGS": "Indstillinger for Live Preview…",
   "LIVE_DEV_SETTINGS_BANNER": "Opsæt en brugerdefineret server for at se live preview af `<b>{0}</b>` og andre server-renderede filer (PHP, JSP, osv.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Få Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har brugt {0}% af dine gratis billedsøgninger ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Gem ændringer",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stileditor",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Rediger stilarter",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Tilføj",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Redigeringstilstand",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspicer element ved hover",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Vis målinger",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Vis afstandshåndtag",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Viser afstandshåndtag, når elementer er valgt i redigeringstilstand for live forhåndsvisning. Standard er 'true'",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Sammenkæd editor og forhåndsvisning",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Sammenkæder editorens markør med elementfremhævelse i live-forhåndsvisningen. Når funktionen er aktiveret, vil flytning af markøren i editoren fremhæve det tilsvarende element i live-forhåndsvisningen, og et klik på et element i live-forhåndsvisningen vil flytte markøren til dets kildekode. Standard er 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' viser kun websiden, '{1}' forbinder websiden med din kode - klik på elementer for at hoppe til deres kode og omvendt, '{2}' giver fremhævning samt avanceret elementmanipulation",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema for Markdown-fremviseren (lys eller mørk)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Finder matchende regler…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "indlejret",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Gem ændringer til det valgte mål (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Fortryd ændringer (Esc)"
 });

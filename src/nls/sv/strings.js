@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fel vid öppning av Live-förhandsgranskning i {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Se till att webbläsaren {0} är installerad och försök igen.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fäst eller lossa förhandsgranskningssidan",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema för Markdown-granskaren (ljust eller mörkt)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Förhandsvisning (uppdateras inte på grund av syntaxfel)",
   "LIVE_DEV_SETTINGS": "Inställningar för Live-förhandsgranskning…",
   "LIVE_DEV_SETTINGS_BANNER": "Konfigurera en anpassad server för att live-förhandsgranska `<b>{0}</b>` och andra serverrenderade filer (PHP, JSP, etc.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Skaffa Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har använt {0}% av dina kostnadsfria bildsökningar ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Spara ändringar?",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stilredigerare",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Redigera stilar",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Lägg till",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Redigeringsläge",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspektera element vid hovring",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Visa mått",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Visa avståndshandtag",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Visa avståndshandtag när element är markerade i liveförhandsgranskningens redigeringsläge. Standard är 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Koppla redigerare och förhandsgranskning",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Kopplar redigerarens markör med elementmarkering i live-förhandsgranskningen. När funktionen är aktiverad, markerar flytt av markören i redigeraren motsvarande element i live-förhandsgranskningen, och ett klick på ett element i live-förhandsgranskningen flyttar markören till dess källkod. Standard är 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' visar endast webbsidan, '{1}' ansluter webbsidan till din kod – klicka på element för att hoppa till deras kod och tvärtom, '{2}' tillhandahåller markering tillsammans med avancerad elementmanipulering",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema för Markdown-granskaren (ljust eller mörkt)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Söker efter matchande regler…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "inbäddad",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Spara ändringar i det valda målet (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Återställ ändringar (Esc)"
 });

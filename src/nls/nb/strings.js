@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Feil ved åpning av forhåndsvisning i {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Sørg for at {0}-nettleseren er installert, og prøv igjen.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fest eller løsne forhåndsvisningsside",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema for Markdown-visningen (lys eller mørk)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (kan ikke oppdatere p.g.a. syntax error)",
   "LIVE_DEV_SETTINGS": "Innstillinger for forhåndsvisning…",
   "LIVE_DEV_SETTINGS_BANNER": "Konfigurer en tilpasset server for forhåndsvisning av `<b>{0}</b>` og andre server-gjengitte filer (PHP, JSP, osv.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Skaff deg Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har brukt {0} % av dine gratis bildesøk ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Lagre endringer",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stilredigering",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Rediger stiler",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Legg til",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Redigeringsmodus",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspiser element ved peker over",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Vis mål",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Vis avstandshåndtak",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Vis avstandshåndtak når elementer er valgt i redigeringsmodus for live forhåndsvisning. Standard er 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Koble redigeringsprogram og forhåndsvisning",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Kobler markøren i redigeringsprogrammet med utheving av elementer i sanntidsforhåndsvisningen. Når aktivert, vil flytting av markøren i redigeringsprogrammet utheve det tilsvarende elementet i sanntidsforhåndsvisningen, og klikking på et element i sanntidsforhåndsvisningen flytter markøren til kildekoden. Standard er 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' viser kun nettsiden, '{1}' kobler nettsiden til koden din – klikk på elementer for å hoppe til koden deres og omvendt, '{2}' gir utheving sammen med avansert elementmanipulering.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema for Markdown-visningen (lys eller mørk)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "In-line",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Finner samsvarende regler …",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "innebygd",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Lagre endringer i det valgte målet (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Tilbakestill endringer (Esc)"
 });

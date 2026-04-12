@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0}에서 라이브 미리보기를 여는 중 오류 발생",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0} 브라우저가 설치되어 있는지 확인하고 다시 시도하세요.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "미리보기 페이지 고정 또는 고정 해제",
+  "MD_VIEWER_THEME_DESCRIPTION": "마크다운 뷰어용 테마 (라이트 또는 다크)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "실시간 프리 (구문 오류로 인해 업데이트되지 않습니다)",
   "LIVE_DEV_SETTINGS": "라이브 미리보기 설정…",
   "LIVE_DEV_SETTINGS_BANNER": "`<b>{0}</b>` 및 기타 서버에서 렌더링된 파일(PHP, JSP 등)을 라이브 미리보기하기 위한 사용자 지정 서버를 설정하세요.",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}에서",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "프로 버전 사용하기",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "무료 이미지 검색의 {0}%({1}/{2})를 사용했습니다.",
+  "LIVE_DEV_LP_SELBOX_TITLE": "변경 사항 저장",
   "LIVE_DEV_STYLES_PANEL_HEADER": "스타일 편집기",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "스타일 편집",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 추가",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "편집 모드",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "호버 시 요소 검사",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "측정값 표시",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "간격 핸들 표시",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "라이브 미리보기 편집 모드에서 요소를 선택하면 간격 핸들을 표시합니다. 기본값은 'true'입니다.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "에디터와 미리보기 연결",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "라이브 미리보기 요소 하이라이트와 에디터 커서를 연결합니다. 활성화하면 에디터에서 커서를 움직일 때 라이브 미리보기의 해당 요소가 하이라이트되고, 라이브 미리보기에서 요소를 클릭하면 해당 소스 코드로 커서가 이동합니다. 기본값은 'true'입니다.",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}'은(는) 웹페이지만 표시하고, '{1}'은(는) 웹페이지를 코드에 연결하여 요소를 클릭하면 해당 코드로 이동하거나 그 반대로 이동할 수 있으며, '{2}'은(는) 고급 요소 조작과 함께 강조 표시를 제공합니다.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "MD_VIEWER_THEME_DESCRIPTION": "마크다운 뷰어용 테마 (라이트 또는 다크)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "인라인",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "엘리먼트.스타일",
+  "LIVE_DEV_LP_SELBOX_LOADING": "일치하는 규칙을 찾는 중…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "임베디드",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "선택한 대상에 변경 사항 저장 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "변경 사항 되돌리기 (Esc)"
 });

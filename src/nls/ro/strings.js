@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Eroare la deschiderea previzualizării live în {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Asigurați-vă că browserul {0} este instalat și încercați din nou.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fixează sau desfixează pagina de previzualizare",
+  "MD_VIEWER_THEME_DESCRIPTION": "Temă pentru vizualizatorul Markdown (deschisă sau închisă)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (nu poate fi reînnoit din cauza unei erori de sintaxă)",
   "LIVE_DEV_SETTINGS": "Setări previzualizare live…",
   "LIVE_DEV_SETTINGS_BANNER": "Configurați un server personalizat pentru a previzualiza live `<b>{0}</b>` și alte fișiere randate de server (PHP, JSP, etc.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "pe {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obțineți Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ați folosit {0}% din căutările gratuite de imagini ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Salvare modificări",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de stiluri",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editează stiluri",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Adaugă",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Mod Editare",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspectare element la survolare",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Afișare Măsurători",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Afișează marcajele de spațiere",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Afișează marcajele de spațiere la selectarea elementelor în modul de editare a previzualizării live. Valoarea implicită este 'adevărat'",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Conectare editor și previzualizare",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Conectează cursorul editorului cu evidențierea elementelor din previzualizarea live. Când este activată, mutarea cursorului în editor evidențiază elementul corespunzător în previzualizarea live, iar un clic pe un element din previzualizarea live mută cursorul la codul său sursă. Valoarea implicită este „true”",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' afișează doar pagina web, '{1}' conectează pagina web la codul dvs. - faceți clic pe elemente pentru a sări la codul lor și invers, '{2}' oferă evidențiere împreună cu manipulare avansată a elementelor.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "MD_VIEWER_THEME_DESCRIPTION": "Temă pentru vizualizatorul Markdown (deschisă sau închisă)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "În linie",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Se caută reguli corespondente…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "încorporat",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salvează modificările în ținta selectată (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Anulează modificările (Esc)"
 });

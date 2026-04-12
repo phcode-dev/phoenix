@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "在 {0} 中開啟即時預覽時發生錯誤",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "請確認已安裝 {0} 瀏覽器，然後再試一次。",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "釘選或取消釘選預覽頁面",
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown 檢視器的主題（淺色或深色）",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "即時預覽 (語法錯誤，不更新)",
   "LIVE_DEV_SETTINGS": "即時預覽設定…",
   "LIVE_DEV_SETTINGS_BANNER": "設定自訂伺服器以即時預覽 `<b>{0}</b>` 和其他伺服器呈現的檔案（PHP、JSP 等）",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "於 {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "取得專業版",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "您已使用 {0}% 的免費圖片搜尋次數 ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "儲存變更",
   "LIVE_DEV_STYLES_PANEL_HEADER": "樣式編輯器",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "編輯樣式",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 新增",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "編輯模式",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "懸停時檢查元素",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "顯示度量",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "顯示間距控點",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "在即時預覽編輯模式中選取元素時顯示間距控點。預設為「開啟」",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "連結編輯器與預覽",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "連結編輯器游標與即時預覽的元素突顯。啟用時，在編輯器中移動游標會突顯即時預覽中的對應元素，點擊即時預覽中的元素則會將游標跳至其原始碼。預設為 'true'。",
   "LIVE_PREVIEW_MODE_PREFERENCE": "「{0}」僅顯示網頁，「{1}」會將網頁與您的程式碼連結——點擊元素即可跳至其程式碼，反之亦然，「{2}」提供反白顯示以及進階的元素操作功能。",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "MD_VIEWER_THEME_DESCRIPTION": "Markdown 檢視器的主題（淺色或深色）"
+  "LIVE_DEV_LP_SELBOX_INLINE": "行內",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "正在尋找相符的規則…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "內嵌",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "儲存變更至選定目標 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "復原變更 (Esc)"
 });

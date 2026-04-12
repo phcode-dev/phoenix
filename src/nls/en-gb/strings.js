@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Error Opening Live Preview in {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Make sure the {0} browser is installed and try again.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin or Unpin Preview Page",
+  "MD_VIEWER_THEME_DESCRIPTION": "Theme for the Markdown viewer (light or dark)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (not updating due to syntax error)",
   "LIVE_DEV_SETTINGS": "Live Preview Settings…",
   "LIVE_DEV_SETTINGS_BANNER": "Set up a custom server to live preview `<b>{0}</b>` and other server-rendered files (PHP, JSP, etc.)",
@@ -511,8 +512,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspect Element on Hover",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Show Measurements",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Show Spacing Handles",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Show spacing handles when elements are selected in live preview edit mode. Defaults to 'true'",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Link Editor and Preview",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Link editor cursor with live preview element highlighting. When enabled, moving the cursor in the editor highlights the corresponding element in the live preview, and clicking an element in the live preview jumps the cursor to its source code. Defaults to 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' shows only the webpage, '{1}' connects the webpage to your code - click on elements to jump to their code and vice versa, '{2}' provides highlighting along with advanced element manipulation",
@@ -2169,5 +2168,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "MD_VIEWER_THEME_DESCRIPTION": "Theme for the Markdown viewer (light or dark)"
+  "LIVE_DEV_LP_SELBOX_TITLE": "Save Changes",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Finding matching rules…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "embedded",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Save changes to the selected target (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Revert changes (Esc)"
 });

@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Virhe avattaessa reaaliaikaista esikatselua sovelluksessa {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Varmista, että {0}-selain on asennettu, ja yritä uudelleen.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Kiinnitä tai irrota esikatselusivu",
+  "MD_VIEWER_THEME_DESCRIPTION": "Markdown-esikatselun teema (vaalea tai tumma)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Esikatselu (ei päivity syntaksivirheen takia)",
   "LIVE_DEV_SETTINGS": "Reaaliaikaisen esikatselun asetukset…",
   "LIVE_DEV_SETTINGS_BANNER": "Määritä mukautettu palvelin reaaliaikaista `<b>{0}</b>`-tiedoston ja muiden palvelimella renderöityjen tiedostojen (PHP, JSP jne.) esikatselua varten.",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "palvelussa {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Hanki Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Olet käyttänyt {0} % ilmaisista kuvahauistasi ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Tallenna muutokset",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Tyylieditori",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Muokkaa tyylejä",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Lisää",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Muokkaustila",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Tarkastele elementtiä kohdistettaessa",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Näytä mitat",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Näytä välistyskahvat",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Näyttää välistyskahvat, kun elementtejä valitaan reaaliaikaisen esikatselun muokkaustilassa. Oletusarvo on 'true'.",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Linkitä editori ja esikatselu",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Yhdistää editorin kursorin live-esikatselun elementtien korostukseen. Kun asetus on käytössä, kursorin siirtäminen editorissa korostaa vastaavan elementin live-esikatselussa, ja elementin napsauttaminen live-esikatselussa siirtää kursorin sen lähdekoodiin. Oletusarvo on 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' näyttää vain verkkosivun, '{1}' yhdistää verkkosivun koodiisi – napsauttamalla elementtejä voit siirtyä niiden koodiin ja päinvastoin, '{2}' tarjoaa korostuksen sekä edistyneen elementtien käsittelyn.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "MD_VIEWER_THEME_DESCRIPTION": "Markdown-esikatselun teema (vaalea tai tumma)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Etsitään vastaavia sääntöjä…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Upotettu",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Tallenna muutokset valittuun kohteeseen (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Peruuta muutokset (Esc)"
 });

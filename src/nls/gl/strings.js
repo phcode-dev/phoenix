@@ -136,6 +136,7 @@ define({
   "LIVE_DEV_OPEN_ERROR_TITLE": "Erro ao abrir a vista previa en directo en {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Asegúrate de que o navegador {0} está instalado e téntao de novo.",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fixar ou desfixar a páxina de vista previa",
+  "MD_VIEWER_THEME_DESCRIPTION": "Tema para o visor de Markdown (claro ou escuro)",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Vista Previa en Vivo (non se está actualizando debido a un erro de sintaxis)",
   "LIVE_DEV_SETTINGS": "Configuración da vista previa en directo…",
   "LIVE_DEV_SETTINGS_BANNER": "Configura un servidor personalizado para ver a vista previa en directo de `<b>{0}</b>` e outros ficheiros renderizados polo servidor (PHP, JSP, etc.)",
@@ -207,6 +208,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en {0}",
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obter Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Usaches o {0}% das túas buscas de imaxes gratuítas ({1}/{2})",
+  "LIVE_DEV_LP_SELBOX_TITLE": "Gardar cambios",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de estilos",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editar estilos",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Engadir",
@@ -511,8 +513,6 @@ define({
   "LIVE_PREVIEW_MODE_EDIT": "Modo de edición",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Inspeccionar elemento ao pasar o cursor",
   "LIVE_PREVIEW_SHOW_RULER_LINES": "Amosar medidas",
-  "LIVE_PREVIEW_SHOW_SPACING_HANDLES": "Amosar tiradores de espazamento",
-  "LIVE_DEV_SETTINGS_SHOW_SPACING_HANDLES_PREFERENCE": "Amosa os tiradores de espazamento cando se seleccionan elementos no modo de edición da vista previa en vivo. Por defecto, o seu valor é «true».",
   "LIVE_PREVIEW_LINK_EDITOR_AND_PREVIEW": "Vincular editor e vista previa",
   "LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE": "Vincula o cursor do editor co resaltado de elementos na vista previa en vivo. Cando está activado, ao mover o cursor no editor resáltase o elemento correspondente na vista previa en vivo, e ao facer clic nun elemento da vista previa en vivo, o cursor salta ao seu código fonte. O valor predeterminado é 'true'",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' amosa só a páxina web, '{1}' conecta a páxina web co seu código (faga clic nos elementos para saltar ao seu código e viceversa), '{2}' fornece resaltado xunto coa manipulación avanzada de elementos.",
@@ -2169,5 +2169,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "MD_VIEWER_THEME_DESCRIPTION": "Tema para o visor de Markdown (claro ou escuro)"
+  "LIVE_DEV_LP_SELBOX_INLINE": "En liña",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Buscando regras coincidentes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incrustado",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Gardar os cambios no destino seleccionado (Intro)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter os cambios (Esc)"
 });
