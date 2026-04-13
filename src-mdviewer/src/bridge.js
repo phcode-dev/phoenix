@@ -8,7 +8,7 @@ import { getState, setState } from "./core/state.js";
 import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
-import { broadcastSelectionStateSync } from "./components/editor.js";
+import { broadcastSelectionStateSync, flushPendingContentChange } from "./components/editor.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -223,6 +223,9 @@ export function initBridge() {
     };
     window.__broadcastSelectionStateForTest = function () {
         broadcastSelectionStateSync();
+    };
+    window.__saveScrollPos = function () {
+        docCache.saveActiveScrollPos();
     };
     window.__triggerContentSync = function () {
         const content = document.getElementById("viewer-content");
@@ -512,8 +515,11 @@ export function initBridge() {
                 entry.mdSrc = markdown;
             }
         }
-        // Send cursor position BEFORE the edit for undo restore
-        sendToParent("mdviewrContentChanged", { markdown, _syncId, cursorPos: _cursorPosBeforeEdit });
+        // Send cursor position BEFORE the edit for undo restore.
+        // Include file path so MarkdownSync can verify the change matches the active document.
+        sendToParent("mdviewrContentChanged", {
+            markdown, _syncId, cursorPos: _cursorPosBeforeEdit, filePath: activePath
+        });
         _cursorPosDirty = false; // allow cursor tracking again
     });
 
@@ -579,6 +585,7 @@ function handleSetContent(data) {
         _baseURL = baseURL;
     }
 
+    flushPendingContentChange();
     _suppressContentChange = true;
     const parseResult = parseMarkdownToHTML(markdown);
 
@@ -667,6 +674,12 @@ function handleSwitchFile(data) {
     if (baseURL) {
         _baseURL = baseURL;
     }
+
+    // Flush any pending debounced content-change from the outgoing file's edits
+    // BEFORE suppressing. This ensures the outgoing file's cache entry and
+    // currentContent are updated with the latest edits, preventing data loss
+    // when the user switches files quickly (within the 50ms debounce window).
+    flushPendingContentChange();
 
     _suppressContentChange = true;
 

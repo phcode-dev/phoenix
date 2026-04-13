@@ -610,6 +610,16 @@ define(function (require, exports, module) {
         // src. so we delete the node itself to eb thorough.
         // Don't destroy the persistent md iframe — just hide it
         if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            // Save scroll position before hiding — hidden elements lose scrollTop.
+            // Use try-catch because the sandboxed iframe blocks cross-origin property access.
+            try {
+                const mdWin = $mdviewrIframe[0].contentWindow;
+                if (mdWin && mdWin.__saveScrollPos) {
+                    mdWin.__saveScrollPos();
+                }
+            } catch (e) {
+                // Cross-origin access blocked by sandbox — scroll will use source-line restore
+            }
             MarkdownSync.deactivate();
             _isMdviewrActive = false;
             _updateLPControlsForMdviewer();
@@ -964,6 +974,16 @@ define(function (require, exports, module) {
         // Switching away from mdviewr to non-markdown preview
         // Hide the md iframe instead of destroying it so cache is preserved
         if(_isMdviewrActive) {
+            // Save scroll position before hiding — hidden elements lose scrollTop.
+            // Use try-catch because the sandboxed iframe blocks cross-origin property access.
+            try {
+                if ($mdviewrIframe && $mdviewrIframe[0].contentWindow &&
+                    $mdviewrIframe[0].contentWindow.__saveScrollPos) {
+                    $mdviewrIframe[0].contentWindow.__saveScrollPos();
+                }
+            } catch (e) {
+                // Cross-origin access blocked by sandbox — scroll will use source-line restore
+            }
             MarkdownSync.deactivate();
             _isMdviewrActive = false;
             if ($mdviewrIframe) {

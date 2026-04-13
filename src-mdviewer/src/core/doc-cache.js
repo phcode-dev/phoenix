@@ -180,6 +180,10 @@ export function saveActiveScrollPos() {
     // — hidden elements report scrollTop = 0 which would destroy the saved value.
     if (!viewerContainer.offsetParent && viewerContainer.scrollTop === 0) return;
 
+    // Don't overwrite a saved non-zero scroll position with 0 — this happens when
+    // the browser resets scrollTop after hide/show and the caller hasn't scrolled yet.
+    if (viewerContainer.scrollTop === 0 && entry.scrollPos > 0) return;
+
     entry.scrollPos = viewerContainer.scrollTop;
 
     // Also save source line for reload scenarios (DOM rebuilt, pixel pos unreliable)
