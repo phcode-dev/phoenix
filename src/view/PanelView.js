@@ -853,9 +853,11 @@ define(function (require, exports, module) {
             _toggleMaximize();
         });
 
-        // Re-check tab overflow when the tab bar resizes (e.g. window resize)
-        const tabBarResizeObserver = new ResizeObserver(_checkTabOverflow);
-        tabBarResizeObserver.observe(_$tabsOverflow[0]);
+        // Observe the outer tab bar container so that only external resizes
+        // (e.g. window resize) trigger a re-check. Observing _$tabsOverflow
+        // would cause an infinite loop in WebKit because _checkTabOverflow
+        // toggles classes that change _$tabsOverflow's size.
+        new ResizeObserver(_checkTabOverflow).observe(_$tabBar[0]);
 
         // Restore maximize state from preferences (survives reload).
         _isMaximized = PreferencesManager.getViewState(PREF_BOTTOM_PANEL_MAXIMIZED) === true;
