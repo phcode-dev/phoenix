@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "获取 Pro 版",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "您已使用 {0}% 的免费图片搜索次数 ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "保存更新",
+  "LIVE_DEV_LP_SELBOX_INLINE": "内联",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "正在查找匹配的规则…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "嵌入式",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "将更改保存到所选目标 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "撤销更改 (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "样式编辑器",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "编辑样式",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 添加",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "针对此项目不再询问",
   "AVAILABLE_IN_PRO_TITLE": "Phoenix Pro 版提供",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro 可让您在 CSS 中定义的屏幕尺寸下预览您的页面。",
-  "MD_EDIT_UPSELL_MESSAGE": "像写文档一样编写 Markdown。Phoenix 会处理格式，让您能专注于写作。",
   "IMAGE_UPLOADING": "正在上传",
   "IMAGE_UPLOAD_FAILED": "图片上传失败",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "登录以嵌入图片",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "LIVE_DEV_LP_SELBOX_INLINE": "内联",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "正在查找匹配的规则…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "嵌入式",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "将更改保存到所选目标 (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "撤销更改 (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "像写文档一样编写 Markdown。{APP_NAME} 会为您处理格式，让您专注于写作。"
 });

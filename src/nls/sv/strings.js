@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Skaffa Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har använt {0}% av dina kostnadsfria bildsökningar ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Spara ändringar?",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Söker efter matchande regler…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "inbäddad",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Spara ändringar i det valda målet (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Återställ ändringar (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stilredigerare",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Redigera stilar",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Lägg till",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Fråga inte igen för det här projektet",
   "AVAILABLE_IN_PRO_TITLE": "Finns i Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Med Phoenix Pro kan du förhandsgranska din sida i de skärmstorlekar som definieras i din CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Skriv Markdown som ett dokument. Phoenix hanterar formateringen så att du kan fokusera på att skriva.",
   "IMAGE_UPLOADING": "Laddar upp",
   "IMAGE_UPLOAD_FAILED": "Kunde inte ladda upp bild",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Logga in för att bädda in bild",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Söker efter matchande regler…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "inbäddad",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Spara ändringar i det valda målet (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Återställ ändringar (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Skriv Markdown som ett dokument. {APP_NAME} hanterar formateringen så att du kan fokusera på att skriva."
 });

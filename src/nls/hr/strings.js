@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Nabavite Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Iskoristili ste {0}% svojih besplatnih pretraživanja slika ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Sačuvaj promjene",
+  "LIVE_DEV_LP_SELBOX_INLINE": "U retku",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Traženje odgovarajućih pravila...",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Ugrađeno",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Spremi promjene na odabrano odredište (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Poništi promjene (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Uređivač stilova",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Uredi stilove",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Dodaj",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne pitaj ponovno za ovaj projekt",
   "AVAILABLE_IN_PRO_TITLE": "Dostupno u Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro omogućuje vam pregled stranice na veličinama zaslona definiranim u vašem CSS-u.",
-  "MD_EDIT_UPSELL_MESSAGE": "Pišite Markdown kao dokument. Phoenix se brine za formatiranje kako biste se vi mogli usredotočiti na pisanje.",
   "IMAGE_UPLOADING": "Prijenos...",
   "IMAGE_UPLOAD_FAILED": "Prijenos slike nije uspio.",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Prijavite se za umetanje slike",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "LIVE_DEV_LP_SELBOX_INLINE": "U retku",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Traženje odgovarajućih pravila...",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Ugrađeno",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Spremi promjene na odabrano odredište (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Poništi promjene (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Pišite Markdown kao dokument. {APP_NAME} se brine za oblikovanje, tako da se možete usredotočiti na pisanje."
 });

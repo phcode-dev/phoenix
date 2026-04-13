@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obtenha o Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Você usou {0}% das suas buscas de imagens gratuitas ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Salvar alterações",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Em linha",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Encontrando regras correspondentes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "incorporado",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salvar alterações no destino selecionado (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter alterações (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de Estilo",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editar Estilos",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Adicionar",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Não perguntar novamente para este projeto",
   "AVAILABLE_IN_PRO_TITLE": "Disponível no Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "O Phoenix Pro permite que você visualize sua página nos tamanhos de tela definidos em seu CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Escreva Markdown como um documento. O Phoenix cuida da formatação para que você possa se concentrar na escrita.",
   "IMAGE_UPLOADING": "Enviando",
   "IMAGE_UPLOAD_FAILED": "Falha ao enviar imagem",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Faça login para incorporar imagem",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Em linha",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Encontrando regras correspondentes…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "incorporado",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salvar alterações no destino selecionado (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter alterações (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Escreva em Markdown como se fosse um documento. O {APP_NAME} cuida da formatação para que você possa se concentrar na escrita."
 });

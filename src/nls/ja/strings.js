@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Proを入手",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "無料の画像検索を{0}%使用しました ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "変更を保存",
+  "LIVE_DEV_LP_SELBOX_INLINE": "インライン",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "一致するルールを検索中…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "埋め込み",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "選択したターゲットへの変更を保存 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "変更を元に戻す (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "スタイルエディター",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "スタイルを編集",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 追加",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "このプロジェクトでは次回から表示しない",
   "AVAILABLE_IN_PRO_TITLE": "Phoenix Proで利用可能",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Proでは、CSSで定義された画面サイズでページをプレビューできます。",
-  "MD_EDIT_UPSELL_MESSAGE": "ドキュメントのようにマークダウンを記述。Phoenixが書式設定を処理するため、執筆に集中できます。",
   "IMAGE_UPLOADING": "アップロード中",
   "IMAGE_UPLOAD_FAILED": "画像のアップロードに失敗しました",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "画像を埋め込むにはログインが必要です",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "LIVE_DEV_LP_SELBOX_INLINE": "インライン",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "一致するルールを検索中…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "埋め込み",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "選択したターゲットへの変更を保存 (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "変更を元に戻す (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "文書を書くようにマークダウンを記述できます。{APP_NAME}が書式設定を処理するので、執筆に集中できます。"
 });

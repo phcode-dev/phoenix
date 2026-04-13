@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obter Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Usaches o {0}% das túas buscas de imaxes gratuítas ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Gardar cambios",
+  "LIVE_DEV_LP_SELBOX_INLINE": "En liña",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Buscando regras coincidentes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incrustado",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Gardar os cambios no destino seleccionado (Intro)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter os cambios (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de estilos",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editar estilos",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Engadir",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Non volver preguntar para este proxecto",
   "AVAILABLE_IN_PRO_TITLE": "Dispoñible en Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro permíteche previsualizar a túa páxina nos tamaños de pantalla definidos no teu CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Escribe en Markdown coma se fose un documento. Phoenix encárgase do formato para que poidas centrarte en escribir.",
   "IMAGE_UPLOADING": "Subindo",
   "IMAGE_UPLOAD_FAILED": "Erro ao subir a imaxe",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Inicia sesión para inserir a imaxe",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_LP_SELBOX_INLINE": "En liña",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Buscando regras coincidentes…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incrustado",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Gardar os cambios no destino seleccionado (Intro)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter os cambios (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Escribe Markdown coma un documento. {APP_NAME} encárgase do formato para que te poidas centrar en escribir."
 });

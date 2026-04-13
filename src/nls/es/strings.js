@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obtén Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Has usado el {0}% de tus búsquedas de imágenes gratuitas ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Guardar cambios",
+  "LIVE_DEV_LP_SELBOX_INLINE": "En línea",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Buscando reglas coincidentes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "incrustado",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Guardar cambios en el destino seleccionado (Intro)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Revertir cambios (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de estilos",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editar estilos",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Añadir",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "No volver a preguntar para este proyecto",
   "AVAILABLE_IN_PRO_TITLE": "Disponible en Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro te permite previsualizar tu página en los tamaños de pantalla definidos en tu CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Escribe en Markdown como si fuera un documento. Phoenix se encarga del formato para que puedas concentrarte en escribir.",
   "IMAGE_UPLOADING": "Subiendo",
   "IMAGE_UPLOAD_FAILED": "Error al subir la imagen",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Inicia sesión para incrustar la imagen",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_LP_SELBOX_INLINE": "En línea",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Buscando reglas coincidentes…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "incrustado",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Guardar cambios en el destino seleccionado (Intro)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Revertir cambios (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Escribe en Markdown como si fuera un documento. {APP_NAME} se encarga del formato para que puedas concentrarte en escribir."
 });

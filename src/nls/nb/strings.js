@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Skaff deg Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har brukt {0} % av dine gratis bildesøk ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Lagre endringer",
+  "LIVE_DEV_LP_SELBOX_INLINE": "In-line",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Finner samsvarende regler …",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "innebygd",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Lagre endringer i det valgte målet (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Tilbakestill endringer (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stilredigering",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Rediger stiler",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Legg til",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ikke spør igjen for dette prosjektet",
   "AVAILABLE_IN_PRO_TITLE": "Tilgjengelig i Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro lar deg forhåndsvise siden din i skjermstørrelsene som er definert i CSS-en din.",
-  "MD_EDIT_UPSELL_MESSAGE": "Skriv Markdown som et dokument. Phoenix håndterer formateringen slik at du kan fokusere på skrivingen.",
   "IMAGE_UPLOADING": "Laster opp",
   "IMAGE_UPLOAD_FAILED": "Opplasting av bilde mislyktes",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Logg inn for å bygge inn bilde",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_LP_SELBOX_INLINE": "In-line",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Finner samsvarende regler …",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "innebygd",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Lagre endringer i det valgte målet (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Tilbakestill endringer (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Skriv Markdown som et dokument. {APP_NAME} håndterer formateringen, slik at du kan holde fokus på skrivingen."
 });

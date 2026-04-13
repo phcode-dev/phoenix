@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Отримати Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ви використали {0}% безкоштовних пошуків зображень ({1} з {2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Зберегти зміни",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Вбудований",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Пошук відповідних правил…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Вбудований",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Зберегти зміни у вибраному об'єкті (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Скасувати зміни (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Редактор стилів",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Редагувати стилі",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Додати",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Не запитувати знову для цього проєкту",
   "AVAILABLE_IN_PRO_TITLE": "Доступно в Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro дозволяє вам переглядати вашу сторінку з розмірами екрана, визначеними у вашому CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Пишіть Markdown, як документ. Phoenix подбає про форматування, щоб ви могли зосередитися на написанні.",
   "IMAGE_UPLOADING": "Завантаження",
   "IMAGE_UPLOAD_FAILED": "Не вдалося завантажити зображення",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Увійдіть, щоб вставити зображення",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Вбудований",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Пошук відповідних правил…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Вбудований",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Зберегти зміни у вибраному об'єкті (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Скасувати зміни (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Пишіть у Маркдауні, як у звичайному документі. {APP_NAME} бере форматування на себе, щоб ви могли зосередитися на написанні."
 });

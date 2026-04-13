@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Iegūt Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ir izmantoti {0}% no jūsu bezmaksas attēlu meklējumiem ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Saglabāt izmaiņas",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Iekļauts",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Meklē atbilstošās kārtulas…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Iegults",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Saglabāt izmaiņas atlasītajā mērķī (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Atsaukt izmaiņas (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stilu redaktors",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Rediģēt stilus",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Pievienot",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Vairs nejautāt šim projektam",
   "AVAILABLE_IN_PRO_TITLE": "Pieejams Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro ļauj priekšskatīt jūsu lapu ekrāna izmēros, kas definēti jūsu CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Rakstiet Markdown kā dokumentu. Phoenix parūpēsies par formatēšanu, lai jūs varētu koncentrēties uz rakstīšanu.",
   "IMAGE_UPLOADING": "Augšupielādē",
   "IMAGE_UPLOAD_FAILED": "Neizdevās augšupielādēt attēlu",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Piesakieties, lai iegultu attēlu",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Iekļauts",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Meklē atbilstošās kārtulas…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Iegults",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Saglabāt izmaiņas atlasītajā mērķī (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Atsaukt izmaiņas (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Rakstiet Markdown kā dokumentu. {APP_NAME} parūpēsies par formatēšanu, lai jūs varētu koncentrēties uz rakstīšanu."
 });

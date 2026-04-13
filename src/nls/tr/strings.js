@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro'ya Geçin",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ücretsiz görsel arama hakkınızın {0}%'lık kısmını kullandınız ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Değişiklikleri kaydet",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Satır İçi",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Eşleşen kurallar bulunuyor…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "gömülü",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Seçilen hedefe değişiklikleri kaydet (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Değişiklikleri geri al (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stil Düzenleyici",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stilleri Düzenle",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Ekle",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Bu proje için tekrar sorma",
   "AVAILABLE_IN_PRO_TITLE": "Phoenix Pro'da mevcut",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro, sayfanızı CSS'nizde tanımlanan ekran boyutlarında önizlemenize olanak tanır.",
-  "MD_EDIT_UPSELL_MESSAGE": "Markdown'u bir belge gibi yazın. Phoenix biçimlendirmeyi halleder, böylece siz yazmaya odaklanabilirsiniz.",
   "IMAGE_UPLOADING": "Yükleniyor",
   "IMAGE_UPLOAD_FAILED": "Görsel yüklenemedi",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Görseli Gömmek İçin Giriş Yapın",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Satır İçi",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Eşleşen kurallar bulunuyor…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "gömülü",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Seçilen hedefe değişiklikleri kaydet (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Değişiklikleri geri al (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Markdown'u bir belge yazar gibi yazın. {APP_NAME} biçimlendirmeyi halleder, böylece siz de yazmaya odaklanabilirsiniz."
 });

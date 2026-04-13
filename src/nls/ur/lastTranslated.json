@@ -1761,7 +1761,7 @@
   "MARKED_FOR_REMOVAL": "Marked for removal",
   "MARKED_FOR_UPDATE": "Marked for update",
   "MARK_MODIFIED_FILES_IN_TREE": "Mark modified files in file tree",
-  "MD_EDIT_UPSELL_MESSAGE": "Write Markdown like a document. Phoenix handles the formatting so you can stay focused on writing.",
+  "MD_EDIT_UPSELL_MESSAGE": "Write Markdown like a document. {APP_NAME} handles the formatting so you can stay focused on writing.",
   "MD_VIEWER_THEME_DESCRIPTION": "Theme for the Markdown viewer (light or dark)",
   "MENU_RESET_HARD": "Discard changes and commits after this (hard reset)",
   "MENU_RESET_MIXED": "Discard commits after this but keep changes unstaged (mixed reset)",

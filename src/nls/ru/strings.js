@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Перейти на Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Вы использовали {0}% бесплатных поисков изображений ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Сохранить изменения",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Инлайн",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "Стиль элемента",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Поиск подходящих правил…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Встроенный",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Сохранить изменения в выбранном назначении (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Отменить изменения (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Редактор стилей",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Редактировать стили",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Добавить",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Больше не спрашивать для этого проекта",
   "AVAILABLE_IN_PRO_TITLE": "Доступно в Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro позволяет просматривать вашу страницу с размерами экрана, определёнными в вашем CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Пишите в Markdown как в обычном документе. Phoenix позаботится о форматировании, чтобы вы могли сосредоточиться на тексте.",
   "IMAGE_UPLOADING": "Загрузка",
   "IMAGE_UPLOAD_FAILED": "Не удалось загрузить изображение",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Войдите, чтобы встроить изображение",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Инлайн",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "Стиль элемента",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Поиск подходящих правил…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Встроенный",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Сохранить изменения в выбранном назначении (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Отменить изменения (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Пишите на Markdown, как в обычном документе. {APP_NAME} позаботится о форматировании, чтобы вы могли сосредоточиться на тексте."
 });

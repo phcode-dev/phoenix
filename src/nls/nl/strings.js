@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Neem Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "U heeft {0}% van uw gratis zoekopdrachten naar afbeeldingen gebruikt ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Opslaan van wijzigingen",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Passende regels zoeken…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "ingesloten",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Wijzigingen opslaan in het geselecteerde doel (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Wijzigingen terugdraaien (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stijleditor",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stijlen bewerken",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Toevoegen",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Niet opnieuw vragen voor dit project",
   "AVAILABLE_IN_PRO_TITLE": "Beschikbaar in Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Met Phoenix Pro kunt u een voorbeeld van uw pagina bekijken op de schermformaten die in uw CSS zijn gedefinieerd.",
-  "MD_EDIT_UPSELL_MESSAGE": "Schrijf Markdown als een document. Phoenix zorgt voor de opmaak, zodat jij je kunt focussen op het schrijven.",
   "IMAGE_UPLOADING": "Uploaden",
   "IMAGE_UPLOAD_FAILED": "Het uploaden van de afbeelding is mislukt",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Inloggen om afbeelding in te sluiten",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Passende regels zoeken…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "ingesloten",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Wijzigingen opslaan in het geselecteerde doel (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Wijzigingen terugdraaien (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Schrijf Markdown als een document. {APP_NAME} verzorgt de opmaak, zodat jij je kunt concentreren op het schrijven."
 });

@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Zdobądź Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Wykorzystano {0}% Twoich darmowych wyszukiwań obrazów ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Zapisz zmiany",
+  "LIVE_DEV_LP_SELBOX_INLINE": "W linii",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Wyszukiwanie pasujących reguł…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Osadzony",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Zapisz zmiany w wybranym celu (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Cofnij zmiany (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Edytor stylów",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Edytuj style",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Dodaj",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Nie pytaj ponownie dla tego projektu",
   "AVAILABLE_IN_PRO_TITLE": "Dostępne w Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro pozwala na podgląd strony w rozmiarach ekranu zdefiniowanych w plikach CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Pisz w Markdown jak w dokumencie. Phoenix zadba o formatowanie, abyś mógł skupić się na pisaniu.",
   "IMAGE_UPLOADING": "Przesyłanie",
   "IMAGE_UPLOAD_FAILED": "Nie udało się przesłać obrazu",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Zaloguj się, aby osadzić obraz",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "LIVE_DEV_LP_SELBOX_INLINE": "W linii",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Wyszukiwanie pasujących reguł…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Osadzony",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Zapisz zmiany w wybranym celu (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Cofnij zmiany (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Pisz w Markdown jak w dokumencie. {APP_NAME} zajmuje się formatowaniem, dzięki czemu możesz skupić się na pisaniu."
 });

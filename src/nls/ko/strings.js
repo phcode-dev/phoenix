@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "프로 버전 사용하기",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "무료 이미지 검색의 {0}%({1}/{2})를 사용했습니다.",
   "LIVE_DEV_LP_SELBOX_TITLE": "변경 사항 저장",
+  "LIVE_DEV_LP_SELBOX_INLINE": "인라인",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "엘리먼트.스타일",
+  "LIVE_DEV_LP_SELBOX_LOADING": "일치하는 규칙을 찾는 중…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "임베디드",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "선택한 대상에 변경 사항 저장 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "변경 사항 되돌리기 (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "스타일 편집기",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "스타일 편집",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 추가",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "이 프로젝트에 대해 다시 묻지 않기",
   "AVAILABLE_IN_PRO_TITLE": "Phoenix Pro에서 사용 가능",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro를 사용하면 CSS에 정의된 화면 크기로 페이지를 미리 볼 수 있습니다.",
-  "MD_EDIT_UPSELL_MESSAGE": "문서처럼 마크다운을 작성하세요. Phoenix가 서식을 처리하므로 글쓰기에만 집중할 수 있습니다.",
   "IMAGE_UPLOADING": "업로드 중",
   "IMAGE_UPLOAD_FAILED": "이미지 업로드 실패",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "이미지 삽입을 위한 로그인",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "LIVE_DEV_LP_SELBOX_INLINE": "인라인",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "엘리먼트.스타일",
-  "LIVE_DEV_LP_SELBOX_LOADING": "일치하는 규칙을 찾는 중…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "임베디드",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "선택한 대상에 변경 사항 저장 (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "변경 사항 되돌리기 (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "문서처럼 마크다운을 작성하세요. {APP_NAME}이 서식을 처리해 드리므로 글쓰기에만 집중할 수 있습니다."
 });

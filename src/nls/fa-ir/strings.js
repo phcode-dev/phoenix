@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "دریافت Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "شما از {0}٪ جستجوهای تصویر رایگان خود استفاده کرده‌اید ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "ذخیره تغییرات",
+  "LIVE_DEV_LP_SELBOX_INLINE": "درون‌خطی",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "در حال یافتن قواعد منطبق…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "جاسازی‌شده",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "ذخیره تغییرات در هدف انتخاب‌شده (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "بازگرداندن تغییرات (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "ویرایشگر استایل",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "ویرایش استایل‌ها",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ افزودن",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "دیگر برای این پروژه سؤال نشود",
   "AVAILABLE_IN_PRO_TITLE": "موجود در Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro به شما امکان می‌دهد صفحه خود را در اندازه‌های صفحه‌نمایش تعریف‌شده در CSS خود پیش‌نمایش کنید.",
-  "MD_EDIT_UPSELL_MESSAGE": "مارک‌داون را مانند یک سند بنویسید. Phoenix قالب‌بندی را انجام می‌دهد تا شما بر نوشتن متمرکز بمانید.",
   "IMAGE_UPLOADING": "در حال آپلود",
   "IMAGE_UPLOAD_FAILED": "آپلود تصویر ناموفق بود",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "برای جاسازی تصویر وارد شوید",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "LIVE_DEV_LP_SELBOX_INLINE": "درون‌خطی",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "در حال یافتن قواعد منطبق…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "جاسازی‌شده",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "ذخیره تغییرات در هدف انتخاب‌شده (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "بازگرداندن تغییرات (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "مارک‌داون را مانند یک سند بنویسید. {APP_NAME} قالب‌بندی را انجام می‌دهد تا شما بتوانید روی نوشتن متمرکز بمانید."
 });

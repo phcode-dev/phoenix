@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Passa a Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Hai utilizzato il {0}% delle tue ricerche di immagini gratuite ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Salva le modifiche",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Ricerca regole corrispondenti…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporato",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salva le modifiche nella destinazione selezionata (Invio)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Annulla le modifiche (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor stili",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Modifica stili",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Aggiungi",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Non chiedere più per questo progetto",
   "AVAILABLE_IN_PRO_TITLE": "Disponibile in Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro ti consente di visualizzare l'anteprima della tua pagina alle dimensioni dello schermo definite nel tuo CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Scrivi in Markdown come in un normale documento. Phoenix si occupa della formattazione, così puoi concentrarti sulla scrittura.",
   "IMAGE_UPLOADING": "Caricamento in corso",
   "IMAGE_UPLOAD_FAILED": "Impossibile caricare l'immagine",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Accedi per incorporare l'immagine",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Ricerca regole corrispondenti…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporato",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salva le modifiche nella destinazione selezionata (Invio)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Annulla le modifiche (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Scrivi in Markdown come in un documento. {APP_NAME} si occupa della formattazione, così puoi concentrarti sulla scrittura."
 });

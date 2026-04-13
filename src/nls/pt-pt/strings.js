@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obter Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Já utilizou {0}% das suas pesquisas de imagens gratuitas ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Guardar alterações",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Em linha",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "A encontrar regras correspondentes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporado",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Guardar alterações no destino selecionado (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter alterações (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de Estilos",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editar Estilos",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Adicionar",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Não voltar a perguntar para este projeto",
   "AVAILABLE_IN_PRO_TITLE": "Disponível no Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "O Phoenix Pro permite-lhe pré-visualizar a sua página nos tamanhos de ecrã definidos no seu CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Escreva Markdown como se fosse um documento. O Phoenix trata da formatação para que se possa focar na escrita.",
   "IMAGE_UPLOADING": "A carregar",
   "IMAGE_UPLOAD_FAILED": "Falha ao carregar imagem",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Inicie sessão para incorporar imagem",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Em linha",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "A encontrar regras correspondentes…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporado",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Guardar alterações no destino selecionado (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Reverter alterações (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Escreva em Markdown como se fosse um documento. O {APP_NAME} trata da formatação para que se possa concentrar na escrita."
 });
