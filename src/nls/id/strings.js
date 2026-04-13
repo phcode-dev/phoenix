@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Dapatkan Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Anda telah menggunakan {0}% dari pencarian gambar gratis Anda ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Simpan Perubahan",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Sebaris",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Mencari aturan yang cocok…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "tersemat",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Simpan perubahan ke target yang dipilih (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Batalkan perubahan (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor Gaya",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Edit Gaya",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Tambah",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Jangan tanya lagi untuk proyek ini",
   "AVAILABLE_IN_PRO_TITLE": "Tersedia di Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro memungkinkan Anda untuk mempratinjau halaman Anda pada ukuran layar yang ditentukan di CSS Anda.",
-  "MD_EDIT_UPSELL_MESSAGE": "Tulis Markdown seperti dokumen. Phoenix menangani pemformatan sehingga Anda dapat tetap fokus menulis.",
   "IMAGE_UPLOADING": "Mengunggah",
   "IMAGE_UPLOAD_FAILED": "Gagal mengunggah gambar",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Masuk untuk Menyematkan Gambar",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Sebaris",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Mencari aturan yang cocok…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "tersemat",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Simpan perubahan ke target yang dipilih (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Batalkan perubahan (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Tulis Markdown seperti dokumen. {APP_NAME} menangani pemformatan agar Anda bisa tetap fokus menulis."
 });

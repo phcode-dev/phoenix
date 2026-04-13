@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro-Version holen",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Sie haben {0}% Ihrer kostenlosen Bildsuchen genutzt ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Änderungen speichern",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Suche nach passenden Regeln...",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "eingebettet",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Änderungen im ausgewählten Ziel speichern (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Änderungen verwerfen (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stil-Editor",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stile bearbeiten",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Hinzufügen",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Für dieses Projekt nicht erneut fragen",
   "AVAILABLE_IN_PRO_TITLE": "Verfügbar in Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro ermöglicht die Vorschau Ihrer Seite in den Bildschirmgrößen, die in Ihrem CSS definiert sind.",
-  "MD_EDIT_UPSELL_MESSAGE": "Schreiben Sie Markdown wie ein Dokument. Phoenix kümmert sich um die Formatierung, damit Sie sich auf das Schreiben konzentrieren können.",
   "IMAGE_UPLOADING": "Wird hochgeladen",
   "IMAGE_UPLOAD_FAILED": "Fehler beim Hochladen des Bildes",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Anmelden, um Bild einzubetten",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Suche nach passenden Regeln...",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "eingebettet",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Änderungen im ausgewählten Ziel speichern (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Änderungen verwerfen (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Schreiben Sie Markdown wie ein Dokument. {APP_NAME} übernimmt die Formatierung, damit Sie sich auf das Schreiben konzentrieren können."
 });

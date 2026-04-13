@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Passer à Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Vous avez utilisé {0} % de vos recherches d'images gratuites ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Enregistrer les modifications",
+  "LIVE_DEV_LP_SELBOX_INLINE": "En ligne",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Recherche de règles correspondantes…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporé",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Enregistrer les modifications sur la cible sélectionnée (Entrée)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Annuler les modifications (Échap)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Éditeur de styles",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Modifier les styles",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Ajouter",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne plus demander pour ce projet",
   "AVAILABLE_IN_PRO_TITLE": "Disponible dans Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro vous permet de prévisualiser votre page aux tailles d'écran définies dans votre CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Écrivez du Markdown comme un document. Phoenix s'occupe de la mise en forme pour que vous puissiez vous concentrer sur l'écriture.",
   "IMAGE_UPLOADING": "Téléversement en cours",
   "IMAGE_UPLOAD_FAILED": "Échec du téléversement de l'image",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Connectez-vous pour intégrer une image",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "LIVE_DEV_LP_SELBOX_INLINE": "En ligne",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Recherche de règles correspondantes…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Incorporé",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Enregistrer les modifications sur la cible sélectionnée (Entrée)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Annuler les modifications (Échap)"
+  "MD_EDIT_UPSELL_MESSAGE": "Rédigez en Markdown comme dans un document. {APP_NAME} se charge de la mise en forme pour que vous puissiez vous concentrer sur l'écriture."
 });

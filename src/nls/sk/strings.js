@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Získajte Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Využili ste {0} % vašich bezplatných vyhľadávaní obrázkov ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Uložiť zmeny",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Hľadajú sa zodpovedajúce pravidlá…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "vložený",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Uložiť zmeny do vybraného cieľa (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Vrátiť zmeny späť (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor štýlov",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Upraviť štýly",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Pridať",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Pre tento projekt sa už nepýtať",
   "AVAILABLE_IN_PRO_TITLE": "Dostupné v Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro umožňuje zobraziť náhľad stránky vo veľkostiach obrazovky definovaných v CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Píšte Markdown ako dokument. Phoenix sa postará o formátovanie, aby ste sa mohli sústrediť na písanie.",
   "IMAGE_UPLOADING": "Nahrávanie",
   "IMAGE_UPLOAD_FAILED": "Nepodarilo sa nahrať obrázok",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Prihláste sa pre vloženie obrázka",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Hľadajú sa zodpovedajúce pravidlá…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "vložený",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Uložiť zmeny do vybraného cieľa (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Vrátiť zmeny späť (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Píšte v Markdowne ako v dokumente. {APP_NAME} sa postará o formátovanie, takže sa môžete sústrediť na písanie."
 });

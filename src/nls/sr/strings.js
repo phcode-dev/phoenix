@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Набавите Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Искористили сте {0}% ваших бесплатних претрага слика ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Сачувај измене",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Линијски",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Проналажење одговарајућих правила…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Уграђено",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Сачувајте измене у изабраном одредишту (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Поништи измене (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Уређивач стилова",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Уреди стилове",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Додај",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Не питај поново за овај пројекат",
   "AVAILABLE_IN_PRO_TITLE": "Доступно у Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro вам омогућава да прегледате своју страницу у величинама екрана дефинисаним у вашем CSS-у.",
-  "MD_EDIT_UPSELL_MESSAGE": "Пишите Markdown као документ. Phoenix се брине о форматирању како бисте остали усредсређени на писање.",
   "IMAGE_UPLOADING": "Отпремање",
   "IMAGE_UPLOAD_FAILED": "Отпремање слике није успело",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Пријавите се да бисте уградили слику",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Линијски",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Проналажење одговарајућих правила…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "Уграђено",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Сачувајте измене у изабраном одредишту (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Поништи измене (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Пишите Markdown као документ. {APP_NAME} брине о форматирању како бисте остали усредсређени на писање."
 });

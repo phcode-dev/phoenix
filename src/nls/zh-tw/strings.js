@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "取得專業版",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "您已使用 {0}% 的免費圖片搜尋次數 ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "儲存變更",
+  "LIVE_DEV_LP_SELBOX_INLINE": "行內",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "正在尋找相符的規則…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "內嵌",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "儲存變更至選定目標 (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "復原變更 (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "樣式編輯器",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "編輯樣式",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ 新增",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "針對此專案不再詢問",
   "AVAILABLE_IN_PRO_TITLE": "僅在 Phoenix Pro 中提供",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro 可讓您以 CSS 中定義的螢幕尺寸預覽您的頁面。",
-  "MD_EDIT_UPSELL_MESSAGE": "像寫文件一樣撰寫 Markdown。Phoenix 會處理格式，讓您能專注於寫作。",
   "IMAGE_UPLOADING": "上傳中",
   "IMAGE_UPLOAD_FAILED": "影像上傳失敗",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "登入以嵌入影像",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "LIVE_DEV_LP_SELBOX_INLINE": "行內",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "正在尋找相符的規則…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "內嵌",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "儲存變更至選定目標 (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "復原變更 (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "像撰寫文件一樣編寫 Markdown。{APP_NAME} 會為您處理格式設定，讓您能專注於寫作。"
 });

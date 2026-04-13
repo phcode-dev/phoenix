@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Få Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har brugt {0}% af dine gratis billedsøgninger ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Gem ændringer",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Finder matchende regler…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "indlejret",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Gem ændringer til det valgte mål (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Fortryd ændringer (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stileditor",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Rediger stilarter",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Tilføj",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Spørg ikke igen for dette projekt",
   "AVAILABLE_IN_PRO_TITLE": "Tilgængelig i Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Med Phoenix Pro kan du forhåndsvise din side i de skærmstørrelser, der er defineret i din CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Skriv Markdown som et dokument. Phoenix håndterer formateringen, så du kan fokusere på at skrive.",
   "IMAGE_UPLOADING": "Uploader",
   "IMAGE_UPLOAD_FAILED": "Kunne ikke uploade billede",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Log ind for at indlejre billede",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Inline",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Finder matchende regler…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "indlejret",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Gem ændringer til det valgte mål (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Fortryd ændringer (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Skriv Markdown som et dokument. {APP_NAME} sørger for formateringen, så du kan forblive fokuseret på at skrive."
 });

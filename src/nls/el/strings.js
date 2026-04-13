@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Αποκτήστε το Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Έχετε χρησιμοποιήσει το {0}% των δωρεάν αναζητήσεων εικόνων σας ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Αποθήκευση Αλλαγών",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Ενσωματωμένο",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Εύρεση αντίστοιχων κανόνων…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "ενσωματωμένο",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Αποθήκευση αλλαγών στον επιλεγμένο στόχο (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Επαναφορά αλλαγών (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Επεξεργαστής Στυλ",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Επεξεργασία Στυλ",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Προσθήκη",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Να μην ερωτηθώ ξανά για αυτό το έργο",
   "AVAILABLE_IN_PRO_TITLE": "Διαθέσιμο στο Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Το Phoenix Pro σάς επιτρέπει να κάνετε προεπισκόπηση της σελίδας σας στα μεγέθη οθόνης που ορίζονται στο CSS σας.",
-  "MD_EDIT_UPSELL_MESSAGE": "Γράψτε Markdown σαν έγγραφο. Το Phoenix αναλαμβάνει τη μορφοποίηση για να μπορείτε να παραμένετε εστιασμένοι στη γραφή.",
   "IMAGE_UPLOADING": "Μεταφόρτωση",
   "IMAGE_UPLOAD_FAILED": "Αποτυχία μεταφόρτωσης εικόνας",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Συνδεθείτε για Ενσωμάτωση Εικόνας",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Ενσωματωμένο",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Εύρεση αντίστοιχων κανόνων…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "ενσωματωμένο",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Αποθήκευση αλλαγών στον επιλεγμένο στόχο (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Επαναφορά αλλαγών (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Γράψτε Markdown σαν έγγραφο. Το {APP_NAME} φροντίζει για τη μορφοποίηση, ώστε να μένετε εστιασμένοι στο γράψιμο."
 });

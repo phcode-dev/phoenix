@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Вземете Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Използвали сте {0}% от вашите безплатни търсения на изображения ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Запазване на промените",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Вграден",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Търсене на съвпадащи правила…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "вграден",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Запазване на промените в избраната цел (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Отмяна на промените (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Редактор на стилове",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Редактиране на стилове",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Добави",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Не питай отново за този проект",
   "AVAILABLE_IN_PRO_TITLE": "Налично в Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro Ви позволява да преглеждате страницата си в размерите на екрана, дефинирани във Вашия CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Пишете Markdown като в документ. Phoenix се грижи за форматирането, за да можете да се съсредоточите върху писането.",
   "IMAGE_UPLOADING": "Качване",
   "IMAGE_UPLOAD_FAILED": "Неуспешно качване на изображението",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Вход за вграждане на изображение",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Вграден",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Търсене на съвпадащи правила…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "вграден",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Запазване на промените в избраната цел (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Отмяна на промените (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Пишете Markdown като документ. {APP_NAME} се грижи за форматирането, за да можете да останете съсредоточени върху писането."
 });

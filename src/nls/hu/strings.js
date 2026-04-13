@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Válts Pro-ra",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Az ingyenes képkereséseid {0}%-át használtad fel ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Változtatások mentése",
+  "LIVE_DEV_LP_SELBOX_INLINE": "Soron belüli",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Megfelelő szabályok keresése…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "beágyazott",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Módosítások mentése a kiválasztott célba (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Módosítások visszavonása (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Stílusszerkesztő",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Stílusok szerkesztése",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Hozzáadás",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne kérdezze újra ennél a projektnél",
   "AVAILABLE_IN_PRO_TITLE": "Elérhető a Phoenix Pro-ban",
   "DEVICE_SIZE_LIMIT_MESSAGE": "A Phoenix Pro lehetővé teszi, hogy az oldalát a CSS-ben meghatározott képernyőméretekben tekintse meg.",
-  "MD_EDIT_UPSELL_MESSAGE": "Szerkesszen Markdownt, mint egy dokumentumot. A Phoenix gondoskodik a formázásról, így Ön az írásra összpontosíthat.",
   "IMAGE_UPLOADING": "Feltöltés",
   "IMAGE_UPLOAD_FAILED": "A kép feltöltése sikertelen",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Bejelentkezés képbeágyazáshoz",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "LIVE_DEV_LP_SELBOX_INLINE": "Soron belüli",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Megfelelő szabályok keresése…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "beágyazott",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Módosítások mentése a kiválasztott célba (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Módosítások visszavonása (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Írjon Markdown-szöveget, akár egy dokumentumot. A(z) {APP_NAME} gondoskodik a formázásról, így Ön az írásra összpontosíthat."
 });

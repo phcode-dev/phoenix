@@ -209,6 +209,12 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obțineți Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ați folosit {0}% din căutările gratuite de imagini ({1}/{2})",
   "LIVE_DEV_LP_SELBOX_TITLE": "Salvare modificări",
+  "LIVE_DEV_LP_SELBOX_INLINE": "În linie",
+  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
+  "LIVE_DEV_LP_SELBOX_LOADING": "Se caută reguli corespondente…",
+  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "încorporat",
+  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salvează modificările în ținta selectată (Enter)",
+  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Anulează modificările (Esc)",
   "LIVE_DEV_STYLES_PANEL_HEADER": "Editor de stiluri",
   "LIVE_DEV_STYLES_EDIT_TOOLTIP": "Editează stiluri",
   "LIVE_DEV_STYLES_PANEL_ADD": "+ Adaugă",
@@ -488,7 +494,6 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Nu mai întrebați pentru acest proiect",
   "AVAILABLE_IN_PRO_TITLE": "Disponibil în Phoenix Pro",
   "DEVICE_SIZE_LIMIT_MESSAGE": "Phoenix Pro vă permite să previzualizați pagina la dimensiunile de ecran definite în CSS.",
-  "MD_EDIT_UPSELL_MESSAGE": "Scrieți Markdown ca pe un document. Phoenix se ocupă de formatare, astfel încât să vă puteți concentra pe scris.",
   "IMAGE_UPLOADING": "Se încarcă",
   "IMAGE_UPLOAD_FAILED": "Încărcarea imaginii a eșuat",
   "IMAGE_UPLOAD_LOGIN_REQUIRED_TITLE": "Autentificați-vă pentru a încorpora imaginea",
@@ -2169,10 +2174,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "LIVE_DEV_LP_SELBOX_INLINE": "În linie",
-  "LIVE_DEV_LP_SELBOX_INLINE_SECONDARY": "element.style",
-  "LIVE_DEV_LP_SELBOX_LOADING": "Se caută reguli corespondente…",
-  "LIVE_DEV_LP_SELBOX_FILE_EMBEDDED": "încorporat",
-  "LIVE_DEV_LP_SELBOX_SAVE_TOOLTIP": "Salvează modificările în ținta selectată (Enter)",
-  "LIVE_DEV_LP_SELBOX_CANCEL_TOOLTIP": "Anulează modificările (Esc)"
+  "MD_EDIT_UPSELL_MESSAGE": "Scrieți în Markdown ca într-un document. {APP_NAME} se ocupă de formatare, astfel încât să vă puteți concentra pe scris."
 });
