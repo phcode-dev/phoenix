@@ -1714,6 +1714,23 @@ function emitContentChange(contentEl) {
     }, CONTENT_CHANGE_DEBOUNCE);
 }
 
+/**
+ * Flush any pending debounced content-change emission immediately.
+ * Called during file switch so the outgoing file's edits are synced
+ * to its cache entry and CM document before switching away.
+ */
+export function flushPendingContentChange() {
+    if (contentChangeTimer) {
+        clearTimeout(contentChangeTimer);
+        contentChangeTimer = null;
+        const contentEl = document.getElementById("viewer-content");
+        if (contentEl) {
+            const markdown = convertToMarkdown(contentEl);
+            emit("bridge:contentChanged", { markdown });
+        }
+    }
+}
+
 function getContentEl() {
     return document.getElementById("viewer-content");
 }

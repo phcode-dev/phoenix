@@ -536,6 +536,22 @@ define(function (require, exports, module) {
             return;
         }
 
+        // Guard against stale content changes arriving after the document was closed.
+        // This can happen because iframe content changes are debounced (50ms) and
+        // postMessage is async, so they may arrive after FILE_CLOSE but before deactivate().
+        const cm = _getCM();
+        if (!cm) {
+            return;
+        }
+
+        // Ignore content changes for a different file than the one currently active
+        // in MarkdownSync. This prevents stale debounced edits from a previous file
+        // from modifying the wrong CM document after a file switch.
+        if (data.filePath && _doc && _doc.file &&
+            data.filePath !== _doc.file.fullPath) {
+            return;
+        }
+
         const markdown = data.markdown;
         const remoteSyncId = data._syncId;
 

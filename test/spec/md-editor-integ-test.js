@@ -199,7 +199,6 @@ define(function (require, exports, module) {
      * @param {Object} editor - The active Editor instance whose content should be synced to the viewer.
      */
     async function _waitForMdPreviewReady(editor) {
-        const expectedSrc = editor ? editor.document.getText() : null;
         await awaitsFor(() => {
             const mdIFrame = _getMdPreviewIFrame();
             if (!mdIFrame || mdIFrame.style.display === "none") { return false; }
@@ -209,14 +208,18 @@ define(function (require, exports, module) {
             if (win.__isSuppressingContentChange && win.__isSuppressingContentChange()) { return false; }
             const content = mdIFrame.contentDocument && mdIFrame.contentDocument.getElementById("viewer-content");
             if (!content || content.children.length === 0) { return false; }
-            if (!EditorManager.getActiveEditor()) { return false; }
-            // Verify the viewer has synced with the editor's content
+            const activeEditor = EditorManager.getActiveEditor();
+            if (!activeEditor) { return false; }
+            // Verify the viewer has synced with the editor's content.
+            // Re-read editor content each iteration — content sync from a previous
+            // test's DOM edit can modify the document asynchronously (debounced postMessage).
+            const expectedSrc = activeEditor.document.getText();
             if (expectedSrc) {
                 const viewerSrc = win.__getCurrentContent && win.__getCurrentContent();
                 if (viewerSrc !== expectedSrc) { return false; }
             }
             return true;
-        }, "md preview synced with editor content");
+        }, "md preview synced with editor content", 5000);
     }
 
     describe("livepreview:Markdown Editor", function () {
