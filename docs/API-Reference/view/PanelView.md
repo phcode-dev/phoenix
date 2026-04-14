@@ -136,7 +136,6 @@ Preference key for persisting the maximize state across reloads.
 | id | <code>string</code> |  |
 | [title] | <code>string</code> |  |
 | [options] | <code>Object</code> |  |
-| [options.iconClass] | <code>string</code> | FontAwesome class string (e.g. "fa-solid fa-terminal"). |
 | [options.iconSvg] | <code>string</code> | Path to an SVG icon (e.g. "styles/images/icon.svg"). |
 
 
