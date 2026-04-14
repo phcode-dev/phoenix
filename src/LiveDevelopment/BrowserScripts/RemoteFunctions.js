@@ -40,6 +40,7 @@ function RemoteFunctions(config = {}) {
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslySelectedElement = null;
+    let _selectedFromEditor = false;
     // Expose the currently selected element globally for external access
     window.__current_ph_lp_selected = null;
 
@@ -550,8 +551,8 @@ function RemoteFunctions(config = {}) {
         }
 
         const element = _lastHoverTarget;
-        // Show hover overlay + hover box only for non-selected elements
-        if (element && element !== previouslySelectedElement) {
+
+        if (element && (element !== previouslySelectedElement || _selectedFromEditor)) {
             _hoverHighlight.add(element);
             if (hoverBoxHandler) {
                 hoverBoxHandler.showHoverBox(element);
@@ -680,6 +681,7 @@ function RemoteFunctions(config = {}) {
         _clickHighlight.add(element);
 
         previouslySelectedElement = element;
+        _selectedFromEditor = fromEditor || false;
         window.__current_ph_lp_selected = element;
     }
 
