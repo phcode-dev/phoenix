@@ -185,6 +185,8 @@ define({
     "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Show measurements when elements are selected in live preview. Defaults to 'false'",
     "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Select Parent",
     "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Edit Text",
+    "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Double-click",
+    "LIVE_DEV_TOOLBOX_EDIT_ELEMENT_PROPS": "Edit Element Properties",
     "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edit Hyperlink",
     "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
     "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
