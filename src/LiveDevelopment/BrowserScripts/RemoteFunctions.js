@@ -497,6 +497,13 @@ function RemoteFunctions(config = {}) {
             }
 
             this.elements = [];
+            // Reset the cached selector so that redraw() uses the elements
+            // array instead of re-querying the DOM with a stale selector.
+            // Without this, a selector like [data-brackets-id='3'] persists
+            // after the element is replaced (e.g. tag name change assigns a
+            // new ID), causing redraw() to find zero matches and release
+            // all overlays — making the highlight vanish.
+            this.selector = "";
         },
 
         redraw: function () {
@@ -643,6 +650,20 @@ function RemoteFunctions(config = {}) {
      *   UI like control box, spacing handles, or measurements.
      */
     function selectElement(element, fromEditor) {
+        // When a cursor-based highlight re-selects the already-selected element,
+        // just refresh the highlight overlay without dismissing existing UI panels
+        // (control box, editor box, element-info). This prevents cursor activity
+        // after a source edit (e.g., tag name change) from tearing down the
+        // element properties panel and losing its state.
+        if (fromEditor && element === previouslySelectedElement) {
+            if (!_clickHighlight) {
+                _clickHighlight = new Highlight();
+            }
+            _clickHighlight.clear();
+            _clickHighlight.add(element);
+            return;
+        }
+
         dismissUIAndCleanupState();
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
@@ -1317,6 +1338,19 @@ function RemoteFunctions(config = {}) {
                     }
                     previouslySelectedElement = freshElement;
                     window.__current_ph_lp_selected = freshElement;
+                    // After element replacement (e.g., tag name change), the old
+                    // DOM node is gone.  Patch the element reference on any
+                    // existing UI boxes so that position() doesn't bail on a
+                    // disconnected node and future syncs resolve correctly.
+                    // We update references directly rather than calling
+                    // handler.updateContent() to avoid side-effects like
+                    // re-creating a dismissed control box.
+                    if (SHARED_STATE._controlBox) {
+                        SHARED_STATE._controlBox.element = freshElement;
+                    }
+                    if (SHARED_STATE._editorBox) {
+                        SHARED_STATE._editorBox.element = freshElement;
+                    }
                     redrawEverything();
                 }
             }

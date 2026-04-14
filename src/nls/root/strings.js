@@ -274,6 +274,7 @@ define({
     "LIVE_DEV_FORMAT_MORE": "More formatting",
     "LIVE_DEV_ELEMENT_PROPS_TITLE": "Element Properties",
     "LIVE_DEV_ELEMENT_PROPS_TAG": "Tag",
+    "LIVE_DEV_ELEMENT_PROPS_VOID_ERROR": "<{0}> is self-closing and cannot have content",
     "LIVE_DEV_ELEMENT_PROPS_SIZE": "Size",
     "LIVE_DEV_ELEMENT_PROPS_CLASS": "Class",
     "LIVE_DEV_ELEMENT_PROPS_ID": "ID",
