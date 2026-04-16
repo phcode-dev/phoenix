@@ -457,6 +457,24 @@ define(function (require, exports, module) {
         // listen for resize here.
         listenToResize($("#sidebar"));
         listenToResize($("#main-toolbar"));
+
+        // In the browser, the #titlebar contains the menubar and filename which can wrap to
+        // multiple lines when the .content area narrows (e.g. when a plugin side panel opens).
+        // The wrapping causes a transient height change that settles asynchronously after JS
+        // recalculates the title-wrapper width. A ResizeObserver catches the settled height
+        // and triggers a layout recomputation so the editor fills the correct space.
+        let _titlebarHeight = $("#titlebar").outerHeight();
+        const titlebarEl = document.getElementById("titlebar");
+        if (titlebarEl) {
+            const titlebarObserver = new ResizeObserver(function () {
+                let newHeight = $("#titlebar").outerHeight();
+                if (newHeight !== _titlebarHeight) {
+                    _titlebarHeight = newHeight;
+                    triggerUpdateLayout();
+                }
+            });
+            titlebarObserver.observe(titlebarEl);
+        }
     });
 
     /**
