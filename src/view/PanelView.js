@@ -365,13 +365,28 @@ define(function (require, exports, module) {
     /** @type {jQueryObject} Overflow dropdown button */
     let _$overflowBtn = null;
 
+    let _checkTabOverflowTimer = null;
+
     function _checkTabOverflow() {
+        // Coalesce multiple calls (e.g. rapid tab adds) and defer to the
+        // next frame so that measurements happen after layout settles.
+        if (_checkTabOverflowTimer) {
+            cancelAnimationFrame(_checkTabOverflowTimer);
+        }
+        _checkTabOverflowTimer = requestAnimationFrame(_doCheckTabOverflow);
+    }
+
+    function _doCheckTabOverflow() {
+        _checkTabOverflowTimer = null;
         if (!_$tabBar) {
             return;
         }
-        // Remove collapsed state first to measure true width
+
+        // Remove collapsed state first to measure true width.
+        // Use a 1px tolerance to avoid sub-pixel rounding flicker at
+        // boundary sizes (e.g. scrollWidth 678 vs clientWidth 677).
         _$tabBar.removeClass("bottom-panel-tabs-collapsed");
-        const isOverflowing = _$tabsOverflow[0].scrollWidth > _$tabsOverflow[0].clientWidth;
+        const isOverflowing = _$tabsOverflow[0].scrollWidth > _$tabsOverflow[0].clientWidth + 1;
         _$tabBar.toggleClass("bottom-panel-tabs-collapsed", isOverflowing);
 
         // Check if still overflowing after collapse
@@ -854,9 +869,9 @@ define(function (require, exports, module) {
         });
 
         // Observe the outer tab bar container so that only external resizes
-        // (e.g. window resize) trigger a re-check. Observing _$tabsOverflow
-        // would cause an infinite loop in WebKit because _checkTabOverflow
-        // toggles classes that change _$tabsOverflow's size.
+        // (e.g. window resize, plugin panel open/close) trigger a re-check.
+        // Observing _$tabsOverflow would cause an infinite loop in WebKit
+        // because _checkTabOverflow toggles classes that change its size.
         new ResizeObserver(_checkTabOverflow).observe(_$tabBar[0]);
 
         // Restore maximize state from preferences (survives reload).
