@@ -22,9 +22,8 @@
 
 #navTabBar {
     display: none;
-    align-items: center;
+    align-items: stretch;
     gap: 2px;
-    width: fit-content;
     margin: 0.5rem 0.5rem 0.4rem;
     padding: 3px;
     background-color: rgba(0, 0, 0, 0.3);
@@ -33,13 +32,15 @@
     user-select: none;
 
     &.has-tabs {
-        display: inline-flex;
+        display: flex;
     }
 }
 
 .sidebar-tab {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    flex: 1 1 0;
     gap: 0.4rem;
     padding: 0.25rem 0.75rem;
     cursor: pointer;
