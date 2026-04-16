@@ -23,11 +23,10 @@
 #navTabBar {
     display: none;
     align-items: center;
+    gap: 0.25rem;
     background-color: @bc-ai-sidebar-bg;
-    height: 2rem;
-    overflow: hidden;
+    padding: 0.35rem 0.5rem;
     user-select: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
     &.has-tabs {
         display: flex;
@@ -38,12 +37,11 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0 0.75rem;
-    height: 100%;
+    padding: 0.25rem 0.7rem;
     cursor: pointer;
-    position: relative;
     color: @project-panel-text-2;
     font-size: 0.85rem;
+    border-radius: 4px;
     transition: color 0.15s ease, background-color 0.15s ease;
 
     i {
@@ -57,17 +55,7 @@
 
     &.active {
         color: @project-panel-text-1;
-        background-color: rgba(255, 255, 255, 0.04);
-
-        &::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: @project-panel-text-1;
-        }
+        background-color: rgba(255, 255, 255, 0.12);
     }
 }
 
