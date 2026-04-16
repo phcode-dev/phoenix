@@ -240,9 +240,6 @@ define(function (require, exports, module) {
             // hilights are enabled only in edit and highlight mode
             return;
         }
-        if(PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC) === false){
-            return;
-        }
         const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
             activeEditor = EditorManager.getActiveEditor(), // this can be an inline editor
             activeFullEditor = EditorManager.getCurrentFullEditor();
