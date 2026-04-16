@@ -444,7 +444,7 @@ define({
     "LIVE_DEV_HB_HEADER": "Header",
     "LIVE_DEV_HB_FOOTER": "Footer",
     "LIVE_DEV_HB_NAVIGATION": "Navigation",
-    "LIVE_DEV_HB_SIDEBAR": "Sidebar",
+    "LIVE_DEV_HB_SIDEBAR": "Aside",
     "LIVE_DEV_HB_MAIN": "Main",
     "LIVE_DEV_HB_ADDRESS": "Address",
     "LIVE_DEV_HB_IMAGE": "Image",
