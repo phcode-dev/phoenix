@@ -115,12 +115,6 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
     });
 
-    // live preview link editor and preview preference
-    const PREFERENCE_LIVE_PREVIEW_SYNC = CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC;
-    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_SYNC, "boolean", true, {
-        description: Strings.LIVE_DEV_SETTINGS_LINK_EDITOR_AND_PREVIEW_PREFERENCE
-    });
-
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
@@ -1474,14 +1468,9 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
             LiveDevelopment.updateRulerLinesConfig();
         });
-        PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_SYNC, function() {
-            LiveDevelopment.updateSyncConfig();
-        });
-
-        // Initialize element highlight, ruler lines, and sync config on startup
+        // Initialize element highlight and ruler lines config on startup
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
-        LiveDevelopment.updateSyncConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);

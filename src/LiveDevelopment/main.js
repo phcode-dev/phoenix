@@ -325,13 +325,6 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.updateConfig(config);
     }
 
-    function updateSyncConfig() {
-        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_SYNC);
-        const config = MultiBrowserLiveDev.getConfig();
-        config.syncSourceAndPreview = prefValue !== false;
-        MultiBrowserLiveDev.updateConfig(config);
-    }
-
     EventDispatcher.makeEventDispatcher(exports);
 
     // private api
@@ -355,7 +348,6 @@ define(function main(require, exports, module) {
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
-    exports.updateSyncConfig = updateSyncConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;

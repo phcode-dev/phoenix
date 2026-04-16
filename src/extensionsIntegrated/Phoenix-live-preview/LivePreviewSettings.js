@@ -62,8 +62,7 @@ define(function (require, exports, module) {
     const SUPPORTED_FRAMEWORKS = {};
     SUPPORTED_FRAMEWORKS[FRAMEWORK_DOCUSAURUS] = {configFile: "docusaurus.config.js", hotReloadSupported: true};
 
-    const PREFERENCE_LINK_EDITOR_AND_PREVIEW = "livePreviewSyncSourceAndPreview",
-        PREFERENCE_SHOW_LIVE_PREVIEW_PANEL = "livePreviewShowAtStartup",
+    const PREFERENCE_SHOW_LIVE_PREVIEW_PANEL = "livePreviewShowAtStartup",
         PREFERENCE_PROJECT_SERVER_ENABLED = "livePreviewUseDevServer",
         PREFERENCE_PROJECT_SERVER_URL = "livePreviewServerURL",
         PREFERENCE_PROJECT_SERVER_PATH = "livePreviewServerProjectPath",
@@ -123,9 +122,7 @@ define(function (require, exports, module) {
                 {"settings": currentSettings, "Strings": Strings}));
 
             // Select the correct theme.
-            const $linkEditorAndPreviewChk = $template.find("#linkEditorAndPreviewChk"),
-                $linkEditorAndPreviewInfo = $template.find("#linkEditorAndPreviewInfo"),
-                $livePreviewServerURL = $template.find("#livePreviewServerURL"),
+            const $livePreviewServerURL = $template.find("#livePreviewServerURL"),
                 $enableCustomServerChk = $template.find("#enableCustomServerChk"),
                 $showLivePreviewAtStartup = $template.find("#showLivePreviewAtStartupChk"),
                 $serveRoot = $template.find("#serveRoot"),
@@ -136,13 +133,6 @@ define(function (require, exports, module) {
                 $frameworkSelect = $template.find("#frameworkSelect");
 
             // Initialize form values from preferences
-            $linkEditorAndPreviewChk.prop(
-                'checked', PreferencesManager.get(PREFERENCE_LINK_EDITOR_AND_PREVIEW) !== false
-            );
-            $linkEditorAndPreviewInfo.on("click", function(e) {
-                e.preventDefault();
-                Phoenix.app.openURLInDefaultBrowser("https://docs.phcode.dev");
-            });
             $enableCustomServerChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED));
             $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
             $hotReloadChk.prop('checked', !!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED));
@@ -184,7 +174,6 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settings", "dialog");
             Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
                 if (id === Dialogs.DIALOG_BTN_OK) {
-                    PreferencesManager.set(PREFERENCE_LINK_EDITOR_AND_PREVIEW, $linkEditorAndPreviewChk.is(":checked"));
                     PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
                     _saveProjectPreferences($enableCustomServerChk.is(":checked"), $livePreviewServerURL.val(),
                         $serveRoot.val(), $hotReloadChk.is(":checked"), $frameworkSelect.val());
