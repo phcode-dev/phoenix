@@ -71,6 +71,7 @@ define(function main(require, exports, module) {
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
         syncSourceAndPreview: true, // default value, this will get updated when the extension loads
+        imageGalleryAutoOpen: true, // auto-open gallery on first image click per session
         isPaidUser: false, // will be updated when we fetch entitlements
         isLoggedIn: false, // will be updated when we fetch entitlements
         hasLiveEditCapability: false // handled inside _liveEditCapabilityChanged function
