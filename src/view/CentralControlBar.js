@@ -42,7 +42,7 @@ define(function (require, exports, module) {
 
     function _getRenderedSidebarWidth() {
         // Use offsetWidth (not jQuery's outerWidth) to force a synchronous reflow
-        // read — with the design-mode `max-width: 70vw` cap on #sidebar, style.width
+        // read — with the design-mode `max-width` cap on #sidebar, style.width
         // and rendered width can diverge mid-drag, and outerWidth has returned the
         // uncapped style value in some frames which left CCB / main-toolbar stuck
         // at stale offsets.
@@ -219,7 +219,7 @@ define(function (require, exports, module) {
         }
         const skipToolbarRestore = !!(opts && opts.skipToolbarRestore);
         // Capture sidebar's currently rendered width BEFORE flipping the body
-        // class. In design mode the `max-width: 70vw` cap can make the rendered
+        // class. In design mode the `max-width` cap can make the rendered
         // width smaller than sidebar.style.width. Removing the class drops the
         // cap and the sidebar would otherwise snap back to the stale style.width.
         if (editorCollapsed && !wantCollapsed && $sidebar && $sidebar[0]) {
@@ -297,8 +297,9 @@ define(function (require, exports, module) {
         // While the sidebar is being dragged we only reposition CCB / main-toolbar.
         // Running the full collapsed-layout (with recomputeLayout) on every resize
         // update fires cascading editor relayouts that can make the sidebar drag
-        // misbehave — the heavy work is done once at resize-end instead. The 70%
-        // design-mode cap itself is enforced in CSS (`max-width: 70vw`) so the
+        // misbehave — the heavy work is done once at resize-end instead. The
+        // design-mode cap itself is enforced in CSS (`max-width: calc(100vw -
+        // 230px)`, i.e. CCB + LP minimum) so the
         // browser refuses to render past it no matter what the Resizer writes.
         $sidebar.on("panelResizeUpdate.ccb", function () {
             _syncLeftPositions();
