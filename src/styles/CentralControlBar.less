@@ -190,3 +190,11 @@
 .ccb-editor-collapsed #main-toolbar > .horz-resizer {
     display: none;
 }
+
+/* Cap the sidebar at 70% of the viewport in design mode so the live-preview
+   area stays usable. Enforcing this via CSS max-width stops the drag itself
+   rather than snapping back after the Resizer has already written a larger
+   value — which avoids ResizeObserver loop warnings from rapid width writes. */
+.ccb-editor-collapsed #sidebar {
+    max-width: 70vw;
+}
