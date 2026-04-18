@@ -237,7 +237,7 @@ define(function (require, exports, module) {
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
         const $collapseBtn = $("#ccbCollapseEditorBtn");
         $collapseBtn.toggleClass("is-active", editorCollapsed)
-            .attr("title", editorCollapsed ? "Switch to Code Editor" : "Switch to Visual Edit");
+            .attr("title", editorCollapsed ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
         $collapseBtn.find("i").attr("class", editorCollapsed ? "fa-solid fa-code" : "fa-solid fa-feather");
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
@@ -304,6 +304,15 @@ define(function (require, exports, module) {
         $fileName = $fileLabel.find(".ccb-file-name");
 
         _wireButtons();
+        // The HTML titles on the control-bar buttons are fallback English
+        // strings; set the localized versions up front so the initial render
+        // reflects the user's locale. (searchNav / navBackButton /
+        // navForwardButton get their localized titles from NavigationProvider.)
+        $("#ccbCollapseEditorBtn").attr("title", Strings.CCB_SWITCH_TO_DESIGN_MODE);
+        $("#ccbSidebarToggleBtn").attr("title", Strings.CMD_TOGGLE_SIDEBAR);
+        $("#ccbUndoBtn").attr("title", Strings.CMD_UNDO);
+        $("#ccbRedoBtn").attr("title", Strings.CMD_REDO);
+        $("#ccbSaveBtn").attr("title", Strings.CMD_FILE_SAVE);
         _syncLeftPositions();
 
         // While the sidebar is being dragged we only reposition CCB / main-toolbar.

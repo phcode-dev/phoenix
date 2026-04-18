@@ -930,6 +930,8 @@ define({
     "CMD_SHOW_SIDEBAR": "Show Sidebar",
     "CMD_TOGGLE_SIDEBAR": "Toggle Sidebar",
     "CMD_TOGGLE_DESIGN_MODE": "Toggle Design Mode",
+    "CCB_SWITCH_TO_DESIGN_MODE": "Switch to Design Mode",
+    "CCB_SWITCH_TO_CODE_EDITOR": "Switch to Code Editor",
     "CMD_TOGGLE_TABBAR": "File Tab Bar",
     "CMD_TOGGLE_PANELS": "Toggle Panels",
     "CMD_TOGGLE_PURE_CODE": "No Distractions",
