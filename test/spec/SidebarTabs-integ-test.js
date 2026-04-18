@@ -527,7 +527,10 @@ define(function (require, exports, module) {
 
             it("should update the .content left offset", function () {
                 SidebarView.resize(350);
-                expect(parseInt(_$(".content").css("left"), 10)).toBe(350);
+                // The central control bar (#centralControlBar) sits between the
+                // sidebar and .content, so .content.left is offset by its width.
+                const ccbWidth = _$("#centralControlBar").outerWidth() || 0;
+                expect(parseInt(_$(".content").css("left"), 10)).toBe(350 + ccbWidth);
             });
 
             it("should persist the width in view state", function () {
