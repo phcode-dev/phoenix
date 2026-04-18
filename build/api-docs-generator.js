@@ -250,7 +250,7 @@ async function generateMarkdown(file, relativePath) {
         markdownContent, path.join(relativePath, fileName)
     );
 
-    await fs.writeFile(tempOutputFileName, updatedMarkdownContent, 'utf-8');
+    await fs.writeFile(tempOutputFileName, normalizeLineEndings(updatedMarkdownContent), 'utf-8');
 
     const fileExists = await fs.access(outputFileName).then(() => true).catch(
         () => false
