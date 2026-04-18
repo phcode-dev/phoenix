@@ -171,3 +171,22 @@
 .ccb-editor-collapsed .content {
     overflow: hidden;
 }
+
+/* Visually move the sidebar's right-resizer to the right edge of the central
+   control bar, so the drag handle sits between the control bar and the editor
+   / live-preview area. The Resizer keeps the handle at `left: sidebar.width`
+   internally (and keeps bumping it back after reposition), so a transform is
+   used here instead of overriding `left`. Hit-testing follows the transform.
+   When the sidebar is hidden the Resizer moves the handle out to become a
+   sibling of #sidebar inside .main-view — apply the same shift there. */
+#sidebar > .horz-resizer,
+.main-view > .horz-resizer {
+    transform: translateX(@central-control-bar-width);
+}
+
+/* In design mode the sidebar resizer doubles as the sidebar↔live-preview
+   splitter — hide the main-toolbar's own left-resizer so there aren't two
+   overlapping handles in the same region. */
+.ccb-editor-collapsed #main-toolbar > .horz-resizer {
+    display: none;
+}
