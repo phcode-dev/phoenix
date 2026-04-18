@@ -20,6 +20,35 @@ let _baseURL = "";
 let _cursorPosBeforeEdit = null; // cursor position before current edit batch
 let _cursorPosDirty = false; // true after content changes, reset when emitted
 let _pendingReloadScroll = null; // { filePath, scrollSourceLine } for scroll restore after reload
+// Key strings ("Ctrl-Shift-O", "Ctrl-Shift-F", …) for shortcuts Phoenix
+// handles by opening a UI that needs focus — we must not auto-refocus our
+// own editor after forwarding those. Populated from the parent via the
+// MDVIEWR_SKIP_REFOCUS_KEYS message; starts empty so bugs in the parent
+// can't break the default refocus behavior.
+let _skipRefocusKeys = new Set();
+const _isMacForKey = /Mac|iPhone|iPad/.test(navigator.platform);
+
+/**
+ * Mirror Phoenix's KeyBindingManager _buildKeyDescriptor to produce the
+ * same canonical key string from a KeyboardEvent so we can look it up in
+ * _skipRefocusKeys. Non-mac: "Ctrl-Shift-O"; mac: "Shift-Cmd-O".
+ */
+function _eventToKeyString(e) {
+    const parts = [];
+    if (_isMacForKey && e.ctrlKey) { parts.push("Ctrl"); }
+    if (e.altKey) { parts.push("Alt"); }
+    if (e.shiftKey) { parts.push("Shift"); }
+    if (!_isMacForKey && e.ctrlKey) { parts.unshift("Ctrl"); }
+    if (_isMacForKey && e.metaKey) { parts.push("Cmd"); }
+    let key = e.key || "";
+    if (key.length === 1) { key = key.toUpperCase(); }
+    parts.push(key);
+    return parts.join("-");
+}
+
+function _isSkipRefocusShortcut(e) {
+    return _skipRefocusKeys.has(_eventToKeyString(e));
+}
 
 /**
  * Check if a URL is absolute (not relative to the document).
@@ -317,6 +346,14 @@ export function initBridge() {
                 window.getSelection().removeAllRanges();
                 document.body.click();
                 break;
+            case "MDVIEWR_SKIP_REFOCUS_KEYS":
+                // Phoenix tells us which forwarded shortcuts should NOT
+                // trigger our auto-refocus (e.g. Quick Open, Find in Files
+                // — shortcuts that open parent-side UI which needs focus).
+                if (Array.isArray(data.keys)) {
+                    _skipRefocusKeys = new Set(data.keys);
+                }
+                break;
         }
     });
 
@@ -416,13 +453,18 @@ export function initBridge() {
                     altKey: e.altKey
                 });
                 // Refocus md editor after Phoenix handles the shortcut
-                // (some commands like Save focus the CM editor)
-                setTimeout(() => {
-                    const content = document.getElementById("viewer-content");
-                    if (content && getState().editMode) {
-                        content.focus({ preventScroll: true });
-                    }
-                }, 100);
+                // (e.g. Save focuses the CM editor). Phoenix sends us the
+                // list of shortcuts for which focus should stay with the
+                // parent (Quick Open, Find in Files …) via
+                // MDVIEWR_SKIP_REFOCUS_KEYS. Don't refocus for those.
+                if (!_isSkipRefocusShortcut(e)) {
+                    setTimeout(() => {
+                        const content = document.getElementById("viewer-content");
+                        if (content && getState().editMode) {
+                            content.focus({ preventScroll: true });
+                        }
+                    }, 100);
+                }
             }
         }
     }, true);
