@@ -370,6 +370,37 @@ define(function (require, exports, module) {
             }
         });
 
+        // In design mode #main-toolbar's geometry is pinned with !important so
+        // external callers of WorkspaceManager.setPluginPanelWidth(w) can't
+        // actually size the live-preview panel. Wrap the API: while collapsed,
+        // translate the requested live-preview content width into a sidebar
+        // width so the sidebar drag/clamp/sync pipeline produces the equivalent
+        // layout. In normal mode we fall through to the original implementation.
+        const _origSetPluginPanelWidth = WorkspaceManager.setPluginPanelWidth;
+        if (typeof _origSetPluginPanelWidth === "function") {
+            WorkspaceManager.setPluginPanelWidth = function (width) {
+                if (!editorCollapsed) {
+                    return _origSetPluginPanelWidth.apply(this, arguments);
+                }
+                const iconsBarWidth = $("#plugin-icons-bar").outerWidth() || 30;
+                const requestedToolbar = width + iconsBarWidth;
+                let newSidebar = window.innerWidth - requestedToolbar - BAR_WIDTH;
+                if (newSidebar < 0) {
+                    newSidebar = 0;
+                }
+                if ($sidebar && $sidebar[0]) {
+                    $sidebar[0].style.width = newSidebar + "px";
+                    const resync = $sidebar.data("resyncSizer");
+                    if (typeof resync === "function") {
+                        resync();
+                    }
+                }
+                _syncLeftPositions();
+                if (WorkspaceManager.recomputeLayout) {
+                    WorkspaceManager.recomputeLayout(true);
+                }
+            };
+        }
 
         MainViewManager.on("currentFileChange.ccb", _updateFileLabel);
         DocumentManager.on("dirtyFlagChange.ccb", _updateFileLabel);
