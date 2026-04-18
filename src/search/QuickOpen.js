@@ -53,6 +53,88 @@ define(function (require, exports, module) {
         _registerQuickOpenProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler);
 
     /**
+     * Build a ModalBar-compatible stub that renders a Spotlight-style floating
+     * picker on top of the viewport (used while in design mode, since the
+     * standard ModalBar mounts into #editor-holder which is collapsed).
+     * Implements the small subset of the ModalBar API that QuickOpen relies on:
+     * `on("close", fn)`, `close()`, `prepareClose()`, and `getRoot()`.
+     * @private
+     */
+    function _createFloatingQuickOpenBar(templateHTML) {
+        const $overlay = $("<div class='quick-open-floating-overlay'/>");
+        const $bar = $("<div class='quick-open-floating-bar'/>").html(templateHTML);
+        $overlay.append($bar).appendTo("body");
+        const closeHandlers = [];
+        let closed = false;
+        function close() {
+            if (closed) { return closePromise; }
+            closed = true;
+            // QuickNavigateDialog.close() returns this.closePromise, which is
+            // the 3rd arg of the ModalBar "close" event payload. Pass a
+            // resolved jQuery Deferred so callers can chain .done() safely.
+            closePromise = $.Deferred().resolve().promise();
+            closeHandlers.forEach(function (fn) {
+                try {
+                    // Match ModalBar's trigger signature: event, reason, promise
+                    fn({}, undefined, closePromise);
+                } catch (e) { /* swallow */ }
+            });
+            $overlay.remove();
+            window.document.body.removeEventListener("focusin", onFocusIn, true);
+            return closePromise;
+        }
+        let closePromise = null;
+        function onFocusIn(e) {
+            // Close when focus moves outside both the bar and the results
+            // dropdown (which QuickSearchField appends to <body>, not into
+            // our overlay).
+            if ($overlay[0].contains(e.target)) { return; }
+            if (e.target.closest && e.target.closest(".quick-search-container")) { return; }
+            close();
+        }
+        const bar = {
+            on: function (evt, fn) {
+                if (evt === "close" && typeof fn === "function") {
+                    closeHandlers.push(fn);
+                }
+            },
+            prepareClose: function () { /* no-op — floating bar doesn't reserve editor space */ },
+            close: close,
+            getRoot: function () { return $bar; }
+        };
+        // Close the whole picker on the FIRST Escape rather than just the
+        // dropdown. Use capture so we run before QuickSearchField's keydown
+        // handler (which does internal dropdown dismiss handling) can
+        // consume the event.
+        function onEscape(e) {
+            if (e.key === "Escape" || e.keyCode === 27) {
+                close();
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.stopImmediatePropagation) { e.stopImmediatePropagation(); }
+            }
+        }
+        $overlay[0].addEventListener("keydown", onEscape, true);
+        // Global safety net: while overlay is up, first Escape anywhere closes it.
+        window.document.addEventListener("keydown", onEscape, true);
+        closeHandlers.push(function () {
+            window.document.removeEventListener("keydown", onEscape, true);
+        });
+        $overlay.on("mousedown", function (e) {
+            if (e.target === $overlay[0]) {
+                close();
+            }
+        });
+        window.document.body.addEventListener("focusin", onFocusIn, true);
+        // Move focus into the input once the overlay is in the DOM.
+        window.setTimeout(function () {
+            const $input = $bar.find("input").first();
+            if ($input.length) { $input.focus(); }
+        }, 0);
+        return bar;
+    }
+
+    /**
      * Represents the symbol kind
      * @type {Object}
      */
@@ -637,6 +719,14 @@ define(function (require, exports, module) {
         initialString = initialString || "";
         initialString = prefix + initialString;
 
+        // If the underlying search field was already torn down (e.g. the bar
+        // was closed via focus-loss but the isOpen flag wasn't updated in
+        // time), fall back to closing cleanly so the caller reopens fresh.
+        if (!this.searchField || !this.searchField.$input || !this.$searchField || !this.$searchField[0]) {
+            this.isOpen = false;
+            return;
+        }
+
         this.searchField.setText(initialString);
 
         // Select just the text after the prefix
@@ -707,17 +797,44 @@ define(function (require, exports, module) {
             placeholder='${Strings.CMD_QUICK_OPEN}\u2026' style='width: 30em'>
             <span class='find-dialog-label'></span>
         </div>`;
-        this.modalBar = new ModalBar(searchBarHTML, true);
+        // In design mode the editor area is collapsed and the normal ModalBar
+        // (which slides in before #editor-holder) has no room to render. Use a
+        // Spotlight-style floating overlay instead so the picker stays usable.
+        if (WorkspaceManager.isInDesignMode()) {
+            this.modalBar = _createFloatingQuickOpenBar(searchBarHTML);
+        } else {
+            this.modalBar = new ModalBar(searchBarHTML, true);
+        }
 
         this.modalBar.on("close", this._handleCloseBar);
 
         this.$searchField = $("input#quickOpenSearch");
         this.$indexingSpinner = $("#indexing-spinner");
 
+        const _floating = WorkspaceManager.isInDesignMode();
+        let _verticalAdjust = this.modalBar.getRoot().outerHeight();
+        if (_floating) {
+            // QuickSearchField computes dropdownTop as
+            //   input.offset().top + input.height + verticalAdjust
+            // For the standard ModalBar that lands flush with the bar's bottom
+            // because the input sits at the bar's bottom edge. In the floating
+            // bar the input is vertically centered inside, so `bar.height` as
+            // verticalAdjust overshoots and the dropdown floats detached. Use
+            // (bar.bottom - input.bottom) instead so the dropdown starts right
+            // below the bar.
+            const $root = this.modalBar.getRoot();
+            const barBottom = $root.offset().top + $root.outerHeight();
+            const inputBottom = this.$searchField.offset().top + this.$searchField.outerHeight();
+            _verticalAdjust = Math.max(0, barBottom - inputBottom);
+        }
         this.searchField = new QuickSearchField(this.$searchField, {
             maxResults: 20,
             firstHighlightIndex: 0,
-            verticalAdjust: this.modalBar.getRoot().outerHeight(),
+            verticalAdjust: _verticalAdjust,
+            // In design mode the floating bar is the visible container for the
+            // picker; align the results dropdown to that element instead of the
+            // bare <input> so the two edges match.
+            $positionEl: _floating ? this.modalBar.getRoot() : undefined,
             resultProvider: this._filterCallback,
             formatter: this._resultsFormatterCallback,
             onCommit: this._handleItemSelect,
@@ -780,14 +897,6 @@ define(function (require, exports, module) {
     }
 
     function doFileSearch() {
-        // Design mode hides the editor area where Quick Open's modal bar and
-        // result interactions need to land. Exit design mode first so the user
-        // sees the picker on the normal editor chrome.
-        // TODO: allow Quick Open to float above the live preview so users can
-        // navigate without leaving design mode.
-        if (WorkspaceManager.isInDesignMode()) {
-            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-        }
         beginSearch("", getCurrentEditorSelectedText());
     }
 
