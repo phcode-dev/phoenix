@@ -38,6 +38,7 @@ define(function (require, exports, module) {
     let savedToolbarWidth = null;
     let livePreviewWasOpen = false;
     let savedSidebarMaxSize = null;
+    let applyingCollapsedLayout = false;
 
     function _syncLeftPositions() {
         if (!$sidebar || !$bar || !$content) {
@@ -48,8 +49,13 @@ define(function (require, exports, module) {
         if (!editorCollapsed) {
             $content.css("left", (sidebarWidth + BAR_WIDTH) + "px");
         } else {
+            const mainToolbar = document.getElementById("main-toolbar");
             const fullToolbarWidth = Math.max(0, window.innerWidth - sidebarWidth - BAR_WIDTH);
-            $("#main-toolbar").css({ left: (sidebarWidth + BAR_WIDTH) + "px", right: "auto", width: fullToolbarWidth + "px" });
+            if (mainToolbar) {
+                mainToolbar.style.setProperty("left", (sidebarWidth + BAR_WIDTH) + "px", "important");
+                mainToolbar.style.setProperty("right", "auto", "important");
+                mainToolbar.style.setProperty("width", fullToolbarWidth + "px", "important");
+            }
         }
     }
 
@@ -84,33 +90,54 @@ define(function (require, exports, module) {
     }
 
     function _applyCollapsedLayout() {
-        const $mainToolbar = $("#main-toolbar");
-        const sidebarWidth = $sidebar.is(":visible") ? ($sidebar.outerWidth() || 0) : 0;
-        // Use explicit px widths (not `auto`) so CSS transitions animate smoothly in
-        // both directions. `width: auto` on #main-toolbar would snap instead of easing.
-        const fullToolbarWidth = Math.max(0, window.innerWidth - sidebarWidth - BAR_WIDTH);
-        // Keep .content in flow (display:block) but collapse it to zero width to avoid
-        // TabBar infinite-loop when its ancestor becomes :hidden. visibility:hidden keeps
-        // layout queries stable while the bar animates out.
-        $content.css({ width: 0, "min-width": 0, right: "auto", visibility: "hidden", "pointer-events": "none" });
-        $mainToolbar.css({ left: (sidebarWidth + BAR_WIDTH) + "px", right: "auto", width: fullToolbarWidth + "px" });
-        // Sidebar's data-maxsize is "80%" of _sideBarMaxSize(), which sums non-content
-        // siblings of #sidebar. In collapsed mode #main-toolbar has width:auto and
-        // grows whenever sidebar shrinks, which feeds back into _sideBarMaxSize and
-        // creates a clamp-driven death spiral during sidebar drags. Pin maxsize to a
-        // fixed px while collapsed so the sidebar drag is purely mouse-driven.
-        if (savedSidebarMaxSize === null) {
-            savedSidebarMaxSize = $sidebar.data("maxsize");
+        if (applyingCollapsedLayout) {
+            return;
         }
-        const fixedMax = Math.max(100, window.innerWidth - BAR_WIDTH - 100);
-        $sidebar.data("maxsize", fixedMax);
-        if (WorkspaceManager.recomputeLayout) {
-            WorkspaceManager.recomputeLayout(true);
+        applyingCollapsedLayout = true;
+        try {
+            const mainToolbar = document.getElementById("main-toolbar");
+            const sidebarWidth = $sidebar.is(":visible") ? ($sidebar.outerWidth() || 0) : 0;
+            const fullToolbarWidth = Math.max(0, window.innerWidth - sidebarWidth - BAR_WIDTH);
+            // Keep .content in flow (display:block) but collapse it to zero width to avoid
+            // TabBar infinite-loop when its ancestor becomes :hidden. visibility:hidden keeps
+            // layout queries stable while the bar animates out.
+            $content.css({ width: 0, "min-width": 0, right: "auto", visibility: "hidden", "pointer-events": "none" });
+            // Use !important on the main-toolbar geometry so WorkspaceManager's clamping
+            // inside handleWindowResize can't fight our width during active window resizes
+            // (which produced a visible width flicker in full-preview mode).
+            if (mainToolbar) {
+                mainToolbar.style.setProperty("left", (sidebarWidth + BAR_WIDTH) + "px", "important");
+                mainToolbar.style.setProperty("right", "auto", "important");
+                mainToolbar.style.setProperty("width", fullToolbarWidth + "px", "important");
+            }
+            // Sidebar's data-maxsize is a percentage of _sideBarMaxSize() (main-view width
+            // minus all non-content siblings). In collapsed mode #main-toolbar is itself a
+            // huge sibling, so _sideBarMaxSize collapses to ~sidebarWidth, and every window
+            // resize clamps the sidebar a pixel smaller (Resizer.js updateResizeLimits) —
+            // producing a slow shrink a short moment after each resize. Raising the
+            // percentage well above 100% short-circuits the clamp in this mode while still
+            // coming from the same upstream code path. Numeric values are ignored by that
+            // code path, so we must use a percentage string.
+            if (savedSidebarMaxSize === null) {
+                savedSidebarMaxSize = $sidebar.data("maxsize");
+            }
+            $sidebar.data("maxsize", "1000%");
+            if (WorkspaceManager.recomputeLayout) {
+                WorkspaceManager.recomputeLayout(true);
+            }
+        } finally {
+            applyingCollapsedLayout = false;
         }
     }
 
     function _restoreExpandedLayout() {
         const $mainToolbar = $("#main-toolbar");
+        const mainToolbar = $mainToolbar[0];
+        if (mainToolbar) {
+            mainToolbar.style.removeProperty("left");
+            mainToolbar.style.removeProperty("right");
+            mainToolbar.style.removeProperty("width");
+        }
         $mainToolbar.css({ left: "", right: "", width: "" });
         $content.css({ width: "", "min-width": "", right: "", visibility: "", "pointer-events": "" });
         // The <> button never closes live preview. If we have a saved width from
@@ -222,6 +249,18 @@ define(function (require, exports, module) {
         });
         WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN + ".ccb " +
             WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN + ".ccb", function () {
+            if (editorCollapsed) {
+                _applyCollapsedLayout();
+            }
+        });
+        // WorkspaceManager's handleWindowResize runs _clampPluginPanelWidth on every
+        // window resize, which caps #main-toolbar at min(innerWidth * 0.75, innerWidth
+        // - sidebar - 100). That's tighter than what we want in collapsed mode (fill
+        // to innerWidth - sidebar - 30), leaving a blank gap on the right. Listen for
+        // the layout-update event that fires after the clamp and reassert our widths.
+        // The applyingCollapsedLayout guard breaks the recursion because our own
+        // recomputeLayout call would otherwise re-enter this handler.
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT + ".ccb", function () {
             if (editorCollapsed) {
                 _applyCollapsedLayout();
             }
