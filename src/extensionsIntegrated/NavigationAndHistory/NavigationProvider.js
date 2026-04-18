@@ -745,12 +745,11 @@ define(function (require, exports, module) {
     }
 
     function _setupNavigationButtons() {
-        let $mainNavBarRight = $("#mainNavBarRight");
         let $mainNavBarLeft = $("#mainNavBarLeft");
-        $showInTree = $mainNavBarRight.find("#showInfileTree");
-        $navback = $mainNavBarRight.find("#navBackButton");
-        $navForward = $mainNavBarRight.find("#navForwardButton");
-        $searchNav = $mainNavBarRight.find("#searchNav");
+        $showInTree = $("#showInfileTree");
+        $navback = $("#navBackButton");
+        $navForward = $("#navForwardButton");
+        $searchNav = $("#searchNav");
 
         $newProject = $mainNavBarLeft.find("#newProject");
         updateTooltips();

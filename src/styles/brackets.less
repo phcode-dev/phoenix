@@ -49,6 +49,7 @@
 @import "Extn-SidebarTabs.less";
 @import "Extn-BottomPanelTabs.less";
 @import "Extn-AIChatPanel.less";
+@import "CentralControlBar.less";
 @import "Extn-Terminal.less";
 @import "UserProfile.less";
 @import "phoenix-pro.less";
@@ -265,7 +266,7 @@ a, img {
 
     .content {
         padding: 0;
-        left: @sidebar-width;  // changed dynamically via Resizer
+        left: (@sidebar-width + 30px);  // changed dynamically via Resizer + CentralControlBar
         right: @main-toolbar-width;
         z-index: @z-index-brackets-main-content;
         border-left: 2px solid rgba(255, 255, 255, 0.10);

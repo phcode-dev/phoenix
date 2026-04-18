@@ -1,0 +1,173 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/* Central vertical control bar between sidebar and editor content */
+
+@central-control-bar-width: 30px;
+
+#centralControlBar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: @central-control-bar-width;
+    left: @sidebar-width; /* updated dynamically when sidebar resizes */
+    z-index: @z-index-brackets-main-content + 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 4px 0;
+    box-sizing: border-box;
+    user-select: none;
+    /* Phoenix's sidebar uses a fixed dark panel color (#252525) in both
+       light and dark themes. Use a slightly darker fixed tone here so the
+       control bar reads as a distinct surface next to the sidebar while
+       still staying on-theme in light mode. */
+    background-color: #222;
+    border-right: 1px solid rgba(0, 0, 0, 0.45);
+
+    .ccb-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+
+        &.ccb-group-file {
+            flex: 0 1 auto;
+            max-height: 220px;
+            overflow: hidden;
+            justify-content: flex-start;
+            padding: 4px 0;
+        }
+    }
+
+    .ccb-divider {
+        height: 1px;
+        margin: 4px 6px;
+        background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    /* New-style buttons (icons with FA) */
+    .ccb-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        margin: 0 3px;
+        color: @project-panel-text-2;
+        font-size: 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.15s ease, background-color 0.15s ease;
+
+        i {
+            pointer-events: none;
+        }
+
+        &:hover {
+            color: @project-panel-text-1;
+            background-color: rgba(255, 255, 255, 0.08);
+            text-decoration: none;
+        }
+
+        &:active {
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+
+        &.disabled,
+        &[aria-disabled="true"] {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+    }
+
+    /* Nudge the collapse-editor icon up so it visually aligns with titlebar icons */
+    #ccbCollapseEditorBtn {
+        margin-top: -2px;
+    }
+
+    /* Nav buttons: suppress legacy sprite styles (NavigationProvider toggles enabled/disabled class) */
+    #searchNav,
+    #navBackButton,
+    #navForwardButton {
+        background: transparent !important;
+        top: auto !important;
+        padding: 0 !important;
+        width: auto !important;
+        height: 28px !important;
+        content: normal !important;
+        opacity: 1;
+    }
+
+    #navBackButton.nav-back-btn-disabled,
+    #navForwardButton.nav-forward-btn-disabled {
+        opacity: 0.35;
+        pointer-events: none;
+    }
+
+    /* Vertical filename label — clicking reveals the current file in the
+       file tree, mirroring the old binoculars button. */
+    .ccb-file-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 0;
+        color: @project-panel-text-2;
+        height: 100%;
+        overflow: hidden;
+        cursor: pointer;
+
+        .ccb-file-dot {
+            flex: 0 0 auto;
+            line-height: 1;
+            color: #f1b84e;
+            visibility: hidden;
+            font-size: 1rem;
+        }
+
+        &.is-dirty .ccb-file-dot {
+            visibility: visible;
+        }
+
+        .ccb-file-name {
+            flex: 1 1 auto;
+            min-height: 0;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-orientation: mixed;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: @project-panel-text-1;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        &:hover .ccb-file-name {
+            text-decoration: underline;
+        }
+    }
+}
+
+/* Editor collapse: actual layout handled in JS via .content width/visibility */
+.ccb-editor-collapsed .content {
+    overflow: hidden;
+}
