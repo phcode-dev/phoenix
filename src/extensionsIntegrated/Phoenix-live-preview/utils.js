@@ -39,60 +39,10 @@ define(function (require, exports, module) {
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
     const EditorManager      = require("editor/EditorManager");
-    function getExtension(filePath) {
-        filePath = filePath || '';
-        let pathSplit = filePath.split('.');
-        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
-    }
-
-    function isPreviewableFile(filePath) {
-        // only svg images should appear in the live preview as it needs text editor.
-        // All other image types should appear in the image previewer
-        return isSVG(filePath) || isMarkdownFile(filePath) || isHTMLFile(filePath) || isPDF(filePath);
-    }
-
-    function isPDF(filePath) {
-        let extension = getExtension(filePath);
-        return extension === "pdf";
-    }
-
-    function isSVG(filePath) {
-        let extension = getExtension(filePath);
-        return extension === "svg";
-    }
-
-    function isImage(filePath) {
-        let extension = getExtension(filePath);
-        return ["jpg", "jpeg", "png", "gif", "svg", "webp", "bmp", "ico", "avif"]
-            .includes(extension.toLowerCase());
-    }
-
-    function isMarkdownFile(filePath) {
-        let extension = getExtension(filePath);
-        return ['md', 'markdown', 'mdx'].includes(extension.toLowerCase());
-    }
-
-    function isHTMLFile(filePath) {
-        let extension = getExtension(filePath);
-        return ['html', 'htm', 'xhtml'].includes(extension.toLowerCase());
-    }
-
-    function isServerRenderedFile(filePath) {
-        let extension = getExtension(filePath);
-        return [
-            "shtml",
-            "asp",
-            "aspx",
-            "php",
-            "jsp",
-            "jspx",
-            "cfm",
-            "cfc", // ColdFusion Component
-            "rb", // Ruby file, used in Ruby on Rails for views with ERB
-            "erb", // Embedded Ruby, used in Ruby on Rails views
-            "py" // Python file, used in web frameworks like Django or Flask for views
-        ].includes(extension.toLowerCase());
-    }
+    // File-type classification helpers live in a shared utility module so
+    // non-live-preview code (e.g. Quick Open in design mode) can use them
+    // without depending on this extension.
+    const FileTypeUtils      = require("utils/FileTypeUtils");
 
     function focusActiveEditorIfFocusInLivePreview() {
         const editor  = EditorManager.getActiveEditor();
@@ -105,15 +55,14 @@ define(function (require, exports, module) {
         }
     }
 
-    exports.getExtension = getExtension;
-    exports.isPreviewableFile = isPreviewableFile;
-    exports.isImage = isImage;
-    exports.isPDF = isPDF;
-    exports.isSVG = isSVG;
-    exports.isHTMLFile = isHTMLFile;
-    exports.isServerRenderedFile = isServerRenderedFile;
-    exports.isMarkdownFile = isMarkdownFile;
+    // Re-export the shared helpers so existing callers keep working.
+    exports.getExtension                      = FileTypeUtils.getExtension;
+    exports.isPreviewableFile                 = FileTypeUtils.isPreviewableFile;
+    exports.isImage                           = FileTypeUtils.isImage;
+    exports.isPDF                             = FileTypeUtils.isPDF;
+    exports.isSVG                             = FileTypeUtils.isSVG;
+    exports.isHTMLFile                        = FileTypeUtils.isHTMLFile;
+    exports.isServerRenderedFile              = FileTypeUtils.isServerRenderedFile;
+    exports.isMarkdownFile                    = FileTypeUtils.isMarkdownFile;
     exports.focusActiveEditorIfFocusInLivePreview = focusActiveEditorIfFocusInLivePreview;
 });
-
-
