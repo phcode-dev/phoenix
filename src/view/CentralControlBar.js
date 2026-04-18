@@ -266,13 +266,6 @@ define(function (require, exports, module) {
             }
         });
 
-        // Dragging the plugin toolbar's left resizer while collapsed should exit the
-        // collapsed state so the user can resize live preview normally.
-        $("#main-toolbar").on("panelResizeStart.ccb", function () {
-            if (editorCollapsed) {
-                _setEditorCollapsed(false);
-            }
-        });
 
         MainViewManager.on("currentFileChange.ccb", _updateFileLabel);
         DocumentManager.on("dirtyFlagChange.ccb", _updateFileLabel);
