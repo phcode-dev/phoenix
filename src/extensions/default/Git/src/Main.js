@@ -49,7 +49,20 @@ define(function (require, exports) {
         Branch.init();
         CloseNotModified.init();
         // Attach events
-        $icon.on("click", Panel.toggle);
+        $icon.on("click", function () {
+            // Design mode collapses the editor and stretches live preview,
+            // which leaves no room for the git bottom panel. Exit design mode
+            // first so the panel has somewhere to render.
+            // TODO: make git panel float/overlay live preview so users can
+            // peek at git status without leaving design mode.
+            const WorkspaceManager = brackets.getModule("view/WorkspaceManager");
+            const CommandManager = brackets.getModule("command/CommandManager");
+            const Commands = brackets.getModule("command/Commands");
+            if (WorkspaceManager.isInDesignMode()) {
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+            }
+            Panel.toggle();
+        });
     }
 
     function _addRemoveItemInGitignore(selectedEntry, method) {

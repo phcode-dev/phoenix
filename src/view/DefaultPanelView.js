@@ -182,6 +182,15 @@ define(function (require, exports, module) {
             .attr("title", Strings.BOTTOM_PANEL_DEFAULT_TITLE);
 
         $drawerBtn.on("click", function () {
+            // Design mode collapses the editor and stretches live preview, which
+            // leaves no room for the bottom tools panel. Exit design mode first
+            // so the panel has somewhere to go.
+            // TODO: revisit once the tools panel can float / overlay the live
+            // preview without disrupting it, so users can peek at tools without
+            // leaving design mode.
+            if (WorkspaceManager.isInDesignMode()) {
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+            }
             if (_panel.isVisible()) {
                 _panel.hide();
             } else {

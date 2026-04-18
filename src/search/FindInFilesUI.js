@@ -191,6 +191,13 @@ define(function (require, exports, module) {
      */
     function _showFindBar(scope, showReplace) {
         FindUtils.notifySearchScopeChanged();
+        // Design mode hides the editor area where the find bar and results
+        // panel mount. Exit design mode first so the UI has somewhere to show.
+        // TODO: make Find in Files overlay the live preview cleanly so users
+        // can search without leaving design mode.
+        if (WorkspaceManager.isInDesignMode()) {
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+        }
         // If the scope is a file with a custom viewer, then we
         // don't show find in files dialog.
         if (scope && !EditorManager.canOpenPath(scope.fullPath)) {

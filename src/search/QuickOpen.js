@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         ProjectManager = require("project/ProjectManager"),
         LanguageManager = require("language/LanguageManager"),
         FileSystemError = require("filesystem/FileSystemError"),
+        WorkspaceManager = require("view/WorkspaceManager"),
         ModalBar = require("widgets/ModalBar").ModalBar,
         QuickSearchField = require("search/QuickSearchField").QuickSearchField,
         StringMatch = require("utils/StringMatch"),
@@ -779,6 +780,14 @@ define(function (require, exports, module) {
     }
 
     function doFileSearch() {
+        // Design mode hides the editor area where Quick Open's modal bar and
+        // result interactions need to land. Exit design mode first so the user
+        // sees the picker on the normal editor chrome.
+        // TODO: allow Quick Open to float above the live preview so users can
+        // navigate without leaving design mode.
+        if (WorkspaceManager.isInDesignMode()) {
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+        }
         beginSearch("", getCurrentEditorSelectedText());
     }
 
