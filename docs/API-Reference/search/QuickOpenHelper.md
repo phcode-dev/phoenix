@@ -16,7 +16,8 @@ const QuickOpenHelper = brackets.getModule("search/QuickOpenHelper")
 <a name="itemFocus"></a>
 
 ## itemFocus(selectedItem, query, explicit)
-Scroll to the selected item in the current document (unless no query string entered yet,in which case the topmost list item is irrelevant)
+Scroll to the selected item in the current document (unless no query string entered yet,
+in which case the topmost list item is irrelevant)
 
 **Kind**: global function  
 
@@ -29,7 +30,8 @@ Scroll to the selected item in the current document (unless no query string ente
 <a name="itemSelect"></a>
 
 ## itemSelect(selectedItem, query)
-Scroll to the selected item in the current document (unless no query string entered yet,in which case the topmost list item is irrelevant)
+Scroll to the selected item in the current document (unless no query string entered yet,
+in which case the topmost list item is irrelevant)
 
 **Kind**: global function  
 
