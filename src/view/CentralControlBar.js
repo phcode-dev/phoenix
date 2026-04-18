@@ -40,11 +40,23 @@ define(function (require, exports, module) {
     let savedSidebarMaxSize = null;
     let applyingCollapsedLayout = false;
 
+    function _getRenderedSidebarWidth() {
+        // Use offsetWidth (not jQuery's outerWidth) to force a synchronous reflow
+        // read — with the design-mode `max-width: 70vw` cap on #sidebar, style.width
+        // and rendered width can diverge mid-drag, and outerWidth has returned the
+        // uncapped style value in some frames which left CCB / main-toolbar stuck
+        // at stale offsets.
+        if (!$sidebar || !$sidebar.is(":visible")) {
+            return 0;
+        }
+        return $sidebar[0].offsetWidth || 0;
+    }
+
     function _syncLeftPositions() {
         if (!$sidebar || !$bar || !$content) {
             return;
         }
-        const sidebarWidth = $sidebar.is(":visible") ? ($sidebar.outerWidth() || 0) : 0;
+        const sidebarWidth = _getRenderedSidebarWidth();
         $bar.css("left", sidebarWidth + "px");
         if (!editorCollapsed) {
             $content.css("left", (sidebarWidth + BAR_WIDTH) + "px");
@@ -96,7 +108,7 @@ define(function (require, exports, module) {
         applyingCollapsedLayout = true;
         try {
             const mainToolbar = document.getElementById("main-toolbar");
-            const sidebarWidth = $sidebar.is(":visible") ? ($sidebar.outerWidth() || 0) : 0;
+            const sidebarWidth = _getRenderedSidebarWidth();
             const fullToolbarWidth = Math.max(0, window.innerWidth - sidebarWidth - BAR_WIDTH);
             // Keep .content in flow (display:block) but collapse it to zero width to avoid
             // TabBar infinite-loop when its ancestor becomes :hidden. visibility:hidden keeps
@@ -145,7 +157,36 @@ define(function (require, exports, module) {
         // by the collapse action, fall back to the default panel size so it stays
         // visibly open at a reasonable width.
         const defaultWidth = Math.floor(window.innerWidth / 2.5);
-        const targetWidth = (savedToolbarWidth && savedToolbarWidth > 50) ? savedToolbarWidth : defaultWidth;
+        let targetWidth = (savedToolbarWidth && savedToolbarWidth > 50) ? savedToolbarWidth : defaultWidth;
+        // If the sidebar was resized larger while collapsed (e.g. to fill most of
+        // the screen), restoring the pre-collapse live-preview width would push
+        // main-toolbar back under the sidebar. Clamp so sidebar + CCB + a
+        // reasonable minimum editor width still fits in the window; if even the
+        // min doesn't fit, trim the sidebar so the live-preview panel keeps its
+        // own declared minWidth (below which the panel renders broken).
+        const MIN_EDITOR_WIDTH = 200;
+        const livePanel = WorkspaceManager.getPanelForID &&
+            WorkspaceManager.getPanelForID("live-preview-panel");
+        const panelIconsWidth = $("#plugin-icons-bar").outerWidth() || 30;
+        const minLPToolbarWidth = ((livePanel && livePanel.minWidth) || 0) + panelIconsWidth;
+        const sidebarWidth = _getRenderedSidebarWidth();
+        const availableForLP = window.innerWidth - sidebarWidth - BAR_WIDTH - MIN_EDITOR_WIDTH;
+        if (targetWidth > availableForLP) {
+            targetWidth = Math.max(minLPToolbarWidth, availableForLP);
+        }
+        if (targetWidth < minLPToolbarWidth) {
+            targetWidth = minLPToolbarWidth;
+        }
+        if (sidebarWidth + BAR_WIDTH + targetWidth + MIN_EDITOR_WIDTH > window.innerWidth) {
+            const trimmedSidebar = Math.max(30, window.innerWidth - BAR_WIDTH - targetWidth - MIN_EDITOR_WIDTH);
+            $sidebar.width(trimmedSidebar);
+            // jQuery .width() sidesteps Resizer — manually reposition its handle so
+            // the resizer doesn't stay stuck at the pre-trim position.
+            const resync = $sidebar.data("resyncSizer");
+            if (typeof resync === "function") {
+                resync();
+            }
+        }
         $mainToolbar.width(targetWidth);
         $content.css("right", targetWidth + "px");
         savedToolbarWidth = null;
@@ -164,6 +205,20 @@ define(function (require, exports, module) {
         const wantCollapsed = !!collapsed;
         if (wantCollapsed === editorCollapsed) {
             return;
+        }
+        // Capture sidebar's currently rendered width BEFORE flipping the body
+        // class. In design mode the `max-width: 70vw` cap can make the rendered
+        // width smaller than sidebar.style.width. Removing the class drops the
+        // cap and the sidebar would otherwise snap back to the stale style.width.
+        if (editorCollapsed && !wantCollapsed && $sidebar && $sidebar[0]) {
+            const rendered = _getRenderedSidebarWidth();
+            if (rendered > 0) {
+                $sidebar[0].style.width = rendered + "px";
+                const resync = $sidebar.data("resyncSizer");
+                if (typeof resync === "function") {
+                    resync();
+                }
+            }
         }
         editorCollapsed = wantCollapsed;
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
@@ -230,7 +285,9 @@ define(function (require, exports, module) {
         // While the sidebar is being dragged we only reposition CCB / main-toolbar.
         // Running the full collapsed-layout (with recomputeLayout) on every resize
         // update fires cascading editor relayouts that can make the sidebar drag
-        // misbehave — the heavy work is done once at resize-end instead.
+        // misbehave — the heavy work is done once at resize-end instead. The 70%
+        // design-mode cap itself is enforced in CSS (`max-width: 70vw`) so the
+        // browser refuses to render past it no matter what the Resizer writes.
         $sidebar.on("panelResizeUpdate.ccb", function () {
             _syncLeftPositions();
         });
