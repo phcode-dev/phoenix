@@ -3,17 +3,14 @@ const path = require('path');
 const glob = require('glob');
 const util = require('util');
 const crypto = require('crypto');
-const exec = util.promisify(require('child_process').exec);
+const jsdoc2md = require('jsdoc-to-markdown');
 
 // Promisify the glob function to enable async/await usage
 const globPromise = util.promisify(glob);
 
 // Constants
 const SRC_DIR = './src';
-const BUILD_DIR = './build';
-const TEMP_DIR = path.join(BUILD_DIR, 'temp');
 const MD_FILES_DIR = path.join('./docs', 'API-Reference');
-const TEMP_CHECK_DIR = path.join(BUILD_DIR, 'check_copy');
 const BATCH_SIZE = 12;
 
 
@@ -25,14 +22,6 @@ async function createDir(dirPath) {
     await fs.mkdir(dirPath, { recursive: true });
 }
 
-
-/**
- * Remove directory
- * @param {string} dirPath - The path to the directory to remove
- */
-async function removeDir(dirPath) {
-    await fs.rm(dirPath, { recursive: true, force: true });
-}
 
 /**
  * Responsible to extract file names with their parent dir
@@ -202,25 +191,6 @@ function normalizeLineEndings(content) {
 
 
 /**
- * Compare two files based on their MD5 hash values
- * @param {string} file1 - Path to the first file
- * @param {string} file2 - Path to the second file
- * @returns {Promise<boolean>} - True if files are different, false otherwise
- */
-async function areFilesDifferent(file1, file2) {
-    const [content1, content2] = await Promise.all([
-        fs.readFile(file1, 'utf-8'),
-        fs.readFile(file2, 'utf-8')
-    ]);
-
-    const hash1 = crypto.createHash('md5').update(content1).digest('hex');
-    const hash2 = crypto.createHash('md5').update(content2).digest('hex');
-
-    return hash1 !== hash2;
-}
-
-
-/**
  * Generates markdown documentation for a given JavaScript file
  * @param {string} file Path to the JavaScript file
  * @param {string} relativePath Relative path of the file from SRC_DIR
@@ -230,51 +200,37 @@ async function generateMarkdown(file, relativePath) {
     const fileName = path.basename(file, '.js');
 
     const modifiedContent = modifyJs(content, fileName);
-    await fs.writeFile(file, modifiedContent, 'utf-8');
+
+    // Generate markdown using jsdoc-to-markdown as a library
+    const markdownContent = await jsdoc2md.render({ source: modifiedContent });
+    const newContent = normalizeLineEndings(
+        modifyMarkdown(markdownContent, path.join(relativePath, fileName))
+    );
 
     const outputDir = path.join(MD_FILES_DIR, relativePath);
     await createDir(outputDir);
 
     const outputFileName = path.join(outputDir, `${fileName}.md`);
-    const tempOutputFileName = path.join(
-        TEMP_CHECK_DIR, `${fileName}_temp.md`
-    );
 
-    await createDir(TEMP_CHECK_DIR);
+    // Compare with existing file in memory to avoid unnecessary writes
+    let existingContent = null;
+    try {
+        existingContent = await fs.readFile(outputFileName, 'utf-8');
+    } catch (e) {
+        // File doesn't exist yet
+    }
 
-    // Generate markdown to a temporary file
-    await exec(`npx jsdoc-to-markdown ${file} > ${tempOutputFileName}`);
+    const newHash = crypto.createHash('md5').update(newContent).digest('hex');
+    const existingHash = existingContent
+        ? crypto.createHash('md5').update(existingContent).digest('hex')
+        : null;
 
-    let markdownContent = await fs.readFile(tempOutputFileName, 'utf-8');
-    const updatedMarkdownContent = modifyMarkdown(
-        markdownContent, path.join(relativePath, fileName)
-    );
-
-    await fs.writeFile(tempOutputFileName, normalizeLineEndings(updatedMarkdownContent), 'utf-8');
-
-    const fileExists = await fs.access(outputFileName).then(() => true).catch(
-        () => false
-    );
-
-    const shouldUpdate = !fileExists || await areFilesDifferent(
-        outputFileName, tempOutputFileName
-    );
-
-    if (shouldUpdate) {
-        await fs.rename(tempOutputFileName, outputFileName);
+    if (newHash !== existingHash) {
+        await fs.writeFile(outputFileName, newContent, 'utf-8');
         console.log(`Updated ${outputFileName}`);
     } else {
-        await fs.unlink(tempOutputFileName);
         console.log(`No changes in ${outputFileName}`);
     }
-}
-
-
-/**
- * Cleans up temp directories
- */
-async function cleanupTempDir() {
-    await removeDir(TEMP_CHECK_DIR);
 }
 
 
@@ -288,7 +244,6 @@ async function driver() {
         await getExistingMarkdownFiles(jsFiles);
 
         console.log(`Found ${jsFiles.length} files to process`);
-        await createDir(TEMP_DIR);
         await createDir(MD_FILES_DIR);
 
         for (let i = 0; i < jsFiles.length; i += BATCH_SIZE) {
@@ -297,25 +252,14 @@ async function driver() {
                 const relativePath = path.relative(
                     SRC_DIR, path.dirname(file)
                 );
-                const tempDirPath = path.join(TEMP_DIR, relativePath);
-                await createDir(tempDirPath);
-
-                const fileName = path.basename(file);
-                const destPath = path.join(tempDirPath, fileName);
-                await fs.copyFile(file, destPath);
-
-                await generateMarkdown(destPath, relativePath);
+                await generateMarkdown(file, relativePath);
                 console.log(`Processed ${file}`);
             }));
         }
 
-        await removeDir(TEMP_DIR);
-        await cleanupTempDir();
         console.log("All files processed successfully!");
     } catch (error) {
         console.error("An error occurred:", error);
-        await removeDir(TEMP_DIR).catch(() => { });
-        await cleanupTempDir().catch(() => { });
     }
 }
 
