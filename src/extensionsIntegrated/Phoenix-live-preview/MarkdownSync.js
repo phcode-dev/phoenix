@@ -25,7 +25,22 @@ define(function (require, exports, module) {
     const ThemeManager = require("view/ThemeManager"),
         NativeApp = require("utils/NativeApp"),
         EditorManager = require("editor/EditorManager"),
+        AppInit = require("utils/AppInit"),
+        CommandManager = require("command/CommandManager"),
+        Commands = require("command/Commands"),
+        KeyBindingManager = require("command/KeyBindingManager"),
         utils = require("./utils");
+
+    // Commands whose shortcuts, when forwarded from the md viewer iframe,
+    // open a parent-side UI that needs to keep keyboard focus. The iframe's
+    // 100ms auto-refocus must skip these shortcuts — otherwise it yanks
+    // focus out of the picker immediately after it opens. We send the raw
+    // key strings (resolved at runtime from KeyBindingManager) so the
+    // iframe stays theme/rebind-agnostic.
+    const SKIP_REFOCUS_COMMANDS = [
+        Commands.NAVIGATE_QUICK_OPEN,
+        Commands.CMD_FIND_IN_FILES
+    ];
 
     let _active = false;
     let _doc = null;
@@ -348,15 +363,51 @@ define(function (require, exports, module) {
 
     // --- iframe ready ---
 
+    /**
+     * Collect the current `key` strings bound to each SKIP_REFOCUS_COMMANDS
+     * command and send them to the iframe so its keyboard-shortcut forward
+     * path can skip its own 100ms auto-refocus for these shortcuts.
+     */
+    function _sendSkipRefocusShortcuts() {
+        const iframeWindow = _getIframeWindow();
+        if (!iframeWindow) { return; }
+        const keys = [];
+        SKIP_REFOCUS_COMMANDS.forEach(function (cmdID) {
+            const bindings = KeyBindingManager.getKeyBindings(cmdID) || [];
+            bindings.forEach(function (b) {
+                if (b && b.key) { keys.push(b.key); }
+            });
+        });
+        iframeWindow.postMessage({
+            type: "MDVIEWR_SKIP_REFOCUS_KEYS",
+            keys: keys
+        }, "*");
+    }
+
     function _onIframeReady() {
         _iframeReady = true;
         _sendContent();
         _sendTheme();
         _sendLocale();
+        _sendSkipRefocusShortcuts();
         if (_onIframeReadyCallback) {
             _onIframeReadyCallback();
         }
     }
+
+    // Re-send shortcuts if the user rebinds Quick Open / Find in Files.
+    // Deferred to appReady so the commands have been registered before we
+    // try to hook their key-binding-change events.
+    AppInit.appReady(function () {
+        SKIP_REFOCUS_COMMANDS.forEach(function (cmdID) {
+            const cmd = CommandManager.get(cmdID);
+            if (cmd && cmd.on) {
+                cmd.on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, function () {
+                    if (_iframeReady) { _sendSkipRefocusShortcuts(); }
+                });
+            }
+        });
+    });
 
     // --- Phoenix → iframe ---
 

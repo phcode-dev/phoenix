@@ -108,13 +108,14 @@ define(function (require, exports, module) {
             if (isInPicker(e.target)) { return; }
             close();
         }
-        window.document.addEventListener("mousedown", onMousedown, true);
-        // Clicks inside the live-preview iframe never surface as mousedown
-        // events on the parent document — the iframe consumes them. Detect
-        // that case via the window blur event (focus moves to the iframe's
-        // content window) and a slight delay to let focus settle before
-        // deciding whether we really moved out of the picker.
+        // Defer attaching the dismiss listeners by a tick so any transient
+        // focus / blur events fired while the picker is opening (common when
+        // the shortcut was forwarded from an iframe like the md viewer —
+        // focus transfers between iframe and parent input can fire spurious
+        // window.blur) don't close the picker before it's ready.
+        let dismissArmed = false;
         function onWindowBlur() {
+            if (!dismissArmed) { return; }
             window.setTimeout(function () {
                 if (closed) { return; }
                 const active = window.document.activeElement;
@@ -122,8 +123,14 @@ define(function (require, exports, module) {
                 close();
             }, 0);
         }
-        window.addEventListener("blur", onWindowBlur);
+        const armTimer = window.setTimeout(function () {
+            if (closed) { return; }
+            dismissArmed = true;
+            window.document.addEventListener("mousedown", onMousedown, true);
+            window.addEventListener("blur", onWindowBlur);
+        }, 120);
         closeHandlers.push(function () {
+            window.clearTimeout(armTimer);
             window.document.removeEventListener("mousedown", onMousedown, true);
             window.removeEventListener("blur", onWindowBlur);
         });
