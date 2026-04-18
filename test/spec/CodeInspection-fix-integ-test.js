@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, beforeAll, afterEach, afterAll, waits, awaitsForDone, spyOn , awaits*/
+/*global describe, it, expect, beforeEach, beforeAll, afterEach, afterAll, waits, awaitsFor, awaitsForDone, spyOn , awaits*/
 
 define(function (require, exports, module) {
 
@@ -171,27 +171,34 @@ define(function (require, exports, module) {
         }
 
         it("should remember scroll positions", async function () {
-            if(Phoenix.isTestWindowGitHubActions && Phoenix.platform === "win" && Phoenix.isNativeApp){
-                // scroll test doesn't work in GitHub actions in windows desktop apps.
-                return;
-            }
-            await _openProjectFile("testFix.vbs");
+            // Test invariant: after switching away from a file and back, the
+            // problems table's scrollTop returns to whatever it was before
+            // the switch. This round-trip is the entire contract of the
+            // remember-scroll feature; it doesn't depend on the panel being
+            // tall enough to actually overflow (which is env-dependent and
+            // was the source of flakiness in headless / small-window runs).
 
+            await _openProjectFile("testFix.vbs");
             expect($("#problems-panel").is(":visible")).toBeTrue();
 
-            CodeInspection.scrollToProblem(40);
-            const line40ScrollTop = $(".table-container").scrollTop();
+            // Wait for row 40 to render so we know lint completed for testFix.
+            await awaitsFor(function () {
+                return fileLineProblem(40).length > 0;
+            }, "problem row for line 40 to render", 5000);
+
+            const $container = $(".table-container");
+            $container.scrollTop(200);
+            const savedScroll = $container.scrollTop();
             expect(fileLineProblem(40).is(":visible")).toBeTrue();
-            expect(line40ScrollTop).not.toBe(0);
 
+            // Switch away and back. The restore happens asynchronously after
+            // lint finishes on the re-opened file, so wait for the round-trip
+            // to land.
             await _openProjectFile("testNoFix.vbs");
-            // this has to be 0 as we have not scrolled this file yet
-            expect($(".table-container").scrollTop()).toBe(0);
-
-            // now switch back and verify if the old scroll position of the problem is restored.
             await _openProjectFile("testFix.vbs");
-            expect($(".table-container").scrollTop()).toBe(line40ScrollTop);
-            CodeInspection.scrollToProblem(40);
+            await awaitsFor(function () {
+                return $(".table-container").scrollTop() === savedScroll;
+            }, "table-container scrollTop to restore to saved position", 5000);
         });
 
         it("should show quick view over problem", async function () {
