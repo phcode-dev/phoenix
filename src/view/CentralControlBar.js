@@ -301,15 +301,34 @@ define(function (require, exports, module) {
         // design-mode cap itself is enforced in CSS (`max-width: calc(100vw -
         // 230px)`, i.e. CCB + LP minimum) so the
         // browser refuses to render past it no matter what the Resizer writes.
+        // In design mode the sidebar's right-resizer doubles as the
+        // sidebar↔live-preview splitter (the main-toolbar's own left-resizer is
+        // hidden). Forward the sidebar's panel-resize events to #main-toolbar
+        // so listeners that watch main-toolbar (e.g. the live-preview resize
+        // ruler / media-query ruler in lpedit-helper) still react to the drag.
+        function _forwardResizeToMainToolbar(type) {
+            if (!editorCollapsed) {
+                return;
+            }
+            const mtWidth = $("#main-toolbar").outerWidth() || 0;
+            $("#main-toolbar").trigger(type, [mtWidth]);
+        }
+        $sidebar.on("panelResizeStart.ccb", function () {
+            _forwardResizeToMainToolbar("panelResizeStart");
+        });
         $sidebar.on("panelResizeUpdate.ccb", function () {
             _syncLeftPositions();
+            _forwardResizeToMainToolbar("panelResizeUpdate");
         });
-        $sidebar.on("panelResizeEnd.ccb panelCollapsed.ccb panelExpanded.ccb", function () {
+        $sidebar.on("panelResizeEnd.ccb panelCollapsed.ccb panelExpanded.ccb", function (e) {
             _syncLeftPositions();
             if (editorCollapsed) {
                 _applyCollapsedLayout();
             }
             _updateSidebarToggleIcon();
+            if (e.type === "panelResizeEnd") {
+                _forwardResizeToMainToolbar("panelResizeEnd");
+            }
         });
         $(window).on("resize.ccb", function () {
             _syncLeftPositions();
