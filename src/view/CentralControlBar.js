@@ -142,7 +142,7 @@ define(function (require, exports, module) {
         }
     }
 
-    function _restoreExpandedLayout() {
+    function _restoreExpandedLayout(skipToolbarRestore) {
         const $mainToolbar = $("#main-toolbar");
         const mainToolbar = $mainToolbar[0];
         if (mainToolbar) {
@@ -152,6 +152,23 @@ define(function (require, exports, module) {
         }
         $mainToolbar.css({ left: "", right: "", width: "" });
         $content.css({ width: "", "min-width": "", right: "", visibility: "", "pointer-events": "" });
+        savedToolbarWidth = null;
+        livePreviewWasOpen = false;
+        if (savedSidebarMaxSize !== null) {
+            $sidebar.data("maxsize", savedSidebarMaxSize);
+            savedSidebarMaxSize = null;
+        }
+        if (skipToolbarRestore) {
+            // Live preview panel was just hidden (e.g. user clicked toolbar-go-live
+            // while in design mode). WorkspaceManager._hidePluginSidePanel has
+            // already sized #main-toolbar correctly for the no-panel state, so we
+            // only need to clear our design-mode overrides and sync positions.
+            _syncLeftPositions();
+            if (WorkspaceManager.recomputeLayout) {
+                WorkspaceManager.recomputeLayout(true);
+            }
+            return;
+        }
         // The <> button never closes live preview. If we have a saved width from
         // before the collapse (LP was already open), restore it. If LP was opened
         // by the collapse action, fall back to the default panel size so it stays
@@ -189,23 +206,18 @@ define(function (require, exports, module) {
         }
         $mainToolbar.width(targetWidth);
         $content.css("right", targetWidth + "px");
-        savedToolbarWidth = null;
-        livePreviewWasOpen = false;
-        if (savedSidebarMaxSize !== null) {
-            $sidebar.data("maxsize", savedSidebarMaxSize);
-            savedSidebarMaxSize = null;
-        }
         _syncLeftPositions();
         if (WorkspaceManager.recomputeLayout) {
             WorkspaceManager.recomputeLayout(true);
         }
     }
 
-    function _setEditorCollapsed(collapsed) {
+    function _setEditorCollapsed(collapsed, opts) {
         const wantCollapsed = !!collapsed;
         if (wantCollapsed === editorCollapsed) {
             return;
         }
+        const skipToolbarRestore = !!(opts && opts.skipToolbarRestore);
         // Capture sidebar's currently rendered width BEFORE flipping the body
         // class. In design mode the `max-width: 70vw` cap can make the rendered
         // width smaller than sidebar.style.width. Removing the class drops the
@@ -241,7 +253,7 @@ define(function (require, exports, module) {
             }
             _applyCollapsedLayout();
         } else {
-            _restoreExpandedLayout();
+            _restoreExpandedLayout(skipToolbarRestore);
         }
     }
 
@@ -304,8 +316,23 @@ define(function (require, exports, module) {
                 _applyCollapsedLayout();
             }
         });
-        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN + ".ccb " +
-            WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN + ".ccb", function () {
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN + ".ccb", function () {
+            if (editorCollapsed) {
+                _applyCollapsedLayout();
+            }
+        });
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN + ".ccb", function (e, panelID) {
+            // Closing the live-preview panel (e.g. via the toolbar-go-live button)
+            // while in design mode leaves a blank area where live preview used to
+            // be — exit design mode so the editor comes back in its place. Skip
+            // our own toolbar-width restore: WorkspaceManager._hidePluginSidePanel
+            // has already shrunk #main-toolbar back to the icon-bar width, and
+            // restoring the pre-collapse live-preview width here would re-open
+            // a dead zone where LP used to be.
+            if (editorCollapsed && panelID === "live-preview-panel") {
+                _setEditorCollapsed(false, { skipToolbarRestore: true });
+                return;
+            }
             if (editorCollapsed) {
                 _applyCollapsedLayout();
             }
