@@ -148,6 +148,35 @@ Keep this file updated as we add coverage; remove lines as suites land.
 - [ ] Toggle back to normal mode preserves live preview (panel stays open
       at `savedToolbarWidth` or the default).
 
+## 11b. Auto-exit design mode from conflicting surfaces
+
+Each of these invocations must exit design mode before running its
+own behavior. Verify `WorkspaceManager.isInDesignMode()` is `true`
+pre-action, then `false` post-action, and that the feature's UI
+renders on the normal editor chrome (not a blank / broken region).
+
+- [ ] Clicking `#app-drawer-button` while in design mode exits design
+      mode, then toggles the default (tools) bottom panel.
+- [ ] Running `Commands.CMD_FIND_IN_FILES` while in design mode exits
+      design mode before the find bar / results panel mount.
+- [ ] Running `Commands.NAVIGATE_QUICK_OPEN` while in design mode
+      exits design mode before Quick Open's modal bar is shown.
+- [ ] Clicking `#git-toolbar-icon` while in design mode exits design
+      mode, then `Panel.toggle()` opens/closes the git panel.
+- [ ] In the above four cases, when NOT in design mode the auto-exit
+      branch is skipped and the original behavior runs unchanged.
+
+Future follow-ups (no tests yet — track as TODOs alongside the site
+comments added in the source files):
+
+- [ ] Tools panel floats over live preview so users can peek without
+      leaving design mode.
+- [ ] Find in Files renders an overlay modal bar and a floating
+      results surface compatible with design mode.
+- [ ] Quick Open gets a spotlight-style floating picker usable in
+      design mode.
+- [ ] Git panel gains a floating variant for design mode.
+
 ## 12. Integration with NoDistractions
 
 - [ ] Design mode + toggling `noDistractions` preference to `true`:
