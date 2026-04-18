@@ -168,14 +168,27 @@ define(function (require, exports, module) {
         KeyBindingManager.addBinding(CMD_TOGGLE_PANELS, [ {key: togglePanelsKey_EN}, {key: togglePanelsKeyMac_EN, platform: "mac"} ]);
 
         PreferencesManager.on("change", PREFS_PURE_CODE, function () {
+            const inDesignMode = WorkspaceManager.isInDesignMode &&
+                WorkspaceManager.isInDesignMode();
             if (PreferencesManager.get(PREFS_PURE_CODE)) {
-                ViewUtils.hideMainToolBar();
-                CommandManager.execute(Commands.HIDE_SIDEBAR);
-                _hidePanelsIfRequired();
+                if (inDesignMode) {
+                    // In design mode the live preview already fills the editor
+                    // area and the main toolbar is the visible surface; just
+                    // collapse the sidebar so LP can stretch to the full width.
+                    CommandManager.execute(Commands.HIDE_SIDEBAR);
+                } else {
+                    ViewUtils.hideMainToolBar();
+                    CommandManager.execute(Commands.HIDE_SIDEBAR);
+                    _hidePanelsIfRequired();
+                }
             } else {
-                ViewUtils.showMainToolBar();
-                CommandManager.execute(Commands.SHOW_SIDEBAR);
-                _showPanelsIfRequired();
+                if (inDesignMode) {
+                    CommandManager.execute(Commands.SHOW_SIDEBAR);
+                } else {
+                    ViewUtils.showMainToolBar();
+                    CommandManager.execute(Commands.SHOW_SIDEBAR);
+                    _showPanelsIfRequired();
+                }
             }
             _updateCheckedState();
         });

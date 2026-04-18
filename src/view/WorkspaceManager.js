@@ -75,6 +75,13 @@ define(function (require, exports, module) {
     const EVENT_WORKSPACE_PANEL_HIDDEN = PanelView.EVENT_PANEL_HIDDEN;
 
     /**
+     * Event triggered when design mode (editor collapsed, full live preview) is
+     * entered or exited. Payload: `(active: boolean)`.
+     * @const
+     */
+    const EVENT_WORKSPACE_DESIGN_MODE_CHANGE = "workspaceDesignModeChange";
+
+    /**
      * Width of the main toolbar in pixels.
      * @const
      * @private
@@ -619,6 +626,35 @@ define(function (require, exports, module) {
         recomputeLayout(true);
     }
 
+    // Design mode tracks whether the editor is fully collapsed to show only the
+    // live-preview panel. The flag is owned by view/CentralControlBar but mirrored
+    // here so other modules don't need to reach into the control bar.
+    let _isInDesignMode = false;
+
+    /**
+     * Returns true while the workspace is in design mode (editor collapsed and
+     * live preview expanded to fill the editor area).
+     * @returns {boolean}
+     */
+    function isInDesignMode() {
+        return _isInDesignMode;
+    }
+
+    /**
+     * Sets the design-mode flag and fires EVENT_WORKSPACE_DESIGN_MODE_CHANGE when
+     * the value actually changes. Intended to be called by the control bar; other
+     * callers should use the dedicated toggle command instead.
+     * @param {boolean} active
+     */
+    function setDesignMode(active) {
+        const next = !!active;
+        if (_isInDesignMode === next) {
+            return;
+        }
+        _isInDesignMode = next;
+        exports.trigger(EVENT_WORKSPACE_DESIGN_MODE_CHANGE, _isInDesignMode);
+    }
+
     // Escape key and toggle panel special handling
     let _escapeKeyConsumers = {};
 
@@ -776,6 +812,9 @@ define(function (require, exports, module) {
     exports.EVENT_WORKSPACE_UPDATE_LAYOUT   = EVENT_WORKSPACE_UPDATE_LAYOUT;
     exports.EVENT_WORKSPACE_PANEL_SHOWN     = EVENT_WORKSPACE_PANEL_SHOWN;
     exports.EVENT_WORKSPACE_PANEL_HIDDEN    = EVENT_WORKSPACE_PANEL_HIDDEN;
+    exports.EVENT_WORKSPACE_DESIGN_MODE_CHANGE = EVENT_WORKSPACE_DESIGN_MODE_CHANGE;
+    exports.isInDesignMode                  = isInDesignMode;
+    exports.setDesignMode                   = setDesignMode;
     exports.DEFAULT_PANEL_ID                = DEFAULT_PANEL_ID;
 
     /**

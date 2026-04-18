@@ -242,6 +242,9 @@ define(function (require, exports, module) {
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
         }
+        if (WorkspaceManager.setDesignMode) {
+            WorkspaceManager.setDesignMode(editorCollapsed);
+        }
 
         if (editorCollapsed) {
             livePreviewWasOpen = _isLivePreviewOpen();
