@@ -191,10 +191,13 @@
     display: none;
 }
 
-/* Cap the sidebar at 70% of the viewport in design mode so the live-preview
-   area stays usable. Enforcing this via CSS max-width stops the drag itself
-   rather than snapping back after the Resizer has already written a larger
-   value — which avoids ResizeObserver loop warnings from rapid width writes. */
+/* Cap the sidebar in design mode so the live-preview panel always keeps at
+   least ~200px of its own. A percentage of the viewport (e.g. 70vw) became
+   too wide on large screens — the live preview would shrink to a useless
+   sliver. Enforcing this via CSS max-width stops the drag itself rather than
+   snapping back after the Resizer has already written a larger value, which
+   also avoids ResizeObserver loop warnings from rapid width writes. The
+   230px accounts for the 30px control bar plus a 200px LP minimum. */
 .ccb-editor-collapsed #sidebar {
-    max-width: 70vw;
+    max-width: ~"calc(100vw - 230px)";
 }
