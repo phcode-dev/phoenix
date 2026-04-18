@@ -127,6 +127,7 @@ define(function (require, exports, module) {
     require("file/FileUtils");
     require("project/SidebarView");
     require("view/SidebarTabs");
+    require("view/CentralControlBar");
     require("utils/Resizer");
     require("LiveDevelopment/main");
     require("utils/NodeConnection");

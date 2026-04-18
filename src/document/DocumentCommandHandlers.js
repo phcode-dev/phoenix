@@ -1953,6 +1953,9 @@ define(function (require, exports, module) {
     function handleShowInTree() {
         let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         if(activeFile){
+            if (!$("#sidebar").is(":visible")) {
+                CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
+            }
             SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
             ProjectManager.showInTree(activeFile);
         }
