@@ -23,6 +23,9 @@
     "file.liveFilePreview":  [
         "Ctrl-Alt-L"
     ],
+    "view.toggleDesignMode": [
+        "Ctrl-F11"
+    ],
     "file.reloadLivePreview": [
         {
             "key": "Ctrl-Shift-R"

@@ -1451,6 +1451,14 @@ define(function (require, exports, module) {
             Menus.AFTER, Commands.FILE_LIVE_FILE_PREVIEW);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, "",
             Menus.AFTER, Commands.CMD_RELOAD_LIVE_PREVIEW);
+        // Design-mode toggle is registered by view/CentralControlBar at module load
+        // so the command exists by now. Insert it last with `AFTER Live Preview` so
+        // it lands directly below the Live Preview item (above Reload / Settings
+        // which were inserted earlier into the same AFTER slot).
+        if (CommandManager.get(Commands.VIEW_TOGGLE_DESIGN_MODE)) {
+            fileMenu.addMenuItem(Commands.VIEW_TOGGLE_DESIGN_MODE, "",
+                Menus.AFTER, Commands.FILE_LIVE_FILE_PREVIEW);
+        }
         fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
 
         _registerHandlers();

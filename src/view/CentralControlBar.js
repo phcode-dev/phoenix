@@ -25,6 +25,7 @@ define(function (require, exports, module) {
     const Commands          = require("command/Commands");
     const DocumentManager   = require("document/DocumentManager");
     const MainViewManager   = require("view/MainViewManager");
+    const Strings           = require("strings");
     const WorkspaceManager  = require("view/WorkspaceManager");
 
     const BAR_WIDTH = 30;
@@ -238,6 +239,9 @@ define(function (require, exports, module) {
         $collapseBtn.toggleClass("is-active", editorCollapsed)
             .attr("title", editorCollapsed ? "Switch to Code Editor" : "Switch to Visual Edit");
         $collapseBtn.find("i").attr("class", editorCollapsed ? "fa-solid fa-code" : "fa-solid fa-feather");
+        if (_toggleDesignModeCommand) {
+            _toggleDesignModeCommand.setChecked(editorCollapsed);
+        }
 
         if (editorCollapsed) {
             livePreviewWasOpen = _isLivePreviewOpen();
@@ -272,7 +276,7 @@ define(function (require, exports, module) {
         $("#ccbSaveBtn").on("click", function (e) { e.preventDefault(); _executeCmd(Commands.FILE_SAVE); });
         $("#ccbCollapseEditorBtn").on("click", function (e) {
             e.preventDefault();
-            _setEditorCollapsed(!editorCollapsed);
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
         });
         $("#ccbSidebarToggleBtn").on("click", function (e) {
             e.preventDefault();
@@ -283,6 +287,11 @@ define(function (require, exports, module) {
             _executeCmd(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         });
     }
+
+    const _toggleDesignModeCommand = CommandManager.register(Strings.CMD_TOGGLE_DESIGN_MODE,
+        Commands.VIEW_TOGGLE_DESIGN_MODE, function () {
+            _setEditorCollapsed(!editorCollapsed);
+        });
 
     AppInit.htmlReady(function () {
         $bar = $("#centralControlBar");
@@ -409,6 +418,7 @@ define(function (require, exports, module) {
         _updateFileLabel();
         _updateSidebarToggleIcon();
     });
+
 
     exports.isEditorCollapsed = function () { return editorCollapsed; };
     exports.setEditorCollapsed = _setEditorCollapsed;
