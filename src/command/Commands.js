@@ -257,6 +257,9 @@ define(function (require, exports, module) {
     /** Toggles sidebar visibility */
     exports.VIEW_HIDE_SIDEBAR           = "view.toggleSidebar";         // SidebarView.js               toggle()
 
+    /** Toggles the design (full live-preview) mode — collapses/expands the editor */
+    exports.VIEW_TOGGLE_DESIGN_MODE     = "view.toggleDesignMode";      // view/CentralControlBar.js    _setEditorCollapsed()
+
     /** Toggles tabbar visibility */
     exports.TOGGLE_TABBAR            = "view.toggleTabbar";
     // extensionsIntegrated/TabBar/main.js
