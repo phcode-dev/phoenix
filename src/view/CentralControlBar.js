@@ -140,8 +140,10 @@ define(function (require, exports, module) {
         }
         editorCollapsed = wantCollapsed;
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
-        $("#ccbCollapseEditorBtn").toggleClass("is-active", editorCollapsed)
-            .attr("title", editorCollapsed ? "Expand editor" : "Collapse editor");
+        const $collapseBtn = $("#ccbCollapseEditorBtn");
+        $collapseBtn.toggleClass("is-active", editorCollapsed)
+            .attr("title", editorCollapsed ? "Switch to Code Editor" : "Switch to Visual Edit");
+        $collapseBtn.find("i").attr("class", editorCollapsed ? "fa-solid fa-code" : "fa-solid fa-feather");
 
         if (editorCollapsed) {
             livePreviewWasOpen = _isLivePreviewOpen();
