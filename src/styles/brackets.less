@@ -2734,6 +2734,96 @@ textarea.exclusions-editor {
     }
 }
 
+// Spotlight-style floating Quick Open picker used while in design mode, where
+// the standard ModalBar has no editor space to mount into.
+// No backdrop dim/blur — file switching is frequent and UI-wide visual
+// changes feel jarring. The overlay only exists to host the centered bar
+// and catch outside-clicks for dismiss.
+.quick-open-floating-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: @z-index-brackets-context-menu-base + 50;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 12vh;
+    background: transparent;
+    pointer-events: none;  // passthrough; the bar re-enables pointer events below
+}
+.quick-open-floating-bar {
+    width: 640px;
+    max-width: 90vw;
+    padding: 0;
+    background-color: @bc-panel-bg;
+    border: 1px solid @bc-panel-border;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    pointer-events: auto;  // re-enable inside the bar (overlay disables it for passthrough)
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+        border-color: @dark-bc-panel-border;
+    }
+
+    // Input line
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 14px;
+    }
+    input[type="text"] {
+        flex: 1 1 auto;
+        width: auto !important;
+        min-width: 0;
+        box-sizing: border-box;
+        height: 48px !important;
+        font-size: 18px;
+        line-height: 1.4;
+        padding: 10px 4px !important;
+        margin: 0 !important;
+        border: 0 !important;
+        outline: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: @bc-text;
+        .dark & {
+            color: @dark-bc-text;
+        }
+        &::placeholder {
+            color: @bc-text-quiet;
+            .dark & { color: @dark-bc-text-quiet; }
+        }
+    }
+    .indexing-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        flex: 0 0 auto;
+        order: -1;  // spinner before input
+    }
+    .find-dialog-label {
+        flex: 0 0 auto;
+        color: @bc-text-quiet;
+        font-size: 12px;
+        .dark & { color: @dark-bc-text-quiet; }
+    }
+}
+// While the floating Quick Open is up, anchor the results dropdown to the
+// floating bar (it's the one styled to contain it). The dropdown is appended
+// to <body> by QuickSearchField; constrain its max-height so it never
+// overflows the viewport, and lift its z-index above the overlay so the
+// overlay's backdrop-filter doesn't blur the dropdown too.
+body:has(.quick-open-floating-overlay) .quick-search-container {
+    z-index: @z-index-brackets-context-menu-base + 51;
+    max-height: 60vh;
+    overflow-y: auto;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
 .quick-search-container {
     border: 1px solid @bc-panel-border;
     box-sizing: border-box;  // lets QuickSearchField size the width more nicely
