@@ -209,8 +209,8 @@ function normalizeLineEndings(content) {
  */
 async function areFilesDifferent(file1, file2) {
     const [content1, content2] = await Promise.all([
-        fs.readFile(file1, 'utf-8').then(normalizeLineEndings),
-        fs.readFile(file2, 'utf-8').then(normalizeLineEndings)
+        fs.readFile(file1, 'utf-8'),
+        fs.readFile(file2, 'utf-8')
     ]);
 
     const hash1 = crypto.createHash('md5').update(content1).digest('hex');
