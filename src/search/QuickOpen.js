@@ -44,6 +44,7 @@ define(function (require, exports, module) {
         LanguageManager = require("language/LanguageManager"),
         FileSystemError = require("filesystem/FileSystemError"),
         WorkspaceManager = require("view/WorkspaceManager"),
+        FileTypeUtils = require("utils/FileTypeUtils"),
         ModalBar = require("widgets/ModalBar").ModalBar,
         QuickSearchField = require("search/QuickSearchField").QuickSearchField,
         StringMatch = require("utils/StringMatch"),
@@ -84,14 +85,48 @@ define(function (require, exports, module) {
             return closePromise;
         }
         let closePromise = null;
+        function isInPicker(node) {
+            if (!node) { return false; }
+            if ($overlay[0].contains(node)) { return true; }
+            if (node.closest && node.closest(".quick-search-container")) { return true; }
+            return false;
+        }
         function onFocusIn(e) {
             // Close when focus moves outside both the bar and the results
             // dropdown (which QuickSearchField appends to <body>, not into
             // our overlay).
-            if ($overlay[0].contains(e.target)) { return; }
-            if (e.target.closest && e.target.closest(".quick-search-container")) { return; }
+            if (isInPicker(e.target)) { return; }
             close();
         }
+        // The overlay itself uses `pointer-events: none` so the UI behind it
+        // stays interactive (users can still click into the sidebar / live
+        // preview). Clicking somewhere does not always move focus (e.g. live
+        // preview iframes keep their own focus), so we also watch mousedown
+        // on the document and dismiss whenever the click lands outside the
+        // bar + dropdown.
+        function onMousedown(e) {
+            if (isInPicker(e.target)) { return; }
+            close();
+        }
+        window.document.addEventListener("mousedown", onMousedown, true);
+        // Clicks inside the live-preview iframe never surface as mousedown
+        // events on the parent document — the iframe consumes them. Detect
+        // that case via the window blur event (focus moves to the iframe's
+        // content window) and a slight delay to let focus settle before
+        // deciding whether we really moved out of the picker.
+        function onWindowBlur() {
+            window.setTimeout(function () {
+                if (closed) { return; }
+                const active = window.document.activeElement;
+                if (active && isInPicker(active)) { return; }
+                close();
+            }, 0);
+        }
+        window.addEventListener("blur", onWindowBlur);
+        closeHandlers.push(function () {
+            window.document.removeEventListener("mousedown", onMousedown, true);
+            window.removeEventListener("blur", onWindowBlur);
+        });
         const bar = {
             on: function (evt, fn) {
                 if (evt === "close" && typeof fn === "function") {
@@ -841,8 +876,15 @@ define(function (require, exports, module) {
             onHighlight: this._handleItemHighlight
         });
 
-        // Return files that are non-binary, or binary files that have a custom viewer
+        // Return files that are non-binary, or binary files that have a custom viewer.
+        // In design mode narrow to files that actually make sense to open into the
+        // live preview (HTML/MD/SVG/PDF) or server-rendered sources — everything
+        // else would just collapse design mode.
         function _filter(file) {
+            if (_floating) {
+                return FileTypeUtils.isPreviewableFile(file.fullPath) ||
+                    FileTypeUtils.isServerRenderedFile(file.fullPath);
+            }
             return !LanguageManager.getLanguageForPath(file.fullPath).isBinary() ||
                 MainViewFactory.findSuitableFactoryForPath(file.fullPath);
         }
