@@ -155,10 +155,6 @@
     opacity: 0.5;
 }
 
-.device-size-item-disabled {
-    opacity: 0.35;
-}
-
 .device-size-item-breakpoint-icon {
     margin-right: 6px;
     width: 12px;
