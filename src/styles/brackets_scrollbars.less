@@ -51,7 +51,7 @@
     }
 
     ::-webkit-scrollbar-thumb {
-        box-shadow: none;
+        background-color: transparent;
         border: none;
     }
 
@@ -67,7 +67,8 @@
     :hover::-webkit-scrollbar-thumb,
     :focus::-webkit-scrollbar-thumb {
         border-radius: 999px;
-        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.6) inset;
+        background-color: rgba(0, 0, 0, 0.6);
+        background-clip: padding-box;
         border: 2px solid transparent;
     }
 
@@ -96,13 +97,14 @@
     }
     &::-webkit-scrollbar-thumb {
         border-radius: 999px;
-        box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.6) inset !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        background-clip: padding-box !important;
         border: 2px solid transparent !important;
     }
 
     .dark & {
         &::-webkit-scrollbar-thumb {
-            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3) inset !important;
+            background-color: rgba(255, 255, 255, 0.3) !important;
         }
     }
 }
@@ -116,7 +118,8 @@
     }
     &::-webkit-scrollbar-thumb {
         border-radius: 999px;
-        box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.3) inset !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        background-clip: padding-box !important;
         border: 2px solid transparent !important;
     }
 
@@ -125,76 +128,79 @@
             background-color: @dark-bc-menu-bg !important;
         }
         &::-webkit-scrollbar-thumb {
-            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3) inset !important;
+            background-color: rgba(255, 255, 255, 0.3) !important;
         }
     }
 }
 
 .platform-linux, .platform-mac {
     // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
+    // Exclude iframes: WKWebView (Tauri macOS) doesn't render custom ::-webkit-scrollbar on
+    // iframe elements correctly, causing invisible scrollbars. Native scrollbar renders instead.
 
-    ::-webkit-scrollbar {
+    :not(iframe)::-webkit-scrollbar {
         width: 12px;
         height: 12px;
     }
 
-    ::-webkit-scrollbar-track:vertical {
+    :not(iframe)::-webkit-scrollbar-track:vertical {
         margin: 0 0 8px 0;
     }
 
-    ::-webkit-scrollbar-track:horizontal {
+    :not(iframe)::-webkit-scrollbar-track:horizontal {
         margin: 0 8px 0 0;
     }
 
-    ::-webkit-scrollbar-thumb {
+    :not(iframe)::-webkit-scrollbar-thumb {
         border-radius: 999px;
-        box-shadow: 0 0 0 5px @linux-scrollbar-thumb inset;
+        background-color: @linux-scrollbar-thumb;
+        background-clip: padding-box;
         border: 2px solid transparent;
     }
 
-    ::-webkit-scrollbar-corner {
+    :not(iframe)::-webkit-scrollbar-corner {
         background: none;
     }
 
-    ::-webkit-scrollbar-thumb:window-inactive {
-        box-shadow: 0 0 0 5px @linux-scrollbar-thumb-inactive inset;
+    :not(iframe)::-webkit-scrollbar-thumb:window-inactive {
+        background-color: @linux-scrollbar-thumb-inactive;
     }
 }
 
 .platform-win {
     // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
 
-    ::-webkit-scrollbar {
+    :not(iframe)::-webkit-scrollbar {
         width: 12px;
         height: 12px;
         background-color: transparent;
     }
 
-    ::-webkit-scrollbar:hover {
+    :not(iframe)::-webkit-scrollbar:hover {
         background-color:  @win-scrollbar-track;
     }
 
-    ::-webkit-scrollbar-thumb {
-        box-shadow: 0 0 0 12px @win-scrollbar-thumb inset;
+    :not(iframe)::-webkit-scrollbar-thumb {
+        background-color: @win-scrollbar-thumb;
     }
 
-    .dragging ::-webkit-scrollbar-thumb,
-    ::-webkit-scrollbar-thumb:hover,
-    ::-webkit-scrollbar-thumb:focus {
-        box-shadow: 0 0 0 12px @win-scrollbar-thumb-hover inset;
+    .dragging :not(iframe)::-webkit-scrollbar-thumb,
+    :not(iframe)::-webkit-scrollbar-thumb:hover,
+    :not(iframe)::-webkit-scrollbar-thumb:focus {
+        background-color: @win-scrollbar-thumb-hover;
     }
-    ::-webkit-scrollbar-thumb:active {
-        box-shadow: 0 0 0 12px @win-scrollbar-thumb-active inset;
+    :not(iframe)::-webkit-scrollbar-thumb:active {
+        background-color: @win-scrollbar-thumb-active;
     }
 
-    ::-webkit-scrollbar-thumb:vertical {
+    :not(iframe)::-webkit-scrollbar-thumb:vertical {
         min-height: 20px;
     }
-    ::-webkit-scrollbar-thumb:horizontal {
+    :not(iframe)::-webkit-scrollbar-thumb:horizontal {
         min-width: 20px;
     }
 
-    ::-webkit-scrollbar-corner {
+    :not(iframe)::-webkit-scrollbar-corner {
         background: none;
     }
 }
@@ -215,23 +221,23 @@
 
         // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
 
-        ::-webkit-scrollbar {
+        :not(iframe)::-webkit-scrollbar {
             background-color: transparent;
         }
 
-        ::-webkit-scrollbar:hover {
+        :not(iframe)::-webkit-scrollbar:hover {
             background-color: rgba(15, 15, 15, .5);
         }
 
-        ::-webkit-scrollbar-thumb {
-            box-shadow: 0 0 0 12px rgb(49, 49, 49) inset;
+        :not(iframe)::-webkit-scrollbar-thumb {
+            background-color: rgb(49, 49, 49);
         }
-        ::-webkit-scrollbar-thumb:hover,
-        ::-webkit-scrollbar-thumb:focus {
-            box-shadow: 0 0 0 12px rgb(89, 89, 89) inset;
+        :not(iframe)::-webkit-scrollbar-thumb:hover,
+        :not(iframe)::-webkit-scrollbar-thumb:focus {
+            background-color: rgb(89, 89, 89);
         }
-        ::-webkit-scrollbar-thumb:active {
-            box-shadow: 0 0 0 12px rgb(169, 169, 169) inset;
+        :not(iframe)::-webkit-scrollbar-thumb:active {
+            background-color: rgb(169, 169, 169);
         }
     }
 
@@ -241,12 +247,13 @@
             background-color: transparent;
         }
 
-        ::-webkit-scrollbar-thumb {
-            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.24) inset;
+        :not(iframe)::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.24);
         }
 
-        ::-webkit-scrollbar-thumb:window-inactive {
-            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.12) inset;
+        :not(iframe)::-webkit-scrollbar-thumb:window-inactive {
+            background-color: rgba(255, 255, 255, 0.12);
         }
     }
 }
+
