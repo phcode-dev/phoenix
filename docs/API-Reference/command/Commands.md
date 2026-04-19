@@ -453,6 +453,12 @@ Opens theme settings
 Toggles sidebar visibility
 
 **Kind**: global variable  
+<a name="VIEW_TOGGLE_DESIGN_MODE"></a>
+
+## VIEW\_TOGGLE\_DESIGN\_MODE
+Toggles the design (full live-preview) mode — collapses/expands the editor
+
+**Kind**: global variable  
 <a name="TOGGLE_TABBAR"></a>
 
 ## TOGGLE\_TABBAR

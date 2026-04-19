@@ -28,6 +28,7 @@ Events:
         * [.EVENT_WORKSPACE_UPDATE_LAYOUT](#module_view/WorkspaceManager..EVENT_WORKSPACE_UPDATE_LAYOUT)
         * [.EVENT_WORKSPACE_PANEL_SHOWN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_SHOWN)
         * [.EVENT_WORKSPACE_PANEL_HIDDEN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_HIDDEN)
+        * [.EVENT_WORKSPACE_DESIGN_MODE_CHANGE](#module_view/WorkspaceManager..EVENT_WORKSPACE_DESIGN_MODE_CHANGE)
         * [.createBottomPanel(id, $panel, [minSize], [title], [options])](#module_view/WorkspaceManager..createBottomPanel) ⇒ <code>Panel</code>
         * [.destroyBottomPanel(id)](#module_view/WorkspaceManager..destroyBottomPanel)
         * [.createPluginPanel(id, $panel, [minSize], $toolbarIcon, [initialSize])](#module_view/WorkspaceManager..createPluginPanel) ⇒ <code>Panel</code>
@@ -36,6 +37,8 @@ Events:
         * [.recomputeLayout(refreshHint)](#module_view/WorkspaceManager..recomputeLayout)
         * [.isPanelVisible(panelID)](#module_view/WorkspaceManager..isPanelVisible) ⇒ <code>boolean</code>
         * [.setPluginPanelWidth(width)](#module_view/WorkspaceManager..setPluginPanelWidth)
+        * [.isInDesignMode()](#module_view/WorkspaceManager..isInDesignMode) ⇒ <code>boolean</code>
+        * [.setDesignMode(active)](#module_view/WorkspaceManager..setDesignMode)
         * [.addEscapeKeyEventHandler(consumerName, eventHandler)](#module_view/WorkspaceManager..addEscapeKeyEventHandler) ⇒ <code>boolean</code>
         * [.removeEscapeKeyEventHandler(consumerName)](#module_view/WorkspaceManager..removeEscapeKeyEventHandler) ⇒ <code>boolean</code>
 
@@ -85,6 +88,13 @@ Event triggered when a panel is shown.
 
 ### view/WorkspaceManager.EVENT\_WORKSPACE\_PANEL\_HIDDEN
 Event triggered when a panel is hidden.
+
+**Kind**: inner constant of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
+<a name="module_view/WorkspaceManager..EVENT_WORKSPACE_DESIGN_MODE_CHANGE"></a>
+
+### view/WorkspaceManager.EVENT\_WORKSPACE\_DESIGN\_MODE\_CHANGE
+Event triggered when design mode (editor collapsed, full live preview) is
+entered or exited. Payload: `(active: boolean)`.
 
 **Kind**: inner constant of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 <a name="module_view/WorkspaceManager..createBottomPanel"></a>
@@ -188,6 +198,26 @@ No-op if no panel is currently visible.
 | Param | Type | Description |
 | --- | --- | --- |
 | width | <code>number</code> | Desired content width in pixels |
+
+<a name="module_view/WorkspaceManager..isInDesignMode"></a>
+
+### view/WorkspaceManager.isInDesignMode() ⇒ <code>boolean</code>
+Returns true while the workspace is in design mode (editor collapsed and
+live preview expanded to fill the editor area).
+
+**Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
+<a name="module_view/WorkspaceManager..setDesignMode"></a>
+
+### view/WorkspaceManager.setDesignMode(active)
+Sets the design-mode flag and fires EVENT_WORKSPACE_DESIGN_MODE_CHANGE when
+the value actually changes. Intended to be called by the control bar; other
+callers should use the dedicated toggle command instead.
+
+**Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
+
+| Param | Type |
+| --- | --- |
+| active | <code>boolean</code> | 
 
 <a name="module_view/WorkspaceManager..addEscapeKeyEventHandler"></a>
 
