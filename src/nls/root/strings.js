@@ -524,6 +524,7 @@ define({
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
     "AVAILABLE_IN_PRO_TITLE": "Available in Phoenix Pro",
     "DEVICE_SIZE_LIMIT_MESSAGE": "See how your page looks on phones, tablets, desktops, and your CSS breakpoints. Upgrade to Phoenix Pro.",
+    "DEVICE_SIZE_NOT_ENOUGH_SPACE": "Not enough space in the editor window for this screen size. Try zooming out.",
     "MD_EDIT_UPSELL_MESSAGE": "Write Markdown like a document. {APP_NAME} handles the formatting so you can stay focused on writing.",
     "IMAGE_UPLOADING": "Uploading",
     "IMAGE_UPLOAD_FAILED": "Failed to upload image",
