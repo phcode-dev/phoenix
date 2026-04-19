@@ -27,7 +27,7 @@
 
 #panel-live-preview-frame,
 #panel-md-preview-frame {
-    background-color: white;
+    background-color: transparent;
     position: relative;
 }
 
