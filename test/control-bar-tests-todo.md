@@ -33,11 +33,15 @@ Keep this file updated as we add coverage; remove lines as suites land.
 - [ ] `#ccbSidebarToggleBtn` executes `VIEW_HIDE_SIDEBAR` and the icon flips
       `fa-angles-left` ↔ `fa-angles-right` on panelCollapsed/panelExpanded.
 - [ ] The old `#sidebar-toggle-btn` in the menubar is NOT in the DOM.
-- [ ] Clicking `#ccbFileLabel` executes `NAVIGATE_SHOW_IN_FILE_TREE` and (if
-      sidebar was hidden) re-opens the sidebar as part of that command.
-- [ ] File label shows the current doc's `file.name` and uses
-      `Phoenix.app.getDisplayPath` for its tooltip.
-- [ ] Dirty indicator dot toggles with `DocumentManager`'s `dirtyFlagChange`.
+- [ ] `#ccbShowInTreeBtn` is rendered in `.ccb-group-nav` directly below
+      `#searchNav` and has a `title` of `Strings.CMD_SHOW_IN_TREE`.
+- [ ] Clicking `#ccbShowInTreeBtn` executes `NAVIGATE_SHOW_IN_FILE_TREE` (if
+      sidebar was hidden, it re-opens as part of the command).
+- [ ] Binoculars `<svg>` renders and inherits `.ccb-btn` color
+      (`currentColor` on the path).
+- [ ] Neither `#ccbFileLabel`, `.ccb-group-file`, `.ccb-file-label`,
+      `.ccb-file-name`, nor `.ccb-file-dot` exists in the DOM or in the
+      compiled CSS.
 
 ## 3. Toggle Design Mode command
 
