@@ -503,22 +503,26 @@ define(function (require, exports, module) {
                     previousSize = newSize;
 
                     if ($element.is(":visible")) {
-                        if (newSize < 10) {
+                        if (collapsible && newSize < 10) {
                             toggle($element);
                             elementSizeFunction.apply($element, [0]);
                         } else {
-                            // Trigger resizeStarted just before the first successful resize update
+                            // Non-collapsible panels must never be auto-hidden by a drag that
+                            // squeezes them to near-zero — a narrow window with a wide sidebar
+                            // can push maxsize below 10, and hiding the toolbar that way
+                            // strands the user with no way to get it back.
+                            var effectiveSize = collapsible ? newSize : Math.max(newSize, minSize);
                             if (!resizeStarted) {
                                 resizeStarted = true;
-                                $element.trigger(EVENT_PANEL_RESIZE_START, newSize);
+                                $element.trigger(EVENT_PANEL_RESIZE_START, effectiveSize);
                             }
 
                             // Resize the main element to the new size. If there is a content element,
                             // its size is the new size minus the size of the non-resizable elements
-                            resizeElement(newSize, (newSize - baseSize));
-                            adjustSibling(newSize);
+                            resizeElement(effectiveSize, (effectiveSize - baseSize));
+                            adjustSibling(effectiveSize);
 
-                            $element.trigger(EVENT_PANEL_RESIZE_UPDATE, [newSize]);
+                            $element.trigger(EVENT_PANEL_RESIZE_UPDATE, [effectiveSize]);
                         }
                     } else if (newSize > 10) {
                         elementSizeFunction.apply($element, [newSize]);

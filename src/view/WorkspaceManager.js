@@ -89,6 +89,20 @@ define(function (require, exports, module) {
     const MAIN_TOOLBAR_WIDTH = 30;
 
     /**
+     * Returns the sidebar's rendered width, or 0 if hidden. jQuery's outerWidth()
+     * on a display:none element that still carries an explicit style.width returns
+     * that stale width rather than 0, which corrupts main-view layout math.
+     * @private
+     */
+    function _getSidebarWidth() {
+        var sb = document.getElementById("sidebar");
+        if (!sb || sb.offsetWidth === 0) {
+            return 0;
+        }
+        return sb.offsetWidth;
+    }
+
+    /**
      * The ".content" vertical stack (editor + all header/footer panels)
      * @type {jQueryObject}
      * @private
@@ -184,8 +198,14 @@ define(function (require, exports, module) {
             }
         });
 
-        var sidebarWidth = $("#sidebar").outerWidth() || 0;
-        $mainToolbar.data("maxsize", Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100));
+        var sidebarWidth = _getSidebarWidth();
+        var pluginIconsBarWidth = $pluginIconsBar.outerWidth() || MAIN_TOOLBAR_WIDTH;
+        var minToolbarWidth = ((currentlyShownPanel && currentlyShownPanel.minWidth) || 0) + pluginIconsBarWidth;
+        // Floor the toolbar's maxsize at its minimum width. Without the floor, a narrow
+        // window with a wide sidebar can drive the cap below 10px, and Resizer's drag
+        // logic would then squeeze the toolbar to zero and hide it.
+        var rawMax = Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100);
+        $mainToolbar.data("maxsize", Math.max(minToolbarWidth, rawMax));
     }
 
 
@@ -224,6 +244,8 @@ define(function (require, exports, module) {
         if (currentlyShownPanel && $mainToolbar.is(":visible")) {
             _clampPluginPanelWidth(currentlyShownPanel);
         }
+        // Then coordinate sidebar width in editor mode so the three regions fit.
+        _ensureEditorLayoutFits();
 
         // FIXME (issue #4564) Workaround https://github.com/codemirror/CodeMirror/issues/1787
         triggerUpdateLayout();
@@ -374,6 +396,19 @@ define(function (require, exports, module) {
         $mainToolbar = $("#main-toolbar");
         $mainPluginPanel = $("#main-plugin-panel");
         $pluginIconsBar = $("#plugin-icons-bar");
+
+        // Sidebar show/resize steals width from the plugin-panel area. Without
+        // re-clamping, the main-toolbar keeps its previous (now-oversized) width
+        // and overlaps the sidebar/editor. Mirror the window-resize handling.
+        $("#sidebar").on("panelExpanded.workspace panelCollapsed.workspace panelResizeEnd.workspace",
+            function () {
+                if (currentlyShownPanel && $mainToolbar.is(":visible")) {
+                    _clampPluginPanelWidth(currentlyShownPanel);
+                }
+                _ensureEditorLayoutFits();
+                triggerUpdateLayout();
+                updateResizeLimits();
+            });
 
         // --- Create the bottom panel tabbed container ---
         $bottomPanelContainer = $('<div id="bottom-panel-container" class="vert-resizable top-resizer"></div>');
@@ -530,7 +565,7 @@ define(function (require, exports, module) {
     }
 
     function _clampPluginPanelWidth(panelBeingShown) {
-        let sidebarWidth = $("#sidebar").outerWidth() || 0;
+        let sidebarWidth = _getSidebarWidth();
         let pluginIconsBarWidth = $pluginIconsBar.outerWidth();
         let minToolbarWidth = (panelBeingShown.minWidth || 0) + pluginIconsBarWidth;
         let maxToolbarWidth = Math.max(
@@ -543,6 +578,45 @@ define(function (require, exports, module) {
             $mainToolbar.width(clampedWidth);
             $windowContent.css("right", clampedWidth);
             Resizer.resyncSizer($mainToolbar[0]);
+        }
+    }
+
+    const CCB_WIDTH = 30;
+    const MIN_EDITOR_WIDTH = 100;
+    const MIN_SIDEBAR_WIDTH = 30;
+
+    /**
+     * In editor mode the sidebar, editor, and plugin-panel (main-toolbar) must
+     * share the horizontal space. Resizer's own sidebar clamp runs lazily on
+     * the next mousemove, and only considers percent-based max sizes — so a
+     * window shrink, or showing the sidebar at its remembered width, can leave
+     * the sidebar overlapping the live-preview panel. Here we do an eager
+     * coordinated shrink: clamp sidebar so sidebar + CCB + current toolbar +
+     * MIN_EDITOR_WIDTH fits in the window. Design mode handles its own
+     * geometry with !important, so this is a no-op there.
+     * @private
+     */
+    function _ensureEditorLayoutFits() {
+        if (_isInDesignMode) {
+            return;
+        }
+        var $sb = $("#sidebar");
+        if (!$sb.length || $sb[0].offsetWidth === 0) {
+            return;
+        }
+        var toolbarW = $mainToolbar.is(":visible") ? $mainToolbar.width() : 0;
+        var maxSidebar = window.innerWidth - CCB_WIDTH - toolbarW - MIN_EDITOR_WIDTH;
+        var currentSb = $sb[0].offsetWidth;
+        if (currentSb > maxSidebar) {
+            var newSb = Math.max(MIN_SIDEBAR_WIDTH, maxSidebar);
+            $sb.width(newSb);
+            var resync = $sb.data("resyncSizer");
+            if (typeof resync === "function") {
+                resync();
+            }
+            // Notify listeners (CCB syncs its left offset; content tracks via forceleft).
+            $sb.trigger("panelResizeUpdate", [newSb]);
+            $sb.trigger("panelResizeEnd", [newSb]);
         }
     }
 
@@ -615,7 +689,7 @@ define(function (require, exports, module) {
         // Respect min/max constraints
         var minSize = currentlyShownPanel.minWidth || 0;
         var minToolbarWidth = minSize + pluginIconsBarWidth;
-        var sidebarWidth = $("#sidebar").outerWidth() || 0;
+        var sidebarWidth = _getSidebarWidth();
         var maxToolbarWidth = Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100);
         newToolbarWidth = Math.max(newToolbarWidth, minToolbarWidth);
         newToolbarWidth = Math.min(newToolbarWidth, maxToolbarWidth);
