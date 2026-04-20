@@ -50,6 +50,48 @@
     height: calc(100% - var(--toolbar-height));
 }
 
+.frame-container.responsive-viewport {
+    justify-content: center;
+    align-items: stretch;
+    background: #1a1a1e;
+}
+
+.frame-container.responsive-viewport > div:first-child:not(.responsive-handle) {
+    display: none;
+}
+
+.responsive-handle {
+    width: 6px;
+    cursor: ew-resize;
+    background: transparent;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 5;
+    transition: background 0.15s;
+}
+
+.responsive-handle:hover,
+.responsive-handle.dragging {
+    background: rgba(66, 133, 244, 0.5);
+}
+
+.responsive-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 24px;
+    border-radius: 1px;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.responsive-handle:hover::after,
+.responsive-handle.dragging::after {
+    background: rgba(255, 255, 255, 0.6);
+}
+
 .plugin-toolbar {
     height: var(--toolbar-height);
     color: #a0a0a0;
