@@ -204,7 +204,7 @@ define(function (require, exports, module) {
         // Floor the toolbar's maxsize at its minimum width. Without the floor, a narrow
         // window with a wide sidebar can drive the cap below 10px, and Resizer's drag
         // logic would then squeeze the toolbar to zero and hide it.
-        var rawMax = Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100);
+        var rawMax = window.innerWidth - sidebarWidth - 100;
         $mainToolbar.data("maxsize", Math.max(minToolbarWidth, rawMax));
     }
 
@@ -570,7 +570,7 @@ define(function (require, exports, module) {
         let minToolbarWidth = (panelBeingShown.minWidth || 0) + pluginIconsBarWidth;
         let maxToolbarWidth = Math.max(
             minToolbarWidth,
-            Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100)
+            window.innerWidth - sidebarWidth - 100
         );
         let currentWidth = $mainToolbar.width();
         if (currentWidth > maxToolbarWidth || currentWidth < minToolbarWidth) {
@@ -675,7 +675,8 @@ define(function (require, exports, module) {
     /**
      * Programmatically sets the plugin panel content width to the given value in pixels.
      * The total toolbar width is adjusted to account for the plugin icons bar.
-     * Width is clamped to respect panel minWidth and max size (75% of window).
+     * If the requested width doesn't fit, the sidebar is progressively shrunk
+     * (and collapsed if necessary) before clamping.
      * No-op if no panel is currently visible.
      * @param {number} width  Desired content width in pixels
      */
@@ -686,11 +687,31 @@ define(function (require, exports, module) {
         var pluginIconsBarWidth = $pluginIconsBar.outerWidth();
         var newToolbarWidth = width + pluginIconsBarWidth;
 
-        // Respect min/max constraints
         var minSize = currentlyShownPanel.minWidth || 0;
         var minToolbarWidth = minSize + pluginIconsBarWidth;
         var sidebarWidth = _getSidebarWidth();
-        var maxToolbarWidth = Math.min(window.innerWidth * 0.75, window.innerWidth - sidebarWidth - 100);
+        var maxToolbarWidth = window.innerWidth - sidebarWidth - MIN_EDITOR_WIDTH;
+
+        if (newToolbarWidth > maxToolbarWidth && sidebarWidth > 0) {
+            var $sb = $("#sidebar");
+            var deficit = newToolbarWidth - maxToolbarWidth;
+            var newSidebarWidth = sidebarWidth - deficit;
+
+            if (newSidebarWidth >= MIN_SIDEBAR_WIDTH) {
+                $sb.width(newSidebarWidth);
+                var resync = $sb.data("resyncSizer");
+                if (typeof resync === "function") {
+                    resync();
+                }
+                $sb.trigger("panelResizeUpdate", [newSidebarWidth]);
+                $sb.trigger("panelResizeEnd", [newSidebarWidth]);
+            } else {
+                Resizer.hide($sb[0]);
+            }
+            sidebarWidth = _getSidebarWidth();
+            maxToolbarWidth = window.innerWidth - sidebarWidth - MIN_EDITOR_WIDTH;
+        }
+
         newToolbarWidth = Math.max(newToolbarWidth, minToolbarWidth);
         newToolbarWidth = Math.min(newToolbarWidth, maxToolbarWidth);
 
