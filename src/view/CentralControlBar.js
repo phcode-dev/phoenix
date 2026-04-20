@@ -238,7 +238,7 @@ define(function (require, exports, module) {
         const $collapseBtn = $("#ccbCollapseEditorBtn");
         $collapseBtn.toggleClass("is-active", editorCollapsed)
             .attr("title", editorCollapsed ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
-        $collapseBtn.find("i").attr("class", editorCollapsed ? "fa-solid fa-code" : "fa-solid fa-feather");
+        $collapseBtn.find("i").attr("class", editorCollapsed ? "fa-solid fa-code" : "fa-solid fa-pen-nib fa-rotate-90");
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
         }
