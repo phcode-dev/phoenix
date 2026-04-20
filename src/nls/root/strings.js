@@ -2074,6 +2074,7 @@ define({
     "PROMO_LEARN_MORE": "Learn More\u2026",
     "PROMO_OPT_OUT_LINK": "Opt out?",
     "PROMO_OPT_OUT_NOTE": "You can cancel your trial anytime by selecting `Help > Cancel Phoenix Pro Trial`.",
+    "PROMO_OPT_OUT_DIALOG_TITLE": "Cancel Phoenix Pro Trial",
     "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Upgrade to {0}",
     "PROMO_PRO_ENDED_TITLE": "{0} trial ended",
     "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Thanks for trying Pro! <b>You're now on the Free Community Edition.</b> <br>Upgrade anytime to unlock these features:",
