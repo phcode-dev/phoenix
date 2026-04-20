@@ -527,6 +527,7 @@ define({
     "DEVICE_SIZE_NOT_ENOUGH_SPACE": "Not enough space for this screen size - try zooming out",
     "DEVICE_SIZE_CYCLE_TOOLTIP": "Switch between mobile, tablet, and desktop",
     "DEVICE_SIZE_DROPDOWN_TOOLTIP": "All device sizes",
+    "DEVICE_SIZE_FIT_TO_PANEL": "Fit to panel",
     "MD_EDIT_UPSELL_MESSAGE": "Write Markdown like a document. {APP_NAME} handles the formatting so you can stay focused on writing.",
     "IMAGE_UPLOADING": "Uploading",
     "IMAGE_UPLOAD_FAILED": "Failed to upload image",
