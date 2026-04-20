@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Sembunyikan Sidebar",
   "CMD_SHOW_SIDEBAR": "Tampilkan Sidebar",
   "CMD_TOGGLE_SIDEBAR": "Buka/Tutup Bilah Samping",
+  "CMD_TOGGLE_DESIGN_MODE": "Beralih Mode Desain",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Beralih ke Mode Desain",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Beralih ke Editor Kode",
   "CMD_TOGGLE_TABBAR": "Bilah Tab Berkas",
   "CMD_TOGGLE_PANELS": "Buka/Tutup Panel",
   "CMD_TOGGLE_PURE_CODE": "Tanpa Distraksi",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "CMD_TOGGLE_DESIGN_MODE": "Beralih Mode Desain",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Beralih ke Mode Desain",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Beralih ke Editor Kode"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Batalkan Uji Coba Phoenix Pro"
 });

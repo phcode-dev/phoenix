@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "साइडबार छिपाएँ",
   "CMD_SHOW_SIDEBAR": "साइडबार दिखाएँ",
   "CMD_TOGGLE_SIDEBAR": "साइडबार टॉगल करें",
+  "CMD_TOGGLE_DESIGN_MODE": "डिज़ाइन मोड टॉगल करें",
+  "CCB_SWITCH_TO_DESIGN_MODE": "डिज़ाइन मोड पर स्विच करें",
+  "CCB_SWITCH_TO_CODE_EDITOR": "कोड एडिटर पर स्विच करें",
   "CMD_TOGGLE_TABBAR": "फ़ाइल टैब बार",
   "CMD_TOGGLE_PANELS": "पैनल टॉगल करें",
   "CMD_TOGGLE_PURE_CODE": "कोई विकर्षण नहीं",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "CMD_TOGGLE_DESIGN_MODE": "डिज़ाइन मोड टॉगल करें",
-  "CCB_SWITCH_TO_DESIGN_MODE": "डिज़ाइन मोड पर स्विच करें",
-  "CCB_SWITCH_TO_CODE_EDITOR": "कोड एडिटर पर स्विच करें"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ट्रायल रद्द करें"
 });

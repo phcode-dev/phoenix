@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Hide Sidebar",
   "CMD_SHOW_SIDEBAR": "Show sidebar",
   "CMD_TOGGLE_SIDEBAR": "Toggle sidebar",
+  "CMD_TOGGLE_DESIGN_MODE": "Toggle Design Mode",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Switch to Design Mode",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Switch to Code Editor",
   "CMD_TOGGLE_TABBAR": "File Tab Bar",
   "CMD_TOGGLE_PANELS": "Toggle panels",
   "CMD_TOGGLE_PURE_CODE": "No distractions",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "CMD_TOGGLE_DESIGN_MODE": "Toggle Design Mode",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Switch to Design Mode",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Switch to Code Editor"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancel Phoenix Pro Trial"
 });

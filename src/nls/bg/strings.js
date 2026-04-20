@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Скриване на страничната лента",
   "CMD_SHOW_SIDEBAR": "Показване на страничната лента",
   "CMD_TOGGLE_SIDEBAR": "Превключване на страничната лента",
+  "CMD_TOGGLE_DESIGN_MODE": "Превключване на дизайнерски режим",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Превключване към дизайнерски режим",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Превключване към кодов редактор",
   "CMD_TOGGLE_TABBAR": "Лента с раздели на файловете",
   "CMD_TOGGLE_PANELS": "Превключване на панелите",
   "CMD_TOGGLE_PURE_CODE": "Без разсейвания",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "CMD_TOGGLE_DESIGN_MODE": "Превключване на дизайнерски режим",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Превключване към дизайнерски режим",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Превключване към кодов редактор"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Прекратяване на пробния период за Phoenix Pro"
 });

@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Gjem sidestolpe",
   "CMD_SHOW_SIDEBAR": "Vis sidestolpe",
   "CMD_TOGGLE_SIDEBAR": "Bytt sidepanel",
+  "CMD_TOGGLE_DESIGN_MODE": "Veksle designmodus",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Bytt til designmodus",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Bytt til kodeeditor",
   "CMD_TOGGLE_TABBAR": "Filfanelinje",
   "CMD_TOGGLE_PANELS": "Bytt paneler",
   "CMD_TOGGLE_PURE_CODE": "Ingen distraksjoner",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "CMD_TOGGLE_DESIGN_MODE": "Veksle designmodus",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Bytt til designmodus",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Bytt til kodeeditor"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Avslutt Phoenix Pro-prøveperiode"
 });

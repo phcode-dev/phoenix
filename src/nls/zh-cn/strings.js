@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "隐藏边栏",
   "CMD_SHOW_SIDEBAR": "显示边栏",
   "CMD_TOGGLE_SIDEBAR": "显示/隐藏边栏",
+  "CMD_TOGGLE_DESIGN_MODE": "切换设计模式",
+  "CCB_SWITCH_TO_DESIGN_MODE": "切换到设计模式",
+  "CCB_SWITCH_TO_CODE_EDITOR": "切换到代码编辑器",
   "CMD_TOGGLE_TABBAR": "文件标签栏",
   "CMD_TOGGLE_PANELS": "显示/隐藏面板",
   "CMD_TOGGLE_PURE_CODE": "无干扰模式",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "CMD_TOGGLE_DESIGN_MODE": "切换设计模式",
-  "CCB_SWITCH_TO_DESIGN_MODE": "切换到设计模式",
-  "CCB_SWITCH_TO_CODE_EDITOR": "切换到代码编辑器"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "取消 Phoenix Pro 试用"
 });

@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "사이드 바 숨기기",
   "CMD_SHOW_SIDEBAR": "사이드 바 표시",
   "CMD_TOGGLE_SIDEBAR": "사이드바 표시 전환",
+  "CMD_TOGGLE_DESIGN_MODE": "디자인 모드 전환",
+  "CCB_SWITCH_TO_DESIGN_MODE": "디자인 모드로 전환",
+  "CCB_SWITCH_TO_CODE_EDITOR": "코드 에디터로 전환",
   "CMD_TOGGLE_TABBAR": "파일 탭 표시줄",
   "CMD_TOGGLE_PANELS": "패널 표시 전환",
   "CMD_TOGGLE_PURE_CODE": "코드만 보기",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "CMD_TOGGLE_DESIGN_MODE": "디자인 모드 전환",
-  "CCB_SWITCH_TO_DESIGN_MODE": "디자인 모드로 전환",
-  "CCB_SWITCH_TO_CODE_EDITOR": "코드 에디터로 전환"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro 무료 체험 취소"
 });

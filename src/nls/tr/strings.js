@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Kenar Çubuğunu Gizle",
   "CMD_SHOW_SIDEBAR": "Kenar Çubuğunu Göster",
   "CMD_TOGGLE_SIDEBAR": "Kenar Çubuğunu Aç/Kapat",
+  "CMD_TOGGLE_DESIGN_MODE": "Tasarım Modunu Değiştir",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Tasarım Moduna Geç",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Kod Düzenleyiciye Geç",
   "CMD_TOGGLE_TABBAR": "Dosya Sekme Çubuğu",
   "CMD_TOGGLE_PANELS": "Panelleri Aç/Kapat",
   "CMD_TOGGLE_PURE_CODE": "Dikkat Dağıtıcı Olmadan",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "CMD_TOGGLE_DESIGN_MODE": "Tasarım Modunu Değiştir",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Tasarım Moduna Geç",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Kod Düzenleyiciye Geç"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro Deneme Sürümünü İptal Et"
 });

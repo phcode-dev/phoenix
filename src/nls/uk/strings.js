@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Приховати бокову панель",
   "CMD_SHOW_SIDEBAR": "Показати бокову панель",
   "CMD_TOGGLE_SIDEBAR": "Перемкнути бічну панель",
+  "CMD_TOGGLE_DESIGN_MODE": "Перемкнути режим дизайну",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Перемкнутися в режим дизайну",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Перемкнутися до редактора коду",
   "CMD_TOGGLE_TABBAR": "Панель вкладок файлів",
   "CMD_TOGGLE_PANELS": "Перемкнути панелі",
   "CMD_TOGGLE_PURE_CODE": "Без відволікань",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "CMD_TOGGLE_DESIGN_MODE": "Перемкнути режим дизайну",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Перемкнутися в режим дизайну",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Перемкнутися до редактора коду"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Скасувати пробний період Phoenix Pro"
 });

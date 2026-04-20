@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Slēpt sānjoslu",
   "CMD_SHOW_SIDEBAR": "Rādīt sānjoslu",
   "CMD_TOGGLE_SIDEBAR": "Rādīt/slēpt sānjoslu",
+  "CMD_TOGGLE_DESIGN_MODE": "Pārslēgt dizaina režīmu",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Pārslēgties uz dizaina režīmu",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Pārslēgties uz koda redaktoru",
   "CMD_TOGGLE_TABBAR": "Failu cilņu josla",
   "CMD_TOGGLE_PANELS": "Rādīt/slēpt paneļus",
   "CMD_TOGGLE_PURE_CODE": "Rādīt/slēpt palīgjoslas",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "CMD_TOGGLE_DESIGN_MODE": "Pārslēgt dizaina režīmu",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Pārslēgties uz dizaina režīmu",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Pārslēgties uz koda redaktoru"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Atcelt Phoenix Pro izmēģinājumu"
 });

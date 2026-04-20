@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "サイドバーを隠す",
   "CMD_SHOW_SIDEBAR": "サイドバーを表示する",
   "CMD_TOGGLE_SIDEBAR": "サイドバーの切り替え",
+  "CMD_TOGGLE_DESIGN_MODE": "デザインモードの切り替え",
+  "CCB_SWITCH_TO_DESIGN_MODE": "デザインモードに切り替え",
+  "CCB_SWITCH_TO_CODE_EDITOR": "コードエディターに切り替え",
   "CMD_TOGGLE_TABBAR": "ファイルタブバー",
   "CMD_TOGGLE_PANELS": "パネルの表示切り替え",
   "CMD_TOGGLE_PURE_CODE": "簡易表示",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "CMD_TOGGLE_DESIGN_MODE": "デザインモードの切り替え",
-  "CCB_SWITCH_TO_DESIGN_MODE": "デザインモードに切り替え",
-  "CCB_SWITCH_TO_CODE_EDITOR": "コードエディターに切り替え"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro トライアルの解約"
 });

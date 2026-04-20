@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "സൈഡ്‌ബാർ മറയ്ക്കുക",
   "CMD_SHOW_SIDEBAR": "സൈഡ്‌ബാർ കാണിക്കുക",
   "CMD_TOGGLE_SIDEBAR": "സൈഡ്‌ബാർ ടോഗിൾ ചെയ്യുക",
+  "CMD_TOGGLE_DESIGN_MODE": "ഡിസൈൻ മോഡ് ടോഗിൾ ചെയ്യുക",
+  "CCB_SWITCH_TO_DESIGN_MODE": "ഡിസൈൻ മോഡിലേക്ക് മാറുക",
+  "CCB_SWITCH_TO_CODE_EDITOR": "കോഡ് എഡിറ്ററിലേക്ക് മാറുക",
   "CMD_TOGGLE_TABBAR": "ഫയൽ ടാബ് ബാർ",
   "CMD_TOGGLE_PANELS": "പാനലുകൾ ടോഗിൾ ചെയ്യുക",
   "CMD_TOGGLE_PURE_CODE": "ശ്രദ്ധാശൈഥില്യങ്ങൾ ഒഴിവാക്കുക",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "CMD_TOGGLE_DESIGN_MODE": "ഡിസൈൻ മോഡ് ടോഗിൾ ചെയ്യുക",
-  "CCB_SWITCH_TO_DESIGN_MODE": "ഡിസൈൻ മോഡിലേക്ക് മാറുക",
-  "CCB_SWITCH_TO_CODE_EDITOR": "കോഡ് എഡിറ്ററിലേക്ക് മാറുക"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ട്രയൽ റദ്ദാക്കുക"
 });

@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Piilota sivupalkki",
   "CMD_SHOW_SIDEBAR": "Näytä sivupalkki",
   "CMD_TOGGLE_SIDEBAR": "Näytä tai piilota sivupalkki",
+  "CMD_TOGGLE_DESIGN_MODE": "Kytke suunnittelutila",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Vaihda suunnittelutilaan",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Vaihda koodieditoriin",
   "CMD_TOGGLE_TABBAR": "Tiedostovälilehtirivi",
   "CMD_TOGGLE_PANELS": "Näytä tai piilota paneelit",
   "CMD_TOGGLE_PURE_CODE": "Ei häiriötekijöitä",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "CMD_TOGGLE_DESIGN_MODE": "Kytke suunnittelutila",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Vaihda suunnittelutilaan",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Vaihda koodieditoriin"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Peruuta Phoenix Pro -kokeilujakso"
 });
