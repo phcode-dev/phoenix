@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "پنهان کردن نوار کناری",
   "CMD_SHOW_SIDEBAR": "نمایش نوار کناری",
   "CMD_TOGGLE_SIDEBAR": "تغییر وضعیت نوار کناری",
+  "CMD_TOGGLE_DESIGN_MODE": "تغییر وضعیت حالت طراحی",
+  "CCB_SWITCH_TO_DESIGN_MODE": "رفتن به حالت طراحی",
+  "CCB_SWITCH_TO_CODE_EDITOR": "رفتن به ویرایشگر کد",
   "CMD_TOGGLE_TABBAR": "نوار برگه‌های فایل",
   "CMD_TOGGLE_PANELS": "تغییر وضعیت پنل‌ها",
   "CMD_TOGGLE_PURE_CODE": "بدون حواس‌پرتی",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "CMD_TOGGLE_DESIGN_MODE": "تغییر وضعیت حالت طراحی",
-  "CCB_SWITCH_TO_DESIGN_MODE": "رفتن به حالت طراحی",
-  "CCB_SWITCH_TO_CODE_EDITOR": "رفتن به ویرایشگر کد"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "لغو دورهٔ آزمایشی Phoenix Pro"
 });
