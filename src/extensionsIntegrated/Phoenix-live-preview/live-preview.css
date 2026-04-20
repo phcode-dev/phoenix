@@ -5,7 +5,7 @@
 .live-preview-browser-btn {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1s, visibility 0s linear 1s; /* Fade-out effect */
+    transition: opacity 1s, visibility 0s linear 1s; 
 }
 
 #live-preview-plugin-toolbar {
@@ -101,7 +101,7 @@
     opacity: 0;
     color: #a0a0a0;
     visibility: hidden;
-    transition: opacity 1s, visibility 0s linear 1s; /* Fade-out effect */
+    transition: opacity 1s, visibility 0s linear 1s; 
     width: 30px;
     height: 22px;
     padding: 1px 6px;
@@ -124,15 +124,16 @@
 }
 
 .lp-device-size-icon {
-    min-width: fit-content;
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 20px;
     cursor: pointer;
     background: transparent;
     box-shadow: none !important;
     border: none;
     color: #a0a0a0;
-    padding: 0 0.35em;
+    padding: 0;
     margin: 0;
 }
 
@@ -282,7 +283,6 @@
     color: #fff;
 }
 
-/* Persistent cursor-sync highlight on CM line corresponding to md viewer cursor */
 .cm-cursor-sync-highlight {
     background-color: rgba(100, 150, 255, 0.18) !important;
 }
