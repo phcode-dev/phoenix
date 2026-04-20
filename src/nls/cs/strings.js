@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Skrýt boční menu",
   "CMD_SHOW_SIDEBAR": "Zobrazit boční menu",
   "CMD_TOGGLE_SIDEBAR": "Zobrazit/skrýt boční menu",
+  "CMD_TOGGLE_DESIGN_MODE": "Přepnout režim návrhu",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Přepnout do režimu návrhu",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Přepnout do editoru kódu",
   "CMD_TOGGLE_TABBAR": "Panel karet souborů",
   "CMD_TOGGLE_PANELS": "Zobrazit/skrýt panely",
   "CMD_TOGGLE_PURE_CODE": "Žádné rozptylování",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "CMD_TOGGLE_DESIGN_MODE": "Přepnout režim návrhu",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Přepnout do režimu návrhu",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Přepnout do editoru kódu"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Ukončit zkušební verzi Phoenix Pro"
 });

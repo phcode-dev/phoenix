@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Dölj sidomeny",
   "CMD_SHOW_SIDEBAR": "Visa sidomeny",
   "CMD_TOGGLE_SIDEBAR": "Växla på/av sidomeny",
+  "CMD_TOGGLE_DESIGN_MODE": "Växla designläge",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Växla till designläge",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Växla till kodredigerare",
   "CMD_TOGGLE_TABBAR": "Flikfält för filer",
   "CMD_TOGGLE_PANELS": "Växla på/av paneler",
   "CMD_TOGGLE_PURE_CODE": "Inga distraktioner",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "CMD_TOGGLE_DESIGN_MODE": "Växla designläge",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Växla till designläge",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Växla till kodredigerare"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Avsluta Phoenix Pro-provperiod"
 });

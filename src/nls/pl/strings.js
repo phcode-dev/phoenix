@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Ukryj pasek boczny",
   "CMD_SHOW_SIDEBAR": "Pokaż pasek boczny",
   "CMD_TOGGLE_SIDEBAR": "Przełącz pasek boczny",
+  "CMD_TOGGLE_DESIGN_MODE": "Przełącz tryb projektowania",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Przełącz na tryb projektowania",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Przełącz na edytor kodu",
   "CMD_TOGGLE_TABBAR": "Pasek kart plików",
   "CMD_TOGGLE_PANELS": "Przełącz panele",
   "CMD_TOGGLE_PURE_CODE": "Tryb bez przeszkadzania",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "CMD_TOGGLE_DESIGN_MODE": "Przełącz tryb projektowania",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Przełącz na tryb projektowania",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Przełącz na edytor kodu"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Anuluj wersję próbną Phoenix Pro"
 });

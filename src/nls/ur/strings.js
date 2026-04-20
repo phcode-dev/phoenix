@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "سائڈبار چھپائیں",
   "CMD_SHOW_SIDEBAR": "سائڈبار دکھائیں",
   "CMD_TOGGLE_SIDEBAR": "سائڈبار ٹوگل کریں",
+  "CMD_TOGGLE_DESIGN_MODE": "ڈیزائن موڈ ٹوگل کریں",
+  "CCB_SWITCH_TO_DESIGN_MODE": "ڈیزائن موڈ پر سوئچ کریں",
+  "CCB_SWITCH_TO_CODE_EDITOR": "کوڈ ایڈیٹر پر سوئچ کریں",
   "CMD_TOGGLE_TABBAR": "فائل ٹیب بار",
   "CMD_TOGGLE_PANELS": "پینلز ٹوگل کریں",
   "CMD_TOGGLE_PURE_CODE": "کوئی خلفشار نہیں",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "CMD_TOGGLE_DESIGN_MODE": "ڈیزائن موڈ ٹوگل کریں",
-  "CCB_SWITCH_TO_DESIGN_MODE": "ڈیزائن موڈ پر سوئچ کریں",
-  "CCB_SWITCH_TO_CODE_EDITOR": "کوڈ ایڈیٹر پر سوئچ کریں"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ٹرائل منسوخ کریں"
 });

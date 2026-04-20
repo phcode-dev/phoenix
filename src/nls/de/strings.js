@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Seitenleiste verbergen",
   "CMD_SHOW_SIDEBAR": "Seitenleiste zeigen",
   "CMD_TOGGLE_SIDEBAR": "Seitenleiste anzeigen/verbergen",
+  "CMD_TOGGLE_DESIGN_MODE": "Design-Modus umschalten",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Zum Design-Modus wechseln",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Zum Code-Editor wechseln",
   "CMD_TOGGLE_TABBAR": "Dateileisten-Registerkarte",
   "CMD_TOGGLE_PANELS": "Panels anzeigen/verbergen",
   "CMD_TOGGLE_PURE_CODE": "Ablenkungsfreier Modus",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "CMD_TOGGLE_DESIGN_MODE": "Design-Modus umschalten",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Zum Design-Modus wechseln",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Zum Code-Editor wechseln"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro-Probeabo kündigen"
 });

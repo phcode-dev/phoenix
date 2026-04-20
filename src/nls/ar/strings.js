@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "إخفاء الشريط الجانبي",
   "CMD_SHOW_SIDEBAR": "إظهار الشريط الجانبي",
   "CMD_TOGGLE_SIDEBAR": "تبديل الشريط الجانبي",
+  "CMD_TOGGLE_DESIGN_MODE": "تبديل وضع التصميم",
+  "CCB_SWITCH_TO_DESIGN_MODE": "التبديل إلى وضع التصميم",
+  "CCB_SWITCH_TO_CODE_EDITOR": "التبديل إلى محرر الكود",
   "CMD_TOGGLE_TABBAR": "شريط تبويب الملف",
   "CMD_TOGGLE_PANELS": "تبديل الألواح",
   "CMD_TOGGLE_PURE_CODE": "بدون تشتيت",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "CMD_TOGGLE_DESIGN_MODE": "تبديل وضع التصميم",
-  "CCB_SWITCH_TO_DESIGN_MODE": "التبديل إلى وضع التصميم",
-  "CCB_SWITCH_TO_CODE_EDITOR": "التبديل إلى محرر الكود"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "إلغاء الفترة التجريبية لـ Phoenix Pro"
 });

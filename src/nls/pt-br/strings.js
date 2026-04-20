@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Esconder barra lateral",
   "CMD_SHOW_SIDEBAR": "Mostrar barra lateral",
   "CMD_TOGGLE_SIDEBAR": "Alternar Barra Lateral",
+  "CMD_TOGGLE_DESIGN_MODE": "Alternar Modo Design",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Mudar para o Modo Design",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Mudar para o Editor de Código",
   "CMD_TOGGLE_TABBAR": "Barra de Abas de Arquivos",
   "CMD_TOGGLE_PANELS": "Alternar Painéis",
   "CMD_TOGGLE_PURE_CODE": "Sem Distração",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "CMD_TOGGLE_DESIGN_MODE": "Alternar Modo Design",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Mudar para o Modo Design",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Mudar para o Editor de Código"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancelar a avaliação do Phoenix Pro"
 });

@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Skryť bočný panel",
   "CMD_SHOW_SIDEBAR": "Zobraziť bočný panel",
   "CMD_TOGGLE_SIDEBAR": "Prepnúť bočný panel",
+  "CMD_TOGGLE_DESIGN_MODE": "Prepnúť režim návrhu",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Prepnúť na režim návrhu",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Prepnúť na editor kódu",
   "CMD_TOGGLE_TABBAR": "Panel so záložkami súborov",
   "CMD_TOGGLE_PANELS": "Prepnúť panely",
   "CMD_TOGGLE_PURE_CODE": "Bez rušenia",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "CMD_TOGGLE_DESIGN_MODE": "Prepnúť režim návrhu",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Prepnúť na režim návrhu",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Prepnúť na editor kódu"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Zrušiť skúšobnú verziu Phoenix Pro"
 });

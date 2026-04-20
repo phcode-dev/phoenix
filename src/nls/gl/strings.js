@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Ocultar menú lateral",
   "CMD_SHOW_SIDEBAR": "Amosar menú lateral",
   "CMD_TOGGLE_SIDEBAR": "Alternar barra lateral",
+  "CMD_TOGGLE_DESIGN_MODE": "Alternar o modo de deseño",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Cambiar ao modo de deseño",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Cambiar ao editor de código",
   "CMD_TOGGLE_TABBAR": "Barra de pestanas de ficheiros",
   "CMD_TOGGLE_PANELS": "Alternar paneis",
   "CMD_TOGGLE_PURE_CODE": "Sen distraccións",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "CMD_TOGGLE_DESIGN_MODE": "Alternar o modo de deseño",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Cambiar ao modo de deseño",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Cambiar ao editor de código"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancelar a proba de Phoenix Pro"
 });

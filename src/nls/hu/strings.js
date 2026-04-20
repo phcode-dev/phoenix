@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Oldalsáv Elrejtése",
   "CMD_SHOW_SIDEBAR": "Oldalsáv Mutatása",
   "CMD_TOGGLE_SIDEBAR": "Oldalsáv ki/bekapcsolása",
+  "CMD_TOGGLE_DESIGN_MODE": "Tervezői mód váltása",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Váltás tervezői módra",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Váltás kódszerkesztőre",
   "CMD_TOGGLE_TABBAR": "Fájlfül sáv",
   "CMD_TOGGLE_PANELS": "Panelek ki/bekapcsolása",
   "CMD_TOGGLE_PURE_CODE": "Figyelemelterelések nélkül",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "CMD_TOGGLE_DESIGN_MODE": "Tervezői mód váltása",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Váltás tervezői módra",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Váltás kódszerkesztőre"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro próbaverzió lemondása"
 });

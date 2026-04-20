@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Сакриј споредну траку",
   "CMD_SHOW_SIDEBAR": "Прикажи споредну траку",
   "CMD_TOGGLE_SIDEBAR": "Укључи/искључи бочну траку",
+  "CMD_TOGGLE_DESIGN_MODE": "Пребаци режим дизајна",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Пребаци у режим дизајна",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Пребаци у уређивач кода",
   "CMD_TOGGLE_TABBAR": "Трака са картицама датотека",
   "CMD_TOGGLE_PANELS": "Укључи/искључи панеле",
   "CMD_TOGGLE_PURE_CODE": "Без ометања",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "CMD_TOGGLE_DESIGN_MODE": "Пребаци режим дизајна",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Пребаци у режим дизајна",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Пребаци у уређивач кода"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Отказивање Phoenix Pro пробног периода"
 });

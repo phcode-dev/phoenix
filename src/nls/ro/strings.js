@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Ascunde bara laterală",
   "CMD_SHOW_SIDEBAR": "Arată bara laterală",
   "CMD_TOGGLE_SIDEBAR": "Comută bara laterală",
+  "CMD_TOGGLE_DESIGN_MODE": "Comută Modul Design",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Treci la Modul Design",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Treci la Editorul de cod",
   "CMD_TOGGLE_TABBAR": "Bară Tab-uri Fișiere",
   "CMD_TOGGLE_PANELS": "Comută panourile",
   "CMD_TOGGLE_PURE_CODE": "Fără distragere",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "CMD_TOGGLE_DESIGN_MODE": "Comută Modul Design",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Treci la Modul Design",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Treci la Editorul de cod"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Anulare perioadă de probă Phoenix Pro"
 });

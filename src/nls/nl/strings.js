@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Verberg zijbalk",
   "CMD_SHOW_SIDEBAR": "Toon zijbalk",
   "CMD_TOGGLE_SIDEBAR": "Zijbalk wisselen",
+  "CMD_TOGGLE_DESIGN_MODE": "Ontwerpmodus in-/uitschakelen",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Overschakelen naar ontwerpmodus",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Overschakelen naar code-editor",
   "CMD_TOGGLE_TABBAR": "Tabbalk Bestand",
   "CMD_TOGGLE_PANELS": "Panelen wisselen",
   "CMD_TOGGLE_PURE_CODE": "Geen afleidingen",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "CMD_TOGGLE_DESIGN_MODE": "Ontwerpmodus in-/uitschakelen",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Overschakelen naar ontwerpmodus",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Overschakelen naar code-editor"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro-proefperiode annuleren"
 });

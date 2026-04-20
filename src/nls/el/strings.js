@@ -823,6 +823,9 @@ define({
   "CMD_HIDE_SIDEBAR": "Απόκρυψη Πλευρικής Εργαλειοθήκης",
   "CMD_SHOW_SIDEBAR": "Προβολή Πλευρικής Εργαλειοθήκης",
   "CMD_TOGGLE_SIDEBAR": "Εναλλαγή Πλευρικής Γραμμής",
+  "CMD_TOGGLE_DESIGN_MODE": "Εναλλαγή Λειτουργίας Σχεδίασης",
+  "CCB_SWITCH_TO_DESIGN_MODE": "Μετάβαση σε Λειτουργία Σχεδίασης",
+  "CCB_SWITCH_TO_CODE_EDITOR": "Μετάβαση στον Επεξεργαστή Κώδικα",
   "CMD_TOGGLE_TABBAR": "Γραμμή καρτελών αρχείων",
   "CMD_TOGGLE_PANELS": "Εναλλαγή Πλαισίων",
   "CMD_TOGGLE_PURE_CODE": "Χωρίς Περισπασμούς",
@@ -2178,7 +2181,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "CMD_TOGGLE_DESIGN_MODE": "Εναλλαγή Λειτουργίας Σχεδίασης",
-  "CCB_SWITCH_TO_DESIGN_MODE": "Μετάβαση σε Λειτουργία Σχεδίασης",
-  "CCB_SWITCH_TO_CODE_EDITOR": "Μετάβαση στον Επεξεργαστή Κώδικα"
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Ακύρωση δοκιμαστικής περιόδου Phoenix Pro"
 });
