@@ -23,8 +23,6 @@ define(function (require, exports, module) {
     const AppInit           = require("utils/AppInit");
     const CommandManager    = require("command/CommandManager");
     const Commands          = require("command/Commands");
-    const DocumentManager   = require("document/DocumentManager");
-    const MainViewManager   = require("view/MainViewManager");
     const Strings           = require("strings");
     const WorkspaceManager  = require("view/WorkspaceManager");
 
@@ -33,8 +31,6 @@ define(function (require, exports, module) {
     let $bar;
     let $sidebar;
     let $content;
-    let $fileLabel;
-    let $fileName;
     let editorCollapsed = false;
     let savedToolbarWidth = null;
     let livePreviewWasOpen = false;
@@ -71,27 +67,6 @@ define(function (require, exports, module) {
                 mainToolbar.style.setProperty("width", fullToolbarWidth + "px", "important");
             }
         }
-    }
-
-    function _updateFileLabel() {
-        if (!$fileLabel) {
-            return;
-        }
-        const doc = DocumentManager.getCurrentDocument();
-        if (!doc) {
-            $fileLabel.removeClass("is-dirty");
-            $fileName.text("");
-            $fileLabel.attr("title", "");
-            return;
-        }
-        const name = doc.file && doc.file.name ? doc.file.name : "";
-        const fullPath = doc.file && doc.file.fullPath ? doc.file.fullPath : "";
-        const displayPath = fullPath && Phoenix && Phoenix.app && Phoenix.app.getDisplayPath
-            ? Phoenix.app.getDisplayPath(fullPath)
-            : fullPath || name;
-        $fileName.text(name);
-        $fileLabel.attr("title", displayPath);
-        $fileLabel.toggleClass("is-dirty", !!doc.isDirty);
     }
 
     function _executeCmd(id) {
@@ -286,7 +261,7 @@ define(function (require, exports, module) {
             e.preventDefault();
             _executeCmd(Commands.VIEW_HIDE_SIDEBAR);
         });
-        $("#ccbFileLabel").on("click", function (e) {
+        $("#ccbShowInTreeBtn").on("click", function (e) {
             e.preventDefault();
             _executeCmd(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         });
@@ -301,8 +276,6 @@ define(function (require, exports, module) {
         $bar = $("#centralControlBar");
         $sidebar = $("#sidebar");
         $content = $(".content");
-        $fileLabel = $("#ccbFileLabel");
-        $fileName = $fileLabel.find(".ccb-file-name");
 
         // Cache the authored pen-nib SVG from the DOM so the toggle handler
         // can restore it after swapping in the fa-code icon for design mode.
@@ -315,6 +288,7 @@ define(function (require, exports, module) {
         // navForwardButton get their localized titles from NavigationProvider.)
         $("#ccbCollapseEditorBtn").attr("title", Strings.CCB_SWITCH_TO_DESIGN_MODE);
         $("#ccbSidebarToggleBtn").attr("title", Strings.CMD_TOGGLE_SIDEBAR);
+        $("#ccbShowInTreeBtn").attr("title", Strings.CMD_SHOW_IN_TREE);
         $("#ccbUndoBtn").attr("title", Strings.CMD_UNDO);
         $("#ccbRedoBtn").attr("title", Strings.CMD_REDO);
         $("#ccbSaveBtn").attr("title", Strings.CMD_FILE_SAVE);
@@ -428,11 +402,6 @@ define(function (require, exports, module) {
             };
         }
 
-        MainViewManager.on("currentFileChange.ccb", _updateFileLabel);
-        DocumentManager.on("dirtyFlagChange.ccb", _updateFileLabel);
-        DocumentManager.on("pathDeleted.ccb fileNameChange.ccb", _updateFileLabel);
-
-        _updateFileLabel();
         _updateSidebarToggleIcon();
     });
 

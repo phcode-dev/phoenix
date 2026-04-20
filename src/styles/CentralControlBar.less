@@ -47,14 +47,6 @@
         flex-direction: column;
         align-items: stretch;
         gap: 2px;
-
-        &.ccb-group-file {
-            flex: 0 1 auto;
-            max-height: 220px;
-            overflow: hidden;
-            justify-content: flex-start;
-            padding: 4px 0;
-        }
     }
 
     .ccb-divider {
@@ -78,6 +70,12 @@
         transition: color 0.15s ease, background-color 0.15s ease;
 
         i {
+            pointer-events: none;
+        }
+
+        svg.ccb-binoculars-icon {
+            width: 15px;
+            height: 15px;
             pointer-events: none;
         }
 
@@ -128,49 +126,6 @@
         pointer-events: none;
     }
 
-    /* Vertical filename label — clicking reveals the current file in the
-       file tree, mirroring the old binoculars button. */
-    .ccb-file-label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        padding: 4px 0;
-        color: @project-panel-text-2;
-        height: 100%;
-        overflow: hidden;
-        cursor: pointer;
-
-        .ccb-file-dot {
-            flex: 0 0 auto;
-            line-height: 1;
-            color: #f1b84e;
-            visibility: hidden;
-            font-size: 1rem;
-        }
-
-        &.is-dirty .ccb-file-dot {
-            visibility: visible;
-        }
-
-        .ccb-file-name {
-            flex: 1 1 auto;
-            min-height: 0;
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-            text-orientation: mixed;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: @project-panel-text-1;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        &:hover .ccb-file-name {
-            text-decoration: underline;
-        }
-    }
 }
 
 /* Editor collapse: actual layout handled in JS via .content width/visibility */
