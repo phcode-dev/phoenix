@@ -119,6 +119,27 @@
     background: rgba(255, 255, 255, 0.6);
 }
 
+.responsive-dimension-label {
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
 .plugin-toolbar {
     height: var(--toolbar-height);
     color: #a0a0a0;
