@@ -23,6 +23,7 @@
 define(function (require, exports, module) {
 
     const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
+        DragTestUtils     = require("spec/DragTestUtils"),
         Strings           = require("strings");
 
     const CCB_WIDTH = 30;
@@ -100,8 +101,31 @@ define(function (require, exports, module) {
                 expect(Math.abs(ccbRect.right - contentLeft)).toBeLessThan(2);
             });
 
-            it("should set sidebar's data-minsize to 30 (so drag can't auto-collapse below CCB)", function () {
-                expect(_$("#sidebar").attr("data-minsize")).toBe("30");
+            it("should let the user fully collapse the sidebar by dragging its right edge all the way left", async function () {
+                // Start from a comfortably wide sidebar so there's room to drag leftward past zero.
+                SidebarView.resize(240);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 240; },
+                    "sidebar to settle at 240px", 2000);
+
+                const $resizer = _$("#sidebar > .horz-resizer");
+                const sidebarLeft = _$("#sidebar")[0].getBoundingClientRect().left;
+                const handleY = _$("#sidebar")[0].getBoundingClientRect().top + 100;
+
+                // Drag all the way left to the sidebar's own left edge — well past 0.
+                // The sidebar is `collapsible`, so the Resizer should hide it entirely
+                // and the CCB's sidebar-toggle remains as the way to bring it back.
+                await DragTestUtils.dragFromElement($resizer[0], sidebarLeft - 50, handleY, testWindow);
+
+                expect(SidebarView.isVisible()).toBe(false);
+
+                // CCB stays put so the user can re-open the sidebar from the toggle.
+                expect(_$("#ccbSidebarToggleBtn").is(":visible")).toBe(true);
+
+                // Restore for later tests.
+                SidebarView.show();
+                await awaitsFor(function () { return SidebarView.isVisible(); },
+                    "sidebar to come back for cleanup", 2000);
+                SidebarView.resize(200);
             });
 
             it("should shift the sidebar's resizer handle right by the CCB width via CSS", function () {
