@@ -35,6 +35,7 @@ define(function (require, exports, module) {
             CommandManager,
             Commands,
             SidebarView,
+            WorkspaceManager,
             _$;
 
         beforeAll(async function () {
@@ -43,6 +44,7 @@ define(function (require, exports, module) {
             CommandManager = brackets.test.CommandManager;
             Commands = brackets.test.Commands;
             SidebarView = brackets.test.SidebarView;
+            WorkspaceManager = brackets.test.WorkspaceManager;
             _$ = testWindow.$;
         }, 30000);
 
@@ -56,15 +58,18 @@ define(function (require, exports, module) {
             CommandManager = null;
             Commands = null;
             SidebarView = null;
+            WorkspaceManager = null;
             _$ = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        // Helper: record every command the CentralControlBar dispatches during the
-        // fn() body. Preferred over Jasmine spies because it exercises the real
-        // CommandManager dispatch path — the `beforeExecuteCommand` event fires on
-        // every `CommandManager.execute`, so we measure the actual effect of the
-        // click handler without monkey-patching.
+        // ---- Shared test helpers ----
+
+        // Record every command the CentralControlBar dispatches during `fn()`.
+        // Preferred over Jasmine spies because it exercises the real
+        // CommandManager dispatch path — the `beforeExecuteCommand` event fires
+        // on every `CommandManager.execute`, so we measure the actual effect of
+        // the click handler without monkey-patching.
         function recordCommands(fn) {
             const executed = [];
             const handler = function (event, id) { executed.push(id); };
@@ -77,11 +82,70 @@ define(function (require, exports, module) {
             return executed;
         }
 
-        beforeEach(function () {
-            // Every test starts with the sidebar visible.
+        function livePanel() {
+            return WorkspaceManager.getPanelForID &&
+                WorkspaceManager.getPanelForID("live-preview-panel");
+        }
+
+        async function openLivePreview() {
+            const lp = livePanel();
+            if (lp && lp.isVisible()) {
+                return;
+            }
+            CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
+            await awaitsFor(function () {
+                const p = livePanel();
+                return p && p.isVisible();
+            }, "live preview to open", 8000);
+        }
+
+        async function closeLivePreviewIfOpen() {
+            const lp = livePanel();
+            if (lp && lp.isVisible()) {
+                CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
+                await awaitsFor(function () { return !lp.isVisible(); },
+                    "live preview to close", 5000);
+            }
+        }
+
+        async function enterDesignMode() {
+            if (WorkspaceManager.isInDesignMode()) {
+                return;
+            }
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+            await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                "design mode to activate", 10000);
+        }
+
+        async function exitDesignMode() {
+            if (!WorkspaceManager.isInDesignMode()) {
+                return;
+            }
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+            await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                "design mode to deactivate", 10000);
+        }
+
+        // Normalize state between tests: exit design mode, close LP, make sure
+        // sidebar is visible at a predictable width. Individual describes can
+        // still add their own beforeEach for section-specific setup.
+        async function resetBaseline() {
+            await exitDesignMode();
+            await closeLivePreviewIfOpen();
             if (!SidebarView.isVisible()) {
                 SidebarView.show();
+                await awaitsFor(function () { return SidebarView.isVisible(); },
+                    "sidebar to be visible", 2000);
             }
+        }
+
+        beforeEach(async function () {
+            await resetBaseline();
+        });
+
+        afterEach(async function () {
+            await exitDesignMode();
+            await closeLivePreviewIfOpen();
         });
 
         describe("1. Layout", function () {
@@ -220,7 +284,7 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("3. #show-in-file-tree button in sidebar", function () {
+        describe("2a. #show-in-file-tree button in sidebar", function () {
 
             it("should render #show-in-file-tree inside #project-files-header, before #collapse-folders, with the localized title", function () {
                 const $btn = _$("#show-in-file-tree");
@@ -240,46 +304,14 @@ define(function (require, exports, module) {
         });
 
         describe("3. Toggle Design Mode command", function () {
-            let WorkspaceManager;
-
-            beforeAll(function () {
-                WorkspaceManager = brackets.test.WorkspaceManager;
-            });
-
-            async function _enterDesignMode() {
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
-                    "design mode to activate", 10000);
-            }
-
-            async function _exitDesignMode() {
-                if (!WorkspaceManager.isInDesignMode()) {
-                    return;
-                }
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
-                    "design mode to deactivate", 10000);
-            }
-
-            afterEach(async function () {
-                await _exitDesignMode();
-                // The toggle opens Live Preview if it wasn't already open; close it so later
-                // tests start from a clean baseline.
-                const lp = WorkspaceManager.getPanelForID && WorkspaceManager.getPanelForID("live-preview-panel");
-                if (lp && lp.isVisible()) {
-                    CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
-                    await awaitsFor(function () { return !lp.isVisible(); },
-                        "live preview to close", 5000);
-                }
-            });
 
             it("should execute VIEW_TOGGLE_DESIGN_MODE and flip isInDesignMode() from false to true and back", async function () {
                 expect(WorkspaceManager.isInDesignMode()).toBe(false);
 
-                await _enterDesignMode();
+                await enterDesignMode();
                 expect(WorkspaceManager.isInDesignMode()).toBe(true);
 
-                await _exitDesignMode();
+                await exitDesignMode();
                 expect(WorkspaceManager.isInDesignMode()).toBe(false);
             });
 
@@ -290,11 +322,11 @@ define(function (require, exports, module) {
                 expect(!!cmd.getChecked()).toBe(false);
                 expect(WorkspaceManager.isInDesignMode()).toBe(false);
 
-                await _enterDesignMode();
+                await enterDesignMode();
                 expect(!!cmd.getChecked()).toBe(true);
                 expect(WorkspaceManager.isInDesignMode()).toBe(true);
 
-                await _exitDesignMode();
+                await exitDesignMode();
                 expect(!!cmd.getChecked()).toBe(false);
                 expect(WorkspaceManager.isInDesignMode()).toBe(false);
             });
@@ -319,14 +351,14 @@ define(function (require, exports, module) {
                 expect($btn.find("i.fa-code").length).toBe(0);
                 expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_DESIGN_MODE);
 
-                await _enterDesignMode();
+                await enterDesignMode();
 
                 // Design mode: <i class="fa-solid fa-code"> + "Switch to Code Editor".
                 expect($btn.find("i.fa-code").length).toBe(1);
                 expect($btn.find("svg").length).toBe(0);
                 expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_CODE_EDITOR);
 
-                await _exitDesignMode();
+                await exitDesignMode();
 
                 // Back to expanded — svg restored, title restored.
                 expect($btn.find("svg").length).toBe(1);
@@ -336,80 +368,25 @@ define(function (require, exports, module) {
         });
 
         describe("4. Enter design mode", function () {
-            let WorkspaceManager;
-
-            beforeAll(function () {
-                WorkspaceManager = brackets.test.WorkspaceManager;
-            });
-
-            function _livePanel() {
-                return WorkspaceManager.getPanelForID &&
-                    WorkspaceManager.getPanelForID("live-preview-panel");
-            }
-
-            async function _closeLivePreviewIfOpen() {
-                const lp = _livePanel();
-                if (lp && lp.isVisible()) {
-                    CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
-                    await awaitsFor(function () { return !lp.isVisible(); },
-                        "live preview to close", 5000);
-                }
-            }
-
-            async function _openLivePreview() {
-                const lp = _livePanel();
-                if (lp && lp.isVisible()) {
-                    return;
-                }
-                CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
-                await awaitsFor(function () {
-                    const p = _livePanel();
-                    return p && p.isVisible();
-                }, "live preview to open", 8000);
-            }
-
-            async function _exitDesignMode() {
-                if (!WorkspaceManager.isInDesignMode()) {
-                    return;
-                }
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
-                    "design mode to deactivate", 10000);
-            }
-
-            beforeEach(async function () {
-                // Every test starts from a clean baseline: no design mode, no LP.
-                await _exitDesignMode();
-                await _closeLivePreviewIfOpen();
-            });
-
-            afterEach(async function () {
-                await _exitDesignMode();
-                await _closeLivePreviewIfOpen();
-            });
 
             it("should open Live Preview exactly once when the toggle is triggered with LP closed", async function () {
-                expect(_livePanel().isVisible()).toBe(false);
+                expect(livePanel().isVisible()).toBe(false);
 
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
-                    "design mode to activate", 10000);
+                await enterDesignMode();
 
                 // LP is now visible (the collapsed layout wrapped around it).
-                expect(_livePanel().isVisible()).toBe(true);
+                expect(livePanel().isVisible()).toBe(true);
             });
 
             it("should preserve sidebar width and pin main-toolbar to innerWidth - sidebar - CCB when LP is already open", async function () {
-                await _openLivePreview();
+                await openLivePreview();
 
                 SidebarView.resize(220);
                 await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 220; },
                     "sidebar to settle at 220px", 2000);
                 const sidebarW = _$("#sidebar")[0].offsetWidth;
 
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
-                    "design mode to activate", 10000);
+                await enterDesignMode();
 
                 // Sidebar width is preserved across the entry.
                 expect(_$("#sidebar")[0].offsetWidth).toBe(sidebarW);
@@ -433,7 +410,7 @@ define(function (require, exports, module) {
             });
 
             it("should restore the pre-collapse main-toolbar width after exit when LP was already open", async function () {
-                await _openLivePreview();
+                await openLivePreview();
 
                 // Pick a toolbar width that won't be trimmed by the exit clamp.
                 const targetToolbarW = 300;
@@ -445,10 +422,8 @@ define(function (require, exports, module) {
 
                 const beforeWidth = _$("#main-toolbar").outerWidth();
 
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
-                    "design mode to activate", 10000);
-                await _exitDesignMode();
+                await enterDesignMode();
+                await exitDesignMode();
 
                 // Toolbar is restored (within rounding tolerance) to its pre-collapse width.
                 expect(Math.abs(_$("#main-toolbar").outerWidth() - beforeWidth)).toBeLessThan(3);
@@ -459,9 +434,7 @@ define(function (require, exports, module) {
                 await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 200; },
                     "sidebar to settle at 200px", 2000);
 
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
-                    "design mode to activate", 10000);
+                await enterDesignMode();
 
                 const startWidth = _$("#sidebar")[0].offsetWidth;
                 for (let i = 0; i < 10; i++) {
@@ -474,9 +447,7 @@ define(function (require, exports, module) {
             });
 
             it("should not let the user resize main-toolbar by dragging its left-edge handle while in design mode", async function () {
-                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
-                    "design mode to activate", 10000);
+                await enterDesignMode();
 
                 const beforeWidth = _$("#main-toolbar").outerWidth();
                 const resizer = _$("#main-toolbar > .horz-resizer")[0];
@@ -490,6 +461,114 @@ define(function (require, exports, module) {
 
                 const afterWidth = _$("#main-toolbar").outerWidth();
                 expect(Math.abs(afterWidth - beforeWidth)).toBeLessThan(2);
+            });
+        });
+
+        describe("5. Exit design mode", function () {
+
+            beforeEach(async function () {
+                // Section 5 tests rely on a predictable sidebar width. The top-level
+                // beforeEach already ensures sidebar is visible and design-mode/LP
+                // are torn down; just pin the width.
+                SidebarView.resize(200);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 200; },
+                    "sidebar to settle at baseline 200px", 2000);
+            });
+
+            it("should leave Live Preview open after exit", async function () {
+                await openLivePreview();
+                await enterDesignMode();
+                await exitDesignMode();
+                expect(livePanel().isVisible()).toBe(true);
+            });
+
+            it("should fit sidebar + CCB + toolbar + a reasonable editor area in the window after exit", async function () {
+                await openLivePreview();
+                await enterDesignMode();
+                await exitDesignMode();
+
+                const sidebar = _$("#sidebar")[0].offsetWidth;
+                const toolbar = _$("#main-toolbar").outerWidth();
+                const total = sidebar + CCB_WIDTH + toolbar;
+                expect(total).toBeLessThanOrEqual(testWindow.innerWidth);
+                // And there's an editor gap of at least a few hundred pixels so the
+                // user actually sees the code area again.
+                expect(testWindow.innerWidth - total).toBeGreaterThan(100);
+            });
+
+            it("should use the innerWidth/2.5 default for toolbar when LP was opened by the toggle itself", async function () {
+                // LP is closed on entry — the toggle opens it.
+                await enterDesignMode();
+                await exitDesignMode();
+
+                expect(livePanel().isVisible()).toBe(true);
+                const expectedDefault = Math.floor(testWindow.innerWidth / 2.5);
+                // `_restoreExpandedLayout` may trim a bit to honour the MIN_EDITOR clamp
+                // on narrow viewports, so compare with a generous tolerance.
+                const toolbar = _$("#main-toolbar").outerWidth();
+                expect(Math.abs(toolbar - expectedDefault)).toBeLessThan(30);
+            });
+
+            it("should not let the sidebar snap wider than the rendered (capped) width after exit even if user dragged past the cap in design mode", async function () {
+                await openLivePreview();
+                await enterDesignMode();
+
+                // In design mode, CSS caps #sidebar at calc(100vw - 230px). Ask the
+                // Resizer to set a style.width larger than that so we exercise the
+                // "pin rendered width on exit" path.
+                const uncappedWidth = testWindow.innerWidth + 1000;
+                SidebarView.resize(uncappedWidth);
+                await awaitsFor(function () {
+                    // style.width gets the big value but offsetWidth is capped.
+                    return _$("#sidebar")[0].style.width === uncappedWidth + "px";
+                }, "sidebar style.width to reach uncapped value", 2000);
+                const cappedRendered = _$("#sidebar")[0].offsetWidth;
+                expect(cappedRendered).toBeLessThan(uncappedWidth);
+
+                await exitDesignMode();
+
+                // After exit, the rendered width must not jump past what the user was
+                // visually seeing in design mode. It may be trimmed smaller (to make
+                // room for toolbar + editor area) but it never snaps to the uncapped
+                // style.width — that would be a visible jump.
+                expect(_$("#sidebar")[0].offsetWidth).toBeLessThanOrEqual(cappedRendered + 1);
+                expect(_$("#sidebar")[0].offsetWidth).toBeLessThan(uncappedWidth);
+            });
+
+            it("should keep the toolbar at least at the live-preview panel's minimum width after exit", async function () {
+                await openLivePreview();
+                await enterDesignMode();
+                await exitDesignMode();
+
+                const lp = livePanel();
+                const iconsW = _$("#plugin-icons-bar").outerWidth();
+                const minToolbar = (lp && lp.minWidth ? lp.minWidth : 0) + iconsW;
+
+                expect(_$("#main-toolbar").outerWidth()).toBeGreaterThanOrEqual(minToolbar);
+            });
+        });
+
+        describe("6. Exit triggered by hiding live preview", function () {
+
+            it("should exit design mode, hide LP, and shrink main-toolbar to the icon-bar width when #toolbar-go-live is clicked in design mode", async function () {
+                await openLivePreview();
+                await enterDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+                expect(livePanel().isVisible()).toBe(true);
+
+                _$("#toolbar-go-live").trigger("click");
+
+                // LP hides → visible to the user.
+                await awaitsFor(function () { return !livePanel().isVisible(); },
+                    "live preview to hide", 5000);
+                // And the editor chrome comes back — design mode ends.
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate after LP close", 5000);
+
+                // Main-toolbar should end up at the icon-bar-only width (its no-panel state).
+                const iconsW = _$("#plugin-icons-bar").outerWidth();
+                const toolbarW = _$("#main-toolbar").outerWidth();
+                expect(Math.abs(toolbarW - iconsW)).toBeLessThan(3);
             });
         });
     });

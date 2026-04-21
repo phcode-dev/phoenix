@@ -10,34 +10,6 @@ describe("mainview: central control bar + design mode", function () { … });
 Keep this file updated as we add coverage; remove lines as suites land.
 
 ---
-
-## 5. Exit design mode
-
-- [ ] Before flipping the body class, `sidebar.style.width` is pinned to the
-      currently rendered (max-width-capped) value so removing the cap
-      doesn't cause the sidebar to snap back to the stale uncapped width.
-- [ ] `Resizer.resyncSizer` runs after the pin so the handle follows.
-- [ ] Normal exit restores `#main-toolbar` to `savedToolbarWidth` (LP had
-      been open pre-collapse) or `innerWidth / 2.5` default (LP was opened by
-      the toggle itself). Never closes LP.
-- [ ] Exit clamps: sidebar + CCB + toolbar + 200 (min editor) ≤ window; if
-      the pre-collapse toolbar width would overflow, trim the sidebar first
-      and `data("resyncSizer")()` afterwards.
-- [ ] `livePanel.minWidth + iconsBar` lower bound is honored when picking
-      the restored toolbar width.
-- [ ] `$sidebar.data("maxsize")` is restored to its saved percentage.
-- [ ] `WorkspaceManager.isInDesignMode()` returns `false`, event fires with
-      `false`.
-
-## 6. Exit triggered by hiding live preview
-
-- [ ] Clicking `#toolbar-go-live` while in design mode:
-  - LP panel hides.
-  - `_restoreExpandedLayout` is called with `skipToolbarRestore: true`.
-  - `#main-toolbar` ends at the icon-bar-only width (WSM's
-    `_hidePluginSidePanel` width), not the pre-collapse LP size.
-  - `body.ccb-editor-collapsed` is removed.
-
 ## 7. Sidebar drag in design mode
 
 - [ ] Dragging the sidebar resizer rightward grows the sidebar linearly
