@@ -62,61 +62,92 @@
 }
 
 .responsive-handle {
-    background: transparent;
     flex-shrink: 0;
     z-index: 5;
+    background: transparent;
     transition: background 0.15s;
 }
 
 .responsive-handle:hover,
 .responsive-handle.dragging {
-    background: rgba(66, 133, 244, 0.5);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .responsive-handle-horizontal {
-    width: 6px;
+    width: 10px;
     cursor: ew-resize;
     position: relative;
 }
 
+.responsive-handle-horizontal::before,
 .responsive-handle-horizontal::after {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 2px;
-    height: 24px;
-    border-radius: 1px;
-    background: rgba(255, 255, 255, 0.25);
+    width: 1px;
+    height: 16px;
+    border-radius: 0.5px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
+.responsive-handle-horizontal::before {
+    transform: translate(calc(-50% - 2px), -50%);
+}
+
+.responsive-handle-horizontal::after {
+    transform: translate(calc(-50% + 2px), -50%);
+}
+
+.responsive-handle-horizontal:hover::before,
 .responsive-handle-horizontal:hover::after,
+.responsive-handle-horizontal.dragging::before,
 .responsive-handle-horizontal.dragging::after {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.responsive-handle-left {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.responsive-handle-left:hover,
+.responsive-handle-left.dragging {
+    opacity: 1;
 }
 
 .responsive-handle-vertical {
     position: absolute;
-    height: 6px;
+    height: 10px;
     cursor: ns-resize;
+    box-sizing: border-box;
 }
 
+.responsive-handle-vertical::before,
 .responsive-handle-vertical::after {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 24px;
-    height: 2px;
-    border-radius: 1px;
-    background: rgba(255, 255, 255, 0.25);
+    width: 16px;
+    height: 1px;
+    border-radius: 0.5px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
+.responsive-handle-vertical::before {
+    transform: translate(-50%, calc(-50% - 2px));
+}
+
+.responsive-handle-vertical::after {
+    transform: translate(-50%, calc(-50% + 2px));
+}
+
+.responsive-handle-vertical:hover::before,
 .responsive-handle-vertical:hover::after,
+.responsive-handle-vertical.dragging::before,
 .responsive-handle-vertical.dragging::after {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
 }
 
 .responsive-dimension-label {
