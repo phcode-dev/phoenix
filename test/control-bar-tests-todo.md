@@ -10,36 +10,6 @@ describe("mainview: central control bar + design mode", function () { … });
 Keep this file updated as we add coverage; remove lines as suites land.
 
 ---
-## 7. Sidebar drag in design mode
-
-- [ ] Dragging the sidebar resizer rightward grows the sidebar linearly
-      (1:1 with mouse delta) up to the CSS max-width cap.
-- [ ] CSS cap is `calc(100vw - 230px)`: on a 1500px viewport the rendered
-      sidebar never exceeds ~1270px even if style.width is much larger.
-- [ ] During a capped drag, `style.width` may exceed the render width (this
-      is expected); no ResizeObserver warnings land in `console.error`.
-- [ ] Dragging back left respects `data-minsize: 30` (no auto-collapse via
-      drag — only via the sidebar-toggle button).
-- [ ] During the drag, `panelResizeStart` / `panelResizeUpdate` /
-      `panelResizeEnd` are re-fired on `#main-toolbar` so
-      `lpedit-helper/resize-ruler-edit` activates the media-query ruler.
-
-## 8. Window resize while in design mode
-
-- [ ] After 20 synthetic `window.dispatchEvent(new Event("resize"))` bursts,
-      sidebar width is unchanged (`"1000%"` short-circuits the Resizer
-      shrink loop).
-- [ ] `#main-toolbar` stays flush with the window's right edge; the
-      `applyingCollapsedLayout` guard keeps our reassertion from recursing
-      through `EVENT_WORKSPACE_UPDATE_LAYOUT`.
-- [ ] With sidebar hidden, `main-toolbar` width tracks the full available
-      width (no ~70–300px gap from WSM clamping).
-
-## 9. Plugin toolbar resizer in design mode
-
-- [ ] `#main-toolbar > .horz-resizer` has `display: none` while collapsed —
-      user never sees / grabs it; sidebar resizer is the only splitter.
-- [ ] Normal mode: main-toolbar resizer is visible and draggable as usual.
 
 ## 10. `WorkspaceManager.setPluginPanelWidth` in design mode
 
@@ -110,21 +80,6 @@ comments added in the source files):
       event.
 - [ ] `exports.isEditorCollapsed()` / `setEditorCollapsed()` on CCB still
       work (back-compat surface).
-
-## 14. Theming / colors
-
-- [ ] CCB background is `#222` regardless of theme (sanity check with a
-      forced light-theme and dark-theme load).
-- [ ] Icon color is `@project-panel-text-2`; hover transitions to
-      `@project-panel-text-1` + `rgba(255,255,255,0.08)` overlay.
-- [ ] File label has `cursor: pointer` and hover adds underline.
-
-## 15. Accessibility / titles
-
-- [ ] Each CCB button has a `title` attribute (collapse, sidebar toggle,
-      undo, redo, save, search, back, forward).
-- [ ] `ccbCollapseEditorBtn` title changes with state.
-- [ ] `ccbSidebarToggleBtn` title changes with sidebar visibility.
 
 ---
 
