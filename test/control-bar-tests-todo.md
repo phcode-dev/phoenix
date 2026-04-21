@@ -11,24 +11,6 @@ Keep this file updated as we add coverage; remove lines as suites land.
 
 ---
 
-## 4. Enter design mode
-
-- [ ] With live preview closed: executing the toggle first opens LP (verify a
-      single execution of `FILE_LIVE_FILE_PREVIEW`), then applies collapsed
-      layout
-- [ ] With live preview open: sidebar width is preserved, `.content` goes to
-      `width: 0`, `#main-toolbar` gets `left: sidebarW + 30`, `width:
-      innerWidth - sidebarW - 30` with `!important`, `right: auto`.
-- [ ] `savedToolbarWidth` captures pre-collapse `#main-toolbar.outerWidth` for
-      later restore (only when LP was already open).
-- [ ] `$sidebar.data("maxsize")` is stored and replaced with `"1000%"` so
-      `Resizer.updateResizeLimits` doesn't shrink the sidebar on subsequent
-      window resizes.
-- [ ] `#main-toolbar > .horz-resizer` gets `display: none` via CSS.
-- [ ] `document.body` gets class `ccb-editor-collapsed`.
-- [ ] `WorkspaceManager.isInDesignMode()` returns `true` and
-      `EVENT_WORKSPACE_DESIGN_MODE_CHANGE` fires with `true`.
-
 ## 5. Exit design mode
 
 - [ ] Before flipping the body class, `sidebar.style.width` is pinned to the
