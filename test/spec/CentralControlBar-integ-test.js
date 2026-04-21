@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaits */
 
 define(function (require, exports, module) {
 
@@ -115,6 +115,16 @@ define(function (require, exports, module) {
             CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
             await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
                 "design mode to activate", 10000);
+            // isInDesignMode() flips as soon as the body class is added, but when LP
+            // wasn't already open the toggle re-enters through a pending LP-open
+            // promise and only runs _applyCollapsedLayout (which sets sidebar
+            // data-maxsize to "1000%") after that resolves. Wait for LP to be visible
+            // AND the collapsed layout to have been applied so subsequent drag tests
+            // see the fully-settled design-mode geometry.
+            await awaitsFor(function () {
+                const p = livePanel();
+                return p && p.isVisible() && _$("#sidebar").data("maxsize") === "1000%";
+            }, "design-mode layout to be applied", 10000);
         }
 
         async function exitDesignMode() {
@@ -440,7 +450,7 @@ define(function (require, exports, module) {
                 for (let i = 0; i < 10; i++) {
                     testWindow.dispatchEvent(new testWindow.Event("resize"));
                 }
-                await awaitsFor(function () { return true; }, "a tick", 100);
+                await awaits(0);
 
                 // The sidebar is pinned — Resizer.updateResizeLimits shouldn't shrink it.
                 expect(_$("#sidebar")[0].offsetWidth).toBe(startWidth);
@@ -569,6 +579,253 @@ define(function (require, exports, module) {
                 const iconsW = _$("#plugin-icons-bar").outerWidth();
                 const toolbarW = _$("#main-toolbar").outerWidth();
                 expect(Math.abs(toolbarW - iconsW)).toBeLessThan(3);
+            });
+        });
+
+        describe("7. Sidebar drag in design mode", function () {
+            // Capture all console.error messages emitted during each test so the
+            // ResizeObserver-warning test can assert on them. Installed/removed via
+            // beforeEach/afterEach so Jasmine itself guarantees the restore — the
+            // spy can't leak into later tests even if a drag helper throws or an
+            // expect() fails mid-test.
+            let consoleErrors;
+            let origConsoleError;
+
+            beforeEach(async function () {
+                SidebarView.resize(200);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 200; },
+                    "sidebar to settle at baseline 200px", 2000);
+                await enterDesignMode();
+
+                consoleErrors = [];
+                origConsoleError = testWindow.console.error;
+                testWindow.console.error = function () {
+                    consoleErrors.push(Array.prototype.slice.call(arguments).map(String).join(" "));
+                    return origConsoleError.apply(testWindow.console, arguments);
+                };
+            });
+
+            afterEach(function () {
+                testWindow.console.error = origConsoleError;
+                consoleErrors = null;
+                origConsoleError = null;
+            });
+
+            it("should grow the sidebar roughly 1:1 with the drag delta up to the CSS cap", async function () {
+                const beforeWidth = _$("#sidebar")[0].offsetWidth;
+                const $resizer = _$("#sidebar > .horz-resizer");
+                const rect = $resizer[0].getBoundingClientRect();
+                const handleY = rect.top + rect.height / 2;
+                const dragDelta = 150;
+
+                await DragTestUtils.dragFromElement($resizer[0],
+                    rect.left + rect.width / 2 + dragDelta, handleY, testWindow);
+
+                const afterWidth = _$("#sidebar")[0].offsetWidth;
+                // 1:1 tracking up to the cap — tolerate a handful of pixels for
+                // sub-pixel accumulation across steps.
+                expect(Math.abs((afterWidth - beforeWidth) - dragDelta)).toBeLessThan(10);
+            });
+
+            it("should cap the rendered sidebar at calc(100vw - 230px) even when dragged far past it", async function () {
+                const $resizer = _$("#sidebar > .horz-resizer");
+                const rect = $resizer[0].getBoundingClientRect();
+                const handleY = rect.top + rect.height / 2;
+                const cap = testWindow.innerWidth - 230;
+
+                // Drag well past the cap — final mouse position near the right edge.
+                await DragTestUtils.dragFromElement($resizer[0],
+                    testWindow.innerWidth - 10, handleY, testWindow);
+
+                const rendered = _$("#sidebar")[0].offsetWidth;
+                // Rendered width hits the cap but never crosses it.
+                expect(rendered).toBeLessThanOrEqual(cap + 1);
+                expect(rendered).toBeGreaterThan(cap - 20);
+            });
+
+            it("should not emit ResizeObserver loop warnings during a capped drag", async function () {
+                const $resizer = _$("#sidebar > .horz-resizer");
+                const rect = $resizer[0].getBoundingClientRect();
+                const handleY = rect.top + rect.height / 2;
+                await DragTestUtils.dragFromElement($resizer[0],
+                    testWindow.innerWidth - 10, handleY, testWindow, 16);
+
+                const resizeObserverWarnings = consoleErrors.filter(function (msg) {
+                    return /ResizeObserver/i.test(msg);
+                });
+                expect(resizeObserverWarnings).toEqual([]);
+            });
+
+            it("should let the user collapse the sidebar via drag in design mode (CCB toggle remains to re-open)", async function () {
+                // Drag all the way left past the sidebar's own left edge.
+                const $resizer = _$("#sidebar > .horz-resizer");
+                const rect = $resizer[0].getBoundingClientRect();
+                const handleY = rect.top + rect.height / 2;
+                const sidebarLeft = _$("#sidebar")[0].getBoundingClientRect().left;
+
+                await DragTestUtils.dragFromElement($resizer[0], sidebarLeft - 100, handleY, testWindow);
+
+                // Design mode honours the same collapse-via-drag affordance as normal
+                // mode (see "1. Layout"). The CCB sidebar-toggle stays put so the user
+                // can bring the sidebar back.
+                expect(SidebarView.isVisible()).toBe(false);
+                expect(_$("#ccbSidebarToggleBtn").is(":visible")).toBe(true);
+            });
+
+            it("should forward panelResizeStart / panelResizeUpdate / panelResizeEnd from the sidebar drag to #main-toolbar", async function () {
+                const events = [];
+                const $mt = _$("#main-toolbar");
+                const record = function (e) { events.push(e.type); };
+                $mt.on("panelResizeStart.test panelResizeUpdate.test panelResizeEnd.test", record);
+
+                try {
+                    const $resizer = _$("#sidebar > .horz-resizer");
+                    const rect = $resizer[0].getBoundingClientRect();
+                    const handleY = rect.top + rect.height / 2;
+                    await DragTestUtils.dragFromElement($resizer[0],
+                        rect.left + 100, handleY, testWindow);
+                    // Wait for the forwarded end event — it travels through CCB's
+                    // `panelResizeEnd` handler which may still be in-flight when the
+                    // drag helper returns.
+                    await awaitsFor(function () { return events.indexOf("panelResizeEnd") !== -1; },
+                        "panelResizeEnd to be forwarded to #main-toolbar", 2000);
+                } finally {
+                    $mt.off(".test");
+                }
+
+                // All three lifecycle events must fire on #main-toolbar so downstream
+                // listeners (lpedit-helper media-query ruler) can track the drag.
+                expect(events).toContain("panelResizeStart");
+                expect(events).toContain("panelResizeUpdate");
+                expect(events).toContain("panelResizeEnd");
+            });
+        });
+
+        describe("8. Window resize while in design mode", function () {
+
+            beforeEach(async function () {
+                SidebarView.resize(200);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 200; },
+                    "sidebar to settle at baseline 200px", 2000);
+                await enterDesignMode();
+            });
+
+            it("should keep sidebar width stable across a burst of 20 synthetic window resizes", async function () {
+                const startWidth = _$("#sidebar")[0].offsetWidth;
+                for (let i = 0; i < 20; i++) {
+                    testWindow.dispatchEvent(new testWindow.Event("resize"));
+                }
+                // Let any deferred handlers flush.
+                await awaits(0);
+                expect(_$("#sidebar")[0].offsetWidth).toBe(startWidth);
+            });
+
+            it("should keep #main-toolbar flush with the right edge of the window after resize bursts", async function () {
+                for (let i = 0; i < 10; i++) {
+                    testWindow.dispatchEvent(new testWindow.Event("resize"));
+                }
+                await awaits(0);
+
+                const mtRect = _$("#main-toolbar")[0].getBoundingClientRect();
+                expect(Math.abs(mtRect.right - testWindow.innerWidth)).toBeLessThan(2);
+            });
+
+            it("should give #main-toolbar the full (window - CCB) width when sidebar is hidden", async function () {
+                SidebarView.hide();
+                await awaitsFor(function () { return !SidebarView.isVisible(); },
+                    "sidebar to hide", 2000);
+
+                // Force a relayout pass by firing a resize so the collapsed-layout
+                // reassertion runs against the new sidebar-hidden geometry.
+                testWindow.dispatchEvent(new testWindow.Event("resize"));
+                await awaits(0);
+
+                const mtW = _$("#main-toolbar").outerWidth();
+                const expected = testWindow.innerWidth - CCB_WIDTH;
+                // No ~70–300px phantom gap from earlier WSM clamping bugs.
+                expect(Math.abs(mtW - expected)).toBeLessThan(5);
+            });
+        });
+
+        describe("9. Plugin toolbar resizer", function () {
+
+            it("should let the user drag the main-toolbar's left-edge handle to resize the panel in normal mode", async function () {
+                await openLivePreview();
+                // Reset to a predictable modest width before the drag so the assertion
+                // isn't sitting at the 75% clamp from whatever previous test left.
+                const iconsW = _$("#plugin-icons-bar").outerWidth();
+                const startTarget = 300;
+                WorkspaceManager.setPluginPanelWidth(startTarget - iconsW);
+                await awaitsFor(function () {
+                    return Math.abs(_$("#main-toolbar").outerWidth() - startTarget) < 3;
+                }, "main-toolbar to settle at 300px", 3000);
+
+                const beforeWidth = _$("#main-toolbar").outerWidth();
+                const resizer = _$("#main-toolbar > .horz-resizer")[0];
+                const rect = resizer.getBoundingClientRect();
+                const handleY = rect.top + rect.height / 2;
+                const delta = 120;
+
+                // Drag leftward to widen the toolbar by ~delta.
+                await DragTestUtils.dragFromElement(resizer,
+                    rect.left + rect.width / 2 - delta, handleY, testWindow);
+
+                const afterWidth = _$("#main-toolbar").outerWidth();
+                expect(afterWidth).toBeGreaterThan(beforeWidth);
+                expect(Math.abs((afterWidth - beforeWidth) - delta)).toBeLessThan(20);
+            });
+        });
+
+        describe("10. WorkspaceManager.setPluginPanelWidth", function () {
+
+            beforeEach(async function () {
+                SidebarView.resize(200);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 200; },
+                    "sidebar to settle at baseline 200px", 2000);
+            });
+
+            it("should, in design mode, translate a requested plugin-panel width into a sidebar width so the layout fits", async function () {
+                await enterDesignMode();
+
+                const iconsW = _$("#plugin-icons-bar").outerWidth();
+                const requested = 400;
+                WorkspaceManager.setPluginPanelWidth(requested);
+                await awaits(0);
+
+                // Expected sidebar = window - (requested + iconsBar) - CCB, clamped at 0.
+                const expectedSidebar = Math.max(0,
+                    testWindow.innerWidth - (requested + iconsW) - CCB_WIDTH);
+                expect(Math.abs(_$("#sidebar")[0].offsetWidth - expectedSidebar)).toBeLessThan(3);
+
+                // And the main-toolbar takes the remaining right-hand room.
+                const mtRect = _$("#main-toolbar")[0].getBoundingClientRect();
+                expect(Math.abs(mtRect.right - testWindow.innerWidth)).toBeLessThan(2);
+            });
+
+            it("should, in normal mode, resize only the plugin-panel (sidebar untouched) and respect the 75%/sidebar clamp", async function () {
+                await openLivePreview();
+                const iconsW = _$("#plugin-icons-bar").outerWidth();
+                const sidebarBefore = _$("#sidebar")[0].offsetWidth;
+
+                // Request a very wide panel — should be clamped against 75% window
+                // and (window - sidebar - 100). Either way sidebar must stay put.
+                const requested = testWindow.innerWidth; // intentionally over-large
+                WorkspaceManager.setPluginPanelWidth(requested);
+                await awaits(0);
+
+                expect(_$("#sidebar")[0].offsetWidth).toBe(sidebarBefore);
+
+                const toolbar = _$("#main-toolbar").outerWidth();
+                const maxAllowed = Math.min(
+                    testWindow.innerWidth * 0.75,
+                    testWindow.innerWidth - sidebarBefore - 100
+                );
+                // Toolbar must honour the clamp (+iconsBar = the WSM math).
+                expect(toolbar).toBeLessThanOrEqual(maxAllowed + 3);
+                // And at minimum it's the icons-bar + LP's minWidth.
+                const lp = livePanel();
+                const minToolbar = (lp && lp.minWidth ? lp.minWidth : 0) + iconsW;
+                expect(toolbar).toBeGreaterThanOrEqual(minToolbar);
             });
         });
     });

@@ -104,6 +104,12 @@ define(function (require, exports, module) {
 
         _fireMouse(doc, "mouseup", endX, endY, testWindow, 0);
         await _awaitFrames(testWindow, 2);
+        // Resizer leaves a full-viewport `.resizing-container` shield in the DOM
+        // for 300ms after mouseup (so a trailing mousedown still registers as a
+        // double-click). If the next test fires its mousedown before that shield
+        // is removed, it lands on the shield rather than the handle and the drag
+        // silently no-ops. Waiting the shield out makes consecutive drags reliable.
+        await new Promise(function (resolve) { testWindow.setTimeout(resolve, 320); });
     }
 
     exports.dragFromElement = dragFromElement;
