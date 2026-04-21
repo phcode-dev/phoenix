@@ -11,30 +11,6 @@ Keep this file updated as we add coverage; remove lines as suites land.
 
 ---
 
-## 1. Layout / DOM structure
-
-- [ ] `#centralControlBar` exists at boot, positioned between sidebar and
-      `.content`, 30px wide.
-- [ ] CCB groups render in order: collapse-editor, sidebar-toggle, undo/redo,
-      save, nav (search / back / forward), vertical filename label.
-- [ ] Sidebar's `data-minsize` is `30` (so drag can't auto-collapse below CCB).
-- [ ] Sidebar's resizer handle is shifted right of the CCB via CSS
-      `transform: translateX(30px)` — clicking at `sidebar.right + 30` lands
-      on the resizer element.
-- [ ] When the sidebar is hidden, the Resizer moves the handle to be a sibling
-      of `#sidebar` inside `.main-view`; the same shift still applies.
-
-## 2. CCB buttons
-
-- [ ] Undo / Redo / Save buttons fire `Commands.EDIT_UNDO`, `EDIT_REDO`,
-      `FILE_SAVE` respectively.
-- [ ] Search / Back / Forward / Show-in-Tree buttons still trigger the
-      `NavigationProvider` behaviors after being moved out of `#mainNavBarRight`.
-- [ ] `#ccbSidebarToggleBtn` executes `VIEW_HIDE_SIDEBAR` and the icon flips
-      `fa-angles-left` ↔ `fa-angles-right` on panelCollapsed/panelExpanded.
-- [ ] The old `#sidebar-toggle-btn` in the menubar is NOT in the DOM.
-- [ ] `.ccb-group-nav` holds exactly `searchNav`, `navBackButton`,
-      `navForwardButton` — no show-in-tree button lives in the CCB.
 
 ## 2a. #show-in-file-tree button (sidebar)
 
