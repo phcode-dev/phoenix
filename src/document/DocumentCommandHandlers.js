@@ -54,6 +54,7 @@ define(function (require, exports, module) {
         Menus               = require("command/Menus"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         StatusBar           = require("widgets/StatusBar"),
+        ViewUtils           = require("utils/ViewUtils"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         LanguageManager     = require("language/LanguageManager"),
         NewFileContentManager     = require("features/NewFileContentManager"),
@@ -1957,7 +1958,16 @@ define(function (require, exports, module) {
                 CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
             }
             SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
-            ProjectManager.showInTree(activeFile);
+            // FileTreeView only auto-scrolls when the selection flips unselected→selected.
+            // Re-invoking the command on an already-selected file would otherwise be a
+            // no-op when the user has scrolled away — force-scroll the selected node
+            // into view so "Show in File Tree" always reveals the row.
+            ProjectManager.showInTree(activeFile).always(function () {
+                const $selected = $("#project-files-container .selected-node").first();
+                if ($selected.length) {
+                    ViewUtils.scrollElementIntoView($("#project-files-container"), $selected, true);
+                }
+            });
         }
     }
 
