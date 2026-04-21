@@ -334,5 +334,163 @@ define(function (require, exports, module) {
                 expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_DESIGN_MODE);
             });
         });
+
+        describe("4. Enter design mode", function () {
+            let WorkspaceManager;
+
+            beforeAll(function () {
+                WorkspaceManager = brackets.test.WorkspaceManager;
+            });
+
+            function _livePanel() {
+                return WorkspaceManager.getPanelForID &&
+                    WorkspaceManager.getPanelForID("live-preview-panel");
+            }
+
+            async function _closeLivePreviewIfOpen() {
+                const lp = _livePanel();
+                if (lp && lp.isVisible()) {
+                    CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
+                    await awaitsFor(function () { return !lp.isVisible(); },
+                        "live preview to close", 5000);
+                }
+            }
+
+            async function _openLivePreview() {
+                const lp = _livePanel();
+                if (lp && lp.isVisible()) {
+                    return;
+                }
+                CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
+                await awaitsFor(function () {
+                    const p = _livePanel();
+                    return p && p.isVisible();
+                }, "live preview to open", 8000);
+            }
+
+            async function _exitDesignMode() {
+                if (!WorkspaceManager.isInDesignMode()) {
+                    return;
+                }
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate", 10000);
+            }
+
+            beforeEach(async function () {
+                // Every test starts from a clean baseline: no design mode, no LP.
+                await _exitDesignMode();
+                await _closeLivePreviewIfOpen();
+            });
+
+            afterEach(async function () {
+                await _exitDesignMode();
+                await _closeLivePreviewIfOpen();
+            });
+
+            it("should open Live Preview exactly once when the toggle is triggered with LP closed", async function () {
+                expect(_livePanel().isVisible()).toBe(false);
+
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate", 10000);
+
+                // LP is now visible (the collapsed layout wrapped around it).
+                expect(_livePanel().isVisible()).toBe(true);
+            });
+
+            it("should preserve sidebar width and pin main-toolbar to innerWidth - sidebar - CCB when LP is already open", async function () {
+                await _openLivePreview();
+
+                SidebarView.resize(220);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 220; },
+                    "sidebar to settle at 220px", 2000);
+                const sidebarW = _$("#sidebar")[0].offsetWidth;
+
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate", 10000);
+
+                // Sidebar width is preserved across the entry.
+                expect(_$("#sidebar")[0].offsetWidth).toBe(sidebarW);
+
+                const win = testWindow.innerWidth;
+                const expectedLeft = sidebarW + CCB_WIDTH;
+                const expectedWidth = win - sidebarW - CCB_WIDTH;
+
+                const mtRect = _$("#main-toolbar")[0].getBoundingClientRect();
+                // Allow sub-pixel rounding.
+                expect(Math.abs(mtRect.left - expectedLeft)).toBeLessThan(2);
+                expect(Math.abs(mtRect.width - expectedWidth)).toBeLessThan(2);
+
+                // Editor area is effectively gone — content is hidden so the editor
+                // isn't peeking through behind LP. (visibility: hidden is what the
+                // user experiences regardless of how the layout pinned it.)
+                expect(testWindow.getComputedStyle(_$(".content")[0]).visibility).toBe("hidden");
+                // Whatever border/padding remains, the content's visible interior is
+                // far too small to show an editor.
+                expect(_$(".content")[0].offsetWidth).toBeLessThan(10);
+            });
+
+            it("should restore the pre-collapse main-toolbar width after exit when LP was already open", async function () {
+                await _openLivePreview();
+
+                // Pick a toolbar width that won't be trimmed by the exit clamp.
+                const targetToolbarW = 300;
+                const iconsW = _$("#plugin-icons-bar").outerWidth();
+                WorkspaceManager.setPluginPanelWidth(targetToolbarW - iconsW);
+                await awaitsFor(function () {
+                    return Math.abs(_$("#main-toolbar").outerWidth() - targetToolbarW) < 2;
+                }, "main-toolbar to settle at target width", 3000);
+
+                const beforeWidth = _$("#main-toolbar").outerWidth();
+
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate", 10000);
+                await _exitDesignMode();
+
+                // Toolbar is restored (within rounding tolerance) to its pre-collapse width.
+                expect(Math.abs(_$("#main-toolbar").outerWidth() - beforeWidth)).toBeLessThan(3);
+            });
+
+            it("should keep sidebar width stable across synthetic window resizes while in design mode", async function () {
+                SidebarView.resize(200);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 200; },
+                    "sidebar to settle at 200px", 2000);
+
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate", 10000);
+
+                const startWidth = _$("#sidebar")[0].offsetWidth;
+                for (let i = 0; i < 10; i++) {
+                    testWindow.dispatchEvent(new testWindow.Event("resize"));
+                }
+                await awaitsFor(function () { return true; }, "a tick", 100);
+
+                // The sidebar is pinned — Resizer.updateResizeLimits shouldn't shrink it.
+                expect(_$("#sidebar")[0].offsetWidth).toBe(startWidth);
+            });
+
+            it("should not let the user resize main-toolbar by dragging its left-edge handle while in design mode", async function () {
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate", 10000);
+
+                const beforeWidth = _$("#main-toolbar").outerWidth();
+                const resizer = _$("#main-toolbar > .horz-resizer")[0];
+                const rect = resizer.getBoundingClientRect();
+                const handleY = rect.top + rect.height / 2;
+
+                // Attempt to drag the toolbar resizer 200px to the left — in normal mode
+                // this would widen the toolbar. In design mode the handle is hidden, so
+                // the user can't actually land on it and the toolbar width is unchanged.
+                await DragTestUtils.dragFromElement(resizer, rect.left - 200, handleY, testWindow);
+
+                const afterWidth = _$("#main-toolbar").outerWidth();
+                expect(Math.abs(afterWidth - beforeWidth)).toBeLessThan(2);
+            });
+        });
     });
 });

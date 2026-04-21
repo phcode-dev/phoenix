@@ -129,6 +129,9 @@ define(function (require, exports, module) {
         }
         $mainToolbar.css({ left: "", right: "", width: "" });
         $content.css({ width: "", "min-width": "", right: "", visibility: "", "pointer-events": "" });
+        // Snapshot the pre-collapse width before clearing it — we read it below to
+        // restore the toolbar to its original size when LP was already open.
+        const preCollapseToolbarWidth = savedToolbarWidth;
         savedToolbarWidth = null;
         livePreviewWasOpen = false;
         if (savedSidebarMaxSize !== null) {
@@ -151,7 +154,7 @@ define(function (require, exports, module) {
         // by the collapse action, fall back to the default panel size so it stays
         // visibly open at a reasonable width.
         const defaultWidth = Math.floor(window.innerWidth / 2.5);
-        let targetWidth = (savedToolbarWidth && savedToolbarWidth > 50) ? savedToolbarWidth : defaultWidth;
+        let targetWidth = (preCollapseToolbarWidth && preCollapseToolbarWidth > 50) ? preCollapseToolbarWidth : defaultWidth;
         // If the sidebar was resized larger while collapsed (e.g. to fill most of
         // the screen), restoring the pre-collapse live-preview width would push
         // main-toolbar back under the sidebar. Clamp so sidebar + CCB + a
