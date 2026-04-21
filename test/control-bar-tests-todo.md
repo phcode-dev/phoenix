@@ -33,29 +33,30 @@ Keep this file updated as we add coverage; remove lines as suites land.
 - [ ] `#ccbSidebarToggleBtn` executes `VIEW_HIDE_SIDEBAR` and the icon flips
       `fa-angles-left` ↔ `fa-angles-right` on panelCollapsed/panelExpanded.
 - [ ] The old `#sidebar-toggle-btn` in the menubar is NOT in the DOM.
-- [ ] `#ccbShowInTreeBtn` is rendered in `.ccb-group-nav` directly below
-      `#searchNav` and has a `title` of `Strings.CMD_SHOW_IN_TREE`.
-- [ ] Clicking `#ccbShowInTreeBtn` executes `NAVIGATE_SHOW_IN_FILE_TREE` (if
-      sidebar was hidden, it re-opens as part of the command).
-- [ ] Binoculars `<svg>` renders and inherits `.ccb-btn` color
-      (`currentColor` on the path).
-- [ ] Neither `#ccbFileLabel`, `.ccb-group-file`, `.ccb-file-label`,
-      `.ccb-file-name`, nor `.ccb-file-dot` exists in the DOM or in the
-      compiled CSS.
+- [ ] `.ccb-group-nav` holds exactly `searchNav`, `navBackButton`,
+      `navForwardButton` — no show-in-tree button lives in the CCB.
+
+## 2a. #show-in-file-tree button (sidebar)
+
+- [ ] `#show-in-file-tree` is a child of `#project-files-header` and sits
+      before `#collapse-folders` in DOM order. Title equals
+      `Strings.CMD_SHOW_IN_TREE`.
+- [ ] Binoculars `<svg>` uses `fill="currentColor"` so the glyph tracks the
+      sidebar text color.
+- [ ] Button is hidden by default (`opacity: 0`, `visibility: hidden`) and
+      only shows on `#sidebar:hover`, matching the `#collapse-folders`
+      affordance.
+- [ ] Clicking `#show-in-file-tree` executes `NAVIGATE_SHOW_IN_FILE_TREE`.
 
 ## 3. Toggle Design Mode command
 
 - [ ] `Commands.VIEW_TOGGLE_DESIGN_MODE === "view.toggleDesignMode"` is
       registered at module load, visible via `CommandManager.get`.
-- [ ] Default keybinding: `Ctrl-F11` (from `base-config/keyboard.json`).
-- [ ] File menu has "Toggle Design Mode" directly below "Live Preview" and
-      above "Reload Live Preview".
 - [ ] Command's checked state mirrors `WorkspaceManager.isInDesignMode()` on
       both entry and exit.
-- [ ] Clicking `#ccbCollapseEditorBtn` routes through the command
-      (verify via a spy on `CommandManager.execute`).
-- [ ] Icon swap: `fa-feather` (expanded) ↔ `fa-code` (design mode). Title
-      swap: "Switch to Visual Edit" ↔ "Switch to Code Editor".
+- [ ] Clicking `#ccbCollapseEditorBtn`toggles design mode
+- [ ] Icon swap: `pen-nib svg` (expanded) ↔ `fa-code` (design mode). Title
+      swap: "Switch to desin mode" ↔ "Switch to Code Editor".(please see the exact string to check.)
 
 ## 4. Enter design mode
 

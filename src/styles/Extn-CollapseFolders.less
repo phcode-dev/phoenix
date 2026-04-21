@@ -1,17 +1,21 @@
-#collapse-folders {
+#collapse-folders,
+#show-in-file-tree {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 0.2em 0.65em;
     margin-top: 0.1em;
     position: absolute !important;
-    right: 0;
     opacity: 0;
     visibility: hidden;
     transition:
         opacity 0.2s ease-in-out,
         visibility 0.2s ease-in-out;
+}
+
+#collapse-folders {
+    flex-direction: column;
+    right: 0;
 
     .collapse-icon {
         font-size: 0.5em;
@@ -19,7 +23,20 @@
     }
 }
 
-#sidebar:hover #collapse-folders {
+#show-in-file-tree {
+    // Sit to the left of #collapse-folders.
+    right: 24px;
+
+    .show-in-tree-icon {
+        // Sized to match the combined stacked-chevron glyph of #collapse-folders.
+        width: 11px;
+        height: 11px;
+        pointer-events: none;
+    }
+}
+
+#sidebar:hover #collapse-folders,
+#sidebar:hover #show-in-file-tree {
     opacity: 1;
     visibility: visible;
 }

@@ -92,6 +92,7 @@ define(function (require, exports, module) {
     require("spec/ExtensionUtils-integ-test");
     require("spec/InlineEditorProviders-integ-test");
     require("spec/PreferencesManager-integ-test");
+    require("spec/CentralControlBar-integ-test");
     require("spec/MainViewFactory-integ-test");
     require("spec/MainViewManager-integ-test");
     require("spec/SidebarTabs-integ-test");

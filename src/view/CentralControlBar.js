@@ -261,10 +261,6 @@ define(function (require, exports, module) {
             e.preventDefault();
             _executeCmd(Commands.VIEW_HIDE_SIDEBAR);
         });
-        $("#ccbShowInTreeBtn").on("click", function (e) {
-            e.preventDefault();
-            _executeCmd(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
-        });
     }
 
     const _toggleDesignModeCommand = CommandManager.register(Strings.CMD_TOGGLE_DESIGN_MODE,
@@ -288,7 +284,6 @@ define(function (require, exports, module) {
         // navForwardButton get their localized titles from NavigationProvider.)
         $("#ccbCollapseEditorBtn").attr("title", Strings.CCB_SWITCH_TO_DESIGN_MODE);
         $("#ccbSidebarToggleBtn").attr("title", Strings.CMD_TOGGLE_SIDEBAR);
-        $("#ccbShowInTreeBtn").attr("title", Strings.CMD_SHOW_IN_TREE);
         $("#ccbUndoBtn").attr("title", Strings.CMD_UNDO);
         $("#ccbRedoBtn").attr("title", Strings.CMD_REDO);
         $("#ccbSaveBtn").attr("title", Strings.CMD_FILE_SAVE);
