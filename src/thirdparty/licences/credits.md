@@ -18,3 +18,6 @@ Please find all other licenses and attributions below:
 
 ### https://onehtmlpagechallenge.com/
 * For the code samples in starter projects
+
+### https://seekicon.com/author/mariusz-ostrowski
+* For the undo redo icons used in the editor
