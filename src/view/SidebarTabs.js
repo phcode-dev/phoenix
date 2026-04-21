@@ -54,7 +54,7 @@ define(function (require, exports, module) {
      * first activated. Applied once if the current width is narrower.
      * @const {number}
      */
-    const AI_TAB_GOOD_WIDTH = 370;
+    const AI_TAB_GOOD_WIDTH = 450;
 
     /** Preference key used to track whether the initial width bump has been applied. */
     const PREF_AI_WIDTH_SET_INITIAL = "aiTabWidthSetInitial";
