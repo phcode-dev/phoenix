@@ -46,6 +46,12 @@ define(function (require, exports, module) {
             SidebarView = brackets.test.SidebarView;
             WorkspaceManager = brackets.test.WorkspaceManager;
             _$ = testWindow.$;
+            // Load a real project with some files so anything that depends on a
+            // populated project tree / file index (e.g. Quick Open's file picker)
+            // has something to list. QuickOpen-test-files has a couple of html
+            // files which are enough for the assertions here.
+            await SpecRunnerUtils.loadProjectInTestWindow(
+                SpecRunnerUtils.getTestPath("/spec/QuickOpen-test-files"));
         }, 30000);
 
         afterAll(async function () {
@@ -899,18 +905,22 @@ define(function (require, exports, module) {
 
             afterEach(async function () {
                 await hideToolsPanelIfVisible();
-                // Close any modal find/quick-open bars left open.
-                if (_$("#find-what").length) {
-                    _$(testWindow.document).trigger(
-                        _$.Event("keydown", { keyCode: 27 /* Esc */ })
-                    );
+                // Close any modal find / quick-open bars left open so the next
+                // test starts with a clean DOM.
+                const findInput = _$("#find-what")[0];
+                if (findInput) {
+                    findInput.dispatchEvent(new testWindow.KeyboardEvent("keydown",
+                        { keyCode: 27 /* Esc */, bubbles: true }));
+                    await awaitsFor(function () { return _$("#find-what").length === 0; },
+                        "find-in-files bar to close", 3000);
                 }
-                if (_$("input#quickOpenSearch").length) {
-                    _$(testWindow.document).trigger(
-                        _$.Event("keydown", { keyCode: 27 })
-                    );
+                const qoInput = _$("input#quickOpenSearch")[0];
+                if (qoInput) {
+                    qoInput.dispatchEvent(new testWindow.KeyboardEvent("keydown",
+                        { keyCode: 27, bubbles: true }));
+                    await awaitsFor(function () { return _$("input#quickOpenSearch").length === 0; },
+                        "quick-open bar to close", 3000);
                 }
-                await awaits(0);
             });
 
             it("should exit design mode and open the tools bottom panel when #app-drawer-button is clicked in design mode", async function () {
@@ -947,26 +957,115 @@ define(function (require, exports, module) {
                     "find-in-files bar to mount", 3000);
             });
 
-            it("should stay in design mode and show a floating Quick Open bar when invoked in design mode", async function () {
-                await enterDesignMode();
-                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+            describe("Quick Open in design mode", function () {
+                // Quick Open has a dedicated design-mode variant (Spotlight-style
+                // floating overlay) instead of the usual ModalBar, so we cover its
+                // core user-facing behaviours here: bar shows up, dropdown lists
+                // project files, typing filters the list, pressing Enter opens
+                // the selected file.
 
-                CommandManager.execute(Commands.NAVIGATE_QUICK_OPEN);
+                function $bar() { return _$(".quick-open-floating-bar"); }
+                function $search() { return _$("input#quickOpenSearch"); }
+                function $dropdownItems() { return _$(".quick-search-container li"); }
 
-                // Quick Open uses a Spotlight-style floating bar in design mode
-                // (rather than exiting) — users see the picker on top of the live
-                // preview without losing design mode.
-                await awaitsFor(function () {
-                    return _$(".quick-open-floating-bar").length > 0;
-                }, "floating Quick Open bar to appear", 3000);
-                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+                async function openQuickOpenInDesignMode() {
+                    await enterDesignMode();
+                    CommandManager.execute(Commands.NAVIGATE_QUICK_OPEN);
+                    await awaitsFor(function () { return $bar().length > 0; },
+                        "floating Quick Open bar to appear", 3000);
+                    await awaitsFor(function () { return $search().length > 0; },
+                        "Quick Open search input to exist", 2000);
+                }
 
-                // Close the picker.
-                const doc = testWindow.document;
-                doc.dispatchEvent(new testWindow.KeyboardEvent("keydown", { keyCode: 27, bubbles: true }));
-                await awaitsFor(function () {
-                    return _$(".quick-open-floating-bar").length === 0;
-                }, "floating Quick Open bar to close", 3000);
+                async function typeInSearch(text) {
+                    $search().val(text);
+                    $search().trigger("input");
+                }
+
+                async function closeQuickOpen() {
+                    if ($bar().length === 0) { return; }
+                    const input = $search()[0];
+                    if (input) {
+                        input.dispatchEvent(new testWindow.KeyboardEvent("keydown",
+                            { keyCode: 27, bubbles: true }));
+                    }
+                    await awaitsFor(function () { return $bar().length === 0; },
+                        "floating Quick Open bar to close", 3000);
+                }
+
+                afterEach(async function () {
+                    await closeQuickOpen();
+                });
+
+                it("should show the floating bar and stay in design mode (no ModalBar)", async function () {
+                    await openQuickOpenInDesignMode();
+                    expect(WorkspaceManager.isInDesignMode()).toBe(true);
+                    // Design-mode variant — the Quick Open search field lives inside
+                    // the floating bar, not inside a normal ModalBar.
+                    expect($search().closest(".quick-open-floating-bar").length).toBe(1);
+                    expect($search().closest(".modal-bar").length).toBe(0);
+                });
+
+                it("should list project files in the dropdown", async function () {
+                    await openQuickOpenInDesignMode();
+                    await awaitsFor(function () { return $dropdownItems().length > 0; },
+                        "Quick Open dropdown to populate with project files", 3000);
+                    const names = $dropdownItems().map(function () {
+                        return _$(this).text();
+                    }).get().join(" | ");
+                    // The test project (QuickOpen-test-files) has lotsOfLines.html
+                    // and somelines.html — both should surface without any query.
+                    expect(names).toContain("lotsOfLines.html");
+                    expect(names).toContain("somelines.html");
+                });
+
+                it("should filter the dropdown as the user types", async function () {
+                    await openQuickOpenInDesignMode();
+                    await awaitsFor(function () { return $dropdownItems().length >= 2; },
+                        "Quick Open dropdown to populate", 3000);
+                    const beforeCount = $dropdownItems().length;
+
+                    await typeInSearch("somelines");
+                    await awaitsFor(function () {
+                        const items = $dropdownItems();
+                        if (items.length === 0) { return false; }
+                        // Every visible item must match the filter.
+                        let allMatch = true;
+                        items.each(function () {
+                            if (!/somelines/i.test(_$(this).text())) { allMatch = false; }
+                        });
+                        return allMatch && items.length < beforeCount;
+                    }, "dropdown to filter down to matching items", 3000);
+
+                    // The un-matching file shouldn't be present anymore.
+                    const filteredNames = $dropdownItems().map(function () {
+                        return _$(this).text();
+                    }).get().join(" | ");
+                    expect(filteredNames).toContain("somelines.html");
+                    expect(filteredNames).not.toContain("lotsOfLines.html");
+                });
+
+                it("should open the selected file when Enter is pressed from the floating bar", async function () {
+                    await openQuickOpenInDesignMode();
+                    await awaitsFor(function () { return $dropdownItems().length >= 2; },
+                        "Quick Open dropdown to populate", 3000);
+
+                    await typeInSearch("somelines");
+                    await awaitsFor(function () {
+                        const items = $dropdownItems();
+                        return items.length > 0 && /somelines/i.test(_$(items[0]).text());
+                    }, "somelines.html to be the top match", 3000);
+
+                    const input = $search()[0];
+                    input.dispatchEvent(new testWindow.KeyboardEvent("keydown",
+                        { keyCode: 13 /* Enter */, bubbles: true }));
+
+                    const DocumentManager = brackets.test.DocumentManager;
+                    await awaitsFor(function () {
+                        const doc = DocumentManager.getCurrentDocument();
+                        return doc && doc.file && doc.file.name === "somelines.html";
+                    }, "somelines.html to open in the editor", 5000);
+                });
             });
 
             it("should exit design mode when the git toolbar icon is clicked in design mode", async function () {
