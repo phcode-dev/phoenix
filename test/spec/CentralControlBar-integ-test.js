@@ -238,5 +238,101 @@ define(function (require, exports, module) {
                 expect(executed).toContain(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
             });
         });
+
+        describe("3. Toggle Design Mode command", function () {
+            let WorkspaceManager;
+
+            beforeAll(function () {
+                WorkspaceManager = brackets.test.WorkspaceManager;
+            });
+
+            async function _enterDesignMode() {
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate", 10000);
+            }
+
+            async function _exitDesignMode() {
+                if (!WorkspaceManager.isInDesignMode()) {
+                    return;
+                }
+                CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate", 10000);
+            }
+
+            afterEach(async function () {
+                await _exitDesignMode();
+                // The toggle opens Live Preview if it wasn't already open; close it so later
+                // tests start from a clean baseline.
+                const lp = WorkspaceManager.getPanelForID && WorkspaceManager.getPanelForID("live-preview-panel");
+                if (lp && lp.isVisible()) {
+                    CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
+                    await awaitsFor(function () { return !lp.isVisible(); },
+                        "live preview to close", 5000);
+                }
+            });
+
+            it("should execute VIEW_TOGGLE_DESIGN_MODE and flip isInDesignMode() from false to true and back", async function () {
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+
+                await _enterDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+
+                await _exitDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+            });
+
+            it("should mirror Command.getChecked() against WorkspaceManager.isInDesignMode() on entry and exit", async function () {
+                const cmd = CommandManager.get(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                expect(cmd).toBeDefined();
+
+                expect(!!cmd.getChecked()).toBe(false);
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+
+                await _enterDesignMode();
+                expect(!!cmd.getChecked()).toBe(true);
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+
+                await _exitDesignMode();
+                expect(!!cmd.getChecked()).toBe(false);
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+            });
+
+            it("should toggle design mode when #ccbCollapseEditorBtn is clicked", async function () {
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+
+                _$("#ccbCollapseEditorBtn").trigger("click");
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate from click", 10000);
+
+                _$("#ccbCollapseEditorBtn").trigger("click");
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate from click", 10000);
+            });
+
+            it("should swap icon (pen-nib svg ↔ fa-code) and title on state change", async function () {
+                const $btn = _$("#ccbCollapseEditorBtn");
+
+                // Expanded (not in design mode): svg pen-nib + "Switch to Design Mode".
+                expect($btn.find("svg").length).toBe(1);
+                expect($btn.find("i.fa-code").length).toBe(0);
+                expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_DESIGN_MODE);
+
+                await _enterDesignMode();
+
+                // Design mode: <i class="fa-solid fa-code"> + "Switch to Code Editor".
+                expect($btn.find("i.fa-code").length).toBe(1);
+                expect($btn.find("svg").length).toBe(0);
+                expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_CODE_EDITOR);
+
+                await _exitDesignMode();
+
+                // Back to expanded — svg restored, title restored.
+                expect($btn.find("svg").length).toBe(1);
+                expect($btn.find("i.fa-code").length).toBe(0);
+                expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_DESIGN_MODE);
+            });
+        });
     });
 });
