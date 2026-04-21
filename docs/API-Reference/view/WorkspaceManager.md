@@ -190,7 +190,8 @@ Returns true if visible else false.
 ### view/WorkspaceManager.setPluginPanelWidth(width)
 Programmatically sets the plugin panel content width to the given value in pixels.
 The total toolbar width is adjusted to account for the plugin icons bar.
-Width is clamped to respect panel minWidth and max size (75% of window).
+If the requested width doesn't fit, the sidebar is progressively shrunk
+(and collapsed if necessary) before clamping.
 No-op if no panel is currently visible.
 
 **Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
