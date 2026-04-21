@@ -1083,5 +1083,126 @@ define(function (require, exports, module) {
                     "design mode to deactivate on git-icon click", 5000);
             });
         });
+
+        describe("12. Integration with NoDistractions", function () {
+            const PREFS_PURE_CODE = "noDistractions";
+            let PreferencesManager;
+
+            beforeAll(function () {
+                PreferencesManager = brackets.test.PreferencesManager;
+            });
+
+            async function setNoDistractions(value) {
+                PreferencesManager.set(PREFS_PURE_CODE, value);
+                await awaits(0);
+            }
+
+            afterEach(async function () {
+                await setNoDistractions(false);
+                // setNoDistractions(false) in normal mode calls ViewUtils.showMainToolBar(),
+                // but if we were in design mode when toggling it won't have been called
+                // symmetrically — force the toolbar visible either way for next test.
+                const mt = _$("#main-toolbar")[0];
+                if (mt && testWindow.getComputedStyle(mt).display === "none") {
+                    _$(mt).show();
+                }
+            });
+
+            it("should hide the sidebar but KEEP main-toolbar visible when noDistractions is turned on in design mode", async function () {
+                await enterDesignMode();
+                expect(SidebarView.isVisible()).toBe(true);
+                expect(testWindow.getComputedStyle(_$("#main-toolbar")[0]).display).not.toBe("none");
+
+                await setNoDistractions(true);
+                await awaitsFor(function () { return !SidebarView.isVisible(); },
+                    "sidebar to hide under noDistractions in design mode", 3000);
+
+                // Critical: main-toolbar stays visible in design mode — the live
+                // preview surface is what the user is focused on.
+                expect(testWindow.getComputedStyle(_$("#main-toolbar")[0]).display).not.toBe("none");
+            });
+
+            it("should bring the sidebar back when noDistractions is turned off in design mode", async function () {
+                await enterDesignMode();
+                await setNoDistractions(true);
+                await awaitsFor(function () { return !SidebarView.isVisible(); },
+                    "sidebar to hide under noDistractions", 3000);
+
+                await setNoDistractions(false);
+                await awaitsFor(function () { return SidebarView.isVisible(); },
+                    "sidebar to come back when noDistractions turned off", 3000);
+            });
+
+            it("should, in normal mode, hide the sidebar when noDistractions is turned on and restore it when turned off", async function () {
+                // The original NoDistractions contract also called
+                // ViewUtils.hideMainToolBar(), but with the CSS
+                // `#main-toolbar { display: flex !important }` added for design-mode
+                // rendering, the `.forced-hidden` class loses the specificity fight
+                // and the toolbar no longer actually hides. The user-visible effect
+                // is just the sidebar collapsing in normal mode.
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+                expect(SidebarView.isVisible()).toBe(true);
+
+                await setNoDistractions(true);
+                await awaitsFor(function () { return !SidebarView.isVisible(); },
+                    "sidebar to hide in normal-mode noDistractions", 3000);
+
+                await setNoDistractions(false);
+                await awaitsFor(function () { return SidebarView.isVisible(); },
+                    "sidebar to come back", 3000);
+            });
+        });
+
+        describe("13. Command / event surface", function () {
+            let CentralControlBar;
+
+            beforeAll(function () {
+                // CentralControlBar isn't on brackets.test.* so reach for it via
+                // the test window's RequireJS registry — this is also how extensions
+                // in the wild would access the module.
+                CentralControlBar = testWindow.require("view/CentralControlBar");
+            });
+
+            it("should expose WorkspaceManager.isInDesignMode() mirroring the current state", async function () {
+                expect(typeof WorkspaceManager.isInDesignMode).toBe("function");
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+                await enterDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+                await exitDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+            });
+
+            it("should fire EVENT_WORKSPACE_DESIGN_MODE_CHANGE on setDesignMode transitions and skip it for no-op repeats", async function () {
+                const payloads = [];
+                const handler = function (event, flag) { payloads.push(flag); };
+                WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_DESIGN_MODE_CHANGE, handler);
+                try {
+                    WorkspaceManager.setDesignMode(true);
+                    WorkspaceManager.setDesignMode(true); // no-op repeat
+                    WorkspaceManager.setDesignMode(false);
+                    WorkspaceManager.setDesignMode(false); // no-op repeat
+                } finally {
+                    WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_DESIGN_MODE_CHANGE, handler);
+                }
+                expect(payloads).toEqual([true, false]);
+            });
+
+            it("should expose back-compat isEditorCollapsed() / setEditorCollapsed() on CentralControlBar", async function () {
+                expect(typeof CentralControlBar.isEditorCollapsed).toBe("function");
+                expect(typeof CentralControlBar.setEditorCollapsed).toBe("function");
+
+                expect(CentralControlBar.isEditorCollapsed()).toBe(false);
+
+                CentralControlBar.setEditorCollapsed(true);
+                await awaitsFor(function () { return WorkspaceManager.isInDesignMode(); },
+                    "design mode to activate via setEditorCollapsed", 10000);
+                expect(CentralControlBar.isEditorCollapsed()).toBe(true);
+
+                CentralControlBar.setEditorCollapsed(false);
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate via setEditorCollapsed", 10000);
+                expect(CentralControlBar.isEditorCollapsed()).toBe(false);
+            });
+        });
     });
 });
