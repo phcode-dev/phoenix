@@ -828,5 +828,161 @@ define(function (require, exports, module) {
                 expect(toolbar).toBeGreaterThanOrEqual(minToolbar);
             });
         });
+
+        describe("11. Cycle stability", function () {
+
+            beforeEach(async function () {
+                SidebarView.resize(200);
+                await awaitsFor(function () { return _$("#sidebar")[0].offsetWidth === 200; },
+                    "sidebar to settle at baseline 200px", 2000);
+            });
+
+            it("should keep CCB, sidebar, and main-toolbar aligned through enter→drag→exit→re-enter", async function () {
+                await openLivePreview();
+
+                // Cycle 1: enter design, drag sidebar wider, exit, re-enter.
+                await enterDesignMode();
+
+                const $resizer = _$("#sidebar > .horz-resizer");
+                let rect = $resizer[0].getBoundingClientRect();
+                let handleY = rect.top + rect.height / 2;
+                await DragTestUtils.dragFromElement($resizer[0],
+                    rect.left + 200, handleY, testWindow);
+
+                await exitDesignMode();
+                await enterDesignMode();
+
+                // After the full cycle, CCB sits flush right of the sidebar and
+                // main-toolbar sits flush right of the CCB.
+                const sidebarRect = _$("#sidebar")[0].getBoundingClientRect();
+                const ccbRect = _$("#centralControlBar")[0].getBoundingClientRect();
+                const mtRect = _$("#main-toolbar")[0].getBoundingClientRect();
+
+                expect(Math.abs(ccbRect.left - sidebarRect.right)).toBeLessThan(2);
+                expect(Math.abs(mtRect.left - (sidebarRect.right + CCB_WIDTH))).toBeLessThan(2);
+            });
+
+            it("should leave Live Preview open after a full design-mode cycle with the toolbar at a usable width", async function () {
+                await openLivePreview();
+                const iconsW = _$("#plugin-icons-bar").outerWidth();
+                const lp = livePanel();
+                const minToolbar = (lp && lp.minWidth ? lp.minWidth : 0) + iconsW;
+
+                await enterDesignMode();
+                await exitDesignMode();
+                await enterDesignMode();
+                await exitDesignMode();
+
+                expect(livePanel().isVisible()).toBe(true);
+                const toolbar = _$("#main-toolbar").outerWidth();
+                expect(toolbar).toBeGreaterThanOrEqual(minToolbar);
+                // And the overall layout still fits the window.
+                const sidebar = _$("#sidebar")[0].offsetWidth;
+                expect(sidebar + CCB_WIDTH + toolbar).toBeLessThanOrEqual(testWindow.innerWidth);
+            });
+        });
+
+        describe("11b. Auto-exit design mode from conflicting surfaces", function () {
+
+            function toolsPanel() {
+                return WorkspaceManager.getPanelForID(WorkspaceManager.DEFAULT_PANEL_ID);
+            }
+
+            async function hideToolsPanelIfVisible() {
+                const p = toolsPanel();
+                if (p && p.isVisible()) {
+                    p.hide();
+                    await awaitsFor(function () { return !p.isVisible(); },
+                        "tools panel to hide", 2000);
+                }
+            }
+
+            afterEach(async function () {
+                await hideToolsPanelIfVisible();
+                // Close any modal find/quick-open bars left open.
+                if (_$("#find-what").length) {
+                    _$(testWindow.document).trigger(
+                        _$.Event("keydown", { keyCode: 27 /* Esc */ })
+                    );
+                }
+                if (_$("input#quickOpenSearch").length) {
+                    _$(testWindow.document).trigger(
+                        _$.Event("keydown", { keyCode: 27 })
+                    );
+                }
+                await awaits(0);
+            });
+
+            it("should exit design mode and open the tools bottom panel when #app-drawer-button is clicked in design mode", async function () {
+                await enterDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+
+                _$("#app-drawer-button").trigger("click");
+
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate on app-drawer click", 5000);
+                await awaitsFor(function () { return toolsPanel().isVisible(); },
+                    "tools bottom panel to become visible", 3000);
+            });
+
+            it("should leave design mode untouched when #app-drawer-button is clicked in normal mode and toggle the tools panel", async function () {
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+
+                _$("#app-drawer-button").trigger("click");
+
+                await awaitsFor(function () { return toolsPanel().isVisible(); },
+                    "tools bottom panel to become visible", 3000);
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+            });
+
+            it("should exit design mode before mounting Find in Files bar", async function () {
+                await enterDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+
+                CommandManager.execute(Commands.CMD_FIND_IN_FILES);
+
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate before Find-in-Files mounts", 5000);
+                await awaitsFor(function () { return _$("#find-what").length > 0; },
+                    "find-in-files bar to mount", 3000);
+            });
+
+            it("should stay in design mode and show a floating Quick Open bar when invoked in design mode", async function () {
+                await enterDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+
+                CommandManager.execute(Commands.NAVIGATE_QUICK_OPEN);
+
+                // Quick Open uses a Spotlight-style floating bar in design mode
+                // (rather than exiting) — users see the picker on top of the live
+                // preview without losing design mode.
+                await awaitsFor(function () {
+                    return _$(".quick-open-floating-bar").length > 0;
+                }, "floating Quick Open bar to appear", 3000);
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+
+                // Close the picker.
+                const doc = testWindow.document;
+                doc.dispatchEvent(new testWindow.KeyboardEvent("keydown", { keyCode: 27, bubbles: true }));
+                await awaitsFor(function () {
+                    return _$(".quick-open-floating-bar").length === 0;
+                }, "floating Quick Open bar to close", 3000);
+            });
+
+            it("should exit design mode when the git toolbar icon is clicked in design mode", async function () {
+                const $gitIcon = _$("#git-toolbar-icon");
+                if (!$gitIcon.length || $gitIcon.hasClass("forced-hidden")) {
+                    // Git isn't available in this test environment — skip.
+                    return;
+                }
+                await enterDesignMode();
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+
+                $gitIcon.trigger("click");
+
+                await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
+                    "design mode to deactivate on git-icon click", 5000);
+            });
+        });
     });
 });
