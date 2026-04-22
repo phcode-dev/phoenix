@@ -25,6 +25,9 @@ Thumbs.db
 /phoenix-builder-mcp/chrome_extension/build/
 /phoenix-builder-mcp/chrome_extension/*.zip
 
+# claude
+.claude/**/*.lock
+
 # ignore node_modules inside src
 /src/node_modules
 /src-node/node_modules
