@@ -320,36 +320,46 @@ a:focus {
         height: 100%;
     }
 
-    .selected-button{
-        background-color: rgba(255, 255, 255, 0.12) !important;
-        margin-left: 3px !important;
-        margin-right: 0 !important;
-    }
-
     .buttons,
     .bottom-buttons {
         text-align: center;
         justify-content: center;
-        margin: 12px 3px 0 0;
+        margin: 12px auto 0;
 
         > a {
-            border-radius: 3px;
+            border-radius: 0;
             background-repeat: no-repeat;
             display: block;
             height: 24px;
-            margin: 10px 0 0 3px;
+            margin: 10px auto 0;
             width: 24px;
+            opacity: 0.65;
+            transition: opacity 0.15s ease;
         }
 
         > a:hover {
-            background-color: rgba(255, 255, 255, 0.08) !important;
+            background-color: transparent !important;
+            opacity: 1;
         }
 
         > a:active {
-            background-color: @bc-shadow-large !important;
+            background-color: transparent !important;
+            opacity: 1;
+        }
 
-            .dark & {
-                background-color: @dark-bc-shadow-large !important;
+        > a.selected-button {
+            background-color: transparent !important;
+            opacity: 1;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: -6px;
+                width: 2px;
+                height: 100%;
+                background-color: @project-panel-text-1;
             }
         }
     }
@@ -357,10 +367,13 @@ a:focus {
     .bottom-buttons {
         position: absolute;
         bottom: 5px;
+        width: 100%;
     }
 
     #user-profile-button {
-        margin-left: 0.24em;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 1 !important;
     }
 }
 
