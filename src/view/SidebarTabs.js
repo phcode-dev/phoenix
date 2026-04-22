@@ -87,6 +87,10 @@ define(function (require, exports, module) {
     let $ccbTabGroup;
 
     /** @type {jQuery}
+     * @private */
+    let $navTabBar;
+
+    /** @type {jQuery}
      * @private*/
     let $sidebar;
 
@@ -124,7 +128,7 @@ define(function (require, exports, module) {
 
     // --- IDs to always exclude from visibility toggling ----------------------
 
-    const _EXCLUDED_IDS = { "mainNavBar": true };
+    const _EXCLUDED_IDS = { "mainNavBar": true, "navTabBar": true };
 
     /**
      * CSS classes that mark structural/resizer elements which must never be
@@ -163,8 +167,9 @@ define(function (require, exports, module) {
         $ccbTabGroup.empty();
         _tabs.sort(function (a, b) { return a.priority - b.priority; });
         _tabs.forEach(function (tab) {
+            const iconMarkup = tab.iconHTML || '<i class="' + tab.iconClass + '"></i>';
             const $item = $('<a href="#" class="ccb-btn ccb-tab-btn" data-tab-id="' + tab.id + '" title="' + tab.label + '">' +
-                '<i class="' + tab.iconClass + '"></i>' +
+                iconMarkup +
                 '</a>');
             if (tab.id === _activeTabId && $sidebar && $sidebar.is(":visible")) {
                 $item.addClass("active");
@@ -172,6 +177,27 @@ define(function (require, exports, module) {
             tab.$tabItem = $item;
             $ccbTabGroup.append($item);
         });
+
+        // Also rebuild the sidebar chip bar
+        if ($navTabBar) {
+            $navTabBar.empty();
+            _tabs.forEach(function (tab) {
+                const iconMarkup = tab.iconHTML || '<i class="' + tab.iconClass + '"></i>';
+                const $chip = $('<div class="sidebar-tab" data-tab-id="' + tab.id + '">' +
+                    iconMarkup +
+                    '<span>' + tab.label + '</span>' +
+                    '</div>');
+                if (tab.id === _activeTabId) {
+                    $chip.addClass("active");
+                }
+                $navTabBar.append($chip);
+            });
+            if (_tabs.length >= 2) {
+                $navTabBar.addClass("has-tabs");
+            } else {
+                $navTabBar.removeClass("has-tabs");
+            }
+        }
     }
 
     /**
@@ -273,6 +299,7 @@ define(function (require, exports, module) {
             id: id,
             label: label,
             iconClass: iconClass,
+            iconHTML: options.iconHTML || null,
             priority: options.priority !== undefined ? options.priority : 100,
             $tabItem: null
         };
@@ -432,6 +459,12 @@ define(function (require, exports, module) {
             }
         }
 
+        // Update active class on sidebar chip tabs
+        if ($navTabBar) {
+            $navTabBar.find(".sidebar-tab").removeClass("active");
+            $navTabBar.find('.sidebar-tab[data-tab-id="' + id + '"]').addClass("active");
+        }
+
         _applyTabVisibility();
 
         // One-time sidebar width bump when switching to a non-files tab
@@ -482,12 +515,15 @@ define(function (require, exports, module) {
     // --- Initialization ------------------------------------------------------
 
     function _updateTabActiveStates() {
-        if (!$ccbTabGroup) {
-            return;
+        if ($ccbTabGroup) {
+            $ccbTabGroup.find(".ccb-tab-btn").removeClass("active");
+            if ($sidebar && $sidebar.is(":visible")) {
+                $ccbTabGroup.find('.ccb-tab-btn[data-tab-id="' + _activeTabId + '"]').addClass("active");
+            }
         }
-        $ccbTabGroup.find(".ccb-tab-btn").removeClass("active");
-        if ($sidebar && $sidebar.is(":visible")) {
-            $ccbTabGroup.find('.ccb-tab-btn[data-tab-id="' + _activeTabId + '"]').addClass("active");
+        if ($navTabBar) {
+            $navTabBar.find(".sidebar-tab").removeClass("active");
+            $navTabBar.find('.sidebar-tab[data-tab-id="' + _activeTabId + '"]').addClass("active");
         }
     }
 
@@ -495,8 +531,12 @@ define(function (require, exports, module) {
         $sidebar = $("#sidebar");
         $ccbTabGroup = $("#ccbTabGroup");
 
+        // Create the sidebar chip tab bar and insert after #mainNavBar
+        $navTabBar = $('<div id="navTabBar"></div>');
+        $sidebar.find("#mainNavBar").after($navTabBar);
+
         // Register the built-in Files tab
-        addTab(SIDEBAR_TAB_FILES, "Files", "fa-solid fa-file", { priority: 0 });
+        addTab(SIDEBAR_TAB_FILES, "Files", "", { priority: 0, iconHTML: '<span class="files-icon"></span>' });
 
         // VSCode-style toggle: clicking the active tab hides sidebar,
         // clicking an inactive tab shows sidebar and switches to that tab.
@@ -519,6 +559,14 @@ define(function (require, exports, module) {
                 CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
                 setActiveTab(tabId);
             } else {
+                setActiveTab(tabId);
+            }
+        });
+
+        // Sidebar chip tab clicks just switch tabs (sidebar is already visible)
+        $navTabBar.on("click", ".sidebar-tab", function () {
+            const tabId = $(this).attr("data-tab-id");
+            if (tabId) {
                 setActiveTab(tabId);
             }
         });
