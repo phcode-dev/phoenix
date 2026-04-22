@@ -172,6 +172,11 @@ define(function (require, exports, module) {
         if (!$controlBar) {
             return;
         }
+
+        // Detach the search button (if it exists) so NavigationProvider's
+        // cached reference and click handler survive rebuilds.
+        const $searchNav = $controlBar.find("#searchNav").detach();
+
         $controlBar.empty();
         _tabs.sort(function (a, b) { return a.priority - b.priority; });
 
@@ -188,9 +193,13 @@ define(function (require, exports, module) {
             $controlBar.append($item);
         });
 
-        // Render the search button
-        $controlBar.append('<a href="#" id="searchNav" class="ccb-btn" title="' +
-            Strings.CMD_FIND_IN_FILES + '">' + ICON_SEARCH + '</a>');
+        // Re-attach or create the search button
+        if ($searchNav.length) {
+            $controlBar.append($searchNav);
+        } else {
+            $controlBar.append('<a href="#" id="searchNav" class="ccb-btn" title="' +
+                Strings.CMD_FIND_IN_FILES + '">' + ICON_SEARCH + '</a>');
+        }
 
         // Also rebuild the sidebar chip bar
         if ($navTabBar) {
