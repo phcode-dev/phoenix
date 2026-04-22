@@ -711,9 +711,48 @@ define(function (require, exports, module) {
         MainViewManager.focusActivePane();
     }
 
+    function _getFindBarClass() {
+        return require("search/FindBar").FindBar;
+    }
+
+    function _updateSearchNavActive() {
+        const FB = _getFindBarClass();
+        const bars = FB._bars;
+        const hasMultifileBar = bars && bars.some(function (bar) {
+            return bar._options && bar._options.multifile;
+        });
+        if ($searchNav) {
+            $searchNav.toggleClass("active", !!hasMultifileBar);
+        }
+    }
+
     function _findInFiles() {
         Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "search");
-        CommandManager.execute(Commands.CMD_FIND_IN_FILES);
+        const FB = _getFindBarClass();
+        const bars = FB._bars;
+        const multiBar = bars && bars.find(function (bar) {
+            return bar._options && bar._options.multifile;
+        });
+        if (multiBar) {
+            const FindInFilesUI = require("search/FindInFilesUI");
+            FindInFilesUI.closeResultsPanel();
+        } else {
+            CommandManager.execute(Commands.CMD_FIND_IN_FILES);
+        }
+    }
+
+    function _initSearchNavTracking() {
+        const FB = _getFindBarClass();
+        const origAdd = FB._addFindBar;
+        const origRemove = FB._removeFindBar;
+        FB._addFindBar = function (findBar) {
+            origAdd.call(FB, findBar);
+            _updateSearchNavActive();
+        };
+        FB._removeFindBar = function (findBar) {
+            origRemove.call(FB, findBar);
+            _updateSearchNavActive();
+        };
     }
 
     function _newProjectClicked() {
@@ -762,6 +801,7 @@ define(function (require, exports, module) {
         _initNavigationCommands();
         _initHandlers();
         _setupNavigationButtons();
+        _initSearchNavTracking();
     }
 
     exports.init = init;
