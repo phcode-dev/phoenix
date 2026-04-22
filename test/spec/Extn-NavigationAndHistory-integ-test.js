@@ -356,8 +356,11 @@ define(function (require, exports, module) {
             return executed;
         }
 
-        it("Should dispatch NAVIGATE_SHOW_IN_FILE_TREE when #showInfileTree is clicked", async function () {
-            await openFile("test.css");
+        it("Should dispatch NAVIGATE_SHOW_IN_FILE_TREE when #showInfileTree is clicked", function () {
+            // Don't open a file here. `recordCommands` hooks EVENT_BEFORE_EXECUTE_COMMAND,
+            // which fires regardless of whether handleShowInTree's activeFile branch runs.
+            // Opening a file would leak into the session-restore state and shift the
+            // nav-history ordering the subsequent _validateNavForFiles tests depend on.
             const $btn = $("#showInfileTree");
             expect($btn.length).toBe(1);
             const executed = recordCommands(function () {
@@ -366,13 +369,25 @@ define(function (require, exports, module) {
             expect(executed).toContain(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         }, 15000);
 
-        it("Should dispatch CMD_FIND_IN_FILES when #searchNav is clicked", function () {
+        it("Should dispatch CMD_FIND_IN_FILES when #searchNav is clicked", async function () {
             const $btn = $("#searchNav");
             expect($btn.length).toBe(1);
             const executed = recordCommands(function () {
                 $btn.trigger("click");
             });
             expect(executed).toContain(Commands.CMD_FIND_IN_FILES);
+            // The click opens the Find-in-Files bar; close it before the
+            // next test's beforeEach reloads, otherwise the modal bar leaks
+            // across the reload and subsequent navigation tests fail with
+            // "Active file to be ... timed out" because the new window's
+            // focus/key handling is stuck behind the stale bar.
+            const FindInFilesUI = testWindow.brackets.test.FindInFilesUI;
+            if (FindInFilesUI && FindInFilesUI._closeFindBar) {
+                FindInFilesUI._closeFindBar(true);
+            }
+            await awaitsFor(function () {
+                return $(".modal-bar").length === 0;
+            }, "find bar to close", 2000);
         }, 15000);
 
         it("Should navigate back and forward between text files", async function () {
