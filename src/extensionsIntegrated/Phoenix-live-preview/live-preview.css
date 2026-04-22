@@ -1,5 +1,5 @@
 :root {
-    --toolbar-height: 32px;
+    --toolbar-height: 34px;
 }
 
 .live-preview-browser-btn {
@@ -185,6 +185,7 @@
     color: inherit;
     width: 28px;
     height: 22px;
+    font-size: 14px;
 }
 
 #live-preview-plugin-toolbar .btn-alt-quiet:hover,
@@ -435,7 +436,7 @@
 }
 
 .lp-edit-actions svg {
-    width: 13px;
+    width: 14px;
     height: 11px;
     pointer-events: none;
 }
