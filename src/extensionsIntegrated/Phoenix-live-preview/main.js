@@ -168,8 +168,7 @@ define(function (require, exports, module) {
         $edgeButtonBallast,
         $firefoxButtonBallast,
         $panelTitle,
-        $modeBtn,
-        $previewBtn;
+        $editModeBtn;
 
     let customLivePreviewBannerShown = false;
 
@@ -341,37 +340,21 @@ define(function (require, exports, module) {
      * Does not hide in custom server mode (handled by _isMdviewrActive being false).
      */
     function _updateLPControlsForMdviewer() {
-        if ($previewBtn) {
-            $previewBtn.toggle(!_isMdviewrActive);
-        }
-        if ($modeBtn) {
-            $modeBtn.toggle(!_isMdviewrActive);
-        }
-    }
-
-    function _updateModeButton(mode) {
-        if ($modeBtn) {
-            if (mode === "highlight") {
-                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_HIGHLIGHT;
-            } else if (mode === "edit") {
-                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_EDIT;
-            } else {
-                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_PREVIEW;
-            }
+        if ($editModeBtn) {
+            $editModeBtn.toggle(!_isMdviewrActive);
         }
     }
 
     function _initializeMode() {
         const currentMode = LiveDevelopment.getCurrentMode();
 
-        // when in preview mode, we need to give the play button a selected state
-        if (currentMode === LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE) {
-            $previewBtn.addClass('selected');
-        } else {
-            $previewBtn.removeClass('selected');
+        if ($editModeBtn) {
+            if (currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE) {
+                $editModeBtn.addClass('selected');
+            } else {
+                $editModeBtn.removeClass('selected');
+            }
         }
-
-        _updateModeButton(currentMode);
     }
 
     function _showModeSelectionDropdown(event) {
@@ -739,19 +722,25 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Handle preview button click - toggles between preview mode and the user's default mode.
-     * PRO users toggle between preview and edit mode.
-     * community users toggle between preview and highlight mode.
+     * Handle edit mode button click - toggles between edit and preview mode.
+     * PRO users: toggle edit ↔ preview.
+     * Community users: show upsell dialog.
      */
-    function _handlePreviewBtnClick() {
-        if($previewBtn.hasClass('selected')) {
-            $previewBtn.removeClass('selected');
-            const defaultMode = isProEditUser ? 'edit' : 'highlight';
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, defaultMode);
+    function _handleEditModeBtnClick() {
+        if (isProEditUser) {
+            const currentMode = LiveDevelopment.getCurrentMode();
+            if (currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE) {
+                LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE);
+            } else {
+                LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE);
+            }
         } else {
-            // Currently NOT in preview mode - switch to preview
-            $previewBtn.addClass('selected');
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+            if (KernalModeTrust.ProDialogs) {
+                KernalModeTrust.ProDialogs.showProUpsellDialog(
+                    KernalModeTrust.ProDialogs.UPSELL_TYPE_LIVE_EDIT);
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "proUpsellDlg", "fail");
+            }
         }
     }
 
@@ -760,9 +749,8 @@ define(function (require, exports, module) {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
-            clickToPreview: Strings.LIVE_PREVIEW_MODE_TOGGLE_PREVIEW,
+            clickToEditMode: Strings.LIVE_PREVIEW_MODE_EDIT,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
-            livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
             openInChrome: Strings.LIVE_DEV_OPEN_CHROME,
             openInSafari: Strings.LIVE_DEV_OPEN_SAFARI,
@@ -791,8 +779,7 @@ define(function (require, exports, module) {
         $firefoxButtonBallast = $panel.find("#firefoxButtonBallast");
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
-        $modeBtn = $panel.find("#livePreviewModeBtn");
-        $previewBtn = $panel.find("#previewModeLivePreviewButton");
+        $editModeBtn = $panel.find("#lpEditModeBtn");
 
         // Markdown theme toggle — persist user choice
         MarkdownSync.setThemeToggleHandler((theme) => {
@@ -831,8 +818,7 @@ define(function (require, exports, module) {
             _popoutLivePreview("firefox");
         });
 
-        $modeBtn.on("click", _handleLPModeBtnClick);
-        $previewBtn.on("click", _handlePreviewBtnClick);
+        $editModeBtn.on("click", _handleEditModeBtnClick);
 
         _showOpenBrowserIcons();
         $settingsIcon.click(()=>{
@@ -1387,20 +1373,10 @@ define(function (require, exports, module) {
     }
 
     function _registerHandlers() {
-        // when clicked anywhere on the page we want to close the dropdown
-        $("html").on("click", function (e) {
-            if ($(e.target).closest("#livePreviewModeBtn").length) { return; }
-            _closeDropdown();
-        });
-
-        $(document).on("click", "#livePreviewModeBtn", function (e) {
-            _handleLPModeBtnClick(e);
-        });
-
         $(document).on("keydown", function (e) {
             if (e.key === "F8") {
                 e.preventDefault();
-                _handlePreviewBtnClick();
+                _handleEditModeBtnClick();
             }
         });
     }

@@ -404,7 +404,7 @@
     flex-shrink: 0;
 }
 
-#previewModeLivePreviewButton {
+#lpEditModeBtn {
     color: #a0a0a0;
     margin-left: 3px;
     margin-top: 0;
@@ -413,7 +413,7 @@
     flex-shrink: 0;
 }
 
-#previewModeLivePreviewButton.selected{
+#lpEditModeBtn.selected {
     color: #FBB03B;
 }
 

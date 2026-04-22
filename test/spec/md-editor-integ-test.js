@@ -1392,38 +1392,35 @@ define(function (require, exports, module) {
                 }
             }, 30000);
 
-            it("should hide play button and mode dropdown for MD files", async function () {
+            it("should hide edit mode button for MD files", async function () {
                 await _openMdFile("doc1.md");
 
                 await awaitsFor(() => {
-                    return !testWindow.$("#previewModeLivePreviewButton").is(":visible") &&
-                        !testWindow.$("#livePreviewModeBtn").is(":visible");
-                }, "play button and mode dropdown to be hidden for MD");
+                    return !testWindow.$("#lpEditModeBtn").is(":visible");
+                }, "edit mode button to be hidden for MD");
             }, 10000);
 
-            it("should show play button and mode dropdown for HTML files", async function () {
+            it("should show edit mode button for HTML files", async function () {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
                     "open simple.html");
 
                 await awaitsFor(() => {
-                    return testWindow.$("#previewModeLivePreviewButton").is(":visible") &&
-                        testWindow.$("#livePreviewModeBtn").is(":visible");
-                }, "play button and mode dropdown to be visible for HTML");
+                    return testWindow.$("#lpEditModeBtn").is(":visible");
+                }, "edit mode button to be visible for HTML");
             }, 10000);
 
-            it("should show play button and mode dropdown again when switching back to HTML", async function () {
+            it("should show edit mode button again when switching back to HTML", async function () {
                 // Open md file first
                 await _openMdFile("doc1.md");
-                await awaitsFor(() => !testWindow.$("#previewModeLivePreviewButton").is(":visible"),
-                    "buttons hidden for MD");
+                await awaitsFor(() => !testWindow.$("#lpEditModeBtn").is(":visible"),
+                    "button hidden for MD");
 
                 // Switch to HTML
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
                     "open simple.html");
                 await awaitsFor(() => {
-                    return testWindow.$("#previewModeLivePreviewButton").is(":visible") &&
-                        testWindow.$("#livePreviewModeBtn").is(":visible");
-                }, "buttons visible again for HTML");
+                    return testWindow.$("#lpEditModeBtn").is(":visible");
+                }, "button visible again for HTML");
             }, 10000);
 
             it("should Reader button have book-open icon and correct title", async function () {

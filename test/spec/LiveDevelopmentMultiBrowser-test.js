@@ -932,33 +932,29 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
 
-            // Play button and mode dropdown should be visible for HTML files
-            let $previewBtn = testWindow.$("#previewModeLivePreviewButton");
-            let $modeBtn = testWindow.$("#livePreviewModeBtn");
-            expect($previewBtn.is(":visible")).toBeTrue();
-            expect($modeBtn.is(":visible")).toBeTrue();
+            // Edit mode button should be visible for HTML files
+            let $editModeBtn = testWindow.$("#lpEditModeBtn");
+            expect($editModeBtn.is(":visible")).toBeTrue();
 
             // Open a markdown file
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md");
             await awaits(300);
 
-            // Play button and mode dropdown should be hidden for markdown files
+            // Edit mode button should be hidden for markdown files
             await awaitsFor(() => {
-                return !testWindow.$("#previewModeLivePreviewButton").is(":visible") &&
-                    !testWindow.$("#livePreviewModeBtn").is(":visible");
-            }, "play button and mode dropdown to be hidden");
+                return !testWindow.$("#lpEditModeBtn").is(":visible");
+            }, "edit mode button to be hidden");
 
             // Switch back to HTML file
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "simple1.html");
             await awaits(300);
 
-            // Play button and mode dropdown should be visible again
+            // Edit mode button should be visible again
             await awaitsFor(() => {
-                return testWindow.$("#previewModeLivePreviewButton").is(":visible") &&
-                    testWindow.$("#livePreviewModeBtn").is(":visible");
-            }, "play button and mode dropdown to be visible again");
+                return testWindow.$("#lpEditModeBtn").is(":visible");
+            }, "edit mode button to be visible again");
 
             await endPreviewSession();
         }, 30000);
