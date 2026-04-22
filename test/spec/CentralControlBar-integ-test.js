@@ -246,14 +246,6 @@ define(function (require, exports, module) {
                 expect(executed).toContain(Commands.FILE_SAVE);
             });
 
-            it("should trigger CMD_FIND_IN_FILES when the search button is clicked", function () {
-                const executed = recordCommands(function () {
-                    _$("#searchNav").trigger("click");
-                });
-                // searchNav routes through NavigationProvider._findInFiles which dispatches CMD_FIND_IN_FILES.
-                expect(executed).toContain(Commands.CMD_FIND_IN_FILES);
-            });
-
             it("should execute VIEW_HIDE_SIDEBAR when #ccbSidebarToggleBtn is clicked, and the sidebar's visibility actually flips", async function () {
                 // Measure the effect: sidebar is visible → click → sidebar hides.
                 expect(SidebarView.isVisible()).toBe(true);
@@ -297,25 +289,6 @@ define(function (require, exports, module) {
 
             it("should have no #sidebar-toggle-btn in the DOM (legacy menubar button removed)", function () {
                 expect(_$("#sidebar-toggle-btn").length).toBe(0);
-            });
-        });
-
-        describe("2a. #show-in-file-tree button in sidebar", function () {
-
-            it("should render #show-in-file-tree inside #project-files-header, before #collapse-folders, with the localized title", function () {
-                const $btn = _$("#show-in-file-tree");
-                expect($btn.length).toBe(1);
-                expect($btn.parent().attr("id")).toBe("project-files-header");
-                // #collapse-folders sits after #show-in-file-tree in DOM order.
-                expect($btn.nextAll("#collapse-folders").length).toBe(1);
-                expect($btn.attr("title")).toBe(Strings.CMD_SHOW_IN_TREE);
-            });
-
-            it("should execute NAVIGATE_SHOW_IN_FILE_TREE when #show-in-file-tree is clicked", function () {
-                const executed = recordCommands(function () {
-                    _$("#show-in-file-tree").trigger("click");
-                });
-                expect(executed).toContain(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
             });
         });
 

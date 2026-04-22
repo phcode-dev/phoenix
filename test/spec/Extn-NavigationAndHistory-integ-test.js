@@ -344,6 +344,37 @@ define(function (require, exports, module) {
             await _expectNavButton(false, true, "nav forward disabled due to new file open");
         }
 
+        function recordCommands(fn) {
+            const executed = [];
+            const handler = function (event, id) { executed.push(id); };
+            CommandManager.on(CommandManager.EVENT_BEFORE_EXECUTE_COMMAND, handler);
+            try {
+                fn();
+            } finally {
+                CommandManager.off(CommandManager.EVENT_BEFORE_EXECUTE_COMMAND, handler);
+            }
+            return executed;
+        }
+
+        it("Should dispatch NAVIGATE_SHOW_IN_FILE_TREE when #showInfileTree is clicked", async function () {
+            await openFile("test.css");
+            const $btn = $("#showInfileTree");
+            expect($btn.length).toBe(1);
+            const executed = recordCommands(function () {
+                $btn.trigger("click");
+            });
+            expect(executed).toContain(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+        }, 15000);
+
+        it("Should dispatch CMD_FIND_IN_FILES when #searchNav is clicked", function () {
+            const $btn = $("#searchNav");
+            expect($btn.length).toBe(1);
+            const executed = recordCommands(function () {
+                $btn.trigger("click");
+            });
+            expect(executed).toContain(Commands.CMD_FIND_IN_FILES);
+        }, 15000);
+
         it("Should navigate back and forward between text files", async function () {
             await navigateResetStack();
             await _validateNavForFiles("test.css", "test.html", "test.js");
