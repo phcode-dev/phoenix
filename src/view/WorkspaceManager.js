@@ -86,7 +86,7 @@ define(function (require, exports, module) {
      * @const
      * @private
      */
-    const MAIN_TOOLBAR_WIDTH = 30;
+    const MAIN_TOOLBAR_WIDTH = 36;
 
     /**
      * Returns the sidebar's rendered width, or 0 if hidden. jQuery's outerWidth()
