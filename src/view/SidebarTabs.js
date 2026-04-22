@@ -58,6 +58,8 @@ define(function (require, exports, module) {
 
     const ICON_SEARCH = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>';
 
+    const ICON_DESIGN = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21"><path fill="currentColor" d="M19.8301 13.3181L19.8253 13.2941L17.7493 6.36938C17.461 5.41309 16.7305 4.65382 15.7791 4.33666L3.07815 0.0790007C2.66007 -0.0603584 2.20355 -0.0123035 1.82872 0.199138L9.29645 7.66686C9.48867 7.614 9.68569 7.58998 9.89233 7.58998C11.1658 7.58998 12.199 8.62316 12.199 9.89661C12.199 11.1701 11.1658 12.2032 9.89233 12.2032C8.61888 12.2032 7.5857 11.1701 7.5857 9.89661C7.5857 9.68997 7.61453 9.48814 7.66258 9.30073L0.199661 1.833C-0.0117809 2.20783 -0.0598357 2.65955 0.0795234 3.08243L4.33718 15.7833C4.65435 16.73 5.41362 17.4653 6.36991 17.7536L13.2946 19.8295L13.3186 19.8344L19.8301 13.3229V13.3181Z"/><line x1="14.1513" y1="20.5938" x2="20.5906" y2="14.1064" stroke="currentColor" stroke-width="1.15332"/></svg>';
+
     /**
      * Preferred sidebar width (px) when a non-files tab (e.g. AI) is
      * first activated. Applied once if the current width is narrower.
@@ -173,12 +175,20 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Detach the search button (if it exists) so NavigationProvider's
-        // cached reference and click handler survive rebuilds.
+        // Detach persistent buttons so cached references and click handlers survive rebuilds.
         const $searchNav = $controlBar.find("#searchNav").detach();
+        const $designBtn = $controlBar.find("#ccbDesignModeBtn").detach();
 
         $controlBar.empty();
         _tabs.sort(function (a, b) { return a.priority - b.priority; });
+
+        // Render the design mode button first
+        if ($designBtn.length) {
+            $controlBar.append($designBtn);
+        } else {
+            $controlBar.append('<a href="#" id="ccbDesignModeBtn" class="ccb-btn" title="' +
+                Strings.CCB_SWITCH_TO_DESIGN_MODE + '">' + ICON_DESIGN + '</a>');
+        }
 
         // Render tab buttons
         _tabs.forEach(function (tab) {
@@ -582,6 +592,14 @@ define(function (require, exports, module) {
             } else {
                 setActiveTab(tabId);
             }
+        });
+
+        // Design mode button click
+        $controlBar.on("click", "#ccbDesignModeBtn", function (e) {
+            e.preventDefault();
+            const CommandManager = require("command/CommandManager");
+            const Commands = require("command/Commands");
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
         });
 
         // Sidebar chip tab clicks just switch tabs (sidebar is already visible)

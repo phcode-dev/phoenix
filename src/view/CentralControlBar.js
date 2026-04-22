@@ -220,6 +220,15 @@ define(function (require, exports, module) {
                 : Strings.CCB_SWITCH_TO_DESIGN_MODE);
         }
 
+        // Update the control bar design mode button
+        const $ccbDesignBtn = $("#ccbDesignModeBtn");
+        if ($ccbDesignBtn.length) {
+            $ccbDesignBtn.toggleClass("active", editorCollapsed);
+            $ccbDesignBtn.attr("title", editorCollapsed
+                ? Strings.CCB_SWITCH_TO_CODE_EDITOR
+                : Strings.CCB_SWITCH_TO_DESIGN_MODE);
+        }
+
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
         }
