@@ -1382,6 +1382,15 @@ a, img {
     cursor: col-resize;
 }
 
+/* Resizer.js visibility-preserving hide: elements with .layout-preserve-hide
+   get this class toggled instead of `display: none`, so their descendants
+   keep their layout objects (and scrollTop / content-visibility caches)
+   across collapse/expand. */
+.layout-preserve-hide.layout-hidden {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
 .working-set-header-title{
     font-size: 15px;
 }

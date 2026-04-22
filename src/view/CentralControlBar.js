@@ -25,6 +25,7 @@ define(function (require, exports, module) {
     const Commands          = require("command/Commands");
     const Strings           = require("strings");
     const WorkspaceManager  = require("view/WorkspaceManager");
+    const SidebarView       = require("project/SidebarView");
 
     const BAR_WIDTH = 30;
 
@@ -44,7 +45,7 @@ define(function (require, exports, module) {
         // and rendered width can diverge mid-drag, and outerWidth has returned the
         // uncapped style value in some frames which left CCB / main-toolbar stuck
         // at stale offsets.
-        if (!$sidebar || !$sidebar.is(":visible")) {
+        if (!$sidebar || !SidebarView.isVisible()) {
             return 0;
         }
         return $sidebar[0].offsetWidth || 0;
@@ -248,7 +249,7 @@ define(function (require, exports, module) {
         if (!$btn.length) {
             return;
         }
-        const isVisible = $("#sidebar").is(":visible");
+        const isVisible = SidebarView.isVisible();
         $btn.find("i").attr("class", isVisible ? "fa-solid fa-angles-left" : "fa-solid fa-angles-right");
     }
 
