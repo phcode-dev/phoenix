@@ -22,7 +22,7 @@
 
 /**
  * SidebarTabs manages multiple tab panes within the sidebar. Tab buttons are
- * rendered into the `#ccbTabGroup` element inside the left control bar. The
+ * rendered into the `#centralControlBar` element (the left control bar). The
  * module provides an API for registering tabs, associating DOM content with
  * tabs, and switching between them.
  *
@@ -40,7 +40,8 @@ define(function (require, exports, module) {
 
     const AppInit              = require("utils/AppInit"),
         EventDispatcher      = require("utils/EventDispatcher"),
-        PreferencesManager   = require("preferences/PreferencesManager");
+        PreferencesManager   = require("preferences/PreferencesManager"),
+        Strings              = require("strings");
 
     // --- Constants -----------------------------------------------------------
 
@@ -49,6 +50,13 @@ define(function (require, exports, module) {
      * @const {string}
      */
     const SIDEBAR_TAB_FILES = "sidebar-tab-files";
+
+    // Inline SVG icons for the control bar — all use fill="currentColor" so
+    // they inherit the button's text color. viewBoxes are cropped tightly
+    // around the path content for consistent visual sizing.
+    const ICON_FILES = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="128 64 384 512"><path fill="currentColor" d="M304 112L192 112C183.2 112 176 119.2 176 128L176 512C176 520.8 183.2 528 192 528L448 528C456.8 528 464 520.8 464 512L464 272L376 272C336.2 272 304 239.8 304 200L304 112zM444.1 224L352 131.9L352 200C352 213.3 362.7 224 376 224L444.1 224zM128 128C128 92.7 156.7 64 192 64L325.5 64C342.5 64 358.8 70.7 370.8 82.7L493.3 205.3C505.3 217.3 512 233.6 512 250.6L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 128z"/></svg>';
+
+    const ICON_SEARCH = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>';
 
     /**
      * Preferred sidebar width (px) when a non-files tab (e.g. AI) is
@@ -84,7 +92,7 @@ define(function (require, exports, module) {
 
     /** @type {jQuery}
      * @private */
-    let $ccbTabGroup;
+    let $controlBar;
 
     /** @type {jQuery}
      * @private */
@@ -161,11 +169,13 @@ define(function (require, exports, module) {
      * @private
      */
     function _rebuildTabBar() {
-        if (!$ccbTabGroup) {
+        if (!$controlBar) {
             return;
         }
-        $ccbTabGroup.empty();
+        $controlBar.empty();
         _tabs.sort(function (a, b) { return a.priority - b.priority; });
+
+        // Render tab buttons
         _tabs.forEach(function (tab) {
             const iconMarkup = tab.iconHTML || '<i class="' + tab.iconClass + '"></i>';
             const $item = $('<a href="#" class="ccb-btn ccb-tab-btn" data-tab-id="' + tab.id + '" title="' + tab.label + '">' +
@@ -175,8 +185,12 @@ define(function (require, exports, module) {
                 $item.addClass("active");
             }
             tab.$tabItem = $item;
-            $ccbTabGroup.append($item);
+            $controlBar.append($item);
         });
+
+        // Render the search button
+        $controlBar.append('<a href="#" id="searchNav" class="ccb-btn" title="' +
+            Strings.CMD_FIND_IN_FILES + '">' + ICON_SEARCH + '</a>');
 
         // Also rebuild the sidebar chip bar
         if ($navTabBar) {
@@ -452,10 +466,10 @@ define(function (require, exports, module) {
         _activeTabId = id;
 
         // Update active class on tab items in the control bar
-        if ($ccbTabGroup) {
-            $ccbTabGroup.find(".ccb-tab-btn").removeClass("active");
+        if ($controlBar) {
+            $controlBar.find(".ccb-tab-btn").removeClass("active");
             if ($sidebar && $sidebar.is(":visible")) {
-                $ccbTabGroup.find('.ccb-tab-btn[data-tab-id="' + id + '"]').addClass("active");
+                $controlBar.find('.ccb-tab-btn[data-tab-id="' + id + '"]').addClass("active");
             }
         }
 
@@ -515,10 +529,10 @@ define(function (require, exports, module) {
     // --- Initialization ------------------------------------------------------
 
     function _updateTabActiveStates() {
-        if ($ccbTabGroup) {
-            $ccbTabGroup.find(".ccb-tab-btn").removeClass("active");
+        if ($controlBar) {
+            $controlBar.find(".ccb-tab-btn").removeClass("active");
             if ($sidebar && $sidebar.is(":visible")) {
-                $ccbTabGroup.find('.ccb-tab-btn[data-tab-id="' + _activeTabId + '"]').addClass("active");
+                $controlBar.find('.ccb-tab-btn[data-tab-id="' + _activeTabId + '"]').addClass("active");
             }
         }
         if ($navTabBar) {
@@ -529,18 +543,18 @@ define(function (require, exports, module) {
 
     AppInit.htmlReady(function () {
         $sidebar = $("#sidebar");
-        $ccbTabGroup = $("#ccbTabGroup");
+        $controlBar = $("#centralControlBar");
 
         // Create the sidebar chip tab bar and insert after #mainNavBar
         $navTabBar = $('<div id="navTabBar"></div>');
         $sidebar.find("#mainNavBar").after($navTabBar);
 
         // Register the built-in Files tab
-        addTab(SIDEBAR_TAB_FILES, "Files", "", { priority: 0, iconHTML: '<span class="files-icon"></span>' });
+        addTab(SIDEBAR_TAB_FILES, "Files", "", { priority: 0, iconHTML: ICON_FILES });
 
         // VSCode-style toggle: clicking the active tab hides sidebar,
         // clicking an inactive tab shows sidebar and switches to that tab.
-        $ccbTabGroup.on("click", ".ccb-tab-btn", function (e) {
+        $controlBar.on("click", ".ccb-tab-btn", function (e) {
             e.preventDefault();
             const tabId = $(this).attr("data-tab-id");
             if (!tabId) {
@@ -548,12 +562,10 @@ define(function (require, exports, module) {
             }
             const sidebarVisible = $sidebar.is(":visible");
             if (sidebarVisible && tabId === _activeTabId) {
-                // Toggle sidebar off
                 const CommandManager = require("command/CommandManager");
                 const Commands = require("command/Commands");
                 CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
             } else if (!sidebarVisible) {
-                // Show sidebar and switch to the clicked tab
                 const CommandManager = require("command/CommandManager");
                 const Commands = require("command/Commands");
                 CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);

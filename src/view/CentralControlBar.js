@@ -26,7 +26,7 @@ define(function (require, exports, module) {
     const Strings           = require("strings");
     const WorkspaceManager  = require("view/WorkspaceManager");
 
-    const BAR_WIDTH = 30;
+    const BAR_WIDTH = 34;
 
     let $bar;
     let $sidebar;
