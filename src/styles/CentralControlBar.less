@@ -30,8 +30,8 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
-    padding: 8px 0;
+    gap: 10px;
+    padding: 10px 0;
     box-sizing: border-box;
     user-select: none;
     background-color: #252525;
@@ -42,32 +42,37 @@
         align-items: center;
         justify-content: center;
         height: 28px;
-        margin: 0 3px;
+        margin: 0;
+        padding: 0;
         color: @project-panel-text-2;
-        border-radius: 4px;
+        opacity: 0.65;
+        border-radius: 0;
+        border-left: 2px solid transparent;
         cursor: pointer;
         text-decoration: none;
-        transition: color 0.15s ease, background-color 0.15s ease;
+        transition: color 0.15s ease;
 
         svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             pointer-events: none;
         }
 
         &:hover {
+            opacity: 1;
             color: @project-panel-text-1;
-            background-color: rgba(255, 255, 255, 0.08);
             text-decoration: none;
         }
 
         &:active {
-            background-color: rgba(255, 255, 255, 0.12);
+            opacity: 1;
+            color: @project-panel-text-1;
         }
 
         &.active {
+            opacity: 1;
             color: @project-panel-text-1;
-            background-color: rgba(255, 255, 255, 0.12);
+            border-left-color: @project-panel-text-1;
         }
 
         &.disabled,
@@ -94,5 +99,5 @@
    least ~200px of its own. The 234px accounts for the 34px control bar
    plus a 200px LP minimum. */
 .ccb-editor-collapsed #sidebar {
-    max-width: ~"calc(100vw - 234px)";
+    max-width: ~"calc(100vw - 236px)";
 }
