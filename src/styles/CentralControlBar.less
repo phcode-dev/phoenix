@@ -107,25 +107,6 @@
         }
     }
 
-    /* Nav buttons: suppress legacy sprite styles (NavigationProvider toggles enabled/disabled class) */
-    #searchNav,
-    #navBackButton,
-    #navForwardButton {
-        background: transparent !important;
-        top: auto !important;
-        padding: 0 !important;
-        width: auto !important;
-        height: 28px !important;
-        content: normal !important;
-        opacity: 1;
-    }
-
-    #navBackButton.nav-back-btn-disabled,
-    #navForwardButton.nav-forward-btn-disabled {
-        opacity: 0.35;
-        pointer-events: none;
-    }
-
 }
 
 /* Editor collapse: actual layout handled in JS via .content width/visibility */

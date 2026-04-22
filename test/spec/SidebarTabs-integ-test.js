@@ -506,6 +506,52 @@ define(function (require, exports, module) {
 
                 expect(SidebarTabs.getActiveTab()).toBe(SidebarTabs.SIDEBAR_TAB_FILES);
             });
+
+            it("should scroll the selected tree node into view when re-invoked on an already-selected file", async function () {
+                // FileTreeView only auto-scrolls on unselected→selected transitions,
+                // so re-invoking NAVIGATE_SHOW_IN_FILE_TREE on an already-selected
+                // file would otherwise be a no-op when the user has scrolled away.
+                // handleShowInTree compensates by calling ViewUtils.scrollElementIntoView
+                // after ProjectManager.showInTree resolves — this asserts that call fires.
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["test.js"]),
+                    "open test file"
+                );
+                // First invocation: sets up the selection. We don't spy here because
+                // FileTreeView's own selection-transition scroll can also fire and we
+                // want to isolate the explicit handleShowInTree scroll.
+                await awaitsForDone(
+                    CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE),
+                    "first show in file tree"
+                );
+
+                const ViewUtils = testWindow.brackets.getModule("utils/ViewUtils");
+                const originalScroll = ViewUtils.scrollElementIntoView;
+                const calls = [];
+                ViewUtils.scrollElementIntoView = function ($container, $element, scrollIntoView) {
+                    calls.push({
+                        containerId: $container && $container.attr && $container.attr("id"),
+                        hasSelectedNode: $element && $element.length > 0
+                    });
+                    return originalScroll.apply(this, arguments);
+                };
+                try {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE),
+                        "re-invoke show in file tree"
+                    );
+                    // The selection-transition scroll in FileTreeView.componentDidUpdate
+                    // cannot fire here (file is already selected), so any scroll call
+                    // against #project-files-container must come from handleShowInTree.
+                    await awaitsFor(function () {
+                        return calls.some(function (c) {
+                            return c.containerId === "project-files-container" && c.hasSelectedNode;
+                        });
+                    }, "ViewUtils.scrollElementIntoView to be called with the selected tree node", 3000);
+                } finally {
+                    ViewUtils.scrollElementIntoView = originalScroll;
+                }
+            });
         });
 
         describe("SidebarView resize", function () {
