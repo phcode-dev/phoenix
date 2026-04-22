@@ -214,7 +214,10 @@ define(function (require, exports, module) {
         // Also rebuild the sidebar chip bar
         if ($navTabBar) {
             $navTabBar.empty();
-            _tabs.forEach(function (tab) {
+            _tabs.forEach(function (tab, index) {
+                if (index > 0) {
+                    $navTabBar.append('<div class="nav-tab-divider"></div>');
+                }
                 const iconMarkup = tab.iconHTML || '<i class="' + tab.iconClass + '"></i>';
                 const $chip = $('<div class="sidebar-tab" data-tab-id="' + tab.id + '">' +
                     iconMarkup +
