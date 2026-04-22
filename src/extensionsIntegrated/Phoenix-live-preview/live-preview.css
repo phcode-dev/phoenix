@@ -182,8 +182,28 @@
 
 .toolbar-button {
     background-color: transparent;
-    width:28px;
+    width: 28px;
     height: 22px;
+}
+
+#live-preview-plugin-toolbar .btn-alt-quiet:hover,
+#live-preview-plugin-toolbar .btn-alt-quiet:focus,
+#live-preview-plugin-toolbar .btn-alt-quiet:active {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+}
+
+#live-preview-plugin-toolbar .lp-device-size-icon:hover,
+#live-preview-plugin-toolbar .lp-device-size-icon:focus,
+#live-preview-plugin-toolbar .lp-device-size-icon:active {
+    border: none !important;
+}
+
+#live-preview-plugin-toolbar .lp-device-size-dropdown-chevron:hover,
+#live-preview-plugin-toolbar .lp-device-size-dropdown-chevron:focus,
+#live-preview-plugin-toolbar .lp-device-size-dropdown-chevron:active {
+    border: none !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .open-icon {
@@ -279,7 +299,7 @@
 .lp-device-size-icon:hover,
 .lp-device-size-icon:focus,
 .lp-device-size-icon:active {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
@@ -293,6 +313,7 @@
     box-shadow: none !important;
     border: none;
     border-left: 1px solid transparent;
+    border-radius: 0 3px 3px 0;
     color: #a0a0a0;
     padding: 0 4px;
     margin: 0;
@@ -307,7 +328,7 @@
 .lp-device-size-dropdown-chevron:hover,
 .lp-device-size-dropdown-chevron:focus,
 .lp-device-size-dropdown-chevron:active {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: transparent !important;
     border: none !important;
     border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: none !important;
