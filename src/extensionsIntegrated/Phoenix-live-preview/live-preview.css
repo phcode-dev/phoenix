@@ -417,6 +417,37 @@
     color: #FBB03B;
 }
 
+.lp-edit-actions {
+    display: inline-flex;
+    align-items: center;
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.3s ease-out,
+                opacity 0.25s ease-out;
+}
+
+.lp-edit-actions.lp-edit-collapsed {
+    transform: translateX(-20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease-in,
+                opacity 0.2s ease-in;
+}
+
+.lp-edit-actions svg {
+    width: 13px;
+    height: 11px;
+    pointer-events: none;
+}
+
+.lp-toolbar-divider {
+    width: 1px;
+    height: 14px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
 .live-preview-status-overlay {
     display: flex;
     flex-direction: row;

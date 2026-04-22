@@ -72,6 +72,8 @@ define(function (require, exports, module) {
         NodeUtils = require("utils/NodeUtils"),
         TrustProjectHTML    = require("text!./trust-project.html"),
         panelHTML       = require("text!./panel.html"),
+        undoIconSVG     = require("text!./images/undo.svg"),
+        redoIconSVG     = require("text!./images/redo.svg"),
         Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
         utils = require('./utils');
@@ -347,14 +349,12 @@ define(function (require, exports, module) {
 
     function _initializeMode() {
         const currentMode = LiveDevelopment.getCurrentMode();
+        const isEditMode = currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE;
 
         if ($editModeBtn) {
-            if (currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE) {
-                $editModeBtn.addClass('selected');
-            } else {
-                $editModeBtn.removeClass('selected');
-            }
+            $editModeBtn.toggleClass('selected', isEditMode);
         }
+        $(".lp-edit-actions").toggleClass("lp-edit-collapsed", !isEditMode);
     }
 
     function _showModeSelectionDropdown(event) {
@@ -828,6 +828,19 @@ define(function (require, exports, module) {
 
         $panel.find("#lpDesignModeBtn").on("click", function () {
             CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+        });
+
+        // Edit mode action buttons (undo/redo/save)
+        $panel.find("#lpUndoBtn").html(undoIconSVG);
+        $panel.find("#lpRedoBtn").html(redoIconSVG);
+        $panel.find("#lpUndoBtn").on("click", function () {
+            CommandManager.execute(Commands.EDIT_UNDO);
+        });
+        $panel.find("#lpRedoBtn").on("click", function () {
+            CommandManager.execute(Commands.EDIT_REDO);
+        });
+        $panel.find("#lpSaveBtn").on("click", function () {
+            CommandManager.execute(Commands.FILE_SAVE);
         });
 
         const popoutSupported = Phoenix.isNativeApp
