@@ -270,6 +270,11 @@
 .ai-msg {
     margin-bottom: 12px;
     max-width: 100%;
+    // Skip layout / paint for messages that are far off-screen. For a large
+    // chat history (>1k messages, >10k DOM nodes), showing the sidebar after
+    // it was `display: none` otherwise costs ~750ms of synchronous reflow.
+    content-visibility: auto;
+    contain-intrinsic-size: auto 300px;
 
     .ai-msg-label {
         font-size: @sidebar-xs-font-size;
