@@ -768,7 +768,8 @@ define(function (require, exports, module) {
             openInSafari: Strings.LIVE_DEV_OPEN_SAFARI,
             openInEdge: Strings.LIVE_DEV_OPEN_EDGE,
             openInFirefox: Strings.LIVE_DEV_OPEN_FIREFOX,
-            clickToPinUnpin: Strings.LIVE_DEV_CLICK_TO_PIN_UNPIN
+            clickToPinUnpin: Strings.LIVE_DEV_CLICK_TO_PIN_UNPIN,
+            designModeExpand: Strings.CCB_SWITCH_TO_DESIGN_MODE
         };
         const PANEL_MIN_SIZE = 50;
         const INITIAL_PANEL_SIZE = document.body.clientWidth/2.5;
@@ -837,6 +838,10 @@ define(function (require, exports, module) {
         $settingsIcon.click(()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtn", "click");
+        });
+
+        $panel.find("#lpDesignModeBtn").on("click", function () {
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
         });
 
         const popoutSupported = Phoenix.isNativeApp

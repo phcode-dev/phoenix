@@ -182,6 +182,7 @@
 
 .toolbar-button {
     background-color: transparent;
+    color: inherit;
     width: 28px;
     height: 22px;
 }

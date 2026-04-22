@@ -208,9 +208,18 @@ define(function (require, exports, module) {
         }
         editorCollapsed = wantCollapsed;
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
-        const $collapseBtn = $("#ccbCollapseEditorBtn");
-        $collapseBtn.toggleClass("active", editorCollapsed)
-            .attr("title", editorCollapsed ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
+
+        // Update the live preview toolbar expand/contract button
+        const $lpDesignBtn = $("#lpDesignModeBtn");
+        if ($lpDesignBtn.length) {
+            $lpDesignBtn.find("i").attr("class", editorCollapsed
+                ? "fa-solid fa-compress"
+                : "fa-solid fa-expand");
+            $lpDesignBtn.attr("title", editorCollapsed
+                ? Strings.CCB_SWITCH_TO_CODE_EDITOR
+                : Strings.CCB_SWITCH_TO_DESIGN_MODE);
+        }
+
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
         }
@@ -237,10 +246,7 @@ define(function (require, exports, module) {
     }
 
     function _wireButtons() {
-        $("#ccbCollapseEditorBtn").on("click", function (e) {
-            e.preventDefault();
-            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-        });
+        // Design mode button is now in the live preview toolbar (#lpDesignModeBtn)
     }
 
     const _toggleDesignModeCommand = CommandManager.register(Strings.CMD_TOGGLE_DESIGN_MODE,
@@ -254,7 +260,6 @@ define(function (require, exports, module) {
         $content = $(".content");
 
         _wireButtons();
-        $("#ccbCollapseEditorBtn").attr("title", Strings.CCB_SWITCH_TO_DESIGN_MODE);
         _syncLeftPositions();
 
         // While the sidebar is being dragged we only reposition .content / main-toolbar.
