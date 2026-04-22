@@ -62,6 +62,7 @@ define(function (require, exports, module) {
         NodeUtils           = require("utils/NodeUtils"),
         ChangeHelper        = require("editor/EditorHelper/ChangeHelper"),
         SidebarTabs         = require("view/SidebarTabs"),
+        SidebarView         = require("project/SidebarView"),
         _                   = require("thirdparty/lodash");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -1954,7 +1955,7 @@ define(function (require, exports, module) {
     function handleShowInTree() {
         let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         if(activeFile){
-            if (!$("#sidebar").is(":visible")) {
+            if (!SidebarView.isVisible()) {
                 CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
             }
             SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);

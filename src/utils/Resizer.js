@@ -178,7 +178,7 @@ define(function (require, exports, module) {
      * @param {DOMNode} element Html element to toggle
      */
     function toggle(element) {
-        if ($(element).is(":visible")) {
+        if (isVisible(element)) {
             hide(element);
         } else {
             show(element);
@@ -217,7 +217,14 @@ define(function (require, exports, module) {
      * @return {boolean} true if element is visible, false if it is not visible
      */
     function isVisible(element) {
-        return $(element).is(":visible");
+        var $el = $(element);
+        if ($el.hasClass("layout-preserve-hide")) {
+            // Element opts out of `display: none` on hide (to keep layout alive
+            // so scrollTop / content-visibility cache survive the toggle). jQuery's
+            // `:visible` still returns true in that case, so consult our own flag.
+            return !$el.hasClass("layout-hidden");
+        }
+        return $el.is(":visible");
     }
 
     function _isPercentage(value) {
@@ -422,7 +429,13 @@ define(function (require, exports, module) {
             // the resizer, the size of the element should be 0, so we restore size in preferences
             resizeElement(elementSize, contentSize);
 
-            $element.show();
+            if ($element.hasClass("layout-preserve-hide")) {
+                // Keep display unchanged — just un-hide via class. The element's
+                // layout tree was preserved, so no reflow avalanche here.
+                $element.removeClass("layout-hidden");
+            } else {
+                $element.show();
+            }
             elementPrefs.visible = true;
 
             if (collapsible) {
@@ -451,7 +464,13 @@ define(function (require, exports, module) {
                 elementSize     = elementSizeFunction.apply($element),
                 resizerSize     = elementSizeFunction.apply($resizer);
 
-            $element.hide();
+            if ($element.hasClass("layout-preserve-hide")) {
+                // Visually hide but keep the layout object alive so descendants
+                // retain scrollTop and content-visibility caches across toggles.
+                $element.addClass("layout-hidden");
+            } else {
+                $element.hide();
+            }
             elementPrefs.visible = false;
             if (collapsible) {
                 $resizer.insertBefore($element);
@@ -472,7 +491,7 @@ define(function (require, exports, module) {
         $resizer.on("mousedown.resizer", function (e) {
             var $resizeShield   = $("<div class='resizing-container " + direction + "-resizing' />"),
                 startPosition   = e[directionProperty],
-                startSize       = $element.is(":visible") ? elementSizeFunction.apply($element) : 0,
+                startSize       = isVisible($element) ? elementSizeFunction.apply($element) : 0,
                 newSize         = startSize,
                 previousSize    = startSize,
                 baseSize        = 0,
@@ -502,7 +521,7 @@ define(function (require, exports, module) {
                 if (newSize !== previousSize) {
                     previousSize = newSize;
 
-                    if ($element.is(":visible")) {
+                    if (isVisible($element)) {
                         if (collapsible && newSize < 10) {
                             toggle($element);
                             elementSizeFunction.apply($element, [0]);
@@ -579,7 +598,7 @@ define(function (require, exports, module) {
                 if (isResizing) {
 
                     var elementSize	= elementSizeFunction.apply($element);
-                    if ($element.is(":visible")) {
+                    if (isVisible($element)) {
                         elementPrefs.size = elementSize;
                         if ($resizableElement.length) {
                             elementPrefs.contentSize = contentSizeFunction.apply($resizableElement);
@@ -651,7 +670,7 @@ define(function (require, exports, module) {
     }
 
     function onWindowResize(e) {
-        if ($sideBar.css("display") === "none") {
+        if (!isVisible($sideBar)) {
             return;
         }
 

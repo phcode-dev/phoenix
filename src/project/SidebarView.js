@@ -251,7 +251,7 @@ define(function (require, exports, module) {
 
         // AppInit.htmlReady in utils/Resizer executes before, so it's possible that the sidebar
         // is collapsed before we add the event. Check here initially
-        if (!$sidebar.is(":visible")) {
+        if (!isVisible()) {
             $sidebar.trigger("panelCollapsed");
         }
 
