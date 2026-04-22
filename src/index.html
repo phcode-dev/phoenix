@@ -905,7 +905,23 @@
 <div class="main-view forced-hidden">
     <div id="notificationUIDefaultAnchor" href="#">
     </div>
-    <div id="sidebar" class="sidebar panel quiet-scrollbars horz-resizable right-resizer collapsible" data-minsize="0" data-maxsize="80%" data-forceleft=".content">
+    <!-- Vertical control bar docked to the left edge -->
+    <div id="centralControlBar" class="no-focus">
+        <div id="ccbTabGroup" class="ccb-group">
+        </div>
+        <div class="ccb-divider"></div>
+        <div class="ccb-group">
+            <a href="#" id="searchNav" class="ccb-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+        </div>
+        <div class="ccb-spacer"></div>
+        <div class="ccb-group ccb-group-bottom">
+            <a href="#" id="ccbCollapseEditorBtn" class="ccb-btn" title="Switch to Design Mode">
+                <i class="fa-solid fa-code"></i>
+            </a>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar panel quiet-scrollbars horz-resizable right-resizer collapsible" data-minsize="30" data-maxsize="80%" data-forceleft=".content">
         <div id="mainNavBar">
             <div id="mainNavBarLeft">
                 <div id="newProject" class="new-project-btn btn-alt-quiet"></div>
@@ -914,6 +930,8 @@
                 <a id="phcode-io-main-nav" href="https://phcode.io" target="_blank" rel="noopener">phcode.io</a>
             </div>
             <div id="mainNavBarRight">
+                <div id="navBackButton" class="nav-back-btn btn-alt-quiet"></div>
+                <div id="navForwardButton" class="nav-forward-btn btn-alt-quiet"></div>
                 <div class="working-set-splitview-btn btn-alt-quiet"></div>
             </div>
         </div>
@@ -930,46 +948,6 @@
         </div>
         <div id="project-files-container">
             <!-- This will contain a dynamically generated <ul> hierarchy at runtime -->
-        </div>
-    </div>
-
-    <!-- Vertical control bar between sidebar and editor content -->
-    <div id="centralControlBar" class="no-focus">
-        <div class="ccb-group ccb-group-top">
-            <a href="#" id="ccbCollapseEditorBtn" class="ccb-btn" title="Switch to Design Mode">
-                <svg class="ccb-pen-nib-icon" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M19.8301 13.3181L19.8253 13.2941L17.7493 6.36938C17.461 5.41309 16.7305 4.65382 15.7791 4.33666L3.07815 0.0790007C2.66007 -0.0603584 2.20355 -0.0123035 1.82872 0.199138L9.29645 7.66686C9.48867 7.614 9.68569 7.58998 9.89233 7.58998C11.1658 7.58998 12.199 8.62316 12.199 9.89661C12.199 11.1701 11.1658 12.2032 9.89233 12.2032C8.61888 12.2032 7.5857 11.1701 7.5857 9.89661C7.5857 9.68997 7.61453 9.48814 7.66258 9.30073L0.199661 1.833C-0.0117809 2.20783 -0.0598357 2.65955 0.0795234 3.08243L4.33718 15.7833C4.65435 16.73 5.41362 17.4653 6.36991 17.7536L13.2946 19.8295L13.3186 19.8344L19.8301 13.3229V13.3181Z" fill="currentColor"/>
-                    <line x1="14.1513" y1="20.5938" x2="20.5906" y2="14.1064" stroke="currentColor" stroke-width="1.15332"/>
-                </svg>
-            </a>
-            <a href="#" id="ccbSidebarToggleBtn" class="ccb-btn" title="Toggle sidebar">
-                <i class="fa-solid fa-angles-left"></i>
-            </a>
-        </div>
-        <div class="ccb-divider"></div>
-        <div class="ccb-group ccb-group-edit">
-            <a href="#" id="ccbUndoBtn" class="ccb-btn" title="Undo">
-                <svg class="ccb-edit-icon" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path fill="currentColor" d="M8.9502 2.33398L6.49219 4.79395L6.18945 5.0957H6.61719L11.4883 5.09766C14.2134 5.09841 15.5922 5.10134 16.4404 5.18164C16.8608 5.22144 17.1435 5.27977 17.3906 5.36328C17.6394 5.44739 17.8593 5.55885 18.1582 5.71582V5.7168C19.3778 6.35739 20.3334 7.45815 20.8584 8.83691C20.9639 9.11405 21.0196 9.29347 21.0508 9.5332C21.0828 9.77961 21.0898 10.094 21.0898 10.6416C21.0898 11.1889 21.0828 11.5027 21.0508 11.749C21.0274 11.929 20.9903 12.0752 20.9287 12.2539L20.8584 12.4463C20.5052 13.3739 20.0723 14.0292 19.3896 14.6748C18.9323 15.1075 18.3356 15.4867 17.7188 15.7578C17.1008 16.0294 16.4754 16.1874 15.9609 16.1875H15.7314V13.2285H15.8633C16.0644 13.2272 16.3978 13.1398 16.6211 13.0381C18.6414 12.1171 18.7461 9.33015 16.7764 8.33105L16.2627 8.07129L16.2256 8.05176H6.18945L6.49219 8.35449L8.9502 10.8145L11.1055 12.9707H6.68848L3.43262 9.71484L0.25 6.53125L3.43262 3.39648L6.6875 0.186523L9.0752 0.182617L11.1055 0.177734L8.9502 2.33398Z"/>
-                </svg>
-            </a>
-            <a href="#" id="ccbRedoBtn" class="ccb-btn" title="Redo">
-                <svg class="ccb-edit-icon" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path fill="currentColor" d="M12.3164 2.33398L14.7744 4.79395L15.0771 5.0957H14.6494L9.77832 5.09766C7.05319 5.09841 5.67443 5.10134 4.82617 5.18164C4.40582 5.22144 4.12312 5.27977 3.87598 5.36328C3.62717 5.44739 3.40726 5.55885 3.1084 5.71582V5.7168C1.88885 6.35739 0.933211 7.45815 0.408203 8.83691C0.302675 9.11405 0.247023 9.29347 0.21582 9.5332C0.183785 9.77961 0.176758 10.094 0.176758 10.6416C0.176759 11.1889 0.183829 11.5027 0.21582 11.749C0.239218 11.929 0.276306 12.0752 0.337891 12.2539L0.408203 12.4463C0.761384 13.3739 1.19432 14.0292 1.87695 14.6748C2.33434 15.1075 2.93102 15.4867 3.54785 15.7578C4.16581 16.0294 4.79116 16.1874 5.30566 16.1875H5.53516V13.2285H5.40332C5.20224 13.2272 4.86878 13.1398 4.64551 13.0381C2.62518 12.1171 2.52048 9.33015 4.49023 8.33105L5.00391 8.07129L5.04102 8.05176H15.0771L14.7744 8.35449L12.3164 10.8145L10.1611 12.9707H14.5781L17.834 9.71484L21.0166 6.53125L17.834 3.39648L14.5791 0.186523L12.1914 0.182617L10.1611 0.177734L12.3164 2.33398Z"/>
-                </svg>
-            </a>
-        </div>
-        <div class="ccb-divider"></div>
-        <div class="ccb-group ccb-group-save">
-            <a href="#" id="ccbSaveBtn" class="ccb-btn" title="Save">
-                <i class="fa-solid fa-floppy-disk"></i>
-            </a>
-        </div>
-        <div class="ccb-divider"></div>
-        <div class="ccb-group ccb-group-nav">
-            <a href="#" id="searchNav" class="ccb-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#" id="navBackButton" class="ccb-btn"><i class="fa-solid fa-arrow-left"></i></a>
-            <a href="#" id="navForwardButton" class="ccb-btn"><i class="fa-solid fa-arrow-right"></i></a>
         </div>
     </div>
 

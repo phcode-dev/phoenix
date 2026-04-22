@@ -21,9 +21,10 @@
 // @INCLUDE_IN_API_DOCS
 
 /**
- * SidebarTabs manages multiple tab panes within the sidebar. It inserts a
- * `#navTabBar` element after `#mainNavBar` and provides an API for registering
- * tabs, associating DOM content with tabs, and switching between them.
+ * SidebarTabs manages multiple tab panes within the sidebar. Tab buttons are
+ * rendered into the `#ccbTabGroup` element inside the left control bar. The
+ * module provides an API for registering tabs, associating DOM content with
+ * tabs, and switching between them.
  *
  * Existing sidebar children that are not explicitly associated with a tab via
  * `addToTab` are treated as belonging to the default "Files" tab. This means
@@ -83,7 +84,7 @@ define(function (require, exports, module) {
 
     /** @type {jQuery}
      * @private */
-    let $navTabBar;
+    let $ccbTabGroup;
 
     /** @type {jQuery}
      * @private*/
@@ -123,7 +124,7 @@ define(function (require, exports, module) {
 
     // --- IDs to always exclude from visibility toggling ----------------------
 
-    const _EXCLUDED_IDS = { "mainNavBar": true, "navTabBar": true };
+    const _EXCLUDED_IDS = { "mainNavBar": true };
 
     /**
      * CSS classes that mark structural/resizer elements which must never be
@@ -156,26 +157,21 @@ define(function (require, exports, module) {
      * @private
      */
     function _rebuildTabBar() {
-        $navTabBar.empty();
+        if (!$ccbTabGroup) {
+            return;
+        }
+        $ccbTabGroup.empty();
         _tabs.sort(function (a, b) { return a.priority - b.priority; });
         _tabs.forEach(function (tab) {
-            const $item = $('<div class="sidebar-tab" data-tab-id="' + tab.id + '">' +
+            const $item = $('<a href="#" class="ccb-btn ccb-tab-btn" data-tab-id="' + tab.id + '" title="' + tab.label + '">' +
                 '<i class="' + tab.iconClass + '"></i>' +
-                '<span>' + tab.label + '</span>' +
-                '</div>');
-            if (tab.id === _activeTabId) {
+                '</a>');
+            if (tab.id === _activeTabId && $sidebar && $sidebar.is(":visible")) {
                 $item.addClass("active");
             }
             tab.$tabItem = $item;
-            $navTabBar.append($item);
+            $ccbTabGroup.append($item);
         });
-
-        // Show/hide the tab bar based on tab count
-        if (_tabs.length >= 2) {
-            $navTabBar.addClass("has-tabs");
-        } else {
-            $navTabBar.removeClass("has-tabs");
-        }
     }
 
     /**
@@ -428,9 +424,13 @@ define(function (require, exports, module) {
         const previousTabId = _activeTabId;
         _activeTabId = id;
 
-        // Update active class on tab items
-        $navTabBar.find(".sidebar-tab").removeClass("active");
-        $navTabBar.find('.sidebar-tab[data-tab-id="' + id + '"]').addClass("active");
+        // Update active class on tab items in the control bar
+        if ($ccbTabGroup) {
+            $ccbTabGroup.find(".ccb-tab-btn").removeClass("active");
+            if ($sidebar && $sidebar.is(":visible")) {
+                $ccbTabGroup.find('.ccb-tab-btn[data-tab-id="' + id + '"]').addClass("active");
+            }
+        }
 
         _applyTabVisibility();
 
@@ -481,22 +481,54 @@ define(function (require, exports, module) {
 
     // --- Initialization ------------------------------------------------------
 
+    function _updateTabActiveStates() {
+        if (!$ccbTabGroup) {
+            return;
+        }
+        $ccbTabGroup.find(".ccb-tab-btn").removeClass("active");
+        if ($sidebar && $sidebar.is(":visible")) {
+            $ccbTabGroup.find('.ccb-tab-btn[data-tab-id="' + _activeTabId + '"]').addClass("active");
+        }
+    }
+
     AppInit.htmlReady(function () {
         $sidebar = $("#sidebar");
-
-        // Create the tab bar and insert after #mainNavBar
-        $navTabBar = $('<div id="navTabBar"></div>');
-        $sidebar.find("#mainNavBar").after($navTabBar);
+        $ccbTabGroup = $("#ccbTabGroup");
 
         // Register the built-in Files tab
-        addTab(SIDEBAR_TAB_FILES, "Files", "fa-solid fa-folder", { priority: 0 });
+        addTab(SIDEBAR_TAB_FILES, "Files", "fa-solid fa-file", { priority: 0 });
 
-        // Set up click handler for tab switching
-        $navTabBar.on("click", ".sidebar-tab", function () {
+        // VSCode-style toggle: clicking the active tab hides sidebar,
+        // clicking an inactive tab shows sidebar and switches to that tab.
+        $ccbTabGroup.on("click", ".ccb-tab-btn", function (e) {
+            e.preventDefault();
             const tabId = $(this).attr("data-tab-id");
-            if (tabId) {
+            if (!tabId) {
+                return;
+            }
+            const sidebarVisible = $sidebar.is(":visible");
+            if (sidebarVisible && tabId === _activeTabId) {
+                // Toggle sidebar off
+                const CommandManager = require("command/CommandManager");
+                const Commands = require("command/Commands");
+                CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
+            } else if (!sidebarVisible) {
+                // Show sidebar and switch to the clicked tab
+                const CommandManager = require("command/CommandManager");
+                const Commands = require("command/Commands");
+                CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
+                setActiveTab(tabId);
+            } else {
                 setActiveTab(tabId);
             }
+        });
+
+        // Update active states when sidebar is shown/hidden
+        $sidebar.on("panelCollapsed.sidebarTabs", function () {
+            _updateTabActiveStates();
+        });
+        $sidebar.on("panelExpanded.sidebarTabs", function () {
+            _updateTabActiveStates();
         });
     });
 

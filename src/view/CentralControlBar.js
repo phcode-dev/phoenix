@@ -36,7 +36,6 @@ define(function (require, exports, module) {
     let livePreviewWasOpen = false;
     let savedSidebarMaxSize = null;
     let applyingCollapsedLayout = false;
-    let penNibIconHTML = null;
 
     function _getRenderedSidebarWidth() {
         // Use offsetWidth (not jQuery's outerWidth) to force a synchronous reflow
@@ -55,22 +54,17 @@ define(function (require, exports, module) {
             return;
         }
         const sidebarWidth = _getRenderedSidebarWidth();
-        $bar.css("left", sidebarWidth + "px");
         if (!editorCollapsed) {
-            $content.css("left", (sidebarWidth + BAR_WIDTH) + "px");
+            $content.css("left", (BAR_WIDTH + sidebarWidth) + "px");
         } else {
             const mainToolbar = document.getElementById("main-toolbar");
-            const fullToolbarWidth = Math.max(0, window.innerWidth - sidebarWidth - BAR_WIDTH);
+            const fullToolbarWidth = Math.max(0, window.innerWidth - BAR_WIDTH - sidebarWidth);
             if (mainToolbar) {
-                mainToolbar.style.setProperty("left", (sidebarWidth + BAR_WIDTH) + "px", "important");
+                mainToolbar.style.setProperty("left", (BAR_WIDTH + sidebarWidth) + "px", "important");
                 mainToolbar.style.setProperty("right", "auto", "important");
                 mainToolbar.style.setProperty("width", fullToolbarWidth + "px", "important");
             }
         }
-    }
-
-    function _executeCmd(id) {
-        CommandManager.execute(id);
     }
 
     function _isLivePreviewOpen() {
@@ -86,7 +80,7 @@ define(function (require, exports, module) {
         try {
             const mainToolbar = document.getElementById("main-toolbar");
             const sidebarWidth = _getRenderedSidebarWidth();
-            const fullToolbarWidth = Math.max(0, window.innerWidth - sidebarWidth - BAR_WIDTH);
+            const fullToolbarWidth = Math.max(0, window.innerWidth - BAR_WIDTH - sidebarWidth);
             // Keep .content in flow (display:block) but collapse it to zero width to avoid
             // TabBar infinite-loop when its ancestor becomes :hidden. visibility:hidden keeps
             // layout queries stable while the bar animates out.
@@ -95,7 +89,7 @@ define(function (require, exports, module) {
             // inside handleWindowResize can't fight our width during active window resizes
             // (which produced a visible width flicker in full-preview mode).
             if (mainToolbar) {
-                mainToolbar.style.setProperty("left", (sidebarWidth + BAR_WIDTH) + "px", "important");
+                mainToolbar.style.setProperty("left", (BAR_WIDTH + sidebarWidth) + "px", "important");
                 mainToolbar.style.setProperty("right", "auto", "important");
                 mainToolbar.style.setProperty("width", fullToolbarWidth + "px", "important");
             }
@@ -215,9 +209,8 @@ define(function (require, exports, module) {
         editorCollapsed = wantCollapsed;
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
         const $collapseBtn = $("#ccbCollapseEditorBtn");
-        $collapseBtn.toggleClass("is-active", editorCollapsed)
+        $collapseBtn.toggleClass("active", editorCollapsed)
             .attr("title", editorCollapsed ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
-        $collapseBtn.html(editorCollapsed ? '<i class="fa-solid fa-code"></i>' : penNibIconHTML);
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
         }
@@ -243,26 +236,10 @@ define(function (require, exports, module) {
         }
     }
 
-    function _updateSidebarToggleIcon() {
-        const $btn = $("#ccbSidebarToggleBtn");
-        if (!$btn.length) {
-            return;
-        }
-        const isVisible = $("#sidebar").is(":visible");
-        $btn.find("i").attr("class", isVisible ? "fa-solid fa-angles-left" : "fa-solid fa-angles-right");
-    }
-
     function _wireButtons() {
-        $("#ccbUndoBtn").on("click", function (e) { e.preventDefault(); _executeCmd(Commands.EDIT_UNDO); });
-        $("#ccbRedoBtn").on("click", function (e) { e.preventDefault(); _executeCmd(Commands.EDIT_REDO); });
-        $("#ccbSaveBtn").on("click", function (e) { e.preventDefault(); _executeCmd(Commands.FILE_SAVE); });
         $("#ccbCollapseEditorBtn").on("click", function (e) {
             e.preventDefault();
             CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-        });
-        $("#ccbSidebarToggleBtn").on("click", function (e) {
-            e.preventDefault();
-            _executeCmd(Commands.VIEW_HIDE_SIDEBAR);
         });
     }
 
@@ -276,29 +253,14 @@ define(function (require, exports, module) {
         $sidebar = $("#sidebar");
         $content = $(".content");
 
-        // Cache the authored pen-nib SVG from the DOM so the toggle handler
-        // can restore it after swapping in the fa-code icon for design mode.
-        penNibIconHTML = $("#ccbCollapseEditorBtn").html();
-
         _wireButtons();
-        // The HTML titles on the control-bar buttons are fallback English
-        // strings; set the localized versions up front so the initial render
-        // reflects the user's locale. (searchNav / navBackButton /
-        // navForwardButton get their localized titles from NavigationProvider.)
         $("#ccbCollapseEditorBtn").attr("title", Strings.CCB_SWITCH_TO_DESIGN_MODE);
-        $("#ccbSidebarToggleBtn").attr("title", Strings.CMD_TOGGLE_SIDEBAR);
-        $("#ccbUndoBtn").attr("title", Strings.CMD_UNDO);
-        $("#ccbRedoBtn").attr("title", Strings.CMD_REDO);
-        $("#ccbSaveBtn").attr("title", Strings.CMD_FILE_SAVE);
         _syncLeftPositions();
 
-        // While the sidebar is being dragged we only reposition CCB / main-toolbar.
+        // While the sidebar is being dragged we only reposition .content / main-toolbar.
         // Running the full collapsed-layout (with recomputeLayout) on every resize
         // update fires cascading editor relayouts that can make the sidebar drag
-        // misbehave — the heavy work is done once at resize-end instead. The
-        // design-mode cap itself is enforced in CSS (`max-width: calc(100vw -
-        // 230px)`, i.e. CCB + LP minimum) so the
-        // browser refuses to render past it no matter what the Resizer writes.
+        // misbehave — the heavy work is done once at resize-end instead.
         // In design mode the sidebar's right-resizer doubles as the
         // sidebar↔live-preview splitter (the main-toolbar's own left-resizer is
         // hidden). Forward the sidebar's panel-resize events to #main-toolbar
@@ -323,7 +285,6 @@ define(function (require, exports, module) {
             if (editorCollapsed) {
                 _applyCollapsedLayout();
             }
-            _updateSidebarToggleIcon();
             if (e.type === "panelResizeEnd") {
                 _forwardResizeToMainToolbar("panelResizeEnd");
             }
@@ -400,7 +361,6 @@ define(function (require, exports, module) {
             };
         }
 
-        _updateSidebarToggleIcon();
     });
 
 

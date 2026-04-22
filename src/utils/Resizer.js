@@ -366,7 +366,11 @@ define(function (require, exports, module) {
 
         function adjustSibling(size) {
             if (forceLeft !== undefined) {
-                $(forceLeft, $parent).css("left", size);
+                // Account for the element's own left offset (e.g. the sidebar
+                // starts after the control bar at left:30px, so .content needs
+                // left = 30 + sidebarWidth rather than just sidebarWidth).
+                const elementLeft = parseInt($element.css("left"), 10) || 0;
+                $(forceLeft, $parent).css("left", elementLeft + size);
             } else if (forceRight !== undefined) {
                 $(forceRight, $parent).css("right", size);
             }
@@ -643,7 +647,8 @@ define(function (require, exports, module) {
             // Adjust the sideBar's width in case it exceeds the window's width when resizing the window.
             $sideBar.width(sideBarMaxSize);
             resyncSizer($sideBar);
-            $(".content").css("left", $sideBar.width());
+            const sidebarLeft = parseInt($sideBar.css("left"), 10) || 0;
+            $(".content").css("left", sidebarLeft + $sideBar.width());
             $sideBar.trigger(EVENT_PANEL_RESIZE_START, $sideBar.width());
             $sideBar.trigger(EVENT_PANEL_RESIZE_UPDATE, [$sideBar.width()]);
             $sideBar.trigger(EVENT_PANEL_RESIZE_END, [$sideBar.width()]);

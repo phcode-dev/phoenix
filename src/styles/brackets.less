@@ -259,14 +259,14 @@ a, img {
 
     .sidebar {
         .vbox;
-        left: 0;
+        left: @central-control-bar-width;
         width: @sidebar-width;  // changed dynamically via Resizer
         white-space: nowrap;
     }
 
     .content {
         padding: 0;
-        left: (@sidebar-width + 30px);  // changed dynamically via Resizer + CentralControlBar
+        left: (@central-control-bar-width + @sidebar-width);  // changed dynamically via Resizer
         right: @main-toolbar-width;
         z-index: @z-index-brackets-main-content;
         border-left: 2px solid rgba(255, 255, 255, 0.10);
@@ -1279,16 +1279,6 @@ a, img {
     top: 7px;
     padding: 4px 6px;
     .sprite-icon(0, 0, 13px, 13px, "images/sprites.svg#newFolder");
-    background-position: center;
-    background-size: cover;
-    opacity: 0.8;
-    z-index: 1;
-}
-
-.show-in-file-tree-btn {
-    top: 7px;
-    padding: 4px 6px;
-    .sprite-icon(0, 0, 13px, 13px, "images/sprites.svg#binoculars");
     background-position: center;
     background-size: cover;
     opacity: 0.8;

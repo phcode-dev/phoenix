@@ -339,7 +339,8 @@ define(function (require, exports, module) {
         }
         width = Math.round(width);
         $sidebar.width(width);
-        $(".content").css("left", width);
+        const sidebarLeft = parseInt($sidebar.css("left"), 10) || 0;
+        $(".content").css("left", sidebarLeft + width);
         Resizer.resyncSizer($sidebar);
         var sidebarPrefs = PreferencesManager.getViewState("sidebar") || {};
         sidebarPrefs.size = width;

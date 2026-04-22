@@ -18,28 +18,22 @@
  *
  */
 
-/* Central vertical control bar between sidebar and editor content */
-
-@central-control-bar-width: 30px;
+/* Vertical control bar docked to the left edge of the window */
 
 #centralControlBar {
     position: absolute;
     top: 0;
+    left: 0;
     height: 100%;
     width: @central-control-bar-width;
-    left: @sidebar-width; /* updated dynamically when sidebar resizes */
-    z-index: @z-index-brackets-main-content + 1;
+    z-index: @z-index-brackets-main-toolbar;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     padding: 4px 0;
     box-sizing: border-box;
     user-select: none;
-    /* Phoenix's sidebar uses a fixed dark panel color (#252525) in both
-       light and dark themes. Use a slightly darker fixed tone here so the
-       control bar reads as a distinct surface next to the sidebar while
-       still staying on-theme in light mode. */
-    background-color: #222;
+    background-color: @main-toolbar-background-color;
     border-right: 1px solid rgba(0, 0, 0, 0.45);
 
     .ccb-group {
@@ -55,7 +49,35 @@
         background-color: rgba(255, 255, 255, 0.06);
     }
 
-    /* New-style buttons (icons with FA) */
+    .ccb-spacer {
+        flex: 1 1 auto;
+    }
+
+    .claude-ai-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-color: currentColor;
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M25.5 3c-.6-2.1-3.6-2.1-4.2 0L18.6 12a3 3 0 0 1-2 2L7.5 16.8c-2.1.6-2.1 3.6 0 4.2L16.6 24a3 3 0 0 1 2 2l2.7 9.1c.6 2.1 3.6 2.1 4.2 0L28.2 26a3 3 0 0 1 2-2l9.1-2.7c2.1-.6 2.1-3.6 0-4.2L30.2 14a3 3 0 0 1-2-2L25.5 3ZM40.3 30.5c-.3-1.2-2-1.2-2.4 0l-1 3.4a1.7 1.7 0 0 1-1.1 1.1l-3.4 1c-1.2.3-1.2 2 0 2.4l3.4 1c.5.2 1 .6 1.1 1.1l1 3.4c.3 1.2 2 1.2 2.4 0l1-3.4c.2-.5.6-1 1.1-1.1l3.4-1c1.2-.3 1.2-2 0-2.4l-3.4-1a1.7 1.7 0 0 1-1.1-1.1l-1-3.4Z'/%3E%3C/svg%3E");
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M25.5 3c-.6-2.1-3.6-2.1-4.2 0L18.6 12a3 3 0 0 1-2 2L7.5 16.8c-2.1.6-2.1 3.6 0 4.2L16.6 24a3 3 0 0 1 2 2l2.7 9.1c.6 2.1 3.6 2.1 4.2 0L28.2 26a3 3 0 0 1 2-2l9.1-2.7c2.1-.6 2.1-3.6 0-4.2L30.2 14a3 3 0 0 1-2-2L25.5 3ZM40.3 30.5c-.3-1.2-2-1.2-2.4 0l-1 3.4a1.7 1.7 0 0 1-1.1 1.1l-3.4 1c-1.2.3-1.2 2 0 2.4l3.4 1c.5.2 1 .6 1.1 1.1l1 3.4c.3 1.2 2 1.2 2.4 0l1-3.4c.2-.5.6-1 1.1-1.1l3.4-1c1.2-.3 1.2-2 0-2.4l-3.4-1a1.7 1.7 0 0 1-1.1-1.1l-1-3.4Z'/%3E%3C/svg%3E");
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+    }
+
+    /* Override legacy sprite styles that NavigationProvider applies */
+    #searchNav {
+        background: transparent !important;
+        top: auto !important;
+        padding: 0 !important;
+        width: auto !important;
+        height: 28px !important;
+        content: normal !important;
+    }
+
     .ccb-btn {
         display: flex;
         align-items: center;
@@ -73,12 +95,6 @@
             pointer-events: none;
         }
 
-        svg.ccb-edit-icon {
-            width: 15px;
-            height: 11px;
-            pointer-events: none;
-        }
-
         &:hover {
             color: @project-panel-text-1;
             background-color: rgba(255, 255, 255, 0.08);
@@ -89,60 +105,22 @@
             background-color: rgba(255, 255, 255, 0.12);
         }
 
+        &.active {
+            color: @project-panel-text-1;
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+
         &.disabled,
         &[aria-disabled="true"] {
             opacity: 0.4;
             pointer-events: none;
         }
     }
-
-    /* Nudge the collapse-editor icon up so it visually aligns with titlebar icons */
-    #ccbCollapseEditorBtn {
-        margin-top: -2px;
-
-        svg {
-            width: 15px;
-            height: 15px;
-            pointer-events: none;
-        }
-    }
-
-    /* Nav buttons: suppress legacy sprite styles (NavigationProvider toggles enabled/disabled class) */
-    #searchNav,
-    #navBackButton,
-    #navForwardButton {
-        background: transparent !important;
-        top: auto !important;
-        padding: 0 !important;
-        width: auto !important;
-        height: 28px !important;
-        content: normal !important;
-        opacity: 1;
-    }
-
-    #navBackButton.nav-back-btn-disabled,
-    #navForwardButton.nav-forward-btn-disabled {
-        opacity: 0.35;
-        pointer-events: none;
-    }
-
 }
 
 /* Editor collapse: actual layout handled in JS via .content width/visibility */
 .ccb-editor-collapsed .content {
     overflow: hidden;
-}
-
-/* Visually move the sidebar's right-resizer to the right edge of the central
-   control bar, so the drag handle sits between the control bar and the editor
-   / live-preview area. The Resizer keeps the handle at `left: sidebar.width`
-   internally (and keeps bumping it back after reposition), so a transform is
-   used here instead of overriding `left`. Hit-testing follows the transform.
-   When the sidebar is hidden the Resizer moves the handle out to become a
-   sibling of #sidebar inside .main-view — apply the same shift there. */
-#sidebar > .horz-resizer,
-.main-view > .horz-resizer {
-    transform: translateX(@central-control-bar-width);
 }
 
 /* In design mode the sidebar resizer doubles as the sidebar↔live-preview
@@ -153,12 +131,8 @@
 }
 
 /* Cap the sidebar in design mode so the live-preview panel always keeps at
-   least ~200px of its own. A percentage of the viewport (e.g. 70vw) became
-   too wide on large screens — the live preview would shrink to a useless
-   sliver. Enforcing this via CSS max-width stops the drag itself rather than
-   snapping back after the Resizer has already written a larger value, which
-   also avoids ResizeObserver loop warnings from rapid width writes. The
-   230px accounts for the 30px control bar plus a 200px LP minimum. */
+   least ~200px of its own. The 230px accounts for the 30px control bar
+   plus a 200px LP minimum. */
 .ccb-editor-collapsed #sidebar {
     max-width: ~"calc(100vw - 230px)";
 }
