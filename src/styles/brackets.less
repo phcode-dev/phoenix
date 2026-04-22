@@ -679,8 +679,10 @@ a, img {
 
 
 #sync-button {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
+    background-size: 26px;
+    background-position: center;
 }
 
 #help-button {
@@ -698,7 +700,7 @@ a, img {
 
 .user {
     background: url("images/circle-user-solid.svg") center no-repeat;
-    background-size: 18px 18px;
+    background-size: 20px 20px;
 }
 
 #editor-holder {
@@ -1163,39 +1165,34 @@ a, img {
 }
 
 #toolbar-go-live {
-    // background-position is 0 0 for 24x24 icons
-    // Default icon is for the 'disconnected' state
-    // The 'connecting failed' (.warning) state also maps here
-    .sprite-icon(0, 0, 24px, 24px, "images/live_development_sprites.svg");
-    // 'Connected' state
+    .sprite-icon(0, 0, 28px, 28px, "images/live_development_sprites.svg");
+    background-size: 28px auto;
     &.success {
-        .sprite-swap(0, 24px);
+        background-position: 0 -28px;
     }
-    // 'Connection in progress' state
     &.info {
-        .sprite-swap(0, 48px);
+        background-position: 0 -56px;
     }
-    // 'Out-of-sync' state
     &.out-of-sync {
-        .sprite-swap(0, 72px);
+        background-position: 0 -84px;
     }
-    // 'sync-error'
     &.sync-error {
-        .sprite-swap(0, 96px);
+        background-position: 0 -112px;
     }
 }
 
 #toolbar-extension-manager {
-    .sprite-icon(0, 0, 24px, 24px, "images/extension-manager-sprite.svg");
+    .sprite-icon(0, 0, 28px, 28px, "images/extension-manager-sprite.svg");
+    background-size: 28px auto;
     &.updatesAvailable {
-        .sprite-icon(0, 24px, 24px, 24px, "images/extension-manager-sprite.svg");
+        background-position: 0 -28px;
     }
 }
 
 #app-drawer-button {
     background-image: url("images/app-drawer.svg");
     background-position: center;
-    background-size: 16px;
+    background-size: 18px;
 }
 
 /* Project panel */
