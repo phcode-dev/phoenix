@@ -1,7 +1,12 @@
 <div id="panel-live-preview">
     <div id="live-preview-plugin-toolbar" class="plugin-toolbar" style="display: flex; align-items: center; flex-direction: row;">
         <div style="width: 20%;display: flex;">
-            <button id="reloadLivePreviewButton" title="{{clickToReload}}" class="btn-alt-quiet toolbar-button reload-icon"></button>
+            <button id="reloadLivePreviewButton" title="{{clickToReload}}" class="btn-alt-quiet toolbar-button">
+	            <i class="fa-solid fa-arrow-rotate-right"></i>
+	        </button>
+	        <button id="designModeToggleLivePreviewButton" title="{{switchToDesignMode}}" class="btn-alt-quiet toolbar-button">
+	            <i class="fa-solid fa-expand"></i>
+	        </button>
 	        <button id="previewModeLivePreviewButton" title="{{clickToPreview}}" class="btn-alt-quiet toolbar-button">
 	            <i class="fa-solid fa-play"></i>
 	        </button>

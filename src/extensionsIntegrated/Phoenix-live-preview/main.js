@@ -169,7 +169,8 @@ define(function (require, exports, module) {
         $firefoxButtonBallast,
         $panelTitle,
         $modeBtn,
-        $previewBtn;
+        $previewBtn,
+        $designModeBtn;
 
     let customLivePreviewBannerShown = false;
 
@@ -341,11 +342,15 @@ define(function (require, exports, module) {
      * Does not hide in custom server mode (handled by _isMdviewrActive being false).
      */
     function _updateLPControlsForMdviewer() {
+        const inDesignMode = WorkspaceManager.isInDesignMode && WorkspaceManager.isInDesignMode();
         if ($previewBtn) {
             $previewBtn.toggle(!_isMdviewrActive);
         }
         if ($modeBtn) {
-            $modeBtn.toggle(!_isMdviewrActive);
+            // Also hidden in design mode (see $designModeBtn wiring in
+            // _createExtensionPanel) because the preview-mode dropdown is moot
+            // when the editor is fully collapsed.
+            $modeBtn.toggle(!_isMdviewrActive && !inDesignMode);
         }
     }
 
@@ -761,6 +766,7 @@ define(function (require, exports, module) {
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
             clickToPreview: Strings.LIVE_PREVIEW_MODE_TOGGLE_PREVIEW,
+            switchToDesignMode: Strings.CCB_SWITCH_TO_DESIGN_MODE,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
@@ -792,6 +798,7 @@ define(function (require, exports, module) {
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $modeBtn = $panel.find("#livePreviewModeBtn");
         $previewBtn = $panel.find("#previewModeLivePreviewButton");
+        $designModeBtn = $panel.find("#designModeToggleLivePreviewButton");
 
         // Markdown theme toggle — persist user choice
         MarkdownSync.setThemeToggleHandler((theme) => {
@@ -870,6 +877,31 @@ define(function (require, exports, module) {
             _loadPreview(true, true);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
+
+        // Design-mode toggle: mirrors the CCB's pen-nib button so the user can
+        // enter/exit design mode without moving focus to the sidebar strip.
+        // Icon swaps between fa-expand (enter) and fa-compress (exit); while
+        // design mode is on, hide #livePreviewModeBtn (the preview-mode dropdown)
+        // since its options are moot when the editor is fully collapsed.
+        function _updateDesignModeButton() {
+            const on = WorkspaceManager.isInDesignMode && WorkspaceManager.isInDesignMode();
+            const $icon = $designModeBtn.find("i");
+            $icon.removeClass("fa-expand fa-compress")
+                .addClass(on ? "fa-compress" : "fa-expand");
+            $designModeBtn.attr("title",
+                on ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
+            if ($modeBtn) {
+                $modeBtn.toggle(!on && !_isMdviewrActive);
+            }
+        }
+        $designModeBtn.click(()=>{
+            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "designModeBtn", "click");
+        });
+        WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_DESIGN_MODE_CHANGE + ".livePreview");
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_DESIGN_MODE_CHANGE + ".livePreview",
+            _updateDesignModeButton);
+        _updateDesignModeButton();
 
         // init the status overlay
         _initOverlay();
