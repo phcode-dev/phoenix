@@ -544,6 +544,7 @@ define({
     "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Image search is temporarily unavailable due to high demand. This usually clears within an hour — please try again shortly.",
     "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
     "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Toggle Preview Mode (F8)",
+    "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Toggle Edit Mode (F8)",
     "LIVE_PREVIEW_MODE_PREVIEW": "Preview Mode",
     "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
     "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",

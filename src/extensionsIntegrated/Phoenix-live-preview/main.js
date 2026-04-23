@@ -369,8 +369,10 @@ define(function (require, exports, module) {
     function _initializeMode() {
         const currentMode = LiveDevelopment.getCurrentMode();
 
-        // when in preview mode, we need to give the play button a selected state
-        if (currentMode === LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE) {
+        // Pencil button lights up only when edit mode is active; preview /
+        // highlight modes leave it un-tinted. Click toggles between edit
+        // and preview.
+        if (currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE) {
             $previewBtn.addClass('selected');
         } else {
             $previewBtn.removeClass('selected');
@@ -744,19 +746,29 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Handle preview button click - toggles between preview mode and the user's default mode.
-     * PRO users toggle between preview and edit mode.
-     * community users toggle between preview and highlight mode.
+     * Toggles between edit mode and preview mode. The pencil button lights up
+     * (via .selected applied in _initializeMode) when edit mode is active;
+     * clicking it when already in edit drops back to preview. Clicking when
+     * NOT in edit tries to enter edit through LiveDevelopment.setMode, which
+     * returns false for users without the live-edit entitlement — in that
+     * case we show the same pro upsell dialog the mode dropdown uses,
+     * mirroring its "Edit Mode" item. _initializeMode reconciles the
+     * .selected class against the actual current mode after the pref
+     * change lands.
      */
     function _handlePreviewBtnClick() {
-        if($previewBtn.hasClass('selected')) {
-            $previewBtn.removeClass('selected');
-            const defaultMode = isProEditUser ? 'edit' : 'highlight';
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, defaultMode);
-        } else {
-            // Currently NOT in preview mode - switch to preview
-            $previewBtn.addClass('selected');
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+        const currentMode = LiveDevelopment.getCurrentMode();
+        if (currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE) {
+            LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE);
+            return;
+        }
+        if (!LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE)) {
+            if (KernalModeTrust.ProDialogs) {
+                KernalModeTrust.ProDialogs.showProUpsellDialog(
+                    KernalModeTrust.ProDialogs.UPSELL_TYPE_LIVE_EDIT);
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "proUpsellDlg", "fail");
+            }
         }
     }
 
@@ -765,7 +777,7 @@ define(function (require, exports, module) {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
-            clickToPreview: Strings.LIVE_PREVIEW_MODE_TOGGLE_PREVIEW,
+            clickToToggleEdit: Strings.LIVE_PREVIEW_MODE_TOGGLE_EDIT,
             switchToDesignMode: Strings.CCB_SWITCH_TO_DESIGN_MODE,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
