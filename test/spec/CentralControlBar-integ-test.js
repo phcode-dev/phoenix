@@ -316,6 +316,22 @@ define(function (require, exports, module) {
                 expect($label.find(".ccb-file-dot").length).toBe(1);
             });
 
+            it("should only be visible in design mode (hidden in code mode)", async function () {
+                // The active file is already obvious from the tab bar / working
+                // files list in code mode, so the vertical label (and its
+                // leading divider) are hidden and only surface in design mode.
+                expect(_$("#ccbFileLabel").is(":visible")).toBe(false);
+                expect(_$("#centralControlBar .ccb-file-divider").is(":visible")).toBe(false);
+
+                await enterDesignMode();
+                expect(_$("#ccbFileLabel").is(":visible")).toBe(true);
+                expect(_$("#centralControlBar .ccb-file-divider").is(":visible")).toBe(true);
+
+                await exitDesignMode();
+                expect(_$("#ccbFileLabel").is(":visible")).toBe(false);
+                expect(_$("#centralControlBar .ccb-file-divider").is(":visible")).toBe(false);
+            });
+
             it("should show the active file's name and clear it when no file is open", async function () {
                 await awaitsForDone(
                     SpecRunnerUtils.openProjectFiles(["somelines.html"]),

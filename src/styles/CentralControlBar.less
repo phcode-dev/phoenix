@@ -181,6 +181,15 @@
 
 }
 
+/* The file label is only useful in design mode — in code mode the active
+   file is already obvious from the tab bar / working-files list, so the
+   vertical label (and its preceding divider) would be redundant chrome
+   that steals vertical space in the CCB. */
+body:not(.ccb-editor-collapsed) #centralControlBar .ccb-file-divider,
+body:not(.ccb-editor-collapsed) #centralControlBar .ccb-group-file {
+    display: none;
+}
+
 /* Editor collapse: actual layout handled in JS via .content width/visibility */
 .ccb-editor-collapsed .content {
     overflow: hidden;
