@@ -105,6 +105,15 @@
             height: 15px;
             pointer-events: none;
         }
+
+        /* Design mode on — give the button a "pressed chip" look. The lighter
+           background reads as a selected toolbar item without introducing a
+           new accent color into the middle of the UI. Icon color unchanged. */
+        &.is-active,
+        &.is-active:hover {
+            background-color: rgba(255, 255, 255, 0.12);
+            color: @project-panel-text-1;
+        }
     }
 
 }
