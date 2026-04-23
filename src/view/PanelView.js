@@ -990,12 +990,12 @@ define(function (require, exports, module) {
         let $btn = _$tabBar.find(".bottom-panel-maximize-btn");
         let $icon = $btn.find("i");
         if (_isMaximized) {
-            $icon.removeClass("fa-regular fa-square")
-                .addClass("fa-regular fa-window-restore");
+            $icon.removeClass("fa-solid fa-expand")
+                .addClass("fa-solid fa-compress");
             $btn.attr("title", Strings.BOTTOM_PANEL_RESTORE);
         } else {
-            $icon.removeClass("fa-regular fa-window-restore")
-                .addClass("fa-regular fa-square");
+            $icon.removeClass("fa-solid fa-compress")
+                .addClass("fa-solid fa-expand");
             $btn.attr("title", Strings.BOTTOM_PANEL_MAXIMIZE);
         }
     }
