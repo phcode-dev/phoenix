@@ -2358,7 +2358,7 @@ define({
     "DEMO_EDIT_MODE_DESCRIPTION": "Select and change things on the page",
     "DEMO_PREVIEW_MODE_LABEL": "Preview mode",
     "DEMO_PREVIEW_MODE_DESCRIPTION": "See your page as visitors will see it",
-    "DEMO_MODE_SWITCH_HINT": "Press <strong>F8</strong> or click the <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> buttons to switch modes.",
+    "DEMO_MODE_SWITCH_HINT": "Press <strong>F8</strong> or click the <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> button to switch modes.",
     "DEMO_TIPS_LABEL": "Tips:",
     "DEMO_SECTION6_TIP1": "Click any link to select it for editing",
     "DEMO_SECTION6_TIP2_NEWTAB": "Enable <strong>Open in new tab</strong> to open links on a separate page",
