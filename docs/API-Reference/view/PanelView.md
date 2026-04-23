@@ -69,12 +69,6 @@ recomputeLayout callback from WorkspaceManager
 The default/quick-access panel ID
 
 **Kind**: global variable  
-<a name="_$addBtn"></a>
-
-## \_$addBtn : <code>jQueryObject</code>
-The "+" button inside the tab overflow area
-
-**Kind**: global variable  
 <a name="_$overflowBtn"></a>
 
 ## \_$overflowBtn : <code>jQueryObject</code>
