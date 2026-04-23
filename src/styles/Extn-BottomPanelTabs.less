@@ -237,8 +237,7 @@
     /* Fix all collapsed tabs to the same width so the UI doesn't shake
        when switching active tab. The width matches the active tab's
        natural content (icon + close button) using fixed px since the
-       icon has a fixed size. The Tools button (.bottom-panel-add-btn)
-       is a separate element and keeps its natural "Tools" text width. */
+       icon has a fixed size. */
     .bottom-panel-tab {
         min-width: 63px;
         box-sizing: border-box;
@@ -247,7 +246,7 @@
     .bottom-panel-tab:not(.active) .bottom-panel-tab-close-btn {
         display: none;
     }
-    /* Default panel (Tools) tab: keep natural width and show its title
+    /* Pinned Quick Access tab: keep natural width and show its title
        even in collapsed mode (other tabs collapse to icon-only). */
     .bottom-panel-tab.bottom-panel-tab-default {
         min-width: auto;
@@ -304,42 +303,14 @@
     }
 }
 
-.bottom-panel-add-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-    height: 2rem;
-    min-width: 70px;
-    line-height: 2rem;
-    cursor: pointer;
-    color: #888;
-    font-size: 0.82rem;
-    flex: 0 0 auto;
-    white-space: nowrap;
-    user-select: none;
-    -webkit-user-drag: none;
-    transition: color 0.12s ease, background-color 0.12s ease;
-
-    img {
-        -webkit-user-drag: none;
-        pointer-events: none;
-    }
+/* Pinned Quick Access tab: subtle separator to distinguish it from regular tabs */
+.bottom-panel-tab.bottom-panel-tab-default {
+    padding-right: 0.8rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
 
     .dark & {
-        color: #777;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
-
-    &:hover {
-        background-color: #e0e0e0;
-        color: #333;
-
-        .dark & {
-            background-color: #333;
-            color: #eee;
-        }
-    }
-
 }
 
 .bottom-panel-tab-bar-actions {

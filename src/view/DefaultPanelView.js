@@ -198,11 +198,9 @@ define(function (require, exports, module) {
             }
         });
 
-        // Auto-hide when any other panel is shown; update drawer button state.
+        // Update drawer button state when panels are shown.
         PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (event, panelID) {
-            if (panelID !== WorkspaceManager.DEFAULT_PANEL_ID) {
-                _panel.hide();
-            } else {
+            if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
                 _updateButtonVisibility();
             }
             $drawerBtn.toggleClass("selected-button", panelID === WorkspaceManager.DEFAULT_PANEL_ID);
