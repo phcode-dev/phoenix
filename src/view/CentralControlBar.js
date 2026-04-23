@@ -37,7 +37,6 @@ define(function (require, exports, module) {
     let livePreviewWasOpen = false;
     let savedSidebarMaxSize = null;
     let applyingCollapsedLayout = false;
-    let penNibIconHTML = null;
 
     function _getRenderedSidebarWidth() {
         // Use offsetWidth (not jQuery's outerWidth) to force a synchronous reflow
@@ -218,7 +217,6 @@ define(function (require, exports, module) {
         const $collapseBtn = $("#ccbCollapseEditorBtn");
         $collapseBtn.toggleClass("is-active", editorCollapsed)
             .attr("title", editorCollapsed ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
-        $collapseBtn.html(editorCollapsed ? '<i class="fa-solid fa-code"></i>' : penNibIconHTML);
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
         }
@@ -276,10 +274,6 @@ define(function (require, exports, module) {
         $bar = $("#centralControlBar");
         $sidebar = $("#sidebar");
         $content = $(".content");
-
-        // Cache the authored pen-nib SVG from the DOM so the toggle handler
-        // can restore it after swapping in the fa-code icon for design mode.
-        penNibIconHTML = $("#ccbCollapseEditorBtn").html();
 
         _wireButtons();
         // The HTML titles on the control-bar buttons are fallback English
