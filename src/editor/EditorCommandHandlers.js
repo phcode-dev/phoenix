@@ -33,6 +33,7 @@ define(function (require, exports, module) {
         Editor = require("editor/Editor").Editor,
         CommandManager = require("command/CommandManager"),
         EditorManager = require("editor/EditorManager"),
+        WorkspaceManager = require("view/WorkspaceManager"),
         StringUtils = require("utils/StringUtils"),
         TokenUtils = require("utils/TokenUtils"),
         CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
@@ -1184,6 +1185,16 @@ define(function (require, exports, module) {
     function handleUndoRedo(operation) {
         var editor = EditorManager.getFocusedEditor();
         var result = new $.Deferred();
+
+        // In design mode the active document often lives behind an external
+        // surface that owns DOM focus (e.g. the markdown viewer iframe in
+        // edit mode), so getFocusedEditor() returns null even though there
+        // is an underlying Phoenix editor whose doc captures the changes.
+        // Fall back to the active-pane full editor so toolbar undo/redo
+        // still drives the document's history in that state.
+        if (!editor && WorkspaceManager.isInDesignMode()) {
+            editor = EditorManager.getCurrentFullEditor();
+        }
 
         if (editor) {
             editor[operation]();
