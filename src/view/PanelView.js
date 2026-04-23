@@ -277,8 +277,55 @@ define(function (require, exports, module) {
             _$tabBar.find(".bottom-panel-tab").removeClass("drag-target");
         }
 
+        // Find the closest non-default, non-dragged tab to mouseX
+        function findNearestDropTarget(mouseX) {
+            let closest = null;
+            let closestDist = Infinity;
+            _$tabsOverflow.find(".bottom-panel-tab").each(function () {
+                if (this === draggedTab) {
+                    return;
+                }
+                if ($(this).data("panel-id") === _defaultPanelId) {
+                    return;
+                }
+                const rect = this.getBoundingClientRect();
+                const dist = Math.min(Math.abs(mouseX - rect.left), Math.abs(mouseX - rect.right));
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    closest = this;
+                }
+            });
+            return closest;
+        }
+
+        // Perform the reorder in _openIds and rebuild the tab bar
+        function reorderTabs(targetEl, mouseX) {
+            if (!draggedTab || targetEl === draggedTab) {
+                return;
+            }
+            let draggedId = $(draggedTab).data("panel-id");
+            let targetId = $(targetEl).data("panel-id");
+            let fromIdx = _openIds.indexOf(draggedId);
+            let toIdx = _openIds.indexOf(targetId);
+            if (fromIdx === -1 || toIdx === -1) {
+                return;
+            }
+            const insertBefore = getDropPosition(targetEl, mouseX);
+            _openIds.splice(fromIdx, 1);
+            let newIdx = _openIds.indexOf(targetId);
+            if (!insertBefore) {
+                newIdx++;
+            }
+            // Never place a tab before the pinned Quick Access tab at index 0
+            if (newIdx < 1 && _defaultPanelId && _openIds[0] === _defaultPanelId) {
+                newIdx = 1;
+            }
+            _openIds.splice(newIdx, 0, draggedId);
+            _updateBottomPanelTabBar();
+            _updateActiveTabHighlight();
+        }
+
         _$tabBar.on("dragstart", ".bottom-panel-tab", function (e) {
-            // Default panel (Tools) tab is never draggable
             if ($(this).data("panel-id") === _defaultPanelId) {
                 e.preventDefault();
                 return;
@@ -297,7 +344,6 @@ define(function (require, exports, module) {
             if (!draggedTab || this === draggedTab) {
                 return;
             }
-            // Don't allow dropping onto the pinned Quick Access tab
             if ($(this).data("panel-id") === _defaultPanelId) {
                 return;
             }
@@ -305,13 +351,31 @@ define(function (require, exports, module) {
             e.originalEvent.dataTransfer.dropEffect = "move";
             _$tabBar.find(".bottom-panel-tab").removeClass("drag-target");
             $(this).addClass("drag-target");
-            let insertBefore = getDropPosition(this, e.originalEvent.clientX);
-            // Can't insert before the first non-default tab (would go ahead of pinned tab)
-            const targetIdx = _openIds.indexOf($(this).data("panel-id"));
-            if (insertBefore && targetIdx <= 1) {
-                insertBefore = false;
+            updateIndicator(this, getDropPosition(this, e.originalEvent.clientX));
+        });
+
+        // Fallback dragover on the overflow container: handles gaps between
+        // tabs, empty space after the last tab, and the Quick Access tab area
+        // by snapping to the nearest valid drop target.
+        _$tabsOverflow.on("dragover", function (e) {
+            if (!draggedTab) {
+                return;
             }
-            updateIndicator(this, insertBefore);
+            // Skip if already over a valid tab (the tab handler above covers it)
+            const $closestTab = $(e.target).closest(".bottom-panel-tab");
+            if ($closestTab.length && $closestTab[0] !== draggedTab
+                && $closestTab.data("panel-id") !== _defaultPanelId) {
+                return;
+            }
+            const nearest = findNearestDropTarget(e.originalEvent.clientX);
+            if (!nearest) {
+                return;
+            }
+            e.preventDefault();
+            e.originalEvent.dataTransfer.dropEffect = "move";
+            _$tabBar.find(".bottom-panel-tab").removeClass("drag-target");
+            $(nearest).addClass("drag-target");
+            updateIndicator(nearest, getDropPosition(nearest, e.originalEvent.clientX));
         });
 
         _$tabBar.on("dragleave", ".bottom-panel-tab", function (e) {
@@ -328,28 +392,23 @@ define(function (require, exports, module) {
                 cleanup();
                 return;
             }
-            let draggedId = $(draggedTab).data("panel-id");
-            let targetId = $(this).data("panel-id");
-            let fromIdx = _openIds.indexOf(draggedId);
-            let toIdx = _openIds.indexOf(targetId);
-            if (fromIdx === -1 || toIdx === -1) {
+            reorderTabs(this, e.originalEvent.clientX);
+            cleanup();
+        });
+
+        // Fallback drop on the overflow container
+        _$tabsOverflow.on("drop", function (e) {
+            if (!draggedTab) {
                 cleanup();
                 return;
             }
-            const insertBefore = getDropPosition(this, e.originalEvent.clientX);
-            _openIds.splice(fromIdx, 1);
-            let newIdx = _openIds.indexOf(targetId);
-            if (!insertBefore) {
-                newIdx++;
+            const nearest = findNearestDropTarget(e.originalEvent.clientX);
+            if (nearest) {
+                e.preventDefault();
+                e.stopPropagation();
+                reorderTabs(nearest, e.originalEvent.clientX);
             }
-            // Never place a tab before the pinned Quick Access tab at index 0
-            if (newIdx < 1 && _defaultPanelId && _openIds[0] === _defaultPanelId) {
-                newIdx = 1;
-            }
-            _openIds.splice(newIdx, 0, draggedId);
             cleanup();
-            _updateBottomPanelTabBar();
-            _updateActiveTabHighlight();
         });
     }
 
