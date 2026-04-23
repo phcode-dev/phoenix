@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaits */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, awaits */
 
 define(function (require, exports, module) {
 
@@ -289,6 +289,102 @@ define(function (require, exports, module) {
 
             it("should have no #sidebar-toggle-btn in the DOM (legacy menubar button removed)", function () {
                 expect(_$("#sidebar-toggle-btn").length).toBe(0);
+            });
+        });
+
+        describe("2b. #ccbFileLabel (active-file indicator)", function () {
+            let DocumentManager, MainViewManager;
+
+            beforeAll(function () {
+                DocumentManager = brackets.test.DocumentManager;
+                MainViewManager = brackets.test.MainViewManager;
+            });
+
+            afterAll(async function () {
+                // Leave the suite in the same "no file open" state we found it
+                // in so later describes don't pick up a stray document.
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close files opened by ccbFileLabel tests");
+            });
+
+            it("should render #ccbFileLabel inside #centralControlBar", function () {
+                const $label = _$("#ccbFileLabel");
+                expect($label.length).toBe(1);
+                expect($label.closest("#centralControlBar").length).toBe(1);
+                expect($label.find(".ccb-file-name").length).toBe(1);
+                expect($label.find(".ccb-file-dot").length).toBe(1);
+            });
+
+            it("should show the active file's name and clear it when no file is open", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["somelines.html"]),
+                    "open somelines.html");
+                await awaitsFor(function () {
+                    return _$("#ccbFileLabel .ccb-file-name").text() === "somelines.html";
+                }, "file label to show somelines.html", 2000);
+                expect(_$("#ccbFileLabel").attr("title")).toContain("somelines.html");
+
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close all files");
+                await awaitsFor(function () {
+                    return _$("#ccbFileLabel .ccb-file-name").text() === "";
+                }, "file label to clear when no doc", 2000);
+            });
+
+            it("should toggle .is-dirty as the active document's dirty flag changes", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["somelines.html"]),
+                    "open somelines.html");
+                await awaitsFor(function () {
+                    return _$("#ccbFileLabel .ccb-file-name").text() === "somelines.html";
+                }, "file label primed", 2000);
+
+                expect(_$("#ccbFileLabel").hasClass("is-dirty")).toBe(false);
+
+                const doc = DocumentManager.getCurrentDocument();
+                const originalText = doc.getText();
+                doc.setText(originalText + "\n// ccb dirty probe");
+                await awaitsFor(function () {
+                    return _$("#ccbFileLabel").hasClass("is-dirty");
+                }, ".is-dirty to appear after setText", 2000);
+
+                doc.refreshText(originalText, doc.diskTimestamp);
+                await awaitsFor(function () {
+                    return !_$("#ccbFileLabel").hasClass("is-dirty");
+                }, ".is-dirty to clear after refresh", 2000);
+            });
+
+            it("should dispatch NAVIGATE_SHOW_IN_FILE_TREE when clicked", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["somelines.html"]),
+                    "open somelines.html");
+                await awaitsFor(function () {
+                    return _$("#ccbFileLabel .ccb-file-name").text() === "somelines.html";
+                }, "file label primed", 2000);
+
+                const executed = recordCommands(function () {
+                    _$("#ccbFileLabel").trigger("click");
+                });
+                expect(executed).toContain(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+            });
+
+            it("should update when the active file switches", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["somelines.html"]),
+                    "open somelines.html");
+                await awaitsFor(function () {
+                    return _$("#ccbFileLabel .ccb-file-name").text() === "somelines.html";
+                }, "somelines.html label", 2000);
+
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["lotsOfLines.html"]),
+                    "open lotsOfLines.html");
+                await awaitsFor(function () {
+                    return _$("#ccbFileLabel .ccb-file-name").text() === "lotsOfLines.html";
+                }, "label to switch to lotsOfLines.html", 2000);
+                expect(_$("#ccbFileLabel").attr("title")).toContain("lotsOfLines.html");
             });
         });
 
