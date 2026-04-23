@@ -166,11 +166,12 @@
     display: none;
 }
 
-/* Default panel (Tools) tab: always show the icon alongside the title,
-   in both expanded and collapsed modes, active or inactive. */
+/* Pinned Quick Access tab: icon-only, always visible */
 .bottom-panel-tab.bottom-panel-tab-default .bottom-panel-tab-icon {
     display: inline-flex;
-    margin-right: 0.4rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
 }
 
 .default-panel-btn .panel-titlebar-icon {
@@ -246,14 +247,9 @@
     .bottom-panel-tab:not(.active) .bottom-panel-tab-close-btn {
         display: none;
     }
-    /* Pinned Quick Access tab: keep natural width and show its title
-       even in collapsed mode (other tabs collapse to icon-only). */
+    /* Pinned Quick Access tab: icon-only, keeps its natural width */
     .bottom-panel-tab.bottom-panel-tab-default {
         min-width: auto;
-        justify-content: flex-start;
-    }
-    .bottom-panel-tab.bottom-panel-tab-default .bottom-panel-tab-title {
-        display: inline;
     }
 }
 
@@ -303,13 +299,17 @@
     }
 }
 
-/* Pinned Quick Access tab: subtle separator to distinguish it from regular tabs */
+/* Pinned Quick Access tab: icon-only with separator */
 .bottom-panel-tab.bottom-panel-tab-default {
-    padding-right: 0.8rem;
+    padding: 0 0.6rem;
+    min-width: auto;
+    justify-content: center;
     border-right: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: transparent;
 
     .dark & {
         border-right: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: transparent;
     }
 }
 

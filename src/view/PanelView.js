@@ -159,8 +159,11 @@ define(function (require, exports, module) {
         $icon[0].style.maskImage = maskUrl;
         $icon[0].style.webkitMaskImage = maskUrl;
         $tab.append($icon);
-        $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
-        if (!isDefault) {
+        if (isDefault) {
+            // Icon-only tab with tooltip
+            $tab.attr('title', title);
+        } else {
+            $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
             $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
         }
         return $tab;
@@ -391,9 +394,13 @@ define(function (require, exports, module) {
             _$overflowBtn.toggle(stillOverflowing);
         }
 
-        // Show tooltip on hover only in collapsed mode (title text is hidden)
+        // Show tooltip on hover only in collapsed mode (title text is hidden).
+        // The pinned Quick Access tab always keeps its tooltip (icon-only).
         _$tabBar.find(".bottom-panel-tab").each(function () {
             const $tab = $(this);
+            if ($tab.data("panel-id") === _defaultPanelId) {
+                return;
+            }
             if (isOverflowing) {
                 $tab.attr("title", $tab.find(".bottom-panel-tab-title").text());
             } else {
