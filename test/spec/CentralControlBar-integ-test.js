@@ -332,26 +332,20 @@ define(function (require, exports, module) {
                     "design mode to deactivate from click", 10000);
             });
 
-            it("should swap icon (pen-nib svg ↔ fa-code) and title on state change", async function () {
+            it("should swap title on state change (pen-nib svg stays in both states)", async function () {
                 const $btn = _$("#ccbCollapseEditorBtn");
 
-                // Expanded (not in design mode): svg pen-nib + "Switch to Design Mode".
                 expect($btn.find("svg").length).toBe(1);
-                expect($btn.find("i.fa-code").length).toBe(0);
                 expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_DESIGN_MODE);
 
                 await enterDesignMode();
 
-                // Design mode: <i class="fa-solid fa-code"> + "Switch to Code Editor".
-                expect($btn.find("i.fa-code").length).toBe(1);
-                expect($btn.find("svg").length).toBe(0);
+                expect($btn.find("svg").length).toBe(1);
                 expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_CODE_EDITOR);
 
                 await exitDesignMode();
 
-                // Back to expanded — svg restored, title restored.
                 expect($btn.find("svg").length).toBe(1);
-                expect($btn.find("i.fa-code").length).toBe(0);
                 expect($btn.attr("title")).toBe(Strings.CCB_SWITCH_TO_DESIGN_MODE);
             });
         });
