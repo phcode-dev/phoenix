@@ -420,7 +420,7 @@ define(function (require, exports, module) {
                 .attr('title', Strings.BOTTOM_PANEL_MINIMIZE)
         );
         $tabBarActions.append(
-            $('<span class="bottom-panel-maximize-btn"><i class="fa-regular fa-square"></i></span>')
+            $('<span class="bottom-panel-maximize-btn"><i class="fa-solid fa-expand"></i></span>')
                 .attr('title', Strings.BOTTOM_PANEL_MAXIMIZE)
         );
         $bottomPanelTabBar.append($bottomPanelTabsOverflow);
