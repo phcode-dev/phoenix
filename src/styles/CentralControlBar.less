@@ -47,6 +47,14 @@
         flex-direction: column;
         align-items: stretch;
         gap: 2px;
+
+        &.ccb-group-file {
+            flex: 0 1 auto;
+            max-height: 220px;
+            overflow: hidden;
+            justify-content: flex-start;
+            padding: 4px 0;
+        }
     }
 
     .ccb-divider {
@@ -113,6 +121,61 @@
         &.is-active:hover {
             background-color: rgba(255, 255, 255, 0.12);
             color: @project-panel-text-1;
+        }
+    }
+
+    /* Vertical filename label — clicking reveals the current file in the
+       file tree (keeps the old binoculars-on-label affordance). */
+    .ccb-file-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 0;
+        color: @project-panel-text-2;
+        height: 100%;
+        overflow: hidden;
+        cursor: pointer;
+
+        .ccb-file-dot {
+            flex: 0 0 auto;
+            line-height: 1;
+            color: #f1b84e;
+            visibility: hidden;
+            font-size: 1rem;
+        }
+
+        &.is-dirty .ccb-file-dot {
+            visibility: visible;
+        }
+
+        .ccb-file-name {
+            flex: 1 1 auto;
+            min-height: 0;
+            /* `sideways-lr` rotates each glyph 90° CCW so the text reads
+               bottom-up naturally. Using this instead of `vertical-rl` +
+               `transform: rotate(180deg)` avoids the blurry sub-pixel
+               rasterization that the transform path produced on linux
+               electron, because Chromium can take its fast vertical-text
+               path for glyph layout and skip the rotated bitmap upscale. */
+            writing-mode: sideways-lr;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: @project-panel-text-1;
+            font-size: 13px;
+            font-weight: 500;
+            /* Promote to its own compositing layer + force AA — keeps the
+               rotated glyphs crisp even when the system falls back to the
+               slow text path. */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
+        }
+
+        &:hover .ccb-file-name {
+            text-decoration: underline;
         }
     }
 

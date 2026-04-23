@@ -23,6 +23,8 @@ define(function (require, exports, module) {
     const AppInit           = require("utils/AppInit");
     const CommandManager    = require("command/CommandManager");
     const Commands          = require("command/Commands");
+    const DocumentManager   = require("document/DocumentManager");
+    const MainViewManager   = require("view/MainViewManager");
     const Strings           = require("strings");
     const WorkspaceManager  = require("view/WorkspaceManager");
     const SidebarView       = require("project/SidebarView");
@@ -32,6 +34,8 @@ define(function (require, exports, module) {
     let $bar;
     let $sidebar;
     let $content;
+    let $fileLabel;
+    let $fileName;
     let editorCollapsed = false;
     let savedToolbarWidth = null;
     let livePreviewWasOpen = false;
@@ -67,6 +71,35 @@ define(function (require, exports, module) {
                 mainToolbar.style.setProperty("width", fullToolbarWidth + "px", "important");
             }
         }
+    }
+
+    function _updateFileLabel() {
+        if (!$fileLabel) {
+            return;
+        }
+        // Use MainViewManager instead of DocumentManager.getCurrentDocument()
+        // so non-editable views (images, custom viewers, etc.) still show up
+        // on the label. getCurrentDocument() is CodeMirror-backed only and
+        // would leave the label blank whenever the active pane is an image
+        // or other non-CM surface.
+        const file = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+        if (!file) {
+            $fileLabel.removeClass("is-dirty");
+            $fileName.text("");
+            $fileLabel.attr("title", "");
+            return;
+        }
+        const name = file.name || "";
+        const fullPath = file.fullPath || "";
+        const displayPath = fullPath && Phoenix && Phoenix.app && Phoenix.app.getDisplayPath
+            ? Phoenix.app.getDisplayPath(fullPath)
+            : fullPath || name;
+        $fileName.text(name);
+        $fileLabel.attr("title", displayPath);
+        // Dirty only makes sense for files with a document behind them; for
+        // non-editable views there's no doc, so the class simply stays off.
+        const doc = DocumentManager.getOpenDocumentForPath(fullPath);
+        $fileLabel.toggleClass("is-dirty", !!(doc && doc.isDirty));
     }
 
     function _executeCmd(id) {
@@ -263,6 +296,10 @@ define(function (require, exports, module) {
             e.preventDefault();
             _executeCmd(Commands.VIEW_HIDE_SIDEBAR);
         });
+        $("#ccbFileLabel").on("click", function (e) {
+            e.preventDefault();
+            _executeCmd(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+        });
     }
 
     const _toggleDesignModeCommand = CommandManager.register(Strings.CMD_TOGGLE_DESIGN_MODE,
@@ -274,6 +311,8 @@ define(function (require, exports, module) {
         $bar = $("#centralControlBar");
         $sidebar = $("#sidebar");
         $content = $(".content");
+        $fileLabel = $("#ccbFileLabel");
+        $fileName = $fileLabel.find(".ccb-file-name");
 
         _wireButtons();
         // The HTML titles on the control-bar buttons are fallback English
@@ -396,6 +435,11 @@ define(function (require, exports, module) {
         }
 
         _updateSidebarToggleIcon();
+
+        MainViewManager.on("currentFileChange.ccb", _updateFileLabel);
+        DocumentManager.on("dirtyFlagChange.ccb", _updateFileLabel);
+        DocumentManager.on("pathDeleted.ccb fileNameChange.ccb", _updateFileLabel);
+        _updateFileLabel();
     });
 
 
