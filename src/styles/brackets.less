@@ -1295,44 +1295,41 @@ a, img {
     z-index: 1;
 }
 
-.nav-back-btn {
-    top: 7px;
-    padding: 4px 6px;
-    .sprite-icon(0, 0, 13px, 13px, "images/sprites.svg#leftArrow");
-    background-position: center;
-    background-size: cover;
-    opacity: 0.8;
-    z-index: 1;
-}
-
-.nav-forward-btn {
-    top: 7px;
-    padding: 4px 6px;
-    .sprite-icon(0, 0, 13px, 13px, "images/sprites.svg#rightArrow");
-    background-position: center;
-    background-size: cover;
-    opacity: 0.8;
-    z-index: 1;
-}
-
-.nav-back-btn-disabled {
-    top: 7px;
-    padding: 4px 6px;
-    .sprite-icon(0, 0, 13px, 13px, "images/sprites.svg#leftArrowDisabled");
-    background-position: center;
-    background-size: cover;
-    opacity: 0.8;
-    z-index: 1;
-}
-
+/* Back / forward nav buttons use FontAwesome arrows so they match the
+   browser's back/forward affordance and stay visually consistent with
+   the other FA-based sidebar and toolbar buttons. NavigationProvider
+   still toggles .nav-back-btn / .nav-back-btn-disabled (and the forward
+   pair) to signal the enabled state — the rules below read as a single
+   icon button with an enabled/disabled fork. */
+.nav-back-btn,
+.nav-forward-btn,
+.nav-back-btn-disabled,
 .nav-forward-btn-disabled {
     top: 7px;
     padding: 4px 6px;
-    .sprite-icon(0, 0, 13px, 13px, "images/sprites.svg#rightArrowDisabled");
-    background-position: center;
-    background-size: cover;
-    opacity: 0.8;
+    width: 13px;
+    height: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
     z-index: 1;
+
+    i {
+        pointer-events: none;
+    }
+}
+
+.nav-back-btn,
+.nav-forward-btn {
+    opacity: 0.8;
+}
+
+.nav-back-btn-disabled,
+.nav-forward-btn-disabled {
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 .splitview-icon-none {
