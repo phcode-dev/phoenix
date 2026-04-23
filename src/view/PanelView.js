@@ -108,9 +108,6 @@ define(function (require, exports, module) {
     /** @type {string|null} The default/quick-access panel ID */
     let _defaultPanelId = null;
 
-    /** @type {jQueryObject} The "+" button inside the tab overflow area */
-    let _$addBtn = null;
-
     // --- Tab helper functions ---
 
     /**
@@ -149,7 +146,7 @@ define(function (require, exports, module) {
      */
     function _buildTab(panel, isActive) {
         let title = panel._tabTitle || _getPanelTitle(panel.panelID, panel.$panel);
-        // Default panel (Tools) tab is not draggable — it's a fixed slot, not a user tab
+        // Default panel (Quick Access) tab is pinned — not draggable, not closable
         const isDefault = panel.panelID === _defaultPanelId;
         let $tab = $('<div class="bottom-panel-tab"></div>')
             .toggleClass('bottom-panel-tab-default', isDefault)
@@ -163,17 +160,15 @@ define(function (require, exports, module) {
         $icon[0].style.webkitMaskImage = maskUrl;
         $tab.append($icon);
         $tab.append($('<span class="bottom-panel-tab-title"></span>').text(title));
-        $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
+        if (!isDefault) {
+            $tab.append($('<span class="bottom-panel-tab-close-btn">&times;</span>').attr('title', Strings.CLOSE));
+        }
         return $tab;
     }
 
     function _updateBottomPanelTabBar() {
         if (!_$tabsOverflow) {
             return;
-        }
-        // Detach the add button before emptying to preserve its event handlers
-        if (_$addBtn) {
-            _$addBtn.detach();
         }
         _$tabsOverflow.empty();
 
@@ -185,11 +180,6 @@ define(function (require, exports, module) {
             _$tabsOverflow.append(_buildTab(panel, panelId === _activeId));
         });
 
-        // Re-append the Tools button at the end
-        if (_$addBtn) {
-            _$tabsOverflow.append(_$addBtn);
-        }
-        _updateAddButtonVisibility();
         _checkTabOverflow();
     }
 
@@ -226,13 +216,7 @@ define(function (require, exports, module) {
             return;
         }
         let $tab = _buildTab(panel, panelId === _activeId);
-        // Insert before the Tools button so it stays at the end
-        if (_$addBtn && _$addBtn.parent().length) {
-            _$addBtn.before($tab);
-        } else {
-            _$tabsOverflow.append($tab);
-        }
-        _updateAddButtonVisibility();
+        _$tabsOverflow.append($tab);
         _checkTabOverflow();
     }
 
@@ -247,7 +231,6 @@ define(function (require, exports, module) {
             return;
         }
         _$tabsOverflow.find('.bottom-panel-tab[data-panel-id="' + panelId + '"]').remove();
-        _updateAddButtonVisibility();
         _checkTabOverflow();
     }
 
@@ -311,7 +294,7 @@ define(function (require, exports, module) {
             if (!draggedTab || this === draggedTab) {
                 return;
             }
-            // Don't allow dropping onto the default panel (Tools) tab
+            // Don't allow dropping onto the pinned Quick Access tab
             if ($(this).data("panel-id") === _defaultPanelId) {
                 return;
             }
@@ -319,7 +302,13 @@ define(function (require, exports, module) {
             e.originalEvent.dataTransfer.dropEffect = "move";
             _$tabBar.find(".bottom-panel-tab").removeClass("drag-target");
             $(this).addClass("drag-target");
-            updateIndicator(this, getDropPosition(this, e.originalEvent.clientX));
+            let insertBefore = getDropPosition(this, e.originalEvent.clientX);
+            // Can't insert before the first non-default tab (would go ahead of pinned tab)
+            const targetIdx = _openIds.indexOf($(this).data("panel-id"));
+            if (insertBefore && targetIdx <= 1) {
+                insertBefore = false;
+            }
+            updateIndicator(this, insertBefore);
         });
 
         _$tabBar.on("dragleave", ".bottom-panel-tab", function (e) {
@@ -349,6 +338,10 @@ define(function (require, exports, module) {
             let newIdx = _openIds.indexOf(targetId);
             if (!insertBefore) {
                 newIdx++;
+            }
+            // Never place a tab before the pinned Quick Access tab at index 0
+            if (newIdx < 1 && _defaultPanelId && _openIds[0] === _defaultPanelId) {
+                newIdx = 1;
             }
             _openIds.splice(newIdx, 0, draggedId);
             cleanup();
@@ -504,23 +497,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Show or hide the "+" button based on whether the default panel is active.
-     * The button is hidden when the default panel is the active tab (since
-     * clicking "+" would be a no-op) and shown otherwise.
-     * @private
-     */
-    function _updateAddButtonVisibility() {
-        if (!_$addBtn) {
-            return;
-        }
-        if (_defaultPanelId && _activeId === _defaultPanelId) {
-            _$addBtn.hide();
-        } else {
-            _$addBtn.show();
-        }
-    }
-
-    /**
      * Switch the active tab to the given panel. Does not show/hide the container.
      * @param {string} panelId
      * @private
@@ -543,7 +519,6 @@ define(function (require, exports, module) {
             newPanel.$panel.addClass("active-bottom-panel");
         }
         _updateActiveTabHighlight();
-        _updateAddButtonVisibility();
     }
 
 
@@ -567,6 +542,12 @@ define(function (require, exports, module) {
         this._tabTitle = _getPanelTitle(id, $panel, title);
         this._options = options || {};
         _panelMap[id] = this;
+
+        // Quick Access panel is pinned: always at index 0, always in the tab bar
+        if (id === _defaultPanelId && _openIds.indexOf(id) === -1) {
+            _openIds.unshift(id);
+            _addTabToBar(id);
+        }
     }
 
     /**
@@ -666,8 +647,13 @@ define(function (require, exports, module) {
             exports.trigger(EVENT_PANEL_SHOWN, panelId);
             return;
         }
-        // Not open: add to open set
-        _openIds.push(panelId);
+        // Not open: add to open set.
+        // Quick Access panel is always pinned at index 0.
+        if (panelId === _defaultPanelId) {
+            _openIds.unshift(panelId);
+        } else {
+            _openIds.push(panelId);
+        }
 
         // Show container if it was hidden
         if (!_$container.is(":visible")) {
@@ -684,9 +670,26 @@ define(function (require, exports, module) {
      */
     Panel.prototype.hide = function () {
         let panelId = this.panelID;
+
+        // Quick Access panel is pinned — it stays in _openIds and the tab bar.
+        // Hiding it collapses the bottom panel container entirely.
+        if (panelId === _defaultPanelId) {
+            if (_activeId !== panelId) {
+                return;
+            }
+            this.$panel.removeClass("active-bottom-panel");
+            _activeId = null;
+            _updateActiveTabHighlight();
+            if (_$container) {
+                restoreIfMaximized();
+                Resizer.hide(_$container[0]);
+            }
+            exports.trigger(EVENT_PANEL_HIDDEN, panelId);
+            return;
+        }
+
         let idx = _openIds.indexOf(panelId);
         if (idx === -1) {
-            // Not open - no-op
             return;
         }
 
@@ -700,10 +703,9 @@ define(function (require, exports, module) {
         if (wasActive && _openIds.length > 0) {
             let nextIdx = Math.min(idx, _openIds.length - 1);
             activatedId = _openIds[nextIdx];
-            _activeId = null; // clear so _switchToTab runs
+            _activeId = null;
             _switchToTab(activatedId);
         } else if (wasActive) {
-            // No more tabs - hide the container
             _activeId = null;
             if (_$container) {
                 restoreIfMaximized();
@@ -713,10 +715,8 @@ define(function (require, exports, module) {
 
         _removeTabFromBar(panelId);
 
-        // Always fire HIDDEN for the closed panel first
         exports.trigger(EVENT_PANEL_HIDDEN, panelId);
 
-        // Then fire SHOWN for the newly activated tab, if any
         if (activatedId) {
             exports.trigger(EVENT_PANEL_SHOWN, activatedId);
         }
@@ -793,18 +793,11 @@ define(function (require, exports, module) {
         _recomputeLayout = recomputeLayoutFn;
         _defaultPanelId = defaultPanelId;
 
-        // Create the "Tools" button inside the scrollable tabs area.
-        _$addBtn = $('<span class="bottom-panel-add-btn" draggable="false" title="' + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '">'
-            + '<img class="app-drawer-tab-icon" draggable="false" src="styles/images/app-drawer.svg"'
-            + ' style="width:12px;height:12px;vertical-align:middle;margin-right:4px">'
-            + Strings.BOTTOM_PANEL_DEFAULT_TITLE + '</span>');
-        _$tabsOverflow.append(_$addBtn);
-
         // Tab bar click handlers
         _$tabBar.on("click", ".bottom-panel-tab-close-btn", function (e) {
             e.stopPropagation();
             let panelId = $(this).closest(".bottom-panel-tab").data("panel-id");
-            if (panelId) {
+            if (panelId && panelId !== _defaultPanelId) {
                 let panel = _panelMap[panelId];
                 if (panel) {
                     panel.requestClose();
@@ -836,14 +829,6 @@ define(function (require, exports, module) {
             _showOverflowMenu();
         });
 
-        // "+" button opens the default/quick-access panel
-        _$addBtn.on("click", function (e) {
-            e.stopPropagation();
-            if (_defaultPanelId && _panelMap[_defaultPanelId]) {
-                _panelMap[_defaultPanelId].show();
-            }
-        });
-
         // Hide-panel button collapses the container but keeps tabs intact.
         // Maximize state is preserved so the panel re-opens maximized.
         _$tabBar.on("click", ".bottom-panel-hide-btn", function (e) {
@@ -860,9 +845,8 @@ define(function (require, exports, module) {
         });
 
         // Double-click on empty tab bar area toggles maximize.
-        // Exclude tabs themselves, action buttons, and the add button.
         _$tabBar.on("dblclick", function (e) {
-            if ($(e.target).closest(".bottom-panel-tab, .bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn, .bottom-panel-add-btn").length) {
+            if ($(e.target).closest(".bottom-panel-tab, .bottom-panel-tab-close-btn, .bottom-panel-hide-btn, .bottom-panel-maximize-btn").length) {
                 return;
             }
             _toggleMaximize();
@@ -1088,7 +1072,12 @@ define(function (require, exports, module) {
         // Clear internal state BEFORE hiding the container so the
         // panelCollapsed handler sees an empty _openIds and doesn't
         // redundantly update the stacks.
-        _openIds = [];
+        // The Quick Access panel stays pinned at index 0.
+        if (_defaultPanelId) {
+            _openIds = [_defaultPanelId];
+        } else {
+            _openIds = [];
+        }
         _activeId = null;
 
         if (_$container && _$container.is(":visible")) {
@@ -1098,8 +1087,6 @@ define(function (require, exports, module) {
 
         _updateBottomPanelTabBar();
 
-        // Fire one EVENT_PANEL_HIDDEN per panel for stack tracking.
-        // No intermediate EVENT_PANEL_SHOWN events are emitted.
         for (let i = 0; i < closedIds.length; i++) {
             exports.trigger(EVENT_PANEL_HIDDEN, closedIds[i]);
         }
