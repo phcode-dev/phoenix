@@ -528,6 +528,7 @@ define({
     "DEVICE_SIZE_CYCLE_NO_FIT": "Screen too small to switch to another device size — increase the window size",
     "DEVICE_SIZE_CYCLE_TOOLTIP": "Switch between mobile, tablet, and desktop",
     "DEVICE_SIZE_DROPDOWN_TOOLTIP": "All device sizes",
+    "DEVICE_SIZE_FIT_TO_SCREEN": "Fit to screen",
     "MD_EDIT_UPSELL_MESSAGE": "Write Markdown like a document. {APP_NAME} handles the formatting so you can stay focused on writing.",
     "IMAGE_UPLOADING": "Uploading",
     "IMAGE_UPLOAD_FAILED": "Failed to upload image",
