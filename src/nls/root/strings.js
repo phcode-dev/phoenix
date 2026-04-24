@@ -2268,6 +2268,7 @@ define({
     "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live Preview Selection",
     "AI_CHAT_SCREENSHOT_CAPTURE": "Capture",
     "AI_CHAT_SCREENSHOT_CANCEL": "Cancel",
+    "AI_CHAT_SCREENSHOT_UPLOAD": "Upload from Device",
     "AI_CHAT_PRIVACY_TITLE": "Start AI Chat with Claude Code",
     "AI_CHAT_PRIVACY_BODY": "To provide responses, this feature sends your prompts and relevant context to Claude Code.<br><br><a class='ai-privacy-link'>Learn more and manage your privacy settings</a>.",
     "AI_CHAT_PRIVACY_OK": "OK",
