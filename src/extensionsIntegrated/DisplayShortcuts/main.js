@@ -539,13 +539,32 @@ define(function (require, exports, module) {
         KeyBindingManager.on(KeyBindingManager.EVENT_NEW_PRESET, _updatePresets);
         KeyBindingManager.on(KeyBindingManager.EVENT_PRESET_CHANGED, _updatePresets);
 
+        // Track whether the shortcuts panel has an open tab (survives container collapse).
+        let _shortcutsTabOpen = false;
+
         // When the panel tab is closed externally (e.g. via the × button),
         // update the menu checked state and clean up resources.
         WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
             if (panelID === TOGGLE_SHORTCUTS_ID && panel) {
+                _shortcutsTabOpen = false;
                 destroyKeyList();
                 _clearSortingEventHandlers();
                 CommandManager.get(TOGGLE_SHORTCUTS_ID).setChecked(false);
+            }
+            // Container collapsed — uncheck menu item but keep tab-open flag
+            if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
+                CommandManager.get(TOGGLE_SHORTCUTS_ID).setChecked(false);
+            }
+        });
+
+        // When any bottom panel is shown (container is visible),
+        // re-check menu item if shortcuts panel still has an open tab.
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, function (event, panelID) {
+            if (panelID === TOGGLE_SHORTCUTS_ID) {
+                _shortcutsTabOpen = true;
+            }
+            if (_shortcutsTabOpen) {
+                CommandManager.get(TOGGLE_SHORTCUTS_ID).setChecked(true);
             }
         });
     });

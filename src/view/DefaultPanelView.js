@@ -198,12 +198,13 @@ define(function (require, exports, module) {
             }
         });
 
-        // Update drawer button state when panels are shown.
+        // Update drawer button state based on bottom panel container visibility.
+        // The app drawer icon stays selected whenever the bottom panel is visible.
         PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (event, panelID) {
             if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
                 _updateButtonVisibility();
             }
-            $drawerBtn.toggleClass("selected-button", panelID === WorkspaceManager.DEFAULT_PANEL_ID);
+            $drawerBtn.addClass("selected-button");
         });
 
         PanelView.on(PanelView.EVENT_PANEL_HIDDEN, function (event, panelID) {
