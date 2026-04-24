@@ -887,30 +887,38 @@ define(function (require, exports, module) {
                 expect(Math.abs(mtRect.right - testWindow.innerWidth)).toBeLessThan(2);
             });
 
-            it("should, in normal mode, resize only the plugin-panel (sidebar untouched) and respect the 75%/sidebar clamp", async function () {
+            it("should, in normal mode, progressively shrink the sidebar when an oversized plugin-panel width is requested", async function () {
                 await openLivePreview();
                 const iconsW = _$("#plugin-icons-bar").outerWidth();
                 const sidebarBefore = _$("#sidebar")[0].offsetWidth;
 
-                // Request a very wide panel — should be clamped against 75% window
-                // and (window - sidebar - 100). Either way sidebar must stay put.
+                // Request a very wide panel — the sidebar should shrink (or
+                // collapse) to make room, then the toolbar is clamped to
+                // (window - finalSidebarWidth - MIN_EDITOR_WIDTH).
                 const requested = testWindow.innerWidth; // intentionally over-large
                 WorkspaceManager.setPluginPanelWidth(requested);
                 await awaits(0);
 
-                expect(_$("#sidebar")[0].offsetWidth).toBe(sidebarBefore);
+                // Sidebar must have shrunk or collapsed to accommodate the request.
+                const sidebarAfter = SidebarView.isVisible() ? _$("#sidebar")[0].offsetWidth : 0;
+                expect(sidebarAfter).toBeLessThan(sidebarBefore);
 
                 const toolbar = _$("#main-toolbar").outerWidth();
-                const maxAllowed = Math.min(
-                    testWindow.innerWidth * 0.75,
-                    testWindow.innerWidth - sidebarBefore - 100
-                );
-                // Toolbar must honour the clamp (+iconsBar = the WSM math).
+                // Toolbar is clamped to (window - sidebar - MIN_EDITOR_WIDTH).
+                const maxAllowed = testWindow.innerWidth - sidebarAfter - 100;
                 expect(toolbar).toBeLessThanOrEqual(maxAllowed + 3);
                 // And at minimum it's the icons-bar + LP's minWidth.
                 const lp = livePanel();
                 const minToolbar = (lp && lp.minWidth ? lp.minWidth : 0) + iconsW;
                 expect(toolbar).toBeGreaterThanOrEqual(minToolbar);
+
+                // Restore sidebar for subsequent tests.
+                if (!SidebarView.isVisible()) {
+                    SidebarView.show();
+                    await awaitsFor(function () { return SidebarView.isVisible(); },
+                        "sidebar to come back", 2000);
+                }
+                SidebarView.resize(200);
             });
         });
 
