@@ -77,23 +77,15 @@
         line-height: 19px;
     }
 
-    .ai-chat-header-actions,
-    .ai-chat-header-left-actions {
+    .ai-chat-header-actions {
         position: absolute;
+        right: 10px;
         display: flex;
         align-items: center;
         gap: 2px;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.5s ease;
-    }
-
-    .ai-chat-header-actions {
-        right: 10px;
-    }
-
-    .ai-chat-header-left-actions {
-        left: 10px;
     }
 
     .ai-history-btn,
@@ -121,8 +113,7 @@
 }
 
 /* Show header actions on tab container hover */
-.ai-tab-container:hover .ai-chat-header-actions,
-.ai-tab-container:hover .ai-chat-header-left-actions {
+.ai-tab-container:hover .ai-chat-header-actions {
     opacity: 1;
     pointer-events: auto;
     transition: opacity 0.15s ease;
