@@ -222,7 +222,7 @@ define(function (require, exports, module) {
         }, "md preview synced with editor content", 5000);
     }
 
-    describe("livepreview:Markdown Editor", function () {
+    describe("livepreview:Markdown Editor 1", function () {
 
         if (Phoenix.browser.desktop.isFirefox ||
             (Phoenix.isTestWindowPlaywright && !Phoenix.browser.desktop.isChromeBased)) {
@@ -527,18 +527,20 @@ define(function (require, exports, module) {
                 await _enterEditMode();
                 await _focusMdContent();
 
-                const listener = _listenForShortcut("F8");
-                _dispatchPlainKeyInMdIframe("F8", { keyCode: 119, code: "F8" });
-                await awaitsFor(() => listener.check(), "F8 shortcut to be forwarded in edit mode");
+                // Use F9 (unbound) — F8 is bound to the Live Preview edit toggle which shows
+                // a pro upsell dialog for free users and blocks tests.
+                const listener = _listenForShortcut("F9");
+                _dispatchPlainKeyInMdIframe("F9", { keyCode: 120, code: "F9" });
+                await awaitsFor(() => listener.check(), "F9 shortcut to be forwarded in edit mode");
                 listener.cleanup();
             }, 10000);
 
             it("should F-key shortcuts work in reader mode", async function () {
                 await _enterReaderMode();
 
-                const listener = _listenForShortcut("F8");
-                _dispatchPlainKeyInMdIframe("F8", { keyCode: 119, code: "F8" });
-                await awaitsFor(() => listener.check(), "F8 shortcut to be forwarded in reader mode");
+                const listener = _listenForShortcut("F9");
+                _dispatchPlainKeyInMdIframe("F9", { keyCode: 120, code: "F9" });
+                await awaitsFor(() => listener.check(), "F9 shortcut to be forwarded in reader mode");
                 listener.cleanup();
             }, 10000);
 
