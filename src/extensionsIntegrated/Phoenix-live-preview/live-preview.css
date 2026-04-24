@@ -250,24 +250,6 @@
     margin-top: 0;
 }
 
-.lp-fit-to-panel-btn {
-    color: #a0a0a0;
-    flex-shrink: 0;
-    margin: 0 2px;
-    background: transparent;
-    border: 1px solid transparent;
-    box-shadow: none;
-    font-size: 12px;
-}
-
-.lp-fit-to-panel-btn:hover,
-.lp-fit-to-panel-btn:focus,
-.lp-fit-to-panel-btn:active {
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: none !important;
-}
-
 .lp-device-size-btn-group {
     display: flex;
     align-items: center;
