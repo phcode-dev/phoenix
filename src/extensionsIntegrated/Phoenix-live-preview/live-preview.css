@@ -336,8 +336,6 @@
 
 .device-size-item-icon {
     margin-right: 6px;
-    width: 12px;
-    text-align: center;
     font-size: inherit;
 }
 
@@ -350,13 +348,12 @@
 
 .device-size-item-width {
     margin-left: 10px;
-    opacity: 0.5;
+    color: #9a9a9a;
+    font-size: 12.5px;
 }
 
 .device-size-item-breakpoint-icon {
     margin-right: 6px;
-    width: 12px;
-    text-align: center;
     font-size: inherit;
     color: rgba(100, 180, 255, 0.8);
 }
