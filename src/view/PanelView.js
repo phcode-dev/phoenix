@@ -899,8 +899,18 @@ define(function (require, exports, module) {
         // Maximize state is preserved so the panel re-opens maximized.
         _$tabBar.on("click", ".bottom-panel-hide-btn", function (e) {
             e.stopPropagation();
-            if (_$container.is(":visible")) {
+            if (_$container && _$container.is(":visible")) {
+                if (_activeId) {
+                    const activePanel = _panelMap[_activeId];
+                    if (activePanel) {
+                        activePanel.$panel.removeClass("active-bottom-panel");
+                    }
+                }
+                _activeId = null;
+                _updateActiveTabHighlight();
+                restoreIfMaximized();
                 Resizer.hide(_$container[0]);
+                exports.trigger(EVENT_PANEL_HIDDEN, _defaultPanelId);
             }
         });
 

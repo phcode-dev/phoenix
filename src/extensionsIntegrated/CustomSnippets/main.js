@@ -255,11 +255,30 @@ define(function (require, exports, module) {
         });
     }
 
+    // Track whether the snippets panel has an open tab (survives container collapse).
+    let _snippetsTabOpen = false;
+
     // When the panel tab is closed externally (e.g. via the × button),
     // update the menu checked state to stay in sync.
     WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
         if (panelID === PANEL_ID && customSnippetsPanel) {
+            _snippetsTabOpen = false;
             CommandManager.get(MY_COMMAND_ID).setChecked(false);
+        }
+        // Container collapsed — uncheck menu item but keep tab-open flag
+        if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
+            CommandManager.get(MY_COMMAND_ID).setChecked(false);
+        }
+    });
+
+    // When any bottom panel is shown (container is visible),
+    // re-check menu item if snippets panel still has an open tab.
+    WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, function (event, panelID) {
+        if (panelID === PANEL_ID) {
+            _snippetsTabOpen = true;
+        }
+        if (_snippetsTabOpen) {
+            CommandManager.get(MY_COMMAND_ID).setChecked(true);
         }
     });
 

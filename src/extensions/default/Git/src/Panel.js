@@ -1510,6 +1510,21 @@ define(function (require, exports) {
             CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(false);
             Preferences.set("panelEnabled", false);
         }
+        // When the bottom panel container is collapsed, deselect the icon
+        // but don't save preference — the panel is still logically open.
+        if (panelID === WorkspaceManager.DEFAULT_PANEL_ID && Main.$icon) {
+            Main.$icon.toggleClass("on", false);
+            Main.$icon.toggleClass("selected-button", false);
+        }
+    });
+
+    // When any bottom panel is shown (container is visible),
+    // re-select the git icon if git panel is still open.
+    WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, function (event, panelID) {
+        if (Main.$icon && Preferences.get("panelEnabled")) {
+            Main.$icon.toggleClass("on", true);
+            Main.$icon.toggleClass("selected-button", true);
+        }
     });
 
     exports.init = init;
