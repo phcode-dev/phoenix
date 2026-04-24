@@ -141,6 +141,7 @@ Preference key for persisting the maximize state across reloads.
     * [.registerOnCloseRequestedHandler(handler)](#Panel+registerOnCloseRequestedHandler)
     * [.requestClose()](#Panel+requestClose) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.show()](#Panel+show)
+    * [.addToTabBar()](#Panel+addToTabBar)
     * [.hide()](#Panel+hide)
     * [.focus()](#Panel+focus) ⇒ <code>boolean</code>
     * [.setVisible(visible)](#Panel+setVisible)
@@ -205,6 +206,14 @@ registered, `hide()` is called.
 
 ### panel.show()
 Shows the panel
+
+**Kind**: instance method of [<code>Panel</code>](#Panel)  
+<a name="Panel+addToTabBar"></a>
+
+### panel.addToTabBar()
+Adds the panel to the tab bar and open set without showing the container.
+Use this during startup to restore a panel's tab when the container
+was collapsed by the user — avoids forcing the bottom panel open.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 <a name="Panel+hide"></a>
