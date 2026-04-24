@@ -525,6 +525,7 @@ define({
     "AVAILABLE_IN_PRO_TITLE": "Available in Phoenix Pro",
     "DEVICE_SIZE_LIMIT_MESSAGE": "To switch between mobile, tablet, and desktop views, upgrade to Phoenix Pro.",
     "DEVICE_SIZE_NOT_ENOUGH_SPACE": "This screen doesn’t fit in the current window size — try expanding the window",
+    "DEVICE_SIZE_CYCLE_NO_FIT": "Screen too small to switch to another device size — increase the window size",
     "DEVICE_SIZE_CYCLE_TOOLTIP": "Switch between mobile, tablet, and desktop",
     "DEVICE_SIZE_DROPDOWN_TOOLTIP": "All device sizes",
     "DEVICE_SIZE_FIT_TO_PANEL": "Fit to panel",
