@@ -732,6 +732,19 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Adds the panel to the tab bar and open set without showing the container.
+     * Use this during startup to restore a panel's tab when the container
+     * was collapsed by the user — avoids forcing the bottom panel open.
+     */
+    Panel.prototype.addToTabBar = function () {
+        if (!_$container || _openIds.indexOf(this.panelID) !== -1) {
+            return;
+        }
+        _openIds.push(this.panelID);
+        _addTabToBar(this.panelID);
+    };
+
+    /**
      * Hides the panel
      */
     Panel.prototype.hide = function () {

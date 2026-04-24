@@ -1358,7 +1358,16 @@ define(function (require, exports) {
 
         // Show gitPanel when appropriate
         if (Preferences.get("panelEnabled") && Setup.isExtensionActivated()) {
-            toggle(true);
+            // If the bottom panel container is collapsed, just add the Git tab
+            // without forcing it open. The user collapsed it intentionally.
+            const $container = $("#bottom-panel-container");
+            if ($container.is(":visible")) {
+                toggle(true);
+            } else {
+                gitPanel.addToTabBar();
+                $("#git-toolbar-icon").removeClass("forced-hidden");
+                refresh();
+            }
         }
         _panelResized();
         GutterManager.init();
@@ -1515,6 +1524,7 @@ define(function (require, exports) {
         if (panelID === WorkspaceManager.DEFAULT_PANEL_ID && Main.$icon) {
             Main.$icon.toggleClass("on", false);
             Main.$icon.toggleClass("selected-button", false);
+            CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(false);
         }
     });
 
@@ -1524,6 +1534,7 @@ define(function (require, exports) {
         if (Main.$icon && Preferences.get("panelEnabled")) {
             Main.$icon.toggleClass("on", true);
             Main.$icon.toggleClass("selected-button", true);
+            CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(true);
         }
     });
 
