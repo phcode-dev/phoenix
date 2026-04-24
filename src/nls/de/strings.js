@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Mehr erfahren…",
   "PROMO_OPT_OUT_LINK": "Abmelden?",
   "PROMO_OPT_OUT_NOTE": "Sie können Ihre Testversion jederzeit abbrechen, indem Sie `Hilfe > Phoenix Pro-Testversion abbrechen` auswählen.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro-Probeabo kündigen",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Auf {0} upgraden",
   "PROMO_PRO_ENDED_TITLE": "{0}-Testversion beendet",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Danke, dass du Pro getestet hast! <b>Du nutzt jetzt die kostenlose Community Edition.</b> <br>Führe jederzeit ein Upgrade durch, um diese Funktionen freizuschalten:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Elemente auf der Seite auswählen und ändern",
   "DEMO_PREVIEW_MODE_LABEL": "Vorschaumodus",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Sehen Sie Ihre Seite so, wie Besucher sie sehen",
-  "DEMO_MODE_SWITCH_HINT": "Drücken Sie <strong>F8</strong> oder klicken Sie auf die <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span>-Schaltflächen, um zwischen den Modi zu wechseln.",
   "DEMO_TIPS_LABEL": "Tipps:",
   "DEMO_SECTION6_TIP1": "Klicken Sie auf einen beliebigen Link, um ihn zur Bearbeitung auszuwählen.",
   "DEMO_SECTION6_TIP2_NEWTAB": "Aktivieren Sie <strong>In neuem Tab öffnen</strong>, um Links auf einer separaten Seite zu öffnen.",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro-Probeabo kündigen"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Bearbeitungsmodus umschalten (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Drücken Sie <strong>F8</strong> oder klicken Sie auf den <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span>-Button, um den Modus umzuschalten."
 });

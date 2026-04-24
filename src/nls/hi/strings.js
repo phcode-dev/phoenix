@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "और जानें…",
   "PROMO_OPT_OUT_LINK": "बाहर निकलें?",
   "PROMO_OPT_OUT_NOTE": "आप `Help > Cancel Phoenix Pro Trial` का चयन करके किसी भी समय अपना ट्रायल रद्द कर सकते हैं।",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ट्रायल रद्द करें",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0} में अपग्रेड करें",
   "PROMO_PRO_ENDED_TITLE": "{0} ट्रायल समाप्त हो गया",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "प्रो आज़माने के लिए धन्यवाद! <b>अब आप फ़्री कम्युनिटी एडिशन पर हैं।</b> <br>इन सुविधाओं को अनलॉक करने के लिए कभी भी अपग्रेड करें:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "पेज पर चीज़ें चुनें और बदलें।",
   "DEMO_PREVIEW_MODE_LABEL": "प्रीव्यू मोड",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "अपना पेज वैसे देखें जैसे विज़िटर देखेंगे।",
-  "DEMO_MODE_SWITCH_HINT": "मोड बदलने के लिए <strong>F8</strong> दबाएँ या <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"चलाएँ\" class=\"play-hint-svg svg-gold\"></span> बटनों पर क्लिक करें।",
   "DEMO_TIPS_LABEL": "टिप्स:",
   "DEMO_SECTION6_TIP1": "किसी भी लिंक को संपादित करने के लिए उस पर क्लिक करें।",
   "DEMO_SECTION6_TIP2_NEWTAB": "लिंक को एक अलग पेज पर खोलने के लिए <strong>नए टैब में खोलें</strong> को सक्षम करें",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ट्रायल रद्द करें"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "एडिट मोड टॉगल करें (F8)",
+  "DEMO_MODE_SWITCH_HINT": "मोड बदलने के लिए <strong>F8</strong> दबाएँ या <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> बटन पर क्लिक करें।"
 });

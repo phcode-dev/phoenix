@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Tudj meg többet…",
   "PROMO_OPT_OUT_LINK": "Lemondás?",
   "PROMO_OPT_OUT_NOTE": "A próbaidőszakot bármikor lemondhatja a `Help > Cancel Phoenix Pro Trial` menüpont kiválasztásával.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro próbaverzió lemondása",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Frissítés {0} verzióra",
   "PROMO_PRO_ENDED_TITLE": "A(z) {0} próbaidőszak lejárt",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Köszönjük, hogy kipróbálta a Pro verziót! <b>Mostantól az ingyenes közösségi kiadást használja.</b> <br>Bármikor frissíthet a következő funkciók feloldásához:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Jelölj ki és módosíts elemeket az oldalon.",
   "DEMO_PREVIEW_MODE_LABEL": "Előnézeti mód",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Nézd meg az oldaladat úgy, ahogy a látogatók látni fogják.",
-  "DEMO_MODE_SWITCH_HINT": "A módok váltásához nyomd meg az <strong>F8</strong>-at, vagy kattints a <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> gombra.",
   "DEMO_TIPS_LABEL": "Tippek:",
   "DEMO_SECTION6_TIP1": "Kattints bármely hivatkozásra, hogy kijelöld szerkesztésre.",
   "DEMO_SECTION6_TIP2_NEWTAB": "Engedélyezd a <strong>Megnyitás új lapon</strong> opciót, hogy a hivatkozások külön oldalon nyíljanak meg.",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro próbaverzió lemondása"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Szerkesztő mód váltása (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Nyomja meg az <strong>F8</strong> billentyűt, vagy kattintson a <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> gombra a módváltáshoz."
 });

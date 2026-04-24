@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Află mai multe…",
   "PROMO_OPT_OUT_LINK": "Renunți?",
   "PROMO_OPT_OUT_NOTE": "Poți anula oricând perioada de probă selectând `Ajutor > Anulare perioadă de probă Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Anulare perioadă de probă Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Treceți la {0}",
   "PROMO_PRO_ENDED_TITLE": "Perioada de probă {0} a expirat",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Vă mulțumim că ați încercat Pro! <b>Acum folosiți ediția gratuită Community.</b> <br>Treceți la o versiune superioară oricând pentru a debloca aceste funcționalități:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Selectați și modificați elemente pe pagină",
   "DEMO_PREVIEW_MODE_LABEL": "Mod previzualizare",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Vedeți pagina dvs. așa cum o vor vedea vizitatorii",
-  "DEMO_MODE_SWITCH_HINT": "Apăsați <strong>F8</strong> sau faceți clic pe butoanele <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> pentru a comuta între moduri.",
   "DEMO_TIPS_LABEL": "Sfaturi:",
   "DEMO_SECTION6_TIP1": "Faceți clic pe orice link pentru a-l selecta pentru editare",
   "DEMO_SECTION6_TIP2_NEWTAB": "Activați <strong>Deschide în filă nouă</strong> pentru a deschide linkurile într-o pagină separată",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Anulare perioadă de probă Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Comută Modul Editare (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Apăsați <strong>F8</strong> sau faceți clic pe butonul <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> pentru a comuta între moduri."
 });

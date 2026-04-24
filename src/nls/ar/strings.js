@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "تعرّف على المزيد…",
   "PROMO_OPT_OUT_LINK": "الانسحاب؟",
   "PROMO_OPT_OUT_NOTE": "يمكنك إلغاء فترتك التجريبية في أي وقت عن طريق تحديد `مساعدة > إلغاء تجربة Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "إلغاء الفترة التجريبية لـ Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "الترقية إلى {0}",
   "PROMO_PRO_ENDED_TITLE": "انتهت الفترة التجريبية لـ {0}",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "شكرًا لتجربتك إصدار Pro! <b>أنت الآن تستخدم الإصدار المجاني للمجتمع.</b> <br>قم بالترقية في أي وقت لإلغاء قفل هذه الميزات:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "حدد الأشياء وغيّرها على الصفحة",
   "DEMO_PREVIEW_MODE_LABEL": "وضع المعاينة",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "شاهد صفحتك كما سيراها الزوار",
-  "DEMO_MODE_SWITCH_HINT": "اضغط على <strong>F8</strong> أو انقر على الأزرار <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> لتبديل الأوضاع.",
   "DEMO_TIPS_LABEL": "نصائح:",
   "DEMO_SECTION6_TIP1": "انقر على أي رابط لتحديده للتعديل",
   "DEMO_SECTION6_TIP2_NEWTAB": "قم بتفعيل <strong>فتح في علامة تبويب جديدة</strong> لفتح الروابط في صفحة منفصلة",
@@ -2180,6 +2180,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "شيء آخر",
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "إلغاء الفترة التجريبية لـ Phoenix Pro"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف"
 });

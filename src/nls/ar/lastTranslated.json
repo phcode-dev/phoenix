@@ -686,7 +686,6 @@
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
   "DEMO_LINK_EDIT_LINK": "Edit Link",
   "DEMO_MODE_EXPLANATION_TITLE": "Edit mode vs Preview mode",
-  "DEMO_MODE_SWITCH_HINT": "Press <strong>F8</strong> or click the <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> buttons to switch modes.",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "See your page as visitors will see it",
   "DEMO_PREVIEW_MODE_LABEL": "Preview mode",
   "DEMO_RESOURCE_DOCUMENTATION": "Documentation",

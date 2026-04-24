@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Zistiť viac…",
   "PROMO_OPT_OUT_LINK": "Zrušiť?",
   "PROMO_OPT_OUT_NOTE": "Svoju skúšobnú verziu môžete kedykoľvek zrušiť výberom `Pomoc > Zrušiť skúšobnú verziu Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Zrušiť skúšobnú verziu Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Prejsť na {0}",
   "PROMO_PRO_ENDED_TITLE": "Skúšobná verzia {0} skončila",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Ďakujeme, že ste vyskúšali verziu Pro! <b>Teraz používate bezplatnú verziu Community Edition.</b> <br>Inovujte kedykoľvek a odomknite tieto funkcie:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Vyberte a zmeňte prvky na stránke.",
   "DEMO_PREVIEW_MODE_LABEL": "Režim náhľadu",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Pozrite si svoju stránku tak, ako ju uvidia návštevníci.",
-  "DEMO_MODE_SWITCH_HINT": "Stlačte <strong>F8</strong> alebo kliknite na tlačidlo <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> na prepnutie režimov.",
   "DEMO_TIPS_LABEL": "Tipy:",
   "DEMO_SECTION6_TIP1": "Kliknite na ľubovoľný odkaz a vyberte ho na úpravu.",
   "DEMO_SECTION6_TIP2_NEWTAB": "Povoľte možnosť <strong>Otvoriť na novej karte</strong>, aby sa odkazy otvárali na samostatnej stránke.",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Zrušiť skúšobnú verziu Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Prepnúť režim úprav (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Stlačte <strong>F8</strong> alebo kliknite na tlačidlo <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> pre prepnutie režimov."
 });

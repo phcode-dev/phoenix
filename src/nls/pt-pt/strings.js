@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Saiba mais…",
   "PROMO_OPT_OUT_LINK": "Recusar?",
   "PROMO_OPT_OUT_NOTE": "Pode cancelar a sua avaliação a qualquer momento ao selecionar `Ajuda > Cancelar Avaliação do Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancelar a Avaliação do Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Atualizar para {0}",
   "PROMO_PRO_ENDED_TITLE": "A versão de avaliação do {0} terminou",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Obrigado por experimentar o Pro! <b>Está agora a utilizar a Edição Comunitária Gratuita.</b> <br>Atualize a qualquer momento para desbloquear estas funcionalidades:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Selecione e altere elementos na página",
   "DEMO_PREVIEW_MODE_LABEL": "Modo de pré-visualização",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Veja a sua página como os visitantes a verão",
-  "DEMO_MODE_SWITCH_HINT": "Pressione <strong>F8</strong> ou clique nos botões <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> para alternar entre os modos.",
   "DEMO_TIPS_LABEL": "Dicas:",
   "DEMO_SECTION6_TIP1": "Clique em qualquer ligação para a selecionar para edição",
   "DEMO_SECTION6_TIP2_NEWTAB": "Ative <strong>Abrir em novo separador</strong> para abrir as ligações numa página separada",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancelar a Avaliação do Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Alternar Modo de Edição (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Pressione <strong>F8</strong> ou clique no botão <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> para alternar entre modos."
 });

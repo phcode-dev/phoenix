@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Lisätietoja…",
   "PROMO_OPT_OUT_LINK": "Jättäydy pois?",
   "PROMO_OPT_OUT_NOTE": "Voit peruuttaa kokeilujaksosi milloin tahansa valitsemalla `Ohje > Peruuta Phoenix Pro -kokeilu`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Peruuta Phoenix Pro -kokeilujakso",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Päivitä versioon {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-kokeilujakso päättyi",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Kiitos, että kokeilit Pro-versiota! <b>Käytät nyt ilmaista Community Edition -versiota.</b> <br>Päivitä milloin tahansa saadaksesi nämä ominaisuudet käyttöösi:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Valitse ja muokkaa sivun kohteita",
   "DEMO_PREVIEW_MODE_LABEL": "Esikatselutila",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Näe sivusi sellaisena kuin kävijät sen näkevät",
-  "DEMO_MODE_SWITCH_HINT": "Paina <strong>F8</strong>-näppäintä tai napsauta <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span>-painiketta vaihtaaksesi tilaa.",
   "DEMO_TIPS_LABEL": "Vinkkejä:",
   "DEMO_SECTION6_TIP1": "Napsauta linkkiä valitaksesi sen muokattavaksi",
   "DEMO_SECTION6_TIP2_NEWTAB": "Ota käyttöön <strong>Avaa uudessa välilehdessä</strong>, niin linkit avautuvat erilliseen välilehteen",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Peruuta Phoenix Pro -kokeilujakso"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Kytke muokkaustila (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Paina <strong>F8</strong> tai napsauta <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span>-painiketta vaihtaaksesi tilaa."
 });

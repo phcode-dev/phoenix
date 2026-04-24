@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Pelajari Lebih Lanjut…",
   "PROMO_OPT_OUT_LINK": "Batal ikut serta?",
   "PROMO_OPT_OUT_NOTE": "Anda dapat membatalkan uji coba Anda kapan saja dengan memilih `Help > Cancel Phoenix Pro Trial`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Batalkan Uji Coba Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Upgrade ke {0}",
   "PROMO_PRO_ENDED_TITLE": "Uji coba {0} berakhir",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Terima kasih telah mencoba Pro! <b>Anda sekarang menggunakan Edisi Komunitas Gratis.</b> <br>Upgrade kapan saja untuk membuka fitur-fitur ini:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Pilih dan ubah berbagai hal di halaman",
   "DEMO_PREVIEW_MODE_LABEL": "Mode pratinjau",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Lihat halaman Anda seperti yang akan dilihat pengunjung",
-  "DEMO_MODE_SWITCH_HINT": "Tekan <strong>F8</strong> atau klik tombol <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> untuk beralih mode.",
   "DEMO_TIPS_LABEL": "Tips:",
   "DEMO_SECTION6_TIP1": "Klik tautan mana pun untuk memilihnya untuk penyuntingan",
   "DEMO_SECTION6_TIP2_NEWTAB": "Aktifkan <strong>Buka di tab baru</strong> untuk membuka tautan di halaman terpisah",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Batalkan Uji Coba Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Alihkan Mode Edit (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Tekan <strong>F8</strong> atau klik tombol <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> untuk beralih mode."
 });

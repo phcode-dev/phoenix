@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Learn more…",
   "PROMO_OPT_OUT_LINK": "Opt out?",
   "PROMO_OPT_OUT_NOTE": "You can cancel your trial anytime by selecting `Help > Cancel Phoenix Pro Trial`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancel Phoenix Pro Trial",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Upgrade to {0}",
   "PROMO_PRO_ENDED_TITLE": "{0} trial ended",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Thanks for trying Pro! <b>You're now on the Free Community Edition.</b> <br>Upgrade anytime to unlock these features:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Select and change things on the page",
   "DEMO_PREVIEW_MODE_LABEL": "Preview mode",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "See your page as visitors will see it",
-  "DEMO_MODE_SWITCH_HINT": "Press <strong>F8</strong> or click the <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> buttons to switch modes.",
   "DEMO_TIPS_LABEL": "Tips:",
   "DEMO_SECTION6_TIP1": "Click any link to select it for editing",
   "DEMO_SECTION6_TIP2_NEWTAB": "Enable <strong>Open in new tab</strong> to open links on a separate page",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancel Phoenix Pro Trial"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Toggle Edit Mode (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Press <strong>F8</strong> or click the <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> button to switch modes."
 });

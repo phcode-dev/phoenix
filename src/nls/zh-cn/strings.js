@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "了解更多…",
   "PROMO_OPT_OUT_LINK": "选择退出？",
   "PROMO_OPT_OUT_NOTE": "您可以随时通过选择 `帮助 > 取消 Phoenix Pro 试用` 来取消试用。",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "取消 Phoenix Pro 试用",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "升级到 {0}",
   "PROMO_PRO_ENDED_TITLE": "{0} 试用已结束",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "感谢您试用 Pro！<b>您现在使用的是免费社区版。</b><br>随时升级即可解锁以下功能：",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "在页面上选择并更改内容",
   "DEMO_PREVIEW_MODE_LABEL": "预览模式",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "以访客视角查看您的页面",
-  "DEMO_MODE_SWITCH_HINT": "按 <strong>F8</strong> 键或单击 <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> 按钮来切换模式。",
   "DEMO_TIPS_LABEL": "提示：",
   "DEMO_SECTION6_TIP1": "单击任何链接以选中并进行编辑",
   "DEMO_SECTION6_TIP2_NEWTAB": "启用 <strong>在新标签页中打开</strong>，以便在单独的页面中打开链接",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "取消 Phoenix Pro 试用"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "切换编辑模式 (F8)",
+  "DEMO_MODE_SWITCH_HINT": "按下 <strong>F8</strong> 或点击 <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> 按钮来切换模式。"
 });

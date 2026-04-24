@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "اطلاعات بیشتر…",
   "PROMO_OPT_OUT_LINK": "انصراف؟",
   "PROMO_OPT_OUT_NOTE": "شما می‌توانید هر زمان با انتخاب `Help > Cancel Phoenix Pro Trial`، دورهٔ آزمایشی خود را لغو کنید.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "لغو دورهٔ آزمایشی Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "ارتقا به {0}",
   "PROMO_PRO_ENDED_TITLE": "نسخه آزمایشی {0} به پایان رسید",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "ممنون از اینکه نسخه Pro را امتحان کردید! <b>شما اکنون در نسخه رایگان انجمن هستید.</b> <br>برای باز کردن قفل این ویژگی‌ها، هر زمان که خواستید ارتقا دهید:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "موارد صفحه را انتخاب و تغییر دهید",
   "DEMO_PREVIEW_MODE_LABEL": "حالت پیش‌نمایش",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "صفحه خود را از دید بازدیدکنندگان ببینید",
-  "DEMO_MODE_SWITCH_HINT": "برای تغییر حالت، کلید <strong>F8</strong> را فشار دهید یا روی دکمه‌های <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> کلیک کنید.",
   "DEMO_TIPS_LABEL": "نکات:",
   "DEMO_SECTION6_TIP1": "روی هر لینکی کلیک کنید تا برای ویرایش انتخاب شود",
   "DEMO_SECTION6_TIP2_NEWTAB": "گزینهٔ <strong>باز کردن در زبانهٔ جدید</strong> را فعال کنید تا لینک‌ها در صفحه‌ای جداگانه باز شوند",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "لغو دورهٔ آزمایشی Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "تغییر حالت ویرایش (F8)",
+  "DEMO_MODE_SWITCH_HINT": "برای تغییر حالت، کلید <strong>F8</strong> را فشار دهید یا روی دکمهٔ <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> کلیک کنید."
 });
