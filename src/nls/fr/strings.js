@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "En savoir plus…",
   "PROMO_OPT_OUT_LINK": "Annuler l'essai ?",
   "PROMO_OPT_OUT_NOTE": "Vous pouvez annuler votre version d'essai à tout moment en sélectionnant `Aide > Annuler la version d'essai de Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Annuler l'essai Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Passer à {0}",
   "PROMO_PRO_ENDED_TITLE": "Essai de {0} terminé",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Merci d'avoir essayé Pro ! <b>Vous utilisez maintenant l'édition communautaire gratuite.</b> <br>Passez à la version supérieure à tout moment pour débloquer ces fonctionnalités :",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Sélectionnez et modifiez des éléments sur la page",
   "DEMO_PREVIEW_MODE_LABEL": "Mode aperçu",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Visualisez votre page telle que les visiteurs la verront",
-  "DEMO_MODE_SWITCH_HINT": "Appuyez sur <strong>F8</strong> ou cliquez sur les boutons <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> pour changer de mode.",
   "DEMO_TIPS_LABEL": "Astuces :",
   "DEMO_SECTION6_TIP1": "Cliquez sur n'importe quel lien pour le sélectionner afin de le modifier",
   "DEMO_SECTION6_TIP2_NEWTAB": "Activez <strong>Ouvrir dans un nouvel onglet</strong> pour ouvrir les liens dans un onglet séparé",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Annuler l'essai Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Basculer en mode édition (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Appuyez sur <strong>F8</strong> ou cliquez sur le bouton <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> pour changer de mode."
 });

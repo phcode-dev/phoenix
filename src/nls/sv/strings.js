@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Läs mer…",
   "PROMO_OPT_OUT_LINK": "Avbryta?",
   "PROMO_OPT_OUT_NOTE": "Du kan när som helst avbryta din provperiod genom att välja `Hjälp > Avbryt Phoenix Pro-provperiod`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Avsluta Phoenix Pro-provperiod",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Uppgradera till {0}",
   "PROMO_PRO_ENDED_TITLE": "Provperioden för {0} har löpt ut",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Tack för att du provade Pro! <b>Du använder nu den kostnadsfria Community Edition.</b> <br>Uppgradera när som helst för att låsa upp dessa funktioner:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Välj och ändra saker på sidan",
   "DEMO_PREVIEW_MODE_LABEL": "Förhandsgranskningsläge",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Se din sida som besökare kommer att se den",
-  "DEMO_MODE_SWITCH_HINT": "Tryck på <strong>F8</strong> eller klicka på <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Spela\" class=\"play-hint-svg svg-gold\"></span>-knappen för att byta läge.",
   "DEMO_TIPS_LABEL": "Tips:",
   "DEMO_SECTION6_TIP1": "Klicka på valfri länk för att markera den för redigering",
   "DEMO_SECTION6_TIP2_NEWTAB": "Aktivera <strong>Öppna i ny flik</strong> för att öppna länkar på en separat sida",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Avsluta Phoenix Pro-provperiod"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Växla redigeringsläge (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Tryck på <strong>F8</strong> eller klicka på <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span>-knappen för att byta läge."
 });

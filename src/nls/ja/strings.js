@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "詳細はこちら…",
   "PROMO_OPT_OUT_LINK": "オプトアウトしますか？",
   "PROMO_OPT_OUT_NOTE": "トライアルは、`ヘルプ > Phoenix Pro トライアルのキャンセル`を選択することで、いつでもキャンセルできます。",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro トライアルの解約",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0}にアップグレード",
   "PROMO_PRO_ENDED_TITLE": "{0}のトライアルは終了しました",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Proをお試しいただきありがとうございます！<b>無料のコミュニティ版に切り替わりました。</b><br>いつでもアップグレードして、以下の機能をご利用いただけます：",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "ページ上のものを選択して変更します",
   "DEMO_PREVIEW_MODE_LABEL": "プレビューモード",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "訪問者に表示されるページを確認します",
-  "DEMO_MODE_SWITCH_HINT": "モードを切り替えるには、<strong>F8</strong>キーを押すか、<span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span>ボタンをクリックします。",
   "DEMO_TIPS_LABEL": "ヒント：",
   "DEMO_SECTION6_TIP1": "リンクをクリックすると編集対象として選択できます。",
   "DEMO_SECTION6_TIP2_NEWTAB": "リンクを別のページで開くには、<strong>「新しいタブで開く」</strong>を有効にします。",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro トライアルの解約"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "編集モードの切り替え (F8)",
+  "DEMO_MODE_SWITCH_HINT": "モードを切り替えるには、<strong>F8</strong>を押すか、<span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span>ボタンをクリックします。"
 });

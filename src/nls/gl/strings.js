@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Máis información…",
   "PROMO_OPT_OUT_LINK": "Darse de baixa?",
   "PROMO_OPT_OUT_NOTE": "Podes cancelar a túa proba en calquera momento seleccionando `Axuda > Cancelar a proba de Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancelar a proba de Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Actualizar a {0}",
   "PROMO_PRO_ENDED_TITLE": "A proba de {0} rematou",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Grazas por probar Pro! <b>Agora estás na Free Community Edition.</b> <br>Actualiza cando queiras para desbloquear estas funcións:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Seleccione e cambie elementos na páxina",
   "DEMO_PREVIEW_MODE_LABEL": "Modo de vista previa",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Vexa a súa páxina como a verán os visitantes",
-  "DEMO_MODE_SWITCH_HINT": "Prema <strong>F8</strong> ou faga clic nos botóns <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> para cambiar de modo.",
   "DEMO_TIPS_LABEL": "Consellos:",
   "DEMO_SECTION6_TIP1": "Faga clic en calquera ligazón para seleccionala para a edición.",
   "DEMO_SECTION6_TIP2_NEWTAB": "Active <strong>Abrir en nova pestana</strong> para abrir as ligazóns nunha páxina separada.",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Cancelar a proba de Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Alternar o modo de edición (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Prema <strong>F8</strong> ou faga clic no botón <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> para cambiar de modo."
 });

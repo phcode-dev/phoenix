@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Dowiedz się więcej…",
   "PROMO_OPT_OUT_LINK": "Zrezygnować?",
   "PROMO_OPT_OUT_NOTE": "Możesz w dowolnym momencie anulować okres próbny, wybierając `Pomoc > Anuluj okres próbny Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Anuluj wersję próbną Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Uaktualnij do {0}",
   "PROMO_PRO_ENDED_TITLE": "Zakończył się okres próbny {0}",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Dziękujemy za wypróbowanie wersji Pro! <b>Korzystasz teraz z darmowej wersji Community Edition.</b> <br>Uaktualnij w dowolnym momencie, aby odblokować te funkcje:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Zaznaczaj i zmieniaj elementy na stronie",
   "DEMO_PREVIEW_MODE_LABEL": "Tryb podglądu",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Zobacz swoją stronę tak, jak zobaczą ją odwiedzający",
-  "DEMO_MODE_SWITCH_HINT": "Naciśnij <strong>F8</strong> lub kliknij przyciski <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Odtwarzaj\" class=\"play-hint-svg svg-gold\"></span>, aby przełączyć tryby.",
   "DEMO_TIPS_LABEL": "Wskazówki:",
   "DEMO_SECTION6_TIP1": "Kliknij dowolny link, aby zaznaczyć go do edycji.",
   "DEMO_SECTION6_TIP2_NEWTAB": "Włącz opcję <strong>Otwórz w nowej karcie</strong>, aby otwierać linki w osobnej karcie.",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Anuluj wersję próbną Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Przełącz tryb edycji (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Naciśnij <strong>F8</strong> lub kliknij przycisk <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span>, aby przełączyć tryby."
 });

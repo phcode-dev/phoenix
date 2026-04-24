@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "자세히 알아보기…",
   "PROMO_OPT_OUT_LINK": "체험 취소?",
   "PROMO_OPT_OUT_NOTE": "언제든지 `도움말 > Phoenix Pro 체험 취소`를 선택하여 체험을 취소할 수 있습니다.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro 무료 체험 취소",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0}로 업그레이드",
   "PROMO_PRO_ENDED_TITLE": "{0} 체험판이 종료되었습니다",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Pro를 체험해 주셔서 감사합니다! <b>이제 무료 커뮤니티 에디션으로 전환되었습니다.</b> <br>언제든지 업그레이드하여 다음 기능을 잠금 해제하세요:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "페이지에서 항목을 선택하고 변경합니다.",
   "DEMO_PREVIEW_MODE_LABEL": "미리보기 모드",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "방문자에게 페이지가 어떻게 보일지 확인합니다.",
-  "DEMO_MODE_SWITCH_HINT": "모드를 전환하려면 <strong>F8</strong> 키를 누르거나 <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> 버튼을 클릭하세요.",
   "DEMO_TIPS_LABEL": "팁:",
   "DEMO_SECTION6_TIP1": "아무 링크나 클릭하여 편집 대상으로 선택하세요.",
   "DEMO_SECTION6_TIP2_NEWTAB": "링크를 별도의 페이지에서 열려면 <strong>새 탭에서 열기</strong>를 활성화하세요.",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro 무료 체험 취소"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "편집 모드 전환 (F8)",
+  "DEMO_MODE_SWITCH_HINT": "<strong>F8</strong> 키를 누르거나 <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> 버튼을 클릭하여 모드를 전환하세요."
 });

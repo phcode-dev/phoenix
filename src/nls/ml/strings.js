@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "കൂടുതലറിയാൻ…",
   "PROMO_OPT_OUT_LINK": "പിന്മാറണോ?",
   "PROMO_OPT_OUT_NOTE": "`Help > Cancel Phoenix Pro Trial` തിരഞ്ഞെടുക്കുന്നതിലൂടെ നിങ്ങൾക്ക് എപ്പോൾ വേണമെങ്കിലും നിങ്ങളുടെ ട്രയൽ റദ്ദാക്കാം.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ട്രയൽ റദ്ദാക്കുക",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0}-ലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യുക",
   "PROMO_PRO_ENDED_TITLE": "{0} ട്രയൽ അവസാനിച്ചു",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Pro പരീക്ഷിച്ചതിന് നന്ദി! <b>നിങ്ങൾ ഇപ്പോൾ സൗജന്യ കമ്മ്യൂണിറ്റി എഡിഷനിലാണ്.</b> <br>ഈ ഫീച്ചറുകൾ അൺലോക്ക് ചെയ്യുന്നതിന് എപ്പോൾ വേണമെങ്കിലും അപ്‌ഗ്രേഡ് ചെയ്യുക:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "പേജിലെ കാര്യങ്ങൾ തിരഞ്ഞെടുത്ത് മാറ്റങ്ങൾ വരുത്തുക",
   "DEMO_PREVIEW_MODE_LABEL": "പ്രിവ്യൂ മോഡ്",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "സന്ദർശകർ കാണുന്നതുപോലെ നിങ്ങളുടെ പേജ് കാണുക",
-  "DEMO_MODE_SWITCH_HINT": "മോഡുകൾ മാറുന്നതിനായി <strong>F8</strong> അമർത്തുക അല്ലെങ്കിൽ <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> ബട്ടണുകളിൽ ക്ലിക്ക് ചെയ്യുക.",
   "DEMO_TIPS_LABEL": "നുറുങ്ങുവിദ്യകൾ:",
   "DEMO_SECTION6_TIP1": "തിരുത്താനായി ഏതെങ്കിലും ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുക",
   "DEMO_SECTION6_TIP2_NEWTAB": "ലിങ്കുകൾ ഒരു പ്രത്യേക പേജിൽ തുറക്കാൻ <strong>പുതിയ ടാബിൽ തുറക്കുക</strong> എന്നത് പ്രവർത്തനക്ഷമമാക്കുക",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ട്രയൽ റദ്ദാക്കുക"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "എഡിറ്റ് മോഡ് മാറ്റുക (F8)",
+  "DEMO_MODE_SWITCH_HINT": "മോഡ് മാറ്റാൻ <strong>F8</strong> അമർത്തുക അല്ലെങ്കിൽ <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> ബട്ടൺ ക്ലിക്ക് ചെയ്യുക."
 });

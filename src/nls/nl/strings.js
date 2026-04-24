@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Meer informatie…",
   "PROMO_OPT_OUT_LINK": "Afmelden?",
   "PROMO_OPT_OUT_NOTE": "U kunt uw proefperiode op elk moment annuleren door `Help > Cancel Phoenix Pro Trial` te selecteren.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro-proefperiode annuleren",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Upgrade naar {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-proefperiode beëindigd",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Bedankt voor het uitproberen van Pro! <b>U gebruikt nu de gratis Community Edition.</b> <br>Upgrade op elk gewenst moment om deze functies te ontgrendelen:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Selecteer en wijzig elementen op de pagina",
   "DEMO_PREVIEW_MODE_LABEL": "Voorbeeldmodus",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Bekijk je pagina zoals bezoekers deze zullen zien",
-  "DEMO_MODE_SWITCH_HINT": "Druk op <strong>F8</strong> of klik op de <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> knoppen om van modus te wisselen.",
   "DEMO_TIPS_LABEL": "Tips:",
   "DEMO_SECTION6_TIP1": "Klik op een willekeurige link om deze te selecteren voor bewerking",
   "DEMO_SECTION6_TIP2_NEWTAB": "Schakel <strong>Openen in nieuw tabblad</strong> in om links op een aparte pagina te openen",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro-proefperiode annuleren"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Bewerkingsmodus wisselen (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Druk op <strong>F8</strong> of klik op de <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> knop om van modus te wisselen."
 });

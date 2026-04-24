@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Uzzināt vairāk…",
   "PROMO_OPT_OUT_LINK": "Atteikties?",
   "PROMO_OPT_OUT_NOTE": "Jūs varat jebkurā laikā atcelt izmēģinājuma versiju, izvēloties `Help > Cancel Phoenix Pro Trial`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Atcelt Phoenix Pro izmēģinājumu",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Jauniniet uz {0}",
   "PROMO_PRO_ENDED_TITLE": "{0} izmēģinājuma periods ir beidzies",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Paldies, ka izmēģinājāt Pro versiju! <b>Tagad jūs izmantojat bezmaksas kopienas versiju.</b> <br>Jauniniet jebkurā laikā, lai atbloķētu šīs funkcijas:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Atlasiet un mainiet elementus lapā",
   "DEMO_PREVIEW_MODE_LABEL": "Priekšskatījuma režīms",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Skatiet savu lapu tā, kā to redzēs apmeklētāji",
-  "DEMO_MODE_SWITCH_HINT": "Nospiediet <strong>F8</strong> vai noklikšķiniet uz <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> pogām, lai pārslēgtu režīmus.",
   "DEMO_TIPS_LABEL": "Padomi:",
   "DEMO_SECTION6_TIP1": "Noklikšķiniet uz jebkuras saites, lai to atlasītu rediģēšanai",
   "DEMO_SECTION6_TIP2_NEWTAB": "Iespējojiet <strong>Atvērt jaunā cilnē</strong>, lai atvērtu saites atsevišķā lapā",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Atcelt Phoenix Pro izmēģinājumu"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Pārslēgt rediģēšanas režīmu (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Nospiediet <strong>F8</strong> vai noklikšķiniet uz <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> pogas, lai pārslēgtu režīmus."
 });

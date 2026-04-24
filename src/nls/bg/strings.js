@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Научете повече…",
   "PROMO_OPT_OUT_LINK": "Отказване?",
   "PROMO_OPT_OUT_NOTE": "Можете да прекратите пробния си период по всяко време, като изберете `Помощ > Прекратяване на пробен период на Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Прекратяване на пробния период за Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Надградете до {0}",
   "PROMO_PRO_ENDED_TITLE": "Пробният период на {0} изтече",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Благодарим Ви, че изпробвахте Pro! <b>Вече сте на безплатното издание Community Edition.</b> <br>Надградете по всяко време, за да отключите тези функции:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Изберете и променяйте неща на страницата",
   "DEMO_PREVIEW_MODE_LABEL": "Режим на преглед",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Вижте страницата си така, както ще я виждат посетителите",
-  "DEMO_MODE_SWITCH_HINT": "Натиснете <strong>F8</strong> или щракнете върху бутоните <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span>, за да превключите режимите.",
   "DEMO_TIPS_LABEL": "Съвети:",
   "DEMO_SECTION6_TIP1": "Щракнете върху която и да е връзка, за да я изберете за редактиране",
   "DEMO_SECTION6_TIP2_NEWTAB": "Активирайте <strong>Отваряне в нов раздел</strong>, за да отваряте връзките в отделна страница",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Прекратяване на пробния период за Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Превключване на режим на редактиране (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Натиснете <strong>F8</strong> или кликнете върху бутона <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span>, за да превключите режимите."
 });

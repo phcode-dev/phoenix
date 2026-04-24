@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Saznajte više…",
   "PROMO_OPT_OUT_LINK": "Odustani?",
   "PROMO_OPT_OUT_NOTE": "Probno razdoblje možete otkazati bilo kada odabirom `Pomoć > Otkaži probno razdoblje za Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Otkaži probno razdoblje za Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Nadogradite na {0}",
   "PROMO_PRO_ENDED_TITLE": "Probno razdoblje za {0} je završilo",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Hvala što ste isprobali Pro! <b>Sada ste na besplatnoj Community verziji.</b> <br>Nadogradite u bilo kojem trenutku kako biste otključali ove značajke:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Odaberite i promijenite elemente na stranici.",
   "DEMO_PREVIEW_MODE_LABEL": "Način za pregled",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Pogledajte svoju stranicu kako će je vidjeti posjetitelji.",
-  "DEMO_MODE_SWITCH_HINT": "Pritisnite <strong>F8</strong> ili kliknite na gumbe <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> za promjenu načina rada.",
   "DEMO_TIPS_LABEL": "Savjeti:",
   "DEMO_SECTION6_TIP1": "Kliknite na bilo koju poveznicu kako biste je odabrali za uređivanje.",
   "DEMO_SECTION6_TIP2_NEWTAB": "Omogućite <strong>Otvori u novoj kartici</strong> kako bi se poveznice otvarale na zasebnoj stranici.",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Otkaži probno razdoblje za Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Prebaci način za uređivanje (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Pritisnite <strong>F8</strong> ili kliknite gumb <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> za promjenu načina rada."
 });

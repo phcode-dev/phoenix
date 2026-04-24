@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Daha Fazla Bilgi Edinin…",
   "PROMO_OPT_OUT_LINK": "Vazgeç?",
   "PROMO_OPT_OUT_NOTE": "Denemenizi dilediğiniz zaman `Help > Cancel Phoenix Pro Trial` seçeneğini belirleyerek iptal edebilirsiniz.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro Deneme Sürümünü İptal Et",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0} sürümüne yükseltin",
   "PROMO_PRO_ENDED_TITLE": "{0} deneme süresi sona erdi",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Pro'yu denediğiniz için teşekkürler! <b>Artık Ücretsiz Topluluk Sürümü'nü kullanıyorsunuz.</b> <br>Bu özelliklerin kilidini açmak için dilediğiniz zaman yükseltin:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Sayfadaki öğeleri seçin ve değiştirin",
   "DEMO_PREVIEW_MODE_LABEL": "Önizleme modu",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Sayfanızı ziyaretçilerin göreceği şekilde görün",
-  "DEMO_MODE_SWITCH_HINT": "Modlar arasında geçiş yapmak için <strong>F8</strong> tuşuna basın veya <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> düğmelerine tıklayın.",
   "DEMO_TIPS_LABEL": "İpuçları:",
   "DEMO_SECTION6_TIP1": "Düzenlemek üzere seçmek için herhangi bir bağlantıya tıklayın",
   "DEMO_SECTION6_TIP2_NEWTAB": "Bağlantıları ayrı bir sayfada açmak için <strong>Yeni sekmede aç</strong> seçeneğini etkinleştirin",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro Deneme Sürümünü İptal Et"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Düzenleme Modunu Değiştir (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Modlar arasında geçiş yapmak için <strong>F8</strong> tuşuna basın veya <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> düğmesine tıklayın."
 });

@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Lær mer…",
   "PROMO_OPT_OUT_LINK": "Meld deg av?",
   "PROMO_OPT_OUT_NOTE": "Du kan avslutte prøveperioden din når som helst ved å velge `Hjelp > Cancel Phoenix Pro Trial`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Avslutt Phoenix Pro-prøveperiode",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Oppgrader til {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-prøveperioden er avsluttet",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Takk for at du prøvde Pro! <b>Du er nå på den gratis Community-utgaven.</b> <br>Oppgrader når som helst for å låse opp disse funksjonene:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Velg og endre ting på siden",
   "DEMO_PREVIEW_MODE_LABEL": "Forhåndsvisningsmodus",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Se siden din slik besøkende vil se den",
-  "DEMO_MODE_SWITCH_HINT": "Trykk på <strong>F8</strong> eller klikk på <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span>-knappene for å bytte modus.",
   "DEMO_TIPS_LABEL": "Tips:",
   "DEMO_SECTION6_TIP1": "Klikk på en lenke for å velge den for redigering",
   "DEMO_SECTION6_TIP2_NEWTAB": "Aktiver <strong>Åpne i ny fane</strong> for å åpne lenker på en separat side",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Avslutt Phoenix Pro-prøveperiode"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Veksle redigeringsmodus (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Trykk på <strong>F8</strong> eller klikk på <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span>-knappen for å bytte modus."
 });

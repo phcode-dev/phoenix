@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "Μάθετε περισσότερα…",
   "PROMO_OPT_OUT_LINK": "Εξαίρεση;",
   "PROMO_OPT_OUT_NOTE": "Μπορείτε να ακυρώσετε τη δοκιμαστική σας περίοδο ανά πάσα στιγμή, επιλέγοντας `Βοήθεια > Ακύρωση δοκιμαστικής περιόδου Phoenix Pro`.",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Ακύρωση δοκιμαστικής περιόδου Phoenix Pro",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "Αναβάθμιση σε {0}",
   "PROMO_PRO_ENDED_TITLE": "Η δοκιμαστική περίοδος του {0} έληξε",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "Ευχαριστούμε που δοκιμάσατε την έκδοση Pro! <b>Τώρα χρησιμοποιείτε τη δωρεάν έκδοση Community Edition.</b> <br>Αναβαθμίστε ανά πάσα στιγμή για να ξεκλειδώσετε αυτές τις δυνατότητες:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "Επιλέξτε και αλλάξτε στοιχεία στη σελίδα",
   "DEMO_PREVIEW_MODE_LABEL": "Λειτουργία προεπισκόπησης",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "Δείτε τη σελίδα σας όπως θα την βλέπουν οι επισκέπτες",
-  "DEMO_MODE_SWITCH_HINT": "Πατήστε το <strong>F8</strong> ή κάντε κλικ στα κουμπιά <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Αναπαραγωγή\" class=\"play-hint-svg svg-gold\"></span> για εναλλαγή μεταξύ των λειτουργιών.",
   "DEMO_TIPS_LABEL": "Συμβουλές:",
   "DEMO_SECTION6_TIP1": "Κάντε κλικ σε οποιονδήποτε σύνδεσμο για να τον επιλέξετε για επεξεργασία",
   "DEMO_SECTION6_TIP2_NEWTAB": "Ενεργοποιήστε την επιλογή <strong>Άνοιγμα σε νέα καρτέλα</strong> για να ανοίγουν οι σύνδεσμοι σε ξεχωριστή σελίδα",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Ακύρωση δοκιμαστικής περιόδου Phoenix Pro"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "Εναλλαγή λειτουργίας επεξεργασίας (F8)",
+  "DEMO_MODE_SWITCH_HINT": "Πατήστε <strong>F8</strong> ή κάντε κλικ στο κουμπί <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> για να αλλάξετε λειτουργία."
 });

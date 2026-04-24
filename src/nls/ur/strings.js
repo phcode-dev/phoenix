@@ -1868,6 +1868,7 @@ define({
   "PROMO_LEARN_MORE": "مزید جانیے…",
   "PROMO_OPT_OUT_LINK": "دستبردار ہوں؟",
   "PROMO_OPT_OUT_NOTE": "آپ کسی بھی وقت `Help > Cancel Phoenix Pro Trial` منتخب کر کے اپنا ٹرائل منسوخ کر سکتے ہیں۔",
+  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ٹرائل منسوخ کریں",
   "PROMO_UPGRADE_APP_UPSELL_BUTTON": "{0} پر اپ گریڈ کریں",
   "PROMO_PRO_ENDED_TITLE": "{0} کا ٹرائل ختم ہو گیا",
   "PROMO_PHOENIX_PRO_ENDED_MESSAGE": "پرو آزمانے کا شکریہ! <b>اب آپ مفت کمیونٹی ایڈیشن پر ہیں۔</b> <br>ان خصوصیات کو غیر مقفل کرنے کے لیے کسی بھی وقت اپ گریڈ کریں:",
@@ -2137,7 +2138,6 @@ define({
   "DEMO_EDIT_MODE_DESCRIPTION": "صفحہ پر چیزیں منتخب کریں اور تبدیل کریں",
   "DEMO_PREVIEW_MODE_LABEL": "پیش منظر موڈ",
   "DEMO_PREVIEW_MODE_DESCRIPTION": "اپنا صفحہ ویسا دیکھیں جیسا زائرین اسے دیکھیں گے",
-  "DEMO_MODE_SWITCH_HINT": "موڈز تبدیل کرنے کے لیے <strong>F8</strong> دبائیں یا <span class=\"play-button-hint\"><img src=\"images/playButton.svg\" alt=\"Play\" class=\"play-hint-svg svg-gold\"></span> بٹنوں پر کلک کریں۔",
   "DEMO_TIPS_LABEL": "تجاویز:",
   "DEMO_SECTION6_TIP1": "ترمیم کے لیے کسی بھی لنک پر کلک کر کے اسے منتخب کریں۔",
   "DEMO_SECTION6_TIP2_NEWTAB": "لنکس کو ایک علیحدہ صفحہ پر کھولنے کے لیے <strong>نئی ٹیب میں کھولیں</strong> کو فعال کریں۔",
@@ -2181,5 +2181,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "PROMO_OPT_OUT_DIALOG_TITLE": "Phoenix Pro ٹرائل منسوخ کریں"
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "ایڈٹ موڈ بدلیں (F8)",
+  "DEMO_MODE_SWITCH_HINT": "موڈ بدلنے کے لیے <strong>F8</strong> دبائیں یا <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> بٹن پر کلک کریں۔"
 });
