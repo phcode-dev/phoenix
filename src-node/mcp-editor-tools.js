@@ -35,6 +35,36 @@ const CLARIFICATION_HINT =
     "IMPORTANT: The user has typed a follow-up clarification while you were working." +
     " Call the getUserClarification tool to read it before proceeding.";
 
+// Per-tool safety-net budgets for the browser round-trip. The node connector
+// is reliable in practice, so these should never fire during normal use —
+// they exist so a stalled promise chain (live preview wedged, etc.) surfaces
+// a deterministic error to Claude instead of the handler hanging forever.
+// Tools whose runtime is bounded by user-supplied code (execJsInLivePreview)
+// intentionally have no timeout — the code is allowed to run as long as it takes.
+const EXEC_PEER_TIMEOUT_MS = {
+    getEditorState: 5000,
+    takeScreenshot: 15000,
+    controlEditor: 5000,
+    resizeLivePreview: 5000
+};
+
+function _execPeerWithTimeout(nodeConnector, fn, args, label) {
+    const ms = EXEC_PEER_TIMEOUT_MS[fn];
+    const call = nodeConnector.execPeer(fn, args);
+    if (!ms) {
+        return call; // no timeout configured for this tool
+    }
+    let timer;
+    const timeout = new Promise(function (_resolve, reject) {
+        timer = setTimeout(function () {
+            reject(new Error(label + " timed out after " + ms + "ms"));
+        }, ms);
+    });
+    return Promise.race([call, timeout]).finally(function () {
+        clearTimeout(timer);
+    });
+}
+
 /**
  * Append a clarification hint to an MCP tool result if the user has queued a message.
  */
@@ -70,7 +100,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         async function () {
             let result;
             try {
-                const state = await nodeConnector.execPeer("getEditorState", {});
+                const state = await _execPeerWithTimeout(nodeConnector, "getEditorState", {}, "getEditorState");
                 result = {
                     content: [{ type: "text", text: JSON.stringify(state) }]
                 };
@@ -107,11 +137,11 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         async function (args) {
             let toolResult;
             try {
-                const result = await nodeConnector.execPeer("takeScreenshot", {
+                const result = await _execPeerWithTimeout(nodeConnector, "takeScreenshot", {
                     selector: args.selector || undefined,
                     purePreview: args.purePreview || false,
                     filePath: args.filePath || undefined
-                });
+                }, "takeScreenshot");
                 if (result.filePath) {
                     toolResult = {
                         content: [{ type: "text", text: "Screenshot saved to: " + result.filePath }]
@@ -148,9 +178,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         async function (args) {
             let toolResult;
             try {
-                const result = await nodeConnector.execPeer("execJsInLivePreview", {
+                const result = await _execPeerWithTimeout(nodeConnector, "execJsInLivePreview", {
                     code: args.code
-                });
+                }, "execJsInLivePreview");
                 if (result.error) {
                     toolResult = {
                         content: [{ type: "text", text: "Error: " + result.error }],
@@ -202,7 +232,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             for (const op of args.operations) {
                 console.log("[Phoenix AI] controlEditor:", op.operation, op.filePath);
                 try {
-                    const result = await nodeConnector.execPeer("controlEditor", op);
+                    const result = await _execPeerWithTimeout(nodeConnector, "controlEditor", op, "controlEditor:" + op.operation);
                     results.push(result);
                     if (!result.success) {
                         hasError = true;
@@ -234,9 +264,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         async function (args) {
             let toolResult;
             try {
-                const result = await nodeConnector.execPeer("resizeLivePreview", {
+                const result = await _execPeerWithTimeout(nodeConnector, "resizeLivePreview", {
                     width: args.width
-                });
+                }, "resizeLivePreview");
                 if (result.error) {
                     toolResult = {
                         content: [{ type: "text", text: "Error: " + result.error }],

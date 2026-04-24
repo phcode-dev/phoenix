@@ -1151,6 +1151,36 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     }
                 }
             }
+
+            // Tool results come back as user-typed messages with content blocks
+            // of type tool_result. Log isError + content size so we can correlate
+            // a "Tool done" (input stream) with what Claude actually saw as the reply.
+            if (message.type === "user" && message.message && Array.isArray(message.message.content)) {
+                for (const block of message.message.content) {
+                    if (block && block.type === "tool_result") {
+                        let len = 0;
+                        let preview = "";
+                        if (typeof block.content === "string") {
+                            len = block.content.length;
+                            preview = block.content.slice(0, 120);
+                        } else if (Array.isArray(block.content)) {
+                            for (const c of block.content) {
+                                if (c && c.type === "text" && typeof c.text === "string") {
+                                    len += c.text.length;
+                                    if (!preview) { preview = c.text.slice(0, 120); }
+                                } else if (c && c.type === "image" && typeof c.data === "string") {
+                                    len += c.data.length;
+                                    if (!preview) { preview = "[image " + c.data.length + "ch]"; }
+                                }
+                            }
+                        }
+                        _log("Tool result:", block.tool_use_id || "?",
+                            "isError=" + !!block.is_error,
+                            "len=" + len + "ch",
+                            preview ? ("preview=" + JSON.stringify(preview)) : "");
+                    }
+                }
+            }
         }
 
         // Flush any remaining accumulated text
