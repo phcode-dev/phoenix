@@ -2180,5 +2180,7 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "شيء آخر",
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
+  "LIVE_PREVIEW_MODE_TOGGLE_EDIT": "تبديل وضع التحرير (F8)",
+  "DEMO_MODE_SWITCH_HINT": "اضغط على <strong>F8</strong> أو انقر على زر <span class=\"play-button-hint\"><i class=\"fa-solid fa-pencil\"></i></span> لتبديل الأوضاع."
 });
