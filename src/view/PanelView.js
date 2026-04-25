@@ -908,23 +908,12 @@ define(function (require, exports, module) {
             _showOverflowMenu();
         });
 
-        // Hide-panel button collapses the container but keeps tabs intact.
-        // Maximize state is preserved so the panel re-opens maximized.
+        // Hide-panel button collapses the container but keeps the active
+        // panel logically active so re-opening (drawer / Escape) restores it
+        // with its content already mounted.
         _$tabBar.on("click", ".bottom-panel-hide-btn", function (e) {
             e.stopPropagation();
-            if (_$container && _$container.is(":visible")) {
-                if (_activeId) {
-                    const activePanel = _panelMap[_activeId];
-                    if (activePanel) {
-                        activePanel.$panel.removeClass("active-bottom-panel");
-                    }
-                }
-                _activeId = null;
-                _updateActiveTabHighlight();
-                restoreIfMaximized();
-                Resizer.hide(_$container[0]);
-                exports.trigger(EVENT_PANEL_HIDDEN, _defaultPanelId);
-            }
+            collapseContainer();
         });
 
         // Maximize/restore toggle button
@@ -1133,6 +1122,39 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Collapse the bottom panel container (transient hide) without touching
+     * which panel is logically active. Fires EVENT_PANEL_HIDDEN with the
+     * default panel id as a "container collapsed" signal so toolbar icons
+     * and menu items that mirror container visibility deselect.
+     * No-op if the container is already hidden.
+     */
+    function collapseContainer() {
+        if (!_$container || !_$container.is(":visible")) {
+            return;
+        }
+        restoreIfMaximized();
+        Resizer.hide(_$container[0]);
+        exports.trigger(EVENT_PANEL_HIDDEN, _defaultPanelId);
+    }
+
+    /**
+     * Re-show the bottom panel container after a previous collapse, with the
+     * previously active panel still mounted. Fires EVENT_PANEL_SHOWN for the
+     * active panel id so toolbar icons / menu items that mirror visibility
+     * re-select. No-op if the container is already visible or there's no
+     * active panel to restore.
+     */
+    function restoreContainer() {
+        if (!_$container || _$container.is(":visible")) {
+            return;
+        }
+        Resizer.show(_$container[0]);
+        if (_activeId) {
+            exports.trigger(EVENT_PANEL_SHOWN, _activeId);
+        }
+    }
+
+    /**
      * Returns a copy of the currently open bottom panel IDs in tab order.
      * @return {string[]}
      */
@@ -1226,6 +1248,8 @@ define(function (require, exports, module) {
     exports.restoreIfMaximized = restoreIfMaximized;
     exports.isMaximized = isMaximized;
     exports.MAXIMIZE_THRESHOLD = MAXIMIZE_THRESHOLD;
+    exports.collapseContainer = collapseContainer;
+    exports.restoreContainer = restoreContainer;
     //events
     exports.EVENT_PANEL_HIDDEN = EVENT_PANEL_HIDDEN;
     exports.EVENT_PANEL_SHOWN = EVENT_PANEL_SHOWN;
