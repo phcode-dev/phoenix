@@ -41,6 +41,14 @@
        still staying on-theme in light mode. */
     background-color: #222;
     border-right: 1px solid rgba(0, 0, 0, 0.45);
+    /* Extend CCB's paint by 2px on each side without affecting layout. Under
+       non-integer DPR (e.g. 110% browser zoom) subpixel rounding can leave a
+       1px gap between CCB and the sidebar on the left, and between CCB and the
+       editor on the right. A solid box-shadow with zero blur paints CCB-colored
+       pixels into those gaps without shifting any geometry. */
+    box-shadow:
+        -2px 0 0 0 #222,
+         2px 0 0 0 #222;
 
     .ccb-group {
         display: flex;
