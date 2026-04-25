@@ -370,38 +370,75 @@
     color: rgba(100, 180, 255, 0.8);
 }
 
-#livePreviewModeBtn {
-    min-width: fit-content;
+.lp-mode-btn-group {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     margin: 0 4px 0 3px;
-    max-width: 80%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    cursor: pointer;
-    background: transparent;
-    box-shadow: none;
     border: 1px solid transparent;
+    border-radius: 3px;
     box-sizing: border-box;
-    color: #a0a0a0;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 0 0.35em;
 }
 
-#livePreviewModeBtn:hover,
-#livePreviewModeBtn:focus,
-#livePreviewModeBtn:active {
+.lp-mode-btn-group:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.lp-mode-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    background: transparent;
+    box-shadow: none !important;
+    border: none;
+    color: #a0a0a0;
+    padding: 0;
+    margin: 0;
+}
+
+#live-preview-plugin-toolbar .lp-mode-icon:hover,
+#live-preview-plugin-toolbar .lp-mode-icon:focus,
+#live-preview-plugin-toolbar .lp-mode-icon:active {
     background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
     box-shadow: none !important;
 }
 
-#livePreviewModeBtn.btn-dropdown::after {
-    position: static;
-    margin-top: 2px;
-    margin-left: 5px;
+.lp-mode-icon.selected {
+    color: #FBB03B;
+}
+
+.lp-mode-dropdown-chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    box-shadow: none !important;
+    border: none;
+    border-left: 1px solid transparent;
+    border-radius: 0 3px 3px 0;
+    color: #a0a0a0;
+    padding: 0 4px;
+    margin: 0;
+    height: 22px;
+    font-size: 10px;
+}
+
+.lp-mode-btn-group:hover .lp-mode-dropdown-chevron {
+    border-left-color: rgba(255, 255, 255, 0.1);
+}
+
+#live-preview-plugin-toolbar .lp-mode-dropdown-chevron:hover,
+#live-preview-plugin-toolbar .lp-mode-dropdown-chevron:focus,
+#live-preview-plugin-toolbar .lp-mode-dropdown-chevron:active {
+    background: transparent !important;
+    border: none !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
 }
 
 #reloadLivePreviewButton {
@@ -420,19 +457,6 @@
     width: 30px;
     height: 22px;
     flex-shrink: 0;
-}
-
-#previewModeLivePreviewButton {
-    color: #a0a0a0;
-    margin-left: 3px;
-    margin-top: 0;
-    width: 30px;
-    height: 22px;
-    flex-shrink: 0;
-}
-
-#previewModeLivePreviewButton.selected{
-    color: #FBB03B;
 }
 
 .live-preview-status-overlay {

@@ -169,6 +169,7 @@ define(function (require, exports, module) {
         $firefoxButtonBallast,
         $panelTitle,
         $modeBtn,
+        $modeBtnGroup,
         $previewBtn,
         $designModeBtn;
 
@@ -343,26 +344,19 @@ define(function (require, exports, module) {
      */
     function _updateLPControlsForMdviewer() {
         const inDesignMode = WorkspaceManager.isInDesignMode && WorkspaceManager.isInDesignMode();
+        const showPen = !_isMdviewrActive;
+        // Dropdown is also hidden in design mode (see $designModeBtn wiring in
+        // _createExtensionPanel) because the preview-mode options are moot
+        // when the editor is fully collapsed.
+        const showChevron = !_isMdviewrActive && !inDesignMode;
         if ($previewBtn) {
-            $previewBtn.toggle(!_isMdviewrActive);
+            $previewBtn.toggle(showPen);
         }
         if ($modeBtn) {
-            // Also hidden in design mode (see $designModeBtn wiring in
-            // _createExtensionPanel) because the preview-mode dropdown is moot
-            // when the editor is fully collapsed.
-            $modeBtn.toggle(!_isMdviewrActive && !inDesignMode);
+            $modeBtn.toggle(showChevron);
         }
-    }
-
-    function _updateModeButton(mode) {
-        if ($modeBtn) {
-            if (mode === "highlight") {
-                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_HIGHLIGHT;
-            } else if (mode === "edit") {
-                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_EDIT;
-            } else {
-                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_PREVIEW;
-            }
+        if ($modeBtnGroup && $modeBtnGroup.length) {
+            $modeBtnGroup.toggle(showPen || showChevron);
         }
     }
 
@@ -371,14 +365,12 @@ define(function (require, exports, module) {
 
         // Pencil button lights up only when edit mode is active; preview /
         // highlight modes leave it un-tinted. Click toggles between edit
-        // and preview.
+        // and preview. The chevron next to it opens the full mode dropdown.
         if (currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE) {
             $previewBtn.addClass('selected');
         } else {
             $previewBtn.removeClass('selected');
         }
-
-        _updateModeButton(currentMode);
     }
 
     function _showModeSelectionDropdown(event) {
@@ -809,6 +801,7 @@ define(function (require, exports, module) {
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $modeBtn = $panel.find("#livePreviewModeBtn");
+        $modeBtnGroup = $panel.find("#lpModeBtnGroup");
         $previewBtn = $panel.find("#previewModeLivePreviewButton");
         $designModeBtn = $panel.find("#designModeToggleLivePreviewButton");
 

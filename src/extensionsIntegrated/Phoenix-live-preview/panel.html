@@ -7,10 +7,14 @@
 	        <button id="designModeToggleLivePreviewButton" title="{{switchToDesignMode}}" class="btn-alt-quiet toolbar-button">
 	            <i class="fa-solid fa-expand"></i>
 	        </button>
-	        <button id="previewModeLivePreviewButton" title="{{clickToToggleEdit}}" class="btn-alt-quiet toolbar-button">
-	            <i class="fa-solid fa-pencil"></i>
-	        </button>
-            <button id="livePreviewModeBtn" title="{{livePreviewConfigureModes}}" class="btn-alt-quiet toolbar-button btn-dropdown btn"><!-- Content will come here dynamically --></button>
+            <span id="lpModeBtnGroup" class="lp-mode-btn-group">
+                <button id="previewModeLivePreviewButton" title="{{clickToToggleEdit}}" class="btn-alt-quiet lp-mode-icon">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+                <button id="livePreviewModeBtn" title="{{livePreviewConfigureModes}}" class="btn-alt-quiet lp-mode-dropdown-chevron">
+                    <i class="fa-solid fa-caret-down"></i>
+                </button>
+            </span>
         </div>
         <div style="width: fit-content;min-width: 60%;display: flex;justify-content: center; align-items: center;">
 <!--            these are buttons that are always invisible to help central align the panel title-->
