@@ -153,6 +153,8 @@
   "AI_CHAT_TOOL_WRITE": "Write",
   "AI_CHAT_TOOL_WRITE_FILE": "Write {0}",
   "AI_CHAT_UNDO": "Undo",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "This will only undo changes made by the AI. Changes made outside the AI won’t be restored and may be lost. For full version history, use version control like Git.",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Undo & Restore",
   "AI_CHAT_UNDO_TITLE": "Undo changes from this response",
   "AI_CHAT_UPSELL_BTN": "Get Phoenix Pro",
   "AI_CHAT_UPSELL_MESSAGE": "AI features are available with Phoenix Pro.",
