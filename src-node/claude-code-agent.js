@@ -522,7 +522,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         content = fs.readFileSync(input.tool_input.file_path, "utf8");
                                     }
                                     if (input.tool_input.old_string && input.tool_input.new_string) {
-                                        content = content.replace(input.tool_input.old_string, input.tool_input.new_string);
+                                        if (input.tool_input.replace_all === true) {
+                                            content = content.split(input.tool_input.old_string)
+                                                .join(input.tool_input.new_string);
+                                        } else {
+                                            content = content.replace(input.tool_input.old_string,
+                                                input.tool_input.new_string);
+                                        }
                                     }
                                     const dir = path.dirname(input.tool_input.file_path);
                                     if (!fs.existsSync(dir)) {
@@ -550,7 +556,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             const edit = {
                                 file: input.tool_input.file_path,
                                 oldText: input.tool_input.old_string,
-                                newText: input.tool_input.new_string
+                                newText: input.tool_input.new_string,
+                                replaceAll: input.tool_input.replace_all === true
                             };
                             editCount++;
                             let editResult;
