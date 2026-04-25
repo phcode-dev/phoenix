@@ -198,13 +198,18 @@ define(function (require, exports, module) {
             }
         });
 
-        // Update drawer button state based on bottom panel container visibility.
-        // The app drawer icon stays selected whenever the bottom panel is visible.
+        // Drawer button reflects whether the Quick Access (default) panel is
+        // the active visible panel. _switchToTab silently swaps active tabs
+        // without firing PANEL_HIDDEN for the previous one, so we have to gate
+        // the SHOWN handler on the panelID — relying on a HIDDEN event would
+        // miss the case where another tab takes over from Quick Access.
+        // The minimize-button "stuck selected" case is handled by PanelView
+        // firing PANEL_HIDDEN with the default panel id, picked up below.
         PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (event, panelID) {
             if (panelID === WorkspaceManager.DEFAULT_PANEL_ID) {
                 _updateButtonVisibility();
             }
-            $drawerBtn.addClass("selected-button");
+            $drawerBtn.toggleClass("selected-button", panelID === WorkspaceManager.DEFAULT_PANEL_ID);
         });
 
         PanelView.on(PanelView.EVENT_PANEL_HIDDEN, function (event, panelID) {
