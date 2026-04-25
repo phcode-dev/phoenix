@@ -155,20 +155,46 @@
     transform: translateX(-50%);
     z-index: 10;
     display: none;
-    padding: 6px 16px;
+    padding: 6px 14px;
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.18);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: #fff;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     white-space: nowrap;
     pointer-events: none;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.responsive-dimension-label .responsive-dimension-device {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+}
+
+.responsive-dimension-label .responsive-dimension-device i {
+    margin-right: 5px;
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.responsive-dimension-label .responsive-dimension-name {
+    vertical-align: middle;
+}
+
+.responsive-dimension-label .responsive-dimension-separator {
+    color: rgba(255, 255, 255, 0.35);
+    margin: 0 6px;
+    font-weight: 400;
+}
+
+.responsive-dimension-label .responsive-dimension-size {
+    color: #fff;
+    font-weight: 600;
 }
 
 .plugin-toolbar {
@@ -319,6 +345,10 @@
 .device-size-item-icon {
     margin-right: 6px;
     font-size: inherit;
+}
+
+.device-size-item-icon-fit {
+    font-size: 11px;
 }
 
 .device-size-item-row {
