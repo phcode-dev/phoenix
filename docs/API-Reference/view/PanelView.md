@@ -313,6 +313,26 @@ When the saved height is near-max or unknown, a sensible default is used.
 Returns true if the bottom panel is currently maximized.
 
 **Kind**: global function  
+<a name="collapseContainer"></a>
+
+## collapseContainer()
+Collapse the bottom panel container (transient hide) without touching
+which panel is logically active. Fires EVENT_PANEL_HIDDEN with the
+default panel id as a "container collapsed" signal so toolbar icons
+and menu items that mirror container visibility deselect.
+No-op if the container is already hidden.
+
+**Kind**: global function  
+<a name="restoreContainer"></a>
+
+## restoreContainer()
+Re-show the bottom panel container after a previous collapse, with the
+previously active panel still mounted. Fires EVENT_PANEL_SHOWN for the
+active panel id so toolbar icons / menu items that mirror visibility
+re-select. No-op if the container is already visible or there's no
+active panel to restore.
+
+**Kind**: global function  
 <a name="getOpenBottomPanelIDs"></a>
 
 ## getOpenBottomPanelIDs() ⇒ <code>Array.&lt;string&gt;</code>
