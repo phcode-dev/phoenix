@@ -270,8 +270,8 @@ exports.cancelQuery = async function () {
     if (currentAbortController) {
         currentAbortController.abort();
         currentAbortController = null;
-        // Clear session so next query starts fresh instead of resuming a killed session
-        currentSessionId = null;
+        // Keep currentSessionId so the next prompt resumes the same SDK session.
+        // Aborts leave an interrupt marker in the session log, not a corrupted state.
         // Clear any pending question or plan
         _questionResolve = null;
         _planResolve = null;
@@ -1256,13 +1256,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 return;
             }
             _log("Cancelled");
-            // Send sessionId so browser side can save partial history for later resume
-            const cancelledSessionId = currentSessionId;
-            // Clear session so next query starts fresh
-            currentSessionId = null;
+            // Keep currentSessionId so the next prompt can resume the same SDK
+            // session — the abort just leaves an interrupt marker in the log.
             nodeConnector.triggerPeer("aiComplete", {
                 requestId: requestId,
-                sessionId: cancelledSessionId
+                sessionId: currentSessionId
             });
             return;
         }
@@ -1288,8 +1286,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             }
         }
 
-        // Clear session after error to prevent cascading failures from resuming a broken session
-        currentSessionId = null;
+        // Keep currentSessionId so the user can retry — errors are often
+        // transient (network, rate limit), and if the session really is broken
+        // the next attempt will surface a fresh error of its own.
 
         nodeConnector.triggerPeer("aiError", {
             requestId: requestId,
@@ -1299,7 +1298,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         // Always send aiComplete after aiError so the UI exits streaming state
         nodeConnector.triggerPeer("aiComplete", {
             requestId: requestId,
-            sessionId: null
+            sessionId: currentSessionId
         });
     }
 }
