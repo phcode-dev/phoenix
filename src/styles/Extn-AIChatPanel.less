@@ -688,6 +688,17 @@
         }
     }
 
+    // Per-edit line stats shown next to the Show-diff toggle on
+    // restored cards. Match the toggle's muted look so the right edge
+    // reads as a single secondary-action cluster — without this the
+    // +x/-y use the panel's default bright text and clash.
+    .ai-tool-edit-stats {
+        font-size: @ai-text-meta;
+        color: @project-panel-text-2;
+        opacity: 0.65;
+        font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+    }
+
     .ai-tool-diff-more {
         background: none;
         border: none;
