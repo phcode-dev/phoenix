@@ -24,11 +24,13 @@
 // (or a relative unit for headings). Centralising the scale here keeps the
 // panel coherent across cards: tool indicators, diff cards, confirm dialogs,
 // the proposed plan, etc. all read as one product instead of independently
-// styled fragments.
-@ai-text-body:      @sidebar-content-font-size;   // 13px — message content, tool labels, prose
+// styled fragments. Body is 14px (one tick larger than Phoenix's 13px sidebar
+// default) so prose breathes more — closer to what users get from Lovable
+// /ChatGPT/Claude desktop. Secondary and meta stay at the smaller tiers.
+@ai-text-body:      @menu-item-font-size;         // 14px — message content, tool labels, prose
 @ai-text-secondary: @sidebar-small-font-size;     // 12px — in-card buttons, mono code, file paths
 @ai-text-meta:      @sidebar-xs-font-size;        // 11px — stats, status, permission/context info
-@ai-line-prose:     1.55;                         // multi-line body text
+@ai-line-prose:     1.6;                          // multi-line body text — generous reading rhythm
 @ai-line-compact:   1.4;                          // single-line UI elements
 
 .ai-tab-container {
@@ -268,7 +270,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 8px 10px;
+    padding: 12px 14px;
     min-height: 0;
     min-width: 0;
     -webkit-user-select: text;
@@ -279,7 +281,7 @@
 
 /* ── Individual messages ────────────────────────────────────────────── */
 .ai-msg {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     max-width: 100%;
     // Skip layout / paint for messages that are far off-screen. For a large
     // chat history (>1k messages, >10k DOM nodes), showing the sidebar after
@@ -297,7 +299,7 @@
 
     .ai-msg-content {
         font-size: @ai-text-body;
-        line-height: 1.55;
+        line-height: @ai-line-prose;
         white-space: normal;
         word-wrap: break-word;
         overflow-wrap: anywhere;
@@ -320,8 +322,8 @@
 
     .ai-msg-content {
         background-color: rgba(255, 255, 255, 0.07);
-        padding: 6px 10px;
-        border-radius: 10px 10px 2px 10px;
+        padding: 8px 12px;
+        border-radius: 12px 12px 2px 12px;
         max-width: 88%;
         text-align: left;
     }
@@ -400,6 +402,7 @@
 .ai-msg-assistant {
     .ai-msg-content {
         padding: 2px 0;
+        line-height: @ai-line-prose;
 
         > *:first-child {
             margin-top: 0;
@@ -409,8 +412,10 @@
             margin-bottom: 0;
         }
 
+        // Paragraph margin tuned to roughly match a single line of prose
+        // so paragraphs read as separated but still related.
         p {
-            margin: 0 0 8px 0;
+            margin: 0 0 14px 0;
 
             &:last-child {
                 margin-bottom: 0;
@@ -425,7 +430,7 @@
         code {
             background-color: rgba(255, 255, 255, 0.08);
             color: @project-panel-text-1;
-            padding: 1px 4px;
+            padding: 1px 5px;
             border-radius: 3px;
             font-size: @sidebar-md-code-font-size;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
@@ -434,10 +439,10 @@
         pre {
             background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 8px 10px;
+            padding: 10px 12px;
             border-radius: 4px;
             overflow-x: auto;
-            margin: 6px 0;
+            margin: 10px 0 12px;
             position: relative;
 
             &.collapsed code {
@@ -451,24 +456,39 @@
                 padding: 0;
                 border-radius: 0;
                 font-size: 1em;
-                line-height: 1.5;
+                line-height: 1.55;
                 color: @project-panel-text-1;
             }
         }
 
+        // Lists: visible vertical gap between items so they breathe but
+        // stay grouped. Block-level margin top/bottom matches a paragraph.
         ul, ol {
-            margin: 4px 0 8px 0;
-            padding-left: 18px;
+            margin: 8px 0 14px 0;
+            padding-left: 20px;
         }
 
         li {
-            margin-bottom: 2px;
+            margin-bottom: 6px;
+            // Brackets' default li rule clamps line-height to ~18px which
+            // makes wrapped bullet text look squished against the prose
+            // around it. Restore the prose rhythm explicitly.
+            line-height: @ai-line-prose;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            // Nested lists shouldn't double-space
+            > ul, > ol {
+                margin: 6px 0 0 0;
+            }
         }
 
         blockquote {
             border-left: 2px solid rgba(255, 255, 255, 0.12);
-            margin: 6px 0;
-            padding: 2px 10px;
+            margin: 10px 0;
+            padding: 4px 12px;
             color: @project-panel-text-2;
         }
 
@@ -527,11 +547,14 @@
 }
 
 /* ── Tool use indicator ─────────────────────────────────────────────── */
+// Tool indicators are factual breadcrumbs, not the main signal. Keep them
+// visually quieter than prose so the eye lands on the assistant's text
+// first. Background and border alphas tuned down from earlier values.
 .ai-msg-tool {
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.025);
     border-left: 2px solid var(--tool-color, @project-panel-text-2);
 
     // Add a small breather between consecutive tool indicators so a stack
@@ -891,9 +914,9 @@
 /* ── Edit summary card ──────────────────────────────────────────────── */
 .ai-msg-edit-summary {
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 4px;
-    margin-bottom: 6px;
-    padding: 6px 10px;
+    border-radius: 6px;
+    margin: 8px 0 12px 0;
+    padding: 10px 12px;
     background-color: rgba(255, 255, 255, 0.025);
 
     .ai-edit-summary-header {
@@ -1332,22 +1355,24 @@
 }
 
 .ai-plan-body {
-    padding: 10px 12px;
+    padding: 14px 16px;
     font-size: @ai-text-body;
     color: @project-panel-text-1;
-    line-height: 1.5;
+    line-height: @ai-line-prose;
     white-space: normal;
     word-wrap: break-word;
-    max-height: 400px;
+    max-height: 460px;
     overflow-y: auto;
 
     p, ul, ol, pre {
-        margin-bottom: 8px;
+        margin-bottom: 14px;
         &:last-child {
             margin-bottom: 0;
         }
     }
 
+    // Heading top margin needs to be larger than paragraph margin so a
+    // section header reads as a section header rather than another bullet.
     h1, h2, h3, h4 {
         color: @project-panel-text-1;
         line-height: 1.25em;
@@ -1355,16 +1380,16 @@
 
     h1 {
         font-size: @sidebar-md-h1-font-size;
-        margin: 12px 0 4px 0;
+        margin: 18px 0 8px 0;
         padding-bottom: .3em;
     }
     h2 {
         font-size: @sidebar-md-h2-font-size;
-        margin: 10px 0 4px 0;
+        margin: 16px 0 8px 0;
         padding-bottom: .3em;
     }
-    h3 { font-size: @sidebar-md-h3-font-size; margin: 8px 0 4px 0; }
-    h4 { font-size: @sidebar-md-h4-font-size; margin: 6px 0 4px 0; opacity: 0.85; }
+    h3 { font-size: @sidebar-md-h3-font-size; margin: 14px 0 6px 0; }
+    h4 { font-size: @sidebar-md-h4-font-size; margin: 12px 0 6px 0; opacity: 0.85; }
 
     strong {
         color: @project-panel-text-1;
@@ -1376,15 +1401,15 @@
 
     blockquote {
         border-left: 3px solid rgba(107, 158, 255, 0.3);
-        margin: 6px 0;
-        padding: 2px 10px;
+        margin: 10px 0;
+        padding: 4px 12px;
         color: @project-panel-text-2;
     }
 
     code {
         background-color: rgba(255, 255, 255, 0.08);
         color: @project-panel-text-1;
-        padding: 1px 4px;
+        padding: 1px 5px;
         border-radius: 3px;
         font-size: @sidebar-md-code-font-size;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
@@ -1393,7 +1418,7 @@
     pre {
         background-color: rgba(0, 0, 0, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.06);
-        padding: 8px 10px;
+        padding: 10px 12px;
         border-radius: 4px;
         overflow-x: auto;
         position: relative;
@@ -1407,18 +1432,29 @@
             padding: 0;
             border-radius: 0;
             font-size: 1em;
-            line-height: 1.5;
+            line-height: 1.55;
             color: @project-panel-text-1;
         }
     }
 
     ul, ol {
-        margin: 4px 0 8px 0;
-        padding-left: 18px;
+        margin: 8px 0 14px 0;
+        padding-left: 22px;
     }
 
     li {
-        margin-bottom: 2px;
+        margin-bottom: 6px;
+        // Same line-height fix as the assistant message — Brackets'
+        // default li rule clamps line-height too tight otherwise.
+        line-height: @ai-line-prose;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        > ul, > ol {
+            margin: 6px 0 0 0;
+        }
     }
 }
 
@@ -2206,12 +2242,12 @@
         color: @project-panel-text-1;
         font-size: @ai-text-body;
         font-family: inherit;
-        padding: 7px 0 7px 10px;
+        padding: 10px 0 10px 12px;
         margin: 0;
         resize: none;
-        min-height: 20px;
-        max-height: 96px;
-        line-height: 1.4;
+        min-height: 24px;
+        max-height: 120px;
+        line-height: @ai-line-compact;
         outline: none !important;
         box-shadow: none !important;
 
