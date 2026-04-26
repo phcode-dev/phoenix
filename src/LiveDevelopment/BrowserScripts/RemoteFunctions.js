@@ -918,7 +918,9 @@ function RemoteFunctions(config = {}) {
 
         const nodes = window.document.querySelectorAll(rule);
 
-        // Highlight all matching nodes
+        // Highlight all matching nodes. selectElement() will narrow _clickHighlight
+        // down to the chosen element below; createCssSelectorHighlight() then
+        // re-highlights the siblings in a separate overlay.
         for (let i = 0; i < nodes.length; i++) {
             highlight(nodes[i]);
         }
@@ -927,22 +929,23 @@ function RemoteFunctions(config = {}) {
             _clickHighlight.selector = rule;
         }
 
-        // In edit mode, select the best element and create temporary highlights for the rest.
-        // In highlight mode, skip selection so all matching elements stay highlighted equally.
-        if (config.mode === 'edit') {
-            const { element, skipSelection } = findBestElementToSelect(nodes, rule);
+        // Both edit and highlight modes go through the same selection path:
+        // selectElement() handles scroll-to-view and the prominent click-highlight,
+        // createCssSelectorHighlight() shows siblings dimly. fromEditor=true
+        // suppresses tool-handler invocation, so highlight mode gets the
+        // highlighting/scroll behavior without any UI boxes.
+        const { element, skipSelection } = findBestElementToSelect(nodes, rule);
 
-            if (!skipSelection) {
-                if (element) {
-                    selectElement(element, true);
-                } else {
-                    // No valid element found, dismiss UI
-                    dismissUIAndCleanupState();
-                }
+        if (!skipSelection) {
+            if (element) {
+                selectElement(element, true);
+            } else {
+                // No valid element found, dismiss UI
+                dismissUIAndCleanupState();
             }
-
-            createCssSelectorHighlight(nodes, rule);
         }
+
+        createCssSelectorHighlight(nodes, rule);
     }
 
     // recreate UI boxes so that they are placed properly
