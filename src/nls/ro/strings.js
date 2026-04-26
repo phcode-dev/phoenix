@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Anulează modificările din acest răspuns",
   "AI_CHAT_RESTORE_TITLE": "Restaurează fișierele la acest punct",
   "AI_CHAT_RESTORED": "Restaurat",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Anulare și Restaurare AI",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Aceasta va anula doar modificările făcute de AI. Modificările care nu au fost făcute de AI nu vor fi restaurate și se pot pierde. Pentru un istoric complet al versiunilor, folosiți un sistem de control al versiunilor precum Git.",
   "AI_CHAT_SHOW_DIFF": "Afișează diferențele",
   "AI_CHAT_HIDE_DIFF": "Ascunde diferențele",
   "AI_CHAT_LABEL_YOU": "Tu",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Anulare și Restaurare AI",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Aceasta va anula doar modificările făcute de AI. Modificările care nu au fost făcute de AI nu vor fi restaurate și se pot pierde. Pentru un istoric complet al versiunilor, folosiți un sistem de control al versiunilor precum Git."
+  "LIVE_DEV_INSERT_CREATE": "Creează",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Două noi moduri de a edita",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Adaugă elemente HTML noi",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Editează eticheta, clasele, ID-ul și atributele",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Am înțeles",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Citește documentația",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Încarcă de pe dispozitiv"
 });

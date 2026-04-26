@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Скасувати зміни з цієї відповіді",
   "AI_CHAT_RESTORE_TITLE": "Відновити файли до цієї точки",
   "AI_CHAT_RESTORED": "Відновлено",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Скасування та відновлення дій ШІ",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ця дія скасує лише зміни, внесені ШІ. Зміни, зроблені без участі ШІ, не будуть відновлені та можуть бути втрачені. Для повної історії версій використовуйте систему контролю версій, як-от Git.",
   "AI_CHAT_SHOW_DIFF": "Показати зміни",
   "AI_CHAT_HIDE_DIFF": "Приховати зміни",
   "AI_CHAT_LABEL_YOU": "Ви",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Скасування та відновлення дій ШІ",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ця дія скасує лише зміни, внесені ШІ. Зміни, зроблені без участі ШІ, не будуть відновлені та можуть бути втрачені. Для повної історії версій використовуйте систему контролю версій, як-от Git."
+  "LIVE_DEV_INSERT_CREATE": "Створити",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Два нові способи редагування",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Додавайте нові HTML-елементи",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Редагуйте тег, класи, ID та атрибути",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Зрозуміло",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Читати документацію",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Завантажити з пристрою"
 });

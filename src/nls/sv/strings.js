@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Ångra ändringar från det här svaret",
   "AI_CHAT_RESTORE_TITLE": "Återställ filer till den här punkten",
   "AI_CHAT_RESTORED": "Återställd",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Ångra och återställ",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Detta ångrar endast ändringar som gjorts av AI:n. Ändringar som inte gjorts av AI:n kommer inte att återställas och kan gå förlorade. För fullständig versionshistorik, använd versionshantering som Git.",
   "AI_CHAT_SHOW_DIFF": "Visa diff",
   "AI_CHAT_HIDE_DIFF": "Dölj diff",
   "AI_CHAT_LABEL_YOU": "Du",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Ångra och återställ",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Detta ångrar endast ändringar som gjorts av AI:n. Ändringar som inte gjorts av AI:n kommer inte att återställas och kan gå förlorade. För fullständig versionshistorik, använd versionshantering som Git."
+  "LIVE_DEV_INSERT_CREATE": "Skapa",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Två nya sätt att redigera",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Lägg till nya HTML-element",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Redigera tagg, klasser, ID och attribut",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Jag förstår",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Läs dokumentationen",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Ladda upp från enhet"
 });

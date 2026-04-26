@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "ഈ പ്രതികരണത്തിൽ നിന്നുള്ള മാറ്റങ്ങൾ പഴയപടിയാക്കുക",
   "AI_CHAT_RESTORE_TITLE": "ഫയലുകൾ ഈ പോയിന്റിലേക്ക് പുനഃസ്ഥാപിക്കുക",
   "AI_CHAT_RESTORED": "പുനഃസ്ഥാപിച്ചു",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "എഐ പഴയപടിയാക്കലും പുനഃസ്ഥാപിക്കലും",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "ഇത് എഐ വരുത്തിയ മാറ്റങ്ങൾ മാത്രം പഴയപടിയാക്കും. എഐക്ക് പുറത്ത് വരുത്തിയ മാറ്റങ്ങൾ പുനഃസ്ഥാപിക്കപ്പെടുകയില്ല, അവ നഷ്ടപ്പെട്ടെന്നും വരാം. പൂർണ്ണമായ വേർഷൻ ഹിസ്റ്ററിക്കായി, Git പോലുള്ള വേർഷൻ കൺട്രോൾ ഉപയോഗിക്കുക.",
   "AI_CHAT_SHOW_DIFF": "ഡിഫ് കാണിക്കുക",
   "AI_CHAT_HIDE_DIFF": "ഡിഫ് മറയ്ക്കുക",
   "AI_CHAT_LABEL_YOU": "നിങ്ങൾ",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "എഐ പഴയപടിയാക്കലും പുനഃസ്ഥാപിക്കലും",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "ഇത് എഐ വരുത്തിയ മാറ്റങ്ങൾ മാത്രം പഴയപടിയാക്കും. എഐക്ക് പുറത്ത് വരുത്തിയ മാറ്റങ്ങൾ പുനഃസ്ഥാപിക്കപ്പെടുകയില്ല, അവ നഷ്ടപ്പെട്ടെന്നും വരാം. പൂർണ്ണമായ വേർഷൻ ഹിസ്റ്ററിക്കായി, Git പോലുള്ള വേർഷൻ കൺട്രോൾ ഉപയോഗിക്കുക."
+  "LIVE_DEV_INSERT_CREATE": "സൃഷ്ടിക്കുക",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "എഡിറ്റുചെയ്യാൻ രണ്ട് പുതിയ വഴികൾ",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "പുതിയ HTML എലമെന്റുകൾ ചേർക്കുക",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "ടാഗ്, ക്ലാസുകൾ, ഐഡി, ആട്രിബ്യൂട്ടുകൾ എന്നിവ എഡിറ്റുചെയ്യുക",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "മനസ്സിലായി",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "ഡോക്‌സ് വായിക്കുക",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "ഡിവൈസിൽ നിന്ന് അപ്‌ലോഡ് ചെയ്യുക"
 });

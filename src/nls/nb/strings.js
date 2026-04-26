@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Angre endringer fra dette svaret",
   "AI_CHAT_RESTORE_TITLE": "Gjenopprett filer til dette punktet",
   "AI_CHAT_RESTORED": "Gjenopprettet",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Angre og gjenopprett",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dette vil kun angre endringer gjort av AI-en. Endringer gjort utenfor AI-en vil ikke bli gjenopprettet og kan gå tapt. For fullstendig versjonshistorikk, bruk versjonskontroll som Git.",
   "AI_CHAT_SHOW_DIFF": "Vis diff",
   "AI_CHAT_HIDE_DIFF": "Skjul diff",
   "AI_CHAT_LABEL_YOU": "Du",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Angre og gjenopprett",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dette vil kun angre endringer gjort av AI-en. Endringer gjort utenfor AI-en vil ikke bli gjenopprettet og kan gå tapt. For fullstendig versjonshistorikk, bruk versjonskontroll som Git."
+  "LIVE_DEV_INSERT_CREATE": "Opprett",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "To nye måter å redigere på",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Legg til nye HTML-elementer",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Rediger tagg, klasser, ID og attributter",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Greit",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Les dokumentasjonen",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Last opp fra enhet"
 });

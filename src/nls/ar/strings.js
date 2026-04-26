@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "التراجع عن التغييرات من هذه الاستجابة",
   "AI_CHAT_RESTORE_TITLE": "استعادة الملفات إلى هذه النقطة",
   "AI_CHAT_RESTORED": "تمت الاستعادة",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "التراجع والاستعادة لتغييرات الذكاء الاصطناعي",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "سيؤدي هذا الإجراء إلى التراجع عن التغييرات التي أجراها الذكاء الاصطناعي فقط. أما التغييرات التي تمت خارجه فلن تتم استعادتها وقد تُفقد. للحصول على سجل إصدارات كامل، استخدم نظام التحكم في الإصدارات مثل Git.",
   "AI_CHAT_SHOW_DIFF": "عرض الفروقات",
   "AI_CHAT_HIDE_DIFF": "إخفاء الفروقات",
   "AI_CHAT_LABEL_YOU": "أنت",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "التراجع والاستعادة لتغييرات الذكاء الاصطناعي",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "سيؤدي هذا الإجراء إلى التراجع عن التغييرات التي أجراها الذكاء الاصطناعي فقط. أما التغييرات التي تمت خارجه فلن تتم استعادتها وقد تُفقد. للحصول على سجل إصدارات كامل، استخدم نظام التحكم في الإصدارات مثل Git."
+  "LIVE_DEV_INSERT_CREATE": "إنشاء",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "طريقتان جديدتان للتعديل",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "إضافة عناصر HTML جديدة",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "تعديل الوسم، والفئات، والمعرّف، والسمات",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "فهمت",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "قراءة المستندات",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "تحميل من الجهاز"
 });

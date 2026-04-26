@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Vrátit zpět změny z této odpovědi",
   "AI_CHAT_RESTORE_TITLE": "Obnovit soubory do tohoto bodu",
   "AI_CHAT_RESTORED": "Obnoveno",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Vrácení a obnovení",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tímto se vrátí zpět pouze změny provedené AI. Změny provedené mimo AI nebudou obnoveny a mohou být ztraceny. Pro úplnou historii verzí použijte verzovací systém, jako je Git.",
   "AI_CHAT_SHOW_DIFF": "Zobrazit diff",
   "AI_CHAT_HIDE_DIFF": "Skrýt diff",
   "AI_CHAT_LABEL_YOU": "Vy",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Vrácení a obnovení",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tímto se vrátí zpět pouze změny provedené AI. Změny provedené mimo AI nebudou obnoveny a mohou být ztraceny. Pro úplnou historii verzí použijte verzovací systém, jako je Git."
+  "LIVE_DEV_INSERT_CREATE": "Vytvořit",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Dva nové způsoby úprav",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Přidávejte nové HTML elementy",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Upravujte tag, třídy, ID a atributy",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Rozumím",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Přečíst dokumentaci",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Nahrát ze zařízení"
 });

@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Опозови промене из овог одговора",
   "AI_CHAT_RESTORE_TITLE": "Врати датотеке на ову тачку",
   "AI_CHAT_RESTORED": "Враћено",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI опозивање и враћање",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ово ће опозвати само измене које је направио AI. Измене направљене мимо AI-ја неће бити враћене и могу бити изгубљене. За комплетну историју верзија, користите контролу верзија попут Git-а.",
   "AI_CHAT_SHOW_DIFF": "Прикажи разлике",
   "AI_CHAT_HIDE_DIFF": "Сакриј разлике",
   "AI_CHAT_LABEL_YOU": "Ви",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI опозивање и враћање",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ово ће опозвати само измене које је направио AI. Измене направљене мимо AI-ја неће бити враћене и могу бити изгубљене. За комплетну историју верзија, користите контролу верзија попут Git-а."
+  "LIVE_DEV_INSERT_CREATE": "Креирај",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Два нова начина за уређивање",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Додајте нове HTML елементе",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Уредите ознаку, класе, ID и атрибуте",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Разумем",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Прочитајте документацију",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Отпремите са уређаја"
 });

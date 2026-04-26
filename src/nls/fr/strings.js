@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Annuler les modifications de cette réponse",
   "AI_CHAT_RESTORE_TITLE": "Restaurer les fichiers à ce point",
   "AI_CHAT_RESTORED": "Restauré",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Annulation et restauration de l'IA",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Cette action annulera uniquement les modifications apportées par l'IA. Les modifications non effectuées par l'IA ne seront pas restaurées et risquent d'être perdues. Pour un historique complet des versions, utilisez un système de contrôle de version comme Git.",
   "AI_CHAT_SHOW_DIFF": "Afficher le diff",
   "AI_CHAT_HIDE_DIFF": "Masquer le diff",
   "AI_CHAT_LABEL_YOU": "Vous",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Annulation et restauration de l'IA",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Cette action annulera uniquement les modifications apportées par l'IA. Les modifications non effectuées par l'IA ne seront pas restaurées et risquent d'être perdues. Pour un historique complet des versions, utilisez un système de contrôle de version comme Git."
+  "LIVE_DEV_INSERT_CREATE": "Créer",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Deux nouvelles façons d'éditer",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Ajouter de nouveaux éléments HTML",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Modifier la balise, les classes, l'ID et les attributs",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Compris",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Lire la documentation",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Téléverser depuis l'appareil"
 });

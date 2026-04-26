@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "اس جواب سے کی گئی تبدیلیاں کالعدم کریں",
   "AI_CHAT_RESTORE_TITLE": "فائلوں کو اس مقام پر بحال کریں",
   "AI_CHAT_RESTORED": "بحال شدہ",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "اے آئی کالعدم و بحال",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "یہ صرف اے آئی کی طرف سے کی گئی تبدیلیوں کو کالعدم کرے گا۔ اے آئی کے علاوہ کی گئی تبدیلیاں بحال نہیں ہوں گی اور ضائع ہو سکتی ہیں۔ ورژن کی مکمل تاریخ کے لیے، Git جیسے ورژن کنٹرول کا استعمال کریں۔",
   "AI_CHAT_SHOW_DIFF": "فرق دکھائیں",
   "AI_CHAT_HIDE_DIFF": "فرق چھپائیں",
   "AI_CHAT_LABEL_YOU": "آپ",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "اے آئی کالعدم و بحال",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "یہ صرف اے آئی کی طرف سے کی گئی تبدیلیوں کو کالعدم کرے گا۔ اے آئی کے علاوہ کی گئی تبدیلیاں بحال نہیں ہوں گی اور ضائع ہو سکتی ہیں۔ ورژن کی مکمل تاریخ کے لیے، Git جیسے ورژن کنٹرول کا استعمال کریں۔"
+  "LIVE_DEV_INSERT_CREATE": "تخلیق کریں",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "ترمیم کرنے کے دو نئے طریقے",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "نئے HTML عناصر شامل کریں",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "ٹیگ، کلاسز، آئی ڈی اور ایٹریبیوٹس میں ترمیم کریں",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "سمجھ گیا",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "دستاویزات پڑھیں",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "ڈیوائس سے اپ لوڈ کریں"
 });

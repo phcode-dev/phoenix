@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Deshacer los cambios de esta respuesta",
   "AI_CHAT_RESTORE_TITLE": "Restaurar los archivos a este punto",
   "AI_CHAT_RESTORED": "Restaurado",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Deshacer y restaurar de la IA",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Esto solo deshará los cambios realizados por la IA. Los cambios no realizados por la IA no se restaurarán y podrían perderse. Para un historial de versiones completo, usa un control de versiones como Git.",
   "AI_CHAT_SHOW_DIFF": "Mostrar diff",
   "AI_CHAT_HIDE_DIFF": "Ocultar diff",
   "AI_CHAT_LABEL_YOU": "Tú",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Deshacer y restaurar de la IA",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Esto solo deshará los cambios realizados por la IA. Los cambios no realizados por la IA no se restaurarán y podrían perderse. Para un historial de versiones completo, usa un control de versiones como Git."
+  "LIVE_DEV_INSERT_CREATE": "Crear",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Dos nuevas formas de editar",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Añade nuevos elementos HTML",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Edita la etiqueta, las clases, el ID y los atributos",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Entendido",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Leer la documentación",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Subir desde el dispositivo"
 });

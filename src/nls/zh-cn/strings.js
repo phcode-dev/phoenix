@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "撤销此响应所做的更改",
   "AI_CHAT_RESTORE_TITLE": "将文件恢复到此节点",
   "AI_CHAT_RESTORED": "已恢复",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 撤销与恢复",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "此操作只会撤销由 AI 所做的更改。在 AI 之外进行的更改将不会被恢复，并可能丢失。如需完整的版本历史记录，请使用 Git 等版本控制系统。",
   "AI_CHAT_SHOW_DIFF": "显示差异",
   "AI_CHAT_HIDE_DIFF": "隐藏差异",
   "AI_CHAT_LABEL_YOU": "你",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 撤销与恢复",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "此操作只会撤销由 AI 所做的更改。在 AI 之外进行的更改将不会被恢复，并可能丢失。如需完整的版本历史记录，请使用 Git 等版本控制系统。"
+  "LIVE_DEV_INSERT_CREATE": "创建",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "两种新的编辑方式",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "添加新的 HTML 元素",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "编辑标签、类、ID 和属性",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "知道了",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "阅读文档",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "从设备上传"
 });

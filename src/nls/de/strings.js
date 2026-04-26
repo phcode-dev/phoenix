@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Änderungen aus dieser Antwort rückgängig machen",
   "AI_CHAT_RESTORE_TITLE": "Dateien zu diesem Punkt wiederherstellen",
   "AI_CHAT_RESTORED": "Wiederhergestellt",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "KI: Rückgängig machen & Wiederherstellen",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dadurch werden nur die von der KI vorgenommenen Änderungen rückgängig gemacht. Änderungen, die nicht von der KI vorgenommen wurden, werden nicht wiederhergestellt und gehen möglicherweise verloren. Für einen vollständigen Versionsverlauf verwenden Sie eine Versionskontrolle wie Git.",
   "AI_CHAT_SHOW_DIFF": "Unterschiede anzeigen",
   "AI_CHAT_HIDE_DIFF": "Unterschiede ausblenden",
   "AI_CHAT_LABEL_YOU": "Du",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "KI: Rückgängig machen & Wiederherstellen",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dadurch werden nur die von der KI vorgenommenen Änderungen rückgängig gemacht. Änderungen, die nicht von der KI vorgenommen wurden, werden nicht wiederhergestellt und gehen möglicherweise verloren. Für einen vollständigen Versionsverlauf verwenden Sie eine Versionskontrolle wie Git."
+  "LIVE_DEV_INSERT_CREATE": "Erstellen",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Zwei neue Wege zum Bearbeiten",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Neue HTML-Elemente hinzufügen",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Tag, Klassen, ID und Attribute bearbeiten",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Verstanden",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Dokumentation lesen",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Vom Gerät hochladen"
 });

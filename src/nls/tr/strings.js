@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Bu yanıttaki değişiklikleri geri al",
   "AI_CHAT_RESTORE_TITLE": "Dosyaları bu noktaya geri yükle",
   "AI_CHAT_RESTORED": "Geri yüklendi",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Geri Alma ve Geri Yükleme",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Bu, yalnızca AI tarafından yapılan değişiklikleri geri alır. AI dışında yapılan değişiklikler geri yüklenmeyecek ve kaybolabilir. Tam sürüm geçmişi için Git gibi bir sürüm kontrolü kullanın.",
   "AI_CHAT_SHOW_DIFF": "Farkları göster",
   "AI_CHAT_HIDE_DIFF": "Farkları gizle",
   "AI_CHAT_LABEL_YOU": "Siz",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Geri Alma ve Geri Yükleme",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Bu, yalnızca AI tarafından yapılan değişiklikleri geri alır. AI dışında yapılan değişiklikler geri yüklenmeyecek ve kaybolabilir. Tam sürüm geçmişi için Git gibi bir sürüm kontrolü kullanın."
+  "LIVE_DEV_INSERT_CREATE": "Oluştur",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Düzenlemenin iki yeni yolu",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Yeni HTML öğeleri ekleyin",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Etiket, sınıflar, kimlik ve nitelikleri düzenleyin",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Anladım",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Belgeleri oku",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Cihazdan Yükle"
 });
