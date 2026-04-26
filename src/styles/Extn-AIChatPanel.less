@@ -1591,6 +1591,87 @@
     }
 }
 
+/* ── Plan-mode write confirmation card ─────────────────────────────── */
+/* Same structure as .ai-bash-confirm; distinct blue accent so users can
+   tell at a glance this is a "switch out of Plan Mode?" prompt rather
+   than a "run command?" prompt. Allow/deny button colours stay
+   green/red so the user-action affordance is consistent. */
+.ai-plan-write-confirm {
+    border: 1px solid rgba(79, 163, 227, 0.3);
+    border-radius: 8px;
+    background: rgba(79, 163, 227, 0.06);
+    margin: 8px 0;
+    overflow: hidden;
+
+    .ai-plan-write-confirm-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        font-weight: 600;
+        font-size: @sidebar-content-font-size;
+        color: #4fa3e3;
+        border-bottom: 1px solid rgba(79, 163, 227, 0.15);
+    }
+
+    .ai-plan-write-confirm-body {
+        padding: 8px 12px;
+        font-size: @sidebar-small-font-size;
+        color: @project-panel-text-2;
+        word-break: break-all;
+    }
+
+    .ai-plan-write-confirm-actions {
+        display: flex;
+        gap: 8px;
+        padding: 8px 12px;
+        border-top: 1px solid rgba(79, 163, 227, 0.15);
+    }
+
+    .ai-plan-write-allow-btn {
+        background: rgba(76, 175, 80, 0.15);
+        border: 1px solid rgba(76, 175, 80, 0.35);
+        color: #81c784;
+        padding: 4px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: @sidebar-xs-font-size;
+
+        &:hover {
+            background: rgba(76, 175, 80, 0.25);
+        }
+    }
+
+    .ai-plan-write-stay-btn {
+        background: rgba(231, 76, 60, 0.15);
+        border: 1px solid rgba(231, 76, 60, 0.35);
+        color: #e57373;
+        padding: 4px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: @sidebar-xs-font-size;
+
+        &:hover {
+            background: rgba(231, 76, 60, 0.25);
+        }
+    }
+}
+
+.ai-plan-write-result {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: @sidebar-xs-font-size;
+    margin: 4px 0;
+
+    &.ai-plan-write-result-allowed {
+        color: #81c784;
+    }
+
+    &.ai-plan-write-result-stayed {
+        color: #e57373;
+    }
+}
+
 /* ── Queued clarification bubble (static, above input) ─────────────── */
 .ai-queued-msg {
     border: 1px dashed rgba(255, 255, 255, 0.15);
