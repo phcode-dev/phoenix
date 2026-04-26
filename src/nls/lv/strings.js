@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Atsaukt šīs atbildes izmaiņas",
   "AI_CHAT_RESTORE_TITLE": "Atjaunot failus uz šo punktu",
   "AI_CHAT_RESTORED": "Atjaunots",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI atsaukšana un atjaunošana",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tiks atsauktas tikai AI veiktās izmaiņas. Ārpus AI veiktās izmaiņas netiks atjaunotas un var tikt zaudētas. Pilnai versiju vēsturei izmantojiet versiju kontroli, piemēram, Git.",
   "AI_CHAT_SHOW_DIFF": "Rādīt atšķirības",
   "AI_CHAT_HIDE_DIFF": "Slēpt atšķirības",
   "AI_CHAT_LABEL_YOU": "Jūs",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI atsaukšana un atjaunošana",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tiks atsauktas tikai AI veiktās izmaiņas. Ārpus AI veiktās izmaiņas netiks atjaunotas un var tikt zaudētas. Pilnai versiju vēsturei izmantojiet versiju kontroli, piemēram, Git."
+  "LIVE_DEV_INSERT_CREATE": "Izveidot",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Divi jauni veidi, kā rediģēt",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Pievienojiet jaunus HTML elementus",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Rediģējiet tagu, klases, ID un atribūtus",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Skaidrs",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Lasīt dokumentāciju",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Augšupielādēt no ierīces"
 });

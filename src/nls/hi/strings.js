@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "इस प्रतिक्रिया के बदलावों को पूर्ववत् करें",
   "AI_CHAT_RESTORE_TITLE": "फ़ाइलों को इस बिंदु पर पुनर्स्थापित करें",
   "AI_CHAT_RESTORED": "पुनर्स्थापित",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "एआई अनडू और रिस्टोर",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "यह केवल एआई द्वारा किए गए बदलावों को ही अनडू करेगा। एआई के बाहर किए गए बदलाव रिस्टोर नहीं होंगे और खो सकते हैं। पूर्ण वर्ज़न हिस्ट्री के लिए, Git जैसे वर्ज़न कंट्रोल का उपयोग करें।",
   "AI_CHAT_SHOW_DIFF": "अंतर दिखाएँ",
   "AI_CHAT_HIDE_DIFF": "अंतर छिपाएँ",
   "AI_CHAT_LABEL_YOU": "आप",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "एआई अनडू और रिस्टोर",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "यह केवल एआई द्वारा किए गए बदलावों को ही अनडू करेगा। एआई के बाहर किए गए बदलाव रिस्टोर नहीं होंगे और खो सकते हैं। पूर्ण वर्ज़न हिस्ट्री के लिए, Git जैसे वर्ज़न कंट्रोल का उपयोग करें।"
+  "LIVE_DEV_INSERT_CREATE": "बनाएँ",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "संपादित करने के दो नए तरीके",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "नए HTML एलीमेंट्स जोड़ें",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "टैग, क्लास, आईडी और एट्रिब्यूट्स संपादित करें",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "समझ गया",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "डॉक्स पढ़ें",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "डिवाइस से अपलोड करें"
 });

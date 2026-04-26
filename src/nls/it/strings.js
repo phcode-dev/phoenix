@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Annulla le modifiche di questa risposta",
   "AI_CHAT_RESTORE_TITLE": "Ripristina i file a questo punto",
   "AI_CHAT_RESTORED": "Ripristinato",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Annulla e ripristina AI",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Questa operazione annullerà solo le modifiche apportate dall'AI. Le modifiche apportate al di fuori dell'AI non verranno ripristinate e potrebbero andare perse. Per una cronologia completa delle versioni, utilizza un sistema di controllo di versione come Git.",
   "AI_CHAT_SHOW_DIFF": "Mostra diff",
   "AI_CHAT_HIDE_DIFF": "Nascondi diff",
   "AI_CHAT_LABEL_YOU": "Tu",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Annulla e ripristina AI",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Questa operazione annullerà solo le modifiche apportate dall'AI. Le modifiche apportate al di fuori dell'AI non verranno ripristinate e potrebbero andare perse. Per una cronologia completa delle versioni, utilizza un sistema di controllo di versione come Git."
+  "LIVE_DEV_INSERT_CREATE": "Crea",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Due nuovi modi per modificare",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Aggiungi nuovi elementi HTML",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Modifica tag, classi, ID e attributi",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Ho capito",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Leggi la documentazione",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Carica dal dispositivo"
 });

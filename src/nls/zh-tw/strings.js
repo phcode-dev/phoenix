@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "復原此回應所做的變更",
   "AI_CHAT_RESTORE_TITLE": "將檔案還原至此時間點",
   "AI_CHAT_RESTORED": "已還原",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 復原與還原",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "此動作只會復原由 AI 所做的變更。非 AI 所做的變更將不會被還原，且可能會遺失。如需完整的版本歷史記錄，請使用像 Git 這類的版本控制系統。",
   "AI_CHAT_SHOW_DIFF": "顯示差異",
   "AI_CHAT_HIDE_DIFF": "隱藏差異",
   "AI_CHAT_LABEL_YOU": "你",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 復原與還原",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "此動作只會復原由 AI 所做的變更。非 AI 所做的變更將不會被還原，且可能會遺失。如需完整的版本歷史記錄，請使用像 Git 這類的版本控制系統。"
+  "LIVE_DEV_INSERT_CREATE": "建立",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "兩種新的編輯方式",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "新增 HTML 元素",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "編輯標籤、類別、ID 和屬性",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "了解",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "閱讀文件",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "從裝置上傳"
 });

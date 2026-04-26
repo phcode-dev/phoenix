@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Desfazer alterações desta resposta",
   "AI_CHAT_RESTORE_TITLE": "Restaurar arquivos para este ponto",
   "AI_CHAT_RESTORED": "Restaurado",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Desfazer e Restaurar da IA",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Isso desfaz apenas as alterações feitas pela IA. Alterações feitas sem o uso da IA não serão restauradas e podem ser perdidas. Para um histórico de versões completo, use um controle de versão como o Git.",
   "AI_CHAT_SHOW_DIFF": "Mostrar diff",
   "AI_CHAT_HIDE_DIFF": "Ocultar diff",
   "AI_CHAT_LABEL_YOU": "Você",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Desfazer e Restaurar da IA",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Isso desfaz apenas as alterações feitas pela IA. Alterações feitas sem o uso da IA não serão restauradas e podem ser perdidas. Para um histórico de versões completo, use um controle de versão como o Git."
+  "LIVE_DEV_INSERT_CREATE": "Criar",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Duas novas maneiras de editar",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Adicione novos elementos HTML",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Edite tag, classes, ID e atributos",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Entendi",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Ler a documentação",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Carregar do dispositivo"
 });

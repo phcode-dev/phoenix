@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Αναίρεση αλλαγών από αυτήν την απόκριση",
   "AI_CHAT_RESTORE_TITLE": "Επαναφορά αρχείων σε αυτό το σημείο",
   "AI_CHAT_RESTORED": "Επαναφέρθηκε",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Αναίρεση & Επαναφορά AI",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Αυτή η ενέργεια θα αναιρέσει μόνο τις αλλαγές που έγιναν από το AI. Οι αλλαγές που δεν έγιναν από το AI δεν θα επαναφερθούν και ενδέχεται να χαθούν. Για πλήρες ιστορικό εκδόσεων, χρησιμοποιήστε ένα σύστημα ελέγχου εκδόσεων όπως το Git.",
   "AI_CHAT_SHOW_DIFF": "Εμφάνιση διαφορών",
   "AI_CHAT_HIDE_DIFF": "Απόκρυψη διαφορών",
   "AI_CHAT_LABEL_YOU": "Εσύ",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Αναίρεση & Επαναφορά AI",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Αυτή η ενέργεια θα αναιρέσει μόνο τις αλλαγές που έγιναν από το AI. Οι αλλαγές που δεν έγιναν από το AI δεν θα επαναφερθούν και ενδέχεται να χαθούν. Για πλήρες ιστορικό εκδόσεων, χρησιμοποιήστε ένα σύστημα ελέγχου εκδόσεων όπως το Git."
+  "LIVE_DEV_INSERT_CREATE": "Δημιουργία",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Δύο νέοι τρόποι επεξεργασίας",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Προσθήκη νέων στοιχείων HTML",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Επεξεργασία ετικέτας, κλάσεων, ID και χαρακτηριστικών",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Το κατάλαβα",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Ανάγνωση τεκμηρίωσης",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Μεταφόρτωση από τη συσκευή"
 });

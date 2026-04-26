@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Undo changes from this response",
   "AI_CHAT_RESTORE_TITLE": "Restore files to this point",
   "AI_CHAT_RESTORED": "Restored",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Undo & Restore",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "This will only undo changes made by the AI. Changes made outside the AI won’t be restored and may be lost. For a full version history, use version control like Git.",
   "AI_CHAT_SHOW_DIFF": "Show diff",
   "AI_CHAT_HIDE_DIFF": "Hide diff",
   "AI_CHAT_LABEL_YOU": "You",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Undo & Restore",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "This will only undo changes made by the AI. Changes made outside the AI won’t be restored and may be lost. For a full version history, use version control like Git."
+  "LIVE_DEV_INSERT_CREATE": "Create",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Two new ways to edit",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Add new HTML elements",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Edit tag, classes, ID and attributes",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Got it",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Read docs",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Upload from Device"
 });

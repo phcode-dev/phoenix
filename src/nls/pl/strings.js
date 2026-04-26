@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Cofnij zmiany z tej odpowiedzi",
   "AI_CHAT_RESTORE_TITLE": "Przywróć pliki do tego punktu",
   "AI_CHAT_RESTORED": "Przywrócono",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Cofanie i przywracanie zmian AI",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Cofnięte zostaną tylko zmiany wprowadzone przez AI. Zmiany wprowadzone w inny sposób nie zostaną przywrócone i mogą zostać utracone. Aby uzyskać pełną historię wersji, użyj systemu kontroli wersji, takiego jak Git.",
   "AI_CHAT_SHOW_DIFF": "Pokaż różnice",
   "AI_CHAT_HIDE_DIFF": "Ukryj różnice",
   "AI_CHAT_LABEL_YOU": "Ty",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Cofanie i przywracanie zmian AI",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Cofnięte zostaną tylko zmiany wprowadzone przez AI. Zmiany wprowadzone w inny sposób nie zostaną przywrócone i mogą zostać utracone. Aby uzyskać pełną historię wersji, użyj systemu kontroli wersji, takiego jak Git."
+  "LIVE_DEV_INSERT_CREATE": "Utwórz",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Dwa nowe sposoby edycji",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Dodaj nowe elementy HTML",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Edytuj tag, klasy, ID i atrybuty",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Rozumiem",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Przeczytaj dokumentację",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Prześlij z urządzenia"
 });

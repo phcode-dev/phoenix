@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Vrátiť späť zmeny z tejto odpovede",
   "AI_CHAT_RESTORE_TITLE": "Obnoviť súbory na tento bod",
   "AI_CHAT_RESTORED": "Obnovené",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Vrátenie späť a obnovenie AI",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Týmto sa vrátia späť iba zmeny vykonané AI. Zmeny, ktoré nevykonala AI, nebudú obnovené a môžu sa stratiť. Pre úplnú históriu verzií použite systém na správu verzií, ako je Git.",
   "AI_CHAT_SHOW_DIFF": "Zobraziť zmeny",
   "AI_CHAT_HIDE_DIFF": "Skryť zmeny",
   "AI_CHAT_LABEL_YOU": "Vy",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Vrátenie späť a obnovenie AI",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Týmto sa vrátia späť iba zmeny vykonané AI. Zmeny, ktoré nevykonala AI, nebudú obnovené a môžu sa stratiť. Pre úplnú históriu verzií použite systém na správu verzií, ako je Git."
+  "LIVE_DEV_INSERT_CREATE": "Vytvoriť",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Dva nové spôsoby úprav",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Pridajte nové prvky HTML",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Upravte značku, triedy, ID a atribúty",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Rozumiem",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Prečítať dokumentáciu",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Nahrať zo zariadenia"
 });

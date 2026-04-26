@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Ezen válasz módosításainak visszavonása",
   "AI_CHAT_RESTORE_TITLE": "Fájlok visszaállítása erre a pontra",
   "AI_CHAT_RESTORED": "Visszaállítva",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "MI-visszavonás és visszaállítás",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ez a művelet csak az MI által végzett módosításokat vonja vissza. Az MI-n kívüli módosítások nem kerülnek visszaállításra, és elveszhetnek. A teljes verzióelőzményekért használjon verziókezelőt, például a Gitet.",
   "AI_CHAT_SHOW_DIFF": "Különbségek megjelenítése",
   "AI_CHAT_HIDE_DIFF": "Különbségek elrejtése",
   "AI_CHAT_LABEL_YOU": "Te",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "MI-visszavonás és visszaállítás",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ez a művelet csak az MI által végzett módosításokat vonja vissza. Az MI-n kívüli módosítások nem kerülnek visszaállításra, és elveszhetnek. A teljes verzióelőzményekért használjon verziókezelőt, például a Gitet."
+  "LIVE_DEV_INSERT_CREATE": "Létrehozás",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Két új szerkesztési mód",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Új HTML-elemek hozzáadása",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Címke, osztályok, azonosító és attribútumok szerkesztése",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Értem",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Dokumentáció olvasása",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Feltöltés eszközről"
 });

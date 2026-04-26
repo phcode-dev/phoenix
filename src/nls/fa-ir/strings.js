@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "لغو تغییرات این پاسخ",
   "AI_CHAT_RESTORE_TITLE": "بازگردانی فایل‌ها به این نقطه",
   "AI_CHAT_RESTORED": "بازیابی شد",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "واگردانی و بازگردانی هوش مصنوعی",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "این کار فقط تغییرات ایجادشده توسط هوش مصنوعی را واگردانی می‌کند. تغییراتی که خارج از عملکرد هوش مصنوعی ایجاد شده‌اند بازگردانی نمی‌شوند و ممکن است از دست بروند. برای دسترسی به تاریخچه کامل نسخه‌ها، از یک سیستم کنترل نسخه مانند Git استفاده کنید.",
   "AI_CHAT_SHOW_DIFF": "نمایش تفاوت‌ها",
   "AI_CHAT_HIDE_DIFF": "پنهان کردن تفاوت‌ها",
   "AI_CHAT_LABEL_YOU": "شما",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "واگردانی و بازگردانی هوش مصنوعی",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "این کار فقط تغییرات ایجادشده توسط هوش مصنوعی را واگردانی می‌کند. تغییراتی که خارج از عملکرد هوش مصنوعی ایجاد شده‌اند بازگردانی نمی‌شوند و ممکن است از دست بروند. برای دسترسی به تاریخچه کامل نسخه‌ها، از یک سیستم کنترل نسخه مانند Git استفاده کنید."
+  "LIVE_DEV_INSERT_CREATE": "ایجاد",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "دو روش جدید برای ویرایش",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "افزودن عناصر HTML جدید",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "ویرایش تگ، کلاس‌ها، ID و ویژگی‌ها",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "متوجه شدم",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "مطالعه مستندات",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "بارگذاری از دستگاه"
 });

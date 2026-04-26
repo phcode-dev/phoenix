@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Отмени промените от този отговор",
   "AI_CHAT_RESTORE_TITLE": "Възстанови файловете до този момент",
   "AI_CHAT_RESTORED": "Възстановено",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Отмяна и възстановяване от AI",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Това ще отмени само промените, направени от AI. Промени, направени извън AI, няма да бъдат възстановени и може да бъдат загубени. За пълна история на версиите използвайте система за контрол на версиите като Git.",
   "AI_CHAT_SHOW_DIFF": "Покажи разликите",
   "AI_CHAT_HIDE_DIFF": "Скрий разликите",
   "AI_CHAT_LABEL_YOU": "Вие",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Отмяна и възстановяване от AI",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Това ще отмени само промените, направени от AI. Промени, направени извън AI, няма да бъдат възстановени и може да бъдат загубени. За пълна история на версиите използвайте система за контрол на версиите като Git."
+  "LIVE_DEV_INSERT_CREATE": "Създай",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Два нови начина за редактиране",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Добавяне на нови HTML елементи",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Редактиране на таг, класове, ID и атрибути",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Разбрах",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Прочетете документацията",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Качване от устройство"
 });

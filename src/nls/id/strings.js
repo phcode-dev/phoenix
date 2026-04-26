@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Batalkan perubahan dari respons ini",
   "AI_CHAT_RESTORE_TITLE": "Pulihkan file ke titik ini",
   "AI_CHAT_RESTORED": "Dipulihkan",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Urungkan & Pulihkan AI",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tindakan ini hanya akan mengurungkan perubahan yang dibuat oleh AI. Perubahan yang dibuat di luar AI tidak akan dipulihkan dan mungkin akan hilang. Untuk riwayat versi lengkap, gunakan kontrol versi seperti Git.",
   "AI_CHAT_SHOW_DIFF": "Tampilkan diff",
   "AI_CHAT_HIDE_DIFF": "Sembunyikan diff",
   "AI_CHAT_LABEL_YOU": "Anda",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Urungkan & Pulihkan AI",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tindakan ini hanya akan mengurungkan perubahan yang dibuat oleh AI. Perubahan yang dibuat di luar AI tidak akan dipulihkan dan mungkin akan hilang. Untuk riwayat versi lengkap, gunakan kontrol versi seperti Git."
+  "LIVE_DEV_INSERT_CREATE": "Buat",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Dua cara baru untuk mengedit",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Tambahkan elemen HTML baru",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Edit tag, kelas, ID, dan atribut",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Mengerti",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Baca dokumentasi",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Unggah dari Perangkat"
 });

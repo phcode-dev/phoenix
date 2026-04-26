@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Fortryd ændringer fra dette svar",
   "AI_CHAT_RESTORE_TITLE": "Gendan filer til dette punkt",
   "AI_CHAT_RESTORED": "Gendannet",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Fortryd & Gendan",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dette vil kun fortryde ændringer foretaget af AI'en. Ændringer foretaget uden for AI'en vil ikke blive gendannet og kan gå tabt. For fuld versionshistorik, brug versionsstyring som Git.",
   "AI_CHAT_SHOW_DIFF": "Vis diff",
   "AI_CHAT_HIDE_DIFF": "Skjul diff",
   "AI_CHAT_LABEL_YOU": "Du",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Fortryd & Gendan",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dette vil kun fortryde ændringer foretaget af AI'en. Ændringer foretaget uden for AI'en vil ikke blive gendannet og kan gå tabt. For fuld versionshistorik, brug versionsstyring som Git."
+  "LIVE_DEV_INSERT_CREATE": "Opret",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "To nye måder at redigere på",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Tilføj nye HTML-elementer",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Rediger tag, klasser, ID og attributter",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Forstået",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Læs dokumentation",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Upload fra enhed"
 });

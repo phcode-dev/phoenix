@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "この応答による変更を取り消す",
   "AI_CHAT_RESTORE_TITLE": "ファイルをこの時点に復元",
   "AI_CHAT_RESTORED": "復元しました",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "エーアイによる取り消しと復元",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "この操作では、エーアイによる変更のみが取り消されます。エーアイ以外で行われた変更は復元されず、失われる可能性があります。完全なバージョン履歴については、ギットなどのバージョン管理システムをご利用ください。",
   "AI_CHAT_SHOW_DIFF": "差分を表示",
   "AI_CHAT_HIDE_DIFF": "差分を非表示",
   "AI_CHAT_LABEL_YOU": "あなた",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "エーアイによる取り消しと復元",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "この操作では、エーアイによる変更のみが取り消されます。エーアイ以外で行われた変更は復元されず、失われる可能性があります。完全なバージョン履歴については、ギットなどのバージョン管理システムをご利用ください。"
+  "LIVE_DEV_INSERT_CREATE": "作成",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "2つの新しい編集方法",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "新しいHTML要素を追加",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "タグ、クラス、ID、属性を編集",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "わかりました",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "ドキュメントを読む",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "デバイスからアップロード"
 });

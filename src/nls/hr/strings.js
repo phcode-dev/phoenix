@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Poništi promjene iz ovog odgovora",
   "AI_CHAT_RESTORE_TITLE": "Vrati datoteke na ovu točku",
   "AI_CHAT_RESTORED": "Vraćeno",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Poništavanje i Vraćanje",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ovim će se poništiti samo promjene koje je napravio AI. Ostale promjene neće biti vraćene i mogu biti izgubljene. Za potpunu povijest verzija koristite kontrolu verzija poput Gita.",
   "AI_CHAT_SHOW_DIFF": "Prikaži razlike",
   "AI_CHAT_HIDE_DIFF": "Sakrij razlike",
   "AI_CHAT_LABEL_YOU": "Vi",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Poništavanje i Vraćanje",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Ovim će se poništiti samo promjene koje je napravio AI. Ostale promjene neće biti vraćene i mogu biti izgubljene. Za potpunu povijest verzija koristite kontrolu verzija poput Gita."
+  "LIVE_DEV_INSERT_CREATE": "Kreiraj",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Dva nova načina za uređivanje",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Dodavanje novih HTML elemenata",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Uređivanje oznake, klasa, ID-a i atributa",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Shvaćam",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Pročitaj dokumentaciju",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Učitaj s uređaja"
 });

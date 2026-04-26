@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Wijzigingen van dit antwoord ongedaan maken",
   "AI_CHAT_RESTORE_TITLE": "Bestanden herstellen naar dit punt",
   "AI_CHAT_RESTORED": "Hersteld",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Ongedaan maken & Herstellen",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Hiermee worden alleen wijzigingen van de AI ongedaan gemaakt. Wijzigingen die niet door de AI zijn gemaakt, worden niet hersteld en kunnen verloren gaan. Gebruik voor een volledige versiegeschiedenis versiebeheer zoals Git.",
   "AI_CHAT_SHOW_DIFF": "Toon diff",
   "AI_CHAT_HIDE_DIFF": "Verberg diff",
   "AI_CHAT_LABEL_YOU": "Jij",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Ongedaan maken & Herstellen",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Hiermee worden alleen wijzigingen van de AI ongedaan gemaakt. Wijzigingen die niet door de AI zijn gemaakt, worden niet hersteld en kunnen verloren gaan. Gebruik voor een volledige versiegeschiedenis versiebeheer zoals Git."
+  "LIVE_DEV_INSERT_CREATE": "Maken",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Twee nieuwe manieren om te bewerken",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Nieuwe HTML-elementen toevoegen",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Tag, klassen, ID en attributen bewerken",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Begrepen",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Lees de documentatie",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Uploaden vanaf apparaat"
 });

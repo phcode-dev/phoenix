@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "Kumoa tämän vastauksen tekemät muutokset",
   "AI_CHAT_RESTORE_TITLE": "Palauta tiedostot tähän pisteeseen",
   "AI_CHAT_RESTORED": "Palautettu",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI:n kumoaminen ja palautus",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tämä kumoaa vain AI:n tekemät muutokset. Muita kuin AI:n tekemiä muutoksia ei palauteta, ja ne voivat kadota. Täyttä versiohistoriaa varten käytä versionhallintaa, kuten Gitiä.",
   "AI_CHAT_SHOW_DIFF": "Näytä erot",
   "AI_CHAT_HIDE_DIFF": "Piilota erot",
   "AI_CHAT_LABEL_YOU": "Sinä",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI:n kumoaminen ja palautus",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tämä kumoaa vain AI:n tekemät muutokset. Muita kuin AI:n tekemiä muutoksia ei palauteta, ja ne voivat kadota. Täyttä versiohistoriaa varten käytä versionhallintaa, kuten Gitiä."
+  "LIVE_DEV_INSERT_CREATE": "Luo",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "Kaksi uutta tapaa muokata",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "Lisää uusia HTML-elementtejä",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "Muokkaa tagia, luokkia, ID:tä ja attribuutteja",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "Selvä",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "Lue dokumentaatio",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "Lataa laitteelta"
 });

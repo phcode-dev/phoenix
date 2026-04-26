@@ -1996,6 +1996,8 @@ define({
   "AI_CHAT_UNDO_TITLE": "이 응답의 변경 사항 실행 취소",
   "AI_CHAT_RESTORE_TITLE": "파일을 이 시점으로 복원",
   "AI_CHAT_RESTORED": "복원됨",
+  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 실행 취소 및 복원",
+  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "이 작업은 AI가 적용한 변경 사항만 실행 취소합니다. AI 외부에서 이루어진 변경 사항은 복원되지 않으며 손실될 수 있습니다. 전체 버전 기록을 위해서는 Git과 같은 버전 관리 시스템을 사용하세요.",
   "AI_CHAT_SHOW_DIFF": "diff 보기",
   "AI_CHAT_HIDE_DIFF": "diff 숨기기",
   "AI_CHAT_LABEL_YOU": "나",
@@ -2187,6 +2189,11 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 실행 취소 및 복원",
-  "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "이 작업은 AI가 적용한 변경 사항만 실행 취소합니다. AI 외부에서 이루어진 변경 사항은 복원되지 않으며 손실될 수 있습니다. 전체 버전 기록을 위해서는 Git과 같은 버전 관리 시스템을 사용하세요."
+  "LIVE_DEV_INSERT_CREATE": "생성",
+  "LIVE_DEV_EDIT_ONBOARD_TITLE": "두 가지 새로운 편집 방법",
+  "LIVE_DEV_EDIT_ONBOARD_INSERT": "새로운 HTML 요소 추가",
+  "LIVE_DEV_EDIT_ONBOARD_PROPS": "태그, 클래스, 아이디 및 속성 편집",
+  "LIVE_DEV_EDIT_ONBOARD_GOT_IT": "알겠습니다",
+  "LIVE_DEV_EDIT_ONBOARD_READ_DOCS": "문서 읽기",
+  "AI_CHAT_SCREENSHOT_UPLOAD": "기기에서 업로드"
 });
