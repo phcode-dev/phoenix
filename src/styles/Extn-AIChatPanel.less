@@ -20,6 +20,17 @@
 
 /* AI Chat Panel — sidebar chat UI for Claude Code integration */
 
+// AI panel typography contract — every font-size below MUST use one of these
+// (or a relative unit for headings). Centralising the scale here keeps the
+// panel coherent across cards: tool indicators, diff cards, confirm dialogs,
+// the proposed plan, etc. all read as one product instead of independently
+// styled fragments.
+@ai-text-body:      @sidebar-content-font-size;   // 13px — message content, tool labels, prose
+@ai-text-secondary: @sidebar-small-font-size;     // 12px — in-card buttons, mono code, file paths
+@ai-text-meta:      @sidebar-xs-font-size;        // 11px — stats, status, permission/context info
+@ai-line-prose:     1.55;                         // multi-line body text
+@ai-line-compact:   1.4;                          // single-line UI elements
+
 .ai-tab-container {
     display: flex;
     flex-direction: column;
@@ -38,7 +49,7 @@
     overflow: hidden;
     background-color: @bc-ai-sidebar-bg;
     color: @project-panel-text-1;
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     container-type: inline-size;
 }
 
@@ -176,7 +187,7 @@
     }
 
     .ai-history-item-title {
-        font-size: @sidebar-content-font-size;
+        font-size: @ai-text-body;
         color: @project-panel-text-1;
         white-space: nowrap;
         overflow: hidden;
@@ -184,7 +195,7 @@
     }
 
     .ai-history-item-time {
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-meta;
         color: @project-panel-text-2;
         opacity: 0.6;
     }
@@ -193,7 +204,7 @@
         background: none;
         border: none;
         color: @project-panel-text-2;
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         padding: 2px 4px;
         cursor: pointer;
         opacity: 0;
@@ -214,7 +225,7 @@
 .ai-history-empty {
     padding: 16px 10px;
     text-align: center;
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     color: @project-panel-text-2;
     opacity: 0.6;
 }
@@ -223,7 +234,7 @@
     display: block;
     padding: 6px 10px;
     text-align: center;
-    font-size: @sidebar-xs-font-size;
+    font-size: @ai-text-meta;
     color: @project-panel-text-2;
     opacity: 0.5;
     cursor: pointer;
@@ -242,7 +253,7 @@
     justify-content: center;
     gap: 6px;
     padding: 4px 10px;
-    font-size: @sidebar-xs-font-size;
+    font-size: @ai-text-meta;
     color: @project-panel-text-2;
     opacity: 0.6;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
@@ -277,7 +288,7 @@
     contain-intrinsic-size: auto 300px;
 
     .ai-msg-label {
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-meta;
         color: @project-panel-text-2;
         margin-bottom: 3px;
         font-weight: 600;
@@ -285,7 +296,7 @@
     }
 
     .ai-msg-content {
-        font-size: @sidebar-content-font-size;
+        font-size: @ai-text-body;
         line-height: 1.55;
         white-space: normal;
         word-wrap: break-word;
@@ -332,7 +343,7 @@
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 4px;
-        font-size: 11px;
+        font-size: @ai-text-meta;
         color: @project-panel-text-2;
         max-width: 180px;
 
@@ -484,7 +495,7 @@
             overflow-x: auto;
             border-collapse: collapse;
             margin: 6px 0;
-            font-size: @sidebar-small-font-size;
+            font-size: @ai-text-secondary;
             cursor: default;
         }
 
@@ -502,7 +513,7 @@
             font-weight: 600;
             color: @project-panel-text-2;
             border-bottom-color: rgba(255, 255, 255, 0.1);
-            font-size: @sidebar-xs-font-size;
+            font-size: @ai-text-meta;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
@@ -517,22 +528,28 @@
 
 /* ── Tool use indicator ─────────────────────────────────────────────── */
 .ai-msg-tool {
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.04);
     border-left: 2px solid var(--tool-color, @project-panel-text-2);
 
+    // Add a small breather between consecutive tool indicators so a stack
+    // of them doesn't read as a single dense block.
+    & + .ai-msg-tool {
+        margin-top: 4px;
+    }
+
     .ai-tool-header {
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 4px 8px;
+        padding: 6px 10px;
         white-space: normal;
     }
 
     .ai-tool-icon {
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
         width: 14px;
         text-align: center;
         flex-shrink: 0;
@@ -550,9 +567,9 @@
     }
 
     .ai-tool-label {
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-body;
         color: @project-panel-text-2;
-        line-height: 1.3;
+        line-height: @ai-line-compact;
 
         &.ai-tool-label-clickable:hover {
             color: @project-panel-text-1;
@@ -562,7 +579,7 @@
 
     .ai-tool-detail {
         display: none;
-        padding: 0 8px 4px 28px;
+        padding: 2px 10px 6px 28px;
     }
 
     .ai-tool-screenshot {
@@ -577,22 +594,22 @@
     }
 
     .ai-tool-detail-line {
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         color: @project-panel-text-2;
-        opacity: 0.7;
-        line-height: 1.5;
+        opacity: 0.78;
+        line-height: @ai-line-compact;
         white-space: normal;
         word-break: break-all;
     }
 
     .ai-tool-preview {
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         color: @project-panel-text-2;
-        opacity: 0.5;
-        padding: 0 8px 4px 28px;
-        line-height: 1.4;
+        opacity: 0.55;
+        padding: 0 10px 4px 28px;
+        line-height: @ai-line-compact;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -635,11 +652,12 @@
     .ai-tool-diff-toggle {
         background: none;
         border: none;
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
         color: @project-panel-text-2;
-        padding: 1px 4px;
+        padding: 2px 8px;
+        line-height: @ai-line-compact;
         cursor: pointer;
-        opacity: 0.6;
+        opacity: 0.65;
         transition: opacity 0.15s ease;
 
         &:hover {
@@ -651,10 +669,11 @@
         background: none;
         border: none;
         color: @project-panel-text-2;
-        font-size: @sidebar-xs-font-size;
-        padding: 1px 4px;
+        font-size: @ai-text-secondary;
+        padding: 2px 6px;
+        line-height: @ai-line-compact;
         cursor: pointer;
-        opacity: 0.5;
+        opacity: 0.55;
         transition: opacity 0.15s ease;
         position: relative;
 
@@ -680,9 +699,9 @@
     .ai-tool-diff {
         display: none;
         padding: 4px 8px 4px 28px;
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
-        line-height: 1.5;
+        line-height: @ai-line-prose;
         overflow-x: auto;
         background-color: rgba(0, 0, 0, 0.15);
 
@@ -727,7 +746,7 @@
     }
 
     .ai-tool-edit-error {
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         color: #e88;
         padding: 3px 8px 3px 28px;
     }
@@ -747,7 +766,7 @@
     .ai-tool-direct-note {
         // Match the .ai-tool-detail-line indent so the note sits under the
         // icon column the same way the file path does on expanded cards.
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-meta;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
         color: @project-panel-text-2;
         opacity: 0.7;
@@ -763,7 +782,7 @@
     }
 
     .ai-tool-elapsed {
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-meta;
         color: @project-panel-text-2;
         opacity: 0.5;
         margin-left: auto;
@@ -779,15 +798,15 @@
     display: flex;
     align-items: flex-start;
     gap: 6px;
-    padding: 2px 0;
-    font-size: @sidebar-small-font-size;
+    padding: 4px 0;
+    font-size: @ai-text-body;
 }
 
 .ai-todo-icon {
     width: 14px;
     text-align: center;
     flex-shrink: 0;
-    font-size: @sidebar-xs-font-size;
+    font-size: @ai-text-secondary;
 
     &.completed { color: #66bb6a; }
     &.in_progress { color: #e8a838; }
@@ -810,7 +829,7 @@
 
 .ai-todo-content {
     color: @project-panel-text-2;
-    line-height: 1.4;
+    line-height: @ai-line-prose;
     white-space: normal;
     overflow-wrap: break-word;
     min-width: 0;
@@ -851,7 +870,7 @@
     align-items: center;
     gap: 3px;
     font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
 }
 
 .ai-color-swatch-preview {
@@ -881,7 +900,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-body;
         font-weight: 600;
         color: @project-panel-text-2;
         margin-bottom: 4px;
@@ -891,9 +910,10 @@
         background: none;
         border: 1px solid rgba(200, 160, 80, 0.3);
         color: rgba(220, 180, 100, 0.9);
-        font-size: @sidebar-xs-font-size;
-        padding: 1px 8px;
-        border-radius: 3px;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
+        padding: 4px 12px;
+        border-radius: 4px;
         cursor: pointer;
         flex-shrink: 0;
         transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -921,7 +941,7 @@
         }
 
         .ai-edit-summary-name {
-            font-size: @sidebar-small-font-size;
+            font-size: @ai-text-secondary;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
             color: @project-panel-text-2;
             overflow: hidden;
@@ -939,7 +959,7 @@
         .ai-edit-summary-stats {
             display: flex;
             gap: 6px;
-            font-size: @sidebar-xs-font-size;
+            font-size: @ai-text-meta;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
             flex-shrink: 0;
         }
@@ -962,7 +982,7 @@
     background: rgba(102, 187, 106, 0.1);
     border: 1px solid rgba(102, 187, 106, 0.25);
     color: #66bb6a;
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     padding: 4px 12px;
     border-radius: 4px;
     cursor: pointer;
@@ -1001,9 +1021,10 @@
         background: none;
         border: 1px dashed rgba(200, 160, 80, 0.3);
         color: rgba(220, 180, 100, 0.7);
-        font-size: @sidebar-xs-font-size;
-        padding: 2px 14px;
-        border-radius: 3px;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
+        padding: 4px 14px;
+        border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
@@ -1063,7 +1084,7 @@
 }
 
 .ai-question-text {
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     color: @project-panel-text-1;
     line-height: 1.5;
     margin-bottom: 8px;
@@ -1113,14 +1134,14 @@
 }
 
 .ai-question-option-label {
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     font-weight: 500;
     white-space: normal;
     word-wrap: break-word;
 }
 
 .ai-question-option-desc {
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     opacity: 0.65;
     line-height: 1.4;
     white-space: normal;
@@ -1136,7 +1157,7 @@
     background: none;
     border: 1px solid rgba(76, 175, 80, 0.3);
     color: rgba(76, 175, 80, 0.85);
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     padding: 3px 10px;
     border-radius: 4px;
     cursor: pointer;
@@ -1167,7 +1188,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 4px;
     color: @project-panel-text-1;
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     padding: 6px 10px !important;
     margin: 0 !important;
     line-height: 1.4;
@@ -1190,7 +1211,7 @@
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: @project-panel-text-2;
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     padding: 0 10px;
     border-radius: 4px;
     cursor: pointer;
@@ -1222,7 +1243,7 @@
     background-color: rgba(255, 255, 255, 0.04);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 3px 3px 0 0;
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     user-select: none;
 }
 
@@ -1245,7 +1266,7 @@
     cursor: pointer;
     padding: 1px 5px;
     border-radius: 3px;
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     line-height: 1;
     transition: background-color 0.15s ease, color 0.15s ease;
 
@@ -1278,7 +1299,7 @@
     border: none;
     color: @project-panel-text-2;
     cursor: pointer;
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     padding: 1px 8px;
     border-radius: 3px;
     transition: background-color 0.15s ease, color 0.15s ease;
@@ -1306,13 +1327,13 @@
     background-color: rgba(107, 158, 255, 0.08);
     border-bottom: 1px solid rgba(107, 158, 255, 0.15);
     color: #6b9eff;
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     font-weight: 600;
 }
 
 .ai-plan-body {
     padding: 10px 12px;
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     color: @project-panel-text-1;
     line-height: 1.5;
     white-space: normal;
@@ -1412,8 +1433,9 @@
     background: rgba(76, 175, 80, 0.15);
     border: 1px solid rgba(76, 175, 80, 0.35);
     color: #4caf50;
-    font-size: @sidebar-content-font-size;
-    padding: 5px 14px;
+    font-size: @ai-text-secondary;
+    line-height: @ai-line-compact;
+    padding: 4px 12px;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.15s ease;
@@ -1437,8 +1459,9 @@
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: @project-panel-text-2;
-    font-size: @sidebar-content-font-size;
-    padding: 5px 14px;
+    font-size: @ai-text-secondary;
+    line-height: @ai-line-compact;
+    padding: 4px 12px;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.15s ease;
@@ -1474,7 +1497,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 4px;
     color: @project-panel-text-1;
-    font-size: @sidebar-content-font-size;
+    font-size: @ai-text-body;
     padding: 6px 10px !important;
     margin: 0 !important;
     line-height: 1.4;
@@ -1533,21 +1556,22 @@
         gap: 8px;
         padding: 8px 12px;
         font-weight: 600;
-        font-size: @sidebar-content-font-size;
+        font-size: @ai-text-body;
         color: #f39c12;
         border-bottom: 1px solid rgba(243, 156, 18, 0.15);
     }
 
     .ai-bash-confirm-body {
-        padding: 8px 12px;
+        padding: 10px 12px;
 
         pre {
             margin: 0;
-            padding: 8px;
+            padding: 8px 10px;
             border-radius: 4px;
             background: rgba(0, 0, 0, 0.2);
             color: #e0e0e0;
-            font-size: @sidebar-content-font-size;
+            font-size: @ai-text-secondary;
+            line-height: @ai-line-prose;
             white-space: pre-wrap;
             word-break: break-all;
         }
@@ -1564,10 +1588,11 @@
         background: rgba(76, 175, 80, 0.15);
         border: 1px solid rgba(76, 175, 80, 0.35);
         color: #81c784;
-        padding: 4px 14px;
+        padding: 4px 12px;
         border-radius: 4px;
         cursor: pointer;
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
 
         &:hover {
             background: rgba(76, 175, 80, 0.25);
@@ -1578,10 +1603,11 @@
         background: rgba(231, 76, 60, 0.15);
         border: 1px solid rgba(231, 76, 60, 0.35);
         color: #e57373;
-        padding: 4px 14px;
+        padding: 4px 12px;
         border-radius: 4px;
         cursor: pointer;
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
 
         &:hover {
             background: rgba(231, 76, 60, 0.25);
@@ -1593,7 +1619,7 @@
 .ai-bash-result {
     padding: 4px 10px;
     border-radius: 4px;
-    font-size: @sidebar-xs-font-size;
+    font-size: @ai-text-meta;
     margin: 4px 0;
 
     &.ai-bash-result-allowed {
@@ -1623,14 +1649,15 @@
         gap: 8px;
         padding: 8px 12px;
         font-weight: 600;
-        font-size: @sidebar-content-font-size;
+        font-size: @ai-text-body;
         color: #4fa3e3;
         border-bottom: 1px solid rgba(79, 163, 227, 0.15);
     }
 
     .ai-plan-write-confirm-body {
-        padding: 8px 12px;
-        font-size: @sidebar-small-font-size;
+        padding: 10px 12px;
+        font-size: @ai-text-body;
+        line-height: @ai-line-prose;
         color: @project-panel-text-2;
         word-break: break-all;
     }
@@ -1646,10 +1673,11 @@
         background: rgba(76, 175, 80, 0.15);
         border: 1px solid rgba(76, 175, 80, 0.35);
         color: #81c784;
-        padding: 4px 14px;
+        padding: 4px 12px;
         border-radius: 4px;
         cursor: pointer;
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
 
         &:hover {
             background: rgba(76, 175, 80, 0.25);
@@ -1660,10 +1688,11 @@
         background: rgba(231, 76, 60, 0.15);
         border: 1px solid rgba(231, 76, 60, 0.35);
         color: #e57373;
-        padding: 4px 14px;
+        padding: 4px 12px;
         border-radius: 4px;
         cursor: pointer;
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
 
         &:hover {
             background: rgba(231, 76, 60, 0.25);
@@ -1674,7 +1703,7 @@
 .ai-plan-write-result {
     padding: 4px 10px;
     border-radius: 4px;
-    font-size: @sidebar-xs-font-size;
+    font-size: @ai-text-meta;
     margin: 4px 0;
 
     &.ai-plan-write-result-allowed {
@@ -1702,7 +1731,7 @@
     }
 
     .ai-queued-label {
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-meta;
         color: @project-panel-text-2;
         font-weight: 600;
         opacity: 0.6;
@@ -1711,7 +1740,7 @@
     .ai-queued-edit-btn {
         background: none;
         border: none;
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-meta;
         color: @project-panel-text-2;
         padding: 0 4px;
         cursor: pointer;
@@ -1743,7 +1772,7 @@
     }
 
     .ai-queued-text {
-        font-size: @sidebar-content-font-size;
+        font-size: @ai-text-body;
         color: @project-panel-text-2;
         line-height: 1.4;
         white-space: pre-wrap;
@@ -1764,7 +1793,7 @@
         color: #e88;
         border-left: 2px solid rgba(255, 80, 80, 0.4);
         padding: 4px 8px;
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         background-color: rgba(255, 80, 80, 0.04);
         border-radius: 0 3px 3px 0;
     }
@@ -1783,7 +1812,7 @@
         background: none;
         border: 1px solid rgba(255, 255, 255, 0.12);
         color: @project-panel-text-2;
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         padding: 4px 14px;
         border-radius: 4px;
         cursor: pointer;
@@ -1802,7 +1831,7 @@
     align-items: center;
     gap: 6px;
     padding: 4px 10px;
-    font-size: @sidebar-small-font-size;
+    font-size: @ai-text-secondary;
     color: @project-panel-text-2;
     flex-shrink: 0;
     opacity: 0.6;
@@ -1833,7 +1862,7 @@
     border-radius: 6px;
     background-color: rgba(255, 200, 50, 0.10);
     border: 1px solid rgba(255, 200, 50, 0.20);
-    font-size: 12px;
+    font-size: @ai-text-secondary;
     color: @project-panel-text-1;
 
     .ai-quota-content {
@@ -1867,7 +1896,7 @@
         cursor: pointer;
         padding: 2px 4px;
         margin-left: 6px;
-        font-size: 12px;
+        font-size: @ai-text-secondary;
 
         &:hover {
             opacity: 1;
@@ -1934,7 +1963,7 @@
         }
 
         .ai-permission-label {
-            font-size: @sidebar-xs-font-size;
+            font-size: @ai-text-meta;
             color: @project-panel-text-2;
             line-height: 1;
         }
@@ -1942,7 +1971,7 @@
         .ai-info {
             display: none;
             margin-left: auto;
-            font-size: 11px;
+            font-size: @ai-text-meta;
             line-height: 1;
             pointer-events: auto;
             white-space: nowrap;
@@ -1954,6 +1983,8 @@
             kbd {
                 display: inline-block;
                 padding: 1px 5px;
+                // Smaller than @ai-text-meta on purpose: kbd glyphs read as
+                // visual chips, not body text, and need to fit at a glance.
                 font-size: 10px;
                 font-family: inherit;
                 line-height: 1.2;
@@ -1994,7 +2025,7 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        font-size: @sidebar-xs-font-size;
+        font-size: @ai-text-meta;
         line-height: 1;
         padding: 3px 6px;
         border-radius: 3px;
@@ -2021,7 +2052,7 @@
             background: none;
             border: none;
             color: @project-panel-text-2;
-            font-size: @sidebar-small-font-size;
+            font-size: @ai-text-secondary;
             line-height: 1;
             padding: 0 0 0 2px;
             cursor: pointer;
@@ -2077,7 +2108,7 @@
                 background: rgba(0, 0, 0, 0.6);
                 border: 1px solid rgba(255, 255, 255, 0.3);
                 color: #fff;
-                font-size: 12px;
+                font-size: @ai-text-secondary;
                 line-height: 1;
                 padding: 0;
                 display: flex;
@@ -2101,7 +2132,7 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 4px;
-            font-size: 11px;
+            font-size: @ai-text-meta;
             color: @project-panel-text-2;
             max-width: 150px;
             position: relative;
@@ -2122,7 +2153,7 @@
                 background: rgba(255, 255, 255, 0.12);
                 border: 1px solid rgba(255, 255, 255, 0.18);
                 color: rgba(255, 255, 255, 0.7);
-                font-size: 11px;
+                font-size: @ai-text-meta;
                 padding: 0;
                 display: none;
                 align-items: center;
@@ -2163,7 +2194,7 @@
         }
 
         i {
-            font-size: @sidebar-content-font-size;
+            font-size: @ai-text-body;
         }
     }
 
@@ -2173,7 +2204,7 @@
         background: transparent !important;
         border: none !important;
         color: @project-panel-text-1;
-        font-size: @sidebar-content-font-size;
+        font-size: @ai-text-body;
         font-family: inherit;
         padding: 7px 0 7px 10px;
         margin: 0;
@@ -2209,7 +2240,7 @@
         }
 
         i {
-            font-size: @sidebar-content-font-size;
+            font-size: @ai-text-body;
         }
     }
 
@@ -2239,7 +2270,7 @@
         }
 
         i {
-            font-size: @sidebar-content-font-size;
+            font-size: @ai-text-body;
         }
     }
 
@@ -2263,7 +2294,7 @@
         }
 
         i {
-            font-size: @sidebar-content-font-size;
+            font-size: @ai-text-body;
         }
     }
 
@@ -2281,7 +2312,7 @@
             padding: 8px 12px;
             cursor: pointer;
             color: @project-panel-text-1;
-            font-size: @sidebar-content-font-size;
+            font-size: @ai-text-body;
             white-space: nowrap;
             display: flex;
             align-items: center;
@@ -2327,7 +2358,7 @@
             border-radius: 4px;
             padding: 4px 12px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: @ai-text-secondary;
             font-family: inherit;
         }
 
@@ -2378,7 +2409,7 @@
     }
 
     .ai-unavailable-message {
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         line-height: 1.5;
         margin-bottom: 12px;
         opacity: 0.6;
@@ -2400,7 +2431,7 @@
         background: none;
         border: 1px solid rgba(255, 255, 255, 0.12);
         color: @project-panel-text-2;
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         padding: 3px 12px;
         border-radius: 3px;
         cursor: pointer;
@@ -2417,7 +2448,7 @@
         border: none;
         color: #000;
         font-weight: 600;
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         padding: 3px 12px;
         border-radius: 3px;
         cursor: pointer;
@@ -2448,7 +2479,7 @@
     }
 
     .ai-install-restart-note {
-        font-size: @sidebar-small-font-size;
+        font-size: @ai-text-secondary;
         color: @project-panel-text-2;
         opacity: 0.6;
         margin-top: 8px;
@@ -2459,7 +2490,7 @@
 /* ── AI Settings Dialog ────────────────────────────────────────────── */
 .ai-settings-dialog {
     .ai-settings-section-label {
-        font-size: 12px;
+        font-size: @ai-text-secondary;
         font-weight: 600;
         color: @bc-text-medium;
         margin-bottom: 6px;
@@ -2515,7 +2546,7 @@
     }
 
     .ai-settings-provider-name {
-        font-size: 13px;
+        font-size: @ai-text-body;
         font-weight: 600;
         color: @bc-text;
         white-space: nowrap;
@@ -2528,7 +2559,7 @@
     }
 
     .ai-settings-provider-url {
-        font-size: 11px;
+        font-size: @ai-text-meta;
         color: @bc-text-quiet;
         white-space: nowrap;
         overflow: hidden;
@@ -2567,7 +2598,7 @@
     }
 
     .ai-settings-edit-error {
-        font-size: 12px;
+        font-size: @ai-text-secondary;
         color: @bc-error;
         min-height: 0;
 
@@ -2588,7 +2619,7 @@
         gap: 4px;
 
         label {
-            font-size: 12px;
+            font-size: @ai-text-secondary;
             font-weight: 600;
             color: @bc-text-medium;
 
@@ -2606,7 +2637,7 @@
             border-radius: @bc-border-radius;
             background: @bc-input-bg;
             color: @bc-text;
-            font-size: 13px;
+            font-size: @ai-text-body;
             outline: none;
 
             &:focus {
@@ -2652,7 +2683,7 @@
     background: rgba(76, 175, 80, 0.08);
     border: 1px solid rgba(76, 175, 80, 0.2);
     border-radius: 4px;
-    font-size: @sidebar-xs-font-size;
+    font-size: @ai-text-meta;
     color: @project-panel-text-2;
     text-align: center;
 }
