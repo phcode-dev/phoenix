@@ -647,6 +647,36 @@
         }
     }
 
+    .ai-tool-diff-more {
+        background: none;
+        border: none;
+        color: @project-panel-text-2;
+        font-size: @sidebar-xs-font-size;
+        padding: 1px 4px;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: opacity 0.15s ease;
+        position: relative;
+
+        // Invisible hit-area expander so users don't have to land on the
+        // narrow ellipsis exactly. Doesn't affect layout because it's an
+        // absolute pseudo-element of the button itself. left: -2px keeps
+        // it from encroaching on the diff-toggle to its left; the right
+        // side has empty header space so we expand more there.
+        &::after {
+            content: "";
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            bottom: -6px;
+            left: -2px;
+        }
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
     .ai-tool-diff {
         display: none;
         padding: 4px 8px 4px 28px;
@@ -2512,3 +2542,4 @@
     color: @project-panel-text-2;
     text-align: center;
 }
+
