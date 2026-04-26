@@ -63,6 +63,11 @@ let _planResolve = null;
 // Pending bash confirmation resolver — used by Bash PreToolUse hook (Edit Mode)
 let _bashConfirmResolve = null;
 
+// Pending plan-mode write confirmation resolver — set when an Edit/Write
+// fires in plan mode and we're awaiting the user's "Allow & Switch to Edit
+// Mode" / "Stay in Plan Mode" choice from the browser.
+let _planModeConfirmResolve = null;
+
 // Stores rejection feedback when user rejects a plan
 let _planRejectionFeedback = null;
 
@@ -300,6 +305,7 @@ exports.cancelQuery = async function () {
         _questionResolve = null;
         _planResolve = null;
         _bashConfirmResolve = null;
+        _planModeConfirmResolve = null;
         _queuedClarification = null;
         return { success: true };
     }
@@ -338,6 +344,18 @@ exports.answerBashConfirm = async function (params) {
     if (_bashConfirmResolve) {
         _bashConfirmResolve(params);
         _bashConfirmResolve = null;
+    }
+    return { success: true };
+};
+
+/**
+ * Receive the user's response to a plan-mode write confirmation prompt.
+ * Called from browser via execPeer("answerPlanModeWriteConfirm", {approved}).
+ */
+exports.answerPlanModeWriteConfirm = async function (params) {
+    if (_planModeConfirmResolve) {
+        _planModeConfirmResolve(params);
+        _planModeConfirmResolve = null;
     }
     return { success: true };
 };
@@ -417,6 +435,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // SDK tool_use id (e.g. "toolu_01...") → our sequential toolCounter so a
     // tool_result block can be mapped back to its indicator on the browser.
     const _toolUseIdToCounter = {};
+    // Set true once the user clicks "Allow & Switch to Edit Mode" on a
+    // plan-mode write confirmation. Subsequent Edit/Write attempts in the same
+    // turn skip the prompt and use the cached "allow" decision so a multi-edit
+    // turn doesn't pop a dialog before every edit.
+    let _planExitApprovedThisTurn = false;
     let queryFn;
     let connectionTimer = null;
 
@@ -606,13 +629,62 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            // Plan mode + user-file Edit: ask the user whether
+                            // to switch to Edit Mode. Mirrors the Bash confirm
+                            // pattern (matcher: "Bash"). Once approved, the
+                            // _planExitApprovedThisTurn flag suppresses the
+                            // prompt for subsequent edits in the same turn.
+                            const filePath = input.tool_input.file_path;
+                            if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
+                                nodeConnector.triggerPeer("aiPlanModeWriteConfirm", {
+                                    requestId: requestId,
+                                    toolName: "Edit",
+                                    filePath: filePath
+                                });
+                                let response;
+                                try {
+                                    response = await new Promise((resolve, reject) => {
+                                        _planModeConfirmResolve = resolve;
+                                        if (signal.aborted) {
+                                            _planModeConfirmResolve = null;
+                                            reject(new Error("Aborted"));
+                                            return;
+                                        }
+                                        const onAbort = () => {
+                                            _planModeConfirmResolve = null;
+                                            reject(new Error("Aborted"));
+                                        };
+                                        signal.addEventListener("abort", onAbort, { once: true });
+                                    });
+                                } catch (err) {
+                                    return {
+                                        hookSpecificOutput: {
+                                            hookEventName: "PreToolUse",
+                                            permissionDecision: "deny",
+                                            permissionDecisionReason: "Edit cancelled."
+                                        }
+                                    };
+                                }
+                                if (!response.approved) {
+                                    return {
+                                        hookSpecificOutput: {
+                                            hookEventName: "PreToolUse",
+                                            permissionDecision: "deny",
+                                            permissionDecisionReason: "User chose to stay in Plan Mode. " +
+                                                "Use the ExitPlanMode tool to propose your changes for " +
+                                                "approval before editing."
+                                        }
+                                    };
+                                }
+                                _planExitApprovedThisTurn = true;
+                            }
                             // New flow: flush dirty buffer to disk so SDK reads
                             // the latest content, capture pre-edit content for
-                            // snapshot tracking, then return {} so SDK runs
-                            // native Edit on disk. Its mtime/read tracker stays
+                            // snapshot tracking, then return {} (or "allow" if
+                            // we're auto-exiting plan mode) so SDK runs native
+                            // Edit on disk. Its mtime/read tracker stays
                             // consistent and the next Edit won't trip the
                             // "modified since read" safety check.
-                            const filePath = input.tool_input.file_path;
                             const oldString = input.tool_input.old_string;
                             let captured = { content: "" };
                             try {
@@ -645,6 +717,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                 };
                             }
                             editCount++;
+                            // In plan mode, after the user approved the
+                            // confirmation prompt, we need an explicit "allow"
+                            // to override the SDK's default plan-mode block.
+                            if (permissionMode === "plan") {
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "allow"
+                                    }
+                                };
+                            }
                             return {};
                         }
                     ]
@@ -708,9 +791,55 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
-                            // Mirror Edit: flush dirty buffer, capture pre-write
-                            // content, return {} so SDK writes natively.
+                            // Plan mode + user-file Write: same confirmation
+                            // path as Edit. See Edit hook above for rationale.
                             const filePath = input.tool_input.file_path;
+                            if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
+                                nodeConnector.triggerPeer("aiPlanModeWriteConfirm", {
+                                    requestId: requestId,
+                                    toolName: "Write",
+                                    filePath: filePath
+                                });
+                                let response;
+                                try {
+                                    response = await new Promise((resolve, reject) => {
+                                        _planModeConfirmResolve = resolve;
+                                        if (signal.aborted) {
+                                            _planModeConfirmResolve = null;
+                                            reject(new Error("Aborted"));
+                                            return;
+                                        }
+                                        const onAbort = () => {
+                                            _planModeConfirmResolve = null;
+                                            reject(new Error("Aborted"));
+                                        };
+                                        signal.addEventListener("abort", onAbort, { once: true });
+                                    });
+                                } catch (err) {
+                                    return {
+                                        hookSpecificOutput: {
+                                            hookEventName: "PreToolUse",
+                                            permissionDecision: "deny",
+                                            permissionDecisionReason: "Write cancelled."
+                                        }
+                                    };
+                                }
+                                if (!response.approved) {
+                                    return {
+                                        hookSpecificOutput: {
+                                            hookEventName: "PreToolUse",
+                                            permissionDecision: "deny",
+                                            permissionDecisionReason: "User chose to stay in Plan Mode. " +
+                                                "Use the ExitPlanMode tool to propose your changes for " +
+                                                "approval before writing."
+                                        }
+                                    };
+                                }
+                                _planExitApprovedThisTurn = true;
+                            }
+                            // Mirror Edit: flush dirty buffer, capture pre-write
+                            // content, return {} (or "allow" in plan mode) so
+                            // SDK writes natively.
                             try {
                                 await nodeConnector.execPeer("saveBufferToDisk", { filePath });
                                 await nodeConnector.execPeer("captureFileContent", { filePath });
@@ -718,6 +847,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                 console.warn("[Phoenix AI] Write prep failed:", filePath, err.message);
                             }
                             editCount++;
+                            if (permissionMode === "plan") {
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "allow"
+                                    }
+                                };
+                            }
                             return {};
                         }
                     ]
