@@ -732,14 +732,33 @@
         padding: 3px 8px 3px 28px;
     }
 
-    .ai-msg-tool.ai-tool-applied-directly {
+    &.ai-tool-applied-directly {
         opacity: 0.78;
+    }
 
+    &.ai-tool-rejected {
         .ai-tool-direct-note {
-            font-size: @sidebar-xs-font-size;
-            color: @project-panel-text-2;
-            font-style: italic;
-            padding: 2px 8px 4px 28px;
+            color: #e88;
+            opacity: 0.85;
+            font-style: normal;
+        }
+    }
+
+    .ai-tool-direct-note {
+        // Match the .ai-tool-detail-line indent so the note sits under the
+        // icon column the same way the file path does on expanded cards.
+        font-size: @sidebar-xs-font-size;
+        font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+        color: @project-panel-text-2;
+        opacity: 0.7;
+        font-style: italic;
+        line-height: 1.5;
+        padding: 0 8px 4px 28px;
+        word-break: break-all;
+
+        &.ai-tool-direct-note-sub {
+            opacity: 0.6;
+            padding-top: 0;
         }
     }
 
