@@ -2214,6 +2214,8 @@ define({
     "AI_CHAT_UNDO_TITLE": "Undo changes from this response",
     "AI_CHAT_RESTORE_TITLE": "Restore files to this point",
     "AI_CHAT_RESTORED": "Restored",
+    "AI_CHAT_FILE_NOT_FOUND_TITLE": "File not found",
+    "AI_CHAT_FILE_NOT_FOUND_MSG": "Could not open <span class=\"dialog-filename\">{0}</span>. The file may have been moved or deleted.",
     "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Undo & Restore",
     "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "This will only undo changes made by the AI. Changes made outside the AI won’t be restored and may be lost. For full version history, use version control like Git.",
     "AI_CHAT_SHOW_DIFF": "Show diff",

@@ -658,6 +658,25 @@
             display: block;
         }
 
+        .ai-diff-row {
+            white-space: pre;
+        }
+
+        .ai-diff-num {
+            display: inline-block;
+            width: 3em;
+            text-align: right;
+            margin-right: 8px;
+            color: @project-panel-text-2;
+            opacity: 0.55;
+            user-select: none;
+        }
+
+        .ai-diff-ctx {
+            color: @project-panel-text-2;
+            opacity: 0.8;
+        }
+
         .ai-diff-old {
             color: #e88;
             background-color: rgba(255, 80, 80, 0.06);
@@ -666,6 +685,12 @@
         .ai-diff-new {
             color: #8c8;
             background-color: rgba(80, 200, 80, 0.06);
+        }
+
+        .ai-diff-sep {
+            height: 0;
+            border-top: 1px dashed rgba(255, 255, 255, 0.12);
+            margin: 4px -8px 4px -28px;
         }
     }
 
