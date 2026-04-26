@@ -23,6 +23,15 @@
 - **Exception — Markdown viewer iframe** (`src-mdviewer/`): Has its own i18n system. Strings go in `src-mdviewer/src/locales/en.json` (root), not `src/nls/`. Other locale files in that folder are auto-translated by GitHub Actions. Use `t("key")` / `tp("key", { param })` from `src-mdviewer/src/core/i18n.js`.
 - Never compare `$(el).text()` against English strings for logic — use data attributes or CSS classes instead.
 
+## File I/O APIs — which to use
+
+Phoenix has two parallel file APIs. Pick the right one for the situation:
+
+- **`Phoenix.VFS.readFileAsync(path, encoding)` / `Phoenix.VFS.writeFileAsync(path, content, encoding)` / `Phoenix.VFS.unlinkAsync(path)`** — for raw app data (config files, session JSONs, caches, snapshots). No size cap. `unlinkAsync` removes non-empty directories recursively.
+- **`FileSystem.getFileForPath(path).read/.write/.unlink`** (and `getDirectoryForPath`) — *only* for files that may be opened as documents in the editor. Goes through the document layer (mtime tracking, dirty-buffer reconciliation). Has a 16 MB cap on reads/writes.
+
+If a file is purely app-internal data and never edited by the user as a document, use the VFS APIs. Mixing them on the same file leads to mtime confusion and surprise size limits.
+
 ## Phoenix MCP (Desktop App Testing)
 
 Use `exec_js` to run JS in the Phoenix browser runtime. jQuery `$()` is global. `brackets.test.*` exposes internal modules (DocumentManager, CommandManager, ProjectManager, FileSystem, EditorManager). Always `return` a value from `exec_js` to see results. Prefer reusing an already-running Phoenix instance (`get_phoenix_status`) over launching a new one.
