@@ -2199,6 +2199,8 @@ define({
     "AI_CHAT_TOOL_SEARCHED": "Searched: {0}",
     "AI_CHAT_TOOL_GREP": "Grep: {0}",
     "AI_CHAT_TOOL_READ_FILE": "Read {0}",
+    "AI_CHAT_TOOL_READ_FILE_RANGE": "Read {0} lines {1}-{2}",
+    "AI_CHAT_TOOL_READ_FILE_FROM": "Read {0} from line {1}",
     "AI_CHAT_TOOL_EDIT_FILE": "Edit {0}",
     "AI_CHAT_TOOL_WRITE_FILE": "Write {0}",
     "AI_CHAT_TOOL_RAN_CMD": "Ran command",
