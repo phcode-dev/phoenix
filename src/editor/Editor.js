@@ -717,7 +717,8 @@ define(function (require, exports, module) {
      * @param {!string} text
      */
     Editor.prototype._resetText = function (text) {
-        var currentText = this._codeMirror.getValue();
+        var cm = this._codeMirror;
+        var currentText = cm.getValue();
 
         // compare with ignoring line-endings, issue #11826
         var textLF = text ? text.replace(/(\r\n|\r|\n)/g, "\n") : null;
@@ -732,14 +733,51 @@ define(function (require, exports, module) {
         var cursorPos = this.getCursorPos(),
             scrollPos = this.getScrollPos();
 
-        // This *will* fire a change event, but we clear the undo immediately afterward
-        this._codeMirror.setValue(text);
-        this._codeMirror.refresh();
+        // First-time content load (e.g. opening a file): there's no useful
+        // undo state to preserve — fall back to setValue + clearHistory so
+        // the user can't ctrl-z into the empty doc that existed before open.
+        var isInitialLoad = currentText === "" && cm.historySize().undo === 0;
 
-        // Make sure we can't undo back to the empty state before setValue(), and mark
-        // the document clean.
-        this._codeMirror.clearHistory();
-        this._codeMirror.markClean();
+        if (isInitialLoad) {
+            cm.setValue(text);
+            cm.refresh();
+            cm.clearHistory();
+        } else {
+            // External-content reload (disk change, AI edit, git checkout, etc.):
+            // replace ONLY the differing middle of the document so the change
+            // is undoable AND CodeMirror marks outside the changed region are
+            // preserved. The latter matters for HTML files used in live
+            // preview (each rendered element holds a mark) — replacing the
+            // whole doc would clear every mark and force a full preview
+            // refresh on every edit.
+            //
+            // O(n) common prefix + suffix scan: cheap enough to apply to all
+            // languages, and AI edits are typically tiny relative to file size.
+            var prefixLen = 0;
+            var minLen = Math.min(currentText.length, text.length);
+            while (prefixLen < minLen &&
+                    currentText.charCodeAt(prefixLen) === text.charCodeAt(prefixLen)) {
+                prefixLen++;
+            }
+            var maxSuffix = Math.min(currentText.length - prefixLen, text.length - prefixLen);
+            var suffixLen = 0;
+            while (suffixLen < maxSuffix &&
+                    currentText.charCodeAt(currentText.length - 1 - suffixLen) ===
+                    text.charCodeAt(text.length - 1 - suffixLen)) {
+                suffixLen++;
+            }
+            var fromPos = cm.posFromIndex(prefixLen);
+            var toPos = cm.posFromIndex(currentText.length - suffixLen);
+            var middle = text.substring(prefixLen, text.length - suffixLen);
+            cm.operation(function () {
+                cm.replaceRange(middle, fromPos, toPos, "+disk");
+            });
+            cm.refresh();
+        }
+        // markClean sets the new "saved" generation — disk == buffer right
+        // now, so dirty=false. Undoing past this generation will re-mark
+        // dirty, exactly like a manual edit.
+        cm.markClean();
 
         // restore cursor and scroll positions
         this.setCursorPos(cursorPos);

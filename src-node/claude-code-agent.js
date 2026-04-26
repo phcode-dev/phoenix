@@ -79,6 +79,30 @@ let _queuedClarification = null;
 const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
 
 /**
+ * Detect whether a PostToolUse `tool_response` represents an error result.
+ * Used to suppress diff-card painting when the SDK's native Edit/Write itself
+ * failed (e.g. oldText not found on disk). The shape of tool_response is
+ * `unknown` per the SDK types — handle the common variants defensively.
+ */
+function _isToolResponseError(toolResponse) {
+    if (!toolResponse) { return false; }
+    if (typeof toolResponse === "object") {
+        if (toolResponse.is_error === true || toolResponse.isError === true) { return true; }
+        if (Array.isArray(toolResponse.content)) {
+            for (const c of toolResponse.content) {
+                if (c && typeof c.text === "string" && /<tool_use_error>/i.test(c.text)) {
+                    return true;
+                }
+            }
+        }
+    }
+    if (typeof toolResponse === "string" && /<tool_use_error>/i.test(toolResponse)) {
+        return true;
+    }
+    return false;
+}
+
+/**
  * Lazily import the ESM @anthropic-ai/claude-code module.
  */
 async function getQueryFn() {
@@ -582,46 +606,46 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
-                            const myToolId = toolCounter; // capture before any await
-                            const edit = {
-                                file: input.tool_input.file_path,
-                                oldText: input.tool_input.old_string,
-                                newText: input.tool_input.new_string,
-                                replaceAll: input.tool_input.replace_all === true
-                            };
-                            editCount++;
-                            let editResult;
+                            // New flow: flush dirty buffer to disk so SDK reads
+                            // the latest content, capture pre-edit content for
+                            // snapshot tracking, then return {} so SDK runs
+                            // native Edit on disk. Its mtime/read tracker stays
+                            // consistent and the next Edit won't trip the
+                            // "modified since read" safety check.
+                            const filePath = input.tool_input.file_path;
+                            const oldString = input.tool_input.old_string;
+                            let captured = { content: "" };
                             try {
-                                editResult = await nodeConnector.execPeer("applyEditToBuffer", edit);
+                                await nodeConnector.execPeer("saveBufferToDisk", { filePath });
+                                captured = await nodeConnector.execPeer(
+                                    "captureFileContent", { filePath }) || captured;
                             } catch (err) {
-                                console.warn("[Phoenix AI] Failed to apply edit to buffer:", err.message);
-                                editResult = { applied: false, error: err.message };
+                                console.warn("[Phoenix AI] Edit prep failed:", filePath, err.message);
                             }
-                            nodeConnector.triggerPeer("aiToolEdit", {
-                                requestId: requestId,
-                                toolId: myToolId,
-                                edit: edit
-                            });
-                            let reason;
-                            if (editResult && editResult.applied === false) {
-                                reason = "Edit FAILED: " + (editResult.error || "unknown error");
-                            } else {
-                                reason = "Edit applied successfully via Phoenix editor.";
-                                if (editResult && editResult.isLivePreviewRelated) {
-                                    reason += " The edited file is part of the active live preview." +
-                                        " Reload when ready with execJsInLivePreview: `location.reload()`";
+                            // Pre-check: if the text to replace is no longer in
+                            // the file (user typed/changed it since the last
+                            // Read), deny with an informative reason instead of
+                            // letting the SDK fail with a generic "oldText not
+                            // found". Phoenix sees the buffer state the SDK
+                            // can't, so this is a more useful failure.
+                            if (oldString && (captured.content || "").indexOf(oldString) === -1) {
+                                let reason = "Edit FAILED: the text you wanted to replace is not " +
+                                    "present in the file. It may have been modified by the user " +
+                                    "or by another tool since you last read it. Read the file again " +
+                                    "to see the current content before retrying.";
+                                if (_queuedClarification) {
+                                    reason += CLARIFICATION_HINT;
                                 }
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "deny",
+                                        permissionDecisionReason: reason
+                                    }
+                                };
                             }
-                            if (_queuedClarification) {
-                                reason += CLARIFICATION_HINT;
-                            }
-                            return {
-                                hookSpecificOutput: {
-                                    hookEventName: "PreToolUse",
-                                    permissionDecision: "deny",
-                                    permissionDecisionReason: reason
-                                }
-                            };
+                            editCount++;
+                            return {};
                         }
                     ]
                 },
@@ -629,44 +653,20 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     matcher: "Read",
                     hooks: [
                         async (input) => {
-                            if (!input || !input.tool_input) {
+                            if (!input || !input.tool_input || !input.tool_input.file_path) {
                                 return {};
                             }
-                            const filePath = input.tool_input.file_path;
-                            if (!filePath) {
-                                return {};
-                            }
+                            // Flush dirty buffer to disk so the SDK's native
+                            // Read sees what the user is actually looking at.
+                            // Returning {} lets the SDK run native Read so its
+                            // read-tracker updates — required to avoid "file
+                            // not read yet" rejections on subsequent edits.
                             try {
-                                const result = await nodeConnector.execPeer("getFileContent", { filePath });
-                                if (result && result.isDirty && result.content !== null) {
-                                    const MAX_LINES = 2000;
-                                    const MAX_LINE_LENGTH = 2000;
-                                    const lines = result.content.split("\n");
-                                    const offset = input.tool_input.offset || 0;
-                                    const limit = input.tool_input.limit || MAX_LINES;
-                                    const selected = lines.slice(offset, offset + limit);
-                                    let formatted = selected.map((line, i) => {
-                                        const truncated = line.length > MAX_LINE_LENGTH
-                                            ? line.slice(0, MAX_LINE_LENGTH) + "..."
-                                            : line;
-                                        return String(offset + i + 1).padStart(6) + "\t" + truncated;
-                                    }).join("\n");
-                                    formatted = filePath + " (" +
-                                        lines.length + " lines total)\n\n" + formatted;
-                                    console.log("[Phoenix AI] Serving dirty file content for:", filePath);
-                                    if (_queuedClarification) {
-                                        formatted += CLARIFICATION_HINT;
-                                    }
-                                    return {
-                                        hookSpecificOutput: {
-                                            hookEventName: "PreToolUse",
-                                            permissionDecision: "deny",
-                                            permissionDecisionReason: formatted
-                                        }
-                                    };
-                                }
+                                await nodeConnector.execPeer("saveBufferToDisk",
+                                    { filePath: input.tool_input.file_path });
                             } catch (err) {
-                                console.warn("[Phoenix AI] Failed to check dirty state:", filePath, err.message);
+                                console.warn("[Phoenix AI] Read prep failed:",
+                                    input.tool_input.file_path, err.message);
                             }
                             return {};
                         }
@@ -708,45 +708,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
-                            const myToolId = toolCounter; // capture before any await
-                            const edit = {
-                                file: input.tool_input.file_path,
-                                oldText: null,
-                                newText: input.tool_input.content
-                            };
-                            editCount++;
-                            let writeResult;
+                            // Mirror Edit: flush dirty buffer, capture pre-write
+                            // content, return {} so SDK writes natively.
+                            const filePath = input.tool_input.file_path;
                             try {
-                                writeResult = await nodeConnector.execPeer("applyEditToBuffer", edit);
+                                await nodeConnector.execPeer("saveBufferToDisk", { filePath });
+                                await nodeConnector.execPeer("captureFileContent", { filePath });
                             } catch (err) {
-                                console.warn("[Phoenix AI] Failed to apply write to buffer:", err.message);
-                                writeResult = { applied: false, error: err.message };
+                                console.warn("[Phoenix AI] Write prep failed:", filePath, err.message);
                             }
-                            nodeConnector.triggerPeer("aiToolEdit", {
-                                requestId: requestId,
-                                toolId: myToolId,
-                                edit: edit
-                            });
-                            let reason;
-                            if (writeResult && writeResult.applied === false) {
-                                reason = "Write FAILED: " + (writeResult.error || "unknown error");
-                            } else {
-                                reason = "Write applied successfully via Phoenix editor.";
-                                if (writeResult && writeResult.isLivePreviewRelated) {
-                                    reason += " The written file is part of the active live preview." +
-                                        " Reload when ready with execJsInLivePreview: `location.reload()`";
-                                }
-                            }
-                            if (_queuedClarification) {
-                                reason += CLARIFICATION_HINT;
-                            }
-                            return {
-                                hookSpecificOutput: {
-                                    hookEventName: "PreToolUse",
-                                    permissionDecision: "deny",
-                                    permissionDecisionReason: reason
-                                }
-                            };
+                            editCount++;
+                            return {};
                         }
                     ]
                 },
@@ -831,6 +803,104 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     permissionDecisionReason: answerText.trim() || "No answer provided"
                                 }
                             };
+                        }
+                    ]
+                }
+            ],
+            PostToolUse: [
+                {
+                    matcher: "Edit",
+                    hooks: [
+                        async (input, toolUseID) => {
+                            const filePath = input && input.tool_input && input.tool_input.file_path;
+                            if (!filePath) { return {}; }
+                            // Plan files don't go through the editor
+                            if (filePath.replace(/\\/g, "/").includes("/.claude/plans/")) {
+                                return {};
+                            }
+                            // If the SDK's native Edit itself failed (e.g.
+                            // oldText not found on disk), don't paint a diff
+                            // card. The existing aiToolResult flow will
+                            // classify the indicator from the tool_result.
+                            if (_isToolResponseError(input.tool_response)) {
+                                return {};
+                            }
+                            const editPayload = {
+                                file: filePath,
+                                oldText: input.tool_input.old_string,
+                                newText: input.tool_input.new_string,
+                                replaceAll: input.tool_input.replace_all === true
+                            };
+                            // 1. Prefer applying the edit directly to the open
+                            //    buffer via doc.replaceRange — preserves
+                            //    CodeMirror marks outside the edit region (live
+                            //    preview HTML element marks). Falls back to a
+                            //    full refreshDocumentFromDisk if no doc is open
+                            //    or the buffer no longer contains old_string
+                            //    (e.g. user typed since save).
+                            let result = {};
+                            try {
+                                result = await nodeConnector.execPeer(
+                                    "applyEditToOpenBufferOnly", editPayload) || {};
+                            } catch (err) {
+                                console.warn("[Phoenix AI] applyEditToOpenBufferOnly failed:", filePath, err.message);
+                            }
+                            if (!result.applied) {
+                                try {
+                                    result = await nodeConnector.execPeer(
+                                        "refreshDocumentFromDisk", { filePath }) || result;
+                                } catch (err) {
+                                    console.warn("[Phoenix AI] Edit refresh fallback failed:", filePath, err.message);
+                                }
+                            }
+                            // 2. Trigger aiToolEdit so the AI panel renders the
+                            //    diff card and the snapshot store records it.
+                            const counterId = _toolUseIdToCounter[toolUseID];
+                            if (counterId !== undefined) {
+                                editPayload.isLivePreviewRelated = !!result.isLivePreviewRelated;
+                                nodeConnector.triggerPeer("aiToolEdit", {
+                                    requestId: requestId,
+                                    toolId: counterId,
+                                    edit: editPayload
+                                });
+                            }
+                            return {};
+                        }
+                    ]
+                },
+                {
+                    matcher: "Write",
+                    hooks: [
+                        async (input, toolUseID) => {
+                            const filePath = input && input.tool_input && input.tool_input.file_path;
+                            if (!filePath) { return {}; }
+                            if (filePath.replace(/\\/g, "/").includes("/.claude/plans/")) {
+                                return {};
+                            }
+                            if (_isToolResponseError(input.tool_response)) {
+                                return {};
+                            }
+                            let refreshResult = {};
+                            try {
+                                refreshResult = await nodeConnector.execPeer(
+                                    "refreshDocumentFromDisk", { filePath }) || {};
+                            } catch (err) {
+                                console.warn("[Phoenix AI] Write refresh failed:", filePath, err.message);
+                            }
+                            const counterId = _toolUseIdToCounter[toolUseID];
+                            if (counterId !== undefined) {
+                                nodeConnector.triggerPeer("aiToolEdit", {
+                                    requestId: requestId,
+                                    toolId: counterId,
+                                    edit: {
+                                        file: filePath,
+                                        oldText: null,
+                                        newText: input.tool_input.content,
+                                        isLivePreviewRelated: !!refreshResult.isLivePreviewRelated
+                                    }
+                                });
+                            }
+                            return {};
                         }
                     ]
                 }
