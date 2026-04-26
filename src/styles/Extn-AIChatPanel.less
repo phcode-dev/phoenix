@@ -622,12 +622,14 @@
         opacity: 1;
     }
 
-    // Inline edit actions (diff toggle)
-    .ai-tool-edit-actions {
+    // Inline edit actions (diff toggle) — sits at the right edge of the
+    // tool header so it shares a row with the "Edit <file>" label.
+    .ai-tool-header .ai-tool-edit-actions {
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 2px 8px 4px 28px;
+        margin-left: auto;
+        padding: 0;
     }
 
     .ai-tool-diff-toggle {
@@ -698,6 +700,17 @@
         font-size: @sidebar-small-font-size;
         color: #e88;
         padding: 3px 8px 3px 28px;
+    }
+
+    .ai-msg-tool.ai-tool-applied-directly {
+        opacity: 0.78;
+
+        .ai-tool-direct-note {
+            font-size: @sidebar-xs-font-size;
+            color: @project-panel-text-2;
+            font-style: italic;
+            padding: 2px 8px 4px 28px;
+        }
     }
 
     .ai-tool-elapsed {
