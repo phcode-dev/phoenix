@@ -422,7 +422,26 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     }
 
     let _lastStderrLines = [];
-    const MAX_STDERR_LINES = 20;
+    const MAX_STDERR_LINES = 50;
+    let _hookErrorBuffer = "";
+    let _hookErrorTimer = null;
+    const HOOK_ERROR_FLUSH_MS = 200;
+
+    function _flushHookError() {
+        if (_hookErrorBuffer) {
+            const trimmed = _hookErrorBuffer.trim();
+            console.error("[AI hook callback error] SDK threw delivering hook payload" +
+                " — tool likely ran natively in acceptEdits mode:\n" + trimmed);
+            try {
+                nodeConnector.triggerPeer("aiHookError", {
+                    requestId: requestId,
+                    error: trimmed
+                });
+            } catch (e) { /* peer may be gone — ignore */ }
+            _hookErrorBuffer = "";
+        }
+        _hookErrorTimer = null;
+    }
 
     const queryOptions = {
         cwd: projectPath || process.cwd(),
@@ -432,6 +451,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             _lastStderrLines.push(data);
             if (_lastStderrLines.length > MAX_STDERR_LINES) {
                 _lastStderrLines.shift();
+            }
+            // Collect consecutive lines belonging to a hook callback error so
+            // we can log the full burst as one block. The SDK fragments the
+            // error across multiple stderr writes which is hard to read.
+            if (_hookErrorBuffer || /Error in hook callback/.test(data)) {
+                _hookErrorBuffer += data + "\n";
+                clearTimeout(_hookErrorTimer);
+                _hookErrorTimer = setTimeout(_flushHookError, HOOK_ERROR_FLUSH_MS);
             }
         },
         allowedTools: [

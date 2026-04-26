@@ -2214,6 +2214,7 @@ define({
     "AI_CHAT_UNDO_TITLE": "Undo changes from this response",
     "AI_CHAT_RESTORE_TITLE": "Restore files to this point",
     "AI_CHAT_RESTORED": "Restored",
+    "AI_CHAT_TOOL_APPLIED_DIRECTLY": "Applied directly to disk · diff not available",
     "AI_CHAT_FILE_NOT_FOUND_TITLE": "File not found",
     "AI_CHAT_FILE_NOT_FOUND_MSG": "Could not open <span class=\"dialog-filename\">{0}</span>. The file may have been moved or deleted.",
     "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Undo & Restore",
