@@ -390,6 +390,9 @@ exports.clearClarification = async function () {
 async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode) {
     let editCount = 0;
     let toolCounter = 0;
+    // SDK tool_use id (e.g. "toolu_01...") → our sequential toolCounter so a
+    // tool_result block can be mapped back to its indicator on the browser.
+    const _toolUseIdToCounter = {};
     let queryFn;
     let connectionTimer = null;
 
@@ -1065,6 +1068,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         toolDeltaCount = 0;
                         toolStreamSendCount = 0;
                         lastToolStreamTime = 0;
+                        // Map the SDK's tool_use id → our toolCounter so we can
+                        // correlate later tool_result blocks back to the indicator.
+                        if (event.content_block.id) {
+                            _toolUseIdToCounter[event.content_block.id] = toolCounter;
+                        }
                         _log("Tool start:", activeToolName, "#" + toolCounter);
                         nodeConnector.triggerPeer("aiProgress", {
                             requestId: requestId,
@@ -1212,6 +1220,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             "isError=" + !!block.is_error,
                             "len=" + len + "ch",
                             preview ? ("preview=" + JSON.stringify(preview)) : "");
+                        // Forward the result so the browser can reflect outcome
+                        // on the corresponding tool indicator (errored vs ran).
+                        const counterId = _toolUseIdToCounter[block.tool_use_id];
+                        if (counterId !== undefined) {
+                            nodeConnector.triggerPeer("aiToolResult", {
+                                requestId: requestId,
+                                toolId: counterId,
+                                isError: !!block.is_error,
+                                preview: preview
+                            });
+                        }
                     }
                 }
             }
