@@ -864,6 +864,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     edit: editPayload
                                 });
                             }
+                            // Catch-all PostToolUse below handles clarification.
                             return {};
                         }
                     ]
@@ -900,13 +901,44 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 });
                             }
+                            // Catch-all PostToolUse below handles clarification.
                             return {};
+                        }
+                    ]
+                },
+                {
+                    // Catch-all: surface a queued user follow-up after every
+                    // tool. Edit/Write/Read have their own hooks above, but
+                    // any tool can be a meaningful checkpoint (Bash, Grep,
+                    // Glob, WebFetch, Task, the Phoenix MCP tools, etc.) so
+                    // we register one matcher-less hook that just returns
+                    // the clarification context if any is queued. Once
+                    // getUserClarification runs and clears _queuedClarification,
+                    // _maybeClarifyContext returns {} and this becomes a no-op.
+                    hooks: [
+                        async () => {
+                            return _maybeClarifyContext();
                         }
                     ]
                 }
             ]
         }
     };
+
+    // Returns a PostToolUse SyncHookJSONOutput that injects the clarification
+    // hint as additionalContext when the user has typed a follow-up while the
+    // AI is streaming. With our PreToolUse hooks now returning {} (allow), the
+    // old practice of appending CLARIFICATION_HINT to permissionDecisionReason
+    // no longer reaches Claude — PostToolUse additionalContext is the new path.
+    function _maybeClarifyContext() {
+        if (!_queuedClarification) { return {}; }
+        return {
+            hookSpecificOutput: {
+                hookEventName: "PostToolUse",
+                additionalContext: CLARIFICATION_HINT
+            }
+        };
+    }
 
     // Set Claude CLI path if found
     const claudePath = findGlobalClaudeCli();
