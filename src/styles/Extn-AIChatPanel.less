@@ -794,6 +794,20 @@
     &.pending { color: @project-panel-text-2; opacity: 0.4; }
 }
 
+// Older TodoWrite blocks are dimmed and have their in-progress spinner
+// swapped for a static arrow when a newer TodoWrite supersedes them.
+// Only the latest block keeps live animation; everything above reads
+// as historical "this was the next step at the time" rather than
+// implying parallel activity.
+.ai-msg-tool.ai-todo-stale {
+    opacity: 0.65;
+
+    .ai-todo-icon {
+        color: @project-panel-text-2;
+        opacity: 0.6;
+    }
+}
+
 .ai-todo-content {
     color: @project-panel-text-2;
     line-height: 1.4;
