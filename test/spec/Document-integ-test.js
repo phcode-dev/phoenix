@@ -117,7 +117,7 @@ define(function (require, exports, module) {
                 DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
             });
 
-            it("should clear dirty flag AND undo when text reset", async function () {
+            it("should clear dirty flag but preserve undo history when text reset", async function () {
                 let dirtyFlagListener = jasmine.createSpy(),
                     changeListener    = jasmine.createSpy();
                 DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
@@ -137,10 +137,15 @@ define(function (require, exports, module) {
                 expect(dirtyFlagListener.calls.count()).toBe(1);
                 expect(changeListener.calls.count()).toBe(1);
 
-                // Reset text (e.g. called by Revert command, or syncing external changes)
+                // Reset text (e.g. called by Revert command, or syncing external changes).
+                // Editor._resetText now uses replaceRange instead of setValue+clearHistory
+                // so the user can ctrl-z back to their pre-revert state. markClean
+                // still resets the dirty flag relative to the new generation.
                 doc.refreshText("New content", Date.now());
                 expect(doc.isDirty).toBe(false);
-                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0); // undo history GONE
+                // Undo history is PRESERVED — the refreshText replaceRange adds a
+                // second entry on top of the original "Foo" edit.
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(2);
                 expect(dirtyFlagListener.calls.count()).toBe(2);
                 expect(changeListener.calls.count()).toBe(2);
 
@@ -165,7 +170,9 @@ define(function (require, exports, module) {
 
                 doc.refreshText("New content", Date.now());  // e.g. syncing external changes
                 expect(doc.isDirty).toBe(false);
-                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0); // still no undo history
+                // The replaceRange used by Editor._resetText records one undo entry
+                // so the user can ctrl-z back to the pre-reset content.
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
                 expect(dirtyFlagListener.calls.count()).toBe(0);  // isDirty hasn't changed
                 expect(changeListener.calls.count()).toBe(1);     // but still counts as a content change
 
