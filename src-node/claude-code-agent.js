@@ -81,6 +81,13 @@ let _planApproved = false;
 // Shape: { text: string, images: [{mediaType, base64Data}] } or null
 let _queuedClarification = null;
 
+// Module-level "runtime" permission mode that hooks read at decision time.
+// Updated on every sendPrompt and via the setPermissionMode peer when the
+// user cycles the panel's permission bar mid-stream — without this, the
+// Bash hook would close over the value at query start and continue
+// prompting for confirmation even after the user has flipped to Full Auto.
+let _runtimePermissionMode = "acceptEdits";
+
 const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
 
 /**
@@ -361,6 +368,22 @@ exports.answerPlanModeWriteConfirm = async function (params) {
 };
 
 /**
+ * Apply a mid-stream permission-mode change so hooks running for the rest
+ * of the turn use the new value. Called from the browser when the user
+ * cycles the permission bar (so e.g. Bash stops prompting immediately
+ * after switching from Edit Mode to Full Auto). The next sendPrompt also
+ * passes permissionMode in params, so this peer is only strictly required
+ * during streaming — but calling it on every cycle keeps the agent's
+ * tracker authoritative.
+ */
+exports.setPermissionMode = async function (params) {
+    if (params && typeof params.mode === "string") {
+        _runtimePermissionMode = params.mode;
+    }
+    return { success: true };
+};
+
+/**
  * Resume a previous session by setting the session ID.
  * The next sendPrompt call will use queryOptions.resume with this session ID.
  */
@@ -430,6 +453,10 @@ exports.clearClarification = async function () {
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
 async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode) {
+    // Sync the runtime mutable that hooks read for permission decisions —
+    // setPermissionMode (peer) updates this same variable when the user
+    // cycles modes mid-stream.
+    _runtimePermissionMode = permissionMode || "acceptEdits";
     let editCount = 0;
     let toolCounter = 0;
     // SDK tool_use id (e.g. "toolu_01...") → our sequential toolCounter so a
@@ -863,7 +890,12 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     matcher: "Bash",
                     hooks: [
                         async (input) => {
-                            if (permissionMode !== "acceptEdits") {
+                            // Read from the runtime mutable so mid-stream
+                            // permission-mode flips (e.g. user switches Edit
+                            // Mode → Full Auto while bash is in flight) take
+                            // effect on the NEXT bash call without waiting
+                            // for the next prompt.
+                            if (_runtimePermissionMode !== "acceptEdits") {
                                 // Plan mode: SDK handles. Full Auto: allow freely.
                                 return {};
                             }
