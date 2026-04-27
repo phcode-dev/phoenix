@@ -248,7 +248,7 @@ exports.checkAvailability = async function () {
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images, envOverrides, permissionMode } = params;
+    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images, envOverrides, permissionMode, additionalDirectories } = params;
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -291,7 +291,7 @@ exports.sendPrompt = async function (params) {
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides, permissionMode)
+    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides, permissionMode, additionalDirectories)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -452,7 +452,7 @@ exports.clearClarification = async function () {
 /**
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
-async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode) {
+async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode, additionalDirectories) {
     // Sync the runtime mutable that hooks read for permission decisions —
     // setPermissionMode (peer) updates this same variable when the user
     // cycles modes mid-stream.
@@ -520,8 +520,23 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         _hookErrorTimer = null;
     }
 
+    // Validate the user-attached extra directories the browser sent.
+    // Drop entries that aren't absolute, don't exist, or duplicate cwd.
+    // Returns undefined for empty results so the SDK ignores the option
+    // rather than seeing a literal []. Each sendPrompt rebuilds this
+    // list, so adding/removing in the UI takes effect on the next turn.
+    const _cwdForValidation = projectPath || process.cwd();
+    const validatedExtraDirs = (Array.isArray(additionalDirectories)
+        ? additionalDirectories.filter(function (p) {
+            if (typeof p !== "string" || !path.isAbsolute(p)) { return false; }
+            if (p === _cwdForValidation) { return false; }
+            try { return fs.existsSync(p); } catch (e) { return false; }
+        })
+        : []);
+
     const queryOptions = {
         cwd: projectPath || process.cwd(),
+        additionalDirectories: validatedExtraDirs.length ? validatedExtraDirs : undefined,
         maxTurns: undefined,
         stderr: (data) => {
             console.log("[AI stderr]", data);

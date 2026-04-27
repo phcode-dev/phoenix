@@ -2121,6 +2121,14 @@
         .ai-context-chip-icon { color: #6b9eff; }
     }
 
+    // Folder context chip — extra working directories the user has
+    // attached to the conversation. Tinted amber/orange so it reads
+    // as a different *kind* of context than file/selection chips.
+    .ai-context-chip-folder {
+        border-color: rgba(232, 168, 56, 0.35);
+        .ai-context-chip-icon { color: #e8a838; }
+    }
+
     /* ── Image preview strip (between context bar and textarea) ──────── */
     .ai-chat-image-preview {
         display: none;
@@ -2345,7 +2353,8 @@
         }
     }
 
-    .ai-screenshot-dropup {
+    .ai-screenshot-dropup,
+    .ai-attach-dropup {
         position: fixed;
         background: @bc-ai-input-bg;
         border: 1px solid @bc-ai-input-border;
@@ -2355,7 +2364,8 @@
         z-index: 100;
         min-width: 200px;
 
-        .ai-screenshot-option {
+        .ai-screenshot-option,
+        .ai-attach-option {
             padding: 8px 12px;
             cursor: pointer;
             color: @project-panel-text-1;
