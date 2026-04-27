@@ -114,6 +114,53 @@ function _isToolResponseError(toolResponse) {
     return false;
 }
 
+// Bash commands the agent can run without prompting the user in Edit
+// Mode. Mirrors the CLI's default "permissions.allow" set
+// (cli.js:2925) plus a small handful of universally read-only shell
+// utilities. Shell-composition characters (`;`, `&&`, `||`, backticks,
+// pipes, redirection, command substitution) trip the safety belt
+// below — without that check `git status; rm -rf /` would slip through
+// since the prefix matches.
+const _SAFE_BASH_PATTERNS = [
+    // git read-only
+    /^git\s+status(\s|$)/,
+    /^git\s+log(\s|$)/,
+    /^git\s+diff(\s|$)/,
+    /^git\s+show(\s|$)/,
+    /^git\s+branch(\s|$)/,
+    /^git\s+ls-files(\s|$)/,
+    /^git\s+rev-parse(\s|$)/,
+    /^git\s+remote\s+show(\s|$)/,
+    /^git\s+--version$/,
+    // generic read-only shell
+    /^ls(\s|$)/,
+    /^pwd$/,
+    /^echo(\s|$)/,
+    /^which\s/,
+    /^cat(\s|$)/,
+    /^head(\s|$)/,
+    /^tail(\s|$)/,
+    /^wc(\s|$)/,
+    /^file\s/,
+    /^stat\s/,
+    // version probes
+    /^node\s+--version$/,
+    /^npm\s+--version$/,
+    /^yarn\s+--version$/,
+    /^pnpm\s+--version$/
+];
+
+function _isSafeReadOnlyBash(rawCmd) {
+    const cmd = (rawCmd || "").trim();
+    if (!cmd) { return false; }
+    // Reject anything that could chain a destructive op via shell
+    // composition: `;` `&&` `||` `|` backticks `$(...)` `<` `>`.
+    // The CLI's parser handles these; we keep matching simple by
+    // refusing to bypass the prompt if any of them are present.
+    if (/[;&|`$()<>]/.test(cmd)) { return false; }
+    return _SAFE_BASH_PATTERNS.some(function (rx) { return rx.test(cmd); });
+}
+
 /**
  * Lazily import the ESM @anthropic-ai/claude-code module.
  */
@@ -916,6 +963,19 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             }
                             // Edit Mode: ask user confirmation before running bash
                             const command = input.tool_input.command || "";
+                            // Skip prompting for well-known read-only commands
+                            // that mirror the Claude Code CLI's default safe
+                            // patterns. Cuts down on prompt fatigue during
+                            // typical "look around the repo" turns.
+                            if (_isSafeReadOnlyBash(command)) {
+                                console.log("[Phoenix AI] Auto-allowing safe bash:", command.slice(0, 80));
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "allow"
+                                    }
+                                };
+                            }
                             console.log("[Phoenix AI] Bash confirmation requested:", command.slice(0, 80));
                             nodeConnector.triggerPeer("aiBashConfirm", {
                                 requestId: requestId,
