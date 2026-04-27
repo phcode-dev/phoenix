@@ -117,10 +117,10 @@ function _isToolResponseError(toolResponse) {
 // Bash commands the agent can run without prompting the user in Edit
 // Mode. Mirrors the CLI's default "permissions.allow" set
 // (cli.js:2925) plus a small handful of universally read-only shell
-// utilities. Shell-composition characters (`;`, `&&`, `||`, backticks,
-// pipes, redirection, command substitution) trip the safety belt
-// below — without that check `git status; rm -rf /` would slip through
-// since the prefix matches.
+// utilities. The safety belt in _isSafeReadOnlyBash splits on
+// `;` / `&&` / `||` and checks every segment, so chaining safe
+// commands (e.g. `git status && git log`, `sleep 1; echo done`)
+// works while `git status; rm -rf /` correctly falls through.
 const _SAFE_BASH_PATTERNS = [
     // git read-only
     /^git\s+status(\s|$)/,
@@ -143,6 +143,9 @@ const _SAFE_BASH_PATTERNS = [
     /^wc(\s|$)/,
     /^file\s/,
     /^stat\s/,
+    // numeric-only sleep — no `sleep $(...)` since process substitution
+    // is rejected separately, but be explicit so `sleep $VAR` also fails.
+    /^sleep\s+\d+(\.\d+)?$/,
     // version probes
     /^node\s+--version$/,
     /^npm\s+--version$/,
@@ -153,12 +156,19 @@ const _SAFE_BASH_PATTERNS = [
 function _isSafeReadOnlyBash(rawCmd) {
     const cmd = (rawCmd || "").trim();
     if (!cmd) { return false; }
-    // Reject anything that could chain a destructive op via shell
-    // composition: `;` `&&` `||` `|` backticks `$(...)` `<` `>`.
-    // The CLI's parser handles these; we keep matching simple by
-    // refusing to bypass the prompt if any of them are present.
-    if (/[;&|`$()<>]/.test(cmd)) { return false; }
-    return _SAFE_BASH_PATTERNS.some(function (rx) { return rx.test(cmd); });
+    // Reject command/process substitution, redirection, and pipes —
+    // these can hide arbitrary commands or send output to dangerous
+    // places. Backticks, `$(...)`, `<`, `>`, `|`. Plain `$VAR` is
+    // allowed (substitution-without-command).
+    if (/[`<>|]|\$\(/.test(cmd)) { return false; }
+    // Split on `;`, `&&`, `||` and verify EVERY segment matches a safe
+    // pattern. Quotes around delimiters are not handled — a command
+    // like `echo "a; b"` will split mid-string and fail safe-check
+    // (which is fine: false negatives are OK, false positives are not).
+    const segments = cmd.split(/\s*(?:;|&&|\|\|)\s*/).filter(Boolean);
+    return segments.every(function (seg) {
+        return _SAFE_BASH_PATTERNS.some(function (rx) { return rx.test(seg); });
+    });
 }
 
 /**
