@@ -1,0 +1,20 @@
+<div class="phoenix-debug-overrides modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">Debug Overrides</h1>
+    </div>
+    <div class="modal-body">
+        <div style="margin-bottom: 6px;">
+            <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" class="ai-panel-local-override" {{#aiPanelLocalOverride}}checked{{/aiPanelLocalOverride}}>
+                <span>AI panel onboarding — local server</span>
+                <i class="fa-solid fa-circle-info"
+                   style="opacity: 0.5; cursor: help; font-size: 12px;"
+                   title="Load http://localhost:5555/onbaording_v5/ instead of the production https://ai-panel-onboarding.phcode.dev/onbaording_v5/. Reload Phoenix after toggling."></i>
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="dialog-button btn" data-button-id="cancel">Cancel</button>
+        <button class="dialog-button btn primary" data-button-id="ok">Save</button>
+    </div>
+</div>
