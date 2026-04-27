@@ -29,6 +29,10 @@
 #panel-md-preview-frame {
     background-color: white;
     position: relative;
+    width: calc(100% + 2px);
+    margin: 0 -1px;
+    clip-path: inset(0 1px);
+    min-width: 0;
 }
 
 #panel-live-preview-frame[src*="no-preview.html"],
@@ -48,6 +52,7 @@
     display: flex;
     width: 100%;
     height: calc(100% - var(--toolbar-height));
+    overflow: hidden;
 }
 
 .frame-container.responsive-viewport {
