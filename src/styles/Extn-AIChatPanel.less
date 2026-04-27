@@ -57,6 +57,32 @@
     color: @project-panel-text-1;
     font-size: @ai-text-body;
     container-type: inline-size;
+
+    /* Onboarding-iframe theme variables — single source of truth for
+       what gets forwarded to the iframe's `?configCSS=` param.
+       AIChatPanel.js _buildOnboardingConfigCSS reads each of these via
+       getComputedStyle and serialises them into a :root{...} block.
+       To retheme the iframe, edit only this list. The names match the
+       iframe's published contract (see ai-panel-onboarding README). */
+    --bg-panel:              @bc-ai-sidebar-bg;
+    --bg-card:               rgba(255, 255, 255, 0.04);
+    --bg-card-hover:         rgba(255, 255, 255, 0.07);
+    --bg-input:              rgba(255, 255, 255, 0.04);
+    --bg-input-focus:        rgba(255, 255, 255, 0.06);
+    --text-primary:          @project-panel-text-1;
+    --text-secondary:        @project-panel-text-2;
+    --text-muted:            rgba(168, 176, 180, 0.6);
+    --border-subtle:         rgba(255, 255, 255, 0.12);
+    --border-active:         rgba(107, 158, 255, 0.4);
+    --border-focus:          rgba(107, 158, 255, 0.5);
+    --accent-primary:        #6b9eff;
+    --accent-primary-soft:   rgba(107, 158, 255, 0.12);
+    --accent-primary-border: rgba(107, 158, 255, 0.3);
+    --font-body:             14px;
+    --font-secondary:        12px;
+    --font-meta:             11px;
+    --radius-md:             6px;
+    --radius-lg:             8px;
 }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
