@@ -143,6 +143,7 @@ define(function (require, exports, module) {
     require("thirdparty/tinycolor");
     require("utils/LocalizationUtils");
     require("phoenix-builder/main");
+    require("phoenix-builder/debug-overrides");
 
     // DEPRECATED: In future we want to remove the global CodeMirror, but for now we
     // expose our required CodeMirror globally so as to avoid breaking extensions in the

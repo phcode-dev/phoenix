@@ -830,6 +830,7 @@ define(function (require, exports, module) {
     diagnosticsSubmenu.addMenuItem(DEBUG_BUILD_TESTS);
     if (AppConfig.config.environment === "dev") {
         diagnosticsSubmenu.addMenuItem("debug.phoenixBuilderConnect");
+        diagnosticsSubmenu.addMenuItem("debug.debugOverrides");
     }
     diagnosticsSubmenu.addMenuDivider();
     diagnosticsSubmenu.addMenuItem(DEBUG_ENABLE_LOGGING);
