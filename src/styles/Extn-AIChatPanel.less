@@ -40,6 +40,10 @@
     flex: 1;
     min-height: 0;
     overflow: hidden;
+    // Positioning context for the onboarding prompt overlay, which is
+    // detached from its template position and re-parented here so it
+    // covers the Files/AI tab strip as well as the panel body.
+    position: relative;
 }
 
 .ai-chat-panel {
@@ -145,7 +149,8 @@
 .ai-chat-panel.ai-history-open {
     > .ai-chat-messages,
     > .ai-chat-status,
-    > .ai-chat-input-area {
+    > .ai-chat-input-area,
+    > .ai-onboarding-wrap {
         display: none !important;
     }
 }
@@ -262,6 +267,179 @@
 
     i {
         font-size: 10px;
+    }
+}
+
+/* ── Onboarding iframe (guided AI starter) ──────────────────────────── */
+/* The wrap sits where .ai-chat-messages would. When visible it claims
+   the same flex slot — when hidden the chat takes that slot back. */
+.ai-onboarding-wrap {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    position: relative;
+    background-color: @bc-ai-sidebar-bg;
+
+    .ai-onboarding-frame {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+    }
+}
+
+/* Prompt confirm overlay — top-level rule (NOT nested under
+   .ai-onboarding-wrap) because at runtime _initOnboarding detaches
+   the overlay element and re-parents it to .ai-tab-container so it
+   covers the Files/AI tab strip in addition to the panel body.
+   Neutral dark-panel chrome — no blue accent. Title strip + full-
+   bleed textarea + bottom action row with Cancel and an icon-only
+   send button that mirrors .ai-send-btn's transparent quiet style. */
+.ai-onboarding-prompt-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: ai-onboarding-overlay-fade 0.15s ease-out;
+
+    .ai-onboarding-prompt-card {
+        width: 100%;
+        max-width: 440px;
+        border: 1px solid @bc-ai-input-border;
+        border-radius: 8px;
+        background: @bc-ai-sidebar-bg;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+        animation: ai-onboarding-card-pop 0.18s ease-out;
+    }
+
+    .ai-onboarding-prompt-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 8px 8px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ai-onboarding-prompt-title {
+        flex: 1;
+        min-width: 0;
+        font-size: @ai-text-body;
+        font-weight: 600;
+        color: @project-panel-text-1;
+        line-height: 1.3;
+    }
+
+    .ai-onboarding-prompt-close {
+        background: none;
+        border: 0;
+        color: @project-panel-text-2;
+        width: 26px;
+        height: 26px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.55;
+        flex-shrink: 0;
+        transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+
+        i { font-size: 0.95em; }
+
+        &:hover {
+            opacity: 1;
+            color: @project-panel-text-1;
+            background: rgba(255, 255, 255, 0.05);
+        }
+    }
+
+    .ai-onboarding-prompt-text {
+        // display: block + width: 100% + box-sizing makes the textarea
+        // span the card's full inner width regardless of the rows attr
+        // or the browser's textarea default width.
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        background: @bc-ai-input-bg;
+        border: 0;
+        border-radius: 0;
+        color: @project-panel-text-1;
+        font-size: @ai-text-body;
+        line-height: @ai-line-prose;
+        padding: 12px 14px;
+        resize: vertical;
+        min-height: 110px;
+        max-height: 260px;
+        outline: none;
+        box-shadow: none;
+
+        // Phoenix's global textarea focus rule paints a border + shadow
+        // that shifts the dialog by ~2px and reads as a flicker. Force
+        // the no-chrome focus state so only the bg darkening signals
+        // focus.
+        &:focus,
+        &:focus-visible {
+            background: @bc-ai-input-bg-focused;
+            border: 0;
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
+    .ai-onboarding-prompt-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 8px 6px 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ai-onboarding-prompt-cancel {
+        background: transparent;
+        border: 0;
+        color: @project-panel-text-2;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: @project-panel-text-1;
+        }
+    }
+
+    .ai-onboarding-prompt-send {
+        background: none;
+        border: 0;
+        color: @project-panel-text-2;
+        width: 32px;
+        height: 28px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.6;
+        transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+
+        i { font-size: 0.95em; }
+
+        &:hover {
+            opacity: 1;
+            color: @project-panel-text-1;
+            background: rgba(255, 255, 255, 0.05);
+        }
     }
 }
 
@@ -2889,6 +3067,24 @@
             color: @project-panel-text-2;
             opacity: 0.6;
         }
+    }
+}
+
+/* Onboarding prompt overlay entrance animations. Kept at file scope so
+   the keyframes resolve regardless of nesting context. */
+@keyframes ai-onboarding-overlay-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes ai-onboarding-card-pop {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
     }
 }
 

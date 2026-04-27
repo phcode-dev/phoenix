@@ -2226,6 +2226,8 @@ define({
     "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Switch to Full Auto Mode?",
     "AI_CHAT_FULL_AUTO_WARNING_BODY": "Full Auto mode lets the AI run any tool — Bash commands, file edits, file deletions, web fetches — without asking you first.<br><br>This is convenient for trusted scratch projects, but can be risky: a misjudged step could overwrite or delete files, run a destructive shell command, or push unintended changes. Use version control (Git) so you can recover if something goes wrong.<br><br>Only enable Full Auto in projects you trust. You can switch back to Edit Mode at any time using <kbd>Shift+Tab</kbd> or by clicking the mode bar.",
     "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Enable Full Auto",
+    "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Ready to build",
+    "AI_CHAT_ONBOARDING_SEND": "Send",
     "AI_CHAT_SHOW_DIFF": "Show diff",
     "AI_CHAT_HIDE_DIFF": "Hide diff",
     "AI_CHAT_DIFF_MORE_TITLE": "Diff options",
