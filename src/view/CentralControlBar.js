@@ -275,10 +275,15 @@ define(function (require, exports, module) {
             // exit into pure-code mode by closing it again. Snapshot the
             // entry state before _restoreExpandedLayout resets it.
             // skipToolbarRestore is already the LP-just-closed path, so
-            // don't double-close in that case. _restoreExpandedLayout runs
-            // first so our !important geometry overrides are cleared before
-            // WorkspaceManager resizes #main-toolbar to the no-panel state.
+            // don't double-close in that case. opts.keepLivePreviewOpen
+            // is the "intercepted #toolbar-go-live click" path — caller
+            // wants LP to stay regardless of entry state. _restoreExpandedLayout
+            // runs first so our !important geometry overrides are cleared
+            // before WorkspaceManager resizes #main-toolbar to the no-panel
+            // state.
+            const keepLivePreviewOpen = !!(opts && opts.keepLivePreviewOpen);
             const shouldCloseLivePreview = !skipToolbarRestore &&
+                !keepLivePreviewOpen &&
                 !livePreviewWasOpen &&
                 _isLivePreviewOpen();
             _restoreExpandedLayout(shouldCloseLivePreview ? true : skipToolbarRestore);
@@ -337,6 +342,25 @@ define(function (require, exports, module) {
         $("#ccbUndoBtn").attr("title", Strings.CMD_UNDO);
         $("#ccbRedoBtn").attr("title", Strings.CMD_REDO);
         $("#ccbSaveBtn").attr("title", Strings.CMD_FILE_SAVE);
+
+        // Intercept clicks on #toolbar-go-live while in design mode: instead
+        // of letting the live-preview module hide LP (the default toggle
+        // behaviour), we exit design mode and keep LP visible. Outside
+        // design mode the button continues to toggle LP normally — we only
+        // act when `editorCollapsed` is true. Capture phase + stopImmediate-
+        // Propagation guarantees we run before the live-preview module's
+        // jQuery click handler.
+        const goLiveBtn = document.getElementById("toolbar-go-live");
+        if (goLiveBtn) {
+            goLiveBtn.addEventListener("click", function (e) {
+                if (!editorCollapsed) {
+                    return;
+                }
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                _setEditorCollapsed(false, { keepLivePreviewOpen: true });
+            }, true /* useCapture */);
+        }
         _syncLeftPositions();
 
         // While the sidebar is being dragged we only reposition CCB / main-toolbar.

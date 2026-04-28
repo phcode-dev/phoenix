@@ -654,27 +654,41 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("6. Exit triggered by hiding live preview", function () {
+        describe("6. #toolbar-go-live click in design mode", function () {
 
-            it("should exit design mode, hide LP, and shrink main-toolbar to the icon-bar width when #toolbar-go-live is clicked in design mode", async function () {
+            it("should exit design mode and keep Live Preview visible when #toolbar-go-live is clicked in design mode", async function () {
                 await openLivePreview();
                 await enterDesignMode();
                 expect(WorkspaceManager.isInDesignMode()).toBe(true);
                 expect(livePanel().isVisible()).toBe(true);
 
-                _$("#toolbar-go-live").trigger("click");
+                // Native click — CCB intercepts via a capture-phase listener,
+                // which jQuery's `.trigger("click")` would not exercise.
+                _$("#toolbar-go-live")[0].click();
 
-                // LP hides → visible to the user.
-                await awaitsFor(function () { return !livePanel().isVisible(); },
-                    "live preview to hide", 5000);
-                // And the editor chrome comes back — design mode ends.
+                // Design mode ends — editor chrome comes back.
                 await awaitsFor(function () { return !WorkspaceManager.isInDesignMode(); },
-                    "design mode to deactivate after LP close", 5000);
+                    "design mode to deactivate after toolbar-go-live click", 5000);
+                // LP should remain open — the click in design mode must NOT hide it.
+                expect(livePanel().isVisible()).toBe(true);
 
-                // Main-toolbar should end up at the icon-bar-only width (its no-panel state).
+                // Main-toolbar should be at a real LP-panel width (well above
+                // just the icon-bar width).
                 const iconsW = _$("#plugin-icons-bar").outerWidth();
                 const toolbarW = _$("#main-toolbar").outerWidth();
-                expect(Math.abs(toolbarW - iconsW)).toBeLessThan(3);
+                expect(toolbarW).toBeGreaterThan(iconsW + 50);
+            });
+
+            it("should toggle Live Preview off normally when #toolbar-go-live is clicked outside design mode", async function () {
+                await openLivePreview();
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
+                expect(livePanel().isVisible()).toBe(true);
+
+                _$("#toolbar-go-live")[0].click();
+
+                await awaitsFor(function () { return !livePanel().isVisible(); },
+                    "live preview to hide on toolbar-go-live click", 5000);
+                expect(WorkspaceManager.isInDesignMode()).toBe(false);
             });
         });
 
