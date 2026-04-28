@@ -39,12 +39,16 @@ define(function (require, exports, module) {
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
     const EditorManager      = require("editor/EditorManager");
+    const WorkspaceManager   = require("view/WorkspaceManager");
     // File-type classification helpers live in a shared utility module so
     // non-live-preview code (e.g. Quick Open in design mode) can use them
     // without depending on this extension.
     const FileTypeUtils      = require("utils/FileTypeUtils");
 
     function focusActiveEditorIfFocusInLivePreview() {
+        if (WorkspaceManager.isInDesignMode()) {
+            return;
+        }
         const editor  = EditorManager.getActiveEditor();
         if(!editor){
             return;
