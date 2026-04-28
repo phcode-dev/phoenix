@@ -157,13 +157,13 @@ define(function (require, exports, module) {
 
         CommandManager.register(Strings.CMD_FILE_CLOSE_BELOW, closeBelow, function () {
             handleClose(closeBelow);
-        });
+        }, { supportsDesignMode: true });
         CommandManager.register(Strings.CMD_FILE_CLOSE_OTHERS, closeOthers, function () {
             handleClose(closeOthers);
-        });
+        }, { supportsDesignMode: true });
         CommandManager.register(Strings.CMD_FILE_CLOSE_ABOVE, closeAbove, function () {
             handleClose(closeAbove);
-        });
+        }, { supportsDesignMode: true });
 
         if (prefs.closeBelow) {
             workingSetListCmenu.addMenuItem(closeBelow, "", Menus.AFTER, Commands.FILE_CLOSE);

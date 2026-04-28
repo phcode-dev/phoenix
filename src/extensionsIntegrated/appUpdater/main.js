@@ -598,10 +598,10 @@ define(function (require, exports, module) {
         });
         CommandManager.register(Strings.CMD_CHECK_FOR_UPDATE, Commands.HELP_CHECK_UPDATES, ()=>{
             checkForUpdates();
-        });
+        }, { supportsDesignMode: true });
         CommandManager.register(Strings.CMD_AUTO_UPDATE, Commands.HELP_AUTO_UPDATE, ()=>{
             PreferencesManager.set(PREFS_AUTO_UPDATE, !PreferencesManager.get(PREFS_AUTO_UPDATE));
-        });
+        }, { supportsDesignMode: true });
         const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
         helpMenu.addMenuItem(Commands.HELP_CHECK_UPDATES, "", Menus.AFTER, Commands.HELP_GET_INVOLVED);
         // auto update is not added to help menu toggle as it will lead to install base version

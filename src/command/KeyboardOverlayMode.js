@@ -203,7 +203,7 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         CommandManager.register(Strings.CMD_KEYBOARD_NAV_OVERLAY,
-            Commands.CMD_KEYBOARD_NAV_UI_OVERLAY, startOverlayMode);
+            Commands.CMD_KEYBOARD_NAV_UI_OVERLAY, startOverlayMode, { supportsDesignMode: true });
         const viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
         viewMenu.addMenuItem(Commands.CMD_KEYBOARD_NAV_UI_OVERLAY, 'Ctrl-P',
             Menus.AFTER, Commands.VIEW_TOGGLE_INSPECTION);

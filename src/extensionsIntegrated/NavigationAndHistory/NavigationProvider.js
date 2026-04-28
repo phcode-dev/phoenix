@@ -538,8 +538,8 @@ define(function (require, exports, module) {
     * @private
     */
     function _initNavigationCommands() {
-        CommandManager.register(Strings.CMD_NAVIGATE_BACKWARD, NAVIGATION_JUMP_BACK, _navigateBack);
-        CommandManager.register(Strings.CMD_NAVIGATE_FORWARD, NAVIGATION_JUMP_FWD, _navigateForward);
+        CommandManager.register(Strings.CMD_NAVIGATE_BACKWARD, NAVIGATION_JUMP_BACK, _navigateBack, { supportsDesignMode: true });
+        CommandManager.register(Strings.CMD_NAVIGATE_FORWARD, NAVIGATION_JUMP_FWD, _navigateForward, { supportsDesignMode: true });
         if(Phoenix.isTestWindow){
             CommandManager.register("reset nav forward and back for tests", _NAVIGATION_RESET_FOR_TESTS, _clearStacks);
         }

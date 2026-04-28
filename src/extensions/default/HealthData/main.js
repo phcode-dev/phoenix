@@ -43,7 +43,7 @@ define(function (require, exports, module) {
 
     // Register the command and add the menu item for the Health Data Statistics
     function addCommand() {
-        CommandManager.register(Strings.CMD_HEALTH_DATA_STATISTICS, healthDataCmdId, handleHealthDataStatistics);
+        CommandManager.register(Strings.CMD_HEALTH_DATA_STATISTICS, healthDataCmdId, handleHealthDataStatistics, { supportsDesignMode: true });
 
         menu.addMenuItem(healthDataCmdId, "", Menus.AFTER, Commands.HELP_GET_INVOLVED);
         menu.addMenuDivider(Menus.AFTER, Commands.HELP_GET_INVOLVED);
