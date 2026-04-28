@@ -20,6 +20,7 @@ define(function (require, exports, module) {
         Dialogs = require("widgets/Dialogs"),
         Mustache = require("thirdparty/mustache/mustache"),
         SurveyTemplate = require("text!./html/survey-template.html"),
+        PhoenixTour = require("./phoenix-tour"),
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
@@ -279,5 +280,6 @@ define(function (require, exports, module) {
         tourStarted = true;
         _showBeautifyNotification();
         _showSurveys();
+        PhoenixTour.startTour();
     };
 });
