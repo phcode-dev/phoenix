@@ -1668,6 +1668,13 @@ define({
     // Guided tour
     "GUIDED_LIVE_PREVIEW": "Make some code changes in the HTML file to see live preview. </br> <a href='#' style='float:right;'>ok</a>",
     "GUIDED_LIVE_PREVIEW_POPOUT": "Click this button to popout live preview to a new tab. </br> <a href='#' style='float:right;'>ok</a>",
+    // Phoenix onboarding tour (one-shot, app-lifetime)
+    "PHOENIX_TOUR_DESIGN_MODE": "Click here to enter Design Mode. Go full-screen and edit your page visually.",
+    "PHOENIX_TOUR_AI_PANEL": "Click here to open the AI panel",
+    "PHOENIX_TOUR_NEW_PROJECT": "Open or create a new project from here",
+    "PHOENIX_TOUR_STEP_OF": "{0} of {1}",
+    "PHOENIX_TOUR_NEXT_BTN": "Next",
+    "PHOENIX_TOUR_DISMISS_BTN": "Dismiss",
     "TEST_TRANSLATE": "use this to test translations",
     //beautify extension
     "BEAUTIFY_ERROR": "Could not beautify code. Check Syntax.",

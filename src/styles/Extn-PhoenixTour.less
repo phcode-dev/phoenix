@@ -1,0 +1,169 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/* Phoenix one-shot onboarding tour overlay (concentric pulse rings + tooltip).
+   The wrapper is centered on the target via inline left/top updated each frame
+   in JS — translate(-50%, -50%) handles the centering. The wrapper itself does
+   not capture pointer events; only the tooltip's action buttons do. */
+
+.phoenix-tour-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100000;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 220ms ease-out;
+
+    &.phoenix-tour-visible {
+        opacity: 1;
+    }
+}
+
+.phoenix-tour-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border: 2px solid #4aa3ff;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(74, 163, 255, 0.45);
+    opacity: 0.9;
+    animation: phoenix-tour-pulse 1.6s ease-out infinite;
+}
+
+.phoenix-tour-ring-2 {
+    animation-delay: 0.8s;
+}
+
+@keyframes phoenix-tour-pulse {
+    0% {
+        transform: scale(0.55);
+        opacity: 0.95;
+    }
+    70% {
+        opacity: 0.35;
+    }
+    100% {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+
+/* Tooltip — sits below-right of the ring so it stays within the viewport
+   even when the target is near the top of the window (both tour targets,
+   the design-mode button and the AI sidebar tab, sit at the top). Solid
+   blue surface so the panel reads clearly against either light or dark
+   theme; theme-agnostic on purpose. The arrow points up-left at the ring. */
+@phoenix-tour-bg: #1e63d8;
+@phoenix-tour-bg-end: #2c7bff;
+
+.phoenix-tour-tooltip {
+    position: absolute;
+    left: 18px;
+    top: 24px;
+    background: linear-gradient(135deg, @phoenix-tour-bg 0%, @phoenix-tour-bg-end 100%);
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.35;
+    max-width: 280px;
+    min-width: 180px;
+    pointer-events: auto;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55),
+                0 0 0 4px rgba(30, 99, 216, 0.18);
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 14px;
+        top: -7px;
+        border: 7px solid transparent;
+        border-bottom-color: @phoenix-tour-bg;
+    }
+}
+
+.phoenix-tour-step {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 4px;
+}
+
+.phoenix-tour-text {
+    display: block;
+}
+
+.phoenix-tour-actions {
+    display: none;
+    margin-top: 10px;
+    justify-content: flex-end;
+    gap: 8px;
+
+    &.has-buttons {
+        display: flex;
+    }
+}
+
+.phoenix-tour-btn {
+    appearance: none;
+    border: 0;
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1.2;
+    transition: background-color 0.12s ease, color 0.12s ease;
+
+    &.phoenix-tour-btn-primary {
+        background: #ffffff;
+        color: #1e63d8;
+
+        &:hover {
+            background: #f1f6ff;
+        }
+    }
+
+    &.phoenix-tour-btn-secondary {
+        background: rgba(255, 255, 255, 0.18);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.28);
+        }
+    }
+}
+
+/* Brief press effect applied to the demoed button by the tour driver so
+   the auto-toggled design-mode click feels visually anchored. */
+.phoenix-tour-pressed {
+    transform: scale(0.92);
+    transition: transform 120ms ease-out;
+}
