@@ -123,6 +123,8 @@ define(function (require, exports, module) {
 
     function _setText(text) {
         if ($overlay) {
+            // `text` may include `\n` for multi-line steps; CSS uses
+            // `white-space: pre-line` to render those line breaks.
             $overlay.find(".phoenix-tour-text").text(text);
         }
     }

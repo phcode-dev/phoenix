@@ -1670,7 +1670,7 @@ define({
     "GUIDED_LIVE_PREVIEW_POPOUT": "Click this button to popout live preview to a new tab. </br> <a href='#' style='float:right;'>ok</a>",
     // Phoenix onboarding tour (one-shot, app-lifetime)
     "PHOENIX_TOUR_DESIGN_MODE": "Click here to enter Design Mode. Go full-screen and edit your page visually.",
-    "PHOENIX_TOUR_AI_PANEL": "Click here to open the AI panel",
+    "PHOENIX_TOUR_AI_PANEL": "Design layouts, fix bugs, and build faster with AI. Click here to open the AI panel",
     "PHOENIX_TOUR_NEW_PROJECT": "Open or create a new project from here",
     "PHOENIX_TOUR_STEP_OF": "{0} of {1}",
     "PHOENIX_TOUR_NEXT_BTN": "Next",
