@@ -271,7 +271,20 @@ define(function (require, exports, module) {
             }
             _applyCollapsedLayout();
         } else {
-            _restoreExpandedLayout(skipToolbarRestore);
+            // If live preview was NOT open before we entered design mode,
+            // exit into pure-code mode by closing it again. Snapshot the
+            // entry state before _restoreExpandedLayout resets it.
+            // skipToolbarRestore is already the LP-just-closed path, so
+            // don't double-close in that case. _restoreExpandedLayout runs
+            // first so our !important geometry overrides are cleared before
+            // WorkspaceManager resizes #main-toolbar to the no-panel state.
+            const shouldCloseLivePreview = !skipToolbarRestore &&
+                !livePreviewWasOpen &&
+                _isLivePreviewOpen();
+            _restoreExpandedLayout(shouldCloseLivePreview ? true : skipToolbarRestore);
+            if (shouldCloseLivePreview) {
+                CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW);
+            }
         }
     }
 
