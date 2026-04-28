@@ -2731,6 +2731,164 @@
     }
 }
 
+/* ── Intro video card (login / unavailable / configure-claude states) ─
+   Renders inside the centered .ai-unavailable column. Vertical rhythm
+   uses a flex `gap` so spacing between the title, description (when
+   present), and the thumb stays consistent — no per-element bottom
+   margins to keep in sync. The slot itself adds bottom space before
+   the existing .ai-unavailable-message that follows it.
+
+   Width is capped at 320px so the block stays a tidy card even in a
+   wide sidebar, and the thumb keeps a 16:9 aspect so the YouTube
+   preview lands cleanly inside without cropping the play button.
+
+   Empty until ai_panel_config.json resolves — `.has-video` is added
+   when the populate function injects content. */
+.ai-intro-video-slot {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto 1.25rem;
+    text-align: center;
+    gap: 14px;
+
+    &.has-video {
+        display: flex;
+    }
+}
+
+.ai-intro-video-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: @project-panel-text-1;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    margin: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.ai-intro-video-desc {
+    font-size: 14px;
+    color: @project-panel-text-2;
+    opacity: 0.8;
+    line-height: 1.5;
+    margin: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.ai-intro-video-thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.25);
+    aspect-ratio: 16 / 9;
+
+    /* Hover-on-thumb scale only the YouTube play icon — keep the thumb
+       border/shadow stable since Phoenix doesn't generally do glow-on-hover
+       on cards/thumbs. */
+    &:hover .ai-intro-video-play {
+        transform: translate(-50%, -50%) scale(1.08);
+        opacity: 1;
+    }
+
+    .ai-intro-video-img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .ai-intro-video-play {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 64px;
+        height: auto;
+        pointer-events: none;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+        opacity: 0.95;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+}
+
+/* When the intro video card is showing, soften the existing icon and
+   give the surrounding column a touch more breathing room so the whole
+   block reads as a single composed card. */
+.ai-unavailable:has(.ai-intro-video-slot.has-video) {
+    .ai-unavailable-icon,
+    .ai-install-icon {
+        margin-bottom: 1.25rem;
+        opacity: 0.5;
+    }
+
+    .ai-unavailable-message {
+        max-width: 320px;
+        font-size: 13.5px;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Re-apply Phoenix's standard `.btn .btn-primary` look inside the
+   .ai-unavailable intro states. The blanket reset below (`.ai-chat-panel
+   .btn-primary`) blanks bootstrap's button styling so chat-area buttons
+   can use their own custom styles; here we want the regular primary
+   button so the Sign In CTA reads as the standard Phoenix action. The
+   selector is more specific than the reset, and `!important` belt-and-
+   braces against any later reset rule that might still apply. */
+.ai-chat-panel .ai-unavailable .btn.btn-primary {
+    display: inline-block;
+    background-color: @bc-primary-btn-bg !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 1px solid darken(@bc-primary-btn-bg, 8%) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 6px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background-color: lighten(@bc-primary-btn-bg, 6%) !important;
+    }
+
+    &:active {
+        background-color: darken(@bc-primary-btn-bg, 8%) !important;
+    }
+
+    &:focus-visible {
+        outline: 2px solid fadeout(@bc-primary-btn-bg, 50%);
+        outline-offset: 2px;
+    }
+}
+
+.dark .ai-chat-panel .ai-unavailable .btn.btn-primary {
+    background-color: @dark-bc-primary-btn-bg !important;
+    border-color: darken(@dark-bc-primary-btn-bg, 8%) !important;
+
+    &:hover {
+        background-color: lighten(@dark-bc-primary-btn-bg, 8%) !important;
+    }
+
+    &:active {
+        background-color: darken(@dark-bc-primary-btn-bg, 8%) !important;
+    }
+}
+
 /* ── Unavailable / placeholder state ────────────────────────────────── */
 .ai-unavailable {
     display: flex;
