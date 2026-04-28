@@ -761,20 +761,20 @@ define(function (require, exports, module) {
         // Command to show recent files list
 
         if (!CommandManager.get(SHOW_RECENT_FILES)) {
-            CommandManager.register(Strings.CMD_RECENT_FILES_OPEN, SHOW_RECENT_FILES, _showRecentFileList);
+            CommandManager.register(Strings.CMD_RECENT_FILES_OPEN, SHOW_RECENT_FILES, _showRecentFileList, { supportsDesignMode: true });
             KeyBindingManager.addBinding(SHOW_RECENT_FILES,
                 Phoenix.isNativeApp ? "Ctrl-R" : "Ctrl-Alt-Shift-O");
         }
 
         // Keyboard only - Navigate to the next doc in MROF list
         if (!CommandManager.get(NEXT_IN_RECENT_FILES)) {
-            CommandManager.register(Strings.CMD_NEXT_DOC, NEXT_IN_RECENT_FILES, _cmdMoveNext);
+            CommandManager.register(Strings.CMD_NEXT_DOC, NEXT_IN_RECENT_FILES, _cmdMoveNext, { supportsDesignMode: true });
         }
         KeyBindingManager.addBinding(NEXT_IN_RECENT_FILES, KeyboardPrefs[NEXT_IN_RECENT_FILES]);
 
         // Keyboard only - Navigate to the prev doc in MROF list
         if (!CommandManager.get(PREV_IN_RECENT_FILES)) {
-            CommandManager.register(Strings.CMD_PREV_DOC, PREV_IN_RECENT_FILES, _cmdMovePrev);
+            CommandManager.register(Strings.CMD_PREV_DOC, PREV_IN_RECENT_FILES, _cmdMovePrev, { supportsDesignMode: true });
         }
         KeyBindingManager.addBinding(PREV_IN_RECENT_FILES, KeyboardPrefs[PREV_IN_RECENT_FILES]);
 

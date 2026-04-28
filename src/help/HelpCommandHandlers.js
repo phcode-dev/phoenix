@@ -174,20 +174,20 @@ define(function (require, exports, module) {
 
     const getProString = `${Strings.CMD_GET_PRO}<i class='fa fa-feather' style='margin-left: 4px;'></i>`;
 
-    CommandManager.register(Strings.CMD_HOW_TO_USE_BRACKETS,    Commands.HELP_HOW_TO_USE_BRACKETS,  _handleLinkMenuItem(brackets.config.how_to_use_url));
-    CommandManager.register(Strings.CMD_DOCS,                   Commands.HELP_DOCS,                 _handleLinkMenuItem(brackets.config.docs_url));
-    CommandManager.register(Strings.CMD_SUPPORT,                Commands.HELP_SUPPORT,              _handleLinkMenuItem(brackets.config.support_url));
+    CommandManager.register(Strings.CMD_HOW_TO_USE_BRACKETS,    Commands.HELP_HOW_TO_USE_BRACKETS,  _handleLinkMenuItem(brackets.config.how_to_use_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_DOCS,                   Commands.HELP_DOCS,                 _handleLinkMenuItem(brackets.config.docs_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_SUPPORT,                Commands.HELP_SUPPORT,              _handleLinkMenuItem(brackets.config.support_url), { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_GET_PRO,                Commands.HELP_GET_PRO,              _handleLinkMenuItem(brackets.config.purchase_url), {
         htmlName: getProString
-    });
-    CommandManager.register(Strings.CMD_VIEW_LICENSE,           Commands.HELP_VIEW_LICENSE,         _openLicenseLink);
-    CommandManager.register(Strings.CMD_SUGGEST,                Commands.HELP_SUGGEST,              _handleLinkMenuItem(brackets.config.suggest_feature_url));
-    CommandManager.register(Strings.CMD_REPORT_ISSUE,           Commands.HELP_REPORT_ISSUE,         _handleLinkMenuItem(brackets.config.report_issue_url));
-    CommandManager.register(Strings.CMD_RELEASE_NOTES,          Commands.HELP_RELEASE_NOTES,        _handleLinkMenuItem(brackets.config.release_notes_url));
-    CommandManager.register(Strings.CMD_GET_INVOLVED,           Commands.HELP_GET_INVOLVED,         _handleLinkMenuItem(brackets.config.get_involved_url));
-    CommandManager.register(Strings.CMD_SHOW_EXTENSIONS_FOLDER, Commands.HELP_SHOW_EXT_FOLDER,      _handleShowExtensionsFolder);
-    CommandManager.register(Strings.CMD_HOMEPAGE,               Commands.HELP_HOMEPAGE,             _handleLinkMenuItem(brackets.config.homepage_url));
-    CommandManager.register(Strings.CMD_TWITTER,                Commands.HELP_TWITTER,              _handleLinkMenuItem(brackets.config.twitter_url));
-    CommandManager.register(Strings.CMD_YOUTUBE,                Commands.HELP_YOUTUBE,              _handleLinkMenuItem(brackets.config.youtube_url));
-    CommandManager.register(Strings.CMD_ABOUT,                  Commands.HELP_ABOUT,                _handleAboutDialog);
+    }, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_VIEW_LICENSE,           Commands.HELP_VIEW_LICENSE,         _openLicenseLink, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_SUGGEST,                Commands.HELP_SUGGEST,              _handleLinkMenuItem(brackets.config.suggest_feature_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_REPORT_ISSUE,           Commands.HELP_REPORT_ISSUE,         _handleLinkMenuItem(brackets.config.report_issue_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_RELEASE_NOTES,          Commands.HELP_RELEASE_NOTES,        _handleLinkMenuItem(brackets.config.release_notes_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_GET_INVOLVED,           Commands.HELP_GET_INVOLVED,         _handleLinkMenuItem(brackets.config.get_involved_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_SHOW_EXTENSIONS_FOLDER, Commands.HELP_SHOW_EXT_FOLDER,      _handleShowExtensionsFolder, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_HOMEPAGE,               Commands.HELP_HOMEPAGE,             _handleLinkMenuItem(brackets.config.homepage_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_TWITTER,                Commands.HELP_TWITTER,              _handleLinkMenuItem(brackets.config.twitter_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_YOUTUBE,                Commands.HELP_YOUTUBE,              _handleLinkMenuItem(brackets.config.youtube_url), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_ABOUT,                  Commands.HELP_ABOUT,                _handleAboutDialog, { supportsDesignMode: true });
 });

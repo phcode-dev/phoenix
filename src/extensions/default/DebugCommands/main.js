@@ -776,30 +776,30 @@ define(function (require, exports, module) {
     let loadOrReloadString = extensionDevelopment.isProjectLoadedAsExtension() ?
         Strings.CMD_RELOAD_CURRENT_EXTENSION : Strings.CMD_LOAD_CURRENT_EXTENSION;
     CommandManager.register(loadOrReloadString,     DEBUG_LOAD_CURRENT_EXTENSION,
-        extensionDevelopment.loadCurrentExtension);
+        extensionDevelopment.loadCurrentExtension, { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_UNLOAD_CURRENT_EXTENSION,     DEBUG_UNLOAD_CURRENT_EXTENSION,
-        extensionDevelopment.unloadCurrentExtension);
-    CommandManager.register(Strings.CMD_REFRESH_WINDOW,             DEBUG_REFRESH_WINDOW,           handleReload);
-    CommandManager.register(Strings.CMD_RELOAD_WITHOUT_USER_EXTS,   DEBUG_RELOAD_WITHOUT_USER_EXTS, handleReloadWithoutUserExts);
+        extensionDevelopment.unloadCurrentExtension, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_REFRESH_WINDOW,             DEBUG_REFRESH_WINDOW,           handleReload, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_RELOAD_WITHOUT_USER_EXTS,   DEBUG_RELOAD_WITHOUT_USER_EXTS, handleReloadWithoutUserExts, { supportsDesignMode: true });
 
     // Start with the "Run Tests" item disabled. It will be enabled later if the test file can be found.
-    CommandManager.register(Strings.CMD_RUN_UNIT_TESTS,       DEBUG_RUN_UNIT_TESTS,         _runUnitTests);
+    CommandManager.register(Strings.CMD_RUN_UNIT_TESTS,       DEBUG_RUN_UNIT_TESTS,         _runUnitTests, { supportsDesignMode: true });
 
-    CommandManager.register(Strings.CMD_SHOW_PERF_DATA,            DEBUG_SHOW_PERF_DATA,            handleShowPerfData);
+    CommandManager.register(Strings.CMD_SHOW_PERF_DATA,            DEBUG_SHOW_PERF_DATA,            handleShowPerfData, { supportsDesignMode: true });
 
     let switchLanguageStr = Strings.CMD_SWITCH_LANGUAGE === "Switch Language\u2026" ?
         Strings.CMD_SWITCH_LANGUAGE :
         `${Strings.CMD_SWITCH_LANGUAGE} (Switch Language)`;
-    CommandManager.register(switchLanguageStr,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
+    CommandManager.register(switchLanguageStr,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage, { supportsDesignMode: true });
 
-    CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
-    CommandManager.register(Strings.CMD_ENABLE_PHNODE_INSPECTOR, DEBUG_ENABLE_PHNODE_INSPECTOR, _handlePhNodeInspectEnable);
-    CommandManager.register(Strings.CMD_GET_PHNODE_INSPECTOR_URL, DEBUG_GET_PHNODE_INSPECTOR_URL, _handleGetPhNodeInspectURL);
-    CommandManager.register(Strings.CMD_ENABLE_LIVE_PREVIEW_LOGS, DEBUG_LIVE_PREVIEW_LOGGING, _handleLivePreviewLogging);
-    CommandManager.register(Strings.CMD_ENABLE_GIT_LOGS, DEBUG_GIT_EXTENSION_LOGGING, _handleGitLogging);
-    CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
-    CommandManager.register(Strings.CMD_OPEN_EXTENSIONS_FOLDER, DEBUG_OPEN_EXTENSION_FOLDER,   _openExtensionsFolder);
-    CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer);
+    CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_ENABLE_PHNODE_INSPECTOR, DEBUG_ENABLE_PHNODE_INSPECTOR, _handlePhNodeInspectEnable, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_GET_PHNODE_INSPECTOR_URL, DEBUG_GET_PHNODE_INSPECTOR_URL, _handleGetPhNodeInspectURL, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_ENABLE_LIVE_PREVIEW_LOGS, DEBUG_LIVE_PREVIEW_LOGGING, _handleLivePreviewLogging, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_ENABLE_GIT_LOGS, DEBUG_GIT_EXTENSION_LOGGING, _handleGitLogging, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_OPEN_EXTENSIONS_FOLDER, DEBUG_OPEN_EXTENSION_FOLDER,   _openExtensionsFolder, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer, { supportsDesignMode: true });
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
     const debugMenu = Menus.getMenu(Menus.AppMenuBar.DEBUG_MENU);
@@ -815,7 +815,7 @@ define(function (require, exports, module) {
     debugMenu.addMenuDivider();
     // Show Developer Tools (optionally enabled)
     if(Phoenix.isNativeApp){
-        CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
+        CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools, { supportsDesignMode: true });
         debugMenu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
     }
     // this command is defined in core, but exposed only in Debug menu for now
@@ -826,7 +826,7 @@ define(function (require, exports, module) {
     }
     const diagnosticsSubmenu = debugMenu.addSubMenu(Strings.CMD_DIAGNOSTIC_TOOLS, DIAGNOSTICS_SUBMENU);
     diagnosticsSubmenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
-    CommandManager.register(Strings.CMD_BUILD_TESTS, DEBUG_BUILD_TESTS, TestBuilder.toggleTestBuilder);
+    CommandManager.register(Strings.CMD_BUILD_TESTS, DEBUG_BUILD_TESTS, TestBuilder.toggleTestBuilder, { supportsDesignMode: true });
     diagnosticsSubmenu.addMenuItem(DEBUG_BUILD_TESTS);
     if (AppConfig.config.environment === "dev") {
         diagnosticsSubmenu.addMenuItem("debug.phoenixBuilderConnect");

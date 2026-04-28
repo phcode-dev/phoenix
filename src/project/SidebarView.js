@@ -319,12 +319,12 @@ define(function (require, exports, module) {
     _cmdSplitNone       = CommandManager.register(Strings.CMD_SPLITVIEW_NONE,       Commands.CMD_SPLITVIEW_NONE,       _handleSplitViewNone);
     _cmdSplitVertical   = CommandManager.register(Strings.CMD_SPLITVIEW_VERTICAL,   Commands.CMD_SPLITVIEW_VERTICAL,   _handleSplitViewVertical);
     _cmdSplitHorizontal = CommandManager.register(Strings.CMD_SPLITVIEW_HORIZONTAL, Commands.CMD_SPLITVIEW_HORIZONTAL, _handleSplitViewHorizontal);
-    _cmdToggleWorkingSet = CommandManager.register(Strings.CMD_TOGGLE_SHOW_WORKING_SET, Commands.CMD_TOGGLE_SHOW_WORKING_SET, _handleToggleWorkingSet);
+    _cmdToggleWorkingSet = CommandManager.register(Strings.CMD_TOGGLE_SHOW_WORKING_SET, Commands.CMD_TOGGLE_SHOW_WORKING_SET, _handleToggleWorkingSet, { supportsDesignMode: true });
     _cmdToggleFileTabs = CommandManager.register(Strings.CMD_TOGGLE_SHOW_FILE_TABS, Commands.CMD_TOGGLE_SHOW_FILE_TABS, _handleToggleFileTabs);
 
-    CommandManager.register(Strings.CMD_TOGGLE_SIDEBAR, Commands.VIEW_HIDE_SIDEBAR, toggle);
-    CommandManager.register(Strings.CMD_SHOW_SIDEBAR, Commands.SHOW_SIDEBAR, show);
-    CommandManager.register(Strings.CMD_HIDE_SIDEBAR, Commands.HIDE_SIDEBAR, hide);
+    CommandManager.register(Strings.CMD_TOGGLE_SIDEBAR, Commands.VIEW_HIDE_SIDEBAR, toggle, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_SHOW_SIDEBAR, Commands.SHOW_SIDEBAR, show, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_HIDE_SIDEBAR, Commands.HIDE_SIDEBAR, hide, { supportsDesignMode: true });
 
     /**
      * Programmatically resize the sidebar to the given width. Persists

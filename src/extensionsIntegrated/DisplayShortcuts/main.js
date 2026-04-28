@@ -24,7 +24,7 @@
 /*global define, brackets, $, CodeMirror, _showShortcuts, window */
 
 define(function (require, exports, module) {
-    
+
     // Brackets modules
     const _                   = require("thirdparty/lodash"),
         CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
@@ -111,7 +111,7 @@ define(function (require, exports, module) {
     function _getOriginFromCommandId(cmdID, keyBinding) {
         // According to CommandManager.register() documentation:
         //  Core commands in Brackets use a simple command title as an id, for example "open.file".
-        //  Extensions should use the following format: "author.myextension.mycommandname". 
+        //  Extensions should use the following format: "author.myextension.mycommandname".
         //  For example, "lschmitt.csswizard.format.css".
         const customOrigin = KeyBindingManager._getCustomShortcutOrigin(keyBinding);
         if(customOrigin){
@@ -303,7 +303,7 @@ define(function (require, exports, module) {
             // New sort column
             sortColumn = newSortColumn;
         }
-        
+
         // Update page
         _showShortcuts();
     }
@@ -341,7 +341,7 @@ define(function (require, exports, module) {
     function _showShortcuts() {
         _updatePresets();
         let $shortcuts = $("#shortcuts-panel");
-        
+
         // Apply any active filter
         _filterShortcuts(true);
 
@@ -465,7 +465,7 @@ define(function (require, exports, module) {
         let s, file_menu;
 
         // Register commands
-        CommandManager.register(Strings.KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS, TOGGLE_SHORTCUTS_ID, _handleShowHideShortcuts);
+        CommandManager.register(Strings.KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS, TOGGLE_SHORTCUTS_ID, _handleShowHideShortcuts, { supportsDesignMode: true });
 
         // Add command to Help menu, if it exists
         file_menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);

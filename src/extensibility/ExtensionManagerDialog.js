@@ -429,7 +429,7 @@ define(function (require, exports, module) {
         return new $.Deferred().resolve(dialog).promise();
     }
 
-    CommandManager.register(Strings.CMD_EXTENSION_MANAGER, Commands.FILE_EXTENSION_MANAGER, _showDialog);
+    CommandManager.register(Strings.CMD_EXTENSION_MANAGER, Commands.FILE_EXTENSION_MANAGER, _showDialog, { supportsDesignMode: true });
 
     AppInit.appReady(function () {
         $("#toolbar-extension-manager").click(_showDialog);

@@ -140,7 +140,7 @@ define(function (require, exports, module) {
         });
     }
 
-    CommandManager.register(Strings.CMD_PHOENIX_BUILDER_CONNECT, COMMAND_ID, _handlePhoenixBuilderConnect);
+    CommandManager.register(Strings.CMD_PHOENIX_BUILDER_CONNECT, COMMAND_ID, _handlePhoenixBuilderConnect, { supportsDesignMode: true });
 
     // Boot script already connects if enabled — no appReady action needed.
 

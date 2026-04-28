@@ -86,7 +86,7 @@ define(function (require, exports, module) {
 
     ExtensionUtils.loadStyleSheet(module, "extension-store.css");
     // todo: replace with extension manager dialogue command
-    toggleCmd = CommandManager.register("Extensions Panel", "toggleExtensionsPanel", _toggleVisibility);
+    toggleCmd = CommandManager.register("Extensions Panel", "toggleExtensionsPanel", _toggleVisibility, { supportsDesignMode: true });
 
     function _createExtensionPanel() {
         $icon = $("#toolbar-extension-manager");

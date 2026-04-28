@@ -389,10 +389,10 @@ define(function (require, exports, module) {
     /**
      * Register Command Handlers
      */
-    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_ADDED, Commands.CMD_WORKINGSET_SORT_BY_ADDED, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_ADDED));
-    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_NAME, Commands.CMD_WORKINGSET_SORT_BY_NAME, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_NAME));
-    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_TYPE, Commands.CMD_WORKINGSET_SORT_BY_TYPE, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_TYPE));
-    CommandManager.register(Strings.CMD_WORKING_SORT_TOGGLE_AUTO, Commands.CMD_WORKING_SORT_TOGGLE_AUTO, _handleToggleAutoSort);
+    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_ADDED, Commands.CMD_WORKINGSET_SORT_BY_ADDED, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_ADDED), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_NAME, Commands.CMD_WORKINGSET_SORT_BY_NAME, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_NAME), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_TYPE, Commands.CMD_WORKINGSET_SORT_BY_TYPE, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_TYPE), { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_WORKING_SORT_TOGGLE_AUTO, Commands.CMD_WORKING_SORT_TOGGLE_AUTO, _handleToggleAutoSort, { supportsDesignMode: true });
 
 
     /**

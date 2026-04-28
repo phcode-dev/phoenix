@@ -323,7 +323,7 @@ define(function (require, exports, module) {
     const _toggleDesignModeCommand = CommandManager.register(Strings.CMD_TOGGLE_DESIGN_MODE,
         Commands.VIEW_TOGGLE_DESIGN_MODE, function () {
             _setEditorCollapsed(!editorCollapsed);
-        });
+        }, { supportsDesignMode: true });
 
     AppInit.htmlReady(function () {
         $bar = $("#centralControlBar");

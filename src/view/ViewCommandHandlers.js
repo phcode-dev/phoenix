@@ -593,12 +593,12 @@ define(function (require, exports, module) {
     // Register command handlers
     CommandManager.register(Strings.CMD_INCREASE_FONT_SIZE, Commands.VIEW_INCREASE_FONT_SIZE,  _handleIncreaseFontSize);
     CommandManager.register(Strings.CMD_DECREASE_FONT_SIZE, Commands.VIEW_DECREASE_FONT_SIZE,  _handleDecreaseFontSize);
-    CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleZoomIn, {eventSource: true});
-    CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleZoomOut, {eventSource: true});
+    CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleZoomIn, {eventSource: true, supportsDesignMode: true});
+    CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleZoomOut, {eventSource: true, supportsDesignMode: true});
     CommandManager.register(Strings.CMD_RESTORE_FONT_SIZE,  Commands.VIEW_RESTORE_FONT_SIZE,   _handleRestoreFontSize);
     CommandManager.register(Strings.CMD_SCROLL_LINE_UP,     Commands.VIEW_SCROLL_LINE_UP,      _handleScrollLineUp);
     CommandManager.register(Strings.CMD_SCROLL_LINE_DOWN,   Commands.VIEW_SCROLL_LINE_DOWN,    _handleScrollLineDown);
-    CommandManager.register(Strings.CMD_THEMES,             Commands.CMD_THEMES_OPEN_SETTINGS, _handleThemeSettings);
+    CommandManager.register(Strings.CMD_THEMES,             Commands.CMD_THEMES_OPEN_SETTINGS, _handleThemeSettings, { supportsDesignMode: true });
 
     prefs.definePreference("fontSize",   "string", DEFAULT_FONT_SIZE + "px", {
         description: Strings.DESCRIPTION_FONT_SIZE

@@ -92,7 +92,7 @@ define(function (require, exports, module) {
     }
 
     function _addMenuEntries() {
-        CommandManager.register(Strings.CMD_PROJECT_NEW, Commands.FILE_NEW_PROJECT, _showNewProjectDialogue);
+        CommandManager.register(Strings.CMD_PROJECT_NEW, Commands.FILE_NEW_PROJECT, _showNewProjectDialogue, { supportsDesignMode: true });
         const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "", Menus.AFTER, Commands.FILE_NEW_FOLDER);
     }

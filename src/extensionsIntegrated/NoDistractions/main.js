@@ -154,9 +154,9 @@ define(function (require, exports, module) {
      * Register the Commands , add the Menu Items and key bindings
      */
     AppInit.appReady(function () {
-        CommandManager.register(Strings.CMD_TOGGLE_PURE_CODE, CMD_TOGGLE_PURE_CODE, _togglePureCode);
-        CommandManager.register(Strings.CMD_TOGGLE_FULLSCREEN, CMD_TOGGLE_FULLSCREEN, _toggleFullScreen);
-        CommandManager.register(Strings.CMD_TOGGLE_PANELS, CMD_TOGGLE_PANELS, _togglePanels);
+        CommandManager.register(Strings.CMD_TOGGLE_PURE_CODE, CMD_TOGGLE_PURE_CODE, _togglePureCode, { supportsDesignMode: true });
+        CommandManager.register(Strings.CMD_TOGGLE_FULLSCREEN, CMD_TOGGLE_FULLSCREEN, _toggleFullScreen, { supportsDesignMode: true });
+        CommandManager.register(Strings.CMD_TOGGLE_PANELS, CMD_TOGGLE_PANELS, _togglePanels, { supportsDesignMode: true });
 
         Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(CMD_TOGGLE_PANELS, "", Menus.AFTER, Commands.VIEW_HIDE_SIDEBAR);
         Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(CMD_TOGGLE_PURE_CODE, togglePureCodeKey, Menus.AFTER, CMD_TOGGLE_PANELS);

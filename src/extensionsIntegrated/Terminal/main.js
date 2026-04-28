@@ -773,8 +773,8 @@ define(function (require, exports, module) {
     }
 
     // Register commands
-    CommandManager.register("New Terminal", CMD_NEW_TERMINAL, _createNewTerminal);
-    CommandManager.register(Strings.CMD_VIEW_TERMINAL, CMD_VIEW_TERMINAL, _showTerminal);
+    CommandManager.register("New Terminal", CMD_NEW_TERMINAL, _createNewTerminal, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_VIEW_TERMINAL, CMD_VIEW_TERMINAL, _showTerminal, { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_OPEN_IN_INTEGRATED_TERMINAL,
         Commands.NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL, function () {
             const entry = ProjectManager.getSelectedItem();
@@ -786,7 +786,7 @@ define(function (require, exports, module) {
                 cwdPath = projectRoot ? projectRoot.fullPath : undefined;
             }
             _createNewTerminal(cwdPath);
-        });
+        }, { supportsDesignMode: true });
 
     // Terminal context menu commands
     CommandManager.register(Strings.CMD_COPY, CMD_TERMINAL_COPY, function () {
