@@ -1573,10 +1573,46 @@ function RemoteFunctions(config = {}) {
         });
     }
 
+    // Modifier shortcuts forwarded to the Phoenix KeyBindingManager. Clipboard
+    // and undo/redo are excluded so form inputs in the previewed page keep
+    // working normally.
+    const _KEYS_NOT_FORWARDED = { c:1, v:1, x:1, a:1, z:1, y:1, C:1, V:1, X:1, A:1, Z:1, Y:1 };
+
+    function _isFunctionKey(event) {
+        return event.key.length >= 2 && event.key[0] === 'F' && !isNaN(event.key.slice(1));
+    }
+
+    function _forwardKeyEventToPhoenix(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        MessageBroker.send({
+            keyForward: true,
+            key: event.key,
+            code: event.code,
+            ctrlKey: event.ctrlKey,
+            metaKey: event.metaKey,
+            shiftKey: event.shiftKey,
+            altKey: event.altKey
+        });
+    }
+
     document.addEventListener('keydown', function(event) {
         if (config.mode === 'edit' && (event.key === 'Escape' || event.key === 'Esc')) {
             event.preventDefault();
             _handleEscapeKeyPress();
+            return;
+        }
+        // Polite: if the previewed page handled the key, don't double-fire.
+        if (event.defaultPrevented) {
+            return;
+        }
+        if (_isFunctionKey(event)) {
+            _forwardKeyEventToPhoenix(event);
+            return;
+        }
+        const isMod = event.metaKey || event.ctrlKey;
+        if (isMod && event.key && event.key.length === 1 && !_KEYS_NOT_FORWARDED[event.key]) {
+            _forwardKeyEventToPhoenix(event);
         }
     });
 

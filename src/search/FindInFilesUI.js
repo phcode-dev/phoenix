@@ -577,11 +577,11 @@ define(function (require, exports, module) {
     });
 
     // Initialize: command handlers
-    CommandManager.register(Strings.CMD_FIND_IN_FILES,       Commands.CMD_FIND_IN_FILES,       _showFindBar);
-    CommandManager.register(Strings.CMD_FIND_IN_SUBTREE,     Commands.CMD_FIND_IN_SUBTREE,     _showFindBarForSubtree);
+    CommandManager.register(Strings.CMD_FIND_IN_FILES,       Commands.CMD_FIND_IN_FILES,       _showFindBar, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FIND_IN_SUBTREE,     Commands.CMD_FIND_IN_SUBTREE,     _showFindBarForSubtree, { supportsDesignMode: true });
 
-    CommandManager.register(Strings.CMD_REPLACE_IN_FILES,    Commands.CMD_REPLACE_IN_FILES,    _showReplaceBar);
-    CommandManager.register(Strings.CMD_REPLACE_IN_SUBTREE,  Commands.CMD_REPLACE_IN_SUBTREE,  _showReplaceBarForSubtree);
+    CommandManager.register(Strings.CMD_REPLACE_IN_FILES,    Commands.CMD_REPLACE_IN_FILES,    _showReplaceBar, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_REPLACE_IN_SUBTREE,  Commands.CMD_REPLACE_IN_SUBTREE,  _showReplaceBarForSubtree, { supportsDesignMode: true });
 
     FindUtils.on(FindUtils.SEARCH_INDEXING_STARTED, _searchIndexingStarted);
     FindUtils.on(FindUtils.SEARCH_INDEXING_PROGRESS, _searchIndexingProgressing);

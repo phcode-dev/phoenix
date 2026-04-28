@@ -451,6 +451,10 @@
                 }
             };
             window.Phoenix.isNativeApp = window.__IS_NATIVE_SHELL__;
+            // Default stub — WorkspaceManager replaces this with its real accessor on load.
+            // Defining it here means leaf modules (e.g. KeyBindingManager) can call
+            // Phoenix.isInDesignMode() unconditionally without a presence check.
+            window.Phoenix.isInDesignMode = function () { return false; };
             window.Phoenix.TRUSTED_ORIGINS[location.origin] = true;
             Phoenix.isSupportedBrowser = Phoenix.isNativeApp ||
                 (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));

@@ -735,6 +735,11 @@ define(function (require, exports, module) {
         return _isInDesignMode;
     }
 
+    // Expose on the Phoenix global so leaf modules (e.g. KeyBindingManager) can
+    // check design-mode state without importing WorkspaceManager and creating a
+    // circular dependency.
+    Phoenix.isInDesignMode = isInDesignMode;
+
     /**
      * Sets the design-mode flag and fires EVENT_WORKSPACE_DESIGN_MODE_CHANGE when
      * the value actually changes. Intended to be called by the control bar; other
