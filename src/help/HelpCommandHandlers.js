@@ -178,8 +178,9 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_DOCS,                   Commands.HELP_DOCS,                 _handleLinkMenuItem(brackets.config.docs_url), { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_SUPPORT,                Commands.HELP_SUPPORT,              _handleLinkMenuItem(brackets.config.support_url), { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_GET_PRO,                Commands.HELP_GET_PRO,              _handleLinkMenuItem(brackets.config.purchase_url), {
-        htmlName: getProString
-    }, { supportsDesignMode: true });
+        htmlName: getProString,
+        supportsDesignMode: true
+    });
     CommandManager.register(Strings.CMD_VIEW_LICENSE,           Commands.HELP_VIEW_LICENSE,         _openLicenseLink, { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_SUGGEST,                Commands.HELP_SUGGEST,              _handleLinkMenuItem(brackets.config.suggest_feature_url), { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_REPORT_ISSUE,           Commands.HELP_REPORT_ISSUE,         _handleLinkMenuItem(brackets.config.report_issue_url), { supportsDesignMode: true });
