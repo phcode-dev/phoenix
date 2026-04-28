@@ -189,6 +189,26 @@ define(function (require, exports, module) {
      * set focus to editor
      * @private
      */
+    /**
+     * Re-dispatches a keyboard shortcut originating from the live preview iframe
+     * onto document.body so KeyBindingManager picks it up. Needed because key
+     * events fired inside an iframe don't bubble to the parent's document.
+     * @private
+     */
+    function _forwardKeyboardShortcutFromIframe(data) {
+        const event = new KeyboardEvent("keydown", {
+            key: data.key,
+            code: data.code,
+            ctrlKey: !!data.ctrlKey,
+            metaKey: !!data.metaKey,
+            shiftKey: !!data.shiftKey,
+            altKey: !!data.altKey,
+            bubbles: true,
+            cancelable: true
+        });
+        document.body.dispatchEvent(event);
+    }
+
     function _focusEditorIfNeeded(editor, tagName, contentEditable) {
         if (WorkspaceManager.isInDesignMode()) {
             return;
@@ -347,6 +367,8 @@ define(function (require, exports, module) {
                     pendingHandler.deferred.resolve(msg);
                 }
             }
+        } else if (msg.keyForward) {
+            _forwardKeyboardShortcutFromIframe(msg);
         } else if (msg.clicked && msg.tagId) {
             // While previewing an html file, and if css related file is active in the editor, then clicking on the
             // live preview, here we set the cursor position in the css file. but this will also trigger a css

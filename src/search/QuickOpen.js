@@ -1048,7 +1048,7 @@ define(function (require, exports, module) {
             });
     });
 
-    CommandManager.register(Strings.CMD_QUICK_OPEN, Commands.NAVIGATE_QUICK_OPEN, doFileSearch);
+    CommandManager.register(Strings.CMD_QUICK_OPEN, Commands.NAVIGATE_QUICK_OPEN, doFileSearch, { supportsDesignMode: true });
     CommandManager.register(Strings.CMD_GOTO_DEFINITION, Commands.NAVIGATE_GOTO_DEFINITION, doDefinitionSearch);
     CommandManager.register(Strings.CMD_GOTO_DEFINITION_PROJECT, Commands.NAVIGATE_GOTO_DEFINITION_PROJECT, doDefinitionSearchInProject);
     CommandManager.register(Strings.CMD_GOTO_LINE, Commands.NAVIGATE_GOTO_LINE, doGotoLine);

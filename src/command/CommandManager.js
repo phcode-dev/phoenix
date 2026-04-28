@@ -158,6 +158,18 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Returns true if the command opted in to running while the workspace is in
+     * design mode (editor collapsed). KeyBindingManager uses this to decide
+     * whether a keyboard shortcut should fire; commands that don't opt in are
+     * swallowed in design mode.
+     *
+     * @return {boolean}
+     */
+    Command.prototype.isSupportedInDesignMode = function () {
+        return !!(this._options && this._options.supportsDesignMode);
+    };
+
+    /**
      * Sets enabled state of Command and dispatches "enabledStateChange"
      * when the enabled state changes.
      *
@@ -250,6 +262,10 @@ define(function (require, exports, module) {
      * event.sourceType(Eg. Ctrl-K) parameter.
      * @param {string} options.htmlName If set, this will be displayed in ui menus instead of the name given.
      *      Example: `"Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"`
+     * @param {boolean} options.supportsDesignMode If true, this command's keyboard shortcut will still fire when
+     *      the workspace is in design mode. Commands that don't opt in are swallowed in design mode because the
+     *      editor area is collapsed and most shortcuts are nonsensical there. Reserve this flag for commands that
+     *      remain useful with no editor visible (file open/save/close, Quick Open, Find in Files, etc.).
      *
      * @return {?Command}
      */

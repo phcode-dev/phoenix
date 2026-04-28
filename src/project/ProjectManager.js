@@ -2229,17 +2229,17 @@ define(function (require, exports, module) {
     EventDispatcher.on_duringInit(MainViewManager, "currentFileChange", _currentFileChange);
 
     // Commands
-    CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openProject);
-    CommandManager.register(Strings.CMD_PROJECT_SETTINGS, Commands.FILE_PROJECT_SETTINGS, _projectSettings);
-    CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree);
-    CommandManager.register(Strings.CMD_FILE_CUT, Commands.FILE_CUT, _cutFileCMD);
-    CommandManager.register(Strings.CMD_FILE_COPY, Commands.FILE_COPY, _copyFileCMD);
-    CommandManager.register(Strings.CMD_FILE_COPY_PATH, Commands.FILE_COPY_PATH, _copyProjectRelativePath);
-    CommandManager.register(Strings.CMD_FILE_PASTE, Commands.FILE_PASTE, _pasteFileCMD);
-    CommandManager.register(Strings.CMD_FILE_DUPLICATE, Commands.FILE_DUPLICATE, _duplicateFileCMD);
-    CommandManager.register(Strings.CMD_FILE_DUPLICATE_FILE, Commands.FILE_DUPLICATE_FILE, _duplicateFileCMD);
-    CommandManager.register(Strings.CMD_FILE_DOWNLOAD_PROJECT, Commands.FILE_DOWNLOAD_PROJECT, _downloadFolderCommand);
-    CommandManager.register(Strings.CMD_FILE_DOWNLOAD, Commands.FILE_DOWNLOAD, _downloadCommand);
+    CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openProject, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_PROJECT_SETTINGS, Commands.FILE_PROJECT_SETTINGS, _projectSettings, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_CUT, Commands.FILE_CUT, _cutFileCMD, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_COPY, Commands.FILE_COPY, _copyFileCMD, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_COPY_PATH, Commands.FILE_COPY_PATH, _copyProjectRelativePath, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_PASTE, Commands.FILE_PASTE, _pasteFileCMD, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_DUPLICATE, Commands.FILE_DUPLICATE, _duplicateFileCMD, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_DUPLICATE_FILE, Commands.FILE_DUPLICATE_FILE, _duplicateFileCMD, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_DOWNLOAD_PROJECT, Commands.FILE_DOWNLOAD_PROJECT, _downloadFolderCommand, { supportsDesignMode: true });
+    CommandManager.register(Strings.CMD_FILE_DOWNLOAD, Commands.FILE_DOWNLOAD, _downloadCommand, { supportsDesignMode: true });
 
     // Define the preference to decide how to sort the Project Tree files
     PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, "boolean", true, {
@@ -2250,7 +2250,7 @@ define(function (require, exports, module) {
             actionCreator.setSortDirectoriesFirst(sortPref);
             CommandManager.get(Commands.FILE_SHOW_FOLDERS_FIRST).setChecked(sortPref);
         });
-    CommandManager.register(Strings.CMD_FILE_SHOW_FOLDERS_FIRST, Commands.FILE_SHOW_FOLDERS_FIRST, _showFolderFirst);
+    CommandManager.register(Strings.CMD_FILE_SHOW_FOLDERS_FIRST, Commands.FILE_SHOW_FOLDERS_FIRST, _showFolderFirst, { supportsDesignMode: true });
     CommandManager.get(Commands.FILE_SHOW_FOLDERS_FIRST).setChecked(PreferencesManager.get(SORT_DIRECTORIES_FIRST));
 
     actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));

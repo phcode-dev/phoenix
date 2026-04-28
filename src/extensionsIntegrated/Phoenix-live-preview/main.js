@@ -1476,12 +1476,12 @@ define(function (require, exports, module) {
         }, fileChangeListenerStartDelay);
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
             _toggleVisibilityOnClick();
-        });
+        }, { supportsDesignMode: true });
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW_SETTINGS,
-            Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, _showSettingsDialog);
+            Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, _showSettingsDialog, { supportsDesignMode: true });
         CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, function () {
             _loadPreview(true, true);
-        });
+        }, { supportsDesignMode: true });
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.AFTER, Commands.FILE_EXTENSION_MANAGER);
         fileMenu.addMenuItem(Commands.CMD_RELOAD_LIVE_PREVIEW, "",

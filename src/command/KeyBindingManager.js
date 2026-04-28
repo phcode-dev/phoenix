@@ -947,6 +947,19 @@ define(function (require, exports, module) {
      */
     function _handleKey(key) {
         if (_enabled && _keyMap[key]) {
+            let command = CommandManager.get(_keyMap[key].commandID);
+            // In design mode, when focus is inside the live preview iframe (the
+            // user is interacting with their previewed page), swallow shortcuts
+            // that didn't opt in via Command.isSupportedInDesignMode(). When
+            // focus is elsewhere in the Phoenix UI (e.g. AI chat textarea), let
+            // shortcuts behave normally — design mode shouldn't break Phoenix's
+            // own UI interactions.
+            const focusInIframe = document.activeElement &&
+                    document.activeElement.tagName === 'IFRAME';
+            if (Phoenix.isInDesignMode() && focusInIframe &&
+                    command && !command.isSupportedInDesignMode()) {
+                return true;
+            }
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "shortcut", key);
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "command", _keyMap[key].commandID);
             logger.leaveTrail("Keyboard shortcut: " + key + " command: " + _keyMap[key].commandID);
@@ -954,7 +967,6 @@ define(function (require, exports, module) {
             // we always mark the event as processed and return true.
             // We don't want multiple behavior tied to the same key event. For Instance, in browser, if `ctrl-k`
             // is not handled by quick edit, it will open browser url bar if we return false here(which is bad ux).
-            let command = CommandManager.get(_keyMap[key].commandID);
             let eventDetails = undefined;
             if(command._options.eventSource){
                 eventDetails = {
