@@ -1482,6 +1482,7 @@ define({
   "PROJECT_SHOW_ON_STARTUP": "نمایش این پنجره هنگام شروع",
   "GUIDED_LIVE_PREVIEW": "برای دیدن پیش‌نمایش زنده، تغییراتی در فایل HTML ایجاد کنید. </br> <a href='#' style='float:right;'>تأیید</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "برای نمایش پیش‌نمایش زنده در یک برگه جدید، روی این دکمه کلیک کنید. </br> <a href='#' style='float:right;'>تأیید</a>",
+  "PHOENIX_TOUR_STEP_OF": "{0} از {1}",
   "TEST_TRANSLATE": "از این برای تست ترجمه‌ها استفاده کنید",
   "BEAUTIFY_ERROR": "امکان زیباسازی کد وجود ندارد. سینتکس را بررسی کنید.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "امکان زیباسازی وجود ندارد. متن ویرایشگر پس از زیباسازی تغییر کرده است.",
@@ -2080,6 +2081,9 @@ define({
   "AI_CHAT_IMAGE_REMOVE": "حذف تصویر",
   "AI_CHAT_ATTACH_FILE": "پیوست کردن فایل‌ها",
   "AI_CHAT_ATTACH_TITLE": "پیوست کردن فایل یا پوشه",
+  "AI_CHAT_ATTACH_FILE_OPTION": "پیوست کردن فایل",
+  "AI_CHAT_ATTACH_FOLDER": "افزودن پوشه به زمینه",
+  "AI_CHAT_ATTACH_FOLDER_PICK_TITLE": "انتخاب پوشه برای افزودن به زمینه",
   "AI_CHAT_SCREENSHOT_TITLE": "گرفتن اسکرین‌شات",
   "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "پیش نمایش زنده",
   "AI_CHAT_SCREENSHOT_AREA": "انتخاب ناحیه",
@@ -2221,7 +2225,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_ATTACH_FILE_OPTION": "پیوست کردن فایل",
-  "AI_CHAT_ATTACH_FOLDER": "افزودن پوشه به زمینه",
-  "AI_CHAT_ATTACH_FOLDER_PICK_TITLE": "انتخاب پوشه برای افزودن به زمینه"
+  "PHOENIX_TOUR_DESIGN_MODE": "برای ورود به حالت طراحی اینجا کلیک کنید. تمام‌صفحه شوید و صفحه خود را به صورت بصری ویرایش کنید.",
+  "PHOENIX_TOUR_AI_PANEL": "برای باز کردن پنل هوش مصنوعی اینجا کلیک کنید.",
+  "PHOENIX_TOUR_NEW_PROJECT": "از اینجا پروژه جدیدی را باز یا ایجاد کنید.",
+  "PHOENIX_TOUR_NEXT_BTN": "بعدی",
+  "PHOENIX_TOUR_DISMISS_BTN": "رد کردن"
 });
