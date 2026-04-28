@@ -53,7 +53,8 @@ define(function (require, exports, module) {
         HTMLInstrumentation   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
         StringUtils = require("utils/StringUtils"),
         FileViewController    = require("project/FileViewController"),
-        MainViewManager     = require("view/MainViewManager");
+        MainViewManager     = require("view/MainViewManager"),
+        WorkspaceManager    = require("view/WorkspaceManager");
 
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = `phoenix_live_preview_scripts_instrumented_${StringUtils.randomString(8)}.js`;
     const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = `pageLoaderWorker_${StringUtils.randomString(8)}.js`;
@@ -189,6 +190,9 @@ define(function (require, exports, module) {
      * @private
      */
     function _focusEditorIfNeeded(editor, tagName, contentEditable) {
+        if (WorkspaceManager.isInDesignMode()) {
+            return;
+        }
         const focusShouldBeInLivePreview = ['INPUT', 'TEXTAREA'].includes(tagName) || contentEditable;
         if(focusShouldBeInLivePreview){
             return;
@@ -247,7 +251,9 @@ define(function (require, exports, module) {
             activeEditorPath = activeEditor ? activeEditor.document.file.fullPath : null,
             activeFullEditorPath = activeFullEditor ? activeFullEditor.document.file.fullPath : null;
         if(!liveDocPath){
-            activeEditor && activeEditor.focus(); // restore focus from live preview
+            if (activeEditor && !WorkspaceManager.isInDesignMode()) {
+                activeEditor.focus(); // restore focus from live preview
+            }
             return;
         }
         const allOpenFileCount = MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES);
