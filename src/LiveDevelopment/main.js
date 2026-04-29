@@ -43,6 +43,7 @@ define(function main(require, exports, module) {
         Strings             = require("strings"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
         StringUtils         = require("utils/StringUtils"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
         EventDispatcher      = require("utils/EventDispatcher");
 
     const LIVE_PREVIEW_MODE = CONSTANTS.LIVE_PREVIEW_MODE,
@@ -260,12 +261,21 @@ define(function main(require, exports, module) {
         return getCurrentMode() === LIVE_PREVIEW_MODE;
     }
 
+    function _designModeChanged() {
+        const config = MultiBrowserLiveDev.getConfig();
+        config.designMode = WorkspaceManager.isInDesignMode();
+        MultiBrowserLiveDev.updateConfig(config);
+    }
+
     /** Initialize LiveDevelopment */
     AppInit.appReady(function () {
         params.parse();
         const config = Object.assign({}, defaultConfig, MultiBrowserLiveDev.getConfig());
         config.mode = getCurrentMode();
+        config.designMode = WorkspaceManager.isInDesignMode();
         MultiBrowserLiveDev.init(config);
+
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_DESIGN_MODE_CHANGE, _designModeChanged);
 
         _loadStyles();
 

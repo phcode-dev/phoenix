@@ -1578,6 +1578,18 @@ function RemoteFunctions(config = {}) {
     // working normally.
     const _KEYS_NOT_FORWARDED = { c:1, v:1, x:1, a:1, z:1, y:1, C:1, V:1, X:1, A:1, Z:1, Y:1 };
 
+    // Forwarding only makes sense when the page runs as an embedded LP iframe
+    // inside Phoenix; if the user popped the preview out into a real browser
+    // tab, the synthetic events would go to a window with no Phoenix UI.
+    // Default false, flip to true via __PHOENIX_EMBED_INFO (per its contract:
+    // guaranteed to fire in embedded iframes, not guaranteed otherwise).
+    let _isPhoenixEmbeddedIframe = false;
+    if (window.__PHOENIX_EMBED_INFO && window.__PHOENIX_EMBED_INFO.onPhoenixEmbeddedInfoAvailable) {
+        window.__PHOENIX_EMBED_INFO.onPhoenixEmbeddedInfoAvailable(function (isEmbedded) {
+            _isPhoenixEmbeddedIframe = !!isEmbedded;
+        });
+    }
+
     function _isFunctionKey(event) {
         return event.key.length >= 2 && event.key[0] === 'F' && !isNaN(event.key.slice(1));
     }
@@ -1600,9 +1612,19 @@ function RemoteFunctions(config = {}) {
         if (config.mode === 'edit' && (event.key === 'Escape' || event.key === 'Esc')) {
             event.preventDefault();
             _handleEscapeKeyPress();
+        }
+    });
+
+    // Forwarder for design mode: runs as late as we can manage in the standard
+    // event flow — bubble phase on `window` (latest target after document),
+    // and the listener itself is registered on `load` so it goes last among
+    // same-target listeners. This gives the previewed page's own handlers the
+    // best chance to call preventDefault (which we then honor) before we
+    // forward to Phoenix.
+    function _designModeKeyForwarder(event) {
+        if (!_isPhoenixEmbeddedIframe || !config.designMode) {
             return;
         }
-        // Polite: if the previewed page handled the key, don't double-fire.
         if (event.defaultPrevented) {
             return;
         }
@@ -1614,11 +1636,12 @@ function RemoteFunctions(config = {}) {
         if (isMod && event.key && event.key.length === 1 && !_KEYS_NOT_FORWARDED[event.key]) {
             _forwardKeyEventToPhoenix(event);
         }
-    });
+    }
 
     // we need to refresh the config once the load is completed
     // this is important because messageBroker gets ready for use only when load fires
     window.addEventListener('load', function() {
+        window.addEventListener('keydown', _designModeKeyForwarder);
         MessageBroker.send({
             requestConfigRefresh: true
         });
