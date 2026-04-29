@@ -31,150 +31,238 @@
 
 /* Dialog styles with light default + .dark overrides */
 .browser-login-waiting-dialog, .pro-upgrade-dialog{
-  /* ---- Layout ---- */
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  /* ---- Cards ---- */
-  .feature-card {
-    background: @bc-panel-bg-alt;           // light surface
-    border: 1px solid @bc-panel-border;     // subtle light border
-    border-radius: @bc-border-radius-large; // 5px
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: background 0.15s ease, border-color 0.15s ease;
-
-    .dark & {
-      background: @dark-bc-panel-bg-alt;    // #313131
-      border: 1px solid @dark-bc-highlight; // rgba(255,255,255,0.06)
-      border-radius: @dark-bc-border-radius-large;
-    }
-  }
-
-  .feature-card:hover {
-    background: @bc-panel-bg;               // hover lift
-    border-color: @bc-shadow-small;         // rgba(0,0,0,0.06)
-
-    .dark & {
-      background: @dark-bc-panel-bg;        // #2c2c2c
-      border-color: @dark-bc-panel-bg-hover;// rgba(255,255,255,0.12)
-    }
-  }
-
-  .feature-card:focus-within {
-    outline: 2px solid @bc-btn-border-focused;       // #2893ef (light)
-    outline-offset: 2px;
-
-    .dark & {
-      outline: 2px solid @dark-bc-btn-border-focused;// #2893ef (dark var)
-    }
-  }
-
-  /* ---- Media wrapper for image + video hover ---- */
-  .feature-media-wrap {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    overflow: hidden;
-    background: @bc-bg-inline-widget;       // #e6e9e9
-
-    .dark & {
-      background: @dark-bc-bg-inline-widget;// #1b1b1b
-    }
-  }
-
-  /* ---- Media thumb ---- */
-  .feature-thumb {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
-    background: @bc-bg-inline-widget;       // #e6e9e9
-    transition: opacity 0.3s ease;
-
-    .dark & {
-      background: @dark-bc-bg-inline-widget;// #1b1b1b
-    }
-  }
-
-  /* ---- Feature video (hidden by default, layered on top of image) ---- */
-  .feature-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  /* ---- Hover state: show video on top of image (image stays as fallback for offline) ---- */
-  .feature-card:hover .feature-video {
-    opacity: 1;
-  }
-
-  /* ---- Card body ---- */
-  .feature-body {
-    padding: 12px;
-  }
-
-  .feature-body h2 {
-    margin: 0 0 6px;
-    font-size: 15px;
-    color: @bc-text-emphasized;             // #111
-
-    .dark & {
-      color: @dark-bc-text-alt;             // #fff
-    }
-  }
-
-  .feature-body p {
-    margin: 0;
-    font-size: 13px;
-    color: @bc-text-medium;                 // #606060
-    line-height: 1.35;
-
-    .dark & {
-      color: @dark-bc-text-quiet;           // #9a9a9a
-    }
-  }
-
-  /* ---- Header title ---- */
   .modal-header .dialog-title {
-    color: @bc-text-emphasized;             // #111 on light
-
-    .dark & {
-      color: @dark-bc-text-alt;             // #fff on dark
-    }
+    color: @bc-text-emphasized;
+    .dark & { color: @dark-bc-text-alt; }
   }
 
-  /* ---- Body copy ---- */
   .waiting-content-container > p {
     margin-bottom: 20px;
     font-size: 14px;
-    color: @bc-text-medium;                 // #606060
-
-    .dark & {
-      color: @dark-bc-text-medium;          // #ccc
-    }
+    color: @bc-text-medium;
+    .dark & { color: @dark-bc-text-medium; }
   }
 
-  /* ---- Links ---- */
   a {
-    color: @bc-text-link;                   // #0083e8
+    color: @bc-text-link;
     text-decoration: none;
+    .dark & { color: @dark-bc-text-link; }
+  }
+  a:hover { text-decoration: underline; }
+}
 
-    .dark & {
-      color: @dark-bc-text-link;            // #6bbeff
+.pro-upgrade-dialog.modal {
+  width: 880px;
+
+  .modal-header {
+    padding-bottom: 12px;
+  }
+
+  .dialog-subtitle {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: @bc-text-medium;
+    .dark & { color: @dark-bc-text-medium; }
+  }
+
+  .modal-body {
+    padding: 0;
+    max-height: none;
+  }
+
+  .feature-carousel {
+    position: relative;
+    width: 100%;
+    user-select: none;
+  }
+
+  /* ---- Media stage: video area with arrows + dots (16:9 at 880 wide) ---- */
+  .feature-stage {
+    position: relative;
+    width: 100%;
+    height: 495px;
+    overflow: hidden;
+    background: #1b1b1b;
+  }
+
+  .feature-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .feature-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .feature-thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #1b1b1b;
+  }
+
+  .feature-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .feature-video.is-ready {
+    opacity: 1;
+  }
+
+  /* ---- Subtle bottom gradient so dots stay legible on bright frames ---- */
+  .feature-stage::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 56px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ---- Edge hover zones: only these reveal arrows on hover ---- */
+  .carousel-hover-zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 25%;
+    z-index: 2;
+  }
+
+  .carousel-hover-zone-left { left: 0; }
+  .carousel-hover-zone-right { right: 0; }
+
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.2s ease, background-color 0.15s ease, transform 0.15s ease;
+    z-index: 3;
+
+    &:hover { background: rgba(0, 0, 0, 0.78); }
+    &:active { transform: translateY(-50%) scale(0.95); }
+    &:focus { outline: none; }
+    &:focus-visible {
+      outline: 2px solid @bc-btn-border-focused;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0;
+      pointer-events: none;
     }
   }
 
-  a:hover {
-    text-decoration: underline;
+  .carousel-arrow-prev { left: 16px; }
+  .carousel-arrow-next { right: 16px; }
+
+  .carousel-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 3;
+  }
+
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+
+    &:hover { background: rgba(255, 255, 255, 0.8); }
+    &:focus { outline: none; }
+    &:focus-visible {
+      outline: 2px solid @bc-btn-border-focused;
+      outline-offset: 2px;
+    }
+  }
+
+  .carousel-dot.is-active {
+    background: #fff;
+    transform: scale(1.25);
+  }
+
+  /* ---- Info panel below the stage ---- */
+  .feature-info {
+    position: relative;
+    height: 70px;
+    background: @bc-panel-bg-alt;
+    border-top: 1px solid @bc-panel-border;
+    overflow: hidden;
+    .dark & {
+      background: @dark-bc-panel-bg-alt;
+      border-top-color: @dark-bc-highlight;
+    }
+  }
+
+  .feature-info-slide {
+    position: absolute;
+    inset: 0;
+    padding: 10px 28px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .feature-info-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .feature-info-slide h2 {
+    margin: 0 0 3px;
+    font-size: 18px;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    color: @bc-text-emphasized;
+    .dark & { color: @dark-bc-text-alt; }
+  }
+
+  .feature-info-slide p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    letter-spacing: 0.02em;
+    word-spacing: 0.08em;
+    color: @bc-text-medium;
+    max-width: 780px;
+    .dark & { color: @dark-bc-text-medium; }
   }
 }
 
