@@ -2172,7 +2172,7 @@ define({
     "AI_CHAT_RETRY": "Retry",
     "AI_CHAT_DESKTOP_ONLY": "AI features require the Phoenix desktop app. Download it to get started.",
     "AI_CHAT_DOWNLOAD_BTN": "Download Desktop App",
-    "AI_CHAT_PLACEHOLDER_TITLE": "Design, fix and build faster",
+    "AI_CHAT_PLACEHOLDER_TITLE": "Design, build, and fix faster with AI",
     "AI_CHAT_PLACEHOLDER_SUBTITLE": "AI that works along your preview",
     "AI_CHAT_PLACEHOLDER_CARD_LAYOUT_TITLE": "Generate Layout",
     "AI_CHAT_PLACEHOLDER_CARD_LAYOUT_DESC": "Describe a section",
