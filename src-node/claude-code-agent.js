@@ -667,7 +667,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "live preview for both HTML/CSS/JS/SVG and Markdown. When the user asks to create " +
             "mockups, prototypes, or web pages, prefer vanilla HTML/CSS/JS so the live preview " +
             "can render and edit them — unless the user specifically requests a framework. " +
-            "Build responsive layouts by default for web content." +
+            "Build responsive layouts by default for web content. For images, prefer real " +
+            "<img> tags over div background-image so the user can swap, inspect, and resize " +
+            "them in the editor — only fall back to background-image when an effect (parallax, " +
+            "cover-with-overlay, repeating tile) genuinely requires it." +
             "\n\nYou can debug and inspect the live preview directly — these tools are for " +
             "active iteration, not just final verification:" +
             "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
