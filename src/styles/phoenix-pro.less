@@ -85,17 +85,31 @@
     background: #1b1b1b;
   }
 
+  /* Slide-over animation: every slide is positioned absolute and lives
+     at one of three transforms — off-screen right (default), active (0),
+     or off-screen left (.is-left). JS toggles is-active / is-left so the
+     transitioning slides cross-fade and translate at the same time, in
+     the direction matching the user's nav. */
   .feature-slide {
     position: absolute;
     inset: 0;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.35s ease;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+    will-change: transform, opacity;
   }
 
+  .feature-slide.is-left {
+    transform: translateX(-100%);
+  }
+
+  /* Defined after .is-left so a slide flipping from is-left to is-active
+     animates straight from -100% to 0, no intermediate jump to +100%. */
   .feature-slide.is-active {
     opacity: 1;
     pointer-events: auto;
+    transform: translateX(0);
   }
 
   .feature-thumb {
@@ -228,21 +242,30 @@
     }
   }
 
+  /* Mirror the .feature-slide transform/cross-fade so the text below the
+     video animates in the same direction as the video stage. */
   .feature-info-slide {
     position: absolute;
     inset: 0;
     padding: 10px 28px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.35s ease;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+    will-change: transform, opacity;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .feature-info-slide.is-left {
+    transform: translateX(-100%);
+  }
+
   .feature-info-slide.is-active {
     opacity: 1;
     pointer-events: auto;
+    transform: translateX(0);
   }
 
   .feature-info-slide h2 {
