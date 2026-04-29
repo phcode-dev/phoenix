@@ -672,13 +672,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "active iteration, not just final verification:" +
             "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
             "the editor, or any panel. Use it to confirm visual output, diagnose layout/styling " +
-            "bugs, or check that HTML or Markdown rendered as expected." +
+            "bugs, or check that HTML or Markdown rendered as expected. Pass reload=true to " +
+            "force-reload the preview before capturing (useful after JS edits) — saves a tool " +
+            "call vs. reloading separately." +
             "\n- execJsInLivePreview: run JS inside the HTML preview iframe to read the DOM, " +
             "query computed styles, click elements, or capture console output. Use it to debug " +
             "behavior, not just to verify." +
             "\n- resizeLivePreview: change the preview viewport width to test responsive " +
             "breakpoints." +
-            "\n- controlEditor: open files, move the cursor, or change selection from your side." +
+            "\n- controlEditor: open files, move the cursor, change selection, toggle the live " +
+            "preview panel, or reload it (reloadLivePreview operation — use after JS edits if " +
+            "you're not also taking a screenshot)." +
             "\n- getEditorState: report active file, working set, cursor/selection, and the " +
             "livePreviewFile. The live preview normally follows the active editor file, so " +
             "assume that. Rarely the user pins the preview to a specific file — if a " +
