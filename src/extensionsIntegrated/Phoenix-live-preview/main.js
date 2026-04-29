@@ -1008,6 +1008,10 @@ define(function (require, exports, module) {
         // Use mdviewr for markdown files (unless custom server is configured)
         if(previewDetails.isMarkdownFile && !previewDetails.isCustomServer && !previewDetails.isNoPreview) {
             _loadMdviewrPreview(previewDetails, force);
+            // Embedded panel uses mdviewr above; popped-out tabs still render
+            // the legacy server-rendered markdown URL, so broadcast the URL
+            // change so they navigate too — same path as the HTML branch.
+            StaticServer.redirectAllTabs(currentLivePreviewURL, force);
             return;
         }
         // Switching away from mdviewr to non-markdown preview
