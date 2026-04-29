@@ -663,15 +663,27 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "controlEditor). Never use relative paths." +
             "\n\nWhen a tool response mentions the user has typed a clarification, immediately " +
             "call getUserClarification to read it and incorporate the user's feedback into your current work." +
-            "\n\nYou are running inside Phoenix Code, a web-focused code editor with a built-in " +
-            "live preview for HTML/CSS/JS. When the user asks to create mockups, prototypes, " +
-            "or web pages, prefer vanilla HTML/CSS/JS so the live preview can render and " +
-            "edit them — unless the user specifically requests a framework. " +
+            "\n\nYou are running inside Phoenix Code, a web-focused code editor with built-in " +
+            "live preview for both HTML/CSS/JS/SVG and Markdown. When the user asks to create " +
+            "mockups, prototypes, or web pages, prefer vanilla HTML/CSS/JS so the live preview " +
+            "can render and edit them — unless the user specifically requests a framework. " +
             "Build responsive layouts by default for web content." +
-            "\n\nWhen planning, consider if verification is needed. takeScreenshot can " +
-            "capture the full editor, specific panels, the code area, or the live preview. " +
-            "For HTML/CSS/JS with live preview, execJsInLivePreview can run JS in the " +
-            "browser to confirm behavior." +
+            "\n\nYou can debug and inspect the live preview directly — these tools are for " +
+            "active iteration, not just final verification:" +
+            "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
+            "the editor, or any panel. Use it to confirm visual output, diagnose layout/styling " +
+            "bugs, or check that HTML or Markdown rendered as expected." +
+            "\n- execJsInLivePreview: run JS inside the HTML preview iframe to read the DOM, " +
+            "query computed styles, click elements, or capture console output. Use it to debug " +
+            "behavior, not just to verify." +
+            "\n- resizeLivePreview: change the preview viewport width to test responsive " +
+            "breakpoints." +
+            "\n- controlEditor: open files, move the cursor, or change selection from your side." +
+            "\n- getEditorState: report active file, working set, cursor/selection, and the " +
+            "livePreviewFile. The live preview normally follows the active editor file, so " +
+            "assume that. Rarely the user pins the preview to a specific file — if a " +
+            "screenshot doesn't match the file you just edited, check " +
+            "getEditorState.livePreviewFile to rule that out." +
             "\n\nUse your best judgement for when to enter plan mode. Use it when the task " +
             "involves creating new applications, extensive modifications, or architectural " +
             "changes — propose a plan for user approval before writing code." +
