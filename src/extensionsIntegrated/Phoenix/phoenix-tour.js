@@ -32,6 +32,7 @@ define(function (require, exports, module) {
     const Strings           = require("strings"),
         StringUtils         = require("utils/StringUtils"),
         Metrics             = require("utils/Metrics"),
+        SidebarView         = require("project/SidebarView"),
         CentralControlBar   = require("view/CentralControlBar");
 
     // Capture the kernel trust ring at module-load time — it's deleted from
@@ -189,7 +190,21 @@ define(function (require, exports, module) {
         update();
     }
 
+    /**
+     * Make sure the sidebar is showing before each step. Upgrade flows can
+     * boot Phoenix with the sidebar hidden (the user's last-session state),
+     * which would hide the AI tab and the new-project button this tour
+     * points at. Cheap to call when already visible — SidebarView.show()
+     * is a no-op then.
+     */
+    function _ensureSidebarVisible() {
+        if (SidebarView && SidebarView.isVisible && !SidebarView.isVisible()) {
+            SidebarView.show();
+        }
+    }
+
     function _runStep1() {
+        _ensureSidebarVisible();
         const $btn = $("#ccbCollapseEditorBtn");
         if (!$btn.length) {
             _markComplete();
@@ -235,6 +250,7 @@ define(function (require, exports, module) {
     }
 
     function _runStep2() {
+        _ensureSidebarVisible();
         const $tab = $('.sidebar-tab[data-tab-id="ai"]');
         if (!$tab.length) {
             // No AI tab in this build — skip ahead to the next step.
@@ -260,6 +276,7 @@ define(function (require, exports, module) {
     }
 
     function _runStep3() {
+        _ensureSidebarVisible();
         const $newBtn = $("#newProject");
         if (!$newBtn.length) {
             // No new-project button — tour is effectively done.
