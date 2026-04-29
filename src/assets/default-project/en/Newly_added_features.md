@@ -7,6 +7,72 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+## [AI Chat — Built-in Coding Assistant](https://docs.phcode.dev/app-links/ai-chat)
+
+`Added in 2026`
+
+Phoenix Code now ships with a built-in AI assistant powered by Claude Code. Chat about your code, edit files, run terminal commands, and restore to any point with a single click.  
+You can also attach files or take a screenshot to show the AI exactly what you mean.
+
+> This feature is available only in desktop apps.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-aiChat.png)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/edit-mode-live-preview">Live Preview Edit Mode 2.0</a></h2>
+
+`Added in 2026`
+
+The Live Preview Edit experience just got a massive upgrade.  
+Now, along with editing text content, you can also apply different formats like Bold, Italic, Underline, and many more.  
+You can also insert new elements right in the Live Preview and change an existing element's tag name, class, ID, and attributes!
+
+![Image](https://docs-images.phcode.dev/in-app/pro-controlBox.png)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/markdown-editor">Rich Markdown Editor</a></h2>
+
+`Added in 2026`
+
+Edit Markdown files visually right inside the Live Preview.  
+Format with toolbar buttons, build tables, drop in images from your device, and add Mermaid diagrams. Every change syncs to your source in real time.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-markdownEditor.png)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/live-preview">Design Mode</a></h2>
+
+`Added in 2026`
+
+Design Mode hides the code editor so the AI chat and Live Preview can sit side by side, taking over the whole window.  
+Prompt the AI on one side, watch your page change on the other, and tweak anything visually with the Edit Mode tools.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-designMode.png)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/resize-ruler">Resize Ruler</a></h2>
+
+`Added in 2026`
+
+Switch between popular phones, tablets, and desktops with a single click to see how your page looks at that size.  
+Phoenix Code also picks up your CSS `@media` breakpoints so you can jump straight to where your layout switches.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-resizeRuler.png)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/terminal">Built-in Terminal</a></h2>
+
+`Added in 2026`
+
+Run commands right next to your code in the new built-in terminal.  
+Phoenix Code allows you to open multiple terminal tabs with your preferred shell.
+
+> This feature is available only in desktop apps.
+
+![Image](https://docs-images.phcode.dev/in-app/terminal.png)
+
+## Polish & Layout
+
+`Added in 2026`
+
+You'll notice small refinements everywhere: better colors, cleaner buttons, smoother styling, and an overall more polished feel.  
+The bottom panel has also been rebuilt with a new tabbed architecture, so you can keep Problems, Search, Git, Terminal, and more open at the same time.
+
 <h2><a target="_blank" href="https://docs.phcode.dev/app-links/live-preview-edit">Live Preview Edit</a></h2>
 
 `Added in 2025`
