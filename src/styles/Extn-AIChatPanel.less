@@ -2840,6 +2840,156 @@
     }
 }
 
+/* Browser-build placeholder layout (designed by the team — left-aligned
+   header, video, three info cards, body copy, full-width CTA). Used only
+   when the browser app can't run AI features, so the panel doubles as a
+   marketing surface for the desktop app. */
+
+.ai-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+    box-sizing: border-box;
+    /* Allow the column to shrink below its intrinsic content size when the
+       sidebar is narrow, otherwise long words like "improvements" force a
+       horizontal scroll. min-width:0 alone isn't enough on a flex column —
+       the inner cards' default min-width:auto prevents shrink. */
+    min-width: 0;
+    width: 100%;
+
+    /* The chat panel sets `white-space: nowrap` higher up so streaming
+       chat lines don't reflow mid-token. Reset it here so all text in the
+       placeholder wraps normally when the sidebar is narrow. */
+    &, * {
+        white-space: normal;
+    }
+}
+
+.ai-placeholder-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ai-placeholder-title {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+    color: @project-panel-text-1;
+    letter-spacing: -0.01em;
+}
+
+.ai-placeholder-subtitle {
+    font-size: 13px;
+    color: @project-panel-text-2;
+    opacity: 0.85;
+    line-height: 1.4;
+}
+
+/* Video slot in the placeholder: full-width, no max cap (the surrounding
+   `.ai-placeholder` panel padding controls effective width). The shared
+   `.ai-intro-video-slot` rule above is centered and capped at 320px,
+   which would look orphaned in the new left-aligned layout. */
+.ai-placeholder .ai-intro-video-slot {
+    max-width: none;
+    margin: 0;
+    text-align: left;
+    gap: 0;
+}
+
+.ai-placeholder-cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ai-placeholder-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.025);
+    /* Allow the card to shrink at narrow sidebar widths instead of forcing
+       a horizontal scroll. */
+    min-width: 0;
+}
+
+.ai-placeholder-card-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    color: @project-panel-text-1;
+    font-size: 14px;
+}
+
+.ai-placeholder-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.ai-placeholder-card-title,
+.ai-placeholder-card-desc {
+    /* Wrap long localized strings instead of overflowing the card. */
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.ai-placeholder-card-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: @project-panel-text-1;
+    line-height: 1.25;
+}
+
+.ai-placeholder-card-desc {
+    font-size: 12px;
+    color: @project-panel-text-2;
+    opacity: 0.8;
+    line-height: 1.3;
+}
+
+.ai-placeholder-body {
+    font-size: 12.5px;
+    color: @project-panel-text-2;
+    opacity: 0.75;
+    line-height: 1.5;
+    margin: 4px 0 0;
+}
+
+/* The shared `.btn.btn-primary` override above sets padding: 6px 18px
+   for the older Sign-In CTA. `!important` here locks in the designer's
+   taller spec for this placeholder CTA without having to thread a more
+   specific selector through every inherited declaration. */
+.ai-chat-panel .ai-placeholder .ai-placeholder-cta {
+    width: 100%;
+    padding: 14px 18px !important;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    /* Match the 8px corner radius of the cards above so the column reads
+       as one coherent stack. The shared .btn.btn-primary rule sets 4px,
+       hence !important. */
+    border-radius: 8px !important;
+    /* Reset horizontal margins — a higher-up `.btn` rule adds
+       `margin-left: 3px` which would shift the CTA right of the cards. */
+    margin: 4px 0 0;
+}
+
 /* Re-apply Phoenix's standard `.btn .btn-primary` look inside the
    .ai-unavailable intro states. The blanket reset below (`.ai-chat-panel
    .btn-primary`) blanks bootstrap's button styling so chat-area buttons
@@ -2847,7 +2997,8 @@
    button so the Sign In CTA reads as the standard Phoenix action. The
    selector is more specific than the reset, and `!important` belt-and-
    braces against any later reset rule that might still apply. */
-.ai-chat-panel .ai-unavailable .btn.btn-primary {
+.ai-chat-panel .ai-unavailable .btn.btn-primary,
+.ai-chat-panel .ai-placeholder .btn.btn-primary {
     display: inline-block;
     background-color: @bc-primary-btn-bg !important;
     background-image: none !important;
@@ -2876,7 +3027,8 @@
     }
 }
 
-.dark .ai-chat-panel .ai-unavailable .btn.btn-primary {
+.dark .ai-chat-panel .ai-unavailable .btn.btn-primary,
+.dark .ai-chat-panel .ai-placeholder .btn.btn-primary {
     background-color: @dark-bc-primary-btn-bg !important;
     border-color: darken(@dark-bc-primary-btn-bg, 8%) !important;
 

@@ -2151,7 +2151,6 @@ define({
     "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered {0}. To proceed, you’ll need an AI subscription or credits.",
 
     // AI CHAT PANEL
-    "AI_CHAT_TITLE_NO_AI": "Phoenix Code AI",
     "AI_CHAT_TITLE": "Claude Code",
     "AI_CHAT_SURPRISE_ME_USER_MSG": "Surprise me!",
     "AI_CHAT_NEW_SESSION_TITLE": "Start a new conversation",
@@ -2173,6 +2172,14 @@ define({
     "AI_CHAT_RETRY": "Retry",
     "AI_CHAT_DESKTOP_ONLY": "AI features require the Phoenix desktop app. Download it to get started.",
     "AI_CHAT_DOWNLOAD_BTN": "Download Desktop App",
+    "AI_CHAT_PLACEHOLDER_TITLE": "Design, fix and build faster",
+    "AI_CHAT_PLACEHOLDER_SUBTITLE": "AI that works along your preview",
+    "AI_CHAT_PLACEHOLDER_CARD_LAYOUT_TITLE": "Generate Layout",
+    "AI_CHAT_PLACEHOLDER_CARD_LAYOUT_DESC": "Describe a section",
+    "AI_CHAT_PLACEHOLDER_CARD_BUGS_TITLE": "Fix Bugs",
+    "AI_CHAT_PLACEHOLDER_CARD_BUGS_DESC": "Scan for issues",
+    "AI_CHAT_PLACEHOLDER_CARD_IMPROVE_TITLE": "Suggest improvements",
+    "AI_CHAT_PLACEHOLDER_CARD_IMPROVE_DESC": "UX & performance tips",
     "AI_CHAT_LOGIN_TITLE": "Sign In to Use AI",
     "AI_CHAT_LOGIN_MESSAGE": "Sign in to your {APP_NAME} account to access AI features.",
     "AI_CHAT_LOGIN_BTN": "Sign In",
