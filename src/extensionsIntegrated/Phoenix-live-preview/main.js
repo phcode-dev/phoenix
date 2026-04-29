@@ -343,12 +343,8 @@ define(function (require, exports, module) {
      * Does not hide in custom server mode (handled by _isMdviewrActive being false).
      */
     function _updateLPControlsForMdviewer() {
-        const inDesignMode = WorkspaceManager.isInDesignMode && WorkspaceManager.isInDesignMode();
         const showPen = !_isMdviewrActive;
-        // Dropdown is also hidden in design mode (see $designModeBtn wiring in
-        // _createExtensionPanel) because the preview-mode options are moot
-        // when the editor is fully collapsed.
-        const showChevron = !_isMdviewrActive && !inDesignMode;
+        const showChevron = !_isMdviewrActive;
         if ($previewBtn) {
             $previewBtn.toggle(showPen);
         }
@@ -893,9 +889,7 @@ define(function (require, exports, module) {
 
         // Design-mode toggle: mirrors the CCB's pen-nib button so the user can
         // enter/exit design mode without moving focus to the sidebar strip.
-        // Icon swaps between fa-expand (enter) and fa-compress (exit); while
-        // design mode is on, hide #livePreviewModeBtn (the preview-mode dropdown)
-        // since its options are moot when the editor is fully collapsed.
+        // Icon swaps between fa-expand (enter) and fa-compress (exit).
         function _updateDesignModeButton() {
             const on = WorkspaceManager.isInDesignMode && WorkspaceManager.isInDesignMode();
             const $icon = $designModeBtn.find("i");
@@ -904,7 +898,7 @@ define(function (require, exports, module) {
             $designModeBtn.attr("title",
                 on ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
             if ($modeBtn) {
-                $modeBtn.toggle(!on && !_isMdviewrActive);
+                $modeBtn.toggle(!_isMdviewrActive);
             }
         }
         $designModeBtn.click(()=>{
