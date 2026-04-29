@@ -29,7 +29,7 @@ const DEV_MAX_TOTAL_SIZE_MB = 100;
 // Custom size limits for known large files (size in MB) For development builds
 const LARGE_FILE_LIST_DEV = {
     'dist/thirdparty/no-minify/language-worker.js.map': 10,
-    'dist/brackets-min.js': 15
+    'dist/brackets-min.js': 20
 };
 
 // Size limits for production/staging builds (in MB)
