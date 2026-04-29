@@ -2180,7 +2180,7 @@ define({
     "AI_CHAT_PLACEHOLDER_CARD_BUGS_DESC": "Scan for issues",
     "AI_CHAT_PLACEHOLDER_CARD_IMPROVE_TITLE": "Suggest improvements",
     "AI_CHAT_PLACEHOLDER_CARD_IMPROVE_DESC": "UX & performance tips",
-    "AI_CHAT_LOGIN_TITLE": "Sign In to Use AI",
+    "AI_CHAT_LOGIN_TITLE": "Sign in to get started with AI",
     "AI_CHAT_LOGIN_MESSAGE": "Sign in to your {APP_NAME} account to access AI features.",
     "AI_CHAT_LOGIN_BTN": "Sign In",
     "AI_CHAT_INTRO_GUEST_TITLE": "Design layouts, fix bugs, and build faster with AI",
