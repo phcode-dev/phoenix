@@ -33,6 +33,11 @@ define(function (require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         Metrics             = require("utils/Metrics"),
         SidebarView         = require("project/SidebarView"),
+        ProjectManager      = require("project/ProjectManager"),
+        EditorManager       = require("editor/EditorManager"),
+        CommandManager      = require("command/CommandManager"),
+        Commands            = require("command/Commands"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
         CentralControlBar   = require("view/CentralControlBar");
 
     // Capture the kernel trust ring at module-load time — it's deleted from
@@ -102,7 +107,7 @@ define(function (require, exports, module) {
         }
     }
 
-    const TOTAL_STEPS = 3;
+    const TOTAL_STEPS = 4;
 
     function _ensureOverlay() {
         if ($overlay) {
@@ -279,9 +284,9 @@ define(function (require, exports, module) {
         _ensureSidebarVisible();
         const $newBtn = $("#newProject");
         if (!$newBtn.length) {
-            // No new-project button — tour is effectively done.
-            _markComplete();
-            _teardown();
+            // No new-project button — skip to the live-preview step instead
+            // of giving up on the tour entirely.
+            _runStep4();
             return;
         }
         _ensureOverlay();
@@ -289,6 +294,95 @@ define(function (require, exports, module) {
         _setStep(3);
         Metrics.countEvent(Metrics.EVENT_TYPE.GUIDE, "tour", "step3");
         _setText(Strings.PHOENIX_TOUR_NEW_PROJECT);
+        _setActions([
+            {
+                label: Strings.PHOENIX_TOUR_NEXT_BTN,
+                kind: "primary",
+                onClick: function () {
+                    _runStep4();
+                }
+            }
+        ]);
+        // Intentionally do NOT advance on a real click of the target — only
+        // the Next button advances.
+    }
+
+    /**
+     * Bring the workspace to a state where the live-preview Edit Mode button
+     * is visible and meaningful: the welcome project must be open, the
+     * active editor file must be one the preview can render (the welcome
+     * project's index.html or phoenix-pro.html), and the LP panel must be
+     * showing. Each branch is a no-op when already true.
+     */
+    async function _ensureLivePreviewReady() {
+        const welcomeRoot = ProjectManager.getWelcomeProjectPath();
+
+        // 1. Switch to the welcome project if we're not already there.
+        const currentRoot = ProjectManager.getProjectRoot();
+        if (!currentRoot || currentRoot.fullPath !== welcomeRoot) {
+            await new Promise(function (resolve) {
+                ProjectManager.openProject(welcomeRoot)
+                    .done(resolve).fail(resolve);
+            });
+        }
+
+        // 2. Make sure the active file is one the LP can render. Prefer
+        //    phoenix-pro.html (Pro flow) and fall back to index.html.
+        const proPath = welcomeRoot + "phoenix-pro.html";
+        const indexPath = welcomeRoot + "index.html";
+        const editor = EditorManager.getActiveEditor();
+        const currentFile = editor && editor.document && editor.document.file
+            ? editor.document.file.fullPath : null;
+        if (currentFile !== proPath && currentFile !== indexPath) {
+            let target = null;
+            try {
+                if (await Phoenix.VFS.existsAsync(proPath)) {
+                    target = proPath;
+                } else if (await Phoenix.VFS.existsAsync(indexPath)) {
+                    target = indexPath;
+                }
+            } catch (e) { /* fall through with target=null */ }
+            if (target) {
+                await new Promise(function (resolve) {
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: target })
+                        .done(resolve).fail(resolve);
+                });
+            }
+        }
+
+        // 3. Open the live-preview panel if it isn't visible.
+        const lpPanel = WorkspaceManager.getPanelForID("live-preview-panel");
+        if (!lpPanel || !lpPanel.isVisible()) {
+            await new Promise(function (resolve) {
+                CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW)
+                    .done(resolve).fail(resolve);
+            });
+        }
+    }
+
+    async function _runStep4() {
+        _ensureSidebarVisible();
+        try {
+            await _ensureLivePreviewReady();
+        } catch (e) { /* best-effort prep — proceed and let the rect-zero
+                         RAF gate sort out a missing target */ }
+
+        const $btn = $("#previewModeLivePreviewButton");
+        if (!$btn.length) {
+            // LP panel never came up (custom server, unsupported file, etc.)
+            // — finalize the tour rather than stalling on a missing target.
+            _markComplete();
+            _teardown();
+            return;
+        }
+        _ensureOverlay();
+        // LP panel sits on the right edge; keep the default tooltip
+        // placement (lower-right of the ring) so the tooltip extends back
+        // into the panel area rather than off the right edge of the viewport.
+        _trackTarget($btn, "left");
+        _setStep(4);
+        Metrics.countEvent(Metrics.EVENT_TYPE.GUIDE, "tour", "step4");
+        _setText(Strings.PHOENIX_TOUR_EDIT_MODE);
         _setActions([
             {
                 label: Strings.PHOENIX_TOUR_DISMISS_BTN,
@@ -300,8 +394,6 @@ define(function (require, exports, module) {
                 }
             }
         ]);
-        // Intentionally do NOT end on a real click of the target — only the
-        // Dismiss button ends the tour.
     }
 
     function _shouldRun() {

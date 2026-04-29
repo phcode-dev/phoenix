@@ -1672,6 +1672,7 @@ define({
     "PHOENIX_TOUR_DESIGN_MODE": "Click here to enter Design Mode. Go full-screen and edit your page visually.",
     "PHOENIX_TOUR_AI_PANEL": "Design layouts, fix bugs, and build faster with AI. Click here to open the AI panel",
     "PHOENIX_TOUR_NEW_PROJECT": "Open or create a new project from here",
+    "PHOENIX_TOUR_EDIT_MODE": "Edit Mode lets you tweak your page directly in the live preview — click elements to inspect and edit them inline.",
     "PHOENIX_TOUR_STEP_OF": "{0} of {1}",
     "PHOENIX_TOUR_NEXT_BTN": "Next",
     "PHOENIX_TOUR_DISMISS_BTN": "Dismiss",
