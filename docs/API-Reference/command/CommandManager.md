@@ -14,6 +14,7 @@ const CommandManager = brackets.getModule("command/CommandManager")
     * [.execute()](#Command+execute) ⇒ <code>$.Promise</code>
     * [.getEnabled()](#Command+getEnabled) ⇒ <code>boolean</code>
     * [.getOptions()](#Command+getOptions) ⇒ <code>object</code>
+    * [.isSupportedInDesignMode()](#Command+isSupportedInDesignMode) ⇒ <code>boolean</code>
     * [.setEnabled(enabled)](#Command+setEnabled)
     * [.setChecked(checked)](#Command+setChecked)
     * [.getChecked()](#Command+getChecked) ⇒ <code>boolean</code>
@@ -60,6 +61,15 @@ Is command enabled?
 
 ### command.getOptions() ⇒ <code>object</code>
 get the command options
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+<a name="Command+isSupportedInDesignMode"></a>
+
+### command.isSupportedInDesignMode() ⇒ <code>boolean</code>
+Returns true if the command opted in to running while the workspace is in
+design mode (editor collapsed). KeyBindingManager uses this to decide
+whether a keyboard shortcut should fire; commands that don't opt in are
+swallowed in design mode.
 
 **Kind**: instance method of [<code>Command</code>](#Command)  
 <a name="Command+setEnabled"></a>
@@ -165,6 +175,7 @@ Registers a global command.
 | [options] | <code>Object</code> |  |
 | options.eventSource | <code>boolean</code> | If set to true, the commandFn will be called with the first argument `event` with details about the source(invoker) as event.eventSource(one of the `CommandManager.SOURCE_*`) and event.sourceType(Eg. Ctrl-K) parameter. |
 | options.htmlName | <code>string</code> | If set, this will be displayed in ui menus instead of the name given.      Example: `"Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"` |
+| options.supportsDesignMode | <code>boolean</code> | If true, this command's keyboard shortcut will still fire when      the workspace is in design mode. Commands that don't opt in are swallowed in design mode because the      editor area is collapsed and most shortcuts are nonsensical there. Reserve this flag for commands that      remain useful with no editor visible (file open/save/close, Quick Open, Find in Files, etc.). |
 
 <a name="registerInternal"></a>
 
