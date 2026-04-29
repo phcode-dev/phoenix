@@ -2990,6 +2990,71 @@
     margin: 4px 0 0;
 }
 
+/* Setup variant of the primary CTA: white pill on the dark panel, used
+   on the "Install Claude Code" / "Setup Claude Code" screens. The
+   placeholder/login CTA stays blue — only these setup-on-dark surfaces
+   flip to white per the designer spec. The selector chains both .btn
+   and .btn-primary classes (specificity 0,6,0) to beat the
+   `.dark .ai-chat-panel .ai-placeholder .btn.btn-primary` rule that
+   would otherwise force blue in the default dark theme. */
+.ai-chat-panel .ai-placeholder .btn.btn-primary.ai-placeholder-cta.ai-placeholder-cta-on-dark {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #1a1a1a !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+
+    &:hover {
+        background-color: #f4f4f4 !important;
+    }
+
+    &:active {
+        background-color: #e8e8e8 !important;
+    }
+}
+
+/* Outlined / muted secondary CTA — sits directly under the white
+   primary on the setup screen for the "Add Custom Provider" alternative. */
+.ai-chat-panel .ai-placeholder .ai-placeholder-cta-secondary {
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.3;
+    border-radius: 8px;
+    margin: 8px 0 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: @project-panel-text-1;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Centered "Need Help? Learn More" footer below the setup CTAs. */
+.ai-chat-panel .ai-placeholder-help {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 12.5px;
+    color: @project-panel-text-2;
+    opacity: 0.75;
+}
+
+.ai-chat-panel .ai-placeholder-help .ai-learn-more-link {
+    color: @bc-primary-btn-bg;
+    text-decoration: none;
+    margin-left: 4px;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 /* Re-apply Phoenix's standard `.btn .btn-primary` look inside the
    .ai-unavailable intro states. The blanket reset below (`.ai-chat-panel
    .btn-primary`) blanks bootstrap's button styling so chat-area buttons
