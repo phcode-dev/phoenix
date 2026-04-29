@@ -675,12 +675,18 @@ define(function (require, exports, module) {
     function _popoutLivePreview(browserName) {
         // We cannot use $iframe.src here if panel is hidden
         const openURL = StaticServer.getTabPopoutURL(currentLivePreviewURL);
+        // In design mode the LP panel fills the editor area — hiding it would
+        // leave the user staring at a blank workspace. Keep the panel open and
+        // just open the popout alongside it.
+        const closePanelAfterPopout = !WorkspaceManager.isInDesignMode();
         if(browserName && ALLOWED_BROWSERS_NAMES.includes(browserName)){
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popout", browserName);
             NodeUtils.openUrlInBrowser(openURL, browserName)
                 .then(()=>{
                     _loadPreview(true);
-                    _setPanelVisibility(false);
+                    if (closePanelAfterPopout) {
+                        _setPanelVisibility(false);
+                    }
                 })
                 .catch(err=>{
                     console.error("Error opening url in browser: ", browserName, err);
@@ -695,7 +701,9 @@ define(function (require, exports, module) {
             NativeApp.openURLInDefaultBrowser(openURL, "livePreview");
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
             _loadPreview(true);
-            _setPanelVisibility(false);
+            if (closePanelAfterPopout) {
+                _setPanelVisibility(false);
+            }
         }
     }
 
