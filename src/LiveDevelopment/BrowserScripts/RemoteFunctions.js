@@ -113,6 +113,10 @@ function RemoteFunctions(config = {}) {
      * check if an element is inspectable.
      * inspectable elements are those which doesn't have GLOBALS.DATA_BRACKETS_ID_ATTR ('data-brackets-id'),
      * this normally happens when content is DOM content is inserted by some scripting language
+     *
+     * Elements opted out via `phcode-no-lp-edit` (cascades to descendants) or
+     * `phcode-no-lp-edit-this` (this element only) are also non-inspectable so
+     * every downstream tool inherits the opt-out automatically.
      */
     function isElementInspectable(element, onlyHighlight = false) {
         if(config.mode !== 'edit' && !onlyHighlight) {
@@ -124,7 +128,9 @@ function RemoteFunctions(config = {}) {
             element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
             // this attribute is used by phoenix internal elements
             !element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`) &&
-            !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
+            !_isInsideHeadTag(element) && // shouldn't be inside the head tag like meta tags and all
+            !element.closest('.phcode-no-lp-edit') &&
+            !(element.classList && element.classList.contains('phcode-no-lp-edit-this'))) {
             return true;
         }
         return false;
@@ -592,9 +598,6 @@ function RemoteFunctions(config = {}) {
         if(!LivePreviewView.isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
             return;
         }
-        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
-            return;
-        }
 
         // Same element as last hover — nothing changed, skip entirely
         if (element === _lastHoverTarget) {
@@ -764,6 +767,8 @@ function RemoteFunctions(config = {}) {
             event.stopPropagation();
             return;
         }
+        // Opted-out elements: silent no-op so the user's existing selection isn't dismissed.
+        // (isElementInspectable would also reject them, but that path runs dismissUIAndCleanupState.)
         if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
