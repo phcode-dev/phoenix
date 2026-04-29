@@ -52,13 +52,6 @@ define(function (require, exports, module) {
     const STEP_START_DELAY_MS = 2500;
     const STEP1_INVITE_MS = 1800;
     const STEP1_DESIGN_MODE_HOLD_MS = 2000;
-    // Hard cap on how long we'll wait for the pro trial start dialog to be
-    // dismissed before starting the tour. The dialog is shown on every fresh
-    // first-run boot (where this tour also runs), so under normal conditions
-    // the wait is bounded by the user dismissing it. The cap protects edge
-    // cases where the dialog isn't shown at all (e.g. user already has a
-    // subscription / a prior expired trial).
-    const TRIAL_DIALOG_WAIT_TIMEOUT_MS = 60000;
 
     function _loadState() {
         const raw = PhStore.getItem(TOUR_STORAGE_KEY);
@@ -417,36 +410,19 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Resolves once the pro trial start dialog has been dismissed, or after
-     * TRIAL_DIALOG_WAIT_TIMEOUT_MS as a fallback for builds/runs where the
-     * dialog isn't shown.
+     * Resolves once the pro trial start dialog has been dismissed. The
+     * dialog is guaranteed to fire `proTrialStartDialogDismissed` on every
+     * boot path (including builds where the dialog isn't shown), so we
+     * just await it without a timeout fallback.
      */
     function _waitForTrialStartDialogDismissed() {
-        return new Promise(function (resolve) {
-            const dismissed = _LoginService && _LoginService.proTrialStartDialogDismissed;
-            if (!dismissed) {
-                // No pro trial flow exposed — proceed immediately.
-                resolve();
-                return;
-            }
-            let settled = false;
-            const fallback = setTimeout(function () {
-                if (settled) {
-                    return;
-                }
-                settled = true;
-                resolve();
-            }, TRIAL_DIALOG_WAIT_TIMEOUT_MS);
-            // jQuery deferred or native promise — both implement .then
-            Promise.resolve(dismissed).then(function () {
-                if (settled) {
-                    return;
-                }
-                settled = true;
-                clearTimeout(fallback);
-                resolve();
-            });
-        });
+        const dismissed = _LoginService && _LoginService.proTrialStartDialogDismissed;
+        // Community-edition builds expose no login service at all — skip
+        // the wait so the tour still works there.
+        if (!dismissed) {
+            return Promise.resolve();
+        }
+        return Promise.resolve(dismissed);
     }
 
     function startTour() {
