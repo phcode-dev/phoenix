@@ -2152,6 +2152,7 @@ define({
     // AI CHAT PANEL
     "AI_CHAT_TITLE_NO_AI": "Phoenix Code AI",
     "AI_CHAT_TITLE": "Claude Code",
+    "AI_CHAT_SURPRISE_ME_USER_MSG": "Surprise me!",
     "AI_CHAT_NEW_SESSION_TITLE": "Start a new conversation",
     "AI_CHAT_NEW_BTN": "New",
     "AI_CHAT_THINKING": "Thinking...",

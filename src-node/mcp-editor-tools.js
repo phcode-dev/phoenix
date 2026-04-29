@@ -128,10 +128,13 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "or '.editor-holder' to capture only the code editor area. " +
         "Only omit the selector when you need to see the full editor application layout. " +
         "Note: live preview screenshots may include Phoenix toolbox overlays on selected elements. " +
-        "Use purePreview=true to temporarily hide these overlays and render the page as it would appear in a real browser.",
+        "Use purePreview=true to temporarily hide these overlays and render the page as it would appear in a real browser. " +
+        "Use reload=true to force-reload the live preview before capturing — useful after editing JS, " +
+        "and saves a tool call vs. calling controlEditor.reloadLivePreview separately.",
         {
             selector: z.string().optional().describe("CSS selector to capture a specific element. Use '#panel-live-preview-frame' for the preview panel (HTML live preview or markdown preview), '.editor-holder' for the code editor."),
             purePreview: z.boolean().optional().describe("When true, temporarily switches to preview mode to hide element highlight overlays and toolboxes before capturing, then restores the previous mode."),
+            reload: z.boolean().optional().describe("When true, force-reloads the live preview before capturing. Use this instead of a separate reloadLivePreview call when you're about to screenshot anyway."),
             filePath: z.string().optional().describe("Absolute path to save the screenshot as a PNG file. If specified, returns the file path instead of inline image data.")
         },
         async function (args) {
@@ -140,6 +143,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 const result = await _execPeerWithTimeout(nodeConnector, "takeScreenshot", {
                     selector: args.selector || undefined,
                     purePreview: args.purePreview || false,
+                    reload: args.reload || false,
                     filePath: args.filePath || undefined
                 }, "takeScreenshot");
                 if (result.filePath) {
@@ -212,10 +216,14 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "- openInWorkingSet: Open a file and pin it to the working set. Params: filePath\n" +
         "- setSelection: Open a file and select a range. Params: filePath, startLine, startCh, endLine, endCh\n" +
         "- setCursorPos: Open a file and set cursor position. Params: filePath, line, ch\n" +
-        "- toggleLivePreview: Show or hide the live preview panel. Params: show (boolean)",
+        "- toggleLivePreview: Show or hide the live preview panel. Params: show (boolean)\n" +
+        "- reloadLivePreview: Force-reload the live preview iframe (and any popped-out preview tabs). " +
+        "Use after editing JS that doesn't appear to have hot-reloaded. Note: if you're about to call " +
+        "takeScreenshot anyway, prefer takeScreenshot({ reload: true }) — it reloads and captures in " +
+        "one step. No params.",
         {
             operations: z.array(z.object({
-                operation: z.enum(["open", "close", "openInWorkingSet", "setSelection", "setCursorPos", "toggleLivePreview"]),
+                operation: z.enum(["open", "close", "openInWorkingSet", "setSelection", "setCursorPos", "toggleLivePreview", "reloadLivePreview"]),
                 filePath: z.string().optional().describe("Absolute path to the file (not required for toggleLivePreview)"),
                 startLine: z.number().optional().describe("Start line (1-based) for setSelection"),
                 startCh: z.number().optional().describe("Start column (1-based) for setSelection"),
