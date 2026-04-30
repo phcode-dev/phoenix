@@ -77,8 +77,7 @@ A new Quick Access tab keeps Problems, Git, Snippets, Shortcuts, and Terminal on
 
 `Added in April 2026`
 
-Meet Phoenix Dark Neo and Phoenix Light Neo - the redesigned default themes with a cleaner, modernized look.  
-Use the new Scroll Sensitivity slider to make scrolling faster or slower.
+Meet Phoenix Dark Neo and Phoenix Light Neo - the redesigned default themes with a cleaner, modernized look.
 
 > Switch between them anytime from `View > Themes...`.
 
