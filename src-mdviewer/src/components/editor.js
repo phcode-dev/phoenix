@@ -403,6 +403,69 @@ export function executeFormat(contentEl, command, value) {
             document.execCommand(command, false, null);
             break;
         case "formatBlock": {
+            // Toggle blockquote: if cursor is inside a blockquote and user
+            // clicks the blockquote button, lift only the cursor's block out
+            // (splitting the blockquote so other lines stay quoted).
+            if (value === "<blockquote>") {
+                const sel0 = window.getSelection();
+                let n0 = sel0?.anchorNode;
+                if (n0?.nodeType === Node.TEXT_NODE) n0 = n0.parentElement;
+                const innerBq = n0?.closest("blockquote");
+                if (innerBq && contentEl.contains(innerBq)) {
+                    // Normalize: if blockquote has loose text/inline children
+                    // (no block element wrapper), wrap them in a <p> so we have
+                    // a stable cursorBlock to lift out.
+                    if (!innerBq.querySelector("p, h1, h2, h3, h4, h5, h6, ul, ol, pre, blockquote, table, hr, div")) {
+                        const wrap = document.createElement("p");
+                        while (innerBq.firstChild) wrap.appendChild(innerBq.firstChild);
+                        innerBq.appendChild(wrap);
+                    }
+                    let cursorBlock = n0;
+                    // If anchor is the blockquote itself (e.g. right after
+                    // execCommand wraps), pick the child at anchor offset.
+                    if (cursorBlock === innerBq) {
+                        const offset = sel0.anchorOffset || 0;
+                        cursorBlock = innerBq.childNodes[offset]
+                            || innerBq.firstElementChild;
+                        if (cursorBlock && cursorBlock.nodeType !== Node.ELEMENT_NODE) {
+                            cursorBlock = innerBq.firstElementChild;
+                        }
+                    } else {
+                        while (cursorBlock && cursorBlock.parentNode !== innerBq) {
+                            cursorBlock = cursorBlock.parentNode;
+                        }
+                    }
+                    if (cursorBlock) {
+                        const parent = innerBq.parentNode;
+                        const afterNodes = [];
+                        let nx = cursorBlock.nextSibling;
+                        while (nx) {
+                            const next = nx.nextSibling;
+                            afterNodes.push(nx);
+                            nx = next;
+                        }
+                        parent.insertBefore(cursorBlock, innerBq.nextSibling);
+                        if (afterNodes.length > 0) {
+                            const newBq = document.createElement("blockquote");
+                            for (const an of afterNodes) newBq.appendChild(an);
+                            parent.insertBefore(newBq, cursorBlock.nextSibling);
+                        }
+                        if (!innerBq.querySelector("*") && !innerBq.textContent.trim()) {
+                            innerBq.remove();
+                        }
+                        const sel1 = window.getSelection();
+                        if (sel1 && contentEl.contains(cursorBlock)) {
+                            const r = document.createRange();
+                            r.selectNodeContents(cursorBlock);
+                            r.collapse(false);
+                            sel1.removeAllRanges();
+                            sel1.addRange(r);
+                        }
+                        contentEl.dispatchEvent(new Event("input", { bubbles: true }));
+                        break;
+                    }
+                }
+            }
             document.execCommand("formatBlock", false, value);
             // After formatBlock on an empty element, the browser may lose
             // cursor position. Find the new block and place cursor inside it.
@@ -2069,6 +2132,74 @@ function enterEditMode(content) {
                     content.dispatchEvent(new Event("input", { bubbles: true }));
                 }
                 return;
+            }
+
+            // Blockquote nesting: Tab nests deeper, Shift+Tab lifts one level.
+            // Only triggers when cursor is in a blockquote AND not in a list/table
+            // (those were handled above and returned early).
+            {
+                const sel4 = window.getSelection();
+                let cursorNode = sel4?.anchorNode;
+                if (cursorNode?.nodeType === Node.TEXT_NODE) cursorNode = cursorNode.parentElement;
+                const innerBq = cursorNode?.closest("blockquote");
+                if (innerBq && content.contains(innerBq)) {
+                    // Normalize: if blockquote has loose text children only,
+                    // wrap them in a <p> so we have a stable block to nest.
+                    if (!innerBq.querySelector("p, h1, h2, h3, h4, h5, h6, ul, ol, pre, blockquote, table, hr, div")) {
+                        const wrap = document.createElement("p");
+                        while (innerBq.firstChild) wrap.appendChild(innerBq.firstChild);
+                        innerBq.appendChild(wrap);
+                    }
+                    // Find the direct child of innerBq that contains the cursor
+                    let cursorBlock = cursorNode;
+                    if (cursorBlock === innerBq) {
+                        const offset = sel4.anchorOffset || 0;
+                        cursorBlock = innerBq.childNodes[offset]
+                            || innerBq.firstElementChild;
+                        if (cursorBlock && cursorBlock.nodeType !== Node.ELEMENT_NODE) {
+                            cursorBlock = innerBq.firstElementChild;
+                        }
+                    } else {
+                        while (cursorBlock && cursorBlock.parentNode !== innerBq) {
+                            cursorBlock = cursorBlock.parentNode;
+                        }
+                    }
+                    if (cursorBlock) {
+                        e.preventDefault();
+                        flushSnapshot(content);
+                        const savedOffset = getCursorOffset(cursorBlock);
+                        if (e.shiftKey) {
+                            // Lift: split innerBq around cursorBlock and move it out
+                            const parent = innerBq.parentNode;
+                            const afterNodes = [];
+                            let n = cursorBlock.nextSibling;
+                            while (n) {
+                                const next = n.nextSibling;
+                                afterNodes.push(n);
+                                n = next;
+                            }
+                            parent.insertBefore(cursorBlock, innerBq.nextSibling);
+                            if (afterNodes.length > 0) {
+                                const newBq = document.createElement("blockquote");
+                                for (const an of afterNodes) newBq.appendChild(an);
+                                parent.insertBefore(newBq, cursorBlock.nextSibling);
+                            }
+                            // Remove innerBq if it has no element children left
+                            // (only stray whitespace text nodes from formatting).
+                            if (!innerBq.querySelector("*") && !innerBq.textContent.trim()) {
+                                innerBq.remove();
+                            }
+                        } else {
+                            // Nest deeper: wrap cursorBlock in a new blockquote
+                            const newBq = document.createElement("blockquote");
+                            innerBq.insertBefore(newBq, cursorBlock);
+                            newBq.appendChild(cursorBlock);
+                        }
+                        restoreCursor(cursorBlock, savedOffset);
+                        content.dispatchEvent(new Event("input", { bubbles: true }));
+                        return;
+                    }
+                }
             }
 
             // Regular text: insert 4 spaces
