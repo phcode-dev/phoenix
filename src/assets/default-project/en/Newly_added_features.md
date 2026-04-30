@@ -64,6 +64,26 @@ Phoenix Code allows you to open multiple terminal tabs with your preferred shell
 
 ![Image](https://docs-images.phcode.dev/in-app/terminal.png)
 
+## [Tabbed Bottom Panel](https://docs.phcode.dev/app-links/git)
+
+`Added in April 2026`
+
+Bottom panels now share a single tabbed container - switch, reorder, maximize, or hide them all at once.  
+A new Quick Access tab keeps Problems, Git, Snippets, Shortcuts, and Terminal one click away.
+
+![Image](https://docs-images.phcode.dev/in-app/bottom-panel.png)
+
+## [Phoenix Neo Themes](https://docs.phcode.dev/app-links/themes)
+
+`Added in April 2026`
+
+Meet Phoenix Dark Neo and Phoenix Light Neo - the redesigned default themes with a cleaner, modernized look.  
+Use the new Scroll Sensitivity slider to make scrolling faster or slower.
+
+> Switch between them anytime from `View > Themes...`.
+
+![Image](https://docs-images.phcode.dev/in-app/themes-settings.png)
+
 ## [Live Preview Edit](https://docs.phcode.dev/app-links/live-preview-edit)
 
 `Added in 2025`
