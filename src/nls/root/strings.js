@@ -2216,6 +2216,7 @@ define({
     "AI_CHAT_TOOL_RESIZE_PREVIEW": "Resize preview",
     "AI_LIVE_PREVIEW_BANNER_TEXT": "AI is inspecting the live preview",
     "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI resized preview to {0}",
+    "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Click to dismiss",
     "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
     "AI_CHAT_TOOL_TASKS": "Tasks",
     "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} of {1} tasks done",
