@@ -578,8 +578,14 @@ define(function (require, exports, module) {
         const replacement = newText.substring(prefixLen, newSuffix);
 
         _syncingFromIframe = true;
+        // Suppress CM's scroll-handler echo for a brief window: replaceRange
+        // can trigger an asynchronous CM scroll (e.g. when content shrinks or
+        // cursor is auto-scrolled into view) which would otherwise feed back to
+        // the iframe and snap it to a stale "first visible line".
+        _scrollSyncFromIframe = true;
         cm.replaceRange(replacement, fromPos, toPos, "+mdviewr");
         _syncingFromIframe = false;
+        setTimeout(function () { _scrollSyncFromIframe = false; }, 200);
     }
 
     function _onIframeContentChanged(data) {
@@ -648,7 +654,12 @@ define(function (require, exports, module) {
                 _cursorRedoStack.push(pos);
                 _pendingCursorPos = pos;
             }
+            // cm.undo() can move the cursor and scroll it into view, which
+            // triggers CM's scroll handler and echoes back to the iframe as
+            // a fromScroll sync — causing visible scroll jumps. Suppress.
+            _scrollSyncFromIframe = true;
             cm.undo();
+            setTimeout(function () { _scrollSyncFromIframe = false; }, 200);
         }
     }
 
@@ -663,7 +674,9 @@ define(function (require, exports, module) {
                 _cursorUndoStack.push(pos);
                 _pendingCursorPos = pos;
             }
+            _scrollSyncFromIframe = true;
             cm.redo();
+            setTimeout(function () { _scrollSyncFromIframe = false; }, 200);
         }
     }
 
@@ -862,7 +875,11 @@ define(function (require, exports, module) {
 
         if (lineTop < viewTop || lineBottom > viewBottom) {
             const targetScrollTop = lineTop - (scrollInfo.clientHeight / 2);
+            // Suppress CM's scroll-handler echo while we scroll programmatically
+            // — otherwise the echo loops back to the iframe and re-scrolls it.
+            _scrollSyncFromIframe = true;
             cm.scrollTo(null, targetScrollTop);
+            setTimeout(function () { _scrollSyncFromIframe = false; }, 200);
         }
 
         // Brief flash on the CM line to show cursor sync feedback

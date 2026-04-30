@@ -15,6 +15,7 @@ let _lastReceivedSyncId = -1;
 let _suppressContentChange = false;
 let _scrollFromCM = false;
 let _scrollFromViewer = false;
+let _scrollFromViewerTimer = null;
 let _suppressScrollToLine = false;
 let _baseURL = "";
 let _cursorPosBeforeEdit = null; // cursor position before current edit batch
@@ -513,6 +514,11 @@ export function initBridge() {
                 }
                 if (bestEl) {
                     const sourceLine = parseInt(bestEl.getAttribute("data-source-line"), 10);
+                    // Mark the viewer as the scroll origin so CM's echo back
+                    // through handleScrollToLine is suppressed.
+                    _scrollFromViewer = true;
+                    if (_scrollFromViewerTimer) clearTimeout(_scrollFromViewerTimer);
+                    _scrollFromViewerTimer = setTimeout(() => { _scrollFromViewer = false; }, 400);
                     sendToParent("mdviewrScrollSync", { sourceLine, fromScroll: true });
                 }
             });
@@ -1057,9 +1063,9 @@ function handleScrollToLine(data) {
     // Suppress during file switch — doc cache restores the correct scroll
     if (_suppressScrollToLine) return;
 
-    // In edit mode, ignore scroll-based sync that originated from the viewer
-    // itself (feedback loop: viewer click → CM scroll → scroll sync back).
-    if (fromScroll && getState().editMode && _scrollFromViewer) return;
+    // Ignore scroll-based sync that originated from the viewer itself
+    // (feedback loop: viewer scroll/click → CM scroll → scroll sync back).
+    if (fromScroll && _scrollFromViewer) return;
 
     const viewer = document.getElementById("viewer-content");
     if (!viewer) return;
@@ -1401,8 +1407,23 @@ function _sendSelectionToParent() {
     }, 200);
 }
 
+// Events the iframe initiates that can cause CM to scroll. We mark the iframe
+// as the scroll origin so CM's resulting scroll-handler echo (forwarded back as
+// MDVIEWR_SCROLL_TO_LINE) gets suppressed by the guard in handleScrollToLine.
+const _viewerInitiatedScrollEvents = new Set([
+    "mdviewrScrollSync",
+    "mdviewrCursorLine",
+    "mdviewrSelectionSync",
+    "embeddedIframeFocusEditor"
+]);
+
 function sendToParent(eventName, payload) {
     if (!window.parent || window.parent === window) return;
+    if (_viewerInitiatedScrollEvents.has(eventName)) {
+        _scrollFromViewer = true;
+        if (_scrollFromViewerTimer) clearTimeout(_scrollFromViewerTimer);
+        _scrollFromViewerTimer = setTimeout(() => { _scrollFromViewer = false; }, 400);
+    }
     window.parent.postMessage({
         type: "MDVIEWR_EVENT",
         eventName,
