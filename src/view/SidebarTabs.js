@@ -39,6 +39,7 @@ define(function (require, exports, module) {
 
     const AppInit              = require("utils/AppInit"),
         EventDispatcher      = require("utils/EventDispatcher"),
+        Metrics              = require("utils/Metrics"),
         PreferencesManager   = require("preferences/PreferencesManager");
 
     // --- Constants -----------------------------------------------------------
@@ -495,6 +496,14 @@ define(function (require, exports, module) {
         $navTabBar.on("click", ".sidebar-tab", function () {
             const tabId = $(this).attr("data-tab-id");
             if (tabId) {
+                // Track only real user clicks here (programmatic
+                // setActiveTab calls — e.g. the phoenix-tour AI peek —
+                // shouldn't inflate the click metric). Map the built-in
+                // Files tab id to a short label; pass the (already short)
+                // id for the rest. Triple stays well within the metrics
+                // server's per-event length budget.
+                const label = (tabId === SIDEBAR_TAB_FILES) ? "files" : tabId;
+                Metrics.countEvent(Metrics.EVENT_TYPE.UI, "navTab", label);
                 setActiveTab(tabId);
             }
         });

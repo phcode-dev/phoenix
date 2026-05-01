@@ -1340,6 +1340,67 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 _log("Session:", currentSessionId);
             }
 
+            // Per-turn token usage: each SDKAssistantMessage carries the
+            // wrapped Anthropic API message whose `.usage` reflects what
+            // that single turn consumed. Useful for diagnosing runaway
+            // loops; logged but not metric'd individually (the result
+            // message rolls up the session totals).
+            if (message.type === "assistant" &&
+                    message.message && message.message.usage) {
+                const u = message.message.usage;
+                _log("Turn usage:",
+                    "in=" + (u.input_tokens || 0),
+                    "out=" + (u.output_tokens || 0),
+                    "cacheRead=" + (u.cache_read_input_tokens || 0),
+                    "cacheCreate=" + (u.cache_creation_input_tokens || 0),
+                    message.parent_tool_use_id ? "(subagent)" : "");
+            }
+
+            // Aggregate session usage on the terminal `result` message.
+            // The SDK emits exactly one of these per query (success or
+            // error_*) with totals across all turns and the per-model
+            // breakdown.
+            if (message.type === "result") {
+                const u = message.usage || {};
+                const mu = message.modelUsage || {};
+                _log("Result:",
+                    "turns=" + (message.num_turns || 0),
+                    "in=" + (u.input_tokens || 0),
+                    "out=" + (u.output_tokens || 0),
+                    "cacheRead=" + (u.cache_read_input_tokens || 0),
+                    "cacheCreate=" + (u.cache_creation_input_tokens || 0),
+                    "cost=$" + (message.total_cost_usd || 0).toFixed(4),
+                    "ms=" + (message.duration_ms || 0),
+                    "apiMs=" + (message.duration_api_ms || 0),
+                    "subtype=" + message.subtype);
+                for (const modelName of Object.keys(mu)) {
+                    const m = mu[modelName];
+                    _log("Model usage[" + modelName + "]:",
+                        "in=" + (m.inputTokens || 0),
+                        "out=" + (m.outputTokens || 0),
+                        "cacheRead=" + (m.cacheReadInputTokens || 0),
+                        "cacheCreate=" + (m.cacheCreationInputTokens || 0),
+                        "websearch=" + (m.webSearchRequests || 0),
+                        "cost=$" + (m.costUSD || 0).toFixed(4),
+                        "ctxWindow=" + (m.contextWindow || 0));
+                }
+                // Forward to the browser so AIChatPanel can raise metrics.
+                // Stuck on its own event so the existing aiComplete handler
+                // doesn't have to change shape.
+                nodeConnector.triggerPeer("aiUsage", {
+                    requestId: requestId,
+                    sessionId: currentSessionId,
+                    subtype: message.subtype,
+                    isError: !!message.is_error,
+                    numTurns: message.num_turns || 0,
+                    durationMs: message.duration_ms || 0,
+                    durationApiMs: message.duration_api_ms || 0,
+                    totalCostUSD: message.total_cost_usd || 0,
+                    usage: u,
+                    modelUsage: mu
+                });
+            }
+
             // Handle streaming events
             if (message.type === "stream_event") {
                 const event = message.event;
