@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "شناسه",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "لینک",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ افزودن کلاس",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "افزودن کلاس…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "افزودن ID…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "تگ‌های پیشنهادی",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "محاسبه‌شده:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "استفاده از «{0}»",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "نام",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "مقدار",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "در حال بارگذاری",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "هنوز کلاسی اضافه نشده",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "هنوز صفتی اضافه نشده",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "در حال بازنشانی",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} مورد دیگر",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "رنگ متن",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "افزودن کلاس…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "افزودن ID…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "هنوز کلاسی اضافه نشده",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "هنوز صفتی اضافه نشده"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "برای بستن کلیک کنید"
 });

@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "ID",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "Ligazón",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ engadir clase",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Engadir unha clase…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Engadir un ID…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "Suxestións de etiquetas",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "Calculado:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "Usar “{0}”",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "nome",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "valor",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "Cargando",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Aínda non hai clases",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Aínda non hai atributos",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "Restablecendo",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} máis",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "Cor do texto",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Engadir unha clase…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Engadir un ID…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Aínda non hai clases",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Aínda non hai atributos"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Fai clic para descartar"
 });

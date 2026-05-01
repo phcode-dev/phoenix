@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "ഐഡി",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "ലിങ്ക്",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ ക്ലാസ് ചേർക്കുക",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "ഒരു ക്ലാസ് ചേർക്കുക…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "ഒരു ഐഡി ചേർക്കുക…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "ടാഗ് നിർദ്ദേശങ്ങൾ",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "കണക്കാക്കിയത്:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "“{0}” ഉപയോഗിക്കുക",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "പേര്",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "മൂല്യം",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "ലോഡ് ചെയ്യുന്നു",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "ഇതുവരെ ക്ലാസുകളൊന്നുമില്ല",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "ഇതുവരെ ആട്രിബ്യൂട്ടുകളൊന്നുമില്ല",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "പുനഃസജ്ജീകരിക്കുന്നു",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} കൂടുതൽ",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "ടെക്സ്റ്റ് നിറം",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "ഒരു ക്ലാസ് ചേർക്കുക…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "ഒരു ഐഡി ചേർക്കുക…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "ഇതുവരെ ക്ലാസുകളൊന്നുമില്ല",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "ഇതുവരെ ആട്രിബ്യൂട്ടുകളൊന്നുമില്ല"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "തള്ളിക്കളയാൻ ക്ലിക്ക് ചെയ്യുക"
 });

@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "ID",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "Ссылка",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ добавить класс",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Добавить класс…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Добавить ID…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "Предлагаемые теги",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "Вычисленные:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "Использовать «{0}»",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "имя",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "значение",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "Загрузка",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Классов пока нет",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Атрибутов пока нет",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "Сброс",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} ещё",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "Цвет текста",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Добавить класс…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Добавить ID…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Классов пока нет",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Атрибутов пока нет"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Нажмите, чтобы закрыть"
 });

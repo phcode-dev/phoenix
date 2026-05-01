@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "ID",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "Посилання",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ додати клас",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Додати клас…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Додати ID…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "Пропозиції тегів",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "Обчислені:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "Використати «{0}»",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "назва",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "значення",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "Завантаження",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Класів ще немає",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Атрибутів ще немає",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "Скидання",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+ще {0}",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "Колір тексту",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Додати клас…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Додати ID…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Класів ще немає",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Атрибутів ще немає"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Натисніть, щоб закрити"
 });
