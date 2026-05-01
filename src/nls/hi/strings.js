@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "आईडी",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "लिंक",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ क्लास जोड़ें",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "क्लास जोड़ें…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "आईडी जोड़ें…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "टैग सुझाव",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "परिकलित:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "“{0}” का उपयोग करें",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "नाम",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "मान",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "लोड हो रहा है",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "अभी तक कोई क्लास नहीं",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "अभी तक कोई एट्रिब्यूट नहीं",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "रीसेट हो रहा है",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} और",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "टेक्स्ट का रंग",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "क्लास जोड़ें…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "आईडी जोड़ें…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "अभी तक कोई क्लास नहीं",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "अभी तक कोई एट्रिब्यूट नहीं"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "खारिज करने के लिए क्लिक करें"
 });

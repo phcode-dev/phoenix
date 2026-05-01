@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "آئی ڈی",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "لنک",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ کلاس شامل کریں",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "کلاس شامل کریں…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "ID شامل کریں…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "ٹیگ تجاویز",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "محسوب:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "”{0}“ استعمال کریں",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "نام",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "قدر",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "لوڈ ہو رہا ہے",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "ابھی تک کوئی کلاس نہیں",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "ابھی تک کوئی ایٹریبیوٹس نہیں",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "ری سیٹ ہو رہا ہے",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} مزید",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "متن کا رنگ",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "کلاس شامل کریں…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "ID شامل کریں…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "ابھی تک کوئی کلاس نہیں",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "ابھی تک کوئی ایٹریبیوٹس نہیں"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "ہٹانے کے لیے کلک کریں"
 });
