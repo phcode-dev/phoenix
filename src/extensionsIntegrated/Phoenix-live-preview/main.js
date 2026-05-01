@@ -343,8 +343,9 @@ define(function (require, exports, module) {
      * Does not hide in custom server mode (handled by _isMdviewrActive being false).
      */
     function _updateLPControlsForMdviewer() {
+        const inDesignMode = WorkspaceManager.isInDesignMode && WorkspaceManager.isInDesignMode();
         const showPen = !_isMdviewrActive;
-        const showChevron = !_isMdviewrActive;
+        const showChevron = !_isMdviewrActive && !inDesignMode;
         if ($previewBtn) {
             $previewBtn.toggle(showPen);
         }
@@ -898,7 +899,7 @@ define(function (require, exports, module) {
             $designModeBtn.attr("title",
                 on ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
             if ($modeBtn) {
-                $modeBtn.toggle(!_isMdviewrActive);
+                $modeBtn.toggle(!on && !_isMdviewrActive);
             }
         }
         $designModeBtn.click(()=>{
