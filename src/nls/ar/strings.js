@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "معرّف",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "رابط",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ إضافة فئة",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "أضف فئة...",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "أضف معرّفًا...",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "اقتراحات الوسوم",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "محسوب:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "استخدام “{0}”",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "الاسم",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "القيمة",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "جارٍ التحميل",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "لا توجد فئات بعد",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "لا توجد سمات بعد",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "جارٍ إعادة التعيين",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} أخرى",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "لون النص",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "أضف فئة...",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "أضف معرّفًا...",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "لا توجد فئات بعد",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "لا توجد سمات بعد"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "اضغط للتجاهل"
 });
