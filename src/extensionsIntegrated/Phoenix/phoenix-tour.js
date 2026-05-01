@@ -33,6 +33,7 @@ define(function (require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         Metrics             = require("utils/Metrics"),
         SidebarView         = require("project/SidebarView"),
+        SidebarTabs         = require("view/SidebarTabs"),
         ProjectManager      = require("project/ProjectManager"),
         EditorManager       = require("editor/EditorManager"),
         CommandManager      = require("command/CommandManager"),
@@ -76,6 +77,21 @@ define(function (require, exports, module) {
     let _rafId = null;
     let _timers = [];
 
+    // Per-step: tracks a click on the highlighted target while the
+    // overlay is showing, fires a metric, then detaches. Cleared by
+    // _detachStepClickMetric on step transitions and teardown.
+    let _activeStepClickHandler = null;
+    let _activeStepClickTarget = null;
+
+    // Step 2: when the step starts we briefly switch the sidebar to the
+    // AI tab as an automatic peek (2s) and revert to whatever the user
+    // was on. _peekPrevTab is non-null only while a peek is in flight so
+    // teardown can revert cleanly if the tour ends mid-peek.
+    let _step2PeekTimer = null;
+    let _step2PeekPrevTab = null;
+    const STEP2_PEEK_HOLD_MS = 2000;
+    const SIDEBAR_AI_TAB_ID = "ai";
+
     function _markComplete() {
         _state.version = CURRENT_TOUR_VERSION;
         _saveState(_state);
@@ -92,8 +108,74 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Attach a one-shot click listener to `$target` that fires a "stepN_clicked"
+     * metric. Captures real user clicks during the overlay session — not the
+     * synthetic class toggles the demos do. Replaces any previously attached
+     * step handler so we never double-count across step transitions.
+     */
+    function _attachStepClickMetric(stepNum, $target) {
+        _detachStepClickMetric();
+        if (!$target || !$target.length || !$target[0]) {
+            return;
+        }
+        const targetEl = $target[0];
+        const handler = function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.GUIDE, "tour", "step" + stepNum + "_clicked");
+            _detachStepClickMetric();
+        };
+        targetEl.addEventListener("click", handler, true);
+        _activeStepClickTarget = targetEl;
+        _activeStepClickHandler = handler;
+    }
+
+    function _detachStepClickMetric() {
+        if (_activeStepClickTarget && _activeStepClickHandler) {
+            _activeStepClickTarget.removeEventListener("click", _activeStepClickHandler, true);
+        }
+        _activeStepClickTarget = null;
+        _activeStepClickHandler = null;
+    }
+
+    /**
+     * Step 2 only: automatically switch the sidebar to the AI tab for a
+     * couple of seconds so the user sees what's behind the tab, then
+     * revert. No-op if the user is already on the AI tab.
+     */
+    function _runStep2AIPeek() {
+        _cancelStep2AIPeek();
+        const current = SidebarTabs.getActiveTab && SidebarTabs.getActiveTab();
+        if (current === SIDEBAR_AI_TAB_ID) {
+            return;
+        }
+        _step2PeekPrevTab = current;
+        SidebarTabs.setActiveTab(SIDEBAR_AI_TAB_ID);
+        _step2PeekTimer = setTimeout(function () {
+            if (_step2PeekPrevTab) {
+                SidebarTabs.setActiveTab(_step2PeekPrevTab);
+            }
+            _step2PeekPrevTab = null;
+            _step2PeekTimer = null;
+        }, STEP2_PEEK_HOLD_MS);
+    }
+
+    function _cancelStep2AIPeek() {
+        if (_step2PeekTimer) {
+            clearTimeout(_step2PeekTimer);
+            _step2PeekTimer = null;
+        }
+        // If we tore down or transitioned mid-peek, restore the previous
+        // tab so the sidebar doesn't get stranded on AI.
+        if (_step2PeekPrevTab) {
+            SidebarTabs.setActiveTab(_step2PeekPrevTab);
+            _step2PeekPrevTab = null;
+        }
+    }
+
     function _teardown() {
         _clearTimers();
+        _detachStepClickMetric();
+        _cancelStep2AIPeek();
         if ($overlay) {
             $overlay.remove();
             $overlay = null;
@@ -213,6 +295,7 @@ define(function (require, exports, module) {
         _trackTarget($btn, "right");
         _setStep(1);
         Metrics.countEvent(Metrics.EVENT_TYPE.GUIDE, "tour", "step1");
+        _attachStepClickMetric(1, $btn);
         // Single, stable message for the entire step. The visible toggle of
         // design mode does the explaining; rotating text under a 2-second
         // demo is too quick to read.
@@ -248,6 +331,9 @@ define(function (require, exports, module) {
     }
 
     function _runStep2() {
+        // Each step transition cancels the previous step's instrumentation.
+        _detachStepClickMetric();
+        _cancelStep2AIPeek();
         _ensureSidebarVisible();
         const $tab = $('.sidebar-tab[data-tab-id="ai"]');
         if (!$tab.length) {
@@ -269,11 +355,17 @@ define(function (require, exports, module) {
                 }
             }
         ]);
+        _attachStepClickMetric(2, $tab);
+        // Auto-peek the AI panel for a couple of seconds so the user gets
+        // a glance at its contents, then revert.
+        _runStep2AIPeek();
         // Intentionally do NOT advance on a real click of the target — the
         // user needs time to read the prompt; only the Next button advances.
     }
 
     function _runStep3() {
+        _detachStepClickMetric();
+        _cancelStep2AIPeek();
         _ensureSidebarVisible();
         const $newBtn = $("#newProject");
         if (!$newBtn.length) {
@@ -286,6 +378,7 @@ define(function (require, exports, module) {
         _trackTarget($newBtn, "right");
         _setStep(3);
         Metrics.countEvent(Metrics.EVENT_TYPE.GUIDE, "tour", "step3");
+        _attachStepClickMetric(3, $newBtn);
         _setText(Strings.PHOENIX_TOUR_NEW_PROJECT);
         _setActions([
             {
@@ -354,6 +447,8 @@ define(function (require, exports, module) {
     }
 
     async function _runStep4() {
+        _detachStepClickMetric();
+        _cancelStep2AIPeek();
         _ensureSidebarVisible();
         try {
             await _ensureLivePreviewReady();
@@ -375,6 +470,7 @@ define(function (require, exports, module) {
         _trackTarget($btn, "left");
         _setStep(4);
         Metrics.countEvent(Metrics.EVENT_TYPE.GUIDE, "tour", "step4");
+        _attachStepClickMetric(4, $btn);
         _setText(Strings.PHOENIX_TOUR_EDIT_MODE);
         _setActions([
             {
