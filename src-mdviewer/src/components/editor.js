@@ -12,6 +12,7 @@ import { initImagePopover, destroyImagePopover } from "./image-popover.js";
 import { initLangPicker, destroyLangPicker, isLangPickerDropdownOpen } from "./lang-picker.js";
 import { highlightCode, renderAfterHTML, normalizeCodeLanguages } from "./viewer.js";
 import { initMermaidEditor, destroyMermaidEditor, insertMermaidBlock, attachOverlays } from "./mermaid-editor.js";
+import { metricCount } from "../bridge.js";
 
 const devLog = import.meta.env.DEV ? console.log.bind(console, "[editor]") : () => {};
 let turndown = null;
@@ -713,6 +714,10 @@ function handleImagePaste(e, contentEl) {
     for (let i = 0; i < items.length; i++) {
         if (items[i].kind === "file" && ALLOWED_IMAGE_TYPES.includes(items[i].type)) {
             e.preventDefault();
+            // Image paste in the live-preview iframe (paired with
+            // md/image/pasteCM for the CodeMirror editor path). No
+            // image data is recorded — just the count.
+            metricCount("image", "pasteLP");
             const blob = items[i].getAsFile();
             const fileName = blob.name || ("image." + blob.type.split("/")[1]);
             const uploadId = _insertUploadPlaceholder(contentEl);
@@ -1004,6 +1009,17 @@ function showHandleMenu(anchor, type, ctx, contentEl, wrapper, clickX) {
             { label: t("table.delete_table"), destructive: true, action: () => { flushSnapshot(contentEl); deleteTable(ctx.table); dispatchInputEvent(contentEl); } }
         ];
     }
+
+    // Wrap each action so picking any row/col menu item raises a single
+    // metric (md/table/rowEdit or colEdit). We don't record which
+    // specific edit — just that one happened — to keep cardinality low.
+    const editLabel = type === "row" ? "rowEdit" : "colEdit";
+    items.forEach((it) => {
+        if (it.action) {
+            const orig = it.action;
+            it.action = () => { metricCount("table", editLabel); orig(); };
+        }
+    });
 
     menu.innerHTML = "";
     items.forEach((item) => {

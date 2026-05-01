@@ -131,6 +131,7 @@ define(function (require, exports, module) {
         PRO: "pro",
         AI: "ai",
         TERMINAL: "term",
+        MD: "md",
         GUIDE: "guide"
     };
 

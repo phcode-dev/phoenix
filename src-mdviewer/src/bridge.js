@@ -1430,3 +1430,16 @@ function sendToParent(eventName, payload) {
         ...payload
     }, "*");
 }
+
+// ─── Metrics helpers ───────────────────────────────────────────────
+// Forwards metric events to the host (MarkdownSync.js) which routes them
+// to Metrics.countEvent / valueEvent under EVENT_TYPE.MD. Only metadata
+// (subcat, label, optional numeric value) crosses the boundary — never
+// markdown content, file paths, or user keystrokes.
+export function metricCount(subcat, label) {
+    sendToParent("mdviewrMetric", { kind: "count", subcat, label });
+}
+
+export function metricValue(subcat, label, value) {
+    sendToParent("mdviewrMetric", { kind: "value", subcat, label, value });
+}
