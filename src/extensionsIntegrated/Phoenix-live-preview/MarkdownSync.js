@@ -48,6 +48,20 @@ define(function (require, exports, module) {
     // metric tells us "users who edit at least one md doc" without
     // inflating with every keystroke.
     const _mdEditedFiles = new Set();
+
+    // Session-cumulative edit-batch count for distinguishing light vs
+    // heavy markdown editors. Each iframe content change (already
+    // 50ms-debounced upstream) increments this. When the count crosses
+    // a bucket threshold we fire a one-shot count event so the analytics
+    // funnel reads as: users-with-LTE5 ⊇ LTE25 ⊇ LTE100 ⊇ GT500.
+    let _mdEditCount = 0;
+    const MD_EDIT_BUCKETS = [
+        { threshold:   5, label: "LTE5"   },
+        { threshold:  25, label: "LTE25"  },
+        { threshold: 100, label: "LTE100" },
+        { threshold: 500, label: "GT500"  }
+    ];
+
     let _active = false;
     let _doc = null;
     let _$iframe = null;
@@ -673,6 +687,18 @@ define(function (require, exports, module) {
         if (editedPath && !_mdEditedFiles.has(editedPath)) {
             _mdEditedFiles.add(editedPath);
             Metrics.countEvent(Metrics.EVENT_TYPE.MD, "doc", "edited");
+        }
+
+        // Edit-volume bucket: fire once when the cumulative session
+        // edit count first crosses each threshold. Each bucket fires
+        // at most once per session, so the metric reads as a funnel.
+        _mdEditCount++;
+        for (let i = 0; i < MD_EDIT_BUCKETS.length; i++) {
+            if (_mdEditCount === MD_EDIT_BUCKETS[i].threshold) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.MD,
+                    "edits", MD_EDIT_BUCKETS[i].label);
+                break;
+            }
         }
 
         // Send back the actual CM text so the iframe can compute accurate
