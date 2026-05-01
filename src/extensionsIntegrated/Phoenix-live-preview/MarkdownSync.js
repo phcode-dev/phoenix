@@ -53,10 +53,14 @@ define(function (require, exports, module) {
     // heavy markdown editors. Each iframe content change (already
     // 50ms-debounced upstream) increments this. When the count crosses
     // a bucket threshold we fire a one-shot count event so the analytics
-    // funnel reads as: users-with-LTE500 ⊇ LTE1K ⊇ GT1K. A representative
-    // sample, not a fine-grained histogram.
+    // funnel reads as: users-with-LTE5 ⊇ LTE25 ⊇ LTE100 ⊇ GT500/LTE500
+    // ⊇ LTE1K ⊇ GT1K — a coarse-to-fine view of edit volume per session.
     let _mdEditCount = 0;
     const MD_EDIT_BUCKETS = [
+        { threshold:    5, label: "LTE5"   },
+        { threshold:   25, label: "LTE25"  },
+        { threshold:  100, label: "LTE100" },
+        { threshold:  500, label: "GT500"  },
         { threshold:  500, label: "LTE500" },
         { threshold: 1000, label: "LTE1K"  },
         { threshold: 1001, label: "GT1K"   }
@@ -692,12 +696,13 @@ define(function (require, exports, module) {
         // Edit-volume bucket: fire once when the cumulative session
         // edit count first crosses each threshold. Each bucket fires
         // at most once per session, so the metric reads as a funnel.
+        // No early-out: multiple labels at the same threshold all
+        // fire (e.g. GT500 + LTE500 at 500 batches).
         _mdEditCount++;
         for (let i = 0; i < MD_EDIT_BUCKETS.length; i++) {
             if (_mdEditCount === MD_EDIT_BUCKETS[i].threshold) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.MD,
                     "edits", MD_EDIT_BUCKETS[i].label);
-                break;
             }
         }
 
