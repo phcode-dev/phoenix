@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "ID",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "Link",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ aggiungi classe",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Aggiungi una classe…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Aggiungi un ID…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "Suggerimenti tag",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "Calcolato:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "Usa “{0}”",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "nome",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "valore",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "Caricamento",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Ancora nessuna classe",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Ancora nessun attributo",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "Reimpostazione in corso",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} in più",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "Colore testo",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Aggiungi una classe…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Aggiungi un ID…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Ancora nessuna classe",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Ancora nessun attributo"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Clicca per chiudere"
 });

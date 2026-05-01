@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "ID",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "Връзка",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ добави клас",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Добавете клас…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Добавете ID…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "Предложения за тагове",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "Изчислени:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "Използвай „{0}“",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "име",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "стойност",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "Зареждане",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Все още няма класове",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Все още няма атрибути",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "Нулиране",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} още",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "Цвят на текста",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Добавете клас…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Добавете ID…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Все още няма класове",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Все още няма атрибути"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Кликнете за затваряне"
 });

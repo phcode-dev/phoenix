@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "Azonosító",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "Hivatkozás",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ osztály hozzáadása",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Osztály hozzáadása…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Azonosító hozzáadása…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "Címkejavaslatok",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "Számított:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "Használja a(z) „{0}”-t",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "név",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "érték",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "Betöltés",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Még nincsenek osztályok",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Még nincsenek attribútumok",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "Visszaállítás",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} további",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "Szövegszín",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Osztály hozzáadása…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Azonosító hozzáadása…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Még nincsenek osztályok",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Még nincsenek attribútumok"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kattintson az elvetéshez"
 });

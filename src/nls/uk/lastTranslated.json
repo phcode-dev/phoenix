@@ -209,6 +209,7 @@
   "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "No AI config file found in system. AI is enabled for all users.",
   "AI_CONTROL_USER_ALLOWED": "AI is enabled for user ({0}) but disabled for others",
   "AI_DISABLED_DIALOG_TITLE": "AI is disabled",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Click to dismiss",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI resized preview to {0}",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI is inspecting the live preview",
   "AI_LOGIN_DIALOG_BUTTON": "Get AI Access",

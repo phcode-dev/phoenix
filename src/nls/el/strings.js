@@ -261,6 +261,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ID": "Αναγνωριστικό",
   "LIVE_DEV_ELEMENT_PROPS_HREF": "Σύνδεσμος",
   "LIVE_DEV_ELEMENT_PROPS_ADD_CLASS": "+ προσθήκη κλάσης",
+  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Προσθήκη κλάσης…",
+  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Προσθήκη ID…",
   "LIVE_DEV_ELEMENT_PROPS_SEARCH_TAGS": "Προτάσεις ετικετών",
   "LIVE_DEV_ELEMENT_PROPS_COMPUTED": "Υπολογισμένο:",
   "LIVE_DEV_ELEMENT_PROPS_USE_CUSTOM": "Χρήση «{0}»",
@@ -269,6 +271,8 @@ define({
   "LIVE_DEV_ELEMENT_PROPS_ATTR_NAME": "όνομα",
   "LIVE_DEV_ELEMENT_PROPS_ATTR_VALUE": "τιμή",
   "LIVE_DEV_ELEMENT_PROPS_LOADING": "Φόρτωση",
+  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Δεν υπάρχουν κλάσεις ακόμα",
+  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Δεν υπάρχουν χαρακτηριστικά ακόμα",
   "LIVE_DEV_ELEMENT_PROPS_RESETTING": "Επαναφορά",
   "LIVE_DEV_CB_EXCEEDED_CLASSES": "+{0} ακόμη",
   "LIVE_DEV_CB_TIP_TEXT_COLOR": "Χρώμα κειμένου",
@@ -2242,8 +2246,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "LIVE_DEV_ELEMENT_PROPS_CLASS_PLACEHOLDER": "Προσθήκη κλάσης…",
-  "LIVE_DEV_ELEMENT_PROPS_ID_PLACEHOLDER": "Προσθήκη ID…",
-  "LIVE_DEV_ELEMENT_PROPS_NO_CLASSES": "Δεν υπάρχουν κλάσεις ακόμα",
-  "LIVE_DEV_ELEMENT_PROPS_NO_ATTRIBUTES": "Δεν υπάρχουν χαρακτηριστικά ακόμα"
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Κάντε κλικ για παράβλεψη"
 });
