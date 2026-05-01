@@ -25,6 +25,7 @@ define(function (require, exports, module) {
     const Commands          = require("command/Commands");
     const DocumentManager   = require("document/DocumentManager");
     const MainViewManager   = require("view/MainViewManager");
+    const Metrics           = require("utils/Metrics");
     const Strings           = require("strings");
     const WorkspaceManager  = require("view/WorkspaceManager");
     const SidebarView       = require("project/SidebarView");
@@ -302,20 +303,41 @@ define(function (require, exports, module) {
         $btn.find("i").attr("class", isVisible ? "fa-solid fa-angles-left" : "fa-solid fa-angles-right");
     }
 
+    function _ccbClickMetric(label) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "ccb", label);
+    }
+
     function _wireButtons() {
-        $("#ccbUndoBtn").on("click", function (e) { e.preventDefault(); _executeCmd(Commands.EDIT_UNDO); });
-        $("#ccbRedoBtn").on("click", function (e) { e.preventDefault(); _executeCmd(Commands.EDIT_REDO); });
-        $("#ccbSaveBtn").on("click", function (e) { e.preventDefault(); _executeCmd(Commands.FILE_SAVE); });
+        $("#ccbUndoBtn").on("click", function (e) {
+            e.preventDefault();
+            _ccbClickMetric("undo");
+            _executeCmd(Commands.EDIT_UNDO);
+        });
+        $("#ccbRedoBtn").on("click", function (e) {
+            e.preventDefault();
+            _ccbClickMetric("redo");
+            _executeCmd(Commands.EDIT_REDO);
+        });
+        $("#ccbSaveBtn").on("click", function (e) {
+            e.preventDefault();
+            _ccbClickMetric("save");
+            _executeCmd(Commands.FILE_SAVE);
+        });
         $("#ccbCollapseEditorBtn").on("click", function (e) {
             e.preventDefault();
+            // editorCollapsed reflects the state *before* the toggle
+            // executes; record which direction the user is going.
+            _ccbClickMetric(editorCollapsed ? "designOff" : "designOn");
             CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
         });
         $("#ccbSidebarToggleBtn").on("click", function (e) {
             e.preventDefault();
+            _ccbClickMetric("sidebar");
             _executeCmd(Commands.VIEW_HIDE_SIDEBAR);
         });
         $("#ccbFileLabel").on("click", function (e) {
             e.preventDefault();
+            _ccbClickMetric("file");
             _executeCmd(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         });
     }

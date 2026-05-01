@@ -129,6 +129,8 @@ define(function (require, exports, module) {
         GIT: "git",
         AUTH: "auth",
         PRO: "pro",
+        AI: "ai",
+        TERMINAL: "term",
         GUIDE: "guide"
     };
 

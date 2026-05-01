@@ -33,6 +33,7 @@ define(function (require, exports, module) {
     const WorkspaceManager = require("view/WorkspaceManager");
     const ProjectManager = require("project/ProjectManager");
     const ExtensionUtils = require("utils/ExtensionUtils");
+    const Metrics = require("utils/Metrics");
     const NodeConnector = require("NodeConnector");
     const Mustache = require("thirdparty/mustache/mustache");
     const Dialogs = require("widgets/Dialogs");
@@ -167,6 +168,7 @@ define(function (require, exports, module) {
                     active.focus();
                 }
                 _showFocusHintToast();
+                Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "panel", "open");
             }
         });
 
@@ -199,6 +201,11 @@ define(function (require, exports, module) {
                 ShellProfiles.setDefaultShell(shell.name);
                 _populateShellDropdown();
                 _updateNewTerminalButtonLabel();
+                // Metric: which shell the user picked from the dropdown
+                // (default-shell switch). _createNewTerminalWithShell below
+                // will also raise its own "new" metric for the spawn.
+                Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "pick",
+                    _shellMetricLabel(shell.name));
                 _createNewTerminalWithShell(shell);
             });
             $shellDropdown.append($item);
@@ -290,11 +297,33 @@ define(function (require, exports, module) {
      * @param {Object} shell - Shell profile to use
      * @param {string} [cwdOverride] - Optional VFS path to use as cwd instead of project root
      */
+    /**
+     * Map an OS shell name (e.g. "powershell.exe", "bash.exe") to a short
+     * family label so the metrics server's per-event length budget stays
+     * comfortable. Strips ".exe" and lower-cases; unknown shells fall
+     * through under "other" (with their lower-cased name shown only in
+     * the cap'd 8-char form).
+     */
+    function _shellMetricLabel(shellName) {
+        if (!shellName) { return "unknown"; }
+        let n = String(shellName).toLowerCase();
+        if (n.endsWith(".exe")) { n = n.slice(0, -4); }
+        // pwsh & powershell are functionally the same family for the metric.
+        if (n === "powershell") { n = "pwsh"; }
+        // Cap so an unexpected long shell name can't blow the label cell.
+        if (n.length > 8) { n = n.slice(0, 8); }
+        return n || "unknown";
+    }
+
     async function _createNewTerminalWithShell(shell, cwdOverride) {
         if (!shell) {
             console.error("Terminal: No shell available");
+            Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "new", "noShell");
             return;
         }
+        // Metric: a new terminal session was created, keyed by shell family.
+        Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "new",
+            _shellMetricLabel(shell.name));
 
         // Get cwd: use override if provided, otherwise fall back to project root
         let cwd;
@@ -319,6 +348,16 @@ define(function (require, exports, module) {
 
         // Add to list
         terminalInstances.push(instance);
+
+        // Tab-count bucket metric — raised only on tab creation so we
+        // can plot how many concurrent terminal tabs users keep open.
+        // Buckets: 1 → "one", 2..4 → "LTE4", 5..9 → "LTE9", 10+ → "GT10".
+        const count = terminalInstances.length;
+        const tabsBucket = count === 1 ? "one"
+                         : count <= 4 ? "LTE4"
+                         : count <= 9 ? "LTE9"
+                                      : "GT10";
+        Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "tabs", tabsBucket);
 
         // Activate this terminal (also updates flyout)
         _activateTerminal(instance.id);
@@ -394,6 +433,7 @@ define(function (require, exports, module) {
         instance.dispose();
         terminalInstances.splice(idx, 1);
         delete processInfo[id];
+        Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "close", "user");
 
         // If we closed the active terminal, activate another
         if (activeTerminalId === id) {
@@ -563,6 +603,12 @@ define(function (require, exports, module) {
     function _onTerminalProcessExit(id, exitCode) {
         delete processInfo[id];
         _updateFlyout();
+        // Metric: terminal process exited on its own (e.g. user typed
+        // "exit"). Distinct from "user" close above, which records the
+        // X-button / panel-driven close path. Exit code is bucketed
+        // ok/err so cardinality stays bounded.
+        Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "exit",
+            exitCode === 0 ? "ok" : "err");
     }
 
     /**

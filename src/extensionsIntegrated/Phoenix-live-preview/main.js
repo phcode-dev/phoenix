@@ -755,6 +755,12 @@ define(function (require, exports, module) {
      */
     function _handlePreviewBtnClick() {
         const currentMode = LiveDevelopment.getCurrentMode();
+        // Metric: which direction the user is toggling so we can see
+        // how often the inline-edit affordance is actually used vs
+        // simply opened-then-closed.
+        Metrics.countEvent(Metrics.EVENT_TYPE.LP_EDIT, "modeBtn",
+            currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE
+                ? "toPrev" : "toEdit");
         if (currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE) {
             LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE);
             return;
