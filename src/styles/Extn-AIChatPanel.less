@@ -644,6 +644,10 @@
     }
 }
 
+/* Fullscreen video overlay opened from the AI panel intro thumbnail.
+   Position fixed so it covers the entire app viewport (not just the
+   AI panel column). The inner player is sized to use most of the
+   screen while preserving 16:9 letterboxing inside the dark backdrop. */
 /* ── Assistant message — markdown content ───────────────────────────── */
 .ai-msg-assistant {
     .ai-msg-content {
@@ -2820,24 +2824,6 @@
     margin: 0;
     white-space: normal;
     overflow-wrap: anywhere;
-}
-
-.ai-intro-video-player {
-    display: block;
-    width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.25);
-    aspect-ratio: 16 / 9;
-
-    video {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        background: rgba(0, 0, 0, 0.25);
-    }
 }
 
 .ai-intro-video-thumb {

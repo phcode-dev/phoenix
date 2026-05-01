@@ -1,0 +1,87 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along
+ * with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/* Styles for view/VideoPlayer.js — both the inline createPlayer wrapper
+ * and the renderFullScreenPlayer overlay (genie-style expand-from-source
+ * animation). The fullscreen overlay's player-expand animation is
+ * JS-driven (FLIP transform) so it can target the actual source rect at
+ * click time; only the backdrop fade is keyframe-driven. */
+
+@keyframes phx-video-fs-backdrop-in {
+    from { background-color: rgba(0, 0, 0, 0); }
+    to   { background-color: rgba(0, 0, 0, 0.88); }
+}
+
+.phx-video-fullscreen-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 24px;
+    box-sizing: border-box;
+    animation: phx-video-fs-backdrop-in 220ms ease-out;
+
+    .phx-video-fullscreen-player {
+        cursor: default;
+        width: min(90vw, calc((90vh - 48px) * 16 / 9));
+        max-width: 90vw;
+        max-height: 90vh;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 6px 32px rgba(0, 0, 0, 0.6);
+        transform-origin: center;
+        will-change: transform, opacity;
+
+        video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+    }
+
+    .phx-video-fullscreen-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.15s ease, transform 0.15s ease;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+    }
+}
