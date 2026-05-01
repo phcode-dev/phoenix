@@ -41,6 +41,7 @@ define(function (require, exports, module) {
         ChangeHelper = require("editor/EditorHelper/ChangeHelper"),
         LanguageManager = require("language/LanguageManager"),
         ImageUploadManager = require("features/ImageUploadManager"),
+        Metrics = require("utils/Metrics"),
         Dialogs = require("widgets/Dialogs"),
         AppInit = require("utils/AppInit");
 
@@ -1315,6 +1316,11 @@ define(function (require, exports, module) {
         }
 
         event.preventDefault();
+
+        // Metric: image paste in the CodeMirror markdown editor view
+        // (paired with md/image/pasteLP for the live-preview iframe path).
+        // No image data or filename is recorded — just the count.
+        Metrics.countEvent(Metrics.EVENT_TYPE.MD, "image", "pasteCM");
 
         const blob = imageItem.getAsFile();
         const fileName = blob.name || ("image." + blob.type.split("/")[1]);

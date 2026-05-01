@@ -40,6 +40,16 @@ import {
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
 import { t, tp } from "../core/i18n.js";
+import { metricCount } from "../bridge.js";
+
+// Toolbar buttons whose clicks roll up under md/nav/formatClick (text-
+// formatting and heading switches). Anything not in this set is treated
+// as a generic md/nav/itemClick so we capture toolbar usage without
+// fragmenting the metric across every button id.
+const FORMAT_CLICK_IDS = new Set([
+    "emb-bold", "emb-italic", "emb-strike", "emb-underline", "emb-code",
+    "emb-block-type" // heading dropdown
+]);
 
 let toolbar = null;
 let resizeObserver = null;
@@ -264,6 +274,14 @@ function wireFormatButtons() {
         if (el) {
             el.addEventListener("mousedown", (e) => {
                 e.preventDefault();
+                // Generic toolbar usage metric: format vs item bucket.
+                // Image insert specifically is also tracked under
+                // md/image/insert below for cross-feature roll-up.
+                metricCount("nav",
+                    FORMAT_CLICK_IDS.has(binding.id) ? "formatClick" : "itemClick");
+                if (binding.id === "emb-image-url" || binding.id === "emb-image-upload") {
+                    metricCount("image", "insert");
+                }
                 emit("action:format", { command: binding.command, value: binding.value });
             });
         }
@@ -274,6 +292,9 @@ function wireBlockTypeSelect() {
     const blockTypeSelect = document.getElementById("emb-block-type");
     if (blockTypeSelect) {
         blockTypeSelect.addEventListener("change", (e) => {
+            // Heading dropdown rolls up under formatClick (heading
+            // selection is a formatting action, just delivered via select).
+            metricCount("nav", "formatClick");
             emit("action:format", { command: "formatBlock", value: e.target.value });
             e.target.blur();
         });
@@ -347,6 +368,7 @@ function wirePrintButton() {
     const printBtn = document.getElementById("emb-print-btn");
     if (printBtn) {
         printBtn.addEventListener("click", () => {
+            metricCount("print", "click");
             window.print();
         });
     }

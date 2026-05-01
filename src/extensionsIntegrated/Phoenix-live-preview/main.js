@@ -1626,6 +1626,9 @@ define(function (require, exports, module) {
                         text: buttonGetProText }
                 ];
                 Metrics.countEvent(Metrics.EVENT_TYPE.LP_EDIT, "mdEditUpsell", "show");
+                // Mirror under the MD category so it groups with the rest
+                // of the markdown-editor metrics on the dashboard.
+                Metrics.countEvent(Metrics.EVENT_TYPE.MD, "upsell", "shown");
                 Dialogs.showModalDialog(Dialogs.DIALOG_ID_INFO,
                     Strings.AVAILABLE_IN_PRO_TITLE,
                     Strings.MD_EDIT_UPSELL_MESSAGE, buttons)

@@ -20,6 +20,7 @@ import {
 import { emit } from "../core/events.js";
 import { getSelectionRect } from "./editor.js";
 import { t } from "../core/i18n.js";
+import { metricCount } from "../bridge.js";
 
 let menu = null;
 let contentEl = null;
@@ -221,6 +222,9 @@ function show() {
   const rect = _savedSlashRect;
   const anchor = document.getElementById("slash-menu-anchor");
   if (!anchor) return;
+  // Slash popup appearance metric — fires when the menu actually
+  // becomes visible, not on every keystroke that filters items.
+  metricCount("slash", "popup");
 
   // Position anchor below the cursor line with gap
   const lineHeight = rect.bottom - rect.top;
@@ -273,6 +277,9 @@ function selectItem(index) {
   if (index < 0 || index >= filteredItems.length) return;
   const item = filteredItems[index];
   recordUsage(item.labelKey);
+  // Slash selection metric — does not record which item was picked
+  // (recordUsage already tracks that locally for prioritisation).
+  metricCount("slash", "select");
 
   // Capture slashRange before hide() clears it
   const savedRange = slashRange;

@@ -29,6 +29,7 @@ define(function (require, exports, module) {
         CommandManager = require("command/CommandManager"),
         Commands = require("command/Commands"),
         KeyBindingManager = require("command/KeyBindingManager"),
+        Metrics = require("utils/Metrics"),
         utils = require("./utils");
 
     // Commands whose shortcuts, when forwarded from the md viewer iframe,
@@ -42,6 +43,11 @@ define(function (require, exports, module) {
         Commands.CMD_FIND_IN_FILES
     ];
 
+    // Set of file paths the user has edited in the markdown viewer this
+    // session. Used to fire md/doc/edited at most once per file so the
+    // metric tells us "users who edit at least one md doc" without
+    // inflating with every keystroke.
+    const _mdEditedFiles = new Set();
     let _active = false;
     let _doc = null;
     let _$iframe = null;
@@ -127,6 +133,12 @@ define(function (require, exports, module) {
                 _handleRedo();
                 break;
             case "mdviewrEditModeChanged":
+                // Mode switch metric — reader/edit are the only two
+                // states the iframe reports. Fires on every transition
+                // (including init) so we see how often users go in and
+                // out of edit mode.
+                Metrics.countEvent(Metrics.EVENT_TYPE.MD, "mode",
+                    data.editMode ? "edit" : "reader");
                 // When switching to reader, send CM content so the iframe
                 // can re-render with accurate data-source-line for cursor sync.
                 if (!data.editMode && _doc) {
@@ -160,6 +172,30 @@ define(function (require, exports, module) {
                 // Persist via StateManager (accessed through main.js callback)
                 if (_onThemeToggle) {
                     _onThemeToggle(data.theme);
+                }
+                // Theme switch metric — fires on every user toggle. The
+                // initial state (light vs dark) is reported separately
+                // when the viewer first activates a markdown doc.
+                if (data.theme === "dark" || data.theme === "light") {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.MD, "theme", data.theme);
+                }
+                break;
+            case "mdviewrMetric":
+                // Generic metric forwarder for events the iframe wants
+                // to record. Schema:
+                //   { kind: "count" | "value", subcat, label, [value] }
+                // We validate types before forwarding so a malformed
+                // payload from the iframe can't break the metrics
+                // pipeline. Category is always EVENT_TYPE.MD.
+                if (data && typeof data.subcat === "string" && data.subcat &&
+                        typeof data.label === "string" && data.label) {
+                    if (data.kind === "value" && Number.isFinite(data.value)) {
+                        Metrics.valueEvent(Metrics.EVENT_TYPE.MD,
+                            data.subcat, data.label, data.value);
+                    } else {
+                        Metrics.countEvent(Metrics.EVENT_TYPE.MD,
+                            data.subcat, data.label);
+                    }
                 }
                 break;
             case "mdviewrImageUploadRequest":
@@ -390,6 +426,15 @@ define(function (require, exports, module) {
         _sendTheme();
         _sendLocale();
         _sendSkipRefocusShortcuts();
+        // Record the effective theme the user is starting in
+        // (light vs dark). Mirror of mdviewrThemeToggle so the dark/
+        // light counter reflects both initial state and toggles.
+        const initialTheme = _themeOverride
+            || ((ThemeManager.getCurrentTheme() && ThemeManager.getCurrentTheme().dark)
+                ? "dark" : "light");
+        if (initialTheme === "dark" || initialTheme === "light") {
+            Metrics.countEvent(Metrics.EVENT_TYPE.MD, "theme", initialTheme);
+        }
         if (_onIframeReadyCallback) {
             _onIframeReadyCallback();
         }
@@ -621,6 +666,14 @@ define(function (require, exports, module) {
         }
 
         _applyDiffToEditor(markdown);
+
+        // First-edit metric per file per session — fires at most once
+        // per document so "users who edit any md file" is a clean count.
+        const editedPath = _doc && _doc.file && _doc.file.fullPath;
+        if (editedPath && !_mdEditedFiles.has(editedPath)) {
+            _mdEditedFiles.add(editedPath);
+            Metrics.countEvent(Metrics.EVENT_TYPE.MD, "doc", "edited");
+        }
 
         // Send back the actual CM text so the iframe can compute accurate
         // data-source-line attributes. The markdown from convertToMarkdown
