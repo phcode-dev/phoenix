@@ -846,10 +846,12 @@ define(function (require, exports, module) {
         const active = _getActiveTerminal();
         if (active && active.isAlive) {
             active.focus();
-            navigator.clipboard.readText().then(function (text) {
+            Phoenix.app.clipboardReadText().then(function (text) {
                 if (text) {
                     nodeConnector.execPeer("writeTerminal", {id: active.id, data: text});
                 }
+            }).catch(function (err) {
+                console.error("Terminal paste failed:", err);
             });
         }
     });
