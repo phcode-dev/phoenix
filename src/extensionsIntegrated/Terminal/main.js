@@ -903,7 +903,7 @@ define(function (require, exports, module) {
             }
         });
         PanelView.on(PanelView.EVENT_PANEL_HIDDEN, function (_event, panelId) {
-            if (panelId === PANEL_ID) {
+            if (panelId === PANEL_ID || panelId === WorkspaceManager.DEFAULT_PANEL_ID) {
                 $btn.removeClass("selected-button");
             }
         });
