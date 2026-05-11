@@ -879,6 +879,32 @@ define(function (require, exports, module) {
         CommandManager.get(CMD_TERMINAL_CLEAR).setEnabled(!!active);
     });
 
+    function _createToolbarButton() {
+        const $btn = $("<a>")
+            .attr({
+                id: "terminal-toolbar-button",
+                href: "#",
+                title: Strings.CMD_VIEW_TERMINAL
+            })
+            .insertBefore("#app-drawer-button");
+
+        $btn.on("click", function () {
+            CommandManager.execute(CMD_VIEW_TERMINAL);
+        });
+
+        const PanelView = require("view/PanelView");
+        PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (_event, panelId) {
+            if (panelId === PANEL_ID) {
+                $btn.addClass("selected-button");
+            }
+        });
+        PanelView.on(PanelView.EVENT_PANEL_HIDDEN, function (_event, panelId) {
+            if (panelId === PANEL_ID) {
+                $btn.removeClass("selected-button");
+            }
+        });
+    }
+
     // Initialize on app ready
     AppInit.appReady(function () {
         if (Phoenix.isSpecRunnerWindow) {
@@ -887,6 +913,7 @@ define(function (require, exports, module) {
 
         _initNodeConnector();
         _createPanel();
+        _createToolbarButton();
 
         // Gate user-initiated panel close (X button): confirm if needed, then
         // dispose all terminals. Programmatic hide() just collapses the panel
