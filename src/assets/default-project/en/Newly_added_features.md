@@ -72,6 +72,14 @@ A new tools drawer brings Git, Terminal, Problems, and more into one place. Swit
 
 ![Image](https://docs-images.phcode.dev/in-app/bottom-panel.png)
 
+## New Linux Platform
+
+`Added in April 2026`
+
+Phoenix Code for Linux has been rebuilt from the ground up.
+
+The previous Linux app was harder to install and didn’t match the experience we wanted to deliver. We heard that feedback loud and clear. This release is powered by a brand-new Linux platform, bringing faster performance, easier installation, and a desktop experience that now stands alongside Windows and macOS.
+
 ## [Phoenix Neo Themes](https://docs.phcode.dev/app-links/themes)
 
 `Added in April 2026`
