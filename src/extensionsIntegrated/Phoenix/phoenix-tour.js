@@ -18,7 +18,7 @@
  *
  */
 
-/*global PhStore */
+/*global PhStore, logger */
 
 /**
  * One-shot, app-lifetime onboarding tour that introduces the design-mode
@@ -32,6 +32,7 @@ define(function (require, exports, module) {
     const Strings           = require("strings"),
         StringUtils         = require("utils/StringUtils"),
         Metrics             = require("utils/Metrics"),
+        BootGreetings       = require("utils/BootGreetings"),
         SidebarView         = require("project/SidebarView"),
         SidebarTabs         = require("view/SidebarTabs"),
         ProjectManager      = require("project/ProjectManager"),
@@ -40,12 +41,6 @@ define(function (require, exports, module) {
         Commands            = require("command/Commands"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         CentralControlBar   = require("view/CentralControlBar");
-
-    // Capture the kernel trust ring at module-load time — it's deleted from
-    // `window` shortly after boot. Treated as optional: community-edition
-    // builds without the pro trial flow won't expose `loginService` and the
-    // tour will simply proceed without waiting.
-    const _LoginService = (window.KernalModeTrust && window.KernalModeTrust.loginService) || null;
 
     const TOUR_STORAGE_KEY = "phoenixOnboardingTourState";
     const CURRENT_TOUR_VERSION = 1;
@@ -287,6 +282,7 @@ define(function (require, exports, module) {
         _ensureSidebarVisible();
         const $btn = $("#ccbCollapseEditorBtn");
         if (!$btn.length) {
+            logger.reportError(new Error("phoenix-tour: #ccbCollapseEditorBtn missing at step 1"));
             _markComplete();
             _teardown();
             return;
@@ -337,7 +333,7 @@ define(function (require, exports, module) {
         _ensureSidebarVisible();
         const $tab = $('.sidebar-tab[data-tab-id="ai"]');
         if (!$tab.length) {
-            // No AI tab in this build — skip ahead to the next step.
+            logger.reportError(new Error("phoenix-tour: AI sidebar tab missing at step 2"));
             _runStep3();
             return;
         }
@@ -369,8 +365,7 @@ define(function (require, exports, module) {
         _ensureSidebarVisible();
         const $newBtn = $("#newProject");
         if (!$newBtn.length) {
-            // No new-project button — skip to the live-preview step instead
-            // of giving up on the tour entirely.
+            logger.reportError(new Error("phoenix-tour: #newProject missing at step 3"));
             _runStep4();
             return;
         }
@@ -457,8 +452,7 @@ define(function (require, exports, module) {
 
         const $btn = $("#previewModeLivePreviewButton");
         if (!$btn.length) {
-            // LP panel never came up (custom server, unsupported file, etc.)
-            // — finalize the tour rather than stalling on a missing target.
+            logger.reportError(new Error("phoenix-tour: #previewModeLivePreviewButton missing at step 4"));
             _markComplete();
             _teardown();
             return;
@@ -495,30 +489,7 @@ define(function (require, exports, module) {
         if (Phoenix.isTestWindow || Phoenix.isSpecRunnerWindow) {
             return false;
         }
-        if (CentralControlBar.isEditorCollapsed && CentralControlBar.isEditorCollapsed()) {
-            // User has already discovered design mode in some other way.
-            return false;
-        }
-        if (!$("#ccbCollapseEditorBtn").length) {
-            return false;
-        }
         return true;
-    }
-
-    /**
-     * Resolves once the pro trial start dialog has been dismissed. The
-     * dialog is guaranteed to fire `proTrialStartDialogDismissed` on every
-     * boot path (including builds where the dialog isn't shown), so we
-     * just await it without a timeout fallback.
-     */
-    function _waitForTrialStartDialogDismissed() {
-        const dismissed = _LoginService && _LoginService.proTrialStartDialogDismissed;
-        // Community-edition builds expose no login service at all — skip
-        // the wait so the tour still works there.
-        if (!dismissed) {
-            return Promise.resolve();
-        }
-        return Promise.resolve(dismissed);
     }
 
     function startTour() {
@@ -528,28 +499,11 @@ define(function (require, exports, module) {
         _ranThisSession = true;
         Metrics.countEvent(Metrics.EVENT_TYPE.GUIDE, "tour", "start");
 
-        _waitForTrialStartDialogDismissed().then(function () {
-            // Re-check primary preconditions after the wait — the user may
-            // have already discovered design mode while a trial dialog was
-            // up, or the button may have been torn down.
-            if (!$("#ccbCollapseEditorBtn").length) {
-                _markComplete();
-                _teardown();
-                return;
-            }
-            if (CentralControlBar.isEditorCollapsed && CentralControlBar.isEditorCollapsed()) {
-                _markComplete();
-                _teardown();
-                return;
-            }
-            _timers.push(setTimeout(function () {
-                if (!$("#ccbCollapseEditorBtn").length) {
-                    _markComplete();
-                    _teardown();
-                    return;
-                }
-                _runStep1();
-            }, STEP_START_DELAY_MS));
+        // Wait until every boot-time greeting dialog (auto/manual update
+        // "What's New", pro trial start, paid-Pro "What's New") has been
+        // dismissed.
+        BootGreetings.allDismissed().then(function () {
+            _timers.push(setTimeout(_runStep1, STEP_START_DELAY_MS));
         });
     }
 

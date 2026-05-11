@@ -2084,6 +2084,8 @@ define({
     // promos
     "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
     "PROMO_UPGRADE_MESSAGE": "Enjoy free access to these premium features for the next {0} days:",
+    "PROMO_PRO_WHATS_NEW_TITLE": "New in {0}",
+    "PROMO_PRO_WHATS_NEW_MESSAGE": "Thanks for being a {0} member. Here’s what’s new in this update:",
     "PROMO_CARD_1": "Edit In Live Preview",
     "PROMO_CARD_1_MESSAGE": "Edit text, update images, change links, drag elements, and more. Your code updates as you go.",
     "PROMO_CARD_2": "Try ideas, build pages, and fix issues with AI",
