@@ -37,7 +37,17 @@ define(function (require, exports, module) {
         NotificationUI = require("widgets/NotificationUI"),
         TaskManager = require("features/TaskManager"),
         NativeApp           = require("utils/NativeApp"),
+        BootGreetings       = require("utils/BootGreetings"),
         PreferencesManager  = require("preferences/PreferencesManager");
+
+    // Reserve a slot in the boot-greeting coordinator so the tour can wait
+    // until the updater has either shown its "What's New" dialog (auto or
+    // manual update) or decided not to. Unblocked once per boot.
+    const UPDATER_GATE = "updater-electron";
+    BootGreetings.registerBlocker(UPDATER_GATE);
+    function _unblockUpdaterGate() {
+        BootGreetings.unblockBlocker(UPDATER_GATE);
+    }
 
     let updateTask, updatePendingRestart, updateFailed;
 
@@ -448,11 +458,13 @@ define(function (require, exports, module) {
 
     AppInit.appReady(async function () {
         if(!window.__ELECTRON__ || Phoenix.isTestWindow) {
+            _unblockUpdaterGate();
             return;
         }
         // Electron updates only supported on Linux currently
         if (brackets.platform !== "linux") {
             console.error("App updates not yet implemented on this platform in Electron builds!");
+            _unblockUpdaterGate();
             return;
         }
         // Check if another window already scheduled an update (multi-window state persistence)
@@ -496,10 +508,13 @@ define(function (require, exports, module) {
         const lastUpdateDetails = PreferencesManager.getViewState(KEY_LAST_UPDATE_DESCRIPTION);
         if(lastUpdateDetails && (lastUpdateDetails.updateVersion === Phoenix.metadata.apiVersion)) {
             let markdownHtml = marked.parse(lastUpdateDetails.releaseNotesMarkdown || "");
-            Dialogs.showInfoDialog(Strings.UPDATE_WHATS_NEW, markdownHtml);
+            Dialogs.showInfoDialog(Strings.UPDATE_WHATS_NEW, markdownHtml)
+                .done(_unblockUpdaterGate);
             PreferencesManager.setViewState(KEY_LAST_UPDATE_DESCRIPTION, null);
             PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, false);
             $("#update-notification").addClass("forced-hidden");
+        } else {
+            _unblockUpdaterGate();
         }
         // check for updates at boot
         let lastUpdateCheckTime = PreferencesManager.getViewState(KEY_LAST_UPDATE_CHECK_TIME);

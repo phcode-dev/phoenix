@@ -42,7 +42,17 @@ define(function (require, exports, module) {
         TaskManager = require("features/TaskManager"),
         StringUtils         = require("utils/StringUtils"),
         NativeApp           = require("utils/NativeApp"),
+        BootGreetings       = require("utils/BootGreetings"),
         PreferencesManager  = require("preferences/PreferencesManager");
+
+    // Reserve a slot in the boot-greeting coordinator so the tour can wait
+    // until the updater has either shown its "What's New" dialog (auto or
+    // manual update) or decided not to. Unblocked once per boot.
+    const UPDATER_GATE = "updater-tauri";
+    BootGreetings.registerBlocker(UPDATER_GATE);
+    function _unblockUpdaterGate() {
+        BootGreetings.unblockBlocker(UPDATER_GATE);
+    }
     let updaterWindow, updateTask, updatePendingRestart, updateFailed;
 
     const TAURI_UPDATER_WINDOW_LABEL = "updater",
@@ -519,14 +529,18 @@ define(function (require, exports, module) {
     let updateInstalledDialogShown = false, updateFailedDialogShown = false;
     AppInit.appReady(function () {
         if(Phoenix.isTestWindow) {
+            _unblockUpdaterGate();
             return;
         }
         if(window.__ELECTRON__) {
-            // Electron updates handled by update-electron.js
+            // Electron updates handled by update-electron.js — that
+            // module owns its own blocker, so this one is a no-op.
+            _unblockUpdaterGate();
             return;
         }
         if(!window.__TAURI__) {
             // app updates are only for desktop builds
+            _unblockUpdaterGate();
             return;
         }
         if (brackets.platform === "mac") {
@@ -616,13 +630,16 @@ define(function (require, exports, module) {
         const lastUpdateDetails = PreferencesManager.getViewState(KEY_LAST_UPDATE_DESCRIPTION);
         if(lastUpdateDetails && (lastUpdateDetails.updateVersion === Phoenix.metadata.apiVersion)) {
             let markdownHtml = marked.parse(lastUpdateDetails.releaseNotesMarkdown || "");
-            Dialogs.showInfoDialog(Strings.UPDATE_WHATS_NEW, markdownHtml);
+            Dialogs.showInfoDialog(Strings.UPDATE_WHATS_NEW, markdownHtml)
+                .done(_unblockUpdaterGate);
             PreferencesManager.setViewState(KEY_LAST_UPDATE_DESCRIPTION, null);
             PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, false);
             // hide the update available icon as we are showing what's new dialog. In edge cases, there can be an update
             // at this time if the user opened phcode after an update, but a new update was just published or the user
             // didn't open phcode after last update, which a new update was published.
             $("#update-notification").addClass("forced-hidden");
+        } else {
+            _unblockUpdaterGate();
         }
         // check for updates at boot
         let lastUpdateCheckTime = PreferencesManager.getViewState(KEY_LAST_UPDATE_CHECK_TIME);
