@@ -898,9 +898,7 @@ define(function (require, exports, module) {
 
         const PanelView = require("view/PanelView");
         PanelView.on(PanelView.EVENT_PANEL_SHOWN, function (_event, panelId) {
-            if (panelId === PANEL_ID) {
-                $btn.addClass("selected-button");
-            }
+            $btn.toggleClass("selected-button", panelId === PANEL_ID);
         });
         PanelView.on(PanelView.EVENT_PANEL_HIDDEN, function (_event, panelId) {
             if (panelId === PANEL_ID || panelId === WorkspaceManager.DEFAULT_PANEL_ID) {

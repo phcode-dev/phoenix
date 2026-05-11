@@ -1528,14 +1528,14 @@ define(function (require, exports) {
         }
     });
 
-    // When any bottom panel is shown (container is visible),
-    // re-select the git icon if git panel is still open.
     WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, function (event, panelID) {
-        if (Main.$icon && Preferences.get("panelEnabled")) {
-            Main.$icon.toggleClass("on", true);
-            Main.$icon.toggleClass("selected-button", true);
-            CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(true);
+        if (!Main.$icon) {
+            return;
         }
+        const isGitActive = (panelID === "main-git.panel");
+        Main.$icon.toggleClass("on", isGitActive);
+        Main.$icon.toggleClass("selected-button", isGitActive);
+        CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(isGitActive);
     });
 
     exports.init = init;
