@@ -708,14 +708,14 @@ define(function (require, exports, module) {
                     await openTerminal();
                     await waitForShellReady();
 
-                    // Mock clipboard.readText to return a known string,
-                    // since the test iframe may not have clipboard
-                    // permission (no window focus).
+                    // Mock Phoenix.app.clipboardReadText to return a
+                    // known string, since the test iframe may not have
+                    // clipboard permission (no window focus).
                     const pasteText = "PASTEMARKER456";
-                    const clipboard = testWindow.navigator.clipboard;
-                    spyOn(clipboard, "readText").and.returnValue(
-                        testWindow.Promise.resolve(pasteText)
-                    );
+                    spyOn(testWindow.Phoenix.app, "clipboardReadText")
+                        .and.returnValue(
+                            testWindow.Promise.resolve(pasteText)
+                        );
 
                     // Execute the paste command
                     await CommandManager.execute("terminal.paste");
