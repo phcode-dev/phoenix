@@ -226,6 +226,39 @@ define(function (require, exports, module) {
         }
     }
 
+    // Track cumulative session time in design mode and emit a metric the
+    // first time the total crosses each of these minute buckets. A
+    // 5-minute ticker rolls the in-progress stretch into the aggregate;
+    // an exit also flushes so a partial stretch isn't dropped.
+    const DESIGN_TIME_BUCKETS_MIN = [5, 10, 15, 20, 30, 45, 60];
+    const MS_PER_MIN = 60 * 1000;
+    const DESIGN_TIME_TICK_MS = 5 * MS_PER_MIN;
+    let _designModeTimeFrom = null;
+    let _aggregateDesignMs = 0;
+    let _lastDesignBucketEmittedIdx = -1;
+
+    function _emitCrossedDesignBuckets() {
+        const minutes = Math.floor(_aggregateDesignMs / MS_PER_MIN);
+        const checkIndex = _lastDesignBucketEmittedIdx + 1;
+        if (checkIndex < DESIGN_TIME_BUCKETS_MIN.length &&
+                minutes >= DESIGN_TIME_BUCKETS_MIN[checkIndex]) {
+            _lastDesignBucketEmittedIdx = checkIndex;
+            Metrics.countEvent(Metrics.EVENT_TYPE.UI, "designTime",
+                DESIGN_TIME_BUCKETS_MIN[checkIndex] + "M");
+        }
+    }
+
+    function _onDesignTimeTick() {
+        if (_designModeTimeFrom == null) {
+            return;
+        }
+        const now = Date.now();
+        _aggregateDesignMs += now - _designModeTimeFrom;
+        _designModeTimeFrom = now;
+        _emitCrossedDesignBuckets();
+    }
+    setInterval(_onDesignTimeTick, DESIGN_TIME_TICK_MS);
+
     function _setEditorCollapsed(collapsed, opts) {
         const wantCollapsed = !!collapsed;
         if (wantCollapsed === editorCollapsed) {
@@ -247,6 +280,14 @@ define(function (require, exports, module) {
             }
         }
         editorCollapsed = wantCollapsed;
+        if (editorCollapsed) {
+            _designModeTimeFrom = Date.now();
+        } else if (_designModeTimeFrom != null) {
+            // Flush the in-progress stretch into the aggregate so the
+            // sliver between the last tick and this exit isn't dropped.
+            _aggregateDesignMs += Date.now() - _designModeTimeFrom;
+            _designModeTimeFrom = null;
+        }
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
         const $collapseBtn = $("#ccbCollapseEditorBtn");
         $collapseBtn.toggleClass("is-active", editorCollapsed)
