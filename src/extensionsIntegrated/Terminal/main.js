@@ -889,7 +889,11 @@ define(function (require, exports, module) {
             .insertBefore("#app-drawer-button");
 
         $btn.on("click", function () {
-            CommandManager.execute(CMD_VIEW_TERMINAL);
+            if (panel && panel.isVisible()) {
+                panel.hide();
+            } else {
+                CommandManager.execute(CMD_VIEW_TERMINAL);
+            }
         });
 
         const PanelView = require("view/PanelView");
