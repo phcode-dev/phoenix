@@ -47,8 +47,8 @@
        editor on the right. A solid box-shadow with zero blur paints CCB-colored
        pixels into those gaps without shifting any geometry. */
     box-shadow:
-        -2px 0 0 0 #222,
-         2px 0 0 0 #222;
+            -2px 0 0 0 #222,
+            2px 0 0 0 #222;
 
     .ccb-group {
         display: flex;
@@ -160,13 +160,12 @@
         .ccb-file-name {
             flex: 1 1 auto;
             min-height: 0;
-            /* `sideways-lr` rotates each glyph 90° CCW so the text reads
-               bottom-up naturally. Using this instead of `vertical-rl` +
-               `transform: rotate(180deg)` avoids the blurry sub-pixel
-               rasterization that the transform path produced on linux
-               electron, because Chromium can take its fast vertical-text
-               path for glyph layout and skip the rotated bitmap upscale. */
-            writing-mode: sideways-lr;
+            /* Base: vertical-rl + rotate(180deg) gives the same bottom-to-top
+               reading direction as sideways-lr and works in all engines
+               (including WebKit/Tauri on macOS where sideways-lr is unsupported
+               and silently falls back to horizontal-tb). */
+            writing-mode: vertical-rl;
+            text-orientation: sideways;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -175,8 +174,9 @@
             font-weight: 500;
             /* Promote to its own compositing layer + force AA — keeps the
                rotated glyphs crisp even when the system falls back to the
-               slow text path. */
-            transform: translateZ(0);
+               slow text path. rotate(180deg) flips vertical-rl top-to-bottom
+               into bottom-to-top reading order. */
+            transform: rotate(180deg) translateZ(0);
             backface-visibility: hidden;
             -webkit-font-smoothing: antialiased;
             text-rendering: geometricPrecision;
