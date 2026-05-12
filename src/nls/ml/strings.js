@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "പ്രിവ്യൂവിന്റെ വലുപ്പം മാറ്റുക",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI ലൈവ് പ്രിവ്യൂ പരിശോധിക്കുന്നു",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI പ്രിവ്യൂവിന്റെ വലുപ്പം {0} ആക്കി മാറ്റി",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "തള്ളിക്കളയാൻ ക്ലിക്ക് ചെയ്യുക",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "എഡിറ്റർ",
   "AI_CHAT_TOOL_TASKS": "ടാസ്ക്കുകൾ",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} ടാസ്ക്കുകളിൽ {0} എണ്ണം പൂർത്തിയായി",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "തള്ളിക്കളയാൻ ക്ലിക്ക് ചെയ്യുക"
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0}-ൽ പുതിയത്",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} അംഗമായതിന് നന്ദി. ഈ അപ്‌ഡേറ്റിൽ പുതിയതായി വന്നത് ഇതാ:"
 });

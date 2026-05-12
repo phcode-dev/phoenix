@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Zmień rozmiar podglądu",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI analizuje podgląd na żywo",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI zmieniło rozmiar podglądu do {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kliknij, aby zamknąć",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Edytor",
   "AI_CHAT_TOOL_TASKS": "Zadania",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Ukończono {0} z {1} zadań",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kliknij, aby zamknąć"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Nowości w {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Dziękujemy, że jesteś członkiem {0}. Oto nowości w tej aktualizacji:"
 });

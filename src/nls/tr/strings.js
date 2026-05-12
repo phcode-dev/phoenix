@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Önizlemeyi yeniden boyutlandır",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI canlı önizlemeyi inceliyor",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI önizlemeyi {0} olarak yeniden boyutlandırdı",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kapatmak için tıklayın",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Düzenleyici",
   "AI_CHAT_TOOL_TASKS": "Görevler",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} görevden {0} tanesi tamamlandı",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kapatmak için tıklayın"
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0}'daki Yenilikler",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} üyesi olduğunuz için teşekkürler. İşte bu güncellemedeki yenilikler:"
 });

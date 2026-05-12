@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Redimensionar a vista previa",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "A IA está a inspeccionar a vista previa en directo",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "A IA redimensionou a vista previa a {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Fai clic para descartar",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Tarefas",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} de {1} tarefas feitas",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Fai clic para descartar"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Novidades en {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Grazas por ser membro de {0}. Velaquí as novidades desta actualización:"
 });

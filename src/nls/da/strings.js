@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Tilpas størrelse på forhåndsvisning",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspicerer live-forhåndsvisningen",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI ændrede forhåndsvisningens størrelse til {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klik for at lukke",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Opgaver",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} af {1} opgaver udført",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klik for at lukke"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Nyt i {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Tak, fordi du er {0}-medlem. Her er, hvad der er nyt i denne opdatering:"
 });

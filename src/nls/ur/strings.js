@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "پیش منظر کا سائز تبدیل کریں",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI لائیو پیش منظر کا معائنہ کر رہا ہے",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI نے پیش منظر کا سائز {0} کر دیا",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "مسترد کرنے کے لیے کلک کریں",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "ایڈیٹر",
   "AI_CHAT_TOOL_TASKS": "ٹاسکس",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} میں سے {0} ٹاسکس مکمل",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "مسترد کرنے کے لیے کلک کریں"
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0} میں نیا",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} کا ممبر ہونے پر شکریہ۔ اس اپ ڈیٹ میں نئی چیزیں یہ ہیں:"
 });

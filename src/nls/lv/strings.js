@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Mainīt priekšskatījuma izmēru",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI pārbauda tiešraides priekšskatījumu",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI mainīja priekšskatījuma izmēru uz {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Noklikšķiniet, lai noraidītu",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Redaktors",
   "AI_CHAT_TOOL_TASKS": "Uzdevumi",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Paveikti {0} no {1} uzdevumiem",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Noklikšķiniet, lai noraidītu"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Jaunumi {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Paldies, ka esat {0} biedrs. Lūk, kas jauns šajā atjauninājumā:"
 });

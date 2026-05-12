@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Előnézet átméretezése",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "A MI az élő előnézetet vizsgálja",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "A MI átméretezte az előnézetet erre: {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kattintson az elvetéshez",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Szerkesztő",
   "AI_CHAT_TOOL_TASKS": "Feladatok",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} feladatból {0} kész",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kattintson az elvetéshez"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Újdonságok a {0}-ban",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Köszönjük, hogy {0}-tag vagy. Íme, az újdonságok ebben a frissítésben:"
 });

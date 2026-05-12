@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Muuta esikatselun kokoa",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "Tekoäly tutkii reaaliaikaista esikatselua",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "Tekoäly muutti esikatselun kokoon {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Napsauta ohittaaksesi",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editori",
   "AI_CHAT_TOOL_TASKS": "Tehtävät",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0}/{1} tehtävää tehty",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Napsauta ohittaaksesi"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Uutta {0}:ssa",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Kiitos, että olet {0}-jäsen. Tässä on uutta tässä päivityksessä:"
 });

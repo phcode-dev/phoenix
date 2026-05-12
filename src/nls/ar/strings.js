@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "تغيير حجم المعاينة",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "الذكاء الاصطناعي يفحص المعاينة المباشرة",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "قام الذكاء الاصطناعي بتغيير حجم المعاينة إلى {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "اضغط للتجاهل",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "المحرر",
   "AI_CHAT_TOOL_TASKS": "المهام",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "تم إنجاز {0} من {1} من المهام",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "اضغط للتجاهل"
+  "PROMO_PRO_WHATS_NEW_TITLE": "جديد في {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "شكرًا لكونك عضوًا في {0}. إليك الجديد في هذا التحديث:"
 });

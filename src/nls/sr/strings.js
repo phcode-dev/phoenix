@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Промени величину прегледа",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI анализира преглед уживо",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI је променио величину прегледа на {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Кликните да одбаците",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Уређивач",
   "AI_CHAT_TOOL_TASKS": "Задаци",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Завршено {0} од {1} задатака",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Кликните да одбаците"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Ново у {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Хвала вам што сте члан {0}. Ево шта је ново у овом ажурирању:"
 });

@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "प्रीव्यू का आकार बदलें",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI लाइव प्रीव्यू की जांच कर रहा है",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI ने प्रीव्यू का आकार बदलकर {0} कर दिया है",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "खारिज करने के लिए क्लिक करें",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "संपादक",
   "AI_CHAT_TOOL_TASKS": "कार्य",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} में से {0} कार्य पूरे हुए",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "खारिज करने के लिए क्लिक करें"
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0} में नया",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} सदस्य होने के लिए धन्यवाद। इस अपडेट में ये नया है:"
 });

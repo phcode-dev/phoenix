@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "تغییر اندازه پیش‌نمایش",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "هوش مصنوعی در حال بررسی پیش‌نمایش زنده است",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "هوش مصنوعی اندازه پیش‌نمایش را به {0} تغییر داد",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "برای بستن کلیک کنید",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "ویرایشگر",
   "AI_CHAT_TOOL_TASKS": "وظایف",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} از {1} وظیفه انجام شده",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "برای بستن کلیک کنید"
+  "PROMO_PRO_WHATS_NEW_TITLE": "موارد جدید در {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "از اینکه عضو {0} هستید سپاسگزاریم. موارد جدید در این به‌روزرسانی:"
 });

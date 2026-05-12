@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Изменить размер предпросмотра",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "ИИ анализирует предпросмотр в реальном времени",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "ИИ изменил размер предпросмотра на {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Нажмите, чтобы закрыть",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Редактор",
   "AI_CHAT_TOOL_TASKS": "Задачи",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Выполнено {0} из {1} задач",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Нажмите, чтобы закрыть"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Что нового в {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Спасибо, что вы пользуетесь {0}. Вот что нового в этом обновлении:"
 });
