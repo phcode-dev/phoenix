@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Hapus Snippet",
   "PROMO_UPGRADE_TITLE": "Anda telah diupgrade ke {0}",
   "PROMO_UPGRADE_MESSAGE": "Nikmati akses gratis ke fitur-fitur premium ini selama {0} hari ke depan:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Baru di {0}",
   "PROMO_CARD_1": "Edit di Pratinjau Langsung",
   "PROMO_CARD_1_MESSAGE": "Edit teks, perbarui gambar, ubah tautan, seret elemen, dan lainnya. Kode Anda diperbarui seiring Anda bekerja.",
   "PROMO_CARD_2": "Coba ide, buat halaman, dan perbaiki masalah dengan AI",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Baru di {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Terima kasih telah menjadi anggota {0}. Berikut adalah yang baru di pembaruan ini:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Terima kasih telah mendukung {0}. Berikut yang baru di pembaruan ini:"
 });

@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kod Parçacığını Sil",
   "PROMO_UPGRADE_TITLE": "{0} sürümüne yükseltildiniz",
   "PROMO_UPGRADE_MESSAGE": "Önümüzdeki {0} gün boyunca bu premium özelliklerden ücretsiz olarak yararlanın:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0}'daki Yenilikler",
   "PROMO_CARD_1": "Canlı Önizlemede Düzenle",
   "PROMO_CARD_1_MESSAGE": "Metinleri düzenleyin, görselleri güncelleyin, bağlantıları değiştirin, öğeleri sürükleyin ve daha fazlasını yapın. Siz değişiklik yaptıkça kodunuz güncellenir.",
   "PROMO_CARD_2": "Yapay zeka ile fikirleri deneyin, sayfalar oluşturun ve sorunları düzeltin.",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "PROMO_PRO_WHATS_NEW_TITLE": "{0}'daki Yenilikler",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} üyesi olduğunuz için teşekkürler. İşte bu güncellemedeki yenilikler:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} desteğiniz için teşekkürler. Bu güncellemedeki yenilikler şunlar:"
 });

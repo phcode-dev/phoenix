@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kódrészlet törlése",
   "PROMO_UPGRADE_TITLE": "Átálltunk a(z) {0} verzióra",
   "PROMO_UPGRADE_MESSAGE": "Élvezze az ingyenes hozzáférést ezekhez a prémium funkciókhoz a következő {0} napban:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Újdonságok a {0}-ban",
   "PROMO_CARD_1": "Szerkesztés élő előnézetben",
   "PROMO_CARD_1_MESSAGE": "Szerkessz szöveget, frissíts képeket, módosíts hivatkozásokat, húzz elemeket és még sok mást. A kódod menet közben frissül.",
   "PROMO_CARD_2": "Próbálj ki ötleteket, építs oldalakat és javíts hibákat az MI segítségével.",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Újdonságok a {0}-ban",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Köszönjük, hogy {0}-tag vagy. Íme, az újdonságok ebben a frissítésben:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Köszönjük, hogy támogatja a {0}-t. Íme a frissítés újdonságai:"
 });

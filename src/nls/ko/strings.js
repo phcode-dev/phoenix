@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "스니펫 삭제",
   "PROMO_UPGRADE_TITLE": "{0}(으)로 업그레이드되었습니다.",
   "PROMO_UPGRADE_MESSAGE": "다음 {0}일 동안 이 프리미엄 기능들을 무료로 이용해 보세요:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0}의 새로운 기능",
   "PROMO_CARD_1": "라이브 미리보기에서 편집",
   "PROMO_CARD_1_MESSAGE": "텍스트 편집, 이미지 업데이트, 링크 변경, 요소 드래그 등 다양한 작업을 할 수 있습니다. 작업 내용이 코드에 바로 업데이트됩니다.",
   "PROMO_CARD_2": "AI로 아이디어를 시도하고, 페이지를 구축하며, 문제를 해결하세요",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "PROMO_PRO_WHATS_NEW_TITLE": "{0}의 새로운 기능",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} 회원이 되어 주셔서 감사합니다. 이번 업데이트의 새로운 기능은 다음과 같습니다:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0}를 성원해 주셔서 감사합니다. 이번 업데이트의 새로운 내용은 다음과 같습니다:"
 });

@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Poista koodinpätkä",
   "PROMO_UPGRADE_TITLE": "Sinut on päivitetty {0}-tilaukseen",
   "PROMO_UPGRADE_MESSAGE": "Nauti näistä premium-ominaisuuksista ilmaiseksi seuraavan {0} päivän ajan:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Uutta {0}:ssa",
   "PROMO_CARD_1": "Muokkaa reaaliaikaisessa esikatselussa",
   "PROMO_CARD_1_MESSAGE": "Muokkaa tekstiä, päivitä kuvia, vaihda linkkejä, vedä elementtejä ja paljon muuta. Koodisi päivittyy samalla kun teet muutoksia.",
   "PROMO_CARD_2": "Kokeile ideoita, rakenna sivuja ja korjaa ongelmia tekoälyllä",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Uutta {0}:ssa",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Kiitos, että olet {0}-jäsen. Tässä on uutta tässä päivityksessä:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Kiitos tuestasi {0}. Tässä tämän päivityksen uudet ominaisuudet:"
 });

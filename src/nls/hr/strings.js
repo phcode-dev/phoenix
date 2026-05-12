@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Izbriši isječak",
   "PROMO_UPGRADE_TITLE": "Nadograđeni ste na {0}",
   "PROMO_UPGRADE_MESSAGE": "Uživajte u besplatnom pristupu ovim premium značajkama sljedećih {0} dana:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Novo u {0}",
   "PROMO_CARD_1": "Uređivanje u pregledu uživo",
   "PROMO_CARD_1_MESSAGE": "Uređujte tekst, ažurirajte slike, mijenjajte poveznice, povlačite elemente i više. Vaš se kôd ažurira dok radite.",
   "PROMO_CARD_2": "Isprobajte ideje, izradite stranice i riješite probleme uz AI",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Novo u {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Hvala vam što ste član {0}. Evo što je novo u ovoj nadogradnji:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Hvala što podržavate {0}. Evo što je novo u ovom ažuriranju:"
 });

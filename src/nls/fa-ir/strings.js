@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف اسنیپت",
   "PROMO_UPGRADE_TITLE": "حساب شما به {0} ارتقا یافت.",
   "PROMO_UPGRADE_MESSAGE": "از دسترسی رایگان به این ویژگی‌های ویژه برای {0} روز آینده لذت ببرید:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "موارد جدید در {0}",
   "PROMO_CARD_1": "ویرایش در پیش‌نمایش زنده",
   "PROMO_CARD_1_MESSAGE": "متن را ویرایش کنید، تصاویر را به‌روزرسانی کنید، پیوندها را تغییر دهید، عناصر را بکشید و رها کنید و موارد دیگر. کد شما همزمان با ویرایش به‌روز می‌شود.",
   "PROMO_CARD_2": "با هوش مصنوعی ایده‌ها را بیازمایید، صفحات را بسازید و مشکلات را برطرف کنید.",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "PROMO_PRO_WHATS_NEW_TITLE": "موارد جدید در {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "از اینکه عضو {0} هستید سپاسگزاریم. موارد جدید در این به‌روزرسانی:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "از حمایت شما از {0} سپاسگزاریم. موارد جدید در این به‌روزرسانی:"
 });

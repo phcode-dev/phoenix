@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "删除片段",
   "PROMO_UPGRADE_TITLE": "您已升级到 {0}",
   "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内，免费畅享以下高级功能：",
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0} 新版特性",
   "PROMO_CARD_1": "实时预览编辑",
   "PROMO_CARD_1_MESSAGE": "编辑文本、更新图片、更改链接、拖动元素等等。您的代码会随操作实时更新。",
   "PROMO_CARD_2": "借助 AI 试验创意、构建页面、修复问题",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "PROMO_PRO_WHATS_NEW_TITLE": "{0} 新版特性",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "感谢您成为 {0} 会员。以下是本次更新的新内容："
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "感谢您支持 {0}。本次更新内容如下："
 });

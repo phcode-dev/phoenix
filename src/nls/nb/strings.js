@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slett kodebit",
   "PROMO_UPGRADE_TITLE": "Du har blitt oppgradert til {0}",
   "PROMO_UPGRADE_MESSAGE": "Få gratis tilgang til disse premium-funksjonene i de neste {0} dagene:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Nytt i {0}",
   "PROMO_CARD_1": "Rediger i direkte forhåndsvisning",
   "PROMO_CARD_1_MESSAGE": "Rediger tekst, oppdater bilder, endre lenker, dra elementer og mer. Koden din oppdateres fortløpende.",
   "PROMO_CARD_2": "Prøv ut ideer, bygg sider og løs problemer med KI",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Nytt i {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Takk for at du er {0}-medlem. Her er det som er nytt i denne oppdateringen:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Takk for at du støtter {0}. Her er hva som er nytt i denne oppdateringen:"
 });

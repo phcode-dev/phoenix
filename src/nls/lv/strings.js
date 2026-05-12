@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Dzēst fragmentu",
   "PROMO_UPGRADE_TITLE": "Jūs esat jaunināts uz {0}",
   "PROMO_UPGRADE_MESSAGE": "Izbaudiet bezmaksas piekļuvi šīm premium funkcijām nākamās {0} dienas:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Jaunumi {0}",
   "PROMO_CARD_1": "Rediģēšana tiešraides priekšskatījumā",
   "PROMO_CARD_1_MESSAGE": "Rediģējiet tekstu, atjauniniet attēlus, mainiet saites, velciet elementus un vēl vairāk. Jūsu kods tiek atjaunināts darba gaitā.",
   "PROMO_CARD_2": "Izmēģiniet idejas, veidojiet lapas un labojiet problēmas ar MI",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Jaunumi {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Paldies, ka esat {0} biedrs. Lūk, kas jauns šajā atjauninājumā:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Paldies, ka atbalstāt {0}. Lūk, kas jauns šajā atjauninājumā:"
 });

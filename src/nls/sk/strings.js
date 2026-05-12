@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstrániť úryvok",
   "PROMO_UPGRADE_TITLE": "Boli ste prejdení na {0}",
   "PROMO_UPGRADE_MESSAGE": "Užite si bezplatný prístup k týmto prémiovým funkciám na nasledujúcich {0} dní:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Novinky v {0}",
   "PROMO_CARD_1": "Editovať v živom náhľade",
   "PROMO_CARD_1_MESSAGE": "Upravujte text, aktualizujte obrázky, meňte odkazy, presúvajte prvky a ďalšie. Váš kód sa aktualizuje priebežne.",
   "PROMO_CARD_2": "Skúšajte nápady, tvorte stránky a opravujte problémy s AI",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Novinky v {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Ďakujeme, že ste členom {0}. Tu sú novinky v tejto aktualizácii:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Ďakujeme za podporu {0}. Tu sú novinky v tejto aktualizácii:"
 });
