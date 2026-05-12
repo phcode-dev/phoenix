@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Vorschaugröße ändern",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "KI untersucht die Live-Vorschau",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "KI hat die Vorschaugröße auf {0} geändert",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klicken zum Schließen",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Aufgaben",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} von {1} Aufgaben erledigt",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klicken zum Schließen"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Neu in {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Vielen Dank, dass Sie Mitglied bei {0} sind. Hier sind die Neuerungen in diesem Update:"
 });

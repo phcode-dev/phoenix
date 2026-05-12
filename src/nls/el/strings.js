@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Αλλαγή μεγέθους προεπισκόπησης",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "Η AI εξετάζει τη ζωντανή προεπισκόπηση",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "Η AI άλλαξε το μέγεθος της προεπισκόπησης σε {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Κάντε κλικ για παράβλεψη",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Επεξεργαστής",
   "AI_CHAT_TOOL_TASKS": "Εργασίες",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} από {1} εργασίες ολοκληρώθηκαν",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Κάντε κλικ για παράβλεψη"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Νέα στο {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Ευχαριστούμε που είστε μέλος του {0}. Δείτε τι νέο υπάρχει σε αυτήν την ενημέρωση:"
 });

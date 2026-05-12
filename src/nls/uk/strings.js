@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Змінити розмір перегляду",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "ШІ аналізує перегляд наживо",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "ШІ змінив розмір перегляду до {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Натисніть, щоб закрити",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Редактор",
   "AI_CHAT_TOOL_TASKS": "Завдання",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Виконано {0} з {1} завдань",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Натисніть, щоб закрити"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Нове в {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Дякуємо, що ви є учасником {0}. Ось що нового в цьому оновленні:"
 });

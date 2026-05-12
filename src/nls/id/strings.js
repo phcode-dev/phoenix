@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Ubah ukuran pratinjau",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI sedang memeriksa pratinjau langsung",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI mengubah ukuran pratinjau menjadi {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klik untuk mengabaikan",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Tugas",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} dari {1} tugas selesai",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klik untuk mengabaikan"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Baru di {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Terima kasih telah menjadi anggota {0}. Berikut adalah yang baru di pembaruan ini:"
 });

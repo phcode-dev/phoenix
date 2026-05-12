@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "プレビューをリサイズ",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AIがライブプレビューを確認しています",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AIがプレビューを{0}にリサイズしました",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "クリックして閉じる",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "エディター",
   "AI_CHAT_TOOL_TASKS": "タスク",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1}件中{0}件のタスクが完了",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "クリックして閉じる"
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0}の新機能",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0}をご利用いただき、誠にありがとうございます。今回のアップデートの新機能はこちらです："
 });

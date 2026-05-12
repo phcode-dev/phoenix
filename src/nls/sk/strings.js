@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Zmeniť veľkosť náhľadu",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI kontroluje živý náhľad",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI zmenila veľkosť náhľadu na {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kliknutím zatvoríte",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Úlohy",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Hotovo {0} z {1} úloh",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kliknutím zatvoríte"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Novinky v {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Ďakujeme, že ste členom {0}. Tu sú novinky v tejto aktualizácii:"
 });

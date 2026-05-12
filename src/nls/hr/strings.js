@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Promijeni veličinu pretpregleda",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI pregledava pretpregled uživo",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI je promijenio veličinu pretpregleda na {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kliknite za odbacivanje",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Uređivač",
   "AI_CHAT_TOOL_TASKS": "Zadaci",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} od {1} zadataka dovršeno",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Kliknite za odbacivanje"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Novo u {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Hvala vam što ste član {0}. Evo što je novo u ovoj nadogradnji:"
 });

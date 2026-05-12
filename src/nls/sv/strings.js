@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Ändra storlek på förhandsgranskning",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI granskar live-förhandsgranskningen",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI ändrade storlek på förhandsgranskningen till {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klicka för att avfärda",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Redigerare",
   "AI_CHAT_TOOL_TASKS": "Uppgifter",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} av {1} uppgifter klara",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klicka för att avfärda"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Nytt i {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Tack för att du är {0}-medlem. Här är vad som är nytt i den här uppdateringen:"
 });

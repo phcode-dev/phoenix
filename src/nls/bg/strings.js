@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Оразмеряване на прегледа",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI инспектира прегледа на живо",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI оразмери прегледа на {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Кликнете за затваряне",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Редактор",
   "AI_CHAT_TOOL_TASKS": "Задачи",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} от {1} изпълнени задачи",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Кликнете за затваряне"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Ново в {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Благодарим ви, че сте член на {0}. Ето какво е новото в тази актуализация:"
 });

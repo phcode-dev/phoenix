@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Voorbeeldformaat wijzigen",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspecteert het live voorbeeld",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI heeft de voorbeeldgrootte aangepast naar {0}",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klik om te sluiten",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Taken",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} van {1} taken voltooid",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Klik om te sluiten"
+  "PROMO_PRO_WHATS_NEW_TITLE": "Nieuw in {0}",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Bedankt dat u een {0}-lid bent. Hier is wat er nieuw is in deze update:"
 });

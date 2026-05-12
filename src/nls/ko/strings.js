@@ -2003,6 +2003,7 @@ define({
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "미리보기 크기 조정",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI가 실시간 미리보기를 검사하고 있습니다",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI가 미리보기를 {0}으로 크기 조정했습니다",
+  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "클릭하여 해제",
   "AI_CHAT_TOOL_CONTROL_EDITOR": "에디터",
   "AI_CHAT_TOOL_TASKS": "작업",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "총 {1}개 작업 중 {0}개 완료",
@@ -2246,5 +2247,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "클릭하여 해제"
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0}의 새로운 기능",
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} 회원이 되어 주셔서 감사합니다. 이번 업데이트의 새로운 기능은 다음과 같습니다:"
 });
