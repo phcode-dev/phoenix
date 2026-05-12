@@ -570,7 +570,14 @@ define(function (require, exports, module) {
                     if (_isPercentage(maxSize)) {
                         maxSize = _percentageToPixels(maxSize, _sideBarMaxSize());
                     }
-                    newSize = Math.min(newSize, maxSize);
+                    // Ignore a non-positive computed cap: it can only come from a
+                    // pathological layout (e.g. design mode + hidden sidebar makes
+                    // _sideBarMaxSize negative, so 1000% becomes a negative px cap
+                    // and pins every drag below zero). CSS max-width still enforces
+                    // the real visible limit in that mode.
+                    if (maxSize > 0) {
+                        newSize = Math.min(newSize, maxSize);
+                    }
                 }
 
                 e.preventDefault();
