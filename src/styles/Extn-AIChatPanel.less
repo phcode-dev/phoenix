@@ -2905,6 +2905,26 @@
        the inner cards' default min-width:auto prevents shrink. */
     min-width: 0;
     width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+
+    &::-webkit-scrollbar {
+        width: 9px;
+        height: 9px;
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background-color: rgba(255, 255, 255, 0.3) !important;
+        background-clip: padding-box !important;
+        border: 2px solid transparent !important;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.45) !important;
+    }
 
     /* The chat panel sets `white-space: nowrap` higher up so streaming
        chat lines don't reflow mid-token. Reset it here so all text in the
@@ -2945,6 +2965,12 @@
     margin: 0;
     text-align: left;
     gap: 0;
+}
+
+.ai-placeholder .ai-intro-video-thumb {
+    max-height: ~"min(220px, 28vh)";
+    max-width: ~"calc(min(220px, 28vh) * 16 / 9)";
+    align-self: flex-start;
 }
 
 .ai-placeholder-cards {
