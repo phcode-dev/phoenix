@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Видалити сніпет",
   "PROMO_UPGRADE_TITLE": "Вас оновлено до {0}",
   "PROMO_UPGRADE_MESSAGE": "Насолоджуйтесь безкоштовним доступом до цих преміум-функцій протягом наступних {0} днів:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Нове в {0}",
   "PROMO_CARD_1": "Редагування в режимі живого перегляду",
   "PROMO_CARD_1_MESSAGE": "Редагуйте текст, оновлюйте зображення, змінюйте посилання, перетягуйте елементи та багато іншого. Ваш код оновлюється в процесі роботи.",
   "PROMO_CARD_2": "Пробуйте ідеї, створюйте сторінки та вирішуйте проблеми за допомогою ШІ.",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Нове в {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Дякуємо, що ви є учасником {0}. Ось що нового в цьому оновленні:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Дякуємо за підтримку {0}. Ось що нового в цьому оновленні:"
 });

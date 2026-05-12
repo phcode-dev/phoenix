@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar fragmento",
   "PROMO_UPGRADE_TITLE": "Actualizaches a {0}",
   "PROMO_UPGRADE_MESSAGE": "Goza de acceso gratuíto a estas funcións premium durante os próximos {0} días:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Novidades en {0}",
   "PROMO_CARD_1": "Editar na vista previa en vivo",
   "PROMO_CARD_1_MESSAGE": "Edita o texto, actualiza as imaxes, cambia as ligazóns, arrastra elementos e moito máis. O teu código actualízase sobre a marcha.",
   "PROMO_CARD_2": "Proba ideas, crea páxinas e corrixe problemas coa IA",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Novidades en {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Grazas por ser membro de {0}. Velaquí as novidades desta actualización:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Grazas por apoiar {0}. Velaquí as novidades desta actualización:"
 });

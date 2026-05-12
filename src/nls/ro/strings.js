@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Șterge snippetul",
   "PROMO_UPGRADE_TITLE": "Ai fost upgradat la {0}",
   "PROMO_UPGRADE_MESSAGE": "Bucură-te de acces gratuit la aceste funcționalități premium pentru următoarele {0} zile:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Noutăți în {0}",
   "PROMO_CARD_1": "Editează în Previzualizarea Live",
   "PROMO_CARD_1_MESSAGE": "Editați textul, actualizați imaginile, schimbați linkurile, trageți elemente și multe altele. Codul dumneavoastră se actualizează pe măsură ce lucrați.",
   "PROMO_CARD_2": "Încearcă idei, construiește pagini și rezolvă probleme cu AI",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Noutăți în {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Vă mulțumim că sunteți membru {0}. Iată ce este nou în această actualizare:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Vă mulțumim pentru că susțineți {0}. Iată ce este nou în această actualizare:"
 });

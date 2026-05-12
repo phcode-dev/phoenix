@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف المقتطف",
   "PROMO_UPGRADE_TITLE": "تم ترقيتك إلى {0}",
   "PROMO_UPGRADE_MESSAGE": "استمتع بوصول مجاني إلى هذه الميزات المتميزة للأيام الـ {0} القادمة:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "جديد في {0}",
   "PROMO_CARD_1": "التعديل في المعاينة المباشرة",
   "PROMO_CARD_1_MESSAGE": "تحرير النص، وتحديث الصور، وتغيير الروابط، وسحب العناصر، والمزيد. يتم تحديث الكود الخاص بك أولاً بأول.",
   "PROMO_CARD_2": "جرّب الأفكار، وأنشئ الصفحات، وأصلح المشكلات بالذكاء الاصطناعي",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "PROMO_PRO_WHATS_NEW_TITLE": "جديد في {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "شكرًا لكونك عضوًا في {0}. إليك الجديد في هذا التحديث:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "شكرًا لدعمكم {0}. إليكم الجديد في هذا التحديث:"
 });

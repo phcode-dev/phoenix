@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "スニペットを削除",
   "PROMO_UPGRADE_TITLE": "{0} にアップグレードされました",
   "PROMO_UPGRADE_MESSAGE": "今後{0}日間、これらのプレミアム機能を無料でご利用いただけます：",
+  "PROMO_PRO_WHATS_NEW_TITLE": "{0}の新機能",
   "PROMO_CARD_1": "ライブプレビューで編集",
   "PROMO_CARD_1_MESSAGE": "テキストの編集、画像の更新、リンクの変更、要素のドラッグなどが可能です。操作に合わせてコードも更新されます。",
   "PROMO_CARD_2": "AIでアイデアを試し、ページを構築、問題を修正",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "PROMO_PRO_WHATS_NEW_TITLE": "{0}の新機能",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0}をご利用いただき、誠にありがとうございます。今回のアップデートの新機能はこちらです："
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "{0}をサポートいただきありがとうございます。今回のアップデートの新機能はこちらです。"
 });

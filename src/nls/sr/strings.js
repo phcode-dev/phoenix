@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Обриши исечак",
   "PROMO_UPGRADE_TITLE": "Унапредили сте на {0}",
   "PROMO_UPGRADE_MESSAGE": "Уживајте у бесплатном приступу овим премијум функцијама у наредних {0} дана:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Ново у {0}",
   "PROMO_CARD_1": "Уређивање у живом прегледу",
   "PROMO_CARD_1_MESSAGE": "Уређујте текст, ажурирајте слике, мењајте везе, превлачите елементе и још много тога. Ваш кôд се ажурира док радите.",
   "PROMO_CARD_2": "Испробајте идеје, правите странице и решавајте проблеме помоћу вештачке интелигенције",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Ново у {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Хвала вам што сте члан {0}. Ево шта је ново у овом ажурирању:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Хвала вам што подржавате {0}. Ево шта је ново у овом ажурирању:"
 });

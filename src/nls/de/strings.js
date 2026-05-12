@@ -1877,6 +1877,7 @@ define({
   "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet löschen",
   "PROMO_UPGRADE_TITLE": "Sie wurden auf {0} hochgestuft",
   "PROMO_UPGRADE_MESSAGE": "Genießen Sie für die nächsten {0} Tage kostenlosen Zugriff auf diese Premium-Funktionen:",
+  "PROMO_PRO_WHATS_NEW_TITLE": "Neu in {0}",
   "PROMO_CARD_1": "In der Live-Vorschau bearbeiten",
   "PROMO_CARD_1_MESSAGE": "Bearbeiten Sie Text, aktualisieren Sie Bilder, ändern Sie Links, ziehen Sie Elemente und mehr. Ihr Code wird während der Bearbeitung aktualisiert.",
   "PROMO_CARD_2": "Ideen ausprobieren, Seiten erstellen und Probleme mit KI beheben",
@@ -2247,6 +2248,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "PROMO_PRO_WHATS_NEW_TITLE": "Neu in {0}",
-  "PROMO_PRO_WHATS_NEW_MESSAGE": "Vielen Dank, dass Sie Mitglied bei {0} sind. Hier sind die Neuerungen in diesem Update:"
+  "PROMO_PRO_WHATS_NEW_MESSAGE": "Vielen Dank für Ihre Unterstützung von {0}. Das ist neu in diesem Update:"
 });
