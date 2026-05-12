@@ -221,13 +221,21 @@ function _findGlobalClaudeCliWin() {
  * Find the user's globally installed Claude CLI on macOS/Linux.
  */
 function _findGlobalClaudeCliLinuxMac() {
+    const home = process.env.HOME || "";
+    // The fallback list matters most when Phoenix is launched from
+    // Finder/Dock on macOS — that PATH is the minimal
+    // `/usr/bin:/bin:/usr/sbin:/sbin`, so `which claude` won't see
+    // anything in the user's shell-managed dirs. Order is by likelihood:
+    // primary docs-recommended installs first, alternatives last.
     const locations = [
-        "/usr/local/bin/claude",
-        "/usr/bin/claude",
-        (process.env.HOME || "") + "/.local/bin/claude",
-        (process.env.HOME || "") + "/.nvm/versions/node/" +
+        home + "/.local/bin/claude",                      // claude.ai/install.sh (default)
+        "/usr/local/bin/claude",                          // System-wide install / Intel Mac Homebrew
+        "/usr/bin/claude",                                // Distro package
+        home + "/.nvm/versions/node/" +
             (process.version.startsWith("v") ? process.version : "v" + process.version) +
-            "/bin/claude"
+            "/bin/claude",                                // npm global via nvm
+        "/opt/homebrew/bin/claude",                       // Homebrew on Apple Silicon
+        "/home/linuxbrew/.linuxbrew/bin/claude"           // Linuxbrew
     ];
 
     // Try 'which -a' first to find all claude binaries, filtering out node_modules
