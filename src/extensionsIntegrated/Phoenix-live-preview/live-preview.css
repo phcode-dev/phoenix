@@ -375,14 +375,49 @@
     color: rgba(100, 180, 255, 0.8);
 }
 
-.lp-mode-btn-group {
+.lp-toolbar-left {
+    width: 20%;
     display: flex;
     align-items: center;
+    gap: 6px;
+    padding-left: 6px;
+    box-sizing: border-box;
     flex-shrink: 0;
-    margin: 0 4px 0 3px;
+}
+
+#reloadLivePreviewButton,
+#designModeToggleLivePreviewButton {
+    width: 28px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #a0a0a0;
     border: 1px solid transparent;
     border-radius: 3px;
     box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+#live-preview-plugin-toolbar #reloadLivePreviewButton:hover,
+#live-preview-plugin-toolbar #designModeToggleLivePreviewButton:hover {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.lp-mode-btn-group {
+    display: flex;
+    align-items: stretch;
+    height: 24px;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .lp-mode-btn-group:hover {
@@ -393,8 +428,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 100%;
     cursor: pointer;
     background: transparent;
     box-shadow: none !important;
@@ -420,16 +455,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 14px;
+    height: 100%;
     cursor: pointer;
     background: transparent;
     box-shadow: none !important;
     border: none;
     border-left: 1px solid transparent;
-    border-radius: 0 3px 3px 0;
+    border-radius: 0;
     color: #a0a0a0;
-    padding: 0 4px;
+    padding: 0;
     margin: 0;
-    height: 22px;
     font-size: 10px;
 }
 
@@ -444,24 +480,6 @@
     border: none !important;
     border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: none !important;
-}
-
-#reloadLivePreviewButton {
-    color: #a0a0a0;
-    margin-left: 3px;
-    margin-top: 0;
-    width: 30px;
-    height: 22px;
-    flex-shrink: 0;
-}
-
-#designModeToggleLivePreviewButton {
-    color: #a0a0a0;
-    margin-left: 3px;
-    margin-top: 0;
-    width: 30px;
-    height: 22px;
-    flex-shrink: 0;
 }
 
 .live-preview-status-overlay {
