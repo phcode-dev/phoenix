@@ -24,6 +24,7 @@ define(function (require, exports, module) {
     const CommandManager    = require("command/CommandManager");
     const Commands          = require("command/Commands");
     const DocumentManager   = require("document/DocumentManager");
+    const LanguageManager   = require("language/LanguageManager");
     const MainViewManager   = require("view/MainViewManager");
     const Metrics           = require("utils/Metrics");
     const Strings           = require("strings");
@@ -229,39 +230,89 @@ define(function (require, exports, module) {
     // Track cumulative session time in design mode and emit a metric the
     // first time the total crosses each of these minute buckets. A
     // 5-minute ticker rolls the in-progress stretch into the aggregate;
-    // an exit also flushes so a partial stretch isn't dropped.
+    // an exit (or a switch away from a markdown file, for the MD stream)
+    // also flushes so a partial stretch isn't dropped.
     const DESIGN_TIME_BUCKETS_MIN = [1, 5, 10, 15, 20, 30, 45, 60];
     const MS_PER_MIN = 60 * 1000;
     const DESIGN_TIME_TICK_MS = 5 * MS_PER_MIN;
-    let _designModeTimeFrom = null;
-    let _aggregateDesignMs = 0;
-    let _lastDesignBucketEmittedIdx = -1;
 
-    function _emitCrossedDesignBuckets() {
-        const minutes = Math.floor(_aggregateDesignMs / MS_PER_MIN);
+    function _makeDesignTracker(metricName) {
+        return {
+            timeFrom: null,
+            aggregateMs: 0,
+            lastEmittedIdx: -1,
+            metricName: metricName
+        };
+    }
+
+    function _emitCrossedBuckets(tracker) {
+        const minutes = Math.floor(tracker.aggregateMs / MS_PER_MIN);
         // A single tick can cross more than one bucket (e.g. 0 → 5 min
         // crosses both 1M and 5M), so drain every bucket the aggregate
         // has now passed.
-        let checkIndex = _lastDesignBucketEmittedIdx + 1;
+        let checkIndex = tracker.lastEmittedIdx + 1;
         while (checkIndex < DESIGN_TIME_BUCKETS_MIN.length &&
                 minutes >= DESIGN_TIME_BUCKETS_MIN[checkIndex]) {
-            _lastDesignBucketEmittedIdx = checkIndex;
-            Metrics.countEvent(Metrics.EVENT_TYPE.UI, "designTime",
+            tracker.lastEmittedIdx = checkIndex;
+            Metrics.countEvent(Metrics.EVENT_TYPE.UI, tracker.metricName,
                 DESIGN_TIME_BUCKETS_MIN[checkIndex] + "M");
             checkIndex++;
         }
     }
 
-    function _onDesignTimeTick() {
-        if (_designModeTimeFrom == null) {
+    function _rollTracker(tracker) {
+        if (tracker.timeFrom == null) {
             return;
         }
         const now = Date.now();
-        _aggregateDesignMs += now - _designModeTimeFrom;
-        _designModeTimeFrom = now;
-        _emitCrossedDesignBuckets();
+        tracker.aggregateMs += now - tracker.timeFrom;
+        tracker.timeFrom = now;
+        _emitCrossedBuckets(tracker);
     }
-    setInterval(_onDesignTimeTick, DESIGN_TIME_TICK_MS);
+
+    function _flushTracker(tracker) {
+        if (tracker.timeFrom == null) {
+            return;
+        }
+        tracker.aggregateMs += Date.now() - tracker.timeFrom;
+        tracker.timeFrom = null;
+        _emitCrossedBuckets(tracker);
+    }
+
+    // Overall design-mode dwell, plus a sub-stream that only accrues
+    // while the active file is markdown / GFM.
+    const _designTracker = _makeDesignTracker("designTime");
+    const _mdDesignTracker = _makeDesignTracker("designTimeMD");
+
+    function _activeFileIsMarkdown() {
+        const file = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+        if (!file || !file.fullPath) {
+            return false;
+        }
+        const lang = LanguageManager.getLanguageForPath(file.fullPath);
+        if (!lang) {
+            return false;
+        }
+        const id = lang.getId();
+        return id === "markdown" || id === "gfm";
+    }
+
+    function _syncMdTrackerToActiveFile() {
+        // Only ever runs while in design mode — the caller (the
+        // currentFileChange handler) is a no-op otherwise.
+        const isMd = _activeFileIsMarkdown();
+        const wasTracking = _mdDesignTracker.timeFrom != null;
+        if (isMd && !wasTracking) {
+            _mdDesignTracker.timeFrom = Date.now();
+        } else if (!isMd && wasTracking) {
+            _flushTracker(_mdDesignTracker);
+        }
+    }
+
+    setInterval(function () {
+        _rollTracker(_designTracker);
+        _rollTracker(_mdDesignTracker);
+    }, DESIGN_TIME_TICK_MS);
 
     function _setEditorCollapsed(collapsed, opts) {
         const wantCollapsed = !!collapsed;
@@ -285,12 +336,15 @@ define(function (require, exports, module) {
         }
         editorCollapsed = wantCollapsed;
         if (editorCollapsed) {
-            _designModeTimeFrom = Date.now();
-        } else if (_designModeTimeFrom != null) {
-            // Flush the in-progress stretch into the aggregate so the
+            _designTracker.timeFrom = Date.now();
+            if (_activeFileIsMarkdown()) {
+                _mdDesignTracker.timeFrom = Date.now();
+            }
+        } else {
+            // Flush the in-progress stretch into each aggregate so the
             // sliver between the last tick and this exit isn't dropped.
-            _aggregateDesignMs += Date.now() - _designModeTimeFrom;
-            _designModeTimeFrom = null;
+            _flushTracker(_designTracker);
+            _flushTracker(_mdDesignTracker);
         }
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
         const $collapseBtn = $("#ccbCollapseEditorBtn");
@@ -540,7 +594,15 @@ define(function (require, exports, module) {
 
         _updateSidebarToggleIcon();
 
-        MainViewManager.on("currentFileChange.ccb", _updateFileLabel);
+        MainViewManager.on("currentFileChange.ccb", function () {
+            _updateFileLabel();
+            // While in design mode, the MD-only timer should follow the
+            // active file: start accruing on switch INTO markdown, flush
+            // on switch OUT.
+            if (editorCollapsed) {
+                _syncMdTrackerToActiveFile();
+            }
+        });
         DocumentManager.on("dirtyFlagChange.ccb", _updateFileLabel);
         DocumentManager.on("pathDeleted.ccb fileNameChange.ccb", _updateFileLabel);
         _updateFileLabel();
