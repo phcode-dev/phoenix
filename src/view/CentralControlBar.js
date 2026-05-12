@@ -230,7 +230,7 @@ define(function (require, exports, module) {
     // first time the total crosses each of these minute buckets. A
     // 5-minute ticker rolls the in-progress stretch into the aggregate;
     // an exit also flushes so a partial stretch isn't dropped.
-    const DESIGN_TIME_BUCKETS_MIN = [5, 10, 15, 20, 30, 45, 60];
+    const DESIGN_TIME_BUCKETS_MIN = [1, 5, 10, 15, 20, 30, 45, 60];
     const MS_PER_MIN = 60 * 1000;
     const DESIGN_TIME_TICK_MS = 5 * MS_PER_MIN;
     let _designModeTimeFrom = null;
@@ -239,12 +239,16 @@ define(function (require, exports, module) {
 
     function _emitCrossedDesignBuckets() {
         const minutes = Math.floor(_aggregateDesignMs / MS_PER_MIN);
-        const checkIndex = _lastDesignBucketEmittedIdx + 1;
-        if (checkIndex < DESIGN_TIME_BUCKETS_MIN.length &&
+        // A single tick can cross more than one bucket (e.g. 0 → 5 min
+        // crosses both 1M and 5M), so drain every bucket the aggregate
+        // has now passed.
+        let checkIndex = _lastDesignBucketEmittedIdx + 1;
+        while (checkIndex < DESIGN_TIME_BUCKETS_MIN.length &&
                 minutes >= DESIGN_TIME_BUCKETS_MIN[checkIndex]) {
             _lastDesignBucketEmittedIdx = checkIndex;
             Metrics.countEvent(Metrics.EVENT_TYPE.UI, "designTime",
                 DESIGN_TIME_BUCKETS_MIN[checkIndex] + "M");
+            checkIndex++;
         }
     }
 
