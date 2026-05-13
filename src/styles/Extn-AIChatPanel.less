@@ -2967,18 +2967,15 @@
     gap: 0;
 }
 
+/* Center the thumb within the placeholder column. The thumb has a
+   28vh / 220px cap so it shrinks well below the surrounding full-width
+   column at narrow viewport heights; pinning at flex-start would leave
+   a visible empty gap on the right. Centering keeps it balanced
+   regardless of column width — applies to all placeholder variants
+   (browser-build placeholder, login, Claude install, Claude login). */
 .ai-placeholder .ai-intro-video-thumb {
     max-height: ~"min(220px, 28vh)";
     max-width: ~"calc(min(220px, 28vh) * 16 / 9)";
-    align-self: flex-start;
-}
-
-/* Setup screens (Claude install / Claude login) reuse the placeholder
-   layout but want the thumb visually centered — at narrow viewport
-   heights the 28vh cap shrinks the thumb well below the surrounding
-   column width, and flex-start pinning leaves a noticeable empty gap
-   on the right. */
-.ai-placeholder.ai-setup .ai-intro-video-thumb {
     align-self: center;
 }
 
