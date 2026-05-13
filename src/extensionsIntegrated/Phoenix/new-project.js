@@ -101,7 +101,6 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "close");
         newProjectDialogueObj.close();
         exports.trigger(exports.EVENT_NEW_PROJECT_DIALOGUE_CLOSED);
-        guidedTour.startTourIfNeeded();
     }
 
     function showErrorDialogue(title, message) {
@@ -149,6 +148,18 @@ define(function (require, exports, module) {
     let _bootDoneDeferred = new $.Deferred();
     let _bootDonePromise = jsPromise(_bootDoneDeferred.promise());
 
+    // Fire the guided tour once on every boot, regardless of how the
+    // new-project dialog flow resolved. Previously this was called from
+    // a few specific paths (closeDialogue, init when welcome screen
+    // disabled), which left users in non-default projects on native app
+    // never seeing the tour. The individual notifications inside
+    // startTourIfNeeded (beautify hint, surveys, one-shot PhoenixTour
+    // overlay, newly-added-features markdown on version bump) all have
+    // their own internal gating so it's safe to call every boot.
+    _bootDonePromise.then(function () {
+        guidedTour.startTourIfNeeded();
+    });
+
     function onBootComplete() {
         return _bootDonePromise;
     }
@@ -158,7 +169,6 @@ define(function (require, exports, module) {
         const shouldShowWelcome = PhStore.getItem("new-project.showWelcomeScreen") || 'Y';
         if(shouldShowWelcome !== 'Y') {
             Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "disabled");
-            guidedTour.startTourIfNeeded();
             _bootDoneDeferred.resolve();
             return;
         }
