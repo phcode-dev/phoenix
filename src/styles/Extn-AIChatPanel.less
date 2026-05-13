@@ -2973,6 +2973,15 @@
     align-self: flex-start;
 }
 
+/* Setup screens (Claude install / Claude login) reuse the placeholder
+   layout but want the thumb visually centered — at narrow viewport
+   heights the 28vh cap shrinks the thumb well below the surrounding
+   column width, and flex-start pinning leaves a noticeable empty gap
+   on the right. */
+.ai-placeholder.ai-setup .ai-intro-video-thumb {
+    align-self: center;
+}
+
 .ai-placeholder-cards {
     list-style: none;
     margin: 0;
