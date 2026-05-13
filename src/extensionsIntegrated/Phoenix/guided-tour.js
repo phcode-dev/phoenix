@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (c) 2021 - present core.ai. All rights reserved.
 
-/*global logger*/
+/*global logger, jsPromise*/
 
 define(function (require, exports, module) {
     const KernalModeTrust = window.KernalModeTrust;
@@ -21,8 +21,79 @@ define(function (require, exports, module) {
         Mustache = require("thirdparty/mustache/mustache"),
         SurveyTemplate = require("text!./html/survey-template.html"),
         PhoenixTour = require("./phoenix-tour"),
+        newFeature = require("./newly-added-features"),
+        ProjectManager = require("project/ProjectManager"),
+        semver = require("thirdparty/semver.browser"),
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
+
+    function _currentAppVersion() {
+        return window.AppConfig && window.AppConfig.apiVersion;
+    }
+
+    function _isNewerVersion(v1, v2) {
+        try {
+            return semver.gt(v1, v2);
+        } catch (e) {
+            return false;
+        }
+    }
+
+    /**
+     * Switch to the welcome project if we're not already there. Returns a
+     * native Promise that resolves once the switch completes (or
+     * immediately if no switch is needed). openProject returns a jQuery
+     * deferred, so we adapt via jsPromise and swallow rejections so
+     * downstream onboarding still runs against whatever project ended up
+     * open.
+     */
+    function _switchToWelcomeProject() {
+        const welcomePath = ProjectManager.getWelcomeProjectPath();
+        const currentPath = ProjectManager.getProjectRoot().fullPath;
+        if (currentPath === welcomePath) {
+            return Promise.resolve();
+        }
+        console.log("Guided tour: switching to welcome project for onboarding");
+        return jsPromise(ProjectManager.openProject(welcomePath)).catch(function () { });
+    }
+
+    /**
+     * If the app was bumped to a newer version since we last recorded a
+     * boot, switch to the welcome project and surface the "newly added
+     * features" markdown there (the tour's intended onboarding context).
+     * - First time we see this user: just record current and return; the
+     *   one-shot PhoenixTour handles fresh-user onboarding.
+     * - Same version as recorded: no-op.
+     * - Newer version than recorded: switch project + run newFeature.init.
+     * - Lower version (downgrade): no-op, leave state untouched so a
+     *   future re-upgrade to the recorded version doesn't re-fire.
+     */
+    function _maybeShowNewFeaturesForVersionChange() {
+        const current = _currentAppVersion();
+        if (!current) {
+            return;
+        }
+        const lastSeen = userAlreadyDidAction.lastSeenAppVersion;
+        if (lastSeen === current) {
+            return;
+        }
+        if (!lastSeen) {
+            // First time we're recording — no prior to compare against.
+            userAlreadyDidAction.lastSeenAppVersion = current;
+            PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+            return;
+        }
+        if (!_isNewerVersion(current, lastSeen)) {
+            // Downgrade — don't refresh, don't update state, so a
+            // future re-upgrade to lastSeen doesn't fire again.
+            return;
+        }
+        _switchToWelcomeProject().then(function () {
+            newFeature.init();
+            userAlreadyDidAction.lastSeenAppVersion = current;
+            PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+        });
+    }
 
     const surveyLinksURL = "https://updates.phcode.io/surveys.json";
 
@@ -280,6 +351,11 @@ define(function (require, exports, module) {
         tourStarted = true;
         _showBeautifyNotification();
         _showSurveys();
+        // PhoenixTour is a once-per-lifetime overlay tour with its own
+        // internal _shouldRun gate; safe to call every boot.
         PhoenixTour.startTour();
+        // On a higher-version change, land on the welcome project and
+        // surface the newly-added-features markdown.
+        _maybeShowNewFeaturesForVersionChange();
     };
 });

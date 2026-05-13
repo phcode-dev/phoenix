@@ -26,7 +26,6 @@ define(function (require, exports, module) {
     const serverSync   = require("./serverSync"),
         newProject   = require("./new-project"),
         defaultProjects   = require("./default-projects"),
-        newFeature   = require("./newly-added-features"),
         AppInit      = require("utils/AppInit"),
         Strings      = require("strings"),
         Dialogs      = require("widgets/Dialogs"),
@@ -95,7 +94,6 @@ define(function (require, exports, module) {
         serverSync.init();
         defaultProjects.init();
         newProject.init();
-        newFeature.init();
         _detectUnSupportedBrowser();
         _persistBrowserStorage();
     });
