@@ -410,14 +410,46 @@
   }
 
   /* ---- Section Headers ---- */
+  .license-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
   .license-section-title {
-    margin: 0 0 16px 0;
+    margin: 0;
     font-size: 16px;
     font-weight: 500;
     color: @bc-text-emphasized;
 
     .dark & {
       color: @dark-bc-text-alt;
+    }
+  }
+
+  /* ---- "License isn't applied to this device" banner ---- */
+  .license-not-applied-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #f0ad4e;
+    border-radius: @bc-border-radius;
+    background-color: rgba(240, 173, 78, 0.12);
+    color: #b8761c;
+    font-size: 13px;
+    line-height: 1.4;
+
+    .dark & {
+      color: #f0c170;
+    }
+
+    .fa-exclamation-triangle {
+      font-size: 16px;
+      margin-top: 1px;
     }
   }
 
@@ -524,6 +556,12 @@
     border-radius: 12px;
     font-size: 12px;
     font-weight: 500;
+
+    /* Warning variant: server-side license valid, but the local
+       activation marker is missing so Pro features won't work yet. */
+    &.warning {
+      background-color: #f0ad4e;
+    }
   }
 
   /* ---- Activation Messages ---- */
