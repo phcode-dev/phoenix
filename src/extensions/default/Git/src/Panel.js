@@ -931,7 +931,7 @@ define(function (require, exports) {
         gitPanel.setVisible(bool);
 
         // Mark menu item as enabled/disabled.
-        CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(bool);
+        _setTogglePanelChecked(bool);
 
         if (bool) {
             $("#git-toolbar-icon").removeClass("forced-hidden");
@@ -1510,13 +1510,25 @@ define(function (require, exports) {
         handleGitCommit(lastCommitMessage[ProjectManager.getProjectRoot().fullPath], false, COMMIT_MODE.DEFAULT);
     });
 
+    // The toggle-panel command is registered in the extension's init flow.
+    // These workspace-panel events can fire during project-open before
+    // init has run (race during boot), so CommandManager.get can return
+    // undefined — the menu just hasn't been wired up yet. Skip the
+    // setChecked call in that window; init will sync state on its own.
+    function _setTogglePanelChecked(bool) {
+        const command = CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL);
+        if (command) {
+            command.setChecked(bool);
+        }
+    }
+
     // When the panel tab is closed externally (e.g. via the × button),
     // update the toolbar icon and menu checked state to stay in sync.
     WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_HIDDEN, function (event, panelID) {
         if (panelID === "main-git.panel" && gitPanel) {
             Main.$icon.toggleClass("on", false);
             Main.$icon.toggleClass("selected-button", false);
-            CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(false);
+            _setTogglePanelChecked(false);
             Preferences.set("panelEnabled", false);
         }
         // When the bottom panel container is collapsed, deselect the icon
@@ -1524,7 +1536,7 @@ define(function (require, exports) {
         if (panelID === WorkspaceManager.DEFAULT_PANEL_ID && Main.$icon) {
             Main.$icon.toggleClass("on", false);
             Main.$icon.toggleClass("selected-button", false);
-            CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(false);
+            _setTogglePanelChecked(false);
         }
     });
 
@@ -1535,7 +1547,7 @@ define(function (require, exports) {
         const isGitActive = (panelID === "main-git.panel");
         Main.$icon.toggleClass("on", isGitActive);
         Main.$icon.toggleClass("selected-button", isGitActive);
-        CommandManager.get(Constants.CMD_GIT_TOGGLE_PANEL).setChecked(isGitActive);
+        _setTogglePanelChecked(isGitActive);
     });
 
     exports.init = init;
