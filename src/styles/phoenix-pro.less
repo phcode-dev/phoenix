@@ -344,13 +344,27 @@
 
 /* ---- License Management Dialog ---- */
 .license-management-dialog {
+  /* The base modal caps body height at ~400px and turns on overflow:auto.
+     This dialog has two stacked sections that exceed that; let it grow
+     up to the viewport so the user doesn't have to scroll. */
+  .modal-body {
+    max-height: calc(100vh - 160px);
+  }
+
   /* ---- Layout ---- */
-  .license-activation-section {
-    margin-bottom: 24px;
+  .license-account-section {
+    margin-bottom: 8px;
+
+    /* Account section uses a bare <h3> (no flex header), so add the
+       breathing room that .license-section-header would otherwise
+       provide. */
+    > .license-section-title {
+      margin-bottom: 12px;
+    }
   }
 
   .license-status-section {
-    margin-top: 24px;
+    margin-top: 8px;
   }
 
   /* ---- Form Elements ---- */
@@ -362,31 +376,43 @@
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    font-size: 16px;
-    color: @bc-text-emphasized;
+    font-size: 14px;
+    color: @bc-text-medium;
 
     .dark & {
-      color: @dark-bc-text-alt;
+      color: @dark-bc-text-medium;
     }
   }
 
   .license-form-input {
-    width: 100%;
     box-sizing: border-box;
     height: 38px;
     margin: 0;
   }
 
+  /* Activate-key row sits above the current-license card; input
+     stretches, the Activate button hugs the right edge. */
+  .license-key-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+
+    .license-form-input {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
   /* ---- Activation Button ---- */
   .license-activate-btn {
-    width: 100%;
     box-sizing: border-box;
     margin: 0;
-    padding: 10px 16px;
+    padding: 0 16px;
     font-size: 14px;
     font-weight: 500;
     border-radius: @bc-border-radius;
     transition: background-color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
 
     .btn-spinner {
       display: none;
@@ -398,9 +424,25 @@
     }
   }
 
+  /* Account section action row: right-aligned, tight spacing. */
+  .license-account-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  /* Signed-in account card: plan name on the left, action on the right,
+     all on one line — drops the redundant "Plan:" label. */
+  .license-account-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
   /* ---- Section Divider ---- */
   .license-divider {
-    margin: 24px 0;
+    margin: 16px 0;
     border: none;
     border-top: 1px solid @bc-panel-border;
 
