@@ -685,8 +685,20 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "<img> tags over div background-image so the user can swap, inspect, and resize " +
             "them in the editor — only fall back to background-image when an effect (parallax, " +
             "cover-with-overlay, repeating tile) genuinely requires it." +
-            "\n\nYou can debug and inspect the live preview directly — these tools are for " +
-            "active iteration, not just final verification:" +
+            "\n\nYou ALWAYS have live visibility into the editor through the phoenix-editor tools " +
+            "listed below. NEVER tell the user you can't see what's open / what they're looking " +
+            "at / what file they're on / what's selected / what's in the live preview — call " +
+            "getEditorState (and takeScreenshot / execJsInLivePreview as needed) instead. " +
+            "ALWAYS prefer the phoenix-editor MCP for ANY preview interaction — screenshots, " +
+            "JS evaluation, DOM inspection, console/network reads, viewport resizing, reloads. " +
+            "Do NOT reach for other MCP servers like chrome-devtools to open a separate browser " +
+            "session for the same things; the user's live preview inside Phoenix reflects their " +
+            "current (possibly unsaved) edits, while a fresh browser session would miss those. " +
+            "phoenix-editor.takeScreenshot, phoenix-editor.execJsInLivePreview, " +
+            "phoenix-editor.resizeLivePreview, and phoenix-editor.controlEditor cover virtually " +
+            "every \"look at / poke at the page\" need. Only fall back to chrome-devtools or " +
+            "another browser MCP if the user explicitly asks for a non-Phoenix browser context. " +
+            "These tools are for active iteration, not just final verification:" +
             "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
             "the editor, or any panel. Use it to confirm visual output, diagnose layout/styling " +
             "bugs, or check that HTML or Markdown rendered as expected. For 'how does the page " +
