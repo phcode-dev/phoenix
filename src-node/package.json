@@ -20,7 +20,7 @@
     },
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
-        "@anthropic-ai/claude-code": "^1.0.0",
+        "@anthropic-ai/claude-code": "^2.1.7",
         "@expo/sudo-prompt": "^9.3.2",
         "@phcode/fs": "^4.0.2",
         "cross-spawn": "^7.0.6",
