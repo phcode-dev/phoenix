@@ -109,7 +109,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "getEditorState",
         "Get the current Phoenix editor state: active file, working set (open files with isDirty flag), live preview file, " +
         "cursor/selection info (current line text with surrounding context, or selected text), " +
-        "and the currently selected element in the live preview (tag, selector, text preview) if any. " +
+        "the currently selected element in the live preview (tag, selector, text preview) if any, " +
+        "and inDesignMode (true when the code editor is hidden and the live preview is expanded " +
+        "to fill the workspace — full-bleed, content-focused view). " +
         "The live preview selected element may differ from the editor cursor — use execJsInLivePreview to inspect it further. " +
         "Long lines are trimmed to 200 chars and selections to 10K chars — use the Read tool for full content.",
         {},
@@ -117,8 +119,17 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             let result;
             try {
                 const state = await _execPeerWithTimeout(nodeConnector, "getEditorState", {}, "getEditorState");
+                // Append a fallback hint so the model has a clear next step if the
+                // state alone doesn't answer the user's question — e.g. they're
+                // pointing at a UI panel (Problems, search, sidebar) that's
+                // visible on screen but not represented in this JSON.
+                const hint = "\n\nIf this state isn't enough to identify what the user is " +
+                    "asking about (e.g. they're pointing at a Phoenix UI panel like the " +
+                    "Problems panel, search bar, or sidebar that isn't represented here), " +
+                    "call takeScreenshot with no selector to capture the full editor window " +
+                    "and see what's on their screen.";
                 result = {
-                    content: [{ type: "text", text: JSON.stringify(state) }]
+                    content: [{ type: "text", text: JSON.stringify(state) + hint }]
                 };
             } catch (err) {
                 result = {
@@ -140,16 +151,13 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "panel shows a WYSIWYG markdown editor/viewer). " +
         "Returns the screenshot as an inline PNG image; if filePath is specified, saves to that file " +
         "and returns the path instead. " +
-        "ALMOST ALWAYS pass a selector — capturing the full editor returns a busy image full of editor " +
-        "chrome that's hard to reason about. Use:" +
-        "\n- '#panel-live-preview-frame' to see the rendered preview (HTML or markdown) — this is what " +
-        "you want when verifying visual output, debugging a layout/styling bug, or confirming the page " +
-        "renders as expected. Use this for ANY 'how does it look', 'is the page rendering', or " +
-        "'check the preview' question." +
-        "\n- '.editor-holder' to see just the code editor area." +
-        "\nOnly omit the selector when you need to see the full editor application layout itself — " +
-        "e.g. the user is asking about Phoenix's UI, panels, toolbar, or you can't otherwise figure " +
-        "out what they're talking about and need to see what's on their screen. " +
+        "Simple rule for the selector parameter:" +
+        "\n- If the question is about the rendered live preview (\"how does it look\", \"is the page " +
+        "rendering\", \"check the preview\", layout/styling/markdown verification): pass " +
+        "selector='#panel-live-preview-frame'. The targeted shot is far easier to reason about than the " +
+        "full editor." +
+        "\n- For anything else — Problems panel, file tree, toolbar, search bar, any editor UI, or " +
+        "\"what is the user looking at\" — omit the selector and capture the full editor window. " +
         "Note: live preview screenshots may include Phoenix toolbox overlays on selected elements. " +
         "Use purePreview=true to temporarily hide these overlays and render the page as it would appear in a real browser. " +
         "Use reload=true to force-reload the live preview before capturing — useful after editing JS, " +
@@ -249,22 +257,29 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "- openInWorkingSet: Open a file and pin it to the working set. Params: filePath\n" +
         "- setSelection: Open a file and select a range. Params: filePath, startLine, startCh, endLine, endCh\n" +
         "- setCursorPos: Open a file and set cursor position. Params: filePath, line, ch\n" +
-        "- toggleLivePreview: Show or hide the live preview panel. Params: show (boolean)\n" +
+        "- toggleLivePreview: Show or hide the live preview panel. Params: showPreview (boolean)\n" +
+        "- toggleDesignMode: Switch design mode on or off. Design mode hides the code editor and " +
+        "expands the live preview to fill the workspace, giving the user a content-focused, " +
+        "browser-like view of their page. Use it when the user wants to see how the page looks " +
+        "without code chrome (e.g. presenting a draft, polishing visuals); turn it off when " +
+        "switching back to code editing. Params: enabled (boolean — true for design mode on, " +
+        "false to return to the code editor + side-by-side preview).\n" +
         "- reloadLivePreview: Force-reload the live preview iframe (and any popped-out preview tabs). " +
         "Use after editing JS that doesn't appear to have hot-reloaded. Note: if you're about to call " +
         "takeScreenshot anyway, prefer takeScreenshot({ reload: true }) — it reloads and captures in " +
         "one step. No params.",
         {
             operations: z.array(z.object({
-                operation: z.enum(["open", "close", "openInWorkingSet", "setSelection", "setCursorPos", "toggleLivePreview", "reloadLivePreview"]),
-                filePath: z.string().optional().describe("Absolute path to the file (not required for toggleLivePreview)"),
+                operation: z.enum(["open", "close", "openInWorkingSet", "setSelection", "setCursorPos", "toggleLivePreview", "toggleDesignMode", "reloadLivePreview"]),
+                filePath: z.string().optional().describe("Absolute path to the file (not required for toggleLivePreview / toggleDesignMode / reloadLivePreview)"),
                 startLine: z.number().optional().describe("Start line (1-based) for setSelection"),
                 startCh: z.number().optional().describe("Start column (1-based) for setSelection"),
                 endLine: z.number().optional().describe("End line (1-based) for setSelection"),
                 endCh: z.number().optional().describe("End column (1-based) for setSelection"),
                 line: z.number().optional().describe("Line number (1-based) for setCursorPos"),
                 ch: z.number().optional().describe("Column (1-based) for setCursorPos"),
-                showPreview: z.boolean().optional().describe("true to show, false to hide live preview (for toggleLivePreview)")
+                showPreview: z.boolean().optional().describe("true to show, false to hide live preview (for toggleLivePreview)"),
+                enabled: z.boolean().optional().describe("true to turn design mode on (full live preview, code editor hidden), false to return to code editor view (for toggleDesignMode)")
             })).describe("Array of editor operations to execute sequentially")
         },
         async function (args) {
