@@ -685,6 +685,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "<img> tags over div background-image so the user can swap, inspect, and resize " +
             "them in the editor — only fall back to background-image when an effect (parallax, " +
             "cover-with-overlay, repeating tile) genuinely requires it." +
+            "\n\nThe live preview is the rendered view of the HTML/CSS/JS/SVG or Markdown file " +
+            "currently active in the editor." +
             "\n\nYou ALWAYS have live visibility into the editor through the phoenix-editor tools " +
             "listed below. NEVER tell the user you can't see what's open / what they're looking " +
             "at / what file they're on / what's selected / what's in the live preview — call " +
@@ -701,14 +703,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "These tools are for active iteration, not just final verification:" +
             "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
             "the editor, or any panel. Use it to confirm visual output, diagnose layout/styling " +
-            "bugs, or check that HTML or Markdown rendered as expected. For 'how does the page " +
-            "look' / 'check the preview' questions pass selector='#panel-live-preview-frame' " +
-            "instead of capturing the full editor window — the targeted shot is far easier to " +
-            "reason about. Pass reload=true to force-reload the preview before capturing " +
-            "(useful after JS edits) — saves a tool call vs. reloading separately. As a last " +
-            "resort when the user asks about something in the editor that you can't identify " +
-            "from getEditorState or other tools, take a screenshot of the editor (no selector) " +
-            "to see what they're looking at." +
+            "bugs, or check that HTML or Markdown rendered as expected. Simple selector rule: " +
+            "if the question is about the rendered live preview pass " +
+            "selector='#panel-live-preview-frame' (targeted shot is easier to reason about); for " +
+            "anything else — Problems panel, file tree, toolbar, any other Phoenix UI, or just " +
+            "\"what is the user looking at\" — omit the selector and capture the full editor " +
+            "window. Pass reload=true to force-reload the preview before capturing (useful after " +
+            "JS edits) — saves a tool call vs. reloading separately." +
             "\n- execJsInLivePreview: run JS inside the HTML preview iframe to read the DOM, " +
             "query computed styles, click elements, or capture console output. Use it to debug " +
             "behavior, not just to verify." +
