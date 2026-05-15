@@ -190,6 +190,8 @@ define(function (require, exports, module) {
             // leaving design mode.
             if (WorkspaceManager.isInDesignMode()) {
                 CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                _panel.show();
+                return;
             }
             if (_panel.isVisible()) {
                 _panel.hide();
