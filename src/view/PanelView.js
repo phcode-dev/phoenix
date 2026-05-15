@@ -681,7 +681,7 @@ define(function (require, exports, module) {
                 return false;
             }
         }
-        this.hide();
+        this.hide({ preferFallback: true });
         return true;
     };
 
@@ -747,8 +747,9 @@ define(function (require, exports, module) {
     /**
      * Hides the panel
      */
-    Panel.prototype.hide = function () {
+    Panel.prototype.hide = function (options) {
         let panelId = this.panelID;
+        let preferFallback = !!(options && options.preferFallback);
 
         // Quick Access panel is pinned — it stays in _openIds and the tab bar.
         // Hiding it collapses the bottom panel container entirely.
@@ -779,7 +780,9 @@ define(function (require, exports, module) {
         let wasActive = (_activeId === panelId);
         let activatedId = null;
 
-        if (wasActive && _openIds.length > 0) {
+        let onlyDefaultLeft = (_openIds.length === 1 && _openIds[0] === _defaultPanelId);
+
+        if (wasActive && preferFallback && _openIds.length > 0 && !onlyDefaultLeft) {
             let nextIdx = Math.min(idx, _openIds.length - 1);
             activatedId = _openIds[nextIdx];
             _activeId = null;

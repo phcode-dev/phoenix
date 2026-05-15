@@ -821,7 +821,7 @@ define(function (require, exports, module) {
             // buttons and menu items that mirror container visibility
             // (drawer, Git icon, etc.) need this signal to deselect.
             PanelView.collapseContainer();
-        } else if (PanelView.getOpenBottomPanelIDs().length > 0) {
+        } else if (PanelView.getActiveBottomPanel()) {
             // Use the helper so SHOWN(_activeId) fires — same listeners
             // need this signal to re-select after a previous collapse.
             PanelView.restoreContainer();
