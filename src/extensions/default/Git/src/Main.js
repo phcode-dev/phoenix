@@ -60,6 +60,8 @@ define(function (require, exports) {
             const Commands = brackets.getModule("command/Commands");
             if (WorkspaceManager.isInDesignMode()) {
                 CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                Panel.toggle(true);
+                return;
             }
             Panel.toggle();
         });
