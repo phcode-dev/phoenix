@@ -172,11 +172,17 @@ function _isSafeReadOnlyBash(rawCmd) {
 }
 
 /**
- * Lazily import the ESM @anthropic-ai/claude-code module.
+ * Lazily import the ESM Claude Agent SDK module.
  */
 async function getQueryFn() {
     if (!queryModule) {
-        queryModule = await import("@anthropic-ai/claude-code");
+        // The JS SDK was split out of @anthropic-ai/claude-code in v2 and
+        // moved to @anthropic-ai/claude-agent-sdk. The CLI binary still
+        // ships under @anthropic-ai/claude-code (used by Phoenix's
+        // terminal "claude" command); the SDK now lives in its own
+        // package with the same query() signature and SDKResultMessage
+        // shape, so the rest of this file is unchanged.
+        queryModule = await import("@anthropic-ai/claude-agent-sdk");
     }
     return queryModule.query;
 }
