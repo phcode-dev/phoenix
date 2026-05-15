@@ -2226,7 +2226,7 @@ define({
     "AI_CHAT_TOOL_SCREENSHOT": "Screenshot",
     "AI_CHAT_TOOL_SCREENSHOT_OF": "Screenshot of {0}",
     "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "live preview",
-    "AI_CHAT_TOOL_SCREENSHOT_FULL_PAGE": "full page",
+    "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "the full editor",
     "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecting preview",
     "AI_CHAT_TOOL_RESIZE_PREVIEW": "Resize preview",
     "AI_LIVE_PREVIEW_BANNER_TEXT": "AI is inspecting the live preview",
