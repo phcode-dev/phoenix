@@ -689,9 +689,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "active iteration, not just final verification:" +
             "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
             "the editor, or any panel. Use it to confirm visual output, diagnose layout/styling " +
-            "bugs, or check that HTML or Markdown rendered as expected. Pass reload=true to " +
-            "force-reload the preview before capturing (useful after JS edits) — saves a tool " +
-            "call vs. reloading separately." +
+            "bugs, or check that HTML or Markdown rendered as expected. For 'how does the page " +
+            "look' / 'check the preview' questions pass selector='#panel-live-preview-frame' " +
+            "instead of capturing the full editor window — the targeted shot is far easier to " +
+            "reason about. Pass reload=true to force-reload the preview before capturing " +
+            "(useful after JS edits) — saves a tool call vs. reloading separately. As a last " +
+            "resort when the user asks about something in the editor that you can't identify " +
+            "from getEditorState or other tools, take a screenshot of the editor (no selector) " +
+            "to see what they're looking at." +
             "\n- execJsInLivePreview: run JS inside the HTML preview iframe to read the DOM, " +
             "query computed styles, click elements, or capture console output. Use it to debug " +
             "behavior, not just to verify." +

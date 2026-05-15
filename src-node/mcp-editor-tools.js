@@ -116,17 +116,24 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
 
     const takeScreenshotTool = sdkModule.tool(
         "takeScreenshot",
-        "Take a screenshot of the Phoenix Code editor application window or the live preview within it (not a web page). " +
-        "The editor window contains: a toolbar at the top, a file tree sidebar on the left, " +
-        "the code editor area in the center, and optionally a live preview panel on the right. " +
-        "The preview panel shows either an HTML/CSS/JS browser view or a rendered markdown preview " +
-        "(when a markdown file is open, the panel shows a WYSIWYG markdown editor/viewer). " +
-        "By default captures the entire editor window and returns the screenshot as an inline PNG image. " +
-        "If filePath is specified, saves to that file and returns the path instead. " +
-        "Prefer capturing specific regions using the selector parameter instead of the full window: " +
-        "use '#panel-live-preview-frame' to capture the preview panel (works for both HTML live preview and markdown preview), " +
-        "or '.editor-holder' to capture only the code editor area. " +
-        "Only omit the selector when you need to see the full editor application layout. " +
+        "Take a screenshot of the Phoenix Code editor application window (or a region within it). " +
+        "This captures the EDITOR APPLICATION, not the rendered web page on its own — the editor window " +
+        "contains a toolbar at the top, a file tree sidebar on the left, the code editor area in the " +
+        "center, and optionally a live preview panel on the right. The preview panel shows either an " +
+        "HTML/CSS/JS browser view or a rendered markdown preview (when a markdown file is open, the " +
+        "panel shows a WYSIWYG markdown editor/viewer). " +
+        "Returns the screenshot as an inline PNG image; if filePath is specified, saves to that file " +
+        "and returns the path instead. " +
+        "ALMOST ALWAYS pass a selector — capturing the full editor returns a busy image full of editor " +
+        "chrome that's hard to reason about. Use:" +
+        "\n- '#panel-live-preview-frame' to see the rendered preview (HTML or markdown) — this is what " +
+        "you want when verifying visual output, debugging a layout/styling bug, or confirming the page " +
+        "renders as expected. Use this for ANY 'how does it look', 'is the page rendering', or " +
+        "'check the preview' question." +
+        "\n- '.editor-holder' to see just the code editor area." +
+        "\nOnly omit the selector when you need to see the full editor application layout itself — " +
+        "e.g. the user is asking about Phoenix's UI, panels, toolbar, or you can't otherwise figure " +
+        "out what they're talking about and need to see what's on their screen. " +
         "Note: live preview screenshots may include Phoenix toolbox overlays on selected elements. " +
         "Use purePreview=true to temporarily hide these overlays and render the page as it would appear in a real browser. " +
         "Use reload=true to force-reload the live preview before capturing — useful after editing JS, " +
