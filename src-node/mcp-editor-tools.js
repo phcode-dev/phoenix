@@ -39,8 +39,6 @@ const CLARIFICATION_HINT =
 // is reliable in practice, so these should never fire during normal use —
 // they exist so a stalled promise chain (live preview wedged, etc.) surfaces
 // a deterministic error to Claude instead of the handler hanging forever.
-// Tools whose runtime is bounded by user-supplied code (execJsInLivePreview)
-// intentionally have no timeout — the code is allowed to run as long as it takes.
 const EXEC_PEER_TIMEOUT_MS = {
     getEditorState: 5000,
     takeScreenshot: 15000,
@@ -48,8 +46,15 @@ const EXEC_PEER_TIMEOUT_MS = {
     resizeLivePreview: 5000
 };
 
-function _execPeerWithTimeout(nodeConnector, fn, args, label) {
-    const ms = EXEC_PEER_TIMEOUT_MS[fn];
+// Floor for caller-provided timeouts (e.g. execJsInLivePreview's
+// timeoutMs). 5s minimum stops the model from spamming impatient retries
+// on a preview that's just taking a beat to settle. No ceiling — the
+// model picks the upper bound based on the task (a user can legitimately
+// ask for a long-running inspection).
+const MIN_CALLER_TIMEOUT_MS = 5000;
+
+function _execPeerWithTimeout(nodeConnector, fn, args, label, overrideMs) {
+    const ms = overrideMs || EXEC_PEER_TIMEOUT_MS[fn];
     const call = nodeConnector.execPeer(fn, args);
     if (!ms) {
         return call; // no timeout configured for this tool
@@ -63,6 +68,17 @@ function _execPeerWithTimeout(nodeConnector, fn, args, label) {
     return Promise.race([call, timeout]).finally(function () {
         clearTimeout(timer);
     });
+}
+
+/**
+ * Clamp a caller-supplied timeoutMs into the allowed range. Returns a
+ * sane default when missing/invalid.
+ */
+function _resolveCallerTimeout(timeoutMs, defaultMs) {
+    if (typeof timeoutMs !== "number" || !isFinite(timeoutMs)) {
+        return defaultMs;
+    }
+    return Math.max(MIN_CALLER_TIMEOUT_MS, timeoutMs);
 }
 
 /**
@@ -184,14 +200,24 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "the global scope of the previewed page. Note: eval() is synchronous — async/await is NOT supported. " +
         "Only available when an HTML file is selected in the live preview — does not work for markdown or " +
         "other non-HTML file types. Use this to inspect or manipulate the user's live-previewed web page " +
-        "(e.g. document.title, DOM queries).",
-        { code: z.string().describe("JavaScript code to execute in the live preview iframe") },
+        "(e.g. document.title, DOM queries).\n\n" +
+        "Pass timeoutMs to bound how long to wait if the live preview is wedged or slow to respond. " +
+        "Defaults to 10000 (10s). Floored at 5000 (the preview frame may still be settling); no " +
+        "upper limit — pick whatever fits the snippet you're running.",
+        {
+            code: z.string().describe("JavaScript code to execute in the live preview iframe"),
+            timeoutMs: z.number().int().optional().describe(
+                "Max wait in milliseconds before giving up on the live preview. " +
+                "Floored at 5000, no upper limit. Default 10000."
+            )
+        },
         async function (args) {
             let toolResult;
+            const timeoutMs = _resolveCallerTimeout(args.timeoutMs, 10000);
             try {
                 const result = await _execPeerWithTimeout(nodeConnector, "execJsInLivePreview", {
                     code: args.code
-                }, "execJsInLivePreview");
+                }, "execJsInLivePreview", timeoutMs);
                 if (result.error) {
                     toolResult = {
                         content: [{ type: "text", text: "Error: " + result.error }],
