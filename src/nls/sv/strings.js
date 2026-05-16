@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "Skärmdump",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Skärmdump av {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "direktförhandsgranskning",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "hela redigeraren",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Granskar förhandsgranskning",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Ändra storlek på förhandsgranskning",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI granskar live-förhandsgranskningen",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "hela redigeraren"
+  "AI_CHAT_TOOL_EDITOR_JS": "Inspekterar redigeraren",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Redigerarinställningar",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Redigerardokumentation"
 });

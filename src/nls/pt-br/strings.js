@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "Captura de tela",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Captura de tela de {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Visualização ao vivo",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "o editor completo",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecionando a pré-visualização",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Redimensionar visualização",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "A IA está inspecionando a visualização ao vivo",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "o editor completo"
+  "AI_CHAT_TOOL_EDITOR_JS": "Inspecionando o editor",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferências do Editor",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Documentação do Editor"
 });

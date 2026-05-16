@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "Képernyőkép",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Képernyőkép: {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "élő előnézet",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "a teljes szerkesztő",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Előnézet vizsgálata",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Előnézet átméretezése",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "A MI az élő előnézetet vizsgálja",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "a teljes szerkesztő"
+  "AI_CHAT_TOOL_EDITOR_JS": "Szerkesztő vizsgálata",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Szerkesztő beállításai",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Szerkesztő dokumentációja"
 });

@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "Στιγμιότυπο οθόνης",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Στιγμιότυπο οθόνης του {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Ζωντανή προεπισκόπηση",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Ο πλήρης επεξεργαστής",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Εξέταση προεπισκόπησης",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Αλλαγή μεγέθους προεπισκόπησης",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "Η AI εξετάζει τη ζωντανή προεπισκόπηση",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Ο πλήρης επεξεργαστής"
+  "AI_CHAT_TOOL_EDITOR_JS": "Επιθεώρηση επεξεργαστή",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Προτιμήσεις επεξεργαστή",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Τεκμηρίωση επεξεργαστή"
 });
