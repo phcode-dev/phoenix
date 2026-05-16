@@ -33,6 +33,11 @@ Thumbs.db
 /src-node/node_modules
 /src-mdviewer/node_modules
 
+# ignore API docs mirror copied from docs/API-Reference/ at build time
+# (shipped as a bundled resource for the editorDocs MCP tool, not
+# checked in)
+/src-node/apiDocs
+
 # ignore mdViewer build output
 /src/mdViewer
 /src/JSUtils/node_modules

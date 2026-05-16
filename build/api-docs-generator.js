@@ -11,6 +11,10 @@ const globPromise = util.promisify(glob);
 // Constants
 const SRC_DIR = './src';
 const MD_FILES_DIR = path.join('./docs', 'API-Reference');
+// Mirror the API reference into the src-node sidecar so the runtime
+// MCP `editorDocs.api` tool can read version-matched docs from disk
+// without going to the website. Git-ignored — see root .gitignore.
+const SRC_NODE_API_DOCS_DIR = path.join('./src-node', 'apiDocs');
 const BATCH_SIZE = 12;
 
 
@@ -235,6 +239,25 @@ async function generateMarkdown(file, relativePath) {
 
 
 /**
+ * Mirror the freshly-generated API reference into src-node/apiDocs so
+ * the Node sidecar can ship it as a bundled resource for the AI's
+ * `editorDocs.api` MCP tool. Replaces any prior contents so we don't
+ * accumulate stale files when modules are removed.
+ */
+async function copyApiDocsToSrcNode() {
+    try {
+        await fs.rm(SRC_NODE_API_DOCS_DIR, { recursive: true, force: true });
+        await fs.cp(MD_FILES_DIR, SRC_NODE_API_DOCS_DIR, { recursive: true });
+        console.log(`Copied ${MD_FILES_DIR} -> ${SRC_NODE_API_DOCS_DIR}`);
+    } catch (error) {
+        // Don't fail the whole build for a copy step — the AI tool will
+        // just fall back to "API docs not bundled in this build" at
+        // runtime. Log loudly so the failure isn't silent.
+        console.error("Failed to mirror API docs into src-node:", error);
+    }
+}
+
+/**
  * Driver function
  */
 async function driver() {
@@ -260,6 +283,12 @@ async function driver() {
         console.log("All files processed successfully!");
     } catch (error) {
         console.error("An error occurred:", error);
+    } finally {
+        // Always mirror whatever made it into docs/API-Reference, even if a
+        // single jsdoc failure aborted the batch loop. Otherwise the
+        // src-node mirror would silently stay stale (or non-existent) any
+        // time one source file has a jsdoc syntax glitch.
+        await copyApiDocsToSrcNode();
     }
 }
 
