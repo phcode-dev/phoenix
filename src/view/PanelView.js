@@ -669,10 +669,10 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Requests the panel to hide, invoking the registered onCloseRequested handler first (if any).
-     * If the handler returns false, the panel stays open. If it returns true or no handler is
-     * registered, `hide()` is called.
-     * @return {Promise<boolean>} Resolves to true if the panel was hidden, false if prevented.
+     * Requests this panel's tab to close, invoking the registered
+     * onCloseRequested handler first (if any). If the handler returns false,
+     * the tab stays open. Otherwise, `closeTab()` is called.
+     * @return {Promise<boolean>} Resolves to true if the tab was closed, false if prevented.
      */
     Panel.prototype.requestClose = async function () {
         if (this._onCloseRequestedHandler) {
@@ -681,7 +681,7 @@ define(function (require, exports, module) {
                 return false;
             }
         }
-        this.hide({ preferFallback: true });
+        this.closeTab();
         return true;
     };
 
@@ -745,14 +745,17 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Hides the panel
+     * Hides this panel: removes its tab from the tab bar, and if this was
+     * the active tab, collapses the bottom panel container. The panel stays
+     * registered — call show() to bring it back.
+     *
+     * For tab-bar UX where closing the active tab should switch to the next
+     * sibling tab (like clicking the X on a tab), use closeTab() instead.
+     * For permanent removal, use destroy().
      */
-    Panel.prototype.hide = function (options) {
+    Panel.prototype.hide = function () {
         let panelId = this.panelID;
-        let preferFallback = !!(options && options.preferFallback);
 
-        // Quick Access panel is pinned — it stays in _openIds and the tab bar.
-        // Hiding it collapses the bottom panel container entirely.
         if (panelId === _defaultPanelId) {
             if (_activeId !== panelId) {
                 return;
@@ -773,16 +776,51 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Remove from open set
+        _openIds.splice(idx, 1);
+        this.$panel.removeClass("active-bottom-panel");
+
+        if (_activeId === panelId) {
+            _activeId = null;
+            if (_$container) {
+                restoreIfMaximized();
+                Resizer.hide(_$container[0]);
+            }
+        }
+
+        _removeTabFromBar(panelId);
+
+        exports.trigger(EVENT_PANEL_HIDDEN, panelId);
+    };
+
+    /**
+     * Closes this tab: removes its tab from the tab bar. If this was the
+     * active tab, switches to the next sibling tab; if no other tab is open,
+     * collapses the bottom panel container instead. The panel stays
+     * registered — call show() to bring it back.
+     *
+     * For a programmatic hide that always collapses (no auto-switch to a
+     * sibling tab), use hide(). For permanent removal, use destroy().
+     */
+    Panel.prototype.closeTab = function () {
+        let panelId = this.panelID;
+
+        if (panelId === _defaultPanelId) {
+            return;
+        }
+
+        let idx = _openIds.indexOf(panelId);
+        if (idx === -1) {
+            return;
+        }
+
         _openIds.splice(idx, 1);
         this.$panel.removeClass("active-bottom-panel");
 
         let wasActive = (_activeId === panelId);
         let activatedId = null;
-
         let onlyDefaultLeft = (_openIds.length === 1 && _openIds[0] === _defaultPanelId);
 
-        if (wasActive && preferFallback && _openIds.length > 0 && !onlyDefaultLeft) {
+        if (wasActive && _openIds.length > 0 && !onlyDefaultLeft) {
             let nextIdx = Math.min(idx, _openIds.length - 1);
             activatedId = _openIds[nextIdx];
             _activeId = null;
