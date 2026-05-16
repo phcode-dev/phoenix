@@ -633,6 +633,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
+            "mcp__phoenix-editor__execJsInEditor",
+            "mcp__phoenix-editor__editorPreferences",
+            "mcp__phoenix-editor__editorDocs",
             "mcp__phoenix-editor__controlEditor",
             "mcp__phoenix-editor__resizeLivePreview",
             "mcp__phoenix-editor__wait",
@@ -647,7 +650,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 tools: ["Read", "Glob", "Grep",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__takeScreenshot",
-                    "mcp__phoenix-editor__execJsInLivePreview"]
+                    "mcp__phoenix-editor__execJsInLivePreview",
+                    "mcp__phoenix-editor__editorDocs"]
             },
             "coder": {
                 description: "Reads, edits, and writes code files." +
@@ -658,7 +662,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 tools: ["Read", "Edit", "Write", "Glob", "Grep",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__takeScreenshot",
-                    "mcp__phoenix-editor__execJsInLivePreview"]
+                    "mcp__phoenix-editor__execJsInLivePreview",
+                    "mcp__phoenix-editor__execJsInEditor",
+                    "mcp__phoenix-editor__editorPreferences",
+                    "mcp__phoenix-editor__editorDocs"]
             }
         },
         mcpServers: { "phoenix-editor": editorMcpServer },
@@ -670,9 +677,15 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "multiple Edit calls to make targeted changes rather than rewriting the entire " +
             "file with Write. This is critical because Write replaces the entire file content " +
             "which is slow and loses undo history." +
-            "\n\nWhen the user asks about the current file, open files, or what they are working on, " +
-            "call getEditorState first — it returns the active file path, working set, cursor position, " +
-            "and selection. Do NOT search the filesystem to answer these questions blindly." +
+            "\n\nALWAYS call getEditorState as your FIRST tool call on any question that " +
+            "references the user's current work — not just \"what file am I on\". This includes " +
+            "implicit-context questions like \"the page\", \"this layout\", \"the nav bar\", " +
+            "\"the button\", \"why is X behaving like this\", \"can you fix the styling\", " +
+            "\"scroll down on the page\", etc. The user is sitting in front of an editor and a " +
+            "live preview — without getEditorState you don't know which file they mean, which " +
+            "rules out targeted Read / Grep and makes you blindly grep the whole codebase. Run " +
+            "getEditorState first; THEN decide whether to Read the active file, Grep within it, " +
+            "or takeScreenshot the live preview to see what they're describing." +
             "\n\nAlways use full absolute paths for all file operations (Read, Edit, Write, " +
             "controlEditor). Never use relative paths." +
             "\n\nWhen a tool response mentions the user has typed a clarification, immediately " +
@@ -723,6 +736,34 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "assume that. Rarely the user pins the preview to a specific file — if a " +
             "screenshot doesn't match the file you just edited, check " +
             "getEditorState.livePreviewFile to rule that out." +
+            "\n- execJsInEditor: eval JS in Phoenix's OWN JS space (parent window — NOT the live " +
+            "preview iframe). Use when controlEditor's fixed ops aren't enough — split panes, " +
+            "click dialog buttons, send synthetic key events, dispatch any CommandManager " +
+            "command, configure indentation, etc. `__PR` exposes the modules and helpers; see " +
+            "the tool description for the full list. Before writing non-trivial JS, call " +
+            "editorDocs and Read / Grep the bundled API reference so you call real APIs." +
+            "\n- editorPreferences: read or write Phoenix preferences. `list` enumerates every " +
+            "registered pref with id/type/default/current/description/scope; `get` for a single " +
+            "pref; `set` writes into user (global), project (.phcode.json in repo), or session " +
+            "(in-memory) scope." +
+            "\n- editorDocs: returns the on-disk path to the bundled API reference plus the " +
+            "feature-docs URL and the GitHub source repo URL. Call once near the start of any " +
+            "non-trivial editor-control task; then Read / Grep the apiDocsPath and WebFetch the " +
+            "featureDocsURL as needed. Do NOT search the codebase blindly when this exists." +
+            "\n\nName-collision rule: \"Phoenix Code\" (the editor the user is sitting inside) " +
+            "and \"Claude Code\" (the SDK / CLI you happen to run on) BOTH have settings, " +
+            "configs, auto-update toggles, themes, etc. When the user says \"set / change / " +
+            "configure / disable X\" without naming a product, they ALWAYS mean PHOENIX — " +
+            "your first action is editorPreferences.list (or .get/.set), not anything else.\n\n" +
+            "DO NOT INVOKE the built-in `update-config` skill, do not Read / Write / cat / Bash " +
+            "anything under ~/.claude/, ~/.claude.json, or any Claude Code / SDK config path, " +
+            "unless the user EXPLICITLY says \"Claude\" / \"Claude Code\" / \"SDK\" / \"agent\" / " +
+            "\"~/.claude\" in their message. The `update-config` skill modifies Claude Code's own " +
+            "config, NEVER Phoenix's — if your first instinct on a config / setting / pref / " +
+            "auto-update / theme question is to fire that skill, STOP and reach for " +
+            "editorPreferences instead.\n\n" +
+            "If a request is genuinely ambiguous (Phoenix has no matching pref), say so and ask " +
+            "the user which product they meant before changing anything." +
             "\n\nUse your best judgement for when to enter plan mode. Use it when the task " +
             "involves creating new applications, extensive modifications, or architectural " +
             "changes — propose a plan for user approval before writing code." +

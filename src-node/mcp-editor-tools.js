@@ -29,7 +29,18 @@
  * Uses the Claude Code SDK's in-process MCP server support (createSdkMcpServer / tool).
  */
 
+const path = require("path");
+const fs = require("fs");
 const { z } = require("zod");
+
+// Absolute path to the bundled API reference, mirrored from
+// docs/API-Reference/ at build time by build/api-docs-generator.js.
+// Git-ignored — see root .gitignore. Surfaced to the AI via the
+// editorDocs MCP tool so it can Read / Grep these directly.
+const PHOENIX_API_DOCS_DIR = path.join(__dirname, "apiDocs");
+const PHOENIX_FEATURE_DOCS_URL = "https://docs.phcode.dev/docs/intro";
+const PHOENIX_API_DOCS_URL = "https://docs.phcode.dev/api/getting-started";
+const PHOENIX_SOURCE_REPO_URL = "https://github.com/phcode-dev/phoenix";
 
 const CLARIFICATION_HINT =
     "IMPORTANT: The user has typed a follow-up clarification while you were working." +
@@ -158,6 +169,10 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "full editor." +
         "\n- For anything else — Problems panel, file tree, toolbar, search bar, any editor UI, or " +
         "\"what is the user looking at\" — omit the selector and capture the full editor window. " +
+        "\n- You can also pass any CSS selector to capture just that DOM node — e.g. " +
+        "'#problems-panel' to inspect inspector results, '.modal:visible' to inspect the active " +
+        "dialog, '#sidebar' to inspect the file tree. Useful right after execJsInEditor mutates " +
+        "the UI and you want to verify the change visually. " +
         "Note: live preview screenshots may include Phoenix toolbox overlays on selected elements. " +
         "Use purePreview=true to temporarily hide these overlays and render the page as it would appear in a real browser. " +
         "Use reload=true to force-reload the live preview before capturing — useful after editing JS, " +
@@ -361,6 +376,196 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         }
     );
 
+    const execJsInEditorTool = sdkModule.tool(
+        "execJsInEditor",
+        "Execute JavaScript in the Phoenix editor's OWN JS space (the parent window — NOT the live " +
+        "preview iframe). Use execJsInLivePreview when you need to run code inside the page being " +
+        "previewed; use this tool when you need to drive Phoenix itself: split panes, click dialog " +
+        "buttons, dispatch arbitrary CommandManager commands, configure indentation, send synthetic " +
+        "key events, etc. Same trust model as execJsInLivePreview — runs without a per-call prompt. " +
+        "\n\n" +
+        "The body is wrapped in `new AsyncFunction('__PR', 'KeyEvent', code)` so you can `await` " +
+        "freely. `__PR` exposes:\n" +
+        "- Modules: $, CommandManager, Commands, Dialogs, EditorManager, MainViewManager, " +
+        "DocumentManager, WorkspaceManager, FileSystem, FileViewController, ProjectManager, " +
+        "PreferencesManager. For anything else use `brackets.getModule(\"path/to/module\")`.\n" +
+        "- __PR.EDITING.{splitVertical, splitHorizontal, splitNone, isSplit, getFirstPaneEditor, " +
+        "getSecondPaneEditor, openFileInFirstPane(path,addToWS?), openFileInSecondPane(path,addToWS?), " +
+        "focusFirstPane, focusSecondPane, setEditorSpacing(useTabs,count,isAuto)}\n" +
+        "- __PR.awaitsFor(pollFn, msg?, timeoutMs?, pollInterval?) — poll until pollFn returns " +
+        "truthy or timeout (rejects).\n" +
+        "- __PR.waitForModalDialog(dialogClass?, name?, timeoutMs?) / waitForModalDialogClosed(...)\n" +
+        "- __PR.clickDialogButtonID(buttonID, dialogClass?) / clickDialogButton(selector, dialogClass?)\n" +
+        "- __PR.raiseKeyEvent(key, eventType?, element?, options?)\n" +
+        "- __PR.execCommand(commandID, arg?) — wraps CommandManager.execute in a native Promise.\n" +
+        "\n" +
+        "Whatever value (or Promise that resolves) your code returns is JSON-stringified and " +
+        "returned to you as `result`. If the return value isn't JSON-serializable you'll get a " +
+        "string repr. Errors are caught and returned as `error` — your call won't crash.\n" +
+        "\n" +
+        "Before writing non-trivial JS that touches Phoenix internals, call the editorDocs tool to " +
+        "find the local API reference path and Read / Grep the relevant module's .md file. " +
+        "Guessing at Phoenix internals will waste a turn. If the API docs don't cover what you " +
+        "need, the source is on GitHub at " + PHOENIX_SOURCE_REPO_URL + " — use the regular " +
+        "WebFetch tool against the relevant raw file.\n" +
+        "\n" +
+        "After running, call takeScreenshot if you want to visually verify what changed — " +
+        "pass no selector for the full editor, or pass a CSS selector (e.g. '#problems-panel', " +
+        "'.modal:visible', '#sidebar') to capture just that DOM node. This is the easiest way " +
+        "to confirm a UI mutation actually landed.\n" +
+        "\n" +
+        "Pass timeoutMs to bound how long to wait if the editor is wedged. Floored at 5000, no " +
+        "upper limit. Default 10000.",
+        {
+            code: z.string().describe("JavaScript code to execute in the Phoenix editor's JS space"),
+            timeoutMs: z.number().int().optional().describe(
+                "Max wait in milliseconds before giving up. " +
+                "Floored at 5000, no upper limit. Default 10000."
+            )
+        },
+        async function (args) {
+            let toolResult;
+            const timeoutMs = _resolveCallerTimeout(args.timeoutMs, 10000);
+            try {
+                const result = await _execPeerWithTimeout(nodeConnector, "execJsInEditor", {
+                    code: args.code
+                }, "execJsInEditor", timeoutMs);
+                if (result && result.error) {
+                    toolResult = {
+                        content: [{ type: "text", text: "Error: " + result.error }],
+                        isError: true
+                    };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: (result && result.result) || "undefined" }]
+                    };
+                }
+            } catch (err) {
+                toolResult = {
+                    content: [{ type: "text", text: "Error executing JS in editor: " + err.message }],
+                    isError: true
+                };
+            }
+            return _maybeAppendHint(toolResult, hasClarification);
+        }
+    );
+
+    const editorPreferencesTool = sdkModule.tool(
+        "editorPreferences",
+        "Read and write Phoenix Code preferences. Three operations:\n" +
+        "- list: Returns every registered preference (id, type, defaultValue, currentValue, " +
+        "description, allowedValues if any, and the resolved scope of the current value).\n" +
+        "- get: Same fields for a single preference id.\n" +
+        "- set: Write a value into a specific scope. Calls PreferencesManager.save() after.\n\n" +
+        "Scope hierarchy (highest precedence wins on read): session → project → user → default.\n" +
+        "- default: built-in fallback declared by definePreference in source. READ-ONLY.\n" +
+        "- user: the user's global settings (persisted across all projects). User-friendly name " +
+        "when talking to the user: \"system-wide\" or \"globally\".\n" +
+        "- project: per-project settings (persisted with the project, travels with the repo). " +
+        "User-friendly name: \"for this project\" / \"in this repo\".\n" +
+        "- session: in-memory only, lasts until Phoenix restarts. User-friendly name: \"just for " +
+        "this session\". Useful for experimentation.\n\n" +
+        "WHEN TALKING TO THE USER: never say the raw scope words user / project / session — say " +
+        "\"system-wide\", \"for this project\", or \"just for this session\" instead. The raw " +
+        "names are only for the tool's scope parameter.\n\n" +
+        "PICKING THE RIGHT SCOPE: don't reflexively offer all three. Pick a sensible default " +
+        "based on what the preference does:\n" +
+        "  - System / app-level concerns (auto-update, telemetry, font, theme, the \"do you want " +
+        "to install Node\" prompt): system-wide makes sense; project / session usually don't.\n" +
+        "  - Code-style concerns (indent size, tabs vs spaces, word wrap, ruler): both " +
+        "system-wide AND for-this-project are reasonable; default to for-this-project (the " +
+        "convention travels with the repo). Mention system-wide only if the user implies it.\n" +
+        "  - Experimentation / one-off (\"try this for now\"): just-this-session.\n" +
+        "If you're not sure which scope fits, use the preference's description / id to judge, " +
+        "and ask the user only when the call is genuinely unclear.\n\n" +
+        "Only preferences registered via definePreference are enumerated by `list`. Raw values " +
+        "in .phcode.json that were never defined won't appear.",
+        {
+            operation: z.enum(["list", "get", "set"]).describe("list / get / set"),
+            id: z.string().optional().describe("Preference id (required for get and set, e.g. 'spaceUnits')"),
+            value: z.any().optional().describe("New value (required for set)"),
+            scope: z.enum(["user", "project", "session"]).optional().describe(
+                "Required for set. Pick the scope that matches the preference's nature " +
+                "(see tool description). user = system-wide / global; project = " +
+                "per-project setting (persisted with the project); session = in-memory until " +
+                "next restart."
+            )
+        },
+        async function (args) {
+            let toolResult;
+            try {
+                const result = await _execPeerWithTimeout(nodeConnector, "editorPreferences", {
+                    operation: args.operation,
+                    id: args.id,
+                    value: args.value,
+                    scope: args.scope
+                }, "editorPreferences");
+                if (result && result.error) {
+                    toolResult = {
+                        content: [{ type: "text", text: "Error: " + result.error }],
+                        isError: true
+                    };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: JSON.stringify(result) }]
+                    };
+                }
+            } catch (err) {
+                toolResult = {
+                    content: [{ type: "text", text: "Error in editorPreferences: " + err.message }],
+                    isError: true
+                };
+            }
+            return _maybeAppendHint(toolResult, hasClarification);
+        }
+    );
+
+    const editorDocsTool = sdkModule.tool(
+        "editorDocs",
+        "Returns the locations of Phoenix Code's documentation. This tool DOES NOT fetch content " +
+        "— it just hands you the absolute paths and URLs so you can read them with the standard " +
+        "Read / Grep / WebFetch tools (which is far more flexible than a fixed-shape doc API).\n\n" +
+        "The response includes:\n" +
+        "- apiDocsPath: absolute filesystem path to the bundled API reference (Markdown files, " +
+        "one per module). Read with the Read tool, or use Grep to find which module exposes a " +
+        "given function. Version-matched to this Phoenix build.\n" +
+        "- apiDocsAvailable: true if the directory exists; false if the build hasn't generated " +
+        "them yet (rare — fall back to the apiDocsURL).\n" +
+        "- apiDocsURL: live web copy of the API reference (latest version, may differ slightly " +
+        "from the bundled docs).\n" +
+        "- featureDocsURL: user-facing feature guides (\"how does Phoenix's X feature work\"). " +
+        "Fetch with WebFetch.\n" +
+        "- sourceRepoURL: GitHub repo for source-level lookups when the API docs don't cover " +
+        "something. Use WebFetch on raw.githubusercontent.com URLs to read individual files.\n\n" +
+        "Call this once near the start of any non-trivial editor-control task, then Read / " +
+        "Grep / WebFetch into the surfaces it returns.",
+        {},
+        async function () {
+            let apiDocsAvailable = false;
+            try {
+                apiDocsAvailable = fs.existsSync(PHOENIX_API_DOCS_DIR);
+            } catch (e) { /* default false */ }
+            const payload = {
+                apiDocsPath: PHOENIX_API_DOCS_DIR,
+                apiDocsAvailable: apiDocsAvailable,
+                apiDocsURL: PHOENIX_API_DOCS_URL,
+                featureDocsURL: PHOENIX_FEATURE_DOCS_URL,
+                sourceRepoURL: PHOENIX_SOURCE_REPO_URL,
+                hint: apiDocsAvailable
+                    ? "Read or Grep apiDocsPath to find the module you need (e.g. " +
+                      "Grep for the function name across the directory). Use WebFetch on " +
+                      "featureDocsURL for user-facing feature guides."
+                    : "Bundled API docs not present in this build. Use WebFetch on " +
+                      "apiDocsURL for the live API reference and on featureDocsURL for feature " +
+                      "guides."
+            };
+            const toolResult = {
+                content: [{ type: "text", text: JSON.stringify(payload, null, 2) }]
+            };
+            return _maybeAppendHint(toolResult, hasClarification);
+        }
+    );
+
     const getUserClarificationTool = sdkModule.tool(
         "getUserClarification",
         "Retrieve a follow-up clarification message the user typed while you were working. " +
@@ -399,8 +604,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
 
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool, controlEditorTool,
-            resizeLivePreviewTool, waitTool, getUserClarificationTool]
+        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool,
+            execJsInEditorTool, editorPreferencesTool, editorDocsTool,
+            controlEditorTool, resizeLivePreviewTool, waitTool, getUserClarificationTool]
     });
 }
 
