@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "Екранна снимка",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Екранна снимка на {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Преглед на живо",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "целият редактор",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Инспектиране на преглед",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Оразмеряване на прегледа",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI инспектира прегледа на живо",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "целият редактор"
+  "AI_CHAT_TOOL_EDITOR_JS": "Инспектиране на редактора",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Предпочитания на редактора",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Документация на редактора"
 });

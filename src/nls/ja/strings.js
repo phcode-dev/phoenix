@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "スクリーンショット",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0}のスクリーンショット",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "ライブプレビュー",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "エディター全体",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "プレビューを検査中",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "プレビューをリサイズ",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AIがライブプレビューを確認しています",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "エディター全体"
+  "AI_CHAT_TOOL_EDITOR_JS": "エディターを検査中",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "エディターの設定",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "エディターのドキュメント"
 });
