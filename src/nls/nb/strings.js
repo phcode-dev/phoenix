@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "Skjermbilde",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Skjermbilde av {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "direkte forhåndsvisning",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Hele editoren",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspiserer forhåndsvisning",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Endre størrelse på forhåndsvisning",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspiserer direkteforhåndsvisningen",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Hele editoren"
+  "AI_CHAT_TOOL_EDITOR_JS": "Inspiserer redigeringsprogram",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Redigeringsinnstillinger",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Redigeringsdokumentasjon"
 });

@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "സ്ക്രീൻഷോട്ട്",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "{0}-ന്റെ സ്ക്രീൻഷോട്ട്",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "തത്സമയ പ്രിവ്യൂ",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "പൂർണ്ണമായ എഡിറ്റർ",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "പ്രിവ്യൂ പരിശോധിക്കുന്നു",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "പ്രിവ്യൂവിന്റെ വലുപ്പം മാറ്റുക",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI ലൈവ് പ്രിവ്യൂ പരിശോധിക്കുന്നു",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "പൂർണ്ണമായ എഡിറ്റർ"
+  "AI_CHAT_TOOL_EDITOR_JS": "എഡിറ്റർ പരിശോധിക്കുന്നു",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "എഡിറ്റർ മുൻഗണനകൾ",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "എഡിറ്റർ രേഖകൾ"
 });

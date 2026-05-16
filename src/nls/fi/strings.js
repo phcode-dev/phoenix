@@ -2013,6 +2013,7 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT": "Kuvakaappaus",
   "AI_CHAT_TOOL_SCREENSHOT_OF": "Kuvakaappaus kohteesta {0}",
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "reaaliaikainen esikatselu",
+  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "koko editori",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Tarkastetaan esikatselua",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Muuta esikatselun kokoa",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "Tekoäly tutkii reaaliaikaista esikatselua",
@@ -2261,5 +2262,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "koko editori"
+  "AI_CHAT_TOOL_EDITOR_JS": "Tarkastellaan editoria",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editorin asetukset",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Editorin dokumentaatio"
 });
