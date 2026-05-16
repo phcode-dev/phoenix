@@ -143,6 +143,7 @@ Preference key for persisting the maximize state across reloads.
     * [.show()](#Panel+show)
     * [.addToTabBar()](#Panel+addToTabBar)
     * [.hide()](#Panel+hide)
+    * [.closeTab()](#Panel+closeTab)
     * [.focus()](#Panel+focus) ⇒ <code>boolean</code>
     * [.setVisible(visible)](#Panel+setVisible)
     * [.setTitle(newTitle)](#Panel+setTitle)
@@ -196,12 +197,12 @@ tab close button). The handler should return `true` to allow the close, or `fals
 <a name="Panel+requestClose"></a>
 
 ### panel.requestClose() ⇒ <code>Promise.&lt;boolean&gt;</code>
-Requests the panel to hide, invoking the registered onCloseRequested handler first (if any).
-If the handler returns false, the panel stays open. If it returns true or no handler is
-registered, `hide()` is called.
+Requests this panel's tab to close, invoking the registered
+onCloseRequested handler first (if any). If the handler returns false,
+the tab stays open. Otherwise, `closeTab()` is called.
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - Resolves to true if the panel was hidden, false if prevented.  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - Resolves to true if the tab was closed, false if prevented.  
 <a name="Panel+show"></a>
 
 ### panel.show()
@@ -219,7 +220,25 @@ was collapsed by the user — avoids forcing the bottom panel open.
 <a name="Panel+hide"></a>
 
 ### panel.hide()
-Hides the panel
+Hides this panel: removes its tab from the tab bar, and if this was
+the active tab, collapses the bottom panel container. The panel stays
+registered — call show() to bring it back.
+
+For tab-bar UX where closing the active tab should switch to the next
+sibling tab (like clicking the X on a tab), use closeTab() instead.
+For permanent removal, use destroy().
+
+**Kind**: instance method of [<code>Panel</code>](#Panel)  
+<a name="Panel+closeTab"></a>
+
+### panel.closeTab()
+Closes this tab: removes its tab from the tab bar. If this was the
+active tab, switches to the next sibling tab; if no other tab is open,
+collapses the bottom panel container instead. The panel stays
+registered — call show() to bring it back.
+
+For a programmatic hide that always collapses (no auto-switch to a
+sibling tab), use hide(). For permanent removal, use destroy().
 
 **Kind**: instance method of [<code>Panel</code>](#Panel)  
 <a name="Panel+focus"></a>
