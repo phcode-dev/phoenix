@@ -154,17 +154,20 @@ define(function (require, exports, module) {
     /**
      * Check if we're at an upgradable location.
      * For Electron on Linux, we require the AppImage to be in ~/.phoenix-code/
+     * (the path the installer.sh writes to).
      */
     async function isUpgradableLocation() {
         try {
-            const isPackaged = await window.electronAPI.isPackaged();
-            if (!isPackaged) {
+            const installedPath = await window.electronAPI.getInstalledAppPath();
+            if (!installedPath) {
                 return false;
             }
-            const homeDir = await window.electronFSAPI.homeDir();
+            let homeDir = await window.electronFSAPI.homeDir();
+            if (!homeDir.endsWith("/")) {
+                homeDir = homeDir + "/";
+            }
             const phoenixInstallDir = `${homeDir}.phoenix-code/`;
-            const execPath = await window.electronAPI.getExecutablePath();
-            return execPath.startsWith(phoenixInstallDir);
+            return installedPath.startsWith(phoenixInstallDir);
         } catch (e) {
             console.error(e);
             return false;
