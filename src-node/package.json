@@ -21,7 +21,6 @@
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
         "@anthropic-ai/claude-agent-sdk": "^0.2.126",
-        "@anthropic-ai/claude-code": "^2.1.118",
         "@expo/sudo-prompt": "^9.3.2",
         "@phcode/fs": "^4.0.2",
         "cross-spawn": "^7.0.6",
