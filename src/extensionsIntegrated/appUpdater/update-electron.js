@@ -56,7 +56,6 @@ define(function (require, exports, module) {
         KEY_UPDATE_AVAILABLE = "PH_UPDATE_AVAILABLE";
 
     const PREFS_AUTO_UPDATE = "autoUpdate";
-    const MAX_LOG_LINES = 500;
     let isAutoUpdateFlow = true;
     let updateScheduled = false;
     let cachedUpdateDetails = null;
@@ -281,6 +280,10 @@ define(function (require, exports, module) {
      */
     function launchLinuxUpdater(onOutput) {
         return new Promise((resolve, reject) => {
+            // Spawn the installer in an external terminal emulator so sudo /
+            // interactive prompts work natively. The external terminal IS the
+            // install UI — no internal dialog. Probes common terminals in
+            // order; first hit wins.
             const stageValue = Phoenix.config.environment;
             console.log('Stage:', stageValue);
             let scriptUrl = 'https://updates.phcode.io/linux/installer.sh';
@@ -288,18 +291,33 @@ define(function (require, exports, module) {
                 scriptUrl = "https://updates.phcode.io/linux/installer-latest-experimental-build.sh";
             }
 
-            // Use spawnProcess to run bash with the wget|bash command
-            const command = '/bin/bash';
-            const args = ['-c', `wget -qO- ${scriptUrl} | bash -s -- --upgrade`];
+            // Inner command run inside the spawned terminal: fetch installer
+            // from $UPDATE_URL and pipe to bash, print exit code, pause so the
+            // user can read output before close.
+            const innerCmd = 'wget -qO- "$UPDATE_URL" | bash -s -- --upgrade; ec=$?; echo; echo "Installer exit code: $ec"; read -rp "Press Enter to close..."';
 
-            window.electronAppAPI.spawnProcess(command, args)
+            // Use UPDATE_URL env var to avoid quoting the URL through multiple
+            // shell layers. nohup/disown so terminals that don't daemonize
+            // (xterm) still let the outer spawn return immediately.
+            const launcherScript = `
+                export UPDATE_URL='${scriptUrl}'
+                if command -v gnome-terminal >/dev/null 2>&1; then
+                    nohup gnome-terminal -- bash -c '${innerCmd}' >/dev/null 2>&1 &
+                elif command -v konsole >/dev/null 2>&1; then
+                    nohup konsole -e bash -c '${innerCmd}' >/dev/null 2>&1 &
+                elif command -v xterm >/dev/null 2>&1; then
+                    nohup xterm -e bash -c '${innerCmd}' >/dev/null 2>&1 &
+                elif command -v x-terminal-emulator >/dev/null 2>&1; then
+                    nohup x-terminal-emulator -e bash -c '${innerCmd}' >/dev/null 2>&1 &
+                else
+                    echo "No supported terminal emulator found" >&2
+                    exit 1
+                fi
+                disown
+            `;
+
+            window.electronAppAPI.spawnProcess('/bin/bash', ['-c', launcherScript])
                 .then(instanceId => {
-                    // Set up output handlers
-                    window.electronAppAPI.onProcessStdout((id, line) => {
-                        if (id === instanceId && onOutput) {
-                            onOutput('stdout', line);
-                        }
-                    });
                     window.electronAppAPI.onProcessStderr((id, line) => {
                         if (id === instanceId && onOutput) {
                             onOutput('stderr', line);
@@ -310,13 +328,13 @@ define(function (require, exports, module) {
                             if (data.code === 0) {
                                 resolve();
                             } else {
-                                reject(new Error(`Update script exited with code: ${data.code}`));
+                                reject(new Error(`Failed to launch installer terminal (exit ${data.code})`));
                             }
                         }
                     });
                     window.electronAppAPI.onProcessError((id, err) => {
                         if (id === instanceId) {
-                            reject(new Error(`Update process error: ${err}`));
+                            reject(new Error(`Terminal spawn error: ${err}`));
                         }
                     });
                 })
@@ -330,133 +348,35 @@ define(function (require, exports, module) {
         }
         // Clear the scheduled flag in shared state
         await window.electronAPI.setUpdateScheduled(false);
-        console.log("Installing update at quit time");
-        return new Promise(resolve => {
-            let dialog;
-            let logLines = [];
-
-            function appendLogLine(text) {
-                // Split text into lines and add each
-                const lines = text.split('\n').filter(l => l.trim());
-                for (const line of lines) {
-                    logLines.push(line);
-                    // Keep only last MAX_LOG_LINES
-                    if (logLines.length > MAX_LOG_LINES) {
-                        logLines.shift();
-                    }
-                }
-                // Update the log display
-                const logElement = document.getElementById('update-log-output');
-                if (logElement) {
-                    logElement.textContent = logLines.join('\n');
-                    logElement.scrollTop = logElement.scrollHeight;
-                }
-            }
-
-            function failUpdateDialogAndExit(err) {
-                console.error("error updating: ", err);
-                dialog && dialog.close();
-                // Build full log text for copying
-                const fullLogText = logLines.join('\n') + '\n\nError: ' + (err.message || err);
-                // Show failure dialog with log output and hover copy icon
-                const failContent = `
-                    <p>${Strings.UPDATE_FAILED_VISIT_SITE_MESSAGE}</p>
-                    <div id="update-fail-log-container" style="
-                        position: relative;
-                        margin-top: 10px;
-                    ">
-                        <pre id="update-fail-log" style="
-                            background: #1e1e1e;
-                            color: #d4d4d4;
-                            padding: 10px;
-                            border-radius: 4px;
-                            font-family: 'Consolas', 'Monaco', monospace;
-                            font-size: 11px;
-                            height: 200px;
-                            overflow-y: auto;
-                            white-space: pre-wrap;
-                            word-wrap: break-word;
-                            margin: 0;
-                        ">${fullLogText}</pre>
-                        <i id="update-log-copy-btn" class="fa-solid fa-copy" title="${Strings.CMD_COPY}" style="
-                            position: absolute;
-                            top: 8px;
-                            right: 8px;
-                            color: #888;
-                            cursor: pointer;
-                            padding: 5px;
-                            border-radius: 3px;
-                            opacity: 0;
-                            transition: opacity 0.2s;
-                        "></i>
-                    </div>
-                `;
-                const failDialog = Dialogs.showModalDialog(
+        console.log("Launching external terminal for update");
+        try {
+            await launchLinuxUpdater();
+            Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'install', 'launched' + Phoenix.platform);
+            // Success: the terminal is now the user's UI. Let the quit proceed.
+        } catch (err) {
+            console.error("Failed to launch installer terminal:", err);
+            logger.reportError(err, "Failed to launch installer terminal at quit time");
+            Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'install', 'launchFailed' + Phoenix.platform);
+            // Block the quit on a failure dialog. This both surfaces the error
+            // to the user AND gives the async metrics/Bugsnag calls above time
+            // to flush before the process exits.
+            const errDetails = (err && err.message) ? err.message : String(err);
+            await new Promise(resolve => {
+                Dialogs.showModalDialog(
                     DefaultDialogs.DIALOG_ID_ERROR,
                     Strings.UPDATE_FAILED_TITLE,
-                    failContent,
+                    `<p>${Strings.UPDATE_FAILED_VISIT_SITE_MESSAGE}</p>` +
+                    `<pre style="background:#1e1e1e;color:#d4d4d4;padding:10px;border-radius:4px;` +
+                    `font-family:Consolas,Monaco,monospace;font-size:11px;white-space:pre-wrap;` +
+                    `word-wrap:break-word;margin-top:10px;">${errDetails}</pre>`,
                     [{ className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: Dialogs.DIALOG_BTN_OK, text: Strings.OK }]
-                );
-                // Set up hover and click handlers for copy icon
-                const $container = $('#update-fail-log-container');
-                const $copyBtn = $('#update-log-copy-btn');
-                $container.on('mouseenter', () => $copyBtn.css('opacity', '1'));
-                $container.on('mouseleave', () => $copyBtn.css('opacity', '0'));
-                $copyBtn.on('click', () => {
-                    Phoenix.app.copyToClipboard(fullLogText);
-                    $copyBtn.removeClass('fa-copy').addClass('fa-check');
-                    setTimeout(() => {
-                        $copyBtn.removeClass('fa-check').addClass('fa-copy');
-                    }, 1500);
-                });
-                $copyBtn.on('mouseenter', () => $copyBtn.css({ 'background': '#333', 'color': '#fff' }));
-                $copyBtn.on('mouseleave', () => $copyBtn.css({ 'background': 'transparent', 'color': '#888' }));
-
-                failDialog.done(() => {
+                ).done(() => {
                     NativeApp.openURLInDefaultBrowser(Phoenix.config.update_download_page)
                         .catch(console.error)
                         .finally(resolve);
                 });
-            }
-
-            // Create dialog with terminal-style log output
-            const dialogContent = `
-                <p>${Strings.UPDATE_INSTALLING_MESSAGE}</p>
-                <pre id="update-log-output" style="
-                    background: #1e1e1e;
-                    color: #d4d4d4;
-                    padding: 10px;
-                    border-radius: 4px;
-                    font-family: 'Consolas', 'Monaco', monospace;
-                    font-size: 11px;
-                    height: 200px;
-                    overflow-y: auto;
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    margin-top: 10px;
-                "></pre>
-            `;
-
-            dialog = Dialogs.showModalDialog(
-                DefaultDialogs.DIALOG_ID_INFO,
-                Strings.UPDATE_INSTALLING,
-                dialogContent,
-                [
-                    {
-                        className: "forced-hidden",
-                        id: Dialogs.DIALOG_BTN_OK,
-                        text: Strings.OK
-                    }
-                ],
-                false
-            );
-
-            launchLinuxUpdater((type, text) => {
-                appendLogLine(text);
-            })
-                .then(resolve)
-                .catch(failUpdateDialogAndExit);
-        });
+            });
+        }
     }
 
     AppInit.appReady(async function () {
