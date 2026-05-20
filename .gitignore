@@ -27,6 +27,7 @@ Thumbs.db
 
 # claude
 .claude/**/*.lock
+.claude/settings.local.json
 
 # ignore node_modules inside src
 /src/node_modules
