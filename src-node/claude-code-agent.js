@@ -824,7 +824,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         },
         allowedTools: [
             "Read", "Edit", "Write", "Glob", "Grep", "Bash",
-            "AskUserQuestion", "Task",
+            "AskUserQuestion", "Task", "Agent",
             "TodoRead", "TodoWrite",
             "TaskCreate", "TaskUpdate", "TaskList", "TaskGet",
             "WebFetch", "WebSearch",
