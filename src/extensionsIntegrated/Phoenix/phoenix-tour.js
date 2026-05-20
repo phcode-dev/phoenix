@@ -70,6 +70,8 @@ define(function (require, exports, module) {
 
     let $overlay = null;
     let _rafId = null;
+    let _resizeObserver = null;
+    let _positionHandler = null;
     let _timers = [];
 
     // Per-step: tracks a click on the highlighted target while the
@@ -97,9 +99,21 @@ define(function (require, exports, module) {
             clearTimeout(_timers[i]);
         }
         _timers = [];
+    }
+
+    function _stopTracking() {
         if (_rafId) {
             cancelAnimationFrame(_rafId);
             _rafId = null;
+        }
+        if (_resizeObserver) {
+            _resizeObserver.disconnect();
+            _resizeObserver = null;
+        }
+        if (_positionHandler) {
+            window.removeEventListener("scroll", _positionHandler, true);
+            window.removeEventListener("resize", _positionHandler);
+            _positionHandler = null;
         }
     }
 
@@ -169,6 +183,7 @@ define(function (require, exports, module) {
 
     function _teardown() {
         _clearTimers();
+        _stopTracking();
         _detachStepClickMetric();
         _cancelStep2AIPeek();
         if ($overlay) {
@@ -185,8 +200,12 @@ define(function (require, exports, module) {
         }
         $overlay = $(
             '<div class="phoenix-tour-overlay" data-tip-placement="right">' +
-              '<div class="phoenix-tour-ring"></div>' +
-              '<div class="phoenix-tour-ring phoenix-tour-ring-2"></div>' +
+              '<div class="phoenix-tour-halo-outer"></div>' +
+              '<div class="phoenix-tour-halo-mid"></div>' +
+              '<div class="phoenix-tour-focus-ring"></div>' +
+              '<div class="phoenix-tour-pulse-ring"></div>' +
+              '<div class="phoenix-tour-pulse-ring phoenix-tour-pulse-ring-2"></div>' +
+              '<div class="phoenix-tour-pulse-ring phoenix-tour-pulse-ring-3"></div>' +
               '<div class="phoenix-tour-tooltip">' +
                 '<div class="phoenix-tour-step"></div>' +
                 '<div class="phoenix-tour-text"></div>' +
@@ -195,6 +214,22 @@ define(function (require, exports, module) {
             '</div>'
         );
         $overlay.appendTo(document.body);
+    }
+
+    /**
+     * Restart the ring animations at the new target so every step gets a
+     * fresh ripple → settle sequence, not the leftover settled rings from
+     * the previous step. The reflow read between class toggles is what
+     * makes the CSS animations restart; without it the browser coalesces
+     * the remove+add and nothing replays.
+     */
+    function _enterStep() {
+        if (!$overlay) {
+            return;
+        }
+        $overlay.removeClass("phoenix-tour-animating");
+        void $overlay[0].offsetWidth;
+        $overlay.addClass("phoenix-tour-visible phoenix-tour-animating");
     }
 
     function _setText(text) {
@@ -241,28 +276,53 @@ define(function (require, exports, module) {
     }
 
     function _trackTarget($target, placement) {
-        function update() {
-            if (!$overlay || !$target.length || !$target[0].isConnected) {
-                _rafId = null;
-                return;
+        // Tour targets are stationary toolbar buttons, so we position once
+        // and then react to scroll/resize/target-size changes via observers
+        // — avoids the compositor cost of a per-frame rAF loop on low-end
+        // hardware. The rAF below is only a short poll for targets that
+        // aren't laid out yet (zero-size on first call).
+        _stopTracking();
+        if (!$overlay || !$target.length) {
+            return;
+        }
+        $overlay.attr("data-tip-placement", placement || "right");
+        const targetEl = $target[0];
+
+        function position() {
+            if (!$overlay || !targetEl.isConnected) {
+                return false;
             }
-            const r = $target[0].getBoundingClientRect();
+            const r = targetEl.getBoundingClientRect();
             if (r.width === 0 && r.height === 0) {
-                _rafId = requestAnimationFrame(update);
-                return;
+                return false;
             }
             const cx = r.left + r.width / 2;
             const cy = r.top + r.height / 2;
             const el = $overlay[0];
             el.style.left = cx + "px";
             el.style.top = cy + "px";
-            _rafId = requestAnimationFrame(update);
+            return true;
         }
-        if (_rafId) {
-            cancelAnimationFrame(_rafId);
+
+        function attachObservers() {
+            _positionHandler = position;
+            if (typeof ResizeObserver !== "undefined") {
+                _resizeObserver = new ResizeObserver(position);
+                _resizeObserver.observe(targetEl);
+            }
+            window.addEventListener("scroll", _positionHandler, true);
+            window.addEventListener("resize", _positionHandler);
         }
-        $overlay.attr("data-tip-placement", placement || "right");
-        update();
+
+        function pollUntilVisible() {
+            if (position()) {
+                _rafId = null;
+                attachObservers();
+                return;
+            }
+            _rafId = requestAnimationFrame(pollUntilVisible);
+        }
+        pollUntilVisible();
     }
 
     /**
@@ -297,7 +357,7 @@ define(function (require, exports, module) {
         // demo is too quick to read.
         _setText(Strings.PHOENIX_TOUR_DESIGN_MODE);
         _setActions([]); // hidden during the auto-demo
-        $overlay.addClass("phoenix-tour-visible");
+        _enterStep();
 
         // Auto-demo: enter design mode, hold, exit, then show "Next".
         _timers.push(setTimeout(function () {
@@ -352,6 +412,7 @@ define(function (require, exports, module) {
             }
         ]);
         _attachStepClickMetric(2, $tab);
+        _enterStep();
         // Auto-peek the AI panel for a couple of seconds so the user gets
         // a glance at its contents, then revert.
         _runStep2AIPeek();
@@ -384,6 +445,7 @@ define(function (require, exports, module) {
                 }
             }
         ]);
+        _enterStep();
         // Intentionally do NOT advance on a real click of the target — only
         // the Next button advances.
     }
@@ -477,6 +539,7 @@ define(function (require, exports, module) {
                 }
             }
         ]);
+        _enterStep();
     }
 
     function _shouldRun() {
