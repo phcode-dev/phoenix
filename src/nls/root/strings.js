@@ -2238,6 +2238,8 @@ define({
     "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
     "AI_CHAT_TOOL_TASKS": "Tasks",
     "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} of {1} tasks done",
+    "AI_CHAT_TOOL_WEB_FETCH": "Fetch web page",
+    "AI_CHAT_TOOL_WEB_SEARCH": "Web search",
     "AI_CHAT_TOOL_SEARCHED": "Searched: {0}",
     "AI_CHAT_TOOL_GREP": "Grep: {0}",
     "AI_CHAT_TOOL_READ_FILE": "Read {0}",
