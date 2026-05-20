@@ -1612,6 +1612,45 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 _log("Session:", currentSessionId);
             }
 
+            // Subagent tool extraction. The SDK delivers the parent
+            // agent's tool calls as a stream of stream_event messages
+            // (content_block_start / content_block_delta / content_block_
+            // stop), but the new Agent dispatcher's *subagent* tool calls
+            // arrive batched on a single assistant message with
+            // parent_tool_use_id set — there is no streaming path. We have
+            // to fish them out here, otherwise the UI sees the parent
+            // Agent card finish and then nothing until the subagent
+            // returns. Each tool_use block emits aiProgress + aiToolInfo
+            // back-to-back (no streaming preview — the SDK never gave us
+            // one); the tool_use id is registered in _toolUseIdToCounter
+            // so the existing tool_result handler routes the response
+            // back to the right indicator card.
+            if (message.type === "assistant" &&
+                    message.parent_tool_use_id &&
+                    message.message && Array.isArray(message.message.content)) {
+                for (const block of message.message.content) {
+                    if (block && block.type === "tool_use") {
+                        toolCounter++;
+                        if (block.id) {
+                            _toolUseIdToCounter[block.id] = toolCounter;
+                        }
+                        _log("Subagent tool:", block.name, "#" + toolCounter);
+                        nodeConnector.triggerPeer("aiProgress", {
+                            requestId: requestId,
+                            toolName: block.name,
+                            toolId: toolCounter,
+                            phase: "tool_use"
+                        });
+                        nodeConnector.triggerPeer("aiToolInfo", {
+                            requestId: requestId,
+                            toolName: block.name,
+                            toolId: toolCounter,
+                            toolInput: block.input || {}
+                        });
+                    }
+                }
+            }
+
             // Per-turn token usage: each SDKAssistantMessage carries the
             // wrapped Anthropic API message whose `.usage` reflects what
             // that single turn consumed. Useful for diagnosing runaway
