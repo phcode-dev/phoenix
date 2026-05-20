@@ -38,7 +38,18 @@
     }
 }
 
-.phoenix-tour-ring {
+/* Two-phase ring system:
+   1. ~3.2s of animated pulse (three staggered ripples) — the initial
+      attention-grab.
+   2. Pulse fades out and a settled focus halo appears: two soft radial
+      gradient annuli (transparent centers, feathered edges) plus a crisp
+      ring snug around the target icon. Reads as a deliberate spotlight,
+      not a stalled ripple. Pulse is bounded (not infinite) so weak GPUs
+      aren't stuck rasterizing scaling box-shadowed elements forever. */
+
+/* Phase 1: 3 staggered pulse rings, 1.6s each at 0.8s intervals → ripple
+   stays continuously visible from t=0 to t=3.2s. */
+.phoenix-tour-pulse-ring {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -48,12 +59,20 @@
     border: 2px solid #4aa3ff;
     border-radius: 50%;
     box-shadow: 0 0 12px rgba(74, 163, 255, 0.45);
-    opacity: 0.9;
-    animation: phoenix-tour-pulse 1.6s ease-out infinite;
+    opacity: 0;
+    pointer-events: none;
 }
 
-.phoenix-tour-ring-2 {
-    animation-delay: 0.8s;
+.phoenix-tour-overlay.phoenix-tour-animating {
+    .phoenix-tour-pulse-ring {
+        animation: phoenix-tour-pulse 1.6s ease-out forwards;
+    }
+    .phoenix-tour-pulse-ring-2 {
+        animation-delay: 0.8s;
+    }
+    .phoenix-tour-pulse-ring-3 {
+        animation-delay: 1.6s;
+    }
 }
 
 @keyframes phoenix-tour-pulse {
@@ -68,6 +87,76 @@
         transform: scale(2.6);
         opacity: 0;
     }
+}
+
+/* Phase 2: settled focus halo. All three layers share a common animation
+   that fades them in (with a slight inward-settle stagger) once the pulse
+   phase ends, then idles. */
+.phoenix-tour-halo-outer,
+.phoenix-tour-halo-mid,
+.phoenix-tour-focus-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Wide soft outer glow — gentle "spotlight" reaching the surrounding UI.
+   Transparent at the very center so the inner layers and icon show
+   through, transparent again at the disc edge so it feathers into the
+   background instead of looking like a hard circle. */
+.phoenix-tour-halo-outer {
+    width: 180px;
+    height: 180px;
+    margin: -90px 0 0 -90px;
+    background: radial-gradient(circle closest-side,
+        transparent 38%,
+        rgba(74, 163, 255, 0.09) 55%,
+        rgba(74, 163, 255, 0.05) 75%,
+        transparent 100%);
+}
+
+/* Mid annulus — denser ring of fill that gives the halo visible structure
+   without resorting to a hard outline. */
+.phoenix-tour-halo-mid {
+    width: 96px;
+    height: 96px;
+    margin: -48px 0 0 -48px;
+    background: radial-gradient(circle closest-side,
+        transparent 28%,
+        rgba(74, 163, 255, 0.20) 50%,
+        rgba(74, 163, 255, 0.10) 75%,
+        transparent 100%);
+}
+
+/* Crisp focus ring at the icon — the unambiguous "this one" marker. */
+.phoenix-tour-focus-ring {
+    width: 38px;
+    height: 38px;
+    margin: -19px 0 0 -19px;
+    border: 2px solid rgba(74, 163, 255, 0.95);
+    background: rgba(74, 163, 255, 0.08);
+    box-shadow: 0 0 14px rgba(74, 163, 255, 0.55);
+}
+
+.phoenix-tour-overlay.phoenix-tour-animating {
+    .phoenix-tour-halo-outer,
+    .phoenix-tour-halo-mid,
+    .phoenix-tour-focus-ring {
+        animation: phoenix-tour-settle 600ms ease-out forwards;
+    }
+    /* Settle inward: outer halo first, then mid, then the crisp ring snaps
+       in last — feels like the ripples collapsing into a focus indicator. */
+    .phoenix-tour-halo-outer  { animation-delay: 3.2s; }
+    .phoenix-tour-halo-mid    { animation-delay: 3.35s; }
+    .phoenix-tour-focus-ring  { animation-delay: 3.5s; }
+}
+
+@keyframes phoenix-tour-settle {
+    0%   { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 /* Tooltip — sits below-right of the ring so it stays within the viewport
