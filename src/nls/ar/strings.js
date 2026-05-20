@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "معاينة مباشرة",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "المحرر الكامل",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "جاري فحص المعاينة",
+  "AI_CHAT_TOOL_EDITOR_JS": "فحص المحرر",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "تفضيلات المحرر",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "مستندات المحرر",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "تغيير حجم المعاينة",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "الذكاء الاصطناعي يفحص المعاينة المباشرة",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "قام الذكاء الاصطناعي بتغيير حجم المعاينة إلى {0}",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_TOOL_EDITOR_JS": "فحص المحرر",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "تفضيلات المحرر",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "مستندات المحرر"
+  "AI_CHAT_TOOL_WEB_FETCH": "جلب صفحة ويب",
+  "AI_CHAT_TOOL_WEB_SEARCH": "بحث الويب"
 });
