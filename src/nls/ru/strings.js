@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "живой предпросмотр",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Весь редактор",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Анализ предпросмотра",
+  "AI_CHAT_TOOL_EDITOR_JS": "Инспектирование редактора",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Настройки редактора",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Документация редактора",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Изменить размер предпросмотра",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "ИИ анализирует предпросмотр в реальном времени",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "ИИ изменил размер предпросмотра на {0}",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_CHAT_TOOL_EDITOR_JS": "Инспектирование редактора",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Настройки редактора",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "Документация редактора"
+  "AI_CHAT_TOOL_WEB_FETCH": "Загрузить веб-страницу",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Веб-поиск"
 });

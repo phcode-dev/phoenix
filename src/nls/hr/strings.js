@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "pregled uživo",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "cijeli uređivač",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pregledavanje pretpregleda",
+  "AI_CHAT_TOOL_EDITOR_JS": "Pregledavanje uređivača",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Postavke uređivača",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentacija uređivača",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Promijeni veličinu pretpregleda",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI pregledava pretpregled uživo",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI je promijenio veličinu pretpregleda na {0}",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_CHAT_TOOL_EDITOR_JS": "Pregledavanje uređivača",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Postavke uređivača",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentacija uređivača"
+  "AI_CHAT_TOOL_WEB_FETCH": "Dohvati web stranicu",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Web pretraga"
 });

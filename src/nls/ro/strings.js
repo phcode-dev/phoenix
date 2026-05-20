@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Previzualizare live",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "editorul complet",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Se inspectează previzualizarea",
+  "AI_CHAT_TOOL_EDITOR_JS": "Inspectare editor",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferințe editor",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Documentație editor",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Redimensionează previzualizarea",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI inspectează previzualizarea live",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI a redimensionat previzualizarea la {0}",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_TOOL_EDITOR_JS": "Inspectare editor",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferințe editor",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "Documentație editor"
+  "AI_CHAT_TOOL_WEB_FETCH": "Preluare pagină web",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Căutare web"
 });

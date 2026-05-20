@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "پیش‌نمایش زنده",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "تمام ویرایشگر",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "در حال بررسی پیش‌نمایش",
+  "AI_CHAT_TOOL_EDITOR_JS": "بررسی ویرایشگر",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "ترجیحات ویرایشگر",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "مستندات ویرایشگر",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "تغییر اندازه پیش‌نمایش",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "هوش مصنوعی در حال بررسی پیش‌نمایش زنده است",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "هوش مصنوعی اندازه پیش‌نمایش را به {0} تغییر داد",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_TOOL_EDITOR_JS": "بررسی ویرایشگر",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "ترجیحات ویرایشگر",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "مستندات ویرایشگر"
+  "AI_CHAT_TOOL_WEB_FETCH": "واکشی صفحه وب",
+  "AI_CHAT_TOOL_WEB_SEARCH": "جستجوی وب"
 });
