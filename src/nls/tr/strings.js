@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "canlı önizleme",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Tüm düzenleyici",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Önizleme inceleniyor",
+  "AI_CHAT_TOOL_EDITOR_JS": "Editör inceleniyor",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editör tercihleri",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Editör belgeleri",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Önizlemeyi yeniden boyutlandır",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI canlı önizlemeyi inceliyor",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI önizlemeyi {0} olarak yeniden boyutlandırdı",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_TOOL_EDITOR_JS": "Editör inceleniyor",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editör tercihleri",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "Editör belgeleri"
+  "AI_CHAT_TOOL_WEB_FETCH": "Web sayfası getirme",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Web araması"
 });

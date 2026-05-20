@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Tiešraides priekšskatījums",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Pilnais redaktors",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pārbauda priekšskatījumu",
+  "AI_CHAT_TOOL_EDITOR_JS": "Pārbauda redaktoru",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Redaktora iestatījumi",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Redaktora dokumentācija",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Mainīt priekšskatījuma izmēru",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI pārbauda tiešraides priekšskatījumu",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI mainīja priekšskatījuma izmēru uz {0}",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_TOOL_EDITOR_JS": "Pārbauda redaktoru",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Redaktora iestatījumi",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "Redaktora dokumentācija"
+  "AI_CHAT_TOOL_WEB_FETCH": "Iegūt tīmekļa lapu",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Tīmekļa meklēšana"
 });

@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "लाइव पूर्वावलोकन",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "पूरा संपादक",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "प्रीव्यू का निरीक्षण किया जा रहा है",
+  "AI_CHAT_TOOL_EDITOR_JS": "संपादक का निरीक्षण",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "संपादक वरीयताएँ",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "संपादक दस्तावेज़",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "प्रीव्यू का आकार बदलें",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI लाइव प्रीव्यू की जांच कर रहा है",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI ने प्रीव्यू का आकार बदलकर {0} कर दिया है",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_TOOL_EDITOR_JS": "संपादक का निरीक्षण",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "संपादक वरीयताएँ",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "संपादक दस्तावेज़"
+  "AI_CHAT_TOOL_WEB_FETCH": "वेब पेज प्राप्त करें",
+  "AI_CHAT_TOOL_WEB_SEARCH": "वेब खोज"
 });

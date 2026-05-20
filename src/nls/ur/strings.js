@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "لائیو پیش منظر",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "مکمل ایڈیٹر",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "پیش نظارہ کا معائنہ جاری ہے",
+  "AI_CHAT_TOOL_EDITOR_JS": "ایڈیٹر کا معائنہ",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "ایڈیٹر کی ترجیحات",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "ایڈیٹر کی دستاویزات",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "پیش منظر کا سائز تبدیل کریں",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI لائیو پیش منظر کا معائنہ کر رہا ہے",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI نے پیش منظر کا سائز {0} کر دیا",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_TOOL_EDITOR_JS": "ایڈیٹر کا معائنہ",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "ایڈیٹر کی ترجیحات",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "ایڈیٹر کی دستاویزات"
+  "AI_CHAT_TOOL_WEB_FETCH": "ویب صفحہ حاصل کریں",
+  "AI_CHAT_TOOL_WEB_SEARCH": "ویب تلاش"
 });

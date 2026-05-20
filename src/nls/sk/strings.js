@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "živý náhľad",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "celý editor",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Skúmanie náhľadu",
+  "AI_CHAT_TOOL_EDITOR_JS": "Inšpekcia editora",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Predvoľby editora",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentácia editora",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Zmeniť veľkosť náhľadu",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI kontroluje živý náhľad",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI zmenila veľkosť náhľadu na {0}",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_CHAT_TOOL_EDITOR_JS": "Inšpekcia editora",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Predvoľby editora",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentácia editora"
+  "AI_CHAT_TOOL_WEB_FETCH": "Načítať webovú stránku",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Vyhľadávanie na webe"
 });

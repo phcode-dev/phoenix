@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "라이브 미리보기",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "전체 에디터",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "미리보기 검사 중",
+  "AI_CHAT_TOOL_EDITOR_JS": "에디터 검사",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "에디터 환경 설정",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "에디터 문서",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "미리보기 크기 조정",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "AI가 실시간 미리보기를 검사하고 있습니다",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "AI가 미리보기를 {0}으로 크기 조정했습니다",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_TOOL_EDITOR_JS": "에디터 검사",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "에디터 환경 설정",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "에디터 문서"
+  "AI_CHAT_TOOL_WEB_FETCH": "웹 페이지 가져오기",
+  "AI_CHAT_TOOL_WEB_SEARCH": "웹 검색"
 });

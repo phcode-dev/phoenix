@@ -2015,6 +2015,9 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "перегляд наживо",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "повний редактор",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Перевірка попереднього перегляду",
+  "AI_CHAT_TOOL_EDITOR_JS": "Інспектування редактора",
+  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Налаштування редактора",
+  "AI_CHAT_TOOL_EDITOR_DOCS": "Документація редактора",
   "AI_CHAT_TOOL_RESIZE_PREVIEW": "Змінити розмір перегляду",
   "AI_LIVE_PREVIEW_BANNER_TEXT": "ШІ аналізує перегляд наживо",
   "AI_LIVE_PREVIEW_BANNER_RESIZE": "ШІ змінив розмір перегляду до {0}",
@@ -2262,7 +2265,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_TOOL_EDITOR_JS": "Інспектування редактора",
-  "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Налаштування редактора",
-  "AI_CHAT_TOOL_EDITOR_DOCS": "Документація редактора"
+  "AI_CHAT_TOOL_WEB_FETCH": "Отримати веб-сторінку",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Веб-пошук"
 });

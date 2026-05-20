@@ -195,6 +195,8 @@
   "AI_CHAT_TOOL_WAIT": "Wait",
   "AI_CHAT_TOOL_WAITED": "Done waiting {0}s",
   "AI_CHAT_TOOL_WAITING": "Waiting {0}s",
+  "AI_CHAT_TOOL_WEB_FETCH": "Fetch web page",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Web search",
   "AI_CHAT_TOOL_WRITE": "Write",
   "AI_CHAT_TOOL_WRITE_FILE": "Write {0}",
   "AI_CHAT_UNDO": "Undo",
