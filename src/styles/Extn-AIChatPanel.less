@@ -1126,6 +1126,39 @@
     }
 }
 
+/* ── Subagent step rows ──────────────────────────────────────────────
+   Compact one-line entries inside an Agent dispatcher card showing
+   what the subagent is doing (Read foo.json, Searched: *.md, etc).
+   Indented with a left border so the nesting reads clearly. */
+.ai-subagent-steps {
+    margin-top: 4px;
+    padding-left: 8px;
+    border-left: 2px solid fade(@project-panel-text-2, 25%);
+}
+
+.ai-subagent-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+    font-size: @ai-text-secondary;
+}
+
+.ai-subagent-step-icon {
+    width: 14px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: @ai-text-secondary;
+}
+
+.ai-subagent-step-label {
+    color: @project-panel-text-2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
 @keyframes ai-spin {
     to { transform: rotate(360deg); }
 }

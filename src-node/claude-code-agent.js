@@ -1628,23 +1628,27 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             if (message.type === "assistant" &&
                     message.parent_tool_use_id &&
                     message.message && Array.isArray(message.message.content)) {
+                const parentToolId = _toolUseIdToCounter[message.parent_tool_use_id];
                 for (const block of message.message.content) {
                     if (block && block.type === "tool_use") {
                         toolCounter++;
                         if (block.id) {
                             _toolUseIdToCounter[block.id] = toolCounter;
                         }
-                        _log("Subagent tool:", block.name, "#" + toolCounter);
+                        _log("Subagent tool:", block.name, "#" + toolCounter,
+                            "parent=#" + (parentToolId !== undefined ? parentToolId : "?"));
                         nodeConnector.triggerPeer("aiProgress", {
                             requestId: requestId,
                             toolName: block.name,
                             toolId: toolCounter,
+                            parentToolId: parentToolId,
                             phase: "tool_use"
                         });
                         nodeConnector.triggerPeer("aiToolInfo", {
                             requestId: requestId,
                             toolName: block.name,
                             toolId: toolCounter,
+                            parentToolId: parentToolId,
                             toolInput: block.input || {}
                         });
                     }
