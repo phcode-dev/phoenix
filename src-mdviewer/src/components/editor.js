@@ -1667,6 +1667,43 @@ function createTurndown() {
         }
     });
 
+    // Anchor wrapping only <img> children (e.g. badge rows). The default Turndown
+    // path leaks the inter-image space text nodes outside the link as flanking
+    // whitespace, producing N-1 leading spaces before the [. The corresponding
+    // DOM preprocessing in convertToMarkdown strips those text nodes so the
+    // anchor's textContent is empty; this rule then re-emits the joining spaces
+    // inside the [...] so they stay contained.
+    td.addRule("imageOnlyLink", {
+        filter(node) {
+            if (node.nodeName !== "A" || !node.getAttribute("href")) {
+                return false;
+            }
+            if (node.childNodes.length === 0) {
+                return false;
+            }
+            for (const child of node.childNodes) {
+                if (!(child.nodeType === 1 && child.nodeName === "IMG")) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        replacement(content, node) {
+            const href = node.getAttribute("href") || "";
+            const title = node.getAttribute("title");
+            const titlePart = title ? ` "${title.replace(/"/g, '\\"')}"` : "";
+            const parts = [];
+            for (const child of node.childNodes) {
+                const alt = child.getAttribute("alt") || "";
+                const src = child.getAttribute("src") || "";
+                const imgTitle = child.getAttribute("title");
+                const imgTitlePart = imgTitle ? ` "${imgTitle.replace(/"/g, '\\"')}"` : "";
+                parts.push(`![${alt}](${src}${imgTitlePart})`);
+            }
+            return `[${parts.join(" ")}](${href}${titlePart})`;
+        }
+    });
+
     return td;
 }
 
@@ -1716,6 +1753,32 @@ export function convertToMarkdown(contentEl) {
         const parent = mark.parentNode;
         parent.replaceChild(document.createTextNode(mark.textContent), mark);
         parent.normalize();
+    });
+    // Image-only links (e.g. badge rows): drop whitespace text nodes between
+    // <img> siblings. Otherwise Turndown's flanking-whitespace handling reads
+    // the anchor's textContent (N-1 spaces for N images) and prepends those
+    // spaces before the [ in the output, indenting the line. The imageOnlyLink
+    // Turndown rule re-emits the joining single space inside the brackets.
+    clone.querySelectorAll("a[href]").forEach((a) => {
+        if (a.childNodes.length === 0) {
+            return;
+        }
+        for (const child of a.childNodes) {
+            if (child.nodeType === 1 && child.nodeName === "IMG") {
+                continue;
+            }
+            if (child.nodeType === 3 && /^\s*$/.test(child.nodeValue)) {
+                continue;
+            }
+            return;
+        }
+        const textNodes = [];
+        for (const child of a.childNodes) {
+            if (child.nodeType === 3) {
+                textNodes.push(child);
+            }
+        }
+        textNodes.forEach((t) => t.remove());
     });
     return turndown.turndown(clone.innerHTML);
 }

@@ -1874,6 +1874,51 @@ define(function (require, exports, module) {
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close doc3.md");
             }, 15000);
+
+            it("should image-only link with multiple images round-trip without leaking whitespace", async function () {
+                // Regression: Turndown's flanking-whitespace handling used to bubble
+                // the inter-<img> spaces inside an <a> out before the [, indenting
+                // the line by N-1 spaces (N images). README's sonarcloud badge row
+                // had 9 images, gaining 8 leading spaces on every save.
+                await _openMdFile("doc1.md");
+                const editor = EditorManager.getActiveEditor();
+
+                const badgesLine = "[![One](https://example.com/1.png) " +
+                    "![Two](https://example.com/2.png) " +
+                    "![Three](https://example.com/3.png) " +
+                    "![Four](https://example.com/4.png)](https://example.com/link)" +
+                    "[![Five](https://example.com/5.png)](https://example.com/link2)";
+                editor.document.setText("# Badges\n\n" + badgesLine + "\n");
+
+                await awaitsFor(() => {
+                    const win = _getMdIFrameWin();
+                    return win && win.__getCurrentContent &&
+                        win.__getCurrentContent() === editor.document.getText();
+                }, "viewer to sync with badges content");
+
+                await _enterEditMode();
+
+                // Force HTML → markdown round-trip through convertToMarkdown
+                const win = _getMdIFrameWin();
+                win.__triggerContentSync();
+
+                // Wait for the debounced content sync to flow back to CM.
+                // Use awaitsFor on a stable condition rather than a fixed wait.
+                await awaitsFor(() => {
+                    const text = editor.document.getText();
+                    const lines = text.split("\n");
+                    const line = lines[2] || "";
+                    return line.includes("example.com/1.png") &&
+                        line.includes("example.com/5.png");
+                }, "CM doc to contain the round-tripped badges line");
+
+                const roundTripped = editor.document.getText().split("\n")[2];
+                expect(roundTripped.startsWith(" ")).toBe(false);
+                expect(roundTripped).toBe(badgesLine);
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close doc1.md");
+            }, 15000);
         });
 
         describe("Empty Line Placeholder", function () {
