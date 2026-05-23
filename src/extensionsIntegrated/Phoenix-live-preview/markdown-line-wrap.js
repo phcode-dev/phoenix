@@ -172,7 +172,10 @@ define(function (require, exports, module) {
         let hi = width;
         let best = greedy;
         while (lo <= hi) {
-            const mid = Math.floor((lo + hi) / 2);
+            // Midpoint of two non-negative ints; >>1 is faster than
+            // Math.floor and the values stay well under 2^31.
+            // eslint-disable-next-line no-bitwise
+            const mid = (lo + hi) >> 1;
             const trial = _packTokens(tokens, mid);
             if (trial.length <= N) {
                 best = trial;
