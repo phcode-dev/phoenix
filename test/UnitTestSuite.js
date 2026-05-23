@@ -126,6 +126,7 @@ define(function (require, exports, module) {
     require("spec/Generic-integ-test");
     require("spec/spacing-auto-detect-integ-test");
     require("spec/LocalizationUtils-test");
+    require("spec/markdown-line-wrap-test");
     require("spec/ScrollTrackHandler-integ-test");
     // Integrated extension tests
     require("spec/Extn-RemoteFileAdapter-integ-test");

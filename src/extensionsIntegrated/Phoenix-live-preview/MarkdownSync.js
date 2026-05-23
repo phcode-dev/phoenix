@@ -30,7 +30,16 @@ define(function (require, exports, module) {
         Commands = require("command/Commands"),
         KeyBindingManager = require("command/KeyBindingManager"),
         Metrics = require("utils/Metrics"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        EditorOptionHandlers = require("editor/EditorOptionHandlers"),
+        markdownLineWrap = require("./markdown-line-wrap"),
         utils = require("./utils");
+
+    const PREF_MD_WRAP_EDITED_LINES = "mdViewerWrapEditedLines";
+    PreferencesManager.definePreference(PREF_MD_WRAP_EDITED_LINES, "boolean", true, {
+        description: "When editing markdown in the live preview, wrap edited lines " +
+            "to the editor's max-line-length guide. Other lines stay byte-identical."
+    });
 
     // Commands whose shortcuts, when forwarded from the md viewer iframe,
     // open a parent-side UI that needs to keep keyboard focus. The iframe's
@@ -618,6 +627,21 @@ define(function (require, exports, module) {
         const oldText = cm.getValue();
         if (oldText === newText) {
             return;
+        }
+
+        // Reflow only the edited long lines back to the editor's max-line-length
+        // guide. Turndown emits each block as a single physical line; without
+        // this step a long paragraph stays on one line until the user runs the
+        // full beautifier. Unchanged lines are guaranteed byte-identical, so
+        // git diffs stay scoped to the actual edit.
+        if (PreferencesManager.get(PREF_MD_WRAP_EDITED_LINES)) {
+            const printWidth = EditorOptionHandlers.getMaxLineLength();
+            if (printWidth && printWidth >= 20) {
+                newText = markdownLineWrap.wrapEditedLines(oldText, newText, printWidth);
+                if (oldText === newText) {
+                    return;
+                }
+            }
         }
 
         // Find first differing character
