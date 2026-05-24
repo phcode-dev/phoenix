@@ -231,6 +231,10 @@ function show() {
   anchor.style.left = rect.left + "px";
   anchor.style.top = rect.bottom + 4 + "px";
 
+  // Reset menu offset — values are anchor-relative, so stale ones from a
+  // previous open would shift the menu away from the new cursor position.
+  menu.style.left = "";
+
   anchor.classList.add("visible");
   menu.scrollTop = 0;
   visible = true;
@@ -251,10 +255,13 @@ function show() {
       menu.style.bottom = "0";
     }
 
-    // Clamp horizontal
+    // Clamp horizontal. menu.style.left is an offset from the anchor
+    // (the anchor is position:fixed and acts as the containing block),
+    // so a viewport coordinate must be converted before assigning.
     const menuRect = menu.getBoundingClientRect();
     if (menuRect.right > window.innerWidth - 8) {
-      menu.style.left = Math.max(8, window.innerWidth - menuRect.width - 8) + "px";
+      const clampedViewportLeft = Math.max(8, window.innerWidth - menuRect.width - 8);
+      menu.style.left = (clampedViewportLeft - rect.left) + "px";
     }
   });
 }
