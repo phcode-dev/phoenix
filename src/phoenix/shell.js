@@ -174,17 +174,26 @@ function _resolveRect(rectOrNodeOrSelector) {
         throw new Error("Expected a rect object, DOM node, or jQuery selector string");
     }
     // Convert DOM element to rect via getBoundingClientRect().
-    // getBoundingClientRect() returns values in the zoomed CSS coordinate space, but
-    // the native capture APIs (Electron capturePage, Tauri capture_page) expect
-    // coordinates in the unzoomed viewport space. Divide by the webview zoom factor
-    // to convert.
-    const zoomFactor = (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
+    // getBoundingClientRect() returns CSS-pixel coordinates. The native capture APIs
+    // need platform-specific coordinate spaces:
+    //  - Windows Tauri (GDI): physical pixels → multiply by devicePixelRatio
+    //  - macOS Tauri (WKSnapshot): view points = CSS px × zoom
+    //  - Electron capturePage: CSS px × zoom (handles DPI internally)
+    // On Windows Tauri we use devicePixelRatio directly because it is the browser
+    // engine's single authoritative CSS-to-physical-pixel ratio, avoiding any
+    // disagreement between the stored zoom factor and the OS DPI scale factor.
     const domRect = element.getBoundingClientRect();
+    let scaleFactor;
+    if (window.__TAURI__ && Phoenix.platform === "win") {
+        scaleFactor = window.devicePixelRatio || 1;
+    } else {
+        scaleFactor = (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
+    }
     return {
-        x: Math.round(domRect.x * zoomFactor),
-        y: Math.round(domRect.y * zoomFactor),
-        width: Math.round(domRect.width * zoomFactor),
-        height: Math.round(domRect.height * zoomFactor)
+        x: Math.round(domRect.x * scaleFactor),
+        y: Math.round(domRect.y * scaleFactor),
+        width: Math.round(domRect.width * scaleFactor),
+        height: Math.round(domRect.height * scaleFactor)
     };
 }
 
@@ -283,9 +292,14 @@ async function _capturePageBinary(rectOrNodeOrSelector) {
         if (rect.width <= 0 || rect.height <= 0) {
             throw new Error("rect width and height must be greater than 0");
         }
-        const zoomFactor = (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
-        const maxWidth = Math.ceil(window.innerWidth * zoomFactor);
-        const maxHeight = Math.ceil(window.innerHeight * zoomFactor);
+        let boundsScale;
+        if (window.__TAURI__ && Phoenix.platform === "win") {
+            boundsScale = window.devicePixelRatio || 1;
+        } else {
+            boundsScale = (window.PhStore && window.PhStore.getItem("desktopZoomScale")) || 1;
+        }
+        const maxWidth = Math.ceil(window.innerWidth * boundsScale);
+        const maxHeight = Math.ceil(window.innerHeight * boundsScale);
         if (rect.x + rect.width > maxWidth) {
             throw new Error("rect x + width exceeds window innerWidth");
         }
