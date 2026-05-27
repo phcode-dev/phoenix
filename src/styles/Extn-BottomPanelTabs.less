@@ -354,11 +354,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     height: 100%;
     padding: 16px;
     gap: 12px;
     user-select: none;
+    overflow-y: auto;
 }
 
 .default-panel-heading {
@@ -367,7 +367,9 @@
     word-spacing: 1px;
     font-weight: 500;
     color: #555;
+    margin-top: auto;
     margin-bottom: 4px;
+    flex-shrink: 0;
 
     .dark & {
         color: #bbb;
@@ -379,6 +381,8 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
+    margin-bottom: auto;
+    flex-shrink: 0;
 }
 
 .default-panel-btn {
