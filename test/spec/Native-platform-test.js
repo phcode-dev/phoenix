@@ -450,16 +450,22 @@ define(function (require, exports, module) {
                     ).toBeRejectedWithError("rect width and height must be greater than 0");
                 });
 
-                it("Should throw when rect exceeds window width bounds", async function () {
-                    await expectAsync(
-                        Phoenix.app.screenShotBinary({x: 0, y: 0, width: 999999, height: 100})
-                    ).toBeRejectedWithError("rect x + width exceeds window innerWidth");
+                it("Should clamp an oversize width rect and return a valid PNG", async function () {
+                    const bytes = await Phoenix.app.screenShotBinary({x: 0, y: 0, width: 999999, height: 100});
+                    expect(bytes instanceof Uint8Array).toBeTrue();
+                    expect(isPNG(bytes)).withContext("Result should be valid PNG data").toBeTrue();
                 });
 
-                it("Should throw when rect exceeds window height bounds", async function () {
+                it("Should clamp an oversize height rect and return a valid PNG", async function () {
+                    const bytes = await Phoenix.app.screenShotBinary({x: 0, y: 0, width: 100, height: 999999});
+                    expect(bytes instanceof Uint8Array).toBeTrue();
+                    expect(isPNG(bytes)).withContext("Result should be valid PNG data").toBeTrue();
+                });
+
+                it("Should throw when rect origin leaves no capturable area", async function () {
                     await expectAsync(
-                        Phoenix.app.screenShotBinary({x: 0, y: 0, width: 100, height: 999999})
-                    ).toBeRejectedWithError("rect y + height exceeds window innerHeight");
+                        Phoenix.app.screenShotBinary({x: 999999, y: 0, width: 100, height: 100})
+                    ).toBeRejectedWithError("rect origin leaves no capturable area");
                 });
 
                 it("Should capture a screenshot of a DOM element", async function () {

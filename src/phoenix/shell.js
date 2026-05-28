@@ -300,12 +300,12 @@ async function _capturePageBinary(rectOrNodeOrSelector) {
         }
         const maxWidth = Math.ceil(window.innerWidth * boundsScale);
         const maxHeight = Math.ceil(window.innerHeight * boundsScale);
-        if (rect.x + rect.width > maxWidth) {
-            throw new Error("rect x + width exceeds window innerWidth");
+        if (rect.x >= maxWidth || rect.y >= maxHeight) {
+            throw new Error("rect origin leaves no capturable area");
         }
-        if (rect.y + rect.height > maxHeight) {
-            throw new Error("rect y + height exceeds window innerHeight");
-        }
+
+        rect.width = Math.min(rect.width, maxWidth - rect.x);
+        rect.height = Math.min(rect.height, maxHeight - rect.y);
     }
     if (window.__TAURI__) {
         const bytes = await window.__TAURI__.invoke('capture_page', { rect });
