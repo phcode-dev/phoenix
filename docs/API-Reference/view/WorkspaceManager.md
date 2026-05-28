@@ -111,7 +111,7 @@ The panel's size & visibility are automatically saved & restored as a view-state
 | $panel | <code>jQueryObject</code> | DOM content to use as the panel. Need not be in the document yet. Must have an id      attribute, for use as a preferences key. |
 | [minSize] | <code>number</code> | @deprecated No longer used. Pass `undefined`. |
 | [title] | <code>string</code> | Display title shown in the bottom panel tab bar. |
-| [options] | <code>Object</code> | Optional settings:   - {string} iconSvg   Path to an SVG icon for the panel tab (e.g. "styles/images/icon.svg").     If omitted, a generic default icon is used. |
+| [options] | <code>Object</code> | Optional settings:   - `iconSvg` (string): Path to an SVG icon for the panel tab (e.g. "styles/images/icon.svg").     If omitted, a generic default icon is used. |
 
 <a name="module_view/WorkspaceManager..destroyBottomPanel"></a>
 
