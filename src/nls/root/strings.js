@@ -2188,6 +2188,7 @@ define({
     "AI_CHAT_CLAUDE_LOGIN_TITLE": "Setup Claude Code",
     "AI_CHAT_CLAUDE_LOGIN_MSG": "Claude Code is installed but needs to be configured.",
     "AI_CHAT_CLAUDE_LOGIN_BTN": "Setup Claude Code",
+    "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Restart {APP_NAME} after configuration completes.",
     "AI_CHAT_ADD_PROVIDER_BTN": "Add Custom Provider",
     "AI_CHAT_SETUP_NEED_HELP": "Need Help?",
     "AI_CHAT_SETUP_LEARN_MORE": "Learn More",
