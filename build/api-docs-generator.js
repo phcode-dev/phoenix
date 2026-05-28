@@ -205,8 +205,34 @@ async function generateMarkdown(file, relativePath) {
 
     const modifiedContent = modifyJs(content, fileName);
 
-    // Generate markdown using jsdoc-to-markdown as a library
-    const markdownContent = await jsdoc2md.render({ source: modifiedContent });
+    // Generate markdown using jsdoc-to-markdown as a library. jsdoc-api spawns
+    // a child `jsdoc` process per call; under our BATCH_SIZE parallelism the
+    // child occasionally produces truncated/empty stdout (manifesting as
+    // "Unexpected end of JSON input"/"Unterminated string in JSON"). Retry
+    // serially so a single transient failure doesn't abort the whole batch.
+    let markdownContent;
+    let lastErr;
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            markdownContent = await jsdoc2md.render({ source: modifiedContent });
+            lastErr = undefined;
+            break;
+        } catch (err) {
+            lastErr = err;
+            const causeMsg = err && err.cause && err.cause.message
+                ? err.cause.message
+                : '';
+            const transient = /Unexpected end of JSON input|Unterminated string in JSON|Jsdoc failed/.test(
+                (err && err.message) || ''
+            ) || /JSON/.test(causeMsg);
+            if (!transient) break;
+            await new Promise(r => setTimeout(r, 200 * (attempt + 1)));
+        }
+    }
+    if (lastErr) {
+        lastErr.message = `[${file}] ${lastErr.message}`;
+        throw lastErr;
+    }
     const newContent = normalizeLineEndings(
         modifyMarkdown(markdownContent, path.join(relativePath, fileName))
     );
