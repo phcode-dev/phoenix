@@ -2170,6 +2170,9 @@ define({
     // AI CHAT PANEL
     "AI_CHAT_TITLE": "Claude Code",
     "AI_CHAT_SURPRISE_ME_USER_MSG": "Surprise me!",
+    "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Setting the stage…",
+    "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Warming the canvas…",
+    "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Almost there…",
     "AI_CHAT_NEW_SESSION_TITLE": "Start a new conversation",
     "AI_CHAT_NEW_BTN": "New",
     "AI_CHAT_THINKING": "Thinking...",
