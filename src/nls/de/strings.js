@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Überraschen Sie mich!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Die Bühne wird bereitet …",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Die Leinwand wird aufgewärmt …",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Fast geschafft …",
   "AI_CHAT_NEW_SESSION_TITLE": "Neue Unterhaltung starten",
   "AI_CHAT_NEW_BTN": "Neu",
   "AI_CHAT_THINKING": "Denkt nach ...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Die Bühne wird bereitet …",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Die Leinwand wird aufgewärmt …",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Fast geschafft …"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Starten Sie {APP_NAME} nach Abschluss der Konfiguration neu.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "KI arbeitet",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Die KI arbeitet gerade an einer Aufgabe. Das Starten einer neuen Konversation bricht diese ab. Fortfahren?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "KI arbeitet",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Die KI arbeitet gerade an einer Aufgabe. Der Wechsel zu einer früheren Konversation bricht diese ab. Fortfahren?"
 });

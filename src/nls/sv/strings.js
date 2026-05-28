@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Överraska mig!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sätter scenen…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Värmer upp duken…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Nästan där…",
   "AI_CHAT_NEW_SESSION_TITLE": "Starta en ny konversation",
   "AI_CHAT_NEW_BTN": "Ny",
   "AI_CHAT_THINKING": "Tänker...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sätter scenen…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Värmer upp duken…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Nästan där…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Starta om {APP_NAME} efter att konfigurationen har slutförts.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI arbetar",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI arbetar för närvarande med en uppgift. Om du startar en ny konversation avbryts den. Fortsätta?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI arbetar",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI arbetar för närvarande med en uppgift. Om du byter till en tidigare konversation avbryts den. Fortsätta?"
 });

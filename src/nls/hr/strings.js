@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste {0}. Da biste nastavili, potrebna vam je AI pretplata ili krediti.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Iznenadi me!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Priprema pozornice…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Zagrijavanje platna…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Skoro gotovo…",
   "AI_CHAT_NEW_SESSION_TITLE": "Započni novi razgovor",
   "AI_CHAT_NEW_BTN": "Nova",
   "AI_CHAT_THINKING": "Razmišljam...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Priprema pozornice…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Zagrijavanje platna…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Skoro gotovo…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Ponovno pokrenite {APP_NAME} nakon dovršetka konfiguracije.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI radi",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI trenutno radi na zadatku. Pokretanje novog razgovora zaustavit će ga. Nastaviti?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI radi",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI trenutno radi na zadatku. Prebacivanje na prethodni razgovor zaustavit će ga. Nastaviti?"
 });

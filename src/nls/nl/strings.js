@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Verras me!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Voorbereidingen treffen...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Het doek opwarmen...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Bijna klaar...",
   "AI_CHAT_NEW_SESSION_TITLE": "Start een nieuw gesprek",
   "AI_CHAT_NEW_BTN": "Nieuw",
   "AI_CHAT_THINKING": "Denken...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Voorbereidingen treffen...",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Het doek opwarmen...",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Bijna klaar..."
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Herstart {APP_NAME} nadat de configuratie is voltooid.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI is bezig",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "De AI is momenteel bezig met een taak. Het starten van een nieuw gesprek zal dit proces stoppen. Doorgaan?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI is bezig",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "De AI is momenteel bezig met een taak. Overschakelen naar een vorig gesprek zal dit proces stoppen. Doorgaan?"
 });

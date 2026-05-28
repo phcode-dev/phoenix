@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Yllätä minut!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Luodaan puitteita…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Herätellään värejä…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Melkein valmista…",
   "AI_CHAT_NEW_SESSION_TITLE": "Aloita uusi keskustelu",
   "AI_CHAT_NEW_BTN": "Uusi",
   "AI_CHAT_THINKING": "Mietitään...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Luodaan puitteita…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Herätellään värejä…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Melkein valmista…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Käynnistä {APP_NAME} uudelleen määrityksen valmistuttua.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "Tekoäly työskentelee",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Tekoälyllä on tehtävä kesken. Uuden keskustelun aloittaminen keskeyttää sen. Jatketaanko?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Tekoäly työskentelee",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Tekoälyllä on tehtävä kesken. Aiempaan keskusteluun siirtyminen keskeyttää sen. Jatketaanko?"
 });

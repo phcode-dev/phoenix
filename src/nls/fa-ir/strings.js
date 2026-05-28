@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "شگفت‌زده‌ام کن!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "آماده‌سازی صحنه…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "گرم کردن بوم…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "تقریباً تمام شد…",
   "AI_CHAT_NEW_SESSION_TITLE": "شروع گفتگوی جدید",
   "AI_CHAT_NEW_BTN": "جدید",
   "AI_CHAT_THINKING": "در حال فکر کردن...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "آماده‌سازی صحنه…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "گرم کردن بوم…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "تقریباً تمام شد…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "پس از تکمیل پیکربندی، {APP_NAME} را دوباره راه‌اندازی کنید.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "هوش مصنوعی در حال کار است",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "هوش مصنوعی در حال انجام یک کار است. شروع گفتگوی جدید، کار فعلی را متوقف می‌کند. آیا ادامه می‌دهید؟",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "هوش مصنوعی در حال کار است",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "هوش مصنوعی در حال انجام یک کار است. رفتن به یک گفتگوی قبلی، کار فعلی را متوقف می‌کند. آیا ادامه می‌دهید؟"
 });

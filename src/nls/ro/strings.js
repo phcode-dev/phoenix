@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Surprinde-mă!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Pregătirea scenei…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Încălzirea pânzei…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Mai e puțin…",
   "AI_CHAT_NEW_SESSION_TITLE": "Începe o conversație nouă",
   "AI_CHAT_NEW_BTN": "Nou",
   "AI_CHAT_THINKING": "Gândește...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Pregătirea scenei…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Încălzirea pânzei…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Mai e puțin…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Reporniți {APP_NAME} după ce se finalizează configurarea.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI lucrează",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI-ul lucrează în prezent la o sarcină. Pornirea unei noi conversații va opri procesul curent. Continuați?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI lucrează",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI-ul lucrează în prezent la o sarcină. Comutarea la o conversație anterioară va opri procesul curent. Continuați?"
 });

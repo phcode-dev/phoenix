@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "놀라게 해주세요!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "무대를 준비하는 중…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "캔버스를 예열하는 중…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "거의 다 됐습니다…",
   "AI_CHAT_NEW_SESSION_TITLE": "새 대화 시작",
   "AI_CHAT_NEW_BTN": "새 파일",
   "AI_CHAT_THINKING": "생각 중...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "무대를 준비하는 중…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "캔버스를 예열하는 중…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "거의 다 됐습니다…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "설정이 완료되면 {APP_NAME}을(를) 다시 시작하세요.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI가 작업 중입니다",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI가 현재 작업 중입니다. 새 대화를 시작하면 작업이 중단됩니다. 계속하시겠습니까?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI가 작업 중입니다",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI가 현재 작업 중입니다. 이전 대화로 전환하면 작업이 중단됩니다. 계속하시겠습니까?"
 });

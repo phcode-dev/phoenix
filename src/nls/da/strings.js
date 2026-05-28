@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Overrask mig!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sætter scenen…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Opvarmer lærredet…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Næsten færdig…",
   "AI_CHAT_NEW_SESSION_TITLE": "Start en ny samtale",
   "AI_CHAT_NEW_BTN": "Ny",
   "AI_CHAT_THINKING": "Tænker...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sætter scenen…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Opvarmer lærredet…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Næsten færdig…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Genstart {APP_NAME} efter konfigurationen er fuldført.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI arbejder",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI arbejder i øjeblikket på en opgave. Start af en ny samtale vil stoppe den. Fortsæt?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI arbejder",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI arbejder i øjeblikket på en opgave. Skift til en tidligere samtale vil stoppe den. Fortsæt?"
 });

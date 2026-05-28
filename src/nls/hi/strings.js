@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "आपने {0} खोज लिया है। आगे बढ़ने के लिए, आपको AI सब्सक्रिप्शन या क्रेडिट्स की ज़रूरत होगी।",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "मुझे आश्चर्यचकित करें!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "मंच तैयार किया जा रहा है…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "कैनवास तैयार हो रहा है…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "बस लगभग हो गया…",
   "AI_CHAT_NEW_SESSION_TITLE": "एक नई बातचीत शुरू करें",
   "AI_CHAT_NEW_BTN": "नया",
   "AI_CHAT_THINKING": "सोच रहा है...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "मंच तैयार किया जा रहा है…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "कैनवास तैयार हो रहा है…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "बस लगभग हो गया…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "कॉन्फ़िगरेशन पूरा होने के बाद {APP_NAME} को पुनः आरंभ करें।",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "एआई काम कर रहा है",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "एआई अभी एक कार्य पर काम कर रहा है। नई बातचीत शुरू करने से यह रुक जाएगा। जारी रखें?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "एआई काम कर रहा है",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "एआई अभी एक कार्य पर काम कर रहा है। पिछली बातचीत पर जाने से यह रुक जाएगा। जारी रखें?"
 });
