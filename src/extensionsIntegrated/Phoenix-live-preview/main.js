@@ -997,6 +997,15 @@ define(function (require, exports, module) {
         if(thisGeneration !== _loadGeneration) {
             return; // A newer _loadPreview call has been made; this one is stale
         }
+        if (_interstitialActive) {
+            // The interstitial is sticky — any LP refresh while it's up
+            // (design-mode toggle, focus change, the user's already-open
+            // previewable file, etc.) keeps the splash on screen. It's
+            // only dismissed via an explicit hideInterstitial() call,
+            // which the caller fires when its prepared content is ready.
+            _paintInterstitial();
+            return;
+        }
         if(urlPinned && !force) {
             return;
         }
@@ -1663,8 +1672,46 @@ define(function (require, exports, module) {
         }
     });
 
+    // Transient splash shown in the live preview iframe while something off-screen
+    // (the AI surprise-me flow) is preparing content. Reuses the no-preview.html
+    // template — the next `_loadPreview` call for a real previewable file
+    // automatically dismisses the interstitial. The state flag is consulted from
+    // inside _loadPreview so async LP refreshes (design-mode toggles, focus
+    // changes, etc.) don't paint the default "Nothing to preview!" page over our
+    // splash while the AI is still working.
+    let _interstitialActive = false;
+    let _interstitialHeading = "";
+    let _interstitialDetails = "";
+    function _paintInterstitial() {
+        if (!$iframe || !$iframe[0]) { return; }
+        if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            $mdviewrIframe.after(newIframe);
+            $iframe = newIframe;
+        }
+        const url = StaticServer.getNoPreviewURL(
+            _interstitialHeading, _interstitialDetails);
+        $iframe.removeAttr('srcdoc');
+        $iframe.attr('src', url);
+    }
+    function showInterstitial(heading, details) {
+        _interstitialActive = true;
+        _interstitialHeading = heading;
+        _interstitialDetails = details || "";
+        _paintInterstitial();
+    }
+    function hideInterstitial() {
+        if (!_interstitialActive) { return; }
+        _interstitialActive = false;
+        _interstitialHeading = "";
+        _interstitialDetails = "";
+        _loadPreview(true);
+    }
+
     // private API to be used inside phoenix codebase only
     exports.LIVE_PREVIEW_PANEL_ID = LIVE_PREVIEW_PANEL_ID;
+    exports.showInterstitial = showInterstitial;
+    exports.hideInterstitial = hideInterstitial;
 });
 
 
