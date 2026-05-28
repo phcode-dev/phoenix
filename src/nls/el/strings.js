@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Ανακαλύψατε το {0}. Για να συνεχίσετε, θα χρειαστείτε μια συνδρομή AI ή πιστώσεις.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Έκπληξέ με!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Στήνεται το σκηνικό…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Προετοιμάζεται ο καμβάς…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Σχεδόν έτοιμο…",
   "AI_CHAT_NEW_SESSION_TITLE": "Έναρξη νέας συνομιλίας",
   "AI_CHAT_NEW_BTN": "Νέο",
   "AI_CHAT_THINKING": "Σκέφτομαι...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Στήνεται το σκηνικό…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Προετοιμάζεται ο καμβάς…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Σχεδόν έτοιμο…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "Η AI εργάζεται",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Η AI εκτελεί μια εργασία αυτήν τη στιγμή. Η έναρξη μιας νέας συνομιλίας θα τη διακόψει. Συνέχεια;",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Η AI εργάζεται",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Η AI εκτελεί μια εργασία αυτήν τη στιγμή. Η μετάβαση σε μια προηγούμενη συνομιλία θα τη διακόψει. Συνέχεια;"
 });

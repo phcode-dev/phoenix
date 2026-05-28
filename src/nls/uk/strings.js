@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Ви відкрили для себе {0}. Щоб продовжити, вам знадобиться підписка на ШІ або кредити.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Здивуй мене!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Готуємо сцену…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Розігріваємо полотно…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Майже готово…",
   "AI_CHAT_NEW_SESSION_TITLE": "Почати нову розмову",
   "AI_CHAT_NEW_BTN": "Новий",
   "AI_CHAT_THINKING": "Думаю...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Готуємо сцену…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Розігріваємо полотно…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Майже готово…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "ШІ працює",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "ШІ зараз працює над завданням. Створення нової розмови зупинить поточний процес. Продовжити?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "ШІ працює",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "ШІ зараз працює над завданням. Перемикання на попередню розмову зупинить поточний процес. Продовжити?"
 });

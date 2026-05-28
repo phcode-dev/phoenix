@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "您已發現 {0}。您需要 AI 訂閱或點數才能繼續。",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "給我點驚喜！",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "正在設定舞台…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "正在為畫布暖身…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "就快好了…",
   "AI_CHAT_NEW_SESSION_TITLE": "開始新對話",
   "AI_CHAT_NEW_BTN": "新增",
   "AI_CHAT_THINKING": "正在思考...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "正在設定舞台…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "正在為畫布暖身…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "就快好了…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI 正在運作中",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI 目前正在處理一項任務。開始新對話將會中止該任務。是否繼續？",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI 正在運作中",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI 目前正在處理一項任務。切換至先前的對話將會中止該任務。是否繼續？"
 });

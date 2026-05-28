@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "おまかせ！",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "舞台を準備しています…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "キャンバスを温めています…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "もうすぐです…",
   "AI_CHAT_NEW_SESSION_TITLE": "新しい会話を始める",
   "AI_CHAT_NEW_BTN": "新規作成",
   "AI_CHAT_THINKING": "考え中...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "舞台を準備しています…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "キャンバスを温めています…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "もうすぐです…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "ＡＩが動作中です",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "現在ＡＩがタスクを実行中です。新しい会話を開始すると、このタスクは停止します。続行しますか？",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "ＡＩが動作中です",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "現在ＡＩがタスクを実行中です。以前の会話に切り替えると、このタスクは停止します。続行しますか？"
 });

@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Sorpréndeme!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Preparando o escenario…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Quentando o lenzo…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Xa case está…",
   "AI_CHAT_NEW_SESSION_TITLE": "Iniciar unha nova conversa",
   "AI_CHAT_NEW_BTN": "Novo",
   "AI_CHAT_THINKING": "Pensando...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Preparando o escenario…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Quentando o lenzo…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Xa case está…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "A IA está a traballar",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "A IA está a traballar nunha tarefa. Iniciar unha nova conversa deterá o proceso. Quere continuar?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "A IA está a traballar",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "A IA está a traballar nunha tarefa. Cambiar a unha conversa anterior deterá o proceso. Quere continuar?"
 });

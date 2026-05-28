@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Překvap mě!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Připravuji scénu…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Zahřívám plátno…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Skoro hotovo…",
   "AI_CHAT_NEW_SESSION_TITLE": "Zahájit novou konverzaci",
   "AI_CHAT_NEW_BTN": "Nový",
   "AI_CHAT_THINKING": "Přemýšlím...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Připravuji scénu…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Zahřívám plátno…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Skoro hotovo…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI pracuje",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI právě pracuje na úkolu. Zahájení nové konverzace tuto činnost zastaví. Chcete pokračovat?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI pracuje",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI právě pracuje na úkolu. Přepnutí na předchozí konverzaci tuto činnost zastaví. Chcete pokračovat?"
 });

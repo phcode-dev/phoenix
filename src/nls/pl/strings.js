@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Zaskocz mnie!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Przygotowuję scenę…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Rozgrzewam płótno…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Już prawie gotowe…",
   "AI_CHAT_NEW_SESSION_TITLE": "Rozpocznij nową rozmowę",
   "AI_CHAT_NEW_BTN": "Nowy",
   "AI_CHAT_THINKING": "Myślę...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Przygotowuję scenę…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Rozgrzewam płótno…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Już prawie gotowe…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI pracuje",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI pracuje obecnie nad zadaniem. Rozpoczęcie nowej konwersacji spowoduje jego zatrzymanie. Kontynuować?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI pracuje",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI pracuje obecnie nad zadaniem. Przełączenie do poprzedniej konwersacji spowoduje jego zatrzymanie. Kontynuować?"
 });

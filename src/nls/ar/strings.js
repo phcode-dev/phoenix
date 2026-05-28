@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "فاجئني!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "تهيئة الأجواء...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "إحماء اللوحة...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "أوشكنا على الانتهاء...",
   "AI_CHAT_NEW_SESSION_TITLE": "بدء محادثة جديدة",
   "AI_CHAT_NEW_BTN": "جديد",
   "AI_CHAT_THINKING": "جارٍ التفكير...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "تهيئة الأجواء...",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "إحماء اللوحة...",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "أوشكنا على الانتهاء..."
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "الذكاء الاصطناعي يعمل",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "يعمل الذكاء الاصطناعي حاليًا على مهمة. سيؤدي بدء محادثة جديدة إلى إيقافه. هل تريد المتابعة؟",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "الذكاء الاصطناعي يعمل",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "يعمل الذكاء الاصطناعي حاليًا على مهمة. سيؤدي الانتقال إلى محادثة سابقة إلى إيقافه. هل تريد المتابعة؟"
 });

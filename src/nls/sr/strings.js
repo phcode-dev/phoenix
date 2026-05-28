@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Открили сте {0}. Да бисте наставили, потребна вам је AI претплата или кредити.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Изненади ме!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Постављање сцене…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Загревање платна…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Само што није…",
   "AI_CHAT_NEW_SESSION_TITLE": "Започни нови разговор",
   "AI_CHAT_NEW_BTN": "Нова",
   "AI_CHAT_THINKING": "Размишљам...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Постављање сцене…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Загревање платна…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Само што није…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "ВИ ради",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "ВИ тренутно ради на задатку. Покретање новог разговора ће прекинути тај процес. Желите ли да наставите?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "ВИ ради",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "ВИ тренутно ради на задатку. Прелазак на претходни разговор ће прекинути тај процес. Желите ли да наставите?"
 });

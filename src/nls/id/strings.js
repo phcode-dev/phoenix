@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Kejutkan saya!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Menyiapkan panggung…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Memanaskan kanvas…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Hampir sampai…",
   "AI_CHAT_NEW_SESSION_TITLE": "Mulai percakapan baru",
   "AI_CHAT_NEW_BTN": "Baru",
   "AI_CHAT_THINKING": "Sedang berpikir...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Menyiapkan panggung…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Memanaskan kanvas…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Hampir sampai…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI sedang bekerja",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI saat ini sedang mengerjakan tugas. Memulai percakapan baru akan menghentikannya. Lanjutkan?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI sedang bekerja",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI saat ini sedang mengerjakan tugas. Beralih ke percakapan sebelumnya akan menghentikannya. Lanjutkan?"
 });

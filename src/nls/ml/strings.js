@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "നിങ്ങൾ {0} കണ്ടെത്തിയിരിക്കുന്നു. തുടരാൻ, നിങ്ങൾക്ക് ഒരു എഐ സബ്സ്ക്രിപ്ഷനോ ക്രെഡിറ്റുകളോ ആവശ്യമാണ്.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "എന്നെ അത്ഭുതപ്പെടുത്തൂ!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "വേദി ഒരുക്കുന്നു…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "ക്യാൻവാസ് തയ്യാറാക്കുന്നു…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "ഏകദേശം എത്തി…",
   "AI_CHAT_NEW_SESSION_TITLE": "പുതിയ സംഭാഷണം തുടങ്ങുക",
   "AI_CHAT_NEW_BTN": "പുതിയത്",
   "AI_CHAT_THINKING": "ചിന്തിക്കുന്നു...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "വേദി ഒരുക്കുന്നു…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "ക്യാൻവാസ് തയ്യാറാക്കുന്നു…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "ഏകദേശം എത്തി…"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "എഐ പ്രവർത്തിച്ചുകൊണ്ടിരിക്കുന്നു",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "എഐ ഇപ്പോൾ ഒരു ടാസ്ക് ചെയ്തുകൊണ്ടിരിക്കുകയാണ്. പുതിയ സംഭാഷണം ആരംഭിക്കുന്നത് നിലവിലുള്ള പ്രവർത്തനം നിർത്തും. തുടരണോ?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "എഐ പ്രവർത്തിച്ചുകൊണ്ടിരിക്കുന്നു",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "എഐ ഇപ്പോൾ ഒരു ടാസ്ക് ചെയ്തുകൊണ്ടിരിക്കുകയാണ്. മുമ്പത്തെ സംഭാഷണത്തിലേക്ക് മാറുന്നത് നിലവിലുള്ള പ്രവർത്തനം നിർത്തും. തുടരണോ?"
 });

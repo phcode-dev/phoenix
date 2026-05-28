@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Du har oppdaget {0}. For å fortsette trenger du et AI-abonnement eller kreditter.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Overrask meg!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Gjør klar scenen …",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Varmer opp lerretet …",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Nesten der …",
   "AI_CHAT_NEW_SESSION_TITLE": "Start en ny samtale",
   "AI_CHAT_NEW_BTN": "Ny",
   "AI_CHAT_THINKING": "Tenker ...",
@@ -2267,7 +2270,8 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Gjør klar scenen …",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Varmer opp lerretet …",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Nesten der …"
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI-en jobber",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI-en jobber for øyeblikket med en oppgave. Hvis du starter en ny samtale, avbrytes den. Fortsette?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI-en jobber",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI-en jobber for øyeblikket med en oppgave. Hvis du bytter til en tidligere samtale, avbrytes den. Fortsette?"
 });
