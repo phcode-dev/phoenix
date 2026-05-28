@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Opgaver",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} af {1} opgaver udført",
+  "AI_CHAT_TOOL_WEB_FETCH": "Hent webside",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Websøgning",
   "AI_CHAT_TOOL_SEARCHED": "Søgt efter: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Læs {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_TOOL_WEB_FETCH": "Hent webside",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Websøgning"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sætter scenen…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Opvarmer lærredet…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Næsten færdig…"
 });

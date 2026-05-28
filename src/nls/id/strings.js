@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Tugas",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} dari {1} tugas selesai",
+  "AI_CHAT_TOOL_WEB_FETCH": "Ambil laman web",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Pencarian web",
   "AI_CHAT_TOOL_SEARCHED": "Dicari: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Baca {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_TOOL_WEB_FETCH": "Ambil laman web",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Pencarian web"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Menyiapkan panggung…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Memanaskan kanvas…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Hampir sampai…"
 });

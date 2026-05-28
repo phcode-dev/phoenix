@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Tarefas",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} de {1} tarefas feitas",
+  "AI_CHAT_TOOL_WEB_FETCH": "Obter páxina web",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Busca na web",
   "AI_CHAT_TOOL_SEARCHED": "Buscouse: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Ler {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_TOOL_WEB_FETCH": "Obter páxina web",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Busca na web"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Preparando o escenario…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Quentando o lenzo…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Xa case está…"
 });

@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Επεξεργαστής",
   "AI_CHAT_TOOL_TASKS": "Εργασίες",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} από {1} εργασίες ολοκληρώθηκαν",
+  "AI_CHAT_TOOL_WEB_FETCH": "Ανάκτηση ιστοσελίδας",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Αναζήτηση στον ιστό",
   "AI_CHAT_TOOL_SEARCHED": "Αναζητήθηκε: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Ανάγνωση {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_TOOL_WEB_FETCH": "Ανάκτηση ιστοσελίδας",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Αναζήτηση στον ιστό"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Στήνεται το σκηνικό…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Προετοιμάζεται ο καμβάς…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Σχεδόν έτοιμο…"
 });

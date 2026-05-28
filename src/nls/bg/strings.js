@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Редактор",
   "AI_CHAT_TOOL_TASKS": "Задачи",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0} от {1} изпълнени задачи",
+  "AI_CHAT_TOOL_WEB_FETCH": "Извличане на уеб страница",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Уеб търсене",
   "AI_CHAT_TOOL_SEARCHED": "Търсене: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Четене на {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_TOOL_WEB_FETCH": "Извличане на уеб страница",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Уеб търсене"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Подготвяне на сцената…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Затопляне на платното…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Почти сме там…"
 });

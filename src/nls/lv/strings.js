@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Redaktors",
   "AI_CHAT_TOOL_TASKS": "Uzdevumi",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Paveikti {0} no {1} uzdevumiem",
+  "AI_CHAT_TOOL_WEB_FETCH": "Iegūt tīmekļa lapu",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Tīmekļa meklēšana",
   "AI_CHAT_TOOL_SEARCHED": "Meklēts: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Lasīt {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_TOOL_WEB_FETCH": "Iegūt tīmekļa lapu",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Tīmekļa meklēšana"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Gatavoju skatuvi…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Sildot audeklu…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Gandrīz gatavs…"
 });

@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "編輯器",
   "AI_CHAT_TOOL_TASKS": "任務",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "已完成 {0}/{1} 項任務",
+  "AI_CHAT_TOOL_WEB_FETCH": "擷取網頁",
+  "AI_CHAT_TOOL_WEB_SEARCH": "網路搜尋",
   "AI_CHAT_TOOL_SEARCHED": "搜尋：{0}",
   "AI_CHAT_TOOL_GREP": "Grep：{0}",
   "AI_CHAT_TOOL_READ_FILE": "讀取 {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_TOOL_WEB_FETCH": "擷取網頁",
-  "AI_CHAT_TOOL_WEB_SEARCH": "網路搜尋"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "正在設定舞台…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "正在為畫布暖身…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "就快好了…"
 });

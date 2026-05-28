@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Edytor",
   "AI_CHAT_TOOL_TASKS": "Zadania",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Ukończono {0} z {1} zadań",
+  "AI_CHAT_TOOL_WEB_FETCH": "Pobierz stronę internetową",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Wyszukiwanie internetowe",
   "AI_CHAT_TOOL_SEARCHED": "Wyszukano: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Odczytaj {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_TOOL_WEB_FETCH": "Pobierz stronę internetową",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Wyszukiwanie internetowe"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Przygotowuję scenę…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Rozgrzewam płótno…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Już prawie gotowe…"
 });

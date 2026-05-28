@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editor",
   "AI_CHAT_TOOL_TASKS": "Úkoly",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Splněno {0} z {1} úkolů",
+  "AI_CHAT_TOOL_WEB_FETCH": "Načíst webovou stránku",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Vyhledávání na webu",
   "AI_CHAT_TOOL_SEARCHED": "Hledáno: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Přečíst {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_TOOL_WEB_FETCH": "Načíst webovou stránku",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Vyhledávání na webu"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Připravuji scénu…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Zahřívám plátno…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Skoro hotovo…"
 });
