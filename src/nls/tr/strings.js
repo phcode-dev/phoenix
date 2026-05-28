@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Beni şaşırt!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sahne hazırlanıyor…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Tuval ısınıyor…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Neredeyse hazır…",
   "AI_CHAT_NEW_SESSION_TITLE": "Yeni bir sohbet başlat",
   "AI_CHAT_NEW_BTN": "Yeni",
   "AI_CHAT_THINKING": "Düşünüyor...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sahne hazırlanıyor…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Tuval ısınıyor…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Neredeyse hazır…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Yapılandırma tamamlandıktan sonra {APP_NAME} uygulamasını yeniden başlatın.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "Yapay Zeka çalışıyor",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Yapay Zeka şu anda bir görev üzerinde çalışıyor. Yeni bir sohbet başlatmak bu işlemi durduracaktır. Devam edilsin mi?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Yapay Zeka çalışıyor",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Yapay Zeka şu anda bir görev üzerinde çalışıyor. Önceki bir sohbete geçmek bu işlemi durduracaktır. Devam edilsin mi?"
 });

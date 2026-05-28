@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Lepj meg!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "A színpad előkészítése…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "A vászon bemelegítése…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Majdnem kész…",
   "AI_CHAT_NEW_SESSION_TITLE": "Új beszélgetés indítása",
   "AI_CHAT_NEW_BTN": "Új",
   "AI_CHAT_THINKING": "Gondolkodás...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "A színpad előkészítése…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "A vászon bemelegítése…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Majdnem kész…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Indítsa újra a(z) {APP_NAME} alkalmazást a konfiguráció befejezése után.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "Az AI dolgozik",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Az AI jelenleg egy feladaton dolgozik. Egy új beszélgetés indítása leállítja azt. Folytatja?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Az AI dolgozik",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Az AI jelenleg egy feladaton dolgozik. Egy korábbi beszélgetésre váltás leállítja azt. Folytatja?"
 });

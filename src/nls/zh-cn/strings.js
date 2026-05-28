@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "您发现了 {0}。要继续，您需要 AI 订阅或点数。",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "给我个惊喜！",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "布置场景中…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "酝酿创意中…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "马上就好…",
   "AI_CHAT_NEW_SESSION_TITLE": "开始新对话",
   "AI_CHAT_NEW_BTN": "新建",
   "AI_CHAT_THINKING": "思考中...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "布置场景中…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "酝酿创意中…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "马上就好…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "配置完成后重启 {APP_NAME}。",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI 正在工作中",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI 当前正在处理任务。开启新对话将中断该任务。要继续吗？",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI 正在工作中",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI 当前正在处理任务。切换到之前的对话将中断该任务。要继续吗？"
 });

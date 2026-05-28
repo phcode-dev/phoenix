@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Вы открыли для себя {0}. Чтобы продолжить, вам понадобится подписка на ИИ или кредиты.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Удиви меня!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Готовим сцену…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Разогреваем холст…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Почти готово…",
   "AI_CHAT_NEW_SESSION_TITLE": "Начать новый диалог",
   "AI_CHAT_NEW_BTN": "Новый",
   "AI_CHAT_THINKING": "Думаю...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Готовим сцену…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Разогреваем холст…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Почти готово…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Перезапустите {APP_NAME} после завершения настройки.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "ИИ работает",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "ИИ сейчас выполняет задачу. Начало нового диалога прервёт её. Продолжить?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "ИИ работает",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "ИИ сейчас выполняет задачу. Переключение на предыдущий диалог прервёт её. Продолжить?"
 });

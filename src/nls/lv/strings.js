@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Pārsteidz mani!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Gatavoju skatuvi…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Sildot audeklu…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Gandrīz gatavs…",
   "AI_CHAT_NEW_SESSION_TITLE": "Sākt jaunu sarunu",
   "AI_CHAT_NEW_BTN": "Jauna",
   "AI_CHAT_THINKING": "Domā...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Gatavoju skatuvi…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Sildot audeklu…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Gandrīz gatavs…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Pārstartējiet {APP_NAME} pēc konfigurācijas pabeigšanas.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI strādā",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI pašlaik veic uzdevumu. Jaunas sarunas sākšana to pārtrauks. Turpināt?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI strādā",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI pašlaik veic uzdevumu. Pārslēgšanās uz iepriekšēju sarunu to pārtrauks. Turpināt?"
 });

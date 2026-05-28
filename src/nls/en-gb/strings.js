@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered {0}. To proceed, you’ll need an AI subscription or credits.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Surprise me!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Setting the stage…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Warming the canvas…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Almost there…",
   "AI_CHAT_NEW_SESSION_TITLE": "Start a new conversation",
   "AI_CHAT_NEW_BTN": "New",
   "AI_CHAT_THINKING": "Thinking...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Setting the stage…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Warming the canvas…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Almost there…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Restart {APP_NAME} after configuration completes.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI is working",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI is currently working on a task. Starting a new conversation will stop it. Continue?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI is working",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI is currently working on a task. Switching to a previous conversation will stop it. Continue?"
 });

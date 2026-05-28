@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "Изненадай ме!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Подготвяне на сцената…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Затопляне на платното…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Почти сме там…",
   "AI_CHAT_NEW_SESSION_TITLE": "Започване на нов разговор",
   "AI_CHAT_NEW_BTN": "Нов",
   "AI_CHAT_THINKING": "Мисли...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Подготвяне на сцената…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Затопляне на платното…",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Почти сме там…"
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "Рестартирайте {APP_NAME} след завършване на конфигурацията.",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "AI работи",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "В момента AI изпълнява задача. Започването на нов разговор ще я спре. Желаете ли да продължите?",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI работи",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "В момента AI изпълнява задача. Превключването към предишен разговор ще я спре. Желаете ли да продължите?"
 });

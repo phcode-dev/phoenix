@@ -1957,6 +1957,9 @@ define({
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
   "AI_CHAT_TITLE": "کلاڈ کوڈ",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "مجھے حیران کرو!",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "منظر ترتیب دیا جا رہا ہے...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "کینوس کو گرمایا جا رہا ہے...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "بس ہونے ہی والا ہے...",
   "AI_CHAT_NEW_SESSION_TITLE": "نئی گفتگو شروع کریں",
   "AI_CHAT_NEW_BTN": "نیا",
   "AI_CHAT_THINKING": "سوچ رہا ہے...",
@@ -2267,7 +2270,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "منظر ترتیب دیا جا رہا ہے...",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "کینوس کو گرمایا جا رہا ہے...",
-  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "بس ہونے ہی والا ہے..."
+  "AI_CHAT_CLAUDE_LOGIN_RESTART_NOTE": "کنفیگریشن مکمل ہونے کے بعد {APP_NAME} دوبارہ شروع کریں۔",
+  "AI_CHAT_NEW_WHILE_STREAMING_TITLE": "اے آئی کام کر رہا ہے",
+  "AI_CHAT_NEW_WHILE_STREAMING_MSG": "اے آئی فی الحال ایک کام پر کام کر رہا ہے۔ نئی گفتگو شروع کرنے سے یہ رک جائے گا۔ جاری رکھیں؟",
+  "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "اے آئی کام کر رہا ہے",
+  "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "اے آئی فی الحال ایک کام پر کام کر رہا ہے۔ پچھلی گفتگو پر جانے سے یہ رک جائے گا۔ جاری رکھیں؟"
 });
