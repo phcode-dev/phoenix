@@ -673,8 +673,11 @@ exports.resumeSession = async function (params) {
  * Destroy the current session (clear session ID).
  */
 exports.destroySession = async function () {
+    if (currentAbortController) {
+        currentAbortController.abort();
+        currentAbortController = null;
+    }
     currentSessionId = null;
-    currentAbortController = null;
     _queuedClarification = null;
     return { success: true };
 };
