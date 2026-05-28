@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "编辑器",
   "AI_CHAT_TOOL_TASKS": "任务",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} 项任务已完成 {0} 项",
+  "AI_CHAT_TOOL_WEB_FETCH": "获取网页",
+  "AI_CHAT_TOOL_WEB_SEARCH": "网络搜索",
   "AI_CHAT_TOOL_SEARCHED": "已搜索：{0}",
   "AI_CHAT_TOOL_GREP": "Grep：{0}",
   "AI_CHAT_TOOL_READ_FILE": "读取 {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_TOOL_WEB_FETCH": "获取网页",
-  "AI_CHAT_TOOL_WEB_SEARCH": "网络搜索"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "布置场景中…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "酝酿创意中…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "马上就好…"
 });

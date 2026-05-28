@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Düzenleyici",
   "AI_CHAT_TOOL_TASKS": "Görevler",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} görevden {0} tanesi tamamlandı",
+  "AI_CHAT_TOOL_WEB_FETCH": "Web sayfası getirme",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Web araması",
   "AI_CHAT_TOOL_SEARCHED": "Aranan: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Okunan: {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_TOOL_WEB_FETCH": "Web sayfası getirme",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Web araması"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Sahne hazırlanıyor…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Tuval ısınıyor…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Neredeyse hazır…"
 });

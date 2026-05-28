@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "ایڈیٹر",
   "AI_CHAT_TOOL_TASKS": "ٹاسکس",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} میں سے {0} ٹاسکس مکمل",
+  "AI_CHAT_TOOL_WEB_FETCH": "ویب صفحہ حاصل کریں",
+  "AI_CHAT_TOOL_WEB_SEARCH": "ویب تلاش",
   "AI_CHAT_TOOL_SEARCHED": "تلاش کیا گیا: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "{0} پڑھا گیا",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_TOOL_WEB_FETCH": "ویب صفحہ حاصل کریں",
-  "AI_CHAT_TOOL_WEB_SEARCH": "ویب تلاش"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "منظر ترتیب دیا جا رہا ہے...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "کینوس کو گرمایا جا رہا ہے...",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "بس ہونے ہی والا ہے..."
 });

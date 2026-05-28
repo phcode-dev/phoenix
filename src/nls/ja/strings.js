@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "エディター",
   "AI_CHAT_TOOL_TASKS": "タスク",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1}件中{0}件のタスクが完了",
+  "AI_CHAT_TOOL_WEB_FETCH": "ウェブページを取得",
+  "AI_CHAT_TOOL_WEB_SEARCH": "ウェブ検索",
   "AI_CHAT_TOOL_SEARCHED": "検索： {0}",
   "AI_CHAT_TOOL_GREP": "グレップ： {0}",
   "AI_CHAT_TOOL_READ_FILE": "{0}の読み取り",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_TOOL_WEB_FETCH": "ウェブページを取得",
-  "AI_CHAT_TOOL_WEB_SEARCH": "ウェブ検索"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "舞台を準備しています…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "キャンバスを温めています…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "もうすぐです…"
 });

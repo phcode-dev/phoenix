@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Editori",
   "AI_CHAT_TOOL_TASKS": "Tehtävät",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{0}/{1} tehtävää tehty",
+  "AI_CHAT_TOOL_WEB_FETCH": "Hae verkkosivu",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Verkkohaku",
   "AI_CHAT_TOOL_SEARCHED": "Haettu: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Lue {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_TOOL_WEB_FETCH": "Hae verkkosivu",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Verkkohaku"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Luodaan puitteita…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Herätellään värejä…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Melkein valmista…"
 });

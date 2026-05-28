@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "에디터",
   "AI_CHAT_TOOL_TASKS": "작업",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "총 {1}개 작업 중 {0}개 완료",
+  "AI_CHAT_TOOL_WEB_FETCH": "웹 페이지 가져오기",
+  "AI_CHAT_TOOL_WEB_SEARCH": "웹 검색",
   "AI_CHAT_TOOL_SEARCHED": "검색: {0}",
   "AI_CHAT_TOOL_GREP": "그렙: {0}",
   "AI_CHAT_TOOL_READ_FILE": "{0} 읽기",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_TOOL_WEB_FETCH": "웹 페이지 가져오기",
-  "AI_CHAT_TOOL_WEB_SEARCH": "웹 검색"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "무대를 준비하는 중…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "캔버스를 예열하는 중…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "거의 다 됐습니다…"
 });

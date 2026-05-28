@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Редактор",
   "AI_CHAT_TOOL_TASKS": "Задачи",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Выполнено {0} из {1} задач",
+  "AI_CHAT_TOOL_WEB_FETCH": "Загрузить веб-страницу",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Веб-поиск",
   "AI_CHAT_TOOL_SEARCHED": "Поиск: {0}",
   "AI_CHAT_TOOL_GREP": "Греп: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Чтение: {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_CHAT_TOOL_WEB_FETCH": "Загрузить веб-страницу",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Веб-поиск"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Готовим сцену…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Разогреваем холст…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Почти готово…"
 });

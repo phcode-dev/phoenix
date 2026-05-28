@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "संपादक",
   "AI_CHAT_TOOL_TASKS": "कार्य",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "{1} में से {0} कार्य पूरे हुए",
+  "AI_CHAT_TOOL_WEB_FETCH": "वेब पेज प्राप्त करें",
+  "AI_CHAT_TOOL_WEB_SEARCH": "वेब खोज",
   "AI_CHAT_TOOL_SEARCHED": "खोजा गया: {0}",
   "AI_CHAT_TOOL_GREP": "ग्रेप: {0}",
   "AI_CHAT_TOOL_READ_FILE": "{0} पढ़ा",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_TOOL_WEB_FETCH": "वेब पेज प्राप्त करें",
-  "AI_CHAT_TOOL_WEB_SEARCH": "वेब खोज"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "मंच तैयार किया जा रहा है…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "कैनवास तैयार हो रहा है…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "बस लगभग हो गया…"
 });

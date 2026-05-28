@@ -2025,6 +2025,8 @@ define({
   "AI_CHAT_TOOL_CONTROL_EDITOR": "Уређивач",
   "AI_CHAT_TOOL_TASKS": "Задаци",
   "AI_CHAT_TOOL_TASKS_SUMMARY": "Завршено {0} од {1} задатака",
+  "AI_CHAT_TOOL_WEB_FETCH": "Дохвати веб-страницу",
+  "AI_CHAT_TOOL_WEB_SEARCH": "Веб-претрага",
   "AI_CHAT_TOOL_SEARCHED": "Претражено: {0}",
   "AI_CHAT_TOOL_GREP": "Grep: {0}",
   "AI_CHAT_TOOL_READ_FILE": "Прочитај {0}",
@@ -2265,6 +2267,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_TOOL_WEB_FETCH": "Дохвати веб-страницу",
-  "AI_CHAT_TOOL_WEB_SEARCH": "Веб-претрага"
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Постављање сцене…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Загревање платна…",
+  "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Само што није…"
 });
