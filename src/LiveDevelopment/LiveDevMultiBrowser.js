@@ -734,6 +734,16 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Clear hover highlight and hover box in the preview. Forwarded from the parent because the
+     * previewed iframe does not reliably receive mouseout/mouseleave on a slow pointer exit.
+     */
+    function clearHoverState() {
+        if (_protocol) {
+            _protocol.evaluate("_LD.clearHoverState && _LD.clearHoverState()");
+        }
+    }
+
+    /**
      * Update configuration in the remote browser
      */
     function updateConfig(config) {
@@ -860,6 +870,7 @@ define(function (require, exports, module) {
     exports.showHighlight       = showHighlight;
     exports.hideHighlight       = hideHighlight;
     exports.redrawHighlight     = redrawHighlight;
+    exports.clearHoverState     = clearHoverState;
     exports.getConfig           = getConfig;
     exports.updateConfig        = updateConfig;
     exports.refreshConfig       = refreshConfig;

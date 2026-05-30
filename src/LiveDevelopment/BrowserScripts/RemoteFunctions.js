@@ -595,12 +595,11 @@ function RemoteFunctions(config = {}) {
         }
 
         const element = event.target;
-        if(!LivePreviewView.isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
+
+        if (element === _lastHoverTarget) {
             return;
         }
-
-        // Same element as last hover — nothing changed, skip entirely
-        if (element === _lastHoverTarget) {
+        if(!LivePreviewView.isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
             return;
         }
         _lastHoverTarget = element;
@@ -615,19 +614,28 @@ function RemoteFunctions(config = {}) {
         }
     }
 
-    function onElementHoverOut(event) {
-        // don't want highlighting and stuff when auto scrolling
-        if (SHARED_STATE.isAutoScrolling) { return; }
+    function _clearHoverState() {
+        if (SHARED_STATE.isAutoScrolling) {
+            return;
+        }
+        if (_hoverHighlight && shouldShowHighlightOnHover()) {
+            _lastHoverTarget = null;
+            _scheduleHoverUpdate();
+        }
+    }
 
+    function onElementHoverOut(event) {
         const element = event.target;
         // Use isElementInspectable (not isElementEditable) so that JS-rendered
         // elements also get their hover highlight and hover box properly dismissed.
         if(LivePreviewView.isElementInspectable(element) && element.nodeType === Node.ELEMENT_NODE) {
-            if (_hoverHighlight && shouldShowHighlightOnHover()) {
-                _lastHoverTarget = null;
-                _scheduleHoverUpdate();
-            }
+            _clearHoverState();
         }
+    }
+
+    // for popped out window: the in-panel iframe case is forwarded parent-side via _LD.clearHoverState().
+    function onDocumentMouseLeave() {
+        _clearHoverState();
     }
 
     function scrollElementToViewPort(element) {
@@ -711,7 +719,9 @@ function RemoteFunctions(config = {}) {
 
     function disableHoverListeners() {
         window.document.removeEventListener("mouseover", onElementHover);
+        window.document.removeEventListener("mousemove", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
+        window.document.documentElement.removeEventListener("mouseleave", onDocumentMouseLeave);
         // Cancel any pending rAF hover update so stale callbacks don't fire
         if (_pendingHoverRAF) {
             cancelAnimationFrame(_pendingHoverRAF);
@@ -732,7 +742,9 @@ function RemoteFunctions(config = {}) {
         if (config.mode === 'edit' && shouldShowHighlightOnHover()) {
             disableHoverListeners();
             window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mousemove", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
+            window.document.documentElement.addEventListener("mouseleave", onDocumentMouseLeave);
         }
     }
 
@@ -1714,7 +1726,8 @@ function RemoteFunctions(config = {}) {
         "getHighlightCount": getHighlightCount,
         "getHighlightTrackingElement": getHighlightTrackingElement,
         "getHighlightStyle": getHighlightStyle,
-        "setHotCornerHidden": setHotCornerHidden
+        "setHotCornerHidden": setHotCornerHidden,
+        "clearHoverState": _clearHoverState
     };
 
     // the below code comment is replaced by added scripts for extensibility

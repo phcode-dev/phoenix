@@ -828,6 +828,11 @@ define(function (require, exports, module) {
         $panel.find(".custom-server-banner-close-icon").on("click", ()=>{
             $panel.find(".live-preview-custom-banner").addClass("forced-hidden");
         });
+        // The previewed iframe does not reliably fire mouseout/mouseleave on a slow pointer exit,
+        // leaving the hover highlight/box stuck. Detect the leave parent-side and forward a clear.
+        $panel.on("mouseleave", "#panel-live-preview-frame", function () {
+            MultiBrowserLiveDev.clearHoverState();
+        });
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
