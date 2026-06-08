@@ -127,8 +127,21 @@ define(function (require, exports, module) {
             body = HTMLInstrumentation.generateInstrumentedHTML(this.editor, this.protocol.getRemoteScript());
         }
 
+        if (!body) {
+            // generateInstrumentedHTML() returns null when the document is empty or its
+            // HTML cannot be parsed into a DOM (no instrumentable content). In that case it
+            // also never injected the remote <script>, so without help the served page would
+            // have no live-preview runtime at all — a blank page with no way to connect back
+            // or start editing. Fall back to the raw text but still inject the remote script
+            // so the runtime always loads, even for a completely empty page.
+            body = this.doc.getText();
+            if (this._instrumentationEnabled) {
+                body += this.protocol.getRemoteScript();
+            }
+        }
+
         return {
-            body: body || this.doc.getText()
+            body: body
         };
     };
 

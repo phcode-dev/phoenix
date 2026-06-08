@@ -206,7 +206,7 @@ define({
     "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Search elements\u2026",
     "LIVE_DEV_INSERT_COMMON": "Common",
     "LIVE_DEV_INSERT_NO_RESULTS": "No matching elements",
-    "LIVE_DEV_INSERT_SEE_MORE": "See more",
+    "LIVE_DEV_INSERT_SHOW_MORE": "Show more",
     "LIVE_DEV_INSERT_SHOW_LESS": "Show less",
     "LIVE_DEV_INSERT_CREATE": "Create",
     "LIVE_DEV_EDIT_ONBOARD_TITLE": "Two new ways to edit",
