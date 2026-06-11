@@ -211,6 +211,7 @@ define({
     "LIVE_DEV_STYLER_SEARCH_FONTS": "Search fonts…",
     "LIVE_DEV_STYLER_FONTS_GOOGLE": "Google",
     "LIVE_DEV_STYLER_FONTS_SYSTEM": "System",
+    "LIVE_DEV_STYLER_FONTS_ON_PAGE": "On this page",
     "LIVE_DEV_STYLER_FONTS_CUSTOM": "Custom",
     "LIVE_DEV_STYLER_FONT_USE_CUSTOM": "Use \"{0}\"",
     "LIVE_DEV_STYLER_APPLY": "Apply",
