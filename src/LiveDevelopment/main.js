@@ -71,6 +71,7 @@ define(function main(require, exports, module) {
         mode: LIVE_HIGHLIGHT_MODE, // will be updated when we fetch entitlements
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
+        showStylesBar: true, // default value, this will get updated when the extension loads
         syncSourceAndPreview: true, // default value, this will get updated when the extension loads
         imageGalleryAutoOpen: true, // auto-open gallery on first image click per session
         isPaidUser: false, // will be updated when we fetch entitlements
@@ -336,6 +337,13 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.updateConfig(config);
     }
 
+    function updateStylesBarConfig() {
+        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_SHOW_STYLES_BAR);
+        const config = MultiBrowserLiveDev.getConfig();
+        config.showStylesBar = prefValue !== false; // defaults to true (on)
+        MultiBrowserLiveDev.updateConfig(config);
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
 
     // private api
@@ -359,6 +367,7 @@ define(function main(require, exports, module) {
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
+    exports.updateStylesBarConfig = updateStylesBarConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;

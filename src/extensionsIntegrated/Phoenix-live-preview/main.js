@@ -115,6 +115,12 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
     });
 
+    // live preview styles bar preference (show/hide the styles bar on element selection); on by default
+    const PREFERENCE_SHOW_STYLES_BAR = CONSTANTS.PREFERENCE_SHOW_STYLES_BAR;
+    PreferencesManager.definePreference(PREFERENCE_SHOW_STYLES_BAR, "boolean", true, {
+        description: Strings.LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE
+    });
+
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
@@ -1540,9 +1546,13 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
             LiveDevelopment.updateRulerLinesConfig();
         });
-        // Initialize element highlight and ruler lines config on startup
+        PreferencesManager.on("change", PREFERENCE_SHOW_STYLES_BAR, function() {
+            LiveDevelopment.updateStylesBarConfig();
+        });
+        // Initialize element highlight, ruler lines and styles bar config on startup
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
+        LiveDevelopment.updateStylesBarConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
