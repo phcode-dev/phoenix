@@ -184,6 +184,7 @@ define({
     "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Inspect element in Live Preview on 'hover' or 'click'. Defaults to 'hover'",
     "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Show measurements when elements are selected in live preview. Defaults to 'false'",
     "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Show the styles bar when elements are selected in live preview. Defaults to 'true'",
+    "LIVE_DEV_SETTINGS_STYLES_BAR_DOCK_PREFERENCE": "Which side the live preview styles bar docks to: 'top', 'bottom', 'left' or 'right'. Defaults to 'bottom'",
     "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Select Parent",
     "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Edit Text",
     "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Double-click",

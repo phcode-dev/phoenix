@@ -121,6 +121,13 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE
     });
 
+    // live preview styles bar dock side preference (where the bar docks); persists user choice
+    const PREFERENCE_STYLES_BAR_DOCK = CONSTANTS.PREFERENCE_STYLES_BAR_DOCK;
+    PreferencesManager.definePreference(PREFERENCE_STYLES_BAR_DOCK, "string", "bottom", {
+        description: Strings.LIVE_DEV_SETTINGS_STYLES_BAR_DOCK_PREFERENCE,
+        values: ["top", "bottom", "left", "right"]
+    });
+
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
@@ -1549,10 +1556,14 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_STYLES_BAR, function() {
             LiveDevelopment.updateStylesBarConfig();
         });
+        PreferencesManager.on("change", PREFERENCE_STYLES_BAR_DOCK, function() {
+            LiveDevelopment.updateStylesBarDockConfig();
+        });
         // Initialize element highlight, ruler lines and styles bar config on startup
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
         LiveDevelopment.updateStylesBarConfig();
+        LiveDevelopment.updateStylesBarDockConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
