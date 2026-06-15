@@ -170,6 +170,7 @@ define({
   "LIVE_DEV_TOOLBOX_DELETE": "Удалить",
   "LIVE_DEV_TOOLBOX_IMAGE_GALLERY": "Галерея изображений",
   "LIVE_DEV_TOOLBOX_MORE_OPTIONS": "Дополнительные параметры",
+  "LIVE_DEV_STYLER_CLOSE_SAVED": "Готово",
   "LIVE_DEV_MORE_OPTIONS_CUT": "Вырезать",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Копировать",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Вставить",
@@ -181,8 +182,12 @@ define({
   "LIVE_DEV_INSERT_SEARCH_PLACEHOLDER": "Поиск элементов…",
   "LIVE_DEV_INSERT_COMMON": "Общие",
   "LIVE_DEV_INSERT_NO_RESULTS": "Нет подходящих элементов",
+  "LIVE_DEV_INSERT_SHOW_MORE": "Показать ещё",
   "LIVE_DEV_INSERT_SHOW_LESS": "Показать меньше",
   "LIVE_DEV_INSERT_CREATE": "Создать",
+  "LIVE_DEV_EMPTY_CANVAS_LABEL": "Ваша страница пуста — добавьте элемент",
+  "LIVE_DEV_EMPTY_CANVAS_ADD": "Добавить первый элемент",
+  "LIVE_DEV_EMPTY_CANVAS_COLLAPSE": "Свернуть",
   "LIVE_DEV_EDIT_ONBOARD_TITLE": "Два новых способа редактирования",
   "LIVE_DEV_EDIT_ONBOARD_INSERT": "Добавляйте новые HTML-элементы",
   "LIVE_DEV_EDIT_ONBOARD_PROPS": "Редактируйте тег, классы, ID и атрибуты",
@@ -2273,9 +2278,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Еще кое-что",
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_INSERT_SHOW_MORE": "Показать ещё",
-  "LIVE_DEV_EMPTY_CANVAS_LABEL": "Ваша страница пуста — добавьте элемент",
-  "LIVE_DEV_EMPTY_CANVAS_ADD": "Добавить первый элемент",
-  "LIVE_DEV_EMPTY_CANVAS_COLLAPSE": "Свернуть"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено"
 });
