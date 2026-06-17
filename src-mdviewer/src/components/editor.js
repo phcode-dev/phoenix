@@ -1,5 +1,6 @@
 // Adapted editor — no save/file I/O, no CM6, no recovery, emits to bridge
 import Prism from "prismjs";
+import { marked } from "marked";
 import TurndownService from "turndown";
 import { gfm } from "turndown-plugin-gfm";
 import { on, emit } from "../core/events.js";
@@ -1799,12 +1800,18 @@ function _updateSourceLineAttrs(contentEl, markdown) {
 
     for (let i = 0; i < children.length; i++) {
         const el = children[i];
-        // Skip UI elements (handles, overlays, etc.)
+        // Skip standalone overlay elements (table handles, code-line/br-line
+        // cursor-sync overlays). Note: cursor-sync-highlight alone is NOT a
+        // skip signal — it's added to real content blocks (<p>, <h1>, etc.)
+        // to highlight them; skipping those would misalign mdLineIdx for the
+        // rest of the walk. The standalone overlay variants always carry the
+        // cursor-sync-br-line or cursor-sync-code-line companion class.
         if (el.classList.contains("table-row-handles") ||
             el.classList.contains("table-col-handles") ||
             el.classList.contains("table-add-row-btn") ||
             el.classList.contains("table-col-add-btn") ||
-            el.classList.contains("cursor-sync-highlight")) {
+            el.classList.contains("cursor-sync-br-line") ||
+            el.classList.contains("cursor-sync-code-line")) {
             continue;
         }
 
@@ -1840,11 +1847,113 @@ function _updateSourceLineAttrs(contentEl, markdown) {
             // Single-line or multi-line block: advance to next blank line.
             // Paragraphs with <br> (soft line breaks) are a single block —
             // the data-source-line on the <p> points to the block's start.
+            const blockStart = mdLineIdx;
             mdLineIdx++;
             while (mdLineIdx < mdLines.length && mdLines[mdLineIdx].trim() !== "") {
                 mdLineIdx++;
             }
+            // For paragraphs that span multiple source lines (Phoenix-side
+            // wrap reflow), keep per-line <span data-source-line> children in
+            // sync so cursor sync resolves to the exact line the caret is on,
+            // not just the block start.
+            if (tag === "P") {
+                const blockLines = mdLines.slice(blockStart, mdLineIdx)
+                    .filter(l => l !== "");
+                _refreshParagraphSourceSpans(el, blockLines, blockStart + 1);
+            }
         }
+    }
+}
+
+// Maintain the per-source-line <span> structure inside a multi-line paragraph.
+// Cases:
+//   - Span count matches sourceLines.length and starting line matches → no-op
+//     (line numbers may have shifted upward, in which case attributes are
+//     updated in place without touching content or cursor).
+//   - Single source line and no spans → no-op.
+//   - Single source line but spans present (paragraph just stopped wrapping)
+//     → unwrap them, preserving caret position by character offset.
+//   - Multi source line and span structure mismatched (just started wrapping,
+//     or wrap line count changed) → rebuild innerHTML from source lines, with
+//     caret position preserved by character offset.
+function _refreshParagraphSourceSpans(p, sourceLines, startLineNum) {
+    const expectedCount = sourceLines.length;
+    if (expectedCount === 0) {
+        return;
+    }
+    const existingSpans = Array.from(p.children)
+        .filter(c => c.tagName === "SPAN" && c.hasAttribute("data-source-line"));
+
+    if (expectedCount === 1) {
+        if (existingSpans.length === 0) {
+            return;
+        }
+        // Paragraph just stopped wrapping — unwrap the spans into the <p>.
+        _rebuildParagraphInner(p, marked.parseInline(sourceLines[0] || ""));
+        return;
+    }
+
+    if (existingSpans.length === expectedCount) {
+        // Span count matches. The user is typing inside one of the spans; do
+        // not disturb their content. Just update the data-source-line values
+        // in case the paragraph shifted up/down in the source.
+        const firstAttr = parseInt(existingSpans[0].getAttribute("data-source-line"), 10);
+        if (firstAttr !== startLineNum) {
+            for (let i = 0; i < existingSpans.length; i++) {
+                existingSpans[i].setAttribute("data-source-line", String(startLineNum + i));
+            }
+        }
+        return;
+    }
+
+    // Span structure doesn't match expected — rebuild from source.
+    const newHtml = sourceLines.map((line, i) =>
+        `<span data-source-line="${startLineNum + i}">${marked.parseInline(line)}</span>`
+    ).join(" ");
+    _rebuildParagraphInner(p, newHtml);
+}
+
+// Replace a paragraph's innerHTML while preserving the user's caret position
+// by character offset within the block. Used when wrap state changes mid-edit
+// (paragraph starts/stops wrapping, or wrap line count changes).
+function _rebuildParagraphInner(p, newInnerHtml) {
+    if (p.innerHTML === newInnerHtml) {
+        return;
+    }
+    const sel = window.getSelection();
+    let savedOffset = null;
+    if (sel && sel.rangeCount) {
+        const range = sel.getRangeAt(0);
+        if (p.contains(range.startContainer)) {
+            const pre = document.createRange();
+            pre.setStart(p, 0);
+            pre.setEnd(range.startContainer, range.startOffset);
+            savedOffset = pre.toString().length;
+        }
+    }
+    p.innerHTML = newInnerHtml;
+    if (savedOffset !== null && sel) {
+        const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT, null);
+        let remaining = savedOffset;
+        let node = walker.nextNode();
+        while (node) {
+            if (remaining <= node.textContent.length) {
+                const range = document.createRange();
+                range.setStart(node, remaining);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+                return;
+            }
+            remaining -= node.textContent.length;
+            node = walker.nextNode();
+        }
+        // Fallback: place cursor at end of paragraph
+        const range = document.createRange();
+        range.selectNodeContents(p);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
     }
 }
 

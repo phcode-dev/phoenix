@@ -188,10 +188,34 @@ function _withSourceLine(protoFn, tagRegex) {
     };
 }
 
+// Paragraphs that span multiple source lines (e.g. lines wrapped by Phoenix's
+// reflow on save) get per-source-line <span data-source-line="N"> children.
+// Without these, the whole <p> shares a single data-source-line attribute and
+// cursor sync always maps to the block's first line — so clicking anywhere in
+// a wrapped paragraph snaps CM to the same line, regardless of caret position.
+// Each line is re-parsed via marked.parseInline so inline markdown inside the
+// span renders correctly. The Phoenix-side wrap step deliberately never splits
+// inline atoms across source lines, so each line is independently parseable.
+function _renderParagraphWithSourceSpans(token) {
+    const startLine = token._sourceLine;
+    if (startLine == null) {
+        return _proto.paragraph.call(this, token);
+    }
+    const sourceLines = (token.raw || "").split("\n").filter(l => l !== "");
+    if (sourceLines.length <= 1) {
+        return _proto.paragraph.call(this, token)
+            .replace(/^<p/, `<p data-source-line="${startLine}"`);
+    }
+    const spans = sourceLines.map((line, i) =>
+        `<span data-source-line="${startLine + i}">${marked.parseInline(line)}</span>`
+    );
+    return `<p data-source-line="${startLine}">${spans.join(" ")}</p>`;
+}
+
 marked.use({
     renderer: {
         heading: _withSourceLine(_proto.heading, /^<h[1-6]/),
-        paragraph: _withSourceLine(_proto.paragraph, /^<p/),
+        paragraph: _renderParagraphWithSourceSpans,
         list: _withSourceLine(_proto.list, /^<[ou]l/),
         listitem: _withSourceLine(_proto.listitem, /^<li/),
         table: _withSourceLine(_proto.table, /^<table/),
