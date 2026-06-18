@@ -507,6 +507,12 @@ define(function (require, exports, module) {
         };
     }
 
+    // The UI language the user has Phoenix set to (e.g. "en", "fr", "ja"), forwarded to the
+    // server so it can localize its messages. Falls back to English when unavailable.
+    function _uiLocale() {
+        return (typeof brackets !== "undefined" && brackets.getLocale && brackets.getLocale()) || "en";
+    }
+
     async function _startAndInit(client) {
         const config = client.config;
         const conn = await getConnector();
@@ -526,6 +532,10 @@ define(function (require, exports, module) {
             method: "initialize",
             params: {
                 processId: null,
+                // LSP InitializeParams.locale - the UI language to localize server messages
+                // (diagnostics, hover/quick-info) in. vtsls forwards this to tsserver, which ships
+                // localized messages for many locales and falls back to English for unknown ones.
+                locale: _uiLocale(),
                 rootUri: rootUri,
                 workspaceFolders: rootUri ? [{ uri: rootUri, name: rootName }] : null,
                 capabilities: _clientCapabilities(),
@@ -550,9 +560,9 @@ define(function (require, exports, module) {
         client.references = new DefaultProviders.ReferencesProvider(client);
         client.lintingProvider = new DefaultProviders.LintingProvider();
         client.lintingProvider._validateOnType = true;
-        // Record the CodeInspection registration name so the provider can tell whether it is
-        // still a participating inspector before nudging a re-run on async diagnostics.
-        client.lintingProvider._inspectionProviderName = client.serverId + " (LSP)";
+        // recorded so the provider can tell whether it is still a participating inspector before nudging a
+        // re-run on async diagnostics.
+        client.lintingProvider._inspectionProviderName = client.serverId;
         client.hover = new HoverProvider.HoverProvider(client);
 
         CodeHintManager.registerHintProvider(client.codeHints, langs, DEFAULT_PRIORITY);
