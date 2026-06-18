@@ -123,6 +123,12 @@ define(function (require, exports, module) {
                             phStart = out.length;
                         out += sub.text;
                         record(parseInt(placeholder[1], 10), phStart, out.length);
+                        // Preserve any tab-stops nested inside the placeholder default (e.g.
+                        // ${1:a ${2:b} c}), shifted into this snippet's coordinate space.
+                        for (var si = 0; si < sub.stops.length; si++) {
+                            record(sub.stops[si].number,
+                                phStart + sub.stops[si].start, phStart + sub.stops[si].end);
+                        }
                     } else if (choice) {
                         var first = choice[2].split(",")[0] || "",
                             chStart = out.length;
