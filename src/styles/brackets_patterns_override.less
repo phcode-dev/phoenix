@@ -670,6 +670,30 @@ a:focus {
             box-shadow: 0 3px 9px @dark-bc-shadow;
         }
 
+        // Opaque, theme-matched scrollbar. The app-wide default uses a transparent track, which on
+        // a floating popup lets the editor behind show through the scroll gutter; match the menu
+        // background instead so the popup reads as one solid surface.
+        &::-webkit-scrollbar {
+            width: 9px;
+        }
+        &::-webkit-scrollbar-track {
+            background-color: @bc-menu-bg;
+
+            .dark & {
+                background-color: @dark-bc-menu-bg;
+            }
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.24);
+            border-radius: 5px;
+            border: 2px solid @bc-menu-bg;
+
+            .dark & {
+                background-color: rgba(255, 255, 255, 0.24);
+                border-color: @dark-bc-menu-bg;
+            }
+        }
+
         // Styles used for inlinemenu widget header
         li.inlinemenu-header a {
             background-color: @bc-bg-tool-bar;

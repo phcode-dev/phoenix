@@ -89,6 +89,63 @@ span.brackets-hints-with-type-details {
     font-family: SourceCodePro;
 }
 
+/* LSP completion signature (VS Code style). The list keeps a STABLE width and each row is a flex
+   line: the label (flexible, truncates with ellipsis) and the highlighted row's signature
+   (fixed-size) sit side-by-side, so they never overlap and arrow-navigation never resizes the
+   popup. Scoped to `.lsp-hints` menus so other providers are unaffected. Full signature is in the
+   side doc popup. */
+.codehint-menu.lsp-hints .dropdown-menu {
+    /* Fixed width so the list never resizes while navigating (the Bootstrap dropdown is
+       shrink-to-fit, so a min-width floor isn't enough - it would still grow per row). The flex
+       row below truncates the label/signature to fit. Matches VS Code's stable-width list. */
+    width: 380px;
+    min-width: 380px;
+    max-width: 380px;
+}
+
+/* Make the <a> the flex container so the row template's whitespace text nodes collapse (a
+   block-level .codehint-item would otherwise add an extra line box, making rows ~2x tall). */
+.codehint-menu.lsp-hints li a {
+    display: flex;
+    align-items: center;
+}
+
+.codehint-menu.lsp-hints .codehint-item {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    align-items: center;
+}
+
+.codehint-menu.lsp-hints .codehint-item > .brackets-hints {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lsp-hint-sig {
+    display: none;
+}
+
+.highlight .lsp-hint-sig {
+    display: block;
+    flex: 0 0 auto;
+    margin-left: 12px;
+    max-width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-style: italic;
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.dark .highlight .lsp-hint-sig {
+    color: rgba(255, 255, 255, 0.65);
+}
+
 .brackets-hints .matched-hint {
     font-weight: 500;
     color: #437900;

@@ -357,6 +357,10 @@ define(function (require, exports, module) {
      * Find the position where cursor should be placed after expansion
      * Looks for patterns like '><', '""', ''
      *
+     * NOTE: this is bespoke, stable cursor-placement logic for Emmet. `editor/TabstopManager`
+     * (added for the LSP completion path) is a reusable snippet/tab-stop engine that could replace
+     * this in future, giving Emmet real $1/${1:x}/$0 tab-stops with Tab navigation.
+     *
      * @param {Editor} editor - The editor instance
      * @param {String} indentedAbbr - the indented abbreviation
      * @param {Object} startPos - Starting position {line, ch} of the expansion

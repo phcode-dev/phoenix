@@ -1,0 +1,9 @@
+{
+    "name": "typescript-support",
+    "title": "TypeScript/JavaScript Language Support",
+    "description": "Provides TypeScript and JavaScript language intelligence (completion, hover, jump-to-definition, signature help, diagnostics and find-references) via the bundled vtsls language server. Desktop only.",
+    "version": "1.0.0",
+    "engines": {
+        "brackets": ">=2.0.0"
+    }
+}

@@ -553,6 +553,52 @@ define(function (require, exports, module) {
      * @private
      * @return {string} If the key is OS-inconsistent, the correct key; otherwise, the original key.
      **/
+    // Maps a physical key code (event.code, which is keyboard-layout and input-method independent)
+    // to the key name used in keymaps. Used as a fallback when event.key is unusable.
+    const _CODE_TO_KEY = {
+        "Space": "Space",
+        "Enter": "Enter",
+        "NumpadEnter": "Enter",
+        "Tab": "Tab",
+        "Backspace": "Backspace",
+        "Delete": "Delete",
+        "Escape": "Esc",
+        "ArrowUp": "Up",
+        "ArrowDown": "Down",
+        "ArrowLeft": "Left",
+        "ArrowRight": "Right",
+        "Home": "Home",
+        "End": "End",
+        "PageUp": "PageUp",
+        "PageDown": "PageDown",
+        "Minus": "-",
+        "Equal": "=",
+        "BracketLeft": "[",
+        "BracketRight": "]",
+        "Backslash": "\\",
+        "Semicolon": ";",
+        "Quote": "'",
+        "Comma": ",",
+        "Period": ".",
+        "Slash": "/",
+        "Backquote": "`"
+    };
+    function _mapCodeToKey(code) {
+        if (!code) {
+            return null;
+        }
+        if (/^Key[A-Z]$/.test(code)) {       // KeyA -> A
+            return code.slice(3);
+        }
+        if (/^Digit[0-9]$/.test(code)) {     // Digit1 -> 1
+            return code.slice(5);
+        }
+        if (/^Numpad[0-9]$/.test(code)) {    // Numpad1 -> 1
+            return code.slice(6);
+        }
+        return _CODE_TO_KEY[code] || null;
+    }
+
     function _mapKeycodeToKey(event) {
         // key code mapping https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
         if((event.ctrlKey || event.metaKey) && event.altKey && brackets.platform === "mac"){
@@ -565,6 +611,15 @@ define(function (require, exports, module) {
             }
         }
         const key = event.key;
+        // Some input methods (e.g. IBus/fcitx on Linux intercepting Ctrl-Space) deliver the event
+        // with key === "Unidentified"/"Dead". Fall back to the physical key code so shortcuts like
+        // Ctrl-Space still resolve correctly.
+        if (key === "Unidentified" || key === "Dead" || !key) {
+            const fromCode = _mapCodeToKey(event.code);
+            if (fromCode) {
+                return fromCode;
+            }
+        }
         let codes = {
             "ArrowUp": "Up",
             "ArrowDown": "Down",

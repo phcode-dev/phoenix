@@ -135,15 +135,23 @@ define(function (require, exports, module) {
      * @param {{source: "KeyboardNav", event}} reason optional reason for selection change
      */
     CodeHintList.prototype._setSelectedIndex = function (index, reason) {
-        var items = this.$hintMenu.find("li");
+        var items = this.$hintMenu.find("li.code-hints-list-item");
 
         // Range check
         index = Math.max(-1, Math.min(index, items.length - 1));
 
-        // Clear old highlight
-        if (this.selectedIndex !== -1) {
-            $(items[this.selectedIndex]).find("a").removeClass("highlight");
+        // Track whether the user has actively navigated (arrow keys) since the current query was
+        // issued. Used by update() to decide whether to preserve the selection across an async
+        // rebuild (preserve only if the user navigated; otherwise pick the best match).
+        if (reason && reason.source === SELECTION_REASON.KEYBOARD_NAV) {
+            this._userNavigated = true;
         }
+
+        // Clear old highlight. Clear ALL highlighted items (not just items[selectedIndex]) so a
+        // single-selection invariant is always enforced - the index can get out of sync with the
+        // DOM when the list is rebuilt by async providers, which would otherwise leave multiple
+        // rows looking selected.
+        items.find("a.highlight").removeClass("highlight");
 
         this.selectedIndex = index;
 
@@ -215,7 +223,7 @@ define(function (require, exports, module) {
         }
 
         // clear the list
-        this.$hintMenu.find("li").remove();
+        this.$hintMenu.find("li.code-hints-list-item").remove();
 
         // if there are no hints then close the list; otherwise add them and
         // set the selection
@@ -392,7 +400,7 @@ define(function (require, exports, module) {
         // Calculate the number of items per scroll page.
         function _itemsPerPage() {
             var itemsPerPage = 1,
-                $items = self.$hintMenu.find("li"),
+                $items = self.$hintMenu.find("li.code-hints-list-item"),
                 $view = self.$hintMenu.find("ul.dropdown-menu"),
                 itemHeight;
 
@@ -465,7 +473,7 @@ define(function (require, exports, module) {
                 }
 
                 // Trigger a click handler to commmit the selected item
-                $(this.$hintMenu.find("li")[this.selectedIndex]).trigger("click");
+                $(this.$hintMenu.find("li.code-hints-list-item")[this.selectedIndex]).trigger("click");
             } else {
                 // Let the event bubble.
                 return false;
@@ -528,7 +536,33 @@ define(function (require, exports, module) {
      */
     CodeHintList.prototype.update = function (hintObj) {
         this.$hintMenu.addClass("apply-transition");
+
+        // Preserve the user's current selection across the rebuild ONLY if they actively navigated
+        // since this query was issued. Without the guard, plain typing (a new query) would keep a
+        // stale selection instead of selecting the best match; with it, a late async response that
+        // arrives while the user is arrow-navigating won't reset their position.
+        var prevText = null;
+        if (this._userNavigated && this.selectedIndex >= 0) {
+            var $prevSel = this.$hintMenu.find("li.code-hints-list-item").eq(this.selectedIndex).find(".brackets-hints").first();
+            if ($prevSel.length) {
+                prevText = $prevSel.text();
+            }
+        }
+
         this._buildListView(hintObj);
+
+        if (prevText) {
+            var matchIndex = -1;
+            this.$hintMenu.find("li.code-hints-list-item").each(function (i, li) {
+                if ($(li).find(".brackets-hints").first().text() === prevText) {
+                    matchIndex = i;
+                    return false;
+                }
+            });
+            if (matchIndex >= 0) {
+                this._setSelectedIndex(matchIndex);
+            }
+        }
 
         // Update the CodeHintList location
         if (this.hints.length) {

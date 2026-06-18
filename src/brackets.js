@@ -211,13 +211,8 @@ define(function (require, exports, module) {
     require("JSUtils/Session");
     require("JSUtils/ScopeManager");
 
-    //load Language Tools Module
-    require("languageTools/PathConverters");
-    require("languageTools/LanguageTools");
-    require("languageTools/ClientLoader");
-    require("languageTools/BracketsToNodeInterface");
-    require("languageTools/DefaultProviders");
-    require("languageTools/DefaultEventHandlers");
+    // Language Tools (LSP) are desktop-only and loaded lazily by languageTools/LSPClient the
+    // first time a language server is started, so they are intentionally not required at boot.
 
     // web workers
     require("worker/IndexingWorker");
