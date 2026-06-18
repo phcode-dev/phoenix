@@ -1734,9 +1734,6 @@ define({
     "DESCRIPTION_PHP_TOOLING_CONFIGURATION": "PHP Tooling default configuration settings",
     "OPEN_PREFERENNCES": "Open Preferences",
 
-    //Strings for LanguageTools Preferences
-    "LANGUAGE_TOOLS_PREFERENCES": "Preferences for Language Tools",
-
     "FIND_ALL_REFERENCES": "Find All References",
     "REFERENCES_IN_FILES": "references",
     "REFERENCE_IN_FILES": "reference",
