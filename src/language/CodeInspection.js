@@ -365,7 +365,7 @@ define(function (require, exports, module) {
      * @param {boolean} aborted - true if any provider returned a result with the 'aborted' flag set
      * @param fileName
      */
-    function updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted, fileName) {
+    function updatePanelTitleAndStatusBar(numProblems, numInfos, providersReportingProblems, aborted, fileName) {
         $fixAllBtn.addClass("forced-hidden");
         var message, tooltip;
 
@@ -403,6 +403,12 @@ define(function (require, exports, module) {
                 StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, numProblems, fileName);
         } else {
             return;
+        }
+
+        // Info-level diagnostics (e.g. LSP suggestions) are shown as rows but aren't "problems";
+        // surface their count in the title so "0 Problems" never sits above a visible info row.
+        if (numInfos > 0) {
+            message = StringUtils.format(Strings.ERRORS_PANEL_TITLE_INFO_SUFFIX, message, numInfos);
         }
 
         $problemsPanel.find(".title").text(message);
@@ -762,6 +768,7 @@ define(function (require, exports, module) {
 
         if (providerList && providerList.length) {
             let numProblems = 0,
+                numInfos = 0,
                 aborted = false,
                 allErrors = [],
                 html,
@@ -825,7 +832,9 @@ define(function (require, exports, module) {
                                 error.codeSnippet = error.codeSnippet.substr(0, 175);  // limit snippet width
                             }
 
-                            if (error.type !== Type.META) {
+                            if (error.type === Type.META) {
+                                numInfos++;
+                            } else {
                                 numProblems++;
                             }
 
@@ -860,7 +869,7 @@ define(function (require, exports, module) {
                     .empty()
                     .append(html);  // otherwise scroll pos from previous contents is remembered
 
-                updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted,
+                updatePanelTitleAndStatusBar(numProblems, numInfos, providersReportingProblems, aborted,
                     path.basename(fullFilePath));
                 setGotoEnabled(true);
 
