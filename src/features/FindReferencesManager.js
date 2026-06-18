@@ -36,10 +36,21 @@ define(function (require, exports, module) {
         Strings                     = require("strings");
 
     var _providerRegistrationHandler = new ProviderRegistrationHandler(),
-        registerFindReferencesProvider = _providerRegistrationHandler.registerProvider.bind(
-            _providerRegistrationHandler
-        ),
         removeFindReferencesProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
+
+    /**
+     * Register a find-references provider. The command's enabled state is normally computed on file
+     * switch; a provider can register *after* the active file is already open (e.g. an LSP server
+     * that starts asynchronously at app launch), so re-evaluate the menu state here too - otherwise
+     * "Find All References" stays disabled until the user switches files.
+     * @param {Object} providerInfo
+     * @param {Array<string>} languageIds
+     * @param {?number} priority
+     */
+    function registerFindReferencesProvider(providerInfo, languageIds, priority) {
+        _providerRegistrationHandler.registerProvider(providerInfo, languageIds, priority);
+        setMenuItemStateForLanguage();
+    }
 
     var searchModel = new SearchModel(),
         _resultsView;

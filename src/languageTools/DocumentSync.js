@@ -191,7 +191,17 @@ define(function (require, exports, module) {
      * @param {Object} client - a LanguageClient
      */
     function openSupportedDocuments(client) {
-        DocumentManager.getAllOpenDocuments().forEach(function (doc) {
+        const docs = DocumentManager.getAllOpenDocuments().slice();
+        // Belt-and-suspenders: the file the user is actually looking at - e.g. a session-restored
+        // document at app start - may not yet appear in getAllOpenDocuments() at the moment the
+        // server finishes starting. Include the active editor's document explicitly so it is synced
+        // immediately, instead of only after the next file switch (which is what triggered the
+        // activeEditorChange safety net before).
+        const activeEditor = EditorManager.getActiveEditor();
+        if (activeEditor && activeEditor.document && docs.indexOf(activeEditor.document) === -1) {
+            docs.push(activeEditor.document);
+        }
+        docs.forEach(function (doc) {
             if (_isSupported(client, doc)) {
                 // Always (re)send didOpen with the current content. This is called right after a
                 // server (re)start, so any prior tracking is stale and must not be trusted - e.g.
