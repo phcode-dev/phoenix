@@ -656,6 +656,12 @@ define(function (require, exports, module) {
         try {
             await _startAndInit(client);
             DocumentSync.openSupportedDocuments(client);
+            // The find-references command's enabled state is computed on file switch; on a project
+            // switch that happens while the server is still restarting (capabilities not yet
+            // available), so it would be left disabled. Now that the server is back with its
+            // capabilities, refresh it for the active file so "Find Usages" works without requiring
+            // another file switch.
+            FindReferencesManager.setMenuItemStateForLanguage();
         } catch (err) {
             console.error("[LSP] failed to restart server", serverId, err && (err.message || err));
         }
