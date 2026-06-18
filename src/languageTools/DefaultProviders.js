@@ -31,7 +31,6 @@ define(function (require, exports, module) {
 
     var EditorManager = require('editor/EditorManager'),
         DocumentManager = require('document/DocumentManager'),
-        ExtensionUtils = require("utils/ExtensionUtils"),
         CommandManager = require("command/CommandManager"),
         Commands = require("command/Commands"),
         StringMatch = require("utils/StringMatch"),
@@ -43,7 +42,8 @@ define(function (require, exports, module) {
             preferPrefixMatches: true
         });
 
-    ExtensionUtils.loadStyleSheet(module, "styles/default_provider_style.css");
+    // Provider styles live in src/styles/brackets.less (core stylesheet) now that languageTools is a
+    // core module - no per-extension stylesheet to load.
 
     // ----- LSP code-hint documentation popup ---------------------------------------------------
     // The signature (type) is shown inline in the hint list; the (potentially long) documentation
