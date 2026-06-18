@@ -1004,6 +1004,7 @@ define({
     "ERRORS_NO_FILE": "No File Open",
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",
     "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problems, {1} Fixable - {2}",
+    "ERRORS_PANEL_TITLE_INFO_SUFFIX": "{0} ({1} Info)",
     "SINGLE_ERROR": "1 {0} Problem - {1}",
     "SINGLE_ERROR_FIXABLE": "1 {0} Problem, {1} Fixable - {2}",
     "MULTIPLE_ERRORS": "{0} {1} Problems - {2}",
