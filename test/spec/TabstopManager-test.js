@@ -18,10 +18,11 @@
  *
  */
 
-/*global describe, it, expect*/
+/*global describe, it, expect, afterEach*/
 
 define(function (require, exports, module) {
-    const TabstopManager = require("editor/TabstopManager");
+    const TabstopManager = require("editor/TabstopManager"),
+        SpecRunnerUtils  = require("spec/SpecRunnerUtils");
 
     describe("unit:TabstopManager", function () {
 
@@ -153,6 +154,128 @@ define(function (require, exports, module) {
                     [1, 4, 4],    // inside the parens on line 1
                     [0, 12, 12]   // indented body on line 2
                 ]);
+            });
+        });
+
+        // insertSnippet drives the real editor: text replacement, caret/selection placement and the
+        // marker-backed Tab/Shift-Tab session. Uses a mock editor (a real Editor + CodeMirror), which
+        // runs in the unit category like Editor-test.
+        describe("insertSnippet - editor session", function () {
+            let myDocument, myEditor;
+
+            function createTestEditor(content) {
+                const mocks = SpecRunnerUtils.createMockEditor(content || "", "javascript");
+                myDocument = mocks.doc;
+                myEditor = mocks.editor;
+            }
+
+            // Reach the live Tab-session keymap CodeMirror is using, so we exercise the exact
+            // bindings insertSnippet installed rather than re-implementing navigation here.
+            function sessionKeymap() {
+                return (myEditor._codeMirror.state.keyMaps || []).filter(function (m) {
+                    return m.name === "tabstop-session";
+                })[0];
+            }
+            function pressTab() {
+                sessionKeymap().Tab(myEditor._codeMirror);
+            }
+            function pressShiftTab() {
+                sessionKeymap()["Shift-Tab"](myEditor._codeMirror);
+            }
+
+            const ORIGIN = { line: 0, ch: 0 };
+
+            afterEach(function () {
+                TabstopManager.endSession();   // before destroy so no marker ops run on a dead editor
+                if (myEditor) {
+                    SpecRunnerUtils.destroyMockEditor(myDocument);
+                    myEditor = null;
+                    myDocument = null;
+                }
+            });
+
+            it("should insert plain text and place the caret at the single stop (no session)", function () {
+                createTestEditor("");
+                TabstopManager.insertSnippet(myEditor, "log($1)", ORIGIN, ORIGIN);
+                expect(myDocument.getText()).toBe("log()");
+                const cursor = myEditor.getCursorPos();
+                expect([cursor.line, cursor.ch]).toEqual([0, 4]);
+                expect(myEditor.getSelectedText()).toBe("");
+                expect(TabstopManager.hasActiveSession()).toBe(false);
+            });
+
+            it("should select a single placeholder's default text for type-over", function () {
+                createTestEditor("");
+                TabstopManager.insertSnippet(myEditor, "foo(${1:bar})", ORIGIN, ORIGIN);
+                expect(myDocument.getText()).toBe("foo(bar)");
+                expect(myEditor.getSelectedText()).toBe("bar");
+                expect(TabstopManager.hasActiveSession()).toBe(false);
+            });
+
+            it("should expand the import-completion snippet without a literal $1", function () {
+                createTestEditor("import getfromi");
+                TabstopManager.insertSnippet(myEditor, 'import { getFromIndex$1 } from "./db";',
+                    ORIGIN, { line: 0, ch: 15 });
+                expect(myDocument.getText()).toBe('import { getFromIndex } from "./db";');
+                const cursor = myEditor.getCursorPos();
+                expect([cursor.line, cursor.ch]).toEqual([0, 21]); // right after getFromIndex
+                expect(TabstopManager.hasActiveSession()).toBe(false);
+            });
+
+            it("should start a session and navigate stops with Tab, ending at $0", function () {
+                createTestEditor("");
+                TabstopManager.insertSnippet(myEditor, "connect(${1:host}, ${2:port})$0", ORIGIN, ORIGIN);
+                expect(myDocument.getText()).toBe("connect(host, port)");
+                expect(myEditor.getSelectedText()).toBe("host");
+                expect(TabstopManager.hasActiveSession()).toBe(true);
+
+                pressTab();
+                expect(myEditor.getSelectedText()).toBe("port");
+                expect(TabstopManager.hasActiveSession()).toBe(true);
+
+                pressTab();
+                // landed on $0 (end of text) - caret only, session ends
+                const cursor = myEditor.getCursorPos();
+                expect([cursor.line, cursor.ch]).toEqual([0, 19]);
+                expect(myEditor.getSelectedText()).toBe("");
+                expect(TabstopManager.hasActiveSession()).toBe(false);
+            });
+
+            it("should navigate backwards with Shift-Tab", function () {
+                createTestEditor("");
+                TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                expect(myEditor.getSelectedText()).toBe("a");
+                pressTab();
+                expect(myEditor.getSelectedText()).toBe("b");
+                pressShiftTab();
+                expect(myEditor.getSelectedText()).toBe("a");
+                expect(TabstopManager.hasActiveSession()).toBe(true);
+            });
+
+            it("should end the session on Esc", function () {
+                createTestEditor("");
+                TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b}", ORIGIN, ORIGIN);
+                expect(TabstopManager.hasActiveSession()).toBe(true);
+                sessionKeymap().Esc(myEditor._codeMirror);
+                expect(TabstopManager.hasActiveSession()).toBe(false);
+            });
+
+            it("should keep stops correct when text is inserted above (markers follow edits)", function () {
+                createTestEditor("");
+                TabstopManager.insertSnippet(myEditor, "fn(${1:a}, ${2:b})", ORIGIN, ORIGIN);
+                expect(myEditor.getSelectedText()).toBe("a");
+                // Simulate an auto-import line being added above the snippet after insertion.
+                myEditor.document.replaceRange("import x;\n", ORIGIN);
+                pressTab();
+                const sel = myEditor.getSelection();
+                expect(myEditor.getSelectedText()).toBe("b");
+                expect(sel.start.line).toBe(1);   // snippet now lives on line 1
+            });
+
+            it("should replace the given range, not just insert at the cursor", function () {
+                createTestEditor("foo.barbaz");
+                TabstopManager.insertSnippet(myEditor, "log($1)", { line: 0, ch: 4 }, { line: 0, ch: 7 });
+                expect(myDocument.getText()).toBe("foo.log()baz");
             });
         });
     });
