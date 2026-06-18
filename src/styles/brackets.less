@@ -2193,6 +2193,29 @@ a, img {
         }
     }
 
+    // highlight.js token colours for the signature block. The app's global hljs theme is
+    // github-dark (locked, for the always-dark sidebar); override it within the hover so the
+    // signature reads well on the light theme too. The chip background follows the editor theme,
+    // so we use a GitHub-light palette in light mode and a GitHub-dark palette in dark mode.
+    pre code.hljs { background: none; }
+    .hljs-keyword, .hljs-literal, .hljs-doctag, .hljs-meta .hljs-keyword { color: #cf222e; }
+    .hljs-string, .hljs-regexp, .hljs-meta-string { color: #0a3069; }
+    .hljs-title, .hljs-title.function_, .hljs-title.class_, .hljs-section { color: #6639ba; }
+    .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #953800; }
+    .hljs-number, .hljs-symbol, .hljs-bullet { color: #0550ae; }
+    .hljs-attr, .hljs-attribute, .hljs-property, .hljs-variable, .hljs-params { color: @bc-text-emphasized; }
+    .hljs-comment, .hljs-quote, .hljs-meta { color: #6e7781; }
+
+    .dark & {
+        .hljs-keyword, .hljs-literal, .hljs-doctag, .hljs-meta .hljs-keyword { color: #ff7b72; }
+        .hljs-string, .hljs-regexp, .hljs-meta-string { color: #a5d6ff; }
+        .hljs-title, .hljs-title.function_, .hljs-title.class_, .hljs-section { color: #d2a8ff; }
+        .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #ffa657; }
+        .hljs-number, .hljs-symbol, .hljs-bullet { color: #79c0ff; }
+        .hljs-attr, .hljs-attribute, .hljs-property, .hljs-variable, .hljs-params { color: @dark-bc-text-emphasized; }
+        .hljs-comment, .hljs-quote, .hljs-meta { color: #8b949e; }
+    }
+
     // Inline code: parameter names, types, identifiers.
     code {
         font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;

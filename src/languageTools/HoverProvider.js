@@ -61,13 +61,38 @@ define(function (require, exports, module) {
         return contents.value || "";
     }
 
+    // Syntax-highlight the fenced code blocks (the type/function signature) using the globally
+    // available highlight.js, so the signature reads like code instead of flat monospace. The app
+    // ships the github-dark hljs theme, so the signature block is rendered on a dark chip in both
+    // light and dark editor themes (see .lsp-hover-quickview pre in brackets.less).
+    function _highlightCode(html) {
+        const hljs = (typeof Phoenix !== "undefined") && Phoenix.libs && Phoenix.libs.hljs;
+        if (!hljs) {
+            return html;
+        }
+        const $wrap = $("<div>").html(html);
+        $wrap.find("pre > code").each(function () {
+            const $code = $(this);
+            const match = ($code.attr("class") || "").match(/language-([\w-]+)/);
+            const lang = match && match[1];
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    $code.html(hljs.highlight($code.text(), { language: lang }).value).addClass("hljs");
+                } catch (e) {
+                    // leave the block unhighlighted on any hljs error
+                }
+            }
+        });
+        return $wrap.html();
+    }
+
     function _renderContents(contents) {
         const markdown = _contentsToMarkdown(contents);
         if (!markdown || !markdown.trim()) {
             return null;
         }
         try {
-            return marked.parse(markdown);
+            return _highlightCode(marked.parse(markdown));
         } catch (e) {
             return null;
         }
