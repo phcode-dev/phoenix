@@ -23,6 +23,7 @@
         "@anthropic-ai/claude-agent-sdk": "^0.2.126",
         "@expo/sudo-prompt": "^9.3.2",
         "@phcode/fs": "^4.0.2",
+        "@vtsls/language-server": "^0.3.0",
         "cross-spawn": "^7.0.6",
         "lmdb": "^3.5.1",
         "mime-types": "^2.1.35",

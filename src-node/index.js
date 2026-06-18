@@ -70,6 +70,9 @@ require("./test-connection");
 require("./utils");
 require("./terminal");
 require("./git/cli");
+// Note: "./lsp-client" is intentionally NOT required here. It is lazy-loaded on demand the
+// first time the desktop LSP client is used (via NodeUtils._loadNodeExtensionModule), so the
+// LSP framework adds nothing to node boot time. See src/languageTools/LSPClient.js.
 require("./claude-code-agent");
 function randomNonce(byteLength) {
     const randomBuffer = new Uint8Array(byteLength);

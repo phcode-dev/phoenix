@@ -450,6 +450,12 @@ define(function (require, exports, module) {
             return hintList.callMoveUp(callMoveUpEvent);
         }
 
+        // A new query is being issued; clear the "user navigated" flag so the upcoming (possibly
+        // async) result selects the best match, unless the user navigates again before it arrives.
+        if (hintList) {
+            hintList._userNavigated = false;
+        }
+
         var response = null;
 
         // Get hints from regular provider if available
@@ -538,6 +544,13 @@ define(function (require, exports, module) {
 
         if (!codeHintsEnabled) {
             return;
+        }
+
+        // Foolproof: never allow two concurrent hint lists. If a session somehow still exists,
+        // close it (removing its menu + global keydown hook) before starting a new one. Otherwise
+        // the old list would leak and both would react to Up/Down/Enter.
+        if (hintList) {
+            _endSession();
         }
 
         // Don't start a session if we have a multiple selection.

@@ -2142,6 +2142,227 @@ a, img {
     }
 }
 
+// LSP hover documentation (rendered inside #quick-view-container)
+.lsp-hover-quickview {
+    text-align: left;
+    max-width: 520px;
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px 4px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: @bc-text;
+    word-wrap: break-word;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+
+    // First block is the function/type signature (a ```ts``` fence): the visual focal point.
+    pre {
+        margin: 0 0 9px 0;
+        padding: 8px 11px;
+        background: @bc-panel-bg-alt;
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        border-radius: 6px;
+        overflow-x: auto;
+        white-space: pre;
+
+        .dark & {
+            background: #1c1c1c;
+            border-color: rgba(255, 255, 255, 0.09);
+        }
+    }
+
+    pre code {
+        font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        color: @bc-text-emphasized;
+        background: none;
+        padding: 0;
+        border: 0;
+
+        .dark & {
+            color: @dark-bc-text-emphasized;
+        }
+    }
+
+    // Inline code: parameter names, types, identifiers.
+    code {
+        font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 11.5px;
+        padding: 1px 5px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.06);
+        color: @bc-text-emphasized;
+
+        .dark & {
+            background: rgba(255, 255, 255, 0.08);
+            color: @dark-bc-text-emphasized;
+        }
+    }
+
+    p {
+        margin: 6px 0;
+    }
+    p:first-of-type {
+        margin-top: 0;
+    }
+    p:last-child {
+        margin-bottom: 0;
+    }
+
+    // JSDoc tags (@param, @returns, ...) arrive as emphasis - present them as crisp accent labels.
+    em {
+        font-style: normal;
+        font-weight: 600;
+        color: @bc-text-link;
+
+        .dark & {
+            color: @dark-bc-text-link;
+        }
+    }
+
+    strong {
+        font-weight: 600;
+        color: @bc-text-emphasized;
+        .dark & {
+            color: @dark-bc-text-emphasized;
+        }
+    }
+
+    a {
+        color: @bc-text-link;
+        text-decoration: none;
+        .dark & {
+            color: @dark-bc-text-link;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    // Separator between signature/sections (rendered from markdown `---`).
+    hr {
+        border: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        margin: 9px 0;
+        .dark & {
+            border-top-color: rgba(255, 255, 255, 0.08);
+        }
+    }
+
+    ul, ol {
+        margin: 5px 0;
+        padding-left: 18px;
+    }
+    li {
+        margin: 2px 0;
+    }
+
+    // Slim, unobtrusive scrollbar that matches both themes.
+    &::-webkit-scrollbar {
+        width: 9px;
+        height: 9px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.18);
+        border-radius: 5px;
+        .dark & {
+            background: rgba(255, 255, 255, 0.18);
+        }
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}
+
+// LSP code-hint documentation popup (shown beside the code hint list)
+.lsp-hint-doc-popup {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    box-sizing: border-box;
+    width: 360px;
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    word-wrap: break-word;
+
+    background: @bc-panel-bg;
+    color: @bc-text;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    box-shadow: 0 4px 15px @bc-shadow-large;
+
+    .dark & {
+        background: @dark-bc-panel-bg;
+        color: @dark-bc-text;
+        border-color: rgba(255, 255, 255, 0.10);
+        box-shadow: 0 4px 15px @dark-bc-shadow-large;
+    }
+
+    p { margin: 6px 0; }
+    p:first-child { margin-top: 0; }
+    p:last-child { margin-bottom: 0; }
+
+    pre {
+        margin: 6px 0;
+        padding: 8px 10px;
+        background: @bc-panel-bg-alt;
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        border-radius: 5px;
+        overflow-x: auto;
+        white-space: pre;
+        .dark & {
+            background: #1c1c1c;
+            border-color: rgba(255, 255, 255, 0.09);
+        }
+    }
+    pre code {
+        font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 12px;
+        color: @bc-text-emphasized;
+        background: none;
+        padding: 0;
+        .dark & { color: @dark-bc-text-emphasized; }
+    }
+    code {
+        font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 11.5px;
+        padding: 1px 5px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.06);
+        color: @bc-text-emphasized;
+        .dark & {
+            background: rgba(255, 255, 255, 0.08);
+            color: @dark-bc-text-emphasized;
+        }
+    }
+    em { font-style: normal; font-weight: 600; color: @bc-text-link; .dark & { color: @dark-bc-text-link; } }
+    a { color: @bc-text-link; text-decoration: none; .dark & { color: @dark-bc-text-link; } }
+    a:hover { text-decoration: underline; }
+    hr {
+        border: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        margin: 8px 0;
+        .dark & { border-top-color: rgba(255, 255, 255, 0.08); }
+    }
+    ul, ol { margin: 5px 0; padding-left: 18px; }
+
+    &::-webkit-scrollbar { width: 9px; }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.18); border-radius: 5px;
+        .dark & { background: rgba(255, 255, 255, 0.18); }
+    }
+    &::-webkit-scrollbar-track { background: transparent; }
+}
+
 // selection view
 #selection-view-container {
     display: none;
