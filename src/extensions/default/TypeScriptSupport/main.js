@@ -26,11 +26,14 @@
  * ready) so it never slows down boot. It just declares which languages map to which server and
  * what initialization options vtsls needs.
  */
+/*global path*/
 define(function (require, exports, module) {
 
 
     const AppInit = brackets.getModule("utils/AppInit"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
+        DocumentManager = brackets.getModule("document/DocumentManager"),
+        FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector");
 
     const SERVER_ID = "typescript";
@@ -56,6 +59,120 @@ define(function (require, exports, module) {
             autoUseWorkspaceTsdk: true
         }
     };
+
+    // --- "implicit any" diagnostics gating for plain JavaScript -----------------------------------
+    //
+    // tsserver runs its language service over JS too, and emits the "noImplicitAny" family of
+    // diagnostics - including 7016 "Could not find a declaration file for module ... implicitly has
+    // an 'any' type. Try `npm i --save-dev @types/...`". For a pure-JS developer who never opted
+    // into type-checking, these are noise, so we suppress them for javascript/jsx UNLESS the project
+    // opts into type-checking via `checkJs` (tsconfig/jsconfig) or a per-file `// @ts-check`. This
+    // mirrors how VS Code only surfaces JS type diagnostics once you opt in. Real errors/warnings,
+    // unused-symbol/deprecation hints, and all type *intelligence* (hover/completion) are untouched.
+    const IMPLICIT_ANY_CODES = new Set([
+        7005, 7006, 7008, 7009, 7010, 7011, 7015, 7016, 7017, 7018, 7019,
+        7022, 7023, 7024, 7025, 7026, 7031, 7033, 7034
+    ]);
+    const SUPPRESS_LANGUAGES = ["javascript", "jsx"];
+    const TS_CONFIG_FILES = ["tsconfig.json", "jsconfig.json"];
+
+    // Whether the current project opts into type-checking its JS (compilerOptions.checkJs).
+    let projectChecksJs = false;
+
+    /**
+     * Strip JSONC comments and trailing commas so tsconfig/jsconfig can be JSON.parse'd. Good enough
+     * for reading a flag (does not handle `//` inside string values - rare in these configs).
+     * @param {string} str
+     * @return {string}
+     */
+    function _stripJsonComments(str) {
+        str = str || "";
+        str = str.replace(/\/\*(?:(?!\*\/)[\s\S])*\*\//g, "");  // block comments
+        str = str.replace(/\/\/[^\n\r]*/g, "");                 // line comments
+        str = str.replace(/,(\s*[}\]])/g, "$1");                // trailing commas
+        return str;
+    }
+
+    /**
+     * Read tsconfig.json/jsconfig.json at the project root and resolve whether compilerOptions.checkJs
+     * is enabled. Does not follow `extends` (a project that only inherits checkJs from a base config
+     * is rare; can be added later). Mirrors the simple root-config reads ESLint/JSHint do.
+     * @return {Promise<boolean>}
+     */
+    function _detectProjectCheckJs() {
+        const root = ProjectManager.getProjectRoot();
+        if (!root) {
+            return Promise.resolve(false);
+        }
+        const rootPath = root.fullPath;
+        return Promise.all(TS_CONFIG_FILES.map(function (name) {
+            return new Promise(function (resolve) {
+                FileSystem.getFileForPath(path.join(rootPath, name)).read(function (err, content) {
+                    if (err || !content) {
+                        resolve(false);
+                        return;
+                    }
+                    try {
+                        const cfg = JSON.parse(_stripJsonComments(content));
+                        resolve(!!(cfg && cfg.compilerOptions && cfg.compilerOptions.checkJs));
+                    } catch (e) {
+                        resolve(false);
+                    }
+                });
+            });
+        })).then(function (results) {
+            return results.indexOf(true) !== -1;
+        });
+    }
+
+    function _refreshCheckJs() {
+        const scanningRoot = ProjectManager.getProjectRoot() && ProjectManager.getProjectRoot().fullPath;
+        _detectProjectCheckJs().then(function (checks) {
+            // Ignore a stale result if the project switched while we were reading.
+            const nowRoot = ProjectManager.getProjectRoot() && ProjectManager.getProjectRoot().fullPath;
+            if (scanningRoot === nowRoot) {
+                projectChecksJs = checks;
+            }
+        });
+    }
+
+    /**
+     * True if an open JS file opts into type-checking with a leading `// @ts-check` (and not
+     * `// @ts-nocheck`). Only checks already-open documents - diagnostics are virtually always for
+     * the file being edited.
+     * @param {string} filePath
+     * @return {boolean}
+     */
+    function _fileHasTsCheck(filePath) {
+        const doc = DocumentManager.getOpenDocumentForPath(filePath);
+        if (!doc) {
+            return false;
+        }
+        const head = doc.getText().slice(0, 1000);
+        if (/@ts-nocheck\b/.test(head)) {
+            return false;
+        }
+        return /@ts-check\b/.test(head);
+    }
+
+    /**
+     * Drop "implicit any" diagnostics for plain JS/JSX files that haven't opted into type-checking.
+     * @param {Array<Object>} diagnostics - raw LSP diagnostics
+     * @param {{languageId:string, filePath:string}} ctx
+     * @return {Array<Object>}
+     */
+    function filterDiagnostics(diagnostics, ctx) {
+        if (SUPPRESS_LANGUAGES.indexOf(ctx.languageId) === -1) {
+            return diagnostics; // typescript/tsx (or anything else) - never filtered
+        }
+        if (projectChecksJs || _fileHasTsCheck(ctx.filePath)) {
+            return diagnostics; // opted into typed JS - keep everything
+        }
+        return diagnostics.filter(function (d) {
+            const code = (typeof d.code === "string") ? parseInt(d.code, 10) : d.code;
+            return !IMPLICIT_ANY_CODES.has(code);
+        });
+    }
 
     let registered = false;
     let lspClientPromise = null;
@@ -126,7 +243,8 @@ define(function (require, exports, module) {
             args: ["--stdio"],
             languages: SUPPORTED_LANGUAGES,
             languageIdMap: LANGUAGE_ID_MAP,
-            initializationOptions: INITIALIZATION_OPTIONS
+            initializationOptions: INITIALIZATION_OPTIONS,
+            filterDiagnostics: filterDiagnostics
         });
         if (client) {
             registered = true;
@@ -143,16 +261,29 @@ define(function (require, exports, module) {
         if (!canRun()) {
             return;
         }
+        _refreshCheckJs();
         start().catch(function (err) {
             console.error("[TypeScriptSupport] init failed", err && (err.message || err));
         });
 
-        // Restart the server against the new workspace root when the project changes.
-        ProjectManager.on("projectOpen", function () {
+        // Restart the server against the new workspace root when the project changes, and
+        // re-evaluate whether the new project type-checks its JS.
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, function () {
+            _refreshCheckJs();
             if (registered) {
                 loadLSPClient().then(function (LSPClient) {
                     LSPClient.restartLanguageServer(SERVER_ID);
                 });
+            }
+        });
+
+        // Pick up a tsconfig/jsconfig being added, edited, or removed at the project root.
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, function (_evt, changedPath) {
+            const root = ProjectManager.getProjectRoot();
+            if (root && TS_CONFIG_FILES.some(function (name) {
+                return changedPath === path.join(root.fullPath, name);
+            })) {
+                _refreshCheckJs();
             }
         });
     });
