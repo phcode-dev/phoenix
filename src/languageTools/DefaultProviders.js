@@ -590,9 +590,13 @@ define(function (require, exports, module) {
         // again on every edit - frequently with identical content. Re-running inspection only to
         // render the same problems rebuilds the Problems panel for nothing, which both wastes work
         // and detaches live DOM (e.g. the inline "fix" buttons a user may be clicking). Skip the
-        // re-run when this file's diagnostics are unchanged from what we last surfaced.
+        // re-run when this file's diagnostics are unchanged from what we last surfaced. A file the
+        // server has nothing to say about is first published as an EMPTY set, so treat "never
+        // recorded" as already-empty - that initial empty publish must NOT count as a change, or it
+        // would needlessly rebuild the panel (this was detaching fix buttons mid-click in tests).
         var signature = JSON.stringify(errors),
-            changed = this._lastSignature.get(filePath) !== signature;
+            previous = this._lastSignature.has(filePath) ? this._lastSignature.get(filePath) : "[]",
+            changed = previous !== signature;
         this._lastSignature.set(filePath, signature);
         if (this._validateOnType && changed) {
             var editor = EditorManager.getActiveEditor(),
