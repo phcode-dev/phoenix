@@ -58,6 +58,7 @@ define(function (require, exports, module) {
         HoverProvider           = require("languageTools/HoverProvider"),
         DocumentSync            = require("languageTools/DocumentSync"),
         DocumentHighlight       = require("languageTools/DocumentHighlight"),
+        LanguageManager         = require("language/LanguageManager"),
         CodeHintManager         = require("editor/CodeHintManager"),
         ParameterHintsManager   = require("features/ParameterHintsManager"),
         JumpToDefManager        = require("features/JumpToDefManager"),
@@ -170,9 +171,22 @@ define(function (require, exports, module) {
             const params = data.params || {};
             // Rewrite the URI to a VFS-based URI so the linting provider keys results by the
             // same path CodeInspection uses (editor.document.file._path).
+            const vfsUri = serverUriToVfsUri(params.uri);
+            let diagnostics = params.diagnostics || [];
+            // Let the language config drop diagnostics that don't make sense for a given file
+            // (e.g. TypeScript's "needs a declaration file" suggestions in a plain JS file).
+            const filterFn = client.config && client.config.filterDiagnostics;
+            if (filterFn && diagnostics.length) {
+                const vfsPath = PathConverters.uriToPath(vfsUri);
+                const language = LanguageManager.getLanguageForPath(vfsPath);
+                diagnostics = filterFn(diagnostics, {
+                    languageId: language && language.getId(),
+                    filePath: vfsPath
+                });
+            }
             client.lintingProvider.setInspectionResults({
-                uri: serverUriToVfsUri(params.uri),
-                diagnostics: params.diagnostics || []
+                uri: vfsUri,
+                diagnostics: diagnostics
             });
         }
     }
