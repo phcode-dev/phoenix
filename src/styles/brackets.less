@@ -2146,9 +2146,6 @@ a, img {
 .lsp-hover-quickview {
     text-align: left;
     max-width: 520px;
-    max-height: 320px;
-    overflow-y: auto;
-    overflow-x: hidden;
     padding: 2px 4px;
     font-size: 12.5px;
     line-height: 1.5;
@@ -2157,6 +2154,13 @@ a, img {
 
     .dark & {
         color: @dark-bc-text;
+    }
+
+    // The documentation scrolls; the action footer below it stays pinned and always visible.
+    .lsp-hover-doc {
+        max-height: 320px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     // First block is the function/type signature (a ```ts``` fence): the visual focal point.
@@ -2262,20 +2266,70 @@ a, img {
         margin: 2px 0;
     }
 
-    // Slim, unobtrusive scrollbar that matches both themes.
-    &::-webkit-scrollbar {
+    // Slim, unobtrusive scrollbar on the scrolling doc that matches both themes.
+    .lsp-hover-doc::-webkit-scrollbar {
         width: 9px;
         height: 9px;
     }
-    &::-webkit-scrollbar-thumb {
+    .lsp-hover-doc::-webkit-scrollbar-thumb {
         background: rgba(0, 0, 0, 0.18);
         border-radius: 5px;
         .dark & {
             background: rgba(255, 255, 255, 0.18);
         }
     }
-    &::-webkit-scrollbar-track {
+    .lsp-hover-doc::-webkit-scrollbar-track {
         background: transparent;
+    }
+
+    // Quick actions (Go to Definition / Find Usages) pinned below the documentation.
+    .lsp-hover-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        margin-top: 8px;
+        padding-top: 7px;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        .dark & {
+            border-top-color: rgba(255, 255, 255, 0.08);
+        }
+    }
+    .lsp-hover-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 9px;
+        border-radius: 5px;
+        cursor: pointer;
+        user-select: none;
+        color: @bc-text-link;
+        transition: background-color 0.12s ease;
+
+        .dark & {
+            color: @dark-bc-text-link;
+        }
+        &:hover,
+        &:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.06);
+            .dark & {
+                background: rgba(255, 255, 255, 0.09);
+            }
+        }
+
+        // Push this action to the far right of the row (e.g. Find Usages).
+        &.lsp-hover-action--end {
+            margin-left: auto;
+        }
+
+        .lsp-hover-action-icon {
+            font-size: 11px;
+            opacity: 0.85;
+        }
+        .lsp-hover-action-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
     }
 }
 

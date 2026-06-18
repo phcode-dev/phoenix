@@ -29,7 +29,12 @@ define(function (require, exports, module) {
 
     // Hover styling lives in src/styles/brackets.less (.lsp-hover-quickview) so it tracks the
     // active light/dark theme.
-    const marked = require("thirdparty/marked.min");
+    const marked = require("thirdparty/marked.min"),
+        CommandManager = require("command/CommandManager"),
+        Commands = require("command/Commands"),
+        KeyBindingManager = require("command/KeyBindingManager"),
+        QuickViewManager = require("features/QuickViewManager"),
+        Strings = require("strings");
 
     /**
      * Convert LSP hover `contents` (MarkupContent | MarkedString | string | array of those)
@@ -69,6 +74,61 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Build one clickable action row (icon + label + optional shortcut). Clicking places the cursor
+     * at the hovered position, dismisses the hover popup, then runs the command - so jump/find
+     * operate on the symbol the user hovered, not wherever the cursor happened to be.
+     */
+    function _action(iconClass, label, commandId, editor, pos, alignRight) {
+        const $action = $("<div>").addClass("lsp-hover-action").attr("tabindex", "0");
+        if (alignRight) {
+            $action.addClass("lsp-hover-action--end");
+        }
+        $("<i>").addClass(iconClass + " lsp-hover-action-icon").appendTo($action);
+        $("<span>").addClass("lsp-hover-action-label").text(label).appendTo($action);
+        // The keyboard shortcut is surfaced as a tooltip (not inline) to keep the row compact.
+        const shortcut = KeyBindingManager.getKeyBindingsDisplay(commandId);
+        $action.attr("title", shortcut ? (label + " (" + shortcut + ")") : label);
+        function run(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            QuickViewManager.hideQuickView();
+            editor.setCursorPos(pos.line, pos.ch);
+            editor.focus();
+            CommandManager.execute(commandId);
+        }
+        $action.on("click", run);
+        $action.on("keydown", function (e) {
+            if (e.keyCode === 13 || e.keyCode === 32) { // Enter / Space
+                run(e);
+            }
+        });
+        return $action;
+    }
+
+    /**
+     * Build the action footer (Go to Definition / Find Usages), gated on what the server supports.
+     * @return {?jQuery} the actions element, or null when no action is available.
+     */
+    function _buildActions(client, editor, pos) {
+        const caps = client.getServerCapabilities() || {};
+        const $actions = $("<div>").addClass("lsp-hover-actions");
+        let count = 0;
+        if (caps.definitionProvider) {
+            $actions.append(_action("fa-solid fa-arrow-right", Strings.CMD_JUMPTO_DEFINITION,
+                Commands.NAVIGATE_JUMPTO_DEFINITION, editor, pos));
+            count++;
+        }
+        if (caps.referencesProvider) {
+            $actions.append(_action("fa-solid fa-magnifying-glass", Strings.FIND_ALL_REFERENCES,
+                Commands.CMD_FIND_ALL_REFERENCES, editor, pos, true));
+            count++;
+        }
+        return count ? $actions : null;
+    }
+
+    /**
      * @param {Object} client - a LanguageClient from LSPClient.js
      */
     function HoverProvider(client) {
@@ -98,10 +158,16 @@ define(function (require, exports, module) {
                         start = { line: hover.range.start.line, ch: hover.range.start.character };
                         end = { line: hover.range.end.line, ch: hover.range.end.character };
                     }
+                    const $content = $("<div>").addClass("lsp-hover-quickview");
+                    $("<div>").addClass("lsp-hover-doc").html(html).appendTo($content);
+                    const $actions = _buildActions(self.client, editor, pos);
+                    if ($actions) {
+                        $content.append($actions);
+                    }
                     resolve({
                         start: start,
                         end: end,
-                        content: $("<div>").addClass("lsp-hover-quickview").html(html)
+                        content: $content
                     });
                 })
                 .fail(function () {

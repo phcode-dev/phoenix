@@ -1498,7 +1498,7 @@ define({
     "EDIT": "Edit",
 
     // extensions/default/JavaScriptCodeHints
-    "CMD_JUMPTO_DEFINITION": "Jump to Definition",
+    "CMD_JUMPTO_DEFINITION": "Go to Definition",
     "CMD_SHOW_PARAMETER_HINT": "Show Parameter Hint",
     "NO_ARGUMENTS": "<no parameters>",
     "DETECTED_EXCLUSION_TITLE": "JavaScript File Inference Problem",
@@ -1735,7 +1735,7 @@ define({
     "DESCRIPTION_PHP_TOOLING_CONFIGURATION": "PHP Tooling default configuration settings",
     "OPEN_PREFERENNCES": "Open Preferences",
 
-    "FIND_ALL_REFERENCES": "Find All References",
+    "FIND_ALL_REFERENCES": "Find Usages",
     "REFERENCES_IN_FILES": "references",
     "REFERENCE_IN_FILES": "reference",
     "REFERENCES_NO_RESULTS": "No References available for current cursor position",
