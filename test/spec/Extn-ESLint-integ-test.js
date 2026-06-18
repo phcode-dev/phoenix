@@ -264,8 +264,20 @@ define(function (require, exports, module) {
             it("should not lint jsx file as ESLint v8 is not configured for react lint", async function () {
                 await _openProjectFile("react.jsx");
                 await awaits(100); // Just wait for some time to prevent any false linter runs
-                await _waitForProblemsPanelVisible(false);
-                expect($("#status-inspection").hasClass("inspection-disabled")).toBeTrue();
+                if (window.Phoenix.isNativeApp) {
+                    // On desktop the LSP server (vtsls) provides JavaScript/JSX diagnostics, so a .jsx
+                    // file IS linted by the LSP even though ESLint v8 is not configured for react -
+                    // the inspector is active (not disabled). ESLint itself still contributes nothing.
+                    await awaitsFor(()=>{
+                        return !$("#status-inspection").hasClass("inspection-disabled");
+                    }, "jsx inspection to be active via the LSP", 15000);
+                    expect($("#status-inspection").hasClass("inspection-disabled")).toBeFalse();
+                } else {
+                    // In the browser build there is no LSP, and ESLint v8 declines jsx, so nothing
+                    // lints the file - the inspector is disabled.
+                    await _waitForProblemsPanelVisible(false);
+                    expect($("#status-inspection").hasClass("inspection-disabled")).toBeTrue();
+                }
             }, 30000);
 
             it("should not show JSHint in desktop app if ESLint is active", async function () {

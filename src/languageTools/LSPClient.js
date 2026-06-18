@@ -550,6 +550,9 @@ define(function (require, exports, module) {
         client.references = new DefaultProviders.ReferencesProvider(client);
         client.lintingProvider = new DefaultProviders.LintingProvider();
         client.lintingProvider._validateOnType = true;
+        // Record the CodeInspection registration name so the provider can tell whether it is
+        // still a participating inspector before nudging a re-run on async diagnostics.
+        client.lintingProvider._inspectionProviderName = client.serverId + " (LSP)";
         client.hover = new HoverProvider.HoverProvider(client);
 
         CodeHintManager.registerHintProvider(client.codeHints, langs, DEFAULT_PRIORITY);
@@ -560,7 +563,7 @@ define(function (require, exports, module) {
 
         langs.forEach(function (lang) {
             CodeInspection.register(lang, {
-                name: client.serverId + " (LSP)",
+                name: client.lintingProvider._inspectionProviderName,
                 scanFileAsync: function (text, fullPath) {
                     // Diagnostics are pushed asynchronously by the server (publishDiagnostics),
                     // so never block the scan waiting for them - return whatever is cached now and

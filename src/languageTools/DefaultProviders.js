@@ -484,13 +484,17 @@ define(function (require, exports, module) {
     /**
      * Method to handle jump to definition feature.
      */
-    JumpToDefProvider.prototype.doJumpToDef = function () {
-        if (!this.client) {
+    JumpToDefProvider.prototype.doJumpToDef = function (editor) {
+        // JumpToDefManager passes the active editor; prefer it. Fall back to the focused/active
+        // editor only if called without one. getFocusedEditor() alone is unreliable - it returns
+        // null whenever the editor does not currently hold DOM focus (e.g. jump invoked from a
+        // menu/command, or in tests), which previously crashed here on a null editor.
+        editor = editor || EditorManager.getFocusedEditor() || EditorManager.getActiveEditor();
+        if (!this.client || !editor) {
             return null;
         }
 
-        var editor = EditorManager.getFocusedEditor(),
-            pos = editor.getCursorPos(),
+        const pos = editor.getCursorPos(),
             docPath = editor.document.file._path,
             docPathUri = PathConverters.pathToUri(docPath),
             $deferredHints = $.Deferred();
@@ -534,6 +538,7 @@ define(function (require, exports, module) {
     function LintingProvider() {
         this._results = new Map();
         this._promiseMap = new Map();
+        this._lastSignature = new Map();
         this._validateOnType = false;
     }
 
@@ -545,10 +550,12 @@ define(function (require, exports, module) {
         if (filePathProvided) {
             this._results.delete(filePath);
             this._promiseMap.delete(filePath);
+            this._lastSignature.delete(filePath);
         } else {
             //clear all results
             this._results.clear();
             this._promiseMap.clear();
+            this._lastSignature.clear();
         }
     };
 
@@ -579,13 +586,43 @@ define(function (require, exports, module) {
            this._promiseMap.get(filePath).resolve(this._results.get(filePath));
            this._promiseMap.delete(filePath);
         }
-        if (this._validateOnType) {
+        // Language servers re-publish diagnostics in waves (e.g. syntax then semantic passes) and
+        // again on every edit - frequently with identical content. Re-running inspection only to
+        // render the same problems rebuilds the Problems panel for nothing, which both wastes work
+        // and detaches live DOM (e.g. the inline "fix" buttons a user may be clicking). Skip the
+        // re-run when this file's diagnostics are unchanged from what we last surfaced.
+        var signature = JSON.stringify(errors),
+            changed = this._lastSignature.get(filePath) !== signature;
+        this._lastSignature.set(filePath, signature);
+        if (this._validateOnType && changed) {
             var editor = EditorManager.getActiveEditor(),
                 docPath = editor ? editor.document.file._path : "";
-            if (filePath === docPath) {
+            // Only nudge CodeInspection to re-pull when this LSP inspector is actually a
+            // registered provider for the active file. In the app it always is, so behaviour
+            // is unchanged. But tests that take manual control of the inspection pipeline call
+            // CodeInspection._unregisterAll() and choreograph their own (mock) linters; a stray
+            // requestRun() fired by the live server's async diagnostics would restart those
+            // carefully-timed runs and flake the results.
+            if (filePath === docPath && this._isRegisteredInspector(docPath)) {
                 CodeInspection.requestRun();
             }
         }
+    };
+
+    /**
+     * @private
+     * @param {string} filePath - active document path
+     * @return {boolean} true if this provider's CodeInspection registration is still active for
+     *      the file (or if no registration name was recorded, preserving legacy behaviour).
+     */
+    LintingProvider.prototype._isRegisteredInspector = function (filePath) {
+        if (!this._inspectionProviderName) {
+            return true;
+        }
+        var name = this._inspectionProviderName;
+        return CodeInspection.getProvidersForPath(filePath).some(function (provider) {
+            return provider.name === name;
+        });
     };
 
     LintingProvider.prototype.getInspectionResultsAsync = function (fileText, filePath) {
