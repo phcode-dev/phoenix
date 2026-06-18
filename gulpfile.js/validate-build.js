@@ -35,9 +35,12 @@ const LARGE_FILE_LIST_DEV = {
 // Size limits for production/staging builds (in MB)
 const PROD_MAX_FILE_SIZE_MB = 2;
 const PROD_MAX_TOTAL_SIZE_MB = 80;
-// Custom size limits for known large files (size in MB) For staging/production builds
+// Custom size limits for known large files (size in MB) For staging/production builds.
+// Margin policy: keep ~1 MB of headroom over a file's current size for individual files (and ~5 MB
+// for the aggregate/total). Bump a limit only enough to restore that margin when a file legitimately
+// grows - don't pad it large, so unexpected size jumps still get caught.
 const LARGE_FILE_LIST_PROD = {
-    'dist/brackets.js': 10, // this is the full minified file itself renamed in prod
+    'dist/brackets.js': 11, // this is the full minified file itself renamed in prod (~10 MB + 1 MB margin)
     'dist/phoenix/virtualfs.js.map': 3
 };
 
