@@ -794,4 +794,5 @@ define(function (require, exports, module) {
     exports.isQuickViewShown = isQuickViewShown;
     exports.lockQuickView = lockQuickView;
     exports.unlockQuickView = unlockQuickView;
+    exports.hideQuickView = hidePreview;
 });
