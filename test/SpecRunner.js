@@ -281,11 +281,7 @@ define(function (require, exports, module) {
 
     //load Language Tools Module
     require("languageTools/PathConverters");
-    require("languageTools/LanguageTools");
-    require("languageTools/ClientLoader");
-    require("languageTools/BracketsToNodeInterface");
     require("languageTools/DefaultProviders");
-    require("languageTools/DefaultEventHandlers");
 
 	//load language features
     require("features/ParameterHintsManager");
