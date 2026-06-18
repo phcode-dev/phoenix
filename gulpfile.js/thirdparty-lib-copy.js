@@ -265,7 +265,10 @@ let copyThirdPartyLibs = series(
         'addon-webgl.js', 'src/thirdparty/xterm'),
     renameFile.bind(renameFile, 'node_modules/@xterm/addon-webgl/lib/addon-webgl.js.map',
         'addon-webgl.js.map', 'src/thirdparty/xterm'),
-    copyLicence.bind(copyLicence, 'node_modules/@xterm/xterm/LICENSE', 'xterm')
+    copyLicence.bind(copyLicence, 'node_modules/@xterm/xterm/LICENSE', 'xterm'),
+    // vtsls language server (bundled in src-node for desktop LSP) + its bundled typescript
+    copyLicence.bind(copyLicence, 'src-node/node_modules/@vtsls/language-server/LICENSE', 'vtsls'),
+    copyLicence.bind(copyLicence, 'src-node/node_modules/typescript/LICENSE.txt', 'typescript')
 
 );
 
