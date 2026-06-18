@@ -34,7 +34,8 @@ define(function (require, exports, module) {
             EditorManager,
             CommandManager,
             Commands,
-            CodeInspection;
+            CodeInspection,
+            QuickViewManager;
 
         // The LSP runs only in the desktop app (it spawns the vtsls Node process), so these tests
         // are meaningless in the browser build - register a single skipped placeholder and bail.
@@ -52,6 +53,7 @@ define(function (require, exports, module) {
             CommandManager = testWindow.brackets.test.CommandManager;
             Commands = testWindow.brackets.test.Commands;
             CodeInspection = testWindow.brackets.test.CodeInspection;
+            QuickViewManager = testWindow.brackets.getModule("features/QuickViewManager");
             CodeInspection.toggleEnabled(true);
             // Wait until the extension has attempted to start the language server.
             await awaitsFor(function () {
@@ -111,5 +113,77 @@ define(function (require, exports, module) {
             }, "plain JS inspection to settle with no problems", 20000);
             expect(panelText().includes(IMPLICIT_ANY_MESSAGE)).toBe(false);
         }, 30000);
+
+        // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------
+
+        // Query the hover popover at a position the same way QuickViewManager does internally.
+        async function _hoverPopoverAt(editor, line, ch) {
+            const pos = { line: line, ch: ch };
+            const token = editor._codeMirror.getTokenAt(pos, true);
+            return QuickViewManager._queryPreviewProviders(editor, pos, token);
+        }
+
+        // sample.ts/sample.js: greetUser is declared on line 1 and called on lines 5 and 6. Each
+        // lives in its own project folder so the (identically named) symbols don't collide in the
+        // server's inferred project.
+        const DECL_LINE = 1, CALL_LINE = 5, CALL_CH = 4;
+
+        [{ ext: "ts", folder: "hover-ts/", file: "sample.ts" },
+            { ext: "js", folder: "hover-js/", file: "sample.js" }].forEach(function (tc) {
+
+            it("hover shows quick actions and Go to Definition navigates (" + tc.ext + ")", async function () {
+                await _openInProject(tc.folder, tc.file);
+                const editor = EditorManager.getCurrentFullEditor();
+                let popover = null;
+                await awaitsFor(async function () {
+                    popover = await _hoverPopoverAt(editor, CALL_LINE, CALL_CH);
+                    return !!(popover && popover.content && popover.content.find(".lsp-hover-action").length === 2);
+                }, "hover quick actions to appear", 20000);
+
+                const labels = popover.content.find(".lsp-hover-action-label").map(function () {
+                    return $(this).text();
+                }).get();
+                expect(labels).toEqual(["Go to Definition", "Find Usages"]);
+
+                // Click "Go to Definition" to jump from the call (line 5) to the declaration (line 1).
+                // Re-click through the hover until it takes effect - the server may still be indexing
+                // right after the project (re)opened, so an early click can be a no-op.
+                await awaitsFor(async function () {
+                    if (EditorManager.getCurrentFullEditor().getCursorPos().line === DECL_LINE) {
+                        return true;
+                    }
+                    const pop = await _hoverPopoverAt(editor, CALL_LINE, CALL_CH);
+                    const $act = pop && pop.content && pop.content.find(".lsp-hover-action").eq(0);
+                    if ($act && $act.length) {
+                        $act.trigger("click");
+                    }
+                    return EditorManager.getCurrentFullEditor().getCursorPos().line === DECL_LINE;
+                }, "Go to Definition to navigate to the declaration", 25000);
+                expect(EditorManager.getCurrentFullEditor().getCursorPos().line).toBe(DECL_LINE);
+            }, 40000);
+
+            it("hover Find Usages opens the references panel (" + tc.ext + ")", async function () {
+                await _openInProject(tc.folder, tc.file);
+                const editor = EditorManager.getCurrentFullEditor();
+                await awaitsFor(async function () {
+                    return !!(await _hoverPopoverAt(editor, CALL_LINE, CALL_CH));
+                }, "hover popover to be available", 20000);
+
+                // "Find Usages" is the right-aligned action; clicking it opens the references panel.
+                // Retry through the hover until the panel opens (the server may still be indexing).
+                await awaitsFor(async function () {
+                    if ($("#reference-in-files-results").is(":visible")) {
+                        return true;
+                    }
+                    const pop = await _hoverPopoverAt(editor, CALL_LINE, CALL_CH);
+                    const $end = pop && pop.content && pop.content.find(".lsp-hover-action--end");
+                    if ($end && $end.length) {
+                        $end.trigger("click");
+                    }
+                    return $("#reference-in-files-results").is(":visible");
+                }, "references panel to open", 25000);
+                expect($("#reference-in-files-results").is(":visible")).toBe(true);
+            }, 40000);
+        });
     });
 });
