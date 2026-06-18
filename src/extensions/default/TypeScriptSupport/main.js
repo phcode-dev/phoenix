@@ -264,6 +264,9 @@ define(function (require, exports, module) {
         _refreshCheckJs();
         start().catch(function (err) {
             console.error("[TypeScriptSupport] init failed", err && (err.message || err));
+        }).finally(function () {
+            // Signal for integration tests that the server start has been attempted/settled.
+            window._TypeScriptSupportReadyToIntegTest = true;
         });
 
         // Restart the server against the new workspace root when the project changes, and
