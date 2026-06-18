@@ -203,10 +203,22 @@ define(function (require, exports, module) {
                 await awaitsForDone(promise, "Jump To Definition");
 
                 selection = myEditor.getSelection();
-                expect(fixSel(selection)).toEql(fixSel({
-                    start: {line: 0, ch: 9},
-                    end: {line: 0, ch: 15}
-                }));
+                if (window.Phoenix.isNativeApp) {
+                    // Desktop has the LSP server (vtsls), which now provides jump-to-definition
+                    // for JavaScript (higher priority than the built-in Tern provider). vtsls
+                    // returns the full declaration range of testMe and we jump to its start
+                    // (the `function` keyword), giving a collapsed cursor at {0,0} - whereas Tern
+                    // selects the identifier name. Both correctly land on the testMe definition.
+                    expect(fixSel(selection)).toEql(fixSel({
+                        start: {line: 0, ch: 0},
+                        end: {line: 0, ch: 0}
+                    }));
+                } else {
+                    expect(fixSel(selection)).toEql(fixSel({
+                        start: {line: 0, ch: 9},
+                        end: {line: 0, ch: 15}
+                    }));
+                }
             });
         });
 

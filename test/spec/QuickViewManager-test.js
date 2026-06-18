@@ -40,6 +40,7 @@ define(function (require, exports, module) {
             editor,
             testFile = "test.css",
             testFileJS = "test.js",
+            testFileHTML = "test.html",
             oldFile;
 
         beforeAll(async function () {
@@ -260,20 +261,26 @@ define(function (require, exports, module) {
                 expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
             });
 
-            it("should register and unregister preview provider for js language", async function () {
-                QuickViewManager.registerQuickViewProvider(provider, ["javascript"]);
+            it("should register and unregister preview provider for a single language", async function () {
+                // This test exercises QuickViewManager's per-language registration (register for one
+                // language vs "all"). It deliberately uses HTML rather than JavaScript: on the desktop
+                // build, JS/TS files also carry the LSP hover provider, whose previews would obscure
+                // what this test checks. HTML is not served by the LSP, so the provider under test is
+                // the only one in play and the assertions hold on both desktop and browser builds.
+                QuickViewManager.registerQuickViewProvider(provider, ["html"]);
 
+                // Open file is CSS (testFile from beforeEach); an html-only provider must not preview.
                 let popoverInfo = await getPopoverAtPos(4, 14);
                 expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
 
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFileJS]), "open test file: " + testFileJS);
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFileHTML]), "open test file: " + testFileHTML);
 
                 popoverInfo = await getPopoverAtPos(4, 14);
                 expect(popoverInfo.content.find("#blinker-fluid").length).toBe(1);
                 expect(line.length > 1).toBeTrue();
                 expect(pos).toEql({ line: 4, ch: 14 });
 
-                QuickViewManager.removeQuickViewProvider(provider, ["javascript"]);
+                QuickViewManager.removeQuickViewProvider(provider, ["html"]);
                 popoverInfo = await getPopoverAtPos(4, 14);
                 expect(popoverInfo).toBe(null);
             });

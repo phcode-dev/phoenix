@@ -88,7 +88,13 @@ define(function (require, exports, module) {
         // Note: these don't request hint results - they only examine hints that might already be open
         function expectNoHints() {
             var codeHintList = CodeHintManager._getCodeHintList();
-            expect(codeHintList).toBeFalsy();
+            // "No hints" means nothing is shown to the user. On the desktop build the LSP provider
+            // (registered at higher priority than the built-in JS hinter) may open a hint session for
+            // contexts the browser hinter suppresses outright - e.g. inside a regular expression - but
+            // vtsls returns zero completions there, so the resulting list is empty and never opened.
+            // So no hints are shown when the list is either absent, or present but closed and empty.
+            var noHintsShown = !codeHintList || (!codeHintList.isOpen() && codeHintList.hints.length === 0);
+            expect(noHintsShown).toBe(true);
         }
 
         function expectSomeHints() {

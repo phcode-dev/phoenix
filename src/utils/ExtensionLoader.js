@@ -166,16 +166,10 @@ define(function (require, exports, module) {
         // we dont load the heavy weight git extension by default for tests as huge number
         // of tests written before git integration and too hard to fix those failing tests for now.
         // we will just have new tests from git specific workflows.
-        // TypeScriptSupport is excluded for the same reason: it spawns a real vtsls language
-        // server and registers global providers (hover/QuickView, linting/CodeInspection,
-        // hints, jump-to-def) for js/jsx/ts/tsx, which breaks pre-existing integration tests
-        // (e.g. QuickView, ESLint) that assume nothing else is registered for those languages.
-        ["Git", "TypeScriptSupport"].forEach(function (extName) {
-            const index = DefaultExtensionsList.indexOf(extName);
-            if(index !== -1) {
-                DefaultExtensionsList.splice(index, 1);
-            }
-        });
+        const index = DefaultExtensionsList.indexOf("Git");
+        if(index !== -1) {
+            DefaultExtensionsList.splice(index, 1);
+        }
     }
 
     const customExtensionLoadPaths = {};
