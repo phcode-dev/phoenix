@@ -339,6 +339,7 @@ define({
     "LIVE_DEV_STYLER_INLINE_STYLE": "Inline",
     "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "directly on the element",
     "LIVE_DEV_STYLER_TARGET_COUNT": "affects {0} on page",
+    "LIVE_DEV_STYLER_TARGET_CREATE": "New rule in {0}",
     "LIVE_DEV_STYLER_NEW_STYLE": "New style…",
     "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "New style",
     "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Adds class \"{0}\" to this element and saves the style in {1}",
