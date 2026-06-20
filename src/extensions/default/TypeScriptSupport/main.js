@@ -283,13 +283,15 @@ define(function (require, exports, module) {
             }
         });
 
-        // Restart the server against the new workspace root when the project changes, and
-        // re-evaluate whether the new project type-checks its JS.
+        // Re-point the server at the new workspace root when the project changes, and re-evaluate
+        // whether the new project type-checks its JS. This uses workspace/didChangeWorkspaceFolders
+        // (no process restart, so no tsserver cold start) and only falls back to a full restart for
+        // servers that don't support live workspace-folder changes.
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, function () {
             _refreshCheckJs();
             if (registered) {
                 loadLSPClient().then(function (LSPClient) {
-                    LSPClient.restartLanguageServer(SERVER_ID);
+                    LSPClient.changeWorkspaceRoot(SERVER_ID);
                 });
             }
         });
