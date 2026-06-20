@@ -34,7 +34,8 @@ define(function (require, exports, module) {
         ProjectManager = brackets.getModule("project/ProjectManager"),
         DocumentManager = brackets.getModule("document/DocumentManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
-        NodeConnector = brackets.getModule("NodeConnector");
+        NodeConnector = brackets.getModule("NodeConnector"),
+        CodeIntelligence = require("./CodeIntelligence");
 
     const SERVER_ID = "typescript";
     const SUPPORTED_LANGUAGES = ["javascript", "typescript", "jsx", "tsx"];
@@ -267,6 +268,19 @@ define(function (require, exports, module) {
         }).finally(function () {
             // Signal for integration tests that the server start has been attempted/settled.
             window._TypeScriptSupportReadyToIntegTest = true;
+        });
+
+        // Offer project-wide code intelligence (creates a default ts/jsconfig) when a JS/TS file is
+        // opened in a project that has no config yet. Projects that already carry one are silent.
+        CodeIntelligence.init({
+            supportedLanguages: SUPPORTED_LANGUAGES,
+            restartServer: function () {
+                if (registered) {
+                    loadLSPClient().then(function (LSPClient) {
+                        LSPClient.restartLanguageServer(SERVER_ID);
+                    });
+                }
+            }
         });
 
         // Restart the server against the new workspace root when the project changes, and

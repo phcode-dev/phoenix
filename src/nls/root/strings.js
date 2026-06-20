@@ -1736,6 +1736,17 @@ define({
     "OPEN_PREFERENNCES": "Open Preferences",
 
     "FIND_ALL_REFERENCES": "Find Usages",
+    // Project-wide code intelligence (TypeScript/JavaScript LSP) - on by default
+    "CODE_INTEL_JS": "JavaScript",
+    "CODE_INTEL_TS": "TypeScript",
+    "CODE_INTEL_ENABLED_TITLE": "{0} Code Intelligence Enabled",
+    "CODE_INTEL_ENABLED_MESSAGE": "Find Usages, Rename, and Go to Definition now work across every file in this project.",
+    "CODE_INTEL_SEE_CONFIG": "See Config",
+    "CODE_INTEL_ENABLE_TS": "Enable TypeScript",
+    "CODE_INTEL_LEARN_MORE": "Learn more",
+    "CODE_INTEL_PANEL_TEXT": "Project-wide code intelligence is off. Enable it for Find Usages, Rename, and Go to Definition across every file — adds a jsconfig.json to the project root.",
+    "CODE_INTEL_PANEL_ENABLE": "Enable",
+    "CODE_INTEL_PANEL_DISMISS": "Dismiss",
     "REFERENCES_IN_FILES": "references",
     "REFERENCE_IN_FILES": "reference",
     "REFERENCES_NO_RESULTS": "No References available for current cursor position",
