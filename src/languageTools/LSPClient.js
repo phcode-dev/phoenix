@@ -539,6 +539,11 @@ define(function (require, exports, module) {
         const rootVfsPath = (config.rootUriProvider && config.rootUriProvider()) || _projectRootPath();
         const rootUri = rootVfsPath ? pathToServerUri(rootVfsPath) : null;
         const rootName = rootVfsPath ? FileUtils.getBaseName(rootVfsPath) : "root";
+        // Remember the active workspace folder so a later project switch can hand the server the
+        // delta (removed old, added new) via workspace/didChangeWorkspaceFolders - see
+        // changeWorkspaceRoot - instead of a full restart.
+        client.rootUri = rootUri;
+        client.rootName = rootName;
 
         await conn.execPeer("startServer", {
             serverId: client.serverId,
@@ -674,6 +679,53 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Re-point a running server at the current project root WITHOUT restarting it, by sending
+     * `workspace/didChangeWorkspaceFolders` (remove the old folder, add the new one). This avoids
+     * the cold start a full restart pays on every project switch. Generic: servers that don't
+     * advertise live workspace-folder change support transparently fall back to a full restart.
+     * The open documents themselves are re-synced by DocumentSync's normal editor-change handling.
+     * @param {string} serverId
+     * @return {Promise<void>}
+     */
+    async function changeWorkspaceRoot(serverId) {
+        const client = clients.get(serverId);
+        if (!client) {
+            return;
+        }
+        // Not up yet (e.g. the project switched before init finished) - a (re)start picks up the
+        // current root on its own.
+        if (!client.capabilities) {
+            return restartLanguageServer(serverId);
+        }
+        const wf = client.capabilities.workspace && client.capabilities.workspace.workspaceFolders;
+        // Per the LSP spec changeNotifications is `boolean | string` (a static flag or a dynamic
+        // registration id); either truthy form means the server accepts live folder changes.
+        const supportsLiveChange = !!(wf && wf.supported && wf.changeNotifications);
+        if (!supportsLiveChange) {
+            return restartLanguageServer(serverId);
+        }
+        const newVfsPath = (client.config.rootUriProvider && client.config.rootUriProvider()) || _projectRootPath();
+        const newUri = newVfsPath ? pathToServerUri(newVfsPath) : null;
+        const oldUri = client.rootUri || null;
+        if (newUri === oldUri) {
+            return; // same workspace - nothing to do
+        }
+        const conn = await getConnector();
+        const added = newUri ? [{ uri: newUri, name: FileUtils.getBaseName(newVfsPath) }] : [];
+        const removed = oldUri ? [{ uri: oldUri, name: client.rootName || FileUtils.getBaseName(oldUri) }] : [];
+        await conn.execPeer("sendNotification", {
+            serverId: serverId,
+            method: "workspace/didChangeWorkspaceFolders",
+            params: { event: { added: added, removed: removed } }
+        });
+        client.rootUri = newUri;
+        client.rootName = newVfsPath ? FileUtils.getBaseName(newVfsPath) : null;
+        // Capabilities are unchanged (no restart), but the active file is now in the new project -
+        // refresh the find-references menu state for that context.
+        FindReferencesManager.setMenuItemStateForLanguage();
+    }
+
     async function restartLanguageServer(serverId) {
         const client = clients.get(serverId);
         if (!client) {
@@ -723,6 +775,7 @@ define(function (require, exports, module) {
 
     exports.registerLanguageServer = registerLanguageServer;
     exports.restartLanguageServer = restartLanguageServer;
+    exports.changeWorkspaceRoot = changeWorkspaceRoot;
     exports.pathToServerUri = pathToServerUri;
     exports.serverUriToVfsUri = serverUriToVfsUri;
 });
