@@ -59,7 +59,18 @@ define(function (require, exports, module) {
             await awaitsFor(function () {
                 return testWindow._TypeScriptSupportReadyToIntegTest;
             }, "TypeScript LSP server to start", 30000);
-        }, 30000);
+
+            // Warm up tsserver. Its very first request pays a large one-time cost - spawning node,
+            // launching vtsls, and loading the TypeScript library + project - which on a slow/loaded
+            // CI runner can exceed a single spec's timeout (fast dev machines never see it). Pay it
+            // once here with a generous budget so every spec below talks to an already-primed server;
+            // later project-switch restarts reuse the warm process and are fast.
+            await SpecRunnerUtils.loadProjectInTestWindow(testFolder + "ts/");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["type-error.ts"]), "warm-up: open type-error.ts");
+            await awaitsFor(function () {
+                return $("#problems-panel").text().includes("not assignable");
+            }, "tsserver to warm up on first cold start", 90000);
+        }, 100000);
 
         afterAll(async function () {
             testWindow = null;
@@ -85,8 +96,8 @@ define(function (require, exports, module) {
             // type-error.ts assigns a string to a `number` -> TS2322 "... not assignable ...".
             await awaitsFor(function () {
                 return panelText().includes("not assignable");
-            }, "TypeScript type error to be reported", 20000);
-        }, 30000);
+            }, "TypeScript type error to be reported", 30000);
+        }, 45000);
 
         it("should report implicit-any in a JS project that opts into checkJs", async function () {
             // js-checkjs has a jsconfig.json with checkJs + noImplicitAny, so the untyped parameter
@@ -94,8 +105,8 @@ define(function (require, exports, module) {
             await _openInProject("js-checkjs/", "implicit.js");
             await awaitsFor(function () {
                 return panelText().includes(IMPLICIT_ANY_MESSAGE);
-            }, "implicit-any to be reported under checkJs", 20000);
-        }, 30000);
+            }, "implicit-any to be reported under checkJs", 30000);
+        }, 45000);
 
         it("should NOT report implicit-any in a plain JS project", async function () {
             // Precondition: confirm the server actually produces implicit-any for this exact code
@@ -103,16 +114,16 @@ define(function (require, exports, module) {
             await _openInProject("js-checkjs/", "implicit.js");
             await awaitsFor(function () {
                 return panelText().includes(IMPLICIT_ANY_MESSAGE);
-            }, "implicit-any under checkJs (precondition)", 20000);
+            }, "implicit-any under checkJs (precondition)", 30000);
 
             // Same code in a plain JS project (no jsconfig / no @ts-check): the "go add types" nag
             // must not appear. Wait for inspection to settle clean, then assert it is absent.
             await _openInProject("js-plain/", "implicit.js");
             await awaitsFor(function () {
                 return $("#status-inspection").hasClass("inspection-valid");
-            }, "plain JS inspection to settle with no problems", 20000);
+            }, "plain JS inspection to settle with no problems", 30000);
             expect(panelText().includes(IMPLICIT_ANY_MESSAGE)).toBe(false);
-        }, 30000);
+        }, 75000);
 
         // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------
 
@@ -138,7 +149,7 @@ define(function (require, exports, module) {
                 await awaitsFor(async function () {
                     popover = await _hoverPopoverAt(editor, CALL_LINE, CALL_CH);
                     return !!(popover && popover.content && popover.content.find(".lsp-hover-action").length === 2);
-                }, "hover quick actions to appear", 20000);
+                }, "hover quick actions to appear", 30000);
 
                 const labels = popover.content.find(".lsp-hover-action-label").map(function () {
                     return $(this).text();
@@ -158,16 +169,16 @@ define(function (require, exports, module) {
                         $act.trigger("click");
                     }
                     return EditorManager.getCurrentFullEditor().getCursorPos().line === DECL_LINE;
-                }, "Go to Definition to navigate to the declaration", 25000);
+                }, "Go to Definition to navigate to the declaration", 30000);
                 expect(EditorManager.getCurrentFullEditor().getCursorPos().line).toBe(DECL_LINE);
-            }, 40000);
+            }, 75000);
 
             it("hover Find Usages opens the references panel (" + tc.ext + ")", async function () {
                 await _openInProject(tc.folder, tc.file);
                 const editor = EditorManager.getCurrentFullEditor();
                 await awaitsFor(async function () {
                     return !!(await _hoverPopoverAt(editor, CALL_LINE, CALL_CH));
-                }, "hover popover to be available", 20000);
+                }, "hover popover to be available", 30000);
 
                 // "Find Usages" is the right-aligned action; clicking it opens the references panel.
                 // Retry through the hover until the panel opens (the server may still be indexing).
@@ -181,9 +192,9 @@ define(function (require, exports, module) {
                         $end.trigger("click");
                     }
                     return $("#reference-in-files-results").is(":visible");
-                }, "references panel to open", 25000);
+                }, "references panel to open", 30000);
                 expect($("#reference-in-files-results").is(":visible")).toBe(true);
-            }, 40000);
+            }, 75000);
         });
     });
 });

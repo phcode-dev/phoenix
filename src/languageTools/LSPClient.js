@@ -167,6 +167,12 @@ define(function (require, exports, module) {
         if (!client) {
             return;
         }
+        if (client._stopping) {
+            // The server is shutting down/restarting. Ignore any late messages it emits during the
+            // teardown window so stale diagnostics from the dying instance don't leak into the fresh
+            // one that replaces it (both share the same serverId).
+            return;
+        }
         if (data.method === "textDocument/publishDiagnostics" && client.lintingProvider) {
             const params = data.params || {};
             // Rewrite the URI to a VFS-based URI so the linting provider keys results by the
@@ -647,6 +653,27 @@ define(function (require, exports, module) {
      * @param {string} serverId
      * @return {Promise<void>}
      */
+    // How long to wait for a server to acknowledge a graceful `shutdown` before we hard-kill it.
+    // Healthy servers reply in well under this; the cap is a failsafe so a slow/buggy/hung server
+    // can't stall the restart indefinitely.
+    const SHUTDOWN_TIMEOUT_MS = 3000;
+
+    // Resolve/reject with `promise`, but reject with a timeout error if it doesn't settle in `ms`.
+    function _withTimeout(promise, ms) {
+        return new Promise(function (resolve, reject) {
+            const timer = setTimeout(function () {
+                reject(new Error("timeout"));
+            }, ms);
+            promise.then(function (value) {
+                clearTimeout(timer);
+                resolve(value);
+            }, function (err) {
+                clearTimeout(timer);
+                reject(err);
+            });
+        });
+    }
+
     async function restartLanguageServer(serverId) {
         const client = clients.get(serverId);
         if (!client) {
@@ -676,11 +703,19 @@ define(function (require, exports, module) {
         client.capabilities = null;
         client._completionCache = null;
         DocumentSync.clearServer(client);
+        // Attempt a graceful LSP shutdown - some servers need it to flush state or clean up child
+        // processes - but BOUND it. The `shutdown` request blocks until the server replies, and a
+        // busy or cold server can be slow (or never reply), which would stall the restart; on a
+        // project switch we'd end up waiting for the old server to finish booting just to tell it to
+        // die, then cold-start a new one (a double penalty on slow CI). Give it a short budget, then
+        // hard-kill regardless. The `exit` notification expects no reply, so it stays cheap.
         try {
-            await conn.execPeer("sendRequest", { serverId: client.serverId, method: "shutdown", params: null });
+            await _withTimeout(
+                conn.execPeer("sendRequest", { serverId: client.serverId, method: "shutdown", params: null }),
+                SHUTDOWN_TIMEOUT_MS);
             await conn.execPeer("sendNotification", { serverId: client.serverId, method: "exit", params: null });
         } catch (e) {
-            // Server may already be dead; fall through to a hard stop.
+            // Timed out, or the server is already dead - fall through to the hard stop.
         }
         await conn.execPeer("stopServer", { serverId: client.serverId });
         client._stopping = false;
