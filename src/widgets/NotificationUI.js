@@ -83,7 +83,9 @@ define(function (require, exports, module) {
         WARNING: "style-warning",
         SUCCESS: "style-success",
         ERROR: "style-error",
-        DANGER: "style-danger"
+        DANGER: "style-danger",
+        // A quiet, theme-matching surface (not a bright colored toast) for low-key notifications.
+        SUBTLE: "style-subtle"
     };
 
     /**

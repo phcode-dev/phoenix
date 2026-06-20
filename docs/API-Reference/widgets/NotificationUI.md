@@ -74,6 +74,7 @@ CSS class names for notification styles.
 | SUCCESS | <code>string</code> | <code>&quot;style-success&quot;</code> | 
 | ERROR | <code>string</code> | <code>&quot;style-error&quot;</code> | 
 | DANGER | <code>string</code> | <code>&quot;style-danger&quot;</code> | 
+| SUBTLE | <code>string</code> | <code>&quot;style-subtle&quot;</code> | 
 
 <a name="module_widgets/NotificationUI..CLOSE_REASON"></a>
 
