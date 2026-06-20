@@ -57,6 +57,30 @@ define(function (require, exports, module) {
         }
     }
 
+    // Syntax-highlight fenced code blocks (the signature/examples in completion docs) with the
+    // globally available highlight.js, so they read like code instead of flat monospace. Theme-aware
+    // token colours live in src/styles/brackets.less (.lsp-hint-doc-popup, shared with the hover).
+    function _highlightCode(html) {
+        var hljs = (typeof Phoenix !== "undefined") && Phoenix.libs && Phoenix.libs.hljs;
+        if (!hljs) {
+            return html;
+        }
+        var $wrap = $("<div>").html(html);
+        $wrap.find("pre > code").each(function () {
+            var $code = $(this);
+            var match = ($code.attr("class") || "").match(/language-([\w-]+)/);
+            var lang = match && match[1];
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    $code.html(hljs.highlight($code.text(), { language: lang }).value).addClass("hljs");
+                } catch (e) {
+                    // leave the block unhighlighted on any hljs error
+                }
+            }
+        });
+        return $wrap.html();
+    }
+
     function _docToHtml(documentation) {
         if (!documentation) {
             return "";
@@ -66,7 +90,7 @@ define(function (require, exports, module) {
             return "";
         }
         try {
-            return marked.parse(md);
+            return _highlightCode(marked.parse(md));
         } catch (e) {
             return _.escape(md);
         }
