@@ -191,35 +191,44 @@ define(function (require, exports, module) {
 
         describe("Editor Navigation Commands", function () {
             it("should jump to definition", async function () {
-                var promise,
-                    selection;
-                promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: testPath + "/test.js"});
-                await awaitsForDone(promise, "Open into working set");
-
+                var selection;
+                await awaitsForDone(
+                    CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: testPath + "/test.js"}),
+                    "Open into working set");
                 myEditor = EditorManager.getCurrentFullEditor();
-                myEditor.setCursorPos({line: 5, ch: 8});
-                await awaits(1500); // for the code intelligence framework to prime up
-                promise = CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
-                await awaitsForDone(promise, "Jump To Definition");
 
-                selection = myEditor.getSelection();
                 if (window.Phoenix.isNativeApp) {
-                    // Desktop has the LSP server (vtsls), which now provides jump-to-definition
-                    // for JavaScript (higher priority than the built-in Tern provider). vtsls
-                    // returns the full declaration range of testMe and we jump to its start
-                    // (the `function` keyword), giving a collapsed cursor at {0,0} - whereas Tern
-                    // selects the identifier name. Both correctly land on the testMe definition.
+                    // Desktop has the LSP server (vtsls), which provides jump-to-definition for
+                    // JavaScript at a higher priority than the built-in Tern provider. vtsls returns
+                    // testMe's full declaration range and we jump to its start (the `function`
+                    // keyword), giving a collapsed cursor at {0,0} - whereas Tern selects the
+                    // identifier name. The server can take a moment to prime after the file opens, so
+                    // retry the jump until the LSP result lands rather than using a fixed wait (which
+                    // flakes on slow CI: before vtsls is ready, Tern answers with {0,9}-{0,15}).
+                    await awaitsFor(async function () {
+                        myEditor.setCursorPos({line: 5, ch: 8});
+                        await awaitsForDone(CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION),
+                            "Jump To Definition");
+                        var sel = myEditor.getSelection();
+                        return sel.start.line === 0 && sel.start.ch === 0 &&
+                            sel.end.line === 0 && sel.end.ch === 0;
+                    }, "LSP jump-to-definition to land on the testMe declaration", 30000);
+                    selection = myEditor.getSelection();
                     expect(fixSel(selection)).toEql(fixSel({
                         start: {line: 0, ch: 0},
                         end: {line: 0, ch: 0}
                     }));
                 } else {
+                    myEditor.setCursorPos({line: 5, ch: 8});
+                    await awaitsForDone(CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION),
+                        "Jump To Definition");
+                    selection = myEditor.getSelection();
                     expect(fixSel(selection)).toEql(fixSel({
                         start: {line: 0, ch: 9},
                         end: {line: 0, ch: 15}
                     }));
                 }
-            });
+            }, 35000);
         });
 
         if(window.Phoenix.isNativeApp) {
