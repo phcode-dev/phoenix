@@ -22,7 +22,9 @@
 
 /* Brackets Variables */
 :root {
- --z-index-parameter-hints: 19;
+ /* Above the central control bar (@z-index-brackets-main-content + 1 = 20) so the
+    parameter hint is never occluded by it when it sits near the editor's left edge. */
+ --z-index-parameter-hints: 21;
  --editor-line-height: 1.5;
 }
 

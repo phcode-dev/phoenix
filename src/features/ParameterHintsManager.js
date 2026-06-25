@@ -53,6 +53,7 @@ define(function (require, exports, module) {
         };
 
     let $hintContainer, // function hint container
+        $hintScroll, // single-line clipping/scrolling layer
         $hintContent, // function hint content holder
         hintState = {},
         lastChar = null,
@@ -66,11 +67,50 @@ define(function (require, exports, module) {
     // keep jslint from complaining about handleCursorActivity being used before
     // it was defined.
     let handleCursorActivity,
-        popupShown = false;
+        popupShown = false,
+        // Monotonic id so a slow LSP response from an earlier caret position can be ignored
+        // once a newer cursor move has fired a fresh request.
+        pendingRequestId = 0;
+
+    /**
+     * A stable identity for the function being called (its parameter list), independent of which
+     * parameter the caret is currently in. Used to keep the popup anchored while only the active
+     * parameter changes.
+     * @param {{parameters: Array}} hint
+     * @return {string}
+     */
+    function _signatureKey(hint) {
+        return (hint.parameters || []).map(function (p) {
+            return p.label || p.type || "";
+        }).join(",");
+    }
 
     let _providerRegistrationHandler = new ProviderRegistrationHandler(),
         registerHintProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
         removeHintProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
+
+    /**
+     * Keep the active parameter visible inside the single-line, width-capped popup: scroll it
+     * into view (centered) when the signature overflows, and fade whichever edge is clipped so
+     * it's clear there's more of the signature off-screen.
+     */
+    function _revealCurrentParameter() {
+        let el = $hintScroll && $hintScroll[0];
+        if (!el) {
+            return;
+        }
+        let maxScroll = el.scrollWidth - el.clientWidth;
+        let $cur = $hintContent.find(".current-parameter");
+        if (maxScroll > 0 && $cur.length) {
+            let elRect = el.getBoundingClientRect(),
+                curRect = $cur[0].getBoundingClientRect(),
+                curLeftInContent = (curRect.left - elRect.left) + el.scrollLeft,
+                target = curLeftInContent - (el.clientWidth - curRect.width) / 2;
+            el.scrollLeft = Math.max(0, Math.min(target, maxScroll));
+        }
+        $hintScroll.toggleClass("fade-left", el.scrollLeft > 1);
+        $hintScroll.toggleClass("fade-right", el.scrollLeft < maxScroll - 1);
+    }
 
     /**
      * Position a function hint.
@@ -80,11 +120,7 @@ define(function (require, exports, module) {
      * @param {number} ybot
      */
     function positionHint(xpos, ypos, ybot) {
-        let hintWidth = $hintContainer.width(),
-            hintHeight = $hintContainer.height(),
-            top = ypos - hintHeight - POINTER_TOP_OFFSET,
-            left = xpos,
-            $editorHolder = $("#editor-holder"),
+        let $editorHolder = $("#editor-holder"),
             editorLeft;
 
         if ($editorHolder.offset() === undefined) {
@@ -94,8 +130,22 @@ define(function (require, exports, module) {
         }
 
         editorLeft = $editorHolder.offset().left;
-        left = Math.max(left, editorLeft);
+
+        // Cap the popup to the editor width so a long signature can never run off-screen (and
+        // underneath the central control bar). The signature stays on one line and scrolls.
+        let maxWidth = Math.min(700, $editorHolder.width() - 24);
+        $hintContainer.css("max-width", maxWidth + "px");
+        _revealCurrentParameter();
+
+        let hintWidth = $hintContainer.outerWidth(),
+            hintHeight = $hintContainer.outerHeight(),
+            top = ypos - hintHeight - POINTER_TOP_OFFSET,
+            left = xpos;
+
+        // Clamp within the editor area: never left of the editor (keeps it clear of the CCB),
+        // never past the right edge.
         left = Math.min(left, editorLeft + $editorHolder.width() - hintWidth);
+        left = Math.max(left, editorLeft);
 
         if (top < 0) {
             $hintContainer.removeClass("preview-bubble-above");
@@ -232,6 +282,8 @@ define(function (require, exports, module) {
      */
     function dismissHint(editor) {
         popupShown = false;
+        // Invalidate any in-flight request so a late response can't re-show a dismissed popup.
+        pendingRequestId++;
         if (hintState.visible) {
             $hintContainer.hide();
             $hintContent.empty();
@@ -262,7 +314,6 @@ define(function (require, exports, module) {
         let $deferredPopUp = $.Deferred();
         let sessionProvider = null;
 
-        dismissHint(editor);
         popupShown = true;
         // Find a suitable provider, if any
         let language = editor.getLanguageForSelection(),
@@ -279,25 +330,67 @@ define(function (require, exports, module) {
             request = sessionProvider.getParameterHints(explicit, onCursorActivity);
         }
 
-        if (request) {
-            request.done(function (parameterHint) {
+        // No hint at the caret (no provider, or none available here) - take down any existing popup.
+        if (!request) {
+            dismissHint(editor);
+            return $deferredPopUp;
+        }
+
+        let requestId = ++pendingRequestId;
+
+        request.done(function (parameterHint) {
+            // A newer cursor move already fired a fresh request; drop this stale response.
+            if (requestId !== pendingRequestId) {
+                return;
+            }
+
+            let signature = _signatureKey(parameterHint),
+                renderKey = parameterHint.currentIndex + "|" + signature;
+
+            // Already showing this exact signature with this exact active parameter: leave the
+            // popup untouched. Moving the caret within one parameter must not dismiss+redraw it
+            // (that is what made arrow-key presses flicker).
+            if (hintState.visible && hintState.renderKey === renderKey) {
+                $deferredPopUp.resolveWith(null);
+                return;
+            }
+
+            _formatHint(editor, parameterHint);
+            $hintContainer.show(); // no-op when already visible -> content updates in place, no blink
+
+            if (hintState.visible && hintState.signature === signature && hintState.anchor) {
+                // Same call, just a different active parameter: keep the popup anchored where it
+                // is and only let the highlight move (positionHint re-reveals the active param).
+                positionHint(hintState.anchor.left, hintState.anchor.top, hintState.anchor.bottom);
+            } else {
                 let cm = editor._codeMirror,
                     pos = parameterHint.functionCallPos || editor.getCursorPos();
-
                 pos = cm.charCoords(pos);
-                _formatHint(editor, parameterHint);
-
-                $hintContainer.show();
                 positionHint(pos.left, pos.top, pos.bottom);
-                hintState.visible = true;
+                hintState.anchor = pos;
+                hintState.signature = signature;
+            }
 
+            hintState.visible = true;
+            hintState.renderKey = renderKey;
+
+            // Attach the cursor-tracking listener once per editor (not on every refresh).
+            if (sessionEditor !== editor) {
+                if (sessionEditor) {
+                    sessionEditor.off("cursorActivity.ParameterHinting", handleCursorActivity);
+                }
                 sessionEditor = editor;
+                editor.off("cursorActivity.ParameterHinting", handleCursorActivity);
                 editor.on("cursorActivity.ParameterHinting", handleCursorActivity);
-                $deferredPopUp.resolveWith(null);
-            }).fail(function () {
-                hintState = {};
-            });
-        }
+            }
+            $deferredPopUp.resolveWith(null);
+        }).fail(function () {
+            // The caret moved off the call (or the request failed) - dismiss, unless a newer
+            // request has since taken over.
+            if (requestId === pendingRequestId) {
+                dismissHint(editor);
+            }
+        });
 
         return $deferredPopUp;
     }
@@ -407,6 +500,7 @@ define(function (require, exports, module) {
         }
         // Create the function hint container
         $hintContainer = $(hintContainerHTML).appendTo($("body"));
+        $hintScroll = $hintContainer.find(".function-hint-scroll");
         $hintContent = $hintContainer.find(".function-hint-content-new");
         activeEditorChangeHandler(null, EditorManager.getActiveEditor(), null);
 

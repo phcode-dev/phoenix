@@ -2667,33 +2667,80 @@ span.brackets-hints-with-type-details {
 
 #function-hint-container-new {
     display: none;
-    background: #fff;
     position: absolute;
     z-index: var(--z-index-parameter-hints);
-    left: 400px;
-    top: 40px;
+    box-sizing: border-box;
+    // Never wider than the editor (JS caps to the editor width too); the signature
+    // stays on one line and scrolls so it can never run off-screen under the CCB.
+    max-width: 700px;
     height: auto;
-    width: auto;
-    overflow: scroll;
-    padding: 1px 6px;
-    text-align: center;
-    border-radius: 3px;
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.24);
+    overflow: hidden;
+    padding: 5px 11px;
+    text-align: left;
+    border-radius: 6px;
+    color: @bc-text;
+    background: @bc-panel-bg;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 15px @bc-shadow-large;
 
     .dark & {
-        background: #000;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: #fff;
-        box-shadow: 0 3px 9px rgba(0, 0, 0, 0.24);
+        color: @dark-bc-text;
+        background: @dark-bc-panel-bg;
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 4px 15px @dark-bc-shadow-large;
+    }
+}
+
+// Clipping/scrolling layer: the (potentially very long) signature lives here on a single
+// line. When it overflows we scroll the active parameter into view and fade the clipped
+// edge(s) to signal there is more - see positionHint() in ParameterHintsManager.
+#function-hint-container-new .function-hint-scroll {
+    overflow: hidden;
+    white-space: nowrap;
+
+    &.fade-left {
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22px);
+        mask-image: linear-gradient(to right, transparent 0, #000 22px);
+    }
+    &.fade-right {
+        -webkit-mask-image: linear-gradient(to left, transparent 0, #000 22px);
+        mask-image: linear-gradient(to left, transparent 0, #000 22px);
+    }
+    &.fade-left.fade-right {
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
     }
 }
 
 #function-hint-container-new .function-hint-content-new {
+    display: inline-block;
     text-align: left;
+    font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre;
 }
 
+// Non-active parameters and the function name / separators read as muted code.
+.brackets-hints .parameter {
+    color: @bc-text;
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+// The parameter the caret is currently inside: clearly emphasized so it's easy to track.
 .brackets-hints .current-parameter {
-    font-weight: 500;
+    font-weight: 700;
+    color: @accent-keyword;
+    background: fade(@accent-keyword, 12%);
+    border-radius: 3px;
+    padding: 1px 2px;
+
+    .dark & {
+        color: #6cb6ff;
+        background: rgba(108, 182, 255, 0.16);
+    }
 }
 
 // selection view
