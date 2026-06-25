@@ -50,11 +50,66 @@ define(function (require, exports, module) {
     // is shown in a separate popup beside the hint list so the list itself never reflows while
     // navigating with the arrow keys.
     var $lspDocPopup = null;
+    // The hint list reflows after _showDocPopup runs - it flips above/below the caret near a screen
+    // edge, shifts as the cursor moves, and moves on scroll. To keep the doc popup glued beside it
+    // (and never overlapping it), we re-derive its position from the list's *current* rect on every
+    // animation frame while it is visible, instead of positioning it once.
+    var _docTrackRAF = null,   // active requestAnimationFrame handle, or null when not tracking
+        _docTrackList = null,  // the ul.dropdown-menu the popup is anchored to
+        _docLastPos = "";      // last applied "left,top" - skip the css write when unchanged
 
     function _hideDocPopup() {
+        if (_docTrackRAF) {
+            cancelAnimationFrame(_docTrackRAF);
+            _docTrackRAF = null;
+        }
+        _docTrackList = null;
+        _docLastPos = "";
         if ($lspDocPopup) {
             $lspDocPopup.hide().empty();
         }
+    }
+
+    /**
+     * Place the doc popup flush beside the hint list's current position: to the right, flipping to
+     * the left when there isn't room, and clamped vertically to stay on screen. Reads the list's
+     * live rect so it stays correct no matter how the list has since moved.
+     */
+    function _positionDocPopup() {
+        if (!$lspDocPopup || !_docTrackList || !_docTrackList.length) {
+            return;
+        }
+        var listEl = _docTrackList[0];
+        if (!listEl.isConnected) {
+            // The hint menu (and this popup, its child) was torn down - stop tracking.
+            _hideDocPopup();
+            return;
+        }
+        var anchor = listEl.getBoundingClientRect();
+        if (anchor.width === 0 && anchor.height === 0) {
+            return; // list not laid out yet (mid-reflow) - try again next frame
+        }
+        var GAP = 6,
+            winW = $(window).width(),
+            winH = $(window).height(),
+            pw = $lspDocPopup.outerWidth(),
+            ph = $lspDocPopup.outerHeight(),
+            left = anchor.right + GAP;
+        if (left + pw > winW - 8) {
+            left = anchor.left - pw - GAP; // not enough room on the right - flip to the left
+        }
+        left = Math.max(8, left);
+        var top = Math.max(8, Math.min(anchor.top, winH - ph - 8));
+        var pos = Math.round(left) + "," + Math.round(top);
+        if (pos !== _docLastPos) {
+            _docLastPos = pos;
+            $lspDocPopup.css({ left: left, top: top });
+        }
+    }
+
+    function _trackDocPopup() {
+        _positionDocPopup();
+        _docTrackRAF = requestAnimationFrame(_trackDocPopup);
     }
 
     // Syntax-highlight fenced code blocks (the signature/examples in completion docs) with the
@@ -117,21 +172,16 @@ define(function (require, exports, module) {
         if (!$list.length) {
             $list = $menu;
         }
-        var anchor = $list[0].getBoundingClientRect();
 
-        var GAP = 6;
-        // Measure, then place to the right of the hint list - flipping to the left when there
-        // isn't enough room.
-        $lspDocPopup.css({ display: "block", visibility: "hidden", left: 0, top: 0 });
-        var winW = $(window).width(), winH = $(window).height(),
-            pw = $lspDocPopup.outerWidth(), ph = $lspDocPopup.outerHeight(),
-            left = anchor.right + GAP;
-        if (left + pw > winW - 8) {
-            left = anchor.left - pw - GAP; // not enough room on the right - flip to the left
+        // Position now, then keep re-positioning every frame so the popup follows the list wherever
+        // it reflows to (and never ends up overlapping it).
+        _docTrackList = $list;
+        _docLastPos = "";
+        $lspDocPopup.css({ display: "block" });
+        _positionDocPopup();
+        if (!_docTrackRAF) {
+            _trackDocPopup();
         }
-        left = Math.max(8, left);
-        var top = Math.min(anchor.top, Math.max(8, winH - ph - 8));
-        $lspDocPopup.css({ left: left, top: top, visibility: "visible" });
     }
 
     function _injectInlineSignature($labelSpan, detail) {
