@@ -590,6 +590,8 @@
   "CMD_ZOOM_OUT": "Zoom Out",
   "CMD_ZOOM_UI": "Zoom UI and Fonts",
   "CODE_EDITOR": "Code Editor",
+  "CODE_HINT_IMPORT_CHOOSE": "Choose which of {0} modules to import <code>{1}</code> from.",
+  "CODE_HINT_IMPORT_FROM_N": "{0} imports…",
   "CODE_INSPECTION_DONE_FILES": "{0} of {1} files done…",
   "CODE_INSPECTION_IN_PROGRESS": "Code inspection in progress…",
   "CODE_INSPECTION_PROBLEMS": "Code inspection problems",
