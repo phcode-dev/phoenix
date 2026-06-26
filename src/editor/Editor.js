@@ -96,7 +96,8 @@ define(function (require, exports, module) {
         EditorPreferences = require("./EditorHelper/EditorPreferences"),
         ChangeHelper = require("./EditorHelper/ChangeHelper"),
         ErrorPopupHelper = require("./EditorHelper/ErrorPopupHelper"),
-        InlineWidgetHelper = require("./EditorHelper/InlineWidgetHelper");
+        InlineWidgetHelper = require("./EditorHelper/InlineWidgetHelper"),
+        ScrollbarHelper = require("./EditorHelper/ScrollbarHelper");
 
     /* Editor preferences */
 
@@ -407,6 +408,9 @@ define(function (require, exports, module) {
         } catch (err) {
             // Fail silently; drag image override is non-critical.
         }
+
+        // Click-to-jump on the native scrollbars (instead of slow viewport-at-a-time paging).
+        ScrollbarHelper.installClickToJump(self);
 
         // Can't get CodeMirror's focused state without searching for
         // CodeMirror-focused. Instead, track focus via onFocus and onBlur
