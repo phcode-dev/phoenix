@@ -2513,12 +2513,9 @@ a, img {
     }
     ul, ol { margin: 5px 0; padding-left: 18px; }
 
-    &::-webkit-scrollbar { width: 9px; }
-    &::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.18); border-radius: 5px;
-        .dark & { background: rgba(255, 255, 255, 0.18); }
-    }
-    &::-webkit-scrollbar-track { background: transparent; }
+    // No custom scrollbar here: inherit the app-wide one (brackets_scrollbars.less) so this popup's
+    // scrollbar matches the editor's exactly - the same 12px slim, rounded pill thumb - instead of a
+    // chunkier block.
 }
 
 // LSP / language-tools code hints. Moved here from languageTools/styles/default_provider_style.css
