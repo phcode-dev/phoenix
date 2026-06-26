@@ -630,28 +630,35 @@ define(function (require, exports, module) {
             cursorPos: pos
         }).done(function (msgObj) {
             let paramList = [];
-            let label;
-            let activeParameter;
             if (msgObj) {
-                let res;
-                res = msgObj.signatures;
-                activeParameter = msgObj.activeParameter;
+                let res = msgObj.signatures;
+                let activeParameter = msgObj.activeParameter;
                 if (res && res.length) {
-                    res.forEach(function (element) {
-                        label = element.documentation;
-                        let param = element.parameters;
-                        param.forEach(ele => {
-                            paramList.push({
-                                label: ele.label,
-                                documentation: ele.documentation
-                            });
+                    // Use the active signature (not all of them concatenated - overloads would
+                    // otherwise merge their parameters into one bogus list).
+                    let sig = res[msgObj.activeSignature || 0] || res[0];
+                    (sig.parameters || []).forEach(function (ele) {
+                        paramList.push({
+                            label: ele.label,
+                            documentation: ele.documentation
                         });
                     });
+
+                    // The function name for the popup header, taken from the signature label
+                    // (everything before the parameter list "("). Without this the manager falls back
+                    // to the editor token at the caret - which is the just-typed "(" - producing an
+                    // unbalanced "((tableName: any)".
+                    let functionName = "";
+                    if (typeof sig.label === "string") {
+                        let paren = sig.label.indexOf("(");
+                        functionName = (paren >= 0 ? sig.label.slice(0, paren) : sig.label).trim();
+                    }
 
                     $deferredHints.resolve({
                         parameters: paramList,
                         currentIndex: activeParameter,
-                        functionDocumentation: label
+                        functionDocumentation: sig.documentation,
+                        functionName: functionName
                     });
                 } else {
                     $deferredHints.reject();

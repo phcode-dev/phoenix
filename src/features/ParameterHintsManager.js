@@ -269,8 +269,16 @@ define(function (require, exports, module) {
         }
 
         if (hints.parameters.length > 0) {
-            let token = editor.getToken(hints.functionCallPos);
-            _formatParameterHint(token.string, hints.parameters, appendSeparators, appendParameter);
+            // Prefer a function name supplied by the provider (LSP signatureHelp gives the full
+            // signature label). Only fall back to the editor token for providers that locate the call
+            // site themselves (Tern sets functionCallPos); without that fallback guard, an LSP hint -
+            // whose functionCallPos is undefined - would read the token at the caret, i.e. the just
+            // typed "(", and render an unbalanced "((".
+            let functionName = hints.functionName;
+            if (functionName == null) {
+                functionName = editor.getToken(hints.functionCallPos).string;
+            }
+            _formatParameterHint(functionName, hints.parameters, appendSeparators, appendParameter);
         } else {
             $hintContent.append(_.escape(Strings.NO_ARGUMENTS));
         }

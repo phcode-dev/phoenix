@@ -364,6 +364,9 @@ define(function (require, exports, module) {
                 }
                 const signatures = result.signatures.map(function (sig) {
                     return {
+                        // Full signature string (e.g. "getTableIndexes(tableName: any): Promise<…>") -
+                        // the provider derives the function name from it for the parameter-hint popup.
+                        label: sig.label,
                         documentation: _markupToString(sig.documentation) || sig.label,
                         parameters: (sig.parameters || []).map(function (p) {
                             return {
@@ -373,7 +376,11 @@ define(function (require, exports, module) {
                         })
                     };
                 });
-                deferred.resolve({ signatures: signatures, activeParameter: result.activeParameter });
+                deferred.resolve({
+                    signatures: signatures,
+                    activeSignature: result.activeSignature,
+                    activeParameter: result.activeParameter
+                });
             } catch (err) {
                 console.warn("[LSP] request failed:", err && (err.message || err));
                 deferred.reject(err);
