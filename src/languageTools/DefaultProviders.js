@@ -153,6 +153,27 @@ define(function (require, exports, module) {
         }
     }
 
+    // Highlight.js language for the signature block, derived from the file being edited so it isn't
+    // hard-wired to one language. The LSP `detail` string carries no language tag, so we use the
+    // editor's. vtsls emits TypeScript-syntax signatures even in .js/.jsx (TS is a superset), so map
+    // the JS family to ts/tsx; every other language uses its own id - hljs resolves many aliases, and
+    // _highlightCode no-ops gracefully when the id is unknown (the block just renders as monospace).
+    var SIGNATURE_HLJS_LANG = {
+        javascript: "typescript",
+        jsx: "tsx",
+        typescript: "typescript",
+        tsx: "tsx"
+    };
+
+    function _signatureLang() {
+        var editor = EditorManager.getActiveEditor();
+        var id = editor && editor.getLanguageForSelection && editor.getLanguageForSelection().getId();
+        if (!id) {
+            return "typescript";
+        }
+        return SIGNATURE_HLJS_LANG[id] || id;
+    }
+
     // Build the side doc popup's content, like VS Code/WebStorm's details panel: the item's
     // signature (token.detail) as a highlighted code block - the focal point - followed by the
     // prose documentation. The signature already carries the "Add import from <module>" line for
@@ -163,7 +184,7 @@ define(function (require, exports, module) {
 
         if (token.detail) {
             try {
-                parts.push(_highlightCode(marked.parse("```typescript\n" + token.detail + "\n```")));
+                parts.push(_highlightCode(marked.parse("```" + _signatureLang() + "\n" + token.detail + "\n```")));
             } catch (e) {
                 // skip the signature block on any parse/highlight error
             }
