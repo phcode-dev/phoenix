@@ -511,7 +511,11 @@ define(function (require, exports, module) {
                     dynamicRegistration: false,
                     completionItem: {
                         snippetSupport: false,
-                        documentationFormat: ["markdown", "plaintext"]
+                        documentationFormat: ["markdown", "plaintext"],
+                        // We render labelDetails.detail/description (e.g. the source module of an
+                        // auto-import) so otherwise-identical labels are distinguishable - see the
+                        // CodeHintsProvider renderer.
+                        labelDetailsSupport: true
                     }
                 },
                 hover: { dynamicRegistration: false, contentFormat: ["markdown", "plaintext"] },

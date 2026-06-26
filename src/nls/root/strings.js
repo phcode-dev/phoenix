@@ -1501,6 +1501,8 @@ define({
     "CMD_JUMPTO_DEFINITION": "Go to Definition",
     "CMD_SHOW_PARAMETER_HINT": "Show Parameter Hint",
     "NO_ARGUMENTS": "<no parameters>",
+    "CODE_HINT_IMPORT_FROM_N": "{0} imports…",
+    "CODE_HINT_IMPORT_CHOOSE": "Choose which of {0} modules to import <code>{1}</code> from.",
     "DETECTED_EXCLUSION_TITLE": "JavaScript File Inference Problem",
     "DETECTED_EXCLUSION_INFO": "{APP_NAME} ran into trouble processing <span class='dialog-filename'>{0}</span>.<br><br>This file will no longer be processed for code hints, Jump to Definition or Quick Edit. To re-enable this file, open <code>.phcode.json</code> in your project and edit <code>jscodehints.detectedExclusions</code>.<br><br>This is likely a {APP_NAME} bug. If you can provide a copy of this file, please <a href='https://github.com/adobe/brackets/wiki/How-to-Report-an-Issue'>file a bug</a> with a link to the file named here.",
 

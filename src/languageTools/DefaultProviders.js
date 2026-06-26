@@ -27,20 +27,22 @@
 define(function (require, exports, module) {
 
 
-    var _ = brackets.getModule("thirdparty/lodash");
+    var _ = require("thirdparty/lodash");
 
-    var EditorManager = require('editor/EditorManager'),
-        DocumentManager = require('document/DocumentManager'),
-        CommandManager = require("command/CommandManager"),
-        Commands = require("command/Commands"),
-        StringMatch = require("utils/StringMatch"),
-        CodeInspection = require("language/CodeInspection"),
-        PathConverters = require("languageTools/PathConverters"),
-        TabstopManager = require("editor/TabstopManager"),
-        marked = require("thirdparty/marked.min"),
-        matcher = new StringMatch.StringMatcher({
-            preferPrefixMatches: true
-        });
+    var EditorManager = require("editor/EditorManager"),
+      DocumentManager = require("document/DocumentManager"),
+      CommandManager = require("command/CommandManager"),
+      Commands = require("command/Commands"),
+      StringMatch = require("utils/StringMatch"),
+      CodeInspection = require("language/CodeInspection"),
+      PathConverters = require("languageTools/PathConverters"),
+      TabstopManager = require("editor/TabstopManager"),
+      Strings = require("strings"),
+      StringUtils = require("utils/StringUtils"),
+      marked = require("thirdparty/marked.min"),
+      matcher = new StringMatch.StringMatcher({
+        preferPrefixMatches: true
+      });
 
     // Provider styles live in src/styles/brackets.less (core stylesheet) now that languageTools is a
     // core module - no per-extension stylesheet to load.
@@ -151,6 +153,33 @@ define(function (require, exports, module) {
         }
     }
 
+    // Build the side doc popup's content, like VS Code/WebStorm's details panel: the item's
+    // signature (token.detail) as a highlighted code block - the focal point - followed by the
+    // prose documentation. The signature already carries the "Add import from <module>" line for
+    // auto-imports (tsserver puts it there), so we don't add our own. Shown whenever there's a
+    // signature OR docs, so a doc-less item still gets its signature shown instead of nothing.
+    function _docPopupHtml(token) {
+        var parts = [];
+
+        if (token.detail) {
+            try {
+                parts.push(_highlightCode(marked.parse("```typescript\n" + token.detail + "\n```")));
+            } catch (e) {
+                // skip the signature block on any parse/highlight error
+            }
+        }
+
+        var docHtml = _docToHtml(token.documentation);
+        if (docHtml) {
+            parts.push(docHtml);
+        }
+
+        if (!token.detail && !docHtml) {
+            return "";
+        }
+        return parts.join("");
+    }
+
     function _showDocPopup($hint, docHtml) {
         var $menu = $hint.closest(".codehint-menu");
         if (!docHtml || !$menu.length) {
@@ -235,6 +264,80 @@ define(function (require, exports, module) {
         return matchResults;
     }
 
+    // True when a completion is an auto-import suggestion (it carries the source module in
+    // labelDetails.description), as opposed to an in-scope symbol or a keyword.
+    function _isAutoImport(item) {
+        return !!(item.labelDetails && item.labelDetails.description);
+    }
+
+    // WebStorm-style noise control: when several modules export the SAME name, the LSP returns one
+    // auto-import suggestion per module, flooding the list with near-identical rows. Collapse those
+    // into a single "N imports…" row; choosing it re-opens the list filtered to just that name's
+    // sources so the user picks the module (see insertHint + the _importLabel branch of getHints).
+    // In-scope symbols and single-source auto-imports are left exactly as they were.
+    function _clubAutoImports(items) {
+        var counts = new Map();
+        items.forEach(function (it) {
+            if (_isAutoImport(it)) {
+                counts.set(it.label, (counts.get(it.label) || 0) + 1);
+            }
+        });
+        var seen = new Set(), result = [];
+        items.forEach(function (it) {
+            if (!_isAutoImport(it) || counts.get(it.label) < 2) {
+                result.push(it); // in-scope, keyword, or the only import source for this name
+                return;
+            }
+            if (seen.has(it.label)) {
+                return; // already represented by the clubbed row at its best-sorted position
+            }
+            seen.add(it.label);
+            result.push(Object.assign({}, it, {
+                _clubbed: true,
+                _importCount: counts.get(it.label)
+            }));
+        });
+        return result;
+    }
+
+    // Render one completion row: the (matched-highlighted) label, plus a dimmed right-aligned tag -
+    // either the source module of a single auto-import, or "N imports…" for a clubbed group.
+    function _renderHint(element) {
+        var $fHint = $("<span>").addClass("brackets-hints");
+        var $label = $("<span>").addClass("lsp-hint-label");
+
+        if (element.stringRanges) {
+            element.stringRanges.forEach(function (item) {
+                if (item.matched) {
+                    $label.append($("<span>").append(_.escape(item.text)).addClass("matched-hint"));
+                } else {
+                    $label.append(_.escape(item.text));
+                }
+            });
+        } else {
+            $label.text(element.label);
+        }
+        $fHint.append($label);
+
+        if (element._clubbed) {
+            $("<span>")
+                .addClass("lsp-hint-source lsp-hint-import-group")
+                .text(StringUtils.format(Strings.CODE_HINT_IMPORT_FROM_N, element._importCount))
+                .appendTo($fHint);
+        } else if (element.labelDetails && element.labelDetails.description) {
+            // VS Code-style source annotation: shows e.g. the `inspector` in a `console` auto-import
+            // so same-named items from different modules read as distinct rows.
+            $("<span>")
+                .addClass("lsp-hint-source")
+                .text(element.labelDetails.description)
+                .attr("title", element.labelDetails.description)
+                .appendTo($fHint);
+        }
+
+        $fHint.data("token", element);
+        return $fHint;
+    }
+
     CodeHintsProvider.prototype.hasHints = function (editor, implicitChar) {
         if (!this.client) {
             return false;
@@ -285,49 +388,41 @@ define(function (require, exports, module) {
             $deferredHints = $.Deferred(),
             self = this;
 
-        this.client.requestHints({
-            filePath: docPath,
-            cursorPos: pos
-        }).done(function (msgObj) {
-            var hints = [];
-
-            // The query is the identifier prefix already typed before the cursor (empty right
-            // after a trigger char such as "."). Deriving it from the raw token is wrong - after a
-            // "." the token is "." itself, which would filter out every member completion.
+        // The query is the identifier prefix already typed before the cursor (empty right after a
+        // trigger char such as "."). Deriving it from the raw token is wrong - after a "." the token
+        // is "." itself, which would filter out every member completion.
+        function computeQuery() {
             var lineText = editor.document.getLine(pos.line),
                 queryStart = pos.ch;
             while (queryStart > 0 && /[\w$]/.test(lineText.charAt(queryStart - 1))) {
                 queryStart--;
             }
-            self.query = lineText.substring(queryStart, pos.ch);
+            return lineText.substring(queryStart, pos.ch);
+        }
+
+        this.client.requestHints({
+            filePath: docPath,
+            cursorPos: pos
+        }).done(function (msgObj) {
+            var hints = [];
+            self.query = computeQuery();
             if (msgObj) {
-                var res = msgObj.items,
-                    filteredHints = filterWithQueryAndMatcher(res, self.query);
-
+                var filteredHints = filterWithQueryAndMatcher(msgObj.items, self.query);
                 StringMatch.basicMatchSort(filteredHints);
-                filteredHints.forEach(function (element) {
-                    var $fHint = $("<span>")
-                        .addClass("brackets-hints");
 
-                    if (element.stringRanges) {
-                        element.stringRanges.forEach(function (item) {
-                            if (item.matched) {
-                                $fHint.append($("<span>")
-                                    .append(_.escape(item.text))
-                                    .addClass("matched-hint"));
-                            } else {
-                                $fHint.append(_.escape(item.text));
-                            }
-                        });
-                    } else {
-                        $fHint.text(element.label);
-                    }
+                // Second step of a clubbed auto-import: the user picked the "N imports…" row, so show
+                // just that name's import sources (one row per module) instead of the whole list.
+                if (self._importLabel) {
+                    var wanted = self._importLabel;
+                    self._importLabel = null;
+                    filteredHints = filteredHints.filter(function (it) {
+                        return it.label === wanted && _isAutoImport(it);
+                    });
+                } else {
+                    filteredHints = _clubAutoImports(filteredHints);
+                }
 
-                    $fHint.data("token", element);
-                    // The signature is added inline lazily on highlight (onHighlight); the
-                    // documentation is shown in a side popup. See _injectInlineSignature.
-                    hints.push($fHint);
-                });
+                hints = filteredHints.map(_renderHint);
             }
 
             $deferredHints.resolve({
@@ -335,6 +430,7 @@ define(function (require, exports, module) {
                 "selectInitial": true
             });
         }).fail(function () {
+            self._importLabel = null;
             $deferredHints.reject();
         });
 
@@ -365,6 +461,14 @@ define(function (require, exports, module) {
         // the list is shown.
         $hint.closest(".codehint-menu").addClass("lsp-hints");
 
+        // Clubbed "N imports…" row: it stands in for several modules, so resolving its (first
+        // module's) docs would be misleading. Show a short hint about what selecting it does.
+        if (token._clubbed) {
+            _showDocPopup($hint, "<p>" + StringUtils.format(
+                Strings.CODE_HINT_IMPORT_CHOOSE, token._importCount, _.escape(token.label)) + "</p>");
+            return;
+        }
+
         function present() {
             // Inline: the signature for the highlighted row. Re-inject every time (it is
             // idempotent) because the list DOM is rebuilt on each keystroke, which drops a
@@ -373,8 +477,8 @@ define(function (require, exports, module) {
             if (token.detail) {
                 _injectInlineSignature($span, token.detail);
             }
-            // Beside the list: the (possibly long) documentation.
-            _showDocPopup($hint, _docToHtml(token.documentation));
+            // Beside the list: the signature header + the (possibly long) documentation.
+            _showDocPopup($hint, _docPopupHtml(token));
         }
 
         if (token._lspResolved || !self.client.resolveCompletion) {
@@ -407,8 +511,21 @@ define(function (require, exports, module) {
         if (!editor) {
             return false;
         }
-        var token = $hint.data("token") || {},
-            cursor = editor.getCursorPos(),
+        var token = $hint.data("token") || {};
+
+        // Clubbed "N imports…" row: don't insert anything yet. Re-open the list showing only this
+        // name's import sources so the user picks the module (WebStorm's "Class to Import" flow).
+        // getHints honors _importLabel on the next open; the symbol/import is inserted when a
+        // concrete source is chosen there.
+        if (token._clubbed) {
+            this._importLabel = token.label;
+            setTimeout(function () {
+                CommandManager.execute(Commands.SHOW_CODE_HINTS);
+            }, 0);
+            return false;
+        }
+
+        var cursor = editor.getCursorPos(),
             lineText = editor.document.getLine(cursor.line),
             textEditRange = token.textEdit && token.textEdit.range,
             startCh,
