@@ -2639,9 +2639,45 @@ span.brackets-hints-with-type-details {
 .codehint-menu.lsp-hints .codehint-item > .brackets-hints {
     flex: 1 1 auto;
     min-width: 0;
+    display: flex;
+    align-items: center;
+}
+
+// The label itself takes the flexible space and truncates; the source tag stays whole.
+.codehint-menu.lsp-hints .lsp-hint-label {
+    flex: 1 1 auto;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+// Source module of an auto-import (labelDetails.description), dimmed at the right edge - VS Code's
+// way of distinguishing same-named completions from different modules.
+.codehint-menu.lsp-hints .lsp-hint-source {
+    flex: 0 0 auto;
+    margin-left: 10px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    font-style: italic;
+    opacity: 0.55;
+}
+
+// On the highlighted row the side doc popup already names the import source, and the inline
+// signature takes the right slot, so hide the source tag there to keep the row uncluttered.
+// The clubbed "N imports…" tag is the row's whole purpose, so keep it visible when highlighted.
+.codehint-menu.lsp-hints .highlight .lsp-hint-source:not(.lsp-hint-import-group) {
+    display: none;
+}
+
+// The clubbed "N imports…" affordance reads as an action, not a source path: not italic, a touch
+// more present than a plain source tag.
+.codehint-menu.lsp-hints .lsp-hint-import-group {
+    font-style: normal;
+    opacity: 0.75;
 }
 
 .lsp-hint-sig {
