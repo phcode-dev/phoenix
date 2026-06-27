@@ -2452,43 +2452,100 @@ a, img {
     line-height: 1.5;
     word-wrap: break-word;
 
-    background: @bc-panel-bg;
+    // Share the completion list's surface so the two popups read as one widget (the list is
+    // @bc-menu-bg with @bc-border-radius and a 0 3px 9px @bc-shadow). Matching bg, radius and shadow
+    // is what stops the doc popup from looking like a separate, mismatched card.
+    background: @bc-menu-bg;
     color: @bc-text;
     border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 6px;
-    box-shadow: 0 4px 15px @bc-shadow-large;
+    border-radius: @bc-border-radius;
+    box-shadow: 0 3px 9px @bc-shadow;
+    // Let users select and copy the docs/signature (the popup otherwise inherits user-select:none),
+    // and show the text/I-beam cursor so it reads as selectable.
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: text;
 
     .dark & {
-        background: @dark-bc-panel-bg;
+        background: @dark-bc-menu-bg;
         color: @dark-bc-text;
-        border-color: rgba(255, 255, 255, 0.10);
-        box-shadow: 0 4px 15px @dark-bc-shadow-large;
+        border-color: rgba(255, 255, 255, 0.09);
+        box-shadow: 0 3px 9px @dark-bc-shadow;
     }
 
     p { margin: 6px 0; }
     p:first-child { margin-top: 0; }
     p:last-child { margin-bottom: 0; }
 
+    // The signature is the popup's focal point: present it as one elevated code panel - a cool inset
+    // lifted off the surface by a hairline border and a 1px top inner-highlight, with comfortable
+    // padding so the syntax tokens have room to breathe. The copy button is anchored to it.
     pre {
-        margin: 6px 0;
-        padding: 8px 10px;
-        background: @bc-panel-bg-alt;
-        border: 1px solid rgba(0, 0, 0, 0.10);
-        border-radius: 5px;
+        position: relative;
+        margin: 1px 0 11px 0;
+        padding: 9px 12px;
+        background: #f2f4f7;
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        border-radius: 6px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
         overflow-x: auto;
         white-space: pre;
         .dark & {
-            background: #1c1c1c;
-            border-color: rgba(255, 255, 255, 0.09);
+            background: #1a1b1f;
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
         }
     }
     pre code {
         font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
         font-size: 12px;
+        line-height: 1.55;
         color: @bc-text-emphasized;
         background: none;
         padding: 0;
         .dark & { color: @dark-bc-text-emphasized; }
+    }
+
+    // Hover-revealed copy button, sitting on the code panel.
+    .lsp-copy-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        padding: 0;
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        border-radius: 5px;
+        background: #ffffff;
+        color: #57606a;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.12s ease, background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+        .dark & {
+            border-color: rgba(255, 255, 255, 0.12);
+            background: #25272e;
+            color: #b9bfc7;
+        }
+    }
+    pre:hover .lsp-copy-btn { opacity: 0.85; }
+    .lsp-copy-btn:hover {
+        opacity: 1;
+        background: #f3f5f8;
+        color: @bc-text-emphasized;
+        .dark & { background: #2f323a; color: @dark-bc-text-emphasized; }
+    }
+    .lsp-copy-btn:focus-visible { opacity: 1; outline: 1px solid @bc-text-link; outline-offset: 1px; }
+    // Copied: swap the glyph for a check in the success accent.
+    .lsp-copy-btn.copied { opacity: 1; }
+    .lsp-copy-btn.copied svg { display: none; }
+    .lsp-copy-btn.copied::after {
+        content: "✓";
+        font-size: 13px;
+        font-weight: 700;
+        color: @accent-success;
     }
     code {
         font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
@@ -2708,17 +2765,19 @@ span.brackets-hints-with-type-details {
     overflow: hidden;
     padding: 5px 11px;
     text-align: left;
-    border-radius: 6px;
+    // Share the completion list / doc popup surface so all three code-hint popups read as one
+    // family (menu bg, @bc-border-radius, 0 3px 9px @bc-shadow).
+    border-radius: @bc-border-radius;
     color: @bc-text;
-    background: @bc-panel-bg;
+    background: @bc-menu-bg;
     border: 1px solid rgba(0, 0, 0, 0.12);
-    box-shadow: 0 4px 15px @bc-shadow-large;
+    box-shadow: 0 3px 9px @bc-shadow;
 
     .dark & {
         color: @dark-bc-text;
-        background: @dark-bc-panel-bg;
-        border-color: rgba(255, 255, 255, 0.12);
-        box-shadow: 0 4px 15px @dark-bc-shadow-large;
+        background: @dark-bc-menu-bg;
+        border-color: rgba(255, 255, 255, 0.09);
+        box-shadow: 0 3px 9px @dark-bc-shadow;
     }
 }
 

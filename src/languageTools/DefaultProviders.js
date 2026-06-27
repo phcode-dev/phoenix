@@ -201,6 +201,47 @@ define(function (require, exports, module) {
         return parts.join("");
     }
 
+    // Minimal copy glyph (stroked, inherits currentColor) for the per-code-block copy button.
+    const COPY_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+        'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<rect x="9" y="9" width="13" height="13" rx="2"/>' +
+        '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    function _copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(text);
+        }
+        return new Promise(function (resolve, reject) {
+            try {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.cssText = "position:fixed;opacity:0;pointer-events:none;";
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand("copy");
+                document.body.removeChild(ta);
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    // Give every code block in the doc popup a hover-revealed copy button.
+    function _addCopyButtons($popup) {
+        $popup.find("pre").each(function () {
+            const $pre = $(this);
+            if ($pre.children(".lsp-copy-btn").length) {
+                return;
+            }
+            $("<button>")
+                .addClass("lsp-copy-btn")
+                .attr({ type: "button", title: Strings.CMD_COPY, "aria-label": Strings.CMD_COPY })
+                .html(COPY_ICON)
+                .appendTo($pre);
+        });
+    }
+
     function _showDocPopup($hint, docHtml) {
         var $menu = $hint.closest(".codehint-menu");
         if (!docHtml || !$menu.length) {
@@ -213,8 +254,29 @@ define(function (require, exports, module) {
         // position:fixed, so it is still placed in viewport coordinates and is never clipped.
         if (!$lspDocPopup || !$lspDocPopup.parent().is($menu)) {
             $lspDocPopup = $("<div>").addClass("lsp-hint-doc-popup").appendTo($menu);
+            // Keep mouse interaction inside the popup from reaching the document-level handlers that
+            // dismiss the completion (Bootstrap's "close dropdown on outside click"), so the user can
+            // select and copy text/code without the popup vanishing. Crucially we do NOT preventDefault
+            // here - the browser's native text selection must keep working.
+            $lspDocPopup
+                .on("mousedown click", function (e) {
+                    e.stopPropagation();
+                })
+                .on("click", ".lsp-copy-btn", function (e) {
+                    e.preventDefault();
+                    const $btn = $(this);
+                    const text = $btn.closest("pre").find("code").text();
+                    if (!text) {
+                        return;
+                    }
+                    _copyText(text).then(function () {
+                        $btn.addClass("copied");
+                        setTimeout(function () { $btn.removeClass("copied"); }, 1200);
+                    }).catch(function () { /* clipboard unavailable - ignore */ });
+                });
         }
         $lspDocPopup.empty().html(docHtml);
+        _addCopyButtons($lspDocPopup);
 
         // Anchor to the actual visible list (ul.dropdown-menu), not the zero-width .codehint-menu
         // positioning element, so the popup sits flush beside the list without overlapping it.
