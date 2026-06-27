@@ -2663,12 +2663,10 @@ span.brackets-hints-with-type-details {
     opacity: 0.55;
 }
 
-// On the highlighted row the side doc popup already names the import source, and the inline
-// signature takes the right slot, so hide the source tag there to keep the row uncluttered.
-// The clubbed "N imports…" tag is the row's whole purpose, so keep it visible when highlighted.
-.codehint-menu.lsp-hints .highlight .lsp-hint-source:not(.lsp-hint-import-group) {
-    display: none;
-}
+// The source-module tag stays visible on the highlighted row too. Auto-imports get no inline
+// signature (their detail is a long "Add import from <module>" that would just clip), so the short
+// module tag is the most useful thing to keep there; in-scope items have no source tag and show
+// their signature instead.
 
 // The clubbed "N imports…" affordance reads as an action, not a source path: not italic, a touch
 // more present than a plain source tag.

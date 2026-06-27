@@ -494,8 +494,10 @@ define(function (require, exports, module) {
             // Inline: the signature for the highlighted row. Re-inject every time (it is
             // idempotent) because the list DOM is rebuilt on each keystroke, which drops a
             // previously-injected signature. resolveCompletion is cached separately (_lspResolved),
-            // so this does not cause extra LSP requests.
-            if (token.detail) {
+            // so this does not cause extra LSP requests. Skip it for auto-imports - their detail is a
+            // long "Add import from <module>" string that just clips uselessly; the short source-module
+            // tag stays visible there instead (see CSS), and the doc popup carries the full import.
+            if (token.detail && !_isAutoImport(token)) {
                 _injectInlineSignature($span, token.detail);
             }
             // Beside the list: the signature header + the (possibly long) documentation.
