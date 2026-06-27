@@ -59,6 +59,44 @@ define(function (require, exports, module) {
     var _inlineScriptLanguages = ["html", "php"],
         phProvider = new JSParameterHintsProvider();
 
+    // --- Defer to the TypeScript language server (vtsls) when it is active ------------------------
+    // When vtsls serves a JS/TS file, Tern is redundant: its hints lose to the server's higher-
+    // priority ones (see the provider registrations at priority 0 below) and its background project
+    // indexing only duplicates work the server already does. So on desktop we resolve a handle to
+    // LSPClient (intentionally kept out of the browser build) and, for any language the server serves,
+    // skip creating a Tern session - ScopeManager then never indexes the project in parallel with the
+    // server. The server starts lazily and can come up *after* Tern already indexed the first file, so
+    // we also listen for its start event to drop that data and re-evaluate the active editor; on stop
+    // we let Tern take over again. In the browser _lspClient stays null and Tern behaves as before.
+    // (We piggy-back on isLintingProviderActive as the "server is up and serving this language"
+    // signal - the same one JSHint uses to defer its linting.)
+    let _lspClient = null;
+    let _reinstallActiveEditorListeners = null;  // assigned at appReady, once the listeners exist
+
+    function _lspServesLanguage(languageId) {
+        return !!(_lspClient && languageId && _lspClient.isLintingProviderActive(languageId));
+    }
+
+    if (Phoenix.isNativeApp) {
+        brackets.getModule(["languageTools/LSPClient"], function (LSPClient) {
+            _lspClient = LSPClient;
+            LSPClient.on(LSPClient.EVENT_LANGUAGE_SERVER_STARTED, function () {
+                // The server may have started after Tern already indexed the first file - drop that
+                // analysis to reclaim the memory, then re-gate the active editor so it defers now.
+                ScopeManager.handleProjectClose();
+                if (_reinstallActiveEditorListeners) {
+                    _reinstallActiveEditorListeners();
+                }
+            });
+            LSPClient.on(LSPClient.EVENT_LANGUAGE_SERVER_STOPPED, function () {
+                // Server gone - let Tern resume handling the active editor.
+                if (_reinstallActiveEditorListeners) {
+                    _reinstallActiveEditorListeners();
+                }
+            });
+        });
+    }
+
     // Define the detectedExclusions which are files that have been detected to cause Tern to run out of control.
     PreferencesManager.definePreference("jscodehints.detectedExclusions", "array", [], {
         description: Strings.DESCRIPTION_DETECTED_EXCLUSIONS
@@ -663,7 +701,18 @@ define(function (require, exports, module) {
                 return;
             }
 
-            if (editor && HintUtils.isSupportedLanguage(LanguageManager.getLanguageForPath(editor.document.file.fullPath).getId())) {
+            const languageId = editor
+                ? LanguageManager.getLanguageForPath(editor.document.file.fullPath).getId()
+                : null;
+
+            // When the TypeScript language server serves this language, defer to it entirely: don't
+            // create a Tern session, so ScopeManager never indexes the project alongside the server.
+            if (_lspServesLanguage(languageId)) {
+                session = null;
+                return;
+            }
+
+            if (editor && HintUtils.isSupportedLanguage(languageId)) {
                 initializeSession(editor, previousEditor);
                 editor
                     .on(HintUtils.eventName("change"), function (event, editor, changeList) {
@@ -844,6 +893,14 @@ define(function (require, exports, module) {
         ProjectManager.on("projectOpen", function () {
             ScopeManager.handleProjectOpen();
         });
+
+        // Lets the LSP start/stop handlers re-evaluate the active editor (gate Tern off when the
+        // server comes up, back on when it goes away) - defined here, where the listeners exist.
+        _reinstallActiveEditorListeners = function () {
+            const activeEditor = EditorManager.getActiveEditor();
+            uninstallEditorListeners(activeEditor);
+            installEditorListeners(activeEditor);
+        };
 
         // immediately install the current editor
         installEditorListeners(EditorManager.getActiveEditor());
