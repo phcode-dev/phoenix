@@ -7,6 +7,7 @@
 - Never include `Co-Authored-By` lines in commit messages.
 
 ## Code Style
+- This is a long-lived, partly legacy codebase — you will see older patterns like `var` in existing files. Leave surrounding legacy style alone unless you're deliberately refactoring it, but **any new code you write must use `const`/`let`, never `var`** (see below). Match the file's other conventions where they don't conflict with these rules.
 - 4-space indentation, never tabs.
 - Always use semicolons.
 - Brace style: (`if (x) {`), single-line blocks allowed.
