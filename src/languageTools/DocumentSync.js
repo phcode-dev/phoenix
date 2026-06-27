@@ -29,7 +29,9 @@
  * `didChange` is debounced. When the server advertises incremental sync, the edits made during
  * the debounce window are accumulated and sent as ordered LSP range edits (so a keystroke ships a
  * tiny payload instead of the whole file); otherwise it falls back to sending the full document
- * text. Any change record that can't be mapped to a range forces a one-off full resync for safety.
+ * text. Before sending, the accumulated edits are replayed on the last-sent text and must reproduce
+ * the current document exactly - if they don't (an unmappable record, or a flush/keystroke ordering
+ * race that already shipped an edit), it sends full text instead, so the server can never diverge.
  * Before any feature request, `flush()` sends the latest pending change synchronously so the
  * server's view matches the cursor.
  *
@@ -84,6 +86,48 @@ define(function (require, exports, module) {
         return changes;
     }
 
+    // Offset (UTF-16 code units) of an LSP position within text. Lines split on "\n", matching what
+    // doc.getText() and the change records use.
+    function _offsetAt(text, pos) {
+        let line = 0, i = 0;
+        while (line < pos.line) {
+            const nl = text.indexOf("\n", i);
+            if (nl === -1) {
+                return text.length;
+            }
+            i = nl + 1;
+            line++;
+        }
+        return i + pos.character;
+    }
+
+    // Replay LSP incremental contentChanges onto a string, in order. Used to verify the accumulated
+    // edits reproduce the current document before we trust them (see _contentChangesFor).
+    function _applyIncremental(text, changes) {
+        for (let i = 0; i < changes.length; i++) {
+            const ch = changes[i];
+            const s = _offsetAt(text, ch.range.start);
+            const e = _offsetAt(text, ch.range.end);
+            text = text.slice(0, s) + ch.text + text.slice(e);
+        }
+        return text;
+    }
+
+    // Choose the contentChanges payload for a didChange: the accumulated incremental edits when the
+    // server wants incremental sync AND replaying them on the last-sent text exactly reproduces the
+    // current document; otherwise a full-text resync. The replay check is the safety net: a
+    // feature-request flush() can race the change listener and send a full update that already
+    // includes a keystroke still sitting in pendingChanges, so replaying it would apply that edit to
+    // the server twice (the classic phantom stray "}"). Any such drift falls back to full text, so the
+    // server can never diverge. Exposed for unit tests.
+    function _contentChangesFor(syncKind, lastSentText, pendingChanges, fullResync, text) {
+        if (!fullResync && syncKind === SYNC_INCREMENTAL && pendingChanges.length &&
+                _applyIncremental(lastSentText, pendingChanges) === text) {
+            return pendingChanges;
+        }
+        return [{ text: text }];
+    }
+
     let initialized = false;
     const registeredClients = [];     // LanguageClient[]
     const tracked = new Map();        // vfsPath -> { client, version, open, pendingTimer }
@@ -133,12 +177,8 @@ define(function (require, exports, module) {
             return;
         }
         const text = doc.getText();
-        let contentChanges;
-        if (!state.fullResync && _syncKind(client) === SYNC_INCREMENTAL && state.pendingChanges.length) {
-            contentChanges = state.pendingChanges; // tiny per-edit payloads
-        } else {
-            contentChanges = [{ text: text }];     // full-document sync (default, or safety fallback)
-        }
+        const contentChanges = _contentChangesFor(
+            _syncKind(client), state.lastSentText, state.pendingChanges, state.fullResync, text);
         state.version += 1;
         state.lastSentText = text;
         state.pendingChanges = [];
@@ -339,4 +379,10 @@ define(function (require, exports, module) {
     exports.openSupportedDocuments = openSupportedDocuments;
     exports.flush = flush;
     exports.clearServer = clearServer;
+
+    // Exposed for unit tests only.
+    exports._toIncrementalChanges = _toIncrementalChanges;
+    exports._applyIncremental = _applyIncremental;
+    exports._contentChangesFor = _contentChangesFor;
+    exports._SYNC_INCREMENTAL = SYNC_INCREMENTAL;
 });
