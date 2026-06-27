@@ -55,10 +55,10 @@ define(function (require, exports, module) {
             CodeInspection = testWindow.brackets.test.CodeInspection;
             QuickViewManager = testWindow.brackets.getModule("features/QuickViewManager");
             CodeInspection.toggleEnabled(true);
-            // Wait until the extension has attempted to start the language server.
-            await awaitsFor(function () {
-                return testWindow._TypeScriptSupportReadyToIntegTest;
-            }, "TypeScript LSP server to start", 30000);
+            // createTestWindowAndRun already waited for the app (and so the extension's appReady, which
+            // wires the lazy-start hooks) to finish loading. The server itself starts lazily on the
+            // first served-language file - the warm-up below opens a .ts, which starts it; waiting for
+            // its diagnostics ("not assignable") is the real readiness signal.
 
             // Warm up tsserver. Its very first request pays a large one-time cost - spawning node,
             // launching vtsls, and loading the TypeScript library + project - which on a slow/loaded
