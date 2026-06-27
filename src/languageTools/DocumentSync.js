@@ -26,9 +26,12 @@
  * disposes it (firing `beforeDocumentDelete`) only when the last editor/working-set reference
  * is gone, so a file open in multiple panes is opened once and closed once.
  *
- * `didChange` is debounced and sends the full document text (simple and correct; incremental
- * sync can be added later). Before any feature request, `flush()` sends the latest pending
- * change synchronously so the server's view matches the cursor.
+ * `didChange` is debounced. When the server advertises incremental sync, the edits made during
+ * the debounce window are accumulated and sent as ordered LSP range edits (so a keystroke ships a
+ * tiny payload instead of the whole file); otherwise it falls back to sending the full document
+ * text. Any change record that can't be mapped to a range forces a one-off full resync for safety.
+ * Before any feature request, `flush()` sends the latest pending change synchronously so the
+ * server's view matches the cursor.
  *
  * @module languageTools/DocumentSync
  */
@@ -39,6 +42,47 @@ define(function (require, exports, module) {
         EditorManager = require("editor/EditorManager");
 
     const CHANGE_DEBOUNCE_MS = 400;
+
+    // LSP TextDocumentSyncKind values we care about.
+    const SYNC_FULL = 1,
+        SYNC_INCREMENTAL = 2;
+
+    // The sync mode the server asked for. `textDocumentSync` is either a number or an object with a
+    // `change` field; anything that isn't explicitly Incremental is treated as full sync (the safe,
+    // always-correct default - e.g. a server that omits the capability).
+    function _syncKind(client) {
+        const tds = client && client.capabilities && client.capabilities.textDocumentSync;
+        if (tds === undefined || tds === null) {
+            return SYNC_FULL;
+        }
+        const kind = (typeof tds === "object") ? tds.change : tds;
+        return (kind === SYNC_INCREMENTAL) ? SYNC_INCREMENTAL : SYNC_FULL;
+    }
+
+    // Map a Phoenix/CodeMirror change list to LSP incremental contentChanges. CodeMirror delivers the
+    // batch in order, each record's {from,to} already relative to the text after the previous records
+    // applied - which is exactly how LSP replays contentChanges - so a straight 1:1 map is correct.
+    // Returns null if any record can't be mapped, signalling the caller to fall back to a full resync.
+    function _toIncrementalChanges(changeList) {
+        if (!changeList || !changeList.length) {
+            return null;
+        }
+        const changes = [];
+        for (let i = 0; i < changeList.length; i++) {
+            const c = changeList[i];
+            if (!c || !c.from || !c.to || !c.text) {
+                return null;
+            }
+            changes.push({
+                range: {
+                    start: { line: c.from.line, character: c.from.ch },
+                    end: { line: c.to.line, character: c.to.ch }
+                },
+                text: c.text.join("\n")
+            });
+        }
+        return changes;
+    }
 
     let initialized = false;
     const registeredClients = [];     // LanguageClient[]
@@ -72,7 +116,11 @@ define(function (require, exports, module) {
     function _open(client, doc) {
         const vfsPath = doc.file.fullPath;
         const text = doc.getText();
-        const state = { client: client, version: 1, open: true, pendingTimer: null, lastSentText: text };
+        const state = {
+            client: client, version: 1, open: true, pendingTimer: null, lastSentText: text,
+            pendingChanges: [],  // accumulated LSP incremental edits since the last send
+            fullResync: false    // set when an unmappable change forces a full-text send
+        };
         tracked.set(vfsPath, state);
         client.notifyDidOpen(client.uriForPath(vfsPath), _lspLanguageId(client, doc), state.version, text);
     }
@@ -85,9 +133,17 @@ define(function (require, exports, module) {
             return;
         }
         const text = doc.getText();
+        let contentChanges;
+        if (!state.fullResync && _syncKind(client) === SYNC_INCREMENTAL && state.pendingChanges.length) {
+            contentChanges = state.pendingChanges; // tiny per-edit payloads
+        } else {
+            contentChanges = [{ text: text }];     // full-document sync (default, or safety fallback)
+        }
         state.version += 1;
         state.lastSentText = text;
-        client.notifyDidChange(client.uriForPath(vfsPath), state.version, text);
+        state.pendingChanges = [];
+        state.fullResync = false;
+        client.notifyDidChange(client.uriForPath(vfsPath), state.version, contentChanges);
     }
 
     function _close(doc) {
@@ -103,7 +159,7 @@ define(function (require, exports, module) {
         tracked.delete(vfsPath);
     }
 
-    function _onDocumentChange(event, doc) {
+    function _onDocumentChange(event, doc, changeList) {
         const client = _clientForDoc(doc);
         if (!client) {
             return;
@@ -112,6 +168,20 @@ define(function (require, exports, module) {
         if (!state || !state.open) {
             _open(client, doc);
             return;
+        }
+        // Accumulate the edits so the debounced send (or a flush() before a feature request) can
+        // replay them as incremental ranges. If the server wants full sync, or a record can't be
+        // mapped, fall back to a full-text resync for this cycle.
+        if (!state.fullResync && _syncKind(client) === SYNC_INCREMENTAL) {
+            const mapped = _toIncrementalChanges(changeList);
+            if (mapped) {
+                for (let i = 0; i < mapped.length; i++) {
+                    state.pendingChanges.push(mapped[i]);
+                }
+            } else {
+                state.fullResync = true;
+                state.pendingChanges = [];
+            }
         }
         if (state.pendingTimer) {
             clearTimeout(state.pendingTimer);

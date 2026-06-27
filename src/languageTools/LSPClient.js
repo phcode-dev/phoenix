@@ -303,10 +303,13 @@ define(function (require, exports, module) {
             textDocument: { uri: uri, languageId: languageId, version: version, text: text }
         });
     };
-    LanguageClient.prototype.notifyDidChange = function (uri, version, text) {
+    // `contentChanges` is the LSP array the caller (DocumentSync) builds: either a single full-text
+    // entry [{ text }] for full sync, or an ordered list of incremental edits [{ range, text }, ...]
+    // when the server advertises incremental sync.
+    LanguageClient.prototype.notifyDidChange = function (uri, version, contentChanges) {
         return this._notify("textDocument/didChange", {
             textDocument: { uri: uri, version: version },
-            contentChanges: [{ text: text }]
+            contentChanges: contentChanges
         });
     };
     LanguageClient.prototype.notifyDidClose = function (uri) {

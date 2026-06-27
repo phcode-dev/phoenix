@@ -152,6 +152,90 @@ define(function (require, exports, module) {
             expect(panelText().toLowerCase().includes("jshint")).toBe(false);
         }, 45000);
 
+        // ----- incremental document sync ----------------------------------------------------------
+
+        // DocumentSync sends incremental range edits (not the whole file) when the server advertises
+        // incremental sync. These two tests use the server's OWN diagnostics as the sync oracle: a
+        // type error can only appear or clear exactly on cue if the server's copy of the document
+        // matches the editor after every edit. If incremental replay ever drifted, the error would
+        // land on the wrong text (or not at all), failing the assertion. incremental.ts is mutated in
+        // memory only and force-closed without saving, so the on-disk fixture stays clean.
+
+        function inspectionClean() {
+            return $("#status-inspection").hasClass("inspection-valid");
+        }
+
+        it("keeps the server in sync across many incremental edits", async function () {
+            await _openInProject("ts/", "incremental.ts");
+            const editor = EditorManager.getCurrentFullEditor();
+            const doc = editor.document;
+            await awaitsFor(inspectionClean, "incremental.ts to start clean", 30000);
+
+            // 1) Many single-character inserts - each a separate change record - appending a valid
+            // statement. Fed only these incremental edits, the server must still parse it as clean.
+            const insert = "\nlet d: number = 4;";
+            for (let i = 0; i < insert.length; i++) {
+                const line = editor.lineCount() - 1;
+                doc.replaceRange(insert[i], { line: line, ch: editor.getLine(line).length });
+            }
+            await awaitsFor(inspectionClean, "still clean after many single-char inserts", 30000);
+
+            // 2) A whole-line replacement (non-empty range) that introduces a type error on line 0.
+            doc.replaceRange('let a: number = "oops";',
+                { line: 0, ch: 0 }, { line: 0, ch: editor.getLine(0).length });
+            await awaitsFor(function () {
+                return panelText().includes("not assignable");
+            }, "type error after a mid-document line replacement", 30000);
+
+            // 3) Fix it with another replacement -> the error must clear.
+            doc.replaceRange("let a: number = 0;",
+                { line: 0, ch: 0 }, { line: 0, ch: editor.getLine(0).length });
+            await awaitsFor(inspectionClean, "error clears after the fix", 30000);
+
+            // 4) A multi-line deletion (non-empty range, empty text): drop line 1 entirely. Still valid.
+            doc.replaceRange("", { line: 1, ch: 0 }, { line: 2, ch: 0 });
+            await awaitsFor(inspectionClean, "still clean after a deletion", 30000);
+
+            // Discard the in-memory edits so the fixture is pristine for re-runs / other tests.
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                "close incremental.ts");
+        }, 90000);
+
+        it("keeps the server in sync for a batched multi-cursor edit", async function () {
+            await _openInProject("ts/", "incremental.ts");
+            const editor = EditorManager.getCurrentFullEditor();
+            await awaitsFor(inspectionClean, "incremental.ts to start clean", 30000);
+
+            // Two cursors on the SAME line, edited in one operation - the order-sensitive case, since
+            // the first replacement shifts the columns of the second. CodeMirror applies and reports
+            // the batch so that replaying the records in array order reproduces the result; this
+            // confirms our 1:1 change-record -> LSP-range map honours that ordering.
+            // "let a: number = 0;" -> "let abc: number = \"hello\";"
+            editor.setSelections([
+                { start: { line: 0, ch: 4 }, end: { line: 0, ch: 5 } },     // the identifier `a`
+                { start: { line: 0, ch: 16 }, end: { line: 0, ch: 17 } }    // the literal `0`
+            ]);
+            editor._codeMirror.replaceSelections(["abc", '"hello"']);
+            // Editor side is correct by construction; the assertion that matters is the server agreeing
+            // - it can only report the error if it received the same text.
+            expect(editor.getLine(0)).toBe('let abc: number = "hello";');
+            await awaitsFor(function () {
+                return panelText().includes("not assignable");
+            }, "type error after the multi-cursor edit", 30000);
+
+            // Revert both cursors in one operation -> the error must clear (sync holds the other way).
+            editor.setSelections([
+                { start: { line: 0, ch: 4 }, end: { line: 0, ch: 7 } },     // `abc`
+                { start: { line: 0, ch: 18 }, end: { line: 0, ch: 25 } }    // `"hello"`
+            ]);
+            editor._codeMirror.replaceSelections(["a", "0"]);
+            expect(editor.getLine(0)).toBe("let a: number = 0;");
+            await awaitsFor(inspectionClean, "error clears after reverting the multi-cursor edit", 30000);
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                "close incremental.ts");
+        }, 90000);
+
         // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------
 
         // Query the hover popover at a position the same way QuickViewManager does internally.
