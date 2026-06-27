@@ -40,7 +40,28 @@ define(function (require, exports, module) {
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker"),
         Metrics            = brackets.getModule("utils/Metrics"),
+        LanguageManager    = brackets.getModule("language/LanguageManager"),
         ESLint       = require("./ESLint");
+
+    // JSHint defers to the TypeScript language service (vtsls) when it is linting the file (see
+    // canInspect). Its module (languageTools/LSPClient) is loaded lazily and only on desktop - it's
+    // intentionally kept out of the browser build - so resolve a handle there to query its state. When
+    // a server starts/stops, LSPClient re-runs inspection itself, so JSHint doesn't track that here. In
+    // the browser there is no LSP, so _lspClient stays null and JSHint keeps linting as before.
+    let _lspClient = null;
+    if (Phoenix.isNativeApp) {
+        brackets.getModule(["languageTools/LSPClient"], function (LSPClient) {
+            _lspClient = LSPClient;
+        });
+    }
+
+    function _lspLintingActive(fullPath) {
+        if (!_lspClient) {
+            return false;
+        }
+        const language = LanguageManager.getLanguageForPath(fullPath);
+        return !!language && _lspClient.isLintingProviderActive(language.getId());
+    }
 
     if(Phoenix.isTestWindow) {
         IndexingWorker.on("JsHint_extension_Loaded", ()=>{
@@ -269,9 +290,12 @@ define(function (require, exports, module) {
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
             return !prefs.get(PREFS_JSHINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
-                && (isJSHintConfigActive() || !ESLint.isESLintActive());
-            // if there is no linter, then we use jsHint as the default linter as it works in browser and native apps.
-            // remove ESLint.isESLintActive() once we add typescript language service that supports browser.
+                && (isJSHintConfigActive()
+                    || (!ESLint.isESLintActive() && !_lspLintingActive(fullPath)));
+            // JSHint is the default JS linter only when nothing richer is linting the file: it defers
+            // to ESLint and to the TypeScript language service (vtsls, desktop). It still runs when a
+            // .jshintrc opts in explicitly, and as a fallback when neither is active (e.g. the browser,
+            // where there is no LSP, or when the language server isn't running).
         }
     });
 
