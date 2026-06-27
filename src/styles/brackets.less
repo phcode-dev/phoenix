@@ -2477,25 +2477,28 @@ a, img {
     p:first-child { margin-top: 0; }
     p:last-child { margin-bottom: 0; }
 
-    // The signature is the popup's focal point: present it as one elevated code panel - a cool inset
-    // lifted off the surface by a hairline border and a 1px top inner-highlight, with comfortable
-    // padding so the syntax tokens have room to breathe. The copy button is anchored to it.
+    // Code blocks - the top signature and any fenced blocks inside the docs - stay cohesive with the
+    // popup surface rather than being a separate-coloured panel: the fill is a faint tint *derived
+    // from* the surface (a low-opacity black/white wash, so it reads the same in both themes) with a
+    // hairline border and soft corners. Distinct enough to register as a code region, quiet enough
+    // not to look like a pasted-in card. Copy button floats at its top-right.
     pre {
         position: relative;
-        margin: 1px 0 11px 0;
-        padding: 9px 12px;
-        background: #f2f4f7;
-        border: 1px solid rgba(0, 0, 0, 0.07);
+        margin: 6px 0 10px 0;
+        padding: 7px 10px;
+        background: rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.10);
         border-radius: 6px;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        box-shadow: none;
         overflow-x: auto;
         white-space: pre;
         .dark & {
-            background: #1a1b1f;
-            border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.10);
         }
     }
+    // The signature is the very first block; no top margin so it sits snug under the popup's top edge.
+    pre:first-child { margin-top: 0; }
     pre code {
         font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
         font-size: 12px;
@@ -2506,36 +2509,36 @@ a, img {
         .dark & { color: @dark-bc-text-emphasized; }
     }
 
-    // Hover-revealed copy button, sitting on the code panel.
+    // Hover-revealed copy button, floating over the flush code block. Borderless and transparent at
+    // rest so it doesn't read as a chip on the bare surface; it grows a faint pill only on its own
+    // hover.
     .lsp-copy-btn {
         position: absolute;
-        top: 5px;
-        right: 5px;
+        top: 3px;
+        right: 3px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         width: 22px;
         height: 22px;
         padding: 0;
-        border: 1px solid rgba(0, 0, 0, 0.10);
+        border: 0;
         border-radius: 5px;
-        background: #ffffff;
+        background: none;
         color: #57606a;
         cursor: pointer;
         opacity: 0;
-        transition: opacity 0.12s ease, background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+        transition: opacity 0.12s ease, background 0.12s ease, color 0.12s ease;
         .dark & {
-            border-color: rgba(255, 255, 255, 0.12);
-            background: #25272e;
             color: #b9bfc7;
         }
     }
-    pre:hover .lsp-copy-btn { opacity: 0.85; }
+    pre:hover .lsp-copy-btn { opacity: 0.7; }
     .lsp-copy-btn:hover {
         opacity: 1;
-        background: #f3f5f8;
+        background: rgba(0, 0, 0, 0.06);
         color: @bc-text-emphasized;
-        .dark & { background: #2f323a; color: @dark-bc-text-emphasized; }
+        .dark & { background: rgba(255, 255, 255, 0.14); color: @dark-bc-text-emphasized; }
     }
     .lsp-copy-btn:focus-visible { opacity: 1; outline: 1px solid @bc-text-link; outline-offset: 1px; }
     // Copied: swap the glyph for a check in the success accent.
