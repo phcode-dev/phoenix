@@ -45,7 +45,7 @@ async function setLocaleStrings(localStrings) {
  */
 async function getPhoenixBinaryVersion(phoenixBinPath) {
     return new Promise((resolve, reject)=>{
-        exec(`"${phoenixBinPath}" -v`, (error, stdout, stderr) => {
+        execFile(phoenixBinPath, ['-v'], (error, stdout, stderr) => {
             if (error || stderr) {
                 reject(`exec error: ${error||stderr}`);
                 return;
