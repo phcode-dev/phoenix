@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     require("spec/CSSUtils-integ-test");
     require("spec/Document-test");
     require("spec/Document-integ-test");
+    require("spec/DocumentSync-test");
     require("spec/Editor-test");
     require("spec/EditorRedraw-test");
     require("spec/EditorCommandHandlers-test");
