@@ -742,6 +742,16 @@ define(function (require, exports, module) {
         if (!client) {
             return;
         }
+        // Resolve the target root FIRST: a redundant call for the same root must be a cheap no-op and
+        // must never restart (this can be called often - e.g. once per editor switch). This check has
+        // to precede the restart fallbacks below, or a same-root call to a server that lacks live
+        // workspace-folder support would pointlessly recycle the process.
+        const newVfsPath = (client.config.rootUriProvider && client.config.rootUriProvider()) || _projectRootPath();
+        const newUri = newVfsPath ? pathToServerUri(newVfsPath) : null;
+        const oldUri = client.rootUri || null;
+        if (newUri === oldUri) {
+            return; // same workspace - nothing to do
+        }
         // Not up yet (e.g. the project switched before init finished) - a (re)start picks up the
         // current root on its own.
         if (!client.capabilities) {
@@ -753,12 +763,6 @@ define(function (require, exports, module) {
         const supportsLiveChange = !!(wf && wf.supported && wf.changeNotifications);
         if (!supportsLiveChange) {
             return restartLanguageServer(serverId);
-        }
-        const newVfsPath = (client.config.rootUriProvider && client.config.rootUriProvider()) || _projectRootPath();
-        const newUri = newVfsPath ? pathToServerUri(newVfsPath) : null;
-        const oldUri = client.rootUri || null;
-        if (newUri === oldUri) {
-            return; // same workspace - nothing to do
         }
         const conn = await getConnector();
         const added = newUri ? [{ uri: newUri, name: FileUtils.getBaseName(newVfsPath) }] : [];

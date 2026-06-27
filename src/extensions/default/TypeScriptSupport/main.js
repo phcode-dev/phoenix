@@ -33,6 +33,7 @@ define(function (require, exports, module) {
     const AppInit = brackets.getModule("utils/AppInit"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         DocumentManager = brackets.getModule("document/DocumentManager"),
+        EditorManager = brackets.getModule("editor/EditorManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector"),
         CodeIntelligence = require("./CodeIntelligence");
@@ -203,8 +204,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     function canRun() {
-        return typeof Phoenix !== "undefined" && Phoenix.isNativeApp &&
-            NodeConnector.isNodeAvailable && NodeConnector.isNodeAvailable();
+        return Phoenix.isNativeApp && NodeConnector.isNodeAvailable();
     }
 
     /**
@@ -252,10 +252,64 @@ define(function (require, exports, module) {
         }
     }
 
-    // Begin loading the LSP framework as soon as the (desktop-only) extension loads - the
-    // reliable moment for module loading - so it is ready by the time start() runs.
+    // Begin loading the LSP framework as soon as the (desktop-only) extension loads - the reliable
+    // moment for module loading - so it is ready by the time we first need it. This only loads the
+    // module; it does not spawn the server (that happens lazily, on the first served-language file).
     if (canRun()) {
         loadLSPClient();
+    }
+
+    /**
+     * True when the active editor holds a language this server handles (JS/TS/JSX/TSX).
+     * @return {boolean}
+     */
+    function _isServedLanguageActive() {
+        const editor = EditorManager.getActiveEditor();
+        return !!(editor && SUPPORTED_LANGUAGES.indexOf(editor.getLanguageForSelection().getId()) !== -1);
+    }
+
+    let starting = false;
+    let pendingRepoint = false;     // a project switch happened; repoint once a served file is active there
+    let initErrorReported = false;  // start() is retried lazily, so report a failure to telemetry only once
+
+    /**
+     * Lazily start the language server when a served-language file is active, and - only right after a
+     * project switch - repoint the running server at the new root. Mirrors VS Code's onLanguage model:
+     * a project with no JS/TS file opened never spawns vtsls; switching to a non-JS project leaves the
+     * idle server where it was; and plain file switches within a project never touch the
+     * workspace-folder / restart machinery (so they can't interfere with a crash auto-restart).
+     */
+    function _ensureServerForActiveEditor() {
+        if (!canRun() || !_isServedLanguageActive()) {
+            return;
+        }
+
+        // Not running yet: lazily start it (a fresh start already points at the current project root).
+        if (!registered) {
+            if (starting) {
+                return; // a start kicked off by a previous activeEditorChange is still in flight
+            }
+            starting = true;
+            pendingRepoint = false;
+            start().catch(function (err) {
+                if (!initErrorReported) {
+                    initErrorReported = true;
+                    window.logger && window.logger.reportError(err, "[TypeScriptSupport] LSP init failed");
+                }
+            }).finally(function () {
+                starting = false;
+            });
+            return;
+        }
+
+        // Running: repoint at the current project, but only when a project switch armed it - never on
+        // ordinary file switches.
+        if (pendingRepoint) {
+            pendingRepoint = false;
+            loadLSPClient().then(function (LSPClient) {
+                LSPClient.changeWorkspaceRoot(SERVER_ID);
+            });
+        }
     }
 
     AppInit.appReady(function () {
@@ -263,12 +317,6 @@ define(function (require, exports, module) {
             return;
         }
         _refreshCheckJs();
-        start().catch(function (err) {
-            console.error("[TypeScriptSupport] init failed", err && (err.message || err));
-        }).finally(function () {
-            // Signal for integration tests that the server start has been attempted/settled.
-            window._TypeScriptSupportReadyToIntegTest = true;
-        });
 
         // Offer project-wide code intelligence (creates a default ts/jsconfig) when a JS/TS file is
         // opened in a project that has no config yet. Projects that already carry one are silent.
@@ -283,17 +331,20 @@ define(function (require, exports, module) {
             }
         });
 
-        // Re-point the server at the new workspace root when the project changes, and re-evaluate
-        // whether the new project type-checks its JS. This uses workspace/didChangeWorkspaceFolders
-        // (no process restart, so no tsserver cold start) and only falls back to a full restart for
-        // servers that don't support live workspace-folder changes.
+        // Lazily start / repoint the server from the active editor's language (VS Code's onLanguage
+        // model). Evaluate the editor already open at startup (session restore), then track switches.
+        EditorManager.on("activeEditorChange", _ensureServerForActiveEditor);
+        _ensureServerForActiveEditor();
+
+        // On project switch: re-evaluate checkJs and arm a one-shot repoint. The actual repoint
+        // (workspace/didChangeWorkspaceFolders, no restart) happens the next time a served-language
+        // file is active - here if one already is, otherwise on the activeEditorChange as the new
+        // project's file opens. Plain file switches within a project never set this, so they don't
+        // repoint.
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, function () {
             _refreshCheckJs();
-            if (registered) {
-                loadLSPClient().then(function (LSPClient) {
-                    LSPClient.changeWorkspaceRoot(SERVER_ID);
-                });
-            }
+            pendingRepoint = true;
+            _ensureServerForActiveEditor();
         });
 
         // Pick up a tsconfig/jsconfig being added, edited, or removed at the project root.
