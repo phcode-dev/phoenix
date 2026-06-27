@@ -64,7 +64,28 @@ define(function (require, exports, module) {
         JumpToDefManager        = require("features/JumpToDefManager"),
         FindReferencesManager   = require("features/FindReferencesManager"),
         QuickViewManager        = require("features/QuickViewManager"),
-        CodeInspection          = require("language/CodeInspection");
+        CodeInspection          = require("language/CodeInspection"),
+        EventDispatcher         = require("utils/EventDispatcher");
+
+    EventDispatcher.makeEventDispatcher(exports);
+
+    /**
+     * Fired when a language server has finished (re)starting and is now serving/linting its languages.
+     * Handler args: `{ serverId, languages }`. Exposed for extensions that want to react to a server
+     * becoming available - it's loaded lazily, so they can't observe its startup directly.
+     * @const {string}
+     */
+    const EVENT_LANGUAGE_SERVER_STARTED = "languageServerStarted";
+
+    /**
+     * Fired when a language server's process has stopped. Note a normal project switch does NOT stop
+     * the server - it is repointed in place via workspace/didChangeWorkspaceFolders. This fires only
+     * when the process is actually recycled: the restart fallback (for servers that can't change
+     * workspace folders live) and manual restarts, each followed by EVENT_LANGUAGE_SERVER_STARTED once
+     * back up. Handler args: `{ serverId, languages }`.
+     * @const {string}
+     */
+    const EVENT_LANGUAGE_SERVER_STOPPED = "languageServerStopped";
 
     const LSP_CONNECTOR_ID = "ph-lsp";
     // Relative path required on the node side (resolved from src-node/utils.js). Lazy-loads the
@@ -225,6 +246,7 @@ define(function (require, exports, module) {
             }
             _startAndInit(client).then(function () {
                 client._crashCount = 0;
+                _announceServerStarted(client);
                 DocumentSync.openSupportedDocuments(client);
             }).catch(function (err) {
                 console.error("[LSP] auto-restart failed", client.serverId, err && (err.message || err));
@@ -623,6 +645,21 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Announce that `client`'s server has (re)started and is now serving its languages: notify
+     * listeners (EVENT_LANGUAGE_SERVER_STARTED) and re-run inspection so any linter that defers to a
+     * language server (e.g. JSHint -> the TS service) drops its now-redundant results - even on a
+     * clean file, where the server's empty publishDiagnostics wouldn't trigger a re-run. Called from
+     * every path that brings a server up: initial registration, restart, and crash auto-restart.
+     */
+    function _announceServerStarted(client) {
+        exports.trigger(EVENT_LANGUAGE_SERVER_STARTED, {
+            serverId: client.serverId,
+            languages: client.languages
+        });
+        CodeInspection.requestRun();
+    }
+
+    /**
      * Register and start a language server, wiring all providers into the editor.
      *
      * @param {Object} config
@@ -654,6 +691,7 @@ define(function (require, exports, module) {
             DocumentSync.openSupportedDocuments(client);
             DocumentHighlight.init();
             DocumentHighlight.registerClient(client);
+            _announceServerStarted(client);
             return client;
         } catch (err) {
             console.error("[LSP] failed to start server", config.serverId, err && (err.message || err));
@@ -745,6 +783,7 @@ define(function (require, exports, module) {
         await stopServerProcess(client);
         try {
             await _startAndInit(client);
+            _announceServerStarted(client);
             DocumentSync.openSupportedDocuments(client);
             // The find-references command's enabled state is computed on file switch; on a project
             // switch that happens while the server is still restarting (capabilities not yet
@@ -782,6 +821,29 @@ define(function (require, exports, module) {
         }
         await conn.execPeer("stopServer", { serverId: client.serverId });
         client._stopping = false;
+        exports.trigger(EVENT_LANGUAGE_SERVER_STOPPED, {
+            serverId: client.serverId,
+            languages: client.languages
+        });
+    }
+
+    /**
+     * Whether a successfully-initialised language server is currently providing diagnostics
+     * (linting) for the given Phoenix language id. Gated on `capabilities` - which is only set
+     * after a successful `initialize` - so a server that failed to start does not suppress a
+     * fallback linter (e.g. JSHint). Returns false in the browser, where no servers are registered.
+     *
+     * @param {string} languageId - Phoenix language id (e.g. "javascript")
+     * @return {boolean}
+     */
+    function isLintingProviderActive(languageId) {
+        for (const client of clients.values()) {
+            if (client.lintingProvider && client.capabilities &&
+                    client.languages && client.languages.indexOf(languageId) !== -1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     exports.registerLanguageServer = registerLanguageServer;
@@ -789,4 +851,7 @@ define(function (require, exports, module) {
     exports.changeWorkspaceRoot = changeWorkspaceRoot;
     exports.pathToServerUri = pathToServerUri;
     exports.serverUriToVfsUri = serverUriToVfsUri;
+    exports.isLintingProviderActive = isLintingProviderActive;
+    exports.EVENT_LANGUAGE_SERVER_STARTED = EVENT_LANGUAGE_SERVER_STARTED;
+    exports.EVENT_LANGUAGE_SERVER_STOPPED = EVENT_LANGUAGE_SERVER_STOPPED;
 });

@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone, path, jsPromise */
 
 define(function (require, exports, module) {
 
@@ -124,6 +124,33 @@ define(function (require, exports, module) {
             }, "plain JS inspection to settle with no problems", 30000);
             expect(panelText().includes(IMPLICIT_ANY_MESSAGE)).toBe(false);
         }, 75000);
+
+        it("defers JSHint to the language server in a plain JS project", async function () {
+            // The language server is the JS linter on desktop, so the legacy JSHint linter must defer
+            // to it: the file below would draw a "Missing semicolon. jshint (W033)" nag if JSHint ran,
+            // but it must not appear. (No .jshintrc, so JSHint isn't explicitly opted in.)
+            const FileSystem = testWindow.brackets.test.FileSystem;
+            const LSPClient = await new Promise(function (resolve) {
+                testWindow.brackets.getModule(["languageTools/LSPClient"], resolve);
+            });
+            // A plain JS project (js-plain has no jsconfig/tsconfig). Add a file JSHint would flag.
+            const projectPath = await SpecRunnerUtils.getTempTestDirectory(testRootSpec + "js-plain");
+            await jsPromise(SpecRunnerUtils.createTextFile(
+                path.join(projectPath, "missing-semicolon.js"), 'console.log("hello")\n', FileSystem));
+            await SpecRunnerUtils.loadProjectInTestWindow(projectPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["missing-semicolon.js"]),
+                "open missing-semicolon.js");
+
+            // The deferral only holds while the server is the active JS linter - wait for that.
+            await awaitsFor(function () {
+                return LSPClient.isLintingProviderActive("javascript");
+            }, "the language server to be the active JS linter", 30000);
+            // The file is valid JS, so the server reports nothing; let inspection settle clean.
+            await awaitsFor(function () {
+                return $("#status-inspection").hasClass("inspection-valid");
+            }, "inspection to settle with no problems", 30000);
+            expect(panelText().toLowerCase().includes("jshint")).toBe(false);
+        }, 45000);
 
         // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------
 

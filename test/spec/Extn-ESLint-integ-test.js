@@ -147,17 +147,31 @@ define(function (require, exports, module) {
             await _waitForProblemsPanelVisible(true);
         }
 
-        it("should show JSHint in desktop app if ESLint load failed for project", async function () {
+        // Wait until the TypeScript language server is the active JS linter. On desktop JSHint defers
+        // to it, so assertions about JSHint being absent are only meaningful once it's up.
+        async function _waitForLSPLintingJS() {
+            const LSPClient = await new Promise(function (resolve) {
+                testWindow.brackets.getModule(["languageTools/LSPClient"], resolve);
+            });
+            await awaitsFor(function () {
+                return LSPClient.isLintingProviderActive("javascript");
+            }, "the language server to be linting JavaScript", 30000);
+        }
+
+        it("should defer JSHint to the LSP even when ESLint load failed (desktop)", async function () {
             await SpecRunnerUtils.parkProject();
             await _openSimpleES6Project();
+            // ESLint can't load (no node_modules) -> it surfaces the npm-install message...
             await awaitsFor(async ()=>{
                 await _fileSwitcherroForESLintFailDetection();
                 return $("#problems-panel").text().includes(Strings.DESCRIPTION_ESLINT_DO_NPM_INSTALL);
             }, "ESLint error to be shown", 3000, 300);
-            await awaitsFor(()=>{
-                return $("#problems-panel").text().includes(JSHintErrorES6Error_js);
-            }, "JShint error to be shown");
-        }, 5000);
+            // ...but JSHint does NOT step in: on desktop the language server is the JS linter, so
+            // JSHint defers to it instead of being the ESLint-failure fallback.
+            await _waitForLSPLintingJS();
+            await awaits(100); // give JSHint time to run if it were going to
+            expect($("#problems-panel").text().includes("JSHint")).toBeFalse();
+        }, 40000);
 
         describe("ES6 project", function () {
             let es6ProjectPath;
@@ -180,13 +194,15 @@ define(function (require, exports, module) {
                 await _loadAndValidateES6Project();
             }, 30000);
 
-            it("should show ESLint and JSHint in desktop app for es6 project or below", async function () {
+            it("should show ESLint failure but defer JSHint to the LSP (es6 project, desktop)", async function () {
                 await _loadAndValidateES6Project();
-                await awaitsFor(async ()=>{
-                    await _fileSwitcherroForESLintFailDetection();
-                    return $("#problems-panel").text().includes(JSHintErrorES6Error_js);
-                }, "JShint error to be shown", 3000, 300);
-            }, 30000);
+                // ESLint v6 is unsupported, so ESLint surfaces its "load failed" message - but JSHint
+                // defers to the language server (the JS linter on desktop) rather than stepping in.
+                await _fileSwitcherroForESLintFailDetection();
+                await _waitForLSPLintingJS();
+                await awaits(100);
+                expect($("#problems-panel").text().includes("JSHint")).toBeFalse();
+            }, 40000);
         });
 
         describe("ES7 and JSHint project", function () {
