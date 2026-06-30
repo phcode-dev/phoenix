@@ -48,11 +48,16 @@ define(function (require, exports, module) {
     const PROVIDER_PRIORITY = 100;
 
     // Doc-comment styles. The `/** */` syntax is shared, but the convention differs:
-    //   jsdoc  - @param {type} name / @returns {type}            (JS/TS family)
+    //   jsdoc  - @param {type} name / @returns {type}            (JavaScript: JSDoc IS the type system)
+    //   tsdoc  - @param name / @returns                          (TypeScript: types live in the
+    //                                                             signature, so a JSDoc {type} is
+    //                                                             redundant and TS flags it -
+    //                                                             "JSDoc types may be moved to TS types")
     //   phpdoc - @param type $name / @return type                (PHP: type before the $name)
     //   tagdoc - @param name / @return                           (Javadoc & Doxygen: no {type} braces)
     //   pydoc  - """ ... Args:/Returns: ... """                  (Python docstring)
     const STYLE_JSDOC = "jsdoc",
+        STYLE_TSDOC   = "tsdoc",
         STYLE_PHPDOC  = "phpdoc",
         STYLE_TAGDOC  = "tagdoc",
         STYLE_PYDOC   = "pydoc";
@@ -63,9 +68,9 @@ define(function (require, exports, module) {
     // intentionally absent: its doc comments are `///` markdown (# Arguments), not `/** @param */`.
     const LANGUAGES = {
         javascript: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
-        typescript: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
+        typescript: { style: STYLE_TSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
         jsx: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
-        tsx: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
+        tsx: { style: STYLE_TSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
         php: { style: STYLE_PHPDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_PHPDOC" },
         java: { style: STYLE_TAGDOC, params: "last", opener: "block", label: "DOC_COMMENT_ADD_JAVADOC" },
         c: { style: STYLE_TAGDOC, params: "last", opener: "block", label: "DOC_COMMENT_ADD_DOXYGEN" },
@@ -401,21 +406,25 @@ define(function (require, exports, module) {
         return out.join("\n");
     }
 
-    // Javadoc / Doxygen: `@param name`, `@return` - no {type} braces (types come from the signature),
-    // and the singular `@return`. The only tabstop is the summary; param names are pre-filled.
-    function _buildTagDoc(sig, indent) {
-        const star = indent + " * ";
-        const out = ["/**", star + "${1:" + _escDesc(Strings.DOC_COMMENT_SUMMARY) + "}"];
-        if (sig && !sig.isClass) {
-            sig.params.forEach(function (p) {
-                out.push(star + "@param " + _esc(p.name));
-            });
-            if (sig.hasReturn) {
-                out.push(star + "@return");
+    // No-{type} block comment: `@param name` + a return tag, no {type} braces because the types live
+    // in the signature. Used by Javadoc/Doxygen (returnTag `@return`) and TypeScript (`@returns` - a
+    // JSDoc {type} in a .ts file is redundant and TS flags it). The only tabstop is the summary;
+    // param names are pre-filled.
+    function _buildTagDoc(returnTag) {
+        return function (sig, indent) {
+            const star = indent + " * ";
+            const out = ["/**", star + "${1:" + _escDesc(Strings.DOC_COMMENT_SUMMARY) + "}"];
+            if (sig && !sig.isClass) {
+                sig.params.forEach(function (p) {
+                    out.push(star + "@param " + _esc(p.name));
+                });
+                if (sig.hasReturn) {
+                    out.push(star + returnTag);
+                }
             }
-        }
-        out.push(indent + " */");
-        return out.join("\n");
+            out.push(indent + " */");
+            return out.join("\n");
+        };
     }
 
     function _buildPyDoc(sig, indent) {
@@ -450,8 +459,9 @@ define(function (require, exports, module) {
         switch (style) {
         case STYLE_PYDOC:  return _buildPyDoc(sig, indent);
         case STYLE_PHPDOC: return _buildPhpDoc(sig, indent);
-        case STYLE_TAGDOC: return _buildTagDoc(sig, indent);
-        default:           return _buildJsDoc(sig, indent);
+        case STYLE_TAGDOC: return _buildTagDoc("@return")(sig, indent);  // Javadoc / Doxygen
+        case STYLE_TSDOC:  return _buildTagDoc("@returns")(sig, indent); // TypeScript (types in sig)
+        default:           return _buildJsDoc(sig, indent);              // JavaScript
         }
     }
 

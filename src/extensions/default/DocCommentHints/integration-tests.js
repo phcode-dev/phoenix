@@ -23,13 +23,27 @@
 define(function (require, exports, module) {
     const SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
-    // Opener already present in each fixture; the test just parks the caret on it and asks for hints.
-    const LANGS = [
-        { file: "a.js",   line: 0, ch: 3, content: "/**\nfunction f(a, b) {\n}\n" },
-        { file: "a.php",  line: 1, ch: 3, content: "<?php\n/**\nfunction f($a) {\n}\n" },
-        { file: "A.java", line: 1, ch: 7, content: "class T {\n    /**\n    int f(int a) {\n    }\n}\n" },
-        { file: "a.cpp",  line: 0, ch: 3, content: "/**\nint f(int a) {\n}\n" },
-        { file: "a.py",   line: 1, ch: 7, content: 'def f(a):\n    """\n' }
+    // Each fixture already contains the opener; the test parks the caret on it, asks for hints,
+    // accepts the hint, and asserts the real doc comment that lands in the document - including the
+    // types extracted from the TS signature.
+    const CASES = [
+        { file: "a.js", line: 0, ch: 3, content: "/**\nfunction add(a, b) {\n}\n",
+            expect: ["@param {*} a", "@param {*} b", "@returns {*}"] },
+        // TypeScript: names only - the types live in the signature, so a JSDoc {type} would be
+        // redundant and TS would flag it ("JSDoc types may be moved to TypeScript types").
+        { file: "b.ts", line: 0, ch: 3, content: "/**\nfunction add(a: number, b: number): number {\n}\n",
+            expect: ["@param a", "@param b", "@returns"], absent: ["@param {", "{number}"] },
+        { file: "c.ts", line: 0, ch: 3,
+            content: "/**\nfunction run(items: T[], cb: (x: T) => void): Promise<number> {\n}\n",
+            expect: ["@param items", "@param cb", "@returns"], absent: ["@param {", "{T[]}", "{*}"] },
+        { file: "a.php", line: 1, ch: 3, content: "<?php\n/**\nfunction f($a) {\n}\n",
+            expect: ["@param mixed $a", "@return mixed"] },
+        { file: "A.java", line: 1, ch: 7, content: "class T {\n    /**\n    int f(int a) {\n    }\n}\n",
+            expect: ["@param a", "@return"] },
+        { file: "a.cpp", line: 0, ch: 3, content: "/**\nint f(int a) {\n}\n",
+            expect: ["@param a", "@return"] },
+        { file: "a.py", line: 1, ch: 7, content: 'def f(a):\n    """\n',
+            expect: ['"""', "Args:", "a:"] }
     ];
 
     describe("integration:DocCommentHints", function () {
@@ -45,8 +59,8 @@ define(function (require, exports, module) {
 
             tempDir = await SpecRunnerUtils.getTempDirectory();
             await SpecRunnerUtils.ensureExistsDirAsync(tempDir);
-            for (const lang of LANGS) {
-                await jsPromise(SpecRunnerUtils.createTextFile(tempDir + "/" + lang.file, lang.content, FileSystem));
+            for (const tc of CASES) {
+                await jsPromise(SpecRunnerUtils.createTextFile(tempDir + "/" + tc.file, tc.content, FileSystem));
             }
             await SpecRunnerUtils.loadProjectInTestWindow(tempDir);
         }, 30000);
@@ -56,24 +70,35 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        function docCommentHintVisible() {
+        function $docHint() {
             return $(".codehint-menu:visible li a").filter(function () {
                 return $(this).find(".doc-comment-hint").length > 0;
-            }).length > 0;
+            });
         }
 
-        LANGS.forEach(function (lang) {
-            it("shows the doc-comment hint popup for " + lang.file, async function () {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles([lang.file]), "open " + lang.file);
+        CASES.forEach(function (tc) {
+            it("shows the popup and inserts the right doc comment for " + tc.file, async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([tc.file]), "open " + tc.file);
                 const editor = EditorManager.getActiveEditor();
-                editor.setCursorPos(lang.line, lang.ch);
+                editor.setCursorPos(tc.line, tc.ch);
                 CommandManager.execute(Commands.SHOW_CODE_HINTS);
-                await awaitsFor(docCommentHintVisible,
-                    "doc-comment hint popup for " + lang.file, 5000);
-                expect(docCommentHintVisible()).toBe(true);
-                // Dismiss the popup before the next file so sessions don't bleed across specs.
-                const target = $(".codehint-menu:visible")[0] || testWindow.document.body;
-                SpecRunnerUtils.simulateKeyEvent(27, "keydown", target);
+
+                // 1) the code-hints popup appears with our hint
+                await awaitsFor(function () { return $docHint().length > 0; },
+                    "doc-comment hint popup for " + tc.file, 5000);
+
+                // 2) accepting it inserts that language's doc-comment convention
+                const $a = $docHint();
+                $a.first().trigger("mousedown");
+                $a.first().trigger("click");
+                await awaitsFor(function () {
+                    const text = editor.document.getText();
+                    return tc.expect.every(function (frag) { return text.indexOf(frag) !== -1; });
+                }, "inserted doc comment for " + tc.file, 5000);
+
+                const text = editor.document.getText();
+                tc.expect.forEach(function (frag) { expect(text.indexOf(frag) !== -1).toBe(true); });
+                (tc.absent || []).forEach(function (frag) { expect(text.indexOf(frag)).toBe(-1); });
             }, 15000);
         });
     });
