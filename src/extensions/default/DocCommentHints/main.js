@@ -47,34 +47,55 @@ define(function (require, exports, module) {
     // context, where those providers have nothing useful to offer anyway.
     const PROVIDER_PRIORITY = 100;
 
+    // Doc-comment styles. The `/** */` syntax is shared, but the convention differs:
+    //   jsdoc  - @param {type} name / @returns {type}            (JS/TS family)
+    //   phpdoc - @param type $name / @return type                (PHP: type before the $name)
+    //   tagdoc - @param name / @return                           (Javadoc & Doxygen: no {type} braces)
+    //   pydoc  - """ ... Args:/Returns: ... """                  (Python docstring)
     const STYLE_JSDOC = "jsdoc",
+        STYLE_PHPDOC  = "phpdoc",
+        STYLE_TAGDOC  = "tagdoc",
         STYLE_PYDOC   = "pydoc";
 
     // Per-language config: the doc-comment style, where a parameter's NAME sits in a declaration
-    // ("first" -> `name: Type` / `name` / `$name`; "last" -> `Type name`, the C/Java family), and
-    // which opener triggers the hint.
+    // ("first" -> `name: Type` / `name` / `$name`; "last" -> `Type name`, the C/Java family), which
+    // opener triggers the hint, and the (localized) label naming that language's convention. Rust is
+    // intentionally absent: its doc comments are `///` markdown (# Arguments), not `/** @param */`.
     const LANGUAGES = {
-        javascript: { style: STYLE_JSDOC, params: "first", opener: "block" },
-        typescript: { style: STYLE_JSDOC, params: "first", opener: "block" },
-        jsx: { style: STYLE_JSDOC, params: "first", opener: "block" },
-        tsx: { style: STYLE_JSDOC, params: "first", opener: "block" },
-        php: { style: STYLE_JSDOC, params: "first", opener: "block" },
-        rust: { style: STYLE_JSDOC, params: "first", opener: "block" },
-        java: { style: STYLE_JSDOC, params: "last",  opener: "block" },
-        c: { style: STYLE_JSDOC, params: "last",  opener: "block" },
-        cpp: { style: STYLE_JSDOC, params: "last",  opener: "block" },
-        python: { style: STYLE_PYDOC, params: "first", opener: "pydoc" }
+        javascript: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
+        typescript: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
+        jsx: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
+        tsx: { style: STYLE_JSDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_JSDOC" },
+        php: { style: STYLE_PHPDOC, params: "first", opener: "block", label: "DOC_COMMENT_ADD_PHPDOC" },
+        java: { style: STYLE_TAGDOC, params: "last", opener: "block", label: "DOC_COMMENT_ADD_JAVADOC" },
+        c: { style: STYLE_TAGDOC, params: "last", opener: "block", label: "DOC_COMMENT_ADD_DOXYGEN" },
+        cpp: { style: STYLE_TAGDOC, params: "last", opener: "block", label: "DOC_COMMENT_ADD_DOXYGEN" },
+        python: { style: STYLE_PYDOC, params: "first", opener: "pydoc", label: "DOC_COMMENT_ADD_DOCSTRING" }
     };
 
-    // Opener: `full` is the canonical opener (offered unconditionally); `partial` also matches the
-    // half-typed forms (`/`, `/*`) so the hint can appear as soon as the user starts the comment -
-    // but a partial match is only offered when a documentable declaration sits next to it (see
-    // _openerContext), so a stray `/` on a line never spams the list. `chars` are the keystrokes that
-    // may trigger an implicit request; `dir` is where the documented declaration lives relative to the
-    // opener (below it for block comments, above it for a Python docstring).
+    // Opener config:
+    //   full      - the canonical opener; offered unconditionally unless `alwaysGate`.
+    //   partial   - also matches half-typed forms (`/`, `/*`, or `"`/`""` once auto-close kicks in) so
+    //               the hint appears as the user starts the comment; only offered with an adjacent
+    //               declaration (see _openerContext), so a stray `/` or empty string never spams it.
+    //   chars     - keystrokes that may trigger an implicit (type-as-you-go) request.
+    //   dir       - where the documented declaration lives: "below" (block comment above a function)
+    //               or "above" (a Python docstring sits under its `def`/`class`).
+    //   fullLine  - match the trimmed full line, not just text-before-cursor. Python needs this because
+    //               typing `"` auto-closes to `""` with the caret between the quotes.
+    //   alwaysGate- require a declaration even for the full opener (Python: a lone `"""`/`""` with no
+    //               `def`/`class` above is just an empty string literal, not a docstring).
+    //   replaceLine- on insert, replace the whole line (to swallow auto-closed quotes) vs only up to
+    //               the caret.
     const OPENERS = {
-        block: { full: /^\s*\/\*\*$/, partial: /^\s*\/\*{0,2}$/, chars: "/*", dir: "below" },
-        pydoc: { full: /^\s*"""$/, partial: /^\s*"""$/, chars: "\"", dir: "above" }
+        block: {
+            full: /^\s*\/\*\*$/, partial: /^\s*\/\*{0,2}$/, chars: "/*", dir: "below",
+            fullLine: false, alwaysGate: false, replaceLine: false
+        },
+        pydoc: {
+            full: /^\s*"{3,6}$/, partial: /^\s*"{1,6}$/, chars: "\"", dir: "above",
+            fullLine: true, alwaysGate: true, replaceLine: true
+        }
     };
 
     function _configFor(editor) {
@@ -204,10 +225,17 @@ define(function (require, exports, module) {
             }
         });
         // Return: a constructor returns nothing; an explicit `void`/`None`/`-> ()` return type is void.
+        // `hasReturnType` is stricter - an EXPLICIT non-None return annotation (`-> Type`). Python uses
+        // it (no annotation -> we can't tell, and most untyped Python returns None, so we omit Returns
+        // rather than guess); the C-family/JS keep the looser `hasReturn` (their signature implies it).
         const after = close === -1 ? "" : declText.slice(close + 1);
         const isCtor = /\b(constructor|__init__)\b/.test(declText) || /\bvoid\s+\w+\s*\(/.test(declText);
         const isVoid = /:\s*void\b/.test(after) || /->\s*(None|\(\s*\))/.test(after) || isCtor;
-        return { params: params, isClass: false, hasReturn: !isVoid, isDeclaration: true };
+        const hasReturnType = /->\s*(?!None\b)[A-Za-z_]/.test(after);
+        return {
+            params: params, isClass: false, hasReturn: !isVoid,
+            hasReturnType: hasReturnType, isDeclaration: true
+        };
     }
 
     // ----- snippet building ------------------------------------------------------------------
@@ -235,6 +263,40 @@ define(function (require, exports, module) {
         return out.join("\n");
     }
 
+    // PHPDoc: `@param type $name`, `@return type`. The type sits before the (kept) $name, no braces.
+    function _buildPhpDoc(sig, indent) {
+        const star = indent + " * ";
+        const out = ["/**", star + "${1:" + _escDesc(Strings.DOC_COMMENT_SUMMARY) + "}"];
+        let stop = 2;
+        if (sig && !sig.isClass) {
+            sig.params.forEach(function (p) {
+                out.push(star + "@param ${" + (stop++) + ":mixed} " + _esc(p));
+            });
+            if (sig.hasReturn) {
+                out.push(star + "@return ${" + (stop++) + ":mixed}");
+            }
+        }
+        out.push(indent + " */");
+        return out.join("\n");
+    }
+
+    // Javadoc / Doxygen: `@param name`, `@return` - no {type} braces (types come from the signature),
+    // and the singular `@return`. The only tabstop is the summary; param names are pre-filled.
+    function _buildTagDoc(sig, indent) {
+        const star = indent + " * ";
+        const out = ["/**", star + "${1:" + _escDesc(Strings.DOC_COMMENT_SUMMARY) + "}"];
+        if (sig && !sig.isClass) {
+            sig.params.forEach(function (p) {
+                out.push(star + "@param " + _esc(p));
+            });
+            if (sig.hasReturn) {
+                out.push(star + "@return");
+            }
+        }
+        out.push(indent + " */");
+        return out.join("\n");
+    }
+
     function _buildPyDoc(sig, indent) {
         const out = ['"""${1:' + _escDesc(Strings.DOC_COMMENT_SUMMARY) + "}"];
         let stop = 2;
@@ -247,7 +309,9 @@ define(function (require, exports, module) {
                 out.push(indent + "    " + _esc(p) + ": ${" + (stop++) + ":" + desc + "}");
             });
         }
-        if (sig && sig.hasReturn) {
+        // Only document a return when the signature explicitly annotates one (`-> Type`); an untyped
+        // Python function usually returns None, so we don't guess a Returns section.
+        if (sig && sig.hasReturnType) {
             out.push("");
             out.push(indent + "Returns:");
             out.push(indent + "    ${" + (stop++) + ":" + desc + "}");
@@ -262,7 +326,12 @@ define(function (require, exports, module) {
     }
 
     function _buildSnippet(style, sig, indent) {
-        return style === STYLE_PYDOC ? _buildPyDoc(sig, indent) : _buildJsDoc(sig, indent);
+        switch (style) {
+        case STYLE_PYDOC:  return _buildPyDoc(sig, indent);
+        case STYLE_PHPDOC: return _buildPhpDoc(sig, indent);
+        case STYLE_TAGDOC: return _buildTagDoc(sig, indent);
+        default:           return _buildJsDoc(sig, indent);
+        }
     }
 
     // ----- the hint provider -----------------------------------------------------------------
@@ -281,15 +350,21 @@ define(function (require, exports, module) {
             return null;
         }
         const cursor = editor.getCursorPos();
-        const before = editor.document.getLine(cursor.line).slice(0, cursor.ch);
-        if (opener.full.test(before)) {
+        const lineText = editor.document.getLine(cursor.line);
+        // Python matches the whole (trimmed) line so auto-closed quotes (caret inside `""`) still count;
+        // block comments match only what's left of the caret.
+        const text = opener.fullLine ? lineText.trim() : lineText.slice(0, cursor.ch);
+        if (!opener.partial.test(text)) {
+            return null;
+        }
+        // A full opener is offered as-is, unless this language always requires a declaration nearby
+        // (Python, to tell a docstring apart from a bare empty-string literal).
+        if (opener.full.test(text) && !opener.alwaysGate) {
             return { cfg: cfg };
         }
-        if (opener.partial.test(before)) {
-            const sig = _parseSignature(_declarationFor(editor, cursor.line, opener.dir), cfg.params);
-            if (sig && sig.isDeclaration) {
-                return { cfg: cfg };
-            }
+        const sig = _parseSignature(_declarationFor(editor, cursor.line, opener.dir), cfg.params);
+        if (sig && sig.isDeclaration) {
+            return { cfg: cfg };
         }
         return null;
     }
@@ -299,7 +374,7 @@ define(function (require, exports, module) {
     DocCommentHintProvider.prototype.hasHints = function (editor, implicitChar) {
         this.editor = editor;
         const ctx = _openerContext(editor, implicitChar);
-        this._style = ctx && ctx.cfg.style;
+        this._cfg = ctx && ctx.cfg;
         return !!ctx;
     };
 
@@ -309,15 +384,15 @@ define(function (require, exports, module) {
         if (!this.editor || !_openerContext(this.editor, null)) {
             return null;
         }
-        // A clear, language-aware action label - not a cryptic "/**/". The leading marker echoes the
-        // doc-comment syntax so it reads as "insert a doc comment here".
-        const isPy = this._style === STYLE_PYDOC;
-        const label = isPy ? Strings.DOC_COMMENT_ADD_DOCSTRING : Strings.DOC_COMMENT_ADD_JSDOC;
+        // A clear, language-aware action label (JSDoc / Javadoc / Doxygen / PHPDoc / docstring) - not a
+        // cryptic "/**/". The leading marker echoes the doc-comment syntax for that language.
+        const cfg = this._cfg;
+        const marker = OPENERS[cfg.opener].dir === "above" ? '"""' : "/**";
         const $hint = $("<span>")
             .addClass("doc-comment-hint")
             .data("docComment", true)
-            .append($("<span>").addClass("doc-comment-hint-marker").text(isPy ? '"""' : "/**"))
-            .append($("<span>").addClass("doc-comment-hint-label").text(" " + label));
+            .append($("<span>").addClass("doc-comment-hint-marker").text(marker))
+            .append($("<span>").addClass("doc-comment-hint-label").text(" " + Strings[cfg.label]));
         return { hints: [$hint], match: null, selectInitial: true, handleWideResults: true };
     };
 
@@ -331,13 +406,16 @@ define(function (require, exports, module) {
         const line = editor.document.getLine(cursor.line);
         const indent = (line.match(/^\s*/) || [""])[0];
 
-        const decl = _declarationFor(editor, cursor.line, OPENERS[cfg.opener].dir);
+        const opener = OPENERS[cfg.opener];
+        const decl = _declarationFor(editor, cursor.line, opener.dir);
         const sig = _parseSignature(decl, cfg.params);
         const snippet = _buildSnippet(cfg.style, sig, indent);
 
-        // Replace the opener the user typed (from the start of `/**` / `"""` up to the caret).
+        // Replace the opener the user typed: from the start of `/**` / `"""`. For Python we replace the
+        // whole line (ch = line length) to swallow the quote that auto-close added after the caret;
+        // for block comments we stop at the caret (anything the user typed after is left alone).
         const startPos = { line: cursor.line, ch: indent.length };
-        const endPos = { line: cursor.line, ch: cursor.ch };
+        const endPos = { line: cursor.line, ch: opener.replaceLine ? line.length : cursor.ch };
         TabstopManager.insertSnippet(editor, snippet, startPos, endPos);
         return false;
     };
@@ -352,4 +430,6 @@ define(function (require, exports, module) {
     exports._buildSnippet = _buildSnippet;
     exports._splitParams = _splitParams;
     exports._paramName = _paramName;
+    exports._Provider = DocCommentHintProvider;
+    exports._LANGUAGES = LANGUAGES;
 });
