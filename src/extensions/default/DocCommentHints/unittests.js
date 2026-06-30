@@ -42,68 +42,107 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("_paramName - per-convention name extraction", function () {
-            const name = DocCommentHints._paramName;
-            it("name-first: plain, typed, default, PHP, rest", function () {
-                expect(name("name", "first")).toBe("name");
-                expect(name("name: string", "first")).toBe("name");
-                expect(name("count = 5", "first")).toBe("count");
-                expect(name("count: number = 1", "first")).toBe("count");
-                expect(name("$user", "first")).toBe("$user");
-                expect(name("...rest", "first")).toBe("rest");
+        describe("_parseParam - name, type and optional", function () {
+            const parse = DocCommentHints._parseParam;
+            function nt(token, conv) {
+                return parse(token, conv || "first");
+            }
+            it("name-first: plain / typed / default / PHP / rest", function () {
+                expect(nt("name")).toEqual({ name: "name", type: null, optional: false });
+                expect(nt("name: string")).toEqual({ name: "name", type: "string", optional: false });
+                expect(nt("count = 5")).toEqual({ name: "count", type: null, optional: false });
+                expect(nt("count: number = 1")).toEqual({ name: "count", type: "number", optional: false });
+                expect(nt("$user")).toEqual({ name: "$user", type: null, optional: false });
+                expect(nt("...rest: number[]")).toEqual({ name: "rest", type: "number[]", optional: false });
             });
-            it("type-first (C/Java): trailing identifier is the name", function () {
-                expect(name("int x", "last")).toBe("x");
-                expect(name("const char *ptr", "last")).toBe("ptr");
-                expect(name("String label", "last")).toBe("label");
+            it("marks optional params (`?`)", function () {
+                expect(nt("a?: string")).toEqual({ name: "a", type: "string", optional: true });
+            });
+            it("extracts complex types without breaking on , : => or strings", function () {
+                expect(nt("items: Array<Map<string, number>>").type).toBe("Array<Map<string, number>>");
+                expect(nt("cb: (x: number, y: string) => void").type).toBe("(x: number, y: string) => void");
+                expect(nt("opts: { a: number; b: string }").type).toBe("{ a: number; b: string }");
+                expect(nt("t: [number, string]").type).toBe("[number, string]");
+                expect(nt('mode: "on" | "off"').type).toBe('"on" | "off"');
+                expect(nt("x: T extends U ? A : B").type).toBe("T extends U ? A : B");
+                expect(nt("cb: () => void = () => {}").type).toBe("() => void"); // default stripped
+            });
+            it("falls back to a null type on an unbalanced/garbled annotation", function () {
+                expect(nt("a: Array<string").type).toBeNull(); // missing '>'
+            });
+            it("type-first (C/Java): trailing identifier is the name, no signature type", function () {
+                expect(nt("int x", "last")).toEqual({ name: "x", type: null, optional: false });
+                expect(nt("const char *ptr", "last")).toEqual({ name: "ptr", type: null, optional: false });
+            });
+        });
+
+        describe("_validType", function () {
+            const valid = DocCommentHints._validType;
+            it("accepts balanced complex types", function () {
+                ["number", "Array<Map<string, number>>", "(x: T) => void", "{ a: number }",
+                    "[a, b]", '"on" | "off"'].forEach(t => expect(valid(t)).toBe(true));
+            });
+            it("rejects empty or unbalanced types", function () {
+                ["", "   ", "Array<string", "(x => void", "}{"].forEach(t => expect(valid(t)).toBe(false));
             });
         });
 
         describe("_parseSignature", function () {
             const parse = DocCommentHints._parseSignature;
+            const names = sig => sig.params.map(p => p.name);
+            const types = sig => sig.params.map(p => p.type);
 
-            it("parses a plain JS function (name-first, returns)", function () {
+            it("parses a plain JS function (name-first, returns, untyped)", function () {
                 const sig = parse("function add(a, b) {", "first");
-                expect(sig.params).toEqual(["a", "b"]);
+                expect(names(sig)).toEqual(["a", "b"]);
+                expect(types(sig)).toEqual([null, null]);
                 expect(sig.isClass).toBe(false);
                 expect(sig.hasReturn).toBe(true);
             });
-            it("parses a typed TS function and keeps return", function () {
+            it("extracts param + return types from a typed TS function", function () {
                 const sig = parse("function f(name: string, count: number = 1): boolean {", "first");
-                expect(sig.params).toEqual(["name", "count"]);
+                expect(names(sig)).toEqual(["name", "count"]);
+                expect(types(sig)).toEqual(["string", "number"]);
+                expect(sig.returnType).toBe("boolean");
                 expect(sig.hasReturn).toBe(true);
+            });
+            it("handles a complex TS arrow (generic, function-type param, generic return)", function () {
+                const sig = parse("const f = (items: T[], cb: (x: T) => void): Promise<number> => {", "first");
+                expect(names(sig)).toEqual(["items", "cb"]);
+                expect(types(sig)).toEqual(["T[]", "(x: T) => void"]);
+                expect(sig.returnType).toBe("Promise<number>");
             });
             it("treats an explicit void return as no @returns", function () {
                 expect(parse("function log(msg: string): void {", "first").hasReturn).toBe(false);
             });
             it("skips self in a Python method", function () {
-                const sig = parse("def greet(self, name):", "first");
-                expect(sig.params).toEqual(["name"]);
+                expect(names(parse("def greet(self, name):", "first"))).toEqual(["name"]);
             });
-            it("parses a Java method type-first", function () {
+            it("parses a Java method type-first (names only, no signature type)", function () {
                 const sig = parse("public int sum(int a, String b) {", "last");
-                expect(sig.params).toEqual(["a", "b"]);
+                expect(names(sig)).toEqual(["a", "b"]);
+                expect(types(sig)).toEqual([null, null]);
                 expect(sig.hasReturn).toBe(true);
             });
             it("parses an arrow function", function () {
-                expect(parse("const mul = (a, b) => {", "first").params).toEqual(["a", "b"]);
+                expect(names(parse("const mul = (a, b) => {", "first"))).toEqual(["a", "b"]);
             });
             it("handles a rest parameter", function () {
-                expect(parse("function f(a, ...rest) {", "first").params).toEqual(["a", "rest"]);
+                expect(names(parse("function f(a, ...rest) {", "first"))).toEqual(["a", "rest"]);
             });
             it("reports a class with no params/return", function () {
                 const sig = parse("export class Bar extends Base {", "first");
                 expect(sig.isClass).toBe(true);
-                expect(sig.params).toEqual([]);
+                expect(names(sig)).toEqual([]);
                 expect(sig.hasReturn).toBe(false);
             });
             it("treats a constructor as returning nothing", function () {
                 const sig = parse("constructor(x, y) {", "first");
-                expect(sig.params).toEqual(["x", "y"]);
+                expect(names(sig)).toEqual(["x", "y"]);
                 expect(sig.hasReturn).toBe(false);
             });
             it("handles an empty parameter list", function () {
-                expect(parse("function noop() {", "first").params).toEqual([]);
+                expect(names(parse("function noop() {", "first"))).toEqual([]);
             });
             it("flags isDeclaration only for real declarations (gates the partial /, /* triggers)", function () {
                 expect(parse("function add(a, b) {", "first").isDeclaration).toBe(true);
@@ -115,6 +154,8 @@ define(function (require, exports, module) {
 
         describe("_buildSnippet", function () {
             const build = DocCommentHints._buildSnippet;
+            // Build the params array (objects now) from simple names.
+            const P = (...names) => names.map(n => ({ name: n }));
 
             // Every generated line must be free of trailing whitespace (linters flag it - see the
             // no-trailing-spaces report that prompted this).
@@ -124,14 +165,30 @@ define(function (require, exports, module) {
                 });
             }
 
-            it("builds a JSDoc skeleton with type tabstops and no trailing whitespace", function () {
-                const snip = build("jsdoc", { params: ["a", "b"], isClass: false, hasReturn: true }, "");
+            it("builds a JSDoc skeleton with {*} for untyped params and no trailing whitespace", function () {
+                const snip = build("jsdoc", { params: P("a", "b"), isClass: false, hasReturn: true }, "");
                 expect(snip.indexOf("/**")).toBe(0);
                 expect(snip).toContain("${1:"); // summary tabstop (default text is localized)
                 expect(snip).toContain("@param {${2:*}} a");
                 expect(snip).toContain("@param {${3:*}} b");
                 expect(snip).toContain("@returns {${4:*}}");
                 expect(snip.trim().slice(-2)).toBe("*/");
+                expectNoTrailingWhitespace(snip);
+            });
+            it("fills the real type as the {type} tabstop, [name] for optional, typed @returns", function () {
+                const sig = {
+                    params: [
+                        { name: "a", type: "number" },
+                        { name: "b", type: "Array<string>" },
+                        { name: "c", type: "T", optional: true }
+                    ],
+                    returnType: "boolean", isClass: false, hasReturn: true
+                };
+                const snip = build("jsdoc", sig, "");
+                expect(snip).toContain("@param {${2:number}} a");
+                expect(snip).toContain("@param {${3:Array<string>}} b");
+                expect(snip).toContain("@param {${4:T}} [c]");
+                expect(snip).toContain("@returns {${5:boolean}}");
                 expectNoTrailingWhitespace(snip);
             });
             it("omits @param/@returns for a class", function () {
@@ -142,15 +199,15 @@ define(function (require, exports, module) {
                 expectNoTrailingWhitespace(snip);
             });
             it("indents continuation lines", function () {
-                const snip = build("jsdoc", { params: ["a"], isClass: false, hasReturn: false }, "    ");
+                const snip = build("jsdoc", { params: P("a"), isClass: false, hasReturn: false }, "    ");
                 expect(snip).toContain("\n     * @param"); // 4-space indent + " * "
             });
             it("escapes $ in a PHP-style parameter name", function () {
-                const snip = build("jsdoc", { params: ["$user"], isClass: false, hasReturn: false }, "");
+                const snip = build("jsdoc", { params: P("$user"), isClass: false, hasReturn: false }, "");
                 expect(snip).toContain("\\$user");
             });
             it("builds a PHPDoc skeleton (type before the $name, @return, no braces)", function () {
-                const snip = build("phpdoc", { params: ["$a", "$b"], isClass: false, hasReturn: true }, "");
+                const snip = build("phpdoc", { params: P("$a", "$b"), isClass: false, hasReturn: true }, "");
                 expect(snip).toContain("@param ${2:mixed} \\$a");
                 expect(snip).toContain("@param ${3:mixed} \\$b");
                 expect(snip).toContain("@return ${4:mixed}");
@@ -158,7 +215,7 @@ define(function (require, exports, module) {
                 expectNoTrailingWhitespace(snip);
             });
             it("builds a Javadoc/Doxygen skeleton (no {type} braces, singular @return)", function () {
-                const snip = build("tagdoc", { params: ["a", "b"], isClass: false, hasReturn: true }, "");
+                const snip = build("tagdoc", { params: P("a", "b"), isClass: false, hasReturn: true }, "");
                 expect(snip).toContain("@param a");
                 expect(snip).toContain("@param b");
                 expect(snip).toContain("@return");
@@ -167,7 +224,7 @@ define(function (require, exports, module) {
                 expectNoTrailingWhitespace(snip);
             });
             it("builds a Python docstring with Args/Returns and no trailing whitespace", function () {
-                const snip = build("pydoc", { params: ["name"], isClass: false, hasReturnType: true }, "    ");
+                const snip = build("pydoc", { params: P("name"), isClass: false, hasReturnType: true }, "    ");
                 expect(snip.indexOf('"""')).toBe(0);
                 expect(snip).toContain("Args:");
                 expect(snip).toContain("name: ${2:");
@@ -176,7 +233,7 @@ define(function (require, exports, module) {
                 expectNoTrailingWhitespace(snip);
             });
             it("Python omits Returns without an explicit return annotation", function () {
-                const snip = build("pydoc", { params: ["name"], isClass: false, hasReturnType: false }, "    ");
+                const snip = build("pydoc", { params: P("name"), isClass: false, hasReturnType: false }, "    ");
                 expect(snip).toContain("Args:");
                 expect(snip).not.toContain("Returns:");
             });
@@ -218,8 +275,9 @@ define(function (require, exports, module) {
             const CASES = [
                 { id: "javascript", content: "/**\nfunction f(a, b) {\n}\n", line: 0, ch: 3,
                     label: "DOC_COMMENT_ADD_JSDOC", has: ["@param {*} a", "@param {*} b", "@returns {*}"], absent: [] },
-                { id: "typescript", content: "/**\nfunction f(a) {\n}\n", line: 0, ch: 3,
-                    label: "DOC_COMMENT_ADD_JSDOC", has: ["@param {*} a"], absent: [] },
+                { id: "typescript", content: "/**\nfunction f(a: number, b: string): boolean {\n}\n", line: 0, ch: 3,
+                    label: "DOC_COMMENT_ADD_JSDOC",
+                    has: ["@param {number} a", "@param {string} b", "@returns {boolean}"], absent: ["{*}"] },
                 { id: "php", content: "<?php\n/**\nfunction f($a, $b) {\n}\n", line: 1, ch: 3,
                     label: "DOC_COMMENT_ADD_PHPDOC", has: ["@param mixed $a", "@return mixed"], absent: ["{*}"] },
                 { id: "java", content: "class T {\n    /**\n    int f(int a, int b) {\n    }\n}\n", line: 1, ch: 7,

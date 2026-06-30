@@ -104,10 +104,78 @@ define(function (require, exports, module) {
 
     // ----- signature parsing -----------------------------------------------------------------
 
-    function _delta(ch) {
-        if (ch === "(" || ch === "[" || ch === "{" || ch === "<") { return 1; }
-        if (ch === ")" || ch === "]" || ch === "}" || ch === ">") { return -1; }
-        return 0;
+    // The reliability core. Walk `s` left to right calling visit(char, index, atTopLevel) for each
+    // non-bracket/non-quote char, where atTopLevel means depth 0 AND outside any string. Tracks
+    // () [] {} <> nesting - with the key subtlety that a `>` right after `=` is the arrow `=>`, not a
+    // generic close - and skips the contents of '…' "…" `…` literals (respecting \ escapes). This lets
+    // us split params and find the name/type separator without tripping on commas/colons inside
+    // generics, function types, object types, tuples or strings.
+    function _eachTopLevel(s, visit) {
+        let depth = 0, quote = null;
+        for (let i = 0; i < s.length; i++) {
+            const c = s[i];
+            if (quote) {
+                if (c === "\\") { i++; } else if (c === quote) { quote = null; }
+                continue;
+            }
+            if (c === '"' || c === "'" || c === "`") { quote = c; continue; }
+            const open = (c === "(" || c === "[" || c === "{" || c === "<");
+            const close = (c === ")" || c === "]" || c === "}" || (c === ">" && s[i - 1] !== "="));
+            if (!open && !close) {
+                visit(c, i, depth === 0);
+            }
+            if (open) { depth++; } else if (close) { depth--; }
+        }
+    }
+
+    // Split `s` on `sep` only where it sits at the top level (depth 0, outside strings).
+    function _splitTopLevel(s, sep) {
+        const out = [];
+        let start = 0;
+        _eachTopLevel(s, function (c, i, top) {
+            if (top && c === sep) {
+                out.push(s.slice(start, i));
+                start = i + 1;
+            }
+        });
+        out.push(s.slice(start));
+        return out;
+    }
+
+    // Index of the first char satisfying pred at the top level, or -1.
+    function _indexOfTopLevel(s, pred) {
+        let found = -1;
+        _eachTopLevel(s, function (c, i, top) {
+            if (found === -1 && top && pred(c, i)) { found = i; }
+        });
+        return found;
+    }
+
+    // A type substring is safe to emit only if its brackets/generics/strings balance; anything else
+    // falls back to `*` so we never write a broken `@param {…}`.
+    function _validType(t) {
+        t = t.trim();
+        if (!t) {
+            return false;
+        }
+        let depth = 0, quote = null;
+        for (let i = 0; i < t.length; i++) {
+            const c = t[i];
+            if (quote) {
+                if (c === "\\") { i++; } else if (c === quote) { quote = null; }
+                continue;
+            }
+            if (c === '"' || c === "'" || c === "`") { quote = c; continue; }
+            if (c === "(" || c === "[" || c === "{" || c === "<") {
+                depth++;
+            } else if (c === ")" || c === "]" || c === "}" || (c === ">" && t[i - 1] !== "=")) {
+                depth--;
+            }
+            if (depth < 0) {
+                return false;
+            }
+        }
+        return depth === 0 && quote === null;
     }
 
     // The declaration the doc comment documents, joining wrapped lines until its parameter parens
@@ -143,57 +211,104 @@ define(function (require, exports, module) {
         return depth;
     }
 
-    // Split a parameter list on top-level commas, ignoring commas nested in (), [], {}, <>.
+    // Split a parameter list on top-level commas, ignoring commas nested in (), [], {}, <>, strings.
     function _splitParams(s) {
-        const out = [];
-        let depth = 0, start = 0;
-        for (let i = 0; i < s.length; i++) {
-            depth += _delta(s[i]);
-            if (s[i] === "," && depth === 0) {
-                out.push(s.slice(start, i));
-                start = i + 1;
-            }
-        }
-        if (s.slice(start).trim() !== "") {
-            out.push(s.slice(start));
-        }
-        return out;
+        return _splitTopLevel(s, ",").filter(function (t) {
+            return t.trim() !== "";
+        });
     }
 
     const IDENT = /[A-Za-z_][\w]*/g;
     const PARAMS_TO_SKIP = { self: true, cls: true, this: true, void: true };
 
-    // Extract a clean parameter name from one parameter token per the language's name convention.
-    function _paramName(token, convention) {
+    // A top-level `=` that begins a default value - not part of `=>` `==` `<=` `>=` `!=`.
+    function _isDefaultEq(t) {
+        return function (c, i) {
+            return c === "=" && t[i + 1] !== ">" && t[i + 1] !== "=" &&
+                t[i - 1] !== "=" && t[i - 1] !== "<" && t[i - 1] !== ">" && t[i - 1] !== "!";
+        };
+    }
+
+    /**
+     * Parse one parameter token into its name, declared type and whether it is optional.
+     * For "first" languages (JS/TS/PHP) the type is the part after the top-level `:`; for "last"
+     * languages (C/Java) there is no `:`-type to surface (tagdoc/phpdoc don't render {type}), so type
+     * stays null. An unparseable/unbalanced type also stays null (the builder falls back to `*`).
+     * @return {?{name: string, type: ?string, optional: boolean}}
+     */
+    function _parseParam(token, convention) {
         let t = token.trim();
         if (!t) {
             return null;
         }
-        // Drop a default value (top-level '=').
-        let depth = 0;
-        for (let i = 0; i < t.length; i++) {
-            depth += _delta(t[i]);
-            if (t[i] === "=" && depth === 0) {
-                t = t.slice(0, i);
+        t = t.replace(/^\.\.\.\s*/, ""); // rest/spread
+        const eq = _indexOfTopLevel(t, _isDefaultEq(t));
+        if (eq !== -1) {
+            t = t.slice(0, eq);
+        }
+        const colon = _indexOfTopLevel(t, function (c) { return c === ":"; });
+        let namePart = (colon === -1 ? t : t.slice(0, colon)).trim();
+        let typePart = colon === -1 ? null : t.slice(colon + 1).trim();
+        let optional = false;
+        if (namePart.endsWith("?")) {
+            optional = true;
+            namePart = namePart.slice(0, -1).trim();
+        }
+        let name;
+        if (convention === "first") {
+            const m = namePart.match(/^[*&\s]*(\$?[A-Za-z_][\w]*)/); // keep a leading $ for PHP
+            name = m ? m[1] : null;
+        } else {
+            const ids = namePart.match(IDENT); // C/Java `Type name` -> trailing identifier
+            name = ids && ids.length ? ids[ids.length - 1] : null;
+            typePart = null;
+        }
+        if (!name) {
+            return null;
+        }
+        return {
+            name: name,
+            type: (typePart && _validType(typePart)) ? typePart.trim() : null,
+            optional: optional
+        };
+    }
+
+    // The declared return type for the jsdoc builder: the TS `: Type` (or `-> Type`) after the param
+    // list, read up to the body `{`, an arrow `=>`, a `;`, or end. Null when absent/unbalanced.
+    function _returnType(after) {
+        const m = after.match(/^\s*(?::|->)\s*/);
+        if (!m) {
+            return null;
+        }
+        const s = after.slice(m[0].length);
+        let depth = 0, quote = null, end = s.length;
+        for (let i = 0; i < s.length; i++) {
+            const c = s[i];
+            if (quote) {
+                if (c === "\\") { i++; } else if (c === quote) { quote = null; }
+                continue;
+            }
+            if (c === '"' || c === "'" || c === "`") { quote = c; continue; }
+            if (depth === 0 && (c === "{" || c === ";" || (c === "=" && s[i + 1] === ">"))) {
+                end = i;
                 break;
             }
+            if (c === "(" || c === "[" || c === "{" || c === "<") {
+                depth++;
+            } else if (c === ")" || c === "]" || c === "}" || (c === ">" && s[i - 1] !== "=")) {
+                depth--;
+            }
         }
-        t = t.replace(/\.\.\./g, " ").trim(); // rest/spread
-        if (convention === "first") {
-            // `name`, `name: Type`, `$name` (PHP). Keep a leading $ if present.
-            const m = t.match(/^[*&\s]*(\$?[A-Za-z_][\w]*)/);
-            return m ? m[1] : null;
-        }
-        // "last": C/Java `Type name`, `const char *name` -> the trailing identifier is the name.
-        const ids = t.match(IDENT);
-        return ids && ids.length ? ids[ids.length - 1] : null;
+        const type = s.slice(0, end).trim();
+        return _validType(type) ? type : null;
     }
 
     /**
      * Parse a declaration line into a documentable signature. `isDeclaration` is true only when the
      * text actually looks like something to document (a function/method - has a parameter list - or a
      * class), which is what gates the half-typed `/` `/*` triggers.
-     * @return {?{params: string[], isClass: boolean, hasReturn: boolean, isDeclaration: boolean}}
+     * @return {?{params: Array<{name,type,optional}>, returnType: ?string, isClass: boolean,
+     *            hasReturn: boolean, hasReturnType: boolean, isDeclaration: boolean}}
      */
     function _parseSignature(declText, convention) {
         if (!declText) {
@@ -202,10 +317,12 @@ define(function (require, exports, module) {
         const open = declText.indexOf("(");
         const classMatch = /\b(class|interface|struct|enum|trait)\b/.exec(declText);
         if (classMatch && (open === -1 || classMatch.index < open)) {
-            return { params: [], isClass: true, hasReturn: false, isDeclaration: true };
+            return { params: [], returnType: null, isClass: true, hasReturn: false,
+                hasReturnType: false, isDeclaration: true };
         }
         if (open === -1) {
-            return { params: [], isClass: false, hasReturn: false, isDeclaration: false };
+            return { params: [], returnType: null, isClass: false, hasReturn: false,
+                hasReturnType: false, isDeclaration: false };
         }
         let depth = 0, close = -1;
         for (let i = open; i < declText.length; i++) {
@@ -219,9 +336,9 @@ define(function (require, exports, module) {
         const inner = close === -1 ? declText.slice(open + 1) : declText.slice(open + 1, close);
         const params = [];
         _splitParams(inner).forEach(function (tok) {
-            const name = _paramName(tok, convention);
-            if (name && !PARAMS_TO_SKIP[name]) {
-                params.push(name);
+            const p = _parseParam(tok, convention);
+            if (p && !PARAMS_TO_SKIP[p.name]) {
+                params.push(p);
             }
         });
         // Return: a constructor returns nothing; an explicit `void`/`None`/`-> ()` return type is void.
@@ -233,7 +350,7 @@ define(function (require, exports, module) {
         const isVoid = /:\s*void\b/.test(after) || /->\s*(None|\(\s*\))/.test(after) || isCtor;
         const hasReturnType = /->\s*(?!None\b)[A-Za-z_]/.test(after);
         return {
-            params: params, isClass: false, hasReturn: !isVoid,
+            params: params, returnType: _returnType(after), isClass: false, hasReturn: !isVoid,
             hasReturnType: hasReturnType, isDeclaration: true
         };
     }
@@ -250,13 +367,17 @@ define(function (require, exports, module) {
         const out = ["/**", star + "${1:" + _escDesc(Strings.DOC_COMMENT_SUMMARY) + "}"];
         let stop = 2;
         if (sig && !sig.isClass) {
-            // Tabstop on the {type} only; no trailing description stub (an empty tabstop would leave a
-            // trailing space that linters flag). Descriptions are added inline by the user.
+            // The {type} is a tabstop pre-filled with the real type from the signature (TS) or `*` when
+            // untyped (JS) - selected on Tab so the user can refine it. Optional params render [name]
+            // (standard JSDoc). No trailing description stub (an empty tabstop leaves a flagged space).
             sig.params.forEach(function (p) {
-                out.push(star + "@param {${" + (stop++) + ":*}} " + _esc(p));
+                const type = p.type ? _esc(p.type) : "*";
+                const nameOut = p.optional ? "[" + _esc(p.name) + "]" : _esc(p.name);
+                out.push(star + "@param {${" + (stop++) + ":" + type + "}} " + nameOut);
             });
             if (sig.hasReturn) {
-                out.push(star + "@returns {${" + (stop++) + ":*}}");
+                const rtype = sig.returnType ? _esc(sig.returnType) : "*";
+                out.push(star + "@returns {${" + (stop++) + ":" + rtype + "}}");
             }
         }
         out.push(indent + " */");
@@ -270,7 +391,7 @@ define(function (require, exports, module) {
         let stop = 2;
         if (sig && !sig.isClass) {
             sig.params.forEach(function (p) {
-                out.push(star + "@param ${" + (stop++) + ":mixed} " + _esc(p));
+                out.push(star + "@param ${" + (stop++) + ":mixed} " + _esc(p.name));
             });
             if (sig.hasReturn) {
                 out.push(star + "@return ${" + (stop++) + ":mixed}");
@@ -287,7 +408,7 @@ define(function (require, exports, module) {
         const out = ["/**", star + "${1:" + _escDesc(Strings.DOC_COMMENT_SUMMARY) + "}"];
         if (sig && !sig.isClass) {
             sig.params.forEach(function (p) {
-                out.push(star + "@param " + _esc(p));
+                out.push(star + "@param " + _esc(p.name));
             });
             if (sig.hasReturn) {
                 out.push(star + "@return");
@@ -306,7 +427,7 @@ define(function (require, exports, module) {
             out.push(indent + "Args:");
             // Non-empty placeholder (selected on tab) so the line carries no trailing whitespace.
             sig.params.forEach(function (p) {
-                out.push(indent + "    " + _esc(p) + ": ${" + (stop++) + ":" + desc + "}");
+                out.push(indent + "    " + _esc(p.name) + ": ${" + (stop++) + ":" + desc + "}");
             });
         }
         // Only document a return when the signature explicitly annotates one (`-> Type`); an untyped
@@ -429,7 +550,8 @@ define(function (require, exports, module) {
     exports._parseSignature = _parseSignature;
     exports._buildSnippet = _buildSnippet;
     exports._splitParams = _splitParams;
-    exports._paramName = _paramName;
+    exports._parseParam = _parseParam;
+    exports._validType = _validType;
     exports._Provider = DocCommentHintProvider;
     exports._LANGUAGES = LANGUAGES;
 });
