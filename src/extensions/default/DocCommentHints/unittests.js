@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect*/
+/*global describe, it, expect, afterEach*/
 
 define(function (require, exports, module) {
     const DocCommentHints = require("./main");
@@ -149,14 +149,120 @@ define(function (require, exports, module) {
                 const snip = build("jsdoc", { params: ["$user"], isClass: false, hasReturn: false }, "");
                 expect(snip).toContain("\\$user");
             });
+            it("builds a PHPDoc skeleton (type before the $name, @return, no braces)", function () {
+                const snip = build("phpdoc", { params: ["$a", "$b"], isClass: false, hasReturn: true }, "");
+                expect(snip).toContain("@param ${2:mixed} \\$a");
+                expect(snip).toContain("@param ${3:mixed} \\$b");
+                expect(snip).toContain("@return ${4:mixed}");
+                expect(snip).not.toContain("@param {");
+                expectNoTrailingWhitespace(snip);
+            });
+            it("builds a Javadoc/Doxygen skeleton (no {type} braces, singular @return)", function () {
+                const snip = build("tagdoc", { params: ["a", "b"], isClass: false, hasReturn: true }, "");
+                expect(snip).toContain("@param a");
+                expect(snip).toContain("@param b");
+                expect(snip).toContain("@return");
+                expect(snip).not.toContain("@returns");
+                expect(snip).not.toContain("@param {");
+                expectNoTrailingWhitespace(snip);
+            });
             it("builds a Python docstring with Args/Returns and no trailing whitespace", function () {
-                const snip = build("pydoc", { params: ["name"], isClass: false, hasReturn: true }, "    ");
+                const snip = build("pydoc", { params: ["name"], isClass: false, hasReturnType: true }, "    ");
                 expect(snip.indexOf('"""')).toBe(0);
                 expect(snip).toContain("Args:");
                 expect(snip).toContain("name: ${2:");
                 expect(snip).toContain("Returns:");
+                expect(snip).not.toContain("@param");
                 expectNoTrailingWhitespace(snip);
+            });
+            it("Python omits Returns without an explicit return annotation", function () {
+                const snip = build("pydoc", { params: ["name"], isClass: false, hasReturnType: false }, "    ");
+                expect(snip).toContain("Args:");
+                expect(snip).not.toContain("Returns:");
+            });
+        });
+
+        // Drives the REAL provider (hasHints -> getHints -> insertHint) on a real editor for each
+        // language: proves the hint fires for that language, shows the right label, and inserts that
+        // language's doc-comment convention.
+        describe("provider, per language", function () {
+            const SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
+            const Strings = brackets.getModule("strings");
+            const TabstopManager = brackets.getModule("editor/TabstopManager");
+            let mockDoc = null;
+
+            afterEach(function () {
+                if (TabstopManager.hasActiveSession && TabstopManager.hasActiveSession()) {
+                    TabstopManager.endSession();
+                }
+                if (mockDoc) {
+                    SpecRunnerUtils.destroyMockEditor(mockDoc);
+                    mockDoc = null;
+                }
+            });
+
+            function run(langId, content, line, ch) {
+                const mock = SpecRunnerUtils.createMockEditor(content, langId);
+                mockDoc = mock.doc;
+                mock.editor.setCursorPos(line, ch);
+                const provider = new DocCommentHints._Provider();
+                const has = provider.hasHints(mock.editor, null);
+                const hints = has ? provider.getHints() : null;
+                const label = hints && hints.hints[0].text();
+                if (has) {
+                    provider.insertHint();
+                }
+                return { has: has, label: label, text: mock.doc.getText() };
+            }
+
+            const CASES = [
+                { id: "javascript", content: "/**\nfunction f(a, b) {\n}\n", line: 0, ch: 3,
+                    label: "DOC_COMMENT_ADD_JSDOC", has: ["@param {*} a", "@param {*} b", "@returns {*}"], absent: [] },
+                { id: "typescript", content: "/**\nfunction f(a) {\n}\n", line: 0, ch: 3,
+                    label: "DOC_COMMENT_ADD_JSDOC", has: ["@param {*} a"], absent: [] },
+                { id: "php", content: "<?php\n/**\nfunction f($a, $b) {\n}\n", line: 1, ch: 3,
+                    label: "DOC_COMMENT_ADD_PHPDOC", has: ["@param mixed $a", "@return mixed"], absent: ["{*}"] },
+                { id: "java", content: "class T {\n    /**\n    int f(int a, int b) {\n    }\n}\n", line: 1, ch: 7,
+                    label: "DOC_COMMENT_ADD_JAVADOC", has: ["@param a", "@param b", "@return"],
+                    absent: ["{*}", "@returns"] },
+                { id: "c", content: "/**\nint f(int a) {\n}\n", line: 0, ch: 3,
+                    label: "DOC_COMMENT_ADD_DOXYGEN", has: ["@param a", "@return"], absent: ["{*}", "@returns"] },
+                { id: "cpp", content: "/**\nint f(int a) {\n}\n", line: 0, ch: 3,
+                    label: "DOC_COMMENT_ADD_DOXYGEN", has: ["@param a", "@return"], absent: ["{*}", "@returns"] },
+                { id: "python", content: 'def f(a, b) -> int:\n    """\n', line: 1, ch: 7,
+                    label: "DOC_COMMENT_ADD_DOCSTRING", has: ["Args:", "a:", "Returns:"], absent: ["@param", "{*}"] }
+            ];
+
+            CASES.forEach(function (tc) {
+                it("offers and inserts the right doc comment for " + tc.id, function () {
+                    const r = run(tc.id, tc.content, tc.line, tc.ch);
+                    expect(r.has).toBe(true);
+                    expect(r.label).toContain(Strings[tc.label]);
+                    tc.has.forEach(function (frag) { expect(r.text).toContain(frag); });
+                    tc.absent.forEach(function (frag) { expect(r.text).not.toContain(frag); });
+                });
+            });
+
+            it("does NOT fire for an unsupported language (css)", function () {
+                expect(run("css", "/**\n.x { color: red; }\n", 0, 3).has).toBe(false);
+            });
+
+            it("Python adds no Returns when the def has no return annotation", function () {
+                const r = run("python", 'def f(a):\n    """\n', 1, 7);
+                expect(r.has).toBe(true);
+                expect(r.text).toContain("Args:");
+                expect(r.text).not.toContain("Returns:");
+            });
+
+            it("Python fires on the auto-closed \"\" state (caret between the quotes)", function () {
+                // typing " auto-closes to "" with the caret inside; the hint must still fire.
+                const r = run("python", 'def f(a):\n    ""\n', 1, 5);
+                expect(r.has).toBe(true);
+                expect(r.text).toContain('"""');
             });
         });
     });
+
+    // Real-window integration: confirms the code-hints POPUP actually appears for these languages.
+    require("./integration-tests");
 });
