@@ -223,6 +223,26 @@ define(function (require, exports, module) {
                 expect(snip).not.toContain("@param {");
                 expectNoTrailingWhitespace(snip);
             });
+            it("builds a TypeScript (tsdoc) skeleton - @param name / @returns, NO {type} braces", function () {
+                // TS types live in the signature, so a JSDoc {type} would be flagged by TS ("JSDoc types
+                // may be moved to TypeScript types"). tsdoc carries names only, with the JSDoc @returns.
+                const snip = build("tsdoc", { params: P("a", "b"), isClass: false, hasReturn: true }, "");
+                expect(snip).toContain("@param a");
+                expect(snip).toContain("@param b");
+                expect(snip).toContain("@returns");
+                expect(snip).not.toContain("@param {");
+                expect(snip).not.toContain("{*}");
+                expectNoTrailingWhitespace(snip);
+            });
+            it("builds a TypeScript skeleton (no {type} braces, @returns) - types live in the signature", function () {
+                const snip = build("tsdoc", { params: P("a", "b"), isClass: false, hasReturn: true }, "");
+                expect(snip).toContain("@param a");
+                expect(snip).toContain("@param b");
+                expect(snip).toContain("@returns");
+                expect(snip).not.toContain("@param {"); // no JSDoc {type} -> no "JSDoc types may be moved" warning
+                expect(snip).not.toContain("{*}");
+                expectNoTrailingWhitespace(snip);
+            });
             it("builds a Python docstring with Args/Returns and no trailing whitespace", function () {
                 const snip = build("pydoc", { params: P("name"), isClass: false, hasReturnType: true }, "    ");
                 expect(snip.indexOf('"""')).toBe(0);
@@ -277,7 +297,9 @@ define(function (require, exports, module) {
                     label: "DOC_COMMENT_ADD_JSDOC", has: ["@param {*} a", "@param {*} b", "@returns {*}"], absent: [] },
                 { id: "typescript", content: "/**\nfunction f(a: number, b: string): boolean {\n}\n", line: 0, ch: 3,
                     label: "DOC_COMMENT_ADD_JSDOC",
-                    has: ["@param {number} a", "@param {string} b", "@returns {boolean}"], absent: ["{*}"] },
+                    // TS types live in the signature, so JSDoc carries names only (no {type}, which TS
+                    // would flag as "JSDoc types may be moved to TypeScript types").
+                    has: ["@param a", "@param b", "@returns"], absent: ["@param {", "{number}", "{*}"] },
                 { id: "php", content: "<?php\n/**\nfunction f($a, $b) {\n}\n", line: 1, ch: 3,
                     label: "DOC_COMMENT_ADD_PHPDOC", has: ["@param mixed $a", "@return mixed"], absent: ["{*}"] },
                 { id: "java", content: "class T {\n    /**\n    int f(int a, int b) {\n    }\n}\n", line: 1, ch: 7,
