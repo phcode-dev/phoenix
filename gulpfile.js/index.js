@@ -912,9 +912,9 @@ const minifyableExtensions = ["CloseOthers", "CodeFolding", "DebugCommands", "Gi
     "HealthData", "JavaScriptCodeHints", "JavaScriptRefactoring", "QuickView", "TypeScriptSupport"];
 // extensions that nned not be minified either coz they are single file extensions or some other reason.
 const nonMinifyExtensions = ["CSSAtRuleCodeHints", "CSSCodeHints",
-    "CSSPseudoSelectorHints", "DarkTheme", "HandlebarsSupport", "HTMLCodeHints", "HtmlEntityCodeHints",
-    "InlineColorEditor", "InlineTimingFunctionEditor", "JavaScriptQuickEdit", "JSLint",
-    "LightTheme", "MDNDocs", "Phoenix-prettier", "PrefsCodeHints", "SVGCodeHints", "UrlCodeHints"
+    "CSSPseudoSelectorHints", "DarkTheme", "DocCommentHints", "HandlebarsSupport", "HTMLCodeHints",
+    "HtmlEntityCodeHints", "InlineColorEditor", "InlineTimingFunctionEditor", "JavaScriptQuickEdit",
+    "JSLint", "LightTheme", "MDNDocs", "Phoenix-prettier", "PrefsCodeHints", "SVGCodeHints", "UrlCodeHints"
 ];
 async function makeConcatExtensions() {
     let content = JSON.parse(fs.readFileSync(`src/extensions/default/DefaultExtensions.json`,
