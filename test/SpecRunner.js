@@ -286,6 +286,8 @@ define(function (require, exports, module) {
 	//load language features
     require("features/ParameterHintsManager");
     require("features/JumpToDefManager");
+    // Preload so DocCommentHints (and its unit spec) can synchronously brackets.getModule it.
+    require("editor/TabstopManager");
 
     //node connector
     require("NodeConnector");

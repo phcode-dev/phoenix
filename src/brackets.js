@@ -197,6 +197,8 @@ define(function (require, exports, module) {
     require("editor/EditorOptionHandlers");
     require("editor/EditorStatusBar");
     require("editor/ImageViewer");
+    // Preload so extensions can synchronously brackets.getModule it (e.g. DocCommentHints snippets).
+    require("editor/TabstopManager");
     require("extensibility/ExtensionDownloader");
     require("extensibility/InstallExtensionDialog");
     require("extensibility/ExtensionManagerDialog");
