@@ -8,6 +8,7 @@
     "CSSCodeHints",
     "CSSPseudoSelectorHints",
     "DebugCommands",
+    "DocCommentHints",
     "HandlebarsSupport",
     "HTMLCodeHints",
     "HtmlEntityCodeHints",

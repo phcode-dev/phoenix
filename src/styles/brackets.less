@@ -2587,6 +2587,17 @@ span.brackets-hints-with-type-details {
     display: inline-block;
 }
 
+// DocCommentHints "Add JSDoc comment" / "Add docstring" row: a muted monospace opener marker
+// followed by the action label, so it reads as "insert a doc comment" rather than a cryptic token.
+.doc-comment-hint .doc-comment-hint-marker {
+    font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
+    opacity: 0.6;
+    margin-right: 2px;
+}
+.doc-comment-hint .doc-comment-hint-label {
+    font-weight: 500;
+}
+
 .brackets-hints-type-details {
     color: #a3a3a3 !important;
     font-weight: 100;
