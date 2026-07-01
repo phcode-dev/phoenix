@@ -199,17 +199,21 @@ define(function (require, exports, module) {
             // Rewrite the URI to a VFS-based URI so the linting provider keys results by the
             // same path CodeInspection uses (editor.document.file._path).
             const vfsUri = serverUriToVfsUri(params.uri);
+            const vfsPath = PathConverters.uriToPath(vfsUri);
+            const language = LanguageManager.getLanguageForPath(vfsPath);
+            const langId = language && language.getId();
+            // An embedded view (e.g. the JS extracted from an HTML file) loses cross-script/module
+            // context, so its diagnostics are unreliable - drop them when the embedded config opts out.
+            const embCfg = client.embeddedLanguages[langId];
+            if (embCfg && embCfg.diagnostics === false) {
+                return;
+            }
             let diagnostics = params.diagnostics || [];
             // Let the language config drop diagnostics that don't make sense for a given file
             // (e.g. TypeScript's "needs a declaration file" suggestions in a plain JS file).
             const filterFn = client.config && client.config.filterDiagnostics;
             if (filterFn && diagnostics.length) {
-                const vfsPath = PathConverters.uriToPath(vfsUri);
-                const language = LanguageManager.getLanguageForPath(vfsPath);
-                diagnostics = filterFn(diagnostics, {
-                    languageId: language && language.getId(),
-                    filePath: vfsPath
-                });
+                diagnostics = filterFn(diagnostics, { languageId: langId, filePath: vfsPath });
             }
             client.lintingProvider.setInspectionResults({
                 uri: vfsUri,
@@ -268,6 +272,10 @@ define(function (require, exports, module) {
         this.serverId = serverId;
         this.languages = languages;
         this.config = config;
+        // Embedded languages map a host language (e.g. "html") whose documents are presented to the
+        // server as a script "view" (e.g. the extracted JavaScript) - see DocumentSync. Shape:
+        // { html: { scriptLanguageId, extract(editor), diagnostics } }.
+        this.embeddedLanguages = (config && config.embeddedLanguages) || {};
         this.capabilities = null;
     }
 
@@ -845,8 +853,10 @@ define(function (require, exports, module) {
      */
     function isLintingProviderActive(languageId) {
         for (const client of clients.values()) {
-            if (client.lintingProvider && client.capabilities &&
-                    client.languages && client.languages.indexOf(languageId) !== -1) {
+            if (client.lintingProvider && client.capabilities && client.languages &&
+                    (client.languages.indexOf(languageId) !== -1 || client.embeddedLanguages[languageId])) {
+                // Also true for an embedded host language (e.g. "html") so the legacy Tern provider
+                // stands down inside HTML, leaving the LSP as the JS provider there.
                 return true;
             }
         }

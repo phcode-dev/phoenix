@@ -139,7 +139,9 @@ define(function (require, exports, module) {
         if (doc.isUntitled && doc.isUntitled()) {
             return false;
         }
-        return client.languages.indexOf(doc.getLanguage().getId()) !== -1;
+        const langId = doc.getLanguage().getId();
+        return client.languages.indexOf(langId) !== -1 ||
+            !!(client.embeddedLanguages && client.embeddedLanguages[langId]);
     }
 
     function _clientForDoc(doc) {
@@ -157,16 +159,45 @@ define(function (require, exports, module) {
         return (map && map[langId]) || langId;
     }
 
+    // The embedded-language config for this doc, or null. An embedded host (e.g. "html") is presented
+    // to the server as a script view of itself - see _serverText.
+    function _embeddedCfg(client, doc) {
+        const emb = client.embeddedLanguages;
+        return (emb && emb[doc.getLanguage().getId()]) || null;
+    }
+
+    function _editorFor(doc) {
+        return doc._masterEditor || EditorManager.getActiveEditor() || null;
+    }
+
+    // The text to send the server for this doc. For an embedded host language it is the script "view"
+    // produced by the config's extract(editor) (e.g. HTML blank-padded down to just its JavaScript,
+    // preserving line/column so positions stay 1:1); for everything else it is the document verbatim.
+    function _serverText(client, doc) {
+        const embCfg = _embeddedCfg(client, doc);
+        if (embCfg) {
+            const editor = _editorFor(doc);
+            return editor ? embCfg.extract(editor) : "";
+        }
+        return doc.getText();
+    }
+
+    function _serverLanguageId(client, doc) {
+        const embCfg = _embeddedCfg(client, doc);
+        return embCfg ? embCfg.scriptLanguageId : _lspLanguageId(client, doc);
+    }
+
     function _open(client, doc) {
         const vfsPath = doc.file.fullPath;
-        const text = doc.getText();
+        const text = _serverText(client, doc);
         const state = {
             client: client, version: 1, open: true, pendingTimer: null, lastSentText: text,
             pendingChanges: [],  // accumulated LSP incremental edits since the last send
-            fullResync: false    // set when an unmappable change forces a full-text send
+            fullResync: false,   // set when an unmappable change forces a full-text send
+            embedded: !!_embeddedCfg(client, doc)
         };
         tracked.set(vfsPath, state);
-        client.notifyDidOpen(client.uriForPath(vfsPath), _lspLanguageId(client, doc), state.version, text);
+        client.notifyDidOpen(client.uriForPath(vfsPath), _serverLanguageId(client, doc), state.version, text);
     }
 
     function _change(client, doc) {
@@ -176,8 +207,10 @@ define(function (require, exports, module) {
             _open(client, doc);
             return;
         }
-        const text = doc.getText();
-        const contentChanges = _contentChangesFor(
+        const text = _serverText(client, doc);
+        // An embedded view is a transform of the raw document (HTML -> blanked JS), so the CodeMirror
+        // change records don't apply to it - always full-sync the freshly regenerated view.
+        const contentChanges = state.embedded ? [{ text: text }] : _contentChangesFor(
             _syncKind(client), state.lastSentText, state.pendingChanges, state.fullResync, text);
         state.version += 1;
         state.lastSentText = text;
@@ -210,9 +243,10 @@ define(function (require, exports, module) {
             return;
         }
         // Accumulate the edits so the debounced send (or a flush() before a feature request) can
-        // replay them as incremental ranges. If the server wants full sync, or a record can't be
-        // mapped, fall back to a full-text resync for this cycle.
-        if (!state.fullResync && _syncKind(client) === SYNC_INCREMENTAL) {
+        // replay them as incremental ranges. Embedded docs always full-sync (their server view is a
+        // transform), so skip accumulation for them. If the server wants full sync, or a record can't
+        // be mapped, fall back to a full-text resync for this cycle.
+        if (!state.embedded && !state.fullResync && _syncKind(client) === SYNC_INCREMENTAL) {
             const mapped = _toIncrementalChanges(changeList);
             if (mapped) {
                 for (let i = 0; i < mapped.length; i++) {
@@ -350,7 +384,9 @@ define(function (require, exports, module) {
                     clearTimeout(state.pendingTimer);
                     state.pendingTimer = null;
                 }
-                if (doc.getText() !== state.lastSentText) {
+                // Compare against the server view (the embedded transform for HTML, the raw text
+                // otherwise) so an embedded doc isn't resent on every feature request.
+                if (_serverText(client, doc) !== state.lastSentText) {
                     _change(client, doc);
                 }
             }
