@@ -91,7 +91,7 @@ define(function (require, exports, module) {
         if (anchor.width === 0 && anchor.height === 0) {
             return; // list not laid out yet (mid-reflow) - try again next frame
         }
-        var GAP = 6,
+        var GAP = 2,
             winW = $(window).width(),
             winH = $(window).height(),
             pw = $lspDocPopup.outerWidth(),
