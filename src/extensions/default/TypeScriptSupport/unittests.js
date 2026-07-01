@@ -267,6 +267,20 @@ define(function (require, exports, module) {
                 "close embedded.html");
         }, 45000);
 
+        // The docs popup beside the hint list must stay empty when its only content would be a
+        // signature that just repeats the item's label (vtsls returns the label itself as `detail`
+        // for keywords/plain identifiers like `this`/`throw`) - otherwise it echoes the hint row.
+        it("suppresses the docs popup that would only echo the hint label", function () {
+            const docHtml = testWindow.brackets.getModule("languageTools/DefaultProviders")._docPopupHtml;
+            expect(docHtml({ label: "this", detail: "this" })).toBe("");
+            expect(docHtml({ label: "throw", detail: "throw", documentation: "" })).toBe("");
+            expect(docHtml({ label: "x" })).toBe(""); // no detail, no docs
+            // A real signature or actual documentation still renders.
+            expect(docHtml({ label: "foo", detail: "function foo(): void" }).length).toBeGreaterThan(0);
+            expect(docHtml({ label: "this", detail: "this", documentation: "The context." }))
+                .toContain("context");
+        });
+
         // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------
 
         // Query the hover popover at a position the same way QuickViewManager does internally.
