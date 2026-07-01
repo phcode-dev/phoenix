@@ -91,7 +91,7 @@ define(function (require, exports, module) {
         if (anchor.width === 0 && anchor.height === 0) {
             return; // list not laid out yet (mid-reflow) - try again next frame
         }
-        var GAP = 2,
+        var GAP = 0,
             winW = $(window).width(),
             winH = $(window).height(),
             pw = $lspDocPopup.outerWidth(),
@@ -182,7 +182,13 @@ define(function (require, exports, module) {
     function _docPopupHtml(token) {
         var parts = [];
 
-        if (token.detail) {
+        // The signature is worth a popup only when it adds something beyond the item's own name.
+        // vtsls returns the label itself as `detail` for keywords/plain identifiers (`this` -> "this",
+        // `throw` -> "throw"), which would make the popup a verbatim echo of the hint row - so a detail
+        // that merely restates the label counts as "no signature".
+        var label = (token.label || "").trim();
+        var detail = (token.detail || "").trim();
+        if (detail && detail !== label) {
             try {
                 parts.push(_highlightCode(marked.parse("```" + _signatureLang() + "\n" + token.detail + "\n```")));
             } catch (e) {
@@ -195,9 +201,7 @@ define(function (require, exports, module) {
             parts.push(docHtml);
         }
 
-        if (!token.detail && !docHtml) {
-            return "";
-        }
+        // Empty -> "" so _showDocPopup hides the popup entirely instead of echoing the hint row.
         return parts.join("");
     }
 
@@ -1020,4 +1024,5 @@ define(function (require, exports, module) {
     exports.LintingProvider = LintingProvider;
     exports.ReferencesProvider = ReferencesProvider;
     exports.serverRespToSearchModelFormat = serverRespToSearchModelFormat;
+    exports._docPopupHtml = _docPopupHtml; // exposed for unit tests
 });
