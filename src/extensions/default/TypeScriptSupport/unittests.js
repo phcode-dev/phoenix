@@ -236,6 +236,37 @@ define(function (require, exports, module) {
                 "close incremental.ts");
         }, 90000);
 
+        // ----- embedded JavaScript in HTML <script> tags -----------------------------------------
+
+        // embedded.html has `var arr = [1, 2, 3];` then `arr.` inside a <script>. The HTML file is
+        // synced to the server as a JavaScript "view" of itself - the <script> blocks kept, everything
+        // else blanked to spaces (newlines preserved) so positions stay 1:1 - so a completion at `arr.`
+        // returns Array members even though the file's top-level language is HTML.
+        it("provides JS completions inside an HTML <script> tag", async function () {
+            await _openInProject("html/", "embedded.html");
+            const editor = EditorManager.getCurrentFullEditor();
+            editor.setCursorPos(6, 4); // just after `arr.`
+
+            function hasPush() {
+                return $(".codehint-menu li").text().indexOf("push") !== -1;
+            }
+            // Ask for hints; re-open only if the menu closed empty (the server may still be processing
+            // the freshly-synced HTML view). Avoids thrashing a menu that is mid-populate.
+            await awaitsFor(function () {
+                if (hasPush()) {
+                    return true;
+                }
+                if (!$(".codehint-menu:visible").length) {
+                    CommandManager.execute(Commands.SHOW_CODE_HINTS);
+                }
+                return false;
+            }, "Array-member completions at arr. inside the <script>", 30000);
+            expect(hasPush()).toBe(true);
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                "close embedded.html");
+        }, 45000);
+
         // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------
 
         // Query the hover popover at a position the same way QuickViewManager does internally.

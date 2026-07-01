@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector"),
+        HTMLUtils = brackets.getModule("language/HTMLUtils"),
         CodeIntelligence = require("./CodeIntelligence");
 
     const SERVER_ID = "typescript";
@@ -47,6 +48,40 @@ define(function (require, exports, module) {
         typescript: "typescript",
         jsx: "javascriptreact",
         tsx: "typescriptreact"
+    };
+
+    /**
+     * Build the JavaScript "view" of an HTML document for the language server: every <script> block
+     * is kept verbatim, everything else (markup, the <script> tags themselves) is replaced by spaces
+     * with newlines preserved. The view therefore has the SAME line/column layout as the HTML, so a
+     * cursor at (line, ch) in the HTML maps 1:1 to the same position in the view - no source map
+     * needed. Mirrors the legacy Tern path's Session.getJavascriptText, reusing HTMLUtils.findBlocks.
+     * @param {Editor} editor
+     * @return {string}
+     */
+    function _extractHtmlJs(editor) {
+        const doc = editor.document;
+        const blocks = HTMLUtils.findBlocks(editor, "javascript");
+        const lastLine = editor.lineCount() - 1;
+        const eof = { line: lastLine, ch: doc.getLine(lastLine).length };
+        let view = "";
+        let from = { line: 0, ch: 0 };
+        function blank(rangeStart, rangeEnd) {
+            return doc.getRange(rangeStart, rangeEnd).replace(/[^\n]/g, " "); // keep \n, blank the rest
+        }
+        blocks.forEach(function (block) {
+            view += blank(from, block.start) + block.text;
+            from = block.end;
+        });
+        view += blank(from, eof); // trailing markup, so the view length matches the HTML exactly
+        return view;
+    }
+
+    // Host languages presented to the TS server as a script "view" of themselves (see _extractHtmlJs
+    // + DocumentSync). diagnostics:false because the blanked view loses cross-script/module context,
+    // so its errors would be unreliable - completions/hover/definition are the value.
+    const EMBEDDED_LANGUAGES = {
+        html: { scriptLanguageId: "javascript", diagnostics: false, extract: _extractHtmlJs }
     };
 
     // vtsls-specific initialization options (mirrors the configuration Zed/VS Code use).
@@ -244,6 +279,7 @@ define(function (require, exports, module) {
             args: ["--stdio"],
             languages: SUPPORTED_LANGUAGES,
             languageIdMap: LANGUAGE_ID_MAP,
+            embeddedLanguages: EMBEDDED_LANGUAGES,
             initializationOptions: INITIALIZATION_OPTIONS,
             filterDiagnostics: filterDiagnostics
         });
@@ -265,7 +301,15 @@ define(function (require, exports, module) {
      */
     function _isServedLanguageActive() {
         const editor = EditorManager.getActiveEditor();
-        return !!(editor && SUPPORTED_LANGUAGES.indexOf(editor.getLanguageForSelection().getId()) !== -1);
+        if (!editor) {
+            return false;
+        }
+        if (SUPPORTED_LANGUAGES.indexOf(editor.getLanguageForSelection().getId()) !== -1) {
+            return true;
+        }
+        // Also start for an embedded host (e.g. an HTML file) so its <script> JS is synced and ready
+        // even before the caret moves into a script block.
+        return !!EMBEDDED_LANGUAGES[editor.document.getLanguage().getId()];
     }
 
     let starting = false;
