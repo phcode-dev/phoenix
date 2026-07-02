@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Inspicer element i Live-forhåndsvisning ved 'hover' eller 'klik'. Standard er 'hover'",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Vis målinger, når elementer vælges i live-forhåndsvisning. Standard er 'false'",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Vis stilbjælken, når elementer er valgt i live forhåndsvisning. Standard er 'true'",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Gemt position for stilbjælken i live-forhåndsvisning, som indstilles automatisk, når bjælken trækkes. En tom værdi placerer bjælken på dens standardplacering.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Vælg overordnet",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Rediger tekst",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Dobbeltklik",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Kontur",
   "LIVE_DEV_STYLER_OFFSET": "Forskydning",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Kant & Kontur",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Kantfarve",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Konturfarve",
   "LIVE_DEV_STYLER_SIDE": "Side",
   "LIVE_DEV_STYLER_PADDING": "Padding",
   "LIVE_DEV_STYLER_MARGIN": "Margen",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Uafhængige sider - hver side har sin egen værdi",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Parvis - top & bund forbundet, venstre & højre forbundet",
   "LIVE_DEV_STYLER_LINK_ALL": "Alle sider forbundet - én værdi for alle sider",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Uafhængig",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Parvis",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Alle kædet",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Klik for at ændre, hvordan sider er forbundet",
   "LIVE_DEV_STYLER_ALL_SIDES": "Alle",
   "LIVE_DEV_STYLER_TOP": "Top",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Gemt position for stilbjælken i live-forhåndsvisning, som indstilles automatisk, når bjælken trækkes. En tom værdi placerer bjælken på dens standardplacering.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Kantfarve",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Konturfarve",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Uafhængig",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Parvis",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Alle kædet"
+  "LIVE_DEV_STYLER_LIMITS": "Min / maks"
 });

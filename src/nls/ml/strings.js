@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "ലൈവ് പ്രിവ്യൂവിൽ 'ഹോവർ' ചെയ്യുമ്പോഴോ 'ക്ലിക്ക്' ചെയ്യുമ്പോഴോ എലമെന്റ് പരിശോധിക്കുക. ഡിഫോൾട്ടായി 'ഹോവർ' ആയിരിക്കും",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "ലൈവ് പ്രിവ്യൂവിൽ എലമെന്റുകൾ തിരഞ്ഞെടുക്കുമ്പോൾ അളവുകൾ കാണിക്കുക. ഡിഫോൾട്ടായി 'ഫാൾസ്' ആയിരിക്കും",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "ലൈവ് പ്രിവ്യൂവിൽ ഘടകങ്ങൾ തിരഞ്ഞെടുക്കുമ്പോൾ സ്റ്റൈൽസ് ബാർ കാണിക്കുക. ഡിഫോൾട്ടായി 'true' ആണ്",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "ലൈവ് പ്രിവ്യൂ സ്റ്റൈൽസ് ബാറിന്റെ സംരക്ഷിച്ച സ്ഥാനം, ബാർ വലിച്ചിഴയ്ക്കുമ്പോൾ സ്വയമേവ സജ്ജീകരിക്കും. ശൂന്യമായി വിട്ടാൽ ബാർ അതിന്റെ ഡിഫോൾട്ട് സ്ഥാനത്ത് ദൃശ്യമാകും.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "പാരന്റ് തിരഞ്ഞെടുക്കുക",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "ടെക്സ്റ്റ് എഡിറ്റ് ചെയ്യുക",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "ഡബിൾ-ക്ലിക്ക്",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "ഔട്ട്ലൈൻ",
   "LIVE_DEV_STYLER_OFFSET": "ഓഫ്‌സെറ്റ്",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "ബോർഡറും ഔട്ട്‌ലൈനും",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "ബോർഡർ നിറം",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "ഔട്ട്‌ലൈൻ നിറം",
   "LIVE_DEV_STYLER_SIDE": "വശം",
   "LIVE_DEV_STYLER_PADDING": "പാഡിംഗ്",
   "LIVE_DEV_STYLER_MARGIN": "മാർജിൻ",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "സ്വതന്ത്രമായ വശങ്ങൾ - ഓരോ വശത്തിനും അതിൻ്റേതായ മൂല്യമുണ്ട്",
   "LIVE_DEV_STYLER_LINK_PAIRED": "ജോടിയാക്കിയത് - മുകളും താഴെയും, ഇടതും വലതും ലിങ്ക് ചെയ്തിരിക്കുന്നു",
   "LIVE_DEV_STYLER_LINK_ALL": "എല്ലാ വശങ്ങളും ലിങ്ക് ചെയ്തത് - എല്ലാ വശങ്ങൾക്കും ഒരൊറ്റ മൂല്യം",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "സ്വതന്ത്രം",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "ജോടിയാക്കിയത്",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "എല്ലാം ലിങ്ക് ചെയ്തത്",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "വശങ്ങൾ എങ്ങനെ ബന്ധിപ്പിച്ചിരിക്കുന്നു എന്ന് മാറ്റാൻ ക്ലിക്ക് ചെയ്യുക",
   "LIVE_DEV_STYLER_ALL_SIDES": "എല്ലാം",
   "LIVE_DEV_STYLER_TOP": "മുകൾ",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "ലൈവ് പ്രിവ്യൂ സ്റ്റൈൽസ് ബാറിന്റെ സംരക്ഷിച്ച സ്ഥാനം, ബാർ വലിച്ചിഴയ്ക്കുമ്പോൾ സ്വയമേവ സജ്ജീകരിക്കും. ശൂന്യമായി വിട്ടാൽ ബാർ അതിന്റെ ഡിഫോൾട്ട് സ്ഥാനത്ത് ദൃശ്യമാകും.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "ബോർഡർ നിറം",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "ഔട്ട്‌ലൈൻ നിറം",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "സ്വതന്ത്രം",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "ജോടിയാക്കിയത്",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "എല്ലാം ലിങ്ക് ചെയ്തത്"
+  "LIVE_DEV_STYLER_LIMITS": "കുറഞ്ഞത് / പരമാവധി"
 });

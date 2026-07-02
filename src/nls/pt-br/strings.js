@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Inspecionar elemento na Visualização ao Vivo com 'hover' ou 'click'. O padrão é 'hover'",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Mostrar medidas quando elementos são selecionados na visualização ao vivo. O padrão é 'falso'",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Mostrar a barra de estilos quando elementos são selecionados na visualização ao vivo. O padrão é 'true'",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Posição salva da barra de estilos da visualização ao vivo, definida automaticamente quando a barra é arrastada. Deixar em branco coloca a barra em sua posição padrão.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Selecionar Pai",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Editar Texto",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Clique duplo",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Contorno",
   "LIVE_DEV_STYLER_OFFSET": "Deslocamento",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Borda e Contorno",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Cor da borda",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Cor do contorno",
   "LIVE_DEV_STYLER_SIDE": "Lado",
   "LIVE_DEV_STYLER_PADDING": "Espaçamento Interno",
   "LIVE_DEV_STYLER_MARGIN": "Margem",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Lados independentes - cada lado tem seu próprio valor",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Em pares - superior e inferior vinculados, esquerdo e direito vinculados",
   "LIVE_DEV_STYLER_LINK_ALL": "Todos os lados vinculados - um valor para cada lado",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Independente",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Emparelhado",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Todos vinculados",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Clique para alterar como os lados são vinculados",
   "LIVE_DEV_STYLER_ALL_SIDES": "Todos",
   "LIVE_DEV_STYLER_TOP": "Início",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Posição salva da barra de estilos da visualização ao vivo, definida automaticamente quando a barra é arrastada. Deixar em branco coloca a barra em sua posição padrão.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Cor da borda",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Cor do contorno",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Independente",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Emparelhado",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Todos vinculados"
+  "LIVE_DEV_STYLER_LIMITS": "Mín / Máx"
 });

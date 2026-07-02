@@ -1920,6 +1920,7 @@
   "LIVE_DEV_STYLER_LAYOUT": "Layout",
   "LIVE_DEV_STYLER_LEFT": "Left",
   "LIVE_DEV_STYLER_LETTER_SPACING": "Letter spacing",
+  "LIVE_DEV_STYLER_LIMITS": "Min / max",
   "LIVE_DEV_STYLER_LIMITS_HIDE": "Hide min / max size limits",
   "LIVE_DEV_STYLER_LIMITS_SHOW": "Show min / max size limits",
   "LIVE_DEV_STYLER_LINE_HEIGHT": "Line height",

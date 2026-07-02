@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Element inspecteren in Live Voorbeeld bij 'hover' of 'klik'. Standaard is 'hover'.",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Toon afmetingen wanneer elementen zijn geselecteerd in de live voorvertoning. Standaard is 'false'",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Toon de stijlbalk wanneer elementen zijn geselecteerd in de live voorvertoning. Standaard is 'true'.",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Opgeslagen positie van de stijlenbalk van de live voorvertoning, automatisch ingesteld wanneer de balk wordt versleept. Leeg laten plaatst de balk op de standaardplek.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Selecteer bovenliggend element",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Tekst bewerken",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Dubbelklik",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Contour",
   "LIVE_DEV_STYLER_OFFSET": "Offset",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Rand & Omlijning",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Randkleur",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Omlijningskleur",
   "LIVE_DEV_STYLER_SIDE": "Zijde",
   "LIVE_DEV_STYLER_PADDING": "Padding",
   "LIVE_DEV_STYLER_MARGIN": "Marge",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Afzonderlijke zijden - elke zijde heeft zijn eigen waarde",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Gepaard - boven & onder gekoppeld, links & rechts gekoppeld",
   "LIVE_DEV_STYLER_LINK_ALL": "Alle zijden gekoppeld - één waarde voor elke zijde",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Onafhankelijk",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Per paar",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Allemaal gekoppeld",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Klik om te wijzigen hoe zijden gekoppeld zijn",
   "LIVE_DEV_STYLER_ALL_SIDES": "Alle",
   "LIVE_DEV_STYLER_TOP": "Boven",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Opgeslagen positie van de stijlenbalk van de live voorvertoning, automatisch ingesteld wanneer de balk wordt versleept. Leeg laten plaatst de balk op de standaardplek.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Randkleur",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Omlijningskleur",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Onafhankelijk",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Per paar",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Allemaal gekoppeld"
+  "LIVE_DEV_STYLER_LIMITS": "Min / max"
 });

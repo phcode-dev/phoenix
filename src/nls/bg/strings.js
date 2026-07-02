@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Инспектиране на елемент в преглед на живо при 'посочване' или 'кликване'. По подразбиране е 'посочване'.",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Показване на размери при избиране на елементи в прегледа на живо. По подразбиране е изключено.",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Показва лентата със стилове при избиране на елементи в прегледа на живо. По подразбиране е 'true'.",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Запазена позиция на лентата със стилове на прегледа на живо, задава се автоматично при плъзгане на лентата. Ако е празно, лентата се поставя на мястото ѝ по подразбиране.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Избор на родител",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Редактиране на текст",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Двойно щракване",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Контур",
   "LIVE_DEV_STYLER_OFFSET": "Отстояние",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Рамка и очертание",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Цвят на рамката",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Цвят на контура",
   "LIVE_DEV_STYLER_SIDE": "Страна",
   "LIVE_DEV_STYLER_PADDING": "Вътрешен отстъп",
   "LIVE_DEV_STYLER_MARGIN": "Външен отстъп",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Независими страни - всяка страна има собствена стойност",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Сдвоени - горна и долна са свързани, лява и дясна са свързани",
   "LIVE_DEV_STYLER_LINK_ALL": "Всички страни са свързани - една стойност за всяка страна",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Независими",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Сдвоени",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Всички свързани",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Кликнете, за да промените как са свързани страните",
   "LIVE_DEV_STYLER_ALL_SIDES": "Всички",
   "LIVE_DEV_STYLER_TOP": "Горе",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Запазена позиция на лентата със стилове на прегледа на живо, задава се автоматично при плъзгане на лентата. Ако е празно, лентата се поставя на мястото ѝ по подразбиране.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Цвят на рамката",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Цвят на контура",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Независими",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Сдвоени",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Всички свързани"
+  "LIVE_DEV_STYLER_LIMITS": "Мин / макс"
 });

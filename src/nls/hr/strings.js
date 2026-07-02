@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Pregledaj element u Pregledu uživo pri 'prelasku mišem' ili 'kliku'. Zadano je 'prelazak mišem'.",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Prikazuje mjere kada su elementi odabrani u pretpregledu uživo. Zadano je 'false'.",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Prikaži traku sa stilovima kada su elementi odabrani u pregledu uživo. Zadana vrijednost je 'true'.",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Spremljena pozicija trake sa stilovima za pregled uživo, postavlja se automatski pri povlačenju trake. Prazna vrijednost postavlja traku na zadano mjesto.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Odaberi nadređeni",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Uredi tekst",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Dvostruki klik",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Obris",
   "LIVE_DEV_STYLER_OFFSET": "Pomak",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Obrub i kontura",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Boja obruba",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Boja obrisa",
   "LIVE_DEV_STYLER_SIDE": "Strana",
   "LIVE_DEV_STYLER_PADDING": "Unutarnji razmak",
   "LIVE_DEV_STYLER_MARGIN": "Margina",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Odvojene strane - svaka strana ima svoju vrijednost",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Upareno - gornja i donja strana povezane, lijeva i desna povezane",
   "LIVE_DEV_STYLER_LINK_ALL": "Sve strane povezane - jedna vrijednost za svaku stranu",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Neovisno",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Upareno",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Sve povezano",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Kliknite za promjenu načina povezivanja strana",
   "LIVE_DEV_STYLER_ALL_SIDES": "Sve",
   "LIVE_DEV_STYLER_TOP": "Vrh",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Spremljena pozicija trake sa stilovima za pregled uživo, postavlja se automatski pri povlačenju trake. Prazna vrijednost postavlja traku na zadano mjesto.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Boja obruba",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Boja obrisa",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Neovisno",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Upareno",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Sve povezano"
+  "LIVE_DEV_STYLER_LIMITS": "Min / maks"
 });

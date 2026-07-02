@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Pārbaudīt elementu tiešraides priekšskatījumā, uzvirzot kursoru ('hover') vai noklikšķinot ('click'). Noklusējums ir 'hover'.",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Rādīt mērījumus, kad tiešsaistes priekšskatījumā ir atlasīti elementi. Noklusējuma vērtība ir 'false'.",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Rādīt stilu joslu, kad elementi ir atlasīti tiešraides priekšskatījumā. Noklusējuma vērtība ir 'true'.",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Saglabātā tiešraides priekšskatījuma stilu joslas pozīcija, kas tiek iestatīta automātiski, kad josla tiek vilkta. Tukša vērtība novieto joslu tās noklusējuma vietā.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Atlasīt vecākelementu",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Rediģēt tekstu",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Dubultklikšķis",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Kontūra",
   "LIVE_DEV_STYLER_OFFSET": "Nobīde",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Apmale & kontūra",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Apmales krāsa",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Kontūras krāsa",
   "LIVE_DEV_STYLER_SIDE": "Mala",
   "LIVE_DEV_STYLER_PADDING": "Iekšējā atkāpe",
   "LIVE_DEV_STYLER_MARGIN": "Ārējā atkāpe",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Atsevišķas malas - katrai malai ir sava vērtība",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Pāros - augša & apakša saistītas, kreisā & labā saistītas",
   "LIVE_DEV_STYLER_LINK_ALL": "Visas malas saistītas - viena vērtība visām malām",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Neatkarīgs",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Sapārots",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Visi saistīti",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Noklikšķiniet, lai mainītu malu saistīšanas veidu",
   "LIVE_DEV_STYLER_ALL_SIDES": "Visi",
   "LIVE_DEV_STYLER_TOP": "Augša",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Saglabātā tiešraides priekšskatījuma stilu joslas pozīcija, kas tiek iestatīta automātiski, kad josla tiek vilkta. Tukša vērtība novieto joslu tās noklusējuma vietā.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Apmales krāsa",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Kontūras krāsa",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Neatkarīgs",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Sapārots",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Visi saistīti"
+  "LIVE_DEV_STYLER_LIMITS": "Min / maks"
 });

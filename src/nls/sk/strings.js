@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Skontrolovať prvok v živom náhľade pri 'prejdení myšou' alebo 'kliknutí'. Predvolená hodnota je 'prejdenie myšou'.",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Zobraziť rozmery pri výbere prvkov v živom náhľade. Predvolená hodnota je 'false'.",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Zobraziť panel štýlov, keď sú prvky vybraté v živom náhľade. Predvolená hodnota je 'true'.",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Uložená pozícia panela štýlov živého náhľadu, ktorá sa nastaví automaticky pri potiahnutí panela. Prázdna hodnota umiestni panel na jeho predvolené miesto.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Vybrať nadradený prvok",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Upraviť text",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Dvojklik",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Obrys",
   "LIVE_DEV_STYLER_OFFSET": "Posun",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Orámovanie a obrys",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Farba orámovania",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Farba obrysu",
   "LIVE_DEV_STYLER_SIDE": "Strana",
   "LIVE_DEV_STYLER_PADDING": "Vnútorný okraj",
   "LIVE_DEV_STYLER_MARGIN": "Vonkajší okraj",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Samostatné strany - každá strana má vlastnú hodnotu",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Spárované - horná a dolná prepojené, ľavá a pravá prepojené",
   "LIVE_DEV_STYLER_LINK_ALL": "Všetky strany prepojené - jedna hodnota pre všetky strany",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Nezávislé",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Spárované",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Všetky prepojené",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Kliknutím zmeníte spôsob prepojenia strán",
   "LIVE_DEV_STYLER_ALL_SIDES": "Všetky",
   "LIVE_DEV_STYLER_TOP": "Horný",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Uložená pozícia panela štýlov živého náhľadu, ktorá sa nastaví automaticky pri potiahnutí panela. Prázdna hodnota umiestni panel na jeho predvolené miesto.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Farba orámovania",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Farba obrysu",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Nezávislé",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Spárované",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Všetky prepojené"
+  "LIVE_DEV_STYLER_LIMITS": "Min / Max"
 });

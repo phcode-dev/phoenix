@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Inspectează elementul în Previzualizarea Live la 'trecerea cu mouse-ul' sau 'clic'. Valoarea implicită este 'trecerea cu mouse-ul'",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Afișează măsurătorile când elementele sunt selectate în previzualizarea live. Valoarea implicită este 'false'.",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Afișează bara de stiluri când elementele sunt selectate în previzualizarea live. Valoarea implicită este 'true'",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Poziția salvată a barei de stiluri a previzualizării live, setată automat când bara este trasă. Dacă este gol, plasează bara în locația sa implicită.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Selectează părintele",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Editează textul",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Dublu-clic",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Contur",
   "LIVE_DEV_STYLER_OFFSET": "Decalaj",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Bordură și Contur",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Culoare chenar",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Culoare contur",
   "LIVE_DEV_STYLER_SIDE": "Latură",
   "LIVE_DEV_STYLER_PADDING": "Padding",
   "LIVE_DEV_STYLER_MARGIN": "Margin",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Laturi independente - fiecare latură are propria sa valoare",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Împerecheate - sus și jos legate, stânga și dreapta legate",
   "LIVE_DEV_STYLER_LINK_ALL": "Toate laturile legate - o singură valoare pentru fiecare latură",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Independent",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Împerecheat",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Toate legate",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Faceți clic pentru a schimba modul în care sunt legate laturile",
   "LIVE_DEV_STYLER_ALL_SIDES": "Toate",
   "LIVE_DEV_STYLER_TOP": "Sus",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Poziția salvată a barei de stiluri a previzualizării live, setată automat când bara este trasă. Dacă este gol, plasează bara în locația sa implicită.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Culoare chenar",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Culoare contur",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Independent",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Împerecheat",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Toate legate"
+  "LIVE_DEV_STYLER_LIMITS": "Min / Max"
 });

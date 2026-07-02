@@ -159,6 +159,7 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Инспектировать элемент в режиме Live Preview при наведении («hover») или нажатии («click»). По умолчанию — «hover».",
   "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Показывать размеры при выборе элементов в режиме предпросмотра. По умолчанию 'false'",
   "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Показывать панель стилей при выборе элементов в режиме живого предпросмотра. По умолчанию 'true'.",
+  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Сохранённая позиция панели стилей живого предпросмотра, устанавливаемая автоматически при перетаскивании панели. Пустое значение размещает панель в её стандартном месте.",
   "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Выбрать родительский элемент",
   "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Редактировать текст",
   "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Двойной щелчок",
@@ -279,6 +280,8 @@ define({
   "LIVE_DEV_STYLER_OUTLINE": "Контур",
   "LIVE_DEV_STYLER_OFFSET": "Смещение",
   "LIVE_DEV_STYLER_BORDER_AND_OUTLINE": "Граница и контур",
+  "LIVE_DEV_STYLER_BORDER_COLOR": "Цвет рамки",
+  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Цвет контура",
   "LIVE_DEV_STYLER_SIDE": "Сторона",
   "LIVE_DEV_STYLER_PADDING": "Внутренний отступ",
   "LIVE_DEV_STYLER_MARGIN": "Внешний отступ",
@@ -287,6 +290,9 @@ define({
   "LIVE_DEV_STYLER_LINK_NONE": "Независимые стороны - у каждой стороны свое значение",
   "LIVE_DEV_STYLER_LINK_PAIRED": "Попарно - верх и низ связаны, лево и право связаны",
   "LIVE_DEV_STYLER_LINK_ALL": "Все стороны связаны - одно значение для всех сторон",
+  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Раздельно",
+  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Попарно",
+  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Все вместе",
   "LIVE_DEV_STYLER_LINK_CYCLE_HINT": "Нажмите, чтобы изменить способ связывания сторон",
   "LIVE_DEV_STYLER_ALL_SIDES": "Все",
   "LIVE_DEV_STYLER_TOP": "Сверху",
@@ -2506,10 +2512,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Сохранённая позиция панели стилей живого предпросмотра, устанавливаемая автоматически при перетаскивании панели. Пустое значение размещает панель в её стандартном месте.",
-  "LIVE_DEV_STYLER_BORDER_COLOR": "Цвет рамки",
-  "LIVE_DEV_STYLER_OUTLINE_COLOR": "Цвет контура",
-  "LIVE_DEV_STYLER_LINK_NONE_SHORT": "Раздельно",
-  "LIVE_DEV_STYLER_LINK_PAIRED_SHORT": "Попарно",
-  "LIVE_DEV_STYLER_LINK_ALL_SHORT": "Все вместе"
+  "LIVE_DEV_STYLER_LIMITS": "Мин / макс"
 });
