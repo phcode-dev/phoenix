@@ -218,5 +218,90 @@ define(function (require, exports, module) {
                 }, "waiting for inline toast to close");
             });
         });
+
+        describe("attachRichTooltip", function () {
+            let $target, binding;
+
+            beforeAll(function () {
+                $target = $("<div id='rich-tooltip-test-target' style='position:fixed;top:60px;left:60px;" +
+                    "width:20px;height:20px;'></div>").appendTo("body");
+            });
+
+            afterAll(function () {
+                if (binding) {
+                    binding.detach();
+                }
+                $target.remove();
+                NotificationUI.hideRichTooltip();
+            });
+
+            function tooltip() {
+                return $(".phoenix-rich-tooltip");
+            }
+
+            it("Should show rich HTML on hover and hide on mouseleave", async function () {
+                binding = NotificationUI.attachRichTooltip($target, "<b>rich</b> content",
+                    { showDelayMs: 0 });
+                $target.trigger("mouseenter");
+                await awaitsFor(function () {
+                    return tooltip().is(":visible");
+                }, "tooltip to appear on hover");
+                expect(tooltip().find("b").text()).toBe("rich");
+
+                $target.trigger("mouseleave");
+                await awaitsFor(function () {
+                    return !tooltip().is(":visible");
+                }, "tooltip to hide on mouseleave");
+            });
+
+            it("Should compute content per element from a function", async function () {
+                binding.detach();
+                $target.attr("data-info", "computed!");
+                binding = NotificationUI.attachRichTooltip($target, function (el) {
+                    return $(el).attr("data-info");
+                }, { showDelayMs: 0 });
+                $target.trigger("mouseenter");
+                await awaitsFor(function () {
+                    return tooltip().is(":visible") && tooltip().text() === "computed!";
+                }, "tooltip to show computed content");
+                $target.trigger("mouseleave");
+                await awaitsFor(function () {
+                    return !tooltip().is(":visible");
+                }, "tooltip to hide");
+            });
+
+            it("Should hide on mousedown and stop showing after detach", async function () {
+                $target.trigger("mouseenter");
+                await awaitsFor(function () {
+                    return tooltip().is(":visible");
+                }, "tooltip to appear before mousedown");
+                $target.trigger("mousedown");
+                await awaitsFor(function () {
+                    return !tooltip().is(":visible");
+                }, "tooltip to hide on mousedown");
+
+                binding.detach();
+                binding = null;
+                $target.trigger("mouseenter");
+                await awaits(50); // give a (detached) show any chance to fire
+                expect(tooltip().is(":visible")).toBe(false);
+            });
+
+            it("Should stay within the viewport", async function () {
+                // park the target at the bottom-right corner - the tooltip must clamp/flip inside
+                $target.css({ top: ($(window).height() - 22) + "px", left: ($(window).width() - 22) + "px" });
+                binding = NotificationUI.attachRichTooltip($target, "clamp me", { showDelayMs: 0 });
+                $target.trigger("mouseenter");
+                await awaitsFor(function () {
+                    return tooltip().is(":visible");
+                }, "tooltip to appear at screen edge");
+                const rect = tooltip()[0].getBoundingClientRect();
+                expect(rect.right).toBeLessThanOrEqual($(window).width());
+                expect(rect.bottom).toBeLessThanOrEqual($(window).height());
+                expect(rect.left).toBeGreaterThanOrEqual(0);
+                expect(rect.top).toBeGreaterThanOrEqual(0);
+                $target.trigger("mouseleave");
+            });
+        });
     });
 });

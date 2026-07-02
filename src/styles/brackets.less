@@ -52,6 +52,7 @@
 @import "CentralControlBar.less";
 @import "Extn-PhoenixTour.less";
 @import "Extn-Terminal.less";
+@import "Extn-TypeScriptSupport.less";
 @import "UserProfile.less";
 @import "phoenix-pro.less";
 @import "VideoPlayer.less";
@@ -4082,6 +4083,102 @@ label input {
 
 #status-language button, #status-encoding button {
     width: auto;
+}
+
+// Rich hover tooltip (NotificationUI.attachRichTooltip) - a shared, body-attached, theme-aware
+// tooltip surface. position:fixed viewport coordinates are set by NotificationUI when shown.
+.phoenix-rich-tooltip {
+    position: fixed;
+    z-index: 10000;
+    max-width: 400px;
+    padding: 10px 13px;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: @bc-text;
+    background: #fff;
+    border: 1px solid @bc-panel-border;
+    box-shadow: 0 4px 16px @bc-shadow-large;
+    // Deliberately interactive: the pointer may travel onto the tooltip to read along or select
+    // text (NotificationUI keeps it open while hovered, with a short grace period on leave).
+    user-select: text;
+    cursor: default;
+
+    .dark & {
+        color: @dark-bc-text;
+        background: #1e1e1e;
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 4px 16px @dark-bc-shadow-large;
+    }
+
+    code {
+        font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 12px;
+        padding: 0 4px;
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.06);
+        .dark & {
+            background: rgba(255, 255, 255, 0.09);
+        }
+    }
+
+    // Optional structured-content helpers, so feature tooltips share one typography:
+    // title / muted subtitle / aligned term->definition rows / footnote / code-example card.
+    .ph-tip-title {
+        font-weight: @font-weight-semibold;
+        font-size: 14px;
+    }
+    .ph-tip-sub {
+        opacity: 0.68;
+        font-size: 12.5px;
+        margin: 1px 0 8px;
+    }
+    .ph-tip-body {
+        font-size: 13px;
+    }
+    .ph-tip-rows {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 5px 10px;
+        font-size: 13px;
+    }
+    .ph-tip-term {
+        font-weight: @font-weight-semibold;
+        white-space: nowrap;
+        color: @bc-primary-btn-bg;
+        .dark & {
+            color: lighten(@bc-primary-btn-bg, 12%);
+        }
+    }
+    .ph-tip-def {
+        opacity: 0.9;
+    }
+    .ph-tip-foot {
+        margin-top: 7px;
+        padding-top: 6px;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        opacity: 0.72;
+        font-size: 12.5px;
+        .dark & {
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+    .ph-tip-example {
+        margin-top: 7px;
+        padding: 6px 8px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.045);
+        font-size: 12.5px;
+        .dark & {
+            background: rgba(255, 255, 255, 0.055);
+        }
+        code {
+            margin-right: 6px;
+        }
+        span {
+            opacity: 0.75;
+        }
+    }
 }
 
 // notification popup

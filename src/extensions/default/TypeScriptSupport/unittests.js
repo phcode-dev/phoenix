@@ -344,6 +344,86 @@ define(function (require, exports, module) {
             expect(content("jsconfig.json", { checkJs: true }, false).compilerOptions.checkJs).toBe(false);
         });
 
+        // ----- config settings panel (friendly UI over the root ts/jsconfig) -----
+        describe("config settings panel", function () {
+
+            async function _setupConfigProject(configText, extraFiles) {
+                const FileSystem = testWindow.brackets.test.FileSystem;
+                const projectPath = await SpecRunnerUtils.getTempTestDirectory(testRootSpec + "js-plain", true);
+                await jsPromise(SpecRunnerUtils.createTextFile(
+                    path.join(projectPath, "jsconfig.json"), configText, FileSystem));
+                for (const name of Object.keys(extraFiles || {})) {
+                    await jsPromise(SpecRunnerUtils.createTextFile(
+                        path.join(projectPath, name), extraFiles[name], FileSystem));
+                }
+                await SpecRunnerUtils.loadProjectInTestWindow(projectPath);
+                return projectPath;
+            }
+
+            async function _generatedConfigText() {
+                const ExtensionLoader = testWindow.brackets.getModule("utils/ExtensionLoader");
+                const CodeIntelligence = await new Promise(function (resolve, reject) {
+                    ExtensionLoader.getRequireContextForExtension("TypeScriptSupport")(
+                        ["CodeIntelligence"], resolve, reject);
+                });
+                return JSON.stringify(CodeIntelligence._configContent("jsconfig.json", null, false), null, 4);
+            }
+
+            function _panelVisible() {
+                return $("#ts-config-settings-panel").is(":visible");
+            }
+
+            afterEach(async function () {
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close config panel project files");
+            });
+
+            afterAll(async function () {
+                await SpecRunnerUtils.removeTempDirectory();
+            }, 30000);
+
+            it("auto-shows on the root config and hides when navigating away", async function () {
+                await _setupConfigProject(await _generatedConfigText(), { "app.js": "var a = 1;\n" });
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["jsconfig.json"]), "open jsconfig");
+                await awaitsFor(_panelVisible, "config panel to auto-show", 30000);
+                // the generated config carries the marker, so the managed-only bits are visible
+                expect($("#ts-config-settings-panel .ts-cfg-auto-manage-wrap").hasClass("forced-hidden")).toBe(false);
+                expect($("#ts-config-settings-panel .ts-cfg-origin").hasClass("forced-hidden")).toBe(false);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["app.js"]), "open app.js");
+                await awaitsFor(function () {
+                    return !_panelVisible();
+                }, "config panel to hide on navigating away", 30000);
+            }, 45000);
+
+            it("toggling Check JavaScript edits and saves the file", async function () {
+                await _setupConfigProject(await _generatedConfigText(), {});
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["jsconfig.json"]), "open jsconfig");
+                await awaitsFor(_panelVisible, "config panel to auto-show", 30000);
+
+                const DocumentManager = testWindow.brackets.test.DocumentManager;
+                const doc = DocumentManager.getCurrentDocument();
+                expect(doc.getText().indexOf("\"checkJs\": false")).not.toBe(-1);
+
+                const $check = $("#ts-config-settings-panel .ts-cfg-check-js");
+                $check.prop("checked", true).trigger("change");
+                await awaitsFor(function () {
+                    return doc.getText().indexOf("\"checkJs\": true") !== -1 && !doc.isDirty;
+                }, "checkJs true to be written and saved", 30000);
+            }, 45000);
+
+            it("drops to read-only for configs with comments (JSONC)", async function () {
+                await _setupConfigProject(
+                    "// user's commented config\n{\n    \"compilerOptions\": { \"checkJs\": true }\n}\n", {});
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["jsconfig.json"]), "open jsconfig");
+                await awaitsFor(_panelVisible, "config panel to auto-show", 30000);
+                await awaitsFor(function () {
+                    return !$("#ts-config-settings-panel .ts-cfg-read-only").hasClass("forced-hidden");
+                }, "read-only notice to show for JSONC", 30000);
+                expect($("#ts-config-settings-panel .ts-cfg-controls").hasClass("forced-hidden")).toBe(true);
+            }, 45000);
+        });
+
         // ----- module flavors: the generated config must "just work" for each -----
         // Demo projects are generated per flavor with the REAL config content our generator emits
         // (also proving vtsls accepts module "preserve"), then cross-file intelligence is asserted
