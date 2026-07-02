@@ -46,5 +46,6 @@ define(function (require, exports, module) {
     require("./CustomSnippets/main");
     require("./CollapseFolders/main");
     require("./Terminal/main");
+    require("./JSONSupport/main");
     require("./pro-loader");
 });

@@ -2229,7 +2229,7 @@ a, img {
     align-self: stretch;
     max-width: 520px;
     padding: 2px 4px;
-    font-size: 12.5px;
+    font-size: 13.5px;
     line-height: 1.5;
     color: @bc-text;
     word-wrap: break-word;
@@ -2281,7 +2281,7 @@ a, img {
     // Inline code: parameter names, types, identifiers.
     code {
         font-family: 'SourceCodePro', 'SF Mono', Menlo, Consolas, monospace;
-        font-size: 11.5px;
+        font-size: 12.5px;
         padding: 1px 5px;
         border-radius: 4px;
         background: rgba(0, 0, 0, 0.06);
@@ -2454,7 +2454,7 @@ a, img {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 8px 12px;
-    font-size: 12.5px;
+    font-size: 13px;
     line-height: 1.5;
     word-wrap: break-word;
 
@@ -2482,6 +2482,19 @@ a, img {
     p { margin: 6px 0; }
     p:first-child { margin-top: 0; }
     p:last-child { margin-bottom: 0; }
+
+    // Headings (e.g. the package-name header in npm hint docs): kill the browser's large default
+    // margins - a first-child heading otherwise adds its top margin to the popup's own padding and
+    // the spacing reads top-heavy vs the bottom.
+    h1, h2, h3, h4, h5, h6 {
+        margin: 8px 0 5px;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+    h1:first-child, h2:first-child, h3:first-child,
+    h4:first-child, h5:first-child, h6:first-child {
+        margin-top: 0;
+    }
 
     // Code blocks - the top signature and any fenced blocks inside the docs - stay cohesive with the
     // popup surface rather than being a separate-coloured panel: the fill is a faint tint *derived
@@ -2635,6 +2648,34 @@ span.brackets-hints-with-type-details {
 .highlight .hint-description {
     display: block;
     color: #6495ed !important;
+}
+
+// npm dependency hover (JSONSupport): links row - homepage left, "View docs" pinned bottom-right.
+// (font size comes from the shared .lsp-hover-quickview base)
+.npm-hover-quickview .npm-hover-links {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    .npm-hover-docs-link {
+        margin-left: auto;
+    }
+}
+
+// npm package hints (JSONSupport): the registry description renders as ONE ellipsized line after
+// the package name - long descriptions read in the side docs popup instead (see NpmHints
+// onHighlight). Overrides the generic block layout above, which wraps long text under the name
+// and stretches the list arbitrarily wide.
+.npm-hint .hint-description,
+.highlight .npm-hint .hint-description {
+    display: inline-block;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+    margin-left: 12px;
+    font-size: 0.92em;
+    opacity: 0.8;
 }
 
 .hint-doc {

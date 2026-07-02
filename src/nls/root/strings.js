@@ -1800,6 +1800,17 @@ define({
     "CODE_INTEL_PANEL_TEXT": "Project-wide code intelligence is off. Enable it for Find Usages, Rename, and Go to Definition across every file — adds a jsconfig.json to the project root.",
     "CODE_INTEL_PANEL_ENABLE": "Enable",
     "CODE_INTEL_PANEL_DISMISS": "Dismiss",
+    // JSON / package.json intelligence (JSONSupport)
+    "NPM_VULN_PROVIDER_NAME": "npm Security Advisories",
+    "NPM_VULN_MESSAGE": "{0}@{1} is vulnerable: {2} ({3} severity)",
+    "NPM_SEVERITY_CRITICAL": "critical",
+    "NPM_SEVERITY_HIGH": "high",
+    "NPM_SEVERITY_MODERATE": "moderate",
+    "NPM_SEVERITY_LOW": "low",
+    "NPM_HINT_LATEST_MINOR": "latest, minor updates ok",
+    "NPM_HINT_LATEST_PATCH": "latest, patch updates only",
+    "NPM_HOVER_HOMEPAGE": "Open homepage",
+    "NPM_HOVER_VIEW_DOCS": "View docs",
     // Code Intelligence config settings panel (shown when a root ts/jsconfig is the active file)
     "CODE_INTEL_CFG_TITLE": "Code Intelligence",
     "CODE_INTEL_CFG_ALL_OPTIONS": "All options…",

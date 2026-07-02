@@ -136,6 +136,8 @@ define(function (require, exports, module) {
     require("spec/Extn-JSHint-integ-test");
     require("spec/Extn-ESLint-integ-test");
     require("spec/Extn-CSSColorPreview-integ-test");
+    require("spec/Extn-JSONSupport-test");
+    require("spec/Extn-JSONSupport-integ-test");
     require("spec/Extn-CollapseFolders-integ-test");
     require("spec/Extn-Tabbar-integ-test");
     require("spec/Extn-CustomSnippets-test");

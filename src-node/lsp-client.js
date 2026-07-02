@@ -142,9 +142,51 @@ function handleMessage(serverId, msg) {
         } else {
             resolve(msg.result);
         }
+    } else if (msg.method && msg.id !== undefined) {
+        // Server-initiated REQUEST: answer it right here so the server never awaits a reply
+        // forever (the browser side has no response path; an unanswered request can stall the
+        // server's own processing - e.g. vscode-json-language-server pulling configuration).
+        _respondToServerRequest(serverId, server, msg);
     } else if (msg.method) {
-        // Notification or server-initiated request - forward to the browser.
+        // Notification - forward to the browser (e.g. textDocument/publishDiagnostics).
         nodeConnector.triggerPeer('lspNotification', { serverId, ...msg });
+    }
+}
+
+/**
+ * Answer a server-initiated request with a benign, spec-shaped reply. We advertise minimal client
+ * capabilities (no dynamic registration, workspace.configuration=false), so servers should rarely
+ * send these - this is the safety net that guarantees no server hangs awaiting a reply.
+ * @param {string} serverId - The server identifier (for logging)
+ * @param {Object} server - The server state object
+ * @param {Object} msg - The incoming JSON-RPC request (method + id)
+ */
+function _respondToServerRequest(serverId, server, msg) {
+    let response;
+    switch (msg.method) {
+    case 'workspace/configuration':
+        // Result must be an array matching params.items length; null entries mean "no config".
+        response = {
+            jsonrpc: '2.0', id: msg.id,
+            result: ((msg.params && msg.params.items) || []).map(() => null)
+        };
+        break;
+    case 'client/registerCapability':
+    case 'client/unregisterCapability':
+    case 'window/workDoneProgress/create':
+    case 'window/showMessageRequest':
+        response = { jsonrpc: '2.0', id: msg.id, result: null };
+        break;
+    default:
+        response = {
+            jsonrpc: '2.0', id: msg.id,
+            error: { code: -32601, message: `Method not handled by Phoenix LSP client: ${msg.method}` }
+        };
+    }
+    try {
+        server.process.stdin.write(encode(response));
+    } catch (e) {
+        console.error(`[lsp-client][${serverId}] failed to answer ${msg.method}:`, e.message);
     }
 }
 

@@ -1258,5 +1258,10 @@ define(function (require, exports, module) {
     exports.LintingProvider = LintingProvider;
     exports.ReferencesProvider = ReferencesProvider;
     exports.serverRespToSearchModelFormat = serverRespToSearchModelFormat;
+    // Generic side-docs popup for code-hint lists: any hint provider's onHighlight can show
+    // supplementary docs beside the list (the LSP providers' own docs use the same surface).
+    // `html` is TRUSTED - escape untrusted parts before calling.
+    exports.showHintDocPopup = _showDocPopup;
+    exports.hideHintDocPopup = _hideDocPopup;
     exports._docPopupHtml = _docPopupHtml; // exposed for unit tests
 });

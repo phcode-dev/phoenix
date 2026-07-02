@@ -163,7 +163,7 @@ Each error object in the results should have the following structure:
                htmlMessage:string,
                type:?Type ,
                fix: { // an optional fix, if present will show the fix button
-                    replace: "text to replace the offset given below",
+                    replaceText: "text to replace the offset given below",
                     rangeOffset: {
                         start: number,
                         end: number
@@ -194,7 +194,7 @@ Each error object in the results should have the following structure:
 | htmlMessage | <code>string</code> | The error message to be displayed as HTML. |
 | type | [<code>Type</code>](#Type) | The type of the error. Defaults to `Type.WARNING` if unspecified. |
 | fix | <code>Object</code> | An optional fix object. |
-| fix.replace | <code>string</code> | The text to replace the error with. |
+| fix.replaceText | <code>string</code> | The text to replace the error with. |
 | fix.rangeOffset | <code>Object</code> | The range within the text to replace. |
 | fix.rangeOffset.start | <code>number</code> | The start offset of the range. |
 | fix.rangeOffset.end | <code>number</code> | The end offset of the range. If no errors are found, return either `null`(treated as file is problem free) or an object with a zero-length `errors` array. Always use `message` to safely display the error as text. If you want to display HTML error message, then explicitly use `htmlMessage` to display it. Both `message` and `htmlMessage` can be used simultaneously. After scanning the file, if you need to omit the lint result, return or resolve with `{isIgnored: true}`. This prevents the file from being marked with a no errors tick mark in the status bar and excludes the linter from the problems panel. |

@@ -290,7 +290,17 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     LanguageClient.prototype.servesDocument = function (editor) {
-        return !!(editor && this.languages.indexOf(editor.document.getLanguage().getId()) !== -1);
+        if (!editor || this.languages.indexOf(editor.document.getLanguage().getId()) === -1) {
+            return false;
+        }
+        // Optional per-file opt-out (config.documentFilter): lets a server decline specific files
+        // of a language it otherwise serves, so lower-priority specialised providers can win there
+        // (e.g. the JSON server yields Phoenix preference files to PrefsCodeHints).
+        if (this.config && typeof this.config.documentFilter === "function" &&
+                !this.config.documentFilter(editor.document.file.fullPath)) {
+            return false;
+        }
+        return true;
     };
 
     LanguageClient.prototype._request = function (method, params) {
@@ -305,9 +315,26 @@ define(function (require, exports, module) {
         return getConnector().then(function (conn) {
             return conn.execPeer("sendNotification", { serverId: serverId, method: method, params: params });
         }).catch(function (err) {
-            // Notifications are best-effort (the server may be restarting). Don't let it become an
-            // unhandled rejection, but still surface it as a warning so we are not blind.
+            // Log AND re-throw: callers must be able to react to a lost notification (DocumentSync
+            // flags a full resync when a didChange never reached the server - swallowing here would
+            // leave the server's copy silently divergent). Fire-and-forget callers attach their own
+            // no-op catch.
             console.warn("[LSP] notification '" + method + "' failed:", err && (err.message || err));
+            throw err;
+        });
+    };
+
+    /**
+     * Send an arbitrary LSP notification to this client's server (e.g. a feature module pushing
+     * `workspace/didChangeConfiguration` after start). Best-effort: failures are logged, never
+     * thrown.
+     * @param {string} method - LSP notification method name
+     * @param {Object} params - notification params
+     * @return {Promise<void>}
+     */
+    LanguageClient.prototype.sendCustomNotification = function (method, params) {
+        return this._notify(method, params).catch(function () {
+            // already logged in _notify; custom notifications are fire-and-forget
         });
     };
 
@@ -327,7 +354,10 @@ define(function (require, exports, module) {
         });
     };
     LanguageClient.prototype.notifyDidClose = function (uri) {
-        return this._notify("textDocument/didClose", { textDocument: { uri: uri } });
+        return this._notify("textDocument/didClose", { textDocument: { uri: uri } }).catch(function () {
+            // ignorable: if the close never arrived the server is usually gone/restarting anyway,
+            // and (re)start resyncs documents from scratch
+        });
     };
 
     function _positionOf(cursorPos) {
@@ -600,7 +630,7 @@ define(function (require, exports, module) {
         return root ? root.fullPath : null;
     }
 
-    function _clientCapabilities() {
+    function _clientCapabilities(config) {
         return {
             textDocument: {
                 synchronization: {
@@ -612,7 +642,11 @@ define(function (require, exports, module) {
                 completion: {
                     dynamicRegistration: false,
                     completionItem: {
-                        snippetSupport: false,
+                        // Off by default: our hint insertion is plain text. A server config can opt
+                        // in (completionSnippetSupport) when the server refuses to offer completion
+                        // without it - vscode-json-language-server does - and the CodeHintsProvider
+                        // strips snippet placeholders on insert for such items.
+                        snippetSupport: !!(config && config.completionSnippetSupport),
                         documentationFormat: ["markdown", "plaintext"],
                         // We render labelDetails.detail/description (e.g. the source module of an
                         // auto-import) so otherwise-identical labels are distinguishable - see the
@@ -679,7 +713,7 @@ define(function (require, exports, module) {
                 locale: _uiLocale(),
                 rootUri: rootUri,
                 workspaceFolders: rootUri ? [{ uri: rootUri, name: rootName }] : null,
-                capabilities: _clientCapabilities(),
+                capabilities: _clientCapabilities(config),
                 initializationOptions: config.initializationOptions || {}
             }
         });
@@ -760,6 +794,14 @@ define(function (require, exports, module) {
      *        When omitted, a generic default is used (identifier chars + the server's non-whitespace
      *        triggerCharacters). Explicit invocation (Ctrl-Space) always shows hints regardless.
      * @param {function():string} [config.rootUriProvider] - returns the workspace root VFS path
+     * @param {function(string):boolean} [config.documentFilter] - per-file opt-out: given a file's
+     *        full path, return false to make this server decline the file even though its language
+     *        matches (e.g. the JSON server yields Phoenix pref files to PrefsCodeHints).
+     * @param {boolean} [config.completionSnippetSupport] - advertise snippet support in the client
+     *        completion capability. Only for servers that refuse to offer completion without it
+     *        (vscode-json-language-server); snippet placeholders are stripped on insert.
+     * @param {function(Array):Array} [config.filterDiagnostics] - server-specific post-filter for
+     *        published diagnostics
      * @return {Promise<LanguageClient|null>} the client, or null if it could not be started
      */
     async function registerLanguageServer(config) {

@@ -52,6 +52,8 @@ The `createFromTemplate` API can be configured with numerous options. See API op
     * [.createToastFromTemplate(title, template, [options])](#module_widgets/NotificationUI..createToastFromTemplate) ⇒ <code>Notification</code>
     * [.showToastOn(containerOrSelector, template, [options])](#module_widgets/NotificationUI..showToastOn) ⇒ <code>Notification</code>
     * [.showHUD(iconClass, label, [options])](#module_widgets/NotificationUI..showHUD) ⇒ <code>Notification</code>
+    * [.hideRichTooltip()](#module_widgets/NotificationUI..hideRichTooltip) : <code>function</code>
+    * [.attachRichTooltip(elements, html, [options])](#module_widgets/NotificationUI..attachRichTooltip) ⇒ <code>Object</code>
 
 <a name="module_widgets/NotificationUI..API"></a>
 
@@ -187,4 +189,32 @@ NotificationUI.showHUD("fa-solid fa-magnifying-glass-plus", "110%");
 | iconClass | <code>string</code> | Font Awesome class string for the icon (e.g. "fa-solid fa-magnifying-glass-plus"). |
 | label | <code>string</code> | Text to display below the icon (e.g. "110%"). |
 | [options] | <code>Object</code> | optional, supported options:   * `autoCloseTimeS` - Time in seconds after which the HUD auto-closes. Default is 1. |
+
+<a name="module_widgets/NotificationUI..hideRichTooltip"></a>
+
+### widgets/NotificationUI.hideRichTooltip() : <code>function</code>
+Hide the currently showing rich tooltip (if any).
+
+**Kind**: inner method of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
+<a name="module_widgets/NotificationUI..attachRichTooltip"></a>
+
+### widgets/NotificationUI.attachRichTooltip(elements, html, [options]) ⇒ <code>Object</code>
+Attaches a rich (HTML-capable) hover tooltip to the given element(s). The tooltip is
+Phoenix-themed for both light and dark themes, positioned beside the element, clamped to the
+viewport, and attached to `<body>` so scrolling containers cannot clip it.
+
+```js
+NotificationUI.attachRichTooltip($(".my-info-icon"), "<b>Hello</b> world");
+// or compute content per element on show:
+NotificationUI.attachRichTooltip($(".my-info-icon"), el => $(el).attr("data-info"));
+```
+
+**Kind**: inner method of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
+**Returns**: <code>Object</code> - call `detach()` to unbind the handlers and hide the tooltip  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| elements | <code>jQuery</code> \| <code>Element</code> \| <code>string</code> | element(s) or selector to attach to |
+| html | <code>string</code> \| <code>function</code> | TRUSTED html string (escape untrusted parts   yourself), or a function returning it for the hovered element |
+| [options] | <code>Object</code> | optional, supported options:   * `showDelayMs` - hover delay before the tooltip appears. Default 250. |
 
