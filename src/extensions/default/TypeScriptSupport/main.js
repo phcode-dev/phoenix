@@ -57,6 +57,27 @@ define(function (require, exports, module) {
         html: { scriptLanguageId: "javascript", diagnostics: false, extract: HtmlJsView.extract }
     };
 
+    /**
+     * Suppress code hints when the caret sits inside a string literal within an HTML <script>. vtsls
+     * sees only the host `.html` URI (not real JS), so it can't tell it's in a string and offers a
+     * junk "all globals + auto-imports" dump there. We can tell from CodeMirror's tokenizer, so we veto
+     * hints in that spot (via the shouldSuppressHints config hook). Plain JS/TS are untouched - the
+     * server handles their in-string behaviour itself.
+     * @param {Editor} editor
+     * @return {boolean}
+     */
+    function _suppressHintsInHtmlString(editor) {
+        if (!EMBEDDED_LANGUAGES[editor.document.getLanguage().getId()]) {
+            return false; // not an embedded host (plain JS/TS)
+        }
+        if (editor.getLanguageForSelection().getId() !== "javascript") {
+            return false; // in the surrounding markup, not the <script> JS
+        }
+        const token = editor.getToken(editor.getCursorPos());
+        const type = token && token.type;
+        return type === "string" || type === "string-2"; // string / template literal
+    }
+
     // vtsls-specific initialization options (mirrors the configuration Zed/VS Code use).
     const INITIALIZATION_OPTIONS = {
         vtsls: {
@@ -254,7 +275,8 @@ define(function (require, exports, module) {
             languageIdMap: LANGUAGE_ID_MAP,
             embeddedLanguages: EMBEDDED_LANGUAGES,
             initializationOptions: INITIALIZATION_OPTIONS,
-            filterDiagnostics: filterDiagnostics
+            filterDiagnostics: filterDiagnostics,
+            shouldSuppressHints: _suppressHintsInHtmlString
         });
         if (client) {
             registered = true;

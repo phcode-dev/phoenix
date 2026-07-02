@@ -435,6 +435,15 @@ define(function (require, exports, module) {
             return false;
         }
 
+        var config = this.client.config || {};
+
+        // Let the server's config veto hints at the current position regardless of how they were
+        // invoked - e.g. an embedded host suppressing completions inside a string literal that the
+        // server (which sees only the host-language document) can't detect on its own.
+        if (typeof config.shouldSuppressHints === "function" && config.shouldSuppressHints(editor)) {
+            return false;
+        }
+
         // Explicit invocation (e.g. Ctrl-Space) always shows hints.
         if (!implicitChar) {
             return true;
@@ -443,7 +452,6 @@ define(function (require, exports, module) {
         // A language server may fully control where hints implicitly appear by supplying a
         // `shouldAutoTrigger(implicitChar, editor)` callback (e.g. to suppress inside strings or
         // trigger on language-specific sequences). When provided, it replaces the default policy.
-        var config = this.client.config || {};
         if (typeof config.shouldAutoTrigger === "function") {
             return !!config.shouldAutoTrigger(implicitChar, editor);
         }
