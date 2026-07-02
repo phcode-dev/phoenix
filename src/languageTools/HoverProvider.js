@@ -164,7 +164,11 @@ define(function (require, exports, module) {
     HoverProvider.prototype.getQuickView = function (editor, pos, token, line) {
         const self = this;
         return new Promise(function (resolve, reject) {
-            if (!self.client || !self.client.getServerCapabilities() ||
+            // servesDocument: quick-view providers are selected by the language at the hover position
+            // (e.g. "javascript" inside an HTML <script>), so without this check we'd request hover
+            // for a document the server never syncs and it would fail.
+            if (!self.client || !self.client.servesDocument(editor) ||
+                    !self.client.getServerCapabilities() ||
                     !self.client.getServerCapabilities().hoverProvider) {
                 reject();
                 return;

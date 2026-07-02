@@ -426,21 +426,15 @@ define(function (require, exports, module) {
     }
 
     CodeHintsProvider.prototype.hasHints = function (editor, implicitChar) {
-        if (!this.client) {
+        // Stand down when the document isn't one the server syncs (providers are selected by the
+        // language at the CURSOR, so e.g. inside an HTML <script> this provider is asked even though
+        // the server never sees the .html) - lets lower-priority providers (Tern) serve those.
+        if (!this.client || !this.client.servesDocument(editor)) {
             return false;
         }
 
         var serverCapabilities = this.client.getServerCapabilities();
         if (!serverCapabilities || !serverCapabilities.completionProvider) {
-            return false;
-        }
-
-        var config = this.client.config || {};
-
-        // Let the server's config veto hints at the current position regardless of how they were
-        // invoked - e.g. an embedded host suppressing completions inside a string literal that the
-        // server (which sees only the host-language document) can't detect on its own.
-        if (typeof config.shouldSuppressHints === "function" && config.shouldSuppressHints(editor)) {
             return false;
         }
 
@@ -452,6 +446,7 @@ define(function (require, exports, module) {
         // A language server may fully control where hints implicitly appear by supplying a
         // `shouldAutoTrigger(implicitChar, editor)` callback (e.g. to suppress inside strings or
         // trigger on language-specific sequences). When provided, it replaces the default policy.
+        var config = this.client.config || {};
         if (typeof config.shouldAutoTrigger === "function") {
             return !!config.shouldAutoTrigger(implicitChar, editor);
         }
@@ -679,7 +674,8 @@ define(function (require, exports, module) {
     ParameterHintsProvider.prototype.setClient = setClient;
 
     ParameterHintsProvider.prototype.hasParameterHints = function (editor, implicitChar) {
-        if (!this.client) {
+        // See CodeHintsProvider.hasHints - don't claim documents the server doesn't sync.
+        if (!this.client || !this.client.servesDocument(editor)) {
             return false;
         }
 
@@ -764,7 +760,8 @@ define(function (require, exports, module) {
     JumpToDefProvider.prototype.setClient = setClient;
 
     JumpToDefProvider.prototype.canJumpToDef = function (editor, implicitChar) {
-        if (!this.client) {
+        // See CodeHintsProvider.hasHints - don't claim documents the server doesn't sync.
+        if (!this.client || !this.client.servesDocument(editor)) {
             return false;
         }
 
@@ -987,7 +984,10 @@ define(function (require, exports, module) {
     ReferencesProvider.prototype.setClient = setClient;
 
     ReferencesProvider.prototype.hasReferences = function() {
-        if (!this.client) {
+        // See CodeHintsProvider.hasHints - don't claim documents the server doesn't sync. This
+        // provider isn't handed an editor, so gate on the active one (references are always
+        // requested for the focused editor).
+        if (!this.client || !this.client.servesDocument(EditorManager.getActiveEditor())) {
             return false;
         }
 

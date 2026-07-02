@@ -238,30 +238,47 @@ define(function (require, exports, module) {
 
         // ----- embedded JavaScript in HTML <script> tags -----------------------------------------
 
-        // embedded.html has `var arr = [1, 2, 3];` then `arr.` inside a <script>. The HTML file is
-        // synced to the server as a JavaScript "view" of itself - the <script> blocks kept, everything
-        // else blanked to spaces (newlines preserved) so positions stay 1:1 - so a completion at `arr.`
-        // returns Array members even though the file's top-level language is HTML.
+        // embedded.html has `var arr = [1, 2, 3];` then `arr.` inside a <script>. HTML embedded JS is
+        // served by the legacy Tern provider, NOT the language server - vtsls can't semantically
+        // analyze an in-memory .html doc. With vtsls running (the suite's warm-up started it), this
+        // also regression-tests that the LSP stands down for documents the server doesn't sync
+        // (servesDocument) instead of claiming the request and starving Tern. Asserted at the
+        // provider layer rather than through SHOW_CODE_HINTS: the hint menu UI requires a FOCUSED
+        // editor (CodeHintManager._startNewSession -> getFocusedEditor), which an unfocused test
+        // runner window never has.
         it("provides JS completions inside an HTML <script> tag", async function () {
             await _openInProject("html/", "embedded.html");
             const editor = EditorManager.getCurrentFullEditor();
             editor.setCursorPos(6, 4); // just after `arr.`
 
-            function hasPush() {
-                return $(".codehint-menu li").text().indexOf("push") !== -1;
-            }
-            // Ask for hints; re-open only if the menu closed empty (the server may still be processing
-            // the freshly-synced HTML view). Avoids thrashing a menu that is mid-populate.
+            // Gate 1: the LSP must not claim HTML, so Tern's session gate is open.
+            const LSPClient = await new Promise(function (resolve) {
+                testWindow.brackets.getModule(["languageTools/LSPClient"], resolve);
+            });
+            expect(LSPClient.isLintingProviderActive("html")).toBe(false);
+
+            // Gate 2 + the completion itself: Tern's registered hint provider serves the <script>.
+            const ExtensionLoader = testWindow.brackets.getModule("utils/ExtensionLoader");
+            const jsCodeHints = await new Promise(function (resolve, reject) {
+                ExtensionLoader.getRequireContextForExtension("JavaScriptCodeHints")(["main"], resolve, reject);
+            });
+            let hintText = "";
             await awaitsFor(function () {
-                if (hasPush()) {
-                    return true;
+                if (!jsCodeHints.jsHintProvider.hasHints(editor, null)) {
+                    return false; // Tern session/worker may still be starting up
                 }
-                if (!$(".codehint-menu:visible").length) {
-                    CommandManager.execute(Commands.SHOW_CODE_HINTS);
+                const response = jsCodeHints.jsHintProvider.getHints(null);
+                if (!response || typeof response.done !== "function") {
+                    return hintText.indexOf("push") !== -1; // sync response already captured below
                 }
-                return false;
-            }, "Array-member completions at arr. inside the <script>", 30000);
-            expect(hasPush()).toBe(true);
+                response.done(function (result) {
+                    hintText = ((result && result.hints) || []).map(function (h) {
+                        return $(h).text();
+                    }).join("|");
+                });
+                return hintText.indexOf("push") !== -1;
+            }, "Tern Array-member completions at arr. inside the <script>", 30000, 500);
+            expect(hintText).toContain("push");
 
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                 "close embedded.html");
@@ -279,132 +296,6 @@ define(function (require, exports, module) {
             expect(docHtml({ label: "foo", detail: "function foo(): void" }).length).toBeGreaterThan(0);
             expect(docHtml({ label: "this", detail: "this", documentation: "The context." }))
                 .toContain("context");
-        });
-
-        // ----- incremental HTML->JS <script> view (HtmlJsView) ------------------------------------
-        // The view fed to the server is maintained with CodeMirror markers so typing inside a <script>
-        // does not re-tokenize the whole file; a full findBlocks build (_extractFull) is the parity
-        // oracle. Uses a large, programmatically-generated HTML file (no checked-in asset).
-        describe("incremental <script> view on large HTML", function () {
-            let HtmlJsView, bigEditor;
-
-            function buildLargeHtml(numBlocks, linesPerBlock) {
-                const p = ["<!DOCTYPE html>", "<html>", "<head><title>big</title></head>", "<body>"];
-                for (let b = 0; b < numBlocks; b++) {
-                    p.push("<h2>Section " + b + "</h2>", "<p>markup words block " + b + " lorem ipsum.</p>",
-                        "<script>", "var block" + b + " = {");
-                    for (let l = 0; l < linesPerBlock; l++) {
-                        p.push("    key" + l + ": " + l + ",");
-                    }
-                    p.push("};", "function fn" + b + "(x) { return block" + b + ".key0 + x; }", "</script>");
-                }
-                p.push("</body>", "</html>");
-                return p.join("\n");
-            }
-
-            // Index of the first line containing `substr` in the (current) document.
-            function lineOf(substr) {
-                return bigEditor.document.getText().split("\n").findIndex(function (l) {
-                    return l.indexOf(substr) !== -1;
-                });
-            }
-
-            beforeAll(async function () {
-                HtmlJsView = testWindow.brackets.getModule("languageTools/HtmlJsView");
-                const FileSystem = testWindow.brackets.test.FileSystem;
-                const bigProject = await SpecRunnerUtils.getTempTestDirectory(testRootSpec + "html");
-                await jsPromise(SpecRunnerUtils.createTextFile(
-                    path.join(bigProject, "big.html"), buildLargeHtml(120, 15), FileSystem));
-                await SpecRunnerUtils.loadProjectInTestWindow(bigProject);
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["big.html"]), "open big.html");
-                bigEditor = EditorManager.getCurrentFullEditor();
-            }, 60000);
-
-            afterAll(async function () {
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
-                    "close big.html");
-                await SpecRunnerUtils.removeTempDirectory();
-            }, 30000);
-
-            it("provides member completions inside a <script> of a large HTML file", async function () {
-                const fnLine = lineOf("function fn5(");
-                bigEditor.document.replaceRange("block5.\n", { line: fnLine, ch: 0 }); // safe interior edit
-                bigEditor.setCursorPos(fnLine, "block5.".length);
-                function hasKey() {
-                    return $(".codehint-menu li").text().indexOf("key0") !== -1;
-                }
-                await awaitsFor(function () {
-                    if (hasKey()) {
-                        return true;
-                    }
-                    if (!$(".codehint-menu:visible").length) {
-                        CommandManager.execute(Commands.SHOW_CODE_HINTS);
-                    }
-                    return false;
-                }, "member completion inside a large-file <script>", 30000);
-                expect(hasKey()).toBe(true);
-            }, 45000);
-
-            it("marker view equals a fresh full findBlocks build after edits", function () {
-                HtmlJsView.extract(bigEditor); // ensure state exists
-                const keyLine = lineOf("key0:");
-                bigEditor.document.replaceRange(" extra", // append to a JS line (interior)
-                    { line: keyLine, ch: bigEditor.document.getLine(keyLine).length });
-                "abcdef".split("").forEach(function (c) { // per-char inserts, each its own record
-                    const l = lineOf("key0:");
-                    bigEditor.document.replaceRange(c, { line: l, ch: bigEditor.document.getLine(l).length });
-                });
-                const delLine = lineOf("key1:"); // a deletion inside a script (leading indent)
-                bigEditor.document.replaceRange("", { line: delLine, ch: 0 }, { line: delLine, ch: 4 });
-                expect(HtmlJsView.extract(bigEditor)).toBe(HtmlJsView._extractFull(bigEditor));
-            });
-
-            it("carries safe in-script keystrokes with zero recompiles", function () {
-                HtmlJsView.extract(bigEditor); // ensure state, then measure only the typing below
-                HtmlJsView._resetStats();
-                const jsLine = lineOf("key5:");
-                let ch = bigEditor.document.getLine(jsLine).length;
-                "myVar.value".split("").forEach(function (c) { // no '<'/'>' -> all fast-path patches
-                    bigEditor.document.replaceRange(c, { line: jsLine, ch: ch });
-                    ch += 1;
-                });
-                const s = HtmlJsView._getStats();
-                expect(s.recompiles).toBe(0);
-                expect(s.mismatches).toBe(0);
-                expect(s.patches).toBeGreaterThan(0);
-                expect(HtmlJsView.extract(bigEditor)).toBe(HtmlJsView._extractFull(bigEditor)); // parity holds
-            });
-
-            it("recompiles on a structural </script> edit and stays correct", function () {
-                HtmlJsView.extract(bigEditor);
-                HtmlJsView._resetStats();
-                const jsLine = lineOf("var block7");
-                bigEditor.document.replaceRange("</script><script>", { line: jsLine, ch: 0 }); // has '<'/'>'
-                const view = HtmlJsView.extract(bigEditor); // forces a full rebuild
-                expect(HtmlJsView._getStats().recompiles).toBeGreaterThanOrEqual(1);
-                expect(view).toBe(HtmlJsView._extractFull(bigEditor));
-            });
-
-            it("self-heals a forced view drift", function () {
-                HtmlJsView.extract(bigEditor);
-                HtmlJsView._resetStats();
-                HtmlJsView._forceDrift(bigEditor);   // silently corrupt the cached view
-                HtmlJsView._verifyNow(bigEditor);    // deterministic stand-in for the idle timer
-                expect(HtmlJsView._getStats().mismatches).toBe(1);
-                expect(HtmlJsView.extract(bigEditor)).toBe(HtmlJsView._extractFull(bigEditor)); // healed
-            });
-
-            it("keeps <script> JS verbatim and blanks markup at 1:1 columns", function () {
-                const view = HtmlJsView.extract(bigEditor);
-                expect(view).toBe(HtmlJsView._extractFull(bigEditor));
-                const viewLines = view.split("\n");
-                const src = bigEditor.document.getText().split("\n");
-                expect(viewLines.length).toBe(src.length); // 1:1 line count preserved
-                const pIdx = src.findIndex(function (l) { return l.indexOf("<p>markup") !== -1; });
-                const jsIdx = src.findIndex(function (l) { return l.trim() === "};"; });
-                expect(/^\s*$/.test(viewLines[pIdx])).toBe(true); // markup blanked to spaces
-                expect(viewLines[jsIdx]).toBe(src[jsIdx]);         // JS preserved verbatim
-            });
         });
 
         // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------

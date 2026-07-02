@@ -202,12 +202,6 @@ define(function (require, exports, module) {
             const vfsPath = PathConverters.uriToPath(vfsUri);
             const language = LanguageManager.getLanguageForPath(vfsPath);
             const langId = language && language.getId();
-            // An embedded view (e.g. the JS extracted from an HTML file) loses cross-script/module
-            // context, so its diagnostics are unreliable - drop them when the embedded config opts out.
-            const embCfg = client.embeddedLanguages[langId];
-            if (embCfg && embCfg.diagnostics === false) {
-                return;
-            }
             let diagnostics = params.diagnostics || [];
             // Let the language config drop diagnostics that don't make sense for a given file
             // (e.g. TypeScript's "needs a declaration file" suggestions in a plain JS file).
@@ -272,10 +266,6 @@ define(function (require, exports, module) {
         this.serverId = serverId;
         this.languages = languages;
         this.config = config;
-        // Embedded languages map a host language (e.g. "html") whose documents are presented to the
-        // server as a script "view" (e.g. the extracted JavaScript) - see DocumentSync. Shape:
-        // { html: { scriptLanguageId, extract(editor), diagnostics } }.
-        this.embeddedLanguages = (config && config.embeddedLanguages) || {};
         this.capabilities = null;
     }
 
@@ -285,6 +275,18 @@ define(function (require, exports, module) {
 
     LanguageClient.prototype.uriForPath = function (vfsPath) {
         return pathToServerUri(vfsPath);
+    };
+
+    /**
+     * Whether this client serves the given editor's DOCUMENT. Feature providers are selected by the
+     * language at the cursor (e.g. "javascript" inside an HTML <script> or a markdown ```js fence),
+     * so without this check they would claim requests in host documents the server never syncs -
+     * returning nothing while starving lower-priority providers (Tern) that can actually serve them.
+     * @param {Editor} editor
+     * @return {boolean}
+     */
+    LanguageClient.prototype.servesDocument = function (editor) {
+        return !!(editor && this.languages.indexOf(editor.document.getLanguage().getId()) !== -1);
     };
 
     LanguageClient.prototype._request = function (method, params) {
@@ -854,9 +856,7 @@ define(function (require, exports, module) {
     function isLintingProviderActive(languageId) {
         for (const client of clients.values()) {
             if (client.lintingProvider && client.capabilities && client.languages &&
-                    (client.languages.indexOf(languageId) !== -1 || client.embeddedLanguages[languageId])) {
-                // Also true for an embedded host language (e.g. "html") so the legacy Tern provider
-                // stands down inside HTML, leaving the LSP as the JS provider there.
+                    client.languages.indexOf(languageId) !== -1) {
                 return true;
             }
         }

@@ -245,7 +245,6 @@ define(function (require, exports, module) {
     require("preferences/PreferencesBase");
     require("JSUtils/Session");
     require("JSUtils/ScopeManager");
-    require("languageTools/HtmlJsView"); // TypeScriptSupport requires it synchronously (see brackets.js)
     require("widgets/InlineMenu");
     require("worker/ExtensionsWorker");
     require("thirdparty/tinycolor");
