@@ -2221,6 +2221,11 @@ a, img {
 
 .lsp-hover-quickview {
     text-align: left;
+    // The QuickView popover centers + shrink-wraps each provider's content (.quick-view-item is a
+    // flex column with align-items:center - right for image/color previews). When another provider
+    // (e.g. a problem row with its Fix button) makes the popover wider, our content would float
+    // centered in the leftover space - stretch to the available width instead.
+    align-self: stretch;
     max-width: 520px;
     padding: 2px 4px;
     font-size: 12.5px;
