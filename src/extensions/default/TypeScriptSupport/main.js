@@ -36,7 +36,6 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector"),
-        HtmlJsView = brackets.getModule("languageTools/HtmlJsView"),
         CodeIntelligence = require("./CodeIntelligence");
 
     const SERVER_ID = "typescript";
@@ -49,34 +48,6 @@ define(function (require, exports, module) {
         jsx: "javascriptreact",
         tsx: "typescriptreact"
     };
-
-    // Host languages presented to the TS server as a script "view" of themselves (see HtmlJsView +
-    // DocumentSync). diagnostics:false because the blanked view loses cross-script/module context, so
-    // its errors would be unreliable - completions/hover/definition are the value.
-    const EMBEDDED_LANGUAGES = {
-        html: { scriptLanguageId: "javascript", diagnostics: false, extract: HtmlJsView.extract }
-    };
-
-    /**
-     * Suppress code hints when the caret sits inside a string literal within an HTML <script>. vtsls
-     * sees only the host `.html` URI (not real JS), so it can't tell it's in a string and offers a
-     * junk "all globals + auto-imports" dump there. We can tell from CodeMirror's tokenizer, so we veto
-     * hints in that spot (via the shouldSuppressHints config hook). Plain JS/TS are untouched - the
-     * server handles their in-string behaviour itself.
-     * @param {Editor} editor
-     * @return {boolean}
-     */
-    function _suppressHintsInHtmlString(editor) {
-        if (!EMBEDDED_LANGUAGES[editor.document.getLanguage().getId()]) {
-            return false; // not an embedded host (plain JS/TS)
-        }
-        if (editor.getLanguageForSelection().getId() !== "javascript") {
-            return false; // in the surrounding markup, not the <script> JS
-        }
-        const token = editor.getToken(editor.getCursorPos());
-        const type = token && token.type;
-        return type === "string" || type === "string-2"; // string / template literal
-    }
 
     // vtsls-specific initialization options (mirrors the configuration Zed/VS Code use).
     const INITIALIZATION_OPTIONS = {
@@ -273,10 +244,8 @@ define(function (require, exports, module) {
             args: ["--stdio"],
             languages: SUPPORTED_LANGUAGES,
             languageIdMap: LANGUAGE_ID_MAP,
-            embeddedLanguages: EMBEDDED_LANGUAGES,
             initializationOptions: INITIALIZATION_OPTIONS,
-            filterDiagnostics: filterDiagnostics,
-            shouldSuppressHints: _suppressHintsInHtmlString
+            filterDiagnostics: filterDiagnostics
         });
         if (client) {
             registered = true;
@@ -299,12 +268,7 @@ define(function (require, exports, module) {
         if (!editor) {
             return false;
         }
-        if (SUPPORTED_LANGUAGES.indexOf(editor.getLanguageForSelection().getId()) !== -1) {
-            return true;
-        }
-        // Also start for an embedded host (e.g. an HTML file) so its <script> JS is synced and ready
-        // even before the caret moves into a script block.
-        return !!EMBEDDED_LANGUAGES[editor.document.getLanguage().getId()];
+        return SUPPORTED_LANGUAGES.indexOf(editor.getLanguageForSelection().getId()) !== -1;
     }
 
     let starting = false;
@@ -356,11 +320,6 @@ define(function (require, exports, module) {
             return;
         }
         _refreshCheckJs();
-
-        // Maintain the incremental HTML-><script>-JS view (markers + self-heal) that
-        // EMBEDDED_LANGUAGES feeds the server. Just subscribes to document events; no cost until an
-        // HTML file is actually synced to a language server.
-        HtmlJsView.init();
 
         // Offer project-wide code intelligence (creates a default ts/jsconfig) when a JS/TS file is
         // opened in a project that has no config yet. Projects that already carry one are silent.
