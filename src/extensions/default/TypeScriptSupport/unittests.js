@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone, path, jsPromise */
+/*global describe, it, expect, beforeAll, afterAll, afterEach, awaitsFor, awaitsForDone, path, jsPromise */
 
 define(function (require, exports, module) {
 
@@ -317,16 +317,109 @@ define(function (require, exports, module) {
             expect(js.compilerOptions.allowJs).toBeUndefined();
             expect(js.compilerOptions.noEmit).toBeUndefined();
 
+            // The universal template: module "preserve" resolves both import and require() with no
+            // extension demands (moduleResolution is implied by it, so the key must be absent);
+            // react-jsx and UMD-global access reduce flavor friction.
+            expect(js.compilerOptions.module).toBe("preserve");
+            expect(js.compilerOptions.moduleResolution).toBeUndefined();
+            expect(js.compilerOptions.jsx).toBe("react-jsx");
+            expect(js.compilerOptions.allowUmdGlobalAccess).toBe(true);
+
+            // typeAcquisition must be explicit on BOTH file types: it defaults ON for jsconfig but
+            // OFF for tsconfig, so without this the jsconfig->tsconfig upgrade would silently kill
+            // Node builtin/@types IntelliSense (ATA).
+            expect(js.typeAcquisition).toEqual({ enable: true });
+
             // upgrade: existing compilerOptions survive; checkJs preserved when not passed
-            const existing = { checkJs: true, target: "es2015" };
+            const existing = { checkJs: true, target: "es2015", module: "nodenext" };
             const ts = content("tsconfig.json", existing);
             expect(ts.compilerOptions.checkJs).toBe(true);   // preserved
             expect(ts.compilerOptions.target).toBe("es2015"); // user's edit preserved
+            expect(ts.compilerOptions.module).toBe("nodenext"); // user's module choice preserved
             expect(ts.compilerOptions.allowJs).toBe(true);    // build-safety additions
             expect(ts.compilerOptions.noEmit).toBe(true);
+            expect(ts.typeAcquisition).toEqual({ enable: true });
 
             // explicit checkJs wins over the preserved value
             expect(content("jsconfig.json", { checkJs: true }, false).compilerOptions.checkJs).toBe(false);
+        });
+
+        // ----- module flavors: the generated config must "just work" for each -----
+        // Demo projects are generated per flavor with the REAL config content our generator emits
+        // (also proving vtsls accepts module "preserve"), then cross-file intelligence is asserted
+        // through the live server via hover (focus-independent, unlike the code-hint menu).
+        // AMD/RequireJS is deliberately absent: tsserver cannot infer define() modules cross-file -
+        // a documented limitation, not a config problem.
+        describe("module flavors served by the generated config", function () {
+
+            async function _setupFlavorProject(files) {
+                const FileSystem = testWindow.brackets.test.FileSystem;
+                const ExtensionLoader = testWindow.brackets.getModule("utils/ExtensionLoader");
+                const CodeIntelligence = await new Promise(function (resolve, reject) {
+                    ExtensionLoader.getRequireContextForExtension("TypeScriptSupport")(
+                        ["CodeIntelligence"], resolve, reject);
+                });
+                // randomize: a unique project path per test. Reusing a fixed temp path collides
+                // with per-project persisted state - Phoenix would try to restore files an earlier
+                // suite's getTempTestDirectory() wipe already deleted ("Error Opening File" dialog).
+                const projectPath = await SpecRunnerUtils.getTempTestDirectory(testRootSpec + "js-plain", true);
+                const cfg = CodeIntelligence._configContent("jsconfig.json", null, false);
+                await jsPromise(SpecRunnerUtils.createTextFile(
+                    path.join(projectPath, "jsconfig.json"), JSON.stringify(cfg, null, 4), FileSystem));
+                for (const name of Object.keys(files)) {
+                    await jsPromise(SpecRunnerUtils.createTextFile(
+                        path.join(projectPath, name), files[name], FileSystem));
+                }
+                await SpecRunnerUtils.loadProjectInTestWindow(projectPath);
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["main.js"]), "open main.js");
+                return EditorManager.getCurrentFullEditor();
+            }
+
+            // Hover over (line, ch) until the popover's text contains `expected` - proves the
+            // symbol resolved through the server (an unresolved symbol hovers as nothing/any).
+            async function _expectHoverContains(editor, line, ch, expected) {
+                await awaitsFor(async function () {
+                    const popover = await _hoverPopoverAt(editor, line, ch);
+                    return !!(popover && popover.content && popover.content.text().indexOf(expected) !== -1);
+                }, "hover at " + line + ":" + ch + " to contain '" + expected + "'", 30000, 500);
+            }
+
+            afterEach(async function () {
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close flavor project files");
+            });
+
+            afterAll(async function () {
+                await SpecRunnerUtils.removeTempDirectory();
+            }, 30000);
+
+            it("resolves CommonJS require() across files (Node-CJS flavor)", async function () {
+                const editor = await _setupFlavorProject({
+                    "local.js": "module.exports = { greetCjs: function () { return \"hi\"; } };\n",
+                    "main.js": "const util = require(\"./local\");\nutil.greetCjs();\n"
+                });
+                // hover `greetCjs` in `util.greetCjs();` - only resolvable if require() resolved
+                await _expectHoverContains(editor, 1, 8, "greetCjs");
+            }, 45000);
+
+            it("resolves extensionless ESM imports (type:module flavor)", async function () {
+                const editor = await _setupFlavorProject({
+                    "package.json": JSON.stringify({ name: "esm-demo", type: "module" }, null, 4),
+                    "lib.js": "export function greetEsm() { return \"hi\"; }\n",
+                    "main.js": "import { greetEsm } from \"./lib\";\ngreetEsm();\n"
+                });
+                // `./lib` has no extension - nodenext-style resolution would fail here; the
+                // template's module "preserve" must resolve it.
+                await _expectHoverContains(editor, 1, 3, "greetEsm");
+            }, 45000);
+
+            it("gives DOM intelligence to plain browser scripts (no lib configured)", async function () {
+                const editor = await _setupFlavorProject({
+                    "main.js": "const el = document.querySelector(\".x\");\nel.click();\n"
+                });
+                // `document` types only exist because the default lib includes DOM
+                await _expectHoverContains(editor, 0, 15, "Document");
+            }, 45000);
         });
 
         // LSP quickfixes: diagnostics and fixes are separate channels - after diagnostics land, the
