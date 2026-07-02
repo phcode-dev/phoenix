@@ -428,7 +428,7 @@ define(function (require, exports, module) {
         // Demo projects are generated per flavor with the REAL config content our generator emits
         // (also proving vtsls accepts module "preserve"), then cross-file intelligence is asserted
         // through the live server via hover (focus-independent, unlike the code-hint menu).
-        // AMD/RequireJS is deliberately absent: tsserver cannot infer define() modules cross-file -
+        // AMD/RequireJS is deliberately absent: tsserver cannot infer those modules cross-file -
         // a documented limitation, not a config problem.
         describe("module flavors served by the generated config", function () {
 

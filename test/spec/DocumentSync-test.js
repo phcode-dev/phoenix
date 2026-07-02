@@ -94,6 +94,17 @@ define(function (require, exports, module) {
                 const batch = [edit(0, 8, 0, 9, "9"), edit(0, 4, 0, 5, "abc")];
                 expect(DocumentSync._applyIncremental("let a = 0;", batch)).toBe("let abc = 9;");
             });
+
+            it("returns null for a position on a line beyond the text (STRICT, no clamping)", function () {
+                // Regression: a stale edit referencing a line past the end used to be clamped to
+                // end-of-text, letting it pass verification while the raw out-of-range line went to
+                // the server - tsserver crashes on that ("Debug Failure. Bad line number").
+                expect(DocumentSync._applyIncremental("a\nb", [edit(2, 0, 2, 0, "x")])).toBe(null);
+            });
+
+            it("returns null for a character beyond the line's length", function () {
+                expect(DocumentSync._applyIncremental("ab\ncd", [edit(0, 5, 0, 5, "x")])).toBe(null);
+            });
         });
 
         describe("_contentChangesFor - the divergence safety net", function () {
@@ -124,6 +135,16 @@ define(function (require, exports, module) {
             it("sends full text when there are no pending edits", function () {
                 const out = DocumentSync._contentChangesFor(INCREMENTAL, "ab", [], false, "abc");
                 expect(out).toEqual([{ text: "abc" }]);
+            });
+
+            it("falls back to full text when a pending edit is out of range for the base text", function () {
+                // The tsserver-crash regression: with lenient clamping this edit replayed to exactly
+                // the final text ("a\nb" + append = "a\nbx") and the invalid line-2 range shipped to
+                // the server. Strict replay must reject it and resync with full text instead.
+                const stale = [{ range: { start: { line: 2, character: 0 }, end: { line: 2, character: 0 } },
+                    text: "x" }];
+                const out = DocumentSync._contentChangesFor(INCREMENTAL, "a\nb", stale, false, "a\nbx");
+                expect(out).toEqual([{ text: "a\nbx" }]);
             });
         });
     });

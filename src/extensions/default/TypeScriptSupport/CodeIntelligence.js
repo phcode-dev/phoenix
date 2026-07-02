@@ -117,7 +117,7 @@ define(function (require, exports, module) {
     //   for tsconfig - without this, the jsconfig->tsconfig upgrade would silently kill Node
     //   builtin/require("pkg") IntelliSense. Explicit on both file types; degrades gracefully to
     //   locally installed @types when npm/network are unavailable.
-    // Known limitation: tsserver cannot infer AMD/RequireJS define() modules cross-file (no config
+    // Known limitation: tsserver cannot infer AMD/RequireJS-style modules cross-file (no config
     // fixes that); users can still add their own paths/baseUrl, which the preserve-merge keeps.
     // compilerOptions from an existing managed config being rewritten/upgraded are preserved over
     // the defaults; `checkJs` is applied only when the caller passes it, else the preserved value

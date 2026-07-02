@@ -86,28 +86,42 @@ define(function (require, exports, module) {
         return changes;
     }
 
-    // Offset (UTF-16 code units) of an LSP position within text. Lines split on "\n", matching what
-    // doc.getText() and the change records use.
+    // Offset (UTF-16 code units) of an LSP position within text, STRICT: returns -1 if the position
+    // lies outside the text (line beyond the last line, or character beyond that line's length).
+    // Strictness matters: a stale/raced edit can reference positions past the document's end, and a
+    // lenient clamp here would let it replay to the "right" text by coincidence and pass
+    // verification - while the server (tsserver crashes on out-of-range lines rather than clamping)
+    // receives the raw invalid range. Out-of-range must fail verification -> full-text resync.
     function _offsetAt(text, pos) {
         let line = 0, i = 0;
         while (line < pos.line) {
             const nl = text.indexOf("\n", i);
             if (nl === -1) {
-                return text.length;
+                return -1;
             }
             i = nl + 1;
             line++;
+        }
+        const nextNl = text.indexOf("\n", i);
+        const lineEnd = nextNl === -1 ? text.length : nextNl;
+        if (i + pos.character > lineEnd) {
+            return -1;
         }
         return i + pos.character;
     }
 
     // Replay LSP incremental contentChanges onto a string, in order. Used to verify the accumulated
-    // edits reproduce the current document before we trust them (see _contentChangesFor).
+    // edits reproduce the current document before we trust them (see _contentChangesFor). Returns
+    // null if any edit references a position outside the evolving text - the caller must treat that
+    // as a verification failure.
     function _applyIncremental(text, changes) {
         for (let i = 0; i < changes.length; i++) {
             const ch = changes[i];
             const s = _offsetAt(text, ch.range.start);
             const e = _offsetAt(text, ch.range.end);
+            if (s === -1 || e === -1 || e < s) {
+                return null;
+            }
             text = text.slice(0, s) + ch.text + text.slice(e);
         }
         return text;
@@ -166,7 +180,15 @@ define(function (require, exports, module) {
             fullResync: false    // set when an unmappable change forces a full-text send
         };
         tracked.set(vfsPath, state);
-        client.notifyDidOpen(client.uriForPath(vfsPath), _lspLanguageId(client, doc), state.version, text);
+        const opened = client.notifyDidOpen(
+            client.uriForPath(vfsPath), _lspLanguageId(client, doc), state.version, text);
+        if (opened && opened.catch) {
+            opened.catch(function () {
+                // The server never saw this file (e.g. it was mid-restart). Mark it not-open so the
+                // next change/flush re-sends a fresh didOpen instead of didChange-ing into a void.
+                state.open = false;
+            });
+        }
     }
 
     function _change(client, doc) {
@@ -183,7 +205,15 @@ define(function (require, exports, module) {
         state.lastSentText = text;
         state.pendingChanges = [];
         state.fullResync = false;
-        client.notifyDidChange(client.uriForPath(vfsPath), state.version, contentChanges);
+        const sent = client.notifyDidChange(client.uriForPath(vfsPath), state.version, contentChanges);
+        if (sent && sent.catch) {
+            sent.catch(function () {
+                // The server never received this change, so lastSentText no longer reflects its
+                // copy - incremental edits computed against it would desync (or crash) the server.
+                // Force the next send to carry full text.
+                state.fullResync = true;
+            });
+        }
     }
 
     function _close(doc) {
