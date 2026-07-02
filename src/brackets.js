@@ -215,6 +215,10 @@ define(function (require, exports, module) {
 
     // Language Tools (LSP) are desktop-only and loaded lazily by languageTools/LSPClient the
     // first time a language server is started, so they are intentionally not required at boot.
+    // Exception: HtmlJsView is lightweight (no server - just markers over <script> ranges) and the
+    // TypeScriptSupport extension references it synchronously to build its embedded HTML->JS view, so
+    // preload it here.
+    require("languageTools/HtmlJsView");
 
     // web workers
     require("worker/IndexingWorker");
