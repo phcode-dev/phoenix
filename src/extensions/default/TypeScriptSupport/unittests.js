@@ -329,6 +329,43 @@ define(function (require, exports, module) {
             expect(content("jsconfig.json", { checkJs: true }, false).compilerOptions.checkJs).toBe(false);
         });
 
+        // LSP quickfixes: diagnostics and fixes are separate channels - after diagnostics land, the
+        // LintingProvider idle-fetches textDocument/codeAction quickfixes, decorates the cached
+        // errors, and re-runs inspection so the Fix All button appears. `consol.log(1)` produces
+        // TS 2552 ("Cannot find name 'consol'") whose quickfix is a single same-file text edit
+        // ("Change spelling to 'console'") - exactly the admitted shape. Fix application goes
+        // through Editor.replaceMultipleRanges, so no editor focus is needed (unlike the code-hint
+        // menu), making this runnable in an unfocused test window.
+        it("wires LSP quickfixes into the problems panel Fix All workflow", async function () {
+            const FileSystem = testWindow.brackets.test.FileSystem;
+            const projectPath = await SpecRunnerUtils.getTempTestDirectory(testRootSpec + "ts");
+            await jsPromise(SpecRunnerUtils.createTextFile(
+                path.join(projectPath, "fixable.ts"), "consol.log(1);\n", FileSystem));
+            await SpecRunnerUtils.loadProjectInTestWindow(projectPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["fixable.ts"]), "open fixable.ts");
+
+            await awaitsFor(function () {
+                return $("#problems-panel").text().indexOf("Cannot find name 'consol'") !== -1;
+            }, "the spelling diagnostic to appear in the problems panel", 30000);
+
+            // The idle codeAction fetch (~800ms after diagnostics settle) attaches the fix and
+            // nudges a re-run - the Fix All button becoming visible proves the whole chain.
+            await awaitsFor(function () {
+                const $btn = $("#problems-panel .problems-fix-all-btn");
+                return $btn.length && !$btn.hasClass("forced-hidden");
+            }, "the Fix All button to appear once quickfixes are fetched", 30000);
+
+            const editor = EditorManager.getCurrentFullEditor();
+            $("#problems-panel .problems-fix-all-btn").click();
+            await awaitsFor(function () {
+                return editor.document.getText().indexOf("console.log(1);") !== -1;
+            }, "the quickfix to change consol -> console", 10000);
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                "close fixable.ts");
+            await SpecRunnerUtils.removeTempDirectory();
+        }, 90000);
+
         // ----- hover quick-actions (Go to Definition / Find Usages) -------------------------------
 
         // Query the hover popover at a position the same way QuickViewManager does internally.
