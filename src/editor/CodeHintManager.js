@@ -687,7 +687,15 @@ define(function (require, exports, module) {
                 // we redraw the list.
                 _updateHintList();
             } else if (event.ctrlKey && event.keyCode === KeyEvent.DOM_VK_SPACE) {
-                _updateHintList(event);
+                // Repeated Ctrl+Space rotates the hint selection - but ONLY once results are
+                // showing. The keyup of the very Ctrl+Space that STARTED the session arrives
+                // ~100ms after keydown, while an async provider's deferred is still pending;
+                // _updateHintList would reject that deferred and the list would never appear
+                // (any provider slower than a keystroke - registry lookups, cold LSP - lost
+                // this race every time).
+                if (!deferredHints) {
+                    _updateHintList(event);
+                }
             }
         }
     }
