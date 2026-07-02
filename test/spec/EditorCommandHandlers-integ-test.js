@@ -115,7 +115,27 @@ define(function (require, exports, module) {
             EditorManager       = testWindow.brackets.test.EditorManager;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
-        }, 30000);
+
+            if (testWindow.Phoenix.isNativeApp) {
+                // Warm up the TypeScript language server here, where the one-time cold start (spawn
+                // vtsls + tsserver loading the TypeScript library and project) belongs - so the
+                // jump-to-definition spec below only needs a short wait for its own request instead
+                // of budgeting for a cold server (its very first request could otherwise pend longer
+                // than any reasonable spec timeout on slow/loaded CI runners).
+                await awaitsForDone(
+                    CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,
+                        {fullPath: testPath + "/test.js"}),
+                    "warm-up: open test.js");
+                const LSPClient = await new Promise(function (resolve) {
+                    testWindow.brackets.getModule(["languageTools/LSPClient"], resolve);
+                });
+                await awaitsFor(function () {
+                    return LSPClient.isLintingProviderActive("javascript");
+                }, "the TypeScript language server to finish its cold start", 90000);
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close warm-up file");
+            }
+        }, 120000);
 
         afterAll(async function () {
             await closeTestWindow();
@@ -202,17 +222,34 @@ define(function (require, exports, module) {
                     // JavaScript at a higher priority than the built-in Tern provider. vtsls returns
                     // testMe's full declaration range and we jump to its start (the `function`
                     // keyword), giving a collapsed cursor at {0,0} - whereas Tern selects the
-                    // identifier name. The server can take a moment to prime after the file opens, so
-                    // retry the jump until the LSP result lands rather than using a fixed wait (which
-                    // flakes on slow CI: before vtsls is ready, Tern answers with {0,9}-{0,15}).
+                    // identifier name. The server was already warmed up in beforeAll, so 15s is
+                    // plenty here. Each attempt is time-boxed: a slow or unanswered request counts
+                    // as a retry instead of pinning the whole wait (awaitsFor races each pollFn
+                    // invocation against the FULL timeout, so one hung attempt would otherwise eat
+                    // the entire budget), and a rejected jump ("no definition yet") also retries -
+                    // awaitsFor aborts outright on a pollFn exception, so the promise is absorbed.
                     await awaitsFor(async function () {
                         myEditor.setCursorPos({line: 5, ch: 8});
-                        await awaitsForDone(CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION),
-                            "Jump To Definition");
+                        var landed = await new Promise(function (resolve) {
+                            var settled = false;
+                            function settle(val) {
+                                if (!settled) {
+                                    settled = true;
+                                    resolve(val);
+                                }
+                            }
+                            CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION)
+                                .done(function () { settle(true); })
+                                .fail(function () { settle(false); });
+                            setTimeout(function () { settle(false); }, 3000);
+                        });
+                        if (!landed) {
+                            return false;
+                        }
                         var sel = myEditor.getSelection();
                         return sel.start.line === 0 && sel.start.ch === 0 &&
                             sel.end.line === 0 && sel.end.ch === 0;
-                    }, "LSP jump-to-definition to land on the testMe declaration", 30000);
+                    }, "LSP jump-to-definition to land on the testMe declaration", 15000, 500);
                     selection = myEditor.getSelection();
                     expect(fixSel(selection)).toEql(fixSel({
                         start: {line: 0, ch: 0},

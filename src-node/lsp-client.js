@@ -218,6 +218,12 @@ exports.startServer = async function startServer(params) {
             if (code) {
                 console.error(`[lsp-client][${serverId}] exited code=${code} signal=${signal || 'none'}`);
             }
+            // Fail every in-flight request immediately - the dead process can never answer them, and
+            // leaving them pending stalls callers until the per-request timeout (2 minutes).
+            for (const { reject: rejectPending } of serverState.pending.values()) {
+                rejectPending(new Error(`Server ${serverId} exited with pending request`));
+            }
+            serverState.pending.clear();
             nodeConnector.triggerPeer('serverExit', { serverId, code, signal, stderr });
             if (!hasResolved) {
                 hasResolved = true;

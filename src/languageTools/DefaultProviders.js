@@ -814,11 +814,19 @@ define(function (require, exports, module) {
                         .done(function () {
                             setJumpPosition(startCurPos);
                             $deferredHints.resolve();
+                        })
+                        .fail(function () {
+                            $deferredHints.reject();
                         });
                 } else { //definition is in current document
                     setJumpPosition(startCurPos);
                     $deferredHints.resolve();
                 }
+            } else {
+                // No definition at this position (servers answer null/[] - e.g. tsserver while it
+                // is still loading the project). MUST settle: an unresolved deferred here leaves
+                // the NAVIGATE_JUMPTO_DEFINITION command promise pending forever.
+                $deferredHints.reject();
             }
         }).fail(function () {
             $deferredHints.reject();
