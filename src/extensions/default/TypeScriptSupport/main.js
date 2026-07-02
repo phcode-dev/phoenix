@@ -36,7 +36,7 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector"),
-        HTMLUtils = brackets.getModule("language/HTMLUtils"),
+        HtmlJsView = brackets.getModule("languageTools/HtmlJsView"),
         CodeIntelligence = require("./CodeIntelligence");
 
     const SERVER_ID = "typescript";
@@ -50,38 +50,11 @@ define(function (require, exports, module) {
         tsx: "typescriptreact"
     };
 
-    /**
-     * Build the JavaScript "view" of an HTML document for the language server: every <script> block
-     * is kept verbatim, everything else (markup, the <script> tags themselves) is replaced by spaces
-     * with newlines preserved. The view therefore has the SAME line/column layout as the HTML, so a
-     * cursor at (line, ch) in the HTML maps 1:1 to the same position in the view - no source map
-     * needed. Mirrors the legacy Tern path's Session.getJavascriptText, reusing HTMLUtils.findBlocks.
-     * @param {Editor} editor
-     * @return {string}
-     */
-    function _extractHtmlJs(editor) {
-        const doc = editor.document;
-        const blocks = HTMLUtils.findBlocks(editor, "javascript");
-        const lastLine = editor.lineCount() - 1;
-        const eof = { line: lastLine, ch: doc.getLine(lastLine).length };
-        let view = "";
-        let from = { line: 0, ch: 0 };
-        function blank(rangeStart, rangeEnd) {
-            return doc.getRange(rangeStart, rangeEnd).replace(/[^\n]/g, " "); // keep \n, blank the rest
-        }
-        blocks.forEach(function (block) {
-            view += blank(from, block.start) + block.text;
-            from = block.end;
-        });
-        view += blank(from, eof); // trailing markup, so the view length matches the HTML exactly
-        return view;
-    }
-
-    // Host languages presented to the TS server as a script "view" of themselves (see _extractHtmlJs
-    // + DocumentSync). diagnostics:false because the blanked view loses cross-script/module context,
-    // so its errors would be unreliable - completions/hover/definition are the value.
+    // Host languages presented to the TS server as a script "view" of themselves (see HtmlJsView +
+    // DocumentSync). diagnostics:false because the blanked view loses cross-script/module context, so
+    // its errors would be unreliable - completions/hover/definition are the value.
     const EMBEDDED_LANGUAGES = {
-        html: { scriptLanguageId: "javascript", diagnostics: false, extract: _extractHtmlJs }
+        html: { scriptLanguageId: "javascript", diagnostics: false, extract: HtmlJsView.extract }
     };
 
     // vtsls-specific initialization options (mirrors the configuration Zed/VS Code use).
@@ -361,6 +334,11 @@ define(function (require, exports, module) {
             return;
         }
         _refreshCheckJs();
+
+        // Maintain the incremental HTML-><script>-JS view (markers + self-heal) that
+        // EMBEDDED_LANGUAGES feeds the server. Just subscribes to document events; no cost until an
+        // HTML file is actually synced to a language server.
+        HtmlJsView.init();
 
         // Offer project-wide code intelligence (creates a default ts/jsconfig) when a JS/TS file is
         // opened in a project that has no config yet. Projects that already carry one are silent.
