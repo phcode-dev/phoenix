@@ -72,7 +72,7 @@ define(function main(require, exports, module) {
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
         showStylesBar: true, // default value, this will get updated when the extension loads
-        stylesBarDock: "bottom", // default dock side, this will get updated when the extension loads
+        stylesBarPosition: "", // saved bar position ("<cx>:<cy>"); empty = default spot
         syncSourceAndPreview: true, // default value, this will get updated when the extension loads
         imageGalleryAutoOpen: true, // auto-open gallery on first image click per session
         isPaidUser: false, // will be updated when we fetch entitlements
@@ -345,10 +345,10 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.updateConfig(config);
     }
 
-    function updateStylesBarDockConfig() {
-        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_STYLES_BAR_DOCK);
+    function updateStylesBarPositionConfig() {
+        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_STYLES_BAR_POSITION);
         const config = MultiBrowserLiveDev.getConfig();
-        config.stylesBarDock = prefValue || "bottom";
+        config.stylesBarPosition = prefValue || "";
         MultiBrowserLiveDev.updateConfig(config);
     }
 
@@ -376,7 +376,7 @@ define(function main(require, exports, module) {
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
     exports.updateStylesBarConfig = updateStylesBarConfig;
-    exports.updateStylesBarDockConfig = updateStylesBarDockConfig;
+    exports.updateStylesBarPositionConfig = updateStylesBarPositionConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;

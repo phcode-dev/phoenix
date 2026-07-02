@@ -44,5 +44,5 @@ define(function main(require, exports, module) {
 
     exports.PREFERENCE_SHOW_STYLES_BAR = "livePreviewShowStylesBar";
 
-    exports.PREFERENCE_STYLES_BAR_DOCK = "livePreviewStylesBarDock";
+    exports.PREFERENCE_STYLES_BAR_POSITION = "livePreviewStylesBarPosition";
 });
