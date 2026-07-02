@@ -36,7 +36,8 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector"),
-        CodeIntelligence = require("./CodeIntelligence");
+        CodeIntelligence = require("./CodeIntelligence"),
+        ConfigPanel = require("./ConfigPanel");
 
     const SERVER_ID = "typescript";
     const SUPPORTED_LANGUAGES = ["javascript", "typescript", "jsx", "tsx"];
@@ -333,6 +334,10 @@ define(function (require, exports, module) {
                 }
             }
         });
+
+        // Friendly settings UI for the project's ts/jsconfig - a bottom panel that auto-shows when
+        // the root config file is being viewed (see ConfigPanel).
+        ConfigPanel.init();
 
         // Lazily start / repoint the server from the active editor's language (VS Code's onLanguage
         // model). Evaluate the editor already open at startup (session restore), then track switches.

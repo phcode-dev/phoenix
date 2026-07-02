@@ -1,0 +1,273 @@
+// Code Intelligence config settings panel (TypeScriptSupport extension - shown when a root
+// ts/jsconfig is the active file). Layout: a disciplined grid of contained "setting cards" -
+// toggles as instant-apply switches, selects with stacked labels - over the standard
+// .bottom-panel chrome. Compiled as part of brackets.less, so core variables apply.
+
+#ts-config-settings-panel {
+
+    .toolbar {
+        .title .fa-solid {
+            margin-right: 6px;
+            opacity: 0.7;
+        }
+        .ts-cfg-file-name {
+            font-weight: normal;
+            opacity: 0.55;
+            margin-left: 8px;
+            font-size: 13px;
+        }
+        .ts-cfg-all-options {
+            position: absolute;
+            right: 34px;   // clear of the tab-bar close affordance
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            cursor: pointer;
+            opacity: 0.9;
+            .fa-solid {
+                font-size: 9px;
+                margin-left: 3px;
+                opacity: 0.8;
+            }
+            &:hover {
+                opacity: 1;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .ts-cfg-body {
+        height: ~"calc(100% - 36px)";
+        overflow-y: auto;
+        padding: 14px 16px 10px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    // ----- the setting-card grid ---------------------------------------------------------------
+    // Uniform column counts at every width - all rows always show the same number of columns.
+    // All SIX cards live in ONE grid: 6 divides evenly by 3, 2 and 1, so every column count gives
+    // full rows with no orphan cards (at 3 columns the toggles/selects rows group naturally). The
+    // ts-cfg-cols-N class is set on the body by a ResizeObserver in ConfigPanel.js (container
+    // queries would do this in pure CSS, but the bundled less compiler is v3 - no @container).
+    .ts-cfg-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    .ts-cfg-body.ts-cfg-cols-2 .ts-cfg-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .ts-cfg-body.ts-cfg-cols-1 .ts-cfg-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ts-cfg-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        margin: 0;
+        padding: 10px 12px;
+        min-height: 52px;
+        box-sizing: border-box;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.035);
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        cursor: pointer;
+        transition: border-color 0.12s ease, background-color 0.12s ease;
+
+        &:hover {
+            border-color: rgba(0, 0, 0, 0.16);
+        }
+        .dark & {
+            background: rgba(255, 255, 255, 0.045);
+            border-color: rgba(255, 255, 255, 0.07);
+            &:hover {
+                border-color: rgba(255, 255, 255, 0.18);
+            }
+        }
+    }
+
+    .ts-cfg-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .ts-cfg-label {
+        color: @bc-text;
+        font-size: 14px;
+        font-weight: @font-weight-semibold;
+        white-space: nowrap;
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+
+    // (i) icons: muted until hovered; the rich tooltip carries the real explanation.
+    .ts-cfg-info {
+        font-size: 12px;
+        opacity: 0.4;
+        margin-left: 2px;
+        transition: opacity 0.12s ease;
+        &:hover {
+            opacity: 0.85;
+        }
+    }
+    .ts-cfg-sublabel {
+        color: @bc-text;
+        opacity: 0.72;
+        font-size: 13px;
+        line-height: 1.35;
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+
+    // ----- switch-style toggles (instant apply -> switch semantics, Phoenix accent) --------------
+    input[type="checkbox"].ts-switch {
+        appearance: none;
+        -webkit-appearance: none;
+        position: relative;
+        flex: none;
+        width: 30px;
+        height: 17px;
+        margin: 0;
+        border-radius: 17px;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        background-color: rgba(0, 0, 0, 0.12);
+        box-shadow: none;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+        // Phoenix's global checkbox styling draws a ✓ glyph via `:checked:before` (content '\2713')
+        // - suppress it, or the tick renders on top of the switch. Our knob is the ::after.
+        &::before,
+        &:checked::before {
+            content: none;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease;
+        }
+        &:checked {
+            background-color: @bc-primary-btn-bg;
+            border-color: @bc-primary-btn-border;
+            &::after {
+                transform: translateX(13px);
+            }
+        }
+        &:focus {
+            outline: none;
+            border-color: @bc-btn-border-focused;
+        }
+        .dark & {
+            border-color: rgba(255, 255, 255, 0.22);
+            background-color: rgba(255, 255, 255, 0.12);
+            &:checked {
+                background-color: @bc-primary-btn-bg;
+                border-color: @bc-primary-btn-border;
+            }
+        }
+    }
+
+    // ----- selects: stacked label + full-width themed native select ------------------------------
+    .ts-cfg-select select {
+        width: 100%;
+        height: 26px;
+        font-size: 13px;
+        padding: 1px 22px 1px 8px;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    // ----- read-only notice (file has comments/custom formatting) --------------------------------
+    .ts-cfg-read-only {
+        color: @bc-text;
+        opacity: 0.7;
+        font-size: 13px;
+        padding: 4px 2px 12px;
+        .dark & {
+            color: @dark-bc-text;
+        }
+        .fa-solid {
+            margin-right: 7px;
+            opacity: 0.7;
+        }
+    }
+
+    // ----- footer: origin note + auto-create preference ------------------------------------------
+    .ts-cfg-footer {
+        // pinned to the bottom of the panel body (the body is a flex column) rather than hugging
+        // whatever content sits above - the divider reads as the panel's baseline.
+        margin-top: auto;
+        border-top: 1px solid @bc-panel-border;
+        padding: 10px 2px 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 36px;
+        align-items: center;
+        justify-content: space-between;
+        .dark & {
+            border-top-color: rgba(255, 255, 255, 0.08);
+        }
+    }
+    .ts-cfg-origin {
+        color: @bc-text;
+        opacity: 0.75;
+        font-size: 13px;
+        line-height: 1.5;
+        flex: 1 1 380px;
+        min-width: 260px;
+        .dark & {
+            color: @dark-bc-text;
+        }
+        .fa-solid {
+            margin-right: 6px;
+        }
+    }
+    .ts-cfg-auto-create {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin: 0;
+        flex: none;
+        cursor: pointer;
+        color: @bc-text;
+        opacity: 0.9;
+        font-size: 13px;
+        .dark & {
+            color: @dark-bc-text;
+        }
+        input[type="checkbox"] {
+            cursor: pointer;
+            margin: 0;
+        }
+    }
+}
+
+// Hovering the panel's "Problems panel" link pulses the status-bar problems indicator, teaching the
+// user where that panel is opened from. Global selector on purpose - the indicator lives in the
+// status bar, not inside our panel. The accent ring (Phoenix primary blue) reads on both themes.
+@keyframes ts-cfg-locate-pulse-anim {
+    0%   { box-shadow: 0 0 0 0 rgba(40, 142, 223, 0.85); }
+    70%  { box-shadow: 0 0 0 7px rgba(40, 142, 223, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 142, 223, 0); }
+}
+
+#status-inspection.ts-cfg-locate-pulse {
+    animation: ts-cfg-locate-pulse-anim 1.1s ease-out infinite;
+    border-radius: 3px;
+    background-color: rgba(40, 142, 223, 0.25);
+}

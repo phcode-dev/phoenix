@@ -541,10 +541,139 @@ define(function (require, exports, module) {
         return notification;
     }
 
+    // ------------------------------------------------------------------------------------------
+    // Rich hover tooltips
+    // ------------------------------------------------------------------------------------------
+
+    let $richTooltip = null,     // shared singleton, body-attached so container overflow can't clip it
+        _tooltipTimer = null,
+        _tooltipHideTimer = null;
+
+    // Leaving the trigger starts a short grace period instead of hiding instantly, so the user can
+    // move the pointer ONTO the tooltip (to read along / select text) without it vanishing.
+    const TOOLTIP_HIDE_GRACE_MS = 300;
+
+    function _cancelTooltipHide() {
+        if (_tooltipHideTimer) {
+            clearTimeout(_tooltipHideTimer);
+            _tooltipHideTimer = null;
+        }
+    }
+
+    function _scheduleTooltipHide() {
+        _cancelTooltipHide();
+        _tooltipHideTimer = setTimeout(hideRichTooltip, TOOLTIP_HIDE_GRACE_MS);
+    }
+
+    function _ensureRichTooltip() {
+        if (!$richTooltip) {
+            $richTooltip = $("<div class='phoenix-rich-tooltip' role='tooltip'></div>")
+                .appendTo("body").hide();
+            $richTooltip
+                .on("mouseenter", _cancelTooltipHide)   // pointer reached the tooltip - keep it
+                .on("mouseleave", _scheduleTooltipHide);
+        }
+        return $richTooltip;
+    }
+
+    // Position near the element: centered below, clamped to the viewport, flipped above when there
+    // is no room beneath. Uses position:fixed viewport coordinates.
+    function _positionRichTooltip($tip, element) {
+        const rect = element.getBoundingClientRect(),
+            tipWidth = $tip.outerWidth(),
+            tipHeight = $tip.outerHeight(),
+            winWidth = $(window).width(),
+            winHeight = $(window).height();
+        let left = rect.left + (rect.width / 2) - (tipWidth / 2);
+        left = Math.max(8, Math.min(left, winWidth - tipWidth - 8));
+        let top = rect.bottom + 8;
+        if (top + tipHeight > winHeight - 8) {
+            top = Math.max(8, rect.top - tipHeight - 8);
+        }
+        $tip.css({ left: left, top: top });
+    }
+
+    /**
+     * Hide the currently showing rich tooltip (if any).
+     * @type {function}
+     */
+    function hideRichTooltip() {
+        if (_tooltipTimer) {
+            clearTimeout(_tooltipTimer);
+            _tooltipTimer = null;
+        }
+        _cancelTooltipHide();
+        if ($richTooltip) {
+            $richTooltip.hide().empty();
+        }
+    }
+
+    /**
+     * Attaches a rich (HTML-capable) hover tooltip to the given element(s). The tooltip is
+     * Phoenix-themed for both light and dark themes, positioned beside the element, clamped to the
+     * viewport, and attached to `<body>` so scrolling containers cannot clip it.
+     *
+     * ```js
+     * NotificationUI.attachRichTooltip($(".my-info-icon"), "<b>Hello</b> world");
+     * // or compute content per element on show:
+     * NotificationUI.attachRichTooltip($(".my-info-icon"), el => $(el).attr("data-info"));
+     * ```
+     *
+     * @param {jQuery|Element|string} elements - element(s) or selector to attach to
+     * @param {string|function(Element):string} html - TRUSTED html string (escape untrusted parts
+     *   yourself), or a function returning it for the hovered element
+     * @param {Object} [options] optional, supported options:
+     *   * `showDelayMs` - hover delay before the tooltip appears. Default 250.
+     * @return {{detach: function}} call `detach()` to unbind the handlers and hide the tooltip
+     * @type {function}
+     */
+    function attachRichTooltip(elements, html, options = {}) {
+        const showDelayMs = options.showDelayMs === undefined ? 250 : options.showDelayMs;
+        const $elements = $(elements);
+
+        function _show(element) {
+            const $tip = _ensureRichTooltip();
+            const content = (typeof html === "function") ? html(element) : html;
+            if (!content) {
+                return;
+            }
+            $tip.html(content).show();
+            _positionRichTooltip($tip, element);
+        }
+
+        $elements
+            .on("mouseenter.phRichTooltip", function (event) {
+                const element = event.currentTarget;
+                _cancelTooltipHide();
+                if (_tooltipTimer) {
+                    clearTimeout(_tooltipTimer);
+                }
+                _tooltipTimer = setTimeout(function () {
+                    _tooltipTimer = null;
+                    _show(element);
+                }, showDelayMs);
+            })
+            // grace period on leave (the pointer may be travelling to the tooltip itself);
+            // mousedown on the trigger dismisses immediately.
+            .on("mouseleave.phRichTooltip", _scheduleTooltipHide)
+            .on("mousedown.phRichTooltip", function () {
+                hideRichTooltip();
+            });
+
+        return {
+            detach: function () {
+                $elements.off(".phRichTooltip");
+                hideRichTooltip();
+            }
+        };
+    }
+
     exports.createFromTemplate = createFromTemplate;
     exports.createToastFromTemplate = createToastFromTemplate;
     exports.showToastOn = showToastOn;
     exports.showHUD = showHUD;
+    exports.attachRichTooltip = attachRichTooltip;
+    exports.hideRichTooltip = hideRichTooltip;
     exports.CLOSE_REASON = CLOSE_REASON;
     exports.NOTIFICATION_STYLES_CSS_CLASS = NOTIFICATION_STYLES_CSS_CLASS;
 });

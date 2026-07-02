@@ -62,6 +62,13 @@ define(function (require, exports, module) {
     // row then offers to re-enable.
     const PREF_CREATED = "tsCodeIntel.created";
 
+    // Global user preference: set false to stop auto-creating configs in new projects entirely
+    // (surfaced both in the preferences file and as a checkbox in the config settings panel).
+    const PREF_AUTO_CREATE = "codeIntel.autoCreateConfig";
+    PreferencesManager.definePreference(PREF_AUTO_CREATE, "boolean", true, {
+        description: Strings.DESCRIPTION_CODE_INTEL_AUTO_CREATE
+    });
+
     // "Learn more" -> the TypeScript/JavaScript config reference (documents every compilerOption in
     // the jsconfig.json we generate: module, target, moduleResolution, checkJs, jsx, ...).
     const DOCS_URL = "https://www.typescriptlang.org/tsconfig/";
@@ -466,6 +473,9 @@ define(function (require, exports, module) {
         if (Phoenix.isTestWindow) {
             return; // never write configs from a test window - it would pollute fixtures
         }
+        if (PreferencesManager.get(PREF_AUTO_CREATE) === false) {
+            return; // the user opted out of auto-creation (managing existing configs is unaffected)
+        }
         if (!editor || !editor.document) {
             return;
         }
@@ -582,6 +592,8 @@ define(function (require, exports, module) {
 
     exports.init = init;
     exports.promptEnable = promptEnable;
+    exports.PREF_AUTO_CREATE = PREF_AUTO_CREATE;
+    exports.DOCS_URL = DOCS_URL;
     // exposed for unit tests (pure function; the event-driven flow never runs in test windows)
     exports._configContent = _configContent;
 });

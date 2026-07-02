@@ -1,0 +1,66 @@
+<div id="ts-config-settings-panel" class="bottom-panel vert-resizable top-resizer">
+    <div class="toolbar simple-toolbar-layout">
+        <div class="title"><i class="fa-solid fa-sliders"></i> <span class="ts-cfg-title-text">{{Strings.CODE_INTEL_CFG_TITLE}}</span><span class="ts-cfg-file-name"></span></div>
+        <a class="ts-cfg-all-options" href="#">{{Strings.CODE_INTEL_CFG_ALL_OPTIONS}} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+    <div class="ts-cfg-body">
+        <div class="ts-cfg-controls">
+            <div class="ts-cfg-grid">
+                <label class="ts-cfg-card ts-cfg-toggle">
+                    <span class="ts-cfg-card-head">
+                        <span class="ts-cfg-label">{{Strings.CODE_INTEL_CFG_CHECK_JS}} <i class="fa-solid fa-circle-info ts-cfg-info" data-ts-tip="checkJs"></i></span>
+                        <input type="checkbox" class="ts-switch ts-cfg-check-js">
+                    </span>
+                    <span class="ts-cfg-sublabel">{{Strings.CODE_INTEL_CFG_CHECK_JS_SUB}}</span>
+                </label>
+                <label class="ts-cfg-card ts-cfg-toggle">
+                    <span class="ts-cfg-card-head">
+                        <span class="ts-cfg-label">{{Strings.CODE_INTEL_CFG_AUTO_TYPES}} <i class="fa-solid fa-circle-info ts-cfg-info" data-ts-tip="autoTypes"></i></span>
+                        <input type="checkbox" class="ts-switch ts-cfg-auto-types">
+                    </span>
+                    <span class="ts-cfg-sublabel">{{Strings.CODE_INTEL_CFG_AUTO_TYPES_SUB}}</span>
+                </label>
+                <label class="ts-cfg-card ts-cfg-toggle ts-cfg-auto-manage-wrap">
+                    <span class="ts-cfg-card-head">
+                        <span class="ts-cfg-label">{{Strings.CODE_INTEL_CFG_AUTO_MANAGE}} <i class="fa-solid fa-circle-info ts-cfg-info" data-ts-tip="autoManage"></i></span>
+                        <input type="checkbox" class="ts-switch ts-cfg-auto-manage">
+                    </span>
+                    <span class="ts-cfg-sublabel">{{Strings.CODE_INTEL_CFG_AUTO_MANAGE_SUB}}</span>
+                </label>
+                <label class="ts-cfg-card ts-cfg-select">
+                    <span class="ts-cfg-card-head">
+                        <span class="ts-cfg-label">{{Strings.CODE_INTEL_CFG_TARGET}} <i class="fa-solid fa-circle-info ts-cfg-info" data-ts-tip="target"></i></span>
+                    </span>
+                    <select class="ts-cfg-target"></select>
+                    <span class="ts-cfg-sublabel">{{Strings.CODE_INTEL_CFG_TARGET_SUB}}</span>
+                </label>
+                <label class="ts-cfg-card ts-cfg-select">
+                    <span class="ts-cfg-card-head">
+                        <span class="ts-cfg-label">{{Strings.CODE_INTEL_CFG_MODULE}} <i class="fa-solid fa-circle-info ts-cfg-info" data-ts-tip="module"></i></span>
+                    </span>
+                    <select class="ts-cfg-module"></select>
+                    <span class="ts-cfg-sublabel">{{Strings.CODE_INTEL_CFG_MODULE_SUB}}</span>
+                </label>
+                <label class="ts-cfg-card ts-cfg-select">
+                    <span class="ts-cfg-card-head">
+                        <span class="ts-cfg-label">{{Strings.CODE_INTEL_CFG_JSX}} <i class="fa-solid fa-circle-info ts-cfg-info" data-ts-tip="jsx"></i></span>
+                    </span>
+                    <select class="ts-cfg-jsx"></select>
+                    <span class="ts-cfg-sublabel">{{Strings.CODE_INTEL_CFG_JSX_SUB}}</span>
+                </label>
+            </div>
+        </div>
+        <div class="ts-cfg-read-only forced-hidden">
+            <i class="fa-solid fa-lock"></i> {{Strings.CODE_INTEL_CFG_READ_ONLY}}
+        </div>
+        <div class="ts-cfg-footer">
+            <div class="ts-cfg-origin forced-hidden">
+                <i class="fa-solid fa-circle-info"></i> <span class="ts-cfg-origin-text"><!-- filled programmatically: the note contains a Problems-panel link --></span>
+            </div>
+            <label class="ts-cfg-auto-create">
+                <input type="checkbox" class="ts-cfg-auto-create-check">
+                <span>{{Strings.CODE_INTEL_CFG_AUTO_CREATE}}</span>
+            </label>
+        </div>
+    </div>
+</div>
