@@ -912,7 +912,7 @@ define(function (require, exports, module) {
      *                htmlMessage:string,
      *                type:?Type ,
      *                fix: { // an optional fix, if present will show the fix button
-     *                     replace: "text to replace the offset given below",
+     *                     replaceText: "text to replace the offset given below",
      *                     rangeOffset: {
      *                         start: number,
      *                         end: number
@@ -929,7 +929,7 @@ define(function (require, exports, module) {
      * @property {string} htmlMessage - The error message to be displayed as HTML.
      * @property {?Type} type - The type of the error. Defaults to `Type.WARNING` if unspecified.
      * @property {?Object} fix - An optional fix object.
-     * @property {string} fix.replace - The text to replace the error with.
+     * @property {string} fix.replaceText - The text to replace the error with.
      * @property {Object} fix.rangeOffset - The range within the text to replace.
      * @property {number} fix.rangeOffset.start - The start offset of the range.
      * @property {number} fix.rangeOffset.end - The end offset of the range.

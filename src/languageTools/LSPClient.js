@@ -213,6 +213,10 @@ define(function (require, exports, module) {
                 uri: vfsUri,
                 diagnostics: diagnostics
             });
+            // Hand the RAW diagnostics (setInspectionResults flattens them, losing range/code/data)
+            // to the quickfix layer, which idle-fetches textDocument/codeAction fixes for them and
+            // decorates the cached results - see LintingProvider.updateQuickFixes.
+            client.lintingProvider.updateQuickFixes(vfsPath, diagnostics);
         }
     }
 
@@ -531,6 +535,62 @@ define(function (require, exports, module) {
         return deferred.promise();
     };
 
+    /**
+     * Quickfix code actions for the given range's diagnostics (LSP textDocument/codeAction).
+     * Server-agnostic: gated on the server's codeActionProvider capability (boolean or object).
+     * @param {{filePath:string, range:Object, diagnostics:Array<Object>}} params - `range` is an LSP
+     *      range ({start:{line,character}, end:{...}}) and `diagnostics` the raw LSP diagnostics to
+     *      pass as context (servers key their fixes off these).
+     * @return {jQuery.Promise} resolves the server's (CodeAction|Command)[] or []
+     */
+    LanguageClient.prototype.requestCodeActions = function (params) {
+        const self = this;
+        const deferred = $.Deferred();
+        if (!this.capabilities || !this.capabilities.codeActionProvider) {
+            return deferred.resolve([]).promise(); // server offers no code actions
+        }
+        (async function () {
+            try {
+                await DocumentSync.flush(self, params.filePath);
+                const result = await self._request("textDocument/codeAction", {
+                    textDocument: { uri: self.uriForPath(params.filePath) },
+                    range: params.range,
+                    context: {
+                        diagnostics: params.diagnostics || [],
+                        only: ["quickfix"]
+                    }
+                });
+                deferred.resolve(Array.isArray(result) ? result : []);
+            } catch (err) {
+                console.warn("[LSP] request failed:", err && (err.message || err));
+                deferred.reject(err);
+            }
+        }());
+        return deferred.promise();
+    };
+
+    /**
+     * Fill in a CodeAction's deferred properties (typically `edit`) via codeAction/resolve. We don't
+     * advertise resolveSupport, so conformant servers inline edits and this is never needed - it
+     * exists for servers that defer anyway, gated on their codeActionProvider.resolveProvider.
+     * Mirrors resolveCompletion: always resolves, falling back to the unresolved action.
+     * @param {Object} action - the CodeAction as returned by requestCodeActions
+     * @return {jQuery.Promise}
+     */
+    LanguageClient.prototype.resolveCodeAction = function (action) {
+        const deferred = $.Deferred();
+        const provider = this.capabilities && this.capabilities.codeActionProvider;
+        if (!provider || !provider.resolveProvider) {
+            return deferred.resolve(action).promise();
+        }
+        this._request("codeAction/resolve", action).then(function (resolved) {
+            deferred.resolve(resolved || action);
+        }, function () {
+            deferred.resolve(action);
+        });
+        return deferred.promise();
+    };
+
     // ------------------------------------------------------------------------------------------
     // Server lifecycle + provider registration
     // ------------------------------------------------------------------------------------------
@@ -567,7 +627,17 @@ define(function (require, exports, module) {
                 },
                 definition: { dynamicRegistration: false },
                 references: { dynamicRegistration: false },
-                publishDiagnostics: { relatedInformation: false }
+                publishDiagnostics: { relatedInformation: false },
+                codeAction: {
+                    dynamicRegistration: false,
+                    // Literal CodeAction support (title/kind/edit) - without this servers degrade to
+                    // bare Commands, which carry no WorkspaceEdit we could apply. resolveSupport is
+                    // deliberately NOT advertised: conformant servers then inline `edit` in the
+                    // codeAction response, sparing a codeAction/resolve round-trip per fix.
+                    codeActionLiteralSupport: {
+                        codeActionKind: { valueSet: ["quickfix"] }
+                    }
+                }
             },
             workspace: { workspaceFolders: true, configuration: false }
         };
@@ -634,6 +704,9 @@ define(function (require, exports, module) {
         // recorded so the provider can tell whether it is still a participating inspector before nudging a
         // re-run on async diagnostics.
         client.lintingProvider._inspectionProviderName = client.serverId;
+        // The quickfix layer requests textDocument/codeAction through this client (capability-gated
+        // inside requestCodeActions), keeping the provider itself transport-agnostic.
+        client.lintingProvider._quickFixClient = client;
         client.hover = new HoverProvider.HoverProvider(client);
 
         CodeHintManager.registerHintProvider(client.codeHints, langs, DEFAULT_PRIORITY);

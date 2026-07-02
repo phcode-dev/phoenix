@@ -832,6 +832,19 @@ define(function (require, exports, module) {
         this._promiseMap = new Map();
         this._lastSignature = new Map();
         this._validateOnType = false;
+        // --- quickfix (textDocument/codeAction) state ---
+        this._quickFixClient = null;         // LanguageClient injected by LSPClient._registerProviders
+        this._rawDiagnostics = new Map();    // filePath -> raw LSP diagnostics (setInspectionResults flattens)
+        this._quickFixState = new Map();     // filePath -> {timestamp, signature} of the last fetch
+        this._quickFixTimer = null;          // idle-fetch timer (cleared on every newer publish)
+        // Diagnostics can arrive while their file sits in a background pane (fetches only run for
+        // the active file) - when such a file becomes active, schedule the fetch it missed.
+        const self = this;
+        EditorManager.on("activeEditorChange", function (evt, current) {
+            if (current && current.document) {
+                self._scheduleQuickFixFetch(current.document.file._path);
+            }
+        });
     }
 
     LintingProvider.prototype.setClient = setClient;
@@ -843,11 +856,19 @@ define(function (require, exports, module) {
             this._results.delete(filePath);
             this._promiseMap.delete(filePath);
             this._lastSignature.delete(filePath);
+            this._rawDiagnostics.delete(filePath);
+            this._quickFixState.delete(filePath);
         } else {
             //clear all results
             this._results.clear();
             this._promiseMap.clear();
             this._lastSignature.clear();
+            this._rawDiagnostics.clear();
+            this._quickFixState.clear();
+        }
+        if (this._quickFixTimer) {
+            clearTimeout(this._quickFixTimer);
+            this._quickFixTimer = null;
         }
     };
 
@@ -866,18 +887,15 @@ define(function (require, exports, module) {
                     line: obj.range.start.line,
                     ch: obj.range.start.character
                 },
+                endPos: {
+                    line: obj.range.end.line,
+                    ch: obj.range.end.character
+                },
                 message: obj.message,
                 type: (obj.severity === 1 ? CodeInspection.Type.ERROR : (obj.severity === 2 ? CodeInspection.Type.WARNING : CodeInspection.Type.META))
             };
         });
 
-        this._results.set(filePath, {
-            errors: errors
-        });
-        if(this._promiseMap.get(filePath)) {
-           this._promiseMap.get(filePath).resolve(this._results.get(filePath));
-           this._promiseMap.delete(filePath);
-        }
         // Language servers re-publish diagnostics in waves (e.g. syntax then semantic passes) and
         // again on every edit - frequently with identical content. Re-running inspection only to
         // render the same problems rebuilds the Problems panel for nothing, which both wastes work
@@ -890,6 +908,19 @@ define(function (require, exports, module) {
             previous = this._lastSignature.has(filePath) ? this._lastSignature.get(filePath) : "[]",
             changed = previous !== signature;
         this._lastSignature.set(filePath, signature);
+
+        // Keep the EXISTING errors array when content is unchanged: the quickfix layer decorates the
+        // cached errors with `fix` after an async codeAction fetch, and replacing the array on an
+        // identical re-publish would silently wipe those fixes without triggering a re-fetch.
+        if (changed || !this._results.has(filePath)) {
+            this._results.set(filePath, {
+                errors: errors
+            });
+        }
+        if(this._promiseMap.get(filePath)) {
+           this._promiseMap.get(filePath).resolve(this._results.get(filePath));
+           this._promiseMap.delete(filePath);
+        }
         if (this._validateOnType && changed) {
             var editor = EditorManager.getActiveEditor(),
                 docPath = editor ? editor.document.file._path : "";
@@ -902,6 +933,193 @@ define(function (require, exports, module) {
             if (filePath === docPath && this._isRegisteredInspector(docPath)) {
                 CodeInspection.requestRun();
             }
+        }
+    };
+
+    // ----- quickfixes (textDocument/codeAction) ------------------------------------------------
+    // Diagnostics and their fixes are separate LSP channels: fixes must be REQUESTED per range with
+    // the diagnostics as context. CodeInspection needs fixes ON the errors at scan time, so the flow
+    // is: retain the raw diagnostics -> idle-fetch code actions (never in the typing hot path) ->
+    // decorate the cached errors with { replaceText, rangeOffset } -> requestRun() so CodeInspection
+    // re-pulls and registers them (fix icons + Fix All appear). Server-agnostic: gated purely on the
+    // server's codeActionProvider capability via LanguageClient.requestCodeActions.
+
+    // Fetch this long after diagnostics settle. Typing produces a new publish per change wave, which
+    // reschedules - so no codeAction traffic while the user is actively typing, and a fetched fix is
+    // never dead-on-arrival (CodeInspection drops fixes whose document changed anyway).
+    var QUICKFIX_IDLE_MS = 800;
+    // Per-diagnostic fallback cap, for servers that don't answer a whole-file batched request.
+    var MAX_QUICKFIX_REQUESTS = 20;
+
+    /**
+     * Record the raw diagnostics for a file and schedule an idle quickfix fetch. Called by the
+     * publishDiagnostics handler right after setInspectionResults.
+     * @param {string} filePath
+     * @param {Array<Object>} rawDiagnostics - unflattened LSP diagnostics (range/code/data intact)
+     */
+    LintingProvider.prototype.updateQuickFixes = function (filePath, rawDiagnostics) {
+        this._rawDiagnostics.set(filePath, rawDiagnostics || []);
+        this._scheduleQuickFixFetch(filePath);
+    };
+
+    LintingProvider.prototype._scheduleQuickFixFetch = function (filePath) {
+        var self = this;
+        if (!this._quickFixClient || !this._rawDiagnostics.has(filePath)) {
+            return;
+        }
+        var editor = EditorManager.getActiveEditor();
+        if (!editor || editor.document.file._path !== filePath ||
+                !this._quickFixClient.servesDocument(editor)) {
+            return; // fixes are only fetched for the active, server-synced document
+        }
+        var state = this._quickFixState.get(filePath);
+        if (state && state.timestamp === editor.document.lastChangeTimestamp &&
+                state.signature === this._lastSignature.get(filePath)) {
+            return; // already fetched for this exact document + diagnostics content
+        }
+        if (this._quickFixTimer) {
+            clearTimeout(this._quickFixTimer);
+        }
+        this._quickFixTimer = setTimeout(function () {
+            self._quickFixTimer = null;
+            self._fetchQuickFixes(filePath);
+        }, QUICKFIX_IDLE_MS);
+    };
+
+    /**
+     * @private
+     * The single admitted fix of a code action, or null. Admitted: a literal quickfix CodeAction,
+     * not disabled, whose WorkspaceEdit touches EXACTLY this file with EXACTLY one TextEdit (the
+     * CodeInspection fix contract is one contiguous same-document replace). Legacy bare Commands
+     * (no edit to apply client-side) are skipped.
+     * @return {?{replaceText:string, rangeOffset:{start:number, end:number}}}
+     */
+    LintingProvider.prototype._fixFromAction = function (action, editor, filePath) {
+        if (!action || !action.title || action.disabled) {
+            return null;
+        }
+        if (!action.kind || action.kind.indexOf("quickfix") !== 0) {
+            return null; // not a quickfix (servers may ignore context.only), or a bare Command
+        }
+        var edit = action.edit;
+        if (!edit) {
+            return null;
+        }
+        var uri = null, edits = null;
+        if (edit.documentChanges && edit.documentChanges.length === 1 &&
+                edit.documentChanges[0].textDocument) {
+            uri = edit.documentChanges[0].textDocument.uri;
+            edits = edit.documentChanges[0].edits;
+        } else if (edit.changes) {
+            var uris = Object.keys(edit.changes);
+            if (uris.length === 1) {
+                uri = uris[0];
+                edits = edit.changes[uri];
+            }
+        }
+        if (!uri || !edits || edits.length !== 1 || typeof edits[0].newText !== "string") {
+            return null; // multi-file / multi-edit / create-rename ops - beyond the one-replace contract
+        }
+        // Compare as decoded platform paths so URI encoding differences can't break the match.
+        var ownUri = this._quickFixClient.uriForPath(filePath);
+        if (PathConverters.uriToPath(uri) !== PathConverters.uriToPath(ownUri)) {
+            return null; // edit lands in a different file
+        }
+        var range = edits[0].range;
+        return {
+            replaceText: edits[0].newText,
+            rangeOffset: {
+                start: editor.indexFromPos({ line: range.start.line, ch: range.start.character }),
+                end: editor.indexFromPos({ line: range.end.line, ch: range.end.character })
+            }
+        };
+    };
+
+    // Attach an action's fix to the cached error matching one of the action's diagnostics.
+    // `forDiagnostic` pins the target in per-diagnostic fallback mode, where the request itself
+    // identifies the diagnostic even when the server omits action.diagnostics.
+    LintingProvider.prototype._attachFix = function (errors, action, fix, forDiagnostic) {
+        var diags = (action.diagnostics && action.diagnostics.length) ? action.diagnostics
+            : (forDiagnostic ? [forDiagnostic] : []);
+        for (var d = 0; d < diags.length; d++) {
+            var diag = diags[d];
+            for (var i = 0; i < errors.length; i++) {
+                var err = errors[i];
+                if (err.pos.line === diag.range.start.line && err.pos.ch === diag.range.start.character &&
+                        err.message === diag.message && (!err.fix || action.isPreferred)) {
+                    err.fix = fix;
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    LintingProvider.prototype._fetchQuickFixes = async function (filePath) {
+        var self = this;
+        var client = this._quickFixClient;
+        var editor = EditorManager.getActiveEditor();
+        var diagnostics = this._rawDiagnostics.get(filePath) || [];
+        var cached = this._results.get(filePath);
+        if (!client || !editor || editor.document.file._path !== filePath ||
+                !client.servesDocument(editor) || !diagnostics.length || !cached) {
+            return;
+        }
+        var fetchedAt = editor.document.lastChangeTimestamp;
+        // Record the fetch attempt up front so identical re-publishes don't re-fetch, even when the
+        // server turns out to have no fixes for these diagnostics.
+        this._quickFixState.set(filePath, {
+            timestamp: fetchedAt,
+            signature: this._lastSignature.get(filePath)
+        });
+
+        try {
+            // One batched whole-file request first (spec-legal, one round trip for every fix)...
+            var lastLine = editor.lineCount() - 1;
+            var wholeFile = {
+                start: { line: 0, character: 0 },
+                end: { line: lastLine, character: editor.document.getLine(lastLine).length }
+            };
+            var actions = await client.requestCodeActions({
+                filePath: filePath, range: wholeFile, diagnostics: diagnostics
+            });
+            var attached = 0;
+            if (actions && actions.length) {
+                for (var i = 0; i < actions.length; i++) {
+                    var resolved = await client.resolveCodeAction(actions[i]); // no-op unless deferred
+                    var fix = this._fixFromAction(resolved, editor, filePath);
+                    if (fix && this._attachFix(cached.errors, resolved, fix, null)) {
+                        attached++;
+                    }
+                }
+            } else {
+                // ...falling back to capped per-diagnostic requests for servers that don't answer
+                // the batched form.
+                var capped = diagnostics.slice(0, MAX_QUICKFIX_REQUESTS);
+                for (var d = 0; d < capped.length; d++) {
+                    var acts = await client.requestCodeActions({
+                        filePath: filePath, range: capped[d].range, diagnostics: [capped[d]]
+                    });
+                    for (var a = 0; acts && a < acts.length; a++) {
+                        var res = await client.resolveCodeAction(acts[a]);
+                        var f = this._fixFromAction(res, editor, filePath);
+                        if (f && this._attachFix(cached.errors, res, f, capped[d])) {
+                            attached++;
+                            break; // one fix per diagnostic
+                        }
+                    }
+                }
+            }
+            // Re-render only when something changed AND the document didn't move under us (a moved
+            // document gets fresh diagnostics -> a fresh fetch; its fixes would be dropped anyway).
+            var activeEditor = EditorManager.getActiveEditor();
+            if (attached && activeEditor && activeEditor.document.file._path === filePath &&
+                    activeEditor.document.lastChangeTimestamp === fetchedAt &&
+                    self._isRegisteredInspector(filePath)) {
+                CodeInspection.requestRun();
+            }
+        } catch (err) {
+            console.warn("[LSP] quickfix fetch failed:", err && (err.message || err));
         }
     };
 
