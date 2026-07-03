@@ -93,6 +93,14 @@ define(function (require, exports, module) {
         if (enabled) {
             this.editor = editor;
 
+            // php files are mixed-mode: their HTML regions report "html" at the cursor and are
+            // served through the html registration. So a cursor whose language is actually "php"
+            // is inside real PHP code (<?php ... ?>), where markup abbreviations are never right -
+            // typing `addition(` there must not summon an Emmet hint.
+            if (editor.getLanguageForSelection().getId() === "php") {
+                return false;
+            }
+
             // check the context before showing emmet hints, because we don't want to show
             // emmet hints when its a Attribute name or value
             // cause for those cases AttrHints should handle it

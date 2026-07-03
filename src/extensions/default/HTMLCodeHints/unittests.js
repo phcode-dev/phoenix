@@ -695,6 +695,35 @@ define(function (require, exports, module) {
 
         describe("Emmet hint provider", function () {
 
+            it("should not offer emmet inside php code regions, only in html regions of php files", function () {
+                // php is a mixed mode: <?php ... ?> regions are real PHP (emmet is never right
+                // there - e.g. typing `addition(`), while the surrounding markup is HTML where
+                // emmet must keep working.
+                const phpContent = "<?php\n" +
+                    "$x = 1;\n" +
+                    "function addition(\n" +
+                    "?>\n" +
+                    "<div>\n" +
+                    "div\n" +
+                    "</div>\n";
+                const phpDocument = SpecRunnerUtils.createMockDocument(phpContent, "php");
+                $("body").append("<div id='php-editor'/>");
+                const phpEditor = new Editor(phpDocument, true, $("#php-editor").get(0));
+
+                // cursor inside the php code region, right after `addition(`
+                phpEditor.setCursorPos({ line: 2, ch: 18 });
+                expect(phpEditor.getLanguageForSelection().getId()).toBe("php");
+                expect(HTMLCodeHints.emmetHintProvider.hasHints(phpEditor, null)).toBe(false);
+
+                // cursor in the html region after "div" - emmet abbreviation expansion still works
+                phpEditor.setCursorPos({ line: 5, ch: 3 });
+                expect(phpEditor.getLanguageForSelection().getId()).not.toBe("php");
+                expect(HTMLCodeHints.emmetHintProvider.hasHints(phpEditor, null)).toBe(true);
+
+                phpEditor.destroy();
+                $("#php-editor").remove();
+            });
+
             it("should display emmet hint and expand to boilerplate code on ! press", function () {
 
                 let emmetBoilerPlate = [
