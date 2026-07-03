@@ -47,6 +47,7 @@ define(function (require, exports, module) {
     const NodeUtils = brackets.getModule("utils/NodeUtils"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         NativeApp = brackets.getModule("utils/NativeApp"),
+        ModalBar = brackets.getModule("widgets/ModalBar").ModalBar,
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
         TaskManager = brackets.getModule("features/TaskManager"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
@@ -60,8 +61,12 @@ define(function (require, exports, module) {
 
     let _onInstalled = null;        // main.js callback: ({entryPath, upgraded}) => void
     let _inFlight = null;           // single-flight install promise
-    const _promptShownForProject = new Set();   // prompt toast: once per project per session
-    let _promptToast = null;
+    // projects where the user clicked "Not Now" - the bar stops reappearing there for the
+    // session. Until then it returns on every php file switch (closing on switch-away is not a
+    // dismissal - only the explicit button is).
+    const _promptDismissedForProject = new Set();
+    let _promptBar = null;          // the ModalBar install prompt, when showing
+    let _promptBarTip = null;       // the benefits tooltip binding on the bar's info icon
     let _panelRowDismissed = false; // Problems-panel row dismissed this session
 
     function _installDirVfs() {
@@ -202,49 +207,71 @@ define(function (require, exports, module) {
 
     // ----- consent UI: prompt toast + Problems-panel row (mirrors the TS enable affordances) ------
 
-    function _dismissPromptToast() {
-        if (_promptToast) {
-            _promptToast.close();
-            _promptToast = null;
+    function _closePromptBar() {
+        if (_promptBarTip) {
+            _promptBarTip.detach();
+            _promptBarTip = null;
+        }
+        if (_promptBar) {
+            _promptBar.close();
+            _promptBar = null;
         }
     }
 
-    function _showPromptToast() {
+    // Compact benefits card for the bar's (i) icon - term -> what it means, one line each.
+    function _benefitsTipHtml() {
+        const $tip = $("<div>");
+        $("<div class='ph-tip-title'>").text(Strings.PHP_INSTALL_TITLE).appendTo($tip);
+        const $rows = $("<div class='ph-tip-rows'>").appendTo($tip);
+        [
+            [Strings.PHP_BENEFIT_COMPLETIONS, Strings.PHP_BENEFIT_COMPLETIONS_SUB],
+            [Strings.PHP_BENEFIT_DOCS, Strings.PHP_BENEFIT_DOCS_SUB],
+            [Strings.PHP_BENEFIT_ERRORS, Strings.PHP_BENEFIT_ERRORS_SUB],
+            [Strings.PHP_BENEFIT_NAV, Strings.PHP_BENEFIT_NAV_SUB]
+        ].forEach(function (row) {
+            $("<span class='ph-tip-term'>").text(row[0]).appendTo($rows);
+            $("<span class='ph-tip-def'>").text(row[1]).appendTo($rows);
+        });
+        return $tip.html();
+    }
+
+    // A find-bar-style banner across the top of the editor - impossible to miss on the file that
+    // triggered it, but passive (autoClose false: clicking back into the code doesn't dismiss it).
+    function _showPromptBar() {
         const root = ProjectManager.getProjectRoot();
         const rootPath = (root && root.fullPath) || "";
-        if (_promptShownForProject.has(rootPath)) {
+        if (_promptDismissedForProject.has(rootPath) || _promptBar) {
             return;
         }
-        _promptShownForProject.add(rootPath);
-        const $tpl = $("<div class='ts-code-intel-toast'>");
-        $("<div class='ts-code-intel-msg'>").text(Strings.PHP_INSTALL_MESSAGE).appendTo($tpl);
+        // built as detached DOM then serialized (ModalBar takes an HTML string); all click
+        // handling is delegated on the live bar root below
+        const $tpl = $("<div class='php-install-bar'>");
+        $("<span class='php-install-bar-text'>").text(Strings.PHP_INSTALL_MESSAGE).appendTo($tpl);
+        $("<i class='fa-solid fa-circle-info php-install-bar-info'>").appendTo($tpl);
         // credit where due (and where premium lives) - not license-required, just right
-        $("<a class='php-intel-powered-by'>").text(Strings.PHP_POWERED_BY_INTELEPHENSE)
-            .attr("href", "#")
-            .on("click", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                NativeApp.openURLInDefaultBrowser(INTELEPHENSE_HOME_URL);
-            })
+        $("<a class='php-intel-powered-by' href='#'>").text(Strings.PHP_POWERED_BY_INTELEPHENSE)
             .appendTo($tpl);
-        const $btns = $("<div class='ts-code-intel-buttons'>").appendTo($tpl);
-        const $install = $("<button class='ts-code-intel-action'>")
-            .text(Strings.PHP_INSTALL_ENABLE).appendTo($btns);
-        const $later = $("<button class='ts-code-intel-action'>")
-            .text(Strings.PHP_INSTALL_NOT_NOW).appendTo($btns);
-        // SUBTLE like the TS enable toast - quiet, theme-matching surface where the link-style
-        // action buttons read clearly. The Problems-panel row provides the persistent affordance
-        // if the toast is missed.
-        _promptToast = NotificationUI.createToastFromTemplate(Strings.PHP_INSTALL_TITLE, $tpl, {
-            dismissOnClick: false, autoCloseTimeS: 45, instantOpen: true,
-            toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUBTLE
-        });
-        $install.on("click", function () {
-            _dismissPromptToast();
+        $("<button class='btn btn-mini php-install-bar-later'>")
+            .text(Strings.PHP_INSTALL_NOT_NOW).appendTo($tpl);
+        $("<button class='btn btn-mini primary php-install-bar-install'>")
+            .text(Strings.PHP_INSTALL_ENABLE).appendTo($tpl);
+
+        _promptBar = new ModalBar($tpl[0].outerHTML, false);
+        const $bar = _promptBar.getRoot();
+        _promptBarTip = NotificationUI.attachRichTooltip(
+            $bar.find(".php-install-bar-info"), _benefitsTipHtml(), { showDelayMs: 150 });
+        $bar.on("click", ".php-install-bar-install", function () {
+            _closePromptBar();
             installNow();
         });
-        $later.on("click", function () {
-            _dismissPromptToast();
+        $bar.on("click", ".php-install-bar-later", function () {
+            const projRoot = ProjectManager.getProjectRoot();
+            _promptDismissedForProject.add((projRoot && projRoot.fullPath) || "");
+            _closePromptBar();
+        });
+        $bar.on("click", ".php-intel-powered-by", function (e) {
+            e.preventDefault();
+            NativeApp.openURLInDefaultBrowser(INTELEPHENSE_HOME_URL);
         });
     }
 
@@ -300,6 +327,9 @@ define(function (require, exports, module) {
         if (!$row) {
             return;
         }
+        if (!phpDocumentActive) {
+            _closePromptBar();  // the bar belongs to the php file that triggered it
+        }
         if (!phpDocumentActive || _panelRowDismissed || _inFlight ||
                 PreferencesManager.get(PREF_PHP_CODE_INTELLIGENCE) === false) {
             $row.hide();
@@ -323,7 +353,9 @@ define(function (require, exports, module) {
         if (typeof Phoenix !== "undefined" && Phoenix.isTestWindow) {
             return;
         }
-        _showPromptToast();
+        if (phpDocumentActive) {
+            _showPromptBar();
+        }
         updatePanelRow(phpDocumentActive);
     }
 
