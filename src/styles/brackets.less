@@ -2220,6 +2220,16 @@ a, img {
     }
 }
 
+// On bright colored toast surfaces (e.g. the PHP install prompt on INFO blue) the link-blue
+// action text is invisible - use high-contrast white bold links there, both themes.
+.notification-popup-container.style-info .ts-code-intel-action,
+.dark .notification-popup-container.style-info .ts-code-intel-action {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    &:hover { color: rgba(255, 255, 255, 0.85); }
+}
+
 .lsp-hover-quickview {
     text-align: left;
     // The QuickView popover centers + shrink-wraps each provider's content (.quick-view-item is a

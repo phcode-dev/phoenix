@@ -1800,6 +1800,18 @@ define({
     "CODE_INTEL_PANEL_TEXT": "Project-wide code intelligence is off. Enable it for Find Usages, Rename, and Go to Definition across every file — adds a jsconfig.json to the project root.",
     "CODE_INTEL_PANEL_ENABLE": "Enable",
     "CODE_INTEL_PANEL_DISMISS": "Dismiss",
+    // PHP language support (PHPSupport)
+    "PHP_INSTALL_TITLE": "PHP Code Intelligence",
+    "PHP_INSTALL_MESSAGE": "Smart completions, docs on hover, error checking and go to definition for PHP. {APP_NAME} downloads the Intelephense language server (free third-party tool, ~9 MB) to your computer.",
+    "PHP_INSTALL_ENABLE": "Install",
+    "PHP_INSTALL_NOT_NOW": "Not Now",
+    "PHP_POWERED_BY_INTELEPHENSE": "Powered by Intelephense",
+    "PHP_PANEL_TEXT": "PHP code intelligence is off. Install the Intelephense language server (free, ~9 MB download) for completions, error checking, docs and go to definition.",
+    "PHP_INSTALLING": "Setting up PHP support — downloading the language server…",
+    "PHP_INSTALL_DONE": "PHP code intelligence is ready.",
+    "PHP_INSTALL_FAILED": "Could not set up PHP support: {0}. {APP_NAME} will retry when you open a PHP file again.",
+    "DESCRIPTION_PHP_CODE_INTELLIGENCE": "false to disable PHP code intelligence (Intelephense). Setting it back to true offers the language server download again.",
+    "DESCRIPTION_PHP_LICENSE_KEY": "Intelephense premium licence key (or an absolute path to a key file) enabling premium features like rename and code actions. Not needed if your licence is already in the standard global intelephense licence file.",
     // JSON / package.json intelligence (JSONSupport)
     "NPM_VULN_PROVIDER_NAME": "npm Security Advisories",
     "NPM_VULN_MESSAGE": "{0}@{1} is vulnerable: {2} ({3} severity)",

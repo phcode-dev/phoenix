@@ -1,0 +1,9 @@
+{
+    "name": "php-support",
+    "title": "PHP Language Support",
+    "description": "Provides PHP language intelligence (completion, hover, signature help, jump-to-definition, find references and diagnostics) via the Intelephense language server, installed on demand with user consent. Desktop only.",
+    "version": "1.0.0",
+    "engines": {
+        "brackets": ">=2.0.0"
+    }
+}

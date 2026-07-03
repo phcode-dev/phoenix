@@ -648,6 +648,11 @@ define(function (require, exports, module) {
                         // strips snippet placeholders on insert for such items.
                         snippetSupport: !!(config && config.completionSnippetSupport),
                         documentationFormat: ["markdown", "plaintext"],
+                        // LSP 3.16: servers only lazily fill (via completionItem/resolve) the
+                        // properties the client declares here - intelephense returns empty
+                        // completion docs without it. We resolve the highlighted item for the
+                        // docs popup, so declare exactly what that popup consumes.
+                        resolveSupport: { properties: ["documentation", "detail"] },
                         // We render labelDetails.detail/description (e.g. the source module of an
                         // auto-import) so otherwise-identical labels are distinguishable - see the
                         // CodeHintsProvider renderer.

@@ -705,9 +705,13 @@ define(function (require, exports, module) {
                 ? LanguageManager.getLanguageForPath(editor.document.file.fullPath).getId()
                 : null;
 
-            // When the TypeScript language server serves this language, defer to it entirely: don't
-            // create a Tern session, so ScopeManager never indexes the project alongside the server.
-            if (_lspServesLanguage(languageId)) {
+            // When a language server serves this language, defer to it entirely: don't create a
+            // Tern session, so ScopeManager never indexes the project alongside the server.
+            // EXCEPT inline-script host documents (html, php): a server claiming those (e.g.
+            // Intelephense for php) serves only the host language, not the embedded <script> JS -
+            // Tern must keep its session there or embedded-JS intelligence dies. Feature routing
+            // by cursor language already keeps the two from overlapping.
+            if (_lspServesLanguage(languageId) && _inlineScriptLanguages.indexOf(languageId) === -1) {
                 session = null;
                 return;
             }

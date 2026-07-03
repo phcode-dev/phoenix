@@ -188,9 +188,19 @@ define(function (require, exports, module) {
         // that merely restates the label counts as "no signature".
         var label = (token.label || "").trim();
         var detail = (token.detail || "").trim();
-        if (detail && detail !== label) {
+        // Some servers (intelephense) split the signature across fields: labelDetails.detail holds
+        // the parameter list ("($search, $replace, ...)") and `detail` only the return type. Shown
+        // alone the return type reads like noise - compose the full signature instead. Only when
+        // labelDetails.detail is a parameter list and `detail` isn't already a full signature
+        // (vtsls puts the whole signature in `detail`, which must stay untouched).
+        var paramList = (token.labelDetails && token.labelDetails.detail || "").trim();
+        var signature = detail;
+        if (paramList.charAt(0) === "(" && detail.indexOf("(") === -1) {
+            signature = label + paramList + (detail ? ": " + detail : "");
+        }
+        if (signature && signature !== label) {
             try {
-                parts.push(_highlightCode(marked.parse("```" + _signatureLang() + "\n" + token.detail + "\n```")));
+                parts.push(_highlightCode(marked.parse("```" + _signatureLang() + "\n" + signature + "\n```")));
             } catch (e) {
                 // skip the signature block on any parse/highlight error
             }
@@ -299,6 +309,10 @@ define(function (require, exports, module) {
             _trackDocPopup();
         }
     }
+
+    // Inline row details longer than this go to the side docs popup instead of the row (some
+    // servers - intelephense - put whole function signatures in `detail`, which bloats the list).
+    const INLINE_DETAIL_MAX_CHARS = 32;
 
     function _injectInlineSignature($labelSpan, detail) {
         if (!detail || !detail.trim() || detail.trim() === "?") {
@@ -566,7 +580,9 @@ define(function (require, exports, module) {
             // so this does not cause extra LSP requests. Skip it for auto-imports - their detail is a
             // long "Add import from <module>" string that just clips uselessly; the short source-module
             // tag stays visible there instead (see CSS), and the doc popup carries the full import.
-            if (token.detail && !_isAutoImport(token)) {
+            // Also skip LONG details (some servers - intelephense - put the whole function signature
+            // there, which bloats the rows): the side docs popup carries those instead.
+            if (token.detail && !_isAutoImport(token) && token.detail.length <= INLINE_DETAIL_MAX_CHARS) {
                 _injectInlineSignature($span, token.detail);
             }
             // Beside the list: the signature header + the (possibly long) documentation.

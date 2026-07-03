@@ -218,15 +218,27 @@ exports.startServer = async function startServer(params) {
         return { success: true, message: "already running", serverId };
     }
 
-    // Prefer a server bundled in node_modules/.bin, otherwise fall back to PATH.
+    // Command resolution, in order:
+    // 1. An absolute path to a .js entry (e.g. a user-installed server like intelephense living
+    //    outside src-node) runs on our own node runtime - process.execPath is phnode itself, the
+    //    same spawn-self pattern _npmInstallInFolder and the ESLint service use. This sidesteps
+    //    node_modules/.bin shims entirely (they are sh scripts / .cmd on Windows).
+    // 2. A server bundled in src-node/node_modules/.bin.
+    // 3. Fall back to PATH.
     let commandPath = command;
-    const localBinPath = path.join(NODE_MODULES_BIN, command);
-    if (fs.existsSync(localBinPath)) {
-        commandPath = localBinPath;
+    let spawnArgs = args;
+    if (path.isAbsolute(command) && command.endsWith('.js')) {
+        spawnArgs = [command, ...args];
+        commandPath = process.execPath;
+    } else {
+        const localBinPath = path.join(NODE_MODULES_BIN, command);
+        if (fs.existsSync(localBinPath)) {
+            commandPath = localBinPath;
+        }
     }
 
     return new Promise((resolve, reject) => {
-        const serverProcess = spawn(commandPath, args, { stdio: ['pipe', 'pipe', 'pipe'] });
+        const serverProcess = spawn(commandPath, spawnArgs, { stdio: ['pipe', 'pipe', 'pipe'] });
         const parser = createParser(serverId);
 
         const serverState = {

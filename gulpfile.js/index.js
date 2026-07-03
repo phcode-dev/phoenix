@@ -533,8 +533,8 @@ function _computeCacheManifest(baseDir, filePaths) {
 
     totalSize = Math.round(totalSize/1024); // KB
     console.log("Total size of cache in KB: ", totalSize);
-    if(totalSize > 75000){
-        throw new Error("The total size of the src or dist folder core assets exceeds 75MB." +
+    if(totalSize > 78000){
+        throw new Error("The total size of the src or dist folder core assets exceeds 78MB." +
             "\nPlease review and trim storage. This significantly impacts the distribution size." +
             "\nEither trim down the size or increase the limit after careful review.");
     }
@@ -909,7 +909,8 @@ function _renameExtensionConcatAsExtensionJSInDist(extensionName) {
 }
 
 const minifyableExtensions = ["CloseOthers", "CodeFolding", "DebugCommands", "Git",
-    "HealthData", "JavaScriptCodeHints", "JavaScriptRefactoring", "QuickView", "TypeScriptSupport"];
+    "HealthData", "JavaScriptCodeHints", "JavaScriptRefactoring", "PHPSupport", "QuickView",
+    "TypeScriptSupport"];
 // extensions that nned not be minified either coz they are single file extensions or some other reason.
 const nonMinifyExtensions = ["CSSAtRuleCodeHints", "CSSCodeHints",
     "CSSPseudoSelectorHints", "DarkTheme", "DocCommentHints", "HandlebarsSupport", "HTMLCodeHints",

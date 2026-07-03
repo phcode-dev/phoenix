@@ -80,11 +80,24 @@ define(function (require, exports, module) {
      * Run JSLint on the current document. Reports results to the main UI. Displays
      * a gold star when no errors are found.
      */
+    // html-validate cannot tokenize php blocks ("failed to tokenize <?php ..." parser errors on
+    // every php file). Blank them out with same-length whitespace - newlines preserved - so the
+    // surrounding HTML is linted normally and every reported position stays valid. Handles
+    // <?php ... ?>, <?= ... ?> and an unterminated <? ... at EOF (pure-php files lint clean).
+    function _blankPhpRegions(text) {
+        return text.replace(/<\?(?:php|=)?[\s\S]*?(?:\?>|$)/g, function (block) {
+            return block.replace(/[^\n]/g, " ");
+        });
+    }
+
     async function lintOneFile(text, fullPath) {
         return new Promise((resolve, reject)=>{
             if(configErrorMessage){
                 resolve({ errors: _getLinterConfigFileErrorMsg() });
                 return;
+            }
+            if(/\.(php\d?|phtml?|phps|ctp)$/i.test(fullPath)) {
+                text = _blankPhpRegions(text);
             }
             IndexingWorker.execPeer("htmlLint", {
                 text,
