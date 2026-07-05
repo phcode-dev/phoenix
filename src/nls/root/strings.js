@@ -193,6 +193,7 @@ define({
     "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
     "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
     "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opens in new tab",
+    "LIVE_DEV_HYPERLINK_LEARN_MORE": "Learn more about links",
     "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicate",
     "LIVE_DEV_TOOLBOX_DELETE": "Delete",
     "LIVE_DEV_TOOLBOX_IMAGE_GALLERY": "Image Gallery",
