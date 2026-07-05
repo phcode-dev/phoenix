@@ -373,6 +373,7 @@
         const lpFn = registeredPhoenixCommFns[fnName];
         if(!lpFn) {
             console.error(`PhoenixComm: No such LP function ${fnName}`);
+            return;
         }
         try {
             const response = lpFn(paramObj);
@@ -390,6 +391,12 @@
     let lpCommReady = false;
     const pendingExecPromises = new Map();
     let queuedExecRequests = [];         // array of { fnName, paramObj, fnExecID }
+    // A pending execPhoenixFn is only ever settled by a response message, so if
+    // the editor disconnects mid-call the promise would hang forever (and any
+    // awaiting caller — e.g. a styles-bar session reset — stalls). Reject after
+    // this long instead; it's far beyond any real round-trip, so it only fires
+    // on a genuine hang, never on a slow-but-legitimate operation.
+    const PHOENIX_FN_TIMEOUT_MS = 30000;
 
     /**
      * Sends immediately if ready, else queues for later replay.
@@ -425,7 +432,13 @@
         execPhoenixFn: function (fnName, paramObj) {
             return new Promise((resolve, reject) => {
                 const fnExecID = currentFnExecID++;
-                pendingExecPromises.set(fnExecID, { resolve, reject });
+                const timer = setTimeout(function () {
+                    if (pendingExecPromises.has(fnExecID)) {
+                        pendingExecPromises.delete(fnExecID);
+                        reject(new Error(`execPhoenixFn timed out: ${fnName}`));
+                    }
+                }, PHOENIX_FN_TIMEOUT_MS);
+                pendingExecPromises.set(fnExecID, { resolve, reject, timer });
                 _sendOrQueueExec({
                     execFnName: fnName,
                     paramObj,
@@ -445,9 +458,15 @@
     function _onPhoenixExecResponse(fnName, fnExecID, resolveWith, rejectWith) {
         const pendingPromise = pendingExecPromises.get(fnExecID);
         if(!pendingPromise) {
+            // already settled (e.g. by the timeout) or an unknown id — bail
+            // rather than dereference undefined and throw in the message handler
             console.error(`execPhoenixFn: No response promise found! for ${fnName}: ${fnExecID}`);
+            return;
         }
         pendingExecPromises.delete(fnExecID);
+        if (pendingPromise.timer) {
+            clearTimeout(pendingPromise.timer);
+        }
         if(rejectWith) {
             pendingPromise.reject(rejectWith);
         } else {
