@@ -1,9 +1,11 @@
 const NodeConnector = require("./node-connector");
-const { exec, execFile } = require('child_process');
+const { exec, execFile, spawn } = require('child_process');
 const fs = require('fs');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
+const zlib = require('zlib');
 const { SYSTEM_SETTINGS_DIR } = require('./constants');
 const { lintFile } = require("./ESLint/service");
 const { addDeviceLicense, getDeviceID, isLicensedDevice, removeDeviceLicense } = require("./licence-device");
@@ -18,7 +20,7 @@ async function _importOpen() {
 }
 
 const UTILS_NODE_CONNECTOR = "ph_utils";
-NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
+const utilsConnector = NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
 
 async function getURLContent({url, options}) {
     options = options || {
@@ -147,6 +149,213 @@ async function _npmInstallInFolder({moduleNativeDir}) {
             }
         });
     });
+}
+
+// no dot in the name - EventDispatcher treats anything after a "." as a listener namespace
+const DOWNLOAD_PROGRESS_EVENT = "downloadProgress";
+
+/**
+ * Downloads a URL to a file on disk with node's native fetch (redirects followed), streaming
+ * `downloadProgress` events carrying {url, transferred, total} to the browser side. When an
+ * expected sha256 hex digest is given, a mismatch deletes the file and rejects - so a resolved
+ * promise means the file on disk is exactly the bytes the caller pinned.
+ *
+ * @param {string} url - download URL
+ * @param {string} destFile - platform path to write (parent directories created)
+ * @param {string} [sha256] - expected hex digest of the downloaded bytes
+ * @return {Promise<void>}
+ */
+async function downloadFile({url, destFile, sha256}) {
+    const response = await fetch(url, { redirect: "follow" });
+    if (!response.ok) {
+        throw new Error("Download failed with HTTP " + response.status + " for " + url);
+    }
+    const total = parseInt(response.headers.get("content-length"), 10) || 0;
+    await fsPromise.mkdir(path.dirname(destFile), { recursive: true });
+    const fileHandle = await fsPromise.open(destFile, "w");
+    const hash = crypto.createHash("sha256");
+    let transferred = 0;
+    let lastReported = 0;
+    try {
+        for await (const chunk of response.body) {
+            await fileHandle.write(chunk);
+            hash.update(chunk);
+            transferred += chunk.length;
+            // throttle the websocket chatter: one event per 256KB is plenty for a progress bar
+            if (transferred - lastReported > 262144 || transferred === total) {
+                lastReported = transferred;
+                utilsConnector.triggerPeer(DOWNLOAD_PROGRESS_EVENT, {url, transferred, total});
+            }
+        }
+    } finally {
+        await fileHandle.close();
+    }
+    if (sha256) {
+        const actual = hash.digest("hex");
+        if (actual !== sha256.toLowerCase()) {
+            await fsPromise.unlink(destFile).catch(() => {});
+            throw new Error("sha256 mismatch for " + url + " - expected " + sha256 + " got " + actual);
+        }
+    }
+}
+
+/*
+ * Minimal zip extraction on the node stdlib alone (zlib) - no external dependencies. Written for
+ * installing language-server archives (e.g. Python wheels, which are plain zips): supports the
+ * stored and deflate methods, restores unix executable bits from the central-directory external
+ * attributes, and refuses path traversal. Does NOT support zip64, encryption or other exotic
+ * compression methods - fine for our curated downloads, not a general-purpose unzipper.
+ */
+/* eslint-disable no-bitwise -- zip header parsing is inherently bit-twiddling */
+
+const EOCD_SIG = 0x06054b50;   // end of central directory
+const CEN_SIG = 0x02014b50;    // central directory entry
+const ZIP64_MARKER = 0xffffffff;
+
+function _findEndOfCentralDirectory(buf) {
+    // EOCD is at the very end, possibly followed by a comment of up to 65535 bytes
+    const earliest = Math.max(0, buf.length - 22 - 65535);
+    for (let i = buf.length - 22; i >= earliest; i--) {
+        if (buf.readUInt32LE(i) === EOCD_SIG) {
+            return i;
+        }
+    }
+    throw new Error("Not a zip file: end of central directory not found");
+}
+
+// Extracts a zip held in a Buffer to destDir, creating directories as needed. Entries whose
+// unix mode carries any execute bit are chmod 755 after writing (except on Windows).
+async function _extractZipBuffer(buf, destDir) {
+    const eocd = _findEndOfCentralDirectory(buf);
+    const entryCount = buf.readUInt16LE(eocd + 10);
+    let offset = buf.readUInt32LE(eocd + 16);
+    const destRoot = path.resolve(destDir);
+    await fsPromise.mkdir(destRoot, { recursive: true });
+    for (let i = 0; i < entryCount; i++) {
+        if (offset + 46 > buf.length || buf.readUInt32LE(offset) !== CEN_SIG) {
+            throw new Error("zip central directory corrupt");
+        }
+        const method = buf.readUInt16LE(offset + 10);
+        const compressedSize = buf.readUInt32LE(offset + 20);
+        const nameLen = buf.readUInt16LE(offset + 28);
+        const extraLen = buf.readUInt16LE(offset + 30);
+        const commentLen = buf.readUInt16LE(offset + 32);
+        const externalAttrs = buf.readUInt32LE(offset + 38);
+        const localOffset = buf.readUInt32LE(offset + 42);
+        const name = buf.toString('utf8', offset + 46, offset + 46 + nameLen);
+        offset += 46 + nameLen + extraLen + commentLen;
+
+        if (compressedSize === ZIP64_MARKER || localOffset === ZIP64_MARKER) {
+            throw new Error("zip64 archives are not supported: " + name);
+        }
+        const destPath = path.resolve(destRoot, name);
+        if (destPath !== destRoot && !destPath.startsWith(destRoot + path.sep)) {
+            throw new Error("zip entry escapes destination directory: " + name);
+        }
+        if (name.endsWith("/")) {
+            await fsPromise.mkdir(destPath, { recursive: true });
+            continue;
+        }
+        // data sits after the entry's LOCAL header, whose name/extra lengths can differ from
+        // the central directory's copy - re-read them from the local header itself
+        const locNameLen = buf.readUInt16LE(localOffset + 26);
+        const locExtraLen = buf.readUInt16LE(localOffset + 28);
+        const dataStart = localOffset + 30 + locNameLen + locExtraLen;
+        const raw = buf.subarray(dataStart, dataStart + compressedSize);
+        let data;
+        if (method === 0) {          // stored
+            data = raw;
+        } else if (method === 8) {   // deflate
+            data = zlib.inflateRawSync(raw);
+        } else {
+            throw new Error("unsupported zip compression method " + method + " in " + name);
+        }
+        await fsPromise.mkdir(path.dirname(destPath), { recursive: true });
+        await fsPromise.writeFile(destPath, data);
+        const unixMode = (externalAttrs >>> 16) & 0xFFFF;
+        if ((unixMode & 0o111) && process.platform !== "win32") {
+            await fsPromise.chmod(destPath, 0o755);
+        }
+    }
+}
+/* eslint-enable no-bitwise */
+
+/**
+ * Extracts a zip file into destDir using the stdlib-only extractor above (creates destDir
+ * if missing, restores unix executable bits recorded in the archive). Python wheels are plain
+ * zips, so this also installs those.
+ *
+ * @param {string} zipPath - platform path of the zip file
+ * @param {string} destDir - platform path of the directory to extract into
+ * @return {Promise<void>}
+ */
+async function extractZipFile({zipPath, destDir}) {
+    const buf = await fsPromise.readFile(zipPath);
+    await _extractZipBuffer(buf, destDir);
+}
+
+/**
+ * Runs an executable with the given args, feeding it text on stdin and capturing its output -
+ * a one-shot filter-style invocation (e.g. `ruff format -` for the Python beautifier). No shell
+ * is involved; the command is spawned directly. Resolves with the exit code rather than
+ * rejecting on non-zero, so callers can read stderr for the reason.
+ *
+ * @param {string} command - platform path of the executable (or a PATH command name)
+ * @param {string[]} [args]
+ * @param {string} [stdinText] - written to the process's stdin, which is then closed
+ * @param {string} [cwd] - working directory (e.g. for tools that discover config upward)
+ * @param {number} [timeoutMs] - kill the process and reject after this long
+ * @return {Promise<{code: number, stdout: string, stderr: string}>}
+ */
+async function execFileWithInput({command, args, stdinText, cwd, timeoutMs}) {
+    return new Promise((resolve, reject) => {
+        const child = spawn(command, args || [], { cwd: cwd || undefined, stdio: ['pipe', 'pipe', 'pipe'] });
+        let stdout = "", stderr = "", settled = false;
+        const timer = timeoutMs ? setTimeout(() => {
+            if (!settled) {
+                settled = true;
+                child.kill();
+                reject(new Error("execFileWithInput timed out: " + command));
+            }
+        }, timeoutMs) : null;
+        child.stdout.on('data', (data) => { stdout += data.toString(); });
+        child.stderr.on('data', (data) => { stderr += data.toString(); });
+        child.on('error', (err) => {
+            if (!settled) {
+                settled = true;
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                reject(err);
+            }
+        });
+        child.on('close', (code) => {
+            if (!settled) {
+                settled = true;
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                resolve({ code, stdout, stderr });
+            }
+        });
+        child.stdin.on('error', () => {}); // EPIPE if the process exits before reading stdin
+        child.stdin.write(stdinText || "");
+        child.stdin.end();
+    });
+}
+
+/**
+ * Marks a file as executable (chmod 755). No-op on Windows, where execute permission does not
+ * exist. For binaries whose archives did not carry unix mode bits.
+ *
+ * @param {string} filePath - platform path of the file
+ * @return {Promise<void>}
+ */
+async function setExecutableBits({filePath}) {
+    if (process.platform === "win32") {
+        return;
+    }
+    await fsPromise.chmod(filePath, 0o755);
 }
 
 /**
@@ -296,3 +505,7 @@ exports.getOSUserName = getOSUserName;
 exports.getSystemSettingsDir = getSystemSettingsDir;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;
+exports.downloadFile = downloadFile;
+exports.extractZipFile = extractZipFile;
+exports.setExecutableBits = setExecutableBits;
+exports.execFileWithInput = execFileWithInput;

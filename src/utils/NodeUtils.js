@@ -128,6 +128,110 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("_npmInstallInFolder", {moduleNativeDir});
     }
 
+    const DOWNLOAD_PROGRESS_EVENT = "downloadProgress";
+    let _downloadCounter = 0;
+
+    /**
+     * Downloads a URL to a file on disk, fully node-side (native fetch, streamed to disk).
+     * When an expected sha256 is given, a mismatch deletes the file and rejects - a resolved
+     * promise means the file holds exactly the pinned bytes.
+     * This is only available in the native app.
+     *
+     * @param {string} url - download URL (redirects followed)
+     * @param {string} destFile - platform path to write (parent directories created)
+     * @param {Object} [options]
+     * @param {string} [options.sha256] - expected hex digest of the downloaded bytes
+     * @param {function(number, number)} [options.progress] - called with (transferredBytes,
+     *        totalBytes) as the download advances; totalBytes is 0 if the server sent no length
+     * @return {Promise<void>}
+     */
+    async function downloadFile(url, destFile, options) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("downloadFile not available in browser");
+        }
+        const progress = options && options.progress;
+        _downloadCounter++;
+        const eventName = DOWNLOAD_PROGRESS_EVENT + ".dl" + _downloadCounter;
+        if(progress) {
+            utilsConnector.on(eventName, function (_evt, data) {
+                if(data && data.url === url) {
+                    progress(data.transferred, data.total);
+                }
+            });
+        }
+        try {
+            return await utilsConnector.execPeer("downloadFile", {
+                url: url,
+                destFile: destFile,
+                sha256: (options && options.sha256) || undefined
+            });
+        } finally {
+            if(progress) {
+                utilsConnector.off(eventName);
+            }
+        }
+    }
+
+    /**
+     * Extracts a zip file into a directory node-side (stdlib only, no browser JSZip; creates the
+     * directory if missing, restores unix executable bits recorded in the archive). Python wheels
+     * are plain zips, so this installs those too.
+     * This is only available in the native app.
+     *
+     * @param {string} zipPath - platform path of the zip file
+     * @param {string} destDir - platform path of the directory to extract into
+     * @return {Promise<void>}
+     */
+    async function extractZipFile(zipPath, destDir) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("extractZipFile not available in browser");
+        }
+        return utilsConnector.execPeer("extractZipFile", {zipPath, destDir});
+    }
+
+    /**
+     * Marks a file as executable (chmod 755); no-op on Windows. For binaries whose archives did
+     * not carry unix mode bits.
+     * This is only available in the native app.
+     *
+     * @param {string} filePath - platform path of the file
+     * @return {Promise<void>}
+     */
+    async function setExecutableBits(filePath) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("setExecutableBits not available in browser");
+        }
+        return utilsConnector.execPeer("setExecutableBits", {filePath});
+    }
+
+    /**
+     * Runs an executable with the given args, feeding it text on stdin and capturing its output -
+     * a one-shot filter-style invocation (e.g. `ruff format -` for the Python beautifier). No
+     * shell is involved. Resolves with the exit code rather than rejecting on non-zero, so
+     * callers can read stderr for the reason.
+     * This is only available in the native app.
+     *
+     * @param {string} command - platform path of the executable (or a PATH command name)
+     * @param {string[]} [args]
+     * @param {Object} [options]
+     * @param {string} [options.stdinText] - written to the process's stdin, then closed
+     * @param {string} [options.cwd] - working directory
+     * @param {number} [options.timeoutMs] - kill the process and reject after this long
+     * @return {Promise<{code: number, stdout: string, stderr: string}>}
+     */
+    async function execFileWithInput(command, args, options) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("execFileWithInput not available in browser");
+        }
+        return utilsConnector.execPeer("execFileWithInput", {
+            command: command,
+            args: args || [],
+            stdinText: options && options.stdinText,
+            cwd: options && options.cwd,
+            timeoutMs: options && options.timeoutMs
+        });
+    }
+
     /**
      * Gets an environment variable's value
      * This is only available in the native app
@@ -334,6 +438,10 @@ define(function (require, exports, module) {
     // private apis
     exports._loadNodeExtensionModule = _loadNodeExtensionModule;
     exports._npmInstallInFolder = _npmInstallInFolder;
+    exports.downloadFile = downloadFile;
+    exports.extractZipFile = extractZipFile;
+    exports.setExecutableBits = setExecutableBits;
+    exports.execFileWithInput = execFileWithInput;
 
     // public apis
     exports.fetchURLText = fetchURLText;

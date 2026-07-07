@@ -1052,6 +1052,10 @@ define(function (require, exports, module) {
         var range = edits[0].range;
         return {
             replaceText: edits[0].newText,
+            // the action's human title (e.g. "Generate variable `x`") - shown as the Fix
+            // button's tooltip so the user knows WHAT will be applied before clicking (servers
+            // often offer generators/suppressions, not the rename the message may suggest)
+            title: action.title,
             rangeOffset: {
                 start: editor.indexFromPos({ line: range.start.line, ch: range.start.character }),
                 end: editor.indexFromPos({ line: range.end.line, ch: range.end.character })

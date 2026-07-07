@@ -154,9 +154,36 @@ function handleMessage(serverId, msg) {
 }
 
 /**
+ * Resolve a workspace/configuration item's dotted section (e.g. "python" or "python.pyrefly")
+ * inside a server's registered workspaceConfiguration object. Returns null when any path
+ * segment is missing - the spec's "no config" answer.
+ * @param {?Object} config - the server's workspaceConfiguration (may be undefined)
+ * @param {?string} section - the requested section; no section means the whole object
+ * @return {*}
+ */
+function _lookupConfigSection(config, section) {
+    if (!config) {
+        return null;
+    }
+    if (!section) {
+        return config;
+    }
+    let value = config;
+    for (const part of section.split('.')) {
+        if (value === null || typeof value !== 'object' || !(part in value)) {
+            return null;
+        }
+        value = value[part];
+    }
+    return value;
+}
+
+/**
  * Answer a server-initiated request with a benign, spec-shaped reply. We advertise minimal client
  * capabilities (no dynamic registration, workspace.configuration=false), so servers should rarely
  * send these - this is the safety net that guarantees no server hangs awaiting a reply.
+ * Servers that pull configuration regardless (e.g. pyrefly) get the workspaceConfiguration
+ * object registered at startServer; anything else gets the spec's null "no config".
  * @param {string} serverId - The server identifier (for logging)
  * @param {Object} server - The server state object
  * @param {Object} msg - The incoming JSON-RPC request (method + id)
@@ -168,7 +195,8 @@ function _respondToServerRequest(serverId, server, msg) {
         // Result must be an array matching params.items length; null entries mean "no config".
         response = {
             jsonrpc: '2.0', id: msg.id,
-            result: ((msg.params && msg.params.items) || []).map(() => null)
+            result: ((msg.params && msg.params.items) || []).map(
+                item => _lookupConfigSection(server.workspaceConfiguration, item && item.section))
         };
         break;
     case 'client/registerCapability':
@@ -205,10 +233,13 @@ exports.ping = async function ping() {
  * @param {string} params.command - Command used to spawn the language server
  * @param {string[]} [params.args=['--stdio']] - Arguments for the command
  * @param {string} params.rootUri - Root URI of the workspace
+ * @param {Object} [params.workspaceConfiguration] - settings tree served to the server's
+ *        workspace/configuration pulls (sections resolved by dotted path); pulls answer null
+ *        without it
  * @returns {Promise<Object>} Result with success status and server info
  */
 exports.startServer = async function startServer(params) {
-    const { serverId, command, args = ['--stdio'], rootUri } = params;
+    const { serverId, command, args = ['--stdio'], rootUri, workspaceConfiguration } = params;
 
     if (!serverId || !command) {
         throw new Error('serverId and command are required');
@@ -224,7 +255,9 @@ exports.startServer = async function startServer(params) {
     //    same spawn-self pattern _npmInstallInFolder and the ESLint service use. This sidesteps
     //    node_modules/.bin shims entirely (they are sh scripts / .cmd on Windows).
     // 2. A server bundled in src-node/node_modules/.bin.
-    // 3. Fall back to PATH.
+    // 3. Fall back to spawning the command as given - which also covers an absolute path to a
+    //    native binary (e.g. a user-installed server like pyrefly), spawned as-is, or a PATH
+    //    lookup for a bare command name.
     let commandPath = command;
     let spawnArgs = args;
     if (path.isAbsolute(command) && command.endsWith('.js')) {
@@ -245,6 +278,7 @@ exports.startServer = async function startServer(params) {
             process: serverProcess,
             pending: new Map(),
             rootUri,
+            workspaceConfiguration,
             stderrTail: [] // keep the last few stderr lines to attach to crash reports
         };
 

@@ -704,7 +704,8 @@ define(function (require, exports, module) {
             serverId: client.serverId,
             command: config.command,
             args: config.args || ["--stdio"],
-            rootUri: rootUri
+            rootUri: rootUri,
+            workspaceConfiguration: config.workspaceConfiguration
         });
 
         const initResult = await conn.execPeer("sendRequest", {
@@ -805,6 +806,10 @@ define(function (require, exports, module) {
      * @param {boolean} [config.completionSnippetSupport] - advertise snippet support in the client
      *        completion capability. Only for servers that refuse to offer completion without it
      *        (vscode-json-language-server); snippet placeholders are stripped on insert.
+     * @param {Object} [config.workspaceConfiguration] - settings tree served node-side to the
+     *        server's workspace/configuration pulls, sections resolved by dotted path (e.g.
+     *        pyrefly pulls section "python" despite our capabilities saying we have none, and
+     *        treats the default null answer as "all diagnostics off").
      * @param {function(Array):Array} [config.filterDiagnostics] - server-specific post-filter for
      *        published diagnostics
      * @return {Promise<LanguageClient|null>} the client, or null if it could not be started

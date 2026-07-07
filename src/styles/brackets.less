@@ -2303,12 +2303,13 @@ a, img {
     }
 }
 
-// PHP install prompt bar (PHPSupport) - find-bar-style banner across the editor top.
-.modal-bar .php-install-bar {
+// Language-server install prompt bar (PHPSupport, PythonSupport) - find-bar-style banner
+// across the editor top.
+.modal-bar .lsp-install-bar {
     display: flex;
     align-items: center;
     gap: 12px;
-    .php-install-bar-text {
+    .lsp-install-bar-text {
         flex: none;      // hug the question so the (i) sits right after it
         min-width: 0;
         overflow: hidden;
@@ -2316,7 +2317,7 @@ a, img {
         white-space: nowrap;
     }
     // sits right after the question; margin-right:auto pushes everything else to the right edge
-    .php-install-bar-info {
+    .lsp-install-bar-info {
         flex: none;
         margin-left: -4px;
         margin-right: auto;
@@ -2324,7 +2325,7 @@ a, img {
         cursor: default;
         &:hover { opacity: 0.9; }
     }
-    .php-intel-powered-by {
+    .lsp-install-bar-powered-by {
         flex: none;
         cursor: pointer;
         white-space: nowrap;
@@ -2332,6 +2333,35 @@ a, img {
     button {
         flex: none;
         margin: 0;
+    }
+}
+
+// First-time language-server install dialog (PHPSupport, PythonSupport): terse one-liner with an
+// (i) whose hover card lists the benefits, plus a muted "install later" note.
+.lsp-install-dialog-info {
+    opacity: 0.5;
+    cursor: default;
+    &:hover { opacity: 0.9; }
+}
+.lsp-install-dialog-later {
+    opacity: 0.75;
+    margin-bottom: 0;
+}
+.lsp-install-dialog-credit {
+    margin: 14px 0 0;
+    font-size: 12px;
+    span { opacity: 0.6; }
+    a { cursor: pointer; }
+}
+// download size in the footer, left of the action buttons - read at the moment of decision
+.modal-footer .lsp-install-dialog-size {
+    float: left;
+    opacity: 0.65;
+    font-size: 12px;
+    line-height: 30px;   // optically centers against the .btn row
+    i {
+        font-size: 11px;
+        margin-right: 3px;
     }
 }
 
@@ -4307,6 +4337,11 @@ label input {
         grid-template-columns: max-content 1fr;
         gap: 5px 10px;
         font-size: 13px;
+    }
+    // Rows directly under the title (no .ph-tip-sub between): without this the title hugs the
+    // first row tighter than the rows' own visual rhythm and the card looks top-cramped.
+    .ph-tip-title + .ph-tip-rows {
+        margin-top: 6px;
     }
     .ph-tip-term {
         font-weight: @font-weight-semibold;

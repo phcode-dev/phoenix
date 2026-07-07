@@ -49,6 +49,8 @@ define(function (require, exports, module) {
         NativeApp = brackets.getModule("utils/NativeApp"),
         ModalBar = brackets.getModule("widgets/ModalBar").ModalBar,
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
+        Dialogs = brackets.getModule("widgets/Dialogs"),
+        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         TaskManager = brackets.getModule("features/TaskManager"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         StringUtils = brackets.getModule("utils/StringUtils"),
@@ -58,6 +60,11 @@ define(function (require, exports, module) {
     const PREF_PHP_CODE_INTELLIGENCE = "php.codeIntelligence";
 
     const INTELEPHENSE_HOME_URL = "https://intelephense.com";
+
+    // once-per-lifetime: the first time the install bar shows, a dialog is raised over it so the
+    // offer cannot be missed. Never shown again (even on cancel) - the bar remains the
+    // ongoing affordance.
+    const STATE_INSTALL_DIALOG_SHOWN = "php.installDialogShown";
 
     let _onInstalled = null;        // main.js callback: ({entryPath, upgraded}) => void
     let _inFlight = null;           // single-flight install promise
@@ -218,21 +225,81 @@ define(function (require, exports, module) {
         }
     }
 
+    function _benefitRows() {
+        return [
+            [Strings.PHP_BENEFIT_COMPLETIONS, Strings.PHP_BENEFIT_COMPLETIONS_SUB],
+            [Strings.PHP_BENEFIT_DOCS, Strings.PHP_BENEFIT_DOCS_SUB],
+            [Strings.PHP_BENEFIT_ERRORS, Strings.PHP_BENEFIT_ERRORS_SUB],
+            [Strings.PHP_BENEFIT_NAV, Strings.PHP_BENEFIT_NAV_SUB]
+        ];
+    }
+
     // Compact benefits card for the bar's (i) icon - term -> what it means, one line each.
     function _benefitsTipHtml() {
         const $tip = $("<div>");
         $("<div class='ph-tip-title'>").text(Strings.PHP_INSTALL_TITLE).appendTo($tip);
         const $rows = $("<div class='ph-tip-rows'>").appendTo($tip);
-        [
-            [Strings.PHP_BENEFIT_COMPLETIONS, Strings.PHP_BENEFIT_COMPLETIONS_SUB],
-            [Strings.PHP_BENEFIT_DOCS, Strings.PHP_BENEFIT_DOCS_SUB],
-            [Strings.PHP_BENEFIT_ERRORS, Strings.PHP_BENEFIT_ERRORS_SUB],
-            [Strings.PHP_BENEFIT_NAV, Strings.PHP_BENEFIT_NAV_SUB]
-        ].forEach(function (row) {
+        _benefitRows().forEach(function (row) {
             $("<span class='ph-tip-term'>").text(row[0]).appendTo($rows);
             $("<span class='ph-tip-def'>").text(row[1]).appendTo($rows);
         });
         return $tip.html();
+    }
+
+    // The very first offer ever also raises a dialog over the bar - the bar alone is easy to
+    // miss. One shot per install (lifetime): cancelling leaves only the bar from then on.
+    // Deliberately terse: one line + an (i) whose hover card lists what it provides (same
+    // rich tooltip as the bar's info icon).
+    function _maybeShowFirstTimeDialog() {
+        const stateManager = PreferencesManager.stateManager;
+        if (stateManager.get(STATE_INSTALL_DIALOG_SHOWN)) {
+            return;
+        }
+        stateManager.set(STATE_INSTALL_DIALOG_SHOWN, true);
+        const $body = $("<div>");
+        const $text = $("<p>").appendTo($body);
+        $("<span>").text(Strings.PHP_INSTALL_DIALOG_TEXT).appendTo($text);
+        $text.append("&nbsp;");
+        $("<i class='fa-solid fa-circle-info lsp-install-dialog-info'>").appendTo($text);
+        $("<p class='lsp-install-dialog-later'>").text(Strings.PHP_INSTALL_LATER_INFO).appendTo($body);
+        // quiet colophon crediting (and linking) the server this rides on
+        const $credit = $("<p class='lsp-install-dialog-credit'>").appendTo($body);
+        $("<span>").text(Strings.LSP_INSTALL_POWERED_BY + " ").appendTo($credit);
+        $("<a href='#' data-href='" + INTELEPHENSE_HOME_URL + "'>").text("Intelephense").appendTo($credit);
+        const dialog = Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.PHP_INSTALL_DIALOG_TITLE,
+            $body.html(), [
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                    id: Dialogs.DIALOG_BTN_CANCEL,
+                    text: Strings.PHP_INSTALL_NOT_NOW
+                },
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                    id: Dialogs.DIALOG_BTN_OK,
+                    text: Strings.PHP_INSTALL_ENABLE
+                }
+            ]);
+        const benefitsTip = NotificationUI.attachRichTooltip(
+            dialog.getElement().find(".lsp-install-dialog-info"), _benefitsTipHtml(), { showDelayMs: 150 });
+        // the body went in as serialized HTML, so link handling is delegated on the live dialog
+        dialog.getElement().on("click", "a[data-href]", function (e) {
+            e.preventDefault();
+            NativeApp.openURLInDefaultBrowser($(e.currentTarget).attr("data-href"));
+        });
+        // the download size sits at the decision point - in the footer, left of the buttons -
+        // so the cost is read exactly when the user weighs Install (store-style metadata chip)
+        const $size = $("<span class='lsp-install-dialog-size'>");
+        $("<i class='fa-solid fa-download'>").appendTo($size);
+        $size.append(document.createTextNode(" " + Strings.PHP_INSTALL_DIALOG_SIZE));
+        $size.prependTo(dialog.getElement().find(".modal-footer"));
+        dialog.done(function (id) {
+            benefitsTip.detach();
+            if (id === Dialogs.DIALOG_BTN_OK) {
+                _closePromptBar();
+                installNow();
+            }
+            // on cancel the bar stays - it is the ongoing affordance
+        });
     }
 
     // A find-bar-style banner across the top of the editor - impossible to miss on the file that
@@ -245,31 +312,31 @@ define(function (require, exports, module) {
         }
         // built as detached DOM then serialized (ModalBar takes an HTML string); all click
         // handling is delegated on the live bar root below
-        const $tpl = $("<div class='php-install-bar'>");
-        $("<span class='php-install-bar-text'>").text(Strings.PHP_INSTALL_MESSAGE).appendTo($tpl);
-        $("<i class='fa-solid fa-circle-info php-install-bar-info'>").appendTo($tpl);
+        const $tpl = $("<div class='lsp-install-bar'>");
+        $("<span class='lsp-install-bar-text'>").text(Strings.PHP_INSTALL_MESSAGE).appendTo($tpl);
+        $("<i class='fa-solid fa-circle-info lsp-install-bar-info'>").appendTo($tpl);
         // credit where due (and where premium lives) - not license-required, just right
-        $("<a class='php-intel-powered-by' href='#'>").text(Strings.PHP_POWERED_BY_INTELEPHENSE)
+        $("<a class='lsp-install-bar-powered-by' href='#'>").text(Strings.PHP_POWERED_BY_INTELEPHENSE)
             .appendTo($tpl);
-        $("<button class='btn btn-mini php-install-bar-later'>")
+        $("<button class='btn btn-mini lsp-install-bar-later'>")
             .text(Strings.PHP_INSTALL_NOT_NOW).appendTo($tpl);
-        $("<button class='btn btn-mini primary php-install-bar-install'>")
+        $("<button class='btn btn-mini primary lsp-install-bar-install'>")
             .text(Strings.PHP_INSTALL_ENABLE).appendTo($tpl);
 
         _promptBar = new ModalBar($tpl[0].outerHTML, false);
         const $bar = _promptBar.getRoot();
         _promptBarTip = NotificationUI.attachRichTooltip(
-            $bar.find(".php-install-bar-info"), _benefitsTipHtml(), { showDelayMs: 150 });
-        $bar.on("click", ".php-install-bar-install", function () {
+            $bar.find(".lsp-install-bar-info"), _benefitsTipHtml(), { showDelayMs: 150 });
+        $bar.on("click", ".lsp-install-bar-install", function () {
             _closePromptBar();
             installNow();
         });
-        $bar.on("click", ".php-install-bar-later", function () {
+        $bar.on("click", ".lsp-install-bar-later", function () {
             const projRoot = ProjectManager.getProjectRoot();
             _promptDismissedForProject.add((projRoot && projRoot.fullPath) || "");
             _closePromptBar();
         });
-        $bar.on("click", ".php-intel-powered-by", function (e) {
+        $bar.on("click", ".lsp-install-bar-powered-by", function (e) {
             e.preventDefault();
             NativeApp.openURLInDefaultBrowser(INTELEPHENSE_HOME_URL);
         });
@@ -355,6 +422,7 @@ define(function (require, exports, module) {
         }
         if (phpDocumentActive) {
             _showPromptBar();
+            _maybeShowFirstTimeDialog();
         }
         updatePanelRow(phpDocumentActive);
     }

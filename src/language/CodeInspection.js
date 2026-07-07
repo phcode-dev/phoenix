@@ -564,10 +564,14 @@ define(function (require, exports, module) {
                 const fixID = `${mark.metadata}`;
                 let errorMessageHTML = `<a style="cursor:pointer;color: unset;">${_.escape(mark.message)}</a>`;
                 if(documentFixes.get(fixID)){
+                    // the fix's title (when the provider gave one) tells the user what clicking
+                    // Fix will actually do - e.g. LSP code actions can be generators/suppressions
+                    const fixTitle = _.escape(documentFixes.get(fixID).title || "");
                     $problemView = $(`<div class="code-inspection-quick-view-item">
                         <i title="${Strings.CLICK_VIEW_PROBLEM}" style="margin-right: 3px;cursor: pointer;"
                             class="${_getIconClassForType(mark.type, mark.isFixable)}"></i>
-                        <button class="btn btn-mini fix-problem-btn" style="margin-right: 5px;">${Strings.FIX}</button>
+                        <button class="btn btn-mini fix-problem-btn" style="margin-right: 5px;"
+                            title="${fixTitle}">${Strings.FIX}</button>
                         ${errorMessageHTML}
                         <button class="btn btn-mini copy-qv-error-text-btn" title="${Strings.COPY_ERROR}">
                             <i class="fas fa-copy copy-qv-error-text-btn"></i>
@@ -913,6 +917,7 @@ define(function (require, exports, module) {
      *                type:?Type ,
      *                fix: { // an optional fix, if present will show the fix button
      *                     replaceText: "text to replace the offset given below",
+     *                     title: "optional tooltip describing what the fix does",
      *                     rangeOffset: {
      *                         start: number,
      *                         end: number
@@ -930,6 +935,7 @@ define(function (require, exports, module) {
      * @property {?Type} type - The type of the error. Defaults to `Type.WARNING` if unspecified.
      * @property {?Object} fix - An optional fix object.
      * @property {string} fix.replaceText - The text to replace the error with.
+     * @property {?string} fix.title - Optional tooltip on the Fix button describing what the fix does.
      * @property {Object} fix.rangeOffset - The range within the text to replace.
      * @property {number} fix.rangeOffset.start - The start offset of the range.
      * @property {number} fix.rangeOffset.end - The end offset of the range.

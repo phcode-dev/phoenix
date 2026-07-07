@@ -56,6 +56,72 @@ This is only available in the native app.
 | url | <code>string</code> | 
 | browserName | <code>string</code> | 
 
+<a name="downloadFile"></a>
+
+## downloadFile(url, destFile, [options]) ⇒ <code>Promise.&lt;void&gt;</code>
+Downloads a URL to a file on disk, fully node-side (native fetch, streamed to disk).
+When an expected sha256 is given, a mismatch deletes the file and rejects - a resolved
+promise means the file holds exactly the pinned bytes.
+This is only available in the native app.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| url | <code>string</code> | download URL (redirects followed) |
+| destFile | <code>string</code> | platform path to write (parent directories created) |
+| [options] | <code>Object</code> |  |
+| [options.sha256] | <code>string</code> | expected hex digest of the downloaded bytes |
+| [options.progress] | <code>function</code> | called with (transferredBytes,        totalBytes) as the download advances; totalBytes is 0 if the server sent no length |
+
+<a name="extractZipFile"></a>
+
+## extractZipFile(zipPath, destDir) ⇒ <code>Promise.&lt;void&gt;</code>
+Extracts a zip file into a directory node-side (stdlib only, no browser JSZip; creates the
+directory if missing, restores unix executable bits recorded in the archive). Python wheels
+are plain zips, so this installs those too.
+This is only available in the native app.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| zipPath | <code>string</code> | platform path of the zip file |
+| destDir | <code>string</code> | platform path of the directory to extract into |
+
+<a name="setExecutableBits"></a>
+
+## setExecutableBits(filePath) ⇒ <code>Promise.&lt;void&gt;</code>
+Marks a file as executable (chmod 755); no-op on Windows. For binaries whose archives did
+not carry unix mode bits.
+This is only available in the native app.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| filePath | <code>string</code> | platform path of the file |
+
+<a name="execFileWithInput"></a>
+
+## execFileWithInput(command, [args], [options]) ⇒ <code>Promise.&lt;{code: number, stdout: string, stderr: string}&gt;</code>
+Runs an executable with the given args, feeding it text on stdin and capturing its output -
+a one-shot filter-style invocation (e.g. `ruff format -` for the Python beautifier). No
+shell is involved. Resolves with the exit code rather than rejecting on non-zero, so
+callers can read stderr for the reason.
+This is only available in the native app.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| command | <code>string</code> | platform path of the executable (or a PATH command name) |
+| [args] | <code>Array.&lt;string&gt;</code> |  |
+| [options] | <code>Object</code> |  |
+| [options.stdinText] | <code>string</code> | written to the process's stdin, then closed |
+| [options.cwd] | <code>string</code> | working directory |
+| [options.timeoutMs] | <code>number</code> | kill the process and reject after this long |
+
 <a name="getEnvironmentVariable"></a>
 
 ## getEnvironmentVariable(varName) ⇒ <code>Promise.&lt;string&gt;</code>

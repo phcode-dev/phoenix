@@ -1,0 +1,9 @@
+{
+    "name": "python-support",
+    "title": "Python Language Support",
+    "description": "Provides Python language intelligence (completion, hover, signature help, jump-to-definition, find references and diagnostics) via the Pyrefly language server, installed on demand with user consent. Desktop only.",
+    "version": "1.0.0",
+    "engines": {
+        "brackets": ">=2.0.0"
+    }
+}
