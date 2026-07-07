@@ -339,7 +339,13 @@
 
     "audio": {
         "name": "Audio",
-        "fileExtensions": ["mp3", "wav", "aif", "aiff", "ogg"],
+        "fileExtensions": ["mp3", "wav", "aif", "aiff", "ogg", "m4a", "flac", "aac"],
+        "isBinary": true
+    },
+
+    "video": {
+        "name": "Video",
+        "fileExtensions": ["mp4", "m4v", "webm", "ogv", "mov", "mkv"],
         "isBinary": true
     },
 
@@ -349,7 +355,7 @@
             "a", "ai", "avi", "bin", "cab", "com", "db", "dll", "dmg",
             "doc", "docx", "dot", "dotx", "dsym", "dylib", "egg", "epub", "eot",
             "exe", "flv", "gz", "gzip", "htmz", "htmlz", "ipch", "iso", "jar",
-            "jsz", "lib", "mpeg", "mpg", "mp4", "msi", "node", "o", "obj", "odc",
+            "jsz", "lib", "mpeg", "mpg", "msi", "node", "o", "obj", "odc",
             "odb", "odf", "odg", "odp", "ods", "odt", "otf", "pak", "pdb", "pdf",
             "pdi", "ppt", "pptx", "psd", "rar", "sdf", "so", "sqlite", "suo", "svgz",
             "swf", "tar", "tif", "tiff", "ttf", "woff", "xls", "xlsx", "zip", "xd"

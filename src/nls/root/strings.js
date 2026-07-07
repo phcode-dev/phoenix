@@ -1470,6 +1470,8 @@ define({
 
     // Custom Viewers
     "IMAGE_VIEWER_LARGEST_ICON": "largest",
+    "MEDIA_VIEWER_FILE_TOO_LARGE": "Preview is limited to files under {0}.",
+    "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "This file cannot be played. The format or codec may not be supported.",
 
     /**
      * Unit names

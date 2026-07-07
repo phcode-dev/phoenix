@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeAll, beforeEach, afterEach, it, expect, awaitsForDone */
+/*global describe, beforeAll, beforeEach, afterEach, it, expect, awaitsForDone, awaitsFor */
 
 define(function (require, exports, module) {
 
@@ -99,6 +99,115 @@ define(function (require, exports, module) {
                 expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE).name).toEqual("events.jpg");
                 expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toEqual(1);
                 expect(MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, testPath + "/images/events.jpg")).not.toEqual(-1);
+            });
+        });
+        describe("Opening and closing Videos", function () {
+            it("should open a video with the media viewer", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.mp4"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE).name).toEqual("small.mp4");
+                // should not have been added to the working set
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toEqual(0);
+                // a media view with a <video> element should have been created
+                expect(_$(".media-view").length).toEqual(1);
+                expect(_$(".media-view video.media-preview").length).toEqual(1);
+            });
+            it("should load video metadata and show dimensions, duration and size", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.mp4"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                const videoEl = _$(".media-view video.media-preview")[0];
+                await awaitsFor(function () {
+                    return videoEl.readyState >= 1; // HAVE_METADATA
+                }, "video metadata to load", 10000);
+                expect(videoEl.videoWidth).toEqual(320);
+                expect(videoEl.videoHeight).toEqual(240);
+                await awaitsFor(function () {
+                    return _$(".media-view .media-data").text().length > 0;
+                }, "video header data to render", 10000);
+                const dataText = _$(".media-view .media-data").text();
+                expect(dataText).toContain("320");
+                expect(dataText).toContain("240");
+                expect(_$(".media-view .media-path").text()).toContain("small.mp4");
+            });
+            it("should open a webm video", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.webm"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE).name).toEqual("small.webm");
+                const videoEl = _$(".media-view video.media-preview")[0];
+                await awaitsFor(function () {
+                    return videoEl.readyState >= 1; // HAVE_METADATA
+                }, "webm video metadata to load", 10000);
+                expect(videoEl.videoWidth).toEqual(320);
+            });
+            it("should close a video", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.mp4"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                MainViewManager._close(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.mp4"));
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE)).toEqual(null);
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toEqual(0);
+                // the media view should have been destroyed
+                expect(_$(".media-view").length).toEqual(0);
+            });
+            it("should add a video to the working set", async function () {
+                promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,  { fullPath: testPath + "/videos/small.mp4" });
+                await awaitsForDone(promise, Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN);
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE).name).toEqual("small.mp4");
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toEqual(1);
+                expect(MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, testPath + "/videos/small.mp4")).not.toEqual(-1);
+            });
+        });
+        describe("Opening and closing Audio", function () {
+            it("should open an audio file with the media viewer using an <audio> element", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/audio/small.mp3"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE).name).toEqual("small.mp3");
+                // should not have been added to the working set
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toEqual(0);
+                // a media view with an <audio> element (not <video>) should have been created
+                expect(_$(".media-view").length).toEqual(1);
+                expect(_$(".media-view audio.media-preview").length).toEqual(1);
+                expect(_$(".media-view video.media-preview").length).toEqual(0);
+            });
+            it("should load audio metadata and show duration and size", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/audio/small.mp3"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                const audioEl = _$(".media-view audio.media-preview")[0];
+                await awaitsFor(function () {
+                    return audioEl.readyState >= 1; // HAVE_METADATA
+                }, "audio metadata to load", 10000);
+                expect(audioEl.duration).toBeGreaterThan(0);
+                await awaitsFor(function () {
+                    return _$(".media-view .media-data").text().length > 0;
+                }, "audio header data to render", 10000);
+                const dataText = _$(".media-view .media-data").text();
+                expect(dataText).toContain("0:01");
+                expect(_$(".media-view .media-path").text()).toContain("small.mp3");
+            });
+            it("should open a wav audio file", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/audio/small.wav"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE).name).toEqual("small.wav");
+                const audioEl = _$(".media-view audio.media-preview")[0];
+                await awaitsFor(function () {
+                    return audioEl.readyState >= 1; // HAVE_METADATA
+                }, "wav audio metadata to load", 10000);
+                expect(audioEl.duration).toBeGreaterThan(0);
+            });
+            it("should close an audio file", async function () {
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/audio/small.mp3"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                MainViewManager._close(MainViewManager.ACTIVE_PANE, getFileObject("/audio/small.mp3"));
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE)).toEqual(null);
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toEqual(0);
+                // the media view should have been destroyed
+                expect(_$(".media-view").length).toEqual(0);
+            });
+            it("should add an audio file to the working set", async function () {
+                promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,  { fullPath: testPath + "/audio/small.mp3" });
+                await awaitsForDone(promise, Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN);
+                expect(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE).name).toEqual("small.mp3");
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toEqual(1);
+                expect(MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, testPath + "/audio/small.mp3")).not.toEqual(-1);
             });
         });
         describe("Managing Image Views", function () {

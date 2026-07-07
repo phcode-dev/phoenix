@@ -1,0 +1,17 @@
+<div class="media-view">
+    <div class="media-centering">
+        <div class="media-header">
+            <div class="media-data"></div>
+            <div class="media-path"></div>
+        </div>
+        <div class="media">
+            {{#isAudio}}
+            <audio class="media-preview" controls></audio>
+            {{/isAudio}}
+            {{^isAudio}}
+            <video class="media-preview" controls></video>
+            {{/isAudio}}
+            <div class="media-error" style="display: none;"></div>
+        </div>
+    </div>
+</div>
