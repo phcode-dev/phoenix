@@ -597,7 +597,23 @@ define(function (require, exports, module) {
                     $resizeShield.off("mousedown");
                     $resizeShield.remove();
                     animationRequest = null;
-                    toggle($element);
+
+                    // The shield covers the whole window, so only treat this press as
+                    // the second click of a double click if it landed on/near the
+                    // resizer; stray clicks elsewhere just dismiss the shield.
+                    const buffer = 8;
+                    const resizerOffset = $resizer.offset();
+                    let nearResizer;
+                    if (direction === DIRECTION_HORIZONTAL) {
+                        nearResizer = e.pageX >= resizerOffset.left - buffer &&
+                            e.pageX <= resizerOffset.left + $resizer.outerWidth() + buffer;
+                    } else {
+                        nearResizer = e.pageY >= resizerOffset.top - buffer &&
+                            e.pageY <= resizerOffset.top + $resizer.outerHeight() + buffer;
+                    }
+                    if (nearResizer) {
+                        toggle($element);
+                    }
                 });
             }
 
@@ -616,18 +632,25 @@ define(function (require, exports, module) {
 
                     isResizing = false;
 
-                    if (resizeStarted) {
-                        $element.trigger(EVENT_PANEL_RESIZE_END, [elementSize]);
-                    }
-
-                    // We wait 300ms to remove the resizer container to capture a mousedown
-                    // on the container that would account for double click
-                    window.setTimeout(function () {
+                    function removeShield() {
                         $(window.document).off("mousemove", onMouseMove);
                         $resizeShield.off("mousedown");
                         $resizeShield.remove();
                         animationRequest = null;
-                    }, 300);
+                    }
+
+                    if (resizeStarted) {
+                        $element.trigger(EVENT_PANEL_RESIZE_END, [elementSize]);
+                        // A double click never includes a drag between its two presses,
+                        // so after a real resize the shield isn't needed to catch a
+                        // second click — remove it right away so it doesn't swallow
+                        // clicks elsewhere in the window.
+                        removeShield();
+                    } else {
+                        // We wait 300ms to remove the resizer container to capture a mousedown
+                        // on the container that would account for double click
+                        window.setTimeout(removeShield, 300);
+                    }
                 }
             }
 
