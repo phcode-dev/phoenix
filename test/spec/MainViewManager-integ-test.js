@@ -1153,6 +1153,9 @@ define(function (require, exports, module) {
                 WorkspaceManager.destroyBottomPanel("focusTestPanel");
             });
 
+            // app-drawer-button is commented out in index.html for now,
+            // uncomment this test when it comes back
+            /*
             it("should app-drawer-button toggle the default panel", async function () {
                 panel1.hide();
                 panel2.hide();
@@ -1170,6 +1173,7 @@ define(function (require, exports, module) {
                 _$("#app-drawer-button").click();
                 expect(defaultPanel.isVisible()).toBeFalse();
             });
+            */
 
             it("should escape collapse bottom panel regardless of canBeShown", async function () {
                 panel1.show();
@@ -1416,6 +1420,9 @@ define(function (require, exports, module) {
             });
         });
 
+        // app-drawer-button is commented out in index.html for now,
+        // uncomment this describe when it comes back
+        /*
         describe("Quick Access panel (app drawer button)", function () {
             const DEFAULT_PANEL_ID = "workspace.defaultPanel";
 
@@ -1485,5 +1492,6 @@ define(function (require, exports, module) {
                 await CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
             });
         });
+        */
     });
 });
