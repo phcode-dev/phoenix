@@ -347,19 +347,24 @@ define(function (require, exports, module) {
             _$dirtydot.css("visibility", "hidden");
         }
 
-        // Set _$titleWrapper to a fixed width just large enough to accommodate _$title. This seems equivalent to what
-        // the browser would do automatically, but the CSS trick we use for layout requires _$titleWrapper to have a
-        // fixed width set on it (see the "#titlebar" CSS rule for details).
-        _$titleWrapper.css("width", "");
-        var newWidth = _$title.width();
-        _$titleWrapper.css("width", newWidth);
+        if (!Phoenix.isNativeApp) {
+            // In the native app the title-wrapper is display:none (the OS window titlebar
+            // shows the file name), so none of this layout work applies there.
 
-        // Changing the width of the title may cause the toolbar layout to change height, which needs to resize the
-        // editor beneath it (toolbar changing height due to window resize is already caught by EditorManager).
-        var newToolbarHeight = _$titleContainerToolbar.height();
-        if (_lastToolbarHeight !== newToolbarHeight) {
-            _lastToolbarHeight = newToolbarHeight;
-            WorkspaceManager.recomputeLayout();
+            // Set _$titleWrapper to a fixed width just large enough to accommodate _$title. This seems equivalent
+            // to what the browser would do automatically, but the CSS trick we use for layout requires
+            // _$titleWrapper to have a fixed width set on it (see the "#titlebar" CSS rule for details).
+            _$titleWrapper.css("width", "");
+            const newWidth = _$title.width();
+            _$titleWrapper.css("width", newWidth);
+
+            // Changing the width of the title may cause the toolbar layout to change height, which needs to resize
+            // the editor beneath it (toolbar changing height due to window resize is already caught by EditorManager).
+            const newToolbarHeight = _$titleContainerToolbar.height();
+            if (_lastToolbarHeight !== newToolbarHeight) {
+                _lastToolbarHeight = newToolbarHeight;
+                WorkspaceManager.recomputeLayout();
+            }
         }
 
 
