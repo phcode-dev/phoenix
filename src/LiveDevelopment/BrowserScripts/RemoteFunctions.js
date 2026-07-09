@@ -72,6 +72,9 @@ function RemoteFunctions(config = {}) {
         // called when an item is selected from the more options dropdown
         "handleDropdownClick",
         "updateContent", // in-place content refresh for control box etc. after drag
+        // a DOM edit changed the selected element's attributes or rebuilt its node —
+        // refresh shown UI in place; must never resurrect dismissed UI
+        "onSelectedElementMutated",
         "reRegisterEventHandlers",
         "handleClick", // handle click on an icon in the tool box.
         // when escape key is presses in the editor, we may need to dismiss the live edit boxes.
@@ -1201,6 +1204,7 @@ function RemoteFunctions(config = {}) {
             targetElement,
             childElement,
             self = this;
+        let selectedElementMutated = false;
 
         this.rememberedNodes = {};
 
@@ -1235,9 +1239,15 @@ function RemoteFunctions(config = {}) {
             case "attrChange":
             case "attrAdd":
                 targetElement.setAttribute(edit.attribute, self._parseEntities(edit.value));
+                if (targetElement === previouslySelectedElement) {
+                    selectedElementMutated = true;
+                }
                 break;
             case "attrDelete":
                 targetElement.removeAttribute(edit.attribute);
+                if (targetElement === previouslySelectedElement) {
+                    selectedElementMutated = true;
+                }
                 break;
             case "elementDelete":
                 if (targetElement.remove) {
@@ -1372,8 +1382,21 @@ function RemoteFunctions(config = {}) {
                         SHARED_STATE._editorBox.element = freshElement;
                     }
                     redrawEverything();
+                    selectedElementMutated = true;
                 }
             }
+        }
+
+        // neither path above refreshes selection-anchored UI CONTENT (the paths
+        // only reposition / re-point element refs), so content rendered at
+        // selection time — e.g. the control box's tag/#id/.classes line — would
+        // stay stale after the selected element's markup changed
+        if (selectedElementMutated && previouslySelectedElement && previouslySelectedElement.isConnected) {
+            getAllToolHandlers().forEach(function (handler) {
+                if (handler.onSelectedElementMutated) {
+                    handler.onSelectedElementMutated(previouslySelectedElement);
+                }
+            });
         }
     };
 
