@@ -148,6 +148,35 @@ define(function (require, exports, module) {
                 expect(isDisplayed).toBeFalse();
 
             });
+
+            it("should set a fixed title wrapper width in browser windows", async function () {
+                if(Phoenix.isNativeApp) {
+                    return;
+                }
+                const openPromise = MainViewManager._open(MainViewManager.FIRST_PANE,
+                    FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(openPromise, "MainViewManager.doOpen");
+
+                const wrapper = testWindow.$('.title-wrapper')[0];
+                await awaitsFor(function () {
+                    return parseFloat(wrapper.style.width) > 0;
+                }, "title wrapper to get a fixed width", 2000);
+            });
+
+            it("should not set a title wrapper width in tauri windows", async function () {
+                if(!Phoenix.isNativeApp) {
+                    return;
+                }
+                const openPromise = MainViewManager._open(MainViewManager.FIRST_PANE,
+                    FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(openPromise, "MainViewManager.doOpen");
+
+                // In native apps, the file name is shown in the OS window title bar
+                // the in-app wrapper for file name stays hidden and _updateTitle skips its layout work...
+                const $wrapper = testWindow.$('.title-wrapper');
+                expect($wrapper.css("display")).toBe("none");
+                expect($wrapper[0].style.width).toBe("");
+            });
         });
 
         describe("opening and closing files", function () {
