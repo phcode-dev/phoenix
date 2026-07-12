@@ -15,6 +15,7 @@ define(function (require, exports) {
         Menus              = brackets.getModule("command/Menus"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         FindInFiles        = brackets.getModule("search/FindInFiles"),
+        MainViewManager    = brackets.getModule("view/MainViewManager"),
         WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         StringUtils        = brackets.getModule("utils/StringUtils"),
@@ -1007,6 +1008,49 @@ define(function (require, exports) {
             });
     }
 
+    function openAllChangedFiles() {
+        return Git.status().then(function (files) {
+            files = _.filter(files, function (file) {
+                if (!shouldShow(file)) {
+                    return false;
+                }
+                // deleted files no longer exist on disk, so there is nothing to open
+                if (file.status.indexOf(Git.FILE_STATUS.DELETED) !== -1) {
+                    return false;
+                }
+                // respect the "show untracked files" panel toggle
+                if (!showingUntracked && file.status.indexOf(Git.FILE_STATUS.UNTRACKED) !== -1) {
+                    return false;
+                }
+                return true;
+            });
+
+            if (files.length === 0) {
+                return;
+            }
+
+            const currentGitRoot = Preferences.get("currentGitRoot");
+            // addListToWorkingSet ignores files already present in any pane, so this is safe
+            // to run repeatedly or with some of the files already open
+            const fileList = files.map(function (file) {
+                return FileSystem.getFileForPath(currentGitRoot + file.file);
+            });
+            MainViewManager.addListToWorkingSet(MainViewManager.ACTIVE_PANE, fileList);
+
+            // if the user is already viewing one of the changed files, we don't switch the file then...
+            // if user is viewing a un-changed file, then we switch to the first changed file
+            const currentPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
+            const viewingChangedFile = _.any(fileList, function (file) {
+                return file.fullPath === currentPath;
+            });
+            if (!viewingChangedFile) {
+                CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[0].fullPath });
+            }
+        }).catch(function (err) {
+            ErrorHandler.showError(err, Strings.ERROR_OPENING_CHANGED_FILES);
+        });
+    }
+
     var lastCheckOneClicked = null;
 
     function attachDefaultTableHandlers() {
@@ -1345,6 +1389,8 @@ define(function (require, exports) {
         CommandManager.register(Strings.VIEW_AUTHORS_SELECTION, Constants.CMD_GIT_AUTHORS_OF_SELECTION, handleAuthorsSelection);
         CommandManager.register(Strings.VIEW_AUTHORS_FILE, Constants.CMD_GIT_AUTHORS_OF_FILE, handleAuthorsFile);
         CommandManager.register(Strings.HIDE_UNTRACKED, Constants.CMD_GIT_TOGGLE_UNTRACKED, handleToggleUntracked);
+        CommandManager.register(Strings.CMD_OPEN_CHANGED_FILES,
+            Constants.CMD_GIT_OPEN_CHANGED_FILES, openAllChangedFiles);
         CommandManager.register(Strings.GIT_INIT, Constants.CMD_GIT_INIT, EventEmitter.getEmitter(Events.HANDLE_GIT_INIT));
         CommandManager.register(Strings.GIT_CLONE, Constants.CMD_GIT_CLONE, EventEmitter.getEmitter(Events.HANDLE_GIT_CLONE));
         CommandManager.register(Strings.GIT_SHOW_HISTORY, Constants.CMD_GIT_HISTORY_GLOBAL, ()=>{

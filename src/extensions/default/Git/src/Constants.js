@@ -36,6 +36,7 @@ define(function (require, exports) {
     exports.CMD_GIT_CLONE_WITH_URL = Commands.CMD_GIT_CLONE_WITH_URL;
     exports.CMD_GIT_SETTINGS_COMMAND_ID = Commands.CMD_GIT_SETTINGS_COMMAND_ID;
     exports.CMD_GIT_CLOSE_UNMODIFIED = Commands.CMD_GIT_CLOSE_UNMODIFIED;
+    exports.CMD_GIT_OPEN_CHANGED_FILES = Commands.CMD_GIT_OPEN_CHANGED_FILES;
     exports.CMD_GIT_CHECKOUT = Commands.CMD_GIT_CHECKOUT;
     exports.CMD_GIT_RESET_HARD = Commands.CMD_GIT_RESET_HARD;
     exports.CMD_GIT_RESET_SOFT = Commands.CMD_GIT_RESET_SOFT;
