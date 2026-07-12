@@ -241,6 +241,7 @@ define(function (require, exports) {
             Constants.CMD_GIT_RESET_SOFT,
 
             // "More options" context menu commands
+            Constants.CMD_GIT_OPEN_CHANGED_FILES,
             Constants.CMD_GIT_DISCARD_ALL_CHANGES,
             Constants.CMD_GIT_UNDO_LAST_COMMIT,
             Constants.CMD_GIT_TOGGLE_UNTRACKED,
@@ -322,6 +323,8 @@ define(function (require, exports) {
         // create context menu for git more options
         const optionsCmenu = Menus.registerContextMenu(Constants.GIT_PANEL_OPTIONS_CMENU);
         Menus.ContextMenu.assignContextMenuToSelector(".git-more-options-btn", optionsCmenu);
+        optionsCmenu.addMenuItem(Constants.CMD_GIT_OPEN_CHANGED_FILES);
+        optionsCmenu.addMenuDivider();
         optionsCmenu.addMenuItem(Constants.CMD_GIT_DISCARD_ALL_CHANGES);
         optionsCmenu.addMenuItem(Constants.CMD_GIT_UNDO_LAST_COMMIT);
         optionsCmenu.addMenuDivider();
@@ -398,6 +401,7 @@ define(function (require, exports) {
         Utils.enableCommand(Constants.CMD_GIT_GOTO_NEXT_CHANGE, enabled);
         Utils.enableCommand(Constants.CMD_GIT_GOTO_PREVIOUS_CHANGE, enabled);
         Utils.enableCommand(Constants.CMD_GIT_CLOSE_UNMODIFIED, enabled);
+        Utils.enableCommand(Constants.CMD_GIT_OPEN_CHANGED_FILES, enabled);
 
         Utils.enableCommand(Constants.CMD_GIT_AUTHORS_OF_SELECTION, enabled);
         Utils.enableCommand(Constants.CMD_GIT_AUTHORS_OF_FILE, enabled);

@@ -537,6 +537,9 @@ define(function (require, exports, module) {
     /** Closes unmodified files */
     exports.CMD_GIT_CLOSE_UNMODIFIED = "git-close-unmodified-files";
 
+    /** Opens all modified/untracked files */
+    exports.CMD_GIT_OPEN_CHANGED_FILES = "git-open-changed-files";
+
     /** Checks out a branch or commit */
     exports.CMD_GIT_CHECKOUT = "git-checkout";
 
