@@ -303,6 +303,7 @@ define(function (require, exports) {
     function attachCloseEvents() {
         $("html").on("click", closeDropdown);
         $("#project-files-container").on("scroll", closeDropdown);
+        $("#git-panel .table-container").on("scroll", closeDropdown);
         $("#titlebar .nav").on("click", closeDropdown);
 
         currentEditor = EditorManager.getCurrentFullEditor();
@@ -316,6 +317,7 @@ define(function (require, exports) {
     function detachCloseEvents() {
         $("html").off("click", closeDropdown);
         $("#project-files-container").off("scroll", closeDropdown);
+        $("#git-panel .table-container").off("scroll", closeDropdown);
         $("#titlebar .nav").off("click", closeDropdown);
 
         if (currentEditor) {
@@ -327,8 +329,59 @@ define(function (require, exports) {
         $dropdown = null;
     }
 
+    function _positionDropdownBelow($toggle) {
+        // two margins to account for the preceding project dropdown as well
+        const marginLeft = (parseInt($toggle.css("margin-left"), 10) * 2) || 0;
+
+        const toggleOffset = $toggle.offset();
+
+        $dropdown
+            .css({
+                left: toggleOffset.left - marginLeft + 3,
+                top: toggleOffset.top + $toggle.outerHeight() - 3
+            })
+            .appendTo($("body"));
+
+        // fix so it doesn't overflow the screen
+        const maxHeight = $dropdown.parent().height(),
+            height = $dropdown.height(),
+            topOffset = $dropdown.position().top;
+        if (height + topOffset >= maxHeight - 10) {
+            $dropdown.css("bottom", "10px");
+        }
+    }
+
+    function _positionDropdownAbove($anchor) {
+        const anchorOffset = $anchor.offset();
+
+        $dropdown
+            .css({
+                left: anchorOffset.left,
+                // the .dropdown-menu class positions with "top: 100%", it has to be
+                // explicitly overridden or the bottom positioning below is over-constrained
+                top: "auto",
+                bottom: $(window).height() - anchorOffset.top + 3,
+                // grow upwards from the anchor instead of the default top-left origin
+                "transform-origin": "0 100%"
+            })
+            .appendTo($("body"));
+
+        // fix so it doesn't overflow the screen
+        if ($dropdown.height() >= anchorOffset.top - 10) {
+            $dropdown.css("top", "10px");
+        }
+
+        const rightOverflow = $dropdown.offset().left + $dropdown.outerWidth() - ($(window).width() - 10);
+        if (rightOverflow > 0) {
+            $dropdown.css("left", anchorOffset.left - rightOverflow);
+        }
+    }
+
     function toggleDropdown(e) {
         e.stopPropagation();
+        // currentTarget is only valid while the event is being dispatched,
+        // so it has to be captured before the async branch listing below
+        const $anchor = $(e.currentTarget);
 
         // If the dropdown is already visible, close it
         if ($dropdown) {
@@ -349,25 +402,11 @@ define(function (require, exports) {
             }, []);
 
             $dropdown = $(renderList(branches));
-            const $toggle = $("#git-branch-dropdown-toggle");
-            // two margins to account for the preceding project dropdown as well
-            const marginLeft = (parseInt($toggle.css("margin-left"), 10) * 2) || 0;
-
-            const toggleOffset = $toggle.offset();
-
-            $dropdown
-                .css({
-                    left: toggleOffset.left - marginLeft + 3,
-                    top: toggleOffset.top + $toggle.outerHeight() - 3
-                })
-                .appendTo($("body"));
-
-            // fix so it doesn't overflow the screen
-            var maxHeight = $dropdown.parent().height(),
-                height = $dropdown.height(),
-                topOffset = $dropdown.position().top;
-            if (height + topOffset >= maxHeight - 10) {
-                $dropdown.css("bottom", "10px");
+            if ($anchor.closest("#git-panel").length) {
+                // the git panel sits at the bottom of the screen, open upwards from there
+                _positionDropdownAbove($anchor);
+            } else {
+                _positionDropdownBelow($("#git-branch-dropdown-toggle"));
             }
 
             PopUpManager.addPopUp($dropdown, detachCloseEvents, true, {closeCurrentPopups: true});
@@ -442,6 +481,7 @@ define(function (require, exports) {
                     .off("click")
                     .text("not a git repo");
                 Panel.setBranchName("not a git repo", "");
+                $("#git-panel .git-panel-branch").removeClass("clickable").off("click");
                 Panel.disable("not-repo");
 
                 return;
@@ -485,6 +525,10 @@ define(function (require, exports) {
                         .off("click")
                         .on("click", toggleDropdown);
                     Panel.setBranchName(branchName, tooltip);
+                    $("#git-panel .git-panel-branch")
+                        .addClass("clickable")
+                        .off("click")
+                        .on("click", toggleDropdown);
                     Panel.enable();
 
                 }).catch(function (err) {
@@ -497,6 +541,7 @@ define(function (require, exports) {
                         .off("click")
                         .text("no branch");
                     Panel.setBranchName("no branch", "");
+                    $("#git-panel .git-panel-branch").removeClass("clickable").off("click");
                     Panel.enable();
                 } else {
                     throw ex;
