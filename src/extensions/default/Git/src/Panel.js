@@ -1271,6 +1271,7 @@ define(function (require, exports) {
         const mainToolbarWidth = $mainToolbar.width();
         let overFlowWidth = 540;
         const breakpoints = [
+            { width: 600, className: "hide-when-medium" },
             { width: overFlowWidth, className: "hide-when-small" },
             { width: 400, className: "hide-when-x-small" }
         ];
