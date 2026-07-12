@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, awaitsFor, awaitsForDone, jsPromise */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, jsPromise */
 
 define(function (require, exports, module) {
 
@@ -584,6 +584,112 @@ define(function (require, exports, module) {
                 SidebarView.resize(380);
                 const prefs = PreferencesManager.getViewState("sidebar");
                 expect(prefs.size).toBe(380);
+            });
+        });
+
+        describe("Sidebar resizer double-click and drag shield", function () {
+
+            function fireMouse(target, type, x, y) {
+                const ev = new testWindow.MouseEvent(type, {
+                    bubbles: true,
+                    cancelable: true,
+                    view: testWindow,
+                    clientX: x,
+                    clientY: y,
+                    button: 0,
+                    buttons: type === "mouseup" ? 0 : 1
+                });
+                target.dispatchEvent(ev);
+            }
+
+            function awaitFrames(n) {
+                return new Promise(function (resolve) {
+                    let remaining = n;
+                    function tick() {
+                        remaining -= 1;
+                        if (remaining <= 0) {
+                            resolve();
+                            return;
+                        }
+                        testWindow.requestAnimationFrame(tick);
+                    }
+                    testWindow.requestAnimationFrame(tick);
+                });
+            }
+
+            function resizerCenter() {
+                const rect = _$("#sidebar > .horz-resizer")[0].getBoundingClientRect();
+                return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+            }
+
+            beforeEach(async function () {
+                SidebarView.show();
+                _$(".resizing-container").remove();
+                SidebarView.resize(300);
+                await awaitsFor(function () {
+                    return _$("#sidebar")[0].offsetWidth === 300;
+                }, "sidebar to settle at baseline 300px", 2000);
+            });
+
+            afterEach(function () {
+                _$(".resizing-container").remove();
+                SidebarView.show();
+            });
+
+            it("should collapse the sidebar on resizer double click", function () {
+                const center = resizerCenter();
+                const $resizer = _$("#sidebar > .horz-resizer");
+
+                fireMouse($resizer[0], "mousedown", center.x, center.y);
+                fireMouse(testWindow.document, "mouseup", center.x, center.y);
+                const $shield = _$(".resizing-container");
+                expect($shield.length).toBe(1);
+
+                fireMouse($shield[0], "mousedown", center.x, center.y);
+                expect(SidebarView.isVisible()).toBe(false);
+            });
+
+            it("should not collapse the sidebar when the second press lands away from the resizer", function () {
+                const center = resizerCenter();
+                const $resizer = _$("#sidebar > .horz-resizer");
+
+                fireMouse($resizer[0], "mousedown", center.x, center.y);
+                fireMouse(testWindow.document, "mouseup", center.x, center.y);
+                const $shield = _$(".resizing-container");
+                expect($shield.length).toBe(1);
+
+                fireMouse($shield[0], "mousedown", center.x + 200, center.y);
+                expect(SidebarView.isVisible()).toBe(true);
+                expect(_$(".resizing-container").length).toBe(0);
+            });
+
+            it("should remove the shield right after a drag so a quick editor click cannot collapse", async function () {
+                const center = resizerCenter();
+                const $resizer = _$("#sidebar > .horz-resizer");
+
+                fireMouse($resizer[0], "mousedown", center.x, center.y);
+                await awaitFrames(1);
+                for (let i = 1; i <= 5; i++) {
+                    fireMouse(testWindow.document, "mousemove", center.x + i * 10, center.y);
+                    await awaitFrames(1);
+                }
+                fireMouse(testWindow.document, "mouseup", center.x + 50, center.y);
+                await awaitFrames(1);
+
+                const widthAfterDrag = _$("#sidebar")[0].offsetWidth;
+                expect(widthAfterDrag).toBeGreaterThan(300);
+
+                expect(_$(".resizing-container").length).toBe(0);
+
+                const edRect = _$("#editor-holder")[0].getBoundingClientRect();
+                const clickX = edRect.left + edRect.width / 2;
+                const clickY = edRect.top + edRect.height / 2;
+                const target = testWindow.document.elementFromPoint(clickX, clickY) || _$("#editor-holder")[0];
+                fireMouse(target, "mousedown", clickX, clickY);
+                fireMouse(target, "mouseup", clickX, clickY);
+
+                expect(SidebarView.isVisible()).toBe(true);
+                expect(_$("#sidebar")[0].offsetWidth).toBe(widthAfterDrag);
             });
         });
     });
