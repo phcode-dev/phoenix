@@ -852,6 +852,19 @@ define(function (require, exports) {
         }
     }
 
+    const BRANCH_MAX_LEN = 18;
+
+    // called by Branch.refresh() so the panel indicator always mirrors the sidebar one,
+    // including merge/rebase decorations like "main|MERGING"
+    function setBranchName(branchName, tooltip) {
+        const displayName = branchName.length > BRANCH_MAX_LEN
+            ? branchName.substring(0, BRANCH_MAX_LEN) + "\u2026"
+            : branchName;
+        const $branch = $gitPanel.find(".git-panel-branch");
+        $branch.attr("title", tooltip || "");
+        $branch.find(".git-branch-name").text(displayName);
+    }
+
     function refreshCommitCounts() {
         // Find Push and Pull buttons
         var $pullBtn = $gitPanel.find(".git-pull");
@@ -1601,6 +1614,7 @@ define(function (require, exports) {
     exports.toggle = toggle;
     exports.enable = enable;
     exports.disable = disable;
+    exports.setBranchName = setBranchName;
     exports.getSelectedHistoryCommit = getSelectedHistoryCommit;
     exports.getPanel = function () { return $gitPanel; };
 

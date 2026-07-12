@@ -426,6 +426,7 @@ define(function (require, exports) {
             .text("\u2026")
             .parent()
                 .show();
+        Panel.setBranchName("\u2026", "");
 
         return Git.getGitRoot().then(function (gitRoot) {
             var projectRoot             = Utils.getProjectRoot(),
@@ -440,6 +441,7 @@ define(function (require, exports) {
                 $gitBranchName
                     .off("click")
                     .text("not a git repo");
+                Panel.setBranchName("not a git repo", "");
                 Panel.disable("not-repo");
 
                 return;
@@ -482,6 +484,7 @@ define(function (require, exports) {
                         .attr("title", tooltip)
                         .off("click")
                         .on("click", toggleDropdown);
+                    Panel.setBranchName(branchName, tooltip);
                     Panel.enable();
 
                 }).catch(function (err) {
@@ -493,6 +496,7 @@ define(function (require, exports) {
                     $gitBranchName
                         .off("click")
                         .text("no branch");
+                    Panel.setBranchName("no branch", "");
                     Panel.enable();
                 } else {
                     throw ex;
