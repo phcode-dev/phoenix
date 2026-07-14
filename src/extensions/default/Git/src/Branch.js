@@ -522,9 +522,11 @@ define(function (require, exports) {
                     const displayName = branchName.length > MAX_LEN
                         ? branchName.substring(0, MAX_LEN) + "\u2026"
                         : branchName;
-                    const html = `<i class="fas fa-code-branch"></i> ${displayName}`;
+                    // branch names may contain characters like "<", so set them
+                    // as text and never as html
                     $gitBranchName
-                        .html(html)
+                        .text(" " + displayName)
+                        .prepend('<i class="fas fa-code-branch"></i>')
                         .attr("title", tooltip)
                         .off("click")
                         .on("click", toggleDropdown);
