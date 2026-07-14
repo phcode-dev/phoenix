@@ -479,8 +479,8 @@ define(function (require, exports) {
 
                 $gitBranchName
                     .off("click")
-                    .text("not a git repo");
-                Panel.setBranchName("not a git repo", "");
+                    .text(Strings.GIT_NOT_A_REPO);
+                Panel.setBranchName(Strings.GIT_NOT_A_REPO, "");
                 $("#git-panel .git-panel-branch").removeClass("clickable").off("click");
                 Panel.disable("not-repo");
 
@@ -539,8 +539,8 @@ define(function (require, exports) {
                 if (ErrorHandler.contains(ex, "unknown revision")) {
                     $gitBranchName
                         .off("click")
-                        .text("no branch");
-                    Panel.setBranchName("no branch", "");
+                        .text(Strings.GIT_NO_BRANCH);
+                    Panel.setBranchName(Strings.GIT_NO_BRANCH, "");
                     $("#git-panel .git-panel-branch").removeClass("clickable").off("click");
                     Panel.enable();
                 } else {

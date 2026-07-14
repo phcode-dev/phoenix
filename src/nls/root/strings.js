@@ -2150,6 +2150,8 @@ define({
     "GIT_COMMIT": "Git commit\u2026",
     "GIT_COMMIT_IN_PROGRESS": "Git Commit in Progress",
     "GIT_DIFF": "Git diff &mdash;",
+    "GIT_NO_BRANCH": "no branch",
+    "GIT_NOT_A_REPO": "not a git repo",
     "GIT_PULL_RESPONSE": "Git Pull response",
     "GIT_PUSH_RESPONSE": "Git Push response",
     "GIT_REMOTES": "Git remotes",
