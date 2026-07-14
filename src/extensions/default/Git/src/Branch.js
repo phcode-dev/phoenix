@@ -357,6 +357,9 @@ define(function (require, exports) {
         $dropdown
             .css({
                 left: anchorOffset.left,
+                // #git-branch-dropdown carries a negative margin-left meant for the
+                // sidebar toggle alignment, neutralize it so left matches the anchor
+                "margin-left": 0,
                 // the .dropdown-menu class positions with "top: 100%", it has to be
                 // explicitly overridden or the bottom positioning below is over-constrained
                 top: "auto",
