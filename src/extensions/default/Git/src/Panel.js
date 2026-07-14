@@ -1016,6 +1016,28 @@ define(function (require, exports) {
             });
     }
 
+    const OPEN_ALL_CONFIRM_THRESHOLD = 50;
+
+    function _openChangedFiles(files) {
+        const currentGitRoot = Preferences.get("currentGitRoot");
+        // addListToWorkingSet ignores files already present in any pane, so this is safe
+        // to run repeatedly or with some of the files already open
+        const fileList = files.map(function (file) {
+            return FileSystem.getFileForPath(currentGitRoot + file.file);
+        });
+        MainViewManager.addListToWorkingSet(MainViewManager.ACTIVE_PANE, fileList);
+
+        // if the user is already viewing one of the changed files, we don't switch the file then...
+        // if user is viewing a un-changed file, then we switch to the first changed file
+        const currentPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
+        const viewingChangedFile = _.any(fileList, function (file) {
+            return file.fullPath === currentPath;
+        });
+        if (!viewingChangedFile) {
+            CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[0].fullPath });
+        }
+    }
+
     function openAllChangedFiles() {
         return Git.status().then(function (files) {
             files = _.filter(files, function (file) {
@@ -1037,23 +1059,18 @@ define(function (require, exports) {
                 return;
             }
 
-            const currentGitRoot = Preferences.get("currentGitRoot");
-            // addListToWorkingSet ignores files already present in any pane, so this is safe
-            // to run repeatedly or with some of the files already open
-            const fileList = files.map(function (file) {
-                return FileSystem.getFileForPath(currentGitRoot + file.file);
-            });
-            MainViewManager.addListToWorkingSet(MainViewManager.ACTIVE_PANE, fileList);
-
-            // if the user is already viewing one of the changed files, we don't switch the file then...
-            // if user is viewing a un-changed file, then we switch to the first changed file
-            const currentPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
-            const viewingChangedFile = _.any(fileList, function (file) {
-                return file.fullPath === currentPath;
-            });
-            if (!viewingChangedFile) {
-                CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[0].fullPath });
+            if (files.length > OPEN_ALL_CONFIRM_THRESHOLD) {
+                return Utils.askQuestion(Strings.CMD_OPEN_CHANGED_FILES,
+                    StringUtils.format(Strings.OPEN_CHANGED_FILES_CONFIRM, files.length),
+                    { booleanResponse: true })
+                    .then(function (response) {
+                        if (response === true) {
+                            _openChangedFiles(files);
+                        }
+                    });
             }
+
+            _openChangedFiles(files);
         }).catch(function (err) {
             ErrorHandler.showError(err, Strings.ERROR_OPENING_CHANGED_FILES);
         });
