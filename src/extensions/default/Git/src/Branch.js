@@ -33,6 +33,7 @@ define(function (require, exports) {
         $dropdown;
 
     let lastRenderedBranchName = null;
+    let $dropdownAnchor = null;
 
     function renderList(branches) {
         branches = branches.map(function (name) {
@@ -329,6 +330,7 @@ define(function (require, exports) {
         // $(window).off("keydown", keydownHook);
 
         $dropdown = null;
+        $dropdownAnchor = null;
     }
 
     function _positionDropdownBelow($toggle) {
@@ -388,10 +390,14 @@ define(function (require, exports) {
         // so it has to be captured before the async branch listing below
         const $anchor = $(e.currentTarget);
 
-        // If the dropdown is already visible, close it
+        // clicking the anchor that opened the dropdown closes it, clicking the
+        // other anchor moves the dropdown there
         if ($dropdown) {
+            const sameAnchor = $dropdownAnchor && $dropdownAnchor[0] === $anchor[0];
             closeDropdown();
-            return;
+            if (sameAnchor) {
+                return;
+            }
         }
 
         Menus.closeAll();
@@ -399,6 +405,9 @@ define(function (require, exports) {
         Git.getBranches().catch(function (err) {
             ErrorHandler.showError(err, Strings.ERROR_GETTING_BRANCH_LIST);
         }).then(function (branches = []) {
+            if ($dropdown) {
+                return;
+            }
             branches = branches.reduce(function (arr, branch) {
                 if (!branch.currentBranch && !branch.remote) {
                     arr.push(branch.name);
@@ -407,6 +416,7 @@ define(function (require, exports) {
             }, []);
 
             $dropdown = $(renderList(branches));
+            $dropdownAnchor = $anchor;
             if ($anchor.closest("#git-panel").length) {
                 // the git panel sits at the bottom of the screen, open upwards from there
                 _positionDropdownAbove($anchor);
