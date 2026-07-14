@@ -32,6 +32,8 @@ define(function (require, exports) {
         currentEditor,
         $dropdown;
 
+    let lastRenderedBranchName = null;
+
     function renderList(branches) {
         branches = branches.map(function (name) {
             return {
@@ -451,10 +453,9 @@ define(function (require, exports) {
                 return;
             }
 
-            var branchInHead  = m[1],
-                branchInUi    = $gitBranchName.text();
+            const branchInHead = m[1];
 
-            if (branchInHead !== branchInUi) {
+            if (branchInHead !== lastRenderedBranchName) {
                 refresh();
             }
         });
@@ -480,6 +481,7 @@ define(function (require, exports) {
                 Preferences.set("currentGitRoot", projectRoot);
                 Preferences.set("currentGitSubfolder", "");
 
+                lastRenderedBranchName = null;
                 $gitBranchName
                     .off("click")
                     .text(Strings.GIT_NOT_A_REPO);
@@ -518,6 +520,7 @@ define(function (require, exports) {
 
                     const MAX_LEN = 18;
 
+                    lastRenderedBranchName = branchName;
                     const tooltip = StringUtils.format(Strings.ON_BRANCH, branchName);
                     const displayName = branchName.length > MAX_LEN
                         ? branchName.substring(0, MAX_LEN) + "\u2026"
@@ -543,6 +546,7 @@ define(function (require, exports) {
 
             }).catch(function (ex) {
                 if (ErrorHandler.contains(ex, "unknown revision")) {
+                    lastRenderedBranchName = null;
                     $gitBranchName
                         .off("click")
                         .text(Strings.GIT_NO_BRANCH);
