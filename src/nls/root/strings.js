@@ -2171,6 +2171,7 @@ define({
     "MERGE_RESULT": "Merge result",
     "NORMALIZE_LINE_ENDINGS": "Normalize line endings (to \\n)",
     "NOTHING_TO_COMMIT": "Nothing to commit, working directory clean.",
+    "OPEN_CHANGED_FILES_CONFIRM": "This will open {0} files in the editor. Do you want to continue?",
     "OPERATION_IN_PROGRESS_TITLE": "Git operation in progress\u2026",
     "ORIGIN_BRANCH": "Origin branch",
     "ON_BRANCH": "'{0}' - Current Git branch",
