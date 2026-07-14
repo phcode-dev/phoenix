@@ -1019,17 +1019,8 @@ define(function (require, exports) {
     const OPEN_ALL_CONFIRM_THRESHOLD = 50;
 
     function _openChangedFiles(fileList) {
-        // addListToWorkingSet ignores files already present in any pane, so this is safe
-        // to run repeatedly or with some of the files already open
         MainViewManager.addListToWorkingSet(MainViewManager.ACTIVE_PANE, fileList);
-
-        // if the user is already viewing one of the changed files, we don't switch the file then...
-        // if user is viewing a un-changed file, then we switch to the first changed file
-        const currentPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
-        const viewingChangedFile = _.any(fileList, function (file) {
-            return file.fullPath === currentPath;
-        });
-        if (!viewingChangedFile) {
+        if (!MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE)) {
             CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[0].fullPath });
         }
     }
