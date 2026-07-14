@@ -516,18 +516,19 @@ define(function (require, exports) {
 
                     EventEmitter.emit(Events.REBASE_MERGE_MODE, mergeInfo.rebaseMode, mergeInfo.mergeMode);
 
-                    var MAX_LEN = 18;
+                    const MAX_LEN = 18;
 
                     const tooltip = StringUtils.format(Strings.ON_BRANCH, branchName);
-                    const html = `<i class="fas fa-code-branch"></i> ${
-                        branchName.length > MAX_LEN ? branchName.substring(0, MAX_LEN) + "\u2026" : branchName
-                    }`;
+                    const displayName = branchName.length > MAX_LEN
+                        ? branchName.substring(0, MAX_LEN) + "\u2026"
+                        : branchName;
+                    const html = `<i class="fas fa-code-branch"></i> ${displayName}`;
                     $gitBranchName
                         .html(html)
                         .attr("title", tooltip)
                         .off("click")
                         .on("click", toggleDropdown);
-                    Panel.setBranchName(branchName, tooltip);
+                    Panel.setBranchName(displayName, tooltip);
                     $("#git-panel .git-panel-branch")
                         .addClass("clickable")
                         .off("click")
