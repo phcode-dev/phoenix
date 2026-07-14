@@ -1018,13 +1018,9 @@ define(function (require, exports) {
 
     const OPEN_ALL_CONFIRM_THRESHOLD = 50;
 
-    function _openChangedFiles(files) {
-        const currentGitRoot = Preferences.get("currentGitRoot");
+    function _openChangedFiles(fileList) {
         // addListToWorkingSet ignores files already present in any pane, so this is safe
         // to run repeatedly or with some of the files already open
-        const fileList = files.map(function (file) {
-            return FileSystem.getFileForPath(currentGitRoot + file.file);
-        });
         MainViewManager.addListToWorkingSet(MainViewManager.ACTIVE_PANE, fileList);
 
         // if the user is already viewing one of the changed files, we don't switch the file then...
@@ -1059,18 +1055,29 @@ define(function (require, exports) {
                 return;
             }
 
-            if (files.length > OPEN_ALL_CONFIRM_THRESHOLD) {
+            const currentGitRoot = Preferences.get("currentGitRoot");
+            const fileList = files.map(function (file) {
+                return FileSystem.getFileForPath(currentGitRoot + file.file);
+            });
+
+            // count only the files the command would actually add, so re-running it
+            // when most of them are already open doesn't ask for confirmation again
+            const newFileCount = _.filter(fileList, function (file) {
+                return MainViewManager.findInAllWorkingSets(file.fullPath).length === 0;
+            }).length;
+
+            if (newFileCount > OPEN_ALL_CONFIRM_THRESHOLD) {
                 return Utils.askQuestion(Strings.CMD_OPEN_CHANGED_FILES,
-                    StringUtils.format(Strings.OPEN_CHANGED_FILES_CONFIRM, files.length),
+                    StringUtils.format(Strings.OPEN_CHANGED_FILES_CONFIRM, newFileCount),
                     { booleanResponse: true })
                     .then(function (response) {
                         if (response === true) {
-                            _openChangedFiles(files);
+                            _openChangedFiles(fileList);
                         }
                     });
             }
 
-            _openChangedFiles(files);
+            _openChangedFiles(fileList);
         }).catch(function (err) {
             ErrorHandler.showError(err, Strings.ERROR_OPENING_CHANGED_FILES);
         });
