@@ -1,4 +1,10 @@
 <!-- List of remotes defined for the current local repository -->
+<li><a class="git-remote-new"><span>{{Strings.CREATE_NEW_REMOTE}}</span></a></li>
+
+{{#remotes.length}}
+<li class="divider"></li>
+{{/remotes.length}}
+
 {{#remotes}}
 <li class="remote">
     <a href="#" data-remote-name="{{name}}" data-type="git" class="remote-name">
@@ -7,4 +13,3 @@
     </a>
 </li>
 {{/remotes}}
-<li><a class="git-remote-new"><span>{{Strings.CREATE_NEW_REMOTE}}</span></a></li>
