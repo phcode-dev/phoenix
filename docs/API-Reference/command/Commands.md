@@ -986,6 +986,12 @@ Opens git settings
 ## CMD\_GIT\_CLOSE\_UNMODIFIED
 Closes unmodified files
 
+**Kind**: global variable
+<a name="CMD_GIT_OPEN_CHANGED_FILES"></a>
+
+## CMD\_GIT\_OPEN\_CHANGED\_FILES
+Opens all modified/untracked files
+
 **Kind**: global variable  
 <a name="CMD_GIT_CHECKOUT"></a>
 
