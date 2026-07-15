@@ -385,25 +385,46 @@ define(function (require, exports) {
         return doPushWithArgs(args, progressTracker);
     }
 
+    const PUSH_PORCELAIN_TO_LINE = new RegExp("^To\\s");
+    const PUSH_PORCELAIN_REF_LINE = new RegExp("^[ +\\-*!=]\\t[^\\t]*:[^\\t]*\\t");
+
     function doPushWithArgs(args, progressTracker) {
         return git(args, {progressTracker})
             .catch(repositoryNotFoundHandler)
             .then(function (stdout) {
-                // this should clear lines from push hooks
-                var lines = stdout.split("\n");
-                while (lines.length > 0 && lines[0].match(/^To/) === null) {
-                    lines.shift();
+                // pre-push hooks print to stdout before the porcelain block and may
+                // even print lines starting with "To" (Eg. "Total size..."), so the
+                // "To <url>" line only counts when a ref status line follows it.
+                // the block is at the end of the output, so scan backwards.
+                const lines = stdout.split("\n");
+                let headerIndex = -1;
+                for (let i = lines.length - 2; i >= 0; i--) {
+                    if (PUSH_PORCELAIN_TO_LINE.test(lines[i]) && PUSH_PORCELAIN_REF_LINE.test(lines[i + 1])) {
+                        headerIndex = i;
+                        break;
+                    }
                 }
 
-                var retObj = {},
-                    lineTwo = lines[1].split("\t");
+                const retObj = {};
+                if (headerIndex === -1) {
+                    // the push itself succeeded as git exited with 0, we just can't
+                    // parse the output. never report a successful push as an error.
+                    retObj.flagDescription = Strings.GIT_PUSH_SUCCESS_MSG;
+                    retObj.from = "";
+                    retObj.to = "";
+                    retObj.summary = "";
+                    retObj.status = "";
+                    return retObj;
+                }
 
-                retObj.remoteUrl = lines[0].trim().split(" ")[1];
+                const lineTwo = lines[headerIndex + 1].split("\t");
+
+                retObj.remoteUrl = lines[headerIndex].trim().split(" ")[1];
                 retObj.flag = lineTwo[0];
                 retObj.from = lineTwo[1].split(":")[0];
                 retObj.to = lineTwo[1].split(":")[1];
                 retObj.summary = lineTwo[2];
-                retObj.status = lines[2];
+                retObj.status = lines[headerIndex + 2] || "";
 
                 switch (retObj.flag) {
                     case " ":
