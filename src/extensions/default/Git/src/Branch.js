@@ -308,6 +308,7 @@ define(function (require, exports) {
         $("#project-files-container").on("scroll", closeDropdown);
         $("#git-panel .table-container").on("scroll", closeDropdown);
         $("#titlebar .nav").on("click", closeDropdown);
+        $("#git-panel .git-remotes").on("click", closeDropdown);
 
         currentEditor = EditorManager.getCurrentFullEditor();
         if (currentEditor) {
@@ -322,6 +323,7 @@ define(function (require, exports) {
         $("#project-files-container").off("scroll", closeDropdown);
         $("#git-panel .table-container").off("scroll", closeDropdown);
         $("#titlebar .nav").off("click", closeDropdown);
+        $("#git-panel .git-remotes").off("click", closeDropdown);
 
         if (currentEditor) {
             currentEditor._codeMirror.off("focus", closeDropdown);
@@ -386,6 +388,7 @@ define(function (require, exports) {
 
     function toggleDropdown(e) {
         e.stopPropagation();
+        $("#git-panel .btn-group.open").removeClass("open");
         // currentTarget is only valid while the event is being dispatched,
         // so it has to be captured before the async branch listing below
         const $anchor = $(e.currentTarget);
