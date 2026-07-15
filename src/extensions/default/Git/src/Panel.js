@@ -904,7 +904,8 @@ define(function (require, exports) {
         $gitPanel.find(".git-file-history").removeClass("active").attr("title", Strings.TOOLTIP_SHOW_FILE_HISTORY);
 
         if (gitPanelMode === "not-repo") {
-            $tableContainer.empty();
+            $tableContainer.html($("<p class='git-edited-list nothing-to-commit'/>")
+                .text(StringUtils.format(Strings.GIT_NOT_REPO_MESSAGE, Strings.GIT_INIT, Strings.GIT_CLONE)));
             return Promise.resolve();
         }
 
