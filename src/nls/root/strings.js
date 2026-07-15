@@ -2233,6 +2233,7 @@ define({
     "TOOLTIP_SHOW_HISTORY": "Show history",
     "GIT_SHOW_FILE_HISTORY": "File Commit history",
     "GIT_SHOW_HISTORY": "Commit history",
+    "GIT_NOT_REPO_MESSAGE": "This project is not a Git repository. Click the {0} button to create a new repository here, or {1} to download an existing one.",
     "GIT_HISTORY_NOTHING_TO_SHOW": "No commits yet. Committed changes will show up here.",
     "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "There is no commit history for this file yet.",
     "GIT_FILE_HISTORY_OPEN_A_FILE": "Open a file in the editor to see its commit history.",
