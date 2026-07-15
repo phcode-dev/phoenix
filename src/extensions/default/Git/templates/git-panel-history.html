@@ -1,5 +1,8 @@
 <table id="git-history-list" class="bottom-panel-table table table-striped table-condensed row-highlight">
     <tbody>
         {{> commits}}
+        {{^commits}}
+        <tr class="history-empty-message"><td colspan="4">{{emptyMessage}}</td></tr>
+        {{/commits}}
     </tbody>
 </table>

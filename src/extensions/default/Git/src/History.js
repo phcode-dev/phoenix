@@ -29,6 +29,13 @@ define(function (require) {
         commitCache       = [],
         lastDocumentSeen  = null;
 
+    // must match the page size git log is invoked with in GitCli.getHistory
+    const HISTORY_PAGE_SIZE = 100;
+
+    // guards against an older async render/load overwriting a newer one
+    let historyRenderId = 0,
+        loadingMoreHistory = false;
+
     // Implementation
 
     function initVariables() {
@@ -90,8 +97,40 @@ define(function (require) {
         return author + email;
     });
 
-    // Render history list the first time
+    function _renderHistoryTable(commits, file) {
+        // calculate some missing stuff like avatars
+        commits = addAdditionalCommitInfo(commits);
+        commitCache = commitCache.concat(commits);
+
+        const templateData = {
+            commits: commits,
+            emptyMessage: file ? Strings.GIT_FILE_HISTORY_NOTHING_TO_SHOW : Strings.GIT_HISTORY_NOTHING_TO_SHOW,
+            Strings: Strings
+        };
+
+        $tableContainer.find("#git-history-list").remove();
+        $tableContainer.append(Mustache.render(gitPanelHistoryTemplate, templateData, {
+            commits: gitPanelHistoryCommitsTemplate
+        }));
+
+        $historyList = $tableContainer.find("#git-history-list")
+            .data("file", file ? file.absolute : null)
+            .data("file-relative", file ? file.relative : null);
+
+        if (commits.length < HISTORY_PAGE_SIZE) {
+            // the full history is already here, so the last commit is the initial
+            // one. with more pages the initial commit is marked by loadMoreHistory.
+            $historyList.attr("x-finished", "true");
+            $historyList
+                .find("tr.history-commit:last-child")
+                .attr("x-initial-commit", "true");
+        }
+    }
+
+    // Render history list the first time. resolves to false when rendering failed.
     function renderHistory(file) {
+        const renderId = ++historyRenderId;
+
         // clear cache
         commitCache = [];
 
@@ -99,40 +138,37 @@ define(function (require) {
             // Get the history commits of the current branch
             var p = file ? Git.getFileHistory(file.relative, branchName) : Git.getHistory(branchName);
             return p.then(function (commits) {
-
-                // calculate some missing stuff like avatars
-                commits = addAdditionalCommitInfo(commits);
-                commitCache = commitCache.concat(commits);
-
-                var templateData = {
-                    commits: commits,
-                    Strings: Strings
-                };
-
-                $tableContainer.append(Mustache.render(gitPanelHistoryTemplate, templateData, {
-                    commits: gitPanelHistoryCommitsTemplate
-                }));
-
-                $historyList = $tableContainer.find("#git-history-list")
-                    .data("file", file ? file.absolute : null)
-                    .data("file-relative", file ? file.relative : null);
-
-                $historyList
-                    .find("tr.history-commit:last-child")
-                    .attr("x-initial-commit", "true");
+                if (renderId === historyRenderId) {
+                    _renderHistoryTable(commits, file);
+                }
+                return true;
             });
         }).catch(function (err) {
+            if (renderId !== historyRenderId) {
+                return true;
+            }
+            // "bad revision"/"unknown revision" mean the branch has no commit
+            // yet (freshly initialized repository), so there is just no history
+            // to show and that is not an error
+            if (ErrorHandler.contains(err, "bad revision") || ErrorHandler.contains(err, "unknown revision")) {
+                _renderHistoryTable([], file);
+                return true;
+            }
             ErrorHandler.showError(err, Strings.ERROR_GET_HISTORY);
+            return false;
         });
     }
 
     // Load more rows in the history list on scroll
     function loadMoreHistory() {
         if ($historyList.is(":visible")) {
-            if (($tableContainer.prop("scrollHeight") - $tableContainer.scrollTop()) === $tableContainer.height()) {
-                if ($historyList.attr("x-finished") === "true") {
+            // 2px tolerance as scroll positions can be fractional on scaled displays
+            if (($tableContainer.prop("scrollHeight") - $tableContainer.scrollTop()) <= $tableContainer.height() + 2) {
+                if (loadingMoreHistory || $historyList.attr("x-finished") === "true") {
                     return;
                 }
+                loadingMoreHistory = true;
+                const renderId = historyRenderId;
                 return Git.getCurrentBranchName().then(function (branchName) {
                     var p,
                         file = $historyList.data("file-relative"),
@@ -143,6 +179,10 @@ define(function (require) {
                         p = Git.getHistory(branchName, skipCount);
                     }
                     return p.then(function (commits) {
+                        if (renderId !== historyRenderId) {
+                            // the list was re-rendered while this page was loading
+                            return;
+                        }
                         if (commits.length === 0) {
                             $historyList.attr("x-finished", "true");
                             // marks initial commit as first
@@ -168,6 +208,9 @@ define(function (require) {
                 })
                 .catch(function (err) {
                     ErrorHandler.showError(err, Strings.ERROR_GET_CURRENT_BRANCH);
+                })
+                .finally(function () {
+                    loadingMoreHistory = false;
                 });
             }
         }
@@ -286,8 +329,19 @@ define(function (require) {
                 $historyList.remove();
             }
             var $spinner = $("<div class='spinner spin large'></div>").appendTo($gitPanel);
-            renderHistory(file).finally(function () {
+            renderHistory(file).then(function (rendered) {
                 $spinner.remove();
+                if (!rendered) {
+                    // rendering failed, go back to the changes view instead of
+                    // leaving an empty table container behind
+                    $tableContainer.find(".git-edited-list").show();
+                    $gitPanel.find(".git-history-toggle").removeClass("active")
+                        .attr("title", Strings.TOOLTIP_SHOW_HISTORY);
+                    $gitPanel.find(".git-file-history").removeClass("active")
+                        .attr("title", Strings.TOOLTIP_SHOW_FILE_HISTORY);
+                    Git.status();
+                    return;
+                }
                 if (isRefresh) {
                     // After rendering, we need to fetch the newly created #git-history-list
                     let $newHistoryList = $tableContainer.find("#git-history-list");
@@ -327,6 +381,8 @@ define(function (require) {
         initVariables();
     });
     EventEmitter.on(Events.GIT_DISABLED, function () {
+        // invalidate any render still in flight so it can't repopulate the panel
+        historyRenderId++;
         lastDocumentSeen = null;
         $historyList.remove();
         $historyList = $();
