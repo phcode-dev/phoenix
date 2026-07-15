@@ -12,11 +12,11 @@
     {{#branchList}}
     <li>
         <a class="git-branch-link" data-branch="{{name}}">
-            {{#canDelete}}
-            <span class="trash-icon">&times;</span>
-            {{/canDelete}}
-            <span class="merge-branch"><i title="{{Strings.MERGE_BRANCH}}" class="octicon octicon-git-merge"></i></span>
             <span class="switch-branch">{{name}}</span>
+            <span class="merge-branch" title="{{Strings.MERGE_BRANCH}}"><i class="octicon octicon-git-merge"></i></span>
+            {{#canDelete}}
+            <span class="trash-icon" title="{{Strings.DELETE_LOCAL_BRANCH}}"><i class="fas fa-trash"></i></span>
+            {{/canDelete}}
         </a>
     </li>
     {{/branchList}}

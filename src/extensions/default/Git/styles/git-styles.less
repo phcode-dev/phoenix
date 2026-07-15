@@ -930,6 +930,7 @@
     margin-left: -12px;
     position: absolute;
     display: block;
+    min-width: 200px;
     max-width: none;
     z-index: 100;
     overflow-y: auto;
@@ -950,6 +951,7 @@
     }
     .git-branch-link {
         position: relative;
+        padding-right: 62px;
         .switch-branch {
             display: inline-block;
             width: 100%;
@@ -959,30 +961,39 @@
         .trash-icon, .merge-branch {
             position: absolute;
             opacity: 0;
-            top: 27%;
+            top: 50%;
+            transform: translateY(-50%);
             background-image: none !important;
-            width: 16px;
-            height: 16px;
-            font-size: 20px;
-            color: rgba(0, 0, 0, 0.5);
-            line-height: 15px;
+            width: 20px;
+            height: 20px;
+            font-size: 13px;
+            color: fade(@bc-menu-text, 55%);
+            line-height: 20px;
             text-align: center;
+            .dark & {
+                color: fade(@dark-bc-menu-text, 55%);
+            }
             &:hover {
-                color: rgba(0, 0, 0, 1);
+                color: @bc-menu-text;
+                .dark & {
+                    color: @dark-bc-menu-text;
+                }
             }
         }
-        .trash-icon, .merge-branch {
-            &:hover {
-                color: rgba(0, 0, 0, 1);
-            }
-        }
-        &:hover {
+        &:hover, &.selected {
             .trash-icon, .merge-branch {
                 opacity: 1;
             }
         }
         .merge-branch {
-            right: 5px;
+            right: 34px;
+            .octicon {
+                font-size: 15px;
+            }
+        }
+        .trash-icon {
+            left: auto;
+            right: 8px;
         }
     }
     a {
