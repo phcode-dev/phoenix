@@ -1,4 +1,5 @@
 @import "../../../../styles/brackets_core_ui_variables.less";
+@import (reference) "../../../../styles/brackets_variables.less";
 
 // common
 @git-moreDarkGrey:               #868888;
@@ -1145,6 +1146,9 @@
             box-shadow: inset 0 1px 0 @dark-bc-btn-bg-down;
             color: @dark-bc-text;
         }
+    }
+    .mainToolbar:has(.btn-group.open) {
+        z-index: (@z-index-brackets-panel-resizer + 1);
     }
     .git-remotes {
         border-radius: 4px 0 0 4px;
