@@ -40,10 +40,19 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        Main.init().then((enabled)=>{
-            if(!enabled) {
-                BracketsEvents.disableAll();
-            }
+        function initMain() {
+            Main.init().then((enabled)=>{
+                if(!enabled) {
+                    BracketsEvents.disableAll();
+                }
+            });
+        }
+        // Main.init emits events like GIT_ENABLED that the modules above listen
+        // for. They load asynchronously, so init must wait for them or events
+        // fired before they finish loading are lost (Eg. empty remotes picker).
+        require(modules, initMain, function (err) {
+            console.error("Git modules failed to load, initializing git anyway", err);
+            initMain();
         });
     });
 
