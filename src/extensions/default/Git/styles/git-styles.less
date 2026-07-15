@@ -1138,14 +1138,28 @@
     }
     .git-remotes {
         border-radius: 4px 0 0 4px;
-        padding-bottom: 5px;
+        display: inline-flex;
+        align-items: center;
+        &:focus {
+            border: 1px solid @bc-btn-border;
+            box-shadow: inset 0 1px @bc-highlight-hard;
+
+            .dark & {
+                border: 1px solid @dark-bc-btn-border;
+                box-shadow: inset 0 1px @dark-bc-highlight;
+            }
+        }
         .caret {
             border-bottom-color: @bc-text;
-            margin: 7px 5px auto 0px;
+            margin: 0 5px 0 0;
 
             .dark & {
                 border-bottom-color: @dark-bc-text;
             }
+        }
+        .git-selected-remote {
+            position: relative;
+            top: -1px;
         }
     }
     .git-remotes-dropdown {
