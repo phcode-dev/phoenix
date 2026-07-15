@@ -2233,6 +2233,8 @@ define({
     "TOOLTIP_SHOW_HISTORY": "Show history",
     "GIT_SHOW_FILE_HISTORY": "File Commit history",
     "GIT_SHOW_HISTORY": "Commit history",
+    "GIT_FILE_HISTORY_OPEN_A_FILE": "Open a file in the editor to see its commit history.",
+    "GIT_FILE_HISTORY_NOT_IN_REPO": "The file is not part of this Git repository.",
     "UNDO_CHANGES": "Discard changes",
     "UNDO_CHANGES_BTN": "Discard changes\u2026",
     "UNDO_LAST_LOCAL_COMMIT": "Undo last local (not pushed) commit\u2026",

@@ -7,6 +7,7 @@ define(function (require) {
         LocalizationUtils = brackets.getModule("utils/LocalizationUtils"),
         Strings = brackets.getModule("strings"),
         Metrics = brackets.getModule("utils/Metrics"),
+        NotificationUI = brackets.getModule("widgets/NotificationUI"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache");
 
     // Local modules
@@ -205,7 +206,18 @@ define(function (require) {
         if (doc) {
             lastDocumentSeen = doc;
         }
-        return doc || lastDocumentSeen;
+        // no fallback to lastDocumentSeen here: when no document is open, file
+        // history must not stick to a file the user has already closed
+        return doc;
+    }
+
+    function _showFileHistoryToast(message) {
+        NotificationUI.createToastFromTemplate(Strings.GIT_SHOW_FILE_HISTORY,
+            "<div>" + _.escape(message) + "</div>", {
+                toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.INFO,
+                autoCloseTimeS: 15,
+                instantOpen: true
+            });
     }
 
     function handleFileChange() {
@@ -251,10 +263,15 @@ define(function (require) {
         }
 
         if (historyEnabled && newHistoryMode === "FILE") {
-            if (doc) {
+            if (doc && doc.file) {
                 file = {};
                 file.absolute = doc.file.fullPath;
                 file.relative = FileUtils.getRelativeFilename(Preferences.get("currentGitRoot"), file.absolute);
+                if (!file.relative) {
+                    // the file is not inside the repository, so it has no history
+                    historyEnabled = false;
+                    file = null;
+                }
             } else {
                 // we want a file history but no file was found
                 historyEnabled = false;
@@ -315,8 +332,17 @@ define(function (require) {
         $historyList = $();
     });
     EventEmitter.on(Events.HISTORY_SHOW_FILE, function () {
-        handleToggleHistory("FILE");
         Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "fileHistory");
+        const doc = getCurrentDocument();
+        if (!doc || !doc.file) {
+            _showFileHistoryToast(Strings.GIT_FILE_HISTORY_OPEN_A_FILE);
+            return;
+        }
+        if (!FileUtils.getRelativeFilename(Preferences.get("currentGitRoot"), doc.file.fullPath)) {
+            _showFileHistoryToast(Strings.GIT_FILE_HISTORY_NOT_IN_REPO);
+            return;
+        }
+        handleToggleHistory("FILE");
     });
     EventEmitter.on(Events.HISTORY_SHOW_GLOBAL, function () {
         handleToggleHistory("GLOBAL");
