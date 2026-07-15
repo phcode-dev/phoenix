@@ -477,6 +477,11 @@ define(function (require, exports) {
     function refresh() {
         if ($gitBranchName.length === 0) { return; }
 
+        const projectRoot = Utils.getProjectRoot();
+        function isStale() {
+            return Utils.getProjectRoot() !== projectRoot;
+        }
+
         // show info that branch is refreshing currently
         $gitBranchName
             .text("\u2026")
@@ -485,8 +490,8 @@ define(function (require, exports) {
         Panel.setBranchName("\u2026", "");
 
         return Git.getGitRoot().then(function (gitRoot) {
-            var projectRoot             = Utils.getProjectRoot(),
-                isRepositoryRootOrChild = gitRoot && projectRoot.indexOf(gitRoot) === 0;
+            if (isStale()) { return; }
+            var isRepositoryRootOrChild = gitRoot && projectRoot.indexOf(gitRoot) === 0;
 
             $gitBranchName.parent().toggle(isRepositoryRootOrChild);
 
@@ -514,6 +519,7 @@ define(function (require, exports) {
             return Git.getCurrentBranchName().then(function (branchName) {
 
                 Git.getMergeInfo().then(function (mergeInfo) {
+                    if (isStale()) { return; }
 
                     if (mergeInfo.mergeMode) {
                         branchName += "|MERGING";
@@ -558,6 +564,7 @@ define(function (require, exports) {
                 });
 
             }).catch(function (ex) {
+                if (isStale()) { return; }
                 if (ErrorHandler.contains(ex, "unknown revision")) {
                     lastRenderedBranchName = null;
                     $gitBranchName
