@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "आपके चयन से मेल खाने वाले कोई मौजूदा CSS नियम नहीं हैं।<br> एक बनाने के लिए \"नया नियम\" पर क्लिक करें।",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "आपकी परियोजना में कोई स्टाइलशीट नहीं है।<br>CSS नियम जोड़ने के लिए एक बनाएँ।",
   "IMAGE_VIEWER_LARGEST_ICON": "सबसे बड़ा",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "पूर्वावलोकन {0} से कम की फ़ाइलों तक सीमित है।",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "इस फ़ाइल को चलाया नहीं जा सकता। हो सकता है कि फ़ॉर्मैट या कोडेक समर्थित न हो।",
   "UNIT_PIXELS": "पिक्सेल",
   "DEBUG_MENU": "डीबग",
   "ERRORS": "त्रुटियाँ",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "पूर्वावलोकन {0} से कम की फ़ाइलों तक सीमित है।",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "इस फ़ाइल को चलाया नहीं जा सकता। हो सकता है कि फ़ॉर्मैट या कोडेक समर्थित न हो।"
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "लिंक के बारे में और जानें",
+  "LIVE_DEV_STYLER_PLACEMENT": "प्लेसमेंट",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "वितरित करें",
+  "LIVE_DEV_STYLER_PACKED": "पैक्ड",
+  "LIVE_DEV_STYLER_MIN": "मिन",
+  "LIVE_DEV_STYLER_MAX": "मैक्स"
 });

@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "کوئی موجودہ CSS اصول آپ کے انتخاب سے مماثل نہیں ہے۔<br> ایک نیا اصول بنانے کیلئے \"نیا اصول\" پر کلک کریں۔",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "آپ کے پراجیکٹ میں کوئی اسٹائل شیٹ نہیں ہے۔<br>سی ایس ایس رولز شامل کرنے کے لیے ایک بنائیں۔",
   "IMAGE_VIEWER_LARGEST_ICON": "سب سے بڑا",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "پیش منظر {0} سے کم کی فائلوں تک محدود ہے۔",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "اس فائل کو چلایا نہیں جا سکتا۔ ہو سکتا ہے کہ فارمیٹ یا کوڈیک معاونت یافتہ نہ ہو۔",
   "UNIT_PIXELS": "پکسلز",
   "DEBUG_MENU": "ڈیبگ",
   "ERRORS": "خرابیاں",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "پیش منظر {0} سے کم کی فائلوں تک محدود ہے۔",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "اس فائل کو چلایا نہیں جا سکتا۔ ہو سکتا ہے کہ فارمیٹ یا کوڈیک معاونت یافتہ نہ ہو۔"
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "لنکس کے بارے میں مزید جانیں۔",
+  "LIVE_DEV_STYLER_PLACEMENT": "مقام",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "تقسیم",
+  "LIVE_DEV_STYLER_PACKED": "جڑا ہوا",
+  "LIVE_DEV_STYLER_MIN": "کم",
+  "LIVE_DEV_STYLER_MAX": "زیادہ"
 });

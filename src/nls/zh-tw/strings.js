@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "既有 CSS 中沒有符合您選取內容的規則。<br> 按一下「新增規則」 建立一組。",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "您的專案中沒有 Stylesheet 樣式表檔案。<br>建立一個來新增 CSS 規則。",
   "IMAGE_VIEWER_LARGEST_ICON": "最大",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "預覽僅限於小於 {0} 的檔案。",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "此檔案無法播放。可能是格式或編解碼器不受支援。",
   "UNIT_PIXELS": "像素",
   "DEBUG_MENU": "除錯",
   "ERRORS": "錯誤",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "預覽僅限於小於 {0} 的檔案。",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "此檔案無法播放。可能是格式或編解碼器不受支援。"
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "進一步瞭解連結",
+  "LIVE_DEV_STYLER_PLACEMENT": "排列",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "分佈",
+  "LIVE_DEV_STYLER_PACKED": "緊湊",
+  "LIVE_DEV_STYLER_MIN": "最小",
+  "LIVE_DEV_STYLER_MAX": "最大"
 });

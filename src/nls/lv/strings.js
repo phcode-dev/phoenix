@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Neeksistē tādas CSS kārtulas, kas atbilstu izvēlētajam.<br> Nospiediet \"Jauna kārtula\", lai to izveidotu.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Jūsu projektā nav stila lapu.<br>Izveidojiet to, lai pievienotu CSS kārtulas.",
   "IMAGE_VIEWER_LARGEST_ICON": "lielākais",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Priekšskatījums ir pieejams failiem, kuru lielums nepārsniedz {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Šo failu nevar atskaņot. Iespējams, formāts vai kodeks netiek atbalstīts.",
   "UNIT_PIXELS": "pikseļi",
   "DEBUG_MENU": "Atkļūdot",
   "ERRORS": "Kļūdas",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Priekšskatījums ir pieejams failiem, kuru lielums nepārsniedz {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Šo failu nevar atskaņot. Iespējams, formāts vai kodeks netiek atbalstīts."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Uzziniet vairāk par saitēm",
+  "LIVE_DEV_STYLER_PLACEMENT": "Novietojums",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Sadalīt",
+  "LIVE_DEV_STYLER_PACKED": "Saspiests",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Maks"
 });

@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Δεν υπάρχουν κανόνες CSS που να ταιριάζουν με την επιλογή σας.<br> Κάντε κλικ στο \"Νέος Κανόνας\" για να δημιουργήσετε ένα νέο.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Δεν υπάρχουν stylesheets στο project σας.<br>Δημιουργήστε ένα για να προσθέσετε κανόνες CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "Μεγαλύτερη",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Η προεπισκόπηση περιορίζεται σε αρχεία κάτω από {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Δεν είναι δυνατή η αναπαραγωγή αυτού του αρχείου. Η μορφή ή ο κωδικοποιητής ενδέχεται να μην υποστηρίζονται.",
   "UNIT_PIXELS": "pixels",
   "DEBUG_MENU": "Debug",
   "ERRORS": "Σφάλματα",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Η προεπισκόπηση περιορίζεται σε αρχεία κάτω από {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Δεν είναι δυνατή η αναπαραγωγή αυτού του αρχείου. Η μορφή ή ο κωδικοποιητής ενδέχεται να μην υποστηρίζονται."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Μάθετε περισσότερα για τους συνδέσμους",
+  "LIVE_DEV_STYLER_PLACEMENT": "Τοποθέτηση",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Κατανομή",
+  "LIVE_DEV_STYLER_PACKED": "Σε συμπύκνωση",
+  "LIVE_DEV_STYLER_MIN": "Ελάχ.",
+  "LIVE_DEV_STYLER_MAX": "Μέγ."
 });

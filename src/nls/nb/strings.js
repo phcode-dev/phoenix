@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Ingen eksisterende CSS regler passer ditt utvalg.<br> Klikk \"Ny regel\" for å lage en.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Det er ingen stilark i prosjektet ditt.<br>Lag ett for å legge til CSS regler.",
   "IMAGE_VIEWER_LARGEST_ICON": "største",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Forhåndsvisning er begrenset til filer under {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Denne filen kan ikke spilles av. Formatet eller kodeken støttes kanskje ikke.",
   "UNIT_PIXELS": "piksler",
   "DEBUG_MENU": "Debug",
   "ERRORS": "Feil",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Forhåndsvisning er begrenset til filer under {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Denne filen kan ikke spilles av. Formatet eller kodeken støttes kanskje ikke."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Lær mer om lenker",
+  "LIVE_DEV_STYLER_PLACEMENT": "Plassering",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Fordel",
+  "LIVE_DEV_STYLER_PACKED": "Pakket",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Maks"
 });

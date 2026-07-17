@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Det finns inga CSS-regler som matchar din markering.<br> Klicka på \"Ny regel\" för att skapa en.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Det finns inga stilmallar i ditt projekt.<br>Skapa en flr att lägga till CSS-regler.",
   "IMAGE_VIEWER_LARGEST_ICON": "största",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Förhandsgranskning är begränsad till filer under {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Den här filen kan inte spelas upp. Formatet eller kodeken kanske inte stöds.",
   "UNIT_PIXELS": "pixlar",
   "DEBUG_MENU": "Debug",
   "ERRORS": "Fel",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Förhandsgranskning är begränsad till filer under {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Den här filen kan inte spelas upp. Formatet eller kodeken kanske inte stöds."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Läs mer om länkar",
+  "LIVE_DEV_STYLER_PLACEMENT": "Placering",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Fördela",
+  "LIVE_DEV_STYLER_PACKED": "Packad",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

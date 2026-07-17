@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Non hai reglas CSS existentes que coincidan cua túa selección.<br> Fai click en \"Nova regra\" para crear unha.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Non hai follas de estilos no teu proxecto.<br>Crea unha para añadir regras CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "máis grande",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "A vista previa está limitada a ficheiros de menos de {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Non se pode reproducir este ficheiro. É posible que o formato ou o códec non sexan compatibles.",
   "UNIT_PIXELS": "píxeles",
   "DEBUG_MENU": "Desenvolvemento",
   "ERRORS": "Erros",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "A vista previa está limitada a ficheiros de menos de {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Non se pode reproducir este ficheiro. É posible que o formato ou o códec non sexan compatibles."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Máis información sobre as ligazóns",
+  "LIVE_DEV_STYLER_PLACEMENT": "Colocación",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Distribuír",
+  "LIVE_DEV_STYLER_PACKED": "Empaquetado",
+  "LIVE_DEV_STYLER_MIN": "Mín.",
+  "LIVE_DEV_STYLER_MAX": "Máx."
 });

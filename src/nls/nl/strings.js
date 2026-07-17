@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Er zijn geen bestaande CSS regels die overeenkomsten met jouw selectie.<br> Klik \"Nieuwe regel\" om te maken.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Er zijn geen stylesheets in je project.<br>Maak er een om CSS regels toe te voegen.",
   "IMAGE_VIEWER_LARGEST_ICON": "meest grote",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Voorvertoning is beperkt tot bestanden kleiner dan {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Dit bestand kan niet worden afgespeeld. Het formaat of de codec wordt mogelijk niet ondersteund.",
   "UNIT_PIXELS": "pixels",
   "DEBUG_MENU": "Debug",
   "ERRORS": "fouten",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Voorvertoning is beperkt tot bestanden kleiner dan {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Dit bestand kan niet worden afgespeeld. Het formaat of de codec wordt mogelijk niet ondersteund."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Meer informatie over links",
+  "LIVE_DEV_STYLER_PLACEMENT": "Plaatsing",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Verdelen",
+  "LIVE_DEV_STYLER_PACKED": "Gegroepeerd",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

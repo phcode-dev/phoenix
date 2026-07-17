@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "നിങ്ങളുടെ തിരഞ്ഞെടുപ്പുമായി പൊരുത്തപ്പെടുന്ന നിലവിലുള്ള CSS നിയമങ്ങളൊന്നുമില്ല.<br> ഒന്ന് സൃഷ്ടിക്കാൻ \"പുതിയ നിയമം\" ക്ലിക്ക് ചെയ്യുക.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "നിങ്ങളുടെ പ്രോജക്ടിൽ സ്റ്റൈൽഷീറ്റുകളൊന്നുമില്ല.<br>CSS നിയമങ്ങൾ ചേർക്കാൻ ഒന്ന് സൃഷ്ടിക്കുക.",
   "IMAGE_VIEWER_LARGEST_ICON": "ഏറ്റവും വലുത്",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "പ്രിവ്യൂ {0}-ൽ താഴെയുള്ള ഫയലുകളിൽ പരിമിതപ്പെടുത്തിയിരിക്കുന്നു.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "ഈ ഫയൽ പ്ലേ ചെയ്യാൻ സാധിക്കില്ല. ഫോർമാറ്റോ കോഡെക്കോ പിന്തുണയ്ക്കുന്നുണ്ടാവില്ല.",
   "UNIT_PIXELS": "പിക്സലുകൾ",
   "DEBUG_MENU": "ഡീബഗ്ഗ്",
   "ERRORS": "പിശകുകൾ",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "പ്രിവ്യൂ {0}-ൽ താഴെയുള്ള ഫയലുകളിൽ പരിമിതപ്പെടുത്തിയിരിക്കുന്നു.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "ഈ ഫയൽ പ്ലേ ചെയ്യാൻ സാധിക്കില്ല. ഫോർമാറ്റോ കോഡെക്കോ പിന്തുണയ്ക്കുന്നുണ്ടാവില്ല."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "ലിങ്കുകളെക്കുറിച്ച് കൂടുതൽ അറിയുക",
+  "LIVE_DEV_STYLER_PLACEMENT": "സ്ഥാനം",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "വിതരണം",
+  "LIVE_DEV_STYLER_PACKED": "പാക്ക്ഡ്",
+  "LIVE_DEV_STYLER_MIN": "മിൻ",
+  "LIVE_DEV_STYLER_MAX": "മാക്സ്"
 });

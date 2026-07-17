@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "선택 일치하는 기존 CSS 규칙이 없습니다. <br> 「새 규칙」을 클릭하여 규칙을 작성하세요.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "프로젝트에는 스타일 시트가 없습니다. <br> 스타일 시트를 작성하여 CSS 규칙에 추가하세요.",
   "IMAGE_VIEWER_LARGEST_ICON": "최대",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "미리 보기는 {0} 미만의 파일로 제한됩니다.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "이 파일을 재생할 수 없습니다. 지원되지 않는 형식 또는 코덱일 수 있습니다.",
   "UNIT_PIXELS": "픽셀",
   "DEBUG_MENU": "디버그",
   "ERRORS": "에러",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "미리 보기는 {0} 미만의 파일로 제한됩니다.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "이 파일을 재생할 수 없습니다. 지원되지 않는 형식 또는 코덱일 수 있습니다."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "링크에 대해 자세히 알아보기",
+  "LIVE_DEV_STYLER_PLACEMENT": "배치",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "분배",
+  "LIVE_DEV_STYLER_PACKED": "팩",
+  "LIVE_DEV_STYLER_MIN": "최소",
+  "LIVE_DEV_STYLER_MAX": "최대"
 });

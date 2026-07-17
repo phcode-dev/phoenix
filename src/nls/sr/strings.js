@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Не постоје CSS правила која се поклапају са Вашом селекцијом.<br> Кликните \"Ново правило\" како бисте креирали ново.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Не постоје стилови у вашем пројекту.<br>Креирајте један или додајте CSS правила.",
   "IMAGE_VIEWER_LARGEST_ICON": "највећа",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Преглед је ограничен на датотеке мање од {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Није могуће репродуковати ову датотеку. Формат или кодек можда нису подржани.",
   "UNIT_PIXELS": "пиксели",
   "DEBUG_MENU": "Отклањање грешака",
   "ERRORS": "Грешке",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Преглед је ограничен на датотеке мање од {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Није могуће репродуковати ову датотеку. Формат или кодек можда нису подржани."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Сазнајте више о линковима",
+  "LIVE_DEV_STYLER_PLACEMENT": "Положај",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Распореди",
+  "LIVE_DEV_STYLER_PACKED": "Збијено",
+  "LIVE_DEV_STYLER_MIN": "Мин",
+  "LIVE_DEV_STYLER_MAX": "Макс"
 });

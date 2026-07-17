@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Няма съществуващи правила за CSS, които да отговарят на избора Ви.<br> Натиснете „Ново правило“, за да създадете такова.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "В проекта Ви няма стилови файлове.<br>Създайте поне един, за да добавите правила за CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "най-голямо",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Прегледът е ограничен до файлове под {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Файлът не може да се възпроизведе. Възможно е форматът или кодекът да не се поддържат.",
   "UNIT_PIXELS": "пиксели",
   "DEBUG_MENU": "Разработка",
   "ERRORS": "Грешки",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Прегледът е ограничен до файлове под {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Файлът не може да се възпроизведе. Възможно е форматът или кодекът да не се поддържат."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Научете повече за връзките",
+  "LIVE_DEV_STYLER_PLACEMENT": "Разположение",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Разпределяне",
+  "LIVE_DEV_STYLER_PACKED": "Сбито",
+  "LIVE_DEV_STYLER_MIN": "Мин",
+  "LIVE_DEV_STYLER_MAX": "Макс"
 });

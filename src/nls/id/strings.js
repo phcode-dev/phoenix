@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Tidak ada aturan CSS yang cocok dengan kriteria Anda.<br> Klik \"Aturan Baru\" untuk membuat baru.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Proyek Anda tidak mempunyai stylesheet.<br>Buat baru untuk menambahkan aturan CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "paling besar",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Pratinjau dibatasi untuk file di bawah {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "File ini tidak dapat diputar. Format atau codec mungkin tidak didukung.",
   "UNIT_PIXELS": "piksel",
   "DEBUG_MENU": "Debug",
   "ERRORS": "Kesalahan",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Pratinjau dibatasi untuk file di bawah {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "File ini tidak dapat diputar. Format atau codec mungkin tidak didukung."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Pelajari lebih lanjut tentang tautan",
+  "LIVE_DEV_STYLER_PLACEMENT": "Penempatan",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Distribusikan",
+  "LIVE_DEV_STYLER_PACKED": "Rapat",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Maks"
 });

@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "符合选择的 CSS 规则不存在。<br> 点击 \"新 CSS 规则\" 来创建。",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "您的项目中没有样式表。<br>建立一个来添加 CSS 规则。",
   "IMAGE_VIEWER_LARGEST_ICON": "最大化",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "预览仅支持小于 {0} 的文件。",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "无法播放此文件。文件格式或编解码器可能不受支持。",
   "UNIT_PIXELS": "像素",
   "DEBUG_MENU": "调试",
   "ERRORS": "错误",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "预览仅支持小于 {0} 的文件。",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "无法播放此文件。文件格式或编解码器可能不受支持。"
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "了解有关链接的更多信息",
+  "LIVE_DEV_STYLER_PLACEMENT": "位置",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "分布",
+  "LIVE_DEV_STYLER_PACKED": "紧凑",
+  "LIVE_DEV_STYLER_MIN": "最小",
+  "LIVE_DEV_STYLER_MAX": "最大"
 });

@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "هیچ قائده منطبقی برای CSSها نسبت به موردی که انتخاب کرده اید وجود ندارد.<br> از گزینه \"قائده جدید\" برای تعریف یک قائده جدید استفاده کنید.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "هیچ شیوه نامه ای-پرونده CSS- در پروژه شما وجود ندارد.<br>جهت تعریف قوائد CSS ابتدا یک پرونده شیوه نامه ایجاد کنید.",
   "IMAGE_VIEWER_LARGEST_ICON": "بزرگتر",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "پیش‌نمایش به فایل‌های زیر {0} محدود است.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "این فایل قابل پخش نیست. ممکن است فرمت یا کدک آن پشتیبانی نشود.",
   "UNIT_PIXELS": "پیکسل",
   "DEBUG_MENU": "خطایابی",
   "ERRORS": "خطاها",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "پیش‌نمایش به فایل‌های زیر {0} محدود است.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "این فایل قابل پخش نیست. ممکن است فرمت یا کدک آن پشتیبانی نشود."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "اطلاعات بیشتر دربارهٔ پیوندها",
+  "LIVE_DEV_STYLER_PLACEMENT": "محل قرارگیری",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "توزیع",
+  "LIVE_DEV_STYLER_PACKED": "فشرده",
+  "LIVE_DEV_STYLER_MIN": "حداقل",
+  "LIVE_DEV_STYLER_MAX": "حداکثر"
 });

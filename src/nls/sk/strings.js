@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Neexistujú žiadne pravidlá CSS, ktoré by zodpovedali vášmu výberu.<br> Kliknite na \"Nové pravidlo\" pre vytvorenie.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "V projekte nie sú žiadne štýly.<br>Vytvorte jeden pre pridanie CSS pravidiel.",
   "IMAGE_VIEWER_LARGEST_ICON": "najväčší",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Náhľad je obmedzený na súbory s veľkosťou do {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Tento súbor nie je možné prehrať. Formát alebo kodek nemusí byť podporovaný.",
   "UNIT_PIXELS": "pixely",
   "DEBUG_MENU": "Ladenie",
   "ERRORS": "Chyby",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Náhľad je obmedzený na súbory s veľkosťou do {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Tento súbor nie je možné prehrať. Formát alebo kodek nemusí byť podporovaný."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Zistite viac o odkazoch",
+  "LIVE_DEV_STYLER_PLACEMENT": "Umiestnenie",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Rozdeliť",
+  "LIVE_DEV_STYLER_PACKED": "Zbalené",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

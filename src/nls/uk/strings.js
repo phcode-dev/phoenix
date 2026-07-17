@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Жодне правило CSS, що відповідає виділенню.<br> Натисніть 'Нове правило' для створення. ",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "У вашому проекті відсутні таблиці стилів.<br>Створіть хоча б одну аби мати можливість додавати CSS-правила.",
   "IMAGE_VIEWER_LARGEST_ICON": "найбільша",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Перегляд обмежено для файлів розміром до {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Цей файл неможливо відтворити. Формат або кодек можуть не підтримуватися.",
   "UNIT_PIXELS": "пікселі",
   "DEBUG_MENU": "Відлагодження",
   "ERRORS": "Помилки",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Перегляд обмежено для файлів розміром до {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Цей файл неможливо відтворити. Формат або кодек можуть не підтримуватися."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Дізнатися більше про посилання",
+  "LIVE_DEV_STYLER_PLACEMENT": "Розташування",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Розподілити",
+  "LIVE_DEV_STYLER_PACKED": "Щільно",
+  "LIVE_DEV_STYLER_MIN": "Мін",
+  "LIVE_DEV_STYLER_MAX": "Макс"
 });

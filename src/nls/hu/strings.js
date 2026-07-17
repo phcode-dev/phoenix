@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Nincsenek olyan létező CSS-szabályok, amelyek megfelelnek a kijelölésnek.<br> Kattintson az \"Új szabály\" gombra egy létrehozásához.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Nincsenek stíluslapok a projektedben.<br>Hozz létre egyet CSS szabályok hozzáadásához.",
   "IMAGE_VIEWER_LARGEST_ICON": "legnagyobb",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Az előnézet {0} alatti fájlokra korlátozott.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Ez a fájl nem játszható le. Lehet, hogy a formátum vagy a kodek nem támogatott.",
   "UNIT_PIXELS": "pixelek",
   "DEBUG_MENU": "Hibakeresés",
   "ERRORS": "Hibák",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Az előnézet {0} alatti fájlokra korlátozott.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Ez a fájl nem játszható le. Lehet, hogy a formátum vagy a kodek nem támogatott."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Tudjon meg többet a hivatkozásokról",
+  "LIVE_DEV_STYLER_PLACEMENT": "Elhelyezés",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Elosztás",
+  "LIVE_DEV_STYLER_PACKED": "Tömörített",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

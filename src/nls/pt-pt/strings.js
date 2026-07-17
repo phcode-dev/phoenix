@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Não existem regras CSS que correspondam à sua seleção.<br> Clique em \"Nova Regra\" para criar uma.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Não existem folhas de estilo no seu projeto.<br>Crie uma para adicionar regras CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "Maior",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "A pré-visualização está limitada a ficheiros com menos de {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Este ficheiro não pode ser reproduzido. O formato ou o codec podem não ser suportados.",
   "UNIT_PIXELS": "píxeis",
   "DEBUG_MENU": "Debug",
   "ERRORS": "Erros",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "A pré-visualização está limitada a ficheiros com menos de {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Este ficheiro não pode ser reproduzido. O formato ou o codec podem não ser suportados."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Saiba mais sobre ligações",
+  "LIVE_DEV_STYLER_PLACEMENT": "Posicionamento",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Distribuir",
+  "LIVE_DEV_STYLER_PACKED": "Agrupado",
+  "LIVE_DEV_STYLER_MIN": "Mín",
+  "LIVE_DEV_STYLER_MAX": "Máx"
 });

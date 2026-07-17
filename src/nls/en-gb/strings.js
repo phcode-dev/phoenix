@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "There are no existing CSS rules that match your selection.<br> Click \"New Rule\" to create one.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "There are no stylesheets in your project.<br>Create one to add CSS rules.",
   "IMAGE_VIEWER_LARGEST_ICON": "Largest",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Preview is limited to files under {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "This file cannot be played. The format or codec may not be supported.",
   "UNIT_PIXELS": "Pixels",
   "DEBUG_MENU": "Debug",
   "ERRORS": "Errors",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Preview is limited to files under {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "This file cannot be played. The format or codec may not be supported."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Learn more about links",
+  "LIVE_DEV_STYLER_PLACEMENT": "Placement",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Distribute",
+  "LIVE_DEV_STYLER_PACKED": "Packed",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

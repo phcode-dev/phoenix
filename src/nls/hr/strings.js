@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Nema postojećih CSS pravila koji odgovaraju vašem odabiru.<br> Kliknite \"New Rule\" da biste ih stvorili.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Ne postoje stilovi u vašem projektu.<br>Stvorite jedan da dodate CSS pravila.",
   "IMAGE_VIEWER_LARGEST_ICON": "najveća",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Pregled je ograničen na datoteke manje od {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Nije moguće reproducirati ovu datoteku. Format ili kodek možda nije podržan.",
   "UNIT_PIXELS": "piksela",
   "DEBUG_MENU": "Otklanjanje grešaka",
   "ERRORS": "Pogreške",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Pregled je ograničen na datoteke manje od {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Nije moguće reproducirati ovu datoteku. Format ili kodek možda nije podržan."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Saznajte više o poveznicama",
+  "LIVE_DEV_STYLER_PLACEMENT": "Položaj",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Rasporedi",
+  "LIVE_DEV_STYLER_PACKED": "Zbijeno",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

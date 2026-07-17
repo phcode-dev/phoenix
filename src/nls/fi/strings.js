@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Valintaasi vastaavia CSS-sääntöjä ei ole.<br> Luo sellainen napsauttamalla ”Uusi sääntö”.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Projektissa ei ole tyylitiedostoja.<br>Lisää CSS-sääntöjä luomalla sellainen.",
   "IMAGE_VIEWER_LARGEST_ICON": "suurin",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Esikatselu on rajoitettu alle {0}:n kokoisiin tiedostoihin.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Tiedostoa ei voi toistaa. Tiedostomuotoa tai koodekkia ei ehkä tueta.",
   "UNIT_PIXELS": "pikseliä",
   "DEBUG_MENU": "Kehitys",
   "ERRORS": "Virheet",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Esikatselu on rajoitettu alle {0}:n kokoisiin tiedostoihin.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Tiedostoa ei voi toistaa. Tiedostomuotoa tai koodekkia ei ehkä tueta."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Lue lisää linkeistä",
+  "LIVE_DEV_STYLER_PLACEMENT": "Sijoitus",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Jaa",
+  "LIVE_DEV_STYLER_PACKED": "Pakattu",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

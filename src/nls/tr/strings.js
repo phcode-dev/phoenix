@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Seçiminize uyan mevcut CSS kuralı yok.<br> Bir tane oluşturmak için \"Yeni Kural\"a tıklayın.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Projenizde stil sayfası yok.<br>CSS kuralları eklemek için bir tane oluşturun.",
   "IMAGE_VIEWER_LARGEST_ICON": "En büyük",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Önizleme, {0} altındaki dosyalarla sınırlıdır.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Bu dosya oynatılamıyor. Biçim veya codec desteklenmiyor olabilir.",
   "UNIT_PIXELS": "piksel",
   "DEBUG_MENU": "Ayıkla",
   "ERRORS": "Hatalar",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Önizleme, {0} altındaki dosyalarla sınırlıdır.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Bu dosya oynatılamıyor. Biçim veya codec desteklenmiyor olabilir."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Bağlantılar hakkında daha fazla bilgi edinin",
+  "LIVE_DEV_STYLER_PLACEMENT": "Yerleşim",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Dağıt",
+  "LIVE_DEV_STYLER_PACKED": "Sıkışık",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Maks"
 });

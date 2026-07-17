@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Существующих правил CSS соответвующих выделенному тексту не определено. <br> Выберите \"Новое правило\" чтобы создать новое.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Ваш проект не содержит таблиц стилей (stylesheets).<br>Создайте его чтобы добавить правила CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "наибольший размер",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Предпросмотр доступен для файлов размером до {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Не удалось воспроизвести файл. Возможно, его формат или кодек не поддерживаются.",
   "UNIT_PIXELS": "пикселей",
   "DEBUG_MENU": "Отладка",
   "ERRORS": "Ошибки",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Предпросмотр доступен для файлов размером до {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Не удалось воспроизвести файл. Возможно, его формат или кодек не поддерживаются."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Узнать больше о ссылках",
+  "LIVE_DEV_STYLER_PLACEMENT": "Размещение",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Распределить",
+  "LIVE_DEV_STYLER_PACKED": "Упаковано",
+  "LIVE_DEV_STYLER_MIN": "Мин",
+  "LIVE_DEV_STYLER_MAX": "Макс"
 });

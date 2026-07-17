@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Es gibt keine CSS-Regeln, die zu Ihrer Auswahl passen.<br> Klicken Sie auf \"Neue Regel\", um eine neue Regel zu erstellen.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Es gibt keine Stylesheets in Ihrem Projekt.<br>Erstellen Sie eines, um CSS-Regeln hinzuzufügen.",
   "IMAGE_VIEWER_LARGEST_ICON": "größtes",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Die Vorschau ist auf Dateien unter {0} begrenzt.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Diese Datei kann nicht abgespielt werden. Das Format oder der Codec wird möglicherweise nicht unterstützt.",
   "UNIT_PIXELS": "Pixel",
   "DEBUG_MENU": "Debug",
   "ERRORS": "Fehler",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Die Vorschau ist auf Dateien unter {0} begrenzt.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Diese Datei kann nicht abgespielt werden. Das Format oder der Codec wird möglicherweise nicht unterstützt."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Mehr über Links erfahren",
+  "LIVE_DEV_STYLER_PLACEMENT": "Platzierung",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Verteilen",
+  "LIVE_DEV_STYLER_PACKED": "Gepackt",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

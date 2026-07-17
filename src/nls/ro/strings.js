@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Nu există nicio regulă CSS care să se potrivească selecției.<br>Clic pe \"Regulă nouă\" pentru a crea una.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Proiectul nu conține nicio foaie de stiluri.<br>Creați una pentru a adăuga reguli CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "maxim",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Previzualizarea este limitată la fișiere mai mici de {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Acest fișier nu poate fi redat. Este posibil ca formatul sau codecul să nu fie suportat.",
   "UNIT_PIXELS": "pixeli",
   "DEBUG_MENU": "Depanare",
   "ERRORS": "Erori",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Previzualizarea este limitată la fișiere mai mici de {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Acest fișier nu poate fi redat. Este posibil ca formatul sau codecul să nu fie suportat."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Aflați mai multe despre linkuri",
+  "LIVE_DEV_STYLER_PLACEMENT": "Amplasare",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Distribuire",
+  "LIVE_DEV_STYLER_PACKED": "Grupat",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Neexistují žádné CSS předpisy odpovídající vašemu výběru.<br>Pro vytvoření předpisu klikněte na \"Nový předpis\".",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Neexistují žádné soubory s kaskádovými styly ve vašem projektu.<br>Vytvořte nový soubor pro přidání CSS předpisů.",
   "IMAGE_VIEWER_LARGEST_ICON": "největší",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Náhled je omezen na soubory do velikosti {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Tento soubor nelze přehrát. Formát nebo kodek nemusí být podporován.",
   "UNIT_PIXELS": "pixely",
   "DEBUG_MENU": "Nástroje",
   "ERRORS": "Chyby",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Náhled je omezen na soubory do velikosti {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Tento soubor nelze přehrát. Formát nebo kodek nemusí být podporován."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Další informace o odkazech",
+  "LIVE_DEV_STYLER_PLACEMENT": "Umístění",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Rozmístit",
+  "LIVE_DEV_STYLER_PACKED": "Sbaleno",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Max"
 });

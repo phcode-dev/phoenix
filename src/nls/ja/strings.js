@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "選択に一致する既存の CSS ルールがありません。<br>「新規ルール」をクリックしてルールを作成してください。",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "プロジェクトにはスタイルシートがありません。<br>スタイルシートを作成して CSS ルールに追加してください。",
   "IMAGE_VIEWER_LARGEST_ICON": "最大",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "プレビューは{0}未満のファイルに限られます。",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "このファイルは再生できません。フォーマットまたはコーデックが対応していない可能性があります。",
   "UNIT_PIXELS": "ピクセル",
   "DEBUG_MENU": "デバッグ",
   "ERRORS": "エラー ",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "プレビューは{0}未満のファイルに限られます。",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "このファイルは再生できません。フォーマットまたはコーデックが対応していない可能性があります。"
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "リンクについてさらに詳しく",
+  "LIVE_DEV_STYLER_PLACEMENT": "配置",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "分布",
+  "LIVE_DEV_STYLER_PACKED": "パック",
+  "LIVE_DEV_STYLER_MIN": "最小",
+  "LIVE_DEV_STYLER_MAX": "最大"
 });

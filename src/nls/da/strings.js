@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "Der eksisterer ingen CSS-regler, som matcher det markerede element.<br> Klik \"Ny regel\" for at oprette en.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "Der er ingen stylesheets i dit projekt.<br>Opret et for at tilføje CSS-regler.",
   "IMAGE_VIEWER_LARGEST_ICON": "største",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "Forhåndsvisning er begrænset til filer under {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Denne fil kan ikke afspilles. Formatet eller codec'et understøttes muligvis ikke.",
   "UNIT_PIXELS": "pixler",
   "DEBUG_MENU": "Fejlsøgning",
   "ERRORS": "Fejl",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "Forhåndsvisning er begrænset til filer under {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "Denne fil kan ikke afspilles. Formatet eller codec'et understøttes muligvis ikke."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "Lær mere om links",
+  "LIVE_DEV_STYLER_PLACEMENT": "Placering",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "Fordel",
+  "LIVE_DEV_STYLER_PACKED": "Pakket",
+  "LIVE_DEV_STYLER_MIN": "Min",
+  "LIVE_DEV_STYLER_MAX": "Maks"
 });

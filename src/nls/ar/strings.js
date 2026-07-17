@@ -1342,6 +1342,8 @@ define({
   "CSS_QUICK_EDIT_NO_MATCHES": "لا توجد قواعد CSS حالية تتطابق مع اختيارك.<br> انقر فوق \"إنشاء قاعدة\" لإنشاء واحدة.",
   "CSS_QUICK_EDIT_NO_STYLESHEETS": "لا توجد أوراق أنماط في مشروعك.<br>أنشئ واحدة لإضافة قواعد CSS.",
   "IMAGE_VIEWER_LARGEST_ICON": "الأكبر",
+  "MEDIA_VIEWER_FILE_TOO_LARGE": "تقتصر المعاينة على الملفات التي يقل حجمها عن {0}.",
+  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "لا يمكن تشغيل هذا الملف. قد تكون الصيغة أو الكوديك غير مدعومة.",
   "UNIT_PIXELS": "بكسل",
   "DEBUG_MENU": "تصحيح الأخطاء",
   "ERRORS": "أخطاء",
@@ -2583,6 +2585,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "MEDIA_VIEWER_FILE_TOO_LARGE": "تقتصر المعاينة على الملفات التي يقل حجمها عن {0}.",
-  "MEDIA_VIEWER_FORMAT_NOT_SUPPORTED": "لا يمكن تشغيل هذا الملف. قد تكون الصيغة أو الكوديك غير مدعومة."
+  "LIVE_DEV_HYPERLINK_LEARN_MORE": "تعرف على المزيد حول الروابط",
+  "LIVE_DEV_STYLER_PLACEMENT": "الموضع",
+  "LIVE_DEV_STYLER_DISTRIBUTE": "توزيع",
+  "LIVE_DEV_STYLER_PACKED": "مرصوص",
+  "LIVE_DEV_STYLER_MIN": "أدنى",
+  "LIVE_DEV_STYLER_MAX": "أقصى"
 });
