@@ -435,6 +435,11 @@
                 const timer = setTimeout(function () {
                     if (pendingExecPromises.has(fnExecID)) {
                         pendingExecPromises.delete(fnExecID);
+                        // if still queued (comm never became ready), drop it so a
+                        // late flush doesn't execute a call the caller saw fail
+                        queuedExecRequests = queuedExecRequests.filter(function (req) {
+                            return req.fnExecID !== fnExecID;
+                        });
                         reject(new Error(`execPhoenixFn timed out: ${fnName}`));
                     }
                 }, PHOENIX_FN_TIMEOUT_MS);
