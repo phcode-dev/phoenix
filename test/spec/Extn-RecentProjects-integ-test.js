@@ -119,12 +119,17 @@ define(function (require, exports, module) {
                 let text = $dropDown.text();
                 expect(text.includes(jsUtilsTestFolderProjectName)).toBeTrue();
                 typeInEncodingPopup("JSUtils");
+                // if the filter hasn't applied yet, DELETE would remove the wrong entry
+                await awaitsFor(function () {
+                    return $dropDown.find(".recent-folder-link:visible").length === 1;
+                }, "dropdown to filter down to the JSUtils project", 5000);
 
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropDown[0]);
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DELETE, "keydown", $dropDown[0]);
 
-                text = $dropDown.text();
-                expect(text.includes(jsUtilsTestFolderProjectName)).toBeFalse();
+                await awaitsFor(function () {
+                    return !$dropDown.text().includes(jsUtilsTestFolderProjectName);
+                }, "JSUtils project to be removed from the recent projects list", 5000);
             });
         });
     });
