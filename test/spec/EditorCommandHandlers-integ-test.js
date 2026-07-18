@@ -217,6 +217,24 @@ define(function (require, exports, module) {
                     "Open into working set");
                 myEditor = EditorManager.getCurrentFullEditor();
 
+                // one jump attempt capped at 3s, so a hung request just counts
+                // as a failed attempt and the caller can retry
+                function attemptJumpToDefinition() {
+                    return new Promise(function (resolve) {
+                        let settled = false;
+                        function settle(val) {
+                            if (!settled) {
+                                settled = true;
+                                resolve(val);
+                            }
+                        }
+                        CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION)
+                            .done(function () { settle(true); })
+                            .fail(function () { settle(false); });
+                        setTimeout(function () { settle(false); }, 3000);
+                    });
+                }
+
                 if (window.Phoenix.isNativeApp) {
                     // Desktop has the LSP server (vtsls), which provides jump-to-definition for
                     // JavaScript at a higher priority than the built-in Tern provider. vtsls returns
@@ -230,23 +248,11 @@ define(function (require, exports, module) {
                     // awaitsFor aborts outright on a pollFn exception, so the promise is absorbed.
                     await awaitsFor(async function () {
                         myEditor.setCursorPos({line: 5, ch: 8});
-                        var landed = await new Promise(function (resolve) {
-                            var settled = false;
-                            function settle(val) {
-                                if (!settled) {
-                                    settled = true;
-                                    resolve(val);
-                                }
-                            }
-                            CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION)
-                                .done(function () { settle(true); })
-                                .fail(function () { settle(false); });
-                            setTimeout(function () { settle(false); }, 3000);
-                        });
+                        const landed = await attemptJumpToDefinition();
                         if (!landed) {
                             return false;
                         }
-                        var sel = myEditor.getSelection();
+                        const sel = myEditor.getSelection();
                         return sel.start.line === 0 && sel.start.ch === 0 &&
                             sel.end.line === 0 && sel.end.ch === 0;
                     }, "LSP jump-to-definition to land on the testMe declaration", 15000, 500);
@@ -256,9 +262,18 @@ define(function (require, exports, module) {
                         end: {line: 0, ch: 0}
                     }));
                 } else {
-                    myEditor.setCursorPos({line: 5, ch: 8});
-                    await awaitsForDone(CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION),
-                        "Jump To Definition");
+                    // Tern can stall on a slow CI runner while it warms up, so
+                    // retry with capped attempts, same as the LSP path above
+                    await awaitsFor(async function () {
+                        myEditor.setCursorPos({line: 5, ch: 8});
+                        const landed = await attemptJumpToDefinition();
+                        if (!landed) {
+                            return false;
+                        }
+                        const sel = myEditor.getSelection();
+                        return sel.start.line === 0 && sel.start.ch === 9 &&
+                            sel.end.line === 0 && sel.end.ch === 15;
+                    }, "Tern jump-to-definition to select the testMe identifier", 30000, 500);
                     selection = myEditor.getSelection();
                     expect(fixSel(selection)).toEql(fixSel({
                         start: {line: 0, ch: 9},
