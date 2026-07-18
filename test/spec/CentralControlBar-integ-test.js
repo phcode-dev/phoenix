@@ -1035,9 +1035,6 @@ define(function (require, exports, module) {
                 }
             });
 
-            // app-drawer-button is commented out in index.html for now,
-            // uncomment these two tests when it comes back
-            /*
             it("should exit design mode and open the tools bottom panel when #app-drawer-button is clicked in design mode", async function () {
                 await enterDesignMode();
                 expect(WorkspaceManager.isInDesignMode()).toBe(true);
@@ -1059,7 +1056,6 @@ define(function (require, exports, module) {
                     "tools bottom panel to become visible", 3000);
                 expect(WorkspaceManager.isInDesignMode()).toBe(false);
             });
-            */
 
             it("should exit design mode before mounting Find in Files bar", async function () {
                 await enterDesignMode();

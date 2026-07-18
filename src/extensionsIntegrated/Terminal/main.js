@@ -885,15 +885,8 @@ define(function (require, exports, module) {
                 id: "terminal-toolbar-button",
                 href: "#",
                 title: Strings.CMD_VIEW_TERMINAL
-            });
-        // The profile button (added externally by phoenix-pro) must stay at the
-        // very bottom of the toolbar, and it may or may not exist yet at appReady.
-        const $profileBtn = $("#user-profile-button");
-        if ($profileBtn.length) {
-            $btn.insertBefore($profileBtn);
-        } else {
-            $btn.appendTo($("#main-toolbar .bottom-buttons"));
-        }
+            })
+            .insertBefore("#app-drawer-button");
 
         $btn.on("click", function () {
             if (WorkspaceManager.isInDesignMode()) {
