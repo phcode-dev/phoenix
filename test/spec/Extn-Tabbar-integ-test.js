@@ -2802,8 +2802,10 @@ define(function (require, exports, module) {
                 // Check that scroll position has changed to the right
                 const scrollAfterDown = $tabBar.scrollLeft();
                 expect(scrollAfterDown).toBeGreaterThan(initialScrollLeft);
-                // Verify the scroll amount is proportional to deltaY (implementation multiplies by 2.5)
-                expect(scrollAfterDown - initialScrollLeft).toBeCloseTo(100 * 2.5, 0);
+                // scroll is deltaY * 2.5 unless clamped; the clamp point varies with font metrics
+                const maxScrollLeft = $tabBar[0].scrollWidth - $tabBar[0].clientWidth;
+                const expectedDown = Math.min(100 * 2.5, maxScrollLeft - initialScrollLeft);
+                expect(scrollAfterDown - initialScrollLeft).toBeCloseTo(expectedDown, 0);
 
                 // Create a wheel event for scrolling up (should scroll left)
                 const wheelEventUp = $.Event("wheel");
@@ -2815,8 +2817,8 @@ define(function (require, exports, module) {
                 // Check that scroll position has moved left from the previous position
                 const scrollAfterUp = $tabBar.scrollLeft();
                 expect(scrollAfterUp).toBeLessThan(scrollAfterDown);
-                // Verify the scroll amount is proportional to deltaY
-                expect(scrollAfterDown - scrollAfterUp).toBeCloseTo(100 * 2.5, 0);
+                const expectedUp = Math.min(100 * 2.5, scrollAfterDown);
+                expect(scrollAfterDown - scrollAfterUp).toBeCloseTo(expectedUp, 0);
             });
 
             it("should scroll tab bar with trackpad scrolling", function () {
