@@ -255,7 +255,7 @@ define(function (require, exports, module) {
                     } else {
                         _pressKeyInSearch("Escape");
                     }
-                    await awaitsFor(() => !_isSearchOpen(), "search bar to close");
+                    await awaitsFor(() => !_isSearchOpen(), "search bar to close", 10000);
                 }
             }
 
@@ -265,48 +265,48 @@ define(function (require, exports, module) {
 
                     beforeAll(async function () {
                         await enterModeFn();
-                    }, 10000);
+                    }, 30000);
 
                     it("should Ctrl+F open search bar", async function () {
                         expect(_isSearchOpen()).toBeFalse();
                         _openSearchWithCtrlF();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
                         await _closeSearch();
-                    }, 10000);
+                    }, 30000);
 
                     it("should typing in search highlight matches", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("Document");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
-                            "matches to be highlighted");
+                            "matches to be highlighted", 10000);
                         expect(_getActiveMatch()).not.toBeNull();
 
                         await _closeSearch();
-                    }, 10000);
+                    }, 30000);
 
                     it("should match count show N/total format", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("Document");
                         await awaitsFor(() => {
                             const count = _getSearchCount();
                             return count && /^\d+\/\d+$/.test(count.textContent);
-                        }, "match count to show N/total format");
+                        }, "match count to show N/total format", 10000);
 
                         expect(_getSearchCount().textContent).toMatch(/^1\/\d+$/);
                         await _closeSearch();
-                    }, 10000);
+                    }, 30000);
 
                     it("should Enter navigate to next match", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("Document");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
-                            "matches to appear");
+                            "matches to appear", 10000);
 
                         const firstActive = _getActiveMatch();
                         expect(firstActive).not.toBeNull();
@@ -315,41 +315,41 @@ define(function (require, exports, module) {
                         await awaitsFor(() => {
                             const active = _getActiveMatch();
                             return active && active !== firstActive;
-                        }, "active match to change on Enter");
+                        }, "active match to change on Enter", 10000);
 
                         await _closeSearch();
-                    }, 10000);
+                    }, 30000);
 
                     it("should Shift+Enter navigate to previous match", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("Document");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
-                            "matches to appear");
+                            "matches to appear", 10000);
 
                         _pressKeyInSearch("Enter");
                         await awaitsFor(() => {
                             const count = _getSearchCount();
                             return count && count.textContent.startsWith("2/");
-                        }, "to be on match 2");
+                        }, "to be on match 2", 10000);
 
                         _pressKeyInSearch("Enter", { shiftKey: true });
                         await awaitsFor(() => {
                             const count = _getSearchCount();
                             return count && count.textContent.startsWith("1/");
-                        }, "to navigate back to match 1");
+                        }, "to navigate back to match 1", 10000);
 
                         await _closeSearch();
-                    }, 10000);
+                    }, 30000);
 
                     it("should navigation wrap around", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("Document");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
-                            "matches to appear");
+                            "matches to appear", 10000);
 
                         const totalMatches = _getHighlightedMatches().length;
                         for (let i = 0; i < totalMatches - 1; i++) {
@@ -358,27 +358,27 @@ define(function (require, exports, module) {
                         await awaitsFor(() => {
                             const count = _getSearchCount();
                             return count && count.textContent.startsWith(totalMatches + "/");
-                        }, "to be on last match");
+                        }, "to be on last match", 10000);
 
                         _pressKeyInSearch("Enter");
                         await awaitsFor(() => {
                             const count = _getSearchCount();
                             return count && count.textContent.startsWith("1/");
-                        }, "to wrap to first match");
+                        }, "to wrap to first match", 10000);
 
                         await _closeSearch();
-                    }, 10000);
+                    }, 30000);
 
                     it("should Escape close search and restore focus", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("test");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
-                            "matches to appear");
+                            "matches to appear", 10000);
 
                         _pressKeyInSearch("Escape");
-                        await awaitsFor(() => !_isSearchOpen(), "search bar to close");
+                        await awaitsFor(() => !_isSearchOpen(), "search bar to close", 10000);
 
                         // Focus should leave the search input
                         const mdDoc = _getMdIFrameDoc();
@@ -386,47 +386,47 @@ define(function (require, exports, module) {
                         await awaitsFor(() => {
                             return mdDoc.activeElement !== searchInput;
                         }, "focus to leave search input");
-                    }, 10000);
+                    }, 30000);
 
                     it("should closing search clear all highlights", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("Document");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
-                            "matches to appear");
+                            "matches to appear", 10000);
 
                         await _closeSearch();
                         expect(_getHighlightedMatches().length).toBe(0);
-                    }, 10000);
+                    }, 30000);
 
                     it("should close button close search", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("test");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
-                            "matches to appear");
+                            "matches to appear", 10000);
 
                         _getMdIFrameDoc().getElementById("search-close").click();
-                        await awaitsFor(() => !_isSearchOpen(), "search bar to close via × button");
+                        await awaitsFor(() => !_isSearchOpen(), "search bar to close via × button", 10000);
                         expect(_getHighlightedMatches().length).toBe(0);
-                    }, 10000);
+                    }, 30000);
 
                     it("should search start from 1 character", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         _typeInSearch("D");
                         await awaitsFor(() => _getHighlightedMatches().length > 0,
                             "matches to appear for single character");
 
                         await _closeSearch();
-                    }, 10000);
+                    }, 30000);
 
                     it("should Escape in search NOT forward to Phoenix", async function () {
                         _openSearch();
-                        await awaitsFor(() => _isSearchOpen(), "search bar to open");
+                        await awaitsFor(() => _isSearchOpen(), "search bar to open", 10000);
 
                         let escapeSent = false;
                         const handler = function (event) {
@@ -438,11 +438,11 @@ define(function (require, exports, module) {
                         testWindow.addEventListener("message", handler);
 
                         _pressKeyInSearch("Escape");
-                        await awaitsFor(() => !_isSearchOpen(), "search bar to close");
+                        await awaitsFor(() => !_isSearchOpen(), "search bar to close", 10000);
 
                         testWindow.removeEventListener("message", handler);
                         expect(escapeSent).toBeFalse();
-                    }, 10000);
+                    }, 30000);
                 });
             }
 

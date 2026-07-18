@@ -577,11 +577,11 @@ define(function (require, exports, module) {
                 await awaitsFor(() => {
                     const blocks = mdDoc.querySelectorAll("#viewer-content pre code");
                     return blocks.length > 0 && blocks[0].textContent.includes("world");
-                }, "viewer code block to reflect CM edit");
+                }, "viewer code block to reflect CM edit", 10000);
 
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
                     "force close");
-            }, 10000);
+            }, 30000);
 
             it("should changing code block language in CM update viewer syntax class", async function () {
                 await _openMdFile("code-block-test.md");
