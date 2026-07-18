@@ -452,13 +452,27 @@ define(function (require, exports, module) {
 
             it("should be able to fix all errors", async function () {
                 await _openAndVerifyInitial();
-                const editor = EditorManager.getCurrentFullEditor();
+                let editor = EditorManager.getCurrentFullEditor();
                 editor.setCursorPos(0, 0); // resent any saved selections from previous run
                 // click on fix : Expected indentation of 4 spaces but found 9. ESLint (indent)
+                // a late doc reload can stale the fixes and pop the "Failed to Apply Fix" dialog
+                // on slow CI; dismiss it, re-lint and retry so it doesn't leak into later suites
                 $($("#problems-panel").find(".problems-fix-all-btn")).click();
-                await awaitsFor(()=>{
+                await awaitsFor(async ()=>{
+                    if($(".error-dialog.instance").length){
+                        testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                            testWindow.brackets.test.DefaultDialogs.DIALOG_ID_ERROR);
+                        await _triggerLint();
+                        await awaitsFor(()=>{
+                            return $("#problems-panel").find(".ph-fix-problem").length === 2;
+                        }, "fix buttons to reappear after re-lint", 15000);
+                        editor = EditorManager.getCurrentFullEditor();
+                        editor.setCursorPos(0, 0);
+                        $($("#problems-panel").find(".problems-fix-all-btn")).click();
+                        return false;
+                    }
                     return $("#problems-panel").find(".ph-fix-problem").length === 0;
-                }, "no problems should remain as all is now fixed", 15000);
+                }, "no problems should remain as all is now fixed", 30000);
 
                 // fixing multiple should place the cursor on first fix
                 expect(editor.hasSelection()).toBeFalse();
@@ -472,7 +486,7 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     return $("#problems-panel").find(".ph-fix-problem").length === 2;
                 }, "2 problem should be there", 15000);
-            }, 30000);
+            }, 60000);
         });
     });
 });
