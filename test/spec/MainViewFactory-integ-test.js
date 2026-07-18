@@ -113,7 +113,8 @@ define(function (require, exports, module) {
                 expect(_$(".media-view video.media-preview").length).toEqual(1);
             });
             it("should load video metadata and show dimensions, duration and size", async function () {
-                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.mp4"));
+                // webm, not mp4: Playwright's Chromium has no H.264 codec
+                promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.webm"));
                 await awaitsForDone(promise, "MainViewManager.doOpen");
                 const videoEl = _$(".media-view video.media-preview")[0];
 
@@ -132,7 +133,7 @@ define(function (require, exports, module) {
                 const dataText = _$(".media-view .media-data").text();
                 expect(dataText).toContain("320");
                 expect(dataText).toContain("240");
-                expect(_$(".media-view .media-path").text()).toContain("small.mp4");
+                expect(_$(".media-view .media-path").text()).toContain("small.webm");
             });
             it("should open a webm video", async function () {
                 promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.webm"));
