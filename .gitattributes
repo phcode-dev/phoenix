@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# must stay byte-exact; autocrlf on Windows CI breaks the file-encoding tests
+test/spec/encoding-test-files/* -text
