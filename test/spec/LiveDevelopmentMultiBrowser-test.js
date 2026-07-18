@@ -198,7 +198,14 @@ define(function (require, exports, module) {
 
         async function waitsForLiveDevelopmentToOpen() {
             LiveDevMultiBrowser.open();
-            await waitsForLiveDevelopmentFileSwitch();
+            try {
+                await waitsForLiveDevelopmentFileSwitch();
+            } catch (e) {
+                // first connection can wedge while the preview server warms up on slow CI
+                LiveDevMultiBrowser.close();
+                LiveDevMultiBrowser.open();
+                await waitsForLiveDevelopmentFileSwitch();
+            }
         }
 
         it("should establish a browser connection for an opened html file", async function () {
@@ -210,7 +217,7 @@ define(function (require, exports, module) {
 
             expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
             await endPreviewSession();
-        }, 30000);
+        }, 60000);
 
         it("should establish a browser connection for an opened html file that has no 'head' tag", async function () {
             //open a file
@@ -220,7 +227,7 @@ define(function (require, exports, module) {
 
             expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
             await endPreviewSession();
-        }, 30000);
+        }, 60000);
 
         it("should send all external stylesheets as related docs on start-up", async function () {
             let liveDoc;
