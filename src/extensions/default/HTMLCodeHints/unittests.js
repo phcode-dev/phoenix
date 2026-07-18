@@ -852,12 +852,14 @@ define(function (require, exports, module) {
 
                 HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
 
-                let text = testDocument.getText().toLowerCase();
-                text = text.split(" ")[0];
-                // add an extra space at the end to make sure that content after that is also present
-                // we cannot check with exact text because it generates randomly
-                text += ' ';
-                expect(text).toBe("lorem ");
+                const fullText = testDocument.getText().toLowerCase();
+                expect(fullText.length).toBeGreaterThan("lorem".length);
+                let text = fullText.split(" ")[0];
+                // generated text is random and may punctuate the first word ("lorem, ipsum")
+                while (text.length && (text[text.length - 1] < "a" || text[text.length - 1] > "z")) {
+                    text = text.slice(0, -1);
+                }
+                expect(text).toBe("lorem");
             });
 
             it("should show emmet hint when lorem is typed along with some number and expand it", function () {
