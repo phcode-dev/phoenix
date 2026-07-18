@@ -95,6 +95,9 @@ define(function (require, exports, module) {
      */
     var PREFS_PURE_CODE = "noDistractions";
 
+    // to ignore the small jitters that might happen during click
+    const DRAG_START_THRESHOLD = 3;
+
     /**
      * Event triggered when a panel is collapsed.
      *
@@ -496,6 +499,7 @@ define(function (require, exports, module) {
                 previousSize    = startSize,
                 baseSize        = 0,
                 resizeStarted   = false;
+            let dragThresholdCrossed = false;
 
             isResizing = true;
             $body.append($resizeShield);
@@ -559,6 +563,15 @@ define(function (require, exports, module) {
             }
 
             function onMouseMove(e) {
+                e.preventDefault();
+
+                if (!dragThresholdCrossed) {
+                    if (Math.abs(e[directionProperty] - startPosition) < DRAG_START_THRESHOLD) {
+                        return;
+                    }
+                    dragThresholdCrossed = true;
+                }
+
                 // calculate newSize adding to startSize the difference
                 // between starting and current position, capped at minSize
                 newSize = Math.max(startSize + directionIncrement * (startPosition - e[directionProperty]), minSize);
@@ -579,8 +592,6 @@ define(function (require, exports, module) {
                         newSize = Math.min(newSize, maxSize);
                     }
                 }
-
-                e.preventDefault();
 
                 if (animationRequest === null) {
                     animationRequest = window.requestAnimationFrame(doRedraw);
