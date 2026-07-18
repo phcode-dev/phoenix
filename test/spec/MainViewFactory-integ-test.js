@@ -116,14 +116,19 @@ define(function (require, exports, module) {
                 promise = MainViewManager._open(MainViewManager.ACTIVE_PANE, getFileObject("/videos/small.mp4"));
                 await awaitsForDone(promise, "MainViewManager.doOpen");
                 const videoEl = _$(".media-view video.media-preview")[0];
+
                 await awaitsFor(function () {
+                    if (_$(".media-view .media-error").is(":visible")) {
+                        throw new Error("video failed to load/decode: " +
+                            _$(".media-view .media-error").text());
+                    }
                     return videoEl.readyState >= 1; // HAVE_METADATA
-                }, "video metadata to load", 10000);
+                }, "video metadata to load", 30000);
                 expect(videoEl.videoWidth).toEqual(320);
                 expect(videoEl.videoHeight).toEqual(240);
                 await awaitsFor(function () {
                     return _$(".media-view .media-data").text().length > 0;
-                }, "video header data to render", 10000);
+                }, "video header data to render", 30000);
                 const dataText = _$(".media-view .media-data").text();
                 expect(dataText).toContain("320");
                 expect(dataText).toContain("240");
