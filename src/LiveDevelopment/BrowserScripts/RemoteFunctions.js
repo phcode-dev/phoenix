@@ -1605,12 +1605,12 @@ function RemoteFunctions(config = {}) {
 
     function _handleEscapeKeyPress() {
         enableHoverListeners(); // so that if hover lock is there it will get cleared
-        dismissUIAndCleanupState();
         getAllToolHandlers().forEach(handler => {
             if (handler.handleEscapePress) {
                 handler.handleEscapePress();
             }
         });
+        dismissUIAndCleanupState();
     }
 
     // Modifier shortcuts forwarded to the Phoenix KeyBindingManager. Clipboard
