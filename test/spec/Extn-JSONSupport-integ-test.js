@@ -88,6 +88,71 @@ define(function (require, exports, module) {
             JsonLsp._setTestSchemaAssociations(null);
         }, 45000);
 
+        it("should consume the autoclosed closing quote when inserting a key completion", async function () {
+            // Regression: typing `"` autocloses to `"|"`; the server's completion textEdit range
+            // covers BOTH quotes (its end is past the cursor) and newText is a full `"key": {$1}`
+            // snippet. insertHint used to clamp the replacement end to the cursor, leaving the
+            // closing quote dangling -> `"key": {}"` (invalid JSON).
+            const JsonLsp = testWindow.require("extensionsIntegrated/JSONSupport/JsonLsp");
+            const EditorManager = testWindow.brackets.test.EditorManager;
+            JsonLsp._setTestSchemaAssociations([{
+                fileMatch: ["appsettings.json"],
+                schema: {
+                    type: "object",
+                    properties: {
+                        serverConfig: { type: "object" }
+                    }
+                }
+            }]);
+            await _openFile("appsettings.json");
+            const editor = EditorManager.getActiveEditor();
+            editor.document.setText('{\n  ""\n}');
+            editor.setCursorPos(1, 3);      // between the quotes: `  "|"`
+
+            // Drive the LSP hint provider directly (the popup UI needs OS window focus that the
+            // embedded test window may not have). Poll fresh requests until the schema completion
+            // shows up - the pushed schema association may take a moment to apply server-side.
+            await awaitsFor(function () {
+                return !!JsonLsp._getClient();
+            }, "JSON language client registered", 30000);
+            const client = JsonLsp._getClient();
+            let $targetHint = null,
+                requestInFlight = false;
+            await awaitsFor(function () {
+                if ($targetHint) {
+                    return true;
+                }
+                if (!requestInFlight) {
+                    requestInFlight = true;
+                    client._completionCache = null; // context key is stable here - don't reuse stale lists
+                    client.codeHints.getHints(null).done(function (result) {
+                        requestInFlight = false;
+                        const hints = (result && result.hints) || [];
+                        $targetHint = hints.find(function ($hint) {
+                            const token = $hint.data("token");
+                            return token && token.label === "serverConfig";
+                        }) || null;
+                    }).fail(function () {
+                        requestInFlight = false;
+                    });
+                }
+                return false;
+            }, "serverConfig schema completion from the JSON server", 30000);
+
+            client.codeHints.insertHint($targetHint); // what selecting the hint with Enter does
+            await awaitsFor(function () {
+                return editor.document.getLine(1).indexOf("serverConfig") !== -1;
+            }, "completion inserted into the document", 30000);
+
+            expect(editor.document.getLine(1)).toBe('  "serverConfig": {}');
+            // the whole document must stay valid JSON - no dangling quote after the insert
+            expect(function () { JSON.parse(editor.document.getText()); }).not.toThrow();
+
+            JsonLsp._setTestSchemaAssociations(null);
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE,
+                { fullPath: testFolder + "/appsettings.json", _forceClose: true }));
+        }, 45000);
+
         it("should squiggle vulnerable dependencies using advisory data", async function () {
             const NpmRegistry = testWindow.require("extensionsIntegrated/JSONSupport/NpmRegistry");
             NpmRegistry._setFetcherForTests(function (url, options) {

@@ -642,12 +642,19 @@ define(function (require, exports, module) {
         // That start is stable as the user types forward (word/member starts don't move) and, crucially,
         // for member completions it points AT the trigger "." while newText itself includes the dot
         // (e.g. "console." + item ".log" -> replace from the "." -> "console.log", not "console..log").
-        // We deliberately end at the CURRENT cursor rather than token.textEdit.range.end: that end is
-        // stale when completions are served from cache while typing continues, which would otherwise
-        // replace only part of the word (e.g. "conso"+enter -> "consolenso").
         if (textEditRange && textEditRange.start.line === cursor.line &&
                 textEditRange.start.character <= cursor.ch) {
             startCh = textEditRange.start.character;
+            // Honor a range.end BEYOND the cursor: the server wants existing text after the caret
+            // overwritten because newText includes it (e.g. JSON key completion inside autoclosed
+            // quotes `"|"` - newText `"author": {$1}` covers both quotes; keeping the closing quote
+            // would leave a dangling `"` behind the insert). A range.end at/before the cursor is
+            // clamped TO the cursor instead: that end is stale when completions are served from
+            // cache while typing continues, which would otherwise replace only part of the word
+            // (e.g. "conso"+enter -> "consolenso").
+            if (textEditRange.end.line === cursor.line && textEditRange.end.character > cursor.ch) {
+                endCh = textEditRange.end.character;
+            }
         } else {
             startCh = cursor.ch;
             while (startCh > 0 && /[\w$]/.test(lineText.charAt(startCh - 1))) {

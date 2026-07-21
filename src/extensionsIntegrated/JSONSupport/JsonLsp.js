@@ -235,4 +235,12 @@ define(function (require, exports, module) {
     exports.canRun = canRun;
     exports.SERVER_ID = SERVER_ID;
     exports._setTestSchemaAssociations = _setTestSchemaAssociations;
+    if (Phoenix.isTestWindow) {
+        // Test hook - the registered LanguageClient (null until the server has started). Lets
+        // integration tests drive the LSP providers (e.g. codeHints) directly, since the hint UI
+        // needs OS window focus that the embedded test window may not have.
+        exports._getClient = function () {
+            return client;
+        };
+    }
 });
