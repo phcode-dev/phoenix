@@ -72,7 +72,7 @@ define(function main(require, exports, module) {
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
         showStylesBar: true, // default value, this will get updated when the extension loads
-        stylesBarPosition: "", // saved bar position ("<cx>:<cy>"); empty = default spot
+        stylesBarPosition: "", // saved dock side ("top"/"bottom"); empty = default bottom
         syncSourceAndPreview: true, // default value, this will get updated when the extension loads
         imageGalleryAutoOpen: true, // auto-open gallery on first image click per session
         isPaidUser: false, // will be updated when we fetch entitlements
