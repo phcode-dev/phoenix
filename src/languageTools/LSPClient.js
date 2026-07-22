@@ -705,7 +705,8 @@ define(function (require, exports, module) {
             command: config.command,
             args: config.args || ["--stdio"],
             rootUri: rootUri,
-            workspaceConfiguration: config.workspaceConfiguration
+            workspaceConfiguration: config.workspaceConfiguration,
+            suppressStderrPattern: config.suppressStderrPattern
         });
 
         const initResult = await conn.execPeer("sendRequest", {
@@ -812,6 +813,10 @@ define(function (require, exports, module) {
      *        treats the default null answer as "all diagnostics off").
      * @param {function(Array):Array} [config.filterDiagnostics] - server-specific post-filter for
      *        published diagnostics
+     * @param {string} [config.suppressStderrPattern] - regex source (string, not RegExp - it
+     *        crosses the node connector); stderr lines matching it are dropped from the live
+     *        console log. Opt in for servers that narrate every request on stderr (pyrefly uses
+     *        "^\\s*INFO\\b"); the full stderr is still kept node-side for crash reports.
      * @return {Promise<LanguageClient|null>} the client, or null if it could not be started
      */
     async function registerLanguageServer(config) {

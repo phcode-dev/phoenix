@@ -236,10 +236,25 @@ exports.ping = async function ping() {
  * @param {Object} [params.workspaceConfiguration] - settings tree served to the server's
  *        workspace/configuration pulls (sections resolved by dotted path); pulls answer null
  *        without it
+ * @param {string} [params.suppressStderrPattern] - regex source; stderr lines matching it are
+ *        dropped from the live console log for this server (for servers that narrate every
+ *        request, e.g. pyrefly with "^\\s*INFO\\b"). The full stderr is still kept in
+ *        stderrTail for crash reports
  * @returns {Promise<Object>} Result with success status and server info
  */
 exports.startServer = async function startServer(params) {
-    const { serverId, command, args = ['--stdio'], rootUri, workspaceConfiguration } = params;
+    const { serverId, command, args = ['--stdio'], rootUri, workspaceConfiguration,
+        suppressStderrPattern } = params;
+
+    // Compiled once here; a broken pattern must not take the server down over log cosmetics.
+    let stderrDropRegex = null;
+    if (suppressStderrPattern) {
+        try {
+            stderrDropRegex = new RegExp(suppressStderrPattern);
+        } catch (err) {
+            console.error(`[lsp-client][${serverId}] invalid suppressStderrPattern ignored:`, err.message);
+        }
+    }
 
     if (!serverId || !command) {
         throw new Error('serverId and command are required');
@@ -291,7 +306,19 @@ exports.startServer = async function startServer(params) {
             if (serverState.stderrTail.length > 50) {
                 serverState.stderrTail.shift();
             }
-            console.error(`[lsp-client][${serverId} stderr]`, text.trimEnd());
+            // A server registered with suppressStderrPattern narrates routine traffic on stderr
+            // (e.g. pyrefly logs every request at INFO level), which drowns real problems in the
+            // console. Drop matching lines from the console log only - stderrTail above keeps the
+            // full text, so crash reports still carry everything.
+            let consoleText = text.trimEnd();
+            if (stderrDropRegex) {
+                consoleText = text.split('\n')
+                    .filter(line => line.trim() && !stderrDropRegex.test(line))
+                    .join('\n');
+            }
+            if (consoleText) {
+                console.error(`[lsp-client][${serverId} stderr]`, consoleText);
+            }
         });
 
         serverProcess.on('spawn', () => {

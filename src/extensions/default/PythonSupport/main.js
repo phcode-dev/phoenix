@@ -105,7 +105,9 @@ define(function (require, exports, module) {
             // pyproject.toml stays authoritative over this.
             workspaceConfiguration: {
                 python: { pyrefly: { typeCheckingMode: "default" } }
-            }
+            },
+            // pyrefly narrates every request on stderr at INFO level - keep that out of the console
+            suppressStderrPattern: "^\\s*INFO\\b"
         });
         if (client) {
             registered = true;
