@@ -62,6 +62,7 @@ define(function (require, exports, module) {
 
     let lspClientPromise = null;
     let registered = false;
+    let _client = null;
     let starting = false;
     let pendingRepoint = false;
     let initErrorReported = false;
@@ -123,6 +124,7 @@ define(function (require, exports, module) {
         });
         if (client) {
             registered = true;
+            _client = client;
         }
     }
 
@@ -251,4 +253,11 @@ define(function (require, exports, module) {
     // for tests
     exports._ensureServerForActiveEditor = _ensureServerForActiveEditor;
     exports.SERVER_ID = SERVER_ID;
+    if (Phoenix.isTestWindow) {
+        // the registered LanguageClient (null until the server has started) - lets integration
+        // tests drive the LSP providers/requests directly
+        exports._getClient = function () {
+            return _client;
+        };
+    }
 });

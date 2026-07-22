@@ -135,6 +135,53 @@ define(function (require, exports, module) {
             }, "cursor to land on the definition", 30000);
         }, 45000);
 
+        it("should offer completions after typing a prefix where a blank-position query was empty", async function () {
+            // Regression: intelephense returns ZERO completions at a bare blank position but a full
+            // list once a prefix exists. The empty result used to be cached under the word-context
+            // key (file|line|text-before-word-start), which is IDENTICAL for the blank position and
+            // the typed prefix - so every later Ctrl-Space on the line replayed "no completions".
+            const phpMain = await _phpModule("main");
+            const client = phpMain._getClient();
+            expect(client).toBeTruthy();
+            await _openFile("funcs.php");
+            const editor = EditorManager.getActiveEditor();
+            const lines = editor.document.getText().split("\n");
+            const defLine = lines.findIndex(function (l) { return l.indexOf("function computeTotal") !== -1; });
+            // fresh blank line inside the <?php block, right above the function
+            editor.document.replaceRange("    \n", { line: defLine, ch: 0 });
+            const blankLine = defLine;
+            const filePath = editor.document.file._path;
+
+            function _hintLabels(cursorPos) {
+                return new Promise(function (resolve) {
+                    client.requestHints({ filePath: filePath, cursorPos: cursorPos })
+                        .done(function (r) {
+                            resolve(r.items.map(function (i) { return i.label; }));
+                        })
+                        .fail(function () { resolve(null); });
+                });
+            }
+
+            // 1. query the bare blank position - primes the completion cache with whatever the
+            //    server answers there (an empty list, for intelephense)
+            await _hintLabels({ line: blankLine, ch: 4 });
+            // 2. type a prefix on the SAME line (same context key) and query again - the server's
+            //    real list must come through, not a stale cached answer
+            editor.document.replaceRange("is_", { line: blankLine, ch: 4 });
+            editor.setCursorPos(blankLine, 7);
+            let labels = null;
+            await awaitsFor(function () {
+                return _hintLabels({ line: blankLine, ch: 7 }).then(function (result) {
+                    labels = result;
+                    return !!(labels && labels.length);
+                });
+            }, "completions for the is_ prefix on the previously-blank line", 30000);
+            expect(labels).toContain("is_int");
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE,
+                { fullPath: testFolder + "/funcs.php", _forceClose: true }));
+        }, 45000);
+
         it("should keep Tern serving embedded <script> JS inside php files", async function () {
             await _openFile("embedded.php");
             const editor = EditorManager.getActiveEditor();

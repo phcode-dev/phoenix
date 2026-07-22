@@ -364,12 +364,13 @@ define(function (require, exports, module) {
         return { line: cursorPos.line, character: cursorPos.ch };
     }
 
-    // Build a cache key identifying the current completion "context": the file, line, the column
-    // where the word under the cursor starts, and the text on the line before that word. While the
-    // user types/moves within the same word, this key stays constant, so we can reuse the server's
-    // (complete) result and filter client-side instead of re-querying. That avoids slow late
-    // responses rebuilding the list mid-navigation.
-    function _completionContextKey(filePath, pos) {
+    // Describe the completion "context" at a position:
+    //  - key: identifies the word being typed - file, line, and the text on the line before the
+    //    column where that word starts. Stays constant while typing/moving within one word.
+    //  - query: the part of the word already typed before the cursor.
+    //  - anchored: whether the word start sits directly after a trigger-ish non-space character
+    //    (".", "->", "::") rather than after whitespace/line start.
+    function _completionContext(filePath, pos) {
         const doc = DocumentManager.getOpenDocumentForPath(filePath);
         if (!doc) {
             return null;
@@ -379,7 +380,11 @@ define(function (require, exports, module) {
         while (start > 0 && /[\w$]/.test(lineText.charAt(start - 1))) {
             start--;
         }
-        return filePath + "|" + pos.line + "|" + lineText.substring(0, start);
+        return {
+            key: filePath + "|" + pos.line + "|" + lineText.substring(0, start),
+            query: lineText.substring(start, pos.ch),
+            anchored: start > 0 && /\S/.test(lineText.charAt(start - 1))
+        };
     }
 
     LanguageClient.prototype.requestHints = function (params) {
@@ -387,11 +392,23 @@ define(function (require, exports, module) {
         const deferred = $.Deferred();
         (async function () {
             try {
-                // Reuse the cached (complete) completion list while still in the same completion
-                // context, so typing/cursor-moves within a word don't re-hit the server.
-                const ctxKey = _completionContextKey(params.filePath, params.cursorPos);
-                if (ctxKey && self._completionCache && self._completionCache.key === ctxKey) {
-                    deferred.resolve({ items: self._completionCache.items });
+                // Reuse the cached completion list while typing forward within one word, so every
+                // keystroke doesn't re-hit the server. Reuse is only sound when the cached list is
+                // a candidate SUPERSET of what the current query would return, so it needs ALL of:
+                //  - the same context key (same file/line/word-start),
+                //  - the current query extending the query the list was fetched with, and
+                //  - that fetched query being non-empty OR anchored to a trigger char: a member
+                //    list after "." / "->" is a closed set, but what a server answers at a BARE
+                //    position is an arbitrary relevance selection, NOT a superset. intelephense
+                //    answers a blank line with a grab-bag of symbols (marked complete!) which,
+                //    if reused, swallows every later keystroke on that line (e.g. typing is_int
+                //    showed no is_int because a stale blank-line list was being refiltered).
+                const ctx = _completionContext(params.filePath, params.cursorPos);
+                const cached = self._completionCache;
+                if (ctx && cached && cached.key === ctx.key &&
+                        ctx.query.startsWith(cached.query) &&
+                        (cached.query || cached.anchored)) {
+                    deferred.resolve({ items: cached.items });
                     return;
                 }
                 await DocumentSync.flush(self, params.filePath);
@@ -406,8 +423,13 @@ define(function (require, exports, module) {
                     // just coerce documentation to a string for inline display.
                     item.documentation = _markupToString(item.documentation);
                 });
-                // Only cache a complete list (an incomplete one must be re-queried as the user types).
-                self._completionCache = (ctxKey && !isIncomplete) ? { key: ctxKey, items: items } : null;
+                // Only cache a complete, NON-EMPTY list (an incomplete one must be re-queried as
+                // the user types; an empty one has nothing to refilter - and some servers answer
+                // empty at a bare position yet answer fully once a prefix exists). The fetched
+                // query + anchoring are stored so the reuse check above can prove superset-ness.
+                self._completionCache = (ctx && !isIncomplete && items.length)
+                    ? { key: ctx.key, query: ctx.query, anchored: ctx.anchored, items: items }
+                    : null;
                 deferred.resolve({ items: items });
             } catch (err) {
                 console.warn("[LSP] request failed:", err && (err.message || err));
