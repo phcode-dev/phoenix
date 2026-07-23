@@ -711,6 +711,14 @@ function handleImagePaste(e, contentEl) {
     if (!items) {
         return false;
     }
+    // Spreadsheet/word-processor copies (e.g. Excel cells) place BOTH a rendered
+    // bitmap AND plain text on the clipboard. Genuine image copies (screenshots,
+    // copy-image) carry no text/plain. Prefer text when present so such copies
+    // paste as text, not an uploaded image. See issue #2960.
+    const pastedText = e.clipboardData.getData && e.clipboardData.getData("text/plain");
+    if (pastedText && pastedText.length > 0) {
+        return false;
+    }
     for (let i = 0; i < items.length; i++) {
         if (items[i].kind === "file" && ALLOWED_IMAGE_TYPES.includes(items[i].type)) {
             e.preventDefault();

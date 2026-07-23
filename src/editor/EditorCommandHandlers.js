@@ -1299,6 +1299,16 @@ define(function (require, exports, module) {
             return false;
         }
 
+        // Spreadsheet/word-processor copies (e.g. Excel cells) place BOTH a rendered
+        // bitmap AND plain text on the clipboard. Genuine image copies (screenshots,
+        // copy-image from a browser/file manager) carry no text/plain. When text is
+        // present, prefer the normal text paste instead of uploading the bitmap so
+        // Excel cells paste as text, not an image. See issue #2960.
+        const pastedText = event.clipboardData.getData && event.clipboardData.getData("text/plain");
+        if (pastedText && pastedText.length > 0) {
+            return false;
+        }
+
         // Only handle in markdown files
         const doc = editor.document;
         if (!doc || !doc.file) {
