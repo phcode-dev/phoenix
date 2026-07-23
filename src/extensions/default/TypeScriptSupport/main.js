@@ -351,27 +351,6 @@ define(function (require, exports, module) {
         return false;
     }
 
-    // tsserver treats a whole callback argument INCLUDING its body as "inside the call", so the
-    // parent call's signature would pop up (and, via the cursor-activity refresh, never dismiss)
-    // while coding inside a callback. Rejecting in getParameterHints covers every trigger path -
-    // Ctrl-Space, typed "("/",", and the cursor-activity re-show, which then auto-dismisses an
-    // already-visible popup when the caret enters the body. Rejecting (rather than declining in
-    // hasParameterHints) keeps this provider the owner of the request, so the manager dismisses
-    // the popup instead of falling through to the legacy Tern JS provider. This is vtsls-specific
-    // policy, so it wraps OUR provider here instead of living in the shared LSP framework
-    // (intelephense and pyrefly already answer null inside nested bodies on their own).
-    function _installParameterHintBodyGate(client) {
-        const provider = client.parameterHints;
-        const baseGetParameterHints = provider.getParameterHints.bind(provider);
-        provider.getParameterHints = function (explicit, onCursorActivity) {
-            const editor = EditorManager.getActiveEditor();
-            if (editor && _inFunctionBodyInsideArgs(editor)) {
-                return $.Deferred().reject(null);
-            }
-            return baseGetParameterHints(explicit, onCursorActivity);
-        };
-    }
-
     async function start() {
         if (registered || !canRun()) {
             return;
@@ -390,12 +369,17 @@ define(function (require, exports, module) {
             languages: SUPPORTED_LANGUAGES,
             languageIdMap: LANGUAGE_ID_MAP,
             initializationOptions: INITIALIZATION_OPTIONS,
-            filterDiagnostics: filterDiagnostics
+            filterDiagnostics: filterDiagnostics,
+            // tsserver treats a whole callback argument INCLUDING its body as "inside the call" -
+            // veto signature help there so the parent call's hint doesn't show (or stick around)
+            // while coding inside a callback like `on("x", () => { | })`.
+            shouldShowParameterHints: function (editor) {
+                return !_inFunctionBodyInsideArgs(editor);
+            }
         });
         if (client) {
             registered = true;
             _client = client;
-            _installParameterHintBodyGate(client);
         }
     }
 

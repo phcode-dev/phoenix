@@ -835,6 +835,12 @@ define(function (require, exports, module) {
      *        treats the default null answer as "all diagnostics off").
      * @param {function(Array):Array} [config.filterDiagnostics] - server-specific post-filter for
      *        published diagnostics
+     * @param {function(Editor):boolean} [config.shouldShowParameterHints] - per-position VETO for
+     *        signature help: return false to reject the request - the popup is suppressed or
+     *        dismissed there and deliberately does NOT fall through to lower-priority providers
+     *        (a fallback answering would undo the veto). For "this document isn't mine, let
+     *        others serve it" use documentFilter instead - that preserves fall-through. E.g.
+     *        vtsls vetoes the parent call's hint inside nested callback bodies.
      * @param {string} [config.suppressStderrPattern] - regex source (string, not RegExp - it
      *        crosses the node connector); stderr lines matching it are dropped from the live
      *        console log. Opt in for servers that narrate every request on stderr (pyrefly uses

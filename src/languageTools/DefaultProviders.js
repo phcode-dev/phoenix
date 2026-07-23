@@ -720,6 +720,19 @@ define(function (require, exports, module) {
             docPath = editor.document.file._path,
             $deferredHints = $.Deferred();
 
+        // A language server may VETO signature help at specific cursor positions by supplying a
+        // `shouldShowParameterHints(editor)` callback (e.g. vtsls suppresses the parent call's
+        // hint inside callback bodies). Rejecting here (rather than declining in
+        // hasParameterHints) keeps this provider the owner of the request, so the manager
+        // dismisses the popup instead of falling through to a lower-priority provider - and the
+        // cursor-activity refresh then auto-dismisses an already-visible popup when the caret
+        // moves into a vetoed position.
+        var config = this.client.config || {};
+        if (typeof config.shouldShowParameterHints === "function" &&
+                !config.shouldShowParameterHints(editor)) {
+            return $deferredHints.reject(null);
+        }
+
         this.client.requestParameterHints({
             filePath: docPath,
             cursorPos: pos
