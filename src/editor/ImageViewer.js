@@ -67,7 +67,7 @@ define(function (require, exports, module) {
         this._scale = 100;           // 100%
         this._scaleDivInfo = null;   // coordinates of hidden scale sticker
 
-        this.relPath = ProjectManager.makeProjectRelativeIfPossible(this.file.fullPath);
+        this.relPath = ProjectManager.getProjectRelativeOrDisplayPath(this.file.fullPath);
 
         this.$imagePath = this.$el.find(".image-path");
         this.$imagePreview = this.$el.find(".image-preview");
@@ -108,7 +108,7 @@ define(function (require, exports, module) {
          * so we just need to see if the file has the same path as our image
          */
         if (this.file.fullPath === newPath) {
-            this.relPath = ProjectManager.makeProjectRelativeIfPossible(newPath);
+            this.relPath = ProjectManager.getProjectRelativeOrDisplayPath(newPath);
             this.$imagePath.text(this.relPath).attr("title", this.relPath);
         }
     };

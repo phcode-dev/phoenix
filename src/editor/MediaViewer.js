@@ -117,7 +117,7 @@ define(function (require, exports, module) {
         this._naturalWidth = 0;
         this._naturalHeight = 0;
 
-        this.relPath = ProjectManager.makeProjectRelativeIfPossible(this.file.fullPath);
+        this.relPath = ProjectManager.getProjectRelativeOrDisplayPath(this.file.fullPath);
 
         this.$mediaPath = this.$el.find(".media-path");
         this.$mediaPreview = this.$el.find(".media-preview");
@@ -175,7 +175,7 @@ define(function (require, exports, module) {
      */
     MediaView.prototype._onFilenameChange = function (e, oldPath, newPath) {
         if (this.file.fullPath === newPath) {
-            this.relPath = ProjectManager.makeProjectRelativeIfPossible(newPath);
+            this.relPath = ProjectManager.getProjectRelativeOrDisplayPath(newPath);
             this.$mediaPath.text(this.relPath).attr("title", this.relPath);
         }
     };
