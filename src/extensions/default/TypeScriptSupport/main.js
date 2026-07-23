@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector"),
+        TokenUtils = brackets.getModule("utils/TokenUtils"),
         CodeIntelligence = require("./CodeIntelligence"),
         ConfigPanel = require("./ConfigPanel");
 
@@ -178,6 +179,7 @@ define(function (require, exports, module) {
     }
 
     let registered = false;
+    let _client = null;
     let lspClientPromise = null;
 
     /**
@@ -228,6 +230,148 @@ define(function (require, exports, module) {
         });
     }
 
+    // A body-opening "{" is preceded by "=>" (arrow body), ")" (function/if/for/switch body) or a
+    // bare block keyword; an object-literal "{" follows "(", ",", ":", "=", "return", "[", ...
+    const BRACE_BODY_MARKERS = /^(=>|\)|do|else|try|finally)$/;
+
+    // Lines longer than this are minified-style code. The backward token walk re-tokenizes a
+    // line's prefix on every step (O(length^2) per line), which on a single huge line can freeze
+    // the UI for seconds - so such lines are never token-scanned.
+    const PARAM_SCAN_MAX_LINE_LENGTH = 2000;
+
+    // Plain-character backward scan over a small window - used only on minified-style lines where
+    // tokenizing is too expensive. True when the cursor sits directly inside a call's argument
+    // parens (an unmatched "(" appears before any unmatched "{"), e.g. right after typing `foo(`.
+    // Quotes/comments are not understood - best effort, bounded blast radius on minified code.
+    function _atCallHeadPlainText(lineText, ch) {
+        const windowStart = Math.max(0, ch - 200);
+        let parenDepth = 0,
+            braceDepth = 0;
+        for (let i = ch - 1; i >= windowStart; i--) {
+            const c = lineText.charAt(i);
+            if (c === ")") {
+                parenDepth++;
+            } else if (c === "(") {
+                if (parenDepth > 0) {
+                    parenDepth--;
+                } else {
+                    return true; // directly inside a call's parens
+                }
+            } else if (c === "}") {
+                braceDepth++;
+            } else if (c === "{") {
+                if (braceDepth > 0) {
+                    braceDepth--;
+                } else {
+                    return false; // some brace scope encloses the cursor first - not at a call head
+                }
+            }
+        }
+        return false; // cannot tell within the window
+    }
+
+    // True when the cursor sits inside a `{...}` FUNCTION BODY nested within the surrounding
+    // call's argument list - e.g. `on("x", () => { <cursor> })`. Object-literal arguments
+    // (`css({ color: <cursor> })`) deliberately do NOT match: their active-parameter highlight is
+    // genuinely useful, and their opening brace is distinguishable by the token before it.
+    // Bounded token-based backward scan; string/comment tokens are ignored.
+    function _inFunctionBodyInsideArgs(editor) {
+        const cursor = editor.getCursorPos();
+        const cursorLineText = editor.document.getLine(cursor.line) || "";
+        if (cursorLineText.length > PARAM_SCAN_MAX_LINE_LENGTH) {
+            // Minified-style line: token-scanning it would freeze the UI, so don't. Suppress the
+            // popup there UNLESS the cursor sits right at a call head (just typed `foo(` / moving
+            // between a call's parens) - that much a cheap plain-text window can decide.
+            return !_atCallHeadPlainText(cursorLineText, cursor.ch);
+        }
+        const ctx = TokenUtils.getInitialContext(editor._codeMirror, cursor);
+        let parenDepth = 0,
+            braceDepth = 0,
+            unmatchedBrace = false,
+            scanned = 0,
+            first = true;
+        while (scanned++ < 2000) {
+            // The initial context token is the one directly BEFORE/at the cursor (e.g. the "(" the
+            // user just typed in `console.log(|`). It must take part in the bracket accounting -
+            // skipping it would match the wrong parens and misclassify the position.
+            if (first) {
+                first = false;
+            } else {
+                // About to cross into the previous line (mirrors movePrevToken's own condition)?
+                // Bail out BEFORE paying to tokenize it if it is minified-style huge - fail open,
+                // the hint then behaves as it did before this gate existed.
+                if (ctx.pos.ch <= 0 || ctx.token.start <= 0) {
+                    if (ctx.pos.line <= 0) {
+                        break;
+                    }
+                    const prevLineText = editor.document.getLine(ctx.pos.line - 1) || "";
+                    if (prevLineText.length > PARAM_SCAN_MAX_LINE_LENGTH) {
+                        return false;
+                    }
+                }
+                if (!TokenUtils.movePrevToken(ctx)) {
+                    break;
+                }
+            }
+            const type = ctx.token.type || "";
+            if (type.indexOf("string") !== -1 || type.indexOf("comment") !== -1) {
+                continue;
+            }
+            const text = ctx.token.string.trim();
+            if (!text) {
+                continue;
+            }
+            if (unmatchedBrace) {
+                // The token preceding an unmatched "{" tells whether it opened a function body
+                // (suppress) or a literal (keep scanning outward for the call paren).
+                if (BRACE_BODY_MARKERS.test(text)) {
+                    return true;
+                }
+                unmatchedBrace = false;
+                // fall through - this token still takes part in normal bracket accounting
+            }
+            if (text === "}") {
+                braceDepth++;
+            } else if (text === "{") {
+                if (braceDepth > 0) {
+                    braceDepth--;
+                } else {
+                    unmatchedBrace = true;
+                }
+            } else if (text === ")") {
+                parenDepth++;
+            } else if (text === "(") {
+                if (parenDepth > 0) {
+                    parenDepth--;
+                } else {
+                    return false; // reached the enclosing call's "(" directly - a real arg position
+                }
+            }
+        }
+        return false;
+    }
+
+    // tsserver treats a whole callback argument INCLUDING its body as "inside the call", so the
+    // parent call's signature would pop up (and, via the cursor-activity refresh, never dismiss)
+    // while coding inside a callback. Rejecting in getParameterHints covers every trigger path -
+    // Ctrl-Space, typed "("/",", and the cursor-activity re-show, which then auto-dismisses an
+    // already-visible popup when the caret enters the body. Rejecting (rather than declining in
+    // hasParameterHints) keeps this provider the owner of the request, so the manager dismisses
+    // the popup instead of falling through to the legacy Tern JS provider. This is vtsls-specific
+    // policy, so it wraps OUR provider here instead of living in the shared LSP framework
+    // (intelephense and pyrefly already answer null inside nested bodies on their own).
+    function _installParameterHintBodyGate(client) {
+        const provider = client.parameterHints;
+        const baseGetParameterHints = provider.getParameterHints.bind(provider);
+        provider.getParameterHints = function (explicit, onCursorActivity) {
+            const editor = EditorManager.getActiveEditor();
+            if (editor && _inFunctionBodyInsideArgs(editor)) {
+                return $.Deferred().reject(null);
+            }
+            return baseGetParameterHints(explicit, onCursorActivity);
+        };
+    }
+
     async function start() {
         if (registered || !canRun()) {
             return;
@@ -250,6 +394,8 @@ define(function (require, exports, module) {
         });
         if (client) {
             registered = true;
+            _client = client;
+            _installParameterHintBodyGate(client);
         }
     }
 
@@ -365,4 +511,16 @@ define(function (require, exports, module) {
             }
         });
     });
+
+    if (Phoenix.isTestWindow) {
+        // the registered LanguageClient (null until the server has started) - lets integration
+        // tests drive the LSP providers/requests directly
+        exports._getClient = function () {
+            return _client;
+        };
+        // the parameter-hint body-gate internals, exported so tests can table-drive the
+        // classification of cursor contexts without a server round-trip per case
+        exports._inFunctionBodyInsideArgs = _inFunctionBodyInsideArgs;
+        exports._atCallHeadPlainText = _atCallHeadPlainText;
+    }
 });

@@ -99,6 +99,168 @@ define(function (require, exports, module) {
             }, "TypeScript type error to be reported", 30000);
         }, 45000);
 
+        it("should reject the parent call's parameter hints inside a callback body only", async function () {
+            // tsserver treats the whole callback argument INCLUDING its body as "inside the call",
+            // so without the body gate the parent signature popup shows (and never dismisses)
+            // while coding inside the callback. The gate REJECTS the request (instead of declining
+            // in hasParameterHints) so the manager dismisses the popup without falling through to
+            // the legacy Tern JS provider. Object-literal arguments must keep their hints.
+            const tsMain = await new Promise(function (resolve, reject) {
+                const ExtensionLoader = testWindow.brackets.test.ExtensionLoader;
+                const ctx = ExtensionLoader.getRequireContextForExtension("TypeScriptSupport");
+                ctx(["main"], resolve, reject);
+            });
+            const client = tsMain._getClient();
+            expect(client).toBeTruthy();
+            const provider = client.parameterHints;
+            await _openInProject("ts/", "type-error.ts");
+            const editor = EditorManager.getActiveEditor();
+            editor.document.setText(
+                "function withOptions(cb: (n: number) => void, options: { color: string }) { cb(1); }\n" +
+                "withOptions((n) => {\n" +
+                "    console.log()\n" +
+                "}, { color: \"red\" });\n"
+            );
+
+            // inside the callback BODY -> the request is rejected outright (popup suppressed /
+            // auto-dismissed there), while the provider still owns the request
+            editor.setCursorPos(2, 4);
+            expect(provider.hasParameterHints(editor, null)).toBe(true);
+            expect(provider.getParameterHints(true, false).state()).toBe("rejected");
+
+            // inside a NESTED call's parens within the body (`console.log(|)`) -> that call's own
+            // hints must flow; the just-typed "(" is the token at the cursor and must be counted
+            const logLine = editor.document.getLine(2);
+            editor.setCursorPos(2, logLine.indexOf("(") + 1);
+            expect(provider.getParameterHints(true, false).state()).not.toBe("rejected");
+
+            // directly inside the argument list -> hints flow to the server as usual
+            editor.setCursorPos(1, 12);
+            expect(provider.getParameterHints(true, false).state()).not.toBe("rejected");
+
+            // inside an object-literal argument -> hints still flow
+            const literalLine = editor.document.getLine(3);
+            editor.setCursorPos(3, literalLine.indexOf("\"red\""));
+            expect(provider.getParameterHints(true, false).state()).not.toBe("rejected");
+
+            // minified-style lines (>2000 chars) are never token-scanned (that walk is quadratic
+            // and can freeze the UI): the popup is suppressed there, EXCEPT directly at a call
+            // head, which a cheap plain-text window decides
+            const filler = "x1=1;".repeat(500); // 2500 chars
+            const minified = "process.on(\"x\", () => {" + filler + "console.log(";
+            editor.document.setText(minified);
+            editor.setCursorPos(0, minified.length);                 // right after `console.log(`
+            expect(provider.getParameterHints(true, false).state()).not.toBe("rejected");
+            editor.setCursorPos(0, minified.indexOf(filler) + 1000); // deep in the filler
+            expect(provider.getParameterHints(true, false).state()).toBe("rejected");
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE,
+                { fullPath: testFolder + "ts/type-error.ts", _forceClose: true }));
+        }, 45000);
+
+        // Parse a source snippet with a "|" cursor marker into {text, pos}.
+        function _parseCursorMarker(src) {
+            const idx = src.indexOf("|");
+            const before = src.substring(0, idx);
+            const line = before.split("\n").length - 1;
+            const ch = line === 0 ? idx : idx - before.lastIndexOf("\n") - 1;
+            return { text: src.replace("|", ""), pos: { line: line, ch: ch } };
+        }
+
+        it("should classify cursor contexts for the parameter-hint body gate", async function () {
+            // Table-driven coverage of _inFunctionBodyInsideArgs. inBody: true means the parent
+            // call's signature popup is suppressed at the "|" cursor; false means hints flow.
+            const CASES = [
+                // function bodies nested in call arguments -> suppress
+                { name: "blank arrow body", src: "on(\"x\", () => { | })", inBody: true },
+                { name: "arrow body after a statement", src: "on(\"x\", () => { log(\"hi\"); | })", inBody: true },
+                { name: "multi-line arrow body", src: "on(\"x\", (a, b) => {\n  const c = a + b;\n  |\n})",
+                    inBody: true },
+                { name: "function-expression body", src: "arr.map(function (x) { | })", inBody: true },
+                { name: "if block inside a callback body", src: "f(x => { if (y) { | } })", inBody: true },
+                { name: "object method shorthand body", src: "f({ m() { | } })", inBody: true },
+                { name: "class method body in class-expression arg", src: "f(class { m() { | } })", inBody: true },
+                { name: "statement position after a closed nested call", src: "f(() => { g(); | })", inBody: true },
+                // also true with no call around it - harmless, servers offer no signature there
+                { name: "top-level function body", src: "function a() { | }", inBody: true },
+
+                // argument positions -> hints must flow
+                { name: "empty argument list", src: "withOptions(|)", inBody: false },
+                { name: "second argument", src: "f(a, |)", inBody: false },
+                { name: "after a closed nested call, still in args", src: "f(g(1), |)", inBody: false },
+                { name: "nested call inside a callback body", src: "f(() => { console.log(|) })", inBody: false },
+                { name: "nested call with args inside a body", src: "f(() => { log(\"a\", |) })", inBody: false },
+
+                // object/array literals in arguments -> hints must flow
+                { name: "object literal argument", src: "css({ color: | })", inBody: false },
+                { name: "nested object literal", src: "cfg({ a: { b: | } })", inBody: false },
+                { name: "object literal inside an array argument", src: "f([{ a: | }])", inBody: false },
+                { name: "parenthesized object literal", src: "f(({ a: | }))", inBody: false },
+
+                // strings and comments are invisible to the scan
+                { name: "brace inside a string argument", src: "f(\"some { text\", |)", inBody: false },
+                { name: "brace inside a template string", src: "f(`some { brace | text`)", inBody: false },
+                { name: "brace inside a block comment", src: "f(/* { */ |2)", inBody: false },
+                { name: "brace inside a line comment", src: "f(1, // { comment\n  |2)", inBody: false },
+
+                // not in any call at all
+                { name: "top-level statement", src: "const x = |;", inBody: false }
+            ];
+            const tsMain = await new Promise(function (resolve, reject) {
+                const ExtensionLoader = testWindow.brackets.test.ExtensionLoader;
+                const ctx = ExtensionLoader.getRequireContextForExtension("TypeScriptSupport");
+                ctx(["main"], resolve, reject);
+            });
+            await _openInProject("ts/", "type-error.ts");
+            const editor = EditorManager.getActiveEditor();
+            const failures = [];
+            CASES.forEach(function (testCase) {
+                const parsed = _parseCursorMarker(testCase.src);
+                editor.document.setText(parsed.text);
+                editor.setCursorPos(parsed.pos.line, parsed.pos.ch);
+                const actual = tsMain._inFunctionBodyInsideArgs(editor);
+                if (actual !== testCase.inBody) {
+                    failures.push(testCase.name + ": expected inBody=" + testCase.inBody + " but got " + actual);
+                }
+            });
+            expect(failures).toEqual([]);
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE,
+                { fullPath: testFolder + "ts/type-error.ts", _forceClose: true }));
+        }, 45000);
+
+        it("should decide call heads on minified-style lines via the plain-text window", async function () {
+            // Table-driven coverage of _atCallHeadPlainText (used only on >2000-char lines, where
+            // token-scanning is too expensive). atHead: true means hints are allowed there.
+            const filler = "x=1;".repeat(80); // 320 chars of paren/brace-free filler
+            const CASES = [
+                { name: "right after an open paren", line: "foo(", ch: 4, atHead: true },
+                { name: "between autoclosed parens", line: "foo()", ch: 4, atHead: true },
+                { name: "after an argument", line: "foo(a, ", ch: 7, atHead: true },
+                { name: "after a closed nested call", line: "foo(bar(1), ", ch: 12, atHead: true },
+                { name: "after a matched object-literal argument", line: "foo({a:1}, ", ch: 11, atHead: true },
+                // conservative on minified lines: any enclosing brace suppresses
+                { name: "inside a body brace", line: "f(() => {" + filler, ch: 9 + 40, atHead: false },
+                { name: "inside an object-literal argument", line: "foo({ ", ch: 6, atHead: false },
+                { name: "no parens within the window", line: filler + filler, ch: 300, atHead: false },
+                { name: "call paren beyond the 200-char window", line: "foo(" + "a".repeat(250), ch: 254,
+                    atHead: false },
+                { name: "line start", line: "foo", ch: 0, atHead: false }
+            ];
+            const tsMain = await new Promise(function (resolve, reject) {
+                const ExtensionLoader = testWindow.brackets.test.ExtensionLoader;
+                const ctx = ExtensionLoader.getRequireContextForExtension("TypeScriptSupport");
+                ctx(["main"], resolve, reject);
+            });
+            const failures = [];
+            CASES.forEach(function (testCase) {
+                const actual = tsMain._atCallHeadPlainText(testCase.line, testCase.ch);
+                if (actual !== testCase.atHead) {
+                    failures.push(testCase.name + ": expected atHead=" + testCase.atHead + " but got " + actual);
+                }
+            });
+            expect(failures).toEqual([]);
+        }, 45000);
+
         it("should report implicit-any in a JS project that opts into checkJs", async function () {
             // js-checkjs has a jsconfig.json with checkJs + noImplicitAny, so the untyped parameter
             // in implicit.js IS flagged - and our diagnostic filter keeps it (the project opted in).
