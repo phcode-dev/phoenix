@@ -56,15 +56,34 @@ This is only available in the native app.
 | url | <code>string</code> | 
 | browserName | <code>string</code> | 
 
+<a name="_npmInstallInFolder"></a>
+
+## \_npmInstallInFolder(moduleNativeDir) ⇒ [<code>CancellablePromise</code>](#CancellablePromise)
+Runs the bundled npm install in the given folder. Rejects if an install is already in
+progress there (two npm processes on one node_modules corrupt each other).
+
+The returned promise carries a `cancel()` method - cancellation is only meaningful for
+the specific install you started, so it lives on the handle rather than as a module API.
+Cancelling kills the npm process; the promise then rejects with a "cancelled" error.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moduleNativeDir | <code>string</code> | platform path of the folder holding package.json |
+
 <a name="downloadFile"></a>
 
-## downloadFile(url, destFile, [options]) ⇒ <code>Promise.&lt;void&gt;</code>
+## downloadFile(url, destFile, [options]) ⇒ [<code>CancellablePromise</code>](#CancellablePromise)
 Downloads a URL to a file on disk, fully node-side (native fetch, streamed to disk).
 When an expected sha256 is given, a mismatch deletes the file and rejects - a resolved
 promise means the file holds exactly the pinned bytes.
 This is only available in the native app.
 
 **Kind**: global function  
+**Returns**: [<code>CancellablePromise</code>](#CancellablePromise) - the returned promise carries a `cancel()` method that aborts
+       the download mid-stream - the promise then rejects with a "cancelled" error and the
+       partial file is deleted  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -73,35 +92,6 @@ This is only available in the native app.
 | [options] | <code>Object</code> |  |
 | [options.sha256] | <code>string</code> | expected hex digest of the downloaded bytes |
 | [options.progress] | <code>function</code> | called with (transferredBytes,        totalBytes) as the download advances; totalBytes is 0 if the server sent no length |
-| [options.cancelId] | <code>string</code> | registers the download so        cancelDownload(cancelId) can abort it mid-stream; the partial file is        deleted and the rejection error message contains "cancelled" |
-
-<a name="cancelDownload"></a>
-
-## cancelDownload(cancelId) ⇒ <code>Promise.&lt;void&gt;</code>
-Cancels an in-flight downloadFile run by the cancelId it was started with. Idempotent -
-unknown ids are a no-op. The cancelled download's promise rejects (message contains
-"cancelled") and its partial file is deleted.
-This is only available in the native app.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| cancelId | <code>string</code> | cancelId passed to downloadFile |
-
-<a name="_cancelNpmInstall"></a>
-
-## \_cancelNpmInstall(moduleNativeDir) ⇒ <code>Promise.&lt;void&gt;</code>
-Kills an in-flight _npmInstallInFolder run by the moduleNativeDir it was started with.
-Idempotent - unknown dirs are a no-op. The killed install's promise rejects (message
-contains "cancelled").
-This is only available in the native app.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| moduleNativeDir | <code>string</code> | dir passed to _npmInstallInFolder |
 
 <a name="extractZipFile"></a>
 
@@ -267,4 +257,17 @@ Retrieves the directory path for system settings. This method is applicable to n
 **Throws**:
 
 - <code>Error</code> If the method is called in browser app.
+
+<a name="CancellablePromise"></a>
+
+## CancellablePromise : <code>Promise</code>
+A Promise that additionally carries a `cancel()` method aborting the underlying
+operation - the promise then rejects with a "cancelled" error.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| cancel | <code>function</code> | aborts the in-flight operation |
 

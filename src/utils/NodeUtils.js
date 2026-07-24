@@ -122,6 +122,14 @@ define(function (require, exports, module) {
     }
 
     /**
+     * A Promise that additionally carries a `cancel()` method aborting the underlying
+     * operation - the promise then rejects with a "cancelled" error.
+     *
+     * @typedef {Promise} CancellablePromise
+     * @property {function(): Promise<void>} cancel - aborts the in-flight operation
+     */
+
+    /**
      * Runs the bundled npm install in the given folder. Rejects if an install is already in
      * progress there (two npm processes on one node_modules corrupt each other).
      *
@@ -130,7 +138,7 @@ define(function (require, exports, module) {
      * Cancelling kills the npm process; the promise then rejects with a "cancelled" error.
      *
      * @param {string} moduleNativeDir - platform path of the folder holding package.json
-     * @return {Promise<void> & {cancel: function(): Promise<void>}}
+     * @return {CancellablePromise}
      */
     function _npmInstallInFolder(moduleNativeDir) {
         if(!Phoenix.isNativeApp) {
@@ -158,9 +166,9 @@ define(function (require, exports, module) {
      * @param {string} [options.sha256] - expected hex digest of the downloaded bytes
      * @param {function(number, number)} [options.progress] - called with (transferredBytes,
      *        totalBytes) as the download advances; totalBytes is 0 if the server sent no length
-     * @return {Promise<void> & {cancel: function(): Promise<void>}} the returned promise carries
-     *        a `cancel()` method that aborts the download mid-stream - the promise then rejects
-     *        with a "cancelled" error and the partial file is deleted
+     * @return {CancellablePromise} the returned promise carries a `cancel()` method that aborts
+     *        the download mid-stream - the promise then rejects with a "cancelled" error and the
+     *        partial file is deleted
      */
     function downloadFile(url, destFile, options) {
         if(!Phoenix.isNativeApp) {
