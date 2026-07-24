@@ -73,6 +73,35 @@ This is only available in the native app.
 | [options] | <code>Object</code> |  |
 | [options.sha256] | <code>string</code> | expected hex digest of the downloaded bytes |
 | [options.progress] | <code>function</code> | called with (transferredBytes,        totalBytes) as the download advances; totalBytes is 0 if the server sent no length |
+| [options.cancelId] | <code>string</code> | registers the download so        cancelDownload(cancelId) can abort it mid-stream; the partial file is        deleted and the rejection error message contains "cancelled" |
+
+<a name="cancelDownload"></a>
+
+## cancelDownload(cancelId) ⇒ <code>Promise.&lt;void&gt;</code>
+Cancels an in-flight downloadFile run by the cancelId it was started with. Idempotent -
+unknown ids are a no-op. The cancelled download's promise rejects (message contains
+"cancelled") and its partial file is deleted.
+This is only available in the native app.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| cancelId | <code>string</code> | cancelId passed to downloadFile |
+
+<a name="_cancelNpmInstall"></a>
+
+## \_cancelNpmInstall(moduleNativeDir) ⇒ <code>Promise.&lt;void&gt;</code>
+Kills an in-flight _npmInstallInFolder run by the moduleNativeDir it was started with.
+Idempotent - unknown dirs are a no-op. The killed install's promise rejects (message
+contains "cancelled").
+This is only available in the native app.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moduleNativeDir | <code>string</code> | dir passed to _npmInstallInFolder |
 
 <a name="extractZipFile"></a>
 

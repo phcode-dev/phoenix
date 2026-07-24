@@ -26,11 +26,15 @@
  * see Beautifier.js); it is NOT wired into the LSP framework.
  *
  * A ~25MB combined download is too big to bundle for one language, so like PHP/Intelephense it
- * installs on demand: the user consents via the find-bar prompt / first-time dialog /
- * Problems-panel row, then the pinned wheels for this platform+arch are resolved through the
- * PyPI JSON API, downloaded, sha256-verified and extracted - all node-side
- * (NodeUtils.downloadFile/extractZipFile; a wheel is a plain zip). Download progress streams
- * into a status-bar task. Works identically on Windows, macOS and Linux.
+ * installs on demand - AUTOMATICALLY, on the first python file opened (autoInstall): the pinned
+ * wheels for this platform+arch are resolved through the PyPI JSON API, downloaded,
+ * sha256-verified and extracted - all node-side (NodeUtils.downloadFile/extractZipFile; a wheel
+ * is a plain zip). The install is announced only through the status-bar task, whose popup is
+ * opened so the download is always visible, with a stop (x) icon to cancel it (cancel = no
+ * retry until the next app launch; the master pref is the durable opt-out). Offline is a
+ * non-event: install silently waits for connectivity. Real failures roll back the partial
+ * install, turn the task red (with a retry icon) and raise a toast. Works identically on
+ * Windows, macOS and Linux.
  *
  * Layout under <appSupport>/lspServers/:
  *   pyrefly/installed.json                                  (version marker, written on success)
@@ -49,25 +53,28 @@ define(function (require, exports, module) {
 
 
     const NodeUtils = brackets.getModule("utils/NodeUtils"),
-        ProjectManager = brackets.getModule("project/ProjectManager"),
-        NativeApp = brackets.getModule("utils/NativeApp"),
-        ModalBar = brackets.getModule("widgets/ModalBar").ModalBar,
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
-        Dialogs = brackets.getModule("widgets/Dialogs"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         TaskManager = brackets.getModule("features/TaskManager"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
+        Metrics = brackets.getModule("utils/Metrics"),
         StringUtils = brackets.getModule("utils/StringUtils"),
         Strings = brackets.getModule("strings");
 
     // Exact tested pins - never ranges. The wheels are sha256-verified against PyPI's manifest,
-    // so what we tested is byte-for-byte what users get. Upgrades are a deliberate pin bump here.
-    const PYREFLY_VERSION = "1.1.1";
-    const RUFF_VERSION = "0.15.20";
+    // so what we tested is byte-for-byte what users get. The authoritative values live in
+    // src/config.json (config.lsp_server_pins) so the scheduled update-lsp-pins workflow can bump
+    // them per release; the literals here are only a fallback for exotic boot states.
+    const _PINS = (brackets.config && brackets.config.lsp_server_pins) || {};
+    if (!_PINS.pyrefly || !_PINS.ruff) {
+        // appConfig.js is generated from src/config.json by the build - a missing pins block
+        // means a stale/broken build; scream so a developer can't miss it. The literal
+        // fallbacks below keep things limping along.
+        window.alert("[PythonSupport] lsp_server_pins missing from AppConfig - " +
+            "stale build? Run npm run build.");
+    }
+    const PYREFLY_VERSION = _PINS.pyrefly || "1.1.1";
+    const RUFF_VERSION = _PINS.ruff || "0.15.20";
     const PREF_PYTHON_CODE_INTELLIGENCE = "python.codeIntelligence";
-
-    const PYREFLY_HOME_URL = "https://pyrefly.org";
-    const RUFF_HOME_URL = "https://docs.astral.sh/ruff/";
 
     // The independently pinned/installed pieces. `pkg` is the PyPI package name; the binary of a
     // wheel build lives at <pkg>-<version>.data/scripts/<pkg>[.exe].
@@ -76,20 +83,12 @@ define(function (require, exports, module) {
         ruff: { pkg: "ruff", version: RUFF_VERSION }
     };
 
-    // once-per-lifetime: the first time the install bar shows, a dialog is raised over it so the
-    // offer cannot be missed. Never shown again (even on cancel) - the bar remains the
-    // ongoing affordance.
-    const STATE_INSTALL_DIALOG_SHOWN = "python.installDialogShown";
-
     let _onInstalled = null;        // main.js callback: ({binaryPath, upgraded}) => void
     let _inFlight = null;           // single-flight install promise
-    // projects where the user clicked "Not Now" - the bar stops reappearing there for the
-    // session. Until then it returns on every python file switch (closing on switch-away is not
-    // a dismissal - only the explicit button is).
-    const _promptDismissedForProject = new Set();
-    let _promptBar = null;          // the ModalBar install prompt, when showing
-    let _promptBarTip = null;       // the benefits tooltip binding on the bar's info icon
-    let _panelRowDismissed = false; // Problems-panel row dismissed this session
+    let _cancelledThisSession = false;  // user hit the task's stop icon - no retry until relaunch
+    let _cancelRequested = false;   // stop clicked while an install is in flight
+    let _activeDownload = null;     // cancellable handle of the in-flight NodeUtils.downloadFile
+    let _onlineRetryArmed = false;  // one-shot window "online" retry listener armed
 
     function _installDirVfs(unit) {
         return Phoenix.VFS.getAppSupportDir() + "lspServers/" + unit.pkg + "/";
@@ -218,15 +217,53 @@ define(function (require, exports, module) {
         return { url: wheel.url, sha256: wheel.digests && wheel.digests.sha256 };
     }
 
+    // Errors that mean "the network is unavailable", not "the install is broken". These take the
+    // QUIET path: offline must be a non-event, not a recurring red failure on every launch.
+    const NETWORK_ERROR_RE = new RegExp(
+        "failed to fetch|fetch failed|load failed|ENOTFOUND|ETIMEDOUT|ECONNRESET|ECONNREFUSED|" +
+        "EAI_AGAIN|ENETUNREACH|getaddrinfo|network", "i");
+    function _isNetworkError(err) {
+        return NETWORK_ERROR_RE.test((err && err.message) || String(err));
+    }
+
+    // One-shot: retry the auto-install as soon as connectivity returns in this session.
+    function _armOnlineRetry() {
+        if (_onlineRetryArmed) {
+            return;
+        }
+        _onlineRetryArmed = true;
+        window.addEventListener("online", function () {
+            _onlineRetryArmed = false;
+            autoInstall();
+        }, { once: true });
+    }
+
+    // Real-failure surface (per product decision): a subtle toast in addition to the red task,
+    // so the user learns setup failed even with the Tasks popup closed.
+    function _showFailureToast(message) {
+        const $tpl = $("<div>").text(message);
+        NotificationUI.createToastFromTemplate(Strings.PYTHON_INSTALL_TITLE, $tpl, {
+            dismissOnClick: true,
+            toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUBTLE,
+            autoCloseTimeS: 30,
+            instantOpen: true
+        });
+    }
+
     // Download + extract one unit's wheel, reporting progress in [pctFrom, pctTo] of `task`.
     async function _installUnit(unit, tag, task, pctFrom, pctTo) {
         const wheel = await _resolveWheel(unit, tag);
+        if (_cancelRequested) {
+            const cancelErr = new Error("install cancelled");
+            cancelErr.cancelled = true;
+            throw cancelErr;
+        }
         // any older version's tree is dead weight (paths carry the version) - wipe it all
         await Phoenix.VFS.unlinkAsync(_installDirVfs(unit)).catch(function () {});
         const destDir = Phoenix.fs.getTauriPlatformPath(_installDirVfs(unit));
         const wheelFile = Phoenix.fs.getTauriPlatformPath(_installDirVfs(unit) + "download.whl");
         const downloadShare = (pctTo - pctFrom) * 0.85;   // extraction takes the rest
-        await NodeUtils.downloadFile(wheel.url, wheelFile, {
+        _activeDownload = NodeUtils.downloadFile(wheel.url, wheelFile, {
             sha256: wheel.sha256,
             progress: function (transferred, total) {
                 if (total > 0) {
@@ -234,6 +271,11 @@ define(function (require, exports, module) {
                 }
             }
         });
+        try {
+            await _activeDownload;
+        } finally {
+            _activeDownload = null;
+        }
         // a wheel is a plain zip; extraction restores the archive's unix exec bits, and the
         // explicit chmod below covers archives that lost them
         await NodeUtils.extractZipFile(wheelFile, destDir);
@@ -254,10 +296,27 @@ define(function (require, exports, module) {
             return { binaryPath: getBinaryPlatformPath(), upgraded: false };
         }
         const upgrading = state.installed;
-        hidePanelRow();
-        // Status-bar task the user can track from anywhere; the downloads stream real progress.
+        _cancelRequested = false;
+        let currentUnit = null;     // the unit being installed, for rollback on failure/cancel
+        // Status-bar task with real download progress. Its popup is OPENED for every install -
+        // with no consent dialog anymore, visibility is the transparency: the user must be able
+        // to see any download we start. The stop icon cancels it.
         const task = TaskManager.addNewTask(Strings.PYTHON_INSTALL_TITLE, Strings.PYTHON_INSTALLING,
-            "<i class='fa-brands fa-python'></i>", { progressPercent: 2 });
+            "<i class='fa-brands fa-python'></i>", {
+                progressPercent: 2,
+                onStopClick: function () {
+                    _cancelledThisSession = true;   // no auto-retry until the next app launch
+                    _cancelRequested = true;
+                    if (_activeDownload) {
+                        _activeDownload.cancel().catch(function () {});
+                    }
+                },
+                onRetryClick: function () {
+                    task.close();
+                    installNow();
+                }
+            });
+        task.showStopIcon(Strings.PYTHON_INSTALL_STOP);
         task.show();
         try {
             const tag = await _wheelTag();
@@ -273,20 +332,52 @@ define(function (require, exports, module) {
             task.setProgressPercent(5);
             const span = 90 / (pending.length || 1);
             for (let i = 0; i < pending.length; i++) {
+                currentUnit = pending[i];
                 await _installUnit(pending[i], tag, task, Math.round(5 + i * span),
                     Math.round(5 + (i + 1) * span));
             }
+            currentUnit = null;
             task.setProgressPercent(100);
             task.setMessage(Strings.PYTHON_INSTALL_DONE);
             task.setSucceded(); // (sic - TaskManager's exported name)
             setTimeout(task.close, 4000);
+            Metrics.countEvent("lsp", "pyInst", upgrading ? "upOk" : "ok");
             return { binaryPath: getBinaryPlatformPath(), upgraded: upgrading };
         } catch (err) {
             const message = (err && err.message) || String(err);
+            // rollback: a half-installed unit must not survive - installedState would otherwise
+            // misread it. Fully-installed units (marker written) are untouched.
+            if (currentUnit) {
+                await Phoenix.VFS.unlinkAsync(_installDirVfs(currentUnit)).catch(function () {});
+            }
+            const cancelled = _cancelRequested || (err && err.cancelled) || /cancelled/i.test(message);
+            if (cancelled) {
+                // user's own decision - no red state, no toast
+                Metrics.countEvent("lsp", "pyInst", "cancel");
+                task.close();
+                return null;
+            }
+            if (_isNetworkError(err) || !navigator.onLine) {
+                // QUIET path: offline is normal life, not an error. Retry when connectivity
+                // returns (same session) or on the next launch.
+                Metrics.countEvent("lsp", "pyInst", "waitNet");
+                task.setMessage(Strings.PYTHON_INSTALL_WAITING_NETWORK);
+                setTimeout(task.close, 4000);
+                _armOnlineRetry();
+                return null;
+            }
+            console.error("[PythonSupport] install failed", err);
+            Metrics.countEvent("lsp", "pyInst", "fail");
+            window.logger && window.logger.reportError(err, "[PythonSupport] LSP install failed");
             task.setFailed();
             task.setMessage(StringUtils.format(Strings.PYTHON_INSTALL_FAILED, message));
-            setTimeout(task.close, 10000);
+            task.showRestartIcon();
+            task.show();
+            _showFailureToast(StringUtils.format(Strings.PYTHON_INSTALL_FAILED, message));
+            setTimeout(task.close, 30000);
             return null;
+        } finally {
+            _activeDownload = null;
         }
     }
 
@@ -310,223 +401,42 @@ define(function (require, exports, module) {
         return _inFlight;
     }
 
-    // ----- consent UI: find-bar prompt + first-time dialog + Problems-panel row -------------------
-
-    function _closePromptBar() {
-        if (_promptBarTip) {
-            _promptBarTip.detach();
-            _promptBarTip = null;
-        }
-        if (_promptBar) {
-            _promptBar.close();
-            _promptBar = null;
-        }
-    }
-
-    function _benefitRows() {
-        return [
-            [Strings.PYTHON_BENEFIT_COMPLETIONS, Strings.PYTHON_BENEFIT_COMPLETIONS_SUB],
-            [Strings.PYTHON_BENEFIT_DOCS, Strings.PYTHON_BENEFIT_DOCS_SUB],
-            [Strings.PYTHON_BENEFIT_ERRORS, Strings.PYTHON_BENEFIT_ERRORS_SUB],
-            [Strings.PYTHON_BENEFIT_NAV, Strings.PYTHON_BENEFIT_NAV_SUB],
-            [Strings.PYTHON_BENEFIT_FORMAT, Strings.PYTHON_BENEFIT_FORMAT_SUB]
-        ];
-    }
-
-    // Compact benefits card for the bar's (i) icon - term -> what it means, one line each.
-    function _benefitsTipHtml() {
-        const $tip = $("<div>");
-        $("<div class='ph-tip-title'>").text(Strings.PYTHON_INSTALL_TITLE).appendTo($tip);
-        const $rows = $("<div class='ph-tip-rows'>").appendTo($tip);
-        _benefitRows().forEach(function (row) {
-            $("<span class='ph-tip-term'>").text(row[0]).appendTo($rows);
-            $("<span class='ph-tip-def'>").text(row[1]).appendTo($rows);
-        });
-        return $tip.html();
-    }
-
-    // The very first offer ever also raises a dialog over the bar - the bar alone is easy to
-    // miss. One shot per install (lifetime): cancelling leaves only the bar from then on.
-    // Deliberately terse: one line + an (i) whose hover card lists what it provides (same
-    // rich tooltip as the bar's info icon).
-    function _maybeShowFirstTimeDialog() {
-        const stateManager = PreferencesManager.stateManager;
-        if (stateManager.get(STATE_INSTALL_DIALOG_SHOWN)) {
-            return;
-        }
-        stateManager.set(STATE_INSTALL_DIALOG_SHOWN, true);
-        const $body = $("<div>");
-        const $text = $("<p>").appendTo($body);
-        $("<span>").text(Strings.PYTHON_INSTALL_DIALOG_TEXT).appendTo($text);
-        $text.append("&nbsp;");
-        $("<i class='fa-solid fa-circle-info lsp-install-dialog-info'>").appendTo($text);
-        $("<p class='lsp-install-dialog-later'>").text(Strings.PYTHON_INSTALL_LATER_INFO).appendTo($body);
-        // quiet colophon crediting (and linking) the tools this rides on
-        const $credit = $("<p class='lsp-install-dialog-credit'>").appendTo($body);
-        $("<span>").text(Strings.LSP_INSTALL_POWERED_BY + " ").appendTo($credit);
-        $("<a href='#' data-href='" + PYREFLY_HOME_URL + "'>").text("Pyrefly").appendTo($credit);
-        $credit.append(document.createTextNode(" · "));
-        $("<a href='#' data-href='" + RUFF_HOME_URL + "'>").text("Ruff").appendTo($credit);
-        const dialog = Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.PYTHON_INSTALL_DIALOG_TITLE,
-            $body.html(), [
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id: Dialogs.DIALOG_BTN_CANCEL,
-                    text: Strings.PYTHON_INSTALL_NOT_NOW
-                },
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id: Dialogs.DIALOG_BTN_OK,
-                    text: Strings.PYTHON_INSTALL_ENABLE
-                }
-            ]);
-        const benefitsTip = NotificationUI.attachRichTooltip(
-            dialog.getElement().find(".lsp-install-dialog-info"), _benefitsTipHtml(), { showDelayMs: 150 });
-        // the body went in as serialized HTML, so link handling is delegated on the live dialog
-        dialog.getElement().on("click", "a[data-href]", function (e) {
-            e.preventDefault();
-            NativeApp.openURLInDefaultBrowser($(e.currentTarget).attr("data-href"));
-        });
-        // the download size sits at the decision point - in the footer, left of the buttons -
-        // so the cost is read exactly when the user weighs Install (store-style metadata chip)
-        const $size = $("<span class='lsp-install-dialog-size'>");
-        $("<i class='fa-solid fa-download'>").appendTo($size);
-        $size.append(document.createTextNode(" " + Strings.PYTHON_INSTALL_DIALOG_SIZE));
-        $size.prependTo(dialog.getElement().find(".modal-footer"));
-        dialog.done(function (id) {
-            benefitsTip.detach();
-            if (id === Dialogs.DIALOG_BTN_OK) {
-                _closePromptBar();
-                installNow();
-            }
-            // on cancel the bar stays - it is the ongoing affordance
-        });
-    }
-
-    // A find-bar-style banner across the top of the editor - impossible to miss on the file that
-    // triggered it, but passive (autoClose false: clicking back into the code doesn't dismiss it).
-    function _showPromptBar() {
-        const root = ProjectManager.getProjectRoot();
-        const rootPath = (root && root.fullPath) || "";
-        if (_promptDismissedForProject.has(rootPath) || _promptBar) {
-            return;
-        }
-        // built as detached DOM then serialized (ModalBar takes an HTML string); all click
-        // handling is delegated on the live bar root below
-        const $tpl = $("<div class='lsp-install-bar'>");
-        $("<span class='lsp-install-bar-text'>").text(Strings.PYTHON_INSTALL_MESSAGE).appendTo($tpl);
-        $("<i class='fa-solid fa-circle-info lsp-install-bar-info'>").appendTo($tpl);
-        // credit where due - not license-required, just right
-        $("<a class='lsp-install-bar-powered-by' href='#'>").text(Strings.PYTHON_POWERED_BY_PYREFLY)
-            .appendTo($tpl);
-        $("<button class='btn btn-mini lsp-install-bar-later'>")
-            .text(Strings.PYTHON_INSTALL_NOT_NOW).appendTo($tpl);
-        $("<button class='btn btn-mini primary lsp-install-bar-install'>")
-            .text(Strings.PYTHON_INSTALL_ENABLE).appendTo($tpl);
-
-        _promptBar = new ModalBar($tpl[0].outerHTML, false);
-        const $bar = _promptBar.getRoot();
-        _promptBarTip = NotificationUI.attachRichTooltip(
-            $bar.find(".lsp-install-bar-info"), _benefitsTipHtml(), { showDelayMs: 150 });
-        $bar.on("click", ".lsp-install-bar-install", function () {
-            _closePromptBar();
-            installNow();
-        });
-        $bar.on("click", ".lsp-install-bar-later", function () {
-            const projRoot = ProjectManager.getProjectRoot();
-            _promptDismissedForProject.add((projRoot && projRoot.fullPath) || "");
-            _closePromptBar();
-        });
-        $bar.on("click", ".lsp-install-bar-powered-by", function (e) {
-            e.preventDefault();
-            NativeApp.openURLInDefaultBrowser(PYREFLY_HOME_URL);
-        });
-    }
-
-    function _ensurePanelRow() {
-        const $panel = $("#problems-panel");
-        if (!$panel.length) {
-            return null;
-        }
-        let $row = $panel.find(".py-intel-panel-row");
-        if ($row.length) {
-            return $row;
-        }
-        // reuse the TS row's styling; the extra class scopes our own lookups
-        $row = $("<div class='ts-code-intel-panel-row py-intel-panel-row'>").hide();
-        $("<span class='ts-code-intel-panel-text'>").text(Strings.PYTHON_PANEL_TEXT).appendTo($row);
-        $("<button class='btn btn-mini primary ts-code-intel-panel-enable'>")
-            .text(Strings.PYTHON_INSTALL_ENABLE)
-            .on("click", function () {
-                installNow();
-            })
-            .appendTo($row);
-        $("<a class='ts-code-intel-panel-close'>")
-            .attr("title", Strings.PYTHON_INSTALL_NOT_NOW).html("&times;")
-            .on("click", function () {
-                _panelRowDismissed = true; // session-only: reappears next launch
-                $row.hide();
-            })
-            .appendTo($row);
-        $panel.children(".toolbar").after($row);
-        return $row;
-    }
-
     /**
-     * Hide the Problems-panel install row (e.g. once an install starts or completes).
+     * Auto-install without any consent UI - the status-bar task (opened popup, stop icon) is the
+     * announcement. Guards, in order:
+     *  - never in test windows (suites call installNow() explicitly; opening a .py fixture must
+     *    not start surprise downloads),
+     *  - master pref false = durable opt-out,
+     *  - user cancelled this session = wait for the next launch,
+     *  - offline = wait silently for connectivity (one-shot window "online" retry).
+     * @return {Promise<?{binaryPath: string, upgraded: boolean}>} null when skipped/failed
      */
-    function hidePanelRow() {
-        const $row = $("#problems-panel .py-intel-panel-row");
-        if ($row.length) {
-            $row.hide();
-        }
-    }
-
-    /**
-     * Show/hide the Problems-panel install row for the current state. Call on active-editor and
-     * project changes with whether a Python DOCUMENT is active.
-     * @param {boolean} pythonDocumentActive
-     */
-    function updatePanelRow(pythonDocumentActive) {
+    function autoInstall() {
         if (typeof Phoenix !== "undefined" && Phoenix.isTestWindow) {
-            return;
+            return Promise.resolve(null);
         }
-        const $row = _ensurePanelRow();
-        if (!$row) {
-            return;
-        }
-        if (!pythonDocumentActive) {
-            _closePromptBar();  // the bar belongs to the python file that triggered it
-        }
-        if (!pythonDocumentActive || _panelRowDismissed || _inFlight ||
+        if (_cancelledThisSession ||
                 PreferencesManager.get(PREF_PYTHON_CODE_INTELLIGENCE) === false) {
-            $row.hide();
-            return;
+            return Promise.resolve(null);
         }
-        installedState().then(function (state) {
-            if (state.installed) {
-                $row.hide();
-            } else {
-                $row.show();
-            }
-        });
+        if (!navigator.onLine) {
+            _armOnlineRetry();
+            return Promise.resolve(null);
+        }
+        return installNow();
     }
 
     /**
-     * Offer the install to the user: the find-bar prompt (plus a once-ever dialog over it) + the
-     * persistent Problems-panel row. Call when a Python document is active but the server is not
-     * installed.
-     * @param {boolean} pythonDocumentActive
+     * Wipe the whole install and reacquire it - self-repair for a supposedly-installed server
+     * that fails to start (binary corrupt beyond the existence checks). The onInstalled callback
+     * re-registers the server on success.
+     * @return {Promise<?{binaryPath: string, upgraded: boolean}>} null on failure
      */
-    function offerInstallUI(pythonDocumentActive) {
-        if (typeof Phoenix !== "undefined" && Phoenix.isTestWindow) {
-            return;
+    async function repairInstall() {
+        for (const key of Object.keys(UNITS)) {
+            await Phoenix.VFS.unlinkAsync(_installDirVfs(UNITS[key])).catch(function () {});
         }
-        if (pythonDocumentActive) {
-            _showPromptBar();
-            _maybeShowFirstTimeDialog();
-        }
-        updatePanelRow(pythonDocumentActive);
+        return installNow();
     }
 
     /**
@@ -539,9 +449,8 @@ define(function (require, exports, module) {
     exports.init = init;
     exports.installedState = installedState;
     exports.installNow = installNow;
-    exports.offerInstallUI = offerInstallUI;
-    exports.updatePanelRow = updatePanelRow;
-    exports.hidePanelRow = hidePanelRow;
+    exports.autoInstall = autoInstall;
+    exports.repairInstall = repairInstall;
     exports.getBinaryPlatformPath = getBinaryPlatformPath;
     exports.getRuffBinaryPlatformPath = getRuffBinaryPlatformPath;
     exports.PYREFLY_VERSION = PYREFLY_VERSION;

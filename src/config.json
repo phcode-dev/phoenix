@@ -33,6 +33,11 @@
         "app_notification_url": "assets/notifications/dev/",
         "app_update_url": "https://updates.phcode.io/tauri/update-latest-experimental-build.json",
         "extensionTakedownURL": "https://updates.phcode.io/extension_takedown.json",
+        "lsp_server_pins": {
+            "intelephense": "1.18.5",
+            "pyrefly": "1.1.1",
+            "ruff": "0.15.20"
+        },
         "linting.enabled_by_default": true,
         "build_timestamp": "",
         "googleAnalyticsID": "G-P4HJFPDB76",

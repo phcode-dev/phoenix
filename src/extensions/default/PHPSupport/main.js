@@ -44,8 +44,8 @@ define(function (require, exports, module) {
     const SUPPORTED_LANGUAGES = ["php"];
     const PREF_LICENSE_KEY = "php.licenseKey";
 
-    // Master switch; also doubles as the durable memory of a declined install prompt (the
-    // decline sets it false; setting it back to true re-offers the install).
+    // Master switch - the durable opt-out of the automatic install; setting it back to true
+    // re-triggers the auto-install on the open php file.
     PreferencesManager.definePreference(ServerInstaller.PREF_PHP_CODE_INTELLIGENCE, "boolean", true, {
         description: Strings.DESCRIPTION_PHP_CODE_INTELLIGENCE
     });
@@ -66,6 +66,7 @@ define(function (require, exports, module) {
     let starting = false;
     let pendingRepoint = false;
     let initErrorReported = false;
+    let _repairAttempted = false;   // one self-repair (wipe + reinstall) per session
 
     function canRun() {
         return Phoenix.isNativeApp && NodeConnector.isNodeAvailable();
@@ -138,22 +139,24 @@ define(function (require, exports, module) {
             return;
         }
         const state = await ServerInstaller.installedState();
-        if (!state.installed) {
-            // not acquired yet: offer the unobtrusive consent UI (prompt toast + Problems-panel
-            // row). Clicking Install runs the installer; its onInstalled callback starts us.
-            ServerInstaller.offerInstallUI(_isPhpDocumentActive());
-            return;
-        }
-        if (!state.pinMatches) {
-            // silent version upgrade - consent was given when it first installed
-            const result = await ServerInstaller.installNow();
-            if (!result) {
-                return;
-            }
-            // installNow's onInstalled callback registers the server
+        if (!state.installed || !state.pinMatches) {
+            // acquire (or upgrade) the server automatically - announced only through the
+            // status-bar task. autoInstall's guards (pref off, user cancelled this session,
+            // offline, test window) decide whether anything actually runs; its onInstalled
+            // callback registers the server.
+            await ServerInstaller.autoInstall();
             return;
         }
         await _registerServer(ServerInstaller.getEntryPlatformPath(), false);
+        if (!registered && !_repairAttempted && !Phoenix.isTestWindow) {
+            // Self-repair: the entry existed but the server would not start (tree corrupt beyond
+            // the existence check). Wipe and reacquire once per session - the onInstalled
+            // callback re-registers on success. A second failure surfaces through the
+            // installer's normal failure UX.
+            _repairAttempted = true;
+            console.error("[PHPSupport] installed server failed to start - reinstalling");
+            await ServerInstaller.repairInstall();
+        }
     }
 
     /**
@@ -221,7 +224,6 @@ define(function (require, exports, module) {
 
         EditorManager.on("activeEditorChange.phpSupport", function () {
             _ensureServerForActiveEditor();
-            ServerInstaller.updatePanelRow(_isPhpDocumentActive() && !registered);
         });
         _ensureServerForActiveEditor();
 
@@ -241,7 +243,7 @@ define(function (require, exports, module) {
             }
         });
 
-        // Master switch flipped back on (e.g. after an earlier decline): offer install again on
+        // Master switch flipped back on (e.g. after an earlier opt-out): auto-install again on
         // the currently open php file.
         PreferencesManager.on("change", ServerInstaller.PREF_PHP_CODE_INTELLIGENCE, function () {
             if (PreferencesManager.get(ServerInstaller.PREF_PHP_CODE_INTELLIGENCE) !== false) {

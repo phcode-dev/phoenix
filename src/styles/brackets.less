@@ -2303,68 +2303,6 @@ a, img {
     }
 }
 
-// Language-server install prompt bar (PHPSupport, PythonSupport) - find-bar-style banner
-// across the editor top.
-.modal-bar .lsp-install-bar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    .lsp-install-bar-text {
-        flex: none;      // hug the question so the (i) sits right after it
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    // sits right after the question; margin-right:auto pushes everything else to the right edge
-    .lsp-install-bar-info {
-        flex: none;
-        margin-left: -4px;
-        margin-right: auto;
-        opacity: 0.5;
-        cursor: default;
-        &:hover { opacity: 0.9; }
-    }
-    .lsp-install-bar-powered-by {
-        flex: none;
-        cursor: pointer;
-        white-space: nowrap;
-    }
-    button {
-        flex: none;
-        margin: 0;
-    }
-}
-
-// First-time language-server install dialog (PHPSupport, PythonSupport): terse one-liner with an
-// (i) whose hover card lists the benefits, plus a muted "install later" note.
-.lsp-install-dialog-info {
-    opacity: 0.5;
-    cursor: default;
-    &:hover { opacity: 0.9; }
-}
-.lsp-install-dialog-later {
-    opacity: 0.75;
-    margin-bottom: 0;
-}
-.lsp-install-dialog-credit {
-    margin: 14px 0 0;
-    font-size: 12px;
-    span { opacity: 0.6; }
-    a { cursor: pointer; }
-}
-// download size in the footer, left of the action buttons - read at the moment of decision
-.modal-footer .lsp-install-dialog-size {
-    float: left;
-    opacity: 0.65;
-    font-size: 12px;
-    line-height: 30px;   // optically centers against the .btn row
-    i {
-        font-size: 11px;
-        margin-right: 3px;
-    }
-}
-
 // On bright colored toast surfaces (e.g. the PHP install prompt on INFO blue) the link-blue
 // action text is invisible - use high-contrast white bold links there, both themes.
 .notification-popup-container.style-info .ts-code-intel-action,

@@ -48,6 +48,7 @@
         "prepare": "husky install",
         "_serveTest": "http-server . -p 5000 -c-1",
         "zipTestFiles": "gulp zipTestFiles",
+        "updateBuiltInLSPS": "node build/update-lsp-pins.js",
         "test": "echo please see `Running and debugging tests` section in readme.md",
         "testIntegHelp": "echo By default this command only runs unit tests.To Run integration tests, please see `Running and debugging tests` section in readme.md",
         "testChromium": "npm run testIntegHelp && npx playwright test --project=chromium",

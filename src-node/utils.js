@@ -107,6 +107,11 @@ async function _loadNodeExtensionModule({moduleNativeDir}) {
     require(moduleNativeDir);
 }
 
+// In-flight cancellable operations - see cancelDownload / _cancelNpmInstall. Download entries
+// hold an AbortController, npm entries hold the spawned ChildProcess.
+const activeDownloads = new Map(); // cancelId -> AbortController
+const activeNpmInstalls = new Map(); // moduleNativeDir -> ChildProcess
+
 /**
  * Installs npm modules in the specified folder.
  *
@@ -115,40 +120,89 @@ async function _loadNodeExtensionModule({moduleNativeDir}) {
  * @private
  */
 async function _npmInstallInFolder({moduleNativeDir}) {
-    const phnodeExePath = process.argv[0];
-    const npmPath = path.resolve(path.dirname(require.resolve("npm")), "bin", "npm-cli.js");
-    console.log("npm path", npmPath, "phnode path", phnodeExePath);
-    // Check if the package.json file exists in the moduleNativeDir
-    // Check if the package.json file exists in the moduleNativeDir
-    const packageJsonPath = path.join(moduleNativeDir, 'package.json');
-    await fsPromise.access(packageJsonPath); // Throws if package.json doesn't exist
-
-    // Check if package-lock.json exists in the moduleNativeDir
-    const packageLockJsonPath = path.join(moduleNativeDir, 'package-lock.json');
-    let packageLockJsonExists = false;
-    try {
-        await fsPromise.access(packageLockJsonPath);
-        packageLockJsonExists = true;
-    } catch (error) {
-        console.log("package-lock.json does not exist, it is recommended to check in package-lock.json," +
-            " using npm install instead of npm ci", packageLockJsonPath);
+    if (activeNpmInstalls.has(moduleNativeDir)) {
+        // two npm processes writing the same node_modules corrupt each other - callers must
+        // await (or cancel) the running install before starting another. Deliberately BEFORE the
+        // try/finally below: this throw must not clean up the entry the running install owns.
+        throw new Error("npm install already in progress in " + moduleNativeDir);
     }
+    try {
+        const phnodeExePath = process.argv[0];
+        const npmPath = path.resolve(path.dirname(require.resolve("npm")), "bin", "npm-cli.js");
+        console.log("npm path", npmPath, "phnode path", phnodeExePath);
+        // Check if the package.json file exists in the moduleNativeDir
+        const packageJsonPath = path.join(moduleNativeDir, 'package.json');
+        await fsPromise.access(packageJsonPath); // Throws if package.json doesn't exist
 
-    const npmInstallMode = packageLockJsonExists ? 'ci' : 'install';
+        // Check if package-lock.json exists in the moduleNativeDir
+        const packageLockJsonPath = path.join(moduleNativeDir, 'package-lock.json');
+        let packageLockJsonExists = false;
+        try {
+            await fsPromise.access(packageLockJsonPath);
+            packageLockJsonExists = true;
+        } catch (error) {
+            console.log("package-lock.json does not exist, it is recommended to check in package-lock.json," +
+                " using npm install instead of npm ci", packageLockJsonPath);
+        }
 
-    const nodeArgs = [npmPath, npmInstallMode, moduleNativeDir];
-    return new Promise((resolve, reject) => {
+        const npmInstallMode = packageLockJsonExists ? 'ci' : 'install';
+
+        const nodeArgs = [npmPath, npmInstallMode, moduleNativeDir];
         console.log(`Running "${phnodeExePath} ${nodeArgs}" in ${moduleNativeDir}`);
-        execFile(phnodeExePath, nodeArgs, { cwd: moduleNativeDir }, (error) => {
-            if (error) {
-                console.error('Error:', error);
-                reject(error);
-            } else {
-                resolve();
-                console.log(`Successfully ran "${nodeArgs}" in ${moduleNativeDir}`);
-            }
+        const npmInstallPromise = new Promise((resolve, reject) => {
+            const child = execFile(phnodeExePath, nodeArgs, { cwd: moduleNativeDir }, (error) => {
+                const wasCancelled = child.__phCancelled;
+                if (error) {
+                    console.error('Error:', error);
+                    if (wasCancelled) {
+                        error.cancelled = true;
+                    }
+                    reject(error);
+                } else {
+                    resolve();
+                    console.log(`Successfully ran "${nodeArgs}" in ${moduleNativeDir}`);
+                }
+            });
+            // Keep the handle so _cancelNpmInstall can kill a runaway/user-cancelled install.
+            activeNpmInstalls.set(moduleNativeDir, child);
         });
-    });
+        // awaited (not returned raw) so the finally below runs only after npm actually exits
+        return await npmInstallPromise;
+    } finally {
+        // The entry MUST never outlive this invocation, whatever the failure path - a stale
+        // entry would make the duplicate-install guard above block every retry until restart.
+        activeNpmInstalls.delete(moduleNativeDir);
+    }
+}
+
+/**
+ * Cancel an in-flight downloadFile run by the cancelId it was started with. Idempotent -
+ * unknown ids are a no-op. The cancelled download's promise rejects with an error carrying
+ * `cancelled: true` and its partial file is deleted.
+ *
+ * @param {string} cancelId - the cancelId a downloadFile call was started with
+ * @return {Promise<void>}
+ */
+async function cancelDownload({cancelId}) {
+    if (cancelId && activeDownloads.has(cancelId)) {
+        activeDownloads.get(cancelId).abort();
+    }
+}
+
+/**
+ * Kill an in-flight _npmInstallInFolder run by the moduleNativeDir it was started with.
+ * Idempotent - unknown dirs are a no-op. The killed install's promise rejects with an error
+ * carrying `cancelled: true`.
+ *
+ * @param {string} moduleNativeDir - the dir an _npmInstallInFolder call was started with
+ * @return {Promise<void>}
+ */
+async function _cancelNpmInstall({moduleNativeDir}) {
+    if (moduleNativeDir && activeNpmInstalls.has(moduleNativeDir)) {
+        const child = activeNpmInstalls.get(moduleNativeDir);
+        child.__phCancelled = true;
+        child.kill();
+    }
 }
 
 // no dot in the name - EventDispatcher treats anything after a "." as a listener namespace
@@ -163,38 +217,64 @@ const DOWNLOAD_PROGRESS_EVENT = "downloadProgress";
  * @param {string} url - download URL
  * @param {string} destFile - platform path to write (parent directories created)
  * @param {string} [sha256] - expected hex digest of the downloaded bytes
+ * @param {string} [cancelId] - registers the download so cancelDownload({cancelId}) can
+ *        abort it mid-stream; the partial file is deleted and the rejection error carries
+ *        `cancelled: true`
  * @return {Promise<void>}
  */
-async function downloadFile({url, destFile, sha256}) {
-    const response = await fetch(url, { redirect: "follow" });
-    if (!response.ok) {
-        throw new Error("Download failed with HTTP " + response.status + " for " + url);
+async function downloadFile({url, destFile, sha256, cancelId}) {
+    let controller = null;
+    if (cancelId) {
+        if (activeDownloads.has(cancelId)) {
+            throw new Error("a download with cancelId " + cancelId + " is already in progress");
+        }
+        controller = new AbortController();
+        activeDownloads.set(cancelId, controller);
     }
-    const total = parseInt(response.headers.get("content-length"), 10) || 0;
-    await fsPromise.mkdir(path.dirname(destFile), { recursive: true });
-    const fileHandle = await fsPromise.open(destFile, "w");
-    const hash = crypto.createHash("sha256");
-    let transferred = 0;
-    let lastReported = 0;
     try {
-        for await (const chunk of response.body) {
-            await fileHandle.write(chunk);
-            hash.update(chunk);
-            transferred += chunk.length;
-            // throttle the websocket chatter: one event per 256KB is plenty for a progress bar
-            if (transferred - lastReported > 262144 || transferred === total) {
-                lastReported = transferred;
-                utilsConnector.triggerPeer(DOWNLOAD_PROGRESS_EVENT, {url, transferred, total});
+        const response = await fetch(url, {
+            redirect: "follow",
+            signal: controller ? controller.signal : undefined
+        });
+        if (!response.ok) {
+            throw new Error("Download failed with HTTP " + response.status + " for " + url);
+        }
+        const total = parseInt(response.headers.get("content-length"), 10) || 0;
+        await fsPromise.mkdir(path.dirname(destFile), { recursive: true });
+        const fileHandle = await fsPromise.open(destFile, "w");
+        const hash = crypto.createHash("sha256");
+        let transferred = 0;
+        let lastReported = 0;
+        try {
+            for await (const chunk of response.body) {
+                await fileHandle.write(chunk);
+                hash.update(chunk);
+                transferred += chunk.length;
+                // throttle the websocket chatter: one event per 256KB is plenty for a progress bar
+                if (transferred - lastReported > 262144 || transferred === total) {
+                    lastReported = transferred;
+                    utilsConnector.triggerPeer(DOWNLOAD_PROGRESS_EVENT, {url, transferred, total});
+                }
+            }
+        } finally {
+            await fileHandle.close();
+        }
+        if (sha256) {
+            const actual = hash.digest("hex");
+            if (actual !== sha256.toLowerCase()) {
+                await fsPromise.unlink(destFile).catch(() => {});
+                throw new Error("sha256 mismatch for " + url + " - expected " + sha256 + " got " + actual);
             }
         }
-    } finally {
-        await fileHandle.close();
-    }
-    if (sha256) {
-        const actual = hash.digest("hex");
-        if (actual !== sha256.toLowerCase()) {
+    } catch (err) {
+        if (err && err.name === "AbortError") {
             await fsPromise.unlink(destFile).catch(() => {});
-            throw new Error("sha256 mismatch for " + url + " - expected " + sha256 + " got " + actual);
+            err.cancelled = true;
+        }
+        throw err;
+    } finally {
+        if (cancelId) {
+            activeDownloads.delete(cancelId);
         }
     }
 }
@@ -505,6 +585,8 @@ exports.getOSUserName = getOSUserName;
 exports.getSystemSettingsDir = getSystemSettingsDir;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;
+exports._cancelNpmInstall = _cancelNpmInstall;
+exports.cancelDownload = cancelDownload;
 exports.downloadFile = downloadFile;
 exports.extractZipFile = extractZipFile;
 exports.setExecutableBits = setExecutableBits;

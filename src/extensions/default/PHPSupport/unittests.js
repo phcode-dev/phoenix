@@ -166,7 +166,11 @@ define(function (require, exports, module) {
             //    server answers there (an empty list, for intelephense)
             await _hintLabels({ line: blankLine, ch: 4 });
             // 2. type a prefix on the SAME line (same context key) and query again - the server's
-            //    real list must come through, not a stale cached answer
+            //    real list must come through, not a stale cached answer. Which exact is_*
+            //    functions make intelephense's top-100 varies with index warmth (its fuzzy match
+            //    ranks things like DISP_E_DIVBYZERO for "is" too), so assert the discriminator:
+            //    a fresh answer contains functions STARTING with is_; the stale blank-position
+            //    grab-bag (or a cached empty list) contains none.
             editor.document.replaceRange("is_", { line: blankLine, ch: 4 });
             editor.setCursorPos(blankLine, 7);
             let labels = null;
@@ -176,10 +180,21 @@ define(function (require, exports, module) {
                     return !!(labels && labels.length);
                 });
             }, "completions for the is_ prefix on the previously-blank line", 30000);
-            expect(labels).toContain("is_int");
+            const hasIsPrefixed = labels.some(function (label) {
+                return label.indexOf("is_") === 0;
+            });
+            expect(hasIsPrefixed).toBe(true);
 
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE,
                 { fullPath: testFolder + "/funcs.php", _forceClose: true }));
+        }, 45000);
+
+        it("should never auto-install in a test window", async function () {
+            // opening .php fixtures in ANY integration suite must not trigger surprise downloads -
+            // suites acquire the server explicitly through installNow() instead
+            const ServerInstaller = await _phpModule("ServerInstaller");
+            const result = await ServerInstaller.autoInstall();
+            expect(result).toBe(null);
         }, 45000);
 
         it("should keep Tern serving embedded <script> JS inside php files", async function () {

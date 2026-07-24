@@ -22,13 +22,16 @@
  * ServerInstaller - on-demand acquisition of the Intelephense PHP language server.
  *
  * Intelephense is proprietary freeware: its license permits individual users to pair it with an
- * LSP-capable editor but forbids redistributing/bundling it. So it is NOT part of the app - the
- * user consents via an unobtrusive prompt (a toast plus a Problems-panel row, mirroring the
- * TypeScript enable flow) and a pinned version is then npm-installed from the public registry
- * into the app-data directory (the user acquires it personally - the license's intended use).
- * Installation runs as a status-bar TASK (TaskManager) with progress, using the bundled npm via
- * the existing node plumbing (NodeUtils._npmInstallInFolder) - no system npm or PHP runtime
- * needed. Works identically on Windows, macOS and Linux (no shell, no .bin shims).
+ * LSP-capable editor but forbids redistributing/bundling it. So it is NOT part of the app - a
+ * pinned version is npm-installed AUTOMATICALLY on the first php file opened (autoInstall) from
+ * the public registry into the app-data directory (the user's machine acquires it locally - the
+ * license's intended use). Installation runs as a status-bar TASK (TaskManager) whose popup is
+ * opened so the download is always visible, with a stop (x) icon to cancel (cancel = no retry
+ * until the next app launch; the master pref is the durable opt-out). It uses the bundled npm
+ * via the existing node plumbing (NodeUtils._npmInstallInFolder) - no system npm or PHP runtime
+ * needed. Offline is a non-event: install silently waits for connectivity. Real failures roll
+ * back the partial tree, turn the task red (with a retry icon) and raise a toast. Works
+ * identically on Windows, macOS and Linux (no shell, no .bin shims).
  *
  * Layout under <appSupport>/lspServers/intelephense/:
  *   package.json                                     (written by us, exact version pin)
@@ -45,36 +48,33 @@ define(function (require, exports, module) {
 
 
     const NodeUtils = brackets.getModule("utils/NodeUtils"),
-        ProjectManager = brackets.getModule("project/ProjectManager"),
-        NativeApp = brackets.getModule("utils/NativeApp"),
-        ModalBar = brackets.getModule("widgets/ModalBar").ModalBar,
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
-        Dialogs = brackets.getModule("widgets/Dialogs"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         TaskManager = brackets.getModule("features/TaskManager"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
+        Metrics = brackets.getModule("utils/Metrics"),
         StringUtils = brackets.getModule("utils/StringUtils"),
         Strings = brackets.getModule("strings");
 
-    const INTELEPHENSE_VERSION = "1.18.5";
+    // Exact tested pin - never a range. The authoritative value lives in src/config.json
+    // (config.lsp_server_pins) so the scheduled update-lsp-pins workflow can bump it per
+    // release; the literal here is only a fallback for exotic boot states.
+    const _PINS = (brackets.config && brackets.config.lsp_server_pins) || {};
+    if (!_PINS.intelephense) {
+        // appConfig.js is generated from src/config.json by the build - a missing pins block
+        // means a stale/broken build; scream so a developer can't miss it. The literal
+        // fallback below keeps things limping along.
+        window.alert("[PHPSupport] lsp_server_pins missing from AppConfig - " +
+            "stale build? Run npm run build.");
+    }
+    const INTELEPHENSE_VERSION = _PINS.intelephense || "1.18.5";
     const PREF_PHP_CODE_INTELLIGENCE = "php.codeIntelligence";
-
-    const INTELEPHENSE_HOME_URL = "https://intelephense.com";
-
-    // once-per-lifetime: the first time the install bar shows, a dialog is raised over it so the
-    // offer cannot be missed. Never shown again (even on cancel) - the bar remains the
-    // ongoing affordance.
-    const STATE_INSTALL_DIALOG_SHOWN = "php.installDialogShown";
 
     let _onInstalled = null;        // main.js callback: ({entryPath, upgraded}) => void
     let _inFlight = null;           // single-flight install promise
-    // projects where the user clicked "Not Now" - the bar stops reappearing there for the
-    // session. Until then it returns on every php file switch (closing on switch-away is not a
-    // dismissal - only the explicit button is).
-    const _promptDismissedForProject = new Set();
-    let _promptBar = null;          // the ModalBar install prompt, when showing
-    let _promptBarTip = null;       // the benefits tooltip binding on the bar's info icon
-    let _panelRowDismissed = false; // Problems-panel row dismissed this session
+    let _cancelledThisSession = false;  // user hit the task's stop icon - no retry until relaunch
+    let _cancelRequested = false;   // stop clicked while an install is in flight
+    let _activeNpmInstall = null;   // cancellable handle of the in-flight npm install
+    let _onlineRetryArmed = false;  // one-shot window "online" retry listener armed
 
     function _installDirVfs() {
         return Phoenix.VFS.getAppSupportDir() + "lspServers/intelephense/";
@@ -135,9 +135,12 @@ define(function (require, exports, module) {
         await Phoenix.VFS.writeFileAsync(_packageJsonVfs(), JSON.stringify(pkg, null, 4), "utf8");
     }
 
-    // Upgrade: wipe the old tree first - a stale package-lock.json vs rewritten package.json makes
-    // the node-side `npm ci` branch fail on manifest mismatch.
-    async function _wipeForUpgrade() {
+    // Wipe the npm artifacts (node_modules + lockfile) but keep cache/ (the index cache) and let
+    // package.json be rewritten. Used before every install (a stale package-lock.json vs the
+    // rewritten package.json makes the node-side `npm ci` branch fail on manifest mismatch, and
+    // a half-written node_modules from an interrupted run must not survive) and as the rollback
+    // after a failed/cancelled install.
+    async function _wipeTree() {
         try {
             await Phoenix.VFS.unlinkAsync(_installDirVfs() + "node_modules");
         } catch (e) {
@@ -150,29 +153,87 @@ define(function (require, exports, module) {
         }
     }
 
+    // Errors that mean "the network is unavailable", not "the install is broken". These take the
+    // QUIET path: offline must be a non-event, not a recurring red failure on every launch.
+    const NETWORK_ERROR_RE = new RegExp(
+        "failed to fetch|fetch failed|load failed|ENOTFOUND|ETIMEDOUT|ECONNRESET|ECONNREFUSED|" +
+        "EAI_AGAIN|ENETUNREACH|getaddrinfo|network", "i");
+    function _isNetworkError(err) {
+        return NETWORK_ERROR_RE.test((err && err.message) || String(err));
+    }
+
+    // One-shot: retry the auto-install as soon as connectivity returns in this session.
+    function _armOnlineRetry() {
+        if (_onlineRetryArmed) {
+            return;
+        }
+        _onlineRetryArmed = true;
+        window.addEventListener("online", function () {
+            _onlineRetryArmed = false;
+            autoInstall();
+        }, { once: true });
+    }
+
+    // Real-failure surface (in addition to the red task): the user learns setup failed even with
+    // the Tasks popup closed.
+    function _showFailureToast(message) {
+        const $tpl = $("<div>").text(message);
+        NotificationUI.createToastFromTemplate(Strings.PHP_INSTALL_TITLE, $tpl, {
+            dismissOnClick: true,
+            toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUBTLE,
+            autoCloseTimeS: 30,
+            instantOpen: true
+        });
+    }
+
     async function _doInstall() {
         const state = await installedState();
         if (state.installed && state.pinMatches) {
             return { entryPath: getEntryPlatformPath(), upgraded: false };
         }
         const upgrading = state.installed;
-        hidePanelRow();
-        // Status-bar task: visible progress the user can track from anywhere in the app. npm gives
-        // no byte-level progress through execFile, so this advances by phase.
+        _cancelRequested = false;
+        // Status-bar task whose popup is OPENED for every install - with no consent dialog
+        // anymore, visibility is the transparency: the user must be able to see any download we
+        // start. npm gives no byte-level progress through execFile, so this advances by phase.
         const task = TaskManager.addNewTask(Strings.PHP_INSTALL_TITLE, Strings.PHP_INSTALLING,
-            "<i class='fa-brands fa-php'></i>", { progressPercent: 5 });
+            "<i class='fa-brands fa-php'></i>", {
+                progressPercent: 5,
+                onStopClick: function () {
+                    _cancelledThisSession = true;   // no auto-retry until the next app launch
+                    _cancelRequested = true;
+                    if (_activeNpmInstall) {
+                        _activeNpmInstall.cancel().catch(function () {});
+                    }
+                },
+                onRetryClick: function () {
+                    task.close();
+                    installNow();
+                }
+            });
+        task.showStopIcon(Strings.PHP_INSTALL_STOP);
         task.show();
         try {
-            if (upgrading) {
-                await _wipeForUpgrade();
-            }
+            // wipe-first: half-written trees from interrupted runs (and old versions on upgrade)
+            // must not confuse npm or the entry check
+            await _wipeTree();
             task.setProgressPercent(15);
             await Phoenix.VFS.ensureExistsDirAsync(_installDirVfs());
             await Phoenix.VFS.ensureExistsDirAsync(_installDirVfs() + "cache/");
             await _writePinnedPackageJson();
             task.setProgressPercent(25);
+            if (_cancelRequested) {
+                const cancelErr = new Error("install cancelled");
+                cancelErr.cancelled = true;
+                throw cancelErr;
+            }
             const platformDir = Phoenix.fs.getTauriPlatformPath(_installDirVfs());
-            await NodeUtils._npmInstallInFolder(platformDir);
+            _activeNpmInstall = NodeUtils._npmInstallInFolder(platformDir);
+            try {
+                await _activeNpmInstall;
+            } finally {
+                _activeNpmInstall = null;
+            }
             task.setProgressPercent(90);
             const ok = await Phoenix.VFS.existsAsync(_entryVfs());
             if (!ok) {
@@ -182,13 +243,40 @@ define(function (require, exports, module) {
             task.setMessage(Strings.PHP_INSTALL_DONE);
             task.setSucceded(); // (sic - TaskManager's exported name)
             setTimeout(task.close, 4000);
+            Metrics.countEvent("lsp", "phpInst", upgrading ? "upOk" : "ok");
             return { entryPath: getEntryPlatformPath(), upgraded: upgrading };
         } catch (err) {
             const message = (err && err.message) || String(err);
+            // rollback: a half-installed tree must not survive (the entry check keys "installed")
+            await _wipeTree();
+            const cancelled = _cancelRequested || (err && err.cancelled) || /cancelled/i.test(message);
+            if (cancelled) {
+                // user's own decision - no red state, no toast
+                Metrics.countEvent("lsp", "phpInst", "cancel");
+                task.close();
+                return null;
+            }
+            if (_isNetworkError(err) || !navigator.onLine) {
+                // QUIET path: offline is normal life, not an error. Retry when connectivity
+                // returns (same session) or on the next launch.
+                Metrics.countEvent("lsp", "phpInst", "waitNet");
+                task.setMessage(Strings.PHP_INSTALL_WAITING_NETWORK);
+                setTimeout(task.close, 4000);
+                _armOnlineRetry();
+                return null;
+            }
+            console.error("[PHPSupport] install failed", err);
+            Metrics.countEvent("lsp", "phpInst", "fail");
+            window.logger && window.logger.reportError(err, "[PHPSupport] LSP install failed");
             task.setFailed();
             task.setMessage(StringUtils.format(Strings.PHP_INSTALL_FAILED, message));
-            setTimeout(task.close, 10000);
+            task.showRestartIcon();
+            task.show();
+            _showFailureToast(StringUtils.format(Strings.PHP_INSTALL_FAILED, message));
+            setTimeout(task.close, 30000);
             return null;
+        } finally {
+            _activeNpmInstall = null;
         }
     }
 
@@ -212,219 +300,40 @@ define(function (require, exports, module) {
         return _inFlight;
     }
 
-    // ----- consent UI: prompt toast + Problems-panel row (mirrors the TS enable affordances) ------
-
-    function _closePromptBar() {
-        if (_promptBarTip) {
-            _promptBarTip.detach();
-            _promptBarTip = null;
-        }
-        if (_promptBar) {
-            _promptBar.close();
-            _promptBar = null;
-        }
-    }
-
-    function _benefitRows() {
-        return [
-            [Strings.PHP_BENEFIT_COMPLETIONS, Strings.PHP_BENEFIT_COMPLETIONS_SUB],
-            [Strings.PHP_BENEFIT_DOCS, Strings.PHP_BENEFIT_DOCS_SUB],
-            [Strings.PHP_BENEFIT_ERRORS, Strings.PHP_BENEFIT_ERRORS_SUB],
-            [Strings.PHP_BENEFIT_NAV, Strings.PHP_BENEFIT_NAV_SUB]
-        ];
-    }
-
-    // Compact benefits card for the bar's (i) icon - term -> what it means, one line each.
-    function _benefitsTipHtml() {
-        const $tip = $("<div>");
-        $("<div class='ph-tip-title'>").text(Strings.PHP_INSTALL_TITLE).appendTo($tip);
-        const $rows = $("<div class='ph-tip-rows'>").appendTo($tip);
-        _benefitRows().forEach(function (row) {
-            $("<span class='ph-tip-term'>").text(row[0]).appendTo($rows);
-            $("<span class='ph-tip-def'>").text(row[1]).appendTo($rows);
-        });
-        return $tip.html();
-    }
-
-    // The very first offer ever also raises a dialog over the bar - the bar alone is easy to
-    // miss. One shot per install (lifetime): cancelling leaves only the bar from then on.
-    // Deliberately terse: one line + an (i) whose hover card lists what it provides (same
-    // rich tooltip as the bar's info icon).
-    function _maybeShowFirstTimeDialog() {
-        const stateManager = PreferencesManager.stateManager;
-        if (stateManager.get(STATE_INSTALL_DIALOG_SHOWN)) {
-            return;
-        }
-        stateManager.set(STATE_INSTALL_DIALOG_SHOWN, true);
-        const $body = $("<div>");
-        const $text = $("<p>").appendTo($body);
-        $("<span>").text(Strings.PHP_INSTALL_DIALOG_TEXT).appendTo($text);
-        $text.append("&nbsp;");
-        $("<i class='fa-solid fa-circle-info lsp-install-dialog-info'>").appendTo($text);
-        $("<p class='lsp-install-dialog-later'>").text(Strings.PHP_INSTALL_LATER_INFO).appendTo($body);
-        // quiet colophon crediting (and linking) the server this rides on
-        const $credit = $("<p class='lsp-install-dialog-credit'>").appendTo($body);
-        $("<span>").text(Strings.LSP_INSTALL_POWERED_BY + " ").appendTo($credit);
-        $("<a href='#' data-href='" + INTELEPHENSE_HOME_URL + "'>").text("Intelephense").appendTo($credit);
-        const dialog = Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.PHP_INSTALL_DIALOG_TITLE,
-            $body.html(), [
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id: Dialogs.DIALOG_BTN_CANCEL,
-                    text: Strings.PHP_INSTALL_NOT_NOW
-                },
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id: Dialogs.DIALOG_BTN_OK,
-                    text: Strings.PHP_INSTALL_ENABLE
-                }
-            ]);
-        const benefitsTip = NotificationUI.attachRichTooltip(
-            dialog.getElement().find(".lsp-install-dialog-info"), _benefitsTipHtml(), { showDelayMs: 150 });
-        // the body went in as serialized HTML, so link handling is delegated on the live dialog
-        dialog.getElement().on("click", "a[data-href]", function (e) {
-            e.preventDefault();
-            NativeApp.openURLInDefaultBrowser($(e.currentTarget).attr("data-href"));
-        });
-        // the download size sits at the decision point - in the footer, left of the buttons -
-        // so the cost is read exactly when the user weighs Install (store-style metadata chip)
-        const $size = $("<span class='lsp-install-dialog-size'>");
-        $("<i class='fa-solid fa-download'>").appendTo($size);
-        $size.append(document.createTextNode(" " + Strings.PHP_INSTALL_DIALOG_SIZE));
-        $size.prependTo(dialog.getElement().find(".modal-footer"));
-        dialog.done(function (id) {
-            benefitsTip.detach();
-            if (id === Dialogs.DIALOG_BTN_OK) {
-                _closePromptBar();
-                installNow();
-            }
-            // on cancel the bar stays - it is the ongoing affordance
-        });
-    }
-
-    // A find-bar-style banner across the top of the editor - impossible to miss on the file that
-    // triggered it, but passive (autoClose false: clicking back into the code doesn't dismiss it).
-    function _showPromptBar() {
-        const root = ProjectManager.getProjectRoot();
-        const rootPath = (root && root.fullPath) || "";
-        if (_promptDismissedForProject.has(rootPath) || _promptBar) {
-            return;
-        }
-        // built as detached DOM then serialized (ModalBar takes an HTML string); all click
-        // handling is delegated on the live bar root below
-        const $tpl = $("<div class='lsp-install-bar'>");
-        $("<span class='lsp-install-bar-text'>").text(Strings.PHP_INSTALL_MESSAGE).appendTo($tpl);
-        $("<i class='fa-solid fa-circle-info lsp-install-bar-info'>").appendTo($tpl);
-        // credit where due (and where premium lives) - not license-required, just right
-        $("<a class='lsp-install-bar-powered-by' href='#'>").text(Strings.PHP_POWERED_BY_INTELEPHENSE)
-            .appendTo($tpl);
-        $("<button class='btn btn-mini lsp-install-bar-later'>")
-            .text(Strings.PHP_INSTALL_NOT_NOW).appendTo($tpl);
-        $("<button class='btn btn-mini primary lsp-install-bar-install'>")
-            .text(Strings.PHP_INSTALL_ENABLE).appendTo($tpl);
-
-        _promptBar = new ModalBar($tpl[0].outerHTML, false);
-        const $bar = _promptBar.getRoot();
-        _promptBarTip = NotificationUI.attachRichTooltip(
-            $bar.find(".lsp-install-bar-info"), _benefitsTipHtml(), { showDelayMs: 150 });
-        $bar.on("click", ".lsp-install-bar-install", function () {
-            _closePromptBar();
-            installNow();
-        });
-        $bar.on("click", ".lsp-install-bar-later", function () {
-            const projRoot = ProjectManager.getProjectRoot();
-            _promptDismissedForProject.add((projRoot && projRoot.fullPath) || "");
-            _closePromptBar();
-        });
-        $bar.on("click", ".lsp-install-bar-powered-by", function (e) {
-            e.preventDefault();
-            NativeApp.openURLInDefaultBrowser(INTELEPHENSE_HOME_URL);
-        });
-    }
-
-    function _ensurePanelRow() {
-        const $panel = $("#problems-panel");
-        if (!$panel.length) {
-            return null;
-        }
-        let $row = $panel.find(".php-intel-panel-row");
-        if ($row.length) {
-            return $row;
-        }
-        // reuse the TS row's styling; the extra class scopes our own lookups
-        $row = $("<div class='ts-code-intel-panel-row php-intel-panel-row'>").hide();
-        $("<span class='ts-code-intel-panel-text'>").text(Strings.PHP_PANEL_TEXT).appendTo($row);
-        $("<button class='btn btn-mini primary ts-code-intel-panel-enable'>")
-            .text(Strings.PHP_INSTALL_ENABLE)
-            .on("click", function () {
-                installNow();
-            })
-            .appendTo($row);
-        $("<a class='ts-code-intel-panel-close'>")
-            .attr("title", Strings.PHP_INSTALL_NOT_NOW).html("&times;")
-            .on("click", function () {
-                _panelRowDismissed = true; // session-only: reappears next launch
-                $row.hide();
-            })
-            .appendTo($row);
-        $panel.children(".toolbar").after($row);
-        return $row;
-    }
-
     /**
-     * Hide the Problems-panel install row (e.g. once an install starts or completes).
+     * Auto-install without any consent UI - the status-bar task (opened popup, stop icon) is the
+     * announcement. Guards, in order:
+     *  - never in test windows (suites call installNow() explicitly; opening a .php fixture must
+     *    not start surprise downloads),
+     *  - master pref false = durable opt-out,
+     *  - user cancelled this session = wait for the next launch,
+     *  - offline = wait silently for connectivity (one-shot window "online" retry).
+     * @return {Promise<?{entryPath: string, upgraded: boolean}>} null when skipped/failed
      */
-    function hidePanelRow() {
-        const $row = $("#problems-panel .php-intel-panel-row");
-        if ($row.length) {
-            $row.hide();
-        }
-    }
-
-    /**
-     * Show/hide the Problems-panel install row for the current state. Call on active-editor and
-     * project changes with whether a PHP DOCUMENT is active.
-     * @param {boolean} phpDocumentActive
-     */
-    function updatePanelRow(phpDocumentActive) {
+    function autoInstall() {
         if (typeof Phoenix !== "undefined" && Phoenix.isTestWindow) {
-            return;
+            return Promise.resolve(null);
         }
-        const $row = _ensurePanelRow();
-        if (!$row) {
-            return;
-        }
-        if (!phpDocumentActive) {
-            _closePromptBar();  // the bar belongs to the php file that triggered it
-        }
-        if (!phpDocumentActive || _panelRowDismissed || _inFlight ||
+        if (_cancelledThisSession ||
                 PreferencesManager.get(PREF_PHP_CODE_INTELLIGENCE) === false) {
-            $row.hide();
-            return;
+            return Promise.resolve(null);
         }
-        installedState().then(function (state) {
-            if (state.installed) {
-                $row.hide();
-            } else {
-                $row.show();
-            }
-        });
+        if (!navigator.onLine) {
+            _armOnlineRetry();
+            return Promise.resolve(null);
+        }
+        return installNow();
     }
 
     /**
-     * Offer the install to the user: one-per-session prompt toast + the persistent Problems-panel
-     * row. Call when a PHP document is active but the server is not installed.
-     * @param {boolean} phpDocumentActive
+     * Wipe the whole install (including the index cache) and reacquire it - self-repair for a
+     * supposedly-installed server that fails to start (entry corrupt beyond the existence check).
+     * The onInstalled callback re-registers the server on success.
+     * @return {Promise<?{entryPath: string, upgraded: boolean}>} null on failure
      */
-    function offerInstallUI(phpDocumentActive) {
-        if (typeof Phoenix !== "undefined" && Phoenix.isTestWindow) {
-            return;
-        }
-        if (phpDocumentActive) {
-            _showPromptBar();
-            _maybeShowFirstTimeDialog();
-        }
-        updatePanelRow(phpDocumentActive);
+    async function repairInstall() {
+        await Phoenix.VFS.unlinkAsync(_installDirVfs()).catch(function () {});
+        return installNow();
     }
 
     /**
@@ -437,9 +346,8 @@ define(function (require, exports, module) {
     exports.init = init;
     exports.installedState = installedState;
     exports.installNow = installNow;
-    exports.offerInstallUI = offerInstallUI;
-    exports.updatePanelRow = updatePanelRow;
-    exports.hidePanelRow = hidePanelRow;
+    exports.autoInstall = autoInstall;
+    exports.repairInstall = repairInstall;
     exports.getEntryPlatformPath = getEntryPlatformPath;
     exports.getCachePlatformPath = getCachePlatformPath;
     exports.INTELEPHENSE_VERSION = INTELEPHENSE_VERSION;

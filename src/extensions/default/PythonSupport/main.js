@@ -24,7 +24,8 @@
  * diagnostics and quick fixes, all through the shared LSP framework. Desktop only.
  *
  * The server is a single ~13MB Rust binary too large to bundle for one language - see
- * ServerInstaller for the consent + on-demand PyPI wheel download flow.
+ * ServerInstaller for the automatic on-demand PyPI wheel download flow (announced through the
+ * status-bar task; the master pref is the opt-out).
  *
  * @module extensions/default/PythonSupport/main
  */
@@ -43,8 +44,8 @@ define(function (require, exports, module) {
     const SERVER_ID = "python";
     const SUPPORTED_LANGUAGES = ["python"];
 
-    // Master switch; also doubles as the durable memory of a declined install prompt (the
-    // decline sets it false; setting it back to true re-offers the install).
+    // Master switch - the durable opt-out of the automatic install; setting it back to true
+    // re-triggers the auto-install on the open python file.
     PreferencesManager.definePreference(ServerInstaller.PREF_PYTHON_CODE_INTELLIGENCE, "boolean", true, {
         description: Strings.DESCRIPTION_PYTHON_CODE_INTELLIGENCE
     });
@@ -54,6 +55,7 @@ define(function (require, exports, module) {
     let starting = false;
     let pendingRepoint = false;
     let initErrorReported = false;
+    let _repairAttempted = false;   // one self-repair (wipe + reinstall) per session
     let _client = null;
 
     function canRun() {
@@ -125,23 +127,24 @@ define(function (require, exports, module) {
             return;
         }
         const state = await ServerInstaller.installedState();
-        if (!state.installed) {
-            // not acquired yet: offer the unobtrusive consent UI (find-bar prompt +
-            // Problems-panel row). Clicking Install runs the installer; its onInstalled
-            // callback starts us.
-            ServerInstaller.offerInstallUI(_isPythonDocumentActive());
-            return;
-        }
-        if (!state.pinMatches) {
-            // silent version upgrade - consent was given when it first installed
-            const result = await ServerInstaller.installNow();
-            if (!result) {
-                return;
-            }
-            // installNow's onInstalled callback registers the server
+        if (!state.installed || !state.pinMatches) {
+            // acquire (or complete/upgrade) the tooling automatically - announced only through
+            // the status-bar task. autoInstall's guards (pref off, user cancelled this session,
+            // offline, test window) decide whether anything actually runs; its onInstalled
+            // callback registers the server.
+            await ServerInstaller.autoInstall();
             return;
         }
         await _registerServer(ServerInstaller.getBinaryPlatformPath());
+        if (!registered && !_repairAttempted && !Phoenix.isTestWindow) {
+            // Self-repair: the marker said installed but the server would not start (binary
+            // corrupt beyond the existence checks). Wipe and reacquire once per session - the
+            // onInstalled callback re-registers on success. A second failure surfaces through
+            // the installer's normal failure UX.
+            _repairAttempted = true;
+            console.error("[PythonSupport] installed server failed to start - reinstalling");
+            await ServerInstaller.repairInstall();
+        }
     }
 
     /**
@@ -209,7 +212,6 @@ define(function (require, exports, module) {
 
         EditorManager.on("activeEditorChange.pythonSupport", function () {
             _ensureServerForActiveEditor();
-            ServerInstaller.updatePanelRow(_isPythonDocumentActive() && !registered);
         });
         _ensureServerForActiveEditor();
 
@@ -218,7 +220,7 @@ define(function (require, exports, module) {
             _ensureServerForActiveEditor();
         });
 
-        // Master switch flipped back on (e.g. after an earlier decline): offer install again on
+        // Master switch flipped back on (e.g. after an earlier opt-out): auto-install again on
         // the currently open python file.
         PreferencesManager.on("change", ServerInstaller.PREF_PYTHON_CODE_INTELLIGENCE, function () {
             if (PreferencesManager.get(ServerInstaller.PREF_PYTHON_CODE_INTELLIGENCE) !== false) {

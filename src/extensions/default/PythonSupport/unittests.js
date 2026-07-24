@@ -198,5 +198,13 @@ define(function (require, exports, module) {
             expect(result.changedText).toContain("def f(a, b):");
             expect(result.changedText).toContain("return a + b");
         }, 45000);
+
+        it("should never auto-install in a test window", async function () {
+            // opening .py fixtures in ANY integration suite must not trigger surprise downloads -
+            // suites acquire the server explicitly through installNow() instead
+            const ServerInstaller = await _pyModule("ServerInstaller");
+            const result = await ServerInstaller.autoInstall();
+            expect(result).toBe(null);
+        }, 45000);
     });
 });

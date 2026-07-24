@@ -121,11 +121,26 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("_loadNodeExtensionModule", {moduleNativeDir});
     }
 
-    async function _npmInstallInFolder(moduleNativeDir) {
+    /**
+     * Runs the bundled npm install in the given folder. Rejects if an install is already in
+     * progress there (two npm processes on one node_modules corrupt each other).
+     *
+     * The returned promise carries a `cancel()` method - cancellation is only meaningful for
+     * the specific install you started, so it lives on the handle rather than as a module API.
+     * Cancelling kills the npm process; the promise then rejects with a "cancelled" error.
+     *
+     * @param {string} moduleNativeDir - platform path of the folder holding package.json
+     * @return {Promise<void> & {cancel: function(): Promise<void>}}
+     */
+    function _npmInstallInFolder(moduleNativeDir) {
         if(!Phoenix.isNativeApp) {
             throw new Error("_npmInstallInFolder not available in browser");
         }
-        return utilsConnector.execPeer("_npmInstallInFolder", {moduleNativeDir});
+        const promise = utilsConnector.execPeer("_npmInstallInFolder", {moduleNativeDir});
+        promise.cancel = function () {
+            return utilsConnector.execPeer("_cancelNpmInstall", {moduleNativeDir});
+        };
+        return promise;
     }
 
     const DOWNLOAD_PROGRESS_EVENT = "downloadProgress";
@@ -143,14 +158,17 @@ define(function (require, exports, module) {
      * @param {string} [options.sha256] - expected hex digest of the downloaded bytes
      * @param {function(number, number)} [options.progress] - called with (transferredBytes,
      *        totalBytes) as the download advances; totalBytes is 0 if the server sent no length
-     * @return {Promise<void>}
+     * @return {Promise<void> & {cancel: function(): Promise<void>}} the returned promise carries
+     *        a `cancel()` method that aborts the download mid-stream - the promise then rejects
+     *        with a "cancelled" error and the partial file is deleted
      */
-    async function downloadFile(url, destFile, options) {
+    function downloadFile(url, destFile, options) {
         if(!Phoenix.isNativeApp) {
             throw new Error("downloadFile not available in browser");
         }
         const progress = options && options.progress;
         _downloadCounter++;
+        const cancelId = "dl" + _downloadCounter;
         const eventName = DOWNLOAD_PROGRESS_EVENT + ".dl" + _downloadCounter;
         if(progress) {
             utilsConnector.on(eventName, function (_evt, data) {
@@ -159,17 +177,20 @@ define(function (require, exports, module) {
                 }
             });
         }
-        try {
-            return await utilsConnector.execPeer("downloadFile", {
-                url: url,
-                destFile: destFile,
-                sha256: (options && options.sha256) || undefined
-            });
-        } finally {
+        const promise = utilsConnector.execPeer("downloadFile", {
+            url: url,
+            destFile: destFile,
+            sha256: (options && options.sha256) || undefined,
+            cancelId: cancelId
+        }).finally(function () {
             if(progress) {
                 utilsConnector.off(eventName);
             }
-        }
+        });
+        promise.cancel = function () {
+            return utilsConnector.execPeer("cancelDownload", {cancelId});
+        };
+        return promise;
     }
 
     /**
