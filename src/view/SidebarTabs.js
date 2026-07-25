@@ -40,7 +40,8 @@ define(function (require, exports, module) {
     const AppInit              = require("utils/AppInit"),
         EventDispatcher      = require("utils/EventDispatcher"),
         Metrics              = require("utils/Metrics"),
-        PreferencesManager   = require("preferences/PreferencesManager");
+        PreferencesManager   = require("preferences/PreferencesManager"),
+        WorkingSetView       = require("project/WorkingSetView");
 
     // --- Constants -----------------------------------------------------------
 
@@ -447,6 +448,11 @@ define(function (require, exports, module) {
         }
 
         if (previousTabId !== id) {
+            if (id === SIDEBAR_TAB_FILES) {
+                // working set marker positions computed while the files tab content was
+                // display:none are all 0, so recompute the selection now that it is visible
+                WorkingSetView.refreshSelection();
+            }
             exports.trigger(EVENT_TAB_CHANGED, id, previousTabId);
         }
     }

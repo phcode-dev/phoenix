@@ -107,6 +107,11 @@ define(function (require, exports, module) {
         });
 
         afterEach(async function () {
+            // restore state in case a selection marker test failed midway
+            testWindow.brackets.test.PreferencesManager.set("showWorkingSet", true);
+            const SidebarTabs = testWindow.brackets.test.SidebarTabs;
+            SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
+            testWindow.$(".open-files-container").css("height", "");
             await testWindow.closeAllFiles();
         });
 
@@ -339,6 +344,89 @@ define(function (require, exports, module) {
             $list.each(function (number, el) {
                 expect($(el).hasClass(test.pop())).toBeTruthy();
             });
+        });
+
+        function _isMarkerAlignedWithSelection() {
+            const $ = testWindow.$;
+            const $selected = $(".open-files-container li.selected");
+            const $marker = $(".open-files-container .sidebar-selection");
+            return $selected.length === 1 && $marker.length === 1 &&
+                Math.abs($marker.offset().top - $selected.offset().top) < 2;
+        }
+
+        it("should reposition selection marker and reveal selection when working set is shown again", async function () {
+            const $ = testWindow.$;
+            const PreferencesManager = testWindow.brackets.test.PreferencesManager;
+            const fileList = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            const $container = $(".open-files-container");
+
+            // view the first file
+            await awaitsForDone(CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[0].fullPath }),
+                "FILE_OPEN first file");
+
+            // shrink the list so the second item overflows and must be scrolled to
+            $container.css("height", "30px");
+            $container.scrollTop(0);
+
+            // hide the working set
+            PreferencesManager.set("showWorkingSet", false);
+            await awaitsFor(function () {
+                return $("#working-set-list-container").hasClass("working-set-hidden");
+            }, "working set to hide");
+
+            // switch to the second file while hidden - marker offsets all compute
+            // to 0 on display:none elements, so it cannot be positioned now
+            await awaitsForDone(CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[1].fullPath }),
+                "FILE_OPEN second file");
+
+            // show the working set again
+            PreferencesManager.set("showWorkingSet", true);
+            await awaitsFor(function () {
+                return !$("#working-set-list-container").hasClass("working-set-hidden");
+            }, "working set to show");
+
+            // the marker must align with the newly selected item and the item
+            // must be scrolled into view
+            await awaitsFor(_isMarkerAlignedWithSelection, "selection marker to align with selected item");
+            await awaitsFor(function () {
+                const $selected = $(".open-files-container li.selected");
+                const containerTop = $container.offset().top;
+                const containerBottom = containerTop + $container.height();
+                return $selected.offset().top >= containerTop &&
+                    ($selected.offset().top + $selected.height()) <= containerBottom;
+            }, "selected item to be scrolled into view");
+        });
+
+        it("should reposition selection marker when switching back to the files sidebar tab", async function () {
+            const $ = testWindow.$;
+            const SidebarTabs = testWindow.brackets.test.SidebarTabs;
+            const fileList = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            const TEST_TAB = "sidebar-tab-wsv-selection-test";
+
+            // view the first file
+            await awaitsForDone(CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[0].fullPath }),
+                "FILE_OPEN first file");
+
+            // switch to another sidebar tab, which hides the files tab content
+            SidebarTabs.addTab(TEST_TAB, "wsv test", "fa-solid fa-flask");
+            SidebarTabs.setActiveTab(TEST_TAB);
+            await awaitsFor(function () {
+                return !$("#working-set-list-container").is(":visible");
+            }, "working set to be hidden by tab switch");
+
+            // switch to the second file while the files tab content is hidden
+            await awaitsForDone(CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileList[1].fullPath }),
+                "FILE_OPEN second file");
+
+            // switch back to the files tab
+            SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
+            await awaitsFor(function () {
+                return $("#working-set-list-container").is(":visible");
+            }, "working set to be visible again");
+
+            await awaitsFor(_isMarkerAlignedWithSelection, "selection marker to align with selected item");
+
+            SidebarTabs.removeTab(TEST_TAB);
         });
 
         it("should allow refresh to be used to update the class list", async function () {
