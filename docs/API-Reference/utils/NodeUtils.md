@@ -123,7 +123,7 @@ This is only available in the native app.
 
 <a name="execFileWithInput"></a>
 
-## execFileWithInput(command, [args], [options]) ⇒ <code>Promise.&lt;{code: number, stdout: string, stderr: string}&gt;</code>
+## execFileWithInput(command, [args], [options]) ⇒ [<code>Promise.&lt;ExecFileResult&gt;</code>](#ExecFileResult)
 Runs an executable with the given args, feeding it text on stdin and capturing its output -
 a one-shot filter-style invocation (e.g. `ruff format -` for the Python beautifier). No
 shell is involved. Resolves with the exit code rather than rejecting on non-zero, so
@@ -270,4 +270,16 @@ operation - the promise then rejects with a "cancelled" error.
 | Name | Type | Description |
 | --- | --- | --- |
 | cancel | <code>function</code> | aborts the in-flight operation |
+
+<a name="ExecFileResult"></a>
+
+## ExecFileResult : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| code | <code>number</code> | the process's exit code |
+| stdout | <code>string</code> |  |
+| stderr | <code>string</code> |  |
 
