@@ -44,5 +44,7 @@ define(function main(require, exports, module) {
 
     exports.PREFERENCE_SHOW_STYLES_BAR = "livePreviewShowStylesBar";
 
+    exports.PREFERENCE_SHOW_STARTER_BAR = "livePreviewShowStarterBar";
+
     exports.PREFERENCE_STYLES_BAR_POSITION = "livePreviewStylesBarPosition";
 });
