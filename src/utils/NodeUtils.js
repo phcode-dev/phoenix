@@ -234,6 +234,13 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @typedef {Object} ExecFileResult
+     * @property {number} code - the process's exit code
+     * @property {string} stdout
+     * @property {string} stderr
+     */
+
+    /**
      * Runs an executable with the given args, feeding it text on stdin and capturing its output -
      * a one-shot filter-style invocation (e.g. `ruff format -` for the Python beautifier). No
      * shell is involved. Resolves with the exit code rather than rejecting on non-zero, so
@@ -246,7 +253,7 @@ define(function (require, exports, module) {
      * @param {string} [options.stdinText] - written to the process's stdin, then closed
      * @param {string} [options.cwd] - working directory
      * @param {number} [options.timeoutMs] - kill the process and reject after this long
-     * @return {Promise<{code: number, stdout: string, stderr: string}>}
+     * @return {Promise<ExecFileResult>}
      */
     async function execFileWithInput(command, args, options) {
         if(!Phoenix.isNativeApp) {

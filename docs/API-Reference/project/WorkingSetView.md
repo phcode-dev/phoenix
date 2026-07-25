@@ -3,6 +3,14 @@
 const WorkingSetView = brackets.getModule("project/WorkingSetView")
 ```
 
+<a name="refreshSelection"></a>
+
+## refreshSelection()
+Recomputes the selection marker of all Pane View List Views and scrolls
+the selected item into view. Needed after the working set becomes visible
+again, as marker positions computed while it was display:none are all 0.
+
+**Kind**: global function  
 <a name="refresh"></a>
 
 ## refresh()
