@@ -121,6 +121,12 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE
     });
 
+    // live preview starter bar preference (show/hide the starter bar on empty pages); on by default
+    const PREFERENCE_SHOW_STARTER_BAR = CONSTANTS.PREFERENCE_SHOW_STARTER_BAR;
+    PreferencesManager.definePreference(PREFERENCE_SHOW_STARTER_BAR, "boolean", true, {
+        description: Strings.LIVE_DEV_SETTINGS_SHOW_STARTER_BAR_PREFERENCE
+    });
+
     // live preview styles bar position preference; persists where the user last dragged the bar
     const PREFERENCE_STYLES_BAR_POSITION = CONSTANTS.PREFERENCE_STYLES_BAR_POSITION;
     PreferencesManager.definePreference(PREFERENCE_STYLES_BAR_POSITION, "string", "", {
@@ -1555,6 +1561,9 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_STYLES_BAR, function() {
             LiveDevelopment.updateStylesBarConfig();
         });
+        PreferencesManager.on("change", PREFERENCE_SHOW_STARTER_BAR, function() {
+            LiveDevelopment.updateStarterBarConfig();
+        });
         PreferencesManager.on("change", PREFERENCE_STYLES_BAR_POSITION, function() {
             LiveDevelopment.updateStylesBarPositionConfig();
         });
@@ -1562,6 +1571,7 @@ define(function (require, exports, module) {
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
         LiveDevelopment.updateStylesBarConfig();
+        LiveDevelopment.updateStarterBarConfig();
         LiveDevelopment.updateStylesBarPositionConfig();
 
         LiveDevelopment.openLivePreview();

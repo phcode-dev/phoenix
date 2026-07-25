@@ -72,6 +72,7 @@ define(function main(require, exports, module) {
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
         showStylesBar: true, // default value, this will get updated when the extension loads
+        showStarterBar: true, // default value, this will get updated when the extension loads
         stylesBarPosition: "", // saved dock side ("top"/"bottom"); empty = default bottom
         syncSourceAndPreview: true, // default value, this will get updated when the extension loads
         imageGalleryAutoOpen: true, // auto-open gallery on first image click per session
@@ -345,6 +346,13 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.updateConfig(config);
     }
 
+    function updateStarterBarConfig() {
+        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_SHOW_STARTER_BAR);
+        const config = MultiBrowserLiveDev.getConfig();
+        config.showStarterBar = prefValue !== false; // defaults to true (on)
+        MultiBrowserLiveDev.updateConfig(config);
+    }
+
     function updateStylesBarPositionConfig() {
         const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_STYLES_BAR_POSITION);
         const config = MultiBrowserLiveDev.getConfig();
@@ -376,6 +384,7 @@ define(function main(require, exports, module) {
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
     exports.updateStylesBarConfig = updateStylesBarConfig;
+    exports.updateStarterBarConfig = updateStarterBarConfig;
     exports.updateStylesBarPositionConfig = updateStylesBarPositionConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
