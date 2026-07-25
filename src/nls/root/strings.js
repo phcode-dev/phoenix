@@ -185,7 +185,7 @@ define({
     "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Show measurements when elements are selected in live preview. Defaults to 'false'",
     "LIVE_DEV_SETTINGS_SHOW_STYLES_BAR_PREFERENCE": "Show the styles bar when elements are selected in live preview. Defaults to 'true'",
     "LIVE_DEV_SETTINGS_SHOW_STARTER_BAR_PREFERENCE": "Show the starter bar when the live preview page is empty. Defaults to 'true'",
-    "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Saved position of the live preview styles bar, set automatically when the bar is dragged. Empty places the bar at its default spot",
+    "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Which edge the live preview styles bar docks to, 'top' or 'bottom'. Defaults to 'bottom'",
     "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Select Parent",
     "LIVE_DEV_TOOLBOX_EDIT_TEXT": "Edit Text",
     "LIVE_DEV_TOOLBOX_DOUBLE_CLICK_HINT": "Double-click",
