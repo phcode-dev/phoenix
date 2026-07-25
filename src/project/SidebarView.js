@@ -301,6 +301,9 @@ define(function (require, exports, module) {
                 if(getPref) {
                     // refer to brackets.less file for styles
                     $workingSet.removeClass("working-set-hidden");
+                    // marker positions computed while the container was display:none are
+                    // all 0, so recompute the selection now that it is visible again
+                    WorkingSetView.refreshSelection();
                 } else {
                     $workingSet.addClass("working-set-hidden");
                 }

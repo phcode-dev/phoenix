@@ -122,6 +122,17 @@ define(function (require, exports, module) {
     var _DRAG_MOVE_DETECTION_START = 3;
 
     /**
+     * Recomputes the selection marker of all Pane View List Views and scrolls
+     * the selected item into view. Needed after the working set becomes visible
+     * again, as marker positions computed while it was display:none are all 0.
+     */
+    function refreshSelection() {
+        _.forEach(_views, function (view) {
+            view._updateListSelection();
+        });
+    }
+
+    /**
      * Refreshes all Pane View List Views
      */
     function refresh(rebuild) {
@@ -1628,6 +1639,7 @@ define(function (require, exports, module) {
     // Public API
     exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
     exports.refresh                       = refresh;
+    exports.refreshSelection              = refreshSelection;
     exports.addIconProvider               = addIconProvider;
     exports.addClassProvider              = addClassProvider;
     exports.syncSelectionIndicator        = syncSelectionIndicator;
