@@ -309,7 +309,8 @@ define(function (require, exports, module) {
                 offset,
                 $copy,
                 $ghost,
-                draggingCurrentFile;
+                draggingCurrentFile,
+                openedOnMouseDown = false;
 
             function initDragging() {
                 itemHeight = $el.height();
@@ -789,6 +790,10 @@ define(function (require, exports, module) {
                                 .always(function () {
                                     postDropCleanup();
                                 });
+                        } else if (openedOnMouseDown) {
+                            // file was already opened on mouse down for a fast switch feel,
+                            // nothing left to do here
+                            postDropCleanup();
                         } else {
                             // Normal right and left click - select the item
                             FileViewController.setFileViewFocus(FileViewController.WORKING_SET_VIEW);
@@ -864,7 +869,16 @@ define(function (require, exports, module) {
                 return;
             }
 
-
+            // open the file right away on mouse down like the file tree and the
+            // editor tab bar do, so switching files feels fast instead of waiting
+            // for mouse up. A drag can still follow - the item just becomes the
+            // current file as soon as it is pressed.
+            if (!tryClosing) {
+                openedOnMouseDown = true;
+                FileViewController.setFileViewFocus(FileViewController.WORKING_SET_VIEW);
+                CommandManager.execute(Commands.FILE_OPEN, {fullPath: sourceFile.fullPath,
+                    paneId: sourceView.paneId});
+            }
 
             e.stopPropagation();
         });
