@@ -37,10 +37,20 @@ define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager"),
         ProjectManager = require("project/ProjectManager"),
         NodeConnector = require("NodeConnector"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        Strings = require("strings"),
         SchemaAssociations = require("./schemaAssociations");
 
     const SERVER_ID = "json";
     const SUPPORTED_LANGUAGES = ["json"];
+    const PREF_JSON_CODE_INTELLIGENCE = "codeIntelligence." + SERVER_ID;
+
+    // Master switch for JSON code intelligence - setting it back to true starts the server on
+    // the open JSON file. A runtime disable of a running server is handled centrally by
+    // LSPClient's own watcher on this pref.
+    PreferencesManager.definePreference(PREF_JSON_CODE_INTELLIGENCE, "boolean", true, {
+        description: Strings.DESCRIPTION_JSON_CODE_INTELLIGENCE
+    });
 
     let lspClientPromise = null;
     let client = null;              // the LanguageClient once registered
@@ -181,6 +191,9 @@ define(function (require, exports, module) {
         if (!canRun() || !_isServedLanguageActive()) {
             return;
         }
+        if (PreferencesManager.get(PREF_JSON_CODE_INTELLIGENCE) === false) {
+            return;
+        }
         if (!registered) {
             if (starting) {
                 return;
@@ -218,6 +231,13 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN + ".jsonSupport", function () {
             pendingRepoint = true;
             _ensureServerForActiveEditor();
+        });
+        // Re-enabling the pref starts the server on the open JSON file without needing a file
+        // switch. The disable direction is handled by LSPClient stopping the running server.
+        PreferencesManager.on("change", PREF_JSON_CODE_INTELLIGENCE, function () {
+            if (PreferencesManager.get(PREF_JSON_CODE_INTELLIGENCE) !== false) {
+                _ensureServerForActiveEditor();
+            }
         });
     }
 
