@@ -127,10 +127,11 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_STARTER_BAR_PREFERENCE
     });
 
-    // live preview styles bar position preference; persists where the user last dragged the bar
+    // live preview styles bar dock side preference; persisted when the user flips the bar's dock button
     const PREFERENCE_STYLES_BAR_POSITION = CONSTANTS.PREFERENCE_STYLES_BAR_POSITION;
-    PreferencesManager.definePreference(PREFERENCE_STYLES_BAR_POSITION, "string", "", {
-        description: Strings.LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE
+    PreferencesManager.definePreference(PREFERENCE_STYLES_BAR_POSITION, "string", "bottom", {
+        description: Strings.LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE,
+        values: ["top", "bottom"]
     });
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";

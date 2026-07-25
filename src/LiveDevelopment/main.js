@@ -73,7 +73,7 @@ define(function main(require, exports, module) {
         showRulerLines: false, // default value, this will get updated when the extension loads
         showStylesBar: true, // default value, this will get updated when the extension loads
         showStarterBar: true, // default value, this will get updated when the extension loads
-        stylesBarPosition: "", // saved dock side ("top"/"bottom"); empty = default bottom
+        stylesBarPosition: "bottom", // saved dock side ("top"/"bottom")
         syncSourceAndPreview: true, // default value, this will get updated when the extension loads
         imageGalleryAutoOpen: true, // auto-open gallery on first image click per session
         isPaidUser: false, // will be updated when we fetch entitlements
@@ -356,7 +356,7 @@ define(function main(require, exports, module) {
     function updateStylesBarPositionConfig() {
         const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_STYLES_BAR_POSITION);
         const config = MultiBrowserLiveDev.getConfig();
-        config.stylesBarPosition = prefValue || "";
+        config.stylesBarPosition = prefValue || "bottom";
         MultiBrowserLiveDev.updateConfig(config);
     }
 
