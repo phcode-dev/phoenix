@@ -423,11 +423,24 @@ define(function (require, exports, module) {
     }
 
     function _getMarkOptions(error){
+        let options;
         switch (error.type) {
-        case Type.ERROR: return Editor.getMarkOptionUnderlineError();
-        case Type.WARNING: return Editor.getMarkOptionUnderlineWarn();
-        case Type.META: return Editor.getMarkOptionUnderlineInfo();
+        case Type.ERROR: options = Editor.getMarkOptionUnderlineError(); break;
+        case Type.WARNING: options = Editor.getMarkOptionUnderlineWarn(); break;
+        case Type.META: options = Editor.getMarkOptionUnderlineInfo(); break;
         }
+        // LSP DiagnosticTag values on the error (1 Unnecessary - unused symbol, 2 Deprecated)
+        // add a text style on top of the squiggle: faded for unused, strikethrough for
+        // deprecated. Panel row and squiggle treatment stay unchanged.
+        if (options && Array.isArray(error.tags)) {
+            if (error.tags.indexOf(1) !== -1) {
+                options.className += " editor-text-fragment-unnecessary";
+            }
+            if (error.tags.indexOf(2) !== -1) {
+                options.className += " editor-text-fragment-deprecated";
+            }
+        }
+        return options;
     }
 
     function _getMarkTypePriority(type){

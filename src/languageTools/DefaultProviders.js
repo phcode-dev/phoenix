@@ -943,7 +943,10 @@ define(function (require, exports, module) {
                     ch: obj.range.end.character
                 },
                 message: obj.message,
-                type: (obj.severity === 1 ? CodeInspection.Type.ERROR : (obj.severity === 2 ? CodeInspection.Type.WARNING : CodeInspection.Type.META))
+                type: (obj.severity === 1 ? CodeInspection.Type.ERROR : (obj.severity === 2 ? CodeInspection.Type.WARNING : CodeInspection.Type.META)),
+                // LSP DiagnosticTag values (1 Unnecessary, 2 Deprecated) - CodeInspection styles
+                // the marked text off these (faded / strikethrough) on top of the squiggle.
+                tags: obj.tags
             };
         });
 

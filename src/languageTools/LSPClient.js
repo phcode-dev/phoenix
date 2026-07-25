@@ -212,6 +212,14 @@ define(function (require, exports, module) {
             if (filterFn && diagnostics.length) {
                 diagnostics = filterFn(diagnostics, { languageId: langId, filePath: vfsPath });
             }
+            // Severity 4 (Hint) without tags is a refactoring suggestion (e.g. tsserver's "File is
+            // a CommonJS module; it may be converted to an ES module") - noise in a problems panel,
+            // so drop it (this also drops its quickfix). Tagged hints stay: tag 1 Unnecessary
+            // (unused symbol) and tag 2 Deprecated are real signal - they keep their panel row and
+            // squiggle, and additionally drive the faded/strikethrough text styling.
+            diagnostics = diagnostics.filter(function (d) {
+                return d.severity !== 4 || (d.tags && d.tags.length);
+            });
             client.lintingProvider.setInspectionResults({
                 uri: vfsUri,
                 diagnostics: diagnostics
