@@ -303,6 +303,9 @@ define(function (require, exports, module) {
     /** Opens the terminal panel */
     exports.VIEW_TERMINAL               = "view.terminal";              // Terminal/main.js              _showTerminal()
 
+    /** Toggles whether AI features are enabled */
+    exports.VIEW_ENABLE_AI              = "view.enableAI";              // phoenix-pro aiEnabled.js     _handleToggleEnableAI()
+
     /** Toggles line numbers visibility */
     exports.TOGGLE_LINE_NUMBERS         = "view.toggleLineNumbers";     // EditorOptionHandlers.js      _getToggler()
 

@@ -40,6 +40,7 @@ define(function (require, exports, module) {
         CommandManager      = require("command/CommandManager"),
         Commands            = require("command/Commands"),
         WorkspaceManager    = require("view/WorkspaceManager"),
+        PreferencesManager  = require("preferences/PreferencesManager"),
         CentralControlBar   = require("view/CentralControlBar");
 
     const TOUR_STORAGE_KEY = "phoenixOnboardingTourState";
@@ -88,6 +89,17 @@ define(function (require, exports, module) {
     let _step2PeekPrevTab = null;
     const STEP2_PEEK_HOLD_MS = 2000;
     const SIDEBAR_AI_TAB_ID = "ai";
+
+    /**
+     * True when the user has deliberately turned AI off (see the `enableAI`
+     * preference owned by phoenix-pro). The tab is legitimately absent in that
+     * case, so step 2 skips itself instead of reporting a missing-tab error.
+     * The pref is undefined in builds without phoenix-pro, hence the explicit
+     * `=== false` check rather than a falsy test.
+     */
+    function _isAIDisabledByUser() {
+        return PreferencesManager.get("enableAI") === false;
+    }
 
     function _markComplete() {
         _state.version = CURRENT_TOUR_VERSION;
@@ -391,6 +403,14 @@ define(function (require, exports, module) {
         _detachStepClickMetric();
         _cancelStep2AIPeek();
         _ensureSidebarVisible();
+        if (_isAIDisabledByUser()) {
+            // The user turned AI off — there is nothing to introduce, so skip the
+            // whole step rather than half of it. Checked before the tab lookup so
+            // this also covers the window between disabling AI and the restart
+            // that actually removes the tab, where the tab is still in the DOM.
+            _runStep3();
+            return;
+        }
         const $tab = $('.sidebar-tab[data-tab-id="ai"]');
         if (!$tab.length) {
             logger.reportError(new Error("phoenix-tour: AI sidebar tab missing at step 2"));
