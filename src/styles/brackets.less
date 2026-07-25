@@ -217,6 +217,17 @@ html, body {
     background: url('images/wavy-info.svg') repeat-x bottom left;
 }
 
+// LSP DiagnosticTag text styles, added on top of the squiggle classes above:
+// unused symbols (tag Unnecessary) render faded, deprecated usages (tag Deprecated)
+// render struck through.
+.editor-text-fragment-unnecessary {
+    opacity: 0.6;
+}
+
+.editor-text-fragment-deprecated {
+    text-decoration: line-through;
+}
+
 .hidden-element{
     display: none !important;
 }

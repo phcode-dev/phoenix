@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, afterEach, awaitsFor, awaitsForDone, path, jsPromise */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, path, jsPromise */
 
 define(function (require, exports, module) {
 
@@ -862,6 +862,88 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     return $("#function-hint-container-new").is(":visible");
                 }, "parameter hint popup to show again", 30000);
+            }, 90000);
+        });
+
+        // ----- hint-severity diagnostics: untagged suggestions dropped, tagged ones styled -----
+        describe("hint diagnostics and tags", function () {
+            let publishedByFile;
+            let origSetInspectionResults;
+
+            beforeAll(function () {
+                // Capture what actually reaches the linting layer (post the LSPClient hint filter)
+                // so the specs can await/assert on publishes deterministically instead of relying
+                // only on problems-panel text.
+                const DefaultProviders = testWindow.require("languageTools/DefaultProviders");
+                const proto = DefaultProviders.LintingProvider.prototype;
+                publishedByFile = {};
+                origSetInspectionResults = proto.setInspectionResults;
+                proto.setInspectionResults = function (msgObj) {
+                    const name = msgObj.uri.substring(msgObj.uri.lastIndexOf("/") + 1);
+                    publishedByFile[name] = publishedByFile[name] || [];
+                    publishedByFile[name].push(msgObj.diagnostics || []);
+                    return origSetInspectionResults.call(this, msgObj);
+                };
+            });
+
+            afterAll(function () {
+                const DefaultProviders = testWindow.require("languageTools/DefaultProviders");
+                DefaultProviders.LintingProvider.prototype.setInspectionResults = origSetInspectionResults;
+            });
+
+            beforeEach(async function () {
+                // Isolate from whatever earlier specs left behind (dirty documents, an open
+                // parameter-hint popup, stale panel state).
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close all files");
+            });
+
+            it("should keep tagged hints (unused/deprecated) in the panel and style the text", async function () {
+                await _openInProject("ts/", "type-error.ts");
+                const editor = EditorManager.getActiveEditor();
+                editor.document.setText(
+                    "const unusedVar: number = 1;\n" +
+                    "/** @deprecated use newFn */\n" +
+                    "function oldFn(): number { return 1; }\n" +
+                    "oldFn();\n" +
+                    "export {};\n"
+                );
+                // tagged hints (unused tag 1, deprecated tag 2) must survive the hint filter
+                await awaitsFor(function () {
+                    const all = (publishedByFile["type-error.ts"] || []).flat();
+                    return all.some(function (d) { return d.tags && d.tags.indexOf(1) !== -1; }) &&
+                        all.some(function (d) { return d.tags && d.tags.indexOf(2) !== -1; });
+                }, "tagged unused + deprecated diagnostics to be published", 30000);
+                await awaitsFor(function () {
+                    return panelText().includes("never read") && panelText().includes("deprecated");
+                }, "unused + deprecated hint rows in the problems panel", 30000);
+                // the marked text carries the tag styles on top of the info squiggle
+                await awaitsFor(function () {
+                    return $(".editor-text-fragment-unnecessary").length > 0 &&
+                        $(".editor-text-fragment-deprecated").length > 0;
+                }, "faded + strikethrough text marks in the editor", 30000);
+            }, 90000);
+
+            it("should drop untagged hint suggestions like the CommonJS to ESM nag", async function () {
+                await _openInProject("js-plain/", "implicit.js");
+                const editor = EditorManager.getActiveEditor();
+                const publishesBeforeEdit = (publishedByFile["implicit.js"] || []).length;
+                // "require(" is concatenated so RequireJS's static dependency scan of this module's
+                // source doesn't read the string literal as an AMD dependency named "http" - that
+                // fails the whole file's load and silently unregisters every suite in it.
+                const requireCall = "require";
+                editor.document.setText("const http = " + requireCall + "('http');\nconsole.log(http);\n");
+                // the server re-publishes (possibly empty) diagnostics after the edit - wait for
+                // one, then assert the untagged 80001 CommonJS suggestion never came through
+                await awaitsFor(function () {
+                    return (publishedByFile["implicit.js"] || []).length > publishesBeforeEdit;
+                }, "a diagnostics publish for implicit.js after the edit", 30000);
+                const all = (publishedByFile["implicit.js"] || []).flat();
+                expect(all.some(function (d) { return d.message.indexOf("CommonJS") !== -1; })).toBe(false);
+                expect(all.some(function (d) {
+                    return d.severity === 4 && !(d.tags && d.tags.length);
+                })).toBe(false);
+                expect(panelText().includes("CommonJS")).toBe(false);
             }, 90000);
         });
     });
