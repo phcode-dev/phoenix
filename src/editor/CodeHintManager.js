@@ -272,6 +272,9 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference("showCodeHints", "boolean", true, {
         description: Strings.DESCRIPTION_SHOW_CODE_HINTS
     });
+    PreferencesManager.definePreference("showCodeHintDocs", "boolean", true, {
+        description: Strings.DESCRIPTION_SHOW_CODE_HINT_DOCS
+    });
     PreferencesManager.definePreference("insertHintOnTab", "boolean", true, {
         description: Strings.DESCRIPTION_INSERT_HINT_ON_TAB
     });

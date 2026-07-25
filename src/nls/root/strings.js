@@ -1691,6 +1691,7 @@ define({
     "DESCRIPTION_SCROLL_PAST_END": "true to enable scrolling beyond the end of the document",
     "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplier for mouse wheel scroll speed (0.1 to 10, default 1). Adjust if scrolling feels too slow or fast.",
     "DESCRIPTION_SHOW_CODE_HINTS": "false to disable all code hints",
+    "DESCRIPTION_SHOW_CODE_HINT_DOCS": "false to hide the documentation popup shown beside code hints",
     "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Keeps the blinking cursor visible when you have a text selection",
     "DESCRIPTION_SHOW_LINE_NUMBERS": "true to show line numbers in a “gutter” to the left of the code",
     "DESCRIPTION_RULERS_COLUMNS": "An array of column numbers to draw vertical rulers in the editor. Eg: [80, 100]",

@@ -31,6 +31,7 @@ define(function (require, exports, module) {
 
     var EditorManager = require("editor/EditorManager"),
       DocumentManager = require("document/DocumentManager"),
+      PreferencesManager = require("preferences/PreferencesManager"),
       CommandManager = require("command/CommandManager"),
       Commands = require("command/Commands"),
       StringMatch = require("utils/StringMatch"),
@@ -257,6 +258,12 @@ define(function (require, exports, module) {
     }
 
     function _showDocPopup($hint, docHtml) {
+        // Single choke point for the docs popup beside the hint list - the preference gates
+        // every caller (LSP hints here, npm hints, ...).
+        if (PreferencesManager.get("showCodeHintDocs") === false) {
+            _hideDocPopup();
+            return;
+        }
         var $menu = $hint.closest(".codehint-menu");
         if (!docHtml || !$menu.length) {
             _hideDocPopup();
