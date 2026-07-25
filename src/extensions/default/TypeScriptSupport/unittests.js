@@ -780,5 +780,89 @@ define(function (require, exports, module) {
                 expect($("#reference-in-files-results").is(":visible")).toBe(true);
             }, 75000);
         });
+
+        // ----- codeIntelligence.* server gates + showParameterHints -----
+        describe("preference gates", function () {
+            let PreferencesManager, LSPClient;
+
+            beforeAll(function () {
+                PreferencesManager = testWindow.brackets.test.PreferencesManager;
+                LSPClient = testWindow.require("languageTools/LSPClient");
+            });
+
+            afterEach(function () {
+                // restore defaults even when a spec failed mid-way
+                PreferencesManager.set("codeIntelligence.typescript", true);
+                PreferencesManager.set("showParameterHints", true);
+            });
+
+            it("should gate registerLanguageServer on codeIntelligence.<serverId> and auto-define the pref",
+                async function () {
+                    PreferencesManager.set("codeIntelligence.fakeGateSpec", false);
+                    const client = await LSPClient.registerLanguageServer({
+                        serverId: "fakeGateSpec",
+                        command: "no-such-lsp-binary",
+                        languages: ["javascript"]
+                    });
+                    expect(client).toBe(null);
+                    // gated before any spawn attempt, but the pref is still auto-defined so
+                    // plugin-supplied servers get a discoverable off-switch with a description
+                    const pref = PreferencesManager.getPreference("codeIntelligence.fakeGateSpec");
+                    expect(pref).toBeTruthy();
+                    expect(pref.description).toContain("fakeGateSpec");
+                    PreferencesManager.set("codeIntelligence.fakeGateSpec", undefined);
+                });
+
+            it("should stop the running server on pref off, block resurrection, and restart on pref on",
+                async function () {
+                    await _openInProject("ts/", "type-error.ts");
+                    await awaitsFor(function () {
+                        return LSPClient.isLintingProviderActive("typescript");
+                    }, "typescript server to be active", 30000);
+
+                    PreferencesManager.set("codeIntelligence.typescript", false);
+                    await awaitsFor(function () {
+                        return !LSPClient.isLintingProviderActive("typescript");
+                    }, "typescript server to stop on pref off", 15000);
+
+                    // neither restart path may resurrect a pref-disabled server
+                    await LSPClient.restartLanguageServer("typescript");
+                    await LSPClient.changeWorkspaceRoot("typescript");
+                    expect(LSPClient.isLintingProviderActive("typescript")).toBe(false);
+
+                    PreferencesManager.set("codeIntelligence.typescript", true);
+                    await awaitsFor(function () {
+                        return LSPClient.isLintingProviderActive("typescript");
+                    }, "typescript server to restart on pref on", 45000);
+                }, 90000);
+
+            it("should gate the parameter hint popup on showParameterHints", async function () {
+                await _openInProject("ts/", "type-error.ts");
+                const editor = EditorManager.getActiveEditor();
+                editor.document.setText("function add(a: number, b: number) { return a + b; }\nadd(1, 2);\n");
+                editor.setCursorPos(1, 4); // inside add(|
+                CommandManager.execute("showParameterHint");
+                await awaitsFor(function () {
+                    return $("#function-hint-container-new").is(":visible");
+                }, "parameter hint popup to show", 30000);
+
+                // flipping the pref off dismisses the visible popup
+                PreferencesManager.set("showParameterHints", false);
+                await awaitsFor(function () {
+                    return !$("#function-hint-container-new").is(":visible");
+                }, "popup to dismiss on pref off", 5000);
+
+                // while off the gate is synchronous - no request is even issued, so the popup
+                // must still be hidden right after an explicit invocation
+                CommandManager.execute("showParameterHint");
+                expect($("#function-hint-container-new").is(":visible")).toBe(false);
+
+                PreferencesManager.set("showParameterHints", true);
+                CommandManager.execute("showParameterHint");
+                await awaitsFor(function () {
+                    return $("#function-hint-container-new").is(":visible");
+                }, "parameter hint popup to show again", 30000);
+            }, 90000);
+        });
     });
 });

@@ -67,7 +67,7 @@ define(function (require, exports, module) {
             "stale build? Run npm run build.");
     }
     const INTELEPHENSE_VERSION = _PINS.intelephense || "1.18.5";
-    const PREF_PHP_CODE_INTELLIGENCE = "php.codeIntelligence";
+    const PREF_PHP_CODE_INTELLIGENCE = "codeIntelligence.php";
 
     let _onInstalled = null;        // main.js callback: ({entryPath, upgraded}) => void
     let _inFlight = null;           // single-flight install promise

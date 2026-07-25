@@ -33,6 +33,7 @@ define(function (require, exports, module) {
         EditorManager = require("editor/EditorManager"),
         Menus = require("command/Menus"),
         Strings = require("strings"),
+        PreferencesManager = require("preferences/PreferencesManager"),
         WorkspaceManager  = require("view/WorkspaceManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
@@ -88,6 +89,19 @@ define(function (require, exports, module) {
     let _providerRegistrationHandler = new ProviderRegistrationHandler(),
         registerHintProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
         removeHintProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
+
+    let paramHintsEnabled = true;
+
+    PreferencesManager.definePreference("showParameterHints", "boolean", true, {
+        description: Strings.DESCRIPTION_SHOW_PARAMETER_HINTS
+    });
+
+    PreferencesManager.on("change", "showParameterHints", function () {
+        paramHintsEnabled = PreferencesManager.get("showParameterHints");
+        if (!paramHintsEnabled) {
+            dismissHint();
+        }
+    });
 
     /**
      * Keep the active parameter visible inside the single-line, width-capped popup: scroll it
@@ -321,6 +335,13 @@ define(function (require, exports, module) {
         let request = null;
         let $deferredPopUp = $.Deferred();
         let sessionProvider = null;
+
+        // Gates implicit ("("/"," typed, cursor tracking) and explicit (Ctrl-Shift-Space)
+        // invocation alike - same semantics as showCodeHints gating code hint sessions.
+        if (!paramHintsEnabled) {
+            dismissHint(editor);
+            return $deferredPopUp;
+        }
 
         popupShown = true;
         // Find a suitable provider, if any

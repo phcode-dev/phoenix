@@ -74,7 +74,7 @@ define(function (require, exports, module) {
     }
     const PYREFLY_VERSION = _PINS.pyrefly || "1.1.1";
     const RUFF_VERSION = _PINS.ruff || "0.15.20";
-    const PREF_PYTHON_CODE_INTELLIGENCE = "python.codeIntelligence";
+    const PREF_PYTHON_CODE_INTELLIGENCE = "codeIntelligence.python";
 
     // The independently pinned/installed pieces. `pkg` is the PyPI package name; the binary of a
     // wheel build lives at <pkg>-<version>.data/scripts/<pkg>[.exe].

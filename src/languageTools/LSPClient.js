@@ -65,7 +65,10 @@ define(function (require, exports, module) {
         FindReferencesManager   = require("features/FindReferencesManager"),
         QuickViewManager        = require("features/QuickViewManager"),
         CodeInspection          = require("language/CodeInspection"),
-        EventDispatcher         = require("utils/EventDispatcher");
+        EventDispatcher         = require("utils/EventDispatcher"),
+        PreferencesManager      = require("preferences/PreferencesManager"),
+        Strings                 = require("strings"),
+        StringUtils             = require("utils/StringUtils");
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -229,8 +232,11 @@ define(function (require, exports, module) {
         }
         client.capabilities = null;
         DocumentSync.clearServer(client);
-        if (client._stopping) {
-            return; // Intentional stop/restart - do not auto-restart here.
+        if (client._stopping || _isDisabledByPref(client.serverId)) {
+            // Intentional stop/restart - do not auto-restart here. The pref check also covers
+            // the pref-off stop: its exit event can land after stopServerProcess resolved (and
+            // reset _stopping), which would otherwise read as a crash and bump _crashCount.
+            return;
         }
         // Unexpected crash - log it loudly (with the server's stderr) so failures are never
         // silent, then self-heal with a bounded backoff to recover without a reload.
@@ -243,7 +249,8 @@ define(function (require, exports, module) {
             return;
         }
         setTimeout(function () {
-            if (!clients.has(client.serverId) || client.capabilities) {
+            if (!clients.has(client.serverId) || client.capabilities ||
+                    _isDisabledByPref(client.serverId)) {
                 return;
             }
             _startAndInit(client).then(function () {
@@ -809,6 +816,52 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Every registered server gets a `codeIntelligence.<serverId>` boolean preference (defined by
+     * its extension, or auto-defined here for plugin-supplied servers) - the durable off-switch
+     * for the whole server: hints, parameter hints, jump-to-def, references, hover, diagnostics.
+     * @param {string} serverId
+     * @return {string} the preference key
+     */
+    function _codeIntelPrefKey(serverId) {
+        return "codeIntelligence." + serverId;
+    }
+
+    function _isDisabledByPref(serverId) {
+        return PreferencesManager.get(_codeIntelPrefKey(serverId)) === false;
+    }
+
+    // serverIds whose codeIntelligence pref already has a change listener attached - the pref
+    // outlives the client entry (registration can be retried), so listeners attach only once.
+    const _prefWatchedServers = new Set();
+
+    /**
+     * Live-toggle a registered server from its `codeIntelligence.<serverId>` pref: off stops the
+     * server process (providers go dormant without capabilities, and inspection re-runs so a
+     * fallback linter can take over); on restarts it in place.
+     */
+    function _watchServerPref(serverId) {
+        if (_prefWatchedServers.has(serverId)) {
+            return;
+        }
+        _prefWatchedServers.add(serverId);
+        PreferencesManager.on("change", _codeIntelPrefKey(serverId), function () {
+            const client = clients.get(serverId);
+            if (!client) {
+                return;
+            }
+            if (_isDisabledByPref(serverId)) {
+                if (client.capabilities) {
+                    stopServerProcess(client).then(function () {
+                        CodeInspection.requestRun();
+                    });
+                }
+            } else {
+                restartLanguageServer(serverId);
+            }
+        });
+    }
+
+    /**
      * Register and start a language server, wiring all providers into the editor.
      *
      * @param {Object} config
@@ -850,6 +903,18 @@ define(function (require, exports, module) {
     async function registerLanguageServer(config) {
         if (clients.has(config.serverId)) {
             return clients.get(config.serverId);
+        }
+        if (!PreferencesManager.getPreference(_codeIntelPrefKey(config.serverId))) {
+            // Auto-define so plugin-supplied servers get a discoverable pref with a description.
+            // Built-ins (typescript/json/php/python) define theirs with richer descriptions
+            // before registering, so this is skipped for them.
+            PreferencesManager.definePreference(_codeIntelPrefKey(config.serverId), "boolean", true, {
+                description: StringUtils.format(Strings.DESCRIPTION_LSP_CODE_INTELLIGENCE, config.serverId)
+            });
+        }
+        _watchServerPref(config.serverId);
+        if (_isDisabledByPref(config.serverId)) {
+            return null;
         }
         const client = new LanguageClient(config.serverId, config.languages, config);
         // Register eagerly so a publishDiagnostics arriving during init is not dropped.
@@ -910,7 +975,9 @@ define(function (require, exports, module) {
      */
     async function changeWorkspaceRoot(serverId) {
         const client = clients.get(serverId);
-        if (!client) {
+        if (!client || _isDisabledByPref(serverId)) {
+            // A pref-disabled server must stay down - the restart fallbacks below would
+            // otherwise resurrect it on a project switch.
             return;
         }
         // Resolve the target root FIRST: a redundant call for the same root must be a cheap no-op and
@@ -952,7 +1019,7 @@ define(function (require, exports, module) {
 
     async function restartLanguageServer(serverId) {
         const client = clients.get(serverId);
-        if (!client) {
+        if (!client || _isDisabledByPref(serverId)) {
             return;
         }
         await stopServerProcess(client);

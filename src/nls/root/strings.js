@@ -1692,6 +1692,7 @@ define({
     "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplier for mouse wheel scroll speed (0.1 to 10, default 1). Adjust if scrolling feels too slow or fast.",
     "DESCRIPTION_SHOW_CODE_HINTS": "false to disable all code hints",
     "DESCRIPTION_SHOW_CODE_HINT_DOCS": "false to hide the documentation popup shown beside code hints",
+    "DESCRIPTION_SHOW_PARAMETER_HINTS": "false to disable the parameter hint popup shown when typing inside a function call",
     "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Keeps the blinking cursor visible when you have a text selection",
     "DESCRIPTION_SHOW_LINE_NUMBERS": "true to show line numbers in a “gutter” to the left of the code",
     "DESCRIPTION_RULERS_COLUMNS": "An array of column numbers to draw vertical rulers in the editor. Eg: [80, 100]",
@@ -1828,6 +1829,10 @@ define({
     "PYTHON_INSTALL_STOP": "Stop setting up Python support ({APP_NAME} will try again on the next launch)",
     "PYTHON_INSTALL_WAITING_NETWORK": "Waiting for an internet connection to set up Python support…",
     "DESCRIPTION_PYTHON_CODE_INTELLIGENCE": "false to disable Python code intelligence (Pyrefly). Setting it back to true downloads the language server again automatically.",
+    // Language server on/off switches (LSPClient and the built-in language support extensions)
+    "DESCRIPTION_TYPESCRIPT_CODE_INTELLIGENCE": "false to disable JavaScript/TypeScript code intelligence (completion, hover docs, jump to definition, diagnostics)",
+    "DESCRIPTION_JSON_CODE_INTELLIGENCE": "false to disable JSON code intelligence (schema based completion, hover docs and validation)",
+    "DESCRIPTION_LSP_CODE_INTELLIGENCE": "false to disable the {0} language server",
     // JSON / package.json intelligence (JSONSupport)
     "NPM_VULN_PROVIDER_NAME": "npm Security Advisories",
     "NPM_VULN_MESSAGE": "{0}@{1} is vulnerable: {2} ({3} severity)",

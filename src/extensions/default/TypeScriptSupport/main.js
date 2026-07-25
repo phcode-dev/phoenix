@@ -37,11 +37,21 @@ define(function (require, exports, module) {
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         NodeConnector = brackets.getModule("NodeConnector"),
         TokenUtils = brackets.getModule("utils/TokenUtils"),
+        PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
+        Strings = brackets.getModule("strings"),
         CodeIntelligence = require("./CodeIntelligence"),
         ConfigPanel = require("./ConfigPanel");
 
     const SERVER_ID = "typescript";
     const SUPPORTED_LANGUAGES = ["javascript", "typescript", "jsx", "tsx"];
+    const PREF_TS_CODE_INTELLIGENCE = "codeIntelligence." + SERVER_ID;
+
+    // Master switch for JS/TS code intelligence - setting it back to true starts the server on
+    // the open JS/TS file. A runtime disable of a running server is handled centrally by
+    // LSPClient's own watcher on this pref.
+    PreferencesManager.definePreference(PREF_TS_CODE_INTELLIGENCE, "boolean", true, {
+        description: Strings.DESCRIPTION_TYPESCRIPT_CODE_INTELLIGENCE
+    });
 
     // Phoenix language id -> LSP languageId
     const LANGUAGE_ID_MAP = {
@@ -417,6 +427,9 @@ define(function (require, exports, module) {
         if (!canRun() || !_isServedLanguageActive()) {
             return;
         }
+        if (PreferencesManager.get(PREF_TS_CODE_INTELLIGENCE) === false) {
+            return;
+        }
 
         // Not running yet: lazily start it (a fresh start already points at the current project root).
         if (!registered) {
@@ -473,6 +486,14 @@ define(function (require, exports, module) {
         // model). Evaluate the editor already open at startup (session restore), then track switches.
         EditorManager.on("activeEditorChange", _ensureServerForActiveEditor);
         _ensureServerForActiveEditor();
+
+        // Re-enabling the pref starts the server on the open JS/TS file without needing a file
+        // switch. The disable direction is handled by LSPClient stopping the running server.
+        PreferencesManager.on("change", PREF_TS_CODE_INTELLIGENCE, function () {
+            if (PreferencesManager.get(PREF_TS_CODE_INTELLIGENCE) !== false) {
+                _ensureServerForActiveEditor();
+            }
+        });
 
         // On project switch: re-evaluate checkJs and arm a one-shot repoint. The actual repoint
         // (workspace/didChangeWorkspaceFolders, no restart) happens the next time a served-language

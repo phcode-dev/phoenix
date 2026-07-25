@@ -177,5 +177,28 @@ define(function (require, exports, module) {
             }, "vulnerability advisory in the problems panel", 30000);
             expect(_problemsText()).toContain("lodash@4.17.21");
         }, 45000);
+
+        it("should stop the JSON server when codeIntelligence.json turns off and restart on re-enable",
+            async function () {
+                const PreferencesManager = testWindow.brackets.test.PreferencesManager;
+                const LSPClient = testWindow.require("languageTools/LSPClient");
+                await _openFile("broken.json");
+                await awaitsFor(function () {
+                    return LSPClient.isLintingProviderActive("json");
+                }, "json server to be active", 30000);
+
+                PreferencesManager.set("codeIntelligence.json", false);
+                try {
+                    await awaitsFor(function () {
+                        return !LSPClient.isLintingProviderActive("json");
+                    }, "json server to stop on pref off", 15000);
+                } finally {
+                    // restore even on failure so later suites see a healthy default
+                    PreferencesManager.set("codeIntelligence.json", true);
+                }
+                await awaitsFor(function () {
+                    return LSPClient.isLintingProviderActive("json");
+                }, "json server to restart on pref on", 45000);
+            }, 90000);
     });
 });
