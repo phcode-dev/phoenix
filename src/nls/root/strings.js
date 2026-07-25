@@ -1199,6 +1199,7 @@ define({
     "CMD_VIEW_TOGGLE_INSPECTION": "Lint Files on Save",
     "CMD_VIEW_TOGGLE_PROBLEMS": "Problems",
     "CMD_VIEW_TERMINAL": "Terminal",
+    "CMD_VIEW_ENABLE_AI": "Enable AI",
     "CMD_WORKINGSET_SORT_BY_ADDED": "Sort by Added",
     "CMD_WORKINGSET_SORT_BY_NAME": "Sort by Name",
     "CMD_WORKINGSET_SORT_BY_TYPE": "Sort by Type",
@@ -2019,6 +2020,7 @@ define({
     "DESCRIPTION_INDENT_GUIDES_ENABLED": "true to show indent guide lines, else false.",
     "DESCRIPTION_HIDE_FIRST": "true to show the first Indent Guide line else false.",
     "DESCRIPTION_CSS_COLOR_PREVIEW": "true to display color previews in the gutter, else false.",
+    "DESCRIPTION_ENABLE_AI": "true to enable AI features, false to disable AI entirely.",
 
     // Emmet
     "DESCRIPTION_EMMET": "true to enable Emmet, else false.",
@@ -2488,6 +2490,14 @@ define({
     "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance.",
     "AI_UPSELL_DIALOG_TITLE": "Continue with {0}?",
     "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered {0}. To proceed, you’ll need an AI subscription or credits.",
+
+    // Enable/disable AI toggle
+    "AI_DISABLE_CONFIRM_TITLE": "Disable AI?",
+    "AI_DISABLE_CONFIRM_MESSAGE": "This turns off all AI features. The AI panel will be removed and {APP_NAME} will stop connecting to AI services.<br><br>Restart {APP_NAME} for this to take effect.",
+    "AI_DISABLE_CONFIRM_BTN": "Disable AI",
+    "AI_ENABLE_CONFIRM_TITLE": "Enable AI?",
+    "AI_ENABLE_CONFIRM_MESSAGE": "This turns AI features back on and restores the AI panel.<br><br>Restart {APP_NAME} for this to take effect.",
+    "AI_ENABLE_CONFIRM_BTN": "Enable AI",
 
     // AI CHAT PANEL
     "AI_CHAT_TITLE": "Claude Code",
