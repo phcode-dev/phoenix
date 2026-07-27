@@ -475,6 +475,7 @@ define(function (require, exports, module) {
             });
 
             const createdBranch = "createdBranch";
+            let defaultBranch;
             async function waitForBranchNameDropdown(expectedName) {
                 await awaitsFor(()=>{
                     return $("#git-branch").text().trim().includes(expectedName);
@@ -482,6 +483,8 @@ define(function (require, exports, module) {
             }
 
             it("should be able to create a new branch", async () => {
+                defaultBranch = await testWindow.phoenixGitEvents.Git.getCurrentBranchName();
+                expect(defaultBranch).toBeTruthy();
                 $("#git-branch-dropdown-toggle").click();
                 await awaitsFor(()=>{
                     return $(".git-branch-new").is(":visible");
@@ -500,9 +503,9 @@ define(function (require, exports, module) {
                     return $(".git-branch-new").is(":visible");
                 }, "branch dropdown to show");
 
-                expect($(".switch-branch").text()).toContain("master");
+                expect($(".switch-branch").text()).toContain(defaultBranch);
                 $(".switch-branch").click();
-                await waitForBranchNameDropdown("master");
+                await waitForBranchNameDropdown(defaultBranch);
             });
         });
     });
