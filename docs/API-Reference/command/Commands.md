@@ -543,6 +543,12 @@ Toggles problems panel visibility
 Opens the terminal panel
 
 **Kind**: global variable  
+<a name="VIEW_ENABLE_AI"></a>
+
+## VIEW\_ENABLE\_AI
+Toggles whether AI features are enabled
+
+**Kind**: global variable  
 <a name="TOGGLE_LINE_NUMBERS"></a>
 
 ## TOGGLE\_LINE\_NUMBERS

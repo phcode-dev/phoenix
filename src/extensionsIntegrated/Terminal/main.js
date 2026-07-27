@@ -889,6 +889,7 @@ define(function (require, exports, module) {
             .insertBefore("#app-drawer-button");
 
         $btn.on("click", function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.UI, "toolbarBtn", "terminal");
             if (WorkspaceManager.isInDesignMode()) {
                 CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
                 CommandManager.execute(CMD_VIEW_TERMINAL);

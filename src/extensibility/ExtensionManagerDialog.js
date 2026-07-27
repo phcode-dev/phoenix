@@ -432,7 +432,10 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_EXTENSION_MANAGER, Commands.FILE_EXTENSION_MANAGER, _showDialog, { supportsDesignMode: true });
 
     AppInit.appReady(function () {
-        $("#toolbar-extension-manager").click(_showDialog);
+        $("#toolbar-extension-manager").click(function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.UI, "toolbarBtn", "extnMgr");
+            _showDialog();
+        });
     });
 
     // Unit tests
