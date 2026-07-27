@@ -310,7 +310,7 @@ define(function (require, exports, module) {
         Metrics.countEventBatched(Metrics.EVENT_TYPE.CODE_HINTS, "show", sessionLanguageId);
         if (sessionProvider && sessionProvider.client && sessionProvider.client._metricLabel) {
             Metrics.countEventBatched(Metrics.EVENT_TYPE.LSP, "hint",
-                sessionProvider.client._metricLabel + "Show");
+                "Show." + sessionProvider.client._metricLabel);
         }
     }
 

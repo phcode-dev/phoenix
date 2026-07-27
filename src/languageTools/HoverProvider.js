@@ -196,7 +196,7 @@ define(function (require, exports, module) {
                     }
                     // Batched: fires on every dwell that produces a hover popup.
                     Metrics.countEventBatched(Metrics.EVENT_TYPE.LSP, "hover",
-                        self.client._metricLabel + "Ok");
+                        "Ok." + self.client._metricLabel);
                     resolve({
                         start: start,
                         end: end,
@@ -208,7 +208,7 @@ define(function (require, exports, module) {
                     // real request failure is a health signal.
                     if (err) {
                         Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hover",
-                            self.client._metricLabel + "Fail");
+                            "Fail." + self.client._metricLabel);
                     }
                     reject();
                 });

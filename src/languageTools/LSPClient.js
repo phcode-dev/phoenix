@@ -252,12 +252,12 @@ define(function (require, exports, module) {
         console.error("[LSP] server '" + data.serverId + "' exited unexpectedly (code=" + data.code +
             (data.signal ? ", signal=" + data.signal : "") + ")." +
             (data.stderr ? "\n--- server stderr ---\n" + data.stderr : ""));
-        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "Crash");
+        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "Crash." + client._metricLabel);
         window.logger.leaveTrail("[LSP] " + client.serverId + " crashed, code=" + data.code);
         client._crashCount = (client._crashCount || 0) + 1;
         if (client._crashCount > MAX_AUTO_RESTARTS) {
             console.error("[LSP]", client.serverId, "exited repeatedly; not restarting");
-            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "Gaveup");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "Gaveup." + client._metricLabel);
             window.logger.reportErrorOnce("lspGaveup." + client.serverId,
                 new Error("code=" + data.code + " signal=" + (data.signal || "none") +
                     _stderrSnippet(data.stderr)),
@@ -275,7 +275,7 @@ define(function (require, exports, module) {
                 DocumentSync.openSupportedDocuments(client);
             }).catch(function (err) {
                 console.error("[LSP] auto-restart failed", client.serverId, err && (err.message || err));
-                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "RstErr");
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "RstErr." + client._metricLabel);
             });
         }, 1000 * client._crashCount);
     }
@@ -300,7 +300,7 @@ define(function (require, exports, module) {
     function _onServerError(_event, data) {
         if (data) {
             console.error("[LSP] server error", data.serverId, data.error);
-            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", _srvLabel(data.serverId) + "Err");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "Err." + _srvLabel(data.serverId));
         }
     }
 
@@ -381,7 +381,7 @@ define(function (require, exports, module) {
             // Successful requests only - failures include the 120s node-side timeout, which
             // would wreck the averages. Failures are counted per feature instead.
             Metrics.valueEventBatched(Metrics.EVENT_TYPE.LSP, "time",
-                metricLabel + (METRIC_METHOD_GROUPS[method] || "Oth"), Date.now() - startTime);
+                (METRIC_METHOD_GROUPS[method] || "Oth") + "." + metricLabel, Date.now() - startTime);
             return result;
         });
     };
@@ -831,7 +831,7 @@ define(function (require, exports, module) {
             params: {}
         });
         // Spawn + initialize handshake time - rare enough to send unbatched.
-        Metrics.valueEvent(Metrics.EVENT_TYPE.LSP, "time", client._metricLabel + "Init",
+        Metrics.valueEvent(Metrics.EVENT_TYPE.LSP, "time", "Init." + client._metricLabel,
             Date.now() - startTime);
     }
 
@@ -881,7 +881,7 @@ define(function (require, exports, module) {
      * every path that brings a server up: initial registration, restart, and crash auto-restart.
      */
     function _announceServerStarted(client) {
-        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "Start");
+        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "Start." + client._metricLabel);
         exports.trigger(EVENT_LANGUAGE_SERVER_STARTED, {
             serverId: client.serverId,
             languages: client.languages
@@ -936,7 +936,7 @@ define(function (require, exports, module) {
                 // The opt-out signal: users actively turning code intelligence off. Only the
                 // non-default (off) state is logged - flips back to the default would just be
                 // noise.
-                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "PrefOff");
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "PrefOff." + client._metricLabel);
                 if (client.capabilities) {
                     stopServerProcess(client).then(function () {
                         CodeInspection.requestRun();
@@ -1003,7 +1003,7 @@ define(function (require, exports, module) {
         if (_isDisabledByPref(config.serverId)) {
             // Users who keep code intelligence durably off. Registration retries can bump this
             // more than once per run - fine, it's a rough opt-out signal, not an exact count.
-            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", _srvLabel(config.serverId) + "OffBoot");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "OffBoot." + _srvLabel(config.serverId));
             return null;
         }
         const client = new LanguageClient(config.serverId, config.languages, config);
@@ -1021,7 +1021,7 @@ define(function (require, exports, module) {
             return client;
         } catch (err) {
             console.error("[LSP] failed to start server", config.serverId, err && (err.message || err));
-            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "StartErr");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "StartErr." + client._metricLabel);
             // err.message distinguishes the classes (spawn error / spawn timeout / init
             // failure - built node-side). Key shared with the restart-failed report so a
             // broken server reports exactly once per app run whichever path hits first.
@@ -1131,7 +1131,7 @@ define(function (require, exports, module) {
             FindReferencesManager.setMenuItemStateForLanguage();
         } catch (err) {
             console.error("[LSP] failed to restart server", serverId, err && (err.message || err));
-            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "RstErr");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "RstErr." + client._metricLabel);
             window.logger.reportErrorOnce("lspStart." + serverId, err,
                 "[LSP] restart failed: " + serverId);
         }

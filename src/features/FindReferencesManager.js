@@ -103,12 +103,12 @@ define(function (require, exports, module) {
         if (referencesPromise) {
             referencesPromise.done(function () {
                 // Explicit user action - Ok vs None gives the per-language hit rate.
-                Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", language.getId() + "Ok");
+                Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", "Ok." + language.getId());
                 if(_resultsView) {
                     _resultsView.open();
                 }
             }).fail(function () {
-                Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", language.getId() + "None");
+                Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", "None." + language.getId());
                 if(_resultsView) {
                     _resultsView.close();
                 }
@@ -119,7 +119,7 @@ define(function (require, exports, module) {
             if(_resultsView) {
                 _resultsView.close();
             }
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", language.getId() + "None");
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", "None." + language.getId());
             editor.displayErrorMessageAtCursor(errorMsg);
             result.reject();
         }

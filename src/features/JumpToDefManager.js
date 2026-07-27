@@ -76,23 +76,23 @@ define(function (require, exports, module) {
 
         let jumpToDefProvider = _getJumpToDefProvider(editor);
         if (!jumpToDefProvider) {
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Fail");
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", "Fail." + languageId);
             result.reject();
             return result.promise();
         }
         request = jumpToDefProvider.doJumpToDef(editor);
 
         if (!request) {
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Fail");
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", "Fail." + languageId);
             result.reject();
             return result.promise();
         }
 
         request.done(function () {
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Ok");
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", "Ok." + languageId);
             result.resolve();
         }).fail(function () {
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Fail");
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", "Fail." + languageId);
             result.reject();
         });
 

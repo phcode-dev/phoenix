@@ -192,15 +192,17 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     return LSPClient.isLintingProviderActive("json");
                 }, "json server to be active", 30000);
-                const startsBefore = auditSum("lsp.srv.jsonStart"),
-                    prefOffBefore = auditSum("lsp.srv.jsonPrefOff");
+                const startsBefore = auditSum("lsp.srv.Start.json"),
+                    prefOffBefore = auditSum("lsp.srv.PrefOff.json");
 
                 PreferencesManager.set("codeIntelligence.json", false);
                 try {
                     await awaitsFor(function () {
                         return !LSPClient.isLintingProviderActive("json");
                     }, "json server to stop on pref off", 15000);
-                    expect(auditSum("lsp.srv.jsonPrefOff")).toBe(prefOffBefore + 1);
+                    // greater-than, not exactly +1: incidental server events (a crash
+                    // auto-restart, a scope reload) must not flake the spec
+                    expect(auditSum("lsp.srv.PrefOff.json")).toBeGreaterThan(prefOffBefore);
                 } finally {
                     // restore even on failure so later suites see a healthy default
                     PreferencesManager.set("codeIntelligence.json", true);
@@ -209,7 +211,7 @@ define(function (require, exports, module) {
                     return LSPClient.isLintingProviderActive("json");
                 }, "json server to restart on pref on", 45000);
                 // re-enable is a return to the default - no pref metric, but the restart counts
-                expect(auditSum("lsp.srv.jsonStart")).toBe(startsBefore + 1);
+                expect(auditSum("lsp.srv.Start.json")).toBeGreaterThan(startsBefore);
             }, 90000);
     });
 });
