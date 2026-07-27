@@ -543,7 +543,7 @@ define(function (require, exports, module) {
             });
         }).fail(function () {
             // requestHints rejects only on a real request failure - empty results resolve.
-            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", self.client._metricLabel + "Fail");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", "Fail." + self.client._metricLabel);
             self._importLabel = null;
             $deferredHints.reject();
         });
@@ -696,10 +696,10 @@ define(function (require, exports, module) {
                 { line: te.range.end.line, ch: te.range.end.character });
         });
 
-        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", this.client._metricLabel + "Acc");
+        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", "Acc." + this.client._metricLabel);
         if (token.additionalTextEdits && token.additionalTextEdits.length) {
             // An auto-import was applied with the completion - a high-value signal on its own.
-            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", this.client._metricLabel + "Import");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", "Import." + this.client._metricLabel);
         }
 
         // Return false to indicate that another hinting session is not needed
@@ -795,7 +795,7 @@ define(function (require, exports, module) {
             // requestParameterHints rejects bare for "no signatures here" (normal) and with an
             // error for a real request failure - only the latter is a health signal.
             if (err) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "sig", metricLabel + "Fail");
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "sig", "Fail." + metricLabel);
             }
             $deferredHints.reject();
         });
@@ -890,7 +890,7 @@ define(function (require, exports, module) {
         }).fail(function (err) {
             // gotoDefinition rejects bare for "no definition here" - only real failures count.
             if (err) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "def", metricLabel + "Fail");
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "def", "Fail." + metricLabel);
             }
             $deferredHints.reject();
         });
@@ -1200,7 +1200,7 @@ define(function (require, exports, module) {
             console.warn("[LSP] quickfix fetch failed:", err && (err.message || err));
             if (self._quickFixClient) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "fix",
-                    self._quickFixClient._metricLabel + "Fail");
+                    "Fail." + self._quickFixClient._metricLabel);
             }
         }
     };
@@ -1321,7 +1321,7 @@ define(function (require, exports, module) {
                     }
                 }).fail(function(err){
                     if (err) {
-                        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "ref", metricLabel + "Fail");
+                        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "ref", "Fail." + metricLabel);
                     }
                     result.reject();
                 });
