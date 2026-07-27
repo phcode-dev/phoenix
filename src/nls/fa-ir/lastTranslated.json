@@ -225,6 +225,7 @@
   "AI_DISABLE_CONFIRM_BTN": "Disable AI",
   "AI_DISABLE_CONFIRM_MESSAGE": "This turns off all AI features. The AI panel will be removed and {APP_NAME} will stop connecting to AI services.<br><br>Restart {APP_NAME} for this to take effect.",
   "AI_DISABLE_CONFIRM_TITLE": "Disable AI?",
+  "AI_ENABLE_CONFIRM_BTN": "Enable AI",
   "AI_ENABLE_CONFIRM_MESSAGE": "This turns AI features back on and restores the AI panel.<br><br>Restart {APP_NAME} for this to take effect.",
   "AI_ENABLE_CONFIRM_TITLE": "Enable AI?",
   "AI_LIVE_PREVIEW_BANNER_DISMISS_TOOLTIP": "Click to dismiss",
