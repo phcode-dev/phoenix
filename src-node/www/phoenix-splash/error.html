@@ -8,10 +8,10 @@
                 const urlSearchParams = new URLSearchParams(window.location.search);
                 const params = Object.fromEntries(urlSearchParams.entries());
                 if(params.mainHeading){
-                    document.getElementById("mainHeading").innerHTML = decodeURIComponent(params.mainHeading);
+                    document.getElementById("mainHeading").textContent = decodeURIComponent(params.mainHeading);
                 }
                 if(params.mainSpan){
-                    document.getElementById("mainSpan").innerHTML = decodeURIComponent(params.mainSpan);
+                    document.getElementById("mainSpan").textContent = decodeURIComponent(params.mainSpan);
                 }
             }
         </script>
