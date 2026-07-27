@@ -572,6 +572,53 @@ define(function (require, exports, module) {
                 expect(viewedFileIs("test.html")).toBeTrue();
                 expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toBe(3);
             });
+
+            // one more than the threshold the panel starts confirming at
+            const BULK_FILE_COUNT = 51;
+
+            it("should confirm before opening a large number of changed files", async () => {
+                await showGitPanel();
+                await __PR.closeAll();
+                await awaitsFor(()=>{
+                    return MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES) === 0;
+                }, "working set to be empty");
+
+                for (let i = 0; i < BULK_FILE_COUNT; i++) {
+                    await __PR.writeTextFile(`bulkFile${i}.txt`, `bulk file ${i}\n`, true);
+                }
+                await __PR.execCommand(Commands.CMD_GIT_REFRESH);
+                await awaitsFor(()=>{
+                    return $gitPanel.find(".modified-file").length >= BULK_FILE_COUNT;
+                }, "bulk files to be in modified files list", 30000);
+
+                // nothing is deleted and untracked files are shown, so every row in the
+                // panel is a file the command will open
+                const changedFileCount = $gitPanel.find(".modified-file").length;
+
+                // cancelling the confirmation must not open anything
+                __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES); // dont await here as
+                // it only completes after the dialog is closed
+                await __PR.waitForModalDialog("#git-question-dialog", null, 10000);
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_CANCEL);
+                await __PR.waitForModalDialogClosed("#git-question-dialog");
+                await __PR.execCommand(Commands.CMD_GIT_REFRESH);
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toBe(0);
+
+                // confirming opens all of them
+                __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES);
+                await __PR.waitForModalDialog("#git-question-dialog", null, 10000);
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
+                await __PR.waitForModalDialogClosed("#git-question-dialog");
+                await awaitsFor(()=>{
+                    return MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES) === changedFileCount;
+                }, "all changed files to be opened", 30000);
+
+                // re-running it now asks nothing as the files are already open. awaiting
+                // here is safe for that reason, a dialog coming up would time out the spec
+                await __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES);
+                expect($("#git-question-dialog").length).toBe(0);
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toBe(changedFileCount);
+            }, 60000);
         });
     });
 });
