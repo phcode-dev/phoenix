@@ -2737,6 +2737,8 @@ define({
     "AI_SETTINGS_NAME_REQUIRED": "Provider name is required.",
     "AI_SETTINGS_NAME_DUPLICATE": "A provider with this name already exists.",
     "AI_SETTINGS_DONE": "Done",
+    "AI_SETTINGS_ENABLE_AI": "Enable AI features",
+    "AI_SETTINGS_ENABLE_AI_NOTE": "Turns all AI features in {APP_NAME} on or off. Takes effect after restart — you can enable it again anytime from <span class='ai-settings-menu-path'>View menu &gt; Enable AI</span>.",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",

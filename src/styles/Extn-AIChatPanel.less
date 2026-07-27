@@ -3499,7 +3499,7 @@
 
     .ai-settings-provider-url {
         font-size: @ai-text-meta;
-        color: @bc-text-quiet;
+        color: @bc-text-medium;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -3601,6 +3601,62 @@
                     color: @dark-bc-text-quiet;
                     opacity: 0.7;
                 }
+            }
+        }
+    }
+
+    .ai-settings-enable-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 0;
+        cursor: pointer;
+
+        input[type="checkbox"] {
+            margin: 2px 0 0;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+    }
+
+    .ai-settings-enable-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .ai-settings-enable-label {
+        font-size: @ai-text-body;
+        font-weight: 600;
+        color: @bc-text;
+
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+
+    .ai-settings-enable-note {
+        font-size: @ai-text-meta;
+        color: @bc-text-medium;
+
+        .dark & {
+            color: @dark-bc-text-quiet;
+        }
+
+        .ai-settings-menu-path {
+            display: inline-block;
+            padding: 0 5px;
+            border: 1px solid @bc-panel-border;
+            border-radius: 3px;
+            background: @bc-panel-bg-alt;
+            color: @bc-text-medium;
+            white-space: nowrap;
+
+            .dark & {
+                border-color: @dark-bc-panel-border;
+                background: @dark-bc-panel-bg-alt;
+                color: @dark-bc-text-medium;
             }
         }
     }
