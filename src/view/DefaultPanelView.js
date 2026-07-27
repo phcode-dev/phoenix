@@ -31,7 +31,8 @@ define(function (require, exports, module) {
         CommandManager = require("command/CommandManager"),
         Strings = require("strings"),
         WorkspaceManager = require("view/WorkspaceManager"),
-        PanelView = require("view/PanelView");
+        PanelView = require("view/PanelView"),
+        Metrics = require("utils/Metrics");
 
     /**
      * Descriptors for each launcher button.
@@ -182,6 +183,7 @@ define(function (require, exports, module) {
             .attr("title", Strings.BOTTOM_PANEL_DEFAULT_TITLE);
 
         $drawerBtn.on("click", function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.UI, "toolbarBtn", "appDrawer");
             // Design mode collapses the editor and stretches live preview, which
             // leaves no room for the bottom tools panel. Exit design mode first
             // so the panel has somewhere to go.
