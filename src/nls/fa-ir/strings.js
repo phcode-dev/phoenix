@@ -2280,6 +2280,7 @@ define({
   "AI_DISABLE_CONFIRM_BTN": "غیرفعال‌سازی هوش مصنوعی",
   "AI_ENABLE_CONFIRM_TITLE": "هوش مصنوعی فعال شود؟",
   "AI_ENABLE_CONFIRM_MESSAGE": "این کار ویژگی‌های هوش مصنوعی را دوباره فعال کرده و پنل هوش مصنوعی را بازمی‌گرداند.<br><br>برای اعمال این تغییر، {APP_NAME} را مجدداً راه‌اندازی کنید.",
+  "AI_ENABLE_CONFIRM_BTN": "فعال‌سازی هوش مصنوعی",
   "AI_CHAT_TITLE": "Claude Code",
   "AI_CHAT_SURPRISE_ME_USER_MSG": "شگفت‌زده‌ام کن!",
   "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "آماده‌سازی صحنه…",
@@ -2600,5 +2601,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_ENABLE_CONFIRM_BTN": "فعال‌سازی هوش مصنوعی"
+  "AI_CHAT_PLACEHOLDER_MODEL": "از {0} بپرسید...",
+  "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code از سیستم خارج شده است یا اعتبار ورود شما منقضی شده است.",
+  "AI_CHAT_AUTH_ERROR_BTN": "ورود به Claude در ترمینال",
+  "AI_CHAT_AUTH_ERROR_HINT": "در ترمینالی که باز می‌شود /login را تایپ کنید، سپس پیام خود را دوباره ارسال کنید.",
+  "AI_CHAT_MODEL_DEFAULT": "پیش‌فرض",
+  "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "در حال حاضر {0}",
+  "AI_CHAT_MODEL_SELECT_TITLE": "مدل هوش مصنوعی برای این گفتگو را انتخاب کنید",
+  "AI_CHAT_MODEL_SWITCHED_NOTICE": "به {0} تغییر یافت. از پیام بعدی شما اعمال می‌شود؛ اولین پاسخ ممکن است در حین بازسازی کش، کمی بیشتر طول بکشد."
 });
