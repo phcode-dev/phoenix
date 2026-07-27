@@ -120,7 +120,7 @@ define(function (require, exports, module) {
             //
             // To track this discrepancy, we emit a one-time metric just before disabling tracking,
             // so we’re aware of this inconsistency and can address it if needed.
-            Metrics.countEvent(Metrics.PLATFORM, "metricBoot", "disableErr");
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "metricBoot", "disableErr");
         }
         Metrics.setDisabled(healthDataDisabled);
         SendToAnalytics.sendPlatformMetrics();

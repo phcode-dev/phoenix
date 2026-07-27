@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, path, jsPromise */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, path, jsPromise, spyOn */
 
 define(function (require, exports, module) {
 
@@ -945,6 +945,142 @@ define(function (require, exports, module) {
                 })).toBe(false);
                 expect(panelText().includes("CommonJS")).toBe(false);
             }, 90000);
+        });
+
+        describe("usage metrics", function () {
+            // Metrics go through the audit map even in the test environment (senders are
+            // disabled, the audit log is not), so assertions read getLoggedDataForAudit().
+            let Metrics;
+
+            beforeAll(function () {
+                Metrics = testWindow.brackets.getModule("utils/Metrics");
+            });
+
+            beforeEach(async function () {
+                // Earlier suites leave dirty unsaved documents behind; a project switch with
+                // those open would block on the save prompt and time the spec out.
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "close all files");
+            });
+
+            it("should count server starts and time completion round trips per server", async function () {
+                const audit = Metrics.getLoggedDataForAudit();
+                // the warm-up already started the typescript server at least once
+                const startEntry = audit.get("lsp.srv.typescriptStart");
+                expect(startEntry && startEntry.sum >= 1).toBe(true);
+
+                await _openInProject("ts/", "type-error.ts");
+                const editor = EditorManager.getActiveEditor();
+                editor.document.setText("const arr = [1, 2, 3];\narr.");
+                editor.setCursorPos(1, 4); // after `arr.`
+
+                const TsMain = await new Promise(function (resolve, reject) {
+                    testWindow.brackets.getModule("utils/ExtensionLoader")
+                        .getRequireContextForExtension("TypeScriptSupport")(["main"], resolve, reject);
+                });
+                const client = TsMain._getClient();
+                expect(client).toBeTruthy();
+
+                // Drive the LSP hint provider directly (the popup UI wants OS focus). A
+                // successful completion round trip must record batched latency under
+                // lsp.time.typescriptComp - visible in the audit only after a flush.
+                let gotHints = false;
+                await awaitsFor(function () {
+                    if (gotHints) {
+                        return true;
+                    }
+                    client.codeHints.getHints(null).done(function (result) {
+                        if (result && result.hints && result.hints.length) {
+                            gotHints = true;
+                        }
+                    });
+                    return false;
+                }, "completions at arr. from the typescript server", 30000, 500);
+
+                await Metrics.flushMetrics();
+                const timeEntry = audit.get("lsp.time.typescriptComp");
+                expect(timeEntry && timeEntry.count >= 1).toBe(true);
+                expect(timeEntry.eventType).toBe("val");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "close type-error.ts");
+            }, 60000);
+
+            it("should count an LSP hint acceptance (and auto-imports) on insertHint", async function () {
+                await _openInProject("ts/", "type-error.ts");
+                const editor = EditorManager.getActiveEditor();
+                editor.document.setText("const arr = [1, 2, 3];\narr.pu");
+                editor.setCursorPos(1, 6); // after `arr.pu`
+
+                const TsMain = await new Promise(function (resolve, reject) {
+                    testWindow.brackets.getModule("utils/ExtensionLoader")
+                        .getRequireContextForExtension("TypeScriptSupport")(["main"], resolve, reject);
+                });
+                const client = TsMain._getClient();
+                let $pushHint = null;
+                await awaitsFor(function () {
+                    if ($pushHint) {
+                        return true;
+                    }
+                    client._completionCache = null; // always request fresh
+                    client.codeHints.getHints(null).done(function (result) {
+                        const hints = (result && result.hints) || [];
+                        $pushHint = hints.find(function ($hint) {
+                            const token = $hint.data("token");
+                            return token && token.label === "push";
+                        }) || null;
+                    });
+                    return false;
+                }, "a push completion at arr.pu", 30000, 500);
+
+                const audit = Metrics.getLoggedDataForAudit();
+                const before = audit.get("lsp.hint.typescriptAcc");
+                const beforeSum = (before && before.sum) || 0;
+                client.codeHints.insertHint($pushHint); // what selecting the hint with Enter does
+                const after = audit.get("lsp.hint.typescriptAcc");
+                expect(after && after.sum).toBe(beforeSum + 1);
+                expect(editor.document.getLine(1)).toContain("push");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "close type-error.ts");
+            }, 60000);
+
+            it("should report an error only once per key via logger.reportErrorOnce", function () {
+                const logger = testWindow.logger;
+                // In the test environment Bugsnag is disabled, so reportError degrades to
+                // console.error - spy on that to observe the dedup.
+                const spy = spyOn(testWindow.console, "error");
+                const key = "unitTest.reportOnce." + Date.now();
+                logger.reportErrorOnce(key, new Error("boom"), "first");
+                logger.reportErrorOnce(key, new Error("boom"), "second");
+                expect(spy.calls.count()).toBe(1);
+                logger.reportErrorOnce(key + ".other", new Error("boom"), "third");
+                expect(spy.calls.count()).toBe(2);
+            });
+
+            it("should scrub user paths from report messages but keep internal/system paths", function () {
+                const scrub = testWindow.logger._scrubPathsInText;
+                // home prefix cut + user project path redacted
+                expect(scrub("failed on /home/alice/projects/clientX/app.js"))
+                    .toBe("failed on <path>");
+                expect(scrub("failed on C:\\Users\\alice\\Documents\\secret\\app.js"))
+                    .toBe("failed on <path>");
+                // app-managed dirs under home stay after the username is cut
+                expect(scrub("server at /home/alice/.local/share/phcode/lsp/intelephense.js"))
+                    .toBe("server at ~/.local/share/phcode/lsp/intelephense.js");
+                // machine-generic system paths and app origins stay verbatim
+                expect(scrub("spawn /usr/bin/node failed")).toBe("spawn /usr/bin/node failed");
+                expect(scrub("at phtauri://localhost/assets/main.js:1:1"))
+                    .toBe("at phtauri://localhost/assets/main.js:1:1");
+                // non-path text untouched
+                expect(scrub("code=1 signal=none")).toBe("code=1 signal=none");
+                // must never throw, whatever it is fed - fails closed to a redacted placeholder
+                expect(scrub(null)).toBe("null");
+                expect(scrub(undefined)).toBe("undefined");
+                expect(scrub(42)).toBe("42");
+                expect(scrub({ toString: function () { throw new Error("boom"); } }))
+                    .toBe("<scrub-failed>");
+            });
         });
     });
 });

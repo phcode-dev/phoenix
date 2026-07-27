@@ -68,7 +68,8 @@ define(function (require, exports, module) {
         EventDispatcher         = require("utils/EventDispatcher"),
         PreferencesManager      = require("preferences/PreferencesManager"),
         Strings                 = require("strings"),
-        StringUtils             = require("utils/StringUtils");
+        StringUtils             = require("utils/StringUtils"),
+        Metrics                 = require("utils/Metrics");
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -251,9 +252,16 @@ define(function (require, exports, module) {
         console.error("[LSP] server '" + data.serverId + "' exited unexpectedly (code=" + data.code +
             (data.signal ? ", signal=" + data.signal : "") + ")." +
             (data.stderr ? "\n--- server stderr ---\n" + data.stderr : ""));
+        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "Crash");
+        window.logger.leaveTrail("[LSP] " + client.serverId + " crashed, code=" + data.code);
         client._crashCount = (client._crashCount || 0) + 1;
         if (client._crashCount > MAX_AUTO_RESTARTS) {
             console.error("[LSP]", client.serverId, "exited repeatedly; not restarting");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "Gaveup");
+            window.logger.reportErrorOnce("lspGaveup." + client.serverId,
+                new Error("code=" + data.code + " signal=" + (data.signal || "none") +
+                    _stderrSnippet(data.stderr)),
+                "[LSP] server crashed repeatedly, gave up: " + client.serverId);
             return;
         }
         setTimeout(function () {
@@ -267,13 +275,32 @@ define(function (require, exports, module) {
                 DocumentSync.openSupportedDocuments(client);
             }).catch(function (err) {
                 console.error("[LSP] auto-restart failed", client.serverId, err && (err.message || err));
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "RstErr");
             });
         }, 1000 * client._crashCount);
+    }
+
+    /**
+     * First non-empty stderr line, truncated, for the crash give-up report. Any user path in
+     * it is redacted by the loggerSetup message scrubber before the report leaves the app.
+     * @param {string} stderr
+     * @return {string} " stderr: <line>" or ""
+     */
+    function _stderrSnippet(stderr) {
+        const lines = String(stderr || "").split("\n");
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (line) {
+                return " stderr: " + line.substring(0, 200);
+            }
+        }
+        return "";
     }
 
     function _onServerError(_event, data) {
         if (data) {
             console.error("[LSP] server error", data.serverId, data.error);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", _srvLabel(data.serverId) + "Err");
         }
     }
 
@@ -281,11 +308,37 @@ define(function (require, exports, module) {
     // LanguageClient - one per server, exposes the provider-facing method surface
     // ------------------------------------------------------------------------------------------
 
+    /**
+     * ServerId as a metric name part. Metric names must be short js-var-safe strings (the GA
+     * event name has a ~30 char budget), and plugin serverIds are unbounded - so sanitize and
+     * truncate once here; every metric in the LSP stack labels with this.
+     * @param {string} serverId
+     * @return {string}
+     */
+    function _srvLabel(serverId) {
+        const cleaned = String(serverId || "").replace(/[^a-zA-Z0-9]/g, "");
+        return cleaned.substring(0, 10) || "ukn";
+    }
+
+    // LSP request method -> short metric suffix for per-method latency. Anything unlisted is
+    // lumped into "Oth" so plugin/custom methods can't explode metric cardinality.
+    const METRIC_METHOD_GROUPS = {
+        "textDocument/completion": "Comp",
+        "textDocument/signatureHelp": "Sig",
+        "textDocument/hover": "Hover",
+        "textDocument/definition": "Def",
+        "textDocument/references": "Ref",
+        "textDocument/codeAction": "Fix",
+        "completionItem/resolve": "Res",
+        "textDocument/documentHighlight": "Hlt"
+    };
+
     function LanguageClient(serverId, languages, config) {
         this.serverId = serverId;
         this.languages = languages;
         this.config = config;
         this.capabilities = null;
+        this._metricLabel = _srvLabel(serverId);
     }
 
     LanguageClient.prototype.getServerCapabilities = function () {
@@ -320,8 +373,16 @@ define(function (require, exports, module) {
 
     LanguageClient.prototype._request = function (method, params) {
         const serverId = this.serverId;
+        const metricLabel = this._metricLabel;
+        const startTime = Date.now();
         return getConnector().then(function (conn) {
             return conn.execPeer("sendRequest", { serverId: serverId, method: method, params: params });
+        }).then(function (result) {
+            // Successful requests only - failures include the 120s node-side timeout, which
+            // would wreck the averages. Failures are counted per feature instead.
+            Metrics.valueEventBatched(Metrics.EVENT_TYPE.LSP, "time",
+                metricLabel + (METRIC_METHOD_GROUPS[method] || "Oth"), Date.now() - startTime);
+            return result;
         });
     };
 
@@ -726,6 +787,7 @@ define(function (require, exports, module) {
     }
 
     async function _startAndInit(client) {
+        const startTime = Date.now();
         const config = client.config;
         const conn = await getConnector();
         const rootVfsPath = (config.rootUriProvider && config.rootUriProvider()) || _projectRootPath();
@@ -768,6 +830,9 @@ define(function (require, exports, module) {
             method: "initialized",
             params: {}
         });
+        // Spawn + initialize handshake time - rare enough to send unbatched.
+        Metrics.valueEvent(Metrics.EVENT_TYPE.LSP, "time", client._metricLabel + "Init",
+            Date.now() - startTime);
     }
 
     function _registerProviders(client) {
@@ -816,6 +881,7 @@ define(function (require, exports, module) {
      * every path that brings a server up: initial registration, restart, and crash auto-restart.
      */
     function _announceServerStarted(client) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "Start");
         exports.trigger(EVENT_LANGUAGE_SERVER_STARTED, {
             serverId: client.serverId,
             languages: client.languages
@@ -852,12 +918,25 @@ define(function (require, exports, module) {
             return;
         }
         _prefWatchedServers.add(serverId);
+        // Change events also fire without the value flipping (e.g. pref scopes reloading on a
+        // project switch). Only a real flip may act - reacting to a same-value event would
+        // needlessly restart a running server (and miscount the opt-out metric).
+        let lastDisabled = _isDisabledByPref(serverId);
         PreferencesManager.on("change", _codeIntelPrefKey(serverId), function () {
+            const disabledNow = _isDisabledByPref(serverId);
+            if (disabledNow === lastDisabled) {
+                return;
+            }
+            lastDisabled = disabledNow;
             const client = clients.get(serverId);
             if (!client) {
                 return;
             }
-            if (_isDisabledByPref(serverId)) {
+            if (disabledNow) {
+                // The opt-out signal: users actively turning code intelligence off. Only the
+                // non-default (off) state is logged - flips back to the default would just be
+                // noise.
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "PrefOff");
                 if (client.capabilities) {
                     stopServerProcess(client).then(function () {
                         CodeInspection.requestRun();
@@ -922,6 +1001,9 @@ define(function (require, exports, module) {
         }
         _watchServerPref(config.serverId);
         if (_isDisabledByPref(config.serverId)) {
+            // Users who keep code intelligence durably off. Registration retries can bump this
+            // more than once per run - fine, it's a rough opt-out signal, not an exact count.
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", _srvLabel(config.serverId) + "OffBoot");
             return null;
         }
         const client = new LanguageClient(config.serverId, config.languages, config);
@@ -939,6 +1021,12 @@ define(function (require, exports, module) {
             return client;
         } catch (err) {
             console.error("[LSP] failed to start server", config.serverId, err && (err.message || err));
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "StartErr");
+            // err.message distinguishes the classes (spawn error / spawn timeout / init
+            // failure - built node-side). Key shared with the restart-failed report so a
+            // broken server reports exactly once per app run whichever path hits first.
+            window.logger.reportErrorOnce("lspStart." + config.serverId, err,
+                "[LSP] start failed: " + config.serverId);
             clients.delete(config.serverId);
             return null;
         }
@@ -1043,6 +1131,9 @@ define(function (require, exports, module) {
             FindReferencesManager.setMenuItemStateForLanguage();
         } catch (err) {
             console.error("[LSP] failed to restart server", serverId, err && (err.message || err));
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", client._metricLabel + "RstErr");
+            window.logger.reportErrorOnce("lspStart." + serverId, err,
+                "[LSP] restart failed: " + serverId);
         }
     }
 

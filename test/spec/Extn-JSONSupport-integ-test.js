@@ -182,16 +182,25 @@ define(function (require, exports, module) {
             async function () {
                 const PreferencesManager = testWindow.brackets.test.PreferencesManager;
                 const LSPClient = testWindow.require("languageTools/LSPClient");
+                const Metrics = testWindow.brackets.getModule("utils/Metrics");
+                const audit = Metrics.getLoggedDataForAudit();
+                function auditSum(key) {
+                    const entry = audit.get(key);
+                    return (entry && entry.sum) || 0;
+                }
                 await _openFile("broken.json");
                 await awaitsFor(function () {
                     return LSPClient.isLintingProviderActive("json");
                 }, "json server to be active", 30000);
+                const startsBefore = auditSum("lsp.srv.jsonStart"),
+                    prefOffBefore = auditSum("lsp.srv.jsonPrefOff");
 
                 PreferencesManager.set("codeIntelligence.json", false);
                 try {
                     await awaitsFor(function () {
                         return !LSPClient.isLintingProviderActive("json");
                     }, "json server to stop on pref off", 15000);
+                    expect(auditSum("lsp.srv.jsonPrefOff")).toBe(prefOffBefore + 1);
                 } finally {
                     // restore even on failure so later suites see a healthy default
                     PreferencesManager.set("codeIntelligence.json", true);
@@ -199,6 +208,8 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     return LSPClient.isLintingProviderActive("json");
                 }, "json server to restart on pref on", 45000);
+                // re-enable is a return to the default - no pref metric, but the restart counts
+                expect(auditSum("lsp.srv.jsonStart")).toBe(startsBefore + 1);
             }, 90000);
     });
 });

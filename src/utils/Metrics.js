@@ -114,7 +114,7 @@ define(function (require, exports, module) {
         LIVE_PREVIEW: "live-preview",
         LP_EDIT: "lp-edit", // live preview edit related
         KEYBOARD: "keyboard",
-        CODE_HINTS: "code-hints",
+        CODE_HINTS: "hints",
         EDITOR: "editor",
         QUICK_VIEW: "quickView",
         SEARCH: "search",
@@ -132,7 +132,8 @@ define(function (require, exports, module) {
         AI: "ai",
         TERMINAL: "term",
         MD: "md",
-        GUIDE: "guide"
+        GUIDE: "guide",
+        LSP: "lsp"
     };
 
     /**
@@ -449,6 +450,73 @@ define(function (require, exports, module) {
         _valueEvent(eventType, eventCategory, eventSubCategory, value);
     }
 
+    // High-frequency events (per-keystroke hint popups, per-request latencies) would overwhelm
+    // the GA free-tier event budget if sent per occurrence, so they are accumulated here and
+    // flushed as aggregates every BATCH_FLUSH_MS through the normal countEvent/valueEvent
+    // pipeline (which keeps power-user prefixing, the audit map and both sinks working).
+    const BATCH_FLUSH_MS = 120 * 1000;
+    const BATCH_KEY_SEPARATOR = "|";
+    const _batchedCounts = new Map(); // "type|category|label" -> count
+    const _batchedValues = new Map(); // "type|category|label" -> {sum, count}
+
+    /**
+     * Same as countEvent, but aggregated client side: occurrences are summed and emitted as a
+     * single count every 2 minutes (and on flushMetrics before app quit). Use for events that
+     * can fire many times a minute; low-frequency user actions should use countEvent directly
+     * so they are not delayed.
+     *
+     * @param {EVENT_TYPE|string} eventType The kind of Event Type that needs to be logged- should be
+     * a js var compatible string.
+     * @param {string} eventCategory The kind of Event Category that
+     * needs to be logged- should be a js var compatible string
+     * @param {string} eventSubCategory The kind of Event Sub Category that
+     * needs to be logged- should be a js var compatible string
+     * @type {function}
+     */
+    function countEventBatched(eventType, eventCategory, eventSubCategory) {
+        const key = eventType + BATCH_KEY_SEPARATOR + eventCategory + BATCH_KEY_SEPARATOR + eventSubCategory;
+        _batchedCounts.set(key, (_batchedCounts.get(key) || 0) + 1);
+    }
+
+    /**
+     * Same as valueEvent, but aggregated client side: values are averaged and emitted as a
+     * single valueEvent per key every 2 minutes (and on flushMetrics before app quit). Note
+     * that only the window average survives - individual samples and sample counts do not.
+     *
+     * @param {EVENT_TYPE|string} eventType The kind of Event Type that needs to be logged- should be
+     * a js var compatible string.
+     * @param {string} eventCategory The kind of Event Category that
+     * needs to be logged- should be a js var compatible string
+     * @param {string} eventSubCategory The kind of Event Sub Category that
+     * needs to be logged- should be a js var compatible string
+     * @param {number} value
+     * @type {function}
+     */
+    function valueEventBatched(eventType, eventCategory, eventSubCategory, value) {
+        const key = eventType + BATCH_KEY_SEPARATOR + eventCategory + BATCH_KEY_SEPARATOR + eventSubCategory;
+        const entry = _batchedValues.get(key);
+        if(entry){
+            entry.sum += Number(value);
+            entry.count++;
+        } else {
+            _batchedValues.set(key, {sum: Number(value), count: 1});
+        }
+    }
+
+    function _flushBatchedEvents() {
+        for(const [key, count] of _batchedCounts){
+            const parts = key.split(BATCH_KEY_SEPARATOR);
+            countEvent(parts[0], parts[1], parts[2], count);
+        }
+        _batchedCounts.clear();
+        for(const [key, entry] of _batchedValues){
+            const parts = key.split(BATCH_KEY_SEPARATOR);
+            valueEvent(parts[0], parts[1], parts[2], Math.round(entry.sum / entry.count));
+        }
+        _batchedValues.clear();
+    }
+    setInterval(_flushBatchedEvents, BATCH_FLUSH_MS);
+
     function setDisabled(shouldDisable) {
         Phoenix._setHealthTrackingDisabled(shouldDisable);
         disabled = shouldDisable;
@@ -472,6 +540,7 @@ define(function (require, exports, module) {
      */
     async function flushMetrics() {
         try{
+            _flushBatchedEvents();
             if(Phoenix.isNativeApp) {
                 _sendQueuedTauriGAEvents();
             }
@@ -535,6 +604,8 @@ define(function (require, exports, module) {
     exports.clearAuditData     = clearAuditData;
     exports.countEvent         = countEvent;
     exports.valueEvent         = valueEvent;
+    exports.countEventBatched  = countEventBatched;
+    exports.valueEventBatched  = valueEventBatched;
     exports.logPerformanceTime = logPerformanceTime;
     exports.flushMetrics       = flushMetrics;
     exports.getRangeName       = getRangeName;
