@@ -45,6 +45,27 @@ let queryModule = null;
 // Session state
 let currentSessionId = null;
 
+// Model list from the SDK's supportedModels() — fetched once per process,
+// best-effort, from the first live query. null until available.
+let cachedModelList = null;
+
+/**
+ * Fetch the model list from a live Query once per process. Best-effort:
+ * the control request can fail on older CLIs or non-streaming input —
+ * the browser keeps its static fallback list in that case.
+ */
+function _fetchModelListOnce(queryResult) {
+    if (cachedModelList) {
+        return;
+    }
+    queryResult.supportedModels().then(function (models) {
+        if (models && models.length) {
+            cachedModelList = models;
+            nodeConnector.triggerPeer("aiModelList", { models: models });
+        }
+    }).catch(function () {});
+}
+
 // Active query state
 let currentAbortController = null;
 
@@ -650,6 +671,15 @@ exports.setPermissionMode = async function (params) {
         _runtimePermissionMode = params.mode;
     }
     return { success: true };
+};
+
+/**
+ * Return the model list fetched from the SDK, or null if no query has
+ * populated it yet (browser falls back to a static alias list).
+ * Called from browser via execPeer("getSupportedModels").
+ */
+exports.getSupportedModels = async function () {
+    return { models: cachedModelList };
 };
 
 /**
@@ -1602,6 +1632,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             if (!receivedFirstMessage) {
                 receivedFirstMessage = true;
                 clearTimeout(connectionTimer);
+                _fetchModelListOnce(result);
             }
             // Check abort
             if (signal.aborted) {
@@ -1613,6 +1644,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             if (message.session_id && !currentSessionId) {
                 currentSessionId = message.session_id;
                 _log("Session:", currentSessionId);
+            }
+
+            // The init message carries the fully-resolved model for the
+            // session — with no model param this is the user's saved
+            // Claude Code default. requestedModel lets the browser tell
+            // an explicit pick apart from default resolution.
+            if (message.type === "system" && message.subtype === "init" && message.model) {
+                nodeConnector.triggerPeer("aiSessionInfo", {
+                    model: message.model,
+                    requestedModel: model || null
+                });
             }
 
             // Subagent tool extraction. The SDK delivers the parent

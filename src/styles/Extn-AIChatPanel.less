@@ -131,6 +131,36 @@
         transition: opacity 0.5s ease;
     }
 
+    /* Model switcher — hover-revealed like .ai-chat-header-actions
+       (Claude Code CLI doesn't persistently show the model either). */
+    .ai-model-select {
+        position: absolute;
+        left: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        height: 26px;
+        padding: 0 6px;
+        color: @project-panel-text-2;
+        font-size: @label-font-size;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+
+        .ai-model-select-label {
+            max-width: 90px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        i {
+            font-size: 9px;
+            opacity: 0.7;
+        }
+    }
+
     .ai-history-btn,
     .ai-settings-btn {
         display: flex;
@@ -162,12 +192,67 @@
     transition: opacity 0.15s ease;
 }
 
+.ai-tab-container:hover .ai-model-select,
+.ai-tab-container .ai-model-select.dropdown-open {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.15s ease;
+}
 
-/* Left-align title when sidebar is narrow to free space for action buttons */
+/* Left-align title when sidebar is narrow to free space for action buttons.
+   The model switcher joins the flow so it can't overlap the title. */
 @container (max-width: 380px) {
     .ai-chat-header {
         justify-content: flex-start;
+
+        .ai-model-select {
+            position: static;
+            margin-right: 8px;
+            padding-left: 0;
+        }
     }
+}
+
+/* ── Model selector dropdown ───────────────────────────────────────── */
+/* Rendered by the standard DropdownButton widget (native Phoenix dropdown
+   look) — only the two-line item layout needs styling here. */
+.dropdownbutton-popup.ai-model-dropdown-popup {
+    min-width: 220px;
+    max-width: 320px;
+    max-height: 420px; // global 160px cap scrolls 5 two-line items
+
+    li a {
+        white-space: normal;
+        overflow-wrap: break-word;
+    }
+
+    .ai-model-item-name {
+        display: block;
+    }
+
+    .ai-model-item-desc {
+        display: block;
+        font-size: @ai-text-meta;
+        opacity: 0.7;
+        padding-left: 17px;
+        line-height: @ai-line-compact;
+    }
+}
+
+/* One-time inline notice after switching model mid-conversation.
+   Sentence-length status prose: secondary tier (12px), reading line-height,
+   left-aligned — meta 11px/centered is for one-line stats, not sentences. */
+.ai-model-switch-notice {
+    padding: 8px 12px;
+    margin: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    font-size: @ai-text-secondary;
+    line-height: @ai-line-prose;
+    color: @project-panel-text-2;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 /* ── Session history dropdown ──────────────────────────────────────── */
