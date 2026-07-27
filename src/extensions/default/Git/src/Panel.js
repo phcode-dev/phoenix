@@ -61,6 +61,8 @@ define(function (require, exports) {
         $tableContainer = $(null),
         lastCommitMessage = {};
 
+    let lastVisibleRefreshTime = 0;
+
     function lintFile(filename) {
         var fullPath = Preferences.get("currentGitRoot") + filename,
             codeInspectionPromise;
@@ -899,6 +901,9 @@ define(function (require, exports) {
     }
 
     function refresh() {
+        if (gitPanel && gitPanel.isVisible()) {
+            lastVisibleRefreshTime = Date.now();
+        }
         // set the history panel to false and remove the class that show the button history active when refresh
         $gitPanel.find(".git-history-toggle").removeClass("active").attr("title", Strings.TOOLTIP_SHOW_HISTORY);
         $gitPanel.find(".git-file-history").removeClass("active").attr("title", Strings.TOOLTIP_SHOW_FILE_HISTORY);
@@ -1611,6 +1616,26 @@ define(function (require, exports) {
         }
     });
 
+    const SHOWN_REFRESH_DEDUPE_MS = 500;
+
+    function _refreshOnPanelShown() {
+        if (!gitPanel || gitPanelDisabled) {
+            return;
+        }
+
+        // deferred because when the panel is shown via toggle(), the shown event
+        // fires from within setVisible() before toggle() calls refresh() itself.
+        // by the time this runs, that refresh has stamped lastVisibleRefreshTime
+        // and this becomes a no-op instead of a duplicate git status run.
+        window.setTimeout(function () {
+            if (!gitPanel.isVisible() || Date.now() - lastVisibleRefreshTime < SHOWN_REFRESH_DEDUPE_MS) {
+                return;
+            }
+
+            EventEmitter.emit(Events.GIT_PANEL_SHOWN);
+        }, 0);
+    }
+
     WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, function (event, panelID) {
         if (!Main.$icon) {
             return;
@@ -1619,6 +1644,9 @@ define(function (require, exports) {
         Main.$icon.toggleClass("on", isGitActive);
         Main.$icon.toggleClass("selected-button", isGitActive);
         _setTogglePanelChecked(isGitActive);
+        if (isGitActive) {
+            _refreshOnPanelShown();
+        }
     });
 
     exports.init = init;
