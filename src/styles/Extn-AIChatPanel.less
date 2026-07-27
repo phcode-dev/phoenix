@@ -239,6 +239,23 @@
     }
 }
 
+/* Auth-error action block: button with its /login hint stacked below —
+   tells the user the one thing to do next at a glance. */
+.ai-auth-error-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.ai-auth-error-hint {
+    margin-top: 6px;
+    font-size: @ai-text-meta;
+    color: @project-panel-text-2;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
 /* One-time inline notice after switching model mid-conversation.
    Sentence-length status prose: secondary tier (12px), reading line-height,
    left-aligned — meta 11px/centered is for one-line stats, not sentences. */

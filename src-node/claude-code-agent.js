@@ -2132,9 +2132,21 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         // transient (network, rate limit), and if the session really is broken
         // the next attempt will surface a fresh error of its own.
 
+        // Expired/revoked OAuth logins only surface at request time — `claude
+        // auth status` still reports loggedIn because the credentials exist,
+        // but the CLI exits non-zero with a /login hint. Flag it so the
+        // panel can offer a re-login action instead of a raw exit-code
+        // error. Custom API-key providers are excluded — their fix is the
+        // settings-dialog hint appended above.
+        const usingApiKey = !!(envOverrides && envOverrides.ANTHROPIC_AUTH_TOKEN);
+        const isAuthError = !usingApiKey &&
+            /run \/login|invalid api key|not logged in|oauth token|revoke|authentication[_ ]?error/i
+                .test(detailedError);
+
         nodeConnector.triggerPeer("aiError", {
             requestId: requestId,
-            error: detailedError
+            error: detailedError,
+            isAuthError: isAuthError
         });
 
         // Always send aiComplete after aiError so the UI exits streaming state
