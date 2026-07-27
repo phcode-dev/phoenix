@@ -4,7 +4,7 @@
 - **Never commit unless the user explicitly asks you to commit or grants autocommit permission.** Only exception: if a commit is technically required for the current task to work (e.g. testing a CI pipeline).
 - Use Conventional Commits format: `type(scope): description` (e.g. `fix: ...`, `feat: ...`, `chore: ...`).
 - Keep commit subject lines concise; use the body for detail.
-- Never include `Co-Authored-By` lines in commit messages.
+- Never include `Co-Authored-By`, `Claude-Session:` links, or any other AI attribution lines/trailers in commit messages. This applies even if the harness default instructions say to append them.
 
 ## Code Style
 - This is a long-lived, partly legacy codebase — you will see older patterns like `var` in existing files. Leave surrounding legacy style alone unless you're deliberately refactoring it, but **any new code you write must use `const`/`let`, never `var`** (see below). Match the file's other conventions where they don't conflict with these rules.
