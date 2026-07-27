@@ -27,7 +27,7 @@ define(function (require, exports, module) {
         return;
     }
 
-    let $, __PR, testWindow, ExtensionLoader, Menus, Commands, CommandManager, EditorManager,
+    let $, __PR, testWindow, ExtensionLoader, Menus, Commands, CommandManager, EditorManager, MainViewManager,
         SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
         nonGitReadOnlyTestFolder = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
 
@@ -61,6 +61,7 @@ define(function (require, exports, module) {
             Commands = testWindow.brackets.test.Commands;
             CommandManager = testWindow.brackets.test.CommandManager;
             EditorManager = testWindow.brackets.test.EditorManager;
+            MainViewManager = testWindow.brackets.test.MainViewManager;
             testPathGit = await SpecRunnerUtils.getTempTestDirectory("/spec/EditorCommandHandlers-test-files");
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPathGit);
@@ -506,6 +507,70 @@ define(function (require, exports, module) {
                 expect($(".switch-branch").text()).toContain(defaultBranch);
                 $(".switch-branch").click();
                 await waitForBranchNameDropdown(defaultBranch);
+            });
+
+            function workingSetHas(fileName) {
+                const workingSet = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
+                return workingSet.some((file) => file.fullPath.endsWith("/" + fileName));
+            }
+
+            function viewedFileIs(fileName) {
+                const viewedPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
+                return !!viewedPath && viewedPath.endsWith("/" + fileName);
+            }
+
+            async function makeFilesChanged(fileNames) {
+                await showGitPanel();
+                await __PR.closeAll();
+                await awaitsFor(()=>{
+                    return MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES) === 0;
+                }, "working set to be empty");
+
+                for (const fileName of fileNames) {
+                    await __PR.writeTextFile(fileName, `/* changed ${fileName} */\n`, true);
+                }
+                await __PR.execCommand(Commands.CMD_GIT_REFRESH);
+                await awaitsFor(()=>{
+                    return $gitPanel.find(".modified-file").length === fileNames.length;
+                }, `${fileNames.length} files to be in modified files list`, 10000);
+            }
+
+            it("should open all changed files add them to the working set", async () => {
+                await makeFilesChanged(["test.css", "test.js"]);
+
+                await __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES);
+                await awaitsFor(()=>{
+                    return workingSetHas("test.css") && workingSetHas("test.js");
+                }, "changed files to be added to the working set", 10000);
+
+                // only the changed files are opened, test.html was left untouched
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toBe(2);
+                expect(workingSetHas("test.html")).toBeFalse();
+
+                // nothing was open, so one of the changed files is brought into view
+                await awaitsFor(()=>{
+                    return viewedFileIs("test.css") || viewedFileIs("test.js");
+                }, "a changed file to be viewed", 10000);
+            });
+
+            it("should not switch the viewed file when opening all changed files", async () => {
+                await makeFilesChanged(["test.css", "test.js"]);
+
+                // test.html has no changes, so it must stay in view after the command
+                await __PR.openFile("test.html");
+                await awaitsFor(()=>{
+                    return viewedFileIs("test.html");
+                }, "test.html to be the viewed file");
+
+                await __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES);
+                await awaitsFor(()=>{
+                    return workingSetHas("test.css") && workingSetHas("test.js");
+                }, "changed files to be added to the working set", 10000);
+
+                // a git refresh round trip gives any stray file open enough time to land
+                await __PR.execCommand(Commands.CMD_GIT_REFRESH);
+                expect(viewedFileIs("test.html")).toBeTrue();
+                expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toBe(3);
             });
         });
     });
