@@ -35,6 +35,7 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         PreferencesManager = require("preferences/PreferencesManager"),
         WorkspaceManager  = require("view/WorkspaceManager"),
+        Metrics = require("utils/Metrics"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
 
@@ -99,6 +100,9 @@ define(function (require, exports, module) {
     PreferencesManager.on("change", "showParameterHints", function () {
         paramHintsEnabled = PreferencesManager.get("showParameterHints");
         if (!paramHintsEnabled) {
+            // The opt-out signal: parameter hints in the non-default off state. Also fires on
+            // boot pref-load for users who keep it off - fine, it's a rough signal.
+            Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "pref", "sigOff");
             dismissHint();
         }
     });
@@ -384,6 +388,12 @@ define(function (require, exports, module) {
                 return;
             }
 
+            // Count the popup APPEARING, not every re-render while the caret moves within the
+            // call. Batched - typing through calls triggers this constantly.
+            if (!hintState.visible) {
+                Metrics.countEventBatched(Metrics.EVENT_TYPE.CODE_HINTS, "sig", language.getId());
+            }
+
             _formatHint(editor, parameterHint);
             $hintContainer.show(); // no-op when already visible -> content updates in place, no blink
 
@@ -507,6 +517,9 @@ define(function (require, exports, module) {
      */
     function handleShowParameterHint() {
         let editor = EditorManager.getActiveEditor();
+        // No metric here: CodeHintManager's explicit Ctrl-Space session also executes this
+        // command internally, so an "explicit param hint command" count would mostly measure
+        // code-hint invocations. The batched popup-shown metric is the usage signal.
         // Pop up function hint
         popUpHint(editor, true, false);
     }

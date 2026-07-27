@@ -252,7 +252,8 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         KeyEvent            = require("utils/KeyEvent"),
         CodeHintListModule  = require("editor/CodeHintList"),
-        PreferencesManager  = require("preferences/PreferencesManager");
+        PreferencesManager  = require("preferences/PreferencesManager"),
+        Metrics             = require("utils/Metrics");
 
     const CodeHintList        = CodeHintListModule.CodeHintList;
 
@@ -264,7 +265,9 @@ define(function (require, exports, module) {
         deferredHints    = null,
         keyDownEditor    = null,
         codeHintsEnabled = true,
-        codeHintOpened   = false;
+        codeHintOpened   = false,
+        sessionLanguageId = null,       // language at cursor when the session began - metric label
+        sessionShownMetricSent = false; // one metric per session, not one per keystroke update
 
     // API for extensions to show hints at the top
     let hintsAtTopHandler = null;
@@ -284,7 +287,45 @@ define(function (require, exports, module) {
 
     PreferencesManager.on("change", "showCodeHints", function () {
         codeHintsEnabled = PreferencesManager.get("showCodeHints");
+        if (!codeHintsEnabled) {
+            // The opt-out signal: code hints in the non-default off state. Also fires on boot
+            // pref-load for users who keep it off - fine, it's a rough signal.
+            Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "pref", "off");
+        }
     });
+
+    /**
+     * Counts the hint list becoming visible with results, once per session. Also attributes
+     * the session to its language server when the provider is LSP-backed, so per-server usage
+     * (and acceptance rate vs the accept metric) is computable. Batched - hint sessions are
+     * per-keystroke-frequency events.
+     * @private
+     * @param {{hints: Array}} response the response about to be shown
+     */
+    function _recordHintsShownMetric(response) {
+        if (sessionShownMetricSent || !response || !response.hints || !response.hints.length) {
+            return;
+        }
+        sessionShownMetricSent = true;
+        Metrics.countEventBatched(Metrics.EVENT_TYPE.CODE_HINTS, "show", sessionLanguageId);
+        if (sessionProvider && sessionProvider.client && sessionProvider.client._metricLabel) {
+            Metrics.countEventBatched(Metrics.EVENT_TYPE.LSP, "hint",
+                sessionProvider.client._metricLabel + "Show");
+        }
+    }
+
+    /**
+     * A provider threw synchronously (hasHints/getHints) - previously this propagated up
+     * through the typing handler and could wedge the session. Count it and report it once per
+     * language per app run.
+     * @private
+     */
+    function _recordProviderError(err, languageId) {
+        console.error("[CodeHints] provider threw in hint session (" + languageId + ")", err);
+        Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "provErr", languageId);
+        window.logger.reportErrorOnce("hintProv." + languageId, err,
+            "[CodeHints] provider threw in hint session (" + languageId + ")");
+    }
 
     /**
      * Comparator to sort providers from high to low priority
@@ -406,6 +447,9 @@ define(function (require, exports, module) {
         sessionProvider = null;
         sessionEditor = null;
         if (deferredHints) {
+            // Mark this as a manager-side cancellation so the fail handler attached in
+            // _updateHintList doesn't count it as a provider failure.
+            deferredHints._canceledByHintManager = true;
             deferredHints.reject();
             deferredHints = null;
         }
@@ -445,6 +489,7 @@ define(function (require, exports, module) {
         callMoveUpEvent = typeof callMoveUpEvent === "undefined" ? false : callMoveUpEvent;
 
         if (deferredHints) {
+            deferredHints._canceledByHintManager = true; // superseded by a newer query, not a failure
             deferredHints.reject();
             deferredHints = null;
         }
@@ -463,7 +508,14 @@ define(function (require, exports, module) {
 
         // Get hints from regular provider if available
         if (sessionProvider) {
-            response = sessionProvider.getHints(lastChar);
+            try {
+                response = sessionProvider.getHints(lastChar);
+            } catch (e) {
+                // A throwing provider must not wedge the session - fall through to the
+                // no-response path below, which closes it cleanly.
+                _recordProviderError(e, sessionLanguageId);
+                response = null;
+            }
         }
 
         lastChar = null;
@@ -501,6 +553,7 @@ define(function (require, exports, module) {
                     }
                 }
 
+                _recordHintsShownMetric(response);
                 if (hintList.isOpen()) {
                     // the session is open
                     hintList.update(response);
@@ -509,6 +562,16 @@ define(function (require, exports, module) {
                 }
             } else { // response is a deferred
                 deferredHints = response;
+                response.fail(function () {
+                    // Provider-side failure (e.g. an LSP completion request errored) - the
+                    // manager's own cancellations (superseded query / session end) are marked
+                    // and excluded. Metrics only: per-server failures are counted at the LSP
+                    // layer, this tracks how often users see hints silently not appear.
+                    if (!response._canceledByHintManager) {
+                        Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "fail",
+                            sessionLanguageId || "ukn");
+                    }
+                });
                 response.done(function (hints) {
                     // Guard against timing issues where the session ends before the
                     // response gets a chance to execute the callback.  If the session
@@ -527,6 +590,7 @@ define(function (require, exports, module) {
                         }
                     }
 
+                    _recordHintsShownMetric(hints);
                     if (hintList.isOpen()) {
                         // the session is open
                         hintList.update(hints);
@@ -565,18 +629,30 @@ define(function (require, exports, module) {
         var language = editor.getLanguageForSelection(),
             enabledProviders = _getProvidersForLanguageId(language.getId());
 
+        sessionLanguageId = language.getId();
+        sessionShownMetricSent = false;
+
         // Check if hints-at-top handler has hints first to avoid duplication
         var hasTopHints = false;
         if (hintsAtTopHandler && hintsAtTopHandler.hasHints) {
-            hasTopHints = hintsAtTopHandler.hasHints(editor, lastChar);
+            try {
+                hasTopHints = hintsAtTopHandler.hasHints(editor, lastChar);
+            } catch (e) {
+                _recordProviderError(e, sessionLanguageId);
+            }
         }
 
         // Find a suitable provider only if hints-at-top handler doesn't have hints
         if (!hasTopHints) {
             enabledProviders.some(function (item, index) {
-                if (item.provider.hasHints(editor, lastChar)) {
-                    sessionProvider = item.provider;
-                    return true;
+                try {
+                    if (item.provider.hasHints(editor, lastChar)) {
+                        sessionProvider = item.provider;
+                        return true;
+                    }
+                } catch (e) {
+                    // Skip the throwing provider; lower-priority providers still get a shot.
+                    _recordProviderError(e, sessionLanguageId);
                 }
             });
         }
@@ -610,25 +686,37 @@ define(function (require, exports, module) {
                 }
             });
             hintList.onSelect(function (hint) {
-                // allow extensions to handle special hint selections
-                var handled = false;
-                if (hintsAtTopHandler && hintsAtTopHandler.insertHint) {
-                    handled = hintsAtTopHandler.insertHint(hint);
-                }
-
-                if (handled) {
-                    // If hints-at-top handler handled it, end the session
-                    _endSession();
-                } else if (sessionProvider) {
-                    // Regular hint provider handling
-                    var restart = sessionProvider.insertHint(hint),
-                        previousEditor = sessionEditor;
-                    _endSession();
-                    if (restart) {
-                        _beginSession(previousEditor);
+                var acceptedLanguageId = sessionLanguageId;
+                try {
+                    // allow extensions to handle special hint selections
+                    var handled = false;
+                    if (hintsAtTopHandler && hintsAtTopHandler.insertHint) {
+                        handled = hintsAtTopHandler.insertHint(hint);
                     }
-                } else {
-                    // if none of the provider handled it, we just end the session
+
+                    if (handled) {
+                        // If hints-at-top handler handled it, end the session
+                        Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "accept", acceptedLanguageId);
+                        _endSession();
+                    } else if (sessionProvider) {
+                        // Regular hint provider handling
+                        var restart = sessionProvider.insertHint(hint),
+                            previousEditor = sessionEditor;
+                        Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "accept", acceptedLanguageId);
+                        _endSession();
+                        if (restart) {
+                            _beginSession(previousEditor);
+                        }
+                    } else {
+                        // if none of the provider handled it, we just end the session
+                        _endSession();
+                    }
+                } catch (e) {
+                    // An insertHint throw used to skip _endSession and leave a stuck popup.
+                    console.error("[CodeHints] insertHint failed (" + acceptedLanguageId + ")", e);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "insErr", acceptedLanguageId);
+                    window.logger.reportErrorOnce("hintInsert." + acceptedLanguageId, e,
+                        "[CodeHints] insertHint failed (" + acceptedLanguageId + ")");
                     _endSession();
                 }
             });

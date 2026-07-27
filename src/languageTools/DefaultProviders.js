@@ -40,6 +40,7 @@ define(function (require, exports, module) {
       TabstopManager = require("editor/TabstopManager"),
       Strings = require("strings"),
       StringUtils = require("utils/StringUtils"),
+      Metrics = require("utils/Metrics"),
       marked = require("thirdparty/marked.min"),
       matcher = new StringMatch.StringMatcher({
         preferPrefixMatches: true
@@ -541,6 +542,8 @@ define(function (require, exports, module) {
                 "selectInitial": true
             });
         }).fail(function () {
+            // requestHints rejects only on a real request failure - empty results resolve.
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", self.client._metricLabel + "Fail");
             self._importLabel = null;
             $deferredHints.reject();
         });
@@ -693,6 +696,12 @@ define(function (require, exports, module) {
                 { line: te.range.end.line, ch: te.range.end.character });
         });
 
+        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", this.client._metricLabel + "Acc");
+        if (token.additionalTextEdits && token.additionalTextEdits.length) {
+            // An auto-import was applied with the completion - a high-value signal on its own.
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hint", this.client._metricLabel + "Import");
+        }
+
         // Return false to indicate that another hinting session is not needed
         return false;
     };
@@ -725,6 +734,7 @@ define(function (require, exports, module) {
         var editor = EditorManager.getActiveEditor(),
             pos = editor.getCursorPos(),
             docPath = editor.document.file._path,
+            metricLabel = this.client._metricLabel,
             $deferredHints = $.Deferred();
 
         // A language server may VETO signature help at specific cursor positions by supplying a
@@ -781,7 +791,12 @@ define(function (require, exports, module) {
             } else {
                 $deferredHints.reject();
             }
-        }).fail(function () {
+        }).fail(function (err) {
+            // requestParameterHints rejects bare for "no signatures here" (normal) and with an
+            // error for a real request failure - only the latter is a health signal.
+            if (err) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "sig", metricLabel + "Fail");
+            }
             $deferredHints.reject();
         });
 
@@ -832,6 +847,7 @@ define(function (require, exports, module) {
         const pos = editor.getCursorPos(),
             docPath = editor.document.file._path,
             docPathUri = PathConverters.pathToUri(docPath),
+            metricLabel = this.client._metricLabel,
             $deferredHints = $.Deferred();
 
         this.client.gotoDefinition({
@@ -871,7 +887,11 @@ define(function (require, exports, module) {
                 // the NAVIGATE_JUMPTO_DEFINITION command promise pending forever.
                 $deferredHints.reject();
             }
-        }).fail(function () {
+        }).fail(function (err) {
+            // gotoDefinition rejects bare for "no definition here" - only real failures count.
+            if (err) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "def", metricLabel + "Fail");
+            }
             $deferredHints.reject();
         });
 
@@ -1178,6 +1198,10 @@ define(function (require, exports, module) {
             }
         } catch (err) {
             console.warn("[LSP] quickfix fetch failed:", err && (err.message || err));
+            if (self._quickFixClient) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "fix",
+                    self._quickFixClient._metricLabel + "Fail");
+            }
         }
     };
 
@@ -1282,6 +1306,7 @@ define(function (require, exports, module) {
             result = $.Deferred();
 
         if (this.client) {
+            const metricLabel = this.client._metricLabel;
             this.client.findReferences({
                 filePath: docPath,
                 cursorPos: pos
@@ -1294,7 +1319,10 @@ define(function (require, exports, module) {
                     } else {
                         result.reject();
                     }
-                }).fail(function(){
+                }).fail(function(err){
+                    if (err) {
+                        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "ref", metricLabel + "Fail");
+                    }
                     result.reject();
                 });
             return result.promise();

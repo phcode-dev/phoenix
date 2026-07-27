@@ -46,6 +46,7 @@
         MAX_ERR_SENT_FIRST_MINUTE = 10,
         MAX_ERR_ALLOWED_IN_MINUTE = 2;
     let firstMinuteElapsed = false, errorsSentThisMinute = 0;
+    const reportedOnceKeys = new Set();
 
     class CustomBugSnagError extends Error {
         constructor(message, err){
@@ -72,6 +73,21 @@
             } else {
                 console.error(message, error, error.nodeStack);
             }
+        },
+        /**
+         * Same as reportError, but reports at most once per `key` per app run. Use for
+         * failures that can repeat (a broken language server fails on every retry) so a
+         * single user cannot exhaust the app-wide error reporting budget with one issue.
+         * @param {string} key dedup key, e.g. "lspStart.typescript"
+         * @param {Error} error
+         * @param {string} [message] optional message
+         */
+        reportErrorOnce: function (key, error, message) {
+            if(reportedOnceKeys.has(key)){
+                return;
+            }
+            reportedOnceKeys.add(key);
+            logger.reportError(error, message);
         },
         /**
          * By default all uncaught exceptions and promise rejections are sent to logger utility. But in some cases
@@ -214,9 +230,64 @@
         return false;
     }
 
+    // Paths that are safe to keep in reported error messages: they point at the app's own
+    // code, origins or machine-generic system locations - never at user content - and are
+    // valuable for diagnosis (e.g. language server stderr referencing its own install dir).
+    function _isSafePathForLogging(pathText) {
+        const lower = pathText.toLowerCase();
+        const safeStarts = ["phtauri://", "https://phtauri.localhost", "http://localhost",
+            "https://localhost", "https://phcode.dev", "https://create.phcode.dev",
+            "https://dev.phcode.dev", "https://staging.phcode.dev",
+            "/usr/", "/lib/", "/lib64/", "/opt/", "/snap/", "/bin/", "/sbin/", "/etc/",
+            "/system/", "/applications/", "c:\\program files", "c:\\windows"];
+        for(let prefix of safeStarts){
+            if(lower.startsWith(prefix)){
+                return true;
+            }
+        }
+        // App-managed dirs (installed language servers, caches) live under a phoenix/phcode
+        // named folder; after home-dir normalization they carry no user identity, so keep them.
+        if(lower.startsWith("~") && (lower.includes("phcode") || lower.includes("phoenix"))){
+            return true;
+        }
+        return false;
+    }
+
+    const HOME_DIR_PREFIX_REGEX = /(?:\/(?:home|Users)\/[^/\s'"`]+|[A-Za-z]:[\\/]Users[\\/][^\\/\s'"`]+)/g;
+    // URLs; ~-anchored paths (1+ segments - a bare ~/file.txt is still a user file); absolute
+    // paths need 2+ segments so prose like "and/or" is not treated as a path.
+    const PATH_LIKE_REGEX = /(?:[a-zA-Z][a-zA-Z0-9+.-]*:\/\/[^\s'"`)\]]+|~(?:[\\/][^\\/\s'"`)\]]+)+|(?:[\\/][^\\/\s'"`)\]]+){2,})/g;
+
+    // Redacts user paths from an error message while keeping internal app/system paths.
+    // The home-dir prefix is cut first (drops the username), then any remaining path-like
+    // substring not under a known-internal prefix is replaced with <path> - a trimmed user
+    // path still leaks project/folder names, and the privacy bar here matches
+    // _shouldDiscardError which drops user-fs stacks entirely.
+    // Must NEVER throw: it runs inside onError, whose catch would swallow the throw and let
+    // the report leave UNSCRUBBED. On any internal failure it fails closed (fully redacted
+    // placeholder) rather than returning the original text.
+    function _scrubPathsInText(text) {
+        try {
+            const homeTrimmed = String(text).replace(HOME_DIR_PREFIX_REGEX, "~");
+            return homeTrimmed.replace(PATH_LIKE_REGEX, function (match) {
+                return _isSafePathForLogging(match) ? match : "<path>";
+            });
+        } catch (e) {
+            return "<scrub-failed>";
+        }
+    }
+    logger._scrubPathsInText = _scrubPathsInText; // exposed for unit tests
+
     function onError(event) {
         // for more info https://docs.bugsnag.com/platforms/javascript/customizing-error-reports
         try{
+            if(Array.isArray(event.errors)){
+                for(let error of event.errors){
+                    if(error && error.errorMessage){
+                        error.errorMessage = _scrubPathsInText(error.errorMessage);
+                    }
+                }
+            }
             let reportedStatus =  "Reported";
             let shouldReport = true;
             if(logger.loggingOptions.healthDataDisabled

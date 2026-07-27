@@ -33,7 +33,8 @@ define(function (require, exports, module) {
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler,
         SearchResultsView           = require("search/SearchResultsView").SearchResultsView,
         SearchModel                 = require("search/SearchModel").SearchModel,
-        Strings                     = require("strings");
+        Strings                     = require("strings"),
+        Metrics                     = require("utils/Metrics");
 
     var _providerRegistrationHandler = new ProviderRegistrationHandler(),
         removeFindReferencesProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
@@ -101,10 +102,13 @@ define(function (require, exports, module) {
         // If one of them will provide a widget, show it inline once ready
         if (referencesPromise) {
             referencesPromise.done(function () {
+                // Explicit user action - Ok vs None gives the per-language hit rate.
+                Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", language.getId() + "Ok");
                 if(_resultsView) {
                     _resultsView.open();
                 }
             }).fail(function () {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", language.getId() + "None");
                 if(_resultsView) {
                     _resultsView.close();
                 }
@@ -115,6 +119,7 @@ define(function (require, exports, module) {
             if(_resultsView) {
                 _resultsView.close();
             }
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ref", language.getId() + "None");
             editor.displayErrorMessageAtCursor(errorMsg);
             result.reject();
         }

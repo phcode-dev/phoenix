@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         CommandManager = require("command/CommandManager"),
         EditorManager = require("editor/EditorManager"),
         Editor              = require("editor/Editor").Editor,
+        Metrics = require("utils/Metrics"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const JUMP_TO_DEF_MARKER = "jumpMarker";
@@ -70,21 +71,28 @@ define(function (require, exports, module) {
             return result.promise();
         }
 
+        // Explicit user action (Ctrl-J / menu) - Ok vs Fail gives the per-language success rate.
+        const languageId = editor.getLanguageForSelection().getId();
+
         let jumpToDefProvider = _getJumpToDefProvider(editor);
         if (!jumpToDefProvider) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Fail");
             result.reject();
             return result.promise();
         }
         request = jumpToDefProvider.doJumpToDef(editor);
 
         if (!request) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Fail");
             result.reject();
             return result.promise();
         }
 
         request.done(function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Ok");
             result.resolve();
         }).fail(function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "jump", languageId + "Fail");
             result.reject();
         });
 

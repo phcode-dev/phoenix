@@ -34,7 +34,8 @@ define(function (require, exports, module) {
         Commands = require("command/Commands"),
         KeyBindingManager = require("command/KeyBindingManager"),
         QuickViewManager = require("features/QuickViewManager"),
-        Strings = require("strings");
+        Strings = require("strings"),
+        Metrics = require("utils/Metrics");
 
     /**
      * Convert LSP hover `contents` (MarkupContent | MarkedString | string | array of those)
@@ -193,13 +194,22 @@ define(function (require, exports, module) {
                     if ($actions) {
                         $content.append($actions);
                     }
+                    // Batched: fires on every dwell that produces a hover popup.
+                    Metrics.countEventBatched(Metrics.EVENT_TYPE.LSP, "hover",
+                        self.client._metricLabel + "Ok");
                     resolve({
                         start: start,
                         end: end,
                         content: $content
                     });
                 })
-                .fail(function () {
+                .fail(function (err) {
+                    // requestHover rejects bare when there's simply nothing to show - only a
+                    // real request failure is a health signal.
+                    if (err) {
+                        Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "hover",
+                            self.client._metricLabel + "Fail");
+                    }
                     reject();
                 });
         });
