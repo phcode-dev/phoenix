@@ -509,6 +509,76 @@ define(function (require, exports, module) {
                 await waitForBranchNameDropdown(defaultBranch);
             });
 
+            function panelBranchName() {
+                return $gitPanel.find(".git-panel-branch .git-branch-name").text().trim();
+            }
+
+            async function waitForBranchDropdownOpen(open) {
+                await awaitsFor(()=>{
+                    return $("#git-branch-dropdown").length === (open ? 1 : 0);
+                }, `branch dropdown to be ${open ? "open" : "closed"}`);
+            }
+
+            async function switchToBranch(branchName) {
+                $("#git-branch-dropdown-toggle").click();
+                await waitForBranchDropdownOpen(true);
+
+                const $branchLink = $(".switch-branch").filter((index, el) => $(el).text().trim() === branchName);
+                expect($branchLink.length).toBe(1);
+                $branchLink.click();
+                await waitForBranchNameDropdown(branchName);
+            }
+
+            it("should git panel branch button show the current branch and follow switches", async () => {
+                await showGitPanel();
+                await waitForBranchNameDropdown(defaultBranch);
+                await awaitsFor(()=>{
+                    return panelBranchName() === defaultBranch;
+                }, "panel branch button to show the current branch");
+
+                // the panel button mirrors the sidebar indicator and is clickable in a repo
+                expect($("#git-branch").text().trim()).toContain(panelBranchName());
+                expect($gitPanel.find(".git-panel-branch").attr("title")).toContain(defaultBranch);
+                expect($gitPanel.find(".git-panel-branch").hasClass("clickable")).toBeTrue();
+
+                await switchToBranch(createdBranch);
+                await awaitsFor(()=>{
+                    return panelBranchName() === createdBranch;
+                }, "panel branch button to follow the branch switch");
+
+                // switch back so the rest of the specs run on the default branch
+                await switchToBranch(defaultBranch);
+                await awaitsFor(()=>{
+                    return panelBranchName() === defaultBranch;
+                }, "panel branch button to follow the switch back");
+            });
+
+            it("should git panel branch button open the dropdown and move it between anchors", async () => {
+                await showGitPanel();
+                await waitForBranchDropdownOpen(false);
+
+                // the dropdown opens above the panel button. _positionDropdownAbove is the
+                // only path that neutralizes the sidebar margin, so the inline margin-left
+                // tells us which anchor the dropdown is currently attached to
+                $gitPanel.find(".git-panel-branch").click();
+                await waitForBranchDropdownOpen(true);
+                expect($("#git-branch-dropdown")[0].style.marginLeft).toBe("0px");
+
+                // clicking the same anchor closes it
+                $gitPanel.find(".git-panel-branch").click();
+                await waitForBranchDropdownOpen(false);
+
+                // clicking the other anchor moves the dropdown there instead of closing it
+                $gitPanel.find(".git-panel-branch").click();
+                await waitForBranchDropdownOpen(true);
+                $("#git-branch-dropdown-toggle").click();
+                await waitForBranchDropdownOpen(true);
+                expect($("#git-branch-dropdown")[0].style.marginLeft).toBe("");
+
+                $("#git-branch-dropdown-toggle").click();
+                await waitForBranchDropdownOpen(false);
+            });
+
             function workingSetHas(fileName) {
                 const workingSet = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
                 return workingSet.some((file) => file.fullPath.endsWith("/" + fileName));
