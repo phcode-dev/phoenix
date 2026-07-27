@@ -33,6 +33,7 @@ define(function (require, exports) {
         $dropdown;
 
     let lastRenderedBranchName = null;
+    let lastRenderedProjectRoot = null;
     let $dropdownAnchor = null;
 
     function renderList(branches) {
@@ -482,12 +483,12 @@ define(function (require, exports) {
             return Utils.getProjectRoot() !== projectRoot;
         }
 
-        // show info that branch is refreshing currently
-        $gitBranchName
-            .text("\u2026")
-            .parent()
-                .show();
-        Panel.setBranchName("\u2026", "");
+        // show the loading placeholder only when the displayed name can't be
+        // trusted (first refresh or project switch), else keep it to avoid flicker
+        if (projectRoot !== lastRenderedProjectRoot) {
+            $gitBranchName.text("\u2026");
+            Panel.setBranchName("\u2026", "");
+        }
 
         return Git.getGitRoot().then(function (gitRoot) {
             if (isStale()) { return; }
@@ -500,6 +501,7 @@ define(function (require, exports) {
                 Preferences.set("currentGitSubfolder", "");
 
                 lastRenderedBranchName = null;
+                lastRenderedProjectRoot = projectRoot;
                 $gitBranchName
                     .off("click")
                     .text(Strings.GIT_NOT_A_REPO);
@@ -539,24 +541,29 @@ define(function (require, exports) {
 
                     const MAX_LEN = 18;
 
+                    const changed = branchName !== lastRenderedBranchName ||
+                        projectRoot !== lastRenderedProjectRoot;
                     lastRenderedBranchName = branchName;
-                    const tooltip = StringUtils.format(Strings.ON_BRANCH, branchName);
-                    const displayName = branchName.length > MAX_LEN
-                        ? branchName.substring(0, MAX_LEN) + "\u2026"
-                        : branchName;
-                    // branch names may contain characters like "<", so set them
-                    // as text and never as html
-                    $gitBranchName
-                        .text(" " + displayName)
-                        .prepend('<i class="fas fa-code-branch"></i>')
-                        .attr("title", tooltip)
-                        .off("click")
-                        .on("click", toggleDropdown);
-                    Panel.setBranchName(displayName, tooltip);
-                    $("#git-panel .git-panel-branch")
-                        .addClass("clickable")
-                        .off("click")
-                        .on("click", toggleDropdown);
+                    lastRenderedProjectRoot = projectRoot;
+                    if (changed) {
+                        const tooltip = StringUtils.format(Strings.ON_BRANCH, branchName);
+                        const displayName = branchName.length > MAX_LEN
+                            ? branchName.substring(0, MAX_LEN) + "\u2026"
+                            : branchName;
+                        // branch names may contain characters like "<", so set them
+                        // as text and never as html
+                        $gitBranchName
+                            .text(" " + displayName)
+                            .prepend('<i class="fas fa-code-branch"></i>')
+                            .attr("title", tooltip)
+                            .off("click")
+                            .on("click", toggleDropdown);
+                        Panel.setBranchName(displayName, tooltip);
+                        $("#git-panel .git-panel-branch")
+                            .addClass("clickable")
+                            .off("click")
+                            .on("click", toggleDropdown);
+                    }
                     Panel.enable();
 
                 }).catch(function (err) {
@@ -567,6 +574,7 @@ define(function (require, exports) {
                 if (isStale()) { return; }
                 if (ErrorHandler.contains(ex, "unknown revision")) {
                     lastRenderedBranchName = null;
+                    lastRenderedProjectRoot = projectRoot;
                     $gitBranchName
                         .off("click")
                         .text(Strings.GIT_NO_BRANCH);
