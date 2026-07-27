@@ -623,6 +623,10 @@ define(function (require, exports) {
         refresh();
     });
 
+    EventEmitter.on(Events.GIT_PANEL_SHOWN, function () {
+        refresh();
+    });
+
     EventEmitter.on(Events.GIT_ENABLED, function () {
         $("#git-branch-dropdown-toggle").removeClass("forced-inVisible");
     });
