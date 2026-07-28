@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Nazwa dostawcy jest wymagana.",
   "AI_SETTINGS_NAME_DUPLICATE": "Dostawca o tej nazwie już istnieje.",
   "AI_SETTINGS_DONE": "Gotowe",
+  "AI_SETTINGS_ENABLE_AI": "Włącz funkcje AI",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Włącza lub wyłącza wszystkie funkcje AI w {APP_NAME}. Zmiana zacznie obowiązywać po ponownym uruchomieniu — możesz je ponownie włączyć w dowolnym momencie z menu <span class='ai-settings-menu-path'>Widok &gt; Włącz AI</span>.",
   "DEMO_SECTION1_TITLE": "Edytuj w podglądzie na żywo",
   "DEMO_SECTION1_SUBTITLE": "Edytuj stronę wizualnie -&nbsp; <b>Twój kod HTML aktualizuje się natychmiast</b>",
   "DEMO_GET_STARTED_BUTTON": "Rozpocznij",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_SETTINGS_ENABLE_AI": "Włącz funkcje AI",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Włącza lub wyłącza wszystkie funkcje AI w {APP_NAME}. Zmiana zacznie obowiązywać po ponownym uruchomieniu — możesz je ponownie włączyć w dowolnym momencie z menu <span class='ai-settings-menu-path'>Widok &gt; Włącz AI</span>."
+  "GIT_NO_BRANCH": "brak gałęzi",
+  "GIT_NOT_A_REPO": "nie jest repozytorium Git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Spowoduje to otwarcie {0} plików w edytorze. Czy chcesz kontynuować?",
+  "GIT_NOT_REPO_MESSAGE": "Ten projekt nie jest repozytorium Git. Kliknij przycisk {0}, aby utworzyć tutaj nowe repozytorium, lub {1}, aby sklonować istniejące.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Brak commitów. Zatwierdzone zmiany pojawią się w tym miejscu.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Brak historii commitów dla tego pliku.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Otwórz plik w edytorze, aby zobaczyć jego historię commitów.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Plik nie jest częścią tego repozytorium Git.",
+  "CMD_OPEN_CHANGED_FILES": "Otwórz wszystkie zmienione pliki",
+  "ERROR_OPENING_CHANGED_FILES": "Nie udało się otworzyć zmienionych plików."
 });

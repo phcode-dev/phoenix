@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Απαιτείται όνομα παρόχου.",
   "AI_SETTINGS_NAME_DUPLICATE": "Υπάρχει ήδη πάροχος με αυτό το όνομα.",
   "AI_SETTINGS_DONE": "Έγινε",
+  "AI_SETTINGS_ENABLE_AI": "Ενεργοποίηση λειτουργιών AI",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Ενεργοποιεί ή απενεργοποιεί όλες τις λειτουργίες AI στο {APP_NAME}. Η αλλαγή ισχύει μετά από επανεκκίνηση — μπορείτε να τις ενεργοποιήσετε ξανά ανά πάσα στιγμή από το <span class='ai-settings-menu-path'>μενού Προβολή &gt; Ενεργοποίηση AI</span>.",
   "DEMO_SECTION1_TITLE": "Επεξεργασία σε Ζωντανή Προεπισκόπηση",
   "DEMO_SECTION1_SUBTITLE": "Επεξεργαστείτε τη σελίδα σας οπτικά -&nbsp; <b>Ο κώδικας HTML ενημερώνεται άμεσα</b>",
   "DEMO_GET_STARTED_BUTTON": "Ξεκινήστε",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_SETTINGS_ENABLE_AI": "Ενεργοποίηση λειτουργιών AI",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Ενεργοποιεί ή απενεργοποιεί όλες τις λειτουργίες AI στο {APP_NAME}. Η αλλαγή ισχύει μετά από επανεκκίνηση — μπορείτε να τις ενεργοποιήσετε ξανά ανά πάσα στιγμή από το <span class='ai-settings-menu-path'>μενού Προβολή &gt; Ενεργοποίηση AI</span>."
+  "GIT_NO_BRANCH": "Κανένας κλάδος",
+  "GIT_NOT_A_REPO": "Δεν είναι αποθετήριο Git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Θα ανοίξουν {0} αρχεία στον επεξεργαστή. Θέλετε να συνεχίσετε;",
+  "GIT_NOT_REPO_MESSAGE": "Αυτό το έργο δεν είναι αποθετήριο Git. Κάντε κλικ στο κουμπί {0} για να δημιουργήσετε ένα νέο αποθετήριο εδώ ή στο {1} για να κάνετε λήψη ενός υπάρχοντος.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Δεν υπάρχουν ακόμη καταχωρίσεις. Οι καταχωρισμένες αλλαγές θα εμφανίζονται εδώ.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Δεν υπάρχει ακόμη ιστορικό καταχωρίσεων για αυτό το αρχείο.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Ανοίξτε ένα αρχείο στον επεξεργαστή για να δείτε το ιστορικό καταχωρίσεών του.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Το αρχείο δεν αποτελεί μέρος αυτού του αποθετηρίου Git.",
+  "CMD_OPEN_CHANGED_FILES": "Άνοιγμα Όλων των Αλλαγμένων Αρχείων",
+  "ERROR_OPENING_CHANGED_FILES": "Το άνοιγμα των αλλαγμένων αρχείων απέτυχε"
 });

@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "El nombre del proveedor es obligatorio.",
   "AI_SETTINGS_NAME_DUPLICATE": "Ya existe un proveedor con este nombre.",
   "AI_SETTINGS_DONE": "Aceptar",
+  "AI_SETTINGS_ENABLE_AI": "Activar funciones de IA",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Activa o desactiva todas las funciones de IA en {APP_NAME}. Tendrá efecto tras el reinicio — puedes volver a activarlas en cualquier momento desde el <span class='ai-settings-menu-path'>menú Ver &gt; Activar IA</span>.",
   "DEMO_SECTION1_TITLE": "Editar en Vista Previa en Vivo",
   "DEMO_SECTION1_SUBTITLE": "Edita tu página visualmente -&nbsp; <b>Tu HTML se actualiza al instante</b>",
   "DEMO_GET_STARTED_BUTTON": "Empezar",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_SETTINGS_ENABLE_AI": "Activar funciones de IA",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Activa o desactiva todas las funciones de IA en {APP_NAME}. Tendrá efecto tras el reinicio — puedes volver a activarlas en cualquier momento desde el <span class='ai-settings-menu-path'>menú Ver &gt; Activar IA</span>."
+  "GIT_NO_BRANCH": "sin rama",
+  "GIT_NOT_A_REPO": "no es un repositorio de Git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Esto abrirá {0} archivos en el editor. ¿Desea continuar?",
+  "GIT_NOT_REPO_MESSAGE": "Este proyecto no es un repositorio de Git. Haga clic en el botón {0} para crear un nuevo repositorio aquí, o en {1} para clonar uno existente.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Aún no hay commits. Los cambios confirmados aparecerán aquí.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Este archivo aún no tiene historial de commits.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Abra un archivo en el editor para ver su historial de commits.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "El archivo no forma parte de este repositorio de Git.",
+  "CMD_OPEN_CHANGED_FILES": "Abrir todos los archivos modificados",
+  "ERROR_OPENING_CHANGED_FILES": "Error al abrir los archivos modificados"
 });

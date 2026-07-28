@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Назив пружаоца је обавезан.",
   "AI_SETTINGS_NAME_DUPLICATE": "Пружалац са овим називом већ постоји.",
   "AI_SETTINGS_DONE": "Завршено",
+  "AI_SETTINGS_ENABLE_AI": "Омогући ВИ функције",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Укључује или искључује све ВИ функције у апликацији {APP_NAME}. Промена се примењује након поновног покретања — можете их поново омогућити у било ком тренутку из <span class='ai-settings-menu-path'>менија „Приказ” &gt; Омогући ВИ</span>.",
   "DEMO_SECTION1_TITLE": "Уреди у прегледу уживо",
   "DEMO_SECTION1_SUBTITLE": "Визуелно уредите своју страницу -&nbsp; <b>Ваш HTML се тренутно ажурира</b>",
   "DEMO_GET_STARTED_BUTTON": "Започни",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_SETTINGS_ENABLE_AI": "Омогући ВИ функције",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Укључује или искључује све ВИ функције у апликацији {APP_NAME}. Промена се примењује након поновног покретања — можете их поново омогућити у било ком тренутку из <span class='ai-settings-menu-path'>менија „Приказ” &gt; Омогући ВИ</span>."
+  "GIT_NO_BRANCH": "нема гране",
+  "GIT_NOT_A_REPO": "није git репозиторијум",
+  "OPEN_CHANGED_FILES_CONFIRM": "Ово ће отворити {0} датотека у уређивачу. Да ли желите да наставите?",
+  "GIT_NOT_REPO_MESSAGE": "Овај пројекат није Git репозиторијум. Кликните на дугме {0} да бисте креирали нови репозиторијум овде, или на {1} да бисте преузели постојећи.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Још увек нема комитова. Комитоване промене ће се појавити овде.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Још увек не постоји историја комитова за ову датотеку.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Отворите датотеку у уређивачу да бисте видели њену историју комитова.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Датотека није део овог Git репозиторијума.",
+  "CMD_OPEN_CHANGED_FILES": "Отвори све измењене датотеке",
+  "ERROR_OPENING_CHANGED_FILES": "Отварање измењених датотека није успело"
 });

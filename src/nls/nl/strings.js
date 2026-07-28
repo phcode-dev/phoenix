@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Providernaam is verplicht.",
   "AI_SETTINGS_NAME_DUPLICATE": "Er bestaat al een provider met deze naam.",
   "AI_SETTINGS_DONE": "Gedaan",
+  "AI_SETTINGS_ENABLE_AI": "AI-functies inschakelen",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Schakelt alle AI-functies in {APP_NAME} in of uit. Wordt van kracht na opnieuw opstarten — u kunt het op elk moment opnieuw inschakelen via het <span class='ai-settings-menu-path'>menu Beeld &gt; AI inschakelen</span>.",
   "DEMO_SECTION1_TITLE": "Bewerk in Live Preview",
   "DEMO_SECTION1_SUBTITLE": "Bewerk je pagina visueel -&nbsp; <b>Je HTML wordt direct bijgewerkt</b>",
   "DEMO_GET_STARTED_BUTTON": "Aan de slag",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_SETTINGS_ENABLE_AI": "AI-functies inschakelen",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Schakelt alle AI-functies in {APP_NAME} in of uit. Wordt van kracht na opnieuw opstarten — u kunt het op elk moment opnieuw inschakelen via het <span class='ai-settings-menu-path'>menu Beeld &gt; AI inschakelen</span>."
+  "GIT_NO_BRANCH": "geen branch",
+  "GIT_NOT_A_REPO": "geen git-repository",
+  "OPEN_CHANGED_FILES_CONFIRM": "Hiermee worden {0} bestanden geopend in de editor. Wilt u doorgaan?",
+  "GIT_NOT_REPO_MESSAGE": "Dit project is geen Git-repository. Klik op de knop {0} om hier een nieuwe repository aan te maken, of op {1} om een bestaande te downloaden.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Nog geen commits. Gecommitte wijzigingen verschijnen hier.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Er is nog geen commitgeschiedenis voor dit bestand.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Open een bestand in de editor om de commitgeschiedenis te zien.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Het bestand is geen onderdeel van deze Git-repository.",
+  "CMD_OPEN_CHANGED_FILES": "Alle gewijzigde bestanden openen",
+  "ERROR_OPENING_CHANGED_FILES": "Openen van gewijzigde bestanden mislukt"
 });

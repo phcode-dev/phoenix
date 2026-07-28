@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Provider name is required.",
   "AI_SETTINGS_NAME_DUPLICATE": "A provider with this name already exists.",
   "AI_SETTINGS_DONE": "Done",
+  "AI_SETTINGS_ENABLE_AI": "Enable AI features",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Turns all AI features in {APP_NAME} on or off. Takes effect after restart — you can enable it again anytime from <span class='ai-settings-menu-path'>View menu &gt; Enable AI</span>.",
   "DEMO_SECTION1_TITLE": "Edit in Live Preview",
   "DEMO_SECTION1_SUBTITLE": "Edit your page visually -&nbsp; <b>Your HTML updates instantly</b>",
   "DEMO_GET_STARTED_BUTTON": "Get Started",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_SETTINGS_ENABLE_AI": "Enable AI features",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Turns all AI features in {APP_NAME} on or off. Takes effect after restart — you can enable it again anytime from <span class='ai-settings-menu-path'>View menu &gt; Enable AI</span>."
+  "GIT_NO_BRANCH": "no branch",
+  "GIT_NOT_A_REPO": "not a git repo",
+  "OPEN_CHANGED_FILES_CONFIRM": "This will open {0} files in the editor. Do you want to continue?",
+  "GIT_NOT_REPO_MESSAGE": "This project is not a Git repository. Click the {0} button to create a new repository here, or {1} to clone an existing one.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "No commits yet. Committed changes will show up here.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "There is no commit history for this file yet.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Open a file in the editor to see its commit history.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "The file is not part of this Git repository.",
+  "CMD_OPEN_CHANGED_FILES": "Open All Changed Files",
+  "ERROR_OPENING_CHANGED_FILES": "Opening changed files failed"
 });

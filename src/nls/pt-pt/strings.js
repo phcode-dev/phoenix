@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "O nome do fornecedor é obrigatório.",
   "AI_SETTINGS_NAME_DUPLICATE": "Já existe um fornecedor com este nome.",
   "AI_SETTINGS_DONE": "Concluído",
+  "AI_SETTINGS_ENABLE_AI": "Ativar funcionalidades de IA",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Ativa ou desativa todas as funcionalidades de IA em {APP_NAME}. A alteração entra em vigor após reiniciar — pode voltar a ativá-las a qualquer momento a partir do <span class='ai-settings-menu-path'>menu Ver &gt; Ativar IA</span>.",
   "DEMO_SECTION1_TITLE": "Editar em Pré-visualização ao Vivo",
   "DEMO_SECTION1_SUBTITLE": "Edite a sua página visualmente -&nbsp; <b>O seu HTML é atualizado instantaneamente</b>",
   "DEMO_GET_STARTED_BUTTON": "Começar",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_SETTINGS_ENABLE_AI": "Ativar funcionalidades de IA",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Ativa ou desativa todas as funcionalidades de IA em {APP_NAME}. A alteração entra em vigor após reiniciar — pode voltar a ativá-las a qualquer momento a partir do <span class='ai-settings-menu-path'>menu Ver &gt; Ativar IA</span>."
+  "GIT_NO_BRANCH": "sem ramo",
+  "GIT_NOT_A_REPO": "não é um repositório Git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Isto irá abrir {0} ficheiros no editor. Deseja continuar?",
+  "GIT_NOT_REPO_MESSAGE": "Este projeto não é um repositório Git. Clique no botão {0} para criar um novo repositório aqui, ou em {1} para descarregar um existente.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Ainda não existem commits. As alterações submetidas aparecerão aqui.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Ainda não existe histórico de commits para este ficheiro.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Abra um ficheiro no editor para ver o seu histórico de commits.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "O ficheiro não faz parte deste repositório Git.",
+  "CMD_OPEN_CHANGED_FILES": "Abrir Todos os Ficheiros Alterados",
+  "ERROR_OPENING_CHANGED_FILES": "Falha ao abrir os ficheiros alterados"
 });

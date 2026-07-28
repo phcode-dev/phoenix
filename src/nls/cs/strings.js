@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Název poskytovatele je povinný.",
   "AI_SETTINGS_NAME_DUPLICATE": "Poskytovatel s tímto názvem již existuje.",
   "AI_SETTINGS_DONE": "Hotovo",
+  "AI_SETTINGS_ENABLE_AI": "Povolit funkce AI",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Zapíná nebo vypíná všechny funkce AI v aplikaci {APP_NAME}. Změna se projeví po restartu — můžete je kdykoli znovu povolit v nabídce <span class='ai-settings-menu-path'>Zobrazit &gt; Povolit AI</span>.",
   "DEMO_SECTION1_TITLE": "Upravit v živém náhledu",
   "DEMO_SECTION1_SUBTITLE": "Upravujte svou stránku vizuálně -&nbsp; <b>Váš kód HTML se okamžitě aktualizuje</b>",
   "DEMO_GET_STARTED_BUTTON": "Začít",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_SETTINGS_ENABLE_AI": "Povolit funkce AI",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Zapíná nebo vypíná všechny funkce AI v aplikaci {APP_NAME}. Změna se projeví po restartu — můžete je kdykoli znovu povolit v nabídce <span class='ai-settings-menu-path'>Zobrazit &gt; Povolit AI</span>."
+  "GIT_NO_BRANCH": "žádná větev",
+  "GIT_NOT_A_REPO": "není repozitář Git",
+  "OPEN_CHANGED_FILES_CONFIRM": "V editoru bude otevřeno {0} souborů. Chcete pokračovat?",
+  "GIT_NOT_REPO_MESSAGE": "Tento projekt není repozitář Git. Klikněte na tlačítko {0} pro vytvoření nového repozitáře zde, nebo {1} pro stažení existujícího.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Zatím žádné commity. Zapsané změny se zobrazí zde.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Tento soubor zatím nemá žádnou historii commitů.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Otevřete soubor v editoru pro zobrazení jeho historie commitů.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Soubor není součástí tohoto repozitáře Git.",
+  "CMD_OPEN_CHANGED_FILES": "Otevřít všechny změněné soubory",
+  "ERROR_OPENING_CHANGED_FILES": "Otevření změněných souborů se nezdařilo."
 });

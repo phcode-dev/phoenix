@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Palveluntarjoajan nimi on pakollinen.",
   "AI_SETTINGS_NAME_DUPLICATE": "Tämänniminen palveluntarjoaja on jo olemassa.",
   "AI_SETTINGS_DONE": "Valmis",
+  "AI_SETTINGS_ENABLE_AI": "Ota tekoälyominaisuudet käyttöön",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Kytkee kaikki {APP_NAME}-sovelluksen tekoälyominaisuudet päälle tai pois. Muutos astuu voimaan uudelleenkäynnistyksen jälkeen — voit ottaa ne uudelleen käyttöön milloin tahansa valikosta <span class='ai-settings-menu-path'>Näytä-valikko &gt; Ota tekoäly käyttöön</span>.",
   "DEMO_SECTION1_TITLE": "Muokkaa live-esikatselussa",
   "DEMO_SECTION1_SUBTITLE": "Muokkaa sivuasi visuaalisesti -&nbsp; <b>HTML-koodisi päivittyy välittömästi</b>",
   "DEMO_GET_STARTED_BUTTON": "Aloita",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_SETTINGS_ENABLE_AI": "Ota tekoälyominaisuudet käyttöön",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Kytkee kaikki {APP_NAME}-sovelluksen tekoälyominaisuudet päälle tai pois. Muutos astuu voimaan uudelleenkäynnistyksen jälkeen — voit ottaa ne uudelleen käyttöön milloin tahansa valikosta <span class='ai-settings-menu-path'>Näytä-valikko &gt; Ota tekoäly käyttöön</span>."
+  "GIT_NO_BRANCH": "ei haaraa",
+  "GIT_NOT_A_REPO": "ei git-repositorio",
+  "OPEN_CHANGED_FILES_CONFIRM": "Tämä avaa {0} tiedostoa editorissa. Haluatko jatkaa?",
+  "GIT_NOT_REPO_MESSAGE": "Tämä projekti ei ole Git-repositorio. Napsauta {0}-painiketta luodaksesi uuden repositorion tähän, tai {1} kloonataksesi olemassa olevan.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Ei vielä committeja. Commitoidut muutokset näkyvät täällä.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Tällä tiedostolla ei ole vielä commit-historiaa.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Avaa tiedosto editorissa nähdäksesi sen commit-historian.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Tiedosto ei ole osa tätä Git-repositoriota.",
+  "CMD_OPEN_CHANGED_FILES": "Avaa kaikki muuttuneet tiedostot",
+  "ERROR_OPENING_CHANGED_FILES": "Muuttuneiden tiedostojen avaaminen epäonnistui"
 });

@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Nama penyedia wajib diisi.",
   "AI_SETTINGS_NAME_DUPLICATE": "Penyedia dengan nama ini sudah ada.",
   "AI_SETTINGS_DONE": "Selesai",
+  "AI_SETTINGS_ENABLE_AI": "Aktifkan fitur AI",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Mengaktifkan atau menonaktifkan semua fitur AI di {APP_NAME}. Berlaku setelah dimulai ulang — Anda dapat mengaktifkannya kembali kapan saja dari <span class='ai-settings-menu-path'>menu Tampilan &gt; Aktifkan AI</span>.",
   "DEMO_SECTION1_TITLE": "Edit di Pratinjau Langsung",
   "DEMO_SECTION1_SUBTITLE": "Edit halaman Anda secara visual -&nbsp; <b>HTML Anda langsung diperbarui</b>",
   "DEMO_GET_STARTED_BUTTON": "Mulai",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_SETTINGS_ENABLE_AI": "Aktifkan fitur AI",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Mengaktifkan atau menonaktifkan semua fitur AI di {APP_NAME}. Berlaku setelah dimulai ulang — Anda dapat mengaktifkannya kembali kapan saja dari <span class='ai-settings-menu-path'>menu Tampilan &gt; Aktifkan AI</span>."
+  "GIT_NO_BRANCH": "tidak ada cabang",
+  "GIT_NOT_A_REPO": "bukan repositori git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Ini akan membuka {0} file di editor. Apakah Anda ingin melanjutkan?",
+  "GIT_NOT_REPO_MESSAGE": "Proyek ini bukan repositori Git. Klik tombol {0} untuk membuat repositori baru di sini, atau {1} untuk mengunduh yang sudah ada.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Belum ada commit. Perubahan yang di-commit akan muncul di sini.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Belum ada riwayat commit untuk file ini.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Buka sebuah file di editor untuk melihat riwayat commit-nya.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "File ini bukan bagian dari repositori Git ini.",
+  "CMD_OPEN_CHANGED_FILES": "Buka Semua File yang Berubah",
+  "ERROR_OPENING_CHANGED_FILES": "Gagal membuka file yang berubah"
 });

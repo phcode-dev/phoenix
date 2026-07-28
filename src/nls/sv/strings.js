@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Leverantörsnamn är obligatoriskt.",
   "AI_SETTINGS_NAME_DUPLICATE": "En leverantör med det här namnet finns redan.",
   "AI_SETTINGS_DONE": "Klar",
+  "AI_SETTINGS_ENABLE_AI": "Aktivera AI-funktioner",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Slår på eller av alla AI-funktioner i {APP_NAME}. Träder i kraft efter omstart – du kan aktivera dem igen när som helst från <span class='ai-settings-menu-path'>Visa-menyn &gt; Aktivera AI</span>.",
   "DEMO_SECTION1_TITLE": "Redigera i live-förhandsvisning",
   "DEMO_SECTION1_SUBTITLE": "Redigera din sida visuellt -&nbsp; <b>Din HTML uppdateras omedelbart</b>",
   "DEMO_GET_STARTED_BUTTON": "Kom igång",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_SETTINGS_ENABLE_AI": "Aktivera AI-funktioner",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Slår på eller av alla AI-funktioner i {APP_NAME}. Träder i kraft efter omstart – du kan aktivera dem igen när som helst från <span class='ai-settings-menu-path'>Visa-menyn &gt; Aktivera AI</span>."
+  "GIT_NO_BRANCH": "ingen branch",
+  "GIT_NOT_A_REPO": "inte ett git-repository",
+  "OPEN_CHANGED_FILES_CONFIRM": "Detta kommer att öppna {0} filer i redigeraren. Vill du fortsätta?",
+  "GIT_NOT_REPO_MESSAGE": "Detta projekt är inte ett git-repository. Klicka på knappen {0} för att skapa ett nytt repository här, eller {1} för att klona ett befintligt.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Inga commits än. Incheckade ändringar kommer att visas här.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Det finns ingen commithistorik för den här filen än.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Öppna en fil i redigeraren för att se dess commithistorik.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Filen är inte en del av detta git-repository.",
+  "CMD_OPEN_CHANGED_FILES": "Öppna alla ändrade filer",
+  "ERROR_OPENING_CHANGED_FILES": "Det gick inte att öppna ändrade filer"
 });

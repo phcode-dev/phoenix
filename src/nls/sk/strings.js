@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Názov poskytovateľa je povinný.",
   "AI_SETTINGS_NAME_DUPLICATE": "Poskytovateľ s týmto názvom už existuje.",
   "AI_SETTINGS_DONE": "Hotovo",
+  "AI_SETTINGS_ENABLE_AI": "Povoliť funkcie AI",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Zapína alebo vypína všetky funkcie AI v aplikácii {APP_NAME}. Zmena sa prejaví po reštarte — môžete to kedykoľvek znova povoliť z <span class='ai-settings-menu-path'>menu Zobraziť &gt; Povoliť AI</span>.",
   "DEMO_SECTION1_TITLE": "Úprava v živom náhľade",
   "DEMO_SECTION1_SUBTITLE": "Vizuálne upravujte svoju stránku -&nbsp; <b>Váš HTML kód sa okamžite aktualizuje</b>",
   "DEMO_GET_STARTED_BUTTON": "Začať",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "AI_SETTINGS_ENABLE_AI": "Povoliť funkcie AI",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Zapína alebo vypína všetky funkcie AI v aplikácii {APP_NAME}. Zmena sa prejaví po reštarte — môžete to kedykoľvek znova povoliť z <span class='ai-settings-menu-path'>menu Zobraziť &gt; Povoliť AI</span>."
+  "GIT_NO_BRANCH": "žiadna vetva",
+  "GIT_NOT_A_REPO": "nie je Git repozitár",
+  "OPEN_CHANGED_FILES_CONFIRM": "V editore sa otvorí {0} súborov. Chcete pokračovať?",
+  "GIT_NOT_REPO_MESSAGE": "Tento projekt nie je Git repozitár. Kliknite na tlačidlo {0} pre vytvorenie nového repozitára, alebo na {1} pre stiahnutie existujúceho.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Zatiaľ žiadne commity. Potvrdené zmeny sa zobrazia tu.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Tento súbor zatiaľ nemá históriu commitov.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Otvorte súbor v editore, aby ste videli jeho históriu commitov.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Súbor nie je súčasťou tohto Git repozitára.",
+  "CMD_OPEN_CHANGED_FILES": "Otvoriť všetky zmenené súbory",
+  "ERROR_OPENING_CHANGED_FILES": "Nepodarilo sa otvoriť zmenené súbory."
 });

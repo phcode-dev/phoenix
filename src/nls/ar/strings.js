@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "اسم المزوّد مطلوب.",
   "AI_SETTINGS_NAME_DUPLICATE": "يوجد مزوّد بهذا الاسم بالفعل.",
   "AI_SETTINGS_DONE": "تم",
+  "AI_SETTINGS_ENABLE_AI": "تفعيل ميزات الذكاء الاصطناعي",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "يقوم بتشغيل أو إيقاف تشغيل جميع ميزات الذكاء الاصطناعي في {APP_NAME}. يسري مفعول هذا الإعداد بعد إعادة التشغيل — يمكنك تفعيله مرة أخرى في أي وقت من <span class='ai-settings-menu-path'>قائمة عرض &gt; تفعيل الذكاء الاصطناعي</span>.",
   "DEMO_SECTION1_TITLE": "تعديل في المعاينة المباشرة",
   "DEMO_SECTION1_SUBTITLE": "عدّل صفحتك بصريًا -&nbsp; <b>يتم تحديث HTML الخاص بك فورًا</b>",
   "DEMO_GET_STARTED_BUTTON": "ابدأ",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_SETTINGS_ENABLE_AI": "تفعيل ميزات الذكاء الاصطناعي",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "يقوم بتشغيل أو إيقاف تشغيل جميع ميزات الذكاء الاصطناعي في {APP_NAME}. يسري مفعول هذا الإعداد بعد إعادة التشغيل — يمكنك تفعيله مرة أخرى في أي وقت من <span class='ai-settings-menu-path'>قائمة عرض &gt; تفعيل الذكاء الاصطناعي</span>."
+  "GIT_NO_BRANCH": "لا يوجد فرع",
+  "GIT_NOT_A_REPO": "ليس مستودع git",
+  "OPEN_CHANGED_FILES_CONFIRM": "سيؤدي هذا إلى فتح {0} من الملفات في المحرر. هل تريد المتابعة؟",
+  "GIT_NOT_REPO_MESSAGE": "هذا المشروع ليس مستودع Git. انقر فوق الزر {0} لإنشاء مستودع جديد هنا، أو {1} لاستنساخ مستودع موجود.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "لا توجد إيداعات بعد. ستظهر التغييرات المودعة هنا.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "لا يوجد سجل إيداعات لهذا الملف بعد.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "افتح ملفًا في المحرر لرؤية سجل إيداعاته.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "الملف ليس جزءًا من مستودع Git هذا.",
+  "CMD_OPEN_CHANGED_FILES": "فتح كل الملفات المعدلة",
+  "ERROR_OPENING_CHANGED_FILES": "فشل فتح الملفات المعدلة"
 });
