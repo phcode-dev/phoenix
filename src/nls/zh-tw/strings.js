@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "供應商名稱為必填。",
   "AI_SETTINGS_NAME_DUPLICATE": "此供應商名稱已存在。",
   "AI_SETTINGS_DONE": "完成",
+  "AI_SETTINGS_ENABLE_AI": "啟用 AI 功能",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "開啟或關閉 {APP_NAME} 中的所有 AI 功能。此設定將於重新啟動後生效 — 您可以隨時從 <span class='ai-settings-menu-path'>「檢視」選單 &gt; 「啟用 AI」</span> 再次啟用。",
   "DEMO_SECTION1_TITLE": "即時預覽編輯",
   "DEMO_SECTION1_SUBTITLE": "視覺化編輯頁面 -&nbsp; <b>HTML 即時更新</b>",
   "DEMO_GET_STARTED_BUTTON": "開始使用",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_SETTINGS_ENABLE_AI": "啟用 AI 功能",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "開啟或關閉 {APP_NAME} 中的所有 AI 功能。此設定將於重新啟動後生效 — 您可以隨時從 <span class='ai-settings-menu-path'>「檢視」選單 &gt; 「啟用 AI」</span> 再次啟用。"
+  "GIT_NO_BRANCH": "沒有分支",
+  "GIT_NOT_A_REPO": "不是 Git 倉儲",
+  "OPEN_CHANGED_FILES_CONFIRM": "這將在編輯器中開啟 {0} 個檔案。您要繼續嗎？",
+  "GIT_NOT_REPO_MESSAGE": "此專案不是 Git 倉儲。點擊 {0} 按鈕在此建立新倉儲，或 {1} 以下載現有的倉儲。",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "尚無提交。已提交的變更將會顯示在此處。",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "此檔案尚無提交歷史記錄。",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "在編輯器中開啟一個檔案，以查看其提交歷史記錄。",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "此檔案不屬於此 Git 倉儲。",
+  "CMD_OPEN_CHANGED_FILES": "開啟所有已變更的檔案",
+  "ERROR_OPENING_CHANGED_FILES": "開啟已變更的檔案失敗"
 });

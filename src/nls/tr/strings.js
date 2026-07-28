@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Sağlayıcı adı gereklidir.",
   "AI_SETTINGS_NAME_DUPLICATE": "Bu ada sahip bir sağlayıcı zaten mevcut.",
   "AI_SETTINGS_DONE": "Tamam",
+  "AI_SETTINGS_ENABLE_AI": "Yapay Zeka özelliklerini etkinleştir",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME} içindeki tüm Yapay Zeka özelliklerini açar veya kapatır. Yeniden başlattıktan sonra etkili olur — istediğiniz zaman <span class='ai-settings-menu-path'>Görünüm menüsü &gt; Yapay Zekayı Etkinleştir</span> yolundan tekrar etkinleştirebilirsiniz.",
   "DEMO_SECTION1_TITLE": "Canlı Önizlemede Düzenle",
   "DEMO_SECTION1_SUBTITLE": "Sayfanızı görsel olarak düzenleyin -&nbsp; <b>HTML'niz anında güncellenir</b>",
   "DEMO_GET_STARTED_BUTTON": "Başlayın",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_SETTINGS_ENABLE_AI": "Yapay Zeka özelliklerini etkinleştir",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME} içindeki tüm Yapay Zeka özelliklerini açar veya kapatır. Yeniden başlattıktan sonra etkili olur — istediğiniz zaman <span class='ai-settings-menu-path'>Görünüm menüsü &gt; Yapay Zekayı Etkinleştir</span> yolundan tekrar etkinleştirebilirsiniz."
+  "GIT_NO_BRANCH": "dal yok",
+  "GIT_NOT_A_REPO": "git deposu değil",
+  "OPEN_CHANGED_FILES_CONFIRM": "Düzenleyicide {0} dosya açılacak. Devam etmek istiyor musunuz?",
+  "GIT_NOT_REPO_MESSAGE": "Bu proje bir Git deposu değil. Burada yeni bir depo oluşturmak için {0} düğmesine tıklayın veya mevcut bir tanesini klonlamak için {1}.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Henüz commit yok. Yapılan commit'ler burada görünecek.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Bu dosya için henüz bir commit geçmişi yok.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Commit geçmişini görmek için düzenleyicide bir dosya açın.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Dosya bu Git deposuna ait değil.",
+  "CMD_OPEN_CHANGED_FILES": "Değiştirilen Tüm Dosyaları Aç",
+  "ERROR_OPENING_CHANGED_FILES": "Değiştirilen dosyalar açılamadı."
 });

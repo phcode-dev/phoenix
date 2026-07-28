@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "نام ارائه‌دهنده الزامی است.",
   "AI_SETTINGS_NAME_DUPLICATE": "ارائه‌دهنده‌ای با این نام از قبل وجود دارد.",
   "AI_SETTINGS_DONE": "انجام",
+  "AI_SETTINGS_ENABLE_AI": "فعال‌سازی ویژگی‌های هوش مصنوعی",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "تمام ویژگی‌های هوش مصنوعی در {APP_NAME} را فعال یا غیرفعال می‌کند. این تغییر پس از راه‌اندازی مجدد اعمال می‌شود — می‌توانید هر زمان آن را دوباره از <span class='ai-settings-menu-path'>منوی نما &gt; فعال‌سازی هوش مصنوعی</span> فعال کنید.",
   "DEMO_SECTION1_TITLE": "ویرایش در پیش‌نمایش زنده",
   "DEMO_SECTION1_SUBTITLE": "صفحه خود را به صورت بصری ویرایش کنید -&nbsp; <b>کد HTML شما فوراً به‌روز می‌شود</b>",
   "DEMO_GET_STARTED_BUTTON": "شروع کنید",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_SETTINGS_ENABLE_AI": "فعال‌سازی ویژگی‌های هوش مصنوعی",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "تمام ویژگی‌های هوش مصنوعی در {APP_NAME} را فعال یا غیرفعال می‌کند. این تغییر پس از راه‌اندازی مجدد اعمال می‌شود — می‌توانید هر زمان آن را دوباره از <span class='ai-settings-menu-path'>منوی نما &gt; فعال‌سازی هوش مصنوعی</span> فعال کنید."
+  "GIT_NO_BRANCH": "بدون شاخه",
+  "GIT_NOT_A_REPO": "مخزن گیت نیست",
+  "OPEN_CHANGED_FILES_CONFIRM": "{0} فایل در ویرایشگر باز خواهد شد. آیا می‌خواهید ادامه دهید؟",
+  "GIT_NOT_REPO_MESSAGE": "این پروژه یک مخزن گیت نیست. برای ایجاد یک مخزن جدید در اینجا روی دکمه {0} کلیک کنید، یا برای کلون کردن یک مخزن موجود از {1} استفاده کنید.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "هنوز کامیتی ثبت نشده است. تغییرات کامیت‌شده در اینجا نمایش داده خواهند شد.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "هنوز تاریخچهٔ کامیتی برای این فایل وجود ندارد.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "برای مشاهدهٔ تاریخچهٔ کامیت‌های یک فایل، آن را در ویرایشگر باز کنید.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "این فایل بخشی از این مخزن گیت نیست.",
+  "CMD_OPEN_CHANGED_FILES": "باز کردن همهٔ فایل‌های تغییریافته",
+  "ERROR_OPENING_CHANGED_FILES": "باز کردن فایل‌های تغییریافته با خطا مواجه شد."
 });

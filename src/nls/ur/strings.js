@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "فراہم کنندہ کا نام لازمی ہے۔",
   "AI_SETTINGS_NAME_DUPLICATE": "اس نام کا فراہم کنندہ پہلے سے موجود ہے۔",
   "AI_SETTINGS_DONE": "ہو گیا",
+  "AI_SETTINGS_ENABLE_AI": "AI فیچرز فعال کریں",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME} میں تمام AI فیچرز کو آن یا آف کرتا ہے۔ اثر دوبارہ شروع کرنے کے بعد ہوگا — آپ اسے کسی بھی وقت <span class='ai-settings-menu-path'>ویو مینو &gt; AI فعال کریں</span> سے دوبارہ فعال کر سکتے ہیں۔",
   "DEMO_SECTION1_TITLE": "لائیو پیش منظر میں ترمیم کریں",
   "DEMO_SECTION1_SUBTITLE": "بصری طور پر اپنے صفحے میں ترمیم کریں -&nbsp; <b>آپ کا HTML فوری طور پر اپ ڈیٹ ہو جاتا ہے</b>",
   "DEMO_GET_STARTED_BUTTON": "شروع کریں",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_SETTINGS_ENABLE_AI": "AI فیچرز فعال کریں",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME} میں تمام AI فیچرز کو آن یا آف کرتا ہے۔ اثر دوبارہ شروع کرنے کے بعد ہوگا — آپ اسے کسی بھی وقت <span class='ai-settings-menu-path'>ویو مینو &gt; AI فعال کریں</span> سے دوبارہ فعال کر سکتے ہیں۔"
+  "GIT_NO_BRANCH": "کوئی برانچ نہیں",
+  "GIT_NOT_A_REPO": "گٹ ریپو نہیں",
+  "OPEN_CHANGED_FILES_CONFIRM": "یہ ایڈیٹر میں {0} فائلیں کھولے گا۔ کیا آپ جاری رکھنا چاہتے ہیں؟",
+  "GIT_NOT_REPO_MESSAGE": "یہ پروجیکٹ گٹ ریپوزٹری نہیں ہے۔ یہاں ایک نئی ریپوزٹری بنانے کے لیے {0} بٹن پر کلک کریں، یا کسی موجودہ کو ڈاؤن لوڈ کرنے کے لیے {1}۔",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "ابھی تک کوئی کمٹ نہیں ہے۔ کمٹ شدہ تبدیلیاں یہاں نظر آئیں گی۔",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "اس فائل کے لیے ابھی تک کوئی کمٹ ہسٹری نہیں ہے۔",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "کسی فائل کی کمٹ ہسٹری دیکھنے کے لیے اسے ایڈیٹر میں کھولیں۔",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "یہ فائل اس گٹ ریپوزٹری کا حصہ نہیں ہے۔",
+  "CMD_OPEN_CHANGED_FILES": "تمام تبدیل شدہ فائلیں کھولیں",
+  "ERROR_OPENING_CHANGED_FILES": "تبدیل شدہ فائلیں کھولنے میں ناکامی ہوئی"
 });

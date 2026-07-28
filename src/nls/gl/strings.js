@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "O nome do provedor é obrigatorio.",
   "AI_SETTINGS_NAME_DUPLICATE": "Xa existe un provedor con este nome.",
   "AI_SETTINGS_DONE": "Aceptar",
+  "AI_SETTINGS_ENABLE_AI": "Activar as funcións de IA",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Activa ou desactiva todas as funcións de IA en {APP_NAME}. Ten efecto despois de reiniciar — podes activalas de novo en calquera momento desde <span class='ai-settings-menu-path'>Menú Ver &gt; Activar IA</span>.",
   "DEMO_SECTION1_TITLE": "Editar na vista previa en directo",
   "DEMO_SECTION1_SUBTITLE": "Edite a súa páxina visualmente -&nbsp; <b>O seu HTML actualízase ao instante</b>",
   "DEMO_GET_STARTED_BUTTON": "Comezar",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_SETTINGS_ENABLE_AI": "Activar as funcións de IA",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Activa ou desactiva todas as funcións de IA en {APP_NAME}. Ten efecto despois de reiniciar — podes activalas de novo en calquera momento desde <span class='ai-settings-menu-path'>Menú Ver &gt; Activar IA</span>."
+  "GIT_NO_BRANCH": "sen póla",
+  "GIT_NOT_A_REPO": "non é un repositorio de Git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Isto abrirá {0} ficheiros no editor. Desexa continuar?",
+  "GIT_NOT_REPO_MESSAGE": "Este proxecto non é un repositorio de Git. Prema o botón {0} para crear un novo repositorio aquí, ou {1} para descargar un existente.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Aínda non hai commits. Os cambios confirmados amosaranse aquí.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Aínda non hai historial de commits para este ficheiro.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Abra un ficheiro no editor para ver o seu historial de commits.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "O ficheiro non forma parte deste repositorio de Git.",
+  "CMD_OPEN_CHANGED_FILES": "Abrir todos os ficheiros modificados",
+  "ERROR_OPENING_CHANGED_FILES": "Produciuse un erro ao abrir os ficheiros modificados"
 });

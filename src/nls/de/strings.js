@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Der Name des Anbieters ist erforderlich.",
   "AI_SETTINGS_NAME_DUPLICATE": "Ein Anbieter mit diesem Namen existiert bereits.",
   "AI_SETTINGS_DONE": "Fertig",
+  "AI_SETTINGS_ENABLE_AI": "KI-Funktionen aktivieren",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Schaltet alle KI-Funktionen in {APP_NAME} ein oder aus. Wird nach einem Neustart wirksam — Sie können sie jederzeit über <span class='ai-settings-menu-path'>Menü Ansicht &gt; KI aktivieren</span> erneut aktivieren.",
   "DEMO_SECTION1_TITLE": "In Live-Vorschau bearbeiten",
   "DEMO_SECTION1_SUBTITLE": "Bearbeite deine Seite visuell -&nbsp; <b>Dein HTML aktualisiert sich sofort</b>",
   "DEMO_GET_STARTED_BUTTON": "Los geht's",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_SETTINGS_ENABLE_AI": "KI-Funktionen aktivieren",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Schaltet alle KI-Funktionen in {APP_NAME} ein oder aus. Wird nach einem Neustart wirksam — Sie können sie jederzeit über <span class='ai-settings-menu-path'>Menü Ansicht &gt; KI aktivieren</span> erneut aktivieren."
+  "GIT_NO_BRANCH": "kein Branch",
+  "GIT_NOT_A_REPO": "kein Git-Repository",
+  "OPEN_CHANGED_FILES_CONFIRM": "Es werden {0} Dateien im Editor geöffnet. Möchten Sie fortfahren?",
+  "GIT_NOT_REPO_MESSAGE": "Dieses Projekt ist kein Git-Repository. Klicken Sie auf die Schaltfläche {0}, um hier ein neues Repository zu erstellen, oder auf {1}, um ein bestehendes herunterzuladen.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Noch keine Commits. Committete Änderungen werden hier angezeigt.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Für diese Datei gibt es noch keinen Commit-Verlauf.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Öffnen Sie eine Datei im Editor, um deren Commit-Verlauf anzuzeigen.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Die Datei ist nicht Teil dieses Git-Repositorys.",
+  "CMD_OPEN_CHANGED_FILES": "Alle geänderten Dateien öffnen",
+  "ERROR_OPENING_CHANGED_FILES": "Öffnen der geänderten Dateien fehlgeschlagen"
 });

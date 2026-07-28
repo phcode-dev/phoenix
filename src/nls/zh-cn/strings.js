@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "提供商名称不能为空。",
   "AI_SETTINGS_NAME_DUPLICATE": "此名称的提供商已存在。",
   "AI_SETTINGS_DONE": "完成",
+  "AI_SETTINGS_ENABLE_AI": "启用 AI 功能",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "开启或关闭 {APP_NAME} 中的所有 AI 功能。重启后生效 — 您可以随时从 <span class='ai-settings-menu-path'>视图菜单 &gt; 启用 AI</span> 再次启用。",
   "DEMO_SECTION1_TITLE": "在实时预览中编辑",
   "DEMO_SECTION1_SUBTITLE": "可视化编辑页面 -&nbsp; <b>HTML 代码即时更新</b>",
   "DEMO_GET_STARTED_BUTTON": "开始使用",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_SETTINGS_ENABLE_AI": "启用 AI 功能",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "开启或关闭 {APP_NAME} 中的所有 AI 功能。重启后生效 — 您可以随时从 <span class='ai-settings-menu-path'>视图菜单 &gt; 启用 AI</span> 再次启用。"
+  "GIT_NO_BRANCH": "无分支",
+  "GIT_NOT_A_REPO": "不是 Git 仓库",
+  "OPEN_CHANGED_FILES_CONFIRM": "此操作将在编辑器中打开 {0} 个文件。是否要继续？",
+  "GIT_NOT_REPO_MESSAGE": "此项目不是 Git 仓库。点击 {0} 按钮可在此处创建一个新仓库，或 {1} 克隆一个现有仓库。",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "尚无提交。已提交的更改将显示在此处。",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "此文件尚无提交历史。",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "在编辑器中打开一个文件以查看其提交历史。",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "该文件不属于此 Git 仓库。",
+  "CMD_OPEN_CHANGED_FILES": "打开所有已更改的文件",
+  "ERROR_OPENING_CHANGED_FILES": "打开已更改的文件失败"
 });

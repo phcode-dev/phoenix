@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Sniedzēja nosaukums ir obligāts.",
   "AI_SETTINGS_NAME_DUPLICATE": "Sniedzējs ar šādu nosaukumu jau pastāv.",
   "AI_SETTINGS_DONE": "Darīts",
+  "AI_SETTINGS_ENABLE_AI": "Iespējot MI funkcijas",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Ieslēdz vai izslēdz visas MI funkcijas lietotnē {APP_NAME}. Stājas spēkā pēc pārstartēšanas — to var jebkurā laikā atkal iespējot no <span class='ai-settings-menu-path'>Skata izvēlnes &gt; Iespējot MI</span>.",
   "DEMO_SECTION1_TITLE": "Rediģēt tiešraides priekšskatījumā",
   "DEMO_SECTION1_SUBTITLE": "Rediģējiet savu lapu vizuāli -&nbsp; <b>Jūsu HTML tiek atjaunināts nekavējoties</b>",
   "DEMO_GET_STARTED_BUTTON": "Sākt darbu",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_SETTINGS_ENABLE_AI": "Iespējot MI funkcijas",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Ieslēdz vai izslēdz visas MI funkcijas lietotnē {APP_NAME}. Stājas spēkā pēc pārstartēšanas — to var jebkurā laikā atkal iespējot no <span class='ai-settings-menu-path'>Skata izvēlnes &gt; Iespējot MI</span>."
+  "GIT_NO_BRANCH": "nav zara",
+  "GIT_NOT_A_REPO": "nav Git repozitorijs",
+  "OPEN_CHANGED_FILES_CONFIRM": "Redaktorā tiks atvērti {0} faili. Vai vēlaties turpināt?",
+  "GIT_NOT_REPO_MESSAGE": "Šis projekts nav Git repozitorijs. Noklikšķiniet uz pogas {0}, lai šeit izveidotu jaunu repozitoriju, vai {1}, lai lejupielādētu esošu.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Vēl nav komitu. Iesniegtās izmaiņas tiks rādītas šeit.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Šim failam vēl nav komitu vēstures.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Atveriet failu redaktorā, lai redzētu tā komitu vēsturi.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Fails nav daļa no šī Git repozitorija.",
+  "CMD_OPEN_CHANGED_FILES": "Atvērt visus mainītos failus",
+  "ERROR_OPENING_CHANGED_FILES": "Neizdevās atvērt mainītos failus"
 });

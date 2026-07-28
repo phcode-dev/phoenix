@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Необходимо указать название провайдера.",
   "AI_SETTINGS_NAME_DUPLICATE": "Провайдер с таким названием уже существует.",
   "AI_SETTINGS_DONE": "Готово",
+  "AI_SETTINGS_ENABLE_AI": "Включить функции ИИ",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Включает или отключает все функции ИИ в {APP_NAME}. Изменения вступят в силу после перезапуска — вы сможете в любое время снова включить их из <span class='ai-settings-menu-path'>меню «Вид» &gt; Включить ИИ</span>.",
   "DEMO_SECTION1_TITLE": "Редактирование в реальном времени",
   "DEMO_SECTION1_SUBTITLE": "Редактируйте свою страницу визуально -&nbsp; <b>Ваш HTML обновляется мгновенно</b>",
   "DEMO_GET_STARTED_BUTTON": "Начать",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_SETTINGS_ENABLE_AI": "Включить функции ИИ",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Включает или отключает все функции ИИ в {APP_NAME}. Изменения вступят в силу после перезапуска — вы сможете в любое время снова включить их из <span class='ai-settings-menu-path'>меню «Вид» &gt; Включить ИИ</span>."
+  "GIT_NO_BRANCH": "нет ветки",
+  "GIT_NOT_A_REPO": "не git-репозиторий",
+  "OPEN_CHANGED_FILES_CONFIRM": "Будет открыто {0} файлов в редакторе. Продолжить?",
+  "GIT_NOT_REPO_MESSAGE": "Этот проект не является репозиторием Git. Нажмите кнопку {0}, чтобы создать здесь новый репозиторий, или {1}, чтобы клонировать существующий.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Коммитов ещё нет. Зафиксированные изменения появятся здесь.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Для этого файла ещё нет истории коммитов.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Откройте файл в редакторе, чтобы увидеть его историю коммитов.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Файл не является частью этого репозитория Git.",
+  "CMD_OPEN_CHANGED_FILES": "Открыть все изменённые файлы",
+  "ERROR_OPENING_CHANGED_FILES": "Не удалось открыть изменённые файлы"
 });

@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Numele furnizorului este obligatoriu.",
   "AI_SETTINGS_NAME_DUPLICATE": "Un furnizor cu acest nume există deja.",
   "AI_SETTINGS_DONE": "Terminat",
+  "AI_SETTINGS_ENABLE_AI": "Activare funcționalități AI",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Activează sau dezactivează toate funcționalitățile AI din {APP_NAME}. Are efect după repornire — le puteți activa din nou oricând din <span class='ai-settings-menu-path'>meniul Vizualizare &gt; Activare AI</span>.",
   "DEMO_SECTION1_TITLE": "Editează în Previzualizare Live",
   "DEMO_SECTION1_SUBTITLE": "Editează-ți pagina vizual -&nbsp; <b>HTML-ul tău se actualizează instantaneu</b>",
   "DEMO_GET_STARTED_BUTTON": "Începe",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_SETTINGS_ENABLE_AI": "Activare funcționalități AI",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Activează sau dezactivează toate funcționalitățile AI din {APP_NAME}. Are efect după repornire — le puteți activa din nou oricând din <span class='ai-settings-menu-path'>meniul Vizualizare &gt; Activare AI</span>."
+  "GIT_NO_BRANCH": "fără ramură",
+  "GIT_NOT_A_REPO": "nu este un depozit Git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Aceasta va deschide {0} fișiere în editor. Doriți să continuați?",
+  "GIT_NOT_REPO_MESSAGE": "Acest proiect nu este un depozit Git. Faceți clic pe butonul {0} pentru a crea un depozit nou aici, sau pe {1} pentru a descărca unul existent.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Niciun commit încă. Modificările commit-uite vor apărea aici.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Nu există încă istoric de commit-uri pentru acest fișier.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Deschideți un fișier în editor pentru a vedea istoricul său de commit-uri.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Fișierul nu face parte din acest depozit Git.",
+  "CMD_OPEN_CHANGED_FILES": "Deschide toate fișierele modificate",
+  "ERROR_OPENING_CHANGED_FILES": "Deschiderea fișierelor modificate a eșuat"
 });

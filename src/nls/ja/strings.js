@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "プロバイダー名は必須です。",
   "AI_SETTINGS_NAME_DUPLICATE": "この名前のプロバイダーはすでに存在します。",
   "AI_SETTINGS_DONE": "完了",
+  "AI_SETTINGS_ENABLE_AI": "ＡＩ機能を有効にする",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME}のすべてのＡＩ機能をオンまたはオフにします。この設定は再起動後に適用されます — いつでも<span class='ai-settings-menu-path'>表示メニュー &gt; ＡＩを有効にする</span>から再度有効にできます。",
   "DEMO_SECTION1_TITLE": "ライブプレビューで編集",
   "DEMO_SECTION1_SUBTITLE": "ページをビジュアルに編集&nbsp;—&nbsp;<b>HTMLが瞬時に更新されます</b>",
   "DEMO_GET_STARTED_BUTTON": "開始する",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_SETTINGS_ENABLE_AI": "ＡＩ機能を有効にする",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME}のすべてのＡＩ機能をオンまたはオフにします。この設定は再起動後に適用されます — いつでも<span class='ai-settings-menu-path'>表示メニュー &gt; ＡＩを有効にする</span>から再度有効にできます。"
+  "GIT_NO_BRANCH": "ブランチなし",
+  "GIT_NOT_A_REPO": "Gitリポジトリではありません",
+  "OPEN_CHANGED_FILES_CONFIRM": "エディターで{0}個のファイルを開きます。続行しますか？",
+  "GIT_NOT_REPO_MESSAGE": "このプロジェクトはGitリポジトリではありません。{0}ボタンをクリックしてここに新しいリポジトリを作成するか、{1}で既存のものをクローンしてください。",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "まだコミットがありません。コミットされた変更はここに表示されます。",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "このファイルにはまだコミット履歴がありません。",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "コミット履歴を表示するには、エディターでファイルを開いてください。",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "このファイルはこのGitリポジトリの一部ではありません。",
+  "CMD_OPEN_CHANGED_FILES": "変更されたすべてのファイルを開く",
+  "ERROR_OPENING_CHANGED_FILES": "変更されたファイルのオープンに失敗しました"
 });

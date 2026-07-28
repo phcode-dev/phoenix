@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "공급자 이름은 필수입니다.",
   "AI_SETTINGS_NAME_DUPLICATE": "같은 이름의 공급자가 이미 존재합니다.",
   "AI_SETTINGS_DONE": "완료",
+  "AI_SETTINGS_ENABLE_AI": "AI 기능 활성화",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME}의 모든 AI 기능을 켜거나 끕니다. 재시작 후 적용됩니다 — 언제든지 <span class='ai-settings-menu-path'>보기 메뉴 &gt; AI 활성화</span>에서 다시 활성화할 수 있습니다.",
   "DEMO_SECTION1_TITLE": "라이브 프리뷰로 편집",
   "DEMO_SECTION1_SUBTITLE": "페이지를 시각적으로 편집하세요 -&nbsp; <b>HTML이 즉시 업데이트됩니다</b>",
   "DEMO_GET_STARTED_BUTTON": "시작하기",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_SETTINGS_ENABLE_AI": "AI 기능 활성화",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME}의 모든 AI 기능을 켜거나 끕니다. 재시작 후 적용됩니다 — 언제든지 <span class='ai-settings-menu-path'>보기 메뉴 &gt; AI 활성화</span>에서 다시 활성화할 수 있습니다."
+  "GIT_NO_BRANCH": "브랜치 없음",
+  "GIT_NOT_A_REPO": "깃 저장소가 아님",
+  "OPEN_CHANGED_FILES_CONFIRM": "{0}개의 파일을 편집기에서 엽니다. 계속하시겠습니까?",
+  "GIT_NOT_REPO_MESSAGE": "이 프로젝트는 깃 저장소가 아닙니다. {0} 버튼을 클릭하여 여기에 새 저장소를 만들거나 {1}하여 기존 저장소를 다운로드하세요.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "아직 커밋이 없습니다. 커밋된 변경 사항이 여기에 표시됩니다.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "이 파일에 대한 커밋 기록이 아직 없습니다.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "파일을 편집기에서 열어 커밋 기록을 확인하세요.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "이 파일은 이 깃 저장소에 포함되어 있지 않습니다.",
+  "CMD_OPEN_CHANGED_FILES": "변경된 모든 파일 열기",
+  "ERROR_OPENING_CHANGED_FILES": "변경된 파일을 여는 데 실패했습니다."
 });

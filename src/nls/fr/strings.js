@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Le nom du fournisseur est requis.",
   "AI_SETTINGS_NAME_DUPLICATE": "Un fournisseur portant ce nom existe déjà.",
   "AI_SETTINGS_DONE": "Terminé",
+  "AI_SETTINGS_ENABLE_AI": "Activer les fonctionnalités d'IA",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Active ou désactive toutes les fonctionnalités d'IA dans {APP_NAME}. Prend effet après redémarrage — vous pouvez les réactiver à tout moment depuis le <span class='ai-settings-menu-path'>menu Affichage &gt; Activer l'IA</span>.",
   "DEMO_SECTION1_TITLE": "Édition en aperçu en direct",
   "DEMO_SECTION1_SUBTITLE": "Modifiez votre page visuellement -&nbsp; <b>Votre HTML se met à jour instantanément</b>",
   "DEMO_GET_STARTED_BUTTON": "Commencer",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "AI_SETTINGS_ENABLE_AI": "Activer les fonctionnalités d'IA",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Active ou désactive toutes les fonctionnalités d'IA dans {APP_NAME}. Prend effet après redémarrage — vous pouvez les réactiver à tout moment depuis le <span class='ai-settings-menu-path'>menu Affichage &gt; Activer l'IA</span>."
+  "GIT_NO_BRANCH": "aucune branche",
+  "GIT_NOT_A_REPO": "pas un dépôt git",
+  "OPEN_CHANGED_FILES_CONFIRM": "Ceci ouvrira {0} fichiers dans l'éditeur. Voulez-vous continuer ?",
+  "GIT_NOT_REPO_MESSAGE": "Ce projet n'est pas un dépôt Git. Cliquez sur le bouton {0} pour créer un nouveau dépôt ici, ou sur {1} pour en cloner un existant.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Aucun commit pour l'instant. Les modifications commitées s'afficheront ici.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Il n'y a pas encore d'historique de commits pour ce fichier.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Ouvrez un fichier dans l'éditeur pour voir son historique de commits.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Le fichier ne fait pas partie de ce dépôt Git.",
+  "CMD_OPEN_CHANGED_FILES": "Ouvrir tous les fichiers modifiés",
+  "ERROR_OPENING_CHANGED_FILES": "L'ouverture des fichiers modifiés a échoué"
 });

@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Необхідно вказати назву провайдера.",
   "AI_SETTINGS_NAME_DUPLICATE": "Провайдер з такою назвою вже існує.",
   "AI_SETTINGS_DONE": "Готово",
+  "AI_SETTINGS_ENABLE_AI": "Увімкнути функції ШІ",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Вмикає або вимикає всі функції ШІ в {APP_NAME}. Зміни застосовуються після перезапуску — ви зможете знову ввімкнути їх будь-коли в <span class='ai-settings-menu-path'>меню «Вигляд» &gt; Увімкнути ШІ</span>.",
   "DEMO_SECTION1_TITLE": "Редагувати в режимі живого перегляду",
   "DEMO_SECTION1_SUBTITLE": "Редагуйте свою сторінку візуально -&nbsp; <b>Ваш HTML оновлюється миттєво</b>",
   "DEMO_GET_STARTED_BUTTON": "Почати",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_SETTINGS_ENABLE_AI": "Увімкнути функції ШІ",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Вмикає або вимикає всі функції ШІ в {APP_NAME}. Зміни застосовуються після перезапуску — ви зможете знову ввімкнути їх будь-коли в <span class='ai-settings-menu-path'>меню «Вигляд» &gt; Увімкнути ШІ</span>."
+  "GIT_NO_BRANCH": "немає гілки",
+  "GIT_NOT_A_REPO": "не git-репозиторій",
+  "OPEN_CHANGED_FILES_CONFIRM": "Це відкриє {0} файлів у редакторі. Продовжити?",
+  "GIT_NOT_REPO_MESSAGE": "Цей проєкт не є Git-репозиторієм. Натисніть кнопку {0}, щоб створити тут новий репозиторій, або {1}, щоб клонувати наявний.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Ще немає комітів. Збережені зміни з'являться тут.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Для цього файлу ще немає історії комітів.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Відкрийте файл у редакторі, щоб переглянути його історію комітів.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Цей файл не є частиною цього Git-репозиторію.",
+  "CMD_OPEN_CHANGED_FILES": "Відкрити всі змінені файли",
+  "ERROR_OPENING_CHANGED_FILES": "Не вдалося відкрити змінені файли"
 });

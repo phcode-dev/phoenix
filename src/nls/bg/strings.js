@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Името на доставчика е задължително.",
   "AI_SETTINGS_NAME_DUPLICATE": "Доставчик с това име вече съществува.",
   "AI_SETTINGS_DONE": "Готово",
+  "AI_SETTINGS_ENABLE_AI": "Активиране на AI функции",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Включва или изключва всички AI функции в {APP_NAME}. Влиза в сила след рестартиране — можете да ги активирате отново по всяко време от <span class='ai-settings-menu-path'>меню „Изглед“ &gt; Активиране на AI</span>.",
   "DEMO_SECTION1_TITLE": "Редактиране с преглед на живо",
   "DEMO_SECTION1_SUBTITLE": "Редактирайте страницата си визуално -&nbsp; <b>Вашият HTML се обновява незабавно</b>",
   "DEMO_GET_STARTED_BUTTON": "Започнете",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "AI_SETTINGS_ENABLE_AI": "Активиране на AI функции",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Включва или изключва всички AI функции в {APP_NAME}. Влиза в сила след рестартиране — можете да ги активирате отново по всяко време от <span class='ai-settings-menu-path'>меню „Изглед“ &gt; Активиране на AI</span>."
+  "GIT_NO_BRANCH": "няма клон",
+  "GIT_NOT_A_REPO": "не е git хранилище",
+  "OPEN_CHANGED_FILES_CONFIRM": "Това ще отвори {0} файла в редактора. Искате ли да продължите?",
+  "GIT_NOT_REPO_MESSAGE": "Този проект не е Git хранилище. Натиснете бутона {0}, за да създадете ново хранилище тук, или {1}, за да клонирате съществуващо.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Все още няма къмити. Къмитнатите промени ще се показват тук.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Все още няма история на къмитите за този файл.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Отворете файл в редактора, за да видите неговата история на къмитите.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Файлът не е част от това Git хранилище.",
+  "CMD_OPEN_CHANGED_FILES": "Отвори всички променени файлове",
+  "ERROR_OPENING_CHANGED_FILES": "Отварянето на променените файлове е неуспешно."
 });

@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "A szolgáltató neve kötelező.",
   "AI_SETTINGS_NAME_DUPLICATE": "Ilyen nevű szolgáltató már létezik.",
   "AI_SETTINGS_DONE": "Kész",
+  "AI_SETTINGS_ENABLE_AI": "MI funkciók engedélyezése",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Be- vagy kikapcsolja az összes MI funkciót a(z) {APP_NAME} alkalmazásban. Az újraindítás után lép érvénybe — bármikor újra engedélyezheti a <span class='ai-settings-menu-path'>Nézet menü &gt; MI engedélyezése</span> menüpontból.",
   "DEMO_SECTION1_TITLE": "Szerkesztés élő előnézetben",
   "DEMO_SECTION1_SUBTITLE": "Szerkessze oldalát vizuálisan -&nbsp; <b>A HTML-kód azonnal frissül</b>",
   "DEMO_GET_STARTED_BUTTON": "Kezdés",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_SETTINGS_ENABLE_AI": "MI funkciók engedélyezése",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Be- vagy kikapcsolja az összes MI funkciót a(z) {APP_NAME} alkalmazásban. Az újraindítás után lép érvénybe — bármikor újra engedélyezheti a <span class='ai-settings-menu-path'>Nézet menü &gt; MI engedélyezése</span> menüpontból."
+  "GIT_NO_BRANCH": "nincs ág",
+  "GIT_NOT_A_REPO": "nem git-tároló",
+  "OPEN_CHANGED_FILES_CONFIRM": "Ez {0} fájlt fog megnyitni a szerkesztőben. Folytatja?",
+  "GIT_NOT_REPO_MESSAGE": "Ez a projekt nem egy Git-tároló. Kattintson a(z) {0} gombra egy új tároló létrehozásához itt, vagy a(z) {1} gombra egy meglévő letöltéséhez.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Még nincsenek commitek. A commitelt változások itt fognak megjelenni.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Ennek a fájlnak még nincs commit-előzménye.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Nyisson meg egy fájlt a szerkesztőben, hogy megtekintse a commit-előzményét.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "A fájl nem része ennek a Git-tárolónak.",
+  "CMD_OPEN_CHANGED_FILES": "Összes módosított fájl megnyitása",
+  "ERROR_OPENING_CHANGED_FILES": "A módosított fájlok megnyitása sikertelen"
 });

@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Naziv pružatelja je obavezan.",
   "AI_SETTINGS_NAME_DUPLICATE": "Pružatelj s ovim nazivom već postoji.",
   "AI_SETTINGS_DONE": "Može",
+  "AI_SETTINGS_ENABLE_AI": "Omogući AI značajke",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Uključuje ili isključuje sve AI značajke u aplikaciji {APP_NAME}. Stupa na snagu nakon ponovnog pokretanja — možete ih ponovno omogućiti bilo kada iz izbornika <span class='ai-settings-menu-path'>Prikaz &gt; Omogući AI</span>.",
   "DEMO_SECTION1_TITLE": "Uređivanje u pregledu uživo",
   "DEMO_SECTION1_SUBTITLE": "Vizualno uredite svoju stranicu -&nbsp; <b>Vaš HTML se trenutno ažurira</b>",
   "DEMO_GET_STARTED_BUTTON": "Započnite",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "AI_SETTINGS_ENABLE_AI": "Omogući AI značajke",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Uključuje ili isključuje sve AI značajke u aplikaciji {APP_NAME}. Stupa na snagu nakon ponovnog pokretanja — možete ih ponovno omogućiti bilo kada iz izbornika <span class='ai-settings-menu-path'>Prikaz &gt; Omogući AI</span>."
+  "GIT_NO_BRANCH": "nema grane",
+  "GIT_NOT_A_REPO": "nije git repozitorij",
+  "OPEN_CHANGED_FILES_CONFIRM": "Ovo će otvoriti {0} datoteka u uređivaču. Želite li nastaviti?",
+  "GIT_NOT_REPO_MESSAGE": "Ovaj projekt nije Git repozitorij. Kliknite gumb {0} kako biste ovdje stvorili novi repozitorij ili {1} za preuzimanje postojećeg.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Još nema commitova. Committane promjene prikazat će se ovdje.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Još nema povijesti commitova za ovu datoteku.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Otvorite datoteku u uređivaču kako biste vidjeli njezinu povijest commitova.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Datoteka nije dio ovog Git repozitorija.",
+  "CMD_OPEN_CHANGED_FILES": "Otvori sve promijenjene datoteke",
+  "ERROR_OPENING_CHANGED_FILES": "Otvaranje promijenjenih datoteka nije uspjelo"
 });

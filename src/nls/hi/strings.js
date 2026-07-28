@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "प्रोवाइडर का नाम आवश्यक है।",
   "AI_SETTINGS_NAME_DUPLICATE": "इस नाम का प्रोवाइडर पहले से मौजूद है।",
   "AI_SETTINGS_DONE": "हो गया",
+  "AI_SETTINGS_ENABLE_AI": "एआई सुविधाएँ सक्षम करें",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME} में सभी एआई सुविधाओं को चालू या बंद करता है। यह रीस्टार्ट के बाद लागू होगा — आप इसे <span class='ai-settings-menu-path'>व्यू मेन्यू &gt; एआई सक्षम करें</span> से किसी भी समय फिर से सक्षम कर सकते हैं।",
   "DEMO_SECTION1_TITLE": "लाइव प्रीव्यू में संपादित करें",
   "DEMO_SECTION1_SUBTITLE": "अपने पेज को विज़ुअली संपादित करें -&nbsp; <b>आपका HTML तुरंत अपडेट हो जाता है</b>",
   "DEMO_GET_STARTED_BUTTON": "शुरू करें",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_SETTINGS_ENABLE_AI": "एआई सुविधाएँ सक्षम करें",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "{APP_NAME} में सभी एआई सुविधाओं को चालू या बंद करता है। यह रीस्टार्ट के बाद लागू होगा — आप इसे <span class='ai-settings-menu-path'>व्यू मेन्यू &gt; एआई सक्षम करें</span> से किसी भी समय फिर से सक्षम कर सकते हैं।"
+  "GIT_NO_BRANCH": "कोई ब्रांच नहीं",
+  "GIT_NOT_A_REPO": "git रिपॉजिटरी नहीं है",
+  "OPEN_CHANGED_FILES_CONFIRM": "इससे एडिटर में {0} फ़ाइलें खुलेंगी। क्या आप जारी रखना चाहते हैं?",
+  "GIT_NOT_REPO_MESSAGE": "यह प्रोजेक्ट एक Git रिपॉजिटरी नहीं है। यहां एक नई रिपॉजिटरी बनाने के लिए {0} बटन पर क्लिक करें, या मौजूदा रिपॉजिटरी डाउनलोड करने के लिए {1}।",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "अभी तक कोई कमिट नहीं है। कमिट किए गए बदलाव यहां दिखाई देंगे।",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "इस फ़ाइल के लिए अभी तक कोई कमिट हिस्ट्री नहीं है।",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "इसकी कमिट हिस्ट्री देखने के लिए एडिटर में एक फ़ाइल खोलें।",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "यह फ़ाइल इस Git रिपॉजिटरी का हिस्सा नहीं है।",
+  "CMD_OPEN_CHANGED_FILES": "सभी बदली हुई फ़ाइलें खोलें",
+  "ERROR_OPENING_CHANGED_FILES": "बदली हुई फ़ाइलें खोलना विफल रहा।"
 });

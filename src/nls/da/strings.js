@@ -2518,6 +2518,8 @@ define({
   "AI_SETTINGS_NAME_REQUIRED": "Udbydernavn er påkrævet.",
   "AI_SETTINGS_NAME_DUPLICATE": "En udbyder med dette navn findes allerede.",
   "AI_SETTINGS_DONE": "Færdig",
+  "AI_SETTINGS_ENABLE_AI": "Aktiver AI-funktioner",
+  "AI_SETTINGS_ENABLE_AI_NOTE": "Slår alle AI-funktioner i {APP_NAME} til eller fra. Træder i kraft efter genstart — du kan aktivere dem igen når som helst fra <span class='ai-settings-menu-path'>Vis-menuen &gt; Aktiver AI</span>.",
   "DEMO_SECTION1_TITLE": "Rediger i Live-forhåndsvisning",
   "DEMO_SECTION1_SUBTITLE": "Rediger din side visuelt -&nbsp; <b>Din HTML opdateres øjeblikkeligt</b>",
   "DEMO_GET_STARTED_BUTTON": "Kom i gang",
@@ -2609,6 +2611,14 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_SETTINGS_ENABLE_AI": "Aktiver AI-funktioner",
-  "AI_SETTINGS_ENABLE_AI_NOTE": "Slår alle AI-funktioner i {APP_NAME} til eller fra. Træder i kraft efter genstart — du kan aktivere dem igen når som helst fra <span class='ai-settings-menu-path'>Vis-menuen &gt; Aktiver AI</span>."
+  "GIT_NO_BRANCH": "ingen gren",
+  "GIT_NOT_A_REPO": "ikke et git-repo",
+  "OPEN_CHANGED_FILES_CONFIRM": "Dette vil åbne {0} filer i editoren. Vil du fortsætte?",
+  "GIT_NOT_REPO_MESSAGE": "Dette projekt er ikke et Git-repository. Klik på knappen {0} for at oprette et nyt repository her, eller {1} for at downloade et eksisterende.",
+  "GIT_HISTORY_NOTHING_TO_SHOW": "Ingen commits endnu. Commitede ændringer vil blive vist her.",
+  "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Der er ingen commit-historik for denne fil endnu.",
+  "GIT_FILE_HISTORY_OPEN_A_FILE": "Åbn en fil i editoren for at se dens commit-historik.",
+  "GIT_FILE_HISTORY_NOT_IN_REPO": "Filen er ikke en del af dette Git-repository.",
+  "CMD_OPEN_CHANGED_FILES": "Åbn alle ændrede filer",
+  "ERROR_OPENING_CHANGED_FILES": "Åbning af ændrede filer mislykkedes"
 });
