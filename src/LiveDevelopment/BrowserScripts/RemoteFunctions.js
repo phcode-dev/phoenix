@@ -190,7 +190,10 @@ function RemoteFunctions(config = {}) {
         disableHoverListeners: disableHoverListeners,
         enableHoverListeners: enableHoverListeners,
         redrawHighlights: redrawHighlights,
-        redrawEverything: redrawEverything
+        redrawEverything: redrawEverything,
+        getTreePath: _getTreePath,
+        getElementByTreePath: _getElementByTreePath,
+        getSourceChildren: _instrumentedChildren
     };
 
     /**
@@ -1054,6 +1057,25 @@ function RemoteFunctions(config = {}) {
         return results && results[0];
     };
 
+    // True for elements Phoenix adds to the page itself, like the tool boxes and
+    // the highlight overlays. They are not part of the user's source file.
+    function _isPhoenixInternalNode(node) {
+        return !!node && node.nodeType === Node.ELEMENT_NODE &&
+            (node.hasAttribute(GLOBALS.PHCODE_INTERNAL_ATTR) ||
+                node.className === GLOBALS.HIGHLIGHT_CLASSNAME);
+    }
+
+    /** The first of the Phoenix elements sitting at the end of `parent`, else null. */
+    function _firstTrailingInternalNode(parent) {
+        let node = parent.lastChild;
+        let first = null;
+        while (_isPhoenixInternalNode(node)) {
+            first = node;
+            node = node.previousSibling;
+        }
+        return first;
+    }
+
     /**
      * @private
      * Insert a new child element
@@ -1068,7 +1090,12 @@ function RemoteFunctions(config = {}) {
         if (edit.firstChild) {
             before = targetElement.firstChild;
         } else if (edit.lastChild) {
-            after = targetElement.lastChild;
+            // Phoenix's tool boxes are the last children of <body>, so appending
+            // here would put the new element after them, in the wrong place.
+            before = _firstTrailingInternalNode(targetElement);
+            if (!before) {
+                after = targetElement.lastChild;
+            }
         }
 
         if (before) {
@@ -1492,27 +1519,38 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    // Only the children that came from the source file. Phoenix's own elements have
+    // no data-brackets-id, and counting them would shift the tree path indexes.
+    function _instrumentedChildren(parent) {
+        const result = [];
+        const children = (parent && parent.children) || [];
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
+                result.push(children[i]);
+            }
+        }
+        return result;
+    }
+
     /**
      * Compute the tree path of an element as an array of child indices
      * from <html> down. Used to re-locate the element after re-instrumentation
      * when data-brackets-id changes and text matching is ambiguous.
      * E.g. [1, 0, 0, 1] means html > 2nd child > 1st child > 1st child > 2nd child.
+     * @return {?Array.<number>} null if the element did not come from the source file.
      */
     function _getTreePath(element) {
         const path = [];
         let el = element;
         while (el && el.parentElement) {
-            const parent = el.parentElement;
-            const children = parent.children;
-            for (let i = 0; i < children.length; i++) {
-                if (children[i] === el) {
-                    path.unshift(i);
-                    break;
-                }
+            const index = _instrumentedChildren(el.parentElement).indexOf(el);
+            if (index === -1) {
+                return null;
             }
-            el = parent;
+            path.unshift(index);
+            el = el.parentElement;
         }
-        return path;
+        return path.length ? path : null;
     }
 
     /**
@@ -1521,10 +1559,11 @@ function RemoteFunctions(config = {}) {
     function _getElementByTreePath(path) {
         let el = document.documentElement;
         for (let i = 0; i < path.length; i++) {
-            if (!el || !el.children || !el.children[path[i]]) {
+            const siblings = _instrumentedChildren(el);
+            if (!siblings[path[i]]) {
                 return null;
             }
-            el = el.children[path[i]];
+            el = siblings[path[i]];
         }
         return el;
     }
