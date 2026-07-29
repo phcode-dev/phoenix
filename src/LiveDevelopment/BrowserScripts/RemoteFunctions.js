@@ -26,7 +26,8 @@ function RemoteFunctions(config = {}) {
     const SHARED_STATE = {
         __description: "Use this to keep shared state for Live Preview Edit instead of window.*",
         _suppressDOMEditDismissal: false,
-        _suppressDOMEditDismissalTimeout: null
+        _suppressDOMEditDismissalTimeout: null,
+        _boxModelHighlightHidden: false
     };
 
     let _hoverHighlight;
@@ -449,15 +450,17 @@ function RemoteFunctions(config = {}) {
             s.backgroundColor = color;
         }
 
-        // Padding region
-        const padColor = COLORS.highlightPadding;
+        // Padding region. Rects stay in place when hidden, only their fill goes away,
+        // so nothing has to be rebuilt when they come back.
+        const boxModelHidden = SHARED_STATE._boxModelHighlightHidden;
+        const padColor = boxModelHidden ? "transparent" : COLORS.highlightPadding;
         setRect(refs.padTop, paddingBox.left, paddingBox.top, paddingBox.width, pt, padColor);
         setRect(refs.padBottom, paddingBox.left, contentBox.top + contentBox.height, paddingBox.width, pb, padColor);
         setRect(refs.padLeft, paddingBox.left, contentBox.top, pl, contentBox.height, padColor);
         setRect(refs.padRight, contentBox.left + contentBox.width, contentBox.top, pr, contentBox.height, padColor);
 
         // Margin region
-        const margColor = COLORS.highlightMargin;
+        const margColor = boxModelHidden ? "transparent" : COLORS.highlightMargin;
         setRect(refs.marTop, marginBox.left, marginBox.top, marginBox.width, mt, margColor);
         setRect(refs.marBottom, marginBox.left, borderBox.top + borderBox.height, marginBox.width, mb, margColor);
         setRect(refs.marLeft, marginBox.left, borderBox.top, ml, borderBox.height, margColor);
@@ -1506,6 +1509,9 @@ function RemoteFunctions(config = {}) {
             _pendingHoverRAF = null;
         }
 
+        // the selection is gone, so a popover can no longer turn the fills back on
+        SHARED_STATE._boxModelHighlightHidden = false;
+
         // Highlight.clear() removes all overlay divs (outline + margin/padding rects)
         hideHighlight();
 
@@ -1766,6 +1772,21 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    /**
+     * Hide just the margin/padding fills of the selected element highlight, keeping
+     * the outline and the selection itself. Used while editing paint properties like
+     * background color, where the fills sit on top of what the user is changing.
+     * @param {Boolean} hidden
+     */
+    function setBoxModelHighlightHidden(hidden) {
+        hidden = !!hidden;
+        if (SHARED_STATE._boxModelHighlightHidden === hidden) {
+            return;
+        }
+        SHARED_STATE._boxModelHighlightHidden = hidden;
+        redrawHighlights();
+    }
+
     let customReturns = {};
     // only apis that needs to be called from phoenix js layer should be customReturns. APis that are shared within
     // the remote function context only should not be in customReturns and should be in
@@ -1789,6 +1810,7 @@ function RemoteFunctions(config = {}) {
         "getHighlightTrackingElement": getHighlightTrackingElement,
         "getHighlightStyle": getHighlightStyle,
         "setHotCornerHidden": setHotCornerHidden,
+        "setBoxModelHighlightHidden": setBoxModelHighlightHidden,
         "clearHoverState": _clearHoverState
     };
 

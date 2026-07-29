@@ -202,6 +202,7 @@ define({
     "LIVE_DEV_STYLER_BACKGROUND": "Background color",
     "LIVE_DEV_STYLER_TEXT_COLOR": "Text color",
     "LIVE_DEV_STYLER_FONT": "Font family",
+    "LIVE_DEV_STYLER_FONT_DEFAULT": "Default",
     "LIVE_DEV_STYLER_SIZE": "Font size",
     "LIVE_DEV_STYLER_WEIGHT": "Font weight",
     "LIVE_DEV_STYLER_ALIGN": "Text alignment",
