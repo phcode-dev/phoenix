@@ -233,6 +233,12 @@ define(function (require, exports, module) {
         removeAttribute: function (key) {
             delete this.attributes[key];
         },
+        hasAttribute: function (key) {
+            return !!this.attributes && this.attributes.hasOwnProperty(key);
+        },
+        getAttribute: function (key) {
+            return (this.attributes && this.attributes.hasOwnProperty(key)) ? this.attributes[key] : null;
+        },
 
         returnFailure: function (other) {
             console.log("TEST FAILURE AT TAG ID ", this.tagID, this, other);
