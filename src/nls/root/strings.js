@@ -207,7 +207,7 @@ define({
     "LIVE_DEV_STYLER_WEIGHT": "Font weight",
     "LIVE_DEV_STYLER_ALIGN": "Text alignment",
     "LIVE_DEV_STYLER_BORDER": "Border",
-    "LIVE_DEV_STYLER_SPACING": "Margin & padding",
+    "LIVE_DEV_STYLER_SPACING": "Box model",
     "LIVE_DEV_STYLER_LAYOUT": "Layout",
     "LIVE_DEV_STYLER_TEXT_STYLE": "Text style",
     "LIVE_DEV_STYLER_DOCK_TOP": "Dock to top",
