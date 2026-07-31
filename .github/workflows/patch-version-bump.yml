@@ -9,12 +9,15 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
           node-version: 24
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           ref: main
+          # keep the checkout token in the local git config so that
+          # peter-evans/create-pull-request can push the bump branch
+          persist-credentials: true
       - name: Bump patch version
         run: |
           npm ci
@@ -26,7 +29,7 @@ jobs:
 
       - name: Create Bump patch version Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: 'ci: bump patch version to ${{ env.PHOENIX_VERSION }}'
           committer: GitHub <noreply@github.com>
