@@ -807,7 +807,7 @@ making the selection
 | [end] | <code>Object</code> | If not specified, defaults to start. |
 | [center] | <code>boolean</code> | true to center the viewport |
 | [centerOptions] | <code>number</code> | Option value, or 0 for no options; one of the BOUNDARY_* constants above. |
-| [origin] | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See [Document::Document#replaceRange](Document::Document#replaceRange) for more details. |
+| [origin] | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See `Document#replaceRange` for more details. |
 
 <a name="Editor+replaceSelection"></a>
 
@@ -891,7 +891,7 @@ Optionally centers around the primary selection after making the selection.
 | selections | <code>Object</code> | The selection ranges to set. If the start and end of a range are the same, treated as a cursor.      If reversed is true, set the anchor of the range to the end instead of the start.      If primary is true, this is the primary selection. Behavior is undefined if more than      one selection has primary set to true. If none has primary set to true, the last one is primary. |
 | center | <code>boolean</code> | true to center the viewport around the primary selection. |
 | centerOptions | <code>number</code> | Option value, or 0 for no options; one of the BOUNDARY_* constants above. |
-| origin | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See [Document::Document#replaceRange](Document::Document#replaceRange) for more details. |
+| origin | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See `Document#replaceRange` for more details. |
 
 <a name="Editor+toggleOverwrite"></a>
 
@@ -1174,7 +1174,7 @@ A-B-A would return A as the mode, not null).
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>Object</code> \| <code>string</code> - Name of syntax-highlighting mode, or object containing a "name" property
     naming the mode along with configuration options required by the mode.  
-**See**: [LanguageManager::#getLanguageForPath](LanguageManager::#getLanguageForPath) and [LanguageManager::Language#getMode](LanguageManager::Language#getMode).  
+**See**: [LanguageManager::#getLanguageForPath](LanguageManager::#getLanguageForPath) and `Language#getMode`.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1195,7 +1195,7 @@ consistent and resolve to the same mode.
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>Object</code> \| <code>string</code> - Name of syntax-highlighting mode, or object containing a "name" property
     naming the mode along with configuration options required by the mode.  
-**See**: [LanguageManager::#getLanguageForPath](LanguageManager::#getLanguageForPath) and [LanguageManager::Language#getMode](LanguageManager::Language#getMode).  
+**See**: [LanguageManager::#getLanguageForPath](LanguageManager::#getLanguageForPath) and `Language#getMode`.  
 
 | Param | Type |
 | --- | --- |
@@ -1222,7 +1222,7 @@ Gets the syntax-highlighting mode for the document.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>Object</code> \| <code>String</code> - Object or Name of syntax-highlighting mode  
-**See**: [LanguageManager.getLanguageForPath](LanguageManager::#getLanguageForPath) and [Language.getMode](LanguageManager::Language#getMode).  
+**See**: [LanguageManager.getLanguageForPath](LanguageManager::#getLanguageForPath) and `Language.getMode`.  
 <a name="Editor+updateLayout"></a>
 
 ### editor.updateLayout([forceRefresh])
