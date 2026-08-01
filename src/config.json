@@ -36,7 +36,7 @@
         "lsp_server_pins": {
             "intelephense": "1.18.5",
             "pyrefly": "1.1.1",
-            "ruff": "0.15.20"
+            "ruff": "0.16.1"
         },
         "linting.enabled_by_default": true,
         "build_timestamp": "",
