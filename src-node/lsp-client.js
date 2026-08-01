@@ -45,8 +45,9 @@
  *   - 'serverExit'      { serverId, code }
  *   - 'serverError'     { serverId, error }
  *
- * Server resolution order when starting: `src-node/node_modules/.bin/<command>` (bundled),
- * then the system PATH. Messages use JSON-RPC 2.0 over stdio with Content-Length headers.
+ * Server resolution order when starting: the `bin` entry a bundled `src-node/node_modules` package
+ * declares for <command>, then the system PATH. Messages use JSON-RPC 2.0 over stdio with
+ * Content-Length headers.
  */
 
 // Create connector at module load time (same pattern as src-node/git/cli.js)
@@ -56,8 +57,97 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-// Path to node_modules/.bin for bundled LSP servers
-const NODE_MODULES_BIN = path.join(__dirname, 'node_modules', '.bin');
+// Paths used to locate bundled LSP servers
+const NODE_MODULES = path.join(__dirname, 'node_modules');
+const NODE_MODULES_BIN = path.join(NODE_MODULES, '.bin');
+
+// command name -> absolute path of the JS entry the bundled package declares for it. Built lazily
+// on first use and kept for the life of the process - node_modules does not change under us.
+let bundledBinIndex = null;
+
+function _readDirSafe(dir) {
+    try {
+        return fs.readdirSync(dir);
+    } catch (err) {
+        return [];
+    }
+}
+
+function _indexPackageBins(index, pkgDir) {
+    let pkg;
+    try {
+        pkg = JSON.parse(fs.readFileSync(path.join(pkgDir, 'package.json'), 'utf8'));
+    } catch (err) {
+        return; // not a package, or unreadable - nothing to index
+    }
+    if (typeof pkg.bin === 'string' && pkg.name) {
+        // shorthand form: the single bin is named after the package ("@scope/name" -> "name")
+        index.set(path.basename(pkg.name), path.resolve(pkgDir, pkg.bin));
+    } else if (pkg.bin && typeof pkg.bin === 'object') {
+        for (const [binName, binPath] of Object.entries(pkg.bin)) {
+            index.set(binName, path.resolve(pkgDir, binPath));
+        }
+    }
+}
+
+// Bundled bins are often extensionless (typescript's `tsserver`, vscode-langservers-extracted's
+// `vscode-json-language-server`), so the extension alone cannot tell us whether our node runtime
+// can run the file - fall back to sniffing the shebang.
+function _isNodeScript(filePath) {
+    if (/\.(js|cjs|mjs)$/.test(filePath)) {
+        return fs.existsSync(filePath);
+    }
+    let fd;
+    try {
+        fd = fs.openSync(filePath, 'r');
+        const buffer = Buffer.alloc(128);
+        const bytesRead = fs.readSync(fd, buffer, 0, 128, 0);
+        const firstLine = buffer.slice(0, bytesRead).toString('utf8').split('\n')[0];
+        return firstLine.startsWith('#!') && firstLine.includes('node');
+    } catch (err) {
+        return false; // missing or unreadable
+    } finally {
+        if (fd !== undefined) {
+            fs.closeSync(fd);
+        }
+    }
+}
+
+/**
+ * Resolves a bundled server command to the JS entry its own package declares in `bin`.
+ *
+ * We deliberately avoid running `node_modules/.bin/<command>`: npm puts a symlink there on POSIX
+ * (and an sh/.cmd shim pair on Windows), and packaging the desktop app dereferences symlinks - the
+ * shim's *body* is then copied into .bin/, where its own relative require ("../dist/main.js")
+ * resolves against node_modules/ instead of the package folder and the server dies at startup with
+ * MODULE_NOT_FOUND. The package's real entry point has no such ambiguity, on any platform.
+ *
+ * @param {string} command - bare command name, e.g. "vtsls"
+ * @returns {string|null} absolute path to a .js entry, or null if no bundled package declares it
+ */
+function _resolveBundledServerEntry(command) {
+    if (!bundledBinIndex) {
+        bundledBinIndex = new Map();
+        for (const entry of _readDirSafe(NODE_MODULES)) {
+            if (entry.startsWith('.')) {
+                continue;
+            }
+            if (entry.startsWith('@')) {
+                for (const scopedPkg of _readDirSafe(path.join(NODE_MODULES, entry))) {
+                    _indexPackageBins(bundledBinIndex, path.join(NODE_MODULES, entry, scopedPkg));
+                }
+            } else {
+                _indexPackageBins(bundledBinIndex, path.join(NODE_MODULES, entry));
+            }
+        }
+    }
+    const entryPath = bundledBinIndex.get(command);
+    // only a node script can run on our node runtime - a native bin is left to the .bin lookup
+    if (entryPath && _isNodeScript(entryPath)) {
+        return entryPath;
+    }
+    return null;
+}
 
 // Registry of active servers: serverId -> serverState
 const servers = new Map();
@@ -269,8 +359,10 @@ exports.startServer = async function startServer(params) {
     //    outside src-node) runs on our own node runtime - process.execPath is phnode itself, the
     //    same spawn-self pattern _npmInstallInFolder and the ESLint service use. This sidesteps
     //    node_modules/.bin shims entirely (they are sh scripts / .cmd on Windows).
-    // 2. A server bundled in src-node/node_modules/.bin.
-    // 3. Fall back to spawning the command as given - which also covers an absolute path to a
+    // 2. A server bundled in src-node/node_modules: run the JS entry its package declares in `bin`
+    //    on our own node runtime, for the same reason - see _resolveBundledServerEntry().
+    // 3. A bundled non-JS bin, via the node_modules/.bin shim.
+    // 4. Fall back to spawning the command as given - which also covers an absolute path to a
     //    native binary (e.g. a user-installed server like pyrefly), spawned as-is, or a PATH
     //    lookup for a bare command name.
     let commandPath = command;
@@ -279,8 +371,12 @@ exports.startServer = async function startServer(params) {
         spawnArgs = [command, ...args];
         commandPath = process.execPath;
     } else {
+        const bundledEntry = _resolveBundledServerEntry(command);
         const localBinPath = path.join(NODE_MODULES_BIN, command);
-        if (fs.existsSync(localBinPath)) {
+        if (bundledEntry) {
+            spawnArgs = [bundledEntry, ...args];
+            commandPath = process.execPath;
+        } else if (fs.existsSync(localBinPath)) {
             commandPath = localBinPath;
         }
     }
