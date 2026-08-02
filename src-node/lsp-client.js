@@ -424,7 +424,15 @@ exports.startServer = async function startServer(params) {
         });
 
         serverProcess.on('exit', (code, signal) => {
-            servers.delete(serverId);
+            // Only clear the registry when this process is still the registered generation.
+            // During a fast restart the old process's exit event can land after the
+            // replacement was already registered - an unconditional delete would remove the
+            // NEW server's entry, so its initialize response gets dropped in handleMessage
+            // (servers.get finds nothing) and every later request fails "not running" while
+            // the replacement process leaks, still alive but unreachable.
+            if (servers.get(serverId) === serverState) {
+                servers.delete(serverId);
+            }
             const stderr = serverState.stderrTail.join('');
             if (code) {
                 console.error(`[lsp-client][${serverId}] exited code=${code} signal=${signal || 'none'}`);
@@ -445,7 +453,9 @@ exports.startServer = async function startServer(params) {
 
         serverProcess.on('error', (err) => {
             console.error(`[lsp-client][${serverId}] spawn error:`, err.message);
-            servers.delete(serverId);
+            if (servers.get(serverId) === serverState) {
+                servers.delete(serverId);
+            }
             nodeConnector.triggerPeer('serverError', { serverId, error: err.message });
             if (!hasResolved) {
                 hasResolved = true;
