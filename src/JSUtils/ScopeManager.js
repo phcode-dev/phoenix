@@ -355,6 +355,9 @@ define(function (require, exports, module) {
      * @return {string} the text, or the empty text if the original was too long
      */
     function filterText(text) {
+        // Callers outside this module (e.g. JavaScriptRefactoring's highlight-references) can hit
+        // this before any Tern init/projectOpen has populated `preferences` - init it on demand.
+        ensurePreferences();
         var newText = text;
         if (text.length > preferences.getMaxFileSize()) {
             newText = "";
