@@ -160,7 +160,7 @@ define(function (require, exports, module) {
     const EVENT_PROJECT_CHANGED_OR_RENAMED_PATH = "projectChangedPath";
 
 
-    EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 25);
+    EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 30);
 
     const CLIPBOARD_SYNC_KEY = "phoenix.clipboard";
 
