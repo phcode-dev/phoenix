@@ -2139,8 +2139,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         // error. Custom API-key providers are excluded — their fix is the
         // settings-dialog hint appended above.
         const usingApiKey = !!(envOverrides && envOverrides.ANTHROPIC_AUTH_TOKEN);
+        // `\b401\b` is the load-bearing match: error phrasing keeps changing
+        // across CLI/SDK versions ("Failed to authenticate", "OAuth access
+        // token has expired", "token revoked"...) but the status code stays
+        // 401. Phrase alternatives remain for exit-code failures where the
+        // CLI prints a /login hint without any status code. 403 is
+        // deliberately excluded — it means "forbidden", not "re-login".
         const isAuthError = !usingApiKey &&
-            /run \/login|invalid api key|not logged in|oauth token|revoke|authentication[_ ]?error/i
+            /run \/login|invalid api key|not logged in|oauth[\w ]*token|\b401\b|re-?authenticate|revoke|authentication[_ ]?error/i
                 .test(detailedError);
 
         nodeConnector.triggerPeer("aiError", {
