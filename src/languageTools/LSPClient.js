@@ -131,7 +131,14 @@ define(function (require, exports, module) {
 
     /** Convert a server `file://` URI (real OS path) back to a VFS-based `file://` URI. */
     function serverUriToVfsUri(serverUri) {
-        const platformPath = PathConverters.uriToPath(serverUri);
+        let platformPath = PathConverters.uriToPath(serverUri);
+        // Windows language servers (e.g. tsserver) lowercase the drive letter in URIs
+        // ("file:///c%3A/..."), but Phoenix VFS mounts use the OS-reported uppercase drive
+        // ("/tauri/C/..."). The VFS is case-sensitive, so an un-normalized drive letter maps the
+        // same file to a second path - jump-to-definition would open a duplicate document.
+        if (brackets.platform === "win" && /^[a-z]:/.test(platformPath)) {
+            platformPath = platformPath.charAt(0).toUpperCase() + platformPath.substr(1);
+        }
         return PathConverters.pathToUri(_toVirtualPath(platformPath));
     }
 
@@ -239,12 +246,19 @@ define(function (require, exports, module) {
         if (!client) {
             return;
         }
+        if (data.pid && client._pid && data.pid !== client._pid) {
+            // Stale exit from a previous process generation - a restart has already spawned the
+            // replacement, so this must not clear its state or read as a crash of the new process.
+            return;
+        }
         client.capabilities = null;
         DocumentSync.clearServer(client);
-        if (client._stopping || _isDisabledByPref(client.serverId)) {
-            // Intentional stop/restart - do not auto-restart here. The pref check also covers
-            // the pref-off stop: its exit event can land after stopServerProcess resolved (and
-            // reset _stopping), which would otherwise read as a crash and bump _crashCount.
+        if (client._stopping || client._restarting || _isDisabledByPref(client.serverId)) {
+            // Intentional stop/restart - do not auto-restart here. The _restarting/pref checks
+            // also cover the stop's exit event landing after stopServerProcess resolved (and
+            // reset _stopping), which would otherwise read as a crash, bump _crashCount, and
+            // schedule an auto-restart that races the restart already in flight (two concurrent
+            // starts orphan one initialize request, which then times out).
             return;
         }
         // Unexpected crash - log it loudly (with the server's stderr) so failures are never
@@ -799,7 +813,7 @@ define(function (require, exports, module) {
         client.rootUri = rootUri;
         client.rootName = rootName;
 
-        await conn.execPeer("startServer", {
+        const startResult = await conn.execPeer("startServer", {
             serverId: client.serverId,
             command: config.command,
             args: config.args || ["--stdio"],
@@ -807,6 +821,9 @@ define(function (require, exports, module) {
             workspaceConfiguration: config.workspaceConfiguration,
             suppressStderrPattern: config.suppressStderrPattern
         });
+        // Process-generation marker: lets _onServerExit tell a stale exit event (a previous
+        // process, delivered after its replacement already spawned) from a crash of this one.
+        client._pid = (startResult && startResult.pid) || null;
 
         const initResult = await conn.execPeer("sendRequest", {
             serverId: client.serverId,
@@ -1118,8 +1135,11 @@ define(function (require, exports, module) {
         if (!client || _isDisabledByPref(serverId)) {
             return;
         }
-        await stopServerProcess(client);
+        // Held for the whole stop+start so the stopped process's exit event - which can land any
+        // time in between - is never mistaken for a crash (see _onServerExit).
+        client._restarting = true;
         try {
+            await stopServerProcess(client);
             await _startAndInit(client);
             _announceServerStarted(client);
             DocumentSync.openSupportedDocuments(client);
@@ -1134,6 +1154,8 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "srv", "RstErr." + client._metricLabel);
             window.logger.reportErrorOnce("lspStart." + serverId, err,
                 "[LSP] restart failed: " + serverId);
+        } finally {
+            client._restarting = false;
         }
     }
 

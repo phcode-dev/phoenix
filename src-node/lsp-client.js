@@ -435,7 +435,7 @@ exports.startServer = async function startServer(params) {
                 rejectPending(new Error(`Server ${serverId} exited with pending request`));
             }
             serverState.pending.clear();
-            nodeConnector.triggerPeer('serverExit', { serverId, code, signal, stderr });
+            nodeConnector.triggerPeer('serverExit', { serverId, code, signal, stderr, pid: serverProcess.pid });
             if (!hasResolved) {
                 hasResolved = true;
                 reject(new Error(`Server ${serverId} exited immediately with code ${code}` +
