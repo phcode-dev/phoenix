@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "Grubość czcionki",
   "LIVE_DEV_STYLER_ALIGN": "Wyrównanie tekstu",
   "LIVE_DEV_STYLER_BORDER": "Obramowanie",
+  "LIVE_DEV_STYLER_SPACING": "Model pudełkowy",
   "LIVE_DEV_STYLER_LAYOUT": "Układ",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Styl tekstu",
   "LIVE_DEV_STYLER_DOCK_TOP": "Zadokuj u góry",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "LIVE_DEV_STYLER_SPACING": "Model pudełkowy"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Zalecane — korzysta z Twojego ustawienia modelu Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Najinteligentniejszy model — tylko jeśli Twój plan obejmuje dostęp do Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Potężny model do złożonych zadań",
+  "AI_CHAT_MODEL_DESC_SONNET": "Zrównoważona szybkość i możliwości do codziennego kodowania",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Najszybszy model do szybkich, prostych zadań"
 });

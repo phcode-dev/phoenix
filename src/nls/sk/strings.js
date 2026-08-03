@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Farba pozadia",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Farba textu",
   "LIVE_DEV_STYLER_FONT": "Typ písma",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Predvolený",
   "LIVE_DEV_STYLER_SIZE": "Veľkosť písma",
   "LIVE_DEV_STYLER_WEIGHT": "Hrúbka písma",
   "LIVE_DEV_STYLER_ALIGN": "Zarovnanie textu",
   "LIVE_DEV_STYLER_BORDER": "Orámovanie",
+  "LIVE_DEV_STYLER_SPACING": "Model rámčeka",
   "LIVE_DEV_STYLER_LAYOUT": "Rozloženie",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Štýl textu",
   "LIVE_DEV_STYLER_DOCK_TOP": "Ukotviť hore",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Predvolený",
-  "LIVE_DEV_STYLER_SPACING": "Model rámčeka"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Odporúčané — používa vaše nastavenie modelu Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Najinteligentnejší model — len ak váš plán zahŕňa prístup k Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Výkonný model na zložité úlohy",
+  "AI_CHAT_MODEL_DESC_SONNET": "Vyvážená rýchlosť a schopnosti na každodenné kódovanie",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Najrýchlejší model na rýchle a jednoduché úlohy"
 });

@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "フォントの太さ",
   "LIVE_DEV_STYLER_ALIGN": "文字揃え",
   "LIVE_DEV_STYLER_BORDER": "ボーダー",
+  "LIVE_DEV_STYLER_SPACING": "ボックスモデル",
   "LIVE_DEV_STYLER_LAYOUT": "レイアウト",
   "LIVE_DEV_STYLER_TEXT_STYLE": "文字スタイル",
   "LIVE_DEV_STYLER_DOCK_TOP": "上部にドッキング",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "LIVE_DEV_STYLER_SPACING": "ボックスモデル"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "推奨 — ユーザーのClaude Codeモデル設定を使用します",
+  "AI_CHAT_MODEL_DESC_FABLE": "最も高性能なモデル — Fableへのアクセス権があるプランの場合のみ利用可能",
+  "AI_CHAT_MODEL_DESC_OPUS": "複雑なタスク向けの強力なモデル",
+  "AI_CHAT_MODEL_DESC_SONNET": "日常的なコーディング向けの、バランスの取れた速度と性能",
+  "AI_CHAT_MODEL_DESC_HAIKU": "素早くシンプルなタスク向けの最速モデル"
 });

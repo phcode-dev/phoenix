@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "لون الخلفية",
   "LIVE_DEV_STYLER_TEXT_COLOR": "لون النص",
   "LIVE_DEV_STYLER_FONT": "عائلة الخط",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "افتراضي",
   "LIVE_DEV_STYLER_SIZE": "حجم الخط",
   "LIVE_DEV_STYLER_WEIGHT": "سُمك الخط",
   "LIVE_DEV_STYLER_ALIGN": "محاذاة النص",
   "LIVE_DEV_STYLER_BORDER": "الحدود",
+  "LIVE_DEV_STYLER_SPACING": "نموذج الصندوق",
   "LIVE_DEV_STYLER_LAYOUT": "التخطيط",
   "LIVE_DEV_STYLER_TEXT_STYLE": "نمط النص",
   "LIVE_DEV_STYLER_DOCK_TOP": "إرساء في الأعلى",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "افتراضي",
-  "LIVE_DEV_STYLER_SPACING": "نموذج الصندوق"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "موصى به — يستخدم إعداد نموذج Claude Code الخاص بك",
+  "AI_CHAT_MODEL_DESC_FABLE": "النموذج الأكثر ذكاءً — فقط إذا كانت خطتك تتضمن الوصول إلى Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "نموذج قوي للمهام المعقدة",
+  "AI_CHAT_MODEL_DESC_SONNET": "توازن بين السرعة والقدرة للبرمجة اليومية",
+  "AI_CHAT_MODEL_DESC_HAIKU": "النموذج الأسرع للمهام السريعة والبسيطة"
 });

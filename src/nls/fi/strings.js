@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "Fontin paino",
   "LIVE_DEV_STYLER_ALIGN": "Tekstin tasaus",
   "LIVE_DEV_STYLER_BORDER": "Reunus",
+  "LIVE_DEV_STYLER_SPACING": "Laatikkomalli",
   "LIVE_DEV_STYLER_LAYOUT": "Asettelu",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Tekstin tyyli",
   "LIVE_DEV_STYLER_DOCK_TOP": "Kiinnitä ylös",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "LIVE_DEV_STYLER_SPACING": "Laatikkomalli"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Suositeltu — käyttää Claude Code -malliasetustasi",
+  "AI_CHAT_MODEL_DESC_FABLE": "Älykkäin malli — vain jos tilauksesi sisältää Fable-käyttöoikeuden",
+  "AI_CHAT_MODEL_DESC_OPUS": "Tehokas malli monimutkaisiin tehtäviin",
+  "AI_CHAT_MODEL_DESC_SONNET": "Tasapainoinen nopeus ja suorituskyky jokapäiväiseen koodaukseen",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Nopein malli nopeisiin, yksinkertaisiin tehtäviin"
 });

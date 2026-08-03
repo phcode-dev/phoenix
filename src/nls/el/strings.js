@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Χρώμα φόντου",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Χρώμα κειμένου",
   "LIVE_DEV_STYLER_FONT": "Γραμματοσειρά",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Προεπιλογή",
   "LIVE_DEV_STYLER_SIZE": "Μέγεθος γραμματοσειράς",
   "LIVE_DEV_STYLER_WEIGHT": "Πάχος γραμματοσειράς",
   "LIVE_DEV_STYLER_ALIGN": "Στοίχιση κειμένου",
   "LIVE_DEV_STYLER_BORDER": "Περίγραμμα",
+  "LIVE_DEV_STYLER_SPACING": "Μοντέλο πλαισίου",
   "LIVE_DEV_STYLER_LAYOUT": "Διάταξη",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Στυλ κειμένου",
   "LIVE_DEV_STYLER_DOCK_TOP": "Προσάρτηση στην κορυφή",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Προεπιλογή",
-  "LIVE_DEV_STYLER_SPACING": "Μοντέλο πλαισίου"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Συνιστάται — χρησιμοποιεί τη ρύθμιση του μοντέλου σας Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Το πιο ευφυές μοντέλο — μόνο εάν το πρόγραμμά σας έχει πρόσβαση στο Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Ισχυρό μοντέλο για σύνθετες εργασίες",
+  "AI_CHAT_MODEL_DESC_SONNET": "Ισορροπία ταχύτητας και δυνατοτήτων για την καθημερινή κωδικοποίηση",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Το ταχύτερο μοντέλο για γρήγορες, απλές εργασίες"
 });

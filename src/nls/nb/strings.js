@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Bakgrunnsfarge",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Tekstfarge",
   "LIVE_DEV_STYLER_FONT": "Skrifttype",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Standard",
   "LIVE_DEV_STYLER_SIZE": "Skriftstørrelse",
   "LIVE_DEV_STYLER_WEIGHT": "Skrifttykkelse",
   "LIVE_DEV_STYLER_ALIGN": "Tekstjustering",
   "LIVE_DEV_STYLER_BORDER": "Kantlinje",
+  "LIVE_DEV_STYLER_SPACING": "Boksmodell",
   "LIVE_DEV_STYLER_LAYOUT": "Oppsett",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Tekststil",
   "LIVE_DEV_STYLER_DOCK_TOP": "Fest øverst",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Standard",
-  "LIVE_DEV_STYLER_SPACING": "Boksmodell"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Anbefalt — bruker din Claude Code-modellinnstilling",
+  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligente modell — kun hvis abonnementet ditt har Fable-tilgang",
+  "AI_CHAT_MODEL_DESC_OPUS": "Kraftig modell for komplekse oppgaver",
+  "AI_CHAT_MODEL_DESC_SONNET": "Balansert hastighet og ytelse for daglig koding",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Raskeste modell for raske, enkle oppgaver"
 });

@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "글꼴 두께",
   "LIVE_DEV_STYLER_ALIGN": "텍스트 정렬",
   "LIVE_DEV_STYLER_BORDER": "테두리",
+  "LIVE_DEV_STYLER_SPACING": "박스 모델",
   "LIVE_DEV_STYLER_LAYOUT": "레이아웃",
   "LIVE_DEV_STYLER_TEXT_STYLE": "텍스트 스타일",
   "LIVE_DEV_STYLER_DOCK_TOP": "위쪽에 도킹",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "LIVE_DEV_STYLER_SPACING": "박스 모델"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "권장 — Claude Code 모델 설정을 사용합니다",
+  "AI_CHAT_MODEL_DESC_FABLE": "가장 지능적인 모델 — Fable 액세스 권한이 있는 요금제에서만 사용 가능",
+  "AI_CHAT_MODEL_DESC_OPUS": "복잡한 작업을 위한 강력한 모델",
+  "AI_CHAT_MODEL_DESC_SONNET": "일상적인 코딩을 위한 균형 잡힌 속도와 성능",
+  "AI_CHAT_MODEL_DESC_HAIKU": "빠르고 간단한 작업을 위한 가장 빠른 모델"
 });

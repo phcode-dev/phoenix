@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Background colour",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Text colour",
   "LIVE_DEV_STYLER_FONT": "Font family",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Default",
   "LIVE_DEV_STYLER_SIZE": "Font size",
   "LIVE_DEV_STYLER_WEIGHT": "Font weight",
   "LIVE_DEV_STYLER_ALIGN": "Text alignment",
   "LIVE_DEV_STYLER_BORDER": "Border",
+  "LIVE_DEV_STYLER_SPACING": "Box model",
   "LIVE_DEV_STYLER_LAYOUT": "Layout",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Text style",
   "LIVE_DEV_STYLER_DOCK_TOP": "Dock to top",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Default",
-  "LIVE_DEV_STYLER_SPACING": "Box model"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Recommended — uses your Claude Code model setting",
+  "AI_CHAT_MODEL_DESC_FABLE": "Most intelligent model — only if your plan has Fable access",
+  "AI_CHAT_MODEL_DESC_OPUS": "Powerful model for complex tasks",
+  "AI_CHAT_MODEL_DESC_SONNET": "Balanced speed and capability for everyday coding",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Fastest model for quick, simple tasks"
 });

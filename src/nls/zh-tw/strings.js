@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "字體粗細",
   "LIVE_DEV_STYLER_ALIGN": "文字對齊",
   "LIVE_DEV_STYLER_BORDER": "邊框",
+  "LIVE_DEV_STYLER_SPACING": "盒子模型",
   "LIVE_DEV_STYLER_LAYOUT": "版面配置",
   "LIVE_DEV_STYLER_TEXT_STYLE": "文字樣式",
   "LIVE_DEV_STYLER_DOCK_TOP": "停靠至頂端",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "LIVE_DEV_STYLER_SPACING": "盒子模型"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "推薦 — 使用您的 Claude Code 模型設定",
+  "AI_CHAT_MODEL_DESC_FABLE": "最智慧的模型 — 僅在您的方案具有 Fable 存取權限時可用",
+  "AI_CHAT_MODEL_DESC_OPUS": "功能強大的模型，適用於複雜任務",
+  "AI_CHAT_MODEL_DESC_SONNET": "兼具速度與能力，適用於日常編碼",
+  "AI_CHAT_MODEL_DESC_HAIKU": "速度最快的模型，適用於快速、簡單的任務"
 });

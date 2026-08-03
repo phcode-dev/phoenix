@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Bakgrundsfärg",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Textfärg",
   "LIVE_DEV_STYLER_FONT": "Teckensnitt",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Standard",
   "LIVE_DEV_STYLER_SIZE": "Teckenstorlek",
   "LIVE_DEV_STYLER_WEIGHT": "Teckensnittsvikt",
   "LIVE_DEV_STYLER_ALIGN": "Textjustering",
   "LIVE_DEV_STYLER_BORDER": "Kantlinje",
+  "LIVE_DEV_STYLER_SPACING": "Boxmodellen",
   "LIVE_DEV_STYLER_LAYOUT": "Layout",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Textstil",
   "LIVE_DEV_STYLER_DOCK_TOP": "Docka högst upp",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Standard",
-  "LIVE_DEV_STYLER_SPACING": "Boxmodellen"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Rekommenderas — använder din Claude Code-modellinställning",
+  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligenta modellen — endast om ditt abonnemang ger Fable-åtkomst",
+  "AI_CHAT_MODEL_DESC_OPUS": "Kraftfull modell för komplexa uppgifter",
+  "AI_CHAT_MODEL_DESC_SONNET": "Balanserad hastighet och kapacitet för daglig kodning",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Snabbaste modellen för snabba, enkla uppgifter"
 });

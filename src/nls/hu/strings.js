@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Háttérszín",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Szövegszín",
   "LIVE_DEV_STYLER_FONT": "Betűtípus",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Alapértelmezett",
   "LIVE_DEV_STYLER_SIZE": "Betűméret",
   "LIVE_DEV_STYLER_WEIGHT": "Betűvastagság",
   "LIVE_DEV_STYLER_ALIGN": "Szövegigazítás",
   "LIVE_DEV_STYLER_BORDER": "Szegély",
+  "LIVE_DEV_STYLER_SPACING": "Dobozmodell",
   "LIVE_DEV_STYLER_LAYOUT": "Elrendezés",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Szövegstílus",
   "LIVE_DEV_STYLER_DOCK_TOP": "Dokkolás felülre",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Alapértelmezett",
-  "LIVE_DEV_STYLER_SPACING": "Dobozmodell"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Ajánlott — a Claude Code modellbeállításodat használja",
+  "AI_CHAT_MODEL_DESC_FABLE": "A legintelligensebb modell — csak ha a csomagod Fable-hozzáférést tartalmaz",
+  "AI_CHAT_MODEL_DESC_OPUS": "Erőteljes modell összetett feladatokhoz",
+  "AI_CHAT_MODEL_DESC_SONNET": "Kiegyensúlyozott sebesség és képesség a mindennapi kódoláshoz",
+  "AI_CHAT_MODEL_DESC_HAIKU": "A leggyorsabb modell gyors, egyszerű feladatokhoz"
 });

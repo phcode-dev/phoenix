@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "Fonta svars",
   "LIVE_DEV_STYLER_ALIGN": "Teksta līdzinājums",
   "LIVE_DEV_STYLER_BORDER": "Apmale",
+  "LIVE_DEV_STYLER_SPACING": "Kastes modelis",
   "LIVE_DEV_STYLER_LAYOUT": "Izkārtojums",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Teksta stils",
   "LIVE_DEV_STYLER_DOCK_TOP": "Piestiprināt augšpusē",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "LIVE_DEV_STYLER_SPACING": "Kastes modelis"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Ieteicams — izmanto jūsu Claude Code modeļa iestatījumu",
+  "AI_CHAT_MODEL_DESC_FABLE": "Vissaprātīgākais modelis — tikai tad, ja jūsu plānam ir Fable piekļuve",
+  "AI_CHAT_MODEL_DESC_OPUS": "Jaudīgs modelis sarežģītiem uzdevumiem",
+  "AI_CHAT_MODEL_DESC_SONNET": "Līdzsvarots ātrums un veiktspēja ikdienas kodēšanai",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Visātrākais modelis ātriem, vienkāršiem uzdevumiem"
 });

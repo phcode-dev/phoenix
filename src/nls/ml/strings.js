@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "പശ്ചാത്തല നിറം",
   "LIVE_DEV_STYLER_TEXT_COLOR": "ടെക്സ്റ്റ് നിറം",
   "LIVE_DEV_STYLER_FONT": "ഫോണ്ട് ഫാമിലി",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "ഡിഫോൾട്ട്",
   "LIVE_DEV_STYLER_SIZE": "ഫോണ്ട് വലുപ്പം",
   "LIVE_DEV_STYLER_WEIGHT": "ഫോണ്ട് വെയിറ്റ്",
   "LIVE_DEV_STYLER_ALIGN": "ടെക്സ്റ്റ് അലൈൻമെൻ്റ്",
   "LIVE_DEV_STYLER_BORDER": "ബോർഡർ",
+  "LIVE_DEV_STYLER_SPACING": "ബോക്സ് മോഡൽ",
   "LIVE_DEV_STYLER_LAYOUT": "ലേഔട്ട്",
   "LIVE_DEV_STYLER_TEXT_STYLE": "ടെക്സ്റ്റ് ശൈലി",
   "LIVE_DEV_STYLER_DOCK_TOP": "മുകളിലേക്ക് ഡോക്ക് ചെയ്യുക",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "ഡിഫോൾട്ട്",
-  "LIVE_DEV_STYLER_SPACING": "ബോക്സ് മോഡൽ"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "ശുപാർശ ചെയ്യുന്നത് — നിങ്ങളുടെ ക്ലോഡ് കോഡ് മോഡൽ ക്രമീകരണം ഉപയോഗിക്കുന്നു",
+  "AI_CHAT_MODEL_DESC_FABLE": "ഏറ്റവും ബുദ്ധിയുള്ള മോഡൽ — നിങ്ങളുടെ പ്ലാനിന് ഫേബിൾ ആക്‌സസ് ഉണ്ടെങ്കിൽ മാത്രം",
+  "AI_CHAT_MODEL_DESC_OPUS": "സങ്കീർണ്ണമായ ജോലികൾക്കുള്ള ശക്തമായ മോഡൽ",
+  "AI_CHAT_MODEL_DESC_SONNET": "ദൈനംദിന കോഡിംഗിനുള്ള സന്തുലിതമായ വേഗതയും കഴിവും",
+  "AI_CHAT_MODEL_DESC_HAIKU": "വേഗമേറിയതും ലളിതവുമായ ജോലികൾക്കുള്ള ഏറ്റവും വേഗതയേറിയ മോഡൽ"
 });

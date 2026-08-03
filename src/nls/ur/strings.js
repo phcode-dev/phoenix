@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "پس منظر کا رنگ",
   "LIVE_DEV_STYLER_TEXT_COLOR": "متن کا رنگ",
   "LIVE_DEV_STYLER_FONT": "فونٹ فیملی",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "ڈیفالٹ",
   "LIVE_DEV_STYLER_SIZE": "فونٹ کا سائز",
   "LIVE_DEV_STYLER_WEIGHT": "فونٹ کا وزن",
   "LIVE_DEV_STYLER_ALIGN": "متن کی سیدھ",
   "LIVE_DEV_STYLER_BORDER": "بارڈر",
+  "LIVE_DEV_STYLER_SPACING": "باکس ماڈل",
   "LIVE_DEV_STYLER_LAYOUT": "لے آؤٹ",
   "LIVE_DEV_STYLER_TEXT_STYLE": "متن کا انداز",
   "LIVE_DEV_STYLER_DOCK_TOP": "اوپر منسلک کریں",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "ڈیفالٹ",
-  "LIVE_DEV_STYLER_SPACING": "باکس ماڈل"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "تجویز کردہ — آپ کی کلاڈ کوڈ ماڈل سیٹنگ استعمال کرتا ہے",
+  "AI_CHAT_MODEL_DESC_FABLE": "سب سے ذہین ماڈل — صرف اس صورت میں جب آپ کے پلان میں Fable تک رسائی ہو",
+  "AI_CHAT_MODEL_DESC_OPUS": "پیچیدہ کاموں کے لیے طاقتور ماڈل",
+  "AI_CHAT_MODEL_DESC_SONNET": "روزمرہ کوڈنگ کے لیے متوازن رفتار اور قابلیت",
+  "AI_CHAT_MODEL_DESC_HAIKU": "فوری، سادہ کاموں کے لیے تیز ترین ماڈل"
 });
