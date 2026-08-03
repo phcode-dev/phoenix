@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Achtergrondkleur",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Tekstkleur",
   "LIVE_DEV_STYLER_FONT": "Lettertype",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Standaard",
   "LIVE_DEV_STYLER_SIZE": "Lettergrootte",
   "LIVE_DEV_STYLER_WEIGHT": "Letterdikte",
   "LIVE_DEV_STYLER_ALIGN": "Tekstuitlijning",
   "LIVE_DEV_STYLER_BORDER": "Rand",
+  "LIVE_DEV_STYLER_SPACING": "Boxmodel",
   "LIVE_DEV_STYLER_LAYOUT": "Lay-out",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Tekststijl",
   "LIVE_DEV_STYLER_DOCK_TOP": "Bovenaan vastmaken",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Standaard",
-  "LIVE_DEV_STYLER_SPACING": "Boxmodel"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Aanbevolen — gebruikt je Claude Code-modelinstelling",
+  "AI_CHAT_MODEL_DESC_FABLE": "Meest intelligente model — alleen als je abonnement Fable-toegang heeft",
+  "AI_CHAT_MODEL_DESC_OPUS": "Krachtig model voor complexe taken",
+  "AI_CHAT_MODEL_DESC_SONNET": "Gebalanceerde snelheid en capaciteit voor dagelijks coderen",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Snelste model voor snelle, eenvoudige taken"
 });

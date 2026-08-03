@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "Schriftgewicht",
   "LIVE_DEV_STYLER_ALIGN": "Textausrichtung",
   "LIVE_DEV_STYLER_BORDER": "Rahmen",
+  "LIVE_DEV_STYLER_SPACING": "Box-Modell",
   "LIVE_DEV_STYLER_LAYOUT": "Layout",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Textstil",
   "LIVE_DEV_STYLER_DOCK_TOP": "Oben andocken",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "LIVE_DEV_STYLER_SPACING": "Box-Modell"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Empfohlen – verwendet Ihre Claude-Code-Modelleinstellung",
+  "AI_CHAT_MODEL_DESC_FABLE": "Intelligentestes Modell – nur wenn Ihr Tarif Zugriff auf Fable hat",
+  "AI_CHAT_MODEL_DESC_OPUS": "Leistungsstarkes Modell für komplexe Aufgaben",
+  "AI_CHAT_MODEL_DESC_SONNET": "Ausgewogene Geschwindigkeit und Leistung für alltägliche Programmieraufgaben",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Schnellstes Modell für schnelle, einfache Aufgaben"
 });

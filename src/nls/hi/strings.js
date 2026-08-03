@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "बैकग्राउंड रंग",
   "LIVE_DEV_STYLER_TEXT_COLOR": "टेक्स्ट रंग",
   "LIVE_DEV_STYLER_FONT": "फ़ॉन्ट परिवार",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "डिफ़ॉल्ट",
   "LIVE_DEV_STYLER_SIZE": "फ़ॉन्ट आकार",
   "LIVE_DEV_STYLER_WEIGHT": "फ़ॉन्ट वज़न",
   "LIVE_DEV_STYLER_ALIGN": "टेक्स्ट संरेखण",
   "LIVE_DEV_STYLER_BORDER": "बॉर्डर",
+  "LIVE_DEV_STYLER_SPACING": "बॉक्स मॉडल",
   "LIVE_DEV_STYLER_LAYOUT": "लेआउट",
   "LIVE_DEV_STYLER_TEXT_STYLE": "टेक्स्ट शैली",
   "LIVE_DEV_STYLER_DOCK_TOP": "शीर्ष पर डॉक करें",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "डिफ़ॉल्ट",
-  "LIVE_DEV_STYLER_SPACING": "बॉक्स मॉडल"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "अनुशंसित — आपके Claude Code मॉडल सेटिंग का उपयोग करता है",
+  "AI_CHAT_MODEL_DESC_FABLE": "सबसे बुद्धिमान मॉडल — केवल अगर आपकी योजना में Fable तक पहुंच है",
+  "AI_CHAT_MODEL_DESC_OPUS": "जटिल कार्यों के लिए शक्तिशाली मॉडल",
+  "AI_CHAT_MODEL_DESC_SONNET": "रोज़मर्रा की कोडिंग के लिए संतुलित गति और क्षमता",
+  "AI_CHAT_MODEL_DESC_HAIKU": "त्वरित, सरल कार्यों के लिए सबसे तेज़ मॉडल"
 });

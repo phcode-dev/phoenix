@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Boja pozadine",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Boja teksta",
   "LIVE_DEV_STYLER_FONT": "Obitelj fontova",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Zadano",
   "LIVE_DEV_STYLER_SIZE": "Veličina fonta",
   "LIVE_DEV_STYLER_WEIGHT": "Debljina fonta",
   "LIVE_DEV_STYLER_ALIGN": "Poravnanje teksta",
   "LIVE_DEV_STYLER_BORDER": "Obrub",
+  "LIVE_DEV_STYLER_SPACING": "Model okvira",
   "LIVE_DEV_STYLER_LAYOUT": "Raspored",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Stil teksta",
   "LIVE_DEV_STYLER_DOCK_TOP": "Pričvrsti na vrh",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Zadano",
-  "LIVE_DEV_STYLER_SPACING": "Model okvira"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Preporučeno — koristi vašu postavku modela Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Najinteligentniji model — samo ako vaš plan ima pristup Fableu",
+  "AI_CHAT_MODEL_DESC_OPUS": "Snažan model za složene zadatke",
+  "AI_CHAT_MODEL_DESC_SONNET": "Uravnotežena brzina i sposobnost za svakodnevno kodiranje",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Najbrži model za brze, jednostavne zadatke"
 });

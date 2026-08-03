@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Warna latar belakang",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Warna teks",
   "LIVE_DEV_STYLER_FONT": "Jenis font",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Bawaan",
   "LIVE_DEV_STYLER_SIZE": "Ukuran font",
   "LIVE_DEV_STYLER_WEIGHT": "Ketebalan font",
   "LIVE_DEV_STYLER_ALIGN": "Perataan teks",
   "LIVE_DEV_STYLER_BORDER": "Garis tepi",
+  "LIVE_DEV_STYLER_SPACING": "Box model",
   "LIVE_DEV_STYLER_LAYOUT": "Tata letak",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Gaya teks",
   "LIVE_DEV_STYLER_DOCK_TOP": "Sematkan ke atas",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Bawaan",
-  "LIVE_DEV_STYLER_SPACING": "Box model"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Direkomendasikan — menggunakan pengaturan model Claude Code Anda",
+  "AI_CHAT_MODEL_DESC_FABLE": "Model paling cerdas — hanya jika paket Anda memiliki akses Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Model andal untuk tugas-tugas kompleks",
+  "AI_CHAT_MODEL_DESC_SONNET": "Keseimbangan kecepatan dan kemampuan untuk pengodean sehari-hari",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Model tercepat untuk tugas-tugas cepat dan sederhana"
 });

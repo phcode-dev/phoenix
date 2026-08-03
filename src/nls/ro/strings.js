@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Culoare de fundal",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Culoare text",
   "LIVE_DEV_STYLER_FONT": "Familie de fonturi",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Implicit",
   "LIVE_DEV_STYLER_SIZE": "Dimensiune font",
   "LIVE_DEV_STYLER_WEIGHT": "Grosime font",
   "LIVE_DEV_STYLER_ALIGN": "Aliniere text",
   "LIVE_DEV_STYLER_BORDER": "Bordură",
+  "LIVE_DEV_STYLER_SPACING": "Model de casetă",
   "LIVE_DEV_STYLER_LAYOUT": "Aranjament",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Stil text",
   "LIVE_DEV_STYLER_DOCK_TOP": "Ancorare sus",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Implicit",
-  "LIVE_DEV_STYLER_SPACING": "Model de casetă"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Recomandat — utilizează setarea dvs. pentru modelul Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Cel mai inteligent model — doar dacă planul dvs. are acces la Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Model puternic pentru sarcini complexe",
+  "AI_CHAT_MODEL_DESC_SONNET": "Echilibru între viteză și capacitate pentru programarea de zi cu zi",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Cel mai rapid model pentru sarcini rapide și simple"
 });

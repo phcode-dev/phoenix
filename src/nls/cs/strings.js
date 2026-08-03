@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "Tloušťka písma",
   "LIVE_DEV_STYLER_ALIGN": "Zarovnání textu",
   "LIVE_DEV_STYLER_BORDER": "Ohraničení",
+  "LIVE_DEV_STYLER_SPACING": "Krabicový model",
   "LIVE_DEV_STYLER_LAYOUT": "Rozvržení",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Styl textu",
   "LIVE_DEV_STYLER_DOCK_TOP": "Ukotvit nahoru",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "LIVE_DEV_STYLER_SPACING": "Krabicový model"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Doporučeno — použije vaše nastavení modelu Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Nejinteligentnější model — pouze pokud váš tarif zahrnuje přístup k Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Výkonný model pro složité úkoly",
+  "AI_CHAT_MODEL_DESC_SONNET": "Vyvážená rychlost a schopnosti pro každodenní kódování",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Nejrychlejší model pro rychlé a jednoduché úkoly"
 });

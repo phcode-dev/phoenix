@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "رنگ پس‌زمینه",
   "LIVE_DEV_STYLER_TEXT_COLOR": "رنگ متن",
   "LIVE_DEV_STYLER_FONT": "خانواده فونت",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "پیش‌فرض",
   "LIVE_DEV_STYLER_SIZE": "اندازه فونت",
   "LIVE_DEV_STYLER_WEIGHT": "ضخامت فونت",
   "LIVE_DEV_STYLER_ALIGN": "ترازبندی متن",
   "LIVE_DEV_STYLER_BORDER": "حاشیه",
+  "LIVE_DEV_STYLER_SPACING": "مدل جعبه",
   "LIVE_DEV_STYLER_LAYOUT": "چیدمان",
   "LIVE_DEV_STYLER_TEXT_STYLE": "سبک متن",
   "LIVE_DEV_STYLER_DOCK_TOP": "اتصال به بالا",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "پیش‌فرض",
-  "LIVE_DEV_STYLER_SPACING": "مدل جعبه"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "توصیه‌شده — از تنظیمات مدل Claude Code شما استفاده می‌کند",
+  "AI_CHAT_MODEL_DESC_FABLE": "هوشمندترین مدل — فقط در صورتی که طرح شما دسترسی به Fable داشته باشد",
+  "AI_CHAT_MODEL_DESC_OPUS": "مدل قدرتمند برای وظایف پیچیده",
+  "AI_CHAT_MODEL_DESC_SONNET": "تعادل بین سرعت و قابلیت برای کدنویسی روزمره",
+  "AI_CHAT_MODEL_DESC_HAIKU": "سریع‌ترین مدل برای وظایف سریع و ساده"
 });

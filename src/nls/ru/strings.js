@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Цвет фона",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Цвет текста",
   "LIVE_DEV_STYLER_FONT": "Шрифт",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "По умолчанию",
   "LIVE_DEV_STYLER_SIZE": "Размер шрифта",
   "LIVE_DEV_STYLER_WEIGHT": "Начертание",
   "LIVE_DEV_STYLER_ALIGN": "Выравнивание текста",
   "LIVE_DEV_STYLER_BORDER": "Рамка",
+  "LIVE_DEV_STYLER_SPACING": "Блочная модель",
   "LIVE_DEV_STYLER_LAYOUT": "Макет",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Стиль текста",
   "LIVE_DEV_STYLER_DOCK_TOP": "Прикрепить сверху",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "По умолчанию",
-  "LIVE_DEV_STYLER_SPACING": "Блочная модель"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Рекомендуется — использует вашу настройку модели Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Самая интеллектуальная модель — только если ваш тарифный план включает доступ к Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Мощная модель для сложных задач",
+  "AI_CHAT_MODEL_DESC_SONNET": "Сбалансированное сочетание скорости и возможностей для повседневного написания кода",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Самая быстрая модель для быстрых и простых задач"
 });

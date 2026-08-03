@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Cor de fundo",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Cor do texto",
   "LIVE_DEV_STYLER_FONT": "Família de fonte",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Padrão",
   "LIVE_DEV_STYLER_SIZE": "Tamanho da fonte",
   "LIVE_DEV_STYLER_WEIGHT": "Peso da fonte",
   "LIVE_DEV_STYLER_ALIGN": "Alinhamento do texto",
   "LIVE_DEV_STYLER_BORDER": "Bordo",
+  "LIVE_DEV_STYLER_SPACING": "Modelo de caixa",
   "LIVE_DEV_STYLER_LAYOUT": "Disposição",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Estilo do texto",
   "LIVE_DEV_STYLER_DOCK_TOP": "Ancorar no topo",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Padrão",
-  "LIVE_DEV_STYLER_SPACING": "Modelo de caixa"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Recomendado — utiliza a sua definição de modelo Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Modelo mais inteligente — apenas se o seu plano tiver acesso ao Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Modelo poderoso para tarefas complexas",
+  "AI_CHAT_MODEL_DESC_SONNET": "Velocidade e capacidade equilibradas para programação do dia a dia",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Modelo mais rápido para tarefas rápidas e simples"
 });

@@ -177,10 +177,12 @@ define({
   "LIVE_DEV_STYLER_BACKGROUND": "Arka plan rengi",
   "LIVE_DEV_STYLER_TEXT_COLOR": "Metin rengi",
   "LIVE_DEV_STYLER_FONT": "Yazı tipi ailesi",
+  "LIVE_DEV_STYLER_FONT_DEFAULT": "Varsayılan",
   "LIVE_DEV_STYLER_SIZE": "Yazı tipi boyutu",
   "LIVE_DEV_STYLER_WEIGHT": "Yazı tipi kalınlığı",
   "LIVE_DEV_STYLER_ALIGN": "Metin hizalama",
   "LIVE_DEV_STYLER_BORDER": "Kenarlık",
+  "LIVE_DEV_STYLER_SPACING": "Kutu modeli",
   "LIVE_DEV_STYLER_LAYOUT": "Düzen",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Metin stili",
   "LIVE_DEV_STYLER_DOCK_TOP": "Üste sabitle",
@@ -2620,6 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "LIVE_DEV_STYLER_FONT_DEFAULT": "Varsayılan",
-  "LIVE_DEV_STYLER_SPACING": "Kutu modeli"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Önerilen — Claude Code model ayarınızı kullanır",
+  "AI_CHAT_MODEL_DESC_FABLE": "En akıllı model — yalnızca planınızda Fable erişimi varsa",
+  "AI_CHAT_MODEL_DESC_OPUS": "Karmaşık görevler için güçlü model",
+  "AI_CHAT_MODEL_DESC_SONNET": "Günlük kodlama için dengeli hız ve yetenek",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Çabuk, basit görevler için en hızlı model"
 });

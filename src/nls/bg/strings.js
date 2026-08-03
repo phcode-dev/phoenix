@@ -182,6 +182,7 @@ define({
   "LIVE_DEV_STYLER_WEIGHT": "Дебелина на шрифта",
   "LIVE_DEV_STYLER_ALIGN": "Подравняване на текста",
   "LIVE_DEV_STYLER_BORDER": "Рамка",
+  "LIVE_DEV_STYLER_SPACING": "Кутиен модел",
   "LIVE_DEV_STYLER_LAYOUT": "Оформление",
   "LIVE_DEV_STYLER_TEXT_STYLE": "Стил на текста",
   "LIVE_DEV_STYLER_DOCK_TOP": "Закачи отгоре",
@@ -2621,5 +2622,9 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "LIVE_DEV_STYLER_SPACING": "Кутиен модел"
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Препоръчително — използва настройката ви за модел Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Най-интелигентният модел — само ако планът ви има достъп до Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Мощен модел за сложни задачи",
+  "AI_CHAT_MODEL_DESC_SONNET": "Балансирана скорост и възможности за ежедневно програмиране",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Най-бързият модел за бързи, прости задачи"
 });
