@@ -4,7 +4,7 @@ We are continuously adding features every week. [Check out our release page to s
 
 Here's a list of top features recently added to Phoenix Code:
 
-## Style Your Page Visually with the Styles Bar
+## [Style Your Page Visually with the Styles Bar](https://docs.phcode.dev/app-links/styles-bar)
 
 `Added in August 2026`
 
@@ -12,7 +12,9 @@ The new Styles Bar in Live Preview lets you style any element on your page visua
 
 Browse and search Google Fonts or system fonts. Starting from scratch? A blank page now shows a starter bar so you can add your first element right from the preview.
 
-## Code Intelligence for JavaScript, TypeScript, JSON, Python, and PHP
+![Image](https://docs-images.phcode.dev/in-app/pro-stylesBar.png)
+
+## [Code Intelligence for JavaScript, TypeScript, JSON, Python, and PHP](https://docs.phcode.dev/app-links/code-intelligence)
 
 `Added in August 2026`
 
@@ -27,7 +29,9 @@ Language servers are downloaded and set up automatically in the background - no 
 
 > This feature is available only in desktop apps.
 
-## Choose Your AI Model/Disable AI
+![Image](https://docs-images.phcode.dev/in-app/codeIntelligence.png)
+
+## [Choose Your AI Model/Disable AI](https://docs.phcode.dev/app-links/ai-models)
 
 `Added in August 2026`
 
@@ -35,11 +39,15 @@ Pick which Claude model powers your AI chat, right from the chat panel. AI can n
 
 > This feature is available only in desktop apps.
 
-## Video and Audio Preview
+![Image](https://docs-images.phcode.dev/in-app/pro-aiModels.png)
+
+## [Video and Audio Preview](https://docs.phcode.dev/app-links/video-audio-preview)
 
 `Added in August 2026`
 
 Click a video or audio file in your project to play it right inside the editor, just like image preview.
+
+![Image](https://docs-images.phcode.dev/in-app/videoAudioPreview.jpg)
 
 ## [Try ideas, build pages, and fix issues with AI](https://docs.phcode.dev/app-links/ai-chat)
 
