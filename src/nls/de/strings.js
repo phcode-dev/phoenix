@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "direkt auf dem Element",
   "LIVE_DEV_STYLER_TARGET_COUNT": "betrifft {0} auf der Seite",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Neue Regel in {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Neuer Stil…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Neuer Stil",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Fügt diesem Element die Klasse „{0}“ hinzu und speichert den Stil in {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Gibt diesem Element die ID „{0}“ und speichert den Stil in {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Speichert den Stil in {0} – formatiert nur dieses Element",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Geben Sie /login in das sich öffnende Terminal ein und senden Sie dann Ihre Nachricht erneut.",
   "AI_CHAT_MODEL_DEFAULT": "Standard",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Aktuell {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Empfohlen – verwendet Ihre Claude-Code-Modelleinstellung",
+  "AI_CHAT_MODEL_DESC_FABLE": "Intelligentestes Modell – nur wenn Ihr Tarif Zugriff auf Fable hat",
+  "AI_CHAT_MODEL_DESC_OPUS": "Leistungsstarkes Modell für komplexe Aufgaben",
+  "AI_CHAT_MODEL_DESC_SONNET": "Ausgewogene Geschwindigkeit und Leistung für alltägliche Programmieraufgaben",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Schnellstes Modell für schnelle, einfache Aufgaben",
   "AI_CHAT_MODEL_SELECT_TITLE": "Wählen Sie das KI-Modell für diesen Chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Zu {0} gewechselt. Gilt ab Ihrer nächsten Nachricht; die erste Antwort kann einen Moment länger dauern, während der Cache neu aufgebaut wird.",
   "AI_CHAT_INPUT_HINT": "{0} zum Senden · {1} für neue Zeile",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Empfohlen – verwendet Ihre Claude-Code-Modelleinstellung",
-  "AI_CHAT_MODEL_DESC_FABLE": "Intelligentestes Modell – nur wenn Ihr Tarif Zugriff auf Fable hat",
-  "AI_CHAT_MODEL_DESC_OPUS": "Leistungsstarkes Modell für komplexe Aufgaben",
-  "AI_CHAT_MODEL_DESC_SONNET": "Ausgewogene Geschwindigkeit und Leistung für alltägliche Programmieraufgaben",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Schnellstes Modell für schnelle, einfache Aufgaben"
+  "LIVE_DEV_STYLER_NEW_RULE": "Neue Regel erstellen…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Neue Regel erstellen"
 });

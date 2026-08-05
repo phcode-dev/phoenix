@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "tieši elementā",
   "LIVE_DEV_STYLER_TARGET_COUNT": "ietekmē {0} lapā",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Jauna kārtula {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Jauns stils…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Jauns stils",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Pievieno klasi “{0}” šim elementam un saglabā stilu {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Piešķir šim elementam ID “{0}” un saglabā stilu {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Saglabā stilu {0} – stilizē tikai šo elementu",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Atvērtajā terminālī ierakstiet /login, pēc tam nosūtiet savu ziņu vēlreiz.",
   "AI_CHAT_MODEL_DEFAULT": "Noklusējums",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Pašlaik {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Ieteicams — izmanto jūsu Claude Code modeļa iestatījumu",
+  "AI_CHAT_MODEL_DESC_FABLE": "Vissaprātīgākais modelis — tikai tad, ja jūsu plānam ir Fable piekļuve",
+  "AI_CHAT_MODEL_DESC_OPUS": "Jaudīgs modelis sarežģītiem uzdevumiem",
+  "AI_CHAT_MODEL_DESC_SONNET": "Līdzsvarots ātrums un veiktspēja ikdienas kodēšanai",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Visātrākais modelis ātriem, vienkāršiem uzdevumiem",
   "AI_CHAT_MODEL_SELECT_TITLE": "Izvēlieties MI modeli šai sarakstei",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Pārslēgts uz {0}. Attiecas uz nākamo ziņu; pirmā atbilde var aizņemt nedaudz ilgāku laiku, kamēr tiek atjaunota kešatmiņa.",
   "AI_CHAT_INPUT_HINT": "Nospiediet {0}, lai nosūtītu · {1} jaunai rindai",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Ieteicams — izmanto jūsu Claude Code modeļa iestatījumu",
-  "AI_CHAT_MODEL_DESC_FABLE": "Vissaprātīgākais modelis — tikai tad, ja jūsu plānam ir Fable piekļuve",
-  "AI_CHAT_MODEL_DESC_OPUS": "Jaudīgs modelis sarežģītiem uzdevumiem",
-  "AI_CHAT_MODEL_DESC_SONNET": "Līdzsvarots ātrums un veiktspēja ikdienas kodēšanai",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Visātrākais modelis ātriem, vienkāršiem uzdevumiem"
+  "LIVE_DEV_STYLER_NEW_RULE": "Izveidot jaunu kārtulu…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Izveidot jaunu kārtulu"
 });

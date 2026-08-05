@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "直接在元素上",
   "LIVE_DEV_STYLER_TARGET_COUNT": "影响页面上的 {0}",
   "LIVE_DEV_STYLER_TARGET_CREATE": "在 {0} 中新建规则",
-  "LIVE_DEV_STYLER_NEW_STYLE": "新建样式…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "新样式",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "将类“{0}”添加到此元素，并将样式保存在 {1} 中",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "为此元素指定 ID“{0}”，并将样式保存在 {1} 中",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "将样式保存在 {0} 中 - 仅为此元素设置样式",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "在打开的终端中输入 /login，然后再次发送您的消息。",
   "AI_CHAT_MODEL_DEFAULT": "默认",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "当前为 {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "推荐 — 使用您的 Claude Code 模型设置",
+  "AI_CHAT_MODEL_DESC_FABLE": "最智能的模型 — 仅限拥有 Fable 访问权限的方案",
+  "AI_CHAT_MODEL_DESC_OPUS": "功能强大的模型，适用于复杂任务",
+  "AI_CHAT_MODEL_DESC_SONNET": "兼顾速度与性能，适用于日常编码",
+  "AI_CHAT_MODEL_DESC_HAIKU": "速度最快的模型，适用于快速、简单的任务",
   "AI_CHAT_MODEL_SELECT_TITLE": "为此聊天选择 AI 模型",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "已切换到 {0}。此设置将从您的下一条消息开始生效；在缓存重建期间，首次响应可能会稍有延迟。",
   "AI_CHAT_INPUT_HINT": "按下 {0} 发送 · {1} 换行",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "推荐 — 使用您的 Claude Code 模型设置",
-  "AI_CHAT_MODEL_DESC_FABLE": "最智能的模型 — 仅限拥有 Fable 访问权限的方案",
-  "AI_CHAT_MODEL_DESC_OPUS": "功能强大的模型，适用于复杂任务",
-  "AI_CHAT_MODEL_DESC_SONNET": "兼顾速度与性能，适用于日常编码",
-  "AI_CHAT_MODEL_DESC_HAIKU": "速度最快的模型，适用于快速、简单的任务"
+  "LIVE_DEV_STYLER_NEW_RULE": "新建规则…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "新建规则"
 });

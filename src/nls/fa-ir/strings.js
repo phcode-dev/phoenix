@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "مستقیماً روی عنصر",
   "LIVE_DEV_STYLER_TARGET_COUNT": "روی {0} مورد در صفحه تأثیر می‌گذارد",
   "LIVE_DEV_STYLER_TARGET_CREATE": "قانون جدید در {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "استایل جدید…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "استایل جدید",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "کلاس «{0}» را به این عنصر اضافه کرده و استایل را در {1} ذخیره می‌کند",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "به این عنصر شناسهٔ «{0}» را داده و استایل را در {1} ذخیره می‌کند",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "استایل را در {0} ذخیره می‌کند - فقط روی همین عنصر اعمال می‌شود",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "در ترمینالی که باز می‌شود /login را تایپ کنید، سپس پیام خود را دوباره ارسال کنید.",
   "AI_CHAT_MODEL_DEFAULT": "پیش‌فرض",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "در حال حاضر {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "توصیه‌شده — از تنظیمات مدل Claude Code شما استفاده می‌کند",
+  "AI_CHAT_MODEL_DESC_FABLE": "هوشمندترین مدل — فقط در صورتی که طرح شما دسترسی به Fable داشته باشد",
+  "AI_CHAT_MODEL_DESC_OPUS": "مدل قدرتمند برای وظایف پیچیده",
+  "AI_CHAT_MODEL_DESC_SONNET": "تعادل بین سرعت و قابلیت برای کدنویسی روزمره",
+  "AI_CHAT_MODEL_DESC_HAIKU": "سریع‌ترین مدل برای وظایف سریع و ساده",
   "AI_CHAT_MODEL_SELECT_TITLE": "مدل هوش مصنوعی برای این گفتگو را انتخاب کنید",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "به {0} تغییر یافت. از پیام بعدی شما اعمال می‌شود؛ اولین پاسخ ممکن است در حین بازسازی کش، کمی بیشتر طول بکشد.",
   "AI_CHAT_INPUT_HINT": "برای ارسال {0} را فشار دهید · {1} برای خط جدید",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "توصیه‌شده — از تنظیمات مدل Claude Code شما استفاده می‌کند",
-  "AI_CHAT_MODEL_DESC_FABLE": "هوشمندترین مدل — فقط در صورتی که طرح شما دسترسی به Fable داشته باشد",
-  "AI_CHAT_MODEL_DESC_OPUS": "مدل قدرتمند برای وظایف پیچیده",
-  "AI_CHAT_MODEL_DESC_SONNET": "تعادل بین سرعت و قابلیت برای کدنویسی روزمره",
-  "AI_CHAT_MODEL_DESC_HAIKU": "سریع‌ترین مدل برای وظایف سریع و ساده"
+  "LIVE_DEV_STYLER_NEW_RULE": "ایجاد قاعدهٔ جدید…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "ایجاد قاعدهٔ جدید"
 });

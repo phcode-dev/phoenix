@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "langsung pada elemen",
   "LIVE_DEV_STYLER_TARGET_COUNT": "Memengaruhi {0} di halaman",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Aturan baru di {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Gaya baru...",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Gaya baru",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Menambahkan kelas \"{0}\" ke elemen ini dan menyimpan gaya di {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Memberikan id \"{0}\" pada elemen ini dan menyimpan gaya di {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Menyimpan gaya di {0} - hanya menata gaya elemen ini",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Ketik /login di terminal yang terbuka, lalu kirim ulang pesan Anda.",
   "AI_CHAT_MODEL_DEFAULT": "Bawaan",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Saat ini {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Direkomendasikan — menggunakan pengaturan model Claude Code Anda",
+  "AI_CHAT_MODEL_DESC_FABLE": "Model paling cerdas — hanya jika paket Anda memiliki akses Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Model andal untuk tugas-tugas kompleks",
+  "AI_CHAT_MODEL_DESC_SONNET": "Keseimbangan kecepatan dan kemampuan untuk pengodean sehari-hari",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Model tercepat untuk tugas-tugas cepat dan sederhana",
   "AI_CHAT_MODEL_SELECT_TITLE": "Pilih model AI untuk obrolan ini",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Beralih ke {0}. Berlaku untuk pesan Anda berikutnya; respons pertama mungkin memerlukan waktu lebih lama selagi cache dibuat ulang.",
   "AI_CHAT_INPUT_HINT": "Tekan {0} untuk mengirim · {1} untuk baris baru",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Direkomendasikan — menggunakan pengaturan model Claude Code Anda",
-  "AI_CHAT_MODEL_DESC_FABLE": "Model paling cerdas — hanya jika paket Anda memiliki akses Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Model andal untuk tugas-tugas kompleks",
-  "AI_CHAT_MODEL_DESC_SONNET": "Keseimbangan kecepatan dan kemampuan untuk pengodean sehari-hari",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Model tercepat untuk tugas-tugas cepat dan sederhana"
+  "LIVE_DEV_STYLER_NEW_RULE": "Buat aturan baru…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Buat aturan baru"
 });

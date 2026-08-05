@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "bezpośrednio na elemencie",
   "LIVE_DEV_STYLER_TARGET_COUNT": "wpływa na {0} na stronie",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Nowa reguła w {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Nowy styl…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Nowy styl",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Dodaje klasę \"{0}\" do tego elementu i zapisuje styl w {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Nadaje temu elementowi ID \"{0}\" i zapisuje styl w {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Zapisuje styl w {0} - stylizuje tylko ten element",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Wpisz /login w terminalu, który się otworzy, a następnie wyślij wiadomość ponownie.",
   "AI_CHAT_MODEL_DEFAULT": "Domyślnie",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Obecnie {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Zalecane — korzysta z Twojego ustawienia modelu Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Najinteligentniejszy model — tylko jeśli Twój plan obejmuje dostęp do Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Potężny model do złożonych zadań",
+  "AI_CHAT_MODEL_DESC_SONNET": "Zrównoważona szybkość i możliwości do codziennego kodowania",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Najszybszy model do szybkich, prostych zadań",
   "AI_CHAT_MODEL_SELECT_TITLE": "Wybierz model AI dla tego czatu",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Przełączono na {0}. Zmiana obowiązuje od następnej wiadomości; pierwsza odpowiedź może potrwać chwilę dłużej podczas przebudowy pamięci podręcznej.",
   "AI_CHAT_INPUT_HINT": "Naciśnij {0}, aby wysłać · {1} dla nowej linii",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Zalecane — korzysta z Twojego ustawienia modelu Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Najinteligentniejszy model — tylko jeśli Twój plan obejmuje dostęp do Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Potężny model do złożonych zadań",
-  "AI_CHAT_MODEL_DESC_SONNET": "Zrównoważona szybkość i możliwości do codziennego kodowania",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Najszybszy model do szybkich, prostych zadań"
+  "LIVE_DEV_STYLER_NEW_RULE": "Utwórz nową regułę…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Utwórz nową regułę"
 });

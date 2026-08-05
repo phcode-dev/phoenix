@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "doğrudan öğe üzerinde",
   "LIVE_DEV_STYLER_TARGET_COUNT": "sayfadaki {0} öğeyi etkiler",
   "LIVE_DEV_STYLER_TARGET_CREATE": "{0} içinde yeni kural",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Yeni stil...",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Yeni stil",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Bu öğeye \"{0}\" sınıfını ekler ve stili {1}'e kaydeder",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Bu öğeye \"{0}\" kimliğini verir ve stili {1}'e kaydeder",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Stili {0} içine kaydeder - yalnızca bu öğeyi stillendirir",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Açılan terminale /login yazın, ardından mesajınızı tekrar gönderin.",
   "AI_CHAT_MODEL_DEFAULT": "Varsayılan",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Şu anda {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Önerilen — Claude Code model ayarınızı kullanır",
+  "AI_CHAT_MODEL_DESC_FABLE": "En akıllı model — yalnızca planınızda Fable erişimi varsa",
+  "AI_CHAT_MODEL_DESC_OPUS": "Karmaşık görevler için güçlü model",
+  "AI_CHAT_MODEL_DESC_SONNET": "Günlük kodlama için dengeli hız ve yetenek",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Çabuk, basit görevler için en hızlı model",
   "AI_CHAT_MODEL_SELECT_TITLE": "Bu sohbet için yapay zeka modelini seçin",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "{0} modeline geçildi. Sonraki mesajınızdan itibaren uygulanır; önbellek yeniden oluşturulurken ilk yanıt biraz daha uzun sürebilir.",
   "AI_CHAT_INPUT_HINT": "Göndermek için {0} · Yeni satır için {1}",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Önerilen — Claude Code model ayarınızı kullanır",
-  "AI_CHAT_MODEL_DESC_FABLE": "En akıllı model — yalnızca planınızda Fable erişimi varsa",
-  "AI_CHAT_MODEL_DESC_OPUS": "Karmaşık görevler için güçlü model",
-  "AI_CHAT_MODEL_DESC_SONNET": "Günlük kodlama için dengeli hız ve yetenek",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Çabuk, basit görevler için en hızlı model"
+  "LIVE_DEV_STYLER_NEW_RULE": "Yeni kural oluştur…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Yeni kural oluştur"
 });

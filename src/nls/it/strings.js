@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "direttamente sull'elemento",
   "LIVE_DEV_STYLER_TARGET_COUNT": "Influisce su {0} nella pagina",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Nuova regola in {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Nuovo stile…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Nuovo stile",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Aggiunge la classe \"{0}\" a questo elemento e salva lo stile in {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Assegna a questo elemento l'ID \"{0}\" e salva lo stile in {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Salva lo stile in {0} - applica lo stile solo a questo elemento",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Digita /login nel terminale che si apre, quindi invia di nuovo il tuo messaggio.",
   "AI_CHAT_MODEL_DEFAULT": "Default",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Attualmente {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Consigliato — utilizza la tua impostazione del modello Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Il modello più intelligente — solo se il tuo piano include l'accesso a Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Modello potente per attività complesse",
+  "AI_CHAT_MODEL_DESC_SONNET": "Velocità e capacità bilanciate per la programmazione di tutti i giorni",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Il modello più veloce per attività semplici e veloci",
   "AI_CHAT_MODEL_SELECT_TITLE": "Scegli il modello di IA per questa chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Passato a {0}. Si applica dal tuo prossimo messaggio; la prima risposta potrebbe richiedere un momento in più mentre la cache viene ricostruita.",
   "AI_CHAT_INPUT_HINT": "Premi {0} per inviare · {1} per andare a capo",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Consigliato — utilizza la tua impostazione del modello Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Il modello più intelligente — solo se il tuo piano include l'accesso a Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Modello potente per attività complesse",
-  "AI_CHAT_MODEL_DESC_SONNET": "Velocità e capacità bilanciate per la programmazione di tutti i giorni",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Il modello più veloce per attività semplici e veloci"
+  "LIVE_DEV_STYLER_NEW_RULE": "Crea nuova regola…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Crea nuova regola"
 });

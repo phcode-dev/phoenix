@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "direkte på elementet",
   "LIVE_DEV_STYLER_TARGET_COUNT": "påvirker {0} på siden",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Ny regel i {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Ny stil …",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Ny stil",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Legger til klassen \"{0}\" til dette elementet og lagrer stilen i {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Gir dette elementet ID-en \"{0}\" og lagrer stilen i {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Lagrer stilen i {0} – stiler kun dette elementet",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i terminalen som åpnes, og send deretter meldingen din på nytt.",
   "AI_CHAT_MODEL_DEFAULT": "Standard",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Gjeldende: {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Anbefalt — bruker din Claude Code-modellinnstilling",
+  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligente modell — kun hvis abonnementet ditt har Fable-tilgang",
+  "AI_CHAT_MODEL_DESC_OPUS": "Kraftig modell for komplekse oppgaver",
+  "AI_CHAT_MODEL_DESC_SONNET": "Balansert hastighet og ytelse for daglig koding",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Raskeste modell for raske, enkle oppgaver",
   "AI_CHAT_MODEL_SELECT_TITLE": "Velg AI-modell for denne chatten",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Byttet til {0}. Gjelder fra din neste melding. Det første svaret kan ta litt lenger tid mens hurtiglageret gjenoppbygges.",
   "AI_CHAT_INPUT_HINT": "Trykk {0} for å sende · {1} for ny linje",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Anbefalt — bruker din Claude Code-modellinnstilling",
-  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligente modell — kun hvis abonnementet ditt har Fable-tilgang",
-  "AI_CHAT_MODEL_DESC_OPUS": "Kraftig modell for komplekse oppgaver",
-  "AI_CHAT_MODEL_DESC_SONNET": "Balansert hastighet og ytelse for daglig koding",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Raskeste modell for raske, enkle oppgaver"
+  "LIVE_DEV_STYLER_NEW_RULE": "Opprett ny regel …",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Opprett ny regel"
 });

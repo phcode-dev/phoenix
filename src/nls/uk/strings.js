@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "безпосередньо на елементі",
   "LIVE_DEV_STYLER_TARGET_COUNT": "Впливає на {0} на сторінці",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Нове правило в {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Новий стиль…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Новий стиль",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Додає клас \"{0}\" до цього елемента та зберігає стиль у {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Надає цьому елементу id \"{0}\" та зберігає стиль у {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Зберігає стиль у {0} – стилізує лише цей елемент",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Введіть /login у терміналі, що відкриється, а потім надішліть своє повідомлення ще раз.",
   "AI_CHAT_MODEL_DEFAULT": "За замовчуванням",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Зараз {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Рекомендовано — використовує ваші налаштування моделі Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Найрозумніша модель — лише якщо ваш план має доступ до Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Потужна модель для складних завдань",
+  "AI_CHAT_MODEL_DESC_SONNET": "Збалансована швидкість і продуктивність для повсякденного кодування",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Найшвидша модель для швидких, простих завдань",
   "AI_CHAT_MODEL_SELECT_TITLE": "Виберіть модель ШІ для цього чату",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Переключено на {0}. Застосовується з наступного повідомлення; перша відповідь може зайняти трохи більше часу, поки кеш перебудовується.",
   "AI_CHAT_INPUT_HINT": "Натисніть {0}, щоб надіслати · {1} для нового рядка",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Рекомендовано — використовує ваші налаштування моделі Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Найрозумніша модель — лише якщо ваш план має доступ до Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Потужна модель для складних завдань",
-  "AI_CHAT_MODEL_DESC_SONNET": "Збалансована швидкість і продуктивність для повсякденного кодування",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Найшвидша модель для швидких, простих завдань"
+  "LIVE_DEV_STYLER_NEW_RULE": "Створити нове правило…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Створення нового правила"
 });

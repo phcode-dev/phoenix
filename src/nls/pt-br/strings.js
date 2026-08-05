@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "diretamente no elemento",
   "LIVE_DEV_STYLER_TARGET_COUNT": "afeta {0} na página",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Nova regra em {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Novo estilo…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Novo estilo",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Adiciona a classe \"{0}\" a este elemento e salva o estilo em {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Atribui o id \"{0}\" a este elemento e salva o estilo em {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Salva o estilo em {0} - estiliza apenas este elemento",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Digite /login no terminal que abrir e, em seguida, envie sua mensagem novamente.",
   "AI_CHAT_MODEL_DEFAULT": "Padrão",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Atualmente {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Recomendado — usa sua configuração do modelo Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Modelo mais inteligente — somente se o seu plano tiver acesso ao Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Modelo poderoso para tarefas complexas",
+  "AI_CHAT_MODEL_DESC_SONNET": "Equilíbrio entre velocidade e capacidade para a programação do dia a dia",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Modelo mais rápido para tarefas rápidas e simples",
   "AI_CHAT_MODEL_SELECT_TITLE": "Escolha o modelo de IA para este chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Alterado para {0}. Válido a partir da sua próxima mensagem; a primeira resposta pode demorar um pouco mais enquanto o cache é reconstruído.",
   "AI_CHAT_INPUT_HINT": "Pressione {0} para enviar · {1} para nova linha",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Recomendado — usa sua configuração do modelo Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Modelo mais inteligente — somente se o seu plano tiver acesso ao Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Modelo poderoso para tarefas complexas",
-  "AI_CHAT_MODEL_DESC_SONNET": "Equilíbrio entre velocidade e capacidade para a programação do dia a dia",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Modelo mais rápido para tarefas rápidas e simples"
+  "LIVE_DEV_STYLER_NEW_RULE": "Criar nova regra…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Criar nova regra"
 });

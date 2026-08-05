@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "براہ راست عنصر پر",
   "LIVE_DEV_STYLER_TARGET_COUNT": "صفحہ پر {0} کو متاثر کرتا ہے",
   "LIVE_DEV_STYLER_TARGET_CREATE": "{0} میں نیا اصول",
-  "LIVE_DEV_STYLER_NEW_STYLE": "نیا اسٹائل…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "نیا اسٹائل",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "اس عنصر میں کلاس \"{0}\" شامل کرتا ہے اور اسٹائل کو {1} میں محفوظ کرتا ہے",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "اس عنصر کو آئی ڈی \"{0}\" دیتا ہے اور اسٹائل کو {1} میں محفوظ کرتا ہے",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "اسٹائل کو {0} میں محفوظ کرتا ہے - صرف اس عنصر کو اسٹائل کرتا ہے",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "کھلنے والے ٹرمینل میں /login ٹائپ کریں، پھر اپنا پیغام دوبارہ بھیجیں۔",
   "AI_CHAT_MODEL_DEFAULT": "ڈیفالٹ",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "فی الحال {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "تجویز کردہ — آپ کی کلاڈ کوڈ ماڈل سیٹنگ استعمال کرتا ہے",
+  "AI_CHAT_MODEL_DESC_FABLE": "سب سے ذہین ماڈل — صرف اس صورت میں جب آپ کے پلان میں Fable تک رسائی ہو",
+  "AI_CHAT_MODEL_DESC_OPUS": "پیچیدہ کاموں کے لیے طاقتور ماڈل",
+  "AI_CHAT_MODEL_DESC_SONNET": "روزمرہ کوڈنگ کے لیے متوازن رفتار اور قابلیت",
+  "AI_CHAT_MODEL_DESC_HAIKU": "فوری، سادہ کاموں کے لیے تیز ترین ماڈل",
   "AI_CHAT_MODEL_SELECT_TITLE": "اس چیٹ کے لیے AI ماڈل منتخب کریں۔",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "{0} پر سوئچ کر دیا گیا ہے۔ یہ آپ کے اگلے پیغام سے لاگو ہوگا؛ کیش کے دوبارہ بننے کے دوران پہلے جواب میں تھوڑا زیادہ وقت لگ سکتا ہے۔",
   "AI_CHAT_INPUT_HINT": "بھیجنے کے لیے {0} دبائیں · نئی لائن کے لیے {1}",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "تجویز کردہ — آپ کی کلاڈ کوڈ ماڈل سیٹنگ استعمال کرتا ہے",
-  "AI_CHAT_MODEL_DESC_FABLE": "سب سے ذہین ماڈل — صرف اس صورت میں جب آپ کے پلان میں Fable تک رسائی ہو",
-  "AI_CHAT_MODEL_DESC_OPUS": "پیچیدہ کاموں کے لیے طاقتور ماڈل",
-  "AI_CHAT_MODEL_DESC_SONNET": "روزمرہ کوڈنگ کے لیے متوازن رفتار اور قابلیت",
-  "AI_CHAT_MODEL_DESC_HAIKU": "فوری، سادہ کاموں کے لیے تیز ترین ماڈل"
+  "LIVE_DEV_STYLER_NEW_RULE": "نیا قاعدہ بنائیں…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "نیا قاعدہ بنائیں"
 });
