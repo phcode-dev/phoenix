@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "direkt på elementet",
   "LIVE_DEV_STYLER_TARGET_COUNT": "påverkar {0} på sidan",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Ny regel i {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Ny stil…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Ny stil",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Lägger till klassen \"{0}\" till det här elementet och sparar stilen i {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Ger det här elementet id:t \"{0}\" och sparar stilen i {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Sparar stilen i {0} – stylar endast det här elementet",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i terminalen som öppnas och skicka sedan ditt meddelande igen.",
   "AI_CHAT_MODEL_DEFAULT": "Standard",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Just nu {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Rekommenderas — använder din Claude Code-modellinställning",
+  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligenta modellen — endast om ditt abonnemang ger Fable-åtkomst",
+  "AI_CHAT_MODEL_DESC_OPUS": "Kraftfull modell för komplexa uppgifter",
+  "AI_CHAT_MODEL_DESC_SONNET": "Balanserad hastighet och kapacitet för daglig kodning",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Snabbaste modellen för snabba, enkla uppgifter",
   "AI_CHAT_MODEL_SELECT_TITLE": "Välj AI-modell för den här chatten",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Bytte till {0}. Gäller från och med ditt nästa meddelande; det första svaret kan ta lite längre tid medan cachen byggs om.",
   "AI_CHAT_INPUT_HINT": "Tryck på {0} för att skicka · {1} för ny rad",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Rekommenderas — använder din Claude Code-modellinställning",
-  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligenta modellen — endast om ditt abonnemang ger Fable-åtkomst",
-  "AI_CHAT_MODEL_DESC_OPUS": "Kraftfull modell för komplexa uppgifter",
-  "AI_CHAT_MODEL_DESC_SONNET": "Balanserad hastighet och kapacitet för daglig kodning",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Snabbaste modellen för snabba, enkla uppgifter"
+  "LIVE_DEV_STYLER_NEW_RULE": "Skapa ny regel…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Skapa ny regel"
 });

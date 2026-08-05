@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "απευθείας στο στοιχείο",
   "LIVE_DEV_STYLER_TARGET_COUNT": "επηρεάζει {0} στη σελίδα",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Νέος κανόνας στο {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Νέο στυλ…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Νέο στυλ",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Προσθέτει την κλάση \"{0}\" σε αυτό το στοιχείο και αποθηκεύει το στυλ στο {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Δίνει σε αυτό το στοιχείο το id \"{0}\" και αποθηκεύει το στυλ στο {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Αποθηκεύει το στυλ στο {0} - εφαρμόζει στυλ μόνο σε αυτό το στοιχείο",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Πληκτρολογήστε /login στο τερματικό που θα ανοίξει και, στη συνέχεια, στείλτε ξανά το μήνυμά σας.",
   "AI_CHAT_MODEL_DEFAULT": "Προεπιλογή",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Τρέχον: {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Συνιστάται — χρησιμοποιεί τη ρύθμιση του μοντέλου σας Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Το πιο ευφυές μοντέλο — μόνο εάν το πρόγραμμά σας έχει πρόσβαση στο Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Ισχυρό μοντέλο για σύνθετες εργασίες",
+  "AI_CHAT_MODEL_DESC_SONNET": "Ισορροπία ταχύτητας και δυνατοτήτων για την καθημερινή κωδικοποίηση",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Το ταχύτερο μοντέλο για γρήγορες, απλές εργασίες",
   "AI_CHAT_MODEL_SELECT_TITLE": "Επιλέξτε το μοντέλο AI για αυτήν τη συνομιλία",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Έγινε εναλλαγή σε {0}. Ισχύει από το επόμενο μήνυμά σας. Η πρώτη απόκριση ενδέχεται να καθυστερήσει λίγο περισσότερο, καθώς η κρυφή μνήμη αναδημιουργείται.",
   "AI_CHAT_INPUT_HINT": "Πατήστε {0} για αποστολή · {1} για νέα γραμμή",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Συνιστάται — χρησιμοποιεί τη ρύθμιση του μοντέλου σας Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Το πιο ευφυές μοντέλο — μόνο εάν το πρόγραμμά σας έχει πρόσβαση στο Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Ισχυρό μοντέλο για σύνθετες εργασίες",
-  "AI_CHAT_MODEL_DESC_SONNET": "Ισορροπία ταχύτητας και δυνατοτήτων για την καθημερινή κωδικοποίηση",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Το ταχύτερο μοντέλο για γρήγορες, απλές εργασίες"
+  "LIVE_DEV_STYLER_NEW_RULE": "Δημιουργία νέου κανόνα…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Δημιουργία νέου κανόνα"
 });

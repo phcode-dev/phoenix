@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "suoraan elementtiin",
   "LIVE_DEV_STYLER_TARGET_COUNT": "vaikuttaa {0} kohteeseen sivulla",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Uusi sääntö kohteessa {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Uusi tyyli…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Uusi tyyli",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Lisää luokan ”{0}” tähän elementtiin ja tallentaa tyylin tiedostoon {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Antaa tälle elementille id:n ”{0}” ja tallentaa tyylin tiedostoon {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Tallentaa tyylin tiedostoon {0} – muotoilee vain tämän elementin",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Kirjoita /login avautuvaan terminaaliin ja lähetä sitten viestisi uudelleen.",
   "AI_CHAT_MODEL_DEFAULT": "Oletus",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Käytössä {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Suositeltu — käyttää Claude Code -malliasetustasi",
+  "AI_CHAT_MODEL_DESC_FABLE": "Älykkäin malli — vain jos tilauksesi sisältää Fable-käyttöoikeuden",
+  "AI_CHAT_MODEL_DESC_OPUS": "Tehokas malli monimutkaisiin tehtäviin",
+  "AI_CHAT_MODEL_DESC_SONNET": "Tasapainoinen nopeus ja suorituskyky jokapäiväiseen koodaukseen",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Nopein malli nopeisiin, yksinkertaisiin tehtäviin",
   "AI_CHAT_MODEL_SELECT_TITLE": "Valitse tekoälymalli tälle keskustelulle",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Vaihdettu malliin {0}. Muutos koskee seuraavaa viestiäsi; ensimmäinen vastaus voi kestää hetken kauemmin, kun välimuistia rakennetaan uudelleen.",
   "AI_CHAT_INPUT_HINT": "Paina {0} lähettääksesi · {1} rivinvaihto",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Suositeltu — käyttää Claude Code -malliasetustasi",
-  "AI_CHAT_MODEL_DESC_FABLE": "Älykkäin malli — vain jos tilauksesi sisältää Fable-käyttöoikeuden",
-  "AI_CHAT_MODEL_DESC_OPUS": "Tehokas malli monimutkaisiin tehtäviin",
-  "AI_CHAT_MODEL_DESC_SONNET": "Tasapainoinen nopeus ja suorituskyky jokapäiväiseen koodaukseen",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Nopein malli nopeisiin, yksinkertaisiin tehtäviin"
+  "LIVE_DEV_STYLER_NEW_RULE": "Luo uusi sääntö…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Luo uusi sääntö"
 });

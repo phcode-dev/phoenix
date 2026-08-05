@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "директно на елементу",
   "LIVE_DEV_STYLER_TARGET_COUNT": "Примењује се на {0} на страници",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Ново правило у {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Нови стил…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Нови стил",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Додаје класу „{0}“ овом елементу и чува стил у {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Додељује овом елементу id „{0}“ и чува стил у {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Чува стил у {0} – стилизује само овај елемент",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Укуцајте /login у терминал који се отвори, а затим поново пошаљите своју поруку.",
   "AI_CHAT_MODEL_DEFAULT": "Подразумевано",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Тренутно {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Препоручено — користи ваше подешавање за модел Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Најинтелигентнији модел — само ако ваш план има приступ моделу Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Моћан модел за сложене задатке",
+  "AI_CHAT_MODEL_DESC_SONNET": "Уравнотежена брзина и могућности за свакодневно кодирање",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Најбржи модел за брзе, једноставне задатке",
   "AI_CHAT_MODEL_SELECT_TITLE": "Изаберите AI модел за ово ћаскање",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Пребачено на {0}. Примењује се од ваше следеће поруке; први одговор може потрајати мало дуже док се кеш поново изграђује.",
   "AI_CHAT_INPUT_HINT": "Притисните {0} да пошаљете · {1} за нови ред",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Препоручено — користи ваше подешавање за модел Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Најинтелигентнији модел — само ако ваш план има приступ моделу Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Моћан модел за сложене задатке",
-  "AI_CHAT_MODEL_DESC_SONNET": "Уравнотежена брзина и могућности за свакодневно кодирање",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Најбржи модел за брзе, једноставне задатке"
+  "LIVE_DEV_STYLER_NEW_RULE": "Креирај ново правило…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Креирај ново правило"
 });

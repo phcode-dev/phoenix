@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "要素に直接",
   "LIVE_DEV_STYLER_TARGET_COUNT": "ページ内の{0}に影響",
   "LIVE_DEV_STYLER_TARGET_CREATE": "{0}に新規ルール",
-  "LIVE_DEV_STYLER_NEW_STYLE": "新規スタイル…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "新しいスタイル",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "この要素にクラス「{0}」を追加し、スタイルを {1} に保存します",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "この要素に ID「{0}」を付与し、スタイルを {1} に保存します",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "スタイルを {0} に保存します - この要素のみにスタイルが適用されます",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "開いたターミナルで /login と入力後、再度メッセージを送信してください。",
   "AI_CHAT_MODEL_DEFAULT": "デフォルト",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "現在 {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "推奨 — ユーザーのClaude Codeモデル設定を使用します",
+  "AI_CHAT_MODEL_DESC_FABLE": "最も高性能なモデル — Fableへのアクセス権があるプランの場合のみ利用可能",
+  "AI_CHAT_MODEL_DESC_OPUS": "複雑なタスク向けの強力なモデル",
+  "AI_CHAT_MODEL_DESC_SONNET": "日常的なコーディング向けの、バランスの取れた速度と性能",
+  "AI_CHAT_MODEL_DESC_HAIKU": "素早くシンプルなタスク向けの最速モデル",
   "AI_CHAT_MODEL_SELECT_TITLE": "このチャット用のAIモデルを選択",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "{0}に切り替えました。次回のメッセージから適用されます。キャッシュの再構築のため、最初の応答には少し時間がかかる場合があります。",
   "AI_CHAT_INPUT_HINT": "`{0}`を押して送信・`{1}`で改行",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "推奨 — ユーザーのClaude Codeモデル設定を使用します",
-  "AI_CHAT_MODEL_DESC_FABLE": "最も高性能なモデル — Fableへのアクセス権があるプランの場合のみ利用可能",
-  "AI_CHAT_MODEL_DESC_OPUS": "複雑なタスク向けの強力なモデル",
-  "AI_CHAT_MODEL_DESC_SONNET": "日常的なコーディング向けの、バランスの取れた速度と性能",
-  "AI_CHAT_MODEL_DESC_HAIKU": "素早くシンプルなタスク向けの最速モデル"
+  "LIVE_DEV_STYLER_NEW_RULE": "新規ルールを作成…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "新規ルールを作成"
 });

@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "directly on the element",
   "LIVE_DEV_STYLER_TARGET_COUNT": "affects {0} on page",
   "LIVE_DEV_STYLER_TARGET_CREATE": "New rule in {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "New style…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "New style",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Adds class \"{0}\" to this element and saves the style in {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Gives this element the id \"{0}\" and saves the style in {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Saves the style in {0} - styles just this element",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Type /login in the terminal that opens, then send your message again.",
   "AI_CHAT_MODEL_DEFAULT": "Default",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Currently {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Recommended — uses your Claude Code model setting",
+  "AI_CHAT_MODEL_DESC_FABLE": "Most intelligent model — only if your plan has Fable access",
+  "AI_CHAT_MODEL_DESC_OPUS": "Powerful model for complex tasks",
+  "AI_CHAT_MODEL_DESC_SONNET": "Balanced speed and capability for everyday coding",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Fastest model for quick, simple tasks",
   "AI_CHAT_MODEL_SELECT_TITLE": "Choose the AI model for this chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Switched to {0}. Applies from your next message; the first response may take a moment longer while the cache rebuilds.",
   "AI_CHAT_INPUT_HINT": "Press {0} to send · {1} for new line",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Recommended — uses your Claude Code model setting",
-  "AI_CHAT_MODEL_DESC_FABLE": "Most intelligent model — only if your plan has Fable access",
-  "AI_CHAT_MODEL_DESC_OPUS": "Powerful model for complex tasks",
-  "AI_CHAT_MODEL_DESC_SONNET": "Balanced speed and capability for everyday coding",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Fastest model for quick, simple tasks"
+  "LIVE_DEV_STYLER_NEW_RULE": "Create new rule…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Create new rule"
 });

@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "directement sur l'élément",
   "LIVE_DEV_STYLER_TARGET_COUNT": "affecte {0} élément(s) sur la page",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Nouvelle règle dans {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Nouveau style…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Nouveau style",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Ajoute la classe \"{0}\" à cet élément et enregistre le style dans {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Attribue l'ID \"{0}\" à cet élément et enregistre le style dans {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Enregistre le style dans {0} - stylise uniquement cet élément",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Tapez /login dans le terminal qui s'ouvre, puis envoyez à nouveau votre message.",
   "AI_CHAT_MODEL_DEFAULT": "Par défaut",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Actuellement {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Recommandé — utilise votre paramètre de modèle Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Modèle le plus intelligent — uniquement si votre abonnement inclut l'accès à Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Modèle puissant pour les tâches complexes",
+  "AI_CHAT_MODEL_DESC_SONNET": "Vitesse et capacité équilibrées pour le codage quotidien",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Modèle le plus rapide pour les tâches simples et rapides",
   "AI_CHAT_MODEL_SELECT_TITLE": "Choisissez le modèle d'IA pour cette discussion",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Passage à {0}. S'applique à partir de votre prochain message ; la première réponse peut prendre un peu plus de temps pendant que le cache se reconstruit.",
   "AI_CHAT_INPUT_HINT": "Appuyez sur {0} pour envoyer · {1} pour aller à la ligne",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Recommandé — utilise votre paramètre de modèle Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Modèle le plus intelligent — uniquement si votre abonnement inclut l'accès à Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Modèle puissant pour les tâches complexes",
-  "AI_CHAT_MODEL_DESC_SONNET": "Vitesse et capacité équilibrées pour le codage quotidien",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Modèle le plus rapide pour les tâches simples et rapides"
+  "LIVE_DEV_STYLER_NEW_RULE": "Créer une nouvelle règle…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Créer une nouvelle règle"
 });

@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "közvetlenül az elemen",
   "LIVE_DEV_STYLER_TARGET_COUNT": "{0} elemet érint az oldalon",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Új szabály a(z) {0} célban",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Új stílus…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Új stílus",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Hozzáadja a „{0}” osztályt ehhez az elemhez, és a stílust a {1}-ba menti.",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "A „{0}” azonosítót adja ennek az elemnek, és a stílust a {1}-ba menti.",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "A stílust a(z) {0} fájlba menti – csak ezt az elemet formázza",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Írd be a /login parancsot a megnyíló terminálba, majd küldd el újra az üzeneted.",
   "AI_CHAT_MODEL_DEFAULT": "Alapértelmezett",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Jelenleg {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Ajánlott — a Claude Code modellbeállításodat használja",
+  "AI_CHAT_MODEL_DESC_FABLE": "A legintelligensebb modell — csak ha a csomagod Fable-hozzáférést tartalmaz",
+  "AI_CHAT_MODEL_DESC_OPUS": "Erőteljes modell összetett feladatokhoz",
+  "AI_CHAT_MODEL_DESC_SONNET": "Kiegyensúlyozott sebesség és képesség a mindennapi kódoláshoz",
+  "AI_CHAT_MODEL_DESC_HAIKU": "A leggyorsabb modell gyors, egyszerű feladatokhoz",
   "AI_CHAT_MODEL_SELECT_TITLE": "Válassza ki a MI-modellt ehhez a csevegéshez",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Átváltott a(z) {0} modellre. A következő üzenettől érvényes; az első válasz némileg tovább tarthat, amíg a gyorsítótár újraépül.",
   "AI_CHAT_INPUT_HINT": "{0} a küldéshez · {1} új sorhoz",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Ajánlott — a Claude Code modellbeállításodat használja",
-  "AI_CHAT_MODEL_DESC_FABLE": "A legintelligensebb modell — csak ha a csomagod Fable-hozzáférést tartalmaz",
-  "AI_CHAT_MODEL_DESC_OPUS": "Erőteljes modell összetett feladatokhoz",
-  "AI_CHAT_MODEL_DESC_SONNET": "Kiegyensúlyozott sebesség és képesség a mindennapi kódoláshoz",
-  "AI_CHAT_MODEL_DESC_HAIKU": "A leggyorsabb modell gyors, egyszerű feladatokhoz"
+  "LIVE_DEV_STYLER_NEW_RULE": "Új szabály létrehozása…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Új szabály létrehozása"
 });

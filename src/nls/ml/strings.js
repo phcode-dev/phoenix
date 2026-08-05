@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "എലമെന്റിൽ നേരിട്ട്",
   "LIVE_DEV_STYLER_TARGET_COUNT": "പേജിലെ {0} എണ്ണത്തെ ബാധിക്കുന്നു",
   "LIVE_DEV_STYLER_TARGET_CREATE": "പുതിയ റൂൾ {0}-ൽ",
-  "LIVE_DEV_STYLER_NEW_STYLE": "പുതിയ സ്റ്റൈൽ...",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "പുതിയ സ്റ്റൈൽ",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "ഈ എലമെന്റിലേക്ക് \"{0}\" എന്ന ക്ലാസ് ചേർക്കുകയും സ്റ്റൈൽ {1}-ൽ സംരക്ഷിക്കുകയും ചെയ്യുന്നു",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "ഈ എലമെന്റിന് \"{0}\" എന്ന ഐഡി നൽകുകയും സ്റ്റൈൽ {1}-ൽ സംരക്ഷിക്കുകയും ചെയ്യുന്നു",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "{0}-ൽ സ്റ്റൈൽ സേവ് ചെയ്യുന്നു - ഈ എലമെന്റിന് മാത്രം സ്റ്റൈൽ നൽകുന്നു",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "തുറന്നുവരുന്ന ടെർമിനലിൽ /login എന്ന് ടൈപ്പ് ചെയ്യുക, തുടർന്ന് നിങ്ങളുടെ സന്ദേശം വീണ്ടും അയക്കുക.",
   "AI_CHAT_MODEL_DEFAULT": "ഡിഫോൾട്ട്",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "നിലവിൽ {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "ശുപാർശ ചെയ്യുന്നത് — നിങ്ങളുടെ ക്ലോഡ് കോഡ് മോഡൽ ക്രമീകരണം ഉപയോഗിക്കുന്നു",
+  "AI_CHAT_MODEL_DESC_FABLE": "ഏറ്റവും ബുദ്ധിയുള്ള മോഡൽ — നിങ്ങളുടെ പ്ലാനിന് ഫേബിൾ ആക്‌സസ് ഉണ്ടെങ്കിൽ മാത്രം",
+  "AI_CHAT_MODEL_DESC_OPUS": "സങ്കീർണ്ണമായ ജോലികൾക്കുള്ള ശക്തമായ മോഡൽ",
+  "AI_CHAT_MODEL_DESC_SONNET": "ദൈനംദിന കോഡിംഗിനുള്ള സന്തുലിതമായ വേഗതയും കഴിവും",
+  "AI_CHAT_MODEL_DESC_HAIKU": "വേഗമേറിയതും ലളിതവുമായ ജോലികൾക്കുള്ള ഏറ്റവും വേഗതയേറിയ മോഡൽ",
   "AI_CHAT_MODEL_SELECT_TITLE": "ഈ ചാറ്റിനായി AI മോഡൽ തിരഞ്ഞെടുക്കുക",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "{0}-ലേക്ക് മാറിയിരിക്കുന്നു. നിങ്ങളുടെ അടുത്ത സന്ദേശം മുതൽ ഇത് ബാധകമാകും. കാഷെ പുനർനിർമ്മിക്കുന്നതിനാൽ ആദ്യ പ്രതികരണത്തിന് അല്പം കൂടുതൽ സമയമെടുത്തേക്കാം.",
   "AI_CHAT_INPUT_HINT": "അയയ്‌ക്കാൻ {0} അമർത്തുക · പുതിയ വരിക്ക് {1}",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "ശുപാർശ ചെയ്യുന്നത് — നിങ്ങളുടെ ക്ലോഡ് കോഡ് മോഡൽ ക്രമീകരണം ഉപയോഗിക്കുന്നു",
-  "AI_CHAT_MODEL_DESC_FABLE": "ഏറ്റവും ബുദ്ധിയുള്ള മോഡൽ — നിങ്ങളുടെ പ്ലാനിന് ഫേബിൾ ആക്‌സസ് ഉണ്ടെങ്കിൽ മാത്രം",
-  "AI_CHAT_MODEL_DESC_OPUS": "സങ്കീർണ്ണമായ ജോലികൾക്കുള്ള ശക്തമായ മോഡൽ",
-  "AI_CHAT_MODEL_DESC_SONNET": "ദൈനംദിന കോഡിംഗിനുള്ള സന്തുലിതമായ വേഗതയും കഴിവും",
-  "AI_CHAT_MODEL_DESC_HAIKU": "വേഗമേറിയതും ലളിതവുമായ ജോലികൾക്കുള്ള ഏറ്റവും വേഗതയേറിയ മോഡൽ"
+  "LIVE_DEV_STYLER_NEW_RULE": "പുതിയ നിയമം സൃഷ്ടിക്കുക…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "പുതിയ നിയമം സൃഷ്ടിക്കുക"
 });

@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "rechtstreeks op het element",
   "LIVE_DEV_STYLER_TARGET_COUNT": "Beïnvloedt {0} op de pagina",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Nieuwe regel in {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Nieuwe stijl…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Nieuwe stijl",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Voegt klasse \"{0}\" toe aan dit element en slaat de stijl op in {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Geeft dit element de id \"{0}\" en slaat de stijl op in {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Slaat de stijl op in {0} - stijlt alleen dit element",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Typ /login in de terminal die opent en verstuur dan uw bericht opnieuw.",
   "AI_CHAT_MODEL_DEFAULT": "Standaard",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Momenteel {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Aanbevolen — gebruikt je Claude Code-modelinstelling",
+  "AI_CHAT_MODEL_DESC_FABLE": "Meest intelligente model — alleen als je abonnement Fable-toegang heeft",
+  "AI_CHAT_MODEL_DESC_OPUS": "Krachtig model voor complexe taken",
+  "AI_CHAT_MODEL_DESC_SONNET": "Gebalanceerde snelheid en capaciteit voor dagelijks coderen",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Snelste model voor snelle, eenvoudige taken",
   "AI_CHAT_MODEL_SELECT_TITLE": "Kies het AI-model voor deze chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Overgeschakeld naar {0}. Geldt vanaf uw volgende bericht; het eerste antwoord kan iets langer duren terwijl de cache opnieuw wordt opgebouwd.",
   "AI_CHAT_INPUT_HINT": "Druk op {0} om te verzenden · {1} voor een nieuwe regel",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Aanbevolen — gebruikt je Claude Code-modelinstelling",
-  "AI_CHAT_MODEL_DESC_FABLE": "Meest intelligente model — alleen als je abonnement Fable-toegang heeft",
-  "AI_CHAT_MODEL_DESC_OPUS": "Krachtig model voor complexe taken",
-  "AI_CHAT_MODEL_DESC_SONNET": "Gebalanceerde snelheid en capaciteit voor dagelijks coderen",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Snelste model voor snelle, eenvoudige taken"
+  "LIVE_DEV_STYLER_NEW_RULE": "Nieuwe regel aanmaken…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Nieuwe regel aanmaken"
 });

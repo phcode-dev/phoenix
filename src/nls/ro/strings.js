@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "direct pe element",
   "LIVE_DEV_STYLER_TARGET_COUNT": "afectează {0} pe pagină",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Regulă nouă în {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Stil nou…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Stil nou",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Adaugă clasa \"{0}\" acestui element și salvează stilul în {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Atribuie acestui element ID-ul \"{0}\" și salvează stilul în {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Salvează stilul în {0} - stilează doar acest element",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Tastați /login în terminalul care se deschide, apoi trimiteți din nou mesajul.",
   "AI_CHAT_MODEL_DEFAULT": "Implicit",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "În prezent {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Recomandat — utilizează setarea dvs. pentru modelul Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Cel mai inteligent model — doar dacă planul dvs. are acces la Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Model puternic pentru sarcini complexe",
+  "AI_CHAT_MODEL_DESC_SONNET": "Echilibru între viteză și capacitate pentru programarea de zi cu zi",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Cel mai rapid model pentru sarcini rapide și simple",
   "AI_CHAT_MODEL_SELECT_TITLE": "Alegeți modelul AI pentru acest chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "S-a comutat la {0}. Se aplică de la următorul mesaj; primul răspuns poate dura puțin mai mult în timp ce memoria cache se reconstruiește.",
   "AI_CHAT_INPUT_HINT": "Apăsați {0} pentru a trimite · {1} pentru linie nouă",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Recomandat — utilizează setarea dvs. pentru modelul Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Cel mai inteligent model — doar dacă planul dvs. are acces la Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Model puternic pentru sarcini complexe",
-  "AI_CHAT_MODEL_DESC_SONNET": "Echilibru între viteză și capacitate pentru programarea de zi cu zi",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Cel mai rapid model pentru sarcini rapide și simple"
+  "LIVE_DEV_STYLER_NEW_RULE": "Creează o regulă nouă…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Creare regulă nouă"
 });

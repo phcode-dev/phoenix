@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "direkte på elementet",
   "LIVE_DEV_STYLER_TARGET_COUNT": "påvirker {0} på siden",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Ny regel i {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Ny stil...",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Ny stil",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Tilføjer klassen \"{0}\" til dette element og gemmer stilen i {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Giver dette element id'et \"{0}\" og gemmer stilen i {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Gemmer stilen i {0} - styler kun dette element",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i den terminal, der åbner, og send derefter din besked igen.",
   "AI_CHAT_MODEL_DEFAULT": "Standard",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "I øjeblikket {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Anbefalet — bruger din Claude Code-modelindstilling",
+  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligente model — kun hvis dit abonnement har adgang til Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Kraftfuld model til komplekse opgaver",
+  "AI_CHAT_MODEL_DESC_SONNET": "Balanceret hastighed og kapacitet til daglig kodning",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Hurtigste model til hurtige, simple opgaver",
   "AI_CHAT_MODEL_SELECT_TITLE": "Vælg AI-modellen til denne chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Skiftet til {0}. Gælder fra din næste besked; det første svar kan tage lidt længere tid, mens cachen genopbygges.",
   "AI_CHAT_INPUT_HINT": "Tryk på {0} for at sende · {1} for en ny linje",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Anbefalet — bruger din Claude Code-modelindstilling",
-  "AI_CHAT_MODEL_DESC_FABLE": "Mest intelligente model — kun hvis dit abonnement har adgang til Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Kraftfuld model til komplekse opgaver",
-  "AI_CHAT_MODEL_DESC_SONNET": "Balanceret hastighed og kapacitet til daglig kodning",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Hurtigste model til hurtige, simple opgaver"
+  "LIVE_DEV_STYLER_NEW_RULE": "Opret ny regel…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Opret ny regel"
 });

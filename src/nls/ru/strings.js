@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "непосредственно на элементе",
   "LIVE_DEV_STYLER_TARGET_COUNT": "затрагивает {0} на странице",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Новое правило в {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Новый стиль…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Новый стиль",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Добавляет класс «{0}» к этому элементу и сохраняет стиль в {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Присваивает этому элементу идентификатор «{0}» и сохраняет стиль в {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Сохраняет стиль в {0} — стилизует только этот элемент",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Введите /login в открывшемся терминале, а затем снова отправьте сообщение.",
   "AI_CHAT_MODEL_DEFAULT": "По умолчанию",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Сейчас: {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Рекомендуется — использует вашу настройку модели Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Самая интеллектуальная модель — только если ваш тарифный план включает доступ к Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Мощная модель для сложных задач",
+  "AI_CHAT_MODEL_DESC_SONNET": "Сбалансированное сочетание скорости и возможностей для повседневного написания кода",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Самая быстрая модель для быстрых и простых задач",
   "AI_CHAT_MODEL_SELECT_TITLE": "Выберите модель ИИ для этого чата",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Переключено на {0}. Применяется со следующего сообщения; первый ответ может занять больше времени, пока перестраивается кеш.",
   "AI_CHAT_INPUT_HINT": "Нажмите {0}, чтобы отправить · {1} для новой строки",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Рекомендуется — использует вашу настройку модели Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Самая интеллектуальная модель — только если ваш тарифный план включает доступ к Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Мощная модель для сложных задач",
-  "AI_CHAT_MODEL_DESC_SONNET": "Сбалансированное сочетание скорости и возможностей для повседневного написания кода",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Самая быстрая модель для быстрых и простых задач"
+  "LIVE_DEV_STYLER_NEW_RULE": "Создать новое правило…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Создание нового правила"
 });

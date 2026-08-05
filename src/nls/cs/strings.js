@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "přímo na elementu",
   "LIVE_DEV_STYLER_TARGET_COUNT": "ovlivňuje {0} na stránce",
   "LIVE_DEV_STYLER_TARGET_CREATE": "Nové pravidlo v {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "Nový styl…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "Nový styl",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "Přidá tomuto prvku třídu „{0}“ a uloží styl do {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "Přiřadí tomuto prvku ID „{0}“ a uloží styl do {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "Uloží styl do {0} – styluje pouze tento prvek",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "Do terminálu, který se otevře, zadejte /login a poté odešlete zprávu znovu.",
   "AI_CHAT_MODEL_DEFAULT": "Výchozí",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Aktuálně {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "Doporučeno — použije vaše nastavení modelu Claude Code",
+  "AI_CHAT_MODEL_DESC_FABLE": "Nejinteligentnější model — pouze pokud váš tarif zahrnuje přístup k Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "Výkonný model pro složité úkoly",
+  "AI_CHAT_MODEL_DESC_SONNET": "Vyvážená rychlost a schopnosti pro každodenní kódování",
+  "AI_CHAT_MODEL_DESC_HAIKU": "Nejrychlejší model pro rychlé a jednoduché úkoly",
   "AI_CHAT_MODEL_SELECT_TITLE": "Vyberte model AI pro tento chat",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "Přepnuto na {0}. Platí od vaší další zprávy; první odpověď může trvat o chvíli déle, zatímco se znovu sestavuje mezipaměť.",
   "AI_CHAT_INPUT_HINT": "Stiskněte {0} pro odeslání · {1} pro nový řádek",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "Doporučeno — použije vaše nastavení modelu Claude Code",
-  "AI_CHAT_MODEL_DESC_FABLE": "Nejinteligentnější model — pouze pokud váš tarif zahrnuje přístup k Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "Výkonný model pro složité úkoly",
-  "AI_CHAT_MODEL_DESC_SONNET": "Vyvážená rychlost a schopnosti pro každodenní kódování",
-  "AI_CHAT_MODEL_DESC_HAIKU": "Nejrychlejší model pro rychlé a jednoduché úkoly"
+  "LIVE_DEV_STYLER_NEW_RULE": "Vytvořit nové pravidlo…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "Vytvořit nové pravidlo"
 });

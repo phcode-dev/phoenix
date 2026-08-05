@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "सीधे एलीमेंट पर",
   "LIVE_DEV_STYLER_TARGET_COUNT": "पेज पर {0} को प्रभावित करता है",
   "LIVE_DEV_STYLER_TARGET_CREATE": "{0} में नया नियम",
-  "LIVE_DEV_STYLER_NEW_STYLE": "नई स्टाइल…",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "नई स्टाइल",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "इस एलीमेंट में क्लास \"{0}\" जोड़ता है और स्टाइल को {1} में सहेजता है",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "इस एलीमेंट को आईडी \"{0}\" देता है और स्टाइल को {1} में सहेजता है",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "{0} में स्टाइल सहेजता है - सिर्फ़ इस एलिमेंट को स्टाइल करता है",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "खुलने वाले टर्मिनल में /login टाइप करें, फिर अपना संदेश दोबारा भेजें।",
   "AI_CHAT_MODEL_DEFAULT": "डिफ़ॉल्ट",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "वर्तमान में {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "अनुशंसित — आपके Claude Code मॉडल सेटिंग का उपयोग करता है",
+  "AI_CHAT_MODEL_DESC_FABLE": "सबसे बुद्धिमान मॉडल — केवल अगर आपकी योजना में Fable तक पहुंच है",
+  "AI_CHAT_MODEL_DESC_OPUS": "जटिल कार्यों के लिए शक्तिशाली मॉडल",
+  "AI_CHAT_MODEL_DESC_SONNET": "रोज़मर्रा की कोडिंग के लिए संतुलित गति और क्षमता",
+  "AI_CHAT_MODEL_DESC_HAIKU": "त्वरित, सरल कार्यों के लिए सबसे तेज़ मॉडल",
   "AI_CHAT_MODEL_SELECT_TITLE": "इस चैट के लिए AI मॉडल चुनें",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "{0} पर स्विच किया गया। आपके अगले संदेश से लागू होगा; कैश के फिर से बनने के दौरान पहली प्रतिक्रिया में थोड़ा अधिक समय लग सकता है।",
   "AI_CHAT_INPUT_HINT": "भेजने के लिए {0} दबाएँ · नई लाइन के लिए {1}",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "अनुशंसित — आपके Claude Code मॉडल सेटिंग का उपयोग करता है",
-  "AI_CHAT_MODEL_DESC_FABLE": "सबसे बुद्धिमान मॉडल — केवल अगर आपकी योजना में Fable तक पहुंच है",
-  "AI_CHAT_MODEL_DESC_OPUS": "जटिल कार्यों के लिए शक्तिशाली मॉडल",
-  "AI_CHAT_MODEL_DESC_SONNET": "रोज़मर्रा की कोडिंग के लिए संतुलित गति और क्षमता",
-  "AI_CHAT_MODEL_DESC_HAIKU": "त्वरित, सरल कार्यों के लिए सबसे तेज़ मॉडल"
+  "LIVE_DEV_STYLER_NEW_RULE": "नया नियम बनाएँ…",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "नया नियम बनाएँ"
 });

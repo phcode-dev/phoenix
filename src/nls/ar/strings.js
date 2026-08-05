@@ -348,8 +348,6 @@ define({
   "LIVE_DEV_STYLER_TARGET_INLINE_HINT": "مباشرة على العنصر",
   "LIVE_DEV_STYLER_TARGET_COUNT": "يؤثر على {0} عنصر بالصفحة",
   "LIVE_DEV_STYLER_TARGET_CREATE": "قاعدة جديدة في {0}",
-  "LIVE_DEV_STYLER_NEW_STYLE": "نمط جديد...",
-  "LIVE_DEV_STYLER_NEW_STYLE_TITLE": "نمط جديد",
   "LIVE_DEV_STYLER_NEW_ADDS_CLASS": "يضيف الفئة \"{0}\" إلى هذا العنصر ويحفظ النمط في {1}",
   "LIVE_DEV_STYLER_NEW_ADDS_ID": "يمنح هذا العنصر المعرّف \"{0}\" ويحفظ النمط في {1}",
   "LIVE_DEV_STYLER_NEW_SAVES_ONE": "يحفظ النمط في {0} - ينسق هذا العنصر فقط",
@@ -2445,6 +2443,11 @@ define({
   "AI_CHAT_AUTH_ERROR_HINT": "اكتب /login في الطرفية التي ستُفتح، ثم أرسل رسالتك مرة أخرى.",
   "AI_CHAT_MODEL_DEFAULT": "افتراضي",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "حاليًا {0}",
+  "AI_CHAT_MODEL_DEFAULT_DESC": "موصى به — يستخدم إعداد نموذج Claude Code الخاص بك",
+  "AI_CHAT_MODEL_DESC_FABLE": "النموذج الأكثر ذكاءً — فقط إذا كانت خطتك تتضمن الوصول إلى Fable",
+  "AI_CHAT_MODEL_DESC_OPUS": "نموذج قوي للمهام المعقدة",
+  "AI_CHAT_MODEL_DESC_SONNET": "توازن بين السرعة والقدرة للبرمجة اليومية",
+  "AI_CHAT_MODEL_DESC_HAIKU": "النموذج الأسرع للمهام السريعة والبسيطة",
   "AI_CHAT_MODEL_SELECT_TITLE": "اختر نموذج الذكاء الاصطناعي لهذه المحادثة",
   "AI_CHAT_MODEL_SWITCHED_NOTICE": "تم التبديل إلى {0}. يُطبّق هذا بدءًا من رسالتك التالية؛ قد تستغرق الاستجابة الأولى وقتًا أطول قليلًا أثناء إعادة بناء ذاكرة التخزين المؤقت.",
   "AI_CHAT_INPUT_HINT": "اضغط على {0} للإرسال · {1} لسطر جديد",
@@ -2622,9 +2625,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_MODEL_DEFAULT_DESC": "موصى به — يستخدم إعداد نموذج Claude Code الخاص بك",
-  "AI_CHAT_MODEL_DESC_FABLE": "النموذج الأكثر ذكاءً — فقط إذا كانت خطتك تتضمن الوصول إلى Fable",
-  "AI_CHAT_MODEL_DESC_OPUS": "نموذج قوي للمهام المعقدة",
-  "AI_CHAT_MODEL_DESC_SONNET": "توازن بين السرعة والقدرة للبرمجة اليومية",
-  "AI_CHAT_MODEL_DESC_HAIKU": "النموذج الأسرع للمهام السريعة والبسيطة"
+  "LIVE_DEV_STYLER_NEW_RULE": "إنشاء قاعدة جديدة...",
+  "LIVE_DEV_STYLER_NEW_RULE_TITLE": "إنشاء قاعدة جديدة"
 });
