@@ -2504,11 +2504,11 @@ define({
 
     // Enable/disable AI toggle
     "AI_DISABLE_CONFIRM_TITLE": "Disable AI?",
-    "AI_DISABLE_CONFIRM_MESSAGE": "This turns off all AI features. The AI panel will be removed and {APP_NAME} will stop connecting to AI services.<br><br>Restart {APP_NAME} for this to take effect.",
-    "AI_DISABLE_CONFIRM_BTN": "Disable AI",
+    "AI_DISABLE_CONFIRM_MESSAGE": "This turns off all AI features. The AI panel will be removed and {APP_NAME} will stop connecting to AI services.<br><br>{APP_NAME} will restart now to apply this change. You will be asked to save any unsaved files.",
+    "AI_DISABLE_CONFIRM_BTN": "Disable AI and Restart",
     "AI_ENABLE_CONFIRM_TITLE": "Enable AI?",
-    "AI_ENABLE_CONFIRM_MESSAGE": "This turns AI features back on and restores the AI panel.<br><br>Restart {APP_NAME} for this to take effect.",
-    "AI_ENABLE_CONFIRM_BTN": "Enable AI",
+    "AI_ENABLE_CONFIRM_MESSAGE": "This turns AI features back on and restores the AI panel.<br><br>{APP_NAME} will restart now to apply this change. You will be asked to save any unsaved files.",
+    "AI_ENABLE_CONFIRM_BTN": "Enable AI and Restart",
 
     // AI CHAT PANEL
     "AI_CHAT_TITLE": "Claude Code",
@@ -2754,7 +2754,7 @@ define({
     "AI_SETTINGS_NAME_DUPLICATE": "A provider with this name already exists.",
     "AI_SETTINGS_DONE": "Done",
     "AI_SETTINGS_ENABLE_AI": "Enable AI features",
-    "AI_SETTINGS_ENABLE_AI_NOTE": "Turns all AI features in {APP_NAME} on or off. Takes effect after restart — you can enable it again anytime from <span class='ai-settings-menu-path'>View menu &gt; Enable AI</span>.",
+    "AI_SETTINGS_ENABLE_AI_NOTE": "Turns all AI features in {APP_NAME} on or off. Changing this restarts {APP_NAME} to apply it — you can enable it again anytime from <span class='ai-settings-menu-path'>View menu &gt; Enable AI</span>.",
 
     // demo start - Phoenix Code Playground - Interactive Onboarding
     "DEMO_SECTION1_TITLE": "Edit in Live Preview",
