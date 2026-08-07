@@ -419,6 +419,9 @@ define(function (require, exports, module) {
     /** Cancels Phoenix Pro trial */
     exports.HELP_CANCEL_TRIAL           = "help.cancelTrial";
 
+    /** Toggles the Pro off-hours offer (label uses server-vended brand name) */
+    exports.HELP_DISABLE_OFF_HOURS      = "help.disableOffHoursOffer";
+
     /** Opens Phoenix License page */
     exports.HELP_VIEW_LICENSE           = "help.viewLicense";           // HelpCommandHandlers.js       _handleLinkMenuItem()
 
