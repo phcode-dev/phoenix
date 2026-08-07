@@ -410,6 +410,7 @@ define({
     "LIVE_DEV_STYLER_STATE_NORMAL": "Normal",
     "LIVE_DEV_STYLER_STATE_BANNER": "Editing the {0} state — changes apply only to {0}",
     "LIVE_DEV_STYLER_STATE_EXIT": "Exit",
+    "LIVE_DEV_STYLER_STATE_EXIT_NAMED": "Exit {0}",
     "LIVE_DEV_STYLER_STATE_NO_BASE": "States can't be applied to inline styles",
     "LIVE_DEV_STYLER_STATE_HOVER": "Hover",
     "LIVE_DEV_STYLER_STATE_FOCUS": "Focus",
