@@ -533,21 +533,26 @@
             }
 
             async function _startRequireLoop() {
-                // If running on localhost, `npm run serve`, `npm run serveLocalAccount` targets puts in a fetch proxy.
-                // tTe proxy helps work around cookie domain set by phcode.dev as the dev urls are localhost. so to use
-                // either the actual services endpoint or localhost endpoints in dev, this is needed.
-                if (!Phoenix.isTestWindow && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+                // Dev-only accounts-server override, set from Debug > Diagnostic Tools > Debug Overrides.
+                // Read synchronously from localStorage before any AMD module loads: account_url covers the
+                // desktop app and every web-tab flow; accounts_proxy_path tells the login services which
+                // serve-proxy route to use in browser dev (the proxy works around phcode.dev cookie domains
+                // on localhost). Same dev gate as the dialog itself; test windows always keep baked config.
+                if (!Phoenix.isTestWindow && window.AppConfig.config.environment === "dev") {
                     try {
-                        const response = await fetch('/proxy/config');
-                        if (response.ok) {
-                            const config = await response.json();
-                            if (config.accountURL) {
-                                window.AppConfig.config.account_url = config.accountURL;
-                                console.log('Applied dynamic account URL from proxy:', config.accountURL);
-                            }
+                        const overrides = JSON.parse(
+                            localStorage.getItem("LOCAL_OVERIDES_FOR_PHOIENXI_DEBUG")) || {};
+                        if (overrides.ACCOUNTS_SERVER_OVERRIDE === "dev") {
+                            window.AppConfig.config.account_url = "http://localhost:5000/";
+                            window.AppConfig.config.accounts_proxy_path = "/proxy/accountsDev";
+                            console.log('Debug override: accounts server set to local dev (localhost:5000)');
+                        } else if (overrides.ACCOUNTS_SERVER_OVERRIDE === "staging") {
+                            window.AppConfig.config.account_url = "https://account-stage.phcode.dev/";
+                            window.AppConfig.config.accounts_proxy_path = "/proxy/accountsStaging";
+                            console.log('Debug override: accounts server set to staging');
                         }
                     } catch (error) {
-                        console.warn('Failed to fetch proxy config, using default account URL:', error);
+                        console.warn('Failed to read accounts server override, using default:', error);
                     }
                 }
                 loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");

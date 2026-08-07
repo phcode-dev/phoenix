@@ -12,9 +12,16 @@ const ACCOUNT_STAGING = 'https://account-stage.phcode.dev';
 const ACCOUNT_DEV = 'http://localhost:5000';
 const ASSETS_SERVER = 'https://assets.phcode.dev';
 
-// Account server configuration - switch between local and production
-let accountServer = ACCOUNT_PROD; // Production
-// Set to local development server if --localAccount flag is provided
+// Static proxy routes - the server is fully stateless; the client chooses which
+// accounts server to talk to via the dev-only Debug Overrides dialog (accounts
+// server dropdown), which selects the proxy path at boot. Longer prefixes are
+// listed first so /proxy/accountsDev is not swallowed by /proxy/accounts.
+const PROXY_ROUTES = [
+    { prefix: '/proxy/accountsStaging', target: ACCOUNT_STAGING },
+    { prefix: '/proxy/accountsDev', target: ACCOUNT_DEV },
+    { prefix: '/proxy/accounts', target: ACCOUNT_PROD },
+    { prefix: '/proxy/assets', target: ASSETS_SERVER }
+];
 
 // Default configuration
 let config = {
@@ -29,8 +36,6 @@ let config = {
 // Parse command line arguments
 function parseArgs() {
     const args = process.argv.slice(2);
-    let hasLocalAccount = false;
-    let hasStagingAccount = false;
 
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
@@ -52,21 +57,9 @@ function parseArgs() {
             config.silent = true;
         } else if (arg === '--log-ip') {
             config.logIp = true;
-        } else if (arg === '--localAccount') {
-            hasLocalAccount = true;
-            accountServer = ACCOUNT_DEV;
-        } else if (arg === '--stagingAccount') {
-            hasStagingAccount = true;
-            accountServer = ACCOUNT_STAGING;
         } else if (!arg.startsWith('-')) {
             config.root = path.resolve(arg);
         }
-    }
-
-    // Check for mutually exclusive flags
-    if (hasLocalAccount && hasStagingAccount) {
-        console.error('Error: --localAccount and --stagingAccount cannot be used together');
-        process.exit(1);
     }
 }
 
@@ -86,37 +79,31 @@ proxy.on('error', (err, req, res) => {
     }
 });
 
-// Modify proxy request headers
-proxy.on('proxyReq', (proxyReq, req) => {
-    // Transform localhost:8000 to appear as phcode.dev domain
+// Build the headers for the proxied request. Passed via proxy.web options instead
+// of mutating inside the proxyReq event: with followRedirects enabled the request
+// headers can already be flushed by the time proxyReq fires (ERR_HTTP_HEADERS_SENT).
+// Transforms localhost:8000 to appear as the phcode.dev domain.
+function buildProxyHeaders(req, target) {
+    const headers = {
+        'Host': new URL(target).hostname,
+        'X-Forwarded-Proto': 'https',
+        'X-Forwarded-For': req.connection.remoteAddress
+    };
+
     const originalReferer = req.headers.referer;
-    const originalOrigin = req.headers.origin;
-
-    // Set target host based on which proxy route is being used
-    const targetHost = req._proxyTarget
-        ? new URL(req._proxyTarget).hostname
-        : new URL(accountServer).hostname;
-    proxyReq.setHeader('Host', targetHost);
-
-    // Transform referer from localhost:8000 to phcode.dev
     if (originalReferer && originalReferer.includes('localhost:8000')) {
-        const newReferer = originalReferer.replace(/http:\/\/localhost:8000/g, 'https://phcode.dev');
-        proxyReq.setHeader('Referer', newReferer);
+        headers['Referer'] = originalReferer.replace(/http:\/\/localhost:8000/g, 'https://phcode.dev');
     } else if (!originalReferer) {
-        proxyReq.setHeader('Referer', 'https://phcode.dev/');
+        headers['Referer'] = 'https://phcode.dev/';
     }
 
-    // Transform origin from localhost:8000 to phcode.dev
+    const originalOrigin = req.headers.origin;
     if (originalOrigin && originalOrigin.includes('localhost:8000')) {
-        const newOrigin = originalOrigin.replace(/http:\/\/localhost:8000/g, 'https://phcode.dev');
-        proxyReq.setHeader('Origin', newOrigin);
+        headers['Origin'] = originalOrigin.replace(/http:\/\/localhost:8000/g, 'https://phcode.dev');
     }
 
-    // Ensure HTTPS scheme
-    proxyReq.setHeader('X-Forwarded-Proto', 'https');
-    proxyReq.setHeader('X-Forwarded-For', req.connection.remoteAddress);
-
-});
+    return headers;
+}
 
 // Modify proxy response headers
 proxy.on('proxyRes', (proxyRes, req, res) => {
@@ -298,70 +285,28 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Handle proxy config request
-    if (parsedUrl.pathname === '/proxy/config') {
-        const configResponse = {
-            accountURL: accountServer + '/'
-        };
+    // Check if this is a proxy request (routes are static - see PROXY_ROUTES)
+    for (const route of PROXY_ROUTES) {
+        if (parsedUrl.pathname === route.prefix || parsedUrl.pathname.startsWith(route.prefix + '/')) {
+            const targetPath = parsedUrl.pathname.replace(route.prefix, '');
+            const originalUrl = req.url;
 
-        if (!config.silent) {
-            console.log(`[CONFIG] ${req.method} ${parsedUrl.pathname} -> ${JSON.stringify(configResponse)}`);
+            // Modify the request URL for the proxy
+            req.url = targetPath + (parsedUrl.search || '');
+            req._proxyTarget = route.target;
+
+            if (!config.silent) {
+                console.log(`[PROXY] ${req.method} ${originalUrl} -> ${route.target}${req.url}`);
+            }
+
+            proxy.web(req, res, {
+                target: route.target,
+                changeOrigin: true,
+                secure: true,
+                headers: buildProxyHeaders(req, route.target)
+            });
+            return;
         }
-
-        const headers = {
-            'Content-Type': 'application/json'
-        };
-
-        if (config.cors) {
-            headers['Access-Control-Allow-Origin'] = '*';
-            headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
-            headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control';
-        }
-
-        res.writeHead(200, headers);
-        res.end(JSON.stringify(configResponse));
-        return;
-    }
-
-    // Check if this is a proxy request
-    if (parsedUrl.pathname.startsWith('/proxy/accounts')) {
-        // Extract the path after /proxy/accounts
-        const targetPath = parsedUrl.pathname.replace('/proxy/accounts', '');
-        const originalUrl = req.url;
-
-        // Modify the request URL for the proxy
-        req.url = targetPath + (parsedUrl.search || '');
-        req._proxyTarget = accountServer;
-
-        if (!config.silent) {
-            console.log(`[PROXY] ${req.method} ${originalUrl} -> ${accountServer}${req.url}`);
-        }
-
-        // Proxy the request
-        proxy.web(req, res, {
-            target: accountServer,
-            changeOrigin: true,
-            secure: true
-        });
-        return;
-    }
-
-    if (parsedUrl.pathname.startsWith('/proxy/assets')) {
-        const targetPath = parsedUrl.pathname.replace('/proxy/assets', '');
-        const originalUrl = req.url;
-        req.url = targetPath + (parsedUrl.search || '');
-        req._proxyTarget = ASSETS_SERVER;
-
-        if (!config.silent) {
-            console.log(`[PROXY] ${req.method} ${originalUrl} -> ${ASSETS_SERVER}${req.url}`);
-        }
-
-        proxy.web(req, res, {
-            target: ASSETS_SERVER,
-            changeOrigin: true,
-            secure: true
-        });
-        return;
     }
 
     // Serve static files
@@ -405,9 +350,10 @@ server.listen(config.port, config.host, () => {
         console.log(`Starting up http-server, serving ${config.root}`);
         console.log(`Available on:`);
         console.log(`  http://${config.host === '0.0.0.0' ? 'localhost' : config.host}:${config.port}`);
-        console.log(`Proxy routes:`);
-        console.log(`  /proxy/accounts/* -> ${accountServer}/*`);
-        console.log(`  /proxy/assets/* -> ${ASSETS_SERVER}/*`);
+        console.log(`Proxy routes (pick the accounts server in Debug > Diagnostic Tools > Debug Overrides):`);
+        for (const route of PROXY_ROUTES) {
+            console.log(`  ${route.prefix}/* -> ${route.target}/*`);
+        }
         console.log('Hit CTRL-C to stop the server');
     }
 });

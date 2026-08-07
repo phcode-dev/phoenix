@@ -12,9 +12,22 @@
                    title="Load http://localhost:5555/onbaording_v5/ instead of the production https://ai-panel-onboarding.phcode.dev/onbaording_v5/. Reload Phoenix after toggling."></i>
             </label>
         </div>
+        <div style="margin-bottom: 6px;">
+            <label style="display: flex; align-items: center; gap: 8px;">
+                <span>Accounts server</span>
+                <select class="accounts-server-override" style="margin: 0;">
+                    <option value="">Production (account.phcode.dev)</option>
+                    <option value="staging" {{#accountsStaging}}selected{{/accountsStaging}}>Staging (account-stage.phcode.dev)</option>
+                    <option value="dev" {{#accountsDev}}selected{{/accountsDev}}>Local dev (localhost:5000)</option>
+                </select>
+                <i class="fa-solid fa-circle-info"
+                   style="opacity: 0.5; cursor: help; font-size: 12px;"
+                   title="Which accounts server the app talks to. Local dev expects loginService `npm run serve` on localhost:5000. Notes: desktop auto-auth only works against production (manual OTP on staging/dev); staging login in the browser may need its secure session cookie copied manually."></i>
+            </label>
+        </div>
     </div>
     <div class="modal-footer">
         <button class="dialog-button btn" data-button-id="cancel">Cancel</button>
-        <button class="dialog-button btn primary" data-button-id="ok">Save</button>
+        <button class="dialog-button btn primary debug-overrides-save-btn" data-button-id="ok">Save</button>
     </div>
 </div>

@@ -43,6 +43,7 @@ define(function (require, exports, module) {
     }
 
     const CommandManager = require("command/CommandManager"),
+        Commands       = require("command/Commands"),
         Dialogs        = require("widgets/Dialogs"),
         Mustache       = require("thirdparty/mustache/mustache"),
         OverridesTpl   = require("text!./debug-overrides-dialog.html");
@@ -71,22 +72,49 @@ define(function (require, exports, module) {
 
     function _handleDebugOverrides() {
         const overrides = _readOverrides();
-        let aiPanelLocalOverride = !!overrides.AI_PANEL_LOCAL_OVERRIDE;
+        const persistedAiOverride = !!overrides.AI_PANEL_LOCAL_OVERRIDE;
+        const persistedAccountsOverride = overrides.ACCOUNTS_SERVER_OVERRIDE || "";
+        let aiPanelLocalOverride = persistedAiOverride;
+        let accountsServerOverride = persistedAccountsOverride;
+        let needsReload = false;
 
         const html = Mustache.render(OverridesTpl, {
-            aiPanelLocalOverride: aiPanelLocalOverride
+            aiPanelLocalOverride: aiPanelLocalOverride,
+            accountsStaging: accountsServerOverride === "staging",
+            accountsDev: accountsServerOverride === "dev"
         });
 
         Dialogs.showModalDialogUsingTemplate(html).done(function (id) {
             if (id !== Dialogs.DIALOG_BTN_OK) { return; }
             const next = _readOverrides();
             next.AI_PANEL_LOCAL_OVERRIDE = aiPanelLocalOverride;
+            if (accountsServerOverride) {
+                next.ACCOUNTS_SERVER_OVERRIDE = accountsServerOverride;
+            } else {
+                delete next.ACCOUNTS_SERVER_OVERRIDE; // production default keeps the blob clean
+            }
             _writeOverrides(next);
+            if (needsReload) {
+                CommandManager.execute(Commands.APP_RELOAD);
+            }
         });
 
         const $dialog = $(".phoenix-debug-overrides.instance");
+
+        // all current overrides are read at boot, so a save only needs a reload
+        // when a value actually changed from what is persisted
+        function _updateSaveButton() {
+            needsReload = (aiPanelLocalOverride !== persistedAiOverride) ||
+                (accountsServerOverride !== persistedAccountsOverride);
+            $dialog.find(".debug-overrides-save-btn").text(needsReload ? "Save & Reload" : "Save");
+        }
         $dialog.find(".ai-panel-local-override").on("change", function () {
             aiPanelLocalOverride = $(this).is(":checked");
+            _updateSaveButton();
+        });
+        $dialog.find(".accounts-server-override").on("change", function () {
+            accountsServerOverride = $(this).val() || "";
+            _updateSaveButton();
         });
     }
 
