@@ -2449,10 +2449,10 @@ define({
     "GET_PHOENIX_PRO": "Get Phoenix Pro",
     "USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE": "Community Edition",
     // Pro off-hours offer ({0} is the server-vended offer brand name, eg. "Pro Off Hours")
-    "CMD_DISABLE_OFF_HOURS": "Disable {0}",
-    "CMD_ENABLE_OFF_HOURS": "Enable {0}",
     "OFF_HOURS_ENDING_TITLE": "{0} is ending soon",
     "OFF_HOURS_ENDING_MSG": "Your free {0} session ends soon. <a href=\"{1}\">Get {2}</a> to keep Pro all day.",
+    "OFF_HOURS_ENDED_TITLE": "{0} has ended",
+    "OFF_HOURS_ENDED_MSG": "Your free {0} session has ended. <a href=\"{1}\">Get {2}</a> to keep Pro features on.",
     "OFF_HOURS_LOGIN_TITLE": "{0} is now free",
     "OFF_HOURS_LOGIN_MSG": "{0}: {1} is free every day during {2}. Log in to use it.",
     "OFF_HOURS_LOGIN_BTN": "Log in",
@@ -2469,6 +2469,7 @@ define({
     "OFF_HOURS_EXPLAIN_ACTIVE": "It's free right now — {0} left!",
     "OFF_HOURS_EXPLAIN_UPCOMING": "Your next free session starts in {0}.",
     "OFF_HOURS_WAIT_BTN": "I'll Wait",
+    "OFF_HOURS_KEEP_CODING_BTN": "Keep Coding",
     // license dialogs
     "MANAGE_LICENSE_DIALOG_TITLE": "Manage Licenses",
     "LICENSE_ACCOUNT_HEADING": "Account License",
