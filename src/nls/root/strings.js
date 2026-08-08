@@ -2429,6 +2429,8 @@ define({
     "PROMO_CARD_3_MESSAGE": "Switch instantly between phone, tablet, and desktop views to catch responsive issues early.",
     "PROMO_CARD_4": "Your Markdown, as a real document",
     "PROMO_CARD_4_MESSAGE": "Edit tables, images, and formatting visually — an easier way to work with Markdown.",
+    "PROMO_CARD_5": "Style your page visually",
+    "PROMO_CARD_5_MESSAGE": "Change fonts, colors, borders, spacing, and layout right in the Live Preview, and your CSS updates in real time.",
     "PROMO_LEARN_MORE": "Learn More\u2026",
     "PROMO_OPT_OUT_LINK": "Opt out?",
     "PROMO_OPT_OUT_NOTE": "You can cancel your trial anytime by selecting `Help > Cancel Phoenix Pro Trial`.",
