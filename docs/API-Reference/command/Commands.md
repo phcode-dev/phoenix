@@ -765,6 +765,12 @@ Opens Phoenix Pro page
 Cancels Phoenix Pro trial
 
 **Kind**: global variable  
+<a name="HELP_DISABLE_OFF_HOURS"></a>
+
+## HELP\_DISABLE\_OFF\_HOURS
+Toggles the Pro off-hours offer (label uses server-vended brand name)
+
+**Kind**: global variable  
 <a name="HELP_VIEW_LICENSE"></a>
 
 ## HELP\_VIEW\_LICENSE
