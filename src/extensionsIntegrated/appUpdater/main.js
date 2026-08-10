@@ -345,6 +345,11 @@ define(function (require, exports, module) {
             window.__TAURI__.path.resolveResource("src-node/installer/launch-windows-installer.js")
                 .then(async nodeSrcPath=>{
                     // this is not supposed to work in linux.
+                    // Strip Windows UNC prefix (\\?\) that Tauri adds on Windows as
+                    // Node 24 cannot load the entry script from \\?\ prefixed paths.
+                    if(nodeSrcPath.startsWith('\\\\?\\')){
+                        nodeSrcPath = nodeSrcPath.slice(4);
+                    }
                     const argsArray = [nodeSrcPath, appdataDir];
                     const command = window.__TAURI__.shell.Command.sidecar('phnode', argsArray);
                     command.on('close', data => {
