@@ -387,6 +387,60 @@ define(function (require, exports, module) {
                     expect(myEditor.getSelectedText()).toBe("a"); // two backward moves: c -> b -> a
                 });
             });
+
+            // Visual boxing while a session is active - see Editor.getMarkOptionTabstopOutline/
+            // getMarkOptionTabstopOutlineActive and brackets.less .editor-text-tabstop-outline*.
+            describe("visual outline markers", function () {
+                function outlineMarks(className) {
+                    return myEditor._codeMirror.getAllMarks().filter(function (m) {
+                        return m.className === className;
+                    });
+                }
+
+                it("should give every range-based stop a subdued outline marker on insertion", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    // 2 range stops (a, b) get the subdued outline; $0 (zero-width, no default) does not
+                    expect(outlineMarks("editor-text-tabstop-outline").length).toBe(2);
+                });
+
+                it("should give only the CURRENTLY selected stop the bold active outline", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    expect(outlineMarks("editor-text-tabstop-outline-active").length).toBe(1);
+
+                    pressTab();
+                    expect(outlineMarks("editor-text-tabstop-outline-active").length).toBe(1);
+                });
+
+                it("should move the active outline as the user tabs, keeping the subdued ones in place",
+                    function () {
+                        createTestEditor("");
+                        TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                        expect(outlineMarks("editor-text-tabstop-outline-active")[0].find().from.ch).toBe(0); // "a"
+
+                        pressTab();
+                        expect(outlineMarks("editor-text-tabstop-outline-active")[0].find().from.ch).toBe(2); // "b"
+                        // both subdued outlines (a and b) are still there, untouched
+                        expect(outlineMarks("editor-text-tabstop-outline").length).toBe(2);
+                    });
+
+                it("should not give a zero-width stop (no default text) any active outline", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} $2 $0", ORIGIN, ORIGIN);
+                    pressTab(); // -> $2, a bare zero-width stop
+                    expect(myEditor.getSelectedText()).toBe("");
+                    expect(outlineMarks("editor-text-tabstop-outline-active").length).toBe(0);
+                });
+
+                it("should clear all outline markers when the session ends", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    TabstopManager.endSession();
+                    expect(outlineMarks("editor-text-tabstop-outline").length).toBe(0);
+                    expect(outlineMarks("editor-text-tabstop-outline-active").length).toBe(0);
+                });
+            });
         });
     });
 });

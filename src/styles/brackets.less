@@ -190,6 +190,58 @@ html, body {
     box-shadow: inset 1px 0 0 0 @bc-primary-btn-border, inset -1px 0 0 0 @bc-primary-btn-border; /* Left, right shadow */
 }
 
+// Subdued outline shown for every remaining stop of an active snippet/tab-stop session (see
+// editor/TabstopManager.js) - a neutral border color, distinct from the bold "active" variant below.
+// Uses @bc-editor-decoration-neutral (no .dark & split - see its own definition for why editor-canvas
+// decorations need one universal mid-tone value instead of a light/dark UI-chrome color pair).
+.editor-text-tabstop-outline {
+    border-top: 1px @bc-editor-decoration-neutral solid;
+    border-bottom: 1px @bc-editor-decoration-neutral solid;
+}
+.editor-text-tabstop-outline-left {
+    box-shadow: inset 1px 0 0 0 @bc-editor-decoration-neutral; /* Left shadow */
+}
+.editor-text-tabstop-outline-right {
+    box-shadow: inset -1px 0 0 0 @bc-editor-decoration-neutral; /* right shadow */
+}
+.editor-text-tabstop-outline-left.editor-text-tabstop-outline-right {
+    box-shadow: inset 1px 0 0 0 @bc-editor-decoration-neutral, inset -1px 0 0 0 @bc-editor-decoration-neutral; /* Left, right shadow */
+}
+
+// Bold/active outline for whichever stop is currently selected, layered on top of the subdued one
+// above (same accent color rename-outline uses, for a consistent "you're actively editing here"
+// visual language across features).
+.editor-text-tabstop-outline-active {
+    border-top: 1px @bc-primary-btn-border solid;
+    border-bottom: 1px @bc-primary-btn-border solid;
+
+    .dark & {
+        border-top: 1px @dark-bc-primary-btn-border solid;
+        border-bottom: 1px @dark-bc-primary-btn-border solid;
+    }
+}
+.editor-text-tabstop-outline-active-left {
+    box-shadow: inset 1px 0 0 0 @bc-primary-btn-border;
+
+    .dark & {
+        box-shadow: inset 1px 0 0 0 @dark-bc-primary-btn-border;
+    }
+}
+.editor-text-tabstop-outline-active-right {
+    box-shadow: inset -1px 0 0 0 @bc-primary-btn-border;
+
+    .dark & {
+        box-shadow: inset -1px 0 0 0 @dark-bc-primary-btn-border;
+    }
+}
+.editor-text-tabstop-outline-active-left.editor-text-tabstop-outline-active-right {
+    box-shadow: inset 1px 0 0 0 @bc-primary-btn-border, inset -1px 0 0 0 @bc-primary-btn-border;
+
+    .dark & {
+        box-shadow: inset 1px 0 0 0 @dark-bc-primary-btn-border, inset -1px 0 0 0 @dark-bc-primary-btn-border;
+    }
+}
+
 // error class has highest visual precedence, followed by warning, spell error and info.
 // .error.error: This selector has 4x the class name, which increases its specificity compared to single class
 // selectors like .warning or .info. Even if error, warning, and info are used on the same div in any order,

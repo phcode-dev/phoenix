@@ -65,6 +65,12 @@
 @bc-error:                      #f74687;
 @bc-modal-backdrop-opacity:     0.4;
 @bc-spinner:                    #78b2f2;
+// Deliberately NOT theme-split (no @dark- pair): this decorates the EDITOR CANVAS, whose background
+// depends on the user's chosen code theme (not just the app's light/dark UI mode - see
+// .cm-matchhighlight in brackets_codemirror_override.less for the same reasoning), so it needs one
+// mid-tone value that reads reasonably against both very light and very dark editor backgrounds,
+// rather than a UI-chrome color pair tuned only for the app's own near-white/near-black panels.
+@bc-editor-decoration-neutral:  #808080;
 
 // Highlights and Shadows
 @bc-highlight:                  rgba(255, 255, 255, 0.12);
