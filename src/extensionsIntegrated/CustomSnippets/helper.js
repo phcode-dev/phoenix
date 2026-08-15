@@ -23,6 +23,7 @@ define(function (require, exports, module) {
     const Global = require("./global");
     const UIHelper = require("./UIHelper");
     const Strings = require("strings");
+    const DefaultSnippets = require("./defaultSnippets");
 
     // list of all the navigation and function keys that are allowed inside the input fields
     const ALLOWED_NAVIGATION_KEYS = [
@@ -56,7 +57,13 @@ define(function (require, exports, module) {
     // Optimized data structures for fast snippet lookups
     let snippetsByLanguage = new Map();
     let snippetsByAbbreviation = new Map();
+    let snippetsByInsertionKey = new Map();
     let allSnippetsOptimized = [];
+    // small dedicated subset of allSnippetsOptimized (only built-in defaults ever set prefixTrigger -
+    // see defaultSnippets.js), scanned on every keystroke by hasExactMatchingSnippet below. Kept
+    // separate from allSnippetsOptimized so that scan's cost never grows with the user's own
+    // (potentially much larger) custom snippet count.
+    let prefixTriggerSnippets = [];
 
     /**
      * Preprocesses a snippet to add optimized lookup properties
@@ -68,6 +75,12 @@ define(function (require, exports, module) {
 
         // pre-compute lowercase abbreviation for faster matching
         optimizedSnippet.abbreviationLower = snippet.abbreviation.toLowerCase();
+
+        // a stable key identifying this exact snippet for insertion (see findSnippetForInsertion /
+        // getSnippetByInsertionKey) - built-ins use their unique `id`; regular user snippets don't
+        // have one, but driver.js already enforces globally-unique abbreviations for those on add, so
+        // the abbreviation itself is a safe stable key for them
+        optimizedSnippet.insertionKey = snippet.id || snippet.abbreviation;
 
         // parse and create a Set of supported extensions for O(1) lookup
         if (snippet.fileExtension.toLowerCase() === "all") {
@@ -90,20 +103,44 @@ define(function (require, exports, module) {
      * Rebuilds optimized data structures from the current snippet list
      * we call this function whenever snippets are loaded, added, modified, or deleted
      * i.e. whenever the snippetList is updated
+     *
+     * This is also where built-in default snippets (see defaultSnippets.js) get merged into the
+     * matching engine - they are NOT part of Global.SnippetHintsList and are never persisted/shown
+     * in the panel, they only exist here, in this optimized/derived view.
      */
     function rebuildOptimizedStructures() {
         // clear existing structures
         snippetsByLanguage.clear();
         snippetsByAbbreviation.clear();
+        snippetsByInsertionKey.clear();
         allSnippetsOptimized.length = 0;
+        prefixTriggerSnippets.length = 0;
 
-        // Process each snippet
-        Global.SnippetHintsList.forEach(snippet => {
+        // Process each snippet - user snippets first, so a user snippet that happens to share an
+        // abbreviation with a default is index-order-first (relevant only for iteration order, since
+        // matching itself checks every candidate for language support regardless of order)
+        Global.SnippetHintsList.concat(DefaultSnippets.DEFAULT_SNIPPETS).forEach(snippet => {
             const optimizedSnippet = preprocessSnippet(snippet);
             allSnippetsOptimized.push(optimizedSnippet);
 
-            // Index by abbreviation (lowercase) for exact matches
-            snippetsByAbbreviation.set(optimizedSnippet.abbreviationLower, optimizedSnippet);
+            if (optimizedSnippet.prefixTrigger) {
+                prefixTriggerSnippets.push(optimizedSnippet);
+            }
+
+            // O(1) lookup by stable identity for insertion - see findSnippetForInsertion. Collisions
+            // aren't expected (built-ins key by unique `id`; user snippets key by their own
+            // abbreviation, which driver.js already enforces is unique among user snippets on add) -
+            // if one somehow occurs, last one indexed wins, same as any other Map.set.
+            snippetsByInsertionKey.set(optimizedSnippet.insertionKey, optimizedSnippet);
+
+            // Index by abbreviation (lowercase) for exact matches. Multiple snippets CAN share the
+            // same abbreviation (e.g. "function" for both JS and PHP) as long as they're scoped to
+            // different, non-overlapping languages - so this maps to an array of candidates, not a
+            // single winner, and hasExactMatchingSnippet below checks all of them.
+            if (!snippetsByAbbreviation.has(optimizedSnippet.abbreviationLower)) {
+                snippetsByAbbreviation.set(optimizedSnippet.abbreviationLower, []);
+            }
+            snippetsByAbbreviation.get(optimizedSnippet.abbreviationLower).push(optimizedSnippet);
 
             // Index by supported languages/extensions
             if (optimizedSnippet.supportsAllLanguages) {
@@ -366,22 +403,64 @@ define(function (require, exports, module) {
         return false;
     }
 
+    // Minimum characters the user must type before a `prefixTrigger` snippet (see defaultSnippets.js)
+    // is allowed to fire on a partial/in-progress prefix of its abbreviation, instead of only once
+    // fully typed. Guards against 1-character noise (e.g. every word starting with "f").
+    const MIN_PREFIX_TRIGGER_LENGTH = 2;
+
     /**
-     * Checks if there's at least one exact match for the query
+     * Checks if there's at least one matching snippet for the query - either an exact abbreviation
+     * match, or, for snippets opted into `prefixTrigger` (see defaultSnippets.js), a leading prefix
+     * of their abbreviation once the user has typed at least MIN_PREFIX_TRIGGER_LENGTH characters.
+     * Regular user-created snippets never set `prefixTrigger`, so they keep requiring an exact match,
+     * unaffected by this.
+     *
+     * Multiple snippets can share the same abbreviation across different languages (e.g. "function"
+     * for both JS and PHP) - every candidate for a given abbreviation/prefix is checked against the
+     * current language context, so one language's entry never shadows another's.
      * @param {string} query - The search query
      * @param {Editor} editor - The editor instance
-     * @returns {boolean} - True if there's an exact match
+     * @returns {boolean} - True if there's a matching snippet
      */
     function hasExactMatchingSnippet(query, editor) {
         const queryLower = query.toLowerCase();
         const languageContext = getCurrentLanguageContext(editor);
 
-        const snippet = snippetsByAbbreviation.get(queryLower);
-        if (snippet) {
-            return isSnippetSupportedInLanguageContext(snippet, languageContext, editor);
+        const exactCandidates = snippetsByAbbreviation.get(queryLower);
+        if (exactCandidates && exactCandidates.some((snippet) =>
+            isSnippetSupportedInLanguageContext(snippet, languageContext, editor))) {
+            return true;
+        }
+
+        if (queryLower.length >= MIN_PREFIX_TRIGGER_LENGTH) {
+            // scoped to the small prefixTriggerSnippets subset (built-ins only), not the user's full
+            // (potentially much larger) snippet list - see its declaration for why
+            const hasPrefixMatch = prefixTriggerSnippets.some((snippet) =>
+                snippet.abbreviationLower.startsWith(queryLower) &&
+                isSnippetSupportedInLanguageContext(snippet, languageContext, editor)
+            );
+            if (hasPrefixMatch) {
+                return true;
+            }
         }
 
         return false;
+    }
+
+    /**
+     * Looks up the exact snippet to insert by its insertionKey (see preprocessSnippet) - an O(1) Map
+     * lookup, not a re-derivation of language context. The hint list shown to the user was already
+     * built from the correctly language-scoped candidates (getMatchingSnippets/hasExactMatchingSnippet
+     * run at hint-display time); each rendered hint element carries the exact resolved snippet's
+     * insertionKey (see createHintItem), so accepting a hint just needs to look that key up directly -
+     * whatever was shown is exactly what gets inserted, with no risk of re-resolving to a different
+     * snippet than the one actually displayed (e.g. if the cursor's language context could ever change
+     * between the hint being shown and being accepted).
+     * @param {string} insertionKey - the `data-insertion-key` carried by the accepted hint element
+     * @returns {Object|null} the matching snippet, or null if not found
+     */
+    function getSnippetByInsertionKey(insertionKey) {
+        return snippetsByInsertionKey.get(insertionKey) || null;
     }
 
     /**
@@ -450,13 +529,20 @@ define(function (require, exports, module) {
      * @param   {String} abbr - the abbreviation text that is to be displayed in the code hint
      * @param   {String} query - the query string typed by the user for highlighting matching characters
      * @param   {String} description - the description of the snippet to be displayed
+     * @param   {String} [insertionKey] - the exact snippet's insertionKey (see preprocessSnippet),
+     *      carried on the element so insertHint can look it up directly (getSnippetByInsertionKey)
+     *      instead of re-resolving by abbreviation + current language context at accept time
      * @returns {JQuery} - the jquery item that has the abbr text and the Snippet icon
      */
-    function createHintItem(abbr, query, description) {
+    function createHintItem(abbr, query, description, insertionKey) {
         var $hint = $("<span>")
             .addClass("brackets-css-hints brackets-hints custom-snippets-hint")
             .attr("data-val", abbr)
             .attr("data-isCustomSnippet", true);
+
+        if (insertionKey !== undefined && insertionKey !== null) {
+            $hint.attr("data-insertion-key", insertionKey);
+        }
 
         // add the tooltip for the description shown when the hint is hovered
         if (description && description.trim() !== "") {
@@ -917,6 +1003,7 @@ define(function (require, exports, module) {
     exports.isSnippetSupportedInLanguageContext = isSnippetSupportedInLanguageContext;
     exports.isSnippetSupportedInFile = isSnippetSupportedInFile;
     exports.hasExactMatchingSnippet = hasExactMatchingSnippet;
+    exports.getSnippetByInsertionKey = getSnippetByInsertionKey;
     exports.getMatchingSnippets = getMatchingSnippets;
     exports.sanitizeFileExtensionInput = sanitizeFileExtensionInput;
     exports.handleFileExtensionInput = handleFileExtensionInput;

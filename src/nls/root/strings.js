@@ -2423,7 +2423,7 @@ define({
     "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet.",
     "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Brief description of what this snippet does. Leave empty if no description needed.",
     "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Specify file types where this snippet should be available (e.g., '.js', '.html', '.css'). Leave empty to make it available for all files.",
-    "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position.",
+    "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position. Add default text that gets selected for type-over with ${1:placeholder text}.",
     "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "console log shortcut (optional)",
     "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Leave empty for all files, or specify like .js, .html",
     "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "console.log(${1});",

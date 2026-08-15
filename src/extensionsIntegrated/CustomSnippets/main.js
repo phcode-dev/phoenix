@@ -290,7 +290,9 @@ define(function (require, exports, module) {
         _addToMenu();
         CodeHintIntegration.init();
 
-        // load snippets from file storage
+        // load snippets from file storage. Built-in default snippets (see defaultSnippets.js) are
+        // NOT part of this user data - they're merged directly into the matching engine's optimized
+        // structures (see helper.js rebuildOptimizedStructures), so they never touch this file.
         const _snippetsLoadedPromise = SnippetsState.loadSnippetsFromState()
             .then(function () {
                 // track boot-time snippet count (only if user has snippets)
@@ -304,8 +306,6 @@ define(function (require, exports, module) {
                 logger.reportError(error, "Custom Snippets: didn't load on app init");
             });
 
-        SnippetCursorManager.registerHandlers();
-
         // Expose modules for integration testing
         if (brackets.test) {
             brackets.test.CustomSnippetsGlobal = Global;
@@ -313,6 +313,7 @@ define(function (require, exports, module) {
             brackets.test.CustomSnippetsCursorManager = SnippetCursorManager;
             brackets.test.CustomSnippetsCodeHintHandler = CodeHintIntegration._CustomSnippetsHandler;
             brackets.test.CustomSnippetsDriver = Driver;
+            brackets.test.CustomSnippetsState = SnippetsState;
             brackets.test._customSnippetsLoadedPromise = _snippetsLoadedPromise;
         }
     });

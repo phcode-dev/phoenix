@@ -260,6 +260,53 @@ define(function (require, exports, module) {
                 expect(TabstopManager.hasActiveSession()).toBe(false);
             });
 
+            describe("ending the session when the user moves on", function () {
+                it("should end the session when the cursor moves outside the snippet's lines", function () {
+                    createTestEditor("some other line here\nsome other line here\n");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    expect(TabstopManager.hasActiveSession()).toBe(true);
+
+                    // simulate the user clicking far away, outside the snippet's lines entirely
+                    myEditor.setCursorPos({ line: 2, ch: 5 });
+                    expect(TabstopManager.hasActiveSession()).toBe(false);
+                });
+
+                it("should NOT end the session for cursor movement that stays within the snippet's lines",
+                    function () {
+                        createTestEditor("");
+                        TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                        // move within the same line, not via Tab (e.g. arrow-key navigation)
+                        myEditor.setCursorPos({ line: 0, ch: 0 });
+                        expect(TabstopManager.hasActiveSession()).toBe(true);
+                    });
+
+                it("should end the session on a multi-cursor selection", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    expect(TabstopManager.hasActiveSession()).toBe(true);
+
+                    myEditor.setSelections([
+                        { start: { line: 0, ch: 0 }, end: { line: 0, ch: 1 } },
+                        { start: { line: 0, ch: 2 }, end: { line: 0, ch: 3 } }
+                    ]);
+                    expect(TabstopManager.hasActiveSession()).toBe(false);
+                });
+
+                it("should not unexpectedly jump the cursor back on a later Tab after the session ended",
+                    function () {
+                        createTestEditor("some other line here\nsome other line here\nyet another line\n");
+                        TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                        myEditor.setCursorPos({ line: 2, ch: 5 }); // moves away, ends the session
+                        expect(TabstopManager.hasActiveSession()).toBe(false);
+
+                        // a stray Tab here must not resurrect/navigate the old session
+                        TabstopManager.goToNextStop();
+                        expect(TabstopManager.hasActiveSession()).toBe(false);
+                        const cursor = myEditor.getCursorPos();
+                        expect([cursor.line, cursor.ch]).toEqual([2, 5]); // cursor stayed put
+                    });
+            });
+
             it("should keep stops correct when text is inserted above (markers follow edits)", function () {
                 createTestEditor("");
                 TabstopManager.insertSnippet(myEditor, "fn(${1:a}, ${2:b})", ORIGIN, ORIGIN);
@@ -276,6 +323,69 @@ define(function (require, exports, module) {
                 createTestEditor("foo.barbaz");
                 TabstopManager.insertSnippet(myEditor, "log($1)", { line: 0, ch: 4 }, { line: 0, ch: 7 });
                 expect(myDocument.getText()).toBe("foo.log()baz");
+            });
+
+            // goToNextStop/goToPreviousStop are the exported primitives other features (e.g. Custom
+            // Snippets' snippetCursorManager.js) drive session navigation with directly, rather than
+            // going through the CodeMirror keymap - test them called directly, not just via Tab/Shift-Tab.
+            describe("goToNextStop / goToPreviousStop (direct API, not via keymap)", function () {
+                it("should advance to the next stop when called directly", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    expect(myEditor.getSelectedText()).toBe("a");
+
+                    TabstopManager.goToNextStop();
+                    expect(myEditor.getSelectedText()).toBe("b");
+                    expect(TabstopManager.hasActiveSession()).toBe(true);
+                });
+
+                it("should go back to the previous stop when called directly", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    TabstopManager.goToNextStop();
+                    expect(myEditor.getSelectedText()).toBe("b");
+
+                    TabstopManager.goToPreviousStop();
+                    expect(myEditor.getSelectedText()).toBe("a");
+                    expect(TabstopManager.hasActiveSession()).toBe(true);
+                });
+
+                it("should end the session when goToNextStop lands on the final $0 stop", function () {
+                    createTestEditor("");
+                    TabstopManager.insertSnippet(myEditor, "${1:a} ${2:b} $0", ORIGIN, ORIGIN);
+                    TabstopManager.goToNextStop(); // -> b
+                    TabstopManager.goToNextStop(); // -> $0, final stop
+                    expect(myEditor.getSelectedText()).toBe("");
+                    expect(TabstopManager.hasActiveSession()).toBe(false);
+                });
+
+                it("should be a no-op when there is no active session", function () {
+                    createTestEditor("plain text, no snippet inserted");
+                    expect(TabstopManager.hasActiveSession()).toBe(false);
+                    expect(function () {
+                        TabstopManager.goToNextStop();
+                        TabstopManager.goToPreviousStop();
+                    }).not.toThrow();
+                    expect(TabstopManager.hasActiveSession()).toBe(false);
+                });
+
+                it("should behave identically to pressing Tab/Shift-Tab in the real editor", function () {
+                    createTestEditor("");
+                    // note the trailing $0: without a final stop after "c", "c" itself would BE the
+                    // final stop and landing on it would end the session immediately (see the
+                    // "should end the session..." test above) - this test wants to stay mid-session
+                    // across every move, so "c" must not be the last stop.
+                    TabstopManager.insertSnippet(myEditor, "fn(${1:a}, ${2:b}, ${3:c})$0", ORIGIN, ORIGIN);
+
+                    TabstopManager.goToNextStop();
+                    pressTab();
+                    expect(myEditor.getSelectedText()).toBe("c"); // two forward moves: a -> b -> c
+                    expect(TabstopManager.hasActiveSession()).toBe(true); // $0 still ahead
+
+                    TabstopManager.goToPreviousStop();
+                    pressShiftTab();
+                    expect(myEditor.getSelectedText()).toBe("a"); // two backward moves: c -> b -> a
+                });
             });
         });
     });

@@ -23,7 +23,6 @@ define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager");
     const Metrics = require("utils/Metrics");
 
-    const Global = require("./global");
     const Driver = require("./driver");
     const Helper = require("./helper");
     const SnippetCursorManager = require("./snippetCursorManager");
@@ -84,7 +83,8 @@ define(function (require, exports, module) {
 
                 if (matchingSnippets.length > 0) {
                     const customSnippetHints = matchingSnippets.map((snippet) => {
-                        return Helper.createHintItem(snippet.abbreviation, needle.word, snippet.description);
+                        return Helper.createHintItem(
+                            snippet.abbreviation, needle.word, snippet.description, snippet.insertionKey);
                     });
 
                     return {
@@ -108,34 +108,33 @@ define(function (require, exports, module) {
         insertHint: function (hint) {
             // check if the hint is a custom snippet
             if (hint && hint.jquery && hint.attr("data-isCustomSnippet")) {
-                // handle custom snippet insertion
-                const abbreviation = hint.attr("data-val");
-                if (Global.SnippetHintsList) {
-                    const matchedSnippet = Global.SnippetHintsList.find(
-                        (snippet) => snippet.abbreviation === abbreviation
-                    );
+                // handle custom snippet insertion. The hint list was already built from the correctly
+                // language-scoped candidates (see getHints above), and each hint element carries the
+                // exact resolved snippet's insertionKey - so accepting it is a direct O(1) lookup, not
+                // a re-search by abbreviation + the (possibly since-changed) current language context
+                const insertionKey = hint.attr("data-insertion-key");
+
+                // Get current editor from EditorManager since it's not passed
+                const editor = EditorManager.getActiveEditor();
+                if (editor) {
+                    const matchedSnippet = Helper.getSnippetByInsertionKey(insertionKey);
                     if (matchedSnippet) {
-                        // Get current editor from EditorManager since it's not passed
-                        const editor = EditorManager.getActiveEditor();
+                        // to track the usage metrics
+                        const fileCategory = Helper.categorizeFileExtensionForMetrics(matchedSnippet.fileExtension);
+                        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "snipt", `use.${fileCategory}`);
 
-                        if (editor) {
-                            // to track the usage metrics
-                            const fileCategory = Helper.categorizeFileExtensionForMetrics(matchedSnippet.fileExtension);
-                            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "snipt", `use.${fileCategory}`);
+                        // replace the typed abbreviation with the template text using cursor manager
+                        const wordInfo = Driver.getWordBeforeCursor();
+                        const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
+                        const end = editor.getCursorPos();
 
-                            // replace the typed abbreviation with the template text using cursor manager
-                            const wordInfo = Driver.getWordBeforeCursor();
-                            const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
-                            const end = editor.getCursorPos();
-
-                            SnippetCursorManager.insertSnippetWithTabStops(
-                                editor,
-                                matchedSnippet.templateText,
-                                start,
-                                end
-                            );
-                            return true; // handled
-                        }
+                        SnippetCursorManager.insertSnippetWithTabStops(
+                            editor,
+                            matchedSnippet.templateText,
+                            start,
+                            end
+                        );
+                        return true; // handled
                     }
                 }
             }

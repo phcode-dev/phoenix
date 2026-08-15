@@ -190,6 +190,42 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @param {{line: number, ch: number}} pos - a document position
+     * @return {boolean} true if `pos` falls within the line span currently covered by the active
+     *      session's markers (i.e. the snippet the user is still tabbing through)
+     */
+    function _isWithinSessionBounds(pos) {
+        var minLine = Infinity,
+            maxLine = -Infinity;
+        _session.markers.forEach(function (m) {
+            var r = _markerRange(m);
+            if (r) {
+                minLine = Math.min(minLine, r.from.line);
+                maxLine = Math.max(maxLine, r.to.line);
+            }
+        });
+        if (minLine === Infinity) {
+            return false; // no markers left resolve-able
+        }
+        return pos.line >= minLine && pos.line <= maxLine;
+    }
+
+    /**
+     * Ends the session as soon as the user's cursor leaves the snippet's lines (e.g. clicks
+     * elsewhere to fix something unrelated) or a multi-cursor selection is made - matches standard
+     * editor behavior (VS Code et al.) and avoids a stray later Tab press unexpectedly jumping the
+     * cursor back into a snippet the user has moved on from.
+     */
+    function _handleCursorActivity(event, editor) {
+        if (!_session || _session.editor !== editor) {
+            return;
+        }
+        if (editor.getSelections().length > 1 || !_isWithinSessionBounds(editor.getCursorPos())) {
+            _clearSession();
+        }
+    }
+
+    /**
      * Resolve a marker (markText range or bookmark) to a {from, to} document range, or null if the
      * marker no longer exists in the document.
      */
@@ -219,6 +255,13 @@ define(function (require, exports, module) {
     }
 
     function _gotoNext() {
+        if (!_session) {
+            // no-op: goToNextStop/goToPreviousStop are exported as public API (see bottom of file)
+            // for callers like Custom Snippets' snippetCursorManager.js to drive navigation directly,
+            // not only via the CodeMirror keymap installed below (which only exists while a session is
+            // active, so it could never reach this function with no session) - a direct caller could.
+            return;
+        }
         // Move forward through the stops; leaving the last one ends the session (caret stays put).
         for (var i = _session.index + 1; i < _session.markers.length; i++) {
             if (_selectStop(i)) {
@@ -233,6 +276,9 @@ define(function (require, exports, module) {
     }
 
     function _gotoPrev() {
+        if (!_session) {
+            return; // see _gotoNext's no-op comment - same reasoning applies here
+        }
         for (var i = _session.index - 1; i >= 0; i--) {
             if (_selectStop(i)) {
                 return;
@@ -314,9 +360,11 @@ define(function (require, exports, module) {
 
         _session = { editor: editor, markers: markers, index: -1, keymap: keymap };
         editor._codeMirror.addKeyMap(keymap);
-        // End the session if the editor it belongs to is destroyed (file closed). Namespaced so
-        // _clearSession can remove it with a single off(".tabstop").
+        // End the session if the editor it belongs to is destroyed (file closed), or the user moves
+        // on (cursor leaves the snippet's lines, or a multi-cursor selection is made). Namespaced so
+        // _clearSession can remove both with a single off(".tabstop").
         editor.on("beforeDestroy.tabstop", _clearSession);
+        editor.on("cursorActivity.tabstop", _handleCursorActivity);
 
         _selectStop(0);
         return parsed;
@@ -338,4 +386,8 @@ define(function (require, exports, module) {
     exports.insertSnippet = insertSnippet;
     exports.hasActiveSession = hasActiveSession;
     exports.endSession = endSession;
+    // exposed so other features with their own stable session lifecycle (e.g. custom snippets)
+    // can drive Tab / Shift-Tab navigation without duplicating this logic
+    exports.goToNextStop = _gotoNext;
+    exports.goToPreviousStop = _gotoPrev;
 });

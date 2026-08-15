@@ -27,6 +27,7 @@ define(function (require, exports, module) {
     const FilterSnippets = require("extensionsIntegrated/CustomSnippets/filterSnippets");
     const SnippetCursorManager = require("extensionsIntegrated/CustomSnippets/snippetCursorManager");
     const Global = require("extensionsIntegrated/CustomSnippets/global");
+    const TabstopManager = require("editor/TabstopManager");
 
     describe("Custom Snippets", function () {
 
@@ -310,6 +311,65 @@ define(function (require, exports, module) {
                 });
             });
 
+            describe("hasExactMatchingSnippet: prefixTrigger", function () {
+                const jsMockEditor = {
+                    getLanguageForPosition: function () {
+                        return { getId: function () { return "javascript"; } };
+                    },
+                    document: {
+                        file: { fullPath: "/test/file.js" }
+                    }
+                };
+
+                beforeEach(function () {
+                    Global.SnippetHintsList.push({
+                        abbreviation: "function",
+                        prefixTrigger: true,
+                        description: "Prefilled function",
+                        templateText: "function ${1}() {}",
+                        fileExtension: ".js"
+                    });
+                    Helper.rebuildOptimizedStructures();
+                });
+
+                it("should match once at least MIN_PREFIX_TRIGGER_LENGTH chars of the abbreviation are typed",
+                    function () {
+                        expect(Helper.hasExactMatchingSnippet("fu", jsMockEditor)).toBe(true);
+                        expect(Helper.hasExactMatchingSnippet("fun", jsMockEditor)).toBe(true);
+                        expect(Helper.hasExactMatchingSnippet("func", jsMockEditor)).toBe(true);
+                        expect(Helper.hasExactMatchingSnippet("function", jsMockEditor)).toBe(true);
+                    });
+
+                it("should not match below MIN_PREFIX_TRIGGER_LENGTH (avoids 1-char noise)", function () {
+                    expect(Helper.hasExactMatchingSnippet("f", jsMockEditor)).toBe(false);
+                });
+
+                it("should not match text that diverges from the abbreviation", function () {
+                    // "fung" diverges from "function" at the 4th char ('g' vs 'c') - not a prefix
+                    expect(Helper.hasExactMatchingSnippet("fung", jsMockEditor)).toBe(false);
+                    // longer than the abbreviation - can't be a prefix of it either
+                    expect(Helper.hasExactMatchingSnippet("functionx", jsMockEditor)).toBe(false);
+                });
+
+                it("should not apply prefix matching to regular (non-prefixTrigger) snippets", function () {
+                    // "cl" is a genuine prefix of "clg" but clg never opted into prefixTrigger
+                    expect(Helper.hasExactMatchingSnippet("cl", jsMockEditor)).toBe(false);
+                });
+
+                it("should still respect language/file-extension scoping for prefix matches", function () {
+                    const pyMockEditor = {
+                        getLanguageForPosition: function () {
+                            return { getId: function () { return "python"; } };
+                        },
+                        document: {
+                            file: { fullPath: "/test/file.py" }
+                        }
+                    };
+                    // the "function" prefixTrigger snippet above is scoped to .js only
+                    expect(Helper.hasExactMatchingSnippet("func", pyMockEditor)).toBe(false);
+                });
+            });
+
             describe("getMatchingSnippets", function () {
                 it("should return prefix-matched snippets for the given language", function () {
                     const mockEditor = {
@@ -492,57 +552,91 @@ define(function (require, exports, module) {
         });
 
         // =====================================================================
-        // SnippetCursorManager: parseTemplateText
+        // SnippetCursorManager: escapeBareDollarSigns
         // =====================================================================
-        describe("SnippetCursorManager: parseTemplateText", function () {
-            it("should parse template text with no tab stops", function () {
-                const result = SnippetCursorManager.parseTemplateText("Hello, World!");
-                expect(result.text).toBe("Hello, World!");
-                expect(result.tabStops.length).toBe(0);
+        describe("SnippetCursorManager: escapeBareDollarSigns", function () {
+            it("should escape a bare '$' followed by a digit so it isn't read as an LSP tab stop", function () {
+                const escaped = SnippetCursorManager.escapeBareDollarSigns("Price: $5");
+                expect(escaped).toBe("Price: \\$5");
+                // and it must round-trip back to the original literal text once expanded
+                expect(TabstopManager.parseSnippet(escaped).text).toBe("Price: $5");
             });
 
-            it("should parse template with a single tab stop", function () {
-                const result = SnippetCursorManager.parseTemplateText("console.log(${1});");
-                expect(result.text).toBe("console.log(${1});");
-                expect(result.tabStops.length).toBe(1);
-                expect(result.tabStops[0].number).toBe(1);
+            it("should escape a bare '$' followed by an identifier so it isn't read as an LSP variable", function () {
+                const escaped = SnippetCursorManager.escapeBareDollarSigns("$scope.value");
+                expect(escaped).toBe("\\$scope.value");
+                expect(TabstopManager.parseSnippet(escaped).text).toBe("$scope.value");
             });
 
-            it("should parse template with multiple tab stops", function () {
-                const result = SnippetCursorManager.parseTemplateText("function ${1}(${2}) {\n    ${3}\n}");
-                expect(result.tabStops.length).toBe(3);
-                expect(result.tabStops[0].number).toBe(1);
-                expect(result.tabStops[1].number).toBe(2);
-                expect(result.tabStops[2].number).toBe(3);
+            it("should leave the braced '${N}' tab stop syntax untouched", function () {
+                expect(SnippetCursorManager.escapeBareDollarSigns("${1}")).toBe("${1}");
+                const parsed = TabstopManager.parseSnippet(SnippetCursorManager.escapeBareDollarSigns("${1}"));
+                expect(parsed.stops.length).toBe(1);
+                expect(parsed.stops[0].number).toBe(1);
             });
 
-            it("should sort tab stops numerically with ${0} at the end", function () {
-                const result = SnippetCursorManager.parseTemplateText("${3} ${1} ${0} ${2}");
-                expect(result.tabStops.length).toBe(4);
-                expect(result.tabStops[0].number).toBe(1);
-                expect(result.tabStops[1].number).toBe(2);
-                expect(result.tabStops[2].number).toBe(3);
-                expect(result.tabStops[3].number).toBe(0); // ${0} always last
+            it("should double pre-existing literal backslashes so they survive TabstopManager's escapes", function () {
+                // input is a template that already contains one literal backslash before '$HOME' -
+                // the old engine had no escape concept, so this rendered as the literal 8 characters
+                // `\$HOME`. The round trip through the new engine must reproduce that exactly.
+                const original = "echo \\$HOME";
+                const escaped = SnippetCursorManager.escapeBareDollarSigns(original);
+                expect(TabstopManager.parseSnippet(escaped).text).toBe(original);
             });
 
-            it("should handle template with only ${0} exit point", function () {
-                const result = SnippetCursorManager.parseTemplateText("return ${0};");
-                expect(result.tabStops.length).toBe(1);
-                expect(result.tabStops[0].number).toBe(0);
+            it("should not interfere with a real tab stop mixed with literal backslashes", function () {
+                const original = "C:\\Users\\${1}\\file.txt";
+                const escaped = SnippetCursorManager.escapeBareDollarSigns(original);
+                const parsed = TabstopManager.parseSnippet(escaped);
+                expect(parsed.text).toBe("C:\\Users\\\\file.txt");
+                expect(parsed.stops.length).toBe(1);
+                expect(parsed.stops[0].number).toBe(1);
+            });
+        });
+
+        // =====================================================================
+        // Built-in default snippets: merged silently, never part of user data
+        // =====================================================================
+        describe("Built-in defaults: silent merge (not in Global.SnippetHintsList or the panel)", function () {
+            let savedSnippetsList;
+
+            beforeEach(function () {
+                savedSnippetsList = Global.SnippetHintsList.slice();
+                Global.SnippetHintsList.length = 0; // simulate a user with zero saved snippets
+                Helper.rebuildOptimizedStructures();
             });
 
-            it("should handle template with ${1} and ${0}", function () {
-                const result = SnippetCursorManager.parseTemplateText("if (${1}) {\n    ${0}\n}");
-                expect(result.tabStops.length).toBe(2);
-                expect(result.tabStops[0].number).toBe(1);
-                expect(result.tabStops[1].number).toBe(0);
+            afterEach(function () {
+                Global.SnippetHintsList.length = 0;
+                savedSnippetsList.forEach(function (s) { Global.SnippetHintsList.push(s); });
+                Helper.rebuildOptimizedStructures();
             });
 
-            it("should preserve the original template text", function () {
-                const template = "<div class=\"${1}\">${2}</div>${0}";
-                const result = SnippetCursorManager.parseTemplateText(template);
-                expect(result.text).toBe(template);
-            });
+            it("should never appear in Global.SnippetHintsList itself - only in the merged/optimized view",
+                function () {
+                    const ids = Global.SnippetHintsList.filter(function (s) { return s.id; });
+                    expect(ids.length).toBe(0);
+                });
+
+            it("should still be found by the matching engine (hasExactMatchingSnippet) with an empty user list",
+                function () {
+                    const jsMockEditor = {
+                        getLanguageForPosition: function () {
+                            return { getId: function () { return "javascript"; } };
+                        },
+                        document: { file: { fullPath: "/test/file.js" } }
+                    };
+                    expect(Helper.hasExactMatchingSnippet("function", jsMockEditor)).toBe(true);
+                    expect(Helper.hasExactMatchingSnippet("arrow", jsMockEditor)).toBe(true);
+                });
+
+            it("should not be deletable/editable via driver.js, since it never touches the user's list",
+                function () {
+                    // Global.SnippetHintsList is what driver.js's add/edit/delete code reads and writes -
+                    // an empty list here means there is nothing for the panel to show or let the user
+                    // delete for any of the built-ins, by construction.
+                    expect(Global.SnippetHintsList.length).toBe(0);
+                });
         });
 
         // =====================================================================
@@ -838,6 +932,87 @@ define(function (require, exports, module) {
                 const $hint = Helper.createHintItem("clg", "", "");
                 expect($hint.hasClass("custom-snippets-hint")).toBe(true);
             });
+
+            it("should attach the insertionKey as a data-insertion-key attribute when provided", function () {
+                const $hint = Helper.createHintItem("clg", "", "", "default-function");
+                expect($hint.attr("data-insertion-key")).toBe("default-function");
+            });
+
+            it("should not add a data-insertion-key attribute when insertionKey is omitted", function () {
+                const $hint = Helper.createHintItem("clg", "", "");
+                expect($hint.attr("data-insertion-key")).toBeUndefined();
+            });
+        });
+
+        // =====================================================================
+        // Helper: insertionKey / getSnippetByInsertionKey (O(1) insertion lookup)
+        // =====================================================================
+        describe("insertionKey and getSnippetByInsertionKey", function () {
+            let savedSnippetsList;
+
+            beforeEach(function () {
+                savedSnippetsList = Global.SnippetHintsList.slice();
+                Global.SnippetHintsList.length = 0;
+                Global.SnippetHintsList.push({
+                    abbreviation: "myown", description: "user snippet", templateText: "x", fileExtension: "all"
+                });
+                Helper.rebuildOptimizedStructures();
+            });
+
+            afterEach(function () {
+                Global.SnippetHintsList.length = 0;
+                savedSnippetsList.forEach(function (s) { Global.SnippetHintsList.push(s); });
+                Helper.rebuildOptimizedStructures();
+            });
+
+            it("should key a built-in default by its stable `id`", function () {
+                const snippet = Helper.getSnippetByInsertionKey("default-function");
+                expect(snippet).toBeTruthy();
+                expect(snippet.abbreviation).toBe("function");
+            });
+
+            it("should key a user snippet (no `id`) by its abbreviation", function () {
+                const snippet = Helper.getSnippetByInsertionKey("myown");
+                expect(snippet).toBeTruthy();
+                expect(snippet.description).toBe("user snippet");
+            });
+
+            it("should return null for an unknown insertionKey", function () {
+                expect(Helper.getSnippetByInsertionKey("zzznonexistent")).toBeNull();
+            });
+
+            it("should return the exact same object getMatchingSnippets would resolve for that language",
+                function () {
+                    const jsMockEditor = {
+                        getLanguageForPosition: function () {
+                            return { getId: function () { return "javascript"; } };
+                        },
+                        document: { file: { fullPath: "/test/file.js" } }
+                    };
+                    const matched = Helper.getMatchingSnippets("function", jsMockEditor)
+                        .find(function (s) { return s.insertionKey === "default-function"; });
+                    const byKey = Helper.getSnippetByInsertionKey("default-function");
+                    expect(byKey).toBe(matched); // same object reference, not just equal content
+                });
+
+            it("should resolve 'function' to the PHP-scoped default (not JS) in a PHP file's hint list",
+                function () {
+                    // "function" is shared by both the JS default (default-function) and the PHP
+                    // default (default-function-php) - this is the actual disambiguation guarantee:
+                    // whichever one getMatchingSnippets resolves for a PHP file must be the PHP one,
+                    // and insertion (via its insertionKey) must return that exact object, never JS's.
+                    const phpMockEditor = {
+                        getLanguageForPosition: function () {
+                            return { getId: function () { return "php"; } };
+                        },
+                        document: { file: { fullPath: "/test/file.php" } }
+                    };
+                    const matched = Helper.getMatchingSnippets("function", phpMockEditor)
+                        .find(function (s) { return s.abbreviationLower === "function"; });
+                    expect(matched.insertionKey).toBe("default-function-php");
+                    expect(Helper.getSnippetByInsertionKey(matched.insertionKey)).toBe(matched);
+                    expect(Helper.getSnippetByInsertionKey(matched.insertionKey).fileExtension).toBe(".php");
+                });
         });
 
         // =====================================================================
