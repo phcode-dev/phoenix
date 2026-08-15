@@ -839,12 +839,13 @@ a:focus {
     line-height: inherit;
 }
 
+// Always absolutely positioned (not just while highlighted) so that when it's hidden
+// (visibility: hidden, below) it's taken out of normal flow entirely - otherwise, on a
+// static-positioned item that isn't highlighted, this label's own reserved inline box can
+// still wrap the row onto a second line, leaving a blank line behind and shifting every
+// hint below it down as selection moves off this item (see #618 follow-up).
 .custom-snippet-code-hint {
     visibility: hidden;
-}
-
-.codehint-menu .dropdown-menu li .highlight .custom-snippet-code-hint {
-    visibility: visible;
     position: absolute;
     right: 0;
     margin-top: -2px;
@@ -855,6 +856,10 @@ a:focus {
     .dark& {
       color: @dark-css-codehint-icon !important;
     }
+}
+
+.codehint-menu .dropdown-menu li .highlight .custom-snippet-code-hint {
+    visibility: visible;
 }
 
 .custom-snippets-hint {
