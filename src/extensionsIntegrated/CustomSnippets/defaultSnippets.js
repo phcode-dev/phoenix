@@ -19,6 +19,12 @@
  */
 
 define(function (require, exports, module) {
+    // INDENT is templateText's own indent-unit marker (see snippetCursorManager.js INDENT_TOKEN) -
+    // resolved to this specific file's actual detected/configured indent (spaces or tabs, whatever
+    // width) at insertion time, instead of hardcoding a literal "    " that would look wrong the
+    // moment a user's file uses 2-space indent, tabs, etc.
+    const INDENT = require("./snippetCursorManager").INDENT_TOKEN;
+
     // These are literal code syntax shown verbatim in the hint tooltip, not natural-language prose -
     // there is nothing in them for a translator to translate, so per the i18n rule in CLAUDE.md they
     // are local constants here rather than strings.js keys (only genuinely translatable strings belong
@@ -56,7 +62,7 @@ define(function (require, exports, module) {
             description: FUNCTION_DESC,
             templateText:
                 "function ${1:name}(${2}) {\n" +
-                "    ${0}\n" +
+                INDENT + "${0}\n" +
                 "}",
             fileExtension: ".js, .jsx, .ts, .tsx"
         },
@@ -68,7 +74,7 @@ define(function (require, exports, module) {
             description: ARROW_DESC,
             templateText:
                 "const ${1:name} = (${2}) => {\n" +
-                "    ${0}\n" +
+                INDENT + "${0}\n" +
                 "};",
             fileExtension: ".js, .jsx, .ts, .tsx"
         },
@@ -83,7 +89,7 @@ define(function (require, exports, module) {
             description: FUNCTION_DESC,
             templateText:
                 "function ${1:name}(${2}) {\n" +
-                "    ${0}\n" +
+                INDENT + "${0}\n" +
                 "}",
             fileExtension: ".php"
         },
@@ -99,7 +105,7 @@ define(function (require, exports, module) {
             description: PYTHON_FUNCTION_DESC,
             templateText:
                 "def ${1:name}(${2}):\n" +
-                "    ${0:pass}",
+                INDENT + "${0:pass}",
             fileExtension: ".py"
         }
     ];

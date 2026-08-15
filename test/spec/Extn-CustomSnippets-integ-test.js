@@ -1119,6 +1119,55 @@ define(function (require, exports, module) {
                 expect(selection.start).toEqual(selection.end);
             });
 
+            it("should indent the function body using the FILE's actual indent settings, not a fixed width",
+                async function () {
+                    const Editor = testWindow.require("editor/Editor").Editor;
+                    const editor = await openCleanFile("test.js");
+                    const fullPath = editor.document.file.fullPath;
+                    const originalUseTabChar = Editor.getUseTabChar(fullPath);
+                    const originalSpaceUnits = Editor.getSpaceUnits(fullPath);
+
+                    try {
+                        Editor.setUseTabChar(false, fullPath);
+                        Editor.setSpaceUnits(2, fullPath); // deliberately NOT the hardcoded old "4"
+
+                        typeAtCursor(editor, "func");
+                        const result = CustomSnippetsHandler.getHints(editor, "c");
+                        const hint = result.hints.find(function (h) {
+                            return h.attr("data-val") === "function";
+                        });
+                        CustomSnippetsHandler.insertHint(hint);
+
+                        expect(editor.document.getLine(1)).toBe("  "); // 2-space body line, not 4
+                    } finally {
+                        Editor.setUseTabChar(originalUseTabChar, fullPath);
+                        Editor.setSpaceUnits(originalSpaceUnits, fullPath);
+                    }
+                });
+
+            it("should indent the function body with a literal tab when the file is configured for tabs",
+                async function () {
+                    const Editor = testWindow.require("editor/Editor").Editor;
+                    const editor = await openCleanFile("test.js");
+                    const fullPath = editor.document.file.fullPath;
+                    const originalUseTabChar = Editor.getUseTabChar(fullPath);
+
+                    try {
+                        Editor.setUseTabChar(true, fullPath);
+
+                        typeAtCursor(editor, "func");
+                        const result = CustomSnippetsHandler.getHints(editor, "c");
+                        const hint = result.hints.find(function (h) {
+                            return h.attr("data-val") === "function";
+                        });
+                        CustomSnippetsHandler.insertHint(hint);
+
+                        expect(editor.document.getLine(1)).toBe("\t");
+                    } finally {
+                        Editor.setUseTabChar(originalUseTabChar, fullPath);
+                    }
+                });
+
             ["ar", "arr", "arrow"].forEach(function (typed) {
                 it("should offer exactly one 'arrow' hint when '" + typed + "' is typed", async function () {
                     const editor = await openCleanFile("test.js");
