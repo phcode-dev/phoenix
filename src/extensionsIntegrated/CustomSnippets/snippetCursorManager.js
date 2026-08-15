@@ -20,124 +20,29 @@
 
 define(function (require, exports, module) {
     const KeyEvent = require("utils/KeyEvent");
-    const EditorManager = require("editor/EditorManager");
-
-    // tab stops regex to handle ${1}, ${2}.... etc.
-    const TAB_STOP_REGEX = /\$\{(\d+)\}/g;
-
-    // this is to check whether an active snippet session is on or off
-    let activeSnippetSession = null;
+    const TabstopManager = require("editor/TabstopManager");
 
     /**
-     * this represents an active snippet session with tab stops
-     */
-    function SnippetSession(editor, tabStops, startLine, endLine) {
-        this.editor = editor;
-        this.tabStops = tabStops; // this is an array of {number, line} sorted by number
-        this.currentTabNumber = tabStops.length > 0 ? tabStops[0].number : 1;
-        this.startLine = startLine;
-        this.endLine = endLine;
-        this.isActive = true;
-    }
-
-    /**
-     * this function is responsible to parse the template text and extract all the tab stops
+     * Custom snippet templateText historically only ever recognized the braced form `${1}` as a
+     * tab stop (regex `/\$\{(\d+)\}/g`) - a bare `$1`, `$scope`, `$5`, etc. was always just literal
+     * text. TabstopManager understands the fuller LSP snippet grammar (bare `$1` tab stops, `${VAR}`
+     * variables that get silently dropped if unresolved, `${1:default}` placeholders, `\$`/`\}`/`\\`
+     * escapes). To keep every already-saved snippet behaving exactly as before after this migration,
+     * we escape every '$' that isn't immediately starting a `${...}` group before handing the text to
+     * TabstopManager - this way only the braced forms are ever treated as snippet syntax, exactly
+     * matching the old engine's behavior, while additively allowing `${1:default text}` and
+     * `${1|a,b,c|}` for anyone (including our own default snippets) who wants richer placeholders.
      *
-     * @param {string} templateText - the template text with tab stops
-     * @returns {Object} - Object containing the text and tab stop information
+     * @param {string} text - the raw template text
+     * @returns {string} - text with any bare (non-`${`) '$' escaped as '\$'
      */
-    function parseTemplateText(templateText) {
-        const tabStops = [];
-        let match;
-
-        // reset regex
-        TAB_STOP_REGEX.lastIndex = 0;
-
-        // find all the tab stops
-        while ((match = TAB_STOP_REGEX.exec(templateText)) !== null) {
-            const tabNumber = parseInt(match[1], 10);
-            tabStops.push({
-                number: tabNumber
-            });
-        }
-
-        // sort the tab stops by number. note: 0 should come at last
-        tabStops.sort((a, b) => {
-            if (a.number === 0) {
-                return 1;
-            }
-            if (b.number === 0) {
-                return -1;
-            }
-            return a.number - b.number;
-        });
-
-        return {
-            text: templateText,
-            tabStops: tabStops
-        };
-    }
-
-    /**
-     * Find tab stops in the snippet lines and return their positions
-     * this is called after snippet insertion to find actual positions in the editor
-     *
-     * @param {Editor} editor - editor instance
-     * @param {number} startLine - Start line of snippet
-     * @param {number} endLine - End line of snippet
-     * @returns {Array} - array of {number, line, start, end} sorted by number
-     */
-    function findTabStops(editor, startLine, endLine) {
-        const tabStops = [];
-        const document = editor.document;
-
-        for (let line = startLine; line <= endLine; line++) {
-            const lineText = document.getLine(line);
-            let match;
-
-            TAB_STOP_REGEX.lastIndex = 0;
-            while ((match = TAB_STOP_REGEX.exec(lineText)) !== null) {
-                const tabNumber = parseInt(match[1], 10);
-                tabStops.push({
-                    number: tabNumber,
-                    line: line,
-                    start: { line: line, ch: match.index },
-                    end: { line: line, ch: match.index + match[0].length }
-                });
-            }
-        }
-
-        tabStops.sort((a, b) => {
-            if (a.number === 0) {
-                return 1;
-            }
-            if (b.number === 0) {
-                return -1;
-            }
-            return a.number - b.number;
-        });
-
-        return tabStops;
-    }
-
-    /**
-     * responsible to check if session should continue (tab stops still exist in template area)
-     * we need this because users can delete tab stops while typing
-     *
-     * @returns {boolean}
-     */
-    function shouldContinueSession() {
-        if (!activeSnippetSession || !activeSnippetSession.isActive) {
-            return false;
-        }
-
-        const session = activeSnippetSession;
-        const tabStops = findTabStops(session.editor, session.startLine, session.endLine);
-
-        // update the session with current tab stops
-        session.tabStops = tabStops;
-
-        return tabStops.length > 0;
+    function escapeBareDollarSigns(text) {
+        // escape pre-existing literal backslashes first, so they aren't misread as introducing a
+        // \$, \}, \\ escape sequence once the next step injects backslashes next to '$' characters
+        let escaped = text.replace(/\\/g, "\\\\");
+        // escape every '$' not immediately followed by '{'
+        escaped = escaped.replace(/\$(?!\{)/g, "\\$");
+        return escaped;
     }
 
     /**
@@ -202,166 +107,15 @@ define(function (require, exports, module) {
      * @param {Object} endPos - End position for insertion
      */
     function insertSnippetWithTabStops(editor, templateText, startPos, endPos) {
-        const parsed = parseTemplateText(templateText);
+        const escapedText = escapeBareDollarSigns(templateText);
 
         // Get the current line's indentation to apply to all subsequent lines
         const baseIndent = getLineIndentation(editor, startPos);
 
         // Apply proper indentation to the snippet text for multi-line snippets
-        const indentedText = addIndentationToSnippet(parsed.text, baseIndent);
+        const indentedText = addIndentationToSnippet(escapedText, baseIndent);
 
-        editor.document.replaceRange(indentedText, startPos, endPos);
-
-        // calculate snippet bounds
-        const lines = indentedText.split("\n");
-        const startLine = startPos.line;
-        const endLine = startPos.line + lines.length - 1;
-
-        // find tab stops in the inserted snippet
-        const tabStops = findTabStops(editor, startLine, endLine);
-
-        if (tabStops.length > 0) {
-            activeSnippetSession = new SnippetSession(editor, tabStops, startLine, endLine);
-
-            // move to first tab stop. this is the default behaviour
-            navigateToTabStop(activeSnippetSession.currentTabNumber);
-        } else {
-            // when no tab stops, we just place cursor at end
-            const finalPos = {
-                line: endLine,
-                ch: lines.length === 1 ? startPos.ch + lines[0].length : lines[lines.length - 1].length
-            };
-            editor.setCursorPos(finalPos);
-        }
-    }
-
-    /**
-     * Navigate to a specific tab stop by number
-     * @param {number} tabNumber - Tab stop number to navigate to
-     */
-    function navigateToTabStop(tabNumber) {
-        if (!shouldContinueSession()) {
-            endSnippetSession();
-            return;
-        }
-
-        const session = activeSnippetSession;
-
-        // find the tab stop with the specified number
-        const tabStop = session.tabStops.find((t) => t.number === tabNumber);
-
-        if (tabStop) {
-            session.currentTabNumber = tabNumber;
-
-            // select the entire tab stop placeholder
-            session.editor.setSelection(tabStop.start, tabStop.end);
-            session.editor.focus();
-        } else {
-            endSnippetSession();
-        }
-    }
-
-    /**
-     * Navigate to the next tab stop
-     * this handles the logic for finding the next available tab stop in sequence
-     */
-    function navigateToNextTabStop() {
-        if (!shouldContinueSession()) {
-            endSnippetSession();
-            return false;
-        }
-
-        const session = activeSnippetSession;
-        const currentNumber = session.currentTabNumber;
-
-        let nextTabStop = null;
-
-        // If we're currently at ${0}, there's no next tab stop so we need to end the session
-        if (currentNumber === 0) {
-            endSnippetSession();
-            return false;
-        }
-
-        // at first, look for the next numbered tab stop (greater than current)
-        for (let i = 0; i < session.tabStops.length; i++) {
-            if (session.tabStops[i].number > currentNumber && session.tabStops[i].number !== 0) {
-                nextTabStop = session.tabStops[i];
-                break;
-            }
-        }
-
-        // If no numbered tab stop found, look for ${0} as the final stop
-        if (!nextTabStop) {
-            nextTabStop = session.tabStops.find((t) => t.number === 0);
-        }
-
-        if (nextTabStop) {
-            navigateToTabStop(nextTabStop.number);
-            return true;
-        }
-        endSnippetSession();
-        return false;
-    }
-
-    /**
-     * Navigate to the previous tab stop
-     * this handles shift+tab navigation to go backwards
-     */
-    function navigateToPreviousTabStop() {
-        if (!shouldContinueSession()) {
-            endSnippetSession();
-            return false;
-        }
-
-        const session = activeSnippetSession;
-        const currentNumber = session.currentTabNumber;
-
-        // Find the previous tab stop number in the sorted array
-        let prevTabStop = null;
-
-        // If we're currently at ${0}, find the highest numbered tab stop
-        if (currentNumber === 0) {
-            let maxNumber = -1;
-            for (let i = 0; i < session.tabStops.length; i++) {
-                if (session.tabStops[i].number !== 0 && session.tabStops[i].number > maxNumber) {
-                    maxNumber = session.tabStops[i].number;
-                    prevTabStop = session.tabStops[i];
-                }
-            }
-        } else {
-            // Find the previous numbered tab stop (less than current, but not 0)
-            for (let i = session.tabStops.length - 1; i >= 0; i--) {
-                if (session.tabStops[i].number < currentNumber && session.tabStops[i].number !== 0) {
-                    prevTabStop = session.tabStops[i];
-                    break;
-                }
-            }
-        }
-
-        if (prevTabStop) {
-            navigateToTabStop(prevTabStop.number);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * End the current snippet session
-     * this cleans up all remaining tab stop placeholders and resets the session
-     */
-    function endSnippetSession() {
-        if (activeSnippetSession) {
-            const session = activeSnippetSession;
-
-            // Remove any remaining tab stop placeholders
-            const tabStops = findTabStops(session.editor, session.startLine, session.endLine);
-            tabStops.reverse().forEach((tabStop) => {
-                session.editor.document.replaceRange("", tabStop.start, tabStop.end);
-            });
-
-            activeSnippetSession.isActive = false;
-            activeSnippetSession = null;
-        }
+        return TabstopManager.insertSnippet(editor, indentedText, startPos, endPos);
     }
 
     /**
@@ -369,166 +123,78 @@ define(function (require, exports, module) {
      * @returns {boolean}
      */
     function isInSnippetSession() {
-        return activeSnippetSession && activeSnippetSession.isActive;
+        return TabstopManager.hasActiveSession();
     }
 
     /**
-     * Check if cursor is within snippet lines
-     * we need this to end the session if user moves cursor outside the snippet area
-     *
-     * @param {Object} cursorPos - Current cursor position
-     * @returns {boolean}
+     * End the current snippet session
      */
-    function isCursorInSnippetLines(cursorPos) {
-        if (!activeSnippetSession) {
+    function endSnippetSession() {
+        TabstopManager.endSession();
+    }
+
+    /**
+     * Navigate to the next tab stop
+     * @returns {boolean} true if a session was active and navigation happened
+     */
+    function navigateToNextTabStop() {
+        if (!TabstopManager.hasActiveSession()) {
             return false;
         }
-
-        return cursorPos.line >= activeSnippetSession.startLine && cursorPos.line <= activeSnippetSession.endLine;
+        TabstopManager.goToNextStop();
+        return true;
     }
 
     /**
-     * Handle key events for tab navigation
-     * this is where all the tab/shift+tab/escape key handling happens
+     * Navigate to the previous tab stop
+     * @returns {boolean} true if a session was active and navigation happened
+     */
+    function navigateToPreviousTabStop() {
+        if (!TabstopManager.hasActiveSession()) {
+            return false;
+        }
+        TabstopManager.goToPreviousStop();
+        return true;
+    }
+
+    /**
+     * Handle key events for tab navigation.
+     * NOTE: real Tab/Shift-Tab/Esc handling during an active session is now owned by
+     * TabstopManager's own CodeMirror keymap (installed per-session in insertSnippet). This
+     * function is kept only as a thin compatibility shim for callers/tests that dispatch a
+     * synthesized key event directly instead of going through the real DOM/CodeMirror path.
      *
-     * @param {Event} jqEvent - jQuery event
+     * @param {Event} jqEvent - jQuery event (unused, kept for signature compatibility)
      * @param {Editor} editor - Editor instance
      * @param {KeyboardEvent} event - Keyboard event
      */
     function handleKeyEvent(jqEvent, editor, event) {
-        if (!isInSnippetSession() || activeSnippetSession.editor !== editor) {
+        if (!TabstopManager.hasActiveSession()) {
             return false;
         }
 
-        // make sure that the cursor is still within snippet lines
-        const cursorPos = editor.getCursorPos();
-        if (!isCursorInSnippetLines(cursorPos)) {
-            endSnippetSession();
-            return false;
-        }
-
-        // Tab key handling
         if (event.keyCode === KeyEvent.DOM_VK_TAB) {
-            if (event.shiftKey) {
-                // Shift+Tab: go to previous tab stop
-                if (navigateToPreviousTabStop()) {
-                    event.preventDefault();
-                    return true;
-                }
-            } else {
-                // Tab: go to next tab stop
-                if (navigateToNextTabStop()) {
-                    event.preventDefault();
-                    return true;
-                }
+            const moved = event.shiftKey ? navigateToPreviousTabStop() : navigateToNextTabStop();
+            if (moved) {
+                event.preventDefault();
+                return true;
             }
         }
 
-        // 'Esc' key to end snippet session
         if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
             endSnippetSession();
             event.preventDefault();
             return true;
         }
 
-        // handle Delete/Backspace - check if session should continue
-        // we need this because users might delete the template text from the editor
-        if (event.keyCode === KeyEvent.DOM_VK_DELETE || event.keyCode === KeyEvent.DOM_VK_BACK_SPACE) {
-            // just to let the delete/backspace complete
-            setTimeout(() => {
-                if (!shouldContinueSession()) {
-                    endSnippetSession();
-                }
-            }, 10);
-        }
-
         return false;
     }
 
-    /**
-     * Handle cursor position changes
-     * this ends the session if user moves cursor outside snippet bounds or creates multiple selections
-     * @param {Event} event - Cursor activity event
-     * @param {Editor} editor - Editor instance
-     */
-    function handleCursorActivity(event, editor) {
-        if (!isInSnippetSession() || activeSnippetSession.editor !== editor) {
-            return;
-        }
-
-        // end session if user creates multiple selections
-        if (editor.getSelections().length > 1) {
-            endSnippetSession();
-            return;
-        }
-
-        const cursorPos = editor.getCursorPos();
-        if (!isCursorInSnippetLines(cursorPos)) {
-            endSnippetSession();
-        }
-    }
-
-    /**
-     * This function is responsible to register all the required handers
-     * we need this to set up all the event listeners for cursor navigation
-     */
-    function registerHandlers() {
-        // register the event handler for snippet cursor navigation
-        const editorHolder = $("#editor-holder")[0];
-        if (editorHolder) {
-            editorHolder.addEventListener(
-                "keydown",
-                function (event) {
-                    const editor = EditorManager.getActiveEditor();
-                    if (editor) {
-                        handleKeyEvent(null, editor, event);
-                    }
-                },
-                true
-            );
-        }
-
-        // Listen for editor changes to end snippet sessions
-        EditorManager.on("activeEditorChange", function (event, current, previous) {
-            if (isInSnippetSession()) {
-                endSnippetSession();
-            }
-        });
-
-        // Register cursor activity handler for current and future editors
-        function registerCursorActivityForEditor(editor) {
-            if (editor) {
-                editor.on("cursorActivity", handleCursorActivity);
-            }
-        }
-
-        // Register for current editor
-        const currentEditor = EditorManager.getActiveEditor();
-        if (currentEditor) {
-            registerCursorActivityForEditor(currentEditor);
-        }
-
-        // Register for editor changes
-        EditorManager.on("activeEditorChange", function (event, current, previous) {
-            if (previous) {
-                previous.off("cursorActivity", handleCursorActivity);
-            }
-            if (current) {
-                registerCursorActivityForEditor(current);
-            }
-            if (isInSnippetSession()) {
-                endSnippetSession();
-            }
-        });
-    }
-
-    exports.parseTemplateText = parseTemplateText;
+    exports.escapeBareDollarSigns = escapeBareDollarSigns;
     exports.insertSnippetWithTabStops = insertSnippetWithTabStops;
     exports.isInSnippetSession = isInSnippetSession;
     exports.handleKeyEvent = handleKeyEvent;
-    exports.handleCursorActivity = handleCursorActivity;
     exports.endSnippetSession = endSnippetSession;
-    exports.registerHandlers = registerHandlers;
     exports.navigateToNextTabStop = navigateToNextTabStop; // exposed for integration testing
     exports.navigateToPreviousTabStop = navigateToPreviousTabStop; // exposed for integration testing
 });

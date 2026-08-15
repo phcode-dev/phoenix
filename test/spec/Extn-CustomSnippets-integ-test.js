@@ -45,19 +45,19 @@ define(function (require, exports, module) {
             {
                 abbreviation: "clg",
                 description: "Console log",
-                templateText: "console.log(${1});${0}",
+                templateText: "console.log(${1:value});${0}",
                 fileExtension: ".js, .ts"
             },
             {
                 abbreviation: "clgall",
                 description: "Console log for all files",
-                templateText: "console.log(${1});${0}",
+                templateText: "console.log(${1:value});${0}",
                 fileExtension: "all"
             },
             {
                 abbreviation: "fnn",
                 description: "Arrow function",
-                templateText: "const ${1} = (${2}) => {\n    ${3}\n};${0}",
+                templateText: "const ${1:myFunction} = (${2:param}) => {\n    ${3:body}\n};${0}",
                 fileExtension: ".js, .ts"
             },
             {
@@ -69,7 +69,7 @@ define(function (require, exports, module) {
             {
                 abbreviation: "divbox",
                 description: "HTML div box",
-                templateText: "<div class=\"${1}\">\n    ${2}\n</div>${0}",
+                templateText: "<div class=\"${1:className}\">\n    ${2:content}\n</div>${0}",
                 fileExtension: ".html"
             },
             {
@@ -81,7 +81,7 @@ define(function (require, exports, module) {
             {
                 abbreviation: "clgdup",
                 description: "Another clg variant",
-                templateText: "console.log('debug:', ${1});${0}",
+                templateText: "console.log('debug:', ${1:value});${0}",
                 fileExtension: ".js"
             }
         ];
@@ -516,11 +516,11 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(clgHint);
 
-                // After insertion of "console.log(${1});${0}"
-                // cursor should be selecting ${1}
+                // After insertion of "console.log(${1:value});${0}"
+                // cursor should be selecting the "value" placeholder text (ready to type over)
                 const selection = editor.getSelection();
                 const selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("value");
             });
 
             it("should replace only the typed abbreviation text, preserving preceding text", async function () {
@@ -586,20 +586,20 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(fnnHint);
 
-                // Template: "const ${1} = (${2}) => {\n    ${3}\n};${0}"
+                // Template: "const ${1:myFunction} = (${2:param}) => {\n    ${3:body}\n};${0}"
                 expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeTrue();
 
                 let selection = editor.getSelection();
                 let selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("myFunction");
 
-                // Navigate to ${2}
+                // Navigate to the "param" stop
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeTrue();
 
                 selection = editor.getSelection();
                 selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${2}");
+                expect(selectedText).toBe("param");
             });
 
             it("should navigate to previous tab stop", async function () {
@@ -612,20 +612,20 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(fnnHint);
 
-                // Navigate forward: ${1} -> ${2}
+                // Navigate forward: "myFunction" -> "param"
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 let selection = editor.getSelection();
                 let selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${2}");
+                expect(selectedText).toBe("param");
 
-                // Navigate backward: ${2} -> ${1}
+                // Navigate backward: "param" -> "myFunction"
                 CustomSnippetsCursorManager.navigateToPreviousTabStop();
                 selection = editor.getSelection();
                 selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("myFunction");
             });
 
-            it("should navigate to ${0} (exit point) after all numbered tab stops", async function () {
+            it("should navigate to ${0} (exit point, collapsed caret) after all numbered tab stops", async function () {
                 const editor = await openCleanFile("test.js");
                 typeAtCursor(editor, "clg");
 
@@ -635,19 +635,40 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(clgHint);
 
-                // Template: "console.log(${1});${0}"
+                // Template: "console.log(${1:value});${0}"
                 let selection = editor.getSelection();
                 let selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("value");
 
-                // Navigate to ${0}
+                // Navigate to ${0} - a bare stop with no default text is a collapsed caret, not a selection
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 selection = editor.getSelection();
+                expect(selection.start).toEqual(selection.end);
                 selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${0}");
+                expect(selectedText).toBe("");
             });
 
-            it("should end snippet session after navigating past ${0}", async function () {
+            it("should treat a bare ${N} stop with no default text as a zero-width caret", async function () {
+                await openFile("test.py");
+                const editor = EditorManager.getActiveEditor();
+                editor.document.setText("");
+                editor.setCursorPos({line: 0, ch: 0});
+                typeAtCursor(editor, "pydef");
+
+                const result = CustomSnippetsHandler.getHints(editor, "f");
+                const pydefHint = result.hints.find(function (h) {
+                    return h.attr("data-val") === "pydef";
+                });
+                CustomSnippetsHandler.insertHint(pydefHint);
+
+                // Template: "def ${1}(${2}):\n    ${3}" - no default text on any stop
+                const selection = editor.getSelection();
+                expect(selection.start).toEqual(selection.end);
+                const lineText = editor.document.getLine(0);
+                expect(lineText).toBe("def ():");
+            });
+
+            it("should end the snippet session as soon as it lands on the final ${0} stop", async function () {
                 const editor = await openCleanFile("test.js");
                 typeAtCursor(editor, "clg");
 
@@ -657,16 +678,13 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(clgHint);
 
-                // Navigate: ${1} -> ${0}
-                CustomSnippetsCursorManager.navigateToNextTabStop();
-                expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeTrue();
-
-                // Navigate past ${0} - should end session
+                // Navigate: "value" -> ${0}. Reaching the final stop ends the session right away
+                // (matching standard LSP/VS Code tab-stop semantics) - there is nothing left to tab to.
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeFalsy();
             });
 
-            it("should end session and remove all tab stop placeholders on endSnippetSession", async function () {
+            it("should leave already-expanded snippet text untouched when session ends early", async function () {
                 const editor = await openCleanFile("test.js");
                 typeAtCursor(editor, "clg");
 
@@ -676,14 +694,18 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(clgHint);
                 expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeTrue();
+
+                // Template: "console.log(${1:value});${0}" - the default text is substituted into
+                // the buffer at insertion time, so ending the session mid-way (still on the first
+                // stop) must not mutate the text at all, only stop navigation.
+                expect(editor.document.getText().trim()).toBe("console.log(value);");
 
                 CustomSnippetsCursorManager.endSnippetSession();
                 expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeFalsy();
 
                 const fullText = editor.document.getText();
-                expect(fullText).not.toContain("${1}");
-                expect(fullText).not.toContain("${0}");
-                expect(fullText.trim()).toBe("console.log();");
+                expect(fullText).not.toContain("${");
+                expect(fullText.trim()).toBe("console.log(value);");
             });
 
             it("should navigate through all tab stops in correct order for multi-stop snippet", async function () {
@@ -696,34 +718,32 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(fnnHint);
 
-                // Template: "const ${1} = (${2}) => {\n    ${3}\n};${0}"
-                // Verify full navigation order: ${1} -> ${2} -> ${3} -> ${0}
+                // Template: "const ${1:myFunction} = (${2:param}) => {\n    ${3:body}\n};${0}"
+                // Verify full navigation order: myFunction -> param -> body -> ${0} (collapsed)
 
                 let selection = editor.getSelection();
                 let selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("myFunction");
 
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 selection = editor.getSelection();
                 selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${2}");
+                expect(selectedText).toBe("param");
 
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 selection = editor.getSelection();
                 selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${3}");
+                expect(selectedText).toBe("body");
 
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 selection = editor.getSelection();
-                selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${0}");
+                expect(selection.start).toEqual(selection.end); // ${0} is a collapsed caret
 
-                // Past ${0} - session ends
-                CustomSnippetsCursorManager.navigateToNextTabStop();
+                // reaching the final stop ends the session right away - nothing left to tab to
                 expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeFalsy();
             });
 
-            it("should remove all remaining tab stop placeholders when session ends early", async function () {
+            it("should leave already-expanded multi-stop text untouched when session ends early", async function () {
                 const editor = await openCleanFile("test.js");
                 typeAtCursor(editor, "fnn");
 
@@ -733,14 +753,14 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(fnnHint);
 
-                // End session early at ${1}
+                // End session early, still on the first stop
                 CustomSnippetsCursorManager.endSnippetSession();
 
                 const fullText = editor.document.getText();
-                expect(fullText).not.toContain("${1}");
-                expect(fullText).not.toContain("${2}");
-                expect(fullText).not.toContain("${3}");
-                expect(fullText).not.toContain("${0}");
+                expect(fullText).not.toContain("${");
+                expect(fullText).toContain("myFunction");
+                expect(fullText).toContain("param");
+                expect(fullText).toContain("body");
             });
 
             it("should handle key event for Tab navigation", async function () {
@@ -755,7 +775,7 @@ define(function (require, exports, module) {
 
                 let selection = editor.getSelection();
                 let selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("myFunction");
 
                 // Simulate Tab key via handleKeyEvent
                 const KeyEvent = testWindow.require("utils/KeyEvent");
@@ -769,7 +789,7 @@ define(function (require, exports, module) {
 
                 selection = editor.getSelection();
                 selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${2}");
+                expect(selectedText).toBe("param");
                 expect(prevented).toBeTrue();
             });
 
@@ -783,7 +803,7 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(fnnHint);
 
-                // Navigate forward first: ${1} -> ${2}
+                // Navigate forward first: "myFunction" -> "param"
                 CustomSnippetsCursorManager.navigateToNextTabStop();
 
                 const KeyEvent = testWindow.require("utils/KeyEvent");
@@ -797,7 +817,7 @@ define(function (require, exports, module) {
 
                 const selection = editor.getSelection();
                 const selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("myFunction");
                 expect(prevented).toBeTrue();
             });
 
@@ -856,7 +876,7 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(fnnHint);
 
-                // Template: "const ${1} = (${2}) => {\n    ${3}\n};${0}"
+                // Template: "const ${1:myFunction} = (${2:param}) => {\n    ${3:body}\n};${0}"
                 const line0 = editor.document.getLine(0);
                 const line1 = editor.document.getLine(1);
                 const line2 = editor.document.getLine(2);
@@ -902,24 +922,23 @@ define(function (require, exports, module) {
                 });
                 CustomSnippetsHandler.insertHint(divHint);
 
-                // Template: "<div class=\"${1}\">\n    ${2}\n</div>${0}"
+                // Template: "<div class=\"${1:className}\">\n    ${2:content}\n</div>${0}"
                 let selection = editor.getSelection();
                 let selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${1}");
+                expect(selectedText).toBe("className");
                 const firstLine = selection.start.line;
 
-                // Navigate to ${2} (second line)
+                // Navigate to "content" (second line)
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 selection = editor.getSelection();
                 selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${2}");
+                expect(selectedText).toBe("content");
                 expect(selection.start.line).toBeGreaterThan(firstLine);
 
-                // Navigate to ${0} (third line)
+                // Navigate to ${0} (third line, collapsed caret)
                 CustomSnippetsCursorManager.navigateToNextTabStop();
                 selection = editor.getSelection();
-                selectedText = editor.document.getRange(selection.start, selection.end);
-                expect(selectedText).toBe("${0}");
+                expect(selection.start).toEqual(selection.end);
             });
         });
 
@@ -1031,6 +1050,254 @@ define(function (require, exports, module) {
                 expect(lineText).toContain("result");
                 expect(lineText).toContain("end");
             });
+        });
+
+        // ================================================================
+        // Test Suite: Default Snippets (function / arrow) - issue #618
+        // ================================================================
+        describe("Default Snippets", function () {
+
+            afterEach(async function () {
+                if (CustomSnippetsCursorManager.isInSnippetSession()) {
+                    CustomSnippetsCursorManager.endSnippetSession();
+                }
+                await closeAllFiles();
+            });
+
+            // "function" is a `prefixTrigger` snippet (see defaultSnippets.js / helper.js
+            // `hasExactMatchingSnippet`): the SAME single entry shows up as soon as the user has
+            // typed a leading prefix of it (2+ chars), not only once the full word is typed - and it
+            // must appear exactly once (not as several near-duplicate abbreviation-length entries).
+            ["fu", "fun", "func", "function"].forEach(function (typed) {
+                it("should offer exactly one 'function' hint when '" + typed + "' is typed", async function () {
+                    const editor = await openCleanFile("test.js");
+                    typeAtCursor(editor, typed);
+
+                    const lastChar = typed.charAt(typed.length - 1);
+                    expect(CustomSnippetsHandler.hasHints(editor, lastChar)).toBeTrue();
+
+                    const result = CustomSnippetsHandler.getHints(editor, lastChar);
+                    const functionHints = result.hints.filter(function (h) {
+                        return h.attr("data-val") === "function";
+                    });
+                    expect(functionHints.length).toBe(1);
+                });
+            });
+
+            it("should NOT offer the function snippet below the minimum prefix length", async function () {
+                const editor = await openCleanFile("test.js");
+                typeAtCursor(editor, "f");
+
+                expect(CustomSnippetsHandler.hasHints(editor, "f")).toBeFalse();
+            });
+
+            it("should insert the default function snippet and cycle every stop", async function () {
+                const editor = await openCleanFile("test.js");
+                typeAtCursor(editor, "func");
+
+                const result = CustomSnippetsHandler.getHints(editor, "c");
+                const hint = result.hints.find(function (h) {
+                    return h.attr("data-val") === "function";
+                });
+                expect(hint).toBeTruthy();
+                CustomSnippetsHandler.insertHint(hint);
+
+                const fullText = editor.document.getText();
+                expect(fullText).toContain("function name() {");
+                expect(fullText).not.toContain("/**"); // no JSDoc - just the bare skeleton
+
+                expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeTrue();
+                let selection = editor.getSelection();
+                expect(editor.document.getRange(selection.start, selection.end)).toBe("name");
+
+                CustomSnippetsCursorManager.navigateToNextTabStop(); // function param - empty stop
+                selection = editor.getSelection();
+                expect(selection.start).toEqual(selection.end);
+
+                CustomSnippetsCursorManager.navigateToNextTabStop(); // $0 - body, collapsed caret
+                selection = editor.getSelection();
+                expect(selection.start).toEqual(selection.end);
+            });
+
+            ["ar", "arr", "arrow"].forEach(function (typed) {
+                it("should offer exactly one 'arrow' hint when '" + typed + "' is typed", async function () {
+                    const editor = await openCleanFile("test.js");
+                    typeAtCursor(editor, typed);
+
+                    const lastChar = typed.charAt(typed.length - 1);
+                    expect(CustomSnippetsHandler.hasHints(editor, lastChar)).toBeTrue();
+
+                    const result = CustomSnippetsHandler.getHints(editor, lastChar);
+                    const arrowHints = result.hints.filter(function (h) {
+                        return h.attr("data-val") === "arrow";
+                    });
+                    expect(arrowHints.length).toBe(1);
+                });
+            });
+
+            it("should NOT offer the arrow snippet below the minimum prefix length", async function () {
+                const editor = await openCleanFile("test.js");
+                typeAtCursor(editor, "a");
+
+                expect(CustomSnippetsHandler.hasHints(editor, "a")).toBeFalse();
+            });
+
+            it("should NOT offer the arrow snippet for '=>' (word-only triggers by design)", async function () {
+                const editor = await openCleanFile("test.js");
+                typeAtCursor(editor, "=>");
+
+                expect(CustomSnippetsHandler.hasHints(editor, ">")).toBeFalse();
+            });
+
+            it("should insert the default 'arrow' snippet and cycle through every stop", async function () {
+                const editor = await openCleanFile("test.js");
+                typeAtCursor(editor, "arrow");
+
+                const result = CustomSnippetsHandler.getHints(editor, "w");
+                const hint = result.hints.find(function (h) {
+                    return h.attr("data-val") === "arrow";
+                });
+                expect(hint).toBeTruthy();
+                CustomSnippetsHandler.insertHint(hint);
+
+                const fullText = editor.document.getText();
+                expect(fullText).toContain("const name = () => {");
+                expect(fullText).not.toContain("/**"); // no JSDoc - just the bare skeleton
+
+                expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeTrue();
+                let selection = editor.getSelection();
+                expect(editor.document.getRange(selection.start, selection.end)).toBe("name");
+
+                CustomSnippetsCursorManager.navigateToNextTabStop(); // arrow function param - empty stop
+                selection = editor.getSelection();
+                expect(selection.start).toEqual(selection.end);
+
+                CustomSnippetsCursorManager.navigateToNextTabStop(); // $0 - body, collapsed caret
+                selection = editor.getSelection();
+                expect(selection.start).toEqual(selection.end);
+            });
+
+            it("should offer the PHP 'function' default in a .php file, scoped independently of JS",
+                async function () {
+                    await openFile("test.php");
+                    const editor = EditorManager.getActiveEditor();
+                    // line 2 is the intentionally-blank line inside the <?php ... block (no closing
+                    // ?> tag in the fixture, so the whole file - including this blank line - stays
+                    // in PHP mode; CodeMirror's php mode otherwise defaults to HTML outside <?php)
+                    editor.setCursorPos({line: 2, ch: 0});
+                    typeAtCursor(editor, "func");
+
+                    const result = CustomSnippetsHandler.getHints(editor, "c");
+                    const hint = result.hints.find(function (h) {
+                        return h.attr("data-val") === "function";
+                    });
+                    expect(hint).toBeTruthy();
+                    CustomSnippetsHandler.insertHint(hint);
+
+                    const lineText = editor.document.getLine(2);
+                    expect(lineText).toContain("function name() {");
+
+                    const selection = editor.getSelection();
+                    expect(editor.document.getRange(selection.start, selection.end)).toBe("name");
+                });
+
+            it("should insert the Python 'def' default with a valid 'pass' body (empty body is a syntax error)",
+                async function () {
+                    const editor = await openCleanFile("test.py");
+                    typeAtCursor(editor, "def");
+
+                    const result = CustomSnippetsHandler.getHints(editor, "f");
+                    const hint = result.hints.find(function (h) {
+                        return h.attr("data-val") === "def";
+                    });
+                    expect(hint).toBeTruthy();
+                    CustomSnippetsHandler.insertHint(hint);
+
+                    expect(CustomSnippetsCursorManager.isInSnippetSession()).toBeTrue();
+                    let selection = editor.getSelection();
+                    expect(editor.document.getRange(selection.start, selection.end)).toBe("name");
+
+                    CustomSnippetsCursorManager.navigateToNextTabStop(); // params - empty stop
+                    selection = editor.getSelection();
+                    expect(selection.start).toEqual(selection.end);
+
+                    CustomSnippetsCursorManager.navigateToNextTabStop(); // $0 - "pass", selected
+                    selection = editor.getSelection();
+                    expect(editor.document.getRange(selection.start, selection.end)).toBe("pass");
+
+                    const lineText = editor.document.getLine(0);
+                    expect(lineText).toBe("def name():");
+                    expect(editor.document.getLine(1)).toBe("    pass");
+                });
+        });
+
+        // ================================================================
+        // Test Suite: Built-in defaults are silent - issue #618
+        // ================================================================
+        describe("Built-in defaults are silent (not user data, not in the panel)", function () {
+
+            let DefaultSnippets, savedSilentSnippetsList;
+
+            beforeEach(function () {
+                DefaultSnippets = testWindow.require("extensionsIntegrated/CustomSnippets/defaultSnippets");
+                savedSilentSnippetsList = CustomSnippetsGlobal.SnippetHintsList.slice();
+                CustomSnippetsGlobal.SnippetHintsList.length = 0; // simulate a user with zero saved snippets
+                CustomSnippetsHelper.rebuildOptimizedStructures();
+            });
+
+            afterEach(function () {
+                CustomSnippetsGlobal.SnippetHintsList.length = 0;
+                savedSilentSnippetsList.forEach(function (s) {
+                    CustomSnippetsGlobal.SnippetHintsList.push(s);
+                });
+                CustomSnippetsHelper.rebuildOptimizedStructures();
+            });
+
+            it("should never appear in Global.SnippetHintsList, even with zero user snippets saved",
+                async function () {
+                    const ids = CustomSnippetsGlobal.SnippetHintsList.filter(function (s) {
+                        return s.id;
+                    });
+                    expect(ids.length).toBe(0);
+                    expect(CustomSnippetsGlobal.SnippetHintsList.length).toBe(0);
+                });
+
+            it("should still offer hints for every default even though the user's list is empty",
+                async function () {
+                    const editor = await openCleanFile("test.js");
+                    typeAtCursor(editor, "function");
+                    expect(CustomSnippetsHandler.hasHints(editor, "n")).toBeTrue();
+                    await closeAllFiles();
+                });
+
+            it("should be completely unaffected by deleting an unrelated user snippet", async function () {
+                CustomSnippetsGlobal.SnippetHintsList.push({
+                    abbreviation: "myown", description: "user snippet", templateText: "x", fileExtension: "all"
+                });
+                CustomSnippetsHelper.rebuildOptimizedStructures();
+                CustomSnippetsGlobal.SnippetHintsList.length = 0; // "delete" it (and everything else)
+                CustomSnippetsHelper.rebuildOptimizedStructures();
+
+                const editor = await openCleanFile("test.js");
+                typeAtCursor(editor, "arrow");
+                expect(CustomSnippetsHandler.hasHints(editor, "w")).toBeTrue();
+                await closeAllFiles();
+            });
+
+            it("should have exactly the ids declared in defaultSnippets.js available for matching",
+                async function () {
+                    const editor = await openCleanFile("test.js");
+                    const expectedAbbreviations = DefaultSnippets.DEFAULT_SNIPPETS
+                        .filter(function (d) { return d.fileExtension.indexOf(".js") !== -1; })
+                        .map(function (d) { return d.abbreviation; });
+                    expectedAbbreviations.forEach(function (abbr) {
+                        editor.document.setText("");
+                        editor.setCursorPos({line: 0, ch: 0});
+                        typeAtCursor(editor, abbr);
+                        expect(CustomSnippetsHandler.hasHints(editor, abbr.charAt(abbr.length - 1))).toBeTrue();
+                    });
+                    await closeAllFiles();
+                });
         });
     });
 });
