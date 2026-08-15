@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach */
+/*global describe, it, expect, beforeEach, afterEach, beforeAll, afterAll */
 /*unittests: Custom Snippets */
 
 define(function (require, exports, module) {
@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     const SnippetCursorManager = require("extensionsIntegrated/CustomSnippets/snippetCursorManager");
     const Global = require("extensionsIntegrated/CustomSnippets/global");
     const TabstopManager = require("editor/TabstopManager");
+    const Editor = require("editor/Editor").Editor;
 
     describe("Custom Snippets", function () {
 
@@ -591,6 +592,89 @@ define(function (require, exports, module) {
                 expect(parsed.text).toBe("C:\\Users\\\\file.txt");
                 expect(parsed.stops.length).toBe(1);
                 expect(parsed.stops[0].number).toBe(1);
+            });
+        });
+
+        // =====================================================================
+        // SnippetCursorManager: getOneIndentUnit / resolveIndentToken (INDENT_TOKEN)
+        // =====================================================================
+        describe("SnippetCursorManager: INDENT_TOKEN resolution", function () {
+            // dedicated fake paths, never opened as real files - Editor.getUseTabChar/getSpaceUnits
+            // resolve preferences purely from the path/extension string, no real file needed. Note:
+            // since these paths aren't within any real open project, PreferencesManager can't give them
+            // a genuinely isolated path-scoped context - Editor.setUseTabChar/setSpaceUnits end up
+            // writing to the current global preference regardless of which fake path is passed, so
+            // tests below set-then-immediately-assert rather than batching multiple paths' setup
+            // together (see the integration suite for true multi-file isolation with real project files).
+            const spacesPath = "/test/indent-token-spaces.js";
+            const tabsPath = "/test/indent-token-tabs.js";
+            let originalUseTabChar, originalSpaceUnits;
+
+            beforeAll(function () {
+                originalUseTabChar = Editor.getUseTabChar(spacesPath);
+                originalSpaceUnits = Editor.getSpaceUnits(spacesPath);
+            });
+
+            afterAll(function () {
+                Editor.setUseTabChar(originalUseTabChar, spacesPath);
+                Editor.setSpaceUnits(originalSpaceUnits, spacesPath);
+            });
+
+            function mockEditorForPath(fullPath) {
+                return { document: { file: { fullPath } } };
+            }
+
+            it("should return the token unchanged when templateText doesn't contain it (fast path)",
+                function () {
+                    const text = "function ${1:name}() {\n    ${0}\n}";
+                    expect(SnippetCursorManager.resolveIndentToken(text, mockEditorForPath(spacesPath)))
+                        .toBe(text);
+                });
+
+            it("should resolve INDENT_TOKEN to a space-repeat string when the file uses spaces", function () {
+                Editor.setUseTabChar(false, spacesPath);
+                Editor.setSpaceUnits(2, spacesPath);
+
+                const unit = SnippetCursorManager.getOneIndentUnit(mockEditorForPath(spacesPath));
+                expect(unit).toBe("  "); // 2 spaces
+
+                const resolved = SnippetCursorManager.resolveIndentToken(
+                    "a\n" + SnippetCursorManager.INDENT_TOKEN + "b", mockEditorForPath(spacesPath));
+                expect(resolved).toBe("a\n  b");
+            });
+
+            it("should resolve INDENT_TOKEN to a literal tab when the file uses tabs", function () {
+                Editor.setUseTabChar(true, tabsPath);
+
+                const unit = SnippetCursorManager.getOneIndentUnit(mockEditorForPath(tabsPath));
+                expect(unit).toBe("\t");
+
+                const resolved = SnippetCursorManager.resolveIndentToken(
+                    "a\n" + SnippetCursorManager.INDENT_TOKEN + "b", mockEditorForPath(tabsPath));
+                expect(resolved).toBe("a\n\tb");
+            });
+
+            it("should resolve every occurrence of INDENT_TOKEN, not just the first", function () {
+                Editor.setUseTabChar(false, spacesPath);
+                Editor.setSpaceUnits(4, spacesPath);
+
+                const template = SnippetCursorManager.INDENT_TOKEN + "a\n" +
+                    SnippetCursorManager.INDENT_TOKEN + SnippetCursorManager.INDENT_TOKEN + "b";
+                const resolved = SnippetCursorManager.resolveIndentToken(template, mockEditorForPath(spacesPath));
+                expect(resolved).toBe("    a\n        b"); // 4 spaces, then 8 (two levels)
+            });
+
+            // interleaved set+assert per path below: these fake paths aren't within any real open
+            // project, so PreferencesManager can't give them a genuinely isolated path-scoped context
+            // here - each set reflects globally, so we check right after setting, not in a batch (see
+            // the integration suite for true multi-file isolation with real project files).
+            it("should resolve to the current global indent settings for a given fake path", function () {
+                Editor.setUseTabChar(false, spacesPath);
+                Editor.setSpaceUnits(2, spacesPath);
+                expect(SnippetCursorManager.getOneIndentUnit(mockEditorForPath(spacesPath))).toBe("  ");
+
+                Editor.setUseTabChar(true, tabsPath);
+                expect(SnippetCursorManager.getOneIndentUnit(mockEditorForPath(tabsPath))).toBe("\t");
             });
         });
 

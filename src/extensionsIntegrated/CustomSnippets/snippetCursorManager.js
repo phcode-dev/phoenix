@@ -21,6 +21,53 @@
 define(function (require, exports, module) {
     const KeyEvent = require("utils/KeyEvent");
     const TabstopManager = require("editor/TabstopManager");
+    const Editor = require("editor/Editor").Editor;
+
+    /**
+     * Marker a snippet's templateText can use to mean "one indent level, in whatever this specific
+     * file/editor is actually configured/detected to use" (spaces vs tabs, and how many) - resolved by
+     * resolveIndentToken below, entirely within this module's own preprocessing, before the text ever
+     * reaches TabstopManager's shared LSP-grammar parser. That's deliberate: TabstopManager is also
+     * used directly by LSP completions and DocCommentHints (see editor/TabstopManager.js), and this
+     * marker is never taught to THAT shared parser at all - by the time TabstopManager sees the text,
+     * this token has already been fully replaced with literal characters, so there is nothing here for
+     * it to interpret, and real LSP-served snippet text (which never passes through this module) can
+     * never trigger this substitution either. Deliberately NOT `$`-prefixed, so it can never collide
+     * with real `${...}` tab-stop/placeholder syntax even if this substitution were ever skipped - it
+     * would just show up as this literal, obviously-wrong-looking text instead of silently misbehaving.
+     */
+    const INDENT_TOKEN = "@@INDENT@@";
+
+    /**
+     * Resolves what "one indent level" literally looks like right now for the given editor's file -
+     * same auto-detection + project/language preference cascade Phoenix's own Tab-key handling uses
+     * (see Editor.getUseTabChar/getSpaceUnits), so it always matches what pressing Tab in that file
+     * would actually insert.
+     *
+     * @param {Editor} editor - the editor instance being inserted into
+     * @returns {string} - e.g. "    " or "\t", scoped to this specific file/language/project
+     */
+    function getOneIndentUnit(editor) {
+        const fullPath = editor && editor.document && editor.document.file && editor.document.file.fullPath;
+        return Editor.getUseTabChar(fullPath) ? "\t" : " ".repeat(Editor.getSpaceUnits(fullPath));
+    }
+
+    /**
+     * Replaces every INDENT_TOKEN in templateText with the current editor's actual one-indent-level
+     * string. See INDENT_TOKEN's own doc comment for why this is a plain string substitution done here
+     * rather than new tab-stop syntax taught to the shared TabstopManager parser.
+     *
+     * @param {string} templateText - the raw template text, may contain zero or more INDENT_TOKENs
+     * @param {Editor} editor - the editor instance being inserted into
+     * @returns {string} - templateText with every INDENT_TOKEN replaced
+     */
+    function resolveIndentToken(templateText, editor) {
+        if (templateText.indexOf(INDENT_TOKEN) === -1) {
+            return templateText; // fast path - most snippets (all user-authored ones, today) skip this
+        }
+        const unit = getOneIndentUnit(editor);
+        return templateText.split(INDENT_TOKEN).join(unit);
+    }
 
     /**
      * Custom snippet templateText historically only ever recognized the braced form `${1}` as a
@@ -107,7 +154,12 @@ define(function (require, exports, module) {
      * @param {Object} endPos - End position for insertion
      */
     function insertSnippetWithTabStops(editor, templateText, startPos, endPos) {
-        const escapedText = escapeBareDollarSigns(templateText);
+        // Resolve any INDENT_TOKEN to this file's actual indent unit first, so everything downstream
+        // just sees plain literal characters - see resolveIndentToken's doc comment for why this must
+        // happen before escaping/parsing, not as new syntax taught to the shared TabstopManager parser.
+        const withIndentResolved = resolveIndentToken(templateText, editor);
+
+        const escapedText = escapeBareDollarSigns(withIndentResolved);
 
         // Get the current line's indentation to apply to all subsequent lines
         const baseIndent = getLineIndentation(editor, startPos);
@@ -197,4 +249,7 @@ define(function (require, exports, module) {
     exports.endSnippetSession = endSnippetSession;
     exports.navigateToNextTabStop = navigateToNextTabStop; // exposed for integration testing
     exports.navigateToPreviousTabStop = navigateToPreviousTabStop; // exposed for integration testing
+    exports.INDENT_TOKEN = INDENT_TOKEN; // referenced by defaultSnippets.js templateText
+    exports.resolveIndentToken = resolveIndentToken; // exposed for unit testing
+    exports.getOneIndentUnit = getOneIndentUnit; // exposed for unit testing
 });
