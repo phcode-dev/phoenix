@@ -385,6 +385,7 @@ define({
   "LIVE_DEV_STYLER_STATE_NORMAL": "Normal",
   "LIVE_DEV_STYLER_STATE_BANNER": "Bearbeitung des {0}-Zustands — Änderungen gelten nur für {0}",
   "LIVE_DEV_STYLER_STATE_EXIT": "Beenden",
+  "LIVE_DEV_STYLER_STATE_EXIT_NAMED": "{0} beenden",
   "LIVE_DEV_STYLER_STATE_NO_BASE": "Zustände können nicht auf Inline-Stile angewendet werden",
   "LIVE_DEV_STYLER_STATE_HOVER": "Hover",
   "LIVE_DEV_STYLER_STATE_FOCUS": "Fokus",
@@ -2213,7 +2214,6 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Geben Sie eine kurze Abkürzung ein (z. B. „clg“, „fn“, „div“). Diese geben Sie ein, um das Snippet auszulösen.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Kurze Beschreibung der Funktion dieses Snippets. Lassen Sie das Feld leer, wenn keine Beschreibung erforderlich ist.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Geben Sie Dateitypen an, für die dieses Snippet verfügbar sein soll (z. B. „.js“, „.html“, „.css“). Lassen Sie das Feld leer, damit es für alle Dateien verfügbar ist.",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Der eigentliche Code, der eingefügt wird. Verwenden Sie ${1}, ${2}, ${3} usw. für Cursorpositionen. ${1} ist die Ausgangsposition, die Tabulatortaste bewegt zu ${2}, ${3} usw. ${0} ist die letzte Position.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Konsolenprotokoll-Verknüpfung (optional)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Für alle Dateien leer lassen oder wie z. B. .js, .html angeben",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2668,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "LIVE_DEV_STYLER_STATE_EXIT_NAMED": "{0} beenden"
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Der eigentliche Code, der eingefügt wird. Verwenden Sie ${1}, ${2}, ${3} usw. für Cursorpositionen. ${1} ist die Anfangsposition, mit der Tab-Taste springen Sie zu ${2}, ${3} usw. ${0} ist die Endposition. Fügen Sie mit ${1:Platzhaltertext} Standardtext hinzu, der zum Überschreiben ausgewählt wird. Verwenden Sie @@INDENT@@ für die Einrückung einer verschachtelten Zeile – es entspricht den tatsächlichen Einrückungseinstellungen der aktuellen Datei (Leerzeichen oder Tabulatoren) anstelle einer festen Breite."
 });

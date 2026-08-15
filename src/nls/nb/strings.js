@@ -385,6 +385,7 @@ define({
   "LIVE_DEV_STYLER_STATE_NORMAL": "Normal",
   "LIVE_DEV_STYLER_STATE_BANNER": "Redigerer {0}-tilstanden — endringer gjelder kun for {0}",
   "LIVE_DEV_STYLER_STATE_EXIT": "Avslutt",
+  "LIVE_DEV_STYLER_STATE_EXIT_NAMED": "Avslutt {0}",
   "LIVE_DEV_STYLER_STATE_NO_BASE": "Tilstander kan ikke brukes på inline-stiler",
   "LIVE_DEV_STYLER_STATE_HOVER": "Hover",
   "LIVE_DEV_STYLER_STATE_FOCUS": "Fokus",
@@ -2213,7 +2214,6 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Skriv inn en kort forkortelse (f.eks. 'clg', 'fn', 'div'). Dette er det du skriver for å utløse snutten.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Kort beskrivelse av hva denne snutten gjør. La stå tomt hvis ingen beskrivelse er nødvendig.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Angi filtyper der denne snutten skal være tilgjengelig (f.eks. '.js', '.html', '.css'). La stå tomt for å gjøre den tilgjengelig for alle filer.",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Den faktiske koden som vil bli satt inn. Bruk ${1}, ${2}, ${3}, osv. for markørposisjoner. ${1} er startposisjonen, tabulator flytter til ${2}, ${3}, osv. ${0} er sluttposisjonen.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Snarvei for console.log (valgfritt)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "La stå tomt for alle filer, eller spesifiser som .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2668,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_STYLER_STATE_EXIT_NAMED": "Avslutt {0}"
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Den faktiske koden som vil bli satt inn. Bruk ${1}, ${2}, ${3}, osv. for markørposisjoner. ${1} er startposisjonen, tabulator flytter til ${2}, ${3}, osv. ${0} er sluttposisjonen. Legg til standardtekst som blir markert for overskriving med ${1:plassholdertekst}. Bruk @@INDENT@@ for innrykk på en nestet linje – det samsvarer med den gjeldende filens faktiske innrykksinnstillinger (mellomrom eller tabulatorer) i stedet for en fast bredde."
 });

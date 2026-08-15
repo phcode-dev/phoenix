@@ -754,7 +754,7 @@
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Custom Snippets",
   "CUSTOM_SNIPPETS_SAVE": "Save",
   "CUSTOM_SNIPPETS_SPACE_ERROR": "Space is not accepted as a valid abbreviation character.",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position. Add default text that gets selected for type-over with ${1:placeholder text}. Use @@INDENT@@ for a nested line's indent - it matches the current file's actual indent settings (spaces or tabs) instead of a fixed width.",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "console.log(${1});",
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Template Text:",
   "DEBUG_MENU": "Debug",
