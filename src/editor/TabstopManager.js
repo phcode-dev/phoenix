@@ -35,11 +35,19 @@
  *     stop, and (when there is more than one stop) starts a Tab-navigable session backed by markers
  *     so the stops follow any later edits (e.g. an auto-import line inserted above).
  *
- * NOTE: this is currently wired only into the LSP completion path (languageTools/DefaultProviders).
- * The Emmet expander (HTMLCodeHints) and the custom-snippets feature have their own stable cursor
- * handling and were intentionally left untouched; they can migrate onto this manager in future.
+ * Used by the LSP completion path (languageTools/DefaultProviders), DocCommentHints, and Custom
+ * Snippets (extensionsIntegrated/CustomSnippets/snippetCursorManager.js). The Emmet expander
+ * (HTMLCodeHints) still has its own separate cursor handling.
+ *
+ * While a Tab-navigable session is active, every remaining stop gets a subdued outline box (see
+ * Editor.getMarkOptionTabstopOutline) so the user can see at a glance how many fields are left and
+ * where, with the currently-selected one getting a bolder "active" outline layered on top (see
+ * Editor.getMarkOptionTabstopOutlineActive) - matches the visual language RenameIdentifier.js already
+ * uses for its own outline box. Zero-width stops (a bare `$N`/`$0` with no default text - just a
+ * caret position, no marker range) don't get an outline, since there's no span to box.
  */
 define(function (require, exports, module) {
+    const Editor = require("editor/Editor").Editor;
 
     /**
      * Expand an LSP snippet into plain text plus the list of tab-stops.
@@ -174,7 +182,7 @@ define(function (require, exports, module) {
 
     // ---- Tab-navigation session ----------------------------------------------------------------
 
-    var _session = null;   // { editor, markers: [marker], index, keymap }
+    var _session = null;   // { editor, markers: [marker], index, keymap, activeOutlineMarker }
 
     function _clearSession() {
         if (!_session) {
@@ -185,6 +193,9 @@ define(function (require, exports, module) {
         session.markers.forEach(function (m) {
             m.clear();
         });
+        if (session.activeOutlineMarker) {
+            session.activeOutlineMarker.clear();
+        }
         session.editor._codeMirror.removeKeyMap(session.keymap);
         session.editor.off(".tabstop");
     }
@@ -251,6 +262,17 @@ define(function (require, exports, module) {
         }
         _session.index = index;
         _session.editor.setSelection(range.from, range.to);
+
+        // swap the bold "active" outline onto whichever stop we just landed on - only meaningful for
+        // a real span (a bare $N/$0 with no default text is a zero-width caret, nothing to box)
+        if (_session.activeOutlineMarker) {
+            _session.activeOutlineMarker.clear();
+            _session.activeOutlineMarker = null;
+        }
+        if (range.from.line !== range.to.line || range.from.ch !== range.to.ch) {
+            _session.activeOutlineMarker = _session.editor.markText(
+                "tabstop-active", range.from, range.to, Editor.getMarkOptionTabstopOutlineActive());
+        }
         return true;
     }
 
@@ -332,6 +354,11 @@ define(function (require, exports, module) {
         }
 
         // Multiple stops: lay down markers and start a Tab-navigable session.
+        // the subdued outline (visual only) is layered onto the SAME functional tracking options
+        // below by className/startStyle/endStyle alone - deliberately not spreading the whole helper
+        // object in, since its own inclusiveLeft/clearWhenEmpty differ from what marker TRACKING here
+        // actually needs (inclusiveLeft: false is what makes typing at a stop's start not stick to it).
+        var outlineOption = Editor.getMarkOptionTabstopOutline();
         var markers = parsed.stops.map(function (stop) {
             var ms = posFromOffset(stop.start),
                 me = posFromOffset(stop.end);
@@ -341,7 +368,10 @@ define(function (require, exports, module) {
             return editor.markText("tabstop", ms, me, {
                 clearWhenEmpty: false,
                 inclusiveLeft: false,
-                inclusiveRight: true
+                inclusiveRight: true,
+                className: outlineOption.className,
+                startStyle: outlineOption.startStyle,
+                endStyle: outlineOption.endStyle
             });
         });
 
@@ -358,7 +388,7 @@ define(function (require, exports, module) {
             }
         };
 
-        _session = { editor: editor, markers: markers, index: -1, keymap: keymap };
+        _session = { editor: editor, markers: markers, index: -1, keymap: keymap, activeOutlineMarker: null };
         editor._codeMirror.addKeyMap(keymap);
         // End the session if the editor it belongs to is destroyed (file closed), or the user moves
         // on (cursor leaves the snippet's lines, or a multi-cursor selection is made). Namespaced so

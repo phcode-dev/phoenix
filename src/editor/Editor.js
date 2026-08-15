@@ -1397,6 +1397,37 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Mark option for a subdued outline box, used to show every remaining stop of an active
+     * snippet/tab-stop session (see editor/TabstopManager.js) so the user can see at a glance how
+     * many fields are left and where, even for the ones they haven't tabbed to yet.
+     */
+    function getMarkOptionTabstopOutline() {
+        return {
+            className: "editor-text-tabstop-outline",
+            startStyle: "editor-text-tabstop-outline-left",
+            endStyle: "editor-text-tabstop-outline-right",
+            clearWhenEmpty: false,
+            inclusiveLeft: true,
+            inclusiveRight: true
+        };
+    }
+
+    /**
+     * Mark option for the bold/active variant of the above, layered on top of it for whichever stop
+     * is currently selected in an active snippet/tab-stop session.
+     */
+    function getMarkOptionTabstopOutlineActive() {
+        return {
+            className: "editor-text-tabstop-outline-active",
+            startStyle: "editor-text-tabstop-outline-active-left",
+            endStyle: "editor-text-tabstop-outline-active-right",
+            clearWhenEmpty: false,
+            inclusiveLeft: true,
+            inclusiveRight: true
+        };
+    }
+
+    /**
      * Mark option to underline errors.
      */
     Editor.getMarkOptionUnderlineError = getMarkOptionUnderlineError;
@@ -1430,6 +1461,8 @@ define(function (require, exports, module) {
      * Mark option for renaming outlines.
      */
     Editor.getMarkOptionRenameOutline = getMarkOptionRenameOutline;
+    Editor.getMarkOptionTabstopOutline = getMarkOptionTabstopOutline;
+    Editor.getMarkOptionTabstopOutlineActive = getMarkOptionTabstopOutlineActive;
 
     /**
      * Can be used to mark a range of text with a specific CSS class name. cursorFrom and cursorTo should be {line, ch}
