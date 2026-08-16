@@ -1575,6 +1575,8 @@ define({
     "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Used {1} times)",
     "EDIT": "Edit",
 
+    "JUMP_TO_DEFINITION_MULTIPLE_PROMPT": "Multiple definitions. Select one:",
+
     // extensions/default/JavaScriptCodeHints
     "CMD_JUMPTO_DEFINITION": "Go to Definition",
     "CMD_SHOW_PARAMETER_HINT": "Show Parameter Hint",

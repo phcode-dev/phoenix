@@ -41,6 +41,7 @@ define(function (require, exports, module) {
       Strings = require("strings"),
       StringUtils = require("utils/StringUtils"),
       Metrics = require("utils/Metrics"),
+      ModalBar = require("widgets/ModalBar").ModalBar,
       marked = require("thirdparty/marked.min"),
       matcher = new StringMatch.StringMatcher({
         preferPrefixMatches: true
@@ -850,41 +851,30 @@ define(function (require, exports, module) {
             metricLabel = this.client._metricLabel,
             $deferredHints = $.Deferred();
 
+        function jumpToLocation(location) {
+            var startCurPos = { line: location.range.start.line, ch: location.range.start.character };
+            if (location.uri !== docPathUri) {
+                CommandManager.execute(Commands.FILE_OPEN, { fullPath: PathConverters.uriToPath(location.uri) })
+                    .done(function () { setJumpPosition(startCurPos); $deferredHints.resolve(); })
+                    .fail(function () { $deferredHints.reject(); });
+            } else { //definition is in current document
+                setJumpPosition(startCurPos);
+                $deferredHints.resolve();
+            }
+        }
+
         this.client.gotoDefinition({
             filePath: docPath,
             cursorPos: pos
         }).done(function (msgObj) {
-            //For Older servers
-            if (Array.isArray(msgObj)) {
-                msgObj = msgObj[msgObj.length - 1];
+            if (Array.isArray(msgObj) && msgObj.length > 1) {
+                showJumpTargetPicker(msgObj, jumpToLocation, $deferredHints.reject);
+                return;
             }
-
-            if (msgObj && msgObj.range) {
-                var docUri = msgObj.uri,
-                    startCurPos = {};
-                startCurPos.line = msgObj.range.start.line;
-                startCurPos.ch = msgObj.range.start.character;
-
-                if (docUri !== docPathUri) {
-                    let documentPath = PathConverters.uriToPath(docUri);
-                    CommandManager.execute(Commands.FILE_OPEN, {
-                            fullPath: documentPath
-                        })
-                        .done(function () {
-                            setJumpPosition(startCurPos);
-                            $deferredHints.resolve();
-                        })
-                        .fail(function () {
-                            $deferredHints.reject();
-                        });
-                } else { //definition is in current document
-                    setJumpPosition(startCurPos);
-                    $deferredHints.resolve();
-                }
-            } else {
-                // No definition at this position (servers answer null/[] - e.g. tsserver while it
-                // is still loading the project). MUST settle: an unresolved deferred here leaves
-                // the NAVIGATE_JUMPTO_DEFINITION command promise pending forever.
+            var location = Array.isArray(msgObj) ? msgObj[0] : msgObj;
+            if (location && location.range) {
+                jumpToLocation(location);
+            } else { // no definition - settle promise
                 $deferredHints.reject();
             }
         }).fail(function (err) {
@@ -897,6 +887,20 @@ define(function (require, exports, module) {
 
         return $deferredHints;
     };
+
+    function showJumpTargetPicker(locations, onPick, onCancel) {
+        var $bar = $('<div style="padding:4px;"></div>').text(Strings.JUMP_TO_DEFINITION_MULTIPLE_PROMPT);
+        locations.forEach(function (loc, i) {
+            $("<button type='button' class='btn'>")
+                .text(PathConverters.uriToPath(loc.uri).split(/[\\/]/).pop() + ":" + (loc.range.start.line + 1) + ":" + (loc.range.start.character + 1))
+                .click(function () {
+                    modalBar.close(false, false, ModalBar.CLOSE_API); onPick(loc);
+                }).appendTo($bar);
+        });
+
+        var modalBar = new ModalBar($bar, true, false);
+        modalBar.on("close", function (_evt, reason) { if (reason !== ModalBar.CLOSE_API) { onCancel(); } });
+    }
 
     function LintingProvider() {
         this._results = new Map();
