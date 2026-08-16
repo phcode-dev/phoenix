@@ -1008,6 +1008,20 @@ define(function (require, exports, module) {
     exports.CMD_VIEW_TERMINAL = CMD_VIEW_TERMINAL;
     exports.CMD_NEW_TERMINAL = CMD_NEW_TERMINAL;
 
+    /**
+     * Get the shared "phoenix_terminal" NodeConnector so other extensions
+     * (e.g. the AI chat panel's embedded CLI terminal) can spawn their own
+     * independent TerminalInstance without registering a second connector
+     * on the same id, which throws. Safe to call any time after boot —
+     * _initNodeConnector() runs unconditionally on AppInit.appReady, before
+     * any user interaction.
+     * @return {Object|null} The terminal NodeConnector, or null if this is
+     *   not a native app build (terminal is unavailable there).
+     */
+    exports.getNodeConnector = function () {
+        return nodeConnector;
+    };
+
     if (Phoenix.isTestWindow) {
         exports._getActiveTerminal = _getActiveTerminal;
         exports._refreshAllProcesses = _refreshAllProcesses;

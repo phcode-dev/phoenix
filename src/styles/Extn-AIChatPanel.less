@@ -33,6 +33,21 @@
 @ai-line-prose:     1.6;                          // multi-line body text — generous reading rhythm
 @ai-line-compact:   1.4;                          // single-line UI elements
 
+// Warning-tone chrome (e.g. the CLI-mode "project switched" banner). Must
+// stay fully opaque — it overlays live terminal output, so any see-through
+// background would make its text unreadable against arbitrary content
+// underneath. Rather than a flat saturated alert-box color (which reads as
+// a foreign popup bolted onto the panel), @ai-warning-bg is the panel's own
+// dark surface (@bc-ai-sidebar-bg, #252525) warmed toward amber — same
+// elevation family, so it still reads as *this panel's* chrome. The amber
+// accent (border stripe + icon + emphasized text) carries the "pay
+// attention" cue instead of the fill color. The action button intentionally
+// uses the panel's own blue accent, not amber — keeping "notice" and
+// "actionable" visually distinct, same split the rest of the panel uses.
+@ai-warning-bg:     #332a1f;
+@ai-warning-accent: #e6a23c;
+@ai-warning-text:   @project-panel-text-1;
+
 .ai-tab-container {
     display: flex;
     flex-direction: column;
@@ -98,6 +113,21 @@
     .ai-chat-title-group {
         display: flex;
         align-items: center;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 6px;
+        transition: background 0.15s ease;
+
+        &:hover,
+        &.dropdown-open {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .ai-chat-title-chevron {
+            margin-left: 5px;
+            font-size: 9px;
+            opacity: 0.5;
+        }
     }
 
     .ai-chat-title-icon {
@@ -182,6 +212,185 @@
         height: 26px;
         padding: 0 8px;
         cursor: pointer;
+    }
+}
+
+/* ── CLI mode ───────────────────────────────────────────────────────── */
+/* History and the model switcher are chat-UI-only concerns — the embedded
+   CLI terminal has its own session/model handling. New + Settings stay. */
+.ai-chat-panel.ai-mode-cli {
+    .ai-model-select,
+    .ai-history-btn {
+        display: none;
+    }
+}
+
+.ai-chat-body-chat,
+.ai-chat-body-cli {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.ai-chat-body-cli {
+    display: none;
+    position: relative;
+
+    // Fixed dark terminal palette — deliberately NOT wrapped in a `.dark &`
+    // guard. TerminalInstance reads --terminal-* off its own container
+    // (see TerminalInstance.js#_getThemeFromCSS); without these declared
+    // here it falls back to the bottom Terminal panel's singleton
+    // .terminal-panel-container (present in the DOM even when that panel
+    // is never opened), which IS light/dark-theme-aware — flipping the
+    // embedded CLI terminal to a white background in light theme even
+    // though this sidebar is always-dark. Values match
+    // ".dark .terminal-panel-container" in styles/Extn-Terminal.less.
+    --terminal-background:          #1e1e1e;
+    --terminal-foreground:          #cccccc;
+    --terminal-cursor:              #ffffff;
+    --terminal-selection:           rgba(255, 255, 255, 0.2);
+    --terminal-ansi-black:          #000000;
+    --terminal-ansi-red:            #cd3131;
+    --terminal-ansi-green:          #0dbc79;
+    --terminal-ansi-yellow:         #e5e510;
+    --terminal-ansi-blue:           #2472c8;
+    --terminal-ansi-magenta:        #bc3fbc;
+    --terminal-ansi-cyan:           #11a8cd;
+    --terminal-ansi-white:          #e5e5e5;
+    --terminal-ansi-bright-black:   #666666;
+    --terminal-ansi-bright-red:     #f14c4c;
+    --terminal-ansi-bright-green:   #23d18b;
+    --terminal-ansi-bright-yellow:  #f5f543;
+    --terminal-ansi-bright-blue:    #3b8eea;
+    --terminal-ansi-bright-magenta: #d670d6;
+    --terminal-ansi-bright-cyan:    #29b8db;
+    --terminal-ansi-bright-white:   #ffffff;
+}
+
+.ai-chat-panel.ai-mode-cli {
+    .ai-chat-body-chat {
+        display: none;
+    }
+
+    .ai-chat-body-cli {
+        display: flex;
+    }
+}
+
+/* "Project switched" banner over the embedded CLI terminal — a dark,
+   warm-tinted card in the panel's own elevation family (see @ai-warning-bg)
+   with a left amber stripe + icon carrying the "pay attention" cue, rather
+   than a flat saturated alert-box color that would read as a foreign popup
+   bolted onto the panel. Body text is @ai-text-body (not the smaller
+   -secondary tier) — this is a message the user needs to actually read,
+   not incidental chrome. Docked to the BOTTOM, not the top: that's where
+   the user's eyes/cursor already are while typing into the terminal (the
+   same spot the chat input box occupies in chat mode), so it can't be
+   missed the way a top banner easily could be while scrolled/typing. */
+.ai-cli-stale-banner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 10px 8px 9px;
+    background: @ai-warning-bg;
+    border-left: 3px solid @ai-warning-accent;
+    box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.35);
+    font-size: @ai-text-body;
+    color: @ai-warning-text;
+
+    .ai-cli-stale-banner-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .ai-cli-stale-banner-icon {
+        flex-shrink: 0;
+        color: @ai-warning-accent;
+    }
+
+    .ai-cli-stale-banner-text {
+        flex: 1;
+        min-width: 0;
+        white-space: normal; // .sidebar.panel sets nowrap; this needs to wrap
+        overflow-wrap: break-word;
+
+        // Explicit color: a global `b, strong { color: #333 }` base rule
+        // (from brackets_patterns_override.less) directly targets <b>, and
+        // a directly-matching rule always wins over inherited color no
+        // matter how much higher the ancestor's specificity is — inheriting
+        // @ai-warning-text from .ai-cli-stale-banner-text here would lose.
+        b {
+            color: @ai-warning-accent;
+            font-weight: 600;
+        }
+    }
+
+    // Two explicit, equally-weighted choices rather than one CTA + a small
+    // close icon — every option here resolves the staleness one way or
+    // the other, so there's nothing left over to "dismiss". Right-aligned
+    // and ordered secondary-then-primary, same convention as
+    // .modal-footer's Cancel/OK (see widgets/Dialogs.js showConfirmDialog)
+    // — the primary action sits rightmost. flex-wrap lets the pair drop
+    // to its own line on a narrow sidebar; each button's own max-width +
+    // ellipsis (below) is what actually bounds an unpredictably long
+    // project name, not wrapping.
+    .ai-cli-stale-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    // Project names are user-controlled and unbounded in length — cap
+    // both buttons the same width and ellipsis rather than letting one
+    // balloon the whole banner or wrap into a multi-line button.
+    .ai-cli-stale-banner-btn,
+    .ai-cli-stale-banner-btn-secondary {
+        max-width: 180px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    // Renders as Phoenix's standard .btn.btn-primary (color/hover/active
+    // come from the shared rule above, keyed off this container class —
+    // same mechanism the placeholder screens' CTAs use) rather than a
+    // one-off custom button style. The accent stripe/icon already carries
+    // "notice", so the button itself stays "actionable" — the panel's
+    // usual primary-action blue, not amber.
+    .ai-cli-stale-banner-btn {
+        padding: 4px 10px !important;
+        font-size: @ai-text-secondary !important;
+    }
+
+    // Secondary choice — same transparent/outlined language as
+    // .ai-placeholder-cta-secondary elsewhere in this panel, sized down
+    // to match the primary button here instead of that CTA's full-width
+    // proportions.
+    .ai-cli-stale-banner-btn-secondary {
+        padding: 4px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        background: transparent;
+        color: @ai-warning-text;
+        font-family: inherit;
+        font-size: @ai-text-secondary;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.32);
+        }
     }
 }
 
@@ -273,12 +482,14 @@
 }
 
 /* ── Session history dropdown ──────────────────────────────────────── */
-/* When history is open, hide chat content and show the dropdown instead */
+/* When history is open, hide chat content and show the dropdown instead.
+   These live inside .ai-chat-body-chat now (not direct .ai-chat-panel
+   children), since that wrapper is what CLI mode toggles alongside it. */
 .ai-chat-panel.ai-history-open {
-    > .ai-chat-messages,
-    > .ai-chat-status,
-    > .ai-chat-input-area,
-    > .ai-onboarding-wrap {
+    .ai-chat-body-chat > .ai-chat-messages,
+    .ai-chat-body-chat > .ai-chat-status,
+    .ai-chat-body-chat > .ai-chat-input-area,
+    .ai-chat-body-chat > .ai-onboarding-wrap {
         display: none !important;
     }
 }
@@ -3278,7 +3489,8 @@
    selector is more specific than the reset, and `!important` belt-and-
    braces against any later reset rule that might still apply. */
 .ai-chat-panel .ai-unavailable .btn.btn-primary,
-.ai-chat-panel .ai-placeholder .btn.btn-primary {
+.ai-chat-panel .ai-placeholder .btn.btn-primary,
+.ai-chat-panel .ai-cli-stale-banner .btn.btn-primary {
     display: inline-block;
     background-color: @bc-primary-btn-bg !important;
     background-image: none !important;
@@ -3308,7 +3520,8 @@
 }
 
 .dark .ai-chat-panel .ai-unavailable .btn.btn-primary,
-.dark .ai-chat-panel .ai-placeholder .btn.btn-primary {
+.dark .ai-chat-panel .ai-placeholder .btn.btn-primary,
+.dark .ai-chat-panel .ai-cli-stale-banner .btn.btn-primary {
     background-color: @dark-bc-primary-btn-bg !important;
     border-color: darken(@dark-bc-primary-btn-bg, 8%) !important;
 
