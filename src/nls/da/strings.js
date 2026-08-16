@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Indtast en kort forkortelse (f.eks. 'clg', 'fn', 'div'). Dette er, hvad du skriver for at udløse snippet'en.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Kort beskrivelse af, hvad denne snippet gør. Lad feltet stå tomt, hvis ingen beskrivelse er nødvendig.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Angiv filtyper, hvor denne snippet skal være tilgængelig (f.eks. '.js', '.html', '.css'). Lad feltet stå tomt for at gøre den tilgængelig for alle filer.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Tekst: Den faktiske kode, der vil blive indsat. Brug ${1}, ${2}, ${3}, osv. til markørpositioner. ${1} er startpositionen, tab flytter til ${2}, ${3}, osv. ${0} er slutpositionen. Tilføj standardtekst, der markeres til overskrivning, med ${1:pladsholdertekst}. Brug @@INDENT@@ til en indlejret linjes indrykning - det matcher den aktuelle fils faktiske indrykningsindstillinger (mellemrum eller tabulatorer) i stedet for en fast bredde.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Genvej til konsol log (valgfrit)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Lad feltet stå tomt for alle filer, eller angiv f.eks. .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Tekst: Den faktiske kode, der vil blive indsat. Brug ${1}, ${2}, ${3}, osv. til markørpositioner. ${1} er startpositionen, tab flytter til ${2}, ${3}, osv. ${0} er slutpositionen. Tilføj standardtekst, der markeres til overskrivning, med ${1:pladsholdertekst}. Brug @@INDENT@@ til en indlejret linjes indrykning - det matcher den aktuelle fils faktiske indrykningsindstillinger (mellemrum eller tabulatorer) i stedet for en fast bredde."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Skift mellem Claude Code-chatten og en indlejret Claude Code CLI-terminal",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Afslut denne CLI-session?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dette vil afslutte den kørende Claude Code CLI-session og starte en ny. Fortsæt?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Denne Claude Code CLI-session kører stadig i {0} — det åbne projekt er nu {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Skift til “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Bliv i “{0}”"
 });

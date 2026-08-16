@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Saisissez une abréviation courte (par ex. : « clg », « fn », « div »). C’est ce que vous saisirez pour déclencher l’extrait de code.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Brève description de la fonction de cet extrait de code. Laissez vide si aucune description n’est nécessaire.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Spécifiez les types de fichiers pour lesquels cet extrait de code doit être disponible (par ex. : « .js », « .html », « .css »). Laissez vide pour qu’il soit disponible pour tous les fichiers.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Texte : Le code qui sera inséré. Utilisez ${1}, ${2}, ${3}, etc. pour les positions du curseur. ${1} est la position initiale, la touche Tab déplace le curseur vers ${2}, ${3}, etc. ${0} est la position finale. Ajoutez du texte par défaut qui sera sélectionné pour être remplacé avec ${1:placeholder text}. Utilisez @@INDENT@@ pour l'indentation d'une ligne imbriquée ; cela correspond aux paramètres d'indentation réels du fichier (espaces ou tabulations) au lieu d'une largeur fixe.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Raccourci console.log (facultatif)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Laissez vide pour tous les fichiers, ou spécifiez comme .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "console.log(${1});",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Texte : Le code qui sera inséré. Utilisez ${1}, ${2}, ${3}, etc. pour les positions du curseur. ${1} est la position initiale, la touche Tab déplace le curseur vers ${2}, ${3}, etc. ${0} est la position finale. Ajoutez du texte par défaut qui sera sélectionné pour être remplacé avec ${1:placeholder text}. Utilisez @@INDENT@@ pour l'indentation d'une ligne imbriquée ; cela correspond aux paramètres d'indentation réels du fichier (espaces ou tabulations) au lieu d'une largeur fixe."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Basculer entre le chat Claude Code et un terminal Claude Code CLI intégré",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Terminer cette session CLI ?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ceci mettra fin à la session Claude Code CLI en cours et en démarrera une nouvelle. Continuer ?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Cette session Claude Code CLI est toujours en cours dans {0} — le projet ouvert est maintenant {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Passer à “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Rester sur “{0}”"
 });

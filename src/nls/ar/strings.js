@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "أدخل اختصارًا قصيرًا (مثل: 'clg'، 'fn'، 'div'). هذا ما ستكتبه لتنشيط المقتطف البرمجي.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "وصف موجز لما يفعله هذا المقتطف البرمجي. اتركه فارغًا إذا لم يكن الوصف مطلوبًا.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "حدد أنواع الملفات التي يجب أن يكون هذا المقتطف البرمجي متاحًا لها (مثل: '.js'، '.html'، '.css'). اتركه فارغًا لجعله متاحًا لجميع الملفات.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "النص: الكود الفعلي الذي سيتم إدراجه. استخدم ${1}، ${2}، ${3}، إلخ، لمواضع المؤشر. ${1} هو الموضع الأولي، وينقلك مفتاح الجدولة (Tab) إلى ${2}، ثم ${3}، وهكذا. ${0} هو الموضع النهائي. أضف نصًا افتراضيًا يتم تحديده للكتابة فوقه باستخدام ${1:placeholder text}. استخدم @@INDENT@@ للمسافة البادئة لسطر متداخل - فهو يطابق إعدادات المسافة البادئة الفعلية للملف الحالي (مسافات أو علامات جدولة) بدلاً من عرض ثابت.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "اختصار لـ console log (اختياري)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "اتركه فارغًا لجميع الملفات، أو حدده مثل .js، .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "console.log(${1});",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "النص: الكود الفعلي الذي سيتم إدراجه. استخدم ${1}، ${2}، ${3}، إلخ، لمواضع المؤشر. ${1} هو الموضع الأولي، وينقلك مفتاح الجدولة (Tab) إلى ${2}، ثم ${3}، وهكذا. ${0} هو الموضع النهائي. أضف نصًا افتراضيًا يتم تحديده للكتابة فوقه باستخدام ${1:placeholder text}. استخدم @@INDENT@@ للمسافة البادئة لسطر متداخل - فهو يطابق إعدادات المسافة البادئة الفعلية للملف الحالي (مسافات أو علامات جدولة) بدلاً من عرض ثابت."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "التبديل بين دردشة Claude Code وطرفية Claude Code CLI مدمجة",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "إنهاء جلسة CLI هذه؟",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "سيؤدي هذا إلى إنهاء جلسة Claude Code CLI قيد التشغيل وبدء جلسة جديدة. هل تريد المتابعة؟",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "لا تزال جلسة Claude Code CLI هذه قيد التشغيل في {0} — المشروع المفتوح الآن هو {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "التبديل إلى ”{0}“",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "البقاء في ”{0}“"
 });

@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "短い略語を入力してください（例：「clg」、「fn」、「div」）。スニペットを呼び出す際に入力する文字列です。",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "このスニペットの機能に関する簡単な説明です。説明が不要な場合は空欄のままにしてください。",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "このスニペットを使用可能にするファイルの種類を指定します（例：「.js」、「.html」、「.css」）。すべてのファイルで使用可能にする場合は空欄のままにしてください。",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "挿入される実際のコードです。カーソル位置には「${1}」、「${2}」、「${3}」などを使用します。「${1}」は最初の位置で、タブキーで「${2}」、「${3}」などの位置に移動します。「${0}」は最終的な位置です。「${1:プレースホルダーテキスト}」のように指定すると、上書き入力用に選択されるデフォルトテキストを追加できます。ネストされた行のインデントには「@@INDENT@@」を使用します。これは、固定幅ではなく、現在のファイルの実際のインデント設定（スペースまたはタブ）に一致します。",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "console.log のショートカット（任意）",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "全てのファイルに対して適用する場合は空欄のまま、特定のファイルに対して適用する場合は .js, .html のように指定してください",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});` (変更なし)",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "挿入される実際のコードです。カーソル位置には「${1}」、「${2}」、「${3}」などを使用します。「${1}」は最初の位置で、タブキーで「${2}」、「${3}」などの位置に移動します。「${0}」は最終的な位置です。「${1:プレースホルダーテキスト}」のように指定すると、上書き入力用に選択されるデフォルトテキストを追加できます。ネストされた行のインデントには「@@INDENT@@」を使用します。これは、固定幅ではなく、現在のファイルの実際のインデント設定（スペースまたはタブ）に一致します。"
+  "AI_CHAT_MODE_CHAT": "Claude Code チャット",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Claude Code チャットと埋め込みClaude Code CLIターミナルを切り替える",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "このCLIセッションを終了しますか？",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "実行中のClaude Code CLIセッションを終了し、新しいセッションを開始します。続行しますか？",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "このClaude Code CLIセッションは{0}でまだ実行中ですが、現在開いているプロジェクトは{1}です。",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "「{0}」に切り替える",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "「{0}」のままにする"
 });

@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Zadejte krátkou zkratku (např. 'clg', 'fn', 'div'). Tuto zkratku budete psát pro spuštění úryvku.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Stručný popis toho, co tento úryvek dělá. Pokud není popis potřeba, ponechte prázdné.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Určete typy souborů, ve kterých má být tento úryvek k dispozici (např. '.js', '.html', '.css'). Ponechte prázdné, aby byl k dispozici pro všechny soubory.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Text: Vlastní kód, který se vloží. Pro pozice kurzoru použijte ${1}, ${2}, ${3} atd. ${1} je počáteční pozice, klávesa Tab přesouvá na ${2}, ${3} atd. ${0} je konečná pozice. Pomocí ${1:placeholder text} přidejte výchozí text, který se vybere pro přepsání. Pro odsazení vnořeného řádku použijte @@INDENT@@ – odpovídá aktuálnímu nastavení odsazení souboru (mezery nebo tabulátory) namísto pevné šířky.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Zkratka pro console.log (volitelné)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Ponechte prázdné pro všechny soubory, nebo zadejte např. .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Text: Vlastní kód, který se vloží. Pro pozice kurzoru použijte ${1}, ${2}, ${3} atd. ${1} je počáteční pozice, klávesa Tab přesouvá na ${2}, ${3} atd. ${0} je konečná pozice. Pomocí ${1:placeholder text} přidejte výchozí text, který se vybere pro přepsání. Pro odsazení vnořeného řádku použijte @@INDENT@@ – odpovídá aktuálnímu nastavení odsazení souboru (mezery nebo tabulátory) namísto pevné šířky."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Přepnout mezi chatem Claude Code a vestavěným terminálem Claude Code CLI",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Ukončit tuto relaci CLI?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tímto se ukončí probíhající relace Claude Code CLI a spustí se nová. Pokračovat?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Tato relace Claude Code CLI stále běží v {0} – otevřený projekt je nyní {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Přepnout na „{0}“",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Zůstat u „{0}“"
 });

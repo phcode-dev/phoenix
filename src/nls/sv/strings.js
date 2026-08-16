@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Ange en kort förkortning (t.ex. 'clg', 'fn', 'div'). Det här skriver du för att utlösa snippeten.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Kort beskrivning av vad den här snippeten gör. Lämna tomt om ingen beskrivning behövs.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Ange filtyper där den här snippeten ska vara tillgänglig (t.ex. '.js', '.html', '.css'). Lämna tomt för att göra den tillgänglig för alla filer.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Den faktiska koden som kommer att infogas. Använd ${1}, ${2}, ${3}, etc. för markörpositioner. ${1} är den initiala positionen, tabb flyttar till ${2}, ${3}, etc. ${0} är den slutliga positionen. Lägg till standardtext som markeras för att skriva över med ${1:platshållartext}. Använd @@INDENT@@ för en nästlad rads indrag - det matchar den aktuella filens faktiska indragsinställningar (blanksteg eller tabbar) istället för en fast bredd.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Genväg för console.log (valfritt)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Lämna tomt för alla filer, eller ange som .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Den faktiska koden som kommer att infogas. Använd ${1}, ${2}, ${3}, etc. för markörpositioner. ${1} är den initiala positionen, tabb flyttar till ${2}, ${3}, etc. ${0} är den slutliga positionen. Lägg till standardtext som markeras för att skriva över med ${1:platshållartext}. Använd @@INDENT@@ för en nästlad rads indrag - det matchar den aktuella filens faktiska indragsinställningar (blanksteg eller tabbar) istället för en fast bredd."
+  "AI_CHAT_MODE_CHAT": "Claude Code-chatt",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Växla mellan Claude Code-chatten och en inbäddad Claude Code CLI-terminal",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Avsluta denna CLI-session?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Detta avslutar den pågående Claude Code CLI-sessionen och startar en ny. Fortsätta?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Denna Claude Code CLI-session körs fortfarande i {0} — det öppna projektet är nu {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Växla till ”{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Stanna kvar i ”{0}”"
 });

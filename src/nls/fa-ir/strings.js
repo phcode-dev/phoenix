@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "یک مخفف کوتاه وارد کنید (مثلاً 'clg'، 'fn'، 'div'). این چیزی است که برای فعال کردن قطعه کد تایپ خواهید کرد.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "توضیح مختصری از کاری که این قطعه کد انجام می‌دهد. اگر نیازی به توضیحات نیست، خالی بگذارید.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "انواع فایل‌هایی را که این قطعه کد باید در آنها در دسترس باشد، مشخص کنید (مثلاً '.js'، '.html'، '.css'). برای در دسترس بودن در همه فایل‌ها، خالی بگذارید.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "متن: کد واقعی که درج خواهد شد. برای موقعیت‌های مکان‌نما از ${1}، ${2}، ${3} و غیره استفاده کنید. ${1} موقعیت اولیه است، با زدن کلید Tab به ${2}، ${3} و غیره منتقل می‌شوید. ${0} موقعیت نهایی است. با استفاده از ${1:placeholder text}، متن پیش‌فرضی را اضافه کنید که برای جای‌نویسی انتخاب می‌شود. برای تورفتگی یک خط تو در تو از @@INDENT@@ استفاده کنید - این متغیر به جای عرض ثابت، با تنظیمات واقعی تورفتگی فایل فعلی (فاصله یا تب) مطابقت دارد.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "میانبر ثبت در کنسول (اختیاری)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "برای همه فایل‌ها خالی بگذارید، یا مانند .js، .html مشخص کنید",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "متن: کد واقعی که درج خواهد شد. برای موقعیت‌های مکان‌نما از ${1}، ${2}، ${3} و غیره استفاده کنید. ${1} موقعیت اولیه است، با زدن کلید Tab به ${2}، ${3} و غیره منتقل می‌شوید. ${0} موقعیت نهایی است. با استفاده از ${1:placeholder text}، متن پیش‌فرضی را اضافه کنید که برای جای‌نویسی انتخاب می‌شود. برای تورفتگی یک خط تو در تو از @@INDENT@@ استفاده کنید - این متغیر به جای عرض ثابت، با تنظیمات واقعی تورفتگی فایل فعلی (فاصله یا تب) مطابقت دارد."
+  "AI_CHAT_MODE_CHAT": "چت Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "جابجایی بین چت Claude Code و ترمینال داخلی Claude Code CLI",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "این جلسهٔ CLI خاتمه یابد؟",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "با این کار، جلسهٔ فعلی Claude Code CLI خاتمه یافته و یک جلسهٔ جدید آغاز می‌شود. ادامه می‌دهید؟",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "جلسهٔ Claude Code CLI هنوز در {0} در حال اجرا است — پروژهٔ فعلی شما اکنون {1} است.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "جابجایی به «{0}»",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "ماندن در «{0}»"
 });

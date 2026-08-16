@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Voer een korte afkorting in (bijv. 'clg', 'fn', 'div'). Dit is wat je typt om het fragment te activeren.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Korte beschrijving van wat dit fragment doet. Laat leeg indien geen beschrijving nodig is.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Geef bestandstypen op waar dit fragment beschikbaar moet zijn (bijv. '.js', '.html', '.css'). Laat leeg om het beschikbaar te maken voor alle bestanden.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "De daadwerkelijke code die wordt ingevoegd. Gebruik ${1}, ${2}, ${3}, etc. voor cursorposities. ${1} is de startpositie, tab verplaatst naar ${2}, ${3}, etc. ${0} is de eindpositie. Voeg standaardtekst toe die wordt geselecteerd om te overschrijven met ${1:placeholder text}. Gebruik @@INDENT@@ voor de inspringing van een geneste regel - dit komt overeen met de inspringingsinstellingen van het huidige bestand (spaties of tabs) in plaats van een vaste breedte.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Snelkoppeling voor console log (optioneel)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Laat leeg voor alle bestanden, of specificeer zoals .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "De daadwerkelijke code die wordt ingevoegd. Gebruik ${1}, ${2}, ${3}, etc. voor cursorposities. ${1} is de startpositie, tab verplaatst naar ${2}, ${3}, etc. ${0} is de eindpositie. Voeg standaardtekst toe die wordt geselecteerd om te overschrijven met ${1:placeholder text}. Gebruik @@INDENT@@ voor de inspringing van een geneste regel - dit komt overeen met de inspringingsinstellingen van het huidige bestand (spaties of tabs) in plaats van een vaste breedte."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Schakel tussen de Claude Code-chat en een ingesloten Claude Code CLI-terminal",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Deze CLI-sessie beëindigen?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Hiermee wordt de actieve Claude Code CLI-sessie beëindigd en een nieuwe gestart. Doorgaan?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Deze Claude Code CLI-sessie draait nog in {0} — het geopende project is nu {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Schakelen naar “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Blijven op “{0}”"
 });

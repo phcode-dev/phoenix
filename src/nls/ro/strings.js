@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Introdu o abreviere scurtă (de ex., 'clg', 'fn', 'div'). Aceasta este ceea ce vei tasta pentru a declanșa fragmentul de cod.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Scurtă descriere a ceea ce face acest fragment de cod. Lasă gol dacă nu este necesară o descriere.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Specifică tipurile de fișiere în care acest fragment de cod ar trebui să fie disponibil (de ex., '.js', '.html', '.css'). Lasă gol pentru a-l face disponibil pentru toate fișierele.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Codul propriu-zis care va fi inserat. Folosiți ${1}, ${2}, ${3}, etc. pentru pozițiile cursorului. ${1} este poziția inițială, tasta Tab mută cursorul la ${2}, ${3}, etc. ${0} este poziția finală. Adăugați text implicit care va fi selectat pentru suprascriere folosind ${1:text substituent}. Folosiți @@INDENT@@ pentru indentarea unei linii imbricate - acesta corespunde setărilor de indentare ale fișierului curent (spații sau tab-uri) în loc de o lățime fixă.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Scurtătură console log (opțional)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Lasă gol pentru toate fișierele sau specifică precum .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "console.log(${1});",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Codul propriu-zis care va fi inserat. Folosiți ${1}, ${2}, ${3}, etc. pentru pozițiile cursorului. ${1} este poziția inițială, tasta Tab mută cursorul la ${2}, ${3}, etc. ${0} este poziția finală. Adăugați text implicit care va fi selectat pentru suprascriere folosind ${1:text substituent}. Folosiți @@INDENT@@ pentru indentarea unei linii imbricate - acesta corespunde setărilor de indentare ale fișierului curent (spații sau tab-uri) în loc de o lățime fixă."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Comutați între chatul Claude Code și un terminal Claude Code CLI încorporat",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Încheiați această sesiune CLI?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Aceasta va încheia sesiunea Claude Code CLI în curs de execuție și va porni una nouă. Continuați?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Această sesiune Claude Code CLI încă rulează în {0} — proiectul deschis este acum {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Comutați la “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Rămâneți la “{0}”"
 });

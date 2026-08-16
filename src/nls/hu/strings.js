@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Adjon meg egy rövid rövidítést (pl. 'clg', 'fn', 'div'). Ezt kell begépelnie a kódrészlet aktiválásához.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Rövid leírás arról, hogy mit csinál ez a kódrészlet. Hagyja üresen, ha nincs szükség leírásra.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Adja meg azokat a fájltípusokat, ahol ez a kódrészlet elérhető legyen (pl. '.js', '.html', '.css'). Hagyja üresen, ha minden fájlban elérhetővé szeretné tenni.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "A beillesztendő tényleges kód. A kurzorpozíciókhoz használja a(z) ${1}, ${2}, ${3} stb. jelöléseket. A(z) ${1} a kezdőpozíció, a Tab billentyűvel a(z) ${2}, ${3} stb. pozíciókra léphet. A(z) ${0} a végső pozíció. Adjon meg alapértelmezett, felülírható szöveget a(z) ${1:helyőrző szöveg} formátummal. Használja a(z) @@INDENT@@ jelölést egy beágyazott sor behúzásához – ez a fix szélesség helyett a fájl aktuális behúzási beállításainak (szóközök vagy tabulátorok) felel meg.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Konzol naplózási parancsikon (opcionális)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Hagyja üresen az összes fájlhoz, vagy adja meg a kiterjesztéseket, pl. .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "A beillesztendő tényleges kód. A kurzorpozíciókhoz használja a(z) ${1}, ${2}, ${3} stb. jelöléseket. A(z) ${1} a kezdőpozíció, a Tab billentyűvel a(z) ${2}, ${3} stb. pozíciókra léphet. A(z) ${0} a végső pozíció. Adjon meg alapértelmezett, felülírható szöveget a(z) ${1:helyőrző szöveg} formátummal. Használja a(z) @@INDENT@@ jelölést egy beágyazott sor behúzásához – ez a fix szélesség helyett a fájl aktuális behúzási beállításainak (szóközök vagy tabulátorok) felel meg."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Váltás a Claude Code csevegés és a beágyazott Claude Code CLI-terminál között",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Befejezi ezt a CLI-munkamenetet?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ez lezárja a futó Claude Code CLI-munkamenetet, és egy újat indít. Folytatja?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "A Claude Code CLI-munkamenet még a(z) {0} projektben fut – a jelenleg megnyitott projekt a(z) {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Váltás a(z) „{0}” projektre",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Maradás a(z) „{0}” projekten"
 });

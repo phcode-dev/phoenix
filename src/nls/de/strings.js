@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Geben Sie eine kurze Abkürzung ein (z. B. „clg“, „fn“, „div“). Diese geben Sie ein, um das Snippet auszulösen.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Kurze Beschreibung der Funktion dieses Snippets. Lassen Sie das Feld leer, wenn keine Beschreibung erforderlich ist.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Geben Sie Dateitypen an, für die dieses Snippet verfügbar sein soll (z. B. „.js“, „.html“, „.css“). Lassen Sie das Feld leer, damit es für alle Dateien verfügbar ist.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Der eigentliche Code, der eingefügt wird. Verwenden Sie ${1}, ${2}, ${3} usw. für Cursorpositionen. ${1} ist die Anfangsposition, mit der Tab-Taste springen Sie zu ${2}, ${3} usw. ${0} ist die Endposition. Fügen Sie mit ${1:Platzhaltertext} Standardtext hinzu, der zum Überschreiben ausgewählt wird. Verwenden Sie @@INDENT@@ für die Einrückung einer verschachtelten Zeile – es entspricht den tatsächlichen Einrückungseinstellungen der aktuellen Datei (Leerzeichen oder Tabulatoren) anstelle einer festen Breite.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Konsolenprotokoll-Verknüpfung (optional)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Für alle Dateien leer lassen oder wie z. B. .js, .html angeben",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Der eigentliche Code, der eingefügt wird. Verwenden Sie ${1}, ${2}, ${3} usw. für Cursorpositionen. ${1} ist die Anfangsposition, mit der Tab-Taste springen Sie zu ${2}, ${3} usw. ${0} ist die Endposition. Fügen Sie mit ${1:Platzhaltertext} Standardtext hinzu, der zum Überschreiben ausgewählt wird. Verwenden Sie @@INDENT@@ für die Einrückung einer verschachtelten Zeile – es entspricht den tatsächlichen Einrückungseinstellungen der aktuellen Datei (Leerzeichen oder Tabulatoren) anstelle einer festen Breite."
+  "AI_CHAT_MODE_CHAT": "Claude Code-Chat",
+  "AI_CHAT_MODE_CLI": "Claude Code-CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Umschalten zwischen dem Claude Code-Chat und einem eingebetteten Claude Code-CLI-Terminal",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Diese CLI-Sitzung beenden?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dies beendet die laufende Claude Code-CLI-Sitzung und startet eine neue. Fortfahren?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Diese Claude Code-CLI-Sitzung läuft noch in {0} – das geöffnete Projekt ist jetzt {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Zu „{0}“ wechseln",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Auf „{0}“ bleiben"
 });

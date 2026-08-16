@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "ایک مختصر مخفف درج کریں (مثال کے طور پر، 'clg'، 'fn'، 'div')۔ یہ وہی ہے جو آپ سنیپٹ کو متحرک کرنے کیلئے ٹائپ کریں گے۔",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "اس سنیپٹ کے کام کی مختصر تفصیل۔ اگر کسی تفصیل کی ضرورت نہیں ہے تو خالی چھوڑ دیں۔",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "فائل کی اقسام کی وضاحت کریں جہاں یہ سنیپٹ دستیاب ہونا چاہیے (مثال کے طور پر، '.js'، '.html'، '.css')۔ تمام فائلوں کیلئے دستیاب کرنے کیلئے خالی چھوڑ دیں۔",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "متن: وہ اصل کوڈ جو داخل کیا جائے گا۔ کرسر کی پوزیشنز کے لیے ${1}، ${2}، ${3}، وغیرہ استعمال کریں۔ ${1} ابتدائی پوزیشن ہے، ٹیب دبانے پر کرسر ${2}، پھر ${3}، وغیرہ پر منتقل ہو جائے گا۔ ${0} آخری پوزیشن ہے۔ ${1:placeholder text} کے ساتھ پہلے سے طے شدہ متن شامل کریں جو ٹائپ-اوور کے لیے منتخب ہو جائے گا۔ نیسٹڈ لائن کے انڈینٹ کے لیے @@INDENT@@ استعمال کریں - یہ ایک مقررہ چوڑائی کے بجائے، موجودہ فائل کی اصل انڈینٹ سیٹنگز (اسپیس یا ٹیبز) سے مطابقت رکھتا ہے۔",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "کنسول لاگ شارٹ کٹ (اختیاری)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "تمام فائلوں کے لیے خالی چھوڑ دیں، یا .js، .html کی طرح مخصوص کریں۔",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "console.log(${1});",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "متن: وہ اصل کوڈ جو داخل کیا جائے گا۔ کرسر کی پوزیشنز کے لیے ${1}، ${2}، ${3}، وغیرہ استعمال کریں۔ ${1} ابتدائی پوزیشن ہے، ٹیب دبانے پر کرسر ${2}، پھر ${3}، وغیرہ پر منتقل ہو جائے گا۔ ${0} آخری پوزیشن ہے۔ ${1:placeholder text} کے ساتھ پہلے سے طے شدہ متن شامل کریں جو ٹائپ-اوور کے لیے منتخب ہو جائے گا۔ نیسٹڈ لائن کے انڈینٹ کے لیے @@INDENT@@ استعمال کریں - یہ ایک مقررہ چوڑائی کے بجائے، موجودہ فائل کی اصل انڈینٹ سیٹنگز (اسپیس یا ٹیبز) سے مطابقت رکھتا ہے۔"
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Claude Code چیٹ اور ایمبیڈڈ Claude Code CLI ٹرمینل کے درمیان سوئچ کریں",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "یہ CLI سیشن ختم کریں؟",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "یہ جاری Claude Code CLI سیشن کو ختم کر کے ایک نیا شروع کر دے گا۔ جاری رکھیں؟",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "یہ Claude Code CLI سیشن اب بھی {0} میں جاری ہے — کھلا ہوا پروجیکٹ اب {1} ہے۔",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "”{0}“ پر سوئچ کریں",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "”{0}“ پر رہیں"
 });

@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Skriv inn en kort forkortelse (f.eks. 'clg', 'fn', 'div'). Dette er det du skriver for å utløse snutten.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Kort beskrivelse av hva denne snutten gjør. La stå tomt hvis ingen beskrivelse er nødvendig.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Angi filtyper der denne snutten skal være tilgjengelig (f.eks. '.js', '.html', '.css'). La stå tomt for å gjøre den tilgjengelig for alle filer.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Den faktiske koden som vil bli satt inn. Bruk ${1}, ${2}, ${3}, osv. for markørposisjoner. ${1} er startposisjonen, tabulator flytter til ${2}, ${3}, osv. ${0} er sluttposisjonen. Legg til standardtekst som blir markert for overskriving med ${1:plassholdertekst}. Bruk @@INDENT@@ for innrykk på en nestet linje – det samsvarer med den gjeldende filens faktiske innrykksinnstillinger (mellomrom eller tabulatorer) i stedet for en fast bredde.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Snarvei for console.log (valgfritt)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "La stå tomt for alle filer, eller spesifiser som .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Den faktiske koden som vil bli satt inn. Bruk ${1}, ${2}, ${3}, osv. for markørposisjoner. ${1} er startposisjonen, tabulator flytter til ${2}, ${3}, osv. ${0} er sluttposisjonen. Legg til standardtekst som blir markert for overskriving med ${1:plassholdertekst}. Bruk @@INDENT@@ for innrykk på en nestet linje – det samsvarer med den gjeldende filens faktiske innrykksinnstillinger (mellomrom eller tabulatorer) i stedet for en fast bredde."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Bytt mellom Claude Code-chatten og en innebygd Claude Code CLI-terminal",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Avslutte denne CLI-økten?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dette vil avslutte den pågående Claude Code CLI-økten og starte en ny. Fortsette?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Denne Claude Code CLI-økten kjører fremdeles i {0} – det åpne prosjektet er nå {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Bytt til «{0}»",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Forbli på «{0}»"
 });

@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Introduce unha abreviatura curta (por exemplo, 'clg', 'fn', 'div'). Isto é o que escribirás para activar o fragmento.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Breve descrición do que fai este fragmento. Déixao baleiro se non se necesita ningunha descrición.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Especifica os tipos de ficheiro onde este fragmento debería estar dispoñible (por exemplo, '.js', '.html', '.css'). Déixao baleiro para que estea dispoñible para todos os ficheiros.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Texto: O código real que se inserirá. Use ${1}, ${2}, ${3}, etc. para as posicións do cursor. ${1} é a posición inicial, a tecla de tabulación móvese a ${2}, ${3}, etc. ${0} é a posición final. Engada texto predeterminado que se selecciona para sobrescribir con ${1:texto de marcador de posición}. Use @@INDENT@@ para a sangría dunha liña aniñada; correspóndese coa configuración de sangría real do ficheiro actual (espazos ou tabulacións) en lugar dun ancho fixo.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Atallo para console.log (opcional)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Déixao baleiro para todos os ficheiros ou especifica como .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Texto: O código real que se inserirá. Use ${1}, ${2}, ${3}, etc. para as posicións do cursor. ${1} é a posición inicial, a tecla de tabulación móvese a ${2}, ${3}, etc. ${0} é a posición final. Engada texto predeterminado que se selecciona para sobrescribir con ${1:texto de marcador de posición}. Use @@INDENT@@ para a sangría dunha liña aniñada; correspóndese coa configuración de sangría real do ficheiro actual (espazos ou tabulacións) en lugar dun ancho fixo."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Alternar entre o chat de Claude Code e un terminal CLI de Claude Code integrado",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Rematar esta sesión da CLI?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Isto rematará a sesión da CLI de Claude Code en execución e iniciará unha nova. Continuar?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Esta sesión da CLI de Claude Code segue en execución en {0} — o proxecto aberto agora é {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Cambiar a “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Permanecer en “{0}”"
 });

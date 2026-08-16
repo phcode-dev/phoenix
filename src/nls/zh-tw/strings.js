@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "輸入簡短的縮寫（例如「clg」、「fn」、「div」）。這將是用於觸發程式碼片段的輸入內容。",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "這個程式碼片段功能的簡要描述。如果不需要描述，請留空。",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "指定此程式碼片段應可用的檔案類型（例如「.js」、「.html」、「.css」）。留空則適用於所有檔案。",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "實際將插入的程式碼。使用 ${1}、${2}、${3} 等來指定游標位置。${1} 是初始位置，按下 Tab 鍵可依序移動至 ${2}、${3} 等位置。${0} 是最終位置。使用 ${1:placeholder text} 來加入預設文字，該文字會被選取以便直接輸入覆寫。使用 @@INDENT@@ 代表巢狀行的縮排；它會符合目前檔案的實際縮排設定 (空格或定位點)，而非固定寬度。",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "console log 的快捷鍵（選用）",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "留空適用於所有檔案，或指定例如 .js、.html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});` (維持不變，因其為程式碼)",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "實際將插入的程式碼。使用 ${1}、${2}、${3} 等來指定游標位置。${1} 是初始位置，按下 Tab 鍵可依序移動至 ${2}、${3} 等位置。${0} 是最終位置。使用 ${1:placeholder text} 來加入預設文字，該文字會被選取以便直接輸入覆寫。使用 @@INDENT@@ 代表巢狀行的縮排；它會符合目前檔案的實際縮排設定 (空格或定位點)，而非固定寬度。"
+  "AI_CHAT_MODE_CHAT": "Claude Code 聊天",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "在 Claude Code 聊天與內嵌的 Claude Code CLI 終端機之間切換",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "結束此 CLI 工作階段？",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "這將會結束執行中的 Claude Code CLI 工作階段，並開始一個全新的工作階段。要繼續嗎？",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "此 Claude Code CLI 工作階段仍在「{0}」中執行 — 目前開啟的專案是「{1}」。",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "切換至「{0}」",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "停留在「{0}」"
 });
