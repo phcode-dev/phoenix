@@ -2777,7 +2777,7 @@ define({
     "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI is currently working on a task. Switching to a previous conversation will stop it. Continue?",
     "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "End this CLI session?",
     "AI_CHAT_CLI_NEW_CONFIRM_MSG": "This will end the running Claude Code CLI session and start a fresh one. Continue?",
-    "AI_CHAT_CLI_STALE_PROJECT_MSG": "This CLI session is still running in {0} — the open project is now {1}.",
+    "AI_CHAT_CLI_STALE_PROJECT_MSG": "This Claude Code CLI session is still running in {0} — the open project is now {1}.",
     "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Switch to “{0}”",
     "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Stay on “{0}”",
     "AI_CHAT_SETTINGS_TITLE": "Claude Code Settings",
