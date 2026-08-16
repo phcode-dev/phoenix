@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Masukkan singkatan pendek (misalnya, 'clg', 'fn', 'div'). Ini yang akan Anda ketik untuk memicu cuplikan kode.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Deskripsi singkat tentang fungsi cuplikan kode ini. Biarkan kosong jika tidak diperlukan deskripsi.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Tentukan jenis berkas tempat cuplikan kode ini akan tersedia (misalnya, '.js', '.html', '.css'). Biarkan kosong agar tersedia untuk semua berkas.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Kode aktual yang akan disisipkan. Gunakan ${1}, ${2}, ${3}, dll. untuk posisi kursor. ${1} adalah posisi awal, tab berpindah ke ${2}, ${3}, dll. ${0} adalah posisi akhir. Tambahkan teks default yang akan dipilih untuk ditimpa dengan ${1:teks placeholder}. Gunakan @@INDENT@@ untuk inden baris bersarang - ini cocok dengan pengaturan inden aktual file saat ini (spasi atau tab), bukan lebar tetap.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Pintasan console log (opsional)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Biarkan kosong untuk semua berkas, atau tentukan seperti .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Kode aktual yang akan disisipkan. Gunakan ${1}, ${2}, ${3}, dll. untuk posisi kursor. ${1} adalah posisi awal, tab berpindah ke ${2}, ${3}, dll. ${0} adalah posisi akhir. Tambahkan teks default yang akan dipilih untuk ditimpa dengan ${1:teks placeholder}. Gunakan @@INDENT@@ untuk inden baris bersarang - ini cocok dengan pengaturan inden aktual file saat ini (spasi atau tab), bukan lebar tetap."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Beralih antara obrolan Claude Code dan terminal Claude Code CLI yang tersemat",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Akhiri sesi CLI ini?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ini akan mengakhiri sesi Claude Code CLI yang sedang berjalan dan memulai sesi yang baru. Lanjutkan?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Sesi Claude Code CLI ini masih berjalan di {0} — proyek yang terbuka sekarang adalah {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Beralih ke “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Tetap di “{0}”"
 });

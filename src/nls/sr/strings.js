@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Унесите кратку скраћеницу (нпр. 'clg', 'fn', 'div'). Ово ћете куцати да бисте покренули исечак кода.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Кратак опис шта овај исечак кода ради. Оставите празно ако није потребан опис.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Наведите типове датотека где би овај исечак кода требало да буде доступан (нпр. '.js', '.html', '.css'). Оставите празно да би био доступан за све датотеке.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Стварни кôд који ће бити уметнут. Користите ${1}, ${2}, ${3} итд. за позиције курсора. ${1} је почетна позиција, тастер Tab помера на ${2}, ${3} итд. ${0} је крајња позиција. Додајте подразумевани текст који ће бити означен за преписивање помоћу ${1:текст чувара места}. Користите @@INDENT@@ за увлачење угнежђене линије – оно одговара стварним подешавањима увлачења тренутне датотеке (размаци или табулатори) уместо фиксне ширине.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "пречица за console log (опционо)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Оставите празно за све датотеке, или наведите као .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});` (This should not be translated as it's a code snippet)",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Стварни кôд који ће бити уметнут. Користите ${1}, ${2}, ${3} итд. за позиције курсора. ${1} је почетна позиција, тастер Tab помера на ${2}, ${3} итд. ${0} је крајња позиција. Додајте подразумевани текст који ће бити означен за преписивање помоћу ${1:текст чувара места}. Користите @@INDENT@@ за увлачење угнежђене линије – оно одговара стварним подешавањима увлачења тренутне датотеке (размаци или табулатори) уместо фиксне ширине."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Пребацивање између Claude Code ћаскања и уграђеног Claude Code CLI терминала",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Прекинути ову CLI сесију?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ово ће прекинути покренуту Claude Code CLI сесију и покренути нову. Наставити?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Ова Claude Code CLI сесија је и даље покренута у {0} — отворени пројекат је сада {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Пребаци се на „{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Остани на „{0}”"
 });

@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Wprowadź krótki skrót (np. „clg”, „fn”, „div”). To jest to, co wpiszesz, aby wywołać fragment kodu.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Krótki opis działania tego fragmentu kodu. Pozostaw puste, jeśli opis nie jest potrzebny.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Określ typy plików, w których ten fragment kodu powinien być dostępny (np. „.js”, „.html”, „.css”). Pozostaw puste, aby był dostępny dla wszystkich plików.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Właściwy kod, który zostanie wstawiony. Użyj ${1}, ${2}, ${3} itd. dla pozycji kursora. ${1} to pozycja początkowa, klawisz Tab przenosi do ${2}, ${3} itd. ${0} to pozycja końcowa. Dodaj domyślny tekst, który zostanie zaznaczony do nadpisania, za pomocą ${1:tekst zastępczy}. Użyj @@INDENT@@ dla wcięcia zagnieżdżonej linii – dopasowuje się ono do aktualnych ustawień wcięć pliku (spacje lub tabulatory) zamiast stałej szerokości.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "skrót console.log (opcjonalnie)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Pozostaw puste dla wszystkich plików lub określ np. .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Właściwy kod, który zostanie wstawiony. Użyj ${1}, ${2}, ${3} itd. dla pozycji kursora. ${1} to pozycja początkowa, klawisz Tab przenosi do ${2}, ${3} itd. ${0} to pozycja końcowa. Dodaj domyślny tekst, który zostanie zaznaczony do nadpisania, za pomocą ${1:tekst zastępczy}. Użyj @@INDENT@@ dla wcięcia zagnieżdżonej linii – dopasowuje się ono do aktualnych ustawień wcięć pliku (spacje lub tabulatory) zamiast stałej szerokości."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Przełączaj między czatem Claude Code a wbudowanym terminalem Claude Code CLI",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Zakończyć tę sesję CLI?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Spowoduje to zakończenie bieżącej sesji Claude Code CLI i rozpoczęcie nowej. Kontynuować?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Ta sesja Claude Code CLI jest nadal uruchomiona w {0} — otwarty projekt to teraz {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Przełącz na “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Pozostań na “{0}”"
 });

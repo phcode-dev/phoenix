@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Kısa bir kısaltma girin (örneğin, 'clg', 'fn', 'div'). Bu, snippet'i tetiklemek için yazacağınız şeydir.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Bu snippet'in ne yaptığının kısa bir açıklaması. Açıklama gerekmiyorsa boş bırakın.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Bu snippet'in kullanılabilir olması gereken dosya türlerini belirtin (örneğin, '.js', '.html', '.css'). Tüm dosyalar için kullanılabilir yapmak için boş bırakın.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Metin: Eklenecek olan asıl kod. İmleç konumları için ${1}, ${2}, ${3}, vb. kullanın. ${1} başlangıç konumudur, Tab tuşu ${2}, ${3}, vb. konumlara geçer. ${0} son konumdur. Üzerine yazmak için seçilecek varsayılan metni ${1:yer tutucu metin} ile ekleyin. İç içe geçmiş bir satırın girintisi için @@INDENT@@ kullanın - bu, sabit bir genişlik yerine mevcut dosyanın gerçek girinti ayarlarıyla (boşluklar veya sekmeler) eşleşir.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "Konsol günlüğü kısayolu (isteğe bağlı)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Tüm dosyalar için boş bırakın veya .js, .html gibi belirtin",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Metin: Eklenecek olan asıl kod. İmleç konumları için ${1}, ${2}, ${3}, vb. kullanın. ${1} başlangıç konumudur, Tab tuşu ${2}, ${3}, vb. konumlara geçer. ${0} son konumdur. Üzerine yazmak için seçilecek varsayılan metni ${1:yer tutucu metin} ile ekleyin. İç içe geçmiş bir satırın girintisi için @@INDENT@@ kullanın - bu, sabit bir genişlik yerine mevcut dosyanın gerçek girinti ayarlarıyla (boşluklar veya sekmeler) eşleşir."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Claude Code sohbeti ile gömülü Claude Code CLI terminali arasında geçiş yapın",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Bu CLI oturumu sonlandırılsın mı?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Bu işlem, mevcut Claude Code CLI oturumunu sonlandırıp yeni bir oturum başlatacak. Devam edilsin mi?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Bu Claude Code CLI oturumu hâlâ {0} üzerinde çalışıyor — açık olan proje ise artık {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}” projesine geçin",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}” projesinde kalın"
 });

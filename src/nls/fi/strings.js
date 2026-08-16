@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Anna lyhyt lyhenne (esim. 'clg', 'fn', 'div'). Tätä kirjoittamalla käynnistät koodinpätkän.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Lyhyt kuvaus koodinpätkän toiminnasta. Jätä tyhjäksi, jos kuvausta ei tarvita.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Määritä tiedostotyypit, joissa tätä koodinpätkää voi käyttää (esim. '.js', '.html', '.css'). Jätä tyhjäksi, jos haluat sen olevan käytettävissä kaikissa tiedostoissa.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Varsinainen lisättävä koodi. Käytä ${1}, ${2}, ${3} jne. kohdistimen paikkoina. ${1} on aloituspaikka, sarkain siirtää paikkaan ${2}, ${3} jne. ${0} on lopullinen paikka. Lisää oletusteksti, joka valitaan ylikirjoitettavaksi, muodossa ${1:paikkamerkkiteksti}. Käytä @@INDENT@@ sisäkkäisen rivin sisennykseen - se vastaa tiedoston todellisia sisennysasetuksia (välilyöntejä tai sarkaimia) kiinteän leveyden sijaan.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "konsolilokin lyhenne (valinnainen)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Jätä tyhjäksi kaikille tiedostoille tai määritä esim. .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "console.log(${1});",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Varsinainen lisättävä koodi. Käytä ${1}, ${2}, ${3} jne. kohdistimen paikkoina. ${1} on aloituspaikka, sarkain siirtää paikkaan ${2}, ${3} jne. ${0} on lopullinen paikka. Lisää oletusteksti, joka valitaan ylikirjoitettavaksi, muodossa ${1:paikkamerkkiteksti}. Käytä @@INDENT@@ sisäkkäisen rivin sisennykseen - se vastaa tiedoston todellisia sisennysasetuksia (välilyöntejä tai sarkaimia) kiinteän leveyden sijaan."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Vaihda Claude Code -keskustelun ja upotetun Claude Code CLI -terminaalin välillä",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Lopetetaanko tämä CLI-istunto?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tämä lopettaa käynnissä olevan Claude Code CLI -istunnon ja aloittaa uuden. Jatketaanko?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Tämä Claude Code CLI -istunto on yhä käynnissä projektissa {0} — avoinna oleva projekti on nyt {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Vaihda kohteeseen ”{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Pysy kohteessa ”{0}”"
 });

@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Unesite kratku kraticu (npr. 'clg', 'fn', 'div'). Ovo ćete upisivati za pokretanje isječka koda.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Kratki opis što ovaj isječak koda radi. Ostavite prazno ako opis nije potreban.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Navedite tipove datoteka gdje bi ovaj isječak koda trebao biti dostupan (npr. '.js', '.html', '.css'). Ostavite prazno da bi bio dostupan za sve datoteke.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Stvarni kôd koji će biti umetnut. Koristite ${1}, ${2}, ${3} itd. za pozicije kursora. ${1} je početna pozicija, a tipka Tab pomiče na ${2}, ${3} itd. ${0} je konačna pozicija. Dodajte zadani tekst koji se odabire za prepisivanje pomoću ${1:placeholder text}. Upotrijebite @@INDENT@@ za uvlačenje ugniježđenog retka – to odgovara stvarnim postavkama uvlačenja trenutačne datoteke (razmaci ili tabulatori) umjesto fiksne širine.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "prečac za console.log (opcionalno)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Ostavite prazno za sve datoteke ili navedite kao .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Stvarni kôd koji će biti umetnut. Koristite ${1}, ${2}, ${3} itd. za pozicije kursora. ${1} je početna pozicija, a tipka Tab pomiče na ${2}, ${3} itd. ${0} je konačna pozicija. Dodajte zadani tekst koji se odabire za prepisivanje pomoću ${1:placeholder text}. Upotrijebite @@INDENT@@ za uvlačenje ugniježđenog retka – to odgovara stvarnim postavkama uvlačenja trenutačne datoteke (razmaci ili tabulatori) umjesto fiksne širine."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Prebacujte se između Claude Code chata i ugrađenog Claude Code CLI terminala",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Prekinuti ovu CLI sesiju?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ovo će prekinuti pokrenutu Claude Code CLI sesiju i pokrenuti novu. Nastaviti?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Ova Claude Code CLI sesija još uvijek je pokrenuta u {0} — otvoreni projekt sada je {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Prebaci na „{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Ostani na „{0}”"
 });

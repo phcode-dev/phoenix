@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Ievadiet īsu saīsinājumu (piemēram, 'clg', 'fn', 'div'). To jūs rakstīsiet, lai aktivizētu fragmentu.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Īss apraksts par to, ko šis fragments dara. Atstājiet tukšu, ja apraksts nav nepieciešams.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Norādiet failu tipus, kuros šim fragmentam jābūt pieejamam (piemēram, '.js', '.html', '.css'). Atstājiet tukšu, lai padarītu to pieejamu visiem failiem.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Faktiskais kods, kas tiks ievietots. Izmantojiet ${1}, ${2}, ${3} utt. kursora pozīcijām. ${1} ir sākuma pozīcija, taustiņš Tab pārvieto uz ${2}, ${3} utt. ${0} ir beigu pozīcija. Pievienojiet noklusējuma tekstu, kas tiek iezīmēts pārrakstīšanai, ar ${1:placeholder text}. Izmantojiet @@INDENT@@ ligzdotas rindas atkāpei — tā atbilst pašreizējā faila faktiskajiem atkāpes iestatījumiem (atstarpēm vai tabulācijām), nevis fiksētam platumam.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "konsoles žurnāla saīsne (pēc izvēles)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Atstājiet tukšu visiem failiem vai norādiet, piemēram, .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Faktiskais kods, kas tiks ievietots. Izmantojiet ${1}, ${2}, ${3} utt. kursora pozīcijām. ${1} ir sākuma pozīcija, taustiņš Tab pārvieto uz ${2}, ${3} utt. ${0} ir beigu pozīcija. Pievienojiet noklusējuma tekstu, kas tiek iezīmēts pārrakstīšanai, ar ${1:placeholder text}. Izmantojiet @@INDENT@@ ligzdotas rindas atkāpei — tā atbilst pašreizējā faila faktiskajiem atkāpes iestatījumiem (atstarpēm vai tabulācijām), nevis fiksētam platumam."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Pārslēgties starp Claude Code tērzēšanu un iegultu Claude Code CLI termināli",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Pārtraukt šo CLI sesiju?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Šī darbība pārtrauks aktīvo Claude Code CLI sesiju un sāks jaunu. Turpināt?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Šī Claude Code CLI sesija joprojām darbojas projektā {0} — atvērtais projekts tagad ir {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Pārslēgties uz “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Palikt projektā “{0}”"
 });

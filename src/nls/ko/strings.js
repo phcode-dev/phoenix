@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "짧은 약어를 입력하세요 (예: 'clg', 'fn', 'div'). 스니펫을 실행할 때 입력할 내용입니다.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "이 스니펫의 기능에 대한 간략한 설명입니다. 설명이 필요 없으면 비워 두세요.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "이 스니펫을 사용할 수 있는 파일 형식을 지정하세요 (예: '.js', '.html', '.css'). 모든 파일에 사용할 수 있도록 하려면 비워 두세요.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "삽입될 실제 코드입니다. 커서 위치에는 ${1}, ${2}, ${3} 등을 사용합니다. ${1}은 초기 위치이며, 탭 키로 ${2}, ${3} 등으로 이동합니다. ${0}은 최종 위치입니다. ${1:placeholder text}를 사용하여 덮어쓸 기본 텍스트를 추가합니다. 중첩된 줄의 들여쓰기에는 @@INDENT@@를 사용합니다. 이는 고정 너비 대신 현재 파일의 실제 들여쓰기 설정(공백 또는 탭)과 일치합니다.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "콘솔 로그 바로 가기 (선택 사항)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "모든 파일에 대해 비워 두거나 .js, .html과 같이 지정하세요",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});` (변경 없음 - 자바스크립트 코드이므로 번역하지 않음)",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "삽입될 실제 코드입니다. 커서 위치에는 ${1}, ${2}, ${3} 등을 사용합니다. ${1}은 초기 위치이며, 탭 키로 ${2}, ${3} 등으로 이동합니다. ${0}은 최종 위치입니다. ${1:placeholder text}를 사용하여 덮어쓸 기본 텍스트를 추가합니다. 중첩된 줄의 들여쓰기에는 @@INDENT@@를 사용합니다. 이는 고정 너비 대신 현재 파일의 실제 들여쓰기 설정(공백 또는 탭)과 일치합니다."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Claude Code 채팅과 내장된 Claude Code CLI 터미널 간 전환",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "이 CLI 세션을 종료하시겠습니까?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "실행 중인 Claude Code CLI 세션을 종료하고 새 세션을 시작합니다. 계속하시겠습니까?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "이 Claude Code CLI 세션은 {0}에서 계속 실행 중입니다 — 현재 열려 있는 프로젝트는 {1}입니다.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}”(으)로 전환",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}”에 머무르기"
 });

@@ -2214,6 +2214,7 @@ define({
   "CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP": "Zadajte krátku skratku (napr. 'clg', 'fn', 'div'). Túto skratku budete písať pre spustenie úryvku kódu.",
   "CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP": "Stručný popis toho, čo tento úryvok kódu robí. Ak nie je potrebný žiadny popis, nechajte prázdne.",
   "CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP": "Zadajte typy súborov, v ktorých má byť tento úryvok kódu dostupný (napr. '.js', '.html', '.css'). Ak ho chcete sprístupniť pre všetky súbory, nechajte prázdne.",
+  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Samotný kód, ktorý bude vložený. Použite ${1}, ${2}, ${3}, atď. pre pozície kurzora. ${1} je počiatočná pozícia, kláves Tab presunie kurzor na ${2}, ${3}, atď. ${0} je konečná pozícia. Pridajte predvolený text, ktorý bude označený na prepísanie, pomocou ${1:placeholder text}. Použite @@INDENT@@ pre odsadenie vnoreného riadka – zodpovedá aktuálnym nastaveniam odsadenia súboru (medzery alebo tabulátory) namiesto pevnej šírky.",
   "CUSTOM_SNIPPETS_DESC_PLACEHOLDER": "skratka pre console.log (voliteľné)",
   "CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER": "Nechajte prázdne pre všetky súbory alebo zadajte napr. .js, .html",
   "CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER": "`console.log(${1});`",
@@ -2668,5 +2669,12 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP": "Samotný kód, ktorý bude vložený. Použite ${1}, ${2}, ${3}, atď. pre pozície kurzora. ${1} je počiatočná pozícia, kláves Tab presunie kurzor na ${2}, ${3}, atď. ${0} je konečná pozícia. Pridajte predvolený text, ktorý bude označený na prepísanie, pomocou ${1:placeholder text}. Použite @@INDENT@@ pre odsadenie vnoreného riadka – zodpovedá aktuálnym nastaveniam odsadenia súboru (medzery alebo tabulátory) namiesto pevnej šírky."
+  "AI_CHAT_MODE_CHAT": "Claude Code",
+  "AI_CHAT_MODE_CLI": "Claude Code CLI",
+  "AI_CHAT_MODE_SELECT_TITLE": "Prepínajte medzi chatom Claude Code a vstavaným terminálom Claude Code CLI",
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Ukončiť túto reláciu CLI?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Týmto sa ukončí prebiehajúca relácia Claude Code CLI a spustí sa nová. Pokračovať?",
+  "AI_CHAT_CLI_STALE_PROJECT_MSG": "Táto relácia Claude Code CLI stále beží v {0} — otvorený projekt je teraz {1}.",
+  "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Prepnúť na “{0}”",
+  "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Zostať na “{0}”"
 });
