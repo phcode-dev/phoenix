@@ -41,11 +41,19 @@ define(function (require, exports, module) {
 
 
     /**
-     * Read terminal theme colors from CSS variables
+     * Read terminal theme colors from CSS variables.
+     * @param {Element} [baseEl] - Element to resolve --terminal-* custom
+     *   properties from (CSS custom properties inherit down the DOM tree,
+     *   so this instance picks up whichever ancestor defines them). Pass
+     *   the instance's own container so each embedding context controls
+     *   its own theme — e.g. the bottom Terminal panel's light/dark-aware
+     *   .terminal-panel-container vs. the always-dark AI sidebar's fixed
+     *   palette (see .ai-chat-body-cli in Extn-AIChatPanel.less). Falls
+     *   back to the old global lookup when omitted.
      * @returns {Object} xterm.js theme object
      */
-    function _getThemeFromCSS() {
-        const panelEl = document.querySelector('.terminal-panel-container') || document.documentElement;
+    function _getThemeFromCSS(baseEl) {
+        const panelEl = baseEl || document.querySelector('.terminal-panel-container') || document.documentElement;
         const style = getComputedStyle(panelEl);
         function v(name) {
             return style.getPropertyValue(name).trim() || undefined;
@@ -122,7 +130,7 @@ define(function (require, exports, module) {
 
         // Create xterm.js instance
         this.terminal = new Terminal({
-            theme: _getThemeFromCSS(),
+            theme: _getThemeFromCSS(this.$container[0]),
             fontFamily: "'Menlo', 'DejaVu Sans Mono', 'Consolas', 'Lucida Console', monospace",
             fontSize: 13,
             lineHeight: 1.2,
@@ -189,8 +197,11 @@ define(function (require, exports, module) {
 
     /**
      * Spawn the PTY process on the Node side
+     * @param {Object} [env] - Extra environment variables to merge into the
+     *   PTY's process env (e.g. custom API endpoint overrides). Optional —
+     *   existing callers that omit it are unaffected.
      */
-    TerminalInstance.prototype.spawn = async function () {
+    TerminalInstance.prototype.spawn = async function (env) {
         const dims = this.fitAddon.proposeDimensions();
         try {
             const result = await this.nodeConnector.execPeer("createTerminal", {
@@ -199,7 +210,8 @@ define(function (require, exports, module) {
                 args: this.shellProfile.args || [],
                 cwd: this.cwd,
                 cols: dims ? dims.cols : 80,
-                rows: dims ? dims.rows : 24
+                rows: dims ? dims.rows : 24,
+                env: env || undefined
             });
             this.pid = result.pid;
             this.isAlive = true;
@@ -406,7 +418,7 @@ define(function (require, exports, module) {
      */
     TerminalInstance.prototype.updateTheme = function () {
         if (this.terminal) {
-            this.terminal.options.theme = _getThemeFromCSS();
+            this.terminal.options.theme = _getThemeFromCSS(this.$container ? this.$container[0] : null);
         }
     };
 

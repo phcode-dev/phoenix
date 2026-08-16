@@ -2555,6 +2555,8 @@ define({
 
     // AI CHAT PANEL
     "AI_CHAT_TITLE": "Claude Code",
+    "AI_CHAT_MODE_CHAT": "Claude Code",
+    "AI_CHAT_MODE_CLI": "Claude Code CLI",
     "AI_CHAT_SURPRISE_ME_USER_MSG": "Surprise me!",
     "AI_CHAT_SURPRISE_ME_LP_HEADING_1": "Setting the stage…",
     "AI_CHAT_SURPRISE_ME_LP_HEADING_2": "Warming the canvas…",
@@ -2713,6 +2715,7 @@ define({
     "AI_CHAT_MODEL_DESC_SONNET": "Balanced speed and capability for everyday coding",
     "AI_CHAT_MODEL_DESC_HAIKU": "Fastest model for quick, simple tasks",
     "AI_CHAT_MODEL_SELECT_TITLE": "Choose the AI model for this chat",
+    "AI_CHAT_MODE_SELECT_TITLE": "Switch between the Claude Code chat and an embedded Claude Code CLI terminal",
     "AI_CHAT_MODEL_SWITCHED_NOTICE": "Switched to {0}. Applies from your next message; the first response may take a moment longer while the cache rebuilds.",
     "AI_CHAT_INPUT_HINT": "Press {0} to send · {1} for new line",
     "AI_CHAT_BASH_CONFIRM_TITLE": "Allow command?",
@@ -2772,6 +2775,11 @@ define({
     "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI is currently working on a task. Starting a new conversation will stop it. Continue?",
     "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI is working",
     "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI is currently working on a task. Switching to a previous conversation will stop it. Continue?",
+    "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "End this CLI session?",
+    "AI_CHAT_CLI_NEW_CONFIRM_MSG": "This will end the running Claude Code CLI session and start a fresh one. Continue?",
+    "AI_CHAT_CLI_STALE_PROJECT_MSG": "This CLI session is still running in {0} — the open project is now {1}.",
+    "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Switch to “{0}”",
+    "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Stay on “{0}”",
     "AI_CHAT_SETTINGS_TITLE": "Claude Code Settings",
     "AI_SETTINGS_API_KEY": "API Key",
     "AI_SETTINGS_BASE_URL": "Base URL",
