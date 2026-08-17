@@ -110,6 +110,7 @@ define(function (require, exports, module) {
     require("spec/QuickViewManager-test");
     require("spec/SelectionViewManager-test");
     require("spec/BeautificationManager-test");
+    require("spec/Beautify-integ-test");
     require("spec/Template-for-integ-test");
     require("spec/LiveDevelopmentMultiBrowser-test");
     require("spec/LiveDevelopmentCustomServer-test");
