@@ -323,6 +323,10 @@ define(function (require, exports, module) {
         if(!_isBeautifyOnSaveEnabled() || !editor || editor.document.file.fullPath !== doc.file.fullPath){
             return;
         }
+        if(!_getEnabledProviders(doc.file.fullPath).length){
+            // no beautify provider registered for this file type, silently skip instead of showing an error.
+            return;
+        }
         editor.clearSelection();
         _beautifyCommand();
     }

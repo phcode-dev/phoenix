@@ -74,6 +74,12 @@ define(function (require, exports, module) {
 
         afterEach(async function () {
             SpecRunnerUtils.destroyMockEditor(testDocument);
+            // safety net: a test that fails/times out partway through can leave "beautify on save"
+            // toggled on, which would otherwise leak into and break unrelated tests/suites.
+            let beautifyOnSaveCmd = CommandManager.get(Commands.EDIT_BEAUTIFY_CODE_ON_SAVE);
+            if(beautifyOnSaveCmd.getChecked()){
+                await awaitsForDone(CommandManager.execute(Commands.EDIT_BEAUTIFY_CODE_ON_SAVE), "beautify on save reset");
+            }
         });
 
         it("should register and unregister beautifier for all languages and beautifyText", async function () {
