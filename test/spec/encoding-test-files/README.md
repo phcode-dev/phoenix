@@ -19,3 +19,12 @@ Only UTF8 and UTF16 is able to do all encodings.
 
 
 TODO: Add BOM test files
+
+## meta-charset-windows1252.html
+
+A separate fixture, unrelated to `generate.py` above. It's a legacy-style HTML file that
+self-declares `charset=windows-1252` via a `<meta http-equiv="Content-Type">` tag and is
+genuinely saved in that charset, used to test that Phoenix auto-detects and honors the
+declaration instead of always defaulting to UTF-8 (see `src/document/EncodingDetector.js` and
+`file-encoding-integ-test.js`). It's a static checked-in fixture - edit it directly with a
+windows-1252-aware tool (or `iconv -f UTF-8 -t WINDOWS-1252`) if it ever needs to change.
