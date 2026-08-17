@@ -271,5 +271,33 @@ define(function (require, exports, module) {
             });
 
         });
+
+        describe("isKnownTextEncoding", function () {
+
+            it("should reject falsy values", function () {
+                expect(EncodingDetector.isKnownTextEncoding(null)).toBe(false);
+                expect(EncodingDetector.isKnownTextEncoding(undefined)).toBe(false);
+                expect(EncodingDetector.isKnownTextEncoding("")).toBe(false);
+            });
+
+            it("should reject the byte-array sentinel used for non-text reads", function () {
+                // Regression test: other code paths (download-file, attach-image-to-chat, etc)
+                // read a File instance with {encoding: fs.BYTE_ARRAY_ENCODING} and no
+                // doNotCache, which - per File.read()'s own caching - leaves that sentinel value
+                // cached in file._encoding even though the file was never opened as text. Note
+                // fs.BYTE_ARRAY_ENCODING is deliberately included in fs.SUPPORTED_ENCODINGS (so
+                // reads can request it), which is exactly why this needs its own explicit check
+                // rather than relying on SUPPORTED_ENCODINGS membership.
+                expect(EncodingDetector.isKnownTextEncoding(window.fs.BYTE_ARRAY_ENCODING)).toBe(false);
+                expect(window.fs.SUPPORTED_ENCODINGS.indexOf(window.fs.BYTE_ARRAY_ENCODING)).not.toBe(-1);
+            });
+
+            it("should accept real text codec names", function () {
+                expect(EncodingDetector.isKnownTextEncoding("utf8")).toBe(true);
+                expect(EncodingDetector.isKnownTextEncoding("windows1252")).toBe(true);
+                expect(EncodingDetector.isKnownTextEncoding("utf16le")).toBe(true);
+            });
+
+        });
     });
 });

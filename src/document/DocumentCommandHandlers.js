@@ -522,22 +522,50 @@ define(function (require, exports, module) {
                     });
             }
 
+            // File.read() caches _contents/_stat keyed together with whatever _encoding was in
+            // effect at the time of that read (see File.js). Bare-reassigning file._encoding
+            // without invalidating that cache would let the imminent real open - which reads with
+            // this same newly-assigned encoding - incorrectly cache-hit and hand back stale
+            // content cached under the OLD encoding (worse, raw bytes, if that prior read used a
+            // byte-array encoding, eg via the "Download" command or an image-attach feature)
+            // instead of doing a real re-read. Always route encoding changes through here so that
+            // can never happen.
+            function _setFileEncoding(newEncoding) {
+                if (file._encoding !== newEncoding) {
+                    file._clearCachedData();
+                    file._encoding = newEncoding;
+                }
+            }
+
             if (options && options.encoding) {
-                file._encoding = options.encoding;
+                _setFileEncoding(options.encoding);
                 _openFileInPane();
             } else {
                 const encoding = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT);
                 if (encoding && encoding[fullPath]) {
-                    file._encoding = encoding[fullPath];
+                    _setFileEncoding(encoding[fullPath]);
+                    _openFileInPane();
+                } else if (EncodingDetector.isKnownTextEncoding(file._encoding)) {
+                    // File instances are cached/reused per path for the session (FileSystem._index),
+                    // so a known-text _encoding here means we've already read (and so already
+                    // detected or defaulted) this exact file once before as text - eg it's being
+                    // reopened after a close. Re-running detection would mean re-reading the whole
+                    // file from disk a second time for no new information, so just reuse what we
+                    // already know. (isKnownTextEncoding - rather than a plain truthiness check -
+                    // matters here: other code paths read this same File instance for non-text
+                    // reasons, eg downloading it or attaching it as a chat image, and can leave a
+                    // non-text sentinel encoding cached on it even though it was never opened as a
+                    // document - we must not mistake that for "already detected".)
                     _openFileInPane();
                 } else {
-                    // No explicit or previously chosen encoding for this file - see if it self-declares
-                    // a non-UTF-8 charset (eg a legacy HTML file with <meta charset="windows-1252">) so we
-                    // don't silently and irreversibly corrupt it by force-decoding as UTF-8. See EncodingDetector.
+                    // No explicit, previously chosen, or already-known encoding for this file - see if
+                    // it self-declares a non-UTF-8 charset (eg a legacy HTML file with
+                    // <meta charset="windows-1252">) so we don't silently and irreversibly corrupt it
+                    // by force-decoding as UTF-8. See EncodingDetector.
                     EncodingDetector.detectFileEncoding(file).then(function (detectedEncoding) {
-                        if (detectedEncoding) {
-                            file._encoding = detectedEncoding;
-                        }
+                        // Always land on a definite, known-text value - never leave file._encoding as
+                        // whatever a prior non-text read (see above) may have left it as.
+                        _setFileEncoding(detectedEncoding || "utf8");
                         _openFileInPane();
                     });
                 }
