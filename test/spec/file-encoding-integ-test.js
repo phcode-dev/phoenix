@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         DocumentManager,
         PreferencesManager,
         CommandManager,
+        FileSystem,
         testWindow,
         brackets;
 
@@ -50,6 +51,7 @@ define(function (require, exports, module) {
             DocumentManager    = brackets.test.DocumentManager;
             PreferencesManager = brackets.test.PreferencesManager;
             CommandManager     = brackets.test.CommandManager;
+            FileSystem         = brackets.test.FileSystem;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
@@ -60,6 +62,7 @@ define(function (require, exports, module) {
             DocumentManager    = null;
             PreferencesManager = null;
             CommandManager     = null;
+            FileSystem         = null;
             testWindow = null;
             brackets = null;
             // comment out below line if you want to debug the test window post running tests
@@ -197,6 +200,50 @@ define(function (require, exports, module) {
                 const text = EditorManager.getActiveEditor().document.getText();
                 return text.indexOf("café supermarché") !== -1;
             }, "windows-1252 html auto-detected", 5000);
+
+            const text = EditorManager.getActiveEditor().document.getText();
+            expect(text.indexOf("�")).toBe(-1);
+            expect(EditorManager.getActiveEditor().document.file._encoding).toBe("windows1252");
+        });
+
+        it("Should still auto-detect correctly even if the file was previously read as raw bytes (eg via Download)", async function () {
+            // Regression test: several unrelated features (the project tree's "Download" command,
+            // attaching a file as a chat image, etc) read a File instance with
+            // {encoding: fs.BYTE_ARRAY_ENCODING} for their own non-text purposes, and - since they
+            // don't pass doNotCache - that read leaves the non-text "byte_array" sentinel cached in
+            // file._encoding as a side effect of File.read()'s own caching (see File.js), even
+            // though the file was never opened as a document. If a file gets touched that way
+            // *before* it's ever opened, detection/open logic must not mistake that sentinel for an
+            // already-known real encoding - see EncodingDetector.isKnownTextEncoding and its use in
+            // DocumentCommandHandlers.
+            const path = testPath + "/meta-charset-windows1252.html";
+
+            const encodingPrefs = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT) || {};
+            delete encodingPrefs[path];
+            PreferencesManager.setViewState("encoding", encodingPrefs, PreferencesManager.STATE_PROJECT_CONTEXT);
+
+            const openDoc = DocumentManager.getOpenDocumentForPath(path);
+            if (openDoc) {
+                await awaitsForDone(CommandManager.execute("file.close", {file: openDoc.file, _forceClose: true}));
+            }
+
+            // simulate the "Download" command's raw-byte read, BEFORE this file is ever opened as
+            // a document - this is what poisons file._encoding with the non-text sentinel.
+            const file = FileSystem.getFileForPath(path);
+            await new Promise(function (resolve, reject) {
+                file.read({encoding: testWindow.fs.BYTE_ARRAY_ENCODING}, function (err) {
+                    err ? reject(err) : resolve();
+                });
+            });
+            expect(file._encoding).toBe(testWindow.fs.BYTE_ARRAY_ENCODING);
+
+            await awaitsForDone(
+                FileViewController.openAndSelectDocument(path, FileViewController.PROJECT_MANAGER));
+
+            await awaitsFor(function () {
+                const text = EditorManager.getActiveEditor().document.getText();
+                return text.indexOf("café supermarché") !== -1;
+            }, "windows-1252 html auto-detected despite prior raw-byte read", 5000);
 
             const text = EditorManager.getActiveEditor().document.getText();
             expect(text.indexOf("�")).toBe(-1);

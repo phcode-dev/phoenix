@@ -244,7 +244,25 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    /**
+     * True if `encoding` is a real text codec name, as opposed to the non-text sentinel value
+     * (`fs.BYTE_ARRAY_ENCODING`, i.e. "byte_array" - notably still present in
+     * `fs.SUPPORTED_ENCODINGS`, so that list alone can't be used to tell them apart) that plenty of
+     * *other* call sites across the codebase pass to `File.read()` for legitimate non-text reasons
+     * (downloading a file, attaching an image, exporting a zip, etc) - and, unless they also pass
+     * `doNotCache: true`, leave cached in `file._encoding` as a side effect of File.read()'s
+     * caching (see File.js). A File instance touched that way before ever being opened as a
+     * document would otherwise look "already known" to a naive truthiness check, silently
+     * defeating both detection and the re-open-skip optimization in DocumentCommandHandlers.
+     * @param {?string} encoding
+     * @return {boolean}
+     */
+    function isKnownTextEncoding(encoding) {
+        return !!encoding && encoding !== window.fs.BYTE_ARRAY_ENCODING;
+    }
+
     exports.SNIFFABLE_EXTENSIONS      = SNIFFABLE_EXTENSIONS;
     exports.detectEncodingFromBytes   = detectEncodingFromBytes;
     exports.detectFileEncoding        = detectFileEncoding;
+    exports.isKnownTextEncoding       = isKnownTextEncoding;
 });
