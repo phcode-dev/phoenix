@@ -41,6 +41,7 @@ define(function (require, exports, module) {
         FileUtils           = require("file/FileUtils"),
         FileViewController  = require("project/FileViewController"),
         InMemoryFile        = require("document/InMemoryFile"),
+        EncodingDetector    = require("document/EncodingDetector"),
         StringUtils         = require("utils/StringUtils"),
         Async               = require("utils/Async"),
         Metrics             = require("utils/Metrics"),
@@ -509,22 +510,38 @@ define(function (require, exports, module) {
             });
 
             var file = FileSystem.getFileForPath(fullPath);
+
+            function _openFileInPane() {
+                MainViewManager._open(paneId, file, options)
+                    .done(function () {
+                        result.resolve(file);
+                    })
+                    .fail(function (fileError) {
+                        _showErrorAndCleanUp(fileError, fullPath);
+                        result.reject();
+                    });
+            }
+
             if (options && options.encoding) {
                 file._encoding = options.encoding;
+                _openFileInPane();
             } else {
                 const encoding = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT);
                 if (encoding && encoding[fullPath]) {
                     file._encoding = encoding[fullPath];
+                    _openFileInPane();
+                } else {
+                    // No explicit or previously chosen encoding for this file - see if it self-declares
+                    // a non-UTF-8 charset (eg a legacy HTML file with <meta charset="windows-1252">) so we
+                    // don't silently and irreversibly corrupt it by force-decoding as UTF-8. See EncodingDetector.
+                    EncodingDetector.detectFileEncoding(file).then(function (detectedEncoding) {
+                        if (detectedEncoding) {
+                            file._encoding = detectedEncoding;
+                        }
+                        _openFileInPane();
+                    });
                 }
             }
-            MainViewManager._open(paneId, file, options)
-                .done(function () {
-                    result.resolve(file);
-                })
-                .fail(function (fileError) {
-                    _showErrorAndCleanUp(fileError, fullPath);
-                    result.reject();
-                });
         }
 
         return result.promise();

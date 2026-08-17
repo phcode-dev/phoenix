@@ -37,6 +37,7 @@ define(function (require, exports, module) {
     require("spec/EditorCommandHandlers-test");
     require("spec/EditorCommandHandlers-integ-test");
     require("spec/EditorManager-test");
+    require("spec/EncodingDetector-test");
     require("spec/EventDispatcher-test");
     require("spec/EventManager-test");
     require("spec/ExtensionInterface-test");
