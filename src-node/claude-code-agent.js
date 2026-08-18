@@ -103,11 +103,14 @@ let _planApproved = false;
 let _queuedClarification = null;
 
 // Module-level "runtime" permission mode that hooks read at decision time.
-// Updated on every sendPrompt and via the setPermissionMode peer when the
-// user cycles the panel's permission bar mid-stream — without this, the
-// Bash hook would close over the value at query start and continue
-// prompting for confirmation even after the user has flipped to Full Auto.
-let _runtimePermissionMode = "acceptEdits";
+// One of "plan" | "acceptEdits" | "auto" (SDK classifier-approved) |
+// "bypassPermissions" (Allow Everything). Updated on every sendPrompt and
+// via the setPermissionMode peer when the user cycles the panel's
+// permission bar mid-stream — without this, the Bash hook would close over
+// the value at query start and continue prompting for confirmation even
+// after the user has flipped to Allow Everything. Defaults to "auto" to
+// match the browser's default (see AIChatPanel.js's _permissionMode).
+let _runtimePermissionMode = "auto";
 
 const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
 
@@ -661,7 +664,7 @@ exports.answerPlanModeWriteConfirm = async function (params) {
  * Apply a mid-stream permission-mode change so hooks running for the rest
  * of the turn use the new value. Called from the browser when the user
  * cycles the permission bar (so e.g. Bash stops prompting immediately
- * after switching from Edit Mode to Full Auto). The next sendPrompt also
+ * after switching from Edit Mode to Allow Everything). The next sendPrompt also
  * passes permissionMode in params, so this peer is only strictly required
  * during streaming — but calling it on every cycle keeps the agent's
  * tracker authoritative.
@@ -758,7 +761,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // Sync the runtime mutable that hooks read for permission decisions —
     // setPermissionMode (peer) updates this same variable when the user
     // cycles modes mid-stream.
-    _runtimePermissionMode = permissionMode || "acceptEdits";
+    _runtimePermissionMode = permissionMode || "auto";
     let editCount = 0;
     let toolCounter = 0;
     // SDK tool_use id (e.g. "toolu_01...") → our sequential toolCounter so a
@@ -901,7 +904,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             }
         },
         mcpServers: { "phoenix-editor": editorMcpServer },
-        permissionMode: permissionMode || "acceptEdits",
+        permissionMode: permissionMode || "auto",
         appendSystemPrompt:
             "When modifying an existing file, always prefer the Edit tool " +
             "(find-and-replace) instead of the Write tool. The Write tool should ONLY be used " +
@@ -1288,11 +1291,15 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         async (input) => {
                             // Read from the runtime mutable so mid-stream
                             // permission-mode flips (e.g. user switches Edit
-                            // Mode → Full Auto while bash is in flight) take
-                            // effect on the NEXT bash call without waiting
-                            // for the next prompt.
+                            // Mode → Allow Everything while bash is in flight)
+                            // take effect on the NEXT bash call without
+                            // waiting for the next prompt.
                             if (_runtimePermissionMode !== "acceptEdits") {
-                                // Plan mode: SDK handles. Full Auto: allow freely.
+                                // Plan mode: SDK handles. Auto: SDK's own
+                                // classifier decides. Allow Everything: allow
+                                // freely. Either way, Phoenix's own
+                                // confirm-dialog/safe-bash-allowlist below is
+                                // only for Edit Mode's manual approval flow.
                                 return {};
                             }
                             // Edit Mode: ask user confirmation before running bash
