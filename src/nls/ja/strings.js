@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "変更を行う前に、AIが実行計画を提案します (クリックして切り替え)",
   "AI_CHAT_MODE_INFO_EDIT": "AIはファイルを編集できます。シェルコマンドの実行には承認が必要です (クリックして切り替え)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AIは承認なしで、ファイルの編集とコマンドの実行ができます (クリックして切り替え)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[または シフト＋タブ]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Codeからサインアウトしているか、ログインの有効期限が切れています。",
   "AI_CHAT_AUTH_ERROR_BTN": "ターミナルでClaudeにログイン",
   "AI_CHAT_AUTH_ERROR_HINT": "開いたターミナルで /login と入力後、再度メッセージを送信してください。",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "現在、AIがタスクを実行中です。以前の会話に切り替えると、実行中のタスクは停止します。続行しますか？",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "このCLIセッションを終了しますか？",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "実行中のClaude Code CLIセッションを終了し、新しいセッションを開始します。続行しますか？",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Proで利用可能",
+  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AIパネル内でクロードコードを実行するのはProの機能です。これにより、クロードはエディターやライブプレビューといったPhoenixの統合機能にアクセスできるようになります。Phoenix AIの統合機能がなくても、ターミナルからクロードコードCLIを無料で引き続き実行できます。",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "ターミナルで開く",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Proにアップグレード",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "このClaude Code CLIセッションは{0}でまだ実行中ですが、現在開いているプロジェクトは{1}です。",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "「{0}」に切り替える",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "「{0}」のままにする",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Proで利用可能",
-  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AIパネル内でクロードコードを実行するのはProの機能です。これにより、クロードはエディターやライブプレビューといったPhoenixの統合機能にアクセスできるようになります。Phoenix AIの統合機能がなくても、ターミナルからクロードコードCLIを無料で引き続き実行できます。",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "ターミナルで開く",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Proにアップグレード"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "ＡＩが承認なしに実行できる範囲を選択［または Shift+Tab］"
 });

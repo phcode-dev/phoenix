@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "AI vil foreslå en plan, før den laver ændringer (Klik for at skifte)",
   "AI_CHAT_MODE_INFO_EDIT": "AI kan redigere filer. Shell-kommandoer kræver godkendelse (Klik for at skifte)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigere filer og køre kommandoer uden godkendelse (Klik for at skifte)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[eller Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code er logget ud, eller dit login er udløbet.",
   "AI_CHAT_AUTH_ERROR_BTN": "Log ind på Claude i Terminal",
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i den terminal, der åbner, og send derefter din besked igen.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI arbejder i øjeblikket på en opgave. Skift til en tidligere samtale vil stoppe den. Fortsæt?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Afslut denne CLI-session?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dette vil afslutte den kørende Claude Code CLI-session og starte en ny. Fortsæt?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Tilgængelig i Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "At køre Claude Code i Phoenix AI-panelet er en Pro-funktion. Det giver Claude adgang til Phoenix-integrationer som din editor og Live Preview. Du kan stadig køre Claude Code CLI gratis fra terminalen, uden Phoenix AI-integrationerne.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Åbn i terminalen",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Opgrader til Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Denne Claude Code CLI-session kører stadig i {0} — det åbne projekt er nu {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Skift til “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Bliv i “{0}”",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Tilgængelig i Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "At køre Claude Code i Phoenix AI-panelet er en Pro-funktion. Det giver Claude adgang til Phoenix-integrationer som din editor og Live Preview. Du kan stadig køre Claude Code CLI gratis fra terminalen, uden Phoenix AI-integrationerne.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Åbn i terminalen",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Opgrader til Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Vælg, hvor meget AI'en kan gøre uden godkendelse [eller Shift+Tab]"
 });

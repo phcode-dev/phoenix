@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "هوش مصنوعی قبل از اعمال تغییرات، یک برنامه پیشنهاد می‌کند (برای تغییر کلیک کنید)",
   "AI_CHAT_MODE_INFO_EDIT": "هوش مصنوعی می‌تواند فایل‌ها را ویرایش کند. دستورات شل نیاز به تأیید دارند (برای تغییر کلیک کنید)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "هوش مصنوعی می‌تواند بدون تأیید، فایل‌ها را ویرایش و دستورات را اجرا کند (برای تغییر کلیک کنید)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[یا Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code از سیستم خارج شده است یا اعتبار ورود شما منقضی شده است.",
   "AI_CHAT_AUTH_ERROR_BTN": "ورود به Claude در ترمینال",
   "AI_CHAT_AUTH_ERROR_HINT": "در ترمینالی که باز می‌شود /login را تایپ کنید، سپس پیام خود را دوباره ارسال کنید.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "هوش مصنوعی در حال انجام یک کار است. رفتن به یک گفتگوی قبلی، کار فعلی را متوقف می‌کند. آیا ادامه می‌دهید؟",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "این جلسهٔ CLI خاتمه یابد؟",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "با این کار، جلسهٔ فعلی Claude Code CLI خاتمه یافته و یک جلسهٔ جدید آغاز می‌شود. ادامه می‌دهید؟",
+  "AI_CHAT_CLI_UPSELL_TITLE": "در Phoenix Pro موجود است",
+  "AI_CHAT_CLI_UPSELL_MSG": "اجرای Claude Code در پنل هوش مصنوعی Phoenix یک قابلیت Pro است. این قابلیت به Claude امکان دسترسی به یکپارچه‌سازی‌های Phoenix مانند ویرایشگر و پیش‌نمایش زنده شما را می‌دهد. شما همچنان می‌توانید Claude Code CLI را به صورت رایگان از ترمینال، بدون یکپارچه‌سازی‌های هوش مصنوعی Phoenix، اجرا کنید.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "باز کردن در ترمینال",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "ارتقا به Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "جلسهٔ Claude Code CLI هنوز در {0} در حال اجرا است — پروژهٔ فعلی شما اکنون {1} است.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "جابجایی به «{0}»",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "ماندن در «{0}»",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "AI_CHAT_CLI_UPSELL_TITLE": "در Phoenix Pro موجود است",
-  "AI_CHAT_CLI_UPSELL_MSG": "اجرای Claude Code در پنل هوش مصنوعی Phoenix یک قابلیت Pro است. این قابلیت به Claude امکان دسترسی به یکپارچه‌سازی‌های Phoenix مانند ویرایشگر و پیش‌نمایش زنده شما را می‌دهد. شما همچنان می‌توانید Claude Code CLI را به صورت رایگان از ترمینال، بدون یکپارچه‌سازی‌های هوش مصنوعی Phoenix، اجرا کنید.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "باز کردن در ترمینال",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "ارتقا به Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "میزان کار هوش مصنوعی بدون تأیید را انتخاب کنید [یا Shift+Tab]"
 });

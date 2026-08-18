@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "MI piedāvās plānu pirms izmaiņu veikšanas (Noklikšķiniet, lai pārslēgtu)",
   "AI_CHAT_MODE_INFO_EDIT": "MI var rediģēt failus. Shell komandām nepieciešams apstiprinājums (Noklikšķiniet, lai pārslēgtu)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "MI var rediģēt failus un izpildīt komandas bez apstiprinājuma (Noklikšķiniet, lai pārslēgtu)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[vai Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Jūs esat izrakstījies no Claude Code vai jūsu pieteikšanās sesija ir beigusies.",
   "AI_CHAT_AUTH_ERROR_BTN": "Pieteikties Claude terminālī",
   "AI_CHAT_AUTH_ERROR_HINT": "Atvērtajā terminālī ierakstiet /login, pēc tam nosūtiet savu ziņu vēlreiz.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI pašlaik veic uzdevumu. Pārslēgšanās uz iepriekšēju sarunu to pārtrauks. Turpināt?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Pārtraukt šo CLI sesiju?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Šī darbība pārtrauks aktīvo Claude Code CLI sesiju un sāks jaunu. Turpināt?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Pieejams Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Claude Code palaišana Phoenix AI panelī ir Pro funkcija. Tā nodrošina Claude piekļuvi Phoenix integrācijām, piemēram, jūsu redaktoram un Live Preview. Jūs joprojām varat bez maksas palaist Claude Code CLI no termināļa, bez Phoenix AI integrācijām.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Atvērt terminālī",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Jaunināt uz Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Šī Claude Code CLI sesija joprojām darbojas projektā {0} — atvērtais projekts tagad ir {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Pārslēgties uz “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Palikt projektā “{0}”",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Pieejams Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Claude Code palaišana Phoenix AI panelī ir Pro funkcija. Tā nodrošina Claude piekļuvi Phoenix integrācijām, piemēram, jūsu redaktoram un Live Preview. Jūs joprojām varat bez maksas palaist Claude Code CLI no termināļa, bez Phoenix AI integrācijām.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Atvērt terminālī",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Jaunināt uz Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Izvēlieties, cik daudz MI drīkst darīt bez apstiprinājuma [vai Shift+Tab]"
 });

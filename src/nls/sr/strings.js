@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "Вештачка интелигенција ће предложити план пре него што направи измене (Кликните да пребаците)",
   "AI_CHAT_MODE_INFO_EDIT": "Вештачка интелигенција може да уређује датотеке. Команде љуске захтевају одобрење (Кликните да пребаците)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Вештачка интелигенција може да уређује датотеке и покреће команде без одобрења (Кликните да пребаците)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[или Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code је одјављен или је ваша пријава истекла.",
   "AI_CHAT_AUTH_ERROR_BTN": "Пријавите се на Claude у терминалу",
   "AI_CHAT_AUTH_ERROR_HINT": "Укуцајте /login у терминал који се отвори, а затим поново пошаљите своју поруку.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI тренутно ради на задатку. Пребацивање на претходни разговор ће га зауставити. Наставити?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Прекинути ову CLI сесију?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ово ће прекинути покренуту Claude Code CLI сесију и покренути нову. Наставити?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Доступно у Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Покретање Claude Code-а унутар Phoenix AI панела је Pro функција. То омогућава Claude-у приступ Phoenix интеграцијама као што су ваш уређивач и Live Preview. И даље можете бесплатно покретати Claude Code CLI из терминала, без Phoenix AI интеграција.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Отвори у терминалу",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Надогради на Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Ова Claude Code CLI сесија је и даље покренута у {0} — отворени пројекат је сада {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Пребаци се на „{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Остани на „{0}”",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Доступно у Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Покретање Claude Code-а унутар Phoenix AI панела је Pro функција. То омогућава Claude-у приступ Phoenix интеграцијама као што су ваш уређивач и Live Preview. И даље можете бесплатно покретати Claude Code CLI из терминала, без Phoenix AI интеграција.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Отвори у терминалу",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Надогради на Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Изаберите колико ВИ може да уради без одобрења [или Shift+Tab]"
 });

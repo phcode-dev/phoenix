@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "Yapay zeka, değişiklik yapmadan önce bir plan önerir (Değiştirmek için tıklayın)",
   "AI_CHAT_MODE_INFO_EDIT": "Yapay zeka dosyaları düzenleyebilir. Kabuk komutları onay gerektirir (Değiştirmek için tıklayın)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Yapay zeka, onay olmadan dosyaları düzenleyebilir ve komutları çalıştırabilir (Değiştirmek için tıklayın)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[veya Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code oturumu kapatıldı veya oturumunuzun süresi doldu.",
   "AI_CHAT_AUTH_ERROR_BTN": "Terminalde Claude'a Giriş Yap",
   "AI_CHAT_AUTH_ERROR_HINT": "Açılan terminale /login yazın, ardından mesajınızı tekrar gönderin.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Yapay Zeka şu anda bir görev üzerinde çalışıyor. Önceki bir sohbete geçmek bu işlemi durduracaktır. Devam edilsin mi?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Bu CLI oturumu sonlandırılsın mı?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Bu işlem, mevcut Claude Code CLI oturumunu sonlandırıp yeni bir oturum başlatacak. Devam edilsin mi?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro'da mevcut",
+  "AI_CHAT_CLI_UPSELL_MSG": "Claude Code'u Phoenix AI paneli içinde çalıştırmak bir Pro özelliğidir. Bu, Claude'a düzenleyiciniz ve Canlı Önizleme gibi Phoenix entegrasyonlarına erişim sağlar. Claude Code CLI'ı, Phoenix AI entegrasyonları olmadan Terminal'den ücretsiz olarak çalıştırmaya devam edebilirsiniz.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Terminal'de Aç",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Pro'ya Yükselt",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Bu Claude Code CLI oturumu hâlâ {0} üzerinde çalışıyor — açık olan proje ise artık {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}” projesine geçin",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}” projesinde kalın",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro'da mevcut",
-  "AI_CHAT_CLI_UPSELL_MSG": "Claude Code'u Phoenix AI paneli içinde çalıştırmak bir Pro özelliğidir. Bu, Claude'a düzenleyiciniz ve Canlı Önizleme gibi Phoenix entegrasyonlarına erişim sağlar. Claude Code CLI'ı, Phoenix AI entegrasyonları olmadan Terminal'den ücretsiz olarak çalıştırmaya devam edebilirsiniz.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Terminal'de Aç",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Pro'ya Yükselt"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Yapay Zekanın onay almadan ne kadar işlem yapabileceğini seçin [veya Shift+Tab]"
 });

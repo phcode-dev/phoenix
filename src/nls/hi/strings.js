@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "बदलाव करने से पहले AI एक योजना का प्रस्ताव देगा (स्विच करने के लिए क्लिक करें)",
   "AI_CHAT_MODE_INFO_EDIT": "AI फ़ाइलें संपादित कर सकता है। शेल कमांड के लिए अनुमोदन की आवश्यकता है (स्विच करने के लिए क्लिक करें)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI बिना अनुमोदन के फ़ाइलें संपादित कर सकता है और कमांड चला सकता है (स्विच करने के लिए क्लिक करें)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[या Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code साइन आउट हो गया है या आपका लॉगिन समाप्त हो गया है।",
   "AI_CHAT_AUTH_ERROR_BTN": "टर्मिनल में Claude में लॉग इन करें",
   "AI_CHAT_AUTH_ERROR_HINT": "खुलने वाले टर्मिनल में /login टाइप करें, फिर अपना संदेश दोबारा भेजें।",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "एआई अभी एक कार्य पर काम कर रहा है। पिछली बातचीत पर जाने से यह रुक जाएगा। जारी रखें?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "इस सीएलआई सत्र को समाप्त करें?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "यह चल रहे Claude Code सीएलआई सत्र को समाप्त कर देगा और एक नया सत्र शुरू करेगा। जारी रखें?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro में उपलब्ध",
+  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI पैनल के अंदर Claude Code चलाना एक Pro फ़ीचर है। यह Claude को आपके एडिटर और Live Preview जैसे Phoenix इंटीग्रेशन तक पहुँच देता है। आप अभी भी टर्मिनल से, Phoenix AI इंटीग्रेशन के बिना, Claude Code CLI को मुफ़्त में चला सकते हैं।",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "टर्मिनल में खोलें",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Pro में अपग्रेड करें",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "यह Claude Code सीएलआई सत्र अभी भी {0} में चल रहा है — खुला हुआ प्रोजेक्ट अब {1} है।",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}” पर स्विच करें",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}” पर बने रहें",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro में उपलब्ध",
-  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI पैनल के अंदर Claude Code चलाना एक Pro फ़ीचर है। यह Claude को आपके एडिटर और Live Preview जैसे Phoenix इंटीग्रेशन तक पहुँच देता है। आप अभी भी टर्मिनल से, Phoenix AI इंटीग्रेशन के बिना, Claude Code CLI को मुफ़्त में चला सकते हैं।",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "टर्मिनल में खोलें",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Pro में अपग्रेड करें"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "चुनें कि AI बिना मंज़ूरी के कितना कर सकता है [या Shift+Tab]"
 });

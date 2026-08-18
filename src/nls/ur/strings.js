@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "AI تبدیلیاں کرنے سے پہلے ایک منصوبہ تجویز کرے گا (تبدیل کرنے کے لیے کلک کریں)",
   "AI_CHAT_MODE_INFO_EDIT": "AI فائلیں ترمیم کر سکتا ہے۔ شیل کمانڈز کو منظوری درکار ہے (تبدیل کرنے کے لیے کلک کریں)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI منظوری کے بغیر فائلیں ترمیم اور کمانڈز چلا سکتا ہے (تبدیل کرنے کے لیے کلک کریں)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[یا Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code سائن آؤٹ ہو گیا ہے یا آپ کا لاگ ان ختم ہو گیا ہے۔",
   "AI_CHAT_AUTH_ERROR_BTN": "ٹرمینل میں Claude پر لاگ ان کریں",
   "AI_CHAT_AUTH_ERROR_HINT": "کھلنے والے ٹرمینل میں /login ٹائپ کریں، پھر اپنا پیغام دوبارہ بھیجیں۔",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "اے آئی فی الحال ایک کام پر کام کر رہا ہے۔ پچھلی گفتگو پر جانے سے یہ رک جائے گا۔ جاری رکھیں؟",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "یہ CLI سیشن ختم کریں؟",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "یہ جاری Claude Code CLI سیشن کو ختم کر کے ایک نیا شروع کر دے گا۔ جاری رکھیں؟",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro میں دستیاب",
+  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI پینل کے اندر Claude Code چلانا ایک پرو فیچر ہے۔ یہ Claude کو Phoenix انٹیگریشنز جیسے آپ کے ایڈیٹر اور لائیو پریویو تک رسائی فراہم کرتا ہے۔ آپ اب بھی Phoenix AI انٹیگریشنز کے بغیر، ٹرمینل سے Claude Code CLI مفت میں چلا سکتے ہیں۔",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "ٹرمینل میں کھولیں",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "پرو میں اپ گریڈ کریں",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "یہ Claude Code CLI سیشن اب بھی {0} میں جاری ہے — کھلا ہوا پروجیکٹ اب {1} ہے۔",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "”{0}“ پر سوئچ کریں",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "”{0}“ پر رہیں",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro میں دستیاب",
-  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI پینل کے اندر Claude Code چلانا ایک پرو فیچر ہے۔ یہ Claude کو Phoenix انٹیگریشنز جیسے آپ کے ایڈیٹر اور لائیو پریویو تک رسائی فراہم کرتا ہے۔ آپ اب بھی Phoenix AI انٹیگریشنز کے بغیر، ٹرمینل سے Claude Code CLI مفت میں چلا سکتے ہیں۔",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "ٹرمینل میں کھولیں",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "پرو میں اپ گریڈ کریں"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "منتخب کریں کہ AI منظوری کے بغیر کس حد تک کام کر سکتا ہے [یا Shift+Tab]"
 });

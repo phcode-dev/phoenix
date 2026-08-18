@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "ШІ запропонує план перед внесенням змін (Натисніть, щоб перемкнути)",
   "AI_CHAT_MODE_INFO_EDIT": "ШІ може редагувати файли. Команди оболонки потребують підтвердження (Натисніть, щоб перемкнути)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "ШІ може редагувати файли та виконувати команди без підтвердження (Натисніть, щоб перемкнути)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[або Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Ви вийшли з Claude Code, або термін дії вашого сеансу минув.",
   "AI_CHAT_AUTH_ERROR_BTN": "Увійти в Claude у терміналі",
   "AI_CHAT_AUTH_ERROR_HINT": "Введіть /login у терміналі, що відкриється, а потім надішліть своє повідомлення ще раз.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "ШІ зараз виконує завдання. Перехід до попередньої розмови зупинить його. Продовжити?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Завершити цю CLI-сесію?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Це завершить поточну CLI-сесію Claude Code і розпочне нову. Продовжити?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Доступно у Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Запуск Claude Code на панелі Phoenix AI — це функція Pro. Вона надає Claude доступ до інтеграцій Phoenix, як-от ваш редактор і Live Preview. Ви все ще можете безкоштовно запускати Claude Code CLI з термінала, без інтеграцій Phoenix AI.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Відкрити в терміналі",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Оновити до Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Ця CLI-сесія Claude Code досі виконується в {0} — тепер відкрито проєкт {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Перемкнутися на «{0}»",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Залишитися в «{0}»",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Доступно у Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Запуск Claude Code на панелі Phoenix AI — це функція Pro. Вона надає Claude доступ до інтеграцій Phoenix, як-от ваш редактор і Live Preview. Ви все ще можете безкоштовно запускати Claude Code CLI з термінала, без інтеграцій Phoenix AI.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Відкрити в терміналі",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Оновити до Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Оберіть, що ШІ може робити без підтвердження [або Shift+Tab]"
 });

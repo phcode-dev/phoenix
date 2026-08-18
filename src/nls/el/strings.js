@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "Το AI θα προτείνει ένα πλάνο πριν κάνει αλλαγές (Κάντε κλικ για εναλλαγή)",
   "AI_CHAT_MODE_INFO_EDIT": "Το AI μπορεί να επεξεργαστεί αρχεία. Οι εντολές shell χρειάζονται έγκριση (Κάντε κλικ για εναλλαγή)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Το AI μπορεί να επεξεργαστεί αρχεία και να εκτελέσει εντολές χωρίς έγκριση (Κάντε κλικ για εναλλαγή)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[ή Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Το Claude Code έχει αποσυνδεθεί ή η σύνδεσή σας έχει λήξει.",
   "AI_CHAT_AUTH_ERROR_BTN": "Συνδεθείτε στο Claude στο Τερματικό",
   "AI_CHAT_AUTH_ERROR_HINT": "Πληκτρολογήστε /login στο τερματικό που θα ανοίξει και, στη συνέχεια, στείλτε ξανά το μήνυμά σας.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Αυτήν τη στιγμή η AI εκτελεί μια εργασία. Η μετάβαση σε μια προηγούμενη συνομιλία θα τη διακόψει. Θέλετε να συνεχίσετε;",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Τερματισμός αυτής της συνεδρίας CLI;",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Αυτό θα τερματίσει την τρέχουσα συνεδρία Claude Code CLI και θα ξεκινήσει μια νέα. Συνέχεια;",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Διαθέσιμο στο Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Η εκτέλεση του Claude Code μέσα στον πίνακα Phoenix AI είναι μια λειτουργία Pro. Παρέχει στον Claude πρόσβαση στις ενσωματώσεις του Phoenix, όπως ο επεξεργαστής σας και η Ζωντανή Προεπισκόπηση. Μπορείτε ακόμα να εκτελείτε το Claude Code CLI δωρεάν από το Τερματικό, χωρίς τις ενσωματώσεις του Phoenix AI.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Άνοιγμα στο Τερματικό",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Αναβάθμιση σε Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Αυτή η συνεδρία Claude Code CLI εξακολουθεί να εκτελείται στο {0} — το ανοιχτό έργο είναι τώρα το {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Μετάβαση στο «{0}»",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Παραμονή στο «{0}»",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Διαθέσιμο στο Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Η εκτέλεση του Claude Code μέσα στον πίνακα Phoenix AI είναι μια λειτουργία Pro. Παρέχει στον Claude πρόσβαση στις ενσωματώσεις του Phoenix, όπως ο επεξεργαστής σας και η Ζωντανή Προεπισκόπηση. Μπορείτε ακόμα να εκτελείτε το Claude Code CLI δωρεάν από το Τερματικό, χωρίς τις ενσωματώσεις του Phoenix AI.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Άνοιγμα στο Τερματικό",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Αναβάθμιση σε Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Επιλέξτε σε ποιο βαθμό μπορεί να δρα η AI χωρίς έγκριση [ή Shift+Tab]"
 });

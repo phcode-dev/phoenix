@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "AI akan mengusulkan rencana sebelum membuat perubahan (Klik untuk beralih)",
   "AI_CHAT_MODE_INFO_EDIT": "AI dapat mengedit file. Perintah shell memerlukan persetujuan (Klik untuk beralih)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI dapat mengedit file dan menjalankan perintah tanpa persetujuan (Klik untuk beralih)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[atau Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code telah keluar atau login Anda telah kedaluwarsa.",
   "AI_CHAT_AUTH_ERROR_BTN": "Masuk ke Claude di Terminal",
   "AI_CHAT_AUTH_ERROR_HINT": "Ketik /login di terminal yang terbuka, lalu kirim ulang pesan Anda.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI saat ini sedang mengerjakan tugas. Beralih ke percakapan sebelumnya akan menghentikannya. Lanjutkan?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Akhiri sesi CLI ini?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ini akan mengakhiri sesi Claude Code CLI yang sedang berjalan dan memulai sesi yang baru. Lanjutkan?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Tersedia di Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Menjalankan Claude Code di dalam panel Phoenix AI adalah fitur Pro. Fitur ini memberikan Claude akses ke integrasi Phoenix seperti editor Anda dan Pratinjau Langsung (Live Preview). Anda masih dapat menjalankan Claude Code CLI secara gratis dari Terminal, tanpa integrasi Phoenix AI.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Buka di Terminal",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Upgrade ke Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Sesi Claude Code CLI ini masih berjalan di {0} — proyek yang terbuka sekarang adalah {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Beralih ke “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Tetap di “{0}”",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Tersedia di Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Menjalankan Claude Code di dalam panel Phoenix AI adalah fitur Pro. Fitur ini memberikan Claude akses ke integrasi Phoenix seperti editor Anda dan Pratinjau Langsung (Live Preview). Anda masih dapat menjalankan Claude Code CLI secara gratis dari Terminal, tanpa integrasi Phoenix AI.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Buka di Terminal",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Upgrade ke Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Pilih sejauh mana AI dapat bertindak tanpa persetujuan [atau Shift+Tab]"
 });

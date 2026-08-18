@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "AI가 변경 사항을 적용하기 전에 계획을 제안합니다 (클릭하여 전환)",
   "AI_CHAT_MODE_INFO_EDIT": "AI는 파일을 수정할 수 있지만, 셸 명령어는 승인이 필요합니다 (클릭하여 전환)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI가 승인 없이 파일을 수정하고 명령어를 실행할 수 있습니다 (클릭하여 전환)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[또는 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code에서 로그아웃되었거나 로그인 세션이 만료되었습니다.",
   "AI_CHAT_AUTH_ERROR_BTN": "터미널에서 Claude에 로그인",
   "AI_CHAT_AUTH_ERROR_HINT": "열리는 터미널에 /login을 입력한 다음 메시지를 다시 보내세요.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI가 현재 작업 중입니다. 이전 대화로 전환하면 작업이 중단됩니다. 계속하시겠습니까?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "이 CLI 세션을 종료하시겠습니까?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "실행 중인 Claude Code CLI 세션을 종료하고 새 세션을 시작합니다. 계속하시겠습니까?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro에서 사용 가능",
+  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI 패널 내에서 Claude Code를 실행하는 것은 Pro 기능입니다. 이 기능을 사용하면 Claude가 에디터 및 라이브 프리뷰와 같은 Phoenix 통합 기능에 액세스할 수 있습니다. Phoenix AI 통합 기능 없이 터미널에서 Claude Code CLI를 무료로 계속 실행할 수 있습니다.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "터미널에서 열기",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Pro로 업그레이드",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "이 Claude Code CLI 세션은 {0}에서 계속 실행 중입니다 — 현재 열려 있는 프로젝트는 {1}입니다.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}”(으)로 전환",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}”에 머무르기",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro에서 사용 가능",
-  "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI 패널 내에서 Claude Code를 실행하는 것은 Pro 기능입니다. 이 기능을 사용하면 Claude가 에디터 및 라이브 프리뷰와 같은 Phoenix 통합 기능에 액세스할 수 있습니다. Phoenix AI 통합 기능 없이 터미널에서 Claude Code CLI를 무료로 계속 실행할 수 있습니다.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "터미널에서 열기",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Pro로 업그레이드"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "AI가 승인 없이 어디까지 작업을 수행할지 선택하세요 [또는 Shift+Tab]"
 });
