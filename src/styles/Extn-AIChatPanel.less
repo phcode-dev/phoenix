@@ -454,6 +454,12 @@
 .dropdownbutton-popup.ai-permission-dropdown-popup {
     min-width: 220px;
     max-width: 320px;
+    // Override the shared .dropdownbutton-popup.dropdown-menu 160px cap
+    // (brackets_patterns_override.less) — 4 two-line items run ~200px,
+    // past that cap, which forced a scrollbar for a list that otherwise
+    // fits easily. Cap against the viewport instead so it only scrolls
+    // if it would genuinely run past the screen.
+    max-height: 90vh;
 
     li a {
         white-space: normal;
@@ -2725,6 +2731,10 @@
 
                 &.mode-plan {
                     background-color: #3498db;
+                }
+
+                &.mode-classifier {
+                    background-color: #9b59b6;
                 }
             }
 
