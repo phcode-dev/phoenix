@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán před provedením změn (Kliknutím přepnete)",
   "AI_CHAT_MODE_INFO_EDIT": "AI může upravovat soubory. Příkazy shellu vyžadují schválení (Kliknutím přepnete)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI může upravovat soubory a spouštět příkazy bez schválení (Kliknutím přepnete)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[nebo Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code je odhlášen nebo vaše přihlášení vypršelo.",
   "AI_CHAT_AUTH_ERROR_BTN": "Přihlásit se ke Claude v Terminálu",
   "AI_CHAT_AUTH_ERROR_HINT": "Do terminálu, který se otevře, zadejte /login a poté odešlete zprávu znovu.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI právě pracuje na úkolu. Přepnutí na předchozí konverzaci ji zastaví. Pokračovat?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Ukončit tuto relaci CLI?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tímto se ukončí probíhající relace Claude Code CLI a spustí se nová. Pokračovat?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Dostupné v Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Spouštění Claude Code v panelu Phoenix AI je funkce Pro. Poskytuje Claude přístup k integracím Phoenix, jako je váš editor a Živý náhled. Stále můžete zdarma spouštět Claude Code CLI z Terminálu, bez integrací Phoenix AI.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Otevřít v Terminálu",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Přejít na Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Tato relace Claude Code CLI stále běží v {0} – otevřený projekt je nyní {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Přepnout na „{0}“",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Zůstat u „{0}“",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Dostupné v Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Spouštění Claude Code v panelu Phoenix AI je funkce Pro. Poskytuje Claude přístup k integracím Phoenix, jako je váš editor a Živý náhled. Stále můžete zdarma spouštět Claude Code CLI z Terminálu, bez integrací Phoenix AI.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Otevřít v Terminálu",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Přejít na Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Zvolte, kolik toho může AI udělat bez schválení [nebo Shift+Tab]"
 });

@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "A IA proporá un plan antes de facer cambios (Fai clic para cambiar)",
   "AI_CHAT_MODE_INFO_EDIT": "A IA pode editar ficheiros. Os comandos da shell necesitan aprobación (Fai clic para cambiar)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "A IA pode editar ficheiros e executar comandos sen aprobación (Fai clic para cambiar)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[ou Maiús+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code non ten a sesión iniciada ou a súa sesión caducou.",
   "AI_CHAT_AUTH_ERROR_BTN": "Iniciar sesión en Claude no terminal",
   "AI_CHAT_AUTH_ERROR_HINT": "Escriba /login no terminal que se abrirá e despois volva enviar a súa mensaxe.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "A IA está a traballar nunha tarefa. Cambiar a unha conversa anterior deteráa. Desexa continuar?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Rematar esta sesión da CLI?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Isto rematará a sesión da CLI de Claude Code en execución e iniciará unha nova. Continuar?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Dispoñible en Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Executar Claude Code dentro do panel de IA de Phoenix é unha funcionalidade Pro. Dálle a Claude acceso ás integracións de Phoenix, como o teu editor e a Vista previa en vivo. Aínda podes executar Claude Code CLI de balde desde o Terminal, sen as integracións de IA de Phoenix.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Abrir no Terminal",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Actualizar a Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Esta sesión da CLI de Claude Code segue en execución en {0} — o proxecto aberto agora é {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Cambiar a “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Permanecer en “{0}”",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Dispoñible en Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Executar Claude Code dentro do panel de IA de Phoenix é unha funcionalidade Pro. Dálle a Claude acceso ás integracións de Phoenix, como o teu editor e a Vista previa en vivo. Aínda podes executar Claude Code CLI de balde desde o Terminal, sen as integracións de IA de Phoenix.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Abrir no Terminal",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Actualizar a Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Escolla canto pode facer a IA sen aprobación [ou Maiús+Tab]"
 });

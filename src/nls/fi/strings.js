@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä (Napsauta vaihtaaksesi)",
   "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Komentotulkin komennot vaativat hyväksynnän (Napsauta vaihtaaksesi)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää (Napsauta vaihtaaksesi)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[tai vaihto+sarkain]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code -palvelusta on kirjauduttu ulos tai kirjautumisesi on vanhentunut.",
   "AI_CHAT_AUTH_ERROR_BTN": "Kirjaudu Claudeen terminaalissa",
   "AI_CHAT_AUTH_ERROR_HINT": "Kirjoita /login avautuvaan terminaaliin ja lähetä sitten viestisi uudelleen.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Tekoälyllä on tehtävä kesken. Aiempaan keskusteluun siirtyminen keskeyttää sen. Jatketaanko?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Lopetetaanko tämä CLI-istunto?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tämä lopettaa käynnissä olevan Claude Code CLI -istunnon ja aloittaa uuden. Jatketaanko?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Saatavilla Phoenix Prossa",
+  "AI_CHAT_CLI_UPSELL_MSG": "Claude Coden suorittaminen Phoenix AI -paneelissa on Pro-ominaisuus. Se antaa Claudelle pääsyn Phoenix-integraatioihin, kuten editoriisi ja Live Preview -esikatseluun. Voit silti suorittaa Claude Code CLI:n ilmaiseksi Terminaalissa ilman Phoenix AI -integraatioita.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Avaa Terminaalissa",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Päivitä Pro-versioon",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Tämä Claude Code CLI -istunto on yhä käynnissä projektissa {0} — avoinna oleva projekti on nyt {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Vaihda kohteeseen ”{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Pysy kohteessa ”{0}”",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Saatavilla Phoenix Prossa",
-  "AI_CHAT_CLI_UPSELL_MSG": "Claude Coden suorittaminen Phoenix AI -paneelissa on Pro-ominaisuus. Se antaa Claudelle pääsyn Phoenix-integraatioihin, kuten editoriisi ja Live Preview -esikatseluun. Voit silti suorittaa Claude Code CLI:n ilmaiseksi Terminaalissa ilman Phoenix AI -integraatioita.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Avaa Terminaalissa",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Päivitä Pro-versioon"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Valitse, kuinka paljon tekoäly saa tehdä ilman hyväksyntää [tai vaihto+sarkain]"
 });

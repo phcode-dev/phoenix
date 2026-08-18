@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "سيقترح الذكاء الاصطناعي خطة قبل إجراء التغييرات (انقر للتبديل)",
   "AI_CHAT_MODE_INFO_EDIT": "يمكن للذكاء الاصطناعي تعديل الملفات. تحتاج أوامر Shell إلى موافقة (انقر للتبديل)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "يمكن للذكاء الاصطناعي تعديل الملفات وتشغيل الأوامر بدون موافقة (انقر للتبديل)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[أو Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "تم تسجيل الخروج من Claude Code أو انتهت صلاحية تسجيل دخولك.",
   "AI_CHAT_AUTH_ERROR_BTN": "تسجيل الدخول إلى Claude في الطرفية",
   "AI_CHAT_AUTH_ERROR_HINT": "اكتب /login في الطرفية التي ستُفتح، ثم أرسل رسالتك مرة أخرى.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "الذكاء الاصطناعي يعمل حاليًا على مهمة. سيتسبب الانتقال إلى محادثة سابقة في إيقافه. هل تريد المتابعة؟",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "إنهاء جلسة CLI هذه؟",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "سيؤدي هذا إلى إنهاء جلسة Claude Code CLI قيد التشغيل وبدء جلسة جديدة. هل تريد المتابعة؟",
+  "AI_CHAT_CLI_UPSELL_TITLE": "متوفر في Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "يُعد تشغيل Claude Code داخل لوحة Phoenix AI ميزة خاصة بإصدار Pro. فهي تمنح Claude إمكانية الوصول إلى تكاملات Phoenix مثل المحرر والمعاينة المباشرة. لا يزال بإمكانك تشغيل Claude Code CLI مجانًا من الطرفية، ولكن بدون تكاملات Phoenix AI.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "فتح في الطرفية",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "الترقية إلى Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "لا تزال جلسة Claude Code CLI هذه قيد التشغيل في {0} — المشروع المفتوح الآن هو {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "التبديل إلى ”{0}“",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "البقاء في ”{0}“",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "AI_CHAT_CLI_UPSELL_TITLE": "متوفر في Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "يُعد تشغيل Claude Code داخل لوحة Phoenix AI ميزة خاصة بإصدار Pro. فهي تمنح Claude إمكانية الوصول إلى تكاملات Phoenix مثل المحرر والمعاينة المباشرة. لا يزال بإمكانك تشغيل Claude Code CLI مجانًا من الطرفية، ولكن بدون تكاملات Phoenix AI.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "فتح في الطرفية",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "الترقية إلى Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "اختر مدى ما يمكن للذكاء الاصطناعي القيام به دون موافقة [أو Shift+Tab]"
 });

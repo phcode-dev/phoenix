@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "AI 會在進行變更前提出計畫 (點擊以切換)",
   "AI_CHAT_MODE_INFO_EDIT": "AI 可以編輯檔案。Shell 指令需要經過核准 (點擊以切換)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以編輯檔案並執行指令，無需經過核准 (點擊以切換)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[或 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code 已登出或您的登入已過期。",
   "AI_CHAT_AUTH_ERROR_BTN": "在終端機登入 Claude",
   "AI_CHAT_AUTH_ERROR_HINT": "在開啟的終端機中輸入 /login，然後再次傳送您的訊息。",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI 目前正在處理任務。切換至先前的對話將會中止目前的任務。要繼續嗎？",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "結束此 CLI 工作階段？",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "這將會結束執行中的 Claude Code CLI 工作階段，並開始一個全新的工作階段。要繼續嗎？",
+  "AI_CHAT_CLI_UPSELL_TITLE": "僅於 Phoenix Pro 提供",
+  "AI_CHAT_CLI_UPSELL_MSG": "在 Phoenix AI 面板中執行 Claude Code 為 Pro 版本專屬功能。這能讓 Claude 存取 Phoenix 的整合功能，例如您的編輯器和即時預覽。您仍然可以從終端機免費執行 Claude Code CLI，但無法使用 Phoenix AI 的整合功能。",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "在終端機中開啟",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "升級至 Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "此 Claude Code CLI 工作階段仍在「{0}」中執行 — 目前開啟的專案是「{1}」。",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "切換至「{0}」",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "停留在「{0}」",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_CLI_UPSELL_TITLE": "僅於 Phoenix Pro 提供",
-  "AI_CHAT_CLI_UPSELL_MSG": "在 Phoenix AI 面板中執行 Claude Code 為 Pro 版本專屬功能。這能讓 Claude 存取 Phoenix 的整合功能，例如您的編輯器和即時預覽。您仍然可以從終端機免費執行 Claude Code CLI，但無法使用 Phoenix AI 的整合功能。",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "在終端機中開啟",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "升級至 Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "選擇 AI 的自主操作程度 [或 Shift+Tab]"
 });

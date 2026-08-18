@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "Az MI tervet javasol a módosítások elvégzése előtt (Kattints a váltáshoz)",
   "AI_CHAT_MODE_INFO_EDIT": "Az MI szerkeszthet fájlokat. A shell parancsok jóváhagyást igényelnek (Kattints a váltáshoz)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Az MI jóváhagyás nélkül szerkeszthet fájlokat és futtathat parancsokat (Kattints a váltáshoz)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[vagy Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "A Claude Code ki van jelentkezve, vagy a bejelentkezésed lejárt.",
   "AI_CHAT_AUTH_ERROR_BTN": "Bejelentkezés a Claude-ba a Terminálban",
   "AI_CHAT_AUTH_ERROR_HINT": "Írd be a /login parancsot a megnyíló terminálba, majd küldd el újra az üzeneted.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Az AI jelenleg egy feladaton dolgozik. Egy korábbi beszélgetésre váltás leállítja azt. Folytatja?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Befejezi ezt a CLI-munkamenetet?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ez lezárja a futó Claude Code CLI-munkamenetet, és egy újat indít. Folytatja?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Elérhető a Phoenix Pro verzióban",
+  "AI_CHAT_CLI_UPSELL_MSG": "A Claude Code futtatása a Phoenix AI panelen belül egy Pro funkció. Ez hozzáférést biztosít a Claude számára a Phoenix olyan integrációihoz, mint a szerkesztő és az Élő Előnézet. A Claude Code CLI-t továbbra is ingyenesen futtathatod a Terminálból, a Phoenix AI integrációk nélkül.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Megnyitás a Terminálban",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Frissítés Pro verzióra",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "A Claude Code CLI-munkamenet még a(z) {0} projektben fut – a jelenleg megnyitott projekt a(z) {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Váltás a(z) „{0}” projektre",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Maradás a(z) „{0}” projekten",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Elérhető a Phoenix Pro verzióban",
-  "AI_CHAT_CLI_UPSELL_MSG": "A Claude Code futtatása a Phoenix AI panelen belül egy Pro funkció. Ez hozzáférést biztosít a Claude számára a Phoenix olyan integrációihoz, mint a szerkesztő és az Élő Előnézet. A Claude Code CLI-t továbbra is ingyenesen futtathatod a Terminálból, a Phoenix AI integrációk nélkül.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Megnyitás a Terminálban",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Frissítés Pro verzióra"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Válassza ki, mennyit tehet a MI jóváhagyás nélkül [vagy Shift+Tab]"
 });

@@ -2483,7 +2483,6 @@ define({
   "AI_CHAT_MODE_INFO_PLAN": "AI kommer att föreslå en plan innan den gör ändringar (Klicka för att byta)",
   "AI_CHAT_MODE_INFO_EDIT": "AI kan redigera filer. Shell-kommandon kräver godkännande (Klicka för att byta)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigera filer och köra kommandon utan godkännande (Klicka för att byta)",
-  "AI_CHAT_MODE_SWITCH_HINT": "[eller Skift+Tabb]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code är utloggad eller så har din inloggning gått ut.",
   "AI_CHAT_AUTH_ERROR_BTN": "Logga in på Claude i terminalen",
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i terminalen som öppnas och skicka sedan ditt meddelande igen.",
@@ -2557,6 +2556,10 @@ define({
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI arbetar för närvarande med en uppgift. Om du byter till en tidigare konversation avbryts den. Fortsätta?",
   "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Avsluta denna CLI-session?",
   "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Detta avslutar den pågående Claude Code CLI-sessionen och startar en ny. Fortsätta?",
+  "AI_CHAT_CLI_UPSELL_TITLE": "Tillgänglig i Phoenix Pro",
+  "AI_CHAT_CLI_UPSELL_MSG": "Att köra Claude Code i Phoenix AI-panelen är en Pro-funktion. Det ger Claude åtkomst till Phoenix-integrationer som din redigerare och Live Preview. Du kan fortfarande köra Claude Code CLI gratis från terminalen, utan Phoenix AI-integrationerna.",
+  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Öppna i terminalen",
+  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Uppgradera till Pro",
   "AI_CHAT_CLI_STALE_PROJECT_MSG": "Denna Claude Code CLI-session körs fortfarande i {0} — det öppna projektet är nu {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Växla till ”{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Stanna kvar i ”{0}”",
@@ -2677,8 +2680,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_CLI_UPSELL_TITLE": "Tillgänglig i Phoenix Pro",
-  "AI_CHAT_CLI_UPSELL_MSG": "Att köra Claude Code i Phoenix AI-panelen är en Pro-funktion. Det ger Claude åtkomst till Phoenix-integrationer som din redigerare och Live Preview. Du kan fortfarande köra Claude Code CLI gratis från terminalen, utan Phoenix AI-integrationerna.",
-  "AI_CHAT_CLI_UPSELL_OPEN_TERMINAL_BTN": "Öppna i terminalen",
-  "AI_CHAT_CLI_UPSELL_UPGRADE_BTN": "Uppgradera till Pro"
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Välj hur mycket AI:n kan göra utan godkännande [eller Skift+Tabb]"
 });
