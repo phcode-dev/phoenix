@@ -61,6 +61,9 @@ define(function (require, exports, module) {
         this._onChange = this._onChange.bind(this);
         this.doc.on("change", this._onChange);
 
+        this._onDeleted = this._onDeleted.bind(this);
+        this.doc.on("deleted", this._onDeleted);
+
         this._onRelated = this._onRelated.bind(this);
         this.protocol.on("DocumentRelated", this._onRelated);
 
@@ -152,6 +155,7 @@ define(function (require, exports, module) {
     LiveHTMLDocument.prototype.close = function () {
         this.doc.releaseRef();
         this.doc.off("change", this._onChange);
+        this.doc.off("deleted", this._onDeleted);
         this.protocol.off("DocumentRelated", this._onRelated);
         this.protocol.off("StylesheetAdded", this._onStylesheetAdded);
         this.protocol.off("StylesheetRemoved", this._onStylesheetRemoved);
@@ -159,6 +163,19 @@ define(function (require, exports, module) {
         this.protocol.off("ScriptRemoved", this._onScriptRemoved);
 
         this.parentClass.close.call(this);
+    };
+
+    /**
+     * @private
+     * Handles the backing Document's file being deleted from disk (eg. from the file tree).
+     * Without this, our extra addRef() on the doc (on top of any editor's own ref) would never
+     * be released - close() is otherwise only called by the live preview session lifecycle, not
+     * in response to the file disappearing.
+     * @param {$.Event} event
+     */
+    LiveHTMLDocument.prototype._onDeleted = function (event) {
+        this.close();
+        this.trigger("deleted", [this]);
     };
 
     /**
