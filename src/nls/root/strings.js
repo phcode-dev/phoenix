@@ -2703,7 +2703,7 @@ define({
     "AI_CHAT_MODE_INFO_PLAN": "AI will propose a plan before making changes (Click to switch)",
     "AI_CHAT_MODE_INFO_EDIT": "AI can edit files. Shell commands need approval (Click to switch)",
     "AI_CHAT_MODE_INFO_FULL_AUTO": "AI can edit files and run commands without approval (Click to switch)",
-    "AI_CHAT_MODE_SWITCH_HINT": "[or Shift+Tab]",
+    "AI_CHAT_PERMISSION_SELECT_TITLE": "Choose how much the AI can do without approval [or Shift+Tab]",
     "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code is signed out or your login has expired.",
     "AI_CHAT_AUTH_ERROR_BTN": "Log in to Claude in Terminal",
     "AI_CHAT_AUTH_ERROR_HINT": "Type /login in the terminal that opens, then send your message again.",
