@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "<span class=\"dialog-filename\">{0}</span>を開けませんでした。ファイルが移動または削除された可能性があります。",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "エーアイによる取り消しと復元",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "この操作では、エーアイによる変更のみが取り消されます。エーアイ以外で行われた変更は復元されず、失われる可能性があります。完全なバージョン履歴については、ギットなどのバージョン管理システムをご利用ください。",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "フルオートモードに切り替えますか？",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "フルオートモードでは、AIが事前の確認なしに、Bashコマンド、ファイル編集、ファイル削除、Webフェッチなどのあらゆるツールを実行します。<br><br>信頼できるスクラッチプロジェクトでは便利ですが、リスクを伴う可能性があります。判断を誤ったステップにより、ファイルの上書きや削除、破壊的なシェルコマンドの実行、意図しない変更のプッシュが行われる可能性があります。問題が発生した場合に復元できるよう、バージョン管理（Git）を使用してください。<br><br>信頼できるプロジェクトでのみフルオートモードを有効にしてください。いつでも<kbd>Shift+Tab</kbd>キーを押すか、モードバーをクリックすることで編集モードに戻すことができます。",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "フルオートを有効にする",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "ビルドの準備ができました",
   "AI_CHAT_ONBOARDING_SEND": "送信",
   "AI_CHAT_SHOW_DIFF": "差分を表示",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "プランを修正してください。",
   "AI_CHAT_MODE_PLAN": "計画モード",
   "AI_CHAT_MODE_EDIT": "AI編集モード",
-  "AI_CHAT_MODE_FULL_AUTO": "フルオート",
   "AI_CHAT_MODE_INFO_PLAN": "変更を行う前に、AIが実行計画を提案します (クリックして切り替え)",
   "AI_CHAT_MODE_INFO_EDIT": "AIはファイルを編集できます。シェルコマンドの実行には承認が必要です (クリックして切り替え)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AIは承認なしで、ファイルの編集とコマンドの実行ができます (クリックして切り替え)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "ＡＩが承認なしに実行できる範囲を選択［または Shift+Tab］",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Codeからサインアウトしているか、ログインの有効期限が切れています。",
   "AI_CHAT_AUTH_ERROR_BTN": "ターミナルでClaudeにログイン",
   "AI_CHAT_AUTH_ERROR_HINT": "開いたターミナルで /login と入力後、再度メッセージを送信してください。",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "ＡＩが承認なしに実行できる範囲を選択［または Shift+Tab］"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "すべて許可モードに切り替えますか？",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "「すべて許可モード」では、AIがあなたに確認することなく、Bashコマンド、ファイル編集、ファイル削除、ウェブ取得など、あらゆるツールを実行します。<br><br>これは信頼できるスクラッチプロジェクトには便利ですが、リスクを伴う可能性があります。判断を誤ると、ファイルの上書きや削除、破壊的なシェルコマンドの実行、意図しない変更のプッシュなどが行われる可能性があります。問題が発生した場合に復元できるよう、バージョン管理（Git）を使用してください。<br><br>信頼できるプロジェクトでのみ「すべて許可」を有効にしてください。<kbd>Shift+Tab</kbd>キーを押すか、モードバーをクリックすることで、いつでも編集モードに戻すことができます。",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "すべて許可を有効にする",
+  "AI_CHAT_MODE_AUTO": "自動",
+  "AI_CHAT_MODE_FULL_AUTO": "すべて許可",
+  "AI_CHAT_MODE_INFO_AUTO": "AIが安全なアクションを自動承認し、リスクのあるものは確認します（クリックで切り替え）"
 });

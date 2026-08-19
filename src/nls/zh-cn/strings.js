@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "无法打开 <span class=\"dialog-filename\">{0}</span>。该文件可能已被移动或删除。",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 撤销与恢复",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "此操作只会撤销由 AI 所做的更改。在 AI 之外进行的更改将不会被恢复，并可能丢失。如需完整的版本历史记录，请使用 Git 等版本控制系统。",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "切换到全自动模式？",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "全自动模式允许 AI 运行任何工具（如 Bash 命令、文件编辑、文件删除、网络抓取等），而无需事先征求您的同意。<br><br>这对于受信任的临时项目来说很方便，但也可能存在风险：一次误判就可能导致覆盖或删除文件、运行破坏性的 shell 命令或推送非预期的更改。请使用版本控制 (Git) 以便在出现问题时可以恢复。<br><br>请仅在您信任的项目中启用全自动模式。您可以随时使用 <kbd>Shift+Tab</kbd> 或通过单击模式栏切换回编辑模式。",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "启用全自动模式",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "准备构建",
   "AI_CHAT_ONBOARDING_SEND": "发送",
   "AI_CHAT_SHOW_DIFF": "显示差异",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "请修订此计划。",
   "AI_CHAT_MODE_PLAN": "计划模式",
   "AI_CHAT_MODE_EDIT": "AI 编辑模式",
-  "AI_CHAT_MODE_FULL_AUTO": "全自动",
   "AI_CHAT_MODE_INFO_PLAN": "AI 会在做出更改前提出计划 (点击切换)",
   "AI_CHAT_MODE_INFO_EDIT": "AI 可编辑文件，Shell 命令需要批准 (点击切换)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可编辑文件并运行命令，无需批准 (点击切换)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "选择 AI 无需批准即可执行的操作范围 [或 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code 已登出或您的登录已过期。",
   "AI_CHAT_AUTH_ERROR_BTN": "在终端登录 Claude",
   "AI_CHAT_AUTH_ERROR_HINT": "在打开的终端中输入 /login，然后再次发送您的消息。",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "选择 AI 无需批准即可执行的操作范围 [或 Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "切换到“完全自动”模式？",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "“完全自动”模式让 AI 无需事先征求您的同意，即可运行任何工具——Bash 命令、文件编辑、文件删除、网络抓取。<br><br>这对于受信任的临时项目来说很方便，但也可能存在风险：一个错误的步骤可能会覆盖或删除文件、运行破坏性的 shell 命令或推送非预期的更改。请使用版本控制 (Git)，以便在出现问题时能够恢复。<br><br>请仅在您信任的项目中启用“完全自动”模式。您可以随时使用 <kbd>Shift+Tab</kbd> 或点击模式栏切换回“编辑模式”。",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "启用完全自动",
+  "AI_CHAT_MODE_AUTO": "自动",
+  "AI_CHAT_MODE_FULL_AUTO": "完全自动",
+  "AI_CHAT_MODE_INFO_AUTO": "AI 会自行判断，自动批准安全操作，并询问有风险的操作 (点击切换)"
 });

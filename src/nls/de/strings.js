@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "<span class=\"dialog-filename\">{0}</span> konnte nicht geöffnet werden. Die Datei wurde möglicherweise verschoben oder gelöscht.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "KI: Rückgängig machen & Wiederherstellen",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dadurch werden nur die von der KI vorgenommenen Änderungen rückgängig gemacht. Änderungen, die nicht von der KI vorgenommen wurden, werden nicht wiederhergestellt und gehen möglicherweise verloren. Für einen vollständigen Versionsverlauf verwenden Sie eine Versionskontrolle wie Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "In den Vollautomatik-Modus wechseln?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Im Vollautomatik-Modus kann die KI jedes Tool – Bash-Befehle, Dateiänderungen, Dateilöschungen, Web-Abrufe – ohne vorherige Rückfrage ausführen.<br><br>Das ist praktisch für vertrauenswürdige Testprojekte, kann aber riskant sein: Ein falsch eingeschätzter Schritt könnte Dateien überschreiben oder löschen, einen destruktiven Shell-Befehl ausführen oder unbeabsichtigte Änderungen pushen. Verwende eine Versionskontrolle (Git), damit du den Zustand wiederherstellen kannst, falls etwas schiefgeht.<br><br>Aktiviere den Vollautomatik-Modus nur in Projekten, denen du vertraust. Du kannst jederzeit mit <kbd>Shift+Tab</kbd> oder durch Klicken auf die Modusleiste in den Bearbeitungsmodus zurückwechseln.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Vollautomatik aktivieren",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Bereit zum Erstellen",
   "AI_CHAT_ONBOARDING_SEND": "Senden",
   "AI_CHAT_SHOW_DIFF": "Unterschiede anzeigen",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Bitte überarbeiten Sie den Plan.",
   "AI_CHAT_MODE_PLAN": "Plan-Modus",
   "AI_CHAT_MODE_EDIT": "KI-Bearbeitungsmodus",
-  "AI_CHAT_MODE_FULL_AUTO": "Vollautomatik",
   "AI_CHAT_MODE_INFO_PLAN": "Die KI schlägt einen Plan vor, bevor sie Änderungen vornimmt (Zum Wechseln klicken)",
   "AI_CHAT_MODE_INFO_EDIT": "Die KI kann Dateien bearbeiten. Shell-Befehle erfordern eine Genehmigung (Zum Wechseln klicken)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Die KI kann Dateien bearbeiten und Befehle ohne Genehmigung ausführen (Zum Wechseln klicken)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Wählen Sie, in welchem Umfang die KI ohne Bestätigung agieren darf [oder Umschalt+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Sie sind bei Claude Code abgemeldet oder Ihre Anmeldung ist abgelaufen.",
   "AI_CHAT_AUTH_ERROR_BTN": "Im Terminal bei Claude anmelden",
   "AI_CHAT_AUTH_ERROR_HINT": "Geben Sie /login in das sich öffnende Terminal ein und senden Sie dann Ihre Nachricht erneut.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Wählen Sie, in welchem Umfang die KI ohne Bestätigung agieren darf [oder Umschalt+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Zum Modus 'Alles erlauben' wechseln?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Der Modus 'Alles erlauben' ermöglicht es der KI, jedes Werkzeug auszuführen – Bash-Befehle, Dateiänderungen, Dateilöschungen, Web-Abrufe – ohne Sie vorher zu fragen.<br><br>Das ist praktisch für vertrauenswürdige Test-Projekte, kann aber riskant sein: Ein falsch eingeschätzter Schritt könnte Dateien überschreiben oder löschen, einen destruktiven Shell-Befehl ausführen oder unbeabsichtigte Änderungen pushen. Verwenden Sie eine Versionskontrolle (Git), damit Sie den Zustand wiederherstellen können, falls etwas schiefgeht.<br><br>Aktivieren Sie 'Alles erlauben' nur in Projekten, denen Sie vertrauen. Sie können jederzeit in den Bearbeitungsmodus zurückwechseln, indem Sie <kbd>Shift+Tab</kbd> drücken oder auf die Modusleiste klicken.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Alles erlauben aktivieren",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Alles erlauben",
+  "AI_CHAT_MODE_INFO_AUTO": "Die KI genehmigt sichere Aktionen eigenständig und fragt bei riskanten nach (Zum Wechseln klicken)"
 });

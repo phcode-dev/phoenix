@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Kunne ikke åbne <span class=\"dialog-filename\">{0}</span>. Filen er muligvis blevet flyttet eller slettet.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Fortryd & Gendan",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dette vil kun fortryde ændringer foretaget af AI'en. Ændringer foretaget uden for AI'en vil ikke blive gendannet og kan gå tabt. For fuld versionshistorik, brug versionsstyring som Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Skift til Fuld Auto-tilstand?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Fuld Auto-tilstand lader AI'en køre ethvert værktøj — Bash-kommandoer, filredigeringer, filsletninger, webhentninger — uden at spørge dig først.<br><br>Dette er praktisk til betroede kladde-projekter, men kan være risikabelt: et forkert trin kan overskrive eller slette filer, køre en destruktiv shell-kommando eller pushe utilsigtede ændringer. Brug versionsstyring (Git), så du kan gendanne, hvis noget går galt.<br><br>Aktivér kun Fuld Auto i projekter, du har tillid til. Du kan til enhver tid skifte tilbage til Redigeringstilstand ved at bruge <kbd>Shift+Tab</kbd> eller ved at klikke på tilstandslinjen.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Aktivér Fuld Auto",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Klar til at bygge",
   "AI_CHAT_ONBOARDING_SEND": "Send",
   "AI_CHAT_SHOW_DIFF": "Vis diff",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Venligst revider planen.",
   "AI_CHAT_MODE_PLAN": "Plantilstand",
   "AI_CHAT_MODE_EDIT": "AI-redigeringstilstand",
-  "AI_CHAT_MODE_FULL_AUTO": "Fuldautomatisk",
   "AI_CHAT_MODE_INFO_PLAN": "AI vil foreslå en plan, før den laver ændringer (Klik for at skifte)",
   "AI_CHAT_MODE_INFO_EDIT": "AI kan redigere filer. Shell-kommandoer kræver godkendelse (Klik for at skifte)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigere filer og køre kommandoer uden godkendelse (Klik for at skifte)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Vælg, hvor meget AI'en kan gøre uden godkendelse [eller Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code er logget ud, eller dit login er udløbet.",
   "AI_CHAT_AUTH_ERROR_BTN": "Log ind på Claude i Terminal",
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i den terminal, der åbner, og send derefter din besked igen.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Vælg, hvor meget AI'en kan gøre uden godkendelse [eller Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Skift til Tillad alt-tilstand?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Tillad alt-tilstand lader AI'en køre ethvert værktøj – Bash-kommandoer, filredigeringer, filsletninger, webhentninger – uden at spørge dig først.<br><br>Dette er praktisk for betroede kladde-projekter, men kan være risikabelt: et fejlbedømt trin kan overskrive eller slette filer, køre en destruktiv shell-kommando eller pushe utilsigtede ændringer. Brug versionskontrol (Git), så du kan gendanne, hvis noget går galt.<br><br>Aktivér kun Tillad alt i projekter, du har tillid til. Du kan til enhver tid skifte tilbage til Redigeringstilstand ved at bruge <kbd>Shift+Tab</kbd> eller ved at klikke på tilstandslinjen.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Aktivér Tillad alt",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Tillad alt",
+  "AI_CHAT_MODE_INFO_AUTO": "AI'en bruger sin dømmekraft til automatisk at godkende sikre handlinger og spørger om risikable (Klik for at skifte)"
 });

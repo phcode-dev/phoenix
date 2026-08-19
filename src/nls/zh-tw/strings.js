@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "無法開啟 <span class=\"dialog-filename\">{0}</span>。該檔案可能已被移動或刪除。",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI 復原與還原",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "此動作只會復原由 AI 所做的變更。非 AI 所做的變更將不會被還原，且可能會遺失。如需完整的版本歷史記錄，請使用像 Git 這類的版本控制系統。",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "切換至全自動模式？",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "全自動模式允許 AI 在未經您事先同意的情況下，執行任何工具 — Bash 指令、檔案編輯、檔案刪除、網路擷取。<br><br>這對於受信任的臨時專案來說很方便，但可能存在風險：一個錯誤的步驟可能會覆寫或刪除檔案、執行破壞性的 shell 指令，或推送非預期的變更。請使用版本控制 (Git)，以便在出現問題時可以復原。<br><br>僅在您信任的專案中啟用全自動模式。您可以隨時使用 <kbd>Shift+Tab</kbd> 或點擊模式列，切換回編輯模式。",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "啟用全自動模式",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "準備建構",
   "AI_CHAT_ONBOARDING_SEND": "傳送",
   "AI_CHAT_SHOW_DIFF": "顯示差異",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "請修訂計畫。",
   "AI_CHAT_MODE_PLAN": "計畫模式",
   "AI_CHAT_MODE_EDIT": "AI 編輯模式",
-  "AI_CHAT_MODE_FULL_AUTO": "全自動",
   "AI_CHAT_MODE_INFO_PLAN": "AI 會在進行變更前提出計畫 (點擊以切換)",
   "AI_CHAT_MODE_INFO_EDIT": "AI 可以編輯檔案。Shell 指令需要經過核准 (點擊以切換)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以編輯檔案並執行指令，無需經過核准 (點擊以切換)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "選擇 AI 的自主操作程度 [或 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code 已登出或您的登入已過期。",
   "AI_CHAT_AUTH_ERROR_BTN": "在終端機登入 Claude",
   "AI_CHAT_AUTH_ERROR_HINT": "在開啟的終端機中輸入 /login，然後再次傳送您的訊息。",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "選擇 AI 的自主操作程度 [或 Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "要切換到「允許所有操作」模式嗎？",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "「允許所有操作」模式讓 AI 無需事先詢問您，即可執行任何工具 — Bash 指令、檔案編輯、檔案刪除、網路擷取。<br><br>這對於受信任的臨時專案來說很方便，但可能存在風險：一個錯誤的判斷可能會覆寫或刪除檔案、執行破壞性的 shell 指令，或推送非預期的變更。請使用版本控制 (Git) 以便在出現問題時能夠復原。<br><br>請僅在您信任的專案中啟用「允許所有操作」。您可以隨時使用 <kbd>Shift+Tab</kbd> 或點擊模式列切換回「編輯模式」。",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "啟用允許所有操作",
+  "AI_CHAT_MODE_AUTO": "自動",
+  "AI_CHAT_MODE_FULL_AUTO": "允許所有操作",
+  "AI_CHAT_MODE_INFO_AUTO": "AI 會自行判斷，自動批准安全操作，並詢問有風險的操作 (點擊以切換)"
 });

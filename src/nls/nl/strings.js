@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Kan <span class=\"dialog-filename\">{0}</span> niet openen. Het bestand is mogelijk verplaatst of verwijderd.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI Ongedaan maken & Herstellen",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Hiermee worden alleen wijzigingen van de AI ongedaan gemaakt. Wijzigingen die niet door de AI zijn gemaakt, worden niet hersteld en kunnen verloren gaan. Gebruik voor een volledige versiegeschiedenis versiebeheer zoals Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Overschakelen naar Volledig automatische modus?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "De Volledig automatische modus laat de AI elk hulpprogramma uitvoeren — Bash-commando's, bestandsbewerkingen, bestandsverwijderingen, web-verzoeken — zonder het eerst te vragen.<br><br>Dit is handig voor vertrouwde kladprojecten, maar kan riskant zijn: een verkeerd ingeschatte stap kan bestanden overschrijven of verwijderen, een destructief shell-commando uitvoeren of onbedoelde wijzigingen pushen. Gebruik versiebeheer (Git) zodat je kunt herstellen als er iets misgaat.<br><br>Schakel de Volledig automatische modus alleen in voor projecten die je vertrouwt. Je kunt op elk moment terugschakelen naar de bewerkingsmodus met <kbd>Shift+Tab</kbd> of door op de modusbalk te klikken.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Volledig automatisch inschakelen",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Klaar om te bouwen",
   "AI_CHAT_ONBOARDING_SEND": "Verzenden",
   "AI_CHAT_SHOW_DIFF": "Toon diff",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Graag het plan herzien.",
   "AI_CHAT_MODE_PLAN": "Planmodus",
   "AI_CHAT_MODE_EDIT": "AI-bewerkingsmodus",
-  "AI_CHAT_MODE_FULL_AUTO": "Volautomatisch",
   "AI_CHAT_MODE_INFO_PLAN": "AI stelt een plan voor voordat het wijzigingen aanbrengt (Klik om te wisselen)",
   "AI_CHAT_MODE_INFO_EDIT": "AI kan bestanden bewerken. Shell-commando's vereisen goedkeuring (Klik om te wisselen)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan bestanden bewerken en commando's uitvoeren zonder goedkeuring (Klik om te wisselen)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Kies hoeveel de AI mag doen zonder goedkeuring [of Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code is uitgelogd of uw login is verlopen.",
   "AI_CHAT_AUTH_ERROR_BTN": "Log in bij Claude in Terminal",
   "AI_CHAT_AUTH_ERROR_HINT": "Typ /login in de terminal die opent en verstuur dan uw bericht opnieuw.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Kies hoeveel de AI mag doen zonder goedkeuring [of Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Overschakelen naar de modus Alles toestaan?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "De modus Alles toestaan laat de AI elke tool uitvoeren — Bash-commando's, bestandsbewerkingen, bestandsverwijderingen, webverzoeken — zonder het u eerst te vragen.<br><br>Dit is handig voor vertrouwde kladprojecten, maar kan riskant zijn: een verkeerd ingeschatte stap kan bestanden overschrijven of verwijderen, een destructief shell-commando uitvoeren, of onbedoelde wijzigingen pushen. Gebruik versiebeheer (Git) zodat u kunt herstellen als er iets misgaat.<br><br>Schakel Alles toestaan alleen in voor projecten die u vertrouwt. U kunt op elk moment terugschakelen naar de bewerkingsmodus met <kbd>Shift+Tab</kbd> of door op de modusbalk te klikken.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Alles toestaan inschakelen",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Alles toestaan",
+  "AI_CHAT_MODE_INFO_AUTO": "De AI keurt veilige acties automatisch goed en vraagt om bevestiging voor riskante acties (Klik om te wisselen)"
 });
