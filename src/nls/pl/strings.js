@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Nie można otworzyć <span class=\"dialog-filename\">{0}</span>. Plik mógł zostać przeniesiony lub usunięty.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Cofanie i przywracanie zmian AI",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Cofnięte zostaną tylko zmiany wprowadzone przez AI. Zmiany wprowadzone w inny sposób nie zostaną przywrócone i mogą zostać utracone. Aby uzyskać pełną historię wersji, użyj systemu kontroli wersji, takiego jak Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Przełączyć na tryb Full Auto?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Tryb Full Auto pozwala AI uruchamiać dowolne narzędzia — polecenia Bash, edycje plików, usuwanie plików, pobieranie z sieci — bez wcześniejszego pytania o zgodę.<br><br>Jest to wygodne w przypadku zaufanych projektów roboczych, ale może być ryzykowne: błędny krok może nadpisać lub usunąć pliki, uruchomić destrukcyjne polecenie powłoki lub wypchnąć niezamierzone zmiany. Używaj systemu kontroli wersji (Git), aby móc odzyskać dane, jeśli coś pójdzie nie tak.<br><br>Włączaj tryb Full Auto tylko w projektach, którym ufasz. Możesz wrócić do trybu edycji w dowolnym momencie, używając <kbd>Shift+Tab</kbd> lub klikając pasek trybu.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Włącz tryb Full Auto",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Gotowe do budowania",
   "AI_CHAT_ONBOARDING_SEND": "Wyślij",
   "AI_CHAT_SHOW_DIFF": "Pokaż różnice",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Proszę poprawić plan.",
   "AI_CHAT_MODE_PLAN": "Tryb planowania",
   "AI_CHAT_MODE_EDIT": "Tryb edycji AI",
-  "AI_CHAT_MODE_FULL_AUTO": "Pełna automatyzacja",
   "AI_CHAT_MODE_INFO_PLAN": "AI zaproponuje plan przed wprowadzeniem zmian (Kliknij, aby przełączyć)",
   "AI_CHAT_MODE_INFO_EDIT": "AI może edytować pliki. Polecenia powłoki wymagają zatwierdzenia (Kliknij, aby przełączyć)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI może edytować pliki i uruchamiać polecenia bez zatwierdzenia (Kliknij, aby przełączyć)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Wybierz zakres samodzielności AI [lub Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Nastąpiło wylogowanie z Claude Code lub Twoja sesja logowania wygasła.",
   "AI_CHAT_AUTH_ERROR_BTN": "Zaloguj się do Claude w Terminalu",
   "AI_CHAT_AUTH_ERROR_HINT": "Wpisz /login w terminalu, który się otworzy, a następnie wyślij wiadomość ponownie.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Wybierz zakres samodzielności AI [lub Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Przełączyć na tryb Pełna Automatyzacja?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Tryb Pełna Automatyzacja pozwala AI uruchamiać dowolne narzędzia — polecenia Bash, edycję plików, usuwanie plików, zapytania sieciowe — bez uprzedniego pytania.<br><br>Jest to wygodne w przypadku zaufanych projektów roboczych, ale może być ryzykowne: błędna decyzja może spowodować nadpisanie lub usunięcie plików, uruchomienie destrukcyjnego polecenia powłoki lub wypchnięcie niezamierzonych zmian. Używaj systemu kontroli wersji (Git), aby móc przywrócić projekt, gdyby coś poszło nie tak.<br><br>Włączaj tryb Pełna Automatyzacja tylko w projektach, którym ufasz. Możesz wrócić do trybu edycji w dowolnym momencie, używając <kbd>Shift+Tab</kbd> lub klikając pasek trybu.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Włącz Pełną Automatyzację",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Pełna Automatyzacja",
+  "AI_CHAT_MODE_INFO_AUTO": "AI automatycznie zatwierdza bezpieczne akcje i pyta o te ryzykowne (Kliknij, aby przełączyć)"
 });

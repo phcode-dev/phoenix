@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Nu s-a putut deschide <span class=\"dialog-filename\">{0}</span>. Este posibil ca fișierul să fi fost mutat sau șters.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Anulare și Restaurare AI",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Aceasta va anula doar modificările făcute de AI. Modificările care nu au fost făcute de AI nu vor fi restaurate și se pot pierde. Pentru un istoric complet al versiunilor, folosiți un sistem de control al versiunilor precum Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Comutați la Modul complet automat?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Modul complet automat permite AI-ului să ruleze orice instrument — comenzi Bash, editări de fișiere, ștergeri de fișiere, preluări web — fără a vă întreba mai întâi.<br><br>Acest lucru este convenabil pentru proiecte de ciornă de încredere, dar poate fi riscant: un pas greșit ar putea suprascrie sau șterge fișiere, rula o comandă shell distructivă sau să facă push la modificări neintenționate. Utilizați controlul versiunilor (Git) pentru a putea recupera dacă ceva nu merge bine.<br><br>Activați Modul complet automat doar în proiectele în care aveți încredere. Puteți comuta înapoi la Modul Editare oricând folosind <kbd>Shift+Tab</kbd> sau dând clic pe bara de moduri.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Activați Modul complet automat",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Gata de construit",
   "AI_CHAT_ONBOARDING_SEND": "Trimiteți",
   "AI_CHAT_SHOW_DIFF": "Afișează diferențele",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Vă rugăm să revizuiți planul.",
   "AI_CHAT_MODE_PLAN": "Mod Planificare",
   "AI_CHAT_MODE_EDIT": "Mod Editare AI",
-  "AI_CHAT_MODE_FULL_AUTO": "Automat Complet",
   "AI_CHAT_MODE_INFO_PLAN": "AI-ul va propune un plan înainte de a face modificări (Apasă pentru a comuta)",
   "AI_CHAT_MODE_INFO_EDIT": "AI-ul poate edita fișiere. Comenzile shell necesită aprobare (Apasă pentru a comuta)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI-ul poate edita fișiere și rula comenzi fără aprobare (Apasă pentru a comuta)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Alegeți cât de mult poate face AI-ul fără aprobare [sau Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code este deconectat sau autentificarea a expirat.",
   "AI_CHAT_AUTH_ERROR_BTN": "Autentifică-te la Claude în Terminal",
   "AI_CHAT_AUTH_ERROR_HINT": "Tastați /login în terminalul care se deschide, apoi trimiteți din nou mesajul.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Alegeți cât de mult poate face AI-ul fără aprobare [sau Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Comutați la modul Permite Totul?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Modul Permite Totul permite AI-ului să ruleze orice instrument — comenzi Bash, editări de fișiere, ștergeri de fișiere, preluări web — fără a vă întreba mai întâi.<br><br>Acest lucru este convenabil pentru proiecte de testare de încredere, dar poate fi riscant: un pas greșit ar putea suprascrie sau șterge fișiere, rula o comandă shell distructivă sau trimite modificări neintenționate. Utilizați un sistem de control al versiunilor (Git) pentru a putea recupera dacă ceva nu merge bine.<br><br>Activați modul Permite Totul doar în proiectele în care aveți încredere. Puteți comuta înapoi la Modul Editare oricând folosind <kbd>Shift+Tab</kbd> sau dând clic pe bara de moduri.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Activați Permite Totul",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Permite Totul",
+  "AI_CHAT_MODE_INFO_AUTO": "AI-ul folosește raționamentul pentru a aproba automat acțiunile sigure și întreabă în legătură cu cele riscante (Faceți clic pentru a comuta)"
 });

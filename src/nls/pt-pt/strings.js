@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Não foi possível abrir <span class=\"dialog-filename\">{0}</span>. O ficheiro pode ter sido movido ou eliminado.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Desfazer e Restaurar da IA",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Isto apenas irá desfazer as alterações feitas pela IA. As alterações não efetuadas pela IA não serão restauradas e poderão ser perdidas. Para um histórico de versões completo, utilize um sistema de controlo de versões como o Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Mudar para o Modo Totalmente Automático?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "O modo Totalmente Automático permite que a IA execute qualquer ferramenta — comandos Bash, edições de ficheiros, eliminações de ficheiros, pedidos web — sem pedir a sua permissão primeiro.<br><br>Isto é conveniente para projetos de rascunho confiáveis, mas pode ser arriscado: um passo mal calculado pode substituir ou eliminar ficheiros, executar um comando de shell destrutivo ou fazer push de alterações não intencionais. Utilize controlo de versões (Git) para que possa recuperar caso algo corra mal.<br><br>Ative o modo Totalmente Automático apenas em projetos nos quais confia. Pode voltar para o Modo de Edição a qualquer momento utilizando <kbd>Shift+Tab</kbd> ou clicando na barra de modo.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Ativar Totalmente Automático",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Pronto para construir",
   "AI_CHAT_ONBOARDING_SEND": "Enviar",
   "AI_CHAT_SHOW_DIFF": "Mostrar diff",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Por favor, reveja o plano.",
   "AI_CHAT_MODE_PLAN": "Modo de Plano",
   "AI_CHAT_MODE_EDIT": "Modo de Edição IA",
-  "AI_CHAT_MODE_FULL_AUTO": "Automático Completo",
   "AI_CHAT_MODE_INFO_PLAN": "A IA irá propor um plano antes de efetuar alterações (Clique para alternar)",
   "AI_CHAT_MODE_INFO_EDIT": "A IA pode editar ficheiros. Os comandos de shell necessitam de aprovação (Clique para alternar)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "A IA pode editar ficheiros e executar comandos sem aprovação (Clique para alternar)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Escolha o quanto a IA pode fazer sem aprovação [ou Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "A sessão em Claude Code foi terminada ou expirou.",
   "AI_CHAT_AUTH_ERROR_BTN": "Iniciar sessão em Claude no Terminal",
   "AI_CHAT_AUTH_ERROR_HINT": "Escreva /login no terminal que abrir e, de seguida, envie a sua mensagem novamente.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Escolha o quanto a IA pode fazer sem aprovação [ou Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Mudar para o modo Permitir Tudo?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "O modo Permitir Tudo permite que a IA execute qualquer ferramenta — comandos Bash, edições de ficheiros, eliminações de ficheiros, pedidos web — sem lhe perguntar primeiro.<br><br>Isto é conveniente para projetos de rascunho confiáveis, mas pode ser arriscado: um passo mal avaliado pode sobrescrever ou eliminar ficheiros, executar um comando de shell destrutivo ou fazer push de alterações não intencionais. Use o controlo de versões (Git) para poder recuperar se algo correr mal.<br><br>Ative o modo Permitir Tudo apenas em projetos em que confia. Pode voltar ao Modo de Edição a qualquer momento usando <kbd>Shift+Tab</kbd> ou clicando na barra de modo.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Ativar Permitir Tudo",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Permitir Tudo",
+  "AI_CHAT_MODE_INFO_AUTO": "A IA usa o seu critério para aprovar automaticamente ações seguras e pede confirmação para as arriscadas (Clique para alternar)"
 });

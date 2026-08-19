@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Ei voitu avata tiedostoa <span class=\"dialog-filename\">{0}</span>. Tiedosto on saatettu siirtää tai poistaa.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI:n kumoaminen ja palautus",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tämä kumoaa vain AI:n tekemät muutokset. Muita kuin AI:n tekemiä muutoksia ei palauteta, ja ne voivat kadota. Täyttä versiohistoriaa varten käytä versionhallintaa, kuten Gitiä.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Vaihdetaanko täysautomaattitilaan?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Täysautomaattitila antaa tekoälyn suorittaa minkä tahansa työkalun – Bash-komentoja, tiedostomuokkauksia, tiedostojen poistoja, verkkohakuja – kysymättä sinulta ensin.<br><br>Tämä on kätevää luotetuissa kokeiluprojekteissa, mutta voi olla riskialtista: väärin arvioitu vaihe voi ylikirjoittaa tai poistaa tiedostoja, suorittaa tuhoisan komentorivikomennon tai työntää (push) tahattomia muutoksia. Käytä versionhallintaa (Git), jotta voit palauttaa tilanteen, jos jokin menee pieleen.<br><br>Ota täysautomaattitila käyttöön vain projekteissa, joihin luotat. Voit palata muokkaustilaan milloin tahansa näppäinyhdistelmällä <kbd>Shift+Tab</kbd> tai napsauttamalla tilapalkkia.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Ota täysautomaatti käyttöön",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Valmiina rakentamaan",
   "AI_CHAT_ONBOARDING_SEND": "Lähetä",
   "AI_CHAT_SHOW_DIFF": "Näytä erot",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Tarkenna suunnitelmaa.",
   "AI_CHAT_MODE_PLAN": "Suunnittelutila",
   "AI_CHAT_MODE_EDIT": "Tekoälymuokkaustila",
-  "AI_CHAT_MODE_FULL_AUTO": "Täysautomaattinen",
   "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä (Napsauta vaihtaaksesi)",
   "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Komentotulkin komennot vaativat hyväksynnän (Napsauta vaihtaaksesi)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää (Napsauta vaihtaaksesi)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Valitse, kuinka paljon tekoäly saa tehdä ilman hyväksyntää [tai vaihto+sarkain]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code -palvelusta on kirjauduttu ulos tai kirjautumisesi on vanhentunut.",
   "AI_CHAT_AUTH_ERROR_BTN": "Kirjaudu Claudeen terminaalissa",
   "AI_CHAT_AUTH_ERROR_HINT": "Kirjoita /login avautuvaan terminaaliin ja lähetä sitten viestisi uudelleen.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Valitse, kuinka paljon tekoäly saa tehdä ilman hyväksyntää [tai vaihto+sarkain]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Vaihdetaanko Salli kaikki -tilaan?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Salli kaikki -tila antaa tekoälyn suorittaa minkä tahansa työkalun — Bash-komennot, tiedostomuokkaukset, tiedostojen poistot, verkkopyynnöt — kysymättä sinulta ensin.<br><br>Tämä on kätevää luotetuissa kokeiluprojekteissa, mutta voi olla riskialtista: väärin arvioitu vaihe voi ylikirjoittaa tai poistaa tiedostoja, suorittaa tuhoisan komentorivikomennon tai puskea tahattomia muutoksia. Käytä versionhallintaa (Git), jotta voit palauttaa tiedot, jos jokin menee pieleen.<br><br>Ota Salli kaikki -tila käyttöön vain projekteissa, joihin luotat. Voit vaihtaa takaisin muokkaustilaan milloin tahansa käyttämällä <kbd>Shift+Tab</kbd> tai napsauttamalla tilapalkkia.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Ota Salli kaikki käyttöön",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Salli kaikki",
+  "AI_CHAT_MODE_INFO_AUTO": "Tekoäly hyväksyy turvalliset toiminnot automaattisesti ja kysyy lupaa riskialttiisiin (Vaihda napsauttamalla)"
 });

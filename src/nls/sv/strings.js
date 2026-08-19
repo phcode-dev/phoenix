@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Kunde inte öppna <span class=\"dialog-filename\">{0}</span>. Filen kan ha flyttats eller tagits bort.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Ångra och återställ",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Detta ångrar endast ändringar som gjorts av AI:n. Ändringar som inte gjorts av AI:n kommer inte att återställas och kan gå förlorade. För fullständig versionshistorik, använd versionshantering som Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Växla till Full Auto-läge?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Full Auto-läget låter AI:n köra vilket verktyg som helst – Bash-kommandon, filredigeringar, filraderingar, webbhämtningar – utan att fråga dig först.<br><br>Detta är bekvämt för betrodda kladdprojekt, men kan vara riskabelt: ett felbedömt steg kan skriva över eller radera filer, köra ett destruktivt skalkommando eller pusha oavsiktliga ändringar. Använd versionshantering (Git) så att du kan återställa om något går fel.<br><br>Aktivera endast Full Auto i projekt du litar på. Du kan när som helst byta tillbaka till redigeringsläge med <kbd>Shift+Tab</kbd> eller genom att klicka på lägesfältet.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Aktivera Full Auto",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Redo att bygga",
   "AI_CHAT_ONBOARDING_SEND": "Skicka",
   "AI_CHAT_SHOW_DIFF": "Visa diff",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Vänligen revidera planen.",
   "AI_CHAT_MODE_PLAN": "Planeringsläge",
   "AI_CHAT_MODE_EDIT": "AI-redigeringsläge",
-  "AI_CHAT_MODE_FULL_AUTO": "Helautomatiskt",
   "AI_CHAT_MODE_INFO_PLAN": "AI kommer att föreslå en plan innan den gör ändringar (Klicka för att byta)",
   "AI_CHAT_MODE_INFO_EDIT": "AI kan redigera filer. Shell-kommandon kräver godkännande (Klicka för att byta)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigera filer och köra kommandon utan godkännande (Klicka för att byta)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Välj hur mycket AI:n kan göra utan godkännande [eller Skift+Tabb]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code är utloggad eller så har din inloggning gått ut.",
   "AI_CHAT_AUTH_ERROR_BTN": "Logga in på Claude i terminalen",
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i terminalen som öppnas och skicka sedan ditt meddelande igen.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Välj hur mycket AI:n kan göra utan godkännande [eller Skift+Tabb]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Växla till läget Tillåt allt?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Läget Tillåt allt låter AI:n köra vilket verktyg som helst – Bash-kommandon, filredigeringar, filborttagningar, webbhämtningar – utan att fråga dig först.<br><br>Detta är bekvämt för betrodda kladdprojekt, men kan vara riskabelt: ett felbedömt steg kan skriva över eller ta bort filer, köra ett destruktivt skalkommando eller pusha oavsiktliga ändringar. Använd versionshantering (Git) så att du kan återställa om något går fel.<br><br>Aktivera endast Tillåt allt i projekt som du litar på. Du kan när som helst växla tillbaka till redigeringsläge med <kbd>Shift+Tab</kbd> eller genom att klicka på lägesfältet.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Aktivera Tillåt allt",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Tillåt allt",
+  "AI_CHAT_MODE_INFO_AUTO": "AI:n använder sitt omdöme för att automatiskt godkänna säkra åtgärder och frågar om riskfyllda (Klicka för att byta)"
 });

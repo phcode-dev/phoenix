@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Impossibile aprire <span class=\"dialog-filename\">{0}</span>. Il file potrebbe essere stato spostato o eliminato.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "Annulla e ripristina AI",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Questa operazione annullerà solo le modifiche apportate dall'AI. Le modifiche apportate al di fuori dell'AI non verranno ripristinate e potrebbero andare perse. Per una cronologia completa delle versioni, utilizza un sistema di controllo di versione come Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Passare alla modalità Full Auto?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "La modalità Full Auto consente all'IA di eseguire qualsiasi strumento — comandi Bash, modifiche di file, eliminazioni di file, recuperi web — senza chiedertelo prima.<br><br>È comodo per progetti scratch di cui ti fidi, ma può essere rischioso: un passaggio valutato male potrebbe sovrascrivere o eliminare file, eseguire un comando shell distruttivo o effettuare il push di modifiche non intenzionali. Usa un sistema di controllo di versione (Git) per poter effettuare un ripristino se qualcosa va storto.<br><br>Abilita la modalità Full Auto solo nei progetti di cui ti fidi. Puoi tornare alla modalità di modifica in qualsiasi momento usando <kbd>Shift+Tab</kbd> o facendo clic sulla barra della modalità.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Abilita Full Auto",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Pronto per creare",
   "AI_CHAT_ONBOARDING_SEND": "Invia",
   "AI_CHAT_SHOW_DIFF": "Mostra diff",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Per favore, revisiona il piano.",
   "AI_CHAT_MODE_PLAN": "Modalità Pianificazione",
   "AI_CHAT_MODE_EDIT": "Modalità Modifica IA",
-  "AI_CHAT_MODE_FULL_AUTO": "Completamente Automatico",
   "AI_CHAT_MODE_INFO_PLAN": "L'IA proporrà un piano prima di apportare modifiche (Fai clic per cambiare)",
   "AI_CHAT_MODE_INFO_EDIT": "L'IA può modificare i file. I comandi della shell richiedono l'approvazione (Fai clic per cambiare)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA può modificare i file ed eseguire comandi senza approvazione (Fai clic per cambiare)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Scegli quante operazioni può eseguire l'IA senza approvazione [o Maiusc+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code è disconnesso o il tuo login è scaduto.",
   "AI_CHAT_AUTH_ERROR_BTN": "Accedi a Claude nel terminale",
   "AI_CHAT_AUTH_ERROR_HINT": "Digita /login nel terminale che si apre, quindi invia di nuovo il tuo messaggio.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Scegli quante operazioni può eseguire l'IA senza approvazione [o Maiusc+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Passare alla modalità Consenti Tutto?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "La modalità Consenti Tutto consente all'IA di eseguire qualsiasi strumento — comandi Bash, modifiche ai file, eliminazioni di file, recupero di dati web — senza chiedertelo prima.<br><br>Questo è comodo per progetti scratch di fiducia, ma può essere rischioso: un'azione errata potrebbe sovrascrivere o eliminare file, eseguire un comando shell distruttivo o effettuare il push di modifiche non intenzionali. Usa un sistema di controllo di versione (Git) in modo da poter ripristinare la situazione se qualcosa va storto.<br><br>Abilita Consenti Tutto solo nei progetti di cui ti fidi. Puoi tornare alla Modalità Modifica in qualsiasi momento usando <kbd>Shift+Tab</kbd> o facendo clic sulla barra della modalità.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Abilita Consenti Tutto",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Consenti Tutto",
+  "AI_CHAT_MODE_INFO_AUTO": "L'IA usa il proprio giudizio per approvare automaticamente le azioni sicure e chiede conferma per quelle rischiose (Clicca per cambiare modalità)"
 });

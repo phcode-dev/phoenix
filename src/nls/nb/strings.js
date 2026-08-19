@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Kunne ikke åpne <span class=\"dialog-filename\">{0}</span>. Filen kan ha blitt flyttet eller slettet.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Angre og gjenopprett",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Dette vil kun angre endringer gjort av AI-en. Endringer gjort utenfor AI-en vil ikke bli gjenopprettet og kan gå tapt. For fullstendig versjonshistorikk, bruk versjonskontroll som Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Bytte til helautomatisk modus?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Helautomatisk modus lar KI-en kjøre ethvert verktøy – Bash-kommandoer, filendringer, filslettinger, web-hentinger – uten å spørre deg først.<br><br>Dette er praktisk for klarerte kladde-prosjekter, men kan være risikabelt: et feilvurdert trinn kan overskrive eller slette filer, kjøre en destruktiv skallkommando eller dytte utilsiktede endringer. Bruk versjonskontroll (Git) slik at du kan gjenopprette hvis noe går galt.<br><br>Aktiver kun helautomatisk modus i prosjekter du stoler på. Du kan bytte tilbake til redigeringsmodus når som helst ved å bruke <kbd>Shift+Tab</kbd> eller ved å klikke på moduslinjen.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Aktiver helautomatisk modus",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Klar til å bygge",
   "AI_CHAT_ONBOARDING_SEND": "Send",
   "AI_CHAT_SHOW_DIFF": "Vis diff",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Vennligst revider planen.",
   "AI_CHAT_MODE_PLAN": "Planmodus",
   "AI_CHAT_MODE_EDIT": "KI-redigeringsmodus",
-  "AI_CHAT_MODE_FULL_AUTO": "Helautomatisk",
   "AI_CHAT_MODE_INFO_PLAN": "KI vil foreslå en plan før den gjør endringer (Klikk for å bytte)",
   "AI_CHAT_MODE_INFO_EDIT": "KI kan redigere filer. Shell-kommandoer krever godkjenning (Klikk for å bytte)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kan redigere filer og kjøre kommandoer uten godkjenning (Klikk for å bytte)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Velg hvor mye AI-en kan gjøre uten godkjenning [eller Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code er logget ut, eller innloggingen din har utløpt.",
   "AI_CHAT_AUTH_ERROR_BTN": "Logg inn på Claude i terminalen",
   "AI_CHAT_AUTH_ERROR_HINT": "Skriv /login i terminalen som åpnes, og send deretter meldingen din på nytt.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Velg hvor mye AI-en kan gjøre uten godkjenning [eller Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Bytte til Tillat alt-modus?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Tillat alt-modus lar KI-en kjøre ethvert verktøy – Bash-kommandoer, filendringer, filslettinger, nettverkshentinger – uten å spørre deg først.<br><br>Dette er praktisk for klarerte kladdeprosjekter, men kan være risikabelt: et feilvurdert steg kan overskrive eller slette filer, kjøre en destruktiv skallkommando eller dytte utilsiktede endringer. Bruk versjonskontroll (Git) slik at du kan gjenopprette hvis noe går galt.<br><br>Aktiver kun Tillat alt-modus i prosjekter du stoler på. Du kan bytte tilbake til redigeringsmodus når som helst ved å bruke <kbd>Shift+Tab</kbd> eller ved å klikke på moduslinjen.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Aktiver Tillat alt",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Tillat alt",
+  "AI_CHAT_MODE_INFO_AUTO": "KI-en bruker skjønn til å autogodkjenne trygge handlinger og spør om risikable (Klikk for å bytte)"
 });

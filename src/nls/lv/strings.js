@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Neizdevās atvērt <span class=\"dialog-filename\">{0}</span>. Iespējams, fails ir pārvietots vai dzēsts.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI atsaukšana un atjaunošana",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tiks atsauktas tikai AI veiktās izmaiņas. Ārpus AI veiktās izmaiņas netiks atjaunotas un var tikt zaudētas. Pilnai versiju vēsturei izmantojiet versiju kontroli, piemēram, Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Pārslēgties uz pilnas automātikas režīmu?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Pilnas automātikas režīms ļauj MI palaist jebkuru rīku — Bash komandas, failu labojumus, failu dzēšanu, tīmekļa pieprasījumus — iepriekš jums nejautājot.<br><br>Tas ir ērti uzticamiem skiču projektiem, bet var būt riskanti: nepareizi novērtēts solis var pārrakstīt vai dzēst failus, palaist destruktīvu čaulas komandu vai iegrūst neparedzētas izmaiņas. Izmantojiet versiju kontroli (Git), lai varētu atgūties, ja kaut kas noiet greizi.<br><br>Iespējojiet pilnas automātikas režīmu tikai projektos, kuriem uzticaties. Jūs jebkurā laikā varat pārslēgties atpakaļ uz rediģēšanas režīmu, izmantojot <kbd>Shift+Tab</kbd> vai noklikšķinot uz režīmu joslas.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Iespējot pilnas automātikas režīmu",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Gatavs veidot",
   "AI_CHAT_ONBOARDING_SEND": "Sūtīt",
   "AI_CHAT_SHOW_DIFF": "Rādīt atšķirības",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Lūdzu, pārskatiet plānu.",
   "AI_CHAT_MODE_PLAN": "Plānošanas režīms",
   "AI_CHAT_MODE_EDIT": "MI rediģēšanas režīms",
-  "AI_CHAT_MODE_FULL_AUTO": "Pilnībā automātisks",
   "AI_CHAT_MODE_INFO_PLAN": "MI piedāvās plānu pirms izmaiņu veikšanas (Noklikšķiniet, lai pārslēgtu)",
   "AI_CHAT_MODE_INFO_EDIT": "MI var rediģēt failus. Shell komandām nepieciešams apstiprinājums (Noklikšķiniet, lai pārslēgtu)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "MI var rediģēt failus un izpildīt komandas bez apstiprinājuma (Noklikšķiniet, lai pārslēgtu)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Izvēlieties, cik daudz MI drīkst darīt bez apstiprinājuma [vai Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Jūs esat izrakstījies no Claude Code vai jūsu pieteikšanās sesija ir beigusies.",
   "AI_CHAT_AUTH_ERROR_BTN": "Pieteikties Claude terminālī",
   "AI_CHAT_AUTH_ERROR_HINT": "Atvērtajā terminālī ierakstiet /login, pēc tam nosūtiet savu ziņu vēlreiz.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Izvēlieties, cik daudz MI drīkst darīt bez apstiprinājuma [vai Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Pārslēgties uz Visu atļaut režīmu?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Visu atļaut režīms ļauj MI palaist jebkuru rīku — Bash komandas, failu labojumus, failu dzēšanu, tīmekļa pieprasījumus — iepriekš nejautājot.<br><br>Tas ir ērti uzticamiem pagaidu projektiem, bet var būt riskanti: nepareizi novērtēts solis var pārrakstīt vai dzēst failus, palaist destruktīvu čaulas (shell) komandu vai iegrūst (push) neparedzētas izmaiņas. Izmantojiet versiju kontroli (Git), lai varētu atgūt datus, ja kaut kas noiet greizi.<br><br>Iespējojiet Visu atļaut režīmu tikai projektos, kuriem uzticaties. Jūs jebkurā laikā varat pārslēgties atpakaļ uz Rediģēšanas režīmu, izmantojot <kbd>Shift+Tab</kbd> vai noklikšķinot uz režīma joslas.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Iespējot Visu atļaut",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Visu atļaut",
+  "AI_CHAT_MODE_INFO_AUTO": "MI izmanto spriestspēju, lai automātiski apstiprinātu drošas darbības, un jautā par riskantām (Noklikšķiniet, lai pārslēgtu)"
 });

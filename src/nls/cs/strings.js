@@ -2440,9 +2440,6 @@ define({
   "AI_CHAT_FILE_NOT_FOUND_MSG": "Nepodařilo se otevřít <span class=\"dialog-filename\">{0}</span>. Soubor mohl být přesunut nebo smazán.",
   "AI_CHAT_UNDO_RESTORE_WARNING_TITLE": "AI: Vrácení a obnovení",
   "AI_CHAT_UNDO_RESTORE_WARNING_BODY": "Tímto se vrátí zpět pouze změny provedené AI. Změny provedené mimo AI nebudou obnoveny a mohou být ztraceny. Pro úplnou historii verzí použijte verzovací systém, jako je Git.",
-  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Přepnout do režimu Full Auto?",
-  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Režim Full Auto umožňuje AI spouštět jakýkoli nástroj – příkazy Bash, úpravy souborů, mazání souborů, stahování z webu – aniž by se vás nejprve zeptala.<br><br>Je to pohodlné pro důvěryhodné projekty nanečisto, ale může to být riskantní: špatně vyhodnocený krok může přepsat nebo smazat soubory, spustit destruktivní příkaz shellu nebo odeslat nechtěné změny. Používejte správu verzí (Git), abyste mohli stav obnovit, pokud se něco pokazí.<br><br>Režim Full Auto povolujte pouze v projektech, kterým důvěřujete. Zpět do režimu úprav se můžete kdykoli přepnout pomocí <kbd>Shift+Tab</kbd> nebo kliknutím na lištu režimů.",
-  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Povolit Full Auto",
   "AI_CHAT_ONBOARDING_REVIEW_PROMPT": "Připraveno k sestavení",
   "AI_CHAT_ONBOARDING_SEND": "Odeslat",
   "AI_CHAT_SHOW_DIFF": "Zobrazit diff",
@@ -2479,10 +2476,10 @@ define({
   "AI_CHAT_PLAN_REVISE_DEFAULT": "Prosím, revidujte plán.",
   "AI_CHAT_MODE_PLAN": "Režim plánování",
   "AI_CHAT_MODE_EDIT": "AI režim úprav",
-  "AI_CHAT_MODE_FULL_AUTO": "Plně automatický",
   "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán před provedením změn (Kliknutím přepnete)",
   "AI_CHAT_MODE_INFO_EDIT": "AI může upravovat soubory. Příkazy shellu vyžadují schválení (Kliknutím přepnete)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI může upravovat soubory a spouštět příkazy bez schválení (Kliknutím přepnete)",
+  "AI_CHAT_PERMISSION_SELECT_TITLE": "Zvolte, kolik toho může AI udělat bez schválení [nebo Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code je odhlášen nebo vaše přihlášení vypršelo.",
   "AI_CHAT_AUTH_ERROR_BTN": "Přihlásit se ke Claude v Terminálu",
   "AI_CHAT_AUTH_ERROR_HINT": "Do terminálu, který se otevře, zadejte /login a poté odešlete zprávu znovu.",
@@ -2680,5 +2677,10 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "AI_CHAT_PERMISSION_SELECT_TITLE": "Zvolte, kolik toho může AI udělat bez schválení [nebo Shift+Tab]"
+  "AI_CHAT_FULL_AUTO_WARNING_TITLE": "Přepnout do režimu Povolit vše?",
+  "AI_CHAT_FULL_AUTO_WARNING_BODY": "Režim Povolit vše umožňuje AI spouštět jakýkoli nástroj – příkazy Bash, úpravy souborů, mazání souborů, načítání z webu – aniž by se vás nejprve zeptala.<br><br>To je pohodlné pro důvěryhodné dočasné projekty, ale může to být riskantní: špatně vyhodnocený krok může přepsat nebo smazat soubory, spustit destruktivní příkaz shellu nebo odeslat nechtěné změny. Používejte systém pro správu verzí (Git), abyste mohli obnovit data, pokud se něco pokazí.<br><br>Režim Povolit vše aktivujte pouze v projektech, kterým důvěřujete. Zpět do režimu úprav se můžete kdykoli přepnout pomocí <kbd>Shift+Tab</kbd> nebo kliknutím na lištu režimů.",
+  "AI_CHAT_FULL_AUTO_WARNING_PROCEED": "Aktivovat Povolit vše",
+  "AI_CHAT_MODE_AUTO": "Auto",
+  "AI_CHAT_MODE_FULL_AUTO": "Povolit vše",
+  "AI_CHAT_MODE_INFO_AUTO": "AI používá vlastní úsudek k automatickému schvalování bezpečných akcí a na ty riskantní se ptá (Kliknutím přepnete)"
 });
