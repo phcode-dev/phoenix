@@ -108,6 +108,7 @@
   "AI_CHAT_MODE_CLI": "Claude Code CLI",
   "AI_CHAT_MODE_EDIT": "AI Edit Mode",
   "AI_CHAT_MODE_FULL_AUTO": "Allow Everything",
+  "AI_CHAT_MODE_INFO_AUTO": "AI uses judgment to auto-approve safe actions and asks about risky ones (Click to switch)",
   "AI_CHAT_MODE_INFO_EDIT": "AI can edit files. Shell commands need approval (Click to switch)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI can edit files and run commands without approval (Click to switch)",
   "AI_CHAT_MODE_INFO_PLAN": "AI will propose a plan before making changes (Click to switch)",
