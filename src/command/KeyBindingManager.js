@@ -1355,6 +1355,9 @@ define(function (require, exports, module) {
         if (!handled && _handleKey(shortcut)) {
             event.stopPropagation();
             event.preventDefault();
+        } else if (!handled && event.key === "Escape" && Phoenix.isNativeApp && brackets.platform === "mac") {
+            // unhandled Esc reaching the native macOS window exits full screen
+            event.preventDefault();
         }
     }
 
