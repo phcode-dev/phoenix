@@ -1579,6 +1579,7 @@ define({
     "CMD_JUMPTO_DEFINITION": "Go to Definition",
     "JUMPTO_DEFINITION_SELECT_TARGET": "Select a definition",
     "JUMPTO_DEFINITION_LINE_LABEL": "Line {0}",
+    "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementation",
     "CMD_SHOW_PARAMETER_HINT": "Show Parameter Hint",
     "NO_ARGUMENTS": "<no parameters>",
     "CODE_HINT_IMPORT_FROM_N": "{0} imports…",

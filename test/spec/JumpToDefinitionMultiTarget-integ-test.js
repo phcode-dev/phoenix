@@ -284,9 +284,16 @@ define(function (require, exports, module) {
                 await openPolymorphismFile();
 
                 var jumpPromise = CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
-                await awaitPickerOpen(3);
+                // 4, not 3: the base declaration gotoDefinition resolved is a genuinely distinct
+                // location here (unlike a real server, where it usually turns out to be one of the
+                // implementations - see mergeLocations()) and must not be silently dropped in favor
+                // of the implementation results.
+                await awaitPickerOpen(4);
 
-                getOpenMenuItems().eq(2).trigger("click");   // AliceClass.sayHello
+                var itemsText = getOpenMenuItems().text();
+                expect(itemsText).toContain("4:5"); // BASE_SAYHELLO, 1-based - never discarded
+
+                getOpenMenuItems().eq(3).trigger("click");   // AliceClass.sayHello (now 4th: base, John, Jane, Alice)
                 await awaitsForDone(jumpPromise, "jump to an implementation after the fallback");
 
                 var editor = EditorManager.getCurrentFullEditor();
@@ -294,6 +301,23 @@ define(function (require, exports, module) {
                 var pos = editor.getCursorPos();
                 expect(pos.line).toBe(ALICE_SAYHELLO.line);
                 expect(pos.ch).toBe(ALICE_SAYHELLO.ch);
+            });
+
+        it("should not duplicate the base declaration when it already matches an implementation",
+            async function () {
+                // The common real-world case (see #3093 comment thread and live testing): the
+                // single "definition" location coincides with one of the implementations (same
+                // file/position, possibly just a wider range) - it must collapse into that entry,
+                // not add a redundant 4th item.
+                registerMockProvider([locationFor(JOHN_SAYHELLO)], {
+                    result: [locationFor(JOHN_SAYHELLO), locationFor(JANE_SAYHELLO), locationFor(ALICE_SAYHELLO)]
+                });
+                await openPolymorphismFile();
+
+                CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
+                await awaitPickerOpen(3);
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $(".inlinemenu-menu.open")[0]);
             });
 
         it("should jump straight to the definition when implementations adds nothing new", async function () {
@@ -536,6 +560,75 @@ define(function (require, exports, module) {
                     // sayHello's own block only - never spills into the unrelated function after it
                     expect(excerpt).toBe(lines.slice(1, 4).join("\n"));
                     expect(excerpt).not.toContain("topLevelThree");
+                });
+        });
+
+        // mergeLocations() is pure array logic - see doJumpToDef's fallBackToImplementations(),
+        // which uses it so a location gotoDefinition already resolved is never silently discarded
+        // in favor of gotoImplementation's answer.
+        describe("location merging", function () {
+            function loc(uri, line, ch) {
+                return {
+                    uri: uri,
+                    range: { start: { line: line, character: ch }, end: { line: line, character: ch + 1 } }
+                };
+            }
+
+            it("should keep a genuinely distinct primary location as its own extra entry, listed first",
+                function () {
+                    var primary = loc("file:///base.js", 1, 2),
+                        extras = [loc("file:///a.js", 5, 2), loc("file:///b.js", 9, 2)],
+                        merged = DefaultProviders._mergeJumpToDefLocations(primary, extras);
+
+                    expect(merged.length).toBe(3);
+                    expect(merged[0]).toBe(primary);
+                    expect(merged[1]).toBe(extras[0]);
+                    expect(merged[2]).toBe(extras[1]);
+                });
+
+            it("should not duplicate an extra that matches the primary location", function () {
+                // extras[1] has the same file/start position as primary, just a different
+                // range.end (as real servers commonly do - see #3093 comment thread and live
+                // testing) - the two are functionally identical (only range.start is ever
+                // used), so it doesn't matter which of the pair survives the dedup, only that
+                // there isn't a redundant duplicate entry in the result.
+                var primary = {
+                        uri: "file:///a.js",
+                        range: { start: { line: 5, character: 2 }, end: { line: 40, character: 3 } }
+                    },
+                    extras = [loc("file:///x.js", 1, 2), loc("file:///a.js", 5, 2), loc("file:///y.js", 9, 2)],
+                    merged = DefaultProviders._mergeJumpToDefLocations(primary, extras);
+
+                expect(merged.length).toBe(3);
+                expect(merged[0]).toBe(primary); // primary is processed first, so it's the one kept
+                expect(merged[1]).toBe(extras[0]);
+                expect(merged[2]).toBe(extras[2]);
+            });
+
+            it("should also dedupe duplicate extras against each other", function () {
+                var primary = loc("file:///a.js", 1, 2),
+                    extras = [loc("file:///b.js", 5, 2), loc("file:///b.js", 5, 2)],
+                    merged = DefaultProviders._mergeJumpToDefLocations(primary, extras);
+
+                expect(merged.length).toBe(2);
+            });
+
+            it("should dedupe locations on the same line at different columns, not just exact matches",
+                function () {
+                    // Real repro: gotoDefinition on a class reference lands at column 0 (the very
+                    // start of "export class JohnClass extends MyBaseClass"), while
+                    // gotoImplementation for that same class lands at the "JohnClass" identifier a
+                    // few columns in - same declaration, same line, different column. Keying
+                    // dedup on the exact character missed this and showed JohnClass twice.
+                    var primary = {
+                            uri: "file:///impx.js",
+                            range: { start: { line: 6, character: 0 }, end: { line: 8, character: 1 } }
+                        },
+                        extras = [loc("file:///impx.js", 6, 13)],
+                        merged = DefaultProviders._mergeJumpToDefLocations(primary, extras);
+
+                    expect(merged.length).toBe(1);
+                    expect(merged[0]).toBe(primary);
                 });
         });
 
