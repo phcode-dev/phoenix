@@ -2639,6 +2639,39 @@ a, img {
     p:first-child { margin-top: 0; }
     p:last-child { margin-bottom: 0; }
 
+    // File + line label the jump-to-definition multi-target picker prepends before its code
+    // excerpt - see languageTools/DefaultProviders.js showJumpTargetPicker()/showExcerptFor().
+    // Filename (+ dimmer directory, when the candidate isn't in the file you jumped from) on the
+    // left, line number flush to the right.
+    .jump-to-def-excerpt-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+        font-size: 11px;
+        color: @bc-text-medium;
+        margin-bottom: 4px;
+
+        .dark & {
+            color: @dark-bc-text-medium;
+        }
+
+        &-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &-path {
+            opacity: 0.6;
+        }
+
+        &-line {
+            flex: 0 0 auto;
+            white-space: nowrap;
+        }
+    }
+
     // Headings (e.g. the package-name header in npm hint docs): kill the browser's large default
     // margins - a first-child heading otherwise adds its top margin to the popup's own padding and
     // the spacing reads top-heavy vs the bottom.

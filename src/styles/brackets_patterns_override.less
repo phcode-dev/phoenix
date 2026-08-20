@@ -694,28 +694,42 @@ a:focus {
             }
         }
 
-        // Styles used for inlinemenu widget header
+        // Styles used for inlinemenu widget header. @bc-bg-tool-bar/@bc-inlinemenu-text used to be
+        // identical in light and dark variants (a dark toolbar-grey chip that clashed against an
+        // otherwise light dropdown in light theme) - use the theme-aware "muted panel" pair instead,
+        // same tokens as this picker's own .jump-to-def-item-path, so the header reads as a subtle
+        // section label rather than a mismatched dark badge.
         li.inlinemenu-header a {
-            background-color: @bc-bg-tool-bar;
-            color: @bc-inlinemenu-text;
+            background-color: @bc-panel-bg-alt;
+            color: @bc-text-medium;
             padding-bottom: 5px;
 
             .dark & {
-                background-color: @dark-bc-bg-tool-bar;
-                color: @dark-bc-inlinemenu-text;
-                padding-bottom: 5px;
+                background-color: @dark-bc-panel-bg-alt;
+                color: @dark-bc-text-medium;
             }
 
             &:hover {
-                background-color: @bc-bg-tool-bar;
-                color: @bc-inlinemenu-text;
-                padding-bottom: 5px;
+                background-color: @bc-panel-bg-alt;
+                color: @bc-text-medium;
 
                 .dark & {
-                    background-color: @dark-bc-bg-tool-bar;
-                    color: @dark-bc-inlinemenu-text;
-                    padding-bottom: 5px;
+                    background-color: @dark-bc-panel-bg-alt;
+                    color: @dark-bc-text-medium;
                 }
+            }
+        }
+
+        // Muted directory suffix on jump-to-definition's multi-target picker items - see
+        // languageTools/DefaultProviders.js showJumpTargetPicker(). Scoped here since
+        // .quick-open-path (used for the same muted-path look in QuickOpen) only applies under
+        // .quick-search-container.
+        .jump-to-def-item-path {
+            color: @bc-text-medium;
+            font-size: 11px;
+
+            .dark & {
+                color: @dark-bc-text-medium;
             }
         }
 

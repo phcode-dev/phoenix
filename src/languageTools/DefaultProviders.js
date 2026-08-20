@@ -32,15 +32,21 @@ define(function (require, exports, module) {
     var EditorManager = require("editor/EditorManager"),
       DocumentManager = require("document/DocumentManager"),
       PreferencesManager = require("preferences/PreferencesManager"),
+      ProjectManager = require("project/ProjectManager"),
       CommandManager = require("command/CommandManager"),
       Commands = require("command/Commands"),
       StringMatch = require("utils/StringMatch"),
       CodeInspection = require("language/CodeInspection"),
+      LanguageManager = require("language/LanguageManager"),
+      QuickViewManager = require("features/QuickViewManager"),
+      FileSystem = require("filesystem/FileSystem"),
       PathConverters = require("languageTools/PathConverters"),
       TabstopManager = require("editor/TabstopManager"),
       Strings = require("strings"),
       StringUtils = require("utils/StringUtils"),
       Metrics = require("utils/Metrics"),
+      FileUtils = require("file/FileUtils"),
+      InlineMenu = require("widgets/InlineMenu").InlineMenu,
       marked = require("thirdparty/marked.min"),
       matcher = new StringMatch.StringMatcher({
         preferPrefixMatches: true
@@ -265,14 +271,17 @@ define(function (require, exports, module) {
             _hideDocPopup();
             return;
         }
-        var $menu = $hint.closest(".codehint-menu");
+        // .inlinemenu-menu too: the jump-to-definition multi-target picker (see
+        // JumpToDefProvider.doJumpToDef -> showJumpTargetPicker) reuses this same side-popup
+        // mechanism, via InlineMenu, to show a code excerpt for the hovered/selected target.
+        var $menu = $hint.closest(".codehint-menu, .inlinemenu-menu");
         if (!docHtml || !$menu.length) {
             _hideDocPopup();
             return;
         }
         // Make the popup a child of the hint menu so it is removed automatically when the menu is
-        // removed (CodeHintList.close() always does $hintMenu.remove()). This ties its lifecycle
-        // strictly to the code-hint list, regardless of which teardown path fires. It uses
+        // removed (CodeHintList.close()/InlineMenu.close() always remove $hintMenu). This ties its
+        // lifecycle strictly to the list, regardless of which teardown path fires. It uses
         // position:fixed, so it is still placed in viewport coordinates and is never clipped.
         if (!$lspDocPopup || !$lspDocPopup.parent().is($menu)) {
             $lspDocPopup = $("<div>").addClass("lsp-hint-doc-popup").appendTo($menu);
@@ -811,6 +820,139 @@ define(function (require, exports, module) {
         EditorManager.getCurrentFullEditor().setCursorPos(curPos.line, curPos.ch, true);
     }
 
+    var DECLARATION_SCAN_LIMIT = 200; // lines to search upward/downward before giving up
+    var EXCERPT_BODY_MAX_LINES = 6;   // cap on the target's own block (target line included)
+
+    function _indentOf(line) {
+        return /^[ \t]*/.exec(line)[0].length;
+    }
+
+    // Scans upward from just above lineIdx for the nearest non-blank line indented *less* than
+    // lineIdx's own line - i.e. the line that opens whatever block/scope lineIdx sits inside.
+    // Language-agnostic on purpose: rather than hand-listing every language's "class"/"def"/"fn"/
+    // "func"/... declaration keywords (which is both never-ending and TS-biased in practice), this
+    // works the same way for any brace- or indentation-scoped language, the same technique editors'
+    // "sticky scroll"/breadcrumb features use. A member a few lines below "class JohnClass extends
+    // MyBaseClass {" is more indented than that line, so this reliably lands there regardless of
+    // what keyword the language actually uses. Best effort only: inconsistent indentation (or a
+    // target already at column 0) just means the excerpt starts at the target line itself instead.
+    function findEnclosingDeclarationLine(lines, lineIdx) {
+        var from = Math.min(lineIdx, lines.length - 1),
+            targetIndent = _indentOf(lines[from]);
+        if (targetIndent === 0) {
+            return null;
+        }
+        var to = Math.max(0, from - DECLARATION_SCAN_LIMIT);
+        for (var i = from - 1; i >= to; i--) {
+            if (!lines[i].trim()) {
+                continue; // skip blank lines - they carry no indentation signal
+            }
+            if (_indentOf(lines[i]) < targetIndent) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    // Mirrors findEnclosingDeclarationLine, but forward: scans from just below lineIdx for the
+    // nearest non-blank line indented at or less than lineIdx's own - i.e. where the block lineIdx
+    // opens actually closes (its own closing brace, in most brace-style languages, or the start of
+    // whatever comes next at the same level). Used to show a truncated target's own block honestly
+    // (with a trailing "...") instead of just grabbing a fixed number of lines regardless of
+    // whether that cuts the block short or spills past its end into unrelated code that follows.
+    function findBlockEndLine(lines, lineIdx) {
+        var indent = _indentOf(lines[lineIdx]),
+            to = Math.min(lines.length - 1, lineIdx + DECLARATION_SCAN_LIMIT);
+        for (var i = lineIdx + 1; i <= to; i++) {
+            if (!lines[i].trim()) {
+                continue;
+            }
+            if (_indentOf(lines[i]) <= indent) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    // True if any line strictly between startExclusive and endExclusive has real content - used so
+    // a "..." marker is only ever shown when something is actually being hidden, never just
+    // because two things happen to be on non-adjacent line numbers (blank lines don't count as
+    // "something hidden").
+    function _hasNonBlankLineBetween(lines, startExclusive, endExclusive) {
+        for (var i = startExclusive + 1; i < endExclusive; i++) {
+            if (lines[i].trim()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // A short, fixed-shape code excerpt around a jump target: the enclosing declaration line (if
+    // found nearby, e.g. "class JohnClass extends MyBaseClass {"), then its own block - never the
+    // declaration's other members (a sibling method, however small, is still unrelated to why this
+    // particular target was picked), so the popup reads the same way every time instead of
+    // sometimes including siblings and sometimes not depending on how much fits. The block itself
+    // is capped independently the same way (see findBlockEndLine) - a long body gets its own "..."
+    // without needing the declaration side to also collapse. A "..." marker is only ever inserted
+    // where it's true - between the declaration and the target when a member actually sits between
+    // them, and after the block only when it was actually cut short - never as a fixed decoration.
+    // Lines are shown in full - the popup already scrolls horizontally for a long line (same as
+    // the signature/documentation code blocks it shares that behavior with).
+    function buildExcerpt(lines, targetLineIdx) {
+        var declLine = findEnclosingDeclarationLine(lines, targetLineIdx),
+            indent = /^[ \t]*/.exec(lines[targetLineIdx])[0],
+            blockEnd = findBlockEndLine(lines, targetLineIdx),
+            naturalEnd = blockEnd !== null ?
+                blockEnd : Math.min(lines.length - 1, targetLineIdx + EXCERPT_BODY_MAX_LINES - 1),
+            bodyEnd = Math.min(naturalEnd, targetLineIdx + EXCERPT_BODY_MAX_LINES - 1),
+            bodyLines = lines.slice(targetLineIdx, bodyEnd + 1);
+
+        if (bodyEnd < naturalEnd) {
+            bodyLines.push(indent + "...");
+        }
+
+        if (declLine === null) {
+            return bodyLines.join("\n");
+        }
+
+        var headerLines = _hasNonBlankLineBetween(lines, declLine, targetLineIdx) ?
+            [lines[declLine], indent + "..."] : [lines[declLine]];
+
+        return headerLines.concat(bodyLines).join("\n");
+    }
+
+    // Text of `path` split into lines, preferring an already-open (possibly unsaved) document
+    // over a disk read, since a jump target may already be open and edited.
+    function getFileLines(path) {
+        var openDoc = DocumentManager.getOpenDocumentForPath(path);
+        if (openDoc) {
+            return $.Deferred().resolve(openDoc.getText().split("\n")).promise();
+        }
+
+        var deferred = $.Deferred();
+        FileSystem.getFileForPath(path).read(function (err, content) {
+            if (err || typeof content !== "string") {
+                deferred.reject();
+            } else {
+                deferred.resolve(content.split("\n"));
+            }
+        });
+        return deferred.promise();
+    }
+
+    // highlight.js language id for a jump target's own file (not the currently active editor's -
+    // a target may be in a different language/file than the one you jumped from). Reuses the same
+    // js/jsx -> ts/tsx aliasing as signature blocks (see SIGNATURE_HLJS_LANG below _docPopupHtml)
+    // since hljs's TS grammar is a strict superset and highlights plain JS/JSX fine.
+    function excerptHljsLang(path) {
+        var language = LanguageManager.getLanguageForPath(path),
+            id = language && language.getId();
+        if (!id) {
+            return "javascript";
+        }
+        return SIGNATURE_HLJS_LANG[id] || id;
+    }
+
     function JumpToDefProvider(client) {
         this.client = client;
     }
@@ -844,43 +986,209 @@ define(function (require, exports, module) {
             return null;
         }
 
-        const pos = editor.getCursorPos(),
+        const client = this.client,
+            pos = editor.getCursorPos(),
             docPath = editor.document.file._path,
             docPathUri = PathConverters.pathToUri(docPath),
-            metricLabel = this.client._metricLabel,
+            metricLabel = client._metricLabel,
             $deferredHints = $.Deferred();
 
-        this.client.gotoDefinition({
+        // Opens (if needed) and moves the cursor to a single resolved {uri, range} location.
+        function jumpToLocation(location) {
+            var docUri = location.uri,
+                startCurPos = {
+                    line: location.range.start.line,
+                    ch: location.range.start.character
+                };
+
+            if (docUri !== docPathUri) {
+                let documentPath = PathConverters.uriToPath(docUri);
+                CommandManager.execute(Commands.FILE_OPEN, {
+                        fullPath: documentPath
+                    })
+                    .done(function () {
+                        setJumpPosition(startCurPos);
+                        $deferredHints.resolve();
+                    })
+                    .fail(function () {
+                        $deferredHints.reject();
+                    });
+            } else { //definition is in current document
+                setJumpPosition(startCurPos);
+                $deferredHints.resolve();
+            }
+        }
+
+        // Builds the near-cursor picker listing every candidate location, Code-Hints-style:
+        // mouse click or keyboard Up/Down + Enter to select, Esc/click-away to cancel. See #3093.
+        //
+        // Rows themselves stay compact (filename + line:col, matching Code Hints' row density) -
+        // disambiguating same-named overrides (which class/function a candidate is in) is instead
+        // shown via a code-excerpt side popup as the user hovers/arrows through items, reusing the
+        // exact same LSP hint documentation popup mechanism (_showDocPopup/_hideDocPopup) that the
+        // autocomplete Code Hints list already uses for its side docs panel.
+        function showJumpTargetPicker(locations) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "def", "Multi." + metricLabel);
+
+            var lineCache = {};
+            function linesFor(path) {
+                if (!lineCache[path]) {
+                    lineCache[path] = getFileLines(path);
+                }
+                return lineCache[path];
+            }
+
+            var items = locations.map(function (location, index) {
+                var path = PathConverters.uriToPath(location.uri),
+                    relPath = ProjectManager.makeProjectRelativeIfPossible(path),
+                    dirPath = FileUtils.getDirectoryPath(relPath),
+                    line = location.range.start.line + 1,
+                    col = location.range.start.character + 1,
+                    name = "<span class=\"jump-to-def-item-file\">" + _.escape(FileUtils.getBaseName(path)) +
+                        "</span> <span class=\"jump-to-def-item-loc\">" + line + ":" + col + "</span>";
+
+                // Only append the directory when there is one to show - for a project-root file
+                // dirPath is "", and repeating the filename we already showed above adds noise
+                // instead of context.
+                if (dirPath) {
+                    name += " <span class=\"jump-to-def-item-path\">" + _.escape(dirPath) + "</span>";
+                }
+
+                return { id: index, name: name };
+            });
+
+            var inlineMenu = new InlineMenu(editor, Strings.JUMPTO_DEFINITION_SELECT_TARGET);
+
+            // Guards against a slower file read for an earlier hover resolving after a later one
+            // and clobbering the popup with stale content.
+            var hoverToken = 0;
+
+            function showExcerptFor(id) {
+                var myToken = ++hoverToken,
+                    location = locations[id],
+                    path = PathConverters.uriToPath(location.uri),
+                    line = location.range.start.line + 1,
+                    // Left: filename, plus a dimmer " - <directory>" only when this candidate is
+                    // in a different file than the one the jump was invoked from (no point telling
+                    // you "you're in script.js" when you already are). Right: the line, flush to
+                    // the popup's edge.
+                    nameHtml = _.escape(FileUtils.getBaseName(path)),
+                    titleHtml;
+
+                if (path !== docPath) {
+                    var dirPath = FileUtils.getDirectoryPath(ProjectManager.makeProjectRelativeIfPossible(path))
+                        .replace(/\/$/, "");
+                    if (dirPath) {
+                        nameHtml += " <span class=\"jump-to-def-excerpt-title-path\">- " +
+                            _.escape(dirPath) + "</span>";
+                    }
+                }
+
+                titleHtml = "<div class=\"jump-to-def-excerpt-title\">" +
+                    "<span class=\"jump-to-def-excerpt-title-name\">" + nameHtml + "</span>" +
+                    "<span class=\"jump-to-def-excerpt-title-line\">" +
+                        _.escape(StringUtils.format(Strings.JUMPTO_DEFINITION_LINE_LABEL, line)) +
+                    "</span></div>";
+
+                linesFor(path).done(function (lines) {
+                    if (myToken !== hoverToken) {
+                        return;
+                    }
+                    var excerpt = buildExcerpt(lines, location.range.start.line),
+                        codeHtml = "";
+                    if (excerpt.trim()) {
+                        try {
+                            codeHtml = _highlightCode(marked.parse(
+                                "```" + excerptHljsLang(path) + "\n" + excerpt + "\n```"
+                            ));
+                        } catch (e) {
+                            codeHtml = "<pre>" + _.escape(excerpt) + "</pre>";
+                        }
+                    }
+                    _showDocPopup(inlineMenu.$menu.find("ul.dropdown-menu"), titleHtml + codeHtml);
+                }).fail(function () {
+                    if (myToken === hoverToken) {
+                        _hideDocPopup();
+                    }
+                });
+            }
+
+            inlineMenu.onHover(function (id) {
+                // The very first selection (index 0) is set synchronously inside InlineMenu.open(),
+                // before $menu has been appended to the DOM - _showDocPopup's positioning needs a
+                // connected element, so defer just that one call by a tick.
+                if (!inlineMenu.$menu.closest("body").length) {
+                    setTimeout(function () { showExcerptFor(id); }, 0);
+                } else {
+                    showExcerptFor(id);
+                }
+            });
+
+            inlineMenu.onSelect(function (id) {
+                _hideDocPopup();
+                inlineMenu.close();
+                jumpToLocation(locations[id]);
+            });
+
+            inlineMenu.onClose(function () {
+                _hideDocPopup();
+                inlineMenu.close();
+                $deferredHints.reject();
+            });
+
+            // Dismiss a quickview that happened to already be showing (e.g. the user pressed
+            // Ctrl+J while hovering something). QuickViewManager itself won't show a new one while
+            // this picker's .inlinemenu-menu.open is in the DOM - checked live, not via a
+            // suppress/close pairing, so it can't get stuck if the picker closes via a path other
+            // than onSelect/onClose (e.g. clicking elsewhere - InlineMenu doesn't notify on that).
+            QuickViewManager.hideQuickView();
+            inlineMenu.open(items);
+        }
+
+        // A single definition location is frequently just the base/interface declaration for a
+        // polymorphic call (obj.method() where obj's type has several concrete overrides) - LSP's
+        // "go to definition" intentionally resolves to one canonical declaration for that case.
+        // When that happens, ask the server for implementations too: if it has more than one,
+        // that's the real "which override did you mean" answer the user is after. See #3093.
+        function fallBackToImplementations(singleLocation) {
+            var serverCapabilities = client.getServerCapabilities();
+            if (!serverCapabilities || !serverCapabilities.implementationProvider) {
+                jumpToLocation(singleLocation);
+                return;
+            }
+
+            client.gotoImplementation({
+                filePath: docPath,
+                cursorPos: pos
+            }).done(function (implResult) {
+                var implLocations = Array.isArray(implResult) ? implResult : (implResult ? [implResult] : []);
+                if (implLocations.length > 1) {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "def", "Impl." + metricLabel);
+                    showJumpTargetPicker(implLocations);
+                } else {
+                    jumpToLocation(singleLocation);
+                }
+            }).fail(function () {
+                jumpToLocation(singleLocation);
+            });
+        }
+
+        client.gotoDefinition({
             filePath: docPath,
             cursorPos: pos
         }).done(function (msgObj) {
-            //For Older servers
+            if (Array.isArray(msgObj) && msgObj.length > 1) {
+                showJumpTargetPicker(msgObj);
+                return;
+            }
+
+            //For Older servers that always return an array
             if (Array.isArray(msgObj)) {
                 msgObj = msgObj[msgObj.length - 1];
             }
 
             if (msgObj && msgObj.range) {
-                var docUri = msgObj.uri,
-                    startCurPos = {};
-                startCurPos.line = msgObj.range.start.line;
-                startCurPos.ch = msgObj.range.start.character;
-
-                if (docUri !== docPathUri) {
-                    let documentPath = PathConverters.uriToPath(docUri);
-                    CommandManager.execute(Commands.FILE_OPEN, {
-                            fullPath: documentPath
-                        })
-                        .done(function () {
-                            setJumpPosition(startCurPos);
-                            $deferredHints.resolve();
-                        })
-                        .fail(function () {
-                            $deferredHints.reject();
-                        });
-                } else { //definition is in current document
-                    setJumpPosition(startCurPos);
-                    $deferredHints.resolve();
-                }
+                fallBackToImplementations(msgObj);
             } else {
                 // No definition at this position (servers answer null/[] - e.g. tsserver while it
                 // is still loading the project). MUST settle: an unresolved deferred here leaves
@@ -1342,4 +1650,5 @@ define(function (require, exports, module) {
     exports.showHintDocPopup = _showDocPopup;
     exports.hideHintDocPopup = _hideDocPopup;
     exports._docPopupHtml = _docPopupHtml; // exposed for unit tests
+    exports._buildJumpToDefExcerpt = buildExcerpt; // exposed for unit tests
 });

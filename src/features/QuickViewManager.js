@@ -241,6 +241,23 @@ define(function (require, exports, module) {
         animationRequest,
         quickViewLocked = false;
 
+    // True while some other menu-like UI is open - the top menu bar, a context menu (including the
+    // editor's right-click menu), the autocomplete Code Hints list, or an InlineMenu picker like
+    // jump-to-definition's multi-target picker (see languageTools/DefaultProviders.js) or Extract
+    // to Variable/Function. QuickView shouldn't pop up while any of those has the user's attention.
+    // All of them share the same underlying convention - a `<li class="dropdown ...">` root that
+    // gets an "open" class added while shown (see command/Menus.js openMenu()/registerContextMenu()
+    // and the codehint-menu/inlinemenu-menu markup in CodeHintList.js/widgets/InlineMenu.js) - so
+    // one generic selector covers all of them, including any future dropdown-based popup, without
+    // needing to name each one. Checked live at draw time, deliberately not via an imperative
+    // suppress/unsuppress pairing: those callers can close their popup through several different
+    // paths (Esc, selecting an item, clicking elsewhere - InlineMenu in particular doesn't notify
+    // on a plain click-away), and a state flag that isn't reliably unset on every one of those
+    // paths gets stuck "suppressed" forever.
+    function _isOtherEditorPopupOpen() {
+        return $(".dropdown.open").length > 0;
+    }
+
     // Constants
     const CMD_ENABLE_QUICK_VIEW       = "view.enableQuickView",
         QUICK_VIEW_EDITOR_MARKER = 'quickViewMark',
@@ -599,7 +616,7 @@ define(function (require, exports, module) {
             clientY: event.clientY
         };
 
-        if (!enabled || quickViewLocked
+        if (!enabled || quickViewLocked || _isOtherEditorPopupOpen()
             || $previewContainer[0].contains(window.document.activeElement)) {
             // activeElement check as, if the popup has an active element, say a text input, user may
             // move the mouse outside popup to type in the input, in which case we should not close popup.
