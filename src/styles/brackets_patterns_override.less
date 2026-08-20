@@ -694,27 +694,35 @@ a:focus {
             }
         }
 
-        // Styles used for inlinemenu widget header. @bc-bg-tool-bar/@bc-inlinemenu-text used to be
-        // identical in light and dark variants (a dark toolbar-grey chip that clashed against an
-        // otherwise light dropdown in light theme) - use the theme-aware "muted panel" pair instead,
-        // same tokens as this picker's own .jump-to-def-item-path, so the header reads as a subtle
-        // section label rather than a mismatched dark badge.
+        // Styles used for inlinemenu widget header. Previously a solid @bc-panel-bg-alt chip -
+        // against the menu's own @bc-menu-bg/@dark-bc-menu-bg surface (white / near-black) that
+        // read as a mismatched floating block sitting on top of the list, especially in dark theme.
+        // Instead, keep it on the same surface as the rest of the menu (no background at all) and
+        // read it as a plain muted title with a hairline divider separating it from the items
+        // below. Same treatment as the code-excerpt popup's own title bar
+        // (.jump-to-def-excerpt-title in brackets.less), so the two pieces of one picker look like
+        // one cohesive, deliberately minimal surface instead of two.
         li.inlinemenu-header a {
-            background-color: @bc-panel-bg-alt;
+            background-color: transparent;
             color: @bc-text-medium;
-            padding-bottom: 5px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            // Same divider color this menu family already uses for its .divider rule above, so the
+            // header's separator reads as an intentional, on-brand line rather than an arbitrary
+            // one-off - and unlike a low-alpha white/black overlay, it stays visible against the
+            // near-black @dark-bc-menu-bg surface.
+            border-bottom: 1px solid @bc-menu-separator;
 
             .dark & {
-                background-color: @dark-bc-panel-bg-alt;
                 color: @dark-bc-text-medium;
+                border-bottom-color: @dark-bc-menu-separator;
             }
 
             &:hover {
-                background-color: @bc-panel-bg-alt;
+                background-color: transparent;
                 color: @bc-text-medium;
 
                 .dark & {
-                    background-color: @dark-bc-panel-bg-alt;
                     color: @dark-bc-text-medium;
                 }
             }
