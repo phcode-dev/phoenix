@@ -733,6 +733,33 @@ a:focus {
             }
         }
 
+        // "Implementation" marker shown flush right on a jump-to-definition item's row when the
+        // row represents one (see showJumpTargetPicker's implementationStartIndex) - the
+        // declaration row and its implementations otherwise look identical once merged into one
+        // list, with nothing else to tell them apart. Right-aligned via float, deliberately not
+        // display:flex on a wrapper: that was tried and reliably added ~11px of unexplained row
+        // height, because a block-level flex child inside InlineMenu's own inline <span> wrapper
+        // (widgets/InlineMenu.js _addItem) gets boxed in an anonymous block that still carries the
+        // parent's own line-height as a "strut". A float is taken out of normal flow entirely, so
+        // it reaches its containing block (the menu item's <a>, which is display:block) without
+        // that side effect.
+        .jump-to-def-item-badge {
+            float: right;
+            font-size: 11px;
+            color: @bc-text-medium;
+            // fa-code-branch reads as a vertical git-branch glyph by default - lay it on its side
+            // so it reads more like a generic "derives from" mark than a literal branch icon.
+            transform: rotate(90deg);
+            // li a's own right padding (see the shared "li a" rule above) is 20px, sized for plain
+            // text - pull the badge back into most of that so it doesn't float in its own patch of
+            // empty space, while still leaving a little breathing room off the popup's edge.
+            margin-right: -14px;
+
+            .dark & {
+                color: @dark-bc-text-medium;
+            }
+        }
+
         li {
             a {
                 // Less padding than on menus. More padding on top than bottom

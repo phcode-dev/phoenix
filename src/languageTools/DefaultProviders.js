@@ -953,6 +953,38 @@ define(function (require, exports, module) {
         return SIGNATURE_HLJS_LANG[id] || id;
     }
 
+    // A location's identity for deduplication - same file and same start *line*, deliberately not
+    // also the start character. Locations from different requests (definition vs. implementation)
+    // routinely name the same declaration while anchored at different columns on that declaration's
+    // line - e.g. gotoDefinition landing at column 0 (the very start of "export class JohnClass
+    // extends MyBaseClass") while gotoImplementation for the same class lands at the "JohnClass"
+    // identifier a few columns in. Keying on the exact character missed that case entirely (shown
+    // as two near-identical "JohnClass" entries instead of one) - a jump target is realistically
+    // always alone on its line, so same file + same line is a safe stand-in for "same target".
+    function _locationKey(location) {
+        return location.uri + ":" + location.range.start.line;
+    }
+
+    // Combines `primary` with `extras`, keeping first-seen order and dropping any of `extras` that
+    // point at the same place as `primary` or one another. Used so a location gotoDefinition
+    // already resolved is never silently thrown away in favor of gotoImplementation's answer - see
+    // fallBackToImplementations below - even though in practice the two usually end up naming the
+    // same target anyway (a single "definition" resolution for a polymorphic call almost always
+    // turns out to be one of the concrete implementations, not the base/interface declaration
+    // itself - LSP has no request that reliably returns that separately).
+    function mergeLocations(primary, extras) {
+        var seen = {},
+            merged = [];
+        [primary].concat(extras).forEach(function (location) {
+            var key = _locationKey(location);
+            if (!seen[key]) {
+                seen[key] = true;
+                merged.push(location);
+            }
+        });
+        return merged;
+    }
+
     function JumpToDefProvider(client) {
         this.client = client;
     }
@@ -1027,7 +1059,15 @@ define(function (require, exports, module) {
         // shown via a code-excerpt side popup as the user hovers/arrows through items, reusing the
         // exact same LSP hint documentation popup mechanism (_showDocPopup/_hideDocPopup) that the
         // autocomplete Code Hints list already uses for its side docs panel.
-        function showJumpTargetPicker(locations) {
+        //
+        // `implementationStartIndex` (optional): when the list is [declaration, ...implementations]
+        // (see fallBackToImplementations/mergeLocations - declaration is always first), this is the
+        // index implementations start at, so those rows get a small "Implementation" badge on the
+        // right - the declaration row otherwise looks identical to any of them, and with everything
+        // merged into one list there's no other visual cue for which is which. Omitted (or equal to
+        // locations.length) when the list is server-returned multi-definition results instead, none
+        // of which are "implementations" in this sense - no rows get the badge.
+        function showJumpTargetPicker(locations, implementationStartIndex) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "def", "Multi." + metricLabel);
 
             var lineCache = {};
@@ -1052,6 +1092,18 @@ define(function (require, exports, module) {
                 // instead of context.
                 if (dirPath) {
                     name += " <span class=\"jump-to-def-item-path\">" + _.escape(dirPath) + "</span>";
+                }
+
+                // Plain inline content, same as the spans above - deliberately not a flex wrapper:
+                // that was tried and reliably added ~11px of unexplained row height, because a
+                // block-level flex child inside InlineMenu's own inline <span> wrapper
+                // (widgets/InlineMenu.js _addItem) gets boxed in an anonymous block that still
+                // carries the parent's own line-height as a "strut". Plain inline content doesn't
+                // have that problem.
+                if (implementationStartIndex !== undefined && index >= implementationStartIndex) {
+                    name += " <i class=\"fa fa-code-branch jump-to-def-item-badge\" title=\"" +
+                        _.escape(Strings.JUMPTO_DEFINITION_IMPLEMENTATION_BADGE) +
+                        "\" aria-hidden=\"true\"></i>";
                 }
 
                 return { id: index, name: name };
@@ -1161,12 +1213,13 @@ define(function (require, exports, module) {
                 filePath: docPath,
                 cursorPos: pos
             }).done(function (implResult) {
-                var implLocations = Array.isArray(implResult) ? implResult : (implResult ? [implResult] : []);
-                if (implLocations.length > 1) {
+                var implLocations = Array.isArray(implResult) ? implResult : (implResult ? [implResult] : []),
+                    merged = mergeLocations(singleLocation, implLocations);
+                if (merged.length > 1) {
                     Metrics.countEvent(Metrics.EVENT_TYPE.LSP, "def", "Impl." + metricLabel);
-                    showJumpTargetPicker(implLocations);
+                    showJumpTargetPicker(merged, 1); // merged[0] is always the declaration slot
                 } else {
-                    jumpToLocation(singleLocation);
+                    jumpToLocation(merged[0]);
                 }
             }).fail(function () {
                 jumpToLocation(singleLocation);
@@ -1651,4 +1704,5 @@ define(function (require, exports, module) {
     exports.hideHintDocPopup = _hideDocPopup;
     exports._docPopupHtml = _docPopupHtml; // exposed for unit tests
     exports._buildJumpToDefExcerpt = buildExcerpt; // exposed for unit tests
+    exports._mergeJumpToDefLocations = mergeLocations; // exposed for unit tests
 });
