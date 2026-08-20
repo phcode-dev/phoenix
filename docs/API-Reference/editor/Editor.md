@@ -1703,3 +1703,18 @@ Constant: Bulls-eye mode, strictly center the text always.
 
 ## CENTERING\_MARGIN
 **Kind**: global constant  
+<a name="getMarkOptionTabstopOutline"></a>
+
+## getMarkOptionTabstopOutline()
+Mark option for a subdued outline box, used to show every remaining stop of an active
+snippet/tab-stop session (see editor/TabstopManager.js) so the user can see at a glance how
+many fields are left and where, even for the ones they haven't tabbed to yet.
+
+**Kind**: global function  
+<a name="getMarkOptionTabstopOutlineActive"></a>
+
+## getMarkOptionTabstopOutlineActive()
+Mark option for the bold/active variant of the above, layered on top of it for whichever stop
+is currently selected in an active snippet/tab-stop session.
+
+**Kind**: global function  
