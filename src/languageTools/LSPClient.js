@@ -341,6 +341,7 @@ define(function (require, exports, module) {
         "textDocument/signatureHelp": "Sig",
         "textDocument/hover": "Hover",
         "textDocument/definition": "Def",
+        "textDocument/implementation": "Impl",
         "textDocument/references": "Ref",
         "textDocument/codeAction": "Fix",
         "completionItem/resolve": "Res",
@@ -570,14 +571,15 @@ define(function (require, exports, module) {
         return deferred.promise();
     };
 
-    LanguageClient.prototype.gotoDefinition = function (params) {
-        const self = this;
+    // Shared by gotoDefinition/gotoImplementation - both are "resolve a position to one or more
+    // {uri, range} locations" requests that only differ in LSP method name.
+    function _requestLocations(client, params, method) {
         const deferred = $.Deferred();
         (async function () {
             try {
-                await DocumentSync.flush(self, params.filePath);
-                const result = await self._request("textDocument/definition", {
-                    textDocument: { uri: self.uriForPath(params.filePath) },
+                await DocumentSync.flush(client, params.filePath);
+                const result = await client._request(method, {
+                    textDocument: { uri: client.uriForPath(params.filePath) },
                     position: _positionOf(params.cursorPos)
                 });
                 if (!result || (Array.isArray(result) && !result.length)) {
@@ -600,6 +602,18 @@ define(function (require, exports, module) {
             }
         }());
         return deferred.promise();
+    }
+
+    LanguageClient.prototype.gotoDefinition = function (params) {
+        return _requestLocations(this, params, "textDocument/definition");
+    };
+
+    // Finds concrete implementations of the symbol at a position. Used as a fallback when
+    // gotoDefinition resolves to a single canonical declaration (e.g. a base class/interface
+    // method) for what is actually a polymorphic call site - see DefaultProviders.js doJumpToDef
+    // and https://github.com/phcode-dev/phoenix/issues/3093.
+    LanguageClient.prototype.gotoImplementation = function (params) {
+        return _requestLocations(this, params, "textDocument/implementation");
     };
 
     LanguageClient.prototype.findReferences = function (params) {
