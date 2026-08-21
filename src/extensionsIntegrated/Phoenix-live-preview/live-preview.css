@@ -1,15 +1,17 @@
 :root {
     --toolbar-height: 30px;
+    --lp-toolbar-btn: 24px;
+    --lp-toolbar-chevron: 14px;
+    --lp-toolbar-gap: 6px;
+    --lp-toolbar-inset: 6px;
+    --lp-toolbar-fg: #a0a0a0;
+    --lp-toolbar-border: rgba(255, 255, 255, 0.1);
 }
 
 .live-preview-browser-btn {
     opacity: 0;
     visibility: hidden;
     transition: opacity 1s, visibility 0s linear 1s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
 }
 
 .live-preview-browser-btn img {
@@ -214,17 +216,21 @@
 
 .plugin-toolbar {
     height: var(--toolbar-height);
-    color: #a0a0a0;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
+    color: var(--lp-toolbar-fg);
 }
 
 .toolbar-button {
+    width: var(--lp-toolbar-btn);
+    height: var(--lp-toolbar-btn);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
     background-color: transparent;
-    width: 28px;
-    height: 22px;
+    color: var(--lp-toolbar-fg);
 }
 
 #live-preview-plugin-toolbar .btn-alt-quiet:hover,
@@ -248,23 +254,19 @@
 }
 
 .open-icon {
-    background: url("./images/sprites.svg#open-icon") no-repeat 72.5%;
-    width: 30px;
-    margin-left: 4px;
+    background: url("./images/sprites.svg#open-icon") center / 20px no-repeat;
 }
 
 .pin-icon {
-    background: url("./images/sprites.svg#pinned-icon") no-repeat 72.5%;
-    width: 30px;
+    background: url("./images/sprites.svg#pinned-icon") center / 20px no-repeat;
 }
 
 .unpin-icon {
-    background: url("./images/sprites.svg#unpinned-icon") no-repeat 72.5%;
-    width: 30px;
+    background: url("./images/sprites.svg#unpinned-icon") center / 20px no-repeat;
 }
 
 .reload-icon {
-    background: url("./images/sprites.svg#reload-icon") center no-repeat;
+    background: url("./images/sprites.svg#reload-icon") center / 20px no-repeat;
 }
 
 #live-preview-plugin-toolbar:hover .lp-settings-icon {
@@ -281,42 +283,8 @@
 
 .lp-settings-icon {
     opacity: 0;
-    color: #a0a0a0;
     visibility: hidden;
-    transition: opacity 1s, visibility 0s linear 1s; 
-    width: 30px;
-    height: 22px;
-    padding: 1px 6px;
-    flex-shrink: 0;
-    margin-top: 0;
-}
-
-.lp-device-size-btn-group {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    margin: 0 4px 0 3px;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    box-sizing: border-box;
-}
-
-.lp-device-size-btn-group:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.lp-device-size-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    cursor: pointer;
-    background: transparent;
-    box-shadow: none !important;
-    border: none;
-    color: #a0a0a0;
-    padding: 0;
-    margin: 0;
+    transition: opacity 1s, visibility 0s linear 1s;
 }
 
 .lp-device-size-icon:hover,
@@ -327,25 +295,8 @@
     box-shadow: none !important;
 }
 
-.lp-device-size-dropdown-chevron {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background: transparent;
-    box-shadow: none !important;
-    border: none;
-    border-left: 1px solid transparent;
-    border-radius: 0 3px 3px 0;
-    color: #a0a0a0;
-    padding: 0 4px;
-    margin: 0;
-    height: 22px;
-    font-size: 10px;
-}
-
 .lp-device-size-btn-group:hover .lp-device-size-dropdown-chevron {
-    border-left-color: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--lp-toolbar-border);
 }
 
 .lp-device-size-dropdown-chevron:hover,
@@ -391,46 +342,37 @@
     flex-direction: row;
 }
 
-.lp-toolbar-left {
+.lp-toolbar-left,
+.lp-toolbar-centre,
+.lp-toolbar-right {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding-left: 6px;
+    gap: var(--lp-toolbar-gap);
     box-sizing: border-box;
-    flex-shrink: 0;
+}
+
+.lp-toolbar-left {
+    flex: 1 1 0;
+    padding-left: var(--lp-toolbar-inset);
 }
 
 .lp-toolbar-centre {
-    flex: 1;
+    flex: 0 1 auto;
     min-width: 0;
-    display: flex;
     justify-content: center;
-    align-items: center;
     overflow: hidden;
 }
 
 .lp-toolbar-right {
-    display: flex;
-    align-items: center;
+    flex: 1 1 0;
+    padding-right: var(--lp-toolbar-inset);
     justify-content: flex-end;
-    flex-shrink: 0;
 }
 
 #reloadLivePreviewButton,
 #designModeToggleLivePreviewButton {
-    width: 28px;
-    height: 24px;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    color: #a0a0a0;
     border: 1px solid transparent;
     border-radius: 3px;
-    box-sizing: border-box;
-    flex-shrink: 0;
 }
 
 #live-preview-plugin-toolbar #reloadLivePreviewButton:hover,
@@ -440,10 +382,11 @@
     box-shadow: none !important;
 }
 
-.lp-mode-btn-group {
+.lp-mode-btn-group,
+.lp-device-size-btn-group {
     display: flex;
     align-items: stretch;
-    height: 24px;
+    height: var(--lp-toolbar-btn);
     margin: 0;
     border: 1px solid transparent;
     border-radius: 3px;
@@ -451,23 +394,26 @@
     flex-shrink: 0;
 }
 
-.lp-mode-btn-group:hover {
-    border-color: rgba(255, 255, 255, 0.1);
+.lp-mode-btn-group:hover,
+.lp-device-size-btn-group:hover {
+    border-color: var(--lp-toolbar-border);
 }
 
-.lp-mode-icon {
+.lp-mode-icon,
+.lp-device-size-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
+    width: var(--lp-toolbar-btn);
     height: 100%;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
     cursor: pointer;
     background: transparent;
     box-shadow: none !important;
     border: none;
-    color: #a0a0a0;
-    padding: 0;
-    margin: 0;
+    color: var(--lp-toolbar-fg);
 }
 
 #live-preview-plugin-toolbar .lp-mode-icon:hover,
@@ -482,26 +428,28 @@
     color: #FBB03B;
 }
 
-.lp-mode-dropdown-chevron {
+.lp-mode-dropdown-chevron,
+.lp-device-size-dropdown-chevron {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 14px;
+    width: var(--lp-toolbar-chevron);
     height: 100%;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
     cursor: pointer;
     background: transparent;
     box-shadow: none !important;
     border: none;
     border-left: 1px solid transparent;
     border-radius: 0;
-    color: #a0a0a0;
-    padding: 0;
-    margin: 0;
+    color: var(--lp-toolbar-fg);
     font-size: 10px;
 }
 
 .lp-mode-btn-group:hover .lp-mode-dropdown-chevron {
-    border-left-color: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--lp-toolbar-border);
 }
 
 #live-preview-plugin-toolbar .lp-mode-dropdown-chevron:hover,
