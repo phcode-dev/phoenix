@@ -2483,6 +2483,7 @@ define({
   "AI_CHAT_MODE_FULL_AUTO": "سب کی اجازت",
   "AI_CHAT_MODE_INFO_PLAN": "AI تبدیلیاں کرنے سے پہلے ایک منصوبہ تجویز کرے گا (تبدیل کرنے کے لیے کلک کریں)",
   "AI_CHAT_MODE_INFO_EDIT": "AI فائلیں ترمیم کر سکتا ہے۔ شیل کمانڈز کو منظوری درکار ہے (تبدیل کرنے کے لیے کلک کریں)",
+  "AI_CHAT_MODE_INFO_AUTO": "اے آئی محفوظ کارروائیوں کو خود بخود منظور کرنے کے لیے اپنی سمجھ بوجھ استعمال کرتا ہے، اور پرخطر کارروائیوں کے بارے میں پوچھتا ہے (تبدیل کرنے کے لیے کلک کریں)",
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI منظوری کے بغیر فائلیں ترمیم اور کمانڈز چلا سکتا ہے (تبدیل کرنے کے لیے کلک کریں)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "منتخب کریں کہ AI منظوری کے بغیر کس حد تک کام کر سکتا ہے [یا Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code سائن آؤٹ ہو گیا ہے یا آپ کا لاگ ان ختم ہو گیا ہے۔",
@@ -2682,5 +2683,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "AI_CHAT_MODE_INFO_AUTO": "اے آئی محفوظ کارروائیوں کو خود بخود منظور کرنے کے لیے اپنی سمجھ بوجھ استعمال کرتا ہے، اور پرخطر کارروائیوں کے بارے میں پوچھتا ہے (تبدیل کرنے کے لیے کلک کریں)"
+  "JUMPTO_DEFINITION_SELECT_TARGET": "ایک تعریف منتخب کریں",
+  "JUMPTO_DEFINITION_LINE_LABEL": "لائن {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "عمل درآمد"
 });
