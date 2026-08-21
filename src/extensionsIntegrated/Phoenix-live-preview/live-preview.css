@@ -5,7 +5,17 @@
 .live-preview-browser-btn {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1s, visibility 0s linear 1s; 
+    transition: opacity 1s, visibility 0s linear 1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.live-preview-browser-btn img {
+    display: block;
+    width: 14px;
+    height: 14px;
 }
 
 #live-preview-plugin-toolbar {
