@@ -56,6 +56,30 @@ function _livePreviewHintText(count) {
         " resizeLivePreview for responsive behavior.";
 }
 
+// Reason returned when a file-rewriting shell command is stopped on its first
+// attempt. A speed bump, not a wall: re-running the identical command goes
+// through (see _shellEditNeedsConfirm). That protects the first edit — which a
+// note after the fact cannot, since by then undo is already gone — while
+// leaving the final call with the model, at the cost of one extra round trip.
+//
+// Preferring Edit/Write is a default, not a rule. Shell rewrites genuinely win
+// on mechanical bulk changes and on large files where Edit would burn tokens
+// re-reading to change a little, so the text asks the model to weigh that
+// against the lost undo rather than treating the shell as forbidden. One round
+// trip is negligible next to the bulk operation it is gating.
+function _shellEditDenyText(what) {
+    return "Phoenix did not run that. It rewrites a file from the shell (" + what + "), which" +
+        " bypasses the editor: the user's open buffer is not refreshed, no reviewable diff is" +
+        " rendered, and the change cannot be undone from the AI panel's Undo button. For an" +
+        " ordinary content change, use Edit for existing files or Write for new ones — those" +
+        " keep all three. But this is a default, not a rule: if the shell is genuinely the" +
+        " better tool here — the user named this command, the change is mechanical across many" +
+        " files or matches, doing it with Edit would mean dozens of calls or reading a very" +
+        " large file to change a little of it, or the target is generated / build output / a" +
+        " log — then run it again unchanged and it will go through. Weigh the token cost" +
+        " against the user losing undo for that file, and tell them which way you went.";
+}
+
 // Nudge on the first unverified live preview edit, then stay quiet until this
 // many more pile up without the model ever looking at the preview.
 const LP_NUDGE_REPEAT_AFTER = 5;
@@ -210,6 +234,119 @@ const _SAFE_BASH_PATTERNS = [
     /^yarn\s+--version$/,
     /^pnpm\s+--version$/
 ];
+
+// Shell constructs whose purpose is rewriting a file in place. Bash is not
+// interchangeable with Edit/Write here: the Edit/Write PostToolUse hooks
+// refresh the open buffer, paint the diff card that backs the panel's Undo
+// button, and carry the live preview signal. A shell rewrite skips all
+// three, so the user silently loses undo for that change.
+//
+// A match stops the command once and offers a retry (see _shellEditDenyText),
+// so the cost of a false positive is one wasted round trip rather than a
+// refusal. Still worth keeping narrow: only constructs that exist to rewrite
+// files belong here.
+const _INPLACE_EDIT_PATTERNS = [
+    // sed -i / -i.bak / -ri / --in-place. The lookahead stops at a pipe or
+    // separator so `grep -i x | sed 's/a/b/'` isn't caught by the grep flag.
+    { rx: /\bsed\b(?=[^|;&]*\s-(?:-in-place|[a-zA-Z]*i))/, what: "sed -i" },
+    // perl -pi -e / perl -i.bak
+    { rx: /\bperl\b(?=[^|;&]*\s-[a-zA-Z]*i)/, what: "perl -i" },
+    { rx: /\bawk\b(?=[^|;&]*\s-i\s+inplace)/, what: "awk -i inplace" },
+    { rx: /\bed\s+-s\b/, what: "ed -s" },
+    { rx: /\bex\s+-s(c|\s)/, what: "ex -s" },
+    // PowerShell equivalents — on Windows the model may reach for these
+    // instead of sed. Set-Content/Add-Content/Out-File all rewrite a file.
+    { rx: /\b(?:Set-Content|Add-Content|Out-File)\b/i, what: "PowerShell Set-Content / Out-File" }
+];
+
+// Redirection / tee targets that aren't the user's files: device sinks and
+// scratch dirs. `> /dev/null` and `> $TMPDIR/x` are ubiquitous and carry no
+// undo cost, so hinting about them would be pure noise.
+//
+// Covers all three platforms, since the model may be driving bash, PowerShell
+// or cmd depending on where Phoenix is running: macOS puts TMPDIR under
+// /var/folders, Windows under %TEMP% / AppData\Local\Temp, and the null sink
+// is /dev/null, NUL or $null respectively.
+const _EXEMPT_WRITE_TARGETS = [
+    /^\/dev\//,
+    /^\/proc\//,
+    /^\/(?:private\/)?tmp\//,
+    /^\/var\/(?:tmp|folders)\//,
+    /^(?:nul|\$null)$/i,
+    /^\$\{?TMPDIR\}?[\\/]/i,
+    /^%(?:TEMP|TMP)%[\\/]/i,
+    /^[a-zA-Z]:[\\/](?:temp|tmp)[\\/]/i,
+    // Git Bash rewrites C:\Temp to MSYS form (/c/temp), and it is the shell
+    // the Bash tool actually uses on Windows.
+    /^\/[a-zA-Z]\/(?:temp|tmp)\//i,
+    /[\\/]AppData[\\/]Local[\\/]Temp[\\/]/i,
+    /^[a-zA-Z]:[\\/]Windows[\\/]Temp[\\/]/i
+];
+
+function _isExemptWriteTarget(target) {
+    if (target === "-") { return true; }
+    return _EXEMPT_WRITE_TARGETS.some(function (rx) { return rx.test(target); });
+}
+
+// Walk the command tracking quote state so a `>` inside a string literal
+// (`echo "a > b"`, `python -c "print(1 > 0)"`) is not mistaken for a
+// redirection. Returns the write destinations found outside quotes.
+// A heuristic guard, not a shell parser.
+function _shellWriteTargets(rawCmd) {
+    // Drop file-descriptor duplications (2>&1, >&2, 1>&2) up front.
+    const cmd = (rawCmd || "").replace(/\d*>&\d*/g, " ");
+    const targets = [];
+    let quote = null;
+    for (let i = 0; i < cmd.length; i++) {
+        const ch = cmd[i];
+        if (quote) {
+            if (ch === quote && cmd[i - 1] !== "\\") { quote = null; }
+            continue;
+        }
+        if (ch === "\"" || ch === "'") { quote = ch; continue; }
+        if (ch !== ">") { continue; }
+        // Skip the rest of a `>>` pair, then the whitespace before the target.
+        let j = i + 1;
+        while (cmd[j] === ">") { j++; }
+        while (cmd[j] === " " || cmd[j] === "\t") { j++; }
+        // Read the target, honouring quotes around a path with spaces.
+        let target = "";
+        if (cmd[j] === "\"" || cmd[j] === "'") {
+            const closer = cmd[j];
+            j++;
+            while (j < cmd.length && cmd[j] !== closer) { target += cmd[j++]; }
+        } else {
+            while (j < cmd.length && !/[\s;|&()]/.test(cmd[j])) { target += cmd[j++]; }
+        }
+        if (target) { targets.push(target); }
+        i = j - 1;
+    }
+    // tee writes to its path arguments rather than via redirection.
+    const tee = /\btee\s+(?:-a\s+)?("[^"]*"|'[^']*'|[^\s;|&()-][^\s;|&()]*)/g;
+    let m;
+    while ((m = tee.exec(cmd)) !== null) {
+        targets.push(m[1].replace(/^["']|["']$/g, ""));
+    }
+    return targets.filter(function (t) { return t && !_isExemptWriteTarget(t); });
+}
+
+/**
+ * Classify a Bash command that would rewrite file content instead of going
+ * through Edit/Write. Returns a short description of what was matched, or
+ * null when the command is fine to run.
+ */
+function _describeInPlaceFileEdit(rawCmd) {
+    const cmd = (rawCmd || "").trim();
+    if (!cmd) { return null; }
+    for (const entry of _INPLACE_EDIT_PATTERNS) {
+        if (entry.rx.test(cmd)) { return entry.what; }
+    }
+    const targets = _shellWriteTargets(cmd);
+    if (targets.length) {
+        return "shell redirection to " + targets[0];
+    }
+    return null;
+}
 
 function _isSafeReadOnlyBash(rawCmd) {
     const cmd = (rawCmd || "").trim();
@@ -811,6 +948,34 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // model last inspected the preview; _lpNudgeCount enforces the hard cap.
     let _lpPendingEdits = 0;
     let _lpNudgeCount = 0;
+    // Shell-rewrite confirmation, scoped per request rather than per
+    // conversation: a new user prompt is a new intent, so the next request's
+    // first rewrite gets its own speed bump instead of riding on a
+    // confirmation given for something else.
+    let _shellEditAwaitingRetry = null;
+    let _shellEditConfirmed = false;
+
+    // True when this command should be stopped and offered a retry. The
+    // identical command coming back means it was meant, so it goes through —
+    // and having confirmed once, the rest of the request goes through too.
+    //
+    // That last part matters: the model often has to fix its own command after
+    // the first attempt (BSD `sed -i ''` failing on GNU sed, say). Keying only
+    // on the exact string charged a second bump for what is one operation, so
+    // one confirmation now covers the request. The first edit is still
+    // protected, which is the whole point of the bump.
+    function _shellEditNeedsConfirm(command) {
+        if (_shellEditConfirmed) {
+            return false;
+        }
+        if (_shellEditAwaitingRetry === command) {
+            _shellEditAwaitingRetry = null;
+            _shellEditConfirmed = true;
+            return false;
+        }
+        _shellEditAwaitingRetry = command;
+        return true;
+    }
     let queryFn;
     let connectionTimer = null;
 
@@ -951,6 +1116,22 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "multiple Edit calls to make targeted changes rather than rewriting the entire " +
             "file with Write. This is critical because Write replaces the entire file content " +
             "which is slow and loses undo history." +
+            "\n\nThe user's project root is " + (projectPath || process.cwd()) + ". For files " +
+            "under it, default to Edit and Write over shell rewrites (sed -i, perl -i, tee, " +
+            "Set-Content/Out-File, `>` / `>>` redirection). Phoenix routes Edit and Write " +
+            "through the editor, so they refresh the user's open buffer, render a reviewable " +
+            "diff, and stay undoable from the AI panel; a shell rewrite skips all three, and " +
+            "the user cannot undo it. Outside the project root — scratch files, temp output, " +
+            "logs — the shell is fine and needs no thought. " +
+            "\nThis is a default, not a prohibition. The shell is the better call when the " +
+            "change is mechanical across many files or matches, when Edit would mean dozens of " +
+            "calls or reading a large file to alter a little of it, or when the target is " +
+            "generated output. Phoenix stops the first shell rewrite of each command and " +
+            "explains why; re-run it unchanged and it goes through. Judge it on the merits — " +
+            "tokens saved against undo lost — and tell the user when you take the shell route. " +
+            "When the saving would be marginal, take Edit: one shell call and one Edit call " +
+            "cost about the same, so a handful of files is not a reason to give up undo. The " +
+            "shell has to earn it." +
             "\n\nALWAYS call getEditorState as your FIRST tool call on any question that " +
             "references the user's current work — not just \"what file am I on\". This includes " +
             "implicit-context questions like \"the page\", \"this layout\", \"the nav bar\", " +
@@ -1338,6 +1519,30 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     matcher: "Bash",
                     hooks: [
                         async (input) => {
+                            // Stop a file rewrite the first time it is tried,
+                            // in every permission mode — "auto" hands the call
+                            // to the SDK classifier, which happily approves
+                            // sed -i. Denying here is what actually protects
+                            // the edit: a note after the fact arrives once undo
+                            // is already gone. Re-running the same command
+                            // confirms intent and goes through.
+                            const command = (input.tool_input && input.tool_input.command) || "";
+                            const inPlaceEdit = _describeInPlaceFileEdit(command);
+                            if (inPlaceEdit && _shellEditNeedsConfirm(command)) {
+                                console.log("[Phoenix AI] Stopped shell file rewrite (" +
+                                    inPlaceEdit + "), offering retry: " + command.slice(0, 70));
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "deny",
+                                        permissionDecisionReason: _shellEditDenyText(inPlaceEdit)
+                                    }
+                                };
+                            }
+                            if (inPlaceEdit) {
+                                console.log("[Phoenix AI] Shell file rewrite confirmed by retry: " +
+                                    command.slice(0, 70));
+                            }
                             // Read from the runtime mutable so mid-stream
                             // permission-mode flips (e.g. user switches Edit
                             // Mode → Allow Everything while bash is in flight)
@@ -1351,8 +1556,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                 // only for Edit Mode's manual approval flow.
                                 return {};
                             }
-                            // Edit Mode: ask user confirmation before running bash
-                            const command = input.tool_input.command || "";
+                            // Edit Mode: ask user confirmation before running bash.
+                            // `command` is read above, for the rewrite check.
                             // Skip prompting for well-known read-only commands
                             // that mirror the Claude Code CLI's default safe
                             // patterns. Cuts down on prompt fatigue during
