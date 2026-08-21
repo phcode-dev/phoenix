@@ -39,6 +39,40 @@ const CLARIFICATION_HINT =
     " IMPORTANT: The user has typed a follow-up clarification while you were working." +
     " Call the getUserClarification tool to read it before proceeding.";
 
+// Nudge the model when it has edited files that render in the user's live
+// preview without ever looking at the result. Deliberately phrased as an FYI
+// the model may act on or ignore — whether a change is worth verifying, and
+// with which tool, is its call.
+//
+// Stated as a count rather than "you just edited…" because the PostToolUse
+// fallback path can deliver this a tool call after the edit, and because
+// naming the number makes it read as a summary rather than a per-edit echo.
+function _livePreviewHintText(count) {
+    return "FYI: " + count + " file(s) you edited are rendered in the user's live preview," +
+        " and you have not inspected it since. Decide for yourself whether looking is worth" +
+        " a tool call here — a trivial or self-evident change usually is not. If it is, you" +
+        " pick the tool: execJsInLivePreview to read the DOM / computed styles / console," +
+        " takeScreenshot with selector='#panel-live-preview-frame' for a visual check, or" +
+        " resizeLivePreview for responsive behavior.";
+}
+
+// Nudge on the first unverified live preview edit, then stay quiet until this
+// many more pile up without the model ever looking at the preview.
+const LP_NUDGE_REPEAT_AFTER = 5;
+
+// Hard ceiling per user request. Without it a long unverified run (30 edits)
+// would emit ~6 nudges, and every one persists in the transcript. If two
+// haven't changed the model's behavior, a third won't either.
+const LP_MAX_NUDGES_PER_REQUEST = 2;
+
+// Calling any of these means the model is already looking at the preview, so
+// there is nothing to nag about — seeing one resets the pending count.
+const LP_INSPECT_TOOLS = [
+    "mcp__phoenix-editor__takeScreenshot",
+    "mcp__phoenix-editor__execJsInLivePreview",
+    "mcp__phoenix-editor__resizeLivePreview"
+];
+
 // Lazy-loaded ESM module reference
 let queryModule = null;
 
@@ -772,6 +806,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // turn skip the prompt and use the cached "allow" decision so a multi-edit
     // turn doesn't pop a dialog before every edit.
     let _planExitApprovedThisTurn = false;
+    // Live preview nudge bookkeeping, per request so each new user prompt
+    // re-arms it. _lpPendingEdits counts live-preview-related edits since the
+    // model last inspected the preview; _lpNudgeCount enforces the hard cap.
+    let _lpPendingEdits = 0;
+    let _lpNudgeCount = 0;
     let queryFn;
     let connectionTimer = null;
 
@@ -948,7 +987,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "phoenix-editor.resizeLivePreview, and phoenix-editor.controlEditor cover virtually " +
             "every \"look at / poke at the page\" need. Only fall back to chrome-devtools or " +
             "another browser MCP if the user explicitly asks for a non-Phoenix browser context. " +
-            "These tools are for active iteration, not just final verification:" +
+            "These tools are for active iteration AND for checking your own work — " +
+            "use them as you go, not only when the user asks:" +
             "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
             "the editor, or any panel. Use it to confirm visual output, diagnose layout/styling " +
             "bugs, or check that HTML or Markdown rendered as expected. Simple selector rule: " +
@@ -960,7 +1000,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "JS edits) — saves a tool call vs. reloading separately." +
             "\n- execJsInLivePreview: run JS inside the HTML preview iframe to read the DOM, " +
             "query computed styles, click elements, or capture console output. Use it to debug " +
-            "behavior, not just to verify." +
+            "behavior and to confirm an edit actually took effect." +
             "\n- resizeLivePreview: change the preview viewport width to test responsive " +
             "breakpoints." +
             "\n- controlEditor: open files, move the cursor, change selection, toggle the live " +
@@ -985,6 +1025,15 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "feature-docs URL and the GitHub source repo URL. Call once near the start of any " +
             "non-trivial editor-control task; then Read / Grep the apiDocsPath and WebFetch the " +
             "featureDocsURL as needed. Do NOT search the codebase blindly when this exists." +
+            "\n\nEDITS THAT LAND IN THE LIVE PREVIEW: when you edit the file getEditorState " +
+            "reported as livePreviewFile — or a CSS / JS / SVG file it links to — the user is " +
+            "watching the result render. Whether that is worth checking is your judgement call, " +
+            "and so is how: execJsInLivePreview to read the DOM / computed styles / console, " +
+            "takeScreenshot with selector='#panel-live-preview-frame' for a visual check, " +
+            "resizeLivePreview for responsive behavior, or nothing at all when the change is " +
+            "trivial or self-evident. Weigh it at meaningful checkpoints (after a section lands, " +
+            "before you report done) rather than after every small edit. Files outside the live " +
+            "preview do not raise the question at all." +
             "\n\nName-collision rule: \"Phoenix Code\" (the editor the user is sitting inside) " +
             "and \"Claude Code\" (the SDK / CLI you happen to run on) BOTH have settings, " +
             "configs, auto-update toggles, themes, etc. When the user says \"set / change / " +
@@ -1438,7 +1487,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     console.warn("[Phoenix AI] Edit refresh fallback failed:", filePath, err.message);
                                 }
                             }
-                            // 2. Trigger aiToolEdit so the AI panel renders the
+                            // 2. Count it toward the live preview nudge. Only
+                            //    incrementing here — the read-and-clear happens
+                            //    in one owner, since PostToolUse hooks can run
+                            //    concurrently for parallel tool calls.
+                            if (result.isLivePreviewRelated) {
+                                _lpPendingEdits++;
+                            }
+                            // 3. Trigger aiToolEdit so the AI panel renders the
                             //    diff card and the snapshot store records it.
                             const counterId = _toolUseIdToCounter[toolUseID];
                             if (counterId !== undefined) {
@@ -1473,6 +1529,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             } catch (err) {
                                 console.warn("[Phoenix AI] Write refresh failed:", filePath, err.message);
                             }
+                            if (refreshResult.isLivePreviewRelated) {
+                                _lpPendingEdits++;
+                            }
                             const counterId = _toolUseIdToCounter[toolUseID];
                             if (counterId !== undefined) {
                                 nodeConnector.triggerPeer("aiToolEdit", {
@@ -1496,13 +1555,45 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     // tool. Edit/Write/Read have their own hooks above, but
                     // any tool can be a meaningful checkpoint (Bash, Grep,
                     // Glob, WebFetch, Task, the Phoenix MCP tools, etc.) so
-                    // we register one matcher-less hook that just returns
-                    // the clarification context if any is queued. Once
+                    // we register one matcher-less hook that returns the
+                    // clarification context if any is queued. Once
                     // getUserClarification runs and clears _queuedClarification,
-                    // _maybeClarifyContext returns {} and this becomes a no-op.
+                    // that part becomes a no-op.
+                    //
+                    // It also carries the live preview nudge as a fallback for
+                    // Claude CLI versions that predate PostToolBatch: the batch
+                    // hook below is the primary path, but we run the user's
+                    // global CLI (findGlobalClaudeCli) so we can't assume it.
+                    // Whichever fires first takes the hint; the other sees a
+                    // cleared counter.
                     hooks: [
-                        async () => {
-                            return _maybeClarifyContext();
+                        async (input) => {
+                            return _buildPostToolUseHint(input);
+                        }
+                    ]
+                }
+            ],
+            PostToolBatch: [
+                {
+                    // Primary emit point for the live preview nudge. Fires once
+                    // after every tool call in a batch resolves, so unlike
+                    // PostToolUse (which may run concurrently for parallel tool
+                    // calls) it can safely read-and-clear shared state, and it
+                    // sees the whole batch — including whether the model already
+                    // inspected the preview itself.
+                    hooks: [
+                        async (input) => {
+                            const names = (input.tool_calls || []).map(function (call) {
+                                return call.tool_name;
+                            });
+                            const hint = _takeLivePreviewHint(names);
+                            if (!hint) { return {}; }
+                            return {
+                                hookSpecificOutput: {
+                                    hookEventName: "PostToolBatch",
+                                    additionalContext: hint
+                                }
+                            };
                         }
                     ]
                 }
@@ -1510,17 +1601,59 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         }
     };
 
-    // Returns a PostToolUse SyncHookJSONOutput that injects the clarification
-    // hint as additionalContext when the user has typed a follow-up while the
-    // AI is streaming. With our PreToolUse hooks now returning {} (allow), the
-    // old practice of appending CLARIFICATION_HINT to permissionDecisionReason
-    // no longer reaches Claude — PostToolUse additionalContext is the new path.
-    function _maybeClarifyContext() {
-        if (!_queuedClarification) { return {}; }
+    // Read-and-clear for the live preview nudge. Returns the hint text when the
+    // model has piled up unverified live-preview edits, else null. Called from
+    // the PostToolBatch hook (primary) and the PostToolUse catch-all (fallback
+    // for older CLIs) — the body is synchronous, so whichever gets here first
+    // takes the hint and the other finds the counter already cleared.
+    //
+    // toolNames is what the model just called: seeing it inspect the preview
+    // itself means there is nothing to nag about.
+    function _takeLivePreviewHint(toolNames) {
+        if (toolNames && toolNames.some(function (name) {
+            return LP_INSPECT_TOOLS.indexOf(name) !== -1;
+        })) {
+            _lpPendingEdits = 0;
+            return null;
+        }
+        if (_lpNudgeCount >= LP_MAX_NUDGES_PER_REQUEST) {
+            return null;
+        }
+        const threshold = _lpNudgeCount === 0 ? 1 : LP_NUDGE_REPEAT_AFTER;
+        if (_lpPendingEdits < threshold) {
+            return null;
+        }
+        const text = _livePreviewHintText(_lpPendingEdits);
+        console.log("[Phoenix AI] live preview nudge:", _lpPendingEdits, "edit(s) unverified");
+        _lpPendingEdits = 0;
+        _lpNudgeCount++;
+        return text;
+    }
+
+    // Returns a PostToolUse SyncHookJSONOutput carrying whatever the model
+    // should see after a tool call: the clarification hint when the user has
+    // typed a follow-up while the AI is streaming, and/or the live preview
+    // nudge. With our PreToolUse hooks now returning {} (allow), the old
+    // practice of appending CLARIFICATION_HINT to permissionDecisionReason no
+    // longer reaches Claude — PostToolUse additionalContext is the new path.
+    //
+    // _queuedClarification is deliberately not cleared here; it clears only
+    // when the model calls getUserClarification. The live preview counter is
+    // cleared by _takeLivePreviewHint, so that half cannot repeat.
+    function _buildPostToolUseHint(input) {
+        const parts = [];
+        if (_queuedClarification) {
+            parts.push(CLARIFICATION_HINT);
+        }
+        const lpHint = _takeLivePreviewHint(input && input.tool_name ? [input.tool_name] : null);
+        if (lpHint) {
+            parts.push(lpHint);
+        }
+        if (!parts.length) { return {}; }
         return {
             hookSpecificOutput: {
                 hookEventName: "PostToolUse",
-                additionalContext: CLARIFICATION_HINT
+                additionalContext: parts.join("\n\n")
             }
         };
     }
