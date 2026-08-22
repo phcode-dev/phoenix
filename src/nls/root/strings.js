@@ -2919,6 +2919,32 @@ define({
     "DEMO_JS_BUTTON_ONE_MORE": "One more thing",
     "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
     "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
-    "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted"
+    "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
     // demo end
+
+    // Migration off the legacy web origin onto the new home
+    "MIGRATE_MOVING_TITLE": "{0} is moving",
+    "MIGRATE_MOVING_MESSAGE": "{APP_NAME} on {0} is moving to a new home at <strong>{1}</strong>. Everything works the same, only the address changes.",
+    "MIGRATE_SUNSET_COUNTDOWN": "You have <strong>{0} days</strong> left before {1} stops working.",
+    "MIGRATE_SUNSET_COUNTDOWN_ONE": "You have <strong>{0} day</strong> left before {1} stops working.",
+    "MIGRATE_DATA_SAFE_NOTE": "Your projects, settings and extensions will be copied over for you the first time you open {0}. Nothing is deleted from this site.",
+    "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatic transfer is not available in this browser. If you have projects saved here, please download them before the date above so you can open them again on the new site.",
+    "MIGRATE_TWA_UPDATE_NOTE": "Please update the app when you can. Nothing stops working today, and you can keep using this version in the meantime.",
+    "MIGRATE_TWA_BROWSER_LINK": "If you cannot update right now, you can also <a href=\'{0}\'>continue in a browser at {1}</a>.",
+    "MIGRATE_GO_TO_NEW_SITE": "Take me to the new site",
+    "MIGRATE_UPDATE_APP": "Update the app",
+    "MIGRATE_STAY_HERE": "Stay here",
+    "MIGRATE_PROGRESS_TITLE": "Bringing your data over",
+    "MIGRATE_PROGRESS_INTRO": "Copying your projects, settings and extensions from {0}. This only happens once.",
+    "MIGRATE_PROGRESS_PREPARING": "Preparing {0} ({1} of {2})\u2026",
+    "MIGRATE_PROGRESS_STATUS": "Copying {0} ({1} of {2})\u2026",
+    "MIGRATE_DONE_TITLE": "All done.",
+    "MIGRATE_DONE_MESSAGE": "{0} files were copied over. Reload to start using them.",
+    "MIGRATE_DONE_PARTIAL": "These could not be copied and are still available on the old site: {0}",
+    "MIGRATE_RELOAD_NOW": "Reload",
+    "MIGRATE_NOTHING_TITLE": "Nothing to bring over",
+    "MIGRATE_NOTHING_MESSAGE": "We could not find any projects, settings or extensions on {0} that need copying.",
+    "MIGRATE_UNREACHABLE_TITLE": "Could not reach the old site",
+    "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} could not connect to {0} to check for your data. Please check your connection and try again.",
+    "CMD_MIGRATE_DATA": "Migrate My Data\u2026"
 });

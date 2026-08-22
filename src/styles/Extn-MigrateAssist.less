@@ -1,0 +1,66 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+// Progress dialog for the one time migration off the legacy web origin.
+// The progress bar itself reuses the shared .progress-bar-* classes from brackets.less, so only the
+// dialog specific spacing lives here.
+.migrate-assist-dialog {
+
+    .migrate-assist-intro {
+        margin-bottom: 12px;
+    }
+
+    .progress-bar-container {
+        margin: 4px 0 10px 0;
+    }
+
+    // Shown while the other origin is still zipping a folder. There is no progress to report during
+    // that phase, and a bar frozen at 0% reads as a hang on the largest and slowest folders.
+    .migrate-assist-bar-indeterminate {
+        width: 100% !important;
+        background: repeating-linear-gradient(
+                to right,
+                #003366 0%, #004c99 10%, #0066cc 20%, #007bff 30%, #3399ff 40%,
+                #66b2ff 50%, #3399ff 60%, #007bff 70%, #0066cc 80%, #004c99 90%, #003366 100%
+        );
+        background-size: 200% auto;
+        animation: migrate-assist-pulse 2s linear infinite;
+    }
+
+    .migrate-assist-status {
+        margin: 0;
+        opacity: 0.8;
+    }
+
+    .migrate-assist-detail {
+        margin: 8px 0 0 0;
+        font-size: 0.9em;
+        opacity: 0.7;
+    }
+}
+
+@keyframes migrate-assist-pulse {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
