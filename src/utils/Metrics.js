@@ -242,6 +242,32 @@ define(function (require, exports, module) {
         tauriGAEvents.clear();
     }
 
+    // GA4 derives campaign attribution by parsing `page_location`. We deliberately
+    // do not send the real URL (it can carry project paths and file names), so an
+    // inbound `?utm_source=...` handoff from phcode.io would otherwise be invisible
+    // and every such session would be reported as direct/none. Allow-list only the
+    // six standard campaign keys back into `page_location`; everything else in the
+    // query string is still dropped.
+    function _getCampaignQuery() {
+        const campaignParams = ['utm_source', 'utm_medium', 'utm_campaign',
+            'utm_content', 'utm_term', 'utm_id'];
+        try {
+            const incoming = new URLSearchParams(window.location.search);
+            const allowed = new URLSearchParams();
+            for(let i = 0; i < campaignParams.length; i++){
+                const key = campaignParams[i];
+                if(incoming.has(key)){
+                    allowed.set(key, incoming.get(key));
+                }
+            }
+            const queryString = allowed.toString();
+            return queryString ? ('?' + queryString) : '';
+        } catch (e) {
+            // never let attribution break analytics init
+            return '';
+        }
+    }
+
     function _initGoogleAnalytics() {
         // Load google analytics scripts
         if(Phoenix.isNativeApp) {
@@ -262,10 +288,10 @@ define(function (require, exports, module) {
             gtag('config', brackets.config.googleAnalyticsID, {
                 'page_title': 'Phoenix editor',
                 'page_path': '/index.html',
-                'page_location': window.location.origin
+                'page_location': window.location.origin + _getCampaignQuery()
             });
         };
-        script.src = 'https://www.googletagmanager.com/gtag/js?' + brackets.config.googleAnalyticsID;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + brackets.config.googleAnalyticsID;
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
