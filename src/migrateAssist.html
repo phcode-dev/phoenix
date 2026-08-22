@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!--
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Phoenix Code data migration helper</title>
+</head>
+<body>
+<!--
+    Migration helper, served from the origin that is being retired.
+
+    web.phcode.dev embeds this page in a hidden iframe to read the projects, preferences and
+    extensions that live in this origin's IndexedDB and cannot otherwise cross the origin boundary.
+    This works because phcode.dev and web.phcode.dev are the same site (eTLD+1), so the frame is
+    same-site rather than third party and browsers do not partition its storage.
+
+    SECURITY: this page hands the user's entire browser filesystem to whoever embeds it, and the
+    origin check below is the only thing standing in the way. Exact string matching only, on every
+    single message, and replies always go to the validated origin, never "*". Reads are confined to
+    the three roots in ALLOWED_ROOTS.
+
+    It deliberately does not boot Phoenix. virtualfs.js is a self contained IIFE that gives us
+    window.fs over the same Filer IndexedDB, which is all we need.
+-->
+<script src="phoenix/virtualfs.js"></script>
+<script src="thirdparty/jszip.js"></script>
+<script>
+    (function () {
+        const TRUSTED_PARENT_ORIGINS = [
+            "https://web.phcode.dev",
+            "http://localhost:8000",
+            "http://127.0.0.1:8000",
+            "http://localhost:5000",
+            "http://127.0.0.1:5000"
+        ];
+
+        const PROJECTS_ROOT = "/fs/local";
+        const APP_ROOT = "/fs/app";
+        const EXTENSIONS_USER = APP_ROOT + "/extensions/user";
+        const EXTENSIONS_DISABLED = APP_ROOT + "/extensions/disabled";
+        const PREFS_FILE = APP_ROOT + "/phcode.json";
+
+        // Only these roots may ever be zipped and handed out. Anything else, including /mnt (which
+        // holds real disc folders the user picked), is refused.
+        const ALLOWED_ROOTS = [PROJECTS_ROOT, EXTENSIONS_USER, EXTENSIONS_DISABLED];
+
+        // Auto created on both origins, so their presence proves nothing about the user having data.
+        // They are still migrated when something else triggers the run, since they may be edited.
+        const NOT_EVIDENCE_OF_DATA = ["default project", "explore"];
+
+        // Extension folders carrying this marker are already tombstoned for deletion at next boot.
+        const DELETED_EXTENSION_MARKER = "_phcode_extension_marked_for_delete";
+
+        const PHSTORE_DB = "PhStore";
+        const PHSTORE_STORE = "KVStore";
+        const PHSTORE_KEYS = ["extensions.disabled", "STATE_recentProjects"];
+
+        const CHUNK_SIZE = 8 * 1024 * 1024;
+
+        let parentOrigin = null;
+
+        function isTrustedOrigin(origin) {
+            // Exact match only. A startsWith test here would let https://web.phcode.dev.evil.com
+            // through, which would hand a stranger every file the user owns.
+            return TRUSTED_PARENT_ORIGINS.indexOf(origin) !== -1;
+        }
+
+        function reply(message, transfer) {
+            if (!parentOrigin) {
+                return;
+            }
+            window.parent.postMessage(message, parentOrigin, transfer || []);
+        }
+
+        function fail(id, err) {
+            console.error("migrateAssist: failed", id, err);
+            reply({ type: "MIGRATE_ERROR", id: id, message: (err && err.message) || String(err) });
+        }
+
+        function readdir(dir) {
+            return new Promise((resolve) => {
+                fs.readdir(dir, { withFileTypes: true }, (err, entries) => {
+                    resolve(err ? [] : (entries || []));
+                });
+            });
+        }
+
+        function readFileBytes(filePath) {
+            return new Promise((resolve, reject) => {
+                fs.readFile(filePath, fs.BYTE_ARRAY_ENCODING, (err, data) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(data);
+                });
+            });
+        }
+
+        function readFileText(filePath) {
+            return new Promise((resolve) => {
+                fs.readFile(filePath, "utf8", (err, data) => {
+                    resolve(err ? null : data);
+                });
+            });
+        }
+
+        /**
+         * Walks a directory and returns every file in it as {path, relativePath, size}.
+         */
+        async function walk(rootDir, currentDir, out) {
+            const entries = await readdir(currentDir);
+            for (const entry of entries) {
+                const fullPath = currentDir + "/" + entry.name;
+                if (entry.isDirectory()) {
+                    await walk(rootDir, fullPath, out);
+                } else {
+                    out.push({
+                        path: fullPath,
+                        relativePath: fullPath.substring(rootDir.length + 1),
+                        size: entry.size || 0
+                    });
+                }
+            }
+            return out;
+        }
+
+        function isAllowedFolder(folderPath) {
+            if (folderPath.indexOf("..") !== -1) {
+                return false;
+            }
+            for (const root of ALLOWED_ROOTS) {
+                // Either the root itself, or a direct child of it. Nothing deeper and nothing else.
+                if (folderPath === root) {
+                    return true;
+                }
+                if (folderPath.startsWith(root + "/") && folderPath.indexOf("/", root.length + 1) === -1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function readPhStore() {
+            return new Promise((resolve) => {
+                const values = {};
+                let request;
+                try {
+                    request = indexedDB.open(PHSTORE_DB);
+                } catch (e) {
+                    resolve(values);
+                    return;
+                }
+                request.onerror = () => resolve(values);
+                request.onsuccess = () => {
+                    const db = request.result;
+                    if (!db.objectStoreNames.contains(PHSTORE_STORE)) {
+                        db.close();
+                        resolve(values);
+                        return;
+                    }
+                    const store = db.transaction(PHSTORE_STORE, "readonly").objectStore(PHSTORE_STORE);
+                    let pending = PHSTORE_KEYS.length;
+                    const done = () => {
+                        pending = pending - 1;
+                        if (pending === 0) {
+                            db.close();
+                            resolve(values);
+                        }
+                    };
+                    for (const key of PHSTORE_KEYS) {
+                        const get = store.get(key);
+                        get.onsuccess = () => {
+                            // PhStore wraps every value as {t: mtime, v: jsonString}.
+                            const entry = get.result;
+                            if (entry && typeof entry.v === "string") {
+                                try {
+                                    values[key] = JSON.parse(entry.v);
+                                } catch (e) {
+                                    console.warn("migrateAssist: unparsable PhStore value", key);
+                                }
+                            }
+                            done();
+                        };
+                        get.onerror = done;
+                    }
+                };
+                // A brand new database created by the open above has no store and no data, which the
+                // contains() check above already handles.
+                request.onupgradeneeded = () => { /* nothing to do, we only ever read */ };
+            });
+        }
+
+        async function collectBundles() {
+            const bundles = [];
+            let hasRealProject = false;
+
+            const projectDirs = await readdir(PROJECTS_ROOT);
+            for (const entry of projectDirs) {
+                if (!entry.isDirectory()) {
+                    continue;
+                }
+                const dir = PROJECTS_ROOT + "/" + entry.name;
+                const files = await walk(dir, dir, []);
+                if (!files.length) {
+                    continue;
+                }
+                bundles.push({
+                    id: dir,
+                    dest: dir,
+                    fileCount: files.length,
+                    bytes: files.reduce((sum, f) => sum + f.size, 0)
+                });
+                if (NOT_EVIDENCE_OF_DATA.indexOf(entry.name) === -1) {
+                    hasRealProject = true;
+                }
+            }
+
+            let extensionCount = 0;
+            for (const extRoot of [EXTENSIONS_USER, EXTENSIONS_DISABLED]) {
+                const extDirs = await readdir(extRoot);
+                const keep = [];
+                for (const entry of extDirs) {
+                    if (!entry.isDirectory()) {
+                        continue;
+                    }
+                    const markerPath = extRoot + "/" + entry.name + "/" + DELETED_EXTENSION_MARKER;
+                    const marker = await readFileText(markerPath);
+                    if (marker !== null) {
+                        continue; // already marked for delete, do not carry it over
+                    }
+                    keep.push(entry.name);
+                }
+                if (!keep.length) {
+                    continue;
+                }
+                if (extRoot === EXTENSIONS_USER) {
+                    extensionCount = keep.length;
+                }
+                const files = await walk(extRoot, extRoot, []);
+                const kept = files.filter((f) => keep.indexOf(f.relativePath.split("/")[0]) !== -1);
+                if (!kept.length) {
+                    continue;
+                }
+                bundles.push({
+                    id: extRoot,
+                    dest: extRoot,
+                    fileCount: kept.length,
+                    bytes: kept.reduce((sum, f) => sum + f.size, 0)
+                });
+            }
+
+            const prefsText = await readFileText(PREFS_FILE);
+            let hasPrefs = false;
+            if (prefsText) {
+                try {
+                    const parsed = JSON.parse(prefsText);
+                    hasPrefs = !!parsed && Object.keys(parsed).length > 0;
+                } catch (e) {
+                    hasPrefs = false;
+                }
+            }
+
+            return {
+                bundles: bundles,
+                prefs: hasPrefs ? prefsText : null,
+                hasData: hasRealProject || hasPrefs || extensionCount > 0
+            };
+        }
+
+        async function handleScan() {
+            const scan = await collectBundles();
+            const phStore = await readPhStore();
+            reply({
+                type: "MIGRATE_SCAN_RESULT",
+                hasData: scan.hasData,
+                bundles: scan.bundles,
+                prefs: scan.prefs,
+                phStore: phStore
+            });
+        }
+
+        async function handleBundle(id) {
+            if (typeof id !== "string" || !isAllowedFolder(id)) {
+                fail(id, new Error("Refused: folder is outside the migratable roots"));
+                return;
+            }
+            const zip = new JSZip();
+            const files = await walk(id, id, []);
+            for (const file of files) {
+                if (file.relativePath.endsWith(DELETED_EXTENSION_MARKER)) {
+                    continue;
+                }
+                const bytes = await readFileBytes(file.path);
+                zip.file(file.relativePath, bytes);
+            }
+            const buffer = await zip.generateAsync({ type: "arraybuffer" });
+            const chunkCount = Math.max(1, Math.ceil(buffer.byteLength / CHUNK_SIZE));
+            reply({ type: "MIGRATE_BUNDLE_META", id: id, totalBytes: buffer.byteLength, chunkCount: chunkCount });
+            for (let index = 0; index < chunkCount; index++) {
+                const start = index * CHUNK_SIZE;
+                const chunk = buffer.slice(start, Math.min(start + CHUNK_SIZE, buffer.byteLength));
+                reply({
+                    type: "MIGRATE_CHUNK",
+                    id: id,
+                    index: index,
+                    chunk: chunk,
+                    last: index === chunkCount - 1
+                }, [chunk]);
+            }
+        }
+
+        window.addEventListener("message", function (event) {
+            // Re-checked on every message, not just the handshake.
+            if (!isTrustedOrigin(event.origin) || event.origin !== parentOrigin) {
+                return;
+            }
+            const data = event.data;
+            if (!data || typeof data !== "object") {
+                return;
+            }
+            if (data.type === "MIGRATE_SCAN") {
+                handleScan().catch((err) => fail("scan", err));
+            } else if (data.type === "MIGRATE_BUNDLE") {
+                handleBundle(data.id).catch((err) => fail(data.id, err));
+            }
+        });
+
+        const requestedParent = new URLSearchParams(window.location.search || "").get("parentOrigin");
+        if (isTrustedOrigin(requestedParent)) {
+            parentOrigin = requestedParent;
+            reply({ type: "MIGRATE_READY" });
+        } else {
+            // Stay silent. Never post to an unvalidated origin, not even to say no.
+            console.error("migrateAssist: refusing to run, untrusted parent origin", requestedParent);
+        }
+    }());
+</script>
+</body>
+</html>
