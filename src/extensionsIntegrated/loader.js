@@ -47,5 +47,6 @@ define(function (require, exports, module) {
     require("./CollapseFolders/main");
     require("./Terminal/main");
     require("./JSONSupport/main");
+    require("./MigrateAssist/main");
     require("./pro-loader");
 });

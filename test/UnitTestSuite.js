@@ -142,6 +142,7 @@ define(function (require, exports, module) {
     require("spec/Extn-JSONSupport-test");
     require("spec/Extn-JSONSupport-integ-test");
     require("spec/Extn-CollapseFolders-integ-test");
+    require("spec/Extn-MigrateAssist-test");
     require("spec/Extn-Tabbar-integ-test");
     require("spec/Extn-CustomSnippets-test");
     require("spec/Extn-CustomSnippets-integ-test");

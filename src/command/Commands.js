@@ -461,6 +461,9 @@ define(function (require, exports, module) {
     /** Toggles auto update */
     exports.HELP_AUTO_UPDATE            = "help.autoUpdate";             // shortcuts integrated extension
 
+    /** Migrates browser data from the legacy web origin */
+    exports.HELP_MIGRATE_DATA           = "help.migrateData";           // MigrateAssist integrated extension
+
     // Working Set Configuration
     /** Sorts working set by order files were added */
     exports.CMD_WORKINGSET_SORT_BY_ADDED  = "cmd.sortWorkingSetByAdded";     // WorkingSetSort.js       _handleSort()
