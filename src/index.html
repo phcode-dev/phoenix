@@ -47,14 +47,14 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://phcode.dev/" />
+    <meta property="og:url" content="https://web.phcode.dev/" />
     <meta property="og:title" content="Phoenix Code | Code Creatively" />
     <meta property="og:description" content="A text editor designed to make coding as intuitive and fun as playing a video game - specially crafted for web developers, designers, and students." />
     <meta property="og:image" content="assets/images/socialcard.png" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://phcode.dev/" />
+    <meta property="twitter:url" content="https://web.phcode.dev/" />
     <meta property="twitter:title" content="Phoenix Code | Code Creatively" />
     <meta property="twitter:description" content="A text editor designed to make coding as intuitive and fun as playing a video game - specially crafted for web developers, designers, and students." />
     <meta property="twitter:image" content="assets/images/socialcard.png" />
@@ -73,10 +73,10 @@
     <script>
         if(["dev.phcode.dev", "staging.phcode.dev"].includes(location.hostname)
             && localStorage.getItem("devDomainsEnabled") !== "true"){
-            alert("Hello explorer, you have reached a development version of phcode.dev that is not for general use and could be very unstable." +
+            alert("Hello explorer, you have reached a development version of Phoenix Code that is not for general use and could be very unstable." +
                 `\n\nIf you know what you are doing and what to visit the dev site, please go to https://${location.hostname}/devEnable.html to enable dev site and visit again.` +
-                "\n\nYou will now be redirected to phcode.dev.");
-            window.location = "https://phcode.dev";
+                "\n\nYou will now be redirected to web.phcode.dev.");
+            window.location = "https://web.phcode.dev";
         }
         if(window.electronAppAPI) {
             window.__ELECTRON__ = true;
@@ -446,6 +446,7 @@
                     'https://phcode.live': true, // phcode prod live preview server
                     'https://ai-panel-onboarding.phcode.dev': true, // Ai panel onboarding iframes
                     'https://phcode.dev': true,
+                    'https://web.phcode.dev': true, // prod web
                     'https://dev.phcode.dev': true,
                     'https://staging.phcode.dev': true,
                     'https://create.phcode.dev': true

@@ -28,6 +28,7 @@
         "phtauri://localhost", // mac or linux desktop
         "https://phtauri.localhost", //windows desktop
         "https://phcode.dev", // prod
+        "https://web.phcode.dev", // prod web
         "https://create.phcode.dev", // extension authoring prod
         "https://dev.phcode.dev", // dev url
         "https://staging.phcode.dev" // staging url
@@ -236,8 +237,8 @@
     function _isSafePathForLogging(pathText) {
         const lower = pathText.toLowerCase();
         const safeStarts = ["phtauri://", "https://phtauri.localhost", "http://localhost",
-            "https://localhost", "https://phcode.dev", "https://create.phcode.dev",
-            "https://dev.phcode.dev", "https://staging.phcode.dev",
+            "https://localhost", "https://phcode.dev", "https://web.phcode.dev",
+            "https://create.phcode.dev", "https://dev.phcode.dev", "https://staging.phcode.dev",
             "/usr/", "/lib/", "/lib64/", "/opt/", "/snap/", "/bin/", "/sbin/", "/etc/",
             "/system/", "/applications/", "c:\\program files", "c:\\windows"];
         for(let prefix of safeStarts){

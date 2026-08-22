@@ -94,10 +94,14 @@
             'http://127.0.0.1:5000': true, // playwright tests
             'https://phcode.live': true, // phcode prod live preview server
             'https://phcode.dev': true,
+            'https://web.phcode.dev': true, // prod web
             'https://dev.phcode.dev': true,
             'https://staging.phcode.dev': true,
             'https://create.phcode.dev': true
         };
+        // this page is always served from the phoenix origin, so trust it whichever domain that is.
+        // keeps the loader working on any new phoenix host without another edit here.
+        TRUSTED_ORIGINS[location.origin] = true;
         let okMessageTemplate;
 
         function isTrustedURL(url) {
