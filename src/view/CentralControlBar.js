@@ -213,7 +213,8 @@ define(function (require, exports, module) {
         if (targetWidth < minLPToolbarWidth) {
             targetWidth = minLPToolbarWidth;
         }
-        if (sidebarWidth + BAR_WIDTH + targetWidth + MIN_EDITOR_WIDTH > window.innerWidth) {
+        if (SidebarView.isVisible() &&
+                sidebarWidth + BAR_WIDTH + targetWidth + MIN_EDITOR_WIDTH > window.innerWidth) {
             const trimmedSidebar = Math.max(30, window.innerWidth - BAR_WIDTH - targetWidth - MIN_EDITOR_WIDTH);
             $sidebar.width(trimmedSidebar);
             // jQuery .width() sidesteps Resizer — manually reposition its handle so
