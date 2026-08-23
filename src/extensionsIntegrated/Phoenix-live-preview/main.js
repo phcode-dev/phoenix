@@ -190,7 +190,7 @@ define(function (require, exports, module) {
         $modeBtn,
         $modeBtnGroup,
         $previewBtn,
-        $designModeBtn;
+        $fullScreenBtn;
 
     let customLivePreviewBannerShown = false;
 
@@ -800,7 +800,7 @@ define(function (require, exports, module) {
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
             clickToToggleEdit: Strings.LIVE_PREVIEW_MODE_TOGGLE_EDIT,
-            switchToDesignMode: Strings.CCB_SWITCH_TO_DESIGN_MODE,
+            fullScreenLivePreview: Strings.LIVE_PREVIEW_FULL_SCREEN,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
@@ -833,7 +833,7 @@ define(function (require, exports, module) {
         $modeBtn = $panel.find("#livePreviewModeBtn");
         $modeBtnGroup = $panel.find("#lpModeBtnGroup");
         $previewBtn = $panel.find("#previewModeLivePreviewButton");
-        $designModeBtn = $panel.find("#designModeToggleLivePreviewButton");
+        $fullScreenBtn = $panel.find("#fullScreenLivePreviewButton");
 
         // Markdown theme toggle — persist user choice
         MarkdownSync.setThemeToggleHandler((theme) => {
@@ -918,28 +918,25 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
 
-        // Design-mode toggle: mirrors the CCB's pen-nib button so the user can
-        // enter/exit design mode without moving focus to the sidebar strip.
-        // Icon swaps between fa-expand (enter) and fa-compress (exit).
-        function _updateDesignModeButton() {
-            const on = WorkspaceManager.isInDesignMode && WorkspaceManager.isInDesignMode();
-            const $icon = $designModeBtn.find("i");
-            $icon.removeClass("fa-expand fa-compress")
+        function _updateFullScreenButton() {
+            const on = WorkspaceManager.isInLPFullScreen && WorkspaceManager.isInLPFullScreen();
+            $fullScreenBtn.find("i")
+                .removeClass("fa-expand fa-compress")
                 .addClass(on ? "fa-compress" : "fa-expand");
-            $designModeBtn.attr("title",
-                on ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
-            if ($modeBtn) {
-                $modeBtn.toggle(!on && !_isMdviewrActive);
-            }
+            $fullScreenBtn.attr("title",
+                on ? Strings.LIVE_PREVIEW_EXIT_FULL_SCREEN : Strings.LIVE_PREVIEW_FULL_SCREEN);
         }
-        $designModeBtn.click(()=>{
-            CommandManager.execute(Commands.VIEW_TOGGLE_DESIGN_MODE);
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "designModeBtn", "click");
+        $fullScreenBtn.click(()=>{
+            CommandManager.execute(Commands.VIEW_TOGGLE_LP_FULL_SCREEN);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "fullScreenBtn", "click");
         });
         WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_DESIGN_MODE_CHANGE + ".livePreview");
         WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_DESIGN_MODE_CHANGE + ".livePreview",
-            _updateDesignModeButton);
-        _updateDesignModeButton();
+            _updateLPControlsForMdviewer);
+        WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE + ".livePreview");
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE + ".livePreview",
+            _updateFullScreenButton);
+        _updateFullScreenButton();
 
         // init the status overlay
         _initOverlay();
