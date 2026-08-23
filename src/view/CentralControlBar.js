@@ -27,6 +27,7 @@ define(function (require, exports, module) {
     const LanguageManager   = require("language/LanguageManager");
     const MainViewManager   = require("view/MainViewManager");
     const Metrics           = require("utils/Metrics");
+    const PreferencesManager = require("preferences/PreferencesManager");
     const Strings           = require("strings");
     const WorkspaceManager  = require("view/WorkspaceManager");
     const SidebarView       = require("project/SidebarView");
@@ -43,6 +44,9 @@ define(function (require, exports, module) {
     let livePreviewWasOpen = false;
     let savedSidebarMaxSize = null;
     let applyingCollapsedLayout = false;
+    let lpFullScreen = false;
+    let sidebarHiddenByFullScreen = false;
+    let designModeEnabledByFullScreen = false;
 
     function _getRenderedSidebarWidth() {
         // Use offsetWidth (not jQuery's outerWidth) to force a synchronous reflow
@@ -316,6 +320,11 @@ define(function (require, exports, module) {
 
     function _setEditorCollapsed(collapsed, opts) {
         const wantCollapsed = !!collapsed;
+        // Leaving design mode also leaves full screen, so give the sidebar back
+        // if full screen was what hid it.
+        if (!wantCollapsed) {
+            _restoreSidebarFromFullScreen();
+        }
         if (wantCollapsed === editorCollapsed) {
             return;
         }
@@ -347,15 +356,14 @@ define(function (require, exports, module) {
             _flushTracker(_mdDesignTracker);
         }
         $("body").toggleClass("ccb-editor-collapsed", editorCollapsed);
-        const $collapseBtn = $("#ccbCollapseEditorBtn");
-        $collapseBtn.toggleClass("is-active", editorCollapsed)
-            .attr("title", editorCollapsed ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
+        _updateCollapseBtn();
         if (_toggleDesignModeCommand) {
             _toggleDesignModeCommand.setChecked(editorCollapsed);
         }
         if (WorkspaceManager.setDesignMode) {
             WorkspaceManager.setDesignMode(editorCollapsed);
         }
+        _recomputeFullScreen();
 
         if (editorCollapsed) {
             livePreviewWasOpen = _isLivePreviewOpen();
@@ -398,8 +406,110 @@ define(function (require, exports, module) {
         if (!$btn.length) {
             return;
         }
-        const isVisible = SidebarView.isVisible();
-        $btn.find("i").attr("class", isVisible ? "fa-solid fa-angles-left" : "fa-solid fa-angles-right");
+        const sidebarVisible = SidebarView.isVisible();
+        $btn.find("i").attr("class", sidebarVisible ? "fa-solid fa-angles-left" : "fa-solid fa-angles-right");
+        $btn.attr("title", lpFullScreen
+            ? Strings.LIVE_PREVIEW_EXIT_FULL_SCREEN : Strings.CMD_TOGGLE_SIDEBAR);
+    }
+
+    function _updateCollapseBtn() {
+        $("#ccbCollapseEditorBtn")
+            .toggleClass("is-active", editorCollapsed)
+            .attr("title", editorCollapsed
+                ? Strings.CCB_SWITCH_TO_CODE_EDITOR : Strings.CCB_SWITCH_TO_DESIGN_MODE);
+    }
+
+    function _hideSidebarForFullScreen() {
+        if (!SidebarView.isVisible()) {
+            return;
+        }
+        sidebarHiddenByFullScreen = true;
+        SidebarView.hide();
+        // Resizer persists visible:false on hide, but full screen itself isn't
+        // persisted, so quitting from it would reopen the app with no sidebar.
+        // Put the stored flag back.
+        const sidebarViewState = PreferencesManager.getViewState("sidebar");
+        if (sidebarViewState) {
+            sidebarViewState.visible = true;
+            PreferencesManager.setViewState("sidebar", sidebarViewState);
+        }
+    }
+
+    function _restoreSidebarFromFullScreen() {
+        if (!sidebarHiddenByFullScreen) {
+            return;
+        }
+        sidebarHiddenByFullScreen = false;
+        if (!SidebarView.isVisible()) {
+            SidebarView.show();
+        }
+    }
+
+    /**
+     * Full screen is derived state: live preview is full screen exactly when the
+     * editor is collapsed and the sidebar is away, however the user got there.
+     * Call this after either of those two inputs changes.
+     * @private
+     */
+    function _recomputeFullScreen() {
+        const nextFullScreen = editorCollapsed && !SidebarView.isVisible();
+        if (nextFullScreen === lpFullScreen) {
+            return;
+        }
+        lpFullScreen = nextFullScreen;
+        if (!lpFullScreen) {
+            sidebarHiddenByFullScreen = false;
+            designModeEnabledByFullScreen = false;
+        }
+        $("body").toggleClass("lp-fullscreen", lpFullScreen);
+        if (WorkspaceManager.setLPFullScreen) {
+            WorkspaceManager.setLPFullScreen(lpFullScreen);
+        }
+        if (_toggleLPFullScreenCommand) {
+            _toggleLPFullScreenCommand.setChecked(lpFullScreen);
+        }
+        _updateSidebarToggleIcon();
+    }
+
+    /**
+     * Enters or exits live-preview full screen, meaning design mode with the sidebar
+     * hidden.
+     *
+     * Exiting undoes only what entering did, so it turns design mode off only when
+     * entering was what turned it on. Entering from design mode returns to design
+     * mode, not to the editor.
+     * @param {boolean} fullScreen
+     * @private
+     */
+    function _setLPFullScreen(fullScreen) {
+        const wantFullScreen = !!fullScreen;
+        if (wantFullScreen === lpFullScreen) {
+            return;
+        }
+        if (wantFullScreen) {
+            designModeEnabledByFullScreen = !editorCollapsed;
+            if (!editorCollapsed) {
+                _setEditorCollapsed(true);
+            }
+            _hideSidebarForFullScreen();
+            _recomputeFullScreen();
+            _syncLeftPositions();
+            _applyCollapsedLayout();
+            return;
+        }
+        if (designModeEnabledByFullScreen) {
+            _restoreSidebarFromFullScreen();
+            _setEditorCollapsed(false);
+            return;
+        }
+        // Design mode was already on, so bringing the sidebar back is the whole undo.
+        if (!SidebarView.isVisible()) {
+            SidebarView.show();
+        }
+        sidebarHiddenByFullScreen = false;
+        _recomputeFullScreen();
+        _syncLeftPositions();
+        _applyCollapsedLayout();
     }
 
     function _ccbClickMetric(label) {
@@ -446,6 +556,11 @@ define(function (require, exports, module) {
             _setEditorCollapsed(!editorCollapsed);
         }, { supportsDesignMode: true });
 
+    const _toggleLPFullScreenCommand = CommandManager.register(Strings.CMD_TOGGLE_LP_FULL_SCREEN,
+        Commands.VIEW_TOGGLE_LP_FULL_SCREEN, function () {
+            _setLPFullScreen(!lpFullScreen);
+        }, { supportsDesignMode: true });
+
     AppInit.htmlReady(function () {
         $bar = $("#centralControlBar");
         $sidebar = $("#sidebar");
@@ -458,8 +573,7 @@ define(function (require, exports, module) {
         // strings; set the localized versions up front so the initial render
         // reflects the user's locale. (searchNav / navBackButton /
         // navForwardButton get their localized titles from NavigationProvider.)
-        $("#ccbCollapseEditorBtn").attr("title", Strings.CCB_SWITCH_TO_DESIGN_MODE);
-        $("#ccbSidebarToggleBtn").attr("title", Strings.CMD_TOGGLE_SIDEBAR);
+        _updateCollapseBtn();
         $("#ccbUndoBtn").attr("title", Strings.CMD_UNDO);
         $("#ccbRedoBtn").attr("title", Strings.CMD_REDO);
         $("#ccbSaveBtn").attr("title", Strings.CMD_FILE_SAVE);
@@ -511,6 +625,7 @@ define(function (require, exports, module) {
             _forwardResizeToMainToolbar("panelResizeUpdate");
         });
         $sidebar.on("panelResizeEnd.ccb panelCollapsed.ccb panelExpanded.ccb", function (e) {
+            _recomputeFullScreen();
             _syncLeftPositions();
             if (editorCollapsed) {
                 _applyCollapsedLayout();
@@ -611,4 +726,17 @@ define(function (require, exports, module) {
 
     exports.isEditorCollapsed = function () { return editorCollapsed; };
     exports.setEditorCollapsed = _setEditorCollapsed;
+
+    /**
+     * True while live preview is expanded to full screen. Full screen implies design
+     * mode, so `isEditorCollapsed()` is true as well.
+     * @returns {boolean}
+     */
+    exports.isLPFullScreen = function () { return lpFullScreen; };
+
+    /**
+     * Enters or exits live-preview full screen.
+     * @param {boolean} fullScreen
+     */
+    exports.setLPFullScreen = _setLPFullScreen;
 });
