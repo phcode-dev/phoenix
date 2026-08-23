@@ -224,7 +224,7 @@ to display the shortcut selection dialog
 <a name="canAssignBinding"></a>
 
 ## canAssignBinding(commandId) ⇒ <code>boolean</code>
-Returns true the given command id can be overriden by user.
+Returns true the given command id can be overridden by user.
 
 **Kind**: global function  
 

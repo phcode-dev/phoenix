@@ -44,7 +44,7 @@ define(function (require, exports, module) {
      * @param {function} removeHandler Pop-up specific remove (e.g. display:none or DOM removal)
      * @param {?Boolean} autoRemove - Specify true to indicate the PopUpManager should
      *      remove the popup from the _popUps array when the popup is closed. Specify false
-     *      when the popup is always persistant in the _popUps array.
+     *      when the popup is always persistent in the _popUps array.
      * @param {object} options
      * @param {boolean} [options.popupManagesFocus] - set to true if the popup manages focus restore on close
      * @param {boolean} [options.closeCurrentPopups] - set to true if you want to dismiss all exiting popups before
