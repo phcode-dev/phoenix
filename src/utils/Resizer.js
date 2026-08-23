@@ -394,9 +394,13 @@ define(function (require, exports, module) {
         // reposition it if the element size changes externally
         function repositionResizer(elementSize) {
             var resizerPosition = elementSize || 1;
-            if (position === POSITION_RIGHT || position === POSITION_BOTTOM) {
-                $resizer.css(resizerCSSPosition, resizerPosition);
+            if (position !== POSITION_RIGHT && position !== POSITION_BOTTOM) {
+                return;
             }
+            if (collapsible && !isVisible($element)) {
+                return;
+            }
+            $resizer.css(resizerCSSPosition, resizerPosition);
         }
 
         $element.data("removeSizable", function () {

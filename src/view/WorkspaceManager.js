@@ -608,7 +608,7 @@ define(function (require, exports, module) {
             return;
         }
         var $sb = $("#sidebar");
-        if (!$sb.length || $sb[0].offsetWidth === 0) {
+        if (!$sb.length || !Resizer.isVisible($sb) || $sb[0].offsetWidth === 0) {
             return;
         }
         var toolbarW = $mainToolbar.is(":visible") ? $mainToolbar.width() : 0;
