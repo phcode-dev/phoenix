@@ -1316,5 +1316,162 @@ define(function (require, exports, module) {
                 expect(CentralControlBar.isEditorCollapsed()).toBe(false);
             });
         });
+
+        describe("14. Live preview full screen", function () {
+            // Full screen is derived state: live preview is full screen exactly when
+            // the editor is collapsed and the sidebar is away. These cover the state
+            // rule and the enter/exit contract, not icon classes or tooltip strings.
+            let PreferencesManager;
+
+            beforeAll(function () {
+                PreferencesManager = brackets.test.PreferencesManager;
+            });
+
+            async function enterFullScreen() {
+                if (WorkspaceManager.isInLPFullScreen()) {
+                    return;
+                }
+                CommandManager.execute(Commands.VIEW_TOGGLE_LP_FULL_SCREEN);
+                await awaitsFor(function () { return WorkspaceManager.isInLPFullScreen(); },
+                    "full screen to activate", 10000);
+                await awaitsFor(function () {
+                    const p = livePanel();
+                    return p && p.isVisible();
+                }, "live preview to be visible in full screen", 10000);
+            }
+
+            async function exitFullScreen() {
+                if (!WorkspaceManager.isInLPFullScreen()) {
+                    return;
+                }
+                CommandManager.execute(Commands.VIEW_TOGGLE_LP_FULL_SCREEN);
+                await awaitsFor(function () { return !WorkspaceManager.isInLPFullScreen(); },
+                    "full screen to deactivate", 10000);
+            }
+
+            it("should collapse the editor and give live preview the full width minus the control bar",
+                async function () {
+                    await openLivePreview();
+                    await enterFullScreen();
+
+                    expect(WorkspaceManager.isInDesignMode()).toBe(true);
+                    expect(SidebarView.isVisible()).toBe(false);
+
+                    const ccbLeft = _$("#centralControlBar")[0].getBoundingClientRect().left;
+                    expect(ccbLeft).toBeLessThan(2);
+
+                    const mtWidth = _$("#main-toolbar").outerWidth();
+                    expect(Math.abs(mtWidth - (testWindow.innerWidth - CCB_WIDTH))).toBeLessThan(5);
+                });
+
+            it("should return to the code editor with the sidebar back when entered from the editor",
+                async function () {
+                    await openLivePreview();
+                    await enterFullScreen();
+                    await exitFullScreen();
+
+                    expect(WorkspaceManager.isInDesignMode()).toBe(false);
+                    expect(SidebarView.isVisible()).toBe(true);
+                    // Live preview was open before full screen, so it stays open.
+                    expect(livePanel().isVisible()).toBe(true);
+                });
+
+            it("should return to design mode, not the editor, when entered from design mode",
+                async function () {
+                    await enterDesignMode();
+                    await enterFullScreen();
+                    await exitFullScreen();
+
+                    expect(WorkspaceManager.isInDesignMode()).toBe(true);
+                    expect(SidebarView.isVisible()).toBe(true);
+                });
+
+            it("should turn on and off as the sidebar is hidden and shown in design mode", async function () {
+                await enterDesignMode();
+                expect(WorkspaceManager.isInLPFullScreen()).toBe(false);
+
+                SidebarView.hide();
+                await awaitsFor(function () { return WorkspaceManager.isInLPFullScreen(); },
+                    "full screen to follow the sidebar collapsing", 3000);
+
+                SidebarView.show();
+                await awaitsFor(function () { return !WorkspaceManager.isInLPFullScreen(); },
+                    "full screen to follow the sidebar coming back", 3000);
+                // Only the sidebar came back, the editor stays collapsed.
+                expect(WorkspaceManager.isInDesignMode()).toBe(true);
+            });
+
+            it("should not be full screen when the sidebar is hidden but the editor is still up",
+                async function () {
+                    expect(WorkspaceManager.isInDesignMode()).toBe(false);
+
+                    SidebarView.hide();
+                    await awaitsFor(function () { return !SidebarView.isVisible(); },
+                        "sidebar to hide", 2000);
+
+                    expect(WorkspaceManager.isInLPFullScreen()).toBe(false);
+                });
+
+            it("should drop to design mode when the CCB sidebar toggle is clicked in full screen",
+                async function () {
+                    await openLivePreview();
+                    await enterFullScreen();
+
+                    _$("#ccbSidebarToggleBtn").trigger("click");
+
+                    await awaitsFor(function () { return !WorkspaceManager.isInLPFullScreen(); },
+                        "full screen to exit on sidebar toggle", 5000);
+                    expect(WorkspaceManager.isInDesignMode()).toBe(true);
+                    expect(SidebarView.isVisible()).toBe(true);
+                });
+
+            it("should leave the stored sidebar visibility alone so quitting from full screen restores it",
+                async function () {
+                    await openLivePreview();
+                    await enterFullScreen();
+
+                    // Resizer writes visible:false on hide. Full screen is not a
+                    // persisted mode, so the stored flag must stay true or the next
+                    // launch comes up with no sidebar.
+                    expect(SidebarView.isVisible()).toBe(false);
+                    expect(PreferencesManager.getViewState("sidebar").visible).toBe(true);
+                });
+
+            it("should keep the sidebar hidden on exit when the user hid it themselves", async function () {
+                await openLivePreview();
+                SidebarView.hide();
+                await awaitsFor(function () { return !SidebarView.isVisible(); },
+                    "sidebar to hide", 2000);
+
+                await enterFullScreen();
+                await exitFullScreen();
+
+                expect(SidebarView.isVisible()).toBe(false);
+            });
+
+            it("should exit and restore the sidebar when live preview is closed in full screen",
+                async function () {
+                    await openLivePreview();
+                    await enterFullScreen();
+
+                    livePanel().hide();
+
+                    await awaitsFor(function () { return !WorkspaceManager.isInLPFullScreen(); },
+                        "full screen to exit when live preview closes", 5000);
+                    expect(WorkspaceManager.isInDesignMode()).toBe(false);
+                    expect(SidebarView.isVisible()).toBe(true);
+                });
+
+            it("should dispatch VIEW_TOGGLE_LP_FULL_SCREEN from the live preview expand button",
+                async function () {
+                    await openLivePreview();
+
+                    const executed = recordCommands(function () {
+                        _$("#fullScreenLivePreviewButton").trigger("click");
+                    });
+
+                    expect(executed).toContain(Commands.VIEW_TOGGLE_LP_FULL_SCREEN);
+                });
+        });
     });
 });
