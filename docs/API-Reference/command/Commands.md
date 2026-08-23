@@ -459,6 +459,12 @@ Toggles sidebar visibility
 Toggles the design (full live-preview) mode — collapses/expands the editor
 
 **Kind**: global variable  
+<a name="VIEW_TOGGLE_LP_FULL_SCREEN"></a>
+
+## VIEW\_TOGGLE\_LP\_FULL\_SCREEN
+Toggles live-preview full screen (design mode with the sidebar hidden)
+
+**Kind**: global variable  
 <a name="TOGGLE_TABBAR"></a>
 
 ## TOGGLE\_TABBAR

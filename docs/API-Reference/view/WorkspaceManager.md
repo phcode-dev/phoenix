@@ -29,6 +29,7 @@ Events:
         * [.EVENT_WORKSPACE_PANEL_SHOWN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_SHOWN)
         * [.EVENT_WORKSPACE_PANEL_HIDDEN](#module_view/WorkspaceManager..EVENT_WORKSPACE_PANEL_HIDDEN)
         * [.EVENT_WORKSPACE_DESIGN_MODE_CHANGE](#module_view/WorkspaceManager..EVENT_WORKSPACE_DESIGN_MODE_CHANGE)
+        * [.EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE](#module_view/WorkspaceManager..EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE)
         * [.createBottomPanel(id, $panel, [minSize], [title], [options])](#module_view/WorkspaceManager..createBottomPanel) ⇒ <code>Panel</code>
         * [.destroyBottomPanel(id)](#module_view/WorkspaceManager..destroyBottomPanel)
         * [.createPluginPanel(id, $panel, [minSize], $toolbarIcon, [initialSize])](#module_view/WorkspaceManager..createPluginPanel) ⇒ <code>Panel</code>
@@ -39,6 +40,8 @@ Events:
         * [.setPluginPanelWidth(width)](#module_view/WorkspaceManager..setPluginPanelWidth)
         * [.isInDesignMode()](#module_view/WorkspaceManager..isInDesignMode) ⇒ <code>boolean</code>
         * [.setDesignMode(active)](#module_view/WorkspaceManager..setDesignMode)
+        * [.isInLPFullScreen()](#module_view/WorkspaceManager..isInLPFullScreen) ⇒ <code>boolean</code>
+        * [.setLPFullScreen(active)](#module_view/WorkspaceManager..setLPFullScreen)
         * [.addEscapeKeyEventHandler(consumerName, eventHandler)](#module_view/WorkspaceManager..addEscapeKeyEventHandler) ⇒ <code>boolean</code>
         * [.removeEscapeKeyEventHandler(consumerName)](#module_view/WorkspaceManager..removeEscapeKeyEventHandler) ⇒ <code>boolean</code>
 
@@ -95,6 +98,13 @@ Event triggered when a panel is hidden.
 ### view/WorkspaceManager.EVENT\_WORKSPACE\_DESIGN\_MODE\_CHANGE
 Event triggered when design mode (editor collapsed, full live preview) is
 entered or exited. Payload: `(active: boolean)`.
+
+**Kind**: inner constant of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
+<a name="module_view/WorkspaceManager..EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE"></a>
+
+### view/WorkspaceManager.EVENT\_WORKSPACE\_LP\_FULL\_SCREEN\_CHANGE
+Event triggered when live-preview full screen (design mode with the sidebar
+hidden) is entered or exited. Payload: `(active: boolean)`.
 
 **Kind**: inner constant of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 <a name="module_view/WorkspaceManager..createBottomPanel"></a>
@@ -213,6 +223,32 @@ live preview expanded to fill the editor area).
 Sets the design-mode flag and fires EVENT_WORKSPACE_DESIGN_MODE_CHANGE when
 the value actually changes. Intended to be called by the control bar; other
 callers should use the dedicated toggle command instead.
+
+**Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
+
+| Param | Type |
+| --- | --- |
+| active | <code>boolean</code> | 
+
+<a name="module_view/WorkspaceManager..isInLPFullScreen"></a>
+
+### view/WorkspaceManager.isInLPFullScreen() ⇒ <code>boolean</code>
+Returns true while live preview is expanded to full screen, meaning design mode
+with the sidebar hidden so live preview owns everything to the right of the
+central control bar.
+
+Full screen is a superset of design mode, so `isInDesignMode()` is true here
+too. Use `isInDesignMode()` if you only care that the editor is collapsed;
+use this only when the sidebar state matters.
+
+**Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
+<a name="module_view/WorkspaceManager..setLPFullScreen"></a>
+
+### view/WorkspaceManager.setLPFullScreen(active)
+Sets the live-preview full-screen flag and fires
+EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE when the value actually changes.
+Intended to be called by the control bar; other callers should use the
+dedicated toggle command instead.
 
 **Kind**: inner method of [<code>view/WorkspaceManager</code>](#module_view/WorkspaceManager)  
 
