@@ -82,6 +82,13 @@ define(function (require, exports, module) {
     const EVENT_WORKSPACE_DESIGN_MODE_CHANGE = "workspaceDesignModeChange";
 
     /**
+     * Event triggered when live-preview full screen (design mode with the sidebar
+     * hidden) is entered or exited. Payload: `(active: boolean)`.
+     * @const
+     */
+    const EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE = "workspaceLPFullScreenChange";
+
+    /**
      * Width of the main toolbar in pixels.
      * @const
      * @private
@@ -755,6 +762,38 @@ define(function (require, exports, module) {
         exports.trigger(EVENT_WORKSPACE_DESIGN_MODE_CHANGE, _isInDesignMode);
     }
 
+    let _isInLPFullScreen = false;
+
+    /**
+     * Returns true while live preview is expanded to full screen, meaning design mode
+     * with the sidebar hidden so live preview owns everything to the right of the
+     * central control bar.
+     *
+     * Full screen is a superset of design mode, so `isInDesignMode()` is true here
+     * too. Use `isInDesignMode()` if you only care that the editor is collapsed;
+     * use this only when the sidebar state matters.
+     * @returns {boolean}
+     */
+    function isInLPFullScreen() {
+        return _isInLPFullScreen;
+    }
+
+    /**
+     * Sets the live-preview full-screen flag and fires
+     * EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE when the value actually changes.
+     * Intended to be called by the control bar; other callers should use the
+     * dedicated toggle command instead.
+     * @param {boolean} active
+     */
+    function setLPFullScreen(active) {
+        const next = !!active;
+        if (_isInLPFullScreen === next) {
+            return;
+        }
+        _isInLPFullScreen = next;
+        exports.trigger(EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE, _isInLPFullScreen);
+    }
+
     // Escape key and toggle panel special handling
     let _escapeKeyConsumers = {};
 
@@ -918,8 +957,11 @@ define(function (require, exports, module) {
     exports.EVENT_WORKSPACE_PANEL_SHOWN     = EVENT_WORKSPACE_PANEL_SHOWN;
     exports.EVENT_WORKSPACE_PANEL_HIDDEN    = EVENT_WORKSPACE_PANEL_HIDDEN;
     exports.EVENT_WORKSPACE_DESIGN_MODE_CHANGE = EVENT_WORKSPACE_DESIGN_MODE_CHANGE;
+    exports.EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE = EVENT_WORKSPACE_LP_FULL_SCREEN_CHANGE;
     exports.isInDesignMode                  = isInDesignMode;
     exports.setDesignMode                   = setDesignMode;
+    exports.isInLPFullScreen                = isInLPFullScreen;
+    exports.setLPFullScreen                 = setLPFullScreen;
     exports.DEFAULT_PANEL_ID                = DEFAULT_PANEL_ID;
 
     /**

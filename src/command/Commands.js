@@ -260,6 +260,9 @@ define(function (require, exports, module) {
     /** Toggles the design (full live-preview) mode — collapses/expands the editor */
     exports.VIEW_TOGGLE_DESIGN_MODE     = "view.toggleDesignMode";      // view/CentralControlBar.js    _setEditorCollapsed()
 
+    /** Toggles live-preview full screen (design mode with the sidebar hidden) */
+    exports.VIEW_TOGGLE_LP_FULL_SCREEN  = "view.toggleLivePreviewFullScreen"; // view/CentralControlBar.js  _setLPFullScreen()
+
     /** Toggles tabbar visibility */
     exports.TOGGLE_TABBAR            = "view.toggleTabbar";
     // extensionsIntegrated/TabBar/main.js
