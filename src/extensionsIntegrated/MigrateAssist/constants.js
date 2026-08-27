@@ -73,6 +73,15 @@ define(function (require, exports, module) {
     const MIGRATION_DONE_KEY = "migrateAssist.v1.done";
 
     /**
+     * PhStore key recording that the user has already been asked. The automatic path prompts at most
+     * once, whatever the outcome: declining, closing the tab, or a transfer that broke half way all
+     * count as having been asked. Re-prompting on every boot after any of those would be a nag, and
+     * the Help menu entry is always there for a deliberate retry.
+     * @type {string}
+     */
+    const MIGRATION_PROMPTED_KEY = "migrateAssist.v1.prompted";
+
+    /**
      * Dev only override, so the whole cross origin flow can be exercised on one dev server.
      * http://localhost:8000 and http://127.0.0.1:8000 are different origins with separate IndexedDB
      * but the same files, and both are already trusted, so they make a usable legacy/new pair.
@@ -203,6 +212,7 @@ define(function (require, exports, module) {
     exports.SUNSET_DATE = SUNSET_DATE;
     exports.TWA_STORE_URL = TWA_STORE_URL;
     exports.MIGRATION_DONE_KEY = MIGRATION_DONE_KEY;
+    exports.MIGRATION_PROMPTED_KEY = MIGRATION_PROMPTED_KEY;
     exports.getLegacyOrigin = getLegacyOrigin;
     exports.getMigrateAssistURL = getMigrateAssistURL;
     exports.getLegacyDomainName = getLegacyDomainName;

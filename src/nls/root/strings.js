@@ -2942,6 +2942,8 @@ define({
     "MIGRATE_RELOAD_NOW": "Reload",
     "MIGRATE_NOTHING_TITLE": "Nothing to bring over",
     "MIGRATE_NOTHING_MESSAGE": "We could not find any projects, settings or extensions on {0} that need copying.",
+    "MIGRATE_INTERRUPTED_TITLE": "Migration did not finish",
+    "MIGRATE_INTERRUPTED_MESSAGE": "The connection to {0} was lost part way through. Anything already copied has been kept. You can pick up where this left off any time from the Help menu.",
     "MIGRATE_UNREACHABLE_TITLE": "Could not reach the old site",
     "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} could not connect to {0} to check for your data. Please check your connection and try again.",
     "MIGRATE_START_MESSAGE": "Found {0} files on {1} to bring over. This runs in the background and you can keep working while it happens. It only needs to be done once.",
