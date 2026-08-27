@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} مرتبہ استعمال ہوا)",
   "EDIT": "ترمیم کریں",
   "CMD_JUMPTO_DEFINITION": "تعریف پر جائیں",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "ایک تعریف منتخب کریں",
+  "JUMPTO_DEFINITION_LINE_LABEL": "لائن {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "عمل درآمد",
   "CMD_SHOW_PARAMETER_HINT": "پیرامیٹر اشارہ دکھائیں",
   "NO_ARGUMENTS": "<no parameters>",
   "CODE_HINT_IMPORT_FROM_N": "{0} امپورٹس…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "ایک تعریف منتخب کریں",
-  "JUMPTO_DEFINITION_LINE_LABEL": "لائن {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "عمل درآمد"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "لائیو پیش منظر فل سکرین ٹوگل کریں",
+  "LIVE_PREVIEW_FULL_SCREEN": "لائیو پیش منظر کو فل سکرین کریں",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "فل سکرین سے باہر نکلیں"
 });

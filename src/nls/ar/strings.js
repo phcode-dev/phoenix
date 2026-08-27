@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (مستخدم {1} مرة)",
   "EDIT": "تحرير",
   "CMD_JUMPTO_DEFINITION": "الانتقال إلى التعريف",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "اختر تعريفًا",
+  "JUMPTO_DEFINITION_LINE_LABEL": "سطر {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "تنفيذ",
   "CMD_SHOW_PARAMETER_HINT": "إظهار تلميح المعامل",
   "NO_ARGUMENTS": "<no parameters>",
   "CODE_HINT_IMPORT_FROM_N": "‏{0} استيرادات…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "اختر تعريفًا",
-  "JUMPTO_DEFINITION_LINE_LABEL": "سطر {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "تنفيذ"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "تبديل وضع ملء الشاشة للمعاينة المباشرة",
+  "LIVE_PREVIEW_FULL_SCREEN": "توسيع المعاينة المباشرة إلى ملء الشاشة",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "الخروج من ملء الشاشة"
 });

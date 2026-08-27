@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Digunakan {1} kali)",
   "EDIT": "Edit",
   "CMD_JUMPTO_DEFINITION": "Buka Definisi",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Pilih definisi",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Baris {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementasi",
   "CMD_SHOW_PARAMETER_HINT": "Tampilkan Petunjuk Parameter",
   "NO_ARGUMENTS": "<tidak ada parameter>",
   "CODE_HINT_IMPORT_FROM_N": "{0} impor…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Pilih definisi",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Baris {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementasi"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Alihkan Pratinjau Langsung Layar Penuh",
+  "LIVE_PREVIEW_FULL_SCREEN": "Perluas Pratinjau Langsung ke Layar Penuh",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Keluar dari Layar Penuh"
 });

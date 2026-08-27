@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Χρησιμοποιήθηκε {1} φορές)",
   "EDIT": "Επεξεργασία",
   "CMD_JUMPTO_DEFINITION": "Μετάβαση στον Ορισμό",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Επιλέξτε έναν ορισμό",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Γραμμή {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Υλοποίηση",
   "CMD_SHOW_PARAMETER_HINT": "Προβολή Υποδείξεων Παραμέτρων",
   "NO_ARGUMENTS": "<χωρίς παραμέτρους>",
   "CODE_HINT_IMPORT_FROM_N": "{0} εισαγωγές…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Επιλέξτε έναν ορισμό",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Γραμμή {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Υλοποίηση"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Εναλλαγή πλήρους οθόνης ζωντανής προεπισκόπησης",
+  "LIVE_PREVIEW_FULL_SCREEN": "Επέκταση ζωντανής προεπισκόπησης σε πλήρη οθόνη",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Έξοδος από πλήρη οθόνη"
 });

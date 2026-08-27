@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} Mal verwendet)",
   "EDIT": "Bearbeiten",
   "CMD_JUMPTO_DEFINITION": "Gehe zu Definition",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Definition auswählen",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Zeile {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementierung",
   "CMD_SHOW_PARAMETER_HINT": "Parameter-Hinweis anzeigen",
   "NO_ARGUMENTS": "<keine Parameter>",
   "CODE_HINT_IMPORT_FROM_N": "{0} Importe…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Definition auswählen",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Zeile {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementierung"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Live-Vorschau: Vollbild umschalten",
+  "LIVE_PREVIEW_FULL_SCREEN": "Live-Vorschau auf Vollbild erweitern",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Vollbild verlassen"
 });

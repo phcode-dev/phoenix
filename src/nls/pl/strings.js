@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (użyto {1} razy)",
   "EDIT": "Edytuj",
   "CMD_JUMPTO_DEFINITION": "Przejdź do definicji",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Wybierz definicję",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Linia {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementacja",
   "CMD_SHOW_PARAMETER_HINT": "Pokaż podpowiedź (parametr)",
   "NO_ARGUMENTS": "<brak parametrów>",
   "CODE_HINT_IMPORT_FROM_N": "{0} importów…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Wybierz definicję",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Linia {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementacja"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Przełącz pełny ekran podglądu na żywo",
+  "LIVE_PREVIEW_FULL_SCREEN": "Rozwiń podgląd na żywo na pełny ekran",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Wyjdź z pełnego ekranu"
 });

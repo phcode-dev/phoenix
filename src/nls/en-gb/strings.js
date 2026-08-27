@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Used {1} times)",
   "EDIT": "Edit",
   "CMD_JUMPTO_DEFINITION": "Go to Definition",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Select a definition",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Line {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementation",
   "CMD_SHOW_PARAMETER_HINT": "Show Parameter Hint",
   "NO_ARGUMENTS": "<no parameters>",
   "CODE_HINT_IMPORT_FROM_N": "{0} imports…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Select a definition",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Line {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementation"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Toggle Live Preview Full Screen",
+  "LIVE_PREVIEW_FULL_SCREEN": "Expand Live Preview to Full Screen",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Exit Full Screen"
 });

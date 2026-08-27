@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (використано {1} разів)",
   "EDIT": "Змінити",
   "CMD_JUMPTO_DEFINITION": "Перейти до визначення",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Виберіть визначення",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Рядок {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Реалізація",
   "CMD_SHOW_PARAMETER_HINT": "Показувати підсвічування параметрів функції",
   "NO_ARGUMENTS": "<параметри відсутні>",
   "CODE_HINT_IMPORT_FROM_N": "{0} імпортів…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Виберіть визначення",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Рядок {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Реалізація"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Перемкнути повноекранний режим живого перегляду",
+  "LIVE_PREVIEW_FULL_SCREEN": "Розгорнути живий перегляд на весь екран",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Вийти з повноекранного режиму"
 });

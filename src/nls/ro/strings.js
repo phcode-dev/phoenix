@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (folosită {1} ori)",
   "EDIT": "Editare",
   "CMD_JUMPTO_DEFINITION": "Mergi la definiție",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Selectați o definiție",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Linia {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementare",
   "CMD_SHOW_PARAMETER_HINT": "Arată sugestia parametrului",
   "NO_ARGUMENTS": "<niciun parametru>",
   "CODE_HINT_IMPORT_FROM_N": "{0} importuri…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Selectați o definiție",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Linia {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementare"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Comutare ecran complet pentru previzualizare live",
+  "LIVE_PREVIEW_FULL_SCREEN": "Extindeți previzualizarea live pe ecran complet",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Ieșiți din ecran complet"
 });

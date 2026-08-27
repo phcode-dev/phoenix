@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1}-szer használva)",
   "EDIT": "Szerkesztés",
   "CMD_JUMPTO_DEFINITION": "Ugrás a definícióra",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Válasszon egy definíciót",
+  "JUMPTO_DEFINITION_LINE_LABEL": "{0}. sor",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementáció",
   "CMD_SHOW_PARAMETER_HINT": "Paramétertipp megjelenítése",
   "NO_ARGUMENTS": "<nincsenek paraméterek>",
   "CODE_HINT_IMPORT_FROM_N": "{0} import…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Válasszon egy definíciót",
-  "JUMPTO_DEFINITION_LINE_LABEL": "{0}. sor",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementáció"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Teljes képernyős élő előnézet váltása",
+  "LIVE_PREVIEW_FULL_SCREEN": "Élő előnézet teljes képernyőre",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Kilépés a teljes képernyős módból"
 });

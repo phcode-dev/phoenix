@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Коришћена {1} пута)",
   "EDIT": "Уреди",
   "CMD_JUMPTO_DEFINITION": "Иди на дефиницију",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Изаберите дефиницију",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Линија {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Имплементација",
   "CMD_SHOW_PARAMETER_HINT": "Пружи малу помоћ око параметра",
   "NO_ARGUMENTS": "<без параметара>",
   "CODE_HINT_IMPORT_FROM_N": "{0} увоза…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Изаберите дефиницију",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Линија {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Имплементација"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Укључи/искључи преглед уживо преко целог екрана",
+  "LIVE_PREVIEW_FULL_SCREEN": "Прошири преглед уживо на цео екран",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Изађи из режима целог екрана"
 });

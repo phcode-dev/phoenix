@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Использовано {1} раза)",
   "EDIT": "Правка",
   "CMD_JUMPTO_DEFINITION": "Перейти к определению",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Выберите определение",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Строка {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Реализация",
   "CMD_SHOW_PARAMETER_HINT": "Показывать подсказки по аргументам функции",
   "NO_ARGUMENTS": "<нет аргументов>",
   "CODE_HINT_IMPORT_FROM_N": "{0} импортов…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Выберите определение",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Строка {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Реализация"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Переключить полноэкранный режим живого предпросмотра",
+  "LIVE_PREVIEW_FULL_SCREEN": "Развернуть живой предпросмотр на полный экран",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Выйти из полноэкранного режима"
 });

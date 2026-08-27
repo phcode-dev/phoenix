@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (इस्तेमाल किया गया {1} बार)",
   "EDIT": "संपादित करें",
   "CMD_JUMPTO_DEFINITION": "परिभाषा पर जाएँ",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "एक परिभाषा चुनें",
+  "JUMPTO_DEFINITION_LINE_LABEL": "लाइन {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "कार्यान्वयन",
   "CMD_SHOW_PARAMETER_HINT": "पैरामीटर संकेत दिखाएँ",
   "NO_ARGUMENTS": "<no parameters>",
   "CODE_HINT_IMPORT_FROM_N": "{0} इंपोर्ट्स…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "एक परिभाषा चुनें",
-  "JUMPTO_DEFINITION_LINE_LABEL": "लाइन {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "कार्यान्वयन"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "लाइव प्रीव्यू फ़ुल स्क्रीन टॉगल करें",
+  "LIVE_PREVIEW_FULL_SCREEN": "लाइव प्रीव्यू को फ़ुल स्क्रीन पर विस्तार करें",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "फ़ुल स्क्रीन से बाहर निकलें"
 });
