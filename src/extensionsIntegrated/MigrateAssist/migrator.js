@@ -42,6 +42,7 @@ define(function (require, exports, module) {
         TaskManager = require("features/TaskManager"),
         PreferencesManager = require("preferences/PreferencesManager"),
         CommandManager = require("command/CommandManager"),
+        FileUtils = require("file/FileUtils"),
         Commands = require("command/Commands"),
         Constants = require("./constants");
 
@@ -195,6 +196,16 @@ define(function (require, exports, module) {
             Strings.MIGRATE_PROGRESS_TITLE,
             StringUtils.format(Strings.MIGRATE_PROGRESS_STATUS, 0, totalFiles),
             `<i class="fa-solid fa-download"></i>`);
+
+        // Open the task list rather than leaving the copy behind a click. Nothing else announces the
+        // migration now that there is no dialog up front, so without this a user who happens to be
+        // looking elsewhere never learns why the app is busy.
+        // Guarded because show() toggles the dropdown: firing it while one is already open would
+        // close that instead. TaskManager closes this itself once the last task finishes.
+        if (!$(".dropdown-menu:visible").length) {
+            task.show();
+        }
+
         return {
             update: function (done) {
                 task.setProgressPercent(Math.round((done / totalFiles) * 100));
@@ -219,9 +230,8 @@ define(function (require, exports, module) {
      * it finished would undo the point of moving progress out of a dialog in the first place.
      */
     /**
-     * Errors are the one thing that earns an interruption here. Everything else rides on the status
-     * bar task: if that is already telling the user what is happening, a dialog repeating it is just
-     * another click for them.
+     * Nothing interrupts while the transfer is running: the status bar task carries that. Dialogs
+     * are reserved for the two moments the user has to act on, finishing and failing.
      */
     function _errorDialog(title, message) {
         Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, title, message);
@@ -246,23 +256,76 @@ define(function (require, exports, module) {
             + StringUtils.format(Strings.CMD_MIGRATE_DATA, Constants.getLegacyDomainName());
     }
 
-    function _showCompletion(migratedFiles, failed) {
-        const $actions = $("<div>").addClass("migrate-assist-toast-actions");
-        const $reload = $("<button>").addClass("btn primary btn-mini")
-            .text(Strings.MIGRATE_RELOAD_NOW);
-        $reload.on("click", function () {
-            CommandManager.execute(Commands.APP_RELOAD);
-        });
-        $actions.append($reload);
-        if (failed.length) {
-            $actions.prepend($("<div>").addClass("migrate-assist-toast-detail")
-                .text(StringUtils.format(Strings.MIGRATE_DONE_PARTIAL, failed.length)));
+    /**
+     * Buckets a migrated file under the project or extension it belongs to, so the summary can name
+     * what actually moved rather than only a file count.
+     */
+    function _recordCategory(filePath, projects, extensions) {
+        const parts = filePath.split("/");
+        // /fs/local/<project>/...
+        if (filePath.startsWith("/fs/local/") && parts[3]) {
+            projects.add(parts[3]);
+        // /fs/app/extensions/<user|disabled>/<extension>/...
+        } else if (filePath.startsWith("/fs/app/extensions/") && parts[5]) {
+            extensions.add(parts[5]);
         }
-        _toast(Strings.MIGRATE_DONE_TITLE,
-            StringUtils.format(Strings.MIGRATE_DONE_MESSAGE, migratedFiles),
-            failed.length ? NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.WARNING
-                : NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUCCESS,
-            $actions);
+    }
+
+    /**
+     * Success is a dialog, not a notification. The user's data has just moved and the copied
+     * extensions and theme only load on the next boot, so there is something they have to do. A
+     * notification they can miss means reloading later, seeing nothing different, and concluding it
+     * failed. This is the one moment in the flow worth interrupting for.
+     *
+     * The summary says what moved and where it came from. "All done" on its own only prompts the
+     * question of what, exactly, is done.
+     */
+    function _showCompletion(summary) {
+        const items = [];
+        if (summary.projects) {
+            items.push(StringUtils.format(Strings.MIGRATE_DONE_PROJECTS, summary.projects));
+        }
+        if (summary.extensions) {
+            items.push(StringUtils.format(Strings.MIGRATE_DONE_EXTENSIONS, summary.extensions));
+        }
+        if (summary.settings) {
+            items.push(Strings.MIGRATE_DONE_SETTINGS);
+        }
+
+        let message = StringUtils.format(Strings.MIGRATE_DONE_FROM, Constants.getLegacyDomainName());
+        message = message + "<ul>" + items.map((item) => `<li>${item}</li>`).join("") + "</ul>";
+        if (summary.failed) {
+            // Do not call a partial copy complete. Say how much is missing and what happens next.
+            message = message + StringUtils.format(Strings.MIGRATE_PARTIAL_COUNT,
+                summary.failed, summary.total);
+            message = message + "<br><br>" + (summary.outOfRetries
+                ? StringUtils.format(Strings.MIGRATE_INTERRUPTED_FINAL, _menuPath())
+                : Strings.MIGRATE_INTERRUPTED_RETRY);
+        } else {
+            message = message + StringUtils.format(Strings.MIGRATE_DONE_TOTAL, summary.files);
+        }
+
+        Dialogs.showModalDialog(
+            summary.failed ? DefaultDialogs.DIALOG_ID_ERROR : DefaultDialogs.DIALOG_ID_INFO,
+            summary.failed ? Strings.MIGRATE_PARTIAL_TITLE : Strings.MIGRATE_DONE_TITLE,
+            message,
+            [
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                    id: Dialogs.DIALOG_BTN_CANCEL,
+                    text: Strings.MIGRATE_RELOAD_LATER
+                },
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                    id: Dialogs.DIALOG_BTN_OK,
+                    text: Strings.MIGRATE_RELOAD_NOW
+                }
+            ]
+        ).done(function (buttonId) {
+            if (buttonId === Dialogs.DIALOG_BTN_OK) {
+                CommandManager.execute(Commands.APP_RELOAD);
+            }
+        });
     }
 
     /**
@@ -291,8 +354,58 @@ define(function (require, exports, module) {
         PreferencesManager.fileChanged(prefFile);
     }
 
-    function _applyPhStore(phStore) {
+    // Kept in step with RecentProjects, which caps its own list at the same number.
+    const RECENT_PROJECTS_KEY = "STATE_recentProjects",
+        MAX_RECENT_PROJECTS = 20;
+
+    /**
+     * Recent projects cannot be copied across verbatim. The list is just absolute paths, and two
+     * kinds of them are dead on arrival: /mnt entries are File System Access mounts whose handles
+     * are origin bound and were never migrated, and anything that failed to copy is not there
+     * either. Both would sit in the dropdown looking openable and fail when clicked.
+     *
+     * Entries are also merged rather than replaced, so projects the user already opened on this
+     * origin are not thrown away by the migration.
+     */
+    async function _applyRecentProjects(incoming) {
+        if (!Array.isArray(incoming)) {
+            return;
+        }
+        // Normalise before comparing. RecentProjects stores paths without a trailing slash while
+        // ProjectManager hands them out with one, and both forms pass an existence check, so
+        // comparing raw strings lets "default project" and "default project/" through as two
+        // separate entries. The user then sees the same project twice and one of them fails to open.
+        const merged = [];
+        for (const rawPath of incoming.concat(PhStore.getItem(RECENT_PROJECTS_KEY) || [])) {
+            if (!rawPath) {
+                continue;
+            }
+            const projectPath = FileUtils.stripTrailingSlash(rawPath);
+            if (projectPath && merged.indexOf(projectPath) === -1) {
+                merged.push(projectPath);
+            }
+        }
+        const mountDir = Phoenix.VFS.getMountDir();
+        const usable = [];
+        for (const projectPath of merged) {
+            if (projectPath.startsWith(mountDir)) {
+                continue;
+            }
+            if (await Phoenix.VFS.existsAsync(projectPath)) {
+                usable.push(projectPath);
+            }
+        }
+        PhStore.setItem(RECENT_PROJECTS_KEY, usable.slice(0, MAX_RECENT_PROJECTS));
+        Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "recentsDropped",
+            merged.length - usable.length);
+    }
+
+    async function _applyPhStore(phStore) {
         for (const key of Object.keys(phStore || {})) {
+            if (key === RECENT_PROJECTS_KEY) {
+                await _applyRecentProjects(phStore[key]);
+                continue;
+            }
             PhStore.setItem(key, phStore[key]);
         }
     }
@@ -311,6 +424,9 @@ define(function (require, exports, module) {
         let progress = null;
         let transferStarted = false;
         let attemptNumber = 0;
+        // At run scope rather than inside the try, so a failure can say how far it got. "Did not
+        // finish" on its own leaves the user unable to tell a total failure from a near miss.
+        let totalFiles = 0, migratedFiles = 0;
         try {
             const scan = await bridge.scan();
             Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "scanMs",
@@ -341,8 +457,9 @@ define(function (require, exports, module) {
             progress = _startProgressTask(scan.files.length);
 
             const failed = [];
-            let migratedFiles = 0;
+            totalFiles = scan.files.length;
             let migratedBytes = 0;
+            const migratedProjects = new Set(), migratedExtensions = new Set();
             for (const file of scan.files) {
                 try {
                     const bytes = await bridge.fetchFile(file.path);
@@ -352,6 +469,7 @@ define(function (require, exports, module) {
                         window.fs.BYTE_ARRAY_ENCODING);
                     migratedFiles = migratedFiles + 1;
                     migratedBytes = migratedBytes + bytes.byteLength;
+                    _recordCategory(file.path, migratedProjects, migratedExtensions);
                 } catch (err) {
                     // One unreadable file should not cost the user everything else.
                     console.error("MigrateAssist: could not copy", file.path, err);
@@ -368,13 +486,20 @@ define(function (require, exports, module) {
                     failed.push("phcode.json");
                 }
             }
-            _applyPhStore(scan.phStore);
+            await _applyPhStore(scan.phStore);
 
-            PhStore.setItem(Constants.MIGRATION_DONE_KEY, {
-                at: Date.now(),
-                files: migratedFiles,
-                failed: failed.length
-            });
+            // Only a clean run counts as done. Per file errors are caught inside the loop so the
+            // run can continue, which means a bridge that dies half way looks like 800 individual
+            // failures rather than one crash, and would otherwise be recorded as a success that is
+            // never retried. Anything less than a full copy stays retryable.
+            const outOfRetries = attemptNumber >= Constants.MAX_AUTO_ATTEMPTS;
+            if (!failed.length) {
+                PhStore.setItem(Constants.MIGRATION_DONE_KEY, {
+                    at: Date.now(),
+                    files: migratedFiles,
+                    failed: 0
+                });
+            }
             const elapsedMs = Math.round(performance.now() - startedAt);
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                 failed.length ? "completedWithErrors" : "completed");
@@ -394,7 +519,15 @@ define(function (require, exports, module) {
             }
 
             progress.succeed(migratedFiles);
-            _showCompletion(migratedFiles, failed);
+            _showCompletion({
+                files: migratedFiles,
+                total: totalFiles,
+                projects: migratedProjects.size,
+                extensions: migratedExtensions.size,
+                settings: !!scan.prefs,
+                failed: failed.length,
+                outOfRetries: outOfRetries
+            });
             return RESULT_MIGRATED;
         } catch (err) {
             console.error("MigrateAssist: migration could not run", err);
@@ -410,13 +543,14 @@ define(function (require, exports, module) {
                     Math.round((performance.now() - startedAt) / 1000));
                 const outOfRetries = attemptNumber >= Constants.MAX_AUTO_ATTEMPTS;
                 _errorDialog(Strings.MIGRATE_INTERRUPTED_TITLE,
-                    outOfRetries
+                    StringUtils.format(Strings.MIGRATE_INTERRUPTED_PROGRESS,
+                        migratedFiles, totalFiles, Constants.getLegacyDomainName())
+                    + "<br><br>"
+                    + (outOfRetries
                         // No more automatic attempts, so hand them the exact menu entry to use
-                        // rather than leaving them to find it.
-                        ? StringUtils.format(Strings.MIGRATE_INTERRUPTED_FINAL,
-                            Constants.getLegacyDomainName(), _menuPath())
-                        : StringUtils.format(Strings.MIGRATE_INTERRUPTED_MESSAGE,
-                            Constants.getLegacyDomainName()));
+                        // rather than leaving them to work out what to do next.
+                        ? StringUtils.format(Strings.MIGRATE_INTERRUPTED_FINAL, _menuPath())
+                        : Strings.MIGRATE_INTERRUPTED_RETRY));
                 return RESULT_INTERRUPTED;
             }
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
@@ -474,7 +608,8 @@ define(function (require, exports, module) {
                 NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.INFO);
         } else if (result === RESULT_UNREACHABLE) {
             _errorDialog(Strings.MIGRATE_UNREACHABLE_TITLE,
-                StringUtils.format(Strings.MIGRATE_UNREACHABLE_MESSAGE, Constants.getLegacyDomainName()));
+                StringUtils.format(Strings.MIGRATE_UNREACHABLE_MESSAGE,
+                    Constants.getLegacyDomainName(), _menuPath()));
         }
     }
 
