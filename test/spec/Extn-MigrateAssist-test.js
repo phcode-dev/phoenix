@@ -115,7 +115,15 @@ define(function (require, exports, module) {
 
             const HELPER_URL = `${Phoenix.baseURL}migrateAssist.html`;
             const SANDBOX = "/temp/migrate-assist-spec";
-            const SEEDED_PROJECT = `${SANDBOX}/seeded`;
+            const OUTSIDE_ROOTS = `${SANDBOX}/not-a-migratable-root`;
+
+            // A project of our own under /fs/local, which is one of the roots the helper serves. The
+            // suite must not depend on whatever projects happen to already exist: a fresh CI checkout
+            // has none, so reading bundles[0] there found nothing at all.
+            const SEEDED_PROJECT = "/fs/local/__migrate_assist_spec__";
+            const TEXT_CONTENT = "hello from the old origin\n";
+            // Includes NUL and 0xFF so a byte exact copy can be told apart from a text round trip.
+            const BINARY_BYTES = new Uint8Array([0x00, 0x01, 0xFF, 0xFE, 0x7F, 0x80, 0x00, 0x42]);
 
             let frames = [];
 
@@ -162,14 +170,19 @@ define(function (require, exports, module) {
             }
 
             beforeAll(async function () {
-                // A project of our own under /temp, so the assertions do not depend on whatever the
-                // machine running the tests happens to have in /fs/local.
                 await Phoenix.VFS.unlinkAsync(SANDBOX).catch(() => {});
-                await Phoenix.VFS.ensureExistsDirAsync(SEEDED_PROJECT);
+                await Phoenix.VFS.unlinkAsync(SEEDED_PROJECT).catch(() => {});
+                await Phoenix.VFS.ensureExistsDirAsync(`${SEEDED_PROJECT}/nested`);
+                await Phoenix.VFS.ensureExistsDirAsync(OUTSIDE_ROOTS);
+                await Phoenix.VFS.writeFileAsync(`${SEEDED_PROJECT}/index.html`, TEXT_CONTENT, "utf8");
+                await Phoenix.VFS.writeFileAsync(`${SEEDED_PROJECT}/nested/deep.txt`, TEXT_CONTENT, "utf8");
+                await Phoenix.VFS.writeFileAsync(`${SEEDED_PROJECT}/image.bin`,
+                    window.Filer.Buffer.from(BINARY_BYTES), window.fs.BYTE_ARRAY_ENCODING);
             });
 
             afterAll(async function () {
                 await Phoenix.VFS.unlinkAsync(SANDBOX).catch(() => {});
+                await Phoenix.VFS.unlinkAsync(SEEDED_PROJECT).catch(() => {});
             });
 
             afterEach(function () {
@@ -241,7 +254,8 @@ define(function (require, exports, module) {
                     "/fs/app",
                     "/fs/local/../../mnt",
                     "/fs/app/extensions/user/../../aiHistory",
-                    SEEDED_PROJECT
+                    OUTSIDE_ROOTS,
+                    `${SEEDED_PROJECT}/nested`
                 ];
                 escapes.forEach((id) => send(helper, {type: "MIGRATE_BUNDLE", id: id}));
                 await awaitsFor(function () {
@@ -259,8 +273,12 @@ define(function (require, exports, module) {
                 }, "scan result", 20000);
 
                 const scan = lastOfType(helper.received, "MIGRATE_SCAN_RESULT");
-                const bundle = scan.bundles[0];
+                // Our own seeded project, not whatever happened to be lying around. It also counts as
+                // real user data, so the helper must report there is something worth migrating.
+                expect(scan.hasData).toBe(true);
+                const bundle = scan.bundles.find((b) => b.dest === SEEDED_PROJECT);
                 expect(bundle).toBeTruthy();
+                expect(bundle.fileCount).toBe(3);
 
                 send(helper, {type: "MIGRATE_BUNDLE", id: bundle.id});
                 await awaitsFor(function () {
@@ -281,9 +299,11 @@ define(function (require, exports, module) {
                     offset = offset + c.chunk.byteLength;
                 });
 
-                // Pre-seed the destination the way the new origin would already look.
+                // Pre-seed the destination the way the receiving origin would already look: one file
+                // that collides with the incoming bundle, and one that exists only here.
                 const dest = `${SANDBOX}/restored`;
                 await Phoenix.VFS.ensureExistsDirAsync(dest);
+                await Phoenix.VFS.writeFileAsync(`${dest}/index.html`, "I am the stale local copy", "utf8");
                 await Phoenix.VFS.writeFileAsync(`${dest}/only-here.txt`, "keep me", "utf8");
 
                 const ticks = [];
@@ -295,9 +315,15 @@ define(function (require, exports, module) {
                 expect(ticks.length).toBeGreaterThan(0);
                 expect(ticks[ticks.length - 1].done).toBe(ticks[ticks.length - 1].totalCount);
 
-                // The file that only existed on the receiving side must survive the merge.
-                const survivor = await Phoenix.VFS.readFileAsync(`${dest}/only-here.txt`, "utf8");
-                expect(survivor).toBe("keep me");
+                // Source wins on a collision, and a file only present on the receiving side survives.
+                expect(await Phoenix.VFS.readFileAsync(`${dest}/index.html`, "utf8")).toBe(TEXT_CONTENT);
+                expect(await Phoenix.VFS.readFileAsync(`${dest}/only-here.txt`, "utf8")).toBe("keep me");
+                // Nested paths keep their shape.
+                expect(await Phoenix.VFS.readFileAsync(`${dest}/nested/deep.txt`, "utf8")).toBe(TEXT_CONTENT);
+                // Binary survives byte for byte, NUL and high bytes included.
+                const restoredBytes = new Uint8Array(
+                    await Phoenix.VFS.readFileAsync(`${dest}/image.bin`, window.fs.BYTE_ARRAY_ENCODING));
+                expect(Array.from(restoredBytes)).toEqual(Array.from(BINARY_BYTES));
             });
         });
     });
