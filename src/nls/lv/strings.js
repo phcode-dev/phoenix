@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Atjaunināt lietotni",
   "MIGRATE_STAY_HERE": "Palikt šeit",
   "MIGRATE_PROGRESS_TITLE": "Pārnesam jūsu datus",
-  "MIGRATE_PROGRESS_INTRO": "Kopējam jūsu projektus, iestatījumus un paplašinājumus no {0}. Tas notiek tikai vienu reizi.",
-  "MIGRATE_PROGRESS_PREPARING": "Sagatavo {0} ({1} no {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopē {0} ({1} no {2})…",
   "MIGRATE_DONE_TITLE": "Viss pabeigts.",
-  "MIGRATE_DONE_MESSAGE": "Tika pārkopēti {0} faili. Pārlādējiet, lai sāktu tos lietot.",
-  "MIGRATE_DONE_PARTIAL": "Šos nevarēja nokopēt, un tie joprojām ir pieejami vecajā vietnē: {0}",
   "MIGRATE_RELOAD_NOW": "Pārlādēt",
   "MIGRATE_NOTHING_TITLE": "Nekas nav jāpārnes",
   "MIGRATE_NOTHING_MESSAGE": "Vietnē {0} netika atrasti projekti, iestatījumi vai paplašinājumi, kuriem nepieciešama kopēšana.",
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} neizdevās izveidot savienojumu ar {0}, lai pārbaudītu jūsu datus. Lūdzu, pārbaudiet savu savienojumu un mēģiniet vēlreiz.",
-  "CMD_MIGRATE_DATA": "Migrēt manus datus…"
+  "MIGRATE_PROGRESS_STATUS": "Nokopēti {0} no {1} failiem",
+  "MIGRATE_DONE_MESSAGE": "Tika pārkopēti {0} faili. Pārlādējiet {APP_NAME}, lai sāktu tos lietot.",
+  "MIGRATE_DONE_PARTIAL": "Neizdevās pārkopēt {0} failus. Tie joprojām ir pieejami vecajā vietnē.",
+  "MIGRATE_START_MESSAGE": "Vietnē {1} atrasti {0} faili pārnešanai. Šis process notiek fonā, un jūs varat turpināt darbu, kamēr tas notiek. Tas ir jāizdara tikai vienu reizi.",
+  "MIGRATE_START_CONFIRM": "Pārnest manus datus",
+  "MIGRATE_RELOAD_LATER": "Vēlāk",
+  "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…"
 });

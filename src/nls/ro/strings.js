@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Actualizați aplicația",
   "MIGRATE_STAY_HERE": "Rămâi aici",
   "MIGRATE_PROGRESS_TITLE": "Se transferă datele",
-  "MIGRATE_PROGRESS_INTRO": "Se copiază proiectele, setările și extensiile dvs. din {0}. Acest lucru se întâmplă o singură dată.",
-  "MIGRATE_PROGRESS_PREPARING": "Se pregătește {0} ({1} din {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Se copiază {0} ({1} din {2})…",
   "MIGRATE_DONE_TITLE": "Finalizat.",
-  "MIGRATE_DONE_MESSAGE": "{0} fișiere au fost copiate. Reîncărcați pentru a începe să le utilizați.",
-  "MIGRATE_DONE_PARTIAL": "Acestea nu au putut fi copiate și sunt încă disponibile pe site-ul vechi: {0}",
   "MIGRATE_RELOAD_NOW": "Reîncărcați",
   "MIGRATE_NOTHING_TITLE": "Nimic de transferat",
   "MIGRATE_NOTHING_MESSAGE": "Nu am putut găsi niciun proiect, setare sau extensie pe {0} care să necesite copiere.",
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a vă verifica datele. Vă rugăm să vă verificați conexiunea și să încercați din nou.",
-  "CMD_MIGRATE_DATA": "Migrare date…"
+  "MIGRATE_PROGRESS_STATUS": "{0} din {1} fișiere copiate",
+  "MIGRATE_DONE_MESSAGE": "Au fost copiate {0} fișiere. Reîncărcați {APP_NAME} pentru a începe să le folosiți.",
+  "MIGRATE_DONE_PARTIAL": "Nu s-au putut copia {0} fișier(e). Acestea sunt încă disponibile pe site-ul vechi.",
+  "MIGRATE_START_MESSAGE": "S-au găsit {0} fișiere pe {1} de transferat. Procesul rulează în fundal și puteți continua să lucrați între timp. Acest lucru trebuie făcut o singură dată.",
+  "MIGRATE_START_CONFIRM": "Migrează datele mele",
+  "MIGRATE_RELOAD_LATER": "Mai târziu",
+  "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…"
 });

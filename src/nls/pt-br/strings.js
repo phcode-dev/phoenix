@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Atualizar o aplicativo",
   "MIGRATE_STAY_HERE": "Permanecer aqui",
   "MIGRATE_PROGRESS_TITLE": "Transferindo seus dados",
-  "MIGRATE_PROGRESS_INTRO": "Copiando seus projetos, configurações e extensões de {0}. Isso acontece apenas uma vez.",
-  "MIGRATE_PROGRESS_PREPARING": "Preparando {0} ({1} de {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Copiando {0} ({1} de {2})…",
   "MIGRATE_DONE_TITLE": "Tudo pronto.",
-  "MIGRATE_DONE_MESSAGE": "{0} arquivos foram copiados. Recarregue para começar a usá-los.",
-  "MIGRATE_DONE_PARTIAL": "Estes não puderam ser copiados e ainda estão disponíveis no site antigo: {0}",
   "MIGRATE_RELOAD_NOW": "Recarregar",
   "MIGRATE_NOTHING_TITLE": "Nada para migrar",
   "MIGRATE_NOTHING_MESSAGE": "Não encontramos projetos, configurações ou extensões em {0} que precisem ser copiados.",
   "MIGRATE_UNREACHABLE_TITLE": "Não foi possível acessar o site antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} não conseguiu se conectar a {0} para verificar seus dados. Verifique sua conexão e tente novamente.",
-  "CMD_MIGRATE_DATA": "Migrar Meus Dados…"
+  "MIGRATE_PROGRESS_STATUS": "{0} de {1} arquivos copiados",
+  "MIGRATE_DONE_MESSAGE": "{0} arquivos foram copiados. Reinicie o {APP_NAME} para começar a usá-los.",
+  "MIGRATE_DONE_PARTIAL": "{0} arquivo(s) não pôde(ram) ser copiado(s). Eles ainda estão disponíveis no site antigo.",
+  "MIGRATE_START_MESSAGE": "Encontramos {0} arquivos em {1} para transferir. O processo é executado em segundo plano e você pode continuar trabalhando enquanto ele acontece. Só precisa ser feito uma vez.",
+  "MIGRATE_START_CONFIRM": "Transferir meus dados",
+  "MIGRATE_RELOAD_LATER": "Mais tarde",
+  "CMD_MIGRATE_DATA": "Migrar Meus Dados de {0}…"
 });

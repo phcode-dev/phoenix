@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Aktualizovat aplikaci",
   "MIGRATE_STAY_HERE": "Zůstat zde",
   "MIGRATE_PROGRESS_TITLE": "Přenos vašich dat",
-  "MIGRATE_PROGRESS_INTRO": "Kopírují se vaše projekty, nastavení a rozšíření z {0}. Tento proces proběhne pouze jednou.",
-  "MIGRATE_PROGRESS_PREPARING": "Připravuje se {0} ({1} z {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopíruje se {0} ({1} z {2})…",
   "MIGRATE_DONE_TITLE": "Vše hotovo.",
-  "MIGRATE_DONE_MESSAGE": "Bylo zkopírováno {0} souborů. Znovu načtěte a začněte je používat.",
-  "MIGRATE_DONE_PARTIAL": "Tyto položky se nepodařilo zkopírovat a jsou stále dostupné na původním webu: {0}",
   "MIGRATE_RELOAD_NOW": "Znovu načíst",
   "MIGRATE_NOTHING_TITLE": "Žádná data k přenosu",
   "MIGRATE_NOTHING_MESSAGE": "Na {0} se nám nepodařilo najít žádné projekty, nastavení ani rozšíření, které by bylo třeba zkopírovat.",
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0}, aby zkontrolovala vaše data. Zkontrolujte prosím své připojení a zkuste to znovu.",
-  "CMD_MIGRATE_DATA": "Migrovat moje data…"
+  "MIGRATE_PROGRESS_STATUS": "Zkopírováno {0} z {1} souborů",
+  "MIGRATE_DONE_MESSAGE": "Bylo zkopírováno {0} souborů. Restartujte {APP_NAME}, abyste je mohli začít používat.",
+  "MIGRATE_DONE_PARTIAL": "Nepodařilo se zkopírovat {0} souborů. Jsou stále k dispozici na starém webu.",
+  "MIGRATE_START_MESSAGE": "Na {1} bylo nalezeno {0} souborů k přenesení. Proces probíhá na pozadí a můžete dál pracovat. Stačí ho provést pouze jednou.",
+  "MIGRATE_START_CONFIRM": "Přenést moje data",
+  "MIGRATE_RELOAD_LATER": "Později",
+  "CMD_MIGRATE_DATA": "Přenést moje data z {0}…"
 });

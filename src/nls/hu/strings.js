@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Az alkalmazás frissítése",
   "MIGRATE_STAY_HERE": "Maradok itt",
   "MIGRATE_PROGRESS_TITLE": "Az adatok áthozása",
-  "MIGRATE_PROGRESS_INTRO": "A projektek, beállítások és bővítmények másolása a(z) {0} alkalmazásból. Ez csak egyszer történik meg.",
-  "MIGRATE_PROGRESS_PREPARING": "A(z) {0} előkészítése ({1}/{2})…",
-  "MIGRATE_PROGRESS_STATUS": "A(z) {0} másolása ({1}/{2})…",
   "MIGRATE_DONE_TITLE": "Minden kész.",
-  "MIGRATE_DONE_MESSAGE": "{0} fájl lett átmásolva. Töltse be újra az oldalt a használatukhoz.",
-  "MIGRATE_DONE_PARTIAL": "Ezeket nem sikerült átmásolni, de továbbra is elérhetők a régi oldalon: {0}",
   "MIGRATE_RELOAD_NOW": "Újratöltés",
   "MIGRATE_NOTHING_TITLE": "Nincs mit áthozni",
   "MIGRATE_NOTHING_MESSAGE": "A(z) {0} helyen nem található másolást igénylő projekt, beállítás vagy bővítmény.",
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A(z) {APP_NAME} nem tudott csatlakozni a(z) {0} oldalhoz az adatai ellenőrzéséhez. Kérjük, ellenőrizze a kapcsolatát, és próbálja újra.",
-  "CMD_MIGRATE_DATA": "Adataim migrálása…"
+  "MIGRATE_PROGRESS_STATUS": "{1} fájlból {0} átmásolva",
+  "MIGRATE_DONE_MESSAGE": "{0} fájl átmásolva. Töltse be újra az {APP_NAME} alkalmazást a használatukhoz.",
+  "MIGRATE_DONE_PARTIAL": "{0} fájlt nem sikerült átmásolni. Ezek továbbra is elérhetők a régi webhelyen.",
+  "MIGRATE_START_MESSAGE": "{0} áthozandó fájlt találtunk a(z) {1} helyen. A folyamat a háttérben fut, közben folytathatja a munkát. Ezt csak egyszer kell elvégezni.",
+  "MIGRATE_START_CONFIRM": "Adataim áthozása",
+  "MIGRATE_RELOAD_LATER": "Később",
+  "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…"
 });

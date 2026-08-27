@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "앱 업데이트하기",
   "MIGRATE_STAY_HERE": "여기에 머물기",
   "MIGRATE_PROGRESS_TITLE": "데이터를 가져오는 중",
-  "MIGRATE_PROGRESS_INTRO": "{0}에서 프로젝트, 설정 및 확장 프로그램을 복사하는 중입니다. 이 작업은 한 번만 수행됩니다.",
-  "MIGRATE_PROGRESS_PREPARING": "{0} 준비 중 ({2} 중 {1})…",
-  "MIGRATE_PROGRESS_STATUS": "{0} 복사 중 ({2} 중 {1})…",
   "MIGRATE_DONE_TITLE": "모두 완료되었습니다.",
-  "MIGRATE_DONE_MESSAGE": "{0}개의 파일이 복사되었습니다. 새로고침하여 사용을 시작하세요.",
-  "MIGRATE_DONE_PARTIAL": "다음 항목은 복사할 수 없었으며 이전 사이트에서 계속 사용할 수 있습니다: {0}",
   "MIGRATE_RELOAD_NOW": "새로고침",
   "MIGRATE_NOTHING_TITLE": "가져올 데이터가 없습니다.",
   "MIGRATE_NOTHING_MESSAGE": "{0}에서 복사할 프로젝트, 설정 또는 확장을 찾을 수 없었습니다.",
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}에서 데이터를 확인하기 위해 {0}에 연결할 수 없습니다. 연결을 확인하고 다시 시도해 주세요.",
-  "CMD_MIGRATE_DATA": "내 데이터 마이그레이션…"
+  "MIGRATE_PROGRESS_STATUS": "{1}개 파일 중 {0}개 복사됨",
+  "MIGRATE_DONE_MESSAGE": "{0}개의 파일이 복사되었습니다. {APP_NAME}을(를) 다시 로드하여 사용하세요.",
+  "MIGRATE_DONE_PARTIAL": "{0}개의 파일을 복사할 수 없었습니다. 해당 파일은 이전 사이트에서 계속 사용할 수 있습니다.",
+  "MIGRATE_START_MESSAGE": "{1}에서 가져올 파일 {0}개를 찾았습니다. 이 작업은 백그라운드에서 실행되며, 진행되는 동안 계속 작업할 수 있습니다. 한 번만 실행하면 됩니다.",
+  "MIGRATE_START_CONFIRM": "내 데이터 가져오기",
+  "MIGRATE_RELOAD_LATER": "나중에",
+  "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…"
 });

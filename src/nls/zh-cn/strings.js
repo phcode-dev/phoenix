@@ -2701,15 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "更新应用",
   "MIGRATE_STAY_HERE": "留在此处",
   "MIGRATE_PROGRESS_TITLE": "正在迁移您的数据",
-  "MIGRATE_PROGRESS_INTRO": "正在从 {0} 复制您的项目、设置和扩展。此操作仅会进行一次。",
-  "MIGRATE_PROGRESS_PREPARING": "正在准备 {0} ({1}/{2})…",
-  "MIGRATE_PROGRESS_STATUS": "正在复制 {0} ({1}/{2})…",
   "MIGRATE_DONE_TITLE": "全部完成。",
-  "MIGRATE_DONE_MESSAGE": "已成功复制 {0} 个文件。重新加载后即可开始使用。",
-  "MIGRATE_DONE_PARTIAL": "以下内容无法复制，但仍保留在旧站点中：{0}",
   "MIGRATE_RELOAD_NOW": "重新加载",
   "MIGRATE_NOTHING_TITLE": "无可迁移的内容",
   "MIGRATE_NOTHING_MESSAGE": "在 {0} 上未找到任何需要复制的项目、设置或扩展。",
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
-  "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以检查您的数据。请检查您的网络连接并重试。"
+  "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以检查您的数据。请检查您的网络连接并重试。",
+  "MIGRATE_PROGRESS_STATUS": "已复制 {0}/{1} 个文件",
+  "MIGRATE_DONE_MESSAGE": "已成功复制 {0} 个文件。重新加载 {APP_NAME} 即可开始使用。",
+  "MIGRATE_DONE_PARTIAL": "有 {0} 个文件未能复制。这些文件仍保留在旧站点上。",
+  "MIGRATE_START_MESSAGE": "在 {1} 上找到 {0} 个可迁移的文件。此过程将在后台运行，期间您可以继续工作。此操作仅需执行一次。",
+  "MIGRATE_START_CONFIRM": "迁移我的数据",
+  "MIGRATE_RELOAD_LATER": "稍后",
+  "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…"
 });

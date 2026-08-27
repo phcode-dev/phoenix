@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Aggiorna l'app",
   "MIGRATE_STAY_HERE": "Rimani qui",
   "MIGRATE_PROGRESS_TITLE": "Trasferimento dei tuoi dati",
-  "MIGRATE_PROGRESS_INTRO": "Copia in corso di progetti, impostazioni ed estensioni da {0}. Questa operazione verrà eseguita una sola volta.",
-  "MIGRATE_PROGRESS_PREPARING": "Preparazione di {0} ({1} di {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Copia di {0} ({1} di {2})…",
   "MIGRATE_DONE_TITLE": "Tutto fatto.",
-  "MIGRATE_DONE_MESSAGE": "Sono stati copiati {0} file. Ricarica per iniziare a usarli.",
-  "MIGRATE_DONE_PARTIAL": "Questi elementi non sono stati copiati e sono ancora disponibili sul vecchio sito: {0}",
   "MIGRATE_RELOAD_NOW": "Ricarica",
   "MIGRATE_NOTHING_TITLE": "Niente da trasferire",
   "MIGRATE_NOTHING_MESSAGE": "Non è stato possibile trovare progetti, impostazioni o estensioni su {0} da copiare.",
   "MIGRATE_UNREACHABLE_TITLE": "Impossibile raggiungere il vecchio sito",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non è riuscito a connettersi a {0} per verificare la presenza dei tuoi dati. Controlla la tua connessione e riprova.",
-  "CMD_MIGRATE_DATA": "Migra i miei dati…"
+  "MIGRATE_PROGRESS_STATUS": "Copiati {0} di {1} file",
+  "MIGRATE_DONE_MESSAGE": "Sono stati copiati {0} file. Ricarica {APP_NAME} per iniziare a usarli.",
+  "MIGRATE_DONE_PARTIAL": "Non è stato possibile copiare {0} file. Sono ancora disponibili sul vecchio sito.",
+  "MIGRATE_START_MESSAGE": "Trovati {0} file su {1} da trasferire. L'operazione verrà eseguita in background e potrai continuare a lavorare nel frattempo. È necessario eseguirla solo una volta.",
+  "MIGRATE_START_CONFIRM": "Trasferisci i miei dati",
+  "MIGRATE_RELOAD_LATER": "Più tardi",
+  "CMD_MIGRATE_DATA": "Migra i miei dati da {0}…"
 });
