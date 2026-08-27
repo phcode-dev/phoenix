@@ -35,22 +35,22 @@
 define(function (require, exports, module) {
     const Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
-        Mustache = require("thirdparty/mustache/mustache"),
         Strings = require("strings"),
         StringUtils = require("utils/StringUtils"),
         Metrics = require("utils/Metrics"),
-        ZipUtils = require("utils/ZipUtils"),
+        TaskManager = require("features/TaskManager"),
         PreferencesManager = require("preferences/PreferencesManager"),
         CommandManager = require("command/CommandManager"),
         Commands = require("command/Commands"),
-        Constants = require("./constants"),
-        progressTemplate = require("text!./html/migrate-progress.html");
+        Constants = require("./constants");
 
     const HANDSHAKE_TIMEOUT_MS = 15000,
-        BUNDLE_TIMEOUT_MS = 120000,
+        FILE_TIMEOUT_MS = 60000,
+        CHUNK_SIZE = 8 * 1024 * 1024,
         IFRAME_ID = "migrate-assist-frame";
 
     const RESULT_MIGRATED = "migrated",
+        RESULT_DECLINED = "declined",
         RESULT_NOTHING = "nothing",
         RESULT_UNREACHABLE = "unreachable";
 
@@ -68,7 +68,7 @@ define(function (require, exports, module) {
         iframe.style.display = "none";
 
         let pendingScan = null,
-            bundleHandler = null,
+            fileHandler = null,
             destroyed = false;
 
         function _onMessage(event) {
@@ -87,8 +87,8 @@ define(function (require, exports, module) {
                 const resolve = pendingScan;
                 pendingScan = null;
                 resolve(data);
-            } else if (bundleHandler) {
-                bundleHandler(data);
+            } else if (fileHandler) {
+                fileHandler(data);
             }
         }
 
@@ -126,98 +126,156 @@ define(function (require, exports, module) {
         }
 
         /**
-         * Requests one bundle and reassembles its chunks into a single ArrayBuffer.
+         * Requests one file, reassembling it from chunks if it is larger than the chunk size.
          */
-        function fetchBundle(id) {
+        function fetchFile(path) {
             return new Promise((resolve, reject) => {
-                const chunks = [];
-                let expected = -1,
-                    received = 0;
+                const parts = [];
+                let received = 0;
                 const timer = setTimeout(() => {
-                    bundleHandler = null;
-                    reject(new Error("timed out receiving " + id));
-                }, BUNDLE_TIMEOUT_MS);
+                    fileHandler = null;
+                    reject(new Error("timed out receiving " + path));
+                }, FILE_TIMEOUT_MS);
 
-                bundleHandler = function (data) {
-                    if (data.id !== id) {
+                function requestFrom(offset) {
+                    iframe.contentWindow.postMessage(
+                        { type: "MIGRATE_READ", path: path, offset: offset, length: CHUNK_SIZE },
+                        legacyOrigin);
+                }
+
+                fileHandler = function (data) {
+                    if (data.path !== path) {
                         return;
                     }
                     if (data.type === "MIGRATE_ERROR") {
                         clearTimeout(timer);
-                        bundleHandler = null;
+                        fileHandler = null;
                         reject(new Error(data.message));
-                    } else if (data.type === "MIGRATE_BUNDLE_META") {
-                        expected = data.chunkCount;
-                    } else if (data.type === "MIGRATE_CHUNK") {
-                        chunks[data.index] = data.chunk;
-                        received = received + 1;
-                        if (data.last || (expected > 0 && received === expected)) {
-                            clearTimeout(timer);
-                            bundleHandler = null;
-                            const total = chunks.reduce((sum, c) => sum + c.byteLength, 0);
-                            const merged = new Uint8Array(total);
-                            let offset = 0;
-                            for (const chunk of chunks) {
-                                merged.set(new Uint8Array(chunk), offset);
-                                offset = offset + chunk.byteLength;
-                            }
-                            resolve(merged.buffer);
-                        }
+                        return;
                     }
+                    if (data.type !== "MIGRATE_DATA") {
+                        return;
+                    }
+                    parts.push(new Uint8Array(data.chunk));
+                    received = received + data.chunk.byteLength;
+                    if (!data.eof) {
+                        requestFrom(received);
+                        return;
+                    }
+                    clearTimeout(timer);
+                    fileHandler = null;
+                    if (parts.length === 1) {
+                        resolve(parts[0]);
+                        return;
+                    }
+                    const merged = new Uint8Array(received);
+                    let offset = 0;
+                    for (const part of parts) {
+                        merged.set(part, offset);
+                        offset = offset + part.byteLength;
+                    }
+                    resolve(merged);
                 };
-                iframe.contentWindow.postMessage({ type: "MIGRATE_BUNDLE", id: id }, legacyOrigin);
+                requestFrom(0);
             });
         }
 
-        return { scan, fetchBundle, destroy };
+        return { scan, fetchFile, destroy };
     }
 
-    function _showProgressDialog(bundleCount) {
-        const dialog = Dialogs.showModalDialogUsingTemplate(
-            Mustache.render(progressTemplate, {
-                Strings: Strings,
-                introMessage: StringUtils.format(Strings.MIGRATE_PROGRESS_INTRO,
-                    Constants.LEGACY_DOMAIN_NAME)
-            }),
-            false // no auto dismiss, the transfer must not be interrupted half way
-        );
-        const $dlg = dialog.getElement();
-        let bundlesDone = 0;
-
+    /**
+     * Progress lives in the status bar rather than a modal. The transfer is dominated by IndexedDB
+     * writes at roughly 10ms per file, so a few thousand files is minutes long, and blocking the
+     * whole editor behind an undismissable dialog for that is not acceptable. The user is told once
+     * up front, works normally while it runs, and gets a dialog again only when it is done.
+     */
+    function _startProgressTask(totalFiles) {
+        const task = TaskManager.addNewTask(
+            Strings.MIGRATE_PROGRESS_TITLE,
+            StringUtils.format(Strings.MIGRATE_PROGRESS_STATUS, 0, totalFiles),
+            `<i class="fa-solid fa-download"></i>`);
         return {
-            dialog: dialog,
-            setWaiting: function (index, name) {
-                // The remote side is zipping. Nothing to count yet, so pulse rather than sit at 0%.
-                $dlg.find(".migrate-assist-bar").addClass("migrate-assist-bar-indeterminate");
-                $dlg.find(".migrate-assist-status")
-                    .text(StringUtils.format(Strings.MIGRATE_PROGRESS_PREPARING, name, index + 1, bundleCount));
+            update: function (done) {
+                task.setProgressPercent(Math.round((done / totalFiles) * 100));
+                task.setMessage(StringUtils.format(Strings.MIGRATE_PROGRESS_STATUS, done, totalFiles));
             },
-            setBundleProgress: function (index, name, doneFiles, totalFiles) {
-                $dlg.find(".migrate-assist-bar").removeClass("migrate-assist-bar-indeterminate");
-                bundlesDone = index;
-                const withinBundle = totalFiles ? (doneFiles / totalFiles) : 0;
-                const overall = Math.min(100, Math.round(((bundlesDone + withinBundle) / bundleCount) * 100));
-                $dlg.find(".migrate-assist-bar").css("width", `${overall}%`);
-                $dlg.find(".migrate-assist-status")
-                    .text(StringUtils.format(Strings.MIGRATE_PROGRESS_STATUS, name, index + 1, bundleCount));
+            succeed: function (done) {
+                task.setProgressPercent(100);
+                task.setMessage(StringUtils.format(Strings.MIGRATE_PROGRESS_STATUS, done, totalFiles));
+                task.setSucceeded();
+                task.close();
             },
-            finish: function (summary) {
-                $dlg.find(".migrate-assist-bar")
-                    .removeClass("migrate-assist-bar-indeterminate")
-                    .css("width", "100%");
-                $dlg.find(".migrate-assist-intro").text(Strings.MIGRATE_DONE_TITLE);
-                $dlg.find(".migrate-assist-status").text(summary.message);
-                if (summary.detail) {
-                    $dlg.find(".migrate-assist-detail").removeClass("forced-hidden").text(summary.detail);
-                }
-                $dlg.find(".migrate-assist-reload").removeClass("forced-hidden").on("click", function () {
-                    CommandManager.execute(Commands.APP_RELOAD);
-                });
-                $dlg.find(".migrate-assist-close").removeClass("forced-hidden").on("click", function () {
-                    dialog.close();
-                });
+            fail: function () {
+                task.setFailed();
+                task.close();
             }
         };
+    }
+
+    /**
+     * Shown once, before anything is copied, so the user knows why their machine is busy.
+     */
+    function _confirmStart(fileCount) {
+        return Dialogs.showModalDialog(
+            DefaultDialogs.DIALOG_ID_INFO,
+            Strings.MIGRATE_PROGRESS_TITLE,
+            StringUtils.format(Strings.MIGRATE_START_MESSAGE, fileCount, Constants.getLegacyDomainName()),
+            [
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                    id: Dialogs.DIALOG_BTN_CANCEL,
+                    text: Strings.CANCEL
+                },
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                    id: Dialogs.DIALOG_BTN_OK,
+                    text: Strings.MIGRATE_START_CONFIRM
+                }
+            ]
+        ).getPromise();
+    }
+
+    function _showCompletion(migratedFiles, failed) {
+        const message = failed.length
+            ? StringUtils.format(Strings.MIGRATE_DONE_MESSAGE, migratedFiles) + "<br><br>"
+                + StringUtils.format(Strings.MIGRATE_DONE_PARTIAL, failed.length)
+            : StringUtils.format(Strings.MIGRATE_DONE_MESSAGE, migratedFiles);
+        Dialogs.showModalDialog(
+            DefaultDialogs.DIALOG_ID_INFO,
+            Strings.MIGRATE_DONE_TITLE,
+            message,
+            [
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                    id: Dialogs.DIALOG_BTN_CANCEL,
+                    text: Strings.MIGRATE_RELOAD_LATER
+                },
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                    id: Dialogs.DIALOG_BTN_OK,
+                    text: Strings.MIGRATE_RELOAD_NOW
+                }
+            ]
+        ).done(function (buttonId) {
+            if (buttonId === Dialogs.DIALOG_BTN_OK) {
+                CommandManager.execute(Commands.APP_RELOAD);
+            }
+        });
+    }
+
+    /**
+     * Filer needs the parent directory to exist before a write, and mkdirs is recursive.
+     */
+    function _ensureParentDir(filePath) {
+        return new Promise((resolve, reject) => {
+            window.fs.mkdirs(window.path.dirname(filePath), 0o755, true, (err) => {
+                if (err && err.code !== "EEXIST") {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
     }
 
     async function _applyPreferences(prefsText) {
@@ -250,35 +308,39 @@ define(function (require, exports, module) {
         let progress = null;
         try {
             const scan = await bridge.scan();
-            if (!scan.hasData || !scan.bundles.length) {
+            if (!scan.hasData || !scan.files.length) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                     manual ? "manualNothing" : "autoNothing");
                 return RESULT_NOTHING;
             }
 
+            // Asked once, before anything is copied. After this the user is left alone.
+            const choice = await _confirmStart(scan.files.length);
+            if (choice !== Dialogs.DIALOG_BTN_OK) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "declined");
+                return RESULT_DECLINED;
+            }
+
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                 manual ? "manualStart" : "autoStart");
-            progress = _showProgressDialog(scan.bundles.length);
+            progress = _startProgressTask(scan.files.length);
 
             const failed = [];
             let migratedFiles = 0;
-            for (let i = 0; i < scan.bundles.length; i++) {
-                const bundle = scan.bundles[i];
-                const name = bundle.dest.substring(bundle.dest.lastIndexOf("/") + 1);
-                progress.setWaiting(i, name);
+            for (const file of scan.files) {
                 try {
-                    const buffer = await bridge.fetchBundle(bundle.id);
-                    await ZipUtils.unzipBinDataToLocation(buffer, bundle.dest, false,
-                        function (doneCount, totalCount) {
-                            progress.setBundleProgress(i, name, doneCount, totalCount);
-                            return true; // must be explicit, see unzipBinDataToLocation
-                        });
-                    migratedFiles = migratedFiles + bundle.fileCount;
+                    const bytes = await bridge.fetchFile(file.path);
+                    // Paths are identical on both origins, so the destination is the source path.
+                    await _ensureParentDir(file.path);
+                    await Phoenix.VFS.writeFileAsync(file.path, window.Filer.Buffer.from(bytes),
+                        window.fs.BYTE_ARRAY_ENCODING);
+                    migratedFiles = migratedFiles + 1;
                 } catch (err) {
-                    // One bad folder should not cost the user everything else.
-                    console.error("MigrateAssist: bundle failed", bundle.id, err);
-                    failed.push(name);
+                    // One unreadable file should not cost the user everything else.
+                    console.error("MigrateAssist: could not copy", file.path, err);
+                    failed.push(file.path);
                 }
+                progress.update(migratedFiles + failed.length);
             }
 
             if (scan.prefs) {
@@ -299,19 +361,15 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                 failed.length ? "completedWithErrors" : "completed");
 
-            progress.finish({
-                message: StringUtils.format(Strings.MIGRATE_DONE_MESSAGE, migratedFiles),
-                detail: failed.length
-                    ? StringUtils.format(Strings.MIGRATE_DONE_PARTIAL, failed.join(", "))
-                    : null
-            });
+            progress.succeed(migratedFiles);
+            _showCompletion(migratedFiles, failed);
             return RESULT_MIGRATED;
         } catch (err) {
             console.error("MigrateAssist: migration could not run", err);
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                 manual ? "manualUnreachable" : "autoUnreachable");
             if (progress) {
-                progress.dialog.close();
+                progress.fail();
             }
             return RESULT_UNREACHABLE;
         } finally {
@@ -348,14 +406,17 @@ define(function (require, exports, module) {
      */
     async function runManually() {
         const result = await run(true);
+        if (result === RESULT_DECLINED) {
+            return; // the user said no, they do not need to be told what they just chose
+        }
         if (result === RESULT_NOTHING) {
             Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO,
                 Strings.MIGRATE_NOTHING_TITLE,
-                StringUtils.format(Strings.MIGRATE_NOTHING_MESSAGE, Constants.LEGACY_DOMAIN_NAME));
+                StringUtils.format(Strings.MIGRATE_NOTHING_MESSAGE, Constants.getLegacyDomainName()));
         } else if (result === RESULT_UNREACHABLE) {
             Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.MIGRATE_UNREACHABLE_TITLE,
-                StringUtils.format(Strings.MIGRATE_UNREACHABLE_MESSAGE, Constants.LEGACY_DOMAIN_NAME));
+                StringUtils.format(Strings.MIGRATE_UNREACHABLE_MESSAGE, Constants.getLegacyDomainName()));
         }
     }
 

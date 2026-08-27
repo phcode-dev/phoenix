@@ -30,8 +30,7 @@ define(function (require, exports, module) {
         return;
     }
 
-    const Constants = require("extensionsIntegrated/MigrateAssist/constants"),
-        ZipUtils = require("utils/ZipUtils");
+    const Constants = require("extensionsIntegrated/MigrateAssist/constants");
 
     describe("unit:MigrateAssist", function () {
 
@@ -211,7 +210,7 @@ define(function (require, exports, module) {
                 const helper = openHelper("https://web.phcode.dev.evil.example");
                 await expectSilenceWhile(helper, [
                     {type: "MIGRATE_SCAN"},
-                    {type: "MIGRATE_BUNDLE", id: "/fs/local"}
+                    {type: "MIGRATE_READ", path: "/fs/local/anything.txt"}
                 ]);
             });
 
@@ -227,7 +226,7 @@ define(function (require, exports, module) {
                 expect(lastOfType(helper.received, "MIGRATE_READY")).not.toBe(null);
             });
 
-            it("should report a scan describing the projects, prefs and extensions", async function () {
+            it("should report a scan listing every migratable file", async function () {
                 const helper = openHelper(location.origin);
                 await helper.ready;
                 send(helper, {type: "MIGRATE_SCAN"});
@@ -236,35 +235,35 @@ define(function (require, exports, module) {
                 }, "scan result", 20000);
 
                 const scan = lastOfType(helper.received, "MIGRATE_SCAN_RESULT");
-                expect(typeof scan.hasData).toBe("boolean");
-                expect(Array.isArray(scan.bundles)).toBe(true);
-                for (const bundle of scan.bundles) {
-                    // Every bundle must name a real destination and be one of the roots we allow.
-                    expect(typeof bundle.dest).toBe("string");
-                    expect(bundle.dest.startsWith("/fs/")).toBe(true);
-                    expect(bundle.fileCount).toBeGreaterThan(0);
-                }
+                expect(scan.hasData).toBe(true);
+                expect(Array.isArray(scan.files)).toBe(true);
+                scan.files.forEach(function (file) {
+                    // Every path handed out must sit under one of the roots we agreed to serve.
+                    expect(file.path.startsWith("/fs/local/")
+                        || file.path.startsWith("/fs/app/extensions/")).toBe(true);
+                });
+                const seeded = scan.files.filter((f) => f.path.startsWith(`${SEEDED_PROJECT}/`));
+                expect(seeded.length).toBe(3);
             });
 
-            it("should refuse to zip anything outside the migratable roots", async function () {
+            it("should refuse to read anything outside the migratable roots", async function () {
                 const helper = openHelper(location.origin);
                 await helper.ready;
                 const escapes = [
-                    "/mnt",
-                    "/fs/app",
-                    "/fs/local/../../mnt",
-                    "/fs/app/extensions/user/../../aiHistory",
-                    OUTSIDE_ROOTS,
-                    `${SEEDED_PROJECT}/nested`
+                    "/mnt/somefolder/secret.txt",
+                    "/fs/app/phcode.json",
+                    "/fs/app/aiHistory/session.json",
+                    "/fs/local/../../mnt/secret.txt",
+                    `${OUTSIDE_ROOTS}/secret.txt`
                 ];
-                escapes.forEach((id) => send(helper, {type: "MIGRATE_BUNDLE", id: id}));
+                escapes.forEach((path) => send(helper, {type: "MIGRATE_READ", path: path}));
                 await awaitsFor(function () {
                     return helper.received.filter((m) => m.type === "MIGRATE_ERROR").length === escapes.length;
                 }, "every escaping path to be rejected", 10000);
-                expect(lastOfType(helper.received, "MIGRATE_CHUNK")).toBe(null);
+                expect(lastOfType(helper.received, "MIGRATE_DATA")).toBe(null);
             });
 
-            it("should round trip a real folder, overwriting collisions and keeping extras", async function () {
+            it("should stream files back byte for byte", async function () {
                 const helper = openHelper(location.origin);
                 await helper.ready;
                 send(helper, {type: "MIGRATE_SCAN"});
@@ -273,58 +272,29 @@ define(function (require, exports, module) {
                 }, "scan result", 20000);
 
                 const scan = lastOfType(helper.received, "MIGRATE_SCAN_RESULT");
-                // Our own seeded project, not whatever happened to be lying around. It also counts as
-                // real user data, so the helper must report there is something worth migrating.
-                expect(scan.hasData).toBe(true);
-                const bundle = scan.bundles.find((b) => b.dest === SEEDED_PROJECT);
-                expect(bundle).toBeTruthy();
-                expect(bundle.fileCount).toBe(3);
-
-                send(helper, {type: "MIGRATE_BUNDLE", id: bundle.id});
-                await awaitsFor(function () {
-                    const last = lastOfType(helper.received, "MIGRATE_CHUNK");
-                    return !!last && last.last === true;
-                }, "all chunks to arrive", 60000);
-
-                const chunks = helper.received.filter((m) => m.type === "MIGRATE_CHUNK" && m.id === bundle.id);
-                const meta = lastOfType(helper.received, "MIGRATE_BUNDLE_META");
-                expect(chunks.length).toBe(meta.chunkCount);
-
-                const total = chunks.reduce((sum, c) => sum + c.chunk.byteLength, 0);
-                expect(total).toBe(meta.totalBytes);
-                const merged = new Uint8Array(total);
-                let offset = 0;
-                chunks.sort((a, b) => a.index - b.index).forEach((c) => {
-                    merged.set(new Uint8Array(c.chunk), offset);
-                    offset = offset + c.chunk.byteLength;
+                const wanted = [`${SEEDED_PROJECT}/index.html`, `${SEEDED_PROJECT}/nested/deep.txt`,
+                    `${SEEDED_PROJECT}/image.bin`];
+                wanted.forEach(function (path) {
+                    expect(scan.files.some((f) => f.path === path)).toBe(true);
                 });
 
-                // Pre-seed the destination the way the receiving origin would already look: one file
-                // that collides with the incoming bundle, and one that exists only here.
-                const dest = `${SANDBOX}/restored`;
-                await Phoenix.VFS.ensureExistsDirAsync(dest);
-                await Phoenix.VFS.writeFileAsync(`${dest}/index.html`, "I am the stale local copy", "utf8");
-                await Phoenix.VFS.writeFileAsync(`${dest}/only-here.txt`, "keep me", "utf8");
+                async function fetchOne(path) {
+                    send(helper, {type: "MIGRATE_READ", path: path, offset: 0, length: 8 * 1024 * 1024});
+                    await awaitsFor(function () {
+                        return helper.received.some((m) => m.type === "MIGRATE_DATA" && m.path === path && m.eof);
+                    }, `data for ${path}`, 20000);
+                    const msg = helper.received.filter((m) => m.type === "MIGRATE_DATA" && m.path === path).pop();
+                    return new Uint8Array(msg.chunk);
+                }
 
-                const ticks = [];
-                await ZipUtils.unzipBinDataToLocation(merged.buffer, dest, false, function (done, totalCount) {
-                    ticks.push({done, totalCount});
-                    return true;
-                });
-
-                expect(ticks.length).toBeGreaterThan(0);
-                expect(ticks[ticks.length - 1].done).toBe(ticks[ticks.length - 1].totalCount);
-
-                // Source wins on a collision, and a file only present on the receiving side survives.
-                expect(await Phoenix.VFS.readFileAsync(`${dest}/index.html`, "utf8")).toBe(TEXT_CONTENT);
-                expect(await Phoenix.VFS.readFileAsync(`${dest}/only-here.txt`, "utf8")).toBe("keep me");
-                // Nested paths keep their shape.
-                expect(await Phoenix.VFS.readFileAsync(`${dest}/nested/deep.txt`, "utf8")).toBe(TEXT_CONTENT);
-                // Binary survives byte for byte, NUL and high bytes included.
-                const restoredBytes = new Uint8Array(
-                    await Phoenix.VFS.readFileAsync(`${dest}/image.bin`, window.fs.BYTE_ARRAY_ENCODING));
-                expect(Array.from(restoredBytes)).toEqual(Array.from(BINARY_BYTES));
+                // Text survives, nested paths keep their shape.
+                expect(new TextDecoder().decode(await fetchOne(wanted[0]))).toBe(TEXT_CONTENT);
+                expect(new TextDecoder().decode(await fetchOne(wanted[1]))).toBe(TEXT_CONTENT);
+                // Binary survives byte for byte, NUL and high bytes included, rather than being
+                // mangled through a text decode.
+                expect(Array.from(await fetchOne(wanted[2]))).toEqual(Array.from(BINARY_BYTES));
             });
+
         });
     });
 });
