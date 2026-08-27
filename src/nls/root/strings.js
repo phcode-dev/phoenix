@@ -775,6 +775,7 @@ define({
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
     "AVAILABLE_IN_PRO_TITLE": "Available in Phoenix Pro",
     "DEVICE_SIZE_LIMIT_MESSAGE": "To switch between mobile, tablet, and desktop views, upgrade to Phoenix Pro.",
+    "LAYERS_PANEL_LIMIT_MESSAGE": "To see your page structure and select or edit any element in it, upgrade to Phoenix Pro.",
     "DEVICE_SIZE_NOT_ENOUGH_SPACE": "This screen doesn’t fit in the current window size — try expanding the window",
     "DEVICE_SIZE_CYCLE_NO_FIT": "Screen too small to switch to another device size — increase the window size",
     "DEVICE_SIZE_CYCLE_TOOLTIP": "Switch between mobile, tablet, and desktop",
@@ -809,6 +810,7 @@ define({
     "LIVE_PREVIEW_SHOW_STYLES_BAR": "Show Styles Bar",
     "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' shows only the webpage, '{1}' connects the webpage to your code - click on elements to jump to their code and vice versa, '{2}' provides highlighting along with advanced element manipulation",
     "LIVE_PREVIEW_CONFIGURE_MODES": "Configure Live Preview Modes",
+    "LIVE_PREVIEW_LAYERS_PANEL": "Toggle Layers Panel",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
     "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview was canceled because the page was closed in the browser",
