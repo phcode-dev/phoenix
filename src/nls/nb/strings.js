@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Oppdater appen",
   "MIGRATE_STAY_HERE": "Bli her",
   "MIGRATE_PROGRESS_TITLE": "Overfører dataene dine",
-  "MIGRATE_PROGRESS_INTRO": "Kopierer prosjektene, innstillingene og utvidelsene dine fra {0}. Dette skjer bare én gang.",
-  "MIGRATE_PROGRESS_PREPARING": "Forbereder {0} ({1} av {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopierer {0} ({1} av {2})…",
   "MIGRATE_DONE_TITLE": "Alt er ferdig.",
-  "MIGRATE_DONE_MESSAGE": "{0} filer ble kopiert. Last inn på nytt for å ta dem i bruk.",
-  "MIGRATE_DONE_PARTIAL": "Disse kunne ikke kopieres og er fremdeles tilgjengelige på det gamle nettstedet: {0}",
   "MIGRATE_RELOAD_NOW": "Last inn på nytt",
   "MIGRATE_NOTHING_TITLE": "Ingenting å overføre",
   "MIGRATE_NOTHING_MESSAGE": "Vi kunne ikke finne noen prosjekter, innstillinger eller utvidelser på {0} som trengte kopiering.",
   "MIGRATE_UNREACHABLE_TITLE": "Fikk ikke kontakt med det gamle nettstedet",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke koble til {0} for å se etter dataene dine. Kontroller tilkoblingen din og prøv igjen.",
-  "CMD_MIGRATE_DATA": "Migrer mine data …"
+  "MIGRATE_PROGRESS_STATUS": "{0} av {1} filer kopiert",
+  "MIGRATE_DONE_MESSAGE": "{0} filer ble kopiert. Last inn {APP_NAME} på nytt for å ta dem i bruk.",
+  "MIGRATE_DONE_PARTIAL": "{0} fil(er) kunne ikke kopieres. De er fremdeles tilgjengelige på den gamle siden.",
+  "MIGRATE_START_MESSAGE": "Fant {0} filer på {1} som kan overføres. Dette kjører i bakgrunnen, og du kan fortsette å jobbe mens det pågår. Det trenger bare å gjøres én gang.",
+  "MIGRATE_START_CONFIRM": "Overfør dataene mine",
+  "MIGRATE_RELOAD_LATER": "Senere",
+  "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…"
 });

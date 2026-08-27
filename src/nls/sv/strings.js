@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Uppdatera appen",
   "MIGRATE_STAY_HERE": "Stanna kvar",
   "MIGRATE_PROGRESS_TITLE": "Flyttar över dina data",
-  "MIGRATE_PROGRESS_INTRO": "Kopierar dina projekt, inställningar och tillägg från {0}. Detta sker endast en gång.",
-  "MIGRATE_PROGRESS_PREPARING": "Förbereder {0} ({1} av {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopierar {0} ({1} av {2})…",
   "MIGRATE_DONE_TITLE": "Klart!",
-  "MIGRATE_DONE_MESSAGE": "{0} filer kopierades. Ladda om för att börja använda dem.",
-  "MIGRATE_DONE_PARTIAL": "Dessa kunde inte kopieras och är fortfarande tillgängliga på den gamla webbplatsen: {0}",
   "MIGRATE_RELOAD_NOW": "Ladda om",
   "MIGRATE_NOTHING_TITLE": "Inget att flytta över",
   "MIGRATE_NOTHING_MESSAGE": "Vi kunde inte hitta några projekt, inställningar eller tillägg på {0} som behöver kopieras.",
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att kontrollera dina data. Kontrollera din anslutning och försök igen.",
-  "CMD_MIGRATE_DATA": "Migrera mina data…"
+  "MIGRATE_PROGRESS_STATUS": "{0} av {1} filer kopierade",
+  "MIGRATE_DONE_MESSAGE": "{0} filer har kopierats. Ladda om {APP_NAME} för att börja använda dem.",
+  "MIGRATE_DONE_PARTIAL": "{0} fil(er) kunde inte kopieras. De finns fortfarande kvar på den gamla webbplatsen.",
+  "MIGRATE_START_MESSAGE": "Hittade {0} filer på {1} att föra över. Detta körs i bakgrunden och du kan fortsätta arbeta under tiden. Det behöver bara göras en gång.",
+  "MIGRATE_START_CONFIRM": "För över min data",
+  "MIGRATE_RELOAD_LATER": "Senare",
+  "CMD_MIGRATE_DATA": "Migrera min data från {0}…"
 });

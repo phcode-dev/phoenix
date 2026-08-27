@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "App aktualisieren",
   "MIGRATE_STAY_HERE": "Hier bleiben",
   "MIGRATE_PROGRESS_TITLE": "Ihre Daten werden übertragen",
-  "MIGRATE_PROGRESS_INTRO": "Ihre Projekte, Einstellungen und Erweiterungen werden von {0} kopiert. Dieser Vorgang wird nur einmal ausgeführt.",
-  "MIGRATE_PROGRESS_PREPARING": "{0} wird vorbereitet ({1} von {2})…",
-  "MIGRATE_PROGRESS_STATUS": "{0} wird kopiert ({1} von {2})…",
   "MIGRATE_DONE_TITLE": "Alles erledigt.",
-  "MIGRATE_DONE_MESSAGE": "{0} Dateien wurden übernommen. Laden Sie die Seite neu, um sie zu verwenden.",
-  "MIGRATE_DONE_PARTIAL": "Die folgenden Elemente konnten nicht kopiert werden und sind weiterhin auf der alten Seite verfügbar: {0}",
   "MIGRATE_RELOAD_NOW": "Neu laden",
   "MIGRATE_NOTHING_TITLE": "Nichts zu übertragen",
   "MIGRATE_NOTHING_MESSAGE": "Wir konnten auf {0} keine Projekte, Einstellungen oder Erweiterungen finden, die kopiert werden müssen.",
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um nach Ihren Daten zu suchen. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
-  "CMD_MIGRATE_DATA": "Meine Daten migrieren…"
+  "MIGRATE_PROGRESS_STATUS": "{0} von {1} Dateien kopiert",
+  "MIGRATE_DONE_MESSAGE": "{0} Dateien wurden übernommen. Laden Sie {APP_NAME} neu, um sie zu verwenden.",
+  "MIGRATE_DONE_PARTIAL": "{0} Datei(en) konnten nicht kopiert werden. Sie sind weiterhin auf der alten Seite verfügbar.",
+  "MIGRATE_START_MESSAGE": "Es wurden {0} Dateien auf {1} gefunden, die übernommen werden können. Dieser Vorgang läuft im Hintergrund und Sie können währenddessen weiterarbeiten. Er muss nur einmal durchgeführt werden.",
+  "MIGRATE_START_CONFIRM": "Meine Daten übernehmen",
+  "MIGRATE_RELOAD_LATER": "Später",
+  "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…"
 });

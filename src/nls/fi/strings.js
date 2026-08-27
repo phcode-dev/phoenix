@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Päivitä sovellus",
   "MIGRATE_STAY_HERE": "Pysy täällä",
   "MIGRATE_PROGRESS_TITLE": "Siirretään tietojasi",
-  "MIGRATE_PROGRESS_INTRO": "Kopioidaan projektejasi, asetuksiasi ja laajennuksiasi sovelluksesta {0}. Tämä tehdään vain kerran.",
-  "MIGRATE_PROGRESS_PREPARING": "Valmistellaan kohdetta {0} ({1}/{2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopioidaan kohdetta {0} ({1}/{2})…",
   "MIGRATE_DONE_TITLE": "Kaikki valmista.",
-  "MIGRATE_DONE_MESSAGE": "{0} tiedostoa kopioitiin. Lataa sivu uudelleen, niin voit ottaa ne käyttöön.",
-  "MIGRATE_DONE_PARTIAL": "Näitä ei voitu kopioida, ja ne ovat edelleen saatavilla vanhalla sivustolla: {0}",
   "MIGRATE_RELOAD_NOW": "Lataa uudelleen",
   "MIGRATE_NOTHING_TITLE": "Ei siirrettävää",
   "MIGRATE_NOTHING_MESSAGE": "Sivustolta {0} ei löytynyt kopioitavia projekteja, asetuksia tai laajennuksia.",
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä osoitteeseen {0} tarkistaakseen tietojasi. Tarkista verkkoyhteytesi ja yritä uudelleen.",
-  "CMD_MIGRATE_DATA": "Siirrä tietoni…"
+  "MIGRATE_PROGRESS_STATUS": "{0}/{1} tiedostoa kopioitu",
+  "MIGRATE_DONE_MESSAGE": "{0} tiedostoa kopioitiin. Lataa {APP_NAME} uudelleen ottaaksesi ne käyttöön.",
+  "MIGRATE_DONE_PARTIAL": "{0} tiedostoa ei voitu kopioida. Ne ovat edelleen saatavilla vanhalla sivustolla.",
+  "MIGRATE_START_MESSAGE": "Sivustolta {1} löytyi {0} siirrettävää tiedostoa. Siirto suoritetaan taustalla, ja voit jatkaa työskentelyä sen aikana. Se tarvitsee tehdä vain kerran.",
+  "MIGRATE_START_CONFIRM": "Siirrä tietoni",
+  "MIGRATE_RELOAD_LATER": "Myöhemmin",
+  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…"
 });

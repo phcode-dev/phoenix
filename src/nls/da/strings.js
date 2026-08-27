@@ -2701,15 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Opdater appen",
   "MIGRATE_STAY_HERE": "Bliv her",
   "MIGRATE_PROGRESS_TITLE": "Overfører dine data",
-  "MIGRATE_PROGRESS_INTRO": "Kopierer dine projekter, indstillinger og udvidelser fra {0}. Dette sker kun én gang.",
-  "MIGRATE_PROGRESS_PREPARING": "Forbereder {0} ({1} af {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopierer {0} ({1} af {2})…",
   "MIGRATE_DONE_TITLE": "Fuldført.",
-  "MIGRATE_DONE_MESSAGE": "{0} filer blev kopieret. Genindlæs for at begynde at bruge dem.",
-  "MIGRATE_DONE_PARTIAL": "Disse kunne ikke kopieres og er stadig tilgængelige på det gamle site: {0}",
   "MIGRATE_RELOAD_NOW": "Genindlæs",
   "MIGRATE_NOTHING_TITLE": "Intet at overføre",
   "MIGRATE_NOTHING_MESSAGE": "Vi kunne ikke finde nogen projekter, indstillinger eller udvidelser på {0}, der skal kopieres.",
   "MIGRATE_UNREACHABLE_TITLE": "Kunne ikke få forbindelse til den gamle side",
-  "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at tjekke for dine data. Tjek venligst din forbindelse, og prøv igen."
+  "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at tjekke for dine data. Tjek venligst din forbindelse, og prøv igen.",
+  "MIGRATE_PROGRESS_STATUS": "{0} af {1} filer kopieret",
+  "MIGRATE_DONE_MESSAGE": "{0} filer blev kopieret. Genindlæs {APP_NAME} for at begynde at bruge dem.",
+  "MIGRATE_DONE_PARTIAL": "{0} fil(er) kunne ikke kopieres. De er stadig tilgængelige på det gamle websted.",
+  "MIGRATE_START_MESSAGE": "Der blev fundet {0} filer på {1}, som kan overføres. Dette kører i baggrunden, og du kan fortsætte med at arbejde, imens det sker. Det skal kun gøres én gang.",
+  "MIGRATE_START_CONFIRM": "Overfør mine data",
+  "MIGRATE_RELOAD_LATER": "Senere",
+  "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…"
 });

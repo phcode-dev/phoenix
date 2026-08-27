@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Actualizar a aplicación",
   "MIGRATE_STAY_HERE": "Quedar aquí",
   "MIGRATE_PROGRESS_TITLE": "A transferir os teus datos",
-  "MIGRATE_PROGRESS_INTRO": "A copiar os teus proxectos, configuracións e extensións desde {0}. Isto só acontece unha vez.",
-  "MIGRATE_PROGRESS_PREPARING": "A preparar {0} ({1} de {2})…",
-  "MIGRATE_PROGRESS_STATUS": "A copiar {0} ({1} de {2})…",
   "MIGRATE_DONE_TITLE": "Todo listo.",
-  "MIGRATE_DONE_MESSAGE": "Copiáronse {0} ficheiros. Recarga para comezar a usalos.",
-  "MIGRATE_DONE_PARTIAL": "Estes non se puideron copiar e aínda están dispoñibles no sitio antigo: {0}",
   "MIGRATE_RELOAD_NOW": "Recargar",
   "MIGRATE_NOTHING_TITLE": "Nada que transferir",
   "MIGRATE_NOTHING_MESSAGE": "Non puidemos atopar ningún proxecto, configuración ou extensión en {0} que precise ser copiado.",
   "MIGRATE_UNREACHABLE_TITLE": "Non se puido acceder ao sitio antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non se puido conectar con {0} para comprobar os seus datos. Comprobe a súa conexión e ténteo de novo.",
-  "CMD_MIGRATE_DATA": "Migrar os meus datos…"
+  "MIGRATE_PROGRESS_STATUS": "Copiados {0} de {1} ficheiros",
+  "MIGRATE_DONE_MESSAGE": "Copiáronse {0} ficheiros. Recarga {APP_NAME} para comezar a usalos.",
+  "MIGRATE_DONE_PARTIAL": "Non se puideron copiar {0} ficheiros. Seguen dispoñibles no sitio antigo.",
+  "MIGRATE_START_MESSAGE": "Atopáronse {0} ficheiros en {1} para importar. Este proceso execútase en segundo plano e podes seguir traballando mentres se realiza. Só é preciso facelo unha vez.",
+  "MIGRATE_START_CONFIRM": "Traer os meus datos",
+  "MIGRATE_RELOAD_LATER": "Máis tarde",
+  "CMD_MIGRATE_DATA": "Migrar os meus datos desde {0}…"
 });

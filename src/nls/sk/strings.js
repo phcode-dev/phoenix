@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Aktualizovať aplikáciu",
   "MIGRATE_STAY_HERE": "Zostať tu",
   "MIGRATE_PROGRESS_TITLE": "Prenos vašich údajov",
-  "MIGRATE_PROGRESS_INTRO": "Kopírujú sa vaše projekty, nastavenia a rozšírenia z {0}. Tento proces prebehne iba raz.",
-  "MIGRATE_PROGRESS_PREPARING": "Pripravuje sa {0} ({1} z {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopíruje sa {0} ({1} z {2})…",
   "MIGRATE_DONE_TITLE": "Všetko hotové.",
-  "MIGRATE_DONE_MESSAGE": "{0} súborov bolo skopírovaných. Obnovte stránku, aby ste ich mohli začať používať.",
-  "MIGRATE_DONE_PARTIAL": "Tieto položky sa nepodarilo skopírovať a sú stále dostupné na starej stránke: {0}",
   "MIGRATE_RELOAD_NOW": "Obnoviť",
   "MIGRATE_NOTHING_TITLE": "Niet čo preniesť",
   "MIGRATE_NOTHING_MESSAGE": "Na {0} sme nenašli žiadne projekty, nastavenia ani rozšírenia na skopírovanie.",
   "MIGRATE_UNREACHABLE_TITLE": "Nepodarilo sa spojiť so starou lokalitou",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikácii {APP_NAME} sa nepodarilo pripojiť k {0} na kontrolu vašich údajov. Skontrolujte svoje pripojenie a skúste to znova.",
-  "CMD_MIGRATE_DATA": "Migrovať moje údaje…"
+  "MIGRATE_PROGRESS_STATUS": "Skopírovaných {0} z {1} súborov",
+  "MIGRATE_DONE_MESSAGE": "Bolo skopírovaných {0} súborov. Znovu načítajte {APP_NAME}, aby ste ich mohli začať používať.",
+  "MIGRATE_DONE_PARTIAL": "{0} súbor(y) sa nepodarilo skopírovať. Sú stále dostupné na starej stránke.",
+  "MIGRATE_START_MESSAGE": "Na {1} sa našlo {0} súborov na prenesenie. Tento proces prebieha na pozadí a môžete počas neho pokračovať v práci. Stačí to urobiť iba raz.",
+  "MIGRATE_START_CONFIRM": "Preniesť moje dáta",
+  "MIGRATE_RELOAD_LATER": "Neskôr",
+  "CMD_MIGRATE_DATA": "Migrovať moje dáta z {0}…"
 });

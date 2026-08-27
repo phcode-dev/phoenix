@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "アプリを更新",
   "MIGRATE_STAY_HERE": "このまま続ける",
   "MIGRATE_PROGRESS_TITLE": "データを移行しています",
-  "MIGRATE_PROGRESS_INTRO": "{0}からプロジェクト、設定、拡張機能をコピーしています。この処理は一度だけ行われます。",
-  "MIGRATE_PROGRESS_PREPARING": "{0}を準備中（{1}/{2}）…",
-  "MIGRATE_PROGRESS_STATUS": "{0}をコピー中（{1}/{2}）…",
   "MIGRATE_DONE_TITLE": "完了しました。",
-  "MIGRATE_DONE_MESSAGE": "{0}個のファイルがコピーされました。リロードしてご利用ください。",
-  "MIGRATE_DONE_PARTIAL": "以下の項目はコピーできませんでした。これらは以前のサイトで引き続き利用できます：{0}",
   "MIGRATE_RELOAD_NOW": "リロード",
   "MIGRATE_NOTHING_TITLE": "移行するデータがありません",
   "MIGRATE_NOTHING_MESSAGE": "コピーが必要なプロジェクト、設定、または拡張機能が {0} で見つかりませんでした。",
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} はデータをチェックするために {0} に接続できませんでした。接続を確認して、もう一度お試しください。",
-  "CMD_MIGRATE_DATA": "データを移行…"
+  "MIGRATE_RELOAD_LATER": "後で再起動",
+  "MIGRATE_PROGRESS_STATUS": "{1}ファイル中{0}ファイルをコピー済み",
+  "MIGRATE_DONE_MESSAGE": "{0}個のファイルをコピーしました。{APP_NAME}を再読み込みして使用を開始してください。",
+  "MIGRATE_DONE_PARTIAL": "{0}個のファイルをコピーできませんでした。これらのファイルは、古いサイトで引き続き利用可能です。",
+  "MIGRATE_START_MESSAGE": "{1}から移行するファイルを{0}個見つけました。この処理はバックグラウンドで実行されるため、作業を続行できます。この操作は一度だけ必要です。",
+  "MIGRATE_START_CONFIRM": "データを移行する",
+  "CMD_MIGRATE_DATA": "{0}からデータを移行…"
 });

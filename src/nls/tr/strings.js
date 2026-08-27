@@ -2701,15 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Uygulamayı güncelle",
   "MIGRATE_STAY_HERE": "Burada kal",
   "MIGRATE_PROGRESS_TITLE": "Verileriniz taşınıyor",
-  "MIGRATE_PROGRESS_INTRO": "{0} konumundan projeleriniz, ayarlarınız ve eklentileriniz kopyalanıyor. Bu işlem yalnızca bir kez yapılır.",
-  "MIGRATE_PROGRESS_PREPARING": "{0} hazırlanıyor ({2} öğeden {1})…",
-  "MIGRATE_PROGRESS_STATUS": "{0} kopyalanıyor ({2} öğeden {1})…",
   "MIGRATE_DONE_TITLE": "İşlem tamamlandı.",
-  "MIGRATE_DONE_MESSAGE": "{0} dosya kopyalandı. Kullanmaya başlamak için yeniden yükleyin.",
-  "MIGRATE_DONE_PARTIAL": "Bunlar kopyalanamadı ve hâlâ eski sitede mevcut: {0}",
   "MIGRATE_RELOAD_NOW": "Yeniden Yükle",
   "MIGRATE_NOTHING_TITLE": "Taşınacak bir şey yok",
   "MIGRATE_NOTHING_MESSAGE": "{0} üzerinde kopyalanması gereken herhangi bir proje, ayar veya eklenti bulamadık.",
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
-  "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, verilerinizi kontrol etmek için {0} adresine bağlanamadı. Lütfen bağlantınızı kontrol edin ve yeniden deneyin."
+  "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, verilerinizi kontrol etmek için {0} adresine bağlanamadı. Lütfen bağlantınızı kontrol edin ve yeniden deneyin.",
+  "MIGRATE_PROGRESS_STATUS": "{1} dosyadan {0} tanesi kopyalandı",
+  "MIGRATE_DONE_MESSAGE": "{0} dosya aktarıldı. Kullanmaya başlamak için {APP_NAME} uygulamasını yeniden başlatın.",
+  "MIGRATE_DONE_PARTIAL": "{0} dosya kopyalanamadı. Bu dosyalar eski sitede hâlâ mevcut.",
+  "MIGRATE_START_MESSAGE": "{1} konumunda aktarılacak {0} dosya bulundu. Bu işlem arka planda çalışır ve bu sırada çalışmaya devam edebilirsiniz. İşlemin yalnızca bir kez yapılması gerekir.",
+  "MIGRATE_START_CONFIRM": "Verilerimi aktar",
+  "MIGRATE_RELOAD_LATER": "Daha sonra",
+  "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…"
 });

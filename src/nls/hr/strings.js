@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Ažuriraj aplikaciju",
   "MIGRATE_STAY_HERE": "Ostanite ovdje",
   "MIGRATE_PROGRESS_TITLE": "Prijenos vaših podataka",
-  "MIGRATE_PROGRESS_INTRO": "Kopiramo vaše projekte, postavke i proširenja s {0}. Ovo se događa samo jednom.",
-  "MIGRATE_PROGRESS_PREPARING": "Priprema {0} ({1} od {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Kopiranje {0} ({1} od {2})…",
   "MIGRATE_DONE_TITLE": "Sve je gotovo.",
-  "MIGRATE_DONE_MESSAGE": "Kopirano je {0} datoteka. Ponovno učitajte kako biste ih počeli koristiti.",
-  "MIGRATE_DONE_PARTIAL": "Ovo se nije moglo kopirati i još uvijek je dostupno na staroj stranici: {0}",
   "MIGRATE_RELOAD_NOW": "Ponovno učitajte",
   "MIGRATE_NOTHING_TITLE": "Nema ničega za prijenos",
   "MIGRATE_NOTHING_MESSAGE": "Nismo mogli pronaći projekte, postavke ili proširenja na {0} koje je potrebno kopirati.",
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} radi provjere vaših podataka. Molimo, provjerite svoju vezu i pokušajte ponovno.",
-  "CMD_MIGRATE_DATA": "Migriraj moje podatke…"
+  "MIGRATE_PROGRESS_STATUS": "Kopirano {0} od {1} datoteka",
+  "MIGRATE_DONE_MESSAGE": "Prekopirano je {0} datoteka. Ponovno učitajte {APP_NAME} kako biste ih počeli koristiti.",
+  "MIGRATE_DONE_PARTIAL": "{0} datoteka nije moglo biti kopirano. I dalje su dostupne na staroj stranici.",
+  "MIGRATE_START_MESSAGE": "Pronađeno je {0} datoteka na {1} za prijenos. Postupak se izvršava u pozadini i možete nastaviti s radom dok se odvija. Potrebno ga je izvršiti samo jednom.",
+  "MIGRATE_START_CONFIRM": "Prenesite moje podatke",
+  "MIGRATE_RELOAD_LATER": "Kasnije",
+  "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…"
 });

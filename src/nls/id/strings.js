@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Perbarui aplikasi",
   "MIGRATE_STAY_HERE": "Tetap di sini",
   "MIGRATE_PROGRESS_TITLE": "Memindahkan data Anda",
-  "MIGRATE_PROGRESS_INTRO": "Menyalin proyek, pengaturan, dan ekstensi Anda dari {0}. Proses ini hanya terjadi sekali.",
-  "MIGRATE_PROGRESS_PREPARING": "Menyiapkan {0} ({1} dari {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Menyalin {0} ({1} dari {2})…",
   "MIGRATE_DONE_TITLE": "Semua selesai.",
-  "MIGRATE_DONE_MESSAGE": "{0} file berhasil disalin. Muat ulang untuk mulai menggunakannya.",
-  "MIGRATE_DONE_PARTIAL": "Item berikut tidak dapat disalin dan masih tersedia di situs lama: {0}",
   "MIGRATE_RELOAD_NOW": "Muat Ulang",
   "MIGRATE_NOTHING_TITLE": "Tidak ada yang perlu dipindahkan",
   "MIGRATE_NOTHING_MESSAGE": "Kami tidak dapat menemukan proyek, pengaturan, atau ekstensi apa pun di {0} yang perlu disalin.",
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk memeriksa data Anda. Harap periksa koneksi Anda dan coba lagi.",
-  "CMD_MIGRATE_DATA": "Migrasikan Data Saya…"
+  "MIGRATE_PROGRESS_STATUS": "{0} dari {1} file disalin",
+  "MIGRATE_DONE_MESSAGE": "{0} file berhasil disalin. Muat ulang {APP_NAME} untuk mulai menggunakannya.",
+  "MIGRATE_DONE_PARTIAL": "{0} file tidak dapat disalin. File tersebut masih tersedia di situs lama.",
+  "MIGRATE_START_MESSAGE": "Ditemukan {0} file di {1} untuk dipindahkan. Proses ini berjalan di latar belakang dan Anda dapat tetap bekerja saat berlangsung. Proses ini hanya perlu dilakukan sekali.",
+  "MIGRATE_START_CONFIRM": "Pindahkan data saya",
+  "MIGRATE_RELOAD_LATER": "Nanti",
+  "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…"
 });

@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Update de app",
   "MIGRATE_STAY_HERE": "Hier blijven",
   "MIGRATE_PROGRESS_TITLE": "Uw gegevens worden overgezet",
-  "MIGRATE_PROGRESS_INTRO": "Uw projecten, instellingen en extensies worden gekopieerd van {0}. Dit gebeurt slechts één keer.",
-  "MIGRATE_PROGRESS_PREPARING": "{0} voorbereiden ({1} van {2})…",
-  "MIGRATE_PROGRESS_STATUS": "{0} kopiëren ({1} van {2})…",
   "MIGRATE_DONE_TITLE": "Alles is klaar.",
-  "MIGRATE_DONE_MESSAGE": "{0} bestanden zijn overgezet. Herlaad de pagina om ze te gebruiken.",
-  "MIGRATE_DONE_PARTIAL": "Deze konden niet worden gekopieerd en zijn nog steeds beschikbaar op de oude site: {0}",
   "MIGRATE_RELOAD_NOW": "Herladen",
   "MIGRATE_NOTHING_TITLE": "Niets om over te zetten",
   "MIGRATE_NOTHING_MESSAGE": "Er zijn geen projecten, instellingen of extensies gevonden op {0} die gekopieerd moeten worden.",
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw gegevens te controleren. Controleer uw verbinding en probeer het opnieuw.",
-  "CMD_MIGRATE_DATA": "Mijn gegevens migreren…"
+  "MIGRATE_PROGRESS_STATUS": "{0} van {1} bestanden gekopieerd",
+  "MIGRATE_DONE_MESSAGE": "{0} bestanden zijn overgezet. Herlaad {APP_NAME} om ze te gebruiken.",
+  "MIGRATE_DONE_PARTIAL": "{0} bestand(en) konden niet worden gekopieerd. Ze zijn nog steeds beschikbaar op de oude site.",
+  "MIGRATE_START_MESSAGE": "{0} bestanden gevonden op {1} om over te zetten. Dit proces draait op de achtergrond en u kunt blijven werken. Dit hoeft maar één keer te gebeuren.",
+  "MIGRATE_START_CONFIRM": "Mijn gegevens overzetten",
+  "MIGRATE_RELOAD_LATER": "Later",
+  "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…"
 });

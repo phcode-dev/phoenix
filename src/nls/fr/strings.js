@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "Mettre à jour l'application",
   "MIGRATE_STAY_HERE": "Rester ici",
   "MIGRATE_PROGRESS_TITLE": "Transfert de vos données",
-  "MIGRATE_PROGRESS_INTRO": "Copie de vos projets, paramètres et extensions depuis {0}. Cette opération n'a lieu qu'une seule fois.",
-  "MIGRATE_PROGRESS_PREPARING": "Préparation de {0} ({1} sur {2})…",
-  "MIGRATE_PROGRESS_STATUS": "Copie de {0} ({1} sur {2})…",
   "MIGRATE_DONE_TITLE": "Terminé.",
-  "MIGRATE_DONE_MESSAGE": "{0} fichiers ont été copiés. Rechargez pour commencer à les utiliser.",
-  "MIGRATE_DONE_PARTIAL": "Ces éléments n'ont pas pu être copiés et sont toujours disponibles sur l'ancien site : {0}",
   "MIGRATE_RELOAD_NOW": "Recharger",
   "MIGRATE_NOTHING_TITLE": "Rien à transférer",
   "MIGRATE_NOTHING_MESSAGE": "Nous n'avons trouvé aucun projet, paramètre ou extension à copier sur {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Impossible d'atteindre l'ancien site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} n'a pas pu se connecter à {0} pour vérifier vos données. Veuillez vérifier votre connexion et réessayer.",
-  "CMD_MIGRATE_DATA": "Migrer mes données…"
+  "MIGRATE_RELOAD_LATER": "Plus tard",
+  "MIGRATE_PROGRESS_STATUS": "{0} sur {1} fichiers copiés",
+  "MIGRATE_DONE_MESSAGE": "{0} fichiers ont été copiés. Rechargez {APP_NAME} pour commencer à les utiliser.",
+  "MIGRATE_DONE_PARTIAL": "{0} fichier(s) n'ont pas pu être copiés. Ils sont toujours disponibles sur l'ancien site.",
+  "MIGRATE_START_MESSAGE": "{0} fichiers à transférer ont été trouvés sur {1}. L'opération s'exécute en arrière-plan et vous pouvez continuer à travailler pendant ce temps. Elle ne doit être effectuée qu'une seule fois.",
+  "MIGRATE_START_CONFIRM": "Transférer mes données",
+  "CMD_MIGRATE_DATA": "Migrer mes données depuis {0}…"
 });

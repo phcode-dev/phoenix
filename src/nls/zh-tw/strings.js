@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "更新應用程式",
   "MIGRATE_STAY_HERE": "留在這裡",
   "MIGRATE_PROGRESS_TITLE": "正在移轉您的資料",
-  "MIGRATE_PROGRESS_INTRO": "正在從 {0} 複製您的專案、設定和擴充功能。此操作只會執行一次。",
-  "MIGRATE_PROGRESS_PREPARING": "正在準備 {0} ({1}/{2})…",
-  "MIGRATE_PROGRESS_STATUS": "正在複製 {0} ({1}/{2})…",
   "MIGRATE_DONE_TITLE": "全部完成。",
-  "MIGRATE_DONE_MESSAGE": "已複製 {0} 個檔案。請重新載入以開始使用。",
-  "MIGRATE_DONE_PARTIAL": "以下項目無法複製，但仍可在舊版網站上使用：{0}",
   "MIGRATE_RELOAD_NOW": "重新載入",
   "MIGRATE_NOTHING_TITLE": "沒有可移轉的資料",
   "MIGRATE_NOTHING_MESSAGE": "我們在 {0} 上找不到任何需要複製的專案、設定或擴充功能。",
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以檢查您的資料。請檢查您的網路連線並再試一次。",
-  "CMD_MIGRATE_DATA": "遷移我的資料…"
+  "MIGRATE_PROGRESS_STATUS": "已複製 {0} 個檔案 (共 {1} 個)",
+  "MIGRATE_DONE_MESSAGE": "已複製 {0} 個檔案。請重新載入 {APP_NAME} 以開始使用。",
+  "MIGRATE_DONE_PARTIAL": "有 {0} 個檔案無法複製。這些檔案仍在舊網站上。",
+  "MIGRATE_START_MESSAGE": "在 {1} 上找到 {0} 個可供轉移的檔案。此程序會在背景執行，過程中您仍可繼續工作。此操作僅需執行一次。",
+  "MIGRATE_START_CONFIRM": "轉移我的資料",
+  "MIGRATE_RELOAD_LATER": "稍後",
+  "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…"
 });

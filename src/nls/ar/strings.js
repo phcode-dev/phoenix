@@ -2701,16 +2701,17 @@ define({
   "MIGRATE_UPDATE_APP": "تحديث التطبيق",
   "MIGRATE_STAY_HERE": "البقاء هنا",
   "MIGRATE_PROGRESS_TITLE": "جارٍ نقل بياناتك",
-  "MIGRATE_PROGRESS_INTRO": "جارٍ نسخ مشاريعك وإعداداتك وإضافاتك من {0}. تحدث هذه العملية مرة واحدة فقط.",
-  "MIGRATE_PROGRESS_PREPARING": "جارٍ تحضير {0} ({1} من {2})…",
-  "MIGRATE_PROGRESS_STATUS": "جارٍ نسخ {0} ({1} من {2})…",
   "MIGRATE_DONE_TITLE": "اكتمل كل شيء.",
-  "MIGRATE_DONE_MESSAGE": "تم نسخ {0} من الملفات. أعد التحميل لبدء استخدامها.",
-  "MIGRATE_DONE_PARTIAL": "تعذر نسخ ما يلي، ولا يزال متاحًا على الموقع القديم: {0}",
   "MIGRATE_RELOAD_NOW": "إعادة تحميل",
   "MIGRATE_NOTHING_TITLE": "لا يوجد شيء لنقله",
   "MIGRATE_NOTHING_MESSAGE": "لم نتمكن من العثور على أي مشاريع أو إعدادات أو ملحقات على {0} تحتاج إلى نسخ.",
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للتحقق من بياناتك. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
-  "CMD_MIGRATE_DATA": "ترحيل بياناتي…"
+  "MIGRATE_PROGRESS_STATUS": "تم نسخ {0} من {1} ملف",
+  "MIGRATE_DONE_MESSAGE": "تم نسخ {0} ملف. أعد تحميل {APP_NAME} لبدء استخدامها.",
+  "MIGRATE_DONE_PARTIAL": "تعذّر نسخ {0} ملف. لا تزال متاحة على الموقع القديم.",
+  "MIGRATE_START_MESSAGE": "تم العثور على {0} ملف في {1} لترحيلها. ستعمل هذه العملية في الخلفية ويمكنك الاستمرار في العمل أثناء حدوثها. لا يلزم القيام بذلك إلا مرة واحدة.",
+  "MIGRATE_START_CONFIRM": "ترحيل بياناتي",
+  "MIGRATE_RELOAD_LATER": "لاحقًا",
+  "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…"
 });
