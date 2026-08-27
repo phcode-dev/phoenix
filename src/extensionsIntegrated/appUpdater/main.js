@@ -582,7 +582,7 @@ define(function (require, exports, module) {
                 } else if(data === UPDATE_STATUS.INSTALLER_DOWNLOADED){
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'downloaded', Phoenix.platform);
                     updatePendingRestart = true;
-                    updateTask.setSucceded();
+                    updateTask.setSucceeded();
                     updateTask.setTitle(Strings.UPDATE_DONE);
                     updateTask.setMessage(Strings.UPDATE_RESTART_INSTALL);
                     if(!updateInstalledDialogShown){

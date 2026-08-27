@@ -194,7 +194,7 @@ define(function (require, exports, module) {
         await window.electronAPI.setUpdateScheduled(true);
         showOrHideUpdateIcon();
         Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'scheduled', Phoenix.platform);
-        updateTask.setSucceded();
+        updateTask.setSucceeded();
         updateTask.setTitle(Strings.UPDATE_DONE);
         updateTask.setMessage(Strings.UPDATE_RESTART_INSTALL);
         NotificationUI.createToastFromTemplate(Strings.UPDATE_READY_RESTART_TITLE,
@@ -406,7 +406,7 @@ define(function (require, exports, module) {
                                 Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
                         }
                     });
-                updateTask.setSucceded();
+                updateTask.setSucceeded();
                 Phoenix.app.registerQuitTimeAppUpdateHandler(quitTimeAppUpdateHandler);
                 console.log("Update was scheduled in another window, registering quit handler");
             }

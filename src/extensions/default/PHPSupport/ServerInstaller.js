@@ -241,7 +241,7 @@ define(function (require, exports, module) {
             }
             task.setProgressPercent(100);
             task.setMessage(Strings.PHP_INSTALL_DONE);
-            task.setSucceded(); // (sic - TaskManager's exported name)
+            task.setSucceeded();
             setTimeout(task.close, 4000);
             Metrics.countEvent("lsp", "phpInst", upgrading ? "upOk" : "ok");
             return { entryPath: getEntryPlatformPath(), upgraded: upgrading };
