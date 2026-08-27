@@ -46,16 +46,16 @@ define(function (require, exports, module) {
     const NEW_ORIGIN = "https://web.phcode.dev";
 
     /**
-     * Human readable form of the above, used inside translated sentences via StringUtils.format.
+     * Human readable form of the new origin, used inside translated sentences via StringUtils.format.
+     * The legacy equivalent is derived from the origin instead, see getLegacyDomainName.
      */
-    const LEGACY_DOMAIN_NAME = "phcode.dev";
     const NEW_DOMAIN_NAME = "web.phcode.dev";
 
     /**
      * The day the legacy origin stops serving. Month is 0 based, so 8 is September.
      * @type {number}
      */
-    const SUNSET_DATE = Date.UTC(2026, 8, 1);
+    const SUNSET_DATE = Date.UTC(2026, 8, 10);
 
     /**
      * Android/ChromeOS Trusted Web Activity that wraps the legacy origin. Users launched from this
@@ -136,6 +136,16 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Hostname of the origin being retired, for use inside user facing sentences. Derived from the
+     * origin rather than written out separately so the two can never disagree, which matters while
+     * the legacy origin still points at staging.
+     * @return {string}
+     */
+    function getLegacyDomainName() {
+        return new URL(getLegacyOrigin()).hostname;
+    }
+
+    /**
      * URL of the helper page on the legacy origin.
      *
      * Both origins serve the same artifact with the same layout, so the helper sits at the same path
@@ -189,13 +199,13 @@ define(function (require, exports, module) {
         return (typeof now === "number" ? now : Date.now()) >= SUNSET_DATE;
     }
 
-    exports.LEGACY_DOMAIN_NAME = LEGACY_DOMAIN_NAME;
     exports.NEW_DOMAIN_NAME = NEW_DOMAIN_NAME;
     exports.SUNSET_DATE = SUNSET_DATE;
     exports.TWA_STORE_URL = TWA_STORE_URL;
     exports.MIGRATION_DONE_KEY = MIGRATION_DONE_KEY;
     exports.getLegacyOrigin = getLegacyOrigin;
     exports.getMigrateAssistURL = getMigrateAssistURL;
+    exports.getLegacyDomainName = getLegacyDomainName;
     exports.getNewOrigin = getNewOrigin;
     exports.isLegacyOrigin = isLegacyOrigin;
     exports.isNewOrigin = isNewOrigin;

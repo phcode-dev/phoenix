@@ -2935,16 +2935,17 @@ define({
     "MIGRATE_UPDATE_APP": "Update the app",
     "MIGRATE_STAY_HERE": "Stay here",
     "MIGRATE_PROGRESS_TITLE": "Bringing your data over",
-    "MIGRATE_PROGRESS_INTRO": "Copying your projects, settings and extensions from {0}. This only happens once.",
-    "MIGRATE_PROGRESS_PREPARING": "Preparing {0} ({1} of {2})\u2026",
-    "MIGRATE_PROGRESS_STATUS": "Copying {0} ({1} of {2})\u2026",
+    "MIGRATE_PROGRESS_STATUS": "{0} of {1} files copied",
     "MIGRATE_DONE_TITLE": "All done.",
-    "MIGRATE_DONE_MESSAGE": "{0} files were copied over. Reload to start using them.",
-    "MIGRATE_DONE_PARTIAL": "These could not be copied and are still available on the old site: {0}",
+    "MIGRATE_DONE_MESSAGE": "{0} files were copied over. Reload {APP_NAME} to start using them.",
+    "MIGRATE_DONE_PARTIAL": "{0} file(s) could not be copied. They are still available on the old site.",
     "MIGRATE_RELOAD_NOW": "Reload",
     "MIGRATE_NOTHING_TITLE": "Nothing to bring over",
     "MIGRATE_NOTHING_MESSAGE": "We could not find any projects, settings or extensions on {0} that need copying.",
     "MIGRATE_UNREACHABLE_TITLE": "Could not reach the old site",
     "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} could not connect to {0} to check for your data. Please check your connection and try again.",
-    "CMD_MIGRATE_DATA": "Migrate My Data\u2026"
+    "MIGRATE_START_MESSAGE": "Found {0} files on {1} to bring over. This runs in the background and you can keep working while it happens. It only needs to be done once.",
+    "MIGRATE_START_CONFIRM": "Bring my data over",
+    "MIGRATE_RELOAD_LATER": "Later",
+    "CMD_MIGRATE_DATA": "Migrate My Data From {0}\u2026"
 });

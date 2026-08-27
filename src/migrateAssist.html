@@ -38,9 +38,14 @@
 
     It deliberately does not boot Phoenix. virtualfs.js is a self contained IIFE that gives us
     window.fs over the same Filer IndexedDB, which is all we need.
+
+    Files are streamed one at a time rather than zipped per folder. IndexedDB costs roughly 10ms per
+    file whatever we do, so an intermediate zip only adds a read/encode/decode pass on top of that
+    floor, and measured on 300 files it produced an archive slightly LARGER than the input because
+    JSZip stores uncompressed. Streaming also gives the receiver an exact per file progress count and
+    keeps peak memory at one file instead of one whole folder.
 -->
 <script src="phoenix/virtualfs.js"></script>
-<script src="thirdparty/jszip.js"></script>
 <script>
     (function () {
         const TRUSTED_PARENT_ORIGINS = [
@@ -142,22 +147,6 @@
             return out;
         }
 
-        function isAllowedFolder(folderPath) {
-            if (folderPath.indexOf("..") !== -1) {
-                return false;
-            }
-            for (const root of ALLOWED_ROOTS) {
-                // Either the root itself, or a direct child of it. Nothing deeper and nothing else.
-                if (folderPath === root) {
-                    return true;
-                }
-                if (folderPath.startsWith(root + "/") && folderPath.indexOf("/", root.length + 1) === -1) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         function readPhStore() {
             return new Promise((resolve) => {
                 const values = {};
@@ -208,8 +197,8 @@
             });
         }
 
-        async function collectBundles() {
-            const bundles = [];
+        async function collectFiles() {
+            const files = [];
             let hasRealProject = false;
 
             const projectDirs = await readdir(PROJECTS_ROOT);
@@ -218,16 +207,13 @@
                     continue;
                 }
                 const dir = PROJECTS_ROOT + "/" + entry.name;
-                const files = await walk(dir, dir, []);
-                if (!files.length) {
+                const found = await walk(dir, dir, []);
+                if (!found.length) {
                     continue;
                 }
-                bundles.push({
-                    id: dir,
-                    dest: dir,
-                    fileCount: files.length,
-                    bytes: files.reduce((sum, f) => sum + f.size, 0)
-                });
+                for (const f of found) {
+                    files.push({ path: f.path, size: f.size });
+                }
                 if (NOT_EVIDENCE_OF_DATA.indexOf(entry.name) === -1) {
                     hasRealProject = true;
                 }
@@ -242,9 +228,8 @@
                         continue;
                     }
                     const markerPath = extRoot + "/" + entry.name + "/" + DELETED_EXTENSION_MARKER;
-                    const marker = await readFileText(markerPath);
-                    if (marker !== null) {
-                        continue; // already marked for delete, do not carry it over
+                    if (await readFileText(markerPath) !== null) {
+                        continue; // already tombstoned for deletion, do not carry it over
                     }
                     keep.push(entry.name);
                 }
@@ -254,17 +239,16 @@
                 if (extRoot === EXTENSIONS_USER) {
                     extensionCount = keep.length;
                 }
-                const files = await walk(extRoot, extRoot, []);
-                const kept = files.filter((f) => keep.indexOf(f.relativePath.split("/")[0]) !== -1);
-                if (!kept.length) {
-                    continue;
+                const found = await walk(extRoot, extRoot, []);
+                for (const f of found) {
+                    if (keep.indexOf(f.relativePath.split("/")[0]) === -1) {
+                        continue;
+                    }
+                    if (f.relativePath.endsWith(DELETED_EXTENSION_MARKER)) {
+                        continue;
+                    }
+                    files.push({ path: f.path, size: f.size });
                 }
-                bundles.push({
-                    id: extRoot,
-                    dest: extRoot,
-                    fileCount: kept.length,
-                    bytes: kept.reduce((sum, f) => sum + f.size, 0)
-                });
             }
 
             const prefsText = await readFileText(PREFS_FILE);
@@ -279,52 +263,51 @@
             }
 
             return {
-                bundles: bundles,
+                files: files,
                 prefs: hasPrefs ? prefsText : null,
                 hasData: hasRealProject || hasPrefs || extensionCount > 0
             };
         }
 
         async function handleScan() {
-            const scan = await collectBundles();
+            const scan = await collectFiles();
             const phStore = await readPhStore();
             reply({
                 type: "MIGRATE_SCAN_RESULT",
                 hasData: scan.hasData,
-                bundles: scan.bundles,
+                files: scan.files,
+                totalBytes: scan.files.reduce((sum, f) => sum + f.size, 0),
                 prefs: scan.prefs,
                 phStore: phStore
             });
         }
 
-        async function handleBundle(id) {
-            if (typeof id !== "string" || !isAllowedFolder(id)) {
-                fail(id, new Error("Refused: folder is outside the migratable roots"));
+        function isAllowedFile(filePath) {
+            if (typeof filePath !== "string" || filePath.indexOf("..") !== -1) {
+                return false;
+            }
+            // Must sit under one of the three roots we are willing to hand over. Anything else,
+            // /mnt included, is refused however it is spelled.
+            return ALLOWED_ROOTS.some((root) => filePath.startsWith(root + "/"));
+        }
+
+        async function handleRead(path, offset, length) {
+            if (!isAllowedFile(path)) {
+                fail(path, new Error("Refused: path is outside the migratable roots"));
                 return;
             }
-            const zip = new JSZip();
-            const files = await walk(id, id, []);
-            for (const file of files) {
-                if (file.relativePath.endsWith(DELETED_EXTENSION_MARKER)) {
-                    continue;
-                }
-                const bytes = await readFileBytes(file.path);
-                zip.file(file.relativePath, bytes);
-            }
-            const buffer = await zip.generateAsync({ type: "arraybuffer" });
-            const chunkCount = Math.max(1, Math.ceil(buffer.byteLength / CHUNK_SIZE));
-            reply({ type: "MIGRATE_BUNDLE_META", id: id, totalBytes: buffer.byteLength, chunkCount: chunkCount });
-            for (let index = 0; index < chunkCount; index++) {
-                const start = index * CHUNK_SIZE;
-                const chunk = buffer.slice(start, Math.min(start + CHUNK_SIZE, buffer.byteLength));
-                reply({
-                    type: "MIGRATE_CHUNK",
-                    id: id,
-                    index: index,
-                    chunk: chunk,
-                    last: index === chunkCount - 1
-                }, [chunk]);
-            }
+            const bytes = await readFileBytes(path);
+            const start = typeof offset === "number" ? offset : 0;
+            const size = typeof length === "number" ? length : CHUNK_SIZE;
+            const end = Math.min(start + size, bytes.byteLength);
+            const chunk = bytes.slice(start, end);
+            reply({
+                type: "MIGRATE_DATA",
+                path: path,
+                offset: start,
+                chunk: chunk,
+                eof: end >= bytes.byteLength
+            }, [chunk]);
         }
 
         window.addEventListener("message", function (event) {
@@ -338,8 +321,8 @@
             }
             if (data.type === "MIGRATE_SCAN") {
                 handleScan().catch((err) => fail("scan", err));
-            } else if (data.type === "MIGRATE_BUNDLE") {
-                handleBundle(data.id).catch((err) => fail(data.id, err));
+            } else if (data.type === "MIGRATE_READ") {
+                handleRead(data.path, data.offset, data.length).catch((err) => fail(data.path, err));
             }
         });
 

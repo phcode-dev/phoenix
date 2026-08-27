@@ -51,13 +51,13 @@ define(function (require, exports, module) {
         const paragraphs = [];
 
         paragraphs.push(StringUtils.format(Strings.MIGRATE_MOVING_MESSAGE,
-            Constants.LEGACY_DOMAIN_NAME, Constants.NEW_DOMAIN_NAME));
+            Constants.getLegacyDomainName(), Constants.NEW_DOMAIN_NAME));
 
         if (!Constants.isPastSunset()) {
             const days = Constants.daysToSunset();
             paragraphs.push(StringUtils.format(
                 days === 1 ? Strings.MIGRATE_SUNSET_COUNTDOWN_ONE : Strings.MIGRATE_SUNSET_COUNTDOWN,
-                days, Constants.LEGACY_DOMAIN_NAME));
+                days, Constants.getLegacyDomainName()));
         }
 
         if (!Constants.isMigrationSupportedBrowser()) {
@@ -112,7 +112,7 @@ define(function (require, exports, module) {
 
         Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_INFO,
-            StringUtils.format(Strings.MIGRATE_MOVING_TITLE, Constants.LEGACY_DOMAIN_NAME),
+            StringUtils.format(Strings.MIGRATE_MOVING_TITLE, Constants.getLegacyDomainName()),
             _buildMessage(),
             _buildButtons()
         ).done(function (buttonId) {

@@ -38,6 +38,7 @@ define(function (require, exports, module) {
         Commands = require("command/Commands"),
         Menus = require("command/Menus"),
         Strings = require("strings"),
+        StringUtils = require("utils/StringUtils"),
         Constants = require("./constants"),
         SunsetDialog = require("./sunset-dialog"),
         Migrator = require("./migrator");
@@ -54,7 +55,9 @@ define(function (require, exports, module) {
         // desktop. It is also skipped on Safari/iOS, where the migration is deliberately not
         // implemented: offering an action we do not honour would be worse than not offering it.
         if (!Phoenix.isTestWindow && Constants.isMigrationSupportedBrowser()) {
-            CommandManager.register(Strings.CMD_MIGRATE_DATA, Commands.HELP_MIGRATE_DATA, function () {
+            CommandManager.register(
+                StringUtils.format(Strings.CMD_MIGRATE_DATA, Constants.getLegacyDomainName()),
+                Commands.HELP_MIGRATE_DATA, function () {
                 Migrator.runManually();
             });
             // Anchored to About rather than to Check for Updates: the updater only registers its
