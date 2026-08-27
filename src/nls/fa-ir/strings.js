@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} بار استفاده شده)",
   "EDIT": "ویرایش",
   "CMD_JUMPTO_DEFINITION": "رفتن به تعریف",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "تعریفی را انتخاب کنید",
+  "JUMPTO_DEFINITION_LINE_LABEL": "خط {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "پیاده‌سازی",
   "CMD_SHOW_PARAMETER_HINT": "نمایش نکات پارامتر",
   "NO_ARGUMENTS": "<بدون پارامترها>",
   "CODE_HINT_IMPORT_FROM_N": "`{0} واردات…`",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "تعریفی را انتخاب کنید",
-  "JUMPTO_DEFINITION_LINE_LABEL": "خط {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "پیاده‌سازی"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "تغییر حالت تمام‌صفحه پیش‌نمایش زنده",
+  "LIVE_PREVIEW_FULL_SCREEN": "گسترش پیش‌نمایش زنده به تمام‌صفحه",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "خروج از حالت تمام‌صفحه"
 });

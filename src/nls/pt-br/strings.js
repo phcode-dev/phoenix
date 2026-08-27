@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (usada {1} vezes)",
   "EDIT": "Editar",
   "CMD_JUMPTO_DEFINITION": "Ir para Definição",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Selecione uma definição",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Linha {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementação",
   "CMD_SHOW_PARAMETER_HINT": "Mostrar dicas de parâmetro",
   "NO_ARGUMENTS": "<nenhum parâmetro>",
   "CODE_HINT_IMPORT_FROM_N": "{0} importações…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Selecione uma definição",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Linha {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementação"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Alternar Pré-visualização ao Vivo em Tela Cheia",
+  "LIVE_PREVIEW_FULL_SCREEN": "Expandir a Pré-visualização ao Vivo para Tela Cheia",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Sair da Tela Cheia"
 });

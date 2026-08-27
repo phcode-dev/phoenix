@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} kez kullanıldı)",
   "EDIT": "Düzenle",
   "CMD_JUMPTO_DEFINITION": "Tanıma Git",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Bir tanım seçin",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Satır {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "İmplementasyon",
   "CMD_SHOW_PARAMETER_HINT": "Parametre İpuçlarını Göster",
   "NO_ARGUMENTS": "<parametre yok>",
   "CODE_HINT_IMPORT_FROM_N": "{0} içe aktarma…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Bir tanım seçin",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Satır {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "İmplementasyon"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Canlı Önizleme Tam Ekranı Aç/Kapat",
+  "LIVE_PREVIEW_FULL_SCREEN": "Canlı Önizlemeyi Tam Ekrana Genişlet",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Tam Ekrandan Çık"
 });

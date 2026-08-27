@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Korištena {1} puta)",
   "EDIT": "Uredi",
   "CMD_JUMPTO_DEFINITION": "Idi na definiciju",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Odaberite definiciju",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Redak {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementacija",
   "CMD_SHOW_PARAMETER_HINT": "Pokaži naznake (hintove) parametara",
   "NO_ARGUMENTS": "<bez parametara>",
   "CODE_HINT_IMPORT_FROM_N": "{0} uvoza…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Odaberite definiciju",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Redak {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementacija"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Promijeni prikaz preko cijelog zaslona za pregled uživo",
+  "LIVE_PREVIEW_FULL_SCREEN": "Proširi pregled uživo na cijeli zaslon",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Izađi iz prikaza preko cijelog zaslona"
 });

@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (ഉപയോഗിച്ചത് {1} തവണ)",
   "EDIT": "എഡിറ്റ് ചെയ്യുക",
   "CMD_JUMPTO_DEFINITION": "നിർവചനത്തിലേക്ക് പോകുക",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "ഒരു നിർവചനം തിരഞ്ഞെടുക്കുക",
+  "JUMPTO_DEFINITION_LINE_LABEL": "വരി {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "നടപ്പാക്കൽ",
   "CMD_SHOW_PARAMETER_HINT": "പാരാമീറ്റർ സൂചന കാണിക്കുക",
   "NO_ARGUMENTS": "<no parameters>",
   "CODE_HINT_IMPORT_FROM_N": "{0} ഇമ്പോർട്ടുകൾ…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "ഒരു നിർവചനം തിരഞ്ഞെടുക്കുക",
-  "JUMPTO_DEFINITION_LINE_LABEL": "വരി {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "നടപ്പാക്കൽ"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "ലൈവ് പ്രിവ്യൂ ഫുൾ സ്ക്രീൻ ടോഗിൾ ചെയ്യുക",
+  "LIVE_PREVIEW_FULL_SCREEN": "ലൈവ് പ്രിവ്യൂ ഫുൾ സ്ക്രീനിലേക്ക് വികസിപ്പിക്കുക",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "ഫുൾ സ്ക്രീനിൽ നിന്ന് പുറത്തുകടക്കുക"
 });

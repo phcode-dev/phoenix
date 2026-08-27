@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Utilizado {1} veces)",
   "EDIT": "Edición",
   "CMD_JUMPTO_DEFINITION": "Ir á definición",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Seleccione unha definición",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Liña {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementación",
   "CMD_SHOW_PARAMETER_HINT": "Amosar suxerencias de parámetros",
   "NO_ARGUMENTS": "<non hay parámetros>",
   "CODE_HINT_IMPORT_FROM_N": "{0} importacións…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Seleccione unha definición",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Liña {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementación"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Alternar a pantalla completa da vista previa en vivo",
+  "LIVE_PREVIEW_FULL_SCREEN": "Expandir a vista previa en vivo a pantalla completa",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Saír da pantalla completa"
 });

@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (käytetty {1} kertaa)",
   "EDIT": "Muokkaa",
   "CMD_JUMPTO_DEFINITION": "Siirry määrittelyyn",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Valitse määritelmä",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Rivi {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Toteutus",
   "CMD_SHOW_PARAMETER_HINT": "Näytä parametrivihje",
   "NO_ARGUMENTS": "<ei parametreja>",
   "CODE_HINT_IMPORT_FROM_N": "{0} tuontia…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Valitse määritelmä",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Rivi {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Toteutus"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Vaihda live-esikatselun kokonäyttötila",
+  "LIVE_PREVIEW_FULL_SCREEN": "Laajenna live-esikatselu koko näyttöön",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Poistu kokonäyttötilasta"
 });

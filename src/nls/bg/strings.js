@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (използван {1} пъти)",
   "EDIT": "Редактиране",
   "CMD_JUMPTO_DEFINITION": "Отиди на дефиниция",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Изберете дефиниция",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Ред {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Имплементация",
   "CMD_SHOW_PARAMETER_HINT": "Показване на подсказката за параметрите",
   "NO_ARGUMENTS": "<няма параметри>",
   "CODE_HINT_IMPORT_FROM_N": "{0} импорти…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Изберете дефиниция",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Ред {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Имплементация"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Превключване на цял екран за преглед на живо",
+  "LIVE_PREVIEW_FULL_SCREEN": "Разширяване на преглед на живо до цял екран",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Изход от цял екран"
 });

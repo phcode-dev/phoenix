@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Brukt {1} ganger)",
   "EDIT": "Rediger",
   "CMD_JUMPTO_DEFINITION": "Gå til definisjon",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Velg en definisjon",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Linje {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementasjon",
   "CMD_SHOW_PARAMETER_HINT": "Vis parameter hint",
   "NO_ARGUMENTS": "<ingen parametere>",
   "CODE_HINT_IMPORT_FROM_N": "{0} importer…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Velg en definisjon",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Linje {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementasjon"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Veksle fullskjerm for live forhåndsvisning",
+  "LIVE_PREVIEW_FULL_SCREEN": "Utvid live forhåndsvisning til fullskjerm",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Avslutt fullskjerm"
 });

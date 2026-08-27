@@ -1433,6 +1433,9 @@ define({
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (použito {1} krát)",
   "EDIT": "Úpravy",
   "CMD_JUMPTO_DEFINITION": "Přejít na definici",
+  "JUMPTO_DEFINITION_SELECT_TARGET": "Vyberte definici",
+  "JUMPTO_DEFINITION_LINE_LABEL": "Řádek {0}",
+  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementace",
   "CMD_SHOW_PARAMETER_HINT": "Zobrazit nápovědu parametru",
   "NO_ARGUMENTS": "<žádné parametry>",
   "CODE_HINT_IMPORT_FROM_N": "{0} importů…",
@@ -2683,7 +2686,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "JUMPTO_DEFINITION_SELECT_TARGET": "Vyberte definici",
-  "JUMPTO_DEFINITION_LINE_LABEL": "Řádek {0}",
-  "JUMPTO_DEFINITION_IMPLEMENTATION_BADGE": "Implementace"
+  "CMD_TOGGLE_LP_FULL_SCREEN": "Přepnout živý náhled na celou obrazovku",
+  "LIVE_PREVIEW_FULL_SCREEN": "Rozšířit živý náhled na celou obrazovku",
+  "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Ukončit režim celé obrazovky"
 });
