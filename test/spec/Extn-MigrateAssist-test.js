@@ -22,6 +22,14 @@
 
 define(function (require, exports, module) {
 
+    // The migration off the legacy web origin is browser only. The desktop app never runs any of it,
+    // and its origin is phtauri://localhost, which migrateAssist.html refuses by design since a
+    // native shell has no business reading a web origin's filesystem. Nothing here is meaningful in
+    // the desktop test runner, so the whole suite sits this one out.
+    if (Phoenix.isNativeApp) {
+        return;
+    }
+
     const Constants = require("extensionsIntegrated/MigrateAssist/constants"),
         ZipUtils = require("utils/ZipUtils");
 
