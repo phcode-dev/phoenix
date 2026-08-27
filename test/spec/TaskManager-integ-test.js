@@ -147,7 +147,7 @@ define(function (require, exports, module) {
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
 
             // now set task to success so that the green persistant spinner is visible.
-            task.setSucceded();
+            task.setSucceeded();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
 
             // now disable the hide spinner option
@@ -157,7 +157,7 @@ define(function (require, exports, module) {
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
 
             // now lets see if the icon is shown when the task is marked ass success
-            task.setSucceded();
+            task.setSucceeded();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
 
             task.close();
@@ -229,7 +229,7 @@ define(function (require, exports, module) {
 
         it("Should be able to set progress to success", async function () {
             const task = TaskManager.addNewTask("title", "message");
-            task.setSucceded();
+            task.setSucceeded();
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
             expectProgressPercentToBeAround(100);
@@ -389,7 +389,7 @@ define(function (require, exports, module) {
         it(`Should success spinner not auto hide on timeout and hide on click`, async function(){
             const task = TaskManager.addNewTask("title", "message");
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
-            task.setSucceded();
+            task.setSucceeded();
             await awaits(TaskManager.SPINNER_HIDE_TIME*2);
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
             // clicking on tasks will hide spinner
@@ -416,7 +416,7 @@ define(function (require, exports, module) {
             const task = TaskManager.addNewTask("title", "message");
             const task1 = TaskManager.addNewTask("title", "message");
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
-            task.setSucceded();
+            task.setSucceeded();
             task1.setFailed();
             expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeTrue();
             task1.close();
@@ -435,7 +435,7 @@ define(function (require, exports, module) {
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
             task.setFailed();
             expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeTrue();
-            task.setSucceded();
+            task.setSucceeded();
             expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeTrue();
             task.setProgressPercent(10);
             expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeFalse();
@@ -451,7 +451,7 @@ define(function (require, exports, module) {
             task.setFailed();
             expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeFalse();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
-            task.setSucceded();
+            task.setSucceeded();
             expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeFalse();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
             task.setProgressPercent(10);
@@ -467,7 +467,7 @@ define(function (require, exports, module) {
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
             task.flashSpinnerForAttention();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
-            task.setSucceded();
+            task.setSucceeded();
             // even though the task succeeded, since task has `noSpinnerNotification` specified, the success-spinner
             // will not be shown. Instead, the normal blue spinner displayed by `flashSpinnerForAttention`
             // is still visible till the spinner hide timer is hit.

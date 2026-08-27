@@ -87,7 +87,7 @@ Methods for managing the task's state and UI representation in the TaskManager.
 | getProgressPercent | <code>function</code> | Returns the task's current progress percentage. |
 | setFailed | <code>function</code> | Marks the task as failed. |
 | isFailed | <code>function</code> | Returns true if the task is marked as failed. |
-| setSucceded | <code>function</code> | Marks the task as succeeded. |
+| setSucceeded | <code>function</code> | Marks the task as succeeded. |
 | isSucceded | <code>function</code> | Returns true if the task is marked as succeeded. |
 | showStopIcon | <code>function</code> | Shows the stop icon with an optional tooltip message. |
 | hideStopIcon | <code>function</code> | Hides the stop icon. |

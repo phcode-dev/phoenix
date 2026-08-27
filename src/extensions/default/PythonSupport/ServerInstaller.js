@@ -339,7 +339,7 @@ define(function (require, exports, module) {
             currentUnit = null;
             task.setProgressPercent(100);
             task.setMessage(Strings.PYTHON_INSTALL_DONE);
-            task.setSucceded(); // (sic - TaskManager's exported name)
+            task.setSucceeded();
             setTimeout(task.close, 4000);
             Metrics.countEvent("lsp", "pyInst", upgrading ? "upOk" : "ok");
             return { binaryPath: getBinaryPlatformPath(), upgraded: upgrading };

@@ -318,7 +318,7 @@ define(function (require, exports, module) {
      * @property {function(): number} getProgressPercent - Returns the task's current progress percentage.
      * @property {function(): void} setFailed - Marks the task as failed.
      * @property {function(): boolean} isFailed - Returns true if the task is marked as failed.
-     * @property {function(): void} setSucceded - Marks the task as succeeded.
+     * @property {function(): void} setSucceeded - Marks the task as succeeded.
      * @property {function(): boolean} isSucceded - Returns true if the task is marked as succeeded.
      * @property {function(string): void} showStopIcon - Shows the stop icon with an optional tooltip message.
      * @property {function(): void} hideStopIcon - Hides the stop icon.
@@ -521,7 +521,7 @@ define(function (require, exports, module) {
         task.getTitle = getTitle;
         task.setMessage = setMessage;
         task.getMessage = getMessage;
-        task.setSucceded = setSucceeded;
+        task.setSucceeded = setSucceeded;
         task.isSucceeded = isSucceeded;
         task.setFailed = setFailed;
         task.isFailed = isFailed;
