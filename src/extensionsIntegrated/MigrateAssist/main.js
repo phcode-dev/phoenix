@@ -39,6 +39,7 @@ define(function (require, exports, module) {
         Menus = require("command/Menus"),
         Strings = require("strings"),
         StringUtils = require("utils/StringUtils"),
+        Metrics = require("utils/Metrics"),
         Constants = require("./constants"),
         SunsetDialog = require("./sunset-dialog"),
         Migrator = require("./migrator");
@@ -51,6 +52,11 @@ define(function (require, exports, module) {
     }
 
     function _initNewOrigin() {
+        if (!Constants.isMigrationSupportedBrowser()) {
+            // Deliberately excluded, but worth counting: it is the difference between "nobody on
+            // Safari needed this" and "we never offered it to them".
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "unsupportedBrowser");
+        }
         // The menu entry is only registered here, so it can never show up on the legacy origin or on
         // desktop. It is also skipped on Safari/iOS, where the migration is deliberately not
         // implemented: offering an action we do not honour would be worse than not offering it.

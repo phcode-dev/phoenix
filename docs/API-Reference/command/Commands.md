@@ -855,6 +855,12 @@ Checks for updates
 Toggles auto update
 
 **Kind**: global variable  
+<a name="HELP_MIGRATE_DATA"></a>
+
+## HELP\_MIGRATE\_DATA
+Migrates browser data from the legacy web origin
+
+**Kind**: global variable  
 <a name="CMD_WORKINGSET_SORT_BY_ADDED"></a>
 
 ## CMD\_WORKINGSET\_SORT\_BY\_ADDED
