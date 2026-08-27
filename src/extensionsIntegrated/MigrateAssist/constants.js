@@ -55,7 +55,7 @@ define(function (require, exports, module) {
      * The day the legacy origin stops serving. Month is 0 based, so 8 is September.
      * @type {number}
      */
-    const SUNSET_DATE = Date.UTC(2026, 8, 10);
+    const SUNSET_DATE = Date.UTC(2026, 8, 1);
 
     /**
      * Android/ChromeOS Trusted Web Activity that wraps the legacy origin. Users launched from this
@@ -71,6 +71,20 @@ define(function (require, exports, module) {
      * @type {string}
      */
     const MIGRATION_DONE_KEY = "migrateAssist.v1.done";
+
+    /**
+     * PhStore key holding how many times the transfer has actually been started. The automatic path
+     * gets MAX_AUTO_ATTEMPTS of them, so a single bad network moment does not cost the user their
+     * migration, while a persistently broken setup stops nagging and points at the Help menu.
+     * @type {string}
+     */
+    const MIGRATION_ATTEMPTS_KEY = "migrateAssist.v1.attempts";
+
+    /**
+     * One attempt, and one retry.
+     * @type {number}
+     */
+    const MAX_AUTO_ATTEMPTS = 2;
 
     /**
      * Dev only override, so the whole cross origin flow can be exercised on one dev server.
@@ -203,6 +217,8 @@ define(function (require, exports, module) {
     exports.SUNSET_DATE = SUNSET_DATE;
     exports.TWA_STORE_URL = TWA_STORE_URL;
     exports.MIGRATION_DONE_KEY = MIGRATION_DONE_KEY;
+    exports.MIGRATION_ATTEMPTS_KEY = MIGRATION_ATTEMPTS_KEY;
+    exports.MAX_AUTO_ATTEMPTS = MAX_AUTO_ATTEMPTS;
     exports.getLegacyOrigin = getLegacyOrigin;
     exports.getMigrateAssistURL = getMigrateAssistURL;
     exports.getLegacyDomainName = getLegacyDomainName;

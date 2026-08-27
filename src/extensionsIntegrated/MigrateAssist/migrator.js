@@ -35,6 +35,7 @@
 define(function (require, exports, module) {
     const Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
+        NotificationUI = require("widgets/NotificationUI"),
         Strings = require("strings"),
         StringUtils = require("utils/StringUtils"),
         Metrics = require("utils/Metrics"),
@@ -50,7 +51,7 @@ define(function (require, exports, module) {
         IFRAME_ID = "migrate-assist-frame";
 
     const RESULT_MIGRATED = "migrated",
-        RESULT_DECLINED = "declined",
+        RESULT_INTERRUPTED = "interrupted",
         RESULT_NOTHING = "nothing",
         RESULT_UNREACHABLE = "unreachable";
 
@@ -213,54 +214,55 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Shown once, before anything is copied, so the user knows why their machine is busy.
+     * Everything after the single up front question is reported at the bottom of the window rather
+     * than in another modal. The user opted in and went back to work; interrupting them again to say
+     * it finished would undo the point of moving progress out of a dialog in the first place.
      */
-    function _confirmStart(fileCount) {
-        return Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_INFO,
-            Strings.MIGRATE_PROGRESS_TITLE,
-            StringUtils.format(Strings.MIGRATE_START_MESSAGE, fileCount, Constants.getLegacyDomainName()),
-            [
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id: Dialogs.DIALOG_BTN_CANCEL,
-                    text: Strings.CANCEL
-                },
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id: Dialogs.DIALOG_BTN_OK,
-                    text: Strings.MIGRATE_START_CONFIRM
-                }
-            ]
-        ).getPromise();
+    /**
+     * Errors are the one thing that earns an interruption here. Everything else rides on the status
+     * bar task: if that is already telling the user what is happening, a dialog repeating it is just
+     * another click for them.
+     */
+    function _errorDialog(title, message) {
+        Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, title, message);
+    }
+
+    function _toast(title, message, style, $extra) {
+        const $content = $("<div>").append($("<div>").text(message));
+        if ($extra) {
+            $content.append($extra);
+        }
+        return NotificationUI.createToastFromTemplate(title, $content, {
+            dismissOnClick: false, // there is a close button, and a stray click must not eat the action
+            toastStyle: style
+        });
+    }
+
+    /**
+     * The Help menu path, spelled exactly as the menu itself spells it.
+     */
+    function _menuPath() {
+        return `${Strings.HELP_MENU} > `
+            + StringUtils.format(Strings.CMD_MIGRATE_DATA, Constants.getLegacyDomainName());
     }
 
     function _showCompletion(migratedFiles, failed) {
-        const message = failed.length
-            ? StringUtils.format(Strings.MIGRATE_DONE_MESSAGE, migratedFiles) + "<br><br>"
-                + StringUtils.format(Strings.MIGRATE_DONE_PARTIAL, failed.length)
-            : StringUtils.format(Strings.MIGRATE_DONE_MESSAGE, migratedFiles);
-        Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_INFO,
-            Strings.MIGRATE_DONE_TITLE,
-            message,
-            [
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id: Dialogs.DIALOG_BTN_CANCEL,
-                    text: Strings.MIGRATE_RELOAD_LATER
-                },
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id: Dialogs.DIALOG_BTN_OK,
-                    text: Strings.MIGRATE_RELOAD_NOW
-                }
-            ]
-        ).done(function (buttonId) {
-            if (buttonId === Dialogs.DIALOG_BTN_OK) {
-                CommandManager.execute(Commands.APP_RELOAD);
-            }
+        const $actions = $("<div>").addClass("migrate-assist-toast-actions");
+        const $reload = $("<button>").addClass("btn primary btn-mini")
+            .text(Strings.MIGRATE_RELOAD_NOW);
+        $reload.on("click", function () {
+            CommandManager.execute(Commands.APP_RELOAD);
         });
+        $actions.append($reload);
+        if (failed.length) {
+            $actions.prepend($("<div>").addClass("migrate-assist-toast-detail")
+                .text(StringUtils.format(Strings.MIGRATE_DONE_PARTIAL, failed.length)));
+        }
+        _toast(Strings.MIGRATE_DONE_TITLE,
+            StringUtils.format(Strings.MIGRATE_DONE_MESSAGE, migratedFiles),
+            failed.length ? NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.WARNING
+                : NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUCCESS,
+            $actions);
     }
 
     /**
@@ -304,22 +306,35 @@ define(function (require, exports, module) {
             return RESULT_NOTHING;
         }
         migrationRunning = true;
+        const startedAt = performance.now();
         const bridge = _createBridge();
         let progress = null;
+        let transferStarted = false;
+        let attemptNumber = 0;
         try {
             const scan = await bridge.scan();
+            Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "scanMs",
+                Math.round(performance.now() - startedAt));
             if (!scan.hasData || !scan.files.length) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                     manual ? "manualNothing" : "autoNothing");
                 return RESULT_NOTHING;
             }
 
-            // Asked once, before anything is copied. After this the user is left alone.
-            const choice = await _confirmStart(scan.files.length);
-            if (choice !== Dialogs.DIALOG_BTN_OK) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "declined");
-                return RESULT_DECLINED;
-            }
+            // Recorded before the user has answered, so we learn the size of what is out there even
+            // from people who decline. Without this the only data would be about those who said yes.
+            Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "foundFiles",
+                scan.files.length);
+            Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "foundKB",
+                Math.round((scan.totalBytes || 0) / 1024));
+
+            // Nothing is asked. The status bar task says what is happening, and the copy is
+            // additive rather than destructive, so a confirmation step would only add a click.
+            transferStarted = true;
+            // Counted the moment the transfer starts, not when it ends, so an attempt that dies
+            // hard still burns its slot. That is what stops an infinite retry loop.
+            attemptNumber = (PhStore.getItem(Constants.MIGRATION_ATTEMPTS_KEY) || 0) + 1;
+            PhStore.setItem(Constants.MIGRATION_ATTEMPTS_KEY, attemptNumber);
 
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                 manual ? "manualStart" : "autoStart");
@@ -327,6 +342,7 @@ define(function (require, exports, module) {
 
             const failed = [];
             let migratedFiles = 0;
+            let migratedBytes = 0;
             for (const file of scan.files) {
                 try {
                     const bytes = await bridge.fetchFile(file.path);
@@ -335,6 +351,7 @@ define(function (require, exports, module) {
                     await Phoenix.VFS.writeFileAsync(file.path, window.Filer.Buffer.from(bytes),
                         window.fs.BYTE_ARRAY_ENCODING);
                     migratedFiles = migratedFiles + 1;
+                    migratedBytes = migratedBytes + bytes.byteLength;
                 } catch (err) {
                     // One unreadable file should not cost the user everything else.
                     console.error("MigrateAssist: could not copy", file.path, err);
@@ -358,19 +375,52 @@ define(function (require, exports, module) {
                 files: migratedFiles,
                 failed: failed.length
             });
+            const elapsedMs = Math.round(performance.now() - startedAt);
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
                 failed.length ? "completedWithErrors" : "completed");
+            Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "migratedFiles",
+                migratedFiles);
+            Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "migratedKB",
+                Math.round(migratedBytes / 1024));
+            Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "durationSec",
+                Math.round(elapsedMs / 1000));
+            // Per file cost is the number that actually moves. It is dominated by IndexedDB, so a
+            // regression here shows up long before total duration does on a small project.
+            Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "msPerFile",
+                migratedFiles ? Math.round(elapsedMs / migratedFiles) : 0);
+            if (failed.length) {
+                Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "failedFiles",
+                    failed.length);
+            }
 
             progress.succeed(migratedFiles);
             _showCompletion(migratedFiles, failed);
             return RESULT_MIGRATED;
         } catch (err) {
             console.error("MigrateAssist: migration could not run", err);
-            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
-                manual ? "manualUnreachable" : "autoUnreachable");
             if (progress) {
                 progress.fail();
             }
+            if (transferStarted) {
+                // They opted in and watched a task start, so a silent stop is not acceptable even on
+                // the automatic path. Whatever landed before the break stays; a retry overwrites it.
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
+                    `interrupted.attempt${attemptNumber}`);
+                Metrics.valueEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "interruptedAfterSec",
+                    Math.round((performance.now() - startedAt) / 1000));
+                const outOfRetries = attemptNumber >= Constants.MAX_AUTO_ATTEMPTS;
+                _errorDialog(Strings.MIGRATE_INTERRUPTED_TITLE,
+                    outOfRetries
+                        // No more automatic attempts, so hand them the exact menu entry to use
+                        // rather than leaving them to find it.
+                        ? StringUtils.format(Strings.MIGRATE_INTERRUPTED_FINAL,
+                            Constants.getLegacyDomainName(), _menuPath())
+                        : StringUtils.format(Strings.MIGRATE_INTERRUPTED_MESSAGE,
+                            Constants.getLegacyDomainName()));
+                return RESULT_INTERRUPTED;
+            }
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist",
+                manual ? "manualUnreachable" : "autoUnreachable");
             return RESULT_UNREACHABLE;
         } finally {
             migrationRunning = false;
@@ -392,11 +442,19 @@ define(function (require, exports, module) {
         if (PhStore.getItem(Constants.MIGRATION_DONE_KEY)) {
             return;
         }
+        // One attempt and one retry. Past that the automatic path stops for good, so a setup that
+        // fails every time cannot turn into an error on every boot forever.
+        if ((PhStore.getItem(Constants.MIGRATION_ATTEMPTS_KEY) || 0) >= Constants.MAX_AUTO_ATTEMPTS) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "skipOutOfAttempts");
+            return;
+        }
         // Once the legacy origin is gone there is nothing to probe, so the feature disables itself
         // rather than opening a doomed iframe on every boot forever.
         if (Constants.isPastSunset()) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "skipPastSunset");
             return;
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "autoProbe");
         run(false);
     }
 
@@ -405,17 +463,17 @@ define(function (require, exports, module) {
      * happened.
      */
     async function runManually() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "manualInvoked");
         const result = await run(true);
-        if (result === RESULT_DECLINED) {
-            return; // the user said no, they do not need to be told what they just chose
+        if (result === RESULT_INTERRUPTED) {
+            return; // an interrupted run has already reported itself
         }
         if (result === RESULT_NOTHING) {
-            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO,
-                Strings.MIGRATE_NOTHING_TITLE,
-                StringUtils.format(Strings.MIGRATE_NOTHING_MESSAGE, Constants.getLegacyDomainName()));
+            _toast(Strings.MIGRATE_NOTHING_TITLE,
+                StringUtils.format(Strings.MIGRATE_NOTHING_MESSAGE, Constants.getLegacyDomainName()),
+                NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.INFO);
         } else if (result === RESULT_UNREACHABLE) {
-            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR,
-                Strings.MIGRATE_UNREACHABLE_TITLE,
+            _errorDialog(Strings.MIGRATE_UNREACHABLE_TITLE,
                 StringUtils.format(Strings.MIGRATE_UNREACHABLE_MESSAGE, Constants.getLegacyDomainName()));
         }
     }
