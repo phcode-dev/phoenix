@@ -40,12 +40,15 @@ define(function (require, exports, module) {
         Constants = require("./constants");
 
     const BTN_GO_NEW_SITE = "goNewSite",
-        BTN_UPDATE_APP = "updateApp",
         BTN_STAY = "stay";
 
-    // document.referrer only reflects the navigation that opened this document, so read it once
-    // before anything can navigate and hold on to the answer.
-    const isTWA = Constants.isTWALaunch();
+    // There is deliberately no Trusted Web Activity branch. document.referrer is the documented way
+    // to spot a TWA launch, but it only survives the first navigation, and this app reloads itself
+    // for cache upgrades and after a migration, so a TWA user looks like a browser user from the
+    // second boot onward. display-mode: standalone survives but cannot tell a TWA from an installed
+    // PWA, and telling a PWA user to update an app they do not have is worse than saying nothing.
+    // Installed app users are therefore sent to the new site like everyone else; the shipped APK
+    // points at web.phcode.dev and trusts it, so that navigation stays chrome-less.
 
     function _buildMessage() {
         const paragraphs = [];
@@ -62,10 +65,6 @@ define(function (require, exports, module) {
 
         if (!Constants.isMigrationSupportedBrowser()) {
             paragraphs.push(Strings.MIGRATE_MANUAL_DOWNLOAD_NOTE);
-        } else if (isTWA) {
-            paragraphs.push(Strings.MIGRATE_TWA_UPDATE_NOTE);
-            paragraphs.push(StringUtils.format(Strings.MIGRATE_TWA_BROWSER_LINK,
-                Constants.getNewOrigin(), Constants.NEW_DOMAIN_NAME));
         } else {
             paragraphs.push(StringUtils.format(Strings.MIGRATE_DATA_SAFE_NOTE, Constants.NEW_DOMAIN_NAME));
         }
@@ -74,24 +73,13 @@ define(function (require, exports, module) {
     }
 
     function _buildButtons() {
-        // "Stay here" is a real choice, not a nag dismiss. On managed ChromeOS fleets the Play Store
-        // can be blocked outright, so the update button may be a dead end through no fault of the
-        // user, and the app has to keep working for them.
+        // "Stay here" is a real choice rather than a nag dismiss. Some installs, managed ChromeOS
+        // fleets in particular, may not be able to move on the user's own schedule.
         const stayButton = {
             className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
             id: BTN_STAY,
             text: Strings.MIGRATE_STAY_HERE
         };
-        if (isTWA) {
-            return [
-                stayButton,
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id: BTN_UPDATE_APP,
-                    text: Strings.MIGRATE_UPDATE_APP
-                }
-            ];
-        }
         return [
             stayButton,
             {
@@ -107,7 +95,7 @@ define(function (require, exports, module) {
      * so the user is reminded again next time rather than being able to silence it permanently.
      */
     function show() {
-        const variant = !Constants.isMigrationSupportedBrowser() ? "safari" : (isTWA ? "twa" : "web");
+        const variant = Constants.isMigrationSupportedBrowser() ? "web" : "safari";
         Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", `sunsetShown.${variant}`);
 
         Dialogs.showModalDialog(
@@ -119,9 +107,6 @@ define(function (require, exports, module) {
             if (buttonId === BTN_GO_NEW_SITE) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "sunsetGoNewSite");
                 window.location = Constants.getNewOrigin();
-            } else if (buttonId === BTN_UPDATE_APP) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "sunsetUpdateApp");
-                window.open(Constants.TWA_STORE_URL, "_blank", "noopener");
             } else {
                 Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", `sunsetStay.${variant}`);
             }
