@@ -58,14 +58,6 @@ define(function (require, exports, module) {
     const SUNSET_DATE = Date.UTC(2026, 8, 1);
 
     /**
-     * Android/ChromeOS Trusted Web Activity that wraps the legacy origin. Users launched from this
-     * package need an app update rather than a browser navigation, see sunset-dialog.js.
-     */
-    const TWA_PACKAGE_ID = "prod.phcode.twa";
-    const TWA_REFERRER_PREFIX = `android-app://${TWA_PACKAGE_ID}`;
-    const TWA_STORE_URL = `https://play.google.com/store/apps/details?id=${TWA_PACKAGE_ID}`;
-
-    /**
      * PhStore key recording that the migration already ran. Once set, the automatic path never runs
      * again and the user has to ask for it from the Help menu.
      * @type {string}
@@ -183,15 +175,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * True when the app was launched from our own Trusted Web Activity. document.referrer only
-     * reflects the initial navigation, so callers should read this once at boot and cache it.
-     * @return {boolean}
-     */
-    function isTWALaunch() {
-        return (document.referrer || "").startsWith(TWA_REFERRER_PREFIX);
-    }
-
-    /**
      * Whole days left before the legacy origin is retired, floored at 0.
      * @param {number} [now] current time in ms, for tests
      * @return {number}
@@ -215,7 +198,6 @@ define(function (require, exports, module) {
 
     exports.NEW_DOMAIN_NAME = NEW_DOMAIN_NAME;
     exports.SUNSET_DATE = SUNSET_DATE;
-    exports.TWA_STORE_URL = TWA_STORE_URL;
     exports.MIGRATION_DONE_KEY = MIGRATION_DONE_KEY;
     exports.MIGRATION_ATTEMPTS_KEY = MIGRATION_ATTEMPTS_KEY;
     exports.MAX_AUTO_ATTEMPTS = MAX_AUTO_ATTEMPTS;
@@ -226,7 +208,6 @@ define(function (require, exports, module) {
     exports.isLegacyOrigin = isLegacyOrigin;
     exports.isNewOrigin = isNewOrigin;
     exports.isMigrationSupportedBrowser = isMigrationSupportedBrowser;
-    exports.isTWALaunch = isTWALaunch;
     exports.daysToSunset = daysToSunset;
     exports.isPastSunset = isPastSunset;
 });
