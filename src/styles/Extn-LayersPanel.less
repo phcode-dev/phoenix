@@ -32,6 +32,9 @@
 @layers-mono:           ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 @layers-prop-name:      #9cdcfe;
 @layers-prop-value:     #ce9178;
+@layers-row-bg:         @bc-ai-sidebar-bg;
+@layers-row-hover-bg:   mix(#ffffff, @bc-ai-sidebar-bg, 6%);
+@layers-row-select-bg:  mix(fade(@bc-sidebar-selection, 100%), @bc-ai-sidebar-bg, 18%);
 
 .layers-tab-container {
     display: flex;
@@ -474,15 +477,26 @@
         display: none;
         align-items: center;
         gap: 1px;
+        position: sticky;
+        right: 0;
         margin-left: auto;
         padding-left: 6px;
         flex: none;
+        background: @layers-row-bg;
     }
 
     .layers-node:hover .layers-node-actions,
     .layers-node.layers-actions-open .layers-node-actions,
     .layers-node-actions:focus-within {
         display: flex;
+    }
+
+    .layers-node:hover .layers-node-actions {
+        background: @layers-row-hover-bg;
+    }
+
+    .layers-node.layers-selected .layers-node-actions {
+        background: @layers-row-select-bg;
     }
 
     .layers-node-action {
