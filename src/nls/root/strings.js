@@ -830,6 +830,8 @@ define({
     "LIVE_PREVIEW_LAYERS_MOVE_UP": "Move Up",
     "LIVE_PREVIEW_LAYERS_MOVE_DOWN": "Move Down",
     "LIVE_PREVIEW_LAYERS_REVEAL_IN_CODE": "Reveal in Code",
+    "LIVE_PREVIEW_LAYERS_ADD_ATTRIBUTE": "Add Attribute",
+    "LIVE_PREVIEW_LAYERS_REMOVE_ATTRIBUTE": "Remove Attribute",
     "LIVE_PREVIEW_LAYERS_PROPERTIES": "Properties",
     "LIVE_PREVIEW_LAYERS_STYLES": "Styles",
     "LIVE_PREVIEW_LAYERS_NO_SELECTION": "Select an element to see its details",
