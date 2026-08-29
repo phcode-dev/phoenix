@@ -401,6 +401,11 @@
     .layers-tree {
         padding-bottom: 6px;
         min-width: min-content;
+        outline: none;
+    }
+
+    .layers-tree:focus .layers-node.layers-selected {
+        box-shadow: inset 0 0 0 1px @layers-accent;
     }
 
     .layers-node {
