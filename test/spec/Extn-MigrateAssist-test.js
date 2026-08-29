@@ -70,8 +70,9 @@ define(function (require, exports, module) {
                 it("should ignore the dev override inside test windows", function () {
                     // The override exists so the flow can be exercised locally. It must never apply in
                     // a test window, otherwise a stray localStorage value could repoint a real
-                    // migration.
-                    expect(Constants.getLegacyOrigin()).toBe("https://staging.phcode.dev");
+                    // migration. Pinning the literals also catches a staging origin being shipped to
+                    // production, which would point the migration at the wrong storage.
+                    expect(Constants.getLegacyOrigin()).toBe("https://phcode.dev");
                     expect(Constants.getNewOrigin()).toBe("https://web.phcode.dev");
                 });
 

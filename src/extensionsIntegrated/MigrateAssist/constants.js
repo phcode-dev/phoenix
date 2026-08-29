@@ -22,8 +22,8 @@
  * Shared configuration for the one time move off the legacy web origin onto web.phcode.dev.
  *
  * Everything that has to change when the rollout moves forward lives here: the two origins and the
- * sunset date. `LEGACY_ORIGIN` points at staging while the flow is being validated end to end;
- * flipping it to https://phcode.dev is the only edit needed to go live.
+ * sunset date. `LEGACY_ORIGIN` is live and points at phcode.dev, which serves migrateAssist.html
+ * and still holds the data of everyone who has not moved across yet.
  *
  * @module extensionsIntegrated/MigrateAssist/constants
  */
@@ -33,11 +33,11 @@ define(function (require, exports, module) {
     // render identically in every locale, so they stay here instead of going through strings.js.
 
     /**
-     * The origin we are migrating away from. Switch to "https://phcode.dev" once the flow has been
-     * validated against staging.
+     * The origin we are migrating away from. It must keep serving migrateAssist.html for as long as
+     * migration is offered, since that page is what reads the old storage.
      * @type {string}
      */
-    const LEGACY_ORIGIN = "https://staging.phcode.dev";
+    const LEGACY_ORIGIN = "https://phcode.dev";
 
     /**
      * The origin we are migrating to.
@@ -143,8 +143,8 @@ define(function (require, exports, module) {
 
     /**
      * Hostname of the origin being retired, for use inside user facing sentences. Derived from the
-     * origin rather than written out separately so the two can never disagree, which matters while
-     * the legacy origin still points at staging.
+     * origin rather than written out separately so the two can never disagree, which matters because
+     * the dev override below can repoint the legacy origin.
      * @return {string}
      */
     function getLegacyDomainName() {
