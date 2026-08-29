@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
   "MIGRATE_MOVING_TITLE": "{0} se seli",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} na {0} seli se na novu lokaciju na <strong>{1}</strong>. Sve radi isto, mijenja se samo adresa.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Imate još <strong>{0} dana</strong> prije nego što {1} prestane raditi.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Imate još <strong>{0} dan</strong> prije nego što {1} prestane raditi.",
   "MIGRATE_DATA_SAFE_NOTE": "Vaši projekti, postavke i proširenja bit će kopirani prvi put kada otvorite {0}. Ništa se ne briše s ove stranice.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatski prijenos nije dostupan u ovom pregledniku. Ako ovdje imate spremljene projekte, molimo preuzmite ih prije gore navedenog datuma kako biste ih mogli ponovno otvoriti na novoj stranici.",
   "MIGRATE_GO_TO_NEW_SITE": "Odvedi me na novu stranicu",
   "MIGRATE_STAY_HERE": "Ostanite ovdje",
   "MIGRATE_PROGRESS_TITLE": "Prijenos vaših podataka",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Za prijenos ostatka, odaberite {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
-  "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…"
+  "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatski prijenos nije dostupan u ovom pregledniku. Ako ovdje imate spremljene projekte, preuzmite ih kako biste ih mogli ponovno otvoriti na novoj stranici."
 });

@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
   "MIGRATE_MOVING_TITLE": "{0}は移転します",
   "MIGRATE_MOVING_MESSAGE": "{0}上の{APP_NAME}は、新しい場所<strong>{1}</strong>に移転します。機能はすべてこれまで通りで、アドレスのみが変更されます。",
-  "MIGRATE_SUNSET_COUNTDOWN": "{1}が利用できなくなるまで、残り<strong>{0}日</strong>です。",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "{1}が利用できなくなるまで、残り<strong>{0}日</strong>です。",
   "MIGRATE_DATA_SAFE_NOTE": "{0}を初めて開く際に、お使いのプロジェクト、設定、拡張機能は自動的にコピーされます。このサイトからデータが削除されることはありません。",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "このブラウザーでは自動転送機能は利用できません。プロジェクトをここに保存している場合は、新しいサイトで開くために、上記の期日までにダウンロードをお願いします。",
   "MIGRATE_GO_TO_NEW_SITE": "新しいサイトへ移動",
   "MIGRATE_STAY_HERE": "このまま続ける",
   "MIGRATE_PROGRESS_TITLE": "データを移行しています",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "残りをコピーするには、{0}を選択してください。",
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
-  "CMD_MIGRATE_DATA": "{0}からデータを移行…"
+  "CMD_MIGRATE_DATA": "{0}からデータを移行…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "このブラウザでは自動転送を利用できません。ここにプロジェクトが保存されている場合は、新しいサイトで再度開けるようにダウンロードしてください。"
 });

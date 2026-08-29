@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
   "MIGRATE_MOVING_TITLE": "{0} flyttar",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} på {0} flyttar till ett nytt hem på <strong>{1}</strong>. Allt fungerar på samma sätt, det är bara adressen som ändras.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Du har <strong>{0} dagar</strong> kvar innan {1} slutar fungera.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Du har <strong>{0} dag</strong> kvar innan {1} slutar fungera.",
   "MIGRATE_DATA_SAFE_NOTE": "Dina projekt, inställningar och tillägg kommer att kopieras över åt dig första gången du öppnar {0}. Ingenting raderas från den här webbplatsen.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatisk överföring är inte tillgänglig i den här webbläsaren. Om du har projekt sparade här, vänligen ladda ner dem före datumet ovan så att du kan öppna dem igen på den nya webbplatsen.",
   "MIGRATE_GO_TO_NEW_SITE": "Ta mig till den nya webbplatsen",
   "MIGRATE_STAY_HERE": "Stanna kvar",
   "MIGRATE_PROGRESS_TITLE": "Flyttar över dina data",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "För att kopiera resten, välj {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
-  "CMD_MIGRATE_DATA": "Migrera min data från {0}…"
+  "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatisk överföring är inte tillgänglig i den här webbläsaren. Om du har projekt sparade här, ladda ner dem så att du kan öppna dem igen på den nya webbplatsen."
 });

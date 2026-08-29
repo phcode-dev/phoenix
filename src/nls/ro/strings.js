@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
   "MIGRATE_MOVING_TITLE": "{0} se mută",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} de pe {0} se mută într-o nouă locație la <strong>{1}</strong>. Totul funcționează la fel, doar adresa se schimbă.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Mai aveți <strong>{0} zile</strong> până când {1} nu va mai funcționa.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Mai aveți <strong>{0} zi</strong> până când {1} nu va mai funcționa.",
   "MIGRATE_DATA_SAFE_NOTE": "Proiectele, setările și extensiile dumneavoastră vor fi copiate automat la prima deschidere a {0}. Nimic nu este șters de pe acest site.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Transferul automat nu este disponibil în acest browser. Dacă aveți proiecte salvate aici, vă rugăm să le descărcați înainte de data de mai sus pentru a le putea deschide din nou pe noul site.",
   "MIGRATE_GO_TO_NEW_SITE": "Mergeți la noul site",
   "MIGRATE_STAY_HERE": "Rămâi aici",
   "MIGRATE_PROGRESS_TITLE": "Se transferă datele",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Pentru a copia restul, alegeți {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
-  "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…"
+  "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Transferul automat nu este disponibil în acest browser. Dacă aveți proiecte salvate aici, vă rugăm să le descărcați pentru a le putea deschide din nou pe noul site."
 });

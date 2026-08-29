@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
   "MIGRATE_MOVING_TITLE": "{0} przenosi się",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} na {0} przenosi się pod nowy adres <strong>{1}</strong>. Wszystko działa tak samo, zmienia się tylko adres.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Pozostało <strong>{0} dni</strong>, zanim {1} przestanie działać.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Pozostał <strong>{0} dzień</strong>, zanim {1} przestanie działać.",
   "MIGRATE_DATA_SAFE_NOTE": "Twoje projekty, ustawienia i rozszerzenia zostaną skopiowane przy pierwszym otwarciu {0}. Nic nie zostanie usunięte z tej witryny.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatyczne przenoszenie nie jest dostępne w tej przeglądarce. Jeśli masz tu zapisane projekty, prosimy o pobranie ich przed powyższą datą, aby można je było ponownie otworzyć w nowej witrynie.",
   "MIGRATE_GO_TO_NEW_SITE": "Przejdź do nowej witryny",
   "MIGRATE_STAY_HERE": "Pozostań tutaj",
   "MIGRATE_PROGRESS_TITLE": "Przenoszenie Twoich danych",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Aby skopiować resztę, wybierz {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
-  "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…"
+  "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatyczne przenoszenie nie jest dostępne w tej przeglądarce. Jeśli masz tu zapisane projekty, pobierz je, aby móc je ponownie otworzyć na nowej stronie."
 });

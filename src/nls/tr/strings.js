@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
   "MIGRATE_MOVING_TITLE": "{0} taşınıyor",
   "MIGRATE_MOVING_MESSAGE": "{0} üzerindeki {APP_NAME}, yeni adresi olan <strong>{1}</strong> adresine taşınıyor. Her şey aynı şekilde çalışmaya devam edecek, sadece adres değişiyor.",
-  "MIGRATE_SUNSET_COUNTDOWN": "{1} çalışmayı durdurmadan önce <strong>{0} gününüz</strong> kaldı.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "{1} çalışmayı durdurmadan önce <strong>{0} gününüz</strong> kaldı.",
   "MIGRATE_DATA_SAFE_NOTE": "{0}'ı ilk açtığınızda projeleriniz, ayarlarınız ve eklentileriniz sizin için kopyalanacak. Bu siteden hiçbir şey silinmeyecek.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Bu tarayıcıda otomatik aktarım mevcut değil. Burada kayıtlı projeleriniz varsa, yeni sitede tekrar açabilmek için lütfen yukarıdaki tarihten önce onları indirin.",
   "MIGRATE_GO_TO_NEW_SITE": "Beni yeni siteye götür",
   "MIGRATE_STAY_HERE": "Burada kal",
   "MIGRATE_PROGRESS_TITLE": "Verileriniz taşınıyor",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Geri kalanını kopyalamak için {0} seçeneğini seçin.",
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
-  "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…"
+  "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Bu tarayıcıda otomatik aktarım mevcut değildir. Burada kayıtlı projeleriniz varsa, yeni sitede tekrar açabilmek için lütfen onları indirin."
 });

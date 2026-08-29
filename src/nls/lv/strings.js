@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
   "MIGRATE_MOVING_TITLE": "{0} pārceļas",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} vietnē {0} pārceļas uz jaunu mājvietu <strong>{1}</strong>. Viss darbojas tāpat, mainās tikai adrese.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Jums ir atlikušas <strong>{0} dienas</strong>, pirms {1} pārtrauks darboties.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Jums ir atlikusi <strong>{0} diena</strong>, pirms {1} pārtrauks darboties.",
   "MIGRATE_DATA_SAFE_NOTE": "Jūsu projekti, iestatījumi un paplašinājumi tiks pārkopēti, kad pirmo reizi atvērsiet {0}. No šīs vietnes nekas netiks dzēsts.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automātiskā pārsūtīšana šajā pārlūkprogrammā nav pieejama. Ja jums šeit ir saglabāti projekti, lūdzu, lejupielādējiet tos pirms augstāk norādītā datuma, lai varētu tos atkal atvērt jaunajā vietnē.",
   "MIGRATE_GO_TO_NEW_SITE": "Doties uz jauno vietni",
   "MIGRATE_STAY_HERE": "Palikt šeit",
   "MIGRATE_PROGRESS_TITLE": "Pārnesam jūsu datus",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Lai pārnestu pārējo, izvēlieties {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
-  "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…"
+  "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automātiskā pārsūtīšana šajā pārlūkprogrammā nav pieejama. Ja jums šeit ir saglabāti projekti, lūdzu, lejupielādējiet tos, lai jūs varētu tos atkal atvērt jaunajā vietnē."
 });

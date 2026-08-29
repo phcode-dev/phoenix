@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
   "MIGRATE_MOVING_TITLE": "A(z) {0} elköltözik",
   "MIGRATE_MOVING_MESSAGE": "A(z) {0} címen lévő {APP_NAME} egy új helyre, a(z) <strong>{1}</strong> címre költözik. Minden ugyanúgy működik, csak a cím változik.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Már csak <strong>{0} nap</strong> van hátra, mielőtt a(z) {1} működése leáll.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Már csak <strong>{0} nap</strong> van hátra, mielőtt a(z) {1} működése leáll.",
   "MIGRATE_DATA_SAFE_NOTE": "A projektjei, beállításai és bővítményei átmásolásra kerülnek, amikor először megnyitja a(z) {0}-t. Erről az oldalról semmi sem törlődik.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Az automatikus átvitel nem érhető el ebben a böngészőben. Ha vannak itt elmentett projektjei, kérjük, töltse le őket a fenti dátum előtt, hogy újra megnyithassa őket az új oldalon.",
   "MIGRATE_GO_TO_NEW_SITE": "Ugrás az új oldalra",
   "MIGRATE_STAY_HERE": "Maradok itt",
   "MIGRATE_PROGRESS_TITLE": "Az adatok áthozása",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "A többi másolásához válassza a(z) {0} lehetőséget.",
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
-  "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…"
+  "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Az automatikus áttelepítés nem érhető el ebben a böngészőben. Ha vannak itt elmentett projektjei, kérjük, töltse le őket, hogy újra megnyithassa őket az új oldalon."
 });

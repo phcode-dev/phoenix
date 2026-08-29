@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
   "MIGRATE_MOVING_TITLE": "{0} flytter",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} på {0} flytter til et nytt hjem på <strong>{1}</strong>. Alt fungerer som før, det er kun adressen som endres.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Du har <strong>{0} dager</strong> igjen før {1} slutter å virke.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Du har <strong>{0} dag</strong> igjen før {1} slutter å virke.",
   "MIGRATE_DATA_SAFE_NOTE": "Dine prosjekter, innstillinger og utvidelser vil bli kopiert over for deg første gang du åpner {0}. Ingenting blir slettet fra dette nettstedet.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatisk overføring er ikke tilgjengelig i denne nettleseren. Hvis du har prosjekter lagret her, må du laste dem ned før datoen ovenfor, slik at du kan åpne dem igjen på det nye nettstedet.",
   "MIGRATE_GO_TO_NEW_SITE": "Ta meg til det nye nettstedet",
   "MIGRATE_STAY_HERE": "Bli her",
   "MIGRATE_PROGRESS_TITLE": "Overfører dataene dine",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "For å kopiere resten, velg {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Fikk ikke kontakt med det gamle nettstedet",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke koble til {0} for å se etter prosjektene og innstillingene dine, så ingenting har blitt endret. Sjekk internettforbindelsen din, og prøv deretter på nytt med {1}.",
-  "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…"
+  "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatisk overføring er ikke tilgjengelig i denne nettleseren. Hvis du har prosjekter lagret her, må du laste dem ned slik at du kan åpne dem igjen på det nye nettstedet."
 });

@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
   "MIGRATE_MOVING_TITLE": "{0} 即將搬家",
   "MIGRATE_MOVING_MESSAGE": "位於 {0} 的 {APP_NAME} 即將搬遷至新家 <strong>{1}</strong>。所有功能維持不變，只有網址變更。",
-  "MIGRATE_SUNSET_COUNTDOWN": "距離 {1} 停止運作還有 <strong>{0} 天</strong>。",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "距離 {1} 停止運作還有 <strong>{0} 天</strong>。",
   "MIGRATE_DATA_SAFE_NOTE": "當您首次開啟 {0} 時，您的專案、設定和擴充功能將會自動複製過去。此網站上的任何資料都不會被刪除。",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "此瀏覽器不支援自動轉移功能。如果您在此處儲存了專案，請在上述日期前將其下載，以便您可以在新網站上重新開啟。",
   "MIGRATE_GO_TO_NEW_SITE": "前往新網站",
   "MIGRATE_STAY_HERE": "留在這裡",
   "MIGRATE_PROGRESS_TITLE": "正在移轉您的資料",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "若要複製剩餘項目，請選擇 {0}。",
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
-  "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…"
+  "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "此瀏覽器不支援自動轉移功能。如果您有專案儲存在這裡，請將其下載，以便您可以在新的網站上重新開啟。"
 });

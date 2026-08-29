@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
   "MIGRATE_MOVING_TITLE": "{0} on siirtymässä",
   "MIGRATE_MOVING_MESSAGE": "Osoitteessa {0} sijaitseva {APP_NAME} siirtyy uuteen osoitteeseen <strong>{1}</strong>. Kaikki toimii samalla tavalla, vain osoite muuttuu.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Sinulla on <strong>{0} päivää</strong> aikaa, ennen kuin {1} lakkaa toimimasta.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Sinulla on <strong>{0} päivä</strong> aikaa, ennen kuin {1} lakkaa toimimasta.",
   "MIGRATE_DATA_SAFE_NOTE": "Projektisi, asetuksesi ja laajennuksesi kopioidaan puolestasi, kun avaat {0}:n ensimmäisen kerran. Mitään ei poisteta tältä sivustolta.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automaattinen siirto ei ole saatavilla tällä selaimella. Jos sinulla on projekteja tallennettuna tänne, lataa ne ennen yllä mainittua päivämäärää, jotta voit avata ne uudelleen uudella sivustolla.",
   "MIGRATE_GO_TO_NEW_SITE": "Siirry uudelle sivustolle",
   "MIGRATE_STAY_HERE": "Pysy täällä",
   "MIGRATE_PROGRESS_TITLE": "Siirretään tietojasi",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Kopioidaksesi loput, valitse {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
-  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…"
+  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automaattinen siirto ei ole saatavilla tässä selaimessa. Jos sinulla on projekteja tallennettuna tähän, lataa ne, jotta voit avata ne uudelleen uudella sivustolla."
 });
