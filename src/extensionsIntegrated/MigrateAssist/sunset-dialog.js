@@ -21,6 +21,9 @@
 /**
  * The "we are moving" dialog, shown on the origin being retired on every boot.
  *
+ * It states that the move is happening, with no countdown and no cutoff date: the move is under way
+ * now, and naming a date we might not hold to would be worse than naming none.
+ *
  * Three variants, differing only in the primary button and the closing sentence:
  *  - default, sends the user to the new site where their data migrates automatically;
  *  - Trusted Web Activity, sends the user to the Play Store instead, because the installed app only
@@ -55,13 +58,6 @@ define(function (require, exports, module) {
 
         paragraphs.push(StringUtils.format(Strings.MIGRATE_MOVING_MESSAGE,
             Constants.getLegacyDomainName(), Constants.NEW_DOMAIN_NAME));
-
-        if (!Constants.isPastSunset()) {
-            const days = Constants.daysToSunset();
-            paragraphs.push(StringUtils.format(
-                days === 1 ? Strings.MIGRATE_SUNSET_COUNTDOWN_ONE : Strings.MIGRATE_SUNSET_COUNTDOWN,
-                days, Constants.getLegacyDomainName()));
-        }
 
         if (!Constants.isMigrationSupportedBrowser()) {
             paragraphs.push(Strings.MIGRATE_MANUAL_DOWNLOAD_NOTE);
