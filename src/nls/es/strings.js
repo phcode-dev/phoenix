@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
   "MIGRATE_MOVING_TITLE": "{0} se está mudando",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} en {0} se muda a una nueva ubicación en <strong>{1}</strong>. Todo funciona igual, solo cambia la dirección.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Te quedan <strong>{0} días</strong> antes de que {1} deje de funcionar.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Te queda <strong>{0} día</strong> antes de que {1} deje de funcionar.",
   "MIGRATE_DATA_SAFE_NOTE": "Tus proyectos, configuraciones y extensiones se copiarán automáticamente la primera vez que abras {0}. No se eliminará nada de este sitio.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "La transferencia automática no está disponible en este navegador. Si tienes proyectos guardados aquí, descárgalos antes de la fecha indicada para poder abrirlos de nuevo en el nuevo sitio.",
   "MIGRATE_GO_TO_NEW_SITE": "Llévame al nuevo sitio",
   "MIGRATE_STAY_HERE": "Permanecer aquí",
   "MIGRATE_PROGRESS_TITLE": "Transfiriendo tus datos",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Para copiar el resto, selecciona {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "No se pudo acceder al sitio antiguo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} no se pudo conectar a {0} para buscar tus proyectos y configuración, por lo que no se ha modificado nada. Comprueba tu conexión a internet y vuelve a intentarlo con {1}.",
-  "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…"
+  "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "La transferencia automática no está disponible en este navegador. Si tiene proyectos guardados aquí, por favor, descárguelos para poder abrirlos de nuevo en el nuevo sitio."
 });

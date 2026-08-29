@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
   "MIGRATE_MOVING_TITLE": "{0} 正在迁移",
   "MIGRATE_MOVING_MESSAGE": "位于 {0} 的 {APP_NAME} 正在迁移至新地址 <strong>{1}</strong>。所有功能均保持不变，仅访问地址发生变更。",
-  "MIGRATE_SUNSET_COUNTDOWN": "距离 {1} 停止工作还剩 <strong>{0} 天</strong>。",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "距离 {1} 停止工作还剩 <strong>{0} 天</strong>。",
   "MIGRATE_DATA_SAFE_NOTE": "在您首次打开 {0} 时，您的项目、设置和扩展程序将自动为您迁移。此站点上的任何数据都不会被删除。",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "此浏览器不支持自动迁移。如果您在此处保存了项目，请在上述日期前进行下载，以便可以在新站点上重新打开。",
   "MIGRATE_GO_TO_NEW_SITE": "前往新站点",
   "MIGRATE_STAY_HERE": "留在此处",
   "MIGRATE_PROGRESS_TITLE": "正在迁移您的数据",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "若要复制剩余部分，请选择 {0}。",
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
-  "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…"
+  "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "此浏览器不支持自动迁移。如果您在此处保存了项目，请下载它们，以便能在新网站上重新打开。"
 });

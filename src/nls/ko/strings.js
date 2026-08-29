@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
   "MIGRATE_MOVING_TITLE": "{0}이(가) 이전합니다",
   "MIGRATE_MOVING_MESSAGE": "{0}의 {APP_NAME}이(가) <strong>{1}</strong>로 이전합니다. 모든 것은 동일하게 작동하며 주소만 변경됩니다.",
-  "MIGRATE_SUNSET_COUNTDOWN": "{1}의 작동이 중지되기까지 <strong>{0}일</strong> 남았습니다.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "{1}의 작동이 중지되기까지 <strong>{0}일</strong> 남았습니다.",
   "MIGRATE_DATA_SAFE_NOTE": "{0}을(를) 처음 열 때 사용자의 프로젝트, 설정 및 확장 프로그램이 자동으로 복사됩니다. 이 사이트에서는 아무것도 삭제되지 않습니다.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "이 브라우저에서는 자동 전송이 지원되지 않습니다. 여기에 저장된 프로젝트가 있다면, 위에 안내된 날짜까지 다운로드하여 새 사이트에서 열어주세요.",
   "MIGRATE_GO_TO_NEW_SITE": "새 사이트로 이동",
   "MIGRATE_STAY_HERE": "여기에 머물기",
   "MIGRATE_PROGRESS_TITLE": "데이터를 가져오는 중",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "나머지 항목을 복사하려면 {0}을(를) 선택하세요.",
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}이(가) {0}에 연결하여 프로젝트 및 설정을 찾을 수 없었으므로 아무것도 변경되지 않았습니다. 인터넷 연결을 확인한 다음 {1}으로 다시 시도하세요.",
-  "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…"
+  "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "이 브라우저에서는 자동 전송을 사용할 수 없습니다. 여기에 저장된 프로젝트가 있는 경우, 새 사이트에서 다시 열 수 있도록 다운로드하시기 바랍니다."
 });

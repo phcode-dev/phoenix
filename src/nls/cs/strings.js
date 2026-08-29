@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
   "MIGRATE_MOVING_TITLE": "{0} se stěhuje",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} na {0} se stěhuje na novou adresu <strong>{1}</strong>. Vše funguje stejně, mění se pouze adresa.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Zbývá vám <strong>{0} dní</strong>, než {1} přestane fungovat.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Zbývá vám <strong>{0} den</strong>, než {1} přestane fungovat.",
   "MIGRATE_DATA_SAFE_NOTE": "Vaše projekty, nastavení a rozšíření se vám zkopírují při prvním otevření {0}. Z tohoto webu se nic nemaže.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatický přenos není v tomto prohlížeči dostupný. Pokud zde máte uložené projekty, stáhněte si je prosím před výše uvedeným datem, abyste je mohli znovu otevřít na novém webu.",
   "MIGRATE_GO_TO_NEW_SITE": "Přejít na nový web",
   "MIGRATE_STAY_HERE": "Zůstat zde",
   "MIGRATE_PROGRESS_TITLE": "Přenos vašich dat",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Pro zkopírování zbytku zvolte {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
-  "CMD_MIGRATE_DATA": "Přenést moje data z {0}…"
+  "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatický přenos není v tomto prohlížeči k dispozici. Pokud zde máte uložené projekty, stáhněte si je, abyste je mohli znovu otevřít na novém webu."
 });

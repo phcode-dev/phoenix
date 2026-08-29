@@ -2691,10 +2691,7 @@ define({
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
   "MIGRATE_MOVING_TITLE": "{0} sedang pindah",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} di {0} sedang pindah ke lokasi baru di <strong>{1}</strong>. Semuanya berfungsi sama, hanya alamatnya yang berubah.",
-  "MIGRATE_SUNSET_COUNTDOWN": "Anda memiliki sisa <strong>{0} hari</strong> sebelum {1} berhenti berfungsi.",
-  "MIGRATE_SUNSET_COUNTDOWN_ONE": "Anda memiliki sisa <strong>{0} hari</strong> sebelum {1} berhenti berfungsi.",
   "MIGRATE_DATA_SAFE_NOTE": "Proyek, pengaturan, dan ekstensi Anda akan disalin saat pertama kali Anda membuka {0}. Tidak ada yang dihapus dari situs ini.",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Transfer otomatis tidak tersedia di peramban ini. Jika Anda memiliki proyek yang tersimpan di sini, harap unduh sebelum tanggal di atas agar Anda dapat membukanya kembali di situs baru.",
   "MIGRATE_GO_TO_NEW_SITE": "Bawa saya ke situs baru",
   "MIGRATE_STAY_HERE": "Tetap di sini",
   "MIGRATE_PROGRESS_TITLE": "Memindahkan data Anda",
@@ -2717,5 +2714,6 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Untuk menyalin sisanya, pilih {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
-  "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…"
+  "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Transfer otomatis tidak tersedia di browser ini. Jika Anda memiliki proyek yang tersimpan di sini, silakan unduh agar Anda dapat membukanya kembali di situs baru."
 });
