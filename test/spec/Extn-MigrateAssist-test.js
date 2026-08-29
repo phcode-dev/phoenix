@@ -34,36 +34,7 @@ define(function (require, exports, module) {
 
     describe("unit:MigrateAssist", function () {
 
-        const DAY = 24 * 60 * 60 * 1000;
-
         describe("constants", function () {
-
-            describe("daysToSunset", function () {
-
-                it("should count whole days remaining", function () {
-                    expect(Constants.daysToSunset(Constants.SUNSET_DATE - (10 * DAY))).toBe(10);
-                    expect(Constants.daysToSunset(Constants.SUNSET_DATE - DAY)).toBe(1);
-                });
-
-                it("should round a part day up, so the last day never reads as zero", function () {
-                    expect(Constants.daysToSunset(Constants.SUNSET_DATE - 1)).toBe(1);
-                    expect(Constants.daysToSunset(Constants.SUNSET_DATE - (DAY + 1))).toBe(2);
-                });
-
-                it("should floor at zero on and after the sunset date", function () {
-                    expect(Constants.daysToSunset(Constants.SUNSET_DATE)).toBe(0);
-                    expect(Constants.daysToSunset(Constants.SUNSET_DATE + DAY)).toBe(0);
-                });
-            });
-
-            describe("isPastSunset", function () {
-
-                it("should be false before the date and true on or after it", function () {
-                    expect(Constants.isPastSunset(Constants.SUNSET_DATE - 1)).toBe(false);
-                    expect(Constants.isPastSunset(Constants.SUNSET_DATE)).toBe(true);
-                    expect(Constants.isPastSunset(Constants.SUNSET_DATE + DAY)).toBe(true);
-                });
-            });
 
             describe("origins", function () {
 

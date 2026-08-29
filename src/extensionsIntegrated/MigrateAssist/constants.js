@@ -21,9 +21,12 @@
 /**
  * Shared configuration for the one time move off the legacy web origin onto web.phcode.dev.
  *
- * Everything that has to change when the rollout moves forward lives here: the two origins and the
- * sunset date. `LEGACY_ORIGIN` is live and points at phcode.dev, which serves migrateAssist.html
- * and still holds the data of everyone who has not moved across yet.
+ * Everything that has to change when the rollout moves forward lives here, which is the two
+ * origins. `LEGACY_ORIGIN` is live and points at phcode.dev, which serves migrateAssist.html and
+ * still holds the data of everyone who has not moved across yet.
+ *
+ * There is deliberately no retirement date. The move has no announced cutoff, and the runaway
+ * probe case the date used to guard is already bounded per user by MAX_AUTO_ATTEMPTS.
  *
  * @module extensionsIntegrated/MigrateAssist/constants
  */
@@ -50,12 +53,6 @@ define(function (require, exports, module) {
      * The legacy equivalent is derived from the origin instead, see getLegacyDomainName.
      */
     const NEW_DOMAIN_NAME = "web.phcode.dev";
-
-    /**
-     * The day the legacy origin stops serving. Month is 0 based, so 8 is September.
-     * @type {number}
-     */
-    const SUNSET_DATE = Date.UTC(2026, 8, 1);
 
     /**
      * PhStore key recording that the migration already ran. Once set, the automatic path never runs
@@ -174,30 +171,7 @@ define(function (require, exports, module) {
         return !(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos);
     }
 
-    /**
-     * Whole days left before the legacy origin is retired, floored at 0.
-     * @param {number} [now] current time in ms, for tests
-     * @return {number}
-     */
-    function daysToSunset(now) {
-        const millisPerDay = 24 * 60 * 60 * 1000;
-        const remaining = SUNSET_DATE - (typeof now === "number" ? now : Date.now());
-        if (remaining <= 0) {
-            return 0;
-        }
-        return Math.ceil(remaining / millisPerDay);
-    }
-
-    /**
-     * @param {number} [now] current time in ms, for tests
-     * @return {boolean} true once the legacy origin is expected to be gone
-     */
-    function isPastSunset(now) {
-        return (typeof now === "number" ? now : Date.now()) >= SUNSET_DATE;
-    }
-
     exports.NEW_DOMAIN_NAME = NEW_DOMAIN_NAME;
-    exports.SUNSET_DATE = SUNSET_DATE;
     exports.MIGRATION_DONE_KEY = MIGRATION_DONE_KEY;
     exports.MIGRATION_ATTEMPTS_KEY = MIGRATION_ATTEMPTS_KEY;
     exports.MAX_AUTO_ATTEMPTS = MAX_AUTO_ATTEMPTS;
@@ -208,6 +182,4 @@ define(function (require, exports, module) {
     exports.isLegacyOrigin = isLegacyOrigin;
     exports.isNewOrigin = isNewOrigin;
     exports.isMigrationSupportedBrowser = isMigrationSupportedBrowser;
-    exports.daysToSunset = daysToSunset;
-    exports.isPastSunset = isPastSunset;
 });

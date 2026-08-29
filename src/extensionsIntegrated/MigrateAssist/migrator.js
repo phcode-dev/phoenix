@@ -582,19 +582,12 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "skipOutOfAttempts");
             return;
         }
-        // Once the legacy origin is gone there is nothing to probe, so the feature disables itself
-        // rather than opening a doomed iframe on every boot forever.
-        if (Constants.isPastSunset()) {
-            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "skipPastSunset");
-            return;
-        }
         Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "autoProbe");
         run(false);
     }
 
     /**
-     * Help menu entry point. Ignores the done flag and the sunset date, and always says what
-     * happened.
+     * Help menu entry point. Ignores the done flag and always says what happened.
      */
     async function runManually() {
         Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "migrateAssist", "manualInvoked");
