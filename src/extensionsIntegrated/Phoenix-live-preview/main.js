@@ -45,6 +45,7 @@ define(function (require, exports, module) {
         FileViewController  = require("project/FileViewController"),
         DocumentManager = require("document/DocumentManager"),
         ExtensionInterface = require("utils/ExtensionInterface"),
+        EventDispatcher   = require("utils/EventDispatcher"),
         CommandManager     = require("command/CommandManager"),
         Commands           = require("command/Commands"),
         Menus              = require("command/Menus"),
@@ -135,6 +136,9 @@ define(function (require, exports, module) {
     });
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
+
+    /** Fired with the full path whenever the preview switches to a different file. */
+    const EVENT_PREVIEWED_FILE_CHANGE = "previewedFileChange";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const MDVIEWR_IFRAME_ID = "panel-md-preview-frame";
     const _sandboxAttr = Phoenix.isTestWindow ? "" :
@@ -614,6 +618,19 @@ define(function (require, exports, module) {
         _isMdviewrActive = false,
         $mdviewrIframe = null; // persistent md iframe, survives HTML preview switches
 
+    /**
+     * Records which file the preview is showing and tells listeners when that changes.
+     * @param {string} fullPath
+     * @private
+     */
+    function _setPreviewedFile(fullPath) {
+        if (currentPreviewFile === fullPath) {
+            return;
+        }
+        currentPreviewFile = fullPath;
+        exports.trigger(EVENT_PREVIEWED_FILE_CHANGE, fullPath);
+    }
+
     function _blankIframe() {
         // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
         // src. so we delete the node itself to eb thorough.
@@ -956,7 +973,7 @@ define(function (require, exports, module) {
         const mdFileURL = encodeURI(previewDetails.URL);
         const baseURL = mdFileURL.substring(0, mdFileURL.lastIndexOf("/") + 1);
 
-        currentPreviewFile = previewDetails.fullPath;
+        _setPreviewedFile(previewDetails.fullPath);
         if (!urlPinned) {
             currentLivePreviewURL = mdFileURL;
         }
@@ -1075,7 +1092,7 @@ define(function (require, exports, module) {
         // preview breaks sporadically. to alleviate this, we create a new iframe every time.
         if(!urlPinned) {
             currentLivePreviewURL = newSrc;
-            currentPreviewFile = previewDetails.fullPath;
+            _setPreviewedFile(previewDetails.fullPath);
         }
         if(isReload && previewDetails.isHTMLFile){
             LiveDevelopment.openLivePreview();
@@ -1741,10 +1758,24 @@ define(function (require, exports, module) {
         _loadPreview(true);
     }
 
+    /**
+     * Full path of the file currently loaded in the preview, which is not always the
+     * file in the editor: the url can be pinned, and a file with no preview of its own
+     * leaves the last previewed one up.
+     * @return {string} empty string when nothing has been previewed yet
+     */
+    function getPreviewedFilePath() {
+        return currentPreviewFile;
+    }
+
+    EventDispatcher.makeEventDispatcher(exports);
+
     // private API to be used inside phoenix codebase only
     exports.LIVE_PREVIEW_PANEL_ID = LIVE_PREVIEW_PANEL_ID;
+    exports.EVENT_PREVIEWED_FILE_CHANGE = EVENT_PREVIEWED_FILE_CHANGE;
     exports.showInterstitial = showInterstitial;
     exports.hideInterstitial = hideInterstitial;
+    exports.getPreviewedFilePath = getPreviewedFilePath;
 });
 
 

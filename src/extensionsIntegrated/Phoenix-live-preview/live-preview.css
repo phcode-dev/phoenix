@@ -428,23 +428,6 @@
     color: #FBB03B;
 }
 
-#livePreviewLayersBtn {
-    border: 1px solid transparent;
-    border-radius: 3px;
-}
-
-#live-preview-plugin-toolbar #livePreviewLayersBtn:hover,
-#live-preview-plugin-toolbar #livePreviewLayersBtn:focus,
-#live-preview-plugin-toolbar #livePreviewLayersBtn:active {
-    border-color: var(--lp-toolbar-border) !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-#livePreviewLayersBtn.selected {
-    color: #FBB03B;
-}
-
 .lp-mode-dropdown-chevron,
 .lp-device-size-dropdown-chevron {
     display: flex;

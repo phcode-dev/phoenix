@@ -1,0 +1,671 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/* Layers sidebar tab — the live preview element tree and element details. */
+
+@layers-accent:         #6b9eff;
+@layers-accent-soft:    rgba(107, 158, 255, 0.16);
+@layers-accent-strong:  rgba(107, 158, 255, 0.26);
+@layers-hover-bg:       rgba(255, 255, 255, 0.06);
+@layers-border:         rgba(255, 255, 255, 0.09);
+@layers-input-bg:       rgba(255, 255, 255, 0.04);
+@layers-input-bg-focus: rgba(255, 255, 255, 0.06);
+@layers-row-height:     22px;
+@layers-indent:         12px;
+@layers-mono:           ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+@layers-prop-name:      #9cdcfe;
+@layers-prop-value:     #ce9178;
+
+.layers-tab-container {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 1;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    background-color: @bc-ai-sidebar-bg;
+    color: @project-panel-text-1;
+    font-size: @sidebar-small-font-size;
+
+    .layers-hidden {
+        display: none !important;
+    }
+
+    .layers-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        -webkit-box-flex: 1;
+        flex: 1;
+        min-height: 0;
+        padding: 2rem 1.5rem;
+        text-align: center;
+    }
+
+    .layers-message-icon {
+        margin-bottom: 0.9rem;
+        font-size: 2.1rem;
+        color: @project-panel-text-2;
+        opacity: 0.55;
+    }
+
+    .layers-message-title {
+        margin-bottom: 0.4rem;
+        font-size: @sidebar-content-font-size;
+        font-weight: 600;
+        color: @project-panel-text-1;
+    }
+
+    .layers-message-text {
+        max-width: 260px;
+        color: @project-panel-text-2;
+        line-height: 1.45;
+    }
+
+    .layers-message-btn {
+        margin-top: 1.1rem;
+        padding: 6px 14px;
+        border: 1px solid @layers-accent;
+        border-radius: 6px;
+        background: @layers-accent-soft;
+        color: @project-panel-text-1;
+        font-family: inherit;
+        font-size: @sidebar-small-font-size;
+        font-weight: 500;
+        cursor: pointer;
+        outline: none;
+
+        &:hover {
+            background: @layers-accent-strong;
+        }
+    }
+
+    .layers-panel {
+        display: flex;
+        flex-direction: column;
+        -webkit-box-flex: 1;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .layers-section {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .layers-section-elements {
+        flex: 0 0 var(--layers-elements-size, 60%);
+    }
+
+    .layers-section-details {
+        flex: 1 1 auto;
+    }
+
+    .layers-section.layers-collapsed {
+        flex: 0 0 auto;
+    }
+
+    .layers-panel.layers-details-collapsed .layers-section-elements:not(.layers-collapsed) {
+        flex: 1 1 auto;
+    }
+
+    .layers-section-header {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        height: 26px;
+        padding: 0 6px 0 2px;
+        flex-shrink: 0;
+        box-sizing: border-box;
+        cursor: pointer;
+        user-select: none;
+        font-size: @sidebar-xs-font-size;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: @project-panel-text-1;
+
+        &:hover {
+            background: @layers-hover-bg;
+        }
+    }
+
+    .layers-chevron {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        flex: none;
+        color: @project-panel-text-2;
+
+        svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 120ms ease;
+        }
+    }
+
+    .layers-section.layers-collapsed .layers-chevron svg {
+        transform: rotate(-90deg);
+    }
+
+    .layers-section-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .layers-section-actions {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-left: auto;
+        flex-shrink: 0;
+        opacity: 0;
+    }
+
+    .layers-section-header:hover .layers-section-actions,
+    .layers-section-actions:focus-within,
+    .layers-menu-open .layers-section-actions {
+        opacity: 1;
+    }
+
+    .layers-hdr-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 4px;
+        background: none;
+        color: @project-panel-text-2;
+        cursor: pointer;
+        outline: none;
+
+        svg {
+            width: 15px;
+            height: 15px;
+            display: block;
+            flex: none;
+        }
+
+        &:hover {
+            background: @layers-hover-bg;
+            color: @project-panel-text-1;
+        }
+
+        &.layers-active {
+            background: @layers-accent-soft;
+            color: @layers-accent;
+
+            &:hover {
+                background: @layers-accent-strong;
+            }
+        }
+    }
+
+
+    .layers-section-content {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    .layers-section.layers-collapsed .layers-section-content,
+    .layers-section.layers-collapsed .layers-search,
+    .layers-section.layers-collapsed .layers-tabs {
+        display: none;
+    }
+
+    .layers-divider {
+        position: relative;
+        flex: 0 0 5px;
+        height: 5px;
+        cursor: row-resize;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 2px;
+            height: 1px;
+            background: @layers-border;
+        }
+
+        &:hover::after,
+        &.layers-dragging::after {
+            height: 2px;
+            background: @layers-accent;
+        }
+    }
+
+    .layers-panel.layers-no-resize .layers-divider {
+        cursor: default;
+
+        &:hover::after {
+            height: 1px;
+            background: @layers-border;
+        }
+    }
+
+
+    .layers-search {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        padding: 2px 8px 6px;
+    }
+
+    .layers-search-box {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        height: 26px;
+        padding: 0 6px 0 8px;
+        box-sizing: border-box;
+        border: 1px solid @layers-border;
+        border-radius: 6px;
+        background: @layers-input-bg;
+
+        &:focus-within {
+            border-color: @layers-accent;
+            background: @layers-input-bg-focus;
+        }
+
+        > svg {
+            width: 13px;
+            height: 13px;
+            flex: none;
+            color: @project-panel-text-2;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            background: transparent;
+            color: @project-panel-text-1;
+            font-family: inherit;
+            font-size: @sidebar-small-font-size;
+
+            &::placeholder {
+                color: @project-panel-text-2;
+                opacity: 0.75;
+            }
+        }
+    }
+
+    .layers-search-clear {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        color: @project-panel-text-2;
+        cursor: pointer;
+        outline: none;
+        flex: none;
+
+        svg {
+            width: 11px;
+            height: 11px;
+            display: block;
+        }
+
+        &:hover {
+            background: @layers-hover-bg;
+            color: @project-panel-text-1;
+        }
+
+        &.layers-hidden {
+            display: none;
+        }
+    }
+
+    .layers-tree {
+        padding-bottom: 6px;
+        min-width: min-content;
+    }
+
+    .layers-node {
+        display: flex;
+        align-items: center;
+        height: @layers-row-height;
+        padding-right: 6px;
+        box-sizing: border-box;
+        white-space: nowrap;
+        cursor: default;
+        user-select: none;
+
+        &:hover {
+            background: @layers-hover-bg;
+        }
+
+        &.layers-selected {
+            background: @bc-sidebar-selection;
+        }
+    }
+
+    .layers-twisty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        flex: none;
+        color: @project-panel-text-2;
+
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .layers-node.layers-collapsed-node .layers-twisty svg {
+        transform: rotate(-90deg);
+    }
+
+    .layers-node-name {
+        margin-left: 4px;
+        color: @project-panel-text-2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .layers-node-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 14px;
+        flex: none;
+        margin-left: 5px;
+        color: @project-panel-text-2;
+
+        svg {
+            width: 14px;
+            height: 14px;
+            display: block;
+        }
+    }
+
+    .layers-node-tag {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: @project-panel-text-1;
+    }
+
+    .layers-node-text {
+        color: @project-panel-text-2;
+        font-style: italic;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .layers-empty {
+        padding: 10px 12px;
+        color: @project-panel-text-2;
+    }
+
+    .layers-tabs {
+        display: flex;
+        align-items: stretch;
+        flex-shrink: 0;
+        padding: 0 8px;
+        border-bottom: 1px solid @layers-border;
+    }
+
+    .layers-tab {
+        padding: 4px 8px 5px;
+        margin: 0;
+        border: none;
+        border-bottom: 2px solid transparent;
+        background: none;
+        color: @project-panel-text-2;
+        font-family: inherit;
+        font-size: @sidebar-xs-font-size;
+        font-weight: 600;
+        cursor: pointer;
+        outline: none;
+
+        &:hover {
+            color: @project-panel-text-1;
+        }
+
+        &.layers-active {
+            color: @project-panel-text-1;
+            border-bottom-color: @layers-accent;
+        }
+    }
+
+    .layers-pane {
+        display: none;
+        padding: 6px 8px 10px;
+
+        &.layers-active {
+            display: block;
+        }
+    }
+
+    .layers-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: @project-panel-text-2;
+        user-select: none;
+    }
+
+    .layers-prop-row {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        min-height: 20px;
+
+        .layers-label {
+            flex: 0 0 44px;
+        }
+    }
+
+    .layers-prop-value {
+        flex: 1;
+        min-width: 0;
+        font-family: @layers-mono;
+        font-size: @sidebar-xs-font-size;
+        color: @project-panel-text-1;
+        word-break: break-all;
+        user-select: text;
+    }
+
+    .layers-group {
+        margin-top: 8px;
+        padding-top: 6px;
+        border-top: 1px solid @layers-border;
+
+        > .layers-label {
+            display: block;
+            margin-bottom: 2px;
+        }
+    }
+
+    .layers-decl {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        min-height: 20px;
+        padding-left: 8px;
+        font-family: @layers-mono;
+        font-size: @sidebar-xs-font-size;
+        user-select: text;
+
+        &:hover {
+            background: @layers-hover-bg;
+        }
+    }
+
+    .layers-decl-name {
+        flex: none;
+        color: @layers-prop-name;
+    }
+
+    .layers-decl-sep {
+        flex: none;
+        color: @project-panel-text-2;
+    }
+
+    .layers-decl-value {
+        flex: 1;
+        min-width: 0;
+        color: @layers-prop-value;
+        word-break: break-all;
+    }
+
+    .layers-decl.layers-overridden {
+        .layers-decl-name,
+        .layers-decl-value {
+            text-decoration: line-through;
+            color: @project-panel-text-2;
+        }
+    }
+
+    .layers-icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 4px;
+        background: none;
+        color: @project-panel-text-2;
+        cursor: pointer;
+        outline: none;
+        flex: none;
+        align-self: center;
+
+        svg {
+            width: 12px;
+            height: 12px;
+            display: block;
+        }
+
+        &:hover {
+            background: @layers-hover-bg;
+            color: @project-panel-text-1;
+        }
+    }
+
+    .layers-decl .layers-icon-btn {
+        opacity: 0;
+    }
+
+    .layers-decl:hover .layers-icon-btn,
+    .layers-decl .layers-icon-btn:focus {
+        opacity: 1;
+    }
+
+    .layers-pane-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+
+    .layers-rule {
+        margin-bottom: 6px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid @layers-border;
+
+        &:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        &.layers-inactive {
+            opacity: 0.6;
+        }
+    }
+
+    .layers-rule-header {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 20px;
+    }
+
+    .layers-rule-selector {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-family: @layers-mono;
+        font-size: @sidebar-xs-font-size;
+        color: @project-panel-text-1;
+    }
+
+    .layers-rule-source {
+        flex: none;
+        max-width: 45%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 10px;
+        color: @project-panel-text-2;
+        cursor: pointer;
+
+        &:hover {
+            color: @layers-accent;
+            text-decoration: underline;
+        }
+    }
+}
+
+body.layers-resizing {
+    cursor: row-resize;
+    user-select: none;
+}
+
+.layers-menu-popup .layers-menu-check {
+    display: inline-block;
+    width: 12px;
+}
