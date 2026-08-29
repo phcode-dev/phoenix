@@ -19,7 +19,8 @@
  */
 
 /**
- * The "we are moving" dialog, shown on the origin being retired on every boot.
+ * The "we are moving" dialog, shown on every boot of the origin being retired. main.js decides who
+ * gets it; for now that is the ChromeOS webapp only.
  *
  * It states that the move is happening, with no countdown and no cutoff date: the move is under way
  * now, and naming a date we might not hold to would be worse than naming none.
@@ -87,7 +88,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Shows the dialog. Called once per boot on the legacy origin; dismissing it is per boot only,
+     * Shows the dialog. Called once per boot by main.js; dismissing it is per boot only,
      * so the user is reminded again next time rather than being able to silence it permanently.
      */
     function show() {

@@ -22,7 +22,8 @@
  * Entry point for the one time move off the legacy web origin onto web.phcode.dev.
  *
  * Which half runs depends purely on which origin this window is:
- *  - on the origin being retired, announce the move once per boot (sunset-dialog);
+ *  - on the origin being retired, announce the move once per boot (sunset-dialog), currently only
+ *    on the ChromeOS webapp;
  *  - on the new origin, quietly check whether anything is left behind and pull it across
  *    (migrator), plus register the Help menu entry that lets the user ask for it again later.
  *
@@ -45,7 +46,10 @@ define(function (require, exports, module) {
         Migrator = require("./migrator");
 
     function _initLegacyOrigin() {
-        if (Phoenix.isTestWindow) {
+        // For now the announcement only goes up on the ChromeOS webapp. Everywhere else the legacy
+        // origin stays silent: it keeps working, and the data of anyone who does open the new site
+        // is pulled across automatically, so there is nothing the dialog has to make them do.
+        if (Phoenix.isTestWindow || !Phoenix.browser.isChromeOS) {
             return;
         }
         SunsetDialog.show();
