@@ -106,7 +106,8 @@ define(function (require, exports, module) {
      * @param {boolean} [force]
      */
     LiveHTMLDocument.prototype.setInstrumentationEnabled = function (enabled, force) {
-        if (!this.editor) {
+        const editor = this._getUsableEditor();
+        if (!editor) {
             // TODO: error
             return;
         }
@@ -114,7 +115,7 @@ define(function (require, exports, module) {
             // TODO: not clear why we do this here instead of waiting for the next time we want to
             // generate the instrumented HTML. This won't work if the dom offsets are out of date.
             HTMLInstrumentation.scanDocument(this.doc);
-            HTMLInstrumentation._markText(this.editor);
+            HTMLInstrumentation._markText(editor);
         }
 
         this._instrumentationEnabled = enabled;
@@ -126,8 +127,9 @@ define(function (require, exports, module) {
      */
     LiveHTMLDocument.prototype.getResponseData = function (enabled) {
         var body;
-        if (this._instrumentationEnabled) {
-            body = HTMLInstrumentation.generateInstrumentedHTML(this.editor, this.protocol.getRemoteScript());
+        const editor = this._getUsableEditor();
+        if (this._instrumentationEnabled && editor) {
+            body = HTMLInstrumentation.generateInstrumentedHTML(editor, this.protocol.getRemoteScript());
         }
 
         if (!body) {
@@ -183,11 +185,11 @@ define(function (require, exports, module) {
      * Update the highlights in the browser based on the cursor position.
      */
     LiveHTMLDocument.prototype.updateHighlight = function () {
-        if (!this.editor || !this.isHighlightEnabled()) {
+        const editor = this._getUsableEditor();
+        if (!editor || !this.isHighlightEnabled()) {
             return;
         }
-        var editor = this.editor,
-            mode = editor.getModeForSelection(),
+        var mode = editor.getModeForSelection(),
             ids = [],
             selectors = [];
 
@@ -202,7 +204,7 @@ define(function (require, exports, module) {
 
             if (!isInlineStyle) {
                 // find the css selector
-                _.each(this.editor.getSelections(), function (sel) {
+                _.each(editor.getSelections(), function (sel) {
                     let selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
                     if (selector) {
                         selectors.push(selector);
@@ -218,7 +220,7 @@ define(function (require, exports, module) {
         }
 
         // its not found in css context, then it must be a inline style or a normal html element
-        _.each(this.editor.getSelections(), function (sel) {
+        _.each(editor.getSelections(), function (sel) {
             var tagID = HTMLInstrumentation._getTagIDAtDocumentPos(
                 editor,
                 sel.reversed ? sel.end : sel.start
@@ -262,6 +264,10 @@ define(function (require, exports, module) {
         if (!this._instrumentationEnabled) {
             return;
         }
+        const editor = this._getUsableEditor();
+        if (!editor) {
+            return;
+        }
 
         // Apply DOM edits is async, so previous PerfUtils timer may still be
         // running. PerfUtils does not support running multiple timers with same
@@ -273,7 +279,7 @@ define(function (require, exports, module) {
         }
 
         var self                = this,
-            result              = HTMLInstrumentation.getUnappliedEditList(this.editor, change),
+            result              = HTMLInstrumentation.getUnappliedEditList(editor, change),
             applyEditsPromise;
 
         if (result.edits) {

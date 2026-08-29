@@ -82,6 +82,7 @@ function cleanUnwantedFilesInDistProd() {
         'dist/nls/*/*.js.map',
         'dist/extensions/default/*/unittests.js.map',
         'dist/**/*no_dist.*',
+        'dist/thirdparty/CodeMirror6/*.js.map',
         'dist/thirdparty/no-minify/language-worker.js.map'
     ]);
 }
@@ -503,8 +504,14 @@ function _isCacheableFile(path) {
 function _fixAndFilterPaths(basePath, entries) {
     let filtered = [];
     for(let entry of entries){
+        const relativeEntry = entry.replace(`${basePath}/`, "");
+        // A manifest cannot contain a stable hash of itself. This also makes
+        // repeated generation safe when release packaging changes afterward.
+        if (relativeEntry === "cacheManifest.json") {
+            continue;
+        }
         if(_isCacheableFile(entry)){
-            filtered.push(entry.replace(`${basePath}/`, ""));
+            filtered.push(relativeEntry);
         }
     }
     return filtered;
@@ -1094,7 +1101,7 @@ function _patchMinifiedCSSInDistIndex() {
     return new Promise((resolve)=>{
         let content = fs.readFileSync("dist/index.html", "utf8");
         if(!content.includes(`<link rel="stylesheet/less" type="text/css" href="styles/brackets.less">`)){
-            throw new Error(`Could not locate string <link rel="stylesheet/less" type="text/css" href="styles/brackets.less"> in file dist/index.html`)
+            throw new Error(`Could not locate string <link rel="stylesheet/less" type="text/css" href="styles/brackets.less"> in file dist/index.html`);
         }
         content = content.replace(
             `<link rel="stylesheet/less" type="text/css" href="styles/brackets.less">`,
@@ -1104,31 +1111,39 @@ function _patchMinifiedCSSInDistIndex() {
     });
 }
 
-const createDistTest = series(copyDistToDistTestFolder, copyTestToDistTestFolder, copyIndexToDistTestFolder);
+const createDistTest = series(zipTestFiles, copyDistToDistTestFolder, copyTestToDistTestFolder,
+    copyIndexToDistTestFolder);
 
 exports.build = series(optionalBuild.clonePhoenixProRepo, optionalBuild.generateProBuildInfo, copyThirdPartyLibs.copyAll, makeLoggerConfig, generateProLoaderFiles, zipDefaultProjectFiles, zipSampleProjectFiles,
     makeBracketsConcatJS, makeBracketsConcatJSWithMinifiedBrowserScripts, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
-    createSrcCacheManifest, validatePackageVersions);
+    createSrcCacheManifest, validatePackageVersions, validateBuild.validateNoCodeMirror5);
 exports.buildDebug = series(optionalBuild.clonePhoenixProRepo, optionalBuild.generateProBuildInfo, copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, generateProLoaderFiles, zipDefaultProjectFiles,
     makeBracketsConcatJS, makeBracketsConcatJSWithMinifiedBrowserScripts, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
-    zipSampleProjectFiles, createSrcCacheManifest);
+    zipSampleProjectFiles, createSrcCacheManifest, validateBuild.validateNoCodeMirror5);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
+exports.bundleCodeMirror6 = copyThirdPartyLibs.bundleCodeMirror6;
 
 exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS, makeConcatExtensions, _compileLessSrc,
     makeDistAll, cleanUnwantedFilesInDistDev, releaseDev, _renameConcatExtensionsinDist,
     createDistCacheManifestDev, createDistTest,
-    _cleanPhoenixProGitFolder, _cleanReleaseBuildArtefactsInSrc, validateBuild.validateDistSizeRestrictions);
+    _cleanPhoenixProGitFolder, _cleanReleaseBuildArtefactsInSrc,
+    validateBuild.validateNoCodeMirror5Release, validateBuild.validateDistSizeRestrictions);
+// dist-test intentionally retains Phoenix Pro sources for its test harness.
+// Build its manifest/copy first, then regenerate dist's manifest after those
+// sources are removed from the production artifact.
 exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJSWithMinifiedBrowserScripts,
     makeConcatExtensions, _compileLessSrc, makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
     cleanUnwantedFilesInDistProd, _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist,
     _patchMinifiedCSSInDistIndex, releaseStaging, createDistCacheManifest, createDistTest,
-    _deletePhoenixProSourceFolder, _cleanReleaseBuildArtefactsInSrc, validateBuild.validateDistSizeRestrictions);
+    _deletePhoenixProSourceFolder, createDistCacheManifest, _cleanReleaseBuildArtefactsInSrc,
+    validateBuild.validateNoCodeMirror5Release, validateBuild.validateDistSizeRestrictions);
 exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJSWithMinifiedBrowserScripts,
     makeConcatExtensions, _compileLessSrc, makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
     cleanUnwantedFilesInDistProd, _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist,
     _patchMinifiedCSSInDistIndex, releaseProd, createDistCacheManifest, createDistTest,
-    _deletePhoenixProSourceFolder, _cleanReleaseBuildArtefactsInSrc, validateBuild.validateDistSizeRestrictions);
+    _deletePhoenixProSourceFolder, createDistCacheManifest, _cleanReleaseBuildArtefactsInSrc,
+    validateBuild.validateNoCodeMirror5Release, validateBuild.validateDistSizeRestrictions);
 exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);
 exports.zipTestFiles = series(zipTestFiles);
@@ -1139,4 +1154,5 @@ exports.default = series(exports.build);
 exports.patchVersionBump = series(patchVersionBump);
 exports.minorVersionBump = series(minorVersionBump);
 exports.majorVersionBump = series(majorVersionBump);
+exports.validateNoCodeMirror5 = series(validateBuild.validateNoCodeMirror5);
 exports.validateDistSizeRestrictions = series(validateBuild.validateDistSizeRestrictions);

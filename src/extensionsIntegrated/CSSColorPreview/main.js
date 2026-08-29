@@ -199,6 +199,10 @@ define(function (require, exports, module) {
                     });
                 }
             });
+            // CM6 batches gutter reconfiguration in a microtask. Flush once
+            // after the complete marker batch so callers can immediately
+            // inspect and interact with the newly installed gutter nodes.
+            editor.refresh();
         }
     }
 
@@ -482,4 +486,3 @@ define(function (require, exports, module) {
         registerHandlers();
     });
 });
-

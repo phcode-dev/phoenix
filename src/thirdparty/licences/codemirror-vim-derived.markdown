@@ -1,6 +1,13 @@
-MIT License
+# @replit CodeMirror Vim-derived compatibility code
 
-Copyright (C) 2017 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+Phoenix bundles `@replit/codemirror-vim-core` and adapts the CodeMirror 5
+integration layer from `@replit/codemirror-vim` in:
+
+- `src/editor/CodeMirrorVimCompat.js`
+
+The adapted integration code is distributed under the following MIT license:
+
+Copyright (C) 2018-2021 by Marijn Haverbeke <marijnh@gmail.com> and others
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

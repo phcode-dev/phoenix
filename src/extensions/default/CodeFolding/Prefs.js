@@ -112,7 +112,11 @@ define(function (require, exports, module) {
       * Clears all the saved line folds for all documents.
       */
     function clearAllFolds() {
-        PreferencesManager.setViewState(FOLDS_PREF_KEY, {});
+        PreferencesManager.setViewState(
+            FOLDS_PREF_KEY,
+            {},
+            PreferencesManager.STATE_PROJECT_CONTEXT
+        );
     }
 
     module.exports.getFolds = getFolds;

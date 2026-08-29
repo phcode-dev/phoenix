@@ -165,7 +165,7 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(INDENT_LINE_COMMENT,  "boolean", true, {
         description: Strings.DESCRIPTION_INDENT_LINE_COMMENT
     });
-    PreferencesManager.definePreference(INPUT_STYLE,  "string", "textarea", {
+    PreferencesManager.definePreference(INPUT_STYLE,  "string", "contenteditable", {
         description: Strings.DESCRIPTION_INPUT_STYLE
     });
     PreferencesManager.definePreference(MOUSE_WHEEL_SCROLL_SENSITIVITY, "number", 1, {

@@ -130,7 +130,8 @@ if(!Phoenix.isNativeApp) {
  */
 require.config({
     paths: {
-        "text": "thirdparty/text/text",
+        "text-base": "thirdparty/text/text",
+        "text": "editor/CodeMirrorLegacyText",
         "i18n": "thirdparty/i18n/i18n",
 
         // The file system implementation. Change this value to use different
@@ -141,7 +142,10 @@ require.config({
     },
     map: {
         "*": {
-            "thirdparty/CodeMirror2": "thirdparty/CodeMirror",
+            // Keep these aliases exact. CodeMirrorLegacyModuleLoader handles
+            // legacy root, addon, keymap, and mode IDs without a CM5 file tree.
+            "thirdparty/CodeMirror/lib/codemirror": "editor/CodeMirrorCompat",
+            "thirdparty/CodeMirror2/lib/codemirror": "editor/CodeMirrorCompat",
             "thirdparty/preact": "preact-compat",
             "view/PanelManager": "view/WorkspaceManager"  // For extension compatibility
         }

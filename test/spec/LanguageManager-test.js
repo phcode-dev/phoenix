@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror          = require("editor/CodeMirrorCompat"),
         LanguageManager     = require("language/LanguageManager"),
         PreferencesManager  = require("preferences/PreferencesManager");
 
@@ -435,6 +435,11 @@ define(function (require, exports, module) {
                 var id          = "erlang",
                     def         = { id: id, name: "erlang", fileExtensions: ["erlang"], mode: "erlang" },
                     language;
+
+                // Other independent compatibility suites may have loaded the
+                // bundled mode already. Reset this public registry entry so
+                // this test still exercises LanguageManager's lazy-load path.
+                delete CodeMirror.modes[id];
 
                 // erlang is not defined in the default set of languages in languages.json
                 expect(CodeMirror.modes[id]).toBe(undefined);

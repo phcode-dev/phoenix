@@ -25,7 +25,7 @@
 define(function (require, exports, module) {
 
 
-    var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror = require("editor/CodeMirrorCompat"),
         TokenUtils = require("utils/TokenUtils");
 
 

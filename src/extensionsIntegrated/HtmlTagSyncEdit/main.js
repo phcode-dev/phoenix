@@ -27,7 +27,7 @@ define(function (require, exports, module) {
     const AppInit = require("utils/AppInit"),
         Editor = require("editor/Editor").Editor,
         LanguageManager     = require("language/LanguageManager"),
-        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        CodeMirror = require("editor/CodeMirrorCompat"),
         Commands            = require("command/Commands"),
         PreferencesManager  = require("preferences/PreferencesManager"),
         WorkspaceManager      = require("view/WorkspaceManager"),
@@ -258,7 +258,8 @@ define(function (require, exports, module) {
             }
             return;
         }
-        const matchingTags = CodeMirror.findMatchingTag(activeEditor._codeMirror, cursor);
+        const matchingTags = CodeMirror.findMatchingTag &&
+            CodeMirror.findMatchingTag(activeEditor._codeMirror, cursor);
         if(!matchingTags) {
             clearRenameMarkers();
             return;

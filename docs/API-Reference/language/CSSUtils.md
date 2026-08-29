@@ -58,12 +58,11 @@ Returns a context info object for the given cursor position
 | editor | <code>Editor</code> |  |
 | constPos | <code>Object</code> | A CM pos (likely from editor.getCursorPos()) |
 
-<a name="getInfoAtPos.._contextCM"></a>
+<a name="getInfoAtPos..contextCM"></a>
 
-### getInfoAtPos.\_contextCM
-We will use this CM to cook css context in case of style attribute value
-as CM in htmlmixed mode doesn't yet identify this as css context. We provide
-a no-op display function to run CM without a DOM head.
+### getInfoAtPos.contextCM
+Use a detached CM6-backed compatibility editor to compute CSS
+context for a style attribute without adding another visible editor.
 
 **Kind**: inner property of [<code>getInfoAtPos</code>](#getInfoAtPos)  
 <a name="getCompleteSelectors"></a>

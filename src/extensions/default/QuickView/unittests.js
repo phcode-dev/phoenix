@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, awaitsFor, awaitsForDone, afterAll */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone, afterAll, spyOn */
 
 define(function (require, exports, module) {
 
@@ -38,6 +38,7 @@ define(function (require, exports, module) {
             Commands,
             MainViewManager,
             EditorManager,
+            FileViewController,
             QuickView,
             editor,
             testFile = "test.css";
@@ -55,6 +56,7 @@ define(function (require, exports, module) {
             CommandManager = brackets.test.CommandManager;
             Commands = brackets.test.Commands;
             EditorManager = brackets.test.EditorManager;
+            FileViewController = brackets.test.FileViewController;
             QuickView = brackets.test.QuickViewManager;
             MainViewManager = brackets.test.MainViewManager;
 
@@ -69,6 +71,7 @@ define(function (require, exports, module) {
             CommandManager   = null;
             Commands         = null;
             EditorManager    = null;
+            FileViewController = null;
             QuickView        = null;
             MainViewManager  = null;
             await SpecRunnerUtils.closeTestWindow();
@@ -330,6 +333,15 @@ define(function (require, exports, module) {
 
                 editor  = EditorManager.getCurrentFullEditor();
             }, 30000);
+
+            afterEach(async function () {
+                const currentFile = MainViewManager.getCurrentlyViewedFile();
+                if (currentFile && !currentFile.fullPath.endsWith("/" + testFile)) {
+                    await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                        "close file opened from image preview");
+                }
+            }, 30000);
+
             it("Should show image preview for file path inside url()",async function () {
                 await checkImagePathAtPos("img/grabber_color-well.png", 140, 26);
                 await checkImagePathAtPos("img/Color.png",              141, 26);
@@ -345,11 +357,14 @@ define(function (require, exports, module) {
 
                 // Just check end of path - local drive location prefix unimportant
                 expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
+                const openSpy = spyOn(FileViewController, "openAndSelectDocument").and.callThrough();
                 imagePreview.click();
-                await awaitsFor(()=>{
-                    let currentFile = MainViewManager.getCurrentlyViewedFile();
-                    return currentFile.fullPath.endsWith(expectedPathEnding);
-                }, "waits for image to open");
+                await awaitsFor(() => openSpy.calls.count() === 1,
+                    "image preview to request opening its file");
+                await awaitsForDone(openSpy.calls.mostRecent().returnValue,
+                    "image preview file to open");
+                const currentFile = MainViewManager.getCurrentlyViewedFile();
+                expect(currentFile.fullPath.endsWith(expectedPathEnding)).toBeTrue();
             });
 
             it("Should click on svg image preview open the corresponding file", async function () {
@@ -362,11 +377,14 @@ define(function (require, exports, module) {
 
                 // Just check end of path - local drive location prefix unimportant
                 expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
+                const openSpy = spyOn(FileViewController, "openAndSelectDocument").and.callThrough();
                 imagePreview.click();
-                await awaitsFor(()=>{
-                    let currentFile = MainViewManager.getCurrentlyViewedFile();
-                    return currentFile.fullPath.endsWith(expectedPathEnding);
-                }, "waits for chinese sch image to open");
+                await awaitsFor(() => openSpy.calls.count() === 1,
+                    "SVG preview to request opening its file");
+                await awaitsForDone(openSpy.calls.mostRecent().returnValue,
+                    "SVG preview file to open");
+                const currentFile = MainViewManager.getCurrentlyViewedFile();
+                expect(currentFile.fullPath.endsWith(expectedPathEnding)).toBeTrue();
             });
 
             it("Should show image preview for urls with http/https",async function () {

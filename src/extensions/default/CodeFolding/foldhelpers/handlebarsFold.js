@@ -27,7 +27,7 @@
 
 define(function (require, exports, module) {
 
-    var CodeMirror  = brackets.getModule("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror  = brackets.getModule("editor/CodeMirrorCompat"),
         _           = brackets.getModule("thirdparty/lodash"),
         StringUtils = brackets.getModule("utils/StringUtils");
 

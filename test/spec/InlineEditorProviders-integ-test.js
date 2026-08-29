@@ -117,7 +117,9 @@ define(function (require, exports, module) {
 
                 // By the time we're called, the content of the widget should be in the DOM and have a nontrivial height.
                 expect($.contains(testWindow.document.documentElement, inlineWidgets[0].htmlContent)).toBe(true);
-                expect(inlineWidgets[0].$htmlContent.height()).toBeGreaterThan(50);
+                await awaitsFor(function () {
+                    return inlineWidgets[0].$htmlContent.height() > 50;
+                }, "inline editor to have nontrivial height", 5000);
             }
 
             editor = null;

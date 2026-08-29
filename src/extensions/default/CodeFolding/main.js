@@ -29,7 +29,7 @@
 define(function (require, exports, module) {
 
 
-    var CodeMirror              = brackets.getModule("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror              = brackets.getModule("editor/CodeMirrorCompat"),
         Strings                 = brackets.getModule("strings"),
         AppInit                 = brackets.getModule("utils/AppInit"),
         CommandManager          = brackets.getModule("command/CommandManager"),
@@ -51,13 +51,9 @@ define(function (require, exports, module) {
         codeFoldingMenuDivider  = "codefolding.divider",
         collapseKey             = "Ctrl-Shift-{",
         expandKey               = "Ctrl-Shift-}";
+    const GUTTER_EVENT_NAMESPACE = ".CodeFolding";
 
     ExtensionUtils.loadStyleSheet(module, "main.less");
-
-    // Load CodeMirror addons
-    brackets.getModule(["thirdparty/CodeMirror/addon/fold/brace-fold"]);
-    brackets.getModule(["thirdparty/CodeMirror/addon/fold/comment-fold"]);
-    brackets.getModule(["thirdparty/CodeMirror/addon/fold/markdown-fold"]);
 
     // Still using slightly modified versions of the foldcode.js and foldgutter.js since we
     // need to modify the gutter click handler to take care of some collapse and expand features
@@ -66,6 +62,7 @@ define(function (require, exports, module) {
         foldCode                = require("foldhelpers/foldcode"),
         indentFold              = require("foldhelpers/indentFold"),
         handlebarsFold          = require("foldhelpers/handlebarsFold"),
+        languageFold            = require("foldhelpers/languageFold"),
         selectionFold           = require("foldhelpers/foldSelected");
 
 
@@ -122,9 +119,20 @@ define(function (require, exports, module) {
         }
 
         var cm = editor._codeMirror;
+        if (typeof cm.getValidFolds !== "function" &&
+                typeof CodeMirror.installExtensions === "function") {
+            CodeMirror.installExtensions(cm);
+        }
+        if (typeof cm.getValidFolds !== "function") {
+            cm._lineFolds = {};
+            return;
+        }
         var viewState = ViewStateManager.getViewState(editor.document.file);
         var path = editor.document.file.fullPath;
-        var folds = cm._lineFolds || prefs.getFolds(path) || {};
+        const currentFolds = cm._lineFolds || {};
+        const folds = Object.keys(currentFolds).length ?
+            currentFolds :
+            prefs.getFolds(path) || {};
 
         //separate out selection folds from non-selection folds
         var nonSelectionFolds = {}, selectionFolds = {}, range;
@@ -283,23 +291,23 @@ define(function (require, exports, module) {
       */
     function setupGutterEventListeners(editor) {
         var cm = editor._codeMirror;
+        const $gutter = $(cm.getGutterElement());
         $(editor.getRootElement()).addClass("folding-enabled");
         cm.setOption("foldGutter", {onGutterClick: onGutterClick});
 
-        $(cm.getGutterElement()).on({
-            mouseenter: function () {
-                if (prefs.getSetting("hideUntilMouseover")) {
-                    foldGutter.updateInViewport(cm);
-                } else {
-                    $(editor.getRootElement()).addClass("over-gutter");
-                }
-            },
-            mouseleave: function () {
-                if (prefs.getSetting("hideUntilMouseover")) {
-                    clearGutter(editor);
-                } else {
-                    $(editor.getRootElement()).removeClass("over-gutter");
-                }
+        $gutter.off(GUTTER_EVENT_NAMESPACE);
+        $gutter.on("mouseenter" + GUTTER_EVENT_NAMESPACE, function () {
+            if (prefs.getSetting("hideUntilMouseover")) {
+                foldGutter.updateInViewport(cm);
+            } else {
+                $(editor.getRootElement()).addClass("over-gutter");
+            }
+        });
+        $gutter.on("mouseleave" + GUTTER_EVENT_NAMESPACE, function () {
+            if (prefs.getSetting("hideUntilMouseover")) {
+                clearGutter(editor);
+            } else {
+                $(editor.getRootElement()).removeClass("over-gutter");
             }
         });
     }
@@ -309,9 +317,10 @@ define(function (require, exports, module) {
       * @param {Editor} editor the editor instance whose gutter should be removed
       */
     function removeGutters(editor) {
-        Editor.unregisterGutter(GUTTER_NAME);
-        $(editor.getRootElement()).removeClass("folding-enabled");
-        CodeMirror.defineOption("foldGutter", false, null);
+        const cm = editor._codeMirror;
+        $(cm.getGutterElement()).off(GUTTER_EVENT_NAMESPACE);
+        $(editor.getRootElement()).removeClass("folding-enabled over-gutter");
+        cm.setOption("foldGutter", false);
     }
 
     /**
@@ -319,9 +328,14 @@ define(function (require, exports, module) {
       * @param {Editor} editor the editor instance where gutter should be added.
       */
     function enableFoldingInEditor(editor) {
+        const cm = editor && editor._codeMirror;
+        if (!cm || cm._destroyed ||
+                (Object.prototype.hasOwnProperty.call(cm, "_view") && !cm._view)) {
+            return;
+        }
         restoreLineFolds(editor);
         setupGutterEventListeners(editor);
-        editor._codeMirror.refresh();
+        cm.refresh();
     }
 
     /**
@@ -332,7 +346,8 @@ define(function (require, exports, module) {
       * @param {Editor} previous the previous editor
       */
     function onActiveEditorChanged(event, current, previous) {
-        if (current && !current._codeMirror._lineFolds) {
+        if (current && current._codeMirror && !current._codeMirror._destroyed &&
+                !current._codeMirror.state.foldGutter) {
             enableFoldingInEditor(current);
         }
         if (previous) {
@@ -371,8 +386,9 @@ define(function (require, exports, module) {
         // Remove gutter & revert collapsed sections in all currently open editors
         Editor.forEveryEditor(function (editor) {
             CodeMirror.commands.unfoldAll(editor._codeMirror);
+            removeGutters(editor);
         });
-        removeGutters();
+        Editor.unregisterGutter(GUTTER_NAME);
     }
 
     /**
@@ -383,6 +399,7 @@ define(function (require, exports, module) {
 
         foldCode.init();
         foldGutter.init();
+        languageFold.init();
 
         // Many CodeMirror modes specify which fold helper should be used for that language. For a few that
         // don't, we register helpers explicitly here. We also register a global helper for generic indent-based
@@ -393,6 +410,9 @@ define(function (require, exports, module) {
         CodeMirror.registerGlobalHelper("fold", "indent", function (mode, cm) {
             return prefs.getSetting("alwaysUseIndentFold");
         }, indentFold);
+        CodeMirror.registerGlobalHelper("fold", "cm6Syntax", function (mode, cm) {
+            return Boolean(cm && cm._view);
+        }, languageFold.syntaxFold);
 
         CodeMirror.registerHelper("fold", "handlebars", handlebarsFold);
         CodeMirror.registerHelper("fold", "htmlhandlebars", handlebarsFold);

@@ -33,9 +33,6 @@
  */
 
 /* LESS imports */
-// codemirror
-@import (less) "../thirdparty/CodeMirror/lib/codemirror.css";
-
 // Bootstrap @ v.2.3.1
 @import url("bootstrap/bootstrap.less");
 
@@ -54,6 +51,8 @@
 
 // Codemirror styling overrides
 @import url("brackets_codemirror_override.less");
+@import url("brackets_codemirror6.less");
+@import (inline) "brackets_codemirror6_legacy_themes.less";
 
 // Styling for file tree
 @import url("jsTreeTheme.less");

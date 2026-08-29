@@ -1,13 +1,52 @@
 import { WebSocketServer } from "ws";
 import { LogBuffer } from "./log-buffer.js";
 
-export function createWSControlServer(port) {
-    const wss = new WebSocketServer({ port });
+export const DEFAULT_WS_HOST = "127.0.0.1";
+
+export async function createWSControlServer(port) {
+    const wss = new WebSocketServer({
+        host: DEFAULT_WS_HOST,
+        port
+    });
+    await new Promise((resolve, reject) => {
+        const onListening = () => {
+            wss.off("error", onError);
+            resolve();
+        };
+        const onError = (error) => {
+            wss.off("listening", onListening);
+            if (error.code === "EADDRINUSE") {
+                const portError = new Error(
+                    `WebSocket port ${port} is already in use. ` +
+                    "Configure a unique PHOENIX_MCP_WS_PORT for each concurrent " +
+                    "Phoenix Builder MCP/Phoenix pair."
+                );
+                portError.code = error.code;
+                portError.cause = error;
+                reject(portError);
+                return;
+            }
+            reject(error);
+        };
+
+        wss.once("listening", onListening);
+        wss.once("error", onError);
+    });
+
     const clients = new Map(); // name -> { ws, logs, isAlive }
     let unknownCounter = 0;
     let requestIdCounter = 0;
     const pendingRequests = new Map();
     let heartbeatInterval = null;
+
+    function _rejectPendingRequestsForSocket(ws, message) {
+        for (const [id, pending] of pendingRequests) {
+            if (pending.ws === ws) {
+                pendingRequests.delete(id);
+                pending.reject(new Error(message));
+            }
+        }
+    }
 
     wss.on("connection", (ws) => {
         // Name is assigned when the client sends a "hello" message.
@@ -177,12 +216,14 @@ export function createWSControlServer(port) {
         });
 
         ws.on("close", () => {
+            _rejectPendingRequestsForSocket(ws, "Phoenix client disconnected");
             if (clientName && clients.get(clientName)?.ws === ws) {
                 clients.delete(clientName);
             }
         });
 
         ws.on("error", () => {
+            _rejectPendingRequestsForSocket(ws, "Phoenix client connection failed");
             if (clientName && clients.get(clientName)?.ws === ws) {
                 clients.delete(clientName);
             }
@@ -256,6 +297,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -295,6 +337,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -334,6 +377,7 @@ export function createWSControlServer(port) {
             }, 10000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -376,6 +420,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -411,6 +456,7 @@ export function createWSControlServer(port) {
             }, 60000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -446,6 +492,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -481,6 +528,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -520,6 +568,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -565,19 +614,27 @@ export function createWSControlServer(port) {
 
     function close() {
         clearInterval(heartbeatInterval);
-        for (const [id, pending] of pendingRequests) {
+        for (const pending of pendingRequests.values()) {
             pending.reject(new Error("Server shutting down"));
         }
         pendingRequests.clear();
-        for (const [name, client] of clients) {
+        for (const ws of wss.clients) {
             try {
-                client.ws.close(1000, "Server shutting down");
+                ws.terminate();
             } catch {
                 // ignore
             }
         }
         clients.clear();
-        wss.close();
+        return new Promise((resolve, reject) => {
+            wss.close((error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
     }
 
     return {
@@ -594,6 +651,10 @@ export function createWSControlServer(port) {
         isClientConnected,
         getConnectedInstances,
         close,
-        getPort: () => port
+        getAddress: () => wss.address(),
+        getPort: () => {
+            const address = wss.address();
+            return address && typeof address === "object" ? address.port : port;
+        }
     };
 }

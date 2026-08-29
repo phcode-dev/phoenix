@@ -29,7 +29,8 @@ require.config({
         "test": "../test",
         "perf": "../test/perf",
         "spec": "../test/spec",
-        "text": "thirdparty/text/text",
+        "text-base": "thirdparty/text/text",
+        "text": "editor/CodeMirrorLegacyText",
         "i18n": "thirdparty/i18n/i18n",
         "fileSystemImpl": "filesystem/impls/appshell/AppshellFileSystem",
         "preferences/PreferencesImpl": "../test/TestPreferencesImpl",
@@ -41,6 +42,10 @@ require.config({
     },
     map: {
         "*": {
+            // Keep these aliases exact. CodeMirrorLegacyModuleLoader handles
+            // legacy root, addon, keymap, and mode IDs without a CM5 file tree.
+            "thirdparty/CodeMirror/lib/codemirror": "editor/CodeMirrorCompat",
+            "thirdparty/CodeMirror2/lib/codemirror": "editor/CodeMirrorCompat",
             "thirdparty/preact": "preact-compat",
             "thirdparty/preact-test-utils": "preact-test-utils"
         }
@@ -266,18 +271,11 @@ define(function (require, exports, module) {
     require("thirdparty/jquery.knob.modified");
     require('thirdparty/marked.min');
 
-    // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
-    require("thirdparty/CodeMirror/addon/fold/xml-fold");
-    require("thirdparty/CodeMirror/addon/edit/matchtags");
-    require("thirdparty/CodeMirror/addon/edit/matchbrackets");
-    require("thirdparty/CodeMirror/addon/edit/closebrackets");
-    require("thirdparty/CodeMirror/addon/edit/closetag");
-    require("thirdparty/CodeMirror/addon/selection/active-line");
-    require("thirdparty/CodeMirror/addon/mode/multiplex");
-    require("thirdparty/CodeMirror/addon/mode/overlay");
-    require("thirdparty/CodeMirror/addon/search/searchcursor");
-    require("thirdparty/CodeMirror/addon/comment/comment");
-    require("thirdparty/CodeMirror/keymap/sublime");
+    // Preserve the eagerly available CodeMirror 5-era addon surface with
+    // implementations backed entirely by the CodeMirror 6 adapter.
+    const CodeMirror = require("editor/CodeMirrorCompat");
+    require("editor/CodeMirrorLegacyAddons").installAll(CodeMirror);
+    require("editor/CodeMirrorSublimeCompat").install(CodeMirror);
 
     //load Language Tools Module
     require("languageTools/PathConverters");

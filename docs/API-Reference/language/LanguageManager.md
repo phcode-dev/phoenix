@@ -296,5 +296,5 @@ Defines a language.
 | definition.fileNames | <code>Array.&lt;string&gt;</code> | List of exact file names (e.g. ["Makefile"] or ["package.json]). Higher precedence than file extension. |
 | definition.blockComment | <code>Array.&lt;string&gt;</code> | Array with two entries defining the block comment prefix and suffix (e.g. ["< !--", "-->"]) |
 | definition.lineComment | <code>string</code> \| <code>Array.&lt;string&gt;</code> | Line comment prefixes (e.g. "//" or ["//", "#"]) |
-| definition.mode | <code>string</code> \| <code>Array.&lt;string&gt;</code> | CodeMirror mode (e.g. "htmlmixed"), optionally with a MIME mode defined by that mode ["clike", "text/x-c++src"]                                                          Unless the mode is located in thirdparty/CodeMirror/mode/"name"/"name".js, you need to first load it yourself. |
+| definition.mode | <code>string</code> \| <code>Array.&lt;string&gt;</code> | CodeMirror-compatible mode (e.g. "htmlmixed"), optionally with a                                                          MIME mode defined by that mode ["clike", "text/x-c++src"].                                                          Custom modes must be registered before defining the language. |
 

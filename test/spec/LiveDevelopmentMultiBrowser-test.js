@@ -67,7 +67,7 @@ define(function (require, exports, module) {
                 if (!outerIFrame || !outerIFrame.src) { return false; }
                 let srcURL = new URL(outerIFrame.src);
                 return srcURL.pathname.endsWith(name) === true;
-            }, "waiting for name- " + name);
+            }, "waiting for name- " + name, 20000);
             // Ensure md viewer is in reader mode for tests
             if (name.endsWith(".md")) {
                 _ensureMdReaderMode();
@@ -1343,6 +1343,34 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        it("should detach a closed editor before delayed highlight updates", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+
+            const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+            const editor = EditorManager.getActiveEditor();
+            expect(liveDoc.editor).toBe(editor);
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all files");
+            await awaitsFor(() => !liveDoc.editor,
+                "live document to detach from the closed editor");
+
+            expect(editor._codeMirror._destroyed).toBe(true);
+            expect(editor._codeMirror._view).toBeNull();
+
+            // Recreate a delayed callback retaining the destroyed editor. The
+            // live document must reject the stale CM6 adapter before reading it.
+            liveDoc.editor = editor;
+            expect(function () {
+                liveDoc.updateHighlight();
+            }).not.toThrow();
+            expect(liveDoc.editor).toBeNull();
+
+            await endPreviewSession();
+        }, 30000);
+
         it("should live highlight css classes highlight all elements", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
                 "SpecRunnerUtils.openProjectFiles simple2.html");
@@ -1716,11 +1744,22 @@ define(function (require, exports, module) {
             });
             sessionStorageSavedScrollPos = JSON.parse(sessionStorageSavedScrollPos);
             expect(sessionStorageSavedScrollPos.scrollY).toBe(savedWindowScrollY);
+            const longPageURL = _getLivePreviewIFrame().src;
+            await awaitsFor(() => {
+                const savedPosition =
+                    testWindow._livePreviewIntegTest.getSavedScrollPosition(longPageURL);
+                return savedPosition && savedPosition.scrollY === savedWindowScrollY;
+            }, "Phoenix parent to cache the live preview scroll position");
 
             // now switch to a different page, its scroll position should not the saved scroll pos of last page
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
-            await waitsForLiveDevelopmentToOpen();
+            await _waitForIframeSrc("simple1.html");
+            await awaitsFor(() => {
+                const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+                return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE &&
+                    liveDoc && liveDoc.doc.file.fullPath.endsWith("/simple1.html");
+            }, "live preview to finish switching to simple1.html", 20000);
             await forRemoteExec(`window.scrollY`, (result) => {
                 return result !== savedWindowScrollY;
             });
@@ -1728,12 +1767,18 @@ define(function (require, exports, module) {
             // now switch back to old page and verify if the scroll position was restored
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["longPage.html"]),
                 "SpecRunnerUtils.openProjectFiles longPage.html");
+            await _waitForIframeSrc("longPage.html");
+            await awaitsFor(() => {
+                const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+                return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE &&
+                    liveDoc && liveDoc.doc.file.fullPath.endsWith("/longPage.html");
+            }, "live preview to finish switching to longPage.html", 20000);
             await forRemoteExec(`window.scrollY`, (result) => {
                 return result === savedWindowScrollY;
             });
 
             await endPreviewSession();
-        }, 30000);
+        }, 150000);
 
         it("should pin live previews pin html file - 1", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),

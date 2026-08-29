@@ -1,0 +1,828 @@
+// Copyright (c) 2026 - present core.ai. All rights reserved.
+//
+// CodeMirror 6 uses a different DOM structure from the previous editor surface. Keep these
+// rules scoped to the CM6 root so legacy and inline editors retain their
+// existing layout.
+
+.CodeMirror.phoenix-codemirror-6 {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background: @background;
+
+    &.cm-focused {
+        outline: none;
+    }
+
+    .cm-scroller {
+        flex-shrink: 0;
+        overflow: auto;
+        font-family: inherit;
+        line-height: var(--editor-line-height);
+    }
+
+    .cm-scroller.CodeMirror-lines {
+        padding: 0;
+        pointer-events: auto;
+    }
+
+    .phoenix-cm6-legacy-sizer,
+    .phoenix-cm6-legacy-vscrollbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: content-box;
+        margin: 0;
+        overflow: hidden;
+        pointer-events: none;
+        visibility: hidden;
+        contain: strict;
+    }
+
+    .phoenix-cm6-legacy-sizer {
+        padding: 0;
+
+        > .phoenix-cm6-legacy-content-width {
+            height: 1px;
+        }
+
+        > .phoenix-cm6-legacy-lines {
+            position: absolute;
+            inset: 0;
+            padding: @code-padding 0;
+            pointer-events: none;
+        }
+
+        > .phoenix-cm6-legacy-measure {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            margin: 0;
+            overflow: hidden;
+        }
+    }
+
+    .phoenix-cm6-legacy-vscrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .cm-content {
+        min-height: 100%;
+        padding:
+            @code-padding
+            var(--phoenix-cm6-scrollbar-right, 0)
+            calc(@code-padding + var(--phoenix-cm6-scrollbar-bottom, 0))
+            0;
+        caret-color: @foreground !important;
+    }
+
+    .cm-line {
+        padding: 0 @code-padding 0 0;
+    }
+
+    .phoenix-cm6-rulers {
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .phoenix-cm6-line-widget {
+        pointer-events: auto;
+    }
+
+    &.CodeMirror-overwrite .cm-cursor {
+        border-left: none !important;
+        border-bottom: 1px solid black;
+        width: 1.2ex;
+    }
+
+    .cm-gutters {
+        background-color: @background;
+        border-right: none;
+        color: @accent-comment;
+    }
+
+    .cm-lineNumbers .cm-gutterElement {
+        color: @accent-comment;
+        min-width: 2.5em;
+        padding: 0 @code-padding 0 10px;
+    }
+
+    .cm-activeLine {
+        background: transparent;
+    }
+
+    &.cm-focused .cm-activeLine {
+        background: @activeline-bg;
+    }
+
+    .cm-activeLineGutter {
+        background: transparent;
+        color: @accent-comment;
+    }
+
+    &.cm-focused .cm-activeLineGutter {
+        background: @activeline-number-bg;
+        color: @activeline-number;
+    }
+
+    .cm-selectionBackground {
+        background: @selection-color-unfocused;
+    }
+
+    &.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {
+        background: @selection-color-focused;
+    }
+
+    .cm-cursor,
+    .cm-dropCursor {
+        border-left-color: black;
+    }
+
+    &.cm-vimMode {
+        .cm-content {
+            caret-color: transparent !important;
+        }
+
+        &.cm-fat-cursor .cm-cursor {
+            width: 1ch;
+            border-left: none !important;
+            background: fade(@foreground, 50%);
+        }
+
+        &.cm-fat-cursor:not(.cm-focused) .cm-cursor {
+            box-sizing: border-box;
+            background: transparent;
+            outline: 1px solid fade(@foreground, 70%);
+        }
+    }
+
+    .phoenix-cm6-vim-dialog,
+    .phoenix-cm6-vim-notification {
+        position: absolute;
+        right: 0;
+        left: 0;
+        z-index: 10;
+        box-sizing: border-box;
+        padding: 4px 8px;
+        overflow: hidden;
+        color: @foreground;
+        background: @background;
+        border-bottom: 1px solid @bc-panel-border;
+
+        input {
+            width: 20em;
+            max-width: calc(100% - 2em);
+            margin: 0 4px;
+            color: inherit;
+            font: inherit;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+    }
+
+    .CodeMirror-dialog-top {
+        top: 0;
+    }
+
+    .CodeMirror-dialog-bottom {
+        bottom: 0;
+        border-top: 1px solid @bc-panel-border;
+        border-bottom: none;
+    }
+
+    .CodeMirror-dialog {
+        position: absolute;
+        right: 0;
+        left: 0;
+        z-index: 15;
+        box-sizing: border-box;
+        padding: 0.1em 0.8em;
+        overflow: hidden;
+        color: inherit;
+        background: inherit;
+
+        input {
+            width: 20em;
+            max-width: calc(100% - 2em);
+            color: inherit;
+            font-family: monospace;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            font-size: 70%;
+        }
+    }
+
+    &.CodeMirror-fullscreen {
+        position: fixed;
+        inset: 0;
+        z-index: 9;
+        height: auto;
+    }
+
+    .CodeMirror-lint-markers {
+        width: 16px;
+    }
+
+    .CodeMirror-lint-mark {
+        background-position: left bottom;
+        background-repeat: repeat-x;
+    }
+
+    .CodeMirror-lint-mark-warning {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJFhQXEbhTg7YAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAMklEQVQI12NkgIIvJ3QXMjAwdDN+OaEbysDA4MPAwNDNwMCwiOHLCd1zX07o6kBVGQEAKBANtobskNMAAAAASUVORK5CYII=");
+    }
+
+    .CodeMirror-lint-mark-error {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDw4cOCW1/KIAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg==");
+    }
+
+    .CodeMirror-lint-marker {
+        position: relative;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+        cursor: pointer;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .CodeMirror-lint-marker-warning {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAANlBMVEX/uwDvrwD/uwD/uwD/uwD/uwD/uwD/uwD/uwD6twD/uwAAAADurwD2tQD7uAD+ugAAAAD/uwDhmeTRAAAADHRSTlMJ8mN1EYcbmiixgACm7WbuAAAAVklEQVR42n3PUQqAIBBFUU1LLc3u/jdbOJoW1P08DA9Gba8+YWJ6gNJoNYIBzAA2chBth5kLmG9YUoG0NHAUwFXwO9LuBQL1giCQb8gC9Oro2vp5rncCIY8L8uEx5ZkAAAAASUVORK5CYII=");
+    }
+
+    .CodeMirror-lint-marker-error {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAHlBMVEW7AAC7AACxAAC7AAC7AAAAAAC4AAC5AAD///+7AAAUdclpAAAABnRSTlMXnORSiwCK0ZKSAAAATUlEQVR42mWPOQ7AQAgDuQLx/z8csYRmPRIFIwRGnosRrpamvkKi0FTIiMASR3hhKW+hAN6/tIWhu9PDWiTGNEkTtIOucA5Oyr9ckPgAWm0GPBog6v4AAAAAElFTkSuQmCC");
+    }
+
+    .CodeMirror-lint-marker-multiple {
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAMAAADzjKfhAAAACVBMVEUAAAAAAAC/v7914kyHAAAAAXRSTlMAQObYZgAAACNJREFUeNo1ioEJAAAIwmz/H90iFFSGJgFMe3gaLZ0od+9/AQZ0ADosbYraAAAAAElFTkSuQmCC");
+        background-position: right bottom;
+        background-repeat: no-repeat;
+    }
+
+    .CodeMirror-lint-line-error {
+        background-color: rgba(183, 76, 81, 0.08);
+    }
+
+    .CodeMirror-lint-line-warning {
+        background-color: rgba(255, 211, 0, 0.1);
+    }
+
+    &.phoenix-cm6-custom-scrollbars .cm-scroller {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    &.phoenix-cm6-custom-scrollbars .cm-scroller::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .CodeMirror-simplescroll-horizontal div,
+    .CodeMirror-simplescroll-vertical div {
+        position: absolute;
+        box-sizing: border-box;
+        background: #ccc;
+        border: 1px solid #bbb;
+        border-radius: 2px;
+    }
+
+    .CodeMirror-simplescroll-horizontal,
+    .CodeMirror-simplescroll-vertical {
+        position: absolute;
+        z-index: 6;
+        background: #eee;
+    }
+
+    .CodeMirror-simplescroll-horizontal {
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 8px;
+
+        div {
+            bottom: 0;
+            height: 100%;
+        }
+    }
+
+    .CodeMirror-simplescroll-vertical {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 8px;
+
+        div {
+            right: 0;
+            width: 100%;
+        }
+    }
+
+    .CodeMirror-overlayscroll-horizontal div,
+    .CodeMirror-overlayscroll-vertical div {
+        position: absolute;
+        background: #bcd;
+        border-radius: 3px;
+    }
+
+    .CodeMirror-overlayscroll-horizontal,
+    .CodeMirror-overlayscroll-vertical {
+        position: absolute;
+        z-index: 6;
+    }
+
+    .CodeMirror-overlayscroll-horizontal {
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 6px;
+
+        div {
+            bottom: 0;
+            height: 100%;
+        }
+    }
+
+    .CodeMirror-overlayscroll-vertical {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 6px;
+
+        div {
+            right: 0;
+            width: 100%;
+        }
+    }
+
+    span.cm-underlined,
+    .cm-tw-underline {
+        text-decoration: underline;
+    }
+
+    span.cm-strikethrough,
+    .cm-tw-deleted {
+        text-decoration: line-through;
+    }
+
+    span.cm-brace {
+        color: #170;
+        font-weight: bold;
+    }
+
+    span.cm-table {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .cm-tw-syntaxerror {
+        color: #fff;
+        background-color: #900;
+    }
+
+    .cm-tw-header5 {
+        font-weight: bold;
+    }
+
+    .cm-tw-listitem:first-child {
+        padding-left: 10px;
+    }
+
+    .cm-tw-box {
+        border: 1px solid;
+        border-top-width: 0 !important;
+        border-color: inherit;
+    }
+
+    .cm-matchingBracket {
+        background-color: @matching-bracket;
+        color: @accent-bracket;
+    }
+
+    .cm-nonmatchingBracket {
+        color: @accent-bracket;
+    }
+}
+
+.CodeMirror-hints {
+    position: absolute;
+    z-index: 10;
+    box-sizing: border-box;
+    max-height: 20em;
+    margin: 0;
+    padding: 2px;
+    overflow: hidden auto;
+    color: black;
+    font-family: monospace;
+    font-size: 90%;
+    list-style: none;
+    background: white;
+    border: 1px solid silver;
+    border-radius: 3px;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.CodeMirror-hint {
+    margin: 0;
+    padding: 0 4px;
+    color: black;
+    white-space: pre;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+li.CodeMirror-hint-active {
+    color: white;
+    background: #08f;
+}
+
+.CodeMirror-lint-tooltip {
+    position: fixed;
+    z-index: 100;
+    max-width: 600px;
+    padding: 2px 5px;
+    overflow: hidden;
+    color: black;
+    font-family: monospace;
+    font-size: 10pt;
+    white-space: pre-wrap;
+    background-color: #ffd;
+    border: 1px solid black;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.CodeMirror-lint-message {
+    padding-left: 18px;
+    background-position: top left;
+    background-repeat: no-repeat;
+}
+
+.CodeMirror-lint-message-warning {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAANlBMVEX/uwDvrwD/uwD/uwD/uwD/uwD/uwD/uwD/uwD6twD/uwAAAADurwD2tQD7uAD+ugAAAAD/uwDhmeTRAAAADHRSTlMJ8mN1EYcbmiixgACm7WbuAAAAVklEQVR42n3PUQqAIBBFUU1LLc3u/jdbOJoW1P08DA9Gba8+YWJ6gNJoNYIBzAA2chBth5kLmG9YUoG0NHAUwFXwO9LuBQL1giCQb8gC9Oro2vp5rncCIY8L8uEx5ZkAAAAASUVORK5CYII=");
+}
+
+.CodeMirror-lint-message-error {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAHlBMVEW7AAC7AACxAAC7AAC7AAAAAAC4AAC5AAD///+7AAAUdclpAAAABnRSTlMXnORSiwCK0ZKSAAAATUlEQVR42mWPOQ7AQAgDuQLx/z8csYRmPRIFIwRGnosRrpamvkKi0FTIiMASR3hhKW+hAN6/tIWhu9PDWiTGNEkTtIOucA5Oyr9ckPgAWm0GPBog6v4AAAAAElFTkSuQmCC");
+}
+
+.CodeMirror-merge {
+    position: relative;
+    height: 350px;
+    white-space: pre;
+    border: 1px solid #ddd;
+
+    .CodeMirror {
+        height: 350px;
+    }
+}
+
+.CodeMirror-merge-2pane {
+    .CodeMirror-merge-pane {
+        width: 47%;
+    }
+
+    .CodeMirror-merge-gap {
+        width: 6%;
+    }
+}
+
+.CodeMirror-merge-3pane {
+    .CodeMirror-merge-pane {
+        width: 31%;
+    }
+
+    .CodeMirror-merge-gap {
+        width: 3.5%;
+    }
+}
+
+.CodeMirror-merge-pane {
+    display: inline-block;
+    white-space: normal;
+    vertical-align: top;
+}
+
+.CodeMirror-merge-pane-rightmost {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
+.CodeMirror-merge-gap {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+    background: #f8f8f8;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+.CodeMirror-merge-scrolllock-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+}
+
+.CodeMirror-merge-scrolllock {
+    position: relative;
+    left: -50%;
+    color: #555;
+    line-height: 1;
+    cursor: pointer;
+
+    &::after {
+        content: "\21db\00a0\00a0\21da";
+    }
+
+    &.CodeMirror-merge-scrolllock-enabled::after {
+        content: "\21db\21da";
+    }
+}
+
+.CodeMirror-merge-copybuttons-left,
+.CodeMirror-merge-copybuttons-right {
+    position: absolute;
+    inset: 0;
+    line-height: 1;
+}
+
+.CodeMirror-merge-copy,
+.CodeMirror-merge-copy-reverse {
+    position: absolute;
+    z-index: 3;
+    color: #44c;
+    cursor: pointer;
+}
+
+.CodeMirror-merge-copybuttons-left .CodeMirror-merge-copy {
+    left: 2px;
+}
+
+.CodeMirror-merge-copybuttons-right .CodeMirror-merge-copy {
+    right: 2px;
+}
+
+.CodeMirror-merge-r-inserted,
+.CodeMirror-merge-l-inserted {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAYAAACddGYaAAAAGUlEQVQI12MwuCXy3+CWyH8GBgYGJgYkAABZbAQ9ELXurwAAAABJRU5ErkJggg==");
+    background-position: bottom left;
+    background-repeat: repeat-x;
+}
+
+.CodeMirror-merge-r-deleted,
+.CodeMirror-merge-l-deleted {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAYAAACddGYaAAAAGUlEQVQI12M4Kyb2/6yY2H8GBgYGJgYkAABURgPz6Ks7wQAAAABJRU5ErkJggg==");
+    background-position: bottom left;
+    background-repeat: repeat-x;
+}
+
+.CodeMirror-merge-r-chunk {
+    background: #ffffe0;
+}
+
+.CodeMirror-merge-r-chunk-start {
+    border-top: 1px solid #ee8;
+}
+
+.CodeMirror-merge-r-chunk-end {
+    border-bottom: 1px solid #ee8;
+}
+
+.CodeMirror-merge-r-connect {
+    fill: #ffffe0;
+    stroke: #ee8;
+    stroke-width: 1px;
+}
+
+.CodeMirror-merge-l-chunk {
+    background: #eef;
+}
+
+.CodeMirror-merge-l-chunk-start {
+    border-top: 1px solid #88e;
+}
+
+.CodeMirror-merge-l-chunk-end {
+    border-bottom: 1px solid #88e;
+}
+
+.CodeMirror-merge-l-connect {
+    fill: #eef;
+    stroke: #88e;
+    stroke-width: 1px;
+}
+
+.CodeMirror-merge-l-chunk.CodeMirror-merge-r-chunk {
+    background: #dfd;
+}
+
+.CodeMirror-merge-l-chunk-start.CodeMirror-merge-r-chunk-start {
+    border-top: 1px solid #4e4;
+}
+
+.CodeMirror-merge-l-chunk-end.CodeMirror-merge-r-chunk-end {
+    border-bottom: 1px solid #4e4;
+}
+
+.CodeMirror-merge-collapsed-widget {
+    padding: 0 3px;
+    color: #88b;
+    font-size: 90%;
+    cursor: pointer;
+    background: #eef;
+    border: 1px solid #ddf;
+    border-radius: 4px;
+
+    &::before {
+        content: "(...)";
+    }
+}
+
+.CodeMirror-merge-collapsed-line .CodeMirror-gutter-elt {
+    display: none;
+}
+
+.CodeMirror-Tern-completion {
+    position: relative;
+    padding-left: 22px;
+    line-height: 1.5;
+
+    &::before {
+        position: absolute;
+        bottom: 2px;
+        left: 2px;
+        box-sizing: border-box;
+        width: 15px;
+        height: 15px;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: center;
+        border-radius: 50%;
+    }
+}
+
+.CodeMirror-Tern-completion-unknown::before {
+    content: "?";
+    background: #4bb;
+}
+
+.CodeMirror-Tern-completion-object::before {
+    content: "O";
+    background: #77c;
+}
+
+.CodeMirror-Tern-completion-fn::before {
+    content: "F";
+    background: #7c7;
+}
+
+.CodeMirror-Tern-completion-array::before {
+    content: "A";
+    background: #c66;
+}
+
+.CodeMirror-Tern-completion-number::before {
+    content: "1";
+    background: #999;
+}
+
+.CodeMirror-Tern-completion-string::before {
+    content: "S";
+    background: #999;
+}
+
+.CodeMirror-Tern-completion-bool::before {
+    content: "B";
+    background: #999;
+}
+
+.CodeMirror-Tern-completion-guess {
+    color: #999;
+}
+
+.CodeMirror-Tern-tooltip {
+    position: absolute;
+    z-index: 10;
+    max-width: 40em;
+    padding: 2px 5px;
+    color: #444;
+    font-family: monospace;
+    font-size: 90%;
+    white-space: pre-wrap;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 3px;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    transition: opacity 1s;
+}
+
+.CodeMirror-Tern-hint-doc {
+    max-width: 25em;
+    margin-top: -3px;
+}
+
+.CodeMirror-Tern-fname {
+    color: black;
+}
+
+.CodeMirror-Tern-farg {
+    color: #70a;
+}
+
+.CodeMirror-Tern-farg-current {
+    text-decoration: underline;
+}
+
+.CodeMirror-Tern-type {
+    color: #07c;
+}
+
+.CodeMirror-Tern-fhint-guess {
+    opacity: 0.7;
+}
+
+// CM6's base theme uses `display: flex !important`. Phoenix switches open
+// editors by writing an inline `display: none`, so explicitly preserve that
+// existing visibility contract for inactive editor views.
+.CodeMirror.phoenix-codemirror-6[style*="display: none"] {
+    display: none !important;
+}
+
+.show-line-padding .CodeMirror.phoenix-codemirror-6 .cm-line {
+    padding-left: @code-padding;
+}
+
+.dark #editor-holder,
+.dark .editor-holder {
+    .CodeMirror.phoenix-codemirror-6 {
+        background-color: #1d1f21;
+        color: #ddd;
+
+        .cm-content {
+            caret-color: #c5c8c6 !important;
+        }
+
+        .cm-gutters {
+            background-color: #1d1f21;
+            color: #767676;
+        }
+
+        .cm-lineNumbers .cm-gutterElement {
+            color: #767676;
+        }
+
+        .cm-activeLine {
+            background: transparent;
+        }
+
+        &.cm-focused .cm-activeLine {
+            background: #2f2f2f;
+        }
+
+        .cm-activeLineGutter {
+            background: transparent;
+            color: #767676;
+        }
+
+        &.cm-focused .cm-activeLineGutter {
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        .cm-selectionBackground {
+            background: #333f48;
+        }
+
+        &.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {
+            background: #0050a0;
+        }
+
+        .cm-cursor,
+        .cm-dropCursor {
+            border-left-color: #c5c8c6;
+        }
+
+        &.CodeMirror-overwrite .cm-cursor {
+            border-left: none !important;
+            border-bottom: 1px solid #fff;
+        }
+    }
+}

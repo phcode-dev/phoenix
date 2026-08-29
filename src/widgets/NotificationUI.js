@@ -123,7 +123,12 @@ define(function (require, exports, module) {
 
     function _closeToastNotification($NotificationPopup, endCB) {
         // Animate out
+        let cleaned = false;
         function cleanup() {
+            if (cleaned) {
+                return;
+            }
+            cleaned = true;
             $NotificationPopup.removeClass("animateClose");
             $NotificationPopup.remove();
             endCB && endCB();
@@ -134,6 +139,9 @@ define(function (require, exports, module) {
             .addClass("animateClose")
             .one("transitionend", cleanup)
             .one("transitioncancel", cleanup);
+        // A transition event is not guaranteed when a toast is closed before
+        // its deferred opening transition starts.
+        setTimeout(cleanup, 600);
     }
 
     function _closeArrowNotification($NotificationPopup, endCB) {
@@ -383,7 +391,9 @@ define(function (require, exports, module) {
         // Animate in
         // Must wait a cycle for the "display: none" to drop out before CSS transitions will work
         setTimeout(function () {
-            $NotificationPopup.addClass( options.instantOpen ? "instantOpen" : "animateOpen");
+            if (notification.$notification) {
+                $NotificationPopup.addClass(options.instantOpen ? "instantOpen" : "animateOpen");
+            }
         }, 0);
 
         if(options.autoCloseTimeS){

@@ -20,6 +20,7 @@ Thumbs.db
 
 # ignore MCP server runtime files
 /phoenix-builder-mcp/.mcp-server.pid
+/phoenix-builder-mcp/.mcp-server-*.pid
 
 # ignore chrome extension build artifacts
 /phoenix-builder-mcp/chrome_extension/build/
@@ -52,7 +53,7 @@ src/phoenix/virtualfs.js.map
 !/src/thirdparty/licences
 /src/thirdparty/less.*
 /src/thirdparty/emmet.*
-/src/thirdparty/CodeMirror
+/src/thirdparty/CodeMirror6
 /src/thirdparty/acorn
 /src/thirdparty/tern
 /src/thirdparty/mustache

@@ -30,7 +30,7 @@
 define(function (require, exports, module) {
 
 
-    var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror = require("editor/CodeMirrorCompat"),
         Async = require("utils/Async"),
         DocumentManager = require("document/DocumentManager"),
         AppInit = require("utils/AppInit"),
@@ -669,41 +669,48 @@ define(function (require, exports, module) {
             return createInfo();
         }
 
-        // Context from the current editor will have htmlState if we are in css mode
-        // and in attribute value state of a tag with attribute name style
-        if (ctx.token.state.htmlState && (!ctx.token.state.localMode || ctx.token.state.localMode.name !== "css")) {
+        let contextCM;
+        try {
+            // Context from the current editor will have htmlState if we are in css mode
+            // and in attribute value state of a tag with attribute name style
+            if (ctx.token.state.htmlState &&
+                    (!ctx.token.state.localMode || ctx.token.state.localMode.name !== "css")) {
 
-            // tagInfo is required to aquire the style attr value
-            var tagInfo = HTMLUtils.getTagInfo(editor, pos, true),
-                // To be used as relative character position
-                offset = tagInfo.position.offset;
+                // tagInfo is required to aquire the style attr value
+                const tagInfo = HTMLUtils.getTagInfo(editor, pos, true),
+                    // To be used as relative character position
+                    offset = tagInfo.position.offset;
 
-            /**
-             * We will use this CM to cook css context in case of style attribute value
-             * as CM in htmlmixed mode doesn't yet identify this as css context. We provide
-             * a no-op display function to run CM without a DOM head.
-             */
-            var _contextCM = new CodeMirror(function () { }, {
-                value: "{" + tagInfo.attr.value.replace(/(^")|("$)/g, ""),
-                mode: "css"
-            });
+                /**
+                 * Use a detached CM6-backed compatibility editor to compute CSS
+                 * context for a style attribute without adding another visible editor.
+                 */
+                contextCM = new CodeMirror(function () { }, {
+                    value: "{" + tagInfo.attr.value.replace(/(^")|("$)/g, ""),
+                    mode: "css"
+                });
 
-            ctx = TokenUtils.getInitialContext(_contextCM, { line: 0, ch: offset + 1 });
+                ctx = TokenUtils.getInitialContext(contextCM, { line: 0, ch: offset + 1 });
+            }
+
+            if (_isInPropName(ctx)) {
+                return _getPropNameInfo(ctx);
+            }
+
+            if (_isInPropValue(ctx)) {
+                return _getRuleInfoStartingFromPropValue(ctx, ctx.editor);
+            }
+
+            if (_isInAtRule(ctx)) {
+                return _getImportUrlInfo(ctx, editor);
+            }
+
+            return createInfo();
+        } finally {
+            if (contextCM) {
+                contextCM.destroy();
+            }
         }
-
-        if (_isInPropName(ctx)) {
-            return _getPropNameInfo(ctx);
-        }
-
-        if (_isInPropValue(ctx)) {
-            return _getRuleInfoStartingFromPropValue(ctx, ctx.editor);
-        }
-
-        if (_isInAtRule(ctx)) {
-            return _getImportUrlInfo(ctx, editor);
-        }
-
-        return createInfo();
     }
 
     /**

@@ -1,6 +1,25 @@
 import { z } from "zod";
 
 const DEFAULT_MAX_CHARS = 10000;
+const PHOENIX_BUILD_TARGETS = {
+    codemirror6: "build:codemirror6",
+    source: "_buildonly",
+    "source-debug": "_buildonlyDebug",
+    full: "build",
+    "full-debug": "build:debug",
+    "release-dev": "release:dev",
+    "release-staging": "release:staging",
+    "release-prod": "release:prod",
+    "validate-dist-size": "validate:dist-size"
+};
+
+const PHOENIX_TEST_CATEGORIES = [
+    "unit",
+    "integration",
+    "LegacyInteg",
+    "livepreview",
+    "mainview"
+];
 
 function _trimToCharBudget(lines, maxChars) {
     let total = 0;
@@ -15,7 +34,137 @@ function _trimToCharBudget(lines, maxChars) {
     return { lines: lines.slice(startIdx), trimmed: startIdx };
 }
 
-export function registerTools(server, processManager, wsControlServer, phoenixDesktopPath) {
+export function registerTools(
+    server,
+    processManager,
+    wsControlServer,
+    phoenixDesktopPath,
+    buildManager,
+    phoenixProjectPath
+) {
+    server.tool(
+        "build_phoenix",
+        "Start an allowlisted Phoenix repository build through npm. The build runs asynchronously; " +
+        "poll get_build_status and inspect get_build_logs until it succeeds or fails.",
+        {
+            target: z.enum(Object.keys(PHOENIX_BUILD_TARGETS))
+                .default("full")
+                .describe("Build target: codemirror6, source, source-debug, full, full-debug, " +
+                    "release-dev, release-staging, release-prod, or validate-dist-size.")
+        },
+        async ({ target }) => {
+            try {
+                const npmScript = PHOENIX_BUILD_TARGETS[target];
+                const result = await buildManager.start(phoenixProjectPath, npmScript);
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({
+                            success: true,
+                            target,
+                            ...result
+                        })
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ success: false, error: err.message })
+                    }]
+                };
+            }
+        }
+    );
+
+    server.tool(
+        "get_build_status",
+        "Get the current or most recent Phoenix build status.",
+        {},
+        async () => ({
+            content: [{
+                type: "text",
+                text: JSON.stringify(buildManager.getStatus())
+            }]
+        })
+    );
+
+    server.tool(
+        "get_build_logs",
+        "Get output from the current or most recent Phoenix build.",
+        {
+            clear: z.boolean().default(false).describe("Clear the build log buffer after reading."),
+            tail: z.number().default(50).describe("Return the last N entries. 0 = all."),
+            before: z.number().optional().describe("Return entries before this absolute log cursor."),
+            filter: z.string().optional().describe("Optional case-insensitive regex applied to log text."),
+            maxChars: z.number().default(DEFAULT_MAX_CHARS).describe(
+                "Maximum returned log characters. Oldest entries are dropped first. 0 = unlimited."
+            )
+        },
+        async ({ clear, tail, before, filter, maxChars }) => {
+            let logs = buildManager.getLogs(tail, before);
+            const totalEntries = buildManager.getLogsTotalPushed();
+            if (clear) {
+                buildManager.clearLogs();
+            }
+
+            if (filter) {
+                let filterRe;
+                try {
+                    filterRe = new RegExp(filter, "i");
+                } catch (error) {
+                    return {
+                        content: [{
+                            type: "text",
+                            text: `Invalid filter regex: ${error.message}`
+                        }]
+                    };
+                }
+                logs = logs.filter((entry) => filterRe.test(entry.text));
+            }
+
+            let lines = logs.map((entry) => `[${entry.stream}] ${entry.text}`);
+            let trimmed = 0;
+            if (maxChars > 0) {
+                const result = _trimToCharBudget(lines, maxChars);
+                lines = result.lines;
+                trimmed = result.trimmed;
+            }
+            const header = `[Build logs: ${totalEntries} total, showing ${lines.length}` +
+                (trimmed ? `, ${trimmed} trimmed` : "") + "]";
+            return {
+                content: [{
+                    type: "text",
+                    text: lines.length ? `${header}\n${lines.join("")}` : "(no build logs)"
+                }]
+            };
+        }
+    );
+
+    server.tool(
+        "stop_build",
+        "Stop the active Phoenix build process tree.",
+        {},
+        async () => {
+            try {
+                const result = await buildManager.stop();
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify(result)
+                    }]
+                };
+            } catch (err) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: JSON.stringify({ success: false, error: err.message })
+                    }]
+                };
+            }
+        }
+    );
+
     server.tool(
         "start_phoenix",
         "Start the Phoenix Code desktop app (Electron). Launches npm run serve:electron in the phoenix-desktop directory.",
@@ -427,15 +576,19 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
         "not actively supported and the full 'all' suite should never be run. " +
         "To run all tests in a category, omit the spec parameter. " +
         "To run a single suite, pass the suite name as spec (e.g. spec='unit: HTML Code Hinting'). " +
-        "Suite names are prefixed with the category and a colon, e.g. 'unit: Editor', 'unit: CSS Parsing'. " +
+        "Suite names are not consistently category-prefixed; use the exact Jasmine suite description. " +
+        "Examples include 'CSS Parsing', 'unit:Phoenix Platform Tests', and " +
+        "'LegacyInteg:ExtensionLoader'. " +
         "You can also run individual specs by passing the full spec name, but note that individual specs " +
         "may fail when run alone because suites often run tests in order with shared state — prefer " +
         "running the full suite instead of individual specs. " +
         "After calling run_tests, use get_test_results to poll for results.",
         {
-            category: z.string().describe("Test category to run: unit, integration, LegacyInteg, livepreview, or mainview."),
+            category: z.enum(PHOENIX_TEST_CATEGORIES)
+                .describe("Test category to run: unit, integration, LegacyInteg, livepreview, or mainview."),
             spec: z.string().optional().describe("Optional suite or spec name to run within the category. " +
-                "Use the full name including category prefix, e.g. 'unit: CSS Parsing' for a suite. " +
+                "Use the exact Jasmine suite/spec name; a category prefix is only present when the " +
+                "suite itself includes one. " +
                 "Prefer running full suites over individual specs, as specs may depend on suite execution order. " +
                 "Omit to run all tests in the category."),
             instance: z.string().optional().describe("Target a specific test runner instance by name. Required when multiple instances are connected.")

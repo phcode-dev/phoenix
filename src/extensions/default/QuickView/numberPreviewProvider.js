@@ -71,12 +71,17 @@ define(function (require, exports, module) {
     }
 
     function _getWordAfterPos(editor, pos) {
+        const lineText = editor.getLine(pos.line) || "";
+        if (lineText.charAt(pos.ch) === "%") {
+            return {
+                text: "%",
+                startPos: { line: pos.line, ch: pos.ch },
+                endPos: { line: pos.line, ch: pos.ch + 1 }
+            };
+        }
+
         // Find the word at the specified position
         const wordRange = editor.getWordAt(pos);
-        if(wordRange.text.startsWith('%')) {
-            wordRange.text = wordRange.text.slice(0, 1);
-            wordRange.endPos.ch = wordRange.startPos.ch + 1;
-        }
         const wordFull = editor.getTextBetween(wordRange.startPos, wordRange.endPos);
 
         // Calculate effective start position within the word, if startPos is within the word

@@ -89,6 +89,11 @@
         var qs = "category=" + encodeURIComponent(category) +
             "&spec=" + encodeURIComponent(spec || "all");
 
+        // MCP-driven runs must see the current repository fixtures. The test
+        // assets live in a persistent virtual filesystem, so a normal page
+        // reload can otherwise reuse an older extracted test_folders.zip.
+        window.localStorage.setItem("EXTRACT_TEST_ASSETS_KEY", "EXTRACT");
+
         setTimeout(function () {
             window.location.href = base + "?" + qs;
         }, 100);

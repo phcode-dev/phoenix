@@ -76,6 +76,13 @@
     border-bottom: 2px solid #78B2F2;
 }
 
+.CodeMirror .CodeMirror-search-match,
+.CodeMirror .CodeMirror-selection-highlight-scrollbar {
+    background: #78B2F2;
+    box-sizing: border-box;
+    opacity: 0.65;
+}
+
 span.cm-keyword {color: @accent-keyword;}
 span.cm-atom {color: @accent-atom;}
 span.cm-number {color: @accent-number;}
@@ -192,7 +199,7 @@ div.CodeMirror-cursors {
 
     TODO (issue #324): We'll still have problems if editors can be nested more than one level deep,
     or if any other descendant-selector-driven CM styles can differ between inner & outer editors
-    (potential problem areas include line wrap and coloring theme: basically, anything in codemirror.css
+    (potential problem areas include line wrap and editor-surface coloring:
     that uses a descandant selector where the CSS class name to the left of the space is something
     other than a vanilla .CodeMirror)
  */

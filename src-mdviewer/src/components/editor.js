@@ -1154,9 +1154,15 @@ function hideTableContextMenu() {
     if (menu) menu.classList.remove("open");
 }
 
+function closestElement(target, selector) {
+    return target && typeof target.closest === "function" ?
+        target.closest(selector) :
+        null;
+}
+
 function setupTableContextMenu(contentEl) {
     const contextHandler = (e) => {
-        const td = e.target.closest("td, th");
+        const td = closestElement(e.target, "td, th");
         if (!td || !contentEl.contains(td)) return;
         const ctx = getTableContext();
         if (!ctx) return;
@@ -1169,7 +1175,7 @@ function setupTableContextMenu(contentEl) {
         const menu = document.getElementById("table-context-menu");
         if (!menu || !menu.classList.contains("open")) return;
         if (menu.contains(e.target)) return;
-        if (e.target.closest(".table-row-handle, .table-col-handle")) return;
+        if (closestElement(e.target, ".table-row-handle, .table-col-handle")) return;
         hideTableContextMenu();
     };
 
@@ -1859,6 +1865,7 @@ function _updateSourceLineAttrs(contentEl, markdown) {
 function emitContentChange(contentEl) {
     clearTimeout(contentChangeTimer);
     contentChangeTimer = setTimeout(() => {
+        contentChangeTimer = null;
         const markdown = convertToMarkdown(contentEl);
         emit("bridge:contentChanged", { markdown });
     }, CONTENT_CHANGE_DEBOUNCE);

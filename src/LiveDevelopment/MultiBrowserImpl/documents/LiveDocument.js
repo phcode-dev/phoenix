@@ -72,6 +72,7 @@ define(function (require, exports, module) {
         this.roots = roots || [];
 
         this._onActiveEditorChange = this._onActiveEditorChange.bind(this);
+        this._onEditorBeforeDestroy = this._onEditorBeforeDestroy.bind(this);
         this._onCursorActivity = this._onCursorActivity.bind(this);
 
         // we cant use file paths for event registration - paths may have spaces(treated as an event list separator)
@@ -154,9 +155,23 @@ define(function (require, exports, module) {
 
         if (this.editor) {
             this.setInstrumentationEnabled(true, true);
+            this.editor.off("beforeDestroy", this._onEditorBeforeDestroy);
+            this.editor.on("beforeDestroy", this._onEditorBeforeDestroy);
             this.editor.off("cursorActivity", this._onCursorActivity);
             this.editor.on("cursorActivity", this._onCursorActivity);
             this.updateHighlight();
+        }
+    };
+
+    /**
+     * @private
+     * Detaches before the editor destroys its underlying CodeMirror instance.
+     * @param {$.Event} event
+     * @param {Editor} editor
+     */
+    LiveDocument.prototype._onEditorBeforeDestroy = function (event, editor) {
+        if (!editor || editor === this.editor) {
+            this._detachFromEditor();
         }
     };
 
@@ -166,9 +181,37 @@ define(function (require, exports, module) {
      */
     LiveDocument.prototype._detachFromEditor = function () {
         if (this.editor) {
+            const editor = this.editor;
             this.hideHighlight();
-            this.editor.off("cursorActivity", this._onCursorActivity);
+            this.editor = null;
+            editor.off("beforeDestroy", this._onEditorBeforeDestroy);
+            editor.off("cursorActivity", this._onCursorActivity);
         }
+    };
+
+    /**
+     * Returns the attached editor only while its CodeMirror surface is usable.
+     * CodeMirror 6 clears `_view` when destroyed, while CodeMirror 5 does not
+     * define that property.
+     * @return {?Editor}
+     */
+    LiveDocument.prototype._getUsableEditor = function () {
+        const editor = this.editor;
+        const codeMirror = editor && editor._codeMirror;
+        const hasCodeMirror6View = codeMirror &&
+            Object.prototype.hasOwnProperty.call(codeMirror, "_view");
+
+        if (!editor ||
+                !codeMirror ||
+                codeMirror._destroyed ||
+                (hasCodeMirror6View && !codeMirror._view)) {
+            if (editor) {
+                this._detachFromEditor();
+            }
+            return null;
+        }
+
+        return editor;
     };
 
     let _disableHighlightOnCursor = false;
@@ -189,7 +232,7 @@ define(function (require, exports, module) {
      * @param {Editor} editor
      */
     LiveDocument.prototype._onCursorActivity = function (event, editor) {
-        if (!this.editor) {
+        if (!this._getUsableEditor()) {
             return;
         }
         if(!_disableHighlightOnCursor){
@@ -208,13 +251,14 @@ define(function (require, exports, module) {
             endLine,
             i,
             lineHandle;
+        const editor = this._getUsableEditor();
 
-        if (!this.editor) {
+        if (!editor) {
             return;
         }
 
         // Buffer addLineClass DOM changes in a CodeMirror operation
-        this.editor._codeMirror.operation(function () {
+        editor._codeMirror.operation(function () {
             // Remove existing errors before marking new ones
             self._clearErrorDisplay();
 
@@ -225,7 +269,7 @@ define(function (require, exports, module) {
                 endLine = error.endPos.line;
 
                 for (i = startLine; i < endLine + 1; i++) {
-                    lineHandle = self.editor._codeMirror.addLineClass(i, "wrap", SYNC_ERROR_CLASS);
+                    lineHandle = editor._codeMirror.addLineClass(i, "wrap", SYNC_ERROR_CLASS);
                     self._errorLineHandles.push(lineHandle);
                 }
             });
@@ -241,14 +285,15 @@ define(function (require, exports, module) {
     LiveDocument.prototype._clearErrorDisplay = function () {
         var self = this,
             lineHandle;
+        const editor = this._getUsableEditor();
 
-        if (!this.editor ||
+        if (!editor ||
                 !this._errorLineHandles ||
                 !this._errorLineHandles.length) {
             return;
         }
 
-        this.editor._codeMirror.operation(function () {
+        editor._codeMirror.operation(function () {
             while (true) {
                 // Iterate over all lines that were previously marked with an error
                 lineHandle = self._errorLineHandles.pop();
@@ -257,7 +302,7 @@ define(function (require, exports, module) {
                     break;
                 }
 
-                self.editor._codeMirror.removeLineClass(lineHandle, "wrap", SYNC_ERROR_CLASS);
+                editor._codeMirror.removeLineClass(lineHandle, "wrap", SYNC_ERROR_CLASS);
             }
         });
     };

@@ -22,10 +22,15 @@
 
 const fs = require('fs');
 const glob = require('glob');
+const {
+    assertNoCodeMirror5
+} = require('../build/validate-codemirror5');
 
 // Size limits for development builds (in MB)
 const DEV_MAX_FILE_SIZE_MB = 6;
-const DEV_MAX_TOTAL_SIZE_MB = 100;
+// The CM6 development bundle intentionally includes its source map. Keep the
+// aggregate guard about 5 MB above the current clean development release.
+const DEV_MAX_TOTAL_SIZE_MB = 107;
 // Custom size limits for known large files (size in MB) For development builds
 const LARGE_FILE_LIST_DEV = {
     'dist/thirdparty/no-minify/language-worker.js.map': 10,
@@ -186,6 +191,29 @@ function validateDistSizeRestrictions() {
     });
 }
 
+function validateNoCodeMirror5() {
+    assertNoCodeMirror5({
+        repositoryRoot: process.cwd()
+    });
+    console.log("CodeMirror 5 validation passed: no dependency, vendor artifact, or direct package import found.");
+    return Promise.resolve();
+}
+
+function validateNoCodeMirror5Release() {
+    assertNoCodeMirror5({
+        repositoryRoot: process.cwd(),
+        requireReleaseLicenseCopies: true
+    });
+    console.log(
+        "CodeMirror 5 release validation passed: no dependency, vendor " +
+            "artifact, or direct package import found, and the derived-code " +
+            "license notices and CodeMirror 6 bundle licenses are packaged."
+    );
+    return Promise.resolve();
+}
+
 module.exports = {
-    validateDistSizeRestrictions
+    validateDistSizeRestrictions,
+    validateNoCodeMirror5,
+    validateNoCodeMirror5Release
 };

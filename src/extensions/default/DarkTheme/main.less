@@ -87,7 +87,8 @@
     }
 }
 
-.CodeMirror-matchingbracket {
+.CodeMirror-matchingbracket,
+.cm-matchingBracket {
     /* Ensure visibility against gray inline editor background */
     background-color: @matching-bracket;
     color: @foreground !important;
@@ -101,7 +102,8 @@
     border-bottom: var(--border-height) solid @matching-tags;
 }
 
-.CodeMirror-overwrite .CodeMirror-cursor {
+.CodeMirror-overwrite .CodeMirror-cursor,
+.CodeMirror-overwrite .cm-cursor {
     border-left: none !important;
     border-bottom: 1px solid #fff;
 }
@@ -113,7 +115,10 @@
     color: #aaa;
 }
 
-.CodeMirror.over-gutter, .CodeMirror-activeline {
+.CodeMirror.over-gutter,
+.CodeMirror-activeline,
+.CodeMirror-activeline-gutter,
+.cm-activeLineGutter {
     .CodeMirror-foldgutter-open:after {
         color: #ddd;
     }

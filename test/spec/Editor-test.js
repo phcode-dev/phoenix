@@ -193,6 +193,15 @@ define(function (require, exports, module) {
                 expect(myEditor.getModeForDocument()).toBe(htmlLanguage.getMode());
             });
 
+            it("should forward document deletion as a lostContent event", function () {
+                const lostContentHandler = jasmine.createSpy();
+                myEditor.on("lostContent", lostContentHandler);
+
+                myDocument.trigger("deleted");
+
+                expect(lostContentHandler).toHaveBeenCalled();
+            });
+
         });
 
         describe("Focus", function () {
@@ -554,6 +563,25 @@ define(function (require, exports, module) {
             });
 
             describe("setCursorPos", function () {
+                it("should use centering as the only scroll path when requested", function () {
+                    spyOn(myEditor._codeMirror, "setCursor").and.callThrough();
+                    spyOn(myEditor, "centerOnCursor");
+
+                    myEditor.setCursorPos(1, 3, true);
+
+                    expect(myEditor._codeMirror.setCursor)
+                        .toHaveBeenCalledWith(1, 3, {scroll: false});
+                    expect(myEditor.centerOnCursor).toHaveBeenCalled();
+
+                    myEditor._codeMirror.setCursor.calls.reset();
+                    myEditor.centerOnCursor.calls.reset();
+                    myEditor.setCursorPos(0, 2, false);
+
+                    expect(myEditor._codeMirror.setCursor)
+                        .toHaveBeenCalledWith(0, 2, undefined);
+                    expect(myEditor.centerOnCursor).not.toHaveBeenCalled();
+                });
+
                 it("should replace an existing single cursor", function () {
                     myEditor._codeMirror.setCursor(0, 2);
                     myEditor.setCursorPos(1, 3);
@@ -2523,6 +2551,19 @@ define(function (require, exports, module) {
                 myEditor.replaceSelection("hello", "around");
                 expect(myEditor.getHistory().done.length).toBe(4);
                 expect(myEditor.getHistory().undone.length).toBe(0);
+            });
+
+            it("should not add orphan history when committing an unchanged live hint", function () {
+                const initialHistoryLength = myEditor.getHistory().done.length;
+                myEditor.createHistoryRestorePoint("liveHint");
+                myEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 5});
+                myEditor.replaceSelection("hello", "around", "liveHints");
+                const liveHintHistoryLength = myEditor.getHistory().done.length;
+
+                expect(liveHintHistoryLength).toBe(initialHistoryLength + 3);
+                myEditor.replaceSelection("hello", "end");
+                expect(myEditor.getHistory().done.length).toBe(liveHintHistoryLength);
+                expect(myEditor.getSelectedText()).toBe("");
             });
 
             it("should be able to create a history restore point and restore to that point", function () {

@@ -76,7 +76,7 @@
  *     language.addFileExtension("lhs");
  *
  * Some CodeMirror modes define variations of themselves. They are called MIME modes.
- * To find existing MIME modes, search for "CodeMirror.defineMIME" in thirdparty/CodeMirror/mode
+ * To find existing MIME modes, inspect the registrations in editor/CodeMirrorCompat.
  * For instance, C++, C# and Java all use the clike (C-like) mode with different settings and a different MIME name.
  * You can refine the mode definition by specifying the MIME mode as well:
  *
@@ -131,7 +131,7 @@ define(function (require, exports, module) {
 
 
     // Dependencies
-    var CodeMirror            = require("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror            = require("editor/CodeMirrorCompat"),
         EventDispatcher       = require("utils/EventDispatcher"),
         Async                 = require("utils/Async"),
         FileUtils             = require("file/FileUtils"),
@@ -578,9 +578,9 @@ define(function (require, exports, module) {
     /**
      * Loads a mode and sets it for this language.
      * @private
-     * @param {(string|Array.<string>)} mode  CodeMirror mode (e.g. "htmlmixed"), optionally paired with a MIME mode defined by
-     *      that mode (e.g. ["clike", "text/x-c++src"]). Unless the mode is located in thirdparty/CodeMirror/mode/"name"/"name".js,
-     *      you need to first load it yourself.
+     * @param {(string|Array.<string>)} mode  CodeMirror-compatible mode (e.g. "htmlmixed"), optionally paired with a MIME mode
+     *      defined by that mode (e.g. ["clike", "text/x-c++src"]). Custom modes must be registered with
+     *      CodeMirrorCompat.defineMode() before defining the language.
      * @return {$.Promise} A promise object that will be resolved when the mode is loaded and set
      */
     Language.prototype._loadAndSetMode = function (mode) {
@@ -604,11 +604,6 @@ define(function (require, exports, module) {
         }
 
         var finish = function () {
-            if (!CodeMirror.modes[mode]) {
-                result.reject("CodeMirror mode \"" + mode + "\" is not loaded");
-                return;
-            }
-
             if (mimeMode) {
                 var modeConfig = CodeMirror.mimeModes[mimeMode];
 
@@ -626,10 +621,10 @@ define(function (require, exports, module) {
             result.resolve(self);
         };
 
-        if (CodeMirror.modes[mode]) {
+        if (CodeMirror.loadMode(mode)) {
             finish();
         } else {
-            require(["thirdparty/CodeMirror/mode/" + mode + "/" + mode], finish);
+            result.reject("CodeMirror-compatible mode \"" + mode + "\" is not registered");
         }
 
         return result.promise();
@@ -938,8 +933,9 @@ define(function (require, exports, module) {
      * @param {Array.<string>}        definition.fileNames      List of exact file names (e.g. ["Makefile"] or ["package.json]). Higher precedence than file extension.
      * @param {Array.<string>}        definition.blockComment   Array with two entries defining the block comment prefix and suffix (e.g. ["< !--", "-->"])
      * @param {(string|Array.<string>)} definition.lineComment  Line comment prefixes (e.g. "//" or ["//", "#"])
-     * @param {(string|Array.<string>)} definition.mode         CodeMirror mode (e.g. "htmlmixed"), optionally with a MIME mode defined by that mode ["clike", "text/x-c++src"]
-     *                                                          Unless the mode is located in thirdparty/CodeMirror/mode/"name"/"name".js, you need to first load it yourself.
+     * @param {(string|Array.<string>)} definition.mode         CodeMirror-compatible mode (e.g. "htmlmixed"), optionally with a
+     *                                                          MIME mode defined by that mode ["clike", "text/x-c++src"].
+     *                                                          Custom modes must be registered before defining the language.
      *
      * @return {$.Promise} A promise object that will be resolved with a Language object
      **/
