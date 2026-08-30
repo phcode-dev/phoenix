@@ -34,7 +34,8 @@
 @layers-prop-value:     #ce9178;
 @layers-row-bg:         @bc-ai-sidebar-bg;
 @layers-row-hover-bg:   mix(#ffffff, @bc-ai-sidebar-bg, 6%);
-@layers-row-select-bg:  mix(fade(@bc-sidebar-selection, 100%), @bc-ai-sidebar-bg, 18%);
+@layers-row-select-bg:  mix(#ffffff, @bc-ai-sidebar-bg, 9%);
+@layers-row-focus-bg:   mix(fade(@bc-sidebar-selection, 100%), @bc-ai-sidebar-bg, 30%);
 
 .layers-tab-container {
     display: flex;
@@ -366,7 +367,7 @@
     }
 
     .layers-tree:focus .layers-node.layers-selected {
-        box-shadow: inset 0 0 0 1px @layers-accent;
+        background: @layers-row-focus-bg;
     }
 
     .layers-node {
@@ -384,7 +385,7 @@
         }
 
         &.layers-selected {
-            background: @bc-sidebar-selection;
+            background: @layers-row-select-bg;
         }
     }
 
@@ -455,6 +456,10 @@
 
     .layers-node.layers-selected .layers-node-actions {
         background: @layers-row-select-bg;
+    }
+
+    .layers-tree:focus .layers-node.layers-selected .layers-node-actions {
+        background: @layers-row-focus-bg;
     }
 
     .layers-node-action {
