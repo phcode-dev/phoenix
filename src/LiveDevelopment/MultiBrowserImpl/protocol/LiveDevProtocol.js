@@ -209,8 +209,24 @@ define(function (require, exports, module) {
         document.body.dispatchEvent(event);
     }
 
+    // A selection Phoenix asked the live preview to make - the layers panel picking
+    // an element - never took focus away from the editor side, so there is nothing
+    // to restore and pulling focus into the editor would take it off whatever asked
+    // for the selection. Time boxed so a selection that never reports back cannot
+    // leave the next real click in the preview without its focus.
+    const KEEP_FOCUS_WINDOW_MS = 1500;
+    let _keepFocusUntil = 0;
+
+    function keepFocusOnNextSelect() {
+        _keepFocusUntil = Date.now() + KEEP_FOCUS_WINDOW_MS;
+    }
+
+    function _shouldKeepFocus() {
+        return Date.now() < _keepFocusUntil;
+    }
+
     function _focusEditorIfNeeded(editor, tagName, contentEditable) {
-        if (WorkspaceManager.isInDesignMode()) {
+        if (WorkspaceManager.isInDesignMode() || _shouldKeepFocus()) {
             return;
         }
         const focusShouldBeInLivePreview = ['INPUT', 'TEXTAREA'].includes(tagName) || contentEditable;
@@ -271,7 +287,7 @@ define(function (require, exports, module) {
             activeEditorPath = activeEditor ? activeEditor.document.file.fullPath : null,
             activeFullEditorPath = activeFullEditor ? activeFullEditor.document.file.fullPath : null;
         if(!liveDocPath){
-            if (activeEditor && !WorkspaceManager.isInDesignMode()) {
+            if (activeEditor && !WorkspaceManager.isInDesignMode() && !_shouldKeepFocus()) {
                 activeEditor.focus(); // restore focus from live preview
             }
             return;
@@ -384,6 +400,7 @@ define(function (require, exports, module) {
             } catch (e) {
                 console.error("error in tag selection", e);
             }
+            _keepFocusUntil = 0;
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(false);
             liveDoc && liveDoc.updateHighlight();
         } else {
@@ -767,6 +784,7 @@ define(function (require, exports, module) {
     exports.setLivePreviewMessageHandler = setLivePreviewMessageHandler;
     exports.setCustomRemoteFunctionProvider = setCustomRemoteFunctionProvider;
     // lp communication functions
+    exports.keepFocusOnNextSelect = keepFocusOnNextSelect;
     exports.registerPhoenixFn = registerPhoenixFn;
     exports.triggerLPFn = triggerLPFn;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
