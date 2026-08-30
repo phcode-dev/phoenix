@@ -114,62 +114,20 @@
     .layers-section {
         display: flex;
         flex-direction: column;
+        flex-grow: var(--layers-grow, 1);
+        flex-shrink: 1;
+        flex-basis: 0;
         min-height: 0;
         overflow: hidden;
-    }
-
-    .layers-section-elements {
-        flex-grow: var(--layers-elements-size, 60);
-        flex-shrink: 1;
-        flex-basis: 0;
-    }
-
-    .layers-details {
-        display: flex;
-        flex-direction: column;
-        flex-grow: calc(100 - var(--layers-elements-size, 60));
-        flex-shrink: 1;
-        flex-basis: 0;
-        min-height: 0;
-        overflow: auto;
     }
 
     .layers-section.layers-collapsed {
         flex: 0 0 auto;
     }
 
-    .layers-panel.layers-details-collapsed {
-        .layers-details {
-            flex: 0 0 auto;
-            overflow: hidden;
-        }
-
-        .layers-section-elements:not(.layers-collapsed) {
-            flex: 1 1 auto;
-        }
-    }
-
-    .layers-detail-groups {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .layers-group {
-        display: flex;
-        flex-direction: column;
-        flex: none;
-    }
-
-    .layers-group-body {
+    .layers-section-properties .layers-section-content,
+    .layers-section-styles .layers-section-content {
         padding: 2px 8px 10px;
-    }
-
-    .layers-group.layers-collapsed .layers-group-body {
-        display: none;
-    }
-
-    .layers-details-empty {
-        flex: none;
     }
 
     .layers-section-header {
@@ -307,7 +265,7 @@
         }
     }
 
-    .layers-panel.layers-no-resize .layers-divider {
+    .layers-divider.layers-no-resize {
         cursor: default;
 
         &:hover::after {
@@ -634,9 +592,7 @@
     }
 
     .layers-attrs {
-        margin-top: 8px;
-        padding-top: 4px;
-        border-top: 1px solid @layers-border;
+        margin-top: 6px;
     }
 
     .layers-attrs-header {
