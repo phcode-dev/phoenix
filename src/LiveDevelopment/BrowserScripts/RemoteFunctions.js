@@ -42,6 +42,8 @@ function RemoteFunctions(config = {}) {
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslySelectedElement = null;
     let _selectedFromEditor = false;
+    // the selected element the `phcode-no-lp-edit` opt-out is lifted for, see _isEditOptedOut
+    let _editOptOutOverride = null;
     // Expose the currently selected element globally for external access
     window.__current_ph_lp_selected = null;
 
@@ -121,6 +123,9 @@ function RemoteFunctions(config = {}) {
      * Elements opted out via `phcode-no-lp-edit` (cascades to descendants) or
      * `phcode-no-lp-edit-this` (this element only) are also non-inspectable so
      * every downstream tool inherits the opt-out automatically.
+     *
+     * @param {DOMElement} element
+     * @param {boolean} [onlyHighlight=false] - If true, bypasses the mode check
      */
     function isElementInspectable(element, onlyHighlight = false) {
         if(config.mode !== 'edit' && !onlyHighlight) {
@@ -133,11 +138,29 @@ function RemoteFunctions(config = {}) {
             // this attribute is used by phoenix internal elements
             !element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`) &&
             !_isInsideHeadTag(element) && // shouldn't be inside the head tag like meta tags and all
-            !element.closest('.phcode-no-lp-edit') &&
-            !(element.classList && element.classList.contains('phcode-no-lp-edit-this'))) {
+            !_isEditOptedOut(element)) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * `phcode-no-lp-edit` cascades to descendants, `phcode-no-lp-edit-this` covers
+     * the one element.
+     *
+     * The opt-out exists so that a pointer landing on the page is read as the page's
+     * own business rather than as an edit, and a click still is: handleElementClick
+     * tests for it before anything else. But an element the editor named outright -
+     * a row picked in the layers panel - is being edited on purpose and there is
+     * nothing ambiguous to protect, so while such an element holds the selection
+     * every tool treats it like any other.
+     */
+    function _isEditOptedOut(element) {
+        if (element === _editOptOutOverride) {
+            return false;
+        }
+        return !!(element.closest('.phcode-no-lp-edit') ||
+            (element.classList && element.classList.contains('phcode-no-lp-edit-this')));
     }
 
     /**
@@ -185,6 +208,7 @@ function RemoteFunctions(config = {}) {
         isElementVisible: isElementVisible,
         screenOffset: screenOffset,
         selectElement: selectElement,
+        sendSelectionToEditor: sendSelectionToEditor,
         brieflyDisableHoverListeners: brieflyDisableHoverListeners,
         handleElementClick: handleElementClick,
         cleanupPreviousElementState: cleanupPreviousElementState,
@@ -668,8 +692,11 @@ function RemoteFunctions(config = {}) {
      * @param {boolean} [fromEditor] - If true, this is an editor-cursor-driven selection;
      *   only lightweight highlights (outline, margin/padding overlay) are shown, not interactive
      *   UI like control box, spacing handles, or measurements.
+     * @param {boolean} [ignoreEditOptOut] - Edit this element even though it opted
+     *   out of live preview editing. For selections asked for by name from the
+     *   editor side; holds only while the element stays selected.
      */
-    function selectElement(element, fromEditor) {
+    function selectElement(element, fromEditor, ignoreEditOptOut) {
         // When a cursor-based highlight re-selects the already-selected element,
         // just refresh the highlight overlay without dismissing existing UI panels
         // (control box, editor box, element-info). This prevents cursor activity
@@ -685,6 +712,8 @@ function RemoteFunctions(config = {}) {
         }
 
         dismissUIAndCleanupState();
+        // set after the dismissal, which clears the previous selection's exemption
+        _editOptOutOverride = ignoreEditOptOut ? element : null;
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
 
@@ -804,22 +833,34 @@ function RemoteFunctions(config = {}) {
             selection.removeAllRanges();
         }
 
-        // send cursor movement message to editor so cursor jumps to clicked element
-        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) &&
-            config.syncSourceAndPreview !== false) {
-            MessageBroker.send({
-                "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
-                "nodeID": element.id,
-                "nodeClassList": element.classList,
-                "nodeName": element.nodeName,
-                "allSelectors": window.getAllInheritedSelectorsInOrder(element),
-                "contentEditable": element.contentEditable === "true",
-                "clicked": true
-            });
-        }
+        sendSelectionToEditor(element);
 
         brieflyDisableHoverListeners();
         selectElement(element);
+    }
+
+    /**
+     * Tells the editor which element is now selected, so the cursor jumps to it and
+     * the css reverse highlight follows. Split out of the click handler because a
+     * selection can also be asked for from the editor side, which must report itself
+     * the same way without a pointer gesture ever touching the page.
+     *
+     * @param {HTMLElement} element
+     */
+    function sendSelectionToEditor(element) {
+        if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ||
+            config.syncSourceAndPreview === false) {
+            return;
+        }
+        MessageBroker.send({
+            "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
+            "nodeID": element.id,
+            "nodeClassList": element.classList,
+            "nodeName": element.nodeName,
+            "allSelectors": window.getAllInheritedSelectorsInOrder(element),
+            "contentEditable": element.contentEditable === "true",
+            "clicked": true
+        });
     }
 
     // clear CSS selector highlights
@@ -1500,6 +1541,7 @@ function RemoteFunctions(config = {}) {
             previouslySelectedElement = null;
             window.__current_ph_lp_selected = null;
         }
+        _editOptOutOverride = null;
 
         // Reset hover tracking so the same-element skip doesn't suppress
         // re-highlighting after a full state cleanup (e.g. Escape, dismiss).
