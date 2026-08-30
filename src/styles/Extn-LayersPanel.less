@@ -375,6 +375,10 @@
         box-shadow: inset 2px 0 0 fade(@layers-accent, 55%);
     }
 
+    .layers-node.layers-flash {
+        animation: layers-flash-row 800ms ease-out;
+    }
+
     .layers-node {
         display: flex;
         align-items: center;
@@ -831,5 +835,26 @@ body.layers-dnd-invalid {
         width: 14px;
         height: 14px;
         display: block;
+    }
+}
+
+@keyframes layers-flash-row {
+    0% {
+        background-color: fade(@layers-accent, 45%);
+    }
+
+    60% {
+        background-color: fade(@layers-accent, 32%);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .layers-tab-container .layers-node.layers-flash {
+        animation-duration: 1ms;
+        background-color: fade(@layers-accent, 32%);
     }
 }
