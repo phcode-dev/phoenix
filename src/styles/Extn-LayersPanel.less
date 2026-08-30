@@ -375,6 +375,14 @@
         box-shadow: inset 2px 0 0 fade(@layers-accent, 55%);
     }
 
+    .layers-tree.layers-kbd-nav .layers-node:hover:not(.layers-selected):not(.layers-cursor) {
+        background: transparent;
+    }
+
+    .layers-tree.layers-kbd-nav .layers-node:hover .layers-node-actions {
+        display: none;
+    }
+
     .layers-node.layers-flash {
         animation: layers-flash-row 800ms ease-out;
     }
