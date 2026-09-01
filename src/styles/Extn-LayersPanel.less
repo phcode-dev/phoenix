@@ -546,6 +546,27 @@
         }
     }
 
+    .layers-node-grip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 18px;
+        flex: none;
+        color: @project-panel-text-2;
+        cursor: grab;
+
+        svg {
+            width: 12px;
+            height: 12px;
+            display: block;
+        }
+
+        &:hover {
+            color: @project-panel-text-1;
+        }
+    }
+
     .layers-node-text {
         color: @project-panel-text-2;
         font-style: italic;
@@ -846,6 +867,10 @@ body.layers-resizing {
 body.layers-dnd {
     cursor: grabbing;
     user-select: none;
+
+    .layers-node-grip {
+        cursor: grabbing;
+    }
 }
 
 body.layers-dnd-invalid {
