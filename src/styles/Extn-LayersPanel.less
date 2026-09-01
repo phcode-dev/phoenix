@@ -859,9 +859,26 @@ body.layers-resizing {
     user-select: none;
 }
 
+.dropdownbutton-popup.layers-menu-popup {
+    max-height: 80vh;
+}
+
 .layers-menu-popup .layers-menu-check {
     display: inline-block;
     width: 12px;
+}
+
+.layers-menu-popup .layers-menu-icon {
+    display: inline-block;
+    width: 13px;
+    margin-right: 7px;
+    vertical-align: -2px;
+
+    svg {
+        width: 13px;
+        height: 13px;
+        display: block;
+    }
 }
 
 body.layers-dnd {
