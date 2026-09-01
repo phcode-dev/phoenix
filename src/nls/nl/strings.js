@@ -784,6 +784,7 @@ define({
   "LIVE_PREVIEW_SHOW_STYLES_BAR": "Stijlenbalk tonen",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' toont alleen de webpagina, '{1}' verbindt de webpagina met uw code - klik op elementen om naar hun code te springen en omgekeerd, '{2}' biedt markering en geavanceerde elementmanipulatie",
   "LIVE_PREVIEW_CONFIGURE_MODES": "Live preview-modi configureren",
+  "LIVE_PREVIEW_LAYERS_COLLAPSE_ALL": "Alles inklappen",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Voorbeeld is geannuleerd omdat de developer tools in de browser zijn geopend",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Voorbeeld is geannuleerd omdat de pagina gesloten werd in de browser",
   "LIVE_DEV_NAVIGATED_AWAY": "Live Voorbeeld is geannuleerd omdat de browser navigeerde naar een pagina die geen deel uit maakt van het huidige project",
@@ -2692,6 +2693,7 @@ define({
   "MIGRATE_MOVING_TITLE": "{0} verhuist",
   "MIGRATE_MOVING_MESSAGE": "{APP_NAME} op {0} verhuist naar een nieuwe locatie op <strong>{1}</strong>. Alles werkt hetzelfde, alleen het adres verandert.",
   "MIGRATE_DATA_SAFE_NOTE": "Uw projecten, instellingen en extensies worden voor u gekopieerd de eerste keer dat u {0} opent. Er wordt niets van deze site verwijderd.",
+  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatische overdracht is niet beschikbaar in deze browser. Als u hier projecten heeft opgeslagen, download ze dan zodat u ze opnieuw kunt openen op de nieuwe site.",
   "MIGRATE_GO_TO_NEW_SITE": "Ga naar de nieuwe site",
   "MIGRATE_STAY_HERE": "Hier blijven",
   "MIGRATE_PROGRESS_TITLE": "Uw gegevens worden overgezet",
@@ -2714,6 +2716,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Om de rest te kopiëren, kiest u {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
-  "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "MIGRATE_MANUAL_DOWNLOAD_NOTE": "Automatische overdracht is niet beschikbaar in deze browser. Als u hier projecten heeft opgeslagen, download ze dan zodat u ze opnieuw kunt openen op de nieuwe site."
+  "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…"
 });
