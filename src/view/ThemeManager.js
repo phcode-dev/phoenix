@@ -237,7 +237,7 @@ define(function (require, exports, module) {
         if(!devThemePaths){
             return null;
         }
-        devThemePaths = devThemePaths.split(","); // paths are a comma seperated list
+        devThemePaths = devThemePaths.split(","); // paths are a comma separated list
         for(let themeID of Object.keys(loadedThemes)){
             let themeFilePath = ExtensionLoader.getSourcePathForExtension(loadedThemes[themeID].file.fullPath);
             for(let devThemePath of devThemePaths){

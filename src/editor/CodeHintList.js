@@ -64,7 +64,7 @@ define(function (require, exports, module) {
         this.selectedIndex = -1;
 
         /**
-         * The maximum number of hints to display. Can be overriden via maxCodeHints pref
+         * The maximum number of hints to display. Can be overridden via maxCodeHints pref
          *
          * @type {number}
          */
