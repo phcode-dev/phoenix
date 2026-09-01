@@ -54,40 +54,61 @@
     }
 
     .layers-message {
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        justify-content: safe center;
         -webkit-box-flex: 1;
         flex: 1;
+        width: 100%;
+        min-width: 0;
         min-height: 0;
-        padding: 2rem 1.5rem;
+        padding: 24px 14px;
+        overflow-y: auto;
+        overflow-x: hidden;
         text-align: center;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
     .layers-message-icon {
-        margin-bottom: 0.9rem;
-        font-size: 2.1rem;
-        color: @project-panel-text-2;
-        opacity: 0.55;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 44px;
+        height: 44px;
+        margin-bottom: 14px;
+        border: 1px solid @layers-border;
+        border-radius: 50%;
+        background: @layers-accent-soft;
+        color: @layers-accent;
+        font-size: 17px;
     }
 
     .layers-message-title {
-        margin-bottom: 0.4rem;
+        max-width: 100%;
+        margin-bottom: 5px;
         font-size: @sidebar-content-font-size;
         font-weight: 600;
+        line-height: 1.35;
         color: @project-panel-text-1;
     }
 
     .layers-message-text {
-        max-width: 260px;
+        max-width: 240px;
         color: @project-panel-text-2;
-        line-height: 1.45;
+        line-height: 1.5;
     }
 
     .layers-message-btn {
-        margin-top: 1.1rem;
-        padding: 6px 14px;
+        box-sizing: border-box;
+        max-width: 100%;
+        margin-top: 16px;
+        padding: 7px 16px;
         border: 1px solid @layers-accent;
         border-radius: 6px;
         background: @layers-accent-soft;
@@ -95,11 +116,23 @@
         font-family: inherit;
         font-size: @sidebar-small-font-size;
         font-weight: 500;
+        line-height: 1.35;
+        white-space: normal;
         cursor: pointer;
         outline: none;
+        transition: background-color 120ms ease, border-color 120ms ease;
 
         &:hover {
             background: @layers-accent-strong;
+        }
+
+        &:active {
+            background: @layers-accent-strong;
+            transform: translateY(1px);
+        }
+
+        &:focus-visible {
+            box-shadow: 0 0 0 2px @layers-accent-soft;
         }
     }
 
