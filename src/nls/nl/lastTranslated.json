@@ -2200,6 +2200,7 @@
   "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Exit Full Screen",
   "LIVE_PREVIEW_FULL_SCREEN": "Expand Live Preview to Full Screen",
   "LIVE_PREVIEW_HIDE_OVERLAY": "Hide this message",
+  "LIVE_PREVIEW_LAYERS_COLLAPSE_ALL": "Collapse All",
   "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
   "LIVE_PREVIEW_MODE_PREFERENCE": "'{0}' shows only the webpage, '{1}' connects the webpage to your code - click on elements to jump to their code and vice versa, '{2}' provides highlighting along with advanced element manipulation",
