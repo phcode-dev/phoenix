@@ -260,7 +260,7 @@ function initCodeEditor() {
     const banner = document.getElementById("download-phcode-banner");
     banner.onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "getApp.Click", window.top.Phoenix.platform);
-        window.top.Phoenix.app.openURLInDefaultBrowser("https://phcode.io");
+        window.top.Phoenix.app.openURLInDefaultBrowser("https://phcode.dev");
     };
     if(!window.top.Phoenix.isNativeApp && !window.top.Phoenix.browser.isChromeOS && window.top.Phoenix.browser.isDeskTop) {
         banner.classList.remove("forced-hidden");

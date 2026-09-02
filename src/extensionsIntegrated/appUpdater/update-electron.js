@@ -216,7 +216,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 if(!isUpgradableLoc) {
-                    const downloadPage = brackets.config.homepage_url || "https://phcode.io";
+                    const downloadPage = brackets.config.homepage_url || "https://phcode.dev";
                     NativeApp.openURLInDefaultBrowser(downloadPage);
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "nonUpgradable"+Phoenix.platform);
                     return;

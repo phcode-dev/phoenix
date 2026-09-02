@@ -1,6 +1,6 @@
 # Welcome to Phoenix!
 
-**Website: https://phcode.io**
+**Website: https://phcode.dev**
 
 Phoenix is a modern open-source and [free software](https://www.gnu.org/philosophy/free-sw.en.html) text editor
 designed to make coding as simple and fun as playing a video game.

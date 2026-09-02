@@ -235,7 +235,7 @@ Automatically rename paired HTML/XML/SVG tags as you type at the start or end of
 
 All new native ChromeOS app is now available on the Google Play Store. The ChromeOS app is a highly requested feature and is specially made for education and student use.
 
-[![Get phcode.io on google play](https://github.com/user-attachments/assets/0a7f20ce-653c-43a8-ac3e-3875ea74df5b)](https://play.google.com/store/apps/details?id=prod.phcode.twa)
+[![Get Phoenix Code on google play](https://github.com/user-attachments/assets/0a7f20ce-653c-43a8-ac3e-3875ea74df5b)](https://play.google.com/store/apps/details?id=prod.phcode.twa)
 
 ## Drag and Drop Files and Folders in Desktop Apps - Experimental
 
@@ -315,7 +315,7 @@ All new search filters to find exactly what you want. `Search in files` or `Excl
 
 Brand new Native Desktop Apps for Mac (M1 and Intel), Linux, and Windows, a milestone release that addresses one of our most requested features. Built from the ground up with the latest Tauri/Rust technology, this update modernizes the core platform with enhanced performance, security, and a seamless cross-platform experience.
 
-Download your copy from [phcode.io](https://phcode.io)
+Download your copy from [phcode.dev](https://phcode.dev)
 
 ![Desktop apps](https://github.com/phcode-dev/phoenix/assets/5336369/9ea4f9cc-5ebd-4d67-bf36-0a6ae7611767)
 
