@@ -814,6 +814,8 @@ define({
   "LIVE_PREVIEW_LAYERS_NOT_IN_SOURCE": "هذا العنصر غير موجود في الملف المصدري",
   "LIVE_PREVIEW_LAYERS_NO_STYLES": "لا توجد أنماط مطبقة",
   "LIVE_PREVIEW_LAYERS_OPEN_SOURCE": "فتح في المحرر",
+  "LIVE_PREVIEW_LAYERS_RULE_INACTIVE": "غير نشط في الحالة الحالية",
+  "LIVE_PREVIEW_LAYERS_EDIT_STYLE": "تحرير في شريط الأنماط",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "تم إلغاء المعاينة المباشرة لأن أدوات مطوّري المتصفح كانت مفتوحة",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "تم إلغاء المعاينة المباشرة لأن الصفحة تم إغلاقها في المتصفح",
   "LIVE_DEV_NAVIGATED_AWAY": "تم إلغاء المعاينة المباشرة لأن المتصفح انتقل إلى صفحة ليست جزءًا من المشروع الحالي",
@@ -1243,7 +1245,6 @@ define({
   "UPDATE_FAILED_TITLE": "فشل التحديث",
   "UPDATE_INSTALLING": "جارٍ تثبيت التحديث…",
   "UPDATE_INSTALLING_MESSAGE": "التحديث قيد التثبيت: {APP_NAME} يقوم حاليًا بتثبيت آخر التحديثات. سيتم إغلاق التطبيق تلقائيًا بمجرد اكتمال التثبيت.",
-  "UPDATE_FAILED_MESSAGE": "يُرجى إغلاق جميع نوافذ تطبيق {APP_NAME} وإعادة فتح التطبيق لمحاولة التحديث مرة أخرى. <br/> يمكنك أيضًا تثبيت التحديث عن طريق تنزيل مُثبّت البرنامج من <a href='https://phcode.io'>phcode.io</a>",
   "UPDATE_FAILED_VISIT_SITE_MESSAGE": "لإعادة المحاولة، يُرجى إغلاق جميع مثيلات {APP_NAME} وإعادة تشغيل التطبيق. <br>ستتم إعادة توجيهك إلى صفحة التنزيل الخاصة بنا قريبًا، حيث يمكنك تنزيل أحدث إصدار يدويًا.",
   "UPDATE_MESSAGE": "مرحبًا، هناك إصدار جديد من {APP_NAME} متاح. إليك بعض الميزات الجديدة:",
   "GET_IT_NOW": "احصل عليه الآن!",
@@ -1562,7 +1563,6 @@ define({
   "DESCRIPTION_HTML_LINT_DISABLE": "صحيح لتعطيل مُدقق HTML في لوحة المشاكل",
   "DESCRIPTION_CODE_INTEL_AUTO_CREATE": "`false` لإيقاف {APP_NAME} عن إنشاء ملف `jsconfig.json`/`tsconfig.json` للذكاء البرمجي عند فتح المشاريع. إذا حذفت ملف إعداد تم إنشاؤه، يمكنك إعادة تمكين الذكاء البرمجي من لوحة المشاكل.",
   "DESCRIPTION_ESLINT_FAILED": "فشل ESLint ({0}). تأكد من أن المشروع يحتوي على <a href='https://eslint.org/docs/latest/use/configure/configuration-files'>ملفات تهيئة</a> صالحة",
-  "DESCRIPTION_ESLINT_USE_NATIVE_APP": "ESLint متاح فقط في تطبيق سطح المكتب. قم بتنزيله من <a href='https://phcode.io'>phcode.io</a>",
   "DESCRIPTION_ESLINT_LOAD_FAILED": "فشل تحميل ESLint لهذا المشروع. {APP_NAME} يدعم فقط إصدارات ESLint الأعلى من 7.",
   "DESCRIPTION_ESLINT_DO_NPM_INSTALL": "يُرجى تشغيل `npm install` على مشروعك لتمكين ESLint",
   "DESCRIPTION_LANGUAGE": "إعدادات خاصة باللغة",
@@ -1789,7 +1789,6 @@ define({
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "الوصول إلى المجلد المحلي غير مدعوم من قبل المتصفح",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "عذرًا، يبدو أن متصفحك الحالي لا يدعم فتح المجلدات المحلية. لهذه الميزة، نوصي باستخدام Chrome أو Edge أو Opera. <br/><br/>بدلاً من ذلك، نحن نعمل على تطوير تطبيقات أصلية لأنظمة Windows و Mac و Linux و iOS و Android لتوفير دعم كامل. <a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">ابق على اطلاع على التحديثات!</a>",
   "ATTENTION_SAFARI_USERS": "تنبيه لمستخدمي Safari",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>يحذف سفاري بيانات الموقع تلقائيًا إذا لم تتم إعادة زيارة الموقع في غضون ٧ أيام. يعتمد {APP_NAME} على تخزين المتصفح لحفظ مشاريعك، والتي قد تتم إزالتها بسبب هذه السياسة. <br/> <br/>يوصى<strong> بتنزيل تطبيق macOS لسطح المكتب</strong> من <a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a></span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "لا يمكن نشر مشروع كبير",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "لا يزال Phoenix في مرحلة ألفا التجريبية. لم نقم yet بتمكين مزامنة المشاريع التي تحتوي على أكثر من ٥٠٠ ملف.",
   "SHARE_WEBSITE": "نشر ومشاركة الموقع؟",
@@ -2746,6 +2745,7 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "LIVE_PREVIEW_LAYERS_RULE_INACTIVE": "غير نشط في الحالة الحالية",
-  "LIVE_PREVIEW_LAYERS_EDIT_STYLE": "تحرير في شريط الأنماط"
+  "UPDATE_FAILED_MESSAGE": "يرجى إغلاق جميع نوافذ تطبيق {APP_NAME} وإعادة فتح التطبيق لمحاولة التحديث مرة أخرى. <br/> يمكنك أيضًا تثبيت التحديث عن طريق تنزيل المثبت من <a href='https://phcode.dev'>phcode.dev</a>",
+  "DESCRIPTION_ESLINT_USE_NATIVE_APP": "ESLint متاح فقط في تطبيق سطح المكتب. قم بتنزيله من <a href='https://phcode.dev'>phcode.dev</a>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>يقوم Safari تلقائيًا بحذف بيانات مواقع الويب إذا لم تتم زيارة الموقع مرة أخرى في غضون 7 أيام. يعتمد {APP_NAME} على مساحة تخزين المتصفح لحفظ مشاريعك، والتي قد تتم إزالتها بسبب هذه السياسة. <br/> <br/>يوصى بـ<strong>تنزيل تطبيق سطح المكتب لنظام macOS</strong> من <a href='https://phcode.dev' target='_blank' style='color: white'>https://phcode.dev</a></span>"
 });
