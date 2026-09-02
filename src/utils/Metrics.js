@@ -244,7 +244,7 @@ define(function (require, exports, module) {
 
     // GA4 derives campaign attribution by parsing `page_location`. We deliberately
     // do not send the real URL (it can carry project paths and file names), so an
-    // inbound `?utm_source=...` handoff from phcode.io would otherwise be invisible
+    // inbound `?utm_source=...` handoff from phcode.dev would otherwise be invisible
     // and every such session would be reported as direct/none. Allow-list only the
     // six standard campaign keys back into `page_location`; everything else in the
     // query string is still dropped.

@@ -249,8 +249,8 @@ define(function (require, exports, module) {
                     return;
                 }
                 if(!isUpgradableLoc) {
-                    // user installed linux as binary without installer, we just open phcode.io
-                    const downloadPage = brackets.config.homepage_url || "https://phcode.io";
+                    // user installed linux as binary without installer, we just open phcode.dev
+                    const downloadPage = brackets.config.homepage_url || "https://phcode.dev";
                     NativeApp.openURLInDefaultBrowser(downloadPage);
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "nonUpgradable"+Phoenix.platform);
                     return;

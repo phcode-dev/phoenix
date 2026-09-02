@@ -36,8 +36,7 @@ User-agent: Googlebot
 Disallow: /assets/
 Disallow: /test/
 
-# XML sitemaps
+# XML sitemap
 Sitemap: https://web.phcode.dev/sitemap-phcode.xml
-Sitemap: https://sitemaps.phcode.io/sitemap-phcode.xml
 
 # more sitemap urls can be given here, but just 1 for now.

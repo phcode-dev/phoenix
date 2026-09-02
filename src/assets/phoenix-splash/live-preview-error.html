@@ -9,7 +9,7 @@
             // innerHTML — that would be reflected XSS. Build the DOM with
             // textContent and createElement only. The strings are plain text:
             // mainHeading uses "\n" for line breaks, mainSpan uses "{0}" as
-            // the placeholder for the phcode.io link.
+            // the placeholder for the phcode.dev link.
             function applyTranslations() {
                 const params = Object.fromEntries(
                     new URLSearchParams(window.location.search).entries()
@@ -32,9 +32,9 @@
                     parts.forEach(function(part, i) {
                         if (i > 0) {
                             const a = document.createElement("a");
-                            a.href = "https://phcode.io";
+                            a.href = "https://phcode.dev";
                             a.style.color = "white";
-                            a.textContent = "phcode.io";
+                            a.textContent = "phcode.dev";
                             el.appendChild(a);
                         }
                         el.appendChild(document.createTextNode(part));
@@ -51,7 +51,7 @@
             <div id="MainText" class="safari-text">
                 <h2 id="mainHeading">Uh Oh!<br>Your current browser doesn't support live preview.</h2>
                 <span id="mainSpan">
-                    Get the best live preview experience by downloading our native apps for Windows, Mac, and Linux from <a href="https://phcode.io" style="color: white">phcode.io</a>.
+                    Get the best live preview experience by downloading our native apps for Windows, Mac, and Linux from <a href="https://phcode.dev" style="color: white">phcode.dev</a>.
                 </span><br>
             </div>
         </div>
