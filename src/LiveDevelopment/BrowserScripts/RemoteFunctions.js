@@ -208,6 +208,7 @@ function RemoteFunctions(config = {}) {
         isElementVisible: isElementVisible,
         screenOffset: screenOffset,
         selectElement: selectElement,
+        isSelectedFromEditor: function () { return _selectedFromEditor; },
         sendSelectionToEditor: sendSelectionToEditor,
         brieflyDisableHoverListeners: brieflyDisableHoverListeners,
         handleElementClick: handleElementClick,
