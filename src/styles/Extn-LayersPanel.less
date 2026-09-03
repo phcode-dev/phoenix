@@ -405,7 +405,7 @@
         font-size: @sidebar-content-font-size;
     }
 
-    .layers-tree.layers-kbd-nav .layers-node:hover:not(.layers-selected) {
+    .layers-tree.layers-kbd-nav .layers-node:hover:not(.layers-selected):not(.layers-cursor) {
         background: transparent;
     }
 
@@ -434,6 +434,25 @@
         &.layers-selected {
             background: @layers-row-select-bg;
             box-shadow: inset 2px 0 0 @layers-accent;
+        }
+
+        &.layers-cursor {
+            background: @layers-hover-bg;
+            box-shadow: inset 2px 0 0 fade(@layers-accent, 70%);
+        }
+
+        &.layers-cursor-ancestor {
+            box-shadow: inset 2px 0 0 fade(@layers-accent, 35%);
+        }
+
+        &.layers-moving {
+            position: relative;
+            z-index: 1;
+            transition: transform 260ms cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        &.layers-spring {
+            animation: layers-spring-row 600ms ease-in-out;
         }
     }
 
@@ -505,6 +524,10 @@
 
     .layers-node.layers-selected .layers-node-actions {
         background: @layers-row-select-bg;
+    }
+
+    .layers-node.layers-cursor .layers-node-actions {
+        background: @layers-row-hover-bg;
     }
 
     .layers-node-action {
@@ -868,9 +891,34 @@ body.layers-dnd-invalid {
     }
 }
 
+@keyframes layers-spring-row {
+    0%, 100% {
+        background-color: @layers-accent-soft;
+        box-shadow: inset 0 0 0 1px @layers-accent;
+    }
+
+    25%, 75% {
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1px transparent;
+    }
+
+    50% {
+        background-color: @layers-accent-soft;
+        box-shadow: inset 0 0 0 1px @layers-accent;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .layers-tab-container .layers-node.layers-flash {
         animation-duration: 1ms;
         background-color: fade(@layers-accent, 32%);
+    }
+
+    .layers-tab-container .layers-node.layers-moving {
+        transition: none;
+    }
+
+    .layers-tab-container .layers-node.layers-spring {
+        animation: none;
     }
 }
