@@ -2062,6 +2062,21 @@
             overflow-y: auto;
             padding: 22px 28px;
         }
+
+        // Approve footer (live plans only) stays pinned below the
+        // scrolling body, with the primary action on the right.
+        .ai-plan-actions,
+        .ai-plan-feedback {
+            flex-shrink: 0;
+        }
+
+        .ai-plan-actions {
+            justify-content: flex-end;
+        }
+
+        .ai-plan-stop-btn {
+            margin-right: auto;
+        }
     }
 
     .ai-plan-fullscreen-close {
@@ -2329,6 +2344,17 @@
 
     .ai-bash-confirm-body {
         padding: 10px 12px;
+
+        .ai-bash-confirm-summary {
+            color: #e0e0e0;
+            font-size: @ai-text-secondary;
+            line-height: @ai-line-prose;
+            margin-bottom: 6px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
 
         pre {
             margin: 0;
@@ -3950,8 +3976,11 @@
    them paint badly here in light editor themes. Neutralise the skins
    inside the panel so the AI panel's own per-element rules
    (.ai-plan-approve-btn, .ai-plan-revise-btn, .ai-plan-feedback-send,
-   etc.) own the look — and that look is identical in both themes. */
-.ai-chat-panel {
+   etc.) own the look — and that look is identical in both themes.
+   The fullscreen plan overlay is appended to <body>, outside the panel,
+   but it is the same always-dark surface, so it gets the same treatment. */
+.ai-chat-panel,
+.ai-plan-fullscreen-overlay {
     .btn,
     .btn:hover,
     .btn:focus,
@@ -3999,6 +4028,66 @@
         &::placeholder {
             color: @project-panel-text-2;
             opacity: 0.6;
+        }
+    }
+
+    /* The neutralised .btn skins above outrank the single-class plan
+       control rules (.ai-plan-approve-btn etc.), which would leave those
+       buttons as bare text. Re-assert their look at matching specificity
+       so they read as buttons in both themes and on both surfaces. */
+    .ai-plan-approve-btn {
+        background: rgba(76, 175, 80, 0.15);
+        border: 1px solid rgba(76, 175, 80, 0.35);
+        color: #4caf50;
+
+        &:hover:not(:disabled) {
+            background: rgba(76, 175, 80, 0.25);
+        }
+
+        &.selected {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+    }
+
+    .ai-plan-revise-btn {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: @project-panel-text-2;
+
+        &:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        &.selected {
+            background: rgba(107, 158, 255, 0.1);
+            border-color: rgba(107, 158, 255, 0.3);
+            color: #6b9eff;
+        }
+    }
+
+    .ai-plan-feedback-send {
+        background: rgba(107, 158, 255, 0.15);
+        border: 1px solid rgba(107, 158, 255, 0.3);
+        color: #6b9eff;
+
+        &:hover:not(:disabled) {
+            background: rgba(107, 158, 255, 0.25);
+        }
+    }
+
+    .ai-plan-stop-btn {
+        background: rgba(229, 115, 115, 0.08);
+        border: 1px solid rgba(229, 115, 115, 0.3);
+        color: #e57373;
+        font-size: @ai-text-secondary;
+        line-height: @ai-line-compact;
+        padding: 4px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+            background: rgba(229, 115, 115, 0.18);
         }
     }
 }

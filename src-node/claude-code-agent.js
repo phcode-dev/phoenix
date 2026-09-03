@@ -28,12 +28,27 @@
 
 const { execSync, spawn } = require("child_process");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const { createEditorMcpServer } = require("./mcp-editor-tools");
 
 const isWindows = process.platform === "win32";
 
 const CONNECTOR_ID = "ph_ai_claude";
+
+// The user's follow-up is addressed to the main agent, like a queued
+// message in the Claude Code CLI. Hooks fire inside subagents too
+// (input.agent_id is set there), and a subagent that reads the queue
+// consumes it — the main agent then finds it empty and never sees what
+// the user asked. Subagents also lack the conversation context to apply
+// it sensibly. So they get neither the hint nor the tool; the main agent
+// reads it as soon as it regains control.
+function _clarificationHintFor(hookInput) {
+    if (!_queuedClarification || (hookInput && hookInput.agent_id)) {
+        return "";
+    }
+    return CLARIFICATION_HINT;
+}
 
 const CLARIFICATION_HINT =
     " IMPORTANT: The user has typed a follow-up clarification while you were working." +
@@ -133,28 +148,18 @@ let editorMcpServer = null;
 // Streaming throttle
 const TEXT_STREAM_THROTTLE_MS = 50;
 
-// Pending question resolver — used by AskUserQuestion hook
-let _questionResolve = null;
-
-// Pending plan resolver — used by ExitPlanMode stream interception
-let _planResolve = null;
-
-// Pending bash confirmation resolver — used by Bash PreToolUse hook (Edit Mode)
-let _bashConfirmResolve = null;
-
-// Pending plan-mode write confirmation resolver — set when an Edit/Write
-// fires in plan mode and we're awaiting the user's "Allow & Switch to Edit
-// Mode" / "Stay in Plan Mode" choice from the browser.
-let _planModeConfirmResolve = null;
-
-// Stores rejection feedback when user rejects a plan
-let _planRejectionFeedback = null;
+// Pending browser answers (question, plan, toolConfirm, planModeConfirm
+// cards), keyed by card kind and then by confirm id. The SDK runs
+// PreToolUse hooks and permission prompts for parallel tool calls
+// concurrently, so several cards can be up at once — a single resolver
+// slot per kind kept only the last one, and clicking any earlier card did
+// nothing. Each card carries its confirmId back in the answer; an answer
+// without one resolves the oldest card of that kind.
+const _pendingAnswers = {};
+let _confirmSeq = 0;
 
 // Stores the last plan content written to .claude/plans/
 let _lastPlanContent = null;
-
-// Flag set when user approves a plan
-let _planApproved = false;
 
 // Queued clarification from the user (typed while AI is streaming)
 // Shape: { text: string, images: [{mediaType, base64Data}] } or null
@@ -171,6 +176,134 @@ let _queuedClarification = null;
 let _runtimePermissionMode = "auto";
 
 const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
+
+// Tools whose permission request in Plan Mode means "the model wants to
+// start editing user files" — they share the plan-mode write-confirm card.
+const FILE_WRITE_TOOLS = ["Edit", "Write", "MultiEdit", "NotebookEdit"];
+
+// Handed to the model right after the user approves a plan. The CLI leaves
+// plan mode on approval and the model carries on in the same turn, so this
+// is where "proceed" gets spelled out for Phoenix.
+const PLAN_APPROVED_HINT = "The user approved the plan. Proceed with the " +
+    "implementation now, in this same turn. After building, verify by using " +
+    "execJsInLivePreview to check the result and takeScreenshot to confirm it " +
+    "looks correct.";
+
+/**
+ * Register a card that waits for a browser answer through one of the
+ * answer* peers. Returns {id, promise}: send `id` to the browser as
+ * confirmId, then await `promise`. It resolves with the browser's payload,
+ * or null when the query is cancelled while the card is still up.
+ */
+function _registerAnswer(kind, signal) {
+    const id = ++_confirmSeq;
+    const bucket = _pendingAnswers[kind] || (_pendingAnswers[kind] = new Map());
+    const promise = new Promise((resolve) => {
+        if (signal.aborted) {
+            resolve(null);
+            return;
+        }
+        const onAbort = () => {
+            bucket.delete(id);
+            resolve(null);
+        };
+        bucket.set(id, (response) => {
+            signal.removeEventListener("abort", onAbort);
+            bucket.delete(id);
+            resolve(response);
+        });
+        signal.addEventListener("abort", onAbort, { once: true });
+    });
+    return { id: id, promise: promise };
+}
+
+/**
+ * Deliver a browser answer to the matching pending card (by confirmId, else
+ * the oldest card of that kind). Returns false if nothing was waiting.
+ */
+function _resolveAnswer(kind, params) {
+    const bucket = _pendingAnswers[kind];
+    if (!bucket || !bucket.size) {
+        return false;
+    }
+    let resolve;
+    if (params && params.confirmId !== undefined) {
+        resolve = bucket.get(params.confirmId);
+    }
+    if (!resolve) {
+        resolve = bucket.values().next().value;
+    }
+    resolve(params || {});
+    return true;
+}
+
+function _clearPendingAnswers() {
+    Object.keys(_pendingAnswers).forEach((kind) => _pendingAnswers[kind].clear());
+}
+
+/**
+ * Ask the user to allow or deny a tool call (the Allow/Deny card). Used by
+ * the Edit Mode Bash hook and for every permission request the CLI hands to
+ * canUseTool that no more specific card covers. Resolves true on Allow,
+ * false on Deny or when the query is aborted while the card is up.
+ */
+async function _askToolConfirm(requestId, toolName, toolInput, signal) {
+    const pending = _registerAnswer("toolConfirm", signal);
+    nodeConnector.triggerPeer("aiBashConfirm", {
+        requestId: requestId,
+        confirmId: pending.id,
+        toolName: toolName,
+        command: toolName === "Bash" ? ((toolInput && toolInput.command) || "") : "",
+        toolInput: toolInput || {}
+    });
+    const response = await pending.promise;
+    return !!(response && response.allowed);
+}
+
+/**
+ * Ask the user (via the browser's plan-mode write-confirm card) whether an
+ * Edit/Write on a user file may go through while the panel is in Plan Mode.
+ * Resolves true for "Allow & Switch to Auto", false for "Stay in Plan
+ * Mode" or when the query is aborted while the card is up.
+ */
+async function _askPlanModeWriteConfirm(requestId, toolName, filePath, signal) {
+    const pending = _registerAnswer("planModeConfirm", signal);
+    nodeConnector.triggerPeer("aiPlanModeWriteConfirm", {
+        requestId: requestId,
+        confirmId: pending.id,
+        toolName: toolName,
+        filePath: filePath
+    });
+    const response = await pending.promise;
+    return !!(response && response.approved);
+}
+
+/**
+ * Show the AskUserQuestion card in the browser and wait for the answers.
+ * Resolves the browser's {answers} payload, or null on abort.
+ */
+async function _askUserQuestions(requestId, questions, signal) {
+    const pending = _registerAnswer("question", signal);
+    nodeConnector.triggerPeer("aiQuestion", {
+        requestId: requestId,
+        confirmId: pending.id,
+        questions: questions
+    });
+    return pending.promise;
+}
+
+/**
+ * Format AskUserQuestion answers as readable text for the model.
+ */
+function _formatAnswers(answer) {
+    let answerText = "";
+    if (answer && answer.answers) {
+        Object.keys(answer.answers).forEach(function (q) {
+            answerText += "Q: " + q + "\nA: " + answer.answers[q] + "\n\n";
+        });
+    }
+    return answerText.trim();
+}
 
 /**
  * Detect whether a PostToolUse `tool_response` represents an error result.
@@ -772,11 +905,8 @@ exports.cancelQuery = async function () {
         currentAbortController = null;
         // Keep currentSessionId so the next prompt resumes the same SDK session.
         // Aborts leave an interrupt marker in the session log, not a corrupted state.
-        // Clear any pending question or plan
-        _questionResolve = null;
-        _planResolve = null;
-        _bashConfirmResolve = null;
-        _planModeConfirmResolve = null;
+        // Drop any cards still waiting for an answer
+        _clearPendingAnswers();
         _queuedClarification = null;
         return { success: true };
     }
@@ -788,10 +918,7 @@ exports.cancelQuery = async function () {
  * Called from browser via execPeer("answerQuestion", {answers}).
  */
 exports.answerQuestion = async function (params) {
-    if (_questionResolve) {
-        _questionResolve(params);
-        _questionResolve = null;
-    }
+    _resolveAnswer("question", params);
     return { success: true };
 };
 
@@ -800,10 +927,7 @@ exports.answerQuestion = async function (params) {
  * Called from browser via execPeer("answerPlan", {approved, feedback}).
  */
 exports.answerPlan = async function (params) {
-    if (_planResolve) {
-        _planResolve(params);
-        _planResolve = null;
-    }
+    _resolveAnswer("plan", params);
     return { success: true };
 };
 
@@ -812,10 +936,7 @@ exports.answerPlan = async function (params) {
  * Called from browser via execPeer("answerBashConfirm", {allowed}).
  */
 exports.answerBashConfirm = async function (params) {
-    if (_bashConfirmResolve) {
-        _bashConfirmResolve(params);
-        _bashConfirmResolve = null;
-    }
+    _resolveAnswer("toolConfirm", params);
     return { success: true };
 };
 
@@ -824,10 +945,7 @@ exports.answerBashConfirm = async function (params) {
  * Called from browser via execPeer("answerPlanModeWriteConfirm", {approved}).
  */
 exports.answerPlanModeWriteConfirm = async function (params) {
-    if (_planModeConfirmResolve) {
-        _planModeConfirmResolve(params);
-        _planModeConfirmResolve = null;
-    }
+    _resolveAnswer("planModeConfirm", params);
     return { success: true };
 };
 
@@ -865,9 +983,7 @@ exports.resumeSession = async function (params) {
         currentAbortController.abort();
         currentAbortController = null;
     }
-    _questionResolve = null;
-    _planResolve = null;
-    _bashConfirmResolve = null;
+    _clearPendingAnswers();
     _queuedClarification = null;
     currentSessionId = params.sessionId;
     return { success: true };
@@ -907,12 +1023,16 @@ exports.queueClarification = async function (params) {
 };
 
 /**
- * Get and clear the queued clarification (text + images).
- * Called by the getUserClarification MCP tool.
+ * Get and clear the queued clarification (text + images). Called by the
+ * getUserClarification MCP tool; tells the panel so the queue bubble
+ * becomes a sent message.
  */
 exports.getAndClearClarification = async function () {
     const result = _queuedClarification;
     _queuedClarification = null;
+    if (result && (result.text || result.images.length)) {
+        nodeConnector.triggerPeer("aiClarificationRead", { text: result.text || "" });
+    }
     return result || { text: null, images: [] };
 };
 
@@ -1035,6 +1155,43 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // rather than seeing a literal []. Each sendPrompt rebuilds this
     // list, so adding/removing in the UI takes effect on the next turn.
     const _cwdForValidation = projectPath || process.cwd();
+    // Where Edit/Write may land without asking: the project, any extra
+    // directories the user attached, and scratch space. Anything else gets
+    // the permission card — the same "write outside the working directory?"
+    // check Claude Code makes on its own, which the Write/Edit entries in
+    // allowedTools would otherwise skip. Seen in the wild: after
+    // `mkdir -p notes-app` in the project, the model wrote the files to
+    // /home/<user>/notes-app and nobody was asked.
+    function _isOutsideWriteRoots(filePath) {
+        if (!filePath || !path.isAbsolute(filePath)) {
+            return false;
+        }
+        const target = path.resolve(filePath);
+        const roots = [_cwdForValidation, os.tmpdir(), "/tmp"].concat(validatedExtraDirs || []);
+        return !roots.some(function (root) {
+            const r = path.resolve(root);
+            return target === r || target.startsWith(r + path.sep);
+        });
+    }
+    async function _denyUnlessOutsideWriteAllowed(toolName, toolInput, promptSignal) {
+        const filePath = toolInput && toolInput.file_path;
+        if (_runtimePermissionMode === "bypassPermissions" || !_isOutsideWriteRoots(filePath)) {
+            return null;
+        }
+        _log("Write outside project roots:", filePath);
+        const allowed = await _askToolConfirm(requestId, toolName, toolInput, promptSignal);
+        if (allowed) {
+            return null;
+        }
+        return {
+            hookSpecificOutput: {
+                hookEventName: "PreToolUse",
+                permissionDecision: "deny",
+                permissionDecisionReason: "User declined to write outside the project folder (" +
+                    filePath + "). Keep project files under " + _cwdForValidation + "."
+            }
+        };
+    }
     const validatedExtraDirs = (Array.isArray(additionalDirectories)
         ? additionalDirectories.filter(function (p) {
             if (typeof p !== "string" || !path.isAbsolute(p)) { return false; }
@@ -1042,6 +1199,123 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             try { return fs.existsSync(p); } catch (e) { return false; }
         })
         : []);
+
+    // Permission-prompt handler (SDK canUseTool). Passing it makes the SDK
+    // launch the CLI with --permission-prompt-tool, and that is what keeps
+    // ExitPlanMode, EnterPlanMode and AskUserQuestion in the model's tool
+    // list: the CLI drops every tool that needs user interaction from a
+    // non-interactive session that has no prompt tool. Without it the model
+    // in Plan Mode writes the plan file and then has nothing to propose it
+    // with — it ends the turn, or (worse, after a subagent hands back
+    // research) keeps circling looking for a way out of plan mode.
+    //
+    // The PreToolUse hooks below still run first and settle most calls;
+    // the CLI only sends here what its permission pipeline marks "ask".
+    // Tools flagged requiresUserInteraction (ExitPlanMode, AskUserQuestion)
+    // always land here regardless of allowedTools.
+    async function _onPermissionRequest(toolName, input, opts) {
+        const promptSignal = (opts && opts.signal) || signal;
+        if (toolName === "ExitPlanMode") {
+            return _onExitPlanModeRequest(input, promptSignal);
+        }
+        if (toolName === "AskUserQuestion") {
+            // Normally intercepted by the PreToolUse hook; kept as a
+            // fallback so a question can never dead-end in a deny.
+            const questions = (input && input.questions) || [];
+            const answer = await _askUserQuestions(requestId, questions, promptSignal);
+            if (!answer) {
+                return { behavior: "deny", message: "Question cancelled." };
+            }
+            return {
+                behavior: "allow",
+                updatedInput: Object.assign({}, input, { answers: answer.answers || {} })
+            };
+        }
+        if (FILE_WRITE_TOOLS.indexOf(toolName) !== -1 && _runtimePermissionMode === "plan") {
+            // Plan mode entered mid-turn via EnterPlanMode: the Edit/Write
+            // hooks saw the query-start mode and passed the call through,
+            // so the CLI's own plan-mode block asks us. Same card as the
+            // hook path, same one-shot approval for the rest of the turn.
+            if (_planExitApprovedThisTurn) {
+                return { behavior: "allow", updatedInput: input };
+            }
+            const filePath = (input && input.file_path) || "";
+            const approved = await _askPlanModeWriteConfirm(
+                requestId, toolName, filePath, promptSignal);
+            if (!approved) {
+                return {
+                    behavior: "deny",
+                    message: "User chose to stay in Plan Mode. Use the ExitPlanMode " +
+                        "tool to propose your changes for approval before editing."
+                };
+            }
+            _planExitApprovedThisTurn = true;
+            _runtimePermissionMode = "auto";
+            return { behavior: "allow", updatedInput: input };
+        }
+        // Anything else the CLI wants a human decision on: Bash or a
+        // non-read-only MCP tool in Plan Mode, a classifier fallback in
+        // Auto, a tool outside allowedTools. With no prompt tool the CLI
+        // used to deny these on its own and nothing ever reached the
+        // panel — the user just saw the model give up. Put up the card.
+        _log("Permission request:", toolName, "mode=" + _runtimePermissionMode);
+        const allowed = await _askToolConfirm(requestId, toolName, input, promptSignal);
+        if (allowed) {
+            return { behavior: "allow", updatedInput: input };
+        }
+        return { behavior: "deny", message: "User denied permission for " + toolName + "." };
+    }
+
+    // ExitPlanMode permission prompt: render the plan card in the browser and
+    // block the tool until the user decides. Approve → "allow": the CLI leaves
+    // plan mode and the model keeps going in this turn (PLAN_APPROVED_HINT
+    // rides in on the PostToolUse hook). Revise → "deny" with the feedback:
+    // the model stays in plan mode, reworks the plan and calls ExitPlanMode
+    // again, which lands right back here with a fresh card.
+    async function _onExitPlanModeRequest(input, promptSignal) {
+        const planText = (input && input.plan) || _lastPlanContent || "";
+        _lastPlanContent = null;
+        if (!planText) {
+            _log("ExitPlanMode with no plan content");
+            return {
+                behavior: "deny",
+                message: "No plan content found. Write the plan to your plan file " +
+                    "(or pass it in the plan argument) and call ExitPlanMode again."
+            };
+        }
+        _log("ExitPlanMode plan (" + planText.length + "ch), waiting for user");
+        const pending = _registerAnswer("plan", promptSignal);
+        nodeConnector.triggerPeer("aiPlanProposed", {
+            requestId: requestId,
+            confirmId: pending.id,
+            plan: planText
+        });
+        const response = await pending.promise;
+        if (!response) {
+            _log("Plan review cancelled");
+            return { behavior: "deny", message: "Plan review cancelled by the user." };
+        }
+        if (!response.approved) {
+            _log("Plan rejected by user, asking for a revision");
+            const feedback = response.feedback || "Please revise the plan.";
+            return {
+                behavior: "deny",
+                message: "The user rejected the plan and wants changes: " + feedback +
+                    "\nStay in plan mode, revise the plan based on this feedback, and " +
+                    "call ExitPlanMode again to propose the updated plan for approval."
+            };
+        }
+        _log("Plan approved by user, continuing in this turn");
+        _planExitApprovedThisTurn = true;
+        // The browser pushes the restored UI mode via setPermissionMode
+        // before answering; only fill in if it hasn't. Auto (classifier
+        // approved) is the landing mode after a plan — it suits the
+        // implementation phase better than manual Edit Mode confirms.
+        if (_runtimePermissionMode === "plan") {
+            _runtimePermissionMode = "auto";
+        }
+        return { behavior: "allow", updatedInput: input };
+    }
 
     const queryOptions = {
         cwd: projectPath || process.cwd(),
@@ -1065,6 +1339,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         allowedTools: [
             "Read", "Edit", "Write", "Glob", "Grep", "Bash",
             "AskUserQuestion", "Task", "Agent",
+            // Background-subagent plumbing: lets the main agent relay a
+            // user follow-up to a running subagent (SendMessage), read its
+            // output, or stop it — the CLI's own way of steering subagents.
+            "SendMessage", "TaskOutput", "TaskStop",
             "TodoRead", "TodoWrite",
             "TaskCreate", "TaskUpdate", "TaskList", "TaskGet",
             "WebFetch", "WebSearch",
@@ -1237,8 +1515,19 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                   "Respond in this language unless they write in a different language."
                 : ""),
         includePartialMessages: true,
+        canUseTool: _onPermissionRequest,
         abortController: currentAbortController,
-        env: envOverrides ? Object.assign({}, process.env, envOverrides) : undefined,
+        // Background tasks off: the CLI otherwise auto-backgrounds a
+        // subagent that runs longer than ~10s, hands the main agent an
+        // "async agent launched" result, and once the main turn ends the
+        // backgrounded agent's tool context stays aborted — every tool it
+        // calls afterwards comes back as "The user doesn't want to take
+        // this action right now", and the model stops and waits for a
+        // user who never said no. Keeping subagents synchronous is the
+        // flow the panel can actually drive (and the CLI's own default
+        // for non-interactive use is the same waiting behaviour).
+        env: Object.assign({}, process.env,
+            { CLAUDE_CODE_DISABLE_BACKGROUND_TASKS: "1" }, envOverrides || {}),
         hooks: {
             PreToolUse: [
                 {
@@ -1273,10 +1562,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                 } catch (err) {
                                     console.warn("[Phoenix AI] Failed to edit plan file:", err.message);
                                 }
-                                let planReason = "Plan file updated.";
-                                if (_queuedClarification) {
-                                    planReason += CLARIFICATION_HINT;
-                                }
+                                const planReason = "Plan file updated." + _clarificationHintFor(input);
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
@@ -1285,6 +1571,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const outsideDenial = await _denyUnlessOutsideWriteAllowed(
+                                "Edit", input.tool_input, signal);
+                            if (outsideDenial) {
+                                return outsideDenial;
+                            }
                             // Plan mode + user-file Edit: ask the user whether
                             // to switch to Edit Mode. Mirrors the Bash confirm
                             // pattern (matcher: "Bash"). Once approved, the
@@ -1292,36 +1583,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // prompt for subsequent edits in the same turn.
                             const filePath = input.tool_input.file_path;
                             if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
-                                nodeConnector.triggerPeer("aiPlanModeWriteConfirm", {
-                                    requestId: requestId,
-                                    toolName: "Edit",
-                                    filePath: filePath
-                                });
-                                let response;
-                                try {
-                                    response = await new Promise((resolve, reject) => {
-                                        _planModeConfirmResolve = resolve;
-                                        if (signal.aborted) {
-                                            _planModeConfirmResolve = null;
-                                            reject(new Error("Aborted"));
-                                            return;
-                                        }
-                                        const onAbort = () => {
-                                            _planModeConfirmResolve = null;
-                                            reject(new Error("Aborted"));
-                                        };
-                                        signal.addEventListener("abort", onAbort, { once: true });
-                                    });
-                                } catch (err) {
-                                    return {
-                                        hookSpecificOutput: {
-                                            hookEventName: "PreToolUse",
-                                            permissionDecision: "deny",
-                                            permissionDecisionReason: "Edit cancelled."
-                                        }
-                                    };
-                                }
-                                if (!response.approved) {
+                                const approved = await _askPlanModeWriteConfirm(
+                                    requestId, "Edit", filePath, signal);
+                                if (!approved) {
                                     return {
                                         hookSpecificOutput: {
                                             hookEventName: "PreToolUse",
@@ -1357,13 +1621,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // found". Phoenix sees the buffer state the SDK
                             // can't, so this is a more useful failure.
                             if (oldString && (captured.content || "").indexOf(oldString) === -1) {
-                                let reason = "Edit FAILED: the text you wanted to replace is not " +
+                                const reason = "Edit FAILED: the text you wanted to replace is not " +
                                     "present in the file. It may have been modified by the user " +
                                     "or by another tool since you last read it. Read the file again " +
-                                    "to see the current content before retrying.";
-                                if (_queuedClarification) {
-                                    reason += CLARIFICATION_HINT;
-                                }
+                                    "to see the current content before retrying." +
+                                    _clarificationHintFor(input);
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
@@ -1435,10 +1697,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                 } catch (err) {
                                     console.warn("[Phoenix AI] Failed to write plan file:", err.message);
                                 }
-                                let planReason = "Plan file saved.";
-                                if (_queuedClarification) {
-                                    planReason += CLARIFICATION_HINT;
-                                }
+                                const planReason = "Plan file saved." + _clarificationHintFor(input);
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
@@ -1447,40 +1706,18 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const outsideDenial = await _denyUnlessOutsideWriteAllowed(
+                                "Write", input.tool_input, signal);
+                            if (outsideDenial) {
+                                return outsideDenial;
+                            }
                             // Plan mode + user-file Write: same confirmation
                             // path as Edit. See Edit hook above for rationale.
                             const filePath = input.tool_input.file_path;
                             if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
-                                nodeConnector.triggerPeer("aiPlanModeWriteConfirm", {
-                                    requestId: requestId,
-                                    toolName: "Write",
-                                    filePath: filePath
-                                });
-                                let response;
-                                try {
-                                    response = await new Promise((resolve, reject) => {
-                                        _planModeConfirmResolve = resolve;
-                                        if (signal.aborted) {
-                                            _planModeConfirmResolve = null;
-                                            reject(new Error("Aborted"));
-                                            return;
-                                        }
-                                        const onAbort = () => {
-                                            _planModeConfirmResolve = null;
-                                            reject(new Error("Aborted"));
-                                        };
-                                        signal.addEventListener("abort", onAbort, { once: true });
-                                    });
-                                } catch (err) {
-                                    return {
-                                        hookSpecificOutput: {
-                                            hookEventName: "PreToolUse",
-                                            permissionDecision: "deny",
-                                            permissionDecisionReason: "Write cancelled."
-                                        }
-                                    };
-                                }
-                                if (!response.approved) {
+                                const approved = await _askPlanModeWriteConfirm(
+                                    requestId, "Write", filePath, signal);
+                                if (!approved) {
                                     return {
                                         hookSpecificOutput: {
                                             hookEventName: "PreToolUse",
@@ -1572,25 +1809,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                 };
                             }
                             console.log("[Phoenix AI] Bash confirmation requested:", command.slice(0, 80));
-                            nodeConnector.triggerPeer("aiBashConfirm", {
-                                requestId: requestId,
-                                command: command,
-                                toolId: toolCounter
-                            });
-                            const response = await new Promise((resolve, reject) => {
-                                _bashConfirmResolve = resolve;
-                                if (signal.aborted) {
-                                    _bashConfirmResolve = null;
-                                    reject(new Error("Aborted"));
-                                    return;
-                                }
-                                const onAbort = () => {
-                                    _bashConfirmResolve = null;
-                                    reject(new Error("Aborted"));
-                                };
-                                signal.addEventListener("abort", onAbort, { once: true });
-                            });
-                            if (response.allowed) {
+                            const allowed = await _askToolConfirm(
+                                requestId, "Bash", input.tool_input, signal);
+                            if (allowed) {
                                 return {};
                             }
                             return {
@@ -1604,42 +1825,41 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     ]
                 },
                 {
+                    // Built-in agents (Explore, Plan, general-purpose) inherit
+                    // every tool, including this one. Keep the user's follow-up
+                    // for the main agent — see _clarificationHintFor.
+                    matcher: "mcp__phoenix-editor__getUserClarification",
+                    hooks: [
+                        async (input) => {
+                            if (!input || !input.agent_id) {
+                                return {};
+                            }
+                            console.log("[Phoenix AI] Blocked getUserClarification from subagent");
+                            return {
+                                hookSpecificOutput: {
+                                    hookEventName: "PreToolUse",
+                                    permissionDecision: "deny",
+                                    permissionDecisionReason: "Only the main agent reads the user's " +
+                                        "follow-up. Finish your task and return your findings; " +
+                                        "the main agent will handle the user's message."
+                                }
+                            };
+                        }
+                    ]
+                },
+                {
                     matcher: "AskUserQuestion",
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted AskUserQuestion");
                             const questions = input.tool_input.questions || [];
-                            nodeConnector.triggerPeer("aiQuestion", {
-                                requestId: requestId,
-                                questions: questions
-                            });
                             // Wait for the user's answer from the browser UI
-                            const answer = await new Promise((resolve, reject) => {
-                                _questionResolve = resolve;
-                                if (signal.aborted) {
-                                    _questionResolve = null;
-                                    reject(new Error("Aborted"));
-                                    return;
-                                }
-                                const onAbort = () => {
-                                    _questionResolve = null;
-                                    reject(new Error("Aborted"));
-                                };
-                                signal.addEventListener("abort", onAbort, { once: true });
-                            });
-                            // Format answers as readable text for the AI
-                            let answerText = "";
-                            if (answer.answers) {
-                                const keys = Object.keys(answer.answers);
-                                keys.forEach(function (q) {
-                                    answerText += "Q: " + q + "\nA: " + answer.answers[q] + "\n\n";
-                                });
-                            }
+                            const answer = await _askUserQuestions(requestId, questions, signal);
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
-                                    permissionDecisionReason: answerText.trim() || "No answer provided"
+                                    permissionDecisionReason: _formatAnswers(answer) || "No answer provided"
                                 }
                             };
                         }
@@ -1647,6 +1867,32 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 }
             ],
             PostToolUse: [
+                {
+                    // Model flipped itself into plan mode: keep the runtime
+                    // tracker honest so the Bash hook and canUseTool see it.
+                    matcher: "EnterPlanMode",
+                    hooks: [
+                        async () => {
+                            _runtimePermissionMode = "plan";
+                            return {};
+                        }
+                    ]
+                },
+                {
+                    // Runs only when ExitPlanMode was allowed, i.e. the
+                    // user approved the plan.
+                    matcher: "ExitPlanMode",
+                    hooks: [
+                        async () => {
+                            return {
+                                hookSpecificOutput: {
+                                    hookEventName: "PostToolUse",
+                                    additionalContext: PLAN_APPROVED_HINT
+                                }
+                            };
+                        }
+                    ]
+                },
                 {
                     matcher: "Edit",
                     hooks: [
@@ -1847,8 +2093,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // cleared by _takeLivePreviewHint, so that half cannot repeat.
     function _buildPostToolUseHint(input) {
         const parts = [];
-        if (_queuedClarification) {
-            parts.push(CLARIFICATION_HINT);
+        const clarificationHint = _clarificationHintFor(input);
+        if (clarificationHint) {
+            parts.push(clarificationHint);
         }
         const lpHint = _takeLivePreviewHint(input && input.tool_name ? [input.tool_name] : null);
         if (lpHint) {
@@ -1929,9 +2176,15 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         let accumulatedText = "";
         let lastStreamTime = 0;
 
-        // Tool input tracking (parent-level)
+        // Tool input tracking (parent-level). activeToolCounter is the id
+        // announced at content_block_start; every later event for the block
+        // must reuse it. toolCounter itself keeps moving while the block
+        // streams — a subagent's batched tool_use can land in between — so
+        // reading toolCounter at delta/stop time sends the parent's input to
+        // the subagent's card and leaves the parent card spinning forever.
         let activeToolName = null;
         let activeToolIndex = null;
+        let activeToolCounter = null;
         let activeToolInputJson = "";
         let lastToolStreamTime = 0;
 
@@ -1939,6 +2192,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         let subagentToolName = null;
         let subagentToolIndex = null;
         let subagentToolInputJson = "";
+        let subagentToolCounter = null;
+        let subagentParentToolId;
         let lastSubagentToolStreamTime = 0;
 
         // Trace counters (logged at tool/query completion, not per-delta)
@@ -2021,6 +2276,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 const parentToolId = _toolUseIdToCounter[message.parent_tool_use_id];
                 for (const block of message.message.content) {
                     if (block && block.type === "tool_use") {
+                        if (block.id && _toolUseIdToCounter[block.id] !== undefined) {
+                            // Already announced from the stream_event path.
+                            continue;
+                        }
                         toolCounter++;
                         if (block.id) {
                             _toolUseIdToCounter[block.id] = toolCounter;
@@ -2120,13 +2379,23 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         subagentToolName = event.content_block.name;
                         subagentToolIndex = event.index;
                         subagentToolInputJson = "";
+                        subagentParentToolId = _toolUseIdToCounter[message.parent_tool_use_id];
                         toolCounter++;
+                        subagentToolCounter = toolCounter;
                         lastSubagentToolStreamTime = 0;
-                        _log("Subagent tool start:", subagentToolName, "#" + toolCounter);
+                        // Register the id so the batched assistant message
+                        // for the same call is skipped and tool_result maps
+                        // back to this indicator.
+                        if (event.content_block.id) {
+                            _toolUseIdToCounter[event.content_block.id] = subagentToolCounter;
+                        }
+                        _log("Subagent tool start:", subagentToolName, "#" + subagentToolCounter,
+                            "parent=#" + (subagentParentToolId !== undefined ? subagentParentToolId : "?"));
                         nodeConnector.triggerPeer("aiProgress", {
                             requestId: requestId,
                             toolName: subagentToolName,
-                            toolId: toolCounter,
+                            toolId: subagentToolCounter,
+                            parentToolId: subagentParentToolId,
                             phase: "tool_use"
                         });
                     }
@@ -2142,7 +2411,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             lastSubagentToolStreamTime = now;
                             nodeConnector.triggerPeer("aiToolStream", {
                                 requestId: requestId,
-                                toolId: toolCounter,
+                                toolId: subagentToolCounter,
                                 toolName: subagentToolName,
                                 partialJson: subagentToolInputJson
                             });
@@ -2156,7 +2425,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         if (subagentToolInputJson) {
                             nodeConnector.triggerPeer("aiToolStream", {
                                 requestId: requestId,
-                                toolId: toolCounter,
+                                toolId: subagentToolCounter,
                                 toolName: subagentToolName,
                                 partialJson: subagentToolInputJson
                             });
@@ -2167,16 +2436,18 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         } catch (e) {
                             // ignore parse errors
                         }
-                        _log("Subagent tool done:", subagentToolName, "#" + toolCounter,
+                        _log("Subagent tool done:", subagentToolName, "#" + subagentToolCounter,
                             "json=" + subagentToolInputJson.length + "ch");
                         nodeConnector.triggerPeer("aiToolInfo", {
                             requestId: requestId,
                             toolName: subagentToolName,
-                            toolId: toolCounter,
+                            toolId: subagentToolCounter,
+                            parentToolId: subagentParentToolId,
                             toolInput: toolInput
                         });
                         subagentToolName = null;
                         subagentToolIndex = null;
+                        subagentToolCounter = null;
                         subagentToolInputJson = "";
                     }
 
@@ -2206,19 +2477,20 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         activeToolIndex = event.index;
                         activeToolInputJson = "";
                         toolCounter++;
+                        activeToolCounter = toolCounter;
                         toolDeltaCount = 0;
                         toolStreamSendCount = 0;
                         lastToolStreamTime = 0;
                         // Map the SDK's tool_use id → our toolCounter so we can
                         // correlate later tool_result blocks back to the indicator.
                         if (event.content_block.id) {
-                            _toolUseIdToCounter[event.content_block.id] = toolCounter;
+                            _toolUseIdToCounter[event.content_block.id] = activeToolCounter;
                         }
-                        _log("Tool start:", activeToolName, "#" + toolCounter);
+                        _log("Tool start:", activeToolName, "#" + activeToolCounter);
                         nodeConnector.triggerPeer("aiProgress", {
                             requestId: requestId,
                             toolName: activeToolName,
-                            toolId: toolCounter,
+                            toolId: activeToolCounter,
                             phase: "tool_use"
                         });
                     }
@@ -2236,7 +2508,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             toolStreamSendCount++;
                             nodeConnector.triggerPeer("aiToolStream", {
                                 requestId: requestId,
-                                toolId: toolCounter,
+                                toolId: activeToolCounter,
                                 toolName: activeToolName,
                                 partialJson: activeToolInputJson
                             });
@@ -2252,7 +2524,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             toolStreamSendCount++;
                             nodeConnector.triggerPeer("aiToolStream", {
                                 requestId: requestId,
-                                toolId: toolCounter,
+                                toolId: activeToolCounter,
                                 toolName: activeToolName,
                                 partialJson: activeToolInputJson
                             });
@@ -2263,56 +2535,19 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         } catch (e) {
                             // ignore parse errors
                         }
-                        _log("Tool done:", activeToolName, "#" + toolCounter,
+                        _log("Tool done:", activeToolName, "#" + activeToolCounter,
                             "deltas=" + toolDeltaCount, "sent=" + toolStreamSendCount,
                             "json=" + activeToolInputJson.length + "ch");
                         nodeConnector.triggerPeer("aiToolInfo", {
                             requestId: requestId,
                             toolName: activeToolName,
-                            toolId: toolCounter,
+                            toolId: activeToolCounter,
                             toolInput: toolInput
                         });
 
-                        // ExitPlanMode: show plan to user and wait for approval
-                        // Plan text comes from a prior Write to .claude/plans/ (captured in hook)
-                        if (activeToolName === "ExitPlanMode") {
-                            const planText = toolInput.plan || _lastPlanContent || "";
-                            _lastPlanContent = null;
-                            if (planText) {
-                                _log("ExitPlanMode plan detected (" + planText.length + "ch), sending to browser");
-                                nodeConnector.triggerPeer("aiPlanProposed", {
-                                    requestId: requestId,
-                                    plan: planText
-                                });
-                                // Pause stream processing until user approves/rejects
-                                const planResponse = await new Promise((resolve, reject) => {
-                                    _planResolve = resolve;
-                                    if (signal.aborted) {
-                                        _planResolve = null;
-                                        reject(new Error("Aborted"));
-                                        return;
-                                    }
-                                    const onAbort = () => {
-                                        _planResolve = null;
-                                        reject(new Error("Aborted"));
-                                    };
-                                    signal.addEventListener("abort", onAbort, { once: true });
-                                });
-                                if (!planResponse.approved) {
-                                    _log("Plan rejected by user, aborting");
-                                    currentAbortController.abort();
-                                    _planRejectionFeedback = planResponse.feedback || "";
-                                } else {
-                                    _log("Plan approved by user, will send proceed prompt");
-                                    _planApproved = true;
-                                }
-                            } else {
-                                _log("ExitPlanMode with no plan content, skipping UI");
-                            }
-                        }
-
                         activeToolName = null;
                         activeToolIndex = null;
+                        activeToolCounter = null;
                         activeToolInputJson = "";
                     }
 
@@ -2390,32 +2625,6 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         _log("Complete: tools=" + toolCounter, "edits=" + editCount,
             "textDeltas=" + textDeltaCount, "textSent=" + textStreamSendCount);
 
-        // Check if plan was approved — send follow-up to proceed with implementation
-        if (_planApproved) {
-            _planApproved = false;
-            _log("Plan approved, sending proceed prompt");
-            nodeConnector.triggerPeer("aiComplete", {
-                requestId: requestId,
-                sessionId: currentSessionId,
-                planApproved: true
-            });
-            return;
-        }
-
-        // Check if stream ended due to plan rejection (abort + break)
-        if (_planRejectionFeedback !== null) {
-            const feedback = _planRejectionFeedback;
-            _planRejectionFeedback = null;
-            _log("Plan rejected, sending revision request");
-            nodeConnector.triggerPeer("aiComplete", {
-                requestId: requestId,
-                sessionId: currentSessionId,
-                planRejected: true,
-                planFeedback: feedback
-            });
-            return;
-        }
-
         // Signal completion
         nodeConnector.triggerPeer("aiComplete", {
             requestId: requestId,
@@ -2428,20 +2637,6 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         const isAbort = signal.aborted || /abort/i.test(errMsg);
 
         if (isAbort) {
-            // Check if this was a plan rejection — if so, send feedback as follow-up
-            if (_planRejectionFeedback !== null) {
-                const feedback = _planRejectionFeedback;
-                _planRejectionFeedback = null;
-                _log("Plan rejected, sending revision request");
-                // Don't clear session — resume with feedback
-                nodeConnector.triggerPeer("aiComplete", {
-                    requestId: requestId,
-                    sessionId: currentSessionId,
-                    planRejected: true,
-                    planFeedback: feedback
-                });
-                return;
-            }
             _log("Cancelled");
             // Keep currentSessionId so the next prompt can resume the same SDK
             // session — the abort just leaves an interrupt marker in the log.

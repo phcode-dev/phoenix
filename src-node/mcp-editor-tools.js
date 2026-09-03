@@ -111,11 +111,15 @@ function _maybeAppendHint(result, hasClarification) {
  * @param {Object} nodeConnector - The NodeConnector instance for communicating with the browser
  * @param {Object} [clarificationAccessors] - Optional accessors for user clarification queue
  * @param {Function} clarificationAccessors.hasClarification - Returns true if a clarification is queued
- * @param {Function} clarificationAccessors.getAndClearClarification - Returns {text} and clears the queue
+ * @param {Function} clarificationAccessors.getAndClearClarification - Returns {text, images} and clears the queue
  * @returns {McpSdkServerConfigWithInstance} MCP server config ready for queryOptions.mcpServers
  */
 function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors) {
     const hasClarification = clarificationAccessors && clarificationAccessors.hasClarification;
+    // Tools that only look at the editor carry readOnlyHint so the CLI treats
+    // them like Read/Grep: no permission prompt, and still callable in Plan
+    // Mode. Without it every MCP tool is assumed to mutate and plan mode
+    // asks the user before each call.
     const getEditorStateTool = sdkModule.tool(
         "getEditorState",
         "Get the current Phoenix editor state: active file, working set (open files with isDirty flag), live preview file, " +
@@ -149,7 +153,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 };
             }
             return _maybeAppendHint(result, hasClarification);
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     const takeScreenshotTool = sdkModule.tool(
@@ -213,7 +218,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 };
             }
             return _maybeAppendHint(toolResult, hasClarification);
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     const execJsInLivePreviewTool = sdkModule.tool(
@@ -258,7 +264,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 };
             }
             return _maybeAppendHint(toolResult, hasClarification);
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     const controlEditorTool = sdkModule.tool(
@@ -322,7 +329,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 isError: hasError
             };
             return _maybeAppendHint(toolResult, hasClarification);
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     const resizeLivePreviewTool = sdkModule.tool(
@@ -355,7 +363,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 };
             }
             return _maybeAppendHint(toolResult, hasClarification);
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     const waitTool = sdkModule.tool(
@@ -373,7 +382,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 content: [{ type: "text", text: "Waited " + args.seconds + " seconds." }]
             };
             return _maybeAppendHint(toolResult, hasClarification);
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     const execJsInEditorTool = sdkModule.tool(
@@ -563,7 +573,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 content: [{ type: "text", text: JSON.stringify(payload, null, 2) }]
             };
             return _maybeAppendHint(toolResult, hasClarification);
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     const getUserClarificationTool = sdkModule.tool(
@@ -576,10 +587,6 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             if (clarificationAccessors && clarificationAccessors.getAndClearClarification) {
                 const result = await clarificationAccessors.getAndClearClarification();
                 if (result && (result.text || (result.images && result.images.length > 0))) {
-                    // Notify browser with the text so it can show it as a user message bubble
-                    nodeConnector.triggerPeer("aiClarificationRead", {
-                        text: result.text || ""
-                    });
                     const content = [];
                     if (result.text) {
                         content.push({ type: "text", text: "User clarification: " + result.text });
@@ -599,7 +606,8 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             return {
                 content: [{ type: "text", text: "No clarification queued." }]
             };
-        }
+        },
+        { annotations: { readOnlyHint: true } }
     );
 
     return sdkModule.createSdkMcpServer({
