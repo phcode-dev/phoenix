@@ -183,6 +183,14 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Whether live preview highlights on cursor movement are currently disabled.
+     * @return {boolean}
+     */
+    LiveDocument.prototype.isCursorHighlightDisabled = function () {
+        return _disableHighlightOnCursor;
+    };
+
+    /**
      * @private
      * Handles a cursor change in our attached editor. Updates the highlight in the browser.
      * @param {$.Event} event
