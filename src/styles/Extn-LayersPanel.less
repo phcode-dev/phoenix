@@ -34,8 +34,7 @@
 @layers-prop-value:     #ce9178;
 @layers-row-bg:         @bc-ai-sidebar-bg;
 @layers-row-hover-bg:   mix(#ffffff, @bc-ai-sidebar-bg, 6%);
-@layers-row-select-bg:  mix(#ffffff, @bc-ai-sidebar-bg, 9%);
-@layers-row-focus-bg:   mix(fade(@bc-sidebar-selection, 100%), @bc-ai-sidebar-bg, 30%);
+@layers-row-select-bg:  mix(@layers-accent, @bc-ai-sidebar-bg, 16%);
 
 .layers-tab-container {
     display: flex;
@@ -399,16 +398,7 @@
         outline: none;
     }
 
-    .layers-tree:focus .layers-node.layers-selected {
-        background: @layers-row-focus-bg;
-    }
-
-    .layers-node.layers-cursor:not(.layers-selected) {
-        background: @layers-hover-bg;
-        box-shadow: inset 2px 0 0 fade(@layers-accent, 55%);
-    }
-
-    .layers-tree.layers-kbd-nav .layers-node:hover:not(.layers-selected):not(.layers-cursor) {
+    .layers-tree.layers-kbd-nav .layers-node:hover:not(.layers-selected) {
         background: transparent;
     }
 
@@ -436,6 +426,7 @@
 
         &.layers-selected {
             background: @layers-row-select-bg;
+            box-shadow: inset 2px 0 0 @layers-accent;
         }
     }
 
@@ -507,10 +498,6 @@
 
     .layers-node.layers-selected .layers-node-actions {
         background: @layers-row-select-bg;
-    }
-
-    .layers-tree:focus .layers-node.layers-selected .layers-node-actions {
-        background: @layers-row-focus-bg;
     }
 
     .layers-node-action {
