@@ -578,22 +578,12 @@
     .layers-drop-line {
         position: absolute;
         right: 0;
-        height: 2px;
+        height: 3px;
         margin-top: -1px;
+        border-radius: 2px;
         background: @layers-accent;
         pointer-events: none;
         z-index: 2;
-
-        &::before {
-            content: "";
-            position: absolute;
-            left: -3px;
-            top: -2px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: @layers-accent;
-        }
     }
 
     .layers-node.layers-drop-into {
