@@ -36,6 +36,35 @@
 @layers-row-hover-bg:   mix(#ffffff, @bc-ai-sidebar-bg, 6%);
 @layers-row-select-bg:  mix(@layers-accent, @bc-ai-sidebar-bg, 16%);
 
+.layers-icon-button() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 4px;
+    background: none;
+    color: @project-panel-text-2;
+    cursor: pointer;
+    outline: none;
+    flex: none;
+
+    svg {
+        width: 13px;
+        height: 13px;
+        display: block;
+        flex: none;
+    }
+
+    &:hover {
+        background: @layers-hover-bg;
+        color: @project-panel-text-1;
+    }
+}
+
 .layers-tab-container {
     display: flex;
     flex-direction: column;
@@ -47,6 +76,8 @@
     background-color: @bc-ai-sidebar-bg;
     color: @project-panel-text-1;
     font-size: @sidebar-small-font-size;
+    letter-spacing: normal;
+    text-shadow: none;
 
     .layers-hidden {
         display: none !important;
@@ -226,31 +257,7 @@
     }
 
     .layers-hdr-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 20px;
-        height: 20px;
-        padding: 0;
-        margin: 0;
-        border: none;
-        border-radius: 4px;
-        background: none;
-        color: @project-panel-text-2;
-        cursor: pointer;
-        outline: none;
-
-        svg {
-            width: 13px;
-            height: 13px;
-            display: block;
-            flex: none;
-        }
-
-        &:hover {
-            background: @layers-hover-bg;
-            color: @project-panel-text-1;
-        }
+        .layers-icon-button();
 
         &.layers-active {
             background: @layers-accent-soft;
@@ -261,7 +268,6 @@
             }
         }
     }
-
 
     .layers-section-content {
         position: relative;
@@ -502,31 +508,7 @@
     }
 
     .layers-node-action {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 20px;
-        height: 20px;
-        padding: 0;
-        margin: 0;
-        border: none;
-        border-radius: 3px;
-        background: none;
-        color: @project-panel-text-2;
-        cursor: pointer;
-        outline: none;
-        flex: none;
-
-        svg {
-            width: 13px;
-            height: 13px;
-            display: block;
-        }
-
-        &:hover {
-            background: @layers-hover-bg;
-            color: @project-panel-text-1;
-        }
+        .layers-icon-button();
 
         &.layers-disabled {
             opacity: 0.3;
@@ -746,32 +728,8 @@
     }
 
     .layers-icon-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 18px;
-        height: 18px;
-        padding: 0;
-        margin: 0;
-        border: none;
-        border-radius: 4px;
-        background: none;
-        color: @project-panel-text-2;
-        cursor: pointer;
-        outline: none;
-        flex: none;
+        .layers-icon-button();
         align-self: center;
-
-        svg {
-            width: 12px;
-            height: 12px;
-            display: block;
-        }
-
-        &:hover {
-            background: @layers-hover-bg;
-            color: @project-panel-text-1;
-        }
     }
 
     .layers-decl .layers-icon-btn {
