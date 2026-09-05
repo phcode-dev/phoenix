@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 
     // Brackets modules
     const _                   = require("thirdparty/lodash"),
-        CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
+        CodeMirror          = require("editor/CodeMirrorCompat"),
         CommandManager      = require("command/CommandManager"),
         Commands            = require("command/Commands"),
         KeyBindingManager   = require("command/KeyBindingManager"),

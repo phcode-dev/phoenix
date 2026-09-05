@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
- * Bidirectional sync between Phoenix's CM5 document editor and the mdviewr iframe.
+ * Bidirectional sync between Phoenix's document editor and the mdviewr iframe.
  * Handles content sync, theme sync, locale sync, and edit mode relay.
  */
 
@@ -103,7 +103,7 @@ define(function (require, exports, module) {
      * If the iframe is the same as the previous activation (e.g. switching between markdown files),
      * content is sent immediately without waiting for mdviewrReady.
      *
-     * @param {Document} doc - Phoenix CM5 Document
+     * @param {Document} doc - Phoenix Document
      * @param {jQuery} $iframe - The iframe jQuery element
      * @param {string} baseURL - Base URL for resolving relative image/resource paths
      */
@@ -261,7 +261,7 @@ define(function (require, exports, module) {
         };
         window.addEventListener("message", _messageHandler);
 
-        // Listen for CM5 document changes (Phoenix → iframe)
+        // Listen for Phoenix document changes (Phoenix → iframe)
         let _lastChangeOrigin = null;
         _docChangeHandler = function () {
             if (_syncingFromIframe) {
@@ -284,7 +284,8 @@ define(function (require, exports, module) {
         };
         ThemeManager.on("themeChange", _themeChangeHandler);
 
-        // Listen for cursor activity in CM5 for scroll sync, selection sync, and toolbar state (CM5 → iframe)
+        // Listen for cursor activity in the Phoenix editor for scroll sync,
+        // selection sync, and toolbar state (Phoenix → iframe)
         _cursorHandler = function () {
             if (_syncingFromIframe || !_iframeReady) {
                 return;
@@ -362,7 +363,10 @@ define(function (require, exports, module) {
         clearTimeout(_scrollSyncTimer);
         clearTimeout(_selectionSyncTimer);
 
-        const cm = _getCM();
+        // Detach from the exact editor instance used during activation. The
+        // document's master editor may already be gone, and EditorManager may
+        // point at a different file by the time deactivation runs.
+        const cm = _activeCM || _getCM();
         if (cm) {
             if (_cursorHandler) {
                 cm.off("cursorActivity", _cursorHandler);
@@ -606,7 +610,7 @@ define(function (require, exports, module) {
     // --- iframe → Phoenix ---
 
     /**
-     * Apply new text to the CM5 editor using a minimal diff so that the undo stack
+     * Apply new text to the Phoenix editor using a minimal diff so that the undo stack
      * records only the changed region instead of a full-document replacement.
      */
     function _applyDiffToEditor(newText) {
@@ -775,7 +779,7 @@ define(function (require, exports, module) {
     // --- Scroll sync ---
 
     /**
-     * Send the current CM5 cursor line to the iframe so it can scroll to the
+     * Send the current Phoenix editor cursor line to the iframe so it can scroll to the
      * corresponding rendered element (only if it's not already visible).
      */
     function _syncScrollToIframe() {
@@ -790,7 +794,7 @@ define(function (require, exports, module) {
         if (!cm) {
             return;
         }
-        // CM5 cursor line is 0-based; source lines in markdown are 1-based
+        // Phoenix editor lines are 0-based; source lines in markdown are 1-based
         const cursor = cm.getCursor();
         const line = cursor.line + 1;
         // For table rows, determine column by counting | before cursor
@@ -930,7 +934,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Move the CM5 cursor to the given source line (1-based) and scroll
+     * Move the Phoenix editor cursor to the given source line (1-based) and scroll
      * the editor to show it if it's not already visible.
      */
     function _scrollCMToLine(sourceLine) {
@@ -938,7 +942,7 @@ define(function (require, exports, module) {
         if (!cm) {
             return;
         }
-        // Convert 1-based source line to 0-based CM5 line
+        // Convert the 1-based source line to a 0-based editor line
         const cmLine = Math.max(0, sourceLine - 1);
         const lineCount = cm.lineCount();
         if (cmLine >= lineCount) {
@@ -982,7 +986,7 @@ define(function (require, exports, module) {
     // --- Selection sync ---
 
     /**
-     * Send the current CM5 selection range to the iframe so it can highlight
+     * Send the current Phoenix editor selection range to the iframe so it can highlight
      * the corresponding rendered elements.
      */
     function _syncSelectionToIframe() {
@@ -1021,7 +1025,7 @@ define(function (require, exports, module) {
 
     /**
      * Handle a selection coming from the iframe. Finds the corresponding text
-     * in CM5 and sets the selection there.
+     * in the Phoenix editor and sets the selection there.
      */
     function _handleSelectionFromIframe(data) {
         const cm = _getCM();
@@ -1217,20 +1221,25 @@ define(function (require, exports, module) {
 
     function _getCM() {
         if (_doc && _doc._masterEditor) {
-            return _doc._masterEditor._codeMirror;
+            const masterCodeMirror = _doc._masterEditor._codeMirror;
+            if (masterCodeMirror && !masterCodeMirror._destroyed) {
+                return masterCodeMirror;
+            }
         }
         // Fallback: _masterEditor can be null when the editor pane doesn't have
         // focus (e.g. md viewer is focused). Try EditorManager lookups first,
         // then fall back to the CM reference captured during activation.
         const fullEditor = EditorManager.getCurrentFullEditor();
-        if (fullEditor) {
+        if (fullEditor && fullEditor._codeMirror &&
+                !fullEditor._codeMirror._destroyed) {
             return fullEditor._codeMirror;
         }
         const activeEditor = EditorManager.getActiveEditor();
-        if (activeEditor) {
+        if (activeEditor && activeEditor._codeMirror &&
+                !activeEditor._codeMirror._destroyed) {
             return activeEditor._codeMirror;
         }
-        return _activeCM;
+        return _activeCM && !_activeCM._destroyed ? _activeCM : null;
     }
 
     /**

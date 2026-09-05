@@ -313,6 +313,7 @@ define(function (require, exports, module) {
 
    /**
     * Function to actually navigate to the position(file,selections) captured in this frame
+    * @return {$.Promise} Resolves after the target file is open and its selection is restored
     */
     NavigationFrame.prototype.goTo = function () {
         const self = this;
@@ -326,7 +327,10 @@ define(function (require, exports, module) {
             this.paneId = thisDoc._masterEditor._paneId;
         }
 
-        CommandManager.execute(Commands.FILE_OPEN, {fullPath: this.filePath, paneId: this.paneId}).done(function () {
+        return CommandManager.execute(
+            Commands.FILE_OPEN,
+            {fullPath: this.filePath, paneId: this.paneId}
+        ).then(function () {
             if(!self.nonEditorView) {
                 EditorManager.getCurrentFullEditor().setSelections(self.selections, true);
             }
@@ -464,12 +468,15 @@ define(function (require, exports, module) {
                 if(currentEditNavFrame) {
                     jumpForwardStack.push(currentEditNavFrame);
                 }
-                navFrame.goTo();
+                navFrame.goTo().always(function () {
+                    _validateNavigationCmds();
+                    deferred.resolve();
+                });
             }).fail(function () {
-                CommandManager.execute(NAVIGATION_JUMP_BACK);
-            }).always(function () {
-                _validateNavigationCmds();
-                deferred.resolve();
+                CommandManager.execute(NAVIGATION_JUMP_BACK).always(function () {
+                    _validateNavigationCmds();
+                    deferred.resolve();
+                });
             });
         } else {
             if(currentEditNavFrame){
@@ -509,18 +516,21 @@ define(function (require, exports, module) {
                 if(currentEditNavFrame){
                     jumpBackwardStack.push(currentEditNavFrame);
                 }
-                navFrame.goTo();
+                navFrame.goTo().always(function () {
+                    _validateNavigationCmds();
+                    deferred.resolve();
+                });
             }).fail(function () {
                 _validateNavigationCmds();
-                CommandManager.execute(NAVIGATION_JUMP_FWD);
-            }).always(function () {
-                _validateNavigationCmds();
-                deferred.resolve();
+                CommandManager.execute(NAVIGATION_JUMP_FWD).always(function () {
+                    _validateNavigationCmds();
+                    deferred.resolve();
+                });
             });
         } else {
             deferred.resolve();
         }
-       return deferred.promise();
+        return deferred.promise();
     }
 
    /**
@@ -628,12 +638,33 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Returns true while an editor's CodeMirror surface can still be queried.
+     * CodeMirror 6 clears `_view` during destruction, while CodeMirror 5 does
+     * not define that property.
+     * @private
+     * @param {?Editor} editor
+     * @return {boolean}
+     */
+    function _isEditorSurfaceUsable(editor) {
+        const codeMirror = editor && editor._codeMirror;
+        const hasCodeMirror6View = codeMirror &&
+            Object.prototype.hasOwnProperty.call(codeMirror, "_view");
+
+        return Boolean(codeMirror &&
+            !codeMirror._destroyed &&
+            (!hasCodeMirror6View || codeMirror._view));
+    }
+
+    /**
      * Function to request a navigation frame creation explicitly. Resets forward stack
      * @private
      */
     function _captureBackFrame(editor) {
+        if (!_isEditorSurfaceUsable(editor)) {
+            return;
+        }
         _recordJumpDef({target: editor},
-            {ranges: editor._codeMirror.listSelections()},
+            {ranges: editor.getSelections()},
             true);
     }
 

@@ -129,10 +129,10 @@ define(function LiveCSSDocumentModule(require, exports, module) {
      * Update the highlights in the browser based on the cursor position.
      */
     LiveCSSDocument.prototype.updateHighlight = function () {
-        if (this.isHighlightEnabled() && this.editor) {
-            var editor = this.editor,
-                selectors = [];
-            _.each(this.editor.getSelections(), function (sel) {
+        const editor = this._getUsableEditor();
+        if (this.isHighlightEnabled() && editor) {
+            const selectors = [];
+            _.each(editor.getSelections(), function (sel) {
                 var selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
                 if (selector) {
                     selectors.push(selector);

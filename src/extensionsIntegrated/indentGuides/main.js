@@ -132,6 +132,7 @@ define(function (require, exports, module) {
             cm.__indentGuidesOverlayAttached !== editor.__indentGuidesOverlay) {
             cm.removeOverlay(cm.__indentGuidesOverlayAttached);
             cm.addOverlay(editor.__indentGuidesOverlay);
+            cm.__indentGuidesOverlayAttached = editor.__indentGuidesOverlay;
             cm.__overlayEnabled = enabled;
         } else if (shouldRerender || cm.__overlayEnabled !== enabled) {
             cm.__overlayEnabled = enabled;

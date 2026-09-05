@@ -3,22 +3,55 @@
 // Based on http://codemirror.net/addon/fold/foldgutter.js
 // Modified by Patrick Oladimeji for Brackets
 
+/*! DONT_STRIP_MINIFY: CodeMirror 5-derived compatibility implementation.
+ * See thirdparty/licences/codemirror5-derived.markdown.
+ */
+
 define(function (require, exports, module) {
 
-    var CodeMirror      = brackets.getModule("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror      = brackets.getModule("editor/CodeMirrorCompat"),
         prefs           = require("Prefs");
 
     function State(options) {
         this.options = options;
         this.from = this.to = 0;
+        this.changeUpdate = null;
+        this.viewportRefresh = null;
+        this.active = true;
     }
 
     function parseOptions(opts) {
-        if (opts === true) { opts = {}; }
+        opts = opts === true ? {} : Object.assign({}, opts || {});
         if (!opts.gutter) { opts.gutter = "CodeMirror-foldgutter"; }
         if (!opts.indicatorOpen) { opts.indicatorOpen = "CodeMirror-foldgutter-open"; }
         if (!opts.indicatorFolded) { opts.indicatorFolded = "CodeMirror-foldgutter-folded"; }
         return opts;
+    }
+
+    function isActive(cm, state) {
+        return Boolean(
+            state &&
+            state.active &&
+            !cm._destroyed &&
+            cm.state.foldGutter === state
+        );
+    }
+
+    function clearTimer(state, name) {
+        if (state && state[name] !== null) {
+            window.clearTimeout(state[name]);
+            state[name] = null;
+        }
+    }
+
+    function scheduleChangeUpdate(cm, state, delay, update) {
+        clearTimer(state, "changeUpdate");
+        state.changeUpdate = window.setTimeout(function () {
+            state.changeUpdate = null;
+            if (isActive(cm, state)) {
+                update();
+            }
+        }, delay);
     }
 
     /**
@@ -48,8 +81,14 @@ define(function (require, exports, module) {
       * @param {!number} to the ending line for the update
       */
     function updateFoldInfo(cm, from, to) {
+        const state = cm.state.foldGutter;
+        if (!isActive(cm, state)) {
+            return;
+        }
+        cm._lineFolds = cm._lineFolds || {};
+
         var minFoldSize = prefs.getSetting("minFoldSize") || 2;
-        var opts = cm.state.foldGutter.options;
+        var opts = state.options;
         var fade = prefs.getSetting("hideUntilMouseover");
         var $gutter = $(cm.getGutterElement());
         var i = from;
@@ -81,10 +120,16 @@ define(function (require, exports, module) {
             viewport change event isn't fired by CodeMirror. The setTimeout is a workaround to trigger the
             gutter update after the viewport has been drawn.
         */
-        if (i === to) {
-            window.setTimeout(function () {
+        if (i === to && state.viewportRefresh === null) {
+            state.viewportRefresh = window.setTimeout(function () {
+                state.viewportRefresh = null;
+                if (!isActive(cm, state)) {
+                    return;
+                }
                 var vp = cm.getViewport();
-                updateFoldInfo(cm, vp.from, vp.to);
+                if (vp.from !== vp.to) {
+                    updateFoldInfo(cm, vp.from, vp.to);
+                }
             }, 200);
         }
 
@@ -128,14 +173,18 @@ define(function (require, exports, module) {
       * @param {?number} to the end line number for the update
       */
     function updateInViewport(cm, from, to) {
-        var vp = cm.getViewport(), state = cm.state.foldGutter;
+        const state = cm.state.foldGutter;
+        if (!isActive(cm, state)) { return; }
+        const vp = cm.getViewport();
         from = isNaN(from) ? vp.from : from;
         to = isNaN(to) ? vp.to : to;
 
-        if (!state) { return; }
         cm.operation(function () {
-            updateFoldInfo(cm, from, to);
+            if (isActive(cm, state)) {
+                updateFoldInfo(cm, from, to);
+            }
         });
+        if (!isActive(cm, state)) { return; }
         state.from = from;
         state.to = to;
     }
@@ -260,6 +309,10 @@ define(function (require, exports, module) {
       * @param {!Object} changeObj detailed information about the change that occurred in the document
       */
     function onChange(cm, changeObj) {
+        const state = cm.state.foldGutter;
+        if (!isActive(cm, state)) {
+            return;
+        }
         if (changeObj.origin === "setValue") { //text content has changed outside of brackets
             var folds = cm.getValidFolds(cm._lineFolds);
             cm._lineFolds = folds;
@@ -267,7 +320,6 @@ define(function (require, exports, module) {
                 cm.foldCode(+line);
             });
         } else {
-            var state = cm.state.foldGutter;
             var lineChanges = changeObj.text.length - changeObj.removed.length;
             // for undo actions that add new line(s) to the document first update the folds cache as normal
             // and then update the folds cache with any line folds that exist in the new lines
@@ -282,10 +334,9 @@ define(function (require, exports, module) {
             }
             state.from = changeObj.from.line;
             state.to = 0;
-            window.clearTimeout(state.changeUpdate);
-            state.changeUpdate = window.setTimeout(function () {
+            scheduleChangeUpdate(cm, state, 600, function () {
                 updateInViewport(cm);
-            }, 600);
+            });
         }
     }
 
@@ -294,9 +345,11 @@ define(function (require, exports, module) {
       * @param {!CodeMirror} cm the CodeMirror instance for the active editor
       */
     function onViewportChange(cm) {
-        var state = cm.state.foldGutter;
-        window.clearTimeout(state.changeUpdate);
-        state.changeUpdate = window.setTimeout(function () {
+        const state = cm.state.foldGutter;
+        if (!isActive(cm, state)) {
+            return;
+        }
+        scheduleChangeUpdate(cm, state, 400, function () {
             var vp = cm.getViewport();
             if (state.from === state.to || vp.from - state.to > 20 || state.from - vp.to > 20) {
                 updateInViewport(cm);
@@ -316,7 +369,7 @@ define(function (require, exports, module) {
                     }
                 });
             }
-        }, 400);
+        });
     }
 
     /**
@@ -325,13 +378,15 @@ define(function (require, exports, module) {
      * @param {!CodeMirror} cm the CodeMirror instance for the active editor
      */
     function onCursorActivity(cm) {
-        var state = cm.state.foldGutter;
-        var vp = cm.getViewport();
-        window.clearTimeout(state.changeUpdate);
-        state.changeUpdate = window.setTimeout(function () {
+        const state = cm.state.foldGutter;
+        if (!isActive(cm, state)) {
+            return;
+        }
+        const vp = cm.getViewport();
+        scheduleChangeUpdate(cm, state, 400, function () {
             //need to render the entire visible viewport to remove fold marks rendered from previous selections if any
             updateInViewport(cm, vp.from, vp.to);
-        }, 400);
+        });
     }
 
     /**
@@ -341,7 +396,10 @@ define(function (require, exports, module) {
       * @param {!Object} to the ch and line position that designates the end of the region
       */
     function onFold(cm, from, to) {
-        var state = cm.state.foldGutter;
+        const state = cm.state.foldGutter;
+        if (!isActive(cm, state)) {
+            return;
+        }
         updateFoldInfo(cm, from.line, from.line + 1);
     }
 
@@ -352,10 +410,33 @@ define(function (require, exports, module) {
       * @param {!{line:number, ch:number}} to the ch and line position that designates the end of the region
       */
     function onUnFold(cm, from, to) {
-        var state = cm.state.foldGutter;
-        var vp = cm.getViewport();
+        const state = cm.state.foldGutter;
+        if (!isActive(cm, state)) {
+            return;
+        }
+        const vp = cm.getViewport();
         delete cm._lineFolds[from.line];
         updateFoldInfo(cm, from.line, to.line || vp.to);
+    }
+
+    function disableFoldGutter(cm) {
+        const state = cm.state.foldGutter;
+        if (!state) {
+            return;
+        }
+        state.active = false;
+        clearTimer(state, "changeUpdate");
+        clearTimer(state, "viewportRefresh");
+        cm.clearGutter(state.options.gutter);
+        if (typeof state.options.onGutterClick === "function") {
+            cm.off("gutterClick", state.options.onGutterClick);
+        }
+        cm.off("change", onChange);
+        cm.off("viewportChange", onViewportChange);
+        cm.off("cursorActivity", onCursorActivity);
+        cm.off("fold", onFold);
+        cm.off("unfold", onUnFold);
+        cm.state.foldGutter = null;
     }
 
     /**
@@ -365,27 +446,23 @@ define(function (require, exports, module) {
     function init() {
         CodeMirror.defineOption("foldGutter", false, function (cm, val, old) {
             if (old && old !== CodeMirror.Init) {
-                cm.clearGutter(cm.state.foldGutter.options.gutter);
-                cm.state.foldGutter = null;
-                cm.off("gutterClick", old.onGutterClick);
-                cm.off("change", onChange);
-                cm.off("viewportChange", onViewportChange);
-                cm.off("cursorActivity", onCursorActivity);
-
-                cm.off("fold", onFold);
-                cm.off("unfold", onUnFold);
-                cm.off("swapDoc", updateInViewport);
+                disableFoldGutter(cm);
             }
             if (val) {
+                cm._lineFolds = cm._lineFolds || {};
                 cm.state.foldGutter = new State(parseOptions(val));
                 updateInViewport(cm);
-                cm.on("gutterClick", val.onGutterClick);
+                if (typeof cm.state.foldGutter.options.onGutterClick === "function") {
+                    cm.on(
+                        "gutterClick",
+                        cm.state.foldGutter.options.onGutterClick
+                    );
+                }
                 cm.on("change", onChange);
                 cm.on("viewportChange", onViewportChange);
                 cm.on("cursorActivity", onCursorActivity);
                 cm.on("fold", onFold);
                 cm.on("unfold", onUnFold);
-                cm.on("swapDoc", updateInViewport);
             }
         });
     }

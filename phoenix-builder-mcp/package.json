@@ -4,6 +4,9 @@
     "private": true,
     "type": "module",
     "main": "index.js",
+    "scripts": {
+        "test": "node --test test/build-manager.test.js test/config.test.js test/process-manager.test.js test/ws-control-server.test.js"
+    },
     "dependencies": {
         "@modelcontextprotocol/sdk": "latest",
         "ws": "^8.0.0",

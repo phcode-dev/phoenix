@@ -33,6 +33,14 @@ define(function (require, exports, module) {
     require("spec/Document-integ-test");
     require("spec/DocumentSync-test");
     require("spec/Editor-test");
+    require("spec/EditorSurfaceConformance-test");
+    require("spec/CodeMirrorCompatParity-test");
+    require("spec/CodeMirrorLegacyModesCompat-test");
+    require("spec/CodeMirrorLegacyAddons-test");
+    require("spec/CodeMirrorLegacyExtendedAddons-test");
+    require("spec/CodeMirrorTwigCompat-test");
+    require("spec/CodeMirrorVimCompat-test");
+    require("spec/MarkdownSync-test");
     require("spec/EditorRedraw-test");
     require("spec/EditorCommandHandlers-test");
     require("spec/EditorCommandHandlers-integ-test");

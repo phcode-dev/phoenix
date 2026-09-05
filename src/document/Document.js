@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         InMemoryFile = require("document/InMemoryFile"),
         PerfUtils = require("utils/PerfUtils"),
         LanguageManager = require("language/LanguageManager"),
-        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        CodeMirror = require("editor/CodeMirrorCompat"),
         _ = require("thirdparty/lodash");
 
     /**
@@ -559,7 +559,7 @@ define(function (require, exports, module) {
         if (!this._refreshInProgress) {
             // Sync isDirty from CodeMirror state
             var wasDirty = this.isDirty;
-            this.isDirty = !editor._codeMirror.isClean();
+            this.isDirty = !editor.isClean();
 
             // Notify if isDirty just changed (this also auto-adds us to working set if needed)
             if (wasDirty !== this.isDirty) {
@@ -577,7 +577,7 @@ define(function (require, exports, module) {
     Document.prototype._markClean = function () {
         this.isDirty = false;
         if (this._masterEditor) {
-            this._masterEditor._codeMirror.markClean();
+            this._masterEditor.markClean();
         }
         exports.trigger("_dirtyFlagChange", this);
     };

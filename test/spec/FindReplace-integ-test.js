@@ -755,8 +755,9 @@ define(function (require, exports, module) {
                 requireExpectedMatches[0].end.ch++;  // other results now include one more char
                 requireExpectedMatches[1].end.ch++;
                 requireExpectedMatches[2].end.ch++;
-                // in a new file, JS isn't color coded, so there's only one span each + 1 additional for current selection probably from ode mirror update
-                expectHighlightedMatches(requireExpectedMatches, 4);
+                // Each match is rendered once. Current-match styling is layered onto the
+                // selected match without requiring an additional highlight DOM node.
+                expectHighlightedMatches(requireExpectedMatches);
                 expectSelection(requireExpectedMatches[0]);
                 expectMatchIndex(0, 3);
             });

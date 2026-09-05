@@ -29,10 +29,10 @@ define(function (require, exports, module) {
 
     describe("CSS '@' rules Code Hinting", function () {
 
-        var defaultContent = "@ { \n" +
-                             "} \n" +
-                             " \n" +
-                             "@m ";
+        const defaultContent = "@ { \n" +
+                               "} \n" +
+                               " \n" +
+                               "@m ";
 
 
         var testDocument, testEditor;
@@ -111,29 +111,9 @@ define(function (require, exports, module) {
         }
 
 
-        var modesToTest = ['css', 'scss', 'less'],
-            modeCounter;
-
-
-        var selectMode = function () {
-            return modesToTest[modeCounter];
-        };
+        const modesToTest = ["css", "scss", "less"];
 
         describe("'@' rules in styles mode (selection of correct restricted block based on input)", function () {
-
-            beforeEach(function () {
-                // create Editor instance (containing a CodeMirror instance)
-                var mock = SpecRunnerUtils.createMockEditor(defaultContent, selectMode());
-                testEditor = mock.editor;
-                testDocument = mock.doc;
-            });
-
-            afterEach(function () {
-                SpecRunnerUtils.destroyMockEditor(testDocument);
-                testEditor = null;
-                testDocument = null;
-            });
-
             var testAllHints = function () {
                     testEditor.setCursorPos({ line: 0, ch: 1 });    // after @
                     var hintList = expectHints(CSSAtRuleCodeHints.restrictedBlockHints);
@@ -164,36 +144,37 @@ define(function (require, exports, module) {
                     expect(CSSAtRuleCodeHints.restrictedBlockHints.hasHints(testEditor, 'c')).toBe(false);
                 };
 
-            for (modeCounter in modesToTest) {
-                it("should list all rule hints right after @", testAllHints);
-                it("should list filtered rule hints right after @m", testFilteredHints);
-                it("should not list rule hints on space", testNoHintsOnSpace);
-                it("should not list rule hints if the cursor is before @", testNoHints);
-            }
+            modesToTest.forEach(function (mode) {
+                describe(mode.toUpperCase(), function () {
+                    beforeEach(function () {
+                        setupTest(defaultContent, mode);
+                    });
+
+                    afterEach(tearDownTest);
+
+                    it("should list all rule hints right after @", testAllHints);
+                    it("should list filtered rule hints right after @m", testFilteredHints);
+                    it("should not list rule hints on space", testNoHintsOnSpace);
+                    it("should not list rule hints if the cursor is before @", testNoHints);
+                });
+            });
         });
 
         describe("'@' rules in LESS mode (selection of correct restricted block based on input)", function () {
-            defaultContent = "@ { \n" +
-                             "} \n" +
-                             " \n" +
-                             "@m \n" +
-                             "@green: green;\n" +
-                             ".div { \n" +
-                             "color: @" +
-                             "} \n";
+            const lessContent = "@ { \n" +
+                                "} \n" +
+                                " \n" +
+                                "@m \n" +
+                                "@green: green;\n" +
+                                ".div { \n" +
+                                "color: @" +
+                                "} \n";
 
             beforeEach(function () {
-                // create Editor instance (containing a CodeMirror instance)
-                var mock = SpecRunnerUtils.createMockEditor(defaultContent, "less");
-                testEditor = mock.editor;
-                testDocument = mock.doc;
+                setupTest(lessContent, "less");
             });
 
-            afterEach(function () {
-                SpecRunnerUtils.destroyMockEditor(testDocument);
-                testEditor = null;
-                testDocument = null;
-            });
+            afterEach(tearDownTest);
 
             it("should not list rule hints in less variable evaluation scope", function () {
                 testEditor.setCursorPos({ line: 3, ch: 3 });    // after {
@@ -204,17 +185,10 @@ define(function (require, exports, module) {
 
         describe("'@' rule hint insertion", function () {
             beforeEach(function () {
-                // create Editor instance (containing a CodeMirror instance)
-                var mock = SpecRunnerUtils.createMockEditor(defaultContent, "css");
-                testEditor = mock.editor;
-                testDocument = mock.doc;
+                setupTest(defaultContent, "css");
             });
 
-            afterEach(function () {
-                SpecRunnerUtils.destroyMockEditor(testDocument);
-                testEditor = null;
-                testDocument = null;
-            });
+            afterEach(tearDownTest);
 
             it("should insert @rule selected", function () {
                 testEditor.setCursorPos({ line: 0, ch: 1 });   // cursor after '@'
@@ -231,6 +205,33 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("'@' rule hints in embedded HTML styles", function () {
+            const embeddedHTMLContent = "<html>\n" +
+                                        "<head>\n" +
+                                        "<style>\n" +
+                                        "@m\n" +
+                                        "</style>\n" +
+                                        "</head>\n" +
+                                        "</html>";
+
+            beforeEach(function () {
+                setupTest(embeddedHTMLContent, "html");
+            });
+
+            afterEach(tearDownTest);
+
+            it("uses the embedded CSS parser state and lists matching hints", function () {
+                const cursor = { line: 3, ch: 2 };
+                testEditor.setCursorPos(cursor);
+
+                const token = testEditor._codeMirror.getTokenAt(cursor);
+                expect(token.state.localState).toBeTruthy();
+                expect(token.state.localState.context.type).toBe("at");
+
+                const hintList = expectHints(CSSAtRuleCodeHints.restrictedBlockHints);
+                verifyListsAreIdentical(hintList, ["@media"]);
+            });
+        });
+
     });
 });
-

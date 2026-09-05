@@ -418,7 +418,7 @@ define(function (require, exports, module) {
             if($(e.target).closest('.tab-bar-container').length) { return; }
 
             require(["editor/EditorManager"], function (EditorManager) {
-                if ($(e.target).parents(".CodeMirror-gutter").length !== 0) {
+                if ($(e.target).closest(".cm-gutters").length !== 0) {
                     return;
                 }
 

@@ -353,7 +353,7 @@ define(function (require, exports, module) {
             _$hiddenEditorsContainer = $("#hidden-editors");
         }
         // Create an editor
-        var editor = _createEditorForDocument(doc, true, _$hiddenEditorsContainer);
+        const editor = _createEditorForDocument(doc, true, _$hiddenEditorsContainer);
         // and hide it
         editor.setVisible(false);
     }

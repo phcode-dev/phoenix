@@ -44,25 +44,6 @@ define(function (require, exports, module) {
     require("thirdparty/jquery.knob.modified");
     require('thirdparty/marked.min');
 
-    // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
-    require("thirdparty/CodeMirror/addon/comment/continuecomment");
-    require("thirdparty/CodeMirror/addon/edit/closebrackets");
-    require("thirdparty/CodeMirror/addon/edit/closetag");
-    require("thirdparty/CodeMirror/addon/edit/matchbrackets");
-    require("thirdparty/CodeMirror/addon/edit/matchtags");
-    require("thirdparty/CodeMirror/addon/fold/xml-fold");
-    require("thirdparty/CodeMirror/addon/mode/multiplex");
-    require("thirdparty/CodeMirror/addon/mode/overlay");
-    require("thirdparty/CodeMirror/addon/mode/simple");
-    require("thirdparty/CodeMirror/addon/scroll/scrollpastend");
-    require("thirdparty/CodeMirror/addon/search/match-highlighter");
-    require("thirdparty/CodeMirror/addon/search/searchcursor");
-    require("thirdparty/CodeMirror/addon/selection/active-line");
-    require("thirdparty/CodeMirror/addon/selection/mark-selection");
-    require("thirdparty/CodeMirror/addon/display/rulers");
-    require("thirdparty/CodeMirror/addon/comment/comment");
-    require("thirdparty/CodeMirror/keymap/sublime");
-
     require("utils/EventDispatcher");
     require("worker/WorkerComm");
     require("utils/ZipUtils");
@@ -145,14 +126,24 @@ define(function (require, exports, module) {
     require("phoenix-builder/main");
     require("phoenix-builder/debug-overrides");
 
-    // DEPRECATED: In future we want to remove the global CodeMirror, but for now we
-    // expose our required CodeMirror globally so as to avoid breaking extensions in the
-    // interim.
-    const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
+    // DEPRECATED: Keep a legacy-shaped global API while the editor surface is
+    // backed exclusively by CodeMirror 6.
+    const CodeMirror = require("editor/CodeMirrorCompat"),
+        CodeMirrorLegacyAddons = require("editor/CodeMirrorLegacyAddons"),
+        CodeMirrorSublimeCompat = require("editor/CodeMirrorSublimeCompat");
+
+    // CodeMirror 5 loaded these addons eagerly during application startup.
+    // Preserve that observable API surface with CM6-backed implementations,
+    // while keeping legacy-path imports idempotent for third-party extensions.
+    CodeMirrorLegacyAddons.installAll(CodeMirror);
+    CodeMirrorSublimeCompat.install(CodeMirror);
 
     Object.defineProperty(window, "CodeMirror", {
         get: function () {
-            DeprecationWarning.deprecationWarning('Use brackets.getModule("thirdparty/CodeMirror/lib/codemirror") instead of global CodeMirror.', true);
+            DeprecationWarning.deprecationWarning(
+                'Use brackets.getModule("editor/CodeMirrorCompat") instead of global CodeMirror.',
+                true
+            );
             return CodeMirror;
         }
     });

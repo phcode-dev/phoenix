@@ -24,7 +24,7 @@
 define(function (require, exports, module) {
 
 
-    var CodeMirror         = require("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror         = require("editor/CodeMirrorCompat"),
         PreferencesManager = require("preferences/PreferencesManager"),
         prefs              = PreferencesManager.getExtensionPrefs("themes");
 

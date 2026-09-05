@@ -85,9 +85,11 @@ define(function (require, exports, module) {
 
         // Determine if arrow is above or below
         cursorCoord = self._codeMirror.charCoords(cursorPos);
+        const $editorHolder = $("#editor-holder"),
+            editorOffset = $editorHolder.offset() || {top: 0, left: 0};
 
         // Assume popover height is max of 2 lines
-        arrowBelow = (cursorCoord.top > 100);
+        arrowBelow = (cursorCoord.top - editorOffset.top > 100);
 
         // Text is dynamic, so build popover first so we can measure final width
         self._$messagePopover = $("<div/>").addClass("popover-message").appendTo($("body"));
@@ -112,7 +114,7 @@ define(function (require, exports, module) {
         };
 
         // See if popover is clipped on any side
-        clip = ViewUtils.getElementClipSize($("#editor-holder"), popoverRect);
+        clip = ViewUtils.getElementClipSize($editorHolder, popoverRect);
 
         // Prevent horizontal clipping
         if (clip.left > 0) {

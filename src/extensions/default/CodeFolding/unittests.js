@@ -4,19 +4,21 @@
  * @date 01/08/2015 18:34
  */
 
-/*global describe, beforeAll, beforeEach, afterEach, afterAll, it, expect, awaitsForDone, awaitsFor, awaits*/
+/*global describe, beforeAll, beforeEach, afterEach, afterAll, it, expect, awaitsForDone, awaitsFor*/
 
 define(function (require, exports, module) {
 
     var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
-    describe("individualrun:Code Folding", function () {
+    describe("integration:Code Folding", function () {
         var testWindow,
             testEditor,
             EditorManager,
             DocumentManager,
             CommandManager,
+            ExtensionLoader,
             PreferencesManager,
+            ViewStateManager,
             prefs,
             cm,
             gutterName = "CodeMirror-foldgutter",
@@ -84,8 +86,27 @@ define(function (require, exports, module) {
             DocumentManager = testWindow.brackets.test.DocumentManager;
             PreferencesManager = testWindow.brackets.test.PreferencesManager;
             CommandManager = testWindow.brackets.test.CommandManager;
+            ExtensionLoader = testWindow.brackets.test.ExtensionLoader;
+            ViewStateManager = testWindow.require("view/ViewStateManager");
 
             prefs = PreferencesManager.getExtensionPrefs("code-folding");
+        }
+
+        function getCodeFoldingModule(moduleName) {
+            const extensionRequire = ExtensionLoader.getRequireContextForExtension("CodeFolding");
+            return extensionRequire(moduleName);
+        }
+
+        function resetPreferences() {
+            setPreference("enabled", true);
+            setPreference("minFoldSize", 2);
+            setPreference("saveFoldStates", true);
+            setPreference("alwaysUseIndentFold", false);
+            setPreference("hideUntilMouseover", false);
+            setPreference("maxFoldLevel", 2);
+            setPreference("makeSelectionsFoldable", true);
+            getCodeFoldingModule("Prefs").clearAllFolds();
+            ViewStateManager.reset();
         }
 
         /**
@@ -155,7 +176,11 @@ define(function (require, exports, module) {
             if (!lineInfo || !lineInfo.gutterMarkers) {
                 return;
             }
-            var classes = lineInfo.gutterMarkers[gutterName].classList;
+            const marker = lineInfo.gutterMarkers[gutterName];
+            if (!marker) {
+                return;
+            }
+            const classes = marker.classList;
             if (classes && classes.contains(foldMarkerClosed)) {
                 return {line: lineInfo.line, type: folded};
             } else if (classes && classes.contains(foldMarkerOpen)) {
@@ -169,9 +194,16 @@ define(function (require, exports, module) {
          *
          * @returns {Array<object>} An array of objects containing the line and the type of marker.
          */
-        function getGutterFoldMarks() {
+        function getGutterFoldMarks(includeAllLines) {
             testEditor = EditorManager.getCurrentFullEditor();
             cm = testEditor._codeMirror;
+            if (includeAllLines) {
+                getCodeFoldingModule("foldhelpers/foldgutter").updateInViewport(
+                    cm,
+                    cm.firstLine(),
+                    cm.lastLine() + 1
+                );
+            }
             var marks = [];
             cm.eachLine(function (lineHandle) {
                 var lineInfo = cm.lineInfo(lineHandle);
@@ -226,8 +258,14 @@ define(function (require, exports, module) {
          */
         async function selectTextInEditor(start, end) {
             cm.setSelection(start, end);
-            //wait for foldmarks to be rendered
-            await awaits(500);
+            await awaitsFor(function () {
+                return cm.state.foldGutter &&
+                    cm.state.foldGutter.changeUpdate !== null;
+            }, "fold gutter refresh to be scheduled");
+            await awaitsFor(function () {
+                return cm.state.foldGutter &&
+                    cm.state.foldGutter.changeUpdate === null;
+            }, "fold gutter refresh to complete");
         }
 
         beforeAll(async function () {
@@ -240,6 +278,247 @@ define(function (require, exports, module) {
             await tearDown();
         });
 
+        it("supports standalone CM6 folding without Phoenix editor setup", function () {
+            const CodeMirror = testWindow.brackets.getModule("editor/CodeMirrorCompat");
+            const holder = testWindow.document.createElement("div");
+            testWindow.document.body.appendChild(holder);
+            const standalone = new CodeMirror(holder, {
+                value: "function answer() {\n    return 42;\n}",
+                mode: "javascript",
+                foldGutter: true
+            });
+            const range = {
+                from: {line: 0, ch: 19},
+                to: {line: 2, ch: 0}
+            };
+
+            try {
+                expect(standalone._lineFolds).toEqual({});
+                expect(function () {
+                    standalone.foldCode(0, {range: range});
+                }).not.toThrow();
+                expect(standalone.isFolded(0)).toEqual(range);
+                standalone.unfoldCode(0, {range: range});
+                expect(standalone.isFolded(0)).toBeFalsy();
+            } finally {
+                standalone.destroy();
+                holder.remove();
+            }
+        });
+
+        it("does not reschedule a deferred fold-gutter refresh after destroy", function () {
+            const CodeMirror = testWindow.brackets.getModule("editor/CodeMirrorCompat");
+            const foldGutter = getCodeFoldingModule("foldhelpers/foldgutter");
+            const holder = testWindow.document.createElement("div");
+            testWindow.document.body.appendChild(holder);
+            const standalone = new CodeMirror(holder, {
+                value: "function answer() {\n    return 42;\n}",
+                mode: "javascript",
+                foldGutter: true
+            });
+            const state = standalone.state.foldGutter;
+            testWindow.clearTimeout(state.viewportRefresh);
+            state.viewportRefresh = null;
+
+            const originalSetTimeout = testWindow.setTimeout;
+            const scheduledCallbacks = [];
+            testWindow.setTimeout = function (callback) {
+                scheduledCallbacks.push(callback);
+                return scheduledCallbacks.length;
+            };
+            try {
+                foldGutter.updateInViewport(standalone, 0, 0);
+                expect(scheduledCallbacks.length).toBe(1);
+
+                standalone.destroy();
+                scheduledCallbacks.shift()();
+
+                expect(scheduledCallbacks.length).toBe(0);
+                expect(state.viewportRefresh).toBeNull();
+            } finally {
+                testWindow.setTimeout = originalSetTimeout;
+                standalone.destroy();
+                holder.remove();
+            }
+        });
+
+        it("uses global line coordinates when syntax-folding linked subviews", function () {
+            const CodeMirror = testWindow.brackets.getModule("editor/CodeMirrorCompat");
+            const languageFold = getCodeFoldingModule("foldhelpers/languageFold");
+            const rootDocument = new CodeMirror.Doc(
+                "prefix\nfunction answer() {\n    return 42;\n}\nsuffix",
+                "javascript"
+            );
+            const subview = rootDocument.linkedDoc({
+                from: 1,
+                to: 4
+            });
+
+            try {
+                const range = languageFold.syntaxFold(
+                    subview._adapter,
+                    {line: 1, ch: 0}
+                );
+
+                expect(range).toBeTruthy();
+                expect(range.from.line).toBe(1);
+                expect(range.to.line).toBe(3);
+            } finally {
+                subview.unlinkDoc(rootDocument);
+                subview._adapter.destroy();
+                rootDocument._adapter.destroy();
+            }
+        });
+
+        it("ignores a stale fold-gutter line after the document shrinks", async function () {
+            const CodeMirror = testWindow.brackets.getModule("editor/CodeMirrorCompat");
+            await openTestFile("test.js");
+            const staleLine = cm.lastLine() + 1;
+
+            expect(function () {
+                CodeMirror.fold.brace(cm, CodeMirror.Pos(staleLine, 0));
+            }).not.toThrow();
+            expect(CodeMirror.fold.brace(
+                cm,
+                CodeMirror.Pos(staleLine, 0)
+            )).toBeNull();
+        });
+
+        it("restores folding extensions before enabling a CM6 editor", async function () {
+            await openTestFile("test.js");
+            cm.setOption("foldGutter", false);
+            delete cm.getValidFolds;
+
+            EditorManager.trigger("activeEditorChange", testEditor, testEditor);
+
+            expect(typeof cm.getValidFolds).toBe("function");
+            expect(cm.state.foldGutter).toBeTruthy();
+        });
+
+        it("updates fold-gutter markers after vertically scrolling the CM6 viewport", async function () {
+            const CodeMirror = testWindow.brackets.getModule("editor/CodeMirrorCompat");
+            const holder = testWindow.document.createElement("div");
+            const targetLine = 210;
+            const lines = Array.from({length: 220}, function (_value, line) {
+                if (line === targetLine) {
+                    return "function farAwayFold() {";
+                }
+                if (line === targetLine + 3) {
+                    return "}";
+                }
+                return `    const value${line} = ${line};`;
+            });
+            holder.style.display = "block";
+            holder.style.width = "600px";
+            holder.style.height = "120px";
+            holder.style.position = "fixed";
+            holder.style.left = "0";
+            holder.style.top = "0";
+            testWindow.document.body.appendChild(holder);
+
+            const standalone = new CodeMirror(holder, {
+                value: lines.join("\n"),
+                mode: "javascript",
+                lineNumbers: true,
+                gutters: ["CodeMirror-linenumbers", gutterName],
+                foldGutter: {
+                    rangeFinder: function (_codeMirror, position) {
+                        if (position.line !== targetLine) {
+                            return;
+                        }
+                        return {
+                            from: CodeMirror.Pos(targetLine, lines[targetLine].length),
+                            to: CodeMirror.Pos(targetLine + 3, 0)
+                        };
+                    }
+                }
+            });
+
+            try {
+                standalone.setSize(600, 120);
+                standalone.refresh();
+
+                await awaitsFor(function () {
+                    const viewport = standalone.getViewport();
+                    const scrollInfo = standalone.getScrollInfo();
+                    return scrollInfo.clientHeight > 0 &&
+                        scrollInfo.height > scrollInfo.clientHeight &&
+                        standalone.defaultTextHeight() > 0 &&
+                        viewport.from === 0 &&
+                        viewport.to > viewport.from &&
+                        viewport.to < targetLine;
+                }, "CM6 folding test editor to expose its initial viewport");
+
+                expect(gutterMarkState(standalone.lineInfo(targetLine))).toBeUndefined();
+
+                standalone.scrollTo(
+                    0,
+                    standalone.getScrollInfo().height
+                );
+                await awaitsFor(function () {
+                    const viewport = standalone.getViewport();
+                    return standalone.getScrollInfo().top > 0 &&
+                        viewport.from <= targetLine &&
+                        viewport.to > targetLine;
+                }, "CM6 folding test editor to scroll to the target line");
+                await awaitsFor(function () {
+                    const markerState = gutterMarkState(
+                        standalone.lineInfo(targetLine)
+                    );
+                    return markerState &&
+                        markerState.line === targetLine &&
+                        markerState.type === open;
+                }, "fold gutter marker to update for the scrolled CM6 viewport");
+                await awaitsFor(function () {
+                    return Boolean(
+                        standalone.getGutterElement()
+                            .querySelector("." + foldMarkerOpen)
+                    );
+                }, "fold gutter marker to render in the scrolled CM6 viewport");
+            } finally {
+                standalone.destroy();
+                holder.remove();
+            }
+        });
+
+        it("does not accumulate gutter hover handlers when folding is toggled", async function () {
+            resetPreferences();
+            await openTestFile("test.js");
+
+            const foldGutter = getCodeFoldingModule("foldhelpers/foldgutter");
+            const gutterElement = cm.getGutterElement();
+            const originalUpdateInViewport = foldGutter.updateInViewport;
+            let updateCount = 0;
+
+            async function setFoldingEnabled(enabled) {
+                setPreference("enabled", enabled);
+                await awaitsFor(function () {
+                    return Boolean(cm.state.foldGutter) === enabled;
+                }, `code folding to be ${enabled ? "enabled" : "disabled"}`);
+            }
+
+            try {
+                setPreference("hideUntilMouseover", true);
+                await setFoldingEnabled(false);
+                await setFoldingEnabled(true);
+                await setFoldingEnabled(false);
+                await setFoldingEnabled(true);
+
+                expect(cm.getGutterElement()).toBe(gutterElement);
+                foldGutter.updateInViewport = function () {
+                    updateCount++;
+                };
+                testWindow.$(gutterElement).trigger("mouseenter");
+
+                expect(updateCount).toBe(1);
+            } finally {
+                foldGutter.updateInViewport = originalUpdateInViewport;
+                setPreference("hideUntilMouseover", false);
+                setPreference("enabled", true);
+                await testWindow.closeAllFiles();
+            }
+        });
+
         Object.keys(testFilesSpec).forEach(function (file) {
             var testFilePath = testFilesSpec[file].filePath;
             var foldableLines = testFilesSpec[file].foldableLines;
@@ -248,6 +527,7 @@ define(function (require, exports, module) {
                 beforeEach(async function () {
                     await setupWindow();
                     await setup();
+                    resetPreferences();
 
                     await openTestFile(testFilePath);
 
@@ -260,7 +540,7 @@ define(function (require, exports, module) {
                 });
 
                 it("renders fold marks on startup", async function () {
-                    var marks = getGutterFoldMarks();
+                    var marks = getGutterFoldMarks(true);
                     expect(marks.length).toBeGreaterThan(0);
                     marks.map(getLineNumber).forEach(function (line) {
                         expect(toZeroIndex(foldableLines)).toContain(line);
@@ -318,7 +598,7 @@ define(function (require, exports, module) {
 
                 it("indicates foldable lines in the gutter", async function () {
                     var lineNumbers = foldableLines;
-                    var marks = getGutterFoldMarks();
+                    var marks = getGutterFoldMarks(true);
                     var gutterNumbers = marks.filter(filterOpen)
                         .map(getLineNumber);
                     expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
@@ -352,7 +632,7 @@ define(function (require, exports, module) {
                         expect(marks.length).toEqual(0);
 
                         var lineNumbers = foldableLines;
-                        var marks = getGutterFoldMarks();
+                        var marks = getGutterFoldMarks(true);
                         var gutterNumbers = marks.filter(filterOpen)
                             .map(getLineNumber);
                         expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
@@ -372,6 +652,11 @@ define(function (require, exports, module) {
                         setPreference("enabled", false);
                         var marks = getEditorFoldMarks();
                         expect(marks.length).toEqual(0);
+                        expect(cm.getOption("foldGutter")).toBe(false);
+                        expect(cm.state.foldGutter).toBeNull();
+                        expect(testEditor.getRootElement().classList.contains("folding-enabled")).toBe(false);
+                        expect(testWindow.brackets.getModule("editor/Editor").Editor
+                            .isGutterRegistered(gutterName)).toBe(false);
                     });
 
                     describe("Fold selected region", function () {
@@ -415,43 +700,50 @@ define(function (require, exports, module) {
                 });
 
                 describe("Editor text changes", function () {
-                    var foldableLine = foldableLines[1],
-                        expandTimeoutElapsed = false;
+                    var foldableLine = foldableLines[1];
 
                     // add a line after folding a region preserves the region and the region can be unfolded
                     it("can unfold a folded region after a line has been added above it", async function () {
                         await foldCodeOnLine(foldableLine);
-                        cm.replaceRange("\r\n", {line: foldableLine - 1, ch: 0});
+                        try {
+                            cm.replaceRange("\r\n", {line: foldableLine - 1, ch: 0});
 
-                        await expandCodeOnLine(foldableLine + 1);
-                        setTimeout(function () {
-                            expandTimeoutElapsed = true;
-                        }, 400);
+                            await expandCodeOnLine(foldableLine + 1);
+                            await awaitsFor(function () {
+                                return getGutterFoldMarks().filter(filterFolded).length === 0;
+                            }, "fold gutter markers to update after inserting a line");
 
-                        await awaitsFor(function () {
-                            return expandTimeoutElapsed;
-                        }, "waiting a moment for gutter markerts to be re-rendered");
-
-                        var marks = getGutterFoldMarks().filter(filterFolded);
-                        expect(marks.length).toEqual(0);
+                            var marks = getGutterFoldMarks().filter(filterFolded);
+                            expect(marks.length).toEqual(0);
+                        } finally {
+                            if (testEditor.document.isDirty) {
+                                cm.undo();
+                            }
+                        }
 
                     });
 
                     it("can unfold a folded region even after a line has been removed above it", async function () {
                         await foldCodeOnLine(foldableLine);
-                        cm.replaceRange("", {line: foldableLine - 1, ch: 0}, {line: foldableLine, ch: 0});
+                        try {
+                            cm.replaceRange(
+                                "",
+                                {line: foldableLine - 2, ch: 0},
+                                {line: foldableLine - 1, ch: 0}
+                            );
 
-                        await expandCodeOnLine(foldableLine - 1);
-                        setTimeout(function () {
-                            expandTimeoutElapsed = true;
-                        }, 400);
+                            await expandCodeOnLine(foldableLine - 1);
+                            await awaitsFor(function () {
+                                return getGutterFoldMarks().filter(filterFolded).length === 0;
+                            }, "fold gutter markers to update after removing a line");
 
-                        await awaitsFor(function () {
-                            return expandTimeoutElapsed;
-                        }, "waiting a moment for gutter markerts to be re-rendered");
-
-                        var marks = getGutterFoldMarks().filter(filterFolded);
-                        expect(marks.length).toEqual(0);
+                            var marks = getGutterFoldMarks().filter(filterFolded);
+                            expect(marks.length).toEqual(0);
+                        } finally {
+                            if (testEditor.document.isDirty) {
+                                cm.undo();
+                            }
+                        }
                     });
                 });
             });

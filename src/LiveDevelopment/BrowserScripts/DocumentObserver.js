@@ -28,6 +28,9 @@
 
     var _document = null;
     var _transport;
+    const LIVE_PREVIEW_SCROLL_POSITION = "PHOENIX_LIVE_PREVIEW_SCROLL_POSITION";
+    const LIVE_PREVIEW_SCROLL_READY = "PHOENIX_LIVE_PREVIEW_SCROLL_READY";
+    const LIVE_PREVIEW_RESTORE_SCROLL_POSITION = "PHOENIX_LIVE_PREVIEW_RESTORE_SCROLL_POSITION";
 
     function inIframe () {
         try {
@@ -48,23 +51,57 @@
         }, false);
     }
 
-    window.addEventListener('scroll', function () {
-        // save scroll position
-        sessionStorage.setItem("saved-scroll-" + location.href, JSON.stringify({
-            scrollX: window.scrollX,
-            scrollY: window.scrollY
-        }));
-    });
-    function scrollToLastPosition() {
-        let saved = JSON.parse(sessionStorage.getItem("saved-scroll-" + location.href));
-        if(saved){
+    function _restoreScrollPosition(position) {
+        if (!position) {
+            return;
+        }
+        const applyScrollPosition = function () {
             window.scrollTo({
-                left: saved.scrollX,
-                top: saved.scrollY,
+                left: position.scrollX,
+                top: position.scrollY,
                 behavior: "instant"
             });
+        };
+        if (document.readyState === "complete") {
+            applyScrollPosition();
+        } else {
+            window.addEventListener("load", applyScrollPosition, { once: true });
         }
     }
+
+    window.addEventListener("scroll", function () {
+        const position = {
+            scrollX: window.scrollX,
+            scrollY: window.scrollY
+        };
+        // Keep sessionStorage support for reloads in the same browsing context.
+        sessionStorage.setItem("saved-scroll-" + location.href, JSON.stringify(position));
+        if (inIframe()) {
+            window.parent.postMessage({
+                type: LIVE_PREVIEW_SCROLL_POSITION,
+                url: location.href,
+                scrollX: position.scrollX,
+                scrollY: position.scrollY
+            }, "*");
+        }
+    });
+
+    function scrollToLastPosition() {
+        const saved = JSON.parse(sessionStorage.getItem("saved-scroll-" + location.href));
+        _restoreScrollPosition(saved);
+    }
+
+    window.addEventListener("message", function (event) {
+        const data = event.data;
+        if (!inIframe() || event.source !== window.parent || !data ||
+            data.type !== LIVE_PREVIEW_RESTORE_SCROLL_POSITION ||
+            data.url !== location.href ||
+            !Number.isFinite(data.scrollX) || !Number.isFinite(data.scrollY)) {
+            return;
+        }
+        _restoreScrollPosition(data);
+    });
+
     window.addEventListener("load", scrollToLastPosition);
 
     /**
@@ -357,6 +394,12 @@
         _document = document;
         // start listening to node changes
         _enableListeners();
+        if (inIframe()) {
+            window.parent.postMessage({
+                type: LIVE_PREVIEW_SCROLL_READY,
+                url: location.href
+            }, "*");
+        }
 
         var rel = related();
 

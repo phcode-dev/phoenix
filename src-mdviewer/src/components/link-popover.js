@@ -346,51 +346,63 @@ function hide() {
   currentAnchor = null;
 }
 
+function updatePositionSync() {
+  if (editMode || createMode) return; // don't reposition while editing
+
+  // If format bar is visible, hide link popover
+  const formatBar = document.getElementById("format-bar");
+  if (formatBar && formatBar.classList.contains("visible")) {
+    hide();
+    return;
+  }
+
+  // If lang picker dropdown is open, hide link popover
+  const langPicker = document.getElementById("lang-picker");
+  if (langPicker && langPicker.classList.contains("visible") && langPicker.querySelector(".lang-picker-dropdown.open")) {
+    hide();
+    return;
+  }
+
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount) {
+    hide();
+    return;
+  }
+
+  // Check selection is inside contentEl
+  if (!contentEl || !contentEl.contains(sel.anchorNode)) {
+    hide();
+    return;
+  }
+
+  // If text is selected (non-collapsed), let format bar handle it
+  if (!sel.isCollapsed) {
+    hide();
+    return;
+  }
+
+  const anchor = findAnchorAtSelection();
+  if (anchor) {
+    show(anchor);
+  } else {
+    hide();
+  }
+}
+
 function updatePosition() {
   if (rafId) cancelAnimationFrame(rafId);
   rafId = requestAnimationFrame(() => {
     rafId = null;
-    if (editMode || createMode) return; // don't reposition while editing
-
-    // If format bar is visible, hide link popover
-    const formatBar = document.getElementById("format-bar");
-    if (formatBar && formatBar.classList.contains("visible")) {
-      hide();
-      return;
-    }
-
-    // If lang picker dropdown is open, hide link popover
-    const langPicker = document.getElementById("lang-picker");
-    if (langPicker && langPicker.classList.contains("visible") && langPicker.querySelector(".lang-picker-dropdown.open")) {
-      hide();
-      return;
-    }
-
-    const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) {
-      hide();
-      return;
-    }
-
-    // Check selection is inside contentEl
-    if (!contentEl || !contentEl.contains(sel.anchorNode)) {
-      hide();
-      return;
-    }
-
-    // If text is selected (non-collapsed), let format bar handle it
-    if (!sel.isCollapsed) {
-      hide();
-      return;
-    }
-
-    const anchor = findAnchorAtSelection();
-    if (anchor) {
-      show(anchor);
-    } else {
-      hide();
-    }
+    updatePositionSync();
   });
+}
+
+export function updateLinkPopoverForTest() {
+  if (rafId) {
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+  updatePositionSync();
 }
 
 export function initLinkPopover(editorEl) {
@@ -431,6 +443,10 @@ export function initLinkPopover(editorEl) {
 }
 
 export function destroyLinkPopover() {
+  if (rafId) {
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
   hide();
   document.removeEventListener("selectionchange", updatePosition);
   if (contentEl) {

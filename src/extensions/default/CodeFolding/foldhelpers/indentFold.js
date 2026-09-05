@@ -6,7 +6,7 @@
 
 define(function (require, exports, module) {
 
-    var CodeMirror  = brackets.getModule("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror  = brackets.getModule("editor/CodeMirrorCompat"),
         cols        = CodeMirror.countColumn,
         pos         = CodeMirror.Pos;
 

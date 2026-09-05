@@ -95,9 +95,13 @@ define(function (require, exports, module) {
 
     const EVENT_EMBEDDED_IFRAME_WHO_AM_I = 'whoAmIframePhoenix';
     const EVENT_EMBEDDED_IFRAME_FOCUS_EDITOR = 'embeddedIframeFocusEditor';
+    const EVENT_LIVE_PREVIEW_SCROLL_POSITION = "PHOENIX_LIVE_PREVIEW_SCROLL_POSITION";
+    const EVENT_LIVE_PREVIEW_SCROLL_READY = "PHOENIX_LIVE_PREVIEW_SCROLL_READY";
+    const EVENT_LIVE_PREVIEW_RESTORE_SCROLL_POSITION = "PHOENIX_LIVE_PREVIEW_RESTORE_SCROLL_POSITION";
 
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
+    const _livePreviewScrollPositions = new Map();
 
     // holds the dropdown instance
     let $dropdown = null;
@@ -170,7 +174,10 @@ define(function (require, exports, module) {
         // for integ tests
         window._livePreviewIntegTest = {
             urlLoadCount: 0,
-            STATE_CUSTOM_SERVER_BANNER_ACK
+            STATE_CUSTOM_SERVER_BANNER_ACK,
+            getSavedScrollPosition: function (url) {
+                return _livePreviewScrollPositions.get(url) || null;
+            }
         };
     }
 
@@ -197,6 +204,38 @@ define(function (require, exports, module) {
         $fullScreenBtn;
 
     let customLivePreviewBannerShown = false;
+
+    function _handleLivePreviewScrollMessage(event) {
+        if (!$iframe || !$iframe[0] || event.source !== $iframe[0].contentWindow) {
+            return;
+        }
+        const data = event.data;
+        if (!data || typeof data.url !== "string") {
+            return;
+        }
+        if (data.type === EVENT_LIVE_PREVIEW_SCROLL_POSITION) {
+            if (!Number.isFinite(data.scrollX) || !Number.isFinite(data.scrollY)) {
+                return;
+            }
+            _livePreviewScrollPositions.set(data.url, {
+                scrollX: data.scrollX,
+                scrollY: data.scrollY
+            });
+            return;
+        }
+        if (data.type === EVENT_LIVE_PREVIEW_SCROLL_READY) {
+            const position = _livePreviewScrollPositions.get(data.url);
+            if (!position) {
+                return;
+            }
+            event.source.postMessage({
+                type: EVENT_LIVE_PREVIEW_RESTORE_SCROLL_POSITION,
+                url: data.url,
+                scrollX: position.scrollX,
+                scrollY: position.scrollY
+            }, event.origin === "null" ? "*" : event.origin);
+        }
+    }
 
     // live Preview overlay variables (overlays are shown when live preview is connecting or there's a syntax error)
     let $statusOverlay = null; // reference to the static overlay element
@@ -1218,6 +1257,7 @@ define(function (require, exports, module) {
     }
 
     async function _projectOpened() {
+        _livePreviewScrollPositions.clear();
         // Deactivate mdviewr on project switch — keep iframe alive but clear cache
         if(_isMdviewrActive) {
             MarkdownSync.deactivate();
@@ -1291,6 +1331,7 @@ define(function (require, exports, module) {
     }
 
     function _projectClosed() {
+        _livePreviewScrollPositions.clear();
         if(urlPinned) {
             _togglePinUrl();
         }
@@ -1505,6 +1546,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "atStart",
             LivePreviewSettings.shouldShowLivePreviewAtStartup() ? "show" : "hide");
         _createExtensionPanel();
+        window.addEventListener("message", _handleLivePreviewScrollMessage);
         StaticServer.init();
         LiveDevServerManager.registerServer({ create: _createStaticServer }, 5);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
@@ -1777,5 +1819,4 @@ define(function (require, exports, module) {
     exports.hideInterstitial = hideInterstitial;
     exports.getPreviewedFilePath = getPreviewedFilePath;
 });
-
 

@@ -21,6 +21,7 @@
 /* eslint-env node */
 
 const { src, dest, series } = require('gulp');
+const { execFileSync } = require("child_process");
 const fs = require("fs");
 const path = require('path');
 
@@ -69,6 +70,21 @@ function copyFiles(srcPathList, dstPath) {
         .pipe(dest(dstPath));
 }
 
+function cleanPrettierDirectory() {
+    const prettierDirectory = path.resolve(__dirname, "../src/thirdparty/prettier");
+    fs.rmSync(prettierDirectory, { recursive: true, force: true });
+    return Promise.resolve();
+}
+
+function bundleCodeMirror6() {
+    const buildScript = path.resolve(__dirname, "../build/build-codemirror6.mjs");
+    execFileSync(process.execPath, [buildScript], {
+        cwd: path.resolve(__dirname, ".."),
+        stdio: "inherit"
+    });
+    return Promise.resolve();
+}
+
 function _copyMimeDB() {
     // mime-db
     return src(['node_modules/mime-db/db.json'])
@@ -96,13 +112,8 @@ function _getConfigJSON() {
  * Add thirdparty libs copied to gitignore except the licence file.
  */
 let copyThirdPartyLibs = series(
-    // codemirror
-    copyFiles.bind(copyFiles, ['node_modules/codemirror/addon/**/*'], 'src/thirdparty/CodeMirror/addon'),
-    copyFiles.bind(copyFiles, ['node_modules/codemirror/keymap/**/*'], 'src/thirdparty/CodeMirror/keymap'),
-    copyFiles.bind(copyFiles, ['node_modules/codemirror/lib/**/*'], 'src/thirdparty/CodeMirror/lib'),
-    copyFiles.bind(copyFiles, ['node_modules/codemirror/mode/**/*'], 'src/thirdparty/CodeMirror/mode'),
-    copyFiles.bind(copyFiles, ['node_modules/codemirror/theme/**/*'], 'src/thirdparty/CodeMirror/theme'),
-    copyLicence.bind(copyLicence, 'node_modules/codemirror/LICENSE', 'codemirror'),
+    // CodeMirror 6 is bundled because its packages are ESM-only and Phoenix loads browser modules through RequireJS.
+    bundleCodeMirror6,
     // @phcode/fs
     copyFiles.bind(copyFiles, ['node_modules/@phcode/fs/dist/virtualfs.js',
         'node_modules/@phcode/fs/dist/virtualfs.js.map'], 'src/phoenix'),
@@ -189,6 +200,9 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/@pixelbrackets/gfm-stylesheet/dist/gfm.min.css'],
         'src/thirdparty/'), // AGPL 2.0 license added to licence md
     // prettier
+    // This directory is generated. Clear files left behind by older Prettier layouts before copying
+    // the current standalone runtime and plugins.
+    cleanPrettierDirectory,
     copyFiles.bind(copyFiles, ['node_modules/prettier/standalone.js'],
         'src/thirdparty/prettier'),
     copyFiles.bind(copyFiles, ['node_modules/prettier/plugins/*.js'],
@@ -306,3 +320,4 @@ function _patchTernLib() {
 
 exports.copyAll = series(copyThirdPartyLibs, _patchAcornLib, _patchTernLib);
 exports.copyAllDebug = series(copyThirdPartyLibs, copyThirdPartyDebugLibs, _patchAcornLib, _patchTernLib);
+exports.bundleCodeMirror6 = bundleCodeMirror6;

@@ -36,7 +36,7 @@ define(function (require, exports, module) {
         WorkspaceManager = require("view/WorkspaceManager"),
         StringUtils = require("utils/StringUtils"),
         TokenUtils = require("utils/TokenUtils"),
-        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        CodeMirror = require("editor/CodeMirrorCompat"),
         _ = require("thirdparty/lodash"),
         ChangeHelper = require("editor/EditorHelper/ChangeHelper"),
         LanguageManager = require("language/LanguageManager"),

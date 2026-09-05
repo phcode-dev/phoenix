@@ -23,27 +23,27 @@ define(function (require, exports, module) {
 
 
     var LanguageManager = brackets.getModule("language/LanguageManager"),
-        CodeMirror      = brackets.getModule("thirdparty/CodeMirror/lib/codemirror");
+        CodeMirror      = brackets.getModule("editor/CodeMirrorCompat");
 
-    brackets.getModule(["thirdparty/CodeMirror/mode/handlebars/handlebars"], function () {
+    if (!CodeMirror.modes.htmlhandlebars) {
         CodeMirror.defineMode("htmlhandlebars", function (config) {
             return CodeMirror.multiplexingMode(
                 CodeMirror.getMode(config, "text/html"),
                 {
                     open: "{{",
-                    close: "}}",
+                    close: /\}\}\}?/,
                     mode: CodeMirror.getMode(config, "handlebars"),
                     parseDelimiters: true
                 }
             );
         });
-        CodeMirror.defineMIME("text/x-handlebars-template", "htmlhandlebars");
+    }
+    CodeMirror.defineMIME("text/x-handlebars-template", "htmlhandlebars");
 
-        LanguageManager.defineLanguage("handlebars", {
-            name: "Handlebars",
-            mode: ["htmlhandlebars", "text/x-handlebars-template"],
-            fileExtensions: ["hbs", "handlebars"],
-            blockComment: ["{{!", "}}"]
-        });
+    LanguageManager.defineLanguage("handlebars", {
+        name: "Handlebars",
+        mode: ["htmlhandlebars", "text/x-handlebars-template"],
+        fileExtensions: ["hbs", "handlebars"],
+        blockComment: ["{{!", "}}"]
     });
 });

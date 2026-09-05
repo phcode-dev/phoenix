@@ -28,7 +28,8 @@
 define(function (require, exports, module) {
 
 
-    const UrlParams   = require("utils/UrlParams").UrlParams;
+    const UrlParams = require("utils/UrlParams").UrlParams,
+        CodeMirrorLegacyModuleLoader = require("editor/CodeMirrorLegacyModuleLoader");
 
     // Define core brackets namespace if it isn't already defined
     //
@@ -98,8 +99,14 @@ define(function (require, exports, module) {
     // core modules) so that extensions can use it.
     // Note: we change the name to "getModule" because this won't do exactly
     // the same thing as 'require' in AMD-wrapped modules. The extension will
-    // only be able to load modules that have already been loaded once.
-    global.brackets.getModule = require;
+    // only be able to load modules that have already been loaded once, except
+    // for historical CodeMirror IDs resolved by the CM6 compatibility loader.
+    global.brackets.getModule = function (moduleName) {
+        if (CodeMirrorLegacyModuleLoader.isLegacyModule(moduleName)) {
+            return CodeMirrorLegacyModuleLoader.resolveLegacyModule(moduleName);
+        }
+        return require.apply(null, arguments);
+    };
 
     /* API for retrieving the global RequireJS config
      * For internal use only

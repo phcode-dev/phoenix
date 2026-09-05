@@ -8,7 +8,7 @@ The markdown viewer (`src-mdviewer/`) is a standalone web app loaded inside an i
 ```
 Test Runner Window
   └── Test Phoenix iframe (testWindow)
-        ├── CM5 editor (CodeMirror)
+        ├── Phoenix editor (CodeMirror 6)
         ├── Live Preview panel
         │     └── #panel-md-preview-frame (md viewer iframe)
         │           ├── #viewer-content (contenteditable in edit mode)

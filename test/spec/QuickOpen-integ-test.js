@@ -30,6 +30,8 @@ define(function (require, exports, module) {
 
     describe("mainview:QuickOpen", function () {
 
+        const QUICK_OPEN_WAIT_TIMEOUT = 30000,
+            QUICK_OPEN_TEST_TIMEOUT = 300000;
         var testPath = SpecRunnerUtils.getTestPath("/spec/QuickOpen-test-files");
         var brackets, testWindow, test$, executeCommand, EditorManager, DocumentManager, PreferencesManager;
 
@@ -51,35 +53,45 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterEach(async function () {
+            if (testWindow && test$ && getSearchField().length) {
+                brackets.test.MainViewManager.focusActivePane();
+                await awaitsFor(function () {
+                    return getSearchField().length === 0;
+                }, "Quick Open cleanup", QUICK_OPEN_WAIT_TIMEOUT);
+            }
+
+            await SpecRunnerUtils.closeTestWindow();
             testWindow      = null;
             brackets        = null;
             test$           = null;
             executeCommand  = null;
             EditorManager   = null;
             DocumentManager = null;
-            await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
         function getSearchBar() {
-            return test$(".modal-bar");
+            return getSearchField().closest(".modal-bar");
         }
         function getSearchField() {
-            return test$(".modal-bar input[type='text']");
+            return test$("#quickOpenSearch");
         }
 
         function expectSearchBarOpen() {
-            expect(getSearchBar()[0]).toBeDefined();
+            expect(getSearchBar().length).toBe(1);
+            expect(getSearchField().length).toBe(1);
         }
 
-        function enterSearchText(str, timeoutLength) {
-            timeoutLength = timeoutLength || 10;
-
+        function enterSearchText(str) {
             expectSearchBarOpen();
+            getSearchField().val(str).trigger("input");
+        }
 
-            testWindow.setTimeout(function () {
-                getSearchField().val(str);
-                getSearchField().trigger("input");
-            }, timeoutLength);
+        async function waitForSearchField() {
+            await awaitsFor(function () {
+                const $field = getSearchField();
+                const $bar = $field.closest(".modal-bar");
+                return $field.length === 1 && $bar.length === 1 && !$bar.hasClass("popout");
+            }, "Quick Open field to be ready", QUICK_OPEN_WAIT_TIMEOUT);
         }
 
         function pressEnter() {
@@ -90,10 +102,18 @@ define(function (require, exports, module) {
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", getSearchField()[0]);
         }
 
-        async function _forPopupVisible() {
+        async function _forExpectedFileResult(query, file) {
             await awaitsFor(function () {
-                return test$(".quick-search-container").is(":visible");
-            }, "popup to be visible", 1000);
+                const $field = getSearchField();
+                const $popup = test$("body > .quick-search-container:visible");
+                const $highlightedResult = $popup.find("li.highlight");
+                return $field.length === 1 &&
+                    $field.val() === query &&
+                    $popup.length === 1 &&
+                    $highlightedResult.length === 1 &&
+                    $highlightedResult.text().indexOf(file) !== -1 &&
+                    $highlightedResult.find(".quicksearch-namematch").length > 0;
+            }, "expected Quick Open result to be rendered", QUICK_OPEN_WAIT_TIMEOUT);
         }
 
         /**
@@ -116,22 +136,20 @@ define(function (require, exports, module) {
 
             // Test quick open using a partial file name
             executeCommand(Commands.NAVIGATE_QUICK_OPEN);
+            await waitForSearchField();
 
-            // need to set the timeout length here to ensure that it has a chance to load the file
-            // list.
-            enterSearchText(quickOpenQuery, 100);
-
-            await awaitsFor(function () {
-                return getSearchField().val() === quickOpenQuery;
-            }, "filename entry timeout", 1000);
-
-            await _forPopupVisible();
+            enterSearchText(quickOpenQuery);
+            await _forExpectedFileResult(quickOpenQuery, file);
             pressEnter();
 
             await awaitsFor(function () {
                 editor = EditorManager.getCurrentFullEditor();
-                return editor !== null && getSearchBar().length === 0;
-            }, "file opening timeout", 3000);
+                const currentDocument = DocumentManager.getCurrentDocument();
+                return editor !== null &&
+                    currentDocument &&
+                    currentDocument.file.name === file &&
+                    getSearchField().length === 0;
+            }, "expected file to open", QUICK_OPEN_WAIT_TIMEOUT);
 
             $scroller = test$(editor.getScrollerElement());
 
@@ -142,20 +160,13 @@ define(function (require, exports, module) {
             if (gotoLineQuery) {
                 // Test go to line
                 executeCommand(Commands.NAVIGATE_GOTO_LINE);
+                await waitForSearchField();
                 enterSearchText(gotoLineQuery);
-            }
-
-            if (gotoLineQuery) {
-                await awaitsFor(function () {
-                    return getSearchField().val() === gotoLineQuery;
-                }, "goto line entry timeout", 1000);
-
                 pressEnter();
-
-                // wait for ModalBar to close
                 await awaitsFor(function () {
-                    return getSearchBar().length === 0;
-                }, "ModalBar close", 1000);
+                    return getSearchField().length === 0 &&
+                        SpecRunnerUtils.editorHasCursorPosition(editor, line - 1, col - 1);
+                }, "expected Go to Line result to be committed", QUICK_OPEN_WAIT_TIMEOUT);
             }
 
             // The user enters a 1-based number, but the reported position
@@ -163,9 +174,9 @@ define(function (require, exports, module) {
             expect(SpecRunnerUtils.editorHasCursorPosition(editor, line - 1, col - 1)).toBeTrue();
 
             // We expect the result to be scrolled roughly to the middle of the window.
-            var offset = $scroller.offset().top;
-            var editorHeight = $scroller.height();
-            var cursorPos = editor._codeMirror.cursorCoords(null, "page").bottom;
+            const offset = $scroller.offset().top;
+            const editorHeight = $scroller.height();
+            const cursorPos = editor.charCoords(editor.getCursorPos(), "page").bottom;
 
             expect(cursorPos).toBeGreaterThan(editorHeight * 0.4 + offset);
             expect(cursorPos).toBeLessThan(editorHeight * 0.6 + offset);
@@ -173,30 +184,30 @@ define(function (require, exports, module) {
 
         it("can open a file and jump to a line, centering that line on the screen", async function () {
             await quickOpenTest("lines", ":50", "lotsOfLines.html", 50, 1);
-        }, 300000);
+        }, QUICK_OPEN_TEST_TIMEOUT);
 
         it("can open a file and jump to a line and column, centering that line on the screen", async function () {
             await quickOpenTest("lines", ":50,20", "lotsOfLines.html", 50, 20);
-        });
+        }, QUICK_OPEN_TEST_TIMEOUT);
 
         it("can directly open a file in a given line and column, centering that line on the screen", async function () {
             await quickOpenTest("lines:150,20", null, "lotsOfLines.html", 150, 20);
-        });
+        }, QUICK_OPEN_TEST_TIMEOUT);
 
         it("can open a file and jump to a line and column with no space after comma", async function () {
             await quickOpenTest("lines", ":50,20", "lotsOfLines.html", 50, 20);
-        });
+        }, QUICK_OPEN_TEST_TIMEOUT);
 
         it("can open a file and jump to a line and column with space after comma", async function () {
             await quickOpenTest("lines", ":50, 20", "lotsOfLines.html", 50, 20);
-        });
+        }, QUICK_OPEN_TEST_TIMEOUT);
 
         it("can directly open a file with line:column format", async function () {
             await quickOpenTest("lines:150:20", null, "lotsOfLines.html", 150, 20);
-        });
+        }, QUICK_OPEN_TEST_TIMEOUT);
 
         it("can directly open a file with line:column format and spaces", async function () {
             await quickOpenTest("lines:150: 20", null, "lotsOfLines.html", 150, 20);
-        });
+        }, QUICK_OPEN_TEST_TIMEOUT);
     });
 });

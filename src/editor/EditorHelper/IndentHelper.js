@@ -26,7 +26,7 @@
 define(function (require, exports, module) {
 
     const _ = require("thirdparty/lodash"),
-        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        CodeMirror = require("editor/CodeMirrorCompat"),
         PreferencesManager = require("preferences/PreferencesManager"),
         EditorPreferences = require("./EditorPreferences");
 

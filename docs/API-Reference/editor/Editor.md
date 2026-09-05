@@ -62,12 +62,15 @@ const Editor = brackets.getModule("editor/Editor")
         * [.clearAllMarks([markType], [lineNumbers])](#Editor+clearAllMarks)
         * [.isSamePosition(position1, position2)](#Editor+isSamePosition) ⇒ <code>boolean</code>
         * [.getHistory()](#Editor+getHistory) ⇒ <code>Array</code>
-        * [.setHistory()](#Editor+setHistory)
+        * [.setHistory(history)](#Editor+setHistory)
+        * [.isClean([generation])](#Editor+isClean) ⇒ <code>boolean</code>
+        * [.markClean()](#Editor+markClean) ⇒ <code>number</code>
+        * [.getEditorEngine()](#Editor+getEditorEngine) ⇒ <code>&quot;codemirror6&quot;</code>
         * [.createHistoryRestorePoint(restorePointName)](#Editor+createHistoryRestorePoint)
         * [.restoreHistoryPoint(restorePointName)](#Editor+restoreHistoryPoint)
         * [.setSelection(start, [end], [center], [centerOptions], [origin])](#Editor+setSelection)
-        * [.replaceSelection(replacement, [select])](#Editor+replaceSelection)
-        * [.replaceSelections(replacement, [select])](#Editor+replaceSelections)
+        * [.replaceSelection(replacement, [select], [origin])](#Editor+replaceSelection)
+        * [.replaceSelections(replacement, [select], [origin])](#Editor+replaceSelections)
         * [.replaceRange(replacement, from, [to], origin)](#Editor+replaceRange)
         * [.replaceMultipleRanges(ranges, [origin])](#Editor+replaceMultipleRanges)
         * [.clearSelection()](#Editor+clearSelection)
@@ -258,13 +261,13 @@ The Document we're bound to
 ### editor.getInlineWidgetsBelowCursor() ⇒ <code>boolean</code>
 Gets the inline widgets below the current cursor position or null.
 
-**Kind**: instance method of [<code>Editor</code>](#Editor)  
+**Kind**: instance method of [<code>Editor</code>](#Editor)
 <a name="Editor+canConsumeEscapeKeyEvent"></a>
 
 ### editor.canConsumeEscapeKeyEvent()
 returns true if the editor can do something an escape key event. Eg. Disable multi cursor escape
 
-**Kind**: instance method of [<code>Editor</code>](#Editor)  
+**Kind**: instance method of [<code>Editor</code>](#Editor)
 <a name="Editor+destroy"></a>
 
 ### editor.destroy()
@@ -272,7 +275,7 @@ Removes this editor from the DOM and detaches from the Document. If this is the 
 Editor that is secretly providing the Document's backing state, then the Document reverts to
 a read-only string-backed mode.
 
-**Kind**: instance method of [<code>Editor</code>](#Editor)  
+**Kind**: instance method of [<code>Editor</code>](#Editor)
 <a name="Editor+selectAllNoScroll"></a>
 
 ### editor.selectAllNoScroll()
@@ -762,12 +765,40 @@ Get a (JSON-serializable) representation of the undo history.
 **Returns**: <code>Array</code> - The history of the editor.  
 <a name="Editor+setHistory"></a>
 
-### editor.setHistory()
+### editor.setHistory(history)
 Replace the editor's undo history with the one provided, which must be a value
 as returned by getHistory. Note that this will have entirely undefined results
 if the editor content isn't also the same as it was when getHistory was called.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Object</code> | A history object returned by getHistory(). |
+
+<a name="Editor+isClean"></a>
+
+### editor.isClean([generation]) ⇒ <code>boolean</code>
+Returns whether the editor's current history generation is clean.
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [generation] | <code>number</code> | Optional generation returned by changeGeneration(). |
+
+<a name="Editor+markClean"></a>
+
+### editor.markClean() ⇒ <code>number</code>
+Marks the current history generation as clean.
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)
+<a name="Editor+getEditorEngine"></a>
+
+### editor.getEditorEngine() ⇒ <code>&quot;codemirror6&quot;</code>
+Returns the active editing-surface backend.
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)
 <a name="Editor+createHistoryRestorePoint"></a>
 
 ### editor.createHistoryRestorePoint(restorePointName)
@@ -811,7 +842,7 @@ making the selection
 
 <a name="Editor+replaceSelection"></a>
 
-### editor.replaceSelection(replacement, [select])
+### editor.replaceSelection(replacement, [select], [origin])
 Replace the selection with the given string.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
@@ -820,10 +851,11 @@ Replace the selection with the given string.
 | --- | --- | --- |
 | replacement | <code>string</code> | the text to replace the current selection |
 | [select] | <code>string</code> | The optional select argument can be used to change selection. Passing "around" will cause the new text to be selected, passing "start" will collapse the selection to the start of the inserted text. |
+| [origin] | <code>string</code> | An optional edit origin passed to change events and used for history grouping. |
 
 <a name="Editor+replaceSelections"></a>
 
-### editor.replaceSelections(replacement, [select])
+### editor.replaceSelections(replacement, [select], [origin])
 Replaces the content of multiple selections with the strings in the array. The length of the given
 array should be the same as the number of active selections.
 
@@ -833,6 +865,7 @@ array should be the same as the number of active selections.
 | --- | --- | --- |
 | replacement | <code>Array.&lt;string&gt;</code> | the text array to replace the current selections with |
 | [select] | <code>string</code> | The optional select argument can be used to change selection. Passing "around" will cause the new text to be selected, passing "start" will collapse the selection to the start of the inserted text. |
+| [origin] | <code>string</code> | An optional edit origin passed to change events and used for history grouping. |
 
 <a name="Editor+replaceRange"></a>
 

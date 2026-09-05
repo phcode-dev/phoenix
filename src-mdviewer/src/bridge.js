@@ -9,6 +9,7 @@ import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
 import { broadcastSelectionStateSync, flushPendingContentChange } from "./components/editor.js";
+import { updateLinkPopoverForTest } from "./components/link-popover.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -17,6 +18,8 @@ let _scrollFromCM = false;
 let _scrollFromViewer = false;
 let _scrollFromViewerTimer = null;
 let _suppressScrollToLine = false;
+let _suppressScrollToLineTimer = null;
+let _pendingScrollToLine = null;
 let _baseURL = "";
 let _cursorPosBeforeEdit = null; // cursor position before current edit batch
 let _cursorPosDirty = false; // true after content changes, reset when emitted
@@ -254,6 +257,12 @@ export function initBridge() {
     window.__broadcastSelectionStateForTest = function () {
         broadcastSelectionStateSync();
     };
+    window.__updateLinkPopoverForTest = function () {
+        updateLinkPopoverForTest();
+    };
+    window.__flushPendingContentChangeForTest = function () {
+        flushPendingContentChange();
+    };
     window.__saveScrollPos = function () {
         docCache.saveActiveScrollPos();
     };
@@ -359,7 +368,7 @@ export function initBridge() {
     });
 
     // Intercept keyboard shortcuts in capture phase before the mdviewr editor handles them.
-    // Undo/redo is routed through CM5's undo stack so both editors stay in sync.
+    // Undo/redo is routed through Phoenix's editor history so both editors stay in sync.
     // Unhandled modifier shortcuts are forwarded to Phoenix's keybinding manager.
     const _mdEditorHandledKeys = new Set(["b", "i", "k", "u", "z", "y", "a", "c", "v", "x"]); // Ctrl/Cmd + key
     const _mdEditorHandledShiftKeys = new Set(["x", "X", "z", "Z"]); // Ctrl/Cmd + Shift + key
@@ -471,7 +480,7 @@ export function initBridge() {
     }, true);
 
     // Detect source line from data-source-line attributes for scroll sync.
-    // In read mode, also refocus CM5 unless the user has a text selection.
+    // In read mode, also refocus the Phoenix editor unless the user has a text selection.
     // Disabled in preview mode (no cursor sync).
     document.addEventListener("click", (e) => {
         const sourceLine = _getSourceLineFromElement(e.target);
@@ -733,8 +742,20 @@ function handleSwitchFile(data) {
 
     // Suppress scroll-to-line from CM during file switch — the doc cache
     // restores the correct scroll position; CM cursor activity would override it.
+    if (_suppressScrollToLineTimer) {
+        clearTimeout(_suppressScrollToLineTimer);
+    }
+    _pendingScrollToLine = null;
     _suppressScrollToLine = true;
-    setTimeout(() => { _suppressScrollToLine = false; }, 500);
+    _suppressScrollToLineTimer = setTimeout(() => {
+        _suppressScrollToLine = false;
+        _suppressScrollToLineTimer = null;
+        const pendingScroll = _pendingScrollToLine;
+        _pendingScrollToLine = null;
+        if (pendingScroll) {
+            handleScrollToLine(pendingScroll);
+        }
+    }, 500);
 
     // Edit mode is global for the md editor frame — preserve it across file switches
     const wasEditMode = getState().editMode;
@@ -1060,8 +1081,13 @@ function handleScrollToLine(data) {
     const { line, fromScroll, tableCol } = data;
     if (line == null) return;
 
-    // Suppress during file switch — doc cache restores the correct scroll
-    if (_suppressScrollToLine) return;
+    // Defer during file switch while the doc cache restores its scroll
+    // position. Keep only the newest request so a cursor move made during
+    // this window is applied once the new document is ready.
+    if (_suppressScrollToLine) {
+        _pendingScrollToLine = { line, fromScroll, tableCol };
+        return;
+    }
 
     // Ignore scroll-based sync that originated from the viewer itself
     // (feedback loop: viewer scroll/click → CM scroll → scroll sync back).

@@ -555,8 +555,23 @@ define(function (require, exports, module) {
                 }
                 expect(hasDestructive).toBeTrue();
 
-                // Close menu
-                mdDoc.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+                // A delegated click may target the Document rather than an Element.
+                // Closing the menu must not assume EventTarget.closest() exists.
+                const mdWin = _getMdIFrameWin();
+                const listenerErrors = [];
+                const errorHandler = (event) => {
+                    listenerErrors.push(event.error || event.message);
+                    event.preventDefault();
+                };
+                mdWin.addEventListener("error", errorHandler);
+                try {
+                    mdDoc.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+                } finally {
+                    mdWin.removeEventListener("error", errorHandler);
+                }
+
+                expect(listenerErrors).toEqual([]);
+                expect(menu.classList.contains("open")).toBeFalse();
             }, 10000);
 
             it("should deleting table remove table-wrapper from DOM", async function () {
@@ -721,4 +736,3 @@ define(function (require, exports, module) {
         });
     });
 });
-

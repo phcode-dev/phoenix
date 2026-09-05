@@ -32,7 +32,7 @@ define(function (require, exports, module) {
     let _pasteInterceptor = null;
     let _keyEventInterceptor = null;
 
-    const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+    const CodeMirror = require("editor/CodeMirrorCompat"),
         Menus = require("command/Menus");
 
     function _applyChanges(changeList) {
@@ -154,7 +154,7 @@ define(function (require, exports, module) {
      */
     function _handleDocumentDeleted(event) {
         // Pass the delete event along as the cause (needed in MultiRangeInlineEditor)
-        self.trigger("lostContent", event);
+        this.trigger("lostContent", event);
     }
 
     /**

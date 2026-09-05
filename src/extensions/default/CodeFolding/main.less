@@ -19,7 +19,10 @@
     }
 }
 
-.CodeMirror.over-gutter, .CodeMirror-activeline {
+.CodeMirror.over-gutter,
+.CodeMirror-activeline,
+.CodeMirror-activeline-gutter,
+.cm-activeLineGutter {
     .CodeMirror-foldgutter-open:after {
         color: @color-triangle-mouseover;
     }
@@ -39,11 +42,8 @@
     padding-top: 2px;
 }
 
-.CodeMirror-gutter-elt {
-    height: 100% !important;
-}
-
-.CodeMirror.folding-enabled .CodeMirror-linenumber {
+.CodeMirror.folding-enabled .CodeMirror-linenumber,
+.CodeMirror.folding-enabled .cm-lineNumbers .cm-gutterElement {
     // Normally linenumber gutter has large right-padding to separate it from the code's text. But the
     // folding gutter provides that same separation, so we need much less padding when it's displayed.
     padding-right: 5px;
@@ -52,7 +52,8 @@
 // If line numbers are not shown and codefolding is enabled we remove the left padding.
 // We add the same padding below to the fold gutter
 .show-line-padding {
-    .folding-enabled.linenumber-disabled pre {
+    .folding-enabled.linenumber-disabled pre,
+    .folding-enabled.linenumber-disabled .cm-line {
         padding-left: 0;
     }
 }

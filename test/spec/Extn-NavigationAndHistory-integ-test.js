@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, beforeEach, awaits, awaitsFor, path */
+/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, beforeEach, awaits, awaitsFor, path, spyOn */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -258,6 +258,7 @@ define(function (require, exports, module) {
             Commands,
             testWindow,
             MainViewManager,
+            EditorManager,
             brackets,
             $;
 
@@ -269,6 +270,7 @@ define(function (require, exports, module) {
             CommandManager      = brackets.test.CommandManager;
             Commands            = brackets.test.Commands;
             MainViewManager     = brackets.test.MainViewManager;
+            EditorManager       = brackets.test.EditorManager;
         }, 30000);
 
         beforeEach(async ()=>{
@@ -284,6 +286,7 @@ define(function (require, exports, module) {
             brackets = null;
             $ = null;
             MainViewManager = null;
+            EditorManager = null;
             Commands = null;
             CommandManager = null;
             await SpecRunnerUtils.closeTestWindow();
@@ -309,7 +312,7 @@ define(function (require, exports, module) {
 
         async function _validateActiveFile(relativePath) {
             await awaitsFor(()=>{
-                return MainViewManager.getCurrentlyViewedFile().fullPath === path.join(testProjectPath, relativePath);
+                return MainViewManager.getCurrentlyViewedPath() === path.join(testProjectPath, relativePath);
             }, "Active file to be " + relativePath);
         }
 
@@ -370,5 +373,20 @@ define(function (require, exports, module) {
             await _validateActiveFile("test.js");
             await _expectNavButton(false, true, "nav back only enabled");
         }, 15000);
+
+        it("Should ignore a destroyed previous editor on active editor change", async function () {
+            await navigateResetStack();
+            await openFile("test.js");
+
+            const editor = EditorManager.getActiveEditor();
+            const listSelectionsSpy = spyOn(editor._codeMirror, "listSelections").and.callThrough();
+            editor._codeMirror.destroy();
+
+            EditorManager.trigger("activeEditorChange", null, editor);
+
+            expect(editor._codeMirror._destroyed).toBe(true);
+            expect(editor._codeMirror._view).toBeNull();
+            expect(listSelectionsSpy).not.toHaveBeenCalled();
+        });
     });
 });

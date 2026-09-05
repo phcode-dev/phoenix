@@ -30,7 +30,7 @@ define(function (require, exports, module) {
 
 
     var _           = require("thirdparty/lodash"),
-        CodeMirror  = require("thirdparty/CodeMirror/lib/codemirror");
+        CodeMirror  = require("editor/CodeMirrorCompat");
 
     var cache;
 

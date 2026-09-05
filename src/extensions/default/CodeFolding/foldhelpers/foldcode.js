@@ -3,9 +3,13 @@
 // Based on http://codemirror.net/addon/fold/foldcode.js
 // Modified by Patrick Oladimeji for Brackets
 
+/*! DONT_STRIP_MINIFY: CodeMirror 5-derived compatibility implementation.
+ * See thirdparty/licences/codemirror5-derived.markdown.
+ */
+
 define(function (require, exports, module) {
 
-    var CodeMirror          = brackets.getModule("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror          = brackets.getModule("editor/CodeMirrorCompat"),
         prefs               = require("Prefs");
 
     /**

@@ -47,6 +47,8 @@ define(function (require, exports, module) {
     const _              = require("thirdparty/lodash"),
         EventDispatcher = require("utils/EventDispatcher"),
         FileSystem     = require("filesystem/FileSystem"),
+        CodeMirrorLegacyFileSystem =
+            require("editor/CodeMirrorLegacyFileSystem"),
         FileUtils      = require("file/FileUtils"),
         Async          = require("utils/Async"),
         ExtensionUtils = require("utils/ExtensionUtils"),
@@ -63,6 +65,8 @@ define(function (require, exports, module) {
         Metrics = require("utils/Metrics"),
         DeprecatedExtensionsTemplate = require("text!htmlContent/deprecated-extensions-dialog.html"),
         CommandManager = require("command/CommandManager");
+
+    CodeMirrorLegacyFileSystem.install();
 
     // takedown/dont load extensions that are compromised at app start - start
     const EXTENSION_TAKEDOWN_LOCALSTORAGE_KEY = "PH_EXTENSION_TAKEDOWN_LIST";
@@ -387,6 +391,14 @@ define(function (require, exports, module) {
      *              (Note: if extension contains a JS syntax error, promise is resolved not rejected).
      */
     function loadExtensionModule(name, config, entryPoint, metadata) {
+        const textPluginConfig = {
+            useXhr: function(_url, _protocol, _hostname, _port) {
+                // as we load extensions in cross domain fashion, we have to use xhr
+                // https://github.com/requirejs/text#xhr-restrictions
+                // else user installed extension require will fail in tauri
+                return true;
+            }
+        };
         let extensionConfig = {
             context: name,
             baseUrl: config.baseUrl,
@@ -394,14 +406,8 @@ define(function (require, exports, module) {
             locale: brackets.getLocale(),
             waitSeconds: EXTENSION_LOAD_TIMOUT_SECONDS,
             config: {
-                text: {
-                    useXhr: function(_url, _protocol, _hostname, _port) {
-                        // as we load extensions in cross domain fashion, we have to use xhr
-                        // https://github.com/requirejs/text#xhr-restrictions
-                        // else user installed extension require will fail in tauri
-                        return true;
-                    }
-                }
+                text: textPluginConfig,
+                "text-base": textPluginConfig
             }
         };
         const isDefaultExtensionModule =( extensionConfig.baseUrl

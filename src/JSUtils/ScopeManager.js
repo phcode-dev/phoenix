@@ -35,7 +35,7 @@ define(function (require, exports, module) {
 
     var _ = require("thirdparty/lodash");
 
-    const CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
+    const CodeMirror          = require("editor/CodeMirrorCompat"),
         DefaultDialogs      = require("widgets/DefaultDialogs"),
         Dialogs             = require("widgets/Dialogs"),
         DocumentManager     = require("document/DocumentManager"),

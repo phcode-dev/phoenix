@@ -401,7 +401,7 @@ define(function (require, exports, module) {
         // future, we should fix things so that we either don't need mock documents or that this
         // is factored so it will just run in both.
         docToShim._handleEditorChange = function (event, editor, changeList) {
-            this.isDirty = !editor._codeMirror.isClean();
+            this.isDirty = !editor.isClean();
             this._notifyDocumentChange(changeList);
         };
         docToShim.notifySaved = function () {
@@ -509,7 +509,7 @@ define(function (require, exports, module) {
      * @param {{filename:string}} options
      * @return {!{doc:!Document, editor:!Editor}}
      */
-    function createMockEditor(initialContent, languageId, visibleRange, options={}) {
+    function createMockEditor(initialContent, languageId, visibleRange, options = {}) {
         // create dummy Document, then Editor tied to it
         var doc = createMockDocument(initialContent, languageId, options.filename);
         return { doc: doc, editor: createMockEditorForDocument(doc, visibleRange) };

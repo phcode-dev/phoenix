@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror          = require("editor/CodeMirrorCompat"),
         EventDispatcher     = require("utils/EventDispatcher"),
         DocumentManager     = require("document/DocumentManager"),
         EditorManager       = require("editor/EditorManager"),
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
 
         var maxWidth = 0;
         allHostedEditors.forEach(function (editor) {
-            var $gutter = $(editor._codeMirror.getGutterElement()).find(".CodeMirror-linenumbers");
+            var $gutter = $(editor._codeMirror.getGutterElement()).find(".cm-lineNumbers");
             $gutter.css("min-width", "");
             var curWidth = $gutter.width();
             if (curWidth > maxWidth) {
@@ -115,7 +115,7 @@ define(function (require, exports, module) {
 
         maxWidth = maxWidth + "px";
         allHostedEditors.forEach(function (editor) {
-            $(editor._codeMirror.getGutterElement()).find(".CodeMirror-linenumbers").css("min-width", maxWidth);
+            $(editor._codeMirror.getGutterElement()).find(".cm-lineNumbers").css("min-width", maxWidth);
 
             // Force CodeMirror to refresh the gutter
             editor._codeMirror.setOption("gutters", editor._codeMirror.getOption("gutters"));

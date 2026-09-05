@@ -105,12 +105,11 @@ define(function (require, exports, module) {
 
     /**
      * Return the scrollbar element for the given editor.
-     * (Select only the direct descendant so we don't get nested inline editors).
      * @param {!Editor} editor
      * @return {jQueryObject}
      */
     function _getScrollbar(editor) {
-        return $(editor.getRootElement()).children(".CodeMirror-vscrollbar");
+        return $(editor.getScrollerElement());
     }
 
     /**
@@ -120,17 +119,16 @@ define(function (require, exports, module) {
     function _calcScaling(editor) {
         const markerState = _getMarkerState(editor);
         const $sb = _getScrollbar(editor);
+        const scrollbar = $sb[0];
 
-        const trackHeight = $sb[0].offsetHeight;
+        const trackHeight = scrollbar ? scrollbar.offsetHeight : 0;
         if (trackHeight > 0) {
             markerState.trackOffset = scrollbarTrackOffset;
             markerState.trackHt = trackHeight - markerState.trackOffset * 2;
         } else {
-            // No scrollbar: use the height of the entire code content
-            const codeContainer = $(editor.getRootElement())
-                .find("> .CodeMirror-scroll > .CodeMirror-sizer > div > .CodeMirror-lines > div")[0];
-            markerState.trackHt = codeContainer.offsetHeight;
-            markerState.trackOffset = codeContainer.offsetTop;
+            const scroller = editor.getScrollerElement();
+            markerState.trackHt = scroller ? scroller.clientHeight : 0;
+            markerState.trackOffset = 0;
         }
     }
 
@@ -208,39 +206,31 @@ define(function (require, exports, module) {
             });
         });
 
-        // Merge/condense overlapping or adjacent segments, same as before
+        // addTickmarks() has already merged adjacent source ranges. Keep each
+        // remaining logical mark distinct here. A second, pixel-based merge is
+        // unreliable when an editor pane has not completed layout yet because
+        // CM6 may temporarily report the same coordinates for unrelated lines.
         markPositions.sort(function (a, b) {
             return a.top - b.top;
         });
 
-        const mergedLineMarks = [];
-        const mergedLeftMarks = [];
-
+        const lineMarks = [];
+        const leftMarks = [];
         markPositions.forEach(function (mark) {
-            const mergedMarks = mark.isLine ? mergedLineMarks : mergedLeftMarks;
-            if (mergedMarks.length > 0) {
-                const last = mergedMarks[mergedMarks.length - 1];
-                // If overlapping or adjacent, merge them
-                if (mark.top <= last.bottom + 1) {
-                    last.bottom = Math.max(last.bottom, mark.bottom);
-                    last.height = last.bottom - last.top;
-                    return;
-                }
-            }
             mark.height = mark.bottom - mark.top;
-            mergedMarks.push(mark);
+            (mark.isLine ? lineMarks : leftMarks).push(mark);
         });
 
         // Now render them into the DOM
         // (1) For the "line" style
-        let html = mergedLineMarks.map(function (m) {
+        let html = lineMarks.map(function (m) {
             return `<div class='tickmark ${m.cssColorClass}'
                      style='top: ${m.top}px; height: ${m.height}px;'></div>`;
         }).join("");
         $track.append($(html));
 
         // (2) For the "left" style
-        html = mergedLeftMarks.map(function (m) {
+        html = leftMarks.map(function (m) {
             return `<div class='tickmark tickmark-side ${m.cssColorClass}'
                      style='top: ${m.top}px; height: ${m.height}px;'></div>`;
         }).join("");

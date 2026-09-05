@@ -1068,6 +1068,17 @@ define(function (require, exports, module) {
                 return null;
             }
 
+            async function _waitForListEditToSyncToCM() {
+                await awaitsFor(() => {
+                    const editor = EditorManager.getActiveEditor();
+                    const win = _getMdIFrameWin();
+                    const viewerText = win && win.__getCurrentContent &&
+                        win.__getCurrentContent();
+                    return editor && viewerText !== ORIGINAL_LIST_MD &&
+                        editor.document.getText() === viewerText;
+                }, "list edit to sync back to CM");
+            }
+
             it("should clicking UL button when in OL switch list to unordered", async function () {
                 const olLi = _findLiByText("First ordered");
                 expect(olLi).not.toBeNull();
@@ -1083,6 +1094,7 @@ define(function (require, exports, module) {
                 await awaitsFor(() => {
                     return olLi.closest("ul") !== null && olLi.closest("ol") === null;
                 }, "ordered list to switch to unordered");
+                await _waitForListEditToSyncToCM();
             }, 10000);
 
             it("should clicking OL button when in UL switch list to ordered", async function () {
@@ -1100,6 +1112,7 @@ define(function (require, exports, module) {
                 await awaitsFor(() => {
                     return ulLi.closest("ol") !== null && ulLi.closest("ul") === null;
                 }, "unordered list to switch to ordered");
+                await _waitForListEditToSyncToCM();
             }, 10000);
 
             it("should UL/OL toggle preserve list content", async function () {
@@ -1123,6 +1136,7 @@ define(function (require, exports, module) {
                 const newTexts = Array.from(newList.querySelectorAll(":scope > li"))
                     .map(li => li.textContent.trim());
                 expect(newTexts).toEqual(itemTexts);
+                await _waitForListEditToSyncToCM();
             }, 10000);
 
             it("should toolbar UL button show active state when cursor in UL", async function () {

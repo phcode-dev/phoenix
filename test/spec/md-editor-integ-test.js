@@ -86,9 +86,21 @@ define(function (require, exports, module) {
     async function _focusMdContent() {
         const mdDoc = _getMdIFrameDoc();
         const content = mdDoc.getElementById("viewer-content");
-        content.focus();
+        content.focus({ preventScroll: true });
         await awaitsFor(() => mdDoc.activeElement === content || content.contains(mdDoc.activeElement),
             "md content to have focus");
+    }
+
+    function _flushLinkPopoverUpdate() {
+        const win = _getMdIFrameWin();
+        expect(typeof win.__updateLinkPopoverForTest).toBe("function");
+        win.__updateLinkPopoverForTest();
+    }
+
+    function _flushPendingContentChange() {
+        const win = _getMdIFrameWin();
+        expect(typeof win.__flushPendingContentChangeForTest).toBe("function");
+        win.__flushPendingContentChangeForTest();
     }
 
     function _isMac() {
@@ -640,6 +652,73 @@ define(function (require, exports, module) {
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
                     "close all between cache tests");
             }, 10000);
+
+            it("should not reapply a completed debounced edit after force-close and reopen", async function () {
+                await _openMdFileAndWaitForPreview("doc1.md");
+                await _enterEditMode();
+
+                const editor = EditorManager.getActiveEditor();
+                const originalText = editor.document.getText();
+                const mdDoc = _getMdIFrameDoc();
+                const content = mdDoc.getElementById("viewer-content");
+                const heading = content.querySelector("h1");
+                const transientHeading = "Transient Debounced Edit";
+
+                expect(editor.document.isDirty).toBeFalse();
+                expect(heading.textContent).toBe("Document One");
+
+                heading.textContent = transientHeading;
+                content.dispatchEvent(new Event("input", { bubbles: true }));
+
+                // Waiting for the CM document proves the debounce callback has
+                // already fired. Its timer must no longer be considered pending.
+                await awaitsFor(() => editor.document.getText().includes(transientHeading),
+                    "debounced markdown edit to reach the Phoenix document");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close edited doc1.md");
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                    "switch away to simple.html");
+                await _openMdFileAndWaitForPreview("doc1.md");
+
+                // Wait for an iframe-to-parent message queued after the file switch.
+                // This guarantees any stale content-change message emitted during
+                // handleSwitchFile() has already reached MarkdownSync.
+                const reopenedWin = _getMdIFrameWin();
+                reopenedWin.__setEditModeForTest(true);
+                await awaitsFor(() => {
+                    const reopenedContent = _getMdIFrameDoc().getElementById("viewer-content");
+                    return reopenedContent && reopenedContent.classList.contains("editing");
+                }, "reopened markdown viewer to enter edit mode");
+
+                let modeChangeReceived = false;
+                const modeChangeHandler = function (event) {
+                    if (event.source === reopenedWin &&
+                        event.data && event.data.type === "MDVIEWR_EVENT" &&
+                        event.data.eventName === "mdviewrEditModeChanged" &&
+                        event.data.editMode === false) {
+                        modeChangeReceived = true;
+                    }
+                };
+                testWindow.addEventListener("message", modeChangeHandler);
+                try {
+                    reopenedWin.__setEditModeForTest(false);
+                    await awaitsFor(() => modeChangeReceived,
+                        "post-reopen iframe message to reach Phoenix");
+                } finally {
+                    testWindow.removeEventListener("message", modeChangeHandler);
+                }
+
+                const reopenedEditor = EditorManager.getActiveEditor();
+                await _waitForMdPreviewReady(reopenedEditor);
+
+                const reopenedContent = _getMdIFrameDoc().getElementById("viewer-content");
+                expect(reopenedEditor.document.getText()).toBe(originalText);
+                expect(reopenedEditor.document.isDirty).toBeFalse();
+                expect(reopenedWin.__getCurrentContent()).toBe(originalText);
+                expect(reopenedContent.querySelector("h1").textContent).toBe("Document One");
+                expect(reopenedContent.textContent).not.toContain(transientHeading);
+            }, 15000);
 
             it("should switch between MD files with viewer showing correct content", async function () {
                 await _openMdFileAndWaitForPreview("doc1.md");
@@ -1254,9 +1333,26 @@ define(function (require, exports, module) {
                 // Cursor should still be at 0 — the click while sync was off had no effect.
                 // Re-enable cursor sync first (re-query btn in case toolbar re-rendered).
                 const syncBtnAfter = _getMdIFrameDoc().getElementById("emb-cursor-sync");
-                syncBtnAfter.click();
-                await awaitsFor(() => syncBtnAfter.classList.contains("active"),
-                    "cursor sync to be re-enabled");
+                const mdIFrameWin = _getMdIFrameWin();
+                let reenabledMessageReceived = false;
+                const reenabledHandler = function (event) {
+                    if (event.source === mdIFrameWin &&
+                        event.data && event.data.type === "MDVIEWR_EVENT" &&
+                        event.data.eventName === "mdviewrCursorSyncToggle" &&
+                        event.data.enabled === true) {
+                        reenabledMessageReceived = true;
+                    }
+                };
+                testWindow.addEventListener("message", reenabledHandler);
+                try {
+                    syncBtnAfter.click();
+                    await awaitsFor(() => syncBtnAfter.classList.contains("active"),
+                        "cursor sync to be re-enabled");
+                    await awaitsFor(() => reenabledMessageReceived,
+                        "cursor sync re-enable message to reach Phoenix");
+                } finally {
+                    testWindow.removeEventListener("message", reenabledHandler);
+                }
                 expect(_getCMCursorLine()).toBe(0);
             }, 10000);
 
@@ -1652,6 +1748,7 @@ define(function (require, exports, module) {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
                 content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+                _flushLinkPopoverUpdate();
 
                 await awaitsFor(() => {
                     const popover = mdDoc.getElementById("link-popover");
@@ -1663,6 +1760,7 @@ define(function (require, exports, module) {
                 popover.querySelector(".link-popover-edit-btn").click();
                 popover.querySelector(".link-popover-input").value = "https://edited-popover.example.com";
                 popover.querySelector(".link-popover-confirm-btn").click();
+                _flushPendingContentChange();
 
                 await awaitsFor(() =>
                     content.querySelector("a[href='https://edited-popover.example.com']") !== null,
@@ -1702,6 +1800,7 @@ define(function (require, exports, module) {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
                 content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+                _flushLinkPopoverUpdate();
 
                 await awaitsFor(() => {
                     const popover = mdDoc.getElementById("link-popover");
@@ -1709,6 +1808,7 @@ define(function (require, exports, module) {
                 }, "link popover to appear");
 
                 mdDoc.getElementById("link-popover").querySelector(".link-popover-unlink-btn").click();
+                _flushPendingContentChange();
 
                 await awaitsFor(() =>
                     content.querySelector("a[href*='remove-link-doc3']") === null,
@@ -1776,6 +1876,7 @@ define(function (require, exports, module) {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
                 content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+                _flushLinkPopoverUpdate();
 
                 await awaitsFor(() => {
                     const popover = mdDoc.getElementById("link-popover");
@@ -1817,6 +1918,7 @@ define(function (require, exports, module) {
                     key: "ArrowRight", code: "ArrowRight", bubbles: true
                 }));
                 content.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+                _flushLinkPopoverUpdate();
 
                 // Wait for link popover to appear
                 await awaitsFor(() => {

@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         ASTWalker = require("thirdparty/acorn/dist/walk");
 
     // Load brackets modules
-    var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+    var CodeMirror = require("editor/CodeMirrorCompat"),
         Async = require("utils/Async"),
         DocumentManager = require("document/DocumentManager"),
         ChangedDocumentTracker = require("document/ChangedDocumentTracker"),

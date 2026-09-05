@@ -31,14 +31,14 @@ define(function (require, exports, module) {
 
     describe("unit:CSS Pseudo class/element Code Hinting", function () {
 
-        var defaultContent = ".selector1: { \n" +
-                             "} \n" +
-                             ".selector2:: { \n" +
-                             "} \n" +
-                             ".selector3:n { \n" +
-                             "} \n" +
-                             ".selector4::f { \n" +
-                             "} \n";
+        const defaultContent = ".selector1: { \n" +
+                               "} \n" +
+                               ".selector2:: { \n" +
+                               "} \n" +
+                               ".selector3:n { \n" +
+                               "} \n" +
+                               ".selector4::f { \n" +
+                               "} \n";
 
 
         var testDocument, testEditor;
@@ -67,28 +67,9 @@ define(function (require, exports, module) {
         }
 
 
-        var modesToTest = ['css', 'scss', 'less'],
-            modeCounter;
-
-
-        var selectMode = function () {
-            return modesToTest[modeCounter];
-        };
+        const modesToTest = ["css", "scss", "less"];
 
         describe("Pseudo classes in different style modes", function () {
-            beforeEach(function () {
-                // create Editor instance (containing a CodeMirror instance)
-                var mock = SpecRunnerUtils.createMockEditor(defaultContent, selectMode());
-                testEditor = mock.editor;
-                testDocument = mock.doc;
-            });
-
-            afterEach(function () {
-                SpecRunnerUtils.destroyMockEditor(testDocument);
-                testEditor = null;
-                testDocument = null;
-            });
-
             var testAllHints = function () {
                     testEditor.setCursorPos({ line: 0, ch: 11 });    // after :
                     var hintList = expectHints(CSSPseudoSelectorCodeHints.pseudoSelectorHints);
@@ -112,29 +93,29 @@ define(function (require, exports, module) {
                     expect(CSSPseudoSelectorCodeHints.pseudoSelectorHints.hasHints(testEditor, 'a')).toBe(false);
                 };
 
-            for (modeCounter in modesToTest) {
-                it("should list all Pseudo selectors right after :", testAllHints);
-                it("should list filtered pseudo selectors right after :n", testFilteredHints);
-                it("should not list rule hints if the cursor is before :", testNoHints);
-            }
+            modesToTest.forEach(function (mode) {
+                describe(mode.toUpperCase(), function () {
+                    beforeEach(function () {
+                        const mock = SpecRunnerUtils.createMockEditor(defaultContent, mode);
+                        testEditor = mock.editor;
+                        testDocument = mock.doc;
+                    });
+
+                    afterEach(function () {
+                        SpecRunnerUtils.destroyMockEditor(testDocument);
+                        testEditor = null;
+                        testDocument = null;
+                    });
+
+                    it("should list all Pseudo selectors right after :", testAllHints);
+                    it("should list filtered pseudo selectors right after :n", testFilteredHints);
+                    it("should not list rule hints if the cursor is before :", testNoHints);
+                });
+            });
         });
 
 
         describe("Pseudo elements in various style modes", function () {
-
-            beforeEach(function () {
-                // create Editor instance (containing a CodeMirror instance)
-                var mock = SpecRunnerUtils.createMockEditor(defaultContent, selectMode());
-                testEditor = mock.editor;
-                testDocument = mock.doc;
-            });
-
-            afterEach(function () {
-                SpecRunnerUtils.destroyMockEditor(testDocument);
-                testEditor = null;
-                testDocument = null;
-            });
-
             var testAllHints = function () {
                     testEditor.setCursorPos({ line: 2, ch: 12 });    // after ::
                     var hintList = expectHints(CSSPseudoSelectorCodeHints.pseudoSelectorHints);
@@ -155,14 +136,72 @@ define(function (require, exports, module) {
                     expect(CSSPseudoSelectorCodeHints.pseudoSelectorHints.hasHints(testEditor, 'c')).toBe(false);
                 };
 
-            for (modeCounter in modesToTest) {
-                it("should list all Pseudo selectors right after :", testAllHints);
-                it("should list filtered pseudo selectors right after ::f", testFilteredHints);
-                it("should not list rule hints if the cursor is before :", testNoHints);
-            }
+            modesToTest.forEach(function (mode) {
+                describe(mode.toUpperCase(), function () {
+                    beforeEach(function () {
+                        const mock = SpecRunnerUtils.createMockEditor(defaultContent, mode);
+                        testEditor = mock.editor;
+                        testDocument = mock.doc;
+                    });
 
+                    afterEach(function () {
+                        SpecRunnerUtils.destroyMockEditor(testDocument);
+                        testEditor = null;
+                        testDocument = null;
+                    });
+
+                    it("should list all Pseudo selectors right after :", testAllHints);
+                    it("should list filtered pseudo selectors right after ::f", testFilteredHints);
+                    it("should not list rule hints if the cursor is before :", testNoHints);
+                });
+            });
+
+        });
+
+        describe("Pseudo selector hints in embedded HTML styles", function () {
+            const embeddedHTMLContent = "<style>\n" +
+                                        ".selector:n {}\n" +
+                                        ".selector::f {}\n" +
+                                        "</style>";
+
+            beforeEach(function () {
+                const mock = SpecRunnerUtils.createMockEditor(embeddedHTMLContent, "html");
+                testEditor = mock.editor;
+                testDocument = mock.doc;
+            });
+
+            afterEach(function () {
+                SpecRunnerUtils.destroyMockEditor(testDocument);
+                testEditor = null;
+                testDocument = null;
+            });
+
+            it("uses the embedded CSS parser state for pseudo classes and elements", function () {
+                const classCursor = { line: 1, ch: 11 };
+                testEditor.setCursorPos(classCursor);
+
+                const classToken = testEditor._codeMirror.getTokenAt(classCursor);
+                expect(classToken.state.localState).toBeTruthy();
+                expect(classToken.state.localState.context).toBeTruthy();
+
+                let hintList = expectHints(CSSPseudoSelectorCodeHints.pseudoSelectorHints);
+                verifyListsAreIdentical(hintList, ["not(selectors)",
+                    "nth-child(n)",
+                    "nth-last-child(n)",
+                    "nth-last-of-type(n)",
+                    "nth-of-type(n)"]);
+
+                const elementCursor = { line: 2, ch: 12 };
+                testEditor.setCursorPos(elementCursor);
+
+                const elementToken = testEditor._codeMirror.getTokenAt(elementCursor);
+                expect(elementToken.state.localState).toBeTruthy();
+                expect(elementToken.state.localState.context).toBeTruthy();
+
+                hintList = expectHints(CSSPseudoSelectorCodeHints.pseudoSelectorHints);
+                verifyListsAreIdentical(hintList, ["first-letter", "first-line"]);
+            });
         });
 
     });
 });
-

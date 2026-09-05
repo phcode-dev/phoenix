@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 
     const AnimationUtils = require("utils/AnimationUtils"),
         Async = require("utils/Async"),
-        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
+        CodeMirror = require("editor/CodeMirrorCompat");
 
     /**
      * ****** Update actual public API doc in Editor.js *****

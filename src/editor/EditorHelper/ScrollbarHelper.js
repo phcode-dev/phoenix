@@ -31,10 +31,8 @@ define(function (require, exports, module) {
      * viewport at a time (painfully slow to reach a far-off spot in a large file). A click on the
      * thumb is left to the native drag.
      *
-     * CodeMirror's "native" scrollbars are real overflow:scroll <div>s (.CodeMirror-vscrollbar /
-     * .CodeMirror-hscrollbar); setting their scroll offset syncs the editor, since CodeMirror listens
-     * to their scroll event. Unlike most native scrollbars, this webview still delivers mousedown on
-     * them, so we can intercept a track click.
+     * CodeMirror 6 renders native scrollbars on its scroll DOM element. Setting that element's scroll
+     * offset updates the editor, and this webview still delivers mousedown on the scrollbar track.
      *
      * @param {!Editor} editor
      */
@@ -48,19 +46,22 @@ define(function (require, exports, module) {
         // Capture phase so we can suppress the native paging before it runs.
         wrapper.addEventListener("mousedown", function (e) {
             const el = e.target;
-            if (e.button !== 0 || !el || !el.classList) {
+            if (e.button !== 0 || el !== cm.getScrollerElement()) {
                 return;
             }
+
             let axis;
-            if (el.classList.contains("CodeMirror-vscrollbar")) {
+            const rect = el.getBoundingClientRect();
+            const scrollbarWidth = el.offsetWidth - el.clientWidth;
+            const scrollbarHeight = el.offsetHeight - el.clientHeight;
+            if (scrollbarWidth > 0 && e.clientX >= rect.right - scrollbarWidth) {
                 axis = "v";
-            } else if (el.classList.contains("CodeMirror-hscrollbar")) {
+            } else if (scrollbarHeight > 0 && e.clientY >= rect.bottom - scrollbarHeight) {
                 axis = "h";
             } else {
                 return;
             }
 
-            const rect = el.getBoundingClientRect();
             const view = (axis === "v") ? el.clientHeight : el.clientWidth;   // visible track px
             const full = (axis === "v") ? el.scrollHeight : el.scrollWidth;   // scrollable px
             if (full <= view) {

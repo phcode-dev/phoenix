@@ -75,7 +75,7 @@ define(function (require, exports, module) {
 
     let CommandManager = require("command/CommandManager"),
         Commands = require("command/Commands"),
-        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        CodeMirror6Adapter = require("editor/CodeMirror6Adapter").CodeMirror6Adapter,
         LanguageManager = require("language/LanguageManager"),
         EventDispatcher = require("utils/EventDispatcher"),
         PerfUtils = require("utils/PerfUtils"),
@@ -183,7 +183,11 @@ define(function (require, exports, module) {
      * @return {CodeMirror.Pos}
      */
     function _copyPos(pos) {
-        return new CodeMirror.Pos(pos.line, pos.ch);
+        return {
+            line: pos.line,
+            ch: pos.ch,
+            sticky: pos.sticky === undefined ? null : pos.sticky
+        };
     }
 
     /**
@@ -355,9 +359,7 @@ define(function (require, exports, module) {
         // This line ensures that the class is applied to any editor created after the fact
         $container.toggleClass("show-line-padding", Boolean(!this._getOption("showLineNumbers")));
 
-        // Create the CodeMirror instance
-        // (note: CodeMirror doesn't actually require using 'new', but jslint complains without it)
-        this._codeMirror = new CodeMirror(container, {
+        const codeMirrorOptions = {
             autoCloseBrackets: currentOptions[CLOSE_BRACKETS],
             autoCloseTags: currentOptions[CLOSE_TAGS],
             coverGutterNextToScrollbar: true,
@@ -382,7 +384,11 @@ define(function (require, exports, module) {
             styleActiveLine: currentOptions[STYLE_ACTIVE_LINE],
             tabSize: currentOptions[TAB_SIZE],
             readOnly: isReadOnly
-        });
+        };
+
+        this._codeMirror = new CodeMirror6Adapter(container, codeMirrorOptions);
+        this._codeMirrorView = this._codeMirror._view;
+        this._editorEngine = "codemirror6";
 
         // Override default drag image in Safari (and harmless in others):
         // Safari shows a text image by default when dragging from CodeMirror,
@@ -475,12 +481,20 @@ define(function (require, exports, module) {
 
         const $cmElement = this.$el;
         $cmElement[0].addEventListener("wheel", (event) => {
-            const $editor = $cmElement.find(".CodeMirror-scroll");
+            const editorElement = this.getScrollerElement();
+            if (!editorElement) {
+                return;
+            }
+
             // We need to scale the scroll by the factor of line height. This became a problem after we added
             // the custom line height feature causing jumping scrolls esp in safari and mac if we dont do
             // this scroll scaling.
-            const lineHeight = parseFloat(getComputedStyle($editor[0]).lineHeight);
-            const defaultHeight = 14, scrollScaleFactor = lineHeight / defaultHeight;
+            const defaultHeight = 14;
+            const measuredLineHeight = parseFloat(getComputedStyle(editorElement).lineHeight);
+            const lineHeight = Number.isFinite(measuredLineHeight) && measuredLineHeight > 0 ?
+                measuredLineHeight :
+                defaultHeight;
+            const scrollScaleFactor = lineHeight / defaultHeight;
 
             // when user is pressing the 'Shift' key, we need to convert the vertical scroll to horizontal scroll
             if (event.shiftKey) {
@@ -492,7 +506,7 @@ define(function (require, exports, module) {
 
                 // apply the horizontal scrolling
                 if (horizontalDelta !== 0) {
-                    $editor[0].scrollLeft += horizontalDelta;
+                    editorElement.scrollLeft += horizontalDelta;
                     event.preventDefault();
                     return;
                 }
@@ -500,7 +514,7 @@ define(function (require, exports, module) {
 
             // apply horizontal scrolling if present. for the diagonal scrolling
             if (event.deltaX !== 0) {
-                $editor[0].scrollLeft += event.deltaX;
+                editorElement.scrollLeft += event.deltaX;
             }
 
             // apply the vertical scrolling normally
@@ -515,9 +529,9 @@ define(function (require, exports, module) {
                     scrollAmount = event.deltaY * defaultHeight;
                 } else {
                     // Page mode - delta is in pages, convert to viewport height
-                    scrollAmount = event.deltaY * $editor[0].clientHeight;
+                    scrollAmount = event.deltaY * editorElement.clientHeight;
                 }
-                $editor[0].scrollTop += scrollAmount * _mouseWheelScrollSensitivity;
+                editorElement.scrollTop += scrollAmount * _mouseWheelScrollSensitivity;
                 event.preventDefault();
             }
         });
@@ -578,9 +592,11 @@ define(function (require, exports, module) {
     Editor.prototype.destroy = function () {
         this.trigger("beforeDestroy", this);
 
+        const rootElement = this.getRootElement();
+
         // CodeMirror docs for getWrapperElement() say all you have to do is "Remove this from your
         // tree to delete an editor instance."
-        $(this.getRootElement()).remove();
+        $(rootElement).remove();
 
         _instances.splice(_instances.indexOf(this), 1);
 
@@ -608,6 +624,8 @@ define(function (require, exports, module) {
         this._inlineWidgets.forEach(function (inlineWidget) {
             self._removeInlineWidgetInternal(inlineWidget);
         });
+
+        this._codeMirror.destroy();
     };
 
     /**
@@ -916,7 +934,11 @@ define(function (require, exports, module) {
         if (expandTabs) {
             ch = this.getColOffset({ line: line, ch: ch });
         }
-        this._codeMirror.setCursor(line, ch);
+        this._codeMirror.setCursor(
+            line,
+            ch,
+            center ? {scroll: false} : undefined
+        );
         if (center) {
             this.centerOnCursor();
         }
@@ -1171,9 +1193,9 @@ define(function (require, exports, module) {
      */
     Editor.prototype.getSelectedText = function (allSelections) {
         if (allSelections) {
-            return this._codeMirror.getSelection();
+            return this._codeMirror.getSelections().join("\n");
         }
-        var sel = this.getSelection();
+        const sel = this.getSelection();
         return this.document.getRange(sel.start, sel.end);
 
     };
@@ -1693,9 +1715,36 @@ define(function (require, exports, module) {
      * Replace the editor's undo history with the one provided, which must be a value
      * as returned by getHistory. Note that this will have entirely undefined results
      * if the editor content isn't also the same as it was when getHistory was called.
+     *
+     * @param {{done: !Array, undone: !Array}} history A history object returned by getHistory().
      */
-    Editor.prototype.setHistory = function () {
-        return this._codeMirror.setHistory();
+    Editor.prototype.setHistory = function (history) {
+        return this._codeMirror.setHistory(history);
+    };
+
+    /**
+     * Returns whether the editor's current history generation is clean.
+     * @param {number=} generation Optional generation returned by changeGeneration().
+     * @return {boolean}
+     */
+    Editor.prototype.isClean = function (generation) {
+        return this._codeMirror.isClean(generation);
+    };
+
+    /**
+     * Marks the current history generation as clean.
+     * @return {number}
+     */
+    Editor.prototype.markClean = function () {
+        return this._codeMirror.markClean();
+    };
+
+    /**
+     * Returns the active editing-surface backend.
+     * @return {"codemirror6"}
+     */
+    Editor.prototype.getEditorEngine = function () {
+        return this._editorEngine;
     };
 
     /**
@@ -1786,9 +1835,10 @@ define(function (require, exports, module) {
      * @param {string} [select] The optional select argument can be used to change selection. Passing "around"
      * will cause the new text to be selected, passing "start" will collapse the selection to the start
      * of the inserted text.
+     * @param {?string} [origin] An optional edit origin passed to change events and used for history grouping.
      */
-    Editor.prototype.replaceSelection = function (replacement, select) {
-        this._codeMirror.replaceSelection(replacement, select);
+    Editor.prototype.replaceSelection = function (replacement, select, origin) {
+        this._codeMirror.replaceSelection(replacement, select, origin);
     };
 
     /**
@@ -1798,9 +1848,10 @@ define(function (require, exports, module) {
      * @param {string} [select] The optional select argument can be used to change selection. Passing "around"
      * will cause the new text to be selected, passing "start" will collapse the selection to the start
      * of the inserted text.
+     * @param {?string} [origin] An optional edit origin passed to change events and used for history grouping.
      */
-    Editor.prototype.replaceSelections = function (replacement, select) {
-        this._codeMirror.replaceSelections(replacement, select);
+    Editor.prototype.replaceSelections = function (replacement, select, origin) {
+        this._codeMirror.replaceSelections(replacement, select, origin);
     };
 
     /**
@@ -2093,10 +2144,10 @@ define(function (require, exports, module) {
      * FUTURE: This is fairly CodeMirror-specific. Logic that depends on this may break if we switch
      * editors.
      * @private
-     * @return {!HTMLDivElement} The editor's lineSpace element.
+    * @return {!HTMLDivElement} The editor's lineSpace element.
      */
     Editor.prototype._getLineSpaceElement = function () {
-        return $(".CodeMirror-lines", this.getScrollerElement()).children().get(0);
+        return this._codeMirror.getLineSpaceElement();
     };
 
     /**
@@ -2501,6 +2552,20 @@ define(function (require, exports, module) {
      * @type {!CodeMirror}
      */
     Editor.prototype._codeMirror = null;
+
+    /**
+     * The active editor backend name.
+     * @private
+     * @type {"codemirror6"}
+     */
+    Editor.prototype._editorEngine = "codemirror6";
+
+    /**
+     * Native CodeMirror 6 view when the CM6 backend is active.
+     * @private
+     * @type {?Object}
+     */
+    Editor.prototype._codeMirrorView = null;
 
     /**
      * @private
