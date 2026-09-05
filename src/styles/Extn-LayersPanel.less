@@ -28,6 +28,8 @@
 @layers-input-bg:       rgba(255, 255, 255, 0.04);
 @layers-input-bg-focus: rgba(255, 255, 255, 0.06);
 @layers-row-height:     26px;
+@layers-label-min-width: 72px;
+@layers-tools-width:    74px;
 @layers-indent:         14px;
 @layers-mono:           ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 @layers-prop-name:      #9cdcfe;
@@ -418,6 +420,7 @@
     }
 
     .layers-node {
+        position: relative;
         display: flex;
         align-items: center;
         height: @layers-row-height;
@@ -493,79 +496,64 @@
         }
     }
 
-    .layers-node-tag {
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: @project-panel-text-1;
+    .layers-tree .layers-node-label {
+        flex: 1 1 auto;
+        min-width: @layers-label-min-width;
+        contain: inline-size;
     }
 
     .layers-node-actions {
         display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+    }
+
+    .layers-node-tools {
+        display: flex;
         align-items: center;
         gap: 1px;
         position: sticky;
         right: 0;
+        width: fit-content;
+        height: 100%;
         margin-left: auto;
-        padding-left: 6px;
-        flex: none;
+        padding: 0 6px;
+        box-sizing: border-box;
+        pointer-events: auto;
         background: @layers-row-bg;
     }
 
     .layers-node:hover .layers-node-actions,
     .layers-node.layers-actions-open .layers-node-actions,
     .layers-node-actions:focus-within {
-        display: flex;
+        display: block;
     }
 
-    .layers-node:hover .layers-node-actions {
+    .layers-node:hover .layers-node-label,
+    .layers-node.layers-actions-open .layers-node-label,
+    .layers-node:focus-within .layers-node-label {
+        padding-right: @layers-tools-width;
+    }
+
+    .layers-tree.layers-kbd-nav .layers-node:hover:not(.layers-actions-open) .layers-node-label {
+        padding-right: 0;
+    }
+
+    .layers-node:hover .layers-node-tools,
+    .layers-node.layers-cursor .layers-node-tools {
         background: @layers-row-hover-bg;
     }
 
-    .layers-node.layers-selected .layers-node-actions {
+    .layers-node.layers-selected .layers-node-tools {
         background: @layers-row-select-bg;
-    }
-
-    .layers-node.layers-cursor .layers-node-actions {
-        background: @layers-row-hover-bg;
     }
 
     .layers-node-action {
         .layers-icon-button();
-
-        &.layers-disabled {
-            opacity: 0.3;
-            cursor: default;
-            pointer-events: none;
-        }
-    }
-
-    .layers-node-grip {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 16px;
-        height: 20px;
-        flex: none;
-        color: @project-panel-text-2;
-        cursor: grab;
-
-        svg {
-            width: 13px;
-            height: 13px;
-            display: block;
-        }
-
-        &:hover {
-            color: @project-panel-text-1;
-        }
-    }
-
-    .layers-node-text {
-        color: @project-panel-text-2;
-        font-style: italic;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 
     .layers-drop-line {
@@ -814,6 +802,40 @@
     }
 }
 
+.layers-node-label {
+    display: flex;
+    align-items: baseline;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.layers-node-name,
+.layers-node-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.layers-node-name {
+    color: @project-panel-text-1;
+}
+
+.layers-node-tag {
+    flex: none;
+    margin-left: 5px;
+    color: @project-panel-text-2;
+
+    &:first-child {
+        margin-left: 0;
+        color: @project-panel-text-1;
+    }
+}
+
+.layers-node-text {
+    color: @project-panel-text-2;
+    font-style: italic;
+}
+
 body.layers-resizing {
     cursor: row-resize;
     user-select: none;
@@ -844,10 +866,6 @@ body.layers-resizing {
 body.layers-dnd {
     cursor: grabbing;
     user-select: none;
-
-    .layers-node-grip {
-        cursor: grabbing;
-    }
 }
 
 body.layers-dnd-invalid {
@@ -860,6 +878,7 @@ body.layers-dnd-invalid {
     display: flex;
     align-items: center;
     gap: 5px;
+    max-width: 260px;
     padding: 2px 8px 2px 6px;
     border: 1px solid rgba(107, 158, 255, 0.5);
     border-radius: 4px;
@@ -874,6 +893,15 @@ body.layers-dnd-invalid {
         width: 14px;
         height: 14px;
         display: block;
+    }
+
+    .layers-node-name,
+    .layers-node-tag:first-child {
+        color: inherit;
+    }
+
+    .layers-node-tag {
+        color: #a0a0a0;
     }
 }
 
