@@ -12,6 +12,7 @@ function RemoteFunctions(config = {}) {
         // to distinguish between phoenix internal vs user created elements
         PHCODE_INTERNAL_ATTR: "data-phcode-internal-c15r5a9",
         DATA_BRACKETS_ID_ATTR: "data-brackets-id", // data attribute used to track elements for live preview operations
+        LP_REF_ATTR: "data-phcode-lp-ref", // identity of a script-added element, stamped only when it is selected
         HIGHLIGHT_CLASSNAME: "__brackets-ld-highlight" // CSS class name used for highlighting elements in live preview
     };
 
@@ -41,6 +42,12 @@ function RemoteFunctions(config = {}) {
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslySelectedElement = null;
+    let _sourcelessObserver = null;
+    let _sourcelessCheckTimer = null;
+    let _sourcelessPath = null;
+    let _sourcelessTag = null;
+    let _sourcelessClass = null;
+    const SOURCELESS_RECOVER_DELAY_MS = 60;
     let _selectedFromEditor = false;
     // the selected element the `phcode-no-lp-edit` opt-out is lifted for, see _isEditOptedOut
     let _editOptOutOverride = null;
@@ -176,6 +183,40 @@ function RemoteFunctions(config = {}) {
         return isElementInspectable(element, onlyHighlight) && element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
     }
 
+    // no data-brackets-id means a script added the element, so there is no HTML source for it
+    function isSourceless(element) {
+        return !!element && !element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+    }
+
+    let _lpRefCounter = 0;
+    const LP_REF_PREFIX = "j";
+    const RE_NUMERIC_ID = /^\d+$/;
+
+    function getElementRef(element) {
+        if (!element || element.nodeType !== Node.ELEMENT_NODE) {
+            return null;
+        }
+        const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        if (tagId) {
+            return tagId;
+        }
+        let ref = element.getAttribute(GLOBALS.LP_REF_ATTR);
+        if (!ref) {
+            ref = LP_REF_PREFIX + (++_lpRefCounter);
+            element.setAttribute(GLOBALS.LP_REF_ATTR, ref);
+        }
+        return ref;
+    }
+
+    function getElementByRef(ref) {
+        if (ref === null || ref === undefined || ref === "") {
+            return null;
+        }
+        const text = String(ref);
+        const attr = RE_NUMERIC_ID.test(text) ? GLOBALS.DATA_BRACKETS_ID_ATTR : GLOBALS.LP_REF_ATTR;
+        return window.document.querySelector("[" + attr + '="' + text + '"]');
+    }
+
     /**
      * this function calc the screen offset of an element
      *
@@ -205,6 +246,9 @@ function RemoteFunctions(config = {}) {
         getAllToolHandlers: getAllToolHandlers,
         isElementEditable: isElementEditable,
         isElementInspectable: isElementInspectable,
+        isSourceless: isSourceless,
+        getElementRef: getElementRef,
+        getElementByRef: getElementByRef,
         isElementVisible: isElementVisible,
         screenOffset: screenOffset,
         selectElement: selectElement,
@@ -754,6 +798,78 @@ function RemoteFunctions(config = {}) {
         previouslySelectedElement = element;
         _selectedFromEditor = fromEditor || false;
         window.__current_ph_lp_selected = element;
+        if (isSourceless(element)) {
+            _watchSourcelessSelection(element);
+        }
+    }
+
+    function _elementIndexPath(element) {
+        const path = [];
+        let el = element;
+        while (el && el !== window.document.body) {
+            const parent = el.parentElement;
+            if (!parent) {
+                return null;
+            }
+            path.unshift(Array.prototype.indexOf.call(parent.children, el));
+            el = parent;
+        }
+        return el === window.document.body ? path : null;
+    }
+
+    function _elementAtIndexPath(path) {
+        let el = window.document.body;
+        for (let i = 0; i < path.length && el; i++) {
+            el = el.children[path[i]];
+        }
+        return el || null;
+    }
+
+    // a re-render replaces a script-added node, so re-select the same tag in the same place or dismiss
+    function _watchSourcelessSelection(element) {
+        _unwatchSourcelessSelection();
+        _sourcelessPath = _elementIndexPath(element);
+        if (!_sourcelessPath) {
+            return;
+        }
+        _sourcelessTag = element.tagName;
+        _sourcelessClass = typeof element.className === "string" ? element.className : "";
+        _sourcelessObserver = new MutationObserver(function () {
+            if (_sourcelessCheckTimer || !previouslySelectedElement || previouslySelectedElement.isConnected) {
+                return;
+            }
+            _sourcelessCheckTimer = setTimeout(_recoverSourcelessSelection, SOURCELESS_RECOVER_DELAY_MS);
+        });
+        _sourcelessObserver.observe(window.document.body, { childList: true, subtree: true });
+    }
+
+    function _unwatchSourcelessSelection() {
+        if (_sourcelessObserver) {
+            _sourcelessObserver.disconnect();
+            _sourcelessObserver = null;
+        }
+        if (_sourcelessCheckTimer) {
+            clearTimeout(_sourcelessCheckTimer);
+            _sourcelessCheckTimer = null;
+        }
+        _sourcelessPath = null;
+    }
+
+    function _recoverSourcelessSelection() {
+        _sourcelessCheckTimer = null;
+        const old = previouslySelectedElement;
+        if (!old || old.isConnected || !_sourcelessPath) {
+            return;
+        }
+        const fresh = _elementAtIndexPath(_sourcelessPath);
+        const className = fresh && typeof fresh.className === "string" ? fresh.className : "";
+        if (fresh && fresh.tagName === _sourcelessTag && className === _sourcelessClass &&
+                isSourceless(fresh) && isElementInspectable(fresh, true) && isElementVisible(fresh)) {
+            const fromEditor = _selectedFromEditor;
+            selectElement(fresh, fromEditor);
+        } else {
+            dismissUIAndCleanupState();
+        }
     }
 
     function disableHoverListeners() {
@@ -849,12 +965,14 @@ function RemoteFunctions(config = {}) {
      * @param {HTMLElement} element
      */
     function sendSelectionToEditor(element) {
-        if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ||
-            config.syncSourceAndPreview === false) {
+        if (config.syncSourceAndPreview === false) {
             return;
         }
+        // sent without a tagId too, so a css file in the editor can still jump to the rule
+        const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
         MessageBroker.send({
-            "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
+            "tagId": tagId || null,
+            "sourceless": !tagId,
             "nodeID": element.id,
             "nodeClassList": element.classList,
             "nodeName": element.nodeName,
@@ -1542,6 +1660,7 @@ function RemoteFunctions(config = {}) {
             previouslySelectedElement = null;
             window.__current_ph_lp_selected = null;
         }
+        _unwatchSourcelessSelection();
         _editOptOutOverride = null;
 
         // Reset hover tracking so the same-element skip doesn't suppress

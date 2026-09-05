@@ -500,6 +500,35 @@
         margin-left: -2px;
     }
 
+    .layers-node.layers-script-node .layers-node-icon,
+    .layers-node.layers-script-node .layers-node-name,
+    .layers-node.layers-script-node .layers-node-tag {
+        opacity: 0.72;
+    }
+
+    .layers-node-badge {
+        display: inline-flex;
+        align-items: center;
+        flex: none;
+        margin-left: 5px;
+        color: @project-panel-text-2;
+        opacity: 0.8;
+
+        svg {
+            width: 11px;
+            height: 11px;
+            display: block;
+        }
+    }
+
+    .layers-props-note {
+        padding: 4px 5px 6px;
+        color: @project-panel-text-2;
+        font-style: italic;
+        line-height: 1.4;
+        white-space: normal;
+    }
+
     .layers-node.layers-root-node .layers-node-tag {
         font-weight: 500;
         color: @project-panel-text-2;
