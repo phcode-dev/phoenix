@@ -181,6 +181,16 @@ const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
 // start editing user files" — they share the plan-mode write-confirm card.
 const FILE_WRITE_TOOLS = ["Edit", "Write", "MultiEdit", "NotebookEdit"];
 
+// The preferences tool both reads and writes, so it cannot carry a static
+// readOnlyHint the way getEditorState does — whether a call is harmless
+// depends on its `operation`.
+const EDITOR_PREFS_TOOL = "mcp__phoenix-editor__editorPreferences";
+
+function _isPreferenceRead(input) {
+    const op = input && input.operation;
+    return op === "get" || op === "list";
+}
+
 // Handed to the model right after the user approves a plan. The CLI leaves
 // plan mode on approval and the model carries on in the same turn, so this
 // is where "proceed" gets spelled out for Phoenix.
@@ -1371,7 +1381,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
             "mcp__phoenix-editor__execJsInEditor",
-            "mcp__phoenix-editor__editorPreferences",
+            // editorPreferences is absent for the same reason as Bash: it can
+            // write, so in Auto the classifier should weigh each call rather
+            // than a rule waving all of them through. Reads never reach a
+            // prompt — the PreToolUse hook below allows them outright.
             "mcp__phoenix-editor__editorDocs",
             "mcp__phoenix-editor__controlEditor",
             "mcp__phoenix-editor__resizeLivePreview",
@@ -1848,6 +1861,27 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     hookEventName: "PreToolUse",
                                     permissionDecision: "deny",
                                     permissionDecisionReason: "User denied this command."
+                                }
+                            };
+                        }
+                    ]
+                },
+                {
+                    // Reading a preference is free of side effects, so allow
+                    // it outright: no card, and no classifier round-trip to
+                    // sit through either. Writes return {} and take the
+                    // normal route — the classifier in Auto, the card
+                    // elsewhere.
+                    matcher: EDITOR_PREFS_TOOL,
+                    hooks: [
+                        async (input) => {
+                            if (!_isPreferenceRead(input && input.tool_input)) {
+                                return {};
+                            }
+                            return {
+                                hookSpecificOutput: {
+                                    hookEventName: "PreToolUse",
+                                    permissionDecision: "allow"
                                 }
                             };
                         }
