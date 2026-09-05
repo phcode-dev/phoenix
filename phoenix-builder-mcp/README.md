@@ -97,6 +97,18 @@ Reloads the Phoenix app. Prompts to save unsaved files before reloading.
 ### `force_reload_phoenix`
 Force-reloads the Phoenix app without saving unsaved changes.
 
+### `run_ai_test_suite`
+Starts (or resumes) the AI panel model tests and hands the session everything it needs: installs the fixture project, gathers git revisions / CLI version / connected instance, opens a run record, and returns the runner briefing plus the test documents from `src/extensionsIntegrated/phoenix-pro/unit-tests/ai_model_tests/`. The session is the runner and the judge. `suite`: `quick` (default), `all`, or a suite name; or `tests: ["EC-1","UB-2"]` for specific tests; or `resumeRunId` to continue a stopped run. Ask Claude: *"run the AI test suite"*, *"run just the plan-mode tests"*, *"run EC-1 and UB-2"*.
+
+### `ai_test_progress`
+Called by the runner after every test to record the result; also answers *"how far along is it?"* (`{ runId }`), lists runs (`{}`), and stops a run (`{ runId, stop: true }`). Progress lives in `reports/runs/<runId>.json`, which you can open at any time.
+
+### `save_ai_test_report`
+Writes the finished report to `reports/latest.md` inside the suite folder, overwriting the previous run (git history keeps earlier runs; `baseline.md` is never touched). A stopped run is saved with a Partial section listing the unrun tests.
+
+### `compare_ai_test_reports`
+Diffs two reports test by test — by default `latest.md` against `baseline.md`, or `against: "previous"` for the last committed run — and flags regressions, quality drops, and slower runs using the thresholds in `model_tests.md`.
+
 ## Typical Claude Code workflow
 
 ```
