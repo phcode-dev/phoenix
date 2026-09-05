@@ -329,7 +329,11 @@ function _buildEditorContextLine(ctx) {
     if (ctx.activeFile) {
         parts.push("the user is editing " + ctx.activeFile + ".");
         if (ctx.unsaved) {
-            parts.push("Unsaved, so stale on disk: " + ctx.unsaved + ".");
+            // Read and Edit are buffer-safe here (the agent flushes the buffer
+            // first); only Grep sees stale disk. Saying "stale on disk" without that
+            // steered the model off Edit onto the editor API — no edit card, no undo.
+            parts.push("Unsaved (Read and Edit see the unsaved text as normal; Grep does not, so " +
+                "use searchEditorBuffers to search these): " + ctx.unsaved + ".");
         }
     }
     if (ctx.livePreviewFile) {
@@ -1421,6 +1425,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "WebFetch", "WebSearch",
             "EnterPlanMode", "ExitPlanMode",
             "mcp__phoenix-editor__getEditorState",
+            "mcp__phoenix-editor__searchEditorBuffers",
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
             "mcp__phoenix-editor__execJsInEditor",
@@ -1442,6 +1447,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     " files to answer questions. Do not modify files.",
                 tools: ["Read", "Glob", "Grep",
                     "mcp__phoenix-editor__getEditorState",
+                    "mcp__phoenix-editor__searchEditorBuffers",
                     "mcp__phoenix-editor__takeScreenshot",
                     "mcp__phoenix-editor__execJsInLivePreview",
                     "mcp__phoenix-editor__editorDocs"]
@@ -1454,6 +1460,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     " only for new files.",
                 tools: ["Read", "Edit", "Write", "Glob", "Grep",
                     "mcp__phoenix-editor__getEditorState",
+                    "mcp__phoenix-editor__searchEditorBuffers",
                     "mcp__phoenix-editor__takeScreenshot",
                     "mcp__phoenix-editor__execJsInLivePreview",
                     "mcp__phoenix-editor__execJsInEditor",

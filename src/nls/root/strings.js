@@ -2659,6 +2659,8 @@ define({
     "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "live preview",
     "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "the full editor",
     "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecting preview",
+    "AI_CHAT_TOOL_SEARCH_UNSAVED": "Search unsaved files",
+    "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Search unsaved files: {0}",
     "AI_CHAT_TOOL_EDITOR_JS": "Inspecting editor",
     "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editor preferences",
     "AI_CHAT_TOOL_EDITOR_DOCS": "Editor docs",
