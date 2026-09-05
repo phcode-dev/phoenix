@@ -1215,6 +1215,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // always land here regardless of allowedTools.
     async function _onPermissionRequest(toolName, input, opts) {
         const promptSignal = (opts && opts.signal) || signal;
+        // Why the CLI is asking. In Auto this is the classifier deciding it
+        // wants a human, which is the whole point of the mode — logging it
+        // tells a genuine ask apart from a silent auto-allow.
+        const askParts = ["Permission ask:", toolName, "mode=" + _runtimePermissionMode];
+        if (opts && opts.decisionReason) {
+            askParts.push("reason=" + opts.decisionReason);
+        }
+        if (opts && opts.blockedPath) {
+            askParts.push("blockedPath=" + opts.blockedPath);
+        }
+        _log.apply(null, askParts);
         if (toolName === "ExitPlanMode") {
             return _onExitPlanModeRequest(input, promptSignal);
         }
@@ -1254,11 +1265,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             return { behavior: "allow", updatedInput: input };
         }
         // Anything else the CLI wants a human decision on: Bash or a
-        // non-read-only MCP tool in Plan Mode, a classifier fallback in
-        // Auto, a tool outside allowedTools. With no prompt tool the CLI
-        // used to deny these on its own and nothing ever reached the
-        // panel — the user just saw the model give up. Put up the card.
-        _log("Permission request:", toolName, "mode=" + _runtimePermissionMode);
+        // non-read-only MCP tool in Plan Mode, a classifier ask in Auto, a
+        // tool outside allowedTools. With no prompt tool the CLI used to
+        // deny these on its own and nothing ever reached the panel — the
+        // user just saw the model give up. Put up the card.
         const allowed = await _askToolConfirm(requestId, toolName, input, promptSignal);
         if (allowed) {
             return { behavior: "allow", updatedInput: input };
@@ -1336,8 +1346,18 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 _hookErrorTimer = setTimeout(_flushHookError, HOOK_ERROR_FLUSH_MS);
             }
         },
+        // Permission allow-rules, not a tool availability list. Bash is
+        // deliberately absent so that nothing here can pre-approve a shell
+        // command: every one is judged by the permission pipeline, and in
+        // Auto that means the SDK's classifier, whose "ask" verdicts reach
+        // canUseTool below as the panel's Allow/Deny card. The CLI happens
+        // to ignore a Bash allow rule anyway ("Ignoring dangerous permission
+        // Bash(*) from cliArg (bypasses classifier)"), so leaving it out
+        // simply stops the list from implying otherwise. Edit Mode still
+        // uses the manual confirm in the Bash PreToolUse hook below, and
+        // Allow Everything (bypassPermissions) skips permission checks.
         allowedTools: [
-            "Read", "Edit", "Write", "Glob", "Grep", "Bash",
+            "Read", "Edit", "Write", "Glob", "Grep",
             "AskUserQuestion", "Task", "Agent",
             // Background-subagent plumbing: lets the main agent relay a
             // user follow-up to a running subagent (SendMessage), read its
@@ -1812,7 +1832,16 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             const allowed = await _askToolConfirm(
                                 requestId, "Bash", input.tool_input, signal);
                             if (allowed) {
-                                return {};
+                                // Explicit allow, not {}: with Bash off the
+                                // allow list, "no opinion" would send a
+                                // command the user just approved on to the
+                                // CLI's own permission check.
+                                return {
+                                    hookSpecificOutput: {
+                                        hookEventName: "PreToolUse",
+                                        permissionDecision: "allow"
+                                    }
+                                };
                             }
                             return {
                                 hookSpecificOutput: {
