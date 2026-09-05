@@ -522,11 +522,26 @@
     }
 
     .layers-props-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
         padding: 4px 5px 6px;
         color: @project-panel-text-2;
         font-style: italic;
         line-height: 1.4;
         white-space: normal;
+    }
+
+    .layers-props-note-icon {
+        display: flex;
+        flex: none;
+        margin-top: 1px;
+
+        svg {
+            width: 13px;
+            height: 13px;
+            display: block;
+        }
     }
 
     .layers-node.layers-root-node .layers-node-tag {
@@ -671,6 +686,21 @@
             color: @project-panel-text-2;
             cursor: default;
         }
+    }
+
+    .layers-prop-static {
+        flex: 1;
+        min-width: 0;
+        padding: 0 5px;
+        color: @project-panel-text-2;
+        font-family: @layers-mono;
+        font-size: @sidebar-xs-font-size;
+        line-height: 22px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: default;
+        user-select: none;
     }
 
     .layers-attrs {
