@@ -769,12 +769,12 @@
     .layers-decl {
         display: flex;
         align-items: baseline;
-        gap: 4px;
         min-height: 20px;
-        padding-left: 8px;
+        padding: 0 4px 0 8px;
         font-family: @layers-mono;
         font-size: @sidebar-xs-font-size;
-        user-select: text;
+        line-height: 18px;
+        user-select: none;
 
         &:hover {
             background: @layers-hover-bg;
@@ -792,15 +792,72 @@
     }
 
     .layers-decl-value {
-        flex: 1;
+        flex: 0 1 auto;
         min-width: 0;
         color: @layers-prop-value;
         word-break: break-all;
     }
 
+    .layers-decl-field,
+    .layers-decl-input {
+        margin: 0 -2px;
+
+        &.layers-decl-value {
+            margin-left: 3px;
+        }
+    }
+
+    .layers-decl-field {
+        padding: 0 2px;
+        border-radius: 3px;
+        cursor: text;
+
+        &:hover {
+            background: @layers-input-bg-focus;
+            box-shadow: inset 0 0 0 1px @layers-border;
+        }
+    }
+
+    .layers-decl-input {
+        box-sizing: border-box;
+        height: 18px;
+        min-width: 0;
+        padding: 0 2px;
+        border: 1px solid @layers-accent;
+        border-radius: 3px;
+        outline: none;
+        box-shadow: none;
+        background: @layers-input-bg-focus;
+        font: inherit;
+        line-height: 16px;
+        text-decoration: none;
+
+        &::placeholder {
+            color: @project-panel-text-2;
+            opacity: 0.6;
+        }
+
+        &.layers-decl-value {
+            flex: 1;
+        }
+    }
+
+    .layers-decl.layers-editing:hover {
+        background: transparent;
+    }
+
+    .layers-decl-actions {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        flex: none;
+        align-self: center;
+        margin-left: auto;
+        padding-left: 6px;
+    }
+
     .layers-decl.layers-overridden {
-        .layers-decl-name,
-        .layers-decl-value {
+        .layers-decl-field {
             text-decoration: line-through;
             color: @project-panel-text-2;
         }
@@ -811,18 +868,21 @@
         align-self: center;
     }
 
-    .layers-decl .layers-icon-btn {
+    .layers-decl .layers-icon-btn,
+    .layers-rule-add {
         opacity: 0;
     }
 
     .layers-decl:hover .layers-icon-btn,
-    .layers-decl .layers-icon-btn:focus {
+    .layers-decl .layers-icon-btn:focus,
+    .layers-rule:hover .layers-rule-add,
+    .layers-rule-add:focus {
         opacity: 1;
     }
 
     .layers-rule {
         margin-bottom: 6px;
-        padding-bottom: 6px;
+        padding-bottom: 8px;
         border-bottom: 1px solid @layers-border;
 
         &:last-child {
