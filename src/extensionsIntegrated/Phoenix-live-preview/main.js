@@ -705,6 +705,12 @@ define(function (require, exports, module) {
     }
 
     const ALLOWED_BROWSERS_NAMES = [`chrome`, `firefox`, `safari`, `edge`, `browser`, `browserPrivate`];
+    /**
+     * Opens the current preview url in a browser tab through the live preview tab loader page. If static `file://`
+     * previews of non-project html are ever added (see `FILE_PROTOCOL_PREVIEW_NOTES.md`), those urls cannot go
+     * through the tab loader and must be opened directly.
+     * @param {string} [browserName] one of ALLOWED_BROWSERS_NAMES, else the default browser
+     */
     function _popoutLivePreview(browserName) {
         // We cannot use $iframe.src here if panel is hidden
         const openURL = StaticServer.getTabPopoutURL(currentLivePreviewURL);
@@ -1022,6 +1028,14 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "mdviewr");
     }
 
+    /**
+     * Renders the current preview target into the panel iframe. Note: html files outside the project currently
+     * get the "Preview Unavailable" page. A verified prototype that instead renders them as static `file://`
+     * pages in an Electron `<webview>` (with reload on save) is documented, with the full patch, in
+     * `FILE_PROTOCOL_PREVIEW_NOTES.md` in this folder. Read it before touching the external file flow here.
+     * @param {boolean} force reload even if the url is unchanged
+     * @param {boolean} isReload true when the user explicitly asked for a reload
+     */
     async function _loadPreview(force, isReload) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
