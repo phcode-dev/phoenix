@@ -73,7 +73,7 @@
     padding: 0 6px;
     margin: 0;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: 6px;
     outline: none;
     box-shadow: none;
     background: transparent;
@@ -95,7 +95,6 @@
     &:focus {
         border-color: @layers-accent;
         background: @layers-input-bg-focus;
-        box-shadow: 0 0 0 2px @layers-accent-soft;
     }
 }
 
@@ -809,7 +808,7 @@
         word-break: break-all;
     }
 
-    .layers-decl-input {
+    .layers-decl-input[type="text"] {
         .layers-field-input();
         flex: 0 1 auto;
         min-width: 3ch;
