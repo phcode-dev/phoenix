@@ -828,6 +828,7 @@ define({
     "LIVE_PREVIEW_LAYERS_SETTINGS": "Settings",
     "LIVE_PREVIEW_LAYERS_SHOW_TEXT_NODES": "Show Text Nodes",
     "LIVE_PREVIEW_LAYERS_HIGHLIGHT_ON_HOVER": "Highlight on Hover in Preview",
+    "LIVE_PREVIEW_LAYERS_SCROLL_ON_HOVER": "Scroll to Element on Hover",
     "LIVE_PREVIEW_LAYERS_MOVE_UP": "Move Up",
     "LIVE_PREVIEW_LAYERS_MOVE_DOWN": "Move Down",
     "LIVE_PREVIEW_LAYERS_ADD_ATTRIBUTE": "Add Attribute",
