@@ -292,6 +292,13 @@ define(function (require, exports, module) {
             }
             return;
         }
+        // a script-added element has no place in the html, only a css file can show it
+        if (!tagId) {
+            if (activeEditor && (liveDoc.isRelated(activeEditorPath) || _isLessOrSCSS(activeEditor))) {
+                _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
+            }
+            return;
+        }
         const allOpenFileCount = MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES);
         function selectInHTMLEditor(fullHtmlEditor) {
             const positionResult = HTMLInstrumentation.getPositionFromTagId(fullHtmlEditor, parseInt(tagId, 10));
@@ -385,7 +392,7 @@ define(function (require, exports, module) {
             }
         } else if (msg.keyForward) {
             _forwardKeyboardShortcutFromIframe(msg);
-        } else if (msg.clicked && msg.tagId) {
+        } else if (msg.clicked && (msg.tagId || msg.sourceless)) {
             // While previewing an html file, and if css related file is active in the editor, then clicking on the
             // live preview, here we set the cursor position in the css file. but this will also trigger a css
             // highlight as the cursor changes which jumps the live preview selection.
@@ -402,7 +409,8 @@ define(function (require, exports, module) {
             }
             _keepFocusUntil = 0;
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(false);
-            liveDoc && liveDoc.updateHighlight();
+            // the caret did not move for a script-added element, re-highlighting would drop its selection
+            liveDoc && !msg.sourceless && liveDoc.updateHighlight();
         } else {
             // enrich received message with clientId
             msg.clientId = clientId;
