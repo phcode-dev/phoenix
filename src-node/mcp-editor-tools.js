@@ -154,7 +154,11 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             }
             return _maybeAppendHint(result, hasClarification);
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            alwaysLoad: true,
+            searchHint: "which file the user has open in Phoenix Code editor, plus cursor, selection, and what the live preview (an embedded browser rendering their HTML or Markdown) is showing"
+        }
     );
 
     const takeScreenshotTool = sdkModule.tool(
@@ -219,7 +223,11 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             }
             return _maybeAppendHint(toolResult, hasClarification);
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            alwaysLoad: true,
+            searchHint: "screenshot the user's Phoenix Code editor app window, or the page rendered in their live preview browser"
+        }
     );
 
     const execJsInLivePreviewTool = sdkModule.tool(
@@ -265,7 +273,11 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             }
             return _maybeAppendHint(toolResult, hasClarification);
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            alwaysLoad: true,
+            searchHint: "run JS in the user's live preview browser to inspect the rendered page's DOM, console or JS state"
+        }
     );
 
     const controlEditorTool = sdkModule.tool(
@@ -330,7 +342,11 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             };
             return _maybeAppendHint(toolResult, hasClarification);
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            alwaysLoad: true,
+            searchHint: "open, close or switch files in Phoenix Code, toggle the live preview browser"
+        }
     );
 
     const resizeLivePreviewTool = sdkModule.tool(
@@ -364,7 +380,10 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             }
             return _maybeAppendHint(toolResult, hasClarification);
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            searchHint: "resize the user's live preview browser viewport to check a responsive layout"
+        }
     );
 
     const waitTool = sdkModule.tool(
@@ -383,7 +402,10 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             };
             return _maybeAppendHint(toolResult, hasClarification);
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            searchHint: "pause before re-checking the user's live preview browser"
+        }
     );
 
     const execJsInEditorTool = sdkModule.tool(
@@ -457,6 +479,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 };
             }
             return _maybeAppendHint(toolResult, hasClarification);
+        },
+        {
+            searchHint: "run JS against Phoenix Code's own editor API, not the page in its live preview"
         }
     );
 
@@ -527,6 +552,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 };
             }
             return _maybeAppendHint(toolResult, hasClarification);
+        },
+        {
+            searchHint: "read or change the user's Phoenix Code editor preferences"
         }
     );
 
@@ -574,7 +602,10 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             };
             return _maybeAppendHint(toolResult, hasClarification);
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            searchHint: "look up Phoenix Code editor feature or API documentation"
+        }
     );
 
     const getUserClarificationTool = sdkModule.tool(
@@ -607,7 +638,10 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
                 content: [{ type: "text", text: "No clarification queued." }]
             };
         },
-        { annotations: { readOnlyHint: true } }
+        {
+            annotations: { readOnlyHint: true },
+            searchHint: "read a follow-up the user typed into this conversation while you were still working"
+        }
     );
 
     return sdkModule.createSdkMcpServer({

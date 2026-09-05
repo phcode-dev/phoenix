@@ -316,6 +316,39 @@ function _formatAnswers(answer) {
 }
 
 /**
+ * Render the editor context the panel sent into the line prepended to the
+ * prompt. The panel assembles it because that is where the data and the
+ * user's context chips already live; this only turns it into prose. Returns
+ * "" when the panel sent nothing, i.e. the user dismissed those chips.
+ */
+function _buildEditorContextLine(ctx) {
+    if (!ctx || (!ctx.activeFile && !ctx.livePreviewFile)) {
+        return "";
+    }
+    const parts = ["Editor state (auto-supplied, no tool call needed):"];
+    if (ctx.activeFile) {
+        parts.push("the user is editing " + ctx.activeFile + ".");
+        if (ctx.unsaved) {
+            parts.push("Unsaved, so stale on disk: " + ctx.unsaved + ".");
+        }
+    }
+    if (ctx.livePreviewFile) {
+        parts.push(ctx.livePreviewFile === ctx.activeFile
+            ? "The live preview is showing that same file."
+            : "The live preview is showing " + ctx.livePreviewFile + ".");
+    }
+    // Say plainly when the lists are complete. Left merely to infer it, the
+    // agent calls getEditorState to check — the exact lookup this line is
+    // here to save.
+    parts.push(ctx.truncated
+        ? "Trust this over searching for it yourself; call getEditorState for the names cut " +
+          "from a list, or if you need the cursor, the selection or a fresher view."
+        : "That is the complete set. Trust it over searching or double-checking; call " +
+          "getEditorState only if you need the cursor, the selection or a fresher view.");
+    return parts.join(" ");
+}
+
+/**
  * Detect whether a PostToolUse `tool_response` represents an error result.
  * Used to suppress diff-card painting when the SDK's native Edit/Write itself
  * failed (e.g. oldText not found on disk). The shape of tool_response is
@@ -855,7 +888,8 @@ exports.checkAvailability = async function (opts) {
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale, selectionContext, images, envOverrides, permissionMode, additionalDirectories } = params;
+    const { prompt, projectPath, sessionAction, model, locale, selectionContext, editorContext,
+        images, envOverrides, permissionMode, additionalDirectories } = params;
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -873,6 +907,12 @@ exports.sendPrompt = async function (params) {
     }
 
     currentAbortController = new AbortController();
+
+    // Prepend what the user is looking at. The panel knows the active file,
+    // the unsaved buffers and the live preview target for certain, so stating
+    // them costs one line and removes the reason to go hunting: without it
+    // the model opens by grepping the project for a file already on screen.
+    const editorContextLine = _buildEditorContextLine(editorContext);
 
     // Prepend selection context to the prompt if available
     let enrichedPrompt = prompt;
@@ -895,6 +935,9 @@ exports.sendPrompt = async function (params) {
                 " and limit=" + (selectionContext.endLine - selectionContext.startLine + 1) +
                 " to read the selected content if needed." + previewSnippet + "\n" + prompt;
         }
+    }
+    if (editorContextLine) {
+        enrichedPrompt = editorContextLine + "\n\n" + enrichedPrompt;
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
