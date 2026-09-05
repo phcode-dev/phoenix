@@ -599,6 +599,14 @@ define(function (require, exports, module) {
             + `&isLoggingEnabled=${logger.loggingOptions.logLivePreview}`;
     }
 
+    /**
+     * Preview url for a file outside the current project. Html files get the "Preview Unavailable" page on purpose:
+     * serving them over the live preview http server would let a malicious page walk the disk and exfiltrate
+     * files. A verified prototype that shows them as static `file://` pages in an Electron `<webview>` instead is
+     * documented in `FILE_PROTOCOL_PREVIEW_NOTES.md` in this folder; use it when this restriction is revisited.
+     * @param {string} fullPath
+     * @return {{url: string, isNoPreview: boolean}}
+     */
     function _getExternalPreviewURL(fullPath) {
         if(utils.isHTMLFile(fullPath)) {
             return {
@@ -646,7 +654,8 @@ define(function (require, exports, module) {
 
     /**
      * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
-     * file is not previewable.
+     * file is not previewable. For files outside the project see `_getExternalPreviewURL` and
+     * `FILE_PROTOCOL_PREVIEW_NOTES.md` (static `file://` preview prototype, not implemented yet).
      * @return {Promise<*>}
      */
     async function getPreviewDetails() {
