@@ -969,6 +969,59 @@ body.layers-resizing {
     user-select: none;
 }
 
+.layers-hints {
+    position: fixed;
+    z-index: 1000;
+    box-sizing: border-box;
+    max-height: 220px;
+    padding: 3px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: #2f2f2f;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    font-family: @layers-mono;
+    font-size: @sidebar-xs-font-size;
+    line-height: 18px;
+}
+
+.layers-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: #e0e0e0;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+        background: @layers-hover-bg;
+    }
+
+    &.layers-hint-selected {
+        background: @layers-accent-soft;
+    }
+
+    strong {
+        font-weight: 600;
+        color: @layers-accent;
+    }
+}
+
+.layers-hint-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.layers-hint-swatch {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 2px;
+}
+
 .dropdownbutton-popup.layers-menu-popup {
     max-height: 80vh;
 }
