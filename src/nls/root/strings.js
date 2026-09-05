@@ -187,8 +187,6 @@ define({
     "LIVE_DEV_SETTINGS_SHOW_STARTER_BAR_PREFERENCE": "Show the starter bar when the live preview page is empty. Defaults to 'true'",
     "LIVE_DEV_SETTINGS_STYLES_BAR_POSITION_PREFERENCE": "Which edge the live preview styles bar docks to, 'top' or 'bottom'. Defaults to 'bottom'",
     "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Select Parent",
-    "LIVE_DEV_TOOLBOX_SELECT_SOURCE_PARENT": "Select Parent in Source",
-    "LIVE_DEV_TOOLBOX_FIND_IN_CODE": "Find in Code",
     "LIVE_DEV_SCRIPT_GENERATED_BADGE": "Script generated",
     "LIVE_DEV_SCRIPT_GENERATED_TOOLTIP": "Added by a script, so it is not in the HTML source. Its CSS rules can still be edited.",
     "LIVE_DEV_STYLER_SCRIPT_ELEMENT_NOTICE": "Script-generated element: edits are saved to its CSS rules",
