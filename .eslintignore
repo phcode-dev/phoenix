@@ -25,3 +25,6 @@ test/**/node_modules/**/*.js
 test/virtual-server-test.js
 test/spec/ESLintExtensionTest-files
 
+
+# AI panel model-test fixtures: deliberately broken pages the tests operate on, not code
+src/extensionsIntegrated/phoenix-pro/unit-tests/ai_model_tests/fixtures/**

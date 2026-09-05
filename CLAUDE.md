@@ -48,6 +48,9 @@ Use `exec_js` to run JS in the Phoenix browser runtime. jQuery `$()` is global. 
 
 **Check logs:** `get_browser_console_logs` with `filter` regex (e.g. `"AI UI"`, `"error"`) and `tail` — includes both browser console and Node.js (PhNode) logs. Use `get_terminal_logs` for Electron process output (only available if Phoenix was launched via `start_phoenix`).
 
+## AI model tests (behavioural tests of the AI panel)
+When asked to "run the AI test suite" / "run the model tests" / "run EC-1 and UB-2": call `run_ai_test_suite` (phoenix-builder MCP) with `suite` (`quick` | `all` | a suite name), or `tests` for specific IDs, or `resumeRunId` to continue. It installs the fixture, opens a run record, and returns the briefing plus the test documents from `src/extensionsIntegrated/phoenix-pro/unit-tests/ai_model_tests/`. You are the runner and the judge — follow them exactly, deterministic checks first. After **every** test call `ai_test_progress` and tell the user one progress line. If the user says stop: `ai_test_progress({ runId, stop: true })`, then save. Finish with `save_ai_test_report`, then `compare_ai_test_reports({})`, and tell the user the report path, PASS/FAIL counts, any regressions, and the Observations section.
+
 ## Writing Tests
 - **Never use `awaits(number)`** (fixed-time waits) in tests — they cause flaky failures. Always use `awaitsFor(condition)` to wait for a specific condition to become true.
 - Use `editor.*` APIs (e.g. `editor.document.getText()`, `editor.getCursorPos()`, `editor.setSelection()`) instead of accessing `editor._codeMirror` directly.
