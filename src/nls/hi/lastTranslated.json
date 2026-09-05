@@ -226,6 +226,8 @@
   "AI_CHAT_TOOL_SEARCHED": "Searched: {0}",
   "AI_CHAT_TOOL_SEARCH_CODE": "Search code",
   "AI_CHAT_TOOL_SEARCH_FILES": "Search files",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Search unsaved files",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Search unsaved files: {0}",
   "AI_CHAT_TOOL_SEND_MESSAGE": "Messaging subagent",
   "AI_CHAT_TOOL_SKILL": "Skill",
   "AI_CHAT_TOOL_SKILL_NAME": "Skill: {0}",
