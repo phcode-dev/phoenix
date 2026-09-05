@@ -54,7 +54,8 @@ const EXEC_PEER_TIMEOUT_MS = {
     getEditorState: 5000,
     takeScreenshot: 15000,
     controlEditor: 5000,
-    resizeLivePreview: 5000
+    resizeLivePreview: 5000,
+    searchEditorBuffers: 3000
 };
 
 // Floor for caller-provided timeouts (e.g. execJsInLivePreview's
@@ -158,6 +159,52 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             annotations: { readOnlyHint: true },
             alwaysLoad: true,
             searchHint: "which file the user has open in Phoenix Code editor, plus cursor, selection, and what the live preview (an embedded browser rendering their HTML or Markdown) is showing"
+        }
+    );
+
+    const searchEditorBuffersTool = sdkModule.tool(
+        "searchEditorBuffers",
+        "Regex search over the UNSAVED open files only — the ones the editor-state line at the top of " +
+        "the prompt lists as unsaved. Those are the only files where Grep is wrong: Grep reads disk, and " +
+        "disk is stale for a buffer the user has edited but not saved. Use Grep for everything else; it " +
+        "is faster and covers the whole project. Only call this when the editor-state line names unsaved " +
+        "files. Returns matches {file, line, text}, searchedFiles (what this actually covered) and truncated.",
+        {
+            pattern: z.string().describe("Regex (default) or literal text to find"),
+            isRegex: z.boolean().optional().describe("false to match the pattern literally. Default true"),
+            caseSensitive: z.boolean().optional().describe("Default false"),
+            fileGlob: z.string().optional().describe("Limit to matching files, e.g. *.css"),
+            maxResults: z.number().optional().describe("Cap on matches returned. Default 50, max 200")
+        },
+        async function (args) {
+            let result;
+            try {
+                const found = await _execPeerWithTimeout(nodeConnector, "searchEditorBuffers",
+                    args || {}, "searchEditorBuffers");
+                let text;
+                if (found && found.error) {
+                    text = JSON.stringify(found);
+                } else if (!found || !found.searchedFiles || !found.searchedFiles.length) {
+                    text = "No unsaved files, so nothing in the editor differs from disk. Use Grep — " +
+                        "it is authoritative for the whole project right now.";
+                } else {
+                    text = JSON.stringify(found) +
+                        "\n\nThis searched ONLY the unsaved files in searchedFiles. Every other file " +
+                        "matches disk — use Grep for the rest of the project.";
+                }
+                result = { content: [{ type: "text", text: text }] };
+            } catch (err) {
+                result = {
+                    content: [{ type: "text", text: "Error searching unsaved files: " + err.message }],
+                    isError: true
+                };
+            }
+            return _maybeAppendHint(result, hasClarification);
+        },
+        {
+            annotations: { readOnlyHint: true },
+            alwaysLoad: true,
+            searchHint: "search the unsaved editor buffers, where Grep would see stale disk content"
         }
     );
 
@@ -382,6 +429,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         },
         {
             annotations: { readOnlyHint: true },
+            alwaysLoad: true,
             searchHint: "resize the user's live preview browser viewport to check a responsive layout"
         }
     );
@@ -646,7 +694,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
 
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, takeScreenshotTool, execJsInLivePreviewTool,
+        tools: [getEditorStateTool, searchEditorBuffersTool, takeScreenshotTool, execJsInLivePreviewTool,
             execJsInEditorTool, editorPreferencesTool, editorDocsTool,
             controlEditorTool, resizeLivePreviewTool, waitTool, getUserClarificationTool]
     });
