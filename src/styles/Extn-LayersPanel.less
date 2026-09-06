@@ -485,6 +485,10 @@
             box-shadow: inset 2px 0 0 fade(@layers-accent, 35%);
         }
 
+        &.layers-text-active {
+            background: @layers-accent-soft;
+        }
+
         &.layers-moving {
             position: relative;
             z-index: 1;
@@ -970,6 +974,10 @@
 .layers-node-text {
     color: @project-panel-text-2;
     font-style: italic;
+}
+
+.layers-node.layers-text-active .layers-node-text {
+    color: @project-panel-text-1;
 }
 
 body.layers-resizing {
