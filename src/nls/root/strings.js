@@ -2602,6 +2602,7 @@ define({
     "AI_CHAT_NEW_SESSION_TITLE": "Start a new conversation",
     "AI_CHAT_NEW_BTN": "New",
     "AI_CHAT_THINKING": "Thinking...",
+    "AI_CHAT_SCROLL_TO_BOTTOM": "Scroll to bottom",
     "AI_CHAT_PLACEHOLDER": "Ask Claude...",
     "AI_CHAT_PLACEHOLDER_MODEL": "Ask {0}...",
     "AI_CHAT_SEND_TITLE": "Send message",

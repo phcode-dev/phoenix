@@ -62,6 +62,7 @@
 }
 
 .ai-chat-panel {
+    position: relative; // anchors .ai-scroll-to-bottom-btn
     display: flex;
     flex-direction: column;
     -webkit-box-flex: 1;
@@ -873,6 +874,34 @@
     background-color: @bc-ai-sidebar-bg;
 }
 
+// Floating "scroll to bottom" control over the lower right of the message
+// list; shown by AIChatPanel._updateScrollToBottomBtn while the list is
+// scrolled away from its end (top is set from the list's bottom edge).
+.ai-scroll-to-bottom-btn {
+    position: absolute;
+    right: 18px;
+    z-index: 5;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: #3a3a3a;
+    color: @project-panel-text-1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: @ai-text-secondary;
+    opacity: 0.9;
+
+    &:hover {
+        opacity: 1;
+        background-color: #454545;
+    }
+}
+
 /* ── Individual messages ────────────────────────────────────────────── */
 .ai-msg {
     margin-bottom: 16px;
@@ -1626,24 +1655,6 @@
         color: #e57373;
         opacity: 0.9;
         white-space: nowrap;
-
-        & + .ai-tool-group-count {
-            margin-left: 0;
-        }
-    }
-
-    // Count pill at the right edge of the header: the number of collated
-    // cards is the one fact the collapsed pile must convey.
-    .ai-tool-group-count {
-        margin-left: auto;
-        flex-shrink: 0;
-        font-size: @ai-text-meta;
-        line-height: 1;
-        padding: 3px 7px;
-        border-radius: 9px;
-        color: @project-panel-text-1;
-        background-color: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .ai-tool-group-body {
@@ -1653,9 +1664,10 @@
         border-left: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    // Count pill bump when a card lands in the pile.
-    .ai-tool-group-count.ai-tool-group-count-bump {
-        animation: ai-tool-group-count-bump 0.3s ease-out;
+    // Label bump when a card lands in the pile.
+    .ai-tool-group-label.ai-tool-group-label-bump {
+        animation: ai-tool-group-label-bump 0.3s ease-out;
+        transform-origin: left center;
     }
 
     &.ai-tool-group-expanded {
@@ -1676,9 +1688,9 @@
     }
 }
 
-@keyframes ai-tool-group-count-bump {
+@keyframes ai-tool-group-label-bump {
     0%   { transform: scale(1); }
-    40%  { transform: scale(1.35); }
+    40%  { transform: scale(1.12); }
     100% { transform: scale(1); }
 }
 
