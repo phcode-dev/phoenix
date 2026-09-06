@@ -457,7 +457,7 @@ const ALLOWED_EXTENSIONS_TO_CACHE = ["js", "html", "htm", "xml", "xhtml", "mjs",
     "png", "svg", "jpg", "jpeg", "gif", "ico", "webp",
     "mustache", "md", "markdown"];
 const DISALLOWED_EXTENSIONS_TO_CACHE = ["map", "nuspec", "partial", "pre", "post",
-    "webmanifest", "rb", "ts"];
+    "webmanifest", "rb", "ts", "sh"];
 
 // Ceiling for the PWA service worker cache, in KB. Dev builds ship unminified sources and keep the
 // phoenix-pro sources in dist, so they are legitimately larger than prod - dev gets the looser
