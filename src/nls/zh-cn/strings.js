@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "实时预览",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "完整编辑器",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "正在检查预览",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "搜索未保存的文件",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "搜索未保存的文件：{0}",
   "AI_CHAT_TOOL_EDITOR_JS": "检查编辑器",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "编辑器首选项",
   "AI_CHAT_TOOL_EDITOR_DOCS": "编辑器文档",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
   "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "搜索未保存的文件",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "搜索未保存的文件：{0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "滚动到底部",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} 个步骤",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} 项失败",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "读取 {0} 个文件",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} 项",
+  "AI_CHAT_TOOL_FAILED_TAG": "失败",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "已截断：聊天记录中仅保留了前 {0} 个字符"
 });

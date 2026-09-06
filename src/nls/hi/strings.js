@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "लाइव पूर्वावलोकन",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "पूरा संपादक",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "प्रीव्यू का निरीक्षण किया जा रहा है",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "सहेजी नहीं गई फ़ाइलें खोजें",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "सहेजी नहीं गई फ़ाइलें खोजें: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "संपादक का निरीक्षण",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "संपादक वरीयताएँ",
   "AI_CHAT_TOOL_EDITOR_DOCS": "संपादक दस्तावेज़",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "पुरानी साइट तक नहीं पहुंच सके",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} आपके प्रोजेक्ट और सेटिंग्स को खोजने के लिए {0} से कनेक्ट नहीं हो सका, इसलिए कुछ भी नहीं बदला गया है। अपना इंटरनेट कनेक्शन जाँचें, फिर {1} के साथ फिर से प्रयास करें।",
   "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "सहेजी नहीं गई फ़ाइलें खोजें",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "सहेजी नहीं गई फ़ाइलें खोजें: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "सबसे नीचे स्क्रॉल करें",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} चरण",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} विफल",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} पढ़ें",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} और",
+  "AI_CHAT_TOOL_FAILED_TAG": "विफल",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "काट-छाँट: चैट हिस्ट्री में केवल पहले {0} अक्षर रखे गए"
 });

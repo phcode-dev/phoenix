@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Tiešraides priekšskatījums",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Pilnais redaktors",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pārbauda priekšskatījumu",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Meklēt nesaglabātos failus",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Meklēt nesaglabātos failos: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Pārbauda redaktoru",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Redaktora iestatījumi",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Redaktora dokumentācija",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
   "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Meklēt nesaglabātos failus",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Meklēt nesaglabātos failos: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Ritināt uz apakšu",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} soļu",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} neveiksmīgi",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Nolasīti {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} vēl",
+  "AI_CHAT_TOOL_FAILED_TAG": "Neveiksmīgi",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Saīsināts: tērzēšanas vēsturē saglabātas tikai pirmās {0} rakstzīmes"
 });

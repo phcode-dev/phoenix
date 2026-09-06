@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "reaaliaikainen esikatselu",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "koko editori",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Tarkastetaan esikatselua",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Etsi tallentamattomista tiedostoista",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Etsi tallentamattomista tiedostoista: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Tarkastetaan editoria",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editorin asetukset",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Editorin dokumentaatio",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
   "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Etsi tallentamattomista tiedostoista",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Etsi tallentamattomista tiedostoista: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Vieritä alas",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} vaihetta",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} epäonnistunutta",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Luettu {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} lisää",
+  "AI_CHAT_TOOL_FAILED_TAG": "epäonnistunut",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Katkaistu: vain ensimmäiset {0} merkkiä säilytettiin keskusteluhistoriassa"
 });

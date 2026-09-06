@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "canlı önizleme",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Tüm düzenleyici",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Önizleme inceleniyor",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Kaydedilmemiş dosyalarda ara",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Kaydedilmemiş dosyalarda ara: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Editör inceleniyor",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editör tercihleri",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Editör belgeleri",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
   "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Kaydedilmemiş dosyalarda ara",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Kaydedilmemiş dosyalarda ara: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "En alta git",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} adım",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} başarısız",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} okuma",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} tane daha",
+  "AI_CHAT_TOOL_FAILED_TAG": "başarısız",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Kırpıldı: Sohbet geçmişinde yalnızca ilk {0} karakter korundu."
 });

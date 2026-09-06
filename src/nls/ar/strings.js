@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "معاينة مباشرة",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "المحرر الكامل",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "جاري فحص المعاينة",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "بحث في الملفات غير المحفوظة",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "بحث في الملفات غير المحفوظة: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "فحص المحرر",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "تفضيلات المحرر",
   "AI_CHAT_TOOL_EDITOR_DOCS": "مستندات المحرر",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "بحث في الملفات غير المحفوظة",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "بحث في الملفات غير المحفوظة: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "التمرير إلى الأسفل",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} خطوات",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} فشلت",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "قراءة {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} المزيد",
+  "AI_CHAT_TOOL_FAILED_TAG": "فشل",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "تم الاقتطاع: تم الاحتفاظ بأول {0} حرفًا فقط في سجل المحادثة."
 });

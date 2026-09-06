@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "pregled uživo",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "cijeli uređivač",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Pregledavanje pretpregleda",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Pretraži nespremljene datoteke",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Pretraži nespremljene datoteke: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Pregledavanje uređivača",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Postavke uređivača",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentacija uređivača",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
   "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Pretraži nespremljene datoteke",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Pretraži nespremljene datoteke: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Na dno",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} koraka",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} neuspjelo",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Pročitano {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} više",
+  "AI_CHAT_TOOL_FAILED_TAG": "Neuspjelo",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Skraćeno: Zadržano je samo prvih {0} znakova u povijesti razgovora."
 });

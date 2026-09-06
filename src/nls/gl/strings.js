@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Vista previa en directo",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "o editor completo",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspeccionando a vista previa",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Buscar ficheiros non gardados",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Buscar ficheiros non gardados: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspeccionando o editor",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferencias do editor",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Documentación do editor",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Non se puido acceder ao sitio antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non se puido conectar a {0} para buscar os seus proxectos e configuracións, polo que non se cambiou nada. Comprobe a súa conexión a internet e despois ténteo de novo con {1}.",
   "CMD_MIGRATE_DATA": "Migrar os meus datos desde {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Buscar ficheiros non gardados",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Buscar ficheiros non gardados: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Ir ao final",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} pasos",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} errados",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Leu {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} máis",
+  "AI_CHAT_TOOL_FAILED_TAG": "Errado",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Truncado: só se mantiveron os primeiros {0} caracteres no historial do chat"
 });

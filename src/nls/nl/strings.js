@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "live voorvertoning",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "De volledige editor",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Preview inspecteren",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Zoek in niet-opgeslagen bestanden",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Zoek in niet-opgeslagen bestanden: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Editor inspecteren",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editorvoorkeuren",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Editor-documentatie",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
   "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Zoek in niet-opgeslagen bestanden",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Zoek in niet-opgeslagen bestanden: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Naar beneden scrollen",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} stappen",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} mislukt",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} gelezen",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} meer",
+  "AI_CHAT_TOOL_FAILED_TAG": "mislukt",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Ingekort: alleen de eerste {0} tekens zijn bewaard in de chatgeschiedenis"
 });

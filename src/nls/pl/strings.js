@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "podgląd na żywo",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "pełny edytor",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspekcja podglądu",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Przeszukiwanie niezapisanych plików",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Przeszukiwanie niezapisanych plików: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspekcja edytora",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferencje edytora",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentacja edytora",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
   "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Przeszukiwanie niezapisanych plików",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Przeszukiwanie niezapisanych plików: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Przewiń na dół",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} kroków",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} nieudanych",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Odczytano {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} więcej",
+  "AI_CHAT_TOOL_FAILED_TAG": "Nieudane",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Przycięto: w historii czatu zachowano tylko pierwsze {0} znaków"
 });

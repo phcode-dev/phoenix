@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "തത്സമയ പ്രിവ്യൂ",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "പൂർണ്ണമായ എഡിറ്റർ",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "പ്രിവ്യൂ പരിശോധിക്കുന്നു",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "സേവ് ചെയ്യാത്ത ഫയലുകൾ തിരയുക",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "സേവ് ചെയ്യാത്ത ഫയലുകൾ തിരയുക: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "എഡിറ്റർ പരിശോധിക്കുന്നു",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "എഡിറ്റർ മുൻഗണനകൾ",
   "AI_CHAT_TOOL_EDITOR_DOCS": "എഡിറ്റർ പ്രമാണങ്ങൾ",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "പഴയ സൈറ്റിൽ എത്തിച്ചേരാൻ കഴിഞ്ഞില്ല",
   "MIGRATE_UNREACHABLE_MESSAGE": "നിങ്ങളുടെ പ്രോജക്റ്റുകളും ക്രമീകരണങ്ങളും തിരയുന്നതിന് {APP_NAME}-ന് {0}-ലേക്ക് കണക്റ്റുചെയ്യാൻ കഴിഞ്ഞില്ല, അതിനാൽ മാറ്റങ്ങളൊന്നും വരുത്തിയിട്ടില്ല. നിങ്ങളുടെ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിച്ച്, തുടർന്ന് {1} ഉപയോഗിച്ച് വീണ്ടും ശ്രമിക്കുക.",
   "CMD_MIGRATE_DATA": "{0}-ൽ നിന്ന് എൻ്റെ ഡാറ്റ മൈഗ്രേറ്റ് ചെയ്യുക…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "സേവ് ചെയ്യാത്ത ഫയലുകൾ തിരയുക",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "സേവ് ചെയ്യാത്ത ഫയലുകൾ തിരയുക: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "താഴേക്ക് സ്ക്രോൾ ചെയ്യുക",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} ഘട്ടങ്ങൾ",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} പരാജയപ്പെട്ടു",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} വായിച്ചു",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} കൂടുതൽ",
+  "AI_CHAT_TOOL_FAILED_TAG": "പരാജയപ്പെട്ടു",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "ചുരുക്കിയത്: ചാറ്റ് ഹിസ്റ്ററിയിൽ ആദ്യത്തെ {0} അക്ഷരങ്ങൾ മാത്രമേ സൂക്ഷിച്ചിട്ടുള്ളൂ"
 });

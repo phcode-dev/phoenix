@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "پیش‌نمایش زنده",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "تمام ویرایشگر",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "در حال بررسی پیش‌نمایش",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "جستجوی فایل‌های ذخیره‌نشده",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "جستجوی فایل‌های ذخیره‌نشده: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "بررسی ویرایشگر",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "ترجیحات ویرایشگر",
   "AI_CHAT_TOOL_EDITOR_DOCS": "مستندات ویرایشگر",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "عدم دسترسی به سایت قدیمی",
   "MIGRATE_UNREACHABLE_MESSAGE": "‏{APP_NAME} نتوانست به {0} متصل شود تا پروژه‌ها و تنظیمات شما را جستجو کند، بنابراین هیچ تغییری ایجاد نشده است. اتصال اینترنت خود را بررسی کنید، سپس با {1} دوباره تلاش کنید.",
   "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "جستجوی فایل‌های ذخیره‌نشده",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "جستجوی فایل‌های ذخیره‌نشده: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "پیمایش به پایین",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} مرحله",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} مورد ناموفق",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "خواندن {0} مورد",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} مورد دیگر",
+  "AI_CHAT_TOOL_FAILED_TAG": "ناموفق",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "کوتاه شده: فقط {0} کاراکتر اول در سابقهٔ چت نگه داشته شد"
 });

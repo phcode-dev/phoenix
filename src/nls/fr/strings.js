@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Aperçu en direct",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "L'éditeur complet",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspection de l'aperçu",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Rechercher dans les fichiers non enregistrés",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Rechercher dans les fichiers non enregistrés : {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspection de l'éditeur",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Préférences de l'éditeur",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Documentation de l'éditeur",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Impossible d'atteindre l'ancien site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} n'a pas pu se connecter à {0} pour rechercher vos projets et paramètres, donc rien n'a été modifié. Vérifiez votre connexion Internet, puis réessayez avec {1}.",
   "CMD_MIGRATE_DATA": "Migrer mes données depuis {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Rechercher dans les fichiers non enregistrés",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Rechercher dans les fichiers non enregistrés : {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Défiler vers le bas",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} étapes",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} échecs",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Lecture de {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} autres",
+  "AI_CHAT_TOOL_FAILED_TAG": "Échec",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Tronqué : seuls les {0} premiers caractères ont été conservés dans l'historique du chat."
 });

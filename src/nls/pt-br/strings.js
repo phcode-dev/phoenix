@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Visualização ao vivo",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "o editor completo",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspecionando a pré-visualização",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Pesquisar arquivos não salvos",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Pesquisar arquivos não salvos: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspecionando o editor",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferências do Editor",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Documentação do Editor",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Não foi possível acessar o site antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "O {APP_NAME} não conseguiu se conectar a {0} para procurar seus projetos e configurações, então nada foi alterado. Verifique sua conexão com a internet e tente novamente com {1}.",
   "CMD_MIGRATE_DATA": "Migrar Meus Dados de {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Pesquisar arquivos não salvos",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Pesquisar arquivos não salvos: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Rolar para o final",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} etapas",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} falharam",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Leu {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} mais",
+  "AI_CHAT_TOOL_FAILED_TAG": "Falhou",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Truncado: apenas os primeiros {0} caracteres foram mantidos no histórico do chat"
 });

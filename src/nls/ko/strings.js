@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "라이브 미리보기",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "전체 에디터",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "미리보기 검사 중",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "저장되지 않은 파일 검색",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "저장되지 않은 파일 검색: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "에디터 검사",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "에디터 환경 설정",
   "AI_CHAT_TOOL_EDITOR_DOCS": "에디터 문서",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}이(가) {0}에 연결하여 프로젝트 및 설정을 찾을 수 없었으므로 아무것도 변경되지 않았습니다. 인터넷 연결을 확인한 다음 {1}으로 다시 시도하세요.",
   "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "저장되지 않은 파일 검색",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "저장되지 않은 파일 검색: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "맨 아래로 스크롤",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} 단계",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0}개 실패",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0}개 읽음",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0}개 더",
+  "AI_CHAT_TOOL_FAILED_TAG": "실패",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "잘림: 채팅 기록에 처음 {0}자만 유지되었습니다."
 });

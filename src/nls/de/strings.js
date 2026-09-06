@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Live-Vorschau",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "der gesamte Editor",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspiziere Vorschau",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Nicht gespeicherte Dateien durchsuchen",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Nicht gespeicherte Dateien durchsuchen: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Editor wird inspiziert",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editoreinstellungen",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Editor-Dokumentation",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um Ihre Projekte und Einstellungen zu suchen, sodass nichts geändert wurde. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es dann mit {1} erneut.",
   "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Nicht gespeicherte Dateien durchsuchen",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Nicht gespeicherte Dateien durchsuchen: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Nach unten scrollen",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} Schritte",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} fehlgeschlagen",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} gelesen",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} weitere",
+  "AI_CHAT_TOOL_FAILED_TAG": "fehlgeschlagen",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Gekürzt: Nur die ersten {0} Zeichen wurden im Chat-Verlauf beibehalten."
 });

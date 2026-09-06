@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Преглед на живо",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "целият редактор",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Инспектиране на преглед",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Търсене в незапазени файлове",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Търсене в незапазени файлове: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Инспектиране на редактора",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Предпочитания на редактора",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Документация на редактора",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не може да се осъществи връзка със стария сайт",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не можа да се свърже с {0}, за да потърси Вашите проекти и настройки, така че нищо не е променено. Проверете интернет връзката си, след това опитайте отново с {1}.",
   "CMD_MIGRATE_DATA": "Мигриране на данните ми от {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Търсене в незапазени файлове",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Търсене в незапазени файлове: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Превъртане до долу",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} стъпки",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} неуспеха",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Прочитане на {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+още {0}",
+  "AI_CHAT_TOOL_FAILED_TAG": "неуспешно",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Съкратено: само първите {0} символа бяха запазени в историята на чата."
 });

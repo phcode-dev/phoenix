@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Direkte forhåndsvisning",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "den fulde editor",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Inspicerer forhåndsvisning",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Søg i ikke-gemte filer",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Søg i ikke-gemte filer: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspicerer editor",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editorindstillinger",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Editor-dokumentation",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunne ikke få forbindelse til den gamle side",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at finde dine projekter og indstillinger, så der er ikke blevet ændret noget. Tjek din internetforbindelse, og prøv derefter igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Søg i ikke-gemte filer",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Søg i ikke-gemte filer: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Rul til bunden",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} trin",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} mislykkedes",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Læste {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} mere",
+  "AI_CHAT_TOOL_FAILED_TAG": "Mislykket",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Afkortet: kun de første {0} tegn blev bibeholdt i chathistorikken"
 });

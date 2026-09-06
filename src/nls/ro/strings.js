@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Previzualizare live",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "editorul complet",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Se inspectează previzualizarea",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Caută în fișierele nesalvate",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Căutare în fișierele nesalvate: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspectare editor",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferințe editor",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Documentație editor",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
   "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Caută în fișierele nesalvate",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Căutare în fișierele nesalvate: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Derulare la final",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} pași",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} eșuate",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "S-a citit {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+ încă {0}",
+  "AI_CHAT_TOOL_FAILED_TAG": "Eșuat",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Trunchiat: doar primele {0} caractere s-au păstrat în istoricul conversației."
 });

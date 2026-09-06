@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "pratinjau langsung",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "seluruh editor",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Menginspeksi pratinjau",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Cari file yang belum disimpan",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Cari file yang belum disimpan: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Memeriksa editor",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Preferensi editor",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentasi editor",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
   "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Cari file yang belum disimpan",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Cari file yang belum disimpan: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Gulir ke bawah",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} langkah",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} gagal",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Membaca {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} lagi",
+  "AI_CHAT_TOOL_FAILED_TAG": "gagal",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Dipotong: hanya {0} karakter pertama yang disimpan di riwayat obrolan"
 });

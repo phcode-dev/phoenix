@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Ζωντανή προεπισκόπηση",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Ο πλήρης επεξεργαστής",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Εξέταση προεπισκόπησης",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Αναζήτηση σε μη αποθηκευμένα αρχεία",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Αναζήτηση σε μη αποθηκευμένα αρχεία: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Επιθεώρηση επεξεργαστή",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Προτιμήσεις επεξεργαστή",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Τεκμηρίωση επεξεργαστή",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Αδυναμία πρόσβασης στον παλιό ιστότοπο",
   "MIGRATE_UNREACHABLE_MESSAGE": "Το {APP_NAME} δεν μπόρεσε να συνδεθεί στο {0} για την αναζήτηση των έργων και των ρυθμίσεών σας, επομένως δεν έχει αλλάξει τίποτα. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο και, στη συνέχεια, δοκιμάστε ξανά με το {1}.",
   "CMD_MIGRATE_DATA": "Μεταφορά των δεδομένων μου από το {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Αναζήτηση σε μη αποθηκευμένα αρχεία",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Αναζήτηση σε μη αποθηκευμένα αρχεία: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Κύλιση στο κάτω μέρος",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} βήματα",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} απέτυχαν",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Διαβάστηκαν {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} ακόμη",
+  "AI_CHAT_TOOL_FAILED_TAG": "Αποτυχία",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Περικοπή: μόνο οι πρώτοι {0} χαρακτήρες διατηρήθηκαν στο ιστορικό της συνομιλίας."
 });

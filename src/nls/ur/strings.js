@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "لائیو پیش منظر",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "مکمل ایڈیٹر",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "پیش نظارہ کا معائنہ جاری ہے",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "غیر محفوظ فائلیں تلاش کریں",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "غیر محفوظ فائلیں تلاش کریں: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "ایڈیٹر کا معائنہ",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "ایڈیٹر کی ترجیحات",
   "AI_CHAT_TOOL_EDITOR_DOCS": "ایڈیٹر کی دستاویزات",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "پرانی سائٹ تک رسائی ممکن نہ ہو سکی",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} آپ کے پروجیکٹس اور سیٹنگز تلاش کرنے کے لیے {0} سے منسلک نہیں ہو سکا، لہذا کوئی تبدیلی نہیں کی گئی ہے۔ اپنا انٹرنیٹ کنکشن چیک کریں، پھر {1} کے ساتھ دوبارہ کوشش کریں۔",
   "CMD_MIGRATE_DATA": "{0} سے میرا ڈیٹا منتقل کریں…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "غیر محفوظ فائلیں تلاش کریں",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "غیر محفوظ فائلیں تلاش کریں: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "نیچے سکرول کریں",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} مراحل",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} ناکام",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "پڑھا {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} مزید",
+  "AI_CHAT_TOOL_FAILED_TAG": "ناکام",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "مختصر کیا گیا: چیٹ ہسٹری میں صرف پہلے {0} حروف رکھے گئے"
 });

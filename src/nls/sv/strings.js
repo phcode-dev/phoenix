@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "direktförhandsgranskning",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "hela redigeraren",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Granskar förhandsgranskning",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Sök i osparade filer",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Sök i osparade filer: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspekterar redigeraren",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Redigerarinställningar",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Redigerardokumentation",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Sök i osparade filer",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Sök i osparade filer: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Skrolla längst ner",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} steg",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} misslyckade",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Läst {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} till",
+  "AI_CHAT_TOOL_FAILED_TAG": "Misslyckad",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Trunkerad: endast de första {0} tecknen behölls i chatthistoriken"
 });

@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "élő előnézet",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "a teljes szerkesztő",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Előnézet vizsgálata",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Nem mentett fájlok keresése",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Keresés a nem mentett fájlokban: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Szerkesztő vizsgálata",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Szerkesztő beállításai",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Szerkesztő dokumentációja",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
   "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Nem mentett fájlok keresése",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Keresés a nem mentett fájlokban: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Görgetés az aljára",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} lépés",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} sikertelen",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} olvasása",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} további",
+  "AI_CHAT_TOOL_FAILED_TAG": "Sikertelen",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Csonkítva: csak az első {0} karakter maradt meg a csevegési előzményekben."
 });

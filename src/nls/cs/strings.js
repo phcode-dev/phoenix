@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "živý náhled",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "celý editor",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Prohlížení náhledu",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Prohledat neuložené soubory",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Hledání v neuložených souborech: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Inspekce editoru",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Předvolby editoru",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Dokumentace editoru",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
   "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Prohledat neuložené soubory",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Hledání v neuložených souborech: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Sjet dolů",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} kroků",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} selhalo",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Přečteno: {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} dalších",
+  "AI_CHAT_TOOL_FAILED_TAG": "Selhání",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Zkráceno: pouze prvních {0} znaků bylo ponecháno v historii chatu."
 });

@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "ライブプレビュー",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "エディター全体",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "プレビューを検査中",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "未保存ファイルの検索",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "未保存ファイルの検索：{0}",
   "AI_CHAT_TOOL_EDITOR_JS": "エディターを検査中",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "エディターの設定",
   "AI_CHAT_TOOL_EDITOR_DOCS": "エディターのドキュメント",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
   "CMD_MIGRATE_DATA": "{0}からデータを移行…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "未保存ファイルの検索",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "未保存ファイルの検索：{0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "一番下へスクロール",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} ステップ",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} 件失敗",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} 件を読み込み",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} 件",
+  "AI_CHAT_TOOL_FAILED_TAG": "失敗",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "省略：チャット履歴には先頭の{0}文字のみが保持されました。"
 });

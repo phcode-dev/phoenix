@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "живой предпросмотр",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "Весь редактор",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Анализ предпросмотра",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Поиск несохранённых файлов",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Поиск по несохранённым файлам: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Инспектирование редактора",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Настройки редактора",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Документация редактора",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не удалось подключиться к старому сайту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не удалось подключиться к {0} для поиска ваших проектов и настроек, поэтому ничего не было изменено. Проверьте подключение к Интернету, затем повторите попытку с помощью {1}.",
   "CMD_MIGRATE_DATA": "Перенести мои данные из {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Поиск несохранённых файлов",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Поиск по несохранённым файлам: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Прокрутить в конец",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} шагов",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} со сбоем",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Прочитано {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} ещё",
+  "AI_CHAT_TOOL_FAILED_TAG": "Сбой",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Усечено: в истории чата сохранено только первых {0} символов."
 });

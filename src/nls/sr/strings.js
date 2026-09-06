@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "Преглед уживо",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "комплетан едитор",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "Проверавање прегледа",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Претрага несачуваних датотека",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Претрага несачуваних датотека: {0}",
   "AI_CHAT_TOOL_EDITOR_JS": "Преглед уређивача",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Подешавања уређивача",
   "AI_CHAT_TOOL_EDITOR_DOCS": "Документација уређивача",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Није могуће приступити старом сајту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} није могао да се повеже са {0} да би потражио ваше пројекте и подешавања, тако да ништа није промењено. Проверите интернет везу, а затим покушајте поново помоћу {1}.",
   "CMD_MIGRATE_DATA": "Мигрирајте моје податке са {0}…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "Претрага несачуваних датотека",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "Претрага несачуваних датотека: {0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "Скролуј до дна",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} корака",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} неуспелих",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "Читање {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "+{0} још",
+  "AI_CHAT_TOOL_FAILED_TAG": "неуспело",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Скраћено: само првих {0} знакова је задржано у историји ћаскања"
 });

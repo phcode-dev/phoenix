@@ -2439,6 +2439,8 @@ define({
   "AI_CHAT_TOOL_SCREENSHOT_LIVE_PREVIEW": "即時預覽",
   "AI_CHAT_TOOL_SCREENSHOT_FULL_EDITOR": "完整編輯器",
   "AI_CHAT_TOOL_LIVE_PREVIEW_JS": "檢視預覽",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED": "搜尋未存檔檔案",
+  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "搜尋未存檔檔案：{0}",
   "AI_CHAT_TOOL_EDITOR_JS": "正在檢查編輯器",
   "AI_CHAT_TOOL_EDITOR_PREFERENCES": "編輯器偏好設定",
   "AI_CHAT_TOOL_EDITOR_DOCS": "編輯器文件",
@@ -2757,6 +2759,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
   "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED": "搜尋未存檔檔案",
-  "AI_CHAT_TOOL_SEARCH_UNSAVED_FOR": "搜尋未存檔檔案：{0}"
+  "AI_CHAT_SCROLL_TO_BOTTOM": "捲動至底部",
+  "AI_CHAT_TOOL_GROUP_STEPS": "{0} 個步驟",
+  "AI_CHAT_TOOL_GROUP_FAILED": "{0} 個失敗",
+  "AI_CHAT_TOOL_GROUP_READ_FILES": "讀取 {0}",
+  "AI_CHAT_TOOL_GROUP_MORE": "還有 +{0} 個",
+  "AI_CHAT_TOOL_FAILED_TAG": "失敗",
+  "AI_CHAT_TOOL_DETAIL_TRUNCATED": "已截斷：僅保留聊天記錄中的前 {0} 個字元"
 });
