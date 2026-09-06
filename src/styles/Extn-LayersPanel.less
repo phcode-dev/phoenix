@@ -627,9 +627,9 @@
         display: block;
     }
 
-    .layers-node:hover .layers-node-label,
+    .layers-node:hover:not(.layers-no-tools) .layers-node-label,
     .layers-node.layers-actions-open .layers-node-label,
-    .layers-node:focus-within .layers-node-label {
+    .layers-node:focus-within:not(.layers-no-tools) .layers-node-label {
         padding-right: @layers-tools-width;
     }
 
