@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         NativeApp           = require("utils/NativeApp"),
         BootGreetings       = require("utils/BootGreetings"),
+        SystemConfigOverride = require("utils/SystemConfigOverride"),
         PreferencesManager  = require("preferences/PreferencesManager");
 
     // Reserve a slot in the boot-greeting coordinator so the tour can wait
@@ -164,7 +165,11 @@ define(function (require, exports, module) {
             if(!updaterWindow){
                 updaterWindow = window.__TAURI__.window.WebviewWindow.getByLabel(TAURI_UPDATER_WINDOW_LABEL);
             }
-            const updateMetadata = await fetchJSON(brackets.config.app_update_url);
+            // an admin can point us at another update feed with the system wide
+            // phoenix_override_config.json, see utils/SystemConfigOverride.js
+            const overrideConfig = await SystemConfigOverride.getOverrides();
+            const updateURL = overrideConfig.app_update_url || brackets.config.app_update_url;
+            const updateMetadata = await fetchJSON(updateURL);
             const phoenixBinaryVersion = await NodeUtils.getPhoenixBinaryVersion();
             const phoenixLoadedAppVersion = Phoenix.metadata.apiVersion;
             if(semver.gt(updateMetadata.version, phoenixBinaryVersion)){

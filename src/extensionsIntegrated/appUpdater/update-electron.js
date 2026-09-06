@@ -38,6 +38,7 @@ define(function (require, exports, module) {
         TaskManager = require("features/TaskManager"),
         NativeApp           = require("utils/NativeApp"),
         BootGreetings       = require("utils/BootGreetings"),
+        SystemConfigOverride = require("utils/SystemConfigOverride"),
         PreferencesManager  = require("preferences/PreferencesManager");
 
     // Reserve a slot in the boot-greeting coordinator so the tour can wait
@@ -123,7 +124,11 @@ define(function (require, exports, module) {
             updatePlatform: updatePlatformKey
         };
         try{
-            const updateMetadata = await fetchJSON(brackets.config.app_update_url);
+            // an admin can point us at another update feed with the system wide
+            // phoenix_override_config.json, see utils/SystemConfigOverride.js
+            const overrideConfig = await SystemConfigOverride.getOverrides();
+            const updateURL = overrideConfig.app_update_url || brackets.config.app_update_url;
+            const updateMetadata = await fetchJSON(updateURL);
             // In Electron, binary version and loaded app version are always the same
             // since both are loaded at app start and only change after full restart
             const currentVersion = await window.electronAPI.getAppVersion();
