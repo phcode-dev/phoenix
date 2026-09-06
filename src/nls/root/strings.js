@@ -2681,6 +2681,7 @@ define({
     "AI_CHAT_TOOL_EDIT_FILE": "Edit {0}",
     "AI_CHAT_TOOL_WRITE_FILE": "Write {0}",
     "AI_CHAT_TOOL_RAN_CMD": "Ran command",
+    "AI_CHAT_TOOL_GROUP_STEPS": "{0} steps",
     "AI_CHAT_TOOL_SKILL_NAME": "Skill: {0}",
     "AI_CHAT_TOOL_IN_PATH": "in {0}",
     "AI_CHAT_TOOL_INCLUDE": "include {0}",

@@ -883,6 +883,15 @@
     content-visibility: auto;
     contain-intrinsic-size: auto 300px;
 
+    // A message appended at the bottom is laid out as the 300px placeholder
+    // for one frame before it renders, which makes a bottom-pinned list
+    // jolt on every new card or bubble. The newest messages are on screen
+    // anyway, so render them normally; once older, they carry a remembered
+    // size and switch to `auto` without a size change.
+    &:nth-last-child(-n + 5) {
+        content-visibility: visible;
+    }
+
     .ai-msg-label {
         font-size: @ai-text-meta;
         color: @project-panel-text-2;
@@ -1418,6 +1427,183 @@
         color: @project-panel-text-2;
         opacity: 0.5;
         margin-left: auto;
+    }
+}
+
+/* ── Collapsed run of finished tool cards ──────────────────────────── */
+// A long run of finished tool cards (e.g. 20 "Ran command" rows) folds into
+// one of these; see core-ai/AIToolGroup.js. Collapsed, it is drawn as a
+// stack of cards: the header card on top with two offset card edges
+// peeking out below it, so the pile reads as "several cards" at a glance.
+// The header shows the distinct tool icons and the step count, and expands
+// to the original cards on click.
+@ai-tool-group-stack-step: 3px;
+
+.ai-tool-group {
+    position: relative;
+    margin-bottom: 6px;
+    // room for the two stacked card edges below the header
+    padding-bottom: (@ai-tool-group-stack-step * 2);
+
+    .ai-tool-group-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        background-color: @bc-ai-sidebar-bg;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.035));
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-left: 2px solid var(--tool-color, @project-panel-text-2);
+        min-width: 0;
+
+        &:hover .ai-tool-group-label {
+            opacity: 1;
+        }
+    }
+
+    // The two card edges "behind" the header. Each is narrower and lower
+    // than the one above it, like a fanned pile of cards.
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 10px;
+        border-radius: 0 0 4px 4px;
+        background-color: @bc-ai-sidebar-bg;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02));
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: none;
+        pointer-events: none;
+    }
+
+    &::before {
+        z-index: 1;
+        left: 4px;
+        right: 4px;
+        bottom: @ai-tool-group-stack-step;
+    }
+
+    &::after {
+        z-index: 0;
+        left: 8px;
+        right: 8px;
+        bottom: 0;
+    }
+
+    .ai-tool-group-chevron {
+        width: 14px;
+        text-align: center;
+        flex-shrink: 0;
+        font-size: @ai-text-meta;
+        color: @project-panel-text-2;
+        opacity: 0.6;
+        transition: transform 0.15s ease;
+    }
+
+    .ai-tool-group-icons {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
+    .ai-tool-group-icon {
+        font-size: @ai-text-secondary;
+        width: 14px;
+        text-align: center;
+    }
+
+    .ai-tool-group-label {
+        font-size: @ai-text-body;
+        color: @project-panel-text-2;
+        opacity: 0.75;
+        line-height: @ai-line-compact;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+
+    // Count pill at the right edge of the header: the number of collated
+    // cards is the one fact the collapsed pile must convey.
+    .ai-tool-group-count {
+        margin-left: auto;
+        flex-shrink: 0;
+        font-size: @ai-text-meta;
+        line-height: 1;
+        padding: 3px 7px;
+        border-radius: 9px;
+        color: @project-panel-text-1;
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ai-tool-group-body {
+        display: none;
+        margin-top: 4px;
+        padding-left: 8px;
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    // Count pill bump when a card lands in the pile.
+    .ai-tool-group-count.ai-tool-group-count-bump {
+        animation: ai-tool-group-count-bump 0.3s ease-out;
+    }
+
+    &.ai-tool-group-expanded {
+        padding-bottom: 0;
+
+        &::before,
+        &::after {
+            display: none;
+        }
+
+        .ai-tool-group-chevron {
+            transform: rotate(90deg);
+        }
+
+        .ai-tool-group-body {
+            display: block;
+        }
+    }
+}
+
+@keyframes ai-tool-group-count-bump {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+}
+
+// A finished card being collated into the pile above it. The real card is
+// moved into the (hidden) group body at once; this floating copy is laid
+// over its old spot and flies up into the pile header, shrinking and fading.
+// The copies live in a fixed overlay over the messages container, outside
+// the scroll container, so they never touch its scroll height. Duration
+// must match FOLD_ANIMATION_MS in core-ai/AIToolGroup.js.
+.ai-tool-group-ghost-layer {
+    position: fixed;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.ai-msg-tool.ai-tool-group-ghost {
+    position: absolute;
+    margin: 0;
+    overflow: hidden;
+    transform-origin: top center;
+    will-change: transform, opacity;
+    transition: transform 0.28s ease-in, opacity 0.28s ease-in;
+
+    &.ai-tool-group-ghost-active {
+        transform: translateY(var(--ghost-dy, -40px)) scale(0.94, 0.15);
+        opacity: 0;
     }
 }
 
