@@ -1210,6 +1210,28 @@
     .ai-tool-detail {
         display: none;
         padding: 2px 10px 6px 28px;
+        // A long command or script must not turn the card into a wall of
+        // text: cap the detail at roughly nine lines and scroll inside it.
+        max-height: 160px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        // The global scrollbar theme paints the thumb only while hovering
+        // the scrolling element itself, which hides the fact that there is
+        // more text below the cap. Show it while the pointer is anywhere
+        // over the AI panel instead.
+        &::-webkit-scrollbar {
+            background-color: transparent;
+        }
+        .ai-chat-panel:hover &::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            background-color: rgba(255, 255, 255, 0.28);
+            background-clip: padding-box;
+            border: 2px solid transparent;
+        }
+        .ai-chat-panel:hover &::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.45);
+        }
     }
 
     .ai-tool-screenshot {
@@ -1231,6 +1253,27 @@
         line-height: @ai-line-compact;
         white-space: normal;
         word-break: break-all;
+    }
+
+    // Restored cards keep only the beginning of a long detail; this note
+    // sits under the kept text so the cut is unmistakable.
+    .ai-tool-detail-truncated {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 4px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: @ai-text-meta;
+        font-style: italic;
+        color: #e8a838;
+        background-color: rgba(232, 168, 56, 0.08);
+        border: 1px dashed rgba(232, 168, 56, 0.45);
+        line-height: @ai-line-compact;
+
+        i {
+            flex-shrink: 0;
+        }
     }
 
     .ai-tool-preview {
@@ -1267,6 +1310,21 @@
     // Expand chevron hint
     &.ai-tool-done .ai-tool-header:hover .ai-tool-label {
         opacity: 1;
+    }
+
+    // Copy button at the right edge of the header row, identical to the
+    // markdown code block one (icon + "Copy", "Copied!" with a tick); copies
+    // the card's detail lines. Only present while the card is expanded:
+    // there is nothing to copy from a card whose detail is hidden.
+    .ai-tool-header .ai-tool-copy-btn {
+        display: none;
+        margin-left: auto;
+        flex-shrink: 0;
+        transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    &.ai-tool-expanded .ai-tool-header .ai-tool-copy-btn {
+        display: inline-block;
     }
 
     // Inline edit actions (diff toggle) — sits at the right edge of the
@@ -1430,6 +1488,30 @@
     }
 }
 
+/* ── Failed tool call ──────────────────────────────────────────────── */
+// A card whose call returned an error: red accent and a "failed" note at
+// the right of its header. Set by AIToolGroup.markCardFailed, live and on
+// restore; the pile header counts these.
+.ai-msg-tool.ai-tool-failed {
+    border-left-color: #e57373;
+
+    .ai-tool-copy-btn + .ai-tool-failed-tag {
+        margin-left: 6px;
+    }
+
+    .ai-tool-failed-tag {
+        margin-left: auto;
+        flex-shrink: 0;
+        font-size: @ai-text-meta;
+        line-height: 1;
+        padding: 2px 6px;
+        border-radius: 8px;
+        color: #e57373;
+        border: 1px solid rgba(229, 115, 115, 0.45);
+        background-color: rgba(229, 115, 115, 0.08);
+    }
+}
+
 /* ── Collapsed run of finished tool cards ──────────────────────────── */
 // A long run of finished tool cards (e.g. 20 "Ran command" rows) folds into
 // one of these; see core-ai/AIToolGroup.js. Collapsed, it is drawn as a
@@ -1528,6 +1610,21 @@
         overflow: hidden;
         text-overflow: ellipsis;
         min-width: 0;
+    }
+
+    // "N failed" note before the count pill, only when a collated tool call
+    // returned an error.
+    .ai-tool-group-failed {
+        margin-left: auto;
+        flex-shrink: 0;
+        font-size: @ai-text-meta;
+        color: #e57373;
+        opacity: 0.9;
+        white-space: nowrap;
+
+        & + .ai-tool-group-count {
+            margin-left: 0;
+        }
     }
 
     // Count pill at the right edge of the header: the number of collated
