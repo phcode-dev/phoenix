@@ -23,9 +23,10 @@
 const fs = require('fs');
 const glob = require('glob');
 
-// Size limits for development builds (in MB)
+// Size limits for development builds (in MB). Same margin policy as the prod limits
+// below: bump only enough to restore the headroom, so real size jumps still get caught.
 const DEV_MAX_FILE_SIZE_MB = 6;
-const DEV_MAX_TOTAL_SIZE_MB = 100;
+const DEV_MAX_TOTAL_SIZE_MB = 105; // dev dist is ~100 MB + 5 MB margin
 // Custom size limits for known large files (size in MB) For development builds
 const LARGE_FILE_LIST_DEV = {
     'dist/thirdparty/no-minify/language-worker.js.map': 10,
