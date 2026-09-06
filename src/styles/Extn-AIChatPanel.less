@@ -1210,6 +1210,11 @@
     .ai-tool-detail {
         display: none;
         padding: 2px 10px 6px 28px;
+    }
+
+    // Text detail (command, path, code lines) only — task lists and subagent
+    // step lists share .ai-tool-detail but always show in full.
+    .ai-tool-detail.ai-tool-detail-lines {
         // A long command or script must not turn the card into a wall of
         // text: cap the detail at roughly nine lines and scroll inside it.
         max-height: 160px;
