@@ -53,8 +53,14 @@ define(function (require, exports, module) {
 
     // Only these `brackets.config` keys can be overridden from the system file. Keep this list
     // as small as possible, add a key only when there is a real need to override it on a machine.
+    // reading this file must never be able to stall the app, see the race in getOverrides()
+    const READ_TIMEOUT_MS = 5000;
+
     const OVERRIDABLE_KEYS = [
-        "app_update_url"
+        "app_update_url",
+        // linux installs by piping an installer script into bash, so the manifest's downloadURL is
+        // not enough there- this is what actually decides which build gets installed on linux.
+        "app_update_linux_installer_url"
     ];
 
     /**
@@ -97,7 +103,15 @@ define(function (require, exports, module) {
             if (!OVERRIDE_FILE_PATH) {
                 return {};
             }
-            const fileData = await Phoenix.VFS.readFileResolves(OVERRIDE_FILE_PATH, "utf8");
+            // Hard timeout. This is awaited on the app update path, including at quit time when
+            // the node process may already be gone, and a read that never settles would hang the
+            // quit. Timing out just means "no overrides", which is the normal case anyway.
+            const fileData = await Promise.race([
+                Phoenix.VFS.readFileResolves(OVERRIDE_FILE_PATH, "utf8"),
+                new Promise((resolve) => {
+                    setTimeout(() => resolve({error: new Error("timed out")}), READ_TIMEOUT_MS);
+                })
+            ]);
             if (fileData.error || !fileData.data) {
                 // the common case, no admin has placed an override file on this machine.
                 return {};

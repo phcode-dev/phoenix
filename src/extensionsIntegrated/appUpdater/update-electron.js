@@ -279,22 +279,57 @@ define(function (require, exports, module) {
     }
 
     /**
+     * The installer script that performs the actual linux upgrade. Unlike windows and mac, linux does
+     * not download the build named in the update manifest- it pipes this script into bash and the
+     * script decides what to install. So this url, not the manifest, is what an admin has to point
+     * elsewhere to genuinely test an update on linux.
+     * @returns {string}
+     */
+    function _getDefaultLinuxInstallerURL() {
+        const stageValue = Phoenix.config.environment;
+        console.log('Stage:', stageValue);
+        if(stageValue === 'dev' || stageValue === 'stage'){
+            return "https://updates.phcode.io/linux/installer-latest-experimental-build.sh";
+        }
+        return 'https://updates.phcode.io/linux/installer.sh';
+    }
+
+    /**
+     * The installer script url for the linux upgrade, preferring an admin override.
+     *
+     * The url is taken as given. Whatever it points at is downloaded and piped into bash anyway,
+     * so sanitising the url itself would buy nothing- anyone who can set it can just as easily
+     * serve any script they like. What makes it trustworthy is that only an admin/root can create
+     * the config file naming it, see utils/SystemConfigOverride.js. A url that does not work fails
+     * loudly through the installer's exit code rather than silently installing something else.
+     *
+     * This sits on the update path, so it never throws: a problem reading the override config
+     * falls back to the shipped default and the update proceeds as normal.
+     * @returns {Promise<string>} always a usable url
+     */
+    async function _resolveLinuxInstallerURL() {
+        try {
+            const overrideConfig = await SystemConfigOverride.getOverrides();
+            return overrideConfig.app_update_linux_installer_url || _getDefaultLinuxInstallerURL();
+        } catch (e) {
+            console.error("Error reading system config override, using the default installer", e);
+            return _getDefaultLinuxInstallerURL();
+        }
+    }
+
+    /**
      * Launches the Linux updater using spawnProcess with streaming output
+     * @param {string} scriptUrl - installer script to pipe into bash
      * @param {function} onOutput - Callback for stdout/stderr lines
      * @returns {Promise} Resolves when update completes, rejects on error
      */
-    function launchLinuxUpdater(onOutput) {
+    function launchLinuxUpdater(scriptUrl, onOutput) {
         return new Promise((resolve, reject) => {
+            console.log('Linux installer script:', scriptUrl);
             // Spawn the installer in an external terminal emulator so sudo /
             // interactive prompts work natively. The external terminal IS the
             // install UI — no internal dialog. Probes common terminals in
             // order; first hit wins.
-            const stageValue = Phoenix.config.environment;
-            console.log('Stage:', stageValue);
-            let scriptUrl = 'https://updates.phcode.io/linux/installer.sh';
-            if(stageValue === 'dev' || stageValue === 'stage'){
-                scriptUrl = "https://updates.phcode.io/linux/installer-latest-experimental-build.sh";
-            }
 
             // Inner command run inside the spawned terminal: fetch installer
             // from $UPDATE_URL and pipe to bash, print exit code, pause so the
@@ -355,7 +390,7 @@ define(function (require, exports, module) {
         await window.electronAPI.setUpdateScheduled(false);
         console.log("Launching external terminal for update");
         try {
-            await launchLinuxUpdater();
+            await launchLinuxUpdater(await _resolveLinuxInstallerURL());
             Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'install', 'launched' + Phoenix.platform);
             // Success: the terminal is now the user's UI. Let the quit proceed.
         } catch (err) {
@@ -395,6 +430,10 @@ define(function (require, exports, module) {
             _unblockUpdaterGate();
             return;
         }
+        // Warm the system override cache at boot. A window that only inherits an already scheduled
+        // update never runs an update check, so without this its first read would happen at quit
+        // time- when the node process may already be gone.
+        SystemConfigOverride.getOverrides();
         // Check if another window already scheduled an update (multi-window state persistence)
         // This ensures the quit handler is registered in this window too
         try {

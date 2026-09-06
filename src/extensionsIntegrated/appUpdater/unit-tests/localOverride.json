@@ -1,0 +1,36 @@
+{
+    "_readme": [
+        "SAMPLE / REFERENCE ONLY - this file does nothing where it sits.",
+        "",
+        "To actually use it, copy it as admin/root into the machine wide control folder and",
+        "rename it to phoenix_override_config.json:",
+        "  windows: C:\\Program Files\\Phoenix Code Control\\phoenix_override_config.json",
+        "  mac    : /Library/Application Support/Phoenix Code Control/phoenix_override_config.json",
+        "  linux  : /etc/phoenix-code-control/phoenix_override_config.json",
+        "",
+        "The folder MUST be admin/root owned. That a standard user cannot create the file is the",
+        "whole security model - see src/utils/SystemConfigOverride.js. Only keys listed in its",
+        "OVERRIDABLE_KEYS are honoured, anything else here (this _readme included) is ignored.",
+        "",
+        "The two urls below point at the sibling sample files in this folder, served by the dev",
+        "server straight out of the repo, so this works as-is with no extra setup:",
+        "  localUpdateManifest.json              - the fake update manifest",
+        "  linux-local-update-override-script.sh - fake installer, just prints 'update done'",
+        "",
+        "Why both: on windows/mac the manifest's platform url is what gets downloaded and",
+        "installed, so app_update_url alone is enough there. Linux installs nothing from the",
+        "manifest - it pipes app_update_linux_installer_url into bash and that script decides",
+        "what to install - so a genuine linux test needs the second override too.",
+        "",
+        "Gotchas when testing:",
+        "  - the file is read once per app session, so restart Phoenix after editing it.",
+        "  - boot update checks are throttled to 24h (PH_LAST_UPDATE_CHECK_TIME view state), so",
+        "    use Help > Check for Updates to see an override take effect immediately.",
+        "  - the linux install only runs at app quit, in an external terminal."
+    ],
+
+    "app_update_url":
+        "http://localhost:8000/src/extensionsIntegrated/appUpdater/unit-tests/localUpdateManifest.json",
+    "app_update_linux_installer_url":
+        "http://localhost:8000/src/extensionsIntegrated/appUpdater/unit-tests/linux-local-update-override-script.sh"
+}

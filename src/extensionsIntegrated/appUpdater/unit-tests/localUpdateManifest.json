@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "SAMPLE / REFERENCE ONLY - the fake update manifest that app_update_url can point at.",
+        "Served by the dev server straight out of the repo:",
+        "  http://localhost:8000/src/extensionsIntegrated/appUpdater/unit-tests/localUpdateManifest.json",
+        "",
+        "Only version, notes and platforms are read by the updater (see getUpdateDetails in",
+        "update-electron.js / main.js). Everything else here, including this _readme, is ignored.",
+        "",
+        "version : must be valid semver and GREATER than the installed build, or the app reports",
+        "          'no updates available'. 99.9.9 is used so it always wins.",
+        "notes   : markdown, rendered as-is in the update dialog. Handy place to prove which",
+        "          manifest was actually fetched.",
+        "",
+        "platform keys are `${os}-${arch}` where os is windows|darwin|linux. Careful: arch differs",
+        "by shell - electron uses node's process.arch (x64, arm64) while tauri uses os.arch()",
+        "(x86_64, aarch64), so the same machine wants a different key on each. All of them are",
+        "listed below so this file works either way. To see yours, run in the app:",
+        "    await Phoenix.app.getPlatformArch()",
+        "",
+        "WARNING - the platform `url` is real on windows/mac: it is downloaded and run as an",
+        "installer. Linux ignores it entirely and pipes app_update_linux_installer_url into bash",
+        "instead. The urls below are deliberately dead ends so nothing can install by accident."
+    ],
+
+    "version": "99.9.9",
+    "notes": "# Fake update from the LOCAL OVERRIDE manifest\n\nIf you can read this, the app fetched its update manifest from **localhost** and not from updates.phcode.io.\n\n- nothing here is real\n- nothing will be installed",
+    "pub_date": "2030-01-01T00:00:00Z",
+
+    "platforms": {
+        "linux-x64": {
+            "signature": "",
+            "url": "http://localhost:8000/not-a-real-installer.tar.gz"
+        },
+        "linux-arm64": {
+            "signature": "",
+            "url": "http://localhost:8000/not-a-real-installer.tar.gz"
+        },
+        "darwin-x86_64": {
+            "signature": "",
+            "url": "http://localhost:8000/not-a-real-installer.tar.gz"
+        },
+        "darwin-aarch64": {
+            "signature": "",
+            "url": "http://localhost:8000/not-a-real-installer.tar.gz"
+        },
+        "windows-x86_64": {
+            "signature": "",
+            "url": "http://localhost:8000/not-a-real-installer.exe"
+        },
+        "windows-aarch64": {
+            "signature": "",
+            "url": "http://localhost:8000/not-a-real-installer.exe"
+        }
+    }
+}
