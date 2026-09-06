@@ -2684,6 +2684,8 @@ define({
     "AI_CHAT_TOOL_RAN_CMD": "Ran command",
     "AI_CHAT_TOOL_GROUP_STEPS": "{0} steps",
     "AI_CHAT_TOOL_GROUP_FAILED": "{0} failed",
+    "AI_CHAT_TOOL_GROUP_READ_FILES": "Read {0}",
+    "AI_CHAT_TOOL_GROUP_MORE": "+{0} more",
     "AI_CHAT_TOOL_FAILED_TAG": "failed",
     "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Truncated: only the first {0} characters were kept in the chat history",
     "AI_CHAT_TOOL_SKILL_NAME": "Skill: {0}",
