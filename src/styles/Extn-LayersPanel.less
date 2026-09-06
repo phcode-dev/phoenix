@@ -965,10 +965,29 @@
     margin-left: 5px;
     color: @project-panel-text-2;
 
+    &:not(:first-child) {
+        display: none;
+    }
+
     &:first-child {
         margin-left: 0;
         color: @project-panel-text-1;
     }
+}
+
+.layers-tag-tip {
+    position: fixed;
+    z-index: 1000;
+    padding: 2px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    background: #2f2f2f;
+    color: @project-panel-text-1;
+    font-family: @layers-mono;
+    font-size: 11px;
+    line-height: 15px;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 .layers-node-text {
