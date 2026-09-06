@@ -241,7 +241,7 @@
         padding: 0 6px 0 2px;
         flex-shrink: 0;
         box-sizing: border-box;
-        cursor: pointer;
+        cursor: default;
         user-select: none;
         font-size: @sidebar-xs-font-size;
         font-weight: 700;
@@ -261,12 +261,19 @@
         width: 18px;
         height: 18px;
         flex: none;
+        border-radius: 4px;
         color: @project-panel-text-2;
+        cursor: pointer;
 
         svg {
             width: 18px;
             height: 18px;
             transition: transform 120ms ease;
+        }
+
+        &:hover {
+            background: @layers-hover-bg;
+            color: @project-panel-text-1;
         }
     }
 
