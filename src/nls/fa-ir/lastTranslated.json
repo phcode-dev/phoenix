@@ -2256,6 +2256,7 @@
   "LIVE_PREVIEW_LAYERS_SHOW_TEXT_NODES": "Show Text Nodes",
   "LIVE_PREVIEW_LAYERS_STYLES": "Styles",
   "LIVE_PREVIEW_LAYERS_TAB": "Layers",
+  "LIVE_PREVIEW_LAYERS_TAG_TOOLTIP": "Show Tag Name Tooltip",
   "LIVE_PREVIEW_LAYERS_TRUNCATED": "Showing the first {0} elements",
   "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
