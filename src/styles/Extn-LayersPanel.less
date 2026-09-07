@@ -1089,24 +1089,48 @@ body.layers-resizing {
     z-index: 1000;
     box-sizing: border-box;
     max-height: 220px;
-    padding: 3px;
+    padding: 4px;
     overflow-y: auto;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    overflow-x: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
-    background: #2f2f2f;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    background: #2a2a2a;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.3);
     font-family: @layers-mono;
     font-size: @sidebar-xs-font-size;
-    line-height: 18px;
+    line-height: 20px;
+    animation: layers-notice-in 90ms ease-out;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.18);
+        background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
 }
 
 .layers-hint {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 1px 6px;
-    border-radius: 3px;
-    color: #e0e0e0;
+    gap: 8px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 4px;
+    color: #d8d8d8;
     white-space: nowrap;
     cursor: pointer;
 
@@ -1115,26 +1139,33 @@ body.layers-resizing {
     }
 
     &.layers-hint-selected {
-        background: @layers-accent-soft;
+        background: @layers-accent-strong;
+        color: #ffffff;
     }
 
     strong {
         font-weight: 600;
         color: @layers-accent;
     }
+
+    &.layers-hint-selected strong {
+        color: #ffffff;
+    }
 }
 
 .layers-hint-label {
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .layers-hint-swatch {
     flex: none;
-    width: 10px;
-    height: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 2px;
+    width: 12px;
+    height: 12px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 3px;
 }
 
 .dropdownbutton-popup.layers-menu-popup {
