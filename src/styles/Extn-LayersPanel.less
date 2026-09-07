@@ -315,6 +315,21 @@
         }
     }
 
+    .layers-maximize {
+        opacity: 0;
+
+        svg {
+            width: 11px;
+            height: 11px;
+        }
+    }
+
+    .layers-section-header:hover .layers-maximize,
+    .layers-maximize:focus-visible,
+    .layers-maximize.layers-active {
+        opacity: 1;
+    }
+
     .layers-section-content {
         position: relative;
         flex: 1;

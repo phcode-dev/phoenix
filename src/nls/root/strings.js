@@ -837,6 +837,8 @@ define({
     "LIVE_PREVIEW_LAYERS_REMOVE_ATTRIBUTE": "Remove Attribute",
     "LIVE_PREVIEW_LAYERS_PROPERTIES": "Properties",
     "LIVE_PREVIEW_LAYERS_STYLES": "Styles",
+    "LIVE_PREVIEW_LAYERS_MAXIMIZE_SECTION": "Expand Section",
+    "LIVE_PREVIEW_LAYERS_RESTORE_SECTIONS": "Restore Sections",
     "LIVE_PREVIEW_LAYERS_NO_SELECTION": "Select an element to see its details",
     "LIVE_PREVIEW_LAYERS_NOT_IN_SOURCE": "This element is not in the source file",
     "LIVE_PREVIEW_LAYERS_NO_STYLES": "No styles applied",
