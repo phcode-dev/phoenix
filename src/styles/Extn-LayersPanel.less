@@ -542,7 +542,7 @@
         gap: 6px;
         flex-shrink: 0;
         margin: 0 6px 6px;
-        padding: 5px 4px 5px 8px;
+        padding: 5px 8px;
         border: 1px solid fade(@layers-accent, 35%);
         border-radius: 6px;
         background: @layers-accent-soft;
@@ -567,10 +567,6 @@
         .layers-notice-text {
             flex: 1;
             min-width: 0;
-        }
-
-        .layers-notice-close {
-            align-self: flex-start;
         }
     }
 
@@ -1102,24 +1098,25 @@ body.layers-resizing {
     animation: layers-notice-in 90ms ease-out;
 
     &::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-        background-color: transparent;
+        width: 6px !important;
+        height: 6px !important;
+        background-color: transparent !important;
     }
 
     &::-webkit-scrollbar-track {
-        background-color: transparent;
+        margin: 0 !important;
+        background-color: transparent !important;
     }
 
     &::-webkit-scrollbar-thumb {
-        border-radius: 3px;
-        border: none;
-        background-color: rgba(255, 255, 255, 0.18);
-        background-clip: padding-box;
+        border-radius: 3px !important;
+        border: none !important;
+        background-color: rgba(255, 255, 255, 0.18) !important;
+        background-clip: padding-box !important;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.3) !important;
     }
 }
 
