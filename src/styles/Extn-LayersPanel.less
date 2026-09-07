@@ -489,7 +489,8 @@
         cursor: default;
         user-select: none;
 
-        &:hover {
+        &:hover,
+        &.layers-actions-open {
             background: @layers-hover-bg;
         }
 
@@ -661,6 +662,7 @@
     }
 
     .layers-node:hover .layers-node-tools,
+    .layers-node.layers-actions-open .layers-node-tools,
     .layers-node.layers-cursor .layers-node-tools {
         background: @layers-row-hover-bg;
     }
