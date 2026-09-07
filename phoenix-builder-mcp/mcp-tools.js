@@ -38,14 +38,15 @@ const AI_TEST_SUITES = {
     "unsaved-buffers": "suite-unsaved-buffers.md",
     "self-sufficiency": "suite-self-sufficiency.md",
     "bug-fixing": "suite-bug-fixing.md",
+    "questions": "suite-questions.md",
     "plan-mode": "suite-plan-mode.md",
     "permissions": "suite-permissions.md"
 };
 // The four model runs that have caught every regression seen so far, plus the
 // free deterministic/piggyback checks. See model_tests.md, "Deterministic first".
 const AI_TEST_QUICK = {
-    suites: ["editor-context", "unsaved-buffers", "self-sufficiency", "bug-fixing"],
-    tests: ["UB-1", "EC-5", "EC-2", "SS-4", "EC-1", "UB-2", "SS-1", "BF-1"]
+    suites: ["editor-context", "unsaved-buffers", "self-sufficiency", "bug-fixing", "questions"],
+    tests: ["UB-1", "EC-5", "EC-2", "SS-4", "QF-6", "EC-1", "UB-2", "SS-1", "BF-1", "QF-1"]
 };
 
 function _gitInfo(cwd) {

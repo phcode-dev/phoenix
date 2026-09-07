@@ -1115,6 +1115,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // SDK tool_use id (e.g. "toolu_01...") → our sequential toolCounter so a
     // tool_result block can be mapped back to its indicator on the browser.
     const _toolUseIdToCounter = {};
+    // tool_use id → SDK tool name, so a tool_result can be interpreted in the
+    // light of which tool produced it (see the AskUserQuestion note below).
+    const _toolUseIdToName = {};
     // Set true once the user clicks "Allow & Switch to Edit Mode" on a
     // plan-mode write confirmation. Subsequent Edit/Write attempts in the same
     // turn skip the prompt and use the cached "allow" decision so a multi-edit
@@ -2396,6 +2399,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         toolCounter++;
                         if (block.id) {
                             _toolUseIdToCounter[block.id] = toolCounter;
+                            _toolUseIdToName[block.id] = block.name;
                         }
                         _log("Subagent tool:", block.name, "#" + toolCounter,
                             "parent=#" + (parentToolId !== undefined ? parentToolId : "?"));
@@ -2598,6 +2602,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         // correlate later tool_result blocks back to the indicator.
                         if (event.content_block.id) {
                             _toolUseIdToCounter[event.content_block.id] = activeToolCounter;
+                            _toolUseIdToName[event.content_block.id] = activeToolName;
                         }
                         _log("Tool start:", activeToolName, "#" + activeToolCounter);
                         nodeConnector.triggerPeer("aiProgress", {
@@ -2713,10 +2718,22 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         // on the corresponding tool indicator (errored vs ran).
                         const counterId = _toolUseIdToCounter[block.tool_use_id];
                         if (counterId !== undefined) {
+                            // A question is answered by DENYING the tool call and
+                            // handing the user's answer back as the denial reason
+                            // (see the AskUserQuestion PreToolUse hook). The CLI
+                            // reports every deny as an error result, so without
+                            // this the panel painted a red "failed" badge on a
+                            // question the user had just answered normally — and
+                            // counted every question as a tool error in metrics.
+                            // The deny is our transport, not a failure; an
+                            // unanswered question means the user cancelled or
+                            // stopped the turn, which is not a failure either.
+                            const resultToolName = _toolUseIdToName[block.tool_use_id];
+                            const isAnsweredByDeny = resultToolName === "AskUserQuestion";
                             nodeConnector.triggerPeer("aiToolResult", {
                                 requestId: requestId,
                                 toolId: counterId,
-                                isError: !!block.is_error,
+                                isError: !!block.is_error && !isAnsweredByDeny,
                                 preview: preview
                             });
                         }
