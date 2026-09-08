@@ -587,12 +587,12 @@
         flex-shrink: 0;
     }
 
-    /* Last prompt of the session, revealed on hover: always-on it made a
-       50-entry list too dense to scan. It keeps its space in the row while
-       hidden, so fading it in shifts nothing. Empty when it would only
-       repeat the title, and the separator hangs off the text so nothing
-       is drawn for those rows. */
-    .ai-history-item-preview {
+    /* Claude's title for the session, revealed on hover: always-on it made
+       a 50-entry list too dense to scan. It keeps its space in the row while
+       hidden, so showing it shifts nothing. Empty when it would only repeat
+       the headline, and the separator hangs off the text so nothing is
+       drawn for those rows. */
+    .ai-history-item-subtext {
         font-size: @ai-text-meta;
         color: @project-panel-text-2;
         // No transition: a fade here reads as lag when you are running the
@@ -610,7 +610,7 @@
         }
     }
 
-    &:hover .ai-history-item-preview {
+    &:hover .ai-history-item-subtext {
         opacity: 0.75;
     }
 
