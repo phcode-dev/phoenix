@@ -49,8 +49,8 @@ function RemoteFunctions(config = {}) {
     let _sourcelessClass = null;
     const SOURCELESS_RECOVER_DELAY_MS = 60;
     let _selectedFromEditor = false;
-    // the selected element the `phcode-no-lp-edit` opt-out is lifted for, see _isEditOptedOut
-    let _editOptOutOverride = null;
+    // the element selected by name (layers panel row), not by pointer
+    let _namedSelection = null;
     // Expose the currently selected element globally for external access
     window.__current_ph_lp_selected = null;
 
@@ -140,7 +140,7 @@ function RemoteFunctions(config = {}) {
         }
 
         if(element && // element should exist
-            element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
+            (!isBodyElement(element) || _isNamedSelection(element)) && // body only when selected by name
             element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
             // this attribute is used by phoenix internal elements
             !element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`) &&
@@ -151,19 +151,23 @@ function RemoteFunctions(config = {}) {
         return false;
     }
 
+    // The body is never selected by pointer (blank clicks deselect, hover stays quiet),
+    // only by name from the layers panel or the caret, and then without the structural tools.
+    function isBodyElement(element) {
+        return !!(element && element.tagName && element.tagName.toLowerCase() === "body");
+    }
+
+    // a named selection lifts the `phcode-no-lp-edit` opt-out and the body block, both pointer-only guards
+    function _isNamedSelection(element) {
+        return !!element && element === _namedSelection;
+    }
+
     /**
      * `phcode-no-lp-edit` cascades to descendants, `phcode-no-lp-edit-this` covers
      * the one element.
-     *
-     * The opt-out exists so that a pointer landing on the page is read as the page's
-     * own business rather than as an edit, and a click still is: handleElementClick
-     * tests for it before anything else. But an element the editor named outright -
-     * a row picked in the layers panel - is being edited on purpose and there is
-     * nothing ambiguous to protect, so while such an element holds the selection
-     * every tool treats it like any other.
      */
     function _isEditOptedOut(element) {
-        if (element === _editOptOutOverride) {
+        if (_isNamedSelection(element)) {
             return false;
         }
         return !!(element.closest('.phcode-no-lp-edit') ||
@@ -246,6 +250,7 @@ function RemoteFunctions(config = {}) {
         getAllToolHandlers: getAllToolHandlers,
         isElementEditable: isElementEditable,
         isElementInspectable: isElementInspectable,
+        isBodyElement: isBodyElement,
         isSourceless: isSourceless,
         getElementRef: getElementRef,
         getElementByRef: getElementByRef,
@@ -677,7 +682,8 @@ function RemoteFunctions(config = {}) {
         if (element === _lastHoverTarget) {
             return;
         }
-        if(!LivePreviewView.isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
+        if(isBodyElement(element) || !LivePreviewView.isElementInspectable(element) ||
+                element.nodeType !== Node.ELEMENT_NODE) {
             return;
         }
         _lastHoverTarget = element;
@@ -737,11 +743,10 @@ function RemoteFunctions(config = {}) {
      * @param {boolean} [fromEditor] - If true, this is an editor-cursor-driven selection;
      *   only lightweight highlights (outline, margin/padding overlay) are shown, not interactive
      *   UI like control box, spacing handles, or measurements.
-     * @param {boolean} [ignoreEditOptOut] - Edit this element even though it opted
-     *   out of live preview editing. For selections asked for by name from the
-     *   editor side; holds only while the element stays selected.
+     * @param {boolean} [byName] - Selected by name (a layers panel row), so the edit
+     *   opt-out and the body block don't apply while it stays selected.
      */
-    function selectElement(element, fromEditor, ignoreEditOptOut) {
+    function selectElement(element, fromEditor, byName) {
         // When a cursor-based highlight re-selects the already-selected element,
         // just refresh the highlight overlay without dismissing existing UI panels
         // (control box, editor box, element-info). This prevents cursor activity
@@ -758,7 +763,7 @@ function RemoteFunctions(config = {}) {
 
         dismissUIAndCleanupState();
         // set after the dismissal, which clears the previous selection's exemption
-        _editOptOutOverride = ignoreEditOptOut ? element : null;
+        _namedSelection = byName ? element : null;
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
 
@@ -939,7 +944,8 @@ function RemoteFunctions(config = {}) {
         if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
-        if (!LivePreviewView.isElementInspectable(element)) {
+        // a blank-space click lands on the body and deselects, even a body selected by name
+        if (isBodyElement(element) || !LivePreviewView.isElementInspectable(element)) {
             dismissUIAndCleanupState();
             return;
         }
@@ -1093,7 +1099,7 @@ function RemoteFunctions(config = {}) {
         hideHighlight();
 
         // Filter out the universal selector (*) from the rule - highlighting everything
-        // is not useful, similar to how we skip html/body in isElementInspectable.
+        // is not useful, similar to how we skip the html tag in isElementInspectable.
         // The rule can be a comma-separated list of selectors (from multi-cursor),
         // so we filter out any standalone * segments and keep valid ones.
         rule = rule.split(",").map(s => s.trim()).filter(s => s !== "*").join(",");
@@ -1661,7 +1667,7 @@ function RemoteFunctions(config = {}) {
             window.__current_ph_lp_selected = null;
         }
         _unwatchSourcelessSelection();
-        _editOptOutOverride = null;
+        _namedSelection = null;
 
         // Reset hover tracking so the same-element skip doesn't suppress
         // re-highlighting after a full state cleanup (e.g. Escape, dismiss).
@@ -1761,7 +1767,7 @@ function RemoteFunctions(config = {}) {
 
     /**
      * This function dismisses all UI elements and cleans up application state
-     * Called when user presses Esc key, clicks on HTML/Body tags, or other dismissal events
+     * Called when user presses Esc key, clicks on blank page space (the body), or other dismissal events
      */
     function dismissUIAndCleanupState() {
         getAllToolHandlers().forEach(handler => (handler.dismiss && handler.dismiss())); // to dismiss all UI boxes
