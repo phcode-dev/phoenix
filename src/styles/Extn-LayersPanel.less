@@ -37,6 +37,7 @@
 @layers-row-bg:         @bc-ai-sidebar-bg;
 @layers-row-hover-bg:   mix(#ffffff, @bc-ai-sidebar-bg, 6%);
 @layers-row-select-bg:  mix(@layers-accent, @bc-ai-sidebar-bg, 16%);
+@layers-row-holder-bg:  mix(#ffffff, @bc-ai-sidebar-bg, 4%);
 
 .layers-icon-button() {
     display: flex;
@@ -507,6 +508,22 @@
             box-shadow: inset 2px 0 0 fade(@layers-accent, 40%);
         }
 
+        &.layers-holds-selected {
+            background: @layers-row-holder-bg;
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 1px;
+                top: 50%;
+                width: 3px;
+                height: 12px;
+                margin-top: -6px;
+                border-radius: 2px;
+                background: fade(@layers-accent, 70%);
+            }
+        }
+
         &.layers-text-active {
             background: @layers-accent-soft;
         }
@@ -720,6 +737,10 @@
 
     .layers-node.layers-selected .layers-node-tools {
         background: @layers-row-select-bg;
+    }
+
+    .layers-node.layers-holds-selected:not(:hover) .layers-node-tools {
+        background: @layers-row-holder-bg;
     }
 
     .layers-node-action {
