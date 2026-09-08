@@ -563,6 +563,45 @@ async function getQueryFn() {
 }
 
 /**
+ * Best-effort AI-generated title for a session.
+ *
+ * The CLI writes an `ai-title` entry into the session JSONL on the first
+ * turn — a few words describing what the conversation is actually about.
+ * The SDK surfaces it as `SDKSessionInfo.summary`, preferring a user-set
+ * custom title and falling back to the raw first prompt when neither
+ * exists. We only report a title that beats that fallback, so the panel
+ * keeps its own first-message title when the CLI has nothing better
+ * (older CLI builds, or a session that ended before the title landed).
+ *
+ * @param {string} sessionId
+ * @param {string} projectPath
+ * @return {Promise<string|null>} short title, or null when unavailable
+ */
+async function _getAISessionTitle(sessionId, projectPath) {
+    if (!sessionId) {
+        return null;
+    }
+    try {
+        if (!queryModule) {
+            queryModule = await import("@anthropic-ai/claude-agent-sdk");
+        }
+        if (typeof queryModule.getSessionInfo !== "function") {
+            return null;
+        }
+        const info = await queryModule.getSessionInfo(sessionId,
+            projectPath ? { dir: projectPath } : undefined);
+        const title = info && info.summary ? info.summary.trim() : "";
+        if (!title || title === (info.firstPrompt || "").trim()) {
+            return null;
+        }
+        return title;
+    } catch (e) {
+        console.log("[Phoenix AI] Session title lookup failed:", e.message);
+        return null;
+    }
+}
+
+/**
  * Build ordered candidate paths on Windows, split into two tiers:
  *   - `native`: real PE binaries dropped by claude.ai/install.ps1 or the
  *     desktop installer. No node/cli.js shim chain to break, so file
@@ -1049,6 +1088,35 @@ exports.resumeSession = async function (params) {
 /**
  * Destroy the current session (clear session ID).
  */
+/**
+ * AI titles for sessions already recorded in the panel's history.
+ *
+ * Lets the history list upgrade entries whose stored title is still the
+ * first user message truncated mid-sentence — the CLI's own title has
+ * been sitting in those transcripts all along. Sessions with nothing
+ * better than the raw first prompt are simply left out of the result.
+ *
+ * @param {{projectPath: string, sessionIds: Array<string>}} params
+ * @return {Promise<Object>} map of sessionId -> title
+ */
+exports.getSessionTitles = async function (params) {
+    const { projectPath, sessionIds } = params || {};
+    const titles = {};
+    if (!Array.isArray(sessionIds)) {
+        return titles;
+    }
+    // Sequential: each lookup parses one session transcript, and these can
+    // be large. A history list is at most a few dozen entries, and this
+    // runs behind an already-rendered dropdown, so latency is not critical.
+    for (const sessionId of sessionIds) {
+        const title = await _getAISessionTitle(sessionId, projectPath);
+        if (title) {
+            titles[sessionId] = title;
+        }
+    }
+    return titles;
+};
+
 exports.destroySession = async function () {
     if (currentAbortController) {
         currentAbortController.abort();
@@ -2758,7 +2826,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         // Signal completion
         nodeConnector.triggerPeer("aiComplete", {
             requestId: requestId,
-            sessionId: currentSessionId
+            sessionId: currentSessionId,
+            sessionTitle: await _getAISessionTitle(currentSessionId, projectPath)
         });
 
     } catch (err) {
@@ -2772,7 +2841,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             // session — the abort just leaves an interrupt marker in the log.
             nodeConnector.triggerPeer("aiComplete", {
                 requestId: requestId,
-                sessionId: currentSessionId
+                sessionId: currentSessionId,
+                sessionTitle: await _getAISessionTitle(currentSessionId, projectPath)
             });
             return;
         }
@@ -2828,7 +2898,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         // Always send aiComplete after aiError so the UI exits streaming state
         nodeConnector.triggerPeer("aiComplete", {
             requestId: requestId,
-            sessionId: currentSessionId
+            sessionId: currentSessionId,
+            sessionTitle: await _getAISessionTitle(currentSessionId, projectPath)
         });
     }
 }

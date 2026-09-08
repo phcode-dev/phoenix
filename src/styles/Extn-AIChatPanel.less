@@ -517,13 +517,12 @@
 
 /* ── Session history dropdown ──────────────────────────────────────── */
 /* When history is open, hide chat content and show the dropdown instead.
-   These live inside .ai-chat-body-chat now (not direct .ai-chat-panel
-   children), since that wrapper is what CLI mode toggles alongside it. */
+   The dropdown is a sibling of .ai-chat-body-chat (the wrapper CLI mode
+   toggles), and both are flex:1 — so the wrapper has to go out of the
+   layout entirely, not just have its children hidden, or it keeps
+   claiming half the panel height and the list stops halfway down. */
 .ai-chat-panel.ai-history-open {
-    .ai-chat-body-chat > .ai-chat-messages,
-    .ai-chat-body-chat > .ai-chat-status,
-    .ai-chat-body-chat > .ai-chat-input-area,
-    .ai-chat-body-chat > .ai-onboarding-wrap {
+    > .ai-chat-body-chat {
         display: none !important;
     }
 }
@@ -574,10 +573,45 @@
         text-overflow: ellipsis;
     }
 
+    .ai-history-item-meta {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+        min-width: 0;
+    }
+
     .ai-history-item-time {
         font-size: @ai-text-meta;
         color: @project-panel-text-2;
         opacity: 0.6;
+        flex-shrink: 0;
+    }
+
+    /* Last prompt of the session, revealed on hover: always-on it made a
+       50-entry list too dense to scan. It keeps its space in the row while
+       hidden, so fading it in shifts nothing. Empty when it would only
+       repeat the title, and the separator hangs off the text so nothing
+       is drawn for those rows. */
+    .ai-history-item-preview {
+        font-size: @ai-text-meta;
+        color: @project-panel-text-2;
+        // No transition: a fade here reads as lag when you are running the
+        // pointer down the list looking for a session.
+        opacity: 0;
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:not(:empty)::before {
+            content: "·";
+            margin-right: 5px;
+        }
+    }
+
+    &:hover .ai-history-item-preview {
+        opacity: 0.75;
     }
 
     .ai-history-item-delete {
