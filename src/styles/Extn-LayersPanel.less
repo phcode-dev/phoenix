@@ -755,6 +755,18 @@
         color: @project-panel-text-2;
     }
 
+    .layers-decl:not(.layers-editing) .layers-decl-value.layers-decl-numeric {
+        cursor: ew-resize;
+    }
+
+    .layers-decl.layers-scrubbing {
+        background: @layers-hover-bg;
+
+        .layers-decl-value {
+            color: @layers-accent;
+        }
+    }
+
     .layers-label {
         font-size: 10px;
         font-weight: 700;
@@ -1089,6 +1101,11 @@
 
 body.layers-resizing {
     cursor: row-resize;
+    user-select: none;
+}
+
+body.layers-scrubbing {
+    cursor: ew-resize;
     user-select: none;
 }
 
