@@ -862,6 +862,7 @@ define({
     "LIVE_PREVIEW_LAYERS_ADD_ELEMENT": "Add an element",
     "LIVE_PREVIEW_LAYERS_EMPTY_PAGE_PROPERTIES": "The page is empty. Add an element to see its properties.",
     "LIVE_PREVIEW_LAYERS_EMPTY_PAGE_STYLES": "The page is empty. Add an element to see its styles.",
+    "LIVE_PREVIEW_LAYERS_SHOW_SELECTED": "Show the selected element",
     "LIVE_PREVIEW_LAYERS_SCRUB_HINT": "Drag to adjust, double-click to edit",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
