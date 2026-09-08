@@ -29,7 +29,7 @@
 @layers-input-bg-focus: rgba(255, 255, 255, 0.06);
 @layers-row-height:     26px;
 @layers-label-min-width: 72px;
-@layers-tools-width:    74px;
+@layers-tools-width:    96px;
 @layers-indent:         14px;
 @layers-mono:           ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 @layers-prop-name:      #9cdcfe;
@@ -295,7 +295,7 @@
         flex-shrink: 0;
     }
 
-    .layers-section-actions .layers-hdr-btn:not(.layers-insert):not(.layers-active) {
+    .layers-section-actions .layers-hdr-btn:not(.layers-active) {
         display: none;
     }
 
@@ -752,16 +752,28 @@
         color: @project-panel-text-2;
     }
 
+    .layers-tree.layers-tree-empty {
+        display: flex;
+        min-height: 100%;
+        min-width: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     .layers-empty-page {
         display: flex;
+        flex: 1;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: center;
         gap: 4px;
-        padding: 10px 12px;
+        padding: 20px 16px;
+        text-align: center;
         white-space: normal;
     }
 
     .layers-empty-page-text {
+        max-width: 220px;
         color: @project-panel-text-2;
         line-height: 1.5;
     }
@@ -770,8 +782,8 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        margin-top: 6px;
-        padding: 5px 12px 5px 9px;
+        margin-top: 8px;
+        padding: 5px 14px 5px 10px;
 
         svg {
             width: 12px;
@@ -1154,19 +1166,19 @@ body.layers-scrubbing {
     .layers-insert-head {
         display: flex;
         align-items: center;
-        gap: 6px;
-        min-height: 20px;
-        padding: 0 2px 6px;
+        gap: 8px;
+        min-height: 24px;
+        padding: 0 0 8px;
         white-space: nowrap;
     }
 
     .layers-insert-where {
-        flex: none;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: @project-panel-text-2;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 600;
+        color: @project-panel-text-1;
     }
 
     .layers-node-icon {
@@ -1187,22 +1199,25 @@ body.layers-scrubbing {
 
     .layers-insert-target {
         display: flex;
+        flex: 1;
         align-items: center;
-        gap: 4px;
+        gap: 5px;
         min-width: 0;
-        padding: 1px 7px 1px 5px;
-        border-radius: 10px;
+        height: 24px;
+        padding: 0 8px 0 6px;
+        box-sizing: border-box;
+        border-radius: 6px;
         background: @layers-accent-soft;
         color: @project-panel-text-1;
 
         .layers-node-icon {
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
             color: @layers-accent;
 
             svg {
-                width: 13px;
-                height: 13px;
+                width: 14px;
+                height: 14px;
             }
         }
     }
@@ -1213,64 +1228,58 @@ body.layers-scrubbing {
         text-overflow: ellipsis;
         font-family: @layers-mono;
         font-size: @sidebar-xs-font-size;
+        font-weight: 500;
     }
 
     .layers-insert-positions {
         display: flex;
+        flex: none;
         gap: 2px;
-        margin-bottom: 8px;
         padding: 2px;
         border-radius: 6px;
-        background: @layers-input-bg;
+        background: rgba(255, 255, 255, 0.06);
     }
 
     .layers-insert-pos {
         display: flex;
-        flex: 1;
         align-items: center;
         justify-content: center;
-        gap: 4px;
-        height: 22px;
-        padding: 0 4px;
+        width: 26px;
+        height: 20px;
+        padding: 0;
         margin: 0;
         border: none;
         border-radius: 4px;
         background: transparent;
-        color: @project-panel-text-2;
-        font-family: inherit;
-        font-size: 10px;
+        color: @project-panel-text-1;
+        opacity: 0.8;
         cursor: pointer;
         outline: none;
 
         svg {
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
             flex: none;
         }
 
-        span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
         &:hover {
-            background: @layers-hover-bg;
-            color: @project-panel-text-1;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 1;
         }
 
         &.layers-active {
-            background: @layers-accent-soft;
-            color: @layers-accent;
+            background: @layers-accent;
+            color: #ffffff;
+            opacity: 1;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         &:disabled {
-            opacity: 0.35;
+            opacity: 0.3;
             cursor: default;
 
             &:hover {
                 background: transparent;
-                color: @project-panel-text-2;
             }
         }
     }
@@ -1320,7 +1329,7 @@ body.layers-scrubbing {
     }
 
     .layers-insert-list {
-        margin: 6px -4px 0;
+        margin: 8px -4px 0;
         padding: 0 4px;
         overflow-y: auto;
         overflow-x: hidden;
@@ -1337,14 +1346,14 @@ body.layers-scrubbing {
         }
     }
 
+    .layers-insert-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+    }
+
     .layers-insert-item {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        height: 24px;
-        padding: 0 6px;
-        border-radius: 4px;
-        white-space: nowrap;
+        border-radius: 5px;
         cursor: pointer;
 
         &.layers-insert-selected {
@@ -1357,7 +1366,99 @@ body.layers-scrubbing {
         }
     }
 
-    .layers-insert-item-name {
+    .layers-insert-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-width: 0;
+        height: 52px;
+        padding: 0 4px;
+        box-sizing: border-box;
+        border: 1px solid @layers-border;
+        background: rgba(255, 255, 255, 0.03);
+
+        .layers-node-icon {
+            width: 18px;
+            height: 18px;
+            color: @project-panel-text-1;
+
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .layers-insert-item-name {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: @sidebar-xs-font-size;
+            line-height: 1.2;
+        }
+
+        &.layers-insert-selected {
+            border-color: @layers-accent;
+
+            .layers-node-icon {
+                color: @layers-accent;
+            }
+        }
+    }
+
+    .layers-insert-more {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        width: 100%;
+        height: 24px;
+        margin: 6px 0 0;
+        padding: 0;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        color: @project-panel-text-2;
+        font-family: inherit;
+        font-size: @sidebar-xs-font-size;
+        cursor: pointer;
+        outline: none;
+
+        svg {
+            width: 11px;
+            height: 11px;
+            flex: none;
+            transition: transform 120ms ease;
+        }
+
+        &.layers-insert-open svg {
+            transform: rotate(180deg);
+        }
+
+        &:hover {
+            background: @layers-hover-bg;
+            color: @project-panel-text-1;
+        }
+    }
+
+    .layers-insert-more + .layers-insert-rows {
+        margin-top: 4px;
+        padding-top: 4px;
+        border-top: 1px solid @layers-border;
+    }
+
+    .layers-insert-row {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        height: 24px;
+        padding: 0 6px;
+        white-space: nowrap;
+    }
+
+    .layers-insert-row .layers-insert-item-name {
         flex: 1;
         min-width: 0;
         overflow: hidden;
