@@ -806,7 +806,10 @@ define(function (require, exports, module) {
             validationPattern = new RegExp("\\\\([a-f0-9]{6}|[a-f0-9]{4}(\\s|\\\\|$)|[a-f0-9]{2}(\\s|\\\\|$)|.)", "i"),
             _parseRuleList,
             _lineFlagsFor = null,
-            _lineFlags = {};
+            _lineFlags = {},
+            _parentScanLevel = -1,
+            _parentScanFrom = 0,
+            _firstUnset = 0;
 
         function _lineFlag(name, compute) {
             if (_lineFlagsFor !== stream.string) {
@@ -983,13 +986,22 @@ define(function (require, exports, module) {
             return true;    // skip the entire property
         }
 
+        // Selectors already ruled out for this level can never qualify later: a
+        // closed rule stays closed and a level never drops. Remembering how far
+        // back that has been checked keeps a flat stylesheet from rescanning every
+        // selector it has seen for every selector it reads.
         function _getParentSelectors() {
             var j;
-            for (j = selectors.length - 1; j >= 0; j--) {
+            if (_parentScanLevel !== currentLevel) {
+                _parentScanLevel = currentLevel;
+                _parentScanFrom = 0;
+            }
+            for (j = selectors.length - 1; j >= _parentScanFrom; j--) {
                 if (selectors[j].declListEndLine === -1 && selectors[j].level < currentLevel) {
                     return getCompleteSelectors(selectors[j], true);
                 }
             }
+            _parentScanFrom = selectors.length;
             return "";
         }
 
@@ -1063,7 +1075,17 @@ define(function (require, exports, module) {
 
             currentSelector = currentSelector.trim();
             var startChar = (selectorGroupStartLine === -1) ? selectorStartChar : selectorStartChar + 1;
-            var selectorStart = (stream.string.indexOf(currentSelector, selectorStartChar) !== -1) ? stream.string.indexOf(currentSelector, selectorStartChar - currentSelector.length) : startChar;
+            // The selector sits next to where it started, so it is looked for around
+            // there rather than down the whole line: a minified sheet is one very
+            // long line and scanning it per selector is quadratic.
+            var selectorLength = currentSelector.length;
+            var searchFrom = Math.max(0, selectorStartChar - selectorLength);
+            var searchTo = Math.min(stream.string.length,
+                Math.max(stream.start, selectorStartChar) + selectorLength + 1);
+            var searchText = stream.string.slice(searchFrom, searchTo);
+            var firstIndex = searchText.indexOf(currentSelector);
+            var fromStart = searchText.indexOf(currentSelector, Math.max(0, selectorStartChar - searchFrom));
+            var selectorStart = (firstIndex !== -1 && fromStart !== -1) ? searchFrom + firstIndex : startChar;
 
             if (currentSelector !== "") {
                 if (currentLevel < level) {
@@ -1088,6 +1110,9 @@ define(function (require, exports, module) {
                     level: currentLevel,
                     parentSelectors: parentSelectors
                 });
+                if (_firstUnset > selectors.length - 1) {
+                    _firstUnset = selectors.length - 1;
+                }
                 currentSelector = "";
             }
             selectorStartChar = -1;
@@ -1143,7 +1168,7 @@ define(function (require, exports, module) {
 
             // assign this declaration list position and selector group to every selector on the stack
             // that doesn't have a declaration list start and end line
-            for (j = selectors.length - 1; j >= 0; j--) {
+            for (j = selectors.length - 1; j >= _firstUnset; j--) {
                 if (selectors[j].level === level) {
                     if (selectors[j].declListEndLine !== -1) {
                         break;
@@ -1183,15 +1208,22 @@ define(function (require, exports, module) {
                 nested = _parseRuleList(undefined, currentLevel + 1);
 
                 // assign this declaration list position to every selector on the stack
-                // that doesn't have a declaration list end line
-                for (j = selectors.length - 1; j >= 0; j--) {
+                // that doesn't have a declaration list end line. Everything before
+                // _firstUnset already carries one, so the walk stops there rather
+                // than running back over the whole stylesheet for every rule.
+                var closedAll = true;
+                for (j = selectors.length - 1; j >= _firstUnset; j--) {
                     if (selectors[j].level < currentLevel) {
+                        closedAll = false;
                         break;
                     }
                     if (selectors[j].declListEndLine === -1) {
                         selectors[j].declListEndLine = line;
                         selectors[j].declListEndChar = stream.pos - 1; // stream.pos actually points to the char after the }
                     }
+                }
+                if (closedAll) {
+                    _firstUnset = selectors.length;
                 }
             } while (currentLevel > 0 && currentLevel === level);
         }
