@@ -622,11 +622,12 @@ function RemoteFunctions(config = {}) {
         },
 
         addAll: function (elements) {
+            const seen = new Set(this.elements);
             const fresh = [];
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
-                if (element !== window.document && !this.elements.includes(element) &&
-                        fresh.indexOf(element) === -1) {
+                if (element !== window.document && !seen.has(element)) {
+                    seen.add(element);
                     fresh.push(element);
                 }
             }
