@@ -29,6 +29,7 @@
 @layers-input-bg-focus: rgba(255, 255, 255, 0.06);
 @layers-row-height:     26px;
 @layers-label-min-width: 72px;
+@layers-row-intrinsic-width: 115px;
 @layers-tools-width:    96px;
 @layers-indent:         14px;
 @layers-mono:           ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -471,6 +472,13 @@
         font-size: @sidebar-content-font-size;
     }
 
+    .layers-sprite {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
     .layers-tree.layers-kbd-nav .layers-node:hover:not(.layers-selected) {
         background: transparent;
     }
@@ -488,6 +496,8 @@
         display: flex;
         align-items: center;
         height: @layers-row-height;
+        content-visibility: auto;
+        contain-intrinsic-size: auto @layers-row-intrinsic-width auto @layers-row-height;
         padding-right: 6px;
         box-sizing: border-box;
         white-space: nowrap;
