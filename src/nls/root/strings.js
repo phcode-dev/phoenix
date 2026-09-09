@@ -486,8 +486,6 @@ define({
     "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "on {0}",
     "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Get Pro",
     "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "You've used {0}% of your free image searches ({1}/{2})",
-    "LIVE_DEV_STYLES_PANEL_PROPERTY_PLACEHOLDER": "property",
-    "LIVE_DEV_STYLES_PANEL_VALUE_PLACEHOLDER": "value",
     "LIVE_DEV_FORMAT_BOLD": "Bold",
     "LIVE_DEV_FORMAT_ITALIC": "Italic",
     "LIVE_DEV_FORMAT_UNDERLINE": "Underline",
@@ -839,6 +837,8 @@ define({
     "LIVE_PREVIEW_LAYERS_EMPTY_PAGE_STYLES": "The page is empty. Add an element to see its styles.",
     "LIVE_PREVIEW_LAYERS_SHOW_SELECTED": "Show the selected element",
     "LIVE_PREVIEW_LAYERS_SCRUB_HINT": "Drag to adjust, double-click to edit",
+    "LIVE_PREVIEW_LAYERS_PROPERTY_PLACEHOLDER": "property",
+    "LIVE_PREVIEW_LAYERS_VALUE_PLACEHOLDER": "value",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
     "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview was canceled because the page was closed in the browser",
