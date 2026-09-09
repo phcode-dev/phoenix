@@ -780,6 +780,13 @@ define(function (require, exports, module) {
      * @param {?string} documentMode language mode of the document that text belongs to, default to css if undefined.
      * @return {Array.<SelectorInfo>} Array with objects specifying selectors.
      */
+    // Tests that depend only on the line being tokenized. A minified stylesheet
+    // is one very long line, so running these per token is what made parsing it slow.
+    const _RE_PAREN_SEMI = /\([^)]+;/;
+    const _RE_OPEN_BRACE = /\{/;
+    const _RE_FOLLOWED_BY_PSEUDO = /\}:(enabled|disabled|checked|indeterminate|link|visited|hover|active|focus|target|lang|root|nth-|first-|last-|only-|empty|not)/;
+    const _RE_VAR_INTERPOLATED = /[@#]\{\S+\}(\s*:|.*;)/;
+
     function extractAllSelectors(text, documentMode) {
         var state, lines, lineCount,
             token, style, stream, line,
@@ -797,7 +804,20 @@ define(function (require, exports, module) {
             declListStartChar = -1,
             escapePattern = new RegExp("\\\\[^\\\\]+", "g"),
             validationPattern = new RegExp("\\\\([a-f0-9]{6}|[a-f0-9]{4}(\\s|\\\\|$)|[a-f0-9]{2}(\\s|\\\\|$)|.)", "i"),
-            _parseRuleList;
+            _parseRuleList,
+            _lineFlagsFor = null,
+            _lineFlags = {};
+
+        function _lineFlag(name, compute) {
+            if (_lineFlagsFor !== stream.string) {
+                _lineFlagsFor = stream.string;
+                _lineFlags = {};
+            }
+            if (_lineFlags[name] === undefined) {
+                _lineFlags[name] = compute(_lineFlagsFor);
+            }
+            return _lineFlags[name];
+        }
 
         // implement _firstToken()/_nextToken() methods to
         // provide a single stream of tokens
@@ -933,7 +953,8 @@ define(function (require, exports, module) {
                 (state.state !== "top" && state.state !== "block" && state.state !== "pseudo" &&
                     // Has a semicolon as in "rgb(0,0,0);", but not one of those after a LESS
                     // mixin parameter variable as in ".size(@width; @height)"
-                    stream.string.indexOf(";") !== -1 && !/\([^)]+;/.test(stream.string)));
+                    _lineFlag("semi", function (str) { return str.indexOf(";") !== -1; }) &&
+                    !_lineFlag("parenSemi", function (str) { return _RE_PAREN_SEMI.test(str); })));
         }
 
         function _skipProperty() {
@@ -996,7 +1017,8 @@ define(function (require, exports, module) {
                 // the semicolors inside a parameter as a property separators.
                 if ((token === ";" && state.state !== "parens") ||
                     // Make sure that something like `> li > a {` is not identified as a property
-                    (state.state === "prop" && !/\{/.test(stream.string))) {
+                    (state.state === "prop" &&
+                        !_lineFlag("brace", function (str) { return _RE_OPEN_BRACE.test(str); }))) {
                     currentSelector = "";
                 } else if (token === "(") {
                     // Collect everything inside the parentheses as a whole chunk so that
@@ -1074,7 +1096,8 @@ define(function (require, exports, module) {
         }
 
         function _parseSelectorList(level) {
-            selectorGroupStartLine = (stream.string.indexOf(",") !== -1) ? line : -1;
+            selectorGroupStartLine =
+                _lineFlag("comma", function (str) { return str.indexOf(",") !== -1; }) ? line : -1;
             selectorGroupStartChar = stream.start;
 
             if (!_parseSelector(stream.start, level)) {
@@ -1189,11 +1212,12 @@ define(function (require, exports, module) {
         }
 
         function _followedByPseudoSelector() {
-            return (/\}:(enabled|disabled|checked|indeterminate|link|visited|hover|active|focus|target|lang|root|nth-|first-|last-|only-|empty|not)/.test(stream.string));
+            return _lineFlag("pseudo", function (str) { return _RE_FOLLOWED_BY_PSEUDO.test(str); });
         }
 
         function _isVariableInterpolatedProperty() {
-            return (/[@#]\{\S+\}(\s*:|.*;)/.test(stream.string) && !_followedByPseudoSelector());
+            return _lineFlag("varInterp", function (str) { return _RE_VAR_INTERPOLATED.test(str); }) &&
+                !_followedByPseudoSelector();
         }
 
         function _parseAtRule(level) {
