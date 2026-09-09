@@ -138,10 +138,18 @@
          * Evaluate an expresion and return its result.
          */
         evaluate: function (msg) {
-            var result = eval(msg.params.expression);
-            MessageBroker.respond(msg, {
-                result: JSON.stringify(result) // TODO: in original protocol this is an object handle
-            });
+            // an unanswered request leaves the editor side waiting forever
+            try {
+                var result = eval(msg.params.expression);
+                MessageBroker.respond(msg, {
+                    result: JSON.stringify(result) // TODO: in original protocol this is an object handle
+                });
+            } catch (e) {
+                console.error("[Brackets LiveDev] Runtime.evaluate failed", e);
+                MessageBroker.respond(msg, {
+                    error: String(e && e.message || e)
+                });
+            }
         }
     };
 
