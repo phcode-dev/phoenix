@@ -453,7 +453,25 @@ function RemoteFunctions(config = {}) {
     // Everything an overlay needs read off the page. Split from the painting
     // below so a batch of overlays can read first and write after: interleaving
     // the two forces a layout per element.
-    function _measureOverlay(element) {
+    // What screenOffset() needs off the body, read once for a whole batch
+    // instead of once per element.
+    function _bodyOffsetContext() {
+        const body = window.document.body;
+        if (window.getComputedStyle(body).position === "static") {
+            return { isStatic: true, x: window.pageXOffset, y: window.pageYOffset };
+        }
+        const bodyBounds = body.getBoundingClientRect();
+        return { isStatic: false, x: bodyBounds.left, y: bodyBounds.top };
+    }
+
+    function _offsetFromBounds(bounds, bodyOffset) {
+        if (bodyOffset.isStatic) {
+            return { left: bounds.left + bodyOffset.x, top: bounds.top + bodyOffset.y };
+        }
+        return { left: bounds.left - bodyOffset.x, top: bounds.top - bodyOffset.y };
+    }
+
+    function _measureOverlay(element, bodyOffset) {
         const bounds = element.getBoundingClientRect();
         if (bounds.width === 0 && bounds.height === 0) {
             return null;
@@ -461,7 +479,7 @@ function RemoteFunctions(config = {}) {
         const cs = window.getComputedStyle(element);
         return {
             bounds: bounds,
-            scroll: LivePreviewView.screenOffset(element),
+            scroll: _offsetFromBounds(bounds, bodyOffset || _bodyOffsetContext()),
             bt: parseFloat(cs.borderTopWidth) || 0,
             br: parseFloat(cs.borderRightWidth) || 0,
             bb: parseFloat(cs.borderBottomWidth) || 0,
@@ -475,6 +493,15 @@ function RemoteFunctions(config = {}) {
             mb: parseFloat(cs.marginBottom) || 0,
             ml: parseFloat(cs.marginLeft) || 0
         };
+    }
+
+    function _measureAll(elements) {
+        const bodyOffset = _bodyOffsetContext();
+        const measured = [];
+        for (let i = 0; i < elements.length; i++) {
+            measured.push(_measureOverlay(elements[i], bodyOffset));
+        }
+        return measured;
     }
 
     // Update an existing overlay's position, dimensions, and colors to match the target element.
@@ -603,7 +630,7 @@ function RemoteFunctions(config = {}) {
                     fresh.push(element);
                 }
             }
-            const measured = fresh.map(_measureOverlay);
+            const measured = _measureAll(fresh);
             for (let i = 0; i < fresh.length; i++) {
                 if (this.trigger) {
                     _trigger(fresh[i], "highlight", 1);
@@ -653,7 +680,7 @@ function RemoteFunctions(config = {}) {
             this.elements = elements;
 
             // Update all overlays in place — no DOM creation or destruction
-            const measured = elements.map(_measureOverlay);
+            const measured = _measureAll(elements);
             for (let i = 0; i < elements.length; i++) {
                 _paintOverlay(this._overlays[i], elements[i], measured[i]);
             }
