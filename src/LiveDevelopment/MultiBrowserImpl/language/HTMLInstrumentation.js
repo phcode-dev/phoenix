@@ -867,20 +867,29 @@ define(function (require, exports, module) {
         _cachedValues = {};
     }
 
-    function getPositionFromTagId(editor, tagId) {
-        var marks = editor._codeMirror.getAllMarks(),
-            markFound;
-
-        markFound = _.find(marks, function (mark) {
-            return (mark.tagID === tagId);
+    function _rebuildTagIdMarkMap(cm) {
+        const map = new Map();
+        cm.getAllMarks().forEach(function (mark) {
+            if (mark.hasOwnProperty("tagID")) {
+                map.set(mark.tagID, mark);
+            }
         });
-        if (markFound) {
-            return {
-                from: markFound.find().from,
-                to: markFound.find().to
-            };
+        cm._phTagIdMarks = map;
+        return map;
+    }
+
+    function getPositionFromTagId(editor, tagId) {
+        const cm = editor._codeMirror;
+        let map = cm._phTagIdMarks || _rebuildTagIdMarkMap(cm);
+        let mark = map.get(tagId);
+        // a cleared mark has no range, so the map is rebuilt from the live marks
+        let range = mark && mark.find();
+        if (!range) {
+            map = _rebuildTagIdMarkMap(cm);
+            mark = map.get(tagId);
+            range = mark && mark.find();
         }
-        return null;
+        return range ? { from: range.from, to: range.to } : null;
     }
 
     // private methods
