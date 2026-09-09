@@ -737,7 +737,7 @@ function RemoteFunctions(config = {}) {
      * @param {Element} element - The DOM element to select
      * @param {boolean} [fromEditor] - If true, this is an editor-cursor-driven selection;
      *   only lightweight highlights (outline, margin/padding overlay) are shown, not interactive
-     *   UI like control box, spacing handles, or measurements.
+     *   UI like the control box or the styles bar.
      * @param {boolean} [byName] - Selected by name (a layers panel row), so the edit
      *   opt-out and the body block don't apply while it stays selected.
      */
