@@ -35,6 +35,10 @@ define(function (require, exports, module) {
      */
     var SYNC_ERROR_CLASS = "live-preview-sync-error";
 
+    // A held arrow key moves the caret far faster than the rule under it can be
+    // resolved, so the highlight follows the caret once it settles.
+    const CURSOR_HIGHLIGHT_DEBOUNCE_MS = 80;
+
     function _simpleHash(str) {
         let hash = 5381;
         for (let i = 0; i < str.length; ) {
@@ -166,6 +170,7 @@ define(function (require, exports, module) {
      */
     LiveDocument.prototype._detachFromEditor = function () {
         if (this.editor) {
+            this._cancelPendingHighlight();
             this.hideHighlight();
             this.editor.off("cursorActivity", this._onCursorActivity);
         }
@@ -197,11 +202,23 @@ define(function (require, exports, module) {
      * @param {Editor} editor
      */
     LiveDocument.prototype._onCursorActivity = function (event, editor) {
-        if (!this.editor) {
+        if (!this.editor || _disableHighlightOnCursor) {
             return;
         }
-        if(!_disableHighlightOnCursor){
-            this.updateHighlight();
+        const self = this;
+        this._cancelPendingHighlight();
+        this._highlightTimer = window.setTimeout(function () {
+            self._highlightTimer = null;
+            if (self.editor) {
+                self.updateHighlight();
+            }
+        }, CURSOR_HIGHLIGHT_DEBOUNCE_MS);
+    };
+
+    LiveDocument.prototype._cancelPendingHighlight = function () {
+        if (this._highlightTimer) {
+            window.clearTimeout(this._highlightTimer);
+            this._highlightTimer = null;
         }
     };
 
