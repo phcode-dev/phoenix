@@ -33,6 +33,43 @@ value of the specified property
 url for import
 
 **Kind**: global constant  
+<a name="_RE_PAREN_SEMI"></a>
+
+## \_RE\_PAREN\_SEMI ⇒ [<code>Array.&lt;SelectorInfo&gt;</code>](#SelectorInfo)
+Extracts all CSS selectors from the given text
+Returns an array of SelectorInfo. Each SelectorInfo is an object with the following properties:
+         selector:                 the text of the selector (note: comma separated selector groups like
+                                   "h1, h2" are broken into separate selectors)
+         ruleStartLine:            line in the text where the rule (including preceding comment) appears
+         ruleStartChar:            column in the line where the rule (including preceding comment) starts
+         selectorStartLine:        line in the text where the selector appears
+         selectorStartChar:        column in the line where the selector starts
+         selectorEndLine:          line where the selector ends
+         selectorEndChar:          column where the selector ends
+         selectorGroupStartLine:   line where the comma-separated selector group (e.g. .foo, .bar, .baz)
+                                   starts that this selector (e.g. .baz) is part of. Particularly relevant for
+                                   groups that are on multiple lines.
+         selectorGroupStartChar:   column in line where the selector group starts.
+         selectorGroup:            the entire selector group containing this selector, or undefined if there
+                                   is only one selector in the rule.
+         declListStartLine:        line where the declaration list for the rule starts
+         declListStartChar:        column in line where the declaration list for the rule starts
+         declListEndLine:          line where the declaration list for the rule ends
+         declListEndChar:          column in the line where the declaration list for the rule ends
+         level:                    the level of the current selector including any containing @media block in the
+                                   nesting level count. Use this property with caution since it is primarily for internal
+                                   parsing use. For example, two sibling selectors may have different levels if one
+                                   of them is nested inside an @media block and it should not be used for sibling info.
+         parentSelectors:          all ancestor selectors separated with '/' if the current selector is a nested one
+
+**Kind**: global constant  
+**Returns**: [<code>Array.&lt;SelectorInfo&gt;</code>](#SelectorInfo) - Array with objects specifying selectors.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>string</code> | CSS text to extract from |
+| documentMode | <code>string</code> | language mode of the document that text belongs to, default to css if undefined. |
+
 <a name="isCSSPreprocessorFile"></a>
 
 ## isCSSPreprocessorFile(filePath) ⇒ <code>boolean</code>
@@ -79,43 +116,6 @@ in info.
 | --- | --- | --- |
 | info | [<code>SelectorInfo</code>](#SelectorInfo) |  |
 | [useGroup] | <code>boolean</code> | true to append selectorGroup instead of selector |
-
-<a name="extractAllSelectors"></a>
-
-## extractAllSelectors(text, documentMode) ⇒ [<code>Array.&lt;SelectorInfo&gt;</code>](#SelectorInfo)
-Extracts all CSS selectors from the given text
-Returns an array of SelectorInfo. Each SelectorInfo is an object with the following properties:
-         selector:                 the text of the selector (note: comma separated selector groups like
-                                   "h1, h2" are broken into separate selectors)
-         ruleStartLine:            line in the text where the rule (including preceding comment) appears
-         ruleStartChar:            column in the line where the rule (including preceding comment) starts
-         selectorStartLine:        line in the text where the selector appears
-         selectorStartChar:        column in the line where the selector starts
-         selectorEndLine:          line where the selector ends
-         selectorEndChar:          column where the selector ends
-         selectorGroupStartLine:   line where the comma-separated selector group (e.g. .foo, .bar, .baz)
-                                   starts that this selector (e.g. .baz) is part of. Particularly relevant for
-                                   groups that are on multiple lines.
-         selectorGroupStartChar:   column in line where the selector group starts.
-         selectorGroup:            the entire selector group containing this selector, or undefined if there
-                                   is only one selector in the rule.
-         declListStartLine:        line where the declaration list for the rule starts
-         declListStartChar:        column in line where the declaration list for the rule starts
-         declListEndLine:          line where the declaration list for the rule ends
-         declListEndChar:          column in the line where the declaration list for the rule ends
-         level:                    the level of the current selector including any containing @media block in the
-                                   nesting level count. Use this property with caution since it is primarily for internal
-                                   parsing use. For example, two sibling selectors may have different levels if one
-                                   of them is nested inside an @media block and it should not be used for sibling info.
-         parentSelectors:          all ancestor selectors separated with '/' if the current selector is a nested one
-
-**Kind**: global function  
-**Returns**: [<code>Array.&lt;SelectorInfo&gt;</code>](#SelectorInfo) - Array with objects specifying selectors.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| text | <code>string</code> | CSS text to extract from |
-| documentMode | <code>string</code> | language mode of the document that text belongs to, default to css if undefined. |
 
 <a name="findMatchingRules"></a>
 
