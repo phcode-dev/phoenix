@@ -31,6 +31,13 @@
 @ai-text-secondary: @sidebar-small-font-size;     // 12px — in-card buttons, mono code, file paths
 @ai-text-meta:      @sidebar-xs-font-size;        // 11px — stats, status, permission/context info
 @ai-line-prose:     1.6;                          // multi-line body text — generous reading rhythm
+
+// Dialog scale. The AI tiers above are sized for a ~300px sidebar column;
+// a modal is not that, and Phoenix's own dialogs render body text at 14px.
+// Reusing the sidebar tiers in a dialog made labels 12px and notes 11px —
+// noticeably smaller than every other dialog in the app.
+@ai-dialog-text:    @menu-item-font-size;         // 14px — matches a stock dialog body
+@ai-dialog-note:    13px;                         // one tick down, still comfortably readable
 @ai-line-compact:   1.4;                          // single-line UI elements
 
 // Warning-tone chrome (e.g. the CLI-mode "project switched" banner). Must
@@ -277,6 +284,28 @@
 
     .ai-chat-body-cli {
         display: flex;
+    }
+}
+
+/* One slot per embedded CLI, both living inside the single
+   .ai-chat-body-cli so they share its --terminal-* palette by inheritance
+   (TerminalInstance reads those off its own container). Only the active
+   mode's slot is shown; the other keeps its PTY running off-screen.
+
+   `position: relative` is load-bearing, not decoration: it anchors this
+   session's .terminal-instance-container (absolute; inset:0) and its
+   .ai-cli-stale-banner (absolute; bottom:0). Without it both sessions'
+   terminals and banners would position against the shared body and stack
+   on top of each other. */
+.ai-cli-session {
+    display: none;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+
+    &.active {
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -4081,9 +4110,127 @@
 }
 
 /* ── AI Settings Dialog ────────────────────────────────────────────── */
+/* Label + input pair. Shared by the AI settings dialog and the CLI-not-found
+   dialog, which asks for a binary path with the same affordance — the rule
+   lives at top level rather than inside .ai-settings-dialog so both get it. */
+.ai-settings-dialog .ai-settings-field,
+.ai-cli-not-found .ai-settings-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    label {
+        font-size: @ai-dialog-text;
+        font-weight: 600;
+        color: @bc-text-medium;
+
+        .dark & {
+            color: @dark-bc-text-medium;
+        }
+    }
+
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 10px;
+        height: 30px;
+        border: 1px solid @bc-panel-border;
+        border-radius: @bc-border-radius;
+        background: @bc-input-bg;
+        color: @bc-text;
+        font-size: @ai-dialog-text;
+        outline: none;
+
+        &:focus {
+            border-color: @bc-btn-border-focused;
+        }
+
+        &::placeholder {
+            color: @bc-text-quiet;
+            opacity: 0.7;
+        }
+
+        .dark & {
+            border-color: @dark-bc-panel-border;
+            background: @dark-bc-input-bg;
+            color: @dark-bc-text;
+
+            &:focus {
+                border-color: @dark-bc-btn-border-focused;
+            }
+
+            &::placeholder {
+                color: @dark-bc-text-quiet;
+                opacity: 0.7;
+            }
+        }
+    }
+}
+
 .ai-settings-dialog {
+    /* One tab per CLI. Underline rather than a boxed tab: the dialog is
+       already a stack of labelled sections, and a heavier control here
+       would read as the page's primary chrome instead of a filter over the
+       provider list below it. */
+    .ai-settings-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 14px;
+        border-bottom: 1px solid @bc-panel-separator;
+
+        .dark & {
+            border-bottom-color: @dark-bc-panel-separator;
+        }
+    }
+
+    .ai-settings-tab {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 6px 12px;
+        margin-bottom: -1px;
+        cursor: pointer;
+        font-size: @ai-text-body;
+        color: @bc-text-medium;
+
+        &:hover {
+            color: @bc-text;
+        }
+
+        &.active {
+            color: @bc-text;
+            border-bottom-color: @bc-primary-btn-bg;
+            font-weight: 600;
+        }
+
+        .dark & {
+            color: @dark-bc-text-medium;
+
+            &:hover,
+            &.active {
+                color: @dark-bc-text;
+            }
+        }
+    }
+
+    /* Explanatory line under a section label or the tab strip. */
+    .ai-settings-section-note,
+    .ai-settings-tab-note {
+        font-size: @ai-dialog-note;
+        color: @bc-text-medium;
+        opacity: 0.8;
+        margin-bottom: 10px;
+        line-height: @ai-line-prose;
+
+        .dark & {
+            color: @dark-bc-text-medium;
+        }
+    }
+
     .ai-settings-section-label {
-        font-size: @ai-text-secondary;
+        font-size: @ai-dialog-text;
         font-weight: 600;
         color: @bc-text-medium;
         margin-bottom: 6px;
@@ -4139,7 +4286,7 @@
     }
 
     .ai-settings-provider-name {
-        font-size: @ai-text-body;
+        font-size: @ai-dialog-text;
         font-weight: 600;
         color: @bc-text;
         white-space: nowrap;
@@ -4152,7 +4299,7 @@
     }
 
     .ai-settings-provider-url {
-        font-size: @ai-text-meta;
+        font-size: @ai-dialog-note;
         color: @bc-text-medium;
         white-space: nowrap;
         overflow: hidden;
@@ -4191,7 +4338,7 @@
     }
 
     .ai-settings-edit-error {
-        font-size: @ai-text-secondary;
+        font-size: @ai-dialog-note;
         color: @bc-error;
         min-height: 0;
 
@@ -4204,59 +4351,6 @@
         display: flex;
         justify-content: flex-end;
         gap: 8px;
-    }
-
-    .ai-settings-field {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-
-        label {
-            font-size: @ai-text-secondary;
-            font-weight: 600;
-            color: @bc-text-medium;
-
-            .dark & {
-                color: @dark-bc-text-medium;
-            }
-        }
-
-        input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 8px 10px;
-            height: 30px;
-            border: 1px solid @bc-panel-border;
-            border-radius: @bc-border-radius;
-            background: @bc-input-bg;
-            color: @bc-text;
-            font-size: @ai-text-body;
-            outline: none;
-
-            &:focus {
-                border-color: @bc-btn-border-focused;
-            }
-
-            &::placeholder {
-                color: @bc-text-quiet;
-                opacity: 0.7;
-            }
-
-            .dark & {
-                border-color: @dark-bc-panel-border;
-                background: @dark-bc-input-bg;
-                color: @dark-bc-text;
-
-                &:focus {
-                    border-color: @dark-bc-btn-border-focused;
-                }
-
-                &::placeholder {
-                    color: @dark-bc-text-quiet;
-                    opacity: 0.7;
-                }
-            }
-        }
     }
 
     .ai-settings-enable-row {
@@ -4281,7 +4375,7 @@
     }
 
     .ai-settings-enable-label {
-        font-size: @ai-text-body;
+        font-size: @ai-dialog-text;
         font-weight: 600;
         color: @bc-text;
 
@@ -4291,7 +4385,7 @@
     }
 
     .ai-settings-enable-note {
-        font-size: @ai-text-meta;
+        font-size: @ai-dialog-note;
         color: @bc-text-medium;
 
         .dark & {
@@ -4477,3 +4571,17 @@
     }
 }
 
+/* "CLI not found" dialog. Reuses the settings field styling above; only the
+   surrounding rhythm is its own. */
+.ai-cli-not-found {
+    .ai-cli-not-found-msg {
+        margin: 0 0 12px;
+        line-height: @ai-line-prose;
+    }
+
+    .ai-learn-more-link {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: @ai-dialog-note;
+    }
+}
