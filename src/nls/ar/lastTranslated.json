@@ -303,6 +303,7 @@
   "AI_SETTINGS_BASE_URL": "Base URL",
   "AI_SETTINGS_BASE_URL_PLACEHOLDER": "Leave blank for default",
   "AI_SETTINGS_CLI_PATHS_NOTE": "Leave blank to detect automatically.",
+  "AI_SETTINGS_CLI_PATH_LABEL": "Path to the {0} executable",
   "AI_SETTINGS_CUSTOM_ENDPOINT_NOTICE": "Using custom API endpoint: {0}",
   "AI_SETTINGS_DEFAULT_PROVIDER": "Default (Local Claude Code)",
   "AI_SETTINGS_DEFAULT_PROVIDER_FOR": "Default (Local {0})",
