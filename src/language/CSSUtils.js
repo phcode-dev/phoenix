@@ -1665,7 +1665,7 @@ define(function (require, exports, module) {
                     }
                 }
 
-                if (!TokenUtils.movePrevToken(ctx)) {
+                if (!TokenUtils.movePrevToken(ctx, false)) {
                     return;
                 }
             }
@@ -1677,7 +1677,7 @@ define(function (require, exports, module) {
             var selector = "";
 
             // Skip over {
-            TokenUtils.movePrevToken(ctx);
+            TokenUtils.movePrevToken(ctx, false);
 
             while (true) {
                 if (ctx.token.type !== "comment") {
@@ -1698,7 +1698,7 @@ define(function (require, exports, module) {
 
                     selector = ctx.token.string + selector;
                 }
-                if (!TokenUtils.movePrevToken(ctx)) {
+                if (!TokenUtils.movePrevToken(ctx, false)) {
                     break;
                 }
             }
@@ -1752,10 +1752,10 @@ define(function (require, exports, module) {
                     if (!isPreprocessorDoc && _hasNonWhitespace(ctx.token.string)) {
                         foundChars = true;
                     }
-                    TokenUtils.movePrevToken(ctx);
+                    TokenUtils.movePrevToken(ctx, false);
                 }
             } else {
-                TokenUtils.movePrevToken(ctx);
+                TokenUtils.movePrevToken(ctx, false);
             }
         } while (!TokenUtils.isAtStart(ctx));
 
