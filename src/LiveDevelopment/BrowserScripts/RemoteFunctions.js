@@ -1192,15 +1192,6 @@ function RemoteFunctions(config = {}) {
 
         const nodes = window.document.querySelectorAll(rule);
 
-        // Highlight all matching nodes. selectElement() will narrow _clickHighlight
-        // down to the chosen element below; createCssSelectorHighlight() then
-        // re-highlights the siblings in a separate overlay.
-        highlightAll(nodes);
-
-        if (_clickHighlight) {
-            _clickHighlight.selector = rule;
-        }
-
         // Both edit and highlight modes go through the same selection path:
         // selectElement() handles scroll-to-view and the prominent click-highlight,
         // createCssSelectorHighlight() shows siblings dimly. fromEditor=true
@@ -1208,8 +1199,15 @@ function RemoteFunctions(config = {}) {
         // highlighting/scroll behavior without any UI boxes.
         const { element, skipSelection } = findBestElementToSelect(nodes, rule);
 
-        if (!skipSelection) {
+        if (skipSelection) {
+            // A recent preview click owns the selection and its open tools.
+            // Keep the existing selector highlight without re-selecting it.
+            highlightAll(nodes);
+            _clickHighlight.selector = rule;
+        } else {
             if (element) {
+                // Select first: drawing every match here would immediately be
+                // cleared by selectElement() and drawn again as siblings below.
                 selectElement(element, true);
             } else {
                 // No valid element found, dismiss UI
