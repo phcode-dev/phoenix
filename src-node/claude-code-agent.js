@@ -26,11 +26,11 @@
  * edit/write interception, and session management.
  */
 
-const { execSync, spawn } = require("child_process");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { createEditorMcpServer } = require("./mcp-editor-tools");
+const CliLocator = require("./cli-locator");
 
 const isWindows = process.platform === "win32";
 
@@ -602,325 +602,219 @@ async function _getAISessionTitle(sessionId, projectPath) {
 }
 
 /**
- * Build ordered candidate paths on Windows, split into two tiers:
- *   - `native`: real PE binaries dropped by claude.ai/install.ps1 or the
- *     desktop installer. No node/cli.js shim chain to break, so file
- *     existence is enough confidence — we skip the `--version` validation.
- *   - `fallback`: PATH discovery via `where`, npm shim. Broken installs
- *     are common here (orphan `.cmd` whose cli.js got deleted, extensionless
- *     POSIX scripts Windows can't execute), so every candidate is verified
- *     with `claude --version` before we return it.
+ * Resolve the user's globally installed Claude CLI, honouring the path
+ * override configured in AI Settings. Kept as a local function so the SDK
+ * path below reads the same as it always has; the search itself now lives
+ * in cli-locator.js, shared with the other CLIs the panel can drive.
+ * Pass `{ force: true }` to invalidate the cache after a spawn failure.
+ * @return {Promise<string|null>} absolute path, or null when not found
  */
-function _winClaudeCandidates() {
-    const userHome = process.env.USERPROFILE || process.env.HOME || "";
-    const native = [
-        path.join(userHome, ".local", "bin", "claude.exe"),
-        path.join(process.env.LOCALAPPDATA || "", "Programs", "claude", "claude.exe")
-    ];
-    const fallback = [];
-
-    // PATH discovery — filter to executable extensions (drop extensionless
-    // POSIX scripts and .ps1, both of which our spawn path can't use),
-    // and prefer .exe over .cmd/.bat shims when both resolve.
-    try {
-        const allPaths = execSync("where claude", { encoding: "utf8" })
-            .trim()
-            .split("\r\n")
-            .filter(p => p && !p.includes("node_modules") && /\.(exe|cmd|bat)$/i.test(p));
-        const exes = allPaths.filter(p => /\.exe$/i.test(p));
-        const others = allPaths.filter(p => !/\.exe$/i.test(p));
-        fallback.push(...exes, ...others);
-    } catch { /* where not on PATH or returned nothing */ }
-
-    // Explicit npm shim in case `where` wasn't reachable.
-    fallback.push(path.join(process.env.APPDATA || "", "npm", "claude.cmd"));
-
-    return { native, fallback };
-}
-
-/**
- * Build candidate nvm-installed claude paths. The previously hardcoded
- * `process.version` was the Node that Phoenix ships, not the Node the user
- * has selected in nvm — which mismatched in practice for ~every nvm user.
- *
- * Strategy: prefer the version named in `~/.nvm/alias/default` (or whatever
- * `$NVM_DIR` points at). Fall back to enumerating installed versions, newest
- * first, so we still find claude when the default alias is a label like
- * `lts/*` or `node` that we don't expand here.
- */
-function _nvmClaudeCandidates(home) {
-    const nvmRoot = process.env.NVM_DIR || path.join(home, ".nvm");
-    const versionsDir = path.join(nvmRoot, "versions", "node");
-    const candidates = [];
-    try {
-        const aliasFile = path.join(nvmRoot, "alias", "default");
-        if (fs.existsSync(aliasFile)) {
-            const alias = fs.readFileSync(aliasFile, "utf8").trim();
-            if (/^v?\d/.test(alias)) {
-                const v = alias.startsWith("v") ? alias : "v" + alias;
-                candidates.push(path.join(versionsDir, v, "bin", "claude"));
-            }
-        }
-    } catch { /* nvm not installed or unreadable */ }
-    try {
-        if (fs.existsSync(versionsDir)) {
-            const versions = fs.readdirSync(versionsDir)
-                .filter(v => /^v\d/.test(v))
-                .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
-            for (const v of versions) {
-                candidates.push(path.join(versionsDir, v, "bin", "claude"));
-            }
-        }
-    } catch { /* ignore */ }
-    return candidates;
-}
-
-/**
- * Build ordered candidate paths on macOS/Linux. See _winClaudeCandidates for
- * the native/fallback rationale.
- */
-function _posixClaudeCandidates() {
-    const home = process.env.HOME || "";
-    const native = [
-        path.join(home, ".local", "bin", "claude")        // claude.ai/install.sh default
-    ];
-    const fallback = [];
-
-    // PATH discovery. Matters most on macOS when Phoenix is launched from
-    // Finder/Dock — that PATH is the minimal `/usr/bin:/bin:/usr/sbin:/sbin`,
-    // so `which` may miss user-managed dirs and the known locations below
-    // are what saves us.
-    try {
-        const allPaths = execSync("which -a claude 2>/dev/null || which claude", { encoding: "utf8" })
-            .trim()
-            .split("\n")
-            .filter(p => p && !p.includes("node_modules"));
-        fallback.push(...allPaths);
-    } catch { /* which not available */ }
-
-    fallback.push(
-        "/usr/local/bin/claude",                           // System-wide / Intel Mac Homebrew
-        "/usr/bin/claude",                                 // Distro package
-        ..._nvmClaudeCandidates(home),                     // npm global via nvm
-        "/opt/homebrew/bin/claude",                        // Homebrew on Apple Silicon
-        "/home/linuxbrew/.linuxbrew/bin/claude"            // Linuxbrew
-    );
-
-    return { native, fallback };
-}
-
-/**
- * Existence + executability check. On Windows executability is derived from
- * extension/PATHEXT not a file attribute, so existsSync is the right test;
- * on posix we want the +x bit.
- */
-function _canAccess(p) {
-    if (!p) { return false; }
-    try {
-        if (isWindows) {
-            return fs.existsSync(p);
-        }
-        fs.accessSync(p, fs.constants.X_OK);
-        return true;
-    } catch {
-        return false;
-    }
-}
-
-/**
- * Spawn claude with argv and resolve to { stdout, stderr, status, error }.
- * Async so callers don't block the event loop while claude runs — `auth
- * status` can take up to 10 s, `--version` up to 3 s, and the integrated
- * terminal and file watchers share this Node process.
- *
- * For .exe/posix binaries: shell-less spawn, paths-with-spaces and special
- * chars pass through verbatim. For Windows .cmd/.bat shims: shell:true
- * (Node refuses to spawn batch files without it per CVE-2024-27980
- * hardening) plus manual command-name quoting (Node intentionally does NOT
- * escape the command name under shell:true).
- *
- * Mimics the spawnSync result shape so callers read .status/.error/.stdout
- * unchanged. `opts.timeout` (ms) kills the process with SIGKILL on expiry
- * and surfaces an Error with message "timeout".
- */
-function _spawnClaude(claudePath, args, opts) {
-    return new Promise(function (resolve) {
-        const isCmdShim = isWindows && /\.(cmd|bat)$/i.test(claudePath);
-        const spawnCmd = isCmdShim ? `"${claudePath}"` : claudePath;
-        const spawnOpts = isCmdShim ? Object.assign({ shell: true }, opts) : opts;
-        const encoding = (opts && opts.encoding) || "utf8";
-        const timeoutMs = (opts && opts.timeout) || 0;
-        let child;
-        try {
-            child = spawn(spawnCmd, args, spawnOpts);
-        } catch (err) {
-            resolve({ stdout: "", stderr: "", status: null, error: err });
-            return;
-        }
-        let stdout = "";
-        let stderr = "";
-        let settled = false;
-        let timer = null;
-        function finish(result) {
-            if (settled) { return; }
-            settled = true;
-            if (timer) { clearTimeout(timer); }
-            resolve(result);
-        }
-        if (child.stdout) {
-            child.stdout.setEncoding(encoding);
-            child.stdout.on("data", function (chunk) { stdout += chunk; });
-        }
-        if (child.stderr) {
-            child.stderr.setEncoding(encoding);
-            child.stderr.on("data", function (chunk) { stderr += chunk; });
-        }
-        child.on("error", function (err) {
-            finish({ stdout, stderr, status: null, error: err });
-        });
-        child.on("close", function (code) {
-            finish({ stdout, stderr, status: code, error: null });
-        });
-        if (timeoutMs > 0) {
-            timer = setTimeout(function () {
-                try { child.kill("SIGKILL"); } catch { /* already exited */ }
-                finish({ stdout, stderr, status: null, error: new Error("timeout") });
-            }, timeoutMs);
-        }
+function findGlobalClaudeCli(opts) {
+    return CliLocator.locateCli("claude", opts).then(function (result) {
+        return result.path;
     });
 }
 
+// Brand names for the messages below. Not translatable and never shown
+// raw — the browser maps errorCode to a localized string; these only reach
+// logs and metrics.
+const CLI_DISPLAY_NAMES = { claude: "Claude Code CLI", codex: "Codex CLI" };
+
 /**
- * Validate that a fallback candidate actually runs. Catches broken installs
- * the existence check misses — e.g. an npm `.cmd` shim whose referenced
- * cli.js was deleted by a half-completed uninstall. `claude --version` is
- * fast (~200 ms healthy) and outputs a version string starting with a digit.
+ * Human-readable summary of why a CLI could not be resolved. The browser
+ * localizes from `errorCode`; this string is for logs, metrics, and the
+ * existing `_renderUnavailableUI(result.error)` path.
  */
-async function _validateClaudeBinary(claudePath) {
+function _cliErrorMessage(cliId, located) {
+    const name = CLI_DISPLAY_NAMES[cliId] || cliId;
+    switch (located.errorCode) {
+    case CliLocator.ERROR_CODES.OVERRIDE_MISSING:
+        return "Configured " + name + " path not found: " + (located.override && located.override.path);
+    case CliLocator.ERROR_CODES.OVERRIDE_NOT_EXECUTABLE:
+        return "Configured " + name + " path is not executable: " + (located.override && located.override.path);
+    case CliLocator.ERROR_CODES.OVERRIDE_INVALID:
+        return "Configured " + name + " path is not a working " + name;
+    case CliLocator.ERROR_CODES.OVERRIDE_TIMEOUT:
+        return "Configured " + name + " path did not respond in time";
+    case CliLocator.ERROR_CODES.OVERRIDE_REJECTED:
+        return "Configured " + name + " path contains unsupported characters";
+    default:
+        return name + " not found";
+    }
+}
+
+/**
+ * Ask claude whether the user is signed in. Only claude has a
+ * machine-readable answer (`claude auth status` prints JSON); codex's login
+ * lives behind a browser/TTY flow, so its terminal shows that itself.
+ * @return {Promise<{loggedIn: boolean, claudePath: string|null}>} claudePath
+ *      is re-resolved when the cached binary turns out to be gone
+ */
+async function _probeClaudeLogin(claudePath) {
+    let loggedIn = false;
+    let result;
     try {
-        const result = await _spawnClaude(claudePath, ["--version"], {
+        result = await CliLocator.spawnCli(claudePath, ["auth", "status"], {
             encoding: "utf8",
-            timeout: 3000
+            timeout: 10000
         });
-        return !result.error && result.status === 0 && /^\d/.test((result.stdout || "").trim());
-    } catch {
-        return false;
+        // Spawn-level failure (ENOENT/EACCES — e.g. user uninstalled
+        // mid-session) means the cached binary is unusable. Invalidate
+        // and re-discover once. Distinct from "binary ran but exited
+        // non-zero", which we still treat as "not logged in".
+        if (result.error && result.status === null) {
+            const relocated = await CliLocator.locateCli("claude", { force: true });
+            if (!relocated.path) {
+                return { loggedIn: false, claudePath: null };
+            }
+            claudePath = relocated.path;
+            result = await CliLocator.spawnCli(claudePath, ["auth", "status"], {
+                encoding: "utf8",
+                timeout: 10000
+            });
+        }
+        if (result.status === 0 && result.stdout) {
+            const authStatus = JSON.parse(result.stdout);
+            loggedIn = authStatus.loggedIn === true;
+        }
+    } catch (e) {
+        // auth status failed — treat as not logged in
     }
-}
-
-// undefined = not yet probed; null = probed, nothing works; string = resolved path
-let _cachedClaudePath;
-let _cachedAt = 0;
-// In-flight discovery promise so concurrent callers share one walk of the
-// fallback chain instead of each spawning their own --version probes.
-let _inFlightDiscovery = null;
-// Negative results expire so a fresh `claude` install completes during a
-// session can be detected on the next checkAvailability (the install-poll
-// flow depends on this). Positive results are cached indefinitely — the
-// self-heal in checkAvailability handles the mid-session-uninstall case
-// by passing { force: true } when a cached path stops spawning.
-const NULL_CACHE_TTL_MS = 15000;
-
-function _setCache(p) {
-    _cachedClaudePath = p;
-    _cachedAt = Date.now();
-    return p;
+    return { loggedIn: loggedIn, claudePath: claudePath };
 }
 
 /**
- * Resolve the user's globally installed Claude CLI. Walks a fallback chain:
- * native candidates first (existence is enough), then PATH/known-location
- * candidates, each validated by spawning `--version` so broken shims get
- * skipped instead of returned. Pass `{ force: true }` to invalidate the
- * cache after a runtime spawn failure.
+ * Whether one of the CLIs the AI panel can drive is installed and usable.
+ * Called from browser via execPeer("checkCliAvailability", {cli}).
+ *
+ * @param {Object} opts - `{cli}` "claude" (default) or "codex";
+ *      `{refresh}` bypasses the cached miss — the install/login poll loops
+ *      pass it because they are explicitly waiting on state to change;
+ *      `{overridePath}` resolves against that path for this call only, so
+ *      the settings UI can test a path without committing it;
+ *      `{probeLogin}` defaults to true for claude, false for codex.
+ * @return {Promise<Object>} `{cli, available, path, source, version, loggedIn,
+ *      loginProbeSupported, error, errorCode, override, searchedPaths}`
  */
-function findGlobalClaudeCli(opts) {
-    const force = !!(opts && opts.force);
-    if (!force && _cachedClaudePath !== undefined) {
-        const fresh = _cachedClaudePath !== null
-            || (Date.now() - _cachedAt) < NULL_CACHE_TTL_MS;
-        if (fresh) {
-            return Promise.resolve(_cachedClaudePath);
+exports.checkCliAvailability = async function (opts) {
+    const cliId = (opts && opts.cli) || "claude";
+    const canProbeLogin = cliId === "claude";
+    const probeLogin = (opts && opts.probeLogin !== undefined) ? !!opts.probeLogin : canProbeLogin;
+    try {
+        const locateOpts = {};
+        if (opts && opts.refresh) {
+            locateOpts.force = true;
         }
-    }
-    if (!force && _inFlightDiscovery) {
-        return _inFlightDiscovery;
-    }
-    const discovery = (async function () {
-        const { native, fallback } = isWindows ? _winClaudeCandidates() : _posixClaudeCandidates();
-        for (const p of native) {
-            if (_canAccess(p)) {
-                console.log("[Phoenix AI] Found native Claude CLI at:", p);
-                return _setCache(p);
-            }
+        if (opts && opts.overridePath !== undefined) {
+            locateOpts.override = opts.overridePath;
         }
-        for (const p of fallback) {
-            if (_canAccess(p) && await _validateClaudeBinary(p)) {
-                console.log("[Phoenix AI] Validated Claude CLI at:", p);
-                return _setCache(p);
-            }
+        const located = await CliLocator.locateCli(cliId, locateOpts);
+        const base = {
+            cli: cliId,
+            loginProbeSupported: canProbeLogin,
+            source: located.source,
+            version: located.version,
+            override: located.override,
+            searchedPaths: located.searchedPaths
+        };
+        if (!located.path) {
+            return Object.assign(base, {
+                available: false,
+                path: null,
+                error: _cliErrorMessage(cliId, located),
+                errorCode: located.errorCode
+            });
         }
-        console.log("[Phoenix AI] Global Claude CLI not found");
-        return _setCache(null);
-    })();
-    if (!force) {
-        _inFlightDiscovery = discovery;
-        discovery.finally(function () {
-            if (_inFlightDiscovery === discovery) {
-                _inFlightDiscovery = null;
+        let cliPath = located.path;
+        let loggedIn;
+        if (probeLogin && canProbeLogin) {
+            const login = await _probeClaudeLogin(cliPath);
+            if (!login.claudePath) {
+                return Object.assign(base, {
+                    available: false,
+                    path: null,
+                    error: _cliErrorMessage(cliId, { errorCode: CliLocator.ERROR_CODES.NOT_FOUND }),
+                    errorCode: CliLocator.ERROR_CODES.NOT_FOUND
+                });
             }
+            cliPath = login.claudePath;
+            loggedIn = login.loggedIn;
+        }
+        return Object.assign(base, {
+            available: true,
+            path: cliPath,
+            loggedIn: loggedIn,
+            error: null,
+            errorCode: null
         });
+    } catch (err) {
+        return {
+            cli: cliId,
+            available: false,
+            path: null,
+            loginProbeSupported: canProbeLogin,
+            error: err.message,
+            errorCode: CliLocator.ERROR_CODES.NOT_FOUND
+        };
     }
-    return discovery;
-}
+};
 
 /**
  * Check whether Claude CLI is available.
  * Called from browser via execPeer("checkAvailability").
+ *
+ * Kept as its own peer on top of checkCliAvailability: several browser call
+ * sites read `claudePath` and the login state, and that legacy key belongs
+ * on a claude-shaped result rather than becoming a lie on a codex one.
  */
 exports.checkAvailability = async function (opts) {
-    try {
-        // Poll loops (install/login screens) pass { refresh: true } because
-        // they're explicitly waiting on state changes — the cached null
-        // would otherwise make detection lag by up to NULL_CACHE_TTL_MS.
-        const refresh = !!(opts && opts.refresh);
-        let claudePath = await findGlobalClaudeCli(refresh ? { force: true } : undefined);
-        if (!claudePath) {
-            return { available: false, claudePath: null, error: "Claude Code CLI not found" };
-        }
-        // Check if user is logged in
-        let loggedIn = false;
-        let result;
-        try {
-            result = await _spawnClaude(claudePath, ["auth", "status"], {
-                encoding: "utf8",
-                timeout: 10000
-            });
-            // Spawn-level failure (ENOENT/EACCES — e.g. user uninstalled
-            // mid-session) means the cached binary is unusable. Invalidate
-            // and re-discover once. Distinct from "binary ran but exited
-            // non-zero", which we still treat as "not logged in".
-            if (result.error && result.status === null) {
-                claudePath = await findGlobalClaudeCli({ force: true });
-                if (!claudePath) {
-                    return { available: false, claudePath: null, error: "Claude Code CLI not found" };
-                }
-                result = await _spawnClaude(claudePath, ["auth", "status"], {
-                    encoding: "utf8",
-                    timeout: 10000
-                });
-            }
-            if (result.status === 0 && result.stdout) {
-                const authStatus = JSON.parse(result.stdout);
-                loggedIn = authStatus.loggedIn === true;
-            }
-        } catch (e) {
-            // auth status failed — treat as not logged in
-        }
-        return { available: true, claudePath: claudePath, loggedIn: loggedIn };
-    } catch (err) {
-        return { available: false, claudePath: null, error: err.message };
+    const result = await exports.checkCliAvailability(
+        Object.assign({}, opts, { cli: "claude", probeLogin: true }));
+    result.claudePath = result.path;
+    return result;
+};
+
+/**
+ * Record the CLI executable paths the user configured in AI Settings.
+ * Called from browser via execPeer("setCliPathOverrides", {claude, codex}).
+ * An empty string clears an override and restores auto-detection.
+ */
+exports.setCliPathOverrides = async function (params) {
+    const applied = CliLocator.setOverrides(params || {});
+    console.log("[Phoenix AI] CLI path overrides:", JSON.stringify(applied));
+    return { applied: applied };
+};
+
+/**
+ * Test one CLI path without disturbing the cache — for the settings UI, so
+ * it never has to reimplement what counts as a working CLI.
+ * Called from browser via execPeer("validateCliPath", {cli, path}).
+ */
+exports.validateCliPath = async function (params) {
+    const cliId = (params && params.cli) || "claude";
+    return CliLocator.validateCliPath(cliId, (params && params.path) || "");
+};
+
+/**
+ * How to spawn a CLI in a PTY: availability plus the command/args the
+ * terminal should use. Callers must not spawn `path` directly — on Windows
+ * an npm-installed CLI resolves to a `.cmd` shim, which node-pty cannot
+ * execute (CreateProcess runs .exe/.com only), so it has to go through
+ * `cmd.exe /c`.
+ * Called from browser via execPeer("getCliSpawnProfile", {cli}).
+ */
+exports.getCliSpawnProfile = async function (params) {
+    const cliId = (params && params.cli) || "claude";
+    const result = await exports.checkCliAvailability({
+        cli: cliId,
+        probeLogin: false,
+        overridePath: params && params.overridePath
+    });
+    if (!result.available) {
+        return Object.assign({}, result, { command: null, args: [] });
     }
+    const profile = CliLocator.getSpawnProfile(result.path);
+    return Object.assign({}, result, { command: profile.command, args: profile.args });
 };
 
 /**
