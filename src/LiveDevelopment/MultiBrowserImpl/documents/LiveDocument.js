@@ -177,6 +177,7 @@ define(function (require, exports, module) {
     };
 
     let _disableHighlightOnCursor = false;
+    let _cursorHighlightGeneration = 0;
 
     /**
      * If tur, it will disable highlights in live preview on cursor movement in editor
@@ -185,6 +186,12 @@ define(function (require, exports, module) {
     LiveDocument.prototype.disableHighlightOnCursorActivity = function (shouldDisable) {
         // intentionally global. see usage for details
         _disableHighlightOnCursor = shouldDisable;
+        if (shouldDisable) {
+            // A preview click or source edit also supersedes timers queued by
+            // other live documents (for example the active CSS editor).
+            _cursorHighlightGeneration++;
+            this._cancelPendingHighlight();
+        }
     };
 
     /**
@@ -202,14 +209,15 @@ define(function (require, exports, module) {
      * @param {Editor} editor
      */
     LiveDocument.prototype._onCursorActivity = function (event, editor) {
+        this._cancelPendingHighlight();
         if (!this.editor || _disableHighlightOnCursor) {
             return;
         }
         const self = this;
-        this._cancelPendingHighlight();
+        const generation = _cursorHighlightGeneration;
         this._highlightTimer = window.setTimeout(function () {
             self._highlightTimer = null;
-            if (self.editor) {
+            if (self.editor && !_disableHighlightOnCursor && generation === _cursorHighlightGeneration) {
                 self.updateHighlight();
             }
         }, CURSOR_HIGHLIGHT_DEBOUNCE_MS);
@@ -311,11 +319,10 @@ define(function (require, exports, module) {
      */
     LiveDocument.prototype.hideHighlight = function (temporary) {
         if (!temporary) {
-            if (this._lastHighlight === null) {
-                return;
-            }
             this._lastHighlight = null;
         }
+        // The preview can have been selected directly or by another live
+        // document, so this document's cached selector cannot prove it is clear.
         this.protocol.evaluate("_LD.hideHighlight()");
     };
 

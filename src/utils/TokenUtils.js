@@ -98,7 +98,9 @@ define(function (require, exports, module) {
         return {
             "editor": cm,
             "pos": pos,
-            "token": cm.getTokenAt(pos, true)
+            // Invalidate cached tokens too: cursorActivity and callers inside an
+            // operation can run before the "changes" event clears the cache.
+            "token": getTokenAt(cm, pos, true)
         };
     }
 
