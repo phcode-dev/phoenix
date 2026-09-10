@@ -311,6 +311,9 @@ define(function (require, exports, module) {
      */
     LiveDocument.prototype.hideHighlight = function (temporary) {
         if (!temporary) {
+            if (this._lastHighlight === null) {
+                return;
+            }
             this._lastHighlight = null;
         }
         this.protocol.evaluate("_LD.hideHighlight()");
