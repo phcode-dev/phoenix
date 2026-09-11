@@ -511,7 +511,6 @@
 
         &.layers-selected {
             background: @layers-row-select-bg;
-            box-shadow: inset 2px 0 0 @layers-accent;
         }
 
         &.layers-match {
@@ -677,7 +676,7 @@
     }
 
     .layers-node.layers-root-node .layers-node-tag {
-        font-weight: 500;
+        font-weight: 400;
         color: @project-panel-text-2;
     }
 
@@ -737,7 +736,7 @@
         background: @layers-row-select-bg;
     }
 
-    .layers-node.layers-holds-selected:not(:hover) .layers-node-tools {
+    .layers-node.layers-holds-selected .layers-node-tools {
         background: @layers-row-holder-bg;
     }
 
