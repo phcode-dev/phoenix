@@ -1666,3 +1666,37 @@ body.layers-dnd-invalid {
         animation-duration: 1ms;
     }
 }
+
+.layers-style-dialog {
+    width: 420px;
+
+    .layers-hidden {
+        display: none;
+    }
+
+    .layers-style-form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 14px;
+
+        input,
+        select {
+            box-sizing: border-box;
+            width: 100%;
+            height: 32px;
+            margin: 0;
+        }
+    }
+
+    .layers-style-help {
+        color: @project-panel-text-2;
+        font-size: @sidebar-small-font-size;
+        line-height: 1.5;
+    }
+
+    .layers-style-error {
+        color: #e89a9a;
+        font-size: @sidebar-small-font-size;
+    }
+}
