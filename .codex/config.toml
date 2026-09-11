@@ -1,0 +1,29 @@
+# Share the repository's existing development and Phoenix testing instructions.
+project_doc_fallback_filenames = ["CLAUDE.md"]
+
+[mcp_servers.phoenix-builder]
+command = "node"
+# Codex may start in a subdirectory. Find this checkout without machine-specific
+# paths or shell commands, then use the same server entry point as Claude Code.
+args = ["-e", '''
+const fs = require("node:fs");
+const path = require("node:path");
+const { pathToFileURL } = require("node:url");
+const entry = "phoenix-builder-mcp/index.js";
+let root = process.cwd();
+while (!fs.existsSync(path.join(root, entry))) {
+    const parent = path.dirname(root);
+    if (parent === root) {
+        throw new Error("Open Codex inside the Phoenix repository to use phoenix-builder.");
+    }
+    root = parent;
+}
+process.chdir(root);
+import(pathToFileURL(path.join(root, entry)).href).catch((error) => {
+    console.error(error);
+    process.exit(1);
+});
+''']
+env_vars = ["PHOENIX_DESKTOP_PATH", "PHOENIX_MCP_WS_PORT"]
+# Live-preview connection and execution can take longer than the default 60s.
+tool_timeout_sec = 120
