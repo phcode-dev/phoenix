@@ -70,6 +70,9 @@ SonarLint static code analysis checker is not yet available as a Brackets
 extension. Use sonarLint plugin for webstorm or any of the available
 IDEs from this link before raising a pull request: https://www.sonarlint.org/
 
+For Claude Code or Codex, see [Phoenix Builder MCP setup](phoenix-builder-mcp/README.md).
+The repository includes configuration for both clients to control and test a Phoenix dev build.
+
 ## Building Release artifacts
 
 * run `npm install`
