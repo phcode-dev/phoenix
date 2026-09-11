@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         tinycolor          = brackets.getModule("thirdparty/tinycolor");
 
     /** Mustache template that forms the bare DOM structure of the UI */
-    var ColorEditorTemplate = require("text!ColorEditorTemplate.html");
+    var ColorEditorTemplate = require("text!./ColorEditorTemplate.html");
 
     /**
      * @const @type {number}
@@ -131,9 +131,10 @@ define(function (require, exports, module) {
 
         this._redoColor = null;
         this._isUpperCase = PreferencesManager.get("uppercaseColors");
-        PreferencesManager.on("change", "uppercaseColors", function () {
+        this._handleUppercaseColorsChange = function () {
             this._isUpperCase = PreferencesManager.get("uppercaseColors");
-        }.bind(this));
+        }.bind(this);
+        PreferencesManager.on("change", "uppercaseColors", this._handleUppercaseColorsChange);
 
         this.$colorValue = this.$element.find(".color-value");
         this.$buttonList = this.$element.find("ul.button-bar");
@@ -270,7 +271,7 @@ define(function (require, exports, module) {
      * Remove any preference listeners before destroying the editor.
      */
     ColorEditor.prototype.destroy = function () {
-        PreferencesManager.off("change", "uppercaseColors");
+        PreferencesManager.off("change", "uppercaseColors", this._handleUppercaseColorsChange);
     };
 
     /**
