@@ -1088,6 +1088,29 @@
         min-height: 20px;
     }
 
+    .layers-rule-copy {
+        opacity: 0;
+    }
+
+    .layers-rule-header:hover .layers-rule-copy,
+    .layers-rule-header:focus-within .layers-rule-copy {
+        opacity: 1;
+    }
+
+    .layers-rule-header:focus-visible {
+        outline: 1px solid @layers-accent;
+        outline-offset: 2px;
+    }
+
+    .layers-style-notice {
+        padding: 8px;
+        margin-bottom: 6px;
+        border-radius: 4px;
+        background: @layers-accent-soft;
+        color: @project-panel-text-1;
+        font-size: @sidebar-small-font-size;
+    }
+
     .layers-rule-target .layers-rule-header {
         background: @layers-accent-soft;
         border-radius: 4px;
