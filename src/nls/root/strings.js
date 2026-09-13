@@ -836,7 +836,7 @@ define({
     "LIVE_PREVIEW_LAYERS_PASTE_FAILED": "Couldn’t paste these properties. Try again.",
     "LIVE_PREVIEW_LAYERS_PASTED": "Properties pasted into {0}",
     "LIVE_PREVIEW_LAYERS_COPY_FAILED": "Couldn’t copy these styles. Try again.",
-    "LIVE_PREVIEW_LAYERS_SAVE_TARGET": "Styles bar changes are saved here",
+    "LIVE_PREVIEW_LAYERS_ADD_INLINE_STYLE": "Add Inline Style",
     "LIVE_PREVIEW_LAYERS_INSERT_POSITION": "Placement",
     "LIVE_PREVIEW_LAYERS_INSERT_INTO_PAGE": "Add to the page",
     "LIVE_PREVIEW_LAYERS_INSERT_LOADING": "Loading elements…",
