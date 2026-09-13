@@ -297,7 +297,7 @@
         flex-shrink: 0;
     }
 
-    .layers-section-actions .layers-hdr-btn:not(.layers-active) {
+    .layers-section-actions .layers-hdr-btn:not(.layers-active):not(.layers-add-inline) {
         display: none;
     }
 
@@ -318,6 +318,12 @@
                 background: @layers-accent-strong;
             }
         }
+    }
+
+    .layers-add-inline:disabled {
+        opacity: 0.4;
+        background: none;
+        cursor: default;
     }
 
     .layers-maximize {
@@ -1145,23 +1151,6 @@
         background: @layers-accent-soft;
         color: @project-panel-text-1;
         font-size: @sidebar-small-font-size;
-    }
-
-    .layers-rule-target .layers-rule-header {
-        background: @layers-accent-soft;
-        border-radius: 4px;
-    }
-
-    .layers-rule-target-mark {
-        display: flex;
-        flex: none;
-        margin-left: 4px;
-        color: @layers-accent;
-
-        svg {
-            width: 12px;
-            height: 12px;
-        }
     }
 
     .layers-rule-selector {
