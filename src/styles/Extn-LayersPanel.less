@@ -1087,8 +1087,54 @@
         display: flex;
     }
 
-    .layers-decl.layers-editing .layers-decl-actions {
+    .layers-decl.layers-editing .layers-decl-actions,
+    .layers-decl.layers-copied .layers-decl-actions {
         display: none;
+    }
+
+    .layers-decl.layers-menu-target,
+    .layers-rule-header.layers-menu-target {
+        background: @layers-hover-bg;
+    }
+
+    .layers-decl.layers-copied {
+        animation: layers-flash-row 800ms ease-out;
+    }
+
+    .layers-rule-header.layers-copied {
+        border-radius: 3px;
+        animation: layers-flash-row 800ms ease-out;
+    }
+
+    .layers-copied-tip {
+        position: fixed;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        box-sizing: border-box;
+        height: 20px;
+        margin-top: -10px;
+        padding: 0 8px 0 6px;
+        border: 1px solid fade(@layers-accent, 55%);
+        border-radius: 10px;
+        background: #2a2a2a;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        color: @project-panel-text-1;
+        font-size: @sidebar-xs-font-size;
+        white-space: nowrap;
+        pointer-events: none;
+        animation: layers-copied-tip 1400ms ease-out forwards;
+
+        .layers-copied-icon {
+            display: flex;
+            color: @layers-accent;
+
+            svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
     }
 
     .layers-decl.layers-overridden {
@@ -1128,15 +1174,6 @@
         align-items: center;
         gap: 6px;
         min-height: 20px;
-    }
-
-    .layers-rule-copy {
-        opacity: 0;
-    }
-
-    .layers-rule-header:hover .layers-rule-copy,
-    .layers-rule-header:focus-within .layers-rule-copy {
-        opacity: 1;
     }
 
     .layers-rule-header:focus-visible {
@@ -1816,6 +1853,23 @@ body.layers-dnd-invalid {
         opacity: 1;
         transform: none;
         background-color: fade(@layers-accent, 45%);
+    }
+}
+
+@keyframes layers-copied-tip {
+    0% {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    12%, 80% {
+        opacity: 1;
+        transform: none;
+    }
+
+    100% {
+        opacity: 0;
+        transform: none;
     }
 }
 
