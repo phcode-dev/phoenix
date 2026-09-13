@@ -832,7 +832,7 @@
         }
     }
 
-    .layers-decl:not(.layers-editing) .layers-decl-value.layers-decl-numeric {
+    .layers-decl-value.layers-decl-numeric {
         cursor: ew-resize;
     }
 
@@ -1029,14 +1029,9 @@
         }
     }
 
-    .layers-value-scrub {
-        cursor: ew-resize;
-        width: 14px;
-        color: @project-panel-text-2;
-    }
-
     input.layers-decl-input[type="text"] {
         .layers-field-input();
+        user-select: text;
         flex: none;
         min-width: 3ch;
         padding: 0 4px;
