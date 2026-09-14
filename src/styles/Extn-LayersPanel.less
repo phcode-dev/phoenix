@@ -25,6 +25,7 @@
 @layers-accent-strong:  rgba(107, 158, 255, 0.26);
 @layers-hover-bg:       rgba(255, 255, 255, 0.06);
 @layers-border:         rgba(255, 255, 255, 0.09);
+@layers-border-strong:  rgba(255, 255, 255, 0.14);
 @layers-input-bg:       rgba(255, 255, 255, 0.04);
 @layers-input-bg-focus: rgba(255, 255, 255, 0.06);
 @layers-font-size:      13px;
@@ -1942,96 +1943,355 @@ body.layers-dnd-invalid {
     position: fixed;
     z-index: 1000;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     padding: 12px;
     overflow: auto;
     border: 1px solid @layers-border;
     border-radius: 10px;
     background: @bc-ai-sidebar-bg;
     color: @project-panel-text-1;
+    font-size: @layers-font-xs;
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+    outline: none;
 
     .layers-color-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
+        gap: 10px;
+        margin-top: -4px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid @layers-border-strong;
+    }
+
+    .layers-color-title {
+        flex: 1;
+        overflow: hidden;
         font-size: @sidebar-small-font-size;
-        font-weight: 500;
+        font-weight: 600;
+        color: @project-panel-text-2;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .layers-color-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex: none;
     }
 
     .layers-icon-btn {
         .layers-icon-button();
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+
+        svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        &.layers-on,
+        &.layers-on:hover {
+            background: @layers-accent;
+            color: #0b0b0b;
+        }
     }
 
-    .color-editor {
+    .layers-cp-main {
+        display: flex;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .layers-cp-right {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
         min-width: 0;
+    }
+
+    .layers-cp-checker {
+        background-image: repeating-conic-gradient(#666666 0% 25%, #bbbbbb 0% 50%);
+        background-size: 8px 8px;
+    }
+
+    .layers-cp-sv {
+        position: relative;
+        height: 168px;
+        border-radius: 6px;
+        cursor: crosshair;
+        touch-action: none;
+    }
+
+    .layers-cp-sv-white,
+    .layers-cp-sv-black {
+        position: absolute;
+        inset: 0;
+        border-radius: 6px;
+    }
+
+    .layers-cp-sv-white {
+        background: linear-gradient(to right, #ffffff, transparent);
+    }
+
+    .layers-cp-sv-black {
+        background: linear-gradient(to top, #000000, transparent);
+    }
+
+    .layers-cp-sv-thumb,
+    .layers-cp-thumb {
+        position: absolute;
+        box-sizing: border-box;
+        width: 14px;
+        height: 14px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    .layers-cp-thumb {
+        top: 50%;
+        background: transparent;
+    }
+
+    .layers-cp-bar {
+        position: relative;
+        height: 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        touch-action: none;
+    }
+
+    .layers-cp-hue {
+        background: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%,
+            #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    }
+
+    .layers-cp-alpha-grad {
+        position: absolute;
+        inset: 0;
+        border-radius: 6px;
+        pointer-events: none;
+    }
+
+    .layers-cp-divider,
+    .layers-cp-swatch-divider {
+        height: 1px;
+        flex: none;
+        background: @layers-border-strong;
+    }
+
+    .layers-cp-format-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .layers-cp-select {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
+        flex: none;
+        box-sizing: border-box;
+        width: 64px;
+        height: 28px;
+        margin: 0;
+        padding: 0 6px;
+        border: 1px solid @layers-border-strong;
+        border-radius: 6px;
+        background: @layers-input-bg;
+        color: @project-panel-text-1;
+        font: inherit;
+        font-size: @layers-font-xs;
+        cursor: pointer;
+
+        &:hover {
+            background: @layers-hover-bg;
+        }
+    }
+
+    .layers-cp-select-chevron {
+        display: inline-flex;
+        flex: none;
+        opacity: 0.8;
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .layers-cp-fields {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    input.layers-cp-chan[type="text"] {
+        flex: 1 1 0;
+        box-sizing: border-box;
         width: 100%;
-        height: auto;
+        min-width: 0;
+        height: 28px;
+        margin: 0;
+        padding: 0 6px;
+        border: 1px solid @layers-border-strong;
+        border-radius: 6px;
+        background: @layers-input-bg;
+        box-shadow: none;
+        color: @project-panel-text-1;
+        font-family: inherit;
+        font-size: @layers-font-xs;
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+        outline: none;
+
+        &:focus {
+            border-color: @layers-accent;
+            background: @layers-input-bg-focus;
+            box-shadow: none;
+        }
+
+        &.layers-cp-chan-hex {
+            text-align: left;
+            text-transform: uppercase;
+        }
+    }
+
+    .layers-cp-alpha-field {
+        position: relative;
+        flex: none;
+        width: 56px;
+
+        input.layers-cp-chan[type="text"] {
+            padding-right: 18px;
+            text-align: left;
+        }
+    }
+
+    .layers-cp-alpha-pct {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+        color: @project-panel-text-2;
+        font-size: 11px;
+        pointer-events: none;
+    }
+
+    .layers-cp-swatches {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: none;
+        width: 68px;
+    }
+
+    .layers-cp-swatch-label {
+        overflow: hidden;
+        color: @project-panel-text-2;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .layers-cp-swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 20px);
+        gap: 4px;
+        align-content: start;
+    }
+
+    .layers-cp-swatch {
+        box-sizing: border-box;
+        width: 20px;
+        height: 20px;
+        margin: 0;
         padding: 0;
+        border: 1px solid @layers-border-strong;
+        border-radius: 6px;
+        cursor: pointer;
 
-        aside {
-            display: none;
+        &:hover {
+            transform: scale(1.15);
+            border-color: @layers-accent;
         }
 
-        section {
-            display: block;
-            width: 100%;
+        &.layers-cp-swatch-active {
+            border-color: @layers-accent;
+            box-shadow: 0 0 0 2px @layers-accent-strong;
+        }
+    }
 
-            .sliders {
-                display: flex;
-                align-items: stretch;
-            }
+    .layers-cp-select-list {
+        position: fixed;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        box-sizing: border-box;
+        width: 110px;
+        padding: 4px;
+        border: 1px solid @layers-border-strong;
+        border-radius: 6px;
+        background: @layers-row-hover-bg;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
 
-            .color-selection-field {
-                flex: 1;
-                min-width: 0;
-                width: auto;
-                margin-right: 12px;
-                float: none;
-            }
+    .layers-cp-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 29px;
+        margin: 0;
+        padding: 6px 8px;
+        border: none;
+        border-radius: 6px;
+        background: transparent;
+        color: @project-panel-text-1;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
 
-            .slider {
-                flex: none;
-                margin-right: 12px;
-                float: none;
-            }
-
-            .opacity-slider {
-                margin-right: 0;
-            }
-
-            footer {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                padding-top: 12px;
-            }
-
-            footer input.color-value {
-                flex: 1;
-                min-width: 0;
-                width: 0;
-                height: 26px;
-                margin: 0;
-                padding: 0 6px;
-                border-color: @layers-border;
-                background: @layers-input-bg;
-                color: @project-panel-text-1;
-                font-family: @layers-mono;
-                font-size: 11px;
-
-                &:focus {
-                    border-color: @layers-accent;
-                    background: @layers-input-bg-focus;
-                    box-shadow: none;
-                }
-            }
+        &:hover {
+            background: @layers-hover-bg;
         }
 
-        ul.button-bar {
-            flex: none;
-            margin-left: 0;
-            white-space: nowrap;
+        &.layers-cp-option-active {
+            background: @layers-accent-soft;
         }
+    }
+
+    .layers-cp-option-label {
+        flex: 1;
+    }
+
+    .layers-cp-option-check {
+        display: inline-flex;
+        flex: none;
+        color: @layers-accent;
+        visibility: hidden;
+
+        svg {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    .layers-cp-option-active .layers-cp-option-check {
+        visibility: visible;
     }
 }
