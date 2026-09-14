@@ -259,6 +259,7 @@ function RemoteFunctions(config = {}) {
         selectElement: selectElement,
         isSelectedFromEditor: function () { return _selectedFromEditor; },
         isNamedSelection: _isNamedSelection,
+        toMatchableSelector: toMatchableSelector,
         sendSelectionToEditor: sendSelectionToEditor,
         brieflyDisableHoverListeners: brieflyDisableHoverListeners,
         handleElementClick: handleElementClick,
@@ -1127,6 +1128,23 @@ function RemoteFunctions(config = {}) {
         _clickHighlight.addAll(wanted);
     }
 
+    const RE_STATE_PSEUDO = /::?(?:hover|active|focus-within|focus-visible|focus|visited|target|checked|disabled|enabled|placeholder-shown|before|after|first-line|first-letter|marker|placeholder|selection)\b/gi;
+
+    // A :hover or ::before rule styles the element in a state it is not in right
+    // now, so it is matched as the plain selector to reach the elements it styles.
+    function toMatchableSelector(rule) {
+        const stripped = rule.replace(RE_STATE_PSEUDO, "");
+        if (stripped === rule) {
+            return rule;
+        }
+        try {
+            window.document.querySelector(stripped);
+            return stripped;
+        } catch (e) {
+            return rule;
+        }
+    }
+
     /**
      * Find the best element to select from a list of matched nodes
      * Prefers: previously selected element > parent of selected > first valid element
@@ -1185,7 +1203,7 @@ function RemoteFunctions(config = {}) {
         // is not useful, similar to how we skip the html tag in isElementInspectable.
         // The rule can be a comma-separated list of selectors (from multi-cursor),
         // so we filter out any standalone * segments and keep valid ones.
-        rule = rule.split(",").map(s => s.trim()).filter(s => s !== "*").join(",");
+        rule = toMatchableSelector(rule).split(",").map(s => s.trim()).filter(s => s !== "*").join(",");
         if (!rule) {
             dismissUIAndCleanupState();
             return;
