@@ -1386,52 +1386,90 @@ body.layers-scrubbing {
     }
 
     .layers-insert-position {
-        width: auto;
-        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
         box-sizing: border-box;
+        min-width: 84px;
+        max-width: 100%;
         height: 26px;
         margin: 0;
-        padding: 2px 26px 2px 9px;
-        border: 1px solid @layers-border;
-        border-radius: 3px;
-        box-shadow: none;
+        padding: 0 6px 0 9px;
+        border: 1px solid @layers-border-strong;
+        border-radius: 4px;
         background: @layers-input-bg;
         color: @project-panel-text-1;
-        font: inherit;
         font-size: 12.5px;
-        text-overflow: ellipsis;
-        appearance: none;
         cursor: pointer;
 
-        &:hover {
+        &:hover,
+        &[aria-expanded="true"] {
             background: @layers-hover-bg;
-            border-color: fade(@layers-insert-accent, 40%);
-        }
-
-        &:focus-visible {
-            outline: 1px solid @layers-insert-accent;
-            outline-offset: -1px;
-        }
-
-        option {
-            background: @bc-ai-sidebar-bg;
-            color: @project-panel-text-1;
         }
     }
 
+    .layers-insert-position-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     .layers-insert-chevron {
-        position: absolute;
-        top: 0;
-        right: 8px;
-        bottom: 0;
-        display: flex;
-        align-items: center;
+        display: inline-flex;
+        flex: none;
         color: @project-panel-text-2;
-        pointer-events: none;
 
         svg {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .layers-insert-position-list {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        box-sizing: border-box;
+        min-width: 100%;
+        padding: 4px;
+        border: 1px solid @layers-border-strong;
+        border-radius: 4px;
+        background: @layers-row-holder-bg;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .layers-insert-option {
+        display: flex;
+        align-items: center;
+        height: 28px;
+        padding: 0 8px;
+        border: none;
+        border-radius: 3px;
+        background: transparent;
+        color: @project-panel-text-1;
+        font-size: 12.5px;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:hover,
+        &:focus-visible {
+            background: @layers-hover-bg;
+            outline: none;
+        }
+
+        &.layers-insert-option-active {
+            background: @layers-accent-soft;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            background: transparent;
+            cursor: default;
         }
     }
 
