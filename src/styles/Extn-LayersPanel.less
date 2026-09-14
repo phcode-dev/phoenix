@@ -1029,12 +1029,16 @@
     .layers-decl-color {
         position: relative;
         flex: none;
-        width: 13px;
-        height: 13px;
+        box-sizing: border-box;
+        width: 14px;
+        height: 14px;
+        margin: 0;
         padding: 0;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 2px;
-        background: repeating-conic-gradient(#999 0% 25%, #fff 0% 50%) 0 0 / 6px 6px;
+        border: none;
+        border-radius: 0;
+        outline: none;
+        box-shadow: none;
+        background: repeating-conic-gradient(#999 0% 25%, #fff 0% 50%) 0 0 / 7px 7px;
         cursor: pointer;
 
         &::after {
@@ -1042,11 +1046,6 @@
             position: absolute;
             inset: 0;
             background: var(--layers-color);
-        }
-
-        &:focus-visible {
-            outline: 1px solid @layers-accent;
-            outline-offset: 2px;
         }
     }
 
@@ -1970,7 +1969,7 @@ body.layers-dnd-invalid {
         flex: 1;
         overflow: hidden;
         font-size: @sidebar-small-font-size;
-        font-weight: 600;
+        font-weight: 500;
         color: @project-panel-text-2;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -2181,11 +2180,14 @@ body.layers-dnd-invalid {
 
     .layers-cp-alpha-pct {
         position: absolute;
-        top: 50%;
+        top: 0;
         right: 8px;
-        transform: translateY(-50%);
+        bottom: 0;
+        display: flex;
+        align-items: center;
         color: @project-panel-text-2;
-        font-size: 11px;
+        font-size: @layers-font-xs;
+        line-height: 18px;
         pointer-events: none;
     }
 
@@ -2200,8 +2202,8 @@ body.layers-dnd-invalid {
     .layers-cp-swatch-label {
         overflow: hidden;
         color: @project-panel-text-2;
-        font-size: 9px;
-        font-weight: 600;
+        font-size: 10px;
+        font-weight: 500;
         letter-spacing: 0.04em;
         text-overflow: ellipsis;
         text-transform: uppercase;
@@ -2243,11 +2245,11 @@ body.layers-dnd-invalid {
         flex-direction: column;
         gap: 1px;
         box-sizing: border-box;
-        width: 110px;
+        width: 64px;
         padding: 4px;
         border: 1px solid @layers-border-strong;
         border-radius: 6px;
-        background: @layers-row-hover-bg;
+        background: @layers-row-holder-bg;
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
     }
 
@@ -2277,21 +2279,5 @@ body.layers-dnd-invalid {
 
     .layers-cp-option-label {
         flex: 1;
-    }
-
-    .layers-cp-option-check {
-        display: inline-flex;
-        flex: none;
-        color: @layers-accent;
-        visibility: hidden;
-
-        svg {
-            width: 15px;
-            height: 15px;
-        }
-    }
-
-    .layers-cp-option-active .layers-cp-option-check {
-        visibility: visible;
     }
 }
