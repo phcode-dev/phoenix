@@ -811,7 +811,6 @@ define({
   "LIVE_PREVIEW_LAYERS_EMPTY_PAGE_PROPERTIES": "الصفحة فارغة. أضف عنصرًا لرؤية خصائصه.",
   "LIVE_PREVIEW_LAYERS_EMPTY_PAGE_STYLES": "الصفحة فارغة. أضف عنصرًا لرؤية أنماطه.",
   "LIVE_PREVIEW_LAYERS_SHOW_SELECTED": "إظهار العنصر المحدد",
-  "LIVE_PREVIEW_LAYERS_SCRUB_HINT": "اسحب للضبط، وانقر نقرًا مزدوجًا للتحرير",
   "LIVE_PREVIEW_LAYERS_PROPERTY_PLACEHOLDER": "خاصية",
   "LIVE_PREVIEW_LAYERS_VALUE_PLACEHOLDER": "قيمة",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "تم إلغاء المعاينة المباشرة لأن أدوات مطوّري المتصفح كانت مفتوحة",
@@ -2662,6 +2661,7 @@ define({
   "AI_SETTINGS_DONE": "تم",
   "AI_SETTINGS_PROVIDER_TYPE_NOTE": "تُكوِّن جهات التوفير هذه {0}. يتم تمرير مفتاح API إليه كـ {1}.",
   "AI_SETTINGS_CLI_PATHS_NOTE": "اتركه فارغًا للكشف التلقائي.",
+  "AI_SETTINGS_CLI_PATH_LABEL": "مسار إلى {0} التنفيذي",
   "AI_SETTINGS_ENABLE_AI": "تفعيل ميزات الذكاء الاصطناعي",
   "AI_SETTINGS_ENABLE_AI_NOTE": "يقوم بتشغيل أو إيقاف جميع ميزات الذكاء الاصطناعي في {APP_NAME}. يؤدي تغيير هذا الإعداد إلى إعادة تشغيل {APP_NAME} لتطبيقه — يمكنك تمكينه مرة أخرى في أي وقت من <span class='ai-settings-menu-path'>قائمة عرض &gt; تمكين الذكاء الاصطناعي</span>.",
   "DEMO_SECTION1_TITLE": "تعديل في المعاينة المباشرة",
@@ -2782,5 +2782,14 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "AI_SETTINGS_CLI_PATH_LABEL": "مسار إلى {0} التنفيذي"
+  "LIVE_PREVIEW_LAYERS_CHANGE_COLOR": "تغيير اللون",
+  "LIVE_PREVIEW_LAYERS_COPY_DECLARATION": "نسخ الخاصية",
+  "LIVE_PREVIEW_LAYERS_COPY_RULE": "نسخ القاعدة",
+  "LIVE_PREVIEW_LAYERS_PASTE_PROPERTIES": "لصق الخصائص",
+  "LIVE_PREVIEW_LAYERS_PASTE": "لصق",
+  "LIVE_PREVIEW_LAYERS_STYLES_MENU_HINT": "انقر بزر الماوس الأيمن لنسخ الأنماط أو لصقها",
+  "LIVE_PREVIEW_LAYERS_PASTE_INVALID": "الصق خصائص CSS أو محددًا كاملًا واحدًا في كل مرة.",
+  "LIVE_PREVIEW_LAYERS_PASTE_FAILED": "تعذر لصق هذه الخصائص. حاول مرة أخرى.",
+  "LIVE_PREVIEW_LAYERS_PASTED": "تم لصق الخصائص في {0}",
+  "LIVE_PREVIEW_LAYERS_COPY_FAILED": "تعذر نسخ هذه الأنماط. حاول مرة أخرى."
 });
