@@ -160,7 +160,9 @@ define(function (require, exports, module) {
             this.setInstrumentationEnabled(true, true);
             this.editor.off("cursorActivity", this._onCursorActivity);
             this.editor.on("cursorActivity", this._onCursorActivity);
-            this.updateHighlight();
+            if (!_isCursorHighlightGated(this)) {
+                this.updateHighlight();
+            }
         }
     };
 
@@ -171,13 +173,29 @@ define(function (require, exports, module) {
     LiveDocument.prototype._detachFromEditor = function () {
         if (this.editor) {
             this._cancelPendingHighlight();
-            this.hideHighlight();
+            if (!_isCursorHighlightGated(this)) {
+                this.hideHighlight();
+            }
             this.editor.off("cursorActivity", this._onCursorActivity);
         }
     };
 
     let _disableHighlightOnCursor = false;
     let _cursorHighlightGeneration = 0;
+    let _cursorHighlightGate = null;
+
+    /**
+     * Lets something outside the live documents decide whether the caret may move
+     * the preview highlight, such as a panel holding a selection of its own.
+     * @param {?function(LiveDocument): boolean} gate Returns false to leave the preview alone; null removes it.
+     */
+    LiveDocument.setCursorHighlightGate = function (gate) {
+        _cursorHighlightGate = gate || null;
+    };
+
+    function _isCursorHighlightGated(liveDoc) {
+        return !!_cursorHighlightGate && _cursorHighlightGate(liveDoc) === false;
+    }
 
     /**
      * If tur, it will disable highlights in live preview on cursor movement in editor
@@ -210,14 +228,15 @@ define(function (require, exports, module) {
      */
     LiveDocument.prototype._onCursorActivity = function (event, editor) {
         this._cancelPendingHighlight();
-        if (!this.editor || _disableHighlightOnCursor) {
+        if (!this.editor || _disableHighlightOnCursor || _isCursorHighlightGated(this)) {
             return;
         }
         const self = this;
         const generation = _cursorHighlightGeneration;
         this._highlightTimer = window.setTimeout(function () {
             self._highlightTimer = null;
-            if (self.editor && !_disableHighlightOnCursor && generation === _cursorHighlightGeneration) {
+            if (self.editor && !_disableHighlightOnCursor && generation === _cursorHighlightGeneration &&
+                    !_isCursorHighlightGated(self)) {
                 self.updateHighlight();
             }
         }, CURSOR_HIGHLIGHT_DEBOUNCE_MS);
