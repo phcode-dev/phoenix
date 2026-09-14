@@ -297,7 +297,7 @@
         flex-shrink: 0;
     }
 
-    .layers-section-actions .layers-hdr-btn:not(.layers-active):not(.layers-add-inline) {
+    .layers-section-actions .layers-hdr-btn:not(.layers-active) {
         display: none;
     }
 
@@ -318,12 +318,6 @@
                 background: @layers-accent-strong;
             }
         }
-    }
-
-    .layers-add-inline:disabled {
-        opacity: 0.4;
-        background: none;
-        cursor: default;
     }
 
     .layers-maximize {
@@ -964,7 +958,8 @@
         color: @layers-prop-name;
     }
 
-    .layers-decl {
+    .layers-decl,
+    .layers-rule-empty {
         position: relative;
         display: flex;
         align-items: center;
@@ -981,6 +976,21 @@
         &:hover {
             background: @layers-hover-bg;
         }
+    }
+
+    .layers-rule-empty {
+        opacity: 0.4;
+        cursor: text;
+
+        &:hover,
+        &:focus-visible {
+            opacity: 0.75;
+            outline: none;
+        }
+    }
+
+    .layers-rule:has(.layers-decl) .layers-rule-empty {
+        display: none;
     }
 
     .layers-decl-name {
