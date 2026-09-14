@@ -502,6 +502,7 @@
         height: @layers-row-height;
         content-visibility: auto;
         contain-intrinsic-size: auto @layers-row-intrinsic-width auto @layers-row-height;
+        margin-right: 2px;
         padding-right: 6px;
         box-sizing: border-box;
         white-space: nowrap;
@@ -746,6 +747,12 @@
 
     .layers-node.layers-holds-selected .layers-node-tools {
         background: @layers-row-holder-bg;
+    }
+
+    .layers-node.layers-caret-target .layers-node-tools {
+        box-shadow: inset -1px 0 0 fade(@layers-accent, 55%),
+            inset 0 1px 0 fade(@layers-accent, 55%),
+            inset 0 -1px 0 fade(@layers-accent, 55%);
     }
 
     .layers-holder-chip {
