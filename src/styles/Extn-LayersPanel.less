@@ -27,10 +27,13 @@
 @layers-border:         rgba(255, 255, 255, 0.09);
 @layers-input-bg:       rgba(255, 255, 255, 0.04);
 @layers-input-bg-focus: rgba(255, 255, 255, 0.06);
-@layers-row-height:     26px;
+@layers-font-size:      13px;
+@layers-font-xs:        12px;
+@layers-font-tree:      14px;
+@layers-row-height:     28px;
 @layers-label-min-width: 72px;
 @layers-row-intrinsic-width: 115px;
-@layers-tools-width:    96px;
+@layers-tools-width:    106px;
 @layers-indent:         14px;
 @layers-mono:           ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 @layers-prop-name:      #9cdcfe;
@@ -44,8 +47,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     padding: 0;
     margin: 0;
     border: none;
@@ -57,8 +60,8 @@
     flex: none;
 
     svg {
-        width: 13px;
-        height: 13px;
+        width: 14px;
+        height: 14px;
         display: block;
         flex: none;
     }
@@ -71,7 +74,7 @@
 
 .layers-field-input() {
     box-sizing: border-box;
-    height: 22px;
+    height: 24px;
     padding: 0 6px;
     margin: 0;
     border: 1px solid transparent;
@@ -81,8 +84,8 @@
     background: transparent;
     color: @project-panel-text-1;
     font-family: @layers-mono;
-    font-size: @sidebar-xs-font-size;
-    line-height: 20px;
+    font-size: @layers-font-xs;
+    line-height: 22px;
     transition: none;
 
     &::placeholder {
@@ -116,7 +119,7 @@
     position: relative;
     background-color: @bc-ai-sidebar-bg;
     color: @project-panel-text-1;
-    font-size: @sidebar-small-font-size;
+    font-size: @layers-font-size;
     letter-spacing: normal;
     text-shadow: none;
 
@@ -163,7 +166,7 @@
     .layers-message-title {
         max-width: 100%;
         margin-bottom: 5px;
-        font-size: @sidebar-content-font-size;
+        font-size: @layers-font-tree;
         font-weight: 600;
         line-height: 1.35;
         color: @project-panel-text-1;
@@ -185,7 +188,7 @@
         background: @layers-accent-soft;
         color: @project-panel-text-1;
         font-family: inherit;
-        font-size: @sidebar-small-font-size;
+        font-size: @layers-font-size;
         font-weight: 500;
         line-height: 1.35;
         white-space: normal;
@@ -239,13 +242,13 @@
         display: flex;
         align-items: center;
         gap: 2px;
-        height: 26px;
+        height: 28px;
         padding: 0 6px 0 2px;
         flex-shrink: 0;
         box-sizing: border-box;
         cursor: default;
         user-select: none;
-        font-size: @sidebar-xs-font-size;
+        font-size: @layers-font-xs;
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
@@ -260,16 +263,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         flex: none;
         border-radius: 4px;
         color: @project-panel-text-2;
         cursor: pointer;
 
         svg {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             transition: transform 120ms ease;
         }
 
@@ -292,7 +295,7 @@
     .layers-section-actions {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 2px;
         margin-left: auto;
         flex-shrink: 0;
     }
@@ -324,8 +327,8 @@
         opacity: 0;
 
         svg {
-            width: 11px;
-            height: 11px;
+            width: 12px;
+            height: 12px;
         }
     }
 
@@ -393,7 +396,7 @@
         align-items: center;
         gap: 6px;
         width: 100%;
-        height: 26px;
+        height: 28px;
         padding: 0 6px 0 8px;
         box-sizing: border-box;
         border: 1px solid @layers-border;
@@ -406,8 +409,8 @@
         }
 
         > svg {
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
             flex: none;
             color: @project-panel-text-2;
         }
@@ -424,7 +427,7 @@
             background: transparent;
             color: @project-panel-text-1;
             font-family: inherit;
-            font-size: @sidebar-small-font-size;
+            font-size: @layers-font-size;
 
             &::placeholder {
                 color: @project-panel-text-2;
@@ -437,8 +440,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
         padding: 0;
         margin: 0;
         border: none;
@@ -450,8 +453,8 @@
         flex: none;
 
         svg {
-            width: 11px;
-            height: 11px;
+            width: 12px;
+            height: 12px;
             display: block;
         }
 
@@ -469,7 +472,7 @@
         padding-bottom: 6px;
         min-width: min-content;
         outline: none;
-        font-size: @sidebar-content-font-size;
+        font-size: @layers-font-tree;
     }
 
     .layers-sprite {
@@ -560,7 +563,7 @@
         border-radius: 6px;
         background: @layers-input-bg;
         color: @project-panel-text-1;
-        font-size: @sidebar-xs-font-size;
+        font-size: @layers-font-xs;
         line-height: 1.4;
         white-space: normal;
         animation: layers-notice-in 180ms ease-out;
@@ -570,15 +573,15 @@
             align-items: center;
             justify-content: center;
             flex: none;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 4px;
             background: @layers-accent-soft;
             color: @layers-accent;
 
             svg {
-                width: 12px;
-                height: 12px;
+                width: 13px;
+                height: 13px;
                 display: block;
             }
         }
@@ -593,15 +596,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 16px;
-        height: 16px;
+        width: 17px;
+        height: 17px;
         flex: none;
         margin-right: 6px;
         color: @project-panel-text-2;
 
         svg {
-            width: 15px;
-            height: 15px;
+            width: 16px;
+            height: 16px;
         }
     }
 
@@ -613,15 +616,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 15px;
-        height: 15px;
+        width: 16px;
+        height: 16px;
         flex: none;
         margin-right: 6px;
         color: @project-panel-text-2;
 
         svg {
-            width: 15px;
-            height: 15px;
+            width: 16px;
+            height: 16px;
             display: block;
         }
     }
@@ -646,8 +649,8 @@
         opacity: 0.8;
 
         svg {
-            width: 11px;
-            height: 11px;
+            width: 12px;
+            height: 12px;
             display: block;
         }
     }
@@ -669,8 +672,8 @@
         margin-top: 1px;
 
         svg {
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
             display: block;
         }
     }
@@ -699,7 +702,7 @@
     .layers-node-tools {
         display: flex;
         align-items: center;
-        gap: 1px;
+        gap: 2px;
         position: sticky;
         right: 0;
         width: fit-content;
@@ -744,9 +747,9 @@
         position: absolute;
         left: 0;
         top: 50%;
-        width: 6px;
-        height: 18px;
-        margin-top: -9px;
+        width: 8px;
+        height: 24px;
+        margin-top: -12px;
         padding: 0;
         border: none;
         border-radius: 0 3px 3px 0;
@@ -757,7 +760,7 @@
         transition: width 100ms ease, background-color 100ms ease;
 
         &:hover {
-            width: 9px;
+            width: 11px;
             background: @layers-accent;
         }
     }
@@ -845,10 +848,7 @@
     }
 
     .layers-label {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
+        font-size: @layers-font-xs;
         color: @project-panel-text-2;
         user-select: none;
     }
@@ -857,10 +857,10 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        min-height: 24px;
+        min-height: 26px;
 
         .layers-label {
-            flex: 0 0 44px;
+            flex: 0 0 48px;
         }
     }
 
@@ -886,8 +886,8 @@
         padding: 0 5px;
         color: @project-panel-text-2;
         font-family: @layers-mono;
-        font-size: @sidebar-xs-font-size;
-        line-height: 22px;
+        font-size: @layers-font-xs;
+        line-height: 24px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -902,7 +902,7 @@
     .layers-attrs-header {
         display: flex;
         align-items: center;
-        min-height: 20px;
+        min-height: 22px;
 
         .layers-label {
             flex: 1;
@@ -928,7 +928,7 @@
         display: flex;
         align-items: center;
         gap: 4px;
-        min-height: 24px;
+        min-height: 26px;
 
         .layers-icon-btn {
             opacity: 0;
@@ -942,19 +942,19 @@
 
     .layers-attr-name {
         flex: 0 1 auto;
-        min-width: 44px;
+        min-width: 48px;
         max-width: 45%;
         padding-left: 5px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         font-family: @layers-mono;
-        font-size: @sidebar-xs-font-size;
+        font-size: @layers-font-xs;
         color: @layers-prop-name;
     }
 
     .layers-attr-row [data-role="name"] {
-        flex: 0 0 44px;
+        flex: 0 0 48px;
         color: @layers-prop-name;
     }
 
@@ -966,11 +966,11 @@
         box-sizing: border-box;
         min-width: 100%;
         width: max-content;
-        min-height: 26px;
+        min-height: 24px;
         padding: 0 4px 0 8px;
         font-family: @layers-mono;
-        font-size: @sidebar-xs-font-size;
-        line-height: 22px;
+        font-size: @layers-font-xs;
+        line-height: 24px;
         user-select: none;
 
         &:hover {
@@ -1024,8 +1024,8 @@
     .layers-decl-color {
         position: relative;
         flex: none;
-        width: 12px;
-        height: 12px;
+        width: 13px;
+        height: 13px;
         padding: 0;
         border: 1px solid rgba(255, 255, 255, 0.25);
         border-radius: 2px;
@@ -1123,15 +1123,15 @@
         align-items: center;
         gap: 4px;
         box-sizing: border-box;
-        height: 20px;
-        margin-top: -10px;
+        height: 22px;
+        margin-top: -11px;
         padding: 0 8px 0 6px;
         border: 1px solid fade(@layers-accent, 55%);
-        border-radius: 10px;
+        border-radius: 11px;
         background: #2a2a2a;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
         color: @project-panel-text-1;
-        font-size: @sidebar-xs-font-size;
+        font-size: @layers-font-xs;
         white-space: nowrap;
         pointer-events: none;
         animation: layers-copied-tip 1400ms ease-out forwards;
@@ -1183,7 +1183,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        min-height: 20px;
+        min-height: 22px;
     }
 
     .layers-rule-header:focus-visible {
@@ -1197,7 +1197,7 @@
         border-radius: 4px;
         background: @layers-accent-soft;
         color: @project-panel-text-1;
-        font-size: @sidebar-small-font-size;
+        font-size: @layers-font-size;
     }
 
     .layers-rule-selector {
@@ -1207,7 +1207,8 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         font-family: @layers-mono;
-        font-size: @sidebar-xs-font-size;
+        font-size: @layers-font-xs;
+        font-weight: 600;
         color: @project-panel-text-1;
     }
 
@@ -1217,7 +1218,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: 10px;
+        font-size: 11px;
         color: @project-panel-text-2;
         cursor: pointer;
 
@@ -1274,8 +1275,8 @@
     background: #2f2f2f;
     color: @project-panel-text-1;
     font-family: @layers-mono;
-    font-size: 11px;
-    line-height: 15px;
+    font-size: 12px;
+    line-height: 16px;
     white-space: nowrap;
     pointer-events: none;
 }
@@ -1681,8 +1682,8 @@ body.layers-scrubbing {
     background: #2a2a2a;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.3);
     font-family: @layers-mono;
-    font-size: @sidebar-xs-font-size;
-    line-height: 20px;
+    font-size: @layers-font-xs;
+    line-height: 22px;
     animation: layers-notice-in 90ms ease-out;
 
     &::-webkit-scrollbar {
@@ -1712,7 +1713,7 @@ body.layers-scrubbing {
     display: flex;
     align-items: center;
     gap: 8px;
-    height: 22px;
+    height: 24px;
     padding: 0 8px;
     border-radius: 4px;
     color: #d8d8d8;
@@ -1796,14 +1797,14 @@ body.layers-dnd-invalid {
     border-radius: 4px;
     background: #2f2f2f;
     color: #e0e0e0;
-    font-size: 12px;
+    font-size: 13px;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0.92;
 
     svg {
-        width: 14px;
-        height: 14px;
+        width: 15px;
+        height: 15px;
         display: block;
     }
 
