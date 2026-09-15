@@ -239,9 +239,12 @@ define(function (require, exports, module) {
         }
     }
 
-    StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
+    StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function (_ev, event) {
         if($iframe && $iframe[0]) {
             const iframeDom = $iframe[0];
+            if (event && event.source === iframeDom.contentWindow && event.data.clientID) {
+                _dockedClientID = event.data.clientID;
+            }
             iframeDom.contentWindow.postMessage({
                 type: "WHO_AM_I_RESPONSE",
                 isTauri: Phoenix.isNativeApp,
@@ -616,6 +619,7 @@ define(function (require, exports, module) {
         currentPreviewFile = '',
         _loadGeneration = 0,
         _isMdviewrActive = false,
+        _dockedClientID = null,
         $mdviewrIframe = null; // persistent md iframe, survives HTML preview switches
 
     /**
@@ -629,6 +633,17 @@ define(function (require, exports, module) {
         }
         currentPreviewFile = fullPath;
         exports.trigger(EVENT_PREVIEWED_FILE_CHANGE, fullPath);
+    }
+
+    // A removed iframe never fires beforeunload, so its connection would linger until the tab heartbeat expires.
+    function _dropDockedConnection() {
+        if (!_dockedClientID) {
+            return;
+        }
+        const clientID = _dockedClientID;
+        _dockedClientID = null;
+        StaticServer.livePreviewTabs.delete(clientID);
+        StaticServer.trigger('BROWSER_CLOSE', { data: { message: {clientID}}});
     }
 
     function _blankIframe() {
@@ -656,6 +671,7 @@ define(function (require, exports, module) {
         } else {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
+            _dropDockedConnection();
             $iframe.remove();
             $iframe = newIframe;
         }
