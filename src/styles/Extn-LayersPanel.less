@@ -249,6 +249,104 @@
         }
     }
 
+    .layers-message.layers-message-files {
+        justify-content: flex-start;
+        padding: 32px 8px 8px;
+
+        .layers-message-text {
+            margin-bottom: 14px;
+        }
+    }
+
+    .layers-files {
+        display: flex;
+        flex-direction: column;
+        flex: 0 1 auto;
+        width: 100%;
+        min-height: 0;
+        text-align: left;
+
+        .layers-search {
+            padding: 0 0 6px;
+        }
+    }
+
+    .layers-files-list {
+        flex: 0 1 auto;
+        min-height: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .layers-file {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        height: @layers-row-height;
+        padding: 0 8px;
+        margin: 0;
+        border: none;
+        border-radius: 5px;
+        background: transparent;
+        color: @project-panel-text-1;
+        font-family: inherit;
+        font-size: @layers-font-size;
+        text-align: left;
+        white-space: nowrap;
+        cursor: pointer;
+        outline: none;
+
+        &:hover {
+            background: @layers-row-hover-bg;
+        }
+
+        &:focus-visible {
+            background: @layers-row-hover-bg;
+            box-shadow: inset 0 0 0 1px @layers-accent;
+        }
+    }
+
+    .layers-file-icon {
+        flex: none;
+        width: 14px;
+        font-size: 13px;
+        text-align: center;
+        color: @project-panel-text-2;
+    }
+
+    .layers-file-icon-html {
+        color: #e44d26;
+    }
+
+    .layers-file-icon-php {
+        color: #8892bf;
+    }
+
+    .layers-file-name {
+        flex: 0 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .layers-file-dir {
+        flex: 0 1000 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: @project-panel-text-2;
+        font-size: @layers-font-xs;
+    }
+
+    .layers-files-note {
+        padding: 8px;
+        color: @project-panel-text-2;
+        font-size: @layers-font-xs;
+        text-align: center;
+    }
+
     .layers-panel {
         display: flex;
         flex-direction: column;
