@@ -147,26 +147,21 @@
         white-space: normal;
         overflow-wrap: break-word;
         word-break: break-word;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     .layers-message-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         flex: none;
-        width: 44px;
-        height: 44px;
         margin-bottom: 14px;
-        border: 1px solid @layers-border;
-        border-radius: 50%;
-        background: @layers-accent-soft;
-        color: @layers-accent;
-        font-size: 17px;
+        color: @project-panel-text-2;
+        font-size: 24px;
+        line-height: 1;
     }
 
     .layers-message-title {
         max-width: 100%;
-        margin-bottom: 5px;
+        margin-bottom: 6px;
         font-size: @layers-font-tree;
         font-weight: 600;
         line-height: 1.35;
@@ -174,40 +169,83 @@
     }
 
     .layers-message-text {
-        max-width: 240px;
+        max-width: 230px;
         color: @project-panel-text-2;
-        line-height: 1.5;
+        line-height: 1.55;
+    }
+
+    .layers-message-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 220px;
+        margin-top: 20px;
+
+        .layers-message-btn {
+            width: 100%;
+            margin-top: 0;
+        }
     }
 
     .layers-message-btn {
         box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         max-width: 100%;
+        min-height: 36px;
         margin-top: 16px;
-        padding: 7px 16px;
-        border: 1px solid @layers-accent;
-        border-radius: 6px;
-        background: @layers-accent-soft;
-        color: @project-panel-text-1;
+        padding: 9px 16px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        background: #ececec;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        color: #1e1e1e;
         font-family: inherit;
         font-size: @layers-font-size;
-        font-weight: 500;
+        font-weight: 400;
         line-height: 1.35;
         white-space: normal;
         cursor: pointer;
         outline: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-text-stroke: 0.25px currentColor;
         transition: background-color 120ms ease, border-color 120ms ease;
 
         &:hover {
-            background: @layers-accent-strong;
+            background: #ffffff;
         }
 
         &:active {
-            background: @layers-accent-strong;
-            transform: translateY(1px);
+            background: #dcdcdc;
         }
 
         &:focus-visible {
-            box-shadow: 0 0 0 2px @layers-accent-soft;
+            box-shadow: 0 0 0 2px fade(@layers-accent, 55%);
+        }
+    }
+
+    .layers-message-btn-secondary {
+        background: transparent;
+        border-color: @layers-border-strong;
+        box-shadow: none;
+        color: @project-panel-text-1;
+
+        i {
+            font-size: 11px;
+            color: @project-panel-text-2;
+        }
+
+        &:hover {
+            background: @layers-hover-bg;
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        &:active {
+            background: @layers-input-bg;
         }
     }
 
