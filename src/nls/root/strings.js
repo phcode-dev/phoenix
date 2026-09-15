@@ -788,6 +788,7 @@ define({
     "LIVE_PREVIEW_LAYERS_TAB": "Layers",
     "LIVE_PREVIEW_LAYERS_NEEDS_PREVIEW": "The Layers panel needs a live preview.",
     "LIVE_PREVIEW_LAYERS_OPEN_PREVIEW": "Open Live Preview",
+    "LIVE_PREVIEW_LAYERS_OPEN_IN_BROWSER": "Open in Browser",
     "LIVE_PREVIEW_LAYERS_NEEDS_HTML": "Open an HTML file to see its layers.",
     "LIVE_PREVIEW_LAYERS_NEEDS_EDIT_MODE": "The Layers panel needs edit mode.",
     "LIVE_PREVIEW_LAYERS_ENABLE_EDIT_MODE": "Turn on Edit Mode",
