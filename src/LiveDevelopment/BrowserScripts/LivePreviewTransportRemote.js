@@ -526,7 +526,8 @@
         window.parent.postMessage({
             handlerName: "ph-liveServer",
             eventName: 'whoAmIframePhoenix',
-            href: location.href
+            href: location.href,
+            clientID: clientID
         }, "*");
     }
 }(this));
