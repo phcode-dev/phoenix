@@ -821,6 +821,7 @@ define({
     "LIVE_PREVIEW_LAYERS_OPEN_SOURCE": "Open in editor",
     "LIVE_PREVIEW_LAYERS_RULE_INACTIVE": "Not active in the current state",
     "LIVE_PREVIEW_LAYERS_EDIT_STYLE": "Edit in Styles Bar",
+    "LIVE_PREVIEW_LAYERS_STYLES_BAR_POPPED_OUT": "Styles bar opened in your browser preview",
     "LIVE_PREVIEW_LAYERS_ADD_DECLARATION": "Add Declaration",
     "LIVE_PREVIEW_LAYERS_REMOVE_DECLARATION": "Remove Declaration",
     "LIVE_PREVIEW_LAYERS_EDIT_DECLARATION": "Edit Declaration",
