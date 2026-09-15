@@ -983,6 +983,22 @@
         }
     }
 
+    .layers-loading-page {
+        animation: layers-loading-in 150ms ease-out 300ms both;
+    }
+
+    .layers-loading-spinner {
+        flex: none;
+        width: 18px;
+        height: 18px;
+        margin-bottom: 6px;
+        box-sizing: border-box;
+        border: 2px solid @layers-border-strong;
+        border-top-color: @layers-accent;
+        border-radius: 50%;
+        animation: layers-spin 800ms linear infinite;
+    }
+
     .layers-decl-value.layers-decl-numeric {
         cursor: ew-resize;
     }
@@ -2102,7 +2118,31 @@ body.layers-dnd-invalid {
     }
 }
 
+@keyframes layers-loading-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes layers-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
+    .layers-tab-container .layers-loading-page {
+        animation-duration: 1ms;
+    }
+
+    .layers-tab-container .layers-loading-spinner {
+        animation-duration: 1600ms;
+    }
+
     .layers-tab-container .layers-node.layers-flash {
         animation-duration: 1ms;
         background-color: fade(@layers-accent, 32%);
