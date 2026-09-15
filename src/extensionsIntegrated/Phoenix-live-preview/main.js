@@ -733,7 +733,7 @@ define(function (require, exports, module) {
         // In design mode the LP panel fills the editor area — hiding it would
         // leave the user staring at a blank workspace. Keep the panel open and
         // just open the popout alongside it.
-        const closePanelAfterPopout = !WorkspaceManager.isInDesignMode();
+        const closePanelAfterPopout = !WorkspaceManager.isInDesignMode() && panel.isVisible();
         if(browserName && ALLOWED_BROWSERS_NAMES.includes(browserName)){
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popout", browserName);
             NodeUtils.openUrlInBrowser(openURL, browserName)
@@ -760,6 +760,33 @@ define(function (require, exports, module) {
                 _setPanelVisibility(false);
             }
         }
+    }
+
+    function _isPopoutSupported() {
+        return Phoenix.isNativeApp || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
+    }
+
+    /**
+     * Whether the previewed page can be opened in a browser: the platform allows it and a page has been previewed.
+     * @return {boolean}
+     */
+    function canPopoutLivePreview() {
+        return _isPopoutSupported() && !!currentLivePreviewURL;
+    }
+
+    /**
+     * Opens the previewed page in the default browser, starting the live preview session if it is off.
+     * @return {boolean} false when there is no page to open
+     */
+    function popoutLivePreview() {
+        if (!canPopoutLivePreview()) {
+            return false;
+        }
+        if (LiveDevelopment.isInactive()) {
+            LiveDevelopment.openLivePreview();
+        }
+        _popoutLivePreview();
+        return true;
     }
 
     function _setTitle(fileName, fullPath, currentLivePreviewURL) {
@@ -925,9 +952,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtn", "click");
         });
 
-        const popoutSupported = Phoenix.isNativeApp
-            || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
-        if(!popoutSupported){
+        if(!_isPopoutSupported()){
             // live preview can be popped out currently in only chrome based browsers. The cross domain iframe
             // that serves the live preview(phcode.live) is sandboxed to the tab in which phcode.dev resides.
             // all iframes in the tab can communicate between each other, but when you popout another tab, it forms
@@ -1806,6 +1831,8 @@ define(function (require, exports, module) {
     exports.showInterstitial = showInterstitial;
     exports.hideInterstitial = hideInterstitial;
     exports.getPreviewedFilePath = getPreviewedFilePath;
+    exports.canPopoutLivePreview = canPopoutLivePreview;
+    exports.popoutLivePreview = popoutLivePreview;
 });
 
 
