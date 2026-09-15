@@ -212,21 +212,9 @@ define(function (require, exports, module) {
     // A selection Phoenix asked the live preview to make - the layers panel picking
     // an element - never took focus away from the editor side, so there is nothing
     // to restore and pulling focus into the editor would take it off whatever asked
-    // for the selection. Time boxed so a selection that never reports back cannot
-    // leave the next real click in the preview without its focus.
-    const KEEP_FOCUS_WINDOW_MS = 1500;
-    let _keepFocusUntil = 0;
-
-    function keepFocusOnNextSelect() {
-        _keepFocusUntil = Date.now() + KEEP_FOCUS_WINDOW_MS;
-    }
-
-    function _shouldKeepFocus() {
-        return Date.now() < _keepFocusUntil;
-    }
-
-    function _focusEditorIfNeeded(editor, tagName, contentEditable) {
-        if (WorkspaceManager.isInDesignMode() || _shouldKeepFocus()) {
+    // for the selection. The page flags the report of such a selection as requested.
+    function _focusEditorIfNeeded(editor, tagName, contentEditable, keepFocus) {
+        if (WorkspaceManager.isInDesignMode() || keepFocus) {
             return;
         }
         const focusShouldBeInLivePreview = ['INPUT', 'TEXTAREA'].includes(tagName) || contentEditable;
@@ -274,7 +262,7 @@ define(function (require, exports, module) {
         }
     }
 
-    function _tagSelectedInLivePreview(tagId, nodeName, contentEditable, allSelectors) {
+    function _tagSelectedInLivePreview(tagId, nodeName, contentEditable, allSelectors, keepFocus) {
         const livePreviewMode = PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE);
         if(livePreviewMode === CONSTANTS.LIVE_PREVIEW_MODE){
             // hilights are enabled only in edit and highlight mode
@@ -287,7 +275,7 @@ define(function (require, exports, module) {
             activeEditorPath = activeEditor ? activeEditor.document.file.fullPath : null,
             activeFullEditorPath = activeFullEditor ? activeFullEditor.document.file.fullPath : null;
         if(!liveDocPath){
-            if (activeEditor && !WorkspaceManager.isInDesignMode() && !_shouldKeepFocus()) {
+            if (activeEditor && !WorkspaceManager.isInDesignMode() && !keepFocus) {
                 activeEditor.focus(); // restore focus from live preview
             }
             return;
@@ -306,7 +294,7 @@ define(function (require, exports, module) {
                 const position = positionResult.from;
                 const masterEditor = fullHtmlEditor.document._masterEditor || fullHtmlEditor;
                 masterEditor.setCursorPos(position.line, position.ch, true);
-                _focusEditorIfNeeded(masterEditor, nodeName, contentEditable);
+                _focusEditorIfNeeded(masterEditor, nodeName, contentEditable, keepFocus);
             }
         }
         if(liveDocPath === activeFullEditorPath) {
@@ -316,7 +304,7 @@ define(function (require, exports, module) {
             // the active editor takes the priority in the workflow. If a css related file is active,
             // then we dont need to open the html live doc. For less files, we dont check if its related as
             // its not directly linked usually and needs a compile step. so we just do a fuzzy search.
-            _focusEditorIfNeeded(activeEditor, nodeName, contentEditable);
+            _focusEditorIfNeeded(activeEditor, nodeName, contentEditable, keepFocus);
             _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
             // in this case, see if we need to do any css reverse highlight magic here
         } else if(!allOpenFileCount){
@@ -402,12 +390,12 @@ define(function (require, exports, module) {
             const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(true);
             try {
-                _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable, msg.allSelectors);
+                _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable, msg.allSelectors,
+                    !!msg.requested);
                 exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
             } catch (e) {
                 console.error("error in tag selection", e);
             }
-            _keepFocusUntil = 0;
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(false);
             // the caret did not move for a script-added element, re-highlighting would drop its selection
             liveDoc && !msg.sourceless && liveDoc.updateHighlight();
@@ -792,7 +780,6 @@ define(function (require, exports, module) {
     exports.setLivePreviewMessageHandler = setLivePreviewMessageHandler;
     exports.setCustomRemoteFunctionProvider = setCustomRemoteFunctionProvider;
     // lp communication functions
-    exports.keepFocusOnNextSelect = keepFocusOnNextSelect;
     exports.registerPhoenixFn = registerPhoenixFn;
     exports.triggerLPFn = triggerLPFn;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;

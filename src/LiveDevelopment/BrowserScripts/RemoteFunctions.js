@@ -1038,8 +1038,10 @@ function RemoteFunctions(config = {}) {
      * the same way without a pointer gesture ever touching the page.
      *
      * @param {HTMLElement} element
+     * @param {boolean=} requested - the editor side asked for this selection, so it keeps its
+     *     focus and reads the report as the echo of its own pick
      */
-    function sendSelectionToEditor(element) {
+    function sendSelectionToEditor(element, requested) {
         if (config.syncSourceAndPreview === false) {
             return;
         }
@@ -1053,7 +1055,8 @@ function RemoteFunctions(config = {}) {
             "nodeName": element.nodeName,
             "allSelectors": window.getAllInheritedSelectorsInOrder(element),
             "contentEditable": element.contentEditable === "true",
-            "clicked": true
+            "clicked": true,
+            "requested": !!requested
         });
     }
 
