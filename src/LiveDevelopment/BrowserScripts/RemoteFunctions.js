@@ -127,9 +127,8 @@ function RemoteFunctions(config = {}) {
      * inspectable elements are those which doesn't have GLOBALS.DATA_BRACKETS_ID_ATTR ('data-brackets-id'),
      * this normally happens when content is DOM content is inserted by some scripting language
      *
-     * Elements opted out via `phcode-no-lp-edit` (cascades to descendants) or
-     * `phcode-no-lp-edit-this` (this element only) are also non-inspectable so
-     * every downstream tool inherits the opt-out automatically.
+     * The `phcode-no-lp-edit` opt-out is not part of this check: it only keeps the
+     * pointer off an element, see isPointerEditOptedOut.
      *
      * @param {DOMElement} element
      * @param {boolean} [onlyHighlight=false] - If true, bypasses the mode check
@@ -144,8 +143,7 @@ function RemoteFunctions(config = {}) {
             element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
             // this attribute is used by phoenix internal elements
             !element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`) &&
-            !_isInsideHeadTag(element) && // shouldn't be inside the head tag like meta tags and all
-            !_isEditOptedOut(element)) {
+            !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
             return true;
         }
         return false;
@@ -157,21 +155,24 @@ function RemoteFunctions(config = {}) {
         return !!(element && element.tagName && element.tagName.toLowerCase() === "body");
     }
 
-    // a named selection lifts the `phcode-no-lp-edit` opt-out and the body block, both pointer-only guards
+    // a named selection lifts the body block, a pointer-only guard
     function _isNamedSelection(element) {
         return !!element && element === _namedSelection;
     }
 
     /**
+     * Whether the page keeps pointer actions on this element to itself: hover,
+     * click, double click and drops in the live preview leave it alone, so its
+     * own widgets keep working. It is still an element like any other to every
+     * path that is not the pointer - the layers panel, the caret, the tools.
      * `phcode-no-lp-edit` cascades to descendants, `phcode-no-lp-edit-this` covers
      * the one element.
+     * @param {DOMElement} element
+     * @returns {boolean}
      */
-    function _isEditOptedOut(element) {
-        if (_isNamedSelection(element)) {
-            return false;
-        }
-        return !!(element.closest('.phcode-no-lp-edit') ||
-            (element.classList && element.classList.contains('phcode-no-lp-edit-this')));
+    function isPointerEditOptedOut(element) {
+        return !!(element && element.closest && (element.closest('.phcode-no-lp-edit') ||
+            (element.classList && element.classList.contains('phcode-no-lp-edit-this'))));
     }
 
     /**
@@ -250,6 +251,7 @@ function RemoteFunctions(config = {}) {
         getAllToolHandlers: getAllToolHandlers,
         isElementEditable: isElementEditable,
         isElementInspectable: isElementInspectable,
+        isPointerEditOptedOut: isPointerEditOptedOut,
         isBodyElement: isBodyElement,
         isSourceless: isSourceless,
         getElementRef: getElementRef,
@@ -751,7 +753,7 @@ function RemoteFunctions(config = {}) {
             return;
         }
         if(isBodyElement(element) || !LivePreviewView.isElementInspectable(element) ||
-                element.nodeType !== Node.ELEMENT_NODE) {
+                isPointerEditOptedOut(element) || element.nodeType !== Node.ELEMENT_NODE) {
             return;
         }
         _lastHoverTarget = element;
@@ -830,7 +832,7 @@ function RemoteFunctions(config = {}) {
         }
 
         dismissUIAndCleanupState();
-        // set after the dismissal, which clears the previous selection's exemption
+        // set after the dismissal, which clears the previous selection's body exemption
         _namedSelection = byName ? element : null;
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
@@ -1008,8 +1010,7 @@ function RemoteFunctions(config = {}) {
             return;
         }
         // Opted-out elements: silent no-op so the user's existing selection isn't dismissed.
-        // (isElementInspectable would also reject them, but that path runs dismissUIAndCleanupState.)
-        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
+        if(isPointerEditOptedOut(element)) {
             return;
         }
         // a blank-space click lands on the body and deselects, even a body selected by name
