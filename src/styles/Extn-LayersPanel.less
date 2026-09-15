@@ -1317,6 +1317,65 @@
         }
     }
 
+    .layers-why {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 16px;
+        height: 16px;
+        margin-left: 4px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: none;
+        color: @project-panel-text-2;
+        cursor: pointer;
+        outline: none;
+        transform: translateY(1px);
+
+        svg {
+            display: block;
+            width: 12px;
+            height: 12px;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: @layers-accent;
+        }
+    }
+
+    .layers-rule-header .layers-why {
+        margin-left: 0;
+    }
+
+    .layers-why-tip {
+        position: fixed;
+        z-index: 10;
+        box-sizing: border-box;
+        max-width: 280px;
+        padding: 5px 8px;
+        border: 1px solid fade(@layers-accent, 55%);
+        border-radius: 6px;
+        background: #2a2a2a;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        color: @project-panel-text-1;
+        font-size: @layers-font-size;
+        line-height: 18px;
+        white-space: normal;
+        pointer-events: none;
+
+        .layers-why-hint {
+            margin-top: 2px;
+            color: @project-panel-text-2;
+        }
+    }
+
+    .layers-decl.layers-decl-winner {
+        animation: layers-flash-row 800ms ease-out;
+    }
+
     .layers-icon-btn {
         .layers-icon-button();
         align-self: center;
