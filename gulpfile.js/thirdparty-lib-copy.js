@@ -27,6 +27,16 @@ const path = require('path');
 // removed require('merge-stream') node module. it gives wired glob behavior and some files goes missing
 const rename = require("gulp-rename");
 
+const copyOptions = {
+    /**
+     * Preserve CSS encoding markers; keep Gulp's BOM stripping for other file types.
+     * @param {Object} file Vinyl file being read.
+     * @returns {boolean} Whether to remove the file's BOM.
+     */
+    removeBOM(file) {
+        return file.extname.toLowerCase() !== ".css";
+    }
+};
 
 // individual third party copy
 function copyLicence(filePath, name) {
@@ -38,7 +48,7 @@ function copyLicence(filePath, name) {
 
 function renameFile(filePath, newName, destPath) {
     console.log(`Renaming file ${filePath} to ${newName}`);
-    return src(filePath)
+    return src(filePath, copyOptions)
         .pipe(rename(newName))
         .pipe(dest(destPath));
 }
@@ -65,7 +75,7 @@ function downloadFile(url, outputPath) {
 
 function copyFiles(srcPathList, dstPath) {
     console.log(`Copying files ${dstPath}`);
-    return src(srcPathList)
+    return src(srcPathList, copyOptions)
         .pipe(dest(dstPath));
 }
 
@@ -304,5 +314,6 @@ function _patchTernLib() {
     });
 }
 
+exports.copyOptions = copyOptions;
 exports.copyAll = series(copyThirdPartyLibs, _patchAcornLib, _patchTernLib);
 exports.copyAllDebug = series(copyThirdPartyLibs, copyThirdPartyDebugLibs, _patchAcornLib, _patchTernLib);
