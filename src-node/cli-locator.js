@@ -292,6 +292,24 @@ function canAccess(p) {
 }
 
 /**
+ * Add the CLI's bin directory to PATH so sibling tools (node/npm) work even
+ * when a GUI launch omits the installation directory. Keep the bin symlink's
+ * directory; its target in node_modules does not contain those tools.
+ * @param {string} cliPath - Resolved CLI path
+ * @param {Object} env - Environment to inherit PATH from
+ * @return {Object} PATH override only; excludes secrets from terminal profiles
+ */
+function _cliPathEnv(cliPath, env) {
+    const pathKey = isWindows
+        ? Object.keys(env).sort().find(key => key.toLowerCase() === "path") || "Path"
+        : "PATH";
+    const binDir = path.dirname(path.resolve(cliPath));
+    const inheritedPath = env[pathKey];
+    const entries = inheritedPath ? inheritedPath.split(path.delimiter) : [];
+    return { [pathKey]: _dedupe([binDir, ...entries]).join(path.delimiter) };
+}
+
+/**
  * Spawn a CLI with argv and resolve to { stdout, stderr, status, error }.
  * Async so callers don't block the event loop while it runs — `claude auth
  * status` can take up to 10 s, `--version` up to 3 s, and the integrated
@@ -311,7 +329,10 @@ function spawnCli(cliPath, args, opts) {
     return new Promise(function (resolve) {
         const isCmdShim = isWindows && /\.(cmd|bat)$/i.test(cliPath);
         const spawnCmd = isCmdShim ? `"${cliPath}"` : cliPath;
-        const spawnOpts = isCmdShim ? Object.assign({ shell: true }, opts) : opts;
+        const baseEnv = (opts && opts.env) || process.env;
+        const spawnOpts = Object.assign(isCmdShim ? { shell: true } : {}, opts, {
+            env: Object.assign({}, baseEnv, _cliPathEnv(cliPath, baseEnv))
+        });
         const encoding = (opts && opts.encoding) || "utf8";
         const timeoutMs = (opts && opts.timeout) || 0;
         let child;
@@ -613,13 +634,17 @@ async function validateCliPath(cliId, cliPath) {
  * `cmd.exe /c`. Passing the shim straight through as the PTY's shell fails
  * to spawn, so every terminal caller must resolve through here rather than
  * using the raw path.
- * @return {{command: string, args: Array<string>}}
+ * `env` carries the same PATH used for probes so child tools such as npm
+ * remain available in the terminal. Callers must forward it to the PTY.
+ * @param {string} cliPath - Resolved CLI path
+ * @return {{command: string, args: Array<string>, env: Object}}
  */
 function getSpawnProfile(cliPath) {
+    const env = _cliPathEnv(cliPath, process.env);
     if (isWindows && /\.(cmd|bat)$/i.test(cliPath || "")) {
-        return { command: process.env.COMSPEC || "cmd.exe", args: ["/c", cliPath] };
+        return { command: process.env.COMSPEC || "cmd.exe", args: ["/c", cliPath], env };
     }
-    return { command: cliPath, args: [] };
+    return { command: cliPath, args: [], env };
 }
 
 exports.CLI_IDS = CLI_IDS;

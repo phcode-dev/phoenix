@@ -2886,6 +2886,8 @@ define({
     "AI_CHAT_CODEX_STALE_PROJECT_MSG": "This Codex CLI session is still running in {0} — the open project is now {1}.",
     "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Switch to “{0}”",
     "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Stay on “{0}”",
+    "AI_CHAT_CLI_EXITED_MSG": "{0} has exited.",
+    "AI_CHAT_CLI_RESTART_BTN": "Restart",
     "AI_CHAT_SETTINGS_TITLE": "AI Settings",
     "AI_SETTINGS_API_KEY": "API Key",
     "AI_SETTINGS_BASE_URL": "Base URL",

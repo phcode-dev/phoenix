@@ -814,7 +814,7 @@ exports.getCliSpawnProfile = async function (params) {
         return Object.assign({}, result, { command: null, args: [] });
     }
     const profile = CliLocator.getSpawnProfile(result.path);
-    return Object.assign({}, result, { command: profile.command, args: profile.args });
+    return Object.assign({}, result, profile);
 };
 
 /**
