@@ -39,6 +39,8 @@ const rename = require("gulp-rename");
 const execSync = require('child_process').execSync;
 const terser = require('terser');
 
+const copyOptions = copyThirdPartyLibs.copyOptions;
+
 function cleanDist() {
     return del(['dist', 'dist-test']);
 }
@@ -136,7 +138,7 @@ function _deletePhoenixProSourceFolder() {
  * @returns {*}
  */
 function makeDistAll() {
-    return src(['src/**/*', 'src/.*/*.*'])
+    return src(['src/**/*', 'src/.*/*.*'], copyOptions)
         .pipe(dest('dist'));
 }
 
@@ -170,7 +172,7 @@ function makeJSDist() {
 
 // we had to do this as prettier is non minifiable
 function makeJSPrettierDist() {
-    return src(["src/thirdparty/prettier/**/*"])
+    return src(["src/thirdparty/prettier/**/*"], copyOptions)
         .pipe(dest('dist/thirdparty/prettier'));
 }
 
@@ -182,12 +184,12 @@ function makeNonMinifyDist() {
         "src/LiveDevelopment/BrowserScripts/RemoteFunctions.js",
         "src/extensionsIntegrated/phoenix-pro/onboarding/**/*",
         "src/extensionsIntegrated/phoenix-pro/unit-tests/**/*",
-        "src/mdViewer/**/*"], {base: 'src'})
+        "src/mdViewer/**/*"], {...copyOptions, base: 'src'})
         .pipe(dest('dist'));
 }
 
 function makeDistNonJS() {
-    return src(['src/**/*', 'src/.*/*.*', '!src/**/*.js'])
+    return src(['src/**/*', 'src/.*/*.*', '!src/**/*.js'], copyOptions)
         .pipe(dest('dist'));
 }
 
@@ -230,40 +232,40 @@ function zipTestFiles() {
         'test/**',
         'test/**/.*',
         '!test/thirdparty/**',
-        '!test/test_folders.zip'])
+        '!test/test_folders.zip'], copyOptions)
         .pipe(zip('test_folders.zip'))
         .pipe(dest('test/'));
 }
 
 function zipDefaultProjectFiles() {
-    return src(['src/assets/default-project/en/**'])
+    return src(['src/assets/default-project/en/**'], copyOptions)
         .pipe(zip('en.zip'))
         .pipe(dest('src/assets/default-project/'));
 }
 
 // sample projects
 function zipSampleProjectBootstrapBlog() {
-    return src(['src/assets/sample-projects/bootstrap-blog/**'])
+    return src(['src/assets/sample-projects/bootstrap-blog/**'], copyOptions)
         .pipe(zip('bootstrap-blog.zip'))
         .pipe(dest('src/assets/sample-projects/'));
 }
 function zipSampleProjectExplore() {
-    return src(['src/assets/sample-projects/explore/**'])
+    return src(['src/assets/sample-projects/explore/**'], copyOptions)
         .pipe(zip('explore.zip'))
         .pipe(dest('src/assets/sample-projects/'));
 }
 function zipSampleProjectHTML5() {
-    return src(['src/assets/sample-projects/HTML5/**'])
+    return src(['src/assets/sample-projects/HTML5/**'], copyOptions)
         .pipe(zip('HTML5.zip'))
         .pipe(dest('src/assets/sample-projects/'));
 }
 function zipSampleProjectDashboard() {
-    return src(['src/assets/sample-projects/dashboard/**'])
+    return src(['src/assets/sample-projects/dashboard/**'], copyOptions)
         .pipe(zip('dashboard.zip'))
         .pipe(dest('src/assets/sample-projects/'));
 }
 function zipSampleProjectHomePages() {
-    return src(['src/assets/sample-projects/home-pages/**'])
+    return src(['src/assets/sample-projects/home-pages/**'], copyOptions)
         .pipe(zip('home-pages.zip'))
         .pipe(dest('src/assets/sample-projects/'));
 }
@@ -991,12 +993,12 @@ function createDistCacheManifestDev() {
 }
 
 function copyDistToDistTestFolder() {
-    return src('dist/**/*')
+    return src('dist/**/*', copyOptions)
         .pipe(dest('dist-test/src'));
 }
 
 function copyTestToDistTestFolder() {
-    return src('test/**/*')
+    return src('test/**/*', copyOptions)
         .pipe(dest('dist-test/test'));
 }
 
@@ -1094,7 +1096,7 @@ function _patchMinifiedCSSInDistIndex() {
     return new Promise((resolve)=>{
         let content = fs.readFileSync("dist/index.html", "utf8");
         if(!content.includes(`<link rel="stylesheet/less" type="text/css" href="styles/brackets.less">`)){
-            throw new Error(`Could not locate string <link rel="stylesheet/less" type="text/css" href="styles/brackets.less"> in file dist/index.html`)
+            throw new Error(`Could not locate string <link rel="stylesheet/less" type="text/css" href="styles/brackets.less"> in file dist/index.html`);
         }
         content = content.replace(
             `<link rel="stylesheet/less" type="text/css" href="styles/brackets.less">`,
