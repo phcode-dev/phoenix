@@ -154,6 +154,7 @@ define(function (require, exports, module) {
     require("spec/Terminal-integ-test");
     // Node Tests
     require("spec/NodeConnection-test");
+    require("spec/CLILocator-test");
     // pro test suite optional components
     require("./pro-test-suite");
     // todo TEST_MODERN

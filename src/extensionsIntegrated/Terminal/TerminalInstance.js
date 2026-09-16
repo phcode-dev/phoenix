@@ -105,6 +105,7 @@ define(function (require, exports, module) {
         this.$container = null;
         this._resizeTimeout = null;
         this._disposed = false;
+        this._processExited = false;
         this._webglAddon = null;
         this._lastDpr = null;
 
@@ -214,7 +215,8 @@ define(function (require, exports, module) {
                 env: env || undefined
             });
             this.pid = result.pid;
-            this.isAlive = true;
+            // A short-lived process can exit before the createTerminal reply arrives.
+            this.isAlive = !this._processExited && !this._disposed;
         } catch (err) {
             console.error("Terminal: Failed to spawn PTY:", err);
             this.terminal.write("\r\n\x1b[31mFailed to start terminal: " + err.message + "\x1b[0m\r\n");
@@ -239,6 +241,7 @@ define(function (require, exports, module) {
      */
     TerminalInstance.prototype._onTerminalExit = function (_event, eventData) {
         if (eventData.id === this.id) {
+            this._processExited = true;
             this.isAlive = false;
             if (this.terminal) {
                 this.terminal.write("\r\n\x1b[90m[Process exited with code " + eventData.exitCode + "]\x1b[0m\r\n");
