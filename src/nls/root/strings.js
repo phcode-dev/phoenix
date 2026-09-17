@@ -2231,6 +2231,7 @@ define({
     "TERMINAL_CLEAR": "Clear Terminal",
     "TERMINAL_CLEAR_BUFFER_HINT": "💡 Press {0} to clear terminal buffer",
     "TERMINAL_PROJECT_CHANGED": "Project changed to {0}. Existing terminals have kept their locations.",
+    "TERMINAL_PROJECT_RESTART_PATH": "Restart in: {0}",
     "TERMINAL_PROJECT_RESTART_WARNING": "Restarting opens every terminal in this folder, stops running processes and clears terminal output.",
     "TERMINAL_PROJECT_KEEP": "Keep Terminals",
     "TERMINAL_PROJECT_RESTART": "Restart All in This Project",

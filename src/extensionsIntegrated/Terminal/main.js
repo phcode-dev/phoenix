@@ -322,9 +322,10 @@ define(function (require, exports, module) {
      * Create a terminal using a shell profile and an optional VFS directory.
      * @param {Object} shell Shell profile to use.
      * @param {string} [cwdOverride] Directory to use instead of the project root.
+     * @param {string} [projectPath] Owning project when restarting during a project switch.
      * @return {Promise<TerminalInstance|undefined>} The new terminal, if a shell is available.
      */
-    async function _createNewTerminalWithShell(shell, cwdOverride) {
+    async function _createNewTerminalWithShell(shell, cwdOverride, projectPath) {
         if (!shell) {
             console.error("Terminal: No shell available");
             Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "new", "noShell");
@@ -335,11 +336,11 @@ define(function (require, exports, module) {
             _shellMetricLabel(shell.name));
 
         // Get cwd: use override if provided, otherwise fall back to project root
+        const projectRoot = ProjectManager.getProjectRoot();
         let cwd;
         if (cwdOverride) {
             cwd = _toNativePath(cwdOverride);
         } else {
-            const projectRoot = ProjectManager.getProjectRoot();
             if (projectRoot) {
                 cwd = _toNativePath(projectRoot.fullPath);
             }
@@ -347,6 +348,8 @@ define(function (require, exports, module) {
 
         // Create instance
         const instance = new TerminalInstance(nodeConnector, shell, cwd);
+        // Project ownership is independent of directories the user visits in the shell.
+        instance.projectPath = projectPath || (projectRoot ? projectRoot.fullPath : null);
 
         // Set up callbacks
         instance.onTitleChanged = _onTerminalTitleChanged;
@@ -399,15 +402,15 @@ define(function (require, exports, module) {
     function _showProjectBanner() {
         _hideProjectBanner();
         const root = ProjectManager.getProjectRoot();
-        if (!root || !terminalInstances.length) {
+        if (!root || !terminalInstances.some(inst => inst.projectPath !== root.fullPath)) {
             return;
         }
         const $banner = $('<div class="terminal-project-banner" role="status"></div>');
         $banner.append($('<div class="terminal-project-message"></div>')
             .text(StringUtils.format(Strings.TERMINAL_PROJECT_CHANGED, root.name)));
         const path = _toNativePath(root.fullPath);
-        $banner.append($('<div class="terminal-project-path"></div>').text(path).attr("title", path));
-        $banner.append($('<div></div>').text(Strings.TERMINAL_PROJECT_RESTART_WARNING));
+        $banner.append($('<div class="terminal-project-path"></div>')
+            .text(StringUtils.format(Strings.TERMINAL_PROJECT_RESTART_PATH, path)).attr("title", path));
         const $actions = $('<div class="terminal-project-actions"></div>');
         $actions.append($('<button class="btn terminal-project-keep"></button>')
             .text(Strings.TERMINAL_PROJECT_KEEP).on("click", function () {
@@ -418,7 +421,8 @@ define(function (require, exports, module) {
                 }
             }));
         $actions.append($('<button class="btn btn-primary terminal-project-restart"></button>')
-            .text(Strings.TERMINAL_PROJECT_RESTART).on("click", _restartTerminalsInProject));
+            .text(Strings.TERMINAL_PROJECT_RESTART).attr("title", Strings.TERMINAL_PROJECT_RESTART_WARNING)
+            .on("click", _restartTerminalsInProject));
         $actions.find("button").prop("disabled", _restartingTerminals);
         $banner.append($actions);
         $contentArea.append($banner);
@@ -482,7 +486,7 @@ define(function (require, exports, module) {
             _updateFlyout();
             const replacements = [];
             for (const profile of profiles) {
-                replacements.push(await _createNewTerminalWithShell(profile, path));
+                replacements.push(await _createNewTerminalWithShell(profile, path, path));
             }
             if (replacements[activeIndex]) {
                 _activateTerminal(replacements[activeIndex].id);
@@ -558,6 +562,9 @@ define(function (require, exports, module) {
         instance.dispose();
         terminalInstances.splice(idx, 1);
         delete processInfo[id];
+        if ($contentArea.find(".terminal-project-banner").length) {
+            _showProjectBanner();
+        }
         Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "close", "user");
 
         // If we closed the active terminal, activate another
