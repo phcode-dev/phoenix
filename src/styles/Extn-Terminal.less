@@ -27,6 +27,7 @@
     --terminal-foreground: #cccccc;
     --terminal-cursor: #ffffff;
     --terminal-selection: rgba(255, 255, 255, 0.2);
+    --terminal-scrollbar-thumb: rgba(255, 255, 255, 0.24);
     --terminal-border: #333333;
     --terminal-toolbar-bg: #1e1e1e;
     --terminal-tab-bg: #181818;
@@ -57,6 +58,7 @@
     --terminal-foreground: #383a42;
     --terminal-cursor: #383a42;
     --terminal-selection: rgba(0, 0, 0, 0.12);
+    --terminal-scrollbar-thumb: @linux-scrollbar-thumb;
     --terminal-border: #e0e0e0;
     --terminal-toolbar-bg: #f5f5f5;
     --terminal-tab-bg: #eeeeee;
@@ -387,6 +389,51 @@
 .terminal-instance-container .xterm-viewport {
     overflow-y: auto;
     background-color: var(--terminal-background) !important;
+}
+
+// xterm draws DOM scrollbars, so the app's native scrollbar selectors do not apply.
+.terminal-instance-container .xterm .xterm-scrollable-element > .xterm-scrollbar {
+    &:hover {
+        background-color: var(--terminal-scrollbar-track-hover, transparent);
+    }
+
+    > .xterm-slider {
+        box-sizing: border-box;
+        border: 2px solid transparent;
+        border-radius: 999px;
+        background-color: var(--terminal-scrollbar-thumb);
+        background-clip: padding-box;
+
+        &:hover {
+            background-color: var(--terminal-scrollbar-thumb-hover, var(--terminal-scrollbar-thumb));
+        }
+
+        &.xterm-active {
+            background-color: var(--terminal-scrollbar-thumb-active, var(--terminal-scrollbar-thumb));
+        }
+
+        .platform-win & {
+            border: none;
+            border-radius: 0;
+        }
+    }
+}
+
+// Match the Windows colors in brackets_scrollbars.less, including the always-dark AI terminals.
+.platform-win .terminal-panel-container {
+    --terminal-scrollbar-thumb: @win-scrollbar-thumb;
+    --terminal-scrollbar-thumb-hover: @win-scrollbar-thumb-hover;
+    --terminal-scrollbar-thumb-active: @win-scrollbar-thumb-active;
+    --terminal-scrollbar-track-hover: @win-scrollbar-track;
+}
+
+.dark.platform-win .terminal-panel-container,
+.darkTheme.platform-win .terminal-panel-container,
+.platform-win .ai-chat-body-cli {
+    --terminal-scrollbar-thumb: rgb(49, 49, 49);
+    --terminal-scrollbar-thumb-hover: rgb(89, 89, 89);
+    --terminal-scrollbar-thumb-active: rgb(169, 169, 169);
+    --terminal-scrollbar-track-hover: rgba(15, 15, 15, 0.5);
 }
 
 /* Empty state */
