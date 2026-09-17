@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "یہ Codex CLI سیشن اب بھی {0} میں چل رہا ہے — کھلا ہوا پروجیکٹ اب {1} ہے۔",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "”{0}“ پر سوئچ کریں",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "”{0}“ پر رہیں",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} ایگزٹ ہو گیا ہے۔",
+  "AI_CHAT_CLI_RESTART_BTN": "دوبارہ شروع کریں",
   "AI_CHAT_SETTINGS_TITLE": "AI سیٹنگز",
   "AI_SETTINGS_API_KEY": "API کی",
   "AI_SETTINGS_BASE_URL": "بیس یو آر ایل",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "پرانی سائٹ تک رسائی ممکن نہ ہو سکی",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} آپ کے پروجیکٹس اور سیٹنگز تلاش کرنے کے لیے {0} سے منسلک نہیں ہو سکا، لہذا کوئی تبدیلی نہیں کی گئی ہے۔ اپنا انٹرنیٹ کنکشن چیک کریں، پھر {1} کے ساتھ دوبارہ کوشش کریں۔",
   "CMD_MIGRATE_DATA": "{0} سے میرا ڈیٹا منتقل کریں…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} ایگزٹ ہو گیا ہے۔",
-  "AI_CHAT_CLI_RESTART_BTN": "دوبارہ شروع کریں"
+  "TERMINAL_PROJECT_CHANGED": "پروجیکٹ {0} میں تبدیل ہو گیا ہے۔ موجودہ ٹرمینلز اپنی جگہ پر ہیں۔",
+  "TERMINAL_PROJECT_RESTART_PATH": "اس میں دوبارہ شروع کریں: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "دوبارہ شروع کرنے سے اس فولڈر کے تمام ٹرمینلز کھل جائیں گے، چل رہے پروسیسز رک جائیں گے اور ٹرمینل کا آؤٹ پٹ صاف ہو جائے گا۔",
+  "TERMINAL_PROJECT_KEEP": "ٹرمینلز برقرار رکھیں",
+  "TERMINAL_PROJECT_RESTART": "اس پروجیکٹ میں سب دوبارہ شروع کریں",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "تمام ٹرمینلز دوبارہ شروع کریں؟",
+  "TERMINAL_RESTART_CONFIRM_MSG": "ٹرمینلز میں فعال پروسیسز چل رہے ہیں۔ دوبارہ شروع کرنے سے وہ رک جائیں گے اور ٹرمینل کا آؤٹ پٹ صاف ہو جائے گا۔ جاری رکھیں؟"
 });

@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Ta sesja Codex CLI jest nadal uruchomiona w {0} — obecnie otwarty projekt to {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Przełącz na “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Pozostań na “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} zakończył działanie.",
+  "AI_CHAT_CLI_RESTART_BTN": "Uruchom ponownie",
   "AI_CHAT_SETTINGS_TITLE": "Ustawienia AI",
   "AI_SETTINGS_API_KEY": "Klucz API",
   "AI_SETTINGS_BASE_URL": "Bazowy URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
   "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} zakończył działanie.",
-  "AI_CHAT_CLI_RESTART_BTN": "Uruchom ponownie"
+  "TERMINAL_PROJECT_CHANGED": "Zmieniono projekt na {0}. Istniejące terminale zachowały swoje lokalizacje.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Uruchom ponownie w: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Ponowne uruchomienie otwiera każdy terminal w tym folderze, zatrzymuje uruchomione procesy i czyści wyjście terminala.",
+  "TERMINAL_PROJECT_KEEP": "Zachowaj terminale",
+  "TERMINAL_PROJECT_RESTART": "Uruchom ponownie wszystkie w tym projekcie",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Uruchomić ponownie wszystkie terminale?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "W terminalach działają aktywne procesy. Ponowne uruchomienie zatrzyma je i wyczyści wyjście terminala. Kontynuować?"
 });

@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Ova Codex CLI sesija još uvijek je pokrenuta u {0} — otvoreni projekt sada je {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Prebaci na „{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Ostani na „{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} je izašao.",
+  "AI_CHAT_CLI_RESTART_BTN": "Ponovno pokreni",
   "AI_CHAT_SETTINGS_TITLE": "AI postavke",
   "AI_SETTINGS_API_KEY": "API ključ",
   "AI_SETTINGS_BASE_URL": "Osnovni URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
   "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} je izašao.",
-  "AI_CHAT_CLI_RESTART_BTN": "Ponovno pokreni"
+  "TERMINAL_PROJECT_CHANGED": "Projekt je promijenjen u {0}. Postojeći terminali zadržali su svoje lokacije.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Ponovno pokreni u: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Ponovno pokretanje otvara svaki terminal u ovoj mapi, zaustavlja pokrenute procese i briše izlaz terminala.",
+  "TERMINAL_PROJECT_KEEP": "Zadrži terminale",
+  "TERMINAL_PROJECT_RESTART": "Ponovno pokreni sve u ovom projektu",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Ponovno pokrenuti sve terminale?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminali imaju aktivne procese. Ponovnim pokretanjem zaustavit ćete ih i obrisati izlaz terminala. Nastaviti?"
 });

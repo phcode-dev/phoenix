@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Šī Codex CLI sesija joprojām darbojas {0} — atvērtais projekts tagad ir {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Pārslēgties uz “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Palikt projektā “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} ir beidzis darbu.",
+  "AI_CHAT_CLI_RESTART_BTN": "Pārstartēt",
   "AI_CHAT_SETTINGS_TITLE": "MI iestatījumi",
   "AI_SETTINGS_API_KEY": "API atslēga",
   "AI_SETTINGS_BASE_URL": "Bāzes URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
   "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} ir beidzis darbu.",
-  "AI_CHAT_CLI_RESTART_BTN": "Pārstartēt"
+  "TERMINAL_PROJECT_CHANGED": "Projekts nomainīts uz {0}. Esošie termināļi ir saglabājuši savas atrašanās vietas.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Restartēt mapē: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Restartējot tiks atvērti visi termināļi šajā mapē, apturēti palaistie procesi un notīrīta termināļa izvade.",
+  "TERMINAL_PROJECT_KEEP": "Saglabāt termināļus",
+  "TERMINAL_PROJECT_RESTART": "Restartēt visus šajā projektā",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Restartēt visus termināļus?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Termināļos ir aktīvi procesi. Restartēšana tos apturēs un notīrīs termināļa izvadi. Turpināt?"
 });

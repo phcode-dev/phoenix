@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "این جلسه Codex CLI همچنان در {0} در حال اجرا است — پروژه باز شده اکنون {1} است.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "جابجایی به «{0}»",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "ماندن در «{0}»",
+  "AI_CHAT_CLI_EXITED_MSG": "`{0} خارج شد.`",
+  "AI_CHAT_CLI_RESTART_BTN": "`راه‌اندازی مجدد`",
   "AI_CHAT_SETTINGS_TITLE": "تنظیمات هوش مصنوعی",
   "AI_SETTINGS_API_KEY": "کلید API",
   "AI_SETTINGS_BASE_URL": "URL پایه",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "عدم دسترسی به سایت قدیمی",
   "MIGRATE_UNREACHABLE_MESSAGE": "‏{APP_NAME} نتوانست به {0} متصل شود تا پروژه‌ها و تنظیمات شما را جستجو کند، بنابراین هیچ تغییری ایجاد نشده است. اتصال اینترنت خود را بررسی کنید، سپس با {1} دوباره تلاش کنید.",
   "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "`{0} خارج شد.`",
-  "AI_CHAT_CLI_RESTART_BTN": "`راه‌اندازی مجدد`"
+  "TERMINAL_PROJECT_CHANGED": "پروژه به {0} تغییر کرد. ترمینال‌های موجود مکان خود را حفظ کرده‌اند.",
+  "TERMINAL_PROJECT_RESTART_PATH": "راه‌اندازی مجدد در: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "راه‌اندازی مجدد، تمام ترمینال‌ها را در این پوشه باز می‌کند، فرایندهای در حال اجرا را متوقف می‌کند و خروجی ترمینال را پاک می‌کند.",
+  "TERMINAL_PROJECT_KEEP": "حفظ ترمینال‌ها",
+  "TERMINAL_PROJECT_RESTART": "راه‌اندازی مجدد همه در این پروژه",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "راه‌اندازی مجدد همهٔ ترمینال‌ها؟",
+  "TERMINAL_RESTART_CONFIRM_MSG": "ترمینال‌ها فرایندهای فعالی دارند. راه‌اندازی مجدد، این فرایندها را متوقف کرده و خروجی ترمینال را پاک می‌کند. ادامه می‌دهید؟"
 });

@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Tato relace Codex CLI stále běží v {0} — otevřený projekt je nyní {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Přepnout na „{0}“",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Zůstat u „{0}“",
+  "AI_CHAT_CLI_EXITED_MSG": "Proces {0} byl ukončen.",
+  "AI_CHAT_CLI_RESTART_BTN": "Restartovat",
   "AI_CHAT_SETTINGS_TITLE": "Nastavení AI",
   "AI_SETTINGS_API_KEY": "Klíč API",
   "AI_SETTINGS_BASE_URL": "Základní URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
   "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "Proces {0} byl ukončen.",
-  "AI_CHAT_CLI_RESTART_BTN": "Restartovat"
+  "TERMINAL_PROJECT_CHANGED": "Projekt byl změněn na {0}. Existující terminály si zachovaly svá umístění.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Restartovat v: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Restartování otevře každý terminál v této složce, zastaví běžící procesy a vymaže výstup terminálu.",
+  "TERMINAL_PROJECT_KEEP": "Ponechat terminály",
+  "TERMINAL_PROJECT_RESTART": "Restartovat vše v tomto projektu",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Restartovat všechny terminály?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminály mají aktivní procesy. Restartování je zastaví a vymaže výstup terminálu. Pokračovat?"
 });

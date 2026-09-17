@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Esta sesión de Codex CLI todavía se está ejecutando en {0} — el proyecto abierto ahora es {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Cambiar a “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Permanecer en “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} ha salido.",
+  "AI_CHAT_CLI_RESTART_BTN": "Reiniciar",
   "AI_CHAT_SETTINGS_TITLE": "Configuración de IA",
   "AI_SETTINGS_API_KEY": "Clave de API",
   "AI_SETTINGS_BASE_URL": "URL base",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "No se pudo acceder al sitio antiguo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} no se pudo conectar a {0} para buscar tus proyectos y configuración, por lo que no se ha modificado nada. Comprueba tu conexión a internet y vuelve a intentarlo con {1}.",
   "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} ha salido.",
-  "AI_CHAT_CLI_RESTART_BTN": "Reiniciar"
+  "TERMINAL_PROJECT_CHANGED": "El proyecto ha cambiado a {0}. Las terminales existentes han mantenido sus ubicaciones.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Reiniciar en: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Reiniciar abre todas las terminales de esta carpeta, detiene los procesos en ejecución y borra la salida de la terminal.",
+  "TERMINAL_PROJECT_KEEP": "Mantener terminales",
+  "TERMINAL_PROJECT_RESTART": "Reiniciar todo en este proyecto",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "¿Reiniciar todas las terminales?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Las terminales tienen procesos activos. Al reiniciar, se detendrán y se borrará la salida de la terminal. ¿Continuar?"
 });

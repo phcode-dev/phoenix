@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Bu Codex CLI oturumu hâlâ {0} üzerinde çalışıyor — şu anda açık olan proje ise {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}” projesine geçin",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}” projesinde kalın",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} çıkış yaptı.",
+  "AI_CHAT_CLI_RESTART_BTN": "Yeniden Başlat",
   "AI_CHAT_SETTINGS_TITLE": "Yapay Zeka Ayarları",
   "AI_SETTINGS_API_KEY": "API Anahtarı",
   "AI_SETTINGS_BASE_URL": "Temel URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
   "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} çıkış yaptı.",
-  "AI_CHAT_CLI_RESTART_BTN": "Yeniden Başlat"
+  "TERMINAL_PROJECT_CHANGED": "Proje, {0} olarak değiştirildi. Mevcut terminaller konumlarını korudu.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Yeniden başlatma konumu: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Yeniden başlatma, bu klasördeki her terminali açar, çalışan işlemleri durdurur ve terminal çıktısını temizler.",
+  "TERMINAL_PROJECT_KEEP": "Terminalleri Koru",
+  "TERMINAL_PROJECT_RESTART": "Bu Projedeki Tümünü Yeniden Başlat",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Tüm Terminaller Yeniden Başlatılsın mı?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminallerde aktif işlemler var. Yeniden başlatmak, bunları durduracak ve terminal çıktısını temizleyecektir. Devam edilsin mi?"
 });

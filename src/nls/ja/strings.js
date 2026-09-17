@@ -2666,6 +2666,7 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "このCodex CLIセッションは{0}で実行中ですが、現在開いているプロジェクトは{1}です。",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "「{0}」に切り替える",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "「{0}」のままにする",
+  "AI_CHAT_CLI_EXITED_MSG": "{0}が終了しました。",
   "AI_CHAT_CLI_RESTART_BTN": "再起動",
   "AI_CHAT_SETTINGS_TITLE": "AI設定",
   "AI_SETTINGS_API_KEY": "APIキー",
@@ -2815,5 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
   "CMD_MIGRATE_DATA": "{0}からデータを移行…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0}が終了しました。"
+  "TERMINAL_PROJECT_CHANGED": "プロジェクトが{0}に変更されました。既存のターミナルは場所を維持しています。",
+  "TERMINAL_PROJECT_RESTART_PATH": "再起動先：{0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "再起動すると、このフォルダー内のすべてのターミナルが開き、実行中のプロセスは停止され、ターミナル出力はクリアされます。",
+  "TERMINAL_PROJECT_KEEP": "ターミナルを維持",
+  "TERMINAL_PROJECT_RESTART": "このプロジェクトで全て再起動",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "すべてのターミナルを再起動しますか？",
+  "TERMINAL_RESTART_CONFIRM_MSG": "ターミナルに実行中のプロセスがあります。再起動するとプロセスが停止され、ターミナル出力がクリアされます。続行しますか？"
 });

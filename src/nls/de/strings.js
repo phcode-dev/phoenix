@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Diese Codex-CLI-Sitzung wird noch in {0} ausgeführt — das geöffnete Projekt ist jetzt {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Zu „{0}“ wechseln",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Auf „{0}“ bleiben",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} wurde beendet.",
+  "AI_CHAT_CLI_RESTART_BTN": "Neu starten",
   "AI_CHAT_SETTINGS_TITLE": "KI-Einstellungen",
   "AI_SETTINGS_API_KEY": "API-Schlüssel",
   "AI_SETTINGS_BASE_URL": "Basis-URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um Ihre Projekte und Einstellungen zu suchen, sodass nichts geändert wurde. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es dann mit {1} erneut.",
   "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} wurde beendet.",
-  "AI_CHAT_CLI_RESTART_BTN": "Neu starten"
+  "TERMINAL_PROJECT_CHANGED": "Projekt auf {0} geändert. Bestehende Terminals haben ihre Arbeitsverzeichnisse beibehalten.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Neustart in: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Ein Neustart öffnet jedes Terminal in diesem Ordner, beendet laufende Prozesse und löscht die Terminalausgabe.",
+  "TERMINAL_PROJECT_KEEP": "Terminals beibehalten",
+  "TERMINAL_PROJECT_RESTART": "Alle in diesem Projekt neu starten",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Alle Terminals neu starten?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "In den Terminals laufen aktive Prozesse. Ein Neustart beendet diese und löscht die Terminalausgabe. Fortfahren?"
 });

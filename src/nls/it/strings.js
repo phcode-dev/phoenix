@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Questa sessione CLI di Codex è ancora in esecuzione in {0} — il progetto aperto ora è {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Passa a “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Resta su “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} è uscito.",
+  "AI_CHAT_CLI_RESTART_BTN": "Riavvia",
   "AI_CHAT_SETTINGS_TITLE": "Impostazioni AI",
   "AI_SETTINGS_API_KEY": "Chiave API",
   "AI_SETTINGS_BASE_URL": "URL di base",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Impossibile raggiungere il vecchio sito",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non è riuscito a connettersi a {0} per cercare i tuoi progetti e le tue impostazioni, pertanto non è stato modificato nulla. Verifica la tua connessione a Internet, quindi riprova con {1}.",
   "CMD_MIGRATE_DATA": "Migra i miei dati da {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} è uscito.",
-  "AI_CHAT_CLI_RESTART_BTN": "Riavvia"
+  "TERMINAL_PROJECT_CHANGED": "Progetto modificato in {0}. I terminali esistenti hanno mantenuto le loro posizioni.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Riavvia in: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Il riavvio apre ogni terminale in questa cartella, arresta i processi in esecuzione e cancella l'output del terminale.",
+  "TERMINAL_PROJECT_KEEP": "Mantieni terminali",
+  "TERMINAL_PROJECT_RESTART": "Riavvia tutto in questo progetto",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Riavviare tutti i terminali?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "I terminali hanno processi attivi. Il riavvio li arresterà e cancellerà l'output del terminale. Continuare?"
 });

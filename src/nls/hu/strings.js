@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Ez a Codex CLI-munkamenet még mindig fut a(z) {0} projektben – a most megnyitott projekt a(z) {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Váltás a(z) „{0}” projektre",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Maradás a(z) „{0}” projekten",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} kilépett.",
+  "AI_CHAT_CLI_RESTART_BTN": "Újraindítás",
   "AI_CHAT_SETTINGS_TITLE": "AI-beállítások",
   "AI_SETTINGS_API_KEY": "API-kulcs",
   "AI_SETTINGS_BASE_URL": "Alap URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
   "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} kilépett.",
-  "AI_CHAT_CLI_RESTART_BTN": "Újraindítás"
+  "TERMINAL_PROJECT_CHANGED": "A projekt megváltozott erre: {0}. A meglévő terminálok megtartották a helyüket.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Újraindítás itt: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Az újraindítás minden terminált megnyit ebben a mappában, leállítja a futó folyamatokat és törli a terminál kimenetét.",
+  "TERMINAL_PROJECT_KEEP": "Terminálok megtartása",
+  "TERMINAL_PROJECT_RESTART": "Projekt termináljainak újraindítása",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Minden terminál újraindítása?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "A terminálokban aktív folyamatok futnak. Az újraindítás leállítja őket, és törli a terminál kimenetét. Folytatja?"
 });

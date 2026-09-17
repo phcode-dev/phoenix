@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Deze Codex CLI-sessie is nog actief in {0} — het geopende project is nu {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Schakelen naar “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Blijven op “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} is afgesloten.",
+  "AI_CHAT_CLI_RESTART_BTN": "Herstarten",
   "AI_CHAT_SETTINGS_TITLE": "AI-instellingen",
   "AI_SETTINGS_API_KEY": "API-sleutel",
   "AI_SETTINGS_BASE_URL": "Basis-URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
   "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} is afgesloten.",
-  "AI_CHAT_CLI_RESTART_BTN": "Herstarten"
+  "TERMINAL_PROJECT_CHANGED": "Project gewijzigd naar {0}. Bestaande terminals hebben hun locaties behouden.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Herstart in: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Herstarten opent elke terminal in deze map, stopt actieve processen en wist de terminaluitvoer.",
+  "TERMINAL_PROJECT_KEEP": "Terminals behouden",
+  "TERMINAL_PROJECT_RESTART": "Herstart alles in dit project",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Alle terminals herstarten?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminals hebben actieve processen. Herstarten stopt deze en wist de terminaluitvoer. Doorgaan?"
 });

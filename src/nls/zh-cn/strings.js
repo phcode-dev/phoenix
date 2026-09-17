@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "此 Codex CLI 会话仍在 {0} 中运行 — 当前打开的项目是 {1}。",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "切换到“{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "停留在“{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} 已退出。",
+  "AI_CHAT_CLI_RESTART_BTN": "重启",
   "AI_CHAT_SETTINGS_TITLE": "AI 设置",
   "AI_SETTINGS_API_KEY": "API 密钥",
   "AI_SETTINGS_BASE_URL": "基础 URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
   "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} 已退出。",
-  "AI_CHAT_CLI_RESTART_BTN": "重启"
+  "TERMINAL_PROJECT_CHANGED": "项目已切换到 {0}。现有终端的位置保持不变。",
+  "TERMINAL_PROJECT_RESTART_PATH": "重启位置：{0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "重启操作将在此文件夹中打开所有终端，停止正在运行的进程，并清除终端输出。",
+  "TERMINAL_PROJECT_KEEP": "保留终端",
+  "TERMINAL_PROJECT_RESTART": "重启本项目所有终端",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "重启所有终端？",
+  "TERMINAL_RESTART_CONFIRM_MSG": "终端有活动进程。重启会停止它们并清除终端输出。是否继续？"
 });

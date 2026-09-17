@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Ова Codex CLI сесија је и даље активна у {0} — отворени пројекат је сада {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Пребаци се на „{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Остани на „{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} је изашао.",
+  "AI_CHAT_CLI_RESTART_BTN": "Поново покрени",
   "AI_CHAT_SETTINGS_TITLE": "AI подешавања",
   "AI_SETTINGS_API_KEY": "API кључ",
   "AI_SETTINGS_BASE_URL": "Основна URL адреса",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Није могуће приступити старом сајту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} није могао да се повеже са {0} да би потражио ваше пројекте и подешавања, тако да ништа није промењено. Проверите интернет везу, а затим покушајте поново помоћу {1}.",
   "CMD_MIGRATE_DATA": "Мигрирајте моје податке са {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} је изашао.",
-  "AI_CHAT_CLI_RESTART_BTN": "Поново покрени"
+  "TERMINAL_PROJECT_CHANGED": "Пројекат је промењен у {0}. Постојећи терминали су задржали своје локације.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Рестартуј у: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Поновно покретање отвара сваки терминал у овој фасцикли, зауставља покренуте процесе и брише излаз терминала.",
+  "TERMINAL_PROJECT_KEEP": "Задржи терминале",
+  "TERMINAL_PROJECT_RESTART": "Рестартуј све у овом пројекту",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Рестартовати све терминале?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Терминали имају активне процесе. Поновно покретање ће их зауставити и обрисати излаз терминала. Наставити?"
 });

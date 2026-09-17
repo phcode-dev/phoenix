@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Denna Codex CLI-session körs fortfarande i {0} — det öppna projektet är nu {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Växla till ”{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Stanna kvar i ”{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} har avslutats.",
+  "AI_CHAT_CLI_RESTART_BTN": "Starta om",
   "AI_CHAT_SETTINGS_TITLE": "AI-inställningar",
   "AI_SETTINGS_API_KEY": "API-nyckel",
   "AI_SETTINGS_BASE_URL": "Bas-URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} har avslutats.",
-  "AI_CHAT_CLI_RESTART_BTN": "Starta om"
+  "TERMINAL_PROJECT_CHANGED": "Projektet ändrades till {0}. Befintliga terminaler har behållit sina platser.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Starta om i: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "En omstart öppnar varje terminal i den här mappen, stoppar pågående processer och rensar terminalens utdata.",
+  "TERMINAL_PROJECT_KEEP": "Behåll terminaler",
+  "TERMINAL_PROJECT_RESTART": "Starta om alla i det här projektet",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Starta om alla terminaler?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminalerna har aktiva processer. En omstart kommer att stoppa dem och rensa terminalens utdata. Fortsätta?"
 });

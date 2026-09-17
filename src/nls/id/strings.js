@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Sesi Codex CLI ini masih berjalan di {0} — proyek yang terbuka sekarang adalah {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Beralih ke “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Tetap di “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} telah keluar.",
+  "AI_CHAT_CLI_RESTART_BTN": "Mulai Ulang",
   "AI_CHAT_SETTINGS_TITLE": "Pengaturan AI",
   "AI_SETTINGS_API_KEY": "Kunci API",
   "AI_SETTINGS_BASE_URL": "URL Dasar",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
   "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} telah keluar.",
-  "AI_CHAT_CLI_RESTART_BTN": "Mulai Ulang"
+  "TERMINAL_PROJECT_CHANGED": "Proyek diubah ke {0}. Terminal yang ada tetap mempertahankan lokasinya.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Mulai ulang di: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Memulai ulang akan membuka setiap terminal di folder ini, menghentikan proses yang sedang berjalan, dan membersihkan output terminal.",
+  "TERMINAL_PROJECT_KEEP": "Pertahankan Terminal",
+  "TERMINAL_PROJECT_RESTART": "Mulai Ulang Semua di Proyek Ini",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Mulai Ulang Semua Terminal?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminal memiliki proses aktif. Memulai ulang akan menghentikannya dan membersihkan output terminal. Lanjutkan?"
 });
