@@ -28,6 +28,7 @@ define(function (require, exports, module) {
 
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
     const Strings = require("strings");
+    const StringUtils = require("utils/StringUtils");
 
     const IS_WINDOWS = Phoenix.platform === "win";
     const IS_MAC = Phoenix.platform === "mac";
@@ -688,7 +689,8 @@ define(function (require, exports, module) {
                 expect(testWindow.$(".terminal-project-banner").length).toBe(0);
                 await SpecRunnerUtils.loadProjectInTestWindow(secondProjectPath);
                 expect(testWindow.$(".terminal-project-banner").is(":visible")).toBeTrue();
-                expect(testWindow.$(".terminal-project-path").text()).toBe(getNativeProjectPath());
+                expect(testWindow.$(".terminal-project-path").text())
+                    .toBe(StringUtils.format(Strings.TERMINAL_PROJECT_RESTART_PATH, getNativeProjectPath()));
                 testWindow.$(".terminal-project-keep").click();
 
                 const panel = WorkspaceManager.getPanelForID(PANEL_ID);
@@ -699,7 +701,38 @@ define(function (require, exports, module) {
                 expect(termModule._getActiveTerminal()).toBe(instance);
                 expect(instance.isAlive).toBeTrue();
                 await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
+                expect(testWindow.$(".terminal-project-banner").length).toBe(0);
+                await SpecRunnerUtils.loadProjectInTestWindow(secondProjectPath);
                 expect(testWindow.$(".terminal-project-banner").is(":visible")).toBeTrue();
+            }, 30000);
+
+            it("clears the banner when returning to the original project without restarting", async function () {
+                const instance = await openReadyTerminal();
+                await writeToTerminal("cd ..\r");
+                await SpecRunnerUtils.loadProjectInTestWindow(secondProjectPath);
+                expect(testWindow.$(".terminal-project-banner").is(":visible")).toBeTrue();
+                await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
+                expect(testWindow.$(".terminal-project-banner").length).toBe(0);
+                expect(termModule._getActiveTerminal()).toBe(instance);
+                expect(instance.isAlive).toBeTrue();
+            }, 30000);
+
+            it("keeps the banner while tabs from another project remain", async function () {
+                const first = await openReadyTerminal();
+                await SpecRunnerUtils.loadProjectInTestWindow(secondProjectPath);
+                await __PR.execCommand(termModule.CMD_NEW_TERMINAL);
+                const second = termModule._getActiveTerminal();
+                await second.firstDataReceived;
+                await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
+                expect(testWindow.$(".terminal-project-banner").is(":visible")).toBeTrue();
+                testWindow.$('.terminal-flyout-item[data-terminal-id="' + second.id + '"] .terminal-flyout-close')
+                    .click();
+                await awaitsFor(function () {
+                    return second._disposed && getTerminalCount() === 1;
+                }, "the other project's terminal to close", 10000);
+                expect(testWindow.$(".terminal-project-banner").length).toBe(0);
+                expect(termModule._getActiveTerminal()).toBe(first);
+                expect(first.isAlive).toBeTrue();
             }, 30000);
 
             it("restarts every tab in the new project and preserves its shell and selection", async function () {
@@ -738,6 +771,10 @@ define(function (require, exports, module) {
                     expect(instance.cwd).toBe(path);
                     await expectWorkingDirectory(instance, path);
                 }
+                await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
+                expect(testWindow.$(".terminal-project-banner").is(":visible")).toBeTrue();
+                await SpecRunnerUtils.loadProjectInTestWindow(secondProjectPath);
+                expect(testWindow.$(".terminal-project-banner").length).toBe(0);
             }, 30000);
 
             it("confirms active processes and leaves sessions untouched when canceled", async function () {
@@ -777,11 +814,7 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
                 __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
                 await __PR.waitForModalDialogClosed();
-                await awaitsFor(function () {
-                    return !testWindow.$(".terminal-project-restart").prop("disabled");
-                }, "new project banner to be actionable", 3000);
-                expect(testWindow.$(".terminal-project-banner").is(":visible")).toBeTrue();
-                expect(testWindow.$(".terminal-project-path").text()).toBe(getNativeProjectPath());
+                expect(testWindow.$(".terminal-project-banner").length).toBe(0);
                 expect(termModule._getActiveTerminal()).toBe(instance);
                 expect(connectorSpy.calls.allArgs().some(args => args[0] === "killTerminal")).toBeFalse();
             }, 30000);
