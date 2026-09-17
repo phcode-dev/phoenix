@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Esta sesión da CLI de Codex aínda está en execución en {0} — o proxecto aberto agora é {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Cambiar a “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Permanecer en “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} saíu.",
+  "AI_CHAT_CLI_RESTART_BTN": "Reiniciar",
   "AI_CHAT_SETTINGS_TITLE": "Configuración da IA",
   "AI_SETTINGS_API_KEY": "Chave de API",
   "AI_SETTINGS_BASE_URL": "URL base",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Non se puido acceder ao sitio antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non se puido conectar a {0} para buscar os seus proxectos e configuracións, polo que non se cambiou nada. Comprobe a súa conexión a internet e despois ténteo de novo con {1}.",
   "CMD_MIGRATE_DATA": "Migrar os meus datos desde {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} saíu.",
-  "AI_CHAT_CLI_RESTART_BTN": "Reiniciar"
+  "TERMINAL_PROJECT_CHANGED": "O proxecto cambiou a {0}. Os terminais existentes mantiveron as súas localizacións.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Reiniciar en: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Ao reiniciar abriranse todos os terminais neste cartafol, deteranse os procesos en execución e limparase a saída do terminal.",
+  "TERMINAL_PROJECT_KEEP": "Manter os terminais",
+  "TERMINAL_PROJECT_RESTART": "Reiniciar todo neste proxecto",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Reiniciar todos os terminais?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Os terminais teñen procesos activos. O reinicio deteraos e limpará a saída do terminal. Desexa continuar?"
 });

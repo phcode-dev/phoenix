@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Denne Codex CLI-session kører stadig i {0} — det åbne projekt er nu {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Skift til “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Bliv i “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} er afsluttet.",
+  "AI_CHAT_CLI_RESTART_BTN": "Genstart",
   "AI_CHAT_SETTINGS_TITLE": "AI-indstillinger",
   "AI_SETTINGS_API_KEY": "API-nøgle",
   "AI_SETTINGS_BASE_URL": "Basis-URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunne ikke få forbindelse til den gamle side",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at finde dine projekter og indstillinger, så der er ikke blevet ændret noget. Tjek din internetforbindelse, og prøv derefter igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} er afsluttet.",
-  "AI_CHAT_CLI_RESTART_BTN": "Genstart"
+  "TERMINAL_PROJECT_CHANGED": "Projekt ændret til {0}. Eksisterende terminaler har bevaret deres placeringer.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Genstart i: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Genstart åbner alle terminaler i denne mappe, stopper kørende processer og rydder terminalens output.",
+  "TERMINAL_PROJECT_KEEP": "Behold terminaler",
+  "TERMINAL_PROJECT_RESTART": "Genstart alle i dette projekt",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Genstart alle terminaler?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminaler har aktive processer. En genstart vil stoppe dem og rydde terminalens output. Fortsæt?"
 });

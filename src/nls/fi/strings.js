@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Tämä Codex CLI -istunto on yhä käynnissä kohteessa {0} — avoinna oleva projekti on nyt {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Vaihda kohteeseen ”{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Pysy kohteessa ”{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} on päättynyt.",
+  "AI_CHAT_CLI_RESTART_BTN": "Käynnistä uudelleen",
   "AI_CHAT_SETTINGS_TITLE": "Tekoälyasetukset",
   "AI_SETTINGS_API_KEY": "API-avain",
   "AI_SETTINGS_BASE_URL": "Perus-URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
   "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} on päättynyt.",
-  "AI_CHAT_CLI_RESTART_BTN": "Käynnistä uudelleen"
+  "TERMINAL_PROJECT_CHANGED": "Projekti vaihdettu projektiin {0}. Olemassa olevat terminaalit ovat säilyttäneet sijaintinsa.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Uudelleenkäynnistys kohteessa: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Uudelleenkäynnistys avaa kaikki tämän kansion terminaalit, pysäyttää käynnissä olevat prosessit ja tyhjentää terminaalin tulosteen.",
+  "TERMINAL_PROJECT_KEEP": "Säilytä terminaalit",
+  "TERMINAL_PROJECT_RESTART": "Uudelleenkäynnistä kaikki tässä projektissa",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Uudelleenkäynnistetäänkö kaikki terminaalit?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminaaleissa on käynnissä prosesseja. Uudelleenkäynnistys pysäyttää ne ja tyhjentää terminaalin tulosteen. Jatketaanko?"
 });

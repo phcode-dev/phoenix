@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "جلسة Codex CLI هذه لا تزال قيد التشغيل في {0} — المشروع المفتوح الآن هو {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "التبديل إلى ”{0}“",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "البقاء في ”{0}“",
+  "AI_CHAT_CLI_EXITED_MSG": "لقد خرج {0}.",
+  "AI_CHAT_CLI_RESTART_BTN": "إعادة التشغيل",
   "AI_CHAT_SETTINGS_TITLE": "إعدادات الذكاء الاصطناعي",
   "AI_SETTINGS_API_KEY": "مفتاح API",
   "AI_SETTINGS_BASE_URL": "عنوان URL الأساسي",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "لقد خرج {0}.",
-  "AI_CHAT_CLI_RESTART_BTN": "إعادة التشغيل"
+  "TERMINAL_PROJECT_CHANGED": "تم تغيير المشروع إلى {0}. احتفظت الطرفيات الحالية بمواقعها.",
+  "TERMINAL_PROJECT_RESTART_PATH": "إعادة التشغيل في: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "تؤدي إعادة التشغيل إلى فتح كل طرفية في هذا المجلد، وإيقاف العمليات قيد التشغيل، ومسح مخرجات الطرفية.",
+  "TERMINAL_PROJECT_KEEP": "إبقاء الطرفيات",
+  "TERMINAL_PROJECT_RESTART": "إعادة تشغيل الكل في هذا المشروع",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "إعادة تشغيل كل الطرفيات؟",
+  "TERMINAL_RESTART_CONFIRM_MSG": "الطرفيات لديها عمليات نشطة. ستؤدي إعادة التشغيل إلى إيقافها ومسح مخرجات الطرفية. هل تريد المتابعة؟"
 });

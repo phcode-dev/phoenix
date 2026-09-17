@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "यह Codex CLI सत्र अभी भी {0} में चल रहा है — अब खुला हुआ प्रोजेक्ट {1} है।",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}” पर स्विच करें",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}” पर बने रहें",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} बाहर निकल गया है।",
+  "AI_CHAT_CLI_RESTART_BTN": "पुनरारंभ करें",
   "AI_CHAT_SETTINGS_TITLE": "AI सेटिंग्स",
   "AI_SETTINGS_API_KEY": "API कुंजी",
   "AI_SETTINGS_BASE_URL": "बेस URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "पुरानी साइट तक नहीं पहुंच सके",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} आपके प्रोजेक्ट और सेटिंग्स को खोजने के लिए {0} से कनेक्ट नहीं हो सका, इसलिए कुछ भी नहीं बदला गया है। अपना इंटरनेट कनेक्शन जाँचें, फिर {1} के साथ फिर से प्रयास करें।",
   "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} बाहर निकल गया है।",
-  "AI_CHAT_CLI_RESTART_BTN": "पुनरारंभ करें"
+  "TERMINAL_PROJECT_CHANGED": "प्रोजेक्ट को {0} में बदल दिया गया है। मौजूदा टर्मिनलों ने अपनी जगह बनाए रखी है।",
+  "TERMINAL_PROJECT_RESTART_PATH": "इसमें रीस्टार्ट करें: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "रीस्टार्ट करने से इस फ़ोल्डर का हर टर्मिनल खुल जाएगा, चल रही प्रक्रियाएँ बंद हो जाएँगी और टर्मिनल आउटपुट साफ़ हो जाएगा।",
+  "TERMINAL_PROJECT_KEEP": "टर्मिनल रखें",
+  "TERMINAL_PROJECT_RESTART": "इस प्रोजेक्ट में सभी को रीस्टार्ट करें",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "सभी टर्मिनल रीस्टार्ट करें?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "टर्मिनलों में सक्रिय प्रक्रियाएँ हैं। रीस्टार्ट करने से वे बंद हो जाएँगी और टर्मिनल आउटपुट साफ़ हो जाएगा। जारी रखें?"
 });

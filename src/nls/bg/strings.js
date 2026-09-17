@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Тази Codex CLI сесия все още работи в {0} — отвореният проект вече е {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Превключване към „{0}“",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Оставане в „{0}“",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} излезе.",
+  "AI_CHAT_CLI_RESTART_BTN": "Рестартиране",
   "AI_CHAT_SETTINGS_TITLE": "Настройки на AI",
   "AI_SETTINGS_API_KEY": "API ключ",
   "AI_SETTINGS_BASE_URL": "Базов URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не може да се осъществи връзка със стария сайт",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не можа да се свърже с {0}, за да потърси Вашите проекти и настройки, така че нищо не е променено. Проверете интернет връзката си, след това опитайте отново с {1}.",
   "CMD_MIGRATE_DATA": "Мигриране на данните ми от {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} излезе.",
-  "AI_CHAT_CLI_RESTART_BTN": "Рестартиране"
+  "TERMINAL_PROJECT_CHANGED": "Проектът е сменен на {0}. Съществуващите терминали са запазили местоположенията си.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Рестартиране в: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Рестартирането отваря всеки терминал в тази папка, спира работещите процеси и изчиства изхода на терминала.",
+  "TERMINAL_PROJECT_KEEP": "Запази терминалите",
+  "TERMINAL_PROJECT_RESTART": "Рестартирай всички в този проект",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Рестартиране на всички терминали?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "В терминалите има активни процеси. Рестартирането ще ги спре и ще изчисти изхода на терминала. Да продължите ли?"
 });

@@ -2666,6 +2666,7 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Cette session Codex CLI est toujours en cours d'exécution dans {0} — le projet ouvert est maintenant {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Passer à “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Rester sur “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} a quitté.",
   "AI_CHAT_CLI_RESTART_BTN": "Recommencer",
   "AI_CHAT_SETTINGS_TITLE": "Paramètres de l'IA",
   "AI_SETTINGS_API_KEY": "Clé d'API",
@@ -2815,5 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Impossible d'atteindre l'ancien site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} n'a pas pu se connecter à {0} pour rechercher vos projets et paramètres, donc rien n'a été modifié. Vérifiez votre connexion Internet, puis réessayez avec {1}.",
   "CMD_MIGRATE_DATA": "Migrer mes données depuis {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} a quitté."
+  "TERMINAL_PROJECT_CHANGED": "Le projet est passé à {0}. Les terminaux existants ont conservé leurs emplacements.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Redémarrer dans : {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Le redémarrage ouvre tous les terminaux dans ce dossier, arrête les processus en cours et efface la sortie des terminaux.",
+  "TERMINAL_PROJECT_KEEP": "Conserver les terminaux",
+  "TERMINAL_PROJECT_RESTART": "Tout redémarrer dans ce projet",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Redémarrer tous les terminaux ?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Les terminaux ont des processus actifs. Le redémarrage les arrêtera et effacera la sortie des terminaux. Continuer ?"
 });

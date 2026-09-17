@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Αυτή η συνεδρία Codex CLI εξακολουθεί να εκτελείται στο {0} — το ανοιχτό έργο είναι τώρα το {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Μετάβαση στο «{0}»",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Παραμονή στο «{0}»",
+  "AI_CHAT_CLI_EXITED_MSG": "Ο/Η {0} τερματίστηκε.",
+  "AI_CHAT_CLI_RESTART_BTN": "Επανεκκίνηση",
   "AI_CHAT_SETTINGS_TITLE": "Ρυθμίσεις AI",
   "AI_SETTINGS_API_KEY": "Κλειδί API",
   "AI_SETTINGS_BASE_URL": "URL Βάσης",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Αδυναμία πρόσβασης στον παλιό ιστότοπο",
   "MIGRATE_UNREACHABLE_MESSAGE": "Το {APP_NAME} δεν μπόρεσε να συνδεθεί στο {0} για την αναζήτηση των έργων και των ρυθμίσεών σας, επομένως δεν έχει αλλάξει τίποτα. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο και, στη συνέχεια, δοκιμάστε ξανά με το {1}.",
   "CMD_MIGRATE_DATA": "Μεταφορά των δεδομένων μου από το {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "Ο/Η {0} τερματίστηκε.",
-  "AI_CHAT_CLI_RESTART_BTN": "Επανεκκίνηση"
+  "TERMINAL_PROJECT_CHANGED": "Το έργο άλλαξε σε {0}. Τα υπάρχοντα τερματικά διατήρησαν τις θέσεις τους.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Επανεκκίνηση σε: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Η επανεκκίνηση ανοίγει κάθε τερματικό σε αυτόν τον φάκελο, διακόπτει τις εκτελούμενες διεργασίες και καθαρίζει την έξοδο του τερματικού.",
+  "TERMINAL_PROJECT_KEEP": "Διατήρηση Τερματικών",
+  "TERMINAL_PROJECT_RESTART": "Επανεκκίνηση Όλων σε Αυτό το Έργο",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Επανεκκίνηση όλων των τερματικών;",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Τα τερματικά έχουν ενεργές διεργασίες. Η επανεκκίνηση θα τις διακόψει και θα καθαρίσει την έξοδο του τερματικού. Συνέχεια;"
 });

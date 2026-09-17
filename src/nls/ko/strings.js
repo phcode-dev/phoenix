@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "이 Codex CLI 세션은 {0}에서 계속 실행 중입니다 — 현재 열려 있는 프로젝트는 {1}입니다.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "“{0}”(으)로 전환",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "“{0}”에 머무르기",
+  "AI_CHAT_CLI_EXITED_MSG": "{0}이(가) 종료되었습니다.",
+  "AI_CHAT_CLI_RESTART_BTN": "다시 시작",
   "AI_CHAT_SETTINGS_TITLE": "AI 설정",
   "AI_SETTINGS_API_KEY": "API 키",
   "AI_SETTINGS_BASE_URL": "기본 URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}이(가) {0}에 연결하여 프로젝트 및 설정을 찾을 수 없었으므로 아무것도 변경되지 않았습니다. 인터넷 연결을 확인한 다음 {1}으로 다시 시도하세요.",
   "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0}이(가) 종료되었습니다.",
-  "AI_CHAT_CLI_RESTART_BTN": "다시 시작"
+  "TERMINAL_PROJECT_CHANGED": "프로젝트가 {0}(으)로 변경되었습니다. 기존 터미널은 위치를 유지했습니다.",
+  "TERMINAL_PROJECT_RESTART_PATH": "다시 시작 위치: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "다시 시작하면 이 폴더의 모든 터미널이 열리고 실행 중인 프로세스가 중지되며 터미널 출력이 지워집니다.",
+  "TERMINAL_PROJECT_KEEP": "터미널 유지",
+  "TERMINAL_PROJECT_RESTART": "이 프로젝트의 모든 터미널 다시 시작",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "모든 터미널을 다시 시작하시겠습니까?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "터미널에 활성 프로세스가 있습니다. 다시 시작하면 프로세스가 중지되고 터미널 출력이 지워집니다. 계속하시겠습니까?"
 });

@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Această sesiune Codex CLI rulează încă în {0} — proiectul deschis acum este {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Comutați la “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Rămâneți la “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} a ieșit.",
+  "AI_CHAT_CLI_RESTART_BTN": "Repornește",
   "AI_CHAT_SETTINGS_TITLE": "Setări AI",
   "AI_SETTINGS_API_KEY": "Cheie API",
   "AI_SETTINGS_BASE_URL": "URL de bază",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
   "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} a ieșit.",
-  "AI_CHAT_CLI_RESTART_BTN": "Repornește"
+  "TERMINAL_PROJECT_CHANGED": "Proiectul a fost schimbat în {0}. Terminalele existente și-au păstrat locațiile.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Repornire în: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Repornirea deschide fiecare terminal în acest folder, oprește procesele în execuție și golește ieșirea terminalului.",
+  "TERMINAL_PROJECT_KEEP": "Păstrează terminalele",
+  "TERMINAL_PROJECT_RESTART": "Repornește-le pe toate în acest proiect",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Reporniți toate terminalele?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminalele au procese active. Repornirea le va opri și va goli ieșirea terminalului. Continuați?"
 });

@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Ця сесія Codex CLI все ще запущена в {0} — відкритий проєкт тепер {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Перемкнутися на «{0}»",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Залишитися в «{0}»",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} вийшов.",
+  "AI_CHAT_CLI_RESTART_BTN": "Перезапустити",
   "AI_CHAT_SETTINGS_TITLE": "Налаштування ШІ",
   "AI_SETTINGS_API_KEY": "API-ключ",
   "AI_SETTINGS_BASE_URL": "Базова URL-адреса",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не вдалося підключитися до старого сайту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не вдалося підключитися до {0}, щоб знайти ваші проєкти та налаштування, тому нічого не було змінено. Перевірте підключення до Інтернету, а потім спробуйте ще раз за допомогою {1}.",
   "CMD_MIGRATE_DATA": "Перенести мої дані з {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} вийшов.",
-  "AI_CHAT_CLI_RESTART_BTN": "Перезапустити"
+  "TERMINAL_PROJECT_CHANGED": "Проєкт змінено на «{0}». Наявні термінали зберегли своє розташування.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Перезапустити в: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Перезапуск відкриє кожен термінал у цій теці, зупинить запущені процеси та очистить вивід термінала.",
+  "TERMINAL_PROJECT_KEEP": "Залишити термінали",
+  "TERMINAL_PROJECT_RESTART": "Перезапустити всі в цьому проєкті",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Перезапустити всі термінали?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "У терміналах є активні процеси. Перезапуск зупинить їх та очистить вивід терміналів. Продовжити?"
 });

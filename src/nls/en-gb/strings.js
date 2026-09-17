@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "This Codex CLI session is still running in {0} — the open project is now {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Switch to “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Stay on “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} has exited.",
+  "AI_CHAT_CLI_RESTART_BTN": "Restart",
   "AI_CHAT_SETTINGS_TITLE": "AI Settings",
   "AI_SETTINGS_API_KEY": "API Key",
   "AI_SETTINGS_BASE_URL": "Base URL",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Could not reach the old site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} could not connect to {0} to look for your projects and settings, so nothing has been changed. Check your internet connection, then try again with {1}.",
   "CMD_MIGRATE_DATA": "Migrate My Data From {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} has exited.",
-  "AI_CHAT_CLI_RESTART_BTN": "Restart"
+  "TERMINAL_PROJECT_CHANGED": "Project changed to {0}. Existing terminals have kept their locations.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Restart in: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "Restarting opens every terminal in this folder, stops running processes and clears terminal output.",
+  "TERMINAL_PROJECT_KEEP": "Keep Terminals",
+  "TERMINAL_PROJECT_RESTART": "Restart All in This Project",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Restart All Terminals?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Terminals have active processes. Restarting will stop them and clear terminal output. Continue?"
 });

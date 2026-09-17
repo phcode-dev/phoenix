@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "Esta sessão CLI do Codex ainda está em execução em {0} — o projeto aberto é agora {1}.",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "Mudar para “{0}”",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "Permanecer em “{0}”",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} saiu.",
+  "AI_CHAT_CLI_RESTART_BTN": "Reiniciar",
   "AI_CHAT_SETTINGS_TITLE": "Definições de IA",
   "AI_SETTINGS_API_KEY": "Chave da API",
   "AI_SETTINGS_BASE_URL": "URL de Base",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Não foi possível aceder ao site antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "O {APP_NAME} não se conseguiu ligar a {0} para procurar os seus projetos e definições, pelo que nada foi alterado. Verifique a sua ligação à internet e, em seguida, tente novamente com {1}.",
   "CMD_MIGRATE_DATA": "Migrar os Meus Dados de {0}…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} saiu.",
-  "AI_CHAT_CLI_RESTART_BTN": "Reiniciar"
+  "TERMINAL_PROJECT_CHANGED": "Projeto alterado para {0}. Os terminais existentes mantiveram as suas localizações.",
+  "TERMINAL_PROJECT_RESTART_PATH": "Reiniciar em: {0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "A reinicialização abre todos os terminais nesta pasta, interrompe os processos em execução e limpa a saída do terminal.",
+  "TERMINAL_PROJECT_KEEP": "Manter Terminais",
+  "TERMINAL_PROJECT_RESTART": "Reiniciar Todos Neste Projeto",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "Reiniciar Todos os Terminais?",
+  "TERMINAL_RESTART_CONFIRM_MSG": "Os terminais têm processos ativos. A reinicialização irá interrompê-los e limpar a saída do terminal. Continuar?"
 });

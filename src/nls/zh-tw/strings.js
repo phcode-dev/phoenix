@@ -2666,6 +2666,8 @@ define({
   "AI_CHAT_CODEX_STALE_PROJECT_MSG": "此 Codex CLI 工作階段仍在 {0} 中執行 — 目前開啟的專案是 {1}。",
   "AI_CHAT_CLI_STALE_PROJECT_SWITCH_BTN": "切換至「{0}」",
   "AI_CHAT_CLI_STALE_PROJECT_STAY_BTN": "停留在「{0}」",
+  "AI_CHAT_CLI_EXITED_MSG": "{0} 已結束。",
+  "AI_CHAT_CLI_RESTART_BTN": "重新啟動",
   "AI_CHAT_SETTINGS_TITLE": "AI 設定",
   "AI_SETTINGS_API_KEY": "API 金鑰",
   "AI_SETTINGS_BASE_URL": "基礎網址",
@@ -2814,6 +2816,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
   "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
-  "AI_CHAT_CLI_EXITED_MSG": "{0} 已結束。",
-  "AI_CHAT_CLI_RESTART_BTN": "重新啟動"
+  "TERMINAL_PROJECT_CHANGED": "專案已變更為 {0}。現有終端機已保留其位置。",
+  "TERMINAL_PROJECT_RESTART_PATH": "於此重啟：{0}",
+  "TERMINAL_PROJECT_RESTART_WARNING": "重啟將會在此資料夾中開啟每個終端機、停止執行中的程序並清除終端機輸出。",
+  "TERMINAL_PROJECT_KEEP": "保留終端機",
+  "TERMINAL_PROJECT_RESTART": "重啟專案中所有終端機",
+  "TERMINAL_RESTART_CONFIRM_TITLE": "重啟所有終端機？",
+  "TERMINAL_RESTART_CONFIRM_MSG": "終端機中有執行中的程序。重啟將會中止它們並清除終端機輸出。要繼續嗎？"
 });
