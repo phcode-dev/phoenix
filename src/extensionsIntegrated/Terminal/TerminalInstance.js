@@ -65,6 +65,8 @@ define(function (require, exports, module) {
             cursorAccent: v("--terminal-background"),
             selectionBackground: v("--terminal-selection"),
             selectionForeground: undefined,
+            // Setting a scrollbar width also enables xterm's overview ruler.
+            overviewRulerBorder: "transparent",
             black: v("--terminal-ansi-black"),
             red: v("--terminal-ansi-red"),
             green: v("--terminal-ansi-green"),
@@ -138,6 +140,8 @@ define(function (require, exports, module) {
             cursorBlink: true,
             cursorStyle: "block",
             scrollback: 10000,
+            // Match Phoenix's scrollbar width and keep FitAddon's column calculation in sync.
+            scrollbar: { width: 12 },
             allowProposedApi: true
         });
 
