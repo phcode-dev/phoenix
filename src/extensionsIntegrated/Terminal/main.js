@@ -93,6 +93,8 @@ define(function (require, exports, module) {
     let originalDefaultShellName = null; // System-detected default shell name
     let _focusToastShown = false;       // Show focus hint toast only once per session
     let _clearHintShown = false;        // Show clear buffer hint toast only once per session
+    let _projectPath = null;
+    let _restartingTerminals = false;
     let $panel, $contentArea, $shellDropdown, $flyoutList;
 
     /**
@@ -186,7 +188,7 @@ define(function (require, exports, module) {
         const shells = ShellProfiles.getShells();
         const defaultShell = ShellProfiles.getDefaultShell();
         $shellDropdown.empty();
-        for (const shell of shells) {
+        shells.forEach(function (shell) {
             const isSelected = defaultShell && defaultShell.name === shell.name;
             const $check = $('<span class="shell-check"></span>');
             if (isSelected) {
@@ -197,6 +199,9 @@ define(function (require, exports, module) {
                 .append($check)
                 .append($('<span></span>').text(shell.name));
             $item.on("click", function () {
+                if (_restartingTerminals) {
+                    return;
+                }
                 _hideShellDropdown();
                 ShellProfiles.setDefaultShell(shell.name);
                 _populateShellDropdown();
@@ -209,7 +214,7 @@ define(function (require, exports, module) {
                 _createNewTerminalWithShell(shell);
             });
             $shellDropdown.append($item);
-        }
+        });
     }
 
     /**
@@ -272,6 +277,9 @@ define(function (require, exports, module) {
      * Create a new terminal with the default shell
      */
     async function _createNewTerminal(cwdOverride) {
+        if (_restartingTerminals) {
+            return;
+        }
         const shell = ShellProfiles.getDefaultShell();
         return _createNewTerminalWithShell(shell, cwdOverride);
     }
@@ -286,17 +294,12 @@ define(function (require, exports, module) {
         if (cwd.startsWith(tauriPrefix)) {
             cwd = Phoenix.fs.getTauriPlatformPath(cwd);
         }
-        if (cwd.length > 1 && (cwd.endsWith("/") || cwd.endsWith("\\"))) {
+        if (cwd.length > 1 && !/^[a-z]:[\\/]$/i.test(cwd) && (cwd.endsWith("/") || cwd.endsWith("\\"))) {
             cwd = cwd.slice(0, -1);
         }
         return cwd;
     }
 
-    /**
-     * Create a new terminal with a specific shell profile
-     * @param {Object} shell - Shell profile to use
-     * @param {string} [cwdOverride] - Optional VFS path to use as cwd instead of project root
-     */
     /**
      * Map an OS shell name (e.g. "powershell.exe", "bash.exe") to a short
      * family label so the metrics server's per-event length budget stays
@@ -315,6 +318,12 @@ define(function (require, exports, module) {
         return n || "unknown";
     }
 
+    /**
+     * Create a terminal using a shell profile and an optional VFS directory.
+     * @param {Object} shell Shell profile to use.
+     * @param {string} [cwdOverride] Directory to use instead of the project root.
+     * @return {Promise<TerminalInstance|undefined>} The new terminal, if a shell is available.
+     */
     async function _createNewTerminalWithShell(shell, cwdOverride) {
         if (!shell) {
             console.error("Terminal: No shell available");
@@ -376,6 +385,119 @@ define(function (require, exports, module) {
 
         // Spawn PTY process
         await instance.spawn();
+        return instance;
+    }
+
+    /** Remove the project-switch notice without changing any terminal session. */
+    function _hideProjectBanner() {
+        if ($contentArea) {
+            $contentArea.find(".terminal-project-banner").remove();
+        }
+    }
+
+    /** Show one notice for all bottom-panel terminals, naming the current project. */
+    function _showProjectBanner() {
+        _hideProjectBanner();
+        const root = ProjectManager.getProjectRoot();
+        if (!root || !terminalInstances.length) {
+            return;
+        }
+        const $banner = $('<div class="terminal-project-banner" role="status"></div>');
+        $banner.append($('<div class="terminal-project-message"></div>')
+            .text(StringUtils.format(Strings.TERMINAL_PROJECT_CHANGED, root.name)));
+        const path = _toNativePath(root.fullPath);
+        $banner.append($('<div class="terminal-project-path"></div>').text(path).attr("title", path));
+        $banner.append($('<div></div>').text(Strings.TERMINAL_PROJECT_RESTART_WARNING));
+        const $actions = $('<div class="terminal-project-actions"></div>');
+        $actions.append($('<button class="btn terminal-project-keep"></button>')
+            .text(Strings.TERMINAL_PROJECT_KEEP).on("click", function () {
+                _hideProjectBanner();
+                const active = _getActiveTerminal();
+                if (active) {
+                    active.focus();
+                }
+            }));
+        $actions.append($('<button class="btn btn-primary terminal-project-restart"></button>')
+            .text(Strings.TERMINAL_PROJECT_RESTART).on("click", _restartTerminalsInProject));
+        $actions.find("button").prop("disabled", _restartingTerminals);
+        $banner.append($actions);
+        $contentArea.append($banner);
+    }
+
+    /** Notify on actual project changes; shell navigation and panel toggles leave sessions alone. */
+    function _onProjectOpen() {
+        const root = ProjectManager.getProjectRoot();
+        const path = root ? root.fullPath : null;
+        if (path !== _projectPath) {
+            _projectPath = path;
+            _showProjectBanner();
+        }
+    }
+
+    /**
+     * Query child processes using the same platform-specific lookup as terminal tabs.
+     * @return {Promise<string[]>} Active child process names.
+     */
+    async function _getActiveProcesses() {
+        const results = await Promise.all(terminalInstances.filter(inst => inst.isAlive).map(function (inst) {
+            return nodeConnector.execPeer("getTerminalProcess", {id: inst.id})
+                .catch(function () { return {process: ""}; });
+        }));
+        return results.filter(result => result.process && !_isShellProcess(result.process))
+            .map(result => result.process);
+    }
+
+    /** Restart all bottom-panel tabs in the selected project, preserving shells, order and selection. */
+    async function _restartTerminalsInProject() {
+        const root = ProjectManager.getProjectRoot();
+        if (_restartingTerminals || !root || !terminalInstances.length) {
+            return;
+        }
+        const path = root.fullPath;
+        _restartingTerminals = true;
+        $contentArea.find(".terminal-project-actions button").prop("disabled", true);
+        try {
+            const activeProcesses = await _getActiveProcesses();
+            if (activeProcesses.length) {
+                const dialog = Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO,
+                    Strings.TERMINAL_RESTART_CONFIRM_TITLE,
+                    Strings.TERMINAL_RESTART_CONFIRM_MSG, [
+                        {className: Dialogs.DIALOG_BTN_CLASS_NORMAL, id: Dialogs.DIALOG_BTN_CANCEL, text: Strings.CANCEL},
+                        {className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: Dialogs.DIALOG_BTN_OK,
+                            text: Strings.TERMINAL_PROJECT_RESTART}
+                    ]);
+                if (await dialog.getPromise() !== Dialogs.DIALOG_BTN_OK) {
+                    return;
+                }
+            }
+            // A project can change while process lookup or confirmation is pending.
+            const currentRoot = ProjectManager.getProjectRoot();
+            if (!currentRoot || currentRoot.fullPath !== path) {
+                return;
+            }
+            const profiles = terminalInstances.map(inst => inst.shellProfile);
+            const activeIndex = terminalInstances.findIndex(inst => inst.id === activeTerminalId);
+            await _disposeAllAsync();
+            activeTerminalId = null;
+            _updateFlyout();
+            const replacements = [];
+            for (const profile of profiles) {
+                replacements.push(await _createNewTerminalWithShell(profile, path));
+            }
+            if (replacements[activeIndex]) {
+                _activateTerminal(replacements[activeIndex].id);
+            }
+            // Keep a notice for a newer project selected during the restart.
+            if (_projectPath !== path) {
+                _showProjectBanner();
+            }
+        } catch (err) {
+            console.error("Terminal: Failed to restart terminals:", err);
+            _showProjectBanner();
+        } finally {
+            _restartingTerminals = false;
+            $contentArea.find(".terminal-project-actions button").prop("disabled", false);
+        }
     }
 
     /**
@@ -401,6 +523,9 @@ define(function (require, exports, module) {
      * Close a terminal instance, confirming first if a child process is running
      */
     async function _closeTerminal(id) {
+        if (_restartingTerminals) {
+            return;
+        }
         const idx = terminalInstances.findIndex(t => t.id === id);
         if (idx === -1) {
             return;
@@ -447,6 +572,7 @@ define(function (require, exports, module) {
 
         // If no terminals left, hide the panel
         if (terminalInstances.length === 0) {
+            _hideProjectBanner();
             panel.hide();
 
         }
@@ -801,6 +927,7 @@ define(function (require, exports, module) {
         }
         terminalInstances = [];
         processInfo = {};
+        _hideProjectBanner();
     }
 
     /**
@@ -923,23 +1050,18 @@ define(function (require, exports, module) {
         _initNodeConnector();
         _createPanel();
         _createToolbarButton();
+        const root = ProjectManager.getProjectRoot();
+        _projectPath = root ? root.fullPath : null;
+        ProjectManager.on("projectOpen.terminal", _onProjectOpen);
 
         // Gate user-initiated panel close (X button): confirm if needed, then
         // dispose all terminals. Programmatic hide() just collapses the panel
         // without disposing terminals.
         panel.registerOnCloseRequestedHandler(async function () {
-            // Query all terminals in parallel to avoid sequential 2s waits on Windows
-            const aliveInstances = terminalInstances.filter(inst => inst.isAlive);
-            const results = await Promise.all(aliveInstances.map(function (inst) {
-                return nodeConnector.execPeer("getTerminalProcess", {id: inst.id})
-                    .catch(function () { return {process: ""}; });
-            }));
-            const activeProcesses = [];
-            for (const result of results) {
-                if (result.process && !_isShellProcess(result.process)) {
-                    activeProcesses.push(result.process);
-                }
+            if (_restartingTerminals) {
+                return false;
             }
+            const activeProcesses = await _getActiveProcesses();
 
             let title, message, confirmText;
             const count = terminalInstances.length;

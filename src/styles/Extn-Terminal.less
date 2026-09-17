@@ -365,6 +365,40 @@
     overflow: hidden;
 }
 
+.terminal-project-banner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    box-sizing: border-box;
+    max-height: 100%;
+    overflow: auto;
+    padding: 8px 10px;
+    background: var(--terminal-toolbar-bg);
+    color: var(--terminal-foreground);
+    border-top: 1px solid var(--terminal-border);
+    border-left: 3px solid var(--terminal-ansi-yellow);
+    box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.2);
+    white-space: normal;
+
+    .terminal-project-path {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin: 4px 0;
+        font-weight: 600;
+    }
+
+    .terminal-project-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 8px;
+    }
+}
+
 .terminal-instance-container {
     position: absolute;
     top: 0;
