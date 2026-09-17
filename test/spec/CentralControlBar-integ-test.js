@@ -1492,15 +1492,16 @@ define(function (require, exports, module) {
                     expect(SidebarView.isVisible()).toBe(true);
                 });
 
-            it("should dispatch VIEW_TOGGLE_LP_FULL_SCREEN from the live preview expand button",
+            it("should dispatch VIEW_TOGGLE_DESIGN_MODE from the live preview expand button",
                 async function () {
                     await openLivePreview();
 
                     const executed = recordCommands(function () {
-                        _$("#fullScreenLivePreviewButton").trigger("click");
+                        _$("#designModeToggleLivePreviewButton").trigger("click");
                     });
 
-                    expect(executed).toContain(Commands.VIEW_TOGGLE_LP_FULL_SCREEN);
+                    expect(executed).toContain(Commands.VIEW_TOGGLE_DESIGN_MODE);
+                    expect(executed).not.toContain(Commands.VIEW_TOGGLE_LP_FULL_SCREEN);
                 });
         });
     });
