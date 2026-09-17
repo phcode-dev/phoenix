@@ -597,6 +597,42 @@ define(function (require, exports, module) {
                 });
         });
 
+        it("should forward Alt+Up to the terminal instead of a Phoenix command", async function () {
+            const termModule = testWindow.brackets.getModule("extensionsIntegrated/Terminal/main");
+            let inputListener;
+            try {
+                await openTerminal();
+                await waitForShellReady();
+                const instance = termModule._getActiveTerminal();
+                const KeyBindingManager = testWindow.brackets.getModule("command/KeyBindingManager");
+                const binding = KeyBindingManager.getKeymap()["Alt-Up"];
+                const command = testWindow.brackets.test.CommandManager.get(binding.commandID);
+                const execute = spyOn(command, "execute")
+                    .and.returnValue(testWindow.$.Deferred().resolve().promise());
+                const input = [];
+                inputListener = instance.terminal.onData(function (data) { input.push(data); });
+                instance.focus();
+                await awaitsFor(function () {
+                    return testWindow.document.activeElement === instance.terminal.textarea;
+                }, "terminal input to have focus", 3000);
+
+                const key = {key: "ArrowUp", code: "ArrowUp", keyCode: 38, which: 38,
+                    altKey: true, bubbles: true, cancelable: true};
+                instance.terminal.textarea.dispatchEvent(new testWindow.KeyboardEvent("keydown", key));
+                instance.terminal.textarea.dispatchEvent(new testWindow.KeyboardEvent("keyup", key));
+                await awaitsFor(function () {
+                    return input.includes("\x1b[1;3A");
+                }, "Alt+Up escape sequence to reach the terminal", 3000);
+                expect(execute).not.toHaveBeenCalled();
+            } finally {
+                if (inputListener) {
+                    inputListener.dispose();
+                }
+                await termModule._disposeAll();
+                WorkspaceManager.getPanelForID(PANEL_ID).hide();
+            }
+        });
+
         describe("Context menu commands", function () {
             let CommandManager;
 
@@ -631,6 +667,43 @@ define(function (require, exports, module) {
                 CommandManager =
                     testWindow.brackets.test.CommandManager;
             });
+
+            it("should open Copy, Paste and Clear Terminal on right-click",
+                async function () {
+                    const Menus = testWindow.brackets.test.Menus;
+                    const ctxMenu = Menus.getContextMenu("terminal-context-menu");
+                    const termModule = testWindow.brackets.getModule("extensionsIntegrated/Terminal/main");
+                    const commandStates = ["terminal.copy", "terminal.paste", "terminal.clear"].map(function (id) {
+                        const command = CommandManager.get(id);
+                        return {command, enabled: command.getEnabled()};
+                    });
+                    try {
+                        await openTerminal();
+                        await waitForShellReady();
+                        const active = getActiveTerminal();
+                        active.terminal.clearSelection();
+                        active.$container.find(".xterm-screen").trigger(testWindow.$.Event("contextmenu", {
+                            pageX: 100,
+                            pageY: 100
+                        }));
+                        await awaitsFor(function () {
+                            return testWindow.$("#terminal-context-menu.open > .dropdown-menu").is(":visible");
+                        }, "terminal context menu to open on right-click", 3000);
+
+                        const labels = testWindow.$("#terminal-context-menu .menu-name").map(function () {
+                            return testWindow.$(this).text();
+                        }).get();
+                        expect(labels).toEqual([Strings.CMD_COPY, Strings.CMD_PASTE, Strings.TERMINAL_CLEAR]);
+                        expect(CommandManager.get("terminal.copy").getEnabled()).toBeFalse();
+                        expect(CommandManager.get("terminal.paste").getEnabled()).toBeTrue();
+                        expect(CommandManager.get("terminal.clear").getEnabled()).toBeTrue();
+                    } finally {
+                        ctxMenu.close();
+                        commandStates.forEach(function (state) { state.command.setEnabled(state.enabled); });
+                        await termModule._disposeAll();
+                        WorkspaceManager.getPanelForID(PANEL_ID).hide();
+                    }
+                });
 
             it("should clear the terminal screen",
                 async function () {

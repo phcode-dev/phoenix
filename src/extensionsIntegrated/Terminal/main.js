@@ -708,22 +708,23 @@ define(function (require, exports, module) {
                 return false;
             }
             const el = document.activeElement;
-            if (!el || !$contentArea[0].contains(el)) {
+            if (!el || !$(el).closest(".terminal-instance-container").length) {
                 return false;
             }
 
+            const inBottomPanel = $contentArea[0].contains(el);
             const ctrlOrMeta = event.ctrlKey || event.metaKey;
             const key = event.key.toLowerCase();
 
             // Ctrl+K (Cmd+K on mac): clear terminal scrollback
-            if (ctrlOrMeta && !event.shiftKey && key === "k") {
+            if (inBottomPanel && ctrlOrMeta && !event.shiftKey && key === "k") {
                 event.preventDefault();
                 _clearActiveTerminal();
                 return true;
             }
 
             // Show clear buffer hint on Ctrl+L
-            if (ctrlOrMeta && !event.shiftKey && key === "l") {
+            if (inBottomPanel && ctrlOrMeta && !event.shiftKey && key === "l") {
                 _showClearBufferHintToast();
             }
 
