@@ -317,6 +317,11 @@ define(function (require, exports, module) {
         }
     }
 
+    function _isInFront(liveDoc) {
+        const fullEditor = EditorManager.getCurrentFullEditor();
+        return !!fullEditor && fullEditor.document.file.fullPath === liveDoc.doc.file.fullPath;
+    }
+
     const processedMessageIDs = new Phoenix.libs.LRUCache({
         max: MAX_PENDING_LP_CALLS_1000
         // we dont need to set a ttl here as message ids are unique throughout lifetime. And old ids will
@@ -397,8 +402,12 @@ define(function (require, exports, module) {
                 console.error("error in tag selection", e);
             }
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(false);
-            // the caret did not move for a script-added element, re-highlighting would drop its selection
-            liveDoc && !msg.sourceless && liveDoc.updateHighlight();
+            // the caret did not move for a script-added element, re-highlighting would drop its selection.
+            // Nor did it move in the page's own code while another file is in front, where the
+            // caret left behind would take the selection from the element just clicked.
+            if (liveDoc && !msg.sourceless && _isInFront(liveDoc)) {
+                liveDoc.updateHighlight();
+            }
         } else {
             // enrich received message with clientId
             msg.clientId = clientId;
