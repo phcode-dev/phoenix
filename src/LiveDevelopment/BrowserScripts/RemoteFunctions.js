@@ -508,9 +508,15 @@ function RemoteFunctions(config = {}) {
         return measured;
     }
 
+    // Margin and padding fills belong to the selected element, picked in the page or by the
+    // caret in its code. A hover and the other matches of a css rule only get the outline.
+    function _showsBoxModel(element, outlineOnly) {
+        return !outlineOnly && element === previouslySelectedElement && !SHARED_STATE._boxModelHighlightHidden;
+    }
+
     // Update an existing overlay's position, dimensions, and colors to match the target element.
     // No DOM elements are created or destroyed — only style properties are updated.
-    function _paintOverlay(overlay, element, measured) {
+    function _paintOverlay(overlay, element, measured, outlineOnly) {
         if (!measured) {
             overlay.classList.add('hidden');
             return;
@@ -574,7 +580,7 @@ function RemoteFunctions(config = {}) {
 
         // Padding region. Rects stay in place when hidden, only their fill goes away,
         // so nothing has to be rebuilt when they come back.
-        const boxModelHidden = SHARED_STATE._boxModelHighlightHidden;
+        const boxModelHidden = !_showsBoxModel(element, outlineOnly);
         const padColor = boxModelHidden ? "transparent" : COLORS.highlightPadding;
         setRect(refs.padTop, paddingBox.left, paddingBox.top, paddingBox.width, pt, padColor);
         setRect(refs.padBottom, paddingBox.left, contentBox.top + contentBox.height, paddingBox.width, pb, padColor);
@@ -599,12 +605,14 @@ function RemoteFunctions(config = {}) {
         outlineStyle.border = `1px solid ${outlineColor}`;
     }
 
-    function _updateOverlay(overlay, element) {
-        _paintOverlay(overlay, element, _measureOverlay(element));
+    function _updateOverlay(overlay, element, outlineOnly) {
+        _paintOverlay(overlay, element, _measureOverlay(element), outlineOnly);
     }
 
-    function Highlight(trigger) {
+    // outlineOnly: a hover can sit on the selected element too, and must not fill it twice
+    function Highlight(trigger, outlineOnly) {
         this.trigger = !!trigger;
+        this.outlineOnly = !!outlineOnly;
         this.elements = [];
         this.selector = "";
         this._overlays = [];
@@ -622,7 +630,7 @@ function RemoteFunctions(config = {}) {
             this.elements.push(element);
             const overlay = _getOverlay();
             this._overlays.push(overlay);
-            _updateOverlay(overlay, element);
+            _updateOverlay(overlay, element, this.outlineOnly);
         },
 
         addAll: function (elements) {
@@ -643,7 +651,7 @@ function RemoteFunctions(config = {}) {
                 this.elements.push(fresh[i]);
                 const overlay = _getOverlay();
                 this._overlays.push(overlay);
-                _paintOverlay(overlay, fresh[i], measured[i]);
+                _paintOverlay(overlay, fresh[i], measured[i], this.outlineOnly);
             }
         },
 
@@ -687,7 +695,7 @@ function RemoteFunctions(config = {}) {
             // Update all overlays in place — no DOM creation or destruction
             const measured = _measureAll(elements);
             for (let i = 0; i < elements.length; i++) {
-                _paintOverlay(this._overlays[i], elements[i], measured[i]);
+                _paintOverlay(this._overlays[i], elements[i], measured[i], this.outlineOnly);
             }
         }
     };
@@ -760,7 +768,7 @@ function RemoteFunctions(config = {}) {
 
         // if _hoverHighlight is uninitialized, initialize it
         if (!_hoverHighlight && shouldShowHighlightOnHover()) {
-            _hoverHighlight = new Highlight(true);
+            _hoverHighlight = new Highlight(true, true);
         }
 
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
@@ -864,15 +872,17 @@ function RemoteFunctions(config = {}) {
             }
         }
 
+        // the overlay paints by who is selected, so that is settled first
+        previouslySelectedElement = element;
+        _selectedFromEditor = fromEditor || false;
+        window.__current_ph_lp_selected = element;
+
         if (!_clickHighlight) {
             _clickHighlight = new Highlight();
         }
         _clickHighlight.clear();
         _clickHighlight.add(element);
 
-        previouslySelectedElement = element;
-        _selectedFromEditor = fromEditor || false;
-        window.__current_ph_lp_selected = element;
         if (isSourceless(element)) {
             _watchSourcelessSelection(element);
         }
@@ -1271,6 +1281,11 @@ function RemoteFunctions(config = {}) {
         if (_hoverHighlight) {
             _hoverHighlight.redraw();
         }
+        // rebuilt, not redrawn: its selector also matches the selected element, which it leaves out
+        if (_cssSelectorHighlight && _cssSelectorHighlight.selector) {
+            const rule = _cssSelectorHighlight.selector;
+            createCssSelectorHighlight(window.document.querySelectorAll(rule), rule);
+        }
     }
 
     // just a wrapper function when we need to redraw highlights as well as UI boxes
@@ -1659,12 +1674,12 @@ function RemoteFunctions(config = {}) {
                 }
 
                 if (freshElement) {
+                    previouslySelectedElement = freshElement;
+                    window.__current_ph_lp_selected = freshElement;
                     if (_clickHighlight) {
                         _clickHighlight.clear();
                         _clickHighlight.add(freshElement);
                     }
-                    previouslySelectedElement = freshElement;
-                    window.__current_ph_lp_selected = freshElement;
                     // After element replacement (e.g., tag name change), the old
                     // DOM node is gone.  Patch the element reference on any
                     // existing UI boxes so that position() doesn't bail on a
@@ -1893,7 +1908,7 @@ function RemoteFunctions(config = {}) {
         });
 
         if (config.mode === 'edit') {
-            _hoverHighlight = new Highlight(true);
+            _hoverHighlight = new Highlight(true, true);
             _clickHighlight = new Highlight(true);
 
             // register the event handlers
