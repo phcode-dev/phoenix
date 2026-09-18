@@ -102,15 +102,26 @@ function splitMetadataAndBuffer(concatenatedBuffer) {
 }
 
 let messageQueue = [];
+const MESSAGE_QUEUE_MAX = 200;
+const WS_RECONNECT_MIN_MS = 1000;
+const WS_RECONNECT_MAX_MS = 10000;
+let _wsReconnectDelayMs = WS_RECONNECT_MIN_MS;
+let _heartbeatStarted = false;
 
 function _sendMessage(message) {
     if(_livePreviewWebSocket && _livePreviewWebSocketOpen) {
         _livePreviewWebSocket.send(mergeMetadataAndArrayBuffer(message));
     } else if(_livePreviewBroadcastChannel){
         _livePreviewBroadcastChannel.postMessage(message);
+    } else if(message.type === 'TAB_ONLINE') {
+        // a heartbeat that cannot go now is worthless later
+        return;
     } else {
         livePreviewDebugModeEnabled && console.warn("No Channels available for live preview worker messaging," +
             " queueing request, waiting for channel..");
+        if(messageQueue.length >= MESSAGE_QUEUE_MAX) {
+            messageQueue.shift();
+        }
         messageQueue.push(message);
     }
 }
@@ -124,6 +135,10 @@ function flushPendingMessages() {
 }
 
 function _setupHearbeatMessenger(clientID) {
+    if(_heartbeatStarted) {
+        return;
+    }
+    _heartbeatStarted = true;
     function _sendOnlineHeartbeat() {
         _sendMessage({
             type: 'TAB_ONLINE',
@@ -151,11 +166,13 @@ function _setupBroadcastChannel(broadcastChannel, clientID) {
 
 function _setupWebsocketChannel(wssEndpoint, clientID) {
     _debugLog("live preview worker websocket url: ", wssEndpoint);
-    _livePreviewWebSocket = new WebSocket(wssEndpoint);
-    _livePreviewWebSocket.binaryType = 'arraybuffer';
-    _livePreviewWebSocket.addEventListener("open", () =>{
+    const socket = new WebSocket(wssEndpoint);
+    socket.binaryType = 'arraybuffer';
+    socket.addEventListener("open", () =>{
         _debugLog("live preview worker websocket opened", wssEndpoint);
+        _livePreviewWebSocket = socket;
         _livePreviewWebSocketOpen = true;
+        _wsReconnectDelayMs = WS_RECONNECT_MIN_MS;
         _sendMessage({
             type: 'CHANNEL_TYPE',
             channelName: 'livePreviewChannel',
@@ -165,7 +182,7 @@ function _setupWebsocketChannel(wssEndpoint, clientID) {
         _setupHearbeatMessenger(clientID);
     });
 
-    _livePreviewWebSocket.addEventListener('message', function (event) {
+    socket.addEventListener('message', function (event) {
         const message = event.data;
         const {metadata} = splitMetadataAndBuffer(message);
         _debugLog("Live Preview worker socket channel: Browser received event from Phoenix: ", metadata);
@@ -176,13 +193,18 @@ function _setupWebsocketChannel(wssEndpoint, clientID) {
         }
     });
 
-    _livePreviewWebSocket.addEventListener('error', function (event) {
+    socket.addEventListener('error', function (event) {
         console.error("Live Preview worker socket channel: error event: ", event);
     });
 
-    _livePreviewWebSocket.addEventListener('close', function () {
+    // The page is still here when the socket goes, so keep trying to get back to the editor.
+    socket.addEventListener('close', function () {
         _livePreviewWebSocketOpen = false;
-        _debugLog("Live Preview worker websocket closed");
+        _debugLog("Live Preview worker websocket closed, reconnecting in ms: ", _wsReconnectDelayMs);
+        setTimeout(() => {
+            _setupWebsocketChannel(wssEndpoint, clientID);
+        }, _wsReconnectDelayMs);
+        _wsReconnectDelayMs = Math.min(_wsReconnectDelayMs * 2, WS_RECONNECT_MAX_MS);
     });
 }
 
