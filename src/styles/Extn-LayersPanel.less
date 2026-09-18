@@ -118,6 +118,7 @@
     min-height: 0;
     overflow: hidden;
     position: relative;
+    container-type: inline-size;
     background-color: @bc-ai-sidebar-bg;
     color: @project-panel-text-1;
     font-size: @layers-font-size;
@@ -372,7 +373,7 @@
 
     .layers-section-properties .layers-section-content,
     .layers-section-styles .layers-section-content {
-        padding: 2px 8px 10px;
+        padding: 2px 8px 10px 14px;
     }
 
     .layers-section-header {
@@ -483,7 +484,10 @@
     }
 
     .layers-section.layers-collapsed .layers-section-content,
-    .layers-section.layers-collapsed .layers-search,
+    .layers-section.layers-collapsed .layers-search {
+        display: none;
+    }
+
     .layers-divider {
         position: relative;
         flex: 0 0 5px;
@@ -894,8 +898,20 @@
     }
 
     .layers-empty {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
         padding: 10px 12px;
         color: @project-panel-text-2;
+        white-space: normal;
+        overflow: hidden;
+        overflow-wrap: break-word;
+    }
+
+    @container (max-width: 95px) {
+        .layers-empty {
+            display: none;
+        }
     }
 
     .layers-tree.layers-tree-empty {
