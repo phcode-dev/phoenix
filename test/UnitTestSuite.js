@@ -115,6 +115,7 @@ define(function (require, exports, module) {
     require("spec/Template-for-integ-test");
     require("spec/LiveDevelopmentMultiBrowser-test");
     require("spec/LiveDevelopmentCustomServer-test");
+    require("spec/LivePreviewTabs-test");
     require("spec/md-editor-integ-test");
     require("spec/md-editor-edit-integ-test");
     require("spec/md-editor-edit-more-integ-test");
