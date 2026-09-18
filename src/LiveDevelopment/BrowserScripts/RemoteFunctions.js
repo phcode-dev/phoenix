@@ -268,6 +268,7 @@ function RemoteFunctions(config = {}) {
         selectElement: selectElement,
         isSelectedFromEditor: function () { return _selectedFromEditor; },
         highlightRuleAroundSelection: highlightRuleAroundSelection,
+        getCaretTarget: function () { return _caretTarget; },
         isNamedSelection: _isNamedSelection,
         toMatchableSelector: toMatchableSelector,
         sendSelectionToEditor: sendSelectionToEditor,
@@ -516,9 +517,8 @@ function RemoteFunctions(config = {}) {
         return measured;
     }
 
-    // Margin and padding fills belong to the selected element, picked in the page or by the
-    // caret in its code, and to the element the caret points at beside a held selection.
-    // A hover and the other matches of a css rule only get the outline.
+    // Margin and padding fills belong to the selected element and to the one the caret
+    // points at. A hover and the other matches of a css rule only get the outline.
     function _showsBoxModel(element, outlineOnly) {
         return !outlineOnly && (element === previouslySelectedElement || element === _caretTarget) &&
             !SHARED_STATE._boxModelHighlightHidden;
@@ -1257,17 +1257,23 @@ function RemoteFunctions(config = {}) {
         return toMatchableSelector(rule).split(",").map(s => s.trim()).filter(s => s !== "*").join(",");
     }
 
+    // only a pick is held, not a selection the caret made before anything held it
+    function _dropCaretMadeSelection() {
+        if (previouslySelectedElement && _selectedFromEditor) {
+            dismissUIAndCleanupState();
+        }
+    }
+
     /**
-     * The caret highlight while something else holds the selection (a layers panel pick).
-     * What the rule reaches is outlined and scrolled into view the same as when the caret
-     * selects, but the held element keeps the selection and its tools.
+     * Highlight and scroll to what the rule reaches without selecting it: the selection
+     * is held elsewhere (the layers panel) and a picked element keeps it.
      * @param {string} rule - The CSS rule to highlight
-     * @returns {Element|null} the element the caret is taken to point at, null when the
-     *   rule reaches nothing or reaches the held element itself
+     * @returns {Element|null} the element the caret points at, null when it is the held one
      */
     function highlightRuleAroundSelection(rule) {
+        _dropCaretMadeSelection();
         rule = _withoutUniversalSelector(rule);
-        // the live document and a panel reading the same caret both ask, the second for what is drawn
+        // already drawn: the live document and the layers panel both ask for the same caret
         if (rule && _cssSelectorHighlight && _cssSelectorHighlight.selector === rule) {
             return _caretTarget;
         }
@@ -1281,8 +1287,8 @@ function RemoteFunctions(config = {}) {
         if (element) {
             scrollElementToViewPort(element);
         }
-        // set before drawing: the overlay paints its margin and padding by it
-        _caretTarget = element && element !== previouslySelectedElement ? element : null;
+        // set before drawing, the overlay paints margin and padding by it
+        _caretTarget =element && element !== previouslySelectedElement ? element : null;
         createCssSelectorHighlight(nodes, rule);
         return _caretTarget;
     }
@@ -1973,13 +1979,10 @@ function RemoteFunctions(config = {}) {
         cleanupPreviousElementState();
     }
 
-    /**
-     * The editor caret left everything it could highlight. That drops the selection too,
-     * unless it is held elsewhere: then only what the caret pointed at goes.
-     * @param {boolean} [keepSelection]
-     */
+    // The editor has nothing to highlight. A selection held elsewhere stays.
     function hideEditorHighlight(keepSelection) {
         if (keepSelection) {
+            _dropCaretMadeSelection();
             _caretTarget = null;
             clearCssSelectorHighlight();
             return;
