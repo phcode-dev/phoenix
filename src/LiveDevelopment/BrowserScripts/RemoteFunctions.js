@@ -38,6 +38,11 @@ function RemoteFunctions(config = {}) {
     let _cssSelectorHighlightTimer = null;
     let _lastHoverTarget = null; // tracks the element currently under the mouse (for same-element skip)
     let _pendingHoverRAF = null; // pending requestAnimationFrame ID for hover updates
+    // a hover shows once the pointer has stayed on an element this long, so the elements
+    // passing under it during a sweep or a scroll don't flash
+    const HOVER_SETTLE_MS = 60;
+    let _hoverSettleTimer = null;
+    let _hoverSettled = false;
 
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
@@ -714,7 +719,8 @@ function RemoteFunctions(config = {}) {
     /**
      * Applies the current hover state in a single batched DOM update.
      * Called once per animation frame via requestAnimationFrame.
-     * _lastHoverTarget holds the element to highlight (or null to clear).
+     * _lastHoverTarget holds the element to highlight (or null to clear), and is only
+     * shown once the pointer has settled on it.
      */
     function _applyHoverState() {
         _pendingHoverRAF = null;
@@ -729,7 +735,7 @@ function RemoteFunctions(config = {}) {
             hoverBoxHandler.dismiss();
         }
 
-        const element = _lastHoverTarget;
+        const element = _hoverSettled ? _lastHoverTarget : null;
 
         if (element && (element !== previouslySelectedElement || _selectedFromEditor)) {
             _hoverHighlight.add(element);
@@ -746,6 +752,30 @@ function RemoteFunctions(config = {}) {
     function _scheduleHoverUpdate() {
         if (!_pendingHoverRAF) {
             _pendingHoverRAF = requestAnimationFrame(_applyHoverState);
+        }
+    }
+
+    function _cancelHoverSettle() {
+        if (_hoverSettleTimer) {
+            clearTimeout(_hoverSettleTimer);
+            _hoverSettleTimer = null;
+        }
+        _hoverSettled = false;
+    }
+
+    function _restartHoverSettle() {
+        _cancelHoverSettle();
+        _hoverSettleTimer = setTimeout(function () {
+            _hoverSettleTimer = null;
+            _hoverSettled = true;
+            _scheduleHoverUpdate();
+        }, HOVER_SETTLE_MS);
+    }
+
+    // a tall element stays under the pointer long enough to settle while the page is still moving
+    function _onScrollWhileHoverSettles() {
+        if (_hoverSettleTimer) {
+            _restartHoverSettle();
         }
     }
 
@@ -772,6 +802,8 @@ function RemoteFunctions(config = {}) {
         }
 
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
+            // the previous hover goes now, this one comes once the pointer settles
+            _restartHoverSettle();
             _scheduleHoverUpdate();
         }
     }
@@ -782,6 +814,7 @@ function RemoteFunctions(config = {}) {
         }
         if (_hoverHighlight && shouldShowHighlightOnHover()) {
             _lastHoverTarget = null;
+            _cancelHoverSettle();
             _scheduleHoverUpdate();
         }
     }
@@ -962,11 +995,13 @@ function RemoteFunctions(config = {}) {
         window.document.removeEventListener("mousemove", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
         window.document.documentElement.removeEventListener("mouseleave", onDocumentMouseLeave);
+        window.document.removeEventListener("scroll", _onScrollWhileHoverSettles, true);
         // Cancel any pending rAF hover update so stale callbacks don't fire
         if (_pendingHoverRAF) {
             cancelAnimationFrame(_pendingHoverRAF);
             _pendingHoverRAF = null;
         }
+        _cancelHoverSettle();
         _lastHoverTarget = null;
     }
 
@@ -985,6 +1020,8 @@ function RemoteFunctions(config = {}) {
             window.document.addEventListener("mousemove", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
             window.document.documentElement.addEventListener("mouseleave", onDocumentMouseLeave);
+            // scroll does not bubble, capture also sees the page's own scroll containers
+            window.document.addEventListener("scroll", _onScrollWhileHoverSettles, { capture: true, passive: true });
         }
     }
 
@@ -1788,6 +1825,7 @@ function RemoteFunctions(config = {}) {
         // Reset hover tracking so the same-element skip doesn't suppress
         // re-highlighting after a full state cleanup (e.g. Escape, dismiss).
         _lastHoverTarget = null;
+        _cancelHoverSettle();
         if (_pendingHoverRAF) {
             cancelAnimationFrame(_pendingHoverRAF);
             _pendingHoverRAF = null;
