@@ -124,6 +124,25 @@
     letter-spacing: normal;
     text-shadow: none;
 
+    #sidebar & {
+        .layers-section-content,
+        .layers-files-list,
+        .layers-message {
+            &::-webkit-scrollbar {
+                width: 9px;
+                height: 9px;
+                background-color: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                border-radius: 999px;
+                background-color: rgba(255, 255, 255, 0.12);
+                background-clip: padding-box;
+                border: 2px solid transparent;
+            }
+        }
+    }
+
     .layers-hidden {
         display: none !important;
     }
