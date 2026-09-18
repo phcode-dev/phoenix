@@ -403,9 +403,8 @@ define(function (require, exports, module) {
             }
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(false);
             // the caret did not move for a script-added element, re-highlighting would drop its selection.
-            // Nor did it move in the page's own code while another file is in front, where the
-            // caret left behind would take the selection from the element just clicked.
-            if (liveDoc && !msg.sourceless && _isInFront(liveDoc)) {
+            // Nor did it move in the html while another file is in front: that stale caret would take it.
+            if (liveDoc &&!msg.sourceless && _isInFront(liveDoc)) {
                 liveDoc.updateHighlight();
             }
         } else {
