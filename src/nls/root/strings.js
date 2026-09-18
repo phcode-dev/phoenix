@@ -806,7 +806,6 @@ define({
     "LIVE_PREVIEW_LAYERS_ENABLE_EDIT_MODE": "Turn on Edit Mode",
     "LIVE_PREVIEW_LAYERS_ELEMENTS": "Elements",
     "LIVE_PREVIEW_LAYERS_SEARCH": "Search elements",
-    "LIVE_PREVIEW_LAYERS_NO_ELEMENTS": "No elements to show",
     "LIVE_PREVIEW_LAYERS_NO_MATCHES": "No matching elements",
     "LIVE_PREVIEW_LAYERS_TRUNCATED": "Showing the first {0} elements",
     "LIVE_PREVIEW_LAYERS_COLLAPSE_ALL": "Collapse All",
