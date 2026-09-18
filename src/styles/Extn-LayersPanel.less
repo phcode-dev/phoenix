@@ -932,6 +932,33 @@
         }
     }
 
+    .layers-pending {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        height: 20px;
+        padding: 10px 12px;
+        box-sizing: content-box;
+
+        span {
+            flex: none;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: @project-panel-text-2;
+            opacity: 0.25;
+            animation: layers-pending-dot 900ms ease-in-out infinite;
+
+            &:nth-child(2) {
+                animation-delay: 150ms;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 300ms;
+            }
+        }
+    }
+
     .layers-tree.layers-tree-empty {
         display: flex;
         min-height: 100%;
@@ -2167,7 +2194,26 @@ body.layers-dnd-invalid {
     }
 }
 
+@keyframes layers-pending-dot {
+    0%,
+    60%,
+    100% {
+        opacity: 0.25;
+        transform: translateY(0);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-3px);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
+    .layers-tab-container .layers-pending span {
+        animation: none;
+        opacity: 0.6;
+    }
+
     .layers-tab-container .layers-loading-page {
         animation-duration: 1ms;
     }
