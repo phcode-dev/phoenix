@@ -56,6 +56,8 @@ function RemoteFunctions(config = {}) {
     let _selectedFromEditor = false;
     // the element selected by name (layers panel row), not by pointer
     let _namedSelection = null;
+    // the element the caret points at while the selection is held elsewhere
+    let _caretTarget = null;
     // Expose the currently selected element globally for external access
     window.__current_ph_lp_selected = null;
 
@@ -265,6 +267,7 @@ function RemoteFunctions(config = {}) {
         screenOffset: screenOffset,
         selectElement: selectElement,
         isSelectedFromEditor: function () { return _selectedFromEditor; },
+        highlightRuleAroundSelection: highlightRuleAroundSelection,
         isNamedSelection: _isNamedSelection,
         toMatchableSelector: toMatchableSelector,
         sendSelectionToEditor: sendSelectionToEditor,
@@ -514,9 +517,11 @@ function RemoteFunctions(config = {}) {
     }
 
     // Margin and padding fills belong to the selected element, picked in the page or by the
-    // caret in its code. A hover and the other matches of a css rule only get the outline.
+    // caret in its code, and to the element the caret points at beside a held selection.
+    // A hover and the other matches of a css rule only get the outline.
     function _showsBoxModel(element, outlineOnly) {
-        return !outlineOnly && element === previouslySelectedElement && !SHARED_STATE._boxModelHighlightHidden;
+        return !outlineOnly && (element === previouslySelectedElement || element === _caretTarget) &&
+            !SHARED_STATE._boxModelHighlightHidden;
     }
 
     // Update an existing overlay's position, dimensions, and colors to match the target element.
@@ -1149,6 +1154,7 @@ function RemoteFunctions(config = {}) {
             _hoverHighlight.clear();
             _hoverHighlight = null;
         }
+        _caretTarget = null;
         clearCssSelectorHighlight();
     }
 
@@ -1243,18 +1249,57 @@ function RemoteFunctions(config = {}) {
         };
     }
 
+    // Filter out the universal selector (*) from the rule - highlighting everything
+    // is not useful, similar to how we skip the html tag in isElementInspectable.
+    // The rule can be a comma-separated list of selectors (from multi-cursor),
+    // so we filter out any standalone * segments and keep valid ones.
+    function _withoutUniversalSelector(rule) {
+        return toMatchableSelector(rule).split(",").map(s => s.trim()).filter(s => s !== "*").join(",");
+    }
+
+    /**
+     * The caret highlight while something else holds the selection (a layers panel pick).
+     * What the rule reaches is outlined and scrolled into view the same as when the caret
+     * selects, but the held element keeps the selection and its tools.
+     * @param {string} rule - The CSS rule to highlight
+     * @returns {Element|null} the element the caret is taken to point at, null when the
+     *   rule reaches nothing or reaches the held element itself
+     */
+    function highlightRuleAroundSelection(rule) {
+        rule = _withoutUniversalSelector(rule);
+        // the live document and a panel reading the same caret both ask, the second for what is drawn
+        if (rule && _cssSelectorHighlight && _cssSelectorHighlight.selector === rule) {
+            return _caretTarget;
+        }
+        _caretTarget = null;
+        if (!rule) {
+            clearCssSelectorHighlight();
+            return null;
+        }
+        const nodes = window.document.querySelectorAll(rule);
+        const { element } = findBestElementToSelect(nodes, rule);
+        if (element) {
+            scrollElementToViewPort(element);
+        }
+        // set before drawing: the overlay paints its margin and padding by it
+        _caretTarget = element && element !== previouslySelectedElement ? element : null;
+        createCssSelectorHighlight(nodes, rule);
+        return _caretTarget;
+    }
+
     /**
      * Highlight all elements matching a CSS rule and select the best one
      * @param {string} rule - The CSS rule to highlight
+     * @param {boolean} [keepSelection] - highlight around a selection held elsewhere instead
      */
-    function highlightRule(rule) {
+    function highlightRule(rule, keepSelection) {
+        if (keepSelection) {
+            highlightRuleAroundSelection(rule);
+            return;
+        }
         hideHighlight();
 
-        // Filter out the universal selector (*) from the rule - highlighting everything
-        // is not useful, similar to how we skip the html tag in isElementInspectable.
-        // The rule can be a comma-separated list of selectors (from multi-cursor),
-        // so we filter out any standalone * segments and keep valid ones.
-        rule = toMatchableSelector(rule).split(",").map(s => s.trim()).filter(s => s !== "*").join(",");
+        rule = _withoutUniversalSelector(rule);
         if (!rule) {
             dismissUIAndCleanupState();
             return;
@@ -1928,6 +1973,20 @@ function RemoteFunctions(config = {}) {
         cleanupPreviousElementState();
     }
 
+    /**
+     * The editor caret left everything it could highlight. That drops the selection too,
+     * unless it is held elsewhere: then only what the caret pointed at goes.
+     * @param {boolean} [keepSelection]
+     */
+    function hideEditorHighlight(keepSelection) {
+        if (keepSelection) {
+            _caretTarget = null;
+            clearCssSelectorHighlight();
+            return;
+        }
+        dismissUIAndCleanupState();
+    }
+
     // init
     _editHandler = new DOMEditHandler(window.document);
 
@@ -2116,7 +2175,7 @@ function RemoteFunctions(config = {}) {
     customReturns = { // we have to do this else the minifier will strip the customReturns variable
         ...customReturns,
         "DOMEditHandler": DOMEditHandler,
-        "hideHighlight": dismissUIAndCleanupState,
+        "hideHighlight": hideEditorHighlight,
         "highlight": highlight,
         "highlightRule": highlightRule,
         "redrawHighlights": redrawHighlights,
