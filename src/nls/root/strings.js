@@ -862,6 +862,8 @@ define({
     "LIVE_PREVIEW_LAYERS_LOADING": "Loading elements…",
     "LIVE_PREVIEW_LAYERS_UNAVAILABLE": "The live preview did not answer.",
     "LIVE_PREVIEW_LAYERS_RETRY": "Try again",
+    "LIVE_PREVIEW_LAYERS_NOT_RESPONDING": "The live preview is not responding.",
+    "LIVE_PREVIEW_LAYERS_RELOAD_PREVIEW": "Reload preview",
     "LIVE_PREVIEW_LAYERS_EMPTY_PAGE": "This page has no elements yet.",
     "LIVE_PREVIEW_LAYERS_ADD_ELEMENT": "Add an element",
     "LIVE_PREVIEW_LAYERS_EMPTY_PAGE_PROPERTIES": "The page is empty. Add an element to see its properties.",
