@@ -969,16 +969,7 @@ define(function (require, exports, module) {
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
-            if (_isMdviewrActive && urlPinned) {
-                // When pinned, just re-send the pinned document's content
-                MarkdownSync.resendContent();
-                Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
-                return;
-            }
-            if (_isMdviewrActive) {
-                MarkdownSync.reloadCurrentFile();
-            }
-            _loadPreview(true, true);
+            reloadLivePreview();
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
 
@@ -1068,6 +1059,21 @@ define(function (require, exports, module) {
         _updateLPControlsForMdviewer();
 
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "mdviewr");
+    }
+
+    /**
+     * Reloads the previewed page, the same way the panel's reload button does.
+     */
+    function reloadLivePreview() {
+        if (_isMdviewrActive && urlPinned) {
+            // When pinned, just re-send the pinned document's content
+            MarkdownSync.resendContent();
+            return;
+        }
+        if (_isMdviewrActive) {
+            MarkdownSync.reloadCurrentFile();
+        }
+        _loadPreview(true, true);
     }
 
     /**
@@ -1834,6 +1840,7 @@ define(function (require, exports, module) {
     exports.getPreviewedFilePath = getPreviewedFilePath;
     exports.canPopoutLivePreview = canPopoutLivePreview;
     exports.popoutLivePreview = popoutLivePreview;
+    exports.reloadLivePreview = reloadLivePreview;
 });
 
 
