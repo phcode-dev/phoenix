@@ -182,20 +182,15 @@ define(function (require, exports, module) {
     let _selectionHolder = null;
 
     /**
-     * Lets something outside the live documents hold the preview selection, such as a
-     * panel with a pick of its own. The caret highlights and scrolls to what it points
-     * at the same as ever, but the held element stays the selected one.
-     * @param {?function(LiveDocument): boolean} holder Returns true while it holds the selection; null removes it.
+     * While the holder returns true the caret still highlights in the preview but never
+     * selects, so a selection made elsewhere (the layers panel) stays.
+     * @param {?function(LiveDocument): boolean} holder null removes it.
      */
     LiveDocument.setSelectionHolder = function (holder) {
         _selectionHolder = holder || null;
     };
 
-    /**
-     * How long the caret rests before the preview highlight follows it. Anything else
-     * following the caret waits the same, or a held arrow key moves one and not the other.
-     * @const {number}
-     */
+    // for anything else that follows the caret and must settle on the same clock
     LiveDocument.CURSOR_HIGHLIGHT_DEBOUNCE_MS = CURSOR_HIGHLIGHT_DEBOUNCE_MS;
 
     function _isSelectionHeld(liveDoc) {
@@ -356,8 +351,8 @@ define(function (require, exports, module) {
      */
     LiveDocument.prototype.highlightRule = function (name) {
         const keepSelection = _isSelectionHeld(this);
-        // Around a held selection the same rule draws differently, so it is not the same highlight.
-        const highlight = (keepSelection ? HELD_HIGHLIGHT_PREFIX : "") + name;
+        // the same rule draws differently around a held selection
+        const highlight =(keepSelection ? HELD_HIGHLIGHT_PREFIX : "") + name;
         if (this._lastHighlight === highlight) {
             return;
         }
