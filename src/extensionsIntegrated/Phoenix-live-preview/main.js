@@ -642,7 +642,7 @@ define(function (require, exports, module) {
         }
         const clientID = _dockedClientID;
         _dockedClientID = null;
-        StaticServer.livePreviewTabs.delete(clientID);
+        StaticServer.dropTab(clientID);
         StaticServer.trigger('BROWSER_CLOSE', { data: { message: {clientID}}});
     }
 
