@@ -270,11 +270,7 @@
 
     .layers-message.layers-message-files {
         justify-content: flex-start;
-        padding: 32px 8px 8px;
-
-        .layers-message-text {
-            margin-bottom: 14px;
-        }
+        padding: 40px 14px 10px;
     }
 
     .layers-files {
@@ -282,11 +278,13 @@
         flex-direction: column;
         flex: 0 1 auto;
         width: 100%;
+        max-width: 300px;
         min-height: 0;
+        margin-top: 18px;
         text-align: left;
 
         .layers-search {
-            padding: 0 0 6px;
+            padding: 0 0 8px;
         }
     }
 
@@ -297,40 +295,45 @@
         overflow-y: auto;
     }
 
-    .layers-file {
+    .layers-file,
+    .layers-folder {
         box-sizing: border-box;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 9px;
         width: 100%;
-        height: @layers-row-height;
-        padding: 0 8px;
+        height: 30px;
+        padding: 0 10px;
         margin: 0;
         border: none;
-        border-radius: 5px;
+        border-radius: 3px;
         background: transparent;
         color: @project-panel-text-1;
         font-family: inherit;
-        font-size: @layers-font-size;
+        font-size: @layers-font-tree;
         text-align: left;
         white-space: nowrap;
         cursor: pointer;
         outline: none;
 
-        &:hover {
+        &:hover,
+        &:focus-visible {
             background: @layers-row-hover-bg;
+
+            .layers-folder-chevron {
+                color: @project-panel-text-1;
+            }
         }
 
         &:focus-visible {
-            background: @layers-row-hover-bg;
             box-shadow: inset 0 0 0 1px @layers-accent;
         }
     }
 
     .layers-file-icon {
         flex: none;
-        width: 14px;
-        font-size: 13px;
+        width: 16px;
+        font-size: 15px;
         text-align: center;
         color: @project-panel-text-2;
     }
@@ -341,6 +344,26 @@
 
     .layers-file-icon-php {
         color: #8892bf;
+    }
+
+    .layers-folder-chevron {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 16px;
+        transition: color 120ms ease;
+
+        svg {
+            flex: none;
+            width: 20px;
+            height: 20px;
+            transform: rotate(-90deg);
+            transition: transform 120ms ease;
+        }
+    }
+
+    .layers-folder-open .layers-folder-chevron svg {
+        transform: none;
     }
 
     .layers-file-name {
@@ -364,6 +387,45 @@
         color: @project-panel-text-2;
         font-size: @layers-font-xs;
         text-align: center;
+    }
+
+    .layers-files-more-row {
+        box-sizing: border-box;
+        display: flex;
+        flex: none;
+        justify-content: center;
+        padding: 8px 10px 2px;
+    }
+
+    .layers-files-more {
+        box-sizing: border-box;
+        flex: none;
+        height: 26px;
+        padding: 0 12px;
+        margin: 0;
+        border: 1px solid @layers-border-strong;
+        border-radius: 6px;
+        background: @layers-input-bg;
+        color: @project-panel-text-1;
+        font-family: inherit;
+        font-size: @layers-font-xs;
+        line-height: 1;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 120ms ease, border-color 120ms ease;
+
+        &:hover {
+            background: @layers-hover-bg;
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        &:active {
+            background: @layers-input-bg;
+        }
+
+        &:focus-visible {
+            border-color: @layers-accent;
+        }
     }
 
     .layers-panel {
