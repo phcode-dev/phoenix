@@ -708,9 +708,11 @@ define(function (require, exports, module) {
                     });
                     return;
                 } else if(!_staticServerInstance || !_staticServerInstance.getBaseUrl()){
+                    // not an answer about the file: the server restarts each time the preview opens
                     resolve({
                         URL: getNoPreviewURL(),
-                        isNoPreview: true
+                        isNoPreview: true,
+                        isServerNotReady: true
                     });
                     return;
                 } else if(utils.isPreviewableFile(fullPath)){

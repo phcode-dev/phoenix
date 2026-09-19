@@ -1154,7 +1154,10 @@ define(function (require, exports, module) {
         // preview breaks sporadically. to alleviate this, we create a new iframe every time.
         if(!urlPinned) {
             currentLivePreviewURL = newSrc;
-            _setPreviewedFile(previewDetails.fullPath);
+            // a server still starting names no file, so the last one stands until it answers
+            if(!previewDetails.isServerNotReady) {
+                _setPreviewedFile(previewDetails.fullPath);
+            }
         }
         if(isReload && previewDetails.isHTMLFile){
             LiveDevelopment.openLivePreview();
