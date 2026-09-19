@@ -646,6 +646,12 @@ define(function (require, exports, module) {
         StaticServer.trigger('BROWSER_CLOSE', { data: { message: {clientID}}});
     }
 
+    // every removal of the docked page goes through here, so its connection never outlives it
+    function _removeDockedIframe() {
+        _dropDockedConnection();
+        $iframe.remove();
+    }
+
     function _blankIframe() {
         // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
         // src. so we delete the node itself to eb thorough.
@@ -671,8 +677,7 @@ define(function (require, exports, module) {
         } else {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
-            _dropDockedConnection();
-            $iframe.remove();
+            _removeDockedIframe();
             $iframe = newIframe;
         }
     }
@@ -1033,7 +1038,7 @@ define(function (require, exports, module) {
         if ($mdviewrIframe && $mdviewrIframe[0].parentNode) {
             // Hide the current HTML iframe and show the md iframe
             if ($iframe[0] !== $mdviewrIframe[0]) {
-                $iframe.remove();
+                _removeDockedIframe();
             }
             $mdviewrIframe.show();
             $iframe = $mdviewrIframe;
@@ -1042,7 +1047,7 @@ define(function (require, exports, module) {
             const mdviewrURL = StaticServer.getMdviewrURL();
             let newIframe = $(MDVIEWR_IFRAME_HTML);
             newIframe.insertAfter($iframe);
-            $iframe.remove();
+            _removeDockedIframe();
             $iframe = newIframe;
             $mdviewrIframe = newIframe;
             if (_isProjectPreviewTrusted()) {
@@ -1180,7 +1185,7 @@ define(function (require, exports, module) {
             newIframe.insertAfter($iframe);
             // Don't remove the md iframe — it's persistent and already hidden
             if (!$mdviewrIframe || $iframe[0] !== $mdviewrIframe[0]) {
-                $iframe.remove();
+                _removeDockedIframe();
             }
             $iframe = newIframe;
             if(_isProjectPreviewTrusted()){
