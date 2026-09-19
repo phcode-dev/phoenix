@@ -804,6 +804,7 @@ define({
     "LIVE_PREVIEW_LAYERS_FILES_TRUNCATED": "Showing the first {0} files",
     "LIVE_PREVIEW_LAYERS_NEEDS_EDIT_MODE": "The Layers panel needs edit mode.",
     "LIVE_PREVIEW_LAYERS_ENABLE_EDIT_MODE": "Turn on Edit Mode",
+    "LIVE_PREVIEW_LAYERS_LOAD_FAILED": "The Layers panel could not load. Restart {APP_NAME} to try again.",
     "LIVE_PREVIEW_LAYERS_ELEMENTS": "Elements",
     "LIVE_PREVIEW_LAYERS_SEARCH": "Search elements",
     "LIVE_PREVIEW_LAYERS_NO_MATCHES": "No matching elements",
