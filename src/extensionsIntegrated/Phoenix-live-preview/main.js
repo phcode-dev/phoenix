@@ -642,8 +642,14 @@ define(function (require, exports, module) {
         }
         const clientID = _dockedClientID;
         _dockedClientID = null;
-        StaticServer.livePreviewTabs.delete(clientID);
+        StaticServer.dropTab(clientID);
         StaticServer.trigger('BROWSER_CLOSE', { data: { message: {clientID}}});
+    }
+
+    // every removal of the docked page goes through here, so its connection never outlives it
+    function _removeDockedIframe() {
+        _dropDockedConnection();
+        $iframe.remove();
     }
 
     function _blankIframe() {
@@ -671,8 +677,7 @@ define(function (require, exports, module) {
         } else {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
-            _dropDockedConnection();
-            $iframe.remove();
+            _removeDockedIframe();
             $iframe = newIframe;
         }
     }
@@ -969,16 +974,7 @@ define(function (require, exports, module) {
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
-            if (_isMdviewrActive && urlPinned) {
-                // When pinned, just re-send the pinned document's content
-                MarkdownSync.resendContent();
-                Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
-                return;
-            }
-            if (_isMdviewrActive) {
-                MarkdownSync.reloadCurrentFile();
-            }
-            _loadPreview(true, true);
+            reloadLivePreview();
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
 
@@ -1042,7 +1038,7 @@ define(function (require, exports, module) {
         if ($mdviewrIframe && $mdviewrIframe[0].parentNode) {
             // Hide the current HTML iframe and show the md iframe
             if ($iframe[0] !== $mdviewrIframe[0]) {
-                $iframe.remove();
+                _removeDockedIframe();
             }
             $mdviewrIframe.show();
             $iframe = $mdviewrIframe;
@@ -1051,7 +1047,7 @@ define(function (require, exports, module) {
             const mdviewrURL = StaticServer.getMdviewrURL();
             let newIframe = $(MDVIEWR_IFRAME_HTML);
             newIframe.insertAfter($iframe);
-            $iframe.remove();
+            _removeDockedIframe();
             $iframe = newIframe;
             $mdviewrIframe = newIframe;
             if (_isProjectPreviewTrusted()) {
@@ -1068,6 +1064,21 @@ define(function (require, exports, module) {
         _updateLPControlsForMdviewer();
 
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "mdviewr");
+    }
+
+    /**
+     * Reloads the previewed page, the same way the panel's reload button does.
+     */
+    function reloadLivePreview() {
+        if (_isMdviewrActive && urlPinned) {
+            // When pinned, just re-send the pinned document's content
+            MarkdownSync.resendContent();
+            return;
+        }
+        if (_isMdviewrActive) {
+            MarkdownSync.reloadCurrentFile();
+        }
+        _loadPreview(true, true);
     }
 
     /**
@@ -1148,7 +1159,10 @@ define(function (require, exports, module) {
         // preview breaks sporadically. to alleviate this, we create a new iframe every time.
         if(!urlPinned) {
             currentLivePreviewURL = newSrc;
-            _setPreviewedFile(previewDetails.fullPath);
+            // a server still starting names no file, so the last one stands until it answers
+            if(!previewDetails.isServerNotReady) {
+                _setPreviewedFile(previewDetails.fullPath);
+            }
         }
         if(isReload && previewDetails.isHTMLFile){
             LiveDevelopment.openLivePreview();
@@ -1171,7 +1185,7 @@ define(function (require, exports, module) {
             newIframe.insertAfter($iframe);
             // Don't remove the md iframe — it's persistent and already hidden
             if (!$mdviewrIframe || $iframe[0] !== $mdviewrIframe[0]) {
-                $iframe.remove();
+                _removeDockedIframe();
             }
             $iframe = newIframe;
             if(_isProjectPreviewTrusted()){
@@ -1834,6 +1848,7 @@ define(function (require, exports, module) {
     exports.getPreviewedFilePath = getPreviewedFilePath;
     exports.canPopoutLivePreview = canPopoutLivePreview;
     exports.popoutLivePreview = popoutLivePreview;
+    exports.reloadLivePreview = reloadLivePreview;
 });
 
 

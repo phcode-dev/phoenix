@@ -45,6 +45,7 @@ define(function (require, exports, module) {
         HilightJSText = require("text!thirdparty/highlight.js/highlight.min.js"),
         GFMCSSText = require("text!thirdparty/gfm.min.css"),
         markdownHTMLTemplate = require("text!./markdown.html"),
+        LivePreviewTabs = require("./LivePreviewTabs"),
         redirectionHTMLTemplate = require("text!./redirectPage.html");
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
@@ -59,7 +60,7 @@ define(function (require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
 
-    const livePreviewTabs = new Map();
+    const livePreviewTabs = LivePreviewTabs.livePreviewTabs;
     const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
 
     // Communication Channels for PHCode.dev Editor and Live Preview
@@ -225,11 +226,7 @@ define(function (require, exports, module) {
                 _sendInitialURL(event.data.pageLoaderID);
                 return;
             case 'TAB_LOADER_ONLINE':
-                livePreviewTabs.set(event.data.pageLoaderID, {
-                    lastSeen: new Date(),
-                    URL: event.data.URL,
-                    navigationTab: true
-                });
+                LivePreviewTabs.tabOnline(event.data.pageLoaderID, event.data.URL, true);
                 return;
             default: return; // ignore messages not intended for us.
             }
@@ -274,13 +271,22 @@ define(function (require, exports, module) {
                     .catch(console.error);
                 return;
             case EVENT_TAB_ONLINE:
-                livePreviewTabs.set(message.clientID, {
-                    lastSeen: new Date(),
-                    URL: message.URL
-                });
+                LivePreviewTabs.tabOnline(message.clientID, message.URL);
                 return;
             case EVENT_REPORT_ERROR:
                 logger.reportError(new Error(message));
+                return;
+            case 'BROWSER_CONNECT':
+                LivePreviewTabs.tabConnected(message.clientID, message.url);
+                exports.trigger(eventName, {
+                    data
+                });
+                return;
+            case 'BROWSER_CLOSE':
+                LivePreviewTabs.dropTab(message.clientID);
+                exports.trigger(eventName, {
+                    data
+                });
                 return;
             default:
                 exports.trigger(eventName, {
@@ -645,30 +651,19 @@ define(function (require, exports, module) {
     });
 
     exports.on(EVENT_TAB_ONLINE, function(_ev, event){
-        livePreviewTabs.set(event.data.message.clientID, {
-            lastSeen: new Date(),
-            URL: event.data.message.URL
-        });
+        LivePreviewTabs.tabOnline(event.data.message.clientID, event.data.message.URL);
     });
 
+    // A tab silent for too long is closed; one that heartbeats again is connected again.
     function _startHeartBeatListeners() {
-        // If we didn't receive heartbeat message from a tab for 10 seconds, we assume tab closed
-        const TAB_HEARTBEAT_TIMEOUT = 10000; // in millis secs
-        setInterval(()=>{
-            let endTime = new Date();
-            for(let tab of livePreviewTabs.keys()){
-                const tabInfo = livePreviewTabs.get(tab);
-                let timeDiff = endTime - tabInfo.lastSeen; // in ms
-                if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
-                    livePreviewTabs.delete(tab);
-                    // the parent navigationTab `phcode.dev/live-preview-loader.html` which loads the live preview tab
-                    // is in the list too. We should not raise browser close for a live-preview-loader tab.
-                    if(!tabInfo.navigationTab) {
-                        exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
-                    }
-                }
+        LivePreviewTabs.start({
+            close: function (clientID) {
+                exports.trigger('BROWSER_CLOSE', { data: { message: {clientID}}});
+            },
+            reconnect: function (clientID, url) {
+                exports.trigger('BROWSER_CONNECT', { data: { message: {clientID, url}}});
             }
-        }, 1000);
+        });
     }
 
     /**
@@ -782,6 +777,7 @@ define(function (require, exports, module) {
     exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
     exports.getPreviewDetails = getPreviewDetails;
     exports.livePreviewTabs = livePreviewTabs;
+    exports.dropTab = LivePreviewTabs.dropTab;
     exports.redirectAllTabs = redirectAllTabs;
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;

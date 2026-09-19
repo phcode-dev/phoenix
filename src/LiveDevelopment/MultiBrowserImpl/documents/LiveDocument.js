@@ -38,6 +38,7 @@ define(function (require, exports, module) {
     // A held arrow key moves the caret far faster than the rule under it can be
     // resolved, so the highlight follows the caret once it settles.
     const CURSOR_HIGHLIGHT_DEBOUNCE_MS = 80;
+    const HELD_HIGHLIGHT_PREFIX = "held:";
 
     function _simpleHash(str) {
         let hash = 5381;
@@ -160,9 +161,7 @@ define(function (require, exports, module) {
             this.setInstrumentationEnabled(true, true);
             this.editor.off("cursorActivity", this._onCursorActivity);
             this.editor.on("cursorActivity", this._onCursorActivity);
-            if (!_isCursorHighlightGated(this)) {
-                this.updateHighlight();
-            }
+            this.updateHighlight();
         }
     };
 
@@ -173,28 +172,29 @@ define(function (require, exports, module) {
     LiveDocument.prototype._detachFromEditor = function () {
         if (this.editor) {
             this._cancelPendingHighlight();
-            if (!_isCursorHighlightGated(this)) {
-                this.hideHighlight();
-            }
+            this.hideHighlight();
             this.editor.off("cursorActivity", this._onCursorActivity);
         }
     };
 
     let _disableHighlightOnCursor = false;
     let _cursorHighlightGeneration = 0;
-    let _cursorHighlightGate = null;
+    let _selectionHolder = null;
 
     /**
-     * Lets something outside the live documents decide whether the caret may move
-     * the preview highlight, such as a panel holding a selection of its own.
-     * @param {?function(LiveDocument): boolean} gate Returns false to leave the preview alone; null removes it.
+     * While the holder returns true the caret still highlights in the preview but never
+     * selects, so a selection made elsewhere (the layers panel) stays.
+     * @param {?function(LiveDocument): boolean} holder null removes it.
      */
-    LiveDocument.setCursorHighlightGate = function (gate) {
-        _cursorHighlightGate = gate || null;
+    LiveDocument.setSelectionHolder = function (holder) {
+        _selectionHolder = holder || null;
     };
 
-    function _isCursorHighlightGated(liveDoc) {
-        return !!_cursorHighlightGate && _cursorHighlightGate(liveDoc) === false;
+    // for anything else that follows the caret and must settle on the same clock
+    LiveDocument.CURSOR_HIGHLIGHT_DEBOUNCE_MS = CURSOR_HIGHLIGHT_DEBOUNCE_MS;
+
+    function _isSelectionHeld(liveDoc) {
+        return !!_selectionHolder && _selectionHolder(liveDoc) === true;
     }
 
     /**
@@ -228,15 +228,14 @@ define(function (require, exports, module) {
      */
     LiveDocument.prototype._onCursorActivity = function (event, editor) {
         this._cancelPendingHighlight();
-        if (!this.editor || _disableHighlightOnCursor || _isCursorHighlightGated(this)) {
+        if (!this.editor || _disableHighlightOnCursor) {
             return;
         }
         const self = this;
         const generation = _cursorHighlightGeneration;
         this._highlightTimer = window.setTimeout(function () {
             self._highlightTimer = null;
-            if (self.editor && !_disableHighlightOnCursor && generation === _cursorHighlightGeneration &&
-                    !_isCursorHighlightGated(self)) {
+            if (self.editor && !_disableHighlightOnCursor && generation === _cursorHighlightGeneration) {
                 self.updateHighlight();
             }
         }, CURSOR_HIGHLIGHT_DEBOUNCE_MS);
@@ -342,7 +341,7 @@ define(function (require, exports, module) {
         }
         // The preview can have been selected directly or by another live
         // document, so this document's cached selector cannot prove it is clear.
-        this.protocol.evaluate("_LD.hideHighlight()");
+        this.protocol.evaluate("_LD.hideHighlight(" + _isSelectionHeld(this) + ")");
     };
 
     /**
@@ -351,11 +350,14 @@ define(function (require, exports, module) {
      * @param {string} name The selector whose matched nodes should be highlighted.
      */
     LiveDocument.prototype.highlightRule = function (name) {
-        if (this._lastHighlight === name) {
+        const keepSelection = _isSelectionHeld(this);
+        // the same rule draws differently around a held selection
+        const highlight =(keepSelection ? HELD_HIGHLIGHT_PREFIX : "") + name;
+        if (this._lastHighlight === highlight) {
             return;
         }
-        this._lastHighlight = name;
-        this.protocol.evaluate("_LD.highlightRule(" + JSON.stringify(name) + ")");
+        this._lastHighlight = highlight;
+        this.protocol.evaluate("_LD.highlightRule(" + JSON.stringify(name) + ", " + keepSelection + ")");
     };
 
     /**

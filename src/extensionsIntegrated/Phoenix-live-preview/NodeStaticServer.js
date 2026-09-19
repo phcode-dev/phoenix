@@ -48,6 +48,7 @@ define(function (require, exports, module) {
         GFMCSSText = require("text!thirdparty/gfm.min.css"),
         markdownHTMLTemplate = require("text!./markdown.html"),
         NodeConnector = require("NodeConnector"),
+        LivePreviewTabs = require("./LivePreviewTabs"),
         redirectionHTMLTemplate = require("text!./redirectPage.html");
 
     const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
@@ -73,7 +74,7 @@ define(function (require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
 
-    const livePreviewTabs = new Map();
+    const livePreviewTabs = LivePreviewTabs.livePreviewTabs;
     const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
 
     let _staticServerInstance;
@@ -99,11 +100,7 @@ define(function (require, exports, module) {
 
     async function tabLoaderOnline(data) {
         window.logger.livePreview.log("Live Preview navigator channel: tabLoaderOnline: ", data);
-        livePreviewTabs.set(data.pageLoaderID, {
-            lastSeen: new Date(),
-            URL: data.URL,
-            navigationTab: true
-        });
+        LivePreviewTabs.tabOnline(data.pageLoaderID, data.URL, true);
     }
 
     // see markdown advanced rendering options at https://marked.js.org/using_advanced
@@ -533,24 +530,16 @@ define(function (require, exports, module) {
         _staticServerInstance = undefined;
     };
 
+    // A tab silent for too long is closed; one that heartbeats again is connected again.
     function _startHeartBeatListeners() {
-        // If we didn't receive heartbeat message from a tab for 10 seconds, we assume tab closed
-        const TAB_HEARTBEAT_TIMEOUT = 10000; // in millis secs
-        setInterval(()=>{
-            let endTime = new Date();
-            for(let tab of livePreviewTabs.keys()){
-                const tabInfo = livePreviewTabs.get(tab);
-                let timeDiff = endTime - tabInfo.lastSeen; // in ms
-                if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
-                    livePreviewTabs.delete(tab);
-                    // the parent navigationTab `phcode.dev/live-preview-loader.html` which loads the live preview tab
-                    // is in the list too. We should not raise browser close for a live-preview-loader tab.
-                    if(!tabInfo.navigationTab) {
-                        exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
-                    }
-                }
+        LivePreviewTabs.start({
+            close: function (clientID) {
+                exports.trigger('BROWSER_CLOSE', { data: { message: {clientID}}});
+            },
+            reconnect: function (clientID, url) {
+                exports.trigger('BROWSER_CONNECT', { data: { message: {clientID, url}}});
             }
-        }, 1000);
+        });
     }
 
     /**
@@ -567,14 +556,18 @@ define(function (require, exports, module) {
     async function onLivePreviewMessage(message) {
         switch (message.type) {
         case EVENT_TAB_ONLINE:
-            livePreviewTabs.set(message.clientID, {
-                lastSeen: new Date(),
-                URL: message.URL
-            });
+            LivePreviewTabs.tabOnline(message.clientID, message.URL);
             return;
+        case 'BROWSER_CONNECT':
+            LivePreviewTabs.tabConnected(message.clientID, message.url);
+            break;
+        case 'BROWSER_CLOSE':
+            LivePreviewTabs.dropTab(message.clientID);
+            break;
         default:
-            exports.trigger(message.type, { data: { message}});
+            break;
         }
+        exports.trigger(message.type, { data: { message}});
     }
 
     function redirectAllTabs(newURL, force) {
@@ -715,9 +708,11 @@ define(function (require, exports, module) {
                     });
                     return;
                 } else if(!_staticServerInstance || !_staticServerInstance.getBaseUrl()){
+                    // not an answer about the file: the server restarts each time the preview opens
                     resolve({
                         URL: getNoPreviewURL(),
-                        isNoPreview: true
+                        isNoPreview: true,
+                        isServerNotReady: true
                     });
                     return;
                 } else if(utils.isPreviewableFile(fullPath)){
@@ -807,6 +802,7 @@ define(function (require, exports, module) {
     exports.StaticServer = StaticServer;
     exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
     exports.livePreviewTabs = livePreviewTabs;
+    exports.dropTab = LivePreviewTabs.dropTab;
     exports.redirectAllTabs = redirectAllTabs;
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
