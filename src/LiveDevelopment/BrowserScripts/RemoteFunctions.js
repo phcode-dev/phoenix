@@ -65,7 +65,7 @@ function RemoteFunctions(config = {}) {
         highlightPadding: "rgba(147, 196, 125, 0.55)",
         highlightMargin: "rgba(246, 178, 107, 0.66)",
         outlineEditable: "#4285F4",
-        outlineNonEditable: "#3C3F41"
+        outlineNonEditable: "#6F6F78"
     };
 
     // the following fucntions can be in the handler and live preview will call those functions when the below
