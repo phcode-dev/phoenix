@@ -136,6 +136,9 @@ define(function (require, exports, module) {
     });
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
+    // how long a popout waits for a live preview session that is still starting, and how often it looks
+    const POPOUT_SESSION_WAIT_MS = 5000;
+    const POPOUT_SESSION_POLL_MS = 50;
 
     /** Fired with the full path whenever the preview switches to a different file. */
     const EVENT_PREVIEWED_FILE_CHANGE = "previewedFileChange";
@@ -767,28 +770,68 @@ define(function (require, exports, module) {
         }
     }
 
-    function _isPopoutSupported() {
-        return Phoenix.isNativeApp || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
-    }
-
     /**
-     * Whether the previewed page can be opened in a browser: the platform allows it and a page has been previewed.
+     * Whether the live preview can be opened in a browser on this platform. No page needs to have been previewed
+     * yet: `popoutLivePreview` works out the page when it is asked.
      * @return {boolean}
      */
     function canPopoutLivePreview() {
-        return _isPopoutSupported() && !!currentLivePreviewURL;
+        return Phoenix.isNativeApp || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
+    }
+
+    // Whether the live preview session can serve the page a popout is to open. The server has to be up, and a
+    // page it instruments needs its live document: without one the tab gets the bare file and never connects.
+    function _canSessionServe(previewDetails) {
+        if (previewDetails.isServerNotReady) {
+            return false;
+        }
+        if (!previewDetails.isHTMLFile || previewDetails.isCustomServer || previewDetails.isNoPreview) {
+            return true;
+        }
+        const liveDoc = MultiBrowserLiveDev.getCurrentLiveDoc();
+        return !!liveDoc && liveDoc.doc.file.fullPath === previewDetails.fullPath;
     }
 
     /**
-     * Opens the previewed page in the default browser, starting the live preview session if it is off.
-     * @return {boolean} false when there is no page to open
+     * The details of the page a popout is to open, once the live preview session can serve it. A session that
+     * cannot yet is started and waited for; past the timeout the details come back as they stand.
+     * @return {Promise<Object>}
      */
-    function popoutLivePreview() {
+    async function _getPopoutPreviewDetails() {
+        let previewDetails = await StaticServer.getPreviewDetails();
+        if (_canSessionServe(previewDetails)) {
+            return previewDetails;
+        }
+        LiveDevelopment.openLivePreview();
+        const deadline = Date.now() + POPOUT_SESSION_WAIT_MS;
+        while (!_canSessionServe(previewDetails) && Date.now() < deadline) {
+            await new Promise((resolve) => setTimeout(resolve, POPOUT_SESSION_POLL_MS));
+            previewDetails = await StaticServer.getPreviewDetails();
+        }
+        return previewDetails;
+    }
+
+    /**
+     * Opens the page the live preview would show in the default browser, starting the session if it cannot serve
+     * that page yet. The page is worked out afresh, as a docked panel that is closed or never opened has none.
+     * @return {Promise<boolean>} false when the live preview server could not name a page
+     */
+    async function popoutLivePreview() {
         if (!canPopoutLivePreview()) {
             return false;
         }
-        if (LiveDevelopment.isInactive()) {
-            LiveDevelopment.openLivePreview();
+        if (urlPinned && currentLivePreviewURL) {
+            // a pinned url stays the page, as it does in the docked panel
+            if (LiveDevelopment.isInactive()) {
+                LiveDevelopment.openLivePreview();
+            }
+        } else {
+            const previewDetails = await _getPopoutPreviewDetails();
+            if (previewDetails.isServerNotReady) {
+                return false;
+            }
+            currentLivePreviewURL = encodeURI(previewDetails.URL);
+            _setPreviewedFile(previewDetails.fullPath);
         }
         _popoutLivePreview();
         return true;
@@ -957,7 +1000,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtn", "click");
         });
 
-        if(!_isPopoutSupported()){
+        if(!canPopoutLivePreview()){
             // live preview can be popped out currently in only chrome based browsers. The cross domain iframe
             // that serves the live preview(phcode.live) is sandboxed to the tab in which phcode.dev resides.
             // all iframes in the tab can communicate between each other, but when you popout another tab, it forms
