@@ -3705,10 +3705,8 @@
     }
 }
 
-/* Browser-build placeholder layout (designed by the team — left-aligned
-   header, video, three info cards, body copy, full-width CTA). Used only
-   when the browser app can't run AI features, so the panel doubles as a
-   marketing surface for the desktop app. */
+/* Shared welcome and CLI setup surfaces. The welcome carousel is used
+   for sign-in and the browser app's desktop-download prompt. */
 
 .ai-placeholder {
     display: flex;
@@ -3796,68 +3794,251 @@
     align-self: center;
 }
 
-.ai-placeholder-cards {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+// The heading travels with each preview; navigation and the CTA stay in place.
+.ai-placeholder.ai-welcome {
+    gap: 0;
+    padding: 22px 20px 24px;
+    overflow-x: hidden;
+
+    .ai-placeholder-title {
+        font-size: 1.64em;
+        font-weight: 600;
+        line-height: 1.25;
+    }
+
+    .ai-placeholder-header {
+        min-height: 69px;
+        flex: 0 0 auto;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .ai-placeholder-subtitle {
+        font-size: @ai-text-body;
+        line-height: 1.5;
+        opacity: 1;
+    }
+
+    .ai-placeholder-body {
+        font-size: @ai-text-body;
+        margin: 0 0 13px;
+        opacity: 1;
+    }
+
+    .ai-placeholder-cta {
+        flex: 0 0 auto;
+        margin-top: 0;
+    }
+
+    .ai-intro-video-thumb {
+        max-width: none;
+        max-height: none;
+    }
+}
+
+.ai-welcome-carousel {
+    flex: 0 0 auto;
+    min-width: 0;
+    margin-bottom: 25px;
+}
+
+.ai-welcome-viewport {
+    overflow: hidden;
+}
+
+.ai-welcome-track {
+    display: flex;
+    align-items: stretch;
+    transition: transform 240ms ease;
+}
+
+.ai-welcome-slide {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
 }
 
-.ai-placeholder-card {
+.ai-welcome-media {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.025);
-    /* Allow the card to shrink at narrow sidebar widths instead of forcing
-       a horizontal scroll. */
-    min-width: 0;
+    justify-content: center;
+    flex: 1 0 auto;
+    min-height: 279px;
 }
 
-.ai-placeholder-card-icon {
-    flex: 0 0 auto;
+.ai-welcome-agents {
+    width: 100%;
+    padding: 4px 0 10px;
+}
+
+.ai-welcome-terminal {
+    width: 86%;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid lighten(@bc-ai-sidebar-bg, 12%);
+    border-radius: 9px;
+    background: mix(@bc-ai-sidebar-bg, #000, 68%);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+
+    + .ai-welcome-terminal {
+        position: relative;
+        margin: -12px 0 0 auto;
+    }
+}
+
+.ai-welcome-terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 36px;
+    padding: 0 12px;
+    background: lighten(@bc-ai-sidebar-bg, 2%);
+    border-bottom: 1px solid lighten(@bc-ai-sidebar-bg, 9%);
+}
+
+.ai-welcome-agent-mark {
+    flex: 0 0 20px;
+    text-align: center;
+    font-size: 1.5em;
+    line-height: 1;
+    color: #e4a184;
+}
+
+.ai-welcome-agent-name {
+    color: @project-panel-text-1;
+    font-size: @ai-text-secondary;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.ai-welcome-terminal-dots {
+    margin-left: auto;
+    color: @project-panel-text-2;
+    letter-spacing: 2px;
+}
+
+.ai-welcome-terminal-lines {
+    padding: 12px 15px 17px;
+    font-family: Consolas, "Liberation Mono", monospace;
+    font-size: @ai-text-secondary;
+    line-height: 1.8;
+    color: @project-panel-text-1;
+}
+
+.ai-welcome-command {
+    color: #e6ac90;
+    margin-bottom: 3px;
+}
+
+.ai-welcome-terminal-status {
+    color: @project-panel-text-2;
+    font-size: @ai-text-meta;
+}
+
+.ai-welcome-codex {
+    .ai-welcome-agent-mark {
+        color: @project-panel-text-1;
+        font-family: monospace;
+        font-size: 1.1em;
+        font-weight: 600;
+    }
+
+    .ai-welcome-command {
+        color: #b5d9d0;
+    }
+}
+
+.ai-welcome-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 11px;
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.ai-welcome-arrow,
+.ai-welcome-dot {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.04);
-    color: @project-panel-text-1;
-    font-size: 14px;
-}
-
-.ai-placeholder-card-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-    flex: 1 1 auto;
-}
-
-.ai-placeholder-card-title,
-.ai-placeholder-card-desc {
-    /* Wrap long localized strings instead of overflowing the card. */
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
-
-.ai-placeholder-card-title {
-    font-size: 13.5px;
-    font-weight: 600;
-    color: @project-panel-text-1;
-    line-height: 1.25;
-}
-
-.ai-placeholder-card-desc {
-    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
     color: @project-panel-text-2;
-    opacity: 0.8;
-    line-height: 1.3;
+    font-size: @ai-text-secondary;
+    cursor: pointer;
+
+    &:hover {
+        background: lighten(@bc-ai-sidebar-bg, 4%);
+        color: @project-panel-text-1;
+    }
+}
+
+.ai-welcome-arrow {
+    width: 34px;
+}
+
+.ai-welcome-dot span {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px;
+    background: #59656d;
+}
+
+.ai-welcome-dot[aria-pressed="true"] span {
+    width: 15px;
+    background: #95cbed;
+}
+
+@container (max-width: 390px) {
+    .ai-placeholder.ai-welcome {
+        .ai-placeholder-title {
+            font-size: 1.5em;
+        }
+
+        .ai-placeholder-header {
+            min-height: 92px;
+        }
+    }
+
+    .ai-welcome-terminal {
+        width: 96%;
+
+        + .ai-welcome-terminal {
+            margin-top: 8px;
+        }
+    }
+
+    .ai-welcome-terminal-lines {
+        padding: 11px 12px 14px;
+        font-size: @ai-text-meta;
+    }
+}
+
+@media (pointer: coarse) {
+    .ai-welcome-arrow,
+    .ai-welcome-dot {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ai-welcome-track,
+    .ai-welcome .ai-intro-video-play {
+        transition: none;
+    }
 }
 
 .ai-placeholder-body {
