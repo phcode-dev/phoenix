@@ -1853,6 +1853,13 @@ define(function (require, exports, module) {
     function _paintInterstitial() {
         if (!$iframe || !$iframe[0]) { return; }
         if ($mdviewrIframe && $iframe[0] === $mdviewrIframe[0]) {
+            // Put the md viewer away as a switch to an HTML file does, or it
+            // shares the panel with the splash, and a later md preview would
+            // sync into the splash's iframe as though it were still up.
+            MarkdownSync.deactivate();
+            _isMdviewrActive = false;
+            $mdviewrIframe.hide();
+            _updateLPControlsForMdviewer();
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             $mdviewrIframe.after(newIframe);
             $iframe = newIframe;
