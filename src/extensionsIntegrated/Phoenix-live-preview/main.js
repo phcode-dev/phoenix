@@ -833,6 +833,11 @@ define(function (require, exports, module) {
             currentLivePreviewURL = encodeURI(previewDetails.URL);
             _setPreviewedFile(previewDetails.fullPath);
         }
+        // In the browser a popped out tab ignores the url it opens with and asks which page to show. Only a
+        // preview load names that page, and none runs while the docked panel is closed and no tab is up yet.
+        if (!Phoenix.isNativeApp) {
+            StaticServer.redirectAllTabs(currentLivePreviewURL, false);
+        }
         _popoutLivePreview();
         return true;
     }
