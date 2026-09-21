@@ -82,6 +82,8 @@ function RemoteFunctions(config = {}) {
         "onElementSelected", // an item is selected in live preview
         "onElementCleanup",
         "onNonEditableElementClick", // called when user clicks on a non-editable element
+        "getHiddenCause", // asked of the "ElementVisibility" handler, see getHiddenCause()
+        "onHiddenElementPicked", // the user picked an element they cannot see, called with its hidden cause
         "handleConfigChange",
         // below  function gets called to render the dropdown when user clicks on the ... menu in the tool box,
         // the handler should retrun html tor ender the dropdown item.
@@ -264,6 +266,8 @@ function RemoteFunctions(config = {}) {
         getElementRef: getElementRef,
         getElementByRef: getElementByRef,
         isElementVisible: isElementVisible,
+        getHiddenCause: getHiddenCause,
+        announceIfHidden: announceIfHidden,
         screenOffset: screenOffset,
         selectElement: selectElement,
         isSelectedFromEditor: function () { return _selectedFromEditor; },
@@ -330,8 +334,38 @@ function RemoteFunctions(config = {}) {
         );
     }
 
-    // Checks if an element is actually visible to the user (not hidden, collapsed, or off-screen)
+    // Why the user cannot see the element as {reason, by, declaration, inPlace}, null when they can.
+    // The "ElementVisibility" tool handler knows more ways of hiding than the basic checks here.
+    function getHiddenCause(element) {
+        if (!element) {
+            return null;
+        }
+        const checker = getToolHandler("ElementVisibility");
+        if (checker && checker.getHiddenCause) {
+            return checker.getHiddenCause(element);
+        }
+        return _isBasicallyVisible(element) ? null : { reason: "hidden", by: element, inPlace: true };
+    }
+
     function isElementVisible(element) {
+        return !getHiddenCause(element);
+    }
+
+    // a pick of an element the user cannot see is answered with why, by a handler that can say it
+    function announceIfHidden(element) {
+        const cause = getHiddenCause(element);
+        if (!cause) {
+            return;
+        }
+        getAllToolHandlers().forEach(handler => {
+            if (handler.onHiddenElementPicked) {
+                handler.onHiddenElementPicked(element, cause);
+            }
+        });
+    }
+
+    // Checks if an element is actually visible to the user (not hidden, collapsed, or off-screen)
+    function _isBasicallyVisible(element) {
         // Check if element has zero dimensions (indicates it's hidden or collapsed)
         const rect = element.getBoundingClientRect();
         if (rect.width === 0 && rect.height === 0) {
@@ -484,9 +518,18 @@ function RemoteFunctions(config = {}) {
         return { left: bounds.left - bodyOffset.x, top: bounds.top - bodyOffset.y };
     }
 
+    // cut off or skipped by the page, its box is somewhere the page paints other things
+    function _isDisplaced(element) {
+        const cause = getHiddenCause(element);
+        return !!cause && !cause.inPlace;
+    }
+
     function _measureOverlay(element, bodyOffset) {
         const bounds = element.getBoundingClientRect();
         if (bounds.width === 0 && bounds.height === 0) {
+            return null;
+        }
+        if ((element === previouslySelectedElement || element === _caretTarget) && _isDisplaced(element)) {
             return null;
         }
         const cs = window.getComputedStyle(element);
@@ -880,8 +923,12 @@ function RemoteFunctions(config = {}) {
         dismissUIAndCleanupState();
         // set after the dismissal, which clears the previous selection's body exemption
         _namedSelection = byName ? element : null;
+        const hiddenCause = getHiddenCause(element);
         // this should also be there when users are in highlight mode
-        scrollElementToViewPort(element);
+        // a hidden element is scrolled to only while it still holds its box in the page
+        if (!hiddenCause || hiddenCause.inPlace) {
+            scrollElementToViewPort(element);
+        }
 
         if(!LivePreviewView.isElementInspectable(element, true)) {
             return false;
@@ -900,7 +947,7 @@ function RemoteFunctions(config = {}) {
             }
 
             // make sure that the element is actually visible to the user
-            if (isElementVisible(element)) {
+            if (!hiddenCause) {
                 // Notify handlers about element selection
                 getAllToolHandlers().forEach(handler => {
                     if (handler.onElementSelected) {
@@ -1081,6 +1128,8 @@ function RemoteFunctions(config = {}) {
 
         brieflyDisableHoverListeners();
         selectElement(element);
+        // an invisible element can still take the click, like an opacity 0 input over a styled label
+        announceIfHidden(element);
     }
 
     /**
