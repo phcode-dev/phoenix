@@ -2111,5 +2111,40 @@ define(function (require, exports, module) {
             }, 10000);
         });
 
+        describe("Splash over the md viewer", function () {
+
+            function _visiblePreviewFrames() {
+                return Array.from(testWindow.document.querySelectorAll(
+                    "#panel-md-preview-frame, #panel-live-preview-frame"))
+                    .filter((frame) => frame.offsetWidth > 0 && frame.offsetHeight > 0);
+            }
+
+            it("should show a splash in place of the md viewer, not beside it", async function () {
+                // What the AI panel's Surprise Me shows while a build is on its way.
+                const ExtensionInterface = brackets.getModule("utils/ExtensionInterface");
+                const LivePreview = await ExtensionInterface.waitAndGetExtensionInterface(
+                    ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW);
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                expect(_visiblePreviewFrames().map((frame) => frame.id)).toEqual(["panel-md-preview-frame"]);
+
+                LivePreview.showInterstitial("Setting the stage", "");
+                try {
+                    await awaitsFor(() => {
+                        const frames = _visiblePreviewFrames();
+                        return frames.length === 1 && frames[0].id === "panel-live-preview-frame";
+                    }, "the splash to take the md viewer's place");
+                } finally {
+                    LivePreview.hideInterstitial();
+                }
+
+                // The md file is still the one being edited: the viewer returns.
+                await awaitsFor(() => {
+                    const frames = _visiblePreviewFrames();
+                    return frames.length === 1 && frames[0].id === "panel-md-preview-frame";
+                }, "the md viewer to come back");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+            }, 15000);
+        });
+
     });
 });
