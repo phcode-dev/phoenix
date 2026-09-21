@@ -62,9 +62,6 @@
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    // Positioning context for the onboarding prompt overlay, which is
-    // detached from its template position and re-parented here so it
-    // covers the Files/AI tab strip as well as the panel body.
     position: relative;
 }
 
@@ -80,32 +77,6 @@
     color: @project-panel-text-1;
     font-size: @ai-text-body;
     container-type: inline-size;
-
-    /* Onboarding-iframe theme variables — single source of truth for
-       what gets forwarded to the iframe's `?configCSS=` param.
-       AIChatPanel.js _buildOnboardingConfigCSS reads each of these via
-       getComputedStyle and serialises them into a :root{...} block.
-       To retheme the iframe, edit only this list. The names match the
-       iframe's published contract (see ai-panel-onboarding README). */
-    --bg-panel:              @bc-ai-sidebar-bg;
-    --bg-card:               rgba(255, 255, 255, 0.04);
-    --bg-card-hover:         rgba(255, 255, 255, 0.07);
-    --bg-input:              rgba(255, 255, 255, 0.04);
-    --bg-input-focus:        rgba(255, 255, 255, 0.06);
-    --text-primary:          @project-panel-text-1;
-    --text-secondary:        @project-panel-text-2;
-    --text-muted:            rgba(168, 176, 180, 0.6);
-    --border-subtle:         rgba(255, 255, 255, 0.12);
-    --border-active:         rgba(107, 158, 255, 0.4);
-    --border-focus:          rgba(107, 158, 255, 0.5);
-    --accent-primary:        #6b9eff;
-    --accent-primary-soft:   rgba(107, 158, 255, 0.12);
-    --accent-primary-border: rgba(107, 158, 255, 0.3);
-    --font-body:             14px;
-    --font-secondary:        12px;
-    --font-meta:             11px;
-    --radius-md:             6px;
-    --radius-lg:             8px;
 }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
@@ -707,220 +678,296 @@
     }
 }
 
-/* ── Onboarding iframe (guided AI starter) ──────────────────────────── */
-/* The wrap sits where .ai-chat-messages would. When visible it claims
-   the same flex slot — when hidden the chat takes that slot back. */
-.ai-onboarding-wrap {
+/* ── Start screen (empty chat) ──────────────────────────────────────── */
+/* Sits where .ai-chat-messages would. When visible it claims the same flex
+   slot — when hidden the chat takes that slot back. */
+@ai-start-accent:        #6b9eff;
+@ai-start-card-bg:       rgba(255, 255, 255, 0.04);
+@ai-start-card-bg-hover: rgba(255, 255, 255, 0.07);
+@ai-start-border:        rgba(255, 255, 255, 0.12);
+
+.ai-chat-start {
     flex: 1;
     min-height: 0;
     min-width: 0;
-    position: relative;
+    overflow-y: auto;
+    padding: 22px 16px 16px;
     background-color: @bc-ai-sidebar-bg;
+    color: @project-panel-text-1;
 
-    .ai-onboarding-frame {
-        position: absolute;
-        inset: 0;
+    .ai-start-greeting {
+        font-size: 15px;
+        font-weight: 600;
+        color: @project-panel-text-2;
+        margin-bottom: 2px;
+    }
+
+    .ai-start-title {
+        font-size: 19px;
+        font-weight: 600;
+        line-height: 1.3;
+        margin: 0 0 18px;
+        color: @project-panel-text-1;
+    }
+
+    .ai-start-card,
+    .ai-start-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
         width: 100%;
-        height: 100%;
-        border: 0;
-        display: block;
+        box-sizing: border-box;
+        text-align: left;
+        font-size: @ai-text-body;
+        color: inherit;
+        background: @ai-start-card-bg;
+        border: 1px solid @ai-start-border;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+
+        &:hover {
+            background: @ai-start-card-bg-hover;
+        }
+
+        &:focus-visible {
+            outline: none;
+            border-color: fade(@ai-start-accent, 50%);
+        }
+    }
+
+    .ai-start-card {
+        padding: 12px;
+    }
+
+    .ai-start-row {
+        padding: 10px 12px;
+        margin-bottom: 6px;
+    }
+
+    .ai-start-row-active {
+        border-color: fade(@ai-start-accent, 40%);
+        background: fade(@ai-start-accent, 12%);
+
+        &:hover {
+            background: fade(@ai-start-accent, 16%);
+        }
+    }
+
+    /* Not installed: reads as an empty slot until set up. */
+    .ai-start-row-missing {
+        border-style: dashed;
+
+        .ai-start-name {
+            color: @project-panel-text-2;
+        }
+
+        .ai-start-setup {
+            display: inline;
+        }
+    }
+
+    /* Dimmed while its label is in flight to the header. */
+    .ai-start-row-leaving {
+        opacity: 0.25;
+    }
+
+    .ai-start-icon {
+        flex: 0 0 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.07);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+
+        svg {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    .ai-start-icon-mono {
+        font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .ai-start-text {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ai-start-name {
+        font-weight: 600;
+    }
+
+    .ai-start-desc {
+        font-size: @ai-text-secondary;
+        color: @project-panel-text-2;
+        margin-top: 1px;
+    }
+
+    .ai-start-chevron {
+        font-size: 11px;
+        color: fade(@project-panel-text-2, 60%);
+    }
+
+    .ai-start-check {
+        color: @ai-start-accent;
+    }
+
+    .ai-start-setup {
+        display: none;
+        font-size: @ai-text-secondary;
+        font-weight: 600;
+        color: @ai-start-accent;
+        white-space: nowrap;
+
+        i {
+            font-size: 10px;
+            margin-left: 2px;
+        }
+    }
+
+    .ai-start-section {
+        font-size: @ai-text-meta;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: fade(@project-panel-text-2, 70%);
+        margin: 22px 0 8px;
+    }
+
+    .ai-start-separator {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 12px 0 10px;
+        font-size: @ai-text-meta;
+        color: fade(@project-panel-text-2, 70%);
+
+        &::before,
+        &::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: @ai-start-border;
+        }
+    }
+
+    .ai-start-footer {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-top: 16px;
+        font-size: @ai-text-secondary;
+        line-height: 1.5;
+        color: fade(@project-panel-text-2, 75%);
+
+        i {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        a {
+            color: @ai-start-accent;
+            cursor: pointer;
+        }
     }
 }
 
-/* Prompt confirm overlay — top-level rule (NOT nested under
-   .ai-onboarding-wrap) because at runtime _initOnboarding detaches
-   the overlay element and re-parents it to .ai-tab-container so it
-   covers the Files/AI tab strip in addition to the panel body.
-   Neutral dark-panel chrome — no blue accent. Title strip + full-
-   bleed textarea + bottom action row with Cancel and an icon-only
-   send button that mirrors .ai-send-btn's transparent quiet style. */
-.ai-onboarding-prompt-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.45);
+/* A picked row's label in flight to the header title. Top level: it is
+   appended to <body> so it can cross out of the panel. */
+.ai-start-fly {
+    position: fixed;
+    z-index: 2000;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 16px;
-    animation: ai-onboarding-overlay-fade 0.15s ease-out;
+    gap: 8px;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+    font-size: @ai-text-body;
+    font-weight: 600;
+    color: @project-panel-text-1;
+    background: #2f3b52;
+    border: 1px solid fade(@ai-start-accent, 60%);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
 
-    .ai-onboarding-prompt-card {
-        width: 100%;
-        max-width: 440px;
-        border: 1px solid @bc-ai-input-border;
-        border-radius: 8px;
-        background: @bc-ai-sidebar-bg;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-        animation: ai-onboarding-card-pop 0.18s ease-out;
-    }
-
-    .ai-onboarding-prompt-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 8px 8px 14px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .ai-onboarding-prompt-title {
-        flex: 1;
-        min-width: 0;
-        font-size: @ai-text-body;
-        font-weight: 600;
-        color: @project-panel-text-1;
-        line-height: 1.3;
-    }
-
-    .ai-onboarding-prompt-close {
-        background: none;
-        border: 0;
-        color: @project-panel-text-2;
-        width: 26px;
-        height: 26px;
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
+    .ai-start-fly-icon {
+        flex: 0 0 auto;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        opacity: 0.55;
-        flex-shrink: 0;
-        transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+        width: 16px;
+        font-size: 13px;
 
-        i { font-size: 0.95em; }
-
-        &:hover {
-            opacity: 1;
-            color: @project-panel-text-1;
-            background: rgba(255, 255, 255, 0.05);
+        svg {
+            width: 15px;
+            height: 15px;
         }
     }
+}
 
-    .ai-onboarding-prompt-text {
-        // display: block + width: 100% + box-sizing makes the textarea
-        // span the card's full inner width regardless of the rows attr
-        // or the browser's textarea default width.
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        background: @bc-ai-input-bg;
-        border: 0;
-        border-radius: 0;
-        color: @project-panel-text-1;
-        font-size: @ai-text-body;
-        line-height: @ai-line-prose;
-        padding: 12px 14px;
-        resize: vertical;
-        min-height: 110px;
-        max-height: 260px;
-        outline: none;
-        box-shadow: none;
+/* Where a picked mode landed. One ring normally; two while the user has yet
+   to discover that the title is a dropdown. */
+@keyframes ai-title-pulse {
+    0% {
+        box-shadow: 0 0 0 0 fade(@ai-start-accent, 65%);
+        background: fade(@ai-start-accent, 28%);
+    }
+    100% {
+        box-shadow: 0 0 0 12px fade(@ai-start-accent, 0%);
+        background: fade(@ai-start-accent, 0%);
+    }
+}
 
-        // Phoenix's global textarea focus rule paints a border + shadow
-        // that shifts the dialog by ~2px and reads as a flicker. Force
-        // the no-chrome focus state so only the bg darkening signals
-        // focus.
-        &:focus,
-        &:focus-visible {
-            background: @bc-ai-input-bg-focused;
-            border: 0;
-            outline: none;
-            box-shadow: none;
-        }
+.ai-chat-header .ai-chat-title-group {
+    &.ai-title-pulse {
+        animation: ai-title-pulse 600ms ease-out 1;
     }
 
-    .ai-onboarding-prompt-images {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 8px 12px;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        background: @bc-ai-input-bg;
+    &.ai-title-pulse-double {
+        animation: ai-title-pulse 700ms ease-out 2;
+    }
+}
 
-        .ai-image-thumb {
-            position: relative;
+.ai-mode-switch-hint {
+    position: fixed;
+    z-index: 1999;
+    transform: translateX(-50%);
+    margin-top: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    font-size: @ai-text-secondary;
+    font-weight: 600;
+    color: #fff;
+    background: #2f6fed;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.2s ease, margin-top 0.2s ease;
 
-            img {
-                display: block;
-                max-width: 64px;
-                max-height: 48px;
-                object-fit: cover;
-                border-radius: 4px;
-                border: 1px solid rgba(255, 255, 255, 0.12);
-                cursor: pointer;
-            }
-
-            .ai-image-remove {
-                position: absolute;
-                top: -6px;
-                right: -6px;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: rgba(0, 0, 0, 0.7);
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                color: #fff;
-                font-size: 11px;
-                line-height: 1;
-                padding: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-            }
-        }
+    &.ai-mode-switch-hint-in {
+        opacity: 1;
+        margin-top: 0;
     }
 
-    .ai-onboarding-prompt-actions {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 4px;
-        padding: 6px 8px 6px 12px;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .ai-onboarding-prompt-cancel {
-        background: transparent;
-        border: 0;
-        color: @project-panel-text-2;
-        font-size: @ai-text-secondary;
-        line-height: @ai-line-compact;
-        padding: 6px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.15s ease, color 0.15s ease;
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: @project-panel-text-1;
-        }
-    }
-
-    .ai-onboarding-prompt-send {
-        background: none;
-        border: 0;
-        color: @project-panel-text-2;
-        width: 32px;
-        height: 28px;
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0.6;
-        transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
-
-        i { font-size: 0.95em; }
-
-        &:hover {
-            opacity: 1;
-            color: @project-panel-text-1;
-            background: rgba(255, 255, 255, 0.05);
-        }
+    &::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        margin-left: -5px;
+        border: 5px solid transparent;
+        border-top: 0;
+        border-bottom-color: #2f6fed;
     }
 }
 
@@ -4292,11 +4339,8 @@
 }
 
 /* ── AI Settings Dialog ────────────────────────────────────────────── */
-/* Label + input pair. Shared by the AI settings dialog and the CLI-not-found
-   dialog, which asks for a binary path with the same affordance — the rule
-   lives at top level rather than inside .ai-settings-dialog so both get it. */
-.ai-settings-dialog .ai-settings-field,
-.ai-cli-not-found .ai-settings-field {
+/* Label + input pair. */
+.ai-settings-dialog .ai-settings-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -4735,35 +4779,135 @@
     }
 }
 
-/* Onboarding prompt overlay entrance animations. Kept at file scope so
-   the keyframes resolve regardless of nesting context. */
-@keyframes ai-onboarding-overlay-fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes ai-onboarding-card-pop {
-    from {
-        opacity: 0;
-        transform: scale(0.96) translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-/* "CLI not found" dialog. Reuses the settings field styling above; only the
-   surrounding rhythm is its own. */
-.ai-cli-not-found {
-    .ai-cli-not-found-msg {
-        margin: 0 0 12px;
-        line-height: @ai-line-prose;
+/* CLI setup dialog: two boxed choices, each carrying its own action, so the
+   button always sits beside the thing it acts on. Themed — unlike the
+   sidebar, dialogs follow the editor's light/dark theme. */
+.ai-cli-setup {
+    .ai-cli-setup-intro {
+        margin: 0 0 14px;
     }
 
-    .ai-learn-more-link {
+    .ai-cli-setup-option {
+        border: 1px solid rgba(128, 128, 128, 0.35);
+        border-radius: 8px;
+        padding: 12px 12px 14px;
+        margin-bottom: 10px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .ai-cli-setup-recommended {
+        border-color: fade(@ai-start-accent, 55%);
+        background: fade(@ai-start-accent, 6%);
+    }
+
+    .ai-cli-setup-option-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    .ai-cli-setup-tag {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 0 6px;
+        border-radius: 8px;
+        color: #2f6fed;
+        border: 1px solid fade(#2f6fed, 50%);
+
+        .dark & {
+            color: @ai-start-accent;
+            border-color: fade(@ai-start-accent, 50%);
+        }
+    }
+
+    .ai-cli-setup-option-desc,
+    .ai-cli-setup-note {
+        font-size: @ai-dialog-note;
+        opacity: 0.75;
+    }
+
+    .ai-cli-setup-option-desc {
+        margin-bottom: 10px;
+    }
+
+    .ai-cli-setup-note {
+        margin-top: 8px;
+    }
+
+    .ai-cli-setup-action {
+        display: flex;
+        align-items: stretch;
+        gap: 8px;
+
+        .ai-cli-setup-command,
+        .ai-cli-path-input {
+            flex: 1;
+            min-width: 0;
+            height: 30px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            margin: 0;
+            min-width: 118px;
+            height: 30px;
+            white-space: nowrap;
+        }
+    }
+
+    .ai-cli-setup-command {
+        display: flex;
+        align-items: center;
+        padding: 0 9px;
+        border-radius: 4px;
+        font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+        font-size: @ai-text-secondary;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background: rgba(128, 128, 128, 0.18);
+        -webkit-user-select: text;
+        user-select: text;
+
+        &::before {
+            content: "$";
+            opacity: 0.45;
+            margin-right: 8px;
+        }
+    }
+
+    .ai-cli-path-input.ai-cli-path-invalid {
+        border-color: #d9534f;
+    }
+
+    .ai-cli-setup-error {
+        font-size: @ai-dialog-note;
+        margin-top: 7px;
+        color: #c9302c;
+
+        .dark & {
+            color: #f0776c;
+        }
+    }
+
+    .ai-cli-auto-detect-link {
         display: inline-block;
-        margin-top: 10px;
+        margin-top: 7px;
         font-size: @ai-dialog-note;
     }
+}
+
+/* Left of Cancel in the setup dialog's footer. */
+.modal-footer .ai-cli-what-is-link {
+    float: left;
+    font-size: @ai-dialog-note;
+    line-height: 28px;
 }
