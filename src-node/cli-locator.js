@@ -122,7 +122,13 @@ const CLI_REGISTRY = {
         // returns an unvalidated path straight to pty.spawn.
         winNative: function () {
             const userHome = process.env.USERPROFILE || process.env.HOME || "";
-            return [path.join(userHome, ".local", "bin", "codex.exe")];
+            return [
+                // chatgpt.com/codex/install.ps1. Listed by full path because
+                // the User PATH entry it adds never reaches this already
+                // running process, so a PATH lookup misses a fresh install.
+                path.join(process.env.LOCALAPPDATA || "", "Programs", "OpenAI", "Codex", "bin", "codex.exe"),
+                path.join(userHome, ".local", "bin", "codex.exe")
+            ];
         },
         winExtra: function () {
             const userHome = process.env.USERPROFILE || process.env.HOME || "";
@@ -626,6 +632,25 @@ async function validateCliPath(cliId, cliPath) {
     };
 }
 
+// Fetchers an install one-liner can pipe from, in preference order. Neither
+// is universal on Linux: Debian/Ubuntu desktops ship wget without curl, Arch
+// and Fedora ship curl without wget.
+const DOWNLOADERS = ["curl", "wget"];
+
+/**
+ * Which downloader is on PATH, so the install command offered to the user is
+ * one that can actually run.
+ * @return {?string} "curl", "wget", or null when neither is installed
+ */
+function findDownloader() {
+    for (const bin of DOWNLOADERS) {
+        if (_pathLookup(bin).length) {
+            return bin;
+        }
+    }
+    return null;
+}
+
 /**
  * How to hand a resolved binary to node-pty.
  *
@@ -653,6 +678,7 @@ exports.canAccess = canAccess;
 exports.spawnCli = spawnCli;
 exports.locateCli = locateCli;
 exports.validateCliPath = validateCliPath;
+exports.findDownloader = findDownloader;
 exports.getSpawnProfile = getSpawnProfile;
 exports.setOverrides = setOverrides;
 exports.getOverride = getOverride;

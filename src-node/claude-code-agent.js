@@ -796,6 +796,15 @@ exports.validateCliPath = async function (params) {
 };
 
 /**
+ * Which downloader the CLI install one-liner can use on this machine.
+ * Called from browser via execPeer("getInstallDownloader").
+ * @return {Promise<{downloader: ?string}>} "curl", "wget", or null
+ */
+exports.getInstallDownloader = async function () {
+    return { downloader: CliLocator.findDownloader() };
+};
+
+/**
  * How to spawn a CLI in a PTY: availability plus the command/args the
  * terminal should use. Callers must not spawn `path` directly — on Windows
  * an npm-installed CLI resolves to a `.cmd` shim, which node-pty cannot

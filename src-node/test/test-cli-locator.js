@@ -18,14 +18,22 @@ const PROCESS_TIMEOUT_MS = 3000;
  * @param {string} platform - Node platform name
  * @param {Object} env - Simulated desktop environment
  * @param {Function} [spawnImpl] - Optional probe process substitute
+ * @param {{fs: Object, execSync: Function}} [stubs] - Optional file system and PATH lookup substitutes
  * @return {Object} Locator exports
  */
-function _loadLocator(platform, env, spawnImpl) {
+function _loadLocator(platform, env, spawnImpl, stubs) {
     const exported = {};
+    const processStubs = {};
+    if (spawnImpl) {
+        processStubs.spawn = spawnImpl;
+    }
+    if (stubs && stubs.execSync) {
+        processStubs.execSync = stubs.execSync;
+    }
     const dependencies = {
         path: platform === "win32" ? path.win32 : path.posix,
-        fs,
-        child_process: spawnImpl ? Object.assign({}, childProcess, { spawn: spawnImpl }) : childProcess
+        fs: (stubs && stubs.fs) || fs,
+        child_process: Object.assign({}, childProcess, processStubs)
     };
     const source = fs.readFileSync(path.join(__dirname, "..", "cli-locator.js"), "utf8");
     vm.runInNewContext(source, {
@@ -161,7 +169,46 @@ async function runStandaloneFixture() {
     }
 }
 
+/**
+ * Locate Codex on a simulated Windows machine where only the standalone
+ * installer's directory holds it and nothing is on PATH.
+ * @return {Promise<Object>} Locator result and the path the installer uses
+ */
+async function locateWindowsStandaloneCodex() {
+    const env = { LOCALAPPDATA: "C:\\Users\\me\\AppData\\Local", USERPROFILE: "C:\\Users\\me" };
+    const installedPath = "C:\\Users\\me\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.exe";
+    const locator = _loadLocator("win32", env, null, {
+        fs: Object.assign({}, fs, {
+            existsSync: function (candidate) { return candidate === installedPath; }
+        }),
+        execSync: function () { throw new Error("not on PATH"); }
+    });
+    return { located: await locator.locateCli("codex"), installedPath };
+}
+
+/**
+ * Report the downloader chosen for each simulated set of installed tools.
+ * @param {{installed: Array<Array<string>>}} params - Tool names on PATH, one list per scenario
+ * @return {Promise<Array<?string>>} Chosen downloader per scenario
+ */
+async function findDownloaders({installed}) {
+    return installed.map(function (tools) {
+        const locator = _loadLocator("linux", { PATH: "/usr/bin" }, null, {
+            execSync: function (command) {
+                const found = tools.find(function (tool) { return command.endsWith("which " + tool); });
+                if (!found) {
+                    throw new Error("not on PATH");
+                }
+                return "/usr/bin/" + found + "\n";
+            }
+        });
+        return locator.findDownloader();
+    });
+}
+
 exports.getSpawnProfile = getSpawnProfile;
+exports.locateWindowsStandaloneCodex = locateWindowsStandaloneCodex;
+exports.findDownloaders = findDownloaders;
 exports.probeWindowsShim = probeWindowsShim;
 exports.runNpmFixture = runNpmFixture;
 exports.runStandaloneFixture = runStandaloneFixture;

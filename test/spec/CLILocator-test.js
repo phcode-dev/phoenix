@@ -100,6 +100,19 @@ define(function (require, exports, module) {
             expect(result.env.Path).toBe("C:\\Windows;C:\\nodejs");
         });
 
+        it("win32: should find Codex where the standalone installer puts it, without PATH", async function () {
+            const result = await nodeConnector.execPeer("locateWindowsStandaloneCodex");
+            expect(result.located.path).withContext(JSON.stringify(result.located)).toBe(result.installedPath);
+            expect(result.located.source).toBe("native");
+        });
+
+        it("should pick curl, fall back to wget, and report when neither is installed", async function () {
+            const result = await nodeConnector.execPeer("findDownloaders", {
+                installed: [["curl", "wget"], ["wget"], []]
+            });
+            expect(result).toEqual(["curl", "wget", null]);
+        });
+
         // These fixtures need POSIX symlinks/shebangs. Register them only there:
         // Phoenix's reporter treats Jasmine pending specs as failures.
         if (Phoenix.platform !== "win") {
