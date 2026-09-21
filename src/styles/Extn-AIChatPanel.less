@@ -1018,24 +1018,163 @@
         }
     }
 
-    /* Only while a demo plays, in the text's place. */
+    /* Only while a demo plays, in the text's place. Shows the pace, and
+       steps it up on each click. */
     .ai-demo-ff-btn {
         display: none;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
+        gap: 7px;
+        /* Room for "32×", so the button does not change width as it steps. */
+        min-width: 72px;
         color: @ai-start-accent;
         background: fade(@ai-start-accent, 10%);
         border: 1px solid fade(@ai-start-accent, 45%);
+        font-variant-numeric: tabular-nums;
 
         &:hover {
             background: fade(@ai-start-accent, 18%);
         }
 
-        &.active {
-            color: #fff;
-            background: @ai-start-accent;
-            border-color: @ai-start-accent;
+        &:active {
+            background: fade(@ai-start-accent, 28%);
         }
+    }
+}
+
+/* What a demo ends on: the model that built it, and the way to another. */
+.ai-demo-end {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 6px;
+    padding: 16px 14px;
+    text-align: center;
+    border: 1px solid fade(@ai-start-accent, 35%);
+    border-radius: 10px;
+    background: fade(@ai-start-accent, 7%);
+
+    .ai-demo-end-title {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: @ai-text-body;
+        font-weight: 600;
+        color: @project-panel-text-1;
+    }
+
+    .ai-demo-end-icon {
+        display: inline-flex;
+        color: @ai-start-accent;
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    /* Signed out: what the demo was for. */
+    .ai-demo-end-cta {
+        margin-top: 2px;
+        font-size: @ai-text-body;
+        color: @project-panel-text-1;
+    }
+
+    .ai-demo-end-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 4px;
+    }
+
+    .ai-demo-end-signin-btn,
+    .ai-demo-another-btn,
+    .ai-demo-reveal-btn,
+    .ai-demo-copy-btn {
+        height: 30px;
+        padding: 0 16px;
+        border-radius: 6px;
+        font-size: @ai-text-secondary;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .ai-demo-end-signin-btn,
+    .ai-demo-another-btn {
+        color: #fff;
+        background: #0a6fd0;
+        border: 1px solid #0a6fd0;
+
+        &:hover {
+            background: #1a80e2;
+            border-color: #1a80e2;
+        }
+    }
+
+    /* One primary action: signing in, when that is on offer. */
+    &.ai-demo-end-signedout .ai-demo-another-btn,
+    .ai-demo-reveal-btn,
+    .ai-demo-copy-btn {
+        color: @project-panel-text-1;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+    }
+
+    /* The reveal: the prompt behind the build, as sent. Long, so it scrolls. */
+    .ai-demo-prompt {
+        align-self: stretch;
+        margin-top: 6px;
+        text-align: left;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.22);
+        overflow: hidden;
+    }
+
+    .ai-demo-prompt-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 6px 6px 6px 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: @ai-text-meta;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: @project-panel-text-2;
+
+        .ai-demo-copy-btn {
+            height: 22px;
+            padding: 0 9px;
+            font-size: @ai-text-meta;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+    }
+
+    .ai-demo-prompt-text {
+        margin: 0;
+        padding: 10px;
+        max-height: 260px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+        font-size: @ai-text-secondary;
+        line-height: 1.5;
+        color: @project-panel-text-1;
+        -webkit-user-select: text;
+        user-select: text;
     }
 }
 
@@ -1052,6 +1191,12 @@
         .ai-demo-bar-text {
             display: none;
         }
+    }
+
+    /* The ending card makes the sign-in offer, and has the way to another
+       demo: nothing is left for the bar to do. */
+    &.ai-demo-ended .ai-demo-bar {
+        display: none;
     }
 
     .ai-chat-start,
