@@ -767,6 +767,27 @@
         }
     }
 
+    /* Compact layout, for people who are not new here: the modes lead and
+       the Surprise Me demo is a footer link instead of a hero card. */
+    .ai-start-footer.ai-start-demo {
+        display: none;
+        margin-top: 8px;
+    }
+
+    &.ai-start-compact {
+        .ai-start-surprise {
+            display: none;
+        }
+
+        .ai-start-footer.ai-start-demo {
+            display: flex;
+        }
+
+        .ai-start-section {
+            margin-top: 4px;
+        }
+    }
+
     /* Dimmed while its label is in flight to the header. */
     .ai-start-row-leaving {
         opacity: 0.25;
@@ -928,16 +949,42 @@
 }
 
 .ai-chat-header .ai-chat-title-group {
-    &.ai-title-pulse {
+    &.ai-pulse {
         animation: ai-title-pulse 600ms ease-out 1;
     }
 
-    &.ai-title-pulse-double {
+    &.ai-pulse-double {
         animation: ai-title-pulse 700ms ease-out 2;
     }
 }
 
-.ai-mode-switch-hint {
+/* The same ring around the chat input, for the built-in chat. Shadow only:
+   the input keeps its own background, and the ring is narrower because the
+   panel edge is close by. */
+@keyframes ai-input-pulse {
+    0% {
+        box-shadow: 0 0 0 0 fade(@ai-start-accent, 65%);
+        border-color: fade(@ai-start-accent, 70%);
+    }
+    100% {
+        box-shadow: 0 0 0 7px fade(@ai-start-accent, 0%);
+        border-color: fade(@ai-start-accent, 70%);
+    }
+}
+
+.ai-chat-input-area .ai-chat-input-wrap {
+    &.ai-pulse {
+        animation: ai-input-pulse 600ms ease-out 1;
+    }
+
+    &.ai-pulse-double {
+        animation: ai-input-pulse 700ms ease-out 2;
+    }
+}
+
+/* A pointer to part of the panel. Top level: appended to <body>. Sits under
+   its anchor pointing up, or over it pointing down (-above). */
+.ai-panel-hint {
     position: fixed;
     z-index: 1999;
     transform: translateX(-50%);
@@ -954,7 +1001,7 @@
     opacity: 0;
     transition: opacity 0.2s ease, margin-top 0.2s ease;
 
-    &.ai-mode-switch-hint-in {
+    &.ai-panel-hint-in {
         opacity: 1;
         margin-top: 0;
     }
@@ -968,6 +1015,23 @@
         border: 5px solid transparent;
         border-top: 0;
         border-bottom-color: #2f6fed;
+    }
+
+    &.ai-panel-hint-above {
+        transform: translate(-50%, -100%);
+        margin-top: -6px;
+
+        &.ai-panel-hint-in {
+            margin-top: 0;
+        }
+
+        &::before {
+            top: auto;
+            bottom: -5px;
+            border: 5px solid transparent;
+            border-bottom: 0;
+            border-top-color: #2f6fed;
+        }
     }
 }
 
