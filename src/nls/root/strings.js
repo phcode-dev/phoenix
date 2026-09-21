@@ -825,6 +825,7 @@ define({
     "LIVE_PREVIEW_LAYERS_SETTINGS": "Settings",
     "LIVE_PREVIEW_LAYERS_SHOW_TEXT_NODES": "Show Text Nodes",
     "LIVE_PREVIEW_LAYERS_SCROLL_ON_HOVER": "Scroll Preview on Hover",
+    "LIVE_PREVIEW_LAYERS_AUTO_COLLAPSE": "Auto-Collapse Elements",
     "LIVE_PREVIEW_LAYERS_MOVE_UP": "Move Up",
     "LIVE_PREVIEW_LAYERS_MOVE_DOWN": "Move Down",
     "LIVE_PREVIEW_LAYERS_CUT_DONE": "Cut",
