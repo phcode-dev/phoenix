@@ -2289,6 +2289,26 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         let textDeltaCount = 0;
         let textStreamSendCount = 0;
 
+        // Text is batched (TEXT_STREAM_THROTTLE_MS), and a batch only went out
+        // when the next text delta arrived. Everything else — a tool card
+        // above all — is sent the moment it happens, so the last words of a
+        // sentence used to reach the panel after the card that followed them
+        // and showed up underneath it. Whatever is not text flushes first.
+        let sentAnyText = false;
+        function flushText() {
+            if (!accumulatedText) {
+                return;
+            }
+            textStreamSendCount++;
+            sentAnyText = true;
+            lastStreamTime = Date.now();
+            nodeConnector.triggerPeer("aiTextStream", {
+                requestId: requestId,
+                text: accumulatedText
+            });
+            accumulatedText = "";
+        }
+
         // Connection timeout — abort if no messages within 60s
         let receivedFirstMessage = false;
         const CONNECTION_TIMEOUT_MS = 60000;
@@ -2360,6 +2380,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             if (message.type === "assistant" &&
                     message.parent_tool_use_id &&
                     message.message && Array.isArray(message.message.content)) {
+                flushText();
                 const parentToolId = _toolUseIdToCounter[message.parent_tool_use_id];
                 for (const block of message.message.content) {
                     if (block && block.type === "tool_use") {
@@ -2458,6 +2479,17 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 const event = message.event;
                 const isSubagent = !!message.parent_tool_use_id;
 
+                if (event.type === "content_block_stop" ||
+                    (event.type === "content_block_start" && event.content_block?.type === "tool_use")) {
+                    flushText();
+                }
+                // Text blocks arrive back to back with nothing between them,
+                // which ran one block's last sentence into the next one's first.
+                if (event.type === "content_block_start" &&
+                    event.content_block?.type === "text" && sentAnyText) {
+                    accumulatedText += "\n\n";
+                }
+
                 if (isSubagent) {
                     // --- Sub-agent events ---
 
@@ -2544,19 +2576,27 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         event.delta?.type === "text_delta") {
                         accumulatedText += event.delta.text;
                         textDeltaCount++;
-                        const now = Date.now();
-                        if (now - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
-                            lastStreamTime = now;
-                            textStreamSendCount++;
-                            nodeConnector.triggerPeer("aiTextStream", {
-                                requestId: requestId,
-                                text: accumulatedText
-                            });
-                            accumulatedText = "";
+                        if (Date.now() - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                            flushText();
                         }
                     }
                 } else {
                     // --- Parent-level events (unchanged) ---
+
+                    // What the model is doing between tool calls. Nothing
+                    // else reaches the panel in these stretches, and they can
+                    // run to minutes — without this, "the API has not
+                    // answered yet" and "the model is thinking" both look
+                    // like a panel that has hung.
+                    if (event.type === "message_start") {
+                        _log("Model responding");
+                        nodeConnector.triggerPeer("aiModelActivity", { requestId: requestId, state: "responding" });
+                    }
+                    if (event.type === "content_block_start" &&
+                        event.content_block?.type === "thinking") {
+                        _log("Thinking started");
+                        nodeConnector.triggerPeer("aiModelActivity", { requestId: requestId, state: "thinking" });
+                    }
 
                     // Tool use start — send initial indicator
                     if (event.type === "content_block_start" &&
@@ -2645,15 +2685,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         event.delta?.type === "text_delta") {
                         accumulatedText += event.delta.text;
                         textDeltaCount++;
-                        const now = Date.now();
-                        if (now - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
-                            lastStreamTime = now;
-                            textStreamSendCount++;
-                            nodeConnector.triggerPeer("aiTextStream", {
-                                requestId: requestId,
-                                text: accumulatedText
-                            });
-                            accumulatedText = "";
+                        if (Date.now() - lastStreamTime >= TEXT_STREAM_THROTTLE_MS) {
+                            flushText();
                         }
                     }
                 }
@@ -2714,13 +2747,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         }
 
         // Flush any remaining accumulated text
-        if (accumulatedText) {
-            textStreamSendCount++;
-            nodeConnector.triggerPeer("aiTextStream", {
-                requestId: requestId,
-                text: accumulatedText
-            });
-        }
+        flushText();
 
         clearTimeout(connectionTimer);
         _log("Complete: tools=" + toolCounter, "edits=" + editCount,
