@@ -900,6 +900,194 @@
     }
 }
 
+/* Surprise Me on the sign-in screen: the start screen's hero card, there
+   playing a recorded build for someone who cannot use the panel yet. */
+.ai-see-demo-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 12px;
+    padding: 12px;
+    text-align: left;
+    font-size: @ai-text-body;
+    color: @project-panel-text-1;
+    background: @ai-start-card-bg;
+    border: 1px solid @ai-start-border;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+        background: @ai-start-card-bg-hover;
+    }
+
+    .ai-see-demo-icon {
+        flex: 0 0 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.07);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+    }
+
+    .ai-see-demo-text {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ai-see-demo-name {
+        font-weight: 600;
+    }
+
+    .ai-see-demo-desc {
+        font-size: @ai-text-secondary;
+        color: @project-panel-text-2;
+        margin-top: 1px;
+    }
+
+    .ai-see-demo-chevron {
+        font-size: 11px;
+        color: fade(@project-panel-text-2, 60%);
+    }
+}
+
+/* Demo mode: the chat UI shown to someone signed out, to watch a recorded
+   build. The input area stays on show but inert, so the demo looks like the
+   panel they would get; the bar under it holds what can actually be done. */
+.ai-demo-bar {
+    display: none;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: @ai-text-secondary;
+    color: @project-panel-text-2;
+
+    .ai-demo-bar-text {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ai-demo-bar-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+    button {
+        height: 28px;
+        margin: 0;
+        padding: 0 12px;
+        box-sizing: border-box;
+        border-radius: 6px;
+        font-size: @ai-text-secondary;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .ai-demo-back-btn {
+        color: @project-panel-text-1;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+    }
+
+    .ai-demo-signin-btn {
+        color: #fff;
+        background: #0a6fd0;
+        border: 1px solid #0a6fd0;
+
+        &:hover {
+            background: #1a80e2;
+            border-color: #1a80e2;
+        }
+    }
+
+    /* Only while a demo plays, in the text's place. */
+    .ai-demo-ff-btn {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        color: @ai-start-accent;
+        background: fade(@ai-start-accent, 10%);
+        border: 1px solid fade(@ai-start-accent, 45%);
+
+        &:hover {
+            background: fade(@ai-start-accent, 18%);
+        }
+
+        &.active {
+            color: #fff;
+            background: @ai-start-accent;
+            border-color: @ai-start-accent;
+        }
+    }
+}
+
+.ai-chat-panel.ai-demo-mode {
+    .ai-demo-bar {
+        display: flex;
+    }
+
+    &.ai-demo-playing {
+        .ai-demo-ff-btn {
+            display: inline-flex;
+        }
+
+        .ai-demo-bar-text {
+            display: none;
+        }
+    }
+
+    .ai-chat-start,
+    .ai-chat-quota-bar {
+        display: none !important;
+    }
+
+    /* On show, not in use. Stop stays live: it ends the replay. */
+    .ai-chat-input-area {
+        pointer-events: none;
+
+        .ai-chat-context-bar,
+        .ai-chat-mode-row,
+        .ai-chat-input-wrap > *:not(.ai-stop-btn) {
+            opacity: 0.5;
+        }
+
+        .ai-stop-btn {
+            pointer-events: auto;
+        }
+    }
+
+    .ai-model-select,
+    .ai-chat-header-actions {
+        visibility: hidden;
+    }
+
+    .ai-chat-title-group {
+        pointer-events: none;
+
+        .ai-chat-title-chevron {
+            display: none;
+        }
+    }
+}
+
 /* A picked row's label in flight to the header title. Top level: it is
    appended to <body> so it can cross out of the panel. */
 .ai-start-fly {
