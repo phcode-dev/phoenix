@@ -1,0 +1,190 @@
+/* Image search cards and the shared full-window image viewer. */
+
+.ai-chat-panel .ai-msg-tool.ai-image-search {
+    padding: 0;
+    border: 1px solid @bc-ai-input-border;
+    border-radius: 5px;
+    background: @bc-ai-sidebar-bg;
+    overflow: hidden;
+
+    button { font: inherit; cursor: pointer; }
+
+    .ai-image-search-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        width: 100%;
+        padding: 12px;
+        border: 0;
+        color: @project-panel-text-1;
+        background: transparent;
+        text-align: left;
+
+        .ai-tool-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        > i { color: @project-panel-text-2; font-size: @ai-text-secondary; }
+        .ai-image-search-chevron { font-size: @ai-text-meta; }
+        &:hover { background: rgba(128, 128, 128, 0.08); }
+    }
+
+    .ai-image-search-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 0 10px; }
+    &.ai-image-search-compact {
+        .ai-image-search-item:nth-child(n+4), .ai-image-search-collage { display: none; }
+        .ai-image-search-show-all { display: flex; }
+    }
+    .ai-image-search-show-all { display: none; border: 0; background: transparent; color: inherit; padding: 5px 0; }
+    .ai-image-search-show-all:hover { color: @project-panel-text-1; }
+    .ai-image-search-item { position: relative; min-width: 0; }
+    &.ai-image-preview-card .ai-image-search-grid[data-count="1"] {
+        grid-template-columns: minmax(0, 1fr);
+        .ai-image-search-photo { aspect-ratio: 4 / 3; }
+        img { object-fit: contain; }
+    }
+    &.ai-image-preview-card .ai-image-search-grid[data-count="2"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .ai-image-search-photo {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        padding: 0;
+        border: 0;
+        border-radius: 2px;
+        overflow: hidden;
+        background: rgba(128, 128, 128, 0.1);
+        color: @project-panel-text-2;
+
+        img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        &:focus-visible { outline: 2px solid @project-panel-text-1; outline-offset: -2px; }
+    }
+    .ai-image-search-unavailable { font-size: @ai-text-secondary; padding: 8px; }
+    .ai-image-search-number {
+        position: absolute;
+        top: 7px;
+        left: 7px;
+        min-width: 22px;
+        padding: 3px 5px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background: rgba(25, 25, 25, 0.5);
+        color: #f1f1f1;
+        font-size: @ai-text-secondary;
+        line-height: 16px;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 120ms ease;
+    }
+    .ai-image-search-reply {
+        position: absolute;
+        right: 7px;
+        bottom: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        padding: 0;
+        border: 0;
+        border-radius: 4px;
+        background: rgba(25, 25, 25, 0.38);
+        backdrop-filter: blur(4px);
+        color: #f1f1f1;
+        font-size: @ai-text-secondary;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 120ms ease;
+
+        i { color: inherit; }
+        &:hover { background: rgba(25, 25, 25, 0.62); }
+        &:focus-visible { outline: 1px solid #eee; outline-offset: 2px; }
+    }
+    .ai-image-search-item:hover .ai-image-search-reply,
+    .ai-image-search-item:focus-within .ai-image-search-reply { opacity: 1; pointer-events: auto; }
+    .ai-image-search-item:hover .ai-image-search-number,
+    .ai-image-search-item:focus-within .ai-image-search-number { opacity: 1; }
+    .ai-image-search-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; font-size: @ai-text-meta; color: @project-panel-text-2; }
+    .ai-image-search-collage { display: flex; align-items: center; gap: 6px; border: 0; background: transparent; color: inherit; padding: 5px 0; }
+    .ai-image-search-collage:hover { color: @project-panel-text-1; }
+    .ai-image-search-status { padding: 12px; font-size: @ai-text-secondary; color: @project-panel-text-2; }
+}
+
+.ai-image-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 42px;
+    background: rgba(8, 8, 8, 0.77);
+    backdrop-filter: blur(3px);
+    color: @project-panel-text-1;
+    font-family: @sansFontFamily;
+    font-size: @ai-dialog-text;
+    line-height: @ai-line-compact;
+
+    &, * { box-sizing: border-box; }
+    .ai-image-viewer-dialog { display: flex; flex-direction: column; width: min(1140px, 100%); height: calc(100vh - 84px); max-height: 940px; background: @bc-ai-sidebar-bg; border: 1px solid @bc-ai-input-border; border-radius: 7px; overflow: hidden; box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5); }
+    .ai-image-viewer-header { display: flex; align-items: center; flex-shrink: 0; gap: 12px; min-height: 52px; padding: 10px 16px; }
+    .ai-image-viewer-title { flex: 1; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ai-image-viewer-count { color: @project-panel-text-2; font-size: @ai-text-secondary; }
+    button { display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 4px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+    button:hover { background: rgba(128, 128, 128, 0.2); }
+    button:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+    .ai-image-viewer-close { width: 30px; height: 30px; }
+    .ai-image-viewer-overview { width: 30px; height: 30px; color: @project-panel-text-2; }
+    .ai-image-viewer-reply { width: 30px; height: 30px; color: @project-panel-text-2; }
+    .ai-image-viewer-reply-overlay {
+        position: absolute;
+        height: 27px;
+        padding: 0 9px;
+        gap: 6px;
+        white-space: nowrap;
+        font-size: 12px;
+        background: rgba(25, 25, 25, 0.38);
+        backdrop-filter: blur(4px);
+        color: #f1f1f1;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 120ms ease;
+    }
+    .ai-image-viewer-stage:has(.ai-image-viewer-image:hover) .ai-image-viewer-reply-overlay,
+    .ai-image-viewer-reply-overlay:hover,
+    .ai-image-viewer-reply-overlay:focus-visible { opacity: 1; pointer-events: auto; }
+    .ai-image-viewer-reply-overlay:hover { background: rgba(25, 25, 25, 0.62); }
+    .ai-image-overview { position: absolute; inset: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+    .ai-image-overview-row { display: flex; align-items: center; justify-content: center; gap: 14px; flex-shrink: 0; }
+    .ai-image-overview-photo { flex-shrink: 0; overflow: hidden; border-radius: 2px; color: @project-panel-text-2; }
+    .ai-image-overview-photo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .ai-image-viewer-stage { position: relative; flex: 1; min-height: 0; padding: 22px 64px; display: flex; align-items: center; justify-content: center; background: #191919; }
+    .ai-image-viewer-image { width: 100%; height: 100%; display: block; object-fit: contain; }
+    .ai-image-viewer-prev, .ai-image-viewer-next { position: absolute; top: calc(50% - 21px); width: 36px; height: 42px; color: #ddd; background: rgba(255, 255, 255, 0.04); }
+    .ai-image-viewer-prev { left: 14px; }
+    .ai-image-viewer-next { right: 14px; }
+    .ai-image-viewer-error { color: #ddd; }
+    .ai-image-viewer-footer { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 24px; padding: 13px 18px; min-height: 62px; border-top: 1px solid @bc-ai-input-border; }
+    .ai-image-viewer-credit { flex-shrink: 0; font-size: @ai-text-secondary; color: @project-panel-text-2; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+}
+
+@media (max-width: 700px) {
+    .ai-image-viewer {
+        padding: 12px;
+        .ai-image-viewer-dialog { height: calc(100vh - 24px); }
+        .ai-image-viewer-stage { padding: 12px 42px; }
+        .ai-image-overview { inset: 12px; }
+        .ai-image-viewer-footer { flex-wrap: wrap; gap: 6px; }
+        .ai-image-viewer-credit { flex-shrink: 1; }
+    }
+}
+@media (hover: none) {
+    .ai-image-viewer .ai-image-viewer-reply-overlay { opacity: 1; pointer-events: auto; }
+    .ai-chat-panel .ai-msg-tool.ai-image-search .ai-image-search-reply { opacity: 1; pointer-events: auto; }
+    .ai-chat-panel .ai-msg-tool.ai-image-search .ai-image-search-number { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ai-image-viewer .ai-image-viewer-reply-overlay { transition: none; }
+    .ai-chat-panel .ai-msg-tool.ai-image-search .ai-image-search-reply { transition: none; }
+    .ai-chat-panel .ai-msg-tool.ai-image-search .ai-image-search-number { transition: none; }
+}

@@ -21,10 +21,7 @@
 /**
  * MCP server factory for exposing Phoenix editor context to Claude Code.
  *
- * Provides three tools:
- *   - getEditorState: returns active file, working set, and live preview file
- *   - takeScreenshot: captures a screenshot of the Phoenix window as base64 PNG
- *   - execJsInLivePreview: executes JS in the live preview iframe
+ * Provides editor state, image search, screenshots, live preview inspection and control tools.
  *
  * Uses the Claude Code SDK's in-process MCP server support (createSdkMcpServer / tool).
  */
@@ -55,7 +52,10 @@ const EXEC_PEER_TIMEOUT_MS = {
     takeScreenshot: 15000,
     controlEditor: 5000,
     resizeLivePreview: 5000,
-    searchEditorBuffers: 3000
+    searchEditorBuffers: 3000,
+    searchImages: 55000,
+    previewImages: 45000,
+    useImage: 12000
 };
 
 // Floor for caller-provided timeouts (e.g. execJsInLivePreview's
@@ -206,6 +206,93 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             alwaysLoad: true,
             searchHint: "search the unsaved editor buffers, where Grep would see stale disk content"
         }
+    );
+
+    const searchImagesTool = sdkModule.tool(
+        "searchImages",
+        "Search Unsplash photos for a website through Phoenix's authenticated image service. " +
+        "Use judiciously: up to 100 image searches per hour are supported. Reuse results instead of repeating searches. " +
+        "Returns up to nine photos with URLs, dimensions, descriptions, photographer credits and downloadTracker. " +
+        "Set includePreview:true to SEE a small numbered collage and choose the best visual match yourself; " +
+        "each collage number matches the photo's number field and 1-based array position. Missing previews are listed. " +
+        "The user can optionally reply with an image URL; do not wait for them to choose. " +
+        "When choosing photos for the page, call useImage once with their downloadTrackers as a list, use their supplied URLs, " +
+        "and credit the photographer and Unsplash with the returned links. Honor rate-limit errors and retryAfterSeconds.",
+        {
+            query: z.string().min(1).max(200).describe("Specific image search query"),
+            page: z.number().int().min(1).optional().describe("Results page, default 1"),
+            includePreview: z.boolean().optional().describe("Return a visual collage for the AI to inspect, default false")
+        },
+        async function (args) {
+            try {
+                const found = await _execPeerWithTimeout(nodeConnector, "searchImages", args, "searchImages");
+                const metadata = Object.assign({kind: "imageSearch", query: args.query, photos: []}, found);
+                delete metadata.collage;
+                const content = [{type: "text", text: JSON.stringify(metadata)}];
+                if (found.collage) {
+                    content.push({type: "image", mimeType: "image/jpeg", data: found.collage.split(",")[1]});
+                }
+                return _maybeAppendHint({content: content, isError: !!found.error}, hasClarification);
+            } catch (error) {
+                return {content: [{type: "text", text: JSON.stringify({kind: "imageSearch",
+                    query: args.query, photos: [], error: error.message})}], isError: true};
+            }
+        },
+        {annotations: {readOnlyHint: true}, searchHint: "search Unsplash photos images pictures for website design with a visual preview collage"}
+    );
+
+    const previewImagesTool = sdkModule.tool(
+        "previewImages",
+        "Show actual image previews in the AI chat from an existing URL or list of URLs. Use this when saying " +
+        "'here are the images' or presenting a shortlist, instead of only pasting links. Supports http://, https:// " +
+        "and file:/// local image URLs, including mixed lists. Shows the same clickable preview and reply UI as " +
+        "image search, without making a search or consuming search allowance. Returns a compact visual image to " +
+        "you, or a numbered collage for 2–9 images matching each photo's number field. Set includePreview=false " +
+        "if you already saw the images and only need to show them to the user. Missing previews are reported; " +
+        "do not claim to have seen them. Local files are read through the desktop bridge without hosting them remotely. " +
+        "Local files and native fallback downloads are limited to 8 MB each.",
+        {
+            urls: z.union([z.string().url(), z.array(z.string().url()).min(1).max(9)])
+                .describe("One image URL or an ordered list of up to nine image URLs, including file:/// URLs"),
+            title: z.string().max(200).optional().describe("Contextual title, e.g. Three hero image options"),
+            includePreview: z.boolean().optional().describe("Return visual content to the AI too; default true")
+        },
+        async function (args) {
+            try {
+                const found = await _execPeerWithTimeout(nodeConnector, "previewImages", args, "previewImages");
+                const metadata = Object.assign({}, found);
+                delete metadata.collage;
+                const content = [{type: "text", text: JSON.stringify(metadata)}];
+                if (found.collage) {
+                    content.push({type: "image", mimeType: "image/jpeg", data: found.collage.split(",")[1]});
+                }
+                return _maybeAppendHint({content: content, isError: !!found.error}, hasClarification);
+            } catch (error) {
+                return {content: [{type: "text", text: JSON.stringify({kind: "imagePreview",
+                    query: args.title, photos: [], error: error.message})}], isError: true};
+            }
+        },
+        {annotations: {readOnlyHint: true}, searchHint: "show display preview images photos pictures from URLs or local file paths, visual image collage shortlist"}
+    );
+
+    const useImageTool = sdkModule.tool(
+        "useImage",
+        "Record Unsplash images chosen from searchImages before embedding their URLs. Prefer selecting multiple " +
+        "photos in one call by passing a list of downloadTrackers (up to nine). A single tracker is also accepted. " +
+        "Returns selected photos and any per-image failures; retry only failed trackers. " +
+        "Does not perform another search or edit any files.",
+        {downloadTracker: z.union([z.string(), z.array(z.string()).min(1).max(9)])
+            .describe("One downloadTracker from searchImages, or an ordered list of up to nine downloadTrackers")},
+        async function (args) {
+            try {
+                const result = await _execPeerWithTimeout(nodeConnector, "useImage", args, "useImage");
+                return _maybeAppendHint({content: [{type: "text", text: JSON.stringify(result)}],
+                    isError: !!result.error}, hasClarification);
+            } catch (error) {
+                return {content: [{type: "text", text: error.message}], isError: true};
+            }
+        },
+        {searchHint: "select use embed an Unsplash photo returned by image search"}
     );
 
     const takeScreenshotTool = sdkModule.tool(
@@ -694,10 +781,32 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
 
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, searchEditorBuffersTool, takeScreenshotTool, execJsInLivePreviewTool,
+        tools: [getEditorStateTool, searchEditorBuffersTool, searchImagesTool, previewImagesTool,
+            useImageTool, takeScreenshotTool, execJsInLivePreviewTool,
             execJsInEditorTool, editorPreferencesTool, editorDocsTool,
             controlEditorTool, resizeLivePreviewTool, waitTool, getUserClarificationTool]
     });
 }
 
+/**
+ * Extract only image-search metadata from a tool result for the matching UI card.
+ * The collage remains in the model response; history and recordings store photo URLs.
+ * @param {string|Array} content - SDK tool result content.
+ * @return {Object|undefined} Search metadata, when present.
+ */
+function getImageSearchResult(content) {
+    const blocks = typeof content === "string" ? [{type: "text", text: content}] : content;
+    for (const block of blocks || []) {
+        if (block.type !== "text") { continue; }
+        try {
+            const value = JSON.parse(block.text);
+            if (["imageSearch", "imagePreview", "imageSelection"].includes(value.kind) && Array.isArray(value.photos)) {
+                return value;
+            }
+        } catch (error) { /* Other text blocks can contain clarification hints. */ }
+    }
+    return undefined;
+}
+
 exports.createEditorMcpServer = createEditorMcpServer;
+exports.getImageSearchResult = getImageSearchResult;
