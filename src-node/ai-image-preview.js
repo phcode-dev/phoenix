@@ -22,7 +22,9 @@ function _imageType(bytes) {
     }
     if (bytes[0] === 0 && bytes[1] === 0 && bytes[2] === 1 && bytes[3] === 0) { return "image/x-icon"; }
     const head = bytes.toString("utf8", 0, Math.min(bytes.length, 2048)).trim();
-    if (/^(?:<\?xml[\s\S]*?\?>\s*)?(?:<!--[\s\S]*?-->\s*)*<svg[\s>]/i.test(head)) {
+    // The prolog and each comment stop at their own end marker, so the match is linear
+    // (a lazy [\s\S]*? could span comments and backtrack exponentially on hostile bytes).
+    if (/^(?:<\?xml(?:(?!\?>)[\s\S])*\?>\s*)?(?:<!--(?:(?!-->)[\s\S])*-->\s*)*<svg[\s>]/i.test(head)) {
         return "image/svg+xml";
     }
     return null;
