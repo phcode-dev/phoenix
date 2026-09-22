@@ -742,6 +742,124 @@
         padding: 12px;
     }
 
+    /* Surprise Me: a card whose head is the button. Once a demo has been
+       seen, clicking it opens a choice beneath: a live build, or another
+       demo. */
+    .ai-start-surprise {
+        display: block;
+        padding: 0;
+        cursor: default;
+
+        &.ai-start-surprise-open:hover {
+            background: @ai-start-card-bg;
+        }
+    }
+
+    .ai-start-surprise-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        margin: 0;
+        padding: 12px;
+        box-sizing: border-box;
+        text-align: left;
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: inset 0 0 0 1px fade(@ai-start-accent, 50%);
+        }
+    }
+
+    .ai-start-surprise-choice,
+    .ai-start-surprise-choice-desc {
+        display: none;
+    }
+
+    .ai-start-surprise-choice {
+        padding: 0 12px 12px;
+    }
+
+    .ai-start-surprise-open {
+        .ai-start-surprise-choice {
+            display: block;
+            animation: ai-start-choice-open 0.22s ease-out;
+        }
+
+        .ai-start-surprise-desc {
+            display: none;
+        }
+
+        .ai-start-surprise-choice-desc {
+            display: block;
+        }
+
+        .ai-start-chevron {
+            transform: rotate(90deg);
+        }
+    }
+
+    .ai-start-surprise-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .ai-start-make-btn,
+    .ai-start-another-btn {
+        flex: 1 1 0;
+        min-width: 130px;
+        height: 30px;
+        margin: 0;
+        padding: 0 12px;
+        box-sizing: border-box;
+        border-radius: 6px;
+        font-size: @ai-text-secondary;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+
+        i {
+            margin-right: 6px;
+        }
+    }
+
+    .ai-start-make-btn {
+        color: inherit;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+    }
+
+    /* Free, so it is the default: primary, and on the right. */
+    .ai-start-another-btn {
+        color: #fff;
+        background: #0a6fd0;
+        border: 1px solid #0a6fd0;
+
+        &:hover {
+            background: #1a80e2;
+            border-color: #1a80e2;
+        }
+    }
+
+    .ai-start-surprise-note {
+        margin-top: 8px;
+        font-size: @ai-text-meta;
+        line-height: 1.4;
+        color: @project-panel-text-2;
+    }
+
     .ai-start-row {
         padding: 10px 12px;
         margin-bottom: 6px;
@@ -783,6 +901,18 @@
 
         .ai-start-footer.ai-start-demo {
             display: flex;
+        }
+
+        /* The footer link opened the choice: it takes the link's place. */
+        &.ai-start-surprise-at-link {
+            .ai-start-surprise {
+                display: block;
+                margin-top: 8px;
+            }
+
+            .ai-start-footer.ai-start-demo {
+                display: none;
+            }
         }
 
         .ai-start-section {
@@ -1180,33 +1310,8 @@
     }
 }
 
-.ai-chat-panel.ai-demo-mode {
-    .ai-demo-bar {
-        display: flex;
-    }
-
-    &.ai-demo-playing {
-        .ai-demo-ff-btn {
-            display: inline-flex;
-        }
-
-        .ai-demo-bar-text {
-            display: none;
-        }
-    }
-
-    /* The ending card makes the sign-in offer, and has the way to another
-       demo: nothing is left for the bar to do. */
-    &.ai-demo-ended .ai-demo-bar {
-        display: none;
-    }
-
-    .ai-chat-start,
-    .ai-chat-quota-bar {
-        display: none !important;
-    }
-
-    /* On show, not in use. Stop stays live: it ends the replay. */
+/* The chat's controls on show, not in use. Stop stays live: it ends the replay. */
+.ai-demo-controls-off() {
     .ai-chat-input-area {
         pointer-events: none;
 
@@ -1232,6 +1337,49 @@
         .ai-chat-title-chevron {
             display: none;
         }
+    }
+}
+
+/* A recorded demo playing looks the same signed in or out: the bar with its
+   pace and the way back, and the chat's controls on show only. */
+.ai-chat-panel.ai-demo-playing {
+    .ai-demo-controls-off();
+
+    .ai-demo-bar {
+        display: flex;
+    }
+
+    .ai-demo-ff-btn {
+        display: inline-flex;
+    }
+
+    .ai-demo-bar-text {
+        display: none;
+    }
+
+    /* Signed in, there is nothing to sign in to. */
+    &:not(.ai-demo-mode) .ai-demo-signin-btn {
+        display: none;
+    }
+}
+
+/* Signed out, the panel is only ever a demo. */
+.ai-chat-panel.ai-demo-mode {
+    .ai-demo-controls-off();
+
+    .ai-demo-bar {
+        display: flex;
+    }
+
+    /* The ending card makes the sign-in offer, and has the way to another
+       demo: nothing is left for the bar to do. */
+    &.ai-demo-ended .ai-demo-bar {
+        display: none;
+    }
+
+    .ai-chat-start,
+    .ai-chat-quota-bar {
+        display: none !important;
     }
 }
 
@@ -1267,6 +1415,24 @@
             width: 15px;
             height: 15px;
         }
+    }
+}
+
+/* The Surprise Me choice, opening beneath the card. */
+@keyframes ai-start-choice-open {
+    from {
+        opacity: 0.4;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ai-chat-start .ai-start-surprise-open .ai-start-surprise-choice {
+        animation: none;
     }
 }
 
