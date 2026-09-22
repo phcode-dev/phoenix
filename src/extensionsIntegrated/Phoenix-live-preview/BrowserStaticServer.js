@@ -40,12 +40,14 @@ define(function (require, exports, module) {
         ProjectManager = require("project/ProjectManager"),
         Strings = require("strings"),
         utils = require('./utils'),
+        LivePreviewTabs = require("./LivePreviewTabs"),
+        // Keep module imports before text imports: inlined HTML comment markers can hide
+        // later dependencies from RequireJS's scanner in the minified release bundle.
         BootstrapCSSText = require("text!thirdparty/bootstrap/bootstrap.min.css"),
         GithubCSSText = require("text!thirdparty/highlight.js/styles/github.min.css"),
         HilightJSText = require("text!thirdparty/highlight.js/highlight.min.js"),
         GFMCSSText = require("text!thirdparty/gfm.min.css"),
         markdownHTMLTemplate = require("text!./markdown.html"),
-        LivePreviewTabs = require("./LivePreviewTabs"),
         redirectionHTMLTemplate = require("text!./redirectPage.html");
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
