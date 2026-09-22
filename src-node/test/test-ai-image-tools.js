@@ -66,9 +66,15 @@ exports.readFixture = async function (params) {
     const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "phoenix-image-preview-"));
     const file = path.join(root, "image # one.gif");
     const gif = Buffer.from("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7", "base64");
+    const contents = {
+        text: "this is not an image",
+        svg: "<?xml version=\"1.0\"?>\n<!-- drawn by hand -->\n<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>",
+        // Many comments and no <svg>: seconds of backtracking for the old sniffing pattern.
+        commentFlood: "<!---->".repeat(30) + "x"
+    };
     let server;
     try {
-        await fs.promises.writeFile(file, params.kind === "text" ? "this is not an image" : gif);
+        await fs.promises.writeFile(file, contents[params.kind] || gif);
         if (params.kind === "large") { await fs.promises.truncate(file, 8 * 1024 * 1024 + 1); }
         if (params.kind === "remote") {
             server = http.createServer(function (_request, response) {

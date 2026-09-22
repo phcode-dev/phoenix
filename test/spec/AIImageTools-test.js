@@ -79,7 +79,12 @@ define(function (require, exports, module) {
             expect(value.dataUrl).toContain("data:image/gif;base64,");
         });
 
-        ["text", "large", "directory"].forEach(function (kind) {
+        it("recognises an SVG behind an XML prolog and comments", async function () {
+            const value = await connector.execPeer("readFixture", {kind: "svg"});
+            expect(value.dataUrl).toContain("data:image/svg+xml;base64,");
+        });
+
+        ["text", "commentFlood", "large", "directory"].forEach(function (kind) {
             it("rejects an invalid image input: " + kind, async function () {
                 const value = await connector.execPeer("readFixture", {kind: kind});
                 expect(value.error).toBeDefined();
