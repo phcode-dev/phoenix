@@ -29,8 +29,11 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { createEditorMcpServer } = require("./mcp-editor-tools");
+const { createEditorMcpServer, getImageSearchResult } = require("./mcp-editor-tools");
 const CliLocator = require("./cli-locator");
+const ImagePreview = require("./ai-image-preview");
+
+exports.readImagePreview = ImagePreview.readImage;
 
 const isWindows = process.platform === "win32";
 
@@ -1400,6 +1403,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "EnterPlanMode", "ExitPlanMode",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__searchEditorBuffers",
+            "mcp__phoenix-editor__searchImages",
+            "mcp__phoenix-editor__previewImages",
+            "mcp__phoenix-editor__useImage",
             "mcp__phoenix-editor__takeScreenshot",
             "mcp__phoenix-editor__execJsInLivePreview",
             "mcp__phoenix-editor__execJsInEditor",
@@ -1422,6 +1428,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 tools: ["Read", "Glob", "Grep",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__searchEditorBuffers",
+                    "mcp__phoenix-editor__searchImages",
+                    "mcp__phoenix-editor__previewImages",
                     "mcp__phoenix-editor__takeScreenshot",
                     "mcp__phoenix-editor__execJsInLivePreview",
                     "mcp__phoenix-editor__editorDocs"]
@@ -1433,6 +1441,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     " changes using Edit for existing files and Write" +
                     " only for new files.",
                 tools: ["Read", "Edit", "Write", "Glob", "Grep",
+                    "mcp__phoenix-editor__searchImages",
+                    "mcp__phoenix-editor__previewImages",
+                    "mcp__phoenix-editor__useImage",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__searchEditorBuffers",
                     "mcp__phoenix-editor__takeScreenshot",
@@ -1517,6 +1528,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "\n- execJsInLivePreview: run JS inside the HTML preview iframe to read the DOM, " +
             "query computed styles, click elements, or capture console output. Use it to debug " +
             "behavior and to confirm an edit actually took effect." +
+            "\n- searchImages: find Unsplash photos for a website; includePreview=true returns a small " +
+            "numbered collage so you can choose visually. Reuse returned URLs and call useImage when selecting " +
+            "a photo for a page. Use searches judiciously, at most 100 per hour." +
+            "\n- previewImages: show actual images in the chat from existing URLs (including file:/// local images). " +
+            "Use it when presenting images or a shortlist to the user; no search is needed." +
             "\n- resizeLivePreview: change the preview viewport width to test responsive " +
             "breakpoints." +
             "\n- controlEditor: open files, move the cursor, change selection, toggle the live " +
@@ -2738,6 +2754,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                 requestId: requestId,
                                 toolId: counterId,
                                 isError: !!block.is_error && !isAnsweredByDeny,
+                                imageSearch: ["mcp__phoenix-editor__searchImages", "mcp__phoenix-editor__previewImages",
+                                    "mcp__phoenix-editor__useImage"]
+                                    .includes(resultToolName) ?
+                                    getImageSearchResult(block.content) : undefined,
                                 preview: preview
                             });
                         }

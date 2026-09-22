@@ -1,5 +1,6 @@
 const NodeConnector = require("./node-connector");
 require("./test/test-cli-locator");
+require("./test/test-ai-image-tools");
 
 const TEST_NODE_CONNECTOR_ID = "ph_test_connector";
 const nodeConnector = NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
