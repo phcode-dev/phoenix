@@ -1222,6 +1222,7 @@
     }
 
     .ai-demo-end-signin-btn,
+    .ai-demo-new-btn,
     .ai-demo-another-btn,
     .ai-demo-reveal-btn,
     .ai-demo-copy-btn {
@@ -1234,8 +1235,9 @@
         transition: background 0.15s ease, border-color 0.15s ease;
     }
 
+    /* One primary action, on the right: signing in, or a chat of one's own. */
     .ai-demo-end-signin-btn,
-    .ai-demo-another-btn {
+    .ai-demo-new-btn {
         color: #fff;
         background: #0a6fd0;
         border: 1px solid #0a6fd0;
@@ -1244,10 +1246,13 @@
             background: #1a80e2;
             border-color: #1a80e2;
         }
+
+        i {
+            margin-right: 6px;
+        }
     }
 
-    /* One primary action: signing in, when that is on offer. */
-    &.ai-demo-end-signedout .ai-demo-another-btn,
+    .ai-demo-another-btn,
     .ai-demo-reveal-btn,
     .ai-demo-copy-btn {
         color: @project-panel-text-1;
