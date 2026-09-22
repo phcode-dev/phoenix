@@ -2653,7 +2653,6 @@ define({
     "AI_CHAT_START_DEMO_LINK": "Want a demo? {0}.",
     "AI_CHAT_START_DEMO_LINK_LABEL": "Surprise me",
     "AI_CHAT_SEE_DEMO_DESC": "See a demo",
-    "AI_CHAT_DEMO_NOTICE": "This is a recorded demo, replayed on your computer.",
     "AI_CHAT_DEMO_NOTICE_OFFLINE": "You're offline, so this is a recorded demo.",
     "AI_CHAT_DEMO_BAR_TEXT": "Sign in to build your own with AI.",
     "AI_CHAT_DEMO_BACK_BTN": "Back",
