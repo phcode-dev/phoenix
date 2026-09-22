@@ -42,13 +42,15 @@ define(function (require, exports, module) {
         NativeApp = require("utils/NativeApp"),
         Dialogs = require("widgets/Dialogs"),
         StringUtils         = require("utils/StringUtils"),
+        NodeConnector = require("NodeConnector"),
+        LivePreviewTabs = require("./LivePreviewTabs"),
+        // Keep module imports before text imports: inlined HTML comment markers can hide
+        // later dependencies from RequireJS's scanner in the minified release bundle.
         BootstrapCSSText = require("text!thirdparty/bootstrap/bootstrap.min.css"),
         GithubCSSText = require("text!thirdparty/highlight.js/styles/github.min.css"),
         HilightJSText = require("text!thirdparty/highlight.js/highlight.min.js"),
         GFMCSSText = require("text!thirdparty/gfm.min.css"),
         markdownHTMLTemplate = require("text!./markdown.html"),
-        NodeConnector = require("NodeConnector"),
-        LivePreviewTabs = require("./LivePreviewTabs"),
         redirectionHTMLTemplate = require("text!./redirectPage.html");
 
     const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
