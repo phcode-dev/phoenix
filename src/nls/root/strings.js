@@ -2670,6 +2670,7 @@ define({
     "AI_CHAT_DEMO_SPEED_TITLE": "Playback speed (click to change)",
     "AI_CHAT_START_WORK_WITH": "Work with",
     "AI_CHAT_START_CHAT_DESC": "Built-in chat with visual edits",
+    "AI_CHAT_START_BY_PROVIDER": "By {0}",
     "AI_CHAT_START_CLI_SEPARATOR": "CLI · connects with {APP_NAME}",
     "AI_CHAT_START_SETUP": "Set up",
     "AI_CHAT_START_CLI_FOLDED": "Use a CLI instead: {0}",
