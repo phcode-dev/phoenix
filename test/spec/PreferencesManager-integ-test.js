@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, beforeAll, afterAll, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeEach, beforeAll, afterAll, awaitsFor, awaitsForDone, spyOn */
 
 define(function (require, exports, module) {
 
@@ -83,6 +83,58 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow(testPathBracketsPrefsOnly);
             await _verifySinglePreference(".brackets.json", 6);
         }, 100000);
+
+        it("should keep a newer project's preferences when an older project's load finishes last", async function () {
+            const FileUtils = testWindow.brackets.test.FileUtils;
+            const projectWithoutSettings = SpecRunnerUtils.getTestPath("/spec/WorkingSetView-test-files");
+            const realReadAsText = FileUtils.readAsText;
+            let releaseStaleReads;
+            const staleReadsReleased = new Promise(function (resolve) {
+                releaseStaleReads = resolve;
+            });
+            let heldReads = 0, settledReads = 0;
+            // Hold the settings-free project's preference reads until the next
+            // project has loaded, so its reload finishes last.
+            spyOn(FileUtils, "readAsText").and.callFake(function (file, ...args) {
+                const result = realReadAsText.call(FileUtils, file, ...args);
+                const name = file.fullPath.split("/").pop();
+                if (!file.fullPath.startsWith(projectWithoutSettings + "/") ||
+                    (name !== ".phcode.json" && name !== ".brackets.json")) {
+                    return result;
+                }
+                heldReads++;
+                const held = new testWindow.$.Deferred();
+                staleReadsReleased.then(function () {
+                    result.always(function () {
+                        settledReads++;
+                    }).done(held.resolve).fail(held.reject);
+                });
+                return held.promise();
+            });
+            spyOn(PreferencesManager, "_setProjectSettingsFile").and.callThrough();
+            try {
+                // Start elsewhere, so opening the settings-free project is a real switch.
+                await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+                await SpecRunnerUtils.loadProjectInTestWindow(projectWithoutSettings);
+                await SpecRunnerUtils.loadProjectInTestWindow(testPathBracketsPrefsOnly);
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(".brackets.json"));
+                await awaitsFor(()=>{
+                    return PreferencesManager.get("spaceUnits") === 6;
+                }, "space units to be 6 from the newer project", 10000);
+                expect(heldReads).toBeGreaterThan(0);
+            } finally {
+                releaseStaleReads();
+            }
+            // Every held read settles, and whatever the older reload does next
+            // runs before the next check.
+            await awaitsFor(()=>{
+                return settledReads === heldReads;
+            }, "the older project's reads to finish", 10000);
+
+            const lastSettingsFile = PreferencesManager._setProjectSettingsFile.calls.mostRecent().args[0];
+            expect(lastSettingsFile.startsWith(testPathBracketsPrefsOnly + "/")).toBeTrue();
+            expect(PreferencesManager.get("spaceUnits")).toBe(6);
+        }, 30000);
 
         it("should .phcode.json take precedence over .brackets.json", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testPathBothPrefs);

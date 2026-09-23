@@ -1117,6 +1117,13 @@ define(function (require, exports, module) {
                 bracketsPrefFile = root.fullPath + SETTINGS_FILENAME_BRACKETS;
             const statusPhoenix = await _validateProjectPreferencesFile(phoenixPrefFile);
             const statusBrackets = await _validateProjectPreferencesFile(bracketsPrefFile);
+            // Another project opened while the files were read. Its own reload
+            // applies; finishing this one would point the project preferences
+            // back at the project that was just closed.
+            const currentRoot = getProjectRoot();
+            if (!currentRoot || currentRoot.fullPath !== root.fullPath) {
+                return;
+            }
             let prefFileToUse = phoenixPrefFile;
             if(statusPhoenix === PREF_NO_FILE && statusBrackets !== PREF_NO_FILE) {
                 prefFileToUse = bracketsPrefFile;
