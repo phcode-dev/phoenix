@@ -691,7 +691,7 @@ define(function (require, exports, module) {
                 expect(testWindow.$(".terminal-project-banner").is(":visible")).toBeTrue();
                 expect(testWindow.$(".terminal-project-path").text())
                     .toBe(StringUtils.format(Strings.TERMINAL_PROJECT_RESTART_PATH, getNativeProjectPath()));
-                testWindow.$(".terminal-project-keep").click();
+                testWindow.$(".terminal-project-dismiss").click();
 
                 const panel = WorkspaceManager.getPanelForID(PANEL_ID);
                 panel.hide();
