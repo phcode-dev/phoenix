@@ -193,13 +193,18 @@ async function locateWindowsStandaloneCodex() {
  * @param {{systemVersion: ?string, bundledVersion: ?string, override: ?string}} params
  * @return {Promise<Object>} The located result
  */
-async function locateWithBundled({systemVersion, bundledVersion, override}) {
-    const root = "/phoenix/src-node";
-    const systemPath = "/home/test/.local/bin/claude";
-    const bundledPath = root + "/node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude";
-    const versions = {};
-    if (systemVersion) { versions[systemPath] = systemVersion; }
-    if (bundledVersion) { versions[bundledPath] = bundledVersion; }
+const BUNDLED_ROOT = "/phoenix/src-node";
+const SYSTEM_CLAUDE = "/home/test/.local/bin/claude";
+const BUNDLED_CLAUDE = BUNDLED_ROOT + "/node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude";
+
+/**
+ * A Linux locator whose only executables are the paths in `versions`, each
+ * answering `--version` through a harmless bundled-Node child. The map is
+ * read live, so a test can remove a binary between lookups.
+ * @param {Object} versions - path -> version string
+ * @return {Object} Locator exports, with the bundled root set
+ */
+function _bundledLocator(versions) {
     const locator = _loadLocator("linux", { HOME: "/home/test", PATH: "/usr/bin" }, function (command) {
         const version = versions[command];
         return childProcess.spawn(process.execPath, ["-e", version
@@ -214,11 +219,35 @@ async function locateWithBundled({systemVersion, bundledVersion, override}) {
         }),
         execSync: function () { throw new Error("not on PATH"); }
     });
-    locator.setBundledRoot(root);
+    locator.setBundledRoot(BUNDLED_ROOT);
+    return locator;
+}
+
+async function locateWithBundled({systemVersion, bundledVersion, override}) {
+    const versions = {};
+    if (systemVersion) { versions[SYSTEM_CLAUDE] = systemVersion; }
+    if (bundledVersion) { versions[BUNDLED_CLAUDE] = bundledVersion; }
+    const locator = _bundledLocator(versions);
     if (override) {
         locator.setOverrides({ claude: override });
     }
     return locator.locateCli("claude");
+}
+
+/**
+ * Locate claude, remove the system copy as an updater might, and locate
+ * again without forcing: the cached path has to be noticed as gone.
+ * @return {Promise<{before: Object, after: Object}>} both lookups
+ */
+async function relocateAfterRemoval() {
+    const versions = {};
+    versions[SYSTEM_CLAUDE] = "2.2.0";
+    versions[BUNDLED_CLAUDE] = "2.1.141";
+    const locator = _bundledLocator(versions);
+    const before = await locator.locateCli("claude");
+    delete versions[SYSTEM_CLAUDE];
+    const after = await locator.locateCli("claude");
+    return { before, after };
 }
 
 /**
@@ -245,6 +274,7 @@ exports.getSpawnProfile = getSpawnProfile;
 exports.locateWindowsStandaloneCodex = locateWindowsStandaloneCodex;
 exports.findDownloaders = findDownloaders;
 exports.locateWithBundled = locateWithBundled;
+exports.relocateAfterRemoval = relocateAfterRemoval;
 exports.probeWindowsShim = probeWindowsShim;
 exports.runNpmFixture = runNpmFixture;
 exports.runStandaloneFixture = runStandaloneFixture;

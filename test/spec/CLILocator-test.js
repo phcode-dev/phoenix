@@ -127,6 +127,12 @@ define(function (require, exports, module) {
             expect(configured.path).toBe("/home/test/.local/bin/claude");
         }, 20000);
 
+        it("should notice a cached Claude Code has gone, and fall back to the bundled one", async function () {
+            const result = await nodeConnector.execPeer("relocateAfterRemoval");
+            expect(result.before.source).withContext(JSON.stringify(result.before)).toBe("native");
+            expect(result.after.source).withContext(JSON.stringify(result.after)).toBe("bundled");
+        }, 15000);
+
         it("should pick curl, fall back to wget, and report when neither is installed", async function () {
             const result = await nodeConnector.execPeer("findDownloaders", {
                 installed: [["curl", "wget"], ["wget"], []]
