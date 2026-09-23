@@ -887,6 +887,81 @@
         }
     }
 
+    /* Claude Code before it is signed in: Set up where the check mark was. */
+    .ai-start-chat-setup-btn {
+        display: none;
+        flex: 0 0 auto;
+        align-items: center;
+        height: 26px;
+        padding: 0 12px;
+        border-radius: 6px;
+        font-size: @ai-text-secondary;
+        font-weight: 600;
+        color: #fff;
+        background: #0a6fd0;
+        border: 1px solid #0a6fd0;
+        transition: background 0.15s ease, border-color 0.15s ease;
+
+        &:hover {
+            background: #1a80e2;
+            border-color: #1a80e2;
+        }
+    }
+
+    &.ai-start-chat-setup .ai-start-row[data-mode="chat"] {
+        .ai-start-check {
+            display: none;
+        }
+
+        .ai-start-chat-setup-btn {
+            display: inline-flex;
+        }
+    }
+
+    /* No CLI installed: the CLI rows fold into one quiet line until asked for. */
+    .ai-start-cli-toggle {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin: 6px 0 4px;
+        padding: 6px 2px;
+        background: none;
+        border: 0;
+        text-align: left;
+        font-size: @ai-text-secondary;
+        color: fade(@project-panel-text-2, 80%);
+        cursor: pointer;
+
+        &:hover {
+            color: @project-panel-text-1;
+        }
+
+        i {
+            width: 10px;
+            font-size: 10px;
+            transition: transform 0.15s ease;
+        }
+    }
+
+    &.ai-start-cli-foldable {
+        .ai-start-cli-toggle {
+            display: flex;
+        }
+
+        .ai-start-separator {
+            display: none;
+        }
+    }
+
+    &.ai-start-cli-folded .ai-start-row[data-cli] {
+        display: none;
+    }
+
+    &.ai-start-cli-foldable:not(.ai-start-cli-folded) .ai-start-cli-toggle i {
+        transform: rotate(90deg);
+    }
+
     /* Compact layout, for people who are not new here: the modes lead and
        the Surprise Me demo is a footer link instead of a hero card. */
     .ai-start-footer.ai-start-demo {
