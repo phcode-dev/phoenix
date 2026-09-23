@@ -48,8 +48,9 @@ const VERSION_PROBE_TIMEOUT_MS = 3000;
 
 // Negative results expire so a fresh install completed during a session is
 // detected on the next lookup (the install-poll flow depends on this).
-// Positive results are cached indefinitely — the self-heal in
-// checkAvailability handles the mid-session-uninstall case by forcing.
+// Positive results are kept for as long as the binary is still there (see
+// _cacheHit): an updater that moves the install, or an uninstall, must be
+// noticed by the next lookup, or a prompt goes to a path that is gone.
 const NULL_CACHE_TTL_MS = 15000;
 
 // Characters that must never reach a user-supplied override path. Windows
@@ -586,6 +587,11 @@ function setBundledRoot(dir) {
 function _cacheHit(cliId, overrideSig) {
     const entry = _cache.get(cliId);
     if (!entry || entry.overrideSig !== overrideSig) {
+        return null;
+    }
+    if (entry.path !== null && !canAccess(entry.path)) {
+        console.log("[Phoenix AI] " + cliId + " CLI is no longer at", entry.path);
+        _cache.delete(cliId);
         return null;
     }
     const fresh = entry.path !== null || (Date.now() - entry.at) < NULL_CACHE_TTL_MS;
