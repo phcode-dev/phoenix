@@ -412,19 +412,22 @@ define(function (require, exports, module) {
         $banner.append($('<div class="terminal-project-path"></div>')
             .text(StringUtils.format(Strings.TERMINAL_PROJECT_RESTART_PATH, path)).attr("title", path));
         const $actions = $('<div class="terminal-project-actions"></div>');
-        $actions.append($('<button class="btn terminal-project-keep"></button>')
-            .text(Strings.TERMINAL_PROJECT_KEEP).on("click", function () {
+        $actions.append($('<button class="btn btn-primary terminal-project-restart"></button>')
+            .text(Strings.TERMINAL_PROJECT_RESTART).attr("title", Strings.TERMINAL_PROJECT_RESTART_WARNING)
+            .on("click", _restartTerminalsInProject));
+        $banner.append($actions);
+        const $dismiss = $('<button type="button" class="terminal-project-dismiss"></button>')
+            .attr({title: Strings.TERMINAL_PROJECT_DISMISS, "aria-label": Strings.TERMINAL_PROJECT_DISMISS})
+            .append('<span aria-hidden="true">&times;</span>')
+            .on("click", function () {
                 _hideProjectBanner();
                 const active = _getActiveTerminal();
                 if (active) {
                     active.focus();
                 }
-            }));
-        $actions.append($('<button class="btn btn-primary terminal-project-restart"></button>')
-            .text(Strings.TERMINAL_PROJECT_RESTART).attr("title", Strings.TERMINAL_PROJECT_RESTART_WARNING)
-            .on("click", _restartTerminalsInProject));
-        $actions.find("button").prop("disabled", _restartingTerminals);
-        $banner.append($actions);
+            });
+        $banner.append($dismiss);
+        $banner.find("button").prop("disabled", _restartingTerminals);
         $contentArea.append($banner);
     }
 
@@ -459,7 +462,7 @@ define(function (require, exports, module) {
         }
         const path = root.fullPath;
         _restartingTerminals = true;
-        $contentArea.find(".terminal-project-actions button").prop("disabled", true);
+        $contentArea.find(".terminal-project-banner button").prop("disabled", true);
         try {
             const activeProcesses = await _getActiveProcesses();
             if (activeProcesses.length) {
@@ -500,7 +503,7 @@ define(function (require, exports, module) {
             _showProjectBanner();
         } finally {
             _restartingTerminals = false;
-            $contentArea.find(".terminal-project-actions button").prop("disabled", false);
+            $contentArea.find(".terminal-project-banner button").prop("disabled", false);
         }
     }
 
