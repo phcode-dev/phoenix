@@ -106,6 +106,27 @@ define(function (require, exports, module) {
             expect(result.located.source).toBe("native");
         });
 
+        it("should use the bundled Claude Code when the system has none, or an older one", async function () {
+            const newer = await nodeConnector.execPeer("locateWithBundled",
+                { systemVersion: "2.2.0", bundledVersion: "2.1.141" });
+            expect(newer.path).withContext(JSON.stringify(newer)).toBe("/home/test/.local/bin/claude");
+            expect(newer.source).toBe("native");
+            const older = await nodeConnector.execPeer("locateWithBundled",
+                { systemVersion: "2.0.9", bundledVersion: "2.1.141" });
+            expect(older.source).withContext(JSON.stringify(older)).toBe("bundled");
+            expect(older.path).toContain("claude-agent-sdk-linux-x64");
+            expect(older.version).toContain("2.1.141");
+            const none = await nodeConnector.execPeer("locateWithBundled", { bundledVersion: "2.1.141" });
+            expect(none.source).withContext(JSON.stringify(none)).toBe("bundled");
+            const nothing = await nodeConnector.execPeer("locateWithBundled", {});
+            expect(nothing.path).toBeNull();
+            // A configured path is never second-guessed, older or not.
+            const configured = await nodeConnector.execPeer("locateWithBundled",
+                { systemVersion: "2.0.9", bundledVersion: "2.1.141", override: "/home/test/.local/bin/claude" });
+            expect(configured.source).withContext(JSON.stringify(configured)).toBe("override");
+            expect(configured.path).toBe("/home/test/.local/bin/claude");
+        }, 20000);
+
         it("should pick curl, fall back to wget, and report when neither is installed", async function () {
             const result = await nodeConnector.execPeer("findDownloaders", {
                 installed: [["curl", "wget"], ["wget"], []]

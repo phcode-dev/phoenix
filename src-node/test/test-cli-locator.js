@@ -187,6 +187,41 @@ async function locateWindowsStandaloneCodex() {
 }
 
 /**
+ * Locate claude with a simulated system install and bundled copy, so the
+ * choice between them is checked without either being installed. Version
+ * probes answer through a harmless bundled-Node child.
+ * @param {{systemVersion: ?string, bundledVersion: ?string, override: ?string}} params
+ * @return {Promise<Object>} The located result
+ */
+async function locateWithBundled({systemVersion, bundledVersion, override}) {
+    const root = "/phoenix/src-node";
+    const systemPath = "/home/test/.local/bin/claude";
+    const bundledPath = root + "/node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude";
+    const versions = {};
+    if (systemVersion) { versions[systemPath] = systemVersion; }
+    if (bundledVersion) { versions[bundledPath] = bundledVersion; }
+    const locator = _loadLocator("linux", { HOME: "/home/test", PATH: "/usr/bin" }, function (command) {
+        const version = versions[command];
+        return childProcess.spawn(process.execPath, ["-e", version
+            ? "console.log(" + JSON.stringify(version + " (Claude Code)") + ")"
+            : "process.exit(1)"]);
+    }, {
+        fs: Object.assign({}, fs, {
+            accessSync: function (candidate) {
+                if (!versions[candidate]) { throw new Error("ENOENT"); }
+            },
+            existsSync: function (candidate) { return !!versions[candidate]; }
+        }),
+        execSync: function () { throw new Error("not on PATH"); }
+    });
+    locator.setBundledRoot(root);
+    if (override) {
+        locator.setOverrides({ claude: override });
+    }
+    return locator.locateCli("claude");
+}
+
+/**
  * Report the downloader chosen for each simulated set of installed tools.
  * @param {{installed: Array<Array<string>>}} params - Tool names on PATH, one list per scenario
  * @return {Promise<Array<?string>>} Chosen downloader per scenario
@@ -209,6 +244,7 @@ async function findDownloaders({installed}) {
 exports.getSpawnProfile = getSpawnProfile;
 exports.locateWindowsStandaloneCodex = locateWindowsStandaloneCodex;
 exports.findDownloaders = findDownloaders;
+exports.locateWithBundled = locateWithBundled;
 exports.probeWindowsShim = probeWindowsShim;
 exports.runNpmFixture = runNpmFixture;
 exports.runStandaloneFixture = runStandaloneFixture;
