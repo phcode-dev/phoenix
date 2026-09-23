@@ -2682,6 +2682,8 @@ define({
     "AI_CHAT_SURPRISE_ME_LP_HEADING_3": "Almost there…",
     "AI_CHAT_NEW_SESSION_TITLE": "Start a new conversation",
     "AI_CHAT_NEW_BTN": "New",
+    "AI_CHAT_CLI_BACK_BTN": "Back",
+    "AI_CHAT_CLI_BACK_TITLE": "Back to {0}",
     "AI_CHAT_THINKING": "Thinking...",
     "AI_CHAT_WAITING_FOR_MODEL": "Waiting for the model...",
     "AI_CHAT_SCROLL_TO_BOTTOM": "Scroll to bottom",

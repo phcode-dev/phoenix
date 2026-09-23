@@ -142,6 +142,40 @@
         transition: opacity 0.5s ease;
     }
 
+    /* CLI modes: the way back to the chat. Hover-revealed like
+       .ai-chat-header-actions, and shown while it has keyboard focus. */
+    .ai-cli-back-btn {
+        display: none;
+        position: absolute;
+        left: 8px;
+        align-items: center;
+        gap: 5px;
+        height: 26px;
+        margin: 0;
+        padding: 0 8px 0 6px;
+        background: transparent;
+        color: @project-panel-text-2;
+        font-family: inherit;
+        font-size: @menu-item-font-size;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+
+        i {
+            font-size: 11px;
+        }
+
+        &:focus-visible {
+            outline: none;
+            border-color: fade(@ai-start-accent, 60%);
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.15s ease;
+        }
+    }
+
     /* Model switcher — hover-revealed like .ai-chat-header-actions
        (Claude Code CLI doesn't persistently show the model either). */
     .ai-model-select {
@@ -203,6 +237,10 @@
     .ai-model-select,
     .ai-history-btn {
         display: none;
+    }
+
+    .ai-cli-back-btn {
+        display: flex;
     }
 }
 
@@ -406,6 +444,7 @@
 }
 
 .ai-tab-container:hover .ai-model-select,
+.ai-tab-container:hover .ai-cli-back-btn,
 .ai-tab-container .ai-model-select.dropdown-open {
     opacity: 1;
     pointer-events: auto;
@@ -422,6 +461,23 @@
             position: static;
             margin-right: 8px;
             padding-left: 0;
+        }
+
+        .ai-cli-back-btn {
+            position: static;
+            flex: none;
+            margin-right: 4px;
+        }
+    }
+}
+
+/* Narrower still: Back keeps only its arrow, so the title keeps its room. */
+@container (max-width: 320px) {
+    .ai-chat-header .ai-cli-back-btn {
+        padding: 0 6px;
+
+        .ai-cli-back-text {
+            display: none;
         }
     }
 }
