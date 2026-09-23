@@ -39,6 +39,20 @@ define(function (require, exports, module) {
 
     let _nextId = 0;
 
+    /**
+     * Open a link clicked in a terminal in the default browser. Web addresses
+     * only: a program can write any URL, and a javascript: one must not run.
+     * @param {string} uri
+     */
+    function _openLink(uri) {
+        if (!/^https?:\/\//i.test(uri)) {
+            return;
+        }
+        Phoenix.app.openURLInDefaultBrowser(uri).catch(function (err) {
+            console.error("Terminal: could not open link:", uri, err);
+        });
+    }
+
 
     /**
      * Read terminal theme colors from CSS variables.
@@ -142,7 +156,16 @@ define(function (require, exports, module) {
             scrollback: 10000,
             // Match Phoenix's scrollbar width and keep FitAddon's column calculation in sync.
             scrollbar: { width: 12 },
-            allowProposedApi: true
+            allowProposedApi: true,
+            // Hyperlinks a program marks up (OSC 8, as `claude auth login`
+            // does with its sign-in URL). Without a handler xterm falls back
+            // to a confirm() and window.open(), which Electron shows as a
+            // dialog and a new app window.
+            linkHandler: {
+                activate: function (_event, uri) {
+                    _openLink(uri);
+                }
+            }
         });
 
         // Load addons
@@ -150,8 +173,9 @@ define(function (require, exports, module) {
         this.searchAddon = new SearchAddon();
 
         this.terminal.loadAddon(this.fitAddon);
+        // Plain URLs in the output, found by pattern.
         this.terminal.loadAddon(new WebLinksAddon(function (_event, uri) {
-            Phoenix.app.openURLInDefaultBrowser(uri);
+            _openLink(uri);
         }));
         this.terminal.loadAddon(this.searchAddon);
 
