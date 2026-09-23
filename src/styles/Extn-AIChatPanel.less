@@ -885,6 +885,31 @@
         .ai-start-setup {
             display: inline;
         }
+
+        .ai-start-go {
+            display: none;
+        }
+    }
+
+    /* The CLI tools, side by side; they stack when the panel is narrow. */
+    .ai-start-cli-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 8px;
+        margin-bottom: 6px;
+
+        .ai-start-row {
+            gap: 10px;
+            min-width: 0;
+            margin-bottom: 0;
+            padding: 9px 10px;
+        }
+
+        .ai-start-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
 
     /* Claude Code before it is signed in: Set up where the check mark was. */
@@ -954,7 +979,7 @@
         }
     }
 
-    &.ai-start-cli-folded .ai-start-row[data-cli] {
+    &.ai-start-cli-folded .ai-start-cli-grid {
         display: none;
     }
 
@@ -1040,6 +1065,21 @@
 
     .ai-start-check {
         color: @ai-start-accent;
+    }
+
+    /* Installed CLI: an arrow that steps forward on hover. */
+    .ai-start-go {
+        font-size: 11px;
+        color: @project-panel-text-2;
+        opacity: 0.55;
+        transition: transform 0.15s ease, opacity 0.15s ease, color 0.15s ease;
+    }
+
+    .ai-start-row:hover .ai-start-go,
+    .ai-start-row:focus-visible .ai-start-go {
+        color: @ai-start-accent;
+        opacity: 1;
+        transform: translateX(2px);
     }
 
     .ai-start-setup {
