@@ -160,6 +160,15 @@ const CLI_REGISTRY = {
 
 const CLI_IDS = Object.keys(CLI_REGISTRY);
 
+// The Claude Code the Claude Agent SDK ships with, in a package for this OS
+// and CPU beside the SDK. It pairs with the SDK version Phoenix was built
+// against, and is what runs when the system has no Claude Code, or one older
+// than it. A configured path still wins outright.
+const BUNDLED_CLAUDE_SCOPE = "@anthropic-ai";
+const BUNDLED_CLAUDE_PACKAGE = "claude-agent-sdk";
+let _bundledRoot = (typeof __dirname === "string") ? __dirname : null;
+let _bundledClaude = null;      // Promise<?{path, version}>: looked up once per process
+
 // cliId -> { path, at, overrideSig, source, version, errorCode, override, searched }
 const _cache = new Map();
 // cliId -> in-flight discovery promise, so concurrent callers share one walk
@@ -492,6 +501,88 @@ function setOverrides(paths) {
     return applied;
 }
 
+/** Whether this Linux runs on musl (Alpine), where the SDK's glibc build cannot load. */
+function _isMusl() {
+    if (process.platform !== "linux") { return false; }
+    const report = (process.report && typeof process.report.getReport === "function")
+        ? process.report.getReport() : null;
+    return !!report && !!report.header && report.header.glibcVersionRuntime === undefined;
+}
+
+/**
+ * Where the SDK's platform package puts Claude Code, likeliest first. The
+ * SDK resolves it the same way.
+ * @return {Array<string>}
+ */
+function _bundledClaudeCandidates() {
+    if (!_bundledRoot) { return []; }
+    const platform = process.platform;
+    const prefix = BUNDLED_CLAUDE_PACKAGE + "-" + platform + "-" + (process.arch || "x64");
+    let packages = [prefix];
+    if (platform === "linux") {
+        packages = _isMusl() ? [prefix + "-musl", prefix] : [prefix, prefix + "-musl"];
+    }
+    const bin = platform === "win32" ? "claude.exe" : "claude";
+    return packages.map(function (pkg) {
+        return path.join(_bundledRoot, "node_modules", BUNDLED_CLAUDE_SCOPE, pkg, bin);
+    });
+}
+
+/**
+ * The bundled Claude Code, proved by `--version`. Looked up once: it does
+ * not change while Phoenix runs.
+ * @return {Promise<?{path: string, version: string}>}
+ */
+function _locateBundledClaude() {
+    if (!_bundledClaude) {
+        _bundledClaude = (async function () {
+            const cli = CLI_REGISTRY.claude;
+            for (const p of _bundledClaudeCandidates()) {
+                if (!canAccess(p)) { continue; }
+                const probe = await _probeVersion(cli, p);
+                if (probe.ok) {
+                    console.log("[Phoenix AI] Bundled claude CLI at:", p, probe.version);
+                    return { path: p, version: probe.version };
+                }
+                console.log("[Phoenix AI] Bundled claude CLI unusable:", p, probe.errorCode);
+            }
+            return null;
+        }());
+    }
+    return _bundledClaude;
+}
+
+/**
+ * Compare two versions part by part: "2.1.141 (Claude Code)" reads as
+ * 2.1.141, and a missing part counts as 0.
+ * @return {number} negative when `a` is older than `b`, positive when newer, 0 when the same
+ */
+function compareVersions(a, b) {
+    const parse = function (v) {
+        const match = /\d+(?:\.\d+)*/.exec(String(v || ""));
+        return match ? match[0].split(".").map(Number) : [];
+    };
+    const pa = parse(a);
+    const pb = parse(b);
+    const count = Math.max(pa.length, pb.length);
+    for (let i = 0; i < count; i++) {
+        const diff = (pa[i] || 0) - (pb[i] || 0);
+        if (diff) { return diff; }
+    }
+    return 0;
+}
+
+/**
+ * Where the bundled Claude Code is looked for. Set by tests; the default is
+ * this module's own directory, which is where the SDK is installed.
+ * @param {?string} dir
+ */
+function setBundledRoot(dir) {
+    _bundledRoot = dir || null;
+    _bundledClaude = null;
+    _cache.delete("claude");
+}
+
 function _cacheHit(cliId, overrideSig) {
     const entry = _cache.get(cliId);
     if (!entry || entry.overrideSig !== overrideSig) {
@@ -569,28 +660,54 @@ function locateCli(cliId, opts) {
 
         const { native, fallback } = _candidates(cli);
         entry.searched = [...native, ...fallback];
+        // Only claude ships with Phoenix. With a bundled copy to weigh a
+        // system install against, the system install's version has to be
+        // known, so the native tier is probed too.
+        const bundled = cliId === "claude" ? await _locateBundledClaude() : null;
+        if (bundled) {
+            entry.searched.push(bundled.path);
+        }
+        let found = null;   // {path, source, version}
         for (const p of native) {
-            if (canAccess(p)) {
-                console.log("[Phoenix AI] Found native " + cli.bin + " CLI at:", p);
-                entry.path = p;
-                entry.source = "native";
-                entry.at = Date.now();
-                _cache.set(cliId, entry);
-                return _toResult(cliId, entry);
+            if (!canAccess(p)) { continue; }
+            let version = null;
+            if (bundled) {
+                const probe = await _probeVersion(cli, p);
+                if (!probe.ok) {
+                    console.log("[Phoenix AI] Native " + cli.bin + " CLI unusable:", p, probe.errorCode);
+                    continue;
+                }
+                version = probe.version;
+            }
+            console.log("[Phoenix AI] Found native " + cli.bin + " CLI at:", p);
+            found = { path: p, source: "native", version: version };
+            break;
+        }
+        if (!found) {
+            for (const p of fallback) {
+                if (!canAccess(p)) { continue; }
+                const probe = await _probeVersion(cli, p);
+                if (probe.ok) {
+                    console.log("[Phoenix AI] Validated " + cli.bin + " CLI at:", p);
+                    found = { path: p, source: "fallback", version: probe.version };
+                    break;
+                }
             }
         }
-        for (const p of fallback) {
-            if (!canAccess(p)) { continue; }
-            const probe = await _probeVersion(cli, p);
-            if (probe.ok) {
-                console.log("[Phoenix AI] Validated " + cli.bin + " CLI at:", p);
-                entry.path = p;
-                entry.source = "fallback";
-                entry.version = probe.version;
-                entry.at = Date.now();
-                _cache.set(cliId, entry);
-                return _toResult(cliId, entry);
-            }
+        if (bundled && (!found || compareVersions(found.version, bundled.version) < 0)) {
+            console.log(found
+                ? "[Phoenix AI] System claude " + found.version + " is older than the bundled " +
+                    bundled.version + "; using the bundled one"
+                : "[Phoenix AI] No system claude; using the bundled " + bundled.version);
+            found = { path: bundled.path, source: "bundled", version: bundled.version };
+        }
+        if (found) {
+            entry.path = found.path;
+            entry.source = found.source;
+            entry.version = found.version;
+            entry.at = Date.now();
+            _cache.set(cliId, entry);
+            return _toResult(cliId, entry);
         }
         console.log("[Phoenix AI] Global " + cli.bin + " CLI not found");
         entry.errorCode = ERROR_CODES.NOT_FOUND;
@@ -680,5 +797,7 @@ exports.locateCli = locateCli;
 exports.validateCliPath = validateCliPath;
 exports.findDownloader = findDownloader;
 exports.getSpawnProfile = getSpawnProfile;
+exports.compareVersions = compareVersions;
+exports.setBundledRoot = setBundledRoot;
 exports.setOverrides = setOverrides;
 exports.getOverride = getOverride;
