@@ -142,12 +142,22 @@
         transition: opacity 0.5s ease;
     }
 
-    /* CLI modes: the way back to the chat. Hover-revealed like
-       .ai-chat-header-actions, and shown while it has keyboard focus. */
-    .ai-cli-back-btn {
-        display: none;
+    /* Left of the title: Back, then the model switcher. The group holds
+       the corner, so the switcher moves over while Back is there. */
+    .ai-chat-header-left {
         position: absolute;
-        left: 8px;
+        left: 10px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /* The way home: in the CLI modes, and in the chat once it has started.
+       Hover-revealed like .ai-chat-header-actions, and shown while it has
+       keyboard focus. */
+    .ai-back-btn {
+        display: none;
+        flex: none;
         align-items: center;
         gap: 5px;
         height: 26px;
@@ -179,8 +189,6 @@
     /* Model switcher — hover-revealed like .ai-chat-header-actions
        (Claude Code CLI doesn't persistently show the model either). */
     .ai-model-select {
-        position: absolute;
-        left: 10px;
         display: flex;
         align-items: center;
         gap: 5px;
@@ -239,8 +247,30 @@
         display: none;
     }
 
-    .ai-cli-back-btn {
+    .ai-back-btn {
         display: flex;
+    }
+}
+
+.ai-chat-panel.ai-chat-started:not(.ai-mode-cli):not(.ai-home) .ai-back-btn {
+    display: flex;
+}
+
+/* Home: the start screen laid over a chat that has started. The chat keeps
+   running underneath, its messages and input out of sight until it is
+   picked again. */
+.ai-chat-panel.ai-home {
+    .ai-model-select {
+        display: none;
+    }
+
+    // The chat shows and hides these inline as it streams, so only
+    // !important keeps them out of home.
+    .ai-chat-input-area,
+    .ai-chat-status,
+    .ai-chat-quota-bar,
+    .ai-scroll-to-bottom-btn {
+        display: none !important;
     }
 }
 
@@ -444,7 +474,7 @@
 }
 
 .ai-tab-container:hover .ai-model-select,
-.ai-tab-container:hover .ai-cli-back-btn,
+.ai-tab-container:hover .ai-back-btn,
 .ai-tab-container .ai-model-select.dropdown-open {
     opacity: 1;
     pointer-events: auto;
@@ -457,26 +487,33 @@
     .ai-chat-header {
         justify-content: flex-start;
 
-        .ai-model-select {
-            position: static;
-            margin-right: 8px;
-            padding-left: 0;
-        }
-
-        .ai-cli-back-btn {
+        .ai-chat-header-left {
             position: static;
             flex: none;
-            margin-right: 4px;
+            margin-right: 8px;
+        }
+
+        .ai-model-select {
+            padding-left: 0;
+        }
+    }
+
+    /* The chat's header is the busier one: Back keeps only its arrow. */
+    .ai-chat-panel:not(.ai-mode-cli) .ai-back-btn {
+        padding: 0 6px;
+
+        .ai-back-text {
+            display: none;
         }
     }
 }
 
-/* Narrower still: Back keeps only its arrow, so the title keeps its room. */
+/* Narrower still: in a CLI too, Back keeps only its arrow. */
 @container (max-width: 320px) {
-    .ai-chat-header .ai-cli-back-btn {
+    .ai-chat-header .ai-back-btn {
         padding: 0 6px;
 
-        .ai-cli-back-text {
+        .ai-back-text {
             display: none;
         }
     }
@@ -740,6 +777,9 @@
 /* Sits where .ai-chat-messages would. When visible it claims the same flex
    slot — when hidden the chat takes that slot back. */
 @ai-start-accent:        #6b9eff;
+// A live session's dot: green, half-way to the secondary text grey, so it
+// is there when looked for without calling out.
+@ai-start-running:       #73b482;
 @ai-start-card-bg:       rgba(255, 255, 255, 0.04);
 @ai-start-card-bg-hover: rgba(255, 255, 255, 0.07);
 @ai-start-border:        rgba(255, 255, 255, 0.12);
@@ -947,6 +987,96 @@
         }
     }
 
+    /* A live session, to go back to: a green dot on its icon, where people
+       expect presence. Its status is said on hover or focus, and always to
+       screen readers. */
+    .ai-start-running {
+        display: none;
+        align-items: center;
+
+        &::before {
+            content: "·";
+            margin: 0 5px;
+            opacity: 0.7;
+        }
+    }
+
+    .ai-start-row-running,
+    &.ai-start-chat-running .ai-start-row[data-mode="chat"] {
+        .ai-start-icon::after {
+            content: "";
+            position: absolute;
+            right: -1px;
+            bottom: -1px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: @ai-start-running;
+            // A ring in the card's own colour keeps the dot crisp on the icon.
+            box-shadow: 0 0 0 2px mix(#fff, @bc-ai-sidebar-bg, 4%);
+            transition: box-shadow 0.15s ease;
+        }
+
+        &:hover .ai-start-icon::after {
+            box-shadow: 0 0 0 2px mix(#fff, @bc-ai-sidebar-bg, 7%);
+        }
+
+        .ai-start-running {
+            display: inline-flex;
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
+        &:hover .ai-start-running,
+        &:focus-visible .ai-start-running {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+        }
+    }
+
+    /* Home over a chat that has started: the chat's card leads back to it,
+       with the same arrow as the CLIs. The Surprise Me demo would play into
+       that chat, so it is not offered. */
+    .ai-start-row[data-mode="chat"] .ai-start-go {
+        display: none;
+    }
+
+    &.ai-start-chat-running {
+        // The compact layout shows these with more specific rules.
+        .ai-start-surprise,
+        .ai-start-footer.ai-start-demo {
+            display: none !important;
+        }
+
+        .ai-start-row[data-mode="chat"] {
+            .ai-start-check {
+                display: none;
+            }
+
+            .ai-start-go {
+                display: inline-block;
+            }
+
+            // Its card is tinted blue, and so is the dot's ring.
+            .ai-start-icon::after {
+                box-shadow: 0 0 0 2px mix(@ai-start-accent, @bc-ai-sidebar-bg, 12%);
+            }
+
+            &:hover .ai-start-icon::after {
+                box-shadow: 0 0 0 2px mix(@ai-start-accent, @bc-ai-sidebar-bg, 16%);
+            }
+        }
+    }
+
     /* The CLI tools, side by side; they stack when the panel is narrow. */
     .ai-start-cli-grid {
         display: grid;
@@ -961,7 +1091,9 @@
             padding: 9px 10px;
         }
 
-        .ai-start-name {
+        // A status shown on hover must not make a card taller.
+        .ai-start-name,
+        .ai-start-desc {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -1076,12 +1208,8 @@
         }
     }
 
-    /* Dimmed while its label is in flight to the header. */
-    .ai-start-row-leaving {
-        opacity: 0.25;
-    }
-
     .ai-start-icon {
+        position: relative;
         flex: 0 0 28px;
         height: 28px;
         border-radius: 6px;
@@ -1123,7 +1251,7 @@
         color: @ai-start-accent;
     }
 
-    /* Installed CLI: an arrow that steps forward on hover. */
+    /* Installed CLI, or the chat under home: an arrow that steps forward on hover. */
     .ai-start-go {
         font-size: 11px;
         color: @project-panel-text-2;
@@ -1496,6 +1624,7 @@
         }
     }
 
+    .ai-back-btn,
     .ai-model-select,
     .ai-chat-header-actions {
         visibility: hidden;
@@ -1553,8 +1682,8 @@
     }
 }
 
-/* A picked row's label in flight to the header title. Top level: it is
-   appended to <body> so it can cross out of the panel. */
+/* Surprise Me's label in flight to the footer link that takes its place.
+   Top level: it is appended to <body>. */
 .ai-start-fly {
     position: fixed;
     z-index: 2000;
@@ -1606,32 +1735,9 @@
     }
 }
 
-/* Where a picked mode landed. One ring normally; two while the user has yet
-   to discover that the title is a dropdown. */
-@keyframes ai-title-pulse {
-    0% {
-        box-shadow: 0 0 0 0 fade(@ai-start-accent, 65%);
-        background: fade(@ai-start-accent, 28%);
-    }
-    100% {
-        box-shadow: 0 0 0 12px fade(@ai-start-accent, 0%);
-        background: fade(@ai-start-accent, 0%);
-    }
-}
-
-.ai-chat-header .ai-chat-title-group {
-    &.ai-pulse {
-        animation: ai-title-pulse 600ms ease-out 1;
-    }
-
-    &.ai-pulse-double {
-        animation: ai-title-pulse 700ms ease-out 2;
-    }
-}
-
-/* The same ring around the chat input, for the built-in chat. Shadow only:
-   the input keeps its own background, and the ring is narrower because the
-   panel edge is close by. */
+/* Where the built-in chat picked on the start screen is typed into. Shadow
+   only: the input keeps its own background, and the ring stays narrow
+   because the panel edge is close by. */
 @keyframes ai-input-pulse {
     0% {
         box-shadow: 0 0 0 0 fade(@ai-start-accent, 65%);
