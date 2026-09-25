@@ -2895,5 +2895,19 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Чтобы скопировать остальное, выберите {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Не удалось подключиться к старому сайту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не удалось подключиться к {0} для поиска ваших проектов и настроек, поэтому ничего не было изменено. Проверьте подключение к Интернету, затем повторите попытку с помощью {1}.",
-  "CMD_MIGRATE_DATA": "Перенести мои данные из {0}…"
+  "CMD_MIGRATE_DATA": "Перенести мои данные из {0}…",
+  "TERMINAL_PROJECT_CHANGED": "Проект переключен на {0}",
+  "TERMINAL_PROJECT_RESTART_PATH": "Перезапустить все терминалы в {0}",
+  "TERMINAL_PROJECT_DISMISS": "Отклонить — оставить терминалы запущенными",
+  "TERMINAL_PROJECT_RESTART": "Перезапустить все терминалы",
+  "AI_CHAT_START_CHAT_NAME": "{0} · Визуальный ИИ",
+  "AI_CHAT_START_CHAT_DESC": "Встроенный чат для визуальных рабочих процессов",
+  "AI_CHAT_START_BY_PROVIDER": "От {0}",
+  "AI_CHAT_START_CLI_SEPARATOR": "Инструменты командной строки · подключаются к {APP_NAME}",
+  "AI_CHAT_START_CHAT_RUNNING": "В процессе",
+  "AI_CHAT_START_CLI_RUNNING": "Выполняется",
+  "AI_CHAT_START_CLI_FOLDED": "Используйте CLI: {0}",
+  "AI_CHAT_BACK_BTN": "Назад",
+  "AI_CHAT_BACK_TITLE": "Вернуться к началу",
+  "AI_CHAT_SETUP_PLACEHOLDER": "Настройте Claude Code, чтобы начать чат"
 });

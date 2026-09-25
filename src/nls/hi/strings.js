@@ -2895,5 +2895,19 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "बाकी को कॉपी करने के लिए, {0} चुनें।",
   "MIGRATE_UNREACHABLE_TITLE": "पुरानी साइट तक नहीं पहुंच सके",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} आपके प्रोजेक्ट और सेटिंग्स को खोजने के लिए {0} से कनेक्ट नहीं हो सका, इसलिए कुछ भी नहीं बदला गया है। अपना इंटरनेट कनेक्शन जाँचें, फिर {1} के साथ फिर से प्रयास करें।",
-  "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…"
+  "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…",
+  "TERMINAL_PROJECT_CHANGED": "प्रोजेक्ट {0} में बदल गया",
+  "TERMINAL_PROJECT_RESTART_PATH": "{0} में सभी टर्मिनल रीस्टार्ट करें",
+  "TERMINAL_PROJECT_DISMISS": "खारिज करें — टर्मिनल चालू रखें",
+  "TERMINAL_PROJECT_RESTART": "सभी टर्मिनल रीस्टार्ट करें",
+  "AI_CHAT_START_CHAT_NAME": "{0} · विज़ुअल AI",
+  "AI_CHAT_START_CHAT_DESC": "विज़ुअल वर्कफ़्लो के लिए अंतर्निहित चैट",
+  "AI_CHAT_START_BY_PROVIDER": "{0} द्वारा",
+  "AI_CHAT_START_CLI_SEPARATOR": "कमांड-लाइन टूल · {APP_NAME} से जुड़ता है",
+  "AI_CHAT_START_CHAT_RUNNING": "प्रगति में",
+  "AI_CHAT_START_CLI_RUNNING": "चल रहा है",
+  "AI_CHAT_START_CLI_FOLDED": "इसके बजाय सीएलआई का उपयोग करें: {0}",
+  "AI_CHAT_BACK_BTN": "वापस",
+  "AI_CHAT_BACK_TITLE": "शुरुआत पर वापस",
+  "AI_CHAT_SETUP_PLACEHOLDER": "चैटिंग शुरू करने के लिए Claude Code सेटअप करें"
 });
