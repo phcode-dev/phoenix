@@ -109,14 +109,39 @@ define(function (require, exports, module) {
             return str.replace(allSpacesRE, " ");
         }
 
-        async function getSourceFromBrowser(liveDoc) {
-            let doneSyncing = false, browserText;
-            liveDoc.getSourceFromBrowser().done(function (text) {
-                browserText = text;
-            }).always(function () {
-                doneSyncing = true;
-            });
-            await awaitsFor(function () { return doneSyncing; }, "Browser to sync changes", 20000);
+        /**
+         * A linked stylesheet gets its live document only once the page reports it back, which can
+         * trail the page's own load. Wait for it rather than reading it straight away.
+         * @return {Promise<Object>} the live document
+         */
+        async function waitsForLiveDocForPath(fullPath) {
+            await awaitsFor(function () {
+                return !!LiveDevMultiBrowser.getLiveDocForPath(fullPath);
+            }, "live document for " + fullPath, 20000);
+            return LiveDevMultiBrowser.getLiveDocForPath(fullPath);
+        }
+
+        /**
+         * Read a live document back from the browser until it passes the check: an edit pushed
+         * a moment ago may still be on its way.
+         * @return {Promise<string>} the browser's text
+         */
+        async function waitsForBrowserSource(liveDoc, isReady, message) {
+            let browserText, reading = false;
+            await awaitsFor(function () {
+                if (browserText !== undefined && isReady(browserText)) {
+                    return true;
+                }
+                if (!reading) {
+                    reading = true;
+                    liveDoc.getSourceFromBrowser().done(function (text) {
+                        browserText = text;
+                    }).always(function () {
+                        reading = false;
+                    });
+                }
+                return false;
+            }, message, 20000);
             return browserText;
         }
 
@@ -194,6 +219,17 @@ define(function (require, exports, module) {
             );
             let editor = EditorManager.getActiveEditor();
             editor && editor.setCursorPos({ line: 0, ch: 0 });
+        }
+
+        /**
+         * Hiding the panel closes Live Preview when no preview client is connected, and in a
+         * test window showing the panel again does not reopen it: tests start Live Preview
+         * themselves. Reopen it the way the app does, so the preview server comes back.
+         */
+        function _reopenLiveDevIfStopped() {
+            if (LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_INACTIVE) {
+                LiveDevMultiBrowser.open();
+            }
         }
 
         async function waitsForLiveDevelopmentToOpen() {
@@ -377,8 +413,10 @@ define(function (require, exports, module) {
             localText = curDoc.getText();
             localText += styleTextAdd;
             curDoc.setText(localText);
-            liveDoc = LiveDevMultiBrowser.getLiveDocForPath(testFolder + "/simple1.css");
-            browserText = await getSourceFromBrowser(liveDoc);
+            liveDoc = await waitsForLiveDocForPath(testFolder + "/simple1.css");
+            browserText = await waitsForBrowserSource(liveDoc, function (text) {
+                return text.includes("testClass");
+            }, "the edited rule to reach the browser");
             browserText = browserText.replace(/url\('http:\/\/127\.0\.0\.1:\d+\/import1\.css'\);/, "url('import1.css');");
 
             expect(fixSpaces(browserText).includes(fixSpaces(styleTextAdd))).toBeTrue();
@@ -434,8 +472,10 @@ define(function (require, exports, module) {
             localText = curDoc.getText();
             localText += "\n .testClass { background-color:#090; }\n";
             curDoc.setText(localText);
-            liveDoc = LiveDevMultiBrowser.getLiveDocForPath(testFolder + "/sub/test.css");
-            browserText = await getSourceFromBrowser(liveDoc);
+            liveDoc = await waitsForLiveDocForPath(testFolder + "/sub/test.css");
+            browserText = await waitsForBrowserSource(liveDoc, function (text) {
+                return text.includes("testClass");
+            }, "the edited rule to reach the browser");
 
             // Drop the port from 127.0.0.1:port so it's easier to work with
             browserText = browserText.replace(/127\.0\.0\.1:\d+/, "127.0.0.1");
@@ -705,44 +745,44 @@ define(function (require, exports, module) {
                 "closing all files before opening simple1.css");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
                 "simple1.css");
-            const doc = DocumentManager.getCurrentDocument();
-            const text = doc.getText();
-            // The original simple1.css should NOT contain background-color:#090
-            // That gets added by a previous test and must be cleaned up
-            // We verify the file doesn't contain #090 background-color and if it does, change expectations
-            // in linux, or if system slow, it will take some time for file system change event to catch
-            // up and update document. so we need to do this below. This is a bug in tests as why is the test not
-            // resetting file properly constantly?
-            const has90 = text.includes("background-color:#090");
-            const firstColor = has90 ? "#090" : "aliceblue";
-            const firstColorRGB = has90 ? "rgb(0, 153, 0)" : "rgb(240, 248, 255)";
-
             await _openCodeHints({ line: 3, ch: 8 }, ["antiquewhite"]);
 
             let editor = EditorManager.getActiveEditor();
             const initialHistoryLength = editor.getHistory().done.length;
+            // Which colors come first is not fixed: the hints suggest colors used earlier, and an
+            // earlier test's #090 can be among them. Follow whatever the menu offers instead.
+            const firstColor = await _previewNextColorHint(editor, "");
+            const secondColor = await _previewNextColorHint(editor, firstColor);
+            return {historyLength: initialHistoryLength, lastColor: secondColor};
+        }
+
+        /** The browser's computed form of a CSS color, e.g. "rgb(240, 248, 255)" for aliceblue. */
+        function _computedColor(color) {
+            const probe = testWindow.document.createElement("span");
+            probe.style.color = color;
+            testWindow.document.body.appendChild(probe);
+            const computed = testWindow.getComputedStyle(probe).color;
+            probe.remove();
+            return computed;
+        }
+
+        /**
+         * Move to the next color hint: the editor shows it as the selection, and the page shows it.
+         * @return {Promise<string>} the color previewed
+         */
+        async function _previewNextColorHint(editor, previousColor) {
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
+            let color;
             await awaitsFor(function () {
-                // #090 is the content from simple1.css file
-                // this appears as the 2nd item in the codehint menu, from "suggest previously used color" feature
-                return editor.getSelectedText() === firstColor;
-            }, `expected live hints to update selection to ${firstColor}`);
-            await _waitForLivePreviewElementColor("testId", firstColorRGB);
-            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
-
-            const secondColor = has90 ? "aliceblue" : "antiquewhite";
-            const secondColorRGB = has90 ? "rgb(240, 248, 255)" : "rgb(250, 235, 215)";
-            await awaitsFor(function () {
-                return editor.getSelectedText() === secondColor;
-            }, `expected live hints to update selection to ${secondColor}`);
-
-            await _waitForLivePreviewElementColor("testId", secondColorRGB); // antiquewhite
-
-            return initialHistoryLength;
+                color = editor.getSelectedText();
+                return !!color && color !== previousColor;
+            }, "live hints to preview the next color");
+            await _waitForLivePreviewElementColor("testId", _computedColor(color));
+            return color;
         }
 
         it("should Live preview push css code hints selection changes to browser(linked css)", async function () {
-            const expectedHistoryLength = await _livePreviewCodeHintsCSS();
+            const expectedHistoryLength = (await _livePreviewCodeHintsCSS()).historyLength;
             let editor = EditorManager.getActiveEditor();
 
             // now dismiss with escape
@@ -761,7 +801,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should Live preview push css code hints selection changes to browser and commit(linked css)", async function () {
-            const expectedHistoryLength = await _livePreviewCodeHintsCSS();
+            const {historyLength: expectedHistoryLength, lastColor} = await _livePreviewCodeHintsCSS();
             let editor = EditorManager.getActiveEditor();
 
             // now dismiss with escape
@@ -772,11 +812,8 @@ define(function (require, exports, module) {
             await awaitsFor(function () {
                 return editor.getSelectedText() === "";
             }, "to restore the text to old state");
-            // check if we have the new value
-            if(!["antiquewhite", "aliceblue"].includes(editor.getToken().string)){
-                // so depends on the bug in _livePreviewCodeHintsCSS which color is at present.
-                expect("color should have beein either aliceblue or antiquewhite").toBeTrue();
-            }
+            // the color previewed last is the one committed
+            expect(editor.getToken().string).toBe(lastColor);
 
             // the undo history should be just one above
             expect(editor.getHistory().done.length).toBe(expectedHistoryLength + 3);
@@ -1298,15 +1335,18 @@ define(function (require, exports, module) {
         }, 30000);
 
         async function forRemoteExec(script, compareFn) {
-            let result;
+            let result, replied = false;
             await awaitsFor(
                 function () {
                     LiveDevProtocol.evaluate(script)
                         .done((response) => {
-                            result = JSON.parse(response.result || "");
+                            // An undefined value comes back with no result at all.
+                            result = response.result ? JSON.parse(response.result) : undefined;
+                            replied = true;
                         });
                     if (compareFn) {
-                        return compareFn(result);
+                        // The reply is async: until the first one arrives there is nothing to compare.
+                        return replied && compareFn(result);
                     }
                     // just exec and return if no compare function is specified
                     return true;
@@ -1388,9 +1428,10 @@ define(function (require, exports, module) {
         it("should live highlight resize as window size changes", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
 
             await waitsForLiveDevelopmentToOpen();
+            // Looked up after the preview opened: each page load gets a fresh iframe.
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let editor = EditorManager.getActiveEditor();
             await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 0;
@@ -1398,7 +1439,6 @@ define(function (require, exports, module) {
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
-            await awaits(500);
             await forRemoteExec(`_LD.getHighlightCount()`, (result) => {
                 return result === 1;
             });
@@ -1409,12 +1449,10 @@ define(function (require, exports, module) {
             });
 
             iFrame.style.width = "100px";
-            await awaits(500);
             await forRemoteExec(`_LD.getHighlightStyle(0, 'width')`, (result) => {
                 return originalWidth !== result;
             });
             iFrame.style.width = "100%";
-            await awaits(500);
             await forRemoteExec(`_LD.getHighlightStyle(0, 'width')`, (result) => {
                 return originalWidth === result;
             });
@@ -1834,34 +1872,31 @@ define(function (require, exports, module) {
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith(`simple1.html`))
-                .toBeTrue();
+            await _waitForIframeSrc("simple1.html");
 
             let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
             pinURLBtn.click();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
                 "simple2.html");
-            await awaits(500);
-            expect(iFrame.src.endsWith(`simple1.html`))
-                .toBeTrue();
+            // Pinned: the preview stays on simple1.
+            await _waitForIframeSrc("simple1.html");
 
-            // now close the live preview panel by clicking on live preview extension icon
+            // now hide and show the live preview panel by clicking on live preview extension icon
             let livePreviewBtn = testWindow.$(testWindow.document.getElementById("toolbar-go-live"));
             livePreviewBtn.click();
-            await awaits(500);
+            await awaitsFor(() => !WorkspaceManager.isPanelVisible("live-preview-panel"),
+                "live preview panel to hide");
             livePreviewBtn.click();
-            await awaits(500);
-            expect(iFrame.src.endsWith(`simple1.html`))
-                .toBeTrue();
+            await awaitsFor(() => WorkspaceManager.isPanelVisible("live-preview-panel"),
+                "live preview panel to show");
+            _reopenLiveDevIfStopped();
+            // Still pinned: the panel shows simple1 again.
+            await _waitForIframeSrc("simple1.html");
 
+            // Unpinned: the preview follows the current file, simple2.
             pinURLBtn.click();
-
-            await awaits(1000);
-            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            let srcURL = new URL(outerIFrame.src);
-            expect(srcURL.pathname.endsWith("simple2.html")).toBeTrue();
+            await _waitForIframeSrc("simple2.html");
 
             await endPreviewSession();
         }, 30000);

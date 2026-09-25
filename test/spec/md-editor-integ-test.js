@@ -576,6 +576,17 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.deletePathAsync(mdTestFolder + "/.phcode.json", true);
             }
 
+            /**
+             * Hiding the panel closes Live Preview when no preview client is connected, and in a
+             * test window showing the panel again does not reopen it: tests start Live Preview
+             * themselves. Reopen it the way the app does, so the preview server comes back.
+             */
+            function _reopenLiveDevIfStopped() {
+                if (LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_INACTIVE) {
+                    LiveDevMultiBrowser.open();
+                }
+            }
+
             async function _openMdFileAndWaitForPreview(fileName) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                     "open " + fileName);
@@ -635,11 +646,21 @@ define(function (require, exports, module) {
             }, 30000);
 
             beforeEach(async function () {
+                // A test that hid the panel can leave Live Preview stopped. Start it again, so one
+                // such test cannot take every later preview in this group down with it.
+                if (LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_INACTIVE) {
+                    await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                        "open simple.html to restart live dev");
+                    LiveDevMultiBrowser.open();
+                    await awaitsFor(() => {
+                        return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
+                    }, "live dev to restart", 20000);
+                }
                 // Reset scroll and close files between tests to prevent state leakage
                 _setViewerScrollTop(0);
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
                     "close all between cache tests");
-            }, 10000);
+            }, 30000);
 
             it("should switch between MD files with viewer showing correct content", async function () {
                 await _openMdFileAndWaitForPreview("doc1.md");
@@ -766,6 +787,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
                 await awaitsFor(() => WorkspaceManager.isPanelVisible("live-preview-panel"),
                     "live preview panel to reopen");
+                _reopenLiveDevIfStopped();
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());
 
                 // Verify iframe persisted (JS variable survived)
