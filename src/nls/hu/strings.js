@@ -2895,5 +2895,19 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "A többi másolásához válassza a(z) {0} lehetőséget.",
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
-  "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…"
+  "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
+  "TERMINAL_PROJECT_CHANGED": "A projekt a következőre váltott: {0}",
+  "TERMINAL_PROJECT_RESTART_PATH": "Az összes terminál újraindítása itt: {0}",
+  "TERMINAL_PROJECT_DISMISS": "Elvetés – a terminálok tovább futnak",
+  "TERMINAL_PROJECT_RESTART": "Az összes terminál újraindítása",
+  "AI_CHAT_START_CHAT_NAME": "{0} · Vizuális MI",
+  "AI_CHAT_START_CHAT_DESC": "Beépített csevegés vizuális munkafolyamatokhoz",
+  "AI_CHAT_START_BY_PROVIDER": "Szolgáltató: {0}",
+  "AI_CHAT_START_CLI_SEPARATOR": "Parancssori eszközök · kapcsolódik a(z) {APP_NAME} alkalmazással",
+  "AI_CHAT_START_CHAT_RUNNING": "Folyamatban",
+  "AI_CHAT_START_CLI_RUNNING": "Fut",
+  "AI_CHAT_START_CLI_FOLDED": "Használj CLI-t helyette: {0}",
+  "AI_CHAT_BACK_BTN": "Vissza",
+  "AI_CHAT_BACK_TITLE": "Vissza a kezdéshez",
+  "AI_CHAT_SETUP_PLACEHOLDER": "Állítsd be a Claude Code-ot a csevegés megkezdéséhez"
 });

@@ -2895,5 +2895,19 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Para copiar o restante, selecione {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Não foi possível aceder ao site antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "O {APP_NAME} não se conseguiu ligar a {0} para procurar os seus projetos e definições, pelo que nada foi alterado. Verifique a sua ligação à internet e, em seguida, tente novamente com {1}.",
-  "CMD_MIGRATE_DATA": "Migrar os Meus Dados de {0}…"
+  "CMD_MIGRATE_DATA": "Migrar os Meus Dados de {0}…",
+  "TERMINAL_PROJECT_CHANGED": "Projeto alterado para {0}",
+  "TERMINAL_PROJECT_RESTART_PATH": "Reiniciar todos os terminais em {0}",
+  "TERMINAL_PROJECT_DISMISS": "Ignorar — manter os terminais em execução",
+  "TERMINAL_PROJECT_RESTART": "Reiniciar Todos os Terminais",
+  "AI_CHAT_START_CHAT_NAME": "{0} · IA Visual",
+  "AI_CHAT_START_CHAT_DESC": "Chat integrado para fluxos de trabalho visuais",
+  "AI_CHAT_START_BY_PROVIDER": "Por {0}",
+  "AI_CHAT_START_CLI_SEPARATOR": "Ferramentas de linha de comandos · liga-se a {APP_NAME}",
+  "AI_CHAT_START_CHAT_RUNNING": "Em curso",
+  "AI_CHAT_START_CLI_RUNNING": "Em execução",
+  "AI_CHAT_START_CLI_FOLDED": "Use uma CLI em alternativa: {0}",
+  "AI_CHAT_BACK_BTN": "Voltar",
+  "AI_CHAT_BACK_TITLE": "Voltar ao início",
+  "AI_CHAT_SETUP_PLACEHOLDER": "Configure o Claude Code para começar a conversar"
 });
