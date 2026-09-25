@@ -156,6 +156,7 @@ define(function (require, exports, module) {
     // Node Tests
     require("spec/NodeConnection-test");
     require("spec/CLILocator-test");
+    require("spec/NpmNodeShim-test");
     require("spec/AIImageTools-test");
     // pro test suite optional components
     require("./pro-test-suite");

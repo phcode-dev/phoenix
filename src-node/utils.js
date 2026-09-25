@@ -113,6 +113,62 @@ const activeDownloads = new Map(); // cancelId -> AbortController
 const activeNpmInstalls = new Map(); // moduleNativeDir -> ChildProcess
 
 /**
+ * npm runs package lifecycle scripts (`postinstall` etc.) through the system shell, and those
+ * scripts commonly invoke a bare `node` (e.g. protobufjs: `node scripts/postinstall`). The shell
+ * resolves that from PATH, but our runtime ships as `phnode`, so on a machine with no system Node
+ * every such install fails with `sh: node: command not found` / `'node' is not recognized`. npm
+ * itself only prepends node-gyp-bin and node_modules/.bin to PATH, never the running binary's dir.
+ *
+ * Creates a temp dir holding a `node` launcher that forwards to `nodeExePath`. Prepend it to PATH
+ * (see _envWithNodeShim) so scripts always run on our own runtime - even when a system Node
+ * exists, which keeps installs independent of whatever version the user happens to have.
+ *
+ * @param {string} nodeExePath - the node binary the launcher should forward to (phnode)
+ * @return {Promise<string>} the shim directory; the caller removes it when done
+ * @private
+ */
+async function _createNodeShimDir(nodeExePath) {
+    const shimDir = await fsPromise.mkdtemp(path.join(os.tmpdir(), "phnode-shim-"));
+    if (process.platform === "win32") {
+        // cmd.exe resolves `node` to node.cmd via PATHEXT. Ending on the exe invocation makes
+        // its exit code the script's exit code, which `cmd /c` then reports.
+        await fsPromise.writeFile(path.join(shimDir, "node.cmd"), `@"${nodeExePath}" %*\r\n`);
+    } else {
+        try {
+            // a symlink also works for shell-less spawn("node") from inside scripts
+            await fsPromise.symlink(nodeExePath, path.join(shimDir, "node"));
+        } catch (err) {
+            console.warn("node shim symlink failed, using a shell launcher instead:", err.message);
+            await fsPromise.writeFile(path.join(shimDir, "node"),
+                `#!/bin/sh\nexec "${nodeExePath}" "$@"\n`, { mode: 0o755 });
+        }
+    }
+    return shimDir;
+}
+
+/**
+ * Returns a copy of `baseEnv` with `shimDir` prepended to PATH. Windows env vars are
+ * case-insensitive and usually spelled `Path`; every spelling present is updated in place so the
+ * child sees exactly one PATH variable, with the original casing.
+ *
+ * @param {string} shimDir - directory from _createNodeShimDir
+ * @param {Object} baseEnv - environment to copy, typically process.env
+ * @return {Object} the new environment
+ * @private
+ */
+function _envWithNodeShim(shimDir, baseEnv) {
+    const env = Object.assign({}, baseEnv);
+    const pathKeys = Object.keys(env).filter(key => /^path$/i.test(key));
+    if (!pathKeys.length) {
+        pathKeys.push("PATH");
+    }
+    for (const key of pathKeys) {
+        env[key] = env[key] ? shimDir + path.delimiter + env[key] : shimDir;
+    }
+    return env;
+}
+
+/**
  * Installs npm modules in the specified folder.
  *
  * @param {string} moduleNativeDir - The directory where the npm modules will be installed.
@@ -126,6 +182,7 @@ async function _npmInstallInFolder({moduleNativeDir}) {
         // try/finally below: this throw must not clean up the entry the running install owns.
         throw new Error("npm install already in progress in " + moduleNativeDir);
     }
+    let nodeShimDir;
     try {
         const phnodeExePath = process.argv[0];
         const npmPath = path.resolve(path.dirname(require.resolve("npm")), "bin", "npm-cli.js");
@@ -149,8 +206,11 @@ async function _npmInstallInFolder({moduleNativeDir}) {
 
         const nodeArgs = [npmPath, npmInstallMode, moduleNativeDir];
         console.log(`Running "${phnodeExePath} ${nodeArgs}" in ${moduleNativeDir}`);
+        // package lifecycle scripts must find a `node` on PATH - see _createNodeShimDir
+        nodeShimDir = await _createNodeShimDir(phnodeExePath);
+        const env = _envWithNodeShim(nodeShimDir, process.env);
         const npmInstallPromise = new Promise((resolve, reject) => {
-            const child = execFile(phnodeExePath, nodeArgs, { cwd: moduleNativeDir }, (error) => {
+            const child = execFile(phnodeExePath, nodeArgs, { cwd: moduleNativeDir, env }, (error) => {
                 const wasCancelled = child.__phCancelled;
                 if (error) {
                     console.error('Error:', error);
@@ -172,6 +232,11 @@ async function _npmInstallInFolder({moduleNativeDir}) {
         // The entry MUST never outlive this invocation, whatever the failure path - a stale
         // entry would make the duplicate-install guard above block every retry until restart.
         activeNpmInstalls.delete(moduleNativeDir);
+        if (nodeShimDir) {
+            await fsPromise.rm(nodeShimDir, { recursive: true, force: true }).catch(err => {
+                console.warn("could not remove node shim dir", nodeShimDir, err.message);
+            });
+        }
     }
 }
 
@@ -586,6 +651,8 @@ exports.getSystemSettingsDir = getSystemSettingsDir;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;
 exports._cancelNpmInstall = _cancelNpmInstall;
+exports._createNodeShimDir = _createNodeShimDir;
+exports._envWithNodeShim = _envWithNodeShim;
 exports.cancelDownload = cancelDownload;
 exports.downloadFile = downloadFile;
 exports.extractZipFile = extractZipFile;
