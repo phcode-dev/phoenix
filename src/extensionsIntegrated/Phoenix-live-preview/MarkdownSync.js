@@ -272,6 +272,7 @@ define(function (require, exports, module) {
             }
             clearTimeout(_debounceTimer);
             _debounceTimer = setTimeout(function () {
+                _debounceTimer = null;
                 _sendUpdate(_lastChangeOrigin);
                 _lastChangeOrigin = null;
             }, DEBOUNCE_TO_IFRAME_MS);
@@ -359,6 +360,7 @@ define(function (require, exports, module) {
         }
 
         clearTimeout(_debounceTimer);
+        _debounceTimer = null;
         clearTimeout(_scrollSyncTimer);
         clearTimeout(_selectionSyncTimer);
 
@@ -669,6 +671,15 @@ define(function (require, exports, module) {
         // from modifying the wrong CM document after a file switch.
         if (data.filePath && _doc && _doc.file &&
             data.filePath !== _doc.file.fullPath) {
+            return;
+        }
+
+        // A CM change is still waiting to go to the iframe, so the iframe made this
+        // before it had that change: applying it would undo the change. The pending
+        // update brings the iframe up to date instead. (e.g. the iframe flushes its
+        // own debounced edit when the same file is switched to again, and that can
+        // land just after the user's next CM edit.)
+        if (_debounceTimer) {
             return;
         }
 
