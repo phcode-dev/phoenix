@@ -90,7 +90,7 @@ EventManager.triggerEvent("closeDialogueHandler", "someEvent", "param1", "param2
 | --- | --- | --- |
 | handlerName | <code>string</code> |  |
 | eventName |  | the event name as recognised by the handler. this is usually a string. |
-| ...eventParams |  | Can be a comma seperated list of args or a single argument. |
+| ...eventParams |  | Can be a comma separated list of args or a single argument. |
 
 <a name="module_utils/EventManager..setTrustedOrigin"></a>
 

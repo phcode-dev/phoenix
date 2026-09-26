@@ -586,7 +586,7 @@ Removes the view and opens the next view
 <a name="module_view/Pane..Pane+removeViews"></a>
 
 #### pane.removeViews(list) ⇒ <code>Array.&lt;File&gt;</code>
-Removes the specifed file from all internal lists, destroys the view of the file (if there is one)
+Removes the specified file from all internal lists, destroys the view of the file (if there is one)
  and shows the interstitial page if the current view is destroyed.
 
 **Kind**: instance method of [<code>Pane</code>](#module_view/Pane..Pane)  

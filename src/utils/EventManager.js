@@ -103,7 +103,7 @@ define(function (require, exports, module) {
      *
      * @param {string} handlerName
      * @param eventName the event name as recognised by the handler. this is usually a string.
-     * @param eventParams Can be a comma seperated list of args or a single argument.
+     * @param eventParams Can be a comma separated list of args or a single argument.
      * @type {function}
      */
     function triggerEvent(handlerName, eventName, ...eventParams) {
