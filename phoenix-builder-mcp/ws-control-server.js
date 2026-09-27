@@ -1,13 +1,53 @@
 import { WebSocketServer } from "ws";
+import http from "node:http";
 import { LogBuffer } from "./log-buffer.js";
 
+/**
+ * Serve existing Phoenix messages on loopback, with explicit listener ownership.
+ * @param {number} port - Local port; zero is supported for isolated test fixtures.
+ * @return {Object} Existing request API plus listener readiness and cancellation.
+ */
 export function createWSControlServer(port) {
-    const wss = new WebSocketServer({ port });
+    const wss = new WebSocketServer({ noServer: true, maxPayload: 32 * 1024 * 1024, perMessageDeflate: false });
+    const listeners = [];
+    let closing = false;
     const clients = new Map(); // name -> { ws, logs, isAlive }
     let unknownCounter = 0;
     let requestIdCounter = 0;
     const pendingRequests = new Map();
     let heartbeatInterval = null;
+
+    /** Reject only this socket's outstanding requests when its connection ends. */
+    function cancelPending(reason = "Builder connection closed", socket) {
+        for (const [id, pending] of pendingRequests) {
+            if (!socket || pending.ws === socket) { pendingRequests.delete(id); pending.reject(new Error(reason)); }
+        }
+    }
+
+    const ready = (async () => {
+        try {
+            const listener = http.createServer((request, response) => { response.writeHead(404); response.end(); });
+            // Builder intentionally trusts all renderer origins, including custom native protocols.
+            listener.on("upgrade", (request, socket, head) => {
+                try {
+                    const target = new URL(`http://${request.headers.host}`);
+                    if (closing || wss.clients.size >= 64 || target.hostname !== "localhost") {
+                        socket.destroy(); return;
+                    }
+                    wss.handleUpgrade(request, socket, head, ws => wss.emit("connection", ws, request));
+                } catch { socket.destroy(); }
+            });
+            await new Promise((resolve, reject) => {
+                listener.once("error", reject);
+                listener.listen({ port, host: "localhost" }, () => {
+                    listener.removeListener("error", reject); resolve();
+                });
+            });
+            if (closing) { await new Promise(resolve => listener.close(resolve)); return; }
+            port = listener.address().port;
+            listeners.push(listener);
+        } catch (error) { await close(); throw error; }
+    })();
 
     wss.on("connection", (ws) => {
         // Name is assigned when the client sends a "hello" message.
@@ -22,8 +62,17 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            const reply = pendingRequests.get(msg.id);
+            if (reply && reply.ws !== ws) { return; }
+            if (clientName && clients.get(clientName)?.ws !== ws) { return; }
+
             switch (msg.type) {
                 case "hello": {
+                    if (clientName) { ws.close(1008, "Hello already received"); return; }
+                    if (msg.name !== undefined && (typeof msg.name !== "string" || !msg.name.length
+                        || msg.name.length > 200 || [...msg.name].some(char => char.charCodeAt(0) < 32))) {
+                        ws.close(1008, "Invalid instance name"); return;
+                    }
                     clientName = msg.name || ("Unknown-" + (++unknownCounter));
 
                     // If same name reconnects (e.g. tab reload), close old connection
@@ -177,12 +226,14 @@ export function createWSControlServer(port) {
         });
 
         ws.on("close", () => {
+            cancelPending("Phoenix instance disconnected", ws);
             if (clientName && clients.get(clientName)?.ws === ws) {
                 clients.delete(clientName);
             }
         });
 
         ws.on("error", () => {
+            cancelPending("Phoenix connection failed", ws);
             if (clientName && clients.get(clientName)?.ws === ws) {
                 clients.delete(clientName);
             }
@@ -249,6 +300,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -256,6 +308,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -288,6 +341,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -295,6 +349,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -327,6 +382,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -334,6 +390,7 @@ export function createWSControlServer(port) {
             }, 10000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -369,6 +426,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -376,6 +434,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -404,6 +463,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -411,6 +471,7 @@ export function createWSControlServer(port) {
             }, 60000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -439,6 +500,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -446,6 +508,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -474,6 +537,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -481,6 +545,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -513,6 +578,7 @@ export function createWSControlServer(port) {
                 return;
             }
 
+            if (pendingRequests.size >= 128 || closing) { reject(new Error("Builder is busy or closing")); return; }
             const id = ++requestIdCounter;
             const timeout = setTimeout(() => {
                 pendingRequests.delete(id);
@@ -520,6 +586,7 @@ export function createWSControlServer(port) {
             }, 30000);
 
             pendingRequests.set(id, {
+                ws: client.ws,
                 resolve: (data) => {
                     clearTimeout(timeout);
                     resolve(data);
@@ -563,24 +630,21 @@ export function createWSControlServer(port) {
         return [...clients.keys()];
     }
 
-    function close() {
+    /** Close listener-owned sockets and reject pending calls without terminating user-opened apps. */
+    async function close() {
+        if (closing) { return; }
+        closing = true;
         clearInterval(heartbeatInterval);
-        for (const [id, pending] of pendingRequests) {
-            pending.reject(new Error("Server shutting down"));
-        }
-        pendingRequests.clear();
-        for (const [name, client] of clients) {
-            try {
-                client.ws.close(1000, "Server shutting down");
-            } catch {
-                // ignore
-            }
-        }
+        cancelPending("Builder server shutting down");
+        for (const socket of wss.clients) { socket.terminate(); }
         clients.clear();
-        wss.close();
+        await Promise.all(listeners.map(listener => new Promise(resolve => listener.close(resolve))));
+        await new Promise(resolve => wss.close(resolve));
     }
 
     return {
+        ready,
+        cancelPending,
         requestScreenshot,
         requestReload,
         requestLogs,

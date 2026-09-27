@@ -64,7 +64,28 @@ See the official [Codex MCP documentation](https://developers.openai.com/codex/m
 
 #### Switching between clients
 
-The current Builder server supports **one coding-agent connection per checkout at a time**. Close the active Claude/Codex MCP session before switching clients. Starting a second server terminates the previous server and may stop the desktop app it launched. Separate ports alone do not provide simultaneous support, because the server also shares a PID file. This is an existing server limitation; the Codex configuration does not change it.
+Each Builder process owns its localhost WebSocket listener and stdio session. A second process on the same port reports a port conflict and leaves the original process alive. Close the active Claude/Codex session before reusing its port, or give separate sessions separate ports and select the intended port in each app. No shared PID file or stale-PID termination is used.
+
+Builder binds to `localhost` and intentionally trusts every renderer Origin, including custom `phtaur://…` and `phtauri://…` URLs. The listener is for trusted development apps. The optional remote framework has separate authentication for workers and its dashboard.
+
+### Optional remote machines
+
+Use two independent MCP servers: **Phoenix Builder** for app interaction, screenshots and Jasmine tests, and **remote-control** for machine discovery, remote commands, file transfers, Git sync and agent coordination. Builder has no framework package dependency and opens no orchestrator agent session. Local Builder use needs no remote framework.
+
+1. Start `npm run controller` in `remote-agent-control`. Its worker port accepts localhost and LAN connections by default; `-- --worker-host <address>` optionally restricts the listener. The dashboard stays localhost-only.
+2. Run `npm run worker` only on remote machines. Pair them in the controller's localhost dashboard and give each a distinct name and plain-text context notes. The controller computer is already **This machine**; it needs no worker process, local connection, or pairing.
+3. In **Port forwarding**, forward the remote workers' localhost port `38571` to port `38571` on **This machine** (`local`). Leave Phoenix's connection URL at `ws://localhost:38571`.
+4. Activate the standalone remote-control MCP from the dashboard's **MCP** tab, then reconnect your coding agent's MCP servers. Existing Builder tools such as `exec_js`, screenshots and Jasmine tests address the remote app by its displayed instance name.
+
+Phoenix probes `http://localhost:38572/v1/metadata` for at most 500 ms before connecting. When a paired worker is connected, the displayed name becomes `<machine-name>-<existing-window-name>`. The stored window name and custom WebSocket URL are preserved. Missing, rejected or invalid metadata falls back to the existing name. Keep the probe permitted by the worker's metadata-origin configuration when using a custom host; `phtauri://localhost` is permitted by default.
+
+All `remote_*` tools belong to the standalone remote-control MCP. Use it to inspect machine context, sync source and launch the remote app; then use Builder tools with the exact machine-prefixed app or test-runner name. Forwarding carries the existing app WebSocket protocol without a Builder-side proxy client.
+
+Native app tests need development checkouts and dependencies installed on the executing machine. On Ubuntu, building `src-node` dependencies can require `build-essential`, `pkg-config`, and `libsecret-1-dev`. Review any npm lifecycle approvals for the required native packages. Start the worker from the intended desktop session so GUI jobs inherit its display access; an SSH connection alone does not establish desktop readiness.
+
+Wait for a verified sync snapshot before running tests. SpecRunner uses fresh module URLs on each load so reruns observe saved source edits, including native custom-protocol pages. Node helper or desktop-shell changes can still require restarting the remote app. Select the machine-prefixed app and runner names explicitly when local and remote windows are connected together.
+
+Remote jobs and transfers belong to the standalone remote-control MCP connection and are cleaned up when that connection ends. Closing Builder ends its own app-control connections and local process ownership; it does not end the independent remote-control session. Persisted forwarding rules remain machine configuration. The existing `start_phoenix`/`stop_phoenix` and terminal logs concern the local desktop process; use remote-control execution to launch a remote app. AI-model fixture installation and report tooling remain local and are not made remote-aware by forwarding an app socket.
 
 ### 3. Enable the connection in Phoenix
 

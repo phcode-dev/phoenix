@@ -111,5 +111,9 @@ module.exports = {
         "env": {
             "node": true
         }
+    }, {
+        "files": ["phoenix-builder-mcp/*.js", "src-node/test/fixtures/*.mjs"],
+        "env": { "node": true },
+        "parserOptions": { "ecmaVersion": 2022 }
     }]
 };

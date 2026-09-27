@@ -51,6 +51,8 @@
     const RECONNECT_BASE_MS = 500;
     const RECONNECT_MAX_MS = 5000;
     const DEFAULT_WS_URL = "ws://localhost:38571";
+    const METADATA_URL = "http://localhost:38572/v1/metadata";
+    const METADATA_TIMEOUT_MS = 500;
 
     // --- Trust ring reference (set later via setKernalModeTrust) ---
     let _kernalModeTrust = null;
@@ -82,6 +84,9 @@
     let reconnectDelay = RECONNECT_BASE_MS;
     let currentUrl = null;
     let autoReconnect = true;
+    let connectionGeneration = 0;
+    let discoveryAbort = null;
+    let displayInstanceName = null;
     const handlers = {};
 
     // --- Enable logToConsole so loggerSetup.js preserves console.log ---
@@ -113,15 +118,60 @@
         return "browser";
     }
 
+    /** Return the stable window base name, never an already machine-prefixed display name. */
     function _getOrCreateInstanceName() {
         let name = sessionStorage.getItem(INSTANCE_NAME_KEY);
         if (!name) {
-            const hex = Math.floor(Math.random() * 0x10000).toString(16).padStart(4, "0");
+            const hex = window.crypto && window.crypto.randomUUID
+                ? window.crypto.randomUUID().replace(/-/g, "").slice(0, 12)
+                : Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, "0");
             const prefix = window._phoenixBuilderNamePrefix || "phoenix";
             name = prefix + "-" + _getPlatformTag() + "-" + hex;
             sessionStorage.setItem(INSTANCE_NAME_KEY, name);
         }
         return name;
+    }
+
+    /**
+     * Discover this worker's nonsecret name without blocking application boot or requiring a worker.
+     * @return {Promise<string>} Machine-prefixed display name, or the existing base name on any failure.
+     */
+    async function _discoverInstanceName() {
+        const base = _getOrCreateInstanceName();
+        const controller = new AbortController();
+        discoveryAbort = controller;
+        const timeout = setTimeout(() => controller.abort(), METADATA_TIMEOUT_MS);
+        try {
+            const response = await fetch(METADATA_URL, { signal: controller.signal, cache: "no-store", credentials: "omit" });
+            if (!response.ok || !response.body) { return base; }
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let text = "";
+            let bytes = 0;
+            try {
+                while (true) {
+                    const item = await reader.read();
+                    if (item.done) { break; }
+                    bytes += item.value.byteLength;
+                    if (bytes > 16384) { await reader.cancel(); return base; }
+                    text += decoder.decode(item.value, { stream: true });
+                }
+            } finally { reader.releaseLock(); }
+            text += decoder.decode();
+            const metadata = JSON.parse(text);
+            if (metadata.version !== 1 || metadata.orchestratorConnected !== true
+                || typeof metadata.machineId !== "string" || !metadata.machineId
+                || typeof metadata.machineName !== "string"
+                || !/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}$/.test(metadata.machineName)) {
+                return base;
+            }
+            return metadata.machineName + "-" + base;
+        } catch {
+            return base;
+        } finally {
+            clearTimeout(timeout);
+            if (discoveryAbort === controller) { discoveryAbort = null; }
+        }
     }
 
     // --- Serialization ---
@@ -255,30 +305,40 @@
     }
 
     // --- Connect / disconnect ---
-    function connect(url) {
-        if (ws) {
-            disconnect();
-        }
+    /**
+     * Refresh optional local identity before connecting to the existing selected Builder URL.
+     * @param {string} url - Existing default or explicitly configured WebSocket URL.
+     * @return {Promise<void>}
+     */
+    async function connect(url) {
+        disconnect();
+        const generation = ++connectionGeneration;
 
         currentUrl = url;
         autoReconnect = true;
-
+        const instanceName = await _discoverInstanceName();
+        if (!autoReconnect || generation !== connectionGeneration) { return; }
+        displayInstanceName = instanceName;
+        let socket;
         try {
-            ws = new WebSocket(url);
+            socket = new WebSocket(url);
+            ws = socket;
         } catch (e) {
             ws = null;
             _scheduleReconnect();
             return;
         }
 
-        ws.onopen = function () {
+        socket.onopen = function () {
+            if (ws !== socket || generation !== connectionGeneration) { return; }
             reconnectDelay = RECONNECT_BASE_MS;
-            _sendMessage({ type: "hello", version: "1.0.0", name: _getOrCreateInstanceName() });
+            _sendMessage({ type: "hello", version: "1.0.0", name: instanceName });
             flushTimer = setInterval(_flushLogs, FLUSH_INTERVAL);
             _flushLogs();
         };
 
-        ws.onmessage = function (event) {
+        socket.onmessage = function (event) {
+            if (ws !== socket) { return; }
             let msg;
             try {
                 msg = JSON.parse(event.data);
@@ -294,18 +354,22 @@
             }
         };
 
-        ws.onclose = function () {
+        socket.onclose = function () {
+            if (ws !== socket) { return; }
             _cleanup();
             _scheduleReconnect();
         };
 
-        ws.onerror = function () {
+        socket.onerror = function () {
             // onclose will be called after this
         };
     }
 
+    /** Cancel discovery/reconnect and close only this boot client's socket. */
     function disconnect() {
         autoReconnect = false;
+        connectionGeneration++;
+        if (discoveryAbort) { discoveryAbort.abort(); discoveryAbort = null; }
         if (reconnectTimer) {
             clearTimeout(reconnectTimer);
             reconnectTimer = null;
@@ -325,7 +389,7 @@
     }
 
     function getInstanceName() {
-        return _getOrCreateInstanceName();
+        return displayInstanceName || _getOrCreateInstanceName();
     }
 
     function sendMessage(msg) {

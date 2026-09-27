@@ -1,5 +1,6 @@
 const NodeConnector = require("./node-connector");
 require("./test/test-cli-locator");
+require("./test/test-remote-machines");
 require("./test/test-ai-image-tools");
 require("./test/test-npm-node-shim");
 
