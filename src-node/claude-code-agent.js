@@ -717,6 +717,7 @@ exports.checkCliAvailability = async function (opts) {
             loginProbeSupported: canProbeLogin,
             source: located.source,
             version: located.version,
+            userInstalled: located.userInstalled,
             override: located.override,
             searchedPaths: located.searchedPaths
         };

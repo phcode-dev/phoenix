@@ -604,6 +604,7 @@ function _toResult(cliId, entry) {
         path: entry.path,
         source: entry.source || null,
         version: entry.version || null,
+        userInstalled: !!entry.userInstalled,
         errorCode: entry.errorCode || null,
         override: entry.override || null,
         searchedPaths: entry.searched || []
@@ -618,7 +619,9 @@ function _toResult(cliId, entry) {
  *      share) after a runtime spawn failure; `{override}` uses that path for
  *      this call only instead of the stored one, so the settings UI can
  *      preview a path without committing it.
- * @return {Promise<Object>} `{cli, path, source, version, errorCode, override, searchedPaths}`
+ * @return {Promise<Object>} `{cli, path, source, version, userInstalled, errorCode, override,
+ *      searchedPaths}`. `userInstalled` says the user has a CLI of their own (found or configured),
+ *      even when a newer bundled copy is the one `path` points to.
  */
 function locateCli(cliId, opts) {
     const cli = CLI_REGISTRY[cliId];
@@ -650,6 +653,7 @@ function locateCli(cliId, opts) {
                 entry.path = report.path;
                 entry.source = "override";
                 entry.version = report.version;
+                entry.userInstalled = true;
                 console.log("[Phoenix AI] Using configured " + cli.bin + " path:", report.path);
             } else {
                 // Deliberately NOT falling through to auto-discovery: quietly
@@ -700,6 +704,8 @@ function locateCli(cliId, opts) {
                 }
             }
         }
+        // Found before the bundled copy is weighed: the user installed one, whichever of the two runs.
+        entry.userInstalled = !!found;
         if (bundled && (!found || compareVersions(found.version, bundled.version) < 0)) {
             console.log(found
                 ? "[Phoenix AI] System claude " + found.version + " is older than the bundled " +
