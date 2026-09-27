@@ -226,7 +226,8 @@
         cursor: pointer;
     }
 
-    .ai-new-session-btn {
+    .ai-new-session-btn,
+    .ai-stop-cli-btn {
         display: flex;
         align-items: center;
         gap: 4px;
@@ -235,6 +236,17 @@
         height: 26px;
         padding: 0 8px;
         cursor: pointer;
+    }
+
+    // Stop ends a running CLI, so it exists only in the CLI modes (below).
+    .ai-stop-cli-btn {
+        display: none;
+
+        // At 11px the square's ink centers on the label's cap height, level
+        // with New's plus; smaller, it sinks onto the baseline.
+        i {
+            font-size: 11px;
+        }
     }
 }
 
@@ -247,7 +259,8 @@
         display: none;
     }
 
-    .ai-back-btn {
+    .ai-back-btn,
+    .ai-stop-cli-btn {
         display: flex;
     }
 }
@@ -503,6 +516,23 @@
         padding: 0 6px;
 
         .ai-back-text {
+            display: none;
+        }
+    }
+}
+
+/* When the header runs short, its whole action group keeps only icons, so
+   Stop and New match History and Settings; their tooltips still name them. */
+@container (max-width: 380px) {
+    .ai-chat-header-actions {
+        .ai-new-session-btn,
+        .ai-stop-cli-btn {
+            justify-content: center;
+            width: 26px;
+            padding: 0;
+        }
+
+        .ai-header-btn-label {
             display: none;
         }
     }
