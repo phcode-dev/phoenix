@@ -43,10 +43,11 @@ const AI_TEST_SUITES = {
     "permissions": "suite-permissions.md"
 };
 // The four model runs that have caught every regression seen so far, plus the
-// free deterministic/piggyback checks. See model_tests.md, "Deterministic first".
+// free deterministic/piggyback checks and EC-7, the one-turn probe that proves
+// the Phoenix system prompt is loaded. See model_tests.md, "Deterministic first".
 const AI_TEST_QUICK = {
     suites: ["editor-context", "unsaved-buffers", "self-sufficiency", "bug-fixing", "questions"],
-    tests: ["UB-1", "EC-5", "EC-2", "SS-4", "QF-6", "EC-1", "UB-2", "SS-1", "BF-1", "QF-1"]
+    tests: ["UB-1", "EC-5", "EC-2", "SS-4", "QF-6", "EC-7", "EC-1", "UB-2", "SS-1", "BF-1", "QF-1"]
 };
 
 function _gitInfo(cwd) {
