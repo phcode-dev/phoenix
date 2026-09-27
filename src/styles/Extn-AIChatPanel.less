@@ -2595,35 +2595,137 @@
         border-left: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    // Second header line: the Read icon then "a.html, b.css +3 more", most
-    // recent first. Hidden while the pile is expanded since the cards show.
-    .ai-tool-group-summary {
-        display: flex;
-        align-items: center;
-        gap: 6px;
+    // The lines under the pile header that name the files the folded cards
+    // touched ("Read ...", "Edited ..."): a label column (tool icon + verb)
+    // shared by both lines so their file lists start at the same x, then the
+    // names styled as the file tree shows them. Hidden while the pile is
+    // expanded, since the cards themselves show.
+    .ai-tool-group-summaries {
+        display: grid;
+        grid-template-columns: max-content minmax(0, 1fr);
+        column-gap: 10px;
+        row-gap: 2px;
+        align-items: baseline;
         flex-basis: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         margin-top: -2px;
         padding-left: 20px; // under the label, past the chevron column
-        font-size: @ai-text-meta;
-        color: @project-panel-text-2;
-        opacity: 0.7;
-        min-width: 0;
+        font-size: @ai-text-secondary; // the file-path tier: these lines exist to name files
+        line-height: @ai-line-compact;
+        color: @project-panel-text-2; // the label, and "+N more" / "Show less"
+    }
 
-        .ai-tool-group-summary-icon {
-            width: 14px;
-            text-align: center;
-            flex-shrink: 0;
+    .ai-tool-group-summary {
+        display: contents; // its label and list are the grid's two cells
+    }
+
+    .ai-tool-group-summary-label {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .ai-tool-group-summary-icon {
+        width: 13px;
+        text-align: center;
+        font-size: @ai-text-meta;
+    }
+
+    .ai-tool-group-summary-list {
+        display: flex;
+        align-items: baseline;
+        min-width: 0;
+    }
+
+    .ai-tool-group-summary-names {
+        flex: 0 1 auto;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; // only when even the first name alone is too long
+    }
+
+    .ai-tool-group-summary-file {
+        cursor: pointer;
+
+        // spacing before each name rather than after, so the last one shown
+        // leaves no trailing gap that would overflow the line
+        & + .ai-tool-group-summary-file {
+            margin-left: 10px;
         }
 
-        .ai-tool-group-summary-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-width: 0;
+        &.ai-tool-group-summary-file-overflow {
+            display: none;
+        }
+
+        // the file tree's icon, at this line's size. Its line height is
+        // pinned so icon fonts with tall glyph boxes (the JSON icon) do not
+        // push their row apart when the list wraps.
+        .bd-icon,
+        .bd-icon i {
+            line-height: 1;
+        }
+
+        .bd-icon {
+            font-size: @ai-text-secondary;
+            width: auto;
+            padding-right: 0;
+            margin-right: 4px;
+            vertical-align: -1px;
+        }
+
+        &:hover .ai-tool-group-summary-file-name {
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
     }
 
-    &.ai-tool-group-expanded .ai-tool-group-summary {
+    .ai-tool-group-summary-file-base {
+        color: @project-panel-text-1;
+    }
+
+    .ai-tool-group-summary-file-ext {
+        color: @project-panel-text-2;
+    }
+
+    .ai-tool-group-summary-more {
+        flex: none;
+        margin-left: 8px;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:hover {
+            color: @project-panel-text-1;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+    }
+
+    // "+N more" clicked: every name, wrapping under the list column, with
+    // "Show less" flowing after the last one.
+    .ai-tool-group-summary-open {
+        .ai-tool-group-summary-list {
+            flex-wrap: wrap;
+            gap: 3px 10px;
+        }
+
+        .ai-tool-group-summary-names {
+            display: contents;
+        }
+
+        .ai-tool-group-summary-file {
+            white-space: nowrap;
+        }
+
+        .ai-tool-group-summary-file + .ai-tool-group-summary-file,
+        .ai-tool-group-summary-more {
+            margin-left: 0;
+        }
+    }
+
+    &.ai-tool-group-expanded .ai-tool-group-summaries {
         display: none;
     }
 
