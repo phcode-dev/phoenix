@@ -127,6 +127,16 @@ define(function (require) {
                 clearRemotePicker();
             }
         }).catch(function (err) {
+            // Opening a project without a repository still refreshes the panel,
+            // so `git remote -v` lands here reporting there is no repository.
+            // That is the project the user chose, not a fault, and a modal over
+            // the editor for it interrupts them for nothing — drop the picker
+            // and keep the reason in the log.
+            if (ErrorHandler.contains(err, "not a git repository")) {
+                clearRemotePicker();
+                ErrorHandler.logError(err);
+                return;
+            }
             ErrorHandler.showError(err, Strings.ERROR_GETTING_REMOTES);
         });
     }
