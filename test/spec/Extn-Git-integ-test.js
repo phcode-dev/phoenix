@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     }
 
     let $, __PR, testWindow, ExtensionLoader, Menus, Commands, CommandManager, EditorManager, MainViewManager,
+        Strings             = require("strings"),
         SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
         nonGitReadOnlyTestFolder = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
 
@@ -355,6 +356,44 @@ define(function (require, exports, module) {
                 await __PR.execCommand(Commands.CMD_GIT_HISTORY_FILE);
                 await waitForHistoryVisible(true);
                 _verifyHistoryCommits();
+            });
+
+            it("should mark every commit local while the repo has no remote", async () => {
+                // This repo was created by `git init` earlier in the suite and
+                // never gained a remote, so nothing in it can have been pushed.
+                // The previous spec leaves file history up and the waterline is
+                // branch-only, so switch back to the branch's history first.
+                await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
+                await waitForHistoryVisible(false);
+                await __PR.execCommand(Commands.CMD_GIT_HISTORY_GLOBAL);
+                await waitForHistoryVisible(true);
+
+                const $historyList = $gitPanel.find("#git-history-list");
+                expect($historyList.data("file")).toBeFalsy();
+                const $commits = $historyList.find("tr.history-commit");
+                expect($commits.length).toBeGreaterThanOrEqual(2);
+                // no remote to compare against, so no commit is behind a waterline
+                expect($historyList.find("tr.history-commit.unpushed").length).toBe($commits.length);
+
+                const $banner = $historyList.find("tr.history-push-line.not-pushed");
+                expect($banner.length).toBe(1);
+                expect($banner.find(".push-line-ref").text().trim()).toBe(Strings.GIT_HISTORY_NOT_PUSHED);
+                expect($banner.find(".push-line-note").text().trim()).toBe(Strings.GIT_HISTORY_NO_TRACKING);
+
+                // Both commits fit in one page, so the list is already finished
+                // and closes the local run off at the initial commit.
+                expect($historyList.find("tr.history-push-end").length).toBe(1);
+                expect($historyList.attr("x-finished")).toBe("true");
+                // the waterline rows must not steal the initial-commit marker
+                expect($historyList.find("tr[x-initial-commit='true']").hasClass("history-commit")).toBeTrue();
+
+                // hand the panel back showing file history, the way this spec
+                // found it — the specs after this one run in order and start
+                // from that state.
+                await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
+                await waitForHistoryVisible(false);
+                await __PR.execCommand(Commands.CMD_GIT_HISTORY_FILE);
+                await waitForHistoryVisible(true);
             });
 
             async function waitForHistoryViewerVisible(visible) {

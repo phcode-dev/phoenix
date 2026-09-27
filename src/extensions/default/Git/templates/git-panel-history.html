@@ -1,5 +1,16 @@
 <table id="git-history-list" class="bottom-panel-table table table-striped table-condensed row-highlight">
     <tbody>
+        {{#notPushed}}
+        <tr class="history-push-line ahead not-pushed">
+            <td colspan="4">
+                <div class="push-line-inner">
+                    <span class="push-line-ref"><i class="octicon octicon-cloud-upload"></i>{{Strings.GIT_HISTORY_NOT_PUSHED}}</span>
+                    <span class="push-line-rule"></span>
+                    <span class="push-line-note">{{Strings.GIT_HISTORY_NO_TRACKING}}</span>
+                </div>
+            </td>
+        </tr>
+        {{/notPushed}}
         {{> commits}}
         {{^commits}}
         <tr class="history-empty-message"><td colspan="4">{{emptyMessage}}</td></tr>

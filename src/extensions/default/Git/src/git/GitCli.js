@@ -501,6 +501,76 @@ define(function (require, exports) {
             });
     }
 
+    /**
+     * Where the current branch's counterpart on the remote points right now.
+     *
+     * The configured upstream wins, but a branch pushed with an explicit refspec
+     * often never gets one, so the default remote's branch of the same name
+     * stands in — otherwise history would call a pushed branch local. Resolves
+     * to null when neither ref is there, which is what a branch that has never
+     * been pushed looks like.
+     *
+     * Usually one git call: a single `for-each-ref` reads the branch and that
+     * default-remote ref together, giving the upstream's name and the hash in
+     * the same pass. Only a branch tracking some other ref needs a second.
+     *
+     * @param {string} branch - name of the current branch
+     * @return {Promise<?{ref: string, hash: string}>} null when there is no counterpart
+     */
+    function getRemoteBranchHead(branch) {
+        if (!branch) {
+            return Promise.resolve(null);
+        }
+        const remotes = Preferences.get("defaultRemotes") || {};
+        const remote = remotes[Preferences.get("currentGitRoot")];
+        const guess = remote ? remote + "/" + branch : null;
+        // The full refname disambiguates: a branch really can be called
+        // "origin/ai", and then both rows would answer to the same short name.
+        const localRef = "refs/heads/" + branch;
+        const guessRef = guess ? "refs/remotes/" + guess : null;
+        // "|" is legal in a ref name, so the fields are parted the way
+        // getHistory above does it rather than on a character refs may contain.
+        const separator = "_._";
+        const args = [
+            "for-each-ref",
+            "--format=%(refname)" + separator + "%(upstream:short)" + separator + "%(objectname)",
+            localRef
+        ];
+        if (guessRef) { args.push(guessRef); }
+
+        // One pass over both refs: the branch row carries the upstream's name,
+        // the remote row carries the hash. A ref that is not there prints
+        // nothing rather than failing, so absence needs no special case.
+        return git(args).then(function (stdout) {
+            let upstream = null, guessHash = null;
+            (stdout || "").split("\n").forEach(function (line) {
+                const parts = line.trim().split(separator);
+                if (parts.length < 3) { return; }
+                if (parts[0] === localRef) {
+                    upstream = parts[1] || null;
+                } else if (parts[0] === guessRef) {
+                    guessHash = parts[2] || null;
+                }
+            });
+            if (upstream && upstream !== guess) {
+                // Tracking something other than <remote>/<branch>, so its hash
+                // was not in the pass above. rev-parse resolves it whatever it
+                // is — a remote-tracking ref, or a local branch for `remote = .`
+                return git(["rev-parse", "--verify", "--quiet", upstream])
+                    .then(function (out) {
+                        const hash = (out || "").trim();
+                        return hash ? { ref: upstream, hash: hash } : null;
+                    })
+                    .catch(function () { return null; });
+            }
+            // The upstream is the ref just read, or there is no upstream and the
+            // branch was pushed to its own name; either way the hash is in hand.
+            return guessHash ? { ref: guess, hash: guessHash } : null;
+        }).catch(function () {
+            return null;
+        });
+    }
+
     // Get list of deleted files between two branches
     function getDeletedFiles(oldBranch, newBranch) {
         return git(["diff", "--no-ext-diff", "--name-status", oldBranch + ".." + newBranch])
@@ -1166,6 +1236,7 @@ define(function (require, exports) {
     exports.setUpstreamBranch         = setUpstreamBranch;
     exports.getCurrentBranchName      = getCurrentBranchName;
     exports.getCurrentUpstreamBranch  = getCurrentUpstreamBranch;
+    exports.getRemoteBranchHead       = getRemoteBranchHead;
     exports.getConfig                 = getConfig;
     exports.setConfig                 = setConfig;
     exports.getBranches               = getBranches;

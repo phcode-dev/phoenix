@@ -452,6 +452,95 @@
             width: 50px;
         }
     }
+    // The push waterline: commits above it are not on the remote yet. They
+    // carry the same orange edge the gutter puts on a modified line, so "edge
+    // means not saved upstream yet" reads the same in the editor and here.
+    // box-shadow rather than the gutter's border-left, which would widen the
+    // cell and shift the whole column.
+    tbody tr.history-commit.unpushed > td:first-child {
+        box-shadow: inset 3px 0 0 @git-orange;
+        .dark & {
+            box-shadow: inset 3px 0 0 @dark-git-orange;
+        }
+    }
+    tbody tr.history-push-line > td {
+        width: auto;
+        padding: 0;
+        border: 0;
+        background: none;
+        .push-line-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 3px 10px 3px 8px;
+            user-select: none;
+        }
+        // Blue while there is nothing to push: the ref is just a landmark. The
+        // `.ahead` rule below repaints it when commits are waiting, so the
+        // marker states what is pending instead of always looking urgent.
+        .push-line-ref {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            flex: 0 0 auto;
+            font-size: 10.5px;
+            line-height: 1;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 3px 7px;
+            border-radius: 3px;
+            color: @git-blue-text;
+            border: 1px solid @git-blue-text;
+            .dark & {
+                color: @git-dark-blue-text;
+                border-color: @git-dark-blue-text;
+            }
+        }
+        .push-line-rule {
+            flex: 1 1 auto;
+            height: 0;
+            border-top: 1px dashed @git-blue-text;
+            opacity: 0.45;
+            .dark & {
+                border-top-color: @git-dark-blue-text;
+            }
+        }
+        .push-line-note {
+            flex: 0 0 auto;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0.8;
+            color: @git-blue-text;
+            .dark & {
+                color: @git-dark-blue-text;
+            }
+        }
+    }
+    // Commits are waiting: the orange run above closes on an orange line, so
+    // the block and its boundary read as one mark rather than two.
+    tbody tr.history-push-line.ahead > td {
+        .push-line-ref {
+            color: @git-orange-text;
+            border-color: @git-orange;
+            .dark & {
+                color: @dark-git-orange;
+                border-color: @dark-git-orange;
+            }
+        }
+        .push-line-rule {
+            border-top-color: @git-orange;
+            opacity: 0.9;
+            .dark & {
+                border-top-color: @dark-git-orange;
+            }
+        }
+        .push-line-note {
+            color: @git-orange-text;
+            .dark & {
+                color: @dark-git-orange;
+            }
+        }
+    }
     tbody tr.history-empty-message td {
         width: auto;
         padding: 15px;

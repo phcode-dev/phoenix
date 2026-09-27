@@ -82,6 +82,10 @@ define(function (require, exports) {
         return GitCli.getHistory(branch, skip, file);
     }
 
+    function getRemoteBranchHead(branch) {
+        return GitCli.getRemoteBranchHead(branch);
+    }
+
     function resetIndex() {
         return GitCli.reset();
     }
@@ -180,6 +184,7 @@ define(function (require, exports) {
     exports.getAllBranches          = getAllBranches;
     exports.getHistory              = getHistory;
     exports.getFileHistory          = getFileHistory;
+    exports.getRemoteBranchHead     = getRemoteBranchHead;
     exports.resetIndex              = resetIndex;
     exports.discardAllChanges       = discardAllChanges;
     exports.getMergeInfo            = getMergeInfo;
