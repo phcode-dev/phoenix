@@ -604,20 +604,6 @@ async function _getAISessionTitle(sessionId, projectPath) {
     }
 }
 
-/**
- * Resolve the user's globally installed Claude CLI, honouring the path
- * override configured in AI Settings. Kept as a local function so the SDK
- * path below reads the same as it always has; the search itself now lives
- * in cli-locator.js, shared with the other CLIs the panel can drive.
- * Pass `{ force: true }` to invalidate the cache after a spawn failure.
- * @return {Promise<string|null>} absolute path, or null when not found
- */
-function findGlobalClaudeCli(opts) {
-    return CliLocator.locateCli("claude", opts).then(function (result) {
-        return result.path;
-    });
-}
-
 // Brand names for the messages below. Not translatable and never shown
 // raw — the browser maps errorCode to a localized string; these only reach
 // logs and metrics.
@@ -826,7 +812,7 @@ exports.getCliSpawnProfile = async function (params) {
     if (!result.available) {
         return Object.assign({}, result, { command: null, args: [] });
     }
-    const profile = CliLocator.getSpawnProfile(result.path);
+    const profile = CliLocator.getSpawnProfile(result.path, result.source);
     return Object.assign({}, result, profile);
 };
 
@@ -2118,7 +2104,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     // It also carries the live preview nudge as a fallback for
                     // Claude CLI versions that predate PostToolBatch: the batch
                     // hook below is the primary path, but we run the user's
-                    // global CLI (findGlobalClaudeCli) so we can't assume it.
+                    // whichever CLI the locator picked, so we can't assume it.
                     // Whichever fires first takes the hint; the other sees a
                     // cleared counter.
                     hooks: [
@@ -2214,10 +2200,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         };
     }
 
-    // Set Claude CLI path if found
-    const claudePath = await findGlobalClaudeCli();
-    if (claudePath) {
-        queryOptions.pathToClaudeCodeExecutable = claudePath;
+    // Set Claude CLI path if found. The env the binary's origin calls for
+    // rides along: the SDK spawns the same executable the CLI pane does, so
+    // the bundled copy must not try to auto-update here either.
+    const located = await CliLocator.locateCli("claude");
+    if (located.path) {
+        queryOptions.pathToClaudeCodeExecutable = located.path;
+        Object.assign(queryOptions.env, CliLocator.getSourceEnv(located.source));
     }
 
     if (model) {

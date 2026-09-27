@@ -73,12 +73,12 @@ function _runProcess(command, args, env) {
 
 /**
  * Return a launch profile and the input environment after the locator runs.
- * @param {Object} params - Simulated platform, env, and cliPath
+ * @param {Object} params - Simulated platform, env, cliPath, and locate source
  * @return {Promise<Object>} Profile and environment for Jasmine assertions
  */
-async function getSpawnProfile({platform, env, cliPath}) {
+async function getSpawnProfile({platform, env, cliPath, source}) {
     const locator = _loadLocator(platform, env);
-    return { profile: locator.getSpawnProfile(cliPath), env };
+    return { profile: locator.getSpawnProfile(cliPath, source), env };
 }
 
 /**

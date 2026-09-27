@@ -781,6 +781,26 @@ function findDownloader() {
 }
 
 /**
+ * Env a CLI needs on top of PATH, decided by where the binary came from.
+ *
+ * The bundled Claude Code ships inside Phoenix and is replaced when Phoenix
+ * updates, so its own auto-updater has nothing useful to do — and it cannot
+ * do it anyway: it resolves the npm prefix of whatever install it thinks it
+ * is and tries to write there, which is a directory Phoenix neither owns nor
+ * should touch. It fails every launch and says so in red across the CLI pane
+ * ("Auto-update failed: no write permission to npm prefix"). Turning the
+ * updater off is the supported way out (Anthropic set the same var for their
+ * own managed runs). A CLI the *user* installed keeps its updater: that copy
+ * is theirs to keep current, and it is how their version eventually
+ * overtakes the bundled one.
+ * @param {?string} source - `source` from locateCli(): "bundled" when ours
+ * @return {Object}
+ */
+function _cliSourceEnv(source) {
+    return source === "bundled" ? { DISABLE_AUTOUPDATER: "1" } : {};
+}
+
+/**
  * How to hand a resolved binary to node-pty.
  *
  * node-pty goes through CreateProcess, which runs .exe/.com only — a
@@ -789,12 +809,14 @@ function findDownloader() {
  * to spawn, so every terminal caller must resolve through here rather than
  * using the raw path.
  * `env` carries the same PATH used for probes so child tools such as npm
- * remain available in the terminal. Callers must forward it to the PTY.
+ * remain available in the terminal, plus whatever `source` implies. Callers
+ * must forward it to the PTY.
  * @param {string} cliPath - Resolved CLI path
+ * @param {?string} [source] - `source` from locateCli(), for the env above
  * @return {{command: string, args: Array<string>, env: Object}}
  */
-function getSpawnProfile(cliPath) {
-    const env = _cliPathEnv(cliPath, process.env);
+function getSpawnProfile(cliPath, source) {
+    const env = Object.assign(_cliPathEnv(cliPath, process.env), _cliSourceEnv(source));
     if (isWindows && /\.(cmd|bat)$/i.test(cliPath || "")) {
         return { command: process.env.COMSPEC || "cmd.exe", args: ["/c", cliPath], env };
     }
@@ -809,6 +831,7 @@ exports.locateCli = locateCli;
 exports.validateCliPath = validateCliPath;
 exports.findDownloader = findDownloader;
 exports.getSpawnProfile = getSpawnProfile;
+exports.getSourceEnv = _cliSourceEnv;
 exports.compareVersions = compareVersions;
 exports.setBundledRoot = setBundledRoot;
 exports.setOverrides = setOverrides;
