@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} étapes",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} échecs",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Lecture de {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Modifications : {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Afficher moins",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} autres",
   "AI_CHAT_TOOL_FAILED_TAG": "Échec",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Tronqué : seuls les {0} premiers caractères ont été conservés dans l'historique du chat.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "L'IA effectue actuellement une tâche. Démarrer une nouvelle conversation l'interrompra. Continuer ?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "L'IA est au travail",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "L'IA effectue actuellement une tâche. Passer à une conversation précédente l'interrompra. Continuer ?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Terminer cette session CLI ?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ceci mettra fin à la session Claude Code CLI en cours et en démarrera une nouvelle. Continuer ?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Ceci mettra fin à la session Codex CLI en cours et en démarrera une nouvelle. Continuer ?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Disponible dans Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "L'exécution de Claude Code dans le panneau Phoenix AI est une fonctionnalité Pro. Cela donne à Claude l'accès aux intégrations de Phoenix telles que votre éditeur et l'Aperçu en direct. Vous pouvez toujours exécuter Claude Code CLI gratuitement depuis le Terminal, sans les intégrations de Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "L'exécution de Codex dans le panneau Phoenix AI est une fonctionnalité Pro. Vous pouvez toujours exécuter Codex CLI gratuitement depuis le Terminal.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Impossible d'atteindre l'ancien site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} n'a pas pu se connecter à {0} pour rechercher vos projets et paramètres, donc rien n'a été modifié. Vérifiez votre connexion Internet, puis réessayez avec {1}.",
   "CMD_MIGRATE_DATA": "Migrer mes données depuis {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Modifications : {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Afficher moins"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Démarrer une nouvelle session {0} ?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ceci met fin à la session {0} en cours, ainsi qu'à toute tâche qu'elle exécute, et en démarre une nouvelle.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Nouvelle session",
+  "AI_CHAT_CLI_STOP_BTN": "Arrêter",
+  "AI_CHAT_CLI_STOP_TITLE": "Arrêter {0}. Met fin à cette session.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Arrêter {0} ?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Ceci met fin à la session {0} en cours, ainsi qu'à toute tâche qu'elle exécute."
 });

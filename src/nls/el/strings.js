@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} βήματα",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} απέτυχαν",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Διαβάστηκαν {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Τροποποιημένα {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Εμφάνιση λιγότερων",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} ακόμη",
   "AI_CHAT_TOOL_FAILED_TAG": "Αποτυχία",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Περικοπή: μόνο οι πρώτοι {0} χαρακτήρες διατηρήθηκαν στο ιστορικό της συνομιλίας.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Αυτήν τη στιγμή η AI εκτελεί μια εργασία. Η έναρξη νέας συνομιλίας θα τη διακόψει. Θέλετε να συνεχίσετε;",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Η AI εργάζεται",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Αυτήν τη στιγμή η AI εκτελεί μια εργασία. Η μετάβαση σε μια προηγούμενη συνομιλία θα τη διακόψει. Θέλετε να συνεχίσετε;",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Τερματισμός αυτής της συνεδρίας CLI;",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Αυτό θα τερματίσει την τρέχουσα συνεδρία Claude Code CLI και θα ξεκινήσει μια νέα. Συνέχεια;",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Αυτό θα τερματίσει την τρέχουσα συνεδρία Codex CLI και θα ξεκινήσει μια νέα. Συνέχεια;",
   "AI_CHAT_CLI_UPSELL_TITLE": "Διαθέσιμο στο Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Η εκτέλεση του Claude Code μέσα στον πίνακα Phoenix AI είναι μια λειτουργία Pro. Παρέχει στον Claude πρόσβαση στις ενσωματώσεις του Phoenix, όπως ο επεξεργαστής σας και η Ζωντανή Προεπισκόπηση. Μπορείτε ακόμα να εκτελείτε το Claude Code CLI δωρεάν από το Τερματικό, χωρίς τις ενσωματώσεις του Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Η εκτέλεση του Codex εντός του πίνακα Phoenix AI είναι μια λειτουργία Pro. Μπορείτε ακόμα να εκτελέσετε το Codex CLI δωρεάν από το Τερματικό.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Αδυναμία πρόσβασης στον παλιό ιστότοπο",
   "MIGRATE_UNREACHABLE_MESSAGE": "Το {APP_NAME} δεν μπόρεσε να συνδεθεί στο {0} για την αναζήτηση των έργων και των ρυθμίσεών σας, επομένως δεν έχει αλλάξει τίποτα. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο και, στη συνέχεια, δοκιμάστε ξανά με το {1}.",
   "CMD_MIGRATE_DATA": "Μεταφορά των δεδομένων μου από το {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Τροποποιημένα {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Εμφάνιση λιγότερων"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Έναρξη νέας συνεδρίας {0};",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Αυτό τερματίζει την τρέχουσα συνεδρία {0}, μαζί με οποιαδήποτε εργασία εκτελεί, και ξεκινά μια νέα.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Νέα Συνεδρία",
+  "AI_CHAT_CLI_STOP_BTN": "Διακοπή",
+  "AI_CHAT_CLI_STOP_TITLE": "Διακοπή {0}. Τερματίζει αυτήν τη συνεδρία.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Διακοπή {0};",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Αυτό τερματίζει την τρέχουσα συνεδρία {0}, μαζί με οποιαδήποτε εργασία εκτελεί."
 });

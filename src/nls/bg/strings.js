@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} стъпки",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} неуспеха",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Прочитане на {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Редактирани {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Покажи по-малко",
   "AI_CHAT_TOOL_GROUP_MORE": "+още {0}",
   "AI_CHAT_TOOL_FAILED_TAG": "неуспешно",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Съкратено: само първите {0} символа бяха запазени в историята на чата.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "В момента AI изпълнява задача. Започването на нов разговор ще я спре. Желаете ли да продължите?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI работи",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "В момента AI изпълнява задача. Превключването към предишен разговор ще я спре. Желаете ли да продължите?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Да се прекрати ли тази CLI сесия?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Това ще прекрати текущата сесия на Claude Code CLI и ще стартира нова. Желаете ли да продължите?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Това ще прекрати текущата Codex CLI сесия и ще стартира нова. Да продължите ли?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Достъпно в Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Изпълнението на Claude Code в панела Phoenix AI е Pro функция. То дава на Claude достъп до интеграциите на Phoenix, като вашия редактор и преглед на живо. Все още можете да изпълнявате Claude Code CLI безплатно от терминала, без интеграциите на Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Използването на Codex в AI панела на Phoenix е Pro функция. Все още можете да използвате Codex CLI безплатно от Терминала.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не може да се осъществи връзка със стария сайт",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не можа да се свърже с {0}, за да потърси Вашите проекти и настройки, така че нищо не е променено. Проверете интернет връзката си, след това опитайте отново с {1}.",
   "CMD_MIGRATE_DATA": "Мигриране на данните ми от {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Редактирани {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Покажи по-малко"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Да се започне ли нова {0} сесия?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Това ще прекрати текущата {0} сесия, заедно с всяка задача, по която работи, и ще започне нова.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Нова сесия",
+  "AI_CHAT_CLI_STOP_BTN": "Спиране",
+  "AI_CHAT_CLI_STOP_TITLE": "Спиране на {0}. Прекратява тази сесия.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Да се спре ли {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Това ще прекрати текущата {0} сесия, заедно с всяка задача, по която работи."
 });

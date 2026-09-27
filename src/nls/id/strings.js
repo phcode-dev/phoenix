@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} langkah",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} gagal",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Membaca {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Diubah {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Tampilkan lebih sedikit",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} lagi",
   "AI_CHAT_TOOL_FAILED_TAG": "gagal",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Dipotong: hanya {0} karakter pertama yang disimpan di riwayat obrolan",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI saat ini sedang mengerjakan tugas. Memulai percakapan baru akan menghentikannya. Lanjutkan?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI sedang bekerja",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI saat ini sedang mengerjakan tugas. Beralih ke percakapan sebelumnya akan menghentikannya. Lanjutkan?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Akhiri sesi CLI ini?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ini akan mengakhiri sesi Claude Code CLI yang sedang berjalan dan memulai sesi yang baru. Lanjutkan?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Ini akan mengakhiri sesi Codex CLI yang sedang berjalan dan memulai yang baru. Lanjutkan?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Tersedia di Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Menjalankan Claude Code di dalam panel Phoenix AI adalah fitur Pro. Fitur ini memberikan Claude akses ke integrasi Phoenix seperti editor Anda dan Pratinjau Langsung (Live Preview). Anda masih dapat menjalankan Claude Code CLI secara gratis dari Terminal, tanpa integrasi Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Menjalankan Codex di dalam panel Phoenix AI adalah fitur Pro. Anda masih dapat menjalankan Codex CLI secara gratis dari Terminal.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
   "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Diubah {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Tampilkan lebih sedikit"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Mulai sesi {0} baru?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tindakan ini akan mengakhiri sesi {0} yang sedang berjalan, beserta tugas apa pun yang sedang dikerjakan, dan memulai sesi yang baru.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Sesi Baru",
+  "AI_CHAT_CLI_STOP_BTN": "Hentikan",
+  "AI_CHAT_CLI_STOP_TITLE": "Hentikan {0}. Mengakhiri sesi ini.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Hentikan {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Tindakan ini akan mengakhiri sesi {0} yang sedang berjalan, beserta tugas apa pun yang sedang dikerjakan."
 });

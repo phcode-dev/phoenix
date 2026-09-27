@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} 個步驟",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} 個失敗",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "讀取 {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "已編輯 {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "收合",
   "AI_CHAT_TOOL_GROUP_MORE": "還有 +{0} 個",
   "AI_CHAT_TOOL_FAILED_TAG": "失敗",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "已截斷：僅保留聊天記錄中的前 {0} 個字元",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI 目前正在處理任務。開始新對話將會中止目前的任務。要繼續嗎？",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI 正在處理中",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI 目前正在處理任務。切換至先前的對話將會中止目前的任務。要繼續嗎？",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "結束此 CLI 工作階段？",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "這將會結束執行中的 Claude Code CLI 工作階段，並開始一個全新的工作階段。要繼續嗎？",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "這將會結束正在執行的 Codex CLI 工作階段，並開始一個新的。要繼續嗎？",
   "AI_CHAT_CLI_UPSELL_TITLE": "僅於 Phoenix Pro 提供",
   "AI_CHAT_CLI_UPSELL_MSG": "在 Phoenix AI 面板中執行 Claude Code 為 Pro 版本專屬功能。這能讓 Claude 存取 Phoenix 的整合功能，例如您的編輯器和即時預覽。您仍然可以從終端機免費執行 Claude Code CLI，但無法使用 Phoenix AI 的整合功能。",
   "AI_CHAT_CODEX_UPSELL_MSG": "在 Phoenix AI 面板中執行 Codex 是 Pro 版功能。您仍然可以從終端機免費執行 Codex CLI。",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
   "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "已編輯 {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "收合"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "開始新的 {0} 工作階段？",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "這將會結束目前執行中的 {0} 工作階段，以及它正在處理的任何任務，並開始一個全新的工作階段。",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "新工作階段",
+  "AI_CHAT_CLI_STOP_BTN": "停止",
+  "AI_CHAT_CLI_STOP_TITLE": "停止 {0}。結束此工作階段。",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "停止 {0}？",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "這將會結束目前執行中的 {0} 工作階段，以及它正在處理的任何任務。"
 });

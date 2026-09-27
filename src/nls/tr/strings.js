@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} adım",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} başarısız",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} okuma",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "{0} düzenlendi",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Daha az göster",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} tane daha",
   "AI_CHAT_TOOL_FAILED_TAG": "başarısız",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Kırpıldı: Sohbet geçmişinde yalnızca ilk {0} karakter korundu.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Yapay Zeka şu anda bir görev üzerinde çalışıyor. Yeni bir sohbet başlatmak bu işlemi durduracaktır. Devam edilsin mi?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Yapay Zeka çalışıyor",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Yapay Zeka şu anda bir görev üzerinde çalışıyor. Önceki bir sohbete geçmek bu işlemi durduracaktır. Devam edilsin mi?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Bu CLI oturumu sonlandırılsın mı?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Bu işlem, mevcut Claude Code CLI oturumunu sonlandırıp yeni bir oturum başlatacak. Devam edilsin mi?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Bu işlem, mevcut Codex CLI oturumunu sonlandırıp yeni bir oturum başlatacak. Devam edilsin mi?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro'da mevcut",
   "AI_CHAT_CLI_UPSELL_MSG": "Claude Code'u Phoenix AI paneli içinde çalıştırmak bir Pro özelliğidir. Bu, Claude'a düzenleyiciniz ve Canlı Önizleme gibi Phoenix entegrasyonlarına erişim sağlar. Claude Code CLI'ı, Phoenix AI entegrasyonları olmadan Terminal'den ücretsiz olarak çalıştırmaya devam edebilirsiniz.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Codex'i Phoenix AI paneli içinde çalıştırmak bir Pro özelliğidir. Codex CLI'ı Terminal'den ücretsiz olarak çalıştırmaya devam edebilirsiniz.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
   "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "{0} düzenlendi",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Daha az göster"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Yeni bir {0} oturumu başlatılsın mı?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Bu, mevcut {0} oturumunu ve üzerinde çalıştığı tüm görevleri sonlandırır ve yeni bir oturum başlatır.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Yeni Oturum",
+  "AI_CHAT_CLI_STOP_BTN": "Durdur",
+  "AI_CHAT_CLI_STOP_TITLE": "{0} oturumunu durdurur. Bu işlem oturumu sonlandırır.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0} oturumu durdurulsun mu?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Bu, mevcut {0} oturumunu ve üzerinde çalıştığı tüm görevleri sonlandıracaktır."
 });
