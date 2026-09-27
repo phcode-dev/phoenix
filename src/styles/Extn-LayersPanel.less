@@ -34,7 +34,7 @@
 @layers-row-height:     28px;
 @layers-label-min-width: 72px;
 @layers-row-intrinsic-width: 115px;
-@layers-tools-width:    106px;
+@layers-tools-width:    130px;
 @layers-script-tools-width: 34px;
 @layers-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 @layers-prop-name:      #9cdcfe;
@@ -982,7 +982,7 @@
         padding-right: 0;
     }
 
-    .layers-node:not(.layers-script-node) .layers-action-select-parent,
+    // A script-added element has no source to edit, so select parent is its only tool.
     .layers-node.layers-script-node .layers-node-action:not(.layers-action-select-parent) {
         display: none;
     }
