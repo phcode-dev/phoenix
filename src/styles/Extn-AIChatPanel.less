@@ -2034,6 +2034,10 @@
             border-radius: 3px;
             font-size: @sidebar-md-code-font-size;
             font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+            // Bootstrap's base `code { white-space: nowrap }` targets the
+            // element directly, so a long inline path or identifier ran off
+            // the panel edge instead of wrapping with the surrounding prose.
+            white-space: pre-wrap;
         }
 
         pre {
@@ -3557,6 +3561,7 @@
         border-radius: 3px;
         font-size: @sidebar-md-code-font-size;
         font-family: 'SourceCodePro-Medium', 'SourceCodePro', monospace;
+        white-space: pre-wrap; // see .ai-msg-content code
     }
 
     pre {
