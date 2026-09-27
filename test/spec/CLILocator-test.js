@@ -35,6 +35,23 @@ define(function (require, exports, module) {
             });
         });
 
+        it("should silence the auto-updater only for the bundled Claude Code", async function () {
+            const args = {
+                platform: "linux", env: { PATH: "/usr/bin" }, cliPath: "/opt/node/bin/claude"
+            };
+            // Ours: it cannot write to the npm prefix it thinks it owns, and
+            // says so in red on every launch. Phoenix updates this copy.
+            const bundled = await nodeConnector.execPeer("getSpawnProfile",
+                Object.assign({ source: "bundled" }, args));
+            expect(bundled.profile.env.DISABLE_AUTOUPDATER).toBe("1");
+            // Theirs: left alone, so their own install can still catch up.
+            for (const source of ["native", "fallback", "override", null]) {
+                const own = await nodeConnector.execPeer("getSpawnProfile",
+                    Object.assign({ source }, args));
+                expect(Object.keys(own.profile.env)).withContext(source).toEqual(["PATH"]);
+            }
+        });
+
         it("macOS: should make Homebrew bin available to the updater", async function () {
             const result = await nodeConnector.execPeer("getSpawnProfile", {
                 platform: "darwin",
