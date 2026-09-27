@@ -600,6 +600,8 @@
           clearInterval(interval);
           PhStore.storageReadyPromise
                   .finally(()=>{
+                    // Refresh the runner bootstrap and modules after saved source edits.
+                    window.require = {urlArgs: "_phoenixTestRun=" + Date.now()};
                     loadJS('../src/thirdparty/requirejs/require.js', _requireDone, document.body, "SpecRunner");
                   });
         }
