@@ -6,6 +6,7 @@ define(function (require) {
         FileUtils = brackets.getModule("file/FileUtils"),
         LocalizationUtils = brackets.getModule("utils/LocalizationUtils"),
         Strings = brackets.getModule("strings"),
+        StringUtils = brackets.getModule("utils/StringUtils"),
         Metrics = brackets.getModule("utils/Metrics"),
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache");
@@ -20,7 +21,8 @@ define(function (require) {
 
     // Templates
     var gitPanelHistoryTemplate = require("text!templates/git-panel-history.html"),
-        gitPanelHistoryCommitsTemplate = require("text!templates/git-panel-history-commits.html");
+        gitPanelHistoryCommitsTemplate = require("text!templates/git-panel-history-commits.html"),
+        gitPanelHistoryEndTemplate = require("text!templates/git-panel-history-end.html");
 
     // Module variables
     let $gitPanel         = $(null),
@@ -28,6 +30,14 @@ define(function (require) {
         $historyList      = $(null),
         commitCache       = [],
         lastDocumentSeen  = null;
+
+    // Where the branch stands against its remote, for the push waterline.
+    // `remoteHead` is null when the branch has no counterpart on the remote at
+    // all; `remoteHeadSeen` latches once the waterline has been placed, so the
+    // pages loaded after it are known to be pushed without re-testing them.
+    let remoteHead      = null,
+        remoteHeadSeen  = false,
+        unpushedCount   = 0;
 
     // must match the page size git log is invoked with in GitCli.getHistory
     const HISTORY_PAGE_SIZE = 100;
@@ -100,12 +110,15 @@ define(function (require) {
     function _renderHistoryTable(commits, file) {
         // calculate some missing stuff like avatars
         commits = addAdditionalCommitInfo(commits);
+        commits = markPushState(commits, file);
         commitCache = commitCache.concat(commits);
 
         const templateData = {
             commits: commits,
-            emptyMessage: file ? Strings.GIT_FILE_HISTORY_NOTHING_TO_SHOW : Strings.GIT_HISTORY_NOTHING_TO_SHOW,
-            Strings: Strings
+            // the banner only makes sense for a branch, not one file's history
+            notPushed: !file && !remoteHead && commits.length > 0,
+            Strings: Strings,
+            emptyMessage: file ? Strings.GIT_FILE_HISTORY_NOTHING_TO_SHOW : Strings.GIT_HISTORY_NOTHING_TO_SHOW
         };
 
         $tableContainer.find("#git-history-list").remove();
@@ -120,10 +133,30 @@ define(function (require) {
         if (commits.length < HISTORY_PAGE_SIZE) {
             // the full history is already here, so the last commit is the initial
             // one. with more pages the initial commit is marked by loadMoreHistory.
-            $historyList.attr("x-finished", "true");
-            $historyList
-                .find("tr.history-commit:last-child")
-                .attr("x-initial-commit", "true");
+            markHistoryFinished();
+        }
+    }
+
+    /**
+     * Note that the whole history is on screen.
+     *
+     * Marks the oldest commit so HistoryViewer knows it has nothing to diff
+     * against, and, for a branch with no counterpart on the remote, closes the
+     * unpushed run with a line — only here, because until the initial commit is
+     * reached a closing line would claim a bottom the list does not have yet.
+     *
+     * Matches the last commit row with `.last()` rather than `:last-child`: the
+     * waterline rows are siblings, so the oldest commit is not always the final
+     * child of the table body.
+     */
+    function markHistoryFinished() {
+        $historyList.attr("x-finished", "true");
+        const $lastCommit = $historyList.find("tr.history-commit").last();
+        $lastCommit.attr("x-initial-commit", "true");
+        if (!remoteHead && $lastCommit.length && !$historyList.find("tr.history-push-end").length) {
+            $lastCommit.after(Mustache.render(gitPanelHistoryEndTemplate, {
+                allLocalText: StringUtils.format(Strings.GIT_HISTORY_ALL_LOCAL, unpushedCount)
+            }));
         }
     }
 
@@ -134,14 +167,25 @@ define(function (require) {
         // clear cache
         commitCache = [];
 
+        // the waterline is recomputed per render: the remote may have moved
+        remoteHead = null;
+        remoteHeadSeen = false;
+        unpushedCount = 0;
+
         return Git.getCurrentBranchName().then(function (branchName) {
-            // Get the history commits of the current branch
-            var p = file ? Git.getFileHistory(file.relative, branchName) : Git.getHistory(branchName);
-            return p.then(function (commits) {
-                if (renderId === historyRenderId) {
-                    _renderHistoryTable(commits, file);
-                }
-                return true;
+            return Git.getRemoteBranchHead(branchName).catch(function () {
+                // a repo without remotes is normal, not an error to surface
+                return null;
+            }).then(function (head) {
+                remoteHead = head;
+                // Get the history commits of the current branch
+                var p = file ? Git.getFileHistory(file.relative, branchName) : Git.getHistory(branchName);
+                return p.then(function (commits) {
+                    if (renderId === historyRenderId) {
+                        _renderHistoryTable(commits, file);
+                    }
+                    return true;
+                });
             });
         }).catch(function (err) {
             if (renderId !== historyRenderId) {
@@ -184,15 +228,13 @@ define(function (require) {
                             return;
                         }
                         if (commits.length === 0) {
-                            $historyList.attr("x-finished", "true");
                             // marks initial commit as first
-                            $historyList
-                                .find("tr.history-commit:last-child")
-                                .attr("x-initial-commit", "true");
+                            markHistoryFinished();
                             return;
                         }
 
                         commits = addAdditionalCommitInfo(commits);
+                        commits = markPushState(commits, file);
                         commitCache = commitCache.concat(commits);
 
                         var templateData = {
@@ -238,6 +280,55 @@ define(function (require) {
             commit.hasTag = !!commit.tags;
         });
 
+        return commits;
+    }
+
+    /**
+     * Flag each commit against the remote, for the waterline the table draws.
+     *
+     * Commits arrive newest first, so everything listed before the remote's
+     * head is still local: walk until that commit shows up, mark it, and leave
+     * the rest alone — they are older than the remote tip and therefore pushed.
+     * The latch carries the answer across pages, since every later page is
+     * older than the one before it. With no counterpart on the remote nothing
+     * has been pushed and every commit is flagged.
+     *
+     * File history is skipped entirely: it lists only the commits touching one
+     * file, so the remote's head usually is not among them and every row would
+     * be wrongly called local.
+     *
+     * @param {Array<Object>} commits - commits for this page, newest first
+     * @param {?(Object|string)} file - whatever the caller holds for the file on
+     *      show; only its presence matters, the first page has the object and
+     *      later pages the relative path
+     * @return {Array<Object>} the same commits, flagged in place
+     */
+    function markPushState(commits, file) {
+        if (file) {
+            return commits;
+        }
+        _.forEach(commits, function (commit) {
+            if (!remoteHead) {
+                commit.unpushed = true;
+                return;
+            }
+            if (remoteHeadSeen) {
+                return;
+            }
+            if (commit.hash === remoteHead.hash) {
+                commit.isRemoteHead = true;
+                // the ref name is a git identifier, never translated
+                commit.remoteRef = remoteHead.ref;
+                commit.isAhead = unpushedCount > 0;
+                commit.pushStateText = commit.isAhead
+                    ? StringUtils.format(Strings.GIT_HISTORY_AHEAD, unpushedCount)
+                    : Strings.GIT_HISTORY_UP_TO_DATE;
+                remoteHeadSeen = true;
+                return;
+            }
+            commit.unpushed = true;
+            unpushedCount++;
+        });
         return commits;
     }
 
