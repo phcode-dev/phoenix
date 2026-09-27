@@ -46,11 +46,13 @@
 }
 
 
-/* SourceSansPro Semibold */
+/* SourceSansPro Semibold. It is also the heaviest weight shipped, so it covers
+   600 and bold too: registered as 500 alone, WebKit (macOS) drew a smeared
+   synthetic bold over it for any heavier weight, while Chrome used it as is. */
 @font-face {
     font-family: 'SourceSansPro';
     src: url('fonts/SourceSansPro/SourceSansPro-Semibold.ttf');
-    font-weight: @font-weight-semibold;
+    font-weight: @font-weight-semibold 700;
     font-style: normal;
 }
 
