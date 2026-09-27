@@ -111,20 +111,26 @@ define(function (require, exports, module) {
                 { systemVersion: "2.2.0", bundledVersion: "2.1.141" });
             expect(newer.path).withContext(JSON.stringify(newer)).toBe("/home/test/.local/bin/claude");
             expect(newer.source).toBe("native");
+            expect(newer.userInstalled).toBeTrue();
             const older = await nodeConnector.execPeer("locateWithBundled",
                 { systemVersion: "2.0.9", bundledVersion: "2.1.141" });
             expect(older.source).withContext(JSON.stringify(older)).toBe("bundled");
             expect(older.path).toContain("claude-agent-sdk-linux-x64");
             expect(older.version).toContain("2.1.141");
+            // the newer bundled copy runs, but the user still has a Claude Code of their own
+            expect(older.userInstalled).toBeTrue();
             const none = await nodeConnector.execPeer("locateWithBundled", { bundledVersion: "2.1.141" });
             expect(none.source).withContext(JSON.stringify(none)).toBe("bundled");
+            expect(none.userInstalled).toBeFalse();
             const nothing = await nodeConnector.execPeer("locateWithBundled", {});
             expect(nothing.path).toBeNull();
+            expect(nothing.userInstalled).toBeFalse();
             // A configured path is never second-guessed, older or not.
             const configured = await nodeConnector.execPeer("locateWithBundled",
                 { systemVersion: "2.0.9", bundledVersion: "2.1.141", override: "/home/test/.local/bin/claude" });
             expect(configured.source).withContext(JSON.stringify(configured)).toBe("override");
             expect(configured.path).toBe("/home/test/.local/bin/claude");
+            expect(configured.userInstalled).toBeTrue();
         }, 20000);
 
         it("should notice a cached Claude Code has gone, and fall back to the bundled one", async function () {
