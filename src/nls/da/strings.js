@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} trin",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} mislykkedes",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Læste {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Ændret {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Vis mindre",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} mere",
   "AI_CHAT_TOOL_FAILED_TAG": "Mislykket",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Afkortet: kun de første {0} tegn blev bibeholdt i chathistorikken",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI arbejder i øjeblikket på en opgave. Start af en ny samtale vil stoppe den. Fortsæt?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI arbejder",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI arbejder i øjeblikket på en opgave. Skift til en tidligere samtale vil stoppe den. Fortsæt?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Afslut denne CLI-session?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dette vil afslutte den kørende Claude Code CLI-session og starte en ny. Fortsæt?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Dette vil afslutte den kørende Codex CLI-session og starte en ny. Fortsæt?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Tilgængelig i Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "At køre Claude Code i Phoenix AI-panelet er en Pro-funktion. Det giver Claude adgang til Phoenix-integrationer som din editor og Live Preview. Du kan stadig køre Claude Code CLI gratis fra terminalen, uden Phoenix AI-integrationerne.",
   "AI_CHAT_CODEX_UPSELL_MSG": "At køre Codex i Phoenix AI-panelet er en Pro-funktion. Du kan stadig køre Codex CLI gratis fra terminalen.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunne ikke få forbindelse til den gamle side",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at finde dine projekter og indstillinger, så der er ikke blevet ændret noget. Tjek din internetforbindelse, og prøv derefter igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Ændret {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Vis mindre"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Start en ny {0}-session?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dette afslutter den kørende {0}-session, sammen med enhver opgave den arbejder på, og starter en ny.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Ny session",
+  "AI_CHAT_CLI_STOP_BTN": "Stop",
+  "AI_CHAT_CLI_STOP_TITLE": "Stop {0}. Afslutter denne session.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Stop {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Dette afslutter den kørende {0}-session, sammen med enhver opgave den arbejder på."
 });

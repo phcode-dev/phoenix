@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} koraka",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} neuspjelo",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Pročitano {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Uređeno {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Prikaži manje",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} više",
   "AI_CHAT_TOOL_FAILED_TAG": "Neuspjelo",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Skraćeno: Zadržano je samo prvih {0} znakova u povijesti razgovora.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI trenutno radi na zadatku. Pokretanje novog razgovora zaustavit će ga. Nastaviti?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI radi",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI trenutno radi na zadatku. Prebacivanje na prethodni razgovor zaustavit će ga. Nastaviti?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Prekinuti ovu CLI sesiju?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ovo će prekinuti pokrenutu Claude Code CLI sesiju i pokrenuti novu. Nastaviti?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Ovo će prekinuti pokrenutu Codex CLI sesiju i pokrenuti novu. Nastaviti?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Dostupno u Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Pokretanje Claude Codea unutar Phoenix AI panela je Pro značajka. To omogućuje Claudeu pristup Phoenix integracijama kao što su vaš uređivač i Live Preview. I dalje možete besplatno pokretati Claude Code CLI iz terminala, bez Phoenix AI integracija.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Pokretanje Codexa unutar Phoenix AI panela je Pro značajka. I dalje možete besplatno pokrenuti Codex CLI iz Terminala.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
   "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Uređeno {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Prikaži manje"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Pokrenuti novu {0} sesiju?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ovo završava trenutnu {0} sesiju, zajedno sa svim zadacima na kojima radi, i pokreće novu.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Nova sesija",
+  "AI_CHAT_CLI_STOP_BTN": "Zaustavi",
+  "AI_CHAT_CLI_STOP_TITLE": "Zaustavi {0}. Završava ovu sesiju.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Zaustaviti {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Ovo završava trenutnu {0} sesiju, zajedno sa svim zadacima na kojima radi."
 });

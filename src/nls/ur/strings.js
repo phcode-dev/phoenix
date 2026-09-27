@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} مراحل",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} ناکام",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "پڑھا {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "ترمیم شدہ {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "کم دکھائیں",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} مزید",
   "AI_CHAT_TOOL_FAILED_TAG": "ناکام",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "مختصر کیا گیا: چیٹ ہسٹری میں صرف پہلے {0} حروف رکھے گئے",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "اے آئی فی الحال ایک کام پر کام کر رہا ہے۔ نئی گفتگو شروع کرنے سے یہ رک جائے گا۔ جاری رکھیں؟",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "اے آئی کام کر رہا ہے",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "اے آئی فی الحال ایک کام پر کام کر رہا ہے۔ پچھلی گفتگو پر جانے سے یہ رک جائے گا۔ جاری رکھیں؟",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "یہ CLI سیشن ختم کریں؟",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "یہ جاری Claude Code CLI سیشن کو ختم کر کے ایک نیا شروع کر دے گا۔ جاری رکھیں؟",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "اس سے چلتا ہوا Codex CLI سیشن ختم ہو جائے گا اور ایک نیا شروع ہو جائے گا۔ جاری رکھیں؟",
   "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro میں دستیاب",
   "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI پینل کے اندر Claude Code چلانا ایک پرو فیچر ہے۔ یہ Claude کو Phoenix انٹیگریشنز جیسے آپ کے ایڈیٹر اور لائیو پریویو تک رسائی فراہم کرتا ہے۔ آپ اب بھی Phoenix AI انٹیگریشنز کے بغیر، ٹرمینل سے Claude Code CLI مفت میں چلا سکتے ہیں۔",
   "AI_CHAT_CODEX_UPSELL_MSG": "Phoenix AI پینل کے اندر Codex چلانا ایک پرو فیچر ہے۔ آپ اب بھی ٹرمینل سے Codex CLI مفت میں چلا سکتے ہیں۔",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "پرانی سائٹ تک رسائی ممکن نہ ہو سکی",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} آپ کے پروجیکٹس اور سیٹنگز تلاش کرنے کے لیے {0} سے منسلک نہیں ہو سکا، لہذا کوئی تبدیلی نہیں کی گئی ہے۔ اپنا انٹرنیٹ کنکشن چیک کریں، پھر {1} کے ساتھ دوبارہ کوشش کریں۔",
   "CMD_MIGRATE_DATA": "{0} سے میرا ڈیٹا منتقل کریں…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "ترمیم شدہ {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "کم دکھائیں"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "ایک نیا {0} سیشن شروع کریں؟",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "اس سے چل رہا {0} سیشن، اس کے زیرِ عمل کسی بھی کام کے ساتھ، ختم ہو جائے گا اور ایک نیا سیشن شروع ہو گا۔",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "نیا سیشن",
+  "AI_CHAT_CLI_STOP_BTN": "روکیں",
+  "AI_CHAT_CLI_STOP_TITLE": "{0} کو روکیں۔ یہ سیشن ختم کرتا ہے۔",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0} کو روکیں؟",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "اس سے چل رہا {0} سیشن، اس کے زیرِ عمل کسی بھی کام کے ساتھ، ختم ہو جائے گا۔"
 });

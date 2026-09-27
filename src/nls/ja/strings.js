@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} ステップ",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} 件失敗",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} 件を読み込み",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "編集済み ({0})",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "折りたたむ",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} 件",
   "AI_CHAT_TOOL_FAILED_TAG": "失敗",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "省略：チャット履歴には先頭の{0}文字のみが保持されました。",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "現在、AIがタスクを実行中です。新しい会話を開始すると、実行中のタスクは停止します。続行しますか？",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AIが実行中です",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "現在、AIがタスクを実行中です。以前の会話に切り替えると、実行中のタスクは停止します。続行しますか？",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "このCLIセッションを終了しますか？",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "実行中のClaude Code CLIセッションを終了し、新しいセッションを開始します。続行しますか？",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "実行中のCodex CLIセッションを終了して、新しいセッションを開始します。続行しますか？",
   "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Proで利用可能",
   "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AIパネル内でクロードコードを実行するのはProの機能です。これにより、クロードはエディターやライブプレビューといったPhoenixの統合機能にアクセスできるようになります。Phoenix AIの統合機能がなくても、ターミナルからクロードコードCLIを無料で引き続き実行できます。",
   "AI_CHAT_CODEX_UPSELL_MSG": "Phoenix AIパネル内でのCodexの実行はPro機能です。引き続き、ターミナルから無料でCodex CLIを実行できます。",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
   "CMD_MIGRATE_DATA": "{0}からデータを移行…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "編集済み ({0})",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "折りたたむ"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "新しい{0}セッションを開始しますか？",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "これにより、実行中の{0}セッションと、それが処理しているタスクはすべて終了し、新しいセッションが開始されます。",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "新規セッション",
+  "AI_CHAT_CLI_STOP_BTN": "停止",
+  "AI_CHAT_CLI_STOP_TITLE": "{0}を停止。このセッションを終了します。",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0}を停止しますか？",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "これにより、実行中の{0}セッションと、それが処理しているタスクはすべて終了します。"
 });

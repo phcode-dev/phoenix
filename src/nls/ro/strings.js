@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} pași",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} eșuate",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "S-a citit {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Editat {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Afișează mai puțin",
   "AI_CHAT_TOOL_GROUP_MORE": "+ încă {0}",
   "AI_CHAT_TOOL_FAILED_TAG": "Eșuat",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Trunchiat: doar primele {0} caractere s-au păstrat în istoricul conversației.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI-ul lucrează în prezent la o sarcină. Pornirea unei noi conversații va opri procesul curent. Continuați?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI lucrează",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI-ul lucrează în prezent la o sarcină. Comutarea la o conversație anterioară va opri procesul curent. Continuați?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Încheiați această sesiune CLI?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Aceasta va încheia sesiunea Claude Code CLI în curs de execuție și va porni una nouă. Continuați?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Aceasta va încheia sesiunea Codex CLI activă și va porni una nouă. Continuați?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Disponibil în Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Rularea Claude Code în panoul Phoenix AI este o funcționalitate Pro. Aceasta îi oferă lui Claude acces la integrările Phoenix, cum ar fi editorul și Previzualizarea Live. Puteți rula în continuare Claude Code CLI gratuit din Terminal, fără integrările Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Rularea Codex în panoul Phoenix AI este o funcționalitate Pro. Puteți rula în continuare Codex CLI gratuit din Terminal.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
   "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Editat {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Afișează mai puțin"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Porniți o nouă sesiune {0}?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Aceasta încheie sesiunea {0} curentă, împreună cu orice sarcină la care lucrează, și pornește una nouă.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Sesiune nouă",
+  "AI_CHAT_CLI_STOP_BTN": "Oprire",
+  "AI_CHAT_CLI_STOP_TITLE": "Oprește {0}. Încheie această sesiune.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Opriți {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Aceasta încheie sesiunea {0} curentă, împreună cu orice sarcină la care lucrează."
 });

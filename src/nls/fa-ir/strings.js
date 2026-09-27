@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} مرحله",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} مورد ناموفق",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "خواندن {0} مورد",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "ویرایش‌شده: {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "نمایش کمتر",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} مورد دیگر",
   "AI_CHAT_TOOL_FAILED_TAG": "ناموفق",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "کوتاه شده: فقط {0} کاراکتر اول در سابقهٔ چت نگه داشته شد",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "هوش مصنوعی در حال انجام یک کار است. شروع گفتگوی جدید، کار فعلی را متوقف می‌کند. آیا ادامه می‌دهید؟",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "هوش مصنوعی در حال کار است",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "هوش مصنوعی در حال انجام یک کار است. رفتن به یک گفتگوی قبلی، کار فعلی را متوقف می‌کند. آیا ادامه می‌دهید؟",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "این جلسهٔ CLI خاتمه یابد؟",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "با این کار، جلسهٔ فعلی Claude Code CLI خاتمه یافته و یک جلسهٔ جدید آغاز می‌شود. ادامه می‌دهید؟",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "این کار جلسه در حال اجرای Codex CLI را پایان داده و یک جلسه جدید را شروع می‌کند. ادامه می‌دهید؟",
   "AI_CHAT_CLI_UPSELL_TITLE": "در Phoenix Pro موجود است",
   "AI_CHAT_CLI_UPSELL_MSG": "اجرای Claude Code در پنل هوش مصنوعی Phoenix یک قابلیت Pro است. این قابلیت به Claude امکان دسترسی به یکپارچه‌سازی‌های Phoenix مانند ویرایشگر و پیش‌نمایش زنده شما را می‌دهد. شما همچنان می‌توانید Claude Code CLI را به صورت رایگان از ترمینال، بدون یکپارچه‌سازی‌های هوش مصنوعی Phoenix، اجرا کنید.",
   "AI_CHAT_CODEX_UPSELL_MSG": "اجرای Codex در پنل هوش مصنوعی Phoenix یک قابلیت Pro است. شما همچنان می‌توانید Codex CLI را به صورت رایگان از ترمینال اجرا کنید.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "عدم دسترسی به سایت قدیمی",
   "MIGRATE_UNREACHABLE_MESSAGE": "‏{APP_NAME} نتوانست به {0} متصل شود تا پروژه‌ها و تنظیمات شما را جستجو کند، بنابراین هیچ تغییری ایجاد نشده است. اتصال اینترنت خود را بررسی کنید، سپس با {1} دوباره تلاش کنید.",
   "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "ویرایش‌شده: {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "نمایش کمتر"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "شروع جلسهٔ جدید {0}؟",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "این کار به جلسهٔ {0} در حال اجرا، به همراه هر وظیفه‌ای که روی آن کار می‌کند، پایان داده و یک جلسهٔ تازه را شروع می‌کند.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "جلسهٔ جدید",
+  "AI_CHAT_CLI_STOP_BTN": "توقف",
+  "AI_CHAT_CLI_STOP_TITLE": "توقف {0}. به این جلسه پایان می‌دهد.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0} متوقف شود؟",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "این کار به جلسهٔ {0} در حال اجرا، به همراه هر وظیفه‌ای که روی آن کار می‌کند، پایان می‌دهد."
 });

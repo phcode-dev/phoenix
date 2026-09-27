@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} vaihetta",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} epäonnistunutta",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Luettu {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Muokattuja: {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Näytä vähemmän",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} lisää",
   "AI_CHAT_TOOL_FAILED_TAG": "epäonnistunut",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Katkaistu: vain ensimmäiset {0} merkkiä säilytettiin keskusteluhistoriassa",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Tekoälyllä on tehtävä kesken. Uuden keskustelun aloittaminen keskeyttää sen. Jatketaanko?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Tekoäly työskentelee",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Tekoälyllä on tehtävä kesken. Aiempaan keskusteluun siirtyminen keskeyttää sen. Jatketaanko?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Lopetetaanko tämä CLI-istunto?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tämä lopettaa käynnissä olevan Claude Code CLI -istunnon ja aloittaa uuden. Jatketaanko?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Tämä päättää käynnissä olevan Codex CLI -istunnon ja aloittaa uuden. Jatketaanko?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Saatavilla Phoenix Prossa",
   "AI_CHAT_CLI_UPSELL_MSG": "Claude Coden suorittaminen Phoenix AI -paneelissa on Pro-ominaisuus. Se antaa Claudelle pääsyn Phoenix-integraatioihin, kuten editoriisi ja Live Preview -esikatseluun. Voit silti suorittaa Claude Code CLI:n ilmaiseksi Terminaalissa ilman Phoenix AI -integraatioita.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Codexin käyttäminen Phoenix AI -paneelissa on Pro-ominaisuus. Voit silti käyttää Codex CLI:tä ilmaiseksi Päätteestä.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
   "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Muokattuja: {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Näytä vähemmän"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Aloitetaanko uusi {0}-istunto?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tämä päättää käynnissä olevan {0}-istunnon ja kaikki siihen liittyvät tehtävät ja aloittaa uuden.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Uusi istunto",
+  "AI_CHAT_CLI_STOP_BTN": "Pysäytä",
+  "AI_CHAT_CLI_STOP_TITLE": "Pysäytä {0}. Päättää tämän istunnon.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Pysäytetäänkö {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Tämä päättää käynnissä olevan {0}-istunnon ja kaikki siihen liittyvät tehtävät."
 });

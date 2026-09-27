@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} steg",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} misslyckade",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Läst {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Redigerade {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Visa färre",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} till",
   "AI_CHAT_TOOL_FAILED_TAG": "Misslyckad",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Trunkerad: endast de första {0} tecknen behölls i chatthistoriken",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI arbetar för närvarande med en uppgift. Om du startar en ny konversation avbryts den. Fortsätta?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI arbetar",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI arbetar för närvarande med en uppgift. Om du byter till en tidigare konversation avbryts den. Fortsätta?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Avsluta denna CLI-session?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Detta avslutar den pågående Claude Code CLI-sessionen och startar en ny. Fortsätta?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Detta kommer att avsluta den pågående Codex CLI-sessionen och starta en ny. Vill du fortsätta?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Tillgänglig i Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Att köra Claude Code i Phoenix AI-panelen är en Pro-funktion. Det ger Claude åtkomst till Phoenix-integrationer som din redigerare och Live Preview. Du kan fortfarande köra Claude Code CLI gratis från terminalen, utan Phoenix AI-integrationerna.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Att köra Codex i Phoenix AI-panelen är en Pro-funktion. Du kan fortfarande köra Codex CLI gratis från terminalen.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Redigerade {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Visa färre"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Starta en ny {0}-session?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Detta avslutar den pågående {0}-sessionen, tillsammans med alla uppgifter den arbetar med, och startar en ny.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Ny session",
+  "AI_CHAT_CLI_STOP_BTN": "Stoppa",
+  "AI_CHAT_CLI_STOP_TITLE": "Stoppa {0}. Avslutar den här sessionen.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Stoppa {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Detta avslutar den pågående {0}-sessionen, tillsammans med alla uppgifter den arbetar med."
 });

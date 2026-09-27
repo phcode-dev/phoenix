@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} soļu",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} neveiksmīgi",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Nolasīti {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Rediģēti {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Rādīt mazāk",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} vēl",
   "AI_CHAT_TOOL_FAILED_TAG": "Neveiksmīgi",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Saīsināts: tērzēšanas vēsturē saglabātas tikai pirmās {0} rakstzīmes",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI pašlaik veic uzdevumu. Jaunas sarunas sākšana to pārtrauks. Turpināt?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI strādā",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI pašlaik veic uzdevumu. Pārslēgšanās uz iepriekšēju sarunu to pārtrauks. Turpināt?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Pārtraukt šo CLI sesiju?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Šī darbība pārtrauks aktīvo Claude Code CLI sesiju un sāks jaunu. Turpināt?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Šī darbība pārtrauks pašreizējo Codex CLI sesiju un sāks jaunu. Turpināt?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Pieejams Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Claude Code palaišana Phoenix AI panelī ir Pro funkcija. Tā nodrošina Claude piekļuvi Phoenix integrācijām, piemēram, jūsu redaktoram un Live Preview. Jūs joprojām varat bez maksas palaist Claude Code CLI no termināļa, bez Phoenix AI integrācijām.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Codex palaišana Phoenix AI panelī ir Pro funkcija. Jūs joprojām varat bez maksas palaist Codex CLI no termināļa.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
   "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Rediģēti {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Rādīt mazāk"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Sākt jaunu {0} sesiju?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tādējādi tiks pārtraukta pašreizējā {0} sesija, kā arī jebkurš uzdevums, pie kura tā strādā, un tiks sākta jauna sesija.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Jauna sesija",
+  "AI_CHAT_CLI_STOP_BTN": "Apturēt",
+  "AI_CHAT_CLI_STOP_TITLE": "Apturēt {0}. Pārtrauc šo sesiju.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Apturēt {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Tādējādi tiks pārtraukta pašreizējā {0} sesija, kā arī jebkurš uzdevums, pie kura tā strādā."
 });

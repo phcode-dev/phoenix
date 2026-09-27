@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} خطوات",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} فشلت",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "قراءة {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "تم تعديل {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "عرض أقل",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} المزيد",
   "AI_CHAT_TOOL_FAILED_TAG": "فشل",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "تم الاقتطاع: تم الاحتفاظ بأول {0} حرفًا فقط في سجل المحادثة.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "الذكاء الاصطناعي يعمل حاليًا على مهمة. سيتسبب بدء محادثة جديدة في إيقافه. هل تريد المتابعة؟",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "الذكاء الاصطناعي يعمل",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "الذكاء الاصطناعي يعمل حاليًا على مهمة. سيتسبب الانتقال إلى محادثة سابقة في إيقافه. هل تريد المتابعة؟",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "إنهاء جلسة CLI هذه؟",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "سيؤدي هذا إلى إنهاء جلسة Claude Code CLI قيد التشغيل وبدء جلسة جديدة. هل تريد المتابعة؟",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "سيؤدي هذا إلى إنهاء جلسة Codex CLI قيد التشغيل وبدء جلسة جديدة. هل تريد المتابعة؟",
   "AI_CHAT_CLI_UPSELL_TITLE": "متوفر في Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "يُعد تشغيل Claude Code داخل لوحة Phoenix AI ميزة خاصة بإصدار Pro. فهي تمنح Claude إمكانية الوصول إلى تكاملات Phoenix مثل المحرر والمعاينة المباشرة. لا يزال بإمكانك تشغيل Claude Code CLI مجانًا من الطرفية، ولكن بدون تكاملات Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "تشغيل Codex داخل لوحة Phoenix AI هي ميزة Pro. لا يزال بإمكانك تشغيل Codex CLI مجانًا من الطرفية.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "تم تعديل {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "عرض أقل"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "بدء جلسة {0} جديدة؟",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "سيؤدي هذا إلى إنهاء جلسة {0} قيد التشغيل، بالإضافة إلى أي مهمة تعمل عليها، وبدء جلسة جديدة.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "جلسة جديدة",
+  "AI_CHAT_CLI_STOP_BTN": "إيقاف",
+  "AI_CHAT_CLI_STOP_TITLE": "إيقاف {0}. ينهي هذه الجلسة.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "إيقاف {0}؟",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "سيؤدي هذا إلى إنهاء جلسة {0} قيد التشغيل، بالإضافة إلى أي مهمة تعمل عليها."
 });
