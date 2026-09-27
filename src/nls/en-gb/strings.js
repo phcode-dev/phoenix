@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} steps",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} failed",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Read {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Edited {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Show less",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} more",
   "AI_CHAT_TOOL_FAILED_TAG": "failed",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Truncated: only the first {0} characters were kept in the chat history",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI is currently working on a task. Starting a new conversation will stop it. Continue?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI is working",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI is currently working on a task. Switching to a previous conversation will stop it. Continue?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "End this CLI session?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "This will end the running Claude Code CLI session and start a fresh one. Continue?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "This will end the running Codex CLI session and start a fresh one. Continue?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Available in Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Running Claude Code inside the Phoenix AI panel is a Pro feature. It gives Claude access to Phoenix integrations such as your editor and Live Preview. You can still run Claude Code CLI for free from the Terminal, without the Phoenix AI integrations.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Running Codex inside the Phoenix AI panel is a Pro feature. You can still run the Codex CLI for free from the Terminal.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Could not reach the old site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} could not connect to {0} to look for your projects and settings, so nothing has been changed. Check your internet connection, then try again with {1}.",
   "CMD_MIGRATE_DATA": "Migrate My Data From {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Edited {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Show less"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Start a new {0} session?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "This ends the running {0} session, along with any task it is working on, and starts a fresh one.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "New Session",
+  "AI_CHAT_CLI_STOP_BTN": "Stop",
+  "AI_CHAT_CLI_STOP_TITLE": "Stop {0}. Ends this session.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Stop {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "This ends the running {0} session, along with any task it is working on."
 });

@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} Schritte",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} fehlgeschlagen",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} gelesen",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Bearbeitet {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Weniger anzeigen",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} weitere",
   "AI_CHAT_TOOL_FAILED_TAG": "fehlgeschlagen",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Gekürzt: Nur die ersten {0} Zeichen wurden im Chat-Verlauf beibehalten.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Die KI arbeitet gerade an einer Aufgabe. Das Starten einer neuen Konversation bricht diese ab. Fortfahren?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "KI arbeitet",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Die KI arbeitet gerade an einer Aufgabe. Der Wechsel zu einer früheren Konversation bricht diese ab. Fortfahren?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Diese CLI-Sitzung beenden?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dies beendet die laufende Claude Code-CLI-Sitzung und startet eine neue. Fortfahren?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Dies beendet die laufende Codex-CLI-Sitzung und startet eine neue. Fortfahren?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Verfügbar in Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Die Ausführung von Claude Code im Phoenix AI-Panel ist eine Pro-Funktion. Dadurch erhält Claude Zugriff auf Phoenix-Integrationen wie deinen Editor und die Live-Vorschau. Du kannst Claude Code CLI weiterhin kostenlos über das Terminal ausführen, ohne die Phoenix AI-Integrationen.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Die Ausführung von Codex im Phoenix-AI-Panel ist eine Pro-Funktion. Sie können die Codex-CLI weiterhin kostenlos über das Terminal ausführen.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um Ihre Projekte und Einstellungen zu suchen, sodass nichts geändert wurde. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es dann mit {1} erneut.",
   "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Bearbeitet {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Weniger anzeigen"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Neue {0}-Sitzung starten?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dies beendet die laufende {0}-Sitzung sowie alle Aufgaben, an denen sie arbeitet, und startet eine neue.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Neue Sitzung",
+  "AI_CHAT_CLI_STOP_BTN": "Stoppen",
+  "AI_CHAT_CLI_STOP_TITLE": "{0} stoppen. Beendet diese Sitzung.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0} stoppen?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Dies beendet die laufende {0}-Sitzung sowie alle Aufgaben, an denen sie arbeitet."
 });

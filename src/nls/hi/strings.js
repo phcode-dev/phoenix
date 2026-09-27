@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} चरण",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} विफल",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} पढ़ें",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "संपादित {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "कम दिखाएँ",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} और",
   "AI_CHAT_TOOL_FAILED_TAG": "विफल",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "काट-छाँट: चैट हिस्ट्री में केवल पहले {0} अक्षर रखे गए",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "एआई अभी एक कार्य पर काम कर रहा है। नई बातचीत शुरू करने से यह रुक जाएगा। जारी रखें?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "एआई काम कर रहा है",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "एआई अभी एक कार्य पर काम कर रहा है। पिछली बातचीत पर जाने से यह रुक जाएगा। जारी रखें?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "इस सीएलआई सत्र को समाप्त करें?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "यह चल रहे Claude Code सीएलआई सत्र को समाप्त कर देगा और एक नया सत्र शुरू करेगा। जारी रखें?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "यह चल रहे Codex CLI सत्र को समाप्त कर देगा और एक नया सत्र शुरू कर देगा। जारी रखें?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Phoenix Pro में उपलब्ध",
   "AI_CHAT_CLI_UPSELL_MSG": "Phoenix AI पैनल के अंदर Claude Code चलाना एक Pro फ़ीचर है। यह Claude को आपके एडिटर और Live Preview जैसे Phoenix इंटीग्रेशन तक पहुँच देता है। आप अभी भी टर्मिनल से, Phoenix AI इंटीग्रेशन के बिना, Claude Code CLI को मुफ़्त में चला सकते हैं।",
   "AI_CHAT_CODEX_UPSELL_MSG": "Phoenix AI पैनल के अंदर Codex चलाना एक Pro फ़ीचर है। आप अभी भी टर्मिनल से Codex CLI को मुफ़्त में चला सकते हैं।",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "पुरानी साइट तक नहीं पहुंच सके",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} आपके प्रोजेक्ट और सेटिंग्स को खोजने के लिए {0} से कनेक्ट नहीं हो सका, इसलिए कुछ भी नहीं बदला गया है। अपना इंटरनेट कनेक्शन जाँचें, फिर {1} के साथ फिर से प्रयास करें।",
   "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "संपादित {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "कम दिखाएँ"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "एक नया {0} सत्र शुरू करें?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "यह चल रहे {0} सत्र को, उस पर चल रहे किसी भी कार्य के साथ, समाप्त कर देगा और एक नया सत्र शुरू करेगा।",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "नया सत्र",
+  "AI_CHAT_CLI_STOP_BTN": "रोकें",
+  "AI_CHAT_CLI_STOP_TITLE": "{0} रोकें। यह सत्र समाप्त हो जाएगा।",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0} रोकें?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "यह चल रहे {0} सत्र को, और उस पर चल रहे किसी भी कार्य को समाप्त कर देगा।"
 });

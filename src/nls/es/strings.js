@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} pasos",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} fallidos",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Leer {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Modificado {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Mostrar menos",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} más",
   "AI_CHAT_TOOL_FAILED_TAG": "fallido",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Truncado: solo se conservaron los primeros {0} caracteres en el historial del chat",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "La IA está trabajando en una tarea. Iniciar una nueva conversación la detendrá. ¿Continuar?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "La IA está trabajando",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "La IA está trabajando en una tarea. Cambiar a una conversación anterior la detendrá. ¿Continuar?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "¿Finalizar esta sesión de CLI?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Esto finalizará la sesión de Claude Code CLI en ejecución y comenzará una nueva. ¿Desea continuar?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Esto finalizará la sesión de Codex CLI en ejecución e iniciará una nueva. ¿Desea continuar?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Disponible en Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Ejecutar Claude Code dentro del panel de IA de Phoenix es una función Pro. Le da a Claude acceso a las integraciones de Phoenix, como tu editor y la Vista previa en vivo. Aún puedes ejecutar Claude Code CLI gratis desde la Terminal, sin las integraciones de la IA de Phoenix.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Ejecutar Codex dentro del panel de IA de Phoenix es una función Pro. Todavía puede ejecutar Codex CLI de forma gratuita desde el terminal.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "No se pudo acceder al sitio antiguo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} no se pudo conectar a {0} para buscar tus proyectos y configuración, por lo que no se ha modificado nada. Comprueba tu conexión a internet y vuelve a intentarlo con {1}.",
   "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Modificado {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Mostrar menos"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "¿Iniciar una nueva sesión de {0}?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Esto finaliza la sesión de {0} en curso, junto con cualquier tarea en la que esté trabajando, e inicia una nueva.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Nueva sesión",
+  "AI_CHAT_CLI_STOP_BTN": "Detener",
+  "AI_CHAT_CLI_STOP_TITLE": "Detener {0}. Finaliza esta sesión.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "¿Detener {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Esto finaliza la sesión de {0} en curso, junto con cualquier tarea en la que esté trabajando."
 });

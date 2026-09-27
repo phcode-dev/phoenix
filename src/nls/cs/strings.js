@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} kroků",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} selhalo",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Přečteno: {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Upraveno {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Zobrazit méně",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} dalších",
   "AI_CHAT_TOOL_FAILED_TAG": "Selhání",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Zkráceno: pouze prvních {0} znaků bylo ponecháno v historii chatu.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI právě pracuje na úkolu. Zahájení nové konverzace ji zastaví. Pokračovat?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI pracuje",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI právě pracuje na úkolu. Přepnutí na předchozí konverzaci ji zastaví. Pokračovat?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Ukončit tuto relaci CLI?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tímto se ukončí probíhající relace Claude Code CLI a spustí se nová. Pokračovat?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Tímto se ukončí běžící relace Codex CLI a spustí se nová. Pokračovat?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Dostupné v Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Spouštění Claude Code v panelu Phoenix AI je funkce Pro. Poskytuje Claude přístup k integracím Phoenix, jako je váš editor a Živý náhled. Stále můžete zdarma spouštět Claude Code CLI z Terminálu, bez integrací Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Spouštění Codexu v panelu Phoenix AI je funkce verze Pro. Codex CLI můžete stále zdarma spouštět z Terminálu.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
   "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Upraveno {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Zobrazit méně"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Zahájit novou relaci {0}?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Tím se ukončí běžící relace {0} a jakýkoli úkol, na kterém pracuje, a zahájí se nová.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Nová relace",
+  "AI_CHAT_CLI_STOP_BTN": "Zastavit",
+  "AI_CHAT_CLI_STOP_TITLE": "Zastavit {0}. Ukončí tuto relaci.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Zastavit {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Tím se ukončí běžící relace {0} a jakýkoli úkol, na kterém pracuje."
 });

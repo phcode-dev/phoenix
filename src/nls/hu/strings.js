@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} lépés",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} sikertelen",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} olvasása",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Szerkesztve: {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Kevesebb mutatása",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} további",
   "AI_CHAT_TOOL_FAILED_TAG": "Sikertelen",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Csonkítva: csak az első {0} karakter maradt meg a csevegési előzményekben.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "Az AI jelenleg egy feladaton dolgozik. Egy új beszélgetés indítása leállítja azt. Folytatja?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "Az AI dolgozik",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "Az AI jelenleg egy feladaton dolgozik. Egy korábbi beszélgetésre váltás leállítja azt. Folytatja?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Befejezi ezt a CLI-munkamenetet?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ez lezárja a futó Claude Code CLI-munkamenetet, és egy újat indít. Folytatja?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Ez lezárja a futó Codex CLI-munkamenetet, és egy újat indít. Folytatja?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Elérhető a Phoenix Pro verzióban",
   "AI_CHAT_CLI_UPSELL_MSG": "A Claude Code futtatása a Phoenix AI panelen belül egy Pro funkció. Ez hozzáférést biztosít a Claude számára a Phoenix olyan integrációihoz, mint a szerkesztő és az Élő Előnézet. A Claude Code CLI-t továbbra is ingyenesen futtathatod a Terminálból, a Phoenix AI integrációk nélkül.",
   "AI_CHAT_CODEX_UPSELL_MSG": "A Codex futtatása a Phoenix AI panelen belül egy Pro funkció. A Codex CLI-t továbbra is ingyenesen futtathatja a Terminálból.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
   "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Szerkesztve: {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Kevesebb mutatása"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Új {0} munkamenet indítása?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Ez leállítja a futó {0} munkamenetet, a benne lévő összes feladattal együtt, és egy újat indít.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Új munkamenet",
+  "AI_CHAT_CLI_STOP_BTN": "Leállítás",
+  "AI_CHAT_CLI_STOP_TITLE": "{0} leállítása. Leállítja ezt a munkamenetet.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0} leállítása?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Ez leállítja a futó {0} munkamenetet, a benne lévő összes feladattal együtt."
 });

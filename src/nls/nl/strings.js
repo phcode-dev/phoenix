@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} stappen",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} mislukt",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "{0} gelezen",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Bewerkt {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Minder weergeven",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} meer",
   "AI_CHAT_TOOL_FAILED_TAG": "mislukt",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Ingekort: alleen de eerste {0} tekens zijn bewaard in de chatgeschiedenis",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "De AI is momenteel bezig met een taak. Het starten van een nieuw gesprek zal dit proces stoppen. Doorgaan?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI is bezig",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "De AI is momenteel bezig met een taak. Overschakelen naar een vorig gesprek zal dit proces stoppen. Doorgaan?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Deze CLI-sessie beëindigen?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Hiermee wordt de actieve Claude Code CLI-sessie beëindigd en een nieuwe gestart. Doorgaan?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Hiermee wordt de actieve Codex CLI-sessie beëindigd en een nieuwe gestart. Doorgaan?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Beschikbaar in Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Het uitvoeren van Claude Code in het Phoenix AI-paneel is een Pro-functie. Dit geeft Claude toegang tot Phoenix-integraties zoals uw editor en Live Voorbeeld. U kunt Claude Code CLI nog steeds gratis uitvoeren vanuit de Terminal, zonder de Phoenix AI-integraties.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Het uitvoeren van Codex in het Phoenix AI-paneel is een Pro-functie. U kunt de Codex CLI nog steeds gratis uitvoeren vanuit de Terminal.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
   "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Bewerkt {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Minder weergeven"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Nieuwe {0}-sessie starten?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Dit beëindigt de actieve {0}-sessie en de taak waaraan deze werkt, en start een nieuwe.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Nieuwe sessie",
+  "AI_CHAT_CLI_STOP_BTN": "Stoppen",
+  "AI_CHAT_CLI_STOP_TITLE": "{0} stoppen. Beëindigt deze sessie.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "{0} stoppen?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Dit beëindigt de actieve {0}-sessie en de taak waaraan deze werkt."
 });

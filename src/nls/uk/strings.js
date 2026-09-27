@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} кроків",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} не спрацювало",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Прочитано {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Відредаговано {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Показати менше",
   "AI_CHAT_TOOL_GROUP_MORE": "+ ще {0}",
   "AI_CHAT_TOOL_FAILED_TAG": "Збій",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Скорочено: в історії чату збережено лише перші {0} символів.",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "ШІ зараз виконує завдання. Початок нової розмови зупинить його. Продовжити?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "ШІ працює",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "ШІ зараз виконує завдання. Перехід до попередньої розмови зупинить його. Продовжити?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Завершити цю CLI-сесію?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Це завершить поточну CLI-сесію Claude Code і розпочне нову. Продовжити?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Це завершить поточну сесію Codex CLI і запустить нову. Продовжити?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Доступно у Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Запуск Claude Code на панелі Phoenix AI — це функція Pro. Вона надає Claude доступ до інтеграцій Phoenix, як-от ваш редактор і Live Preview. Ви все ще можете безкоштовно запускати Claude Code CLI з термінала, без інтеграцій Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Запуск Codex у панелі Phoenix AI є функцією Pro. Ви все ще можете безкоштовно запускати Codex CLI з Термінала.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не вдалося підключитися до старого сайту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не вдалося підключитися до {0}, щоб знайти ваші проєкти та налаштування, тому нічого не було змінено. Перевірте підключення до Інтернету, а потім спробуйте ще раз за допомогою {1}.",
   "CMD_MIGRATE_DATA": "Перенести мої дані з {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Відредаговано {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Показати менше"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Почати нову сесію {0}?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Це завершить поточну сесію {0} разом із будь-яким завданням, над яким вона працює, і розпочне нову.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Нова сесія",
+  "AI_CHAT_CLI_STOP_BTN": "Зупинити",
+  "AI_CHAT_CLI_STOP_TITLE": "Зупинити {0}. Завершує цю сесію.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Зупинити {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Це завершить поточну сесію {0} разом із будь-яким завданням, над яким вона працює."
 });

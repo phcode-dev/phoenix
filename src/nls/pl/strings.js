@@ -2572,6 +2572,8 @@ define({
   "AI_CHAT_TOOL_GROUP_STEPS": "{0} kroków",
   "AI_CHAT_TOOL_GROUP_FAILED": "{0} nieudanych",
   "AI_CHAT_TOOL_GROUP_READ_FILES": "Odczytano {0}",
+  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Edytowano {0}",
+  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Pokaż mniej",
   "AI_CHAT_TOOL_GROUP_MORE": "+{0} więcej",
   "AI_CHAT_TOOL_FAILED_TAG": "Nieudane",
   "AI_CHAT_TOOL_DETAIL_TRUNCATED": "Przycięto: w historii czatu zachowano tylko pierwsze {0} znaków",
@@ -2748,9 +2750,6 @@ define({
   "AI_CHAT_NEW_WHILE_STREAMING_MSG": "AI pracuje obecnie nad zadaniem. Rozpoczęcie nowej konwersacji przerwie jej pracę. Kontynuować?",
   "AI_CHAT_RESUME_WHILE_STREAMING_TITLE": "AI pracuje",
   "AI_CHAT_RESUME_WHILE_STREAMING_MSG": "AI pracuje obecnie nad zadaniem. Przełączenie na poprzednią konwersację przerwie jej pracę. Kontynuować?",
-  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Zakończyć tę sesję CLI?",
-  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Spowoduje to zakończenie bieżącej sesji Claude Code CLI i rozpoczęcie nowej. Kontynuować?",
-  "AI_CHAT_CODEX_NEW_CONFIRM_MSG": "Spowoduje to zakończenie bieżącej sesji Codex CLI i rozpoczęcie nowej. Kontynuować?",
   "AI_CHAT_CLI_UPSELL_TITLE": "Dostępne w Phoenix Pro",
   "AI_CHAT_CLI_UPSELL_MSG": "Uruchamianie Claude Code w panelu Phoenix AI jest funkcją Pro. Daje to Claude dostęp do integracji Phoenix, takich jak edytor i Live Preview. Nadal możesz uruchamiać Claude Code CLI za darmo z Terminala, bez integracji Phoenix AI.",
   "AI_CHAT_CODEX_UPSELL_MSG": "Uruchamianie Codex w panelu Phoenix AI jest funkcją Pro. Nadal możesz uruchamiać Codex CLI za darmo z poziomu terminala.",
@@ -2910,6 +2909,11 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
   "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
-  "AI_CHAT_TOOL_GROUP_EDITED_FILES": "Edytowano {0}",
-  "AI_CHAT_TOOL_GROUP_SHOW_LESS": "Pokaż mniej"
+  "AI_CHAT_CLI_NEW_CONFIRM_TITLE": "Rozpocząć nową sesję {0}?",
+  "AI_CHAT_CLI_NEW_CONFIRM_MSG": "Spowoduje to zakończenie bieżącej sesji {0} wraz z każdym zadaniem, nad którym pracuje, i rozpoczęcie nowej.",
+  "AI_CHAT_CLI_NEW_CONFIRM_BTN": "Nowa sesja",
+  "AI_CHAT_CLI_STOP_BTN": "Zatrzymaj",
+  "AI_CHAT_CLI_STOP_TITLE": "Zatrzymaj {0}. Kończy tę sesję.",
+  "AI_CHAT_CLI_STOP_CONFIRM_TITLE": "Zatrzymać {0}?",
+  "AI_CHAT_CLI_STOP_CONFIRM_MSG": "Spowoduje to zakończenie bieżącej sesji {0} wraz z każdym zadaniem, nad którym pracuje."
 });
