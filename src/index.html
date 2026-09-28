@@ -922,10 +922,12 @@
                 <div id="newProject" class="new-project-btn btn-alt-quiet"></div>
             </div>
             <div>
-                <!-- placeholder only: profile-menu.js _updateBranding repaints this once entitlements
-                     resolve - localized "Get Phoenix Pro" for free users, plan name for pro users -->
+                <!-- Deliberately empty: profile-menu.js fills this once it knows what belongs
+                     here - the plan name for pro users, localized "Get Phoenix Pro" for free
+                     ones. Anything shipped here would be a guess made before entitlements
+                     resolve, and it would be shown to every user including the paying ones. -->
                 <a id="phcode-io-main-nav" href="https://phcode.dev/pricing?promo=FreeNavbar"
-                   target="_blank" rel="noopener">phcode.dev</a>
+                   target="_blank" rel="noopener"></a>
             </div>
             <div id="mainNavBarRight">
                 <div id="navBackButton" class="nav-back-btn btn-alt-quiet"><i class="fa-solid fa-arrow-left"></i></div>
