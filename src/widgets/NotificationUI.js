@@ -111,6 +111,34 @@ define(function (require, exports, module) {
      */
 
     /**
+     * Close after the given seconds, holding off while the mouse is over the notification so a user
+     * reading it or reaching for one of its actions does not lose it. The countdown restarts in
+     * full once the mouse leaves.
+     * @param {jQuery} $notification - The notification element.
+     * @param {number} seconds - Time to wait before closing.
+     * @param {function} closeFn - Closes the notification with the timeout reason.
+     * @private
+     */
+    function _autoCloseUnlessHovered($notification, seconds, closeFn) {
+        let timer = null;
+        function stop() {
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
+            }
+        }
+        function start() {
+            stop();
+            timer = setTimeout(function () {
+                timer = null;
+                closeFn();
+            }, seconds * 1000);
+        }
+        $notification.on("mouseenter", stop).on("mouseleave", start);
+        start();
+    }
+
+    /**
      * @constructor
      * @private
      */
@@ -211,6 +239,7 @@ define(function (require, exports, module) {
      *   * `allowedPlacements` - Optional String array with values restricting where the notification will be shown.
      *       Values can be a mix of `['top', 'bottom', 'left', 'right']`
      *   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
+     *     The countdown pauses while the mouse is over the notification.
      *   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
      *   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be
      *     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.
@@ -229,9 +258,9 @@ define(function (require, exports, module) {
         let notification = (new Notification($tooltip, NOTIFICATION_TYPE_ARROW));
 
         if(options.autoCloseTimeS){
-            setTimeout(()=>{
+            _autoCloseUnlessHovered($tooltip, options.autoCloseTimeS, function () {
                 notification.close(CLOSE_REASON.TIMEOUT);
-            }, options.autoCloseTimeS * 1000);
+            });
         }
 
         if(options.dismissOnClick){
@@ -352,6 +381,7 @@ define(function (require, exports, module) {
      * @param {{dismissOnClick, autoCloseTimeS, toastStyle, instantOpen}} [options] optional, supported
      *   * options are:
      *   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
+     *     The countdown pauses while the mouse is over the notification.
      *   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
      *   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be
      *     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.
@@ -387,9 +417,9 @@ define(function (require, exports, module) {
         }, 0);
 
         if(options.autoCloseTimeS){
-            setTimeout(()=>{
+            _autoCloseUnlessHovered($NotificationPopup, options.autoCloseTimeS, function () {
                 notification.close(CLOSE_REASON.TIMEOUT);
-            }, options.autoCloseTimeS * 1000);
+            });
         }
 
         if(options.dismissOnClick){
@@ -416,6 +446,7 @@ define(function (require, exports, module) {
      * @param {string|Element} template HTML string or DOM Element for the toast content.
      * @param {Object} [options] optional, supported options:
      *   * `autoCloseTimeS` - Time in seconds after which the toast auto-closes. Default is 5.
+     *     The countdown pauses while the mouse is over the toast.
      *   * `dismissOnClick` - If true, clicking the toast dismisses it. Default is true.
      * @return {Notification} Object with a done handler that resolves when the toast closes.
      * @type {function}
@@ -466,11 +497,11 @@ define(function (require, exports, module) {
         };
 
         if (autoCloseTimeS) {
-            setTimeout(function () {
+            _autoCloseUnlessHovered($toast, autoCloseTimeS, function () {
                 if (notification.$notification) {
                     notification.close(CLOSE_REASON.TIMEOUT);
                 }
-            }, autoCloseTimeS * 1000);
+            });
         }
 
         if (dismissOnClick) {
@@ -497,6 +528,7 @@ define(function (require, exports, module) {
      * @param {string} label Text to display below the icon (e.g. "110%").
      * @param {Object} [options] optional, supported options:
      *   * `autoCloseTimeS` - Time in seconds after which the HUD auto-closes. Default is 1.
+     *     The countdown pauses while the mouse is over the HUD.
      * @return {Notification} Object with a done handler that resolves when the HUD closes.
      * @type {function}
      */
@@ -531,11 +563,11 @@ define(function (require, exports, module) {
         };
 
         if (autoCloseTimeS) {
-            setTimeout(function () {
+            _autoCloseUnlessHovered($hud, autoCloseTimeS, function () {
                 if (notification.$notification) {
                     notification.close(CLOSE_REASON.TIMEOUT);
                 }
-            }, autoCloseTimeS * 1000);
+            });
         }
 
         return notification;
