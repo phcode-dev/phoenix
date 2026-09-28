@@ -37,9 +37,8 @@
     .ai-image-search-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 0 10px; }
     &.ai-image-search-compact {
         .ai-image-search-item:nth-child(n+4), .ai-image-search-collage { display: none; }
-        .ai-image-search-show-all { display: flex; }
     }
-    .ai-image-search-show-all { display: none; border: 0; background: transparent; color: inherit; padding: 5px 0; }
+    .ai-image-search-show-all { display: flex; border: 0; background: transparent; color: inherit; padding: 5px 0; }
     .ai-image-search-show-all:hover { color: @project-panel-text-1; }
     .ai-image-search-item { position: relative; min-width: 0; }
     &.ai-image-preview-card .ai-image-search-grid[data-count="1"] {
@@ -111,6 +110,9 @@
     .ai-image-search-item:hover .ai-image-search-number,
     .ai-image-search-item:focus-within .ai-image-search-number { opacity: 1; }
     .ai-image-search-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; font-size: @ai-text-meta; color: @project-panel-text-2; }
+    // The whole footer toggles a large result set, like the heading does.
+    .ai-image-search-footer.ai-image-search-toggle { cursor: pointer; }
+    .ai-image-search-footer-actions { display: flex; align-items: center; gap: 14px; }
     .ai-image-search-collage { display: flex; align-items: center; gap: 6px; border: 0; background: transparent; color: inherit; padding: 5px 0; }
     .ai-image-search-collage:hover { color: @project-panel-text-1; }
     .ai-image-search-status { padding: 12px; font-size: @ai-text-secondary; color: @project-panel-text-2; }

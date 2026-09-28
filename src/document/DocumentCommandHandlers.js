@@ -2002,23 +2002,56 @@ define(function (require, exports, module) {
     }
 
     /** Show in File Tree command handler **/
+    /**
+     * Reveal a file in the file tree the way the "Show in File Tree" command does: show the sidebar
+     * if it is hidden, switch it to the Files tab, select the file and scroll its row into view.
+     * @param {File} file - The file to reveal. Silently no-ops outside the project.
+     */
+    function revealInFileTree(file) {
+        if (!SidebarView.isVisible()) {
+            CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
+        }
+        SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
+        ProjectManager.showInTree(file).always(function () {
+            if (ProjectManager.isInFileTree(file.fullPath) || !ProjectManager.isWithinProject(file.fullPath)) {
+                _scrollFileTreeSelectionIntoView();
+                return;
+            }
+            // A file created moments ago outside the FileSystem API is not in the tree yet, so the
+            // selection was dropped: reload the tree and select the file once it arrives. The tree
+            // has no event for that (its change event fires before the directory reload lands),
+            // so look for the node a few times over the next three seconds.
+            const RETRY_MS = 250, MAX_RETRIES = 12;
+            let retries = 0;
+            function selectWhenInTree() {
+                if (ProjectManager.isInFileTree(file.fullPath)) {
+                    ProjectManager.showInTree(file).always(_scrollFileTreeSelectionIntoView);
+                } else if (++retries < MAX_RETRIES) {
+                    setTimeout(selectWhenInTree, RETRY_MS);
+                }
+            }
+            ProjectManager.refreshFileTree();
+            setTimeout(selectWhenInTree, RETRY_MS);
+        });
+    }
+
+    /**
+     * FileTreeView only auto-scrolls when the selection flips unselected→selected.
+     * Re-invoking the command on an already-selected file would otherwise be a
+     * no-op when the user has scrolled away — force-scroll the selected node
+     * into view so "Show in File Tree" always reveals the row.
+     */
+    function _scrollFileTreeSelectionIntoView() {
+        const $selected = $("#project-files-container .selected-node").first();
+        if ($selected.length) {
+            ViewUtils.scrollElementIntoView($("#project-files-container"), $selected, true);
+        }
+    }
+
     function handleShowInTree() {
         let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         if(activeFile){
-            if (!SidebarView.isVisible()) {
-                CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
-            }
-            SidebarTabs.setActiveTab(SidebarTabs.SIDEBAR_TAB_FILES);
-            // FileTreeView only auto-scrolls when the selection flips unselected→selected.
-            // Re-invoking the command on an already-selected file would otherwise be a
-            // no-op when the user has scrolled away — force-scroll the selected node
-            // into view so "Show in File Tree" always reveals the row.
-            ProjectManager.showInTree(activeFile).always(function () {
-                const $selected = $("#project-files-container .selected-node").first();
-                if ($selected.length) {
-                    ViewUtils.scrollElementIntoView($("#project-files-container"), $selected, true);
-                }
-            });
+            revealInFileTree(activeFile);
         }
     }
 
@@ -2452,6 +2485,7 @@ define(function (require, exports, module) {
 
     // Define public API
     exports.showFileOpenError = showFileOpenError;
+    exports.revealInFileTree = revealInFileTree;
     exports.APP_QUIT_CANCELLED = APP_QUIT_CANCELLED;
 
 
