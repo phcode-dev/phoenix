@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     const DefaultDialogs = require("widgets/DefaultDialogs");
     const Strings = require("strings");
     const StringUtils = require("utils/StringUtils");
+    const StateManager = require("preferences/StateManager");
 
     const Menus = require("command/Menus");
     const Commands = require("command/Commands");
@@ -95,6 +96,11 @@ define(function (require, exports, module) {
     let _clearHintShown = false;        // Show clear buffer hint toast only once per session
     let _projectPath = null;
     let _restartingTerminals = false;
+    // id of the tab whose name is being edited, so background refreshes know
+    // not to rebuild the list out from under the field
+    let renamingTerminalId = null;
+    // where tab names the user typed are kept between runs
+    const STATE_TAB_NAMES = "terminal.tabNames";
     let $panel, $contentArea, $shellDropdown, $flyoutList;
 
     /**
@@ -350,6 +356,8 @@ define(function (require, exports, module) {
         const instance = new TerminalInstance(nodeConnector, shell, cwd);
         // Project ownership is independent of directories the user visits in the shell.
         instance.projectPath = projectPath || (projectRoot ? projectRoot.fullPath : null);
+        // a name given to this slot in an earlier run comes back with it
+        instance.customName = _loadTabNames()[instance.id] || null;
 
         // Set up callbacks
         instance.onTitleChanged = _onTerminalTitleChanged;
@@ -690,43 +698,156 @@ define(function (require, exports, module) {
         return lastSlash >= 0 ? trimmed.slice(lastSlash + 1) : trimmed;
     }
 
+    /**
+     * Names the user has given terminal tabs, kept globally rather than per
+     * project so a name means the same thing wherever they are working.
+     *
+     * Keyed by terminal id, which counts up from term_1 in creation order and
+     * starts over each run: a name therefore belongs to a tab's place in the
+     * strip rather than to one shell, and the second terminal opened next run
+     * gets the name the second terminal had. That is as close to "remember my
+     * terminals" as this can get until the panel restores a session at all —
+     * it recreates nothing on boot today, so there is no terminal to hand a
+     * name back to. Names are kept when a tab closes for the same reason:
+     * dropping them would leave nothing to remember by the next run.
+     *
+     * @return {Object} id -> name, empty when nothing has been named
+     */
+    function _loadTabNames() {
+        const stored = StateManager.get(STATE_TAB_NAMES);
+        return (stored && typeof stored === "object") ? stored : {};
+    }
+
+    /**
+     * Record or forget one tab's name.
+     * @param {string} id - terminal id
+     * @param {?string} name - the name, or null to go back to the process label
+     */
+    function _saveTabName(id, name) {
+        const names = _loadTabNames();
+        if (name) {
+            names[id] = name;
+        } else {
+            delete names[id];
+        }
+        StateManager.set(STATE_TAB_NAMES, names);
+    }
+
+    /**
+     * Edit a tab's name in place.
+     *
+     * The label is normally the running process, which says nothing once
+     * several idle shells are open — they all read the same. A name the user
+     * gives sticks to the tab instead, and clearing it hands the tab back to
+     * the process label.
+     *
+     * The field is built on the live row rather than through _updateFlyout,
+     * because that rebuilds the list from scratch on every process and title
+     * change and would take the half-typed field with it. Committing writes to
+     * the instance and re-renders, so the name survives those rebuilds.
+     *
+     * @param {Object} inst - the terminal being renamed
+     * @param {jQuery} $item - its row in the tab strip
+     */
+    function _beginRename(inst, $item) {
+        const $title = $item.find(".terminal-flyout-title");
+        if (!$title.length || $item.find(".terminal-flyout-rename").length) {
+            return;
+        }
+        const $input = $('<input type="text" class="terminal-flyout-rename">')
+            .val(inst.customName || $title.text().trim());
+        $item.addClass("renaming");
+        renamingTerminalId = inst.id;
+        $title.hide().after($input);
+        $input.trigger("focus").trigger("select");
+
+        let settled = false;
+        function finish(commit) {
+            if (settled) { return; }
+            settled = true;
+            renamingTerminalId = null;
+            if (commit) {
+                const name = $input.val().trim();
+                // an emptied field means "go back to naming it after the process"
+                inst.customName = name || null;
+                _saveTabName(inst.id, inst.customName);
+                Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "rename",
+                    name ? "set" : "clear");
+            }
+            $input.remove();
+            $title.show();
+            $item.removeClass("renaming");
+            _updateFlyout();
+        }
+        $input.on("keydown", function (e) {
+            // the terminal binds plenty of keys; none of them apply while typing here
+            e.stopPropagation();
+            if (e.key === "Enter") { finish(true); }
+            if (e.key === "Escape") { finish(false); }
+        });
+        $input.on("blur", function () { finish(true); });
+        // a double click inside the field shouldn't re-enter renaming
+        $input.on("dblclick click", function (e) { e.stopPropagation(); });
+    }
+
     function _updateFlyout() {
+        // A rebuild empties the list, which tears the rename field out of the
+        // document mid-edit; the removal fires blur, and blur commits, so a
+        // half-typed name lands on the tab without the user ever confirming it.
+        // Background refreshes can wait the few seconds an edit takes —
+        // _beginRename renders once it is done.
+        if (renamingTerminalId) {
+            return;
+        }
         $flyoutList.empty();
         for (const inst of terminalInstances) {
             const proc = processInfo[inst.id] || "";
             const basename = proc ? proc.split("/").pop().split("\\").pop() : "";
 
-            // Label: process basename; right side: cwd basename; tooltip: full title.
+            // Label: the user's own name when they gave one, otherwise the
+            // process basename; right side: cwd basename; tooltip: full title.
             // If the title is stale (child set it and the shell didn't reset it),
             // fall back to the shell profile name.
-            const label = basename || "Terminal";
+            const label = inst.customName || basename || "Terminal";
             const displayTitle = inst._titleStale ? inst.shellProfile.name : inst.title;
             const cwdName = _extractCwdBasename(displayTitle);
 
             const $item = $('<div class="terminal-flyout-item"></div>')
                 .attr("data-terminal-id", inst.id)
                 .attr("title", displayTitle)
-                .toggleClass("active", inst.id === activeTerminalId);
+                .toggleClass("active", inst.id === activeTerminalId)
+                // a name the user typed reads as theirs, not as what we detected
+                .toggleClass("renamed", !!inst.customName);
 
             if (!inst.isAlive) {
                 $item.css("opacity", "0.6");
             }
 
             $item.append('<span class="terminal-flyout-close"><i class="fa-solid fa-xmark"></i></span>');
-            $item.append('<span class="terminal-flyout-icon"><i class="fa-solid fa-terminal"></i></span>');
+            $item.append('<span class="terminal-flyout-edit" title="' + Strings.TERMINAL_RENAME_TAB +
+                '"><i class="fa-solid fa-pen"></i></span>');
             $item.append($('<span class="terminal-flyout-title"></span>').text(label));
             if (cwdName) {
                 $item.append($('<span class="terminal-flyout-cwd"></span>').text(cwdName));
             }
 
             $item.on("click", function (e) {
-                if (!$(e.target).closest(".terminal-flyout-close").length) {
+                if (!$(e.target).closest(".terminal-flyout-close, .terminal-flyout-edit").length) {
                     _activateTerminal(inst.id);
                 }
             });
             $item.find(".terminal-flyout-close").on("click", function (e) {
                 e.stopPropagation();
                 _closeTerminal(inst.id);
+            });
+            // Bound on the pencil itself, like the close above, so it runs
+            // before the row's own handler and can stop the click there. Let it
+            // through and the row activates the terminal, which takes focus off
+            // the field and rebuilds the list out from under it.
+            $item.find(".terminal-flyout-edit").on("click", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                _beginRename(inst, $item);
             });
 
             $flyoutList.append($item);

@@ -101,8 +101,10 @@
 /* Tab bar: static sidebar, width switches via .terminal-tabs-expanded on container */
 .terminal-tab-bar {
     position: relative;
-    width: 60px;
-    min-width: 60px;
+    /* wide enough for a short name; the strip shows names rather than a row of
+       identical terminal icons, which told the tabs apart not at all */
+    width: 84px;
+    min-width: 84px;
 }
 
 .terminal-tabs-expanded .terminal-tab-bar {
@@ -171,24 +173,12 @@
     box-shadow: inset 2px 0 0 #007acc;
 }
 
-/* Icon column: fixed 30px slot */
-.terminal-flyout-icon {
-    width: 30px;
-    min-width: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    flex-shrink: 0;
-}
-
-/* Title & CWD: hidden in collapsed, shown in expanded */
+/* Title always shows; the CWD is what collapsed drops for want of room */
 .terminal-flyout-title {
     flex: 1;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: none;
 }
 
 .terminal-flyout-cwd {
@@ -231,10 +221,6 @@
 }
 
 /* ─── Expanded mode ─── */
-.terminal-tabs-expanded .terminal-flyout-title {
-    display: block;
-}
-
 .terminal-tabs-expanded .terminal-flyout-cwd {
     display: block;
 }
@@ -242,6 +228,86 @@
 /* Reserve space so cwd text doesn't sit under the close button */
 .terminal-tabs-expanded .terminal-flyout-cwd {
     margin-right: 20px;
+}
+
+/* ─── Tab name and its hover controls ─── */
+/* The row always carries its name. The icon it replaces was the same glyph on
+   every row, so it said nothing the name does not say better. */
+.terminal-flyout-title {
+    padding-left: 8px;
+}
+
+/* A name the user typed, set apart from the process name detected for them */
+.terminal-flyout-item.renamed .terminal-flyout-title {
+    font-style: italic;
+}
+
+/* Rename pencil: sits inboard of the close, so both hover controls share the
+   right edge and the name's left edge never shifts under the pointer. */
+.terminal-flyout-edit {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--terminal-tab-text);
+    background: transparent;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.terminal-flyout-item:hover .terminal-flyout-edit {
+    display: flex;
+}
+
+.terminal-flyout-edit:hover {
+    color: var(--terminal-tab-active-text);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Hovering trades the cwd for the controls. Reserving room for them instead
+   would mean retuning this margin for every control ever added to the right
+   edge — which is how the 20px above went stale the moment a second one
+   appeared — and it leaves the name more room, not less. */
+.terminal-flyout-item:hover .terminal-flyout-cwd {
+    display: none;
+}
+
+.terminal-flyout-item:hover .terminal-flyout-title {
+    padding-right: 40px;
+}
+
+/* Rename field, sized to sit on the row rather than grow it.
+   Matched on the attribute as well as the class: the theme's own
+   input[type="text"] sets a height, padding and border of its own, and
+   outranks a lone class, so a plain .terminal-flyout-rename would render at
+   the full row height. This takes the rule above it without !important. */
+input[type="text"].terminal-flyout-rename {
+    box-sizing: border-box;
+    flex: 1;
+    min-width: 0;
+    height: 20px;
+    margin-left: 6px;
+    margin-right: 18px;
+    padding: 0 4px;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--terminal-tab-active-text);
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid #007acc;
+    border-radius: 2px;
+    outline: none;
+}
+
+/* Nothing competes with the field while it is open */
+.terminal-flyout-item.renaming .terminal-flyout-edit,
+.terminal-flyout-item.renaming .terminal-flyout-close,
+.terminal-flyout-item.renaming .terminal-flyout-cwd {
+    display: none;
 }
 
 
