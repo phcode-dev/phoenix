@@ -2229,6 +2229,7 @@ define({
     "ERROR_SAVE_FIRST": "Save the document first!",
     "ERROR_TERMINAL_NOT_FOUND": "Terminal was not found for your OS, you can define a custom Terminal command in the settings",
     "TERMINAL_RENAME_TAB": "Rename this terminal",
+    "TERMINAL_RENAME_DONE": "Done",
     "TERMINAL_CLOSE_CONFIRM_TITLE": "Active Process Running",
     "TERMINAL_CLOSE_CONFIRM_MSG": "Terminal has an active process running: <b>{0}</b>.<br>Are you sure you want to close it?",
     "TERMINAL_CLOSE_SINGLE_TITLE": "Close Terminal?",

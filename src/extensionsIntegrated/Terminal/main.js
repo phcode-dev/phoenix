@@ -356,8 +356,6 @@ define(function (require, exports, module) {
         const instance = new TerminalInstance(nodeConnector, shell, cwd);
         // Project ownership is independent of directories the user visits in the shell.
         instance.projectPath = projectPath || (projectRoot ? projectRoot.fullPath : null);
-        // a name given to this slot in an earlier run comes back with it
-        instance.customName = _loadTabNames()[instance.id] || null;
 
         // Set up callbacks
         instance.onTitleChanged = _onTerminalTitleChanged;
@@ -490,15 +488,26 @@ define(function (require, exports, module) {
             if (!currentRoot || currentRoot.fullPath !== path) {
                 return;
             }
-            const profiles = terminalInstances.map(inst => inst.shellProfile);
+            // A restart replaces every instance, and the new ones are issued
+            // fresh ids, so a name looked up by id would not find them. Carry
+            // the names across with the shells: the tabs are the same tabs to
+            // the user, only pointed at the new project.
+            const carried = terminalInstances.map(inst => ({
+                profile: inst.shellProfile,
+                customName: inst.customName
+            }));
             const activeIndex = terminalInstances.findIndex(inst => inst.id === activeTerminalId);
             await _disposeAllAsync();
             activeTerminalId = null;
             _updateFlyout();
             const replacements = [];
-            for (const profile of profiles) {
-                replacements.push(await _createNewTerminalWithShell(profile, path, path));
+            for (const item of carried) {
+                const replacement = await _createNewTerminalWithShell(item.profile, path, path);
+                replacement.customName = item.customName;
+                replacements.push(replacement);
             }
+            // the names were set after each tab rendered, so draw them again
+            _updateFlyout();
             if (replacements[activeIndex]) {
                 _activateTerminal(replacements[activeIndex].id);
             }
@@ -573,6 +582,8 @@ define(function (require, exports, module) {
         instance.dispose();
         terminalInstances.splice(idx, 1);
         delete processInfo[id];
+        // closing a named tab is how the user says not to bring it back
+        _saveTabNames();
         if ($contentArea.find(".terminal-project-banner").length) {
             _showProjectBanner();
         }
@@ -699,38 +710,47 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Names the user has given terminal tabs, kept globally rather than per
-     * project so a name means the same thing wherever they are working.
+     * The names the user has given terminal tabs, in strip order, kept globally
+     * rather than per project so a name means the same thing wherever they are
+     * working.
      *
-     * Keyed by terminal id, which counts up from term_1 in creation order and
-     * starts over each run: a name therefore belongs to a tab's place in the
-     * strip rather than to one shell, and the second terminal opened next run
-     * gets the name the second terminal had. That is as close to "remember my
-     * terminals" as this can get until the panel restores a session at all —
-     * it recreates nothing on boot today, so there is no terminal to hand a
-     * name back to. Names are kept when a tab closes for the same reason:
-     * dropping them would leave nothing to remember by the next run.
+     * A list rather than a map off terminal ids: ids are handed out afresh each
+     * run and again on every restart, so nothing identifies a shell across
+     * them. What the user is naming is the tab, and the list is what says how
+     * many tabs to bring back and what to call them.
      *
-     * @return {Object} id -> name, empty when nothing has been named
+     * @return {Array<string>} names in order, empty when nothing has been named
      */
     function _loadTabNames() {
         const stored = StateManager.get(STATE_TAB_NAMES);
-        return (stored && typeof stored === "object") ? stored : {};
+        if (Array.isArray(stored)) {
+            return stored.filter(function (n) { return typeof n === "string" && n; });
+        }
+        // an earlier build kept these against terminal ids; order them by the
+        // number in the id rather than the text of it, or term_10 sorts before
+        // term_2 and the tabs come back shuffled
+        if (stored && typeof stored === "object") {
+            const idOrder = function (k) {
+                const digits = /(\d+)/.exec(k);
+                return digits ? parseInt(digits[1], 10) : 0;
+            };
+            return Object.keys(stored)
+                .sort(function (a, b) { return idOrder(a) - idOrder(b); })
+                .map(function (k) { return stored[k]; })
+                .filter(Boolean);
+        }
+        return [];
     }
 
     /**
-     * Record or forget one tab's name.
-     * @param {string} id - terminal id
-     * @param {?string} name - the name, or null to go back to the process label
+     * Write the current tabs' names back, so the set that returns next run is
+     * the set on screen now. Unnamed tabs are left out: naming one is what asks
+     * for it to come back.
      */
-    function _saveTabName(id, name) {
-        const names = _loadTabNames();
-        if (name) {
-            names[id] = name;
-        } else {
-            delete names[id];
-        }
-        StateManager.set(STATE_TAB_NAMES, names);
+    function _saveTabNames() {
+        StateManager.set(STATE_TAB_NAMES, terminalInstances
+            .map(function (inst) { return inst.customName; })
+            .filter(Boolean));
     }
 
     /**
@@ -756,9 +776,12 @@ define(function (require, exports, module) {
         }
         const $input = $('<input type="text" class="terminal-flyout-rename">')
             .val(inst.customName || $title.text().trim());
+        const $done = $('<span class="terminal-flyout-rename-done" title="' +
+            Strings.TERMINAL_RENAME_DONE + '"><i class="fa-solid fa-check"></i></span>');
         $item.addClass("renaming");
         renamingTerminalId = inst.id;
         $title.hide().after($input);
+        $input.after($done);
         $input.trigger("focus").trigger("select");
 
         let settled = false;
@@ -770,11 +793,12 @@ define(function (require, exports, module) {
                 const name = $input.val().trim();
                 // an emptied field means "go back to naming it after the process"
                 inst.customName = name || null;
-                _saveTabName(inst.id, inst.customName);
+                _saveTabNames();
                 Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "rename",
                     name ? "set" : "clear");
             }
             $input.remove();
+            $done.remove();
             $title.show();
             $item.removeClass("renaming");
             _updateFlyout();
@@ -788,6 +812,15 @@ define(function (require, exports, module) {
         $input.on("blur", function () { finish(true); });
         // a double click inside the field shouldn't re-enter renaming
         $input.on("dblclick click", function (e) { e.stopPropagation(); });
+        // Committed on mousedown, before the field can lose focus: letting the
+        // blur land first would finish the edit and take this button away
+        // between press and release, so the click would never arrive.
+        $done.on("mousedown", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            finish(true);
+        });
+        $done.on("click", function (e) { e.stopPropagation(); });
     }
 
     function _updateFlyout() {
@@ -878,6 +911,39 @@ define(function (require, exports, module) {
      * @param {string} [options.shellCommand] - A shell command to execute in a new terminal.
      *   When provided, always creates a fresh terminal and types the command into it.
      */
+    /**
+     * Open the tabs the user named last time, all of them, in the order they
+     * were in.
+     *
+     * The panel is often shut when a window starts, so this runs the first time
+     * it opens with nothing in it. Bringing the tabs back one at a time as the
+     * user presses + would not be bringing them back at all — the point of
+     * naming a terminal is that it is waiting where it was left.
+     *
+     * Shells are new: nothing of what ran in them is restored, only the tabs
+     * and what they are called. With nothing saved this is the plain single
+     * terminal the panel has always opened with.
+     */
+    async function _restoreSavedTerminals() {
+        const names = _loadTabNames();
+        if (!names.length) {
+            await _createNewTerminal();
+            return;
+        }
+        for (const name of names) {
+            await _createNewTerminal();
+            const restored = terminalInstances[terminalInstances.length - 1];
+            if (restored) {
+                restored.customName = name;
+            }
+        }
+        // each tab rendered before its name was put back
+        _updateFlyout();
+        if (terminalInstances.length) {
+            _activateTerminal(terminalInstances[0].id);
+        }
+    }
+
     async function _showTerminal(options) {
         if (options && options.shellCommand) {
             await _createNewTerminal();
@@ -893,7 +959,7 @@ define(function (require, exports, module) {
             return;
         }
         if (terminalInstances.length === 0) {
-            await _createNewTerminal();
+            await _restoreSavedTerminals();
             return;
         }
         const active = _getActiveTerminal();

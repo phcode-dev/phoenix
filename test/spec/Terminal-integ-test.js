@@ -652,11 +652,10 @@ define(function (require, exports, module) {
                 }, "terminal panel to close", 5000);
             }
 
-            it("should rename a tab and remember the name for its slot", async function () {
+            it("should rename a tab and remember it for the next run", async function () {
                 await openOneTerminal();
                 const autoLabel = tabLabel();
 
-                const id = $activeTab().attr("data-terminal-id");
                 commitRename(startRename(), "build", "Enter");
 
                 await awaitsFor(function () {
@@ -665,15 +664,16 @@ define(function (require, exports, module) {
                 // marked as the user's own, not a process we detected
                 expect($activeTab().hasClass("renamed")).toBeTrue();
                 expect(tabLabel()).not.toBe(autoLabel);
-                // and written through, so the slot keeps it for the next run
-                expect(StateManager.get(STATE_TAB_NAMES)[id]).toBe("build");
+                // written through as a list, which is what says how many tabs
+                // to bring back next time and what to call them
+                expect(StateManager.get(STATE_TAB_NAMES)).toEqual(["build"]);
 
+                commitRename(startRename(), "", "Enter");
                 await closePanel();
             });
 
             it("should return a tab to its process label when the name is cleared", async function () {
                 await openOneTerminal();
-                const id = $activeTab().attr("data-terminal-id");
                 commitRename(startRename(), "build", "Enter");
                 await awaitsFor(function () {
                     return tabLabel() === "build";
@@ -686,7 +686,8 @@ define(function (require, exports, module) {
                 }, "tab to fall back to its process label", 5000);
 
                 expect($activeTab().hasClass("renamed")).toBeFalse();
-                expect(StateManager.get(STATE_TAB_NAMES)[id]).toBeUndefined();
+                // and drops out of what comes back next run
+                expect(StateManager.get(STATE_TAB_NAMES)).toEqual([]);
 
                 await closePanel();
             });
@@ -760,6 +761,90 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     return !testWindow.$("#terminal-panel").is(":visible");
                 }, "terminal panel to close", 5000);
+            });
+
+            it("should reopen every saved tab at once when the panel opens", async function () {
+                const termModule = testWindow.brackets.getModule(
+                    "extensionsIntegrated/Terminal/main"
+                );
+                StateManager.set(STATE_TAB_NAMES, ["build", "server", "tests"]);
+                await termModule._disposeAll();
+                WorkspaceManager.getPanelForID(PANEL_ID).hide();
+
+                // The panel is usually shut when a window starts. Opening it is
+                // what brings the tabs back — all of them, not one per press of
+                // the new-terminal button.
+                await openTerminal();
+                await awaitsFor(function () {
+                    return getTerminalCount() === 3;
+                }, "every saved tab to come back", 20000);
+
+                const names = testWindow.$(".terminal-flyout-title").map(function () {
+                    return testWindow.$(this).text();
+                }).get();
+                expect(names).toEqual(["build", "server", "tests"]);
+                expect(testWindow.$(".terminal-flyout-item.renamed").length).toBe(3);
+                expect(testWindow.$(".terminal-flyout-item.active").index()).toBe(0);
+
+                StateManager.set(STATE_TAB_NAMES, []);
+                await termModule._disposeAll();
+                WorkspaceManager.getPanelForID(PANEL_ID).hide();
+            }, 40000);
+
+            it("should open a single terminal when nothing has been named", async function () {
+                const termModule = testWindow.brackets.getModule(
+                    "extensionsIntegrated/Terminal/main"
+                );
+                StateManager.set(STATE_TAB_NAMES, []);
+                await termModule._disposeAll();
+                WorkspaceManager.getPanelForID(PANEL_ID).hide();
+
+                await openTerminal();
+                await awaitsFor(function () {
+                    return getTerminalCount() === 1;
+                }, "the usual single terminal", 10000);
+                expect(testWindow.$(".terminal-flyout-item.renamed").length).toBe(0);
+
+                await closePanel();
+            });
+
+            it("should place the rename field on the row's centre line", async function () {
+                await openOneTerminal();
+                startRename();
+                const $input = testWindow.$(".terminal-flyout-rename");
+                const row = $activeTab()[0].getBoundingClientRect();
+                const field = $input[0].getBoundingClientRect();
+
+                // the theme gives form inputs a bottom margin of their own,
+                // which pushed the field off centre until it was zeroed
+                const offset = (field.top + field.height / 2)
+                    - (row.top + row.height / 2);
+                expect(Math.abs(offset)).toBeLessThan(2);
+                expect(field.height).toBeLessThan(row.height);
+                expect(field.top).not.toBeLessThan(row.top);
+                expect(field.bottom).not.toBeGreaterThan(row.bottom);
+
+                commitRename($input, "", "Escape");
+                await closePanel();
+            });
+
+            it("should confirm the edit from the tick button", async function () {
+                await openOneTerminal();
+                const $input = startRename();
+                $input.val("via-tick");
+
+                // mousedown, not click: a click would let the field blur and
+                // finish first, taking the button away before the press lands
+                testWindow.$(".terminal-flyout-rename-done").trigger("mousedown");
+                await awaitsFor(function () {
+                    return testWindow.$(".terminal-flyout-rename").length === 0;
+                }, "rename field to close", 5000);
+
+                expect(tabLabel()).toBe("via-tick");
+                expect($activeTab().hasClass("renamed")).toBeTrue();
+
+                commitRename(startRename(), "", "Enter");
+                await closePanel();
             });
         });
 
@@ -899,6 +984,35 @@ define(function (require, exports, module) {
                 expect(termModule._getActiveTerminal()).toBe(first);
                 expect(first.isAlive).toBeTrue();
             }, 30000);
+
+            it("keeps tab names when the terminals restart in the new project", async function () {
+                const first = await openReadyTerminal();
+
+                // name it, the way the pencil does
+                testWindow.$(".terminal-flyout-item.active .terminal-flyout-edit").click();
+                const $field = testWindow.$(".terminal-flyout-rename");
+                $field.val("build");
+                $field.trigger(testWindow.$.Event("keydown", {key: "Enter"}));
+                await awaitsFor(function () {
+                    return testWindow.$(".terminal-flyout-item.active .terminal-flyout-title")
+                        .text() === "build";
+                }, "tab to take the typed name", 5000);
+
+                // A restart replaces the instance, and the replacement is issued
+                // a fresh id — the name has to travel with it rather than be
+                // looked up by an id that no longer exists.
+                await SpecRunnerUtils.loadProjectInTestWindow(secondProjectPath);
+                testWindow.$(".terminal-project-restart").click();
+                await awaitsFor(function () {
+                    const active = termModule._getActiveTerminal();
+                    return getTerminalCount() === 1 && active && active.isAlive
+                        && active.id !== first.id;
+                }, "terminal to be replaced by the restart", 15000);
+
+                expect(testWindow.$(".terminal-flyout-item.active .terminal-flyout-title").text())
+                    .toBe("build");
+                expect(testWindow.$(".terminal-flyout-item.active").hasClass("renamed")).toBeTrue();
+            });
 
             it("restarts every tab in the new project and preserves its shell and selection", async function () {
                 const first = await openReadyTerminal();
