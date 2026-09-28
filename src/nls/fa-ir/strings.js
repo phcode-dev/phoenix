@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "چیزی انتخاب نشده است!",
   "ERROR_SAVE_FIRST": "ابتدا سند را ذخیره کنید!",
   "ERROR_TERMINAL_NOT_FOUND": "ترمینال برای سیستم عامل شما یافت نشد، می‌توانید یک دستور ترمینال سفارشی را در تنظیمات تعریف کنید.",
+  "TERMINAL_RENAME_TAB": "تغییر نام این ترمینال",
+  "TERMINAL_RENAME_DONE": "انجام",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "فرایند فعال در حال اجرا",
   "TERMINAL_CLOSE_CONFIRM_MSG": "ترمینال یک فرایند فعال در حال اجرا دارد: <b>{0}</b>.<br>آیا مطمئن هستید که می‌خواهید آن را ببندید؟",
   "TERMINAL_CLOSE_SINGLE_TITLE": "بستن ترمینال؟",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "برای کپی کردن موارد باقی‌مانده، {0} را انتخاب کنید.",
   "MIGRATE_UNREACHABLE_TITLE": "عدم دسترسی به سایت قدیمی",
   "MIGRATE_UNREACHABLE_MESSAGE": "‏{APP_NAME} نتوانست به {0} متصل شود تا پروژه‌ها و تنظیمات شما را جستجو کند، بنابراین هیچ تغییری ایجاد نشده است. اتصال اینترنت خود را بررسی کنید، سپس با {1} دوباره تلاش کنید.",
-  "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…",
-  "TERMINAL_RENAME_TAB": "تغییر نام این ترمینال"
+  "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…"
 });

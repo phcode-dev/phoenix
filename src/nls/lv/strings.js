@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Nekas nav atlasīts!",
   "ERROR_SAVE_FIRST": "Vispirms saglabājiet dokumentu!",
   "ERROR_TERMINAL_NOT_FOUND": "Jūsu operētājsistēmai netika atrasts terminālis, iestatījumos varat definēt pielāgotu termināļa komandu",
+  "TERMINAL_RENAME_TAB": "Pārdēvēt šo termināli",
+  "TERMINAL_RENAME_DONE": "Darīts",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Darbojas aktīvs process",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Terminālī darbojas aktīvs process: <b>{0}</b>.<br>Vai tiešām vēlaties to aizvērt?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Aizvērt termināli?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Lai pārnestu pārējo, izvēlieties {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
-  "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
-  "TERMINAL_RENAME_TAB": "Pārdēvēt šo termināli"
+  "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…"
 });

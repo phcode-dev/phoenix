@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Nic není vybráno!",
   "ERROR_SAVE_FIRST": "Nejprve uložte dokument!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminál nebyl nalezen pro váš operační systém, můžete definovat vlastní příkaz terminálu v nastavení",
+  "TERMINAL_RENAME_TAB": "Přejmenovat tento terminál",
+  "TERMINAL_RENAME_DONE": "Hotovo",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Běží aktivní proces",
   "TERMINAL_CLOSE_CONFIRM_MSG": "V terminálu běží aktivní proces: <b>{0}</b>.<br>Opravdu ho chcete zavřít?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Zavřít terminál?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Pro zkopírování zbytku zvolte {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
-  "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
-  "TERMINAL_RENAME_TAB": "Přejmenovat tento terminál"
+  "CMD_MIGRATE_DATA": "Přenést moje data z {0}…"
 });

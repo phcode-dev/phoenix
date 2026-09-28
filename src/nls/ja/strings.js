@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "何も選択されていません！",
   "ERROR_SAVE_FIRST": "まずドキュメントを保存してください！",
   "ERROR_TERMINAL_NOT_FOUND": "お使いのOSに対応するターミナルが見つかりませんでした。設定でカスタムターミナルコマンドを定義できます。",
+  "TERMINAL_RENAME_TAB": "このターミナルの名前を変更",
+  "TERMINAL_RENAME_DONE": "完了",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "実行中のプロセス",
   "TERMINAL_CLOSE_CONFIRM_MSG": "ターミナルでプロセス<b>{0}</b>が実行中です。<br>閉じてよろしいですか？",
   "TERMINAL_CLOSE_SINGLE_TITLE": "ターミナルを閉じますか？",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "残りをコピーするには、{0}を選択してください。",
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
-  "CMD_MIGRATE_DATA": "{0}からデータを移行…",
-  "TERMINAL_RENAME_TAB": "このターミナルの名前を変更"
+  "CMD_MIGRATE_DATA": "{0}からデータを移行…"
 });

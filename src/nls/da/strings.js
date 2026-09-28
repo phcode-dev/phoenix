@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Intet er valgt!",
   "ERROR_SAVE_FIRST": "Gem dokumentet først!",
   "ERROR_TERMINAL_NOT_FOUND": "Der blev ikke fundet en terminal til dit operativsystem. Du kan definere en brugerdefineret terminalkommando i indstillingerne.",
+  "TERMINAL_RENAME_TAB": "Omdøb denne terminal",
+  "TERMINAL_RENAME_DONE": "Færdig",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Igangværende proces",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Terminalen har en aktiv proces kørende: <b>{0}</b>.<br>Er du sikker på, at du vil lukke den?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Luk terminal?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "For at kopiere resten skal du vælge {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Kunne ikke få forbindelse til den gamle side",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at finde dine projekter og indstillinger, så der er ikke blevet ændret noget. Tjek din internetforbindelse, og prøv derefter igen med {1}.",
-  "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…",
-  "TERMINAL_RENAME_TAB": "Omdøb denne terminal"
+  "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…"
 });

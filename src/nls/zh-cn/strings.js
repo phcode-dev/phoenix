@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "未选择任何内容！",
   "ERROR_SAVE_FIRST": "请先保存文档！",
   "ERROR_TERMINAL_NOT_FOUND": "找不到适用于您操作系统的终端，您可以在设置中自定义终端命令",
+  "TERMINAL_RENAME_TAB": "重命名此终端",
+  "TERMINAL_RENAME_DONE": "完成",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "活动进程正在运行",
   "TERMINAL_CLOSE_CONFIRM_MSG": "终端有活动进程正在运行: <b>{0}</b>。<br>您确定要关闭它吗？",
   "TERMINAL_CLOSE_SINGLE_TITLE": "关闭终端？",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "若要复制剩余部分，请选择 {0}。",
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
-  "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
-  "TERMINAL_RENAME_TAB": "重命名此终端"
+  "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…"
 });
