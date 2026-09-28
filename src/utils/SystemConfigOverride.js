@@ -60,7 +60,12 @@ define(function (require, exports, module) {
         "app_update_url",
         // linux installs by piping an installer script into bash, so the manifest's downloadURL is
         // not enough there- this is what actually decides which build gets installed on linux.
-        "app_update_linux_installer_url"
+        "app_update_linux_installer_url",
+        // Lets an admin instrument a non dev build, for the one day named. A date rather than a
+        // flag because boot cannot read this file (no file reads on the boot path) and so reads a
+        // cached copy instead- a date means a cache left behind after this file is gone is
+        // worthless on any other day. Format is YYYY-MM-DD, see phoenix-builder/main.js.
+        "prodMCPOverrideDate"
     ];
 
     /**

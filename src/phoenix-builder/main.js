@@ -22,6 +22,105 @@
 
 define(function (require, exports, module) {
 
+    const SystemConfigOverride = require("utils/SystemConfigOverride"),
+        AppInit                = require("utils/AppInit"),
+        StatusBar              = require("widgets/StatusBar"),
+        BuilderStrings         = require("strings");
+
+    // Where the boot script looks to decide whether a non dev build may be
+    // instrumented, see phoenix-builder-boot.js.
+    const PROD_OVERRIDE_DATE_KEY = "prodMCPOverrideDate";
+    const STATUS_INDICATOR_ID = "status-mcp-controlled";
+    // the boot script's own switch, see phoenix-builder-boot.js
+    const BUILDER_ENABLED_KEY = "phoenixBuilderEnabled";
+
+    /**
+     * Keep the cached admin permission in step with the admin owned file.
+     *
+     * Boot cannot read that file - it does no file reads, which is what keeps
+     * startup quick - so it reads a cached copy from localStorage instead. This
+     * writes that copy, one launch behind: a date placed today is honoured from
+     * the next start, and a file removed stops being honoured from the start
+     * after that. The value is a date rather than a flag exactly because of
+     * that lag, so a copy left behind is worthless on any other day.
+     *
+     * Runs in every build, not just dev, since a production build is the only
+     * place the permission means anything.
+     * @private
+     */
+    function _refreshProdInstrumentationPermission() {
+        // In dev the admin file plays no part in the gate, and this flag is the
+        // user's own switch in the Settings tab - writing it from here would
+        // stomp on a choice they made by hand.
+        const managesEnabledFlag = AppConfig.config.environment !== "dev";
+        SystemConfigOverride.getOverrides()
+            .then(function (overrides) {
+                const date = overrides && overrides[PROD_OVERRIDE_DATE_KEY];
+                if (date) {
+                    localStorage.setItem(PROD_OVERRIDE_DATE_KEY, date);
+                    // The file is the admin saying so. Asking them to also type
+                    // a command into the console of every machine would add a
+                    // step without adding a decision.
+                    if (managesEnabledFlag) {
+                        localStorage.setItem(BUILDER_ENABLED_KEY, "true");
+                    }
+                } else {
+                    localStorage.removeItem(PROD_OVERRIDE_DATE_KEY);
+                    if (managesEnabledFlag) {
+                        localStorage.removeItem(BUILDER_ENABLED_KEY);
+                    }
+                }
+            })
+            .catch(function (err) {
+                // never leave a stale permission behind on an unreadable file
+                localStorage.removeItem(PROD_OVERRIDE_DATE_KEY);
+                if (managesEnabledFlag) {
+                    localStorage.removeItem(BUILDER_ENABLED_KEY);
+                }
+                console.error("Could not read the system config override", err);
+            });
+    }
+
+    /**
+     * Say so, in the status bar, while something is driving this session.
+     *
+     * Shown on connection rather than on being enabled: a build that merely
+     * allows instrumentation is not being instrumented, and the thing worth
+     * telling the user about is that someone is on the other end right now.
+     *
+     * Not shown in dev, where being driven by the builder is the ordinary way
+     * of working and a permanent badge would only be noise. It is the builds a
+     * user runs that should say when something else is at the controls.
+     * @private
+     */
+    function _watchInstrumentationState() {
+        if (AppConfig.config.environment === "dev") {
+            return;
+        }
+        const boot = window._phoenixBuilder;
+        if (!boot || !boot.setConnectionListener) {
+            return;
+        }
+        const $indicator = $("<div></div>").text(BuilderStrings.STATUSBAR_MCP_CONTROLLED);
+        let shown = false;
+        boot.setConnectionListener(function (connected) {
+            if (connected && !shown) {
+                StatusBar.addIndicator(STATUS_INDICATOR_ID, $indicator, true,
+                    "mcp-controlled-indicator",
+                    BuilderStrings.STATUSBAR_MCP_CONTROLLED_TOOLTIP);
+                shown = true;
+            } else if (!connected && shown) {
+                StatusBar.updateIndicator(STATUS_INDICATOR_ID, false);
+                shown = false;
+            }
+        });
+    }
+
+    AppInit.appReady(function () {
+        _refreshProdInstrumentationPermission();
+        _watchInstrumentationState();
+    });
+
     // Only register the command in dev builds
     if (!window.AppConfig || AppConfig.config.environment !== "dev") {
         return;

@@ -1117,6 +1117,8 @@ define({
     "STATUSBAR_LINE_COUNT_SINGULAR": "\u2014 {0} Line",
     "STATUSBAR_LINE_COUNT_PLURAL": "\u2014 {0} Lines",
     "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extensions Disabled",
+    "STATUSBAR_MCP_CONTROLLED": "Remote Controlled",
+    "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "This editor is being remotely controlled. Another program is connected to it and can read and change your files.",
     "STATUSBAR_INSERT": "INS",
     "STATUSBAR_OVERWRITE": "OVR",
     "STATUSBAR_INSOVR_TOOLTIP": "Click to toggle cursor between Insert (INS) and Overwrite (OVR) modes",
