@@ -1528,8 +1528,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 "query computed styles, click elements, or capture console output. Use it to debug " +
                 "behavior and to confirm an edit actually took effect." +
                 "\n- searchImages: find Unsplash photos for a website; includePreview=true returns a small " +
-                "numbered collage so you can choose visually. Reuse returned URLs and call useImage when selecting " +
-                "a photo for a page. Use searches judiciously, at most 100 per hour." +
+                "numbered collage so you can choose visually. Call useImage when selecting photos for a page and " +
+                "prefer embedding the returned Unsplash URLs; pass downloadPath only when the user asks for local " +
+                "files or the use case needs them. Use searches judiciously, at most 100 per hour." +
                 "\n- previewImages: show actual images in the chat from existing URLs (including file:/// local " +
                 "images). " +
                 "Use it when presenting images or a shortlist to the user; no search is needed." +
