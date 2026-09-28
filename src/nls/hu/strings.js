@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Ez a projekt nem egy Git-tároló. Kattintson a(z) {0} gombra egy új tároló létrehozásához itt, vagy a(z) {1} gombra egy meglévő letöltéséhez.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Még nincsenek commitek. A commitelt változások itt fognak megjelenni.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Ennek a fájlnak még nincs commit-előzménye.",
+  "GIT_HISTORY_AHEAD": "{0} előrébb",
+  "GIT_HISTORY_UP_TO_DATE": "naprakész",
+  "GIT_HISTORY_NOT_PUSHED": "nincs feltöltve",
+  "GIT_HISTORY_NO_TRACKING": "nincs követő ág",
+  "GIT_HISTORY_ALL_LOCAL": "{0} helyi commit",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Nyisson meg egy fájlt a szerkesztőben, hogy megtekintse a commit-előzményét.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "A fájl nem része ennek a Git-tárolónak.",
   "UNDO_CHANGES": "Módosítások elvetése",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
   "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
-  "GIT_HISTORY_AHEAD": "{0} előrébb",
-  "GIT_HISTORY_UP_TO_DATE": "naprakész",
-  "GIT_HISTORY_NOT_PUSHED": "nincs feltöltve",
-  "GIT_HISTORY_NO_TRACKING": "nincs követő ág",
-  "GIT_HISTORY_ALL_LOCAL": "{0} helyi commit"
+  "TERMINAL_RENAME_TAB": "A terminál átnevezése"
 });

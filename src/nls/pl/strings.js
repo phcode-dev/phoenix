@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Ten projekt nie jest repozytorium Git. Kliknij przycisk {0}, aby utworzyć tutaj nowe repozytorium, lub {1}, aby sklonować istniejące.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Brak commitów. Zatwierdzone zmiany pojawią się w tym miejscu.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Brak historii commitów dla tego pliku.",
+  "GIT_HISTORY_AHEAD": "{0} do przodu",
+  "GIT_HISTORY_UP_TO_DATE": "na bieżąco",
+  "GIT_HISTORY_NOT_PUSHED": "niewypchnięte",
+  "GIT_HISTORY_NO_TRACKING": "brak gałęzi śledzącej",
+  "GIT_HISTORY_ALL_LOCAL": "{0} commitów lokalnych",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Otwórz plik w edytorze, aby zobaczyć jego historię commitów.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Plik nie jest częścią tego repozytorium Git.",
   "UNDO_CHANGES": "Odrzuć zmiany",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
   "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
-  "GIT_HISTORY_AHEAD": "{0} do przodu",
-  "GIT_HISTORY_UP_TO_DATE": "na bieżąco",
-  "GIT_HISTORY_NOT_PUSHED": "niewypchnięte",
-  "GIT_HISTORY_NO_TRACKING": "brak gałęzi śledzącej",
-  "GIT_HISTORY_ALL_LOCAL": "{0} commitów lokalnych"
+  "TERMINAL_RENAME_TAB": "Zmień nazwę tego terminala"
 });

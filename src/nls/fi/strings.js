@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Tämä projekti ei ole Git-repositorio. Napsauta {0}-painiketta luodaksesi uuden repositorion tähän, tai {1} kloonataksesi olemassa olevan.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Ei vielä committeja. Commitoidut muutokset näkyvät täällä.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Tällä tiedostolla ei ole vielä commit-historiaa.",
+  "GIT_HISTORY_AHEAD": "{0} edellä",
+  "GIT_HISTORY_UP_TO_DATE": "Ajantasalla",
+  "GIT_HISTORY_NOT_PUSHED": "Ei pushattu",
+  "GIT_HISTORY_NO_TRACKING": "Ei seurantahaaraa",
+  "GIT_HISTORY_ALL_LOCAL": "{0} paikallista committia",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Avaa tiedosto editorissa nähdäksesi sen commit-historian.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Tiedosto ei ole osa tätä Git-repositoriota.",
   "UNDO_CHANGES": "Hylkää muutokset",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
   "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "GIT_HISTORY_AHEAD": "{0} edellä",
-  "GIT_HISTORY_UP_TO_DATE": "Ajantasalla",
-  "GIT_HISTORY_NOT_PUSHED": "Ei pushattu",
-  "GIT_HISTORY_NO_TRACKING": "Ei seurantahaaraa",
-  "GIT_HISTORY_ALL_LOCAL": "{0} paikallista committia"
+  "TERMINAL_RENAME_TAB": "Nimeä tämä pääte uudelleen"
 });

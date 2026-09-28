@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Dette projekt er ikke et Git-repository. Klik på knappen {0} for at oprette et nyt repository her, eller {1} for at downloade et eksisterende.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Ingen commits endnu. Commitede ændringer vil blive vist her.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Der er ingen commit-historik for denne fil endnu.",
+  "GIT_HISTORY_AHEAD": "{0} foran",
+  "GIT_HISTORY_UP_TO_DATE": "Ajour",
+  "GIT_HISTORY_NOT_PUSHED": "Ikke pushet",
+  "GIT_HISTORY_NO_TRACKING": "Ingen tracking-branch",
+  "GIT_HISTORY_ALL_LOCAL": "{0} lokale commits",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Åbn en fil i editoren for at se dens commit-historik.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Filen er ikke en del af dette Git-repository.",
   "UNDO_CHANGES": "Fortryd ændringer",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunne ikke få forbindelse til den gamle side",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at finde dine projekter og indstillinger, så der er ikke blevet ændret noget. Tjek din internetforbindelse, og prøv derefter igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…",
-  "GIT_HISTORY_AHEAD": "{0} foran",
-  "GIT_HISTORY_UP_TO_DATE": "Ajour",
-  "GIT_HISTORY_NOT_PUSHED": "Ikke pushet",
-  "GIT_HISTORY_NO_TRACKING": "Ingen tracking-branch",
-  "GIT_HISTORY_ALL_LOCAL": "{0} lokale commits"
+  "TERMINAL_RENAME_TAB": "Omdøb denne terminal"
 });

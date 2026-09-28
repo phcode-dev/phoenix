@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "यह प्रोजेक्ट एक Git रिपॉजिटरी नहीं है। यहां एक नई रिपॉजिटरी बनाने के लिए {0} बटन पर क्लिक करें, या मौजूदा रिपॉजिटरी डाउनलोड करने के लिए {1}।",
   "GIT_HISTORY_NOTHING_TO_SHOW": "अभी तक कोई कमिट नहीं है। कमिट किए गए बदलाव यहां दिखाई देंगे।",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "इस फ़ाइल के लिए अभी तक कोई कमिट हिस्ट्री नहीं है।",
+  "GIT_HISTORY_AHEAD": "{0} आगे",
+  "GIT_HISTORY_UP_TO_DATE": "अद्यतित",
+  "GIT_HISTORY_NOT_PUSHED": "पुश नहीं किया गया",
+  "GIT_HISTORY_NO_TRACKING": "कोई ट्रैकिंग ब्रांच नहीं",
+  "GIT_HISTORY_ALL_LOCAL": "{0} स्थानीय कमिट्स",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "इसकी कमिट हिस्ट्री देखने के लिए एडिटर में एक फ़ाइल खोलें।",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "यह फ़ाइल इस Git रिपॉजिटरी का हिस्सा नहीं है।",
   "UNDO_CHANGES": "परिवर्तन रद्द करें",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "पुरानी साइट तक नहीं पहुंच सके",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} आपके प्रोजेक्ट और सेटिंग्स को खोजने के लिए {0} से कनेक्ट नहीं हो सका, इसलिए कुछ भी नहीं बदला गया है। अपना इंटरनेट कनेक्शन जाँचें, फिर {1} के साथ फिर से प्रयास करें।",
   "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…",
-  "GIT_HISTORY_AHEAD": "{0} आगे",
-  "GIT_HISTORY_UP_TO_DATE": "अद्यतित",
-  "GIT_HISTORY_NOT_PUSHED": "पुश नहीं किया गया",
-  "GIT_HISTORY_NO_TRACKING": "कोई ट्रैकिंग ब्रांच नहीं",
-  "GIT_HISTORY_ALL_LOCAL": "{0} स्थानीय कमिट्स"
+  "TERMINAL_RENAME_TAB": "इस टर्मिनल का नाम बदलें"
 });

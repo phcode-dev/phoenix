@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "此项目不是 Git 仓库。点击 {0} 按钮可在此处创建一个新仓库，或 {1} 克隆一个现有仓库。",
   "GIT_HISTORY_NOTHING_TO_SHOW": "尚无提交。已提交的更改将显示在此处。",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "此文件尚无提交历史。",
+  "GIT_HISTORY_AHEAD": "领先 {0} 个提交",
+  "GIT_HISTORY_UP_TO_DATE": "已是最新",
+  "GIT_HISTORY_NOT_PUSHED": "未推送",
+  "GIT_HISTORY_NO_TRACKING": "无跟踪分支",
+  "GIT_HISTORY_ALL_LOCAL": "{0} 个本地提交",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "在编辑器中打开一个文件以查看其提交历史。",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "该文件不属于此 Git 仓库。",
   "UNDO_CHANGES": "丢弃更改",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
   "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
-  "GIT_HISTORY_AHEAD": "领先 {0} 个提交",
-  "GIT_HISTORY_UP_TO_DATE": "已是最新",
-  "GIT_HISTORY_NOT_PUSHED": "未推送",
-  "GIT_HISTORY_NO_TRACKING": "无跟踪分支",
-  "GIT_HISTORY_ALL_LOCAL": "{0} 个本地提交"
+  "TERMINAL_RENAME_TAB": "重命名此终端"
 });

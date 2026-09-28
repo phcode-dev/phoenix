@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Dieses Projekt ist kein Git-Repository. Klicken Sie auf die Schaltfläche {0}, um hier ein neues Repository zu erstellen, oder auf {1}, um ein bestehendes herunterzuladen.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Noch keine Commits. Committete Änderungen werden hier angezeigt.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Für diese Datei gibt es noch keinen Commit-Verlauf.",
+  "GIT_HISTORY_AHEAD": "{0} voraus",
+  "GIT_HISTORY_UP_TO_DATE": "Auf dem neuesten Stand",
+  "GIT_HISTORY_NOT_PUSHED": "Nicht gepusht",
+  "GIT_HISTORY_NO_TRACKING": "Kein Tracking-Branch",
+  "GIT_HISTORY_ALL_LOCAL": "{0} lokale Commits",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Öffnen Sie eine Datei im Editor, um deren Commit-Verlauf anzuzeigen.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Die Datei ist nicht Teil dieses Git-Repositorys.",
   "UNDO_CHANGES": "Änderungen verwerfen",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um Ihre Projekte und Einstellungen zu suchen, sodass nichts geändert wurde. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es dann mit {1} erneut.",
   "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…",
-  "GIT_HISTORY_AHEAD": "{0} voraus",
-  "GIT_HISTORY_UP_TO_DATE": "Auf dem neuesten Stand",
-  "GIT_HISTORY_NOT_PUSHED": "Nicht gepusht",
-  "GIT_HISTORY_NO_TRACKING": "Kein Tracking-Branch",
-  "GIT_HISTORY_ALL_LOCAL": "{0} lokale Commits"
+  "TERMINAL_RENAME_TAB": "Dieses Terminal umbenennen"
 });

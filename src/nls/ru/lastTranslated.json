@@ -2783,6 +2783,7 @@
   "TERMINAL_PROJECT_RESTART": "Restart All Terminals",
   "TERMINAL_PROJECT_RESTART_PATH": "Restart all terminals in {0}",
   "TERMINAL_PROJECT_RESTART_WARNING": "Restarting opens every terminal in this folder, stops running processes and clears terminal output.",
+  "TERMINAL_RENAME_TAB": "Rename this terminal",
   "TERMINAL_RESTART_CONFIRM_MSG": "Terminals have active processes. Restarting will stop them and clear terminal output. Continue?",
   "TERMINAL_RESTART_CONFIRM_TITLE": "Restart All Terminals?",
   "TEST_TRANSLATE": "use this to test translations",

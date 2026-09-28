@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "此專案不是 Git 倉儲。點擊 {0} 按鈕在此建立新倉儲，或 {1} 以下載現有的倉儲。",
   "GIT_HISTORY_NOTHING_TO_SHOW": "尚無提交。已提交的變更將會顯示在此處。",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "此檔案尚無提交歷史記錄。",
+  "GIT_HISTORY_AHEAD": "{0} 項領先",
+  "GIT_HISTORY_UP_TO_DATE": "最新",
+  "GIT_HISTORY_NOT_PUSHED": "未推送",
+  "GIT_HISTORY_NO_TRACKING": "無追蹤分支",
+  "GIT_HISTORY_ALL_LOCAL": "{0} 個本機提交",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "在編輯器中開啟一個檔案，以查看其提交歷史記錄。",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "此檔案不屬於此 Git 倉儲。",
   "UNDO_CHANGES": "捨棄變更",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
   "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
-  "GIT_HISTORY_AHEAD": "{0} 項領先",
-  "GIT_HISTORY_UP_TO_DATE": "最新",
-  "GIT_HISTORY_NOT_PUSHED": "未推送",
-  "GIT_HISTORY_NO_TRACKING": "無追蹤分支",
-  "GIT_HISTORY_ALL_LOCAL": "{0} 個本機提交"
+  "TERMINAL_RENAME_TAB": "重新命名此終端機"
 });

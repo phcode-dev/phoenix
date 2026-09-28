@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Dit project is geen Git-repository. Klik op de knop {0} om hier een nieuwe repository aan te maken, of op {1} om een bestaande te downloaden.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Nog geen commits. Gecommitte wijzigingen verschijnen hier.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Er is nog geen commitgeschiedenis voor dit bestand.",
+  "GIT_HISTORY_AHEAD": "{0} voor",
+  "GIT_HISTORY_UP_TO_DATE": "bijgewerkt",
+  "GIT_HISTORY_NOT_PUSHED": "niet gepusht",
+  "GIT_HISTORY_NO_TRACKING": "geen tracking branch",
+  "GIT_HISTORY_ALL_LOCAL": "{0} commits lokaal",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Open een bestand in de editor om de commitgeschiedenis te zien.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Het bestand is geen onderdeel van deze Git-repository.",
   "UNDO_CHANGES": "Wijzigingen verwerpen",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
   "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "GIT_HISTORY_AHEAD": "{0} voor",
-  "GIT_HISTORY_UP_TO_DATE": "bijgewerkt",
-  "GIT_HISTORY_NOT_PUSHED": "niet gepusht",
-  "GIT_HISTORY_NO_TRACKING": "geen tracking branch",
-  "GIT_HISTORY_ALL_LOCAL": "{0} commits lokaal"
+  "TERMINAL_RENAME_TAB": "Hernoem deze terminal"
 });

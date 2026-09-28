@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Dette prosjektet er ikke et Git-depot. Klikk på {0}-knappen for å opprette et nytt depot her, eller {1} for å klone et eksisterende.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Ingen commits ennå. Commitede endringer vil vises her.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Det er ingen commit-historikk for denne filen ennå.",
+  "GIT_HISTORY_AHEAD": "{0} foran",
+  "GIT_HISTORY_UP_TO_DATE": "Ajour",
+  "GIT_HISTORY_NOT_PUSHED": "Ikke pushet",
+  "GIT_HISTORY_NO_TRACKING": "Ingen sporingsgren",
+  "GIT_HISTORY_ALL_LOCAL": "{0} lokale commits",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Åpne en fil i redigeringsprogrammet for å se dens commit-historikk.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Filen er ikke en del av dette Git-depotet.",
   "UNDO_CHANGES": "Forkast endringer",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Fikk ikke kontakt med det gamle nettstedet",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke koble til {0} for å se etter prosjektene og innstillingene dine, så ingenting har blitt endret. Sjekk internettforbindelsen din, og prøv deretter på nytt med {1}.",
   "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…",
-  "GIT_HISTORY_AHEAD": "{0} foran",
-  "GIT_HISTORY_UP_TO_DATE": "Ajour",
-  "GIT_HISTORY_NOT_PUSHED": "Ikke pushet",
-  "GIT_HISTORY_NO_TRACKING": "Ingen sporingsgren",
-  "GIT_HISTORY_ALL_LOCAL": "{0} lokale commits"
+  "TERMINAL_RENAME_TAB": "Gi nytt navn til denne terminalen"
 });

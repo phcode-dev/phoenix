@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Detta projekt är inte ett git-repository. Klicka på knappen {0} för att skapa ett nytt repository här, eller {1} för att klona ett befintligt.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Inga commits än. Incheckade ändringar kommer att visas här.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Det finns ingen commithistorik för den här filen än.",
+  "GIT_HISTORY_AHEAD": "{0} före",
+  "GIT_HISTORY_UP_TO_DATE": "Ajour",
+  "GIT_HISTORY_NOT_PUSHED": "Ej pushad",
+  "GIT_HISTORY_NO_TRACKING": "Ingen spårande gren",
+  "GIT_HISTORY_ALL_LOCAL": "{0} lokala commits",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Öppna en fil i redigeraren för att se dess commithistorik.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Filen är inte en del av detta git-repository.",
   "UNDO_CHANGES": "Återställ ändringar",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
-  "GIT_HISTORY_AHEAD": "{0} före",
-  "GIT_HISTORY_UP_TO_DATE": "Ajour",
-  "GIT_HISTORY_NOT_PUSHED": "Ej pushad",
-  "GIT_HISTORY_NO_TRACKING": "Ingen spårande gren",
-  "GIT_HISTORY_ALL_LOCAL": "{0} lokala commits"
+  "TERMINAL_RENAME_TAB": "Döp om denna terminal"
 });

@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "این پروژه یک مخزن گیت نیست. برای ایجاد یک مخزن جدید در اینجا روی دکمه {0} کلیک کنید، یا برای کلون کردن یک مخزن موجود از {1} استفاده کنید.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "هنوز کامیتی ثبت نشده است. تغییرات کامیت‌شده در اینجا نمایش داده خواهند شد.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "هنوز تاریخچهٔ کامیتی برای این فایل وجود ندارد.",
+  "GIT_HISTORY_AHEAD": "‎{0} کامیت جلوتر",
+  "GIT_HISTORY_UP_TO_DATE": "به‌روز",
+  "GIT_HISTORY_NOT_PUSHED": "پوش نشده",
+  "GIT_HISTORY_NO_TRACKING": "بدون شاخهٔ ردیابی",
+  "GIT_HISTORY_ALL_LOCAL": "‎{0} کامیت محلی",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "برای مشاهدهٔ تاریخچهٔ کامیت‌های یک فایل، آن را در ویرایشگر باز کنید.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "این فایل بخشی از این مخزن گیت نیست.",
   "UNDO_CHANGES": "لغو تغییرات",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "عدم دسترسی به سایت قدیمی",
   "MIGRATE_UNREACHABLE_MESSAGE": "‏{APP_NAME} نتوانست به {0} متصل شود تا پروژه‌ها و تنظیمات شما را جستجو کند، بنابراین هیچ تغییری ایجاد نشده است. اتصال اینترنت خود را بررسی کنید، سپس با {1} دوباره تلاش کنید.",
   "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…",
-  "GIT_HISTORY_AHEAD": "‎{0} کامیت جلوتر",
-  "GIT_HISTORY_UP_TO_DATE": "به‌روز",
-  "GIT_HISTORY_NOT_PUSHED": "پوش نشده",
-  "GIT_HISTORY_NO_TRACKING": "بدون شاخهٔ ردیابی",
-  "GIT_HISTORY_ALL_LOCAL": "‎{0} کامیت محلی"
+  "TERMINAL_RENAME_TAB": "تغییر نام این ترمینال"
 });

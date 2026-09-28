@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Proyek ini bukan repositori Git. Klik tombol {0} untuk membuat repositori baru di sini, atau {1} untuk mengunduh yang sudah ada.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Belum ada commit. Perubahan yang di-commit akan muncul di sini.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Belum ada riwayat commit untuk file ini.",
+  "GIT_HISTORY_AHEAD": "{0} lebih maju",
+  "GIT_HISTORY_UP_TO_DATE": "terkini",
+  "GIT_HISTORY_NOT_PUSHED": "belum di-push",
+  "GIT_HISTORY_NO_TRACKING": "tidak ada cabang pelacakan",
+  "GIT_HISTORY_ALL_LOCAL": "{0} commit lokal",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Buka sebuah file di editor untuk melihat riwayat commit-nya.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "File ini bukan bagian dari repositori Git ini.",
   "UNDO_CHANGES": "Buang perubahan",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
   "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
-  "GIT_HISTORY_AHEAD": "{0} lebih maju",
-  "GIT_HISTORY_UP_TO_DATE": "terkini",
-  "GIT_HISTORY_NOT_PUSHED": "belum di-push",
-  "GIT_HISTORY_NO_TRACKING": "tidak ada cabang pelacakan",
-  "GIT_HISTORY_ALL_LOCAL": "{0} commit lokal"
+  "TERMINAL_RENAME_TAB": "Ubah nama terminal ini"
 });

@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Этот проект не является репозиторием Git. Нажмите кнопку {0}, чтобы создать здесь новый репозиторий, или {1}, чтобы клонировать существующий.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Коммитов ещё нет. Зафиксированные изменения появятся здесь.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Для этого файла ещё нет истории коммитов.",
+  "GIT_HISTORY_AHEAD": "на {0} вперёд",
+  "GIT_HISTORY_UP_TO_DATE": "актуально",
+  "GIT_HISTORY_NOT_PUSHED": "не отправлено",
+  "GIT_HISTORY_NO_TRACKING": "нет отслеживаемой ветки",
+  "GIT_HISTORY_ALL_LOCAL": "{0} локальных коммитов",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Откройте файл в редакторе, чтобы увидеть его историю коммитов.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Файл не является частью этого репозитория Git.",
   "UNDO_CHANGES": "Отменить изменения",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не удалось подключиться к старому сайту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не удалось подключиться к {0} для поиска ваших проектов и настроек, поэтому ничего не было изменено. Проверьте подключение к Интернету, затем повторите попытку с помощью {1}.",
   "CMD_MIGRATE_DATA": "Перенести мои данные из {0}…",
-  "GIT_HISTORY_AHEAD": "на {0} вперёд",
-  "GIT_HISTORY_UP_TO_DATE": "актуально",
-  "GIT_HISTORY_NOT_PUSHED": "не отправлено",
-  "GIT_HISTORY_NO_TRACKING": "нет отслеживаемой ветки",
-  "GIT_HISTORY_ALL_LOCAL": "{0} локальных коммитов"
+  "TERMINAL_RENAME_TAB": "Переименовать этот терминал"
 });
