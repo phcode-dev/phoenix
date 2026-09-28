@@ -54,6 +54,7 @@ const EXEC_PEER_TIMEOUT_MS = {
     resizeLivePreview: 5000,
     searchEditorBuffers: 3000,
     getProblems: 15000,
+    notifyUser: 5000,
     searchImages: 55000,
     previewImages: 45000,
     useImage: 90000
@@ -754,6 +755,54 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         }
     );
 
+    const notifyUserTool = sdkModule.tool(
+        "notifyUser",
+        "Show a short notification toast in the editor window, outside the chat. Use it only when the " +
+        "user may not be watching the chat: a long task has finished, or something needs their attention " +
+        "before you can continue. Do not use it for ordinary replies; the chat already shows those. " +
+        "When the AI panel is visible no toast is shown and the result says so, since the user already " +
+        "sees the chat; pass alwaysShow: true if a toast is still wanted. Clicking the toast brings the " +
+        "user to the chat. By default errors stay until dismissed and other kinds close after a few " +
+        "seconds; autoCloseS overrides that.",
+        {
+            title: z.string().min(1).max(80).describe("Short heading, up to 80 characters"),
+            message: z.string().max(500).optional()
+                .describe("One or two plain-text sentences, up to 500 characters; newlines are kept"),
+            kind: z.enum(["info", "success", "warning", "error"]).optional().describe("Default info"),
+            alwaysShow: z.boolean().optional()
+                .describe("Show the toast even when the AI panel is visible. Default false"),
+            autoCloseS: z.number().int().min(0).max(300).optional()
+                .describe("Seconds before the toast closes on its own, 3 to 300; 0 keeps it until the user " +
+                    "dismisses it. Default 12, 20 for warning, 0 for error")
+        },
+        async function (args) {
+            let toolResult;
+            try {
+                const result = await _execPeerWithTimeout(nodeConnector, "notifyUser", args || {}, "notifyUser");
+                if (result && result.error) {
+                    toolResult = {
+                        content: [{ type: "text", text: "Error: " + result.error }],
+                        isError: true
+                    };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: JSON.stringify(result) }]
+                    };
+                }
+            } catch (err) {
+                toolResult = {
+                    content: [{ type: "text", text: "Error notifying the user: " + err.message }],
+                    isError: true
+                };
+            }
+            return _maybeAppendHint(toolResult, hasClarification);
+        },
+        {
+            annotations: { readOnlyHint: true },
+            searchHint: "notify alert the user with a toast notification when a long task finishes or needs attention"
+        }
+    );
+
     const editorDocsTool = sdkModule.tool(
         "editorDocs",
         "Returns the locations of Phoenix Code's documentation. This tool DOES NOT fetch content " +
@@ -844,7 +893,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         name: "phoenix-editor",
         tools: [getEditorStateTool, searchEditorBuffersTool, searchImagesTool, previewImagesTool,
             useImageTool, takeScreenshotTool, execJsInLivePreviewTool,
-            execJsInEditorTool, editorPreferencesTool, editorDocsTool, getProblemsTool,
+            execJsInEditorTool, editorPreferencesTool, editorDocsTool, getProblemsTool, notifyUserTool,
             controlEditorTool, resizeLivePreviewTool, waitTool, getUserClarificationTool]
     });
 }

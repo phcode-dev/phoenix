@@ -2785,6 +2785,7 @@ define({
     "AI_CHAT_TOOL_EDITOR_PREFERENCES": "Editor preferences",
     "AI_CHAT_TOOL_EDITOR_DOCS": "Editor docs",
     "AI_CHAT_TOOL_PROBLEMS": "Problems",
+    "AI_CHAT_TOOL_NOTIFY": "Notification",
     "AI_CHAT_TOOL_PROBLEMS_IN": "Problems in {0}",
     "AI_CHAT_TOOL_RESIZE_PREVIEW": "Resize preview",
     "AI_LIVE_PREVIEW_BANNER_TEXT": "AI is inspecting the live preview",
