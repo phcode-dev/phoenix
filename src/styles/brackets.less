@@ -421,6 +421,22 @@ a, img {
     }
 }
 
+/* Something outside the app is driving this window. Deliberately loud: it is
+   the one status the user must not overlook, and unlike the rest of the bar it
+   is not a setting they chose. Shown only while a controller is attached, so a
+   quiet bar means nobody is connected. */
+.mcp-controlled-indicator {
+    /* Its own background, so it reads the same against either theme's bar. Not
+       @bc-error, which is a pink that only reaches 3.4:1 against white text and
+       looks decorative; this is 5.3:1 and reads as an alert. */
+    background: #c9302c;
+    color: #fff;
+    font-weight: 600;
+    padding: 0 8px;
+    border-radius: 3px;
+    margin: 2px 4px;
+}
+
 .hide-status-indicators > *:not(.global-indicator) {
     display: none !important;
 }

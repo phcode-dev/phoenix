@@ -26,11 +26,46 @@
 
 (function () {
 
-    // Gate checks — exit immediately if not enabled or not a dev build
+    // Gate checks — exit immediately if not enabled or not permitted here
     if (localStorage.getItem("phoenixBuilderEnabled") !== "true") {
         return;
     }
-    if (!window.AppConfig || AppConfig.config.environment !== "dev") {
+    if (!window.AppConfig) {
+        return;
+    }
+
+    /**
+     * Whether a machine admin has allowed instrumentation on a non dev build,
+     * for today only.
+     *
+     * The permission itself lives in the admin owned system config file, which
+     * only root can write — see utils/SystemConfigOverride.js. Reading it is a
+     * file read, and boot does no file reads, so the date it carries is cached
+     * to localStorage after boot (see phoenix-builder/main.js) and only the
+     * cached copy is consulted here.
+     *
+     * It is a date rather than a flag so that the cache cannot outlive the
+     * admin's intent: a copy left behind after the file is gone is worthless on
+     * any other day, and an exfiltrated config is worthless tomorrow.
+     *
+     * Parsed strictly and compared as text against today's local date. Anything
+     * unexpected — a wrong shape, a stray value, no value — means not allowed.
+     *
+     * @return {boolean}
+     */
+    function _prodInstrumentationAllowedToday() {
+        const stored = localStorage.getItem("prodMCPOverrideDate");
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(stored || "")) {
+            return false;
+        }
+        const now = new Date();
+        const today = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, "0") + "-" +
+            String(now.getDate()).padStart(2, "0");
+        return stored === today;
+    }
+
+    if (AppConfig.config.environment !== "dev" && !_prodInstrumentationAllowedToday()) {
         return;
     }
     // Skip MCP in test windows (the embedded Phoenix iframe inside SpecRunner).
@@ -56,6 +91,19 @@
 
     // --- Trust ring reference (set later via setKernalModeTrust) ---
     let _kernalModeTrust = null;
+
+    // Told whenever the socket opens or closes, so the UI can say that this
+    // session is under outside control. Set through window._phoenixBuilder.
+    let _onConnectionChange = null;
+    function _notifyConnectionChange(connected) {
+        if (typeof _onConnectionChange === "function") {
+            try {
+                _onConnectionChange(connected);
+            } catch (e) {
+                console.error("Phoenix Builder: connection listener failed", e);
+            }
+        }
+    }
 
     /**
      * Dismantle the trust ring before reload. Awaits up to 5s, ignores errors.
@@ -335,6 +383,7 @@
             _sendMessage({ type: "hello", version: "1.0.0", name: instanceName });
             flushTimer = setInterval(_flushLogs, FLUSH_INTERVAL);
             _flushLogs();
+            _notifyConnectionChange(true);
         };
 
         socket.onmessage = function (event) {
@@ -357,6 +406,7 @@
         socket.onclose = function () {
             if (ws !== socket) { return; }
             _cleanup();
+            _notifyConnectionChange(false);
             _scheduleReconnect();
         };
 
@@ -482,6 +532,11 @@
         sendMessage: sendMessage,
         registerHandler: registerHandler,
         getLogBuffer: function () { return capturedLogs.slice(); },
+        // Called with true/false as the socket opens and closes.
+        setConnectionListener: function (fn) {
+            _onConnectionChange = fn;
+            fn(isConnected());
+        },
         dismantleTrustRing: _dismantleTrustRing,
         // Called once by trust_ring.js to pass the trust ring reference
         // before it is nuked from window. Set-only, no getter.
