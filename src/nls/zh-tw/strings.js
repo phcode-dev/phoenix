@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "未選取任何項目！",
   "ERROR_SAVE_FIRST": "請先儲存文件！",
   "ERROR_TERMINAL_NOT_FOUND": "您的作業系統找不到終端機，您可以在設定中自訂終端機指令",
+  "TERMINAL_RENAME_TAB": "重新命名此終端機",
+  "TERMINAL_RENAME_DONE": "完成",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "有作用中程序正在執行",
   "TERMINAL_CLOSE_CONFIRM_MSG": "終端機有作用中程序正在執行：<b>{0}</b>。<br>您確定要關閉嗎？",
   "TERMINAL_CLOSE_SINGLE_TITLE": "關閉終端機？",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "若要複製剩餘項目，請選擇 {0}。",
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
-  "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
-  "TERMINAL_RENAME_TAB": "重新命名此終端機"
+  "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…"
 });

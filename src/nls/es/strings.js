@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "¡No hay nada seleccionado!",
   "ERROR_SAVE_FIRST": "¡Guarde el documento primero!",
   "ERROR_TERMINAL_NOT_FOUND": "No se encontró un terminal para su sistema operativo. Puede definir un comando de terminal personalizado en la configuración.",
+  "TERMINAL_RENAME_TAB": "Renombrar esta terminal",
+  "TERMINAL_RENAME_DONE": "Aceptar",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Proceso en ejecución",
   "TERMINAL_CLOSE_CONFIRM_MSG": "El terminal tiene un proceso en ejecución: <b>{0}</b>.<br>¿Seguro que quieres cerrarlo?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "¿Cerrar terminal?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Para copiar el resto, selecciona {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "No se pudo acceder al sitio antiguo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} no se pudo conectar a {0} para buscar tus proyectos y configuración, por lo que no se ha modificado nada. Comprueba tu conexión a internet y vuelve a intentarlo con {1}.",
-  "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…",
-  "TERMINAL_RENAME_TAB": "Renombrar esta terminal"
+  "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…"
 });

@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Nu este nimic selectat!",
   "ERROR_SAVE_FIRST": "Salvează documentul mai întâi!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminalul nu a fost găsit pentru sistemul tău de operare. Poți defini o comandă personalizată pentru Terminal în setări.",
+  "TERMINAL_RENAME_TAB": "Redenumește acest terminal",
+  "TERMINAL_RENAME_DONE": "Terminat",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Proces activ în execuție",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Terminalul are un proces activ în execuție: <b>{0}</b>.<br>Sunteți sigur că doriți să îl închideți?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Închideți terminalul?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Pentru a copia restul, alegeți {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
-  "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
-  "TERMINAL_RENAME_TAB": "Redenumește acest terminal"
+  "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…"
 });

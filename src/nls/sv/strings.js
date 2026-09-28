@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Inget är valt!",
   "ERROR_SAVE_FIRST": "Spara dokumentet först!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminalen hittades inte för ditt operativsystem. Du kan ange ett eget terminalkommando i inställningarna.",
+  "TERMINAL_RENAME_TAB": "Döp om denna terminal",
+  "TERMINAL_RENAME_DONE": "Klar",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Aktiv process körs",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Terminalen har en aktiv process som körs: <b>{0}</b>.<br>Är du säker på att du vill stänga den?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Stäng terminalen?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "För att kopiera resten, välj {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
-  "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
-  "TERMINAL_RENAME_TAB": "Döp om denna terminal"
+  "CMD_MIGRATE_DATA": "Migrera min data från {0}…"
 });

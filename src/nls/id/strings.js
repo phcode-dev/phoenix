@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Tidak ada yang dipilih!",
   "ERROR_SAVE_FIRST": "Simpan dokumen terlebih dahulu!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminal tidak ditemukan untuk OS Anda, Anda dapat menentukan perintah Terminal kustom di pengaturan",
+  "TERMINAL_RENAME_TAB": "Ubah nama terminal ini",
+  "TERMINAL_RENAME_DONE": "Selesai",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Proses Aktif Berjalan",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Terminal memiliki proses aktif yang berjalan: <b>{0}</b>.<br>Apakah Anda yakin ingin menutupnya?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Tutup Terminal?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Untuk menyalin sisanya, pilih {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
-  "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
-  "TERMINAL_RENAME_TAB": "Ubah nama terminal ini"
+  "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…"
 });

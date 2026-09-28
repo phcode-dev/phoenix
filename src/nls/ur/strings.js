@@ -2027,6 +2027,7 @@ define({
   "ERROR_NOTHING_SELECTED": "کچھ بھی منتخب نہیں ہے!",
   "ERROR_SAVE_FIRST": "پہلے دستاویز محفوظ کریں!",
   "ERROR_TERMINAL_NOT_FOUND": "آپ کے آپریٹنگ سسٹم کے لیے ٹرمینل نہیں ملا، آپ ترتیبات میں ایک اپنی مرضی کا ٹرمینل کمانڈ بیان کر سکتے ہیں",
+  "TERMINAL_RENAME_TAB": "اس ٹرمینل کا نام تبدیل کریں",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "فعال پروسیس جاری ہے",
   "TERMINAL_CLOSE_CONFIRM_MSG": "ٹرمینل میں ایک فعال پروسیس جاری ہے: <b>{0}</b>۔<br>کیا آپ واقعی اسے بند کرنا چاہتے ہیں؟",
   "TERMINAL_CLOSE_SINGLE_TITLE": "ٹرمینل بند کریں؟",
@@ -2921,5 +2922,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "پرانی سائٹ تک رسائی ممکن نہ ہو سکی",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} آپ کے پروجیکٹس اور سیٹنگز تلاش کرنے کے لیے {0} سے منسلک نہیں ہو سکا، لہذا کوئی تبدیلی نہیں کی گئی ہے۔ اپنا انٹرنیٹ کنکشن چیک کریں، پھر {1} کے ساتھ دوبارہ کوشش کریں۔",
   "CMD_MIGRATE_DATA": "{0} سے میرا ڈیٹا منتقل کریں…",
-  "TERMINAL_RENAME_TAB": "اس ٹرمینل کا نام تبدیل کریں"
+  "TERMINAL_RENAME_DONE": "ہو گیا"
 });

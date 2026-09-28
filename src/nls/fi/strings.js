@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Mitään ei ole valittu!",
   "ERROR_SAVE_FIRST": "Tallenna ensin dokumentti!",
   "ERROR_TERMINAL_NOT_FOUND": "Päätettä ei löydetty käyttöjärjestelmällesi. Voit määrittää mukautetun päätekomennon asetuksissa.",
+  "TERMINAL_RENAME_TAB": "Nimeä tämä pääte uudelleen",
+  "TERMINAL_RENAME_DONE": "Valmis",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Aktiivinen prosessi käynnissä",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Päätteessä on käynnissä aktiivinen prosessi: <b>{0}</b>.<br>Haluatko varmasti sulkea sen?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Suljetaanko pääte?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Kopioidaksesi loput, valitse {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
-  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "TERMINAL_RENAME_TAB": "Nimeä tämä pääte uudelleen"
+  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…"
 });

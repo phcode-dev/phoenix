@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Nic nie zostało zaznaczone!",
   "ERROR_SAVE_FIRST": "Najpierw zapisz dokument!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminal nie został znaleziony dla twojego systemu operacyjnego. Możesz zdefiniować własne polecenie terminala w ustawieniach.",
+  "TERMINAL_RENAME_TAB": "Zmień nazwę tego terminala",
+  "TERMINAL_RENAME_DONE": "Gotowe",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Trwa aktywny proces",
   "TERMINAL_CLOSE_CONFIRM_MSG": "W terminalu trwa aktywny proces: <b>{0}</b>.<br>Czy na pewno chcesz go zamknąć?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Zamknąć terminal?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Aby skopiować resztę, wybierz {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
-  "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
-  "TERMINAL_RENAME_TAB": "Zmień nazwę tego terminala"
+  "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…"
 });

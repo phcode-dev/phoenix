@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Nichts ist ausgewählt!",
   "ERROR_SAVE_FIRST": "Speichern Sie zuerst das Dokument!",
   "ERROR_TERMINAL_NOT_FOUND": "Für Ihr Betriebssystem wurde kein Terminal gefunden. Sie können einen benutzerdefinierten Terminalbefehl in den Einstellungen festlegen.",
+  "TERMINAL_RENAME_TAB": "Dieses Terminal umbenennen",
+  "TERMINAL_RENAME_DONE": "Fertig",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Laufender Prozess",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Im Terminal läuft ein aktiver Prozess: <b>{0}</b>.<br>Möchten Sie das Terminal wirklich schließen?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Terminal schließen?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Um den Rest zu kopieren, wählen Sie {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um Ihre Projekte und Einstellungen zu suchen, sodass nichts geändert wurde. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es dann mit {1} erneut.",
-  "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…",
-  "TERMINAL_RENAME_TAB": "Dieses Terminal umbenennen"
+  "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…"
 });

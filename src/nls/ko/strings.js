@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "아무것도 선택되지 않았습니다!",
   "ERROR_SAVE_FIRST": "먼저 문서를 저장하세요!",
   "ERROR_TERMINAL_NOT_FOUND": "현재 OS에서 터미널을 찾을 수 없습니다. 설정에서 사용자 지정 터미널 명령을 정의할 수 있습니다.",
+  "TERMINAL_RENAME_TAB": "이 터미널 이름 바꾸기",
+  "TERMINAL_RENAME_DONE": "완료",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "활성 프로세스 실행 중",
   "TERMINAL_CLOSE_CONFIRM_MSG": "터미널에서 실행 중인 활성 프로세스: <b>{0}</b>.<br>정말로 닫으시겠습니까?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "터미널을 닫으시겠습니까?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "나머지 항목을 복사하려면 {0}을(를) 선택하세요.",
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}이(가) {0}에 연결하여 프로젝트 및 설정을 찾을 수 없었으므로 아무것도 변경되지 않았습니다. 인터넷 연결을 확인한 다음 {1}으로 다시 시도하세요.",
-  "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…",
-  "TERMINAL_RENAME_TAB": "이 터미널 이름 바꾸기"
+  "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…"
 });

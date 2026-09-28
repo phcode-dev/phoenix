@@ -2027,6 +2027,7 @@ define({
   "ERROR_NOTHING_SELECTED": "Hiçbir şey seçili değil!",
   "ERROR_SAVE_FIRST": "Önce belgeyi kaydedin!",
   "ERROR_TERMINAL_NOT_FOUND": "İşletim sisteminiz için terminal bulunamadı, ayarlar bölümünden özel bir terminal komutu tanımlayabilirsiniz",
+  "TERMINAL_RENAME_TAB": "Bu terminali yeniden adlandır",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Aktif İşlem Çalışıyor",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Terminalde aktif bir işlem çalışıyor: <b>{0}</b>.<br>Kapatmak istediğinizden emin misiniz?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Terminal Kapatılsın mı?",
@@ -2921,5 +2922,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
   "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
-  "TERMINAL_RENAME_TAB": "Bu terminali yeniden adlandır"
+  "TERMINAL_RENAME_DONE": "Tamam"
 });

@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Er is niets geselecteerd!",
   "ERROR_SAVE_FIRST": "Sla het document eerst op!",
   "ERROR_TERMINAL_NOT_FOUND": "Er is geen terminal gevonden voor uw besturingssysteem. U kunt een aangepaste terminalopdracht definiëren in de instellingen.",
+  "TERMINAL_RENAME_TAB": "Hernoem deze terminal",
+  "TERMINAL_RENAME_DONE": "Gedaan",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Lopend proces",
   "TERMINAL_CLOSE_CONFIRM_MSG": "De terminal voert een actief proces uit: <b>{0}</b>.<br>Weet je zeker dat je deze wilt sluiten?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Terminal sluiten?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Om de rest te kopiëren, kiest u {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
-  "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "TERMINAL_RENAME_TAB": "Hernoem deze terminal"
+  "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…"
 });

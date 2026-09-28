@@ -2027,6 +2027,7 @@ define({
   "ERROR_NOTHING_SELECTED": "कुछ भी चयनित नहीं है!",
   "ERROR_SAVE_FIRST": "पहले दस्तावेज़ सहेजें!",
   "ERROR_TERMINAL_NOT_FOUND": "आपके OS के लिए टर्मिनल नहीं मिला, आप सेटिंग्स में एक कस्टम टर्मिनल कमांड परिभाषित कर सकते हैं",
+  "TERMINAL_RENAME_TAB": "इस टर्मिनल का नाम बदलें",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "सक्रिय प्रक्रिया चल रही है",
   "TERMINAL_CLOSE_CONFIRM_MSG": "टर्मिनल में एक सक्रिय प्रक्रिया चल रही है: <b>{0}</b>।<br>क्या आप वाकई इसे बंद करना चाहते हैं?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "टर्मिनल बंद करें?",
@@ -2921,5 +2922,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "पुरानी साइट तक नहीं पहुंच सके",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} आपके प्रोजेक्ट और सेटिंग्स को खोजने के लिए {0} से कनेक्ट नहीं हो सका, इसलिए कुछ भी नहीं बदला गया है। अपना इंटरनेट कनेक्शन जाँचें, फिर {1} के साथ फिर से प्रयास करें।",
   "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…",
-  "TERMINAL_RENAME_TAB": "इस टर्मिनल का नाम बदलें"
+  "TERMINAL_RENAME_DONE": "हो गया"
 });

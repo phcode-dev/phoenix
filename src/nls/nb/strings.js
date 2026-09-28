@@ -2027,6 +2027,7 @@ define({
   "ERROR_NOTHING_SELECTED": "Ingenting er valgt!",
   "ERROR_SAVE_FIRST": "Lagre dokumentet først!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminal ble ikke funnet for operativsystemet ditt. Du kan definere en egendefinert terminalkommando i innstillingene.",
+  "TERMINAL_RENAME_TAB": "Gi nytt navn til denne terminalen",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Aktiv prosess kjører",
   "TERMINAL_CLOSE_CONFIRM_MSG": "Terminalen har en aktiv prosess som kjører: <b>{0}</b>.<br>Er du sikker på at du vil lukke den?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Lukk terminal?",
@@ -2921,5 +2922,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Fikk ikke kontakt med det gamle nettstedet",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke koble til {0} for å se etter prosjektene og innstillingene dine, så ingenting har blitt endret. Sjekk internettforbindelsen din, og prøv deretter på nytt med {1}.",
   "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…",
-  "TERMINAL_RENAME_TAB": "Gi nytt navn til denne terminalen"
+  "TERMINAL_RENAME_DONE": "Ferdig"
 });

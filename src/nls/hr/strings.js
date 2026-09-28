@@ -2027,6 +2027,8 @@ define({
   "ERROR_NOTHING_SELECTED": "Ništa nije odabrano!",
   "ERROR_SAVE_FIRST": "Prvo spremite dokument!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminal nije pronađen za vaš OS. Možete definirati prilagođenu naredbu terminala u postavkama.",
+  "TERMINAL_RENAME_TAB": "Preimenuj ovaj terminal",
+  "TERMINAL_RENAME_DONE": "Može",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Pokrenut je aktivan proces",
   "TERMINAL_CLOSE_CONFIRM_MSG": "U terminalu se izvodi aktivan proces: <b>{0}</b>.<br>Jeste li sigurni da ga želite zatvoriti?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Zatvoriti terminal?",
@@ -2920,6 +2922,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Za prijenos ostatka, odaberite {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
-  "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
-  "TERMINAL_RENAME_TAB": "Preimenuj ovaj terminal"
+  "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…"
 });

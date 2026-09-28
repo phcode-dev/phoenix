@@ -2027,6 +2027,7 @@ define({
   "ERROR_NOTHING_SELECTED": "لم يتم تحديد أي شيء!",
   "ERROR_SAVE_FIRST": "احفظ المستند أولاً!",
   "ERROR_TERMINAL_NOT_FOUND": "لم يتم العثور على طرفية لنظام التشغيل الخاص بك، يمكنك تحديد أمر طرفية مخصص في الإعدادات",
+  "TERMINAL_RENAME_TAB": "إعادة تسمية هذه الطرفية",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "عملية نشطة قيد التشغيل",
   "TERMINAL_CLOSE_CONFIRM_MSG": "لدى الطرفية عملية نشطة قيد التشغيل: <b>{0}</b>.<br>هل أنت متأكد من أنك تريد إغلاقها؟",
   "TERMINAL_CLOSE_SINGLE_TITLE": "إغلاق الطرفية؟",
@@ -2921,5 +2922,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "TERMINAL_RENAME_TAB": "إعادة تسمية هذه الطرفية"
+  "TERMINAL_RENAME_DONE": "تم"
 });
