@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone, awaits */
+/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone, awaits, jasmine, spyOn */
 
 define(function (require, exports, module) {
     let NotificationUI = require("widgets/NotificationUI");
@@ -106,6 +106,50 @@ define(function (require, exports, module) {
             }, "waiting for notification to close");
         }
 
+        it("Should hold the auto close while the mouse is over the toast", function () {
+            // Mock time from the start so the auto-close timer itself is under the clock. The close
+            // itself is observed on the notification, since the removal waits for a CSS transition.
+            jasmine.clock().install();
+            try {
+                const notification = NotificationUI.createToastFromTemplate("hello", "world", {autoCloseTimeS: 1});
+                spyOn(notification, "close").and.callThrough();
+                const $popup = $("#toast-notification-container").children().last();
+                expect($popup.length).toBe(1);
+                $popup.trigger("mouseenter");
+                jasmine.clock().tick(1500);
+                expect($popup[0].isConnected).toBe(true);
+                expect(notification.close).not.toHaveBeenCalled();
+                $popup.trigger("mouseleave");
+                jasmine.clock().tick(900);
+                expect(notification.close).not.toHaveBeenCalled();
+                jasmine.clock().tick(200);
+                expect(notification.close).toHaveBeenCalledWith(NotificationUI.CLOSE_REASON.TIMEOUT);
+            } finally {
+                jasmine.clock().uninstall();
+            }
+        });
+
+        it("Should hold the auto close while the mouse is over the HUD", function () {
+            jasmine.clock().install();
+            let closeReason;
+            try {
+                const notification = NotificationUI.showHUD("fa-solid fa-magnifying-glass-plus", "110%");
+                notification.done(function (reason) { closeReason = reason; });
+                const $hud = $("body > .hud-overlay");
+                expect($hud.length).toBe(1);
+                $hud.trigger("mouseenter");
+                jasmine.clock().tick(1500);
+                expect($hud[0].isConnected).toBe(true);
+                expect(closeReason).toBeUndefined();
+                $hud.trigger("mouseleave");
+                jasmine.clock().tick(1100);
+                expect(closeReason).toBe(NotificationUI.CLOSE_REASON.TIMEOUT);
+                expect($("body > .hud-overlay").length).toBe(0);
+            } finally {
+                jasmine.clock().uninstall();
+            }
+        });
+
         it("Should style toast notification", async function () {
             await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.INFO);
             await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.WARNING);
@@ -150,6 +194,29 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     return $container.find(".inline-toast").length === 0;
                 }, "waiting for inline toast to auto-close", 3000);
+            });
+
+            it("Should hold the auto close while the mouse is over the inline toast", function () {
+                jasmine.clock().install();
+                let closeReason;
+                try {
+                    const notification = NotificationUI.showToastOn($container[0], "hover me", {autoCloseTimeS: 1});
+                    notification.done(function (reason) { closeReason = reason; });
+                    const $toast = $container.find(".inline-toast");
+                    expect($toast.length).toBe(1);
+                    $toast.trigger("mouseenter");
+                    jasmine.clock().tick(1500);
+                    expect($toast[0].isConnected).toBe(true);
+                    expect(closeReason).toBeUndefined();
+                    $toast.trigger("mouseleave");
+                    jasmine.clock().tick(1100);
+                    // The close falls back to a timer when no transition event arrives.
+                    jasmine.clock().tick(600);
+                    expect(closeReason).toBe(NotificationUI.CLOSE_REASON.TIMEOUT);
+                    expect($container.find(".inline-toast").length).toBe(0);
+                } finally {
+                    jasmine.clock().uninstall();
+                }
             });
 
             it("Should dismiss on click by default", async function () {
