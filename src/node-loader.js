@@ -747,6 +747,8 @@ function nodeLoader() {
                     fs.forceUseNodeWSEndpoint(true);
                     setNodeWSEndpoint(message.phoenixNodeURL);
                     KernalModeTrust.localAutoAuthURL = message.autoAuthURL;
+                    // base url the media viewer streams opened video and audio from
+                    window.PhNodeEngine.mediaURL = message.mediaURL;
                     window.isNodeReady = true;
                     resolve(message);
                     // node is designed such that it is not required at boot time to lower startup time.
@@ -859,6 +861,8 @@ function nodeLoader() {
                     fs.forceUseNodeWSEndpoint(true);
                     setNodeWSEndpoint(message.phoenixNodeURL);
                     KernalModeTrust.localAutoAuthURL = message.autoAuthURL;
+                    // base url the media viewer streams opened video and audio from
+                    window.PhNodeEngine.mediaURL = message.mediaURL;
                     window.isNodeReady = true;
                     resolve(message);
                     window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;

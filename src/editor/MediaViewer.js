@@ -59,8 +59,37 @@ define(function (require, exports, module) {
         return _MIME_TYPES[extension] || (isAudio ? "audio/mpeg" : "video/mp4");
     }
 
+    /**
+     * Whether the file can be streamed rather than read into the page. Needs the
+     * node side up, so this is false in the browser and until node is ready.
+     * @return {boolean}
+     * @private
+     */
+    function _canStreamMedia() {
+        return !!(Phoenix.isNativeApp && window.isNodeReady &&
+            window.PhNodeEngine && window.PhNodeEngine.mediaURL);
+    }
+
+    /**
+     * The url node will stream this file from.
+     *
+     * Nothing is registered first - the path rides in the query string and node
+     * reads it - so this is a plain string built here, with no round trip to
+     * wait on and no state on either side to keep in step.
+     *
+     * @param {File} file
+     * @return {string}
+     * @private
+     */
+    function _mediaStreamURL(file) {
+        const platformPath = Phoenix.fs.getTauriPlatformPath(file.fullPath);
+        return window.PhNodeEngine.mediaURL +
+            "?platformPath=" + encodeURIComponent(platformPath);
+    }
+
     // blob: URLs are rejected by the media loader on the custom app protocol in native builds
     // ("Media load rejected by URL safety check"), so we use a data URI like ImageViewer does.
+    // Only the browser takes this path now, see MediaView.prototype._loadMedia.
     function _mediaToDataURI(file, isAudio, cb) {
         file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content) {
             if (err) {
@@ -136,11 +165,24 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Reads the media file and points the media element at its content
+     * Points the media element at the file, streaming it from node where we can.
+     *
+     * The desktop app serves the file over the node http server and hands the
+     * element a url, so the bytes never pass through here: no size limit, no
+     * copy of the file in memory, and the element can ask for the piece it
+     * needs, which is what lets it seek. In the browser there is no such server
+     * and the data URI below is all there is - which is why the 16MB cap and
+     * its error message still apply there.
      * @private
      */
     MediaView.prototype._loadMedia = function () {
         const self = this;
+        if (_canStreamMedia()) {
+            this.$mediaError.hide();
+            this.$mediaPreview.show();
+            this.$mediaPreview[0].src = _mediaStreamURL(this.file);
+            return;
+        }
         _mediaToDataURI(this.file, this._isAudio, function (err, dataURI) {
             if (err) {
                 self._showError(err === FileSystemError.EXCEEDS_MAX_FILE_SIZE
@@ -153,6 +195,7 @@ define(function (require, exports, module) {
             self.$mediaPreview[0].src = dataURI;
         });
     };
+
 
     /**
      * Shows an error message instead of the media element
