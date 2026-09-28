@@ -1436,6 +1436,21 @@ define(function (require, exports, module) {
         return model.showInTree(entry).then(_saveTreeState);
     }
 
+    /**
+     * Whether the file tree currently has a node for the path. A file written outside the
+     * FileSystem API is not in the tree until the watcher or a refresh adds it, and a file in a
+     * folder that was never expanded is not in it either; `showInTree` expands the folders first.
+     *
+     * @param {string} fullPath Absolute path of a file or folder
+     * @return {boolean} true if the tree has the node
+     */
+    function isInFileTree(fullPath) {
+        if (!isWithinProject(fullPath)) {
+            return false;
+        }
+        return model._viewModel.isFilePathVisible(makeProjectRelativeIfPossible(fullPath)) !== null;
+    }
+
     function _filePickerSupported() {
         return Phoenix.isNativeApp
             || window.showOpenFilePicker; // fs access file picker
@@ -2450,6 +2465,7 @@ define(function (require, exports, module) {
     exports.moveToTrash                   = moveToTrash;
     exports.forceFinishRename             = forceFinishRename;
     exports.showInTree                    = showInTree;
+    exports.isInFileTree                  = isInFileTree;
     exports.shouldShowFileNameInTree      = ProjectModel._shouldShowName;
     exports.refreshFileTree               = refreshFileTree;
     exports.getAllFiles                   = getAllFiles;
