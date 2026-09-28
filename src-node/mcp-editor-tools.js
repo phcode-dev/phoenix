@@ -56,7 +56,7 @@ const EXEC_PEER_TIMEOUT_MS = {
     getProblems: 15000,
     searchImages: 55000,
     previewImages: 45000,
-    useImage: 12000
+    useImage: 90000
 };
 
 // Floor for caller-provided timeouts (e.g. execJsInLivePreview's
@@ -217,8 +217,9 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "Set includePreview:true to SEE a small numbered collage and choose the best visual match yourself; " +
         "each collage number matches the photo's number field and 1-based array position. Missing previews are listed. " +
         "The user can optionally reply with an image URL; do not wait for them to choose. " +
-        "When choosing photos for the page, call useImage once with their downloadTrackers as a list, use their supplied URLs, " +
-        "and credit the photographer and Unsplash with the returned links. Honor rate-limit errors and retryAfterSeconds.",
+        "When choosing photos for the page, call useImage once with their downloadTrackers as a list, prefer embedding " +
+        "their supplied URLs, and credit the photographer and Unsplash with the returned links. " +
+        "Honor rate-limit errors and retryAfterSeconds.",
         {
             query: z.string().min(1).max(200).describe("Specific image search query"),
             page: z.number().int().min(1).optional().describe("Results page, default 1"),
@@ -278,12 +279,22 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
 
     const useImageTool = sdkModule.tool(
         "useImage",
-        "Record Unsplash images chosen from searchImages before embedding their URLs. Prefer selecting multiple " +
-        "photos in one call by passing a list of downloadTrackers (up to nine). A single tracker is also accepted. " +
-        "Returns selected photos and any per-image failures; retry only failed trackers. " +
-        "Does not perform another search or edit any files.",
-        {downloadTracker: z.union([z.string(), z.array(z.string()).min(1).max(9)])
-            .describe("One downloadTracker from searchImages, or an ordered list of up to nine downloadTrackers")},
+        "Select Unsplash photos from searchImages. Prefer the Unsplash URLs: without downloadPath the photos are " +
+        "shown as selected in the chat and you embed their URLs directly; nothing is downloaded. Pass downloadPath " +
+        "only when the user asks for local files or the use case needs them (offline pages, a build that bundles " +
+        "assets, an image that must be edited): the photos are then downloaded into the project and each returned " +
+        "photo has savedPath (absolute) and projectPath (project-relative, for src attributes). Prefer selecting " +
+        "multiple photos in one call by passing a list of downloadTrackers (up to nine). A single tracker is also " +
+        "accepted. Returns selected photos and any per-image failures; retry only failed trackers. " +
+        "Does not perform another search or edit existing files.",
+        {
+            downloadTracker: z.union([z.string(), z.array(z.string()).min(1).max(9)])
+                .describe("One downloadTracker from searchImages, or an ordered list of up to nine downloadTrackers"),
+            downloadPath: z.string().optional()
+                .describe("Download into the project instead of embedding by URL: a project folder such as " +
+                    "images/, or for a single photo a file path such as images/hero.jpg (jpg, png, webp or avif). " +
+                    "Omit it to embed the Unsplash URLs.")
+        },
         async function (args) {
             try {
                 const result = await _execPeerWithTimeout(nodeConnector, "useImage", args, "useImage");
