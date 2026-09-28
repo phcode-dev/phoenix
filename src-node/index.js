@@ -66,6 +66,7 @@ const path = require('path');
 const PhoenixFS = require('@phcode/fs/dist/phoenix-fs');
 const NodeConnector = require("./node-connector");
 const LivePreview = require("./live-preview");
+const MediaServer = require("./media-server");
 require("./test-connection");
 require("./utils");
 require("./terminal");
@@ -99,6 +100,7 @@ const PHOENIX_STATIC_SERVER_URL = `/Static${randomNonce(8)}`;
 const PHOENIX_NODE_URL = `/PhoenixNode${randomNonce(8)}`;
 const PHOENIX_LIVE_PREVIEW_COMM_URL = `/PreviewComm${randomNonce(8)}`;
 const PHOENIX_AUTO_AUTH_URL = `/AutoAuth${randomNonce(8)}`;
+const PHOENIX_MEDIA_URL = `/Media${randomNonce(8)}`;
 
 const savedConsoleLog = console.log;
 
@@ -197,7 +199,8 @@ function processCommand(line) {
                     phoenixNodeURL: `ws://localhost:${port}${PHOENIX_NODE_URL}`,
                     staticServerURL: `http://localhost:${port}${PHOENIX_STATIC_SERVER_URL}`,
                     livePreviewCommURL: `ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`,
-                    autoAuthURL: `http://localhost:${port}${PHOENIX_AUTO_AUTH_URL}`
+                    autoAuthURL: `http://localhost:${port}${PHOENIX_AUTO_AUTH_URL}`,
+                    mediaURL: `http://localhost:${port}${PHOENIX_MEDIA_URL}`
                 }, jsonCmd.commandID);
             });
             return;
@@ -319,6 +322,11 @@ const server = http.createServer((req, res) => {
 
     } else if (req.url.startsWith(PHOENIX_AUTO_AUTH_URL)) {
         return autoAuth(req, res);
+    } else if (req.url.startsWith(PHOENIX_MEDIA_URL)) {
+        // Video and audio the editor has opened, streamed from disk with byte
+        // range support so the media element can seek. See media-server.js.
+        const mediaURL = new URL(req.url, `http://${req.headers.host}`);
+        return MediaServer.serveMedia(req, res, mediaURL);
     }else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not Found');
@@ -340,5 +348,6 @@ server.listen(0, localhostOnly, () => {
     savedConsoleLog(`Phoenix node connector url is ws://localhost:${port}${PHOENIX_NODE_URL}`);
     savedConsoleLog(`Phoenix live preview comm url is ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`);
     savedConsoleLog(`Phoenix AutoAuth url is ws://localhost:${port}${PHOENIX_AUTO_AUTH_URL}`);
+    savedConsoleLog(`Phoenix media url is http://localhost:${port}${PHOENIX_MEDIA_URL}`);
     serverPortResolve(port);
 });
