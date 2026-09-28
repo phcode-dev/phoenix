@@ -5873,3 +5873,9 @@
     font-size: @ai-dialog-note;
     line-height: 28px;
 }
+
+// Toast the AI raises through notifyUser; the message is plain text with its line breaks kept.
+.ai-notify-toast {
+    cursor: pointer;
+    .ai-notify-message { white-space: pre-line; }
+}
