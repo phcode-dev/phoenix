@@ -291,13 +291,16 @@ input[type="text"].terminal-flyout-rename {
     flex: 1;
     min-width: 0;
     height: 20px;
-    margin-left: 6px;
-    margin-right: 18px;
+    /* all four sides, because the theme gives form inputs a bottom margin of
+       their own and that pushes the field off the row's centre line */
+    margin: 0 22px 0 6px;
     padding: 0 4px;
     font-size: 12px;
     line-height: 18px;
-    color: var(--terminal-tab-active-text);
-    background: rgba(0, 0, 0, 0.35);
+    /* background and text colour are left to the theme's own input styling, so
+       this field reads like every other one — white on a light theme rather
+       than a dark patch on a light strip. Only the border is ours, to mark the
+       row as being edited. */
     border: 1px solid #007acc;
     border-radius: 2px;
     outline: none;
@@ -308,6 +311,28 @@ input[type="text"].terminal-flyout-rename {
 .terminal-flyout-item.renaming .terminal-flyout-close,
 .terminal-flyout-item.renaming .terminal-flyout-cwd {
     display: none;
+}
+
+/* Confirm button, in the slot the pencil and close vacate while editing */
+.terminal-flyout-rename-done {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--terminal-tab-text);
+    background: transparent;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.terminal-flyout-rename-done:hover {
+    color: var(--terminal-tab-active-text);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 
