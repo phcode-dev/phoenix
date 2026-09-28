@@ -4,6 +4,7 @@
         <ul class="nav nav-tabs no-focus" style="margin-bottom: 0;">
             <li class="active"><a href="#builder-settings" data-toggle="tab">Settings</a></li>
             <li><a href="#builder-logs" data-toggle="tab">Console Logs</a></li>
+            <li><a href="#builder-prod" data-toggle="tab">Production</a></li>
         </ul>
     </div>
     <div class="modal-body tab-content">
@@ -60,6 +61,36 @@
             <div class="builder-log-container" style="overflow-y: auto; max-height: 350px; font-family: monospace; font-size: 12px; border: 1px solid var(--item-border-color); border-radius: 4px; padding: 4px;">
                 <span style="opacity: 0.5;">No logs captured yet.</span>
             </div>
+        </div>
+        <div id="builder-prod" class="tab-pane">
+            <p class="dialog-message">
+                MCP is off in production builds. To instrument one, a machine admin drops a dated
+                permission in a root owned folder &mdash; being able to write there is what proves an
+                admin allowed it. It is a date, not a switch, so a permission cannot be left on by
+                accident: it works on that day only.
+            </p>
+
+            <p style="font-weight: bold; margin-bottom: 4px;">1. Grant it (click to copy, then run in a terminal)</p>
+            <pre class="builder-config-code" style="padding: 8px; border: 1px solid var(--item-border-color); border-radius: 4px; overflow-x: auto; font-size: 12px; cursor: pointer; white-space: pre-wrap; word-break: break-all;" title="Click to copy">{{mcpGrantCommand}}</pre>
+            <p style="font-size: 12px; opacity: 0.7; margin-top: 4px;">
+                Writes <code>{{mcpOverrideFile}}</code> with today's date, <code>{{mcpToday}}</code>.
+                Re-run it on any day you want to instrument again.
+            </p>
+
+            <p style="font-weight: bold; margin-bottom: 4px; margin-top: 12px;">2. Restart the production app twice</p>
+            <p style="font-size: 12px; opacity: 0.7; margin-top: 0;">
+                Nothing else to switch on &mdash; the file is the permission, and the app picks it up
+                by itself. Boot reads no files, to keep startup quick, so it consults a cached copy of
+                the date: the first start after step 1 caches it, the second acts on it. Removing the
+                file clears the cache the same way, one start later.
+            </p>
+
+            <p style="font-weight: bold; margin-bottom: 4px; margin-top: 12px;">Revoking</p>
+            <pre class="builder-config-code" style="padding: 8px; border: 1px solid var(--item-border-color); border-radius: 4px; overflow-x: auto; font-size: 12px; cursor: pointer; white-space: pre-wrap; word-break: break-all;" title="Click to copy">{{mcpRevokeCommand}}</pre>
+            <p style="font-size: 12px; opacity: 0.7; margin-top: 4px;">
+                It also lapses on its own at midnight. While anything is connected the production
+                window shows a red <b>Remote Controlled</b> badge in its status bar.
+            </p>
         </div>
     </div>
     <div class="modal-footer">
