@@ -179,11 +179,34 @@ define(function (require, exports, module) {
         let url = localStorage.getItem("phoenixBuilderWsUrl") || DEFAULT_WS_URL,
             enabled = localStorage.getItem("phoenixBuilderEnabled") === "true";
 
+        // Ready to run, so the Production tab needs nothing looked up elsewhere.
+        // The path comes from SystemConfigOverride rather than being written out
+        // again here, so the two cannot drift apart.
+        const overrideFile = Phoenix.fs.getTauriPlatformPath(SystemConfigOverride.OVERRIDE_FILE_PATH);
+        const overrideDir = overrideFile.replace(/[/\\][^/\\]+$/, "");
+        const now = new Date();
+        const today = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, "0") + "-" +
+            String(now.getDate()).padStart(2, "0");
+        const isWin = Phoenix.platform === "win";
+        const grantCommand = isWin
+            ? 'mkdir "' + overrideDir + '" & echo {"' + PROD_OVERRIDE_DATE_KEY + '": "' + today +
+                '"} > "' + overrideFile + '"'
+            : 'sudo mkdir -p "' + overrideDir + '" && echo \'{"' + PROD_OVERRIDE_DATE_KEY +
+                '": "' + today + '"}\' | sudo tee "' + overrideFile + '"';
+        const revokeCommand = isWin
+            ? 'del "' + overrideFile + '"'
+            : 'sudo rm "' + overrideFile + '"';
+
         const templateVars = {
             url: url,
             enabled: enabled,
             connected: PhoenixBuilderClient.isConnected(),
-            instanceName: PhoenixBuilderClient.getInstanceName()
+            instanceName: PhoenixBuilderClient.getInstanceName(),
+            mcpOverrideFile: overrideFile,
+            mcpToday: today,
+            mcpGrantCommand: grantCommand,
+            mcpRevokeCommand: revokeCommand
         };
 
         const template = Mustache.render(BuilderConnectTemplate, templateVars);
