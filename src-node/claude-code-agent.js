@@ -1405,6 +1405,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             // than a rule waving all of them through. Reads never reach a
             // prompt — the PreToolUse hook below allows them outright.
             "mcp__phoenix-editor__editorDocs",
+            "mcp__phoenix-editor__getProblems",
             "mcp__phoenix-editor__controlEditor",
             "mcp__phoenix-editor__resizeLivePreview",
             "mcp__phoenix-editor__wait",
@@ -1423,7 +1424,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     "mcp__phoenix-editor__previewImages",
                     "mcp__phoenix-editor__takeScreenshot",
                     "mcp__phoenix-editor__execJsInLivePreview",
-                    "mcp__phoenix-editor__editorDocs"]
+                    "mcp__phoenix-editor__editorDocs", "mcp__phoenix-editor__getProblems"]
             },
             "coder": {
                 description: "Reads, edits, and writes code files." +
@@ -1441,7 +1442,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     "mcp__phoenix-editor__execJsInLivePreview",
                     "mcp__phoenix-editor__execJsInEditor",
                     "mcp__phoenix-editor__editorPreferences",
-                    "mcp__phoenix-editor__editorDocs"]
+                    "mcp__phoenix-editor__editorDocs", "mcp__phoenix-editor__getProblems"]
             }
         },
         mcpServers: { "phoenix-editor": editorMcpServer },
@@ -1556,6 +1557,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 "feature-docs URL and the GitHub source repo URL. Call once near the start of any " +
                 "non-trivial editor-control task; then Read / Grep the apiDocsPath and WebFetch the " +
                 "featureDocsURL as needed. Do NOT search the codebase blindly when this exists." +
+                "\n- getProblems: to get the problems in a file use this tool; it opens the file in the " +
+                "editor and gives you the errors the editor reports. Use it when the user points at a " +
+                "red squiggle or the Problems panel, and after your own edits to check for new errors." +
                 "\n\nEDITS THAT LAND IN THE LIVE PREVIEW: when you edit the file getEditorState " +
                 "reported as livePreviewFile — or a CSS / JS / SVG file it links to — the user is " +
                 "watching the result render. Whether that is worth checking is your judgement call, " +
