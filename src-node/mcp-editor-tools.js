@@ -53,6 +53,7 @@ const EXEC_PEER_TIMEOUT_MS = {
     controlEditor: 5000,
     resizeLivePreview: 5000,
     searchEditorBuffers: 3000,
+    getProblems: 15000,
     searchImages: 55000,
     previewImages: 45000,
     useImage: 12000
@@ -693,6 +694,55 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         }
     );
 
+
+    const getProblemsTool = sdkModule.tool(
+        "getProblems",
+        "Get the problems for a file: it opens the file in the editor and returns the errors and " +
+        "warnings reported by the syntax checkers available for that file type, with 1-based line " +
+        "and column, type, message and the checker (provider) that found each. respondedProviders " +
+        "lists the checkers that answered; judge from that whether the coverage is enough for what " +
+        "the user asked. If no problem provider is set for the file type, the result says so. " +
+        "Defaults to the active file. Returns at most 20 problems by default; counts always cover " +
+        "the whole file, so use pattern, type or provider to narrow, or raise maxProblems. Use it " +
+        "when the user points at a red squiggle or the Problems panel, and after your own edits " +
+        "to check for new errors.",
+        {
+            filePath: z.string().optional().describe("Absolute path of the file. Default: the active editor file"),
+            pattern: z.string().optional().describe("Regex (default) or literal text the message must match"),
+            isRegex: z.boolean().optional().describe("false to match the pattern literally. Default true"),
+            caseSensitive: z.boolean().optional().describe("Default false"),
+            type: z.enum(["error", "warning", "meta"]).optional().describe("Only problems of this type"),
+            provider: z.string().optional().describe("Only problems from this linter; names come back in every result"),
+            maxProblems: z.number().int().optional().describe("Cap on returned problems. Default 20, max 200")
+        },
+        async function (args) {
+            let toolResult;
+            try {
+                const result = await _execPeerWithTimeout(nodeConnector, "getProblems", args || {}, "getProblems");
+                if (result && result.error) {
+                    toolResult = {
+                        content: [{ type: "text", text: "Error: " + result.error }],
+                        isError: true
+                    };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: JSON.stringify(result) }]
+                    };
+                }
+            } catch (err) {
+                toolResult = {
+                    content: [{ type: "text", text: "Error getting problems: " + err.message }],
+                    isError: true
+                };
+            }
+            return _maybeAppendHint(toolResult, hasClarification);
+        },
+        {
+            annotations: { readOnlyHint: true },
+            searchHint: "lint errors warnings diagnostics problems red squiggles in a file, what the Problems panel shows"
+        }
+    );
+
     const editorDocsTool = sdkModule.tool(
         "editorDocs",
         "Returns the locations of Phoenix Code's documentation. This tool DOES NOT fetch content " +
@@ -783,7 +833,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         name: "phoenix-editor",
         tools: [getEditorStateTool, searchEditorBuffersTool, searchImagesTool, previewImagesTool,
             useImageTool, takeScreenshotTool, execJsInLivePreviewTool,
-            execJsInEditorTool, editorPreferencesTool, editorDocsTool,
+            execJsInEditorTool, editorPreferencesTool, editorDocsTool, getProblemsTool,
             controlEditorTool, resizeLivePreviewTool, waitTool, getUserClarificationTool]
     });
 }
