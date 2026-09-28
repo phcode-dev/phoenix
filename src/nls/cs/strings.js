@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Tento projekt není repozitář Git. Klikněte na tlačítko {0} pro vytvoření nového repozitáře zde, nebo {1} pro stažení existujícího.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Zatím žádné commity. Zapsané změny se zobrazí zde.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Tento soubor zatím nemá žádnou historii commitů.",
+  "GIT_HISTORY_AHEAD": "{0} napřed",
+  "GIT_HISTORY_UP_TO_DATE": "aktuální",
+  "GIT_HISTORY_NOT_PUSHED": "neodesláno",
+  "GIT_HISTORY_NO_TRACKING": "žádná sledovací větev",
+  "GIT_HISTORY_ALL_LOCAL": "{0} lokálních revizí",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Otevřete soubor v editoru pro zobrazení jeho historie commitů.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Soubor není součástí tohoto repozitáře Git.",
   "UNDO_CHANGES": "Zahodit změny",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
   "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
-  "GIT_HISTORY_AHEAD": "{0} napřed",
-  "GIT_HISTORY_UP_TO_DATE": "aktuální",
-  "GIT_HISTORY_NOT_PUSHED": "neodesláno",
-  "GIT_HISTORY_NO_TRACKING": "žádná sledovací větev",
-  "GIT_HISTORY_ALL_LOCAL": "{0} lokálních revizí"
+  "TERMINAL_RENAME_TAB": "Přejmenovat tento terminál"
 });

@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "이 프로젝트는 깃 저장소가 아닙니다. {0} 버튼을 클릭하여 여기에 새 저장소를 만들거나 {1}하여 기존 저장소를 다운로드하세요.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "아직 커밋이 없습니다. 커밋된 변경 사항이 여기에 표시됩니다.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "이 파일에 대한 커밋 기록이 아직 없습니다.",
+  "GIT_HISTORY_AHEAD": "{0}개 앞섬",
+  "GIT_HISTORY_UP_TO_DATE": "최신 상태",
+  "GIT_HISTORY_NOT_PUSHED": "푸시되지 않음",
+  "GIT_HISTORY_NO_TRACKING": "추적 브랜치 없음",
+  "GIT_HISTORY_ALL_LOCAL": "로컬 커밋 {0}개",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "파일을 편집기에서 열어 커밋 기록을 확인하세요.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "이 파일은 이 깃 저장소에 포함되어 있지 않습니다.",
   "UNDO_CHANGES": "변경 사항 취소",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}이(가) {0}에 연결하여 프로젝트 및 설정을 찾을 수 없었으므로 아무것도 변경되지 않았습니다. 인터넷 연결을 확인한 다음 {1}으로 다시 시도하세요.",
   "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…",
-  "GIT_HISTORY_AHEAD": "{0}개 앞섬",
-  "GIT_HISTORY_UP_TO_DATE": "최신 상태",
-  "GIT_HISTORY_NOT_PUSHED": "푸시되지 않음",
-  "GIT_HISTORY_NO_TRACKING": "추적 브랜치 없음",
-  "GIT_HISTORY_ALL_LOCAL": "로컬 커밋 {0}개"
+  "TERMINAL_RENAME_TAB": "이 터미널 이름 바꾸기"
 });

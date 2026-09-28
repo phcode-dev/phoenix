@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Šis projekts nav Git repozitorijs. Noklikšķiniet uz pogas {0}, lai šeit izveidotu jaunu repozitoriju, vai {1}, lai lejupielādētu esošu.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Vēl nav komitu. Iesniegtās izmaiņas tiks rādītas šeit.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Šim failam vēl nav komitu vēstures.",
+  "GIT_HISTORY_AHEAD": "{0} priekšā",
+  "GIT_HISTORY_UP_TO_DATE": "aktuāls",
+  "GIT_HISTORY_NOT_PUSHED": "nav nosūtīts",
+  "GIT_HISTORY_NO_TRACKING": "nav izsekošanas zara",
+  "GIT_HISTORY_ALL_LOCAL": "{0} lokālas izmaiņas",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Atveriet failu redaktorā, lai redzētu tā komitu vēsturi.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Fails nav daļa no šī Git repozitorija.",
   "UNDO_CHANGES": "Atcelt izmaiņas",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
   "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
-  "GIT_HISTORY_AHEAD": "{0} priekšā",
-  "GIT_HISTORY_UP_TO_DATE": "aktuāls",
-  "GIT_HISTORY_NOT_PUSHED": "nav nosūtīts",
-  "GIT_HISTORY_NO_TRACKING": "nav izsekošanas zara",
-  "GIT_HISTORY_ALL_LOCAL": "{0} lokālas izmaiņas"
+  "TERMINAL_RENAME_TAB": "Pārdēvēt šo termināli"
 });

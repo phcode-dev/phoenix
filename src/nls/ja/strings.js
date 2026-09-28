@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "このプロジェクトはGitリポジトリではありません。{0}ボタンをクリックしてここに新しいリポジトリを作成するか、{1}で既存のものをクローンしてください。",
   "GIT_HISTORY_NOTHING_TO_SHOW": "まだコミットがありません。コミットされた変更はここに表示されます。",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "このファイルにはまだコミット履歴がありません。",
+  "GIT_HISTORY_AHEAD": "{0}件先行",
+  "GIT_HISTORY_UP_TO_DATE": "最新です",
+  "GIT_HISTORY_NOT_PUSHED": "未プッシュ",
+  "GIT_HISTORY_NO_TRACKING": "追跡ブランチなし",
+  "GIT_HISTORY_ALL_LOCAL": "{0}件のローカルコミット",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "コミット履歴を表示するには、エディターでファイルを開いてください。",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "このファイルはこのGitリポジトリの一部ではありません。",
   "UNDO_CHANGES": "変更を破棄",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
   "CMD_MIGRATE_DATA": "{0}からデータを移行…",
-  "GIT_HISTORY_AHEAD": "{0}件先行",
-  "GIT_HISTORY_UP_TO_DATE": "最新です",
-  "GIT_HISTORY_NOT_PUSHED": "未プッシュ",
-  "GIT_HISTORY_NO_TRACKING": "追跡ブランチなし",
-  "GIT_HISTORY_ALL_LOCAL": "{0}件のローカルコミット"
+  "TERMINAL_RENAME_TAB": "このターミナルの名前を変更"
 });

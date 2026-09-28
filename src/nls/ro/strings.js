@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Acest proiect nu este un depozit Git. Faceți clic pe butonul {0} pentru a crea un depozit nou aici, sau pe {1} pentru a descărca unul existent.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Niciun commit încă. Modificările commit-uite vor apărea aici.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Nu există încă istoric de commit-uri pentru acest fișier.",
+  "GIT_HISTORY_AHEAD": "{0} în avans",
+  "GIT_HISTORY_UP_TO_DATE": "la zi",
+  "GIT_HISTORY_NOT_PUSHED": "nepublicat",
+  "GIT_HISTORY_NO_TRACKING": "fără ramură de urmărire",
+  "GIT_HISTORY_ALL_LOCAL": "{0} commituri locale",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Deschideți un fișier în editor pentru a vedea istoricul său de commit-uri.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Fișierul nu face parte din acest depozit Git.",
   "UNDO_CHANGES": "Renunță la modificări",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
   "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
-  "GIT_HISTORY_AHEAD": "{0} în avans",
-  "GIT_HISTORY_UP_TO_DATE": "la zi",
-  "GIT_HISTORY_NOT_PUSHED": "nepublicat",
-  "GIT_HISTORY_NO_TRACKING": "fără ramură de urmărire",
-  "GIT_HISTORY_ALL_LOCAL": "{0} commituri locale"
+  "TERMINAL_RENAME_TAB": "Redenumește acest terminal"
 });

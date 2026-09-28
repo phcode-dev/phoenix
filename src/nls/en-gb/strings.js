@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "This project is not a Git repository. Click the {0} button to create a new repository here, or {1} to clone an existing one.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "No commits yet. Committed changes will show up here.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "There is no commit history for this file yet.",
+  "GIT_HISTORY_AHEAD": "{0} ahead",
+  "GIT_HISTORY_UP_TO_DATE": "up to date",
+  "GIT_HISTORY_NOT_PUSHED": "not pushed",
+  "GIT_HISTORY_NO_TRACKING": "no tracking branch",
+  "GIT_HISTORY_ALL_LOCAL": "{0} commits local",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Open a file in the editor to see its commit history.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "The file is not part of this Git repository.",
   "UNDO_CHANGES": "Discard changes",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Could not reach the old site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} could not connect to {0} to look for your projects and settings, so nothing has been changed. Check your internet connection, then try again with {1}.",
   "CMD_MIGRATE_DATA": "Migrate My Data From {0}…",
-  "GIT_HISTORY_AHEAD": "{0} ahead",
-  "GIT_HISTORY_UP_TO_DATE": "up to date",
-  "GIT_HISTORY_NOT_PUSHED": "not pushed",
-  "GIT_HISTORY_NO_TRACKING": "no tracking branch",
-  "GIT_HISTORY_ALL_LOCAL": "{0} commits local"
+  "TERMINAL_RENAME_TAB": "Rename this terminal"
 });

@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Този проект не е Git хранилище. Натиснете бутона {0}, за да създадете ново хранилище тук, или {1}, за да клонирате съществуващо.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Все още няма къмити. Къмитнатите промени ще се показват тук.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Все още няма история на къмитите за този файл.",
+  "GIT_HISTORY_AHEAD": "{0} напред",
+  "GIT_HISTORY_UP_TO_DATE": "актуален",
+  "GIT_HISTORY_NOT_PUSHED": "непубликувани",
+  "GIT_HISTORY_NO_TRACKING": "няма проследяващ клон",
+  "GIT_HISTORY_ALL_LOCAL": "{0} локални къмита",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Отворете файл в редактора, за да видите неговата история на къмитите.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Файлът не е част от това Git хранилище.",
   "UNDO_CHANGES": "Отмени промените",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Не може да се осъществи връзка със стария сайт",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} не можа да се свърже с {0}, за да потърси Вашите проекти и настройки, така че нищо не е променено. Проверете интернет връзката си, след това опитайте отново с {1}.",
   "CMD_MIGRATE_DATA": "Мигриране на данните ми от {0}…",
-  "GIT_HISTORY_AHEAD": "{0} напред",
-  "GIT_HISTORY_UP_TO_DATE": "актуален",
-  "GIT_HISTORY_NOT_PUSHED": "непубликувани",
-  "GIT_HISTORY_NO_TRACKING": "няма проследяващ клон",
-  "GIT_HISTORY_ALL_LOCAL": "{0} локални къмита"
+  "TERMINAL_RENAME_TAB": "Преименувай този терминал"
 });

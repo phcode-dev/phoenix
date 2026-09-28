@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "هذا المشروع ليس مستودع Git. انقر فوق الزر {0} لإنشاء مستودع جديد هنا، أو {1} لاستنساخ مستودع موجود.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "لا توجد إيداعات بعد. ستظهر التغييرات المودعة هنا.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "لا يوجد سجل إيداعات لهذا الملف بعد.",
+  "GIT_HISTORY_AHEAD": "متقدم بـ {0}",
+  "GIT_HISTORY_UP_TO_DATE": "مُحدَّث",
+  "GIT_HISTORY_NOT_PUSHED": "غير مدفوع",
+  "GIT_HISTORY_NO_TRACKING": "لا يوجد فرع تتبُّع",
+  "GIT_HISTORY_ALL_LOCAL": "{0} تثبيتات محلية",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "افتح ملفًا في المحرر لرؤية سجل إيداعاته.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "الملف ليس جزءًا من مستودع Git هذا.",
   "UNDO_CHANGES": "تجاهل التغييرات",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "GIT_HISTORY_AHEAD": "متقدم بـ {0}",
-  "GIT_HISTORY_UP_TO_DATE": "مُحدَّث",
-  "GIT_HISTORY_NOT_PUSHED": "غير مدفوع",
-  "GIT_HISTORY_NO_TRACKING": "لا يوجد فرع تتبُّع",
-  "GIT_HISTORY_ALL_LOCAL": "{0} تثبيتات محلية"
+  "TERMINAL_RENAME_TAB": "إعادة تسمية هذه الطرفية"
 });

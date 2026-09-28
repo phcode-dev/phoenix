@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Овај пројекат није Git репозиторијум. Кликните на дугме {0} да бисте креирали нови репозиторијум овде, или на {1} да бисте преузели постојећи.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Још увек нема комитова. Комитоване промене ће се појавити овде.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Још увек не постоји историја комитова за ову датотеку.",
+  "GIT_HISTORY_AHEAD": "{0} испред",
+  "GIT_HISTORY_UP_TO_DATE": "Ажурно",
+  "GIT_HISTORY_NOT_PUSHED": "Необјављено",
+  "GIT_HISTORY_NO_TRACKING": "Нема пратеће гране",
+  "GIT_HISTORY_ALL_LOCAL": "{0} локалних комита",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Отворите датотеку у уређивачу да бисте видели њену историју комитова.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Датотека није део овог Git репозиторијума.",
   "UNDO_CHANGES": "Одустани од измена",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Није могуће приступити старом сајту",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} није могао да се повеже са {0} да би потражио ваше пројекте и подешавања, тако да ништа није промењено. Проверите интернет везу, а затим покушајте поново помоћу {1}.",
   "CMD_MIGRATE_DATA": "Мигрирајте моје податке са {0}…",
-  "GIT_HISTORY_AHEAD": "{0} испред",
-  "GIT_HISTORY_UP_TO_DATE": "Ажурно",
-  "GIT_HISTORY_NOT_PUSHED": "Необјављено",
-  "GIT_HISTORY_NO_TRACKING": "Нема пратеће гране",
-  "GIT_HISTORY_ALL_LOCAL": "{0} локалних комита"
+  "TERMINAL_RENAME_TAB": "Преименуј овај терминал"
 });

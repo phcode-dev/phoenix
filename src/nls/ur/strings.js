@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "یہ پروجیکٹ گٹ ریپوزٹری نہیں ہے۔ یہاں ایک نئی ریپوزٹری بنانے کے لیے {0} بٹن پر کلک کریں، یا کسی موجودہ کو ڈاؤن لوڈ کرنے کے لیے {1}۔",
   "GIT_HISTORY_NOTHING_TO_SHOW": "ابھی تک کوئی کمٹ نہیں ہے۔ کمٹ شدہ تبدیلیاں یہاں نظر آئیں گی۔",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "اس فائل کے لیے ابھی تک کوئی کمٹ ہسٹری نہیں ہے۔",
+  "GIT_HISTORY_AHEAD": "{0} آگے",
+  "GIT_HISTORY_UP_TO_DATE": "اپ ٹو ڈیٹ",
+  "GIT_HISTORY_NOT_PUSHED": "پش نہیں ہوئے",
+  "GIT_HISTORY_NO_TRACKING": "کوئی ٹریکنگ برانچ نہیں",
+  "GIT_HISTORY_ALL_LOCAL": "{0} مقامی کمیٹس",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "کسی فائل کی کمٹ ہسٹری دیکھنے کے لیے اسے ایڈیٹر میں کھولیں۔",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "یہ فائل اس گٹ ریپوزٹری کا حصہ نہیں ہے۔",
   "UNDO_CHANGES": "تبدیلیاں رد کریں۔",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "پرانی سائٹ تک رسائی ممکن نہ ہو سکی",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} آپ کے پروجیکٹس اور سیٹنگز تلاش کرنے کے لیے {0} سے منسلک نہیں ہو سکا، لہذا کوئی تبدیلی نہیں کی گئی ہے۔ اپنا انٹرنیٹ کنکشن چیک کریں، پھر {1} کے ساتھ دوبارہ کوشش کریں۔",
   "CMD_MIGRATE_DATA": "{0} سے میرا ڈیٹا منتقل کریں…",
-  "GIT_HISTORY_AHEAD": "{0} آگے",
-  "GIT_HISTORY_UP_TO_DATE": "اپ ٹو ڈیٹ",
-  "GIT_HISTORY_NOT_PUSHED": "پش نہیں ہوئے",
-  "GIT_HISTORY_NO_TRACKING": "کوئی ٹریکنگ برانچ نہیں",
-  "GIT_HISTORY_ALL_LOCAL": "{0} مقامی کمیٹس"
+  "TERMINAL_RENAME_TAB": "اس ٹرمینل کا نام تبدیل کریں"
 });

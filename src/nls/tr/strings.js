@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Bu proje bir Git deposu değil. Burada yeni bir depo oluşturmak için {0} düğmesine tıklayın veya mevcut bir tanesini klonlamak için {1}.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Henüz commit yok. Yapılan commit'ler burada görünecek.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Bu dosya için henüz bir commit geçmişi yok.",
+  "GIT_HISTORY_AHEAD": "{0} ileride",
+  "GIT_HISTORY_UP_TO_DATE": "güncel",
+  "GIT_HISTORY_NOT_PUSHED": "push edilmedi",
+  "GIT_HISTORY_NO_TRACKING": "izleme dalı yok",
+  "GIT_HISTORY_ALL_LOCAL": "{0} yerel commit",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Commit geçmişini görmek için düzenleyicide bir dosya açın.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Dosya bu Git deposuna ait değil.",
   "UNDO_CHANGES": "Değişiklikleri iptal et",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
   "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
-  "GIT_HISTORY_AHEAD": "{0} ileride",
-  "GIT_HISTORY_UP_TO_DATE": "güncel",
-  "GIT_HISTORY_NOT_PUSHED": "push edilmedi",
-  "GIT_HISTORY_NO_TRACKING": "izleme dalı yok",
-  "GIT_HISTORY_ALL_LOCAL": "{0} yerel commit"
+  "TERMINAL_RENAME_TAB": "Bu terminali yeniden adlandır"
 });

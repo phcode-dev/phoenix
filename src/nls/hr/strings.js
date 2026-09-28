@@ -2139,6 +2139,11 @@ define({
   "GIT_NOT_REPO_MESSAGE": "Ovaj projekt nije Git repozitorij. Kliknite gumb {0} kako biste ovdje stvorili novi repozitorij ili {1} za preuzimanje postojećeg.",
   "GIT_HISTORY_NOTHING_TO_SHOW": "Još nema commitova. Committane promjene prikazat će se ovdje.",
   "GIT_FILE_HISTORY_NOTHING_TO_SHOW": "Još nema povijesti commitova za ovu datoteku.",
+  "GIT_HISTORY_AHEAD": "{0} ispred",
+  "GIT_HISTORY_UP_TO_DATE": "ažurirano",
+  "GIT_HISTORY_NOT_PUSHED": "nije pushano",
+  "GIT_HISTORY_NO_TRACKING": "nema grane za praćenje",
+  "GIT_HISTORY_ALL_LOCAL": "{0} lokalnih commitova",
   "GIT_FILE_HISTORY_OPEN_A_FILE": "Otvorite datoteku u uređivaču kako biste vidjeli njezinu povijest commitova.",
   "GIT_FILE_HISTORY_NOT_IN_REPO": "Datoteka nije dio ovog Git repozitorija.",
   "UNDO_CHANGES": "Odbaci promjene",
@@ -2916,9 +2921,5 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
   "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
-  "GIT_HISTORY_AHEAD": "{0} ispred",
-  "GIT_HISTORY_UP_TO_DATE": "ažurirano",
-  "GIT_HISTORY_NOT_PUSHED": "nije pushano",
-  "GIT_HISTORY_NO_TRACKING": "nema grane za praćenje",
-  "GIT_HISTORY_ALL_LOCAL": "{0} lokalnih commitova"
+  "TERMINAL_RENAME_TAB": "Preimenuj ovaj terminal"
 });
