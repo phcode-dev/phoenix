@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Satır",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Satır",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Uzantılar Devre Dışı",
+  "STATUSBAR_MCP_CONTROLLED": "Uzaktan Kontrol Ediliyor",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Bu düzenleyici uzaktan kontrol ediliyor. Başka bir program ona bağlıdır ve dosyalarınızı okuyabilir ve değiştirebilir.",
   "STATUSBAR_INSERT": "EKL",
   "STATUSBAR_OVERWRITE": "ÜST",
   "STATUSBAR_INSOVR_TOOLTIP": "Ekleme (EKL) ve Üzerine Yazma (ÜST) modları arasında geçiş yapmak için tıklayın",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Yapay Zeka Düzenleme Modu",
   "AI_CHAT_MODE_AUTO": "Otomatik",
   "AI_CHAT_MODE_FULL_AUTO": "Her Şeye İzin Ver",
-  "AI_CHAT_MODE_INFO_PLAN": "Yapay zeka, değişiklik yapmadan önce bir plan önerir (Değiştirmek için tıklayın)",
-  "AI_CHAT_MODE_INFO_EDIT": "Yapay zeka dosyaları düzenleyebilir. Kabuk komutları onay gerektirir (Değiştirmek için tıklayın)",
-  "AI_CHAT_MODE_INFO_AUTO": "Yapay zeka, güvenli eylemleri otomatik olarak onaylar ve riskli olanları sorar (Değiştirmek için tıklayın)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Yapay zeka, onay olmadan dosyaları düzenleyebilir ve komutları çalıştırabilir (Değiştirmek için tıklayın)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Yapay Zekanın onay almadan ne kadar işlem yapabileceğini seçin [veya Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code oturumu kapatıldı veya oturumunuzun süresi doldu.",
   "AI_CHAT_AUTH_ERROR_BTN": "Terminalde Claude'a Giriş Yap",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
   "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
-  "STATUSBAR_MCP_CONTROLLED": "Uzaktan Kontrol Ediliyor",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Bu düzenleyici uzaktan kontrol ediliyor. Başka bir program ona bağlıdır ve dosyalarınızı okuyabilir ve değiştirebilir."
+  "AI_CHAT_MODE_INFO_PLAN": "Yapay Zeka, değişiklik yapmadan önce bir plan önerir.",
+  "AI_CHAT_MODE_INFO_EDIT": "Yapay Zeka dosyaları düzenleyebilir. Kabuk komutları onay gerektirir.",
+  "AI_CHAT_MODE_INFO_AUTO": "Yapay Zeka, kendi takdirini kullanarak güvenli eylemleri otomatik onaylar ve riskli olanları sorar.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Yapay Zeka, onay gerekmeksizin dosyaları düzenleyebilir ve komutları çalıştırabilir."
 });

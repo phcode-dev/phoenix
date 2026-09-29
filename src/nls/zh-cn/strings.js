@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} 行",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} 行",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "扩展已禁用",
+  "STATUSBAR_MCP_CONTROLLED": "远程控制",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "此编辑器正受远程控制。另一个程序已连接到它，可以读取和更改您的文件。",
   "STATUSBAR_INSERT": "插入",
   "STATUSBAR_OVERWRITE": "改写",
   "STATUSBAR_INSOVR_TOOLTIP": "点击切换光标的插入 (INS) 和改写 (OVR) 模式",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI 编辑模式",
   "AI_CHAT_MODE_AUTO": "自动",
   "AI_CHAT_MODE_FULL_AUTO": "完全自动",
-  "AI_CHAT_MODE_INFO_PLAN": "AI 会在做出更改前提出计划 (点击切换)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI 可编辑文件，Shell 命令需要批准 (点击切换)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI 会自行判断，自动批准安全操作，并询问有风险的操作 (点击切换)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可编辑文件并运行命令，无需批准 (点击切换)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "选择 AI 无需批准即可执行的操作范围 [或 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code 已登出或您的登录已过期。",
   "AI_CHAT_AUTH_ERROR_BTN": "在终端登录 Claude",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
   "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
-  "STATUSBAR_MCP_CONTROLLED": "远程控制",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "此编辑器正受远程控制。另一个程序已连接到它，可以读取和更改您的文件。"
+  "AI_CHAT_MODE_INFO_PLAN": "AI 在做出更改前会提出计划",
+  "AI_CHAT_MODE_INFO_EDIT": "AI 可以编辑文件。Shell 命令需要批准。",
+  "AI_CHAT_MODE_INFO_AUTO": "AI 会自行判断，自动批准安全操作，并询问高风险操作。",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以编辑文件和运行命令，无需批准。"
 });

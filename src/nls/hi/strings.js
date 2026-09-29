@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} पंक्ति",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} पंक्तियाँ",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "एक्सटेंशन अक्षम",
+  "STATUSBAR_MCP_CONTROLLED": "रिमोट नियंत्रित",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "यह एडिटर रिमोट से नियंत्रित किया जा रहा है। एक दूसरा प्रोग्राम इससे जुड़ा है और आपकी फ़ाइलों को पढ़ और बदल सकता है।",
   "STATUSBAR_INSERT": "सम्मिलित करें (INS)",
   "STATUSBAR_OVERWRITE": "अधिलेखित करें (OVR)",
   "STATUSBAR_INSOVR_TOOLTIP": "सम्मिलित (INS) और अधिलेखित (OVR) मोड के बीच कर्सर टॉगल करने के लिए क्लिक करें",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI एडिट मोड",
   "AI_CHAT_MODE_AUTO": "ऑटो",
   "AI_CHAT_MODE_FULL_AUTO": "पूर्ण अनुमति",
-  "AI_CHAT_MODE_INFO_PLAN": "बदलाव करने से पहले AI एक योजना का प्रस्ताव देगा (स्विच करने के लिए क्लिक करें)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI फ़ाइलें संपादित कर सकता है। शेल कमांड के लिए अनुमोदन की आवश्यकता है (स्विच करने के लिए क्लिक करें)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI अपने विवेक से सुरक्षित कार्यों को ऑटो-अप्रूव करता है और जोखिम भरे कार्यों के बारे में पूछता है (स्विच करने के लिए क्लिक करें)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI बिना अनुमोदन के फ़ाइलें संपादित कर सकता है और कमांड चला सकता है (स्विच करने के लिए क्लिक करें)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "चुनें कि AI बिना मंज़ूरी के कितना कर सकता है [या Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code साइन आउट हो गया है या आपका लॉगिन समाप्त हो गया है।",
   "AI_CHAT_AUTH_ERROR_BTN": "टर्मिनल में Claude में लॉग इन करें",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "पुरानी साइट तक नहीं पहुंच सके",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} आपके प्रोजेक्ट और सेटिंग्स को खोजने के लिए {0} से कनेक्ट नहीं हो सका, इसलिए कुछ भी नहीं बदला गया है। अपना इंटरनेट कनेक्शन जाँचें, फिर {1} के साथ फिर से प्रयास करें।",
   "CMD_MIGRATE_DATA": "{0} से मेरा डेटा माइग्रेट करें…",
-  "STATUSBAR_MCP_CONTROLLED": "रिमोट नियंत्रित",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "यह एडिटर रिमोट से नियंत्रित किया जा रहा है। एक दूसरा प्रोग्राम इससे जुड़ा है और आपकी फ़ाइलों को पढ़ और बदल सकता है।"
+  "AI_CHAT_MODE_INFO_PLAN": "AI बदलाव करने से पहले एक योजना प्रस्तावित करेगा",
+  "AI_CHAT_MODE_INFO_EDIT": "AI फ़ाइलें संपादित कर सकता है। शेल कमांड के लिए मंज़ूरी की आवश्यकता है",
+  "AI_CHAT_MODE_INFO_AUTO": "AI अपने विवेक से सुरक्षित कार्यों को स्वतः मंज़ूरी देता है और जोखिम भरे कार्यों के बारे में पूछता है",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI बिना मंज़ूरी के फ़ाइलें संपादित और कमांड चला सकता है"
 });

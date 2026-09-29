@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Linea",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Linee",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Estensioni disabilitate",
+  "STATUSBAR_MCP_CONTROLLED": "Controllato da remoto",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Questo editor è controllato da remoto. Un altro programma è connesso e può leggere e modificare i tuoi file.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Fare clic per cambiare il cursore tra la modalità Inserisci (INS) e Sovrascrivi (OVR)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Modalità Modifica IA",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Consenti Tutto",
-  "AI_CHAT_MODE_INFO_PLAN": "L'IA proporrà un piano prima di apportare modifiche (Fai clic per cambiare)",
-  "AI_CHAT_MODE_INFO_EDIT": "L'IA può modificare i file. I comandi della shell richiedono l'approvazione (Fai clic per cambiare)",
-  "AI_CHAT_MODE_INFO_AUTO": "L'IA usa il proprio giudizio per approvare automaticamente le azioni sicure e chiede conferma per quelle rischiose (Clicca per cambiare modalità)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA può modificare i file ed eseguire comandi senza approvazione (Fai clic per cambiare)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Scegli quante operazioni può eseguire l'IA senza approvazione [o Maiusc+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code è disconnesso o il tuo login è scaduto.",
   "AI_CHAT_AUTH_ERROR_BTN": "Accedi a Claude nel terminale",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Impossibile raggiungere il vecchio sito",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non è riuscito a connettersi a {0} per cercare i tuoi progetti e le tue impostazioni, pertanto non è stato modificato nulla. Verifica la tua connessione a Internet, quindi riprova con {1}.",
   "CMD_MIGRATE_DATA": "Migra i miei dati da {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Controllato da remoto",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Questo editor è controllato da remoto. Un altro programma è connesso e può leggere e modificare i tuoi file."
+  "AI_CHAT_MODE_INFO_PLAN": "L'AI proporrà un piano prima di apportare modifiche",
+  "AI_CHAT_MODE_INFO_EDIT": "L'AI può modificare i file. I comandi shell richiedono approvazione",
+  "AI_CHAT_MODE_INFO_AUTO": "L'AI approva automaticamente le azioni ritenute sicure e chiede conferma per quelle rischiose",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'AI può modificare i file ed eseguire comandi senza approvazione"
 });

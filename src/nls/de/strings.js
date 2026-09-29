@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Zeile",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Zeilen",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Erweiterungen deaktiviert",
+  "STATUSBAR_MCP_CONTROLLED": "Ferngesteuert",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Dieser Editor wird ferngesteuert. Ein anderes Programm ist damit verbunden und kann Ihre Dateien lesen und ändern.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Klicken, um zwischen den Cursor-Modi Einfügen (INS) und Überschreiben (OVR) umzuschalten",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "KI-Bearbeitungsmodus",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Alles erlauben",
-  "AI_CHAT_MODE_INFO_PLAN": "Die KI schlägt einen Plan vor, bevor sie Änderungen vornimmt (Zum Wechseln klicken)",
-  "AI_CHAT_MODE_INFO_EDIT": "Die KI kann Dateien bearbeiten. Shell-Befehle erfordern eine Genehmigung (Zum Wechseln klicken)",
-  "AI_CHAT_MODE_INFO_AUTO": "Die KI genehmigt sichere Aktionen eigenständig und fragt bei riskanten nach (Zum Wechseln klicken)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Die KI kann Dateien bearbeiten und Befehle ohne Genehmigung ausführen (Zum Wechseln klicken)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Wählen Sie, in welchem Umfang die KI ohne Bestätigung agieren darf [oder Umschalt+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Sie sind bei Claude Code abgemeldet oder Ihre Anmeldung ist abgelaufen.",
   "AI_CHAT_AUTH_ERROR_BTN": "Im Terminal bei Claude anmelden",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um Ihre Projekte und Einstellungen zu suchen, sodass nichts geändert wurde. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es dann mit {1} erneut.",
   "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…",
-  "STATUSBAR_MCP_CONTROLLED": "Ferngesteuert",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Dieser Editor wird ferngesteuert. Ein anderes Programm ist damit verbunden und kann Ihre Dateien lesen und ändern."
+  "AI_CHAT_MODE_INFO_PLAN": "KI schlägt einen Plan vor, bevor sie Änderungen vornimmt",
+  "AI_CHAT_MODE_INFO_EDIT": "KI kann Dateien bearbeiten. Shell-Befehle erfordern eine Genehmigung",
+  "AI_CHAT_MODE_INFO_AUTO": "KI genehmigt sichere Aktionen automatisch und fragt bei riskanten nach",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kann Dateien bearbeiten und Befehle ohne Genehmigung ausführen"
 });

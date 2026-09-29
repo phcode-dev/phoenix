@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} 행",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} 행",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "확장 기능 사용 불가",
+  "STATUSBAR_MCP_CONTROLLED": "원격 제어 중",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "이 편집기는 원격으로 제어되고 있습니다. 다른 프로그램이 연결되어 사용자의 파일을 읽고 변경할 수 있습니다.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "클릭하면 커서를 삽입(INS)또는 덮어쓰기(OVR) 모드로 전환합니다",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI 편집 모드",
   "AI_CHAT_MODE_AUTO": "자동",
   "AI_CHAT_MODE_FULL_AUTO": "모든 것 허용",
-  "AI_CHAT_MODE_INFO_PLAN": "AI가 변경 사항을 적용하기 전에 계획을 제안합니다 (클릭하여 전환)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI는 파일을 수정할 수 있지만, 셸 명령어는 승인이 필요합니다 (클릭하여 전환)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI가 자체 판단에 따라 안전한 작업은 자동으로 승인하고, 위험한 작업에 대해서는 사용자에게 확인을 요청합니다 (클릭하여 전환)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI가 승인 없이 파일을 수정하고 명령어를 실행할 수 있습니다 (클릭하여 전환)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "AI가 승인 없이 어디까지 작업을 수행할지 선택하세요 [또는 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code에서 로그아웃되었거나 로그인 세션이 만료되었습니다.",
   "AI_CHAT_AUTH_ERROR_BTN": "터미널에서 Claude에 로그인",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}이(가) {0}에 연결하여 프로젝트 및 설정을 찾을 수 없었으므로 아무것도 변경되지 않았습니다. 인터넷 연결을 확인한 다음 {1}으로 다시 시도하세요.",
   "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…",
-  "STATUSBAR_MCP_CONTROLLED": "원격 제어 중",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "이 편집기는 원격으로 제어되고 있습니다. 다른 프로그램이 연결되어 사용자의 파일을 읽고 변경할 수 있습니다."
+  "AI_CHAT_MODE_INFO_PLAN": "AI가 변경 사항을 적용하기 전에 계획을 제안합니다.",
+  "AI_CHAT_MODE_INFO_EDIT": "AI가 파일을 수정할 수 있습니다. 셸 명령어는 승인이 필요합니다.",
+  "AI_CHAT_MODE_INFO_AUTO": "AI가 판단에 따라 안전한 작업은 자동 승인하고 위험한 작업에 대해서는 질문합니다.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI가 승인 없이 파일을 수정하고 명령어를 실행할 수 있습니다."
 });

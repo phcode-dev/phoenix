@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Sor",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Sor",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Bővítmények letiltva",
+  "STATUSBAR_MCP_CONTROLLED": "Távolról vezérelt",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "A szerkesztő távolról vezérelt. Egy másik program csatlakozik hozzá, amely olvashatja és módosíthatja a fájljait.",
   "STATUSBAR_INSERT": "BESZÚR",
   "STATUSBAR_OVERWRITE": "FELÜL",
   "STATUSBAR_INSOVR_TOOLTIP": "Kattintson a kurzor Beszúrás (BESZÚR) és Felülírás (FELÜL) módjai közötti váltáshoz",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "MI szerkesztő mód",
   "AI_CHAT_MODE_AUTO": "Automatikus",
   "AI_CHAT_MODE_FULL_AUTO": "Mindent engedélyez",
-  "AI_CHAT_MODE_INFO_PLAN": "Az MI tervet javasol a módosítások elvégzése előtt (Kattints a váltáshoz)",
-  "AI_CHAT_MODE_INFO_EDIT": "Az MI szerkeszthet fájlokat. A shell parancsok jóváhagyást igényelnek (Kattints a váltáshoz)",
-  "AI_CHAT_MODE_INFO_AUTO": "A MI saját belátása szerint automatikusan jóváhagyja a biztonságos műveleteket, és rákérdez a kockázatosakra (Kattints",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Az MI jóváhagyás nélkül szerkeszthet fájlokat és futtathat parancsokat (Kattints a váltáshoz)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Válassza ki, mennyit tehet a MI jóváhagyás nélkül [vagy Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "A Claude Code ki van jelentkezve, vagy a bejelentkezésed lejárt.",
   "AI_CHAT_AUTH_ERROR_BTN": "Bejelentkezés a Claude-ba a Terminálban",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
   "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
-  "STATUSBAR_MCP_CONTROLLED": "Távolról vezérelt",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "A szerkesztő távolról vezérelt. Egy másik program csatlakozik hozzá, amely olvashatja és módosíthatja a fájljait."
+  "AI_CHAT_MODE_INFO_PLAN": "Az MI javasol egy tervet a módosítások elvégzése előtt",
+  "AI_CHAT_MODE_INFO_EDIT": "Az MI szerkeszthet fájlokat. A shell parancsok jóváhagyást igényelnek",
+  "AI_CHAT_MODE_INFO_AUTO": "Az MI a saját belátása szerint automatikusan jóváhagyja a biztonságos műveleteket, és rákérdez a kockázatosakra",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Az MI jóváhagyás nélkül szerkeszthet fájlokat és futtathat parancsokat"
 });

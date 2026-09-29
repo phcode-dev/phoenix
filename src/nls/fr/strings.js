@@ -2648,10 +2648,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Mode d'édition IA",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Tout autoriser",
-  "AI_CHAT_MODE_INFO_PLAN": "L'IA proposera un plan avant d'effectuer des modifications (Cliquez pour basculer)",
-  "AI_CHAT_MODE_INFO_EDIT": "L'IA peut modifier les fichiers. Les commandes shell nécessitent une approbation (Cliquez pour basculer)",
-  "AI_CHAT_MODE_INFO_AUTO": "L'IA utilise son jugement pour approuver automatiquement les actions sûres et demande une confirmation pour les actions risquées (Cliquez pour changer)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA peut modifier les fichiers et exécuter des commandes sans approbation (Cliquez pour basculer)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Choisissez le niveau d'autorisation de l'IA [ou Maj+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code est déconnecté ou votre session a expiré.",
   "AI_CHAT_AUTH_ERROR_BTN": "Se connecter à Claude dans le terminal",
@@ -2922,5 +2918,11 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Pour copier le reste, choisissez {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Impossible d'atteindre l'ancien site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} n'a pas pu se connecter à {0} pour rechercher vos projets et paramètres, donc rien n'a été modifié. Vérifiez votre connexion Internet, puis réessayez avec {1}.",
-  "CMD_MIGRATE_DATA": "Migrer mes données depuis {0}…"
+  "CMD_MIGRATE_DATA": "Migrer mes données depuis {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Contrôlé à distance",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Cet éditeur est contrôlé à distance. Un autre programme y est connecté et peut lire et modifier vos fichiers.",
+  "AI_CHAT_MODE_INFO_PLAN": "L'IA proposera un plan avant d'effectuer des modifications",
+  "AI_CHAT_MODE_INFO_EDIT": "L'IA peut modifier les fichiers. Les commandes shell nécessitent une approbation",
+  "AI_CHAT_MODE_INFO_AUTO": "L'IA utilise son jugement pour approuver automatiquement les actions sûres et demande une confirmation pour les actions risquées",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "L'IA peut modifier les fichiers et exécuter des commandes sans approbation"
 });

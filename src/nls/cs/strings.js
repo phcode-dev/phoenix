@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "Řádek: {0}",
   "STATUSBAR_LINE_COUNT_PLURAL": "Řádky: {0}",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Doplňky zakázány",
+  "STATUSBAR_MCP_CONTROLLED": "Vzdáleně ovládaný",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Tento editor je vzdáleně ovládaný. Je k němu připojen jiný program a může číst a měnit vaše soubory.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Klikněte pro přepnutí kurzoru mezi módem Insert (INS) a Overwrite (OVR)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI režim úprav",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Povolit vše",
-  "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán před provedením změn (Kliknutím přepnete)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI může upravovat soubory. Příkazy shellu vyžadují schválení (Kliknutím přepnete)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI používá vlastní úsudek k automatickému schvalování bezpečných akcí a na ty riskantní se ptá (Kliknutím přepnete)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI může upravovat soubory a spouštět příkazy bez schválení (Kliknutím přepnete)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Zvolte, kolik toho může AI udělat bez schválení [nebo Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code je odhlášen nebo vaše přihlášení vypršelo.",
   "AI_CHAT_AUTH_ERROR_BTN": "Přihlásit se ke Claude v Terminálu",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
   "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Vzdáleně ovládaný",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Tento editor je vzdáleně ovládaný. Je k němu připojen jiný program a může číst a měnit vaše soubory."
+  "AI_CHAT_MODE_INFO_PLAN": "AI navrhne plán před provedením změn",
+  "AI_CHAT_MODE_INFO_EDIT": "AI může upravovat soubory. Příkazy shellu vyžadují schválení",
+  "AI_CHAT_MODE_INFO_AUTO": "AI automaticky schvaluje bezpečné akce a na rizikové se ptá",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI může upravovat soubory a spouštět příkazy bez schválení"
 });

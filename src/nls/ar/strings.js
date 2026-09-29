@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} سطر",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} أسطر",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "الإضافات معطلة",
+  "STATUSBAR_MCP_CONTROLLED": "مُتحكَّم به عن بعد",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "يتم التحكم في هذا المحرر عن بعد. يوجد برنامج آخر متصل به ويمكنه قراءة ملفاتك وتغييرها.",
   "STATUSBAR_INSERT": "إدراج",
   "STATUSBAR_OVERWRITE": "استبدال",
   "STATUSBAR_INSOVR_TOOLTIP": "انقر للتبديل بين وضعي الإدراج (INS) والاستبدال (OVR) للمؤشر",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "وضع التحرير بالذكاء الاصطناعي",
   "AI_CHAT_MODE_AUTO": "تلقائي",
   "AI_CHAT_MODE_FULL_AUTO": "السماح بكل شيء",
-  "AI_CHAT_MODE_INFO_PLAN": "سيقترح الذكاء الاصطناعي خطة قبل إجراء التغييرات (انقر للتبديل)",
-  "AI_CHAT_MODE_INFO_EDIT": "يمكن للذكاء الاصطناعي تعديل الملفات. تحتاج أوامر Shell إلى موافقة (انقر للتبديل)",
-  "AI_CHAT_MODE_INFO_AUTO": "يستخدم الذكاء الاصطناعي تقديره للموافقة التلقائية على الإجراءات الآمنة ويسأل عن الإجراءات المحفوفة بالمخاطر (انقر للتبديل)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "يمكن للذكاء الاصطناعي تعديل الملفات وتشغيل الأوامر بدون موافقة (انقر للتبديل)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "اختر مدى ما يمكن للذكاء الاصطناعي القيام به دون موافقة [أو Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "تم تسجيل الخروج من Claude Code أو انتهت صلاحية تسجيل دخولك.",
   "AI_CHAT_AUTH_ERROR_BTN": "تسجيل الدخول إلى Claude في الطرفية",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "مُتحكَّم به عن بعد",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "يتم التحكم في هذا المحرر عن بعد. يوجد برنامج آخر متصل به ويمكنه قراءة ملفاتك وتغييرها."
+  "AI_CHAT_MODE_INFO_PLAN": "سيقترح الذكاء الاصطناعي خطة قبل إجراء التغييرات",
+  "AI_CHAT_MODE_INFO_EDIT": "يمكن للذكاء الاصطناعي تعديل الملفات. تحتاج أوامر الشل إلى موافقة",
+  "AI_CHAT_MODE_INFO_AUTO": "يستخدم الذكاء الاصطناعي تقديره للموافقة التلقائية على الإجراءات الآمنة ويسأل عن الإجراءات الخطرة",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "يمكن للذكاء الاصطناعي تعديل الملفات وتشغيل الأوامر بدون موافقة"
 });

@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} liña",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} liñas",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extensións deshabilitadas",
+  "STATUSBAR_MCP_CONTROLLED": "Controlado remotamente",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Este editor está a ser controlado remotamente. Outro programa está conectado a el e pode ler e modificar os seus ficheiros.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "SOB",
   "STATUSBAR_INSOVR_TOOLTIP": "Fai click para intercambiar entre o modo insertar (INS) e o modo sobrescribir (SOB)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Modo de edición IA",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Permitir todo",
-  "AI_CHAT_MODE_INFO_PLAN": "A IA proporá un plan antes de facer cambios (Fai clic para cambiar)",
-  "AI_CHAT_MODE_INFO_EDIT": "A IA pode editar ficheiros. Os comandos da shell necesitan aprobación (Fai clic para cambiar)",
-  "AI_CHAT_MODE_INFO_AUTO": "A IA usa o seu criterio para aprobar automaticamente as accións seguras e pregunta sobre as arriscadas (Preme para cambiar)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "A IA pode editar ficheiros e executar comandos sen aprobación (Fai clic para cambiar)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Escolla canto pode facer a IA sen aprobación [ou Maiús+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code non ten a sesión iniciada ou a súa sesión caducou.",
   "AI_CHAT_AUTH_ERROR_BTN": "Iniciar sesión en Claude no terminal",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Non se puido acceder ao sitio antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non se puido conectar a {0} para buscar os seus proxectos e configuracións, polo que non se cambiou nada. Comprobe a súa conexión a internet e despois ténteo de novo con {1}.",
   "CMD_MIGRATE_DATA": "Migrar os meus datos desde {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Controlado remotamente",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Este editor está a ser controlado remotamente. Outro programa está conectado a el e pode ler e modificar os seus ficheiros."
+  "AI_CHAT_MODE_INFO_PLAN": "A IA proporá un plan antes de facer cambios",
+  "AI_CHAT_MODE_INFO_EDIT": "A IA pode editar ficheiros. Os comandos de shell precisan aprobación",
+  "AI_CHAT_MODE_INFO_AUTO": "A IA usa o seu criterio para aprobar automaticamente as accións seguras e pregunta sobre as arriscadas",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "A IA pode editar ficheiros e executar comandos sen aprobación"
 });
