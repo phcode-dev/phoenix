@@ -820,6 +820,19 @@ exports.getCliSpawnProfile = async function (params) {
     return Object.assign({}, result, profile);
 };
 
+// The assistant's own UI files for askInLivePreview live in Phoenix's app data, never in the
+// project. Writing there is the assistant's business: no permission card, no snapshot, no
+// edit event, no card in the chat.
+let _aiScratchDir = null;
+function _isAiScratchPath(filePath) {
+    if (!_aiScratchDir || !filePath || !path.isAbsolute(filePath)) {
+        return false;
+    }
+    const root = path.resolve(_aiScratchDir);
+    const target = path.resolve(filePath);
+    return target === root || target.startsWith(root + path.sep);
+}
+
 /**
  * Send a prompt to Claude and stream results back to the browser.
  * Called from browser via execPeer("sendPrompt", {prompt, projectPath, sessionAction, model}).
@@ -829,7 +842,10 @@ exports.getCliSpawnProfile = async function (params) {
  */
 exports.sendPrompt = async function (params) {
     const { prompt, projectPath, sessionAction, model, locale, selectionContext, editorContext,
-        images, envOverrides, permissionMode, additionalDirectories } = params;
+        images, envOverrides, permissionMode, additionalDirectories, aiScratchDir } = params;
+    if (typeof aiScratchDir === "string" && aiScratchDir) {
+        _aiScratchDir = aiScratchDir;
+    }
     const requestId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
     // Handle session
@@ -1188,7 +1204,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // `mkdir -p notes-app` in the project, the model wrote the files to
     // /home/<user>/notes-app and nobody was asked.
     function _isOutsideWriteRoots(filePath) {
-        if (!filePath || !path.isAbsolute(filePath)) {
+        if (!filePath || !path.isAbsolute(filePath) || _isAiScratchPath(filePath)) {
             return false;
         }
         const target = path.resolve(filePath);
@@ -1407,6 +1423,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "mcp__phoenix-editor__editorDocs",
             "mcp__phoenix-editor__getProblems",
             "mcp__phoenix-editor__notifyUser",
+            "mcp__phoenix-editor__askInLivePreview",
             "mcp__phoenix-editor__controlEditor",
             "mcp__phoenix-editor__resizeLivePreview",
             "mcp__phoenix-editor__wait",
@@ -1565,6 +1582,19 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 "\n- notifyUser: show a toast in the editor window when a long task finishes or you need the " +
                 "user's attention and they may be away from the chat. Never use it for ordinary replies. " +
                 "It is skipped while the AI panel is visible unless you pass alwaysShow." +
+                "\n- askInLivePreview: whenever showing beats telling and the page is in the live preview, " +
+                "compose UI with askInLivePreview instead of prose: a choice about one element (its colour, " +
+                "copy, placement), a choice about the whole page (theme, palette, typography, layout direction, " +
+                "which of several designs to keep), or simply to present something visually (a mockup, a " +
+                "before-and-after, a set of variants) even when the only answer is OK or a comment. The card's " +
+                "frame, title, controls and text field are Phoenix's; you write the body, and pass a theme with " +
+                "the page's colours so the frame matches. For one element pass anchor so the page dims around it " +
+                "and the card keeps out of its way; put the card beside the element only when that helps. Hovering an " +
+                "option previews it on the page with previewCss or previewHtml, clicking it answers. " +
+                "Write the UI files into the folder getEditorState reports as askInLivePreviewUiDir (yours to " +
+                "write freely, no permission is asked and the user is not shown those writes). " +
+                "The tool description is the whole contract; never look for its implementation, " +
+                "and keep the look-at-the-page step to one screenshot or one execJsInLivePreview." +
                 "\n\nEDITS THAT LAND IN THE LIVE PREVIEW: when you edit the file getEditorState " +
                 "reported as livePreviewFile — or a CSS / JS / SVG file it links to — the user is " +
                 "watching the result render. Whether that is worth checking is your judgement call, " +
@@ -1624,6 +1654,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     matcher: "Edit",
                     hooks: [
                         async (input) => {
+                            if (_isAiScratchPath(input && input.tool_input && input.tool_input.file_path)) {
+                                return { hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "allow" } };
+                            }
                             console.log("[Phoenix AI] Intercepted Edit tool");
                             // Plan file edits: capture content, write to disk, skip editor
                             const editPath = (input.tool_input.file_path || "").replace(/\\/g, "/");
@@ -1768,6 +1801,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     hooks: [
                         async (input) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
+                            if (_isAiScratchPath(input && input.tool_input && input.tool_input.file_path)) {
+                                // The daily sweep may have removed the folder; it comes back for the write.
+                                try {
+                                    fs.mkdirSync(path.dirname(input.tool_input.file_path), { recursive: true });
+                                } catch (err) { /* the write reports it */ }
+                                return { hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "allow" } };
+                            }
                             // Capture plan content when writing to .claude/plans/
                             // Plan files: capture content for plan card, write to disk
                             // but don't open in editor
@@ -2023,6 +2063,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             if (filePath.replace(/\\/g, "/").includes("/.claude/plans/")) {
                                 return {};
                             }
+                            if (_isAiScratchPath(filePath)) {
+                                return {};
+                            }
                             // If the SDK's native Edit itself failed (e.g.
                             // oldText not found on disk), don't paint a diff
                             // card. The existing aiToolResult flow will
@@ -2088,6 +2131,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             const filePath = input && input.tool_input && input.tool_input.file_path;
                             if (!filePath) { return {}; }
                             if (filePath.replace(/\\/g, "/").includes("/.claude/plans/")) {
+                                return {};
+                            }
+                            if (_isAiScratchPath(filePath)) {
                                 return {};
                             }
                             if (_isToolResponseError(input.tool_response)) {
