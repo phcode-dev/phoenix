@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Para copiar o resto, escolla {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Non se puido acceder ao sitio antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} non se puido conectar a {0} para buscar os seus proxectos e configuracións, polo que non se cambiou nada. Comprobe a súa conexión a internet e despois ténteo de novo con {1}.",
-  "CMD_MIGRATE_DATA": "Migrar os meus datos desde {0}…"
+  "CMD_MIGRATE_DATA": "Migrar os meus datos desde {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Controlado remotamente",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Este editor está a ser controlado remotamente. Outro programa está conectado a el e pode ler e modificar os seus ficheiros."
 });

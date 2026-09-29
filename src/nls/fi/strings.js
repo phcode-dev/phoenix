@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Kopioidaksesi loput, valitse {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
-  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…"
+  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Etäohjattu",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Tätä editoria etäohjataan. Siihen on yhdistetty toinen ohjelma, joka voi lukea ja muokata tiedostojasi."
 });

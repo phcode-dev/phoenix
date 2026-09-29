@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Za prijenos ostatka, odaberite {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
-  "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…"
+  "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Daljinski upravljano",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Ovaj uređivač je daljinski upravljan. Drugi program je povezan s njim i može čitati i mijenjati vaše datoteke."
 });

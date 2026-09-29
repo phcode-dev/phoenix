@@ -2028,6 +2028,7 @@ define({
   "ERROR_SAVE_FIRST": "Guarde o documento primeiro!",
   "ERROR_TERMINAL_NOT_FOUND": "O terminal não foi encontrado para o seu SO. Pode definir um comando de terminal personalizado nas definições",
   "TERMINAL_RENAME_TAB": "Renomear este terminal",
+  "TERMINAL_RENAME_DONE": "Feito",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Processo em Execução",
   "TERMINAL_CLOSE_CONFIRM_MSG": "O terminal tem um processo ativo em execução: <b>{0}</b>.<br>Tem a certeza de que o pretende fechar?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Fechar Terminal?",
@@ -2922,5 +2923,6 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Não foi possível aceder ao site antigo",
   "MIGRATE_UNREACHABLE_MESSAGE": "O {APP_NAME} não se conseguiu ligar a {0} para procurar os seus projetos e definições, pelo que nada foi alterado. Verifique a sua ligação à internet e, em seguida, tente novamente com {1}.",
   "CMD_MIGRATE_DATA": "Migrar os Meus Dados de {0}…",
-  "TERMINAL_RENAME_DONE": "Feito"
+  "STATUSBAR_MCP_CONTROLLED": "Controlado Remotamente",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Este editor está a ser controlado remotamente. Outro programa está ligado a ele e pode ler e alterar os seus ficheiros."
 });

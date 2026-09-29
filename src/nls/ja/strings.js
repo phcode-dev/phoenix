@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "残りをコピーするには、{0}を選択してください。",
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
-  "CMD_MIGRATE_DATA": "{0}からデータを移行…"
+  "CMD_MIGRATE_DATA": "{0}からデータを移行…",
+  "STATUSBAR_MCP_CONTROLLED": "リモート制御中",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "このエディターはリモート制御されています。別のプログラムが接続しており、ファイルの読み取りや変更を行うことができます。"
 });

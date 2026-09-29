@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Um den Rest zu kopieren, wählen Sie {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Die alte Seite konnte nicht erreicht werden",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} konnte keine Verbindung zu {0} herstellen, um Ihre Projekte und Einstellungen zu suchen, sodass nichts geändert wurde. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es dann mit {1} erneut.",
-  "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…"
+  "CMD_MIGRATE_DATA": "Meine Daten von {0} migrieren…",
+  "STATUSBAR_MCP_CONTROLLED": "Ferngesteuert",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Dieser Editor wird ferngesteuert. Ein anderes Programm ist damit verbunden und kann Ihre Dateien lesen und ändern."
 });

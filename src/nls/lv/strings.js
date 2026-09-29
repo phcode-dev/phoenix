@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Lai pārnestu pārējo, izvēlieties {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
-  "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…"
+  "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Attālināti vadīts",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Šis redaktors tiek attālināti vadīts. Cita programma ir tam pieslēgta un var lasīt un mainīt jūsu failus."
 });

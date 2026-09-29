@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "若要複製剩餘項目，請選擇 {0}。",
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
-  "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…"
+  "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
+  "STATUSBAR_MCP_CONTROLLED": "遠端受控",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "此編輯器正受到遠端控制。另一個程式已與其連線，且可以讀取和變更您的檔案。"
 });

@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Pentru a copia restul, alegeți {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
-  "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…"
+  "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Controlat de la distanță",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Acest editor este controlat de la distanță. Un alt program este conectat la acesta și poate citi și modifica fișierele dumneavoastră."
 });

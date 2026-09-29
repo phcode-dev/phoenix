@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Pro zkopírování zbytku zvolte {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nepodařilo se připojit k původnímu webu",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikaci {APP_NAME} se nepodařilo připojit k {0} a vyhledat vaše projekty a nastavení, takže se nic nezměnilo. Zkontrolujte své připojení k internetu a zkuste to znovu pomocí {1}.",
-  "CMD_MIGRATE_DATA": "Přenést moje data z {0}…"
+  "CMD_MIGRATE_DATA": "Přenést moje data z {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Vzdáleně ovládaný",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Tento editor je vzdáleně ovládaný. Je k němu připojen jiný program a může číst a měnit vaše soubory."
 });

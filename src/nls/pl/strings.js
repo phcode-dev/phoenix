@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Aby skopiować resztę, wybierz {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
-  "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…"
+  "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Zdalnie sterowany",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Ten edytor jest zdalnie sterowany. Inny program jest do niego podłączony i może odczytywać oraz zmieniać Twoje pliki."
 });
