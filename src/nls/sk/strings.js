@@ -2028,6 +2028,7 @@ define({
   "ERROR_SAVE_FIRST": "Najprv uložte dokument!",
   "ERROR_TERMINAL_NOT_FOUND": "Terminál nebol nájdený pre váš operačný systém, môžete definovať vlastný príkaz terminálu v nastaveniach",
   "TERMINAL_RENAME_TAB": "Premenovať tento terminál",
+  "TERMINAL_RENAME_DONE": "Hotovo",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Beží aktívny proces",
   "TERMINAL_CLOSE_CONFIRM_MSG": "V termináli beží aktívny proces: <b>{0}</b>.<br>Naozaj ho chcete zatvoriť?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Zavrieť terminál?",
@@ -2922,5 +2923,6 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nepodarilo sa spojiť so starou lokalitou",
   "MIGRATE_UNREACHABLE_MESSAGE": "Aplikácii {APP_NAME} sa nepodarilo pripojiť k {0} na vyhľadanie vašich projektov a nastavení, takže sa nič nezmenilo. Skontrolujte svoje internetové pripojenie a potom to skúste znova výberom {1}.",
   "CMD_MIGRATE_DATA": "Migrovať moje dáta z {0}…",
-  "TERMINAL_RENAME_DONE": "Hotovo"
+  "STATUSBAR_MCP_CONTROLLED": "Vzdialene ovládané",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Tento editor je ovládaný na diaľku. Je k nemu pripojený iný program, ktorý môže čítať a meniť vaše súbory."
 });

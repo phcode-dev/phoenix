@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "För att kopiera resten, välj {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
-  "CMD_MIGRATE_DATA": "Migrera min data från {0}…"
+  "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Fjärrstyrd",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Den här redigeraren fjärrstyrs. Ett annat program är anslutet till den och kan läsa och ändra dina filer."
 });

@@ -2734,6 +2734,8 @@
   "STATUSBAR_LANG_TOOLTIP": "Click to change file type",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Lines",
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Line",
+  "STATUSBAR_MCP_CONTROLLED": "Remote Controlled",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "This editor is being remotely controlled. Another program is connected to it and can read and change your files.",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_SELECTION_CH_PLURAL": " — Selected {0} columns",
   "STATUSBAR_SELECTION_CH_SINGULAR": " — Selected {0} column",

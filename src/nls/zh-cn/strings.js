@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "若要复制剩余部分，请选择 {0}。",
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
-  "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…"
+  "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
+  "STATUSBAR_MCP_CONTROLLED": "远程控制",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "此编辑器正受远程控制。另一个程序已连接到它，可以读取和更改您的文件。"
 });

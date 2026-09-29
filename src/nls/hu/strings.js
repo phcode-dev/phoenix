@@ -2028,6 +2028,7 @@ define({
   "ERROR_SAVE_FIRST": "Először mentse a dokumentumot!",
   "ERROR_TERMINAL_NOT_FOUND": "Nem található terminál az operációs rendszeréhez. Megadhat egyéni terminálparancsot a beállításokban.",
   "TERMINAL_RENAME_TAB": "A terminál átnevezése",
+  "TERMINAL_RENAME_DONE": "Kész",
   "TERMINAL_CLOSE_CONFIRM_TITLE": "Aktív folyamat fut",
   "TERMINAL_CLOSE_CONFIRM_MSG": "A terminálban egy aktív folyamat fut: <b>{0}</b>.<br>Biztosan be akarja zárni?",
   "TERMINAL_CLOSE_SINGLE_TITLE": "Terminál bezárása?",
@@ -2922,5 +2923,6 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
   "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
-  "TERMINAL_RENAME_DONE": "Kész"
+  "STATUSBAR_MCP_CONTROLLED": "Távolról vezérelt",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "A szerkesztő távolról vezérelt. Egy másik program csatlakozik hozzá, amely olvashatja és módosíthatja a fájljait."
 });

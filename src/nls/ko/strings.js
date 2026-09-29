@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "나머지 항목을 복사하려면 {0}을(를) 선택하세요.",
   "MIGRATE_UNREACHABLE_TITLE": "이전 사이트에 접속할 수 없습니다.",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}이(가) {0}에 연결하여 프로젝트 및 설정을 찾을 수 없었으므로 아무것도 변경되지 않았습니다. 인터넷 연결을 확인한 다음 {1}으로 다시 시도하세요.",
-  "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…"
+  "CMD_MIGRATE_DATA": "{0}에서 내 데이터 이전…",
+  "STATUSBAR_MCP_CONTROLLED": "원격 제어 중",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "이 편집기는 원격으로 제어되고 있습니다. 다른 프로그램이 연결되어 사용자의 파일을 읽고 변경할 수 있습니다."
 });

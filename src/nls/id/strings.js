@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Untuk menyalin sisanya, pilih {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
-  "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…"
+  "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Dikendalikan dari Jarak Jauh",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Editor ini sedang dikendalikan dari jarak jauh. Program lain terhubung dan dapat membaca serta mengubah file Anda."
 });

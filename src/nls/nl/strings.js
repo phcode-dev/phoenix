@@ -2922,5 +2922,7 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Om de rest te kopiëren, kiest u {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
-  "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…"
+  "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
+  "STATUSBAR_MCP_CONTROLLED": "Op afstand bediend",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Deze editor wordt op afstand bediend. Een ander programma is ermee verbonden en kan uw bestanden lezen en wijzigen."
 });
