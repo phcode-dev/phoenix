@@ -5879,3 +5879,9 @@
     cursor: pointer;
     .ai-notify-message { white-space: pre-line; }
 }
+
+// The askInLivePreview card: the answer is given in the preview; the chat offers a way out.
+.ai-chat-panel .ai-ask-detail { display: flex; align-items: center; gap: 10px; }
+.ai-chat-panel .ai-ask-waiting { color: @project-panel-text-2; font-size: @ai-text-secondary; }
+.ai-chat-panel .ai-ask-cancel { border: 1px solid @bc-ai-input-border; border-radius: 4px; background: transparent; color: inherit; font: inherit; font-size: @ai-text-secondary; padding: 2px 10px; cursor: pointer; }
+.ai-chat-panel .ai-ask-cancel:hover { background: rgba(128, 128, 128, 0.2); }

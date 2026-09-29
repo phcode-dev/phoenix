@@ -755,6 +755,91 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         }
     );
 
+    const askInLivePreviewTool = sdkModule.tool(
+        "askInLivePreview",
+        "Show a question card over the page in the live preview and wait for the user's answer. Use it whenever " +
+        "showing beats telling: a choice about one element or about the whole page, or presenting variants or " +
+        "a mockup for a reaction. The card's frame is Phoenix's: a title bar reading 'Phoenix AI asks' with " +
+        "minimize and close, a text field with Send for an answer in the user's own words, drag, resize and " +
+        "placement. You write only the body: uiFile, an HTML fragment with its own <style>, and scriptFile, whose " +
+        "text runs once it is rendered as function(root, phoenix, params) { <your file's text goes here> }, so " +
+        "write only what goes between the braces. Write both with Write into the folder " +
+        "getEditorState reports as askInLivePreviewUiDir (your own folder: no permission needed, not shown to the " +
+        "user), edit and reuse them later; pass " +
+        "per-ask data in params, which fills {{key}} placeholders in the markup (escaped) and reaches the script " +
+        "as is. Rule for choices: hovering an option previews it on the page, clicking it answers; a hover preview " +
+        "reverts when the pointer leaves the card. phoenix: answer(payload) closes the card and returns the " +
+        "payload to you (previews in place stay); cancel(); previewCss(css|null) tries a style on the page; " +
+        "previewHtml(selector, html|null) swaps a page element; pickElement() resolves with the page element the " +
+        "user clicks next as {selector, tag, id, classes, text, rect}; highlight(selector|null) dims the page " +
+        "around an element; rectOf(selector); styleOf(selector, [props]); resize(width, height). root is the body " +
+        "element (root.querySelector; document cannot see it). Put a short label in the payload; the chat shows " +
+        "it as the user's reply. For one element pass anchor: the page dims around it (lifted while the pointer " +
+        "is over the card) and the card keeps out of its way; it stays in a corner unless placement asks for a " +
+        "side of the element. theme tints the frame with the page's colours. This is the whole contract; do not " +
+        "search for its implementation. " +
+        "Result: the payload, or cancelled with who cancelled (user, chat, page, timeout, previewClosed). " +
+        "Needs an open live preview; otherwise ask in the chat.",
+        {
+            uiFile: z.string().min(1).describe("The body markup file with its own <style>: an absolute path, or a file name " +
+                "inside askInLivePreviewUiDir; up to 200000 characters"),
+            scriptFile: z.string().optional().describe("Path of the file whose text runs as " +
+                "function(root, phoenix, params) { <your file's text goes here> }: only what goes between the braces; " +
+                "up to 100000 characters"),
+            params: z.object({}).passthrough().optional()
+                .describe("Data for this ask: fills {{key}} placeholders in the markup and is passed to the script"),
+            summary: z.string().min(1).max(200).describe("One line for the chat card saying what you are asking"),
+            anchor: z.string().max(500).optional()
+                .describe("CSS selector of the element the question is about; the card is placed beside it"),
+            highlight: z.boolean().optional()
+                .describe("Dim the page around anchor and glow it; default true when anchor is given"),
+            placement: z.enum(["auto", "above", "below", "left", "right",
+                "bottom-right", "bottom-left", "top-right", "top-left", "center", "bottom"]).optional()
+                .describe("Default bottom-right, out of the way; a corner never covers the anchor. auto or a side " +
+                    "puts the card beside the anchor with a pointer, flipping when there is no room"),
+            width: z.number().int().min(220).max(1200).optional().describe("Card width in px, default 340; the user can resize"),
+            height: z.number().int().min(120).max(1000).optional()
+                .describe("Card height in px; default fits the body, up to 85% of the viewport"),
+            theme: z.object({
+                background: z.string().max(64).optional(),
+                titleBackground: z.string().max(64).optional(),
+                titleColor: z.string().max(64).optional(),
+                textColor: z.string().max(64).optional(),
+                accent: z.string().max(64).optional()
+            }).optional().describe("CSS colours for the frame, so the card matches the page; unset ones default to a " +
+                "light or dark card chosen from the page's background. accent colours the Send button"),
+            timeoutS: z.number().int().min(10).max(1800).optional().describe("Seconds to wait for an answer, default 300")
+        },
+        async function (args) {
+            let toolResult;
+            try {
+                const timeoutMs = ((args && args.timeoutS) || 300) * 1000 + 15000;
+                const result = await _execPeerWithTimeout(nodeConnector, "askInLivePreview", args || {},
+                    "askInLivePreview", timeoutMs);
+                if (result && result.error) {
+                    toolResult = {
+                        content: [{ type: "text", text: "Error: " + result.error }],
+                        isError: true
+                    };
+                } else {
+                    toolResult = {
+                        content: [{ type: "text", text: JSON.stringify(result) }]
+                    };
+                }
+            } catch (err) {
+                toolResult = {
+                    content: [{ type: "text", text: "Error asking in the live preview: " + err.message }],
+                    isError: true
+                };
+            }
+            return _maybeAppendHint(toolResult, hasClarification);
+        },
+        {
+            alwaysLoad: true,
+            searchHint: "ask the user to choose between options with custom UI shown in the live preview"
+        }
+    );
+
     const notifyUserTool = sdkModule.tool(
         "notifyUser",
         "Show a short notification toast in the editor window, outside the chat. Use it only when the " +
@@ -894,6 +979,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         tools: [getEditorStateTool, searchEditorBuffersTool, searchImagesTool, previewImagesTool,
             useImageTool, takeScreenshotTool, execJsInLivePreviewTool,
             execJsInEditorTool, editorPreferencesTool, editorDocsTool, getProblemsTool, notifyUserTool,
+            askInLivePreviewTool,
             controlEditorTool, resizeLivePreviewTool, waitTool, getUserClarificationTool]
     });
 }
