@@ -1591,8 +1591,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 "the page's colours so the frame matches. For one element pass anchor so the page dims around it " +
                 "and the card keeps out of its way; put the card beside the element only when that helps. Hovering an " +
                 "option previews it on the page with previewCss or previewHtml, clicking it answers. " +
-                "Write the UI files into the folder getEditorState reports as askInLivePreviewUiDir (yours to " +
-                "write freely, no permission is asked and the user is not shown those writes). " +
+                "Write the UI files into " + (_aiScratchDir ? _aiScratchDir + " (askInLivePreviewUiDir)" :
+                    "the folder getEditorState reports as askInLivePreviewUiDir") + ", never into the project " +
+                "(yours to write freely, no permission is asked and the user is not shown those writes). " +
                 "The tool description is the whole contract; never look for its implementation, " +
                 "and keep the look-at-the-page step to one screenshot or one execJsInLivePreview." +
                 "\n\nEDITS THAT LAND IN THE LIVE PREVIEW: when you edit the file getEditorState " +

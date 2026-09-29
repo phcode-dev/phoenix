@@ -381,15 +381,23 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "execJsInLivePreview",
         "Execute JavaScript in the live preview iframe (the page being previewed), NOT in Phoenix itself. " +
         "Auto-opens the live preview panel if it is not already visible. Code is evaluated via eval() in " +
-        "the global scope of the previewed page. Note: eval() is synchronous — async/await is NOT supported. " +
+        "the previewed page, so the value of its last expression comes back; a top-level return works too. " +
+        "Note: eval() is synchronous — async/await is NOT supported. " +
         "Only available when an HTML file is selected in the live preview — does not work for markdown or " +
         "other non-HTML file types. Use this to inspect or manipulate the user's live-previewed web page " +
         "(e.g. document.title, DOM queries).\n\n" +
         "Pass timeoutMs to bound how long to wait if the live preview is wedged or slow to respond. " +
         "Defaults to 10000 (10s). Floored at 5000 (the preview frame may still be settling); no " +
-        "upper limit — pick whatever fits the snippet you're running.",
+        "upper limit — pick whatever fits the snippet you're running.\n\n" +
+        "If the script is reusable in any way, run again with other params, or a larger script you may edit and " +
+        "run again, write it to the folder getEditorState reports as askInLivePreviewUiDir (yours, no permission " +
+        "needed) and pass scriptFile instead of code. The file runs as function(params) { <your file's text goes " +
+        "here> } in the page, so return the value. Inline code is only for a very short throwaway.",
         {
-            code: z.string().describe("JavaScript code to execute in the live preview iframe"),
+            code: z.string().optional().describe("A very short throwaway snippet to run in the live preview iframe; anything reusable goes in scriptFile"),
+            scriptFile: z.string().optional().describe("Instead of code: an absolute path, or a file name inside " +
+                "askInLivePreviewUiDir, run as function(params) { <your file's text goes here> }; return the value"),
+            params: z.object({}).passthrough().optional().describe("Data the code sees as `params`"),
             timeoutMs: z.number().int().optional().describe(
                 "Max wait in milliseconds before giving up on the live preview. " +
                 "Floored at 5000, no upper limit. Default 10000."
@@ -400,7 +408,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             const timeoutMs = _resolveCallerTimeout(args.timeoutMs, 10000);
             try {
                 const result = await _execPeerWithTimeout(nodeConnector, "execJsInLivePreview", {
-                    code: args.code
+                    code: args.code, scriptFile: args.scriptFile, params: args.params
                 }, "execJsInLivePreview", timeoutMs);
                 if (result.error) {
                     toolResult = {
@@ -564,7 +572,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "buttons, dispatch arbitrary CommandManager commands, configure indentation, send synthetic " +
         "key events, etc. Same trust model as execJsInLivePreview — runs without a per-call prompt. " +
         "\n\n" +
-        "The body is wrapped in `new AsyncFunction('__PR', 'KeyEvent', code)` so you can `await` " +
+        "The body is wrapped in `new AsyncFunction('__PR', 'KeyEvent', 'params', code)` so you can `await` " +
         "freely. `__PR` exposes:\n" +
         "- Modules: $, CommandManager, Commands, Dialogs, EditorManager, MainViewManager, " +
         "DocumentManager, WorkspaceManager, FileSystem, FileViewController, ProjectManager, " +
@@ -595,9 +603,16 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "to confirm a UI mutation actually landed.\n" +
         "\n" +
         "Pass timeoutMs to bound how long to wait if the editor is wedged. Floored at 5000, no " +
-        "upper limit. Default 10000.",
+        "upper limit. Default 10000.\n\n" +
+        "If the script is reusable in any way, run again with other params, or a larger script you may edit and " +
+        "run again, write it to the folder getEditorState reports as askInLivePreviewUiDir (yours, no permission " +
+        "needed) and pass scriptFile instead of code. The file is the same async function body, with params as " +
+        "its third argument, so return the value. Inline code is only for a very short throwaway.",
         {
-            code: z.string().describe("JavaScript code to execute in the Phoenix editor's JS space"),
+            code: z.string().optional().describe("A very short throwaway snippet to run in the Phoenix editor's JS space; anything reusable goes in scriptFile"),
+            scriptFile: z.string().optional().describe("Instead of code: an absolute path, or a file name inside " +
+                "askInLivePreviewUiDir, run as the async function body with __PR, KeyEvent and params; return the value"),
+            params: z.object({}).passthrough().optional().describe("Data the code sees as `params`"),
             timeoutMs: z.number().int().optional().describe(
                 "Max wait in milliseconds before giving up. " +
                 "Floored at 5000, no upper limit. Default 10000."
@@ -608,7 +623,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             const timeoutMs = _resolveCallerTimeout(args.timeoutMs, 10000);
             try {
                 const result = await _execPeerWithTimeout(nodeConnector, "execJsInEditor", {
-                    code: args.code
+                    code: args.code, scriptFile: args.scriptFile, params: args.params
                 }, "execJsInEditor", timeoutMs);
                 if (result && result.error) {
                     toolResult = {
@@ -767,8 +782,10 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "getEditorState reports as askInLivePreviewUiDir (your own folder: no permission needed, not shown to the " +
         "user), edit and reuse them later; pass " +
         "per-ask data in params, which fills {{key}} placeholders in the markup (escaped) and reaches the script " +
-        "as is. Rule for choices: hovering an option previews it on the page, clicking it answers; a hover preview " +
-        "reverts when the pointer leaves the card. phoenix: answer(payload) closes the card and returns the " +
+        "as is. Make the body as visual and interactive as the question deserves (swatches, mini previews, icons, " +
+        "sliders), with one constraint: every word stays readable in every state, hover and selected included, " +
+        "against the theme you chose. Rule for choices: hovering an option previews it on the page, clicking it answers; a " +
+        "hover preview reverts when the pointer leaves the card. phoenix: answer(payload) closes the card and returns the " +
         "payload to you (previews in place stay); cancel(); previewCss(css|null) tries a style on the page; " +
         "previewHtml(selector, html|null) swaps a page element; pickElement() resolves with the page element the " +
         "user clicks next as {selector, tag, id, classes, text, rect}; highlight(selector|null) dims the page " +
@@ -779,7 +796,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "side of the element. theme tints the frame with the page's colours. This is the whole contract; do not " +
         "search for its implementation. " +
         "Result: the payload, or cancelled with who cancelled (user, chat, page, timeout, previewClosed). " +
-        "Needs an open live preview; otherwise ask in the chat.",
+        "Needs an open HTML live preview; otherwise ask in the chat.",
         {
             uiFile: z.string().min(1).describe("The body markup file with its own <style>: an absolute path, or a file name " +
                 "inside askInLivePreviewUiDir; up to 200000 characters"),
