@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} rivi",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} riviä",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Laajennukset poistettu käytöstä",
+  "STATUSBAR_MCP_CONTROLLED": "Etäohjattu",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Tätä editoria etäohjataan. Siihen on yhdistetty toinen ohjelma, joka voi lukea ja muokata tiedostojasi.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Vaihda kohdistimen sijoitus (INS)- ja korvaus (OVR) ‑tilojen välillä napsauttamalla",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Tekoälymuokkaustila",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Salli kaikki",
-  "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä (Napsauta vaihtaaksesi)",
-  "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Komentotulkin komennot vaativat hyväksynnän (Napsauta vaihtaaksesi)",
-  "AI_CHAT_MODE_INFO_AUTO": "Tekoäly hyväksyy turvalliset toiminnot automaattisesti ja kysyy lupaa riskialttiisiin (Vaihda napsauttamalla)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää (Napsauta vaihtaaksesi)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Valitse, kuinka paljon tekoäly saa tehdä ilman hyväksyntää [tai vaihto+sarkain]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code -palvelusta on kirjauduttu ulos tai kirjautumisesi on vanhentunut.",
   "AI_CHAT_AUTH_ERROR_BTN": "Kirjaudu Claudeen terminaalissa",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
   "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Etäohjattu",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Tätä editoria etäohjataan. Siihen on yhdistetty toinen ohjelma, joka voi lukea ja muokata tiedostojasi."
+  "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä",
+  "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Komentotulkin komennot vaativat hyväksynnän",
+  "AI_CHAT_MODE_INFO_AUTO": "Tekoäly käyttää harkintaa hyväksyäkseen turvalliset toiminnot automaattisesti ja kysyy lupaa riskialttiisiin",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää"
 });

@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} 行",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} 行",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "拡張機能無効",
+  "STATUSBAR_MCP_CONTROLLED": "リモート制御中",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "このエディターはリモート制御されています。別のプログラムが接続しており、ファイルの読み取りや変更を行うことができます。",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "クリックして挿入 (INS) モードと上書き (OVR) モード間のカーソルを切り替え",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI編集モード",
   "AI_CHAT_MODE_AUTO": "自動",
   "AI_CHAT_MODE_FULL_AUTO": "すべて許可",
-  "AI_CHAT_MODE_INFO_PLAN": "変更を行う前に、AIが実行計画を提案します (クリックして切り替え)",
-  "AI_CHAT_MODE_INFO_EDIT": "AIはファイルを編集できます。シェルコマンドの実行には承認が必要です (クリックして切り替え)",
-  "AI_CHAT_MODE_INFO_AUTO": "AIが安全なアクションを自動承認し、リスクのあるものは確認します（クリックで切り替え）",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AIは承認なしで、ファイルの編集とコマンドの実行ができます (クリックして切り替え)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "ＡＩが承認なしに実行できる範囲を選択［または Shift+Tab］",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Codeからサインアウトしているか、ログインの有効期限が切れています。",
   "AI_CHAT_AUTH_ERROR_BTN": "ターミナルでClaudeにログイン",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
   "CMD_MIGRATE_DATA": "{0}からデータを移行…",
-  "STATUSBAR_MCP_CONTROLLED": "リモート制御中",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "このエディターはリモート制御されています。別のプログラムが接続しており、ファイルの読み取りや変更を行うことができます。"
+  "AI_CHAT_MODE_INFO_PLAN": "AIは変更を加える前に計画を提案します",
+  "AI_CHAT_MODE_INFO_EDIT": "AIはファイルを編集できます。シェルコマンドには承認が必要です",
+  "AI_CHAT_MODE_INFO_AUTO": "AIは判断に基づき、安全なアクションは自動承認し、リスクのあるものについては確認を求めます",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AIは承認なしでファイルの編集やコマンドの実行ができます"
 });

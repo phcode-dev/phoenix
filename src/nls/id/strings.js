@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Baris",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Baris",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Ekstensi Tidak Aktif",
+  "STATUSBAR_MCP_CONTROLLED": "Dikendalikan dari Jarak Jauh",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Editor ini sedang dikendalikan dari jarak jauh. Program lain terhubung dan dapat membaca serta mengubah file Anda.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Klik untuk beralih antara mode Sisipan (INS) dan Timpa (OVR)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Mode Edit AI",
   "AI_CHAT_MODE_AUTO": "Otomatis",
   "AI_CHAT_MODE_FULL_AUTO": "Izinkan Segalanya",
-  "AI_CHAT_MODE_INFO_PLAN": "AI akan mengusulkan rencana sebelum membuat perubahan (Klik untuk beralih)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI dapat mengedit file. Perintah shell memerlukan persetujuan (Klik untuk beralih)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI menggunakan pertimbangan untuk menyetujui tindakan aman secara otomatis dan menanyakan tentang tindakan yang berisiko (Klik untuk beralih)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI dapat mengedit file dan menjalankan perintah tanpa persetujuan (Klik untuk beralih)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Pilih sejauh mana AI dapat bertindak tanpa persetujuan [atau Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code telah keluar atau login Anda telah kedaluwarsa.",
   "AI_CHAT_AUTH_ERROR_BTN": "Masuk ke Claude di Terminal",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
   "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Dikendalikan dari Jarak Jauh",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Editor ini sedang dikendalikan dari jarak jauh. Program lain terhubung dan dapat membaca serta mengubah file Anda."
+  "AI_CHAT_MODE_INFO_PLAN": "AI akan mengusulkan rencana sebelum membuat perubahan",
+  "AI_CHAT_MODE_INFO_EDIT": "AI dapat mengedit file. Perintah shell memerlukan persetujuan",
+  "AI_CHAT_MODE_INFO_AUTO": "AI menggunakan penilaian untuk menyetujui tindakan aman secara otomatis dan bertanya tentang yang berisiko",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI dapat mengedit file dan menjalankan perintah tanpa persetujuan"
 });

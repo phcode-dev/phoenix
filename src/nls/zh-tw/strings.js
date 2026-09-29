@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} 行",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} 行",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "已停用擴充功能",
+  "STATUSBAR_MCP_CONTROLLED": "遠端受控",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "此編輯器正受到遠端控制。另一個程式已與其連線，且可以讀取和變更您的檔案。",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "按一下可以在插入 (INS) 與覆寫 (OVR) 模式中切換",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI 編輯模式",
   "AI_CHAT_MODE_AUTO": "自動",
   "AI_CHAT_MODE_FULL_AUTO": "允許所有操作",
-  "AI_CHAT_MODE_INFO_PLAN": "AI 會在進行變更前提出計畫 (點擊以切換)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI 可以編輯檔案。Shell 指令需要經過核准 (點擊以切換)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI 會自行判斷，自動批准安全操作，並詢問有風險的操作 (點擊以切換)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以編輯檔案並執行指令，無需經過核准 (點擊以切換)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "選擇 AI 的自主操作程度 [或 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code 已登出或您的登入已過期。",
   "AI_CHAT_AUTH_ERROR_BTN": "在終端機登入 Claude",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
   "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
-  "STATUSBAR_MCP_CONTROLLED": "遠端受控",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "此編輯器正受到遠端控制。另一個程式已與其連線，且可以讀取和變更您的檔案。"
+  "AI_CHAT_MODE_INFO_PLAN": "AI 會在進行變更前提出計畫",
+  "AI_CHAT_MODE_INFO_EDIT": "AI 可以編輯檔案。Shell 指令需要批准",
+  "AI_CHAT_MODE_INFO_AUTO": "AI 會運用判斷力自動批准安全的動作，並詢問有風險的動作",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以編輯檔案並執行指令，無需批准"
 });

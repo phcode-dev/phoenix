@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Regel",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Regels",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extensies uitgeschakeld",
+  "STATUSBAR_MCP_CONTROLLED": "Op afstand bediend",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Deze editor wordt op afstand bediend. Een ander programma is ermee verbonden en kan uw bestanden lezen en wijzigen.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Klik om de cursor te wisselen tussen Insert (INS) en Overwrite (OVR) mode.",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI-bewerkingsmodus",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Alles toestaan",
-  "AI_CHAT_MODE_INFO_PLAN": "AI stelt een plan voor voordat het wijzigingen aanbrengt (Klik om te wisselen)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI kan bestanden bewerken. Shell-commando's vereisen goedkeuring (Klik om te wisselen)",
-  "AI_CHAT_MODE_INFO_AUTO": "De AI keurt veilige acties automatisch goed en vraagt om bevestiging voor riskante acties (Klik om te wisselen)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan bestanden bewerken en commando's uitvoeren zonder goedkeuring (Klik om te wisselen)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Kies hoeveel de AI mag doen zonder goedkeuring [of Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code is uitgelogd of uw login is verlopen.",
   "AI_CHAT_AUTH_ERROR_BTN": "Log in bij Claude in Terminal",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
   "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Op afstand bediend",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Deze editor wordt op afstand bediend. Een ander programma is ermee verbonden en kan uw bestanden lezen en wijzigen."
+  "AI_CHAT_MODE_INFO_PLAN": "AI zal een plan voorstellen voordat het wijzigingen aanbrengt.",
+  "AI_CHAT_MODE_INFO_EDIT": "AI kan bestanden bewerken. Shell-commando's vereisen goedkeuring.",
+  "AI_CHAT_MODE_INFO_AUTO": "AI gebruikt zijn oordeel om veilige acties automatisch goed te keuren en vraagt om goedkeuring voor risicovolle acties.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan bestanden bewerken en commando's uitvoeren zonder goedkeuring."
 });

@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} rând",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} rânduri",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extensii dezactivate",
+  "STATUSBAR_MCP_CONTROLLED": "Controlat de la distanță",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Acest editor este controlat de la distanță. Un alt program este conectat la acesta și poate citi și modifica fișierele dumneavoastră.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "RSC",
   "STATUSBAR_INSOVR_TOOLTIP": "Clic pentru a modifica cursorul între modul de Inserare(INS) și modul de Rescriere(RSC)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Mod Editare AI",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Permite Totul",
-  "AI_CHAT_MODE_INFO_PLAN": "AI-ul va propune un plan înainte de a face modificări (Apasă pentru a comuta)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI-ul poate edita fișiere. Comenzile shell necesită aprobare (Apasă pentru a comuta)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI-ul folosește raționamentul pentru a aproba automat acțiunile sigure și întreabă în legătură cu cele riscante (Faceți clic pentru a comuta)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI-ul poate edita fișiere și rula comenzi fără aprobare (Apasă pentru a comuta)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Alegeți cât de mult poate face AI-ul fără aprobare [sau Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code este deconectat sau autentificarea a expirat.",
   "AI_CHAT_AUTH_ERROR_BTN": "Autentifică-te la Claude în Terminal",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nu s-a putut accesa site-ul vechi",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nu s-a putut conecta la {0} pentru a căuta proiectele și setările dvs., prin urmare, nu s-a modificat nimic. Verificați conexiunea la internet, apoi reîncercați cu {1}.",
   "CMD_MIGRATE_DATA": "Migrează datele mele din {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Controlat de la distanță",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Acest editor este controlat de la distanță. Un alt program este conectat la acesta și poate citi și modifica fișierele dumneavoastră."
+  "AI_CHAT_MODE_INFO_PLAN": "AI va propune un plan înainte de a face modificări",
+  "AI_CHAT_MODE_INFO_EDIT": "AI poate edita fișiere. Comenzile shell necesită aprobare",
+  "AI_CHAT_MODE_INFO_AUTO": "AI folosește raționamentul pentru a aproba automat acțiunile sigure și întreabă despre cele riscante",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI poate edita fișiere și rula comenzi fără aprobare"
 });

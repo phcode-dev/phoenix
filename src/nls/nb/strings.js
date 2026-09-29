@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Linje",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Linjer",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Utvidelser deaktivert",
+  "STATUSBAR_MCP_CONTROLLED": "Fjernstyrt",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Denne teksteditoren er fjernstyrt. Et annet program er koblet til den og kan lese og endre filene dine.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Klikk for å veksle mellom innsettingsmodus (INN) og overskrivningsmodus (OVR)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "KI-redigeringsmodus",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Tillat alt",
-  "AI_CHAT_MODE_INFO_PLAN": "KI vil foreslå en plan før den gjør endringer (Klikk for å bytte)",
-  "AI_CHAT_MODE_INFO_EDIT": "KI kan redigere filer. Shell-kommandoer krever godkjenning (Klikk for å bytte)",
-  "AI_CHAT_MODE_INFO_AUTO": "KI-en bruker skjønn til å autogodkjenne trygge handlinger og spør om risikable (Klikk for å bytte)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kan redigere filer og kjøre kommandoer uten godkjenning (Klikk for å bytte)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Velg hvor mye AI-en kan gjøre uten godkjenning [eller Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code er logget ut, eller innloggingen din har utløpt.",
   "AI_CHAT_AUTH_ERROR_BTN": "Logg inn på Claude i terminalen",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Fikk ikke kontakt med det gamle nettstedet",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke koble til {0} for å se etter prosjektene og innstillingene dine, så ingenting har blitt endret. Sjekk internettforbindelsen din, og prøv deretter på nytt med {1}.",
   "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Fjernstyrt",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Denne teksteditoren er fjernstyrt. Et annet program er koblet til den og kan lese og endre filene dine."
+  "AI_CHAT_MODE_INFO_PLAN": "KI vil foreslå en plan før den gjør endringer",
+  "AI_CHAT_MODE_INFO_EDIT": "KI kan redigere filer. Shell-kommandoer trenger godkjenning",
+  "AI_CHAT_MODE_INFO_AUTO": "KI bruker skjønn til å autogodkjenne trygge handlinger og spør om risikable",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kan redigere filer og kjøre kommandoer uten godkjenning"
 });

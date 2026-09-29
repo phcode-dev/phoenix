@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} linje",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} linjer",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Udvidelser slået fra",
+  "STATUSBAR_MCP_CONTROLLED": "Fjernstyret",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Denne editor er fjernstyret. Et andet program er tilsluttet den og kan læse og ændre dine filer.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Klik for at skifte markør mellem indsætningstilstand (INDS) og overskrivningstilstand (OVR)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI-redigeringstilstand",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Tillad alt",
-  "AI_CHAT_MODE_INFO_PLAN": "AI vil foreslå en plan, før den laver ændringer (Klik for at skifte)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigere filer. Shell-kommandoer kræver godkendelse (Klik for at skifte)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI'en bruger sin dømmekraft til automatisk at godkende sikre handlinger og spørger om risikable (Klik for at skifte)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigere filer og køre kommandoer uden godkendelse (Klik for at skifte)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Vælg, hvor meget AI'en kan gøre uden godkendelse [eller Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code er logget ud, eller dit login er udløbet.",
   "AI_CHAT_AUTH_ERROR_BTN": "Log ind på Claude i Terminal",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunne ikke få forbindelse til den gamle side",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke oprette forbindelse til {0} for at finde dine projekter og indstillinger, så der er ikke blevet ændret noget. Tjek din internetforbindelse, og prøv derefter igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrer mine data fra {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Fjernstyret",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Denne editor er fjernstyret. Et andet program er tilsluttet den og kan læse og ændre dine filer."
+  "AI_CHAT_MODE_INFO_PLAN": "AI vil foreslå en plan, før den foretager ændringer",
+  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigere filer. Shell-kommandoer kræver godkendelse",
+  "AI_CHAT_MODE_INFO_AUTO": "AI bruger sin dømmekraft til automatisk at godkende sikre handlinger og spørger om de risikable",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigere filer og køre kommandoer uden godkendelse"
 });

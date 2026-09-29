@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} rinda",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} rindas",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Paplašinājumi atspējoti",
+  "STATUSBAR_MCP_CONTROLLED": "Attālināti vadīts",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Šis redaktors tiek attālināti vadīts. Cita programma ir tam pieslēgta un var lasīt un mainīt jūsu failus.",
   "STATUSBAR_INSERT": "Iespraušana (INS)",
   "STATUSBAR_OVERWRITE": "Pārraksts (OVR)",
   "STATUSBAR_INSOVR_TOOLTIP": "Nospiediet, lai pārslēgtu kursoru starp iespraušanas (INS) un pārraksta (OVR) režīmu",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "MI rediģēšanas režīms",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Visu atļaut",
-  "AI_CHAT_MODE_INFO_PLAN": "MI piedāvās plānu pirms izmaiņu veikšanas (Noklikšķiniet, lai pārslēgtu)",
-  "AI_CHAT_MODE_INFO_EDIT": "MI var rediģēt failus. Shell komandām nepieciešams apstiprinājums (Noklikšķiniet, lai pārslēgtu)",
-  "AI_CHAT_MODE_INFO_AUTO": "MI izmanto spriestspēju, lai automātiski apstiprinātu drošas darbības, un jautā par riskantām (Noklikšķiniet, lai pārslēgtu)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "MI var rediģēt failus un izpildīt komandas bez apstiprinājuma (Noklikšķiniet, lai pārslēgtu)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Izvēlieties, cik daudz MI drīkst darīt bez apstiprinājuma [vai Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Jūs esat izrakstījies no Claude Code vai jūsu pieteikšanās sesija ir beigusies.",
   "AI_CHAT_AUTH_ERROR_BTN": "Pieteikties Claude terminālī",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
   "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Attālināti vadīts",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Šis redaktors tiek attālināti vadīts. Cita programma ir tam pieslēgta un var lasīt un mainīt jūsu failus."
+  "AI_CHAT_MODE_INFO_PLAN": "MI piedāvās plānu, pirms veiks izmaiņas.",
+  "AI_CHAT_MODE_INFO_EDIT": "MI var rediģēt failus. Shell komandām nepieciešams apstiprinājums.",
+  "AI_CHAT_MODE_INFO_AUTO": "MI izmanto savu vērtējumu, lai automātiski apstiprinātu drošas darbības, un jautā par riskantām.",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "MI var rediģēt failus un izpildīt komandas bez apstiprinājuma."
 });

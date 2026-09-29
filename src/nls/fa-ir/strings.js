@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} خط",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} خط ها",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "غیرفعال سازی افزونه ها",
+  "STATUSBAR_MCP_CONTROLLED": "کنترل از راه دور",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "این ویرایشگر از راه دور کنترل می‌شود. برنامه‌ای دیگر به آن متصل است و می‌تواند فایل‌های شما را بخواند و تغییر دهد.",
   "STATUSBAR_INSERT": "واردسازی",
   "STATUSBAR_OVERWRITE": "دوباره نویسی",
   "STATUSBAR_INSOVR_TOOLTIP": "جهت تغییر حالت از وارد سازی (INS) به بازنویسی (OVR) یا برعکس، کلیک کنید",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "حالت ویرایش هوش مصنوعی",
   "AI_CHAT_MODE_AUTO": "خودکار",
   "AI_CHAT_MODE_FULL_AUTO": "اجازه همه‌چیز",
-  "AI_CHAT_MODE_INFO_PLAN": "هوش مصنوعی قبل از اعمال تغییرات، یک برنامه پیشنهاد می‌کند (برای تغییر کلیک کنید)",
-  "AI_CHAT_MODE_INFO_EDIT": "هوش مصنوعی می‌تواند فایل‌ها را ویرایش کند. دستورات شل نیاز به تأیید دارند (برای تغییر کلیک کنید)",
-  "AI_CHAT_MODE_INFO_AUTO": "هوش مصنوعی با قضاوت خود اقدامات امن را به‌طور خودکار تأیید کرده و در مورد موارد پرخطر سؤال می‌کند (برای تغییر کلیک کنید)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "هوش مصنوعی می‌تواند بدون تأیید، فایل‌ها را ویرایش و دستورات را اجرا کند (برای تغییر کلیک کنید)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "میزان کار هوش مصنوعی بدون تأیید را انتخاب کنید [یا Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code از سیستم خارج شده است یا اعتبار ورود شما منقضی شده است.",
   "AI_CHAT_AUTH_ERROR_BTN": "ورود به Claude در ترمینال",
@@ -2922,7 +2920,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "برای کپی کردن موارد باقی‌مانده، {0} را انتخاب کنید.",
   "MIGRATE_UNREACHABLE_TITLE": "عدم دسترسی به سایت قدیمی",
   "MIGRATE_UNREACHABLE_MESSAGE": "‏{APP_NAME} نتوانست به {0} متصل شود تا پروژه‌ها و تنظیمات شما را جستجو کند، بنابراین هیچ تغییری ایجاد نشده است. اتصال اینترنت خود را بررسی کنید، سپس با {1} دوباره تلاش کنید.",
-  "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "کنترل از راه دور",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "این ویرایشگر از راه دور کنترل می‌شود. برنامه‌ای دیگر به آن متصل است و می‌تواند فایل‌های شما را بخواند و تغییر دهد."
+  "CMD_MIGRATE_DATA": "انتقال داده‌های من از {0}…"
 });

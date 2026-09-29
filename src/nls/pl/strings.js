@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} linia",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} linii",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Rozszerzenia wyłączone",
+  "STATUSBAR_MCP_CONTROLLED": "Zdalnie sterowany",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Ten edytor jest zdalnie sterowany. Inny program jest do niego podłączony i może odczytywać oraz zmieniać Twoje pliki.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Kliknij aby zmienić tryb wprowadzania: wstaw (INS) lub zastąp (OVR)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Tryb edycji AI",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Pełna Automatyzacja",
-  "AI_CHAT_MODE_INFO_PLAN": "AI zaproponuje plan przed wprowadzeniem zmian (Kliknij, aby przełączyć)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI może edytować pliki. Polecenia powłoki wymagają zatwierdzenia (Kliknij, aby przełączyć)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI automatycznie zatwierdza bezpieczne akcje i pyta o te ryzykowne (Kliknij, aby przełączyć)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI może edytować pliki i uruchamiać polecenia bez zatwierdzenia (Kliknij, aby przełączyć)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Wybierz zakres samodzielności AI [lub Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Nastąpiło wylogowanie z Claude Code lub Twoja sesja logowania wygasła.",
   "AI_CHAT_AUTH_ERROR_BTN": "Zaloguj się do Claude w Terminalu",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nie udało się połączyć ze starą witryną",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nie mogła połączyć się z {0}, aby wyszukać Twoje projekty i ustawienia, dlatego nic nie zostało zmienione. Sprawdź połączenie z internetem, a następnie spróbuj ponownie, wybierając {1}.",
   "CMD_MIGRATE_DATA": "Migruj moje dane z {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Zdalnie sterowany",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Ten edytor jest zdalnie sterowany. Inny program jest do niego podłączony i może odczytywać oraz zmieniać Twoje pliki."
+  "AI_CHAT_MODE_INFO_PLAN": "AI zaproponuje plan przed wprowadzeniem zmian",
+  "AI_CHAT_MODE_INFO_EDIT": "AI może edytować pliki. Polecenia shell wymagają zatwierdzenia",
+  "AI_CHAT_MODE_INFO_AUTO": "AI samodzielnie zatwierdza bezpieczne działania, a o te ryzykowne pyta",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI może edytować pliki i uruchamiać polecenia bez zatwierdzenia"
 });

@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} red",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} redova",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extenzije onemogućene",
+  "STATUSBAR_MCP_CONTROLLED": "Daljinski upravljano",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Ovaj uređivač je daljinski upravljan. Drugi program je povezan s njim i može čitati i mijenjati vaše datoteke.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Kliknite za prebacivanje kursora između načina Umetanja (UME) i Prepisivanja (PRE)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI način uređivanja",
   "AI_CHAT_MODE_AUTO": "Automatski",
   "AI_CHAT_MODE_FULL_AUTO": "Potpuno automatski",
-  "AI_CHAT_MODE_INFO_PLAN": "AI će predložiti plan prije unošenja izmjena (kliknite za promjenu)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI može uređivati datoteke. Naredbe ljuske zahtijevaju odobrenje (kliknite za promjenu)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI koristi prosudbu za automatsko odobravanje sigurnih radnji i traži potvrdu za rizične (Kliknite za promjenu)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI može uređivati datoteke i izvršavati naredbe bez odobrenja (kliknite za promjenu)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Odaberite koliko AI može učiniti bez odobrenja [ili Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code je odjavljen ili je vaša prijava istekla.",
   "AI_CHAT_AUTH_ERROR_BTN": "Prijavite se u Claude u Terminalu",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
   "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Daljinski upravljano",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Ovaj uređivač je daljinski upravljan. Drugi program je povezan s njim i može čitati i mijenjati vaše datoteke."
+  "AI_CHAT_MODE_INFO_PLAN": "AI će predložiti plan prije nego što napravi promjene",
+  "AI_CHAT_MODE_INFO_EDIT": "AI može uređivati datoteke. Naredbe ljuske (shell) zahtijevaju odobrenje",
+  "AI_CHAT_MODE_INFO_AUTO": "AI koristi prosudbu za automatsko odobravanje sigurnih radnji i pita za rizične",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI može uređivati datoteke i pokretati naredbe bez odobrenja"
 });

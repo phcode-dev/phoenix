@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} rad",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} rader",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Tillägg har avaktiverats",
+  "STATUSBAR_MCP_CONTROLLED": "Fjärrstyrd",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Den här redigeraren fjärrstyrs. Ett annat program är anslutet till den och kan läsa och ändra dina filer.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "ÖVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Klicka för att växla mellan Insert (INS)- och Overwrite (ÖVR)-läge.",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI-redigeringsläge",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Tillåt allt",
-  "AI_CHAT_MODE_INFO_PLAN": "AI kommer att föreslå en plan innan den gör ändringar (Klicka för att byta)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigera filer. Shell-kommandon kräver godkännande (Klicka för att byta)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI:n använder sitt omdöme för att automatiskt godkänna säkra åtgärder och frågar om riskfyllda (Klicka för att byta)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigera filer och köra kommandon utan godkännande (Klicka för att byta)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Välj hur mycket AI:n kan göra utan godkännande [eller Skift+Tabb]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code är utloggad eller så har din inloggning gått ut.",
   "AI_CHAT_AUTH_ERROR_BTN": "Logga in på Claude i terminalen",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Fjärrstyrd",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Den här redigeraren fjärrstyrs. Ett annat program är anslutet till den och kan läsa och ändra dina filer."
+  "AI_CHAT_MODE_INFO_PLAN": "AI kommer att föreslå en plan innan den gör ändringar",
+  "AI_CHAT_MODE_INFO_EDIT": "AI kan redigera filer. Shell-kommandon kräver godkännande",
+  "AI_CHAT_MODE_INFO_AUTO": "AI använder sitt omdöme för att automatiskt godkänna säkra åtgärder och frågar om riskfyllda sådana",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigera filer och köra kommandon utan godkännande"
 });

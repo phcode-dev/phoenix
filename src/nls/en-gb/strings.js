@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} Line",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} Lines",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extensions Disabled",
+  "STATUSBAR_MCP_CONTROLLED": "Remote Controlled",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "This editor is being remotely controlled. Another program is connected to it and can read and change your files.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "OVR",
   "STATUSBAR_INSOVR_TOOLTIP": "Click to toggle cursor between Insert (INS) and Overwrite (OVR) modes",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "AI Edit Mode",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Allow Everything",
-  "AI_CHAT_MODE_INFO_PLAN": "AI will propose a plan before making changes (Click to switch)",
-  "AI_CHAT_MODE_INFO_EDIT": "AI can edit files. Shell commands need approval (Click to switch)",
-  "AI_CHAT_MODE_INFO_AUTO": "AI uses judgment to auto-approve safe actions and asks about risky ones (Click to switch)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI can edit files and run commands without approval (Click to switch)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Choose how much the AI can do without approval [or Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code is signed out or your login has expired.",
   "AI_CHAT_AUTH_ERROR_BTN": "Log in to Claude in Terminal",
@@ -2923,6 +2921,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Could not reach the old site",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} could not connect to {0} to look for your projects and settings, so nothing has been changed. Check your internet connection, then try again with {1}.",
   "CMD_MIGRATE_DATA": "Migrate My Data From {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Remote Controlled",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "This editor is being remotely controlled. Another program is connected to it and can read and change your files."
+  "AI_CHAT_MODE_INFO_PLAN": "AI will propose a plan before making changes",
+  "AI_CHAT_MODE_INFO_EDIT": "AI can edit files. Shell commands need approval",
+  "AI_CHAT_MODE_INFO_AUTO": "AI uses judgement to auto-approve safe actions and asks about risky ones",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "AI can edit files and run commands without approval"
 });
