@@ -778,7 +778,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
         "minimize and close, a text field with Send for an answer in the user's own words, drag, resize and " +
         "placement. You write only the body: uiFile, an HTML fragment with its own <style>, and scriptFile, whose " +
         "text runs once it is rendered as function(root, phoenix, params) { <your file's text goes here> }, so " +
-        "write only what goes between the braces. Write both with Write into the folder " +
+        "write only what goes between the braces. Write both files first, then call this tool; Write them into the folder " +
         "getEditorState reports as askInLivePreviewUiDir (your own folder: no permission needed, not shown to the " +
         "user), edit and reuse them later; pass " +
         "per-ask data in params, which fills {{key}} placeholders in the markup (escaped) and reaches the script " +

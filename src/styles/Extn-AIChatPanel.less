@@ -717,6 +717,20 @@
         flex-shrink: 0;
     }
 
+    // The chat's tokens and cost, when it has had a turn.
+    .ai-history-item-usage {
+        font-size: @ai-text-meta;
+        color: @project-panel-text-2;
+        opacity: 0.6;
+        flex-shrink: 0;
+        white-space: nowrap;
+
+        &::before {
+            content: "·";
+            margin-right: 5px;
+        }
+    }
+
     /* Claude's title for the session, revealed on hover: always-on it made
        a 50-entry list too dense to scan. It keeps its space in the row while
        hidden, so showing it shifts nothing. Empty when it would only repeat
@@ -4222,6 +4236,178 @@
         to { opacity: 1; }
     }
 
+    /* ── Usage chip: tokens and cost of the chat, with a drop-up for the split ───── */
+    .ai-chat-mode-row {
+        position: relative;
+
+        .ai-usage-chip {
+            position: relative;
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 4px;
+            font-size: @ai-text-meta;
+            color: @project-panel-text-2;
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+
+            &:hover, &.ai-usage-open {
+                background: rgba(255, 255, 255, 0.04);
+                color: @project-panel-text-1;
+            }
+
+            > i {
+                width: 14px;
+                text-align: center;
+                font-size: 10px;
+                opacity: 0.75;
+            }
+
+            .ai-usage-caret {
+                width: auto;
+                font-size: 9px;
+                opacity: 0.6;
+                transition: transform 120ms ease;
+            }
+
+            &.ai-usage-open .ai-usage-caret {
+                transform: rotate(180deg);
+            }
+
+            // Dim the chip's own text and icon before any turn; never the chip itself, since an
+            // opacity on the container would fade the drop-up inside it as well.
+            &.ai-usage-empty > i,
+            &.ai-usage-empty > .ai-usage-chip-text {
+                opacity: 0.6;
+            }
+        }
+
+        // The info flash shares the right side: the chip stops claiming the space then.
+        .ai-info.ai-info-flash + .ai-usage-chip {
+            margin-left: 8px;
+        }
+
+        // The drop-up borrows the attach menu's surface.
+        .ai-usage-pop {
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: ~"calc(100% + 6px)";
+            min-width: 230px;
+            padding: 4px 0;
+            background: @bc-ai-input-bg;
+            border: 1px solid @bc-ai-input-border;
+            border-radius: 8px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            text-align: left;
+            font-size: @ai-text-meta;
+            color: @project-panel-text-1;
+            cursor: default;
+            white-space: nowrap;
+        }
+
+        .ai-usage-chip.ai-usage-open .ai-usage-pop {
+            display: block;
+        }
+
+        .ai-usage-tabs {
+            display: flex;
+            gap: 2px;
+            padding: 6px 8px 5px;
+            border-bottom: 1px solid @bc-ai-input-border;
+            margin-bottom: 2px;
+        }
+
+        .ai-usage-tab {
+            padding: 4px 9px;
+            border-radius: 4px;
+            font-size: @ai-text-secondary;
+            color: @project-panel-text-2;
+            cursor: pointer;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.04);
+            }
+
+            &.active {
+                background: rgba(255, 255, 255, 0.08);
+                color: @project-panel-text-1;
+            }
+
+            &.ai-usage-tab-options {
+                margin-left: auto;
+
+                i {
+                    font-size: 11px;
+                }
+            }
+        }
+
+        .ai-usage-pane {
+            display: none;
+            flex-direction: column;
+            min-height: var(--ai-usage-pane-height);
+
+            &.active {
+                display: flex;
+            }
+        }
+
+        .ai-usage-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 5px 12px;
+
+            span:last-child {
+                font-variant-numeric: tabular-nums;
+            }
+
+            &.ai-usage-total {
+                border-top: 1px solid @bc-ai-input-border;
+                margin-top: 2px;
+                padding-top: 6px;
+            }
+        }
+
+        .ai-usage-note {
+            margin-top: auto;
+            padding: 4px 12px 6px;
+            color: @project-panel-text-2;
+            white-space: normal;
+            max-width: 270px;
+        }
+
+        label.ai-usage-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 0;
+            padding: 7px 12px;
+            font-size: @ai-text-meta;
+            font-weight: normal;
+            line-height: 1.4;
+            color: inherit;
+            cursor: pointer;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.04);
+            }
+
+            input[type="checkbox"] {
+                margin: 0;
+                width: 13px;
+                height: 13px;
+            }
+        }
+    }
+
     .ai-chat-context-bar {
         display: none;
         flex-wrap: wrap;
@@ -5885,3 +6071,27 @@
 .ai-chat-panel .ai-ask-waiting { color: @project-panel-text-2; font-size: @ai-text-secondary; }
 .ai-chat-panel .ai-ask-cancel { border: 1px solid @bc-ai-input-border; border-radius: 4px; background: transparent; color: inherit; font: inherit; font-size: @ai-text-secondary; padding: 2px 10px; cursor: pointer; }
 .ai-chat-panel .ai-ask-cancel:hover { background: rgba(128, 128, 128, 0.2); }
+
+/* ── Usage line under an answer: what that turn took ────────────────── */
+.ai-chat-panel .ai-usage-turn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: -2px 0 10px 14px;
+    font-size: @ai-text-meta;
+    color: @project-panel-text-2;
+    white-space: nowrap;
+
+    i {
+        font-size: 10px;
+        opacity: 0.7;
+    }
+
+    .ai-usage-sep {
+        opacity: 0.5;
+    }
+
+    &.ai-usage-hidden {
+        display: none;
+    }
+}
