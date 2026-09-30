@@ -378,16 +378,31 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Get the text of a document, applying any size restrictions
-     * if necessary
+     * Prepare a background file read or update for Tern's JavaScript parser.
+     * HTML and PHP start empty: getFileInfo() supplies their extracted scripts with each hint
+     * request. Parsing host markup here can throw and strand Tern's pending reads.
+     * @private
+     * @param {string} path - full path of the file.
+     * @param {string} text - unfiltered file contents.
+     * @return {string} JavaScript source, or an empty placeholder for HTML/PHP.
+     */
+    function filterTernFileText(path, text) {
+        const languageId = LanguageManager.getLanguageForPath(path).getId();
+        if (languageId === "html" || languageId === "php") {
+            return "";
+        }
+        return filterText(text);
+    }
+
+    /**
+     * Get a document's source for a background Tern update, excluding host markup
+     * and applying the configured size limit.
      * @private
      * @param {Document} document - the document to get the text from
-     * @return {string} the text, or the empty text if the original was too long
+     * @return {string} JavaScript source, or empty text for HTML/PHP or an oversized file.
      */
     function getTextFromDocument(document) {
-        var text = document.getText();
-        text = filterText(text);
-        return text;
+        return filterTernFileText(document.file.fullPath, document.getText());
     }
 
     /**
@@ -606,14 +621,14 @@ define(function (require, exports, module) {
      * @return {{type: string, name: string, offsetLines: number, text: string}}
      */
     function getFileInfo(session, preventPartialUpdates) {
+        const languageId = LanguageManager.getLanguageForPath(session.editor.document.file.fullPath).getId();
         var start = session.getCursor(),
             end = start,
             document = session.editor.document,
             path = document.file.fullPath,
-            isHtmlFile = LanguageManager.getLanguageForPath(path).getId() === "html",
             result;
 
-        if (isHtmlFile) {
+        if (languageId === "html" || languageId === "php") {
             result = {type: MessageIds.TERN_FILE_INFO_TYPE_FULL,
                 name: path,
                 text: session.getJavascriptText()};
@@ -946,7 +961,7 @@ define(function (require, exports, module) {
                 promise.done(function (docText) {
                     resolvedFiles[name] = filePath;
                     numResolvedFiles++;
-                    replyWith(name, filterText(docText));
+                    replyWith(name, filterTernFileText(filePath, docText));
                 });
                 return promise;
             }
@@ -1075,8 +1090,8 @@ define(function (require, exports, module) {
          *  to tern.
          * @private
          * @param {string} dir - the root directory to add.
-         * @param {function ()} doneCallback - called when all files have been
-         * added to tern.
+         * @param {function ()} doneCallback - called when traversal finishes, including
+         * when the directory can no longer be resolved.
          */
         function addAllFilesAndSubdirectories(dir, doneCallback) {
             FileSystem.resolve(dir, function (err, directory) {
@@ -1093,6 +1108,9 @@ define(function (require, exports, module) {
                 }
 
                 if (err) {
+                    // The directory can disappear before background indexing starts.
+                    // Release initialization so later editors do not wait on it indefinitely.
+                    doneCallback();
                     return;
                 }
 
@@ -1326,12 +1344,14 @@ define(function (require, exports, module) {
          * @param {?Document} previousDocument - the document of the editor is changing from
          */
         function handleEditorChange(session, document, previousDocument) {
-            if (addFilesPromise === null) {
-                doEditorChange(session, document, previousDocument);
-            } else {
+            if (addFilesPromise && addFilesPromise.state() === "pending") {
                 addFilesPromise.done(function () {
-                    doEditorChange(session, document, previousDocument);
+                    // An earlier queued editor may have started another initialization.
+                    // Recheck the current promise so only one worker-ready handler owns it.
+                    handleEditorChange(session, document, previousDocument);
                 });
+            } else {
+                doEditorChange(session, document, previousDocument);
             }
         }
 

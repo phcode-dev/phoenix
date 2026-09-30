@@ -430,24 +430,28 @@ define(function (require, exports, module) {
             const jsCodeHints = await new Promise(function (resolve, reject) {
                 ExtensionLoader.getRequireContextForExtension("JavaScriptCodeHints")(["main"], resolve, reject);
             });
-            let hintText = "";
+            let hintText = "", hintState = "not requested";
             await awaitsFor(async function () {
                 if (!jsCodeHints.jsHintProvider.hasHints(editor, null)) {
+                    hintState = "provider declined the editor context";
                     return false; // Tern session/worker may still be starting up
                 }
                 // The provider returns a Deferred for fresh hints and an object for
                 // cached hints. Await either result before checking this request.
                 let result;
                 try {
+                    hintState = "waiting for the Tern response";
                     result = await jsCodeHints.jsHintProvider.getHints(null);
                 } catch (err) {
+                    hintState = "request rejected: " + String(err);
                     return false; // A project/session change can cancel a pending request.
                 }
                 hintText = ((result && result.hints) || []).map(function (h) {
                     return $(h).text();
                 }).join("|");
+                hintState = "returned hints: " + hintText;
                 return hintText.indexOf("push") !== -1;
-            }, "Tern Array-member completions at arr. inside the <script>", 30000, 500);
+            }, () => "Tern Array-member completions at arr. inside the <script>: " + hintState, 30000, 500);
             expect(hintText).toContain("push");
 
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),

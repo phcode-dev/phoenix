@@ -110,10 +110,11 @@ define(function (require, exports, module) {
             // Mock time from the start so the auto-close timer itself is under the clock. The close
             // itself is observed on the notification, since the removal waits for a CSS transition.
             jasmine.clock().install();
+            let notification, $popup;
             try {
-                const notification = NotificationUI.createToastFromTemplate("hello", "world", {autoCloseTimeS: 1});
+                notification = NotificationUI.createToastFromTemplate("hello", "world", {autoCloseTimeS: 1});
+                $popup = notification.$notification;
                 spyOn(notification, "close").and.callThrough();
-                const $popup = $("#toast-notification-container").children().last();
                 expect($popup.length).toBe(1);
                 $popup.trigger("mouseenter");
                 jasmine.clock().tick(1500);
@@ -125,6 +126,13 @@ define(function (require, exports, module) {
                 jasmine.clock().tick(200);
                 expect(notification.close).toHaveBeenCalledWith(NotificationUI.CLOSE_REASON.TIMEOUT);
             } finally {
+                if (notification) {
+                    notification.close("test-cleanup");
+                    // The fake clock does not advance CSS transitions. Complete this
+                    // toast's removal so the next spec starts without a closing toast.
+                    $popup.trigger("transitionend");
+                    expect($popup[0].isConnected).toBeFalse();
+                }
                 jasmine.clock().uninstall();
             }
         });

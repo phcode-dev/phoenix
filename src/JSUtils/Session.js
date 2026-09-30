@@ -742,15 +742,16 @@ define(function (require, exports, module) {
 
     /**
      * Get the javascript text of the file open in the editor for this Session.
-     * For a javascript file, this is just the text of the file.  For an HTML file,
+     * For a javascript file, this is just the text of the file.  For an HTML/PHP file,
      * this will be only the text in the script tags.  This is so that we can pass
      * just the javascript text to tern, and avoid confusing it with HTML tags, since it
      * only knows how to parse javascript.
      * @return {String} - the "javascript" text that can be sent to Tern.
      */
     Session.prototype.getJavascriptText = function () {
-        if (LanguageManager.getLanguageForPath(this.editor.document.file.fullPath).getId() === "html") {
-            // HTML file - need to send back only the bodies of the
+        const languageId = LanguageManager.getLanguageForPath(this.editor.document.file.fullPath).getId();
+        if (languageId === "html" || languageId === "php") {
+            // HTML/PHP file - need to send back only the bodies of the
             // script tags
             var text = "",
                 editor = this.editor,
