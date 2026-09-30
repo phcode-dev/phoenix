@@ -6272,6 +6272,45 @@
         display: block;
     }
 
+    /* The details' page: the last 30 days, or an earlier calendar month. */
+    .ai-usage-month-nav {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin: 0 0 6px -4px;
+    }
+
+    .ai-usage-month-prev,
+    .ai-usage-month-next {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        font-size: 10px;
+        color: fade(@project-panel-text-2, 90%);
+        cursor: pointer;
+
+        &:hover {
+            color: @project-panel-text-1;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        &.ai-usage-nav-off {
+            color: fade(@project-panel-text-2, 35%);
+            background: none;
+            cursor: default;
+        }
+    }
+
+    .ai-usage-month-label {
+        min-width: 110px;
+        text-align: center;
+        font-size: @ai-text-secondary;
+        color: @project-panel-text-1;
+    }
+
     /* Stat rows wrap in a narrow panel rather than run past the card. */
     .ai-usage-big {
         display: flex;
