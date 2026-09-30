@@ -6095,3 +6095,399 @@
         display: none;
     }
 }
+
+/* ── Usage card on the start screen: months of use as a heat map ────── */
+/* Hidden until the first turn is on the ledger. The whole card is the
+   Details toggle, so it keeps the start cards' border but not their hover
+   lift: a wash over the coloured cells reads as a flash, not a hint. Only
+   the Details label brightens. Type sits on the start screen's own scale. */
+@ai-usage-heat:  #4f8cff;
+@ai-usage-heat-top: @ai-start-accent;
+@ai-usage-caption: fade(@project-panel-text-2, 70%);
+
+.ai-chat-start .ai-usage-card {
+    margin: 16px 0 8px;
+    padding: 14px 14px 12px;
+    box-sizing: border-box;
+    border: 1px solid @ai-start-border;
+    border-radius: 8px;
+    background: @ai-start-card-bg;
+    font-size: @ai-text-secondary;
+    color: @project-panel-text-1;
+    cursor: pointer;
+    outline: none;
+
+    &:focus-visible {
+        border-color: fade(@ai-start-accent, 50%);
+    }
+
+    &:hover .ai-usage-card-toggle {
+        color: @project-panel-text-1;
+    }
+
+    .ai-usage-card-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .ai-usage-card-title {
+        font-size: @ai-text-body;
+        font-weight: 600;
+    }
+
+    .ai-usage-card-range {
+        font-size: @ai-text-meta;
+        color: @project-panel-text-2;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.05);
+        white-space: nowrap;
+    }
+
+    /* Other Phoenix windows write the same ledger; this reads it again. */
+    .ai-usage-card-reload {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        font-size: 11px;
+        color: fade(@project-panel-text-2, 80%);
+        cursor: pointer;
+
+        &:hover {
+            color: @project-panel-text-1;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        &.ai-usage-reloading i {
+            animation: ai-usage-spin 0.7s linear infinite;
+        }
+    }
+
+    .ai-usage-card-toggle {
+        margin-left: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: @ai-text-secondary;
+        color: @project-panel-text-2;
+        white-space: nowrap;
+
+        i {
+            font-size: 9px;
+        }
+    }
+
+    .ai-usage-months {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+    }
+
+    .ai-usage-month {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .ai-usage-month-name {
+        font-size: @ai-text-meta;
+        color: @ai-usage-caption;
+        margin-bottom: 1px;
+    }
+
+    .ai-usage-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 11px);
+        gap: 3px;
+    }
+
+    .ai-usage-wd {
+        font-size: 10px;
+        line-height: 11px;
+        color: @ai-usage-caption;
+        text-align: center;
+    }
+
+    .ai-usage-cell {
+        display: block;
+        width: 11px;
+        height: 11px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.06);
+
+        &.ai-usage-l1 { background: fade(@ai-usage-heat, 35%); }
+        &.ai-usage-l2 { background: fade(@ai-usage-heat, 60%); }
+        &.ai-usage-l3 { background: fade(@ai-usage-heat, 85%); }
+        &.ai-usage-l4 { background: @ai-usage-heat-top; }
+        &.ai-usage-pad { background: transparent; }
+    }
+
+    .ai-usage-legend {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin-top: 8px;
+        font-size: @ai-text-meta;
+        color: @ai-usage-caption;
+
+        .ai-usage-fit {
+            margin-right: auto;
+        }
+
+        .ai-usage-scale {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-left: auto;
+        }
+
+        .ai-usage-cell {
+            width: 9px;
+            height: 9px;
+        }
+    }
+
+    /* Details: hidden until the card is opened. */
+    .ai-usage-more {
+        display: none;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    &.ai-usage-open .ai-usage-more {
+        display: block;
+    }
+
+    .ai-usage-big {
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        margin: 4px 0 12px;
+
+        .ai-usage-stat b {
+            font-size: 19px;
+            font-weight: 600;
+            line-height: 1.15;
+        }
+    }
+
+    .ai-usage-stat {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+
+        b {
+            font-size: @ai-text-body;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        span {
+            font-size: @ai-text-meta;
+            color: @ai-usage-caption;
+            margin-top: 2px;
+            white-space: nowrap;
+        }
+    }
+
+    .ai-usage-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 44px;
+        margin-bottom: 4px;
+    }
+
+    .ai-usage-bar {
+        flex: 1;
+        display: flex;
+        flex-direction: column-reverse;
+        border-radius: 2px 2px 0 0;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.03);
+        min-height: 1px;
+
+        i {
+            display: block;
+        }
+    }
+
+    .ai-usage-axis {
+        display: flex;
+        justify-content: space-between;
+        font-size: @ai-text-meta;
+        color: @ai-usage-caption;
+        margin-bottom: 10px;
+    }
+
+    .ai-usage-sub {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 12px 0 6px;
+        font-size: @ai-text-meta;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: @ai-usage-caption;
+
+        small {
+            margin-left: auto;
+            font-size: @ai-text-meta;
+            letter-spacing: normal;
+            text-transform: none;
+        }
+    }
+
+    .ai-usage-model {
+        display: grid;
+        grid-template-columns: 10px 1fr auto;
+        align-items: center;
+        gap: 8px;
+        padding: 3px 0;
+    }
+
+    .ai-usage-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .ai-usage-model-name {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .ai-usage-model-bar {
+        height: 3px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.08);
+
+        i {
+            display: block;
+            height: 100%;
+            border-radius: 2px;
+        }
+    }
+
+    .ai-usage-amt {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .ai-usage-activity {
+        display: flex;
+        gap: 16px;
+        margin: 6px 0 4px;
+    }
+}
+
+@keyframes ai-usage-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* The day under the pointer, in the grid or the bars. Lives on the body so
+   the card's overflow cannot clip it. */
+.ai-usage-day-tip {
+    position: fixed;
+    z-index: 1000;
+    min-width: 196px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    background: @bc-ai-sidebar-bg;
+    border: 1px solid @ai-start-border;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    font-size: @ai-text-secondary;
+    color: @project-panel-text-1;
+    pointer-events: none;
+
+    .ai-usage-tip-date {
+        font-size: @ai-text-body;
+        font-weight: 600;
+        margin-bottom: 8px;
+        white-space: nowrap;
+    }
+
+    .ai-usage-tip-quiet {
+        color: @project-panel-text-2;
+        white-space: nowrap;
+    }
+
+    .ai-usage-tip-stats {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 9px;
+    }
+
+    .ai-usage-stat {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+
+        b {
+            font-size: @ai-text-body;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        span {
+            font-size: @ai-text-meta;
+            color: @ai-usage-caption;
+            margin-top: 2px;
+        }
+    }
+
+    .ai-usage-tip-split {
+        display: flex;
+        height: 5px;
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 8px;
+        background: rgba(255, 255, 255, 0.06);
+
+        i {
+            display: block;
+            height: 100%;
+        }
+    }
+
+    .ai-usage-tip-line {
+        display: grid;
+        grid-template-columns: auto 1fr auto auto;
+        align-items: center;
+        gap: 8px;
+        padding: 2px 0;
+        white-space: nowrap;
+    }
+
+    .ai-usage-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+    }
+
+    .ai-usage-tip-pct {
+        color: @project-panel-text-2;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .ai-usage-tip-amt {
+        font-variant-numeric: tabular-nums;
+    }
+}
