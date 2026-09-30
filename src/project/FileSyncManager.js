@@ -219,22 +219,58 @@ define(function (require, exports, module) {
 
 
     /**
-     * Reloads the Document's contents from disk, discarding any unsaved changes in the editor.
+     * Reloads a Document from disk unless it is edited or saved while the read is pending.
      * @private
      * @param {!Document} doc
-     * @return {$.Promise} Resolved after editor has been refreshed; rejected if unable to load the
-     *      file's new content. Errors are logged but no UI is shown.
+     * @param {boolean=} discardChanges Whether the user explicitly chose to discard existing edits.
+     * @return {$.Promise} Resolved after refreshing or discarding a stale read; rejected if unable
+     *      to load the file's new content. Errors are logged but no UI is shown.
      */
-    function reloadDoc(doc) {
+    function reloadDoc(doc, discardChanges = false) {
+        // The document may have closed, changed or started saving since classification.
+        if (DocumentManager.getOpenDocumentForPath(doc.file.fullPath) !== doc ||
+                (!discardChanges && doc.isDirty) || doc.isSaving) {
+            return $.Deferred().resolve().promise();
+        }
 
-        var promise = FileUtils.readAsText(doc.file);
+        let changedDuringRead = false;
+        let tracking = true;
+        const onChange = function () {
+            changedDuringRead = true;
+        };
+        /** Release this read's listeners and document reference exactly once. */
+        const stopTracking = function () {
+            if (!tracking) {
+                return;
+            }
+            tracking = false;
+            doc.off("change _dirtyFlagChange", onChange);
+            doc.off("deleted", onDeleted);
+            doc.releaseRef();
+        };
+        const onDeleted = function () {
+            changedDuringRead = true;
+            stopTracking();
+        };
+        doc.addRef();
+        doc.on("deleted", onDeleted);
+        // Saving existing edits after choosing "Reload from disk" changes the
+        // dirty flag without another text change. Track that transition too,
+        // before the save's asynchronous timestamp update has necessarily finished.
+        doc.on("change _dirtyFlagChange", onChange);
+        const promise = FileUtils.readAsText(doc.file);
 
         promise.done(function (text, readTimestamp) {
-            doc.refreshText(text, readTimestamp);
+            // A newer edit can already be saved by now, so the dirty flag alone
+            // cannot tell whether these bytes still belong to the current version.
+            if (!changedDuringRead && (discardChanges || !doc.isDirty) && !doc.isSaving) {
+                doc.refreshText(text, readTimestamp);
+            }
         });
         promise.fail(function (error) {
             console.log("Error reloading contents of " + doc.file.fullPath, error);
         });
+        promise.always(stopTracking);
         return promise;
     }
 
@@ -247,7 +283,7 @@ define(function (require, exports, module) {
      */
     function reloadChangedDocs() {
         // Reload each doc in turn, and once all are (async) done, signal that we're done
-        return Async.doInParallel(toReload, reloadDoc, false);
+        return Async.doInParallel(toReload, doc => reloadDoc(doc), false);
     }
 
     /**
@@ -366,7 +402,7 @@ define(function (require, exports, module) {
                             result.resolve();
                         } else {
                             // Discard - load changes from disk
-                            reloadDoc(doc)
+                            reloadDoc(doc, true)
                                 .done(function () {
                                     result.resolve();
                                 })

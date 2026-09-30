@@ -51,7 +51,7 @@ define(function (require, exports, module) {
             };
         }
 
-        let invalidFix;
+        let invalidFix, testInspector;
 
         function scanFile(text, fullPath) {
             const currentEditor = EditorManager.getActiveEditor();
@@ -114,7 +114,7 @@ define(function (require, exports, module) {
             prefs = brackets.test.PreferencesManager.getExtensionPrefs("linting");
             CodeInspection = brackets.test.CodeInspection;
             PreferencesManager = brackets.test.PreferencesManager;
-            createVBScriptInspector();
+            testInspector = createVBScriptInspector();
             CodeInspection.toggleEnabled(true);
             testFolder = await SpecRunnerUtils.getTempTestDirectory("/spec/CodeInspection-test-files/");
             await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
@@ -262,6 +262,64 @@ define(function (require, exports, module) {
             await _openProjectFile("no-errors.js");
             await _openProjectFile(fileName);
         }
+
+        /**
+         * Hold scans of the open fixture so tests can control when results arrive.
+         * @return {{pending: Array<Object>, restore: Function}} Pending scans and cleanup.
+         */
+        function holdInspectionResults() {
+            const pending = [];
+            testInspector.scanFileAsync = function (text, fullPath) {
+                const deferred = $.Deferred();
+                pending.push({deferred, result: scanFile(text, fullPath)});
+                return deferred.promise();
+            };
+            return {
+                pending,
+                restore: async function () {
+                    delete testInspector.scanFileAsync;
+                    pending.forEach(scan => scan.deferred.resolve(scan.result));
+                    await Promise.all(pending.map(scan => testWindow.jsPromise(scan.deferred.promise())));
+                }
+            };
+        }
+
+        it("should keep visible fixes usable while an unchanged document is rescanned", async function () {
+            await _openProjectFile("testFix.vbs");
+            const editor = EditorManager.getActiveEditor();
+            const scans = holdInspectionResults();
+            try {
+                CodeInspection.requestRun();
+                await awaitsFor(() => scans.pending.length > 0, "replacement scan to start");
+                expect($("#problems-panel .problems-fix-all-btn").is(":visible")).toBeTrue();
+                $("#problems-panel .problems-fix-all-btn").click();
+                expect(editor.document.getText()).not.toContain("fixable");
+            } finally {
+                await scans.restore();
+            }
+        });
+
+        it("should ignore older diagnostics after a newer scan has cleared them", async function () {
+            await _openProjectFile("testFix.vbs");
+            const editor = EditorManager.getActiveEditor();
+            const scans = holdInspectionResults();
+            try {
+                CodeInspection.requestRun();
+                await awaitsFor(() => scans.pending.length === 1, "first scan to start");
+                CodeInspection.requestRun();
+                await awaitsFor(() => scans.pending.length === 2, "second scan to start");
+                scans.pending[1].deferred.resolve({errors: []});
+                await testWindow.jsPromise(scans.pending[1].deferred.promise());
+                expect(editor.getAllMarks("codeInspector").length).toBe(0);
+                scans.pending[0].deferred.resolve(scans.pending[0].result);
+                await testWindow.jsPromise(scans.pending[0].deferred.promise());
+                expect(editor.getAllMarks("codeInspector").length).toBe(0);
+                expect($("#problems-panel .ph-fix-problem").length).toBe(0);
+                expect($("#problems-panel .problems-fix-all-btn").is(":visible")).toBeFalse();
+            } finally {
+                await scans.restore();
+            }
+        });
 
         it("should fix by clicking fix button in quick view and undo", async function () {
             await _openProjectFile("testFix.vbs");

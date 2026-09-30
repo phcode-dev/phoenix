@@ -197,7 +197,17 @@ define(function (require, exports, module) {
                 let quickViewSwatch = popoverInfo.content.find("#quick-view-color-swatch");
                 expect(quickViewSwatch.attr("data-for-test")).toBe(color);
                 quickViewSwatch.click();
-                expect(EditorManager.getFocusedInlineWidget()._color).toBe(color);
+                // Find the color editor among the host's inline widgets rather than as
+                // the focused one: an inline widget only holds focus while the window
+                // does, so the old check came back null when the test window was in
+                // the background, with the color editor open all the same.
+                let colorWidget;
+                await awaitsFor(function () {
+                    colorWidget = EditorManager.getActiveEditor().getInlineWidgets()
+                        .find(function (widget) { return widget._color; });
+                    return !!colorWidget;
+                }, "inline color editor to open");
+                expect(colorWidget._color).toBe(color);
             });
 
             describe("JavaScript file", function () {

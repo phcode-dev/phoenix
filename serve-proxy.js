@@ -309,8 +309,26 @@ const server = http.createServer((req, res) => {
         }
     }
 
-    // Serve static files
-    let filePath = path.join(config.root, parsedUrl.pathname);
+    // Serve static files. url.parse leaves the pathname percent encoded, so a
+    // directory or file whose name contains a space was looked up on disk as
+    // "sub%20dir" and answered 404 even though it was right there. Decode before
+    // touching the filesystem - the traversal check below still runs on the
+    // result, which is what stops an encoded "%2e%2e" from buying anything.
+    let decodedPathname;
+    try {
+        decodedPathname = decodeURIComponent(parsedUrl.pathname);
+    } catch (e) {
+        // A malformed escape is a bad request, not a missing file.
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Bad Request');
+        return;
+    }
+    if (decodedPathname.indexOf('\0') !== -1) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Bad Request');
+        return;
+    }
+    let filePath = path.join(config.root, decodedPathname);
 
     // Security: prevent directory traversal
     const normalizedPath = path.normalize(filePath);

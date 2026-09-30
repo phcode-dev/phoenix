@@ -1290,16 +1290,31 @@ define(function (require, exports, module) {
                 const viewer = mdDoc.querySelector(".app-viewer");
                 const editor = EditorManager.getActiveEditor();
 
-                // Set cursor to line 0 — viewer should scroll to top
-                editor.setCursorPos(0, 0);
-                await awaitsFor(() => viewer.scrollTop < 50,
+                // Opening long.md is a file switch, and for 500ms after one the viewer
+                // drops every cursor scroll request (bridge.js, _suppressScrollToLine) so
+                // it can restore the cached scroll position undisturbed. Moving the cursor
+                // once, when the steps above finish inside that window, sent a request
+                // that was dropped and never repeated - which is why this failed on a fast
+                // run and passed on a slow one. So keep moving it, between two neighbouring
+                // lines so each poll is a fresh cursor move and a fresh request, until the
+                // viewer answers: the first request after the window closes is honoured.
+                function _moveCursorUntil(lineA, lineB, done, message) {
+                    let flip = false;
+                    return awaitsFor(() => {
+                        flip = !flip;
+                        editor.setCursorPos(flip ? lineA : lineB, 0);
+                        return done();
+                    }, message, 5000);
+                }
+
+                // Cursor at the top — viewer should scroll to the top
+                await _moveCursorUntil(0, 1, () => viewer.scrollTop < 50,
                     "viewer to scroll near top when CM cursor at line 0");
                 const topScroll = viewer.scrollTop;
 
-                // Set cursor to last line — viewer should scroll down
+                // Cursor at the end — viewer should scroll down
                 const lastLine = editor.lineCount() - 1;
-                editor.setCursorPos(lastLine, 0);
-                await awaitsFor(() => viewer.scrollTop > topScroll + 100,
+                await _moveCursorUntil(lastLine, lastLine - 1, () => viewer.scrollTop > topScroll + 100,
                     "viewer to scroll down when CM cursor moves to last line");
             }, 10000);
 

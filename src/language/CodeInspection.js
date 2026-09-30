@@ -652,7 +652,7 @@ define(function (require, exports, module) {
     }
 
     let fixIDCounter = 1;
-    let documentFixes = new Map(), lastDocumentScanTimeStamp;
+    let documentFixes = new Map(), lastDocumentScanTimeStamp, lastScannedDocument;
     function _registerNewFix(editor, fix, providerName, maxOffset) {
         if(!editor || !fix || !fix.rangeOffset) {
             return null;
@@ -747,10 +747,8 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Run inspector applicable to current document. Updates status bar indicator and refreshes error list in
-     * bottom panel. Does not run if inspection is disabled or if a providerName is given and does not
-     * match the current doc's provider name.
-     * @param {?string} providerName name of the provider that is requesting a run
+     * Run inspectors for the current document and publish results from the latest unchanged scan.
+     * Does not scan while inspection is disabled. Keeps valid fixes available until a current scan replaces them.
      */
     function run() {
         if(!problemsPanel){
@@ -778,8 +776,6 @@ define(function (require, exports, module) {
 
         let editor = EditorManager.getCurrentFullEditor(), fullFilePath;
         if(editor){
-            lastDocumentScanTimeStamp = editor.document.lastChangeTimestamp;
-            documentFixes.clear();
             fullFilePath = editor.document.file.fullPath;
         }
 
@@ -791,9 +787,20 @@ define(function (require, exports, module) {
                 html,
                 providersReportingProblems = [];
             scrollPositionMap.set($problemsPanelTable.lintFilePath || fullFilePath, $problemsPanelTable.scrollTop());
+            const scanTimestamp = currentDoc.lastChangeTimestamp;
 
             // run all the providers registered for this file type
             (_currentPromise = inspectFile(currentDoc.file, providerList)).then(function (results) {
+                // Check before changing marks, fixes or panel state: an older scan
+                // can finish after a newer scan, edit, or document switch.
+                if (this !== _currentPromise || currentDoc !== DocumentManager.getCurrentDocument() ||
+                    currentDoc.lastChangeTimestamp !== scanTimestamp ||
+                    editor !== EditorManager.getCurrentFullEditor()) {
+                    return;
+                }
+                lastDocumentScanTimeStamp = scanTimestamp;
+                lastScannedDocument = currentDoc;
+                documentFixes.clear();
                 // filter out any ignored results
                 results = results.filter(function (providerResult) {
                     return !providerResult.result || !providerResult.result.isIgnored;
@@ -805,11 +812,6 @@ define(function (require, exports, module) {
                 editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
                 editor.clearGutter(CODE_INSPECTION_GUTTER);
                 _updateEditorMarksAndFixResults(results);
-                // check if promise has not changed while inspectFile was running
-                if (this !== _currentPromise) {
-                    return;
-                }
-
                 // how many errors in total?
                 var errors = results.reduce(function (a, item) { return a + (item.result ? item.result.errors.length : 0); }, 0);
 
@@ -1215,11 +1217,16 @@ define(function (require, exports, module) {
             typeof fixDetails.replaceText !== "string");
     }
 
+    /**
+     * Apply one fix if its document and text still match the displayed inspection results.
+     * @param {string} fixID ID assigned to the displayed fix.
+     */
     function _fixProblem(fixID) {
         const fixDetails = documentFixes.get(fixID);
         const editor = EditorManager.getCurrentFullEditor();
-        const maxOffset = editor.document.getText().length;
-        if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+        const maxOffset = editor ? editor.document.getText().length : 0;
+        if(!editor || !fixDetails || editor.document !== lastScannedDocument ||
+            editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "fixFail", "dialogShown");
             Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
         } else if(_isInvalidFix(fixDetails, maxOffset)){
@@ -1235,9 +1242,11 @@ define(function (require, exports, module) {
         run();
     }
 
+    /** Apply all displayed fixes only to the document version that was inspected. */
     function _fixAllProblems() {
         const editor = EditorManager.getCurrentFullEditor();
-        if(!editor || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+        if(!editor || editor.document !== lastScannedDocument ||
+            editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
             Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
             return;
         }

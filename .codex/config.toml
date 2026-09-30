@@ -27,3 +27,6 @@ import(pathToFileURL(path.join(root, entry)).href).catch((error) => {
 env_vars = ["PHOENIX_DESKTOP_PATH", "PHOENIX_MCP_WS_PORT"]
 # Live-preview connection and execution can take longer than the default 60s.
 tool_timeout_sec = 120
+
+[mcp_servers.phoenix-builder.tools.get_phoenix_status]
+approval_mode = "approve"

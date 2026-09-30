@@ -83,7 +83,14 @@ define(function (require, exports, module) {
      */
     function _mediaStreamURL(file) {
         const platformPath = Phoenix.fs.getTauriPlatformPath(file.fullPath);
-        return window.PhNodeEngine.mediaURL +
+        // The file name rides in the path, before the query that actually names the
+        // file, purely so the URL ends in the right extension. WebKit picks its
+        // media engine for WebM off the URL extension rather than the Content-Type,
+        // so without this a .webm plays as "format not supported" on the Mac
+        // desktop app while the very same bytes play from a blob. mp4 is content
+        // sniffed and so never showed the problem. Node ignores this segment - it
+        // matches the route by prefix and reads platformPath from the query.
+        return window.PhNodeEngine.mediaURL + "/" + encodeURIComponent(file.name) +
             "?platformPath=" + encodeURIComponent(platformPath);
     }
 

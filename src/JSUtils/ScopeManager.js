@@ -110,20 +110,22 @@ define(function (require, exports, module) {
 
     /**
      *  Init preferences from a file in the project root or builtin
-     *  defaults if no file is found;
+     *  defaults if no file is found. Ignore callbacks from a previous project.
      * @private
      *  @param {string=} projectRootPath - new project root path. Only needed
      *  for unit tests.
      */
     function initPreferences(projectRootPath) {
 
-        // Reject the old preferences if they have not completed.
-        if (deferredPreferences && deferredPreferences.state() === "pending") {
-            deferredPreferences.reject();
+        const previousRequest = deferredPreferences;
+        const request = $.Deferred();
+        deferredPreferences = request;
+        // Cancelling the old request can release queued editor changes. Those
+        // changes must already see the new project's preference request.
+        if (previousRequest && previousRequest.state() === "pending") {
+            previousRequest.reject();
         }
-
-        deferredPreferences = $.Deferred();
-        var pr = ProjectManager.getProjectRoot();
+        const pr = ProjectManager.getProjectRoot();
 
         // Open preferences relative to the project root
         // Normally there is a project root, but for unit tests we need to
@@ -133,6 +135,7 @@ define(function (require, exports, module) {
         } else if (!projectRootPath) {
             console.log("initPreferences: projectRootPath has no value. Using Defaults.");
             preferences = new Preferences();
+            request.resolve();
             return;
         }
 
@@ -140,8 +143,14 @@ define(function (require, exports, module) {
 
         preferences = new Preferences();
         FileSystem.resolve(path, function (err, file) {
+            if (deferredPreferences !== request) {
+                return;
+            }
             if (!err) {
                 FileUtils.readAsText(file).done(function (text) {
+                    if (deferredPreferences !== request) {
+                        return;
+                    }
                     var configObj = null;
                     try {
                         configObj = JSON.parse(text);
@@ -154,13 +163,16 @@ define(function (require, exports, module) {
                         }
                     }
                     preferences = new Preferences(configObj);
-                    deferredPreferences.resolve();
+                    request.resolve();
                 }).fail(function (error) {
+                    if (deferredPreferences !== request) {
+                        return;
+                    }
                     preferences = new Preferences();
-                    deferredPreferences.resolve();
+                    request.resolve();
                 });
             } else {
-                deferredPreferences.resolve();
+                request.resolve();
             }
         });
     }
@@ -1299,6 +1311,10 @@ define(function (require, exports, module) {
                         });
                     });
                 });
+            }).fail(function () {
+                // A project switch cancelled these preferences. Release this
+                // initialization so the next editor change can initialize Tern.
+                addFilesDeferred.resolveWith(null);
             });
         }
 

@@ -431,19 +431,21 @@ define(function (require, exports, module) {
                 ExtensionLoader.getRequireContextForExtension("JavaScriptCodeHints")(["main"], resolve, reject);
             });
             let hintText = "";
-            await awaitsFor(function () {
+            await awaitsFor(async function () {
                 if (!jsCodeHints.jsHintProvider.hasHints(editor, null)) {
                     return false; // Tern session/worker may still be starting up
                 }
-                const response = jsCodeHints.jsHintProvider.getHints(null);
-                if (!response || typeof response.done !== "function") {
-                    return hintText.indexOf("push") !== -1; // sync response already captured below
+                // The provider returns a Deferred for fresh hints and an object for
+                // cached hints. Await either result before checking this request.
+                let result;
+                try {
+                    result = await jsCodeHints.jsHintProvider.getHints(null);
+                } catch (err) {
+                    return false; // A project/session change can cancel a pending request.
                 }
-                response.done(function (result) {
-                    hintText = ((result && result.hints) || []).map(function (h) {
-                        return $(h).text();
-                    }).join("|");
-                });
+                hintText = ((result && result.hints) || []).map(function (h) {
+                    return $(h).text();
+                }).join("|");
                 return hintText.indexOf("push") !== -1;
             }, "Tern Array-member completions at arr. inside the <script>", 30000, 500);
             expect(hintText).toContain("push");
@@ -917,10 +919,17 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     return panelText().includes("never read") && panelText().includes("deprecated");
                 }, "unused + deprecated hint rows in the problems panel", 30000);
-                // the marked text carries the tag styles on top of the info squiggle
+                // the marked text carries the tag styles on top of the info squiggle.
+                // Read the marks off the editor rather than looking for their spans in
+                // the page: CodeMirror only renders spans for lines it has painted, and
+                // late in a full run it had not, so this timed out with the marks - and
+                // the panel rows the waits above had already seen - all in place.
                 await awaitsFor(function () {
-                    return $(".editor-text-fragment-unnecessary").length > 0 &&
-                        $(".editor-text-fragment-deprecated").length > 0;
+                    const classes = editor.findMarks({line: 0, ch: 0}, {line: editor.lineCount(), ch: 0})
+                        .map(function (mark) { return mark.className || ""; })
+                        .join(" ");
+                    return classes.includes("editor-text-fragment-unnecessary") &&
+                        classes.includes("editor-text-fragment-deprecated");
                 }, "faded + strikethrough text marks in the editor", 30000);
             }, 90000);
 

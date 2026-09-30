@@ -81,7 +81,12 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([tc.file]), "open " + tc.file);
                 const editor = EditorManager.getActiveEditor();
                 editor.setCursorPos(tc.line, tc.ch);
-                CommandManager.execute(Commands.SHOW_CODE_HINTS);
+                // Hand the editor to the command. Left to itself it asks for the
+                // focused editor, and an editor only counts as focused once the
+                // browser has dispatched focus to it - which it does not do while the
+                // test window is behind another app. Then no session starts, no popup
+                // opens, and every case here times out together.
+                CommandManager.execute(Commands.SHOW_CODE_HINTS, editor);
 
                 // 1) the code-hints popup appears with our hint
                 await awaitsFor(function () { return $docHint().length > 0; },
