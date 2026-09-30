@@ -6130,6 +6130,7 @@
         align-items: center;
         gap: 8px;
         margin-bottom: 10px;
+        min-width: 0;
     }
 
     .ai-usage-card-title {
@@ -6137,6 +6138,7 @@
         font-weight: 600;
     }
 
+    /* The one header item that may give way in a narrow panel. */
     .ai-usage-card-range {
         font-size: @ai-text-meta;
         color: @project-panel-text-2;
@@ -6144,11 +6146,15 @@
         border-radius: 4px;
         background: rgba(255, 255, 255, 0.05);
         white-space: nowrap;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     /* Other Phoenix windows write the same ledger; this reads it again. */
     .ai-usage-card-reload {
         margin-left: auto;
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -6171,6 +6177,7 @@
 
     .ai-usage-card-toggle {
         margin-left: 6px;
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         gap: 5px;
@@ -6265,10 +6272,12 @@
         display: block;
     }
 
+    /* Stat rows wrap in a narrow panel rather than run past the card. */
     .ai-usage-big {
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-end;
-        gap: 24px;
+        gap: 8px 24px;
         margin: 4px 0 12px;
 
         .ai-usage-stat b {
@@ -6391,7 +6400,8 @@
 
     .ai-usage-activity {
         display: flex;
-        gap: 16px;
+        flex-wrap: wrap;
+        gap: 8px 16px;
         margin: 6px 0 4px;
     }
 }
