@@ -54,6 +54,32 @@ define(function (require, exports, module) {
 
     MainViewManager._initialize($("#mock-main-view"));
 
+    // Test-only orphan cleanup: refresh well before the Node idle timeout.
+    const NODE_IDLE_EXIT_MS = 120000;
+    const NODE_HEARTBEAT_MS = 30000;
+
+    /**
+     * Refresh the idle-exit watchdogs for this runner and its test window.
+     * A beforeunload terminate write can be lost, so abandoned engines need a fallback.
+     * Sleep or page suspension can also stop heartbeats and cause a false Node crash
+     * dialog after wake. This tradeoff is accepted only for tests: normal editor
+     * sessions must leave the watchdog disabled (see src-node/index.js for history).
+     *
+     * @returns {void}
+     */
+    function _keepNodeEnginesAlive() {
+        [window, _testWindow].forEach(function (win) {
+            if (win && win.PhNodeEngine && win.PhNodeEngine.setIdleExit) {
+                try {
+                    win.PhNodeEngine.setIdleExit(NODE_IDLE_EXIT_MS);
+                } catch (e) {
+                    // a window mid-teardown is exactly the case we want reaped
+                }
+            }
+        });
+    }
+    setInterval(_keepNodeEnginesAlive, NODE_HEARTBEAT_MS);
+
     // When the test runner page reloads (e.g. switching test
     // categories), terminate the test window's Node engine so
     // its phnode.exe process and children (ESLint runners,
@@ -741,6 +767,18 @@ define(function (require, exports, module) {
                 _testWindow = testIframe.contentWindow;
             }
         } else if(!_testWindow.brackets || !_testWindow.executeCommand){
+            // Navigating away abandons this window's Node engine. Tauri, not the
+            // webview, owns that child process and holds its stdin open, so nothing
+            // closes it on its own - src-node only exits on an explicit terminate or
+            // when stdin closes. Reap it here or it outlives the run as an orphan,
+            // still holding its LSP servers.
+            if(_testWindow.PhNodeEngine){
+                try {
+                    _testWindow.PhNodeEngine.terminateNode();
+                } catch (e) {
+                    // the window may already be too far gone to ask
+                }
+            }
             _testWindow.location.href = 'about:blank';
             _testWindow.location.href = _testWindowURL;
         } else {

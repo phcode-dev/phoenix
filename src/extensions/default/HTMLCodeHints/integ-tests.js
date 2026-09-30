@@ -88,15 +88,23 @@ define(function (require, exports, module) {
             const selected = ProjectManager.getSelectedItem();
             expect(selected.fullPath).toBe(testPath + "/jumpToDef.html");
 
-            let editor = EditorManager.getActiveEditor();
-            editor.setCursorPos({ line: 5, ch: 6 });
+            const hostEditor = EditorManager.getActiveEditor();
+            hostEditor.setCursorPos({ line: 5, ch: 6 });
 
             await awaitsForDone(CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION),
                 "jump to def on div");
 
-            editor = EditorManager.getFocusedInlineEditor();
-            expect(editor.document.file.fullPath.endsWith("LiveDevelopment-MultiBrowser-test-files/simpleShared.css"))
-                .toBeTrue();
+            // Ask the host for its inline editors rather than for the focused one:
+            // an inline editor only holds focus while the window does, so the old
+            // check came back null whenever the test window was not the OS front
+            // window, without the inline editor being any less open.
+            let inlineEditor;
+            await awaitsFor(function () {
+                inlineEditor = EditorManager.getInlineEditors(hostEditor)[0];
+                return !!inlineEditor;
+            }, "inline editor to open on the definition");
+            expect(inlineEditor.document.file.fullPath
+                .endsWith("LiveDevelopment-MultiBrowser-test-files/simpleShared.css")).toBeTrue();
             await closeSession();
         });
 
@@ -105,14 +113,22 @@ define(function (require, exports, module) {
             const selected = ProjectManager.getSelectedItem();
             expect(selected.fullPath).toBe(testPath + "/jumpToDef.html");
 
-            let editor = EditorManager.getActiveEditor();
-            editor.setCursorPos({ line: 6, ch: 23 });
+            const hostEditor = EditorManager.getActiveEditor();
+            hostEditor.setCursorPos({ line: 6, ch: 23 });
 
             await awaitsForDone(CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION),
                 "jump to def on div");
 
-            editor = EditorManager.getFocusedInlineEditor();
-            expect(editor.document.file.fullPath.endsWith("LiveDevelopment-MultiBrowser-test-files/sub/test.css"))
+            // Ask the host for its inline editors rather than for the focused one:
+            // an inline editor only holds focus while the window does, so the old
+            // check came back null whenever the test window was not the OS front
+            // window, without the inline editor being any less open.
+            let inlineEditor;
+            await awaitsFor(function () {
+                inlineEditor = EditorManager.getInlineEditors(hostEditor)[0];
+                return !!inlineEditor;
+            }, "inline editor to open on the definition");
+            expect(inlineEditor.document.file.fullPath.endsWith("LiveDevelopment-MultiBrowser-test-files/sub/test.css"))
                 .toBeTrue();
             await closeSession();
         });
@@ -202,9 +218,11 @@ define(function (require, exports, module) {
             let editor = EditorManager.getActiveEditor();
             editor.setCursorPos(cursor);
 
-            await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS),
-                "show code hints");
-
+            // The index has to hold the classes before hints are asked for, not after.
+            // Showing hints is a one-shot request: made while the index is still
+            // catching up, the provider has no class hints to offer, no menu opens,
+            // and nothing asks again once the index is ready - so this passed only
+            // when the index happened to be warm, and timed out under a full run.
             await awaitsFor(async function () {
                 for(let hint of expectedSomeHintsArray){
                     const allSelectors = await CSSUtils.getAllCssSelectorsInProject();
@@ -214,6 +232,11 @@ define(function (require, exports, module) {
                 }
                 return true;
             }, "CSSUtils project selectors to be updated");
+
+            // With the editor passed in, the session does not depend on it holding
+            // focus, which it does not while the test window is in the background.
+            await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS, editor),
+                "show code hints");
 
             await awaitsFor(function () {
                 return $(".codehint-menu").is(":visible");

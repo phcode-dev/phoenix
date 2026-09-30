@@ -58,6 +58,24 @@ define(function (require, exports, module) {
             expect(pm.projectRoot).toBe(null);
         });
 
+        describe("without a project root", function () {
+            it("should return no project files", async function () {
+                const pm = new ProjectModel.ProjectModel();
+                expect(await pm.getAllFiles()).toEqual([]);
+            });
+
+            it("should still include additional open files", async function () {
+                const pm = new ProjectModel.ProjectModel();
+                const file = {fullPath: "/standalone.js"};
+                expect(await pm.getAllFiles([file])).toEqual([file]);
+            });
+
+            it("should return no project ignore filters", async function () {
+                const pm = new ProjectModel.ProjectModel();
+                expect(await pm.computeProjectGitIgnoreAsync()).toEqual([]);
+            });
+        });
+
         describe("with projectRoot", function () {
             var root, pm;
 

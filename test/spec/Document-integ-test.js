@@ -19,7 +19,7 @@
  *
  */
 
-/*global jasmine, describe, beforeAll, afterAll,beforeEach, afterEach, it, expect, awaitsForDone */
+/*global jasmine, describe, beforeAll, afterAll,beforeEach, afterEach, it, expect, awaitsForDone, awaitsFor, spyOn */
 
 define(function (require, exports, module) {
 
@@ -33,6 +33,7 @@ define(function (require, exports, module) {
         Editor,     // loaded from brackets.test
         MainViewManager,     // loaded from brackets.test
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
+    let FileSyncManager, FileUtils, FileSystem, Dialogs;
 
     describe("LegacyInteg:Document Integration", function () {
 
@@ -51,6 +52,10 @@ define(function (require, exports, module) {
             DocumentModule      = testWindow.brackets.test.DocumentModule;
             DocumentManager     = testWindow.brackets.test.DocumentManager;
             MainViewManager     = testWindow.brackets.test.MainViewManager;
+            FileSyncManager     = testWindow.brackets.test.FileSyncManager;
+            FileUtils           = testWindow.brackets.test.FileUtils;
+            FileSystem          = testWindow.brackets.test.FileSystem;
+            Dialogs             = testWindow.brackets.test.Dialogs;
             Editor     = testWindow.brackets.test.Editor;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
@@ -64,6 +69,10 @@ define(function (require, exports, module) {
             DocumentModule  = null;
             DocumentManager = null;
             MainViewManager = null;
+            FileSyncManager = null;
+            FileUtils = null;
+            FileSystem = null;
+            Dialogs = null;
             await SpecRunnerUtils.closeTestWindow();
             testWindow = null;
         }, 30000);
@@ -77,6 +86,364 @@ define(function (require, exports, module) {
         var JS_FILE   = testPath + "/test.js",
             CSS_FILE  = testPath + "/test.css",
             HTML_FILE = testPath + "/test.html";
+
+        describe("External file refresh", function () {
+            let pendingReads = [];
+            let refreshDocuments = [];
+            let temporaryFiles = [];
+
+            afterEach(async function () {
+                // Unblock FileSyncManager even if a test fails before releasing its read.
+                pendingReads.forEach(read => read.reject("TEST_REFRESH_CANCELLED"));
+                refreshDocuments.forEach(doc => { doc.isSaving = false; });
+                pendingReads = [];
+                refreshDocuments = [];
+                for (const file of temporaryFiles) {
+                    await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE,
+                        {file, _forceClose: true}), "close refresh fixture");
+                    await awaitsForDone(SpecRunnerUtils.deletePath(file.fullPath), "remove refresh fixture");
+                }
+                temporaryFiles = [];
+            });
+
+            /**
+             * Hold a disk refresh until the test has changed the open document.
+             * @param {string=} dirtyText Initial unsaved text to discard through the conflict dialog.
+             * @param {Object=} options Optional classification hook or conflict-dialog choice.
+             * @return {Promise<Object>} Document, read state and controls for completing or retrying the refresh.
+             */
+            async function startRefresh(dirtyText, options = {}) {
+                const path = options.path || JS_FILE;
+                await awaitsForDone(CommandManager.execute(Commands.FILE_OPEN, {fullPath: path}), "open refresh document");
+                const doc = DocumentManager.getOpenDocumentForPath(path);
+                refreshDocuments.push(doc);
+                if (dirtyText !== undefined) {
+                    doc.setText(dirtyText);
+                    spyOn(Dialogs, "showModalDialog").and.returnValue(
+                        $.Deferred().resolve(options.choice || Dialogs.DIALOG_BTN_DONTSAVE).promise());
+                }
+                const diskTime = new Date(doc.diskTimestamp.getTime() + 1000);
+                const initialRefCount = doc._refCount;
+                const pendingRead = new $.Deferred();
+                pendingReads.push(pendingRead);
+                let classified = false;
+                const stat = spyOn(doc.file, "stat").and.callFake(callback => {
+                    callback(null, {mtime: diskTime});
+                    if (options.afterClassification) {
+                        options.afterClassification(doc);
+                    }
+                    classified = true;
+                });
+                let readingDocument = false;
+                const readAsText = FileUtils.readAsText;
+                const read = spyOn(FileUtils, "readAsText").and.callFake(function (file) {
+                    if (file.fullPath === doc.file.fullPath) {
+                        readingDocument = true;
+                        return pendingRead.promise();
+                    }
+                    return readAsText.apply(this, arguments);
+                });
+                FileSyncManager.syncOpenDocuments();
+                try {
+                    await awaitsFor(() => options.skipRead ? classified : readingDocument,
+                        "external refresh to reach the expected phase");
+                } finally {
+                    // Restore metadata access before resolving the read so a subsequent
+                    // focus event cannot start another synthetic external-change check.
+                    stat.and.callThrough();
+                    read.and.callThrough();
+                }
+                return {
+                    doc,
+                    diskTime,
+                    initialRefCount,
+                    readingDocument,
+                    finish: text => pendingRead.resolve(text, diskTime),
+                    fail: error => pendingRead.reject(error),
+                    retry: function (text) {
+                        stat.and.callFake(callback => callback(null, {mtime: diskTime}));
+                        read.and.callFake(file => file === doc.file
+                            ? $.Deferred().resolve(text, diskTime).promise() : readAsText(file));
+                        try {
+                            FileSyncManager.syncOpenDocuments();
+                        } finally {
+                            stat.and.callThrough();
+                            read.and.callThrough();
+                        }
+                    }
+                };
+            }
+
+            /**
+             * Hold actual disk-read bytes while the normal save command writes a newer version.
+             * Only delivery of the read result is delayed; file reads, writes and saves remain real.
+             * @param {string=} dirtyText Unsaved text present when the user chooses to reload.
+             * @return {Promise<Object>} Document, captured disk contents and a read completion callback.
+             */
+            async function startRealRefresh(dirtyText) {
+                await SpecRunnerUtils.createTempDirectory();
+                const path = SpecRunnerUtils.getTempDirectory() + "/filesync-" + Date.now() + ".txt";
+                const file = FileSystem.getFileForPath(path);
+                temporaryFiles.push(file);
+                await awaitsForDone(FileUtils.writeText(file, "initial content", true), "create refresh fixture");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_OPEN, {fullPath: path}), "open refresh fixture");
+                const doc = DocumentManager.getOpenDocumentForPath(path);
+                refreshDocuments.push(doc);
+                if (dirtyText !== undefined) {
+                    doc.setText(dirtyText);
+                    spyOn(Dialogs, "showModalDialog").and.returnValue(
+                        $.Deferred().resolve(Dialogs.DIALOG_BTN_DONTSAVE).promise());
+                }
+                const pendingRead = new $.Deferred();
+                pendingReads.push(pendingRead);
+                const readAsText = FileUtils.readAsText;
+                let captured;
+                let intercepted = false;
+                const read = spyOn(FileUtils, "readAsText").and.callFake(function (readFile) {
+                    if (readFile === file && !intercepted) {
+                        intercepted = true;
+                        // Bypass File's cache so the captured bytes come from the filesystem.
+                        const result = readAsText.call(this, readFile, true);
+                        result.done((text, timestamp) => { captured = {text, timestamp}; });
+                        result.fail(error => pendingRead.reject(error));
+                        return pendingRead.promise();
+                    }
+                    return readAsText.apply(this, arguments);
+                });
+                try {
+                    await awaitsForDone(FileUtils.writeText(file, "external content", true), "write external version");
+                    FileSyncManager.syncOpenDocuments();
+                    await awaitsFor(() => captured, "capture actual external disk contents");
+                } finally {
+                    read.and.callThrough();
+                }
+                expect(captured.text).toBe("external content");
+                return {
+                    doc,
+                    finish: () => pendingRead.resolve(captured.text, captured.timestamp)
+                };
+            }
+
+            it("should apply a disk refresh when the document has not changed", async function () {
+                const refresh = await startRefresh();
+                refresh.finish("external content");
+                expect(refresh.doc.getText()).toBe("external content");
+                expect(refresh.doc.isDirty).toBeFalse();
+                expect(refresh.doc._refCount).toBe(refresh.initialRefCount);
+            });
+
+            it("should preserve edits made while a disk refresh is pending", async function () {
+                const refresh = await startRefresh();
+                refresh.doc.setText("newer edit");
+                refresh.finish("older disk content");
+                expect(refresh.doc.getText()).toBe("newer edit");
+                expect(refresh.doc.isDirty).toBeTrue();
+            });
+
+            it("should preserve a newer clean version while a disk refresh is pending", async function () {
+                const refresh = await startRefresh();
+                const newerTime = new Date(refresh.doc.diskTimestamp.getTime() + 2000);
+                refresh.doc.refreshText("newer restored content", newerTime);
+                refresh.finish("older disk content");
+                expect(refresh.doc.getText()).toBe("newer restored content");
+                expect(refresh.doc.diskTimestamp).toBe(newerTime);
+                expect(refresh.doc.isDirty).toBeFalse();
+            });
+
+            it("should discard unsaved changes when the user chooses to reload from disk", async function () {
+                const refresh = await startRefresh("unsaved changes");
+                expect(Dialogs.showModalDialog).toHaveBeenCalled();
+                refresh.finish("external content");
+                expect(refresh.doc.getText()).toBe("external content");
+                expect(refresh.doc.isDirty).toBeFalse();
+            });
+
+            it("should preserve edits made after the user chooses to reload from disk", async function () {
+                const refresh = await startRefresh("unsaved changes");
+                refresh.doc.setText("edit after confirming reload");
+                refresh.finish("older disk content");
+                expect(refresh.doc.getText()).toBe("edit after confirming reload");
+                expect(refresh.doc.isDirty).toBeTrue();
+            });
+
+            it("should preserve edits made after classification but before reading", async function () {
+                const refresh = await startRefresh(undefined, {
+                    afterClassification: doc => doc.setText("edit after classification"),
+                    skipRead: true
+                });
+                expect(refresh.readingDocument).toBeFalse();
+                refresh.finish("older disk content");
+                expect(refresh.doc.getText()).toBe("edit after classification");
+                expect(refresh.doc.isDirty).toBeTrue();
+            });
+
+            it("should not start a refresh while the document is saving", async function () {
+                const refresh = await startRefresh(undefined, {
+                    afterClassification: doc => { doc.isSaving = true; },
+                    skipRead: true
+                });
+                const text = refresh.doc.getText();
+                expect(refresh.readingDocument).toBeFalse();
+                refresh.finish("older disk content");
+                expect(refresh.doc.getText()).toBe(text);
+            });
+
+            it("should protect later documents in a batch without treating their index as discard permission", async function () {
+                await awaitsForDone(CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,
+                    {fullPath: HTML_FILE}), "retain first document in working set");
+                const firstDoc = DocumentManager.getOpenDocumentForPath(HTML_FILE);
+                firstDoc.addRef();
+                let firstStat;
+                let openDocuments;
+                try {
+                    await awaitsForDone(CommandManager.execute(Commands.FILE_OPEN,
+                        {fullPath: JS_FILE}), "open second document before installing metadata spies");
+                    const secondDoc = DocumentManager.getOpenDocumentForPath(JS_FILE);
+                    // Document ids depend on earlier file discovery; explicitly exercise index 1.
+                    openDocuments = spyOn(DocumentManager, "getAllOpenDocuments")
+                        .and.returnValue([firstDoc, secondDoc]);
+                    const firstTime = new Date(firstDoc.diskTimestamp.getTime() + 1000);
+                    firstStat = spyOn(firstDoc.file, "stat").and.callFake(callback => {
+                        callback(null, {mtime: firstTime});
+                    });
+                    const refresh = await startRefresh(undefined, {
+                        path: JS_FILE,
+                        afterClassification: doc => {
+                            firstStat.and.callThrough();
+                            doc.setText("newer second document");
+                        },
+                        skipRead: true
+                    });
+                    expect(FileUtils.readAsText.calls.allArgs().some(args => args[0] === firstDoc.file))
+                        .withContext(JSON.stringify({
+                            reads: FileUtils.readAsText.calls.allArgs().map(args => args[0].fullPath),
+                            stats: firstStat.calls.count(),
+                            dirty: firstDoc.isDirty,
+                            saving: firstDoc.isSaving,
+                            open: DocumentManager.getAllOpenDocuments().map(doc => doc.file.fullPath)
+                        })).toBeTrue();
+                    expect(refresh.readingDocument).toBeFalse();
+                    refresh.finish("older second document");
+                    expect(refresh.doc.getText()).toBe("newer second document");
+                    expect(refresh.doc.isDirty).toBeTrue();
+                } finally {
+                    if (firstStat) {
+                        firstStat.and.callThrough();
+                    }
+                    if (openDocuments) {
+                        openDocuments.and.callThrough();
+                    }
+                    firstDoc.releaseRef();
+                }
+            });
+
+            it("should not apply a pending refresh while the document is saving", async function () {
+                const refresh = await startRefresh();
+                const text = refresh.doc.getText();
+                const timestamp = refresh.doc.diskTimestamp;
+                refresh.doc.isSaving = true;
+                refresh.finish("older disk content");
+                expect(refresh.doc.getText()).toBe(text);
+                expect(refresh.doc.diskTimestamp).toBe(timestamp);
+            });
+
+            it("should retain undo history when rejecting a stale read", async function () {
+                const refresh = await startRefresh();
+                const original = refresh.doc.getText();
+                refresh.doc.replaceRange("new edit\n", {line: 0, ch: 0});
+                refresh.finish("older disk content");
+                EditorManager.getActiveEditor().undo();
+                expect(refresh.doc.getText()).toBe(original);
+            });
+
+            it("should keep unsaved changes when the user declines a disk reload", async function () {
+                const refresh = await startRefresh("keep my edits", {
+                    choice: Dialogs.DIALOG_BTN_CANCEL,
+                    skipRead: true
+                });
+                expect(Dialogs.showModalDialog).toHaveBeenCalled();
+                expect(refresh.readingDocument).toBeFalse();
+                expect(refresh.doc.getText()).toBe("keep my edits");
+                expect(refresh.doc.isDirty).toBeTrue();
+                expect(refresh.doc.keepChangesTime).toBe(refresh.diskTime.getTime());
+            });
+
+            it("should leave the document unchanged after a failed read and allow a later refresh", async function () {
+                const refresh = await startRefresh();
+                const text = refresh.doc.getText();
+                const timestamp = refresh.doc.diskTimestamp;
+                refresh.fail("NOT_READABLE");
+                expect(refresh.doc.getText()).toBe(text);
+                expect(refresh.doc.diskTimestamp).toBe(timestamp);
+                expect(refresh.doc._refCount).toBe(refresh.initialRefCount);
+                refresh.retry("successful retry");
+                expect(refresh.doc.getText()).toBe("successful retry");
+                expect(refresh.doc.diskTimestamp).toBe(refresh.diskTime);
+            });
+
+            it("should allow a later refresh after rejecting a stale read", async function () {
+                const refresh = await startRefresh();
+                refresh.doc.replaceRange("new edit\n", {line: 0, ch: 0});
+                refresh.finish("older disk content");
+                EditorManager.getActiveEditor().undo();
+                expect(refresh.doc.isDirty).toBeFalse();
+                refresh.retry("latest disk version");
+                expect(refresh.doc.getText()).toBe("latest disk version");
+                expect(refresh.doc.isDirty).toBeFalse();
+            });
+
+            it("should retain unsaved edits and report an error when a confirmed reload fails", async function () {
+                const refresh = await startRefresh("unsaved edits");
+                refresh.fail("NOT_READABLE");
+                expect(Dialogs.showModalDialog.calls.count()).toBe(2);
+                expect(refresh.doc.getText()).toBe("unsaved edits");
+                expect(refresh.doc.isDirty).toBeTrue();
+                expect(refresh.doc._refCount).toBe(refresh.initialRefCount);
+            });
+
+            it("should preserve a real save completed while an older disk read is pending", async function () {
+                const refresh = await startRealRefresh();
+                refresh.doc.setText("newer saved content");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE, {doc: refresh.doc}), "save newer edit");
+                expect(refresh.doc.isDirty).toBeFalse();
+                expect(refresh.doc.isSaving).toBeFalse();
+                refresh.finish();
+                expect(refresh.doc.getText()).toBe("newer saved content");
+                expect(await FileUtils.readAsText(refresh.doc.file, true)).toBe("newer saved content");
+            });
+
+            it("should release a deleted document and ignore its pending read", async function () {
+                const refresh = await startRefresh();
+                const refreshText = spyOn(refresh.doc, "refreshText").and.callThrough();
+                DocumentManager.notifyFileDeleted(refresh.doc.file);
+                expect(DocumentManager.getOpenDocumentForPath(refresh.doc.file.fullPath)).toBeFalsy();
+                refresh.finish("content from before deletion");
+                expect(refreshText).not.toHaveBeenCalled();
+                expect(refresh.doc._refCount).toBe(0);
+            });
+
+            it("should not resurrect a document deleted between classification and reading", async function () {
+                const refresh = await startRefresh(undefined, {
+                    afterClassification: doc => DocumentManager.notifyFileDeleted(doc.file),
+                    skipRead: true
+                });
+                expect(refresh.readingDocument).toBeFalse();
+                expect(DocumentManager.getOpenDocumentForPath(refresh.doc.file.fullPath)).toBeFalsy();
+                expect(refresh.doc._refCount).toBe(0);
+                refresh.finish("content from before deletion");
+                expect(refresh.doc._refCount).toBe(0);
+            });
+
+            it("should preserve a save made after choosing reload without another text edit", async function () {
+                const refresh = await startRealRefresh("edits saved after choosing reload");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE, {doc: refresh.doc}), "save existing edits");
+                expect(refresh.doc.isDirty).toBeFalse();
+                expect(refresh.doc.isSaving).toBeFalse();
+                refresh.finish();
+                expect(refresh.doc.getText()).toBe("edits saved after choosing reload");
+                expect(await FileUtils.readAsText(refresh.doc.file, true)).toBe("edits saved after choosing reload");
+            });
+        });
 
 
         describe("Dirty flag and undo", function () {

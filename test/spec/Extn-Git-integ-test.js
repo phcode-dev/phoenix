@@ -686,41 +686,45 @@ define(function (require, exports, module) {
             const BULK_FILE_COUNT = 51;
 
             it("should confirm before opening a large number of changed files", async () => {
-                await showGitPanel();
-                await __PR.closeAll();
-                await awaitsFor(()=>{
-                    return MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES) === 0;
-                }, "working set to be empty");
+                const changedFiles = ["test.css", "test.js"];
+                await makeFilesChanged(changedFiles);
 
                 for (let i = 0; i < BULK_FILE_COUNT; i++) {
-                    await __PR.writeTextFile(`bulkFile${i}.txt`, `bulk file ${i}\n`, true);
+                    const fileName = `bulkFile${i}.txt`;
+                    await __PR.writeTextFile(fileName, `bulk file ${i}\n`, true);
+                    changedFiles.push(fileName);
                 }
                 await __PR.execCommand(Commands.CMD_GIT_REFRESH);
+                // Refresh dispatches an event without waiting for Git status. Earlier
+                // watcher results can already contain 51 rows while the final files
+                // are still being written, so wait for the complete fixture list.
+                const changedFileCount = changedFiles.length;
                 await awaitsFor(()=>{
-                    return $gitPanel.find(".modified-file").length >= BULK_FILE_COUNT;
+                    const panelFiles = $gitPanel.find(".modified-file").map((index, row) =>
+                        $(row).attr("x-file")).get();
+                    return panelFiles.length === changedFileCount &&
+                        changedFiles.every(fileName => panelFiles.includes(fileName));
                 }, "bulk files to be in modified files list", 30000);
 
-                // nothing is deleted and untracked files are shown, so every row in the
-                // panel is a file the command will open
-                const changedFileCount = $gitPanel.find(".modified-file").length;
-
                 // cancelling the confirmation must not open anything
-                __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES); // dont await here as
-                // it only completes after the dialog is closed
+                let openChangedFiles = __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES);
                 await __PR.waitForModalDialog("#git-question-dialog", null, 10000);
                 __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_CANCEL);
                 await __PR.waitForModalDialogClosed("#git-question-dialog");
-                await __PR.execCommand(Commands.CMD_GIT_REFRESH);
+                await openChangedFiles;
                 expect(MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES)).toBe(0);
 
                 // confirming opens all of them
-                __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES);
+                openChangedFiles = __PR.execCommand(Commands.CMD_GIT_OPEN_CHANGED_FILES);
                 await __PR.waitForModalDialog("#git-question-dialog", null, 10000);
                 __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
                 await __PR.waitForModalDialogClosed("#git-question-dialog");
+                await openChangedFiles;
                 await awaitsFor(()=>{
-                    return MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES) === changedFileCount;
-                }, "all changed files to be opened", 30000);
+                    return MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES) === changedFileCount &&
+                        changedFiles.every(workingSetHas);
+                }, () => `all ${changedFileCount} changed files to be opened; working set has ` +
+                    MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES), 30000);
 
                 // re-running it now asks nothing as the files are already open. awaiting
                 // here is safe for that reason, a dialog coming up would time out the spec

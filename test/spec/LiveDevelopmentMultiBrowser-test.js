@@ -1351,7 +1351,12 @@ define(function (require, exports, module) {
                     // just exec and return if no compare function is specified
                     return true;
                 },
-                "awaitRemoteExec",
+                // Name the script and the page's last answer: a spec may wait on several of
+                // these in a row, and a bare "awaitRemoteExec" never said which one stalled.
+                function () {
+                    return "awaitRemoteExec: " + script + " - last reply: " +
+                        (replied ? JSON.stringify(result) : "none");
+                },
                 5000,
                 50
             );

@@ -581,8 +581,15 @@ function nodeLoader() {
 
 
     window.nodeSetupDonePromise = new Promise((resolve, reject) =>{
+        // Test-only orphan cleanup, refreshed by SpecRunnerUtils. Both native paths
+        // below must keep startup arming gated by Phoenix.isTestWindow; normal editor
+        // sessions leave the Node watchdog disabled. Sleep or a suspended page can
+        // interrupt heartbeats and cause a false Node crash dialog after wake, so
+        // this timeout is only an acceptable tradeoff for test processes.
+        const TEST_NODE_IDLE_EXIT_MS = 120000;
         const NODE_COMMANDS = {
             TERMINATE: "terminate",
+            SET_IDLE_EXIT: "setIdleExit",
             PING: "ping",
             SET_DEBUG_MODE: "setDebugMode",
             GET_ENDPOINTS: "getEndpoints"
@@ -737,6 +744,21 @@ function nodeLoader() {
                 }
                 return nodeTerminationPromise;
             };
+            // Ask node to exit on its own if we stop talking to it for this long.
+            // Only the test runner uses this: a terminate sent while the page is
+            // being torn down is an async write that usually never lands, which is
+            // how abandoned test windows leave their node engines running.
+            window.PhNodeEngine.setIdleExit = function (idleMs) {
+                if(window.isNodeTerminated) {
+                    return Promise.resolve();
+                }
+                return execNode(NODE_COMMANDS.SET_IDLE_EXIT, idleMs);
+            };
+            if(Phoenix.isTestWindow) {
+                // Arm at spawn, not on the test runner's first heartbeat: a page reloaded
+                // before that heartbeat left its engine unarmed and running forever.
+                window.PhNodeEngine.setIdleExit(TEST_NODE_IDLE_EXIT_MS);
+            }
             window.PhNodeEngine.getInspectPort = function () {
                 return inspectPort;
             };
@@ -851,6 +873,16 @@ function nodeLoader() {
                 }
                 return nodeTerminationPromise;
             };
+            // See the tauri path above - only the test runner asks for this.
+            window.PhNodeEngine.setIdleExit = function (idleMs) {
+                if (window.isNodeTerminated) {
+                    return Promise.resolve();
+                }
+                return execNode(NODE_COMMANDS.SET_IDLE_EXIT, idleMs);
+            };
+            if (Phoenix.isTestWindow) {
+                window.PhNodeEngine.setIdleExit(TEST_NODE_IDLE_EXIT_MS);
+            }
             window.PhNodeEngine.getInspectPort = function () {
                 return inspectPort;
             };

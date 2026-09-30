@@ -593,12 +593,16 @@ define(function (require, exports, module) {
      * directory traversal is active at a time, which is useful at project load
      * time when watchers (and hence filesystem-level caching) has not finished
      * starting up. The cache is cleared on every filesystem change event, and
-     * also on project load and unload.
+     * also on project load and unload. With no project root, resolves with an empty list.
      *
      * @param {boolean} sort true to sort files by their paths
+     * @param {Array<Object>=} _gitIgnoreFiltersOut Receives ignore filters found during traversal.
      * @return {$.Promise.<Array.<File>>}
      */
     ProjectModel.prototype._getAllFilesCache = function _getAllFilesCache(sort, _gitIgnoreFiltersOut) {
+        if (!this.projectRoot) {
+            return $.Deferred().resolve([]).promise();
+        }
         let self = this;
         if (!this._allFilesCachePromise) {
             let gitIgnoreFilters = _gitIgnoreFiltersOut || [], gitIgnoreSearchedInDir = {};

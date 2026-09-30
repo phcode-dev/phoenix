@@ -392,20 +392,17 @@ define(function (require, exports, module) {
         });
 
         describe("ESLint v9 with fixes project", function () {
-            let esLatestProjectPath, originalErrorFile;
+            let esLatestProjectPath;
 
             beforeAll(async function () {
                 esLatestProjectPath = await _createTempProject("es9_with_fixes");
                 await _npmInstallInFolder(esLatestProjectPath);
                 await SpecRunnerUtils.loadProjectInTestWindow(esLatestProjectPath);
-                await _openProjectFile("error.js");
-                const editor = EditorManager.getCurrentFullEditor();
-                originalErrorFile = editor.document.getText();
             }, 30000);
 
             beforeEach(async function () {
-                await jsPromise(SpecRunnerUtils.createTextFile(path.join(esLatestProjectPath, "error.js"),
-                    originalErrorFile, FileSystem));
+                // Fixes are unsaved edits. Closing them restores the unchanged fixture
+                // without a disk write racing the next document's initial lint scan.
                 await testWindow.closeAllFiles();
             });
 
@@ -452,25 +449,11 @@ define(function (require, exports, module) {
 
             it("should be able to fix all errors", async function () {
                 await _openAndVerifyInitial();
-                let editor = EditorManager.getCurrentFullEditor();
+                const editor = EditorManager.getCurrentFullEditor();
                 editor.setCursorPos(0, 0); // resent any saved selections from previous run
                 // click on fix : Expected indentation of 4 spaces but found 9. ESLint (indent)
-                // a late doc reload can stale the fixes and pop the "Failed to Apply Fix" dialog
-                // on slow CI; dismiss it, re-lint and retry so it doesn't leak into later suites
                 $($("#problems-panel").find(".problems-fix-all-btn")).click();
-                await awaitsFor(async ()=>{
-                    if($(".error-dialog.instance").length){
-                        testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                            testWindow.brackets.test.DefaultDialogs.DIALOG_ID_ERROR);
-                        await _triggerLint();
-                        await awaitsFor(()=>{
-                            return $("#problems-panel").find(".ph-fix-problem").length === 2;
-                        }, "fix buttons to reappear after re-lint", 15000);
-                        editor = EditorManager.getCurrentFullEditor();
-                        editor.setCursorPos(0, 0);
-                        $($("#problems-panel").find(".problems-fix-all-btn")).click();
-                        return false;
-                    }
+                await awaitsFor(()=>{
                     return $("#problems-panel").find(".ph-fix-problem").length === 0;
                 }, "no problems should remain as all is now fixed", 30000);
 

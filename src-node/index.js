@@ -169,17 +169,62 @@ rl.on('close', () => {
     process.exit(1);
 });
 
+// Opt-in watchdog for test processes; disabled by default. node-loader.js arms
+// it for Phoenix.isTestWindow, and SpecRunnerUtils refreshes the runner and its
+// test window. Normal editor sessions never send setIdleExit.
+//
+// Tauri owns this process and holds stdin open after the spawning page goes away.
+// A terminate command sent during beforeunload can be lost, leaving Node and its
+// LSP servers running. Test runs accept timeout-based cleanup for these orphans.
+// Keep this disabled in normal editor sessions: sleep, page suspension or long
+// pauses can stop heartbeats even though the page still exists. Expiry can then
+// trigger a Node crash dialog after wake. Earlier heartbeat/socket orphan checks
+// were removed for sleep-related crashes in a1e660cb5 and ba5800d93.
+let _idleExitMs = 0;
+let _idleExitTimer = null;
+
+function _shutdown(reason) {
+    lmdb.dumpDBToFileAndCloseDB()
+        .catch(console.error)
+        .finally(() => {
+            console.log(reason);
+            process.exit(0);
+        });
+}
+
+function _refreshIdleExit() {
+    if (!_idleExitMs) {
+        return;
+    }
+    if (_idleExitTimer) {
+        clearTimeout(_idleExitTimer);
+    }
+    _idleExitTimer = setTimeout(() => {
+        _shutdown(`No command for ${_idleExitMs}ms, the page that spawned us is gone.`);
+    }, _idleExitMs);
+    // never let this timer alone hold the process up
+    if (_idleExitTimer.unref) {
+        _idleExitTimer.unref();
+    }
+}
+
 function processCommand(line) {
     try{
         let jsonCmd = JSON.parse(line);
+        // any command at all is proof the page is still there
+        _refreshIdleExit();
         switch (jsonCmd.commandCode) {
+        case "setIdleExit":
+            _idleExitMs = Number(jsonCmd.commandData) || 0;
+            if (!_idleExitMs && _idleExitTimer) {
+                clearTimeout(_idleExitTimer);
+                _idleExitTimer = null;
+            }
+            _refreshIdleExit();
+            _sendResponse(_idleExitMs, jsonCmd.commandID);
+            return;
         case "terminate":
-            lmdb.dumpDBToFileAndCloseDB()
-                .catch(console.error)
-                .finally(()=>{
-                    console.log("Node terminated by phcode.");
-                    process.exit(0);
-                });
+            _shutdown("Node terminated by phcode.");
             return;
         case "ping": _sendResponse("pong", jsonCmd.commandID); return;
         case "setDebugMode":
