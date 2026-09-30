@@ -1028,6 +1028,8 @@ define({
   "STATUSBAR_LINE_COUNT_SINGULAR": "— {0} línea",
   "STATUSBAR_LINE_COUNT_PLURAL": "— {0} líneas",
   "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extensiones deshabilitadas",
+  "STATUSBAR_MCP_CONTROLLED": "Controlado remotamente",
+  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Este editor está siendo controlado remotamente. Otro programa está conectado a él y puede leer y cambiar tus archivos.",
   "STATUSBAR_INSERT": "INS",
   "STATUSBAR_OVERWRITE": "SOB",
   "STATUSBAR_INSOVR_TOOLTIP": "Haz clic para intercambiar entre el modo insertar (INS) y el modo sobrescribir (SOB)",
@@ -2648,10 +2650,6 @@ define({
   "AI_CHAT_MODE_EDIT": "Modo de edición con IA",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Permitir todo",
-  "AI_CHAT_MODE_INFO_PLAN": "La IA propondrá un plan antes de realizar cambios (Haz clic para cambiar)",
-  "AI_CHAT_MODE_INFO_EDIT": "La IA puede editar archivos. Los comandos de shell necesitan aprobación (Haz clic para cambiar)",
-  "AI_CHAT_MODE_INFO_AUTO": "La IA usa su criterio para aprobar automáticamente las acciones seguras y pregunta sobre las arriesgadas (haz clic para cambiar)",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "La IA puede editar archivos y ejecutar comandos sin aprobación (Haz clic para cambiar)",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Elige cuánto puede hacer la IA sin aprobación [o Mayús+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "No has iniciado sesión en Claude Code o tu sesión ha caducado.",
   "AI_CHAT_AUTH_ERROR_BTN": "Iniciar sesión en Claude en la terminal",
@@ -2721,7 +2719,6 @@ define({
   "AI_CHAT_IMAGE_GUEST_LIMIT": "Ha agotado su cuota de búsqueda de imágenes. Inicie sesión para seguir buscando.",
   "AI_CHAT_IMAGE_SERVER_LIMIT": "La búsqueda de imágenes está temporalmente limitada. Espere antes de volver a buscar.",
   "AI_CHAT_IMAGE_TIMEOUT": "Se ha agotado el tiempo de espera para la búsqueda de imágenes. Vuelva a intentarlo más tarde.",
-  "AI_CHAT_IMAGE_REQUEST_FAILED": "El servicio de imágenes ha devuelto un error ({0}).",
   "AI_CHAT_ATTACH_FILE": "Adjuntar archivos",
   "AI_CHAT_ATTACH_TITLE": "Adjuntar archivo o carpeta",
   "AI_CHAT_ATTACH_FILE_OPTION": "Adjuntar archivo",
@@ -2922,7 +2919,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Para copiar el resto, selecciona {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "No se pudo acceder al sitio antiguo",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} no se pudo conectar a {0} para buscar tus proyectos y configuración, por lo que no se ha modificado nada. Comprueba tu conexión a internet y vuelve a intentarlo con {1}.",
-  "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…",
-  "STATUSBAR_MCP_CONTROLLED": "Controlado remotamente",
-  "STATUSBAR_MCP_CONTROLLED_TOOLTIP": "Este editor está siendo controlado remotamente. Otro programa está conectado a él y puede leer y cambiar tus archivos."
+  "CMD_MIGRATE_DATA": "Migrar mis datos desde {0}…"
 });
