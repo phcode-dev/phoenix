@@ -2650,6 +2650,10 @@ define({
   "AI_CHAT_MODE_EDIT": "KI-redigeringsmodus",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Tillat alt",
+  "AI_CHAT_MODE_INFO_PLAN": "KI vil foreslå en plan før den gjør endringer",
+  "AI_CHAT_MODE_INFO_EDIT": "KI kan redigere filer. Shell-kommandoer trenger godkjenning",
+  "AI_CHAT_MODE_INFO_AUTO": "KI bruker skjønn til å autogodkjenne trygge handlinger og spør om risikable",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kan redigere filer og kjøre kommandoer uten godkjenning",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Velg hvor mye AI-en kan gjøre uten godkjenning [eller Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code er logget ut, eller innloggingen din har utløpt.",
   "AI_CHAT_AUTH_ERROR_BTN": "Logg inn på Claude i terminalen",
@@ -2719,7 +2723,6 @@ define({
   "AI_CHAT_IMAGE_GUEST_LIMIT": "Din kvote for bildesøk er brukt opp. Logg inn for å fortsette å søke.",
   "AI_CHAT_IMAGE_SERVER_LIMIT": "Bildesøk er midlertidig begrenset. Vent før du søker igjen.",
   "AI_CHAT_IMAGE_TIMEOUT": "Tidsavbrudd for bildesøk. Prøv igjen senere.",
-  "AI_CHAT_IMAGE_REQUEST_FAILED": "Bildetjenesten returnerte en feil ({0}).",
   "AI_CHAT_ATTACH_FILE": "Legg ved filer",
   "AI_CHAT_ATTACH_TITLE": "Legg ved fil eller mappe",
   "AI_CHAT_ATTACH_FILE_OPTION": "Legg ved en fil",
@@ -2920,9 +2923,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "For å kopiere resten, velg {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Fikk ikke kontakt med det gamle nettstedet",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunne ikke koble til {0} for å se etter prosjektene og innstillingene dine, så ingenting har blitt endret. Sjekk internettforbindelsen din, og prøv deretter på nytt med {1}.",
-  "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…",
-  "AI_CHAT_MODE_INFO_PLAN": "KI vil foreslå en plan før den gjør endringer",
-  "AI_CHAT_MODE_INFO_EDIT": "KI kan redigere filer. Shell-kommandoer trenger godkjenning",
-  "AI_CHAT_MODE_INFO_AUTO": "KI bruker skjønn til å autogodkjenne trygge handlinger og spør om risikable",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "KI kan redigere filer og kjøre kommandoer uten godkjenning"
+  "CMD_MIGRATE_DATA": "Migrer dataene mine fra {0}…"
 });
