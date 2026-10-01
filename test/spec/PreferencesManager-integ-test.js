@@ -52,6 +52,27 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
+        /**
+         * Wait for asynchronous inspection to publish both the diagnostic and its visible status.
+         * @param {string} fileName Current fixture name, used in failure messages.
+         * @param {boolean} hasConflict Whether the preferences conflict should be reported.
+         * @return {Promise<void>}
+         */
+        async function _waitForPreferenceInspection(fileName, hasConflict) {
+            // Inspectors may take up to asyncTimeout; the default two-second UI wait can
+            // expire while valid filesystem-backed inspection is still running on CI.
+            const timeout = PreferencesManager.getExtensionPrefs("linting").get("asyncTimeout") + 5000;
+            await awaitsFor(()=>{
+                const $indicator = testWindow.$("#status-inspection");
+                const conflictShown = testWindow.$("#problems-panel").text()
+                    .includes(Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE);
+                const iconMatches = hasConflict
+                    ? $indicator.is(".inspection-errors, .inspection-repair")
+                    : $indicator.hasClass("inspection-valid");
+                return $indicator.is(":visible") && iconMatches && conflictShown === hasConflict;
+            }, "inspection diagnostic and visible status for " + fileName, timeout);
+        }
+
         async function _verifySinglePreference(fileName, expectedSpaceUnits) {
             const projectWithoutSettings = SpecRunnerUtils.getTestPath("/spec/WorkingSetView-test-files"),
                 FileViewController = testWindow.brackets.test.FileViewController;
@@ -156,36 +177,17 @@ define(function (require, exports, module) {
 
             // there will be an error in problems panel if both present
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".phcode.json"));
-            // Keep the visual assertion: another provider can offer a fix, which changes
-            // the warning icon to a repair icon while the preference conflict still exists.
-            await awaitsFor(()=>{
-                return testWindow.$("#status-inspection").is(":visible") &&
-                    testWindow.$("#status-inspection").is(".inspection-errors, .inspection-repair");
-            }, "visible problem indicator on .phcode.json");
             if (!testWindow.$("#problems-panel").is(":visible")) {
                 CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
             }
-            await awaitsFor(()=>{
-                return testWindow.$("#problems-panel").text().includes(Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE);
-            }, "problem panel on .phcode.json");
+            await _waitForPreferenceInspection(".phcode.json", true);
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles("test.json"));
-            await awaitsFor(()=>{
-                return !testWindow.$("#problems-panel").text().includes(Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE);
-            }, "no preference conflict for normal test.json file");
-            await awaitsFor(()=>{
-                return testWindow.$("#status-inspection").is(".inspection-valid:visible");
-            }, "valid inspection indicator for normal test.json file");
+            await _waitForPreferenceInspection("test.json", false);
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".brackets.json"));
-            await awaitsFor(()=>{
-                return testWindow.$("#problems-panel").text().includes(Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE);
-            }, "problem panel on .brackets.json");
-            await awaitsFor(()=>{
-                return testWindow.$("#status-inspection").is(":visible") &&
-                    testWindow.$("#status-inspection").is(".inspection-errors, .inspection-repair");
-            }, "visible problem indicator on .brackets.json");
-        });
+            await _waitForPreferenceInspection(".brackets.json", true);
+        }, 45000);
 
         it("should open .brackets.json file if it has json errors", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testPathBracketsPrefsOnlyCorrupt);
