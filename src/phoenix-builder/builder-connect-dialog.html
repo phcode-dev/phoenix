@@ -4,7 +4,9 @@
         <ul class="nav nav-tabs no-focus" style="margin-bottom: 0;">
             <li class="active"><a href="#builder-settings" data-toggle="tab">Settings</a></li>
             <li><a href="#builder-logs" data-toggle="tab">Console Logs</a></li>
+            {{#mcpOverrideFile}}
             <li><a href="#builder-prod" data-toggle="tab">Production</a></li>
+            {{/mcpOverrideFile}}
         </ul>
     </div>
     <div class="modal-body tab-content">
@@ -62,6 +64,7 @@
                 <span style="opacity: 0.5;">No logs captured yet.</span>
             </div>
         </div>
+        {{#mcpOverrideFile}}
         <div id="builder-prod" class="tab-pane">
             <p class="dialog-message">
                 MCP is off in production builds. To instrument one, a machine admin drops a dated
@@ -92,6 +95,7 @@
                 window shows a red <b>Remote Controlled</b> badge in its status bar.
             </p>
         </div>
+        {{/mcpOverrideFile}}
     </div>
     <div class="modal-footer">
         <button class="dialog-button btn primary" data-button-id="ok">Done</button>

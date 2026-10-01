@@ -1456,8 +1456,16 @@ define(function (require, exports, module) {
             return null; // multi-file / multi-edit / create-rename ops - beyond the one-replace contract
         }
         // Compare as decoded platform paths so URI encoding differences can't break the match.
-        var ownUri = this._quickFixClient.uriForPath(filePath);
-        if (PathConverters.uriToPath(uri) !== PathConverters.uriToPath(ownUri)) {
+        const ownUri = this._quickFixClient.uriForPath(filePath);
+        let editPath = PathConverters.uriToPath(uri);
+        let ownPath = PathConverters.uriToPath(ownUri);
+        if (brackets.platform === "win") {
+            // tsserver lowercases drive letters; Phoenix uses the OS-reported uppercase drive.
+            // Normalize only the drive, retaining the rest of the path's case distinctions.
+            editPath = editPath.replace(/^[a-z]:/i, drive => drive.toUpperCase());
+            ownPath = ownPath.replace(/^[a-z]:/i, drive => drive.toUpperCase());
+        }
+        if (editPath !== ownPath) {
             return null; // edit lands in a different file
         }
         var range = edits[0].range;

@@ -208,7 +208,10 @@ define(function (require, exports, module) {
                     PreferencesManager.set("codeIntelligence.json", true);
                 }
                 await awaitsFor(function () {
-                    return LSPClient.isLintingProviderActive("json");
+                    // Capabilities become available before initialization finishes and the
+                    // restart is announced. Wait for both parts of the restart contract.
+                    return LSPClient.isLintingProviderActive("json") &&
+                        auditSum("lsp.srv.Start.json") > startsBefore;
                 }, "json server to restart on pref on", 45000);
                 // re-enable is a return to the default - no pref metric, but the restart counts
                 expect(auditSum("lsp.srv.Start.json")).toBeGreaterThan(startsBefore);

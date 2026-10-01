@@ -1258,7 +1258,9 @@ define(function (require, exports, module) {
                 return;
             }
 
-            if (previousDocument && previousDocument.isDirty) {
+            // A failed initial directory lookup leaves this module without a server.
+            // There is no cached previous file to update until initialization succeeds.
+            if (ternPromise && previousDocument && previousDocument.isDirty) {
                 updateTernFile(previousDocument);
             }
 

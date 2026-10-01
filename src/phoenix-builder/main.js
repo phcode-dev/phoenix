@@ -175,15 +175,17 @@ define(function (require, exports, module) {
         $container.scrollTop($container[0].scrollHeight);
     }
 
+    /** Open Builder settings, including production setup when a native override path is available. */
     function _handlePhoenixBuilderConnect() {
         let url = localStorage.getItem("phoenixBuilderWsUrl") || DEFAULT_WS_URL,
             enabled = localStorage.getItem("phoenixBuilderEnabled") === "true";
 
-        // Ready to run, so the Production tab needs nothing looked up elsewhere.
-        // The path comes from SystemConfigOverride rather than being written out
-        // again here, so the two cannot drift apart.
-        const overrideFile = Phoenix.fs.getTauriPlatformPath(SystemConfigOverride.OVERRIDE_FILE_PATH);
-        const overrideDir = overrideFile.replace(/[/\\][^/\\]+$/, "");
+        // The production override is a native file. Browser apps only have VFS paths,
+        // so they expose connection settings and logs without native setup commands.
+        // Use SystemConfigOverride's path so the instructions stay in sync with its lookup.
+        const overrideFile = Phoenix.isNativeApp
+            ? Phoenix.fs.getTauriPlatformPath(SystemConfigOverride.OVERRIDE_FILE_PATH) : null;
+        const overrideDir = overrideFile ? overrideFile.replace(/[/\\][^/\\]+$/, "") : "";
         const now = new Date();
         const today = now.getFullYear() + "-" +
             String(now.getMonth() + 1).padStart(2, "0") + "-" +

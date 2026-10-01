@@ -198,5 +198,28 @@ define(function (require, exports, module) {
         it("can directly open a file with line:column format and spaces", async function () {
             await quickOpenTest("lines:150: 20", null, "lotsOfLines.html", 150, 20);
         });
+
+        it("can reopen Quick Open after dismissing its results with no document open", async function () {
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            expect(DocumentManager.getCurrentDocument()).toBeNull();
+
+            executeCommand(Commands.NAVIGATE_QUICK_OPEN);
+            enterSearchText("lines");
+            await _forPopupVisible();
+
+            // Commands dismiss the current popup before executing. With no editor to focus,
+            // dismissing the results must also close the bar and release its search field.
+            executeCommand(Commands.NAVIGATE_QUICK_OPEN);
+            await _forPopupVisible();
+            enterSearchText("lines");
+            await awaitsFor(function () {
+                return getSearchField().val() === "lines";
+            }, "reopened search field to accept input", 1000);
+            pressEnter();
+            await awaitsFor(function () {
+                const doc = DocumentManager.getCurrentDocument();
+                return doc && doc.file.name === "lotsOfLines.html" && getSearchBar().length === 0;
+            }, "reopened Quick Open to open the selected file", 3000);
+        });
     });
 });

@@ -346,7 +346,7 @@ define(function (require, exports, module) {
 
     /**
      * Highlight all nodes affected by a CSS rule. Should be called by subclass implementations of
-     * `updateHighlight()`.
+     * `updateHighlight()`. Failed sends can be retried on subsequent cursor activity.
      * @param {string} name The selector whose matched nodes should be highlighted.
      */
     LiveDocument.prototype.highlightRule = function (name) {
@@ -357,7 +357,14 @@ define(function (require, exports, module) {
             return;
         }
         this._lastHighlight = highlight;
-        this.protocol.evaluate("_LD.highlightRule(" + JSON.stringify(name) + ", " + keepSelection + ")");
+        this.protocol.evaluate("_LD.highlightRule(" + JSON.stringify(name) + ", " + keepSelection + ")")
+            .fail(() => {
+                // Attaching an editor can highlight before any preview client connects.
+                // Do not cache a failed send, or clear a newer selector's pending highlight.
+                if (this._lastHighlight === highlight) {
+                    this._lastHighlight = null;
+                }
+            });
     };
 
     /**

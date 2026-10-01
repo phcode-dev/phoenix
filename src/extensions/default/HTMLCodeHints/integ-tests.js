@@ -169,14 +169,13 @@ define(function (require, exports, module) {
             await closeSession();
         });
 
-        async function _deleteFile(relativeFileName) {
-            let deleted = false;
-            FileSystem.getFileForPath(`${testPath}/${relativeFileName}`).unlink(()=>{
-                deleted = true;
-            });
-            await awaitsFor(function () {
-                return deleted;
-            }, "extension interface registration notification");
+        /**
+         * Remove a fixture, tolerating absence and reporting other filesystem errors.
+         * @param {string} relativeFileName Fixture name within the test project.
+         * @return {Promise<void>}
+         */
+        function _deleteFile(relativeFileName) {
+            return SpecRunnerUtils.deletePathAsync(`${testPath}/${relativeFileName}`, true, FileSystem);
         }
 
         async function createAndVerifyFileContents(fileName, firstLineOfContent) {
