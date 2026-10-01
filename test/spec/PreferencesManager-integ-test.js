@@ -156,8 +156,12 @@ define(function (require, exports, module) {
 
             // there will be an error in problems panel if both present
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".phcode.json"));
-            // Check the diagnostic itself: another provider can offer a fix, which changes
-            // the status icon to inspection-repair while the preference conflict still exists.
+            // Keep the visual assertion: another provider can offer a fix, which changes
+            // the warning icon to a repair icon while the preference conflict still exists.
+            await awaitsFor(()=>{
+                return testWindow.$("#status-inspection").is(":visible") &&
+                    testWindow.$("#status-inspection").is(".inspection-errors, .inspection-repair");
+            }, "visible problem indicator on .phcode.json");
             if (!testWindow.$("#problems-panel").is(":visible")) {
                 CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
             }
@@ -169,11 +173,18 @@ define(function (require, exports, module) {
             await awaitsFor(()=>{
                 return !testWindow.$("#problems-panel").text().includes(Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE);
             }, "no preference conflict for normal test.json file");
+            await awaitsFor(()=>{
+                return testWindow.$("#status-inspection").is(".inspection-valid:visible");
+            }, "valid inspection indicator for normal test.json file");
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".brackets.json"));
             await awaitsFor(()=>{
                 return testWindow.$("#problems-panel").text().includes(Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE);
             }, "problem panel on .brackets.json");
+            await awaitsFor(()=>{
+                return testWindow.$("#status-inspection").is(":visible") &&
+                    testWindow.$("#status-inspection").is(".inspection-errors, .inspection-repair");
+            }, "visible problem indicator on .brackets.json");
         });
 
         it("should open .brackets.json file if it has json errors", async function () {
