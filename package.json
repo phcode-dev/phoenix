@@ -15,7 +15,7 @@
     "devDependencies": {
         "@commitlint/cli": "^16.0.2",
         "@commitlint/config-conventional": "^16.0.0",
-        "@playwright/test": "^1.38.1",
+        "@playwright/test": "^1.56.1",
         "del": "^6.0.0",
         "eslint": "^8.18.0",
         "glob": "^8.1.0",
