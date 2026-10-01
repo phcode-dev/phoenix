@@ -6160,6 +6160,13 @@
         min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        // With dollars shown, the chip opens the spend tip on hover.
+        &.ai-usage-card-range-spend {
+            cursor: default;
+            text-decoration: underline dotted fade(@project-panel-text-2, 60%);
+            text-underline-offset: 3px;
+        }
     }
 
     /* Other Phoenix windows write the same ledger; this reads it again. */
@@ -6338,7 +6345,8 @@
             line-height: 1.15;
         }
 
-        // The tokens figure opens its split by kind on hover; the dotted rule hints at it.
+        // The spend and tokens figures open a tip on hover; the dotted rule hints at it.
+        .ai-usage-stat-spend b,
         .ai-usage-stat-kinds b {
             align-self: flex-start;
             border-bottom: 1px dotted fade(@project-panel-text-1, 50%);
@@ -6584,5 +6592,20 @@
             margin-top: 4px;
             padding-top: 6px;
         }
+    }
+
+    // The spend figures' tip: a Claude plan covers the spend; Phoenix Pro adds no charge.
+    .ai-usage-tip-note,
+    .ai-usage-tip-foot {
+        max-width: 240px;
+        white-space: normal;
+        line-height: 1.45;
+    }
+
+    .ai-usage-tip-foot {
+        margin-top: 8px;
+        padding-top: 7px;
+        border-top: 1px solid @ai-start-border;
+        color: @project-panel-text-2;
     }
 }

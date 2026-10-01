@@ -2808,6 +2808,8 @@ define({
     "AI_CHAT_USAGE_API_TIME": "Time in API",
     "AI_CHAT_USAGE_COST": "Cost at list price",
     "AI_CHAT_USAGE_NOTE": "With a Claude subscription, this cost is included in your plan. Pricing shown is for reference only.",
+    "AI_CHAT_USAGE_SPEND_INCLUDED": "With a Claude subscription, this spend is included in your plan at no extra cost.",
+    "AI_CHAT_USAGE_SPEND_NO_PRO_CHARGE": "No charge to your Phoenix Pro subscription.",
     "AI_CHAT_USAGE_OPTION_TURNS": "Show usage after every turn",
     "AI_CHAT_USAGE_OPTION_DOLLARS": "Show $ cost",
     "AI_CHAT_USAGE_CARD_TITLE": "Usage",
