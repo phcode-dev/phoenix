@@ -6077,7 +6077,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: -2px 0 10px 14px;
+    // Flush with the answer above it and its "Claude" label.
+    margin: -2px 0 10px;
     font-size: @ai-text-meta;
     color: @project-panel-text-2;
     white-space: nowrap;
@@ -6089,6 +6090,16 @@
 
     .ai-usage-sep {
         opacity: 0.5;
+    }
+
+    // The tokens open their split by kind on hover; the dotted rule hints at it.
+    .ai-usage-turn-tokens {
+        border-bottom: 1px dotted fade(@project-panel-text-1, 50%);
+        cursor: default;
+
+        &:hover {
+            color: @project-panel-text-1;
+        }
     }
 
     &.ai-usage-hidden {
@@ -6324,6 +6335,12 @@
             font-weight: 600;
             line-height: 1.15;
         }
+
+        // The tokens figure opens its split by kind on hover; the dotted rule hints at it.
+        .ai-usage-stat-kinds b {
+            align-self: flex-start;
+            border-bottom: 1px dotted fade(@project-panel-text-1, 50%);
+        }
     }
 
     .ai-usage-stat {
@@ -6449,9 +6466,11 @@
     to { transform: rotate(360deg); }
 }
 
-/* The day under the pointer, in the grid or the bars. Lives on the body so
-   the card's overflow cannot clip it. */
-.ai-usage-day-tip {
+/* The usage tips: the day under the pointer on the start-screen card, and a
+   token split there or under a turn line. They live on the body so neither the
+   card's overflow nor the scrolling messages can clip them. */
+.ai-usage-day-tip,
+.ai-usage-turn-tip {
     position: fixed;
     z-index: 1000;
     min-width: 196px;
@@ -6538,5 +6557,30 @@
 
     .ai-usage-tip-amt {
         font-variant-numeric: tabular-nums;
+    }
+
+    // The tokens figure's split: kind, count and share, the total under a rule. A kind
+    // with nothing in it stays in its place, dimmed.
+    .ai-usage-tip-kind {
+        display: grid;
+        grid-template-columns: 1fr auto 34px;
+        gap: 12px;
+        padding: 2px 0;
+        white-space: nowrap;
+
+        .ai-usage-tip-amt,
+        .ai-usage-tip-pct {
+            text-align: right;
+        }
+
+        &.ai-usage-tip-none {
+            color: @project-panel-text-2;
+        }
+
+        &.ai-usage-tip-total {
+            border-top: 1px solid @ai-start-border;
+            margin-top: 4px;
+            padding-top: 6px;
+        }
     }
 }
