@@ -204,8 +204,8 @@ define(function (require, exports, module) {
 
         it("Should be able to remove a shortcut", async function () {
             await editShortcut(Commands.EDIT_BEAUTIFY_CODE);
+            const existingBinding = KeyBindingManager.getKeyBindings(Commands.EDIT_BEAUTIFY_CODE);
             testWindow.$(".change-shortcut-dialog .Remove").click();
-            let existingBinding = KeyBindingManager.getKeyBindings(Commands.EDIT_BEAUTIFY_CODE);
             await awaitsFor(async ()=>{
                 try {
                     const textJson = JSON.parse(await _readKeyboardJson(KeyBindingManager._getUserKeyMapFilePath()));

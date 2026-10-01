@@ -28,6 +28,7 @@ define(function (require, exports, module) {
 
     describe("integration:ESLint", function () {
         const testRootSpec = "/spec/ESLintExtensionTest-files/";
+        const installFixtureRoot = SpecRunnerUtils.getTempDirectory() + "/eslint";
         let testProjectsFolder = SpecRunnerUtils.getTestPath(testRootSpec),
             Strings     = require("strings"),
             testWindow,
@@ -64,6 +65,9 @@ define(function (require, exports, module) {
             CommandManager = null;
             Commands = null;
             await SpecRunnerUtils.closeTestWindow();
+            if (Phoenix.isNativeApp) {
+                await SpecRunnerUtils.deletePathAsync(installFixtureRoot, true);
+            }
         }, 30000);
 
         const JSHintErrorES6Error_js = "Missing semicolon. jshint (W033)",
@@ -71,17 +75,39 @@ define(function (require, exports, module) {
             ESLintErrorES8Error_js = "Expected '===' and instead saw '=='. ESLint (eqeqeq)",
             ESLintReactError_js = "'element' is assigned a value but never used. ESLint (no-unused-vars)";
 
+        /**
+         * Copy one install fixture without deleting projects still used by other Node processes.
+         * @param {string} esLintSpecSubFolder Fixture directory name.
+         * @return {Promise<string>} Editable project path.
+         */
         async function _createTempProject(esLintSpecSubFolder) {
-            return await SpecRunnerUtils.getTempTestDirectory(testRootSpec + esLintSpecSubFolder);
+            const projectPath = installFixtureRoot + "/" + esLintSpecSubFolder;
+            await SpecRunnerUtils.deletePathAsync(projectPath, true);
+            await awaitsForDone(SpecRunnerUtils.copyPath(testProjectsFolder + esLintSpecSubFolder, projectPath),
+                "copy ESLint " + esLintSpecSubFolder + " fixture");
+            return projectPath;
         }
 
         async function _openProjectFile(fileName) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]), "opening "+ fileName);
         }
 
+        /**
+         * Install dependencies, cancelling npm before the setup hook's timeout can leave it running.
+         * @param {string} folder Fixture VFS path.
+         * @return {Promise<void>}
+         */
         async function _npmInstallInFolder(folder) {
             const npmInstallPlatformPath = Phoenix.fs.getTauriPlatformPath(folder);
-            await NodeUtils._npmInstallInFolder(npmInstallPlatformPath);
+            const install = NodeUtils._npmInstallInFolder(npmInstallPlatformPath);
+            const timer = setTimeout(function () {
+                install.cancel().catch(error => console.error("Could not cancel fixture npm install", error));
+            }, 90000);
+            try {
+                await install;
+            } finally {
+                clearTimeout(timer);
+            }
         }
 
         async function _waitForProblemsPanelVisible(visible) {
@@ -180,7 +206,7 @@ define(function (require, exports, module) {
                 es6ProjectPath = await _createTempProject("es6");
                 await _npmInstallInFolder(es6ProjectPath);
                 await SpecRunnerUtils.loadProjectInTestWindow(es6ProjectPath);
-            }, 30000);
+            }, 120000);
 
             async function _loadAndValidateES6Project() {
                 await _openProjectFile("error.js");
@@ -212,7 +238,7 @@ define(function (require, exports, module) {
                 es7ProjectPath = await _createTempProject("es7_JSHint");
                 await _npmInstallInFolder(es7ProjectPath);
                 await SpecRunnerUtils.loadProjectInTestWindow(es7ProjectPath);
-            }, 30000);
+            }, 120000);
 
             async function _loadAndValidateES7Project() {
                 await _openProjectFile("error.js");
@@ -242,7 +268,7 @@ define(function (require, exports, module) {
                 reactProjectPath = await _createTempProject("es8_react_jsx");
                 await _npmInstallInFolder(reactProjectPath);
                 await SpecRunnerUtils.loadProjectInTestWindow(reactProjectPath);
-            }, 30000);
+            }, 120000);
 
             it("should ESLint jsx reactjs in v8 work as expected", async function () {
                 await _openProjectFile("react.jsx");
@@ -263,7 +289,7 @@ define(function (require, exports, module) {
                 es7ProjectPath = await _createTempProject("es8_module");
                 await _npmInstallInFolder(es7ProjectPath);
                 await SpecRunnerUtils.loadProjectInTestWindow(es7ProjectPath);
-            }, 30000);
+            }, 120000);
 
             async function _loadAndValidateES8Project() {
                 await _openProjectFile("error.js");
@@ -336,7 +362,7 @@ define(function (require, exports, module) {
                 configPath = path.join(esLatestProjectPath, CONFIG_FILE_NAME);
                 await _npmInstallInFolder(esLatestProjectPath);
                 await SpecRunnerUtils.loadProjectInTestWindow(esLatestProjectPath);
-            }, 30000);
+            }, 120000);
 
             let initDone = false;
             async function _loadAndValidateESLatestProject() {
@@ -398,7 +424,7 @@ define(function (require, exports, module) {
                 esLatestProjectPath = await _createTempProject("es9_with_fixes");
                 await _npmInstallInFolder(esLatestProjectPath);
                 await SpecRunnerUtils.loadProjectInTestWindow(esLatestProjectPath);
-            }, 30000);
+            }, 120000);
 
             beforeEach(async function () {
                 // Fixes are unsaved edits. Closing them restores the unchanged fixture

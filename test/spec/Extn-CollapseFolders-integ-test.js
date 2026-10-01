@@ -87,8 +87,9 @@ define(function (require, exports, module) {
          */
         async function openFolder(folderPath) {
             const folderEntry = FileSystem.getDirectoryForPath(folderPath);
-            // Call setDirectoryOpen without awaitsForDone since it doesn't return a promise
-            ProjectManager._actionCreator.setDirectoryOpen(folderEntry.fullPath, true);
+            // Fixture setup waits for the directory read before checking the rendered tree.
+            // The action creator discards this promise; the model exposes the actual completion.
+            await jsPromise(ProjectManager._actionCreator.model.setDirectoryOpen(folderEntry.fullPath, true));
 
             // Wait for the folder to be opened in the UI
             await awaitsFor(

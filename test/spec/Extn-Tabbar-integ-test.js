@@ -33,7 +33,7 @@ define(function (require, exports, module) {
             Commands,
             DocumentManager,
             Strings;
-        let testFilePath, testFilePath2, testFilePath3, testDuplicateDir1, testDuplicateDir2, testDuplicateName;
+        let testFolder, testFilePath, testFilePath2, testFilePath3, testDuplicateDir1, testDuplicateDir2, testDuplicateName;
 
         /**
          * Helper function to create multiple test files
@@ -45,7 +45,7 @@ define(function (require, exports, module) {
         async function createTestFiles(count, prefix, content) {
             const testFiles = [];
             for (let i = 0; i < count; i++) {
-                const filePath = SpecRunnerUtils.getTempDirectory() + `/${prefix}-${i}.js`;
+                const filePath = testFolder + `/${prefix}-${i}.js`;
                 testFiles.push(filePath);
                 await jsPromise(
                     SpecRunnerUtils.createTextFile(
@@ -245,17 +245,20 @@ define(function (require, exports, module) {
             DocumentManager = testWindow.brackets.test.DocumentManager;
             Strings = testWindow.Strings;
 
+            // Keep this suite's files separate so cleanup never walks or deletes another suite's fixtures.
+            testFolder = SpecRunnerUtils.getTempDirectory() + "/tabbar";
+
             // Create test files
-            testFilePath = SpecRunnerUtils.getTempDirectory() + "/tabbar-test.js";
-            testFilePath2 = SpecRunnerUtils.getTempDirectory() + "/tabbar-test2.js";
-            testFilePath3 = SpecRunnerUtils.getTempDirectory() + "/tabbar-test3.js";
+            testFilePath = testFolder + "/tabbar-test.js";
+            testFilePath2 = testFolder + "/tabbar-test2.js";
+            testFilePath3 = testFolder + "/tabbar-test3.js";
 
             // Create files with the same name in different directories for testing duplicate name handling
-            testDuplicateDir1 = SpecRunnerUtils.getTempDirectory() + "/dir1";
-            testDuplicateDir2 = SpecRunnerUtils.getTempDirectory() + "/dir2";
+            testDuplicateDir1 = testFolder + "/dir1";
+            testDuplicateDir2 = testFolder + "/dir2";
             testDuplicateName = "duplicate.js";
 
-            await SpecRunnerUtils.createTempDirectory();
+            await SpecRunnerUtils.ensureExistsDirAsync(testFolder);
             await SpecRunnerUtils.ensureExistsDirAsync(testDuplicateDir1);
             await SpecRunnerUtils.ensureExistsDirAsync(testDuplicateDir2);
 
@@ -290,7 +293,7 @@ define(function (require, exports, module) {
 
             testWindow = null;
             await SpecRunnerUtils.closeTestWindow();
-            await SpecRunnerUtils.removeTempDirectory();
+            await SpecRunnerUtils.deletePathAsync(testFolder, true);
         }, 5000);
 
         /**
@@ -2289,7 +2292,7 @@ define(function (require, exports, module) {
                 // Create several test files
                 const testFiles = [];
                 for (let i = 0; i < 10; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/number-test-${i}.js`;
+                    const filePath = testFolder + `/number-test-${i}.js`;
                     testFiles.push(filePath);
                     await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Number test file ${i}`, FileSystem));
                 }
@@ -2329,7 +2332,7 @@ define(function (require, exports, module) {
                 // Create several test files
                 const testFiles = [];
                 for (let i = 0; i < 10; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/number-test-${i}.js`;
+                    const filePath = testFolder + `/number-test-${i}.js`;
                     testFiles.push(filePath);
                     await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Number test file ${i}`, FileSystem));
                 }
@@ -2366,7 +2369,7 @@ define(function (require, exports, module) {
                 // First open some files with the default setting
                 const testFiles = [];
                 for (let i = 0; i < 3; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/number-test-${i}.js`;
+                    const filePath = testFolder + `/number-test-${i}.js`;
                     testFiles.push(filePath);
                     await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Number test file ${i}`, FileSystem));
                 }
@@ -2423,7 +2426,7 @@ define(function (require, exports, module) {
                 // Create test files for first pane
                 const firstPaneFiles = [];
                 for (let i = 0; i < 5; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/first-pane-${i}.js`;
+                    const filePath = testFolder + `/first-pane-${i}.js`;
                     firstPaneFiles.push(filePath);
                     await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// First pane file ${i}`, FileSystem));
                 }
@@ -2431,7 +2434,7 @@ define(function (require, exports, module) {
                 // Create test files for second pane
                 const secondPaneFiles = [];
                 for (let i = 0; i < 5; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/second-pane-${i}.js`;
+                    const filePath = testFolder + `/second-pane-${i}.js`;
                     secondPaneFiles.push(filePath);
                     await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Second pane file ${i}`, FileSystem));
                 }
@@ -2746,7 +2749,7 @@ define(function (require, exports, module) {
                 // Create multiple test files to ensure scrolling is needed
                 longTestFilePaths = [];
                 for (let i = 1; i <= 15; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/scroll-test-file-${i}.js`;
+                    const filePath = testFolder + `/scroll-test-file-${i}.js`;
                     longTestFilePaths.push(filePath);
                     await jsPromise(
                         SpecRunnerUtils.createTextFile(filePath, `// Test file ${i} for scrolling`, FileSystem)

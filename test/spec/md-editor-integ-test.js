@@ -818,7 +818,15 @@ define(function (require, exports, module) {
                 // Scroll down
                 _setViewerScrollTop(300);
                 await awaitsFor(() => _getViewerScrollTop() >= 290, "scroll to apply");
-                const scrollBefore = _getViewerScrollTop();
+                // Reload restores the nearest source block, not an exact pixel offset on rebuilt DOM.
+                const viewerBefore = _getMdIFrameDoc().getElementById("app-viewer");
+                const viewerTop = viewerBefore.getBoundingClientRect().top;
+                const sourceElements = Array.from(_getMdIFrameDoc().querySelectorAll("#viewer-content [data-source-line]"));
+                const anchorBefore = sourceElements.reduce((nearest, element) => {
+                    return Math.abs(element.getBoundingClientRect().top - viewerTop) <
+                        Math.abs(nearest.getBoundingClientRect().top - viewerTop) ? element : nearest;
+                });
+                const sourceLine = anchorBefore.getAttribute("data-source-line");
 
                 // Capture the current h1 DOM node
                 const h1Before = _getMdIFrameDoc().querySelector("#viewer-content h1");
@@ -837,11 +845,13 @@ define(function (require, exports, module) {
                 // Verify edit mode preserved
                 await _assertMdEditMode(true);
 
-                // Verify scroll position approximately preserved
+                // Verify the saved reading position is restored even when a source block is tall.
                 await awaitsFor(() => {
-                    const scroll = _getViewerScrollTop();
-                    return Math.abs(scroll - scrollBefore) < 100;
-                }, "scroll position to be approximately restored after reload");
+                    const mdDoc = _getMdIFrameDoc();
+                    const anchor = mdDoc.querySelector('#viewer-content [data-source-line="' + sourceLine + '"]');
+                    const viewer = mdDoc.getElementById("app-viewer");
+                    return anchor && Math.abs(anchor.getBoundingClientRect().top - viewer.getBoundingClientRect().top) < 2;
+                }, "the same source block to be restored after reload");
             }, 15000);
 
             it("should working set changes sync to iframe and cache entries persist", async function () {

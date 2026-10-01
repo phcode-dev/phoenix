@@ -138,6 +138,36 @@ define(function (require, exports, module) {
             }
         });
 
+        it("should recover from a missing initial directory before switching away from a dirty document", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["embedded.html"]), "open embedded script");
+            const editor = EditorManager.getCurrentFullEditor();
+            editor.setCursorPos(6, 4);
+            const session = new Session(editor);
+            await awaitsForDone(ScopeManager.requestHints(session, editor.document), "initialize Tern");
+
+            const directoryPath = editor.document.file.parentPath;
+            const resolve = FileSystem.resolve;
+            const lookup = spyOn(FileSystem, "resolve").and.callFake(function (filePath, callback) {
+                if (filePath === directoryPath) {
+                    Promise.resolve().then(() => callback(FileSystemError.NOT_FOUND));
+                    return;
+                }
+                return resolve.apply(this, arguments);
+            });
+            try {
+                // A fresh module completes its failed directory lookup without creating a Tern server.
+                await awaitsForDone(ScopeManager._maybeReset(session, editor.document, true), "missing initial directory");
+            } finally {
+                lookup.and.callThrough();
+            }
+
+            editor.document.setText(editor.document.getText() + "\n<!-- unsaved edit -->");
+            editor.setCursorPos(6, 4);
+            ScopeManager.handleEditorChange(session, editor.document, editor.document);
+            await awaitsForDone(ScopeManager.requestHints(session, editor.document), "hints after failed initialization");
+            expect(session.ternHints.some(hint => hint.value === "push")).toBeTrue();
+        });
+
         it("should initialize HTML without parsing markup as JavaScript", async function () {
             const worker = spyOn(IndexingWorker, "execPeer").and.callThrough();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["embedded.html"]), "open embedded script");

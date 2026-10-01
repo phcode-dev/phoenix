@@ -79,7 +79,8 @@ define(function (require, exports, module) {
 
         afterEach(async function () {
             await testWindow.closeAllFiles();
-            expect(DocumentManager.getAllOpenDocuments().length).toBe(0);
+            await awaitsFor(() => DocumentManager.getAllOpenDocuments().length === 0,
+                "background readers to release closed documents");
             DocumentModule.off(".docTest");
         });
 
@@ -229,7 +230,9 @@ define(function (require, exports, module) {
                 refresh.finish("external content");
                 expect(refresh.doc.getText()).toBe("external content");
                 expect(refresh.doc.isDirty).toBeFalse();
-                expect(refresh.doc._refCount).toBe(refresh.initialRefCount);
+                // Refreshing text also starts linting, which temporarily owns a document reference.
+                await awaitsFor(() => refresh.doc._refCount <= refresh.initialRefCount,
+                    "the refresh and background inspection to release their references");
             });
 
             it("should preserve edits made while a disk refresh is pending", async function () {

@@ -156,9 +156,8 @@ define(function (require, exports, module) {
 
             // there will be an error in problems panel if both present
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".phcode.json"));
-            await awaitsFor(()=>{
-                return testWindow.$("#status-inspection").hasClass("inspection-errors");
-            }, "lint errors detected on .phcode.json");
+            // Check the diagnostic itself: another provider can offer a fix, which changes
+            // the status icon to inspection-repair while the preference conflict still exists.
             if (!testWindow.$("#problems-panel").is(":visible")) {
                 CommandManager.execute(Commands.VIEW_TOGGLE_PROBLEMS);
             }
@@ -168,8 +167,8 @@ define(function (require, exports, module) {
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles("test.json"));
             await awaitsFor(()=>{
-                return !testWindow.$("#status-inspection").hasClass("inspection-errors");
-            }, "no lint errors for normal test.json file");
+                return !testWindow.$("#problems-panel").text().includes(Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE);
+            }, "no preference conflict for normal test.json file");
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".brackets.json"));
             await awaitsFor(()=>{

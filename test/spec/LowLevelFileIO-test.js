@@ -530,40 +530,20 @@ define(function (require, exports, module) {
 
             });
             it("should rename a folder", async function () {
-                var oldName     = testDir + "/rename_me",
-                    newName     = testDir + "/renamed_folder",
-                    renameCB    = errSpy(),
-                    statCB      = statSpy();
-
-                complete = false;
-
-                brackets.fs.rename(oldName, newName, renameCB);
-
-                await awaitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
-
-                expect(renameCB.error).toBe(null);
-
-                // Verify new folder is found and old one is missing
-                brackets.fs.stat(oldName, statCB);
-
-                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
-
-                expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
-
-                statCB = statSpy();
-                brackets.fs.stat(newName, statCB);
-
-                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
-
-                expect(statCB.error).toBe(null);
-
-                // Rename the folder back to the old name
-                renameCB = errSpy();
-                brackets.fs.rename(newName, oldName, renameCB);
-
-                await awaitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
-
-                expect(renameCB.error).toBe(null);
+                const oldName = testDir + "/rename_me";
+                const newName = testDir + "/renamed_folder";
+                const renameError = await new Promise(resolve => brackets.fs.rename(oldName, newName, resolve));
+                expect(renameError).toBe(null);
+                try {
+                    // Await the filesystem callbacks directly; IndexedDB can be slow on loaded browser runners.
+                    const missingError = await new Promise(resolve => brackets.fs.stat(oldName, resolve));
+                    expect(missingError.code).toBe(brackets.fs.ERR_CODES.ENOENT);
+                    const statError = await new Promise(resolve => brackets.fs.stat(newName, resolve));
+                    expect(statError).toBe(null);
+                } finally {
+                    const restoreError = await new Promise(resolve => brackets.fs.rename(newName, oldName, resolve));
+                    expect(restoreError).toBe(null);
+                }
             });
             it("should rename return an error if the new name already exists", async function () {
                 var oldName = testDir + "/file_one.txt",

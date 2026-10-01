@@ -115,9 +115,11 @@ define(function (require, exports, module) {
                 var inlineWidgets = editor.getInlineWidgets();
                 expect(inlineWidgets.length).toBe(1);
 
-                // By the time we're called, the content of the widget should be in the DOM and have a nontrivial height.
+                // The open promise attaches the widget; its opening animation finishes later.
                 expect($.contains(testWindow.document.documentElement, inlineWidgets[0].htmlContent)).toBe(true);
-                expect(inlineWidgets[0].$htmlContent.height()).toBeGreaterThan(50);
+                await awaitsFor(function () {
+                    return inlineWidgets[0].$htmlContent.height() > 50;
+                }, "inline editor to expand");
             }
 
             editor = null;

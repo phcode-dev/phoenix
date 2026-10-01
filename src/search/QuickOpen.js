@@ -761,11 +761,9 @@ define(function (require, exports, module) {
         initialString = initialString || "";
         initialString = prefix + initialString;
 
-        // If the underlying search field was already torn down (e.g. the bar
-        // was closed via focus-loss but the isOpen flag wasn't updated in
-        // time), fall back to closing cleanly so the caller reopens fresh.
+        // Closing must go through the bar so isOpen and closePromise stay in sync.
         if (!this.searchField || !this.searchField.$input || !this.$searchField || !this.$searchField[0]) {
-            this.isOpen = false;
+            this.close();
             return;
         }
 
@@ -880,7 +878,10 @@ define(function (require, exports, module) {
             resultProvider: this._filterCallback,
             formatter: this._resultsFormatterCallback,
             onCommit: this._handleItemSelect,
-            onHighlight: this._handleItemHighlight
+            onHighlight: this._handleItemHighlight,
+            // PopUpManager can dismiss results without moving focus (e.g. when no
+            // document is open). The destroyed search field cannot keep serving the bar.
+            onDismiss: this.close.bind(this)
         });
 
         // Return files that are non-binary, or binary files that have a custom viewer.
