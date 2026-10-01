@@ -285,16 +285,15 @@ define(function (require, exports, module) {
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
                 "Open test file"
             );
-        }, 5000);
+        }, 30000);
 
         afterAll(async function () {
-            // Close all files without prompting to save
-            await testWindow.closeAllFiles();
-
-            testWindow = null;
+            // closeTestWindow closes the files and parks the project before deleting fixtures.
+            // Browser IndexedDB cleanup needs the same budget as other integration teardown.
             await SpecRunnerUtils.closeTestWindow();
             await SpecRunnerUtils.deletePathAsync(testFolder, true);
-        }, 5000);
+            testWindow = null;
+        }, 30000);
 
         /**
          * Helper function to check if a tab for a specific file exists in the tab bar
@@ -2745,9 +2744,9 @@ define(function (require, exports, module) {
         describe("Tab Bar Scrolling", function () {
             let longTestFilePaths = [];
 
-            beforeEach(async function () {
-                // Create multiple test files to ensure scrolling is needed
-                longTestFilePaths = [];
+            beforeAll(async function () {
+                // These files are read-only fixtures; create them once rather than rewriting
+                // the same 15 files and notifying filesystem watchers before every scroll test.
                 for (let i = 1; i <= 15; i++) {
                     const filePath = testFolder + `/scroll-test-file-${i}.js`;
                     longTestFilePaths.push(filePath);
@@ -2755,37 +2754,37 @@ define(function (require, exports, module) {
                         SpecRunnerUtils.createTextFile(filePath, `// Test file ${i} for scrolling`, FileSystem)
                     );
                 }
+            }, 30000);
 
-                // Open all files to create many tabs
-                for (let filePath of longTestFilePaths) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
-                        `Open ${filePath}`
-                    );
+            beforeEach(async function () {
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: longTestFilePaths[0] }),
+                    "Open the scrolling fixture's active editor"
+                );
+                // Working-set entries create real tabs without loading and linting 14 more
+                // editors. These cases exercise tab scrolling, not document activation.
+                for (const filePath of longTestFilePaths.slice(1)) {
+                    MainViewManager.addToWorkingSet("first-pane", FileSystem.getFileForPath(filePath));
                 }
 
-                // Wait for tabs to be rendered
+                // Require actual overflow so no scrolling assertion can pass without scrolling.
                 await awaitsFor(
                     function () {
-                        return getTabCount() >= 15;
+                        const tabBar = $("#phoenix-tab-bar")[0];
+                        return getTabCount() === longTestFilePaths.length && tabBar &&
+                            tabBar.scrollWidth > tabBar.clientWidth;
                     },
-                    "All tabs to be created"
+                    "All scrolling tabs to be created and overflow"
                 );
+                $("#phoenix-tab-bar").scrollLeft(0);
             });
 
             afterEach(async function () {
-                // Close all test files
-                for (let filePath of longTestFilePaths) {
-                    const fileObj = FileSystem.getFileForPath(filePath);
-                    try {
-                        await awaitsForDone(
-                            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj }),
-                            `Close ${filePath}`
-                        );
-                    } catch (e) {
-                        // Ignore errors if file is already closed
-                    }
-                }
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
             });
 
             it("should scroll tab bar horizontally when mouse wheel is scrolled", function () {
@@ -2879,13 +2878,7 @@ define(function (require, exports, module) {
 
                 // Open multiple files in second pane to enable scrolling
                 for (let i = 1; i < 8; i++) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, {
-                            fullPath: longTestFilePaths[i],
-                            paneId: "second-pane"
-                        }),
-                        `Open file ${i} in second pane`
-                    );
+                    MainViewManager.addToWorkingSet("second-pane", FileSystem.getFileForPath(longTestFilePaths[i]));
                 }
 
                 // Wait for tabs to be rendered in second pane
@@ -2920,14 +2913,9 @@ define(function (require, exports, module) {
                 const $tabBar = $("#phoenix-tab-bar");
                 expect($tabBar.length).toBe(1);
 
-                // Ensure the tab bar is scrollable by checking if scrollWidth > clientWidth
-                if ($tabBar[0].scrollWidth <= $tabBar[0].clientWidth) {
-                    // Skip test if tab bar is not scrollable
-                    return;
-                }
-
                 // Set initial scroll position to middle to allow scrolling in both directions
                 const maxScroll = $tabBar[0].scrollWidth - $tabBar[0].clientWidth;
+                expect(maxScroll).toBeGreaterThan(200);
                 const midScroll = Math.floor(maxScroll / 2);
                 $tabBar.scrollLeft(midScroll);
 
