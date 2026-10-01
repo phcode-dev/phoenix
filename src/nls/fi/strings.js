@@ -2650,6 +2650,10 @@ define({
   "AI_CHAT_MODE_EDIT": "Tekoälymuokkaustila",
   "AI_CHAT_MODE_AUTO": "Auto",
   "AI_CHAT_MODE_FULL_AUTO": "Salli kaikki",
+  "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä",
+  "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Komentotulkin komennot vaativat hyväksynnän",
+  "AI_CHAT_MODE_INFO_AUTO": "Tekoäly käyttää harkintaa hyväksyäkseen turvalliset toiminnot automaattisesti ja kysyy lupaa riskialttiisiin",
+  "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Valitse, kuinka paljon tekoäly saa tehdä ilman hyväksyntää [tai vaihto+sarkain]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code -palvelusta on kirjauduttu ulos tai kirjautumisesi on vanhentunut.",
   "AI_CHAT_AUTH_ERROR_BTN": "Kirjaudu Claudeen terminaalissa",
@@ -2719,7 +2723,6 @@ define({
   "AI_CHAT_IMAGE_GUEST_LIMIT": "Kuvahakukiintiösi on käytetty. Kirjaudu sisään jatkaaksesi hakemista.",
   "AI_CHAT_IMAGE_SERVER_LIMIT": "Kuvahakua on väliaikaisesti rajoitettu. Odota, ennen kuin haet uudelleen.",
   "AI_CHAT_IMAGE_TIMEOUT": "Kuvahaun aikakatkaisu. Yritä myöhemmin uudelleen.",
-  "AI_CHAT_IMAGE_REQUEST_FAILED": "Kuvapalvelu palautti virheen ({0}).",
   "AI_CHAT_ATTACH_FILE": "Liitä tiedostoja",
   "AI_CHAT_ATTACH_TITLE": "Liitä tiedosto tai kansio",
   "AI_CHAT_ATTACH_FILE_OPTION": "Liitä tiedosto",
@@ -2920,9 +2923,5 @@ define({
   "MIGRATE_INTERRUPTED_FINAL": "Kopioidaksesi loput, valitse {0}.",
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
-  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "AI_CHAT_MODE_INFO_PLAN": "Tekoäly ehdottaa suunnitelmaa ennen muutosten tekemistä",
-  "AI_CHAT_MODE_INFO_EDIT": "Tekoäly voi muokata tiedostoja. Komentotulkin komennot vaativat hyväksynnän",
-  "AI_CHAT_MODE_INFO_AUTO": "Tekoäly käyttää harkintaa hyväksyäkseen turvalliset toiminnot automaattisesti ja kysyy lupaa riskialttiisiin",
-  "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää"
+  "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…"
 });
