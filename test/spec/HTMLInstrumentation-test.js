@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         WellFormedDoc       = require("text!spec/HTMLInstrumentation-test-files/wellformed.html"),
         NotWellFormedDoc    = require("text!spec/HTMLInstrumentation-test-files/omitEndTags.html"),
         InvalidHTMLDoc      = require("text!spec/HTMLInstrumentation-test-files/invalidHTML.html");
+    const LiveHTMLDocument = require("LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument");
 
     RemoteFunctions = eval(`(()=>{${RemoteFunctions.trim()}\nreturn RemoteFunctions();})()`);
 
@@ -414,6 +415,100 @@ define(function (require, exports, module) {
             }
         }
     };
+
+    describe("unit: HTML Instrumentation Script Order", function () {
+        const remoteScript = '<script src="/phoenix-remote.js"></script>';
+        const pageScript = '<script>window.pageRan = true;</script>';
+        const fixtures = [
+            { name: "inline scripts in the head", html: '<!doctype html><html><head>' + pageScript +
+                '</head><body></body></html>' },
+            { name: "a body with no explicit head", html: '<!doctype html><html><body>' + pageScript +
+                '</body></html>' },
+            { name: "an HTML fragment starting with a script", html: pageScript + '<p>content</p>' },
+            { name: "a script before an explicit head", html: '<!doctype html><html>' + pageScript +
+                '<head></head><body></body></html>' },
+            { name: "uppercase head and script tags", html: '<!doctype html><HTML><HEAD>' +
+                pageScript.toUpperCase() + '</HEAD><BODY></BODY></HTML>' }
+        ];
+
+        fixtures.forEach(function (fixture) {
+            it("injects before " + fixture.name, function () {
+                const mockEditor = SpecRunnerUtils.createMockEditor(fixture.html, "html").editor;
+                try {
+                    // Repeat after an edit so regeneration also uses the cached editor marks.
+                    for (let i = 0; i < 2; i++) {
+                        if (i > 0) {
+                            mockEditor.document.replaceRange(" ", { line: 0, ch: 0 });
+                            HTMLInstrumentation.getUnappliedEditList(mockEditor);
+                        }
+                        const html = HTMLInstrumentation.generateInstrumentedHTML(mockEditor, remoteScript);
+                        const parsed = new DOMParser().parseFromString(html, "text/html");
+                        const scripts = parsed.querySelectorAll("script");
+                        expect(scripts.length).toBe(2);
+                        expect(scripts[0].getAttribute("src")).toBe("/phoenix-remote.js");
+                        expect(scripts[1].textContent.toLowerCase()).toBe("window.pageran = true;");
+                        if (fixture.html.startsWith("<!doctype")) {
+                            expect(parsed.compatMode).toBe("CSS1Compat");
+                        }
+                    }
+                } finally {
+                    SpecRunnerUtils.destroyMockEditor(mockEditor.document);
+                }
+            });
+        });
+    });
+
+    describe("unit: HTML Live Preview Unfinished Pages", function () {
+        const remoteScript = '<script src="/phoenix-remote.js"></script>';
+        const fixtures = [
+            { name: "an empty page", html: "" },
+            { name: "whitespace only", html: " \n\t" },
+            { name: "a doctype only", html: "<!doctype html>", standards: true },
+            { name: "a partial opening tag", html: "<div" },
+            { name: "an unfinished comment", html: "<!-- still typing" },
+            { name: "an unfinished attribute", html: '<!doctype html><html><body><div class="', standards: true },
+            { name: "an unfinished script", html: '<!doctype html><script>window.pageRan = true;', standards: true },
+            { name: "a script followed by a partial tag", html: '<script>window.pageRan = true;</script><div' },
+            { name: "a comment before the doctype", html: '<!-- note --><!doctype html><div', standards: true },
+            { name: "a PUBLIC doctype", html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" ' +
+                '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><div', standards: true },
+            { name: "a SYSTEM identifier containing a greater-than sign", html: '<!doctype html SYSTEM "a>b"><div' },
+            { name: "an abruptly closed doctype before a script",
+                html: '<!doctype html SYSTEM "a><script>window.pageRan = true;</script><div' },
+            { name: "a comment with a browser-supported alternate ending",
+                html: '<!-- note --!><script>window.pageRan = true;</script><!-- unfinished' }
+        ];
+
+        fixtures.forEach(function (fixture) {
+            it("keeps the runtime available for " + fixture.name, function () {
+                const mockEditor = SpecRunnerUtils.createMockEditor(fixture.html, "html").editor;
+                const liveDoc = {
+                    editor: mockEditor,
+                    doc: mockEditor.document,
+                    protocol: { getRemoteScript: function () { return remoteScript; } },
+                    _instrumentationEnabled: true
+                };
+                try {
+                    const html = LiveHTMLDocument.prototype.getResponseData.call(liveDoc).body;
+                    const parsed = new DOMParser().parseFromString(html, "text/html");
+                    const scripts = parsed.querySelectorAll("script");
+                    expect(scripts[0].getAttribute("src")).toBe("/phoenix-remote.js");
+                    expect(parsed.querySelectorAll('script[src="/phoenix-remote.js"]').length).toBe(1);
+                    if (fixture.standards) {
+                        expect(parsed.compatMode).toBe("CSS1Compat");
+                    }
+                    const original = new DOMParser().parseFromString(fixture.html, "text/html");
+                    if (original.doctype) {
+                        expect(parsed.compatMode).toBe(original.compatMode);
+                    }
+                    liveDoc._instrumentationEnabled = false;
+                    expect(LiveHTMLDocument.prototype.getResponseData.call(liveDoc).body).toBe(fixture.html);
+                } finally {
+                    SpecRunnerUtils.destroyMockEditor(mockEditor.document);
+                }
+            });
+        });
+    });
 
     describe("HTML Instrumentation", function () {
 

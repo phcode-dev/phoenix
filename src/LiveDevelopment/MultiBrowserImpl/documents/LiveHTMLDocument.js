@@ -121,7 +121,22 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Returns the instrumented version of the file.
+     * Insert the runtime before unfinished markup, preserving a leading doctype's parsing mode.
+     * Only complete comments and a doctype may precede the script; partial markup must
+     * follow it so an unfinished attribute, comment or raw-text element cannot swallow the runtime.
+     * @param {string} html Uninstrumentable source text.
+     * @param {string} remoteScript Blocking runtime script markup.
+     * @return {string} Source text with the runtime inserted before page content.
+     */
+    function _injectIntoUnfinishedHTML(html, remoteScript) {
+        // HTML ends a doctype at the first > even inside an unfinished quoted identifier.
+        const preamble = /^(?:\uFEFF|[\t\n\f\r ]|<!--(?:>|->|[\s\S]*?--!?>))*(?:<!doctype[\t\n\f\r ][^>]*>)?/i
+            .exec(html)[0];
+        return preamble + remoteScript + html.slice(preamble.length);
+    }
+
+    /**
+     * Returns the instrumented file, including a runtime for empty or unfinished HTML.
      * @return {{body: string}} instrumented doc
      */
     LiveHTMLDocument.prototype.getResponseData = function (enabled) {
@@ -135,11 +150,10 @@ define(function (require, exports, module) {
             // HTML cannot be parsed into a DOM (no instrumentable content). In that case it
             // also never injected the remote <script>, so without help the served page would
             // have no live-preview runtime at all — a blank page with no way to connect back
-            // or start editing. Fall back to the raw text but still inject the remote script
-            // so the runtime always loads, even for a completely empty page.
+            // or start editing. Inject before unfinished content so the runtime always loads.
             body = this.doc.getText();
             if (this._instrumentationEnabled) {
-                body += this.protocol.getRemoteScript();
+                body = _injectIntoUnfinishedHTML(body, this.protocol.getRemoteScript());
             }
         }
 

@@ -265,6 +265,35 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 60000);
 
+        [
+            { name: "a blank page", html: "" },
+            { name: "an unfinished attribute after a page script", html: '<!doctype html><script>' +
+                'window.__pageSawComm = typeof window._Brackets_LiveDev_PhoenixComm;</script><div class="' },
+            { name: "an unfinished script", html: '<!doctype html><script>window.stillTyping = ' }
+        ].forEach(function (fixture) {
+            it("keeps live preview connected for " + fixture.name + " and recovers when HTML is completed",
+                async function () {
+                    try {
+                        await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]));
+                        const doc = DocumentManager.getCurrentDocument();
+                        doc.setText(fixture.html);
+                        await waitsForLiveDevelopmentToOpen();
+                        const sealed = await forRemoteExec("({frozen:Object.isFrozen(window._LD)," +
+                            "comm:typeof window._Brackets_LiveDev_PhoenixComm,answer:40+2})", result => !!result);
+                        expect(sealed).toEqual({ frozen: true, comm: "undefined", answer: 42 });
+                        if (fixture.html.includes("__pageSawComm")) {
+                            expect(await forRemoteExec("window.__pageSawComm", value => value !== undefined))
+                                .toBe("undefined");
+                        }
+                        doc.setText('<!doctype html><html><head></head><body><p id="recovered">Ready</p></body></html>');
+                        await forRemoteExec("document.getElementById('recovered') && " +
+                            "document.getElementById('recovered').textContent", value => value === "Ready");
+                    } finally {
+                        await endPreviewSession();
+                    }
+                }, 60000);
+        });
+
         it("should send all external stylesheets as related docs on start-up", async function () {
             let liveDoc;
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
