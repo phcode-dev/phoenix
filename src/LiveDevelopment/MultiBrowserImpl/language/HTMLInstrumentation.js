@@ -727,6 +727,7 @@ define(function (require, exports, module) {
      *
      * @param {Editor} editor The editor whose document we're instrumenting, and which we should
      *     mark ranges in.
+     * @param {string} [remoteScript] Blocking script markup to insert before page content executes.
      * @return {string} instrumented html content
      */
     function generateInstrumentedHTML(editor, remoteScript) {
@@ -740,6 +741,38 @@ define(function (require, exports, module) {
 
         if (!dom) {
             return null;
+        }
+
+        // The parser's root can omit earlier top-level siblings in HTML fragments. Inspect all
+        // source elements so a script outside that root cannot run before the channel is sealed.
+        let remoteScriptOffset = orig.length;
+        if (remoteScript) {
+            // Incremental DOM updates leave some source offsets stale; reloads need current offsets.
+            const sourceDOM = dom.fullBuild ? dom : HTMLSimpleDOM.build(orig);
+            if (!sourceDOM) {
+                return null;
+            }
+            Object.keys(sourceDOM.nodeMap).forEach(function (id) {
+                const node = sourceDOM.nodeMap[id];
+                if (node.tag && node.tag !== "html") {
+                    const offset = node.tag === "head" ? node.openEnd : node.start;
+                    remoteScriptOffset = Math.min(remoteScriptOffset, offset);
+                }
+            });
+        }
+
+        /**
+         * Copy source text, inserting the blocking remote script at its source offset once.
+         * @param {number} endOffset Exclusive end of the source text to copy.
+         */
+        function appendOriginalText(endOffset) {
+            if (remoteScript && !remoteScriptInserted && remoteScriptOffset <= endOffset) {
+                gen += orig.substr(lastIndex, remoteScriptOffset - lastIndex) + remoteScript;
+                lastIndex = remoteScriptOffset;
+                remoteScriptInserted = true;
+            }
+            gen += orig.substr(lastIndex, endOffset - lastIndex);
+            lastIndex = endOffset;
         }
 
         // Ensure that the marks in the editor are up to date with respect to the given DOM.
@@ -792,17 +825,8 @@ define(function (require, exports, module) {
 
                 // Insert the attribute as the first attribute in the tag.
                 var insertIndex = startOffset + node.tag.length + 1;
-                gen += orig.substr(lastIndex, insertIndex - lastIndex) + attrText;
-                lastIndex = insertIndex;
-
-                // If we have a script to inject and this is the head tag, inject it immediately
-                // after the open tag.
-                if (remoteScript && !remoteScriptInserted && node.tag === "head") {
-                    insertIndex = node.openEnd;
-                    gen += orig.substr(lastIndex, insertIndex - lastIndex) + remoteScript;
-                    lastIndex = insertIndex;
-                    remoteScriptInserted = true;
-                }
+                appendOriginalText(insertIndex);
+                gen += attrText;
             }
 
             if (node.isElement()) {
@@ -811,13 +835,7 @@ define(function (require, exports, module) {
         }
 
         walk(dom);
-        gen += orig.substr(lastIndex);
-
-        if (remoteScript && !remoteScriptInserted) {
-            // if the remote script couldn't be injected before (e.g. due to missing "head" tag),
-            // append it at the end
-            gen += remoteScript;
-        }
+        appendOriginalText(orig.length);
 
         return gen;
     }

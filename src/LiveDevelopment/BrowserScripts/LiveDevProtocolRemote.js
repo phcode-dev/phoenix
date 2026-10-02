@@ -35,6 +35,43 @@
     //     send(msgStr) - sends the given message string over the transport.
     var transport = global._Brackets_LiveDev_Transport;
 
+    // The page's own scripts run after this file and may patch built-ins to read or rewrite what goes
+    // to and from the editor, so everything on that path uses the originals, captured here. The
+    // editor's Runtime.evaluate scripts run through the real eval, called indirectly so they see only
+    // the global scope, as they would from the page: never this closure's transport, comm or the CSS
+    // domain object that shadows window.CSS here.
+    const _globalEval = global.eval;
+    const _parse = JSON.parse;
+    const _stringify = JSON.stringify;
+    const _Promise = global.Promise;
+    const _setTimeout = global.setTimeout;
+    const _clearTimeout = global.clearTimeout;
+
+    /**
+     * Append without Array.prototype.push, which a page could patch to collect the item.
+     * @param {Array} arr Destination array.
+     * @param {*} item Item to append.
+     */
+    function _arrayPush(arr, item) {
+        arr[arr.length] = item;
+    }
+
+    /**
+     * Copy nonmatching items without exposing the array to a page-patched filter.
+     * @param {Array} arr Source array.
+     * @param {function(*): boolean} predicate Returns true for items to remove.
+     * @return {Array} The remaining items, in order.
+     */
+    function _arrayWithout(arr, predicate) {
+        const kept = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (!predicate(arr[i])) {
+                _arrayPush(kept, arr[i]);
+            }
+        }
+        return kept;
+    }
+
     /**
      * Manage messaging between Editor and Browser at the protocol layer.
      * Handle messages that arrives through the current transport and dispatch them
@@ -68,16 +105,15 @@
 
             if (msgHandlers && msgHandlers.length > 0) {
                 // invoke handlers with the received message
-                msgHandlers.forEach(function (handler) {
+                // A plain loop: a patched Array.prototype.forEach would be handed the message.
+                for (let i = 0; i < msgHandlers.length; i++) {
                     try {
                         // TODO: check which context should be used to call handlers here.
-                        handler(msg);
-                        return;
+                        msgHandlers[i](msg);
                     } catch (e) {
                         console.error("[Brackets LiveDev] Error executing a handler for " + msg.method, e.stack);
-                        return;
                     }
-                });
+                }
             } else {
                 // no subscribers, ignore it.
                 // TODO: any other default handling? (eg. specific respond, trigger as a generic event, etc.);
@@ -115,8 +151,7 @@
                 //initialize array
                 this.handlers[method] = [];
             }
-            // add handler to the stack
-            this.handlers[method].push(handler);
+            _arrayPush(this.handlers[method], handler);
         },
 
         /**
@@ -124,7 +159,7 @@
          * @param {string} msgStr Message to be sent.
          */
         send: function (msgStr) {
-            transport.send(JSON.stringify(msgStr));
+            transport.send(_stringify(msgStr));
         }
     };
 
@@ -140,9 +175,9 @@
         evaluate: function (msg) {
             // an unanswered request leaves the editor side waiting forever
             try {
-                var result = eval(msg.params.expression);
+                var result = _globalEval(msg.params.expression);
                 MessageBroker.respond(msg, {
-                    result: JSON.stringify(result) // TODO: in original protocol this is an object handle
+                    result: _stringify(result) // TODO: in original protocol this is an object handle
                 });
             } catch (e) {
                 console.error("[Brackets LiveDev] Runtime.evaluate failed", e);
@@ -349,7 +384,7 @@
          * @param {string} msgStr The protocol message as stringified JSON.
          */
         message: function (msgStr) {
-            const msg = JSON.parse(msgStr);
+            const msg = _parse(msgStr);
             _setPCommReady();
             if(msg && typeof msg === "object" && msg.method === "PhoenixComm.execLPFn") {
                 _onLPFnTrigger(msg.fnName, msg.params);
@@ -397,7 +432,8 @@
 
     let currentFnExecID = 1;
     let lpCommReady = false;
-    const pendingExecPromises = new Map();
+    // A page-patched Map.prototype.set must not receive the promise's resolve/reject callbacks.
+    const pendingExecPromises = Object.create(null);
     let queuedExecRequests = [];         // array of { fnName, paramObj, fnExecID }
     // A pending execPhoenixFn is only ever settled by a response message, so if
     // the editor disconnects mid-call the promise would hang forever (and any
@@ -414,7 +450,7 @@
         if (lpCommReady) {
             MessageBroker.send(payload);
         } else {
-            queuedExecRequests.push(payload);
+            _arrayPush(queuedExecRequests, payload);
         }
     }
 
@@ -437,21 +473,25 @@
             }
             registeredPhoenixCommFns[fnName] = fn;
         },
+        /**
+         * Request an editor function, rejecting if no response arrives before the timeout.
+         * @param {string} fnName Registered editor function name.
+         * @param {*} paramObj Function parameters.
+         * @return {Promise<*>} The editor's response.
+         */
         execPhoenixFn: function (fnName, paramObj) {
-            return new Promise((resolve, reject) => {
+            return new _Promise((resolve, reject) => {
                 const fnExecID = currentFnExecID++;
-                const timer = setTimeout(function () {
-                    if (pendingExecPromises.has(fnExecID)) {
-                        pendingExecPromises.delete(fnExecID);
+                const timer = _setTimeout(function () {
+                    if (pendingExecPromises[fnExecID]) {
+                        delete pendingExecPromises[fnExecID];
                         // if still queued (comm never became ready), drop it so a
                         // late flush doesn't execute a call the caller saw fail
-                        queuedExecRequests = queuedExecRequests.filter(function (req) {
-                            return req.fnExecID !== fnExecID;
-                        });
+                        queuedExecRequests = _arrayWithout(queuedExecRequests, req => req.fnExecID === fnExecID);
                         reject(new Error(`execPhoenixFn timed out: ${fnName}`));
                     }
                 }, PHOENIX_FN_TIMEOUT_MS);
-                pendingExecPromises.set(fnExecID, { resolve, reject, timer });
+                pendingExecPromises[fnExecID] = { resolve, reject, timer };
                 _sendOrQueueExec({
                     execFnName: fnName,
                     paramObj,
@@ -468,17 +508,24 @@
 
     PhoenixComm.registerLpFn("PH_LP_COMM_READY", _setPCommReady);
 
+    /**
+     * Settle a pending editor request and clear its timeout; ignore late or unknown replies.
+     * @param {string} fnName Editor function name, used for diagnostics.
+     * @param {number} fnExecID Request identifier.
+     * @param {*} resolveWith Successful result.
+     * @param {*} rejectWith Error returned by the editor, if any.
+     */
     function _onPhoenixExecResponse(fnName, fnExecID, resolveWith, rejectWith) {
-        const pendingPromise = pendingExecPromises.get(fnExecID);
+        const pendingPromise = pendingExecPromises[fnExecID];
         if(!pendingPromise) {
             // already settled (e.g. by the timeout) or an unknown id — bail
             // rather than dereference undefined and throw in the message handler
             console.error(`execPhoenixFn: No response promise found! for ${fnName}: ${fnExecID}`);
             return;
         }
-        pendingExecPromises.delete(fnExecID);
+        delete pendingExecPromises[fnExecID];
         if (pendingPromise.timer) {
-            clearTimeout(pendingPromise.timer);
+            _clearTimeout(pendingPromise.timer);
         }
         if(rejectWith) {
             pendingPromise.reject(rejectWith);
