@@ -2660,7 +2660,7 @@ define({
 
     // AI CHAT PANEL
     "AI_CHAT_TITLE": "Claude Code",
-    "AI_CHAT_MODE_CHAT": "Claude Code",
+    "AI_CHAT_MODE_CHAT": "Visual AI",
     "AI_CHAT_MODE_CLI": "Claude Code CLI",
     "AI_CHAT_MODE_CODEX_CLI": "Codex CLI",
     "AI_CHAT_START_TYPE_HINT": "Type here to get started",
@@ -2687,7 +2687,7 @@ define({
     "AI_CHAT_DEMO_PROMPT_COPIED": "Copied",
     "AI_CHAT_DEMO_SPEED_TITLE": "Playback speed (click to change)",
     "AI_CHAT_START_WORK_WITH": "Work with",
-    "AI_CHAT_START_CHAT_NAME": "{0} · Visual AI",
+    "AI_CHAT_START_CHAT_NAME": "Visual AI with {0}",
     "AI_CHAT_START_CHAT_DESC": "Built-in chat for visual workflows",
     "AI_CHAT_START_BY_PROVIDER": "By {0}",
     "AI_CHAT_START_CLI_SEPARATOR": "Command-line tools · connects with {APP_NAME}",
