@@ -2499,8 +2499,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             // Per-turn token usage: each SDKAssistantMessage carries the
             // wrapped Anthropic API message whose `.usage` reflects what
             // that single turn consumed. Useful for diagnosing runaway
-            // loops; logged but not metric'd individually (the result
-            // message rolls up the session totals).
+            // loops. The panel keeps these in RAM until the result replaces
+            // them; message ids let it dedupe repeated content blocks.
             if (message.type === "assistant" &&
                     message.message && message.message.usage) {
                 const u = message.message.usage;
@@ -2510,6 +2510,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     "cacheRead=" + (u.cache_read_input_tokens || 0),
                     "cacheCreate=" + (u.cache_creation_input_tokens || 0),
                     message.parent_tool_use_id ? "(subagent)" : "");
+                nodeConnector.triggerPeer("aiUsageProgress", {
+                    requestId: requestId,
+                    messageId: message.message.id,
+                    parentToolUseId: message.parent_tool_use_id || null,
+                    model: message.message.model,
+                    usage: u
+                });
             }
 
             // Aggregate session usage on the terminal `result` message.
