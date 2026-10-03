@@ -112,6 +112,10 @@ define(function (require, exports, module) {
 
     // live preview ruler lines preference (show/hide ruler lines on element selection)
     const PREFERENCE_SHOW_RULER_LINES = CONSTANTS.PREFERENCE_SHOW_RULER_LINES;
+    const PREFERENCE_SHOW_ASK_AI = CONSTANTS.PREFERENCE_SHOW_ASK_AI;
+    PreferencesManager.definePreference(PREFERENCE_SHOW_ASK_AI, "boolean", true, {
+        description: Strings.LIVE_DEV_AI_CHAT_SHOW
+    });
     PreferencesManager.definePreference(PREFERENCE_SHOW_RULER_LINES, "boolean", false, {
         description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
     });
@@ -415,6 +419,9 @@ define(function (require, exports, module) {
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
             items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
         }
+        if (Phoenix.isNativeApp) {
+            items.push("---", Strings.LIVE_DEV_AI_CHAT_SHOW);
+        }
 
         $dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
             if (item === Strings.LIVE_PREVIEW_MODE_PREVIEW) {
@@ -440,6 +447,8 @@ define(function (require, exports, module) {
                     return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
                 }
                 return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
+            } else if (item === Strings.LIVE_DEV_AI_CHAT_SHOW) {
+                return (PreferencesManager.get(PREFERENCE_SHOW_ASK_AI) ? "✓ " : "\u00A0".repeat(4)) + item;
             } else if (item === Strings.LIVE_PREVIEW_SHOW_RULER_LINES) {
                 const isEnabled = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
                 if(isEnabled) {
@@ -483,6 +492,8 @@ define(function (require, exports, module) {
                         Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "proUpsellDlg", "fail");
                     }
                 }
+            } else if (item === Strings.LIVE_DEV_AI_CHAT_SHOW) {
+                PreferencesManager.set(PREFERENCE_SHOW_ASK_AI, !PreferencesManager.get(PREFERENCE_SHOW_ASK_AI));
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 // Don't allow edit highlight toggle if edit features are not active
                 if (!isEditFeaturesActive) {
@@ -1691,6 +1702,9 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
             LiveDevelopment.updateRulerLinesConfig();
         });
+        PreferencesManager.on("change", PREFERENCE_SHOW_ASK_AI, function () {
+            LiveDevelopment.updateAskAIConfig();
+        });
         PreferencesManager.on("change", PREFERENCE_SHOW_STYLES_BAR, function() {
             LiveDevelopment.updateStylesBarConfig();
         });
@@ -1703,6 +1717,7 @@ define(function (require, exports, module) {
         // Initialize element highlight, ruler lines and styles bar config on startup
         LiveDevelopment.updateElementHighlightConfig();
         LiveDevelopment.updateRulerLinesConfig();
+        LiveDevelopment.updateAskAIConfig();
         LiveDevelopment.updateStylesBarConfig();
         LiveDevelopment.updateStarterBarConfig();
         LiveDevelopment.updateStylesBarPositionConfig();
@@ -1901,9 +1916,10 @@ define(function (require, exports, module) {
     exports.showInterstitial = showInterstitial;
     exports.hideInterstitial = hideInterstitial;
     exports.getPreviewedFilePath = getPreviewedFilePath;
+    /** @return {string|null} Transport client of the current embedded HTML preview, never a popout. */
+    exports.getEmbeddedClientID = function () { return _dockedClientID || null; };
     exports.canPopoutLivePreview = canPopoutLivePreview;
     exports.popoutLivePreview = popoutLivePreview;
     exports.reloadLivePreview = reloadLivePreview;
 });
-
 
