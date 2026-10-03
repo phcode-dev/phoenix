@@ -63,30 +63,29 @@ define(function (require, exports, module) {
     let _transportBridge;
 
     /**
-     * Returns the script that should be injected into the browser to handle the other end of the transport.
+     * Fill the remote script's config initializer, preserving its private scope in source and minified builds.
      * @return {string}
      */
     function getRemoteScript() {
-        const replaceString = "const TRANSPORT_CONFIG={};";
+        const replaceString = "__PHOENIX_LIVE_PREVIEW_TRANSPORT_CONFIG__()";
         if(!LivePreviewTransportRemote.includes(replaceString)){
-            throw new Error("Live preview transport is expected to have replaceable template string:" +
-                " //REPLACE_ME_WITH_LIVE_PREVIEW_TRANSPORT_CONFIG_AND_SCRIPT_DYNAMIC");
+            throw new Error("Live preview transport is missing its config initializer: " + replaceString);
         }
-        let transportScript = (_transportBridge && _transportBridge.getRemoteTransportScript &&
+        const transportScript = (_transportBridge && _transportBridge.getRemoteTransportScript &&
             _transportBridge.getRemoteTransportScript()) || "";
-        transportScript = "const TRANSPORT_CONFIG={};" +
-            `TRANSPORT_CONFIG.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
-            `TRANSPORT_CONFIG.IS_NATIVE_APP = ${Phoenix.isNativeApp};\n` +
-            `TRANSPORT_CONFIG.PLATFORM = "${Phoenix.platform}";\n` +
-            `TRANSPORT_CONFIG.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}";\n` +
-            `TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n`+
-            `TRANSPORT_CONFIG.TRUSTED_ORIGINS_EMBED = ${JSON.stringify(Phoenix.TRUSTED_ORIGINS)};\n`+
-            `TRANSPORT_CONFIG.STRINGS = {
-                UNSUPPORTED_DOM_APIS_CONFIRM: "${Strings.UNSUPPORTED_DOM_APIS_CONFIRM}"
-            };\n`+
-            transportScript;
-        return LivePreviewTransportRemote.replace(replaceString, transportScript)
-            + "\n";
+        const config = {
+            PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID,
+            IS_NATIVE_APP: Phoenix.isNativeApp,
+            PLATFORM: Phoenix.platform,
+            LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME: LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME,
+            LIVE_PREVIEW_DEBUG_ENABLED: logger.loggingOptions.logLivePreview,
+            TRUSTED_ORIGINS_EMBED: Phoenix.TRUSTED_ORIGINS,
+            STRINGS: { UNSUPPORTED_DOM_APIS_CONFIRM: Strings.UNSUPPORTED_DOM_APIS_CONFIRM }
+        };
+        const initializer = "(function () {\nconst TRANSPORT_CONFIG = " + JSON.stringify(config) + ";\n" +
+            transportScript + "\nreturn TRANSPORT_CONFIG;\n}())";
+        // A callback keeps literal $ sequences in config values out of String.replace's replacement syntax.
+        return LivePreviewTransportRemote.replace(replaceString, () => initializer) + "\n";
     }
 
     EventDispatcher.makeEventDispatcher(exports);
