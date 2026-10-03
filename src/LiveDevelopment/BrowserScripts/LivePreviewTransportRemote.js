@@ -19,6 +19,8 @@
  *
  */
 
+/*global __PHOENIX_LIVE_PREVIEW_TRANSPORT_CONFIG__ */
+
 // This is a transport injected into the browser via a script that handles the low
 // level communication between the live development protocol handlers on both sides.
 // The actual communication to phoenix is done via the loaded web worker below. We just post/receive all
@@ -89,13 +91,10 @@
 
 (function (global) {
 
-    // The below line will be replaced with the transport scripts provided by the static server at
-    // LivePreviewTransport.js:getRemoteScript() This is so that the actual live preview page doesnt get hold of
-    // any phoenix web socket or broadcast channel ids from this closure programatically for security.
-
-    //Replace dynamic section start
-    const TRANSPORT_CONFIG={};
-    //Replace dynamic section end
+    // getRemoteScript() replaces this call with a private config initializer before serving the script.
+    // A call survives minification without depending on declaration spacing or merged const statements.
+    // Its unknown return value also prevents the minifier from folding config property reads.
+    const TRANSPORT_CONFIG = __PHOENIX_LIVE_PREVIEW_TRANSPORT_CONFIG__();
 
     // The page's own scripts run after this one and may patch built-ins to read or rewrite what goes
     // to and from the editor. The channel uses the originals, captured here before any of them runs.
