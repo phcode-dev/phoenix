@@ -22,7 +22,8 @@ function RemoteFunctions(config = {}) {
         // this is just a test function here to check if live preview. fn call is working correctly.
         console.log("Hello World", param);
     });
-    const MessageBroker = window._Brackets_MessageBroker; // to be used by plugins.
+    // Injected plugins share this closure; the window property is removed after injection.
+    const MessageBroker = window._Brackets_MessageBroker;
 
     const SHARED_STATE = {
         __description: "Use this to keep shared state for Live Preview Edit instead of window.*",
