@@ -43,6 +43,7 @@
     },
     "scripts": {
         "postinstall": "cd phoenix-builder-mcp && npm install",
+        "enableBuilderMcpInProd": "node phoenix-builder-mcp/enable-in-prod/index.cjs",
         "lint": "eslint --quiet src test",
         "lint:fix": "eslint --quiet --fix src test",
         "prepare": "husky install",

@@ -4,6 +4,9 @@
     "private": true,
     "type": "module",
     "main": "index.js",
+    "scripts": {
+        "enableBuilderMcpInProd": "node enable-in-prod/index.cjs"
+    },
     "dependencies": {
         "@modelcontextprotocol/sdk": "latest",
         "ws": "^8.0.0",
