@@ -9,6 +9,7 @@ import { setLocale } from "./core/i18n.js";
 import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
 import { broadcastSelectionStateSync, flushPendingContentChange } from "./components/editor.js";
+import { captureSelection, restoreSelection, getRenderedMdLineText } from "./core/selection-context.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -81,6 +82,7 @@ function _annotateTokenLines(tokens) {
     for (const token of tokens) {
         if (token.type !== "space") {
             token._sourceLine = line;
+            token._sourceEndLine = line + (token.raw.replace(/\n$/, "").match(/\n/g) || []).length;
         }
         // Recursively annotate children with their source lines
         _annotateTokenChildren(token, line);
@@ -132,6 +134,7 @@ function _annotateNestedTokens(tokens, startLine) {
     for (const token of tokens) {
         if (token.type !== "space") {
             token._sourceLine = line;
+            token._sourceEndLine = line + (token.raw.replace(/\n$/, "").match(/\n/g) || []).length;
         }
         // Recurse into nested lists
         if (token.type === "list" && token.items) {
@@ -182,7 +185,8 @@ function _withSourceLine(protoFn, tagRegex) {
     return function (token) {
         const html = protoFn.call(this, token);
         if (token._sourceLine != null) {
-            return html.replace(tagRegex, `$& data-source-line="${token._sourceLine}"`);
+            return html.replace(tagRegex, `$& data-source-line="${token._sourceLine}"` +
+                ` data-source-end-line="${token._sourceEndLine || token._sourceLine}"`);
         }
         return html;
     };
@@ -278,6 +282,24 @@ export function initBridge() {
         if (!data || !data.type) return;
 
         switch (data.type) {
+            case "MDVIEWR_ASK_AI_ENABLED":
+                if (event.source === window.parent) { emit("ai:enabled", !!data.enabled); }
+                break;
+            case "MDVIEWR_ASK_AI_SELECTION":
+                if (event.source === window.parent) { emit("ai:attach-selection", {titlebar: true}); }
+                break;
+            case "MDVIEWR_SELECT_SOURCE_RANGE":
+                if (event.source === window.parent && data.filePath === docCache.getActiveFilePath()) {
+                    restoreSelection(document.getElementById("viewer-content"), getState().currentContent,
+                        data.selectionId);
+                }
+                break;
+            case "MDVIEWR_RENDERED_LINES":
+                if (event.source === window.parent) {
+                    sendToParent("mdviewrRenderedLines", {requestId: data.requestId,
+                        result: getRenderedMdLineText(data.params)});
+                }
+                break;
             case "MDVIEWR_SET_CONTENT":
                 handleSetContent(data);
                 break;
@@ -550,6 +572,20 @@ export function initBridge() {
     }, true);
 
     // Listen for content changes from editor (debounced by editor.js)
+    on("ai:attach-selection", ({rect, titlebar}) => {
+        if (flushPendingContentChange()) {
+            emit("editor:source-lines", getState().currentContent);
+        }
+        const content = document.getElementById("viewer-content");
+        const selection = captureSelection(content, getState().currentContent, docCache.getActiveFilePath());
+        if (selection) {
+            sendToParent("mdviewrAskAI", {selection, rect, filePath: docCache.getActiveFilePath()});
+        } else {
+            if (titlebar) { sendToParent("mdviewrAskAIEmpty", {}); }
+            else { emit("ai:selection-unavailable"); }
+        }
+    });
+
     on("bridge:contentChanged", ({ markdown }) => {
         if (_suppressContentChange) return;
         _syncId++;

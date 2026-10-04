@@ -53,6 +53,7 @@ const EXEC_PEER_TIMEOUT_MS = {
     controlEditor: 5000,
     resizeLivePreview: 5000,
     searchEditorBuffers: 3000,
+    getRenderedMdSelectionFollowUp: 5000,
     getProblems: 15000,
     notifyUser: 5000,
     searchImages: 55000,
@@ -162,6 +163,38 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
             alwaysLoad: true,
             searchHint: "which file the user has open in Phoenix Code editor, plus cursor, selection, and what the live preview (an embedded browser rendering their HTML or Markdown) is showing"
         }
+    );
+
+    const getRenderedMdSelectionFollowUpTool = sdkModule.tool(
+        "getRenderedMdSelectionFollowUp",
+        "Use only to disambiguate a user-attached Markdown Live Preview selection when its supplied excerpts " +
+        "are insufficient, including follow-up questions about that attachment. Requires the attachment's " +
+        "selectionId; never invent an ID. This is not a general Markdown reader or a query of the current " +
+        "preview. Returns logical rendered lines from " +
+        "the original attachment snapshot with ⟦ and ⟧ marking the selected text. These are NOT source-file " +
+        "lines or screen-wrapped lines. Use selectionId and renderedSelectionLines from the attachment. " +
+        "Returns at most 50 lines and 12000 text characters; clipped lines include an ellipsis. " +
+        "Snapshots may expire after reload or eviction; never substitute another selection if one expires.",
+        {
+            selectionId: z.string().describe("Copy selectionId from the user's Markdown selection attachment"),
+            lineStart: z.number().int().min(1).describe("First logical rendered line, one-based inclusive"),
+            lineEnd: z.number().int().min(1).describe("Last logical rendered line, one-based inclusive"),
+            maxCharsClipPerLine: z.number().int().min(20).max(2000).optional()
+                .describe("Maximum characters per rendered line; default 240. Increase to inspect clipped context.")
+        },
+        async function (args) {
+            let result;
+            try {
+                const context = await _execPeerWithTimeout(nodeConnector, "getRenderedMdSelectionFollowUp", args,
+                    "getRenderedMdSelectionFollowUp");
+                result = {content: [{type: "text", text: JSON.stringify(context)}], isError: !!context.error};
+            } catch (error) {
+                result = {content: [{type: "text", text: error.message}], isError: true};
+            }
+            return _maybeAppendHint(result, hasClarification);
+        },
+        {annotations: {readOnlyHint: true},
+            searchHint: "clarify a user-attached Markdown Live Preview selection snapshot using its selectionId"}
     );
 
     const searchEditorBuffersTool = sdkModule.tool(
@@ -993,7 +1026,7 @@ function createEditorMcpServer(sdkModule, nodeConnector, clarificationAccessors)
 
     return sdkModule.createSdkMcpServer({
         name: "phoenix-editor",
-        tools: [getEditorStateTool, searchEditorBuffersTool, searchImagesTool, previewImagesTool,
+        tools: [getEditorStateTool, getRenderedMdSelectionFollowUpTool, searchEditorBuffersTool, searchImagesTool, previewImagesTool,
             useImageTool, takeScreenshotTool, execJsInLivePreviewTool,
             execJsInEditorTool, editorPreferencesTool, editorDocsTool, getProblemsTool, notifyUserTool,
             askInLivePreviewTool,

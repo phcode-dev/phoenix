@@ -154,8 +154,8 @@ define(function (require, exports, module) {
         Menus               = require("command/Menus"),
         PreferencesManager  = require("preferences/PreferencesManager"),
         Strings             = require("strings"),
-        ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
+        Resizer             = require("utils/Resizer"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         EventDispatcher     = require("utils/EventDispatcher"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
@@ -219,7 +219,8 @@ define(function (require, exports, module) {
      *    is tracked by hoverTimer. The state changes to visible==true as soon as
      *    there is a provider. If the mouse moves before then, timer is restarted.
      * @typedef {Object} PopoverState
-     * @property {boolean} visible - Whether the popover is visible.
+     * @property {boolean} visible - Whether the popover has been rendered and remains open.
+     * @property {boolean=} layoutPending - Whether temporarily hidden until workspace layout settles.
      * @property {!Editor} editor - The editor instance associated with the popover.
      * @property {!{line: number, ch: number}} start - Start of the matched text range.
      * @property {!{line: number, ch: number}} end - End of the matched text range.
@@ -230,6 +231,9 @@ define(function (require, exports, module) {
      * @private
      */
     let popoverState = null;
+    let popupTimer = null, currentQueryID = 0, queryInProgress = false, layoutFrame = 0, layoutTimer = null;
+    const resizingPanels = new Set();
+    const LAYOUT_SETTLE_DELAY = 120;
 
 
 
@@ -238,58 +242,121 @@ define(function (require, exports, module) {
     /**
      * Cancels whatever popoverState was currently pending and sets it back to null. If the popover was visible,
      * hides it; if the popover was invisible and still pending, cancels hoverTimer so it will never be shown.
+     * @param {boolean=} focusEditor Whether to restore editor focus; defaults to true.
      * @private
      */
-    function hidePreview() {
+    function hidePreview(focusEditor) {
+        clearTimeout(popupTimer);
+        clearTimeout(layoutTimer);
+        layoutTimer = null;
+        cancelAnimationFrame(layoutFrame);
+        layoutFrame = 0;
+        popupTimer = null;
+        currentQueryID++;
+        queryInProgress = false;
         if (!popoverState) {
             return;
         }
         if (popoverState.visible) {
             $previewContent.empty();
             $previewContainer.hide();
+            $previewContainer.css("visibility", "");
             $previewContainer.removeClass("active");
-            if(EditorManager.getActiveEditor()){
+            if(focusEditor !== false && EditorManager.getActiveEditor()){
                 EditorManager.getActiveEditor().focus();
             }
         }
         popoverState = null;
     }
 
-    function positionPreview(editor) {
-        let ybot = popoverState.ybot;
+    /**
+     * Measure the visible selection highlights, including wrapped lines and partial viewport selections.
+     * @param {Editor} editor Editor containing the selection.
+     * @param {Object} bounds Visible editor bounds in window coordinates.
+     * @return {Object|null} Visible bounds and highlight rectangles, or null when none are visible.
+     */
+    function getVisibleSelectionBounds(editor, bounds) {
+        let selection = null;
+        const root = editor.getRootElement();
+        // CodeMirror already lays out these rectangles; do not scan source lines or characters.
+        for (const highlight of root.querySelectorAll(".CodeMirror-selected")) {
+            if (highlight.closest(".CodeMirror") !== root) { continue; }
+            const rect = highlight.getBoundingClientRect();
+            const left = Math.max(bounds.left, rect.left), right = Math.min(bounds.right, rect.right);
+            const top = Math.max(bounds.top, rect.top), bottom = Math.min(bounds.bottom, rect.bottom);
+            if (right <= left || bottom <= top) { continue; }
+            if (!selection) {
+                selection = {left, right, top, bottom, rectangles: []};
+            } else {
+                selection.left = Math.min(selection.left, left);
+                selection.right = Math.max(selection.right, right);
+                selection.top = Math.min(selection.top, top);
+                selection.bottom = Math.max(selection.bottom, bottom);
+            }
+            selection.rectangles.push({left, right, top, bottom});
+        }
+        return selection;
+    }
+
+    /**
+     * Prefer below-right, then above-right, and overlap only when no outside placement fits.
+     * @param {Editor} editor Editor whose visible bounds constrain the popup.
+     * @param {boolean=} refreshBounds Remeasure selection highlights after an editor layout change.
+     */
+    function positionPreview(editor, refreshBounds) {
         if ($previewContent.find("#selection-view-popover-root").is(':empty')){
             hidePreview();
             return;
         }
-        let previewWidth  = $previewContainer.outerWidth(),
-            top           = lastMouseY - $previewContainer.outerHeight() - POINTER_HEIGHT,
-            left          = lastMouseX - previewWidth / 2,
-            elementRect = {
-                top: top,
-                left: left - POPOVER_HORZ_MARGIN,
-                height: $previewContainer.outerHeight() + POINTER_HEIGHT,
-                width: previewWidth + 2 * POPOVER_HORZ_MARGIN
-            },
-            clip = ViewUtils.getElementClipSize($(editor.getRootElement()), elementRect);
-
-        // Prevent horizontal clipping
-        if (clip.left > 0) {
-            left += clip.left;
-        } else if (clip.right > 0) {
-            left -= clip.right;
+        const root = editor.getRootElement();
+        const bounds = root.getBoundingClientRect();
+        if (!root.isConnected || bounds.width <= POPOVER_HORZ_MARGIN * 2 ||
+            bounds.height <= POPOVER_HORZ_MARGIN * 2) {
+            hidePreview(false);
+            return;
         }
-
-        // If clipped on top, flip popover below line
-        if (clip.top > 0) {
-            top = ybot + POINTER_HEIGHT;
-            $previewContainer
-                .removeClass("preview-bubble-above")
-                .addClass("preview-bubble-below");
-        } else {
-            $previewContainer
-                .removeClass("preview-bubble-below")
-                .addClass("preview-bubble-above");
+        const minX = Math.max(0, bounds.left) + POPOVER_HORZ_MARGIN;
+        const maxX = Math.min(window.innerWidth, bounds.right) - POPOVER_HORZ_MARGIN;
+        const minY = Math.max(0, bounds.top) + POPOVER_HORZ_MARGIN;
+        const maxY = Math.min(window.innerHeight, bounds.bottom) - POPOVER_HORZ_MARGIN;
+        if (!popoverState.anchor) {
+            const overEditor = lastMouseX >= minX && lastMouseX <= maxX && lastMouseY >= minY && lastMouseY <= maxY;
+            popoverState.anchor = {x: overEditor ? lastMouseX : popoverState.xpos,
+                y: overEditor ? lastMouseY : popoverState.ytop};
+            refreshBounds = true;
         }
+        if (refreshBounds) {
+            popoverState.selectionBounds = getVisibleSelectionBounds(editor,
+                {left: minX, right: maxX, top: minY, bottom: maxY});
+        }
+        const anchorX = Math.max(minX, Math.min(maxX, popoverState.anchor.x));
+        const anchorY = Math.max(minY, Math.min(maxY, popoverState.anchor.y));
+        const previewWidth = $previewContainer.outerWidth(), previewHeight = $previewContainer.outerHeight();
+        const selection = popoverState.selectionBounds ||
+            {left: anchorX, right: anchorX, top: anchorY, bottom: anchorY};
+        let left = Math.max(minX, Math.min(maxX - previewWidth, selection.right - previewWidth));
+        // A short final line leaves room beside it: tuck under the blue region at the toolbar's right-side position.
+        const occupied = (selection.rectangles || [selection]).filter(rect =>
+            rect.right > left && rect.left < left + previewWidth);
+        const bottom = occupied.length ? Math.max(...occupied.map(rect => rect.bottom)) : selection.bottom;
+        let top = bottom + POINTER_HEIGHT;
+        let below = true;
+        if (top + previewHeight > maxY) {
+            top = selection.top - previewHeight - POINTER_HEIGHT;
+            below = false;
+            if (top < minY) {
+                top = anchorY - previewHeight - POINTER_HEIGHT;
+                if (selection.right + POINTER_HEIGHT + previewWidth <= maxX) {
+                    left = selection.right + POINTER_HEIGHT;
+                } else if (selection.left - POINTER_HEIGHT - previewWidth >= minX) {
+                    left = selection.left - POINTER_HEIGHT - previewWidth;
+                }
+                // With no room on any side, retain the right-aligned position inside the selection.
+            }
+        }
+        top = Math.max(minY, Math.min(maxY - previewHeight, top));
+        left = Math.max(minX, Math.min(maxX - previewWidth, left));
+        $previewContainer.toggleClass("preview-bubble-below", below).toggleClass("preview-bubble-above", !below);
 
         $previewContainer
             .css({
@@ -297,6 +364,69 @@ define(function (require, exports, module) {
                 top: top
             })
             .addClass("active");
+    }
+
+    /** Hide the popup without discarding its controls, and cancel any pending layout measurements. */
+    function suspendPreviewLayout() {
+        clearTimeout(layoutTimer);
+        layoutTimer = null;
+        cancelAnimationFrame(layoutFrame);
+        layoutFrame = 0;
+        if (popoverState && popoverState.visible && !popoverState.layoutPending) {
+            popoverState.layoutPending = true;
+            $previewContainer.css("visibility", "hidden");
+        }
+    }
+
+    /** Remeasure once after resizing finishes, then reveal the existing popup at its new position. */
+    function restorePreviewLayout() {
+        clearTimeout(layoutTimer);
+        layoutTimer = null;
+        if (!popoverState || !popoverState.visible || resizingPanels.size || layoutFrame) { return; }
+        layoutFrame = requestAnimationFrame(function () {
+            layoutFrame = 0;
+            if (!popoverState || !popoverState.visible || resizingPanels.size) { return; }
+            const editor = popoverState.editor;
+            const cursor = editor.charCoords(editor.getCursorPos(), "window");
+            popoverState.anchor = {x: cursor.left, y: cursor.top};
+            positionPreview(editor, true);
+            if (popoverState && popoverState.visible) {
+                popoverState.layoutPending = false;
+                $previewContainer.css("visibility", "");
+            }
+        });
+    }
+
+    /** Wait for layout events to settle when there is no explicit panel-resize lifecycle. */
+    function schedulePreviewLayout() {
+        if (!popoverState || !popoverState.visible) { return; }
+        suspendPreviewLayout();
+        if (!resizingPanels.size) {
+            layoutTimer = setTimeout(restorePreviewLayout, LAYOUT_SETTLE_DELAY);
+        }
+    }
+
+    /**
+     * Suspend positioning throughout a panel drag, including any forwarded resize events.
+     * @param {jQuery.Event} event Resize-start event whose target identifies the resizing panel.
+     */
+    function onPanelResizeStart(event) {
+        resizingPanels.add(event.target);
+        if (popoverState && popoverState.visible) {
+            suspendPreviewLayout();
+        } else {
+            hidePreview(false);
+        }
+    }
+
+    /**
+     * Restore the popup after all panels participating in the drag have finished resizing.
+     * @param {jQuery.Event} event Resize-end event for the panel that finished resizing.
+     */
+    function onPanelResizeEnd(event) {
+        if (resizingPanels.delete(event.target) && !resizingPanels.size) {
+            restorePreviewLayout();
+        }
     }
 
     // Preview hide/show logic ------------------------------------------------
@@ -382,17 +512,15 @@ define(function (require, exports, module) {
             $previewContainer.show();
             popoverState.visible = true;
             positionPreview(editor);
-
-            exports.on(_EVENT_POPUP_CONTENT_MUTATED, ()=>{
-                if(!popoverState || !editor){
-                    return;
-                }
-                positionPreview(editor);
-            });
         }
     }
 
-    let currentQueryID = 0;
+    /**
+     * Render only the latest provider result; dismissed requests cannot reopen the popup.
+     * @param {Editor} editor Editor providing the selected text.
+     * @param {Array<Object>} selectionObj Selected ranges supplied to providers.
+     * @return {Promise<void>} Resolves after the provider results have been considered.
+     */
     async function showPreview(editor, selectionObj) {
         if (!editor) {
             hidePreview();
@@ -402,17 +530,20 @@ define(function (require, exports, module) {
         // Query providers and append to popoverState
         currentQueryID++;
         let savedQueryId = currentQueryID;
-        popoverState = await queryPreviewProviders(editor, selectionObj);
+        queryInProgress = true;
+        const result = await queryPreviewProviders(editor, selectionObj);
         if(savedQueryId === currentQueryID){
             // this is to prevent race conditions. For Eg., if the preview provider takes time to generate a preview,
             // another query might have happened while the last query is still in progress. So we only render the most
             // recent QueryID
+            queryInProgress = false;
+            popoverState = result;
             _renderPreview(editor);
         }
     }
 
     function handleMouseUp(event) {
-        if (!enabled) {
+        if (!enabled || resizingPanels.size) {
             return;
         }
 
@@ -421,7 +552,10 @@ define(function (require, exports, module) {
             // Button is down - don't show popovers while dragging
             return;
         }
-        setTimeout(()=>{
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+        popupTimer = setTimeout(()=>{
+            popupTimer = null;
             // we do this delayed popup so that we get a consistent view of the editor selections
             let editor = EditorManager.getActiveEditor();
             if(editor){
@@ -431,13 +565,14 @@ define(function (require, exports, module) {
     }
 
     function _processMouseMove(event) {
+        if (!enabled || resizingPanels.size || popupTimer !== null || queryInProgress ||
+            (popoverState && popoverState.visible)) {
+            return;
+        }
         lastMouseX= event.clientX;
         lastMouseY= event.clientY;
         if (event.buttons !== 0) {
             // Button is down - don't show popovers while dragging
-            return;
-        }
-        if (isSelectionViewShown()) {
             return;
         }
         let editor = EditorManager.getHoveredEditor(event);
@@ -455,7 +590,6 @@ define(function (require, exports, module) {
                 return;
             }
             if (editor.posWithinRange(mousePos, selection.start, selection.end, true)) {
-                popoverState = {};
                 showPreview(editor, selectionObj);
             }
         }
@@ -497,7 +631,7 @@ define(function (require, exports, module) {
 
             } else {
                 editorHolder.removeEventListener("mouseup", handleMouseUp, true);
-                editorHolder.addEventListener("mousemove", _processMouseMove, true);
+                editorHolder.removeEventListener("mousemove", _processMouseMove, true);
                 editorHolder.removeEventListener("scroll", hidePreview, true);
 
                 // Cleanup doc "change" listener
@@ -526,7 +660,7 @@ define(function (require, exports, module) {
     }
 
     function _handleEscapeKeyEvent(event) {
-        if(isSelectionViewShown()){
+        if(popoverState && popoverState.visible){
             hidePreview();
             event.preventDefault();
             event.stopPropagation();
@@ -543,6 +677,14 @@ define(function (require, exports, module) {
             childList: true, // Observe direct children
             subtree: true // And lower descendants too
         });
+        exports.on(_EVENT_POPUP_CONTENT_MUTATED, function () {
+            if (isSelectionViewShown()) {
+                positionPreview(popoverState.editor);
+            }
+        });
+        WorkspaceManager.on("workspaceUpdateLayout", schedulePreviewLayout);
+        $(document).on(Resizer.EVENT_PANEL_RESIZE_START + ".selectionView", onPanelResizeStart)
+            .on(Resizer.EVENT_PANEL_RESIZE_END + ".selectionView", onPanelResizeEnd);
 
         // Register command
         // Insert menu at specific pos since this may load before OR after code folding extension
@@ -561,12 +703,12 @@ define(function (require, exports, module) {
     });
 
     /**
-     * If quickview is displayed and visible on screen
+     * Whether the selection popup is visible, excluding temporary suspension during layout changes.
      * @return {boolean}
      * @type {function}
      */
     function isSelectionViewShown() {
-        return (popoverState && popoverState.visible) || false;
+        return (popoverState && popoverState.visible && !popoverState.layoutPending) || false;
     }
 
     // For unit testing
@@ -575,5 +717,6 @@ define(function (require, exports, module) {
 
     exports.registerSelectionViewProvider = registerSelectionViewProvider;
     exports.removeSelectionViewProvider   = removeSelectionViewProvider;
+    exports.hidePreview = hidePreview;
     exports.isSelectionViewShown = isSelectionViewShown;
 });

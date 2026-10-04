@@ -10,6 +10,7 @@ import {
 import { on, emit } from "../core/events.js";
 import { getSelectionRect } from "./editor.js";
 import { t, tp } from "../core/i18n.js";
+import { getState } from "../core/state.js";
 
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
 const mod = isMac ? "\u2318" : "Ctrl";
@@ -19,6 +20,22 @@ let contentEl = null;
 let rafId = null;
 let linkMode = false;
 let savedRange = null;
+let askAIEnabled = false;
+let initialized = false;
+
+on("ai:enabled", enabled => {
+    askAIEnabled = enabled;
+    initFormatBar(document.getElementById("viewer-content"));
+    buildBar();
+    updatePosition();
+});
+on("state:editMode", () => {
+    if (initialized) { hide(); buildBar(); }
+});
+on("ai:selection-unavailable", () => {
+    const button = document.getElementById("fb-ask-ai");
+    if (button) { button.textContent = t("format.selection_unavailable"); }
+});
 
 const buttons = [
   { id: "fb-bold", icon: "bold", command: "bold", tooltipKey: "format.bold", stateKey: "bold" },
@@ -36,12 +53,16 @@ function buildBar() {
 
   let html = '<div class="format-bar-buttons">';
   for (const btn of buttons) {
+    if (!getState().editMode) { continue; }
     if (btn === null) {
       html += '<div class="toolbar-divider"></div>';
     } else {
       const tooltip = tp(btn.tooltipKey, { mod });
       html += `<button class="toolbar-btn format-btn" id="${btn.id}" data-tooltip="${tooltip}" aria-pressed="false" tabindex="-1"><i data-lucide="${btn.icon}"></i></button>`;
     }
+  }
+  if (askAIEnabled) {
+      html += '<button class="toolbar-btn format-ask-ai" id="fb-ask-ai" tabindex="-1"></button>';
   }
   html += "</div>";
 
@@ -52,6 +73,16 @@ function buildBar() {
   </div>`;
 
   bar.innerHTML = html;
+
+  const askAI = document.getElementById("fb-ask-ai");
+  if (askAI) {
+      askAI.textContent = t("format.ask_ai");
+      askAI.addEventListener("mousedown", event => event.preventDefault());
+      askAI.addEventListener("click", () => {
+          const rect = askAI.getBoundingClientRect();
+          emit("ai:attach-selection", {rect: {x: rect.left + rect.width / 2, y: rect.top + rect.height / 2}});
+      });
+  }
 
   createIcons({
     icons: { Bold, Italic, Strikethrough, Underline, Code, Link },
@@ -201,6 +232,8 @@ function updatePosition() {
   if (rafId) cancelAnimationFrame(rafId);
   rafId = requestAnimationFrame(() => {
     rafId = null;
+    contentEl = document.getElementById("viewer-content");
+    if (!getState().editMode && !askAIEnabled) { hide(); return; }
     if (linkMode) return; // don't reposition while editing link
     const sel = window.getSelection();
     if (!sel || sel.isCollapsed || !sel.rangeCount) {
@@ -227,7 +260,9 @@ function updatePosition() {
     // Skip if selection is inside a code block — formatting doesn't apply
     const anchorEl = sel.anchorNode.nodeType === Node.ELEMENT_NODE
       ? sel.anchorNode : sel.anchorNode.parentElement;
-    if (anchorEl && anchorEl.closest("pre")) {
+    const inCode = !!(anchorEl && anchorEl.closest("pre"));
+    bar.classList.toggle("ai-code-selection", inCode);
+    if (inCode && !askAIEnabled) {
       hide();
       return;
     }
@@ -266,13 +301,15 @@ function onSelectionState(state) {
 
 export function initFormatBar(editorEl) {
   contentEl = editorEl;
+  if (initialized) { buildBar(); return; }
+  initialized = true;
   buildBar();
 
   document.addEventListener("selectionchange", updatePosition);
   document.addEventListener("mousedown", onDocumentMousedown);
   // Fallback for WebKitGTK
-  contentEl.addEventListener("mouseup", updatePosition);
-  contentEl.addEventListener("keyup", updatePosition);
+  document.addEventListener("mouseup", updatePosition);
+  document.addEventListener("keyup", updatePosition);
   // Dismiss on scroll
   const appViewer = document.getElementById("app-viewer");
   if (appViewer) {
@@ -286,13 +323,12 @@ export function initFormatBar(editorEl) {
 }
 
 export function destroyFormatBar() {
+  initialized = false;
   hide();
   document.removeEventListener("selectionchange", updatePosition);
   document.removeEventListener("mousedown", onDocumentMousedown);
-  if (contentEl) {
-    contentEl.removeEventListener("mouseup", updatePosition);
-    contentEl.removeEventListener("keyup", updatePosition);
-  }
+  document.removeEventListener("mouseup", updatePosition);
+  document.removeEventListener("keyup", updatePosition);
   if (bar) bar.innerHTML = "";
   contentEl = null;
   linkMode = false;

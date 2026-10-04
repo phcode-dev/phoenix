@@ -1410,6 +1410,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "EnterPlanMode", "ExitPlanMode",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__searchEditorBuffers",
+            "mcp__phoenix-editor__getRenderedMdSelectionFollowUp",
             "mcp__phoenix-editor__searchImages",
             "mcp__phoenix-editor__previewImages",
             "mcp__phoenix-editor__useImage",
@@ -1438,6 +1439,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 tools: ["Read", "Glob", "Grep",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__searchEditorBuffers",
+                    "mcp__phoenix-editor__getRenderedMdSelectionFollowUp",
                     "mcp__phoenix-editor__searchImages",
                     "mcp__phoenix-editor__previewImages",
                     "mcp__phoenix-editor__takeScreenshot",
@@ -1456,6 +1458,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     "mcp__phoenix-editor__useImage",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__searchEditorBuffers",
+                    "mcp__phoenix-editor__getRenderedMdSelectionFollowUp",
                     "mcp__phoenix-editor__takeScreenshot",
                     "mcp__phoenix-editor__execJsInLivePreview",
                     "mcp__phoenix-editor__execJsInEditor",
@@ -2335,7 +2338,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     message: { role: "user", content: contentBlocks },
                     parent_tool_use_id: null
                 };
-            })();
+            }());
         }
 
         const result = queryFn({
