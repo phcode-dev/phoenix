@@ -68,6 +68,36 @@ Each Builder process owns its localhost WebSocket listener and stdio session. A 
 
 Builder binds to `localhost` and intentionally trusts every renderer Origin, including custom `phtaur://…` and `phtauri://…` URLs. The listener is for trusted development apps. The optional remote framework has separate authentication for workers and its dashboard.
 
+### Enable Builder MCP in a production desktop build
+
+From the repository root or this `phoenix-builder-mcp` directory, run:
+
+```sh
+npm run enableBuilderMcpInProd
+```
+
+The single [Node.js script](enable-in-prod/index.cjs) works on Windows, macOS and Linux and needs
+no npm dependencies. It asks whether to **Enable for today**, **Disable**, or **Cancel** (the default).
+After you choose an action, it requests `sudo` access on Linux/macOS or Windows administrator
+approval through UAC. You do not need to run npm itself as administrator.
+
+It sets today's **local** date in `prodMCPOverrideDate` in the existing system override file:
+
+| Platform | File |
+| --- | --- |
+| Windows | `C:\Program Files\Phoenix Code Control\phoenix_override_config.json` |
+| macOS | `/Library/Application Support/Phoenix Code Control/phoenix_override_config.json` |
+| Linux | `/etc/phoenix-code-control/phoenix_override_config.json` |
+
+Other override settings are preserved. Disable removes only the Builder permission, deleting the
+file if no settings remain. Invalid JSON is left untouched and reported instead of overwritten.
+
+**Restart the production app twice after enabling or disabling.** Boot uses a cached permission:
+the first start refreshes it from the file and the second applies it. The permission is valid only
+for that local calendar day; run this command again on another day to renew it. This does not
+disconnect an already running session. Start the Builder MCP server separately using the setup
+above; the script only manages the desktop app's permission file.
+
 ### Optional remote machines
 
 Use two independent MCP servers: **Phoenix Builder** for app interaction, screenshots and Jasmine tests, and **remote-control** for machine discovery, remote commands, file transfers, Git sync and agent coordination. Builder has no framework package dependency and opens no orchestrator agent session. Local Builder use needs no remote framework.
