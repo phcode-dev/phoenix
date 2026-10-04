@@ -167,7 +167,12 @@ export function captureSelection(content, source, filePath) {
     const context = {startLine: blocks[0].startLine, endLine: blocks.at(-1).endLine};
     const rendered = {startLine: index.text.slice(0, start).split("\n").length,
         endLine: index.text.slice(0, end - 1).split("\n").length};
-    const selectionId = crypto.randomUUID();
+    // Repeated Ask AI clicks on the same rendered revision reuse the attachment snapshot.
+    const existing = Array.from(snapshots.entries()).find(([, snapshot]) => snapshot.filePath === filePath &&
+        snapshot.start === start && snapshot.end === end && snapshot.index.source === source &&
+        snapshot.index.text === index.text);
+    const selectionId = existing ? existing[0] : crypto.randomUUID();
+    snapshots.delete(selectionId);
     snapshots.set(selectionId, {index, start, end, filePath, range: range.cloneRange(), selectedText: range.toString(), content});
     while (snapshots.size > MAX_SNAPSHOTS) { snapshots.delete(snapshots.keys().next().value); }
     const lines = source.split("\n");
