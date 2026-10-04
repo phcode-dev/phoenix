@@ -461,8 +461,9 @@ define(function (require, exports, module) {
         // not steal focus. Calling preventDefault() on mousedown prevents
         // focus from going to the click target.
         $("html").on("mousedown", ".no-focus", function (e) {
-            // Text fields should always be focusable.
-            const $target = $(e.target),
+            // Shadow DOM retargets e.target to its host; text fields inside it must still be focusable.
+            const eventPath = e.originalEvent && e.originalEvent.composedPath ? e.originalEvent.composedPath() : [];
+            const $target = $(eventPath[0] || e.target),
                 isFormElement =
                     $target.is("input") ||
                     $target.is("textarea") ||
