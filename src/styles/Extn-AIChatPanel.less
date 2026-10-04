@@ -4480,104 +4480,50 @@
         .ai-context-chip-icon { color: #e8a838; }
     }
 
-    /* ── Image preview strip (between context bar and textarea) ──────── */
+    /* Comfortable attachment tray. The viewport adapts to the composer's available height. */
     .ai-chat-image-preview {
         display: none;
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 6px 8px;
+        margin: 0 4px 9px;
+        &.has-images { display: block; }
+    }
 
-        &.has-images {
-            display: flex;
-        }
+    .ai-attachment-count {
+        color: @project-panel-text-2;
+        font-size: @ai-text-secondary;
+        margin-bottom: 8px;
+    }
 
-        .ai-image-thumb {
-            position: relative;
+    .ai-attachment-viewport { position: relative; }
+    .ai-attachment-grid {
+        --ai-attachment-card-width: 169px;
+        display: grid;
+        grid-template-columns: ~"repeat(auto-fill, minmax(min(100%, 160px), 1fr))";
+        gap: 8px;
+        padding: 1px 1px 4px;
+        max-height: 269px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+    }
 
-            img {
-                display: block;
-                max-width: 60px;
-                max-height: 48px;
-                object-fit: cover;
-                border-radius: 4px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                cursor: pointer;
-                .ai-transparency-backdrop(4px);
-            }
-
-            .ai-image-remove {
-                position: absolute;
-                top: -8px;
-                right: -8px;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                background: rgba(0, 0, 0, 0.6);
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                color: #fff;
-                font-size: @ai-text-secondary;
-                line-height: 1;
-                padding: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: background 150ms, color 150ms;
-
-                &:hover {
-                    background: rgba(255, 255, 255, 0.25);
-                    color: #fff;
-                }
-            }
-        }
-
-        .ai-file-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 6px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 4px;
-            font-size: @ai-text-meta;
-            color: @project-panel-text-2;
-            max-width: 150px;
-            position: relative;
-
-            .ai-file-chip-name {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-            .ai-file-remove {
-                position: absolute;
-                top: -6px;
-                right: -6px;
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.12);
-                border: 1px solid rgba(255, 255, 255, 0.18);
-                color: rgba(255, 255, 255, 0.7);
-                font-size: @ai-text-meta;
-                padding: 0;
-                display: none;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: background 150ms, color 150ms;
-
-                &:hover {
-                    background: rgba(255, 255, 255, 0.22);
-                    color: #fff;
-                }
-            }
-
-            &:hover .ai-file-remove {
-                display: flex;
-            }
-        }
+    .ai-attachment-more {
+        position: absolute;
+        right: 14px;
+        z-index: 2;
+        padding: 4px 9px;
+        border: 1px solid @project-panel-text-2;
+        border-radius: 14px;
+        background: @bc-ai-sidebar-bg;
+        color: @project-panel-text-1;
+        box-shadow: 0 2px 8px fade(#000, 50%);
+        font-family: inherit;
+        font-size: @ai-text-secondary;
+        line-height: 18px;
+        cursor: pointer;
+        &[hidden] { display: none; }
+        &.ai-attachment-more-above { top: 7px; }
+        &.ai-attachment-more-below { bottom: 7px; }
+        &:hover { background: lighten(@bc-ai-sidebar-bg, 8%); }
     }
 
     .ai-attach-btn {
@@ -6609,3 +6555,160 @@
         color: @project-panel-text-2;
     }
 }
+
+.ai-selection-actions {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin: -4px;
+    gap: 3px;
+    color: @bc-text;
+
+    button {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        height: 28px;
+        padding: 4px 8px;
+        border: 0;
+        border-radius: 3px;
+        background: transparent;
+        color: inherit;
+        font-family: @sansFontFamily;
+        font-size: @label-font-size;
+        line-height: 20px;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:hover { background: fade(@bc-text, 8%); }
+        &:active, &[aria-expanded="true"] { background: fade(@bc-text, 14%); }
+        &:focus-visible {
+            outline: 1px solid @bc-primary-btn-border;
+            outline-offset: -1px;
+        }
+    }
+
+    .ai-selection-options {
+        width: 27px;
+        padding: 4px 0;
+        border-left: 1px solid fade(@bc-text, 18%);
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .dark & {
+        color: @dark-bc-text;
+        button:hover { background: fade(@dark-bc-text, 8%); }
+        button:active, button[aria-expanded="true"] { background: fade(@dark-bc-text, 14%); }
+        button:focus-visible { outline-color: @dark-bc-text-link; }
+        .ai-selection-options { border-left-color: fade(@dark-bc-text, 18%); }
+    }
+}
+
+.ai-attachment-flight {
+    position: fixed;
+    z-index: 9999999;
+    pointer-events: none;
+    padding: 7px 10px;
+    border: 1px solid @project-panel-text-2;
+    border-radius: 5px;
+    color: @project-panel-text-1;
+    background: @bc-ai-sidebar-bg;
+    box-shadow: 0 2px 8px fade(#000, 40%);
+    font-size: @ai-text-body;
+}
+
+.ai-chat-panel .ai-attachment-card {
+    position: relative;
+    box-sizing: border-box;
+    height: 128px;
+    min-width: 0;
+    border: 1px solid fade(#fff, 16%);
+    border-radius: 7px;
+    background: fade(#fff, 3%);
+    overflow: hidden;
+    font-family: inherit;
+    font-size: @ai-text-body;
+    color: @project-panel-text-1;
+    &:hover { border-color: @project-panel-text-2; }
+
+    .ai-attachment-open {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        font: inherit;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+        overflow: hidden;
+        img {
+            width: 100%;
+            height: 99px;
+            min-height: 0;
+            object-fit: contain;
+            padding: 4px;
+            box-sizing: border-box;
+            .ai-transparency-backdrop(6px);
+        }
+    }
+    .ai-attachment-heading {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        width: 100%;
+        padding: 7px 27px 0 9px;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        line-height: 18px;
+        i { font-size: @ai-text-secondary; color: @project-panel-text-2; }
+        .ai-file-chip-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    }
+    .ai-attachment-excerpt {
+        display: block;
+        width: 100%;
+        padding: 0 9px;
+        margin-top: 6px;
+        box-sizing: border-box;
+        line-height: 18px;
+        span { display: block; overflow: hidden; white-space: pre; text-overflow: ellipsis; }
+    }
+    .ai-attachment-caption {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: auto;
+        padding: 5px 8px;
+        line-height: 18px;
+        border-top: 1px solid fade(#fff, 6%);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .ai-attachment-range { font-size: @ai-text-meta; color: @project-panel-text-2; }
+    .ai-attachment-remove {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 1px solid fade(#fff, 24%);
+        border-radius: 50%;
+        background: @bc-ai-sidebar-bg;
+        color: @project-panel-text-1;
+        font: inherit;
+        line-height: 1;
+        cursor: pointer;
+    }
+    button:focus-visible { outline: 2px solid @project-panel-text-2; outline-offset: -3px; }
+}
+.ai-user-files .ai-attachment-card { width: 180px; }

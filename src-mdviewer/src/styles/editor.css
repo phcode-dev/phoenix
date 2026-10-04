@@ -207,6 +207,20 @@
   height: 16px;
 }
 
+.format-bar .format-ask-ai {
+    width: auto;
+    padding: 0 9px;
+    border-left: 1px solid var(--color-border);
+    border-radius: 0;
+    white-space: nowrap;
+    font: inherit;
+}
+
+.format-bar.ai-code-selection .format-btn,
+.format-bar.ai-code-selection .toolbar-divider {
+    display: none;
+}
+
 .format-bar .toolbar-divider {
   height: 16px;
   margin: 0 2px;
