@@ -95,7 +95,6 @@ define(function (require, exports, module) {
     let _askAIEmptyHandler = null;
     let _pendingSelectionReveal = null;
     let _requestedAskAIOrigin = null;
-    const _renderedRequests = new Map();
     // Stacks of cursor positions { sourceLine, offsetInBlock } for undo/redo restore
     let _cursorUndoStack = [];
     let _cursorRedoStack = [];
@@ -277,11 +276,6 @@ define(function (require, exports, module) {
                 _requestedAskAIOrigin = null;
                 if (_askAIEmptyHandler) { _askAIEmptyHandler(); }
                 break;
-            case "mdviewrRenderedLines": {
-                const pending = _renderedRequests.get(data.requestId);
-                if (pending) { pending(data.result); }
-                break;
-            }
             case "embeddedIframeHrefClick":
                 _handleHrefClick(data);
                 break;
@@ -1396,19 +1390,27 @@ define(function (require, exports, module) {
      * @return {Promise<Object>} Marked snapshot lines, or an error if the snapshot is unavailable.
      */
     function getRenderedMdSelectionFollowUp(params) {
-        const frame = _getIframeWindow();
-        if (!_active || !frame) {
-            return Promise.resolve({error: "Open Markdown Live Preview to read its snapshots."});
+        // The persistent viewer retains attachment snapshots even when HTML or no preview is showing.
+        const frame = _mdIframeRef && _mdIframeRef.isConnected && _mdIframeRef.contentWindow;
+        if (!frame) {
+            return Promise.resolve({error: "Markdown selection snapshot unavailable. Attach the selection again."});
         }
         return new Promise(resolve => {
             const requestId = crypto.randomUUID();
             const timeout = setTimeout(() => finish({error: "Markdown preview did not respond."}), 3000);
             function finish(result) {
                 clearTimeout(timeout);
-                _renderedRequests.delete(requestId);
+                window.removeEventListener("message", onResult);
                 resolve(result);
             }
-            _renderedRequests.set(requestId, finish);
+            function onResult(event) {
+                const data = event.data;
+                if (event.source === frame && data && data.type === "MDVIEWR_EVENT" &&
+                        data.eventName === "mdviewrRenderedLines" && data.requestId === requestId) {
+                    finish(data.result);
+                }
+            }
+            window.addEventListener("message", onResult);
             frame.postMessage({type: "MDVIEWR_RENDERED_LINES", requestId, params}, "*");
         });
     }
@@ -1419,7 +1421,7 @@ define(function (require, exports, module) {
     exports.getRenderedMdSelectionFollowUp = getRenderedMdSelectionFollowUp;
     exports._getDebugState = function () {
         return { _active, _iframeReady, _cursorSyncEnabled, _syncingFromIframe,
-            hasDoc: !!_doc, hasCursorHandler: !!_cursorHandler,
+            hasDoc: !!_doc, doc: _doc, hasCursorHandler: !!_cursorHandler,
             iframeId: _$iframe && _$iframe[0] ? _$iframe[0].id : null,
             hasIframeWindow: !!(_$iframe && _$iframe[0] && _$iframe[0].contentWindow) };
     };

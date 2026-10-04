@@ -46,7 +46,7 @@ define(function (require, exports, module) {
             await awaitsFor(() => win.brackets.test.LiveDevMultiBrowser.status ===
                 win.brackets.test.LiveDevMultiBrowser.STATUS_ACTIVE, "live preview server", 20000);
             sync = win.brackets.getModule("extensionsIntegrated/Phoenix-live-preview/MarkdownSync");
-            original = win.brackets.test.AIChatPanel && win.brackets.test.AIChatPanel.attachMarkdownSelection;
+            original = win.brackets.test.AILivePreviewChat && win.brackets.test.AILivePreviewChat.attachSelection;
         }, 40000);
         beforeEach(async function () {
             received = [];
@@ -55,7 +55,7 @@ define(function (require, exports, module) {
             editor = win.brackets.test.EditorManager.getCurrentFullEditor();
             await awaitsFor(() => {
                 frame = win.document.getElementById("panel-md-preview-frame");
-                return sync._getDebugState()._active && frame && frame.contentWindow.__getCurrentContent &&
+                return sync._getDebugState().doc === editor.document && frame && frame.contentWindow.__getCurrentContent &&
                     frame.contentWindow.__getCurrentContent() === editor.document.getText() &&
                     !frame.contentWindow.__isSuppressingContentChange() && frame.contentDocument.getElementById("fb-ask-ai");
             },
@@ -65,7 +65,10 @@ define(function (require, exports, module) {
         });
         afterEach(async function () {
             if (frame) { frame.contentWindow.getSelection().removeAllRanges(); }
-            await win.brackets.test.CommandManager.execute(commands.FILE_CLOSE, {_forceClose: true});
+            await win.brackets.test.CommandManager.execute(commands.FILE_CLOSE_ALL, {_forceClose: true});
+            // An empty working set retains the last preview; switch away to detach its document before reopening it.
+            await SpecRunnerUtils.openProjectFiles(["simple.html"]);
+            await awaitsFor(() => !sync.isActive(), "Markdown document detached");
         });
         afterAll(async function () {
             if (sync) { sync.setAskAIHandler(original || null); }
@@ -75,6 +78,7 @@ define(function (require, exports, module) {
 
         /** Select literal rendered text, then click the real selection-toolbar action. */
         async function attach(selector, text, start = 0, end = text.length, occurrence = 0) {
+            const previousCount = received.length;
             const doc = frame.contentDocument;
             const element = doc.querySelectorAll("#viewer-content " + selector)[occurrence];
             const walker = doc.createTreeWalker(element, win.NodeFilter.SHOW_TEXT);
@@ -90,8 +94,8 @@ define(function (require, exports, module) {
             doc.dispatchEvent(new win.Event("selectionchange"));
             await awaitsFor(() => doc.getElementById("format-bar").classList.contains("visible"), "selection bar visible");
             doc.getElementById("fb-ask-ai").click();
-            await awaitsFor(() => received.length === 1, "selection attached");
-            return received[0].markdownSelection;
+            await awaitsFor(() => received.length === previousCount + 1, "selection attached");
+            return received[previousCount].markdownSelection;
         }
         it("offers only Ask AI in Reader mode and preserves a partial bold selection", async function () {
             const selection = await attach("strong", "bold words", 2, 8);
@@ -145,6 +149,52 @@ define(function (require, exports, module) {
             sync.revealSelection(editor.document.file.fullPath, {selectionId: selection.selectionId});
             await awaitsFor(() => frame.contentWindow.getSelection().toString() === "ld wor", "exact preview selection");
         });
+        it("reuses the same snapshot for repeated selections and distinguishes different character ranges", async function () {
+            const first = await attach("strong", "bold words", 2, 8);
+            const again = await attach("strong", "bold words", 2, 8);
+            const other = await attach("strong", "bold words", 3, 8);
+            expect(again.selectionId).toBe(first.selectionId);
+            expect(other.selectionId).not.toBe(first.selectionId);
+        });
+        it("keeps attachment snapshots readable after switching to HTML and hiding Live Preview", async function () {
+            const selection = await attach("strong", "bold words", 2, 8);
+            const panel = win.brackets.test.WorkspaceManager.getPanelForID("live-preview-panel");
+            await SpecRunnerUtils.openProjectFiles(["simple.html"]);
+            await awaitsFor(() => !sync.isActive(), "HTML preview active");
+            panel.hide();
+            try {
+                const result = await sync.getRenderedMdSelectionFollowUp({selectionId: selection.selectionId,
+                    lineStart: selection.rendered.startLine, lineEnd: selection.rendered.endLine});
+                expect(result.error).toBeUndefined();
+                expect(result.lines.some(line => line.text.includes("⟦ld wor⟧"))).toBe(true);
+                expect(panel.isVisible()).toBe(false);
+            } finally { panel.show(); }
+        });
+        if (Phoenix.isNativeApp) {
+            it("adds real Markdown selections to the shared dialog without opening the AI sidebar", async function () {
+                const chat = win.brackets.test.AILivePreviewChat;
+                const tabs = win.brackets.getModule("view/SidebarTabs");
+                tabs.setActiveTab(tabs.SIDEBAR_TAB_FILES);
+                chat.destroy();
+                chat.init();
+                sync.setAskAIHandler(file => { received.push(file); return chat.attachSelection(file); });
+                try {
+                    const first = await attach("strong", "bold words", 2, 8);
+                    await attach("strong", "bold words", 2, 8);
+                    expect(chat._test.getState().open).toBe(true);
+                    expect(chat._test.getState().files.length).toBe(1);
+                    expect(chat._test.getState().files[0].markdownSelection.selectionId).toBe(first.selectionId);
+                    expect(tabs.getActiveTab()).toBe(tabs.SIDEBAR_TAB_FILES);
+                    const count = chat._test.getState().files.length;
+                    win.document.getElementById("live-preview-ask-ai").click();
+                    expect(chat._test.getState().open).toBe(false);
+                    expect(chat._test.getState().files.length).toBe(count);
+                    win.document.getElementById("live-preview-ask-ai").click();
+                    expect(chat._test.getState().open).toBe(true);
+                    expect(chat._test.getState().files.length).toBe(count);
+                } finally { chat.destroy(); }
+            });
+        }
         it("restores a queued selection after reopening a closed preview", async function () {
             const selection = await attach("strong", "bold words", 2, 8);
             frame.contentWindow.getSelection().removeAllRanges();
@@ -229,17 +279,15 @@ define(function (require, exports, module) {
             expect((await read(first)).lines[0].text).toBe("Hello ⟦world⟧ world!");
             expect((await read(second)).lines[0].text).toBe("Hello world ⟦world⟧!");
         });
-        it("attaches the existing selection through the titlebar action and hints when empty", async function () {
+        it("returns the current selection or reports an empty explicit selection request", async function () {
             await attach("strong", "bold words");
             received = [];
             let hinted = false;
             sync.setAskAIHandler(file => received.push(file), () => { hinted = true; });
-            const button = win.document.getElementById("live-preview-ask-ai");
-            await awaitsFor(() => button && !button.hidden, "Markdown titlebar action");
-            button.click();
-            await awaitsFor(() => received.length === 1, "titlebar attachment");
+            sync.requestAskAISelection();
+            await awaitsFor(() => received.length === 1, "requested attachment");
             frame.contentWindow.getSelection().removeAllRanges();
-            button.click();
+            sync.requestAskAISelection();
             await awaitsFor(() => hinted, "empty selection hint");
         });
         it("flushes a pending visual edit before collecting source context", async function () {
