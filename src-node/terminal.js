@@ -24,6 +24,7 @@ const path = require("path");
 const which = require("which");
 const {execFile} = require("child_process");
 const NodeConnector = require("./node-connector");
+const CliConnector = require("./ai-cli-connector");
 
 const CONNECTOR_ID = "phoenix_terminal";
 const nodeConnector = NodeConnector.createNodeConnector(CONNECTOR_ID, exports);
@@ -112,9 +113,10 @@ function _appendBuffer(id, data) {
  * @param {number} params.cols - Column count
  * @param {number} params.rows - Row count
  * @param {Object} params.env - Additional environment variables
+ * @param {string} [params.connectorSessionId] - AI connector owned by this terminal until exit
  * @returns {{id: string, pid: number, shell: string}}
  */
-exports.createTerminal = async function ({id, shell, args, cwd, cols, rows, env}) {
+exports.createTerminal = async function ({id, shell, args, cwd, cols, rows, env, connectorSessionId}) {
     if (terminals[id]) {
         throw new Error(`Terminal with id ${id} already exists`);
     }
@@ -132,6 +134,8 @@ exports.createTerminal = async function ({id, shell, args, cwd, cols, rows, env}
     }
 
     let ptyProcess;
+    // A rejected duplicate binding must not revoke a session already owned by another PTY.
+    if (connectorSessionId) { CliConnector.bindTerminal(connectorSessionId, id); }
     try {
         ptyProcess = pty.spawn(shell, args || [], {
             name: "xterm-256color",
@@ -141,6 +145,7 @@ exports.createTerminal = async function ({id, shell, args, cwd, cols, rows, env}
             env: termEnv
         });
     } catch (spawnErr) {
+        if (connectorSessionId) { await CliConnector.revokeSession(connectorSessionId, "spawn_failed"); }
         console.error("Terminal: pty.spawn failed:", spawnErr.message, spawnErr.stack);
         throw spawnErr;
     }
@@ -158,6 +163,7 @@ exports.createTerminal = async function ({id, shell, args, cwd, cols, rows, env}
     });
 
     ptyProcess.onExit(function ({exitCode, signal}) {
+        if (connectorSessionId) { CliConnector.revokeSession(connectorSessionId, "terminal_exit").catch(() => {}); }
         const exitingTerm = terminals[id];
         if (exitingTerm) {
             // Flush any remaining buffered output

@@ -67,6 +67,7 @@ const PhoenixFS = require('@phcode/fs/dist/phoenix-fs');
 const NodeConnector = require("./node-connector");
 const LivePreview = require("./live-preview");
 const MediaServer = require("./media-server");
+const CliConnector = require("./ai-cli-connector");
 require("./test-connection");
 require("./utils");
 require("./terminal");
@@ -184,6 +185,7 @@ let _idleExitMs = 0;
 let _idleExitTimer = null;
 
 function _shutdown(reason) {
+    CliConnector.close();
     lmdb.dumpDBToFileAndCloseDB()
         .catch(console.error)
         .finally(() => {
@@ -325,6 +327,7 @@ function autoAuth(req, res) {
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
+    if (CliConnector.handleRequest(req, res)) { return; }
     if (req.url.startsWith(PHOENIX_STATIC_SERVER_URL)) {
         // Remove '/Static<rand>' from the beginning of the URL and construct file path
         const url = new URL(req.url, `http://${req.headers.host}`);
@@ -383,6 +386,8 @@ NodeConnector.CreateNodeConnectorWSServer(server, PHOENIX_NODE_URL);
 // PhoenixFS.setDebugMode(true); // uncomment this line to enable more logging in phoenix fs lib
 
 LivePreview.CreateLivePreviewWSServer(server, PHOENIX_LIVE_PREVIEW_COMM_URL);
+CliConnector.attach(server);
+process.on("exit", CliConnector.close);
 // Start the HTTP server on port 3000
 server.listen(0, localhostOnly, () => {
     const port = server.address().port;

@@ -505,4 +505,6 @@ function CreateNodeConnectorWSServer(server, wssPath) {
 
 exports.CreateNodeConnectorWSServer = CreateNodeConnectorWSServer;
 exports.createNodeConnector = createNodeConnector;
+/** Whether a browser transport exists; CLI mutations must not queue across a disconnect. */
+exports.isConnected = () => !!(controlSocketMain && controlSocketMain.readyState === WebSocket.OPEN);
 global.createNodeConnector = createNodeConnector; //Add to global namespace for future node extensions
