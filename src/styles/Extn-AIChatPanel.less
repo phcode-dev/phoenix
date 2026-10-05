@@ -83,17 +83,21 @@
 
 /* ── Header ─────────────────────────────────────────────────────────── */
 .ai-chat-header {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr);
     align-items: center;
-    justify-content: center;
+    gap: 6px;
     position: relative;
-    padding: 10px 10px 9px 12px;
+    padding: 10px 10px 9px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     flex-shrink: 0;
 
     .ai-chat-title-group {
         display: flex;
         align-items: center;
+        flex: 0 1 auto;
+        min-width: 0;
+        margin: 0 auto;
         cursor: pointer;
         padding: 2px 6px;
         border-radius: 6px;
@@ -105,6 +109,7 @@
         }
 
         .ai-chat-title-chevron {
+            flex: none;
             margin-left: 5px;
             font-size: 9px;
             opacity: 0.5;
@@ -114,6 +119,7 @@
     .ai-chat-title-icon {
         display: inline-flex;
         align-items: center;
+        flex: none;
         margin-right: 5px;
         opacity: 0.6;
         color: @project-panel-text-2;
@@ -125,6 +131,10 @@
     }
 
     .ai-chat-title {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         font-weight: 400;
         font-size: @label-font-size;
         color: @project-panel-text-2;
@@ -132,23 +142,25 @@
     }
 
     .ai-chat-header-actions {
-        position: absolute;
-        right: 10px;
         display: flex;
         align-items: center;
+        flex: none;
+        justify-self: end;
         gap: 2px;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.5s ease;
     }
 
-    /* Left of the title: Back, then the model switcher. The group holds
-       the corner, so the switcher moves over while Back is there. */
+    /* Keep both control groups in the layout even while faded out, so
+       revealing them cannot cover the title or move it under the pointer. */
     .ai-chat-header-left {
-        position: absolute;
-        left: 10px;
         display: flex;
         align-items: center;
+        flex: 0 1 auto;
+        min-width: 0;
+        max-width: 100%;
+        justify-self: start;
         gap: 4px;
     }
 
@@ -191,6 +203,7 @@
     .ai-model-select {
         display: flex;
         align-items: center;
+        min-width: 0;
         gap: 5px;
         height: 26px;
         padding: 0 6px;
@@ -209,6 +222,7 @@
         }
 
         i {
+            flex: none;
             font-size: 9px;
             opacity: 0.7;
         }
@@ -238,6 +252,50 @@
         cursor: pointer;
     }
 
+    // Connection to Phoenix of the CLI on screen; shown by the panel only in the CLI modes,
+    // and only when the CLI was launched with one. The button opens its details and power control.
+    .ai-cli-connector-badge {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 4px;
+        background: transparent;
+        font-size: @menu-item-font-size;
+        color: @project-panel-text-2;
+        cursor: pointer;
+
+        &:hover,
+        &[aria-expanded="true"] {
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        &:focus-visible {
+            outline: 2px solid @ai-start-accent;
+            outline-offset: -2px;
+        }
+
+        &.ai-cli-connector-visible {
+            display: flex;
+        }
+        &[data-state="connecting"] {
+            opacity: 0.6;
+        }
+        &[data-state="connected"] {
+            color: #66bb6a;
+        }
+        &[data-state="paused"] {
+            color: #e0a84c;
+        }
+        &[data-state="ended"] {
+            color: #e57373;
+        }
+    }
+
     // Stop ends a running CLI, so it exists only in the CLI modes (below).
     .ai-stop-cli-btn {
         display: none;
@@ -254,6 +312,10 @@
 /* History and the model switcher are chat-UI-only concerns — the embedded
    CLI terminal has its own session/model handling. New + Settings stay. */
 .ai-chat-panel.ai-mode-cli {
+    .ai-chat-header-left {
+        flex: none;
+    }
+
     .ai-model-select,
     .ai-history-btn {
         display: none;
@@ -480,39 +542,122 @@
 }
 
 /* Show header actions on tab container hover */
-.ai-tab-container:hover .ai-chat-header-actions {
+.ai-tab-container:hover .ai-chat-header-actions,
+.ai-chat-header:focus-within .ai-chat-header-actions,
+.ai-chat-header.ai-cli-connection-open .ai-chat-header-actions {
     opacity: 1;
     pointer-events: auto;
     transition: opacity 0.15s ease;
 }
 
+/* A body-mounted popover can extend below the header without clipping the terminal. */
+.ai-cli-connection-popover {
+    position: fixed;
+    z-index: 1000;
+    box-sizing: border-box;
+    max-width: calc(100vw - 16px);
+    padding: 16px;
+    overflow: auto;
+    background: #303030;
+    color: @project-panel-text-1;
+    border: 1px solid #515151;
+    border-radius: 8px;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.44);
+    font-size: @ai-text-body;
+    line-height: @ai-line-compact;
+    outline: none;
+
+    .ai-cli-connection-heading { display: flex; align-items: center; gap: 10px; }
+    #ai-cli-connection-title { font-weight: 600; }
+    .ai-cli-connection-symbol {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        background: rgba(67, 133, 72, 0.14);
+        color: #8bd090;
+        font-size: 16px;
+    }
+    .ai-cli-connection-client,
+    .ai-cli-connection-description,
+    .ai-cli-connection-detail,
+    .ai-cli-connection-note {
+        color: #b6b6b6;
+        font-size: @ai-text-secondary;
+        line-height: 1.45;
+        margin-top: 3px;
+    }
+    .ai-cli-connection-status {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #a0d9a4;
+        margin: 15px 0 14px;
+        font-size: @ai-text-secondary;
+    }
+    .ai-cli-connection-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+    .ai-cli-connection-capability {
+        display: flex;
+        gap: 10px;
+        margin: 12px 0;
+        > i { flex: none; width: 18px; padding-top: 3px; color: #b6c0c5; text-align: center; }
+    }
+    .ai-cli-connection-footer { border-top: 1px solid #4a4a4a; margin: 16px -16px -16px; padding: 13px 16px 14px; }
+    .ai-cli-connection-power {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        border: 1px solid #666;
+        background: #393939;
+        color: #eee;
+        border-radius: 5px;
+        padding: 7px 10px;
+        font-family: inherit;
+        font-size: @ai-text-body;
+        line-height: @ai-line-compact;
+        cursor: pointer;
+        &:hover:not(:disabled) { background: #454545; border-color: #888; }
+        &:disabled { opacity: 0.5; cursor: default; }
+        &:focus-visible { outline: 2px solid @ai-start-accent; outline-offset: 2px; }
+    }
+    .ai-cli-connection-note { text-align: center; margin-top: 8px; }
+    .ai-cli-connection-error { color: #efaaaa; font-size: @ai-text-secondary; margin-top: 8px; }
+    &:not([data-state="connected"]) .ai-cli-connection-status { color: #b6b6b6; }
+    &[data-state="paused"] .ai-cli-connection-status { color: #e0a84c; }
+    &.ai-cli-connection-off {
+        .ai-cli-connection-symbol { background: rgba(255, 255, 255, 0.04); color: #aaa; }
+        .ai-cli-connection-capability { opacity: 0.45; }
+    }
+}
+
 .ai-tab-container:hover .ai-model-select,
 .ai-tab-container:hover .ai-back-btn,
+.ai-chat-header:focus-within .ai-model-select,
+.ai-chat-header:focus-within .ai-back-btn,
 .ai-tab-container .ai-model-select.dropdown-open {
     opacity: 1;
     pointer-events: auto;
     transition: opacity 0.15s ease;
 }
 
-/* Left-align title when sidebar is narrow to free space for action buttons.
-   The model switcher joins the flow so it can't overlap the title. */
-@container (max-width: 380px) {
+/* Compact both sides together so the title stays at the panel's centre. */
+@container (max-width: 560px) {
     .ai-chat-header {
-        justify-content: flex-start;
-
-        .ai-chat-header-left {
-            position: static;
-            flex: none;
-            margin-right: 8px;
-        }
-
         .ai-model-select {
             padding-left: 0;
+
+            .ai-model-select-label {
+                max-width: 72px;
+            }
         }
     }
 
-    /* The chat's header is the busier one: Back keeps only its arrow. */
-    .ai-chat-panel:not(.ai-mode-cli) .ai-back-btn {
+    .ai-chat-header .ai-back-btn {
         padding: 0 6px;
 
         .ai-back-text {
@@ -523,7 +668,7 @@
 
 /* When the header runs short, its whole action group keeps only icons, so
    Stop and New match History and Settings; their tooltips still name them. */
-@container (max-width: 380px) {
+@container (max-width: 560px) {
     .ai-chat-header-actions {
         .ai-new-session-btn,
         .ai-stop-cli-btn {
@@ -538,13 +683,31 @@
     }
 }
 
-/* Narrower still: in a CLI too, Back keeps only its arrow. */
-@container (max-width: 320px) {
-    .ai-chat-header .ai-back-btn {
-        padding: 0 6px;
+/* Below this width a centred title and both control groups cannot share
+   one row. Keep the title centred above them instead of covering it. */
+@container (max-width: 400px) {
+    .ai-chat-header {
+        grid-template-columns: minmax(0, 1fr) auto;
+        row-gap: 4px;
 
-        .ai-back-text {
-            display: none;
+        .ai-chat-title-group {
+            grid-column-start: 1;
+            grid-column-end: -1;
+            grid-row: 1;
+            max-width: 100%;
+        }
+
+        .ai-chat-header-left,
+        .ai-chat-header-actions {
+            grid-row: 2;
+        }
+
+        .ai-chat-header-left {
+            grid-column: 1;
+        }
+
+        .ai-chat-header-actions {
+            grid-column: 2;
         }
     }
 }
@@ -6010,6 +6173,11 @@
 .ai-notify-toast {
     cursor: pointer;
     .ai-notify-message { white-space: pre-line; }
+    .ai-notify-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
 }
 
 // The askInLivePreview card: the answer is given in the preview; the chat offers a way out.
@@ -6372,6 +6540,20 @@
         align-items: center;
         gap: 8px;
         padding: 3px 0;
+    }
+
+    .ai-usage-models-toggle {
+        display: block;
+        margin: 6px 0 0 auto;
+        padding: 2px 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+
+        &:hover { text-decoration: underline; }
+        &:focus-visible { outline: 2px solid @ai-start-accent; outline-offset: 2px; }
     }
 
     .ai-usage-dot {

@@ -1,6 +1,7 @@
 const NodeConnector = require("./node-connector");
 require("./test/test-cli-locator");
 require("./test/test-ai-image-tools");
+require("./test/test-ai-cli-connector");
 require("./test/test-npm-node-shim");
 require("./test/test-media-server");
 
