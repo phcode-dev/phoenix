@@ -56,7 +56,7 @@
     "file": "File"
   },
   "format": {
-    "ask_ai": "+ Ask AI",
+    "ask_ai": "Ask AI",
     "selection_unavailable": "Cannot locate this selection",
     "paragraph": "Paragraph",
     "heading1": "Heading 1",

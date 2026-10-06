@@ -80,7 +80,6 @@ async function writeLaunchFiles(session, nodePath = process.execPath) {
         args.push("--mcp-config", files.mcpConfigFile, "--settings", files.settingsFile,
             "--append-system-prompt-file", files.systemPromptFile, "--session-id", session.sessionId);
         if (session.scratchDir) { args.push("--add-dir", session.scratchDir); }
-        if (session.draftsDir) { args.push("--add-dir", session.draftsDir); }
     } else {
         // JSON string quoting is also valid TOML basic-string quoting for these paths. In
         // particular it escapes Windows backslashes instead of accidentally introducing \U.
