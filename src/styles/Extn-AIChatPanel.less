@@ -426,6 +426,56 @@
     }
 }
 
+/* Local transfer feedback: stays inside the terminal and lets typing/clicks pass through. */
+.hud-overlay.ai-cli-transfer-hud {
+    position: absolute;
+    top: auto;
+    bottom: 72px;
+    transform: translateX(-50%);
+    z-index: 6;
+    width: max-content;
+    max-width: calc(100% - 32px);
+    height: auto;
+    box-sizing: border-box;
+    flex-direction: row;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid fade(@ai-start-accent, 48%);
+    border-radius: 10px;
+    background: rgba(35, 45, 63, 0.97);
+    color: #e5efff;
+    box-shadow: 0 0 18px fade(@ai-start-accent, 16%), 0 6px 24px rgba(0, 0, 0, 0.3);
+    animation: ai-cli-transfer-hud 3s ease both;
+
+    i {
+        flex-shrink: 0;
+        font-size: 18px;
+        margin: 0;
+        color: @ai-start-accent;
+    }
+
+    .hud-label {
+        min-width: 0;
+        font-size: @ai-text-body;
+        font-weight: 400;
+        line-height: 1.4;
+        letter-spacing: normal;
+        white-space: normal;
+        overflow-wrap: break-word;
+    }
+}
+
+@keyframes ai-cli-transfer-hud {
+    0%, 100% { opacity: 0; }
+    8%, 85% { opacity: 1; }
+    15% { box-shadow: 0 0 24px fade(@ai-start-accent, 30%), 0 6px 24px rgba(0, 0, 0, 0.3); }
+    50%, 85% { box-shadow: 0 0 18px fade(@ai-start-accent, 16%), 0 6px 24px rgba(0, 0, 0, 0.3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hud-overlay.ai-cli-transfer-hud { animation: none; }
+}
+
 /* "Project switched" banner over the embedded CLI terminal — a dark,
    warm-tinted card in the panel's own elevation family (see @ai-warning-bg)
    with a left amber stripe + icon carrying the "pay attention" cue, rather
@@ -6738,6 +6788,16 @@
     }
 }
 
+.ai-sparkles-icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask: url("images/ai-sparkles.svg") center / contain no-repeat;
+    mask: url("images/ai-sparkles.svg") center / contain no-repeat;
+}
+
 .ai-selection-actions {
     display: inline-flex;
     align-items: center;
@@ -6772,20 +6832,13 @@
         }
     }
 
-    .ai-selection-options {
-        width: 27px;
-        padding: 4px 0;
-        border-left: 1px solid fade(@bc-text, 18%);
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
+    .ai-selection-ask { gap: 6px; }
 
     .dark & {
         color: @dark-bc-text;
         button:hover { background: fade(@dark-bc-text, 8%); }
         button:active, button[aria-expanded="true"] { background: fade(@dark-bc-text, 14%); }
         button:focus-visible { outline-color: @dark-bc-text-link; }
-        .ai-selection-options { border-left-color: fade(@dark-bc-text, 18%); }
     }
 }
 

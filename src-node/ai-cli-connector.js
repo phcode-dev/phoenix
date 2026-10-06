@@ -160,12 +160,6 @@ class CliConnector {
             await fs.promises.mkdir(session.directory, {mode: 0o700});
             session.scratchDir = input.askUiDir;
             if (session.scratchDir) { await fs.promises.mkdir(session.scratchDir, {recursive: true}); }
-            // Ask AI drafts (screenshots, long context) are written here; Claude asks before reading
-            // outside its directories, so its launch lists this one too.
-            if (input.cli === "claude") {
-                session.draftsDir = path.join(input.appSupportDir, "ai-cli-drafts");
-                await fs.promises.mkdir(session.draftsDir, {recursive: true});
-            }
             const launch = await writeLaunchFiles(session);
             session.bindTimer = setTimeout(() => this.revokeSession(sessionId, "launch_timeout"), 30000);
             session.bindTimer.unref();

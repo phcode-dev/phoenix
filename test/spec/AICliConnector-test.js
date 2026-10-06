@@ -53,12 +53,13 @@ define(function (require, exports, module) {
             expect(result.other.content[0].text).toContain("file.txt");
         });
 
-        it("builds all 16 tools with the installed Agent SDK and retains long tool budgets", async function () {
+        it("builds all 17 tools with the installed Agent SDK and retains long tool budgets", async function () {
             const result = await run("catalog");
-            expect(result.names.length).toBe(16);
+            expect(result.names.length).toBe(17);
             expect(result.sdkNames).toEqual(result.names);
             expect(result.names).toContain("getProblems");
             expect(result.names).toContain("askInLivePreview");
+            expect(result.names).toContain("getUserQuestion");
             expect(result.names).not.toContain("getUserClarification");
             expect(result.names).not.toContain("previewImages");
             expect(result.stateAlwaysLoaded).toBe(true);
@@ -69,6 +70,15 @@ define(function (require, exports, module) {
             const result = await run("panel-parity");
             expect(result.cliImage).toEqual(result.panelImage);
             expect(result.cliState).toEqual(result.panelState);
+        });
+        it("retrieves a question and image through stdio MCP with connector-supplied ownership", async function () {
+            const result = await run("adapter-question");
+            expect(result.result.content).toEqual([
+                {type: "text", text: "Explain this selected element"},
+                {type: "image", data: "cG5n", mimeType: "image/png"}
+            ]);
+            expect(result.caller.sessionId).toBe(result.sessionId);
+            expect(result.caller.kind).toBe("cli");
         });
         it("removes panel-only guidance from the CLI without dropping locale or the prompt probe", async function () {
             const result = await run("prompt");
@@ -89,10 +99,10 @@ define(function (require, exports, module) {
             expect(result.settings.hooks.UserPromptSubmit[0].hooks[0].type).toBe("http");
             expect(result.settings.hooks.UserPromptSubmit[0].hooks[0].headers.Authorization).toBeUndefined();
             if (brackets.platform !== "win") { expect(result.mode).toBe(384); }
-            // Claude reads Ask AI screenshots from the drafts folder without a permission prompt.
+            // Ask AI attachments now arrive through MCP; only Ask UI needs a scratch directory.
             const addDirs = result.launch.args.filter((arg, index) => result.launch.args[index - 1] === "--add-dir");
-            expect(addDirs).toEqual([result.scratchDir, result.draftsDir]);
-            expect(result.draftsExists).toBe(true);
+            expect(addDirs).toEqual([result.scratchDir]);
+            expect(result.draftsExists).toBe(false);
         });
         it("launches Codex without a profile or replacement developer instructions", async function () {
             const result = await run("codex-launch");
@@ -201,13 +211,13 @@ define(function (require, exports, module) {
         it("starts stdio MCP, lists metadata and returns an image block", async function () {
             const result = await run("adapter");
             expect(result.instructions).toContain("Phoenix Code");
-            expect(result.tools.length).toBe(16);
+            expect(result.tools.length).toBe(17);
             expect(result.tools.find(tool => tool.name === "getEditorState")._meta["anthropic/alwaysLoad"]).toBe(true);
             expect(result.result.content[0]).toEqual({type: "image", data: "cG5n", mimeType: "image/png"});
         });
         it("answers MCP discovery while Phoenix is unavailable and returns a useful tool error", async function () {
             const result = await run("adapter-disconnected");
-            expect(result.tools.length).toBe(16);
+            expect(result.tools.length).toBe(17);
             expect(result.result.isError).toBe(true);
         });
         it("returns a native edit denial when an HTTP hook cannot save a dirty buffer", async function () {

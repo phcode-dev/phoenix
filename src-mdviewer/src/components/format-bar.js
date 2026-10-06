@@ -11,6 +11,7 @@ import { on, emit } from "../core/events.js";
 import { getSelectionRect } from "./editor.js";
 import { t, tp } from "../core/i18n.js";
 import { getState } from "../core/state.js";
+import askAISparkles from "../../../src/styles/images/ai-sparkles.svg?raw";
 
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
 const mod = isMac ? "\u2318" : "Ctrl";
@@ -34,7 +35,7 @@ on("state:editMode", () => {
 });
 on("ai:selection-unavailable", () => {
     const button = document.getElementById("fb-ask-ai");
-    if (button) { button.textContent = t("format.selection_unavailable"); }
+    if (button) { button.querySelector(".format-ask-ai-label").textContent = t("format.selection_unavailable"); }
 });
 
 const buttons = [
@@ -76,7 +77,8 @@ function buildBar() {
 
   const askAI = document.getElementById("fb-ask-ai");
   if (askAI) {
-      askAI.textContent = t("format.ask_ai");
+      askAI.innerHTML = askAISparkles + '<span class="format-ask-ai-label"></span>';
+      askAI.querySelector(".format-ask-ai-label").textContent = t("format.ask_ai");
       askAI.addEventListener("mousedown", event => event.preventDefault());
       askAI.addEventListener("click", () => {
           const rect = askAI.getBoundingClientRect();

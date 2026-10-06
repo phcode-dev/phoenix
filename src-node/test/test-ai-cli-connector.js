@@ -341,6 +341,10 @@ exports.exercise = async function ({scenario}) {
             calls.push({fn, data});
             if (fn === "endCliSessionInBrowser") { return {ended: true}; }
             if (data.fn === "takeScreenshot") { return {base64: "cG5n"}; }
+            if (data.fn === "getUserQuestion") {
+                return {content: [{type: "text", text: "Explain this selected element"},
+                    {type: "image", data: "cG5n", mimeType: "image/png"}]};
+            }
             if (data.fn === "getEditorContext") { return {activeFile: path.join(directory, "file.txt")}; }
             if (data.fn === "prepareEdit") {
                 if (scenario === "toggle-pending") {
@@ -424,7 +428,7 @@ exports.exercise = async function ({scenario}) {
             const [code] = await closed;
             return {code};
         }
-        if (["adapter", "adapter-disconnected"].includes(scenario)) {
+        if (["adapter", "adapter-disconnected", "adapter-question"].includes(scenario)) {
             if (scenario === "adapter-disconnected") { controller.close(); }
             client = new Client({name: "fixture", version: "1"});
             transport = new StdioClientTransport({command: process.execPath,
@@ -437,8 +441,12 @@ exports.exercise = async function ({scenario}) {
             }
             await client.connect(transport);
             const listed = await client.listTools();
-            const result = await client.callTool({name: "takeScreenshot", arguments: {}});
-            return {instructions: client.getInstructions(), tools: listed.tools, result};
+            const question = scenario === "adapter-question";
+            const result = await client.callTool({name: question ? "getUserQuestion" : "takeScreenshot",
+                arguments: question ? {questionId: "8aca77d8-854f-4415-a2c0-f5be54b437fd"} : {}});
+            return {instructions: client.getInstructions(), tools: listed.tools, result,
+                caller: question ? calls.find(call => call.data.fn === "getUserQuestion").data.caller : undefined,
+                sessionId: launch.sessionId};
         }
         const connection = await connect(launch);
         if (scenario === "toggle-pending") {

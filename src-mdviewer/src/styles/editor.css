@@ -209,6 +209,7 @@
 
 .format-bar .format-ask-ai {
     width: auto;
+    gap: 6px;
     padding: 0 9px;
     border-left: 1px solid var(--color-border);
     border-radius: 0;
