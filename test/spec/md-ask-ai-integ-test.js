@@ -81,6 +81,10 @@ define(function (require, exports, module) {
             const previousCount = received.length;
             const doc = frame.contentDocument;
             const element = doc.querySelectorAll("#viewer-content " + selector)[occurrence];
+            // File switches and large re-renders queue scroll restoration. A real user selects
+            // after that layout; otherwise its late scroll dismisses the freshly opened toolbar.
+            element.scrollIntoView({block: "nearest"});
+            await new Promise(resolve => frame.contentWindow.requestAnimationFrame(resolve));
             const walker = doc.createTreeWalker(element, win.NodeFilter.SHOW_TEXT);
             let node;
             while ((node = walker.nextNode())) { if (node.data.includes(text)) { break; } }
@@ -246,6 +250,32 @@ define(function (require, exports, module) {
         it("rejects an expired selection rather than returning another snapshot", async function () {
             const result = await sync.getRenderedMdSelectionFollowUp({selectionId: "missing", lineStart: 1, lineEnd: 3});
             expect(result.error).toContain("expired");
+        });
+        ["origin", "source"].forEach(function (field) {
+            it("ignores a snapshot reply from an unrelated " + field, async function () {
+                const selection = await attach("strong", "bold words", 2, 8);
+                const viewer = frame.contentWindow;
+                const onRequest = function (event) {
+                    const message = event.data;
+                    if (message.type === "MDVIEWR_RENDERED_LINES") {
+                        win.dispatchEvent(new win.MessageEvent("message", {
+                            source: field === "source" ? win : viewer,
+                            origin: field === "origin" ? "https://unrelated.invalid" : win.location.origin,
+                            data: {type: "MDVIEWR_EVENT", eventName: "mdviewrRenderedLines",
+                                requestId: message.requestId, result: {error: "unrelated reply"}}
+                        }));
+                    }
+                };
+                viewer.addEventListener("message", onRequest);
+                try {
+                    const result = await sync.getRenderedMdSelectionFollowUp({selectionId: selection.selectionId,
+                        lineStart: selection.rendered.startLine, lineEnd: selection.rendered.endLine});
+                    expect(result.error).toBeUndefined();
+                    expect(result.lines[0].text).toContain("⟦ld wor⟧");
+                } finally {
+                    viewer.removeEventListener("message", onRequest);
+                }
+            });
         });
         /** Replace only this spec's unsaved buffer and wait for the real preview render. */
         async function setSource(source) {

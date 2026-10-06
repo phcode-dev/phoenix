@@ -595,16 +595,24 @@ define(function (require, exports, module) {
         }
     }
 
+    /** Dismiss on editor viewport scrolling, except while workspace layout is being restored. */
+    function onEditorScroll() {
+        if (resizingPanels.size || (popoverState && popoverState.layoutPending)) { return; }
+        hidePreview(false);
+    }
+
     function onActiveEditorChange(_event, current, previous) {
         // Hide preview when editor changes
         hidePreview();
 
         if (previous && previous.document) {
             previous.document.off("change", hidePreview);
+            previous.off("scroll", onEditorScroll);
         }
 
         if (current && current.document) {
             current.document.on("change", hidePreview);
+            current.on("scroll", onEditorScroll);
         }
     }
 
@@ -618,12 +626,10 @@ define(function (require, exports, module) {
             enabled = _enabled;
             let editorHolder = $("#editor-holder")[0];
             if (enabled) {
-                // Note: listening to "scroll" also catches text edits, which bubble a scroll
-                // event up from the hidden text area. This means
-                // we auto-hide on text edit, which is probably actually a good thing.
+                // Editor scroll events exclude Firefox's hidden input scrolling on selection/focus.
+                // Text edits already dismiss through the document change listener.
                 editorHolder.addEventListener("mouseup", handleMouseUp, true);
                 editorHolder.addEventListener("mousemove", _processMouseMove, true);
-                editorHolder.addEventListener("scroll", hidePreview, true);
 
                 // Setup doc "change" listener
                 onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
@@ -632,7 +638,6 @@ define(function (require, exports, module) {
             } else {
                 editorHolder.removeEventListener("mouseup", handleMouseUp, true);
                 editorHolder.removeEventListener("mousemove", _processMouseMove, true);
-                editorHolder.removeEventListener("scroll", hidePreview, true);
 
                 // Cleanup doc "change" listener
                 onActiveEditorChange(null, null, EditorManager.getActiveEditor());

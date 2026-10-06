@@ -361,12 +361,13 @@ define(function (require, exports, module) {
                 const scroll = editor.getScrollPos();
                 SelectionViewManager.registerSelectionViewProvider(provider, ["all"]);
                 try {
-                    editor.setSize(null, 90);
-                    editor.setSelection({line: 2, ch: 0}, {line: 2, ch: 6});
+                    // Keep both vertical gaps too small for the popup, including with smaller editor fonts.
+                    editor.setSize(null, 70);
+                    editor.setSelection({line: 0, ch: 0}, {line: 0, ch: 6});
                     editor.setScrollPos(0, 0);
-                    await showPopoverAtPos(2, 6);
+                    await showPopoverAtPos(0, 6);
                     const popup = getBounds(testWindow.$("#selection-view-container"));
-                    expect(popup.left).toBeGreaterThan(editor.charCoords({line: 2, ch: 6}).left);
+                    expect(popup.left).toBeGreaterThan(editor.charCoords({line: 0, ch: 6}).left);
                     expect(boundsInsideWindow(testWindow.$("#selection-view-container"))).toBe(true);
                 } finally {
                     SelectionViewManager.hidePreview();
@@ -407,6 +408,9 @@ define(function (require, exports, module) {
                 SelectionViewManager.registerSelectionViewProvider(provider, ["all"]);
                 try {
                     editor.setSelection({line: 0, ch: 0}, {line: 10, ch: 0});
+                    editor.setScrollPos(0, 0);
+                    // Finish the programmatic selection's scroll before simulating the user's mouseup.
+                    await new Promise(resolve => testWindow.requestAnimationFrame(resolve));
                     const point = editor.charCoords({line: 4, ch: 3});
                     const root = editor.getRootElement();
                     root.dispatchEvent(new testWindow.MouseEvent("mouseup", {bubbles: true, buttons: 0,
@@ -419,6 +423,35 @@ define(function (require, exports, module) {
                 } finally {
                     SelectionViewManager.hidePreview();
                     SelectionViewManager.removeSelectionViewProvider(provider, ["all"]);
+                }
+            });
+
+            it("ignores scroll events from the hidden selection input", async function () {
+                SelectionViewManager.registerSelectionViewProvider(provider, ["all"]);
+                try {
+                    editor.setSelection({line: 0, ch: 0}, {line: 10, ch: 0});
+                    await showPopoverAtPos(4, 0);
+                    editor.getRootElement().querySelector("textarea").dispatchEvent(new testWindow.Event("scroll"));
+                    expect(SelectionViewManager.isSelectionViewShown()).toBe(true);
+                } finally {
+                    SelectionViewManager.hidePreview();
+                    SelectionViewManager.removeSelectionViewProvider(provider, ["all"]);
+                }
+            });
+
+            it("dismisses when the editor viewport actually scrolls", async function () {
+                const scroll = editor.getScrollPos();
+                SelectionViewManager.registerSelectionViewProvider(provider, ["all"]);
+                try {
+                    editor.setSelection({line: 0, ch: 0}, {line: 10, ch: 0});
+                    editor.setScrollPos(0, 0);
+                    await showPopoverAtPos(4, 0);
+                    editor.setScrollPos(0, 100);
+                    await awaitsFor(() => !SelectionViewManager.isSelectionViewShown(), "popup dismissed on scroll");
+                } finally {
+                    SelectionViewManager.hidePreview();
+                    SelectionViewManager.removeSelectionViewProvider(provider, ["all"]);
+                    editor.setScrollPos(scroll.x, scroll.y);
                 }
             });
 
@@ -459,9 +492,13 @@ define(function (require, exports, module) {
                     SelectionViewManager.registerSelectionViewProvider(provider, ["all"]);
                     SelectionViewManager.hidePreview();
                     try {
-                        if (action !== "opens") { panel.show(); }
+                        if (action !== "opens") {
+                            panel.show();
+                            workspace.setPluginPanelWidth(250);
+                        }
                         editor.setSelection({line: 7, ch: 0}, {line: 10, ch: 0});
                         editor.setScrollPos(0, 0);
+                        await new Promise(resolve => testWindow.requestAnimationFrame(resolve));
                         await showPopoverAtPos(7, 0);
                         const popup = testWindow.$("#selection-view-container");
                         const content = popup.find("#blinker-fluid")[0];
@@ -471,13 +508,12 @@ define(function (require, exports, module) {
                         if (action === "resizes") { workspace.setPluginPanelWidth(400); }
                         if (action === "closes") { panel.hide(); }
                         expect(SelectionViewManager.isSelectionViewShown()).toBe(false);
-                        await awaitsFor(() => {
-                            const bounds = getBounds(popup);
-                            const root = editor.getRootElement().getBoundingClientRect();
-                            return SelectionViewManager.isSelectionViewShown() &&
-                                Math.abs(bounds.right - before) > 30 &&
-                                Math.abs((bounds.right - before) - (root.right - beforeEditorRight)) < 2;
-                        }, "popup follows the resized editor", 3000);
+                        await awaitsFor(() => SelectionViewManager.isSelectionViewShown(),
+                            "popup restored after editor layout", 3000);
+                        const bounds = getBounds(popup);
+                        const root = editor.getRootElement().getBoundingClientRect();
+                        expect(Math.abs(bounds.right - before)).toBeGreaterThan(30);
+                        expect(Math.abs((bounds.right - before) - (root.right - beforeEditorRight))).toBeLessThan(2);
                         expect(boundsInsideWindow(popup)).toBe(true);
                         expect(popup.find("#blinker-fluid")[0]).toBe(content);
                     } finally {
