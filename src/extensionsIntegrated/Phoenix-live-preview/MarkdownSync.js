@@ -137,8 +137,9 @@ define(function (require, exports, module) {
             if (!data || data.type !== "MDVIEWR_EVENT") {
                 return;
             }
-            // Verify message is from our iframe
-            if (_$iframe && _$iframe[0] && event.source !== _$iframe[0].contentWindow) {
+            // Verify both the viewer window and its expected (normally opaque) origin.
+            if (!_$iframe || !_$iframe[0] || event.source !== _$iframe[0].contentWindow ||
+                event.origin !== _viewerOrigin(_$iframe[0])) {
                 return;
             }
 
@@ -1385,6 +1386,16 @@ define(function (require, exports, module) {
     }
 
     /**
+     * The bundled viewer is served with Phoenix, but its production sandbox gives it an opaque origin.
+     * @param {HTMLIFrameElement} iframe Markdown viewer frame.
+     * @return {string} Expected message origin; "null" for a sandbox without allow-same-origin.
+     */
+    function _viewerOrigin(iframe) {
+        return iframe.hasAttribute("sandbox") && !iframe.sandbox.contains("allow-same-origin") ?
+            "null" : window.location.origin;
+    }
+
+    /**
      * Retrieve rendered snapshot lines to clarify a previously attached Markdown selection.
      * @param {Object} params Attachment selectionId, rendered line range, and optional per-line character limit.
      * @return {Promise<Object>} Marked snapshot lines, or an error if the snapshot is unavailable.
@@ -1395,6 +1406,7 @@ define(function (require, exports, module) {
         if (!frame) {
             return Promise.resolve({error: "Markdown selection snapshot unavailable. Attach the selection again."});
         }
+        const origin = _viewerOrigin(_mdIframeRef);
         return new Promise(resolve => {
             const requestId = crypto.randomUUID();
             const timeout = setTimeout(() => finish({error: "Markdown preview did not respond."}), 3000);
@@ -1405,13 +1417,14 @@ define(function (require, exports, module) {
             }
             function onResult(event) {
                 const data = event.data;
-                if (event.source === frame && data && data.type === "MDVIEWR_EVENT" &&
+                if (event.source === frame && event.origin === origin && data && data.type === "MDVIEWR_EVENT" &&
                         data.eventName === "mdviewrRenderedLines" && data.requestId === requestId) {
                     finish(data.result);
                 }
             }
             window.addEventListener("message", onResult);
-            frame.postMessage({type: "MDVIEWR_RENDERED_LINES", requestId, params}, "*");
+            // Opaque sandbox origins cannot be named as a postMessage target.
+            frame.postMessage({type: "MDVIEWR_RENDERED_LINES", requestId, params}, origin === "null" ? "*" : origin);
         });
     }
 
