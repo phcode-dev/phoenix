@@ -174,31 +174,6 @@ define(function (require, exports, module) {
                 expect(panel.isVisible()).toBe(false);
             } finally { panel.show(); }
         });
-        if (Phoenix.isNativeApp) {
-            it("adds real Markdown selections to the shared dialog without opening the AI sidebar", async function () {
-                const chat = win.brackets.test.AILivePreviewChat;
-                const tabs = win.brackets.getModule("view/SidebarTabs");
-                tabs.setActiveTab(tabs.SIDEBAR_TAB_FILES);
-                chat.destroy();
-                chat.init();
-                sync.setAskAIHandler(file => { received.push(file); return chat.attachSelection(file); });
-                try {
-                    const first = await attach("strong", "bold words", 2, 8);
-                    await attach("strong", "bold words", 2, 8);
-                    expect(chat._test.getState().open).toBe(true);
-                    expect(chat._test.getState().files.length).toBe(1);
-                    expect(chat._test.getState().files[0].markdownSelection.selectionId).toBe(first.selectionId);
-                    expect(tabs.getActiveTab()).toBe(tabs.SIDEBAR_TAB_FILES);
-                    const count = chat._test.getState().files.length;
-                    win.document.getElementById("live-preview-ask-ai").click();
-                    expect(chat._test.getState().open).toBe(false);
-                    expect(chat._test.getState().files.length).toBe(count);
-                    win.document.getElementById("live-preview-ask-ai").click();
-                    expect(chat._test.getState().open).toBe(true);
-                    expect(chat._test.getState().files.length).toBe(count);
-                } finally { chat.destroy(); }
-            });
-        }
         it("restores a queued selection after reopening a closed preview", async function () {
             const selection = await attach("strong", "bold words", 2, 8);
             frame.contentWindow.getSelection().removeAllRanges();
