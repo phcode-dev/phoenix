@@ -72,7 +72,9 @@
     "table": "Tabula",
     "task_list": "Uzdevumu saraksts",
     "text_formatting": "Teksta formatēšana",
-    "underline": "Pasvītrot ({mod}+U)"
+    "underline": "Pasvītrot ({mod}+U)",
+    "ask_ai": "Jautāt mākslīgajam intelektam",
+    "selection_unavailable": "Nevar atrast šo atlasi"
   },
   "help": {
     "editing": "Rediģēšana",
@@ -178,6 +180,10 @@
     "add_row_above": "Pievienot rindu virs",
     "add_row_below": "Pievienot rindu zem",
     "col_options": "{n}. kolonnas opcijas",
+    "copy_col": "Kopēt kolonnu",
+    "copy_row": "Kopēt rindu",
+    "cut_col": "Izgriezt kolonnu",
+    "cut_row": "Izgriezt rindu",
     "delete_col": "Dzēst kolonnu",
     "delete_row": "Dzēst rindu",
     "delete_table": "Dzēst tabulu",
@@ -187,13 +193,9 @@
     "insert_row_above": "Ievietot rindu virs",
     "insert_row_below": "Ievietot rindu zem",
     "new_row": "+ Jauna rinda",
-    "row_options": "Rindas {n} opcijas",
-    "copy_col": "Kopēt kolonnu",
-    "copy_row": "Kopēt rindu",
-    "cut_col": "Izgriezt kolonnu",
-    "cut_row": "Izgriezt rindu",
     "paste_col": "Ielīmēt kolonnu pa labi",
-    "paste_row": "Ielīmēt rindu zemāk"
+    "paste_row": "Ielīmēt rindu zemāk",
+    "row_options": "Rindas {n} opcijas"
   },
   "toolbar": {
     "cursor_sync": "Pārslēgt kursoru sinhronizāciju",

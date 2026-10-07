@@ -141,6 +141,10 @@
   "table.add_row_above": "Dodaj wiersz powyżej",
   "table.add_row_below": "Dodaj wiersz poniżej",
   "table.col_options": "Opcje kolumny {n}",
+  "table.copy_col": "Kopiuj kolumnę",
+  "table.copy_row": "Kopiuj wiersz",
+  "table.cut_col": "Wytnij kolumnę",
+  "table.cut_row": "Wytnij wiersz",
   "table.delete_col": "Usuń kolumnę",
   "table.delete_row": "Usuń wiersz",
   "table.delete_table": "Usuń tabelę",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Wstaw wiersz powyżej",
   "table.insert_row_below": "Wstaw wiersz poniżej",
   "table.new_row": "+ Nowy wiersz",
+  "table.paste_col": "Wklej kolumnę po prawej",
+  "table.paste_row": "Wklej wiersz poniżej",
   "table.row_options": "Opcje wiersza {n}",
   "toolbar.cursor_sync": "Przełącz synchronizację kursora",
   "toolbar.edit": "Edytuj",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Otwórz plik",
   "welcome.subtitle": "Piękna przeglądarka Markdown",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopiuj kolumnę",
-  "table.copy_row": "Kopiuj wiersz",
-  "table.cut_col": "Wytnij kolumnę",
-  "table.cut_row": "Wytnij wiersz",
-  "table.paste_col": "Wklej kolumnę po prawej",
-  "table.paste_row": "Wklej wiersz poniżej"
+  "format.ask_ai": "Zapytaj AI",
+  "format.selection_unavailable": "Nie można odnaleźć tego zaznaczenia"
 }

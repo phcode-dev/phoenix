@@ -72,7 +72,9 @@
     "table": "Tabelle",
     "task_list": "Aufgabenliste",
     "text_formatting": "Textformatierung",
-    "underline": "Unterstreichen ({mod}+U)"
+    "underline": "Unterstreichen ({mod}+U)",
+    "ask_ai": "KI fragen",
+    "selection_unavailable": "Diese Auswahl kann nicht gefunden werden"
   },
   "help": {
     "editing": "Bearbeitung",
@@ -178,6 +180,10 @@
     "add_row_above": "Zeile darüber hinzufügen",
     "add_row_below": "Zeile darunter hinzufügen",
     "col_options": "Optionen für Spalte {n}",
+    "copy_col": "Spalte kopieren",
+    "copy_row": "Zeile kopieren",
+    "cut_col": "Spalte ausschneiden",
+    "cut_row": "Zeile ausschneiden",
     "delete_col": "Spalte löschen",
     "delete_row": "Zeile löschen",
     "delete_table": "Tabelle löschen",
@@ -187,13 +193,9 @@
     "insert_row_above": "Zeile darüber einfügen",
     "insert_row_below": "Zeile darunter einfügen",
     "new_row": "+ Neue Zeile",
-    "row_options": "Optionen für Zeile {n}",
-    "copy_col": "Spalte kopieren",
-    "copy_row": "Zeile kopieren",
-    "cut_col": "Spalte ausschneiden",
-    "cut_row": "Zeile ausschneiden",
     "paste_col": "Spalte rechts einfügen",
-    "paste_row": "Zeile unten einfügen"
+    "paste_row": "Zeile unten einfügen",
+    "row_options": "Optionen für Zeile {n}"
   },
   "toolbar": {
     "cursor_sync": "Cursor-Synchronisierung umschalten",

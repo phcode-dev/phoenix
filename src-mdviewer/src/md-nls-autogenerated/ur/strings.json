@@ -141,6 +141,10 @@
   "table.add_row_above": "اوپر قطار شامل کریں",
   "table.add_row_below": "نیچے قطار شامل کریں",
   "table.col_options": "کالم {n} اختیارات",
+  "table.copy_col": "کالم کاپی کریں",
+  "table.copy_row": "قطار کاپی کریں",
+  "table.cut_col": "کالم کٹ کریں",
+  "table.cut_row": "قطار کٹ کریں",
   "table.delete_col": "کالم حذف کریں",
   "table.delete_row": "قطار حذف کریں",
   "table.delete_table": "ٹیبل حذف کریں",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "اوپر قطار شامل کریں",
   "table.insert_row_below": "نیچے قطار شامل کریں",
   "table.new_row": "+ نئی قطار",
+  "table.paste_col": "کالم دائیں پیسٹ کریں",
+  "table.paste_row": "قطار نیچے پیسٹ کریں",
   "table.row_options": "قطار {n} اختیارات",
   "toolbar.cursor_sync": "کرسر سنک ٹوگل کریں",
   "toolbar.edit": "ترمیم",
@@ -191,10 +197,6 @@
   "welcome.open_button": "فائل کھولیں",
   "welcome.subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
   "welcome.title": "Kern",
-  "table.copy_col": "کالم کاپی کریں",
-  "table.copy_row": "قطار کاپی کریں",
-  "table.cut_col": "کالم کٹ کریں",
-  "table.cut_row": "قطار کٹ کریں",
-  "table.paste_col": "کالم دائیں پیسٹ کریں",
-  "table.paste_row": "قطار نیچے پیسٹ کریں"
+  "format.ask_ai": "مصنوعی ذہانت سے پوچھیں",
+  "format.selection_unavailable": "منتخب کردہ حصے کو تلاش نہیں کیا جا سکتا"
 }

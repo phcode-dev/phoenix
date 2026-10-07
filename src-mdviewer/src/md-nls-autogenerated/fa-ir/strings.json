@@ -141,6 +141,10 @@
   "table.add_row_above": "افزودن ردیف در بالا",
   "table.add_row_below": "افزودن ردیف در پایین",
   "table.col_options": "گزینه‌های ستون {n}",
+  "table.copy_col": "کپی ستون",
+  "table.copy_row": "کپی سطر",
+  "table.cut_col": "برش ستون",
+  "table.cut_row": "برش سطر",
   "table.delete_col": "حذف ستون",
   "table.delete_row": "حذف ردیف",
   "table.delete_table": "حذف جدول",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "درج ردیف در بالا",
   "table.insert_row_below": "درج ردیف در پایین",
   "table.new_row": "+ سطر جدید",
+  "table.paste_col": "جای‌گذاری ستون در سمت راست",
+  "table.paste_row": "جای‌گذاری سطر در زیر",
   "table.row_options": "گزینه‌های سطر {n}",
   "toolbar.cursor_sync": "تغییر وضعیت همگام‌سازی نشانگر",
   "toolbar.edit": "ویرایش",
@@ -191,10 +197,6 @@
   "welcome.open_button": "باز کردن فایل",
   "welcome.subtitle": "یک نمایشگر زیبای مارک‌داون",
   "welcome.title": "Kern",
-  "table.copy_col": "کپی ستون",
-  "table.copy_row": "کپی سطر",
-  "table.cut_col": "برش ستون",
-  "table.cut_row": "برش سطر",
-  "table.paste_col": "جای‌گذاری ستون در سمت راست",
-  "table.paste_row": "جای‌گذاری سطر در زیر"
+  "format.ask_ai": "از هوش مصنوعی بپرسید",
+  "format.selection_unavailable": "این بخش انتخاب‌شده پیدا نمی‌شود"
 }

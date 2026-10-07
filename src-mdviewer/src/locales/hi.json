@@ -72,7 +72,9 @@
     "table": "तालिका",
     "task_list": "कार्य सूची",
     "text_formatting": "टेक्स्ट फ़ॉर्मेटिंग",
-    "underline": "रेखांकित ({mod}+U)"
+    "underline": "रेखांकित ({mod}+U)",
+    "ask_ai": "एआई से पूछें",
+    "selection_unavailable": "चयनित अंश नहीं मिल रहा है"
   },
   "help": {
     "editing": "संपादन",
@@ -178,6 +180,10 @@
     "add_row_above": "ऊपर पंक्ति जोड़ें",
     "add_row_below": "नीचे पंक्ति जोड़ें",
     "col_options": "स्तंभ {n} विकल्प",
+    "copy_col": "कॉलम कॉपी करें",
+    "copy_row": "पंक्ति कॉपी करें",
+    "cut_col": "कॉलम कट करें",
+    "cut_row": "पंक्ति कट करें",
     "delete_col": "स्तंभ हटाएँ",
     "delete_row": "पंक्ति हटाएँ",
     "delete_table": "टेबल हटाएँ",
@@ -187,13 +193,9 @@
     "insert_row_above": "ऊपर पंक्ति जोड़ें",
     "insert_row_below": "नीचे पंक्ति जोड़ें",
     "new_row": "+ नई पंक्ति",
-    "row_options": "पंक्ति {n} विकल्प",
-    "copy_col": "कॉलम कॉपी करें",
-    "copy_row": "पंक्ति कॉपी करें",
-    "cut_col": "कॉलम कट करें",
-    "cut_row": "पंक्ति कट करें",
     "paste_col": "कॉलम दाएँ पेस्ट करें",
-    "paste_row": "पंक्ति नीचे पेस्ट करें"
+    "paste_row": "पंक्ति नीचे पेस्ट करें",
+    "row_options": "पंक्ति {n} विकल्प"
   },
   "toolbar": {
     "cursor_sync": "कर्सर सिंक टॉगल करें",

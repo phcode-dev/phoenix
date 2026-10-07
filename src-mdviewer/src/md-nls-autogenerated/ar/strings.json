@@ -141,6 +141,10 @@
   "table.add_row_above": "إضافة صف أعلى",
   "table.add_row_below": "إضافة صف أسفل",
   "table.col_options": "خيارات العمود {n}",
+  "table.copy_col": "نسخ العمود",
+  "table.copy_row": "نسخ الصف",
+  "table.cut_col": "قص العمود",
+  "table.cut_row": "قص الصف",
   "table.delete_col": "حذف العمود",
   "table.delete_row": "حذف الصف",
   "table.delete_table": "حذف الجدول",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "إدراج صف أعلى",
   "table.insert_row_below": "إدراج صف أسفل",
   "table.new_row": "+ صف جديد",
+  "table.paste_col": "لصق العمود يمينًا",
+  "table.paste_row": "لصق الصف أسفل",
   "table.row_options": "خيارات الصف {n}",
   "toolbar.cursor_sync": "تبديل مزامنة المؤشر",
   "toolbar.edit": "تحرير",
@@ -191,10 +197,6 @@
   "welcome.open_button": "فتح ملف",
   "welcome.subtitle": "عارض ماركداون أنيق",
   "welcome.title": "Kern",
-  "table.copy_col": "نسخ العمود",
-  "table.copy_row": "نسخ الصف",
-  "table.cut_col": "قص العمود",
-  "table.cut_row": "قص الصف",
-  "table.paste_col": "لصق العمود يمينًا",
-  "table.paste_row": "لصق الصف أسفل"
+  "format.ask_ai": "اسأل الذكاء الاصطناعي",
+  "format.selection_unavailable": "يتعذر العثور على هذا التحديد"
 }

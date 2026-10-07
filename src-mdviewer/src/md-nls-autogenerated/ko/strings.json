@@ -141,6 +141,10 @@
   "table.add_row_above": "위에 행 추가",
   "table.add_row_below": "아래에 행 추가",
   "table.col_options": "열 {n} 옵션",
+  "table.copy_col": "열 복사",
+  "table.copy_row": "행 복사",
+  "table.cut_col": "열 잘라내기",
+  "table.cut_row": "행 잘라내기",
   "table.delete_col": "열 삭제",
   "table.delete_row": "행 삭제",
   "table.delete_table": "표 삭제",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "위에 행 삽입",
   "table.insert_row_below": "아래에 행 삽입",
   "table.new_row": "+ 새 행",
+  "table.paste_col": "오른쪽에 열 붙여넣기",
+  "table.paste_row": "아래에 행 붙여넣기",
   "table.row_options": "행 {n} 옵션",
   "toolbar.cursor_sync": "커서 동기화 전환",
   "toolbar.edit": "편집",
@@ -191,10 +197,6 @@
   "welcome.open_button": "파일 열기",
   "welcome.subtitle": "아름다운 마크다운 뷰어",
   "welcome.title": "Kern",
-  "table.copy_col": "열 복사",
-  "table.copy_row": "행 복사",
-  "table.cut_col": "열 잘라내기",
-  "table.cut_row": "행 잘라내기",
-  "table.paste_col": "오른쪽에 열 붙여넣기",
-  "table.paste_row": "아래에 행 붙여넣기"
+  "format.ask_ai": "인공지능에 질문하기",
+  "format.selection_unavailable": "이 선택 영역을 찾을 수 없습니다"
 }

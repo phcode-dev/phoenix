@@ -72,7 +72,9 @@
     "table": "Tabell",
     "task_list": "Oppgaveliste",
     "text_formatting": "Tekstformatering",
-    "underline": "Understreking ({mod}+U)"
+    "underline": "Understreking ({mod}+U)",
+    "ask_ai": "Spør KI",
+    "selection_unavailable": "Finner ikke denne markeringen"
   },
   "help": {
     "editing": "Redigering",
@@ -178,6 +180,10 @@
     "add_row_above": "Legg til rad over",
     "add_row_below": "Legg til rad under",
     "col_options": "Alternativer for kolonne {n}",
+    "copy_col": "Kopier kolonne",
+    "copy_row": "Kopier rad",
+    "cut_col": "Klipp ut kolonne",
+    "cut_row": "Klipp ut rad",
     "delete_col": "Slett kolonne",
     "delete_row": "Slett rad",
     "delete_table": "Slett tabell",
@@ -187,13 +193,9 @@
     "insert_row_above": "Sett inn rad over",
     "insert_row_below": "Sett inn rad under",
     "new_row": "+ Ny rad",
-    "row_options": "Alternativer for rad {n}",
-    "copy_col": "Kopier kolonne",
-    "copy_row": "Kopier rad",
-    "cut_col": "Klipp ut kolonne",
-    "cut_row": "Klipp ut rad",
     "paste_col": "Lim inn kolonne til høyre",
-    "paste_row": "Lim inn rad under"
+    "paste_row": "Lim inn rad under",
+    "row_options": "Alternativer for rad {n}"
   },
   "toolbar": {
     "cursor_sync": "Veksle markørsynk",

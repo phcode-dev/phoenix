@@ -72,7 +72,9 @@
     "table": "Táboa",
     "task_list": "Lista de tarefas",
     "text_formatting": "Formato do texto",
-    "underline": "Subliñado ({mod}+U)"
+    "underline": "Subliñado ({mod}+U)",
+    "ask_ai": "Preguntar á IA",
+    "selection_unavailable": "Non se pode localizar esta selección"
   },
   "help": {
     "editing": "Edición",
@@ -178,6 +180,10 @@
     "add_row_above": "Engadir fila enriba",
     "add_row_below": "Engadir fila debaixo",
     "col_options": "Opcións da columna {n}",
+    "copy_col": "Copiar columna",
+    "copy_row": "Copiar fila",
+    "cut_col": "Cortar columna",
+    "cut_row": "Cortar fila",
     "delete_col": "Eliminar columna",
     "delete_row": "Eliminar fila",
     "delete_table": "Eliminar táboa",
@@ -187,13 +193,9 @@
     "insert_row_above": "Inserir fila enriba",
     "insert_row_below": "Inserir fila debaixo",
     "new_row": "+ Nova fila",
-    "row_options": "Opcións da fila {n}",
-    "copy_col": "Copiar columna",
-    "copy_row": "Copiar fila",
-    "cut_col": "Cortar columna",
-    "cut_row": "Cortar fila",
     "paste_col": "Pegar columna á dereita",
-    "paste_row": "Pegar fila debaixo"
+    "paste_row": "Pegar fila debaixo",
+    "row_options": "Opcións da fila {n}"
   },
   "toolbar": {
     "cursor_sync": "Alternar a sincronización do cursor",

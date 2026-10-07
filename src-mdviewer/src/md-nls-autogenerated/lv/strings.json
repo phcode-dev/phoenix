@@ -141,6 +141,10 @@
   "table.add_row_above": "Pievienot rindu virs",
   "table.add_row_below": "Pievienot rindu zem",
   "table.col_options": "{n}. kolonnas opcijas",
+  "table.copy_col": "Kopēt kolonnu",
+  "table.copy_row": "Kopēt rindu",
+  "table.cut_col": "Izgriezt kolonnu",
+  "table.cut_row": "Izgriezt rindu",
   "table.delete_col": "Dzēst kolonnu",
   "table.delete_row": "Dzēst rindu",
   "table.delete_table": "Dzēst tabulu",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Ievietot rindu virs",
   "table.insert_row_below": "Ievietot rindu zem",
   "table.new_row": "+ Jauna rinda",
+  "table.paste_col": "Ielīmēt kolonnu pa labi",
+  "table.paste_row": "Ielīmēt rindu zemāk",
   "table.row_options": "Rindas {n} opcijas",
   "toolbar.cursor_sync": "Pārslēgt kursoru sinhronizāciju",
   "toolbar.edit": "Rediģēt",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Atvērt failu",
   "welcome.subtitle": "Skaists Markdown skatītājs",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopēt kolonnu",
-  "table.copy_row": "Kopēt rindu",
-  "table.cut_col": "Izgriezt kolonnu",
-  "table.cut_row": "Izgriezt rindu",
-  "table.paste_col": "Ielīmēt kolonnu pa labi",
-  "table.paste_row": "Ielīmēt rindu zemāk"
+  "format.ask_ai": "Jautāt mākslīgajam intelektam",
+  "format.selection_unavailable": "Nevar atrast šo atlasi"
 }

@@ -72,7 +72,9 @@
     "table": "جدول",
     "task_list": "فهرست کارها",
     "text_formatting": "قالب‌بندی متن",
-    "underline": "زیرخط ({mod}+U)"
+    "underline": "زیرخط ({mod}+U)",
+    "ask_ai": "از هوش مصنوعی بپرسید",
+    "selection_unavailable": "این بخش انتخاب‌شده پیدا نمی‌شود"
   },
   "help": {
     "editing": "ویرایش",
@@ -178,6 +180,10 @@
     "add_row_above": "افزودن ردیف در بالا",
     "add_row_below": "افزودن ردیف در پایین",
     "col_options": "گزینه‌های ستون {n}",
+    "copy_col": "کپی ستون",
+    "copy_row": "کپی سطر",
+    "cut_col": "برش ستون",
+    "cut_row": "برش سطر",
     "delete_col": "حذف ستون",
     "delete_row": "حذف ردیف",
     "delete_table": "حذف جدول",
@@ -187,13 +193,9 @@
     "insert_row_above": "درج ردیف در بالا",
     "insert_row_below": "درج ردیف در پایین",
     "new_row": "+ سطر جدید",
-    "row_options": "گزینه‌های سطر {n}",
-    "copy_col": "کپی ستون",
-    "copy_row": "کپی سطر",
-    "cut_col": "برش ستون",
-    "cut_row": "برش سطر",
     "paste_col": "جای‌گذاری ستون در سمت راست",
-    "paste_row": "جای‌گذاری سطر در زیر"
+    "paste_row": "جای‌گذاری سطر در زیر",
+    "row_options": "گزینه‌های سطر {n}"
   },
   "toolbar": {
     "cursor_sync": "تغییر وضعیت همگام‌سازی نشانگر",

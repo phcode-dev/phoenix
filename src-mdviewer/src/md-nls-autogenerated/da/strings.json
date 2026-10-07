@@ -141,6 +141,10 @@
   "table.add_row_above": "Tilføj række ovenfor",
   "table.add_row_below": "Tilføj række nedenfor",
   "table.col_options": "Kolonne {n} indstillinger",
+  "table.copy_col": "Kopiér kolonne",
+  "table.copy_row": "Kopiér række",
+  "table.cut_col": "Klip kolonne",
+  "table.cut_row": "Klip række",
   "table.delete_col": "Slet kolonne",
   "table.delete_row": "Slet række",
   "table.delete_table": "Slet tabel",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Indsæt række ovenfor",
   "table.insert_row_below": "Indsæt række nedenfor",
   "table.new_row": "+ Ny række",
+  "table.paste_col": "Indsæt kolonne til højre",
+  "table.paste_row": "Indsæt række under",
   "table.row_options": "Indstillinger for række {n}",
   "toolbar.cursor_sync": "Skift cursorsynkronisering",
   "toolbar.edit": "Rediger",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Åbn fil",
   "welcome.subtitle": "En smuk Markdown-fremviser",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopiér kolonne",
-  "table.copy_row": "Kopiér række",
-  "table.cut_col": "Klip kolonne",
-  "table.cut_row": "Klip række",
-  "table.paste_col": "Indsæt kolonne til højre",
-  "table.paste_row": "Indsæt række under"
+  "format.ask_ai": "Spørg AI",
+  "format.selection_unavailable": "Kan ikke finde denne markering"
 }

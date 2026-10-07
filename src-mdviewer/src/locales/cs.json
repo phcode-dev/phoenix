@@ -72,7 +72,9 @@
     "table": "Tabulka",
     "task_list": "Seznam úkolů",
     "text_formatting": "Formátování textu",
-    "underline": "Podtržení ({mod}+U)"
+    "underline": "Podtržení ({mod}+U)",
+    "ask_ai": "Zeptat se AI",
+    "selection_unavailable": "Tento výběr nelze najít"
   },
   "help": {
     "editing": "Úpravy",
@@ -178,6 +180,10 @@
     "add_row_above": "Přidat řádek nad",
     "add_row_below": "Přidat řádek pod",
     "col_options": "Možnosti sloupce {n}",
+    "copy_col": "Kopírovat sloupec",
+    "copy_row": "Kopírovat řádek",
+    "cut_col": "Vyjmout sloupec",
+    "cut_row": "Vyjmout řádek",
     "delete_col": "Odstranit sloupec",
     "delete_row": "Odstranit řádek",
     "delete_table": "Smazat tabulku",
@@ -187,13 +193,9 @@
     "insert_row_above": "Vložit řádek nad",
     "insert_row_below": "Vložit řádek pod",
     "new_row": "+ Nový řádek",
-    "row_options": "Možnosti řádku {n}",
-    "copy_col": "Kopírovat sloupec",
-    "copy_row": "Kopírovat řádek",
-    "cut_col": "Vyjmout sloupec",
-    "cut_row": "Vyjmout řádek",
     "paste_col": "Vložit sloupec vpravo",
-    "paste_row": "Vložit řádek pod"
+    "paste_row": "Vložit řádek pod",
+    "row_options": "Možnosti řádku {n}"
   },
   "toolbar": {
     "cursor_sync": "Přepnout synchronizaci kurzorů",

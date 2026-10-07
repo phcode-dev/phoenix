@@ -141,6 +141,10 @@
   "table.add_row_above": "മുകളിൽ വരി ചേർക്കുക",
   "table.add_row_below": "താഴെ വരി ചേർക്കുക",
   "table.col_options": "കോളം {n} ഓപ്ഷനുകൾ",
+  "table.copy_col": "കോളം പകർത്തുക",
+  "table.copy_row": "വരി പകർത്തുക",
+  "table.cut_col": "കോളം മുറിച്ചെടുക്കുക",
+  "table.cut_row": "വരി മുറിച്ചെടുക്കുക",
   "table.delete_col": "കോളം ഇല്ലാതാക്കുക",
   "table.delete_row": "വരി ഇല്ലാതാക്കുക",
   "table.delete_table": "പട്ടിക നീക്കം ചെയ്യുക",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "മുകളിൽ വരി ചേർക്കുക",
   "table.insert_row_below": "താഴെ വരി ചേർക്കുക",
   "table.new_row": "+ പുതിയ വരി",
+  "table.paste_col": "കോളം വലതുവശത്ത് ഒട്ടിക്കുക",
+  "table.paste_row": "വരി താഴെ ഒട്ടിക്കുക",
   "table.row_options": "വരി {n} ഓപ്ഷനുകൾ",
   "toolbar.cursor_sync": "കേഴ്‌സർ സിങ്ക് ടോഗിൾ ചെയ്യുക",
   "toolbar.edit": "എഡിറ്റ്",
@@ -191,10 +197,6 @@
   "welcome.open_button": "ഫയൽ തുറക്കുക",
   "welcome.subtitle": "ഒരു മനോഹരമായ മാർക്ക്ഡൗൺ വ്യൂവർ",
   "welcome.title": "Kern",
-  "table.copy_col": "കോളം പകർത്തുക",
-  "table.copy_row": "വരി പകർത്തുക",
-  "table.cut_col": "കോളം മുറിച്ചെടുക്കുക",
-  "table.cut_row": "വരി മുറിച്ചെടുക്കുക",
-  "table.paste_col": "കോളം വലതുവശത്ത് ഒട്ടിക്കുക",
-  "table.paste_row": "വരി താഴെ ഒട്ടിക്കുക"
+  "format.ask_ai": "നിർമിത ബുദ്ധിയോട് ചോദിക്കുക",
+  "format.selection_unavailable": "ഈ തിരഞ്ഞെടുപ്പ് കണ്ടെത്താനാകുന്നില്ല"
 }

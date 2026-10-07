@@ -141,6 +141,10 @@
   "table.add_row_above": "在上方添加行",
   "table.add_row_below": "在下方添加行",
   "table.col_options": "第 {n} 列选项",
+  "table.copy_col": "复制列",
+  "table.copy_row": "复制行",
+  "table.cut_col": "剪切列",
+  "table.cut_row": "剪切行",
   "table.delete_col": "删除列",
   "table.delete_row": "删除行",
   "table.delete_table": "删除表格",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "在上方插入行",
   "table.insert_row_below": "在下方插入行",
   "table.new_row": "+ 新增行",
+  "table.paste_col": "在右侧粘贴列",
+  "table.paste_row": "在下方粘贴行",
   "table.row_options": "第 {n} 行选项",
   "toolbar.cursor_sync": "切换光标同步",
   "toolbar.edit": "编辑",
@@ -191,10 +197,6 @@
   "welcome.open_button": "打开文件",
   "welcome.subtitle": "优雅的 Markdown 阅读器",
   "welcome.title": "Kern",
-  "table.copy_col": "复制列",
-  "table.copy_row": "复制行",
-  "table.cut_col": "剪切列",
-  "table.cut_row": "剪切行",
-  "table.paste_col": "在右侧粘贴列",
-  "table.paste_row": "在下方粘贴行"
+  "format.ask_ai": "询问 AI",
+  "format.selection_unavailable": "无法定位此选区"
 }

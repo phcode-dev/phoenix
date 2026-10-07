@@ -141,6 +141,10 @@
   "table.add_row_above": "Додај ред изнад",
   "table.add_row_below": "Додај ред испод",
   "table.col_options": "Опције колоне {n}",
+  "table.copy_col": "Копирај колону",
+  "table.copy_row": "Копирај ред",
+  "table.cut_col": "Исеци колону",
+  "table.cut_row": "Исеци ред",
   "table.delete_col": "Обриши колону",
   "table.delete_row": "Обриши ред",
   "table.delete_table": "Обриши табелу",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Уметни ред изнад",
   "table.insert_row_below": "Уметни ред испод",
   "table.new_row": "+ Нови ред",
+  "table.paste_col": "Налепи колону десно",
+  "table.paste_row": "Налепи ред испод",
   "table.row_options": "Опције реда {n}",
   "toolbar.cursor_sync": "Укључи/искључи синхронизацију курсора",
   "toolbar.edit": "Уреди",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Отвори датотеку",
   "welcome.subtitle": "Прелеп Markdown прегледач",
   "welcome.title": "Kern",
-  "table.copy_col": "Копирај колону",
-  "table.copy_row": "Копирај ред",
-  "table.cut_col": "Исеци колону",
-  "table.cut_row": "Исеци ред",
-  "table.paste_col": "Налепи колону десно",
-  "table.paste_row": "Налепи ред испод"
+  "format.ask_ai": "Питај вештачку интелигенцију",
+  "format.selection_unavailable": "Није могуће пронаћи овај изабрани део текста"
 }

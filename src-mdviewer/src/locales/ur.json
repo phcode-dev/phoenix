@@ -72,7 +72,9 @@
     "table": "ٹیبل",
     "task_list": "ٹاسک فہرست",
     "text_formatting": "ٹیکسٹ فارمیٹنگ",
-    "underline": "انڈر لائن ({mod}+U)"
+    "underline": "انڈر لائن ({mod}+U)",
+    "ask_ai": "مصنوعی ذہانت سے پوچھیں",
+    "selection_unavailable": "منتخب کردہ حصے کو تلاش نہیں کیا جا سکتا"
   },
   "help": {
     "editing": "ترمیم",
@@ -178,6 +180,10 @@
     "add_row_above": "اوپر قطار شامل کریں",
     "add_row_below": "نیچے قطار شامل کریں",
     "col_options": "کالم {n} اختیارات",
+    "copy_col": "کالم کاپی کریں",
+    "copy_row": "قطار کاپی کریں",
+    "cut_col": "کالم کٹ کریں",
+    "cut_row": "قطار کٹ کریں",
     "delete_col": "کالم حذف کریں",
     "delete_row": "قطار حذف کریں",
     "delete_table": "ٹیبل حذف کریں",
@@ -187,13 +193,9 @@
     "insert_row_above": "اوپر قطار شامل کریں",
     "insert_row_below": "نیچے قطار شامل کریں",
     "new_row": "+ نئی قطار",
-    "row_options": "قطار {n} اختیارات",
-    "copy_col": "کالم کاپی کریں",
-    "copy_row": "قطار کاپی کریں",
-    "cut_col": "کالم کٹ کریں",
-    "cut_row": "قطار کٹ کریں",
     "paste_col": "کالم دائیں پیسٹ کریں",
-    "paste_row": "قطار نیچے پیسٹ کریں"
+    "paste_row": "قطار نیچے پیسٹ کریں",
+    "row_options": "قطار {n} اختیارات"
   },
   "toolbar": {
     "cursor_sync": "کرسر سنک ٹوگل کریں",

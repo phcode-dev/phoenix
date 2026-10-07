@@ -141,6 +141,10 @@
   "table.add_row_above": "Engadir fila enriba",
   "table.add_row_below": "Engadir fila debaixo",
   "table.col_options": "Opcións da columna {n}",
+  "table.copy_col": "Copiar columna",
+  "table.copy_row": "Copiar fila",
+  "table.cut_col": "Cortar columna",
+  "table.cut_row": "Cortar fila",
   "table.delete_col": "Eliminar columna",
   "table.delete_row": "Eliminar fila",
   "table.delete_table": "Eliminar táboa",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Inserir fila enriba",
   "table.insert_row_below": "Inserir fila debaixo",
   "table.new_row": "+ Nova fila",
+  "table.paste_col": "Pegar columna á dereita",
+  "table.paste_row": "Pegar fila debaixo",
   "table.row_options": "Opcións da fila {n}",
   "toolbar.cursor_sync": "Alternar a sincronización do cursor",
   "toolbar.edit": "Editar",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Abrir ficheiro",
   "welcome.subtitle": "Un fermoso visor de Markdown",
   "welcome.title": "Kern",
-  "table.copy_col": "Copiar columna",
-  "table.copy_row": "Copiar fila",
-  "table.cut_col": "Cortar columna",
-  "table.cut_row": "Cortar fila",
-  "table.paste_col": "Pegar columna á dereita",
-  "table.paste_row": "Pegar fila debaixo"
+  "format.ask_ai": "Preguntar á IA",
+  "format.selection_unavailable": "Non se pode localizar esta selección"
 }

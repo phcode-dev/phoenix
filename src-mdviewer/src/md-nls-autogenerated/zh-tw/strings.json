@@ -141,6 +141,10 @@
   "table.add_row_above": "在上方新增列",
   "table.add_row_below": "在下方新增列",
   "table.col_options": "第 {n} 欄選項",
+  "table.copy_col": "複製欄",
+  "table.copy_row": "複製列",
+  "table.cut_col": "剪下欄",
+  "table.cut_row": "剪下列",
   "table.delete_col": "刪除欄",
   "table.delete_row": "刪除列",
   "table.delete_table": "刪除表格",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "在上方插入列",
   "table.insert_row_below": "在下方插入列",
   "table.new_row": "+ 新增列",
+  "table.paste_col": "向右貼上欄",
+  "table.paste_row": "在下方貼上列",
   "table.row_options": "第 {n} 列選項",
   "toolbar.cursor_sync": "切換游標同步",
   "toolbar.edit": "編輯",
@@ -191,10 +197,6 @@
   "welcome.open_button": "開啟檔案",
   "welcome.subtitle": "精美的 Markdown 檢視器",
   "welcome.title": "Kern",
-  "table.copy_col": "複製欄",
-  "table.copy_row": "複製列",
-  "table.cut_col": "剪下欄",
-  "table.cut_row": "剪下列",
-  "table.paste_col": "向右貼上欄",
-  "table.paste_row": "在下方貼上列"
+  "format.ask_ai": "詢問 AI",
+  "format.selection_unavailable": "無法找到此選取範圍"
 }

@@ -72,7 +72,9 @@
     "table": "Tabel",
     "task_list": "Opgaveliste",
     "text_formatting": "Tekstformatering",
-    "underline": "Understreg ({mod}+U)"
+    "underline": "Understreg ({mod}+U)",
+    "ask_ai": "Spørg AI",
+    "selection_unavailable": "Kan ikke finde denne markering"
   },
   "help": {
     "editing": "Redigering",
@@ -178,6 +180,10 @@
     "add_row_above": "Tilføj række ovenfor",
     "add_row_below": "Tilføj række nedenfor",
     "col_options": "Kolonne {n} indstillinger",
+    "copy_col": "Kopiér kolonne",
+    "copy_row": "Kopiér række",
+    "cut_col": "Klip kolonne",
+    "cut_row": "Klip række",
     "delete_col": "Slet kolonne",
     "delete_row": "Slet række",
     "delete_table": "Slet tabel",
@@ -187,13 +193,9 @@
     "insert_row_above": "Indsæt række ovenfor",
     "insert_row_below": "Indsæt række nedenfor",
     "new_row": "+ Ny række",
-    "row_options": "Indstillinger for række {n}",
-    "copy_col": "Kopiér kolonne",
-    "copy_row": "Kopiér række",
-    "cut_col": "Klip kolonne",
-    "cut_row": "Klip række",
     "paste_col": "Indsæt kolonne til højre",
-    "paste_row": "Indsæt række under"
+    "paste_row": "Indsæt række under",
+    "row_options": "Indstillinger for række {n}"
   },
   "toolbar": {
     "cursor_sync": "Skift cursorsynkronisering",

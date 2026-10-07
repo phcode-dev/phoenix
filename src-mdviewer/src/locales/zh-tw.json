@@ -72,7 +72,9 @@
     "table": "表格",
     "task_list": "工作清單",
     "text_formatting": "文字格式",
-    "underline": "底線 ({mod}+U)"
+    "underline": "底線 ({mod}+U)",
+    "ask_ai": "詢問 AI",
+    "selection_unavailable": "無法找到此選取範圍"
   },
   "help": {
     "editing": "編輯",
@@ -178,6 +180,10 @@
     "add_row_above": "在上方新增列",
     "add_row_below": "在下方新增列",
     "col_options": "第 {n} 欄選項",
+    "copy_col": "複製欄",
+    "copy_row": "複製列",
+    "cut_col": "剪下欄",
+    "cut_row": "剪下列",
     "delete_col": "刪除欄",
     "delete_row": "刪除列",
     "delete_table": "刪除表格",
@@ -187,13 +193,9 @@
     "insert_row_above": "在上方插入列",
     "insert_row_below": "在下方插入列",
     "new_row": "+ 新增列",
-    "row_options": "第 {n} 列選項",
-    "copy_col": "複製欄",
-    "copy_row": "複製列",
-    "cut_col": "剪下欄",
-    "cut_row": "剪下列",
     "paste_col": "向右貼上欄",
-    "paste_row": "在下方貼上列"
+    "paste_row": "在下方貼上列",
+    "row_options": "第 {n} 列選項"
   },
   "toolbar": {
     "cursor_sync": "切換游標同步",
