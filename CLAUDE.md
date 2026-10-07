@@ -1,5 +1,22 @@
 # Claude Code Instructions
 
+## Shared task tracking
+
+- For Phoenix AI, CLI connector and Live Preview work, read the Pro repository's
+  [high-level-todos.md](src/extensionsIntegrated/phoenix-pro/high-level-todos.md) before choosing work.
+  Keep it a short, user-facing overview of what remains.
+- Read and maintain [the agent handoff](src/extensionsIntegrated/phoenix-pro/docs/agent-handoff.md)
+  for implementation context, task ownership, dependencies, decisions and verification evidence.
+  Update it when starting, handing off, completing or deferring work, and synchronize the high-level
+  status. Put detailed findings in the handoff or linked reports, not in the high-level overview.
+- Keep completed children with their active parent. When the whole parent and required verification
+  are complete, move its full section from the active overview to Pro's
+  [high-level-completed-tasks.md](src/extensionsIntegrated/phoenix-pro/high-level-completed-tasks.md)
+  with a completion date and outcome. Preserve detailed evidence in the handoff/reports.
+- Coordinate overlapping work with the listed owner. A task entry does not override the user's
+  current scope or reactivate deferred work. The Pro repository is separate and gitignored here;
+  inspect its Git status separately.
+
 ## Git Commits
 - **Never commit unless the user explicitly asks you to commit or grants autocommit permission.** Only exception: if a commit is technically required for the current task to work (e.g. testing a CI pipeline).
 - Use Conventional Commits format: `type(scope): description` (e.g. `fix: ...`, `feat: ...`, `chore: ...`).
