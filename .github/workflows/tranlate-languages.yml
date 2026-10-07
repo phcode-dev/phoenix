@@ -2,7 +2,7 @@ name: Generating Translations For strings
 
 on:
   push:
-    branches: [ main ]
+    branches: [ tauri ]
 
 jobs:
   build-tasks:
