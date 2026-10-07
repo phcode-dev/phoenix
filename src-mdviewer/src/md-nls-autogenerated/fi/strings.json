@@ -141,6 +141,10 @@
   "table.add_row_above": "Lisää rivi yläpuolelle",
   "table.add_row_below": "Lisää rivi alapuolelle",
   "table.col_options": "Sarakkeen {n} valinnat",
+  "table.copy_col": "Kopioi sarake",
+  "table.copy_row": "Kopioi rivi",
+  "table.cut_col": "Leikkaa sarake",
+  "table.cut_row": "Leikkaa rivi",
   "table.delete_col": "Poista sarake",
   "table.delete_row": "Poista rivi",
   "table.delete_table": "Poista taulukko",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Lisää rivi yläpuolelle",
   "table.insert_row_below": "Lisää rivi alapuolelle",
   "table.new_row": "+ Uusi rivi",
+  "table.paste_col": "Liitä sarake oikealle",
+  "table.paste_row": "Liitä rivi alle",
   "table.row_options": "Rivin {n} asetukset",
   "toolbar.cursor_sync": "Kytke kohdistimen synkronointi",
   "toolbar.edit": "Muokkaa",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Avaa tiedosto",
   "welcome.subtitle": "Kaunis Markdown-katselin",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopioi sarake",
-  "table.copy_row": "Kopioi rivi",
-  "table.cut_col": "Leikkaa sarake",
-  "table.cut_row": "Leikkaa rivi",
-  "table.paste_col": "Liitä sarake oikealle",
-  "table.paste_row": "Liitä rivi alle"
+  "format.ask_ai": "Kysy tekoälyltä",
+  "format.selection_unavailable": "Tätä valintaa ei löydy"
 }

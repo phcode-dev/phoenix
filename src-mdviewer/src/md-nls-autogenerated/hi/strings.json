@@ -141,6 +141,10 @@
   "table.add_row_above": "ऊपर पंक्ति जोड़ें",
   "table.add_row_below": "नीचे पंक्ति जोड़ें",
   "table.col_options": "स्तंभ {n} विकल्प",
+  "table.copy_col": "कॉलम कॉपी करें",
+  "table.copy_row": "पंक्ति कॉपी करें",
+  "table.cut_col": "कॉलम कट करें",
+  "table.cut_row": "पंक्ति कट करें",
   "table.delete_col": "स्तंभ हटाएँ",
   "table.delete_row": "पंक्ति हटाएँ",
   "table.delete_table": "टेबल हटाएँ",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "ऊपर पंक्ति जोड़ें",
   "table.insert_row_below": "नीचे पंक्ति जोड़ें",
   "table.new_row": "+ नई पंक्ति",
+  "table.paste_col": "कॉलम दाएँ पेस्ट करें",
+  "table.paste_row": "पंक्ति नीचे पेस्ट करें",
   "table.row_options": "पंक्ति {n} विकल्प",
   "toolbar.cursor_sync": "कर्सर सिंक टॉगल करें",
   "toolbar.edit": "संपादित करें",
@@ -191,10 +197,6 @@
   "welcome.open_button": "फ़ाइल खोलें",
   "welcome.subtitle": "एक सुंदर मार्कडाउन व्यूअर",
   "welcome.title": "Kern",
-  "table.copy_col": "कॉलम कॉपी करें",
-  "table.copy_row": "पंक्ति कॉपी करें",
-  "table.cut_col": "कॉलम कट करें",
-  "table.cut_row": "पंक्ति कट करें",
-  "table.paste_col": "कॉलम दाएँ पेस्ट करें",
-  "table.paste_row": "पंक्ति नीचे पेस्ट करें"
+  "format.ask_ai": "एआई से पूछें",
+  "format.selection_unavailable": "चयनित अंश नहीं मिल रहा है"
 }

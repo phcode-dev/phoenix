@@ -141,6 +141,10 @@
   "table.add_row_above": "Додати рядок вище",
   "table.add_row_below": "Додати рядок нижче",
   "table.col_options": "Параметри стовпця {n}",
+  "table.copy_col": "Копіювати стовпець",
+  "table.copy_row": "Копіювати рядок",
+  "table.cut_col": "Вирізати стовпець",
+  "table.cut_row": "Вирізати рядок",
   "table.delete_col": "Видалити стовпець",
   "table.delete_row": "Видалити рядок",
   "table.delete_table": "Видалити таблицю",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Вставити рядок вище",
   "table.insert_row_below": "Вставити рядок нижче",
   "table.new_row": "+ Новий рядок",
+  "table.paste_col": "Вставити стовпець праворуч",
+  "table.paste_row": "Вставити рядок нижче",
   "table.row_options": "Параметри рядка {n}",
   "toolbar.cursor_sync": "Перемкнути синхронізацію курсорів",
   "toolbar.edit": "Редагувати",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Відкрити файл",
   "welcome.subtitle": "Гарний переглядач файлів Markdown",
   "welcome.title": "Керн",
-  "table.copy_col": "Копіювати стовпець",
-  "table.copy_row": "Копіювати рядок",
-  "table.cut_col": "Вирізати стовпець",
-  "table.cut_row": "Вирізати рядок",
-  "table.paste_col": "Вставити стовпець праворуч",
-  "table.paste_row": "Вставити рядок нижче"
+  "format.ask_ai": "Запитати ШІ",
+  "format.selection_unavailable": "Не вдалося знайти цей виділений фрагмент"
 }

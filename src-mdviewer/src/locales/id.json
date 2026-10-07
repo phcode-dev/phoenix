@@ -72,7 +72,9 @@
     "table": "Tabel",
     "task_list": "Daftar tugas",
     "text_formatting": "Pemformatan teks",
-    "underline": "Garis Bawah ({mod}+U)"
+    "underline": "Garis Bawah ({mod}+U)",
+    "ask_ai": "Tanya AI",
+    "selection_unavailable": "Tidak dapat menemukan pilihan ini"
   },
   "help": {
     "editing": "Pengeditan",
@@ -178,6 +180,10 @@
     "add_row_above": "Tambah baris di atas",
     "add_row_below": "Tambah baris di bawah",
     "col_options": "Opsi kolom {n}",
+    "copy_col": "Salin kolom",
+    "copy_row": "Salin baris",
+    "cut_col": "Potong kolom",
+    "cut_row": "Potong baris",
     "delete_col": "Hapus kolom",
     "delete_row": "Hapus baris",
     "delete_table": "Hapus tabel",
@@ -187,13 +193,9 @@
     "insert_row_above": "Sisipkan baris di atas",
     "insert_row_below": "Sisipkan baris di bawah",
     "new_row": "+ Baris baru",
-    "row_options": "Opsi baris {n}",
-    "copy_col": "Salin kolom",
-    "copy_row": "Salin baris",
-    "cut_col": "Potong kolom",
-    "cut_row": "Potong baris",
     "paste_col": "Tempel kolom kanan",
-    "paste_row": "Tempel baris di bawah"
+    "paste_row": "Tempel baris di bawah",
+    "row_options": "Opsi baris {n}"
   },
   "toolbar": {
     "cursor_sync": "Alihkan sinkronisasi kursor",

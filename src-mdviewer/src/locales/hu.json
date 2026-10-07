@@ -72,7 +72,9 @@
     "table": "Táblázat",
     "task_list": "Feladatlista",
     "text_formatting": "Szövegformázás",
-    "underline": "Aláhúzás ({mod}+U)"
+    "underline": "Aláhúzás ({mod}+U)",
+    "ask_ai": "Kérdezd az AI-t",
+    "selection_unavailable": "Ez a kijelölés nem található"
   },
   "help": {
     "editing": "Szerkesztés",
@@ -178,6 +180,10 @@
     "add_row_above": "Sor hozzáadása fölé",
     "add_row_below": "Sor hozzáadása alá",
     "col_options": "{n}. oszlop beállításai",
+    "copy_col": "Oszlop másolása",
+    "copy_row": "Sor másolása",
+    "cut_col": "Oszlop kivágása",
+    "cut_row": "Sor kivágása",
     "delete_col": "Oszlop törlése",
     "delete_row": "Sor törlése",
     "delete_table": "Táblázat törlése",
@@ -187,13 +193,9 @@
     "insert_row_above": "Sor beszúrása fölé",
     "insert_row_below": "Sor beszúrása alá",
     "new_row": "+ Új sor",
-    "row_options": "{n}. sor beállításai",
-    "copy_col": "Oszlop másolása",
-    "copy_row": "Sor másolása",
-    "cut_col": "Oszlop kivágása",
-    "cut_row": "Sor kivágása",
     "paste_col": "Oszlop beillesztése jobbra",
-    "paste_row": "Sor beillesztése alá"
+    "paste_row": "Sor beillesztése alá",
+    "row_options": "{n}. sor beállításai"
   },
   "toolbar": {
     "cursor_sync": "Kurzor szinkronizálás váltása",

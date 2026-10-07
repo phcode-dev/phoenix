@@ -72,7 +72,9 @@
     "table": "Tabell",
     "task_list": "Att göra-lista",
     "text_formatting": "Textformatering",
-    "underline": "Understruken ({mod}+U)"
+    "underline": "Understruken ({mod}+U)",
+    "ask_ai": "Fråga AI",
+    "selection_unavailable": "Det går inte att hitta den här markeringen"
   },
   "help": {
     "editing": "Redigering",
@@ -178,6 +180,10 @@
     "add_row_above": "Lägg till rad ovanför",
     "add_row_below": "Lägg till rad nedanför",
     "col_options": "Alternativ för kolumn {n}",
+    "copy_col": "Kopiera kolumn",
+    "copy_row": "Kopiera rad",
+    "cut_col": "Klipp ut kolumn",
+    "cut_row": "Klipp ut rad",
     "delete_col": "Ta bort kolumn",
     "delete_row": "Ta bort rad",
     "delete_table": "Ta bort tabell",
@@ -187,13 +193,9 @@
     "insert_row_above": "Infoga rad ovanför",
     "insert_row_below": "Infoga rad nedanför",
     "new_row": "+ Ny rad",
-    "row_options": "Alternativ för rad {n}",
-    "copy_col": "Kopiera kolumn",
-    "copy_row": "Kopiera rad",
-    "cut_col": "Klipp ut kolumn",
-    "cut_row": "Klipp ut rad",
     "paste_col": "Klistra in kolumn till höger",
-    "paste_row": "Klistra in rad nedanför"
+    "paste_row": "Klistra in rad nedanför",
+    "row_options": "Alternativ för rad {n}"
   },
   "toolbar": {
     "cursor_sync": "Växla markörsynkronisering",

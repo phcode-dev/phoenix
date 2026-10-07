@@ -141,6 +141,10 @@
   "table.add_row_above": "Adaugă rând deasupra",
   "table.add_row_below": "Adaugă rând dedesubt",
   "table.col_options": "Opțiuni coloană {n}",
+  "table.copy_col": "Copiază coloana",
+  "table.copy_row": "Copiază rândul",
+  "table.cut_col": "Decupează coloana",
+  "table.cut_row": "Decupează rândul",
   "table.delete_col": "Șterge coloana",
   "table.delete_row": "Șterge rândul",
   "table.delete_table": "Șterge tabelul",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Inserează rând deasupra",
   "table.insert_row_below": "Inserează rând dedesubt",
   "table.new_row": "+ Rând nou",
+  "table.paste_col": "Lipește coloana la dreapta",
+  "table.paste_row": "Lipește rândul dedesubt",
   "table.row_options": "Opțiuni rând {n}",
   "toolbar.cursor_sync": "Comută sincronizarea cursorului",
   "toolbar.edit": "Editare",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Deschide fișier",
   "welcome.subtitle": "Un vizualizator Markdown frumos",
   "welcome.title": "Kern",
-  "table.copy_col": "Copiază coloana",
-  "table.copy_row": "Copiază rândul",
-  "table.cut_col": "Decupează coloana",
-  "table.cut_row": "Decupează rândul",
-  "table.paste_col": "Lipește coloana la dreapta",
-  "table.paste_row": "Lipește rândul dedesubt"
+  "format.ask_ai": "Întreabă AI",
+  "format.selection_unavailable": "Nu se poate găsi această selecție"
 }

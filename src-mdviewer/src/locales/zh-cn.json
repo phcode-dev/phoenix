@@ -72,7 +72,9 @@
     "table": "表格",
     "task_list": "任务列表",
     "text_formatting": "文本格式",
-    "underline": "下划线 ({mod}+U)"
+    "underline": "下划线 ({mod}+U)",
+    "ask_ai": "询问 AI",
+    "selection_unavailable": "无法定位此选区"
   },
   "help": {
     "editing": "编辑",
@@ -178,6 +180,10 @@
     "add_row_above": "在上方添加行",
     "add_row_below": "在下方添加行",
     "col_options": "第 {n} 列选项",
+    "copy_col": "复制列",
+    "copy_row": "复制行",
+    "cut_col": "剪切列",
+    "cut_row": "剪切行",
     "delete_col": "删除列",
     "delete_row": "删除行",
     "delete_table": "删除表格",
@@ -187,13 +193,9 @@
     "insert_row_above": "在上方插入行",
     "insert_row_below": "在下方插入行",
     "new_row": "+ 新增行",
-    "row_options": "第 {n} 行选项",
-    "copy_col": "复制列",
-    "copy_row": "复制行",
-    "cut_col": "剪切列",
-    "cut_row": "剪切行",
     "paste_col": "在右侧粘贴列",
-    "paste_row": "在下方粘贴行"
+    "paste_row": "在下方粘贴行",
+    "row_options": "第 {n} 行选项"
   },
   "toolbar": {
     "cursor_sync": "切换光标同步",

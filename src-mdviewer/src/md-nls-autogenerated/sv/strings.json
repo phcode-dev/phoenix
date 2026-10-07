@@ -141,6 +141,10 @@
   "table.add_row_above": "Lägg till rad ovanför",
   "table.add_row_below": "Lägg till rad nedanför",
   "table.col_options": "Alternativ för kolumn {n}",
+  "table.copy_col": "Kopiera kolumn",
+  "table.copy_row": "Kopiera rad",
+  "table.cut_col": "Klipp ut kolumn",
+  "table.cut_row": "Klipp ut rad",
   "table.delete_col": "Ta bort kolumn",
   "table.delete_row": "Ta bort rad",
   "table.delete_table": "Ta bort tabell",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Infoga rad ovanför",
   "table.insert_row_below": "Infoga rad nedanför",
   "table.new_row": "+ Ny rad",
+  "table.paste_col": "Klistra in kolumn till höger",
+  "table.paste_row": "Klistra in rad nedanför",
   "table.row_options": "Alternativ för rad {n}",
   "toolbar.cursor_sync": "Växla markörsynkronisering",
   "toolbar.edit": "Redigera",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Öppna fil",
   "welcome.subtitle": "En vacker Markdown-visare",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopiera kolumn",
-  "table.copy_row": "Kopiera rad",
-  "table.cut_col": "Klipp ut kolumn",
-  "table.cut_row": "Klipp ut rad",
-  "table.paste_col": "Klistra in kolumn till höger",
-  "table.paste_row": "Klistra in rad nedanför"
+  "format.ask_ai": "Fråga AI",
+  "format.selection_unavailable": "Det går inte att hitta den här markeringen"
 }

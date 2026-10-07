@@ -141,6 +141,10 @@
   "table.add_row_above": "Adicionar linha acima",
   "table.add_row_below": "Adicionar linha abaixo",
   "table.col_options": "Opções da coluna {n}",
+  "table.copy_col": "Copiar coluna",
+  "table.copy_row": "Copiar linha",
+  "table.cut_col": "Recortar coluna",
+  "table.cut_row": "Recortar linha",
   "table.delete_col": "Excluir coluna",
   "table.delete_row": "Excluir linha",
   "table.delete_table": "Excluir tabela",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Inserir linha acima",
   "table.insert_row_below": "Inserir linha abaixo",
   "table.new_row": "+ Nova linha",
+  "table.paste_col": "Colar coluna à direita",
+  "table.paste_row": "Colar linha abaixo",
   "table.row_options": "Opções da linha {n}",
   "toolbar.cursor_sync": "Alternar sincronização de cursor",
   "toolbar.edit": "Editar",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Abrir arquivo",
   "welcome.subtitle": "Um belo visualizador Markdown",
   "welcome.title": "Kern",
-  "table.copy_col": "Copiar coluna",
-  "table.copy_row": "Copiar linha",
-  "table.cut_col": "Recortar coluna",
-  "table.cut_row": "Recortar linha",
-  "table.paste_col": "Colar coluna à direita",
-  "table.paste_row": "Colar linha abaixo"
+  "format.ask_ai": "Perguntar à IA",
+  "format.selection_unavailable": "Não foi possível localizar esta seleção"
 }

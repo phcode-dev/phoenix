@@ -72,7 +72,9 @@
     "table": "Tabela",
     "task_list": "Lista zadań",
     "text_formatting": "Formatowanie tekstu",
-    "underline": "Podkreślenie ({mod}+U)"
+    "underline": "Podkreślenie ({mod}+U)",
+    "ask_ai": "Zapytaj AI",
+    "selection_unavailable": "Nie można odnaleźć tego zaznaczenia"
   },
   "help": {
     "editing": "Edycja",
@@ -178,6 +180,10 @@
     "add_row_above": "Dodaj wiersz powyżej",
     "add_row_below": "Dodaj wiersz poniżej",
     "col_options": "Opcje kolumny {n}",
+    "copy_col": "Kopiuj kolumnę",
+    "copy_row": "Kopiuj wiersz",
+    "cut_col": "Wytnij kolumnę",
+    "cut_row": "Wytnij wiersz",
     "delete_col": "Usuń kolumnę",
     "delete_row": "Usuń wiersz",
     "delete_table": "Usuń tabelę",
@@ -187,13 +193,9 @@
     "insert_row_above": "Wstaw wiersz powyżej",
     "insert_row_below": "Wstaw wiersz poniżej",
     "new_row": "+ Nowy wiersz",
-    "row_options": "Opcje wiersza {n}",
-    "copy_col": "Kopiuj kolumnę",
-    "copy_row": "Kopiuj wiersz",
-    "cut_col": "Wytnij kolumnę",
-    "cut_row": "Wytnij wiersz",
     "paste_col": "Wklej kolumnę po prawej",
-    "paste_row": "Wklej wiersz poniżej"
+    "paste_row": "Wklej wiersz poniżej",
+    "row_options": "Opcje wiersza {n}"
   },
   "toolbar": {
     "cursor_sync": "Przełącz synchronizację kursora",

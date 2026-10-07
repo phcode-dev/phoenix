@@ -141,6 +141,10 @@
   "table.add_row_above": "Добавить строку выше",
   "table.add_row_below": "Добавить строку ниже",
   "table.col_options": "Настройки столбца {n}",
+  "table.copy_col": "Копировать столбец",
+  "table.copy_row": "Копировать строку",
+  "table.cut_col": "Вырезать столбец",
+  "table.cut_row": "Вырезать строку",
   "table.delete_col": "Удалить столбец",
   "table.delete_row": "Удалить строку",
   "table.delete_table": "Удалить таблицу",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Вставить строку выше",
   "table.insert_row_below": "Вставить строку ниже",
   "table.new_row": "+ Новая строка",
+  "table.paste_col": "Вставить столбец справа",
+  "table.paste_row": "Вставить строку ниже",
   "table.row_options": "Параметры строки {n}",
   "toolbar.cursor_sync": "Переключить синхронизацию курсоров",
   "toolbar.edit": "Редактировать",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Открыть файл",
   "welcome.subtitle": "Красивый просмотрщик Markdown",
   "welcome.title": "Керн",
-  "table.copy_col": "Копировать столбец",
-  "table.copy_row": "Копировать строку",
-  "table.cut_col": "Вырезать столбец",
-  "table.cut_row": "Вырезать строку",
-  "table.paste_col": "Вставить столбец справа",
-  "table.paste_row": "Вставить строку ниже"
+  "format.ask_ai": "Спросить ИИ",
+  "format.selection_unavailable": "Не удалось найти выделенный фрагмент"
 }

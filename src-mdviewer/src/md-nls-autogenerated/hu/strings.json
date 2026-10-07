@@ -141,6 +141,10 @@
   "table.add_row_above": "Sor hozzáadása fölé",
   "table.add_row_below": "Sor hozzáadása alá",
   "table.col_options": "{n}. oszlop beállításai",
+  "table.copy_col": "Oszlop másolása",
+  "table.copy_row": "Sor másolása",
+  "table.cut_col": "Oszlop kivágása",
+  "table.cut_row": "Sor kivágása",
   "table.delete_col": "Oszlop törlése",
   "table.delete_row": "Sor törlése",
   "table.delete_table": "Táblázat törlése",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Sor beszúrása fölé",
   "table.insert_row_below": "Sor beszúrása alá",
   "table.new_row": "+ Új sor",
+  "table.paste_col": "Oszlop beillesztése jobbra",
+  "table.paste_row": "Sor beillesztése alá",
   "table.row_options": "{n}. sor beállításai",
   "toolbar.cursor_sync": "Kurzor szinkronizálás váltása",
   "toolbar.edit": "Szerkesztés",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Fájl megnyitása",
   "welcome.subtitle": "Egy gyönyörű Markdown megjelenítő",
   "welcome.title": "Kern",
-  "table.copy_col": "Oszlop másolása",
-  "table.copy_row": "Sor másolása",
-  "table.cut_col": "Oszlop kivágása",
-  "table.cut_row": "Sor kivágása",
-  "table.paste_col": "Oszlop beillesztése jobbra",
-  "table.paste_row": "Sor beillesztése alá"
+  "format.ask_ai": "Kérdezd az AI-t",
+  "format.selection_unavailable": "Ez a kijelölés nem található"
 }

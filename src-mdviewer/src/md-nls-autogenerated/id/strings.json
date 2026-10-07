@@ -141,6 +141,10 @@
   "table.add_row_above": "Tambah baris di atas",
   "table.add_row_below": "Tambah baris di bawah",
   "table.col_options": "Opsi kolom {n}",
+  "table.copy_col": "Salin kolom",
+  "table.copy_row": "Salin baris",
+  "table.cut_col": "Potong kolom",
+  "table.cut_row": "Potong baris",
   "table.delete_col": "Hapus kolom",
   "table.delete_row": "Hapus baris",
   "table.delete_table": "Hapus tabel",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Sisipkan baris di atas",
   "table.insert_row_below": "Sisipkan baris di bawah",
   "table.new_row": "+ Baris baru",
+  "table.paste_col": "Tempel kolom kanan",
+  "table.paste_row": "Tempel baris di bawah",
   "table.row_options": "Opsi baris {n}",
   "toolbar.cursor_sync": "Alihkan sinkronisasi kursor",
   "toolbar.edit": "Edit",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Buka File",
   "welcome.subtitle": "Penampil Markdown yang indah",
   "welcome.title": "Kern",
-  "table.copy_col": "Salin kolom",
-  "table.copy_row": "Salin baris",
-  "table.cut_col": "Potong kolom",
-  "table.cut_row": "Potong baris",
-  "table.paste_col": "Tempel kolom kanan",
-  "table.paste_row": "Tempel baris di bawah"
+  "format.ask_ai": "Tanya AI",
+  "format.selection_unavailable": "Tidak dapat menemukan pilihan ini"
 }

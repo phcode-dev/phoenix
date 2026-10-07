@@ -72,7 +72,9 @@
     "table": "Table",
     "task_list": "Task list",
     "text_formatting": "Text formatting",
-    "underline": "Underline ({mod}+U)"
+    "underline": "Underline ({mod}+U)",
+    "ask_ai": "Ask AI",
+    "selection_unavailable": "Cannot locate this selection"
   },
   "help": {
     "editing": "Editing",
@@ -178,6 +180,10 @@
     "add_row_above": "Add row above",
     "add_row_below": "Add row below",
     "col_options": "Column {n} options",
+    "copy_col": "Copy column",
+    "copy_row": "Copy row",
+    "cut_col": "Cut column",
+    "cut_row": "Cut row",
     "delete_col": "Delete column",
     "delete_row": "Delete row",
     "delete_table": "Delete table",
@@ -187,13 +193,9 @@
     "insert_row_above": "Insert row above",
     "insert_row_below": "Insert row below",
     "new_row": "+ New row",
-    "row_options": "Row {n} options",
-    "copy_col": "Copy column",
-    "copy_row": "Copy row",
-    "cut_col": "Cut column",
-    "cut_row": "Cut row",
     "paste_col": "Paste column right",
-    "paste_row": "Paste row below"
+    "paste_row": "Paste row below",
+    "row_options": "Row {n} options"
   },
   "toolbar": {
     "cursor_sync": "Toggle cursor sync",

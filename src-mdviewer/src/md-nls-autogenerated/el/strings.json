@@ -141,6 +141,10 @@
   "table.add_row_above": "Προσθήκη γραμμής επάνω",
   "table.add_row_below": "Προσθήκη γραμμής κάτω",
   "table.col_options": "Επιλογές στήλης {n}",
+  "table.copy_col": "Αντιγραφή στήλης",
+  "table.copy_row": "Αντιγραφή γραμμής",
+  "table.cut_col": "Αποκοπή στήλης",
+  "table.cut_row": "Αποκοπή γραμμής",
   "table.delete_col": "Διαγραφή στήλης",
   "table.delete_row": "Διαγραφή γραμμής",
   "table.delete_table": "Διαγραφή πίνακα",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Εισαγωγή γραμμής επάνω",
   "table.insert_row_below": "Εισαγωγή γραμμής κάτω",
   "table.new_row": "+ Νέα γραμμή",
+  "table.paste_col": "Επικόλληση στήλης δεξιά",
+  "table.paste_row": "Επικόλληση γραμμής κάτω",
   "table.row_options": "Επιλογές γραμμής {n}",
   "toolbar.cursor_sync": "Εναλλαγή συγχρονισμού δρομέα",
   "toolbar.edit": "Επεξεργασία",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Άνοιγμα Αρχείου",
   "welcome.subtitle": "Ένα όμορφο πρόγραμμα προβολής Markdown",
   "welcome.title": "Kern",
-  "table.copy_col": "Αντιγραφή στήλης",
-  "table.copy_row": "Αντιγραφή γραμμής",
-  "table.cut_col": "Αποκοπή στήλης",
-  "table.cut_row": "Αποκοπή γραμμής",
-  "table.paste_col": "Επικόλληση στήλης δεξιά",
-  "table.paste_row": "Επικόλληση γραμμής κάτω"
+  "format.ask_ai": "Ρωτήστε την τεχνητή νοημοσύνη",
+  "format.selection_unavailable": "Δεν είναι δυνατός ο εντοπισμός αυτής της επιλογής"
 }

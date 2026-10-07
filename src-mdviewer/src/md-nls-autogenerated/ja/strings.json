@@ -141,6 +141,10 @@
   "table.add_row_above": "上に行を追加",
   "table.add_row_below": "下に行を追加",
   "table.col_options": "列 {n} のオプション",
+  "table.copy_col": "列をコピー",
+  "table.copy_row": "行をコピー",
+  "table.cut_col": "列を切り取り",
+  "table.cut_row": "行を切り取り",
   "table.delete_col": "列を削除",
   "table.delete_row": "行を削除",
   "table.delete_table": "表を削除",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "上に行を挿入",
   "table.insert_row_below": "下に行を挿入",
   "table.new_row": "+ 新しい行",
+  "table.paste_col": "列を右に貼り付け",
+  "table.paste_row": "行を下に貼り付け",
   "table.row_options": "行 {n} のオプション",
   "toolbar.cursor_sync": "カーソル同期の切り替え",
   "toolbar.edit": "編集",
@@ -191,10 +197,6 @@
   "welcome.open_button": "ファイルを開く",
   "welcome.subtitle": "美しいMarkdownビューア",
   "welcome.title": "Kern",
-  "table.copy_col": "列をコピー",
-  "table.copy_row": "行をコピー",
-  "table.cut_col": "列を切り取り",
-  "table.cut_row": "行を切り取り",
-  "table.paste_col": "列を右に貼り付け",
-  "table.paste_row": "行を下に貼り付け"
+  "format.ask_ai": "AIに質問",
+  "format.selection_unavailable": "この選択範囲が見つかりません"
 }

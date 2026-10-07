@@ -141,6 +141,10 @@
   "table.add_row_above": "Aggiungi riga sopra",
   "table.add_row_below": "Aggiungi riga sotto",
   "table.col_options": "Opzioni colonna {n}",
+  "table.copy_col": "Copia colonna",
+  "table.copy_row": "Copia riga",
+  "table.cut_col": "Taglia colonna",
+  "table.cut_row": "Taglia riga",
   "table.delete_col": "Elimina colonna",
   "table.delete_row": "Elimina riga",
   "table.delete_table": "Elimina tabella",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Inserisci riga sopra",
   "table.insert_row_below": "Inserisci riga sotto",
   "table.new_row": "+ Nuova riga",
+  "table.paste_col": "Incolla colonna a destra",
+  "table.paste_row": "Incolla riga sotto",
   "table.row_options": "Opzioni riga {n}",
   "toolbar.cursor_sync": "Attiva/disattiva sincronizzazione cursore",
   "toolbar.edit": "Modifica",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Apri file",
   "welcome.subtitle": "Un bellissimo visualizzatore Markdown",
   "welcome.title": "Kern",
-  "table.copy_col": "Copia colonna",
-  "table.copy_row": "Copia riga",
-  "table.cut_col": "Taglia colonna",
-  "table.cut_row": "Taglia riga",
-  "table.paste_col": "Incolla colonna a destra",
-  "table.paste_row": "Incolla riga sotto"
+  "format.ask_ai": "Chiedi all'IA",
+  "format.selection_unavailable": "Impossibile individuare questa selezione"
 }

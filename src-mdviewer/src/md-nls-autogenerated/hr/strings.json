@@ -141,6 +141,10 @@
   "table.add_row_above": "Dodaj redak iznad",
   "table.add_row_below": "Dodaj redak ispod",
   "table.col_options": "Opcije stupca {n}",
+  "table.copy_col": "Kopiraj stupac",
+  "table.copy_row": "Kopiraj redak",
+  "table.cut_col": "Izreži stupac",
+  "table.cut_row": "Izreži redak",
   "table.delete_col": "Izbriši stupac",
   "table.delete_row": "Izbriši redak",
   "table.delete_table": "Izbriši tablicu",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Umetni redak iznad",
   "table.insert_row_below": "Umetni redak ispod",
   "table.new_row": "+ Novi redak",
+  "table.paste_col": "Zalijepi stupac desno",
+  "table.paste_row": "Zalijepi redak ispod",
   "table.row_options": "Opcije retka {n}",
   "toolbar.cursor_sync": "Prebaci sinkronizaciju kursora",
   "toolbar.edit": "Uredi",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Otvori datoteku",
   "welcome.subtitle": "Prekrasan Markdown preglednik",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopiraj stupac",
-  "table.copy_row": "Kopiraj redak",
-  "table.cut_col": "Izreži stupac",
-  "table.cut_row": "Izreži redak",
-  "table.paste_col": "Zalijepi stupac desno",
-  "table.paste_row": "Zalijepi redak ispod"
+  "format.ask_ai": "Pitaj umjetnu inteligenciju",
+  "format.selection_unavailable": "Nije moguće pronaći ovaj odabir"
 }

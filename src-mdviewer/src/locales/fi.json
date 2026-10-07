@@ -72,7 +72,9 @@
     "table": "Taulukko",
     "task_list": "Tehtäväluettelo",
     "text_formatting": "Tekstin muotoilu",
-    "underline": "Alleviivaus ({mod}+U)"
+    "underline": "Alleviivaus ({mod}+U)",
+    "ask_ai": "Kysy tekoälyltä",
+    "selection_unavailable": "Tätä valintaa ei löydy"
   },
   "help": {
     "editing": "Muokkaus",
@@ -178,6 +180,10 @@
     "add_row_above": "Lisää rivi yläpuolelle",
     "add_row_below": "Lisää rivi alapuolelle",
     "col_options": "Sarakkeen {n} valinnat",
+    "copy_col": "Kopioi sarake",
+    "copy_row": "Kopioi rivi",
+    "cut_col": "Leikkaa sarake",
+    "cut_row": "Leikkaa rivi",
     "delete_col": "Poista sarake",
     "delete_row": "Poista rivi",
     "delete_table": "Poista taulukko",
@@ -187,13 +193,9 @@
     "insert_row_above": "Lisää rivi yläpuolelle",
     "insert_row_below": "Lisää rivi alapuolelle",
     "new_row": "+ Uusi rivi",
-    "row_options": "Rivin {n} asetukset",
-    "copy_col": "Kopioi sarake",
-    "copy_row": "Kopioi rivi",
-    "cut_col": "Leikkaa sarake",
-    "cut_row": "Leikkaa rivi",
     "paste_col": "Liitä sarake oikealle",
-    "paste_row": "Liitä rivi alle"
+    "paste_row": "Liitä rivi alle",
+    "row_options": "Rivin {n} asetukset"
   },
   "toolbar": {
     "cursor_sync": "Kytke kohdistimen synkronointi",

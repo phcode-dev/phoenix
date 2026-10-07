@@ -141,6 +141,10 @@
   "table.add_row_above": "Přidat řádek nad",
   "table.add_row_below": "Přidat řádek pod",
   "table.col_options": "Možnosti sloupce {n}",
+  "table.copy_col": "Kopírovat sloupec",
+  "table.copy_row": "Kopírovat řádek",
+  "table.cut_col": "Vyjmout sloupec",
+  "table.cut_row": "Vyjmout řádek",
   "table.delete_col": "Odstranit sloupec",
   "table.delete_row": "Odstranit řádek",
   "table.delete_table": "Smazat tabulku",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Vložit řádek nad",
   "table.insert_row_below": "Vložit řádek pod",
   "table.new_row": "+ Nový řádek",
+  "table.paste_col": "Vložit sloupec vpravo",
+  "table.paste_row": "Vložit řádek pod",
   "table.row_options": "Možnosti řádku {n}",
   "toolbar.cursor_sync": "Přepnout synchronizaci kurzorů",
   "toolbar.edit": "Upravit",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Otevřít soubor",
   "welcome.subtitle": "Krásný prohlížeč Markdownu",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopírovat sloupec",
-  "table.copy_row": "Kopírovat řádek",
-  "table.cut_col": "Vyjmout sloupec",
-  "table.cut_row": "Vyjmout řádek",
-  "table.paste_col": "Vložit sloupec vpravo",
-  "table.paste_row": "Vložit řádek pod"
+  "format.ask_ai": "Zeptat se AI",
+  "format.selection_unavailable": "Tento výběr nelze najít"
 }

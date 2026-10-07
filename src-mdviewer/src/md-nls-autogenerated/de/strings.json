@@ -141,6 +141,10 @@
   "table.add_row_above": "Zeile darüber hinzufügen",
   "table.add_row_below": "Zeile darunter hinzufügen",
   "table.col_options": "Optionen für Spalte {n}",
+  "table.copy_col": "Spalte kopieren",
+  "table.copy_row": "Zeile kopieren",
+  "table.cut_col": "Spalte ausschneiden",
+  "table.cut_row": "Zeile ausschneiden",
   "table.delete_col": "Spalte löschen",
   "table.delete_row": "Zeile löschen",
   "table.delete_table": "Tabelle löschen",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Zeile darüber einfügen",
   "table.insert_row_below": "Zeile darunter einfügen",
   "table.new_row": "+ Neue Zeile",
+  "table.paste_col": "Spalte rechts einfügen",
+  "table.paste_row": "Zeile unten einfügen",
   "table.row_options": "Optionen für Zeile {n}",
   "toolbar.cursor_sync": "Cursor-Synchronisierung umschalten",
   "toolbar.edit": "Bearbeiten",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Datei öffnen",
   "welcome.subtitle": "Ein schöner Markdown-Betrachter",
   "welcome.title": "Kern",
-  "table.copy_col": "Spalte kopieren",
-  "table.copy_row": "Zeile kopieren",
-  "table.cut_col": "Spalte ausschneiden",
-  "table.cut_row": "Zeile ausschneiden",
-  "table.paste_col": "Spalte rechts einfügen",
-  "table.paste_row": "Zeile unten einfügen"
+  "format.ask_ai": "KI fragen",
+  "format.selection_unavailable": "Diese Auswahl kann nicht gefunden werden"
 }

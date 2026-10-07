@@ -141,6 +141,10 @@
   "table.add_row_above": "Legg til rad over",
   "table.add_row_below": "Legg til rad under",
   "table.col_options": "Alternativer for kolonne {n}",
+  "table.copy_col": "Kopier kolonne",
+  "table.copy_row": "Kopier rad",
+  "table.cut_col": "Klipp ut kolonne",
+  "table.cut_row": "Klipp ut rad",
   "table.delete_col": "Slett kolonne",
   "table.delete_row": "Slett rad",
   "table.delete_table": "Slett tabell",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Sett inn rad over",
   "table.insert_row_below": "Sett inn rad under",
   "table.new_row": "+ Ny rad",
+  "table.paste_col": "Lim inn kolonne til høyre",
+  "table.paste_row": "Lim inn rad under",
   "table.row_options": "Alternativer for rad {n}",
   "toolbar.cursor_sync": "Veksle markørsynk",
   "toolbar.edit": "Rediger",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Åpne fil",
   "welcome.subtitle": "En vakker Markdown-fremviser",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopier kolonne",
-  "table.copy_row": "Kopier rad",
-  "table.cut_col": "Klipp ut kolonne",
-  "table.cut_row": "Klipp ut rad",
-  "table.paste_col": "Lim inn kolonne til høyre",
-  "table.paste_row": "Lim inn rad under"
+  "format.ask_ai": "Spør KI",
+  "format.selection_unavailable": "Finner ikke denne markeringen"
 }

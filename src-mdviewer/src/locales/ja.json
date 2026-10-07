@@ -72,7 +72,9 @@
     "table": "テーブル",
     "task_list": "タスクリスト",
     "text_formatting": "テキスト書式設定",
-    "underline": "下線 ({mod}+U)"
+    "underline": "下線 ({mod}+U)",
+    "ask_ai": "AIに質問",
+    "selection_unavailable": "この選択範囲が見つかりません"
   },
   "help": {
     "editing": "編集",
@@ -178,6 +180,10 @@
     "add_row_above": "上に行を追加",
     "add_row_below": "下に行を追加",
     "col_options": "列 {n} のオプション",
+    "copy_col": "列をコピー",
+    "copy_row": "行をコピー",
+    "cut_col": "列を切り取り",
+    "cut_row": "行を切り取り",
     "delete_col": "列を削除",
     "delete_row": "行を削除",
     "delete_table": "表を削除",
@@ -187,13 +193,9 @@
     "insert_row_above": "上に行を挿入",
     "insert_row_below": "下に行を挿入",
     "new_row": "+ 新しい行",
-    "row_options": "行 {n} のオプション",
-    "copy_col": "列をコピー",
-    "copy_row": "行をコピー",
-    "cut_col": "列を切り取り",
-    "cut_row": "行を切り取り",
     "paste_col": "列を右に貼り付け",
-    "paste_row": "行を下に貼り付け"
+    "paste_row": "行を下に貼り付け",
+    "row_options": "行 {n} のオプション"
   },
   "toolbar": {
     "cursor_sync": "カーソル同期の切り替え",

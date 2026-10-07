@@ -72,7 +72,9 @@
     "table": "Tabuľka",
     "task_list": "Zoznam úloh",
     "text_formatting": "Formátovanie textu",
-    "underline": "Podčiarknuté ({mod}+U)"
+    "underline": "Podčiarknuté ({mod}+U)",
+    "ask_ai": "Spýtať sa AI",
+    "selection_unavailable": "Tento výber sa nedá nájsť"
   },
   "help": {
     "editing": "Úpravy",
@@ -178,6 +180,10 @@
     "add_row_above": "Pridať riadok nad",
     "add_row_below": "Pridať riadok pod",
     "col_options": "Možnosti stĺpca {n}",
+    "copy_col": "Kopírovať stĺpec",
+    "copy_row": "Kopírovať riadok",
+    "cut_col": "Vystrihnúť stĺpec",
+    "cut_row": "Vystrihnúť riadok",
     "delete_col": "Odstrániť stĺpec",
     "delete_row": "Odstrániť riadok",
     "delete_table": "Odstrániť tabuľku",
@@ -187,13 +193,9 @@
     "insert_row_above": "Vložiť riadok nad",
     "insert_row_below": "Vložiť riadok pod",
     "new_row": "+ Nový riadok",
-    "row_options": "Možnosti riadka {n}",
-    "copy_col": "Kopírovať stĺpec",
-    "copy_row": "Kopírovať riadok",
-    "cut_col": "Vystrihnúť stĺpec",
-    "cut_row": "Vystrihnúť riadok",
     "paste_col": "Vložiť stĺpec napravo",
-    "paste_row": "Vložiť riadok nižšie"
+    "paste_row": "Vložiť riadok nižšie",
+    "row_options": "Možnosti riadka {n}"
   },
   "toolbar": {
     "cursor_sync": "Prepnúť synchronizáciu kurzora",

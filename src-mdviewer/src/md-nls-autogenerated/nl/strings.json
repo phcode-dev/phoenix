@@ -141,6 +141,10 @@
   "table.add_row_above": "Rij boven toevoegen",
   "table.add_row_below": "Rij onder toevoegen",
   "table.col_options": "Kolom {n} opties",
+  "table.copy_col": "Kolom kopiëren",
+  "table.copy_row": "Rij kopiëren",
+  "table.cut_col": "Kolom knippen",
+  "table.cut_row": "Rij knippen",
   "table.delete_col": "Kolom verwijderen",
   "table.delete_row": "Rij verwijderen",
   "table.delete_table": "Tabel verwijderen",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Rij boven invoegen",
   "table.insert_row_below": "Rij onder invoegen",
   "table.new_row": "+ Nieuwe rij",
+  "table.paste_col": "Kolom rechts plakken",
+  "table.paste_row": "Rij onder plakken",
   "table.row_options": "Opties voor rij {n}",
   "toolbar.cursor_sync": "Cursorsynchronisatie in-/uitschakelen",
   "toolbar.edit": "Bewerken",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Bestand openen",
   "welcome.subtitle": "Een prachtige Markdown-viewer",
   "welcome.title": "Kern",
-  "table.copy_col": "Kolom kopiëren",
-  "table.copy_row": "Rij kopiëren",
-  "table.cut_col": "Kolom knippen",
-  "table.cut_row": "Rij knippen",
-  "table.paste_col": "Kolom rechts plakken",
-  "table.paste_row": "Rij onder plakken"
+  "format.ask_ai": "Vraag het AI",
+  "format.selection_unavailable": "Kan deze selectie niet vinden"
 }

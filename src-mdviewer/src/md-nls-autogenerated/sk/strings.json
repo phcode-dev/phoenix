@@ -141,6 +141,10 @@
   "table.add_row_above": "Pridať riadok nad",
   "table.add_row_below": "Pridať riadok pod",
   "table.col_options": "Možnosti stĺpca {n}",
+  "table.copy_col": "Kopírovať stĺpec",
+  "table.copy_row": "Kopírovať riadok",
+  "table.cut_col": "Vystrihnúť stĺpec",
+  "table.cut_row": "Vystrihnúť riadok",
   "table.delete_col": "Odstrániť stĺpec",
   "table.delete_row": "Odstrániť riadok",
   "table.delete_table": "Odstrániť tabuľku",
@@ -150,6 +154,8 @@
   "table.insert_row_above": "Vložiť riadok nad",
   "table.insert_row_below": "Vložiť riadok pod",
   "table.new_row": "+ Nový riadok",
+  "table.paste_col": "Vložiť stĺpec napravo",
+  "table.paste_row": "Vložiť riadok nižšie",
   "table.row_options": "Možnosti riadka {n}",
   "toolbar.cursor_sync": "Prepnúť synchronizáciu kurzora",
   "toolbar.edit": "Upraviť",
@@ -191,10 +197,6 @@
   "welcome.open_button": "Otvoriť súbor",
   "welcome.subtitle": "Krásny prehliadač Markdownu",
   "welcome.title": "Kern",
-  "table.copy_col": "Kopírovať stĺpec",
-  "table.copy_row": "Kopírovať riadok",
-  "table.cut_col": "Vystrihnúť stĺpec",
-  "table.cut_row": "Vystrihnúť riadok",
-  "table.paste_col": "Vložiť stĺpec napravo",
-  "table.paste_row": "Vložiť riadok nižšie"
+  "format.ask_ai": "Spýtať sa AI",
+  "format.selection_unavailable": "Tento výber sa nedá nájsť"
 }
