@@ -41,8 +41,8 @@ async function runPatchHook(session, input, peer) {
                     throw new Error(result.message || "Phoenix could not synchronize a patch target.");
                 }
             } catch (error) {
-                // No native patch has run yet. Release every earlier target even if
-                // one cleanup fails, including when prepare rejected rather than replied.
+                // No native patch has run yet. Discard earlier passive baselines, even if
+                // another cleanup fails; there are no file reservations to release.
                 await Promise.allSettled(prepared.map(previous =>
                     peer("finishEdit", Object.assign({}, previous, {toolFailed: true}))));
                 return {hookSpecificOutput: {hookEventName: event, permissionDecision: "deny",
@@ -111,7 +111,7 @@ async function runHook(session, input, peer) {
         }
         return {};
     }
-    // Reads only need the preflight save. They never reconcile or reserve a write.
+    // Reads only need the preflight save; they never reconcile a write.
     if (input.tool_name === "Read") { return {}; }
     if (event === "PostToolUse" || event === "PostToolUseFailure") {
         const toolInput = input.tool_input;

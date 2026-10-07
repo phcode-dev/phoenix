@@ -85,7 +85,7 @@ class CliConnector {
      */
     async peer(session, fn, args, callId) {
         if (!this.sessions.has(session.sessionId)) { throw new Error("Phoenix session ended."); }
-        if (session.enabled === false && !["cancelCliCall", "finishEdit"].includes(fn)) {
+        if (session.enabled === false && fn !== "cancelCliCall") {
             throw Object.assign(new Error("Phoenix tools are disconnected. Reconnect from the Phoenix connection button."),
                 {code: "connection_disabled"});
         }
@@ -154,7 +154,7 @@ class CliConnector {
                 usage.endpoint,
             directory: path.join(bootDirectory, sessionId), sockets: new Set(),
             createdAt: Date.now(), callCount: 0, lastCallAt: null, hooksReady: false, enabled: true,
-            connectionGeneration: 0, pendingEdits: new Map(), state: "connecting"});
+            connectionGeneration: 0, state: "connecting"});
         this.sessions.set(sessionId, session);
         try {
             await fs.promises.mkdir(session.directory, {mode: 0o700});
@@ -231,28 +231,9 @@ class CliConnector {
             if (frame.fn === "UserPromptSubmit" && session.cli === "codex" && !frame.args.agent_id) {
                 this.usage.recordTurn(session.sessionId, frame.args.turn_id);
             }
-            const editId = frame.args.tool_use_id;
-            const preparing = frame.fn === "PreToolUse" && editId &&
-                ["Edit", "MultiEdit", "Write", "apply_patch"].includes(frame.args.tool_name);
-            const finishing = ["PostToolUse", "PostToolUseFailure"].includes(frame.fn) &&
-                session.pendingEdits.has(editId);
-            if (session.enabled === false && !finishing) { return {}; }
-            if (preparing) {
-                // Keep only the bounded lifetime of the browser's edit reservations.
-                for (const [id, at] of session.pendingEdits) {
-                    if (Date.now() - at > 10 * 60 * 1000) { session.pendingEdits.delete(id); }
-                }
-                session.pendingEdits.set(editId, Date.now());
-            }
-            let result;
-            try {
-                result = await deadline(runHook(session, frame.args, peer), frame.fn === "PreToolUse" ? 20000 : 8000);
-                if (preparing && result.hookSpecificOutput && result.hookSpecificOutput.permissionDecision === "deny") {
-                    session.pendingEdits.delete(editId);
-                }
-            } finally {
-                if (finishing) { session.pendingEdits.delete(editId); }
-            }
+            if (session.enabled === false) { return {}; }
+            const result = await deadline(runHook(session, frame.args, peer),
+                frame.fn === "PreToolUse" ? 20000 : 8000);
             if (session.state === "connected") { this.emit(session, "connected"); }
             return result;
         }

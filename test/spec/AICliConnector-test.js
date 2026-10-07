@@ -15,13 +15,21 @@ define(function (require, exports, module) {
         });
         const run = scenario => connector.execPeer("exercise", {scenario});
 
-        it("finishes an edit prepared during disconnect without running hooks for new edits", async function () {
+        it("makes completion hooks no-ops after disconnect, including an already prepared edit", async function () {
             const result = await run("toggle-pending");
-            expect(result.finishes).toBe(1);
-            expect(result.pending).toBe(0);
+            expect(result.finishes).toBe(0);
             expect(result.cleanup.disconnect).toBe(true);
             expect(result.status.state).toBe("disabled");
         });
+
+        for (const cli of ["claude", "codex"]) {
+            it("allows " + cli + " retries without an earlier completion hook", async function () {
+                const result = await run("retry-" + cli);
+                expect(result.responses).toEqual([{}, {}, {}, {}]);
+                expect(result.prepared).toEqual(["missing-post", "retry", "after-failure"]);
+                expect(result.finished).toEqual(["retry"]);
+            });
+        }
 
         it("disconnects browser and node-side tools without dispatching them", async function () {
             const result = await run("toggle-tools");
@@ -134,7 +142,7 @@ define(function (require, exports, module) {
             expect(result.calls[1].args.filePath).toContain("new file.txt");
             expect(result.calls[2].args.filePath).toContain("other.txt");
         });
-        it("releases prepared Codex targets when a later file refuses the patch", async function () {
+        it("discards earlier Codex baselines when a later file refuses the patch", async function () {
             const result = await run("patch-deny");
             expect(result.result.hookSpecificOutput.permissionDecision).toBe("deny");
             expect(result.calls.length).toBe(3);
@@ -147,7 +155,7 @@ define(function (require, exports, module) {
             expect(result.calls.every(call => call.fn === "finishEdit")).toBe(true);
             expect(result.result.hookSpecificOutput.additionalContext).toContain("other.txt");
         });
-        it("releases earlier Codex targets when saving a later target throws", async function () {
+        it("discards earlier Codex baselines when saving a later target throws", async function () {
             const result = await run("patch-reject");
             expect(result.result.hookSpecificOutput.permissionDecision).toBe("deny");
             expect(result.result.hookSpecificOutput.permissionDecisionReason).toBe("save rejected");

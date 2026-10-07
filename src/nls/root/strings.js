@@ -2736,7 +2736,7 @@ define({
     "AI_CHAT_CLI_CONNECT_ERROR": "{0} could not connect to Phoenix and is running without it: {1}",
     "AI_SETTINGS_CLI_CONNECT_LABEL": "Connect {0} to Phoenix",
     "AI_SETTINGS_CLI_CONNECT_DESC": "When launched from the AI panel, the CLI sees your open files, unsaved changes and live preview, and can use the editor's tools. Takes effect the next time it starts.",
-    "AI_CHAT_CLI_HOOK_REVIEW": "{0} may ask you to review Phoenix's hooks on first launch. These keep editor context and open files in sync. Without them, you can still use the Phoenix tools.",
+    "AI_CHAT_CLI_HOOK_REVIEW": "{0} may ask you to review Phoenix's hooks. After reviewing them, select “Trust all and continue” to keep editor context and open files in sync. Without these hooks, you can still use the Phoenix tools.",
     "AI_CHAT_CLI_NOT_FOUND": "Claude Code Not Installed",
     "AI_CHAT_CLI_INSTALL_MSG": "Claude Code CLI must be installed on your system to use AI features in {APP_NAME}.",
     "AI_CHAT_CLI_INSTALL_BTN": "Install Claude Code",
