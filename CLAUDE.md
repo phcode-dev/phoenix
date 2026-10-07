@@ -61,6 +61,16 @@ If a file is purely app-internal data and never edited by the user as a document
 
 ## Phoenix MCP (Desktop App Testing)
 
+The shared Builder hub is owned by `npm run serve`; each coding agent has its own adapter.
+Before app control, tests or source sync on a machine, use `reserve_machine` with the canonical
+remote-control machine ID and honor its whole-machine reservation. Read the source note on
+acquisition, record changes before and after edits/sync, and release when finished. Dequeue if
+a queued request is no longer needed. Notes survive disconnect and are context, not permission
+to discard others' uncommitted/unsaved work. Status discovery is read-only; tool traffic does
+not itself acquire or release reservations. See [Builder setup and workflow](phoenix-builder-mcp/README.md).
+When upgrading an existing single-owner Builder connection, reconnect it after restarting serve
+to expose these coordination tools.
+
 Use `exec_js` to run JS in the Phoenix browser runtime. jQuery `$()` is global. `brackets.test.*` exposes internal modules (DocumentManager, CommandManager, ProjectManager, FileSystem, EditorManager). Always `return` a value from `exec_js` to see results. Prefer reusing an already-running Phoenix instance (`get_phoenix_status`) over launching a new one.
 
 **Open AI sidebar tab:** `document.querySelectorAll('span').forEach(s => { if (s.textContent.trim() === 'AI' && s.childNodes.length === 1) s.parentElement.click(); });`

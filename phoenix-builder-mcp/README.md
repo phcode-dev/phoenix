@@ -16,7 +16,18 @@ cd phoenix-builder-mcp
 npm install
 ```
 
-### 2. Configure your coding agent
+### 2. Start the shared hub and configure your coding agent
+
+Run `npm run serve` from the Phoenix repository. It serves the app on port 8000 and supervises
+one Builder hub on localhost:38571. Each coding agent runs its own small stdio adapter; several
+adapters can use that hub together. The adapter can list tools while serve is offline, and
+reconnects when the hub returns. It never retries an uncertain tool call automatically.
+
+Set `PHOENIX_DESKTOP_PATH` in the environment that starts **serve** if the desktop checkout is
+not `../phoenix-desktop`. Set `PHOENIX_MCP_WS_PORT` consistently for serve, adapters and Phoenix
+if using a different port. `PHOENIX_BUILDER_HUB=0` disables the hub on a secondary web server.
+Source notes are stored in `phoenix-builder-mcp/.state/source-notes.json`; set
+`PHOENIX_BUILDER_STATE_DIR` on serve to choose another directory.
 
 #### Claude Code
 
@@ -27,18 +38,15 @@ The project root already contains `.mcp.json` which registers the server automat
     "mcpServers": {
         "phoenix-builder": {
             "command": "node",
-            "args": ["phoenix-builder-mcp/index.js"],
-            "env": {
-                "PHOENIX_DESKTOP_PATH": "../phoenix-desktop"
-            }
+            "args": ["phoenix-builder-mcp/index.js"]
         }
     }
 }
 ```
 
-Set `PHOENIX_DESKTOP_PATH` to the path of your phoenix-desktop checkout if it is not at `../phoenix-desktop`.
-
-You can also set `PHOENIX_MCP_WS_PORT` (default `38571`) to change the WebSocket port used for communication between the MCP server and the Phoenix browser runtime.
+Optionally set `PHOENIX_BUILDER_AGENT_NAME` on an adapter to label it `claude`, `codex`, or another
+friendly name. Otherwise the MCP client name is used. The hub adds a unique suffix and maintains
+a separate UUID session identity; display names are not ownership credentials.
 
 #### Codex
 
@@ -49,22 +57,83 @@ The repository includes [`.codex/config.toml`](../.codex/config.toml), which reg
 3. Restart Codex after pulling this configuration. In the CLI, run `codex mcp list` from this checkout to check registration, or use `/mcp` in an interactive session to check the connection.
 4. Ask Codex to check `get_phoenix_status` and reuse a connected dev instance, or launch one with `start_phoenix`.
 
-The launcher works from the repository root or a subdirectory, including checkout paths containing spaces. It uses Node.js directly, so it does not depend on a Unix shell. The default desktop checkout is `../phoenix-desktop`, resolved relative to this checkout. For a different layout (including Git worktrees), set `PHOENIX_DESKTOP_PATH` in the environment that starts Codex. `PHOENIX_MCP_WS_PORT` is also forwarded. Alternatively, put machine-specific overrides in your personal `~/.codex/config.toml`, not in the shared project file:
-
-```toml
-[mcp_servers.phoenix-builder.env]
-PHOENIX_DESKTOP_PATH = "/absolute/path/to/phoenix-desktop"
-```
-
-For Windows TOML paths, use forward slashes (for example `C:/dev/phoenix-desktop`) or literal single-quoted strings. Node.js and npm must be on the PATH available to Codex.
+The launcher works from the repository root or a subdirectory, including paths containing spaces.
+It uses Node.js directly and does not require a Unix shell. Node.js and npm must be on the PATH
+available to Codex. The desktop path belongs to the hub's `npm run serve` environment, rather
+than an individual adapter's configuration.
 
 Codex also reads the existing [`CLAUDE.md`](../CLAUDE.md) through `project_doc_fallback_filenames`, so both agents use the same development rules and Phoenix testing guidance. Claude's `.mcp.json` and instructions continue to work as before. This setup controls the dev build externally; it does not replace the Claude SDK used inside Phoenix's AI sidebar.
 
 See the official [Codex MCP documentation](https://developers.openai.com/codex/mcp/) for configuration and [instruction discovery](https://developers.openai.com/codex/guides/agents-md/) for fallback filenames.
 
-#### Switching between clients
+#### Switching between clients and upgrading an existing session
 
-Each Builder process owns its localhost WebSocket listener and stdio session. A second process on the same port reports a port conflict and leaves the original process alive. Close the active Claude/Codex session before reusing its port, or give separate sessions separate ports and select the intended port in each app. No shared PID file or stale-PID termination is used.
+Adapters no longer own the app listener or the local Phoenix process. Closing one adapter ends
+only its agent session; the hub and other adapters remain available. Stop/restart serve to stop
+its owned hub. An occupied Builder port is reported without terminating its current owner;
+web serving continues, but the new hub is unavailable until the conflict is resolved.
+
+For the first upgrade from the old single-owner server, disconnect the old Builder MCP,
+restart `npm run serve`, then reconnect each coding agent's Builder MCP. Existing Phoenix
+windows reconnect to the same port. Do not run a second hub over the old listener or kill a
+process merely because it occupies the port.
+
+#### Reserve a machine
+
+Use canonical `machineId` values from Builder status or remote-control (`local` for this
+controller). Unknown/legacy app identities are shown as unidentified; names are never parsed
+into IDs. Reservations also work before an app connects, so a machine can be reserved for setup.
+
+1. Call `reserve_machine({machineId, reason, queue: true})`. A free machine is granted immediately;
+   otherwise the request joins FIFO. Without `queue: true`, a busy result leaves the queue unchanged.
+2. Read `sourceCodeChangedNote` on every grant and inspect existing source and jobs. Notes are
+   peer context, not permission to discard another person's uncommitted or unsaved work.
+3. Before editing/syncing, call `update_source_code_note` with the reservation ID, affected checkout,
+   disposition (`disposable`, `preserve`, `unknown`), phase and optional sync/job ID. Await persistence.
+4. Update after success/failure, then `release_machine`. Release may include a final note, persisted
+   before the next grant. `dequeue_machine` removes your pending request at any position; an already
+   granted request needs release. `get_reservation_status` lists owners, queues, notes and agents.
+
+One reservation covers the entire machine, including Builder and remote-control activity.
+Reservations are explicit coordination: ordinary Phoenix messages neither enforce nor change them.
+There are no partial locks, upgrades, leases or heartbeats. A local adapter's socket close/error
+releases its ownership and queued entries. An idle turn or app reload does not. A hung but still
+connected adapter retains ownership until disconnected. Reconnecting creates a new session.
+
+Source notes survive release, disconnect and hub restart. Ownership and wait queues are in RAM
+and are not restored after restart. A new owner receives existing notes with its grant, even if
+source work was interrupted; there is no separate approval gate in the pool. The agent must still
+inspect source state and any remaining processes before changing that machine.
+
+#### Wait for a queued request
+
+The reservation response includes a read-only `pollUrl`:
+
+```sh
+node phoenix-builder-mcp/wait-for-reservation.js POLL_URL --timeout-ms 3600000
+```
+
+The monitor polls with backoff and emits one JSON result when granted (exit 0). Cancellation,
+release or session loss ends without a grant (exit 2); timeout/error exits 1. A monitor timeout
+does not dequeue the request. Polling never acquires a reservation or keeps the adapter alive.
+
+For an agent host that exposes a supported wakeup command:
+
+```sh
+node phoenix-builder-mcp/wait-for-reservation.js POLL_URL --notify node /path/to/host-wakeup.js
+```
+
+The command runs once, with the grant JSON in `PHOENIX_BUILDER_GRANT`. It is spawned directly,
+without shell evaluation; notes are data. Run the monitor in the agent's supported background
+worker/task mechanism. Plain stdout or a desktop notification is not proof that an idle model
+has resumed. The executable notification bridge is verified; host-specific idle-turn wakeup
+requires configuration and verification in that host. Do not start a second agent session and
+assume it owns the original adapter's reservation.
+
+The hub holds one terminal log history capped at 10,000 entries in RAM. Each adapter keeps only
+read/clear positions into it. Reading or clearing one adapter's view does not delete another's
+history; old entries are evicted once for everyone. The cap is by entries, not bytes. Phoenix's
+existing browser-console buffers remain in their app windows.
 
 Builder binds to `localhost` and intentionally trusts every renderer Origin, including custom `phtaur://…` and `phtauri://…` URLs. The listener is for trusted development apps. The optional remote framework has separate authentication for workers and its dashboard.
 
@@ -109,13 +178,21 @@ Use two independent MCP servers: **Phoenix Builder** for app interaction, screen
 
 Phoenix probes `http://localhost:38572/v1/metadata` for at most 500 ms before connecting. When a paired worker is connected, the displayed name becomes `<machine-name>-<existing-window-name>`. The stored window name and custom WebSocket URL are preserved. Missing, rejected or invalid metadata falls back to the existing name. Keep the probe permitted by the worker's metadata-origin configuration when using a custom host; `phtauri://localhost` is permitted by default.
 
+The app's existing WebSocket `hello` also includes `machineId` from valid metadata: the paired
+remote-control host ID, or `local` for the controller's own machine. The field is omitted when
+metadata is unavailable or invalid and is refreshed on every connection attempt. Existing
+Builder servers accept this additional field. The shared hub's status includes a `machines`
+array grouping instance names by that ID, alongside the existing `connectedInstances` list.
+
 All `remote_*` tools belong to the standalone remote-control MCP. Use it to inspect machine context, sync source and launch the remote app; then use Builder tools with the exact machine-prefixed app or test-runner name. Forwarding carries the existing app WebSocket protocol without a Builder-side proxy client.
 
 Native app tests need development checkouts and dependencies installed on the executing machine. On Ubuntu, building `src-node` dependencies can require `build-essential`, `pkg-config`, and `libsecret-1-dev`. Review any npm lifecycle approvals for the required native packages. Start the worker from the intended desktop session so GUI jobs inherit its display access; an SSH connection alone does not establish desktop readiness.
 
 Wait for a verified sync snapshot before running tests. SpecRunner uses fresh module URLs on each load so reruns observe saved source edits, including native custom-protocol pages. Node helper or desktop-shell changes can still require restarting the remote app. Select the machine-prefixed app and runner names explicitly when local and remote windows are connected together.
 
-Remote jobs and transfers belong to the standalone remote-control MCP connection and are cleaned up when that connection ends. Closing Builder ends its own app-control connections and local process ownership; it does not end the independent remote-control session. Persisted forwarding rules remain machine configuration. The existing `start_phoenix`/`stop_phoenix` and terminal logs concern the local desktop process; use remote-control execution to launch a remote app. AI-model fixture installation and report tooling remain local and are not made remote-aware by forwarding an app socket.
+Remote jobs and transfers belong to the standalone remote-control MCP connection and are cleaned up when that connection ends. Closing one Builder adapter releases its reservations but leaves shared app connections running.
+Stopping the hub ends its app-control sockets and its managed local process. Neither action ends
+the independent remote-control session. Persisted forwarding rules remain machine configuration. The existing `start_phoenix`/`stop_phoenix` and terminal logs concern the local desktop process; use remote-control execution to launch a remote app. AI-model fixture installation and report tooling remain local and are not made remote-aware by forwarding an app socket.
 
 ### 3. Enable the connection in Phoenix
 

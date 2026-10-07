@@ -181,11 +181,11 @@
     }
 
     /**
-     * Discover this worker's nonsecret name without blocking application boot or requiring a worker.
-     * @return {Promise<string>} Machine-prefixed display name, or the existing base name on any failure.
+     * Discover the window name and optional machine ID without requiring a remote-control worker.
+     * @return {Promise<Object>} Name and machineId from metadata, or only the base name on failure.
      */
-    async function _discoverInstanceName() {
-        const base = _getOrCreateInstanceName();
+    async function _discoverInstanceIdentity() {
+        const base = { name: _getOrCreateInstanceName() };
         const controller = new AbortController();
         discoveryAbort = controller;
         const timeout = setTimeout(() => controller.abort(), METADATA_TIMEOUT_MS);
@@ -213,7 +213,7 @@
                 || !/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}$/.test(metadata.machineName)) {
                 return base;
             }
-            return metadata.machineName + "-" + base;
+            return { name: metadata.machineName + "-" + base.name, machineId: metadata.machineId };
         } catch {
             return base;
         } finally {
@@ -364,9 +364,9 @@
 
         currentUrl = url;
         autoReconnect = true;
-        const instanceName = await _discoverInstanceName();
+        const identity = await _discoverInstanceIdentity();
         if (!autoReconnect || generation !== connectionGeneration) { return; }
-        displayInstanceName = instanceName;
+        displayInstanceName = identity.name;
         let socket;
         try {
             socket = new WebSocket(url);
@@ -380,7 +380,7 @@
         socket.onopen = function () {
             if (ws !== socket || generation !== connectionGeneration) { return; }
             reconnectDelay = RECONNECT_BASE_MS;
-            _sendMessage({ type: "hello", version: "1.0.0", name: instanceName });
+            _sendMessage({ type: "hello", version: "1.0.0", name: identity.name, machineId: identity.machineId });
             flushTimer = setInterval(_flushLogs, FLUSH_INTERVAL);
             _flushLogs();
             _notifyConnectionChange(true);

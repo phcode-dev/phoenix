@@ -31,6 +31,24 @@ export class LogBuffer {
         return this._totalPushed;
     }
 
+    /**
+     * Create independent read/clear cursors over this shared, bounded history.
+     * @return {Object} get(sinceLast) and clear() operations; clearing hides entries only from this reader.
+     */
+    createReader() {
+        let read = 0;
+        let cleared = 0;
+        return {
+            get: sinceLast => {
+                const beginning = this._totalPushed - this._entries.length;
+                const result = this._entries.slice(Math.max(0, (sinceLast ? read : cleared) - beginning));
+                if (sinceLast) { read = this._totalPushed; }
+                return result;
+            },
+            clear: () => { cleared = this._totalPushed; read = cleared; }
+        };
+    }
+
     getTail(n, before) {
         const firstIndex = this._totalPushed - this._entries.length;
         let endIdx = this._entries.length;
