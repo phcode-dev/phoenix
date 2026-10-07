@@ -25,6 +25,7 @@ define(function (require, exports, module) {
     require("test/spec/Native-platform-test");
     require("spec/trust-ring-test");
     require("spec/utframework-suite-test");
+    require("spec/TestEnvironment-test");
     require("spec/Async-test");
     require("spec/CommandManager-test");
     require("spec/CSSUtils-test");

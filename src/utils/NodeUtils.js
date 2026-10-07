@@ -452,23 +452,34 @@ define(function (require, exports, module) {
         _updateNodeLocaleStrings();
     }
 
-    try {
-        if(Phoenix.isTestWindow) {
-            if(Phoenix.isNativeApp) {
-                async function _setIsTestWindowGitHubActions() {
-                    const actionsEnv = await utilsConnector.execPeer("getEnvironmentVariable", "GITHUB_ACTIONS");
-                    Phoenix.isTestWindowGitHubActions = !!actionsEnv;
-                }
-                _setIsTestWindowGitHubActions().catch(e=>{
-                    console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
-                });
-            } else {
-                const urlSearchParams = new window.URLSearchParams(window.location.search || "");
-                Phoenix.isTestWindowGitHubActions = urlSearchParams.get("isTestWindowGitHubActions") === "yes";
-            }
+    /**
+     * Initialize CI detection for a test window before platform-dependent suites are registered.
+     * @param {Object} phoenix Window platform flags; receives isTestWindowGitHubActions on success.
+     * @param {function(string): Promise<string>} readEnvironment Native environment lookup.
+     * @param {string} search Browser URL query string.
+     * @return {Promise<void>} Resolves when detection finishes; rejects if the native lookup fails.
+     */
+    async function _initTestWindowEnvironment(phoenix, readEnvironment, search) {
+        if (!phoenix.isTestWindow) {
+            return;
         }
-    } catch (e) {
-        console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
+        if (phoenix.isNativeApp) {
+            const actionsEnv = await readEnvironment("GITHUB_ACTIONS");
+            phoenix.isTestWindowGitHubActions = !!actionsEnv;
+        } else {
+            const urlSearchParams = new window.URLSearchParams(search || "");
+            phoenix.isTestWindowGitHubActions = urlSearchParams.get("isTestWindowGitHubActions") === "yes";
+        }
+    }
+
+    if (Phoenix.isTestWindow) {
+        // Keep the original rejection available to the runner, even though other test windows only log it.
+        exports._testWindowEnvironmentReady = _initTestWindowEnvironment(Phoenix, getEnvironmentVariable,
+            window.location.search);
+        exports._testWindowEnvironmentReady.catch(e => {
+            console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
+        });
+        exports._initTestWindowEnvironment = _initTestWindowEnvironment;
     }
 
     // private apis
