@@ -227,7 +227,6 @@ define(function (require, exports, module) {
         UrlParams               = require("utils/UrlParams").UrlParams,
         UnitTestReporter        = require("test/UnitTestReporter").UnitTestReporter,
         BootstrapReporterView   = require("test/BootstrapReporterView").BootstrapReporterView,
-        NodeUtils               = require("utils/NodeUtils"),
         NativeApp               = require("utils/NativeApp");
 
     window.Strings = require("strings");
@@ -581,10 +580,9 @@ define(function (require, exports, module) {
         });
     }
 
-    /** Wait for test environment detection and storage before loading assets and extension suites. */
+    /** Wait for native boot variables and storage before loading test assets. */
     async function setupAndRunTests() {
         globalTestRunnerLogToConsole("Starting tests...");
-        await NodeUtils._testWindowEnvironmentReady;
         await window._tauriBootVarsPromise;
         await window.PhStore.storageReadyPromise;
         let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);

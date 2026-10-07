@@ -452,34 +452,10 @@ define(function (require, exports, module) {
         _updateNodeLocaleStrings();
     }
 
-    /**
-     * Initialize CI detection for a test window before platform-dependent suites are registered.
-     * @param {Object} phoenix Window platform flags; receives isTestWindowGitHubActions on success.
-     * @param {function(string): Promise<string>} readEnvironment Native environment lookup.
-     * @param {string} search Browser URL query string.
-     * @return {Promise<void>} Resolves when detection finishes; rejects if the native lookup fails.
-     */
-    async function _initTestWindowEnvironment(phoenix, readEnvironment, search) {
-        if (!phoenix.isTestWindow) {
-            return;
-        }
-        if (phoenix.isNativeApp) {
-            const actionsEnv = await readEnvironment("GITHUB_ACTIONS");
-            phoenix.isTestWindowGitHubActions = !!actionsEnv;
-        } else {
-            const urlSearchParams = new window.URLSearchParams(search || "");
-            phoenix.isTestWindowGitHubActions = urlSearchParams.get("isTestWindowGitHubActions") === "yes";
-        }
-    }
-
-    if (Phoenix.isTestWindow) {
-        // Keep the original rejection available to the runner, even though other test windows only log it.
-        exports._testWindowEnvironmentReady = _initTestWindowEnvironment(Phoenix, getEnvironmentVariable,
-            window.location.search);
-        exports._testWindowEnvironmentReady.catch(e => {
-            console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
-        });
-        exports._initTestWindowEnvironment = _initTestWindowEnvironment;
+    if (Phoenix.isTestWindow && !Phoenix.isNativeApp) {
+        // Native test windows receive this in node-loader's boot handshake.
+        const urlSearchParams = new window.URLSearchParams(window.location.search);
+        Phoenix.isTestWindowGitHubActions = urlSearchParams.get("isTestWindowGitHubActions") === "yes";
     }
 
     // private apis

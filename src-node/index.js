@@ -244,6 +244,7 @@ function processCommand(line) {
                     port,
                     phoenixFSURL: `ws://localhost:${port}${PHOENIX_FS_URL}`,
                     phoenixNodeURL: `ws://localhost:${port}${PHOENIX_NODE_URL}`,
+                    isGitHubActions: !!process.env.GITHUB_ACTIONS,
                     staticServerURL: `http://localhost:${port}${PHOENIX_STATIC_SERVER_URL}`,
                     livePreviewCommURL: `ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`,
                     autoAuthURL: `http://localhost:${port}${PHOENIX_AUTO_AUTH_URL}`,

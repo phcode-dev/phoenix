@@ -3,75 +3,54 @@
  * Copyright (c) 2026 core.ai . All rights reserved.
  */
 
-/*global describe, it, expect, expectAsync */
+/*global describe, it, expect, jasmine */
 
 define(function (require, exports, module) {
     const NodeUtils = require("utils/NodeUtils");
+    // Capture during module evaluation: awaiting readiness inside an it() misses registration-time races.
+    const registeredInCI = Phoenix.isTestWindowGitHubActions;
+
+    /** @return {Array<string>} Names of registered native credential specs, regardless of the active test filter. */
+    function getCredentialSpecs() {
+        const names = [];
+        function visit(suite, parents) {
+            const name = (parents + " " + suite.description).trim();
+            if (suite.children) {
+                suite.children.forEach(child => visit(child, name));
+            } else if (name.includes("Credentials OTP API Tests")) {
+                names.push(name);
+            }
+        }
+        visit(jasmine.getEnv().topSuite(), "");
+        return names;
+    }
 
     describe("unit:Test Environment", function () {
-        it("waits for a delayed native lookup before exposing the CI flag to suite registration", async function () {
-            const platform = {isTestWindow: true, isNativeApp: true};
-            let resolveLookup, requestedVariable, registered = false, registeredInCI;
-            const lookup = new Promise(resolve => { resolveLookup = resolve; });
-            const ready = NodeUtils._initTestWindowEnvironment(platform, name => {
-                requestedVariable = name;
-                return lookup;
-            }, "");
-            const registration = ready.then(() => {
-                registered = true;
-                registeredInCI = platform.isTestWindowGitHubActions;
+        it("resolves CI detection before test modules register their suites", function () {
+            expect(typeof registeredInCI).toBe("boolean");
+        });
+
+        it("registers suites using the actual native environment or browser CI query", async function () {
+            const expected = Phoenix.isNativeApp ? !!(await NodeUtils.getEnvironmentVariable("GITHUB_ACTIONS")) :
+                new URLSearchParams(window.location.search).get("isTestWindowGitHubActions") === "yes";
+            expect(registeredInCI).toBe(expected);
+        });
+
+        if (Phoenix.isNativeApp) {
+            it("receives the CI flag in the completed Node boot response", async function () {
+                const boot = await window.nodeSetupDonePromise;
+                expect(typeof boot.isGitHubActions).toBe("boolean");
+                expect(boot.isGitHubActions).toBe(registeredInCI);
             });
-            await Promise.resolve();
-            expect(requestedVariable).toBe("GITHUB_ACTIONS");
-            expect(registered).toBeFalse();
-            expect(platform.isTestWindowGitHubActions).toBeUndefined();
 
-            resolveLookup("true");
-            await registration;
-            expect(registeredInCI).toBeTrue();
-        });
-
-        it("enables local native test registration when the CI environment variable is absent", async function () {
-            const platform = {isTestWindow: true, isNativeApp: true};
-            await NodeUtils._initTestWindowEnvironment(platform, async () => undefined, "");
-            expect(platform.isTestWindowGitHubActions).toBeFalse();
-        });
-
-        it("rejects a failed lookup without registering suites as a non-CI run", async function () {
-            const platform = {isTestWindow: true, isNativeApp: true};
-            const error = new Error("Native environment lookup failed");
-            let registered = false;
-            const ready = NodeUtils._initTestWindowEnvironment(platform, async () => { throw error; }, "");
-            const registration = ready.then(() => { registered = true; });
-            await expectAsync(registration).toBeRejectedWith(error);
-            expect(registered).toBeFalse();
-            expect(platform.isTestWindowGitHubActions).toBeUndefined();
-        });
-
-        for (const [search, expected] of [["?isTestWindowGitHubActions=yes", true],
-            ["?isTestWindowGitHubActions=no", false], ["", false]]) {
-            it("detects browser CI from " + (search || "an empty query"), async function () {
-                const platform = {isTestWindow: true, isNativeApp: false};
-                let nativeLookup = false;
-                const ready = NodeUtils._initTestWindowEnvironment(platform, async () => { nativeLookup = true; }, search);
-                // Browser detection remains synchronous, with an already-resolved readiness promise.
-                expect(platform.isTestWindowGitHubActions).toBe(expected);
-                await ready;
-                expect(nativeLookup).toBeFalse();
+            it("applies the Linux CI keyring exclusion when credential specs register", function () {
+                const names = getCredentialSpecs();
+                const excluded = Phoenix.platform === "linux" && registeredInCI;
+                expect(names.length).toBeGreaterThan(0);
+                expect(names.some(name => name.endsWith("Should store credentials successfully"))).toBe(!excluded);
+                expect(names.some(name => name.endsWith("Should not run in github actions in linux desktop")))
+                    .toBe(excluded);
             });
         }
-
-        it("does not query or alter the environment of a normal editor window", async function () {
-            const platform = {isTestWindow: false, isNativeApp: true};
-            let nativeLookup = false;
-            await NodeUtils._initTestWindowEnvironment(platform, async () => { nativeLookup = true; }, "");
-            expect(nativeLookup).toBeFalse();
-            expect(platform.isTestWindowGitHubActions).toBeUndefined();
-        });
-
-        it("exposes the completed environment lookup in the running test window", async function () {
-            await NodeUtils._testWindowEnvironmentReady;
-            expect(typeof Phoenix.isTestWindowGitHubActions).toBe("boolean");
-        });
     });
 });
