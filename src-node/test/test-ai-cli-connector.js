@@ -350,6 +350,7 @@ exports.exercise = async function ({scenario}) {
                 if (scenario === "toggle-pending") {
                     return new Promise(resolve => { release = () => resolve({ok: true}); });
                 }
+                if (scenario.startsWith("retry-")) { return {ok: true, state: "clean"}; }
                 return {ok: false, message: "fixture save failed"};
             }
             if (data.fn === "execJsInEditor" && ["disconnect", "revoke-pending"].includes(scenario)) {
@@ -367,7 +368,7 @@ exports.exercise = async function ({scenario}) {
         return connection;
     };
     try {
-        const launch = await create(scenario === "codex-launch" ? "codex" : "claude");
+        const launch = await create(["codex-launch", "retry-codex"].includes(scenario) ? "codex" : "claude");
         const record = readSession(launch.files.sessionFile);
         if (scenario === "hook-command") {
             const script = path.join(directory, "hook with ' quotes & % ! 界.cjs");
@@ -449,6 +450,22 @@ exports.exercise = async function ({scenario}) {
                 sessionId: launch.sessionId};
         }
         const connection = await connect(launch);
+        if (scenario.startsWith("retry-")) {
+            const args = scenario === "retry-codex" ? {tool_name: "apply_patch", cwd: directory,
+                tool_input: {command: "*** Begin Patch\n*** Update File: a.txt\n@@\n-a\n+b\n*** End Patch"}} :
+                {tool_name: "Edit", tool_input: {file_path: path.join(directory, "a.txt"),
+                    old_string: "a", new_string: "b"}};
+            const responses = [];
+            for (const [event, id] of [["PreToolUse", "missing-post"], ["PreToolUse", "retry"],
+                ["PostToolUseFailure", "retry"], ["PreToolUse", "after-failure"]]) {
+                responses.push(await connection.call("hook", event,
+                    {...args, hook_event_name: event, tool_use_id: id}, 6000));
+            }
+            const edits = calls.filter(call => call.data && ["prepareEdit", "finishEdit"].includes(call.data.fn));
+            return {responses, prepared: edits.filter(call => call.data.fn === "prepareEdit")
+                .map(call => call.data.args.toolUseId),
+            finished: edits.filter(call => call.data.fn === "finishEdit").map(call => call.data.args.toolUseId)};
+        }
         if (scenario === "toggle-pending") {
             const args = {tool_name: "Write", tool_use_id: "in-flight", tool_input: {file_path: path.join(directory, "a")}};
             const preparing = connection.call("hook", "PreToolUse", {...args, hook_event_name: "PreToolUse"}, 6000);
@@ -468,7 +485,6 @@ exports.exercise = async function ({scenario}) {
             await connection.call("hook", "PostToolUse", {...args, tool_use_id: "never-prepared",
                 hook_event_name: "PostToolUse"}, 6000);
             return {finishes: calls.filter(call => call.data && call.data.fn === "finishEdit").length,
-                pending: controller.sessions.get(launch.sessionId).pendingEdits.size,
                 cleanup: calls.find(call => call.fn === "endCliSessionInBrowser").data,
                 status: controller.getStatus(launch.sessionId)};
         }
