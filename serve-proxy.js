@@ -6,6 +6,7 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const httpProxy = require('http-proxy');
+const { startBuilderHub } = require('./phoenix-builder-mcp/serve-hub.cjs');
 
 const ACCOUNT_PROD = 'https://account.phcode.dev';
 const ACCOUNT_STAGING = 'https://account-stage.phcode.dev';
@@ -362,8 +363,16 @@ const server = http.createServer((req, res) => {
 
 // Parse arguments and start server
 parseArgs();
+let builderHub;
+let stopping = false;
 
 server.listen(config.port, config.host, () => {
+    if (process.env.PHOENIX_BUILDER_HUB !== '0') {
+        builderHub = startBuilderHub();
+        builderHub.ready.catch(error => {
+            console.error(`Builder hub unavailable: ${error.message}. Web serving continues; no existing port owner was stopped.`);
+        });
+    }
     if (!config.silent) {
         console.log(`Starting up http-server, serving ${config.root}`);
         console.log(`Available on:`);
@@ -376,17 +385,13 @@ server.listen(config.port, config.host, () => {
     }
 });
 
-// Handle graceful shutdown
-process.on('SIGINT', () => {
+/** Shut down the web listener and its owned Builder hub together. */
+async function shutdown() {
+    if (stopping) { return; }
+    stopping = true;
     console.log('\nShutting down the server...');
-    server.close(() => {
-        process.exit(0);
-    });
-});
-
-process.on('SIGTERM', () => {
-    console.log('\nShutting down the server...');
-    server.close(() => {
-        process.exit(0);
-    });
-});
+    await Promise.all([new Promise(resolve => server.close(resolve)), builderHub ? builderHub.stop() : Promise.resolve()]);
+    process.exit(0);
+}
+process.once('SIGINT', shutdown);
+process.once('SIGTERM', shutdown);
