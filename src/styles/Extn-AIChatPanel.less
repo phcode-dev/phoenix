@@ -6648,6 +6648,48 @@
         gap: 8px 16px;
         margin: 6px 0 4px;
     }
+
+    .ai-usage-footer {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid @ai-start-border;
+        margin-top: 14px;
+        padding-top: 9px;
+    }
+
+    .ai-usage-delete {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 4px 0 4px 6px;
+        border: 0;
+        border-radius: 3px;
+        background: transparent;
+        color: @project-panel-text-2;
+        font: inherit;
+        cursor: pointer;
+
+        &:hover { color: @project-panel-text-1; }
+        &:hover span { text-decoration: underline; text-underline-offset: 3px; }
+        &:focus-visible { outline: 2px solid @ai-start-accent; outline-offset: 3px; }
+    }
+}
+
+.ai-usage-delete-dialog {
+    width: 460px;
+    max-width: calc(100vw - 32px);
+    animation: none !important;
+    transition: none !important;
+
+    & + .modal-backdrop { animation: none !important; transition: none !important; }
+    .modal-body { padding: 17px 20px 20px; }
+    .modal-body p { margin: 0 0 18px; }
+    label { display: block; margin-bottom: 7px; font-weight: @font-weight-semibold; }
+    select { display: block; box-sizing: border-box; width: 100%; margin: 0; }
+    .ai-usage-delete-hint { margin-top: 8px; font-size: @ai-text-secondary; opacity: 0.7; }
+    .modal-body .ai-usage-delete-warning { margin: 18px 0 0; }
+    .ai-usage-delete-error { margin-top: 12px; color: @bc-danger-btn-bg; }
+    .ai-usage-delete-error:empty { display: none; }
 }
 
 @keyframes ai-usage-spin {
