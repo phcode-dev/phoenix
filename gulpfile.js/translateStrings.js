@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const CORE_AI_TRANSLATE_API_KEY = process.env.CORE_AI_TRANSLATE_API_KEY;
+const CORE_AI_TRANSLATE_URL = process.env.CORE_AI_TRANSLATE_URL || "https://translate.core.ai/translate";
 
 // A global accumulator object initialized to zero
 const globalUtilizationMetrics = {
@@ -102,20 +103,20 @@ function getTranslationrequest(stringsToTranslate, lang) {
 }
 
 /**
- * Sends translation payload to the specified API and returns the result.
+ * Send the translation payload to the configured service, with credentials when supplied.
  *
  * @param {object} apiInput - The translation payload object.
  * @returns {Promise<any>} The JSON-parsed response from the API.
  */
 async function getTranslation(apiInput) {
-    const url = "https://translate.core.ai/translate";
+    const headers = { "Content-Type": "application/json" };
+    if (CORE_AI_TRANSLATE_API_KEY) {
+        headers.authorization = `Basic ${CORE_AI_TRANSLATE_API_KEY}`;
+    }
     try {
-        const response = await fetch(url, {
+        const response = await fetch(CORE_AI_TRANSLATE_URL, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "authorization": `Basic ${CORE_AI_TRANSLATE_API_KEY}`
-            },
+            headers: headers,
             body: JSON.stringify(apiInput)
         });
 
@@ -378,23 +379,23 @@ async function _processLang(lang, config) {
 
 // ---- Phoenix NLS translation ----
 
+/** Translate Phoenix locales through the configured service, propagating request failures to Gulp.
+ * @return {Promise<void>} Resolves when all Phoenix locales have been processed.
+ */
 async function translate() {
-    console.log("please make sure that core.ai lang translation service credentials are available as env vars.");
-    return new Promise(async (resolve)=>{
-        const nlsDir = 'src/nls';
-        let langs = _getAllNLSFolders(nlsDir);
-        console.log(langs);
-        const config = {
-            nlsDir,
-            sourceStrings: rootStrings,
-            format: 'js',
-            errorsFile: 'src/nls/errors.txt'
-        };
-        for(let lang of langs){
-            await _processLang(lang, config);
-        }
-        resolve();
-    });
+    console.log("Using translation service:", CORE_AI_TRANSLATE_URL);
+    const nlsDir = 'src/nls';
+    const langs = _getAllNLSFolders(nlsDir);
+    console.log(langs);
+    const config = {
+        nlsDir,
+        sourceStrings: rootStrings,
+        format: 'js',
+        errorsFile: 'src/nls/errors.txt'
+    };
+    for (const lang of langs) {
+        await _processLang(lang, config);
+    }
 }
 
 // ---- mdviewer translation ----
@@ -476,9 +477,13 @@ async function translateMdviewer() {
     // Copy translated flat JSON → nested locale files for mdviewer runtime
     console.log("[mdviewer] Copying translations to locales folder...");
     for (let lang of langs) {
-        if (lang === 'root') continue;
+        if (lang === 'root') {
+            continue;
+        }
         const flatStrings = _getJson(path.join(mdNlsDir, lang, 'strings.json'));
-        if (!Object.keys(flatStrings).length) continue;
+        if (!Object.keys(flatStrings).length) {
+            continue;
+        }
         const nested = _unflattenObject(flatStrings);
         fs.writeFileSync(
             path.join(localesDir, `${lang}.json`),

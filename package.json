@@ -84,6 +84,7 @@
         "serveExternal": "npm install --prefix src-node && node serve-proxy.js . -p 8000 -a 0.0.0.0 --log-ip -c-1",
         "createJSDocs": "node build/api-docs-generator.js && git add docs",
         "_translateStrings": "gulp translateStrings",
+        "translateLocal": "cross-env CORE_AI_TRANSLATE_URL=http://localhost:4310/translate gulp translateStrings",
         "_minify": "r.js -o require.min.config.js && echo this is untested see https://stackoverflow.com/questions/14337970/minifying-requirejs-javascript-codebase-to-a-single-file"
     },
     "licenses": [
