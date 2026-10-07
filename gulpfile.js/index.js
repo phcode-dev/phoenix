@@ -430,12 +430,12 @@ function releaseProd() {
     });
 }
 
-function translateStrings() {
-    return new Promise(async (resolve)=>{ // eslint-disable-line
-        await Translate.translate();
-        await Translate.translateMdviewer();
-        resolve();
-    });
+/** Translate both Phoenix and Markdown viewer locales using the configured service.
+ * @return {Promise<void>} Rejects if either translation pass fails.
+ */
+async function translateStrings() {
+    await Translate.translate();
+    await Translate.translateMdviewer();
 }
 
 function _listFilesInDir(dir) {
