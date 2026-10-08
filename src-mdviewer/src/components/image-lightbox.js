@@ -8,8 +8,8 @@ import { getState } from "../core/state.js";
 import { t } from "../core/i18n.js";
 
 // Images smaller than this get no hover expand button; it would cover them.
-const EXPAND_BUTTON_MIN_IMAGE_SIZE = 64;
-const EXPAND_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+const EXPAND_BUTTON_MIN_IMAGE_SIZE = 96;
+const EXPAND_ICON = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
     'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/>' +
     '<path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/>' +
     '<path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
