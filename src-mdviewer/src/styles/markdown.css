@@ -611,9 +611,10 @@ pre .cursor-sync-highlight {
   .image-lightbox, .image-lightbox-img { animation: none; }
 }
 
-/* Edit mode: an expand button over the centre of a hovered image opens the lightbox. */
+/* Edit mode: an expand button over the centre of a hovered image opens the lightbox. It sits in the
+   viewer's scroll container, so it scrolls with the image. */
 .image-lightbox-expand {
-  position: fixed;
+  position: absolute;
   z-index: 340;
   display: flex;
   align-items: center;
