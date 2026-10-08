@@ -111,17 +111,11 @@ Scrolls to the problem line
 
 <a name="run"></a>
 
-## run(providerName)
-Run inspector applicable to current document. Updates status bar indicator and refreshes error list in
-bottom panel. Does not run if inspection is disabled or if a providerName is given and does not
-match the current doc's provider name.
+## run()
+Run inspectors for the current document and publish results from the latest unchanged scan.
+Does not scan while inspection is disabled. Keeps valid fixes available until a current scan replaces them.
 
 **Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| providerName | <code>string</code> | name of the provider that is requesting a run |
-
 <a name="toggleEnabled"></a>
 
 ## toggleEnabled(enabled, doNotSave)
@@ -134,6 +128,23 @@ Enable or disable all inspection.
 | enabled | <code>boolean</code> | Enabled state. If omitted, the state is toggled. |
 | doNotSave | <code>boolean</code> | true if the preference should not be saved to user settings. This is generally for events triggered by project-level settings. |
 
+<a name="_fixProblem"></a>
+
+## \_fixProblem(fixID)
+Apply one fix if its document and text still match the displayed inspection results.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fixID | <code>string</code> | ID assigned to the displayed fix. |
+
+<a name="_fixAllProblems"></a>
+
+## \_fixAllProblems()
+Apply all displayed fixes only to the document version that was inspected.
+
+**Kind**: global function  
 <a name="Error"></a>
 
 ## Error : <code>Object</code>

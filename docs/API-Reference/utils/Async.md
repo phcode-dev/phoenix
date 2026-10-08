@@ -49,6 +49,12 @@ Removes all pending promises from the queue.
 Value passed to fail() handlers that have been triggered due to withTimeout()'s timeout
 
 **Kind**: global variable  
+<a name="RETRY_DEFAULT_DELAYS_MS"></a>
+
+## RETRY\_DEFAULT\_DELAYS\_MS
+The waits retry() puts between attempts when none are given: 5 s, 15 s, 30 s, 60 s.
+
+**Kind**: global constant  
 <a name="doInParallel"></a>
 
 ## doInParallel(items, beginProcessItem, failFast) ⇒ <code>$.Promise</code>
@@ -204,6 +210,35 @@ fail() (with Async.ERROR_TIMEOUT) is called based on value of resolveTimeout.
 | promise | <code>$.Promise</code> |  |
 | timeout | <code>number</code> |  |
 | [resolveTimeout] | <code>boolean</code> | If true, then resolve deferred on timeout, otherwise reject. Default is false. |
+
+<a name="retry"></a>
+
+## retry(operation, [options]) ⇒ <code>Promise</code>
+Runs an operation again when it fails, waiting longer before each retry. Meant for calls
+that may hit a network blip or a service that is restarting: the first retry is quick and
+the later ones are spaced out, so a short outage is ridden out without hammering the other
+side. Each wait is jittered so many clients recovering at once do not retry in step.
+
+The operation is called with the attempt number, starting at 1, and returns a Promise (a
+plain value or another thenable, such as a jQuery promise, is adopted with Promise.resolve).
+A thrown error or a rejection counts as a failure. Always returns a native Promise: it
+resolves with the first successful value and rejects with the last failure once the attempts
+are used up, or as soon as `shouldRetry` says a failure is not worth retrying, or when the
+signal aborts.
+
+**Kind**: global function  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| operation | <code>function</code> |  | called with the attempt number (1-based) |
+| [options] | <code>Object</code> |  |  |
+| [options.attempts] | <code>number</code> | <code>5</code> | how many times to try in all, the first included |
+| [options.delaysMs] | <code>number</code> \| <code>Array.&lt;number&gt;</code> | <code>[5000, 15000, 30000, 60000]</code> | the wait before     each retry. A number is a fixed wait; an array gives the waits in order, and its last     value repeats when there are more retries than entries. |
+| [options.jitter] | <code>number</code> | <code>0.25</code> | each wait is varied at random by up to this fraction     either way; 0 disables it |
+| [options.shouldRetry] | <code>function</code> |  | given the failure and the     attempt that failed; return false to stop at once. Every failure is retried by default. |
+| [options.onRetry] | <code>function</code> |  | told the failure, the attempt that     failed and the wait in ms before each retry, for logging |
+| [options.timeoutMs] | <code>number</code> |  | a cap on each attempt; one that runs longer fails     with Async.ERROR_TIMEOUT and is retried like any other failure |
+| [options.signal] | <code>AbortSignal</code> |  | aborting it ends the waiting and rejects with the     signal's reason |
 
 <a name="waitForAll"></a>
 
