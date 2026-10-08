@@ -44,3 +44,14 @@
 - [ ] Cmd+Right near image goes to end of block on Mac
 - [ ] Cmd+Left near image goes to start of block on Mac
 - [ ] End/Home work normally on lines without images
+
+## Image Lightbox
+- [x] Reader mode: clicking an image opens it alone over a dimmed backdrop; a click closes it
+- [x] Escape closes the lightbox
+- [x] Reader mode: a linked image follows its link instead of opening the lightbox
+- [x] Edit mode: click selects the image (popover), double-click opens the lightbox
+- [x] Edit mode: hovering an image shows a centred expand button that opens the lightbox
+- [x] Reader mode: no expand button on hover
+- [x] Edit mode: the image toolbar's view button opens the lightbox
+- [ ] Switching files or modes closes an open lightbox
+- [ ] Escape with the lightbox open is not forwarded to Phoenix (editor keeps its focus state)

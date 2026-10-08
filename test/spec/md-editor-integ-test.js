@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, beforeAll, beforeEach, afterAll, awaitsFor, it, awaitsForDone, expect, awaits*/
+/*global describe, beforeAll, beforeEach, afterAll, afterEach, awaitsFor, it, awaitsForDone, expect, awaits*/
 
 define(function (require, exports, module) {
 
@@ -2155,6 +2155,162 @@ define(function (require, exports, module) {
 
                 await awaitsFor(() => !_isSlashMenuVisible(),
                     "slash menu to dismiss on Escape");
+            }, 10000);
+        });
+
+        describe("Image Lightbox", function () {
+
+            let _originalOpenURL;
+
+            beforeAll(async function () {
+                _originalOpenURL = NativeApp.openURLInDefaultBrowser;
+                // The fixture lives in the markdown test project, which earlier suites switch to.
+                if (testWindow && brackets.test.ProjectManager.getProjectRoot().fullPath !== mdTestFolder + "/") {
+                    await SpecRunnerUtils.loadProjectInTestWindow(mdTestFolder);
+                    await SpecRunnerUtils.deletePathAsync(mdTestFolder + "/.phcode.json", true);
+                }
+                if (testWindow && LiveDevMultiBrowser.status !== LiveDevMultiBrowser.STATUS_ACTIVE) {
+                    await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                        "open simple.html for live dev");
+                    LiveDevMultiBrowser.open();
+                    await awaitsFor(() =>
+                        LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                    "live dev to open", 20000);
+                }
+            }, 30000);
+
+            afterAll(function () {
+                NativeApp.openURLInDefaultBrowser = _originalOpenURL;
+            });
+
+            afterEach(async function () {
+                const lightbox = _getLightbox();
+                if (lightbox) {
+                    lightbox.click();
+                }
+                NativeApp.openURLInDefaultBrowser = _originalOpenURL;
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close image-test.md");
+            });
+
+            async function _openImageDoc() {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["image-test.md"]),
+                    "open image-test.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+            }
+
+            function _getLightbox() {
+                const mdDoc = _getMdIFrameDoc();
+                return mdDoc && mdDoc.querySelector(".image-lightbox");
+            }
+
+            function _getImage(alt) {
+                return _getMdIFrameDoc().querySelector(`#viewer-content img[alt="${alt}"]`);
+            }
+
+            function _expectLightboxShows(img) {
+                const lightbox = _getLightbox();
+                expect(lightbox).not.toBeNull();
+                expect(lightbox.querySelector(".image-lightbox-img").src).toBe(img.src);
+                expect(_getMdIFrameDoc().activeElement).toBe(lightbox);
+            }
+
+            it("should open an image on its own in reader mode on click and close on click", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                const img = _getImage("Sample image");
+                expect(img).not.toBeNull();
+                img.click();
+                _expectLightboxShows(img);
+
+                _getLightbox().click();
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            it("should close the lightbox on Escape", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                _getImage("Sample image").click();
+                expect(_getLightbox()).not.toBeNull();
+                _dispatchPlainKeyInMdIframe("Escape", { keyCode: 27 });
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            it("should follow a linked image's link in reader mode instead of opening it", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                let capturedURL = null;
+                NativeApp.openURLInDefaultBrowser = function (url) {
+                    capturedURL = url;
+                };
+                _getImage("Linked image").click();
+                await awaitsFor(() => capturedURL !== null, "the image's link to open");
+                expect(capturedURL).toContain("test-image-link.example.com");
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            it("should select an image on click in edit mode and open it on double-click", async function () {
+                await _openImageDoc();
+                await _enterEditMode();
+
+                const img = _getImage("Sample image");
+                img.click();
+                const popover = _getMdIFrameDoc().getElementById("image-popover");
+                await awaitsFor(() => popover.classList.contains("visible"), "image popover to show");
+                expect(_getLightbox()).toBeNull();
+
+                img.dispatchEvent(new MouseEvent("dblclick", { bubbles: true, cancelable: true }));
+                _expectLightboxShows(img);
+                _dispatchPlainKeyInMdIframe("Escape", { keyCode: 27 });
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            it("should open a hovered image from its expand button in edit mode", async function () {
+                await _openImageDoc();
+                await _enterEditMode();
+
+                const mdDoc = _getMdIFrameDoc();
+                const img = _getImage("Sample image");
+                img.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+                const expand = mdDoc.querySelector(".image-lightbox-expand");
+                expect(expand).not.toBeNull();
+                expect(expand.classList.contains("visible")).toBeTrue();
+
+                // Moving off the image hides it; hovering again brings it back.
+                img.dispatchEvent(new MouseEvent("mouseout", { bubbles: true, relatedTarget: mdDoc.body }));
+                expect(expand.classList.contains("visible")).toBeFalse();
+                img.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+                expect(expand.classList.contains("visible")).toBeTrue();
+
+                expand.click();
+                _expectLightboxShows(img);
+                expect(expand.classList.contains("visible")).toBeFalse();
+            }, 10000);
+
+            it("should show no expand button over an image in reader mode", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                const expand = _getMdIFrameDoc().querySelector(".image-lightbox-expand");
+                _getImage("Sample image").dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+                expect(!expand || !expand.classList.contains("visible")).toBeTrue();
+            }, 10000);
+
+            it("should open the selected image from the image toolbar's view button in edit mode", async function () {
+                await _openImageDoc();
+                await _enterEditMode();
+
+                const img = _getImage("Sample image");
+                img.click();
+                const popover = _getMdIFrameDoc().getElementById("image-popover");
+                await awaitsFor(() => popover.classList.contains("visible"), "image popover to show");
+
+                popover.querySelector(".image-popover-btn-view").click();
+                _expectLightboxShows(img);
+                expect(popover.classList.contains("visible")).toBeFalse();
             }, 10000);
         });
 

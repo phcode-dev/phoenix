@@ -10,6 +10,7 @@ import { marked } from "marked";
 import * as docCache from "./core/doc-cache.js";
 import { broadcastSelectionStateSync, flushPendingContentChange } from "./components/editor.js";
 import { captureSelection, restoreSelection, getRenderedMdLineText } from "./core/selection-context.js";
+import { readerClickImage } from "./components/image-lightbox.js";
 
 let _syncId = 0;
 let _lastReceivedSyncId = -1;
@@ -402,7 +403,8 @@ export function initBridge() {
                 "#search-bar.open",
                 "#slash-menu-anchor.visible",
                 "#lang-picker.visible",
-                "#link-popover.visible"
+                "#link-popover.visible",
+                ".image-lightbox"
             ];
             const hasOpenPopup = popupSelectors.some(sel => document.querySelector(sel));
             if (hasOpenPopup) {
@@ -503,6 +505,10 @@ export function initBridge() {
                 setTimeout(() => { _scrollFromViewer = false; }, 500);
                 sendToParent("mdviewrScrollSync", { sourceLine });
             }
+            return;
+        }
+        // An image click opens the lightbox here, which needs keyboard focus for Escape.
+        if (readerClickImage(e.target)) {
             return;
         }
         const selection = window.getSelection();

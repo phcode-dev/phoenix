@@ -1,10 +1,11 @@
 /**
  * Image popover — appears when clicking an image in edit mode.
- * Shows Edit (opens image URL dialog) and Delete buttons.
+ * Shows View (opens the image lightbox), Edit (opens image URL dialog) and Delete buttons.
  */
 import { emit, on } from "../core/events.js";
 import { t } from "../core/i18n.js";
 import { getState } from "../core/state.js";
+import { openImageLightbox } from "./image-lightbox.js";
 
 const UPLOAD_PLACEHOLDER_SRC = "https://user-cdn.phcode.site/images/uploading.svg";
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
@@ -97,6 +98,18 @@ export function initImagePopover(content) {
     if (!popover) return;
 
     popover.innerHTML = "";
+
+    const viewBtn = document.createElement("button");
+    viewBtn.className = "image-popover-btn image-popover-btn-view";
+    viewBtn.setAttribute("aria-label", t("image.view"));
+    viewBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+    viewBtn.addEventListener("mousedown", (e) => e.preventDefault());
+    viewBtn.addEventListener("click", () => {
+        const img = currentImg;
+        hide();
+        openImageLightbox(img);
+    });
+    popover.appendChild(viewBtn);
 
     const editBtn = document.createElement("button");
     editBtn.className = "image-popover-btn";

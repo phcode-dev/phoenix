@@ -121,6 +121,7 @@
     "no_results": "No results"
   },
   "image": {
+    "view": "View image",
     "edit": "Edit Image URL",
     "delete": "Delete image"
   },

@@ -570,3 +570,73 @@ pre .cursor-sync-highlight {
   font-size: var(--font-size-xs);
 }
 
+
+/* ===== Image lightbox: an image on its own over a dimmed backdrop ===== */
+#viewer-content:not(.editing) img:not(a img) {
+  cursor: zoom-in;
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-modal) + 20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+  outline: none;
+  animation: image-lightbox-in 150ms ease-out;
+}
+
+.image-lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  animation: image-lightbox-zoom 150ms ease-out;
+}
+
+@keyframes image-lightbox-in {
+  from { opacity: 0; }
+}
+
+@keyframes image-lightbox-zoom {
+  from { transform: scale(0.96); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-lightbox, .image-lightbox-img { animation: none; }
+}
+
+/* Edit mode: an expand button over the centre of a hovered image opens the lightbox. */
+.image-lightbox-expand {
+  position: fixed;
+  z-index: 340;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  cursor: zoom-in;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 120ms ease-out, background 120ms ease-out;
+}
+
+.image-lightbox-expand.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.image-lightbox-expand:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
