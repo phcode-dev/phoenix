@@ -235,6 +235,20 @@ path lies outside the project, or if it doesn't exist.
 | --- | --- | --- |
 | entry | <code>File</code> \| <code>Directory</code> | File or Directory to show |
 
+<a name="isInFileTree"></a>
+
+## isInFileTree(fullPath) ⇒ <code>boolean</code>
+Whether the file tree currently has a node for the path. A file written outside the
+FileSystem API is not in the tree until the watcher or a refresh adds it, and a file in a
+folder that was never expanded is not in it either; `showInTree` expands the folders first.
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - true if the tree has the node  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fullPath | <code>string</code> | Absolute path of a file or folder |
+
 <a name="openProject"></a>
 
 ## openProject([path]) ⇒ <code>$.Promise</code>

@@ -119,7 +119,7 @@ let notification1 = NotificationUI.createFromTemplate(
 | title | <code>string</code> | The title for the notification. |
 | template | <code>string</code> \| <code>Element</code> | A string template or HTML Element to use as the dialog HTML. |
 | [elementID] | <code>String</code> | optional id string if provided will show the notification pointing to the element.   If no element is specified, it will be managed as a generic notification. |
-| [options] | <code>Object</code> | optional, supported   * options are:   * `allowedPlacements` - Optional String array with values restricting where the notification will be shown.       Values can be a mix of `['top', 'bottom', 'left', 'right']`   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name. |
+| [options] | <code>Object</code> | optional, supported   * options are:   * `allowedPlacements` - Optional String array with values restricting where the notification will be shown.       Values can be a mix of `['top', 'bottom', 'left', 'right']`   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.     The countdown pauses while the mouse is over the notification.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name. |
 
 <a name="module_widgets/NotificationUI..createToastFromTemplate"></a>
 
@@ -146,7 +146,7 @@ let notification1 = NotificationUI.createToastFromTemplate( "Title here",
 | --- | --- | --- |
 | title | <code>string</code> | The title for the notification. |
 | template | <code>string</code> \| <code>Element</code> | A string template or HTML Element to use as the dialog HTML. |
-| [options] | <code>Object</code> | optional, supported   * options are:   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.   * `instantOpen` - To instantly open the popup without any open animation delays |
+| [options] | <code>Object</code> | optional, supported   * options are:   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.     The countdown pauses while the mouse is over the notification.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.   * `instantOpen` - To instantly open the popup without any open animation delays |
 
 <a name="module_widgets/NotificationUI..showToastOn"></a>
 
@@ -168,7 +168,7 @@ NotificationUI.showToastOn(document.getElementById("my-panel"), "Hello!", {
 | --- | --- | --- |
 | containerOrSelector | <code>Element</code> \| <code>string</code> | A DOM element or CSS selector for the parent container.   The container should have `position: relative` or `absolute` so the toast is positioned correctly. |
 | template | <code>string</code> \| <code>Element</code> | HTML string or DOM Element for the toast content. |
-| [options] | <code>Object</code> | optional, supported options:   * `autoCloseTimeS` - Time in seconds after which the toast auto-closes. Default is 5.   * `dismissOnClick` - If true, clicking the toast dismisses it. Default is true. |
+| [options] | <code>Object</code> | optional, supported options:   * `autoCloseTimeS` - Time in seconds after which the toast auto-closes. Default is 5.     The countdown pauses while the mouse is over the toast.   * `dismissOnClick` - If true, clicking the toast dismisses it. Default is true. |
 
 <a name="module_widgets/NotificationUI..showHUD"></a>
 
@@ -188,7 +188,7 @@ NotificationUI.showHUD("fa-solid fa-magnifying-glass-plus", "110%");
 | --- | --- | --- |
 | iconClass | <code>string</code> | Font Awesome class string for the icon (e.g. "fa-solid fa-magnifying-glass-plus"). |
 | label | <code>string</code> | Text to display below the icon (e.g. "110%"). |
-| [options] | <code>Object</code> | optional, supported options:   * `autoCloseTimeS` - Time in seconds after which the HUD auto-closes. Default is 1. |
+| [options] | <code>Object</code> | optional, supported options:   * `autoCloseTimeS` - Time in seconds after which the HUD auto-closes. Default is 1.     The countdown pauses while the mouse is over the HUD. |
 
 <a name="module_widgets/NotificationUI..hideRichTooltip"></a>
 

@@ -118,9 +118,106 @@ performing any operations.
    to be shown to the user. The div contents can be later updated as and when more details are available.
 1. Note that the SelectionView could be hidden/removed any time by the SelectionViewManager.
 1. If multiple providers returns a valid popup, all of them are displayed.
+
+* [features/SelectionViewManager](#module_features/SelectionViewManager)
+    * [.getVisibleSelectionBounds(editor, bounds)](#module_features/SelectionViewManager..getVisibleSelectionBounds) ⇒ <code>Object</code> \| <code>null</code>
+    * [.positionPreview(editor, [refreshBounds])](#module_features/SelectionViewManager..positionPreview)
+    * [.suspendPreviewLayout()](#module_features/SelectionViewManager..suspendPreviewLayout)
+    * [.restorePreviewLayout()](#module_features/SelectionViewManager..restorePreviewLayout)
+    * [.schedulePreviewLayout()](#module_features/SelectionViewManager..schedulePreviewLayout)
+    * [.onPanelResizeStart(event)](#module_features/SelectionViewManager..onPanelResizeStart)
+    * [.onPanelResizeEnd(event)](#module_features/SelectionViewManager..onPanelResizeEnd)
+    * [.showPreview(editor, selectionObj)](#module_features/SelectionViewManager..showPreview) ⇒ <code>Promise.&lt;void&gt;</code>
+    * [.onEditorScroll()](#module_features/SelectionViewManager..onEditorScroll)
+    * [.isSelectionViewShown()](#module_features/SelectionViewManager..isSelectionViewShown) ⇒ <code>boolean</code>
+
+<a name="module_features/SelectionViewManager..getVisibleSelectionBounds"></a>
+
+### features/SelectionViewManager.getVisibleSelectionBounds(editor, bounds) ⇒ <code>Object</code> \| <code>null</code>
+Measure the visible selection highlights, including wrapped lines and partial viewport selections.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+**Returns**: <code>Object</code> \| <code>null</code> - Visible bounds and highlight rectangles, or null when none are visible.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| editor | <code>Editor</code> | Editor containing the selection. |
+| bounds | <code>Object</code> | Visible editor bounds in window coordinates. |
+
+<a name="module_features/SelectionViewManager..positionPreview"></a>
+
+### features/SelectionViewManager.positionPreview(editor, [refreshBounds])
+Prefer below-right, then above-right, and overlap only when no outside placement fits.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| editor | <code>Editor</code> | Editor whose visible bounds constrain the popup. |
+| [refreshBounds] | <code>boolean</code> | Remeasure selection highlights after an editor layout change. |
+
+<a name="module_features/SelectionViewManager..suspendPreviewLayout"></a>
+
+### features/SelectionViewManager.suspendPreviewLayout()
+Hide the popup without discarding its controls, and cancel any pending layout measurements.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+<a name="module_features/SelectionViewManager..restorePreviewLayout"></a>
+
+### features/SelectionViewManager.restorePreviewLayout()
+Remeasure once after resizing finishes, then reveal the existing popup at its new position.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+<a name="module_features/SelectionViewManager..schedulePreviewLayout"></a>
+
+### features/SelectionViewManager.schedulePreviewLayout()
+Wait for layout events to settle when there is no explicit panel-resize lifecycle.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+<a name="module_features/SelectionViewManager..onPanelResizeStart"></a>
+
+### features/SelectionViewManager.onPanelResizeStart(event)
+Suspend positioning throughout a panel drag, including any forwarded resize events.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>jQuery.Event</code> | Resize-start event whose target identifies the resizing panel. |
+
+<a name="module_features/SelectionViewManager..onPanelResizeEnd"></a>
+
+### features/SelectionViewManager.onPanelResizeEnd(event)
+Restore the popup after all panels participating in the drag have finished resizing.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>jQuery.Event</code> | Resize-end event for the panel that finished resizing. |
+
+<a name="module_features/SelectionViewManager..showPreview"></a>
+
+### features/SelectionViewManager.showPreview(editor, selectionObj) ⇒ <code>Promise.&lt;void&gt;</code>
+Render only the latest provider result; dismissed requests cannot reopen the popup.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
+**Returns**: <code>Promise.&lt;void&gt;</code> - Resolves after the provider results have been considered.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| editor | <code>Editor</code> | Editor providing the selected text. |
+| selectionObj | <code>Array.&lt;Object&gt;</code> | Selected ranges supplied to providers. |
+
+<a name="module_features/SelectionViewManager..onEditorScroll"></a>
+
+### features/SelectionViewManager.onEditorScroll()
+Dismiss on editor viewport scrolling, except while workspace layout is being restored.
+
+**Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
 <a name="module_features/SelectionViewManager..isSelectionViewShown"></a>
 
 ### features/SelectionViewManager.isSelectionViewShown() ⇒ <code>boolean</code>
-If quickview is displayed and visible on screen
+Whether the selection popup is visible, excluding temporary suspension during layout changes.
 
 **Kind**: inner method of [<code>features/SelectionViewManager</code>](#module_features/SelectionViewManager)  
