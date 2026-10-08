@@ -35,6 +35,7 @@ const ImagePreview = require("./ai-image-preview");
 const {buildSystemPrompt, buildEditorContextLine} = require("./ai-system-prompt");
 const CliConnector = require("./ai-cli-connector");
 const CliCapabilities = require("./ai-cli-capabilities");
+const ModelEffort = require("./ai-model-effort");
 const NodeConnector = require("./node-connector");
 
 exports.readImagePreview = ImagePreview.readImage;
@@ -128,6 +129,12 @@ let currentSessionId = null;
 // Model list from the SDK's supportedModels() — fetched once per process,
 // best-effort, from the first live query. null until available.
 let cachedModelList = null;
+
+// The model the last query sent without a model resolved to (the user's saved
+// Claude Code default) and the endpoint it was resolved on, so an effort asked
+// for on the default model is checked against that model, and only while the
+// endpoint is the same. null until a default query has started.
+let _lastResolvedDefault = null;
 
 /**
  * Fetch the model list from a live Query once per process. Best-effort:
@@ -812,13 +819,14 @@ function _isAiScratchPath(filePath) {
 
 /**
  * Send a prompt to Claude and stream results back to the browser.
- * Called from browser via execPeer("sendPrompt", {prompt, projectPath, sessionAction, model}).
+ * Called from browser via execPeer("sendPrompt", {prompt, projectPath, sessionAction, model, effort}).
+ * effort is a thinking effort level for the model, or absent to leave the default to the SDK.
  *
  * Returns immediately with a requestId. Results are sent as events:
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale, selectionContext, editorContext,
+    const { prompt, projectPath, sessionAction, model, effort, locale, selectionContext, editorContext,
         images, envOverrides, permissionMode, additionalDirectories, aiScratchDir } = params;
     if (typeof aiScratchDir === "string" && aiScratchDir) {
         _aiScratchDir = aiScratchDir;
@@ -874,7 +882,7 @@ exports.sendPrompt = async function (params) {
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides, permissionMode, additionalDirectories)
+    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides, permissionMode, additionalDirectories, effort)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -1063,7 +1071,7 @@ exports.clearClarification = async function () {
 /**
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
-async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode, additionalDirectories) {
+async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode, additionalDirectories, effort) {
     // Sync the runtime mutable that hooks read for permission decisions —
     // setPermissionMode (peer) updates this same variable when the user
     // cycles modes mid-stream.
@@ -2109,6 +2117,22 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         queryOptions.model = model;
     }
 
+    // Thinking effort: only a level the model supports, and none at all for
+    // the default, so the user's saved setting or the model's own default applies.
+    // The endpoint is the query's own environment, inherited variables included.
+    const endpoint = queryOptions.env.ANTHROPIC_BASE_URL || "";
+    const effortLevel = ModelEffort.effortForQuery({
+        effort: effort,
+        model: model,
+        models: cachedModelList,
+        resolvedDefaultModel: _lastResolvedDefault && _lastResolvedDefault.endpoint === endpoint ?
+            _lastResolvedDefault.model : null,
+        customEndpoint: !!endpoint
+    });
+    if (effortLevel) {
+        queryOptions.effort = effortLevel;
+    }
+
 
     // Resume session if we have an existing one (already cleared if sessionAction was "new")
     if (currentSessionId) {
@@ -2260,6 +2284,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             // Claude Code default. requestedModel lets the browser tell
             // an explicit pick apart from default resolution.
             if (message.type === "system" && message.subtype === "init" && message.model) {
+                if (!model) {
+                    _lastResolvedDefault = { model: message.model, endpoint: endpoint };
+                }
                 nodeConnector.triggerPeer("aiSessionInfo", {
                     model: message.model,
                     requestedModel: model || null
