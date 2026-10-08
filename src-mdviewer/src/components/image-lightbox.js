@@ -1,7 +1,7 @@
 /**
  * Image lightbox — shows an image on its own over a dimmed backdrop, inside the viewer frame.
- * Opens on a click in reader mode. In edit mode it opens from the expand button shown over a
- * hovered image, or a double-click. Any click or Escape closes it.
+ * Opens on a click in reader mode. In edit mode it opens from the expand button shown in the
+ * top-right corner of a hovered image, or a double-click. Any click or Escape closes it.
  */
 import { on } from "../core/events.js";
 import { getState } from "../core/state.js";
@@ -9,6 +9,8 @@ import { t } from "../core/i18n.js";
 
 // Images smaller than this get no hover expand button; it would cover them.
 const EXPAND_BUTTON_MIN_IMAGE_SIZE = 96;
+// Gap between the expand button and the image's top and right edges.
+const EXPAND_BUTTON_INSET = 10;
 const EXPAND_ICON = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
     'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/>' +
     '<path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/>' +
@@ -96,7 +98,8 @@ export function openImageLightbox(img) {
 /**
  * The hover expand button. It lives in the viewer's scroll container, positioned in that
  * container's content coordinates, so a scroll carries it along with its image instead of it
- * being moved after each scroll event.
+ * being moved after each scroll event. Only an image whose top has scrolled out of view moves it,
+ * to keep it on the visible part of the image.
  */
 function _getExpandButton() {
     const appViewer = document.getElementById("app-viewer");
@@ -122,7 +125,7 @@ function _getExpandButton() {
     return expandButton;
 }
 
-/** In edit mode, show the expand button over the centre of the hovered image. */
+/** In edit mode, show the expand button in the top-right corner of the hovered image. */
 function _showExpandButton(img) {
     const rect = img.getBoundingClientRect();
     if (rect.width < EXPAND_BUTTON_MIN_IMAGE_SIZE || rect.height < EXPAND_BUTTON_MIN_IMAGE_SIZE) {
@@ -132,9 +135,18 @@ function _showExpandButton(img) {
     const button = _getExpandButton();
     const host = button.parentNode;
     const hostRect = host.getBoundingClientRect();
+    const half = button.offsetWidth / 2;
+    // Centre of the button, in viewport coordinates: the image's top-right corner, moved down to
+    // the top of the visible area when a tall image's top has scrolled out of view.
+    const centreX = rect.right - EXPAND_BUTTON_INSET - half;
+    let centreY = rect.top + EXPAND_BUTTON_INSET + half;
+    const visibleTop = hostRect.top + host.clientTop + EXPAND_BUTTON_INSET + half;
+    if (centreY < visibleTop) {
+        centreY = Math.min(visibleTop, rect.bottom - EXPAND_BUTTON_INSET - half);
+    }
     hoveredImg = img;
-    button.style.left = (rect.left - hostRect.left - host.clientLeft + host.scrollLeft + rect.width / 2) + "px";
-    button.style.top = (rect.top - hostRect.top - host.clientTop + host.scrollTop + rect.height / 2) + "px";
+    button.style.left = (centreX - hostRect.left - host.clientLeft + host.scrollLeft) + "px";
+    button.style.top = (centreY - hostRect.top - host.clientTop + host.scrollTop) + "px";
     button.classList.add("visible");
 }
 
