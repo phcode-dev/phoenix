@@ -5,6 +5,7 @@ require("./test/test-ai-cli-connector");
 require("./test/test-npm-node-shim");
 require("./test/test-media-server");
 require("./test/test-builder-hub");
+require("./test/test-ai-model-effort");
 
 const TEST_NODE_CONNECTOR_ID = "ph_test_connector";
 const nodeConnector = NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);

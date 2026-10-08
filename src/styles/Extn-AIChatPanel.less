@@ -4526,11 +4526,6 @@
             }
         }
 
-        // The info flash shares the right side: the chip stops claiming the space then.
-        .ai-info.ai-info-flash + .ai-usage-chip {
-            margin-left: 8px;
-        }
-
         // The drop-up borrows the attach menu's surface.
         .ai-usage-pop {
             display: none;
@@ -7017,3 +7012,177 @@
     button:focus-visible { outline: 2px solid @project-panel-text-2; outline-offset: -3px; }
 }
 .ai-user-files .ai-attachment-card { width: 180px; }
+
+/* ── Thinking effort: a chip after the permission control, opening a slider dropdown ───── */
+@ai-effort-accent: #4285F4;
+
+.ai-chat-input-area .ai-chat-mode-row {
+    // Looks like the permission ("Auto") control it sits next to.
+    .ai-effort-chip {
+        position: relative;
+        margin-left: 2px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        height: 22px;
+        padding: 0 6px;
+        border-radius: 4px;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+
+        &[hidden] {
+            display: none;
+        }
+
+        &:hover, &.ai-effort-open {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        // An outline bulb with a solid one over it, revealed from the bottom up to the chosen level.
+        .ai-effort-icon {
+            display: inline-grid;
+            font-size: 10px;
+            color: @project-panel-text-2;
+
+            > i {
+                grid-area: ~"1 / 1";
+            }
+        }
+
+        .ai-effort-bulb-fill {
+            clip-path: ~"inset(calc(100% - var(--ai-effort-fill, 0%)) 0 0 0)";
+        }
+
+        .ai-effort-chip-text {
+            font-size: @ai-text-meta;
+            color: @project-panel-text-2;
+            line-height: 1;
+        }
+
+        .ai-effort-caret {
+            font-size: 9px;
+            opacity: 0.7;
+        }
+    }
+
+    // The input hint ("Enter to send …") flashes briefly; it gets the row's right side to itself.
+    .ai-info.ai-info-flash ~ .ai-usage-chip {
+        display: none;
+    }
+}
+
+/* ── Thinking effort dropdown ─────────────────────────────────────── */
+/* The standard DropdownButton widget, like the model selector, with the slider panel as its one HTML
+   item (as the Tasks status dropdown does). The item itself is not a pick, so it never highlights. */
+.dropdownbutton-popup.ai-effort-dropdown-popup {
+    width: 270px;
+    max-height: 90vh; // the shared 160px cap would scroll the panel
+
+    &.dropdown-menu li a {
+        padding: 6px 12px;
+        white-space: normal;
+        cursor: default;
+    }
+
+    &.dropdown-menu a.selected {
+        background: none;
+    }
+
+    .ai-effort-panel {
+        font-size: @ai-text-meta;
+    }
+
+    .ai-effort-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .ai-effort-heading {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        opacity: 0.6;
+    }
+
+    .ai-effort-value {
+        font-size: 12px;
+    }
+
+    .ai-effort-controls {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .ai-effort-default {
+        flex: none;
+        padding: 1px 9px;
+        border: 1px solid @ai-effort-accent;
+        border-radius: 10px;
+        background: transparent;
+        color: @ai-effort-accent;
+        font-size: @ai-text-meta;
+        cursor: pointer;
+
+        &.active {
+            background: @ai-effort-accent;
+            color: #fff;
+        }
+    }
+
+    .ai-effort-scale {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ai-effort-slider {
+        display: block;
+        width: 100%;
+        margin: 0;
+        accent-color: @ai-effort-accent;
+        cursor: pointer;
+
+        &.ai-effort-dim {
+            opacity: 0.35;
+        }
+    }
+
+    // Labels sit under the slider's stops: the inset keeps them centred on the thumb's travel.
+    .ai-effort-ticks {
+        position: relative;
+        height: 13px;
+        margin: 2px 7px 0;
+        font-size: 10px;
+        opacity: 0.6;
+    }
+
+    .ai-effort-tick {
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+        white-space: nowrap;
+    }
+
+    .ai-effort-hint {
+        margin-top: 8px;
+        opacity: 0.6;
+    }
+}
+
+.ai-chat-panel.ai-mode-cli .ai-effort-chip {
+    display: none;
+}
+
+/* The panel's dropdown triggers share the model picker's chevron. */
+.ai-dropdown-chevron {
+    font-size: 9px;
+    opacity: 0.7;
+    margin-left: 5px;
+}

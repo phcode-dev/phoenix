@@ -166,6 +166,7 @@ define(function (require, exports, module) {
     require("spec/NpmNodeShim-test");
     require("spec/AIImageTools-test");
     require("spec/AICliConnector-test");
+    require("spec/AIModelEffort-test");
     // pro test suite optional components
     require("./pro-test-suite");
     // todo TEST_MODERN
