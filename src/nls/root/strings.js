@@ -3002,6 +3002,7 @@ define({
     "AI_CHAT_MODE_SELECT_TITLE": "Switch between the Claude Code chat and an embedded CLI terminal",
     "AI_CHAT_MODEL_SWITCHED_NOTICE": "Switched to {0}. Applies from your next message; the first response may take a moment longer while the cache rebuilds.",
     "AI_CHAT_EFFORT_TITLE": "Thinking effort",
+    "AI_CHAT_EFFORT_CURRENT": "Thinking effort: {0}",
     "AI_CHAT_EFFORT_HEADING": "Thinking effort · {0}",
     "AI_CHAT_EFFORT_DEFAULT": "Default",
     "AI_CHAT_EFFORT_DEFAULT_LABEL": "Default effort",
