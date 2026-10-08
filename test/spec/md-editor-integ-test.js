@@ -2197,6 +2197,11 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["image-test.md"]),
                     "open image-test.md");
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                // Hover checks need the image at its real size.
+                await awaitsFor(() => {
+                    const img = _getImage("Sample image");
+                    return img && img.complete && img.naturalWidth > 0;
+                }, "the sample image to load");
             }
 
             function _getLightbox() {
@@ -2268,49 +2273,85 @@ define(function (require, exports, module) {
                 expect(_getLightbox()).toBeNull();
             }, 10000);
 
-            it("should open a hovered image from its expand button in edit mode", async function () {
-                await _openImageDoc();
-                await _enterEditMode();
+            /** Move the pointer to a point of an element, as a real mouse move would report it. */
+            function _moveMouseTo(el, xFraction = 0.5, yFraction = 0.5) {
+                const rect = el.getBoundingClientRect();
+                el.dispatchEvent(new MouseEvent("mousemove", {
+                    bubbles: true,
+                    clientX: rect.left + rect.width * xFraction,
+                    clientY: rect.top + rect.height * yFraction
+                }));
+            }
 
-                const mdDoc = _getMdIFrameDoc();
-                const img = _getImage("Sample image");
-                img.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
-                const expand = mdDoc.querySelector(".image-lightbox-expand");
-                expect(expand).not.toBeNull();
-                expect(expand.classList.contains("visible")).toBeTrue();
+            function _getExpandButton() {
+                return _getMdIFrameDoc().querySelector(".image-lightbox-expand");
+            }
 
-                // Moving off the image hides it; hovering again brings it back.
-                img.dispatchEvent(new MouseEvent("mouseout", { bubbles: true, relatedTarget: mdDoc.body }));
-                expect(expand.classList.contains("visible")).toBeFalse();
-                img.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
-                expect(expand.classList.contains("visible")).toBeTrue();
+            function _isExpandButtonVisible() {
+                const expand = _getExpandButton();
+                return !!expand && expand.classList.contains("visible");
+            }
 
-                expand.click();
-                _expectLightboxShows(img);
-                expect(expand.classList.contains("visible")).toBeFalse();
-            }, 10000);
+            /** The expand button sits on the centre of the image, on screen. */
+            function _expectExpandButtonCentredOn(img) {
+                const imgRect = img.getBoundingClientRect();
+                const btnRect = _getExpandButton().getBoundingClientRect();
+                expect(btnRect.left + btnRect.width / 2).toBeCloseTo(imgRect.left + imgRect.width / 2, 0);
+                expect(btnRect.top + btnRect.height / 2).toBeCloseTo(imgRect.top + imgRect.height / 2, 0);
+            }
+
+            it("should show the expand button wherever the pointer moves over an image in edit mode",
+                async function () {
+                    await _openImageDoc();
+                    await _enterEditMode();
+
+                    const img = _getImage("Sample image");
+                    // Each move below is handled before the next statement, so the real pointer resting
+                    // over the runner cannot interleave its own moves.
+                    // Near a corner, not just the centre: any point over the image counts.
+                    _moveMouseTo(img, 0.1, 0.1);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                    _expectExpandButtonCentredOn(img);
+                    const expand = _getExpandButton();
+
+                    // Off the image it hides; moving back over it shows it again.
+                    _moveMouseTo(_getMdIFrameDoc().querySelector("#viewer-content h1"));
+                    expect(_isExpandButtonVisible()).toBeFalse();
+                    _moveMouseTo(img, 0.8, 0.7);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+
+                    expand.click();
+                    _expectLightboxShows(img);
+                    expect(_isExpandButtonVisible()).toBeFalse();
+                }, 10000);
+
+            it("should keep the expand button over the image across a scroll while the pointer stays",
+                async function () {
+                    await _openImageDoc();
+                    await _enterEditMode();
+
+                    const img = _getImage("Sample image");
+                    _moveMouseTo(img);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                    // A scroll used to hide it for good while the pointer stayed on the image. It now
+                    // lives in the scroll container, so it stays on the image's centre.
+                    expect(_getExpandButton().parentNode.id).toBe("app-viewer");
+                    _getMdIFrameDoc().getElementById("app-viewer").dispatchEvent(new Event("scroll"));
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                    _expectExpandButtonCentredOn(img);
+                    // Moving off and back is still tracked after the scroll.
+                    _moveMouseTo(_getMdIFrameDoc().querySelector("#viewer-content h1"));
+                    expect(_isExpandButtonVisible()).toBeFalse();
+                    _moveMouseTo(img);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                }, 10000);
 
             it("should show no expand button over an image in reader mode", async function () {
                 await _openImageDoc();
                 await _enterReaderMode();
 
-                const expand = _getMdIFrameDoc().querySelector(".image-lightbox-expand");
-                _getImage("Sample image").dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
-                expect(!expand || !expand.classList.contains("visible")).toBeTrue();
-            }, 10000);
-
-            it("should open the selected image from the image toolbar's view button in edit mode", async function () {
-                await _openImageDoc();
-                await _enterEditMode();
-
-                const img = _getImage("Sample image");
-                img.click();
-                const popover = _getMdIFrameDoc().getElementById("image-popover");
-                await awaitsFor(() => popover.classList.contains("visible"), "image popover to show");
-
-                popover.querySelector(".image-popover-btn-view").click();
-                _expectLightboxShows(img);
-                expect(popover.classList.contains("visible")).toBeFalse();
+                _moveMouseTo(_getImage("Sample image"));
+                expect(_isExpandButtonVisible()).toBeFalse();
             }, 10000);
         });
 

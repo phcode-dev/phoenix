@@ -52,6 +52,5 @@
 - [x] Edit mode: click selects the image (popover), double-click opens the lightbox
 - [x] Edit mode: hovering an image shows a centred expand button that opens the lightbox
 - [x] Reader mode: no expand button on hover
-- [x] Edit mode: the image toolbar's view button opens the lightbox
 - [ ] Switching files or modes closes an open lightbox
 - [ ] Escape with the lightbox open is not forwarded to Phoenix (editor keeps its focus state)

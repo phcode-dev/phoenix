@@ -1,7 +1,7 @@
 /**
  * Image lightbox — shows an image on its own over a dimmed backdrop, inside the viewer frame.
  * Opens on a click in reader mode. In edit mode it opens from the expand button shown over a
- * hovered image, a double-click, or the image popover's view button. Any click or Escape closes it.
+ * hovered image, or a double-click. Any click or Escape closes it.
  */
 import { on } from "../core/events.js";
 import { getState } from "../core/state.js";
@@ -18,6 +18,14 @@ let overlay = null;
 let returnFocus = null;
 let expandButton = null;
 let hoveredImg = null;
+// Last pointer position in edit mode; null when it is outside the frame or a button is held.
+let lastPointer = null;
+// Moving onto a different element is handled at once. Repeated moves over the same one, and
+// scrolls, are checked at most once per frame interval, whatever rate an engine sends them at (not
+// all coalesce mouse moves per frame); a trailing check catches the last position.
+const SYNC_INTERVAL_MS = 16;
+let lastSyncAt = 0;
+let trailingSync = null;
 
 /**
  * The previewable image a pointer event landed on, if any: a loaded document image, not one
@@ -85,7 +93,13 @@ export function openImageLightbox(img) {
     overlay.focus({ preventScroll: true });
 }
 
+/**
+ * The hover expand button. It lives in the viewer's scroll container, positioned in that
+ * container's content coordinates, so a scroll carries it along with its image instead of it
+ * being moved after each scroll event.
+ */
 function _getExpandButton() {
+    const appViewer = document.getElementById("app-viewer");
     if (!expandButton) {
         expandButton = document.createElement("button");
         expandButton.type = "button";
@@ -101,12 +115,9 @@ function _getExpandButton() {
             _hideExpandButton();
             openImageLightbox(img);
         });
-        expandButton.addEventListener("mouseleave", (e) => {
-            if (e.relatedTarget !== hoveredImg) {
-                _hideExpandButton();
-            }
-        });
-        document.body.appendChild(expandButton);
+    }
+    if (appViewer && expandButton.parentNode !== appViewer) {
+        appViewer.appendChild(expandButton);
     }
     return expandButton;
 }
@@ -119,9 +130,11 @@ function _showExpandButton(img) {
         return;
     }
     const button = _getExpandButton();
+    const host = button.parentNode;
+    const hostRect = host.getBoundingClientRect();
     hoveredImg = img;
-    button.style.left = (rect.left + rect.width / 2) + "px";
-    button.style.top = (rect.top + rect.height / 2) + "px";
+    button.style.left = (rect.left - hostRect.left - host.clientLeft + host.scrollLeft + rect.width / 2) + "px";
+    button.style.top = (rect.top - hostRect.top - host.clientTop + host.scrollTop + rect.height / 2) + "px";
     button.classList.add("visible");
 }
 
@@ -130,6 +143,73 @@ function _hideExpandButton() {
     if (expandButton) {
         expandButton.classList.remove("visible");
     }
+}
+
+/**
+ * @param {Element} el - What is under the pointer.
+ * @return {?HTMLImageElement} The image the expand button belongs on for it: the image itself, or
+ *     the button's own image while the pointer is on the button.
+ */
+function _hoverTargetFor(el) {
+    if (expandButton && expandButton.contains(el)) {
+        return hoveredImg;
+    }
+    return previewableImage(el);
+}
+
+/**
+ * Show the expand button for the image under the pointer, wherever on the image it is, or hide
+ * it. Checked on every pointer move and scroll, so it never depends on catching the moment the
+ * pointer entered the image (a scroll or a large image could miss that).
+ * @param {?Element} [underPointer] - What is under the pointer, when the caller already knows (a
+ *     mouse event's target); otherwise it is looked up at the last pointer position.
+ */
+function _syncExpandButton(underPointer) {
+    if (!lastPointer || overlay || !getState().editMode) {
+        _hideExpandButton();
+        return;
+    }
+    const el = underPointer instanceof Element ? underPointer :
+        document.elementFromPoint(lastPointer.x, lastPointer.y);
+    if (expandButton && el && expandButton.contains(el)) {
+        // On the button itself, which sits over its image.
+        if (!hoveredImg || !hoveredImg.isConnected) {
+            _hideExpandButton();
+        }
+        return;
+    }
+    const img = previewableImage(el);
+    if (img) {
+        _showExpandButton(img);
+    } else {
+        _hideExpandButton();
+    }
+}
+
+/**
+ * Run the hover check now, or once the current frame interval has passed.
+ * @param {?Element} [underPointer] - As for _syncExpandButton; ignored when the check is deferred.
+ */
+function _requestExpandSync(underPointer) {
+    if (underPointer && _hoverTargetFor(underPointer) !== hoveredImg) {
+        lastSyncAt = performance.now();
+        _syncExpandButton(underPointer);
+        return;
+    }
+    if (trailingSync) {
+        return;
+    }
+    const wait = lastSyncAt + SYNC_INTERVAL_MS - performance.now();
+    if (wait <= 0) {
+        lastSyncAt = performance.now();
+        _syncExpandButton(underPointer);
+        return;
+    }
+    trailingSync = setTimeout(() => {
+        trailingSync = null;
+        lastSyncAt = performance.now();
+        _syncExpandButton();
+    }, wait);
 }
 
 /** Close the lightbox, returning focus to where it was. */
@@ -156,22 +236,7 @@ export function initImageLightbox() {
                 openImageLightbox(img);
             }
         });
-        appViewer.addEventListener("mouseover", (e) => {
-            if (!getState().editMode) {
-                return;
-            }
-            const img = previewableImage(e.target);
-            if (img) {
-                _showExpandButton(img);
-            }
-        });
-        appViewer.addEventListener("mouseout", (e) => {
-            // Leaving the image for anything but its expand button hides the button.
-            if (hoveredImg && e.target === hoveredImg && e.relatedTarget !== expandButton) {
-                _hideExpandButton();
-            }
-        });
-        appViewer.addEventListener("scroll", _hideExpandButton);
+        appViewer.addEventListener("scroll", () => _requestExpandSync());
         appViewer.addEventListener("dblclick", (e) => {
             if (!getState().editMode) {
                 return;
@@ -193,7 +258,20 @@ export function initImageLightbox() {
         }
     });
 
-    window.addEventListener("resize", _hideExpandButton);
+    document.addEventListener("mousemove", (e) => {
+        if (!getState().editMode) {
+            return;
+        }
+        // Not while a button is held: selecting text or dragging an image.
+        lastPointer = e.buttons ? null : { x: e.clientX, y: e.clientY };
+        // The event's target is the browser's own hit test; no need for another.
+        _requestExpandSync(e.target);
+    });
+    document.documentElement.addEventListener("mouseleave", () => {
+        lastPointer = null;
+        _hideExpandButton();
+    });
+    window.addEventListener("resize", () => _requestExpandSync());
     // A file or mode switch leaves nothing of the lightbox behind.
     const reset = () => {
         closeImageLightbox();
