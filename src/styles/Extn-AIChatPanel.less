@@ -98,22 +98,6 @@
         flex: 0 1 auto;
         min-width: 0;
         margin: 0 auto;
-        cursor: pointer;
-        padding: 2px 6px;
-        border-radius: 6px;
-        transition: background 0.15s ease;
-
-        &:hover,
-        &.dropdown-open {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .ai-chat-title-chevron {
-            flex: none;
-            margin-left: 5px;
-            font-size: 9px;
-            opacity: 0.5;
-        }
     }
 
     .ai-chat-title-icon {
@@ -135,10 +119,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-weight: 400;
-        font-size: @label-font-size;
-        color: @project-panel-text-2;
-        line-height: 19px;
+        font: inherit;
+        color: inherit;
     }
 
     .ai-chat-header-actions {
@@ -1358,6 +1340,51 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+    }
+
+    .ai-cli-session-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 0 8px;
+    }
+
+    .ai-cli-card {
+        position: relative;
+        min-width: 0;
+
+        .ai-start-row {
+            height: 100%;
+            padding-right: 36px;
+        }
+
+        .ai-cli-session-more {
+            position: absolute;
+            right: 6px;
+            top: 6px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            font-size: 18px;
+            line-height: 24px;
+            color: @project-panel-text-2;
+            background: transparent;
+        }
+
+        &.ai-cli-card-missing {
+            .ai-start-row { padding-right: 10px; }
+            .ai-cli-session-more { display: none; }
+        }
+
+        input.ai-cli-session-name {
+            position: absolute;
+            box-sizing: border-box;
+            min-height: 20px;
+            margin: 0;
+            padding: 0 2px;
+            font: inherit;
+            font-weight: 600;
+            z-index: 1;
         }
     }
 
