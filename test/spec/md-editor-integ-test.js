@@ -2292,12 +2292,13 @@ define(function (require, exports, module) {
                 return !!expand && expand.classList.contains("visible");
             }
 
-            /** The expand button sits on the centre of the image, on screen. */
-            function _expectExpandButtonCentredOn(img) {
+            /** The expand button sits in the image's top-right corner, inset from its edges, on screen. */
+            function _expectExpandButtonInCornerOf(img) {
                 const imgRect = img.getBoundingClientRect();
                 const btnRect = _getExpandButton().getBoundingClientRect();
-                expect(btnRect.left + btnRect.width / 2).toBeCloseTo(imgRect.left + imgRect.width / 2, 0);
-                expect(btnRect.top + btnRect.height / 2).toBeCloseTo(imgRect.top + imgRect.height / 2, 0);
+                const inset = 10;
+                expect(btnRect.right).toBeCloseTo(imgRect.right - inset, 0);
+                expect(btnRect.top).toBeCloseTo(imgRect.top + inset, 0);
             }
 
             it("should show the expand button wherever the pointer moves over an image in edit mode",
@@ -2311,7 +2312,7 @@ define(function (require, exports, module) {
                     // Near a corner, not just the centre: any point over the image counts.
                     _moveMouseTo(img, 0.1, 0.1);
                     expect(_isExpandButtonVisible()).toBeTrue();
-                    _expectExpandButtonCentredOn(img);
+                    _expectExpandButtonInCornerOf(img);
                     const expand = _getExpandButton();
 
                     // Off the image it hides; moving back over it shows it again.
@@ -2334,11 +2335,11 @@ define(function (require, exports, module) {
                     _moveMouseTo(img);
                     expect(_isExpandButtonVisible()).toBeTrue();
                     // A scroll used to hide it for good while the pointer stayed on the image. It now
-                    // lives in the scroll container, so it stays on the image's centre.
+                    // lives in the scroll container, so it stays in the image's corner.
                     expect(_getExpandButton().parentNode.id).toBe("app-viewer");
                     _getMdIFrameDoc().getElementById("app-viewer").dispatchEvent(new Event("scroll"));
                     expect(_isExpandButtonVisible()).toBeTrue();
-                    _expectExpandButtonCentredOn(img);
+                    _expectExpandButtonInCornerOf(img);
                     // Moving off and back is still tracked after the scroll.
                     _moveMouseTo(_getMdIFrameDoc().querySelector("#viewer-content h1"));
                     expect(_isExpandButtonVisible()).toBeFalse();
