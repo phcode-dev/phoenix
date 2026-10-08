@@ -4,6 +4,60 @@ We are continuously adding features every week. [Check out our release page to s
 
 Here's a list of top features recently added to Phoenix Code:
 
+## [Layers Panel: Your Page as a Tree](https://docs.phcode.dev/app-links/layers-panel)
+
+`Added in October 2026`
+
+The new **Layers** tab in the sidebar shows your page as a tree. Click a row to select the element, then edit its tag, classes, attributes, and styles right in the sidebar. Drag rows to move things around, and insert, duplicate, or delete elements without touching the code.
+
+The Styles section lists every rule that applies to the element, shows which values are overridden and by what, and lets you edit them in place.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-layersPanel.jpg)
+
+## [A New AI Panel with Built-in Claude Code](https://docs.phcode.dev/app-links/ai-chat)
+
+`Added in October 2026`
+
+Claude Code now comes built in. Sign in and start chatting, with nothing to install. The new chat shows you what the AI is doing as it works, and every change it makes can be undone with one click. You decide how much it can do on its own.
+
+New to AI? Click **Surprise Me** on the start screen to watch a demo first. Free accounts get a daily and monthly chat limit. Phoenix Pro removes the limits.
+
+> This feature is available only in desktop apps.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-aiPanel.jpg)
+
+## [Claude Code CLI and Codex CLI Inside the Editor](https://docs.phcode.dev/app-links/ai-cli)
+
+`Added in October 2026`
+
+Already use **Claude Code** or **Codex**? Run them inside the AI panel. They see the file you are editing, your unsaved changes, and the Live Preview, and they can take screenshots and open files.
+
+> Running the CLIs inside the panel is a Phoenix Pro feature, available only in desktop apps.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-aiCli.jpg)
+
+## [Ask AI About What You See](https://docs.phcode.dev/app-links/ai-ask)
+
+`Added in October 2026`
+
+Select an element in Live Preview and click **Ask AI**. A screenshot of the element and its place in the code go with your question, so you don't have to describe where it is. The same button appears on selected code in the editor and on selected text in the Markdown preview.
+
+The AI can ask you back the same way, with a card inside the Live Preview and options you can preview on the page.
+
+> This feature is available only in desktop apps.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-aiAsk.jpg)
+
+## [Find Photos with AI](https://docs.phcode.dev/app-links/ai-images)
+
+`Added in October 2026`
+
+Ask the AI for a picture and it searches Unsplash. Pick one and it goes on your page, linked from Unsplash or downloaded into your project.
+
+> This feature is available only in desktop apps.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-aiImages.jpg)
+
 ## [Style Your Page Visually with the Styles Bar](https://docs.phcode.dev/app-links/styles-bar)
 
 `Added in August 2026`
