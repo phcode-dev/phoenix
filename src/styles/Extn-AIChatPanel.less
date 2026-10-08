@@ -7054,6 +7054,23 @@
             clip-path: ~"inset(calc(100% - var(--ai-effort-fill, 0%)) 0 0 0)";
         }
 
+        &[data-effort-level="xhigh"] .ai-effort-icon,
+        &[data-effort-level="max"] .ai-effort-icon {
+            color: #88733e;
+
+            .dark & {
+                color: #c2ae78;
+            }
+        }
+
+        &[data-effort-level="max"] .ai-effort-icon {
+            filter: drop-shadow(0 0 1px rgba(175, 133, 36, 0.4)) drop-shadow(0 0 3px rgba(175, 133, 36, 0.18));
+
+            .dark & {
+                filter: drop-shadow(0 0 1px rgba(255, 218, 124, 0.55)) drop-shadow(0 0 3px rgba(238, 190, 75, 0.28));
+            }
+        }
+
         .ai-effort-chip-text {
             font-size: @ai-text-meta;
             color: @project-panel-text-2;
@@ -7145,12 +7162,44 @@
     .ai-effort-slider {
         display: block;
         width: 100%;
+        height: 16px;
         margin: 0;
         accent-color: @ai-effort-accent;
         cursor: pointer;
 
         &.ai-effort-dim {
-            opacity: 0.35;
+            // Default is not a particular stop: show an empty track while keeping it interactive.
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+
+            &::-webkit-slider-runnable-track {
+                height: 4px;
+                border-radius: 2px;
+                background: fade(@project-panel-text-2, 25%);
+            }
+
+            &::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 16px;
+                height: 16px;
+                margin-top: -6px;
+                opacity: 0;
+            }
+
+            &::-moz-range-track {
+                height: 4px;
+                border-radius: 2px;
+                background: fade(@project-panel-text-2, 25%);
+            }
+
+            &::-moz-range-progress {
+                background: transparent;
+            }
+
+            &::-moz-range-thumb {
+                opacity: 0;
+            }
         }
     }
 
@@ -7166,8 +7215,19 @@
     .ai-effort-tick {
         position: absolute;
         top: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
         transform: translateX(-50%);
         white-space: nowrap;
+
+        &:hover, &:focus-visible {
+            color: @ai-effort-accent;
+        }
     }
 
     .ai-effort-hint {
