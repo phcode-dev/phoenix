@@ -5,6 +5,7 @@
 import "./styles/app.css";
 import { initI18n } from "./core/i18n.js";
 import { initViewer } from "./components/viewer.js";
+import { initImageLightbox } from "./components/image-lightbox.js";
 import { initEditor } from "./components/editor.js";
 import { initEmbeddedToolbar } from "./components/embedded-toolbar.js";
 import { initContextMenu } from "./components/context-menu.js";
@@ -17,6 +18,7 @@ async function init() {
 
     // Initialize components
     initViewer();
+    initImageLightbox();
     initEditor();
     initEmbeddedToolbar();
     initContextMenu();
