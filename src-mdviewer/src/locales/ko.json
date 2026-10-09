@@ -47,6 +47,7 @@
     "success": "PDF 내보내기 완료"
   },
   "format": {
+    "ask_ai": "인공지능에 질문하기",
     "block_type": "블록 유형",
     "blockquote": "인용",
     "bold": "굵게 ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "더 보기",
     "numbered_list": "번호 목록",
     "paragraph": "본문",
+    "selection_unavailable": "이 선택 영역을 찾을 수 없습니다",
     "strikethrough": "취소선 ({mod}+Shift+X)",
     "table": "표",
     "task_list": "작업 목록",
     "text_formatting": "텍스트 서식",
-    "underline": "밑줄 ({mod}+U)",
-    "ask_ai": "인공지능에 질문하기",
-    "selection_unavailable": "이 선택 영역을 찾을 수 없습니다"
+    "underline": "밑줄 ({mod}+U)"
   },
   "help": {
     "editing": "편집",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "이미지 삭제",
-    "edit": "이미지 URL 수정"
+    "edit": "이미지 URL 수정",
+    "view": "이미지 보기"
   },
   "image_dialog": {
     "alt_placeholder": "이미지 설명",

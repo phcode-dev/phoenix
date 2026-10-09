@@ -47,6 +47,7 @@
     "success": "PDF succesvol geëxporteerd"
   },
   "format": {
+    "ask_ai": "Vraag het AI",
     "block_type": "Bloktype",
     "blockquote": "Blokcitaat",
     "bold": "Vet ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Meer",
     "numbered_list": "Genummerde lijst",
     "paragraph": "Paragraaf",
+    "selection_unavailable": "Kan deze selectie niet vinden",
     "strikethrough": "Doorhalen ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Takenlijst",
     "text_formatting": "Tekstopmaak",
-    "underline": "Onderstrepen ({mod}+U)",
-    "ask_ai": "Vraag het AI",
-    "selection_unavailable": "Kan deze selectie niet vinden"
+    "underline": "Onderstrepen ({mod}+U)"
   },
   "help": {
     "editing": "Bewerken",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Afbeelding verwijderen",
-    "edit": "Afbeeldings-URL bewerken"
+    "edit": "Afbeeldings-URL bewerken",
+    "view": "Afbeelding bekijken"
   },
   "image_dialog": {
     "alt_placeholder": "Afbeeldingsbeschrijving",

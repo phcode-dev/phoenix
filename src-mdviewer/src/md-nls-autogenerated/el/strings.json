@@ -34,6 +34,7 @@
   "drop_zone.text": "Αποθέστε το αρχείο Markdown εδώ",
   "export.open": "Άνοιγμα",
   "export.success": "Το PDF εξήχθη με επιτυχία",
+  "format.ask_ai": "Ρωτήστε την τεχνητή νοημοσύνη",
   "format.block_type": "Τύπος μπλοκ",
   "format.blockquote": "Εσοχή παράθεσης",
   "format.bold": "Έντονα ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Περισσότερα",
   "format.numbered_list": "Αριθμημένη λίστα",
   "format.paragraph": "Παράγραφος",
+  "format.selection_unavailable": "Δεν είναι δυνατός ο εντοπισμός αυτής της επιλογής",
   "format.strikethrough": "Διαγράμμιση ({mod}+Shift+X)",
   "format.table": "Πίνακας",
   "format.task_list": "Λίστα εργασιών",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Άνοιγμα Αρχείου",
   "welcome.subtitle": "Ένα όμορφο πρόγραμμα προβολής Markdown",
   "welcome.title": "Kern",
-  "format.ask_ai": "Ρωτήστε την τεχνητή νοημοσύνη",
-  "format.selection_unavailable": "Δεν είναι δυνατός ο εντοπισμός αυτής της επιλογής"
+  "image.view": "Προβολή εικόνας"
 }

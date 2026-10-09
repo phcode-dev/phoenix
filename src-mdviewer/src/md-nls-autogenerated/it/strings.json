@@ -34,6 +34,7 @@
   "drop_zone.text": "Trascina qui il tuo file Markdown",
   "export.open": "Apri",
   "export.success": "PDF esportato con successo",
+  "format.ask_ai": "Chiedi all'IA",
   "format.block_type": "Tipo di blocco",
   "format.blockquote": "Citazione",
   "format.bold": "Grassetto ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Altro",
   "format.numbered_list": "Elenco numerato",
   "format.paragraph": "Paragrafo",
+  "format.selection_unavailable": "Impossibile individuare questa selezione",
   "format.strikethrough": "Barrato ({mod}+Shift+X)",
   "format.table": "Tabella",
   "format.task_list": "Elenco attività",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Apri file",
   "welcome.subtitle": "Un bellissimo visualizzatore Markdown",
   "welcome.title": "Kern",
-  "format.ask_ai": "Chiedi all'IA",
-  "format.selection_unavailable": "Impossibile individuare questa selezione"
+  "image.view": "Visualizza immagine"
 }

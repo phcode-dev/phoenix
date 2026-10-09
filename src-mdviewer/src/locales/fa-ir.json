@@ -47,6 +47,7 @@
     "success": "فایل PDF با موفقیت صادر شد"
   },
   "format": {
+    "ask_ai": "از هوش مصنوعی بپرسید",
     "block_type": "نوع بلوک",
     "blockquote": "نقل‌قول",
     "bold": "ضخیم ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "بیشتر",
     "numbered_list": "فهرست شماره‌دار",
     "paragraph": "پاراگراف",
+    "selection_unavailable": "این بخش انتخاب‌شده پیدا نمی‌شود",
     "strikethrough": "خط خورده ({mod}+Shift+X)",
     "table": "جدول",
     "task_list": "فهرست کارها",
     "text_formatting": "قالب‌بندی متن",
-    "underline": "زیرخط ({mod}+U)",
-    "ask_ai": "از هوش مصنوعی بپرسید",
-    "selection_unavailable": "این بخش انتخاب‌شده پیدا نمی‌شود"
+    "underline": "زیرخط ({mod}+U)"
   },
   "help": {
     "editing": "ویرایش",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "حذف تصویر",
-    "edit": "ویرایش URL تصویر"
+    "edit": "ویرایش URL تصویر",
+    "view": "مشاهدهٔ تصویر"
   },
   "image_dialog": {
     "alt_placeholder": "توضیحات تصویر",

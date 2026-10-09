@@ -34,6 +34,7 @@
   "drop_zone.text": "Släpp din Markdown-fil här",
   "export.open": "Öppna",
   "export.success": "PDF-filen har exporterats",
+  "format.ask_ai": "Fråga AI",
   "format.block_type": "Blocktyp",
   "format.blockquote": "Citatblock",
   "format.bold": "Fet ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Mer",
   "format.numbered_list": "Numrerad lista",
   "format.paragraph": "Stycke",
+  "format.selection_unavailable": "Det går inte att hitta den här markeringen",
   "format.strikethrough": "Genomstruken ({mod}+Shift+X)",
   "format.table": "Tabell",
   "format.task_list": "Att göra-lista",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Öppna fil",
   "welcome.subtitle": "En vacker Markdown-visare",
   "welcome.title": "Kern",
-  "format.ask_ai": "Fråga AI",
-  "format.selection_unavailable": "Det går inte att hitta den här markeringen"
+  "image.view": "Visa bild"
 }

@@ -47,6 +47,7 @@
     "success": "PDF کامیابی سے برآمد ہوئی"
   },
   "format": {
+    "ask_ai": "مصنوعی ذہانت سے پوچھیں",
     "block_type": "بلاک کی قسم",
     "blockquote": "بلاک کوٹ",
     "bold": "بولڈ ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "مزید",
     "numbered_list": "نمبر فہرست",
     "paragraph": "پیراگراف",
+    "selection_unavailable": "منتخب کردہ حصے کو تلاش نہیں کیا جا سکتا",
     "strikethrough": "سٹرائیک تھرو ({mod}+Shift+X)",
     "table": "ٹیبل",
     "task_list": "ٹاسک فہرست",
     "text_formatting": "ٹیکسٹ فارمیٹنگ",
-    "underline": "انڈر لائن ({mod}+U)",
-    "ask_ai": "مصنوعی ذہانت سے پوچھیں",
-    "selection_unavailable": "منتخب کردہ حصے کو تلاش نہیں کیا جا سکتا"
+    "underline": "انڈر لائن ({mod}+U)"
   },
   "help": {
     "editing": "ترمیم",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "تصویر حذف کریں",
-    "edit": "تصویر کا یو آر ایل ترمیم کریں"
+    "edit": "تصویر کا یو آر ایل ترمیم کریں",
+    "view": "تصویر دیکھیں"
   },
   "image_dialog": {
     "alt_placeholder": "تصویر کی تفصیل",

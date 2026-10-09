@@ -47,6 +47,7 @@
     "success": "PDF-filen blev eksporteret med succes"
   },
   "format": {
+    "ask_ai": "Spørg AI",
     "block_type": "Bloktype",
     "blockquote": "Blokcitat",
     "bold": "Fed ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Mere",
     "numbered_list": "Nummereret liste",
     "paragraph": "Afsnit",
+    "selection_unavailable": "Kan ikke finde denne markering",
     "strikethrough": "Gennemstreget ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Opgaveliste",
     "text_formatting": "Tekstformatering",
-    "underline": "Understreg ({mod}+U)",
-    "ask_ai": "Spørg AI",
-    "selection_unavailable": "Kan ikke finde denne markering"
+    "underline": "Understreg ({mod}+U)"
   },
   "help": {
     "editing": "Redigering",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Slet billede",
-    "edit": "Rediger billed-URL"
+    "edit": "Rediger billed-URL",
+    "view": "Vis billede"
   },
   "image_dialog": {
     "alt_placeholder": "Billedbeskrivelse",

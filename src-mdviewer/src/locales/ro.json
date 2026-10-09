@@ -47,6 +47,7 @@
     "success": "PDF exportat cu succes"
   },
   "format": {
+    "ask_ai": "Întreabă AI",
     "block_type": "Tip de bloc",
     "blockquote": "Citat bloc",
     "bold": "Aldin ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Mai multe",
     "numbered_list": "Listă numerotată",
     "paragraph": "Paragraf",
+    "selection_unavailable": "Nu se poate găsi această selecție",
     "strikethrough": "Tăiat ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Listă de sarcini",
     "text_formatting": "Formatare text",
-    "underline": "Subliniere ({mod}+U)",
-    "ask_ai": "Întreabă AI",
-    "selection_unavailable": "Nu se poate găsi această selecție"
+    "underline": "Subliniere ({mod}+U)"
   },
   "help": {
     "editing": "Editare",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Șterge imaginea",
-    "edit": "Editează URL-ul imaginii"
+    "edit": "Editează URL-ul imaginii",
+    "view": "Vizualizează imaginea"
   },
   "image_dialog": {
     "alt_placeholder": "Descriere imagine",

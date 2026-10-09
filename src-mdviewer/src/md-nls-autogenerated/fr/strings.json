@@ -34,6 +34,7 @@
   "drop_zone.text": "Déposez votre fichier Markdown ici",
   "export.open": "Ouvrir",
   "export.success": "PDF exporté avec succès",
+  "format.ask_ai": "Demander à l’IA",
   "format.block_type": "Type de bloc",
   "format.blockquote": "Citation",
   "format.bold": "Gras ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Plus",
   "format.numbered_list": "Liste numérotée",
   "format.paragraph": "Paragraphe",
+  "format.selection_unavailable": "Impossible de localiser cette sélection",
   "format.strikethrough": "Barré ({mod}+Maj+X)",
   "format.table": "Tableau",
   "format.task_list": "Liste de tâches",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Ouvrir un fichier",
   "welcome.subtitle": "Un beau visualiseur Markdown",
   "welcome.title": "Kern",
-  "format.ask_ai": "Demander à l’IA",
-  "format.selection_unavailable": "Impossible de localiser cette sélection"
+  "image.view": "Afficher l’image"
 }

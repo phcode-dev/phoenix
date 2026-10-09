@@ -34,6 +34,7 @@
   "drop_zone.text": "Lepaskan file Markdown Anda di sini",
   "export.open": "Buka",
   "export.success": "PDF berhasil diekspor",
+  "format.ask_ai": "Tanya AI",
   "format.block_type": "Tipe blok",
   "format.blockquote": "Kutipan",
   "format.bold": "Tebal ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Lainnya",
   "format.numbered_list": "Daftar bernomor",
   "format.paragraph": "Paragraf",
+  "format.selection_unavailable": "Tidak dapat menemukan pilihan ini",
   "format.strikethrough": "Coret ({mod}+Shift+X)",
   "format.table": "Tabel",
   "format.task_list": "Daftar tugas",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Buka File",
   "welcome.subtitle": "Penampil Markdown yang indah",
   "welcome.title": "Kern",
-  "format.ask_ai": "Tanya AI",
-  "format.selection_unavailable": "Tidak dapat menemukan pilihan ini"
+  "image.view": "Lihat gambar"
 }

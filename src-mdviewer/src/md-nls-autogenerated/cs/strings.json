@@ -34,6 +34,7 @@
   "drop_zone.text": "Přetáhněte sem svůj Markdown soubor",
   "export.open": "Otevřít",
   "export.success": "PDF bylo úspěšně exportováno",
+  "format.ask_ai": "Zeptat se AI",
   "format.block_type": "Typ bloku",
   "format.blockquote": "Bloková citace",
   "format.bold": "Tučné ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Další",
   "format.numbered_list": "Číslovaný seznam",
   "format.paragraph": "Odstavec",
+  "format.selection_unavailable": "Tento výběr nelze najít",
   "format.strikethrough": "Přeškrtnutí ({mod}+Shift+X)",
   "format.table": "Tabulka",
   "format.task_list": "Seznam úkolů",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Otevřít soubor",
   "welcome.subtitle": "Krásný prohlížeč Markdownu",
   "welcome.title": "Kern",
-  "format.ask_ai": "Zeptat se AI",
-  "format.selection_unavailable": "Tento výběr nelze najít"
+  "image.view": "Zobrazit obrázek"
 }

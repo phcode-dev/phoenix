@@ -34,6 +34,7 @@
   "drop_zone.text": "Sem presuňte svoj Markdown súbor",
   "export.open": "Otvoriť",
   "export.success": "PDF bolo úspešne exportované",
+  "format.ask_ai": "Spýtať sa AI",
   "format.block_type": "Typ bloku",
   "format.blockquote": "Citácia",
   "format.bold": "Tučné ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Viac",
   "format.numbered_list": "Číslovaný zoznam",
   "format.paragraph": "Odsek",
+  "format.selection_unavailable": "Tento výber sa nedá nájsť",
   "format.strikethrough": "Prečiarknuté ({mod}+Shift+X)",
   "format.table": "Tabuľka",
   "format.task_list": "Zoznam úloh",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Otvoriť súbor",
   "welcome.subtitle": "Krásny prehliadač Markdownu",
   "welcome.title": "Kern",
-  "format.ask_ai": "Spýtať sa AI",
-  "format.selection_unavailable": "Tento výber sa nedá nájsť"
+  "image.view": "Zobraziť obrázok"
 }

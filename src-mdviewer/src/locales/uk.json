@@ -47,6 +47,7 @@
     "success": "PDF успішно експортовано"
   },
   "format": {
+    "ask_ai": "Запитати ШІ",
     "block_type": "Тип блоку",
     "blockquote": "Цитата",
     "bold": "Напівжирний ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Більше",
     "numbered_list": "Нумерований список",
     "paragraph": "Абзац",
+    "selection_unavailable": "Не вдалося знайти цей виділений фрагмент",
     "strikethrough": "Закреслений ({mod}+Shift+X)",
     "table": "Таблиця",
     "task_list": "Список завдань",
     "text_formatting": "Форматування тексту",
-    "underline": "Підкреслений ({mod}+U)",
-    "ask_ai": "Запитати ШІ",
-    "selection_unavailable": "Не вдалося знайти цей виділений фрагмент"
+    "underline": "Підкреслений ({mod}+U)"
   },
   "help": {
     "editing": "Редагування",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Видалити зображення",
-    "edit": "Редагувати URL зображення"
+    "edit": "Редагувати URL зображення",
+    "view": "Переглянути зображення"
   },
   "image_dialog": {
     "alt_placeholder": "Опис зображення",

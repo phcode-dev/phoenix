@@ -34,6 +34,7 @@
   "drop_zone.text": "اپنی مارک ڈاؤن فائل یہاں چھوڑیں",
   "export.open": "کھولیں",
   "export.success": "PDF کامیابی سے برآمد ہوئی",
+  "format.ask_ai": "مصنوعی ذہانت سے پوچھیں",
   "format.block_type": "بلاک کی قسم",
   "format.blockquote": "بلاک کوٹ",
   "format.bold": "بولڈ ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "مزید",
   "format.numbered_list": "نمبر فہرست",
   "format.paragraph": "پیراگراف",
+  "format.selection_unavailable": "منتخب کردہ حصے کو تلاش نہیں کیا جا سکتا",
   "format.strikethrough": "سٹرائیک تھرو ({mod}+Shift+X)",
   "format.table": "ٹیبل",
   "format.task_list": "ٹاسک فہرست",
@@ -197,6 +199,5 @@
   "welcome.open_button": "فائل کھولیں",
   "welcome.subtitle": "ایک خوبصورت مارک ڈاؤن ویوئر",
   "welcome.title": "Kern",
-  "format.ask_ai": "مصنوعی ذہانت سے پوچھیں",
-  "format.selection_unavailable": "منتخب کردہ حصے کو تلاش نہیں کیا جا سکتا"
+  "image.view": "تصویر دیکھیں"
 }

@@ -34,6 +34,7 @@
   "drop_zone.text": "Превуците своју Markdown датотеку овде",
   "export.open": "Отвори",
   "export.success": "PDF је успешно извезен",
+  "format.ask_ai": "Питај вештачку интелигенцију",
   "format.block_type": "Тип блока",
   "format.blockquote": "Блок цитат",
   "format.bold": "Подебљано ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Више",
   "format.numbered_list": "Нумерисана листа",
   "format.paragraph": "Пасус",
+  "format.selection_unavailable": "Није могуће пронаћи овај изабрани део текста",
   "format.strikethrough": "Прецртано ({mod}+Shift+X)",
   "format.table": "Табела",
   "format.task_list": "Листа задатака",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Отвори датотеку",
   "welcome.subtitle": "Прелеп Markdown прегледач",
   "welcome.title": "Kern",
-  "format.ask_ai": "Питај вештачку интелигенцију",
-  "format.selection_unavailable": "Није могуће пронаћи овај изабрани део текста"
+  "image.view": "Прикажи слику"
 }

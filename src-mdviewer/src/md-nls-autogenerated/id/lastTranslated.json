@@ -69,6 +69,7 @@
   "help.shortcuts": "Keyboard Shortcuts",
   "image.delete": "Delete image",
   "image.edit": "Edit Image URL",
+  "image.view": "View image",
   "image_dialog.alt_placeholder": "Image description",
   "image_dialog.insert": "Insert",
   "image_dialog.title": "Insert Image URL",

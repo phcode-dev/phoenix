@@ -47,6 +47,7 @@
     "success": "PDF exported successfully"
   },
   "format": {
+    "ask_ai": "Ask AI",
     "block_type": "Block type",
     "blockquote": "Blockquote",
     "bold": "Bold ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "More",
     "numbered_list": "Numbered list",
     "paragraph": "Paragraph",
+    "selection_unavailable": "Cannot locate this selection",
     "strikethrough": "Strikethrough ({mod}+Shift+X)",
     "table": "Table",
     "task_list": "Task list",
     "text_formatting": "Text formatting",
-    "underline": "Underline ({mod}+U)",
-    "ask_ai": "Ask AI",
-    "selection_unavailable": "Cannot locate this selection"
+    "underline": "Underline ({mod}+U)"
   },
   "help": {
     "editing": "Editing",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Delete image",
-    "edit": "Edit Image URL"
+    "edit": "Edit Image URL",
+    "view": "View image"
   },
   "image_dialog": {
     "alt_placeholder": "Image description",

@@ -47,6 +47,7 @@
     "success": "Plik PDF został pomyślnie wyeksportowany"
   },
   "format": {
+    "ask_ai": "Zapytaj AI",
     "block_type": "Typ bloku",
     "blockquote": "Cytat blokowy",
     "bold": "Pogrubienie ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Więcej",
     "numbered_list": "Lista numerowana",
     "paragraph": "Akapit",
+    "selection_unavailable": "Nie można odnaleźć tego zaznaczenia",
     "strikethrough": "Przekreślenie ({mod}+Shift+X)",
     "table": "Tabela",
     "task_list": "Lista zadań",
     "text_formatting": "Formatowanie tekstu",
-    "underline": "Podkreślenie ({mod}+U)",
-    "ask_ai": "Zapytaj AI",
-    "selection_unavailable": "Nie można odnaleźć tego zaznaczenia"
+    "underline": "Podkreślenie ({mod}+U)"
   },
   "help": {
     "editing": "Edycja",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Usuń obrazek",
-    "edit": "Edytuj URL obrazka"
+    "edit": "Edytuj URL obrazka",
+    "view": "Wyświetl obraz"
   },
   "image_dialog": {
     "alt_placeholder": "Opis obrazka",

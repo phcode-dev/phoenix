@@ -34,6 +34,7 @@
   "drop_zone.text": "Markdownファイルをここにドロップ",
   "export.open": "開く",
   "export.success": "PDFのエクスポートが完了しました",
+  "format.ask_ai": "AIに質問",
   "format.block_type": "ブロックタイプ",
   "format.blockquote": "引用",
   "format.bold": "太字 ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "その他",
   "format.numbered_list": "番号付きリスト",
   "format.paragraph": "段落",
+  "format.selection_unavailable": "この選択範囲が見つかりません",
   "format.strikethrough": "取り消し線 ({mod}+Shift+X)",
   "format.table": "テーブル",
   "format.task_list": "タスクリスト",
@@ -197,6 +199,5 @@
   "welcome.open_button": "ファイルを開く",
   "welcome.subtitle": "美しいMarkdownビューア",
   "welcome.title": "Kern",
-  "format.ask_ai": "AIに質問",
-  "format.selection_unavailable": "この選択範囲が見つかりません"
+  "image.view": "画像を表示"
 }

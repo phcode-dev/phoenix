@@ -34,6 +34,7 @@
   "drop_zone.text": "Húzza ide a Markdown fájlt",
   "export.open": "Megnyitás",
   "export.success": "A PDF exportálása sikeres.",
+  "format.ask_ai": "Kérdezd az AI-t",
   "format.block_type": "Blokk típusa",
   "format.blockquote": "Idézetblokk",
   "format.bold": "Félkövér ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Továbbiak",
   "format.numbered_list": "Számozott lista",
   "format.paragraph": "Bekezdés",
+  "format.selection_unavailable": "Ez a kijelölés nem található",
   "format.strikethrough": "Áthúzott ({mod}+Shift+X)",
   "format.table": "Táblázat",
   "format.task_list": "Feladatlista",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Fájl megnyitása",
   "welcome.subtitle": "Egy gyönyörű Markdown megjelenítő",
   "welcome.title": "Kern",
-  "format.ask_ai": "Kérdezd az AI-t",
-  "format.selection_unavailable": "Ez a kijelölés nem található"
+  "image.view": "Kép megtekintése"
 }

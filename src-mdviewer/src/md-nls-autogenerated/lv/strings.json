@@ -34,6 +34,7 @@
   "drop_zone.text": "Ievelciet savu Markdown failu šeit",
   "export.open": "Atvērt",
   "export.success": "PDF veiksmīgi eksportēts",
+  "format.ask_ai": "Jautāt mākslīgajam intelektam",
   "format.block_type": "Bloka tips",
   "format.blockquote": "Citāta bloks",
   "format.bold": "Treknraksts ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Vairāk",
   "format.numbered_list": "Numurēts saraksts",
   "format.paragraph": "Rindkopa",
+  "format.selection_unavailable": "Nevar atrast šo atlasi",
   "format.strikethrough": "Pārsvītrojums ({mod}+Shift+X)",
   "format.table": "Tabula",
   "format.task_list": "Uzdevumu saraksts",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Atvērt failu",
   "welcome.subtitle": "Skaists Markdown skatītājs",
   "welcome.title": "Kern",
-  "format.ask_ai": "Jautāt mākslīgajam intelektam",
-  "format.selection_unavailable": "Nevar atrast šo atlasi"
+  "image.view": "Skatīt attēlu"
 }

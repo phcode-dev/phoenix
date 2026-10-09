@@ -47,6 +47,7 @@
     "success": "PDF vietiin onnistuneesti"
   },
   "format": {
+    "ask_ai": "Kysy tekoälyltä",
     "block_type": "Lohkotyyppi",
     "blockquote": "Lainauslohko",
     "bold": "Lihavointi ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Lisää",
     "numbered_list": "Numeroitu luettelo",
     "paragraph": "Kappale",
+    "selection_unavailable": "Tätä valintaa ei löydy",
     "strikethrough": "Yliviivaus ({mod}+Shift+X)",
     "table": "Taulukko",
     "task_list": "Tehtäväluettelo",
     "text_formatting": "Tekstin muotoilu",
-    "underline": "Alleviivaus ({mod}+U)",
-    "ask_ai": "Kysy tekoälyltä",
-    "selection_unavailable": "Tätä valintaa ei löydy"
+    "underline": "Alleviivaus ({mod}+U)"
   },
   "help": {
     "editing": "Muokkaus",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Poista kuva",
-    "edit": "Muokkaa kuvan URL-osoitetta"
+    "edit": "Muokkaa kuvan URL-osoitetta",
+    "view": "Näytä kuva"
   },
   "image_dialog": {
     "alt_placeholder": "Kuvan kuvaus",

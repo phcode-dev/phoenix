@@ -34,6 +34,7 @@
   "drop_zone.text": "अपनी मार्कडाउन फ़ाइल यहाँ छोड़ें",
   "export.open": "खोलें",
   "export.success": "PDF सफलतापूर्वक निर्यात किया गया",
+  "format.ask_ai": "एआई से पूछें",
   "format.block_type": "ब्लॉक प्रकार",
   "format.blockquote": "उद्धरण",
   "format.bold": "बोल्ड ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "अधिक",
   "format.numbered_list": "क्रमांकित सूची",
   "format.paragraph": "अनुच्छेद",
+  "format.selection_unavailable": "चयनित अंश नहीं मिल रहा है",
   "format.strikethrough": "स्ट्राइकथ्रू ({mod}+Shift+X)",
   "format.table": "तालिका",
   "format.task_list": "कार्य सूची",
@@ -197,6 +199,5 @@
   "welcome.open_button": "फ़ाइल खोलें",
   "welcome.subtitle": "एक सुंदर मार्कडाउन व्यूअर",
   "welcome.title": "Kern",
-  "format.ask_ai": "एआई से पूछें",
-  "format.selection_unavailable": "चयनित अंश नहीं मिल रहा है"
+  "image.view": "छवि देखें"
 }

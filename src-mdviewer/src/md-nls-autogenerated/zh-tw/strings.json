@@ -34,6 +34,7 @@
   "drop_zone.text": "將您的 Markdown 檔案拖放至此",
   "export.open": "開啟",
   "export.success": "PDF 匯出成功",
+  "format.ask_ai": "詢問 AI",
   "format.block_type": "區塊類型",
   "format.blockquote": "引用",
   "format.bold": "粗體 ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "更多",
   "format.numbered_list": "編號清單",
   "format.paragraph": "段落",
+  "format.selection_unavailable": "無法找到此選取範圍",
   "format.strikethrough": "刪除線 ({mod}+Shift+X)",
   "format.table": "表格",
   "format.task_list": "工作清單",
@@ -197,6 +199,5 @@
   "welcome.open_button": "開啟檔案",
   "welcome.subtitle": "精美的 Markdown 檢視器",
   "welcome.title": "Kern",
-  "format.ask_ai": "詢問 AI",
-  "format.selection_unavailable": "無法找到此選取範圍"
+  "image.view": "檢視圖片"
 }

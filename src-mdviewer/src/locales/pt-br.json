@@ -47,6 +47,7 @@
     "success": "PDF exportado com sucesso"
   },
   "format": {
+    "ask_ai": "Perguntar à IA",
     "block_type": "Tipo de bloco",
     "blockquote": "Citação",
     "bold": "Negrito ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Mais",
     "numbered_list": "Lista numerada",
     "paragraph": "Parágrafo",
+    "selection_unavailable": "Não foi possível localizar esta seleção",
     "strikethrough": "Tachado ({mod}+Shift+X)",
     "table": "Tabela",
     "task_list": "Lista de tarefas",
     "text_formatting": "Formatação de texto",
-    "underline": "Sublinhado ({mod}+U)",
-    "ask_ai": "Perguntar à IA",
-    "selection_unavailable": "Não foi possível localizar esta seleção"
+    "underline": "Sublinhado ({mod}+U)"
   },
   "help": {
     "editing": "Edição",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Excluir imagem",
-    "edit": "Editar URL da imagem"
+    "edit": "Editar URL da imagem",
+    "view": "Visualizar imagem"
   },
   "image_dialog": {
     "alt_placeholder": "Descrição da imagem",

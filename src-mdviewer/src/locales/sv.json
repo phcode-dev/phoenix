@@ -47,6 +47,7 @@
     "success": "PDF-filen har exporterats"
   },
   "format": {
+    "ask_ai": "Fråga AI",
     "block_type": "Blocktyp",
     "blockquote": "Citatblock",
     "bold": "Fet ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Mer",
     "numbered_list": "Numrerad lista",
     "paragraph": "Stycke",
+    "selection_unavailable": "Det går inte att hitta den här markeringen",
     "strikethrough": "Genomstruken ({mod}+Shift+X)",
     "table": "Tabell",
     "task_list": "Att göra-lista",
     "text_formatting": "Textformatering",
-    "underline": "Understruken ({mod}+U)",
-    "ask_ai": "Fråga AI",
-    "selection_unavailable": "Det går inte att hitta den här markeringen"
+    "underline": "Understruken ({mod}+U)"
   },
   "help": {
     "editing": "Redigering",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Ta bort bild",
-    "edit": "Redigera bild-URL"
+    "edit": "Redigera bild-URL",
+    "view": "Visa bild"
   },
   "image_dialog": {
     "alt_placeholder": "Bildbeskrivning",

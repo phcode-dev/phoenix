@@ -47,6 +47,7 @@
     "success": "PDF सफलतापूर्वक निर्यात किया गया"
   },
   "format": {
+    "ask_ai": "एआई से पूछें",
     "block_type": "ब्लॉक प्रकार",
     "blockquote": "उद्धरण",
     "bold": "बोल्ड ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "अधिक",
     "numbered_list": "क्रमांकित सूची",
     "paragraph": "अनुच्छेद",
+    "selection_unavailable": "चयनित अंश नहीं मिल रहा है",
     "strikethrough": "स्ट्राइकथ्रू ({mod}+Shift+X)",
     "table": "तालिका",
     "task_list": "कार्य सूची",
     "text_formatting": "टेक्स्ट फ़ॉर्मेटिंग",
-    "underline": "रेखांकित ({mod}+U)",
-    "ask_ai": "एआई से पूछें",
-    "selection_unavailable": "चयनित अंश नहीं मिल रहा है"
+    "underline": "रेखांकित ({mod}+U)"
   },
   "help": {
     "editing": "संपादन",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "छवि हटाएँ",
-    "edit": "छवि URL संपादित करें"
+    "edit": "छवि URL संपादित करें",
+    "view": "छवि देखें"
   },
   "image_dialog": {
     "alt_placeholder": "छवि का विवरण",

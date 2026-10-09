@@ -47,6 +47,7 @@
     "success": "PDF exportado con éxito"
   },
   "format": {
+    "ask_ai": "Preguntar á IA",
     "block_type": "Tipo de bloque",
     "blockquote": "Cita en bloque",
     "bold": "Negra ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Máis",
     "numbered_list": "Lista numerada",
     "paragraph": "Parágrafo",
+    "selection_unavailable": "Non se pode localizar esta selección",
     "strikethrough": "Riscado ({mod}+Maiús+X)",
     "table": "Táboa",
     "task_list": "Lista de tarefas",
     "text_formatting": "Formato do texto",
-    "underline": "Subliñado ({mod}+U)",
-    "ask_ai": "Preguntar á IA",
-    "selection_unavailable": "Non se pode localizar esta selección"
+    "underline": "Subliñado ({mod}+U)"
   },
   "help": {
     "editing": "Edición",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Eliminar imaxe",
-    "edit": "Editar URL da imaxe"
+    "edit": "Editar URL da imaxe",
+    "view": "Ver imaxe"
   },
   "image_dialog": {
     "alt_placeholder": "Descrición da imaxe",
