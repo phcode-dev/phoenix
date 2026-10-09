@@ -312,6 +312,54 @@ define(function (require, exports, module) {
             expect(result.emitted.map(record => record.model))
                 .toEqual(["gpt-future", "gpt-6-sol-new", "gpt-5.3-codex", null, null]);
         });
+        it("loads prices once on first Codex tokens, without loading for Claude, turns or warmups", async function () {
+            const result = await run("usage-pricing-lazy");
+            expect(result.before).toEqual({loads: 0, emitted: 3});
+            expect(result.waiting).toEqual({loads: 1, emitted: 3});
+            expect(result.loads).toBe(1);
+            expect(result.costs).toEqual([0.00273, 0.00546, 0.01638]);
+        });
+        it("keeps pricing and deduplicating Codex usage when loading cached prices fails", async function () {
+            const result = await run("usage-pricing-load-error");
+            expect(result.loads).toBe(2);
+            expect(result.costs).toEqual([0.00273, 0.00546, 0.01638]);
+        });
+        it("bounds a stalled cache request and retries preparation on later Codex usage", async function () {
+            const result = await run("usage-pricing-load-timeout");
+            expect(result.loads).toBe(2);
+            expect(result.costs).toEqual([0.00273, 0.00546, 0.01638]);
+        });
+        it("prices each reported tier independently across a session switch and deduplicates repeated exports", async function () {
+            const result = await run("usage-pricing-tiers");
+            expect(result.emitted.length).toBe(5);
+            expect(result.emitted.map(record => record.serviceTier))
+                .toEqual(["fast", "ultrafast", "default", "default", "fast"]);
+            expect(result.emitted.every(record => record.model === "gpt-6-astra" && record.turns === 0)).toBeTrue();
+            const expected = [0.00546, 0.01638, 0.00273, 0.00273, 0.00546];
+            result.emitted.forEach((record, index) => expect(record.costUSD).toBeCloseTo(expected[index], 9));
+        });
+        it("applies each tier's long-context rates to input, cache reads, cache writes and output", async function () {
+            const result = await run("usage-pricing-tier-long");
+            expect(result.emitted.length).toBe(4);
+            const expected = [0.8392, 1.668408, 2.5176, 5.005224];
+            result.emitted.forEach((record, index) => expect(record.costUSD).toBeCloseTo(expected[index], 9));
+        });
+        it("leaves explicit unknown tiers and unpublished model-tier combinations unpriced", async function () {
+            const result = await run("usage-pricing-unknown-tier");
+            expect(result.emitted.map(record => record.serviceTier))
+                .toEqual(["unknown", "unknown", "unknown", "ultrafast", "fast"]);
+            expect(result.emitted.map(record => record.costUSD)).toEqual([null, null, null, null, null]);
+        });
+        it("applies a validated catalog atomically and retains it after malformed, older or mutated updates", async function () {
+            const result = await run("usage-pricing-catalog");
+            expect(result.accepted).toBeTrue();
+            expect(result.estimates[0]).toBeCloseTo(0.00017, 9);
+            expect(result.estimates[1]).toBeCloseTo(0.00059, 9);
+            expect(result.estimates[2]).toBeCloseTo(0.00171, 9);
+            expect(result.estimates[3]).toBeNull();
+            expect(result.rejected).toEqual([true, true, true, true, true, true]);
+            expect(result.retained).toBeCloseTo(0.00017, 9);
+        });
         it("skips misshapen OTLP exports and out-of-range times without throwing", async function () {
             const result = await run("usage-malformed");
             expect(result.thrown).toEqual([]);

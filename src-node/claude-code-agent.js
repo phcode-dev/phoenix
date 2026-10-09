@@ -36,6 +36,7 @@ const {buildSystemPrompt, buildEditorContextLine} = require("./ai-system-prompt"
 const CliConnector = require("./ai-cli-connector");
 const CliCapabilities = require("./ai-cli-capabilities");
 const ModelEffort = require("./ai-model-effort");
+const {updatePricing} = require("./ai-cli-pricing");
 const NodeConnector = require("./node-connector");
 
 exports.readImagePreview = ImagePreview.readImage;
@@ -205,6 +206,9 @@ exports.endCliConnectorSession = async params => CliConnector.revokeSession(para
 exports.getCliConnectorStatus = async params => CliConnector.getStatus(params.sessionId);
 /** Disconnect or reconnect only this CLI's Phoenix tools; its terminal keeps running. */
 exports.setCliConnectorEnabled = async params => CliConnector.setEnabled(params.sessionId, params.enabled);
+
+/** Validate and atomically replace this window's Codex estimate prices; never reprices saved usage. */
+exports.setExternalModelPricing = async params => updatePricing(params && params.catalog);
 
 // Tools whose permission request in Plan Mode means "the model wants to
 // start editing user files" — they share the plan-mode write-confirm card.

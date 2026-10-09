@@ -22,6 +22,7 @@ const {runHook} = require("../ai-cli-hooks");
 const {hookCommand} = require("../ai-cli-launch");
 const {checkCodexServers} = require("../ai-cli-capabilities");
 const {CliUsage, userOwnsTelemetry, launchSettings} = require("../ai-cli-usage");
+const {createPricing} = require("../ai-cli-pricing");
 const {spawnCli} = require("../cli-locator");
 const NodeConnector = require("../node-connector");
 
@@ -96,6 +97,69 @@ function post(port, urlPath, body, method) {
 
 /** Usage collector fixtures; none of them need a connector session or the browser. */
 async function exerciseUsage(scenario) {
+    if (["usage-pricing-lazy", "usage-pricing-load-error", "usage-pricing-load-timeout"].includes(scenario)) {
+        const emitted = [];
+        let loads = 0, release;
+        const gate = new Promise(resolve => { release = resolve; });
+        const usage = new CliUsage({emit: record => emitted.push(record), baseUrl: () => "http://localhost",
+            pricingWaitMs: scenario === "usage-pricing-load-timeout" ? 1 : undefined,
+            preparePricing: async () => {
+                loads++;
+                if (scenario === "usage-pricing-load-timeout" && loads === 1) { return new Promise(() => {}); }
+                await gate;
+                if (scenario === "usage-pricing-load-error" && loads === 1) { throw new Error("cache unavailable"); }
+            }});
+        try {
+            const codex = usage.open("lazy-codex", "codex");
+            const claude = usage.open("lazy-claude", "claude");
+            usage.ingest(claude.token, otlpLogs([claudeRequest("lazy-claude", "prompt")]));
+            usage.recordTurn("lazy-codex", "prompt");
+            usage.ingest(codex.token, otlpLogs([pricedCompletion("1791142979000000000",
+                {model: "gpt-6-astra", input_token_count: 0, cached_token_count: 0, output_token_count: 0})]));
+            const before = {loads, emitted: emitted.length};
+            const payload = otlpLogs([pricedCompletion("1791142980000000000", {model: "gpt-6-astra"}),
+                pricedCompletion("1791142980001000000", {model: "gpt-6-astra", service_tier: "priority"})]);
+            usage.ingest(codex.token, payload);
+            usage.ingest(codex.token, payload);
+            await Promise.resolve();
+            const waiting = {loads, emitted: emitted.length};
+            release();
+            await usage.pricingReady;
+            usage.ingest(codex.token, otlpLogs([pricedCompletion("1791142980002000000",
+                {model: "gpt-6-astra", service_tier: "ultrafast"})]));
+            await usage.pricingReady;
+            return {before, waiting, loads, costs: emitted.filter(record => record.cli === "codex" && record.input)
+                .map(record => record.costUSD)};
+        } finally {
+            release();
+            usage.closeAll();
+        }
+    }
+    if (scenario === "usage-pricing-catalog") {
+        const pricing = createPricing();
+        const catalog = {version: 1, updatedAt: "2026-10-10", currency: "USD", unit: "million_tokens",
+            models: {"fixture-model": {
+                standard: {input: 1, cacheRead: 2, cacheWrite: 3, output: 4},
+                fast: {input: 5, cacheRead: 6, cacheWrite: 7, output: 8},
+                longContext: {aboveInputTokens: 100,
+                    standard: {input: 10, cacheRead: 20, cacheWrite: 30, output: 40}}
+            }}};
+        const tokens = {input: 60, cacheRead: 30, cacheWrite: 10, output: 5};
+        const accepted = pricing.update(catalog);
+        const estimates = [pricing.estimate("fixture-model", tokens),
+            pricing.estimate("fixture-model", tokens, "fast"),
+            pricing.estimate("fixture-model", Object.assign({}, tokens, {input: 61})),
+            pricing.estimate("gpt-6-astra", tokens)];
+        const invalid = [Object.assign({}, catalog, {currency: "EUR"}),
+            Object.assign({}, catalog, {version: 2}), Object.assign({}, catalog, {unit: "per_token"}),
+            Object.assign({}, catalog, {updatedAt: "2026-10-01"}),
+            Object.assign({}, catalog, {models: {}}),
+            Object.assign({}, catalog, {models: {bad: {standard: {input: -1, output: 3}}}})];
+        const rejected = invalid.map(candidate => !pricing.update(candidate));
+        // The estimator owns a validated copy, not a reference to the caller's mutable data.
+        catalog.models["fixture-model"].standard.input = 999;
+        return {accepted, estimates, rejected, retained: pricing.estimate("fixture-model", tokens)};
+    }
     const emitted = [];
     let ready = true;
     const usage = new CliUsage({emit: record => emitted.push(record), ready: () => ready,
@@ -139,6 +203,53 @@ async function exerciseUsage(scenario) {
         usage.ingest(token, otlpLogs([272000, 272001].map((tokens, index) =>
             pricedCompletion(String(1791142980000 + index) + "000000", {model: "gpt-6-sol",
                 input_token_count: tokens, cached_token_count: 72000, output_token_count: 1000}))));
+        usage.closeAll();
+        return {emitted};
+    }
+    if (scenario === "usage-pricing-tiers" || scenario === "usage-pricing-chart") {
+        const {token} = usage.open("codex-session", "codex");
+        const chart = scenario === "usage-pricing-chart";
+        const tiers = chart ? ["priority", "ultrafast", "default"] :
+            ["priority", "ultrafast", "default", undefined, "fast"];
+        const records = tiers.map((tier, index) => {
+            const values = {model: "gpt-6-astra"};
+            if (tier !== undefined) { values.service_tier = tier; }
+            if (chart) {
+                Object.assign(values, {input_token_count: 100000, cached_token_count: 30000,
+                    output_token_count: 40000});
+            }
+            return pricedCompletion(String(1791142980000 + index) + "000000", values);
+        });
+        usage.ingest(token, otlpLogs(records));
+        usage.ingest(token, otlpLogs(records));
+        usage.closeAll();
+        return {emitted};
+    }
+    if (scenario === "usage-pricing-tier-long") {
+        const {token} = usage.open("codex-session", "codex");
+        const records = [];
+        for (const service_tier of ["fast", "ultrafast"]) {
+            for (const input_token_count of [272000, 272001]) {
+                records.push(pricedCompletion(String(1791142980000 + records.length) + "000000",
+                    {model: "gpt-6.1-sol", service_tier, input_token_count,
+                        cached_token_count: 71000, cache_write_token_count: 1000, output_token_count: 1000}));
+            }
+        }
+        usage.ingest(token, otlpLogs(records));
+        usage.closeAll();
+        return {emitted};
+    }
+    if (scenario === "usage-pricing-unknown-tier") {
+        const {token} = usage.open("codex-session", "codex");
+        const cases = [
+            {model: "gpt-6-astra", service_tier: "future-tier"},
+            {model: "gpt-6-astra", service_tier: ""},
+            {model: "gpt-6-astra", service_tier: 123},
+            {model: "gpt-6-luna", service_tier: "ultrafast"},
+            {model: "gpt-future", service_tier: "fast"}
+        ];
+        usage.ingest(token, otlpLogs(cases.map((values, index) =>
+            pricedCompletion(String(1791142980000 + index) + "000000", values))));
         usage.closeAll();
         return {emitted};
     }
@@ -256,7 +367,9 @@ async function exerciseUsageLaunch() {
 /** Run one fixture with independent files, sockets and sessions, cleaning all owned resources. */
 exports.exercise = async function ({scenario}) {
     if (["usage-claude", "usage-codex", "usage-malformed", "usage-backlog", "usage-http", "usage-pricing",
-        "usage-pricing-long", "usage-pricing-unknown"].includes(scenario)) {
+        "usage-pricing-long", "usage-pricing-unknown", "usage-pricing-tiers", "usage-pricing-tier-long",
+        "usage-pricing-unknown-tier", "usage-pricing-catalog", "usage-pricing-chart",
+        "usage-pricing-lazy", "usage-pricing-load-error", "usage-pricing-load-timeout"].includes(scenario)) {
         return exerciseUsage(scenario);
     }
     if (scenario === "usage-launch") {
