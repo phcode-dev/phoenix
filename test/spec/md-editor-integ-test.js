@@ -2197,6 +2197,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["image-test.md"]),
                     "open image-test.md");
                 await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                // The fixture embeds its SVG so these interaction tests need no virtual image server.
                 // Hover checks need the image at its real size.
                 await awaitsFor(() => {
                     const img = _getImage("Sample image");
