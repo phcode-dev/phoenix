@@ -2,10 +2,10 @@
 
 A plain image:
 
-![Sample image](images/sample.svg)
+![Sample image](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMzIwIDE4MCI+PHJlY3Qgd2lkdGg9IjMyMCIgaGVpZ2h0PSIxODAiIGZpbGw9IiM0Mjg1RjQiLz48Y2lyY2xlIGN4PSIxNjAiIGN5PSI5MCIgcj0iNTAiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4K)
 
 A linked image:
 
-[![Linked image](images/sample.svg)](https://test-image-link.example.com/)
+[![Linked image](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMzIwIDE4MCI+PHJlY3Qgd2lkdGg9IjMyMCIgaGVpZ2h0PSIxODAiIGZpbGw9IiM0Mjg1RjQiLz48Y2lyY2xlIGN4PSIxNjAiIGN5PSI5MCIgcj0iNTAiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4K)](https://test-image-link.example.com/)
 
 Final paragraph.
