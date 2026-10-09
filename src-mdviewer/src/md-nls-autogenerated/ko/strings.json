@@ -34,6 +34,7 @@
   "drop_zone.text": "마크다운 파일을 여기에 놓으세요",
   "export.open": "열기",
   "export.success": "PDF 내보내기 완료",
+  "format.ask_ai": "인공지능에 질문하기",
   "format.block_type": "블록 유형",
   "format.blockquote": "인용",
   "format.bold": "굵게 ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "더 보기",
   "format.numbered_list": "번호 목록",
   "format.paragraph": "본문",
+  "format.selection_unavailable": "이 선택 영역을 찾을 수 없습니다",
   "format.strikethrough": "취소선 ({mod}+Shift+X)",
   "format.table": "표",
   "format.task_list": "작업 목록",
@@ -197,6 +199,5 @@
   "welcome.open_button": "파일 열기",
   "welcome.subtitle": "아름다운 마크다운 뷰어",
   "welcome.title": "Kern",
-  "format.ask_ai": "인공지능에 질문하기",
-  "format.selection_unavailable": "이 선택 영역을 찾을 수 없습니다"
+  "image.view": "이미지 보기"
 }

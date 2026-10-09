@@ -47,6 +47,7 @@
     "success": "PDF erfolgreich exportiert"
   },
   "format": {
+    "ask_ai": "KI fragen",
     "block_type": "Blocktyp",
     "blockquote": "Zitat",
     "bold": "Fett ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Mehr",
     "numbered_list": "Nummerierte Liste",
     "paragraph": "Absatz",
+    "selection_unavailable": "Diese Auswahl kann nicht gefunden werden",
     "strikethrough": "Durchgestrichen ({mod}+Umschalt+X)",
     "table": "Tabelle",
     "task_list": "Aufgabenliste",
     "text_formatting": "Textformatierung",
-    "underline": "Unterstreichen ({mod}+U)",
-    "ask_ai": "KI fragen",
-    "selection_unavailable": "Diese Auswahl kann nicht gefunden werden"
+    "underline": "Unterstreichen ({mod}+U)"
   },
   "help": {
     "editing": "Bearbeitung",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Bild löschen",
-    "edit": "Bild-URL bearbeiten"
+    "edit": "Bild-URL bearbeiten",
+    "view": "Bild anzeigen"
   },
   "image_dialog": {
     "alt_placeholder": "Bildbeschreibung",

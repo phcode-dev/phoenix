@@ -34,6 +34,7 @@
   "drop_zone.text": "Upuść tutaj swój plik Markdown",
   "export.open": "Otwórz",
   "export.success": "Plik PDF został pomyślnie wyeksportowany",
+  "format.ask_ai": "Zapytaj AI",
   "format.block_type": "Typ bloku",
   "format.blockquote": "Cytat blokowy",
   "format.bold": "Pogrubienie ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Więcej",
   "format.numbered_list": "Lista numerowana",
   "format.paragraph": "Akapit",
+  "format.selection_unavailable": "Nie można odnaleźć tego zaznaczenia",
   "format.strikethrough": "Przekreślenie ({mod}+Shift+X)",
   "format.table": "Tabela",
   "format.task_list": "Lista zadań",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Otwórz plik",
   "welcome.subtitle": "Piękna przeglądarka Markdown",
   "welcome.title": "Kern",
-  "format.ask_ai": "Zapytaj AI",
-  "format.selection_unavailable": "Nie można odnaleźć tego zaznaczenia"
+  "image.view": "Wyświetl obraz"
 }

@@ -34,6 +34,7 @@
   "drop_zone.text": "فایل مارک‌داون خود را اینجا رها کنید",
   "export.open": "باز کردن",
   "export.success": "فایل PDF با موفقیت صادر شد",
+  "format.ask_ai": "از هوش مصنوعی بپرسید",
   "format.block_type": "نوع بلوک",
   "format.blockquote": "نقل‌قول",
   "format.bold": "ضخیم ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "بیشتر",
   "format.numbered_list": "فهرست شماره‌دار",
   "format.paragraph": "پاراگراف",
+  "format.selection_unavailable": "این بخش انتخاب‌شده پیدا نمی‌شود",
   "format.strikethrough": "خط خورده ({mod}+Shift+X)",
   "format.table": "جدول",
   "format.task_list": "فهرست کارها",
@@ -197,6 +199,5 @@
   "welcome.open_button": "باز کردن فایل",
   "welcome.subtitle": "یک نمایشگر زیبای مارک‌داون",
   "welcome.title": "Kern",
-  "format.ask_ai": "از هوش مصنوعی بپرسید",
-  "format.selection_unavailable": "این بخش انتخاب‌شده پیدا نمی‌شود"
+  "image.view": "مشاهدهٔ تصویر"
 }

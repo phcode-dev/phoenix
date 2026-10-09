@@ -47,6 +47,7 @@
     "success": "تم تصدير PDF بنجاح"
   },
   "format": {
+    "ask_ai": "اسأل الذكاء الاصطناعي",
     "block_type": "نوع الكتلة",
     "blockquote": "اقتباس",
     "bold": "غامق ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "المزيد",
     "numbered_list": "قائمة مرقّمة",
     "paragraph": "فقرة",
+    "selection_unavailable": "يتعذر العثور على هذا التحديد",
     "strikethrough": "يتوسطه خط ({mod}+Shift+X)",
     "table": "جدول",
     "task_list": "قائمة مهام",
     "text_formatting": "تنسيق النص",
-    "underline": "تسطير ({mod}+U)",
-    "ask_ai": "اسأل الذكاء الاصطناعي",
-    "selection_unavailable": "يتعذر العثور على هذا التحديد"
+    "underline": "تسطير ({mod}+U)"
   },
   "help": {
     "editing": "التحرير",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "حذف الصورة",
-    "edit": "تعديل رابط الصورة"
+    "edit": "تعديل رابط الصورة",
+    "view": "عرض الصورة"
   },
   "image_dialog": {
     "alt_placeholder": "وصف الصورة",

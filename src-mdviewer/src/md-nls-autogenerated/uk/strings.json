@@ -34,6 +34,7 @@
   "drop_zone.text": "Перетягніть сюди ваш Markdown-файл",
   "export.open": "Відкрити",
   "export.success": "PDF успішно експортовано",
+  "format.ask_ai": "Запитати ШІ",
   "format.block_type": "Тип блоку",
   "format.blockquote": "Цитата",
   "format.bold": "Напівжирний ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Більше",
   "format.numbered_list": "Нумерований список",
   "format.paragraph": "Абзац",
+  "format.selection_unavailable": "Не вдалося знайти цей виділений фрагмент",
   "format.strikethrough": "Закреслений ({mod}+Shift+X)",
   "format.table": "Таблиця",
   "format.task_list": "Список завдань",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Відкрити файл",
   "welcome.subtitle": "Гарний переглядач файлів Markdown",
   "welcome.title": "Керн",
-  "format.ask_ai": "Запитати ШІ",
-  "format.selection_unavailable": "Не вдалося знайти цей виділений фрагмент"
+  "image.view": "Переглянути зображення"
 }

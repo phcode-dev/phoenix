@@ -47,6 +47,7 @@
     "success": "PDF је успешно извезен"
   },
   "format": {
+    "ask_ai": "Питај вештачку интелигенцију",
     "block_type": "Тип блока",
     "blockquote": "Блок цитат",
     "bold": "Подебљано ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Више",
     "numbered_list": "Нумерисана листа",
     "paragraph": "Пасус",
+    "selection_unavailable": "Није могуће пронаћи овај изабрани део текста",
     "strikethrough": "Прецртано ({mod}+Shift+X)",
     "table": "Табела",
     "task_list": "Листа задатака",
     "text_formatting": "Форматирање текста",
-    "underline": "Подвучено ({mod}+U)",
-    "ask_ai": "Питај вештачку интелигенцију",
-    "selection_unavailable": "Није могуће пронаћи овај изабрани део текста"
+    "underline": "Подвучено ({mod}+U)"
   },
   "help": {
     "editing": "Уређивање",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Обриши слику",
-    "edit": "Измени URL слике"
+    "edit": "Измени URL слике",
+    "view": "Прикажи слику"
   },
   "image_dialog": {
     "alt_placeholder": "Опис слике",

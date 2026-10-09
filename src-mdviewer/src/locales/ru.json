@@ -47,6 +47,7 @@
     "success": "PDF успешно экспортирован"
   },
   "format": {
+    "ask_ai": "Спросить ИИ",
     "block_type": "Тип блока",
     "blockquote": "Цитата",
     "bold": "Полужирный ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Ещё",
     "numbered_list": "Нумерованный список",
     "paragraph": "Параграф",
+    "selection_unavailable": "Не удалось найти выделенный фрагмент",
     "strikethrough": "Зачёркнутый ({mod}+Shift+X)",
     "table": "Таблица",
     "task_list": "Список задач",
     "text_formatting": "Форматирование текста",
-    "underline": "Подчеркнутый ({mod}+U)",
-    "ask_ai": "Спросить ИИ",
-    "selection_unavailable": "Не удалось найти выделенный фрагмент"
+    "underline": "Подчеркнутый ({mod}+U)"
   },
   "help": {
     "editing": "Редактирование",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Удалить изображение",
-    "edit": "Изменить URL изображения"
+    "edit": "Изменить URL изображения",
+    "view": "Просмотреть изображение"
   },
   "image_dialog": {
     "alt_placeholder": "Описание изображения",

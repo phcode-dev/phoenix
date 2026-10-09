@@ -34,6 +34,7 @@
   "drop_zone.text": "Sleep uw Markdown-bestand hierheen",
   "export.open": "Openen",
   "export.success": "PDF succesvol geëxporteerd",
+  "format.ask_ai": "Vraag het AI",
   "format.block_type": "Bloktype",
   "format.blockquote": "Blokcitaat",
   "format.bold": "Vet ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Meer",
   "format.numbered_list": "Genummerde lijst",
   "format.paragraph": "Paragraaf",
+  "format.selection_unavailable": "Kan deze selectie niet vinden",
   "format.strikethrough": "Doorhalen ({mod}+Shift+X)",
   "format.table": "Tabel",
   "format.task_list": "Takenlijst",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Bestand openen",
   "welcome.subtitle": "Een prachtige Markdown-viewer",
   "welcome.title": "Kern",
-  "format.ask_ai": "Vraag het AI",
-  "format.selection_unavailable": "Kan deze selectie niet vinden"
+  "image.view": "Afbeelding bekijken"
 }

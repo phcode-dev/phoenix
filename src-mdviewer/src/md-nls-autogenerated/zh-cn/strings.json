@@ -34,6 +34,7 @@
   "drop_zone.text": "将 Markdown 文件拖放到此处",
   "export.open": "打开",
   "export.success": "PDF 导出成功",
+  "format.ask_ai": "询问 AI",
   "format.block_type": "块类型",
   "format.blockquote": "引用",
   "format.bold": "粗体 ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "更多",
   "format.numbered_list": "有序列表",
   "format.paragraph": "正文",
+  "format.selection_unavailable": "无法定位此选区",
   "format.strikethrough": "删除线 ({mod}+Shift+X)",
   "format.table": "表格",
   "format.task_list": "任务列表",
@@ -197,6 +199,5 @@
   "welcome.open_button": "打开文件",
   "welcome.subtitle": "优雅的 Markdown 阅读器",
   "welcome.title": "Kern",
-  "format.ask_ai": "询问 AI",
-  "format.selection_unavailable": "无法定位此选区"
+  "image.view": "查看图片"
 }

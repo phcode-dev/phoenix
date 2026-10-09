@@ -47,6 +47,7 @@
     "success": "PDF berhasil diekspor"
   },
   "format": {
+    "ask_ai": "Tanya AI",
     "block_type": "Tipe blok",
     "blockquote": "Kutipan",
     "bold": "Tebal ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Lainnya",
     "numbered_list": "Daftar bernomor",
     "paragraph": "Paragraf",
+    "selection_unavailable": "Tidak dapat menemukan pilihan ini",
     "strikethrough": "Coret ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Daftar tugas",
     "text_formatting": "Pemformatan teks",
-    "underline": "Garis Bawah ({mod}+U)",
-    "ask_ai": "Tanya AI",
-    "selection_unavailable": "Tidak dapat menemukan pilihan ini"
+    "underline": "Garis Bawah ({mod}+U)"
   },
   "help": {
     "editing": "Pengeditan",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Hapus gambar",
-    "edit": "Edit URL Gambar"
+    "edit": "Edit URL Gambar",
+    "view": "Lihat gambar"
   },
   "image_dialog": {
     "alt_placeholder": "Deskripsi gambar",

@@ -34,6 +34,7 @@
   "drop_zone.text": "Træk din Markdown-fil hertil",
   "export.open": "Åbn",
   "export.success": "PDF-filen blev eksporteret med succes",
+  "format.ask_ai": "Spørg AI",
   "format.block_type": "Bloktype",
   "format.blockquote": "Blokcitat",
   "format.bold": "Fed ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Mere",
   "format.numbered_list": "Nummereret liste",
   "format.paragraph": "Afsnit",
+  "format.selection_unavailable": "Kan ikke finde denne markering",
   "format.strikethrough": "Gennemstreget ({mod}+Shift+X)",
   "format.table": "Tabel",
   "format.task_list": "Opgaveliste",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Åbn fil",
   "welcome.subtitle": "En smuk Markdown-fremviser",
   "welcome.title": "Kern",
-  "format.ask_ai": "Spørg AI",
-  "format.selection_unavailable": "Kan ikke finde denne markering"
+  "image.view": "Vis billede"
 }

@@ -34,6 +34,7 @@
   "drop_zone.text": "أفلت ملف ماركداون هنا",
   "export.open": "فتح",
   "export.success": "تم تصدير PDF بنجاح",
+  "format.ask_ai": "اسأل الذكاء الاصطناعي",
   "format.block_type": "نوع الكتلة",
   "format.blockquote": "اقتباس",
   "format.bold": "غامق ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "المزيد",
   "format.numbered_list": "قائمة مرقّمة",
   "format.paragraph": "فقرة",
+  "format.selection_unavailable": "يتعذر العثور على هذا التحديد",
   "format.strikethrough": "يتوسطه خط ({mod}+Shift+X)",
   "format.table": "جدول",
   "format.task_list": "قائمة مهام",
@@ -197,6 +199,5 @@
   "welcome.open_button": "فتح ملف",
   "welcome.subtitle": "عارض ماركداون أنيق",
   "welcome.title": "Kern",
-  "format.ask_ai": "اسأل الذكاء الاصطناعي",
-  "format.selection_unavailable": "يتعذر العثور على هذا التحديد"
+  "image.view": "عرض الصورة"
 }

@@ -34,6 +34,7 @@
   "drop_zone.text": "Markdown-Datei hier ablegen",
   "export.open": "Öffnen",
   "export.success": "PDF erfolgreich exportiert",
+  "format.ask_ai": "KI fragen",
   "format.block_type": "Blocktyp",
   "format.blockquote": "Zitat",
   "format.bold": "Fett ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Mehr",
   "format.numbered_list": "Nummerierte Liste",
   "format.paragraph": "Absatz",
+  "format.selection_unavailable": "Diese Auswahl kann nicht gefunden werden",
   "format.strikethrough": "Durchgestrichen ({mod}+Umschalt+X)",
   "format.table": "Tabelle",
   "format.task_list": "Aufgabenliste",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Datei öffnen",
   "welcome.subtitle": "Ein schöner Markdown-Betrachter",
   "welcome.title": "Kern",
-  "format.ask_ai": "KI fragen",
-  "format.selection_unavailable": "Diese Auswahl kann nicht gefunden werden"
+  "image.view": "Bild anzeigen"
 }

@@ -47,6 +47,7 @@
     "success": "PDF veiksmīgi eksportēts"
   },
   "format": {
+    "ask_ai": "Jautāt mākslīgajam intelektam",
     "block_type": "Bloka tips",
     "blockquote": "Citāta bloks",
     "bold": "Treknraksts ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Vairāk",
     "numbered_list": "Numurēts saraksts",
     "paragraph": "Rindkopa",
+    "selection_unavailable": "Nevar atrast šo atlasi",
     "strikethrough": "Pārsvītrojums ({mod}+Shift+X)",
     "table": "Tabula",
     "task_list": "Uzdevumu saraksts",
     "text_formatting": "Teksta formatēšana",
-    "underline": "Pasvītrot ({mod}+U)",
-    "ask_ai": "Jautāt mākslīgajam intelektam",
-    "selection_unavailable": "Nevar atrast šo atlasi"
+    "underline": "Pasvītrot ({mod}+U)"
   },
   "help": {
     "editing": "Rediģēšana",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Dzēst attēlu",
-    "edit": "Rediģēt attēla URL"
+    "edit": "Rediģēt attēla URL",
+    "view": "Skatīt attēlu"
   },
   "image_dialog": {
     "alt_placeholder": "Attēla apraksts",

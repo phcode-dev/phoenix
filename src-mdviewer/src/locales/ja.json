@@ -47,6 +47,7 @@
     "success": "PDFのエクスポートが完了しました"
   },
   "format": {
+    "ask_ai": "AIに質問",
     "block_type": "ブロックタイプ",
     "blockquote": "引用",
     "bold": "太字 ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "その他",
     "numbered_list": "番号付きリスト",
     "paragraph": "段落",
+    "selection_unavailable": "この選択範囲が見つかりません",
     "strikethrough": "取り消し線 ({mod}+Shift+X)",
     "table": "テーブル",
     "task_list": "タスクリスト",
     "text_formatting": "テキスト書式設定",
-    "underline": "下線 ({mod}+U)",
-    "ask_ai": "AIに質問",
-    "selection_unavailable": "この選択範囲が見つかりません"
+    "underline": "下線 ({mod}+U)"
   },
   "help": {
     "editing": "編集",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "画像を削除",
-    "edit": "画像URLを編集"
+    "edit": "画像URLを編集",
+    "view": "画像を表示"
   },
   "image_dialog": {
     "alt_placeholder": "画像の説明",

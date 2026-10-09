@@ -47,6 +47,7 @@
     "success": "PDF 匯出成功"
   },
   "format": {
+    "ask_ai": "詢問 AI",
     "block_type": "區塊類型",
     "blockquote": "引用",
     "bold": "粗體 ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "更多",
     "numbered_list": "編號清單",
     "paragraph": "段落",
+    "selection_unavailable": "無法找到此選取範圍",
     "strikethrough": "刪除線 ({mod}+Shift+X)",
     "table": "表格",
     "task_list": "工作清單",
     "text_formatting": "文字格式",
-    "underline": "底線 ({mod}+U)",
-    "ask_ai": "詢問 AI",
-    "selection_unavailable": "無法找到此選取範圍"
+    "underline": "底線 ({mod}+U)"
   },
   "help": {
     "editing": "編輯",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "刪除圖片",
-    "edit": "編輯圖片 URL"
+    "edit": "編輯圖片 URL",
+    "view": "檢視圖片"
   },
   "image_dialog": {
     "alt_placeholder": "圖片說明",

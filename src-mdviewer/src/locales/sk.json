@@ -47,6 +47,7 @@
     "success": "PDF bolo úspešne exportované"
   },
   "format": {
+    "ask_ai": "Spýtať sa AI",
     "block_type": "Typ bloku",
     "blockquote": "Citácia",
     "bold": "Tučné ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Viac",
     "numbered_list": "Číslovaný zoznam",
     "paragraph": "Odsek",
+    "selection_unavailable": "Tento výber sa nedá nájsť",
     "strikethrough": "Prečiarknuté ({mod}+Shift+X)",
     "table": "Tabuľka",
     "task_list": "Zoznam úloh",
     "text_formatting": "Formátovanie textu",
-    "underline": "Podčiarknuté ({mod}+U)",
-    "ask_ai": "Spýtať sa AI",
-    "selection_unavailable": "Tento výber sa nedá nájsť"
+    "underline": "Podčiarknuté ({mod}+U)"
   },
   "help": {
     "editing": "Úpravy",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Vymazať obrázok",
-    "edit": "Upraviť URL obrázka"
+    "edit": "Upraviť URL obrázka",
+    "view": "Zobraziť obrázok"
   },
   "image_dialog": {
     "alt_placeholder": "Popis obrázka",

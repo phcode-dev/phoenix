@@ -34,6 +34,7 @@
   "drop_zone.text": "Пуснете своя Markdown файл тук",
   "export.open": "Отвори",
   "export.success": "PDF е експортиран успешно",
+  "format.ask_ai": "Попитайте изкуствения интелект",
   "format.block_type": "Тип на блока",
   "format.blockquote": "Цитатен блок",
   "format.bold": "Получер ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Още",
   "format.numbered_list": "Номериран списък",
   "format.paragraph": "Параграф",
+  "format.selection_unavailable": "Този избран текст не може да бъде намерен",
   "format.strikethrough": "Зачертан текст ({mod}+Shift+X)",
   "format.table": "Таблица",
   "format.task_list": "Списък със задачи",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Отвори файл",
   "welcome.subtitle": "Красив преглед на Markdown",
   "welcome.title": "Kern",
-  "format.ask_ai": "Попитайте изкуствения интелект",
-  "format.selection_unavailable": "Този избран текст не може да бъде намерен"
+  "image.view": "Преглед на изображението"
 }

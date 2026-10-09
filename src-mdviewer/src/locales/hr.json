@@ -47,6 +47,7 @@
     "success": "PDF je uspješno izvezen"
   },
   "format": {
+    "ask_ai": "Pitaj umjetnu inteligenciju",
     "block_type": "Vrsta bloka",
     "blockquote": "Blok citat",
     "bold": "Podebljano ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Više",
     "numbered_list": "Numerirani popis",
     "paragraph": "Odlomak",
+    "selection_unavailable": "Nije moguće pronaći ovaj odabir",
     "strikethrough": "Precrtano ({mod}+Shift+X)",
     "table": "Tablica",
     "task_list": "Popis zadataka",
     "text_formatting": "Oblikovanje teksta",
-    "underline": "Podcrtano ({mod}+U)",
-    "ask_ai": "Pitaj umjetnu inteligenciju",
-    "selection_unavailable": "Nije moguće pronaći ovaj odabir"
+    "underline": "Podcrtano ({mod}+U)"
   },
   "help": {
     "editing": "Uređivanje",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Izbriši sliku",
-    "edit": "Uredi URL slike"
+    "edit": "Uredi URL slike",
+    "view": "Prikaži sliku"
   },
   "image_dialog": {
     "alt_placeholder": "Opis slike",

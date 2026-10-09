@@ -47,6 +47,7 @@
     "success": "PDF 导出成功"
   },
   "format": {
+    "ask_ai": "询问 AI",
     "block_type": "块类型",
     "blockquote": "引用",
     "bold": "粗体 ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "更多",
     "numbered_list": "有序列表",
     "paragraph": "正文",
+    "selection_unavailable": "无法定位此选区",
     "strikethrough": "删除线 ({mod}+Shift+X)",
     "table": "表格",
     "task_list": "任务列表",
     "text_formatting": "文本格式",
-    "underline": "下划线 ({mod}+U)",
-    "ask_ai": "询问 AI",
-    "selection_unavailable": "无法定位此选区"
+    "underline": "下划线 ({mod}+U)"
   },
   "help": {
     "editing": "编辑",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "删除图片",
-    "edit": "编辑图片 URL"
+    "edit": "编辑图片 URL",
+    "view": "查看图片"
   },
   "image_dialog": {
     "alt_placeholder": "图片描述",

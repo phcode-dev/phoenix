@@ -34,6 +34,7 @@
   "drop_zone.text": "Solte aquí o seu ficheiro Markdown",
   "export.open": "Abrir",
   "export.success": "PDF exportado con éxito",
+  "format.ask_ai": "Preguntar á IA",
   "format.block_type": "Tipo de bloque",
   "format.blockquote": "Cita en bloque",
   "format.bold": "Negra ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Máis",
   "format.numbered_list": "Lista numerada",
   "format.paragraph": "Parágrafo",
+  "format.selection_unavailable": "Non se pode localizar esta selección",
   "format.strikethrough": "Riscado ({mod}+Maiús+X)",
   "format.table": "Táboa",
   "format.task_list": "Lista de tarefas",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Abrir ficheiro",
   "welcome.subtitle": "Un fermoso visor de Markdown",
   "welcome.title": "Kern",
-  "format.ask_ai": "Preguntar á IA",
-  "format.selection_unavailable": "Non se pode localizar esta selección"
+  "image.view": "Ver imaxe"
 }

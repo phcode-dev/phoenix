@@ -34,6 +34,7 @@
   "drop_zone.text": "Trageți fișierul Markdown aici",
   "export.open": "Deschide",
   "export.success": "PDF exportat cu succes",
+  "format.ask_ai": "Întreabă AI",
   "format.block_type": "Tip de bloc",
   "format.blockquote": "Citat bloc",
   "format.bold": "Aldin ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Mai multe",
   "format.numbered_list": "Listă numerotată",
   "format.paragraph": "Paragraf",
+  "format.selection_unavailable": "Nu se poate găsi această selecție",
   "format.strikethrough": "Tăiat ({mod}+Shift+X)",
   "format.table": "Tabel",
   "format.task_list": "Listă de sarcini",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Deschide fișier",
   "welcome.subtitle": "Un vizualizator Markdown frumos",
   "welcome.title": "Kern",
-  "format.ask_ai": "Întreabă AI",
-  "format.selection_unavailable": "Nu se poate găsi această selecție"
+  "image.view": "Vizualizează imaginea"
 }

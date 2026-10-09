@@ -34,6 +34,7 @@
   "drop_zone.text": "Pudota Markdown-tiedostosi tähän",
   "export.open": "Avaa",
   "export.success": "PDF vietiin onnistuneesti",
+  "format.ask_ai": "Kysy tekoälyltä",
   "format.block_type": "Lohkotyyppi",
   "format.blockquote": "Lainauslohko",
   "format.bold": "Lihavointi ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Lisää",
   "format.numbered_list": "Numeroitu luettelo",
   "format.paragraph": "Kappale",
+  "format.selection_unavailable": "Tätä valintaa ei löydy",
   "format.strikethrough": "Yliviivaus ({mod}+Shift+X)",
   "format.table": "Taulukko",
   "format.task_list": "Tehtäväluettelo",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Avaa tiedosto",
   "welcome.subtitle": "Kaunis Markdown-katselin",
   "welcome.title": "Kern",
-  "format.ask_ai": "Kysy tekoälyltä",
-  "format.selection_unavailable": "Tätä valintaa ei löydy"
+  "image.view": "Näytä kuva"
 }

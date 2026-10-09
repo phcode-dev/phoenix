@@ -34,6 +34,7 @@
   "drop_zone.text": "Перетащите сюда ваш Markdown-файл",
   "export.open": "Открыть",
   "export.success": "PDF успешно экспортирован",
+  "format.ask_ai": "Спросить ИИ",
   "format.block_type": "Тип блока",
   "format.blockquote": "Цитата",
   "format.bold": "Полужирный ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Ещё",
   "format.numbered_list": "Нумерованный список",
   "format.paragraph": "Параграф",
+  "format.selection_unavailable": "Не удалось найти выделенный фрагмент",
   "format.strikethrough": "Зачёркнутый ({mod}+Shift+X)",
   "format.table": "Таблица",
   "format.task_list": "Список задач",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Открыть файл",
   "welcome.subtitle": "Красивый просмотрщик Markdown",
   "welcome.title": "Керн",
-  "format.ask_ai": "Спросить ИИ",
-  "format.selection_unavailable": "Не удалось найти выделенный фрагмент"
+  "image.view": "Просмотреть изображение"
 }

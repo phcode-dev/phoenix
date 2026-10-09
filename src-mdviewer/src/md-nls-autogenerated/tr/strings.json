@@ -34,6 +34,7 @@
   "drop_zone.text": "Markdown dosyanızı buraya bırakın",
   "export.open": "Aç",
   "export.success": "PDF başarıyla dışa aktarıldı",
+  "format.ask_ai": "Yapay zekâya sor",
   "format.block_type": "Blok türü",
   "format.blockquote": "Alıntı bloku",
   "format.bold": "Kalın ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Daha fazla",
   "format.numbered_list": "Numaralı liste",
   "format.paragraph": "Paragraf",
+  "format.selection_unavailable": "Bu seçim bulunamıyor",
   "format.strikethrough": "Üstü çizili ({mod}+Shift+X)",
   "format.table": "Tablo",
   "format.task_list": "Görev listesi",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Dosya Aç",
   "welcome.subtitle": "Harika bir Markdown görüntüleyici",
   "welcome.title": "Kern",
-  "format.ask_ai": "Yapay zekâya sor",
-  "format.selection_unavailable": "Bu seçim bulunamıyor"
+  "image.view": "Görseli görüntüle"
 }

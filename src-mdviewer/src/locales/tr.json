@@ -47,6 +47,7 @@
     "success": "PDF başarıyla dışa aktarıldı"
   },
   "format": {
+    "ask_ai": "Yapay zekâya sor",
     "block_type": "Blok türü",
     "blockquote": "Alıntı bloku",
     "bold": "Kalın ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Daha fazla",
     "numbered_list": "Numaralı liste",
     "paragraph": "Paragraf",
+    "selection_unavailable": "Bu seçim bulunamıyor",
     "strikethrough": "Üstü çizili ({mod}+Shift+X)",
     "table": "Tablo",
     "task_list": "Görev listesi",
     "text_formatting": "Metin biçimlendirme",
-    "underline": "Altı Çizili ({mod}+U)",
-    "ask_ai": "Yapay zekâya sor",
-    "selection_unavailable": "Bu seçim bulunamıyor"
+    "underline": "Altı Çizili ({mod}+U)"
   },
   "help": {
     "editing": "Düzenleme",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Görseli sil",
-    "edit": "Görsel URL'sini Düzenle"
+    "edit": "Görsel URL'sini Düzenle",
+    "view": "Görseli görüntüle"
   },
   "image_dialog": {
     "alt_placeholder": "Resim açıklaması",

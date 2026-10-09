@@ -47,6 +47,7 @@
     "success": "A PDF exportálása sikeres."
   },
   "format": {
+    "ask_ai": "Kérdezd az AI-t",
     "block_type": "Blokk típusa",
     "blockquote": "Idézetblokk",
     "bold": "Félkövér ({mod}+B)",
@@ -68,13 +69,12 @@
     "more_elements": "Továbbiak",
     "numbered_list": "Számozott lista",
     "paragraph": "Bekezdés",
+    "selection_unavailable": "Ez a kijelölés nem található",
     "strikethrough": "Áthúzott ({mod}+Shift+X)",
     "table": "Táblázat",
     "task_list": "Feladatlista",
     "text_formatting": "Szövegformázás",
-    "underline": "Aláhúzás ({mod}+U)",
-    "ask_ai": "Kérdezd az AI-t",
-    "selection_unavailable": "Ez a kijelölés nem található"
+    "underline": "Aláhúzás ({mod}+U)"
   },
   "help": {
     "editing": "Szerkesztés",
@@ -85,7 +85,8 @@
   },
   "image": {
     "delete": "Kép törlése",
-    "edit": "Kép URL szerkesztése"
+    "edit": "Kép URL szerkesztése",
+    "view": "Kép megtekintése"
   },
   "image_dialog": {
     "alt_placeholder": "Kép leírása",

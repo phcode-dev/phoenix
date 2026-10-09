@@ -34,6 +34,7 @@
   "drop_zone.text": "Slipp Markdown-filen din her",
   "export.open": "Åpne",
   "export.success": "PDF eksportert",
+  "format.ask_ai": "Spør KI",
   "format.block_type": "Blokktype",
   "format.blockquote": "Sitatblokk",
   "format.bold": "Fet ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Mer",
   "format.numbered_list": "Nummerert liste",
   "format.paragraph": "Avsnitt",
+  "format.selection_unavailable": "Finner ikke denne markeringen",
   "format.strikethrough": "Gjennomstreking ({mod}+Shift+X)",
   "format.table": "Tabell",
   "format.task_list": "Oppgaveliste",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Åpne fil",
   "welcome.subtitle": "En vakker Markdown-fremviser",
   "welcome.title": "Kern",
-  "format.ask_ai": "Spør KI",
-  "format.selection_unavailable": "Finner ikke denne markeringen"
+  "image.view": "Vis bilde"
 }

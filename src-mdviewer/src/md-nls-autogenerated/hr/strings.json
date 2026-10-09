@@ -34,6 +34,7 @@
   "drop_zone.text": "Ovdje ispustite svoju Markdown datoteku",
   "export.open": "Otvori",
   "export.success": "PDF je uspješno izvezen",
+  "format.ask_ai": "Pitaj umjetnu inteligenciju",
   "format.block_type": "Vrsta bloka",
   "format.blockquote": "Blok citat",
   "format.bold": "Podebljano ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "Više",
   "format.numbered_list": "Numerirani popis",
   "format.paragraph": "Odlomak",
+  "format.selection_unavailable": "Nije moguće pronaći ovaj odabir",
   "format.strikethrough": "Precrtano ({mod}+Shift+X)",
   "format.table": "Tablica",
   "format.task_list": "Popis zadataka",
@@ -197,6 +199,5 @@
   "welcome.open_button": "Otvori datoteku",
   "welcome.subtitle": "Prekrasan Markdown preglednik",
   "welcome.title": "Kern",
-  "format.ask_ai": "Pitaj umjetnu inteligenciju",
-  "format.selection_unavailable": "Nije moguće pronaći ovaj odabir"
+  "image.view": "Prikaži sliku"
 }

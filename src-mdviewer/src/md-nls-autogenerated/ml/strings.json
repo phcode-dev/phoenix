@@ -34,6 +34,7 @@
   "drop_zone.text": "നിങ്ങളുടെ മാർക്ക്ഡൗൺ ഫയൽ ഇവിടെ ഇടുക",
   "export.open": "തുറക്കുക",
   "export.success": "PDF വിജയകരമായി എക്സ്പോർട്ട് ചെയ്തു",
+  "format.ask_ai": "നിർമിത ബുദ്ധിയോട് ചോദിക്കുക",
   "format.block_type": "ബ്ലോക്ക് തരം",
   "format.blockquote": "ബ്ലോക്ക്ക്വോട്ട്",
   "format.bold": "ബോൾഡ് ({mod}+B)",
@@ -55,6 +56,7 @@
   "format.more_elements": "കൂടുതൽ",
   "format.numbered_list": "നമ്പർ ലിസ്റ്റ്",
   "format.paragraph": "ഖണ്ഡിക",
+  "format.selection_unavailable": "ഈ തിരഞ്ഞെടുപ്പ് കണ്ടെത്താനാകുന്നില്ല",
   "format.strikethrough": "സ്ട്രൈക്ക്ത്രൂ ({mod}+Shift+X)",
   "format.table": "ടേബിൾ",
   "format.task_list": "ടാസ്ക് ലിസ്റ്റ്",
@@ -197,6 +199,5 @@
   "welcome.open_button": "ഫയൽ തുറക്കുക",
   "welcome.subtitle": "ഒരു മനോഹരമായ മാർക്ക്ഡൗൺ വ്യൂവർ",
   "welcome.title": "Kern",
-  "format.ask_ai": "നിർമിത ബുദ്ധിയോട് ചോദിക്കുക",
-  "format.selection_unavailable": "ഈ തിരഞ്ഞെടുപ്പ് കണ്ടെത്താനാകുന്നില്ല"
+  "image.view": "ചിത്രം കാണുക"
 }
