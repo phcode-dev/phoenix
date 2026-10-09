@@ -156,11 +156,12 @@ function buildSystemPrompt({projectPath, scratchDir, locale, cli = false} = {}) 
     "copy, placement), a choice about the whole page (theme, palette, typography, layout direction, " +
     "which of several designs to keep), or simply to present something visually (a mockup, a " +
     "before-and-after, a set of variants) even when the only answer is OK or a comment. The card's " +
-    "frame, title, controls and text field are Phoenix's; you write the body, and pass a theme with " +
-    "the page's colours so the frame matches. For one element pass anchor so the page dims around it " +
-    "and the card keeps out of its way; put the card beside the element only when that helps. Hovering an " +
-    "option previews it on the page with previewCss or previewHtml, clicking it answers. " +
-    "Write the UI files into " + (scratchDir ? scratchDir + " (askInLivePreviewUiDir)" :
+    "frame, controls and text field are Phoenix's. Prefer built-in choices with IDs, labels and " +
+    "preview CSS; no generated interaction code is needed. For expressive custom bodies use " +
+    "ph-choice/ph-hover markers in uiFile; Phoenix owns hover, click, restore and cleanup. Reuse " +
+    "HTML/CSS/JS files and change params on follow-ups. Runtime page scripts must define cleanup(); " +
+    "failed cleanup reloads the preview while preserving the question. Pass a matching frame theme " +
+    "and anchor when helpful. Write reusable files into " + (scratchDir ? scratchDir + " (askInLivePreviewUiDir)" :
         "the folder getEditorState reports as askInLivePreviewUiDir") + ", never into the project " +
     (cli ? "(subject to the CLI's own file permissions). " :
         "(yours to write freely, no permission is asked and the user is not shown those writes). ") +

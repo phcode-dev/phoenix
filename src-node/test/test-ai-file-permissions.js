@@ -108,6 +108,7 @@ async function exercise(params) {
         "./ai-cli-connector": {setBrowserConnector: () => {}},
         "./ai-cli-capabilities": {},
         "./ai-model-effort": {effortForQuery: () => undefined},
+        "./ai-cli-pricing": {updatePricing: () => {}},
         "./node-connector": {isConnected: () => true}
     };
     const source = fs.readFileSync(path.join(__dirname, "..", "claude-code-agent.js"), "utf8");

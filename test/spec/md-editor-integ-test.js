@@ -2359,6 +2359,18 @@ define(function (require, exports, module) {
 
         describe("Splash over the md viewer", function () {
 
+            beforeEach(async function () {
+                // Lightbox cleanup can leave an HTML file active. This check needs its own Markdown document.
+                await awaitsForDone(SpecRunnerUtils.openFiles([mdTestFolder + "/doc1.md"]),
+                    "open doc1.md for the splash");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+            });
+
+            afterEach(async function () {
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close the splash document");
+            });
+
             function _visiblePreviewFrames() {
                 return Array.from(testWindow.document.querySelectorAll(
                     "#panel-md-preview-frame, #panel-live-preview-frame"))

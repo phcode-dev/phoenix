@@ -727,39 +727,69 @@ function getEditorToolSpecs(peerCall, options = {}) {
 
     addTool(
         "askInLivePreview",
-        "Show a question card over the page in the live preview and wait for the user's answer. Use it whenever " +
-        "showing beats telling: a choice about one element or about the whole page, or presenting variants or " +
-        "a mockup for a reaction. The card's frame is Phoenix's: a title bar reading 'Phoenix AI asks' with " +
-        "minimize and close, a text field with Send for an answer in the user's own words, drag, resize and " +
-        "placement. You write only the body: uiFile, an HTML fragment with its own <style>, and scriptFile, whose " +
-        "text runs once it is rendered as function(root, phoenix, params) { <your file's text goes here> }, so " +
-        "write only what goes between the braces. Write both files first, then call this tool; Write them into the folder " +
-        "getEditorState reports as askInLivePreviewUiDir (your own folder: no permission needed, not shown to the " +
-        "user), edit and reuse them later; pass " +
-        "per-ask data in params, which fills {{key}} placeholders in the markup (escaped) and reaches the script " +
-        "as is. Make the body as visual and interactive as the question deserves (swatches, mini previews, icons, " +
-        "sliders), with one constraint: every word stays readable in every state, hover and selected included, " +
-        "against the theme you chose. Rule for choices: hovering an option previews it on the page, clicking it answers; a " +
-        "hover preview reverts when the pointer leaves the card. phoenix: answer(payload) closes the card and returns the " +
-        "payload to you (previews in place stay); cancel(); previewCss(css|null) tries a style on the page; " +
-        "previewHtml(selector, html|null) swaps a page element; pickElement() resolves with the page element the " +
-        "user clicks next as {selector, tag, id, classes, text, rect}; highlight(selector|null) dims the page " +
-        "around an element; rectOf(selector); styleOf(selector, [props]); resize(width, height). root is the body " +
-        "element (root.querySelector; document cannot see it). Put a short label in the payload; the chat shows " +
-        "it as the user's reply. For one element pass anchor: the page dims around it (lifted while the pointer " +
-        "is over the card) and the card keeps out of its way; it stays in a corner unless placement asks for a " +
-        "side of the element. theme tints the frame with the page's colours. This is the whole contract; do not " +
-        "search for its implementation. " +
-        "Result: the payload, or cancelled with who cancelled (user, chat, page, timeout, previewClosed). " +
-        "Needs an open HTML live preview; otherwise ask in the chat.",
+        "Ask a visual question over the HTML live preview and wait for the answer. Prefer choices: each has id, " +
+        "label, optional description/color, and preview:{css or cssFile, optional scriptFile, selector, params}. Phoenix " +
+        "handles hover/focus previews, restore on leave, keyboard/touch, click-to-answer and cleanup. A click " +
+        "returns {choice:id,label}, closes the question, and retains the preview while you apply the choice to " +
+        "source. Runtime effects are restored before file preparation so live edits use the original DOM; " +
+        "CSS-only effects may remain until verification or turn end. Apply the chosen result before finishing. " +
+        "Without uiFile, Phoenix renders styled choice cards: no UI files or JavaScript needed. For expressive " +
+        "custom content write an HTML fragment with its own <style>, mark any option class='ph-choice' data-id='1' " +
+        "(hover and click) or class='ph-hover' (hover only). Design the full body freely; keep text readable. " +
+        "Write reusable files in getEditorState's askInLivePreviewUiDir, outside the project. Shared cssFile " +
+        "templates use {{key}} from preview.params (merged over top-level params); reuse files and change params " +
+        "for follow-ups instead of regenerating UI/CSS. Inline css is useful for small previews. " +
+        "preview.scriptFile runs in the actual page as function(preview,params){file text}. Prefer defining " +
+        "hover(selector,params) for DOM/layout effects and cleanup() to restore them. Define these at the FILE TOP " +
+        "LEVEL, not inside an IIFE and not on window/globalThis. Inside a wrapper instead register " +
+        "preview.hover(fn) and preview.cleanup(fn). Example file: let saved; " +
+        "function hover(selector,params){saved=preview.query(selector); /* temporary effect */} " +
+        "function cleanup(){/* restore saved state */}. Phoenix calls and awaits " +
+        "hover on activation (including click without prior hover), then cleanup before switching/leaving. " +
+        "selector comes from preview.selector, params.selector or anchor. Both functions may be async. Define cleanup() " +
+        "to undo custom effects (async allowed), or register preview.cleanup(fn). Absent, failing or false " +
+        "cleanup automatically reloads the page. If complete restoration cannot be guaranteed, set " +
+        "preview.reloadOnCleanup:true to always reload after that preview, even when cleanup() succeeds; " +
+        "include a short UI hint if trying the option will reset page state. The question and its draft survive. " +
+        "Helpers: preview.query(selector), hover(fn), css(text), html(selector,markup), on(selector,event,handler), " +
+        "interval(fn,ms), timeout(fn,ms), cleanup(fn), signal. Effects must stay in the temporary page; reload " +
+        "cannot undo storage or server writes. Optional top-level scriptFile controls the isolated question UI " +
+        "as function(root,phoenix,params){file text}; phoenix.preview(id,params) pins a preview so the user " +
+        "can try the page's controls; preview(null) clears it. Interactive previews NEED a separate " +
+        "Pin & try button using phoenix.preview and a dedicated Choose button using ph-choice or phoenix.answer. " +
+        "Example: a ph-hover card with data-id='1', a plain [data-try='1'] button wired in scriptFile to " +
+        "phoenix.preview('1'), and a separate ph-choice button data-id='1'. Do not put ph-choice on the whole " +
+        "card containing these controls, since a click on a child would submit. " +
+        "Include a brief hint explaining that pinning lets the user try controls before choosing; page controls " +
+        "need normal Preview mode, not Edit mode. Also phoenix.answer(id,params), cancel(). UI-supplied params " +
+        "are returned with the answer so you can persist the exact customized choice. " +
+        "Normal choices need no handlers. Question state survives page resets. Built-in frame supplies close, " +
+        "minimize, drag anywhere in the editor window, resize and a free-text answer. Files can be absolute " +
+        "or relative to askInLivePreviewUiDir. " +
+        "This is the complete contract; do not search for implementation. Result is answered, cancelled or error. " +
+        "Needs an HTML live preview; otherwise ask in chat.",
         {
-            uiFile: z.string().min(1).describe("The body markup file with its own <style>: an absolute path, or a file name " +
+            uiFile: z.string().min(1).optional().describe("Optional custom body markup with its own <style>: an absolute path, or a file name " +
                 "inside askInLivePreviewUiDir; up to 200000 characters"),
             scriptFile: z.string().optional().describe("Path of the file whose text runs as " +
                 "function(root, phoenix, params) { <your file's text goes here> }: only what goes between the braces; " +
                 "up to 100000 characters"),
             params: z.object({}).passthrough().optional()
                 .describe("Data for this ask: fills {{key}} placeholders in the markup and is passed to the script"),
+            choices: z.array(z.object({
+                id: z.string().min(1).max(64),
+                label: z.string().min(1).max(500),
+                description: z.string().max(1000).optional(),
+                color: z.string().max(64).optional(),
+                preview: z.object({
+                    css: z.string().max(200000).optional(),
+                    cssFile: z.string().min(1).optional(),
+                    scriptFile: z.string().min(1).optional(),
+                    reloadOnCleanup: z.boolean().optional().describe("Always reload the page after this preview when complete cleanup cannot be guaranteed"),
+                    selector: z.string().max(500).optional().describe("Page target passed to hover(selector, params)"),
+                    params: z.object({}).passthrough().optional()
+                }).optional()
+            })).min(1).max(20).optional().describe("Reusable choices; IDs match ph-choice/ph-hover data-id in custom HTML"),
             summary: z.string().min(1).max(200).describe("One line for the chat card saying what you are asking"),
             anchor: z.string().max(500).optional()
                 .describe("CSS selector of the element the question is about; the card is placed beside it"),
@@ -768,10 +798,10 @@ function getEditorToolSpecs(peerCall, options = {}) {
             placement: z.enum(["auto", "above", "below", "left", "right",
                 "bottom-right", "bottom-left", "top-right", "top-left", "center", "bottom"]).optional()
                 .describe("Default bottom-right, out of the way; a corner never covers the anchor. auto or a side " +
-                    "puts the card beside the anchor with a pointer, flipping when there is no room"),
-            width: z.number().int().min(220).max(1200).optional().describe("Card width in px, default 340; the user can resize"),
+                    "puts the card beside the anchor, trying another side when there is no room"),
+            width: z.number().int().min(220).max(1200).optional().describe("Card width in px, default 360 for choices; the user can resize"),
             height: z.number().int().min(120).max(1000).optional()
-                .describe("Card height in px; default fits the body, up to 85% of the viewport"),
+                .describe("Card height in px; default fits the body within the preview"),
             theme: z.object({
                 background: z.string().max(64).optional(),
                 titleBackground: z.string().max(64).optional(),
