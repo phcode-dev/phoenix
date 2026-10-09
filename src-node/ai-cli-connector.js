@@ -50,6 +50,7 @@ class CliConnector {
             emit: record => { if (this.options.emitUsage) { this.options.emitUsage(record); } },
             ready: () => !this.options.ready || this.options.ready(),
             baseUrl: () => "http://localhost:" + this.server.address().port,
+            preparePricing: this.options.preparePricing,
             drainMs: this.options.usageDrainMs
         });
         this.upgrade = (request, socket, head) => {
@@ -412,6 +413,7 @@ exports.setBrowserConnector = function (connector, ready) { browserConnector = c
 /** Attach exactly once to the window's existing HTTP server. */
 exports.attach = function (server) {
     controller = new CliConnector(server, {peer: (fn, args) => browserConnector.execPeer(fn, args),
+        preparePricing: () => browserConnector.execPeer("prepareExternalModelPricing"),
         emitUsage: record => browserConnector.triggerPeer("aiCliUsage", record),
         ready: () => browserReady(), emit: state => browserConnector.triggerPeer("aiCliConnectorState", state)});
 };

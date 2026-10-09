@@ -31,6 +31,7 @@ const SEEN_LIMIT = 5000;
 const BACKLOG_LIMIT = 2000;
 const BACKLOG_RETRY_MS = 2000;
 const EXPORT_INTERVAL_MS = 2000;
+const PRICING_WAIT_MS = 5000;
 // The largest time a JS Date can hold.
 const MAX_TIME_MS = 8.64e15;
 
@@ -90,6 +91,18 @@ function fingerprint(parts) {
 }
 
 /**
+ * Normalize Codex's per-response tier without consulting a session's mutable configuration.
+ * Codex 0.162 omits this field for Standard; older exporters also retain the standard estimate.
+ * @param {*} value Exported service_tier attribute.
+ * @return {string} A known pricing tier, or "unknown" for an unsupported explicit value.
+ */
+function codexServiceTier(value) {
+    if (value === undefined || value === null || value === "default") { return "default"; }
+    if (value === "priority" || value === "fast") { return "fast"; }
+    return value === "ultrafast" ? "ultrafast" : "unknown";
+}
+
+/**
  * Claude Code's per-request event. Its input excludes cache reads and writes, so the four
  * kinds are already disjoint; the cost is the CLI's own estimate at API list price.
  * @return {?Object} Normalized usage, or null for any other record.
@@ -132,6 +145,7 @@ function codexUsage(record, attrs) {
     // reads. Every probe so far reported 0 cache writes, so a nonzero value is unverified.
     const usage = {
         model: modelId(attrs.model),
+        serviceTier: codexServiceTier(attrs.service_tier),
         input: Math.max(0, count(attrs.input_token_count) - cacheRead - cacheWrite),
         output: count(attrs.output_token_count),
         cacheRead: cacheRead,
@@ -140,12 +154,11 @@ function codexUsage(record, attrs) {
         at: recordTime(record, attrs),
         promptId: null
     };
-    usage.costUSD = estimateCodexCost(usage.model, usage);
     // No request id: the nanosecond stamp tells two identical responses apart, and a retried
     // export repeats it, so the retry is dropped.
     usage.key = fingerprint([attrs["conversation.id"], attrs["event.timestamp"], record.timeUnixNano,
         record.observedTimeUnixNano, attrs.input_token_count, attrs.output_token_count, attrs.cached_token_count,
-        attrs.cache_write_token_count, attrs.reasoning_token_count, usage.model]);
+        attrs.cache_write_token_count, attrs.reasoning_token_count, usage.model, usage.serviceTier]);
     return usage;
 }
 
@@ -207,7 +220,8 @@ function userOwnsTelemetry(cli, where = {}) {
 class CliUsage {
     /**
      * @param {{emit: function(Object), baseUrl: function(): string, ready?: function(): boolean,
-     *     drainMs?: number}} options - ready says whether the editor can take records now
+     *     drainMs?: number, preparePricing?: function(): Promise, pricingWaitMs?: number}} options
+     *     ready says whether the editor can take records now; preparePricing lazily loads cached prices.
      */
     constructor(options) {
         this.options = options;
@@ -216,6 +230,8 @@ class CliUsage {
         this.bySession = new Map();
         this.backlog = [];
         this.retryTimer = null;
+        this.pricingReady = null;
+        this.closed = false;
     }
 
     /** Deliver a record now, or hold it until the editor is back. */
@@ -279,6 +295,7 @@ class CliUsage {
 
     /** Forget every session at once (PhNode exit). */
     closeAll() {
+        this.closed = true;
         clearTimeout(this.retryTimer);
         this.retryTimer = null;
         for (const entry of this.byToken.values()) { clearTimeout(entry.closeTimer); }
@@ -293,8 +310,32 @@ class CliUsage {
         return true;
     }
 
+    /**
+     * Bound first-use preparation so a reloading browser cannot hold usage indefinitely.
+     * Failed preparation is retried by a later completion; this batch uses current prices.
+     * @return {Promise} Resolves when prices are ready or the bounded attempt failed.
+     */
+    _preparePricing() {
+        if (!this.pricingReady) {
+            let timer;
+            const waitMs = this.options.pricingWaitMs === undefined ? PRICING_WAIT_MS : this.options.pricingWaitMs;
+            const work = Promise.race([
+                Promise.resolve().then(() => this.options.preparePricing()),
+                new Promise((_resolve, reject) => {
+                    timer = setTimeout(() => reject(new Error("Pricing cache preparation timed out")), waitMs);
+                    timer.unref();
+                })
+            ]);
+            const ready = work.catch(() => {
+                if (this.pricingReady === ready) { this.pricingReady = null; }
+            }).finally(() => clearTimeout(timer));
+            this.pricingReady = ready;
+        }
+        return this.pricingReady;
+    }
+
     _emit(entry, usage, turns) {
-        this._deliver({
+        const record = {
             sessionId: entry.sessionId,
             cli: entry.cli,
             model: usage.model || null,
@@ -306,7 +347,23 @@ class CliUsage {
             cacheWrite: usage.cacheWrite,
             costUSD: usage.costUSD,
             turns: turns
-        });
+        };
+        if (entry.cli !== "codex" || !usage.serviceTier) {
+            this._deliver(record);
+            return;
+        }
+        record.serviceTier = usage.serviceTier;
+        const deliverPriced = () => {
+            if (this.closed) { return; }
+            record.costUSD = estimateCodexCost(usage.model, usage, usage.serviceTier);
+            this._deliver(record);
+        };
+        if (this.options.preparePricing && usage.input + usage.output + usage.cacheRead + usage.cacheWrite > 0) {
+            // Claude and turn-only events never load prices or wait on this preparation.
+            this._preparePricing().then(deliverPriced);
+        } else {
+            deliverPriced();
+        }
     }
 
     /**
