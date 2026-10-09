@@ -3497,6 +3497,98 @@
     }
 }
 
+.ai-question-reminder {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr) 24px;
+    gap: 4px 8px;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    padding: 12px;
+    background: rgba(213, 173, 91, 0.12);
+    border: 1px solid rgba(213, 173, 91, 0.35);
+    border-left: 3px solid #cba257;
+    border-radius: 5px;
+    color: @project-panel-text-1;
+    font-size: @ai-text-body;
+    line-height: 20px;
+    white-space: normal;
+
+    &[hidden] { display: none; }
+
+    .ai-question-reminder-icon {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+        color: #dfb86d;
+    }
+
+    .ai-question-reminder-title {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+        min-width: 0;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .ai-question-reminder-detail {
+        grid-column: ~"2 / 4";
+        grid-row: 2;
+        min-width: 0;
+        font-size: @ai-dialog-note;
+        line-height: 18px;
+        color: @project-panel-text-2;
+        overflow-wrap: anywhere;
+    }
+
+    button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        font: inherit;
+        border-radius: 3px;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: 1px solid @bc-btn-border-focused;
+            outline-offset: 2px;
+        }
+    }
+
+    .ai-question-reminder-close {
+        grid-column: 3;
+        grid-row: 1;
+        width: 24px;
+        height: 24px;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        color: @project-panel-text-2;
+
+        &:hover { background: rgba(213, 173, 91, 0.19); }
+    }
+
+    .ai-question-reminder-show {
+        grid-column: ~"2 / 4";
+        grid-row: 3;
+        justify-self: end;
+        min-height: 28px;
+        margin-top: 6px;
+        padding: 3px 10px;
+        border: 1px solid rgba(213, 173, 91, 0.38);
+        background: rgba(213, 173, 91, 0.08);
+        color: @project-panel-text-1;
+        font-size: @ai-dialog-note;
+
+        &:hover {
+            background: rgba(213, 173, 91, 0.19);
+            border-color: rgba(213, 173, 91, 0.6);
+        }
+    }
+}
+
 .ai-question-other {
     display: flex;
     align-items: stretch;
