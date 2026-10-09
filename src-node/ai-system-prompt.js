@@ -25,6 +25,14 @@ const SERVER_INSTRUCTIONS = "Phoenix Code editor tools for the session launched 
     "Call getEditorState for the user's current file and preview. Before native edits use flushUnsavedFiles; " +
     "afterwards use refreshFilesFromDisk. Preserve unsaved typing and stop on conflicts. " +
     "Prefer these tools for Phoenix screenshots, live preview and editor controls.";
+// Match the default AI sidebar surface; authored rich content remains transparent unless it sets a background.
+const RICH_UI_STYLE_GUIDANCE = "Rich content sits on Phoenix's dark panel (default background #252525, " +
+    "inherited text #e0e0e0), not a white page. Its transparent boundary resets inherited text formatting " +
+    "except the chat font and text colour; your CSS controls the content inside. " +
+    "Transparent areas show the panel. Inherit the chat font/colour, " +
+    "or set both foreground and background for your custom surfaces, including hover, focus and disabled states. " +
+    "Design for a narrow, resizable sidebar. Images can use HTTPS URLs or inline <svg>. " +
+    "For SVG in an <img> data URL, URL-encode the SVG (including # colours) or use base64. ";
 
 /**
  * Build the Phoenix append without replacing the CLI's own system instructions.
@@ -151,7 +159,7 @@ function buildSystemPrompt({projectPath, scratchDir, locale, cli = false} = {}) 
     "user's attention and they may be away from the chat. Never use it for ordinary replies. " +
     (cli ? "It is skipped while your originating CLI session is visible unless you pass alwaysShow." :
         "It is skipped while the AI panel is visible unless you pass alwaysShow.") +
-    "\n- askInLivePreview: whenever showing beats telling and the page is in the live preview, " +
+    "\n- askInLivePreview: for visual requests about the actual page in the live preview, " +
     "compose UI with askInLivePreview instead of prose: a choice about one element (its colour, " +
     "copy, placement), a choice about the whole page (theme, palette, typography, layout direction, " +
     "which of several designs to keep), or simply to present something visually (a mockup, a " +
@@ -167,6 +175,29 @@ function buildSystemPrompt({projectPath, scratchDir, locale, cli = false} = {}) 
         "(yours to write freely, no permission is asked and the user is not shown those writes). ") +
     "The tool description is the whole contract; never look for its implementation, " +
     "and keep the look-at-the-page step to one screenshot or one execJsInLivePreview." +
+    "\n- Rich UI outside the live page: When asked to show visual examples, components or demos " +
+    "(for example, 'show me a carousel with images'), render a working visual by default. Use ordinary " +
+    "code fences when the user asks for source code or a code walkthrough. Standalone examples belong " +
+    "here even if an unrelated page is open; do not read or edit project files just to display them. " + (cli ?
+        "use askRichQuestion for a visual explanation, interactive mockup or question in your own terminal pane; " +
+        "set acknowledgement:true for a visual that only needs OK. Do not print rich Markdown fences in a CLI." :
+        "use a complete top-level fenced code block with language phoenix_interactive_preview_html for a " +
+        "nonblocking visual embedded naturally in your reply. Put plain HTML, <style> and optionally <script> " +
+        "inside it, no React or external libraries. " +
+        "Use askRichQuestion only when you need to wait for an answer. " +
+        "Inline scripts run in a shared DOM-free worker, never in the editor. Available API: " +
+        "ui.on(selector,event,fn,{preventDefault:true}) passes {value,checked,key,dataset,values}; " +
+        "ui.text/html/value(selector,value), ui.attr/style(selector,name,value), ui.show(selector,bool), " +
+        "ui.getState(), ui.setState(serializableObject), ui.timeout/interval(fn,ms), ui.cleanup(fn). " +
+        "Initialize state from ui.getState() and save changes with ui.setState() so controls restore from history. " +
+        "Example: <button id='inc'>+</button><output id='n'>0</output><script>" +
+        "let s=ui.getState();s.n=s.n||0;ui.text('#n',s.n);ui.on('#inc','click',()=>{" +
+        "ui.text('#n',++s.n);ui.setState(s);});</script>. " +
+        "There is no document/window/root, fetch, imports or filesystem API in inline scripts. " +
+        "Use ui.on, not HTML onclick attributes. CSS is scoped to this block; no external CSS resources. " +
+        "Keep display widgets self-contained and compact; no answer callback is needed.") +
+    " " + RICH_UI_STYLE_GUIDANCE +
+    "This feature does not inspect or change the actual live page: use askInLivePreview for that instead." +
     "\n\nEDITS THAT LAND IN THE LIVE PREVIEW: when you edit the file getEditorState " +
     "reported as livePreviewFile — or a CSS / JS / SVG file it links to — the user is " +
     "watching the result render. Whether that is worth checking is your judgement call, " +
@@ -255,3 +286,4 @@ function buildEditorContextLine(ctx, options = {}) {
 exports.buildSystemPrompt = buildSystemPrompt;
 exports.buildEditorContextLine = buildEditorContextLine;
 exports.SERVER_INSTRUCTIONS = SERVER_INSTRUCTIONS;
+exports.RICH_UI_STYLE_GUIDANCE = RICH_UI_STYLE_GUIDANCE;

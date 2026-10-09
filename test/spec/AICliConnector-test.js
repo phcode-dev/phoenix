@@ -61,17 +61,19 @@ define(function (require, exports, module) {
             expect(result.other.content[0].text).toContain("file.txt");
         });
 
-        it("builds all 17 tools with the installed Agent SDK and retains long tool budgets", async function () {
+        it("builds all 18 tools with the installed Agent SDK and retains long tool budgets", async function () {
             const result = await run("catalog");
-            expect(result.names.length).toBe(17);
+            expect(result.names.length).toBe(18);
             expect(result.sdkNames).toEqual(result.names);
             expect(result.names).toContain("getProblems");
             expect(result.names).toContain("askInLivePreview");
+            expect(result.names).toContain("askRichQuestion");
             expect(result.names).toContain("getUserQuestion");
             expect(result.names).not.toContain("getUserClarification");
             expect(result.names).not.toContain("previewImages");
             expect(result.stateAlwaysLoaded).toBe(true);
             expect(result.askTimeout).toBe(1815000);
+            expect(result.richQuestionTimeout).toBe(86400000);
             expect(result.imageTimeout).toBe(90000);
         });
         it("shares screenshot and editor-state result shaping with the panel", async function () {
@@ -219,13 +221,13 @@ define(function (require, exports, module) {
         it("starts stdio MCP, lists metadata and returns an image block", async function () {
             const result = await run("adapter");
             expect(result.instructions).toContain("Phoenix Code");
-            expect(result.tools.length).toBe(17);
+            expect(result.tools.length).toBe(18);
             expect(result.tools.find(tool => tool.name === "getEditorState")._meta["anthropic/alwaysLoad"]).toBe(true);
             expect(result.result.content[0]).toEqual({type: "image", data: "cG5n", mimeType: "image/png"});
         });
         it("answers MCP discovery while Phoenix is unavailable and returns a useful tool error", async function () {
             const result = await run("adapter-disconnected");
-            expect(result.tools.length).toBe(17);
+            expect(result.tools.length).toBe(18);
             expect(result.result.isError).toBe(true);
         });
         it("returns a native edit denial when an HTTP hook cannot save a dirty buffer", async function () {

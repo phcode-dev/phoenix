@@ -23,6 +23,7 @@
 const path = require("path");
 const fs = require("fs");
 const { z } = require("zod");
+const {RICH_UI_STYLE_GUIDANCE} = require("./ai-system-prompt");
 
 // Absolute path to the bundled API reference, mirrored from
 // docs/API-Reference/ at build time by build/api-docs-generator.js.
@@ -51,6 +52,10 @@ const EXEC_PEER_TIMEOUT_MS = {
     previewImages: 45000,
     useImage: 90000
 };
+
+// A rich question waits until the user answers or its owner cancels it. The CLI transport needs a finite
+// budget; this one is a day, and ending it cancels the question in the editor like any CLI cancellation.
+const RICH_QUESTION_FAILSAFE_MS = 24 * 60 * 60 * 1000;
 
 // Floor for caller-provided timeouts (e.g. execJsInLivePreview's
 // timeoutMs). 5s minimum stops the model from spamming impatient retries
@@ -96,6 +101,9 @@ function _resolveCallerTimeout(timeoutMs, defaultMs) {
 function getToolTimeout(name, args = {}) {
     if (name === "askInLivePreview") {
         return (args.timeoutS || 300) * 1000 + 15000;
+    }
+    if (name === "askRichQuestion") {
+        return RICH_QUESTION_FAILSAFE_MS;
     }
     if (name === "execJsInEditor" || name === "execJsInLivePreview") {
         return _resolveCallerTimeout(args.timeoutMs, 10000);
@@ -839,6 +847,64 @@ function getEditorToolSpecs(peerCall, options = {}) {
         {
             alwaysLoad: true,
             searchHint: "ask the user to choose between options with custom UI shown in the live preview"
+        }
+    );
+
+    addTool(
+        "askRichQuestion",
+        "Ask the user a question shown as rich interactive UI " +
+        (options.cli ? "in your session's pane in Phoenix" : "in the chat") + ", with no live preview needed, and " +
+        "wait for the answer: a visual choice, a short form, or something to look at and confirm. Prefer choices: " +
+        "each has id, label and optional description/color; Phoenix renders the cards and a pick returns " +
+        "{choice:id,label}. For custom content pass html or uiFile with its own <style> or cssFile, and mark options " +
+        "class='ph-choice' data-id='<id>'; this wires the answer without applying card styling. " +
+        RICH_UI_STYLE_GUIDANCE +
+        "Interaction code goes in scriptFile or an inline <script> in the markup " +
+        "and runs sandboxed as " + (options.cli ? "function(ui, params, root), where root is the question's own " +
+        "DOM inside an isolated frame" : "function(ui, params), with no DOM, window or root") + ". No external " +
+        "scripts, libraries or network. The ui API: on(selector, event, handler, {preventDefault}), whose handler " +
+        "gets {value, checked, key, dataset, values}; text(selector, value), html(selector, value) and " +
+        "value(selector, value); attr(selector, name, value) and style(selector, name, value); show(selector, " +
+        "visible); getState() and setState(object); answer(value) and cancel(); interval(fn, ms), timeout(fn, ms) " +
+        "and cleanup(fn). params is data for the UI and its script. " +
+        (options.cli ? "Phoenix supplies the titlebar from summary, Close, and a reply box that returns " +
+            "answer:{text:string}; do not duplicate them in your markup. " : "") +
+        "Set acknowledgement to show an OK button for " +
+        "something the user only needs to review. Write reusable files in getEditorState's askInLivePreviewUiDir " +
+        "and pass their names. The result is {answered:true, answer, answeredIn:'richUI'}, {acknowledged:true}, " +
+        "{cancelled:true, by} or an error. It waits until the user answers or closes it, or the turn is stopped.",
+        {
+            summary: z.string().min(1).max(200).describe("Short title saying what you are asking"),
+            html: z.string().max(200000).optional().describe("Question markup with its own <style>; or use uiFile"),
+            uiFile: z.string().min(1).optional().describe("Markup file: an absolute path, or a file name inside " +
+                "askInLivePreviewUiDir; up to 200000 characters"),
+            cssFile: z.string().min(1).optional().describe("Stylesheet file for the markup, located like uiFile"),
+            scriptFile: z.string().min(1).optional().describe("Script file located like uiFile, run as the body of " +
+                (options.cli ? "function(ui, params, root)" : "function(ui, params)") + "; up to 100000 characters"),
+            params: z.object({}).passthrough().optional().describe("Data for the UI and its script"),
+            choices: z.array(z.object({
+                id: z.string().min(1).max(64),
+                label: z.string().min(1).max(500),
+                description: z.string().max(1000).optional(),
+                color: z.string().max(64).optional()
+            })).min(1).max(20).optional().describe("Options; IDs match ph-choice data-id in custom markup"),
+            acknowledgement: z.boolean().optional().describe("Show an OK button; the result is {acknowledged:true}")
+        },
+        async function (args) {
+            try {
+                // No timeout of its own: the chat's Stop or the CLI's cancellation ends the question.
+                const result = await nodeConnector.execPeer("askRichQuestion", args || {});
+                if (result && result.error) {
+                    return {content: [{ type: "text", text: "Error: " + result.error }], isError: true};
+                }
+                return {content: [{ type: "text", text: JSON.stringify(result) }]};
+            } catch (err) {
+                return {content: [{ type: "text", text: "Error asking the question: " + err.message }], isError: true};
+            }
+        },
+        {
+            alwaysLoad: true,
+            searchHint: "ask the user with rich interactive UI in the conversation, without a live preview"
         }
     );
 
