@@ -249,7 +249,10 @@ class CliConnector {
         try {
             return await deadline(spec.handler(args), timeoutMs);
         } finally {
-            if (spec.name === "askInLivePreview") { this.cancelCall(session, frame.id); }
+            // A question still showing when its call ends, by error or budget, must not outlive it.
+            if (spec.name === "askInLivePreview" || spec.name === "askRichQuestion") {
+                this.cancelCall(session, frame.id);
+            }
         }
     }
 

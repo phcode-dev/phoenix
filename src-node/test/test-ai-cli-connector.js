@@ -402,6 +402,7 @@ exports.exercise = async function ({scenario}) {
         return {names: specs.map(spec => spec.name), sdkNames: built.map(tool => tool.name),
             stateAlwaysLoaded: specs.find(spec => spec.name === "getEditorState").alwaysLoad,
             askTimeout: getToolTimeout("askInLivePreview", {timeoutS: 1800}),
+            richQuestionTimeout: getToolTimeout("askRichQuestion"),
             imageTimeout: getToolTimeout("useImage")};
     }
     if (scenario === "prompt") {

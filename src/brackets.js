@@ -478,14 +478,19 @@ define(function (require, exports, module) {
         // changes). We can't use a simple .on("click", "a") because of http://bugs.jquery.com/ticket/3861:
         // jQuery hides non-left clicks from such event handlers, yet middle-clicks still cause CEF to
         // navigate. Also, a capture handler is more reliable than bubble.
-        window.document.body.addEventListener("click", function (e) {
+        /**
+         * Route links, including links inside Shadow DOM, through the native URL opener.
+         * @param {MouseEvent} e Click or middle-button activation.
+         */
+        function handleLinkClick(e) {
             // Don't interfere with context menu clicks
             if (e.button === 2 || (brackets.platform === "mac" && e.ctrlKey)) {
                 return;
             }
 
             // Check parents too, in case link has inline formatting tags
-            let node = e.target, url;
+            const path = e.composedPath ? e.composedPath() : [];
+            let node = path[0] || e.target, url;
             while (node) {
                 if (node.tagName === "A") {
                     url = node.getAttribute("href");
@@ -498,7 +503,9 @@ define(function (require, exports, module) {
                 }
                 node = node.parentElement;
             }
-        }, true);
+        }
+        window.document.body.addEventListener("click", handleLinkClick, true);
+        window.document.body.addEventListener("auxclick", handleLinkClick, true);
 
         // jQuery patch to shim deprecated usage of $() on EventDispatchers
         const DefaultCtor = jQuery.fn.init;
