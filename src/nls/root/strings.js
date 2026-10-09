@@ -2974,6 +2974,7 @@ define({
     "AI_CHAT_PLAN_MAXIMIZE": "Open plan in full screen",
     "AI_CHAT_PLAN_CLOSE_FULLSCREEN": "Minimize back to the chat (Esc)",
     "AI_CHAT_PLAN_APPROVE": "Approve",
+    "AI_CHAT_PLAN_REJECT": "Reject",
     "AI_CHAT_PLAN_REVISE": "Revise",
     "AI_CHAT_PLAN_FEEDBACK_PLACEHOLDER": "What would you like changed?",
     "AI_CHAT_PLAN_STOP": "Stop",

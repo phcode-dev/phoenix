@@ -155,6 +155,7 @@ function _fetchModelListOnce(queryResult) {
 
 // Active query state
 let currentAbortController = null;
+let activeQuery = null;
 
 // Lazily-initialized in-process MCP server for editor context
 let editorMcpServer = null;
@@ -965,11 +966,40 @@ exports.answerPlanModeWriteConfirm = async function (params) {
  * after switching from Edit Mode to Allow Everything). The next sendPrompt also
  * passes permissionMode in params, so this peer is only strictly required
  * during streaming — but calling it on every cycle keeps the agent's
- * tracker authoritative.
+ * tracker and the SDK session authoritative.
+ * @param {{mode: string}} params Requested SDK permission mode.
+ * @return {Promise<{success: boolean}>} Resolves after the active SDK session is updated.
  */
 exports.setPermissionMode = async function (params) {
     if (params && typeof params.mode === "string") {
         _runtimePermissionMode = params.mode;
+        if (activeQuery && !activeQuery.signal.aborted) {
+            const current = activeQuery;
+            // Keep rapid mode changes in order; a failed earlier update must
+            // not prevent a subsequent explicit choice from reaching the SDK.
+            current.modeUpdate = current.modeUpdate.catch(() => {}).then(async () => {
+                if (current.signal.aborted) { throw new Error("Permission mode update cancelled"); }
+                let timeout;
+                try {
+                    await Promise.race([
+                        current.query.setPermissionMode(params.mode),
+                        new Promise((resolve, reject) => {
+                            timeout = setTimeout(() => reject(new Error("Permission mode update timed out")), 10000);
+                        })
+                    ]);
+                } finally {
+                    clearTimeout(timeout);
+                }
+            });
+            try {
+                await current.modeUpdate;
+            } catch (err) {
+                // A stale, more permissive SDK mode must not continue after
+                // the user chose a different mode in the panel.
+                current.controller.abort();
+                throw err;
+            }
+        }
     }
     return { success: true };
 };
@@ -1099,11 +1129,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // tool_use id → SDK tool name, so a tool_result can be interpreted in the
     // light of which tool produced it (see the AskUserQuestion note below).
     const _toolUseIdToName = {};
-    // Set true once the user clicks "Allow & Switch to Edit Mode" on a
-    // plan-mode write confirmation. Subsequent Edit/Write attempts in the same
-    // turn skip the prompt and use the cached "allow" decision so a multi-edit
-    // turn doesn't pop a dialog before every edit.
-    let _planExitApprovedThisTurn = false;
+    const _savedPlanToolIds = new Set();
     // Live preview nudge bookkeeping, per request so each new user prompt
     // re-arms it. _lpPendingEdits counts live-preview-related edits since the
     // model last inspected the preview; _lpNudgeCount enforces the hard cap.
@@ -1196,13 +1222,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // rather than seeing a literal []. Each sendPrompt rebuilds this
     // list, so adding/removing in the UI takes effect on the next turn.
     const _cwdForValidation = projectPath || process.cwd();
-    // Where Edit/Write may land without asking: the project, any extra
-    // directories the user attached, and scratch space. Anything else gets
-    // the permission card — the same "write outside the working directory?"
-    // check Claude Code makes on its own, which the Write/Edit entries in
-    // allowedTools would otherwise skip. Seen in the wild: after
-    // `mkdir -p notes-app` in the project, the model wrote the files to
-    // /home/<user>/notes-app and nobody was asked.
+    // AI Edit Mode permits edits within the project, attached directories
+    // and scratch space. Other paths need its manual permission card.
+    // Auto leaves file permission decisions to the SDK instead.
     function _isOutsideWriteRoots(filePath) {
         if (!filePath || !path.isAbsolute(filePath) || _isAiScratchPath(filePath)) {
             return false;
@@ -1214,9 +1236,27 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             return target === r || target.startsWith(r + path.sep);
         });
     }
+    /**
+     * Wait for SDK mode changes before allowing a file hook to proceed.
+     * @param {string} [mode] Optional new mode, for an explicitly approved plan.
+     * @return {Promise<Object|null>} A hook denial on cancellation/failure, otherwise null.
+     */
+    async function _fileModeDenial(mode) {
+        try {
+            if (mode) { await exports.setPermissionMode({mode}); }
+            if (activeQuery && activeQuery.requestId === requestId) {
+                await activeQuery.modeUpdate;
+            }
+            if (!signal.aborted) { return null; }
+        } catch (err) {
+            _log("File permission mode update failed:", err.message);
+        }
+        return {hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny",
+            permissionDecisionReason: "Permission mode update failed or the query was cancelled."}};
+    }
     async function _denyUnlessOutsideWriteAllowed(toolName, toolInput, promptSignal) {
         const filePath = toolInput && toolInput.file_path;
-        if (_runtimePermissionMode === "bypassPermissions" || !_isOutsideWriteRoots(filePath)) {
+        if (_runtimePermissionMode !== "acceptEdits" || !_isOutsideWriteRoots(filePath)) {
             return null;
         }
         _log("Write outside project roots:", filePath);
@@ -1284,13 +1324,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             };
         }
         if (FILE_WRITE_TOOLS.indexOf(toolName) !== -1 && _runtimePermissionMode === "plan") {
-            // Plan mode entered mid-turn via EnterPlanMode: the Edit/Write
-            // hooks saw the query-start mode and passed the call through,
-            // so the CLI's own plan-mode block asks us. Same card as the
-            // hook path, same one-shot approval for the rest of the turn.
-            if (_planExitApprovedThisTurn) {
-                return { behavior: "allow", updatedInput: input };
-            }
+            // Fallback for file tools not intercepted by the Edit/Write hooks.
             const filePath = (input && input.file_path) || "";
             const approved = await _askPlanModeWriteConfirm(
                 requestId, toolName, filePath, promptSignal);
@@ -1301,8 +1335,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         "tool to propose your changes for approval before editing."
                 };
             }
-            _planExitApprovedThisTurn = true;
-            _runtimePermissionMode = "auto";
+            if (await _fileModeDenial("auto")) {
+                return {behavior: "deny", message: "Permission mode update failed or the query was cancelled."};
+            }
             return { behavior: "allow", updatedInput: input };
         }
         // Anything else the CLI wants a human decision on: Bash or a
@@ -1357,13 +1392,12 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             };
         }
         _log("Plan approved by user, continuing in this turn");
-        _planExitApprovedThisTurn = true;
         // The browser pushes the restored UI mode via setPermissionMode
         // before answering; only fill in if it hasn't. Auto (classifier
         // approved) is the landing mode after a plan — it suits the
         // implementation phase better than manual Edit Mode confirms.
-        if (_runtimePermissionMode === "plan") {
-            _runtimePermissionMode = "auto";
+        if (await _fileModeDenial(_runtimePermissionMode === "plan" ? "auto" : undefined)) {
+            return {behavior: "deny", message: "Permission mode update failed or the query was cancelled."};
         }
         return { behavior: "allow", updatedInput: input };
     }
@@ -1389,8 +1423,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         },
         // Permission allow-rules, not a tool availability list. Bash is
         // deliberately absent so that nothing here can pre-approve a shell
-        // command: every one is judged by the permission pipeline, and in
-        // Auto that means the SDK's classifier, whose "ask" verdicts reach
+        // command. Edit and Write are absent for the same reason: in Auto
+        // the SDK permission pipeline decides, and its "ask" verdicts reach
         // canUseTool below as the panel's Allow/Deny card. The CLI happens
         // to ignore a Bash allow rule anyway ("Ignoring dangerous permission
         // Bash(*) from cliArg (bypasses classifier)"), so leaving it out
@@ -1398,7 +1432,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         // uses the manual confirm in the Bash PreToolUse hook below, and
         // Allow Everything (bypassPermissions) skips permission checks.
         allowedTools: [
-            "Read", "Edit", "Write", "Glob", "Grep",
+            "Read", "Glob", "Grep",
             "AskUserQuestion", "Task", "Agent",
             // Background-subagent plumbing: lets the main agent relay a
             // user follow-up to a running subagent (SendMessage), read its
@@ -1496,7 +1530,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 {
                     matcher: "Edit",
                     hooks: [
-                        async (input) => {
+                        async (input, toolUseID) => {
                             if (_isAiScratchPath(input && input.tool_input && input.tool_input.file_path)) {
                                 return { hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "allow" } };
                             }
@@ -1523,10 +1557,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         fs.mkdirSync(dir, { recursive: true });
                                     }
                                     fs.writeFileSync(input.tool_input.file_path, content, "utf8");
+                                    _savedPlanToolIds.add(toolUseID || input.tool_use_id);
                                     _lastPlanContent = content;
                                     console.log("[Phoenix AI] Captured plan edit content:", content.length + "ch");
                                 } catch (err) {
                                     console.warn("[Phoenix AI] Failed to edit plan file:", err.message);
+                                    return {hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny",
+                                        permissionDecisionReason: "Could not save the plan file: " + err.message}};
                                 }
                                 const planReason = "Plan file updated." + _clarificationHintFor(input);
                                 return {
@@ -1537,18 +1574,19 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const modeDenial = await _fileModeDenial();
+                            if (modeDenial) { return modeDenial; }
+                            const checkedMode = _runtimePermissionMode;
+                            let planWriteApproved = false;
                             const outsideDenial = await _denyUnlessOutsideWriteAllowed(
                                 "Edit", input.tool_input, signal);
                             if (outsideDenial) {
                                 return outsideDenial;
                             }
-                            // Plan mode + user-file Edit: ask the user whether
-                            // to switch to Edit Mode. Mirrors the Bash confirm
-                            // pattern (matcher: "Bash"). Once approved, the
-                            // _planExitApprovedThisTurn flag suppresses the
-                            // prompt for subsequent edits in the same turn.
+                            // Read the current mode, not the query-start mode:
+                            // approving a plan returns subsequent edits to Auto.
                             const filePath = input.tool_input.file_path;
-                            if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
+                            if (_runtimePermissionMode === "plan") {
                                 const approved = await _askPlanModeWriteConfirm(
                                     requestId, "Edit", filePath, signal);
                                 if (!approved) {
@@ -1562,15 +1600,18 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         }
                                     };
                                 }
-                                _planExitApprovedThisTurn = true;
+                                const switchDenial = await _fileModeDenial("auto");
+                                if (switchDenial) { return switchDenial; }
+                                planWriteApproved = true;
                             }
                             // New flow: flush dirty buffer to disk so SDK reads
                             // the latest content, capture pre-edit content for
-                            // snapshot tracking, then return {} (or "allow" if
-                            // we're auto-exiting plan mode) so SDK runs native
+                            // snapshot tracking, then let the SDK run native
                             // Edit on disk. Its mtime/read tracker stays
                             // consistent and the next Edit won't trip the
-                            // "modified since read" safety check.
+                            // "modified since read" safety check. This saves the
+                            // user's existing buffer, not the AI's proposed edit.
+                            // The SDK can still deny the prepared edit in Auto.
                             const oldString = input.tool_input.old_string;
                             let captured = { content: "" };
                             try {
@@ -1600,11 +1641,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const finalModeDenial = await _fileModeDenial();
+                            if (finalModeDenial) { return finalModeDenial; }
                             editCount++;
-                            // In plan mode, after the user approved the
-                            // confirmation prompt, we need an explicit "allow"
-                            // to override the SDK's default plan-mode block.
-                            if (permissionMode === "plan") {
+                            // A plan confirmation approves this exact call only.
+                            // Otherwise only AI Edit Mode pre-approves after its
+                            // guard. A mode change during prep must not skip it.
+                            if (planWriteApproved ||
+                                (checkedMode === "acceptEdits" && _runtimePermissionMode === "acceptEdits")) {
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
@@ -1642,7 +1686,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 {
                     matcher: "Write",
                     hooks: [
-                        async (input) => {
+                        async (input, toolUseID) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
                             if (_isAiScratchPath(input && input.tool_input && input.tool_input.file_path)) {
                                 // The daily sweep may have removed the folder; it comes back for the write.
@@ -1657,18 +1701,21 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             const writePath = input.tool_input.file_path || "";
                             const normalizedPath = writePath.replace(/\\/g, "/");
                             if (normalizedPath.includes("/.claude/plans/")) {
-                                _lastPlanContent = input.tool_input.content || "";
-                                console.log("[Phoenix AI] Captured plan content:",
-                                    _lastPlanContent.length + "ch");
+                                const planContent = input.tool_input.content || "";
                                 // Write to disk so Claude can read it back later
                                 try {
                                     const dir = path.dirname(writePath);
                                     if (!fs.existsSync(dir)) {
                                         fs.mkdirSync(dir, { recursive: true });
                                     }
-                                    fs.writeFileSync(writePath, input.tool_input.content || "", "utf8");
+                                    fs.writeFileSync(writePath, planContent, "utf8");
+                                    _savedPlanToolIds.add(toolUseID || input.tool_use_id);
+                                    _lastPlanContent = planContent;
+                                    console.log("[Phoenix AI] Captured plan content:", planContent.length + "ch");
                                 } catch (err) {
                                     console.warn("[Phoenix AI] Failed to write plan file:", err.message);
+                                    return {hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny",
+                                        permissionDecisionReason: "Could not save the plan file: " + err.message}};
                                 }
                                 const planReason = "Plan file saved." + _clarificationHintFor(input);
                                 return {
@@ -1679,6 +1726,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const modeDenial = await _fileModeDenial();
+                            if (modeDenial) { return modeDenial; }
+                            const checkedMode = _runtimePermissionMode;
+                            let planWriteApproved = false;
                             const outsideDenial = await _denyUnlessOutsideWriteAllowed(
                                 "Write", input.tool_input, signal);
                             if (outsideDenial) {
@@ -1687,7 +1738,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // Plan mode + user-file Write: same confirmation
                             // path as Edit. See Edit hook above for rationale.
                             const filePath = input.tool_input.file_path;
-                            if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
+                            if (_runtimePermissionMode === "plan") {
                                 const approved = await _askPlanModeWriteConfirm(
                                     requestId, "Write", filePath, signal);
                                 if (!approved) {
@@ -1701,19 +1752,24 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         }
                                     };
                                 }
-                                _planExitApprovedThisTurn = true;
+                                const switchDenial = await _fileModeDenial("auto");
+                                if (switchDenial) { return switchDenial; }
+                                planWriteApproved = true;
                             }
                             // Mirror Edit: flush dirty buffer, capture pre-write
-                            // content, return {} (or "allow" in plan mode) so
-                            // SDK writes natively.
+                            // content, and leave Auto's permission decision to
+                            // the SDK before it writes natively.
                             try {
                                 await nodeConnector.execPeer("saveBufferToDisk", { filePath });
                                 await nodeConnector.execPeer("captureFileContent", { filePath });
                             } catch (err) {
                                 console.warn("[Phoenix AI] Write prep failed:", filePath, err.message);
                             }
+                            const finalModeDenial = await _fileModeDenial();
+                            if (finalModeDenial) { return finalModeDenial; }
                             editCount++;
-                            if (permissionMode === "plan") {
+                            if (planWriteApproved ||
+                                (checkedMode === "acceptEdits" && _runtimePermissionMode === "acceptEdits")) {
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
@@ -1890,6 +1946,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     matcher: "ExitPlanMode",
                     hooks: [
                         async () => {
+                            // The native tool also changes modes. Re-apply the
+                            // panel's mode after it runs, before the next tool.
+                            if (await _fileModeDenial(_runtimePermissionMode)) { return {}; }
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PostToolUse",
@@ -2162,10 +2221,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     try {
         _log("Query start:", JSON.stringify(prompt).slice(0, 80), "cwd=" + (projectPath || "?"));
 
-        // Build prompt: multi-modal with images, or plain string
-        let sdkPrompt = prompt;
+        // Build the text and optional image blocks for the user message.
+        const contentBlocks = [{ type: "text", text: prompt }];
         if (images && images.length > 0) {
-            const contentBlocks = [{ type: "text", text: prompt }];
             images.forEach(function (img, idx) {
                 // Infer media type from base64 header if missing
                 let mediaType = img.mediaType;
@@ -2189,20 +2247,25 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     source: { type: "base64", media_type: mediaType, data: img.base64Data }
                 });
             });
-            sdkPrompt = (async function* () {
-                yield {
-                    type: "user",
-                    session_id: currentSessionId || "",
-                    message: { role: "user", content: contentBlocks },
-                    parent_tool_use_id: null
-                };
-            }());
         }
+        // Streaming input enables SDK control requests, including permission
+        // mode changes, for text-only turns as well as image turns.
+        const sdkPrompt = (async function* () {
+            yield {
+                type: "user",
+                session_id: currentSessionId || "",
+                message: { role: "user", content: contentBlocks },
+                parent_tool_use_id: null
+            };
+        }());
 
+        queryOptions.permissionMode = _runtimePermissionMode;
         const result = queryFn({
             prompt: sdkPrompt,
             options: queryOptions
         });
+        activeQuery = {requestId, query: result, signal, controller: currentAbortController,
+            modeUpdate: Promise.resolve()};
 
         let accumulatedText = "";
         let lastStreamTime = 0;
@@ -2688,10 +2751,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // stopped the turn, which is not a failure either.
                             const resultToolName = _toolUseIdToName[block.tool_use_id];
                             const isAnsweredByDeny = resultToolName === "AskUserQuestion";
+                            // Successful intercepted plan writes also use deny as
+                            // transport. Do not depend on the CLI's error wording.
+                            const planFileSaved = _savedPlanToolIds.delete(block.tool_use_id);
                             nodeConnector.triggerPeer("aiToolResult", {
                                 requestId: requestId,
                                 toolId: counterId,
-                                isError: !!block.is_error && !isAnsweredByDeny,
+                                isError: !!block.is_error && !isAnsweredByDeny && !planFileSaved,
+                                planFileSaved: planFileSaved,
                                 imageSearch: ["mcp__phoenix-editor__searchImages", "mcp__phoenix-editor__previewImages",
                                     "mcp__phoenix-editor__useImage"]
                                     .includes(resultToolName) ?
@@ -2789,5 +2856,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             sessionId: currentSessionId,
             sessionTitle: await _getAISessionTitle(currentSessionId, projectPath)
         });
+    } finally {
+        if (activeQuery && activeQuery.requestId === requestId) {
+            activeQuery = null;
+        }
     }
 }
