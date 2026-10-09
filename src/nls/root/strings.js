@@ -3141,6 +3141,7 @@ define({
     "LIVE_DEV_AI_CHAT_SOURCE": "{0}:{1}",
     "LIVE_DEV_AI_CHAT_SOURCE_UNAVAILABLE": "Source location unavailable",
 
+    "AI_CHAT_SCREENSHOT_TITLE": "Take Screenshot",
     "AI_CHAT_SCREENSHOT_LIVE_PREVIEW": "Live Preview screenshot",
     "AI_CHAT_SCREENSHOT_AREA": "Area screenshot\u2026",
     "AI_CHAT_SCREENSHOT_SELECTED_ELEMENT": "Live Preview selection screenshot",
