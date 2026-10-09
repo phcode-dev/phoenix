@@ -256,8 +256,11 @@ function _registerAnswer(kind, signal) {
 }
 
 /**
- * Deliver a browser answer to the matching pending card (by confirmId, else
- * the oldest card of that kind). Returns false if nothing was waiting.
+ * Deliver an answer by confirmId, or to the oldest card only when no ID is supplied.
+ * An expired ID must never answer a newer question or permission request.
+ * @param {string} kind Card category.
+ * @param {Object} params Answer payload with an optional confirmId.
+ * @return {boolean} Whether a matching pending card accepted the answer.
  */
 function _resolveAnswer(kind, params) {
     const bucket = _pendingAnswers[kind];
@@ -267,10 +270,10 @@ function _resolveAnswer(kind, params) {
     let resolve;
     if (params && params.confirmId !== undefined) {
         resolve = bucket.get(params.confirmId);
-    }
-    if (!resolve) {
+    } else {
         resolve = bucket.values().next().value;
     }
+    if (!resolve) { return false; }
     resolve(params || {});
     return true;
 }
@@ -318,16 +321,28 @@ async function _askPlanModeWriteConfirm(requestId, toolName, filePath, signal) {
 
 /**
  * Show the AskUserQuestion card in the browser and wait for the answers.
- * Resolves the browser's {answers} payload, or null on abort.
+ * Close that card when the SDK ends its wait; timeout policy belongs to the SDK.
+ * @param {string} requestId Owning query ID.
+ * @param {Array<Object>} questions Questions supplied by Claude.
+ * @param {AbortSignal} signal SDK question or query cancellation signal.
+ * @return {Promise<Object|null>} The browser's answers, or null on cancellation.
  */
 async function _askUserQuestions(requestId, questions, signal) {
+    if (signal.aborted) { return null; }
     const pending = _registerAnswer("question", signal);
     nodeConnector.triggerPeer("aiQuestion", {
         requestId: requestId,
         confirmId: pending.id,
         questions: questions
     });
-    return pending.promise;
+    try {
+        return await pending.promise;
+    } finally {
+        nodeConnector.triggerPeer("aiQuestionClosed", {
+            requestId: requestId,
+            confirmId: pending.id
+        });
+    }
 }
 
 /**
@@ -1838,11 +1853,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 {
                     matcher: "AskUserQuestion",
                     hooks: [
-                        async (input) => {
+                        async (input, _toolUseID, options) => {
                             console.log("[Phoenix AI] Intercepted AskUserQuestion");
                             const questions = input.tool_input.questions || [];
-                            // Wait for the user's answer from the browser UI
-                            const answer = await _askUserQuestions(requestId, questions, signal);
+                            // The hook may expire while the query continues. Follow its
+                            // cancellation as well as Stop, without adding a UI timer.
+                            const questionSignal = options && options.signal
+                                ? AbortSignal.any([signal, options.signal]) : signal;
+                            const answer = await _askUserQuestions(requestId, questions, questionSignal);
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",

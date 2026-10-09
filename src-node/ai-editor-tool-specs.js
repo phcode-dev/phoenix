@@ -608,6 +608,9 @@ function getEditorToolSpecs(peerCall, options = {}) {
         "description, allowedValues if any, and the resolved scope of the current value).\n" +
         "- get: Same fields for a single preference id.\n" +
         "- set: Write a value into a specific scope. Calls PreferencesManager.save() after.\n\n" +
+        "This is the running editor's preference registry, not its documentation. If the user " +
+        "asks you to look something up in the Phoenix docs, use editorDocs and read the relevant " +
+        "documentation before answering; this tool can supplement it with current values.\n\n" +
         "Scope hierarchy (highest precedence wins on read): session → project → user → default.\n" +
         "- default: built-in fallback declared by definePreference in source. READ-ONLY.\n" +
         "- user: the user's global settings (persisted across all projects). User-friendly name " +
@@ -874,8 +877,11 @@ function getEditorToolSpecs(peerCall, options = {}) {
         "Fetch with WebFetch.\n" +
         "- sourceRepoURL: GitHub repo for source-level lookups when the API docs don't cover " +
         "something. Use WebFetch on raw.githubusercontent.com URLs to read individual files.\n\n" +
-        "Call this once near the start of any non-trivial editor-control task, then Read / " +
-        "Grep / WebFetch into the surfaces it returns.",
+        "When the user asks for a Phoenix documentation lookup, call this tool and then read " +
+        "the relevant returned source with Read / Grep / WebFetch before answering. Calling " +
+        "this locator alone does not consult the documentation. If the source cannot be read, " +
+        "say so and distinguish any fallback evidence. Also call this once near the start " +
+        "of any non-trivial editor-control task, then read the relevant reference.",
         {},
         async function () {
             let apiDocsAvailable = false;
