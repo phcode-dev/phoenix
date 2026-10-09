@@ -4768,11 +4768,11 @@
         justify-content: center;
         flex-shrink: 0;
         align-self: stretch;
-        border-radius: 7px 0 0 7px;
         opacity: 0.5;
         transition: opacity 0.15s ease, color 0.15s ease;
 
-        &:hover {
+        &:hover,
+        &[aria-expanded="true"] {
             opacity: 1;
             color: @project-panel-text-1;
         }
@@ -4801,30 +4801,6 @@
 
         &:disabled {
             cursor: not-allowed;
-        }
-    }
-
-    .ai-screenshot-btn {
-        background: none;
-        border: none;
-        color: @project-panel-text-2;
-        width: 28px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        align-self: stretch;
-        opacity: 0.5;
-        transition: opacity 0.15s ease, color 0.15s ease;
-
-        &:hover {
-            opacity: 1;
-            color: @project-panel-text-1;
-        }
-
-        i {
-            font-size: @ai-text-body;
         }
     }
 
@@ -4882,7 +4858,6 @@
         }
     }
 
-    .ai-screenshot-dropup,
     .ai-attach-dropup {
         position: fixed;
         background: @bc-ai-input-bg;
@@ -4893,7 +4868,12 @@
         z-index: 100;
         min-width: 200px;
 
-        .ai-screenshot-option,
+        .ai-attach-divider {
+            height: 1px;
+            margin: 4px 0;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         .ai-attach-option {
             padding: 8px 12px;
             cursor: pointer;
@@ -4906,6 +4886,16 @@
 
             &:hover {
                 background: rgba(255, 255, 255, 0.08);
+            }
+
+            // Nothing to capture right now (e.g. no Live Preview selection).
+            &.disabled {
+                opacity: 0.45;
+                cursor: default;
+
+                &:hover {
+                    background: none;
+                }
             }
 
             i {
@@ -4957,13 +4947,21 @@
             }
         }
 
-        .ai-screenshot-cancel-btn {
+        .ai-screenshot-cancel-btn,
+        .ai-screenshot-fit-btn {
             background: rgba(255, 255, 255, 0.12);
             color: #ccc;
 
             &:hover {
                 background: rgba(255, 255, 255, 0.2);
             }
+        }
+
+        // Whole-window / smaller-area toggle: an icon-only button before Capture.
+        .ai-screenshot-fit-btn {
+            display: flex;
+            align-items: center;
+            padding: 4px 9px;
         }
     }
 }
