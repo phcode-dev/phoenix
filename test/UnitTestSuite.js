@@ -167,6 +167,7 @@ define(function (require, exports, module) {
     require("spec/AIImageTools-test");
     require("spec/AICliConnector-test");
     require("spec/AIModelEffort-test");
+    require("spec/AIFilePermissions-test");
     // pro test suite optional components
     require("./pro-test-suite");
     // todo TEST_MODERN
