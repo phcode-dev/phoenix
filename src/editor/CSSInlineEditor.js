@@ -56,56 +56,12 @@ define(function (require, exports, module) {
      * @private
      */
     function _getSelectorName(editor, pos) {
-        var tagInfo = HTMLUtils.getTagInfo(editor, pos),
-            selectorName = "",
-            reason;
+        var tagInfo = HTMLUtils.getTagInfo(editor, pos);
 
-        if (tagInfo.position.tokenType === HTMLUtils.TAG_NAME || tagInfo.position.tokenType === HTMLUtils.CLOSING_TAG) {
-            // Type selector
-            selectorName = tagInfo.tagName;
-        } else if (tagInfo.position.tokenType === HTMLUtils.ATTR_NAME ||
-                   tagInfo.position.tokenType === HTMLUtils.ATTR_VALUE) {
-            if (tagInfo.attr.name === "class") {
-                // Class selector. We only look for the class name
-                // that includes the insertion point. For example, if
-                // the attribute is:
-                //   class="error-dialog modal hide"
-                // and the insertion point is inside "modal", we want ".modal"
-                var attributeValue = tagInfo.attr.value;
-                if (/\S/.test(attributeValue)) {
-                    var startIndex = attributeValue.substr(0, tagInfo.position.offset).lastIndexOf(" ");
-                    var endIndex = attributeValue.indexOf(" ", tagInfo.position.offset);
-                    selectorName = "." +
-                        attributeValue.substring(
-                            startIndex === -1 ? 0 : startIndex + 1,
-                            endIndex === -1 ? attributeValue.length : endIndex
-                        );
+        const strategies = require('../JSUtils/SelectorStrategy.js');
+        const activeStrategy = strategies.find(s => s.isMatch(tagInfo.position.tokenType, tagInfo.attr.name));
 
-                    // If the insertion point is surrounded by space between two classnames, selectorName is "."
-                    if (selectorName === ".") {
-                        selectorName = "";
-                        reason = Strings.ERROR_CSSQUICKEDIT_BETWEENCLASSES;
-                    }
-                } else {
-                    reason = Strings.ERROR_CSSQUICKEDIT_CLASSNOTFOUND;
-                }
-            } else if (tagInfo.attr.name === "id") {
-                // ID selector
-                var trimmedVal = tagInfo.attr.value.trim();
-                if (trimmedVal) {
-                    selectorName = "#" + trimmedVal;
-                } else {
-                    reason = Strings.ERROR_CSSQUICKEDIT_IDNOTFOUND;
-                }
-            } else {
-                reason = Strings.ERROR_CSSQUICKEDIT_UNSUPPORTEDATTR;
-            }
-        }
-
-        return {
-            selectorName: selectorName,
-            reason: reason
-        };
+        return activeStrategy.extract(tagInfo);
     }
 
     /**

@@ -243,7 +243,7 @@ the "currentIndex" property index of the hint the cursor is on, may be
 
 ### session.getJavascriptText() ⇒ <code>String</code>
 Get the javascript text of the file open in the editor for this Session.
-For a javascript file, this is just the text of the file.  For an HTML file,
+For a javascript file, this is just the text of the file.  For an HTML/PHP file,
 this will be only the text in the script tags.  This is so that we can pass
 just the javascript text to tern, and avoid confusing it with HTML tags, since it
 only knows how to parse javascript.

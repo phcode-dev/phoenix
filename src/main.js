@@ -130,6 +130,7 @@ if(!Phoenix.isNativeApp) {
  */
 require.config({
     paths: {
+        "modal_builder": "src/JSUtils/ModalBuilder",
         "text": "thirdparty/text/text",
         "i18n": "thirdparty/i18n/i18n",
 
@@ -205,30 +206,11 @@ function applyStyles(element, styles) {
     Object.assign(element.style, styles);
 }
 function confirmReload(title, message) {
-    // vanilla js elements as we dont know if anything else is available in crash scenario
-    const modal = document.createElement('div');
-    const modalContent = document.createElement('div');
-    const modalTitle = document.createElement('h2');
-    const modalMessage = document.createElement('p');
-    const buttonsContainer = document.createElement('div'); // Container for buttons
-    const copyButton = document.createElement('button');
-    const getHelpButton = document.createElement('button');
-    const reloadButton = document.createElement('button');
+    const modalBuilder = new (require('modal_builder')())(document);
 
-    // Set content
-    modalTitle.textContent = title;
-    message.split('\n').forEach((part, index, array) => {
-        modalMessage.appendChild(document.createTextNode(part));
-        if (index < array.length - 1) { // Don't add a break on the last element
-            modalMessage.appendChild(document.createElement('br'));
-        }
-    });
-    copyButton.textContent = 'Copy Error';
-    getHelpButton.textContent = 'Get Help';
-    // In native apps, we can't reload because AES trust ring won't survive - must quit and restart manually
-    reloadButton.textContent = Phoenix.isNativeApp ? 'Quit App' : 'Restart App';
-    // Styling for visibility
-    // Define common styles for buttons
+    modalBuilder.addTitle(title, 'red');
+    modalBuilder.addMessage(message);
+
     const buttonStyles = {
         padding: '10px 20px',
         marginRight: '10px', // Space between buttons
@@ -243,8 +225,30 @@ function confirmReload(title, message) {
     const getHelpButtonStyles = {backgroundColor: '#4CAF50'};
     const reloadButtonStyles = {backgroundColor: '#4CAF50'};
 
-    modalTitle.style.color = 'red';
-    applyStyles(modal, {
+    modalBuilder.addButton(
+        'Copy Error',
+        {...buttonStyles, ...copyButtonStyles},
+        function() {
+            navigator.clipboard.writeText(message).then(() => {
+                alert('Error Message copied!');
+            }, (err) => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+    );
+    modalBuilder.addButton(
+        'Get Help',
+        {...buttonStyles, ...getHelpButtonStyles},
+        function() {
+            Phoenix.app.openURLInDefaultBrowser("https://github.com/phcode-dev/phoenix/discussions");
+        }
+    );
+    const reloadButton = modalBuilder.addButton(
+        Phoenix.isNativeApp ? 'Quit App' : 'Restart App',
+        {...buttonStyles, ...reloadButtonStyles}
+    );
+
+    modalBuilder.addStyle('modal', {
         color: 'black',
         position: 'fixed',
         top: '0',
@@ -258,7 +262,7 @@ function confirmReload(title, message) {
         alignItems: 'center'
     });
 
-    applyStyles(modalContent, {
+    modalBuilder.addStyle('content', {
         backgroundColor: 'white',
         padding: '20px',
         borderRadius: '10px',
@@ -266,37 +270,13 @@ function confirmReload(title, message) {
         boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
     });
 
-    applyStyles(buttonsContainer, {
+    modalBuilder.addStyle('buttons', {
         marginTop: '20px',
         display: 'flex',
         justifyContent: 'space-around'
     });
 
-    // Apply styles to buttons
-    applyStyles(copyButton, {...buttonStyles, ...copyButtonStyles});
-    applyStyles(getHelpButton, {...buttonStyles, ...getHelpButtonStyles});
-    applyStyles(reloadButton, {...buttonStyles, ...reloadButtonStyles});
-
-    // Event listeners for buttons
-    copyButton.onclick = function() {
-        navigator.clipboard.writeText(message).then(() => {
-            alert('Error Message copied!');
-        }, (err) => {
-            console.error('Failed to copy text: ', err);
-        });
-    };
-    getHelpButton.onclick = function() {
-        Phoenix.app.openURLInDefaultBrowser("https://github.com/phcode-dev/phoenix/discussions");
-    };
-
-    // Append children
-    modalContent.appendChild(modalTitle);
-    modalContent.appendChild(modalMessage);
-    buttonsContainer.appendChild(copyButton);
-    buttonsContainer.appendChild(getHelpButton);
-    buttonsContainer.appendChild(reloadButton);
-    modalContent.appendChild(buttonsContainer);
-    modal.appendChild(modalContent);
+    const modal = modalBuilder.build();
 
     // Append modal to the body
     document.body.appendChild(modal);
