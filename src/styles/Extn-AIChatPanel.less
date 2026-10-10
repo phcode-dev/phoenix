@@ -498,7 +498,7 @@
     gap: 12px;
     padding: 10px 12px;
     border-bottom: 1px solid rgba(128, 128, 128, 0.25);
-    h2 { margin: 0; font: inherit; font-weight: 600; overflow-wrap: anywhere; }
+    h2 { margin: 0; font: inherit; font-weight: 600; color: inherit; overflow-wrap: anywhere; }
 }
 .ai-rich-frame-heading { flex: 1; min-width: 0; }
 .ai-rich-frame-context { font-size: @ai-text-secondary; opacity: 0.65; margin-bottom: 4px; overflow-wrap: anywhere; }
@@ -2416,6 +2416,10 @@
             font-weight: 600;
         }
 
+        a {
+            color: #6b9eff;
+        }
+
         code {
             background-color: rgba(255, 255, 255, 0.08);
             color: @project-panel-text-1;
@@ -2485,7 +2489,7 @@
             color: @project-panel-text-2;
         }
 
-        h1, h2, h3, h4 {
+        h1, h2, h3, h4, h5, h6 {
             color: @project-panel-text-1;
             line-height: 1.25em;
         }
@@ -3999,7 +4003,7 @@
 
     // Heading top margin needs to be larger than paragraph margin so a
     // section header reads as a section header rather than another bullet.
-    h1, h2, h3, h4 {
+    h1, h2, h3, h4, h5, h6 {
         color: @project-panel-text-1;
         line-height: 1.25em;
     }
@@ -6707,6 +6711,7 @@
             font-size: @ai-text-body;
             font-weight: 600;
             font-variant-numeric: tabular-nums;
+            color: inherit;
         }
 
         span {
@@ -6922,6 +6927,7 @@
             font-size: @ai-text-body;
             font-weight: 600;
             font-variant-numeric: tabular-nums;
+            color: inherit;
         }
 
         span {
