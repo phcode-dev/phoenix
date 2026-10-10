@@ -2667,6 +2667,7 @@ define({
     "AI_CHAT_START_GREETING": "Hi {0},",
     "AI_CHAT_START_TITLE": "What are we building today?",
     "AI_CHAT_START_SURPRISE_TITLE": "Surprise Me",
+    "AI_CHAT_START_DISMISS_DEMO": "Dismiss demo",
     "AI_CHAT_START_SURPRISE_DESC": "Show me a demo of what you can do",
     "AI_CHAT_START_SURPRISE_CHOICE_DESC": "Watch another demo, or have me build something live",
     "AI_CHAT_START_MAKE_NEW": "Make something new",
