@@ -1632,7 +1632,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // letting the SDK fail with a generic "oldText not
                             // found". Phoenix sees the buffer state the SDK
                             // can't, so this is a more useful failure.
-                            if (oldString && (captured.content || "").indexOf(oldString) === -1) {
+                            // Native Read presents LF text even when the disk file uses CRLF.
+                            // Compare logical lines without changing the snapshot or SDK input.
+                            const contentToMatch = (captured.content || "").replace(/\r\n/g, "\n");
+                            const oldStringToMatch = oldString && oldString.replace(/\r\n/g, "\n");
+                            if (oldStringToMatch && contentToMatch.indexOf(oldStringToMatch) === -1) {
                                 const reason = "Edit FAILED: the text you wanted to replace is not " +
                                     "present in the file. It may have been modified by the user " +
                                     "or by another tool since you last read it. Read the file again " +

@@ -175,6 +175,30 @@ define(function (require, exports, module) {
             expect(result.promptMessages[0].message.content.map(item => item.type)).toEqual(["text", "image"]);
         });
 
+        ["\n", "\r\n"].forEach(function (lineEnding) {
+            it("accepts a multiline edit read from a " + (lineEnding === "\n" ? "LF" : "CRLF") +
+                " file", async function () {
+                const result = await exercise({mode: "auto", tool: "Edit",
+                    fileContent: ["body {", "    background: #000a2e;", "    overflow: hidden;", "}"].join(lineEnding),
+                    oldString: "body {\n    background: #000a2e;\n    overflow: hidden;"});
+                expect(result.decision).toEqual({});
+                expect(result.events).toEqual([]);
+            });
+        });
+
+        it("accepts CRLF edit text when the file uses LF", async function () {
+            const result = await exercise({mode: "auto", tool: "Edit",
+                fileContent: "body {\n    color: red;\n}\n", oldString: "body {\r\n    color: red;\r\n}"});
+            expect(result.decision).toEqual({});
+        });
+
+        it("still rejects changed text in a CRLF file instead of overlooking whitespace changes", async function () {
+            const result = await exercise({mode: "auto", tool: "Edit",
+                fileContent: "body {\r\n  color: red;\r\n}\r\n", oldString: "body {\n    color: red;\n}"});
+            expect(result.decision.hookSpecificOutput.permissionDecision).toBe("deny");
+            expect(result.decision.hookSpecificOutput.permissionDecisionReason).toContain("modified by the user");
+        });
+
         it("Auto still rejects an edit that no longer matches the current buffer", async function () {
             const result = await exercise({mode: "auto", tool: "Edit", stale: true});
             expect(result.decision.hookSpecificOutput.permissionDecision).toBe("deny");

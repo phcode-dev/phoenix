@@ -12,7 +12,7 @@ const NodeConnector = require("../node-connector");
 /**
  * Exercise one bounded permission scenario with a fake SDK and browser connector.
  * No installed CLI, network, credentials, user files or global agent state are used.
- * @param {Object} params Mode, tool, target category and optional mode/answer scenario.
+ * @param {Object} params Mode, tool, target category and optional mode/answer scenario or edit text.
  * @return {Promise<Object>} Hook decisions, SDK options and observed browser operations.
  */
 async function exercise(params) {
@@ -50,7 +50,9 @@ async function exercise(params) {
                 switchedDuringPrep = true;
                 await exported.setPermissionMode({mode: params.switchDuringPrep});
             }
-            return name === "captureFileContent" ? {content: params.stale ? "changed" : "before"} : {};
+            return name === "captureFileContent" ? {
+                content: params.fileContent !== undefined ? params.fileContent : (params.stale ? "changed" : "before")
+            } : {};
         },
         triggerPeer: function (name, data) {
             events.push({name, data});
@@ -158,7 +160,8 @@ async function exercise(params) {
                 await postExit.hooks[0]();
             }
         }
-        const toolInput = {file_path: filePath, content: "after", old_string: "before", new_string: "after"};
+        const toolInput = {file_path: filePath, content: "after",
+            old_string: params.oldString !== undefined ? params.oldString : "before", new_string: "after"};
         const hook = options.hooks.PreToolUse.find(entry => entry.matcher === tool).hooks[0];
         const decision = await Promise.race([
             hook({tool_name: tool, tool_input: toolInput}, "fixture-tool", {}), deadline
