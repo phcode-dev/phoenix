@@ -828,8 +828,10 @@ define(function (require, exports, module) {
     diagnosticsSubmenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
     CommandManager.register(Strings.CMD_BUILD_TESTS, DEBUG_BUILD_TESTS, TestBuilder.toggleTestBuilder, { supportsDesignMode: true });
     diagnosticsSubmenu.addMenuItem(DEBUG_BUILD_TESTS);
-    if (AppConfig.config.environment === "dev") {
+    if (CommandManager.get("debug.phoenixBuilderConnect")) {
         diagnosticsSubmenu.addMenuItem("debug.phoenixBuilderConnect");
+    }
+    if (AppConfig.config.environment === "dev") {
         diagnosticsSubmenu.addMenuItem("debug.debugOverrides");
     }
     diagnosticsSubmenu.addMenuDivider();

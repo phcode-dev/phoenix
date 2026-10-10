@@ -25,7 +25,12 @@ define(function (require, exports, module) {
     const SystemConfigOverride = require("utils/SystemConfigOverride"),
         AppInit                = require("utils/AppInit"),
         StatusBar              = require("widgets/StatusBar"),
-        BuilderStrings         = require("strings");
+        CommandManager         = require("command/CommandManager"),
+        Dialogs                = require("widgets/Dialogs"),
+        Strings                = require("strings"),
+        Mustache               = require("thirdparty/mustache/mustache"),
+        PhoenixBuilderClient   = require("./phoenix-builder-client"),
+        BuilderConnectTemplate = require("text!./builder-connect-dialog.html");
 
     // Where the boot script looks to decide whether a non dev build may be
     // instrumented, see phoenix-builder-boot.js.
@@ -101,13 +106,13 @@ define(function (require, exports, module) {
         if (!boot || !boot.setConnectionListener) {
             return;
         }
-        const $indicator = $("<div></div>").text(BuilderStrings.STATUSBAR_MCP_CONTROLLED);
+        const $indicator = $("<div></div>").text(Strings.STATUSBAR_MCP_CONTROLLED);
         let shown = false;
         boot.setConnectionListener(function (connected) {
             if (connected && !shown) {
                 StatusBar.addIndicator(STATUS_INDICATOR_ID, $indicator, true,
                     "mcp-controlled-indicator",
-                    BuilderStrings.STATUSBAR_MCP_CONTROLLED_TOOLTIP);
+                    Strings.STATUSBAR_MCP_CONTROLLED_TOOLTIP);
                 shown = true;
             } else if (!connected && shown) {
                 StatusBar.updateIndicator(STATUS_INDICATOR_ID, false);
@@ -121,17 +126,10 @@ define(function (require, exports, module) {
         _watchInstrumentationState();
     });
 
-    // Only register the command in dev builds
-    if (!window.AppConfig || AppConfig.config.environment !== "dev") {
+    // Production boot creates the Builder only when enabled with today's admin permission.
+    if (!window.AppConfig || (AppConfig.config.environment !== "dev" && !window._phoenixBuilder)) {
         return;
     }
-
-    const CommandManager       = require("command/CommandManager"),
-        Dialogs              = require("widgets/Dialogs"),
-        Strings              = require("strings"),
-        Mustache             = require("thirdparty/mustache/mustache"),
-        PhoenixBuilderClient = require("./phoenix-builder-client"),
-        BuilderConnectTemplate = require("text!./builder-connect-dialog.html");
 
     const COMMAND_ID = "debug.phoenixBuilderConnect";
     const DEFAULT_WS_URL = "ws://localhost:38571";
