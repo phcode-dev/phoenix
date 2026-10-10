@@ -1776,8 +1776,7 @@
     }
 }
 
-/* Surprise Me on the sign-in screen: the start screen's hero card, there
-   playing a recorded build for someone who cannot use the panel yet. */
+/* Preview a recorded build before signing in. */
 .ai-see-demo-card {
     display: flex;
     align-items: center;
@@ -1825,11 +1824,6 @@
         font-size: @ai-text-secondary;
         color: @project-panel-text-2;
         margin-top: 1px;
-    }
-
-    .ai-see-demo-chevron {
-        font-size: 11px;
-        color: fade(@project-panel-text-2, 60%);
     }
 }
 
@@ -5401,6 +5395,43 @@
     .ai-intro-video-thumb {
         max-width: none;
         max-height: none;
+    }
+}
+
+// Keep both sign-in actions visible when the illustration exceeds the available height.
+.ai-signin {
+    .ai-welcome-carousel {
+        flex-shrink: 1;
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+
+    .ai-placeholder-body {
+        flex-shrink: 0;
+    }
+}
+
+.ai-chat-panel .ai-placeholder .ai-signin-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    margin-top: 4px;
+
+    > .ai-placeholder-cta,
+    > .ai-see-demo-card {
+        width: auto;
+        min-width: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .ai-see-demo-name {
+        overflow-wrap: anywhere;
     }
 }
 
