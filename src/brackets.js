@@ -214,6 +214,9 @@ define(function (require, exports, module) {
     require("JSUtils/Session");
     require("JSUtils/ScopeManager");
 
+    // Shared setup policy/UI is lightweight; the language server clients themselves stay lazy.
+    require("languageTools/LSPInstallSupport");
+
     // Language Tools (LSP) are desktop-only and loaded lazily by languageTools/LSPClient the
     // first time a language server is started, so they are intentionally not required at boot.
 

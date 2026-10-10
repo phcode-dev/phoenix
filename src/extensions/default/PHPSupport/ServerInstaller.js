@@ -26,11 +26,11 @@
  * pinned version is npm-installed AUTOMATICALLY on the first php file opened (autoInstall) from
  * the public registry into the app-data directory (the user's machine acquires it locally - the
  * license's intended use). Installation runs as a status-bar TASK (TaskManager) whose popup is
- * opened so the download is always visible, with a stop (x) icon to cancel (cancel = no retry
- * until the next app launch; the master pref is the durable opt-out). It uses the bundled npm
+ * opened so the download is always visible, with a stop (x) icon to cancel (automatic setup runs at most once
+ * per day; manual retry is always available). It uses the bundled npm
  * via the existing node plumbing (NodeUtils._npmInstallInFolder) - no system npm or PHP runtime
  * needed. Offline is a non-event: install silently waits for connectivity. Real failures roll
- * back the partial tree, turn the task red (with a retry icon) and raise a toast. Works
+ * back the partial tree, leave a failed task with manual retry and copyable error details. Works
  * identically on Windows, macOS and Linux (no shell, no .bin shims).
  *
  * Layout under <appSupport>/lspServers/intelephense/:
@@ -48,11 +48,10 @@ define(function (require, exports, module) {
 
 
     const NodeUtils = brackets.getModule("utils/NodeUtils"),
-        NotificationUI = brackets.getModule("widgets/NotificationUI"),
+        LSPInstallSupport = brackets.getModule("languageTools/LSPInstallSupport"),
         TaskManager = brackets.getModule("features/TaskManager"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         Metrics = brackets.getModule("utils/Metrics"),
-        StringUtils = brackets.getModule("utils/StringUtils"),
         Strings = brackets.getModule("strings");
 
     // Exact tested pin - never a range. The authoritative value lives in src/config.json
@@ -68,10 +67,11 @@ define(function (require, exports, module) {
     }
     const INTELEPHENSE_VERSION = _PINS.intelephense || "1.18.5";
     const PREF_PHP_CODE_INTELLIGENCE = "codeIntelligence.php";
+    const installSupport = LSPInstallSupport.create("php", Strings.PHP_INSTALL_TITLE,
+        "<i class='fa-brands fa-php'></i>");
 
     let _onInstalled = null;        // main.js callback: ({entryPath, upgraded}) => void
     let _inFlight = null;           // single-flight install promise
-    let _cancelledThisSession = false;  // user hit the task's stop icon - no retry until relaunch
     let _cancelRequested = false;   // stop clicked while an install is in flight
     let _activeNpmInstall = null;   // cancellable handle of the in-flight npm install
     let _onlineRetryArmed = false;  // one-shot window "online" retry listener armed
@@ -174,24 +174,24 @@ define(function (require, exports, module) {
         }, { once: true });
     }
 
-    // Real-failure surface (in addition to the red task): the user learns setup failed even with
-    // the Tasks popup closed.
-    function _showFailureToast(message) {
-        const $tpl = $("<div>").text(message);
-        NotificationUI.createToastFromTemplate(Strings.PHP_INSTALL_TITLE, $tpl, {
-            dismissOnClick: true,
-            toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUBTLE,
-            autoCloseTimeS: 30,
-            instantOpen: true
-        });
-    }
-
-    async function _doInstall() {
+    /**
+     * Acquire the pinned server, optionally replacing a damaged installation.
+     * @param {boolean} repair Whether to remove the old installation before checking its state.
+     * @return {Promise<?Object>} Installed server details, or null after a handled failure.
+     */
+    async function _doInstall(repair) {
+        if (repair) {
+            installSupport.recordAttempt();
+            await Phoenix.VFS.unlinkAsync(_installDirVfs()).catch(function () {});
+        }
         const state = await installedState();
         if (state.installed && state.pinMatches) {
             return { entryPath: getEntryPlatformPath(), upgraded: false };
         }
         const upgrading = state.installed;
+        if (!repair) {
+            installSupport.recordAttempt();
+        }
         _cancelRequested = false;
         // Status-bar task whose popup is OPENED for every install - with no consent dialog
         // anymore, visibility is the transparency: the user must be able to see any download we
@@ -200,7 +200,6 @@ define(function (require, exports, module) {
             "<i class='fa-brands fa-php'></i>", {
                 progressPercent: 5,
                 onStopClick: function () {
-                    _cancelledThisSession = true;   // no auto-retry until the next app launch
                     _cancelRequested = true;
                     if (_activeNpmInstall) {
                         _activeNpmInstall.cancel().catch(function () {});
@@ -258,7 +257,7 @@ define(function (require, exports, module) {
             }
             if (_isNetworkError(err) || !navigator.onLine) {
                 // QUIET path: offline is normal life, not an error. Retry when connectivity
-                // returns (same session) or on the next launch.
+                // returns, subject to the same daily limit.
                 Metrics.countEvent("lsp", "phpInst", "waitNet");
                 task.setMessage(Strings.PHP_INSTALL_WAITING_NETWORK);
                 setTimeout(task.close, 4000);
@@ -268,12 +267,7 @@ define(function (require, exports, module) {
             console.error("[PHPSupport] install failed", err);
             Metrics.countEvent("lsp", "phpInst", "fail");
             window.logger && window.logger.reportError(err, "[PHPSupport] LSP install failed");
-            task.setFailed();
-            task.setMessage(StringUtils.format(Strings.PHP_INSTALL_FAILED, message));
-            task.showRestartIcon();
-            task.show();
-            _showFailureToast(StringUtils.format(Strings.PHP_INSTALL_FAILED, message));
-            setTimeout(task.close, 30000);
+            installSupport.showFailure(task, err);
             return null;
         } finally {
             _activeNpmInstall = null;
@@ -283,13 +277,14 @@ define(function (require, exports, module) {
     /**
      * Install (or upgrade) now - single-flighted. On success, notifies the onInstalled callback so
      * the language server can start immediately.
+     * @param {boolean} [repair=false] Remove the existing installation before setup.
      * @return {Promise<?{entryPath: string, upgraded: boolean}>} null on failure
      */
-    function installNow() {
+    function _startInstall(repair = false) {
         if (_inFlight) {
             return _inFlight;
         }
-        _inFlight = _doInstall().then(function (result) {
+        _inFlight = _doInstall(repair).then(function (result) {
             if (result && _onInstalled) {
                 _onInstalled(result);
             }
@@ -301,12 +296,20 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Start a user-requested installation, regardless of the daily automatic limit.
+     * @return {Promise<?Object>} Installed server details, or null on failure.
+     */
+    function installNow() {
+        return _startInstall();
+    }
+
+    /**
      * Auto-install without any consent UI - the status-bar task (opened popup, stop icon) is the
      * announcement. Guards, in order:
      *  - never in test windows (suites call installNow() explicitly; opening a .php fixture must
      *    not start surprise downloads),
      *  - master pref false = durable opt-out,
-     *  - user cancelled this session = wait for the next launch,
+     *  - today's attempt already ran = leave a quiet task with a manual install action,
      *  - offline = wait silently for connectivity (one-shot window "online" retry).
      * @return {Promise<?{entryPath: string, upgraded: boolean}>} null when skipped/failed
      */
@@ -314,8 +317,14 @@ define(function (require, exports, module) {
         if (typeof Phoenix !== "undefined" && Phoenix.isTestWindow) {
             return Promise.resolve(null);
         }
-        if (_cancelledThisSession ||
-                PreferencesManager.get(PREF_PHP_CODE_INTELLIGENCE) === false) {
+        if (PreferencesManager.get(PREF_PHP_CODE_INTELLIGENCE) === false) {
+            return Promise.resolve(null);
+        }
+        if (_inFlight) {
+            return _inFlight;
+        }
+        if (!installSupport.canAutoInstall()) {
+            installSupport.showManualInstall(installNow);
             return Promise.resolve(null);
         }
         if (!navigator.onLine) {
@@ -328,12 +337,19 @@ define(function (require, exports, module) {
     /**
      * Wipe the whole install (including the index cache) and reacquire it - self-repair for a
      * supposedly-installed server that fails to start (entry corrupt beyond the existence check).
+     * @param {boolean} [automatic=false] Apply the daily limit to background self-repair.
      * The onInstalled callback re-registers the server on success.
      * @return {Promise<?{entryPath: string, upgraded: boolean}>} null on failure
      */
-    async function repairInstall() {
-        await Phoenix.VFS.unlinkAsync(_installDirVfs()).catch(function () {});
-        return installNow();
+    function repairInstall(automatic = false) {
+        if (_inFlight) {
+            return _inFlight;
+        }
+        if (automatic && !installSupport.canAutoInstall()) {
+            installSupport.showManualInstall(repairInstall);
+            return Promise.resolve(null);
+        }
+        return _startInstall(true);
     }
 
     /**
