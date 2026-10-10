@@ -737,13 +737,16 @@ function getEditorToolSpecs(peerCall, options = {}) {
         "askInLivePreview",
         "Ask a visual question over the HTML live preview and wait for the answer. Prefer choices: each has id, " +
         "label, optional description/color, and preview:{css or cssFile, optional scriptFile, selector, params}. Phoenix " +
-        "handles hover/focus previews, restore on leave, keyboard/touch, click-to-answer and cleanup. A click " +
-        "returns {choice:id,label}, closes the question, and retains the preview while you apply the choice to " +
+        "owns hover/focus previews, selection and cleanup: clicking a choice keeps its preview and fills the reply " +
+        "box; only the user's Send/Enter confirms. Hovering elsewhere is temporary; leaving restores the selection. " +
+        "Clearing the reply clears selection. Confirmation returns {choice:id,label}, closes the question, " +
+        "and retains the preview while you apply the choice to " +
         "source. Runtime effects are restored before file preparation so live edits use the original DOM; " +
         "CSS-only effects may remain until verification or turn end. Apply the chosen result before finishing. " +
         "Without uiFile, Phoenix renders styled choice cards: no UI files or JavaScript needed. For expressive " +
         "custom content write an HTML fragment with its own <style>, mark any option class='ph-choice' data-id='1' " +
-        "(hover and click) or class='ph-hover' (hover only). Design the full body freely; keep text readable. " +
+        "(hover and select) or class='ph-hover' (hover only). Style .ph-selected for a visible selected state; " +
+        "Phoenix toggles it and aria-pressed. Design the full body freely; keep text readable. " +
         "Write reusable files in getEditorState's askInLivePreviewUiDir, outside the project. Shared cssFile " +
         "templates use {{key}} from preview.params (merged over top-level params); reuse files and change params " +
         "for follow-ups instead of regenerating UI/CSS. Inline css is useful for small previews. " +
@@ -762,16 +765,11 @@ function getEditorToolSpecs(peerCall, options = {}) {
         "Helpers: preview.query(selector), hover(fn), css(text), html(selector,markup), on(selector,event,handler), " +
         "interval(fn,ms), timeout(fn,ms), cleanup(fn), signal. Effects must stay in the temporary page; reload " +
         "cannot undo storage or server writes. Optional top-level scriptFile controls the isolated question UI " +
-        "as function(root,phoenix,params){file text}; phoenix.preview(id,params) pins a preview so the user " +
-        "can try the page's controls; preview(null) clears it. Interactive previews NEED a separate " +
-        "Pin & try button using phoenix.preview and a dedicated Choose button using ph-choice or phoenix.answer. " +
-        "Example: a ph-hover card with data-id='1', a plain [data-try='1'] button wired in scriptFile to " +
-        "phoenix.preview('1'), and a separate ph-choice button data-id='1'. Do not put ph-choice on the whole " +
-        "card containing these controls, since a click on a child would submit. " +
-        "Include a brief hint explaining that pinning lets the user try controls before choosing; page controls " +
-        "need normal Preview mode, not Edit mode. Also phoenix.answer(id,params), cancel(). UI-supplied params " +
-        "are returned with the answer so you can persist the exact customized choice. " +
-        "Normal choices need no handlers. Question state survives page resets. Built-in frame supplies close, " +
+        "as function(root,phoenix,params){file text}; phoenix.select(id,params) selects a customized choice for " +
+        "confirmation; phoenix.cancel() cancels. Supplied params return with the confirmed choice. Normal choices " +
+        "need no handlers or extra buttons: the user clicks, tries the page, then sends the reply. Page controls " +
+        "need normal Preview mode, not Edit mode. Selection survives minimizing and cleanup reloads. " +
+        "Built-in frame supplies close, " +
         "minimize, drag anywhere in the editor window, resize and a free-text answer. Files can be absolute " +
         "or relative to askInLivePreviewUiDir. " +
         "This is the complete contract; do not search for implementation. Result is answered, cancelled or error. " +
@@ -817,7 +815,7 @@ function getEditorToolSpecs(peerCall, options = {}) {
                 textColor: z.string().max(64).optional(),
                 accent: z.string().max(64).optional()
             }).optional().describe("CSS colours for the frame, so the card matches the page; unset ones default to a " +
-                "light or dark card chosen from the page's background. accent colours the Send button"),
+                "light or dark card chosen from the page's background. accent colours selection and focus"),
             timeoutS: z.number().int().min(10).max(1800).optional().describe("Seconds to wait for an answer, default 300")
         },
         async function (args) {
