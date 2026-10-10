@@ -167,6 +167,9 @@ for that local calendar day; run this command again on another day to renew it. 
 disconnect an already running session. Start the Builder MCP server separately using the setup
 above; the script only manages the desktop app's permission file.
 
+Once Builder is enabled at startup, production builds also show **Debug → Phoenix Code Diagnostic
+Tools → Phoenix Builder MCP…** for connection settings and console logs.
+
 ### Optional remote machines
 
 Use two independent MCP servers: **Phoenix Builder** for app interaction, screenshots and Jasmine tests, and **remote-control** for machine discovery, remote commands, file transfers, Git sync and agent coordination. Builder has no framework package dependency and opens no orchestrator agent session. Local Builder use needs no remote framework.
