@@ -30,10 +30,10 @@
  * wheels for this platform+arch are resolved through the PyPI JSON API, downloaded,
  * sha256-verified and extracted - all node-side (NodeUtils.downloadFile/extractZipFile; a wheel
  * is a plain zip). The install is announced only through the status-bar task, whose popup is
- * opened so the download is always visible, with a stop (x) icon to cancel it (cancel = no
- * retry until the next app launch; the master pref is the durable opt-out). Offline is a
+ * opened so the download is always visible, with a stop (x) icon to cancel it (automatic setup runs at most
+ * once per day; manual retry is always available). Offline is a
  * non-event: install silently waits for connectivity. Real failures roll back the partial
- * install, turn the task red (with a retry icon) and raise a toast. Works identically on
+ * install, leave a failed task with manual retry and copyable error details. Works identically on
  * Windows, macOS and Linux.
  *
  * Layout under <appSupport>/lspServers/:
@@ -53,11 +53,10 @@ define(function (require, exports, module) {
 
 
     const NodeUtils = brackets.getModule("utils/NodeUtils"),
-        NotificationUI = brackets.getModule("widgets/NotificationUI"),
+        LSPInstallSupport = brackets.getModule("languageTools/LSPInstallSupport"),
         TaskManager = brackets.getModule("features/TaskManager"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         Metrics = brackets.getModule("utils/Metrics"),
-        StringUtils = brackets.getModule("utils/StringUtils"),
         Strings = brackets.getModule("strings");
 
     // Exact tested pins - never ranges. The wheels are sha256-verified against PyPI's manifest,
@@ -75,6 +74,8 @@ define(function (require, exports, module) {
     const PYREFLY_VERSION = _PINS.pyrefly || "1.1.1";
     const RUFF_VERSION = _PINS.ruff || "0.15.20";
     const PREF_PYTHON_CODE_INTELLIGENCE = "codeIntelligence.python";
+    const installSupport = LSPInstallSupport.create("python", Strings.PYTHON_INSTALL_TITLE,
+        "<i class='fa-brands fa-python'></i>");
 
     // The independently pinned/installed pieces. `pkg` is the PyPI package name; the binary of a
     // wheel build lives at <pkg>-<version>.data/scripts/<pkg>[.exe].
@@ -85,7 +86,6 @@ define(function (require, exports, module) {
 
     let _onInstalled = null;        // main.js callback: ({binaryPath, upgraded}) => void
     let _inFlight = null;           // single-flight install promise
-    let _cancelledThisSession = false;  // user hit the task's stop icon - no retry until relaunch
     let _cancelRequested = false;   // stop clicked while an install is in flight
     let _activeDownload = null;     // cancellable handle of the in-flight NodeUtils.downloadFile
     let _onlineRetryArmed = false;  // one-shot window "online" retry listener armed
@@ -238,18 +238,6 @@ define(function (require, exports, module) {
         }, { once: true });
     }
 
-    // Real-failure surface (per product decision): a subtle toast in addition to the red task,
-    // so the user learns setup failed even with the Tasks popup closed.
-    function _showFailureToast(message) {
-        const $tpl = $("<div>").text(message);
-        NotificationUI.createToastFromTemplate(Strings.PYTHON_INSTALL_TITLE, $tpl, {
-            dismissOnClick: true,
-            toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUBTLE,
-            autoCloseTimeS: 30,
-            instantOpen: true
-        });
-    }
-
     // Download + extract one unit's wheel, reporting progress in [pctFrom, pctTo] of `task`.
     async function _installUnit(unit, tag, task, pctFrom, pctTo) {
         const wheel = await _resolveWheel(unit, tag);
@@ -290,12 +278,26 @@ define(function (require, exports, module) {
         task.setProgressPercent(pctTo);
     }
 
-    async function _doInstall() {
+    /**
+     * Acquire the pinned server, optionally replacing a damaged installation.
+     * @param {boolean} repair Whether to remove the old installation before checking its state.
+     * @return {Promise<?Object>} Installed server details, or null after a handled failure.
+     */
+    async function _doInstall(repair) {
+        if (repair) {
+            installSupport.recordAttempt();
+            for (const key of Object.keys(UNITS)) {
+                await Phoenix.VFS.unlinkAsync(_installDirVfs(UNITS[key])).catch(function () {});
+            }
+        }
         const state = await installedState();
         if (state.installed && state.pinMatches) {
             return { binaryPath: getBinaryPlatformPath(), upgraded: false };
         }
         const upgrading = state.installed;
+        if (!repair) {
+            installSupport.recordAttempt();
+        }
         _cancelRequested = false;
         let currentUnit = null;     // the unit being installed, for rollback on failure/cancel
         // Status-bar task with real download progress. Its popup is OPENED for every install -
@@ -305,7 +307,6 @@ define(function (require, exports, module) {
             "<i class='fa-brands fa-python'></i>", {
                 progressPercent: 2,
                 onStopClick: function () {
-                    _cancelledThisSession = true;   // no auto-retry until the next app launch
                     _cancelRequested = true;
                     if (_activeDownload) {
                         _activeDownload.cancel().catch(function () {});
@@ -359,7 +360,7 @@ define(function (require, exports, module) {
             }
             if (_isNetworkError(err) || !navigator.onLine) {
                 // QUIET path: offline is normal life, not an error. Retry when connectivity
-                // returns (same session) or on the next launch.
+                // returns, subject to the same daily limit.
                 Metrics.countEvent("lsp", "pyInst", "waitNet");
                 task.setMessage(Strings.PYTHON_INSTALL_WAITING_NETWORK);
                 setTimeout(task.close, 4000);
@@ -369,12 +370,7 @@ define(function (require, exports, module) {
             console.error("[PythonSupport] install failed", err);
             Metrics.countEvent("lsp", "pyInst", "fail");
             window.logger && window.logger.reportError(err, "[PythonSupport] LSP install failed");
-            task.setFailed();
-            task.setMessage(StringUtils.format(Strings.PYTHON_INSTALL_FAILED, message));
-            task.showRestartIcon();
-            task.show();
-            _showFailureToast(StringUtils.format(Strings.PYTHON_INSTALL_FAILED, message));
-            setTimeout(task.close, 30000);
+            installSupport.showFailure(task, err);
             return null;
         } finally {
             _activeDownload = null;
@@ -384,13 +380,14 @@ define(function (require, exports, module) {
     /**
      * Install (or upgrade) now - single-flighted. On success, notifies the onInstalled callback so
      * the language server can start immediately.
+     * @param {boolean} [repair=false] Remove the existing installation before setup.
      * @return {Promise<?{binaryPath: string, upgraded: boolean}>} null on failure
      */
-    function installNow() {
+    function _startInstall(repair = false) {
         if (_inFlight) {
             return _inFlight;
         }
-        _inFlight = _doInstall().then(function (result) {
+        _inFlight = _doInstall(repair).then(function (result) {
             if (result && _onInstalled) {
                 _onInstalled(result);
             }
@@ -402,12 +399,20 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Start a user-requested installation, regardless of the daily automatic limit.
+     * @return {Promise<?Object>} Installed server details, or null on failure.
+     */
+    function installNow() {
+        return _startInstall();
+    }
+
+    /**
      * Auto-install without any consent UI - the status-bar task (opened popup, stop icon) is the
      * announcement. Guards, in order:
      *  - never in test windows (suites call installNow() explicitly; opening a .py fixture must
      *    not start surprise downloads),
      *  - master pref false = durable opt-out,
-     *  - user cancelled this session = wait for the next launch,
+     *  - today's attempt already ran = leave a quiet task with a manual install action,
      *  - offline = wait silently for connectivity (one-shot window "online" retry).
      * @return {Promise<?{binaryPath: string, upgraded: boolean}>} null when skipped/failed
      */
@@ -415,8 +420,14 @@ define(function (require, exports, module) {
         if (typeof Phoenix !== "undefined" && Phoenix.isTestWindow) {
             return Promise.resolve(null);
         }
-        if (_cancelledThisSession ||
-                PreferencesManager.get(PREF_PYTHON_CODE_INTELLIGENCE) === false) {
+        if (PreferencesManager.get(PREF_PYTHON_CODE_INTELLIGENCE) === false) {
+            return Promise.resolve(null);
+        }
+        if (_inFlight) {
+            return _inFlight;
+        }
+        if (!installSupport.canAutoInstall()) {
+            installSupport.showManualInstall(installNow);
             return Promise.resolve(null);
         }
         if (!navigator.onLine) {
@@ -430,13 +441,18 @@ define(function (require, exports, module) {
      * Wipe the whole install and reacquire it - self-repair for a supposedly-installed server
      * that fails to start (binary corrupt beyond the existence checks). The onInstalled callback
      * re-registers the server on success.
+     * @param {boolean} [automatic=false] Apply the daily limit to background self-repair.
      * @return {Promise<?{binaryPath: string, upgraded: boolean}>} null on failure
      */
-    async function repairInstall() {
-        for (const key of Object.keys(UNITS)) {
-            await Phoenix.VFS.unlinkAsync(_installDirVfs(UNITS[key])).catch(function () {});
+    function repairInstall(automatic = false) {
+        if (_inFlight) {
+            return _inFlight;
         }
-        return installNow();
+        if (automatic && !installSupport.canAutoInstall()) {
+            installSupport.showManualInstall(repairInstall);
+            return Promise.resolve(null);
+        }
+        return _startInstall(true);
     }
 
     /**
