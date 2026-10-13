@@ -47,6 +47,7 @@
     "success": "PDF 导出成功"
   },
   "format": {
+    "ask_ai": "询问 AI",
     "block_type": "块类型",
     "blockquote": "引用",
     "bold": "粗体 ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "更多",
     "numbered_list": "有序列表",
     "paragraph": "正文",
+    "selection_unavailable": "无法定位此选区",
     "strikethrough": "删除线 ({mod}+Shift+X)",
     "table": "表格",
     "task_list": "任务列表",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "删除图片",
-    "edit": "编辑图片 URL"
+    "edit": "编辑图片 URL",
+    "view": "查看图片"
   },
   "image_dialog": {
     "alt_placeholder": "图片描述",
@@ -178,6 +181,10 @@
     "add_row_above": "在上方添加行",
     "add_row_below": "在下方添加行",
     "col_options": "第 {n} 列选项",
+    "copy_col": "复制列",
+    "copy_row": "复制行",
+    "cut_col": "剪切列",
+    "cut_row": "剪切行",
     "delete_col": "删除列",
     "delete_row": "删除行",
     "delete_table": "删除表格",
@@ -187,13 +194,9 @@
     "insert_row_above": "在上方插入行",
     "insert_row_below": "在下方插入行",
     "new_row": "+ 新增行",
-    "row_options": "第 {n} 行选项",
-    "copy_col": "复制列",
-    "copy_row": "复制行",
-    "cut_col": "剪切列",
-    "cut_row": "剪切行",
     "paste_col": "在右侧粘贴列",
-    "paste_row": "在下方粘贴行"
+    "paste_row": "在下方粘贴行",
+    "row_options": "第 {n} 行选项"
   },
   "toolbar": {
     "cursor_sync": "切换光标同步",

@@ -38,6 +38,7 @@ const crypto = require("crypto");
 const rename = require("gulp-rename");
 const execSync = require('child_process').execSync;
 const terser = require('terser');
+const { prepareBuilderTestFixture } = require('../phoenix-builder-mcp/prepare-test-fixture.cjs');
 
 const copyOptions = copyThirdPartyLibs.copyOptions;
 
@@ -429,12 +430,12 @@ function releaseProd() {
     });
 }
 
-function translateStrings() {
-    return new Promise(async (resolve)=>{ // eslint-disable-line
-        await Translate.translate();
-        await Translate.translateMdviewer();
-        resolve();
-    });
+/** Translate both Phoenix and Markdown viewer locales using the configured service.
+ * @return {Promise<void>} Rejects if either translation pass fails.
+ */
+async function translateStrings() {
+    await Translate.translate();
+    await Translate.translateMdviewer();
 }
 
 function _listFilesInDir(dir) {
@@ -1133,7 +1134,7 @@ exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJSWithM
     _deletePhoenixProSourceFolder, _cleanReleaseBuildArtefactsInSrc, validateBuild.validateDistSizeRestrictions);
 exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);
-exports.zipTestFiles = series(zipTestFiles);
+exports.zipTestFiles = series(prepareBuilderTestFixture, zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
 exports.serveExternal = series(exports.build, serveExternal);
 exports.translateStrings = series(translateStrings);

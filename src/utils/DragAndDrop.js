@@ -99,7 +99,8 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Open dropped files
+     * Open dropped files in order so the last file becomes active, regardless of load times.
+     * Continue processing the remaining paths if an earlier file cannot be opened.
      *
      * @param {Array.<string>} paths Array of file paths dropped on the application.
      * @return {Promise} Promise that is resolved if all files are opened, or rejected
@@ -109,7 +110,8 @@ define(function (require, exports, module) {
         var errorFiles = [],
             ERR_MULTIPLE_ITEMS_WITH_DIR = {};
 
-        return Async.doInParallel(paths, function (path, idx) {
+        // Each open activates its view, so parallel opens would select whichever finishes last.
+        return Async.doSequentially(paths, function (path, idx) {
             var result = new $.Deferred();
 
             // Only open files.

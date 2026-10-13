@@ -622,5 +622,128 @@ define(function (require, exports, module) {
                 expect(queue2._curPromise).toBe(null);
             });
         });
+
+        describe("retry", function () {
+            const NO_JITTER = 0;
+
+            /** An operation that fails `failures` times, then resolves with "ok"; records how often it ran. */
+            function flaky(failures) {
+                const op = function (attempt) {
+                    op.calls.push(attempt);
+                    if (attempt <= failures) {
+                        return Promise.reject(new Error("fail " + attempt));
+                    }
+                    return Promise.resolve("ok");
+                };
+                op.calls = [];
+                return op;
+            }
+
+            it("resolves with the first success and runs the operation once when it succeeds", async function () {
+                const op = flaky(0);
+                const value = await Async.retry(op, { delaysMs: 1, jitter: NO_JITTER });
+                expect(value).toBe("ok");
+                expect(op.calls).toEqual([1]);
+            });
+
+            it("retries after failures, waiting the given delays, and tells onRetry each time", async function () {
+                const op = flaky(2);
+                const retries = [];
+                const value = await Async.retry(op, {
+                    delaysMs: [1, 2], jitter: NO_JITTER,
+                    onRetry: function (err, attempt, waitMs) { retries.push([err.message, attempt, waitMs]); }
+                });
+                expect(value).toBe("ok");
+                expect(op.calls).toEqual([1, 2, 3]);
+                expect(retries).toEqual([["fail 1", 1, 1], ["fail 2", 2, 2]]);
+            });
+
+            it("rejects with the last failure once the attempts are used up", async function () {
+                const op = flaky(10);
+                let failure = null;
+                await Async.retry(op, { attempts: 3, delaysMs: 1, jitter: NO_JITTER }).catch(function (err) { failure = err; });
+                expect(failure && failure.message).toBe("fail 3");
+                expect(op.calls).toEqual([1, 2, 3]);
+            });
+
+            it("stops at once when shouldRetry says no", async function () {
+                const op = flaky(10);
+                let failure = null;
+                await Async.retry(op, {
+                    attempts: 5, delaysMs: 1, jitter: NO_JITTER,
+                    shouldRetry: function (err, attempt) { return attempt < 2; }
+                }).catch(function (err) { failure = err; });
+                expect(failure && failure.message).toBe("fail 2");
+                expect(op.calls).toEqual([1, 2]);
+            });
+
+            it("repeats the last delay when there are more retries than delays, and a number is a fixed delay", async function () {
+                const waits = [];
+                await Async.retry(flaky(3), {
+                    attempts: 4, delaysMs: [1, 3], jitter: NO_JITTER,
+                    onRetry: function (err, attempt, waitMs) { waits.push(waitMs); }
+                });
+                expect(waits).toEqual([1, 3, 3]);
+                waits.length = 0;
+                await Async.retry(flaky(2), {
+                    delaysMs: 2, jitter: NO_JITTER,
+                    onRetry: function (err, attempt, waitMs) { waits.push(waitMs); }
+                });
+                expect(waits).toEqual([2, 2]);
+            });
+
+            it("varies each wait by the jitter and never below zero", async function () {
+                const waits = [];
+                await Async.retry(flaky(3), {
+                    attempts: 4, delaysMs: 20, jitter: 0.5,
+                    onRetry: function (err, attempt, waitMs) { waits.push(waitMs); }
+                });
+                expect(waits.length).toBe(3);
+                waits.forEach(function (wait) {
+                    expect(wait).toBeGreaterThanOrEqual(10);
+                    expect(wait).toBeLessThanOrEqual(30);
+                });
+            });
+
+            it("fails a slow attempt with ERROR_TIMEOUT and retries it", async function () {
+                let calls = 0;
+                const value = await Async.retry(function () {
+                    calls++;
+                    if (calls === 1) {
+                        return new Promise(function () {});     // never settles
+                    }
+                    return "ok";
+                }, { timeoutMs: 5, delaysMs: 1, jitter: NO_JITTER,
+                    onRetry: function (err) { expect(err).toBe(Async.ERROR_TIMEOUT); } });
+                expect(value).toBe("ok");
+                expect(calls).toBe(2);
+            });
+
+            it("ends the waiting when the signal aborts", async function () {
+                const controller = new AbortController();
+                const op = flaky(10);
+                let failure = null;
+                const pending = Async.retry(op, { delaysMs: 10000, jitter: NO_JITTER, signal: controller.signal })
+                    .catch(function (err) { failure = err; });
+                await awaitsFor(function () { return op.calls.length === 1; }, "the first attempt");
+                controller.abort(new Error("gone"));
+                await pending;
+                expect(failure && failure.message).toBe("gone");
+                expect(op.calls).toEqual([1]);
+            });
+
+            it("treats a thrown error as a failure and accepts jQuery promises", async function () {
+                let calls = 0;
+                const value = await Async.retry(function () {
+                    calls++;
+                    if (calls === 1) {
+                        throw new Error("sync fail");
+                    }
+                    return new $.Deferred().resolve("ok").promise();
+                }, { delaysMs: 1, jitter: NO_JITTER });
+                expect(value).toBe("ok");
+                expect(calls).toBe(2);
+            });
+        });
     });
 });

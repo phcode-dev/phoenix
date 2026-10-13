@@ -47,6 +47,7 @@
     "success": "PDF esportato con successo"
   },
   "format": {
+    "ask_ai": "Chiedi all'IA",
     "block_type": "Tipo di blocco",
     "blockquote": "Citazione",
     "bold": "Grassetto ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Altro",
     "numbered_list": "Elenco numerato",
     "paragraph": "Paragrafo",
+    "selection_unavailable": "Impossibile individuare questa selezione",
     "strikethrough": "Barrato ({mod}+Shift+X)",
     "table": "Tabella",
     "task_list": "Elenco attività",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Elimina immagine",
-    "edit": "Modifica URL dell'immagine"
+    "edit": "Modifica URL dell'immagine",
+    "view": "Visualizza immagine"
   },
   "image_dialog": {
     "alt_placeholder": "Descrizione immagine",
@@ -178,6 +181,10 @@
     "add_row_above": "Aggiungi riga sopra",
     "add_row_below": "Aggiungi riga sotto",
     "col_options": "Opzioni colonna {n}",
+    "copy_col": "Copia colonna",
+    "copy_row": "Copia riga",
+    "cut_col": "Taglia colonna",
+    "cut_row": "Taglia riga",
     "delete_col": "Elimina colonna",
     "delete_row": "Elimina riga",
     "delete_table": "Elimina tabella",
@@ -187,13 +194,9 @@
     "insert_row_above": "Inserisci riga sopra",
     "insert_row_below": "Inserisci riga sotto",
     "new_row": "+ Nuova riga",
-    "row_options": "Opzioni riga {n}",
-    "copy_col": "Copia colonna",
-    "copy_row": "Copia riga",
-    "cut_col": "Taglia colonna",
-    "cut_row": "Taglia riga",
     "paste_col": "Incolla colonna a destra",
-    "paste_row": "Incolla riga sotto"
+    "paste_row": "Incolla riga sotto",
+    "row_options": "Opzioni riga {n}"
   },
   "toolbar": {
     "cursor_sync": "Attiva/disattiva sincronizzazione cursore",

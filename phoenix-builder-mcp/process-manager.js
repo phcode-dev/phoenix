@@ -116,6 +116,16 @@ export function createProcessManager() {
         return terminalLogs.totalPushed();
     }
 
+    /** Give each agent its own read/clear position without deleting another agent's log history. */
+    function createSessionView() {
+        const reader = terminalLogs.createReader();
+        return {
+            start, stop, isRunning, getPid, getTerminalLogsTotalPushed,
+            getTerminalLogs: reader.get,
+            clearTerminalLogs: reader.clear
+        };
+    }
+
     return {
         start,
         stop,
@@ -123,6 +133,7 @@ export function createProcessManager() {
         getPid,
         getTerminalLogs,
         clearTerminalLogs,
-        getTerminalLogsTotalPushed
+        getTerminalLogsTotalPushed,
+        createSessionView
     };
 }

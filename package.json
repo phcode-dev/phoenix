@@ -1,7 +1,7 @@
 {
     "name": "phoenix",
-    "version": "5.5.4-0",
-    "apiVersion": "5.5.4",
+    "version": "5.5.6-0",
+    "apiVersion": "5.5.6",
     "homepage": "https://core.ai",
     "issues": {
         "url": "https://github.com/phcode-dev/phoenix/issues"
@@ -42,7 +42,8 @@
         "through2": "^4.0.2"
     },
     "scripts": {
-        "postinstall": "cd phoenix-builder-mcp && npm install",
+        "postinstall": "cd phoenix-builder-mcp && npm install && node prepare-test-fixture.cjs",
+        "enableBuilderMcpInProd": "node phoenix-builder-mcp/enable-in-prod/index.cjs",
         "lint": "eslint --quiet src test",
         "lint:fix": "eslint --quiet --fix src test",
         "prepare": "husky install",
@@ -83,6 +84,7 @@
         "serveExternal": "npm install --prefix src-node && node serve-proxy.js . -p 8000 -a 0.0.0.0 --log-ip -c-1",
         "createJSDocs": "node build/api-docs-generator.js && git add docs",
         "_translateStrings": "gulp translateStrings",
+        "translateLocal": "cross-env CORE_AI_TRANSLATE_URL=http://localhost:4310/translate gulp translateStrings",
         "_minify": "r.js -o require.min.config.js && echo this is untested see https://stackoverflow.com/questions/14337970/minifying-requirejs-javascript-codebase-to-a-single-file"
     },
     "licenses": [

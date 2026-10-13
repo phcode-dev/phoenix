@@ -47,6 +47,7 @@
     "success": "PDF exportat cu succes"
   },
   "format": {
+    "ask_ai": "Întreabă AI",
     "block_type": "Tip de bloc",
     "blockquote": "Citat bloc",
     "bold": "Aldin ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Mai multe",
     "numbered_list": "Listă numerotată",
     "paragraph": "Paragraf",
+    "selection_unavailable": "Nu se poate găsi această selecție",
     "strikethrough": "Tăiat ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Listă de sarcini",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Șterge imaginea",
-    "edit": "Editează URL-ul imaginii"
+    "edit": "Editează URL-ul imaginii",
+    "view": "Vizualizează imaginea"
   },
   "image_dialog": {
     "alt_placeholder": "Descriere imagine",
@@ -178,6 +181,10 @@
     "add_row_above": "Adaugă rând deasupra",
     "add_row_below": "Adaugă rând dedesubt",
     "col_options": "Opțiuni coloană {n}",
+    "copy_col": "Copiază coloana",
+    "copy_row": "Copiază rândul",
+    "cut_col": "Decupează coloana",
+    "cut_row": "Decupează rândul",
     "delete_col": "Șterge coloana",
     "delete_row": "Șterge rândul",
     "delete_table": "Șterge tabelul",
@@ -187,13 +194,9 @@
     "insert_row_above": "Inserează rând deasupra",
     "insert_row_below": "Inserează rând dedesubt",
     "new_row": "+ Rând nou",
-    "row_options": "Opțiuni rând {n}",
-    "copy_col": "Copiază coloana",
-    "copy_row": "Copiază rândul",
-    "cut_col": "Decupează coloana",
-    "cut_row": "Decupează rândul",
     "paste_col": "Lipește coloana la dreapta",
-    "paste_row": "Lipește rândul dedesubt"
+    "paste_row": "Lipește rândul dedesubt",
+    "row_options": "Opțiuni rând {n}"
   },
   "toolbar": {
     "cursor_sync": "Comută sincronizarea cursorului",

@@ -66,7 +66,7 @@ define(function (require, exports, module) {
     let starting = false;
     let pendingRepoint = false;
     let initErrorReported = false;
-    let _repairAttempted = false;   // one self-repair (wipe + reinstall) per session
+    let _repairAttempted = false;   // one self-repair request per session, subject to the daily install limit
 
     function canRun() {
         return Phoenix.isNativeApp && NodeConnector.isNodeAvailable();
@@ -141,7 +141,7 @@ define(function (require, exports, module) {
         const state = await ServerInstaller.installedState();
         if (!state.installed || !state.pinMatches) {
             // acquire (or upgrade) the server automatically - announced only through the
-            // status-bar task. autoInstall's guards (pref off, user cancelled this session,
+            // status-bar task. autoInstall's guards (pref off, daily attempt already used,
             // offline, test window) decide whether anything actually runs; its onInstalled
             // callback registers the server.
             await ServerInstaller.autoInstall();
@@ -150,12 +150,12 @@ define(function (require, exports, module) {
         await _registerServer(ServerInstaller.getEntryPlatformPath(), false);
         if (!registered && !_repairAttempted && !Phoenix.isTestWindow) {
             // Self-repair: the entry existed but the server would not start (tree corrupt beyond
-            // the existence check). Wipe and reacquire once per session - the onInstalled
+            // the existence check). Wipe and reacquire within the daily install limit - the onInstalled
             // callback re-registers on success. A second failure surfaces through the
             // installer's normal failure UX.
             _repairAttempted = true;
             console.error("[PHPSupport] installed server failed to start - reinstalling");
-            await ServerInstaller.repairInstall();
+            await ServerInstaller.repairInstall(true);
         }
     }
 

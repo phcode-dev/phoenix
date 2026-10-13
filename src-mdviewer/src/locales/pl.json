@@ -47,6 +47,7 @@
     "success": "Plik PDF został pomyślnie wyeksportowany"
   },
   "format": {
+    "ask_ai": "Zapytaj AI",
     "block_type": "Typ bloku",
     "blockquote": "Cytat blokowy",
     "bold": "Pogrubienie ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Więcej",
     "numbered_list": "Lista numerowana",
     "paragraph": "Akapit",
+    "selection_unavailable": "Nie można odnaleźć tego zaznaczenia",
     "strikethrough": "Przekreślenie ({mod}+Shift+X)",
     "table": "Tabela",
     "task_list": "Lista zadań",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Usuń obrazek",
-    "edit": "Edytuj URL obrazka"
+    "edit": "Edytuj URL obrazka",
+    "view": "Wyświetl obraz"
   },
   "image_dialog": {
     "alt_placeholder": "Opis obrazka",
@@ -178,6 +181,10 @@
     "add_row_above": "Dodaj wiersz powyżej",
     "add_row_below": "Dodaj wiersz poniżej",
     "col_options": "Opcje kolumny {n}",
+    "copy_col": "Kopiuj kolumnę",
+    "copy_row": "Kopiuj wiersz",
+    "cut_col": "Wytnij kolumnę",
+    "cut_row": "Wytnij wiersz",
     "delete_col": "Usuń kolumnę",
     "delete_row": "Usuń wiersz",
     "delete_table": "Usuń tabelę",
@@ -187,13 +194,9 @@
     "insert_row_above": "Wstaw wiersz powyżej",
     "insert_row_below": "Wstaw wiersz poniżej",
     "new_row": "+ Nowy wiersz",
-    "row_options": "Opcje wiersza {n}",
-    "copy_col": "Kopiuj kolumnę",
-    "copy_row": "Kopiuj wiersz",
-    "cut_col": "Wytnij kolumnę",
-    "cut_row": "Wytnij wiersz",
     "paste_col": "Wklej kolumnę po prawej",
-    "paste_row": "Wklej wiersz poniżej"
+    "paste_row": "Wklej wiersz poniżej",
+    "row_options": "Opcje wiersza {n}"
   },
   "toolbar": {
     "cursor_sync": "Przełącz synchronizację kursora",

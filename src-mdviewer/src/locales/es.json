@@ -47,6 +47,7 @@
     "success": "PDF exportado con éxito"
   },
   "format": {
+    "ask_ai": "Preguntar a la IA",
     "block_type": "Tipo de bloque",
     "blockquote": "Cita",
     "bold": "Negrita ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Más",
     "numbered_list": "Lista numerada",
     "paragraph": "Párrafo",
+    "selection_unavailable": "No se puede localizar esta selección",
     "strikethrough": "Tachado ({mod}+Shift+X)",
     "table": "Tabla",
     "task_list": "Lista de tareas",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Eliminar imagen",
-    "edit": "Editar URL de la imagen"
+    "edit": "Editar URL de la imagen",
+    "view": "Ver imagen"
   },
   "image_dialog": {
     "alt_placeholder": "Descripción de la imagen",
@@ -178,6 +181,10 @@
     "add_row_above": "Añadir fila arriba",
     "add_row_below": "Añadir fila abajo",
     "col_options": "Opciones de columna {n}",
+    "copy_col": "Copiar columna",
+    "copy_row": "Copiar fila",
+    "cut_col": "Cortar columna",
+    "cut_row": "Cortar fila",
     "delete_col": "Eliminar columna",
     "delete_row": "Eliminar fila",
     "delete_table": "Eliminar tabla",
@@ -187,13 +194,9 @@
     "insert_row_above": "Insertar fila arriba",
     "insert_row_below": "Insertar fila abajo",
     "new_row": "+ Nueva fila",
-    "row_options": "Opciones de fila {n}",
-    "copy_col": "Copiar columna",
-    "copy_row": "Copiar fila",
-    "cut_col": "Cortar columna",
-    "cut_row": "Cortar fila",
     "paste_col": "Pegar columna a la derecha",
-    "paste_row": "Pegar fila debajo"
+    "paste_row": "Pegar fila debajo",
+    "row_options": "Opciones de fila {n}"
   },
   "toolbar": {
     "cursor_sync": "Alternar sincronización del cursor",

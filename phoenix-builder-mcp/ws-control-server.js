@@ -5,9 +5,10 @@ import { LogBuffer } from "./log-buffer.js";
 /**
  * Serve existing Phoenix messages on loopback, with explicit listener ownership.
  * @param {number} port - Local port; zero is supported for isolated test fixtures.
+ * @param {Object} [options] Optional hub HTTP/upgrade handlers sharing this listener.
  * @return {Object} Existing request API plus listener readiness and cancellation.
  */
-export function createWSControlServer(port) {
+export function createWSControlServer(port, options = {}) {
     const wss = new WebSocketServer({ noServer: true, maxPayload: 32 * 1024 * 1024, perMessageDeflate: false });
     const listeners = [];
     let closing = false;
@@ -26,14 +27,19 @@ export function createWSControlServer(port) {
 
     const ready = (async () => {
         try {
-            const listener = http.createServer((request, response) => { response.writeHead(404); response.end(); });
+            const listener = http.createServer((request, response) => {
+                if (options.handleHttp && options.handleHttp(request, response)) { return; }
+                response.writeHead(404); response.end();
+            });
             // Builder intentionally trusts all renderer origins, including custom native protocols.
             listener.on("upgrade", (request, socket, head) => {
                 try {
                     const target = new URL(`http://${request.headers.host}`);
-                    if (closing || wss.clients.size >= 64 || target.hostname !== "localhost") {
+                    if (closing || target.hostname !== "localhost") {
                         socket.destroy(); return;
                     }
+                    if (options.handleUpgrade && options.handleUpgrade(request, socket, head)) { return; }
+                    if (wss.clients.size >= 64) { socket.destroy(); return; }
                     wss.handleUpgrade(request, socket, head, ws => wss.emit("connection", ws, request));
                 } catch { socket.destroy(); }
             });
@@ -74,6 +80,8 @@ export function createWSControlServer(port) {
                         ws.close(1008, "Invalid instance name"); return;
                     }
                     clientName = msg.name || ("Unknown-" + (++unknownCounter));
+                    const machineId = typeof msg.machineId === "string" && msg.machineId.trim()
+                        && msg.machineId.length <= 200 ? msg.machineId : null;
 
                     // If same name reconnects (e.g. tab reload), close old connection
                     // but preserve the existing log buffer so logs survive across reloads
@@ -87,12 +95,14 @@ export function createWSControlServer(port) {
                         clients.set(clientName, {
                             ws: ws,
                             logs: existing.logs,
+                            machineId,
                             isAlive: true
                         });
                     } else {
                         clients.set(clientName, {
                             ws: ws,
                             logs: new LogBuffer(),
+                            machineId,
                             isAlive: true
                         });
                     }
@@ -630,6 +640,16 @@ export function createWSControlServer(port) {
         return [...clients.keys()];
     }
 
+    /** Return canonical machine membership without guessing from names or loopback addresses. */
+    function getMachines() {
+        const groups = new Map();
+        for (const [name, client] of clients) {
+            if (!groups.has(client.machineId)) { groups.set(client.machineId, []); }
+            groups.get(client.machineId).push(name);
+        }
+        return [...groups].map(([machineId, instances]) => ({ machineId, instances }));
+    }
+
     /** Close listener-owned sockets and reject pending calls without terminating user-opened apps. */
     async function close() {
         if (closing) { return; }
@@ -657,6 +677,7 @@ export function createWSControlServer(port) {
         clearBrowserLogs,
         isClientConnected,
         getConnectedInstances,
+        getMachines,
         close,
         getPort: () => port
     };

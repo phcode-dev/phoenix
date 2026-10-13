@@ -47,6 +47,7 @@
     "success": "PDF 내보내기 완료"
   },
   "format": {
+    "ask_ai": "인공지능에 질문하기",
     "block_type": "블록 유형",
     "blockquote": "인용",
     "bold": "굵게 ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "더 보기",
     "numbered_list": "번호 목록",
     "paragraph": "본문",
+    "selection_unavailable": "이 선택 영역을 찾을 수 없습니다",
     "strikethrough": "취소선 ({mod}+Shift+X)",
     "table": "표",
     "task_list": "작업 목록",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "이미지 삭제",
-    "edit": "이미지 URL 수정"
+    "edit": "이미지 URL 수정",
+    "view": "이미지 보기"
   },
   "image_dialog": {
     "alt_placeholder": "이미지 설명",
@@ -178,6 +181,10 @@
     "add_row_above": "위에 행 추가",
     "add_row_below": "아래에 행 추가",
     "col_options": "열 {n} 옵션",
+    "copy_col": "열 복사",
+    "copy_row": "행 복사",
+    "cut_col": "열 잘라내기",
+    "cut_row": "행 잘라내기",
     "delete_col": "열 삭제",
     "delete_row": "행 삭제",
     "delete_table": "표 삭제",
@@ -187,13 +194,9 @@
     "insert_row_above": "위에 행 삽입",
     "insert_row_below": "아래에 행 삽입",
     "new_row": "+ 새 행",
-    "row_options": "행 {n} 옵션",
-    "copy_col": "열 복사",
-    "copy_row": "행 복사",
-    "cut_col": "열 잘라내기",
-    "cut_row": "행 잘라내기",
     "paste_col": "오른쪽에 열 붙여넣기",
-    "paste_row": "아래에 행 붙여넣기"
+    "paste_row": "아래에 행 붙여넣기",
+    "row_options": "행 {n} 옵션"
   },
   "toolbar": {
     "cursor_sync": "커서 동기화 전환",

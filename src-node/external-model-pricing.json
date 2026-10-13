@@ -1,0 +1,248 @@
+{
+    "version": 1,
+    "updatedAt": "2026-10-09",
+    "currency": "USD",
+    "unit": "million_tokens",
+    "models": {
+        "gpt-6-astra": {
+            "standard": {
+                "input": 10,
+                "cacheRead": 1,
+                "cacheWrite": 12.5,
+                "output": 50
+            },
+            "fast": {
+                "input": 20,
+                "cacheRead": 2,
+                "cacheWrite": 25.0,
+                "output": 100
+            },
+            "ultrafast": {
+                "input": 60,
+                "cacheRead": 6,
+                "cacheWrite": 75.0,
+                "output": 300
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 20,
+                    "cacheRead": 2,
+                    "cacheWrite": 25.0,
+                    "output": 75.0
+                },
+                "fast": {
+                    "input": 40,
+                    "cacheRead": 4,
+                    "cacheWrite": 50.0,
+                    "output": 150.0
+                },
+                "ultrafast": {
+                    "input": 120,
+                    "cacheRead": 12,
+                    "cacheWrite": 150.0,
+                    "output": 450.0
+                }
+            }
+        },
+        "gpt-6.1-sol": {
+            "standard": {
+                "input": 2,
+                "cacheRead": 0.1,
+                "cacheWrite": 2.5,
+                "output": 10
+            },
+            "fast": {
+                "input": 4,
+                "cacheRead": 0.2,
+                "cacheWrite": 5.0,
+                "output": 20
+            },
+            "ultrafast": {
+                "input": 12,
+                "cacheRead": 0.6,
+                "cacheWrite": 15.0,
+                "output": 60
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 4,
+                    "cacheRead": 0.2,
+                    "cacheWrite": 5.0,
+                    "output": 15.0
+                },
+                "fast": {
+                    "input": 8,
+                    "cacheRead": 0.4,
+                    "cacheWrite": 10.0,
+                    "output": 30.0
+                },
+                "ultrafast": {
+                    "input": 24,
+                    "cacheRead": 1.2,
+                    "cacheWrite": 30.0,
+                    "output": 90.0
+                }
+            }
+        },
+        "gpt-6-sol": {
+            "standard": {
+                "input": 2,
+                "cacheRead": 0.2,
+                "cacheWrite": 2.5,
+                "output": 10
+            },
+            "fast": {
+                "input": 4,
+                "cacheRead": 0.4,
+                "cacheWrite": 5.0,
+                "output": 20
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 4,
+                    "cacheRead": 0.4,
+                    "cacheWrite": 5.0,
+                    "output": 15.0
+                },
+                "fast": {
+                    "input": 8,
+                    "cacheRead": 0.8,
+                    "cacheWrite": 10.0,
+                    "output": 30.0
+                }
+            }
+        },
+        "gpt-6-luna": {
+            "standard": {
+                "input": 0.1,
+                "cacheRead": 0.01,
+                "cacheWrite": 0.125,
+                "output": 0.5
+            },
+            "fast": {
+                "input": 0.2,
+                "cacheRead": 0.02,
+                "cacheWrite": 0.25,
+                "output": 1.0
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 0.2,
+                    "cacheRead": 0.02,
+                    "cacheWrite": 0.25,
+                    "output": 0.75
+                },
+                "fast": {
+                    "input": 0.4,
+                    "cacheRead": 0.04,
+                    "cacheWrite": 0.5,
+                    "output": 1.5
+                }
+            }
+        },
+        "gpt-5.6-sol": {
+            "standard": {
+                "input": 4,
+                "cacheRead": 0.4,
+                "cacheWrite": 5,
+                "output": 20
+            },
+            "fast": {
+                "input": 8,
+                "cacheRead": 0.8,
+                "cacheWrite": 10,
+                "output": 40
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 8,
+                    "cacheRead": 0.8,
+                    "cacheWrite": 10,
+                    "output": 30.0
+                },
+                "fast": {
+                    "input": 16,
+                    "cacheRead": 1.6,
+                    "cacheWrite": 20,
+                    "output": 60.0
+                }
+            }
+        },
+        "gpt-5.6": {
+            "standard": {
+                "input": 4,
+                "cacheRead": 0.4,
+                "cacheWrite": 5,
+                "output": 20
+            },
+            "fast": {
+                "input": 8,
+                "cacheRead": 0.8,
+                "cacheWrite": 10,
+                "output": 40
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 8,
+                    "cacheRead": 0.8,
+                    "cacheWrite": 10,
+                    "output": 30.0
+                },
+                "fast": {
+                    "input": 16,
+                    "cacheRead": 1.6,
+                    "cacheWrite": 20,
+                    "output": 60.0
+                }
+            }
+        },
+        "gpt-5.6-terra": {
+            "standard": {
+                "input": 2,
+                "cacheRead": 0.2,
+                "cacheWrite": 2.5,
+                "output": 12
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 4,
+                    "cacheRead": 0.4,
+                    "cacheWrite": 5.0,
+                    "output": 18.0
+                }
+            }
+        },
+        "gpt-5.6-luna": {
+            "standard": {
+                "input": 0.2,
+                "cacheRead": 0.02,
+                "cacheWrite": 0.25,
+                "output": 1.2
+            },
+            "longContext": {
+                "aboveInputTokens": 272000,
+                "standard": {
+                    "input": 0.4,
+                    "cacheRead": 0.04,
+                    "cacheWrite": 0.5,
+                    "output": 1.8
+                }
+            }
+        },
+        "gpt-5.3-codex": {
+            "standard": {
+                "input": 1.75,
+                "cacheRead": 0.175,
+                "cacheWrite": null,
+                "output": 14
+            }
+        }
+    }
+}

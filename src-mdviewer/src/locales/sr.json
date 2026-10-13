@@ -47,6 +47,7 @@
     "success": "PDF је успешно извезен"
   },
   "format": {
+    "ask_ai": "Питај вештачку интелигенцију",
     "block_type": "Тип блока",
     "blockquote": "Блок цитат",
     "bold": "Подебљано ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Више",
     "numbered_list": "Нумерисана листа",
     "paragraph": "Пасус",
+    "selection_unavailable": "Није могуће пронаћи овај изабрани део текста",
     "strikethrough": "Прецртано ({mod}+Shift+X)",
     "table": "Табела",
     "task_list": "Листа задатака",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Обриши слику",
-    "edit": "Измени URL слике"
+    "edit": "Измени URL слике",
+    "view": "Прикажи слику"
   },
   "image_dialog": {
     "alt_placeholder": "Опис слике",
@@ -178,6 +181,10 @@
     "add_row_above": "Додај ред изнад",
     "add_row_below": "Додај ред испод",
     "col_options": "Опције колоне {n}",
+    "copy_col": "Копирај колону",
+    "copy_row": "Копирај ред",
+    "cut_col": "Исеци колону",
+    "cut_row": "Исеци ред",
     "delete_col": "Обриши колону",
     "delete_row": "Обриши ред",
     "delete_table": "Обриши табелу",
@@ -187,13 +194,9 @@
     "insert_row_above": "Уметни ред изнад",
     "insert_row_below": "Уметни ред испод",
     "new_row": "+ Нови ред",
-    "row_options": "Опције реда {n}",
-    "copy_col": "Копирај колону",
-    "copy_row": "Копирај ред",
-    "cut_col": "Исеци колону",
-    "cut_row": "Исеци ред",
     "paste_col": "Налепи колону десно",
-    "paste_row": "Налепи ред испод"
+    "paste_row": "Налепи ред испод",
+    "row_options": "Опције реда {n}"
   },
   "toolbar": {
     "cursor_sync": "Укључи/искључи синхронизацију курсора",

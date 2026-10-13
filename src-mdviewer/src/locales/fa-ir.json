@@ -47,6 +47,7 @@
     "success": "فایل PDF با موفقیت صادر شد"
   },
   "format": {
+    "ask_ai": "از هوش مصنوعی بپرسید",
     "block_type": "نوع بلوک",
     "blockquote": "نقل‌قول",
     "bold": "ضخیم ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "بیشتر",
     "numbered_list": "فهرست شماره‌دار",
     "paragraph": "پاراگراف",
+    "selection_unavailable": "این بخش انتخاب‌شده پیدا نمی‌شود",
     "strikethrough": "خط خورده ({mod}+Shift+X)",
     "table": "جدول",
     "task_list": "فهرست کارها",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "حذف تصویر",
-    "edit": "ویرایش URL تصویر"
+    "edit": "ویرایش URL تصویر",
+    "view": "مشاهدهٔ تصویر"
   },
   "image_dialog": {
     "alt_placeholder": "توضیحات تصویر",
@@ -178,6 +181,10 @@
     "add_row_above": "افزودن ردیف در بالا",
     "add_row_below": "افزودن ردیف در پایین",
     "col_options": "گزینه‌های ستون {n}",
+    "copy_col": "کپی ستون",
+    "copy_row": "کپی سطر",
+    "cut_col": "برش ستون",
+    "cut_row": "برش سطر",
     "delete_col": "حذف ستون",
     "delete_row": "حذف ردیف",
     "delete_table": "حذف جدول",
@@ -187,13 +194,9 @@
     "insert_row_above": "درج ردیف در بالا",
     "insert_row_below": "درج ردیف در پایین",
     "new_row": "+ سطر جدید",
-    "row_options": "گزینه‌های سطر {n}",
-    "copy_col": "کپی ستون",
-    "copy_row": "کپی سطر",
-    "cut_col": "برش ستون",
-    "cut_row": "برش سطر",
     "paste_col": "جای‌گذاری ستون در سمت راست",
-    "paste_row": "جای‌گذاری سطر در زیر"
+    "paste_row": "جای‌گذاری سطر در زیر",
+    "row_options": "گزینه‌های سطر {n}"
   },
   "toolbar": {
     "cursor_sync": "تغییر وضعیت همگام‌سازی نشانگر",

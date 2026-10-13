@@ -55,7 +55,7 @@ define(function (require, exports, module) {
     let starting = false;
     let pendingRepoint = false;
     let initErrorReported = false;
-    let _repairAttempted = false;   // one self-repair (wipe + reinstall) per session
+    let _repairAttempted = false;   // one self-repair request per session, subject to the daily install limit
     let _client = null;
 
     function canRun() {
@@ -129,7 +129,7 @@ define(function (require, exports, module) {
         const state = await ServerInstaller.installedState();
         if (!state.installed || !state.pinMatches) {
             // acquire (or complete/upgrade) the tooling automatically - announced only through
-            // the status-bar task. autoInstall's guards (pref off, user cancelled this session,
+            // the status-bar task. autoInstall's guards (pref off, daily attempt already used,
             // offline, test window) decide whether anything actually runs; its onInstalled
             // callback registers the server.
             await ServerInstaller.autoInstall();
@@ -138,12 +138,12 @@ define(function (require, exports, module) {
         await _registerServer(ServerInstaller.getBinaryPlatformPath());
         if (!registered && !_repairAttempted && !Phoenix.isTestWindow) {
             // Self-repair: the marker said installed but the server would not start (binary
-            // corrupt beyond the existence checks). Wipe and reacquire once per session - the
+            // corrupt beyond the existence checks). Wipe and reacquire within the daily install limit - the
             // onInstalled callback re-registers on success. A second failure surfaces through
             // the installer's normal failure UX.
             _repairAttempted = true;
             console.error("[PythonSupport] installed server failed to start - reinstalling");
-            await ServerInstaller.repairInstall();
+            await ServerInstaller.repairInstall(true);
         }
     }
 

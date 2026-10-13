@@ -771,6 +771,9 @@ function nodeLoader() {
                     KernalModeTrust.localAutoAuthURL = message.autoAuthURL;
                     // base url the media viewer streams opened video and audio from
                     window.PhNodeEngine.mediaURL = message.mediaURL;
+                    if (Phoenix.isTestWindow) {
+                        Phoenix.isTestWindowGitHubActions = message.isGitHubActions;
+                    }
                     window.isNodeReady = true;
                     resolve(message);
                     // node is designed such that it is not required at boot time to lower startup time.
@@ -895,6 +898,9 @@ function nodeLoader() {
                     KernalModeTrust.localAutoAuthURL = message.autoAuthURL;
                     // base url the media viewer streams opened video and audio from
                     window.PhNodeEngine.mediaURL = message.mediaURL;
+                    if (Phoenix.isTestWindow) {
+                        Phoenix.isTestWindowGitHubActions = message.isGitHubActions;
+                    }
                     window.isNodeReady = true;
                     resolve(message);
                     window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;

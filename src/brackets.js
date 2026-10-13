@@ -214,6 +214,9 @@ define(function (require, exports, module) {
     require("JSUtils/Session");
     require("JSUtils/ScopeManager");
 
+    // Shared setup policy/UI is lightweight; the language server clients themselves stay lazy.
+    require("languageTools/LSPInstallSupport");
+
     // Language Tools (LSP) are desktop-only and loaded lazily by languageTools/LSPClient the
     // first time a language server is started, so they are intentionally not required at boot.
 
@@ -461,8 +464,9 @@ define(function (require, exports, module) {
         // not steal focus. Calling preventDefault() on mousedown prevents
         // focus from going to the click target.
         $("html").on("mousedown", ".no-focus", function (e) {
-            // Text fields should always be focusable.
-            const $target = $(e.target),
+            // Shadow DOM retargets e.target to its host; text fields inside it must still be focusable.
+            const eventPath = e.originalEvent && e.originalEvent.composedPath ? e.originalEvent.composedPath() : [];
+            const $target = $(eventPath[0] || e.target),
                 isFormElement =
                     $target.is("input") ||
                     $target.is("textarea") ||
@@ -477,14 +481,19 @@ define(function (require, exports, module) {
         // changes). We can't use a simple .on("click", "a") because of http://bugs.jquery.com/ticket/3861:
         // jQuery hides non-left clicks from such event handlers, yet middle-clicks still cause CEF to
         // navigate. Also, a capture handler is more reliable than bubble.
-        window.document.body.addEventListener("click", function (e) {
+        /**
+         * Route links, including links inside Shadow DOM, through the native URL opener.
+         * @param {MouseEvent} e Click or middle-button activation.
+         */
+        function handleLinkClick(e) {
             // Don't interfere with context menu clicks
             if (e.button === 2 || (brackets.platform === "mac" && e.ctrlKey)) {
                 return;
             }
 
             // Check parents too, in case link has inline formatting tags
-            let node = e.target, url;
+            const path = e.composedPath ? e.composedPath() : [];
+            let node = path[0] || e.target, url;
             while (node) {
                 if (node.tagName === "A") {
                     url = node.getAttribute("href");
@@ -497,7 +506,9 @@ define(function (require, exports, module) {
                 }
                 node = node.parentElement;
             }
-        }, true);
+        }
+        window.document.body.addEventListener("click", handleLinkClick, true);
+        window.document.body.addEventListener("auxclick", handleLinkClick, true);
 
         // jQuery patch to shim deprecated usage of $() on EventDispatchers
         const DefaultCtor = jQuery.fn.init;

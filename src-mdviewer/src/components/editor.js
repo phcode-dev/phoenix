@@ -5,7 +5,7 @@ import { gfm } from "turndown-plugin-gfm";
 import { on, emit } from "../core/events.js";
 import { getState, setState } from "../core/state.js";
 import { t, tp } from "../core/i18n.js";
-import { initFormatBar, destroyFormatBar, focusFormatBar } from "./format-bar.js";
+import { initFormatBar, focusFormatBar } from "./format-bar.js";
 import { initSlashMenu, destroySlashMenu, isSlashMenuVisible } from "./slash-menu.js";
 import { initLinkPopover, destroyLinkPopover } from "./link-popover.js";
 import { initImagePopover, destroyImagePopover } from "./image-popover.js";
@@ -1853,12 +1853,14 @@ function _updateSourceLineAttrs(contentEl, markdown) {
                 mdLineIdx++;
             }
         }
+        el.setAttribute("data-source-end-line", String(Math.min(mdLines.length, mdLineIdx)));
     }
 }
 
 function emitContentChange(contentEl) {
     clearTimeout(contentChangeTimer);
     contentChangeTimer = setTimeout(() => {
+        contentChangeTimer = null;
         const markdown = convertToMarkdown(contentEl);
         emit("bridge:contentChanged", { markdown });
     }, CONTENT_CHANGE_DEBOUNCE);
@@ -1868,6 +1870,7 @@ function emitContentChange(contentEl) {
  * Flush any pending debounced content-change emission immediately.
  * Called during file switch so the outgoing file's edits are synced
  * to its cache entry and CM document before switching away.
+ * @return {boolean} Whether a pending edit was emitted synchronously.
  */
 export function flushPendingContentChange() {
     if (contentChangeTimer) {
@@ -1877,8 +1880,10 @@ export function flushPendingContentChange() {
         if (contentEl) {
             const markdown = convertToMarkdown(contentEl);
             emit("bridge:contentChanged", { markdown });
+            return true;
         }
     }
+    return false;
 }
 
 function getContentEl() {
@@ -2781,7 +2786,6 @@ function cleanupEditMode(content) {
         _dragEndHandler = null;
     }
 
-    destroyFormatBar();
     destroyLinkPopover();
     destroyImagePopover();
     destroyLangPicker();

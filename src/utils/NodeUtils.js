@@ -452,23 +452,10 @@ define(function (require, exports, module) {
         _updateNodeLocaleStrings();
     }
 
-    try {
-        if(Phoenix.isTestWindow) {
-            if(Phoenix.isNativeApp) {
-                async function _setIsTestWindowGitHubActions() {
-                    const actionsEnv = await utilsConnector.execPeer("getEnvironmentVariable", "GITHUB_ACTIONS");
-                    Phoenix.isTestWindowGitHubActions = !!actionsEnv;
-                }
-                _setIsTestWindowGitHubActions().catch(e=>{
-                    console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
-                });
-            } else {
-                const urlSearchParams = new window.URLSearchParams(window.location.search || "");
-                Phoenix.isTestWindowGitHubActions = urlSearchParams.get("isTestWindowGitHubActions") === "yes";
-            }
-        }
-    } catch (e) {
-        console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
+    if (Phoenix.isTestWindow && !Phoenix.isNativeApp) {
+        // Native test windows receive this in node-loader's boot handshake.
+        const urlSearchParams = new window.URLSearchParams(window.location.search);
+        Phoenix.isTestWindowGitHubActions = urlSearchParams.get("isTestWindowGitHubActions") === "yes";
     }
 
     // private apis

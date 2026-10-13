@@ -19,13 +19,14 @@
  *
  */
 
-/*global describe, beforeEach, afterEach, it, expect, awaitsForDone, beforeAll, afterAll */
+/*global describe, beforeEach, afterEach, it, expect, awaitsForDone, awaitsForFail, beforeAll, afterAll, spyOn */
 
 define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var DocumentManager,      // loaded from brackets.test
+    let DocumentManager,      // loaded from brackets.test
+        Dialogs,              // loaded from brackets.test
         DragAndDrop,          // loaded from brackets.test
         EditorManager,        // loaded from brackets.test
         MainViewManager,      // loaded from brackets.test
@@ -45,6 +46,7 @@ define(function (require, exports, module) {
 
             // Load module instances from brackets.test
             DocumentManager = testWindow.brackets.test.DocumentManager;
+            Dialogs         = testWindow.brackets.test.Dialogs;
             DragAndDrop     = testWindow.brackets.test.DragAndDrop;
             EditorManager   = testWindow.brackets.test.EditorManager;
             MainViewManager = testWindow.brackets.test.MainViewManager;
@@ -53,6 +55,7 @@ define(function (require, exports, module) {
         afterAll(async function () {
             testWindow      = null;
             DocumentManager = null;
+            Dialogs         = null;
             DragAndDrop     = null;
             EditorManager   = null;
             MainViewManager = null;
@@ -113,6 +116,30 @@ define(function (require, exports, module) {
                 var editor = EditorManager.getActiveEditor();
                 expect(editor).toBe(null);
                 expect(MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE)).toEqual(lastImagePath);
+            });
+
+            it("should leave the last dropped image active even when it is already open", async function () {
+                const firstImagePath = testPath + "/couz.png";
+                const lastImagePath = testPath + "/couz2.png";
+                await awaitsForDone(DragAndDrop.openDroppedFiles([lastImagePath]), "opening the last image first");
+                await awaitsForDone(DragAndDrop.openDroppedFiles([firstImagePath, lastImagePath]),
+                    "opening a drop ending with the already open image");
+
+                expect(MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE)).toEqual(lastImagePath);
+                expect(MainViewManager.findInWorkingSet(MainViewManager.ALL_PANES, firstImagePath)).not.toEqual(-1);
+                expect(MainViewManager.findInWorkingSet(MainViewManager.ALL_PANES, lastImagePath)).not.toEqual(-1);
+            });
+
+            it("should open later dropped files and report an earlier file that cannot be opened", async function () {
+                const imagePath = testPath + "/couz2.png";
+                // Keep the error presentation out of the way while checking the failed drop's result.
+                const errorDialog = spyOn(Dialogs, "showModalDialog").and.stub();
+                await awaitsForFail(DragAndDrop.openDroppedFiles([testPath + "/missing-drop-file.png", imagePath]),
+                    "reporting the missing file after processing the rest of the drop");
+
+                expect(MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE)).toEqual(imagePath);
+                expect(MainViewManager.findInWorkingSet(MainViewManager.ALL_PANES, imagePath)).not.toEqual(-1);
+                expect(errorDialog.calls.count()).toBe(1);
             });
 
             it("should add images to the working set when they dropped from outside the project", async function () {

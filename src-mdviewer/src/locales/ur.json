@@ -47,6 +47,7 @@
     "success": "PDF کامیابی سے برآمد ہوئی"
   },
   "format": {
+    "ask_ai": "مصنوعی ذہانت سے پوچھیں",
     "block_type": "بلاک کی قسم",
     "blockquote": "بلاک کوٹ",
     "bold": "بولڈ ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "مزید",
     "numbered_list": "نمبر فہرست",
     "paragraph": "پیراگراف",
+    "selection_unavailable": "منتخب کردہ حصے کو تلاش نہیں کیا جا سکتا",
     "strikethrough": "سٹرائیک تھرو ({mod}+Shift+X)",
     "table": "ٹیبل",
     "task_list": "ٹاسک فہرست",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "تصویر حذف کریں",
-    "edit": "تصویر کا یو آر ایل ترمیم کریں"
+    "edit": "تصویر کا یو آر ایل ترمیم کریں",
+    "view": "تصویر دیکھیں"
   },
   "image_dialog": {
     "alt_placeholder": "تصویر کی تفصیل",
@@ -178,6 +181,10 @@
     "add_row_above": "اوپر قطار شامل کریں",
     "add_row_below": "نیچے قطار شامل کریں",
     "col_options": "کالم {n} اختیارات",
+    "copy_col": "کالم کاپی کریں",
+    "copy_row": "قطار کاپی کریں",
+    "cut_col": "کالم کٹ کریں",
+    "cut_row": "قطار کٹ کریں",
     "delete_col": "کالم حذف کریں",
     "delete_row": "قطار حذف کریں",
     "delete_table": "ٹیبل حذف کریں",
@@ -187,13 +194,9 @@
     "insert_row_above": "اوپر قطار شامل کریں",
     "insert_row_below": "نیچے قطار شامل کریں",
     "new_row": "+ نئی قطار",
-    "row_options": "قطار {n} اختیارات",
-    "copy_col": "کالم کاپی کریں",
-    "copy_row": "قطار کاپی کریں",
-    "cut_col": "کالم کٹ کریں",
-    "cut_row": "قطار کٹ کریں",
     "paste_col": "کالم دائیں پیسٹ کریں",
-    "paste_row": "قطار نیچے پیسٹ کریں"
+    "paste_row": "قطار نیچے پیسٹ کریں",
+    "row_options": "قطار {n} اختیارات"
   },
   "toolbar": {
     "cursor_sync": "کرسر سنک ٹوگل کریں",

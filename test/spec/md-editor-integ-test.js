@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, beforeAll, beforeEach, afterAll, awaitsFor, it, awaitsForDone, expect, awaits*/
+/*global describe, beforeAll, beforeEach, afterAll, afterEach, awaitsFor, it, awaitsForDone, expect, awaits*/
 
 define(function (require, exports, module) {
 
@@ -2158,7 +2158,218 @@ define(function (require, exports, module) {
             }, 10000);
         });
 
+        describe("Image Lightbox", function () {
+
+            let _originalOpenURL;
+
+            beforeAll(async function () {
+                _originalOpenURL = NativeApp.openURLInDefaultBrowser;
+                // The fixture lives in the markdown test project, which earlier suites switch to.
+                if (testWindow && brackets.test.ProjectManager.getProjectRoot().fullPath !== mdTestFolder + "/") {
+                    await SpecRunnerUtils.loadProjectInTestWindow(mdTestFolder);
+                    await SpecRunnerUtils.deletePathAsync(mdTestFolder + "/.phcode.json", true);
+                }
+                if (testWindow && LiveDevMultiBrowser.status !== LiveDevMultiBrowser.STATUS_ACTIVE) {
+                    await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple.html"]),
+                        "open simple.html for live dev");
+                    LiveDevMultiBrowser.open();
+                    await awaitsFor(() =>
+                        LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                    "live dev to open", 20000);
+                }
+            }, 30000);
+
+            afterAll(function () {
+                NativeApp.openURLInDefaultBrowser = _originalOpenURL;
+            });
+
+            afterEach(async function () {
+                const lightbox = _getLightbox();
+                if (lightbox) {
+                    lightbox.click();
+                }
+                NativeApp.openURLInDefaultBrowser = _originalOpenURL;
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close image-test.md");
+            });
+
+            async function _openImageDoc() {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["image-test.md"]),
+                    "open image-test.md");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+                // The fixture embeds its SVG so these interaction tests need no virtual image server.
+                // Hover checks need the image at its real size.
+                await awaitsFor(() => {
+                    const img = _getImage("Sample image");
+                    return img && img.complete && img.naturalWidth > 0;
+                }, "the sample image to load");
+            }
+
+            function _getLightbox() {
+                const mdDoc = _getMdIFrameDoc();
+                return mdDoc && mdDoc.querySelector(".image-lightbox");
+            }
+
+            function _getImage(alt) {
+                return _getMdIFrameDoc().querySelector(`#viewer-content img[alt="${alt}"]`);
+            }
+
+            function _expectLightboxShows(img) {
+                const lightbox = _getLightbox();
+                expect(lightbox).not.toBeNull();
+                expect(lightbox.querySelector(".image-lightbox-img").src).toBe(img.src);
+                expect(_getMdIFrameDoc().activeElement).toBe(lightbox);
+            }
+
+            it("should open an image on its own in reader mode on click and close on click", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                const img = _getImage("Sample image");
+                expect(img).not.toBeNull();
+                img.click();
+                _expectLightboxShows(img);
+
+                _getLightbox().click();
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            it("should close the lightbox on Escape", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                _getImage("Sample image").click();
+                expect(_getLightbox()).not.toBeNull();
+                _dispatchPlainKeyInMdIframe("Escape", { keyCode: 27 });
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            it("should follow a linked image's link in reader mode instead of opening it", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                let capturedURL = null;
+                NativeApp.openURLInDefaultBrowser = function (url) {
+                    capturedURL = url;
+                };
+                _getImage("Linked image").click();
+                await awaitsFor(() => capturedURL !== null, "the image's link to open");
+                expect(capturedURL).toContain("test-image-link.example.com");
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            it("should select an image on click in edit mode and open it on double-click", async function () {
+                await _openImageDoc();
+                await _enterEditMode();
+
+                const img = _getImage("Sample image");
+                img.click();
+                const popover = _getMdIFrameDoc().getElementById("image-popover");
+                await awaitsFor(() => popover.classList.contains("visible"), "image popover to show");
+                expect(_getLightbox()).toBeNull();
+
+                img.dispatchEvent(new MouseEvent("dblclick", { bubbles: true, cancelable: true }));
+                _expectLightboxShows(img);
+                _dispatchPlainKeyInMdIframe("Escape", { keyCode: 27 });
+                expect(_getLightbox()).toBeNull();
+            }, 10000);
+
+            /** Move the pointer to a point of an element, as a real mouse move would report it. */
+            function _moveMouseTo(el, xFraction = 0.5, yFraction = 0.5) {
+                const rect = el.getBoundingClientRect();
+                el.dispatchEvent(new MouseEvent("mousemove", {
+                    bubbles: true,
+                    clientX: rect.left + rect.width * xFraction,
+                    clientY: rect.top + rect.height * yFraction
+                }));
+            }
+
+            function _getExpandButton() {
+                return _getMdIFrameDoc().querySelector(".image-lightbox-expand");
+            }
+
+            function _isExpandButtonVisible() {
+                const expand = _getExpandButton();
+                return !!expand && expand.classList.contains("visible");
+            }
+
+            /** The expand button sits in the image's top-right corner, inset from its edges, on screen. */
+            function _expectExpandButtonInCornerOf(img) {
+                const imgRect = img.getBoundingClientRect();
+                const btnRect = _getExpandButton().getBoundingClientRect();
+                const inset = 10;
+                expect(btnRect.right).toBeCloseTo(imgRect.right - inset, 0);
+                expect(btnRect.top).toBeCloseTo(imgRect.top + inset, 0);
+            }
+
+            it("should show the expand button wherever the pointer moves over an image in edit mode",
+                async function () {
+                    await _openImageDoc();
+                    await _enterEditMode();
+
+                    const img = _getImage("Sample image");
+                    // Each move below is handled before the next statement, so the real pointer resting
+                    // over the runner cannot interleave its own moves.
+                    // Near a corner, not just the centre: any point over the image counts.
+                    _moveMouseTo(img, 0.1, 0.1);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                    _expectExpandButtonInCornerOf(img);
+                    const expand = _getExpandButton();
+
+                    // Off the image it hides; moving back over it shows it again.
+                    _moveMouseTo(_getMdIFrameDoc().querySelector("#viewer-content h1"));
+                    expect(_isExpandButtonVisible()).toBeFalse();
+                    _moveMouseTo(img, 0.8, 0.7);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+
+                    expand.click();
+                    _expectLightboxShows(img);
+                    expect(_isExpandButtonVisible()).toBeFalse();
+                }, 10000);
+
+            it("should keep the expand button over the image across a scroll while the pointer stays",
+                async function () {
+                    await _openImageDoc();
+                    await _enterEditMode();
+
+                    const img = _getImage("Sample image");
+                    _moveMouseTo(img);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                    // A scroll used to hide it for good while the pointer stayed on the image. It now
+                    // lives in the scroll container, so it stays in the image's corner.
+                    expect(_getExpandButton().parentNode.id).toBe("app-viewer");
+                    _getMdIFrameDoc().getElementById("app-viewer").dispatchEvent(new Event("scroll"));
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                    _expectExpandButtonInCornerOf(img);
+                    // Moving off and back is still tracked after the scroll.
+                    _moveMouseTo(_getMdIFrameDoc().querySelector("#viewer-content h1"));
+                    expect(_isExpandButtonVisible()).toBeFalse();
+                    _moveMouseTo(img);
+                    expect(_isExpandButtonVisible()).toBeTrue();
+                }, 10000);
+
+            it("should show no expand button over an image in reader mode", async function () {
+                await _openImageDoc();
+                await _enterReaderMode();
+
+                _moveMouseTo(_getImage("Sample image"));
+                expect(_isExpandButtonVisible()).toBeFalse();
+            }, 10000);
+        });
+
         describe("Splash over the md viewer", function () {
+
+            beforeEach(async function () {
+                // Lightbox cleanup can leave an HTML file active. This check needs its own Markdown document.
+                await awaitsForDone(SpecRunnerUtils.openFiles([mdTestFolder + "/doc1.md"]),
+                    "open doc1.md for the splash");
+                await _waitForMdPreviewReady(EditorManager.getActiveEditor());
+            });
+
+            afterEach(async function () {
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }),
+                    "force close the splash document");
+            });
 
             function _visiblePreviewFrames() {
                 return Array.from(testWindow.document.querySelectorAll(

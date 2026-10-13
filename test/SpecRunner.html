@@ -344,7 +344,7 @@
         baseURL: _getBaseURL(),
         isTestWindow: _isTestWindow(),
         isTestWindowPlaywright: _isTestWindowPlaywright(),
-        // isTestWindowGitHubActions is injected later
+        // isTestWindowGitHubActions is resolved before RequireJS loads the test suites.
         isSpecRunnerWindow: window.location.pathname.endsWith("/SpecRunner.html"),
         firstBoot: false, // will be set below
         startTime: Date.now(),
@@ -595,14 +595,33 @@
       function _requireDone() {
         // do nothing
       }
+      /** Resolve CI exclusions before any AMD test module can register its suites. */
+      async function _initializeTestEnvironment() {
+        if (Phoenix.isNativeApp) {
+          await window.nodeSetupDonePromise;
+          if (typeof Phoenix.isTestWindowGitHubActions !== "boolean") {
+            throw new Error("Node boot response is missing the GitHub Actions flag");
+          }
+        } else {
+          Phoenix.isTestWindowGitHubActions = new URLSearchParams(window.location.search)
+                  .get("isTestWindowGitHubActions") === "yes";
+        }
+        window.globalTestRunnerLogToConsole("Test environment ready before suite registration: GitHub Actions=" +
+                Phoenix.isTestWindowGitHubActions);
+      }
       const interval = setInterval(()=>{
         if(PhStore){
           clearInterval(interval);
           PhStore.storageReadyPromise
-                  .finally(()=>{
+                  .finally(async ()=>{
+                    await _initializeTestEnvironment();
                     // Refresh the runner bootstrap and modules after saved source edits.
                     window.require = {urlArgs: "_phoenixTestRun=" + Date.now()};
                     loadJS('../src/thirdparty/requirejs/require.js', _requireDone, document.body, "SpecRunner");
+                  }).catch(error => {
+                    const message = "Test runner startup failed: " + (error.message || String(error));
+                    window.globalTestRunnerErrorToConsole(message);
+                    document.getElementById("loadProgressMessage").textContent = message;
                   });
         }
       }, 100);

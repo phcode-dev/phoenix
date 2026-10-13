@@ -47,6 +47,7 @@
     "success": "PDF başarıyla dışa aktarıldı"
   },
   "format": {
+    "ask_ai": "Yapay zekâya sor",
     "block_type": "Blok türü",
     "blockquote": "Alıntı bloku",
     "bold": "Kalın ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Daha fazla",
     "numbered_list": "Numaralı liste",
     "paragraph": "Paragraf",
+    "selection_unavailable": "Bu seçim bulunamıyor",
     "strikethrough": "Üstü çizili ({mod}+Shift+X)",
     "table": "Tablo",
     "task_list": "Görev listesi",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Görseli sil",
-    "edit": "Görsel URL'sini Düzenle"
+    "edit": "Görsel URL'sini Düzenle",
+    "view": "Görseli görüntüle"
   },
   "image_dialog": {
     "alt_placeholder": "Resim açıklaması",
@@ -178,6 +181,10 @@
     "add_row_above": "Yukarıya satır ekle",
     "add_row_below": "Aşağıya satır ekle",
     "col_options": "Sütun {n} seçenekleri",
+    "copy_col": "Sütunu kopyala",
+    "copy_row": "Satırı kopyala",
+    "cut_col": "Sütunu kes",
+    "cut_row": "Satırı kes",
     "delete_col": "Sütunu sil",
     "delete_row": "Satırı sil",
     "delete_table": "Tabloyu sil",
@@ -187,13 +194,9 @@
     "insert_row_above": "Yukarıya satır ekle",
     "insert_row_below": "Aşağıya satır ekle",
     "new_row": "+ Yeni satır",
-    "row_options": "{n}. satır seçenekleri",
-    "copy_col": "Sütunu kopyala",
-    "copy_row": "Satırı kopyala",
-    "cut_col": "Sütunu kes",
-    "cut_row": "Satırı kes",
     "paste_col": "Sağa sütun yapıştır",
-    "paste_row": "Aşağıya satır yapıştır"
+    "paste_row": "Aşağıya satır yapıştır",
+    "row_options": "{n}. satır seçenekleri"
   },
   "toolbar": {
     "cursor_sync": "İmleç senkronizasyonunu aç/kapat",

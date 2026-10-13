@@ -233,7 +233,7 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
         "Use before=N (from previous totalEntries) to page back. Avoid tail=0 unless necessary — " +
         "prefer filter + small tail to keep responses compact.",
         {
-            clear: z.boolean().default(false).describe("If true, return all logs and clear the buffer. If false, return only new logs since last read."),
+            clear: z.boolean().default(false).describe("If true, return this agent's visible logs and clear its cursor. If false, return only new logs since this agent's last read. Other agents' history is unchanged."),
             tail: z.number().default(50).describe("Return last N entries. 0 = all."),
             before: z.number().optional().describe("Cursor: return entries before this totalEntries position. Use the totalEntries value from a previous response to page back stably."),
             filter: z.string().optional().describe("Optional regex to filter log entries by text content. Applied before tail/before."),
@@ -652,6 +652,7 @@ export function registerTools(server, processManager, wsControlServer, phoenixDe
                         pid: processManager.getPid(),
                         wsConnected: wsControlServer.isClientConnected(),
                         connectedInstances: wsControlServer.getConnectedInstances(),
+                        machines: wsControlServer.getMachines(),
                         wsPort: wsControlServer.getPort()
                     })
                 }]

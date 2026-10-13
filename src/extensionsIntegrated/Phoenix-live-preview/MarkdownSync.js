@@ -30,7 +30,8 @@ define(function (require, exports, module) {
         Commands = require("command/Commands"),
         KeyBindingManager = require("command/KeyBindingManager"),
         Metrics = require("utils/Metrics"),
-        utils = require("./utils");
+        utils = require("./utils"),
+        MarkdownSelection = require("./MarkdownSelection");
 
     // Commands whose shortcuts, when forwarded from the md viewer iframe,
     // open a parent-side UI that needs to keep keyboard focus. The iframe's
@@ -90,6 +91,10 @@ define(function (require, exports, module) {
     let _onEditModeRequest = null;
     let _onIframeReadyCallback = null;
     let _cursorSyncEnabled = true;
+    let _askAIHandler = null;
+    let _askAIEmptyHandler = null;
+    let _pendingSelectionReveal = null;
+    let _requestedAskAIOrigin = null;
     // Stacks of cursor positions { sourceLine, offsetInBlock } for undo/redo restore
     let _cursorUndoStack = [];
     let _cursorRedoStack = [];
@@ -132,8 +137,9 @@ define(function (require, exports, module) {
             if (!data || data.type !== "MDVIEWR_EVENT") {
                 return;
             }
-            // Verify message is from our iframe
-            if (_$iframe && _$iframe[0] && event.source !== _$iframe[0].contentWindow) {
+            // Verify both the viewer window and its expected (normally opaque) origin.
+            if (!_$iframe || !_$iframe[0] || event.source !== _$iframe[0].contentWindow ||
+                event.origin !== _viewerOrigin(_$iframe[0])) {
                 return;
             }
 
@@ -250,6 +256,26 @@ define(function (require, exports, module) {
                 if (_cursorSyncEnabled) {
                     _handleSelectionFromIframe(data);
                 }
+                break;
+            case "mdviewrAskAI": {
+                if (!_askAIHandler || !_doc || data.filePath !== _doc.file.fullPath) { break; }
+                const attachment = MarkdownSelection.capture(_doc, data.selection);
+                if (attachment) {
+                    const frame = _$iframe[0].getBoundingClientRect();
+                    const rect = data.rect || {};
+                    const origin = Number.isFinite(rect.x) && Number.isFinite(rect.y) ? {
+                        x: frame.left + Math.max(0, Math.min(frame.width, rect.x)),
+                        y: frame.top + Math.max(0, Math.min(frame.height, rect.y))
+                    } : _requestedAskAIOrigin && _requestedAskAIOrigin.expires > Date.now() ?
+                        _requestedAskAIOrigin.point : null;
+                    _requestedAskAIOrigin = null;
+                    _askAIHandler(attachment, origin);
+                }
+                break;
+            }
+            case "mdviewrAskAIEmpty":
+                _requestedAskAIOrigin = null;
+                if (_askAIEmptyHandler) { _askAIEmptyHandler(); }
                 break;
             case "embeddedIframeHrefClick":
                 _handleHrefClick(data);
@@ -495,6 +521,8 @@ define(function (require, exports, module) {
             baseURL: _baseURL,
             filePath: _doc.file.fullPath
         }, "*");
+        _sendAskAICapability();
+        _revealPendingSelection();
     }
 
     function _sendContent() {
@@ -512,6 +540,8 @@ define(function (require, exports, module) {
             baseURL: _baseURL,
             filePath: _doc.file.fullPath
         }, "*");
+        _sendAskAICapability();
+        _revealPendingSelection();
     }
 
     function _sendUpdate(changeOrigin) {
@@ -1307,9 +1337,104 @@ define(function (require, exports, module) {
     }
 
     // Expose internal state for test debugging
+    /** Tell the trusted Markdown viewer whether the desktop AI integration is available. */
+    function _sendAskAICapability() {
+        const frame = _getIframeWindow();
+        if (frame) { frame.postMessage({type: "MDVIEWR_ASK_AI_ENABLED", enabled: !!_askAIHandler}, "*"); }
+    }
+
+    /** Register the desktop integration without coupling the core viewer to the Pro extension. */
+    function setAskAIHandler(handler, emptyHandler) {
+        _askAIHandler = handler;
+        _askAIEmptyHandler = emptyHandler;
+        _sendAskAICapability();
+    }
+
+    /**
+     * Ask the trusted viewer to attach its selection or show the empty-selection hint.
+     * @param {{x: number, y: number}=} origin Parent toolbar position for the attachment animation.
+     */
+    function requestAskAISelection(origin) {
+        const frame = _getIframeWindow();
+        if (_active && _askAIHandler && frame) {
+            _requestedAskAIOrigin = origin ? {point: origin, expires: Date.now() + 3000} : null;
+            frame.postMessage({type: "MDVIEWR_ASK_AI_SELECTION"}, "*");
+        }
+    }
+
+    /** Deliver a queued selection after its document has been sent to the ready viewer. */
+    function _revealPendingSelection() {
+        if (!_pendingSelectionReveal) { return; }
+        if (Date.now() > _pendingSelectionReveal.expires) { _pendingSelectionReveal = null; return; }
+        if (!_active || !_iframeReady || !_doc || _doc.file.fullPath !== _pendingSelectionReveal.filePath) { return; }
+        const frame = _getIframeWindow();
+        if (frame) {
+            frame.postMessage({type: "MDVIEWR_SELECT_SOURCE_RANGE", filePath: _pendingSelectionReveal.filePath,
+                selectionId: _pendingSelectionReveal.selectionId}, "*");
+            _pendingSelectionReveal = null;
+        }
+    }
+
+    /**
+     * Reveal a captured selection, waiting for a closed preview or file switch to finish opening.
+     * @param {string} filePath Markdown document to reveal.
+     * @param {Object} range Validated source range containing the captured selectionId.
+     */
+    function revealSelection(filePath, range) {
+        _pendingSelectionReveal = {filePath, selectionId: range.selectionId, expires: Date.now() + 10000};
+        _revealPendingSelection();
+    }
+
+    /**
+     * The bundled viewer is served with Phoenix, but its production sandbox gives it an opaque origin.
+     * @param {HTMLIFrameElement} iframe Markdown viewer frame.
+     * @return {string} Expected message origin; "null" for a sandbox without allow-same-origin.
+     */
+    function _viewerOrigin(iframe) {
+        return iframe.hasAttribute("sandbox") && !iframe.sandbox.contains("allow-same-origin") ?
+            "null" : window.location.origin;
+    }
+
+    /**
+     * Retrieve rendered snapshot lines to clarify a previously attached Markdown selection.
+     * @param {Object} params Attachment selectionId, rendered line range, and optional per-line character limit.
+     * @return {Promise<Object>} Marked snapshot lines, or an error if the snapshot is unavailable.
+     */
+    function getRenderedMdSelectionFollowUp(params) {
+        // The persistent viewer retains attachment snapshots even when HTML or no preview is showing.
+        const frame = _mdIframeRef && _mdIframeRef.isConnected && _mdIframeRef.contentWindow;
+        if (!frame) {
+            return Promise.resolve({error: "Markdown selection snapshot unavailable. Attach the selection again."});
+        }
+        const origin = _viewerOrigin(_mdIframeRef);
+        return new Promise(resolve => {
+            const requestId = crypto.randomUUID();
+            const timeout = setTimeout(() => finish({error: "Markdown preview did not respond."}), 3000);
+            function finish(result) {
+                clearTimeout(timeout);
+                window.removeEventListener("message", onResult);
+                resolve(result);
+            }
+            function onResult(event) {
+                const data = event.data;
+                if (event.source === frame && event.origin === origin && data && data.type === "MDVIEWR_EVENT" &&
+                        data.eventName === "mdviewrRenderedLines" && data.requestId === requestId) {
+                    finish(data.result);
+                }
+            }
+            window.addEventListener("message", onResult);
+            // Opaque sandbox origins cannot be named as a postMessage target.
+            frame.postMessage({type: "MDVIEWR_RENDERED_LINES", requestId, params}, origin === "null" ? "*" : origin);
+        });
+    }
+
+    exports.setAskAIHandler = setAskAIHandler;
+    exports.requestAskAISelection = requestAskAISelection;
+    exports.revealSelection = revealSelection;
+    exports.getRenderedMdSelectionFollowUp = getRenderedMdSelectionFollowUp;
     exports._getDebugState = function () {
         return { _active, _iframeReady, _cursorSyncEnabled, _syncingFromIframe,
-            hasDoc: !!_doc, hasCursorHandler: !!_cursorHandler,
+            hasDoc: !!_doc, doc: _doc, hasCursorHandler: !!_cursorHandler,
             iframeId: _$iframe && _$iframe[0] ? _$iframe[0].id : null,
             hasIframeWindow: !!(_$iframe && _$iframe[0] && _$iframe[0].contentWindow) };
     };

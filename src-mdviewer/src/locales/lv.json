@@ -47,6 +47,7 @@
     "success": "PDF veiksmīgi eksportēts"
   },
   "format": {
+    "ask_ai": "Jautāt mākslīgajam intelektam",
     "block_type": "Bloka tips",
     "blockquote": "Citāta bloks",
     "bold": "Treknraksts ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Vairāk",
     "numbered_list": "Numurēts saraksts",
     "paragraph": "Rindkopa",
+    "selection_unavailable": "Nevar atrast šo atlasi",
     "strikethrough": "Pārsvītrojums ({mod}+Shift+X)",
     "table": "Tabula",
     "task_list": "Uzdevumu saraksts",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Dzēst attēlu",
-    "edit": "Rediģēt attēla URL"
+    "edit": "Rediģēt attēla URL",
+    "view": "Skatīt attēlu"
   },
   "image_dialog": {
     "alt_placeholder": "Attēla apraksts",
@@ -178,6 +181,10 @@
     "add_row_above": "Pievienot rindu virs",
     "add_row_below": "Pievienot rindu zem",
     "col_options": "{n}. kolonnas opcijas",
+    "copy_col": "Kopēt kolonnu",
+    "copy_row": "Kopēt rindu",
+    "cut_col": "Izgriezt kolonnu",
+    "cut_row": "Izgriezt rindu",
     "delete_col": "Dzēst kolonnu",
     "delete_row": "Dzēst rindu",
     "delete_table": "Dzēst tabulu",
@@ -187,13 +194,9 @@
     "insert_row_above": "Ievietot rindu virs",
     "insert_row_below": "Ievietot rindu zem",
     "new_row": "+ Jauna rinda",
-    "row_options": "Rindas {n} opcijas",
-    "copy_col": "Kopēt kolonnu",
-    "copy_row": "Kopēt rindu",
-    "cut_col": "Izgriezt kolonnu",
-    "cut_row": "Izgriezt rindu",
     "paste_col": "Ielīmēt kolonnu pa labi",
-    "paste_row": "Ielīmēt rindu zemāk"
+    "paste_row": "Ielīmēt rindu zemāk",
+    "row_options": "Rindas {n} opcijas"
   },
   "toolbar": {
     "cursor_sync": "Pārslēgt kursoru sinhronizāciju",

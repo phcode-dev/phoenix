@@ -47,6 +47,7 @@
     "success": "PDF exported successfully"
   },
   "format": {
+    "ask_ai": "Ask AI",
     "block_type": "Block type",
     "blockquote": "Blockquote",
     "bold": "Bold ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "More",
     "numbered_list": "Numbered list",
     "paragraph": "Paragraph",
+    "selection_unavailable": "Cannot locate this selection",
     "strikethrough": "Strikethrough ({mod}+Shift+X)",
     "table": "Table",
     "task_list": "Task list",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Delete image",
-    "edit": "Edit Image URL"
+    "edit": "Edit Image URL",
+    "view": "View image"
   },
   "image_dialog": {
     "alt_placeholder": "Image description",
@@ -178,6 +181,10 @@
     "add_row_above": "Add row above",
     "add_row_below": "Add row below",
     "col_options": "Column {n} options",
+    "copy_col": "Copy column",
+    "copy_row": "Copy row",
+    "cut_col": "Cut column",
+    "cut_row": "Cut row",
     "delete_col": "Delete column",
     "delete_row": "Delete row",
     "delete_table": "Delete table",
@@ -187,13 +194,9 @@
     "insert_row_above": "Insert row above",
     "insert_row_below": "Insert row below",
     "new_row": "+ New row",
-    "row_options": "Row {n} options",
-    "copy_col": "Copy column",
-    "copy_row": "Copy row",
-    "cut_col": "Cut column",
-    "cut_row": "Cut row",
     "paste_col": "Paste column right",
-    "paste_row": "Paste row below"
+    "paste_row": "Paste row below",
+    "row_options": "Row {n} options"
   },
   "toolbar": {
     "cursor_sync": "Toggle cursor sync",

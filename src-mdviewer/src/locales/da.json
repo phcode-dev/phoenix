@@ -47,6 +47,7 @@
     "success": "PDF-filen blev eksporteret med succes"
   },
   "format": {
+    "ask_ai": "Spørg AI",
     "block_type": "Bloktype",
     "blockquote": "Blokcitat",
     "bold": "Fed ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Mere",
     "numbered_list": "Nummereret liste",
     "paragraph": "Afsnit",
+    "selection_unavailable": "Kan ikke finde denne markering",
     "strikethrough": "Gennemstreget ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Opgaveliste",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Slet billede",
-    "edit": "Rediger billed-URL"
+    "edit": "Rediger billed-URL",
+    "view": "Vis billede"
   },
   "image_dialog": {
     "alt_placeholder": "Billedbeskrivelse",
@@ -178,6 +181,10 @@
     "add_row_above": "Tilføj række ovenfor",
     "add_row_below": "Tilføj række nedenfor",
     "col_options": "Kolonne {n} indstillinger",
+    "copy_col": "Kopiér kolonne",
+    "copy_row": "Kopiér række",
+    "cut_col": "Klip kolonne",
+    "cut_row": "Klip række",
     "delete_col": "Slet kolonne",
     "delete_row": "Slet række",
     "delete_table": "Slet tabel",
@@ -187,13 +194,9 @@
     "insert_row_above": "Indsæt række ovenfor",
     "insert_row_below": "Indsæt række nedenfor",
     "new_row": "+ Ny række",
-    "row_options": "Indstillinger for række {n}",
-    "copy_col": "Kopiér kolonne",
-    "copy_row": "Kopiér række",
-    "cut_col": "Klip kolonne",
-    "cut_row": "Klip række",
     "paste_col": "Indsæt kolonne til højre",
-    "paste_row": "Indsæt række under"
+    "paste_row": "Indsæt række under",
+    "row_options": "Indstillinger for række {n}"
   },
   "toolbar": {
     "cursor_sync": "Skift cursorsynkronisering",

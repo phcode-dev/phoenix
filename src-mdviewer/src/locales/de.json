@@ -47,6 +47,7 @@
     "success": "PDF erfolgreich exportiert"
   },
   "format": {
+    "ask_ai": "KI fragen",
     "block_type": "Blocktyp",
     "blockquote": "Zitat",
     "bold": "Fett ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Mehr",
     "numbered_list": "Nummerierte Liste",
     "paragraph": "Absatz",
+    "selection_unavailable": "Diese Auswahl kann nicht gefunden werden",
     "strikethrough": "Durchgestrichen ({mod}+Umschalt+X)",
     "table": "Tabelle",
     "task_list": "Aufgabenliste",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Bild löschen",
-    "edit": "Bild-URL bearbeiten"
+    "edit": "Bild-URL bearbeiten",
+    "view": "Bild anzeigen"
   },
   "image_dialog": {
     "alt_placeholder": "Bildbeschreibung",
@@ -178,6 +181,10 @@
     "add_row_above": "Zeile darüber hinzufügen",
     "add_row_below": "Zeile darunter hinzufügen",
     "col_options": "Optionen für Spalte {n}",
+    "copy_col": "Spalte kopieren",
+    "copy_row": "Zeile kopieren",
+    "cut_col": "Spalte ausschneiden",
+    "cut_row": "Zeile ausschneiden",
     "delete_col": "Spalte löschen",
     "delete_row": "Zeile löschen",
     "delete_table": "Tabelle löschen",
@@ -187,13 +194,9 @@
     "insert_row_above": "Zeile darüber einfügen",
     "insert_row_below": "Zeile darunter einfügen",
     "new_row": "+ Neue Zeile",
-    "row_options": "Optionen für Zeile {n}",
-    "copy_col": "Spalte kopieren",
-    "copy_row": "Zeile kopieren",
-    "cut_col": "Spalte ausschneiden",
-    "cut_row": "Zeile ausschneiden",
     "paste_col": "Spalte rechts einfügen",
-    "paste_row": "Zeile unten einfügen"
+    "paste_row": "Zeile unten einfügen",
+    "row_options": "Optionen für Zeile {n}"
   },
   "toolbar": {
     "cursor_sync": "Cursor-Synchronisierung umschalten",

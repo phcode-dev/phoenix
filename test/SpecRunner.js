@@ -240,7 +240,6 @@ define(function (require, exports, module) {
     require("utils/Global");
     require("command/Menus");
     require("utils/NodeDomain");
-    require("utils/NodeUtils");
     require("utils/ColorUtils");
     require("preferences/PreferencesBase");
     require("JSUtils/Session");
@@ -581,6 +580,7 @@ define(function (require, exports, module) {
         });
     }
 
+    /** Wait for native boot variables and storage before loading test assets. */
     async function setupAndRunTests() {
         globalTestRunnerLogToConsole("Starting tests...");
         await window._tauriBootVarsPromise;
@@ -633,5 +633,10 @@ define(function (require, exports, module) {
         }
     }
 
-    setupAndRunTests();
+    setupAndRunTests().catch(error => {
+        const message = "Test runner startup failed: " + (error.message || String(error));
+        globalTestRunnerErrorToConsole(message);
+        _showLoading(true);
+        document.getElementById("loadProgressMessage").textContent = message;
+    });
 });

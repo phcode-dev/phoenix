@@ -71,6 +71,7 @@ define(function main(require, exports, module) {
         mode: LIVE_HIGHLIGHT_MODE, // will be updated when we fetch entitlements
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
+        showAskAI: true,
         showStylesBar: true, // default value, this will get updated when the extension loads
         showStarterBar: true, // default value, this will get updated when the extension loads
         stylesBarPosition: "bottom", // saved dock side ("top"/"bottom")
@@ -339,6 +340,13 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.updateConfig(config);
     }
 
+    /** Synchronize the preview-only Ask AI visibility preference with connected pages. */
+    function updateAskAIConfig() {
+        const config = MultiBrowserLiveDev.getConfig();
+        config.showAskAI = PreferencesManager.get(CONSTANTS.PREFERENCE_SHOW_ASK_AI) !== false;
+        MultiBrowserLiveDev.updateConfig(config);
+    }
+
     function updateStylesBarConfig() {
         const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_SHOW_STYLES_BAR);
         const config = MultiBrowserLiveDev.getConfig();
@@ -383,6 +391,7 @@ define(function main(require, exports, module) {
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
+    exports.updateAskAIConfig = updateAskAIConfig;
     exports.updateStylesBarConfig = updateStylesBarConfig;
     exports.updateStarterBarConfig = updateStarterBarConfig;
     exports.updateStylesBarPositionConfig = updateStylesBarPositionConfig;

@@ -44,6 +44,31 @@
     }
 }
 
+// Reuse the Files project switcher's quiet trigger for sidebar dropdowns. Keep the
+// generic .btn class off these controls: its dark hover fill overrides btn-alt-quiet.
+.sidebar-project-dropdown {
+    display: inline-flex;
+    align-items: center;
+    appearance: none;
+    padding: 2px 5px;
+    background-color: transparent;
+    color: @project-panel-text-2;
+    font-family: @sansFontFamily;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.14px;
+    text-shadow: inherit;
+
+    &:active {
+        background-color: transparent;
+    }
+
+    .dropdown-arrow {
+        flex: none;
+    }
+}
+
 #project-dropdown-toggle {
     display: flex;
     /* adjust margins to keep position #project-title position stable after extension is loaded */

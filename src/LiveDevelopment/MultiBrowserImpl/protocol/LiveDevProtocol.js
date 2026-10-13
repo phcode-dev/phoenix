@@ -539,6 +539,25 @@ define(function (require, exports, module) {
         return "\n" + script + "\n";
     }
 
+    // Runs last in the injected script, before any of the page's own scripts. The transport, broker,
+    // comm and protocol manager have each captured what they need from one another by now, so they
+    // leave the window: a page script cannot read, rewrite or send on the channel to the editor.
+    // _LD stays, since the editor's evaluate calls reach it by name, but frozen and fixed in place, so
+    // a page can neither wrap its functions nor shadow it with a global let of its own.
+    const SEAL_REMOTE_SCRIPT = `
+;(function (global) {
+    delete global._Brackets_LiveDev_Transport;
+    delete global._Brackets_MessageBroker;
+    delete global._Brackets_LiveDev_PhoenixComm;
+    delete global._Brackets_LiveDev_ProtocolManager;
+    const ld = global._LD;
+    if (ld && typeof ld === "object") {
+        Object.freeze(ld);
+        Object.defineProperty(global, "_LD", { value: ld, writable: false, configurable: false });
+    }
+}(this));
+`;
+
     /**
      * Returns a script that should be injected into the HTML that's launched in the
      * browser in order to handle protocol requests. Includes the <script> tags.
@@ -550,7 +569,8 @@ define(function (require, exports, module) {
         const remoteFunctionsScript = _getRemoteFunctionsScript() || "";
         return transportScript +
             "\n" + LiveDevProtocolRemote + "\n" +
-            remoteFunctionsScript;
+            remoteFunctionsScript +
+            SEAL_REMOTE_SCRIPT;
     }
 
     /**

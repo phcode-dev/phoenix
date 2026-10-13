@@ -229,9 +229,14 @@ define(function (require, exports, module) {
      * @param {Object} [env] - Extra environment variables to merge into the
      *   PTY's process env (e.g. custom API endpoint overrides). Optional —
      *   existing callers that omit it are unaffected.
+     * @param {Object} [options]
+     * @param {string} [options.connectorSessionId] - The AI CLI connector session this
+     *   process runs under, so PhNode ends that session when the process exits.
+     * @return {Promise<boolean>} Whether the PTY was created.
      */
-    TerminalInstance.prototype.spawn = async function (env) {
+    TerminalInstance.prototype.spawn = async function (env, options) {
         const dims = this.fitAddon.proposeDimensions();
+        const connectorSessionId = options && options.connectorSessionId;
         try {
             const result = await this.nodeConnector.execPeer("createTerminal", {
                 id: this.id,
@@ -240,14 +245,17 @@ define(function (require, exports, module) {
                 cwd: this.cwd,
                 cols: dims ? dims.cols : 80,
                 rows: dims ? dims.rows : 24,
-                env: env || undefined
+                env: env || undefined,
+                connectorSessionId: connectorSessionId || undefined
             });
             this.pid = result.pid;
             // A short-lived process can exit before the createTerminal reply arrives.
             this.isAlive = !this._processExited && !this._disposed;
+            return true;
         } catch (err) {
             console.error("Terminal: Failed to spawn PTY:", err);
             this.terminal.write("\r\n\x1b[31mFailed to start terminal: " + err.message + "\x1b[0m\r\n");
+            return false;
         }
     };
 

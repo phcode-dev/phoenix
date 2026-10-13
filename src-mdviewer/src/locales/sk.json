@@ -47,6 +47,7 @@
     "success": "PDF bolo úspešne exportované"
   },
   "format": {
+    "ask_ai": "Spýtať sa AI",
     "block_type": "Typ bloku",
     "blockquote": "Citácia",
     "bold": "Tučné ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Viac",
     "numbered_list": "Číslovaný zoznam",
     "paragraph": "Odsek",
+    "selection_unavailable": "Tento výber sa nedá nájsť",
     "strikethrough": "Prečiarknuté ({mod}+Shift+X)",
     "table": "Tabuľka",
     "task_list": "Zoznam úloh",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Vymazať obrázok",
-    "edit": "Upraviť URL obrázka"
+    "edit": "Upraviť URL obrázka",
+    "view": "Zobraziť obrázok"
   },
   "image_dialog": {
     "alt_placeholder": "Popis obrázka",
@@ -178,6 +181,10 @@
     "add_row_above": "Pridať riadok nad",
     "add_row_below": "Pridať riadok pod",
     "col_options": "Možnosti stĺpca {n}",
+    "copy_col": "Kopírovať stĺpec",
+    "copy_row": "Kopírovať riadok",
+    "cut_col": "Vystrihnúť stĺpec",
+    "cut_row": "Vystrihnúť riadok",
     "delete_col": "Odstrániť stĺpec",
     "delete_row": "Odstrániť riadok",
     "delete_table": "Odstrániť tabuľku",
@@ -187,13 +194,9 @@
     "insert_row_above": "Vložiť riadok nad",
     "insert_row_below": "Vložiť riadok pod",
     "new_row": "+ Nový riadok",
-    "row_options": "Možnosti riadka {n}",
-    "copy_col": "Kopírovať stĺpec",
-    "copy_row": "Kopírovať riadok",
-    "cut_col": "Vystrihnúť stĺpec",
-    "cut_row": "Vystrihnúť riadok",
     "paste_col": "Vložiť stĺpec napravo",
-    "paste_row": "Vložiť riadok nižšie"
+    "paste_row": "Vložiť riadok nižšie",
+    "row_options": "Možnosti riadka {n}"
   },
   "toolbar": {
     "cursor_sync": "Prepnúť synchronizáciu kurzora",

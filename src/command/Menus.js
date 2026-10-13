@@ -455,6 +455,8 @@ define(function (require, exports, module) {
      */
     function Menu(id) {
         this.id = id;
+        // Submenus inherit their owner's namespace even though they render as context menus.
+        this._metricsEventType = Metrics.EVENT_TYPE.APP_MENU;
     }
 
     Menu.prototype._getMenuItemId = function (commandId) {
@@ -733,7 +735,7 @@ define(function (require, exports, module) {
                     event.stopPropagation();
                     return true;
                 }
-                Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
+                Metrics.countEvent(self._metricsEventType || Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
                 MainViewManager.focusActivePane();
                 const commandId = menuItem._command.getID();
@@ -909,6 +911,7 @@ define(function (require, exports, module) {
         }
 
         let menu = new ContextMenu(id);
+        menu._metricsEventType = this._metricsEventType;
         contextMenuMap[id] = menu;
 
         let menuItemID = this.id + "-" + id;
@@ -1544,6 +1547,7 @@ define(function (require, exports, module) {
      */
     function ContextMenu(id) {
         Menu.apply(this, arguments);
+        this._metricsEventType = Metrics.EVENT_TYPE.UI_MENU;
 
         let $newMenu = $("<li class='dropdown context-menu' id='" + StringUtils.jQueryIdEscape(id) + "'></li>"),
             $popUp = $("<ul class='dropdown-menu'></ul>"),

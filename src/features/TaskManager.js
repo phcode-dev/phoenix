@@ -237,6 +237,7 @@ define(function (require, exports, module) {
         if(!task._$html){
             return;
         }
+        $html.find(".progress-bar-background").toggle(!task._hideProgressBar);
         $html.find(".progress")
             .removeClass("progress-bar-foreground")
             .removeClass("progress-bar-foreground-pulse")
@@ -346,6 +347,7 @@ define(function (require, exports, module) {
      * @param {Function} [options.onRetryClick] - Callback function triggered when the retry button is clicked.
      * @param {Function} [options.onSelect] - Callback function triggered when the task is selected from the dropdown.
      * @param {number} [options.progressPercent] - Initial progress percentage of the task.
+     * @param {boolean} [options.hideProgressBar] - Hide progress for tasks waiting on a user action.
      * @param {boolean} [options.noSpinnerNotification] - If set to true, will not show the task spinners for this task.
      *         This can be used for silent background tasks where user attention is not needed.
      * @returns {TaskObject} Returns a task object with methods for updating the task's state and UI representation,
@@ -403,6 +405,7 @@ define(function (require, exports, module) {
             onRetryClick: options && options.onRetryClick,
             onSelect: options && options.onSelect,
             _percent: options && options.progressPercent,
+            _hideProgressBar: options && options.hideProgressBar,
             _completedStatus: STATUS_INCOMPLETE,
             _iconHTML: iconHTML,
             _noSpinnerNotification: options && options.noSpinnerNotification,

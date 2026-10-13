@@ -349,6 +349,132 @@ define(function (require, exports, module) {
         return wrapper.promise();
     }
 
+    /** The waits retry() puts between attempts when none are given: 5 s, 15 s, 30 s, 60 s. */
+    const RETRY_DEFAULT_DELAYS_MS = [5000, 15000, 30000, 60000];
+    const RETRY_DEFAULT_ATTEMPTS = 5;
+    const RETRY_DEFAULT_JITTER = 0.25;
+
+    /**
+     * Runs an operation again when it fails, waiting longer before each retry. Meant for calls
+     * that may hit a network blip or a service that is restarting: the first retry is quick and
+     * the later ones are spaced out, so a short outage is ridden out without hammering the other
+     * side. Each wait is jittered so many clients recovering at once do not retry in step.
+     *
+     * The operation is called with the attempt number, starting at 1, and returns a Promise (a
+     * plain value or another thenable, such as a jQuery promise, is adopted with Promise.resolve).
+     * A thrown error or a rejection counts as a failure. Always returns a native Promise: it
+     * resolves with the first successful value and rejects with the last failure once the attempts
+     * are used up, or as soon as `shouldRetry` says a failure is not worth retrying, or when the
+     * signal aborts.
+     *
+     * @param {function(number): *} operation - called with the attempt number (1-based)
+     * @param {Object} [options]
+     * @param {number} [options.attempts=5] - how many times to try in all, the first included
+     * @param {number|Array<number>} [options.delaysMs=[5000, 15000, 30000, 60000]] - the wait before
+     *     each retry. A number is a fixed wait; an array gives the waits in order, and its last
+     *     value repeats when there are more retries than entries.
+     * @param {number} [options.jitter=0.25] - each wait is varied at random by up to this fraction
+     *     either way; 0 disables it
+     * @param {function(*, number): boolean} [options.shouldRetry] - given the failure and the
+     *     attempt that failed; return false to stop at once. Every failure is retried by default.
+     * @param {function(*, number, number)} [options.onRetry] - told the failure, the attempt that
+     *     failed and the wait in ms before each retry, for logging
+     * @param {number} [options.timeoutMs] - a cap on each attempt; one that runs longer fails
+     *     with Async.ERROR_TIMEOUT and is retried like any other failure
+     * @param {AbortSignal} [options.signal] - aborting it ends the waiting and rejects with the
+     *     signal's reason
+     * @return {Promise}
+     */
+    function retry(operation, options) {
+        const settings = options || {};
+        const attempts = Math.max(1, settings.attempts || RETRY_DEFAULT_ATTEMPTS);
+        const jitter = typeof settings.jitter === "number" ? Math.max(0, settings.jitter) : RETRY_DEFAULT_JITTER;
+        let delays = settings.delaysMs === undefined ? RETRY_DEFAULT_DELAYS_MS : settings.delaysMs;
+        if (!Array.isArray(delays)) {
+            delays = [delays];
+        }
+        if (!delays.length) {
+            delays = [0];
+        }
+        const signal = settings.signal;
+
+        function waitFor(retryIndex) {
+            const base = delays[Math.min(retryIndex, delays.length - 1)];
+            const spread = base * jitter;
+            return Math.max(0, Math.round(base + (Math.random() * 2 - 1) * spread));
+        }
+
+        function attemptOnce(attempt) {
+            let result;
+            try {
+                result = operation(attempt);
+            } catch (err) {
+                return Promise.reject(err);
+            }
+            const promise = Promise.resolve(result);
+            if (!settings.timeoutMs) {
+                return promise;
+            }
+            return new Promise(function (resolve, reject) {
+                const timer = window.setTimeout(function () {
+                    reject(ERROR_TIMEOUT);
+                }, settings.timeoutMs);
+                promise.then(function (value) {
+                    window.clearTimeout(timer);
+                    resolve(value);
+                }, function (err) {
+                    window.clearTimeout(timer);
+                    reject(err);
+                });
+            });
+        }
+
+        return new Promise(function (resolve, reject) {
+            if (signal && signal.aborted) {
+                reject(signal.reason);
+                return;
+            }
+            let timer = null;
+            function onAbort() {
+                window.clearTimeout(timer);
+                reject(signal.reason);
+            }
+            if (signal) {
+                signal.addEventListener("abort", onAbort, { once: true });
+            }
+            function finish(settle, value) {
+                if (signal) {
+                    signal.removeEventListener("abort", onAbort);
+                }
+                settle(value);
+            }
+
+            function run(attempt) {
+                attemptOnce(attempt).then(function (value) {
+                    finish(resolve, value);
+                }, function (err) {
+                    if (signal && signal.aborted) {
+                        return;
+                    }
+                    const more = attempt < attempts &&
+                        (!settings.shouldRetry || settings.shouldRetry(err, attempt) !== false);
+                    if (!more) {
+                        finish(reject, err);
+                        return;
+                    }
+                    const wait = waitFor(attempt - 1);
+                    if (settings.onRetry) {
+                        settings.onRetry(err, attempt, wait);
+                    }
+                    timer = window.setTimeout(function () {
+                        run(attempt + 1);
+                    }, wait);
+                });
+            }
+            run(1);
+        });
+    }
+
     /**
      * Allows waiting for all the promises to be either resolved or rejected.
      * Unlike $.when(), it does not call .fail() or .always() handlers on first
@@ -596,6 +722,7 @@ define(function (require, exports, module) {
     exports.doInParallel_aggregateErrors = doInParallel_aggregateErrors;
     exports.firstSequentially   = firstSequentially;
     exports.withTimeout         = withTimeout;
+    exports.retry               = retry;
     exports.waitForAll          = waitForAll;
     exports.ERROR_TIMEOUT       = ERROR_TIMEOUT;
     exports.chain               = chain;

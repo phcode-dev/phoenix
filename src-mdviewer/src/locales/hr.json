@@ -47,6 +47,7 @@
     "success": "PDF je uspješno izvezen"
   },
   "format": {
+    "ask_ai": "Pitaj umjetnu inteligenciju",
     "block_type": "Vrsta bloka",
     "blockquote": "Blok citat",
     "bold": "Podebljano ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Više",
     "numbered_list": "Numerirani popis",
     "paragraph": "Odlomak",
+    "selection_unavailable": "Nije moguće pronaći ovaj odabir",
     "strikethrough": "Precrtano ({mod}+Shift+X)",
     "table": "Tablica",
     "task_list": "Popis zadataka",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Izbriši sliku",
-    "edit": "Uredi URL slike"
+    "edit": "Uredi URL slike",
+    "view": "Prikaži sliku"
   },
   "image_dialog": {
     "alt_placeholder": "Opis slike",
@@ -178,6 +181,10 @@
     "add_row_above": "Dodaj redak iznad",
     "add_row_below": "Dodaj redak ispod",
     "col_options": "Opcije stupca {n}",
+    "copy_col": "Kopiraj stupac",
+    "copy_row": "Kopiraj redak",
+    "cut_col": "Izreži stupac",
+    "cut_row": "Izreži redak",
     "delete_col": "Izbriši stupac",
     "delete_row": "Izbriši redak",
     "delete_table": "Izbriši tablicu",
@@ -187,13 +194,9 @@
     "insert_row_above": "Umetni redak iznad",
     "insert_row_below": "Umetni redak ispod",
     "new_row": "+ Novi redak",
-    "row_options": "Opcije retka {n}",
-    "copy_col": "Kopiraj stupac",
-    "copy_row": "Kopiraj redak",
-    "cut_col": "Izreži stupac",
-    "cut_row": "Izreži redak",
     "paste_col": "Zalijepi stupac desno",
-    "paste_row": "Zalijepi redak ispod"
+    "paste_row": "Zalijepi redak ispod",
+    "row_options": "Opcije retka {n}"
   },
   "toolbar": {
     "cursor_sync": "Prebaci sinkronizaciju kursora",

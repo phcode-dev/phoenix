@@ -47,6 +47,7 @@
     "success": "PDF berhasil diekspor"
   },
   "format": {
+    "ask_ai": "Tanya AI",
     "block_type": "Tipe blok",
     "blockquote": "Kutipan",
     "bold": "Tebal ({mod}+B)",
@@ -68,6 +69,7 @@
     "more_elements": "Lainnya",
     "numbered_list": "Daftar bernomor",
     "paragraph": "Paragraf",
+    "selection_unavailable": "Tidak dapat menemukan pilihan ini",
     "strikethrough": "Coret ({mod}+Shift+X)",
     "table": "Tabel",
     "task_list": "Daftar tugas",
@@ -83,7 +85,8 @@
   },
   "image": {
     "delete": "Hapus gambar",
-    "edit": "Edit URL Gambar"
+    "edit": "Edit URL Gambar",
+    "view": "Lihat gambar"
   },
   "image_dialog": {
     "alt_placeholder": "Deskripsi gambar",
@@ -178,6 +181,10 @@
     "add_row_above": "Tambah baris di atas",
     "add_row_below": "Tambah baris di bawah",
     "col_options": "Opsi kolom {n}",
+    "copy_col": "Salin kolom",
+    "copy_row": "Salin baris",
+    "cut_col": "Potong kolom",
+    "cut_row": "Potong baris",
     "delete_col": "Hapus kolom",
     "delete_row": "Hapus baris",
     "delete_table": "Hapus tabel",
@@ -187,13 +194,9 @@
     "insert_row_above": "Sisipkan baris di atas",
     "insert_row_below": "Sisipkan baris di bawah",
     "new_row": "+ Baris baru",
-    "row_options": "Opsi baris {n}",
-    "copy_col": "Salin kolom",
-    "copy_row": "Salin baris",
-    "cut_col": "Potong kolom",
-    "cut_row": "Potong baris",
     "paste_col": "Tempel kolom kanan",
-    "paste_row": "Tempel baris di bawah"
+    "paste_row": "Tempel baris di bawah",
+    "row_options": "Opsi baris {n}"
   },
   "toolbar": {
     "cursor_sync": "Alihkan sinkronisasi kursor",

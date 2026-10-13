@@ -1,5 +1,22 @@
 # Claude Code Instructions
 
+## Shared task tracking
+
+- For Phoenix AI, CLI connector and Live Preview work, read the Pro repository's
+  [high-level-todos.md](src/extensionsIntegrated/phoenix-pro/high-level-todos.md) before choosing work.
+  Keep it a short, user-facing overview of what remains.
+- Read and maintain [the agent handoff](src/extensionsIntegrated/phoenix-pro/docs/agent-handoff.md)
+  for implementation context, task ownership, dependencies, decisions and verification evidence.
+  Update it when starting, handing off, completing or deferring work, and synchronize the high-level
+  status. Put detailed findings in the handoff or linked reports, not in the high-level overview.
+- Keep completed children with their active parent. When the whole parent and required verification
+  are complete, move its full section from the active overview to Pro's
+  [high-level-completed-tasks.md](src/extensionsIntegrated/phoenix-pro/high-level-completed-tasks.md)
+  with a completion date and outcome. Preserve detailed evidence in the handoff/reports.
+- Coordinate overlapping work with the listed owner. A task entry does not override the user's
+  current scope or reactivate deferred work. The Pro repository is separate and gitignored here;
+  inspect its Git status separately.
+
 ## Git Commits
 - **Never commit unless the user explicitly asks you to commit or grants autocommit permission.** Only exception: if a commit is technically required for the current task to work (e.g. testing a CI pipeline).
 - Use Conventional Commits format: `type(scope): description` (e.g. `fix: ...`, `feat: ...`, `chore: ...`).
@@ -43,6 +60,16 @@ Phoenix has two parallel file APIs. Pick the right one for the situation:
 If a file is purely app-internal data and never edited by the user as a document, use the VFS APIs. Mixing them on the same file leads to mtime confusion and surprise size limits.
 
 ## Phoenix MCP (Desktop App Testing)
+
+The shared Builder hub is owned by `npm run serve`; each coding agent has its own adapter.
+Before app control, tests or source sync on a machine, use `reserve_machine` with the canonical
+remote-control machine ID and honor its whole-machine reservation. Read the source note on
+acquisition, record changes before and after edits/sync, and release when finished. Dequeue if
+a queued request is no longer needed. Notes survive disconnect and are context, not permission
+to discard others' uncommitted/unsaved work. Status discovery is read-only; tool traffic does
+not itself acquire or release reservations. See [Builder setup and workflow](phoenix-builder-mcp/README.md).
+When upgrading an existing single-owner Builder connection, reconnect it after restarting serve
+to expose these coordination tools.
 
 Use `exec_js` to run JS in the Phoenix browser runtime. jQuery `$()` is global. `brackets.test.*` exposes internal modules (DocumentManager, CommandManager, ProjectManager, FileSystem, EditorManager). Always `return` a value from `exec_js` to see results. Prefer reusing an already-running Phoenix instance (`get_phoenix_status`) over launching a new one.
 

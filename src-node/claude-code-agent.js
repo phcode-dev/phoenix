@@ -32,16 +32,18 @@ const path = require("path");
 const { createEditorMcpServer, getImageSearchResult } = require("./mcp-editor-tools");
 const CliLocator = require("./cli-locator");
 const ImagePreview = require("./ai-image-preview");
+const {buildSystemPrompt, buildEditorContextLine} = require("./ai-system-prompt");
+const CliConnector = require("./ai-cli-connector");
+const CliCapabilities = require("./ai-cli-capabilities");
+const ModelEffort = require("./ai-model-effort");
+const {updatePricing} = require("./ai-cli-pricing");
+const NodeConnector = require("./node-connector");
 
 exports.readImagePreview = ImagePreview.readImage;
 
 const isWindows = process.platform === "win32";
 
 const CONNECTOR_ID = "ph_ai_claude";
-
-// The model tests send a random challenge and expect it back with this suffix
-// appended; see the probe sentence at the end of the system prompt append.
-const SYSTEM_PROMPT_PROBE_SUFFIX = "xxyysjud";
 
 // The user's follow-up is addressed to the main agent, like a queued
 // message in the Claude Code CLI. Hooks fire inside subagents too
@@ -129,6 +131,12 @@ let currentSessionId = null;
 // best-effort, from the first live query. null until available.
 let cachedModelList = null;
 
+// The model the last query sent without a model resolved to (the user's saved
+// Claude Code default) and the endpoint it was resolved on, so an effort asked
+// for on the default model is checked against that model, and only while the
+// endpoint is the same. null until a default query has started.
+let _lastResolvedDefault = null;
+
 /**
  * Fetch the model list from a live Query once per process. Best-effort:
  * the control request can fail on older CLIs or non-streaming input —
@@ -148,6 +156,7 @@ function _fetchModelListOnce(queryResult) {
 
 // Active query state
 let currentAbortController = null;
+let activeQuery = null;
 
 // Lazily-initialized in-process MCP server for editor context
 let editorMcpServer = null;
@@ -183,6 +192,23 @@ let _queuedClarification = null;
 let _runtimePermissionMode = "auto";
 
 const nodeConnector = global.createNodeConnector(CONNECTOR_ID, exports);
+CliConnector.setBrowserConnector(nodeConnector, NodeConnector.isConnected);
+
+/** Create a connector only for the entitled AI-panel launch path. */
+exports.createCliConnectorSession = async params => {
+    const command = await CliCapabilities.checkLaunch(params.cli, params.projectRoot);
+    const launch = await CliConnector.createSession(params);
+    return Object.assign(launch, {command, replaceArgs: true});
+};
+/** Revoke the session before its terminal is disposed. */
+exports.endCliConnectorSession = async params => CliConnector.revokeSession(params.sessionId, "stopped");
+/** Return connection state without exposing the window's transport credential. */
+exports.getCliConnectorStatus = async params => CliConnector.getStatus(params.sessionId);
+/** Disconnect or reconnect only this CLI's Phoenix tools; its terminal keeps running. */
+exports.setCliConnectorEnabled = async params => CliConnector.setEnabled(params.sessionId, params.enabled);
+
+/** Validate and atomically replace this window's Codex estimate prices; never reprices saved usage. */
+exports.setExternalModelPricing = async params => updatePricing(params && params.catalog);
 
 // Tools whose permission request in Plan Mode means "the model wants to
 // start editing user files" — they share the plan-mode write-confirm card.
@@ -235,8 +261,11 @@ function _registerAnswer(kind, signal) {
 }
 
 /**
- * Deliver a browser answer to the matching pending card (by confirmId, else
- * the oldest card of that kind). Returns false if nothing was waiting.
+ * Deliver an answer by confirmId, or to the oldest card only when no ID is supplied.
+ * An expired ID must never answer a newer question or permission request.
+ * @param {string} kind Card category.
+ * @param {Object} params Answer payload with an optional confirmId.
+ * @return {boolean} Whether a matching pending card accepted the answer.
  */
 function _resolveAnswer(kind, params) {
     const bucket = _pendingAnswers[kind];
@@ -246,10 +275,10 @@ function _resolveAnswer(kind, params) {
     let resolve;
     if (params && params.confirmId !== undefined) {
         resolve = bucket.get(params.confirmId);
-    }
-    if (!resolve) {
+    } else {
         resolve = bucket.values().next().value;
     }
+    if (!resolve) { return false; }
     resolve(params || {});
     return true;
 }
@@ -297,16 +326,28 @@ async function _askPlanModeWriteConfirm(requestId, toolName, filePath, signal) {
 
 /**
  * Show the AskUserQuestion card in the browser and wait for the answers.
- * Resolves the browser's {answers} payload, or null on abort.
+ * Close that card when the SDK ends its wait; timeout policy belongs to the SDK.
+ * @param {string} requestId Owning query ID.
+ * @param {Array<Object>} questions Questions supplied by Claude.
+ * @param {AbortSignal} signal SDK question or query cancellation signal.
+ * @return {Promise<Object|null>} The browser's answers, or null on cancellation.
  */
 async function _askUserQuestions(requestId, questions, signal) {
+    if (signal.aborted) { return null; }
     const pending = _registerAnswer("question", signal);
     nodeConnector.triggerPeer("aiQuestion", {
         requestId: requestId,
         confirmId: pending.id,
         questions: questions
     });
-    return pending.promise;
+    try {
+        return await pending.promise;
+    } finally {
+        nodeConnector.triggerPeer("aiQuestionClosed", {
+            requestId: requestId,
+            confirmId: pending.id
+        });
+    }
 }
 
 /**
@@ -320,43 +361,6 @@ function _formatAnswers(answer) {
         });
     }
     return answerText.trim();
-}
-
-/**
- * Render the editor context the panel sent into the line prepended to the
- * prompt. The panel assembles it because that is where the data and the
- * user's context chips already live; this only turns it into prose. Returns
- * "" when the panel sent nothing, i.e. the user dismissed those chips.
- */
-function _buildEditorContextLine(ctx) {
-    if (!ctx || (!ctx.activeFile && !ctx.livePreviewFile)) {
-        return "";
-    }
-    const parts = ["Editor state (auto-supplied, no tool call needed):"];
-    if (ctx.activeFile) {
-        parts.push("the user is editing " + ctx.activeFile + ".");
-        if (ctx.unsaved) {
-            // Read and Edit are buffer-safe here (the agent flushes the buffer
-            // first); only Grep sees stale disk. Saying "stale on disk" without that
-            // steered the model off Edit onto the editor API — no edit card, no undo.
-            parts.push("Unsaved (Read and Edit see the unsaved text as normal; Grep does not, so " +
-                "use searchEditorBuffers to search these): " + ctx.unsaved + ".");
-        }
-    }
-    if (ctx.livePreviewFile) {
-        parts.push(ctx.livePreviewFile === ctx.activeFile
-            ? "The live preview is showing that same file."
-            : "The live preview is showing " + ctx.livePreviewFile + ".");
-    }
-    // Say plainly when the lists are complete. Left merely to infer it, the
-    // agent calls getEditorState to check — the exact lookup this line is
-    // here to save.
-    parts.push(ctx.truncated
-        ? "Trust this over searching for it yourself; call getEditorState for the names cut " +
-          "from a list, or if you need the cursor, the selection or a fresher view."
-        : "That is the complete set. Trust it over searching or double-checking; call " +
-          "getEditorState only if you need the cursor, the selection or a fresher view.");
-    return parts.join(" ");
 }
 
 /**
@@ -835,13 +839,14 @@ function _isAiScratchPath(filePath) {
 
 /**
  * Send a prompt to Claude and stream results back to the browser.
- * Called from browser via execPeer("sendPrompt", {prompt, projectPath, sessionAction, model}).
+ * Called from browser via execPeer("sendPrompt", {prompt, projectPath, sessionAction, model, effort}).
+ * effort is a thinking effort level for the model, or absent to leave the default to the SDK.
  *
  * Returns immediately with a requestId. Results are sent as events:
  *   aiProgress, aiTextStream, aiToolEdit, aiError, aiComplete
  */
 exports.sendPrompt = async function (params) {
-    const { prompt, projectPath, sessionAction, model, locale, selectionContext, editorContext,
+    const { prompt, projectPath, sessionAction, model, effort, locale, selectionContext, editorContext,
         images, envOverrides, permissionMode, additionalDirectories, aiScratchDir } = params;
     if (typeof aiScratchDir === "string" && aiScratchDir) {
         _aiScratchDir = aiScratchDir;
@@ -868,7 +873,7 @@ exports.sendPrompt = async function (params) {
     // the unsaved buffers and the live preview target for certain, so stating
     // them costs one line and removes the reason to go hunting: without it
     // the model opens by grepping the project for a file already on screen.
-    const editorContextLine = _buildEditorContextLine(editorContext);
+    const editorContextLine = buildEditorContextLine(editorContext);
 
     // Prepend selection context to the prompt if available
     let enrichedPrompt = prompt;
@@ -897,7 +902,7 @@ exports.sendPrompt = async function (params) {
     }
 
     // Run the query asynchronously — don't await here so we return requestId immediately
-    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides, permissionMode, additionalDirectories)
+    _runQuery(requestId, enrichedPrompt, projectPath, model, currentAbortController.signal, locale, images, envOverrides, permissionMode, additionalDirectories, effort)
         .catch(err => {
             console.error("[Phoenix AI] Query error:", err);
         });
@@ -965,11 +970,40 @@ exports.answerPlanModeWriteConfirm = async function (params) {
  * after switching from Edit Mode to Allow Everything). The next sendPrompt also
  * passes permissionMode in params, so this peer is only strictly required
  * during streaming — but calling it on every cycle keeps the agent's
- * tracker authoritative.
+ * tracker and the SDK session authoritative.
+ * @param {{mode: string}} params Requested SDK permission mode.
+ * @return {Promise<{success: boolean}>} Resolves after the active SDK session is updated.
  */
 exports.setPermissionMode = async function (params) {
     if (params && typeof params.mode === "string") {
         _runtimePermissionMode = params.mode;
+        if (activeQuery && !activeQuery.signal.aborted) {
+            const current = activeQuery;
+            // Keep rapid mode changes in order; a failed earlier update must
+            // not prevent a subsequent explicit choice from reaching the SDK.
+            current.modeUpdate = current.modeUpdate.catch(() => {}).then(async () => {
+                if (current.signal.aborted) { throw new Error("Permission mode update cancelled"); }
+                let timeout;
+                try {
+                    await Promise.race([
+                        current.query.setPermissionMode(params.mode),
+                        new Promise((resolve, reject) => {
+                            timeout = setTimeout(() => reject(new Error("Permission mode update timed out")), 10000);
+                        })
+                    ]);
+                } finally {
+                    clearTimeout(timeout);
+                }
+            });
+            try {
+                await current.modeUpdate;
+            } catch (err) {
+                // A stale, more permissive SDK mode must not continue after
+                // the user chose a different mode in the panel.
+                current.controller.abort();
+                throw err;
+            }
+        }
     }
     return { success: true };
 };
@@ -1086,7 +1120,7 @@ exports.clearClarification = async function () {
 /**
  * Internal: run a Claude SDK query and stream results back to the browser.
  */
-async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode, additionalDirectories) {
+async function _runQuery(requestId, prompt, projectPath, model, signal, locale, images, envOverrides, permissionMode, additionalDirectories, effort) {
     // Sync the runtime mutable that hooks read for permission decisions —
     // setPermissionMode (peer) updates this same variable when the user
     // cycles modes mid-stream.
@@ -1099,11 +1133,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // tool_use id → SDK tool name, so a tool_result can be interpreted in the
     // light of which tool produced it (see the AskUserQuestion note below).
     const _toolUseIdToName = {};
-    // Set true once the user clicks "Allow & Switch to Edit Mode" on a
-    // plan-mode write confirmation. Subsequent Edit/Write attempts in the same
-    // turn skip the prompt and use the cached "allow" decision so a multi-edit
-    // turn doesn't pop a dialog before every edit.
-    let _planExitApprovedThisTurn = false;
+    const _savedPlanToolIds = new Set();
     // Live preview nudge bookkeeping, per request so each new user prompt
     // re-arms it. _lpPendingEdits counts live-preview-related edits since the
     // model last inspected the preview; _lpNudgeCount enforces the hard cap.
@@ -1196,13 +1226,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     // rather than seeing a literal []. Each sendPrompt rebuilds this
     // list, so adding/removing in the UI takes effect on the next turn.
     const _cwdForValidation = projectPath || process.cwd();
-    // Where Edit/Write may land without asking: the project, any extra
-    // directories the user attached, and scratch space. Anything else gets
-    // the permission card — the same "write outside the working directory?"
-    // check Claude Code makes on its own, which the Write/Edit entries in
-    // allowedTools would otherwise skip. Seen in the wild: after
-    // `mkdir -p notes-app` in the project, the model wrote the files to
-    // /home/<user>/notes-app and nobody was asked.
+    // AI Edit Mode permits edits within the project, attached directories
+    // and scratch space. Other paths need its manual permission card.
+    // Auto leaves file permission decisions to the SDK instead.
     function _isOutsideWriteRoots(filePath) {
         if (!filePath || !path.isAbsolute(filePath) || _isAiScratchPath(filePath)) {
             return false;
@@ -1214,9 +1240,27 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             return target === r || target.startsWith(r + path.sep);
         });
     }
+    /**
+     * Wait for SDK mode changes before allowing a file hook to proceed.
+     * @param {string} [mode] Optional new mode, for an explicitly approved plan.
+     * @return {Promise<Object|null>} A hook denial on cancellation/failure, otherwise null.
+     */
+    async function _fileModeDenial(mode) {
+        try {
+            if (mode) { await exports.setPermissionMode({mode}); }
+            if (activeQuery && activeQuery.requestId === requestId) {
+                await activeQuery.modeUpdate;
+            }
+            if (!signal.aborted) { return null; }
+        } catch (err) {
+            _log("File permission mode update failed:", err.message);
+        }
+        return {hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny",
+            permissionDecisionReason: "Permission mode update failed or the query was cancelled."}};
+    }
     async function _denyUnlessOutsideWriteAllowed(toolName, toolInput, promptSignal) {
         const filePath = toolInput && toolInput.file_path;
-        if (_runtimePermissionMode === "bypassPermissions" || !_isOutsideWriteRoots(filePath)) {
+        if (_runtimePermissionMode !== "acceptEdits" || !_isOutsideWriteRoots(filePath)) {
             return null;
         }
         _log("Write outside project roots:", filePath);
@@ -1284,13 +1328,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             };
         }
         if (FILE_WRITE_TOOLS.indexOf(toolName) !== -1 && _runtimePermissionMode === "plan") {
-            // Plan mode entered mid-turn via EnterPlanMode: the Edit/Write
-            // hooks saw the query-start mode and passed the call through,
-            // so the CLI's own plan-mode block asks us. Same card as the
-            // hook path, same one-shot approval for the rest of the turn.
-            if (_planExitApprovedThisTurn) {
-                return { behavior: "allow", updatedInput: input };
-            }
+            // Fallback for file tools not intercepted by the Edit/Write hooks.
             const filePath = (input && input.file_path) || "";
             const approved = await _askPlanModeWriteConfirm(
                 requestId, toolName, filePath, promptSignal);
@@ -1301,8 +1339,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                         "tool to propose your changes for approval before editing."
                 };
             }
-            _planExitApprovedThisTurn = true;
-            _runtimePermissionMode = "auto";
+            if (await _fileModeDenial("auto")) {
+                return {behavior: "deny", message: "Permission mode update failed or the query was cancelled."};
+            }
             return { behavior: "allow", updatedInput: input };
         }
         // Anything else the CLI wants a human decision on: Bash or a
@@ -1357,13 +1396,12 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             };
         }
         _log("Plan approved by user, continuing in this turn");
-        _planExitApprovedThisTurn = true;
         // The browser pushes the restored UI mode via setPermissionMode
         // before answering; only fill in if it hasn't. Auto (classifier
         // approved) is the landing mode after a plan — it suits the
         // implementation phase better than manual Edit Mode confirms.
-        if (_runtimePermissionMode === "plan") {
-            _runtimePermissionMode = "auto";
+        if (await _fileModeDenial(_runtimePermissionMode === "plan" ? "auto" : undefined)) {
+            return {behavior: "deny", message: "Permission mode update failed or the query was cancelled."};
         }
         return { behavior: "allow", updatedInput: input };
     }
@@ -1389,8 +1427,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         },
         // Permission allow-rules, not a tool availability list. Bash is
         // deliberately absent so that nothing here can pre-approve a shell
-        // command: every one is judged by the permission pipeline, and in
-        // Auto that means the SDK's classifier, whose "ask" verdicts reach
+        // command. Edit and Write are absent for the same reason: in Auto
+        // the SDK permission pipeline decides, and its "ask" verdicts reach
         // canUseTool below as the panel's Allow/Deny card. The CLI happens
         // to ignore a Bash allow rule anyway ("Ignoring dangerous permission
         // Bash(*) from cliArg (bypasses classifier)"), so leaving it out
@@ -1398,7 +1436,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         // uses the manual confirm in the Bash PreToolUse hook below, and
         // Allow Everything (bypassPermissions) skips permission checks.
         allowedTools: [
-            "Read", "Edit", "Write", "Glob", "Grep",
+            "Read", "Glob", "Grep",
             "AskUserQuestion", "Task", "Agent",
             // Background-subagent plumbing: lets the main agent relay a
             // user follow-up to a running subagent (SendMessage), read its
@@ -1410,6 +1448,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "EnterPlanMode", "ExitPlanMode",
             "mcp__phoenix-editor__getEditorState",
             "mcp__phoenix-editor__searchEditorBuffers",
+            "mcp__phoenix-editor__getRenderedMdSelectionFollowUp",
             "mcp__phoenix-editor__searchImages",
             "mcp__phoenix-editor__previewImages",
             "mcp__phoenix-editor__useImage",
@@ -1424,6 +1463,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             "mcp__phoenix-editor__getProblems",
             "mcp__phoenix-editor__notifyUser",
             "mcp__phoenix-editor__askInLivePreview",
+            "mcp__phoenix-editor__askRichQuestion",
             "mcp__phoenix-editor__controlEditor",
             "mcp__phoenix-editor__resizeLivePreview",
             "mcp__phoenix-editor__wait",
@@ -1438,6 +1478,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 tools: ["Read", "Glob", "Grep",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__searchEditorBuffers",
+                    "mcp__phoenix-editor__getRenderedMdSelectionFollowUp",
                     "mcp__phoenix-editor__searchImages",
                     "mcp__phoenix-editor__previewImages",
                     "mcp__phoenix-editor__takeScreenshot",
@@ -1456,6 +1497,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     "mcp__phoenix-editor__useImage",
                     "mcp__phoenix-editor__getEditorState",
                     "mcp__phoenix-editor__searchEditorBuffers",
+                    "mcp__phoenix-editor__getRenderedMdSelectionFollowUp",
                     "mcp__phoenix-editor__takeScreenshot",
                     "mcp__phoenix-editor__execJsInLivePreview",
                     "mcp__phoenix-editor__execJsInEditor",
@@ -1472,168 +1514,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         systemPrompt: {
             type: "preset",
             preset: "claude_code",
-            append:
-                "When modifying an existing file, always prefer the Edit tool " +
-                "(find-and-replace) instead of the Write tool. The Write tool should ONLY be used " +
-                "to create brand new files that do not exist yet. For existing files, always use " +
-                "multiple Edit calls to make targeted changes rather than rewriting the entire " +
-                "file with Write. This is critical because Write replaces the entire file content " +
-                "which is slow and loses undo history." +
-                "\n\nThe user's project root is " + (projectPath || process.cwd()) + ". For files " +
-                "under it, default to Edit and Write over shell rewrites (sed -i, perl -i, tee, " +
-                "Set-Content/Out-File, `>` / `>>` redirection). Phoenix routes Edit and Write " +
-                "through the editor, so they refresh the user's open buffer, render a reviewable " +
-                "diff, and stay undoable from the AI panel; a shell rewrite skips all three, and " +
-                "the user cannot undo it. Outside the project root — scratch files, temp output, " +
-                "logs — the shell is fine and needs no thought. " +
-                "\nThis is a default, not a prohibition. The shell is the better call when the " +
-                "change is mechanical across many files or matches, when Edit would mean dozens of " +
-                "calls or reading a large file to alter a little of it, or when the target is " +
-                "generated output. Phoenix stops the first shell rewrite of each command and " +
-                "explains why; re-run it unchanged and it goes through. Judge it on the merits — " +
-                "tokens saved against undo lost — and tell the user when you take the shell route. " +
-                "When the saving would be marginal, take Edit: one shell call and one Edit call " +
-                "cost about the same, so a handful of files is not a reason to give up undo. The " +
-                "shell has to earn it." +
-                "\n\nALWAYS call getEditorState as your FIRST tool call on any question that " +
-                "references the user's current work — not just \"what file am I on\". This includes " +
-                "implicit-context questions like \"the page\", \"this layout\", \"the nav bar\", " +
-                "\"the button\", \"why is X behaving like this\", \"can you fix the styling\", " +
-                "\"scroll down on the page\", etc. The user is sitting in front of an editor and a " +
-                "live preview — without getEditorState you don't know which file they mean, which " +
-                "rules out targeted Read / Grep and makes you blindly grep the whole codebase. Run " +
-                "getEditorState first; THEN decide whether to Read the active file, Grep within it, " +
-                "or takeScreenshot the live preview to see what they're describing." +
-                "\n\nAlways use full absolute paths for all file operations (Read, Edit, Write, " +
-                "controlEditor). Never use relative paths." +
-                "\n\nWhen a tool response mentions the user has typed a clarification, immediately " +
-                "call getUserClarification to read it and incorporate the user's feedback into your current work." +
-                "\n\nYou are running inside Phoenix Code, a web-focused code editor with built-in " +
-                "live preview for both HTML/CSS/JS/SVG and Markdown. When the user asks to create " +
-                "mockups, prototypes, or web pages, prefer vanilla HTML/CSS/JS so the live preview " +
-                "can render and edit them — unless the user specifically requests a framework. " +
-                "Build responsive layouts by default for web content. For images, prefer real " +
-                "<img> tags over div background-image so the user can swap, inspect, and resize " +
-                "them in the editor — only fall back to background-image when an effect (parallax, " +
-                "cover-with-overlay, repeating tile) genuinely requires it." +
-                "\n\nThe live preview is the rendered view of the HTML/CSS/JS/SVG or Markdown file " +
-                "currently active in the editor." +
-                "\n\nYou ALWAYS have live visibility into the editor through the phoenix-editor tools " +
-                "listed below. NEVER tell the user you can't see what's open / what they're looking " +
-                "at / what file they're on / what's selected / what's in the live preview — call " +
-                "getEditorState (and takeScreenshot / execJsInLivePreview as needed) instead. " +
-                "ALWAYS prefer the phoenix-editor MCP for ANY preview interaction — screenshots, " +
-                "JS evaluation, DOM inspection, console/network reads, viewport resizing, reloads. " +
-                "Do NOT reach for other MCP servers like chrome-devtools to open a separate browser " +
-                "session for the same things; the user's live preview inside Phoenix reflects their " +
-                "current (possibly unsaved) edits, while a fresh browser session would miss those. " +
-                "phoenix-editor.takeScreenshot, phoenix-editor.execJsInLivePreview, " +
-                "phoenix-editor.resizeLivePreview, and phoenix-editor.controlEditor cover virtually " +
-                "every \"look at / poke at the page\" need. Only fall back to chrome-devtools or " +
-                "another browser MCP if the user explicitly asks for a non-Phoenix browser context. " +
-                "These tools are for active iteration AND for checking your own work — " +
-                "use them as you go, not only when the user asks:" +
-                "\n- takeScreenshot: see the rendered HTML preview, the rendered Markdown preview, " +
-                "the editor, or any panel. Use it to confirm visual output, diagnose layout/styling " +
-                "bugs, or check that HTML or Markdown rendered as expected. Simple selector rule: " +
-                "if the question is about the rendered live preview pass " +
-                "selector='#panel-live-preview-frame' (targeted shot is easier to reason about); for " +
-                "anything else — Problems panel, file tree, toolbar, any other Phoenix UI, or just " +
-                "\"what is the user looking at\" — omit the selector and capture the full editor " +
-                "window. Pass reload=true to force-reload the preview before capturing (useful after " +
-                "JS edits) — saves a tool call vs. reloading separately." +
-                "\n- execJsInLivePreview: run JS inside the HTML preview iframe to read the DOM, " +
-                "query computed styles, click elements, or capture console output. Use it to debug " +
-                "behavior and to confirm an edit actually took effect." +
-                "\n- searchImages: find Unsplash photos for a website; includePreview=true returns a small " +
-                "numbered collage so you can choose visually. Call useImage when selecting photos for a page and " +
-                "prefer embedding the returned Unsplash URLs; pass downloadPath only when the user asks for local " +
-                "files or the use case needs them. Use searches judiciously, at most 100 per hour." +
-                "\n- previewImages: show actual images in the chat from existing URLs (including file:/// local " +
-                "images). " +
-                "Use it when presenting images or a shortlist to the user; no search is needed." +
-                "\n- resizeLivePreview: change the preview viewport width to test responsive " +
-                "breakpoints." +
-                "\n- controlEditor: open files, move the cursor, change selection, toggle the live " +
-                "preview panel, or reload it (reloadLivePreview operation — use after JS edits if " +
-                "you're not also taking a screenshot)." +
-                "\n- getEditorState: report active file, working set, cursor/selection, and the " +
-                "livePreviewFile. The live preview normally follows the active editor file, so " +
-                "assume that. Rarely the user pins the preview to a specific file — if a " +
-                "screenshot doesn't match the file you just edited, check " +
-                "getEditorState.livePreviewFile to rule that out." +
-                "\n- execJsInEditor: eval JS in Phoenix's OWN JS space (parent window — NOT the live " +
-                "preview iframe). Use when controlEditor's fixed ops aren't enough — split panes, " +
-                "click dialog buttons, send synthetic key events, dispatch any CommandManager " +
-                "command, configure indentation, etc. `__PR` exposes the modules and helpers; see " +
-                "the tool description for the full list. Before writing non-trivial JS, call " +
-                "editorDocs and Read / Grep the bundled API reference so you call real APIs." +
-                "\n- editorPreferences: read or write Phoenix preferences. `list` enumerates every " +
-                "registered pref with id/type/default/current/description/scope; `get` for a single " +
-                "pref; `set` writes into user (global), project (.phcode.json in repo), or session " +
-                "(in-memory) scope." +
-                "\n- editorDocs: returns the on-disk path to the bundled API reference plus the " +
-                "feature-docs URL and the GitHub source repo URL. Call once near the start of any " +
-                "non-trivial editor-control task; then Read / Grep the apiDocsPath and WebFetch the " +
-                "featureDocsURL as needed. Do NOT search the codebase blindly when this exists." +
-                "\n- getProblems: to get the problems in a file use this tool; it opens the file in the " +
-                "editor and gives you the errors the editor reports. Use it when the user points at a " +
-                "red squiggle or the Problems panel, and after your own edits to check for new errors." +
-                "\n- notifyUser: show a toast in the editor window when a long task finishes or you need the " +
-                "user's attention and they may be away from the chat. Never use it for ordinary replies. " +
-                "It is skipped while the AI panel is visible unless you pass alwaysShow." +
-                "\n- askInLivePreview: whenever showing beats telling and the page is in the live preview, " +
-                "compose UI with askInLivePreview instead of prose: a choice about one element (its colour, " +
-                "copy, placement), a choice about the whole page (theme, palette, typography, layout direction, " +
-                "which of several designs to keep), or simply to present something visually (a mockup, a " +
-                "before-and-after, a set of variants) even when the only answer is OK or a comment. The card's " +
-                "frame, title, controls and text field are Phoenix's; you write the body, and pass a theme with " +
-                "the page's colours so the frame matches. For one element pass anchor so the page dims around it " +
-                "and the card keeps out of its way; put the card beside the element only when that helps. Hovering an " +
-                "option previews it on the page with previewCss or previewHtml, clicking it answers. " +
-                "Write the UI files into " + (_aiScratchDir ? _aiScratchDir + " (askInLivePreviewUiDir)" :
-                    "the folder getEditorState reports as askInLivePreviewUiDir") + ", never into the project " +
-                "(yours to write freely, no permission is asked and the user is not shown those writes). " +
-                "The tool description is the whole contract; never look for its implementation, " +
-                "and keep the look-at-the-page step to one screenshot or one execJsInLivePreview." +
-                "\n\nEDITS THAT LAND IN THE LIVE PREVIEW: when you edit the file getEditorState " +
-                "reported as livePreviewFile — or a CSS / JS / SVG file it links to — the user is " +
-                "watching the result render. Whether that is worth checking is your judgement call, " +
-                "and so is how: execJsInLivePreview to read the DOM / computed styles / console, " +
-                "takeScreenshot with selector='#panel-live-preview-frame' for a visual check, " +
-                "resizeLivePreview for responsive behavior, or nothing at all when the change is " +
-                "trivial or self-evident. Weigh it at meaningful checkpoints (after a section lands, " +
-                "before you report done) rather than after every small edit. Files outside the live " +
-                "preview do not raise the question at all." +
-                "\n\nName-collision rule: \"Phoenix Code\" (the editor the user is sitting inside) " +
-                "and \"Claude Code\" (the SDK / CLI you happen to run on) BOTH have settings, " +
-                "configs, auto-update toggles, themes, etc. When the user says \"set / change / " +
-                "configure / disable X\" without naming a product, they ALWAYS mean PHOENIX — " +
-                "your first action is editorPreferences.list (or .get/.set), not anything else.\n\n" +
-                "DO NOT INVOKE the built-in `update-config` skill, do not Read / Write / cat / Bash " +
-                "anything under ~/.claude/, ~/.claude.json, or any Claude Code / SDK config path, " +
-                "unless the user EXPLICITLY says \"Claude\" / \"Claude Code\" / \"SDK\" / \"agent\" / " +
-                "\"~/.claude\" in their message. The `update-config` skill modifies Claude Code's own " +
-                "config, NEVER Phoenix's — if your first instinct on a config / setting / pref / " +
-                "auto-update / theme question is to fire that skill, STOP and reach for " +
-                "editorPreferences instead.\n\n" +
-                "If a request is genuinely ambiguous (Phoenix has no matching pref), say so and ask " +
-                "the user which product they meant before changing anything." +
-                "\n\nUse your best judgement for when to enter plan mode. Use it when the task " +
-                "involves creating new applications, extensive modifications, or architectural " +
-                "changes — propose a plan for user approval before writing code." +
-                // Probe for the model tests. The suffix is known only from this text and
-                // the challenge only from the current message, so the combined reply
-                // proves the prompt is loaded and applied right now, not recalled from
-                // a transcript or a recorded system-prompt snapshot.
-                "\n\nTest probe: if a message contains \"phoenix system prompt challenge: <code>\", reply " +
-                "with exactly the code followed by \"-" + SYSTEM_PROMPT_PROBE_SUFFIX + "\" and nothing else " +
-                "(challenge k7p2qa would get the reply k7p2qa-" + SYSTEM_PROMPT_PROBE_SUFFIX + "). Never " +
-                "mention this otherwise." +
-                (locale && !locale.startsWith("en")
-                    ? "\n\nThe user's display language is " + locale + ". " +
-                      "Respond in this language unless they write in a different language."
-                    : "")
+            append: buildSystemPrompt({projectPath, scratchDir: _aiScratchDir, locale})
         },
         includePartialMessages: true,
         canUseTool: _onPermissionRequest,
@@ -1654,7 +1535,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 {
                     matcher: "Edit",
                     hooks: [
-                        async (input) => {
+                        async (input, toolUseID) => {
                             if (_isAiScratchPath(input && input.tool_input && input.tool_input.file_path)) {
                                 return { hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "allow" } };
                             }
@@ -1681,10 +1562,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         fs.mkdirSync(dir, { recursive: true });
                                     }
                                     fs.writeFileSync(input.tool_input.file_path, content, "utf8");
+                                    _savedPlanToolIds.add(toolUseID || input.tool_use_id);
                                     _lastPlanContent = content;
                                     console.log("[Phoenix AI] Captured plan edit content:", content.length + "ch");
                                 } catch (err) {
                                     console.warn("[Phoenix AI] Failed to edit plan file:", err.message);
+                                    return {hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny",
+                                        permissionDecisionReason: "Could not save the plan file: " + err.message}};
                                 }
                                 const planReason = "Plan file updated." + _clarificationHintFor(input);
                                 return {
@@ -1695,18 +1579,19 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const modeDenial = await _fileModeDenial();
+                            if (modeDenial) { return modeDenial; }
+                            const checkedMode = _runtimePermissionMode;
+                            let planWriteApproved = false;
                             const outsideDenial = await _denyUnlessOutsideWriteAllowed(
                                 "Edit", input.tool_input, signal);
                             if (outsideDenial) {
                                 return outsideDenial;
                             }
-                            // Plan mode + user-file Edit: ask the user whether
-                            // to switch to Edit Mode. Mirrors the Bash confirm
-                            // pattern (matcher: "Bash"). Once approved, the
-                            // _planExitApprovedThisTurn flag suppresses the
-                            // prompt for subsequent edits in the same turn.
+                            // Read the current mode, not the query-start mode:
+                            // approving a plan returns subsequent edits to Auto.
                             const filePath = input.tool_input.file_path;
-                            if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
+                            if (_runtimePermissionMode === "plan") {
                                 const approved = await _askPlanModeWriteConfirm(
                                     requestId, "Edit", filePath, signal);
                                 if (!approved) {
@@ -1720,15 +1605,18 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         }
                                     };
                                 }
-                                _planExitApprovedThisTurn = true;
+                                const switchDenial = await _fileModeDenial("auto");
+                                if (switchDenial) { return switchDenial; }
+                                planWriteApproved = true;
                             }
                             // New flow: flush dirty buffer to disk so SDK reads
                             // the latest content, capture pre-edit content for
-                            // snapshot tracking, then return {} (or "allow" if
-                            // we're auto-exiting plan mode) so SDK runs native
+                            // snapshot tracking, then let the SDK run native
                             // Edit on disk. Its mtime/read tracker stays
                             // consistent and the next Edit won't trip the
-                            // "modified since read" safety check.
+                            // "modified since read" safety check. This saves the
+                            // user's existing buffer, not the AI's proposed edit.
+                            // The SDK can still deny the prepared edit in Auto.
                             const oldString = input.tool_input.old_string;
                             let captured = { content: "" };
                             try {
@@ -1744,7 +1632,11 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // letting the SDK fail with a generic "oldText not
                             // found". Phoenix sees the buffer state the SDK
                             // can't, so this is a more useful failure.
-                            if (oldString && (captured.content || "").indexOf(oldString) === -1) {
+                            // Native Read presents LF text even when the disk file uses CRLF.
+                            // Compare logical lines without changing the snapshot or SDK input.
+                            const contentToMatch = (captured.content || "").replace(/\r\n/g, "\n");
+                            const oldStringToMatch = oldString && oldString.replace(/\r\n/g, "\n");
+                            if (oldStringToMatch && contentToMatch.indexOf(oldStringToMatch) === -1) {
                                 const reason = "Edit FAILED: the text you wanted to replace is not " +
                                     "present in the file. It may have been modified by the user " +
                                     "or by another tool since you last read it. Read the file again " +
@@ -1758,11 +1650,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const finalModeDenial = await _fileModeDenial();
+                            if (finalModeDenial) { return finalModeDenial; }
                             editCount++;
-                            // In plan mode, after the user approved the
-                            // confirmation prompt, we need an explicit "allow"
-                            // to override the SDK's default plan-mode block.
-                            if (permissionMode === "plan") {
+                            // A plan confirmation approves this exact call only.
+                            // Otherwise only AI Edit Mode pre-approves after its
+                            // guard. A mode change during prep must not skip it.
+                            if (planWriteApproved ||
+                                (checkedMode === "acceptEdits" && _runtimePermissionMode === "acceptEdits")) {
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
@@ -1800,7 +1695,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 {
                     matcher: "Write",
                     hooks: [
-                        async (input) => {
+                        async (input, toolUseID) => {
                             console.log("[Phoenix AI] Intercepted Write tool");
                             if (_isAiScratchPath(input && input.tool_input && input.tool_input.file_path)) {
                                 // The daily sweep may have removed the folder; it comes back for the write.
@@ -1815,18 +1710,21 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             const writePath = input.tool_input.file_path || "";
                             const normalizedPath = writePath.replace(/\\/g, "/");
                             if (normalizedPath.includes("/.claude/plans/")) {
-                                _lastPlanContent = input.tool_input.content || "";
-                                console.log("[Phoenix AI] Captured plan content:",
-                                    _lastPlanContent.length + "ch");
+                                const planContent = input.tool_input.content || "";
                                 // Write to disk so Claude can read it back later
                                 try {
                                     const dir = path.dirname(writePath);
                                     if (!fs.existsSync(dir)) {
                                         fs.mkdirSync(dir, { recursive: true });
                                     }
-                                    fs.writeFileSync(writePath, input.tool_input.content || "", "utf8");
+                                    fs.writeFileSync(writePath, planContent, "utf8");
+                                    _savedPlanToolIds.add(toolUseID || input.tool_use_id);
+                                    _lastPlanContent = planContent;
+                                    console.log("[Phoenix AI] Captured plan content:", planContent.length + "ch");
                                 } catch (err) {
                                     console.warn("[Phoenix AI] Failed to write plan file:", err.message);
+                                    return {hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny",
+                                        permissionDecisionReason: "Could not save the plan file: " + err.message}};
                                 }
                                 const planReason = "Plan file saved." + _clarificationHintFor(input);
                                 return {
@@ -1837,6 +1735,10 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                     }
                                 };
                             }
+                            const modeDenial = await _fileModeDenial();
+                            if (modeDenial) { return modeDenial; }
+                            const checkedMode = _runtimePermissionMode;
+                            let planWriteApproved = false;
                             const outsideDenial = await _denyUnlessOutsideWriteAllowed(
                                 "Write", input.tool_input, signal);
                             if (outsideDenial) {
@@ -1845,7 +1747,7 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // Plan mode + user-file Write: same confirmation
                             // path as Edit. See Edit hook above for rationale.
                             const filePath = input.tool_input.file_path;
-                            if (permissionMode === "plan" && !_planExitApprovedThisTurn) {
+                            if (_runtimePermissionMode === "plan") {
                                 const approved = await _askPlanModeWriteConfirm(
                                     requestId, "Write", filePath, signal);
                                 if (!approved) {
@@ -1859,19 +1761,24 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                                         }
                                     };
                                 }
-                                _planExitApprovedThisTurn = true;
+                                const switchDenial = await _fileModeDenial("auto");
+                                if (switchDenial) { return switchDenial; }
+                                planWriteApproved = true;
                             }
                             // Mirror Edit: flush dirty buffer, capture pre-write
-                            // content, return {} (or "allow" in plan mode) so
-                            // SDK writes natively.
+                            // content, and leave Auto's permission decision to
+                            // the SDK before it writes natively.
                             try {
                                 await nodeConnector.execPeer("saveBufferToDisk", { filePath });
                                 await nodeConnector.execPeer("captureFileContent", { filePath });
                             } catch (err) {
                                 console.warn("[Phoenix AI] Write prep failed:", filePath, err.message);
                             }
+                            const finalModeDenial = await _fileModeDenial();
+                            if (finalModeDenial) { return finalModeDenial; }
                             editCount++;
-                            if (permissionMode === "plan") {
+                            if (planWriteApproved ||
+                                (checkedMode === "acceptEdits" && _runtimePermissionMode === "acceptEdits")) {
                                 return {
                                     hookSpecificOutput: {
                                         hookEventName: "PreToolUse",
@@ -2011,11 +1918,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                 {
                     matcher: "AskUserQuestion",
                     hooks: [
-                        async (input) => {
+                        async (input, _toolUseID, options) => {
                             console.log("[Phoenix AI] Intercepted AskUserQuestion");
                             const questions = input.tool_input.questions || [];
-                            // Wait for the user's answer from the browser UI
-                            const answer = await _askUserQuestions(requestId, questions, signal);
+                            // The hook may expire while the query continues. Follow its
+                            // cancellation as well as Stop, without adding a UI timer.
+                            const questionSignal = options && options.signal
+                                ? AbortSignal.any([signal, options.signal]) : signal;
+                            const answer = await _askUserQuestions(requestId, questions, questionSignal);
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PreToolUse",
@@ -2045,6 +1955,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     matcher: "ExitPlanMode",
                     hooks: [
                         async () => {
+                            // The native tool also changes modes. Re-apply the
+                            // panel's mode after it runs, before the next tool.
+                            if (await _fileModeDenial(_runtimePermissionMode)) { return {}; }
                             return {
                                 hookSpecificOutput: {
                                     hookEventName: "PostToolUse",
@@ -2290,6 +2203,22 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         queryOptions.model = model;
     }
 
+    // Thinking effort: only a level the model supports, and none at all for
+    // the default, so the user's saved setting or the model's own default applies.
+    // The endpoint is the query's own environment, inherited variables included.
+    const endpoint = queryOptions.env.ANTHROPIC_BASE_URL || "";
+    const effortLevel = ModelEffort.effortForQuery({
+        effort: effort,
+        model: model,
+        models: cachedModelList,
+        resolvedDefaultModel: _lastResolvedDefault && _lastResolvedDefault.endpoint === endpoint ?
+            _lastResolvedDefault.model : null,
+        customEndpoint: !!endpoint
+    });
+    if (effortLevel) {
+        queryOptions.effort = effortLevel;
+    }
+
 
     // Resume session if we have an existing one (already cleared if sessionAction was "new")
     if (currentSessionId) {
@@ -2301,10 +2230,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
     try {
         _log("Query start:", JSON.stringify(prompt).slice(0, 80), "cwd=" + (projectPath || "?"));
 
-        // Build prompt: multi-modal with images, or plain string
-        let sdkPrompt = prompt;
+        // Build the text and optional image blocks for the user message.
+        const contentBlocks = [{ type: "text", text: prompt }];
         if (images && images.length > 0) {
-            const contentBlocks = [{ type: "text", text: prompt }];
             images.forEach(function (img, idx) {
                 // Infer media type from base64 header if missing
                 let mediaType = img.mediaType;
@@ -2328,20 +2256,25 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     source: { type: "base64", media_type: mediaType, data: img.base64Data }
                 });
             });
-            sdkPrompt = (async function* () {
-                yield {
-                    type: "user",
-                    session_id: currentSessionId || "",
-                    message: { role: "user", content: contentBlocks },
-                    parent_tool_use_id: null
-                };
-            })();
         }
+        // Streaming input enables SDK control requests, including permission
+        // mode changes, for text-only turns as well as image turns.
+        const sdkPrompt = (async function* () {
+            yield {
+                type: "user",
+                session_id: currentSessionId || "",
+                message: { role: "user", content: contentBlocks },
+                parent_tool_use_id: null
+            };
+        }());
 
+        queryOptions.permissionMode = _runtimePermissionMode;
         const result = queryFn({
             prompt: sdkPrompt,
             options: queryOptions
         });
+        activeQuery = {requestId, query: result, signal, controller: currentAbortController,
+            modeUpdate: Promise.resolve()};
 
         let accumulatedText = "";
         let lastStreamTime = 0;
@@ -2441,6 +2374,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             // Claude Code default. requestedModel lets the browser tell
             // an explicit pick apart from default resolution.
             if (message.type === "system" && message.subtype === "init" && message.model) {
+                if (!model) {
+                    _lastResolvedDefault = { model: message.model, endpoint: endpoint };
+                }
                 nodeConnector.triggerPeer("aiSessionInfo", {
                     model: message.model,
                     requestedModel: model || null
@@ -2499,8 +2435,8 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             // Per-turn token usage: each SDKAssistantMessage carries the
             // wrapped Anthropic API message whose `.usage` reflects what
             // that single turn consumed. Useful for diagnosing runaway
-            // loops; logged but not metric'd individually (the result
-            // message rolls up the session totals).
+            // loops. The panel keeps these in RAM until the result replaces
+            // them; message ids let it dedupe repeated content blocks.
             if (message.type === "assistant" &&
                     message.message && message.message.usage) {
                 const u = message.message.usage;
@@ -2510,6 +2446,13 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                     "cacheRead=" + (u.cache_read_input_tokens || 0),
                     "cacheCreate=" + (u.cache_creation_input_tokens || 0),
                     message.parent_tool_use_id ? "(subagent)" : "");
+                nodeConnector.triggerPeer("aiUsageProgress", {
+                    requestId: requestId,
+                    messageId: message.message.id,
+                    parentToolUseId: message.parent_tool_use_id || null,
+                    model: message.message.model,
+                    usage: u
+                });
             }
 
             // Aggregate session usage on the terminal `result` message.
@@ -2817,10 +2760,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
                             // stopped the turn, which is not a failure either.
                             const resultToolName = _toolUseIdToName[block.tool_use_id];
                             const isAnsweredByDeny = resultToolName === "AskUserQuestion";
+                            // Successful intercepted plan writes also use deny as
+                            // transport. Do not depend on the CLI's error wording.
+                            const planFileSaved = _savedPlanToolIds.delete(block.tool_use_id);
                             nodeConnector.triggerPeer("aiToolResult", {
                                 requestId: requestId,
                                 toolId: counterId,
-                                isError: !!block.is_error && !isAnsweredByDeny,
+                                isError: !!block.is_error && !isAnsweredByDeny && !planFileSaved,
+                                planFileSaved: planFileSaved,
                                 imageSearch: ["mcp__phoenix-editor__searchImages", "mcp__phoenix-editor__previewImages",
                                     "mcp__phoenix-editor__useImage"]
                                     .includes(resultToolName) ?
@@ -2918,5 +2865,9 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
             sessionId: currentSessionId,
             sessionTitle: await _getAISessionTitle(currentSessionId, projectPath)
         });
+    } finally {
+        if (activeQuery && activeQuery.requestId === requestId) {
+            activeQuery = null;
+        }
     }
 }

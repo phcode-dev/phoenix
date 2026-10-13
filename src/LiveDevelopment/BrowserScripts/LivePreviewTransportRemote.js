@@ -19,6 +19,8 @@
  *
  */
 
+/*global __PHOENIX_LIVE_PREVIEW_TRANSPORT_CONFIG__ */
+
 // This is a transport injected into the browser via a script that handles the low
 // level communication between the live development protocol handlers on both sides.
 // The actual communication to phoenix is done via the loaded web worker below. We just post/receive all
@@ -89,18 +91,44 @@
 
 (function (global) {
 
-    // The below line will be replaced with the transport scripts provided by the static server at
-    // LivePreviewTransport.js:getRemoteScript() This is so that the actual live preview page doesnt get hold of
-    // any phoenix web socket or broadcast channel ids from this closure programatically for security.
+    // getRemoteScript() replaces this call with a private config initializer before serving the script.
+    // A call survives minification without depending on declaration spacing or merged const statements.
+    // Its unknown return value also prevents the minifier from folding config property reads.
+    const TRANSPORT_CONFIG = __PHOENIX_LIVE_PREVIEW_TRANSPORT_CONFIG__();
 
-    //Replace dynamic section start
-    const TRANSPORT_CONFIG={};
-    //Replace dynamic section end
+    // The page's own scripts run after this one and may patch built-ins to read or rewrite what goes
+    // to and from the editor. The channel uses the originals, captured here before any of them runs.
+    const _apply = Reflect.apply;
+    const _workerPostMessage = Worker.prototype.postMessage;
+    const _messageEventData = Object.getOwnPropertyDescriptor(MessageEvent.prototype, "data").get;
+    const _stringify = JSON.stringify;
+    const _console = global.console;
+    const _consoleLog = _console.log;
 
+    /**
+     * Log only when enabled by the editor, using the original console method.
+     * @param {...*} args Values to log.
+     */
     function _debugLog(...args) {
-        if(window.LIVE_PREVIEW_DEBUG_ENABLED) {
-            console.log(...args);
+        if (TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED) {
+            _apply(_consoleLog, _console, args);
         }
+    }
+
+    /**
+     * Send data through the captured Worker method.
+     * @param {Object} data Worker message.
+     */
+    function _postToWorker(data) {
+        _apply(_workerPostMessage, worker, [data]);
+    }
+    /**
+     * Read worker data without invoking a page-patched getter.
+     * @param {MessageEvent} event Worker event.
+     * @return {*} The event payload.
+     */
+    function _eventData(event) {
+        return _apply(_messageEventData, event, []);
     }
 
     function createLRU(max = 100) {
@@ -139,9 +167,10 @@
     const worker = new Worker(TRANSPORT_CONFIG.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME);
     let _workerMessageProcessor;
     worker.onmessage = (event) => {
-        const type = event.data.type;
+        const data = _eventData(event);
+        const type = data.type;
         switch (type) {
-        case 'REDIRECT_PAGE': location.href = event.data.URL; break;
+        case 'REDIRECT_PAGE': location.href = data.URL; break;
         default:
             if(_workerMessageProcessor){
                 return _workerMessageProcessor(event);
@@ -151,7 +180,7 @@
     };
     // message channel to phoenix connect on load itself. The channel id is injected from phoenix
     // via LivePreviewTransport.js while serving the instrumented html file
-    worker.postMessage({
+    _postToWorker({
         type: "setupPhoenixComm",
         livePreviewDebugModeEnabled: TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED,
         broadcastChannel: TRANSPORT_CONFIG.LIVE_PREVIEW_BROADCAST_CHANNEL_ID, // in browser this will be present, but not in tauri
@@ -159,7 +188,7 @@
         clientID
     });
     function _postLivePreviewMessage(message) {
-        worker.postMessage({type: "livePreview", message});
+        _postToWorker({type: "livePreview", message});
     }
     let sentTitle, sentFavIconURL;
 
@@ -192,7 +221,7 @@
                 if(!base64){
                     base64 = "favicon.ico";
                 }
-                worker.postMessage({
+                _postToWorker({
                     type: "updateTitleIcon",
                     faviconBase64: base64
                 });
@@ -201,7 +230,7 @@
 
         if(sentTitle!== document.title) {
             sentTitle = document.title;
-            worker.postMessage({
+            _postToWorker({
                 type: "updateTitleIcon",
                 title: document.title
             });
@@ -239,18 +268,19 @@
 
             // Listen to the response
             _workerMessageProcessor = (event) => {
+                const data = _eventData(event);
                 // Print the result
-                _debugLog("Live Preview: Browser received event from Phoenix: ", JSON.stringify(event.data));
-                const type = event.data.type;
+                _debugLog("Live Preview: Browser received event from Phoenix: ", _stringify(data));
+                const type = data.type;
                 switch (type) {
                 case 'BROWSER_CONNECT': break; // do nothing. This is a loopback message from another live preview tab
                 case 'BROWSER_MESSAGE': break; // do nothing. This is a loopback message from another live preview tab
                 case 'BROWSER_CLOSE': break; // do nothing. This is a loopback message from another live preview tab
                 case 'MESSAGE_FROM_PHOENIX':
                     if (self._callbacks && self._callbacks.message) {
-                        const clientIDs = event.data.clientIDs,
-                            message = event.data.message,
-                            messageID = event.data.messageID;
+                        const clientIDs = data.clientIDs,
+                            message = data.message,
+                            messageID = data.messageID;
                         if(messageID && processedMessageIDs.has(messageID)){
                             return; // we have already processed this message.
                         }
