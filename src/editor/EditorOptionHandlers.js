@@ -104,32 +104,46 @@ define(function (require, exports, module) {
         };
     }
 
+    // Factory - Refactoring
+    const RulerOptionsFactory = {
+        create: function (rulerColumns, rulerColors, defaultColor) {
+            return rulerColumns.map(function (column, index) {
+                return {
+                    color: rulerColors[index] ? rulerColors[index] : defaultColor,
+                    column: column,
+                    lineStyle: "solid !important"
+                };
+            });
+        }
+    };
+
     function _createRulers(editor) {
         const rulerColumns = PreferencesManager.get(PREFERENCES_EDITOR_RULERS) || [];
         const rulerColors = PreferencesManager.get(PREFERENCES_EDITOR_RULER_COLORS) || [];
         const rulersEnabled = PreferencesManager.get(PREFERENCES_EDITOR_RULERS_ENABLED);
-        if( !rulersEnabled || !rulerColumns.length || !editor){
+
+        if (!rulersEnabled || !rulerColumns.length || !editor) {
             return;
         }
 
-        if(!_currentTheme){
+        if (!_currentTheme) {
             _currentTheme = ThemeManager.getCurrentTheme();
         }
-        if(!_currentTheme){
-            // theme manager can return a null current theme at startup before themes load!
+
+        if (!_currentTheme) {
+            // O tema pode ainda não estar carregado na inicialização.
             return;
         }
-        const defaultColor = (_currentTheme && _currentTheme.dark) ? "#333333" : "#e0e0e0";
 
-        if(!editor._codeMirror.getOption("rulers")){
-            let rulerOptions = [];
-            for(let i=0; i<rulerColumns.length; i++) {
-                rulerOptions.push({
-                    color: rulerColors[i] ? rulerColors[i]: defaultColor,
-                    column: rulerColumns[i],
-                    lineStyle: "solid !important"
-                });
-            }
+        const defaultColor = _currentTheme.dark ? "#333333" : "#e0e0e0";
+
+        if (!editor._codeMirror.getOption("rulers")) {
+            const rulerOptions = RulerOptionsFactory.create(
+                rulerColumns,
+                rulerColors,
+                defaultColor
+            );
+
             editor._codeMirror.setOption("rulers", rulerOptions);
         }
     }
