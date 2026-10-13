@@ -324,12 +324,29 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.updateConfig(config);
     }
 
+    // Adapter - Refactoring
+    const ElementHighlightPreferenceAdapter = {
+        toLivePreviewConfig() {
+            const prefValue = PreferencesManager.get(
+                CONSTANTS.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT
+            );
+
+            return {
+                elemHighlights: prefValue || CONSTANTS.HIGHLIGHT_HOVER
+            };
+        }
+    };
+
     // this function is responsible to update element highlight config
     // called from live preview extension when preference changes
     function updateElementHighlightConfig() {
-        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
         const config = MultiBrowserLiveDev.getConfig();
-        config.elemHighlights = prefValue || CONSTANTS.HIGHLIGHT_HOVER;
+
+        Object.assign(
+            config,
+            ElementHighlightPreferenceAdapter.toLivePreviewConfig()
+        );
+
         MultiBrowserLiveDev.updateConfig(config);
     }
 
