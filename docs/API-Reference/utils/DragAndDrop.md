@@ -18,7 +18,8 @@ Returns true if the drag and drop items contains valid drop objects.
 <a name="openDroppedFiles"></a>
 
 ## openDroppedFiles(paths) ⇒ <code>Promise</code>
-Open dropped files
+Open dropped files in order so the last file becomes active, regardless of load times.
+Continue processing the remaining paths if an earlier file cannot be opened.
 
 **Kind**: global function  
 **Returns**: <code>Promise</code> - Promise that is resolved if all files are opened, or rejected

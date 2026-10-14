@@ -31,6 +31,7 @@
         "node-pty": "^1.1.0",
         "npm": "11.8.0",
         "open": "^10.1.0",
+        "phoenix": "file:..",
         "vscode-langservers-extracted": "4.10.0",
         "which": "^2.0.1",
         "ws": "^8.17.1",
