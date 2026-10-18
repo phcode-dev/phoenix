@@ -1924,13 +1924,26 @@ define(function (require, exports, module) {
     function handleFileRename() {
         // Prefer selected sidebar item (which could be a folder)
         var entry = ProjectManager.getContext();
-        if (!entry) {
-            // Else use current file (not selected in ProjectManager if not visible in tree or workingset)
-            entry = MainViewManager.getCurrentlyViewedFile();
-        }
         if (entry) {
             ProjectManager.renameItemInline(entry);
+            return;
         }
+
+        // Else use current file (not selected in ProjectManager if not visible in tree or workingset)
+        entry = MainViewManager.getCurrentlyViewedFile();
+        if (!entry) {
+            return;
+        }
+        if (!ProjectManager.isWithinProject(entry.fullPath)) {
+            ProjectManager.renameItemInline(entry);
+            return;
+        }
+
+        // the rename happens inline in the file tree, so the tree has to be on screen with the file in
+        // view first. This is what the working set and the tab bar context menus end up in.
+        revealInFileTree(entry).always(function () {
+            ProjectManager.renameItemInline(entry);
+        });
     }
 
 
@@ -2006,8 +2019,10 @@ define(function (require, exports, module) {
      * Reveal a file in the file tree the way the "Show in File Tree" command does: show the sidebar
      * if it is hidden, switch it to the Files tab, select the file and scroll its row into view.
      * @param {File} file - The file to reveal. Silently no-ops outside the project.
+     * @return {$.Promise} resolved once the file is selected in the tree, rejected if it never showed up
      */
     function revealInFileTree(file) {
+        const result = new $.Deferred();
         if (!SidebarView.isVisible()) {
             CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
         }
@@ -2015,6 +2030,7 @@ define(function (require, exports, module) {
         ProjectManager.showInTree(file).always(function () {
             if (ProjectManager.isInFileTree(file.fullPath) || !ProjectManager.isWithinProject(file.fullPath)) {
                 _scrollFileTreeSelectionIntoView();
+                result.resolve();
                 return;
             }
             // A file created moments ago outside the FileSystem API is not in the tree yet, so the
@@ -2025,14 +2041,20 @@ define(function (require, exports, module) {
             let retries = 0;
             function selectWhenInTree() {
                 if (ProjectManager.isInFileTree(file.fullPath)) {
-                    ProjectManager.showInTree(file).always(_scrollFileTreeSelectionIntoView);
+                    ProjectManager.showInTree(file).always(function () {
+                        _scrollFileTreeSelectionIntoView();
+                        result.resolve();
+                    });
                 } else if (++retries < MAX_RETRIES) {
                     setTimeout(selectWhenInTree, RETRY_MS);
+                } else {
+                    result.reject();
                 }
             }
             ProjectManager.refreshFileTree();
             setTimeout(selectWhenInTree, RETRY_MS);
         });
+        return result.promise();
     }
 
     /**
