@@ -267,12 +267,19 @@ define(function (require, exports, module) {
         // a resize (sidebar, live preview panel, window...) only changes whether all the tabs still fit
         this.resizeObserver = new ResizeObserver(() => this.updateOverflowButton());
         this.resizeObserver.observe(this.bar);
+
+        // MainViewManager only announces current file changes for the active pane, so the pane is asked
+        // directly as well. Otherwise a file that opens in the other pane (like the next file after its
+        // current tab is closed) would sit there without an active tab
+        this.pane = MainViewManager._getPane(paneId);
+        this.pane.on("currentViewChange.tabbar", () => _scheduleUpdate(paneId));
     }
 
     /**
      * removes the tab bar from the pane
      */
     TabBarView.prototype.destroy = function () {
+        this.pane.off(".tabbar");
         this.resizeObserver.disconnect();
         this.$container.remove();
         this.tabs.clear();
