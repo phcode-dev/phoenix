@@ -285,6 +285,9 @@ define(function (require, exports, module) {
     /** Submenu for Open in working set context menu */
     exports.OPEN_IN_SUBMENU_WS          = "file-open-in-submenu-ws";
 
+    /** Submenu for Open in file tab bar context menu */
+    exports.OPEN_IN_SUBMENU_FILE_TABS   = "file-open-in-submenu-file-tabs";
+
     /** Increases editor font size */
     exports.VIEW_INCREASE_FONT_SIZE     = "view.increaseFontSize";      // ViewCommandHandlers.js       _handleIncreaseFontSize()
 

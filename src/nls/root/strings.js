@@ -1151,9 +1151,12 @@ define({
     // Tab bar Strings
     "CLOSE_TABS_TO_THE_RIGHT": "Close Tabs to the Right",
     "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
+    "CLOSE_OTHER_TABS": "Close Other Tabs",
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_SAVED_TABS": "Close Saved Tabs",
     "CLOSE_TAB_TOOLTIP": "Close Tab",
+    "PIN_TAB": "Pin Tab",
+    "UNPIN_TAB": "Unpin Tab",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",

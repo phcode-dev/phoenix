@@ -32,7 +32,8 @@ define(function (require, exports, module) {
         Menus           = require("command/Menus"),
         Strings         = require("strings"),
         MainViewManager = require("view/MainViewManager"),
-        CommandManager  = require("command/CommandManager");
+        CommandManager  = require("command/CommandManager"),
+        WorkingSetView  = require("project/WorkingSetView");
 
     /**
      * Disables menu items present in items if enabled is true.
@@ -68,6 +69,24 @@ define(function (require, exports, module) {
                     Commands.NAVIGATE_OPEN_IN_DEFAULT_APP]);
             });
         }
+    }
+
+    /**
+     * The pin command toggles, so its menu label has to say what it will do to the file the menu was
+     * opened for. The working set remembers the right-clicked item, the tab bar makes the clicked tab
+     * current before opening its menu.
+     * @param {boolean} forFileTabs - true for the tab bar context menu, false for the working set one
+     */
+    function _updatePinMenuItemName(forFileTabs) {
+        const contextFile = !forFileTabs && WorkingSetView.getContext(),
+            file = contextFile || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE),
+            pinned = file && MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, file.fullPath);
+
+        let name = pinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN;
+        if (forFileTabs) {
+            name = pinned ? Strings.UNPIN_TAB : Strings.PIN_TAB;
+        }
+        CommandManager.get(Commands.FILE_PIN).setName(name);
     }
 
     const isBrowser = !Phoenix.isNativeApp;
@@ -310,34 +329,53 @@ define(function (require, exports, module) {
         // WorkingSet context menu - Unlike most context menus, we can't attach
         // listeners here because the DOM nodes for each pane's working set are
         // created dynamically. Each WorkingSetView attaches its own listeners.
+        // The editor tab bar shows the same working set, so its context menu gets exactly the same
+        // items. Extensions that add to one of these menus should add to the other too.
         var workingset_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU);
-        workingset_cmenu.addMenuItem(Commands.FILE_SAVE);
-        workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
-        if(Phoenix.isNativeApp){
-            let subMenu = workingset_cmenu.addSubMenu(Strings.CMD_OPEN_IN, Commands.OPEN_IN_SUBMENU_WS);
-            subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
-            subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_TERMINAL);
-            subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL);
-            if (brackets.platform === "win") {
-                subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_POWERSHELL);
+        var filetabs_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU);
+        [workingset_cmenu, filetabs_cmenu].forEach(function (cmenu) {
+            cmenu.addMenuItem(Commands.FILE_SAVE);
+            cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+            if(Phoenix.isNativeApp){
+                const subMenuId = cmenu === workingset_cmenu
+                    ? Commands.OPEN_IN_SUBMENU_WS
+                    : Commands.OPEN_IN_SUBMENU_FILE_TABS;
+                let subMenu = cmenu.addSubMenu(Strings.CMD_OPEN_IN, subMenuId);
+                subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+                subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_TERMINAL);
+                subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_INTEGRATED_TERMINAL);
+                if (brackets.platform === "win") {
+                    subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_POWERSHELL);
+                }
+                subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_DEFAULT_APP);
             }
-            subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_DEFAULT_APP);
-        }
-        workingset_cmenu.addMenuDivider();
-        workingset_cmenu.addMenuItem(Commands.FILE_COPY);
-        workingset_cmenu.addMenuItem(Commands.FILE_COPY_PATH);
-        workingset_cmenu.addMenuItem(Commands.FILE_DUPLICATE);
-        workingset_cmenu.addMenuItem(Commands.FILE_DOWNLOAD, undefined, undefined, undefined, {
-            hideWhenCommandDisabled: true
+            cmenu.addMenuDivider();
+            cmenu.addMenuItem(Commands.FILE_COPY);
+            cmenu.addMenuItem(Commands.FILE_COPY_PATH);
+            cmenu.addMenuItem(Commands.FILE_DUPLICATE);
+            cmenu.addMenuItem(Commands.FILE_DOWNLOAD, undefined, undefined, undefined, {
+                hideWhenCommandDisabled: true
+            });
+            cmenu.addMenuDivider();
+            cmenu.addMenuItem(Commands.FILE_RENAME);
+            cmenu.addMenuItem(Commands.FILE_DELETE);
+            cmenu.addMenuDivider();
+            cmenu.addMenuItem(Commands.CMD_FIND_IN_SUBTREE);
+            cmenu.addMenuItem(Commands.CMD_REPLACE_IN_SUBTREE);
+            cmenu.addMenuDivider();
+            // the CloseOthers extension adds its close commands right after FILE_CLOSE
+            cmenu.addMenuItem(Commands.FILE_CLOSE);
+            cmenu.addMenuDivider();
+            cmenu.addMenuItem(Commands.FILE_PIN);
+            cmenu.addMenuDivider();
+            cmenu.addMenuItem(Commands.FILE_REOPEN_CLOSED);
         });
-        workingset_cmenu.addMenuDivider();
-        workingset_cmenu.addMenuItem(Commands.FILE_RENAME);
-        workingset_cmenu.addMenuItem(Commands.FILE_DELETE);
-        workingset_cmenu.addMenuDivider();
-        workingset_cmenu.addMenuItem(Commands.CMD_FIND_IN_SUBTREE);
-        workingset_cmenu.addMenuItem(Commands.CMD_REPLACE_IN_SUBTREE);
-        workingset_cmenu.addMenuDivider();
-        workingset_cmenu.addMenuItem(Commands.FILE_CLOSE);
+        workingset_cmenu.on("beforeContextMenuOpen", function () {
+            _updatePinMenuItemName(false);
+        });
+        filetabs_cmenu.on("beforeContextMenuOpen", function () {
+            _updatePinMenuItemName(true);
+        });
 
         var splitview_menu = Menus.registerContextMenu(Menus.ContextMenuIds.SPLITVIEW_MENU);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_NONE);
@@ -485,6 +523,8 @@ define(function (require, exports, module) {
         // Check the visibility of context menu items before opening the context menu.
         // 'Rename', 'Show in file tree' and 'Show in explorer' items will be disabled for files that have not yet been saved to disk.
         Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).on("beforeContextMenuOpen", _setMenuItemsVisible);
+        Menus.getContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU)
+            .on("beforeContextMenuOpen", _setMenuItemsVisible);
         Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).on("beforeContextMenuOpen", _setMenuItemsVisible);
     });
 });

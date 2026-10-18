@@ -151,5 +151,45 @@ define(function (require, exports, module) {
 
             expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(2);
         });
+
+        it("Close all in pane", async function () {
+            var ws = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            DocumentManager.getDocumentForPath(ws[2].fullPath).done(function (doc) {
+                MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
+            });
+
+            await awaitsForDone(CommandManager.execute("file.close_all_in_pane"), "file.close_all_in_pane");
+
+            expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(0);
+        });
+
+        it("Close others keeps pinned files open", async function () {
+            var ws = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            MainViewManager.setFilePinned(MainViewManager.ACTIVE_PANE, ws[0], true);
+
+            docSelectIndex = 2;
+            cmdToRun       = "file.close_others";
+
+            await runCloseOthers();
+
+            var remaining = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            expect(remaining.length).toEqual(2);
+            expect(remaining[0].fullPath).toEqual(ws[0].fullPath);
+            expect(MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, ws[0].fullPath)).toBe(true);
+        });
+
+        it("Close all in pane keeps pinned files open", async function () {
+            var ws = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            MainViewManager.setFilePinned(MainViewManager.ACTIVE_PANE, ws[3], true);
+            DocumentManager.getDocumentForPath(ws[1].fullPath).done(function (doc) {
+                MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
+            });
+
+            await awaitsForDone(CommandManager.execute("file.close_all_in_pane"), "file.close_all_in_pane");
+
+            var remaining = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            expect(remaining.length).toEqual(1);
+            expect(remaining[0].fullPath).toEqual(ws[3].fullPath);
+        });
     });
 });
