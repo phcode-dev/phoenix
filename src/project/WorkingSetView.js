@@ -299,6 +299,7 @@ define(function (require, exports, module) {
                 lastPageY = startPageY,
                 lastHit = { where: NOMANSLAND },
                 tryClosing = $(e.target).hasClass("can-close"),
+                tryUnpinning = $(e.target).closest(".file-status-icon").hasClass("pinned"),
                 currentFile = MainViewManager.getCurrentlyViewedFile(),
                 activePaneId = MainViewManager.getActivePaneId(),
                 activeView = _views[activePaneId],
@@ -782,8 +783,18 @@ define(function (require, exports, module) {
                 if (sourceView.paneId === currentView.paneId && startingIndex === $el.index()) {
                     // if the item was dragged but not moved then don't open or close
                     if (!dragged) {
-                        // Click on close icon, or middle click anywhere - close the item without selecting it first
-                        if (tryClosing || e.which === MIDDLE_BUTTON) {
+                        // pinned items show a pin instead of the close icon, clicking it unpins the file.
+                        // a middle click on a pinned item does nothing so pinned files don't close by accident
+                        const isPinned = MainViewManager.isPathPinned(sourceView.paneId, sourceFile.fullPath);
+                        if (tryUnpinning) {
+                            CommandManager
+                                .execute(Commands.FILE_PIN, {file: sourceFile,
+                                    paneId: sourceView.paneId, pinned: false})
+                                .always(function () {
+                                    postDropCleanup();
+                                });
+                        } else if (tryClosing || (e.which === MIDDLE_BUTTON && !isPinned)) {
+                            // Click on close icon, or middle click anywhere - close the item without selecting it first
                             CommandManager
                                 .execute(Commands.FILE_CLOSE, {file: sourceFile,
                                     paneId: sourceView.paneId})
@@ -873,7 +884,7 @@ define(function (require, exports, module) {
             // editor tab bar do, so switching files feels fast instead of waiting
             // for mouse up. A drag can still follow - the item just becomes the
             // current file as soon as it is pressed.
-            if (!tryClosing) {
+            if (!tryClosing && !tryUnpinning) {
                 openedOnMouseDown = true;
                 FileViewController.setFileViewFocus(FileViewController.WORKING_SET_VIEW);
                 CommandManager.execute(Commands.FILE_OPEN, {fullPath: sourceFile.fullPath,
@@ -1183,15 +1194,21 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Updates the appearance of the list element based on the parameters provided
+     * Updates the appearance of the list element based on the parameters provided.
+     * The status icon slot shows one thing at a time: the close icon while hovering an unpinned item,
+     * the pin icon for a pinned item (hovering or not dirty), otherwise the dirty dot if the file is dirty.
      * @private
      * @param {!HTMLLIElement} listElement
      * @param {bool} isDirty
-     * @param {bool} canClose
+     * @param {bool} canClose - true while the mouse is over the item
+     * @param {bool} isPinned
      */
-    WorkingSetView.prototype._updateFileStatusIcon = function (listElement, isDirty, canClose) {
+    WorkingSetView.prototype._updateFileStatusIcon = function (listElement, isDirty, canClose, isPinned) {
         var $fileStatusIcon = listElement.find(".file-status-icon"),
-            showIcon = isDirty || canClose;
+            showPin = isPinned && (canClose || !isDirty),
+            showClose = canClose && !isPinned,
+            showDirty = isDirty && !showPin && !showClose,
+            showIcon = showPin || showClose || showDirty;
 
         // remove icon if its not needed
         if (!showIcon && $fileStatusIcon.length !== 0) {
@@ -1207,8 +1224,16 @@ define(function (require, exports, module) {
 
         // Set icon's class
         if ($fileStatusIcon) {
-            ViewUtils.toggleClass($fileStatusIcon, "dirty", isDirty);
-            ViewUtils.toggleClass($fileStatusIcon, "can-close", canClose);
+            ViewUtils.toggleClass($fileStatusIcon, "dirty", showDirty);
+            ViewUtils.toggleClass($fileStatusIcon, "can-close", showClose);
+            ViewUtils.toggleClass($fileStatusIcon, "pinned", showPin);
+            if (showPin) {
+                if ($fileStatusIcon.children(".fa-thumbtack").length === 0) {
+                    $fileStatusIcon.html("<i class='fa-solid fa-thumbtack'></i>").attr("title", Strings.CMD_FILE_UNPIN);
+                }
+            } else if ($fileStatusIcon.children().length !== 0) {
+                $fileStatusIcon.empty().removeAttr("title");
+            }
         }
     };
 
@@ -1270,18 +1295,28 @@ define(function (require, exports, module) {
         });
 
         // Update the listItem's apperance
-        this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false);
+        this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false, this._isPinned(file));
         _updateListItemSelection($newItem, selectedFile);
         _makeDraggable($newItem);
 
         $newItem.hover(
             function () {
-                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true, self._isPinned(file));
             },
             function () {
-                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false, self._isPinned(file));
             }
         );
+    };
+
+    /**
+     * Whether the file is pinned in this view's pane
+     * @private
+     * @param {!File} file
+     * @return {boolean}
+     */
+    WorkingSetView.prototype._isPinned = function (file) {
+        return MainViewManager.isPathPinned(this.paneId, file.fullPath);
     };
 
     /**
@@ -1392,9 +1427,10 @@ define(function (require, exports, module) {
                     // without having to move the mouse, if there is a next file.
                     var $nextListItem = $listItem.next();
                     if ($nextListItem && $nextListItem.length > 0) {
-                        var canClose = ($listItem.find(".can-close").length === 1);
-                        var isDirty = _isOpenAndDirty($nextListItem.data(_FILE_KEY));
-                        this._updateFileStatusIcon($nextListItem, isDirty, canClose);
+                        var canClose = ($listItem.find(".can-close, .pinned").length === 1);
+                        var nextFile = $nextListItem.data(_FILE_KEY);
+                        var isDirty = _isOpenAndDirty(nextFile);
+                        this._updateFileStatusIcon($nextListItem, isDirty, canClose, this._isPinned(nextFile));
                     }
                     $listItem.remove();
                 }
@@ -1455,8 +1491,8 @@ define(function (require, exports, module) {
     WorkingSetView.prototype._handleDirtyFlagChanged = function (e, doc) {
         var listItem = this._findListItemFromFile(doc.file);
         if (listItem) {
-            var canClose = $(listItem).find(".can-close").length === 1;
-            this._updateFileStatusIcon(listItem, doc.isDirty, canClose);
+            var canClose = $(listItem).find(".can-close, .pinned").length === 1;
+            this._updateFileStatusIcon(listItem, doc.isDirty, canClose, this._isPinned(doc.file));
         }
     };
 
