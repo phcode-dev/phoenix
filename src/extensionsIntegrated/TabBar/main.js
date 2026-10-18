@@ -361,10 +361,13 @@ define(function (require, exports, module) {
 
     /**
      * the overflow button is shown when the tabs don't fit in the bar
+     * the button itself takes room from the bar once it is showing, so the tabs are measured against
+     * the full width. Otherwise a bar that would fit fine without the button would keep it forever
      */
     TabBarView.prototype.updateOverflowButton = function () {
         const bar = this.bar;
-        this.$overflowButton.toggleClass("hidden", bar.scrollWidth <= bar.clientWidth);
+        const buttonWidth = this.$overflowButton.hasClass("hidden") ? 0 : this.$overflowButton[0].offsetWidth;
+        this.$overflowButton.toggleClass("hidden", bar.scrollWidth <= bar.clientWidth + buttonWidth);
     };
 
     /**
