@@ -79,8 +79,9 @@ define(function (require, exports, module) {
      */
     function _updatePinMenuItemName(forFileTabs) {
         const contextFile = !forFileTabs && WorkingSetView.getContext(),
-            file = contextFile || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE),
-            pinned = file && MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, file.fullPath);
+            paneId = (!forFileTabs && WorkingSetView.getContextPaneId()) || MainViewManager.ACTIVE_PANE,
+            file = contextFile || MainViewManager.getCurrentlyViewedFile(paneId),
+            pinned = file && MainViewManager.isPathPinned(paneId, file.fullPath);
 
         let name = pinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN;
         if (forFileTabs) {
