@@ -510,13 +510,15 @@ define(function (require, exports, module) {
     }
 
     function _focusEditor() {
-        // the mousedown that got us here hasn't finished yet, focusing right away would get undone
-        setTimeout(function () {
+        // the mousedown that got us here moves the focus to the tab once the handlers are done, so the
+        // editor is focused right after that but still before the frame is painted. A timer would leave
+        // a painted frame without a cursor in between, which shows as a flash in the editor
+        window.requestAnimationFrame(function () {
             const editor = EditorManager.getActiveEditor();
             if (editor) {
                 editor.focus();
             }
-        }, 0);
+        });
     }
 
     /**
