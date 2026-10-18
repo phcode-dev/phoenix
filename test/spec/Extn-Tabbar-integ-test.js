@@ -2522,8 +2522,9 @@ define(function (require, exports, module) {
                     return $(this).text().trim();
                 }).get();
                 expect(itemNames).toContain(Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL);
-                expect(itemNames).toContain(Strings.CMD_WORKINGSET_SORT_BY_NAME);
-                expect(itemNames).toContain(Strings.CMD_TOGGLE_TABBAR);
+                expect(itemNames).toContain(Strings.TABBAR_NUMBER_OF_TABS);
+                expect(itemNames).toContain(Strings.CMD_HIDE_TABBAR);
+                expect(itemNames).not.toContain(Strings.CMD_WORKINGSET_SORT_BY_NAME);
 
                 const $smoothItem = $("#tabbar-settings-context-menu .menu-name").filter(function () {
                     return $(this).text().trim() === Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL;
