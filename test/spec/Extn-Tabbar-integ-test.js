@@ -2490,6 +2490,56 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Settings Menu", function () {
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1, smoothScroll: false });
+                await testWindow.closeAllFiles();
+                await openTestFiles([testFilePath]);
+                await waitForTabs([testFilePath]);
+            });
+
+            afterEach(function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1, smoothScroll: false });
+            });
+
+            it("should open the tab bar settings from the empty part of the bar and toggle smooth scrolling", async function () {
+                const $bar = $("#phoenix-tab-bar");
+                const barRect = $bar[0].getBoundingClientRect();
+                $bar.trigger($.Event("click", { target: $bar[0], pageX: barRect.right - 5, pageY: barRect.top + 5 }));
+
+                await awaitsFor(
+                    function () {
+                        return $("#tabbar-settings-context-menu").hasClass("open");
+                    },
+                    "Settings menu to open"
+                );
+                const itemNames = $("#tabbar-settings-context-menu .menu-name").map(function () {
+                    return $(this).text().trim();
+                }).get();
+                expect(itemNames).toContain(Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL);
+                expect(itemNames).toContain(Strings.CMD_WORKINGSET_SORT_BY_NAME);
+                expect(itemNames).toContain(Strings.CMD_TOGGLE_TABBAR);
+
+                const $smoothItem = $("#tabbar-settings-context-menu .menu-name").filter(function () {
+                    return $(this).text().trim() === Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL;
+                }).closest("li");
+                expect($smoothItem.find("a").hasClass("checked")).toBe(false);
+                $smoothItem.click();
+
+                await awaitsFor(
+                    function () {
+                        return PreferencesManager.get("tabBar.options").smoothScroll === true;
+                    },
+                    "Smooth scrolling preference to turn on"
+                );
+                expect(CommandManager.get(Commands.TOGGLE_TABBAR_SMOOTH_SCROLL).getChecked()).toBe(true);
+
+                // clicking a tab must not open the settings
+                getTab(testFilePath).trigger($.Event("click", { pageX: 10, pageY: 10 }));
+                expect($("#tabbar-settings-context-menu").hasClass("open")).toBe(false);
+            });
+        });
+
         describe("Number of Tabs Preference", function () {
             beforeEach(async function () {
                 // Enable the tab bar feature with default settings

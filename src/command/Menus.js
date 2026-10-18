@@ -73,6 +73,7 @@ define(function (require, exports, module) {
         WORKING_SET_CONTEXT_MENU: "workingset-context-menu",
         WORKING_SET_CONFIG_MENU: "workingset-configuration-menu",
         FILE_TABS_CONTEXT_MENU: "tabbar-context-menu",
+        FILE_TABS_SETTINGS_MENU: "tabbar-settings-context-menu",
         SPLITVIEW_MENU: "splitview-menu"
     };
 
