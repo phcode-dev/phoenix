@@ -2468,6 +2468,19 @@ define(function (require, exports, module) {
                 );
                 expect(MainViewManager.isPathPinned("second-pane", pinFiles[0])).toBe(true);
                 expect(MainViewManager.isPathPinned("first-pane", pinFiles[0])).toBe(false);
+
+                // the working set lists follow the move as well
+                const workingSetPaneOf = (filePath) => $("#working-set-list-container li").filter(function () {
+                    const file = $(this).data("file");
+                    return file && file.fullPath === filePath;
+                }).closest(".working-set-view").attr("id");
+                await awaitsFor(
+                    function () {
+                        return workingSetPaneOf(pinFiles[0]) === "working-set-list-second-pane";
+                    },
+                    "Working set to list the file under the second pane"
+                );
+                expect($("#working-set-list-second-pane .file-status-icon.pinned").length).toBe(1);
                 await awaitsFor(
                     function () {
                         return $("#phoenix-tab-bar-2").find(`.tab[data-path="${pinFiles[0]}"] .tab-pin`).length === 1;

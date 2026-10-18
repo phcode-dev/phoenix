@@ -1521,6 +1521,26 @@ define(function (require, exports, module) {
         }
     };
 
+    /**
+     * workingSetMove event handler, a file moved from one pane's working set to the other's
+     * @private
+     * @param {jQuery.Event} e - event object
+     * @param {!File} file - the file that moved
+     * @param {!string} sourcePaneId - the pane the file left
+     * @param {!string} destinationPaneId - the pane the file went to
+     */
+    WorkingSetView.prototype._handleWorkingSetMove = function (e, file, sourcePaneId, destinationPaneId) {
+        // a drag within the working set itself refreshes all the views once the drop is done
+        if (this.suppressSortRedraw) {
+            return;
+        }
+        if (this.paneId === sourcePaneId || this.paneId === destinationPaneId) {
+            this._rebuildViewList(true);
+        } else {
+            this._checkForDuplicateAndNonProjectFiles();
+        }
+    };
+
 
     /**
      * Initializes the WorkingSetView object
@@ -1541,6 +1561,7 @@ define(function (require, exports, module) {
         MainViewManager.on(this._makeEventName("activePaneChange"), _.bind(this._handleActivePaneChange, this));
         MainViewManager.on(this._makeEventName("paneLayoutChange"), _.bind(this._handlePaneLayoutChange, this));
         MainViewManager.on(this._makeEventName("workingSetUpdate"), _.bind(this._handleWorkingSetUpdate, this));
+        MainViewManager.on(this._makeEventName("workingSetMove"), _.bind(this._handleWorkingSetMove, this));
 
         DocumentManager.on(this._makeEventName("dirtyFlagChange"), _.bind(this._handleDirtyFlagChanged, this));
 
