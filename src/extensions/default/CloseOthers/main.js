@@ -72,20 +72,22 @@ define(function (require, exports, module) {
 
 
     /**
-     * The files of the active pane's working set that the command would close for the given target file.
+     * The files of the pane's working set that the command would close for the given target file.
      * Pinned files are never closed by these commands. A file that is only previewed (not in the working
-     * set) counts as sitting after the last working set file, which is where the tab bar shows it.
+     * set) counts as sitting after the last working set file, which is where the tab bar shows it, and
+     * "Close All" closes the preview as well.
+     * @param {string} paneId - the pane to look in, or ACTIVE_PANE
      * @param {string} mode - one of the close command ids
      * @param {string} targetPath - full path of the file the command is relative to
      * @return {Array.<File>}
      */
-    function getFilesToClose(mode, targetPath) {
-        const paneId = MainViewManager.ACTIVE_PANE,
-            workingSetList = MainViewManager.getWorkingSet(paneId),
+    function getFilesToClose(paneId, mode, targetPath) {
+        const workingSetList = MainViewManager.getWorkingSet(paneId),
             files = [];
 
         let targetIndex = MainViewManager.findInWorkingSet(paneId, targetPath);
-        if (targetIndex === -1) {
+        const isPreview = targetIndex === -1;
+        if (isPreview) {
             targetIndex = workingSetList.length;
         }
 
@@ -98,6 +100,13 @@ define(function (require, exports, module) {
             }
             if (!MainViewManager.isPathPinned(paneId, workingSetList[i].fullPath)) {
                 files.push(workingSetList[i]);
+            }
+        }
+
+        if (mode === closeAll && isPreview) {
+            const previewFile = MainViewManager.getCurrentlyViewedFile(paneId);
+            if (previewFile && previewFile.fullPath === targetPath) {
+                files.push(previewFile);
             }
         }
 
@@ -114,7 +123,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        const files = getFilesToClose(mode, targetPath);
+        const files = getFilesToClose(MainViewManager.ACTIVE_PANE, mode, targetPath);
         if (files.length) {
             return CommandManager.execute(Commands.FILE_CLOSE_LIST, {fileList: files});
         }
@@ -125,16 +134,17 @@ define(function (require, exports, module) {
      * @param {boolean} forFileTabs - true when the tab bar menu is opening, false for the working set menu
      */
     function contextMenuOpenHandler(forFileTabs) {
-        // the working set remembers the item that was right-clicked, the tab bar makes the clicked tab
-        // the current file before it opens its menu
+        // the working set remembers the item (and pane) that was right-clicked, the tab bar makes the
+        // clicked tab the current file before it opens its menu
         const contextFile = !forFileTabs && WorkingSetView.getContext(),
-            file = contextFile || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE),
+            paneId = (!forFileTabs && WorkingSetView.getContextPaneId()) || MainViewManager.ACTIVE_PANE,
+            file = contextFile || MainViewManager.getCurrentlyViewedFile(paneId),
             names = forFileTabs ? fileTabNames : workingSetNames;
 
         MENU_ORDER.forEach(function (commandId) {
             const command = CommandManager.get(commandId);
             command.setName(names[commandId]);
-            command.setEnabled(Boolean(file) && getFilesToClose(commandId, file.fullPath).length > 0);
+            command.setEnabled(Boolean(file) && getFilesToClose(paneId, commandId, file.fullPath).length > 0);
         });
     }
 
