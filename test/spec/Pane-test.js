@@ -485,6 +485,22 @@ define(function (require, exports, module) {
                 myPane.showView(preview);
                 expect(myPane.getTemporaryViewFile()).toBe(preview.getFile());
             });
+
+            it("should announce the rename of a file that is only being looked at", function () {
+                createTestPane();
+                const view = createMockView("/temp/old.js");
+                myPane.addView(view);
+                myPane.showView(view);
+                const spy = jasmine.createSpy("viewListChange");
+                myPane.on("viewListChange", spy);
+
+                // the file system renames the File object before the event arrives
+                view.file.fullPath = "/temp/new.js";
+                myPane._handleFileNameChange(null, "/temp/old.js", "/temp/new.js");
+                expect(spy).toHaveBeenCalled();
+                expect(myPane._views["/temp/new.js"]).toBe(view);
+                expect(myPane.getTemporaryViewFile().fullPath).toBe("/temp/new.js");
+            });
         });
 
         describe("Pinning", function () {
