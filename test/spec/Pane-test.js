@@ -451,6 +451,112 @@ define(function (require, exports, module) {
                 }
             });
         });
+        describe("Pinning", function () {
+            var files;
+
+            function paths() {
+                return myPane._viewList.map(function (file) {
+                    return file.fullPath;
+                });
+            }
+
+            beforeEach(function () {
+                files = [];
+                for (var i = 0; i < 4; i++) {
+                    files[i] = createMockView("/pin/" + i.toString()).getFile();
+                }
+                myPane.addListToViewList(files);
+            });
+
+            it("should move a pinned file to the front and an unpinned one to the start of the unpinned files", function () {
+                expect(myPane.setPathPinned("/pin/2", true)).toBe(true);
+                expect(paths()).toEqual(["/pin/2", "/pin/0", "/pin/1", "/pin/3"]);
+                expect(myPane.setPathPinned("/pin/3", true)).toBe(true);
+                expect(paths()).toEqual(["/pin/2", "/pin/3", "/pin/0", "/pin/1"]);
+                expect(myPane.getPinnedCount()).toEqual(2);
+                expect(myPane.isPathPinned("/pin/3")).toBe(true);
+
+                expect(myPane.setPathPinned("/pin/2", false)).toBe(true);
+                expect(paths()).toEqual(["/pin/3", "/pin/2", "/pin/0", "/pin/1"]);
+                expect(myPane.isPathPinned("/pin/2")).toBe(false);
+                expect(myPane.getPinnedCount()).toEqual(1);
+
+                expect(myPane.setPathPinned("/pin/2", false)).toBe(false);
+                expect(myPane.setPathPinned("/not/there", true)).toBe(false);
+            });
+
+            it("should pin a file moved in front of a pinned file and unpin one moved behind an unpinned file", function () {
+                myPane.setPathPinned("/pin/0", true);
+
+                myPane.moveWorkingSetItem(3, 0);
+                expect(paths()).toEqual(["/pin/3", "/pin/0", "/pin/1", "/pin/2"]);
+                expect(myPane.isPathPinned("/pin/3")).toBe(true);
+
+                myPane.moveWorkingSetItem(1, 3);
+                expect(paths()).toEqual(["/pin/3", "/pin/1", "/pin/2", "/pin/0"]);
+                expect(myPane.isPathPinned("/pin/0")).toBe(false);
+
+                // dropping right behind the pinned files keeps the file as it was
+                myPane.moveWorkingSetItem(3, 1);
+                expect(paths()).toEqual(["/pin/3", "/pin/0", "/pin/1", "/pin/2"]);
+                expect(myPane.isPathPinned("/pin/0")).toBe(false);
+                expect(myPane.getPinnedCount()).toEqual(1);
+            });
+
+            it("should keep pinned files in front when sorting", function () {
+                myPane.setPathPinned("/pin/3", true);
+                myPane.sortViewList(function (paneId, file1, file2) {
+                    return file2.fullPath.localeCompare(file1.fullPath);
+                });
+                expect(paths()).toEqual(["/pin/3", "/pin/2", "/pin/1", "/pin/0"]);
+
+                myPane.setPathPinned("/pin/0", true);
+                myPane.sortViewList(function (paneId, file1, file2) {
+                    return file1.fullPath.localeCompare(file2.fullPath);
+                });
+                expect(paths()).toEqual(["/pin/0", "/pin/3", "/pin/1", "/pin/2"]);
+            });
+
+            it("should pin a file added inside the pinned block and keep the others behind the pinned files", function () {
+                myPane.setPathPinned("/pin/0", true);
+                myPane.setPathPinned("/pin/1", true);
+                var inside = createMockView("/pin/inside").getFile(),
+                    front = createMockView("/pin/front").getFile();
+
+                expect(myPane.addToViewList(inside, 1)).toEqual(1);
+                expect(myPane.isPathPinned("/pin/inside")).toBe(true);
+                expect(paths()).toEqual(["/pin/0", "/pin/inside", "/pin/1", "/pin/2", "/pin/3"]);
+
+                // a move from another pane without an index lands right after the pinned files
+                expect(myPane._addToViewList(front, { indexRequested: true })).toEqual(3);
+                expect(myPane.isPathPinned("/pin/front")).toBe(false);
+                expect(paths()).toEqual(["/pin/0", "/pin/inside", "/pin/1", "/pin/front", "/pin/2", "/pin/3"]);
+            });
+
+            it("should forget the pinned state when the file is removed", function () {
+                myPane.setPathPinned("/pin/1", true);
+                myPane.removeView(files[1]);
+                expect(myPane.isPathPinned("/pin/1")).toBe(false);
+                expect(myPane.getPinnedCount()).toEqual(0);
+            });
+
+            it("should save and restore the pinned state", function () {
+                myPane.setPathPinned("/pin/2", true);
+                var state = myPane.saveState();
+                expect(state[0].file).toEqual("/pin/2");
+                expect(state[0].pinned).toBe(true);
+                expect(state[1].pinned).toBeUndefined();
+
+                var otherPane = createMockPane("other-pane");
+                otherPane.loadState(state);
+                expect(otherPane.getViewList().map(function (file) {
+                    return file.fullPath;
+                })).toEqual(["/pin/2", "/pin/0", "/pin/1", "/pin/3"]);
+                expect(otherPane.isPathPinned("/pin/2")).toBe(true);
+                expect(otherPane.getPinnedCount()).toEqual(1);
+                otherPane.destroy();
+            });
+        });
         describe("Dispatch events", function () {
             beforeEach(function () {
                 myPane.addView(myView);

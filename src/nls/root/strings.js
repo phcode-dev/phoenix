@@ -1208,6 +1208,8 @@ define({
     "CMD_FILE_CLOSE_OTHERS": "Close Others",
     "CMD_FILE_CLOSE_ABOVE": "Close Others Above",
     "CMD_FILE_CLOSE_BELOW": "Close Others Below",
+    "CMD_FILE_PIN": "Pin",
+    "CMD_FILE_UNPIN": "Unpin",
     "CMD_FILE_SAVE": "Save File",
     "CMD_FILE_SAVE_ALL": "Save All",
     "CMD_FILE_SAVE_AS": "Save As\u2026",
