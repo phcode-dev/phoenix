@@ -22,22 +22,43 @@
 define(function (require, exports, module) {
 
 
-    var Menus               = brackets.getModule("command/Menus"),
+    const Menus               = brackets.getModule("command/Menus"),
         CommandManager      = brackets.getModule("command/CommandManager"),
         Commands            = brackets.getModule("command/Commands"),
         MainViewManager     = brackets.getModule("view/MainViewManager"),
+        WorkingSetView      = brackets.getModule("project/WorkingSetView"),
         Strings             = brackets.getModule("strings"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
-        workingSetListCmenu = Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU);
+        workingSetListCmenu = Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU),
+        fileTabsCmenu       = Menus.getContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU);
 
     // Constants
-    var closeOthers             = "file.close_others",
+    const closeOthers           = "file.close_others",
         closeAbove              = "file.close_above",
-        closeBelow              = "file.close_below";
+        closeBelow              = "file.close_below",
+        closeAll                = "file.close_all_in_pane";
+
+    // the order in which the items appear in the menus, right after "Close"
+    const MENU_ORDER = [closeAbove, closeOthers, closeBelow, closeAll];
+
+    // the working set is a vertical list and the tab bar a horizontal one, so the same commands get
+    // different names depending on which of the two menus is open
+    const workingSetNames = {
+        [closeAbove]: Strings.CMD_FILE_CLOSE_ABOVE,
+        [closeOthers]: Strings.CMD_FILE_CLOSE_OTHERS,
+        [closeBelow]: Strings.CMD_FILE_CLOSE_BELOW,
+        [closeAll]: Strings.CMD_FILE_CLOSE_ALL
+    };
+    const fileTabNames = {
+        [closeAbove]: Strings.CLOSE_TABS_TO_THE_LEFT,
+        [closeOthers]: Strings.CLOSE_OTHER_TABS,
+        [closeBelow]: Strings.CLOSE_TABS_TO_THE_RIGHT,
+        [closeAll]: Strings.CLOSE_ALL_TABS
+    };
 
     // Global vars and preferences
-    var prefs                   = PreferencesManager.getExtensionPrefs("closeOthers"),
-        menuEntriesShown        = {};
+    const prefs = PreferencesManager.getExtensionPrefs("closeOthers");
+    let menuEntriesShown = {};
 
     prefs.definePreference("below",  "boolean", true, {
         description: Strings.DESCRIPTION_CLOSE_OTHERS_BELOW
@@ -51,130 +72,129 @@ define(function (require, exports, module) {
 
 
     /**
-     * Handle the different Close Other commands
-     * @param {string} mode
+     * The files of the active pane's working set that the command would close for the given target file.
+     * Pinned files are never closed by these commands. A file that is only previewed (not in the working
+     * set) counts as sitting after the last working set file, which is where the tab bar shows it.
+     * @param {string} mode - one of the close command ids
+     * @param {string} targetPath - full path of the file the command is relative to
+     * @return {Array.<File>}
      */
-    function handleClose(mode) {
-        var targetIndex  = MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE)),
-            workingSetList = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE),
-            start        = (mode === closeBelow) ? (targetIndex + 1) : 0,
-            end          = (mode === closeAbove) ? (targetIndex) : (workingSetList.length),
-            files        = [],
-            i;
+    function getFilesToClose(mode, targetPath) {
+        const paneId = MainViewManager.ACTIVE_PANE,
+            workingSetList = MainViewManager.getWorkingSet(paneId),
+            files = [];
 
-        for (i = start; i < end; i++) {
-            if ((mode === closeOthers && i !== targetIndex) || (mode !== closeOthers)) {
+        let targetIndex = MainViewManager.findInWorkingSet(paneId, targetPath);
+        if (targetIndex === -1) {
+            targetIndex = workingSetList.length;
+        }
+
+        const start = (mode === closeBelow) ? (targetIndex + 1) : 0,
+            end = (mode === closeAbove) ? targetIndex : workingSetList.length;
+
+        for (let i = start; i < end; i++) {
+            if (mode === closeOthers && i === targetIndex) {
+                continue;
+            }
+            if (!MainViewManager.isPathPinned(paneId, workingSetList[i].fullPath)) {
                 files.push(workingSetList[i]);
             }
         }
 
-        CommandManager.execute(Commands.FILE_CLOSE_LIST, {fileList: files});
+        return files;
     }
 
     /**
-     * Enable/Disable the menu items depending on which document is selected in the working set
+     * Handle the different Close commands, relative to the current file of the active pane
+     * @param {string} mode
      */
-    function contextMenuOpenHandler() {
-        var file = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+    function handleClose(mode) {
+        const targetPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
+        if (!targetPath) {
+            return;
+        }
 
-        if (file) {
-            var targetIndex  = MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, file.fullPath),
-                workingSetListSize = MainViewManager.getWorkingSetSize(MainViewManager.ACTIVE_PANE);
-
-            if (targetIndex === workingSetListSize - 1) { // hide "Close Others Below" if the last file in Working Files is selected
-                CommandManager.get(closeBelow).setEnabled(false);
-            } else {
-                CommandManager.get(closeBelow).setEnabled(true);
-            }
-
-            if (workingSetListSize === 1) { // hide "Close Others" if there is only one file in Working Files
-                CommandManager.get(closeOthers).setEnabled(false);
-            } else {
-                CommandManager.get(closeOthers).setEnabled(true);
-            }
-
-            if (targetIndex === 0) { // hide "Close Others Above" if the first file in Working Files is selected
-                CommandManager.get(closeAbove).setEnabled(false);
-            } else {
-                CommandManager.get(closeAbove).setEnabled(true);
-            }
+        const files = getFilesToClose(mode, targetPath);
+        if (files.length) {
+            return CommandManager.execute(Commands.FILE_CLOSE_LIST, {fileList: files});
         }
     }
 
+    /**
+     * Names the menu items for the menu that is opening and disables the ones that have nothing to close
+     * @param {boolean} forFileTabs - true when the tab bar menu is opening, false for the working set menu
+     */
+    function contextMenuOpenHandler(forFileTabs) {
+        // the working set remembers the item that was right-clicked, the tab bar makes the clicked tab
+        // the current file before it opens its menu
+        const contextFile = !forFileTabs && WorkingSetView.getContext(),
+            file = contextFile || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE),
+            names = forFileTabs ? fileTabNames : workingSetNames;
+
+        MENU_ORDER.forEach(function (commandId) {
+            const command = CommandManager.get(commandId);
+            command.setName(names[commandId]);
+            command.setEnabled(Boolean(file) && getFilesToClose(commandId, file.fullPath).length > 0);
+        });
+    }
+
 
     /**
-     * Returns the preferences used to add/remove the menu items
-     * @return {{closeBelow: boolean, closeOthers: boolean, closeAbove: boolean}}
+     * Returns which menu items should be shown, as per the preferences. "Close All" is always shown.
+     * @return {Object.<string, boolean>}
      */
     function getPreferences() {
         // It's senseless to look prefs up for the current file, instead look them up for
         // the current project (or globally)
         return {
-            closeBelow: prefs.get("below",  PreferencesManager.CURRENT_PROJECT),
-            closeOthers: prefs.get("others", PreferencesManager.CURRENT_PROJECT),
-            closeAbove: prefs.get("above",  PreferencesManager.CURRENT_PROJECT)
+            [closeBelow]: prefs.get("below",  PreferencesManager.CURRENT_PROJECT),
+            [closeOthers]: prefs.get("others", PreferencesManager.CURRENT_PROJECT),
+            [closeAbove]: prefs.get("above",  PreferencesManager.CURRENT_PROJECT),
+            [closeAll]: true
         };
     }
 
     /**
-     * When the preferences changed, add/remove the required menu items
+     * Adds the enabled menu items to both context menus in a fixed order right after "Close" and
+     * removes the ones that were switched off in the preferences
      */
-    function prefChangeHandler() {
-        var prefs = getPreferences();
+    function syncMenuItems() {
+        const show = getPreferences();
 
-        if (prefs.closeBelow !== menuEntriesShown.closeBelow) {
-            if (prefs.closeBelow) {
-                workingSetListCmenu.addMenuItem(closeBelow, "", Menus.AFTER, Commands.FILE_CLOSE);
-            } else {
-                workingSetListCmenu.removeMenuItem(closeBelow);
-            }
-        }
+        [workingSetListCmenu, fileTabsCmenu].forEach(function (cmenu) {
+            let previous = Commands.FILE_CLOSE;
+            MENU_ORDER.forEach(function (commandId) {
+                if (menuEntriesShown[commandId]) {
+                    cmenu.removeMenuItem(commandId);
+                }
+                if (show[commandId]) {
+                    cmenu.addMenuItem(commandId, "", Menus.AFTER, previous);
+                    previous = commandId;
+                }
+            });
+        });
 
-        if (prefs.closeOthers !== menuEntriesShown.closeOthers) {
-            if (prefs.closeOthers) {
-                workingSetListCmenu.addMenuItem(closeOthers, "", Menus.AFTER, Commands.FILE_CLOSE);
-            } else {
-                workingSetListCmenu.removeMenuItem(closeOthers);
-            }
-        }
-
-        if (prefs.closeAbove !== menuEntriesShown.closeAbove) {
-            if (prefs.closeAbove) {
-                workingSetListCmenu.addMenuItem(closeAbove, "", Menus.AFTER, Commands.FILE_CLOSE);
-            } else {
-                workingSetListCmenu.removeMenuItem(closeAbove);
-            }
-        }
-
-        menuEntriesShown = prefs;
+        menuEntriesShown = show;
     }
 
     /**
      * Register the Commands and add the Menu Items, if required
      */
     function initializeCommands() {
-        var prefs = getPreferences();
-
         CommandManager.register(Strings.CMD_FILE_CLOSE_BELOW, closeBelow, function () {
-            handleClose(closeBelow);
+            return handleClose(closeBelow);
         }, { supportsDesignMode: true });
         CommandManager.register(Strings.CMD_FILE_CLOSE_OTHERS, closeOthers, function () {
-            handleClose(closeOthers);
+            return handleClose(closeOthers);
         }, { supportsDesignMode: true });
         CommandManager.register(Strings.CMD_FILE_CLOSE_ABOVE, closeAbove, function () {
-            handleClose(closeAbove);
+            return handleClose(closeAbove);
+        }, { supportsDesignMode: true });
+        CommandManager.register(Strings.CMD_FILE_CLOSE_ALL, closeAll, function () {
+            return handleClose(closeAll);
         }, { supportsDesignMode: true });
 
-        if (prefs.closeBelow) {
-            workingSetListCmenu.addMenuItem(closeBelow, "", Menus.AFTER, Commands.FILE_CLOSE);
-        }
-        if (prefs.closeOthers) {
-            workingSetListCmenu.addMenuItem(closeOthers, "", Menus.AFTER, Commands.FILE_CLOSE);
-        }
-        if (prefs.closeAbove) {
-            workingSetListCmenu.addMenuItem(closeAbove, "", Menus.AFTER, Commands.FILE_CLOSE);
-        }
-        menuEntriesShown = prefs;
+        syncMenuItems();
     }
 
 
@@ -182,7 +202,12 @@ define(function (require, exports, module) {
     initializeCommands();
 
     // Add a context menu open handler
-    workingSetListCmenu.on("beforeContextMenuOpen", contextMenuOpenHandler);
+    workingSetListCmenu.on("beforeContextMenuOpen", function () {
+        contextMenuOpenHandler(false);
+    });
+    fileTabsCmenu.on("beforeContextMenuOpen", function () {
+        contextMenuOpenHandler(true);
+    });
 
-    prefs.on("change", prefChangeHandler);
+    prefs.on("change", syncMenuItems);
 });
