@@ -451,6 +451,42 @@ define(function (require, exports, module) {
                 }
             });
         });
+        describe("Temporary views", function () {
+            it("should report the current view while its file is not in the view list", function () {
+                createTestPane();
+                const view = createMockView("/temp/a.js");
+                myPane.addView(view);
+                myPane.showView(view);
+                expect(myPane.getTemporaryViewFile()).toBe(view.getFile());
+
+                myPane.addToViewList(view.getFile());
+                expect(myPane.getTemporaryViewFile()).toBe(null);
+            });
+
+            it("should not report a closed file whose view waits for the next one", function () {
+                createTestPane();
+                const first = createMockView("/temp/first.js");
+                const second = createMockView("/temp/second.js");
+                myPane.addToViewList(first.getFile());
+                myPane.addView(first);
+                myPane.addToViewList(second.getFile());
+                myPane.addView(second);
+                myPane.showView(first);
+
+                myPane._doRemove(first.getFile(), true);
+                expect(myPane.getCurrentlyViewedPath()).toBe("/temp/first.js");
+                expect(myPane.getTemporaryViewFile()).toBe(null);
+
+                myPane.showView(second);
+                expect(myPane.getTemporaryViewFile()).toBe(null);
+
+                const preview = createMockView("/temp/preview.js");
+                myPane.addView(preview);
+                myPane.showView(preview);
+                expect(myPane.getTemporaryViewFile()).toBe(preview.getFile());
+            });
+        });
+
         describe("Pinning", function () {
             var files;
 
