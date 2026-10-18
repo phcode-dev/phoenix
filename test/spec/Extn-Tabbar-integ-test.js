@@ -2705,6 +2705,26 @@ define(function (require, exports, module) {
                 expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
             });
 
+            it("should keep a previewed file when it is saved", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath2, FileViewController.PROJECT_MANAGER),
+                    "Preview second file from the file tree"
+                );
+                await awaitsFor(() => getTab(testFilePath2).hasClass("placeholder"), "Placeholder tab to appear");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE), "Save the previewed file");
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.findInWorkingSet("first-pane", testFilePath2) !== -1 &&
+                            !getTab(testFilePath2).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath2).length === 1 &&
+                            !getWorkingSetItem(testFilePath2).hasClass("placeholder");
+                    },
+                    "Saved preview to become a working set file"
+                );
+            });
+
             it("should not show a closed file as a placeholder while the next one opens", async function () {
                 await addToWorkingSet([testFilePath2, testFilePath3]);
                 await waitForTabs([testFilePath, testFilePath2, testFilePath3]);
