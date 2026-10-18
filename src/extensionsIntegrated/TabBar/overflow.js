@@ -82,7 +82,7 @@ define(function (require, exports, module) {
             : '<span class="tab-dirty-icon-overflow empty"></span>'; // adding an empty span for better alignment
         const controlHtml = item.isPinned
             ? `<span class="tab-pin-icon-overflow" data-tab-path="${path}">
-                <i class="fa-solid fa-thumbtack"></i></span>`
+                <i class="pinned-file-icon"></i></span>`
             : `<span class="tab-close-icon-overflow" data-tab-path="${path}">
                 <i class="fa-solid fa-times"></i></span>`;
 
