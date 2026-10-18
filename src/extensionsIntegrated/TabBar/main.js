@@ -754,6 +754,9 @@ define(function (require, exports, module) {
         // Update menu checkmarks
         CommandManager.get(Commands.TOGGLE_TABBAR).setChecked(prefs.showTabBar);
         CommandManager.get(Commands.TOGGLE_TABBAR_SMOOTH_SCROLL).setChecked(Preference.tabBarSmoothScroll);
+        NUMBER_OF_TABS_CHOICES.forEach((count) => {
+            CommandManager.get(_numberOfTabsCommandId(count)).setChecked(prefs.numberOfTabs === count);
+        });
 
         if (isTabBarActive()) {
             MainViewManager.getPaneIdList().forEach(_createView);
@@ -763,15 +766,24 @@ define(function (require, exports, module) {
         }
     }
 
+    // the choices offered in the settings menu for how many tabs to show, -1 means all of them
+    const NUMBER_OF_TABS_CHOICES = [-1, 5, 10, 15, 20];
+    const HIDE_TABBAR_COMMAND = "tabbar.hide";
+
+    function _numberOfTabsCommandId(count) {
+        return count === -1 ? "tabbar.numberOfTabs.all" : "tabbar.numberOfTabs." + count;
+    }
+
     /**
-     * flips one of the boolean keys of the tab bar preference
-     * @param {string} key - the key to toggle
+     * changes one key of the tab bar preference
+     * @param {string} key - the key to change
+     * @param {*} value - the new value
      */
-    function _togglePreference(key) {
+    function _setPreference(key, value) {
         const currentPref = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
         PreferencesManager.set(Preference.PREFERENCES_TAB_BAR, {
             ...currentPref,
-            [key]: !currentPref[key]
+            [key]: value
         });
     }
 
@@ -781,25 +793,28 @@ define(function (require, exports, module) {
      */
     function _registerCommands() {
         CommandManager.register(Strings.CMD_TOGGLE_TABBAR, Commands.TOGGLE_TABBAR,
-            () => _togglePreference("showTabBar"));
+            () => _setPreference("showTabBar", !Preference.tabBarEnabled));
         CommandManager.register(Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL, Commands.TOGGLE_TABBAR_SMOOTH_SCROLL,
-            () => _togglePreference("smoothScroll"));
+            () => _setPreference("smoothScroll", !Preference.tabBarSmoothScroll));
+        CommandManager.register(Strings.CMD_HIDE_TABBAR, HIDE_TABBAR_COMMAND,
+            () => _setPreference("showTabBar", false));
+        NUMBER_OF_TABS_CHOICES.forEach((count) => {
+            CommandManager.register(count === -1 ? Strings.TABBAR_ALL_TABS : String(count),
+                _numberOfTabsCommandId(count), () => _setPreference("numberOfTabs", count));
+        });
     }
 
     /**
-     * the settings menu that opens from the empty part of the tab bar. The sort commands order the
-     * working set, which is what the tabs show, so they belong here as much as in the working set
+     * the settings menu that opens from the empty part of the tab bar
      */
     function _registerSettingsMenu() {
         const menu = Menus.registerContextMenu(Menus.ContextMenuIds.FILE_TABS_SETTINGS_MENU);
-        menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_ADDED);
-        menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_NAME);
-        menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_TYPE);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.CMD_WORKING_SORT_TOGGLE_AUTO);
-        menu.addMenuDivider();
         menu.addMenuItem(Commands.TOGGLE_TABBAR_SMOOTH_SCROLL);
-        menu.addMenuItem(Commands.TOGGLE_TABBAR);
+        menu.addMenuDivider();
+        const countMenu = menu.addSubMenu(Strings.TABBAR_NUMBER_OF_TABS, "tabbar-number-of-tabs-submenu");
+        NUMBER_OF_TABS_CHOICES.forEach((count) => countMenu.addMenuItem(_numberOfTabsCommandId(count)));
+        menu.addMenuDivider();
+        menu.addMenuItem(HIDE_TABBAR_COMMAND);
     }
 
     AppInit.appReady(function () {
