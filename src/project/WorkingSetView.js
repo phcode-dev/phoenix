@@ -70,6 +70,13 @@ define(function (require, exports, module) {
     var _contextEntry;
 
     /**
+     * The id of the pane whose working set the context menu was opened on
+     * @type {string}
+     * @private
+     */
+    var _contextPaneId;
+
+    /**
      * Class Providers
      * @see {@link #addClassProvider}
      * @private
@@ -1546,8 +1553,10 @@ define(function (require, exports, module) {
         // Disable horizontal scrolling until WebKit bug #99379 is fixed
         this.$openFilesContainer.css("overflow-x", "hidden");
 
+        var self = this;
         this.$openFilesContainer.on("contextmenu.workingSetView", function (e) {
             _contextEntry = $(e.target).closest("li").data(_FILE_KEY);
+            _contextPaneId = self.paneId;
             Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).open(e);
         });
 
@@ -1690,6 +1699,16 @@ define(function (require, exports, module) {
         return _contextEntry;
     }
 
+    /**
+     * Gets the id of the pane whose working set the context menu was last opened on. The item that
+     * was right-clicked is being made the current file at the same time, so when the menu opens the
+     * active pane may not have caught up yet, this one has.
+     * @return {string}
+     */
+    function getContextPaneId() {
+        return _contextPaneId;
+    }
+
     // Public API
     exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
     exports.refresh                       = refresh;
@@ -1698,6 +1717,7 @@ define(function (require, exports, module) {
     exports.addClassProvider              = addClassProvider;
     exports.syncSelectionIndicator        = syncSelectionIndicator;
     exports.getContext                    = getContext;
+    exports.getContextPaneId              = getContextPaneId;
 
     // API to be used only by default extensions
     exports.useIconProviders              = useIconProviders;
