@@ -193,19 +193,16 @@ define(function (require, exports, module) {
         const fromPaneId = sourcePaneId;
         const file = FileSystem.getFileForPath(draggedPath);
         const open = () => CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: targetPaneId });
+        const inSourceWorkingSet = MainViewManager.findInWorkingSet(fromPaneId, draggedPath) !== -1;
+        const targetHasIt = MainViewManager.findInWorkingSet(targetPaneId, draggedPath) !== -1 ||
+            MainViewManager._getPane(targetPaneId).getViewForPath(draggedPath);
 
-        // a placeholder tab has nothing to move, the file joins the target pane's working set and the
-        // preview in the source pane goes away
-        if (MainViewManager.findInWorkingSet(fromPaneId, draggedPath) === -1) {
+        // there is no view to carry over when the dragged tab is only a preview or when the target pane
+        // already has the file. The file becomes a working set entry of the target pane where it was
+        // dropped and leaves the source pane, so it never ends up showing in both panes at once
+        if (!inSourceWorkingSet || targetHasIt) {
             MainViewManager.addToWorkingSet(targetPaneId, file, toIndex);
             open().always(() => CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: fromPaneId }));
-            return;
-        }
-
-        // the target pane already has this file, nothing to move, just show it there
-        if (MainViewManager.findInWorkingSet(targetPaneId, draggedPath) !== -1 ||
-            MainViewManager._getPane(targetPaneId).getViewForPath(draggedPath)) {
-            open();
             return;
         }
 
