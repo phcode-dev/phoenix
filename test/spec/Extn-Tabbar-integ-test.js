@@ -2545,6 +2545,130 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Placeholder Rows", function () {
+            let originalProjectPath;
+
+            function getWorkingSetItem(filePath) {
+                return $("#working-set-list-container li").filter(function () {
+                    const file = $(this).data("file");
+                    return file && file.fullPath === filePath;
+                });
+            }
+
+            async function addToWorkingSet(filePaths) {
+                for (const filePath of filePaths) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: filePath }),
+                        `Add ${filePath} to the working set`
+                    );
+                }
+            }
+
+            // a file is only previewed when it belongs to the project, files from elsewhere always go
+            // straight into the working set. So the test folder becomes the project for these specs
+            beforeAll(async function () {
+                originalProjectPath = testWindow.brackets.test.ProjectManager.getProjectRoot().fullPath;
+                await testWindow.closeAllFiles();
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            }, 30000);
+
+            afterAll(async function () {
+                await testWindow.closeAllFiles();
+                await SpecRunnerUtils.loadProjectInTestWindow(originalProjectPath);
+            }, 30000);
+
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                await addToWorkingSet([testFilePath]);
+                await waitForTabs([testFilePath]);
+            });
+
+            it("should show a previewed file as a placeholder in the working set and the tab bar alike", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath2, FileViewController.PROJECT_MANAGER),
+                    "Preview second file from the file tree"
+                );
+
+                await awaitsFor(
+                    function () {
+                        return getTab(testFilePath2).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath2).hasClass("placeholder");
+                    },
+                    "Placeholder tab and working set row to appear"
+                );
+                expect(MainViewManager.findInWorkingSet("first-pane", testFilePath2)).toBe(-1);
+                // the placeholder sits after the working set files in both
+                expect($("#phoenix-tab-bar .tab").last().attr("data-path")).toBe(testFilePath2);
+                expect($("#working-set-list-container li").last().data("file").fullPath).toBe(testFilePath2);
+
+                // previewing another file replaces the placeholder in both
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath3, FileViewController.PROJECT_MANAGER),
+                    "Preview third file from the file tree"
+                );
+                await awaitsFor(
+                    function () {
+                        return getTab(testFilePath3).hasClass("placeholder") && !tabExists(testFilePath2) &&
+                            getWorkingSetItem(testFilePath3).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath2).length === 0;
+                    },
+                    "Placeholder to move to the third file"
+                );
+
+                // clicking the placeholder row keeps the file, in the working set and the tab bar
+                getWorkingSetItem(testFilePath3).trigger($.Event("mousedown", { which: 1, pageY: 10 }));
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.findInWorkingSet("first-pane", testFilePath3) !== -1 &&
+                            !getTab(testFilePath3).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath3).length === 1 &&
+                            !getWorkingSetItem(testFilePath3).hasClass("placeholder");
+                    },
+                    "Placeholder to become a working set file"
+                );
+            });
+
+            it("should keep the current file when a working set item is right-clicked", async function () {
+                await addToWorkingSet([testFilePath2]);
+                await waitForTabs([testFilePath, testFilePath2]);
+                await awaitsFor(
+                    function () {
+                        return getWorkingSetItem(testFilePath).length === 1 && isTabActive(testFilePath2);
+                    },
+                    "Working set rows to appear"
+                );
+
+                const $row = getWorkingSetItem(testFilePath);
+                $row.trigger($.Event("mousedown", { which: 3, pageY: 10 }));
+                $row.trigger($.Event("contextmenu", { pageX: 100, pageY: 200, target: $row.find("a")[0] }));
+                await awaitsFor(
+                    function () {
+                        return $("#workingset-context-menu").hasClass("open");
+                    },
+                    "Working set context menu to appear"
+                );
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+                expect($row.hasClass("context")).toBe(true);
+
+                // the menu acts on the right-clicked file: Close closes it, not the current file
+                const $closeItem = $("#workingset-context-menu .menu-name").filter(function () {
+                    return $(this).text().trim() === Strings.CMD_FILE_CLOSE;
+                }).closest("li");
+                $closeItem.click();
+                cancelSaveDialog();
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath) && getWorkingSetItem(testFilePath).length === 0;
+                    },
+                    "Right-clicked file to close"
+                );
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+                expect(testWindow.brackets.test.FileViewController.getWorkingSetContext()).toBe(null);
+            });
+        });
+
         describe("Number of Tabs Preference", function () {
             beforeEach(async function () {
                 // Enable the tab bar feature with default settings

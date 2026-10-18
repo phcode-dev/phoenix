@@ -915,12 +915,51 @@ define(function (require, exports, module) {
     }
 
     /**
+     * The file the pane is showing without it being in the working set (opened with a single click in
+     * the file tree). It gets a placeholder item at the end of the list, the same way the tab bar
+     * shows a placeholder tab for it.
+     * @private
+     * @return {?File}
+     */
+    WorkingSetView.prototype._getPlaceholderFile = function () {
+        var file = MainViewManager.getCurrentlyViewedFile(this.paneId);
+        if (file && MainViewManager.findInWorkingSet(this.paneId, file.fullPath) === -1) {
+            return file;
+        }
+        return null;
+    };
+
+    /**
+     * Keeps the placeholder item in step with the file the pane shows
+     * @private
+     */
+    WorkingSetView.prototype._syncPlaceholder = function () {
+        var $placeholder = this.$openFilesList.children("li.placeholder"),
+            file = this._getPlaceholderFile(),
+            shownPath = $placeholder.length ? $placeholder.data(_FILE_KEY).fullPath : null;
+
+        if ((file ? file.fullPath : null) === shownPath) {
+            return;
+        }
+
+        $placeholder.remove();
+        if (file) {
+            this._createNewListItem(file, true);
+        }
+        this._updateVisibility();
+        this._updateItemClasses();
+        this._adjustForScrollbars();
+        this._updateListSelection();
+    };
+
+    /**
      * Hides or shows the WorkingSetView
      * @private
      */
     WorkingSetView.prototype._updateVisibility = function () {
         var fileList = MainViewManager.getWorkingSet(this.paneId);
-        if (MainViewManager.getPaneCount() === 1 && (!fileList || fileList.length === 0)) {
+        var noFiles = !fileList || fileList.length === 0;
+        if (MainViewManager.getPaneCount() === 1 && noFiles && !this._getPlaceholderFile()) {
             this.$openFilesContainer.hide();
             this.$workingSetListViewHeader.hide();
         } else {
@@ -1144,6 +1183,15 @@ define(function (require, exports, module) {
             externalProjectFiles = [],
             fileList = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
 
+        // the placeholder items take part as well, their files are shown but not in the working sets
+        MainViewManager.getPaneIdList().forEach(function (paneId) {
+            const file = MainViewManager.getCurrentlyViewedFile(paneId);
+            const isPlaceholder = file && MainViewManager.findInWorkingSet(paneId, file.fullPath) === -1;
+            if (isPlaceholder && fileList.indexOf(file) === -1) {
+                fileList.push(file);
+            }
+        });
+
         // We need to always clear current directories as files could be removed from working tree.
         this.$openFilesContainer.find("ul > li > a > span.directory").remove();
 
@@ -1259,9 +1307,10 @@ define(function (require, exports, module) {
      * Builds the UI for a new list item and inserts in into the end of the list
      * @private
      * @param {File} file
+     * @param {boolean=} isPlaceholder - true for the file the pane shows without it being in the working set
      * @return {HTMLLIElement} newListItem
      */
-    WorkingSetView.prototype._createNewListItem = function (file) {
+    WorkingSetView.prototype._createNewListItem = function (file, isPlaceholder) {
         var self = this,
             selectedFile = MainViewManager.getCurrentlyViewedFile(this.paneId),
             data = {fullPath: file.fullPath,
@@ -1296,7 +1345,24 @@ define(function (require, exports, module) {
         // Update the listItem's apperance
         this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false, this._isPinned(file));
         _updateListItemSelection($newItem, selectedFile);
-        _makeDraggable($newItem);
+
+        if (isPlaceholder) {
+            // a placeholder can't be dragged around as it has no place in the working set yet.
+            // Clicking it keeps the file, like clicking the placeholder tab does
+            $newItem.addClass("placeholder");
+            $newItem.on("mousedown", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                Menus.closeAll();
+                if (e.which === MIDDLE_BUTTON || (e.which === LEFT_BUTTON && $(e.target).hasClass("can-close"))) {
+                    CommandManager.execute(Commands.FILE_CLOSE, {file: file, paneId: self.paneId});
+                } else if (e.which === LEFT_BUTTON && !(e.ctrlKey && brackets.platform === "mac")) {
+                    FileViewController.openFileAndAddToWorkingSet(file.fullPath, self.paneId);
+                }
+            });
+        } else {
+            _makeDraggable($newItem);
+        }
 
         // the hover state is remembered on the item as the status icon alone can't tell anymore,
         // a pinned item shows its pin whether the mouse is over it or not
@@ -1335,6 +1401,11 @@ define(function (require, exports, module) {
         fileList.forEach(function (file) {
             self._createNewListItem(file);
         });
+
+        var placeholderFile = this._getPlaceholderFile();
+        if (placeholderFile) {
+            this._createNewListItem(placeholderFile, true);
+        }
 
         if (forceRedraw) {
             self._redraw();
@@ -1572,6 +1643,12 @@ define(function (require, exports, module) {
         MainViewManager.on(this._makeEventName("workingSetUpdate"), _.bind(this._handleWorkingSetUpdate, this));
         MainViewManager.on(this._makeEventName("workingSetMove"), _.bind(this._handleWorkingSetMove, this));
 
+        // the placeholder item follows the file the pane shows. MainViewManager only announces the
+        // active pane's file changes, so the pane itself is asked for the rest
+        MainViewManager.on(this._makeEventName("currentFileChange"), _.bind(this._syncPlaceholder, this));
+        this._pane = MainViewManager._getPane(this.paneId);
+        this._pane.on(this._makeEventName("currentViewChange"), _.bind(this._syncPlaceholder, this));
+
         DocumentManager.on(this._makeEventName("dirtyFlagChange"), _.bind(this._handleDirtyFlagChanged, this));
 
         FileViewController.on(this._makeEventName("documentSelectionFocusChange") + " " + this._makeEventName("fileViewFocusChange"), _.bind(this._updateListSelection, this));
@@ -1605,6 +1682,7 @@ define(function (require, exports, module) {
         this.$openFilesContainer.off(".workingSetView");
         this.$el.remove();
         MainViewManager.off(this._makeEventName(""));
+        this._pane.off(this._makeEventName(""));
         DocumentManager.off(this._makeEventName(""));
         FileViewController.off(this._makeEventName(""));
     };
