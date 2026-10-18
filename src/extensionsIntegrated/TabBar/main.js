@@ -264,8 +264,21 @@ define(function (require, exports, module) {
         // the tab bar sits between the pane header and the editor
         $(`#${paneId} .pane-header`).after(this.$container);
 
-        // a resize (sidebar, live preview panel, window...) only changes whether all the tabs still fit
-        this.resizeObserver = new ResizeObserver(() => this.updateOverflowButton());
+        // a resize (sidebar, live preview panel, window...) only changes whether all the tabs still fit.
+        // The check waits for the next frame because showing or hiding the overflow button changes the
+        // width of the bar itself, and doing that inside the observer callback makes the browser report
+        // an undelivered resize loop
+        this.overflowCheckPending = false;
+        this.resizeObserver = new ResizeObserver(() => {
+            if (this.overflowCheckPending) {
+                return;
+            }
+            this.overflowCheckPending = true;
+            window.requestAnimationFrame(() => {
+                this.overflowCheckPending = false;
+                this.updateOverflowButton();
+            });
+        });
         this.resizeObserver.observe(this.bar);
 
         // MainViewManager only announces current file changes for the active pane, so the pane is asked
