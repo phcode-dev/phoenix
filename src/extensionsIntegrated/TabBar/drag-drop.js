@@ -173,6 +173,17 @@ define(function (require, exports, module) {
             return;
         }
 
+        _reorder(paneId, fromIndex, toIndex);
+    }
+
+    /**
+     * moves a working set item to the drop index, which still counts the item at its old place
+     *
+     * @param {string} paneId - The pane ID
+     * @param {number} fromIndex - the working set index of the item
+     * @param {number} toIndex - the working set index to move to, before the move
+     */
+    function _reorder(paneId, fromIndex, toIndex) {
         if (fromIndex < toIndex) {
             toIndex--;
         }
@@ -194,14 +205,18 @@ define(function (require, exports, module) {
         const file = FileSystem.getFileForPath(draggedPath);
         const open = () => CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: targetPaneId });
         const inSourceWorkingSet = MainViewManager.findInWorkingSet(fromPaneId, draggedPath) !== -1;
-        const targetHasIt = MainViewManager.findInWorkingSet(targetPaneId, draggedPath) !== -1 ||
-            MainViewManager._getPane(targetPaneId).getViewForPath(draggedPath);
+        const targetIndex = MainViewManager.findInWorkingSet(targetPaneId, draggedPath);
+        const targetHasIt = targetIndex !== -1 || MainViewManager._getPane(targetPaneId).getViewForPath(draggedPath);
 
         // there is no view to carry over when the dragged tab is only a preview or when the target pane
         // already has the file. The file becomes a working set entry of the target pane where it was
         // dropped and leaves the source pane, so it never ends up showing in both panes at once
         if (!inSourceWorkingSet || targetHasIt) {
-            MainViewManager.addToWorkingSet(targetPaneId, file, toIndex);
+            if (targetIndex === -1) {
+                MainViewManager.addToWorkingSet(targetPaneId, file, toIndex);
+            } else {
+                _reorder(targetPaneId, targetIndex, toIndex);
+            }
             open().always(() => CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: fromPaneId }));
             return;
         }
