@@ -3352,8 +3352,9 @@ define(function (require, exports, module) {
                 wheelEventRight.originalEvent = { deltaY: 500 }; // Large scroll right
                 $tabBar.trigger(wheelEventRight);
 
-                // Should not exceed maximum scroll (a small floating point tolerance)
-                expect($tabBar.scrollLeft()).toBeLessThanOrEqual(maxScrollLeft + 1);
+                // Should not exceed maximum scroll. scrollWidth and clientWidth are rounded to whole
+                // pixels while the tabs have fractional widths, so the real end can sit a pixel past them
+                expect($tabBar.scrollLeft()).toBeLessThanOrEqual(maxScrollLeft + 2);
 
                 // Scroll far to the left
                 $tabBar.scrollLeft(-1000); // Try to scroll beyond minimum
