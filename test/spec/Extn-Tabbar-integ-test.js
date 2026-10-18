@@ -1114,6 +1114,71 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Tab Reuse", function () {
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                await awaitsFor(
+                    function () {
+                        return getTabCount() === 0;
+                    },
+                    "Tab bar to update with no tabs"
+                );
+            });
+
+            it("should keep the existing tab elements when files are opened, switched and closed", async function () {
+                await openTestFiles([testFilePath]);
+                await waitForTabs([testFilePath]);
+                const firstTab = getTab(testFilePath)[0];
+
+                // opening another file only adds a tab, the existing one is left alone
+                await openTestFiles([testFilePath2]);
+                await waitForTabs([testFilePath, testFilePath2]);
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath2);
+                    },
+                    "Second tab to become active"
+                );
+                const secondTab = getTab(testFilePath2)[0];
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+
+                // switching files moves the active marker, the tabs stay the same elements
+                await openTestFiles([testFilePath]);
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath);
+                    },
+                    "First tab to become active"
+                );
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+                expect(getTab(testFilePath2)[0]).toBe(secondTab);
+
+                // a dirty flag change only toggles a class on the tab
+                const doc = DocumentManager.getOpenDocumentForPath(testFilePath);
+                doc.setText("// Modified content");
+                await awaitsFor(
+                    function () {
+                        return isTabDirty(testFilePath);
+                    },
+                    "Dirty indicator to appear"
+                );
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+                doc.setText("// Test file 1 for TabBar");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE, { doc: doc }), "Save file");
+
+                // closing a file removes just its tab
+                await closeTestFiles([testFilePath2]);
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath2);
+                    },
+                    "Second tab to disappear"
+                );
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+            });
+        });
+
         describe("Active Tab", function () {
             beforeEach(async function () {
                 // Enable the tab bar feature
@@ -2089,109 +2154,6 @@ define(function (require, exports, module) {
                 expect(getTabCount()).toBe(1);
             });
 
-            it("should close saved tabs when selecting 'Close saved tabs' from context menu", async function () {
-                // Open all three test files
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
-                    "Open first test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
-                    "Open second test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
-                    "Open third test file"
-                );
-
-                // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
-                    },
-                    "All tabs to appear"
-                );
-
-                // Verify all three tabs exist
-                expect(tabExists(testFilePath)).toBe(true);
-                expect(tabExists(testFilePath2)).toBe(true);
-                expect(tabExists(testFilePath3)).toBe(true);
-
-                // Make the second file dirty
-                const doc2 = DocumentManager.getOpenDocumentForPath(testFilePath2);
-                doc2.setText("// Modified content");
-
-                // Wait for the dirty indicator to appear
-                await awaitsFor(
-                    function () {
-                        return isTabDirty(testFilePath2);
-                    },
-                    "Dirty indicator to appear"
-                );
-
-                // Verify the second tab is dirty
-                expect(isTabDirty(testFilePath2)).toBe(true);
-
-                // Get any tab element (we'll use the first)
-                const $tab = getTab(testFilePath);
-
-                // Right-click on the tab to open context menu
-                const mousedownEvent = $.Event("mousedown", {
-                    button: 2,
-                    pageX: 100,
-                    pageY: 100
-                });
-                $tab.trigger(mousedownEvent);
-
-                const contextmenuEvent = $.Event("contextmenu", {
-                    pageX: 100,
-                    pageY: 100
-                });
-                $tab.trigger(contextmenuEvent);
-
-                // Wait for context menu to appear
-                await awaitsFor(
-                    function () {
-                        return getContextMenu().hasClass("open");
-                    },
-                    "Context menu to appear"
-                );
-
-                // Find and click the "Close Saved Tabs" option
-                const $closeSavedTabsOption = getContextMenu()
-                    .find(".menu-name")
-                    .filter(function () {
-                        return $(this).text().trim() === Strings.CLOSE_SAVED_TABS;
-                    })
-                    .closest("li");
-                expect($closeSavedTabsOption.length).toBe(1);
-                $closeSavedTabsOption.click();
-
-                // Cancel any save dialogs that might appear
-                cancelSaveDialog();
-
-                // Verify only the dirty tab remains
-                await awaitsFor(
-                    function () {
-                        return !tabExists(testFilePath) && tabExists(testFilePath2) && !tabExists(testFilePath3);
-                    },
-                    "Saved tabs to be closed"
-                );
-
-                expect(tabExists(testFilePath)).toBe(false);
-                expect(tabExists(testFilePath2)).toBe(true);
-                expect(tabExists(testFilePath3)).toBe(false);
-                expect(getTabCount()).toBe(1);
-                expect(isTabDirty(testFilePath2)).toBe(true);
-
-                // Clean up - revert changes to the second file
-                doc2.setText("// Test file 2 for TabBar");
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_SAVE, { doc: doc2 }),
-                    "Save file with original content"
-                );
-            });
-
             it("should close all tabs when selecting 'Close all tabs' from context menu", async function () {
                 // Open all three test files
                 await awaitsForDone(
@@ -2270,6 +2232,248 @@ define(function (require, exports, module) {
                 expect(tabExists(testFilePath2)).toBe(false);
                 expect(tabExists(testFilePath3)).toBe(false);
                 expect(getTabCount()).toBe(0);
+            });
+        });
+
+        describe("Pinned Tabs", function () {
+            let pinFiles;
+
+            function getContextMenuItem(text) {
+                return $("#tabbar-context-menu")
+                    .find(".menu-name")
+                    .filter(function () {
+                        return $(this).text().trim() === text;
+                    })
+                    .closest("li");
+            }
+
+            function getWorkingSetItem(filePath) {
+                return $("#working-set-list-container li").filter(function () {
+                    const file = $(this).data("file");
+                    return file && file.fullPath === filePath;
+                });
+            }
+
+            function getWorkingSetOrder() {
+                return MainViewManager.getWorkingSet("first-pane").map((file) => file.fullPath);
+            }
+
+            async function openTabContextMenu(filePath) {
+                getTab(filePath).trigger($.Event("contextmenu", { pageX: 100, pageY: 100 }));
+                await awaitsFor(
+                    function () {
+                        return $("#tabbar-context-menu").hasClass("open");
+                    },
+                    "Context menu to appear"
+                );
+            }
+
+            async function closeContextMenu() {
+                $("body").click();
+                await awaitsFor(
+                    function () {
+                        return !$("#tabbar-context-menu").hasClass("open");
+                    },
+                    "Context menu to disappear"
+                );
+            }
+
+            async function pinFromContextMenu(filePath, paneId = "first-pane") {
+                await openTabContextMenu(filePath);
+                const $pinItem = getContextMenuItem(Strings.PIN_TAB);
+                expect($pinItem.length).toBe(1);
+                $pinItem.click();
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.isPathPinned(paneId, filePath) && getTab(filePath).hasClass("pinned");
+                    },
+                    "Tab to be pinned"
+                );
+            }
+
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+                pinFiles = await createTestFiles(3, "pin-test", "// Pin test file");
+                await openTestFiles(pinFiles);
+                await waitForTabs(pinFiles);
+            });
+
+            afterEach(async function () {
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            it("should pin a tab from the context menu and show a pin instead of the close button", async function () {
+                await pinFromContextMenu(pinFiles[1]);
+
+                const $tab = getTab(pinFiles[1]);
+                expect($tab.find(".tab-pin").length).toBe(1);
+                expect($tab.find(".tab-close").length).toBe(0);
+                expect(getTab(pinFiles[0]).find(".tab-close").length).toBe(1);
+
+                // pinned tabs move to the front, in the working set and in the tab bar
+                expect(getWorkingSetOrder()).toEqual([pinFiles[1], pinFiles[0], pinFiles[2]]);
+                expect($("#phoenix-tab-bar .tab").first().attr("data-path")).toBe(pinFiles[1]);
+
+                // the menu offers to unpin a pinned tab
+                await openTabContextMenu(pinFiles[1]);
+                expect(getContextMenuItem(Strings.UNPIN_TAB).length).toBe(1);
+                expect(getContextMenuItem(Strings.PIN_TAB).length).toBe(0);
+                await closeContextMenu();
+            });
+
+            it("should unpin a tab when its pin icon is clicked", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                getTab(pinFiles[0]).find(".tab-pin").click();
+                await awaitsFor(
+                    function () {
+                        return !MainViewManager.isPathPinned("first-pane", pinFiles[0]) &&
+                            getTab(pinFiles[0]).find(".tab-close").length === 1;
+                    },
+                    "Tab to be unpinned"
+                );
+                expect(getTab(pinFiles[0]).hasClass("pinned")).toBe(false);
+            });
+
+            it("should show the pin in the working set and unpin from there", async function () {
+                await pinFromContextMenu(pinFiles[2]);
+
+                await awaitsFor(
+                    function () {
+                        return getWorkingSetItem(pinFiles[2]).find(".file-status-icon.pinned").length === 1;
+                    },
+                    "Pin icon to appear in the working set"
+                );
+                // the working set lists the pinned file first as well
+                expect($("#working-set-list-container li").first().data("file").fullPath).toBe(pinFiles[2]);
+
+                getWorkingSetItem(pinFiles[2]).find(".file-status-icon.pinned").trigger("mousedown");
+                await awaitsFor(
+                    function () {
+                        return !MainViewManager.isPathPinned("first-pane", pinFiles[2]) &&
+                            !getTab(pinFiles[2]).hasClass("pinned");
+                    },
+                    "File to be unpinned from the working set"
+                );
+                expect(getWorkingSetItem(pinFiles[2]).find(".file-status-icon.pinned").length).toBe(0);
+            });
+
+            it("should keep pinned tabs open when closing all tabs from the context menu", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                await openTabContextMenu(pinFiles[1]);
+                const $closeAll = getContextMenuItem(Strings.CLOSE_ALL_TABS);
+                expect($closeAll.length).toBe(1);
+                $closeAll.click();
+                cancelSaveDialog();
+
+                await awaitsFor(
+                    function () {
+                        return getTabCount() === 1;
+                    },
+                    "Unpinned tabs to close"
+                );
+                expect(tabExists(pinFiles[0])).toBe(true);
+                expect(getWorkingSetOrder()).toEqual([pinFiles[0]]);
+            });
+
+            it("should skip pinned tabs for close tabs to the left and disable it when nothing is left to close", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+                await pinFromContextMenu(pinFiles[1]);
+                expect(getWorkingSetOrder()).toEqual([pinFiles[0], pinFiles[1], pinFiles[2]]);
+
+                // everything to the left of the last tab is pinned, so there is nothing to close
+                await openTabContextMenu(pinFiles[2]);
+                expect(getContextMenuItem(Strings.CLOSE_TABS_TO_THE_LEFT).find("a").hasClass("disabled")).toBe(true);
+                expect(getContextMenuItem(Strings.CLOSE_OTHER_TABS).find("a").hasClass("disabled")).toBe(true);
+                expect(getContextMenuItem(Strings.CLOSE_TABS_TO_THE_RIGHT).find("a").hasClass("disabled")).toBe(true);
+                expect(getContextMenuItem(Strings.CLOSE_ALL_TABS).find("a").hasClass("disabled")).toBe(false);
+                await closeContextMenu();
+
+                // from the first tab, close tabs to the right only closes the unpinned one
+                await openTabContextMenu(pinFiles[0]);
+                expect(getContextMenuItem(Strings.CLOSE_TABS_TO_THE_RIGHT).find("a").hasClass("disabled")).toBe(false);
+                getContextMenuItem(Strings.CLOSE_TABS_TO_THE_RIGHT).click();
+                cancelSaveDialog();
+
+                await awaitsFor(
+                    function () {
+                        return !tabExists(pinFiles[2]);
+                    },
+                    "Unpinned tab to the right to close"
+                );
+                expect(getWorkingSetOrder()).toEqual([pinFiles[0], pinFiles[1]]);
+            });
+
+            it("should pin a tab dropped in front of a pinned tab and unpin one dropped behind an unpinned tab", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                await simulateTabDragAndDrop(pinFiles[2], pinFiles[0], true);
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.isPathPinned("first-pane", pinFiles[2]) &&
+                            getTab(pinFiles[2]).hasClass("pinned");
+                    },
+                    "Tab dropped in front of a pinned tab to be pinned"
+                );
+                expect(getWorkingSetOrder()).toEqual([pinFiles[2], pinFiles[0], pinFiles[1]]);
+
+                await simulateTabDragAndDrop(pinFiles[0], pinFiles[1], false);
+                await awaitsFor(
+                    function () {
+                        return !MainViewManager.isPathPinned("first-pane", pinFiles[0]) &&
+                            !getTab(pinFiles[0]).hasClass("pinned");
+                    },
+                    "Tab dropped behind an unpinned tab to be unpinned"
+                );
+                expect(getWorkingSetOrder()).toEqual([pinFiles[2], pinFiles[1], pinFiles[0]]);
+                expect(MainViewManager.isPathPinned("first-pane", pinFiles[2])).toBe(true);
+            });
+
+            it("should keep a tab pinned when it is dragged to the other pane", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                MainViewManager.setLayoutScheme(1, 2);
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.getPaneCount() === 2;
+                    },
+                    "Second pane to be created"
+                );
+
+                const sourceTab = getTab(pinFiles[0]);
+                const emptyPaneTarget = $("#second-pane .pane-content");
+                sourceTab.trigger($.Event("dragstart", {
+                    originalEvent: { dataTransfer: { setData: function () {}, effectAllowed: "move" } }
+                }));
+                emptyPaneTarget.trigger($.Event("dragover", {
+                    originalEvent: { dataTransfer: { dropEffect: "move" } },
+                    preventDefault: function () {}
+                }));
+                emptyPaneTarget.trigger($.Event("drop", {
+                    originalEvent: { dataTransfer: {} },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                }));
+                sourceTab.trigger($.Event("dragend"));
+
+                await awaitsFor(
+                    function () {
+                        return tabExistsInPane(pinFiles[0], "second-pane") && !tabExistsInPane(pinFiles[0], "first-pane");
+                    },
+                    "Tab to move to the second pane"
+                );
+                expect(MainViewManager.isPathPinned("second-pane", pinFiles[0])).toBe(true);
+                expect(MainViewManager.isPathPinned("first-pane", pinFiles[0])).toBe(false);
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar-2").find(`.tab[data-path="${pinFiles[0]}"] .tab-pin`).length === 1;
+                    },
+                    "Pin to show on the moved tab"
+                );
             });
         });
 
