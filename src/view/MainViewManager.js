@@ -492,8 +492,10 @@ define(function (require, exports, module) {
                 pane = _getPaneFromElement($container);
 
             if (pane) {
-                // Editor is a full editor
-                if (pane.id !== _activePaneId) {
+                // Editor is a full editor. Only the editor a pane is actually showing may activate the
+                // pane: a document that is open in both panes has an editor in each, and the one the
+                // other pane keeps hidden must not pull the activation over there.
+                if (pane.id !== _activePaneId && pane.getCurrentlyViewedEditor() === current) {
                     // we just need to set the active pane in this case
                     //  it will dispatch the currentFileChange message as well
                     //  as dispatching other events when the active pane changes
