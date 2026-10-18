@@ -508,6 +508,13 @@ define(function (require, exports, module) {
     Pane.prototype._currentView = null;
 
     /**
+     * Path of the closed file whose view stays up until the next file is ready to show
+     * @type {?string}
+     * @private
+     */
+    Pane.prototype._removedCurrentPath = null;
+
+    /**
      * The last thing that received a focus event
      * @type {?DomElement}
      * @private
@@ -565,6 +572,20 @@ define(function (require, exports, module) {
             this._currentView = null;
             this._notifyCurrentViewChange(null, currentView);
         }
+    };
+
+    /**
+     * Gets the file of the current view when it isn't in the working set, a file opened from the file
+     * tree with a single click just to have a look at it. A file that was just closed stays up until
+     * the next one is ready but is on its way out, so it doesn't count
+     * @return {?File}
+     */
+    Pane.prototype.getTemporaryViewFile = function () {
+        const file = this._currentView && this._currentView.getFile();
+        if (!file || file.fullPath === this._removedCurrentPath || this.findInViewList(file.fullPath) !== -1) {
+            return null;
+        }
+        return file;
     };
 
     /**
@@ -929,6 +950,7 @@ define(function (require, exports, module) {
      * @param {?View} oldView - the view being replaced
      */
     Pane.prototype._notifyCurrentViewChange = function (newView, oldView) {
+        this._removedCurrentPath = null;
         this.updateHeaderText();
 
         this.trigger("currentViewChange", newView, oldView);
@@ -986,6 +1008,10 @@ define(function (require, exports, module) {
         if (view) {
             if (!preventViewChange) {
                 this._doDestroyView(view);
+            } else if (view === this._currentView) {
+                // the view stays up until the next file is ready, but it is on its way out so it
+                // must not be taken for a file that is just being looked at
+                this._removedCurrentPath = file.fullPath;
             }
         }
 
