@@ -449,6 +449,17 @@ define(function (require, exports, module) {
         }
     };
 
+    /**
+     * draws the file icons again with the icon providers registered by now
+     */
+    TabBarView.prototype.refreshIcons = function () {
+        this.tabs.forEach((tab, path) => {
+            const file = FileSystem.getFileForPath(path);
+            const $icon = $(tab.firstChild).empty();
+            WorkingSetView.useIconProviders({ fullPath: path, name: file.name, isFile: true }, $icon);
+        });
+    };
+
     function _forEachView(callback) {
         Object.keys(_views).forEach((paneId) => callback(_views[paneId]));
     }
@@ -718,6 +729,12 @@ define(function (require, exports, module) {
         FileViewController.on("workingSetContextChange", function (event, context) {
             _forEachView((view) => view.setContextPath(
                 context && context.paneId === view.paneId ? context.file.fullPath : null));
+        });
+
+        // an icon provider that comes in later, like one from an extension that loads after the tabs
+        // were made, gets to draw its icons on the existing tabs as well
+        WorkingSetView.on("providersChange", function () {
+            _forEachView((view) => view.refreshIcons());
         });
     }
 

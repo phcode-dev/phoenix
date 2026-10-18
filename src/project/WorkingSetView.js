@@ -45,7 +45,8 @@ define(function (require, exports, module) {
         paneListTemplate      = require("text!htmlContent/working-set.html"),
         Strings               = require("strings"),
         _                     = require("thirdparty/lodash"),
-        Mustache              = require("thirdparty/mustache/mustache");
+        Mustache              = require("thirdparty/mustache/mustache"),
+        EventDispatcher       = require("utils/EventDispatcher");
 
     /**
      * Open view dictionary
@@ -1719,6 +1720,7 @@ define(function (require, exports, module) {
         // build all views so the provider has a chance to add icons
         //    to all items that have already been created
         refresh(true);
+        exports.trigger("providersChange");
     }
 
     /**
@@ -1742,6 +1744,7 @@ define(function (require, exports, module) {
         // build all views so the provider has a chance to style
         //    all items that have already been created
         refresh(true);
+        exports.trigger("providersChange");
     }
 
     AppInit.htmlReady(function () {
@@ -1819,6 +1822,9 @@ define(function (require, exports, module) {
     }
 
     // Public API
+    // the tab bar draws its icons with the same providers, so it is told when new ones arrive
+    EventDispatcher.makeEventDispatcher(exports);
+
     exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
     exports.refresh                       = refresh;
     exports.refreshSelection              = refreshSelection;
