@@ -167,9 +167,24 @@ define(function (require, exports, module) {
      * @param {!jQuery.Event} e - event
      * @param {?File} file - current file (can be null)
      */
-    function _handleCurrentFileChange(e, file) {
+    function _handleCurrentFileChange(e, file, paneId) {
         var doc = file && DocumentManager.getOpenDocumentForPath(file.fullPath);
-        _notifyActiveEditorChanged(doc && doc._masterEditor);
+        if (!doc) {
+            _notifyActiveEditorChanged(null);
+            return;
+        }
+
+        // The same document can be open in both panes. The editor that became active is the one the
+        // pane is showing, not necessarily the document's master editor: that is whichever of its
+        // editors was focused last and may sit in the other pane. Activating that pane instead would
+        // dispatch this event again for the other pane's file and bounce back and forth without end.
+        var paneEditor = paneId && MainViewManager.getCurrentlyViewedEditor(paneId);
+        if (paneEditor && paneEditor.document === doc) {
+            doc._toggleMasterEditor(paneEditor);
+            _notifyActiveEditorChanged(paneEditor);
+        } else {
+            _notifyActiveEditorChanged(doc._masterEditor);
+        }
     }
 
     /**
