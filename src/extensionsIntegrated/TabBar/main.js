@@ -310,19 +310,14 @@ define(function (require, exports, module) {
     TabBarView.prototype.update = function () {
         const paneId = this.paneId;
         const workingSet = MainViewManager.getWorkingSet(paneId);
-        const currentFile = MainViewManager.getCurrentlyViewedFile(paneId);
-        const currentPath = currentFile ? currentFile.fullPath : null;
+        const currentPath = MainViewManager.getCurrentlyViewedPath(paneId);
         const entries = _getVisibleEntries(workingSet, currentPath);
 
         // when a file is opened from the filetree and is not present in the working set, then it is a placeholder
-        // and gets a tab at the end. But when the current file was just closed it isn't in the working set
-        // either while the next file is still being opened, that one had a real tab a moment ago so it's not
-        // a placeholder, its tab simply goes away
-        const inWorkingSet = workingSet.some((file) => file.fullPath === currentPath);
-        const previousTab = currentPath && this.tabs.get(currentPath);
-        const wasWorkingSetTab = previousTab && !previousTab.classList.contains("placeholder");
-        if (currentFile && !inWorkingSet && !wasWorkingSetTab) {
-            entries.push({ file: currentFile, placeholder: true });
+        // and gets a tab at the end
+        const placeholderFile = this.pane.getTemporaryViewFile();
+        if (placeholderFile) {
+            entries.push({ file: placeholderFile, placeholder: true });
         }
 
         // if no files are present in the pane and no placeholder, we hide the tab bar for that pane

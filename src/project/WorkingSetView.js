@@ -922,11 +922,7 @@ define(function (require, exports, module) {
      * @return {?File}
      */
     WorkingSetView.prototype._getPlaceholderFile = function () {
-        var file = MainViewManager.getCurrentlyViewedFile(this.paneId);
-        if (file && MainViewManager.findInWorkingSet(this.paneId, file.fullPath) === -1) {
-            return file;
-        }
-        return null;
+        return this._pane.getTemporaryViewFile();
     };
 
     /**
@@ -1627,6 +1623,7 @@ define(function (require, exports, module) {
      * @private
      */
     WorkingSetView.prototype.init = function () {
+        this._pane = MainViewManager._getPane(this.paneId);
         this.$openFilesContainer = this.$el.find(".open-files-container");
         this.$workingSetListViewHeader = this.$el.find(".working-set-header");
 
@@ -1646,7 +1643,6 @@ define(function (require, exports, module) {
         // the placeholder item follows the file the pane shows. MainViewManager only announces the
         // active pane's file changes, so the pane itself is asked for the rest
         MainViewManager.on(this._makeEventName("currentFileChange"), _.bind(this._syncPlaceholder, this));
-        this._pane = MainViewManager._getPane(this.paneId);
         this._pane.on(this._makeEventName("currentViewChange"), _.bind(this._syncPlaceholder, this));
 
         DocumentManager.on(this._makeEventName("dirtyFlagChange"), _.bind(this._handleDirtyFlagChanged, this));

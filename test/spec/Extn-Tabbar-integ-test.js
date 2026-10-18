@@ -2704,6 +2704,26 @@ define(function (require, exports, module) {
                 expect($tab.hasClass("context")).toBe(false);
                 expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
             });
+
+            it("should not show a closed file as a placeholder while the next one opens", async function () {
+                await addToWorkingSet([testFilePath2, testFilePath3]);
+                await waitForTabs([testFilePath, testFilePath2, testFilePath3]);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath3);
+
+                // the closed file stays in view until the next one is ready, during which neither list may
+                // treat it as a preview. The pane reports that state directly
+                const pane = MainViewManager._getPane("first-pane");
+                const file = FileSystem.getFileForPath(testFilePath3);
+                const closePromise = CommandManager.execute(Commands.FILE_CLOSE, { file: file });
+                expect(pane.getTemporaryViewFile()).toBe(null);
+                await awaitsForDone(closePromise, "Close the current file");
+                await awaitsFor(
+                    () => !tabExists(testFilePath3) && getWorkingSetItem(testFilePath3).length === 0,
+                    "Closed file to leave both lists"
+                );
+                expect($("#phoenix-tab-bar .tab.placeholder").length).toBe(0);
+                expect($("#working-set-list-container li.placeholder").length).toBe(0);
+            });
         });
 
         describe("Number of Tabs Preference", function () {
