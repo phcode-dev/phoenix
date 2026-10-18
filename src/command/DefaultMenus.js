@@ -33,7 +33,8 @@ define(function (require, exports, module) {
         Strings         = require("strings"),
         MainViewManager = require("view/MainViewManager"),
         CommandManager  = require("command/CommandManager"),
-        WorkingSetView  = require("project/WorkingSetView");
+        WorkingSetView  = require("project/WorkingSetView"),
+        FileViewController = require("project/FileViewController");
 
     /**
      * Disables menu items present in items if enabled is true.
@@ -57,7 +58,7 @@ define(function (require, exports, module) {
      * disables menu items accordingly
      */
     function _setMenuItemsVisible() {
-        var file = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+        var file = WorkingSetView.getContext() || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         if (file) {
             file.exists(function (err, isPresent) {
                 if (err) {
@@ -73,14 +74,12 @@ define(function (require, exports, module) {
 
     /**
      * The pin command toggles, so its menu label has to say what it will do to the file the menu was
-     * opened for. The working set remembers the right-clicked item, the tab bar makes the clicked tab
-     * current before opening its menu.
+     * opened for: the right-clicked item of the working set or the tab bar, else the current file.
      * @param {boolean} forFileTabs - true for the tab bar context menu, false for the working set one
      */
     function _updatePinMenuItemName(forFileTabs) {
-        const contextFile = !forFileTabs && WorkingSetView.getContext(),
-            paneId = (!forFileTabs && WorkingSetView.getContextPaneId()) || MainViewManager.ACTIVE_PANE,
-            file = contextFile || MainViewManager.getCurrentlyViewedFile(paneId),
+        const paneId = WorkingSetView.getContextPaneId() || MainViewManager.ACTIVE_PANE,
+            file = WorkingSetView.getContext() || MainViewManager.getCurrentlyViewedFile(paneId),
             pinned = file && MainViewManager.isPathPinned(paneId, file.fullPath);
 
         let name = pinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN;
@@ -376,6 +375,28 @@ define(function (require, exports, module) {
         });
         filetabs_cmenu.on("beforeContextMenuOpen", function () {
             _updatePinMenuItemName(true);
+        });
+
+        // Both menus act on the right-clicked file without selecting it. That file is remembered while
+        // a menu is up and forgotten once it is gone: after an item was clicked (the item's own handler
+        // has run the command by then), when the menu closes any other way, or on a click elsewhere.
+        // Right-clicking another item closes the menu and reopens it in one go, so the check waits a
+        // tick and only forgets the file when neither menu is up anymore.
+        function _forgetWorkingSetContextWhenClosed() {
+            window.setTimeout(function () {
+                if (!workingset_cmenu.isOpen() && !filetabs_cmenu.isOpen()) {
+                    FileViewController.setWorkingSetContext(null);
+                }
+            }, 0);
+        }
+        [workingset_cmenu, filetabs_cmenu].forEach(function (cmenu) {
+            cmenu.on("beforeContextMenuClose", _forgetWorkingSetContextWhenClosed);
+            $("#" + cmenu.id).on("click.dropdown-menu", _forgetWorkingSetContextWhenClosed);
+        });
+        $(window.document).on("mousedown", function (e) {
+            if (FileViewController.getWorkingSetContext() && !$(e.target).closest(".context-menu").length) {
+                _forgetWorkingSetContextWhenClosed();
+            }
         });
 
         var splitview_menu = Menus.registerContextMenu(Menus.ContextMenuIds.SPLITVIEW_MENU);

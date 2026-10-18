@@ -32,6 +32,7 @@ define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager");
     const WorkspaceManager = require("view/WorkspaceManager");
     const WorkingSetView = require("project/WorkingSetView");
+    const FileViewController = require("project/FileViewController");
     const ViewUtils = require("utils/ViewUtils");
     const Menus = require("command/Menus");
     const Strings = require("strings");
@@ -435,6 +436,22 @@ define(function (require, exports, module) {
         this.tabs.forEach((tab, path) => _applyGitStatus(tab, path));
     };
 
+    /**
+     * marks the tab a context menu is open for, so it is clear what the menu acts on while the
+     * active tab stays where it was
+     * @param {?string} path - the full path of the file, or null to clear the mark
+     */
+    TabBarView.prototype.setContextPath = function (path) {
+        const previous = this.bar.querySelector(".tab.context");
+        if (previous) {
+            previous.classList.remove("context");
+        }
+        const tab = path && this.tabs.get(path);
+        if (tab) {
+            tab.classList.add("context");
+        }
+    };
+
     function _forEachView(callback) {
         Object.keys(_views).forEach((paneId) => callback(_views[paneId]));
     }
@@ -602,25 +619,15 @@ define(function (require, exports, module) {
         });
 
         // Add the contextmenu (right-click) handler
+        // the menu acts on the right-clicked tab, the active tab stays where it is
         $(document).on("contextmenu", TAB, function (event) {
             event.preventDefault();
             event.stopPropagation();
 
             const path = this.getAttribute("data-path");
-            const paneId = _paneIdOf(this);
-            const location = { pageX: event.pageX, pageY: event.pageY };
-
-            // the menu commands work on the current file of the active pane, so the right-clicked tab
-            // is made current first, exactly like right-clicking an item in the working set selects it
-            const isCurrent = MainViewManager.getActivePaneId() === paneId &&
-                MainViewManager.getCurrentlyViewedPath(paneId) === path;
-            const ready = isCurrent
-                ? $.Deferred().resolve().promise()
-                : CommandManager.execute(Commands.FILE_OPEN, { fullPath: path, paneId: paneId });
-
-            ready.always(function () {
-                Menus.getContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU).open(location);
-            });
+            FileViewController.setWorkingSetContext(FileSystem.getFileForPath(path), _paneIdOf(this));
+            Menus.getContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU)
+                .open({ pageX: event.pageX, pageY: event.pageY });
         });
 
         // a click on the empty part of the bar, not on a tab, opens the tab bar settings
@@ -726,6 +733,11 @@ define(function (require, exports, module) {
         }
 
         CommandManager.on("beforeExecuteCommand", _onBeforeCommand);
+
+        FileViewController.on("workingSetContextChange", function (event, context) {
+            _forEachView((view) => view.setContextPath(
+                context && context.paneId === view.paneId ? context.file.fullPath : null));
+        });
     }
 
     /**

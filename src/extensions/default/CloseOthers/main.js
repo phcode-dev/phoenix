@@ -114,16 +114,27 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Handle the different Close commands, relative to the current file of the active pane
+     * The file the close commands are relative to and the pane it is in: the item a working set or
+     * tab bar menu was opened on, else the current file of the active pane
+     * @return {{file: ?File, paneId: string}}
+     */
+    function getTarget() {
+        const paneId = WorkingSetView.getContextPaneId() || MainViewManager.ACTIVE_PANE,
+            file = WorkingSetView.getContext() || MainViewManager.getCurrentlyViewedFile(paneId);
+        return { file: file, paneId: paneId };
+    }
+
+    /**
+     * Handle the different Close commands
      * @param {string} mode
      */
     function handleClose(mode) {
-        const targetPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
-        if (!targetPath) {
+        const target = getTarget();
+        if (!target.file) {
             return;
         }
 
-        const files = getFilesToClose(MainViewManager.ACTIVE_PANE, mode, targetPath);
+        const files = getFilesToClose(target.paneId, mode, target.file.fullPath);
         if (files.length) {
             return CommandManager.execute(Commands.FILE_CLOSE_LIST, {fileList: files});
         }
@@ -134,11 +145,9 @@ define(function (require, exports, module) {
      * @param {boolean} forFileTabs - true when the tab bar menu is opening, false for the working set menu
      */
     function contextMenuOpenHandler(forFileTabs) {
-        // the working set remembers the item (and pane) that was right-clicked, the tab bar makes the
-        // clicked tab the current file before it opens its menu
-        const contextFile = !forFileTabs && WorkingSetView.getContext(),
-            paneId = (!forFileTabs && WorkingSetView.getContextPaneId()) || MainViewManager.ACTIVE_PANE,
-            file = contextFile || MainViewManager.getCurrentlyViewedFile(paneId),
+        const target = getTarget(),
+            file = target.file,
+            paneId = target.paneId,
             names = forFileTabs ? fileTabNames : workingSetNames;
 
         MENU_ORDER.forEach(function (commandId) {

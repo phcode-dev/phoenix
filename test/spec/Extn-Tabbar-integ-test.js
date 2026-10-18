@@ -1911,6 +1911,8 @@ define(function (require, exports, module) {
                 // Get the tab element
                 const $tab = getTab(testFilePath);
                 expect($tab.length).toBe(1);
+                const currentBefore = MainViewManager.getCurrentlyViewedPath("first-pane");
+                expect(currentBefore).toBe(testFilePath3);
 
                 // Simulate a right-click (contextmenu) event on the tab
                 const event = $.Event("contextmenu", {
@@ -1927,8 +1929,11 @@ define(function (require, exports, module) {
                     "Context menu to appear"
                 );
 
-                // Verify the context menu is open
+                // Verify the context menu is open, for the right-clicked tab, while the current file stays put
                 expect(getContextMenu().hasClass("open")).toBe(true);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(currentBefore);
+                expect(isTabActive(testFilePath3)).toBe(true);
+                expect($tab.hasClass("context")).toBe(true);
 
                 // Clean up - close the context menu by clicking elsewhere
                 $("body").click();
