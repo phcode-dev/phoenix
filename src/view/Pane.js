@@ -1227,7 +1227,9 @@ define(function (require, exports, module) {
         // the File object's name has changed by the time we've gotten the event.
         // So, we need to look for the file by its new name to determine if
         // if we need to dispatch the event which may look funny
-        var dispatchEvent = (this.findInViewList(newname) >= 0);
+        // a file that is only being looked at has a tab and a working set row as well, so its rename
+        // is announced too
+        const dispatchEvent = (this.findInViewList(newname) >= 0) || this.getCurrentlyViewedPath() === newname;
 
         // rename the view
         if (this._views.hasOwnProperty(oldname)) {
