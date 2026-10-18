@@ -1293,6 +1293,7 @@ define({
     "LIVE_PREVIEW_FULL_SCREEN": "Expand Live Preview to Full Screen",
     "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Exit Full Screen",
     "CMD_TOGGLE_TABBAR": "File Tab Bar",
+    "CMD_TOGGLE_TABBAR_SMOOTH_SCROLL": "Smooth Tab Scrolling",
     "CMD_TOGGLE_PANELS": "Toggle Panels",
     "CMD_TOGGLE_PURE_CODE": "No Distractions",
     "CMD_TOGGLE_FULLSCREEN": "Fullscreen",
@@ -2150,6 +2151,7 @@ define({
     "DESCRIPTION_TABBAR": "Set the tab bar settings.",
     "DESCRIPTION_SHOW_TABBAR": "true to show the tab bar, else false.",
     "DESCRIPTION_NUMBER_OF_TABS": "The number of tabs to show in the tab bar. Set to -1 to show all tabs",
+    "DESCRIPTION_TABBAR_SMOOTH_SCROLL": "true to animate the tab bar when it scrolls to the active tab, else false.",
     "TABBAR_SHOW_HIDDEN_TABS": "Show hidden tabs",
 
     // Git extension

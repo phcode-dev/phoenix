@@ -412,7 +412,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        bar.scrollTo({ left: scrollLeft, behavior: "smooth" });
+        bar.scrollTo({ left: scrollLeft, behavior: Preference.tabBarSmoothScroll ? "smooth" : "auto" });
     };
 
     /**
@@ -623,6 +623,17 @@ define(function (require, exports, module) {
             });
         });
 
+        // a click on the empty part of the bar, not on a tab, opens the tab bar settings
+        $(document).on("click contextmenu", ".phoenix-tab-bar", function (event) {
+            if (event.target !== this) {
+                return;
+            }
+            event.preventDefault();
+            event.stopPropagation();
+            Menus.getContextMenu(Menus.ContextMenuIds.FILE_TABS_SETTINGS_MENU)
+                .open({ pageX: event.pageX, pageY: event.pageY });
+        });
+
         // the mouse wheel scrolls the tabs sideways. A trackpad already gives a sideways delta,
         // that one is taken as is and the up/down delta is multiplied to get a decent scroll amount
         $(document).on("wheel", ".phoenix-tab-bar", function (event) {
@@ -726,9 +737,11 @@ define(function (require, exports, module) {
         const prefs = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
         Preference.tabBarEnabled = prefs.showTabBar;
         Preference.tabBarNumberOfTabs = prefs.numberOfTabs;
+        Preference.tabBarSmoothScroll = Boolean(prefs.smoothScroll);
 
-        // Update menu checkmark
+        // Update menu checkmarks
         CommandManager.get(Commands.TOGGLE_TABBAR).setChecked(prefs.showTabBar);
+        CommandManager.get(Commands.TOGGLE_TABBAR_SMOOTH_SCROLL).setChecked(Preference.tabBarSmoothScroll);
 
         if (isTabBarActive()) {
             MainViewManager.getPaneIdList().forEach(_createView);
@@ -739,21 +752,47 @@ define(function (require, exports, module) {
     }
 
     /**
+     * flips one of the boolean keys of the tab bar preference
+     * @param {string} key - the key to toggle
+     */
+    function _togglePreference(key) {
+        const currentPref = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
+        PreferencesManager.set(Preference.PREFERENCES_TAB_BAR, {
+            ...currentPref,
+            [key]: !currentPref[key]
+        });
+    }
+
+    /**
      * Registers the commands,
-     * for toggling the tab bar from the menu bar
+     * for toggling the tab bar from the menu bar and the tab bar settings
      */
     function _registerCommands() {
-        CommandManager.register(Strings.CMD_TOGGLE_TABBAR, Commands.TOGGLE_TABBAR, () => {
-            const currentPref = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
-            PreferencesManager.set(Preference.PREFERENCES_TAB_BAR, {
-                ...currentPref,
-                showTabBar: !currentPref.showTabBar
-            });
-        });
+        CommandManager.register(Strings.CMD_TOGGLE_TABBAR, Commands.TOGGLE_TABBAR,
+            () => _togglePreference("showTabBar"));
+        CommandManager.register(Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL, Commands.TOGGLE_TABBAR_SMOOTH_SCROLL,
+            () => _togglePreference("smoothScroll"));
+    }
+
+    /**
+     * the settings menu that opens from the empty part of the tab bar. The sort commands order the
+     * working set, which is what the tabs show, so they belong here as much as in the working set
+     */
+    function _registerSettingsMenu() {
+        const menu = Menus.registerContextMenu(Menus.ContextMenuIds.FILE_TABS_SETTINGS_MENU);
+        menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_ADDED);
+        menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_NAME);
+        menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_TYPE);
+        menu.addMenuDivider();
+        menu.addMenuItem(Commands.CMD_WORKING_SORT_TOGGLE_AUTO);
+        menu.addMenuDivider();
+        menu.addMenuItem(Commands.TOGGLE_TABBAR_SMOOTH_SCROLL);
+        menu.addMenuItem(Commands.TOGGLE_TABBAR);
     }
 
     AppInit.appReady(function () {
         _registerCommands();
+        _registerSettingsMenu();
 
         // add the toggle tab bar command to the view menu
         const viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
