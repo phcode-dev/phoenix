@@ -414,6 +414,8 @@ Brackets Context Menu Constants
 | PROJECT_MENU | <code>string</code> | <code>&quot;project-context-menu&quot;</code> | 
 | WORKING_SET_CONTEXT_MENU | <code>string</code> | <code>&quot;workingset-context-menu&quot;</code> | 
 | WORKING_SET_CONFIG_MENU | <code>string</code> | <code>&quot;workingset-configuration-menu&quot;</code> | 
+| FILE_TABS_CONTEXT_MENU | <code>string</code> | <code>&quot;tabbar-context-menu&quot;</code> | 
+| FILE_TABS_SETTINGS_MENU | <code>string</code> | <code>&quot;tabbar-settings-context-menu&quot;</code> | 
 | SPLITVIEW_MENU | <code>string</code> | <code>&quot;splitview-menu&quot;</code> | 
 
 <a name="SubMenuIds"></a>

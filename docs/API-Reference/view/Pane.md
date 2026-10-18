@@ -148,6 +148,7 @@ Hidden views can be later shown by calling `pane.showView(view)`
         * [.ITEM_NOT_FOUND](#module_view/Pane..Pane+ITEM_NOT_FOUND)
         * [.ITEM_FOUND_NO_SORT](#module_view/Pane..Pane+ITEM_FOUND_NO_SORT)
         * [.ITEM_FOUND_NEEDS_SORT](#module_view/Pane..Pane+ITEM_FOUND_NEEDS_SORT)
+        * [.getTemporaryViewFile()](#module_view/Pane..Pane+getTemporaryViewFile) ⇒ <code>File</code>
         * [.mergeFrom(other)](#module_view/Pane..Pane+mergeFrom)
         * [.destroy()](#module_view/Pane..Pane+destroy)
         * [.getViewList()](#module_view/Pane..Pane+getViewList) ⇒ <code>Array.&lt;File&gt;</code>
@@ -161,6 +162,9 @@ Hidden views can be later shown by calling `pane.showView(view)`
         * [.makeViewMostRecent(file)](#module_view/Pane..Pane+makeViewMostRecent)
         * [.sortViewList(compareFn)](#module_view/Pane..Pane+sortViewList)
         * [.swapViewListIndexes(index1, index2)](#module_view/Pane..Pane+swapViewListIndexes) ⇒ <code>boolean</code>
+        * [.isPathPinned(fullPath)](#module_view/Pane..Pane+isPathPinned) ⇒ <code>boolean</code>
+        * [.getPinnedCount()](#module_view/Pane..Pane+getPinnedCount) ⇒ <code>number</code>
+        * [.setPathPinned(fullPath, pinned)](#module_view/Pane..Pane+setPathPinned) ⇒ <code>boolean</code>
         * [.traverseViewListByMRU(direction, [current])](#module_view/Pane..Pane+traverseViewListByMRU) ⇒ <code>File</code>
         * [.showInterstitial(show)](#module_view/Pane..Pane+showInterstitial)
         * [.getViewForPath(path)](#module_view/Pane..Pane+getViewForPath) ⇒ <code>boolean</code>
@@ -198,6 +202,7 @@ Hidden views can be later shown by calling `pane.showView(view)`
     * [.ITEM_NOT_FOUND](#module_view/Pane..Pane+ITEM_NOT_FOUND)
     * [.ITEM_FOUND_NO_SORT](#module_view/Pane..Pane+ITEM_FOUND_NO_SORT)
     * [.ITEM_FOUND_NEEDS_SORT](#module_view/Pane..Pane+ITEM_FOUND_NEEDS_SORT)
+    * [.getTemporaryViewFile()](#module_view/Pane..Pane+getTemporaryViewFile) ⇒ <code>File</code>
     * [.mergeFrom(other)](#module_view/Pane..Pane+mergeFrom)
     * [.destroy()](#module_view/Pane..Pane+destroy)
     * [.getViewList()](#module_view/Pane..Pane+getViewList) ⇒ <code>Array.&lt;File&gt;</code>
@@ -211,6 +216,9 @@ Hidden views can be later shown by calling `pane.showView(view)`
     * [.makeViewMostRecent(file)](#module_view/Pane..Pane+makeViewMostRecent)
     * [.sortViewList(compareFn)](#module_view/Pane..Pane+sortViewList)
     * [.swapViewListIndexes(index1, index2)](#module_view/Pane..Pane+swapViewListIndexes) ⇒ <code>boolean</code>
+    * [.isPathPinned(fullPath)](#module_view/Pane..Pane+isPathPinned) ⇒ <code>boolean</code>
+    * [.getPinnedCount()](#module_view/Pane..Pane+getPinnedCount) ⇒ <code>number</code>
+    * [.setPathPinned(fullPath, pinned)](#module_view/Pane..Pane+setPathPinned) ⇒ <code>boolean</code>
     * [.traverseViewListByMRU(direction, [current])](#module_view/Pane..Pane+traverseViewListByMRU) ⇒ <code>File</code>
     * [.showInterstitial(show)](#module_view/Pane..Pane+showInterstitial)
     * [.getViewForPath(path)](#module_view/Pane..Pane+getViewForPath) ⇒ <code>boolean</code>
@@ -319,6 +327,14 @@ and the workingset needs to be resorted
 
 **Kind**: instance constant of [<code>Pane</code>](#module_view/Pane..Pane)  
 **See**: [Pane#reorderItem](Pane#reorderItem)  
+<a name="module_view/Pane..Pane+getTemporaryViewFile"></a>
+
+#### pane.getTemporaryViewFile() ⇒ <code>File</code>
+Gets the file of the current view when it isn't in the working set, a file opened from the file
+tree with a single click just to have a look at it. A file that was just closed stays up until
+the next one is ready but is on its way out, so it doesn't count
+
+**Kind**: instance method of [<code>Pane</code>](#module_view/Pane..Pane)  
 <a name="module_view/Pane..Pane+mergeFrom"></a>
 
 #### pane.mergeFrom(other)
@@ -443,7 +459,7 @@ Moves the specified file to the front of the MRU (Most Recently Used) list.
 <a name="module_view/Pane..Pane+sortViewList"></a>
 
 #### pane.sortViewList(compareFn)
-Sorts items in the pane's view list.
+Sorts items in the pane's view list. Pinned files are sorted amongst themselves and stay in front.
 
 **Kind**: instance method of [<code>Pane</code>](#module_view/Pane..Pane)  
 
@@ -463,6 +479,38 @@ Swaps two items in the file view list (used while dragging items in the working 
 | --- | --- | --- |
 | index1 | <code>number</code> | the index of the first item to swap |
 | index2 | <code>number</code> | the index of the second item to swap |
+
+<a name="module_view/Pane..Pane+isPathPinned"></a>
+
+#### pane.isPathPinned(fullPath) ⇒ <code>boolean</code>
+Whether the file is pinned in this pane
+
+**Kind**: instance method of [<code>Pane</code>](#module_view/Pane..Pane)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fullPath | <code>string</code> | the full path of the file |
+
+<a name="module_view/Pane..Pane+getPinnedCount"></a>
+
+#### pane.getPinnedCount() ⇒ <code>number</code>
+Returns the number of pinned files. As pinned files are always kept at the front of the view list,
+this is also the index of the first unpinned file.
+
+**Kind**: instance method of [<code>Pane</code>](#module_view/Pane..Pane)  
+<a name="module_view/Pane..Pane+setPathPinned"></a>
+
+#### pane.setPathPinned(fullPath, pinned) ⇒ <code>boolean</code>
+Pins or unpins a file in the view list. Pinning moves the file to the end of the pinned block and
+unpinning moves it to the start of the unpinned block, so nothing else changes position.
+
+**Kind**: instance method of [<code>Pane</code>](#module_view/Pane..Pane)  
+**Returns**: <code>boolean</code> - true if the pinned state changed  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fullPath | <code>string</code> | the full path of the file, it must be in the view list |
+| pinned | <code>boolean</code> | true to pin, false to unpin |
 
 <a name="module_view/Pane..Pane+traverseViewListByMRU"></a>
 
