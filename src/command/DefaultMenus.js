@@ -34,7 +34,8 @@ define(function (require, exports, module) {
         MainViewManager = require("view/MainViewManager"),
         CommandManager  = require("command/CommandManager"),
         WorkingSetView  = require("project/WorkingSetView"),
-        FileViewController = require("project/FileViewController");
+        FileViewController = require("project/FileViewController"),
+        ProjectManager  = require("project/ProjectManager");
 
     /**
      * Disables menu items present in items if enabled is true.
@@ -56,9 +57,10 @@ define(function (require, exports, module) {
     /**
      * Checks if file saved and present on system and
      * disables menu items accordingly
+     * @param {?FileSystemEntry} contextEntry - the entry the menu was opened on, if any
      */
-    function _setMenuItemsVisible() {
-        var file = WorkingSetView.getContext() || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+    function _setMenuItemsVisible(contextEntry) {
+        var file = contextEntry || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         if (file) {
             file.exists(function (err, isPresent) {
                 if (err) {
@@ -377,26 +379,20 @@ define(function (require, exports, module) {
             _updatePinMenuItemName(true);
         });
 
-        // Both menus act on the right-clicked file without selecting it. That file is remembered while
-        // a menu is up and forgotten once it is gone: after an item was clicked (the item's own handler
-        // has run the command by then), when the menu closes any other way, or on a click elsewhere.
-        // Right-clicking another item closes the menu and reopens it in one go, so the check waits a
-        // tick and only forgets the file when neither menu is up anymore.
+        // Both menus act on the right-clicked file without selecting it. That file is remembered for
+        // exactly as long as a menu is up. Menus get closed from all over the place (an item click,
+        // Escape, a click elsewhere, another menu opening) and not all of them tell the menu about it,
+        // so the open class on the menu itself is watched instead. Right-clicking another item closes
+        // the menu and reopens it in one go, which is why only the final state counts. The item
+        // handlers have run their command by the time the observer gets to look.
         function _forgetWorkingSetContextWhenClosed() {
-            window.setTimeout(function () {
-                if (!workingset_cmenu.isOpen() && !filetabs_cmenu.isOpen()) {
-                    FileViewController.setWorkingSetContext(null);
-                }
-            }, 0);
-        }
-        [workingset_cmenu, filetabs_cmenu].forEach(function (cmenu) {
-            cmenu.on("beforeContextMenuClose", _forgetWorkingSetContextWhenClosed);
-            $("#" + cmenu.id).on("click.dropdown-menu", _forgetWorkingSetContextWhenClosed);
-        });
-        $(window.document).on("mousedown", function (e) {
-            if (FileViewController.getWorkingSetContext() && !$(e.target).closest(".context-menu").length) {
-                _forgetWorkingSetContextWhenClosed();
+            if (!workingset_cmenu.isOpen() && !filetabs_cmenu.isOpen()) {
+                FileViewController.setWorkingSetContext(null);
             }
+        }
+        const menuStateObserver = new window.MutationObserver(_forgetWorkingSetContextWhenClosed);
+        [workingset_cmenu, filetabs_cmenu].forEach(function (cmenu) {
+            menuStateObserver.observe($("#" + cmenu.id)[0], { attributes: true, attributeFilter: ["class"] });
         });
 
         var splitview_menu = Menus.registerContextMenu(Menus.ContextMenuIds.SPLITVIEW_MENU);
@@ -544,9 +540,16 @@ define(function (require, exports, module) {
         });
         // Check the visibility of context menu items before opening the context menu.
         // 'Rename', 'Show in file tree' and 'Show in explorer' items will be disabled for files that have not yet been saved to disk.
-        Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).on("beforeContextMenuOpen", _setMenuItemsVisible);
-        Menus.getContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU)
-            .on("beforeContextMenuOpen", _setMenuItemsVisible);
-        Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).on("beforeContextMenuOpen", _setMenuItemsVisible);
+        // the file tree menu is opened on a tree entry, the other two on the right-clicked file. A file
+        // from a working set menu that this menu is replacing may still be remembered at this point
+        [Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU, Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU]
+            .forEach(function (id) {
+                Menus.getContextMenu(id).on("beforeContextMenuOpen", function () {
+                    _setMenuItemsVisible(WorkingSetView.getContext());
+                });
+            });
+        Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).on("beforeContextMenuOpen", function () {
+            _setMenuItemsVisible(ProjectManager.getContext());
+        });
     });
 });

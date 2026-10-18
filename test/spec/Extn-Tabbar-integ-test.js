@@ -78,6 +78,25 @@ define(function (require, exports, module) {
         }
 
         /**
+         * Helper function to add files to a working set and open them, like the file tree double click does
+         * @param {string[]} filePaths - Array of file paths to add
+         * @param {string} [paneId] - Optional pane ID to add the files to
+         * @returns {Promise<void>}
+         */
+        async function addToWorkingSet(filePaths, paneId) {
+            for (const filePath of filePaths) {
+                const options = { fullPath: filePath };
+                if (paneId) {
+                    options.paneId = paneId;
+                }
+                await awaitsForDone(
+                    CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, options),
+                    `Add ${filePath} to the working set`
+                );
+            }
+        }
+
+        /**
          * Helper function to wait for tabs to appear
          * @param {string[]} filePaths - Array of file paths to wait for
          * @param {string} [paneId] - Optional pane ID to check for tabs
@@ -2556,15 +2575,6 @@ define(function (require, exports, module) {
                 });
             }
 
-            async function addToWorkingSet(filePaths) {
-                for (const filePath of filePaths) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: filePath }),
-                        `Add ${filePath} to the working set`
-                    );
-                }
-            }
-
             // a file is only previewed when it belongs to the project, files from elsewhere always go
             // straight into the working set. So the test folder becomes the project for these specs
             beforeAll(async function () {
@@ -2667,6 +2677,32 @@ define(function (require, exports, module) {
                 );
                 expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
                 expect(testWindow.brackets.test.FileViewController.getWorkingSetContext()).toBe(null);
+            });
+
+            it("should forget the right-clicked file as soon as the menu is gone, however it went", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                const Menus = testWindow.brackets.test.Menus;
+                await addToWorkingSet([testFilePath2]);
+                await waitForTabs([testFilePath, testFilePath2]);
+
+                // a left click on another row closes the menu through Menus.closeAll without telling it
+                const $row = getWorkingSetItem(testFilePath);
+                $row.trigger($.Event("contextmenu", { pageX: 100, pageY: 200, target: $row.find("a")[0] }));
+                await awaitsFor(() => $("#workingset-context-menu").hasClass("open"), "Working set menu to appear");
+                expect(FileViewController.getWorkingSetContext().file.fullPath).toBe(testFilePath);
+                Menus.closeAll();
+                await awaitsFor(() => FileViewController.getWorkingSetContext() === null, "Context forgotten after closeAll");
+                expect($row.hasClass("context")).toBe(false);
+
+                // a click anywhere else closes it through the dropdown plugin on the document
+                const $tab = getTab(testFilePath);
+                $tab.trigger($.Event("contextmenu", { pageX: 100, pageY: 100 }));
+                await awaitsFor(() => $("#tabbar-context-menu").hasClass("open"), "Tab context menu to appear");
+                expect(FileViewController.getWorkingSetContext().file.fullPath).toBe(testFilePath);
+                $(testWindow.document).trigger("click");
+                await awaitsFor(() => FileViewController.getWorkingSetContext() === null, "Context forgotten after a click");
+                expect($tab.hasClass("context")).toBe(false);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
             });
         });
 
