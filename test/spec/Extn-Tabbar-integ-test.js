@@ -2746,6 +2746,50 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Cross Pane Drag", function () {
+            afterEach(async function () {
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            it("should keep the drop position when the target pane already has the file", async function () {
+                MainViewManager.setLayoutScheme(1, 2);
+                const files = await createTestFiles(3, "both-panes", "// file in both panes");
+                await addToWorkingSet([files[1]], "first-pane");
+                await addToWorkingSet([files[0], files[1], files[2]], "second-pane");
+                await waitForTabs([files[1]], "first-pane");
+                await waitForTabs([files[0], files[1], files[2]], "second-pane");
+
+                // dropping the file from the first pane in front of the last tab of the second pane leaves
+                // it where it already is, instead of pushing it past that tab
+                const sourceTab = $(`#phoenix-tab-bar .tab[data-path="${files[1]}"]`);
+                const targetTab = $(`#phoenix-tab-bar-2 .tab[data-path="${files[2]}"]`);
+                const dropX = targetTab[0].getBoundingClientRect().left + 5;
+                sourceTab.trigger($.Event("dragstart", {
+                    originalEvent: { dataTransfer: { setData: function () {}, effectAllowed: "move" } }
+                }));
+                targetTab.trigger($.Event("dragenter"));
+                targetTab.trigger($.Event("dragover", {
+                    originalEvent: { dataTransfer: { dropEffect: "move" }, clientX: dropX },
+                    preventDefault: function () {}
+                }));
+                targetTab.trigger($.Event("drop", {
+                    originalEvent: { dataTransfer: {}, clientX: dropX },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                }));
+                sourceTab.trigger($.Event("dragend"));
+
+                await awaitsFor(
+                    () => !tabExistsInPane(files[1], "first-pane") &&
+                        MainViewManager.getCurrentlyViewedPath("second-pane") === files[1],
+                    "File to leave the first pane and show in the second"
+                );
+                expect(MainViewManager.getWorkingSet("second-pane").map((file) => file.fullPath)).toEqual(files);
+                expect(MainViewManager.getWorkingSet("first-pane").length).toBe(0);
+            });
+        });
+
         describe("Number of Tabs Preference", function () {
             beforeEach(async function () {
                 // Enable the tab bar feature with default settings
