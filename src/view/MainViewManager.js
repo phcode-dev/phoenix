@@ -62,7 +62,8 @@
  *          (e, fileRemoved:File, suppressRedraw:boolean, paneId:string)
  *    - workingSetRemoveList -- When multiple files are removed from the working set
  *          (e, filesRemoved:Array."File", paneId:string)
- *    - workingSetSort -- When a pane's view array is reordered without additions or removals.
+ *    - workingSetSort -- When a pane's view array is reordered without additions or removals. Also fired when a
+ *          file is pinned or unpinned, as pinned files are kept at the front of the working set.
  *          (e, paneId:string)
  *    - workingSetUpdate -- When changes happen due to system events such as a file being deleted.
  *                              listeners should discard all working set info and rebuilt it from the pane
@@ -1003,6 +1004,46 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Pins or unpins a file in a pane. Pinned files are kept at the front of the working set, in the order the
+     * user arranged them, and the bulk close commands (close others, close all...) leave them alone.
+     * Pinning a file that is only being previewed (not in the working set yet) adds it to the working set first.
+     * Fires `workingSetSort` for the pane when the pinned state changes.
+     * @param {!string} paneId - the id of the pane the file is in or ACTIVE_PANE
+     * @param {!File} file - the file to pin or unpin
+     * @param {boolean} pinned - true to pin, false to unpin
+     * @return {boolean} true if the pinned state changed
+     */
+    function setFilePinned(paneId, file, pinned) {
+        const pane = _getPane(paneId);
+        if (!pane || !file) {
+            return false;
+        }
+
+        if (pinned && pane.findInViewList(file.fullPath) === -1) {
+            addToWorkingSet(pane.id, file);
+        }
+
+        if (!pane.setPathPinned(file.fullPath, pinned)) {
+            return false;
+        }
+
+        exports.trigger("workingSetSort", pane.id);
+        _scheduleViewStateSave();
+        return true;
+    }
+
+    /**
+     * Whether the file is pinned in the given pane
+     * @param {!string} paneId - the id of the pane or ACTIVE_PANE
+     * @param {!string} fullPath - the full path of the file
+     * @return {boolean} true if the file is pinned
+     */
+    function isPathPinned(paneId, fullPath) {
+        const pane = _getPane(paneId);
+        return Boolean(pane && pane.isPathPinned(fullPath));
+    }
+
+    /**
      * Get the next or previous file in the MRU list.
      * @param {!number} direction - Must be 1 or -1 to traverse forward or backward
      * @return {?{file:File, paneId:string}} The File object of the next item in the traversal order or null if there aren't any files to traverse.
@@ -1808,6 +1849,8 @@ define(function (require, exports, module) {
     exports.addListToWorkingSet = addListToWorkingSet;
     exports.getWorkingSetSize = getWorkingSetSize;
     exports.getWorkingSet = getWorkingSet;
+    exports.setFilePinned = setFilePinned;
+    exports.isPathPinned = isPathPinned;
 
     // Pane state
     exports.cacheScrollState = cacheScrollState;

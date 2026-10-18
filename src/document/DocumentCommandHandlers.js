@@ -2114,6 +2114,28 @@ define(function (require, exports, module) {
             });
     }
 
+    /**
+     * Pins or unpins a file in a pane. Without `pinned` in the command data the current state is toggled.
+     * @param {{file: File=, paneId: string=, pinned: boolean=}=} commandData
+     *      file - the file to pin or unpin, defaults to the file shown in the pane
+     *      paneId - the pane the file lives in, defaults to the active pane
+     *      pinned - true to pin, false to unpin, leave out to toggle
+     */
+    function handleFilePin(commandData) {
+        const data = commandData || {},
+            paneId = data.paneId || MainViewManager.ACTIVE_PANE,
+            file = data.file || MainViewManager.getCurrentlyViewedFile(paneId);
+
+        if (!file) {
+            return;
+        }
+
+        const pinned = (typeof data.pinned === "boolean")
+            ? data.pinned
+            : !MainViewManager.isPathPinned(paneId, file.fullPath);
+        MainViewManager.setFilePinned(paneId, file, pinned);
+    }
+
     /** Show the selected sidebar (tree or workingset) item in Finder/Explorer */
     function handleShowInOS() {
         var entry = ProjectManager.getSelectedItem();
@@ -2510,6 +2532,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_SAVE_AS,                Commands.FILE_SAVE_AS,                   handleFileSaveAs, _designModeOpts);
     CommandManager.register(Strings.CMD_FILE_RENAME,                 Commands.FILE_RENAME,                    handleFileRename);
     CommandManager.register(Strings.CMD_FILE_DELETE,                 Commands.FILE_DELETE,                    handleFileDelete);
+    CommandManager.register(Strings.CMD_FILE_PIN,                    Commands.FILE_PIN,                       handleFilePin, _designModeOpts);
 
     // Close Commands
     CommandManager.register(Strings.CMD_FILE_CLOSE,                  Commands.FILE_CLOSE,                     handleFileClose, _designModeOpts);
