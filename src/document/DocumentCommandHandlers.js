@@ -1289,6 +1289,18 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Saving a file that is only being looked at keeps it: it joins the working set of the pane showing it
+     * @param {!File} file - the file being saved
+     * @param {string} paneId - the pane the save is for
+     */
+    function _keepPreviewedFile(file, paneId) {
+        if (MainViewManager.getCurrentlyViewedPath(paneId) === file.fullPath &&
+                MainViewManager.findInWorkingSet(paneId, file.fullPath) === -1) {
+            MainViewManager.addToWorkingSet(paneId, file);
+        }
+    }
+
+    /**
      * Saves the given file. If no file specified, assumes the current document.
      * @param {?{doc: ?Document}} commandData  Document to close, or null
      * @return {$.Promise} resolved with the saved document's File (which MAY DIFFER from the doc
@@ -1310,6 +1322,11 @@ define(function (require, exports, module) {
         }
         if(ChangeHelper._onBeforeSave(doc)){
             return $.Deferred().reject().promise();
+        }
+        // a save asked for by the user on the file they are looking at, not one of the saves a close or
+        // a save all hands over as commandData
+        if (doc && !(commandData && commandData.doc)) {
+            _keepPreviewedFile(doc.file, context ? context.paneId : MainViewManager.ACTIVE_PANE);
         }
 
         if (doc && !doc.isSaving) {
@@ -1421,6 +1438,12 @@ define(function (require, exports, module) {
      *      after all operations completed if any ONE of them failed.
      */
     function handleFileSaveAll() {
+        MainViewManager.getPaneIdList().forEach(function (paneId) {
+            const file = MainViewManager.getCurrentlyViewedFile(paneId);
+            if (file) {
+                _keepPreviewedFile(file, paneId);
+            }
+        });
         return saveAll();
     }
 

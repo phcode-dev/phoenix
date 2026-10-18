@@ -746,7 +746,6 @@ define(function (require, exports, module) {
                 // CommandManager.execute() to trigger beforeExecuteCommand events consistently, whether invoked via
                 // menu click or keyboard shortcut.
                 // because there are listeners that uses beforeExecuteCommand to listen to save commands
-                // (for ex: tabbar listens to save commands to add placeholder tabs to working set)
                 // Other commands use direct execution to preserve file tree context
                 if(commandId === Commands.FILE_SAVE ||
                    commandId === Commands.FILE_SAVE_AS ||

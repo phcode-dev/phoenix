@@ -647,29 +647,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * This function is responsible to add the placeholder tab to the working set (if user press save on it)
-     * @param {Event} event
-     * @param {String} commandId - the command id, to make sure we check it do the operation only on file save
-     */
-    function _onBeforeCommand(event, commandId) {
-        if (!isTabBarActive() || (commandId !== Commands.FILE_SAVE && commandId !== Commands.FILE_SAVE_ALL)) {
-            return;
-        }
-
-        const savedPath = commandId === Commands.FILE_SAVE
-            ? MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE)
-            : null;
-
-        MainViewManager.getPaneIdList().forEach((paneId) => {
-            const file = MainViewManager.getCurrentlyViewedFile(paneId);
-            const isPlaceholder = file && MainViewManager.findInWorkingSet(paneId, file.fullPath) === -1;
-            if (isPlaceholder && (!savedPath || file.fullPath === savedPath)) {
-                MainViewManager.addToWorkingSet(paneId, file);
-            }
-        });
-    }
-
-    /**
      * Registers the event handlers
      */
     function _registerHandlers() {
@@ -728,8 +705,6 @@ define(function (require, exports, module) {
                 _forEachView((view) => view.refreshGitStatus());
             });
         }
-
-        CommandManager.on("beforeExecuteCommand", _onBeforeCommand);
 
         FileViewController.on("workingSetContextChange", function (event, context) {
             _forEachView((view) => view.setContextPath(
