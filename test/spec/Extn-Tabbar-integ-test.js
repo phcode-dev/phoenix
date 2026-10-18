@@ -2529,6 +2529,7 @@ define(function (require, exports, module) {
             it("should open the tab bar settings from the empty part of the bar and toggle smooth scrolling", async function () {
                 const $bar = $("#phoenix-tab-bar");
                 const barRect = $bar[0].getBoundingClientRect();
+                $bar.trigger($.Event("mousedown", { which: 1, target: $bar[0] }));
                 $bar.trigger($.Event("click", { target: $bar[0], pageX: barRect.right - 5, pageY: barRect.top + 5 }));
 
                 await awaitsFor(

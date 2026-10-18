@@ -560,7 +560,9 @@ define(function (require, exports, module) {
 
         $(document).on("mousedown", TAB, function (event) {
             // right clicks are for the context menu and the close/pin icons have their own click handler
-            if (event.which === 3 || $(event.target).closest(".tab-close, .tab-pin").length) {
+            const rightClick = event.which === 3 || event.button === 2 ||
+                (event.ctrlKey && brackets.platform === "mac");
+            if (rightClick || $(event.target).closest(".tab-close, .tab-pin").length) {
                 return;
             }
 
@@ -627,9 +629,14 @@ define(function (require, exports, module) {
                 .open({ pageX: event.pageX, pageY: event.pageY });
         });
 
-        // a click on the empty part of the bar, not on a tab, opens the tab bar settings
+        // a click on the empty part of the bar, not on a tab, opens the tab bar settings. A press that
+        // started on a tab and ended on the bar is reported as a click on the bar too, that one doesn't count
+        let pressedEmptyBar = false;
+        $(document).on("mousedown", ".phoenix-tab-bar", function (event) {
+            pressedEmptyBar = event.target === this;
+        });
         $(document).on("click contextmenu", ".phoenix-tab-bar", function (event) {
-            if (event.target !== this) {
+            if (event.target !== this || (event.type === "click" && !pressedEmptyBar)) {
                 return;
             }
             event.preventDefault();
