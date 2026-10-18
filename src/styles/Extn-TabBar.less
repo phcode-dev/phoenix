@@ -238,8 +238,11 @@
 
     .tab-close,
     .tab-pin {
-        font-size: 0.75rem;
-        padding: 0.1rem 0.4rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.3rem;
+        height: 1.2rem;
         margin-left: 0.25rem;
         color: #666;
         border-radius: 0.2rem;
@@ -260,6 +263,7 @@
     }
 
     .tab-close {
+        font-size: 0.75rem;
         visibility: hidden;
         opacity: 0;
         pointer-events: none;
@@ -273,9 +277,7 @@
     }
 
     .tab-pin {
-        font-size: 0.85rem;
-        display: inline-flex;
-        align-items: center;
+        font-size: 0.8rem;
     }
 
     .tab.git-modified > .tab-icon::before,
