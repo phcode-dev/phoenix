@@ -270,6 +270,10 @@ define(function (require, exports, module) {
     exports.TOGGLE_TABBAR            = "view.toggleTabbar";
     // extensionsIntegrated/TabBar/main.js
 
+    /** Toggles whether the tabbar animates when it scrolls to the active tab */
+    exports.TOGGLE_TABBAR_SMOOTH_SCROLL = "view.toggleTabbarSmoothScroll";
+    // extensionsIntegrated/TabBar/main.js
+
     /** Zooms in the editor view */
     exports.VIEW_ZOOM_IN                = "view.zoomIn";                // ViewCommandHandlers.js       _handleZoomIn()
 
