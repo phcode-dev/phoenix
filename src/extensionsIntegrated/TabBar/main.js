@@ -383,7 +383,9 @@ define(function (require, exports, module) {
     TabBarView.prototype.updateOverflowButton = function () {
         const bar = this.bar;
         const buttonWidth = this.$overflowButton.hasClass("hidden") ? 0 : this.$overflowButton[0].offsetWidth;
-        this.$overflowButton.toggleClass("hidden", bar.scrollWidth <= bar.clientWidth + buttonWidth);
+        // the couple of pixels of slack match what the overflow menu treats as hidden, so the button
+        // never shows up with an empty menu behind it
+        this.$overflowButton.toggleClass("hidden", bar.scrollWidth <= bar.clientWidth + buttonWidth + 2);
     };
 
     /**
