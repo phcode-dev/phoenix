@@ -1299,8 +1299,15 @@ define(function (require, exports, module) {
     function handleFileSave(commandData) {
         const activeEditor = EditorManager.getActiveEditor(),
             activeDoc = activeEditor && activeEditor.document,
-            doc = (commandData && commandData.doc) || activeDoc;
+            context = FileViewController.getWorkingSetContext(),
+            contextDoc = context && DocumentManager.getOpenDocumentForPath(context.file.fullPath),
+            doc = (commandData && commandData.doc) || contextDoc || activeDoc;
         let settings;
+
+        // a working set or tab bar menu was opened on a file that was never loaded, nothing to save there
+        if (context && !contextDoc && !(commandData && commandData.doc)) {
+            return $.Deferred().resolve().promise();
+        }
         if(ChangeHelper._onBeforeSave(doc)){
             return $.Deferred().reject().promise();
         }
@@ -1478,6 +1485,13 @@ define(function (require, exports, module) {
             _forceClose = commandData._forceClose;
             paneId      = commandData.paneId || paneId;
             _spawnedRequest = commandData.spawnedRequest || false;
+        }
+
+        // from a working set or tab bar context menu the file to close is the right-clicked one
+        var context = FileViewController.getWorkingSetContext();
+        if (!file && context) {
+            file = context.file;
+            paneId = (commandData && commandData.paneId) || context.paneId;
         }
 
         // utility function for handleFileClose: closes document & removes from workingset
@@ -1929,8 +1943,10 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Else use current file (not selected in ProjectManager if not visible in tree or workingset)
-        entry = MainViewManager.getCurrentlyViewedFile();
+        // Else the file a working set or tab bar menu was opened on, else the current file
+        // (not selected in ProjectManager if not visible in tree or workingset)
+        var context = FileViewController.getWorkingSetContext();
+        entry = (context && context.file) || MainViewManager.getCurrentlyViewedFile();
         if (!entry) {
             return;
         }
@@ -2071,9 +2087,10 @@ define(function (require, exports, module) {
     }
 
     function handleShowInTree() {
-        let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
-        if(activeFile){
-            revealInFileTree(activeFile);
+        const context = FileViewController.getWorkingSetContext();
+        const file = (context && context.file) || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+        if (file) {
+            revealInFileTree(file);
         }
     }
 
@@ -2145,8 +2162,9 @@ define(function (require, exports, module) {
      */
     function handleFilePin(commandData) {
         const data = commandData || {},
-            paneId = data.paneId || MainViewManager.ACTIVE_PANE,
-            file = data.file || MainViewManager.getCurrentlyViewedFile(paneId);
+            context = FileViewController.getWorkingSetContext(),
+            paneId = data.paneId || (context && context.paneId) || MainViewManager.ACTIVE_PANE,
+            file = data.file || (context && context.file) || MainViewManager.getCurrentlyViewedFile(paneId);
 
         if (!file) {
             return;

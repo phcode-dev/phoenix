@@ -63,6 +63,15 @@ define(function (require, exports, module) {
     var _curDocChangedDueToMe = false;
 
     /**
+     * The file a context menu of the working set or the file tab bar was opened on, with the pane it
+     * belongs to. A right click there doesn't select the file, so the file commands in those menus
+     * look here first and only then at the current file. Cleared when the menu goes away.
+     * @type {?{file: File, paneId: string}}
+     * @private
+     */
+    var _workingSetContext = null;
+
+    /**
      * view managing working set.
      * @type {string}
      */
@@ -286,7 +295,32 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     // Deprecated
+    /**
+     * Remembers the file a working set or tab bar context menu was opened on. Pass null when the
+     * menu closes. Fires `workingSetContextChange` with the context so the views can mark the file
+     * while the menu is up.
+     * @param {?File} file - the right-clicked file, or null to forget it
+     * @param {string=} paneId - the pane the file is shown or listed in, defaults to the active pane
+     */
+    function setWorkingSetContext(file, paneId) {
+        if (!file && !_workingSetContext) {
+            return;
+        }
+        _workingSetContext = file ? { file: file, paneId: paneId || MainViewManager.getActivePaneId() } : null;
+        exports.trigger("workingSetContextChange", _workingSetContext);
+    }
+
+    /**
+     * The file a working set or tab bar context menu is currently open for
+     * @return {?{file: File, paneId: string}} null when no such menu is up
+     */
+    function getWorkingSetContext() {
+        return _workingSetContext;
+    }
+
     exports.addToWorkingSetAndSelect = addToWorkingSetAndSelect;
+    exports.setWorkingSetContext = setWorkingSetContext;
+    exports.getWorkingSetContext = getWorkingSetContext;
 
     // Define public API
     exports.getFileSelectionFocus = getFileSelectionFocus;

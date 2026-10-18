@@ -63,20 +63,6 @@ define(function (require, exports, module) {
     var _iconProviders = [];
 
     /**
-     * The file/folder object of the current context
-     * @type {FileSystemEntry}
-     * @private
-     */
-    var _contextEntry;
-
-    /**
-     * The id of the pane whose working set the context menu was opened on
-     * @type {string}
-     * @private
-     */
-    var _contextPaneId;
-
-    /**
      * Class Providers
      * @see {@link #addClassProvider}
      * @private
@@ -97,7 +83,8 @@ define(function (require, exports, module) {
      * @enum {number}
      */
     var LEFT_BUTTON = 1,
-        MIDDLE_BUTTON = 2;
+        MIDDLE_BUTTON = 2,
+        RIGHT_BUTTON = 3;
 
     /**
      * Each list item in the working set stores a references to the related document in the list item's data.
@@ -880,9 +867,14 @@ define(function (require, exports, module) {
             // close all menus, and disable sorting
             Menus.closeAll();
 
-            // Dragging only happens with the left mouse button
-            //  or (on the Mac) when the ctrl key isn't pressed
-            if (e.which !== LEFT_BUTTON || (e.ctrlKey && brackets.platform === "mac")) {
+            // a right click is for the context menu, it neither selects nor opens the item
+            if (e.which === RIGHT_BUTTON || (e.ctrlKey && brackets.platform === "mac")) {
+                preDropCleanup();
+                return;
+            }
+
+            // Dragging only happens with the left mouse button, a middle click closes the item
+            if (e.which !== LEFT_BUTTON) {
                 drop();
                 return;
             }
@@ -1522,6 +1514,23 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Marks the item a context menu is open for, so it is clear what the menu acts on while the
+     * selection stays where it was
+     * @private
+     * @param {jQuery.Event} e - event object
+     * @param {?{file: File, paneId: string}} context - the file the menu is open for
+     */
+    WorkingSetView.prototype._handleWorkingSetContextChange = function (e, context) {
+        this.$openFilesList.children("li.context").removeClass("context");
+        if (context && context.paneId === this.paneId) {
+            var $listItem = this._findListItemFromFile(context.file);
+            if ($listItem) {
+                $listItem.addClass("context");
+            }
+        }
+    };
+
+    /**
      * workingSetMove event handler, a file moved from one pane's working set to the other's
      * @private
      * @param {jQuery.Event} e - event object
@@ -1566,6 +1575,8 @@ define(function (require, exports, module) {
         DocumentManager.on(this._makeEventName("dirtyFlagChange"), _.bind(this._handleDirtyFlagChanged, this));
 
         FileViewController.on(this._makeEventName("documentSelectionFocusChange") + " " + this._makeEventName("fileViewFocusChange"), _.bind(this._updateListSelection, this));
+        FileViewController.on(this._makeEventName("workingSetContextChange"),
+            _.bind(this._handleWorkingSetContextChange, this));
 
         // Show scroller shadows when open-files-container scrolls
         ViewUtils.addScrollerShadow(this.$openFilesContainer[0], null, true);
@@ -1576,8 +1587,9 @@ define(function (require, exports, module) {
 
         var self = this;
         this.$openFilesContainer.on("contextmenu.workingSetView", function (e) {
-            _contextEntry = $(e.target).closest("li").data(_FILE_KEY);
-            _contextPaneId = self.paneId;
+            // the menu acts on the right-clicked item, the selection stays where it is
+            var file = $(e.target).closest("li").data(_FILE_KEY);
+            FileViewController.setWorkingSetContext(file || null, self.paneId);
             Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).open(e);
         });
 
@@ -1714,20 +1726,22 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Gets the filesystem object for the current context in the working set.
+     * Gets the file a working set or tab bar context menu is open for. Right-clicking an item doesn't
+     * select it, so this is what the menu commands act on.
+     * @return {?File}
      */
     function getContext() {
-        return _contextEntry;
+        var context = FileViewController.getWorkingSetContext();
+        return context ? context.file : undefined;
     }
 
     /**
-     * Gets the id of the pane whose working set the context menu was last opened on. The item that
-     * was right-clicked is being made the current file at the same time, so when the menu opens the
-     * active pane may not have caught up yet, this one has.
-     * @return {string}
+     * Gets the id of the pane the file of `getContext()` is shown or listed in
+     * @return {?string}
      */
     function getContextPaneId() {
-        return _contextPaneId;
+        var context = FileViewController.getWorkingSetContext();
+        return context ? context.paneId : undefined;
     }
 
     // Public API
