@@ -1645,7 +1645,7 @@ a, img {
         display: block;
         height: 16px;
         line-height: 15px;
-        margin-left: 18px;
+        margin-left: 20px;
         padding: 4px 0 3px 0;
 
         cursor: default;
@@ -1852,25 +1852,15 @@ a, img {
 
     &.pinned {
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        height: 23px;
+        margin-left: 5px;
 
         > i {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            line-height: 16px;
-            text-align: center;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.75);
         }
-
-        &:hover > i {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        &:active > i {
-            color: rgba(255, 255, 255, 0.3);
-        }
-    }
 
         &:hover > i {
             color: rgba(255, 255, 255, 0.95);

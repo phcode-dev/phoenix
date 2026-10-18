@@ -1235,8 +1235,8 @@ define(function (require, exports, module) {
             ViewUtils.toggleClass($fileStatusIcon, "can-close", showClose);
             ViewUtils.toggleClass($fileStatusIcon, "pinned", showPin);
             if (showPin) {
-                if ($fileStatusIcon.children(".fa-thumbtack").length === 0) {
-                    $fileStatusIcon.html("<i class='fa-solid fa-thumbtack'></i>").attr("title", Strings.CMD_FILE_UNPIN);
+                if ($fileStatusIcon.children(".pinned-file-icon").length === 0) {
+                    $fileStatusIcon.html("<i class='pinned-file-icon'></i>").attr("title", Strings.CMD_FILE_UNPIN);
                 }
             } else if ($fileStatusIcon.children().length !== 0) {
                 $fileStatusIcon.empty().removeAttr("title");

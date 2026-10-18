@@ -209,7 +209,7 @@ define(function (require, exports, module) {
         if (control.classList.contains("tab-pin") !== state.pinned) {
             control.className = state.pinned ? "tab-pin" : "tab-close";
             control.innerHTML = state.pinned
-                ? '<i class="fa-solid fa-thumbtack"></i>'
+                ? '<i class="pinned-file-icon"></i>'
                 : '<i class="fa-solid fa-times"></i>';
             control.removeAttribute("title");
         }
