@@ -66,3 +66,24 @@ Opens the specified document with its associated external editor,
 returns either WORKING_SET_VIEW or PROJECT_MANAGER
 
 **Kind**: global function  
+<a name="setWorkingSetContext"></a>
+
+## setWorkingSetContext(file, [paneId])
+Remembers the file a working set or tab bar context menu was opened on. Pass null when the
+menu closes. Fires `workingSetContextChange` with the context so the views can mark the file
+while the menu is up.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>File</code> | the right-clicked file, or null to forget it |
+| [paneId] | <code>string</code> | the pane the file is shown or listed in, defaults to the active pane |
+
+<a name="getWorkingSetContext"></a>
+
+## getWorkingSetContext() ⇒ <code>Object</code>
+The file a working set or tab bar context menu is currently open for
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - null when no such menu is up  
