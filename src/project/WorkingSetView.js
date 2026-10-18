@@ -1299,11 +1299,15 @@ define(function (require, exports, module) {
         _updateListItemSelection($newItem, selectedFile);
         _makeDraggable($newItem);
 
+        // the hover state is remembered on the item as the status icon alone can't tell anymore,
+        // a pinned item shows its pin whether the mouse is over it or not
         $newItem.hover(
             function () {
+                $(this).data("hovered", true);
                 self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true, self._isPinned(file));
             },
             function () {
+                $(this).data("hovered", false);
                 self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false, self._isPinned(file));
             }
         );
@@ -1427,7 +1431,7 @@ define(function (require, exports, module) {
                     // without having to move the mouse, if there is a next file.
                     var $nextListItem = $listItem.next();
                     if ($nextListItem && $nextListItem.length > 0) {
-                        var canClose = ($listItem.find(".can-close, .pinned").length === 1);
+                        var canClose = ($listItem.data("hovered") === true);
                         var nextFile = $nextListItem.data(_FILE_KEY);
                         var isDirty = _isOpenAndDirty(nextFile);
                         this._updateFileStatusIcon($nextListItem, isDirty, canClose, this._isPinned(nextFile));
@@ -1491,7 +1495,7 @@ define(function (require, exports, module) {
     WorkingSetView.prototype._handleDirtyFlagChanged = function (e, doc) {
         var listItem = this._findListItemFromFile(doc.file);
         if (listItem) {
-            var canClose = $(listItem).find(".can-close, .pinned").length === 1;
+            var canClose = $(listItem).data("hovered") === true;
             this._updateFileStatusIcon(listItem, doc.isDirty, canClose, this._isPinned(doc.file));
         }
     };
