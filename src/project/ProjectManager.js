@@ -561,7 +561,7 @@ define(function (require, exports, module) {
         // then file tree selection, else use working set
         var selectedEntry = getFileTreeContext();
         if (!selectedEntry) {
-            var workingSetContext = FileViewController.getWorkingSetContext();
+            const workingSetContext = FileViewController.getWorkingSetContext();
             selectedEntry = workingSetContext && workingSetContext.file;
         }
         if (!selectedEntry) {

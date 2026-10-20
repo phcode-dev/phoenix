@@ -929,7 +929,7 @@ define(function (require, exports, module) {
      * @private
      */
     WorkingSetView.prototype._syncPlaceholder = function () {
-        var $placeholder = this.$openFilesList.children("li.placeholder"),
+        const $placeholder = this.$openFilesList.children("li.placeholder"),
             file = this._getPlaceholderFile(),
             shownPath = $placeholder.length ? $placeholder.data(_FILE_KEY).fullPath : null;
 
@@ -1393,7 +1393,7 @@ define(function (require, exports, module) {
             self._createNewListItem(file);
         });
 
-        var placeholderFile = this._getPlaceholderFile();
+        const placeholderFile = this._getPlaceholderFile();
         if (placeholderFile) {
             this._createNewListItem(placeholderFile, true);
         }
@@ -1492,9 +1492,9 @@ define(function (require, exports, module) {
                     // without having to move the mouse, if there is a next file.
                     var $nextListItem = $listItem.next();
                     if ($nextListItem && $nextListItem.length > 0) {
-                        var canClose = ($listItem.data("hovered") === true);
-                        var nextFile = $nextListItem.data(_FILE_KEY);
-                        var isDirty = _isOpenAndDirty(nextFile);
+                        const canClose = ($listItem.data("hovered") === true);
+                        const nextFile = $nextListItem.data(_FILE_KEY);
+                        const isDirty = _isOpenAndDirty(nextFile);
                         this._updateFileStatusIcon($nextListItem, isDirty, canClose, this._isPinned(nextFile));
                     }
                     $listItem.remove();
@@ -1556,7 +1556,7 @@ define(function (require, exports, module) {
     WorkingSetView.prototype._handleDirtyFlagChanged = function (e, doc) {
         var listItem = this._findListItemFromFile(doc.file);
         if (listItem) {
-            var canClose = $(listItem).data("hovered") === true;
+            const canClose = $(listItem).data("hovered") === true;
             this._updateFileStatusIcon(listItem, doc.isDirty, canClose, this._isPinned(doc.file));
         }
     };
@@ -1585,7 +1585,7 @@ define(function (require, exports, module) {
     WorkingSetView.prototype._handleWorkingSetContextChange = function (e, context) {
         this.$openFilesList.children("li.context").removeClass("context");
         if (context && context.paneId === this.paneId) {
-            var $listItem = this._findListItemFromFile(context.file);
+            const $listItem = this._findListItemFromFile(context.file);
             if ($listItem) {
                 $listItem.addClass("context");
             }
@@ -1653,10 +1653,10 @@ define(function (require, exports, module) {
         // Disable horizontal scrolling until WebKit bug #99379 is fixed
         this.$openFilesContainer.css("overflow-x", "hidden");
 
-        var self = this;
+        const self = this;
         this.$openFilesContainer.on("contextmenu.workingSetView", function (e) {
             // the menu acts on the right-clicked item, the selection stays where it is
-            var file = $(e.target).closest("li").data(_FILE_KEY);
+            const file = $(e.target).closest("li").data(_FILE_KEY);
             FileViewController.setWorkingSetContext(file || null, self.paneId);
             Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).open(e);
         });
@@ -1802,7 +1802,7 @@ define(function (require, exports, module) {
      * @return {?File}
      */
     function getContext() {
-        var context = FileViewController.getWorkingSetContext();
+        const context = FileViewController.getWorkingSetContext();
         return context ? context.file : undefined;
     }
 
@@ -1811,7 +1811,7 @@ define(function (require, exports, module) {
      * @return {?string}
      */
     function getContextPaneId() {
-        var context = FileViewController.getWorkingSetContext();
+        const context = FileViewController.getWorkingSetContext();
         return context ? context.paneId : undefined;
     }
 

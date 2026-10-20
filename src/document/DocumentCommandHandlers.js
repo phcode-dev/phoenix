@@ -1511,7 +1511,7 @@ define(function (require, exports, module) {
         }
 
         // from a working set or tab bar context menu the file to close is the right-clicked one
-        var context = FileViewController.getWorkingSetContext();
+        const context = FileViewController.getWorkingSetContext();
         if (!file && context) {
             file = context.file;
             paneId = (commandData && commandData.paneId) || context.paneId;
@@ -1968,7 +1968,7 @@ define(function (require, exports, module) {
 
         // Else the file a working set or tab bar menu was opened on, else the current file
         // (not selected in ProjectManager if not visible in tree or workingset)
-        var context = FileViewController.getWorkingSetContext();
+        const context = FileViewController.getWorkingSetContext();
         entry = (context && context.file) || MainViewManager.getCurrentlyViewedFile();
         if (!entry) {
             return;

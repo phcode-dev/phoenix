@@ -178,7 +178,7 @@ define(function (require, exports, module) {
         // pane is showing, not necessarily the document's master editor: that is whichever of its
         // editors was focused last and may sit in the other pane. Activating that pane instead would
         // dispatch this event again for the other pane's file and bounce back and forth without end.
-        var paneEditor = paneId && MainViewManager.getCurrentlyViewedEditor(paneId);
+        const paneEditor = paneId && MainViewManager.getCurrentlyViewedEditor(paneId);
         if (paneEditor && paneEditor.document === doc) {
             doc._toggleMasterEditor(paneEditor);
             _notifyActiveEditorChanged(paneEditor);

@@ -60,7 +60,7 @@ define(function (require, exports, module) {
      * @param {?FileSystemEntry} contextEntry - the entry the menu was opened on, if any
      */
     function _setMenuItemsVisible(contextEntry) {
-        var file = contextEntry || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+        const file = contextEntry || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
         if (file) {
             file.exists(function (err, isPresent) {
                 if (err) {
@@ -334,7 +334,7 @@ define(function (require, exports, module) {
         // The editor tab bar shows the same working set, so its context menu gets exactly the same
         // items. Extensions that add to one of these menus should add to the other too.
         var workingset_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU);
-        var filetabs_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU);
+        const filetabs_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.FILE_TABS_CONTEXT_MENU);
         [workingset_cmenu, filetabs_cmenu].forEach(function (cmenu) {
             cmenu.addMenuItem(Commands.FILE_SAVE);
             cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
