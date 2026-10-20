@@ -759,14 +759,12 @@ define(function (require, exports, module) {
                     // re-enable stuff we turned off
                     _suppressSortRedrawForAllViews(false);
                     _suppressScrollShadowsOnAllViews(false);
-                }
 
-                // we don't need to refresh if the item
-                //  was dragged but not enough to not change
-                //  its order in the working set
-                if (!noRefresh) {
-                    // rebuild the view
-                    refresh(true);
+                    // a plain click changes nothing in the list, rebuilding it would only lose the hover
+                    // state of the row under the mouse. A drag that didn't change the order skips it too
+                    if (!noRefresh) {
+                        refresh(true);
+                    }
                 }
                 // focus the editor
                 MainViewManager.focusActivePane();
@@ -954,9 +952,9 @@ define(function (require, exports, module) {
      * @private
      */
     WorkingSetView.prototype._updateVisibility = function () {
+        // a placeholder alone keeps a hidden working set hidden, showing it would push the file tree under the mouse
         var fileList = MainViewManager.getWorkingSet(this.paneId);
-        var noFiles = !fileList || fileList.length === 0;
-        if (MainViewManager.getPaneCount() === 1 && noFiles && !this._getPlaceholderFile()) {
+        if (MainViewManager.getPaneCount() === 1 && (!fileList || fileList.length === 0)) {
             this.$openFilesContainer.hide();
             this.$workingSetListViewHeader.hide();
         } else {
@@ -1022,10 +1020,6 @@ define(function (require, exports, module) {
      * @private
      */
     WorkingSetView.prototype._scrollSelectedFileIntoView = function () {
-        if (!_hasSelectionFocus()) {
-            return;
-        }
-
         var file = MainViewManager.getCurrentlyViewedFile(this.paneId);
 
         var $selectedFile = this._findListItemFromFile(file);

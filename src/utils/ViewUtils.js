@@ -28,7 +28,8 @@ define(function (require, exports, module) {
         ProjectManager        = require("project/ProjectManager"),
         LanguageManager     = require("language/LanguageManager");
 
-    var SCROLL_SHADOW_HEIGHT = 5;
+    // keep in step with the .scroller-shadow height in brackets.less
+    var SCROLL_SHADOW_HEIGHT = 8;
 
     /**
      * @private
@@ -36,61 +37,41 @@ define(function (require, exports, module) {
     var _resizeHandlers = [];
 
     /**
-     * Positions shadow background elements to indicate vertical scrolling.
+     * Fades the shadow elements in and out to indicate vertical scrolling.
      *
      * @private
-     * @param {!DOMElement} $displayElement the DOMElement that displays the shadow
      * @param {!Object} $scrollElement the object that is scrolled
      * @param {!DOMElement} $shadowTop div .scroller-shadow.top
      * @param {!DOMElement} $shadowBottom div .scroller-shadow.bottom
-     * @param {boolean} isPositionFixed When using absolute position, top remains at 0.
      */
-    function _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed) {
-        var offsetTop           = 0,
-            scrollElement       = $scrollElement.get(0),
-            scrollTop           = scrollElement.scrollTop,
-            topShadowOffset     = Math.min(scrollTop - SCROLL_SHADOW_HEIGHT, 0),
-            displayElementWidth = $displayElement.width();
+    function _updateScrollerShadow($scrollElement, $shadowTop, $shadowBottom) {
+        var scrollElement = $scrollElement.get(0),
+            scrollTop = scrollElement.scrollTop;
 
         if ($shadowTop) {
-            $shadowTop.css("background-position", "0px " + topShadowOffset + "px");
-
-            if (isPositionFixed) {
-                offsetTop = $displayElement.offset().top;
-                $shadowTop.css("top", offsetTop);
-            }
-
-            if (isPositionFixed) {
-                $shadowTop.css("width", displayElementWidth);
-            }
+            $shadowTop.css("opacity", Math.min(scrollTop / SCROLL_SHADOW_HEIGHT, 1));
         }
 
         if ($shadowBottom) {
-            var clientHeight        = scrollElement.clientHeight,
-                outerHeight         = $displayElement.outerHeight(),
-                scrollHeight        = scrollElement.scrollHeight,
-                bottomShadowOffset  = SCROLL_SHADOW_HEIGHT; // outside of shadow div viewport
-
-            if (scrollHeight > clientHeight) {
-                bottomShadowOffset -= Math.min(SCROLL_SHADOW_HEIGHT, (scrollHeight - (scrollTop + clientHeight)));
-            }
-
-            $shadowBottom.css("background-position", "0px " + bottomShadowOffset + "px");
-            $shadowBottom.css("top", offsetTop + outerHeight - SCROLL_SHADOW_HEIGHT);
-            $shadowBottom.css("width", displayElementWidth);
+            var remaining = scrollElement.scrollHeight - (scrollTop + scrollElement.clientHeight);
+            $shadowBottom.css("opacity", Math.min(Math.max(remaining, 0) / SCROLL_SHADOW_HEIGHT, 1));
         }
     }
 
-    function getOrCreateShadow($displayElement, position, isPositionFixed) {
+    function getOrCreateShadow($displayElement, position, isSticky) {
         var $findShadow = $displayElement.find(".scroller-shadow." + position);
 
         if ($findShadow.length === 0) {
             $findShadow = $(window.document.createElement("div")).addClass("scroller-shadow " + position);
-            $displayElement.append($findShadow);
+            // a sticky top shadow has to come first in the flow to stick to the top of the scroller
+            if (isSticky && position === "top") {
+                $displayElement.prepend($findShadow);
+            } else {
+                $displayElement.append($findShadow);
+            }
         }
 
-        if (!isPositionFixed) {
-            // position is fixed by default
+        if (!isSticky) {
             $findShadow.css("position", "absolute");
             $findShadow.css(position, "0");
         }
@@ -107,23 +88,23 @@ define(function (require, exports, module) {
      * @param {?boolean} showBottom optionally show the bottom shadow
      */
     function addScrollerShadow(displayElement, scrollElement, showBottom) {
-        // use fixed positioning when the display and scroll elements are the same
-        var isPositionFixed = false;
+        // the shadows stick inside the scroller itself when the display and scroll elements are the same
+        var isSticky = false;
 
         if (!scrollElement) {
             scrollElement = displayElement;
-            isPositionFixed = true;
+            isSticky = true;
         }
 
         // update shadows when the scrolling element is scrolled
         var $displayElement = $(displayElement),
             $scrollElement = $(scrollElement);
 
-        var $shadowTop = getOrCreateShadow($displayElement, "top", isPositionFixed);
-        var $shadowBottom = (showBottom) ? getOrCreateShadow($displayElement, "bottom", isPositionFixed) : null;
+        var $shadowTop = getOrCreateShadow($displayElement, "top", isSticky);
+        var $shadowBottom = (showBottom) ? getOrCreateShadow($displayElement, "bottom", isSticky) : null;
 
         var doUpdate = function () {
-            _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed);
+            _updateScrollerShadow($scrollElement, $shadowTop, $shadowBottom);
         };
 
         // remove any previously installed listeners on this node
