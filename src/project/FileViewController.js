@@ -69,7 +69,7 @@ define(function (require, exports, module) {
      * @type {?{file: File, paneId: string}}
      * @private
      */
-    var _workingSetContext = null;
+    let _workingSetContext = null;
 
     /**
      * view managing working set.

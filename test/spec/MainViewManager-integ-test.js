@@ -544,14 +544,13 @@ define(function (require, exports, module) {
                 expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
             });
             it("should not bounce between panes when a document shown in one pane was last focused in the other", async function () {
-                var js = testPath + "/test.js",
+                const js = testPath + "/test.js",
                     css = testPath + "/test.css",
-                    opens = [[css, "first-pane"], [js, "first-pane"], [js, "second-pane"], [css, "second-pane"]],
-                    i;
+                    opens = [[css, "first-pane"], [js, "first-pane"], [js, "second-pane"], [css, "second-pane"]];
 
                 // the files go into both working sets so each pane keeps an editor for the file it is not showing
                 MainViewManager.setLayoutScheme(1, 2);
-                for (i = 0; i < opens.length; i++) {
+                for (let i = 0; i < opens.length; i++) {
                     promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,
                         { fullPath: opens[i][0], paneId: opens[i][1] });
                     await awaitsForDone(promise, Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN);
@@ -562,7 +561,7 @@ define(function (require, exports, module) {
                 // both documents have an editor in each pane. Focusing test.js in the second pane and
                 // test.css in the first pane and then switching files would leave each document's master
                 // editor in the pane that is not showing it, so set that state up directly
-                var docJs = DocumentManager.getOpenDocumentForPath(js),
+                const docJs = DocumentManager.getOpenDocumentForPath(js),
                     docCss = DocumentManager.getOpenDocumentForPath(css);
                 docJs._toggleMasterEditor(docJs._associatedFullEditors.find(function (editor) {
                     return editor._paneId === "second-pane";
@@ -571,7 +570,7 @@ define(function (require, exports, module) {
                     return editor._paneId === "first-pane";
                 }));
 
-                var errorSpy = spyOn(testWindow.console, "error").and.callThrough();
+                const errorSpy = spyOn(testWindow.console, "error").and.callThrough();
                 MainViewManager.setActivePaneId("first-pane");
                 expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
                 MainViewManager.setActivePaneId("second-pane");

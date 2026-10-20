@@ -504,7 +504,7 @@ define(function (require, exports, module) {
         });
 
         describe("Pinning", function () {
-            var files;
+            let files;
 
             function paths() {
                 return myPane._viewList.map(function (file) {
@@ -514,7 +514,7 @@ define(function (require, exports, module) {
 
             beforeEach(function () {
                 files = [];
-                for (var i = 0; i < 4; i++) {
+                for (let i = 0; i < 4; i++) {
                     files[i] = createMockView("/pin/" + i.toString()).getFile();
                 }
                 myPane.addListToViewList(files);
@@ -572,7 +572,7 @@ define(function (require, exports, module) {
             it("should pin a file added inside the pinned block and keep the others behind the pinned files", function () {
                 myPane.setPathPinned("/pin/0", true);
                 myPane.setPathPinned("/pin/1", true);
-                var inside = createMockView("/pin/inside").getFile(),
+                const inside = createMockView("/pin/inside").getFile(),
                     front = createMockView("/pin/front").getFile();
 
                 expect(myPane.addToViewList(inside, 1)).toEqual(1);
@@ -594,12 +594,12 @@ define(function (require, exports, module) {
 
             it("should save and restore the pinned state", function () {
                 myPane.setPathPinned("/pin/2", true);
-                var state = myPane.saveState();
+                const state = myPane.saveState();
                 expect(state[0].file).toEqual("/pin/2");
                 expect(state[0].pinned).toBe(true);
                 expect(state[1].pinned).toBeUndefined();
 
-                var otherPane = createMockPane("other-pane");
+                const otherPane = createMockPane("other-pane");
                 otherPane.loadState(state);
                 expect(otherPane.getViewList().map(function (file) {
                     return file.fullPath;
