@@ -1046,7 +1046,7 @@ define({
     "GEAR_MENU_TOOLTIP": "Configure Working Files",
 
     "CMD_TOGGLE_SHOW_WORKING_SET": "Show Working Files",
-    "CMD_TOGGLE_SHOW_FILE_TABS": "Show File Tab Bar",
+    "CMD_TOGGLE_SHOW_FILE_TABS": "Show Tab Bar",
 
     "SPLITVIEW_INFO_TITLE": "Already Open",
     "SPLITVIEW_MULTIPANE_WARNING": "The file is already open in another pane. {APP_NAME} will soon support opening the same file in more than one pane. Until then, the file will be shown in the pane it's already open in.<br /><br />(You'll only see this message once.)",
@@ -1292,7 +1292,7 @@ define({
     "CMD_TOGGLE_LP_FULL_SCREEN": "Toggle Live Preview Full Screen",
     "LIVE_PREVIEW_FULL_SCREEN": "Expand Live Preview to Full Screen",
     "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Exit Full Screen",
-    "CMD_TOGGLE_TABBAR": "File Tab Bar",
+    "CMD_TOGGLE_TABBAR": "Toggle Tab Bar",
     "CMD_TOGGLE_TABBAR_SMOOTH_SCROLL": "Smooth Tab Scrolling",
     "CMD_HIDE_TABBAR": "Hide Tab Bar",
     "TABBAR_NUMBER_OF_TABS": "Number of Tabs",
