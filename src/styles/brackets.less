@@ -1036,15 +1036,18 @@ a, img {
     .pane-header {
         opacity: 0.7; // quieten inactive pane header
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
         border-bottom:  1px solid rgba(0, 0, 0, 0.05);
         padding: 5px 10px;
         background-color: @background;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
 
         &-text {
-            display: inline;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .dark & {
@@ -1053,20 +1056,13 @@ a, img {
         }
 
         &-flipview-btn {
-            position: relative;
             display: none;
-            top: 0;
-            padding-top: 2px;
-            padding-right: 4px;
-            padding-left: 4px;
-            margin-left: 0;
-            margin-bottom: 0;
+            flex: 0 0 auto;
+            padding: 0 4px;
             .sprite-icon(0, 0, 13px, 13px, "images/flip-view-icons.svg");
             background-origin: content-box;
             -webkit-transform: translateZ(0); // forces GPU mode for better filter rendering on retina
             transform: translateZ(0); // future proofing
-            z-index: 1;
-            vertical-align: middle;
 
             &:hover {
                 background-image: url("images/flip-view-icons-hover.svg")
@@ -1081,7 +1077,7 @@ a, img {
             }
 
             &.flipview-icon-right {
-                background-position: center -18px;
+                background-position: center -17px;
             }
 
             &.flipview-icon-bottom {
@@ -1089,20 +1085,23 @@ a, img {
             }
 
             &.flipview-icon-left {
-                background-position: center -54px;
+                background-position: center -53px;
             }
         }
 
         &-close-btn {
             position: relative;
             display: none;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
             height: 16px;
             width: 16px;
-            float: right;
-            margin-top: -2px;
+            margin-left: auto;
 
             &:before {
                 color: rgba(0, 0, 0, 0.5);
+                line-height: 16px;
             }
 
             &:hover:before {
@@ -1122,11 +1121,11 @@ a, img {
 
         &:hover, &.always-show-header-buttons {
             > .pane-header-flipview-btn:not(.flipview-icon-none) {
-                display: inline-block;
+                display: block;
             }
 
             > .pane-header-close-btn {
-                display: inline;
+                display: flex;
             }
         }
     }
