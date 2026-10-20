@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         LanguageManager     = require("language/LanguageManager");
 
     // keep in step with the .scroller-shadow height in brackets.less
-    var SCROLL_SHADOW_HEIGHT = 8;
+    const SCROLL_SHADOW_HEIGHT = 8;
 
     /**
      * @private
@@ -45,7 +45,7 @@ define(function (require, exports, module) {
      * @param {!DOMElement} $shadowBottom div .scroller-shadow.bottom
      */
     function _updateScrollerShadow($scrollElement, $shadowTop, $shadowBottom) {
-        var scrollElement = $scrollElement.get(0),
+        const scrollElement = $scrollElement.get(0),
             scrollTop = scrollElement.scrollTop;
 
         if ($shadowTop) {
@@ -53,7 +53,7 @@ define(function (require, exports, module) {
         }
 
         if ($shadowBottom) {
-            var remaining = scrollElement.scrollHeight - (scrollTop + scrollElement.clientHeight);
+            const remaining = scrollElement.scrollHeight - (scrollTop + scrollElement.clientHeight);
             $shadowBottom.css("opacity", Math.min(Math.max(remaining, 0) / SCROLL_SHADOW_HEIGHT, 1));
         }
     }
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
      */
     function addScrollerShadow(displayElement, scrollElement, showBottom) {
         // the shadows stick inside the scroller itself when the display and scroll elements are the same
-        var isSticky = false;
+        let isSticky = false;
 
         if (!scrollElement) {
             scrollElement = displayElement;
@@ -100,8 +100,8 @@ define(function (require, exports, module) {
         var $displayElement = $(displayElement),
             $scrollElement = $(scrollElement);
 
-        var $shadowTop = getOrCreateShadow($displayElement, "top", isSticky);
-        var $shadowBottom = (showBottom) ? getOrCreateShadow($displayElement, "bottom", isSticky) : null;
+        const $shadowTop = getOrCreateShadow($displayElement, "top", isSticky);
+        const $shadowBottom = (showBottom) ? getOrCreateShadow($displayElement, "bottom", isSticky) : null;
 
         var doUpdate = function () {
             _updateScrollerShadow($scrollElement, $shadowTop, $shadowBottom);
