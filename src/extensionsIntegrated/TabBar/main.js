@@ -765,7 +765,7 @@ define(function (require, exports, module) {
     }
 
     // the choices offered in the settings menu for how many tabs to show, -1 means all of them
-    const NUMBER_OF_TABS_CHOICES = [-1, 5, 10, 15, 20];
+    const NUMBER_OF_TABS_CHOICES = [-1, 1, 3, 5, 10];
     const HIDE_TABBAR_COMMAND = "tabbar.hide";
 
     function _numberOfTabsCommandId(count) {
@@ -808,7 +808,6 @@ define(function (require, exports, module) {
     function _registerSettingsMenu() {
         const menu = Menus.registerContextMenu(Menus.ContextMenuIds.FILE_TABS_SETTINGS_MENU);
         menu.addMenuItem(Commands.TOGGLE_TABBAR_SMOOTH_SCROLL);
-        menu.addMenuDivider();
         const countMenu = menu.addSubMenu(Strings.TABBAR_NUMBER_OF_TABS, "tabbar-number-of-tabs-submenu");
         NUMBER_OF_TABS_CHOICES.forEach((count) => countMenu.addMenuItem(_numberOfTabsCommandId(count)));
         menu.addMenuDivider();
