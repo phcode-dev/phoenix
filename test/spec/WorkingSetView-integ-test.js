@@ -192,6 +192,55 @@ define(function (require, exports, module) {
             expect(listItems.find(".file-status-icon dirty").length).toBe(0);
         });
 
+        it("should pin and unpin files moved across the pinned block and show the pin in the list", async function () {
+            const $ = testWindow.$;
+            await openAndMakeDirty(testPath + "/file_three.js");
+            await awaitsFor(function () {
+                return workingSetListItemCount === 3;
+            }, "third file to be in the working set");
+
+            // a pinned item only shows its pin while the file is clean
+            const files = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+            files.forEach(function (file) {
+                DocumentManager.getOpenDocumentForPath(file.fullPath)._markClean();
+            });
+            function rowPaths() {
+                return $(".open-files-container > ul").children().map(function (index, row) {
+                    return $(row).data("file").fullPath;
+                }).get();
+            }
+            function pinnedRows() {
+                return $(".open-files-container > ul").children().filter(function (index, row) {
+                    return $(row).find(".file-status-icon.pinned").length === 1;
+                }).map(function (index, row) {
+                    return $(row).data("file").fullPath;
+                }).get();
+            }
+
+            MainViewManager.setFilePinned(MainViewManager.ACTIVE_PANE, files[1], true);
+            await awaitsFor(function () {
+                return rowPaths()[0] === files[1].fullPath && pinnedRows().length === 1;
+            }, "pinned file to move to the top with its pin");
+            expect(pinnedRows()).toEqual([files[1].fullPath]);
+
+            // dropping the last file in front of the pinned one pins it as well
+            MainViewManager._moveWorkingSetItem(MainViewManager.ACTIVE_PANE, 2, 0);
+            await awaitsFor(function () {
+                return rowPaths()[0] === files[2].fullPath && pinnedRows().length === 2;
+            }, "file dropped in front of the pinned one to be pinned");
+            expect(rowPaths()).toEqual([files[2].fullPath, files[1].fullPath, files[0].fullPath]);
+            expect(MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, files[2].fullPath)).toBe(true);
+
+            // dropping a pinned file behind the unpinned one unpins it
+            MainViewManager._moveWorkingSetItem(MainViewManager.ACTIVE_PANE, 1, 2);
+            await awaitsFor(function () {
+                return rowPaths()[2] === files[1].fullPath && pinnedRows().length === 1;
+            }, "file dropped behind the unpinned one to be unpinned");
+            expect(rowPaths()).toEqual([files[2].fullPath, files[0].fullPath, files[1].fullPath]);
+            expect(pinnedRows()).toEqual([files[2].fullPath]);
+            expect(MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, files[1].fullPath)).toBe(false);
+        });
+
         it("should show the file in project tree when a file is being renamed", async function () {
             var $ = testWindow.$;
             var secondItem =  $(".open-files-container > ul").children().eq(1);
