@@ -132,6 +132,7 @@ a:focus {
     position: absolute;
     z-index: @z-index-brackets-drag-ghost;
     background-color: transparent;
+    pointer-events: none;
 
     text-shadow: 0 1px 2px @bc-shadow-large;
 
@@ -146,6 +147,10 @@ a:focus {
 
 #working-set-list-container .drag-show-as-selected {
     background-color: @bc-sidebar-selection;
+}
+
+#working-set-list-container.dragging .file-status-icon.can-close:before {
+    visibility: hidden;
 }
 
 /* Toolbar-related styles */
