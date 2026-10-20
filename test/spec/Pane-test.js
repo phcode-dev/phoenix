@@ -585,6 +585,41 @@ define(function (require, exports, module) {
                 expect(paths()).toEqual(["/pin/0", "/pin/inside", "/pin/1", "/pin/front", "/pin/2", "/pin/3"]);
             });
 
+            it("should keep the pinned files of a merged pane pinned and in front", function () {
+                myPane.setPathPinned("/pin/2", true);
+                const otherPane = createMockPane("other-pane"),
+                    otherFiles = [createMockView("/other/a").getFile(), createMockView("/other/b").getFile()];
+                otherPane.addListToViewList(otherFiles);
+                otherPane.setPathPinned("/other/b", true);
+
+                myPane.mergeFrom(otherPane);
+                expect(paths()).toEqual(["/pin/2", "/other/b", "/pin/0", "/pin/1", "/pin/3", "/other/a"]);
+                expect(myPane.isPathPinned("/other/b")).toBe(true);
+                expect(myPane.isPathPinned("/other/a")).toBe(false);
+                expect(myPane.getPinnedCount()).toEqual(2);
+                otherPane.destroy();
+            });
+
+            it("should move the pinned state along when a pinned file or its folder is renamed", function () {
+                myPane.setPathPinned("/pin/1", true);
+                // the file system renames the File objects before the event arrives
+                files[1].fullPath = "/pin/renamed";
+                myPane._handleFileNameChange(null, "/pin/1", "/pin/renamed");
+                expect(myPane.isPathPinned("/pin/renamed")).toBe(true);
+                expect(myPane.isPathPinned("/pin/1")).toBe(false);
+
+                myPane.setPathPinned("/pin/3", true);
+                files.forEach(function (file) {
+                    file.fullPath = file.fullPath.replace("/pin/", "/moved/");
+                });
+                myPane._handleFileNameChange(null, "/pin/", "/moved/");
+                expect(myPane.isPathPinned("/moved/renamed")).toBe(true);
+                expect(myPane.isPathPinned("/moved/3")).toBe(true);
+                expect(myPane.isPathPinned("/pin/3")).toBe(false);
+                expect(myPane.getPinnedCount()).toEqual(2);
+                expect(paths().slice(0, 2)).toEqual(["/moved/renamed", "/moved/3"]);
+            });
+
             it("should forget the pinned state when the file is removed", function () {
                 myPane.setPathPinned("/pin/1", true);
                 myPane.removeView(files[1]);
