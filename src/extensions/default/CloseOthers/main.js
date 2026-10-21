@@ -157,6 +157,20 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Puts the commands back in service once both menus are closed. Disabling them only greys out the items
+     * of the menu that is opening; a keyboard shortcut or any other caller must still be able to run them
+     * afterwards. Menus get closed from many places without telling the menu, so the open class is watched.
+     */
+    function enableCommandsWhenMenusClosed() {
+        if (workingSetListCmenu.isOpen() || fileTabsCmenu.isOpen()) {
+            return;
+        }
+        MENU_ORDER.forEach(function (commandId) {
+            CommandManager.get(commandId).setEnabled(true);
+        });
+    }
+
 
     /**
      * Returns which menu items should be shown, as per the preferences. "Close All" is always shown.
@@ -226,6 +240,11 @@ define(function (require, exports, module) {
     });
     fileTabsCmenu.on("beforeContextMenuOpen", function () {
         contextMenuOpenHandler(true);
+    });
+
+    const menuStateObserver = new window.MutationObserver(enableCommandsWhenMenusClosed);
+    [workingSetListCmenu, fileTabsCmenu].forEach(function (cmenu) {
+        menuStateObserver.observe($("#" + cmenu.id)[0], { attributes: true, attributeFilter: ["class"] });
     });
 
     prefs.on("change", syncMenuItems);
