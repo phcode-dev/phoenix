@@ -555,6 +555,18 @@ Opens the terminal panel
 Toggles whether AI features are enabled
 
 **Kind**: global variable  
+<a name="VIEW_TOGGLE_SPELL_CHECK"></a>
+
+## VIEW\_TOGGLE\_SPELL\_CHECK
+Toggles the spell checker
+
+**Kind**: global variable  
+<a name="VIEW_TOGGLE_SPELLING_PANEL"></a>
+
+## VIEW\_TOGGLE\_SPELLING\_PANEL
+Toggles the spelling panel visibility
+
+**Kind**: global variable  
 <a name="TOGGLE_LINE_NUMBERS"></a>
 
 ## TOGGLE\_LINE\_NUMBERS
