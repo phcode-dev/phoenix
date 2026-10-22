@@ -1,0 +1,241 @@
+#status-indicators #status-spelling {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 7px;
+    border: none;
+    cursor: pointer;
+    color: @bc-text-thin-quiet;
+
+    .dark & {
+        color: @dark-bc-text-thin-quiet;
+    }
+
+    i {
+        font-size: 12px;
+    }
+
+    .spelling-count {
+        font-size: 11px;
+        line-height: 1;
+    }
+
+    &.spelling-ok i {
+        color: @spell-underline-text;
+    }
+
+    &.spelling-issues {
+        color: @bc-text;
+
+        .dark & {
+            color: @dark-bc-text;
+        }
+
+        i {
+            color: #e39a2c;
+        }
+    }
+
+    &.spelling-off,
+    &.spelling-locked,
+    &.spelling-unavailable {
+        opacity: 0.55;
+    }
+
+    &.spelling-error i {
+        color: @error-underline-text;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    &:active {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+}
+
+#spelling-panel {
+    .user-select(text);
+
+    .toolbar {
+        display: flex;
+        align-items: center;
+        padding: 6px 8px;
+    }
+
+    .title {
+        flex: 1;
+        margin-left: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .spelling-toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: 8px;
+    }
+
+    .spelling-body {
+        height: calc(100% - 36px);
+        overflow: auto;
+    }
+
+    .spelling-message {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 26px 20px;
+        text-align: center;
+    }
+
+    .spelling-message-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .spelling-message-text {
+        color: @bc-text-thin-quiet;
+        margin-bottom: 14px;
+        line-height: 1.5;
+
+        .dark & {
+            color: @dark-bc-text-thin-quiet;
+        }
+    }
+
+    .spelling-message-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .spelling-list table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .spelling-row {
+        cursor: pointer;
+    }
+
+    .line-number {
+        text-align: right;
+        white-space: nowrap;
+        width: 56px;
+    }
+
+    .spelling-word-cell {
+        width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .spelling-word {
+        font-weight: 600;
+        padding-bottom: 1px;
+        background: url(images/wavy-spell-error.svg) repeat-x bottom left;
+    }
+
+    .spelling-snippet {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: @bc-text-thin-quiet;
+
+        .dark & {
+            color: @dark-bc-text-thin-quiet;
+        }
+
+        mark {
+            background: transparent;
+            color: inherit;
+            font-weight: 600;
+            padding: 0;
+        }
+    }
+
+    .spelling-actions-row td {
+        padding: 4px 8px 6px 64px;
+    }
+
+    .spelling-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .spelling-actions .btn {
+        margin: 0;
+    }
+
+    .spelling-actions-label {
+        color: @bc-text-thin-quiet;
+        margin-right: 2px;
+
+        .dark & {
+            color: @dark-bc-text-thin-quiet;
+        }
+    }
+
+    .spelling-actions-spacer {
+        flex: 1;
+    }
+
+    .spelling-more {
+        padding: 8px 12px;
+        color: @bc-text-thin-quiet;
+
+        .dark & {
+            color: @dark-bc-text-thin-quiet;
+        }
+    }
+}
+
+.spelling-quick-view {
+    padding: 4px 2px;
+    max-width: 380px;
+
+    .spelling-qv-header {
+        margin-bottom: 6px;
+    }
+
+    .spelling-qv-word {
+        font-weight: 600;
+        margin-right: 6px;
+    }
+
+    .spelling-qv-label {
+        color: @bc-text-thin-quiet;
+
+        .dark & {
+            color: @dark-bc-text-thin-quiet;
+        }
+    }
+
+    .spelling-qv-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-bottom: 8px;
+    }
+
+    .spelling-qv-suggestions .btn {
+        margin: 0;
+    }
+
+    .spelling-qv-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .spelling-qv-actions a {
+        cursor: pointer;
+    }
+}
