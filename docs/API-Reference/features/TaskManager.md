@@ -39,6 +39,7 @@ like `showStopIcon`, `hideStopIcon`, etc.
 | [options.onRetryClick] | <code>function</code> |  | Callback function triggered when the retry button is clicked. |
 | [options.onSelect] | <code>function</code> |  | Callback function triggered when the task is selected from the dropdown. |
 | [options.progressPercent] | <code>number</code> |  | Initial progress percentage of the task. |
+| [options.hideProgressBar] | <code>boolean</code> |  | Hide progress for tasks waiting on a user action. |
 | [options.noSpinnerNotification] | <code>boolean</code> |  | If set to true, will not show the task spinners for this task.         This can be used for silent background tasks where user attention is not needed. |
 
 **Example**  

@@ -457,6 +457,7 @@ const ALLOWED_EXTENSIONS_TO_CACHE = ["js", "html", "htm", "xml", "xhtml", "mjs",
     "txt", "otf",
     "json", "config",
     "zip",
+    "gz", "trie",
     "png", "svg", "jpg", "jpeg", "gif", "ico", "webp",
     "mustache", "md", "markdown"];
 const DISALLOWED_EXTENSIONS_TO_CACHE = ["map", "nuspec", "partial", "pre", "post",
