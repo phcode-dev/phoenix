@@ -102,6 +102,89 @@ function _getConfigJSON() {
     return JSON.parse(fs.readFileSync(configPath, "utf8"));
 }
 
+
+// cspell dictionaries for the Phoenix Pro spell checker, copied to src/thirdparty/cspell-dicts/<id>/
+const CSPELL_DICTIONARIES = {
+    "en_US": ["node_modules/@cspell/dict-en_us/en_US.trie.gz"],
+    "en_GB": ["node_modules/@cspell/dict-en-gb/en_GB.trie.gz"],
+    "software-terms": [
+        "node_modules/@cspell/dict-software-terms/dict/softwareTerms.txt.gz",
+        "node_modules/@cspell/dict-software-terms/dict/software-tools.txt",
+        "node_modules/@cspell/dict-software-terms/dict/networkingTerms.txt",
+        "node_modules/@cspell/dict-software-terms/dict/webServices.txt",
+        "node_modules/@cspell/dict-software-terms/dict/computing-acronyms.txt",
+        "node_modules/@cspell/dict-software-terms/dict/coding-compound-terms.txt"
+    ],
+    "companies": ["node_modules/@cspell/dict-companies/dict/companies.txt"],
+    "fonts": ["node_modules/@cspell/dict-fonts/dict/fonts.txt"],
+    "filetypes": ["node_modules/@cspell/dict-filetypes/filetypes.txt.gz"],
+    "fullstack": ["node_modules/@cspell/dict-fullstack/dict/fullstack.txt"],
+    "lorem-ipsum": ["node_modules/@cspell/dict-lorem-ipsum/dict/lorem.txt"],
+    "html": ["node_modules/@cspell/dict-html/dict/html.txt.gz"],
+    "html-symbol-entities": ["node_modules/@cspell/dict-html-symbol-entities/dict/entities.txt.gz"],
+    "css": ["node_modules/@cspell/dict-css/dict/css.txt"],
+    "typescript": ["node_modules/@cspell/dict-typescript/dict/typescript.txt"],
+    "node": ["node_modules/@cspell/dict-node/dict/node.txt"],
+    "npm": ["node_modules/@cspell/dict-npm/dict/npm.txt"],
+    "git": ["node_modules/@cspell/dict-git/dict/git-terms.txt"],
+    "markdown": ["node_modules/@cspell/dict-markdown/markdown.txt.gz"],
+    "python": [
+        "node_modules/@cspell/dict-python/dict/python.txt",
+        "node_modules/@cspell/dict-python/dict/python-common.txt"
+    ],
+    "java": ["node_modules/@cspell/dict-java/dict/java.trie"],
+    "php": ["node_modules/@cspell/dict-php/dict/php.txt"],
+    "cpp": [
+        "node_modules/@cspell/dict-cpp/dict/cpp.txt.gz",
+        "node_modules/@cspell/dict-cpp/dict/cpp-refined.txt.gz",
+        "node_modules/@cspell/dict-cpp/dict/cpp-legacy.txt.gz",
+        "node_modules/@cspell/dict-cpp/dict/cpp-compound-words.txt.gz"
+    ],
+    "golang": ["node_modules/@cspell/dict-golang/dict/go.txt"],
+    "rust": [
+        "node_modules/@cspell/dict-rust/dict/rust.txt.gz",
+        "node_modules/@cspell/dict-rust/dict/crates.txt.gz"
+    ],
+    "csharp": ["node_modules/@cspell/dict-csharp/dict/csharp.txt.gz"],
+    "shell": ["node_modules/@cspell/dict-shell/dict/shell-all-words.txt"],
+    "sql": ["node_modules/@cspell/dict-sql/sql.txt.gz"],
+    "docker": ["node_modules/@cspell/dict-docker/dict/docker-words.txt.gz"],
+    "ruby": [
+        "node_modules/@cspell/dict-ruby/dict/ruby.txt",
+        "node_modules/@cspell/dict-ruby/dict/gems.txt"
+    ]
+};
+
+function _copyCSpellDictionaries() {
+    return new Promise((resolve) => {
+        const destRoot = "src/thirdparty/cspell-dicts";
+        const licenceChunks = [];
+        const seenPackages = new Set();
+        fs.rmSync(destRoot, { recursive: true, force: true });
+        for (const [id, files] of Object.entries(CSPELL_DICTIONARIES)) {
+            const destDir = path.join(destRoot, id);
+            fs.mkdirSync(destDir, { recursive: true });
+            for (const file of files) {
+                console.log(`Copying cspell dictionary ${file} to ${destDir}`);
+                fs.copyFileSync(file, path.join(destDir, path.basename(file)));
+                const packageDir = file.split("/").slice(0, 3).join("/");
+                if (seenPackages.has(packageDir)) {
+                    continue;
+                }
+                seenPackages.add(packageDir);
+                const packageJSON = JSON.parse(fs.readFileSync(path.join(packageDir, "package.json"), "utf8"));
+                const licenceFile = ["LICENSE", "LICENSE.md", "COPYING"].map(name => path.join(packageDir, name))
+                    .find(candidate => fs.existsSync(candidate));
+                const licenceText = licenceFile ? fs.readFileSync(licenceFile, "utf8") : "";
+                licenceChunks.push(`## ${packageJSON.name} ${packageJSON.version}\n\n${licenceText.trim()}\n`);
+            }
+        }
+        fs.writeFileSync("src/thirdparty/licences/cspell-dictionaries.markdown",
+            `# cspell dictionaries\n\n${licenceChunks.join("\n")}`);
+        resolve();
+    });
+}
+
 /**
  * Add thirdparty libs copied to gitignore except the licence file.
  */
@@ -255,6 +338,13 @@ let copyThirdPartyLibs = series(
     copyLicence.bind(copyLicence, 'node_modules/jasmine-reporters/LICENSE', 'jasmine-reporters'),
     // lmdb
     copyLicence.bind(copyLicence, 'node_modules/lmdb/LICENSE', 'lmdb'),
+    // cspell trie engine + fflate (gzip) used by the Phoenix Pro spell checker worker. ES modules, so no-minify.
+    renameFile.bind(renameFile, 'node_modules/cspell-trie-lib/dist/index.js', 'cspell-trie-lib.js',
+        'src/thirdparty/no-minify/cspell'),
+    copyLicence.bind(copyLicence, 'node_modules/cspell-trie-lib/LICENSE', 'cspell-trie-lib'),
+    renameFile.bind(renameFile, 'node_modules/fflate/esm/browser.js', 'fflate.js', 'src/thirdparty/no-minify/cspell'),
+    copyLicence.bind(copyLicence, 'node_modules/fflate/LICENSE', 'fflate'),
+    _copyCSpellDictionaries,
     // xterm.js terminal emulator (@xterm/* scoped packages, v6)
     copyFiles.bind(copyFiles, ['node_modules/@xterm/xterm/lib/xterm.js',
         'node_modules/@xterm/xterm/lib/xterm.js.map'], 'src/thirdparty/xterm'),

@@ -309,6 +309,11 @@ define(function (require, exports, module) {
     /** Toggles whether AI features are enabled */
     exports.VIEW_ENABLE_AI              = "view.enableAI";              // phoenix-pro aiEnabled.js     _handleToggleEnableAI()
 
+    /** Toggles the spell checker */
+    exports.VIEW_TOGGLE_SPELL_CHECK     = "view.toggleSpellCheck";      // phoenix-pro spell-check/main.js
+    /** Toggles the spelling panel visibility */
+    exports.VIEW_TOGGLE_SPELLING_PANEL  = "view.toggleSpellingPanel";   // phoenix-pro spell-check/main.js
+
     /** Toggles line numbers visibility */
     exports.TOGGLE_LINE_NUMBERS         = "view.toggleLineNumbers";     // EditorOptionHandlers.js      _getToggler()
 
