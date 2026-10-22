@@ -1,57 +1,55 @@
 #status-indicators #status-spelling {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 0 7px;
-    border: none;
+    height: (@bc-bg-status-bar-height - 1px);
+    box-sizing: border-box;
+    padding: 0 9px;
+    border-left: none;
+    border-right: 1px solid @bc-panel-border;
     cursor: pointer;
     color: @bc-text-thin-quiet;
 
     .dark & {
+        border-right-color: @dark-bc-panel-separator;
         color: @dark-bc-text-thin-quiet;
     }
 
-    i {
-        font-size: 12px;
+    .spelling-icon {
+        width: 16px;
+        height: 14px;
+        background-color: currentColor;
+        -webkit-mask-image: url(images/status-spelling-ok.svg);
+        mask-image: url(images/status-spelling-ok.svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
     }
 
-    .spelling-count {
-        font-size: 11px;
-        line-height: 1;
+    &.spelling-ok .spelling-icon {
+        background-color: @spell-underline-text;
     }
 
-    &.spelling-ok i {
-        color: @spell-underline-text;
+    &.spelling-issues .spelling-icon,
+    &.spelling-error .spelling-icon {
+        -webkit-mask-image: url(images/status-spelling-issues.svg);
+        mask-image: url(images/status-spelling-issues.svg);
     }
 
-    &.spelling-issues {
-        color: @bc-text;
+    &.spelling-issues .spelling-icon {
+        background-color: #e39a2c;
+    }
 
-        .dark & {
-            color: @dark-bc-text;
-        }
-
-        i {
-            color: #e39a2c;
-        }
+    &.spelling-error .spelling-icon {
+        background-color: @error-underline-text;
     }
 
     &.spelling-off,
     &.spelling-locked,
     &.spelling-unavailable {
         opacity: 0.55;
-    }
-
-    &.spelling-error i {
-        color: @error-underline-text;
-    }
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    &:active {
-        background-color: rgba(0, 0, 0, 0.05);
     }
 }
 
