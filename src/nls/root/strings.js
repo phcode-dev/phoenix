@@ -815,7 +815,6 @@ define({
     "LIVE_PREVIEW_LAYERS_TAB": "Layers",
     "LIVE_PREVIEW_LAYERS_NEEDS_PREVIEW": "The Layers panel needs a live preview.",
     "LIVE_PREVIEW_LAYERS_OPEN_PREVIEW": "Open Live Preview",
-    "LIVE_PREVIEW_LAYERS_OPEN_IN_BROWSER": "Open in Browser",
     "LIVE_PREVIEW_LAYERS_NEEDS_HTML": "Open an HTML file to see its layers.",
     "LIVE_PREVIEW_LAYERS_CHOOSE_PAGE": "Choose a page",
     "LIVE_PREVIEW_LAYERS_PICK_HTML": "Pick an HTML file to see its layers.",
