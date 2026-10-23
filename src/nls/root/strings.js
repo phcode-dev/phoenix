@@ -3178,7 +3178,7 @@ define({
     "LIVE_DEV_AI_CHAT_SENT": "Sent to Visual AI",
     "LIVE_DEV_AI_CHAT_TRANSFER": "Transfer to {0}",
     "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Transfer the draft, then submit in the CLI",
-    "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Open the CLI prompt and finish any question or approval, then try again. Your draft is kept here.",
+    "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Open a running CLI session, then try again. Your draft is kept here.",
     "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Draft added. Review and press Enter to send.",
     "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Connect Phoenix using the connection button in the CLI header, then try again. If this session started without a connection, start a connected session. Your draft is kept here.",
     "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Attached from Phoenix: {0}.",
