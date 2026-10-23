@@ -8,63 +8,71 @@ Here's a list of top features recently added to Phoenix Code:
 
 `Added in October 2026`
 
-See and edit your page’s HTML structure in the new **Layers** sidebar. Add, rearrange, and duplicate elements, edit their properties, and fine-tune CSS, with changes synced to your code and Live Preview.
+**Edit your web pages visually, without touching code!** The new Layers sidebar lets you explore your page’s HTML structure, add, move, duplicate, or delete elements, and edit their properties.
 
-See which styles affect an element and edit them in one place. Pick colors, adjust sizes and spacing, and watch the result in Live Preview.
+Change colors, fonts, sizes, and spacing with simple visual controls. Every change is instantly reflected in your code and Live Preview.
 
 > The Layers panel is a Phoenix Pro feature.
 
 ![Image](https://docs-images.phcode.dev/in-app/pro-layersPanel.jpg)
 
-## [Visual Questions in Live Preview](https://docs.phcode.dev/app-links/ai-ask)
+## [Ask AI in Live Preview](https://docs.phcode.dev/app-links/ai-ask)
 
 `Added in October 2026`
 
-Select part of your page and use **Ask AI** to explore an idea. Phoenix AI can create interactive questions with design options you can try on the page—layouts, colors, and styles you can see before choosing what goes into your code.
+**Just point and ask AI, instead of explaining what you want to change!** Select any part of your page in Live Preview and ask AI to make changes. No need to describe where or what you're referring to.
 
-Hover to preview an option, click to keep it, then press **Send** to confirm. You can also use **Ask AI** with selected code or Markdown text.
+Ask AI to suggest alternative designs, explore color schemes, or try different fonts.
+
+**Ask AI also works with [custom server previews](https://docs.phcode.dev/docs/Features/Live%20Preview/live-preview-settings)**, including PHP and other server-rendered pages, as well as selected code or Markdown text.
+
+> Available only in desktop apps.
+
+![](https://user-cdn.phcode.site/images/50f6bd8b-6d22-436f-ad53-8674891c457e.jpeg)
+
+## [Intelligent UI in AI Chat](https://docs.phcode.dev/app-links/ai-chat)
+
+`Added in October 2026`
+
+**See what AI means, instead of just reading about it!** Phoenix AI can now show interactive designs, buttons, cards, layouts, and more directly in chat.
+
+Explore different styles, click through options, and adjust controls right in the conversation. Instead of just describing an idea, AI can show you how it looks and works—all without opening Live Preview or writing code.
 
 > This feature is available only in desktop apps.
 
-![Image](https://docs-images.phcode.dev/in-app/pro-aiAsk.jpg)
+![](https://user-cdn.phcode.site/images/6d84fa6b-0a0c-47a7-b0b6-499cc20ec5fb.png)
 
-## [Interactive Replies in Chat](https://docs.phcode.dev/app-links/ai-chat)
-
-`Added in October 2026`
-
-Phoenix AI can create interactive mockups, comparisons, and explanations in the chat. Click through options and adjust controls to explore an idea, instead of piecing it together from a text description. You can use these visuals even without a page open in Live Preview.
-
-> This feature is available only in desktop apps.
-
-## [Bring Your Existing CLI Agents into Phoenix Code](https://docs.phcode.dev/app-links/ai-cli)
+## [Bring Your Claude Code & Codex CLI to Phoenix Code](https://docs.phcode.dev/app-links/ai-cli)
 
 `Added in October 2026`
 
-Bring your existing agents into Phoenix Code and give them a visual way to work with you. **ChatGPT Codex** and **Claude Code CLI** gain tools to prototype designs in Live Preview, show interactive choices, and ask questions on your page—so you can see, try, and refine ideas instead of just reading descriptions.
+**Supercharge your existing CLI agents with rich, interactive visual workflows!** Use your existing Claude Code or Codex subscriptions in Phoenix Code to explore designs in Live Preview, try interactive options, and make changes visually instead of relying on text descriptions.
 
-Keep multiple sessions running and switch between them as you work. You can also transfer an **Ask AI** draft and its attachments to a connected session, then review and submit it there.
+Run multiple CLI sessions, switch between them easily, and send **Ask AI** requests directly to your agents. Track your AI consumption with the built-in **AI Usage Meter** (see below).
 
-> Running the CLIs inside the panel is a Phoenix Pro feature, available only in desktop apps.
+> Running CLI agents inside Phoenix Code is a Phoenix Pro feature, available only in desktop apps.
 
-![Image](https://docs-images.phcode.dev/in-app/pro-aiCli.jpg)
+![](https://user-cdn.phcode.site/images/117a072b-efd1-4623-87d7-5c20746a9b6b.gif)
 
-## [AI Usage Graphs](https://docs.phcode.dev/app-links/ai-chat)
-
-`Added in October 2026`
-
-See your AI usage across Phoenix AI, ChatGPT Codex, and Claude Code CLI sessions in Phoenix. Track tokens, estimated costs, and model breakdowns, with daily activity graphs and monthly history.
-
-Costs are estimates at API list prices; your provider bill may differ. You can delete usage history while keeping your chats.
-
-> These features are available only in desktop apps.
-
-## [Simpler AI Setup](https://docs.phcode.dev/app-links/ai-chat)
+## [Track Your AI Usage](https://docs.phcode.dev/app-links/ai-chat)
 
 `Added in October 2026`
 
-Get from signing in to creating with AI more easily, with guided setup in Phoenix Code. The start screen brings Phoenix AI, ChatGPT Codex, and Claude Code CLI together and shows your running sessions.
+**See how much AI you're using, all in one place!** Track token usage and estimated costs across Phoenix AI, Claude Code, and Codex CLI sessions.
 
-> This feature is available only in desktop apps.
+Explore daily usage graphs, monthly trends, and breakdowns by AI model. You can also clear your usage history without deleting your chats.
+
+> Costs are estimated using API list prices and may differ from your actual provider charges. Available only in desktop apps.
+
+![](https://user-cdn.phcode.site/images/84bdfaf0-31c1-45eb-8a59-3107179f7c04.png)
+
+## [Easier AI Setup & Quick Access](https://docs.phcode.dev/app-links/ai-chat)
+
+`Added in October 2026`
+
+**Get started with your favorite AI tools more easily!** The new AI start screen brings Phoenix AI, ChatGPT Codex, and Claude Code CLI together in one place.
+
+Quickly set up your AI tools, switch running sessions, and pick up right where you left off.
 
 ![Image](https://docs-images.phcode.dev/in-app/pro-aiPanel.jpg)
 
@@ -76,19 +84,25 @@ See what you can create with Phoenix AI before signing in or using any AI credit
 
 > This feature is available only in desktop apps.
 
-## [AI Thinking Effort](https://docs.phcode.dev/app-links/ai-chat)
+## [Adjust AI Thinking Effort](https://docs.phcode.dev/app-links/ai-chat)
 
 `Added in October 2026`
 
-Adjust how deeply supported AI models reason, from quick everyday tasks to more involved problems. Choose **Thinking effort** for the selected model, or leave it at Default.
+**Choose how much effort AI puts into solving your problems!** Use lower thinking effort for quick, simple tasks or higher effort for complex problems that need deeper reasoning.
+
+Select your preferred **Thinking Effort** for supported AI models, or leave it at **Default** to use the model's standard setting.
 
 > This feature is available only in desktop apps.
 
-## [Find Photos with AI](https://docs.phcode.dev/app-links/ai-images)
+![](https://user-cdn.phcode.site/images/3428ceb1-402d-4410-86ca-552bc02805b9.png)
+
+## [Discover Stock Photos with AI](https://docs.phcode.dev/app-links/ai-images)
 
 `Added in October 2026`
 
-Find the right photos for your page together with AI. Browse and compare options in an interactive gallery, refine the search, and choose what fits your design. Ask AI to use your choices on the page or download them into your project.
+**Find the perfect photos for your website with the help of AI!** Explore real stock photos, discover new ideas, and let AI help you narrow down your choices to find images that fit your design.
+
+Ask AI to add your favorite photos directly to your page or download them into your project.
 
 > This feature is available only in desktop apps.
 
@@ -98,7 +112,9 @@ Find the right photos for your page together with AI. Browse and compare options
 
 `Added in October 2026`
 
-Open an image in a larger lightbox without leaving your document. Click an unlinked image in reader mode, or use its expand button or double-click while editing. Press Escape to return to your Markdown.
+**Take a closer look at images without leaving your Markdown document!** Open images in a larger view to see details more clearly, whether you're reading or editing.
+
+Simply click an image in reader mode, or double-click it while editing. Press **Escape** to return to your document.
 
 ## [Style Your Page Visually with the Styles Bar](https://docs.phcode.dev/app-links/styles-bar)
 
