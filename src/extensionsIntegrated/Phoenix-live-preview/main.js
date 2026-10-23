@@ -778,10 +778,6 @@ define(function (require, exports, module) {
         }
     }
 
-    function _isPopoutSupported() {
-        return Phoenix.isNativeApp || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
-    }
-
     function _setTitle(fileName, fullPath, currentLivePreviewURL) {
         let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW,
             tooltip = message;
@@ -945,7 +941,9 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtn", "click");
         });
 
-        if(!_isPopoutSupported()){
+        const popoutSupported = Phoenix.isNativeApp
+            || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
+        if(!popoutSupported){
             // live preview can be popped out currently in only chrome based browsers. The cross domain iframe
             // that serves the live preview(phcode.live) is sandboxed to the tab in which phcode.dev resides.
             // all iframes in the tab can communicate between each other, but when you popout another tab, it forms
