@@ -44,7 +44,8 @@ This module dispatches several events:
          (e, fileRemoved:File, suppressRedraw:boolean, paneId:string)
    - workingSetRemoveList -- When multiple files are removed from the working set
          (e, filesRemoved:Array."File", paneId:string)
-   - workingSetSort -- When a pane's view array is reordered without additions or removals.
+   - workingSetSort -- When a pane's view array is reordered without additions or removals. Also fired when a
+         file is pinned or unpinned, as pinned files are kept at the front of the working set.
          (e, paneId:string)
    - workingSetUpdate -- When changes happen due to system events such as a file being deleted.
                              listeners should discard all working set info and rebuilt it from the pane
@@ -85,6 +86,8 @@ To listen for events, do something like this: (see EventDispatcher for details o
     * [.addToWorkingSet(paneId, file, [index], [forceRedraw])](#module_view/MainViewManager..addToWorkingSet)
     * [.addListToWorkingSet(paneId, fileList)](#module_view/MainViewManager..addListToWorkingSet)
     * [.switchPaneFocus()](#module_view/MainViewManager..switchPaneFocus)
+    * [.setFilePinned(paneId, file, pinned)](#module_view/MainViewManager..setFilePinned) ⇒ <code>boolean</code>
+    * [.isPathPinned(paneId, fullPath)](#module_view/MainViewManager..isPathPinned) ⇒ <code>boolean</code>
     * [.traverseToNextViewByMRU(direction)](#module_view/MainViewManager..traverseToNextViewByMRU) ⇒ <code>Object</code>
     * [.traverseToNextViewInListOrder(direction)](#module_view/MainViewManager..traverseToNextViewInListOrder) ⇒ <code>Object</code>
     * [.beginTraversal()](#module_view/MainViewManager..beginTraversal)
@@ -381,6 +384,36 @@ Adds the given file list to the end of the workingset.
 Switch between panes
 
 **Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+<a name="module_view/MainViewManager..setFilePinned"></a>
+
+### view/MainViewManager.setFilePinned(paneId, file, pinned) ⇒ <code>boolean</code>
+Pins or unpins a file in a pane. Pinned files are kept at the front of the working set, in the order the
+user arranged them, and the bulk close commands (close others, close all...) leave them alone.
+Pinning a file that is only being previewed (not in the working set yet) adds it to the working set first.
+Fires `workingSetSort` for the pane when the pinned state changes.
+
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+**Returns**: <code>boolean</code> - true if the pinned state changed  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paneId | <code>string</code> | the id of the pane the file is in or ACTIVE_PANE |
+| file | <code>File</code> | the file to pin or unpin |
+| pinned | <code>boolean</code> | true to pin, false to unpin |
+
+<a name="module_view/MainViewManager..isPathPinned"></a>
+
+### view/MainViewManager.isPathPinned(paneId, fullPath) ⇒ <code>boolean</code>
+Whether the file is pinned in the given pane
+
+**Kind**: inner method of [<code>view/MainViewManager</code>](#module_view/MainViewManager)  
+**Returns**: <code>boolean</code> - true if the file is pinned  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paneId | <code>string</code> | the id of the pane or ACTIVE_PANE |
+| fullPath | <code>string</code> | the full path of the file |
+
 <a name="module_view/MainViewManager..traverseToNextViewByMRU"></a>
 
 ### view/MainViewManager.traverseToNextViewByMRU(direction) ⇒ <code>Object</code>

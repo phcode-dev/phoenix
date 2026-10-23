@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, awaits, jsPromise */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, jsPromise, spyOn */
 
 define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
@@ -73,6 +73,25 @@ define(function (require, exports, module) {
                 await awaitsForDone(
                     CommandManager.execute(Commands.FILE_OPEN, options),
                     `Open file ${filePath}${paneId ? ` in ${paneId}` : ""}`
+                );
+            }
+        }
+
+        /**
+         * Helper function to add files to a working set and open them, like the file tree double click does
+         * @param {string[]} filePaths - Array of file paths to add
+         * @param {string} [paneId] - Optional pane ID to add the files to
+         * @returns {Promise<void>}
+         */
+        async function addToWorkingSet(filePaths, paneId) {
+            for (const filePath of filePaths) {
+                const options = { fullPath: filePath };
+                if (paneId) {
+                    options.paneId = paneId;
+                }
+                await awaitsForDone(
+                    CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, options),
+                    `Add ${filePath} to the working set`
                 );
             }
         }
@@ -230,6 +249,91 @@ define(function (require, exports, module) {
         function tabExistsInPane(filePath, paneId) {
             const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
             return $(tabBarId).find(`.tab[data-path="${filePath}"]`).length > 0;
+        }
+
+        /**
+         * Helper function to get an item of a context menu by its label
+         * @param {string} menuId - id of the menu element, like "tabbar-context-menu"
+         * @param {string} text - the label of the item
+         * @returns {jQuery} - The li element of the item
+         */
+        function getMenuItemByText(menuId, text) {
+            return $(`#${menuId} .menu-name`).filter(function () {
+                return $(this).text().trim() === text;
+            }).closest("li");
+        }
+
+        /**
+         * Helper function to open the context menu of a tab, in whichever pane it is
+         * @param {jQuery} $tab - the tab element
+         * @returns {Promise<void>}
+         */
+        async function openContextMenuOfTab($tab) {
+            expect($tab.length).toBe(1);
+            $tab.trigger($.Event("contextmenu", { pageX: 100, pageY: 100 }));
+            await awaitsFor(
+                function () {
+                    return $("#tabbar-context-menu").hasClass("open");
+                },
+                "Tab context menu to appear"
+            );
+        }
+
+        /**
+         * Helper function to open the context menu of a working set item
+         * @param {jQuery} $row - the li element of the item
+         * @returns {Promise<void>}
+         */
+        async function openContextMenuOfWorkingSetItem($row) {
+            expect($row.length).toBe(1);
+            $row.trigger($.Event("contextmenu", { pageX: 100, pageY: 200, target: $row.find("a")[0] }));
+            await awaitsFor(
+                function () {
+                    return $("#workingset-context-menu").hasClass("open");
+                },
+                "Working set context menu to appear"
+            );
+        }
+
+        /**
+         * Helper function to get the working set item of a file in a pane's list
+         * @param {string} filePath - The path of the file
+         * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+         * @returns {jQuery} - The li element of the item
+         */
+        function getWorkingSetItemInPane(filePath, paneId) {
+            return $(`#working-set-list-${paneId} li`).filter(function () {
+                const file = $(this).data("file");
+                return file && file.fullPath === filePath;
+            });
+        }
+
+        /**
+         * Helper function to get the tab of a file in a pane's tab bar
+         * @param {string} filePath - The path of the file
+         * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+         * @returns {jQuery} - The tab element
+         */
+        function getTabInPane(filePath, paneId) {
+            const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+            return $(tabBarId).find(`.tab[data-path="${filePath}"]`);
+        }
+
+        /**
+         * Helper function to read a file from disk
+         * @param {string} filePath - The path of the file
+         * @returns {Promise<string>} - The text of the file
+         */
+        function readFileFromDisk(filePath) {
+            return new Promise(function (resolve, reject) {
+                FileSystem.getFileForPath(filePath).read(function (err, text) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(text);
+                    }
+                });
+            });
         }
 
         beforeAll(async function () {
@@ -1114,6 +1218,71 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Tab Reuse", function () {
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                await awaitsFor(
+                    function () {
+                        return getTabCount() === 0;
+                    },
+                    "Tab bar to update with no tabs"
+                );
+            });
+
+            it("should keep the existing tab elements when files are opened, switched and closed", async function () {
+                await openTestFiles([testFilePath]);
+                await waitForTabs([testFilePath]);
+                const firstTab = getTab(testFilePath)[0];
+
+                // opening another file only adds a tab, the existing one is left alone
+                await openTestFiles([testFilePath2]);
+                await waitForTabs([testFilePath, testFilePath2]);
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath2);
+                    },
+                    "Second tab to become active"
+                );
+                const secondTab = getTab(testFilePath2)[0];
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+
+                // switching files moves the active marker, the tabs stay the same elements
+                await openTestFiles([testFilePath]);
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath);
+                    },
+                    "First tab to become active"
+                );
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+                expect(getTab(testFilePath2)[0]).toBe(secondTab);
+
+                // a dirty flag change only toggles a class on the tab
+                const doc = DocumentManager.getOpenDocumentForPath(testFilePath);
+                doc.setText("// Modified content");
+                await awaitsFor(
+                    function () {
+                        return isTabDirty(testFilePath);
+                    },
+                    "Dirty indicator to appear"
+                );
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+                doc.setText("// Test file 1 for TabBar");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE, { doc: doc }), "Save file");
+
+                // closing a file removes just its tab
+                await closeTestFiles([testFilePath2]);
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath2);
+                    },
+                    "Second tab to disappear"
+                );
+                expect(getTab(testFilePath)[0]).toBe(firstTab);
+            });
+        });
+
         describe("Active Tab", function () {
             beforeEach(async function () {
                 // Enable the tab bar feature
@@ -1432,6 +1601,33 @@ define(function (require, exports, module) {
                 await closeTestFiles(testFiles);
             });
 
+            it("should hide the overflow button once the tabs fit and never open an empty menu", async function () {
+                const testFiles = await createTestFiles(15, "overflow-test", "// Overflow test file");
+                await openTestFiles(testFiles);
+                await waitForTabs(testFiles);
+                await awaitsFor(
+                    function () {
+                        return isOverflowButtonVisible();
+                    },
+                    "Overflow button to appear"
+                );
+
+                await closeTestFiles(testFiles.slice(3));
+                await awaitsFor(
+                    function () {
+                        return getTabCount() === 3 && !isOverflowButtonVisible();
+                    },
+                    "Overflow button to hide once the tabs fit"
+                );
+
+                // the click handler of the button is still there, but with no hidden tab there is no menu to show
+                expect(getOverflowDropdown().length).toBe(0);
+                getOverflowButton().click();
+                expect(getOverflowDropdown().length).toBe(0);
+
+                await closeTestFiles(testFiles.slice(0, 3));
+            });
+
             it("should scroll tab bar to make selected file visible when selecting from working set", async function () {
                 // Create several test files to ensure overflow
                 const testFiles = await createTestFiles(15, "overflow-test", "// Overflow test file");
@@ -1544,6 +1740,27 @@ define(function (require, exports, module) {
 
                 // Verify the tab has a file icon
                 expect(hasFileIcon(testFilePath)).toBe(true);
+            });
+
+            it("should draw the icons of a provider registered after the tabs were made", async function () {
+                await openTestFiles([testFilePath]);
+                await waitForTabs([testFilePath]);
+                expect(getTab(testFilePath).find(".late-test-icon").length).toBe(0);
+
+                // a provider can't be unregistered, so it is switched off again once the spec is done
+                let lateIconActive = true;
+                testWindow.brackets.test.WorkingSetView.addIconProvider(function (data) {
+                    if (lateIconActive && data.fullPath === testFilePath) {
+                        return "<i class='late-test-icon'></i>";
+                    }
+                }, 100);
+                await awaitsFor(
+                    function () {
+                        return getTab(testFilePath).find(".late-test-icon").length === 1;
+                    },
+                    "Late icon provider to draw on the existing tab"
+                );
+                lateIconActive = false;
             });
 
             it("should display a dirty indicator when the file is modified and remove it when saved", async function () {
@@ -1846,6 +2063,8 @@ define(function (require, exports, module) {
                 // Get the tab element
                 const $tab = getTab(testFilePath);
                 expect($tab.length).toBe(1);
+                const currentBefore = MainViewManager.getCurrentlyViewedPath("first-pane");
+                expect(currentBefore).toBe(testFilePath3);
 
                 // Simulate a right-click (contextmenu) event on the tab
                 const event = $.Event("contextmenu", {
@@ -1862,8 +2081,11 @@ define(function (require, exports, module) {
                     "Context menu to appear"
                 );
 
-                // Verify the context menu is open
+                // Verify the context menu is open, for the right-clicked tab, while the current file stays put
                 expect(getContextMenu().hasClass("open")).toBe(true);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(currentBefore);
+                expect(isTabActive(testFilePath3)).toBe(true);
+                expect($tab.hasClass("context")).toBe(true);
 
                 // Clean up - close the context menu by clicking elsewhere
                 $("body").click();
@@ -2089,109 +2311,6 @@ define(function (require, exports, module) {
                 expect(getTabCount()).toBe(1);
             });
 
-            it("should close saved tabs when selecting 'Close saved tabs' from context menu", async function () {
-                // Open all three test files
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
-                    "Open first test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
-                    "Open second test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
-                    "Open third test file"
-                );
-
-                // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
-                    },
-                    "All tabs to appear"
-                );
-
-                // Verify all three tabs exist
-                expect(tabExists(testFilePath)).toBe(true);
-                expect(tabExists(testFilePath2)).toBe(true);
-                expect(tabExists(testFilePath3)).toBe(true);
-
-                // Make the second file dirty
-                const doc2 = DocumentManager.getOpenDocumentForPath(testFilePath2);
-                doc2.setText("// Modified content");
-
-                // Wait for the dirty indicator to appear
-                await awaitsFor(
-                    function () {
-                        return isTabDirty(testFilePath2);
-                    },
-                    "Dirty indicator to appear"
-                );
-
-                // Verify the second tab is dirty
-                expect(isTabDirty(testFilePath2)).toBe(true);
-
-                // Get any tab element (we'll use the first)
-                const $tab = getTab(testFilePath);
-
-                // Right-click on the tab to open context menu
-                const mousedownEvent = $.Event("mousedown", {
-                    button: 2,
-                    pageX: 100,
-                    pageY: 100
-                });
-                $tab.trigger(mousedownEvent);
-
-                const contextmenuEvent = $.Event("contextmenu", {
-                    pageX: 100,
-                    pageY: 100
-                });
-                $tab.trigger(contextmenuEvent);
-
-                // Wait for context menu to appear
-                await awaitsFor(
-                    function () {
-                        return getContextMenu().hasClass("open");
-                    },
-                    "Context menu to appear"
-                );
-
-                // Find and click the "Close Saved Tabs" option
-                const $closeSavedTabsOption = getContextMenu()
-                    .find(".menu-name")
-                    .filter(function () {
-                        return $(this).text().trim() === Strings.CLOSE_SAVED_TABS;
-                    })
-                    .closest("li");
-                expect($closeSavedTabsOption.length).toBe(1);
-                $closeSavedTabsOption.click();
-
-                // Cancel any save dialogs that might appear
-                cancelSaveDialog();
-
-                // Verify only the dirty tab remains
-                await awaitsFor(
-                    function () {
-                        return !tabExists(testFilePath) && tabExists(testFilePath2) && !tabExists(testFilePath3);
-                    },
-                    "Saved tabs to be closed"
-                );
-
-                expect(tabExists(testFilePath)).toBe(false);
-                expect(tabExists(testFilePath2)).toBe(true);
-                expect(tabExists(testFilePath3)).toBe(false);
-                expect(getTabCount()).toBe(1);
-                expect(isTabDirty(testFilePath2)).toBe(true);
-
-                // Clean up - revert changes to the second file
-                doc2.setText("// Test file 2 for TabBar");
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_SAVE, { doc: doc2 }),
-                    "Save file with original content"
-                );
-            });
-
             it("should close all tabs when selecting 'Close all tabs' from context menu", async function () {
                 // Open all three test files
                 await awaitsForDone(
@@ -2270,6 +2389,962 @@ define(function (require, exports, module) {
                 expect(tabExists(testFilePath2)).toBe(false);
                 expect(tabExists(testFilePath3)).toBe(false);
                 expect(getTabCount()).toBe(0);
+            });
+        });
+
+        describe("Pinned Tabs", function () {
+            let pinFiles;
+
+            function getContextMenuItem(text) {
+                return $("#tabbar-context-menu")
+                    .find(".menu-name")
+                    .filter(function () {
+                        return $(this).text().trim() === text;
+                    })
+                    .closest("li");
+            }
+
+            function getWorkingSetItem(filePath) {
+                return $("#working-set-list-container li").filter(function () {
+                    const file = $(this).data("file");
+                    return file && file.fullPath === filePath;
+                });
+            }
+
+            function getWorkingSetOrder() {
+                return MainViewManager.getWorkingSet("first-pane").map((file) => file.fullPath);
+            }
+
+            async function openTabContextMenu(filePath) {
+                getTab(filePath).trigger($.Event("contextmenu", { pageX: 100, pageY: 100 }));
+                await awaitsFor(
+                    function () {
+                        return $("#tabbar-context-menu").hasClass("open");
+                    },
+                    "Context menu to appear"
+                );
+            }
+
+            async function closeContextMenu() {
+                $("body").click();
+                await awaitsFor(
+                    function () {
+                        return !$("#tabbar-context-menu").hasClass("open");
+                    },
+                    "Context menu to disappear"
+                );
+            }
+
+            async function pinFromContextMenu(filePath, paneId = "first-pane") {
+                await openTabContextMenu(filePath);
+                const $pinItem = getContextMenuItem(Strings.PIN_TAB);
+                expect($pinItem.length).toBe(1);
+                $pinItem.click();
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.isPathPinned(paneId, filePath) && getTab(filePath).hasClass("pinned");
+                    },
+                    "Tab to be pinned"
+                );
+            }
+
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+                pinFiles = await createTestFiles(3, "pin-test", "// Pin test file");
+                await openTestFiles(pinFiles);
+                await waitForTabs(pinFiles);
+            });
+
+            afterEach(async function () {
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            it("should pin a tab from the context menu and show a pin instead of the close button", async function () {
+                await pinFromContextMenu(pinFiles[1]);
+
+                const $tab = getTab(pinFiles[1]);
+                expect($tab.find(".tab-pin").length).toBe(1);
+                expect($tab.find(".tab-close").length).toBe(0);
+                expect(getTab(pinFiles[0]).find(".tab-close").length).toBe(1);
+
+                // pinned tabs move to the front, in the working set and in the tab bar
+                expect(getWorkingSetOrder()).toEqual([pinFiles[1], pinFiles[0], pinFiles[2]]);
+                expect($("#phoenix-tab-bar .tab").first().attr("data-path")).toBe(pinFiles[1]);
+
+                // the menu offers to unpin a pinned tab
+                await openTabContextMenu(pinFiles[1]);
+                expect(getContextMenuItem(Strings.UNPIN_TAB).length).toBe(1);
+                expect(getContextMenuItem(Strings.PIN_TAB).length).toBe(0);
+                await closeContextMenu();
+            });
+
+            it("should unpin a tab when its pin icon is clicked", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                getTab(pinFiles[0]).find(".tab-pin").click();
+                await awaitsFor(
+                    function () {
+                        return !MainViewManager.isPathPinned("first-pane", pinFiles[0]) &&
+                            getTab(pinFiles[0]).find(".tab-close").length === 1;
+                    },
+                    "Tab to be unpinned"
+                );
+                expect(getTab(pinFiles[0]).hasClass("pinned")).toBe(false);
+            });
+
+            it("should show the pin in the working set and unpin from there", async function () {
+                await pinFromContextMenu(pinFiles[2]);
+
+                await awaitsFor(
+                    function () {
+                        return getWorkingSetItem(pinFiles[2]).find(".file-status-icon.pinned").length === 1;
+                    },
+                    "Pin icon to appear in the working set"
+                );
+                // the working set lists the pinned file first as well
+                expect($("#working-set-list-container li").first().data("file").fullPath).toBe(pinFiles[2]);
+
+                getWorkingSetItem(pinFiles[2]).find(".file-status-icon.pinned").trigger("mousedown");
+                await awaitsFor(
+                    function () {
+                        return !MainViewManager.isPathPinned("first-pane", pinFiles[2]) &&
+                            !getTab(pinFiles[2]).hasClass("pinned");
+                    },
+                    "File to be unpinned from the working set"
+                );
+                expect(getWorkingSetItem(pinFiles[2]).find(".file-status-icon.pinned").length).toBe(0);
+            });
+
+            it("should keep pinned tabs open when closing all tabs from the context menu", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                await openTabContextMenu(pinFiles[1]);
+                const $closeAll = getContextMenuItem(Strings.CLOSE_ALL_TABS);
+                expect($closeAll.length).toBe(1);
+                $closeAll.click();
+                cancelSaveDialog();
+
+                await awaitsFor(
+                    function () {
+                        return getTabCount() === 1;
+                    },
+                    "Unpinned tabs to close"
+                );
+                expect(tabExists(pinFiles[0])).toBe(true);
+                expect(getWorkingSetOrder()).toEqual([pinFiles[0]]);
+            });
+
+            it("should skip pinned tabs for close tabs to the left and disable it when nothing is left to close", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+                await pinFromContextMenu(pinFiles[1]);
+                expect(getWorkingSetOrder()).toEqual([pinFiles[0], pinFiles[1], pinFiles[2]]);
+
+                // everything to the left of the last tab is pinned, so there is nothing to close
+                await openTabContextMenu(pinFiles[2]);
+                expect(getContextMenuItem(Strings.CLOSE_TABS_TO_THE_LEFT).find("a").hasClass("disabled")).toBe(true);
+                expect(getContextMenuItem(Strings.CLOSE_OTHER_TABS).find("a").hasClass("disabled")).toBe(true);
+                expect(getContextMenuItem(Strings.CLOSE_TABS_TO_THE_RIGHT).find("a").hasClass("disabled")).toBe(true);
+                expect(getContextMenuItem(Strings.CLOSE_ALL_TABS).find("a").hasClass("disabled")).toBe(false);
+                await closeContextMenu();
+
+                // from the first tab, close tabs to the right only closes the unpinned one
+                await openTabContextMenu(pinFiles[0]);
+                expect(getContextMenuItem(Strings.CLOSE_TABS_TO_THE_RIGHT).find("a").hasClass("disabled")).toBe(false);
+                getContextMenuItem(Strings.CLOSE_TABS_TO_THE_RIGHT).click();
+                cancelSaveDialog();
+
+                await awaitsFor(
+                    function () {
+                        return !tabExists(pinFiles[2]);
+                    },
+                    "Unpinned tab to the right to close"
+                );
+                expect(getWorkingSetOrder()).toEqual([pinFiles[0], pinFiles[1]]);
+            });
+
+            it("should pin a tab dropped in front of a pinned tab and unpin one dropped behind an unpinned tab", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                await simulateTabDragAndDrop(pinFiles[2], pinFiles[0], true);
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.isPathPinned("first-pane", pinFiles[2]) &&
+                            getTab(pinFiles[2]).hasClass("pinned");
+                    },
+                    "Tab dropped in front of a pinned tab to be pinned"
+                );
+                expect(getWorkingSetOrder()).toEqual([pinFiles[2], pinFiles[0], pinFiles[1]]);
+
+                await simulateTabDragAndDrop(pinFiles[0], pinFiles[1], false);
+                await awaitsFor(
+                    function () {
+                        return !MainViewManager.isPathPinned("first-pane", pinFiles[0]) &&
+                            !getTab(pinFiles[0]).hasClass("pinned");
+                    },
+                    "Tab dropped behind an unpinned tab to be unpinned"
+                );
+                expect(getWorkingSetOrder()).toEqual([pinFiles[2], pinFiles[1], pinFiles[0]]);
+                expect(MainViewManager.isPathPinned("first-pane", pinFiles[2])).toBe(true);
+            });
+
+            it("should show the dirty indicator on a pinned tab and on its working set item", async function () {
+                await pinFromContextMenu(pinFiles[1]);
+                const doc = DocumentManager.getOpenDocumentForPath(pinFiles[1]);
+                doc.setText("// Pin test file changed");
+                await awaitsFor(
+                    function () {
+                        return isTabDirty(pinFiles[1]);
+                    },
+                    "Pinned tab to show the dirty indicator"
+                );
+                expect(getTab(pinFiles[1]).hasClass("pinned")).toBe(true);
+                expect(getTab(pinFiles[1]).find(".tab-pin").length).toBe(1);
+                expect(getTab(pinFiles[1]).find(".tab-close").length).toBe(0);
+
+                // the working set item shows the dirty dot while the mouse is away and the pin while it hovers
+                const $row = getWorkingSetItem(pinFiles[1]);
+                await awaitsFor(
+                    function () {
+                        return $row.find(".file-status-icon.dirty").length === 1;
+                    },
+                    "Pinned working set item to show the dirty dot"
+                );
+                expect($row.find(".file-status-icon.pinned").length).toBe(0);
+                $row.trigger("mouseenter");
+                expect($row.find(".file-status-icon.pinned").length).toBe(1);
+                expect($row.find(".file-status-icon.dirty").length).toBe(0);
+                $row.trigger("mouseleave");
+                expect($row.find(".file-status-icon.dirty").length).toBe(1);
+
+                // once the file is clean again the pin is back
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE, { doc: doc }), "Save the pinned file");
+                await awaitsFor(
+                    function () {
+                        return !isTabDirty(pinFiles[1]) && $row.find(".file-status-icon.pinned").length === 1;
+                    },
+                    "Pin to show again once the file is clean"
+                );
+                expect($row.find(".file-status-icon.dirty").length).toBe(0);
+            });
+
+            it("should close an unpinned tab on middle click but not a pinned one", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                getTab(pinFiles[0]).trigger($.Event("mousedown", { which: 2, button: 1 }));
+                getTab(pinFiles[1]).trigger($.Event("mousedown", { which: 2, button: 1 }));
+                cancelSaveDialog();
+                await awaitsFor(
+                    function () {
+                        return !tabExists(pinFiles[1]);
+                    },
+                    "Unpinned tab to close on middle click"
+                );
+                expect(tabExists(pinFiles[0])).toBe(true);
+                expect(MainViewManager.isPathPinned("first-pane", pinFiles[0])).toBe(true);
+                expect(getWorkingSetOrder()).toEqual([pinFiles[0], pinFiles[2]]);
+            });
+
+            it("should only focus the editor when the active tab is clicked again", async function () {
+                expect(isTabActive(pinFiles[2])).toBe(true);
+                const executeSpy = spyOn(CommandManager, "execute").and.callThrough();
+                const openCalls = () => executeSpy.calls.allArgs().filter((args) => args[0] === Commands.FILE_OPEN);
+
+                // the active tab doesn't open the file again, that would rebuild the editor
+                getTab(pinFiles[2]).trigger($.Event("mousedown", { which: 1, button: 0 }));
+                expect(openCalls().length).toBe(0);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(pinFiles[2]);
+
+                // another tab is opened through the command
+                getTab(pinFiles[1]).trigger($.Event("mousedown", { which: 1, button: 0 }));
+                expect(openCalls().length).toBe(1);
+                expect(openCalls()[0][1].fullPath).toBe(pinFiles[1]);
+                await awaitsFor(
+                    function () {
+                        return isTabActive(pinFiles[1]);
+                    },
+                    "Other tab to become active"
+                );
+            });
+
+            it("should take a ctrl click on mac as a right click and not open the tab", async function () {
+                expect(isTabActive(pinFiles[2])).toBe(true);
+                const executeSpy = spyOn(CommandManager, "execute").and.callThrough();
+                const openCalls = () => executeSpy.calls.allArgs().filter((args) => args[0] === Commands.FILE_OPEN);
+
+                getTab(pinFiles[0]).trigger($.Event("mousedown", { which: 1, button: 0, ctrlKey: true }));
+                if (testWindow.brackets.platform === "mac") {
+                    expect(openCalls().length).toBe(0);
+                    expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(pinFiles[2]);
+                } else {
+                    expect(openCalls().length).toBe(1);
+                    expect(openCalls()[0][1].fullPath).toBe(pinFiles[0]);
+                    await awaitsFor(
+                        function () {
+                            return isTabActive(pinFiles[0]);
+                        },
+                        "Ctrl clicked tab to become active"
+                    );
+                }
+            });
+
+            it("should keep a tab pinned when it is dragged to the other pane", async function () {
+                await pinFromContextMenu(pinFiles[0]);
+
+                MainViewManager.setLayoutScheme(1, 2);
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.getPaneCount() === 2;
+                    },
+                    "Second pane to be created"
+                );
+
+                const sourceTab = getTab(pinFiles[0]);
+                const emptyPaneTarget = $("#second-pane .pane-content");
+                sourceTab.trigger($.Event("dragstart", {
+                    originalEvent: { dataTransfer: { setData: function () {}, effectAllowed: "move" } }
+                }));
+                emptyPaneTarget.trigger($.Event("dragover", {
+                    originalEvent: { dataTransfer: { dropEffect: "move" } },
+                    preventDefault: function () {}
+                }));
+                emptyPaneTarget.trigger($.Event("drop", {
+                    originalEvent: { dataTransfer: {} },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                }));
+                sourceTab.trigger($.Event("dragend"));
+
+                await awaitsFor(
+                    function () {
+                        return tabExistsInPane(pinFiles[0], "second-pane") && !tabExistsInPane(pinFiles[0], "first-pane");
+                    },
+                    "Tab to move to the second pane"
+                );
+                expect(MainViewManager.isPathPinned("second-pane", pinFiles[0])).toBe(true);
+                expect(MainViewManager.isPathPinned("first-pane", pinFiles[0])).toBe(false);
+
+                // the working set lists follow the move as well
+                const workingSetPaneOf = (filePath) => $("#working-set-list-container li").filter(function () {
+                    const file = $(this).data("file");
+                    return file && file.fullPath === filePath;
+                }).closest(".working-set-view").attr("id");
+                await awaitsFor(
+                    function () {
+                        return workingSetPaneOf(pinFiles[0]) === "working-set-list-second-pane";
+                    },
+                    "Working set to list the file under the second pane"
+                );
+                expect($("#working-set-list-second-pane .file-status-icon.pinned").length).toBe(1);
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar-2").find(`.tab[data-path="${pinFiles[0]}"] .tab-pin`).length === 1;
+                    },
+                    "Pin to show on the moved tab"
+                );
+            });
+        });
+
+        describe("Settings Menu", function () {
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1, smoothScroll: false });
+                await testWindow.closeAllFiles();
+                await openTestFiles([testFilePath]);
+                await waitForTabs([testFilePath]);
+            });
+
+            afterEach(function () {
+                testWindow.brackets.test.Menus.closeAll();
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1, smoothScroll: false });
+            });
+
+            async function openSettingsMenu() {
+                const $bar = $("#phoenix-tab-bar");
+                const barRect = $bar[0].getBoundingClientRect();
+                $bar.trigger($.Event("mousedown", { which: 1, target: $bar[0] }));
+                $bar.trigger($.Event("click", { target: $bar[0], pageX: barRect.right - 5, pageY: barRect.top + 5 }));
+                await awaitsFor(
+                    function () {
+                        return $("#tabbar-settings-context-menu").hasClass("open");
+                    },
+                    "Settings menu to open"
+                );
+            }
+
+            it("should open the tab bar settings from the empty part of the bar and toggle smooth scrolling", async function () {
+                const $bar = $("#phoenix-tab-bar");
+                const barRect = $bar[0].getBoundingClientRect();
+                $bar.trigger($.Event("mousedown", { which: 1, target: $bar[0] }));
+                $bar.trigger($.Event("click", { target: $bar[0], pageX: barRect.right - 5, pageY: barRect.top + 5 }));
+
+                await awaitsFor(
+                    function () {
+                        return $("#tabbar-settings-context-menu").hasClass("open");
+                    },
+                    "Settings menu to open"
+                );
+                const itemNames = $("#tabbar-settings-context-menu .menu-name").map(function () {
+                    return $(this).text().trim();
+                }).get();
+                expect(itemNames).toContain(Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL);
+                expect(itemNames).toContain(Strings.TABBAR_NUMBER_OF_TABS);
+                expect(itemNames).toContain(Strings.CMD_HIDE_TABBAR);
+                expect(itemNames).not.toContain(Strings.CMD_WORKINGSET_SORT_BY_NAME);
+
+                const $smoothItem = $("#tabbar-settings-context-menu .menu-name").filter(function () {
+                    return $(this).text().trim() === Strings.CMD_TOGGLE_TABBAR_SMOOTH_SCROLL;
+                }).closest("li");
+                expect($smoothItem.find("a").hasClass("checked")).toBe(false);
+                $smoothItem.click();
+
+                await awaitsFor(
+                    function () {
+                        return PreferencesManager.get("tabBar.options").smoothScroll === true;
+                    },
+                    "Smooth scrolling preference to turn on"
+                );
+                expect(CommandManager.get(Commands.TOGGLE_TABBAR_SMOOTH_SCROLL).getChecked()).toBe(true);
+
+                // a press that started on a tab and ended on the empty part of the bar is reported as a click
+                // on the bar as well, that one must not open the settings
+                getTab(testFilePath).trigger($.Event("mousedown", { which: 1 }));
+                $bar.trigger($.Event("click", { target: $bar[0], pageX: barRect.right - 5, pageY: barRect.top + 5 }));
+                expect($("#tabbar-settings-context-menu").hasClass("open")).toBe(false);
+            });
+
+            it("should limit the tabs when a count is picked from the number of tabs submenu", async function () {
+                const files = await createTestFiles(5, "count-test", "// count test file");
+                await openTestFiles(files);
+                await waitForTabs(files);
+                expect(getTabCount()).toBe(6);
+
+                await openSettingsMenu();
+                const $countItem = $("#tabbar-number-of-tabs-submenu .menu-name").filter(function () {
+                    return $(this).text().trim() === "3";
+                }).closest("li");
+                expect($countItem.length).toBe(1);
+                expect($countItem.find("a").hasClass("checked")).toBe(false);
+                $countItem.click();
+
+                await awaitsFor(
+                    function () {
+                        return PreferencesManager.get("tabBar.options").numberOfTabs === 3 && getTabCount() === 3;
+                    },
+                    "Only three tabs to show"
+                );
+                // the current file is past the limit and still gets a tab
+                expect(isTabActive(files[4])).toBe(true);
+                expect(CommandManager.get("tabbar.numberOfTabs.3").getChecked()).toBe(true);
+                expect(CommandManager.get("tabbar.numberOfTabs.all").getChecked()).toBe(false);
+            });
+        });
+
+        describe("Placeholder Rows", function () {
+            let originalProjectPath;
+
+            function getWorkingSetItem(filePath) {
+                return $("#working-set-list-container li").filter(function () {
+                    const file = $(this).data("file");
+                    return file && file.fullPath === filePath;
+                });
+            }
+
+            // a file is only previewed when it belongs to the project, files from elsewhere always go
+            // straight into the working set. So the test folder becomes the project for these specs
+            beforeAll(async function () {
+                originalProjectPath = testWindow.brackets.test.ProjectManager.getProjectRoot().fullPath;
+                await testWindow.closeAllFiles();
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            }, 30000);
+
+            afterAll(async function () {
+                await testWindow.closeAllFiles();
+                await SpecRunnerUtils.loadProjectInTestWindow(originalProjectPath);
+            }, 30000);
+
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                await addToWorkingSet([testFilePath]);
+                await waitForTabs([testFilePath]);
+            });
+
+            it("should show a previewed file as a placeholder in the working set and the tab bar alike", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath2, FileViewController.PROJECT_MANAGER),
+                    "Preview second file from the file tree"
+                );
+
+                await awaitsFor(
+                    function () {
+                        return getTab(testFilePath2).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath2).hasClass("placeholder");
+                    },
+                    "Placeholder tab and working set row to appear"
+                );
+                expect(MainViewManager.findInWorkingSet("first-pane", testFilePath2)).toBe(-1);
+                // the placeholder sits after the working set files in both
+                expect($("#phoenix-tab-bar .tab").last().attr("data-path")).toBe(testFilePath2);
+                expect($("#working-set-list-container li").last().data("file").fullPath).toBe(testFilePath2);
+
+                // previewing another file replaces the placeholder in both
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath3, FileViewController.PROJECT_MANAGER),
+                    "Preview third file from the file tree"
+                );
+                await awaitsFor(
+                    function () {
+                        return getTab(testFilePath3).hasClass("placeholder") && !tabExists(testFilePath2) &&
+                            getWorkingSetItem(testFilePath3).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath2).length === 0;
+                    },
+                    "Placeholder to move to the third file"
+                );
+
+                // clicking the placeholder row keeps the file, in the working set and the tab bar
+                getWorkingSetItem(testFilePath3).trigger($.Event("mousedown", { which: 1, pageY: 10 }));
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.findInWorkingSet("first-pane", testFilePath3) !== -1 &&
+                            !getTab(testFilePath3).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath3).length === 1 &&
+                            !getWorkingSetItem(testFilePath3).hasClass("placeholder");
+                    },
+                    "Placeholder to become a working set file"
+                );
+            });
+
+            it("should keep the current file when a working set item is right-clicked", async function () {
+                await addToWorkingSet([testFilePath2]);
+                await waitForTabs([testFilePath, testFilePath2]);
+                await awaitsFor(
+                    function () {
+                        return getWorkingSetItem(testFilePath).length === 1 && isTabActive(testFilePath2);
+                    },
+                    "Working set rows to appear"
+                );
+
+                const $row = getWorkingSetItem(testFilePath);
+                $row.trigger($.Event("mousedown", { which: 3, pageY: 10 }));
+                $row.trigger($.Event("contextmenu", { pageX: 100, pageY: 200, target: $row.find("a")[0] }));
+                await awaitsFor(
+                    function () {
+                        return $("#workingset-context-menu").hasClass("open");
+                    },
+                    "Working set context menu to appear"
+                );
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+                expect($row.hasClass("context")).toBe(true);
+
+                // the menu acts on the right-clicked file: Close closes it, not the current file
+                const $closeItem = $("#workingset-context-menu .menu-name").filter(function () {
+                    return $(this).text().trim() === Strings.CMD_FILE_CLOSE;
+                }).closest("li");
+                $closeItem.click();
+                cancelSaveDialog();
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath) && getWorkingSetItem(testFilePath).length === 0;
+                    },
+                    "Right-clicked file to close"
+                );
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+                expect(testWindow.brackets.test.FileViewController.getWorkingSetContext()).toBe(null);
+            });
+
+            it("should forget the right-clicked file as soon as the menu is gone, however it went", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                const Menus = testWindow.brackets.test.Menus;
+                await addToWorkingSet([testFilePath2]);
+                await waitForTabs([testFilePath, testFilePath2]);
+
+                // a left click on another row closes the menu through Menus.closeAll without telling it
+                const $row = getWorkingSetItem(testFilePath);
+                $row.trigger($.Event("contextmenu", { pageX: 100, pageY: 200, target: $row.find("a")[0] }));
+                await awaitsFor(() => $("#workingset-context-menu").hasClass("open"), "Working set menu to appear");
+                expect(FileViewController.getWorkingSetContext().file.fullPath).toBe(testFilePath);
+                Menus.closeAll();
+                await awaitsFor(() => FileViewController.getWorkingSetContext() === null, "Context forgotten after closeAll");
+                expect($row.hasClass("context")).toBe(false);
+
+                // a click anywhere else closes it through the dropdown plugin on the document
+                const $tab = getTab(testFilePath);
+                $tab.trigger($.Event("contextmenu", { pageX: 100, pageY: 100 }));
+                await awaitsFor(() => $("#tabbar-context-menu").hasClass("open"), "Tab context menu to appear");
+                expect(FileViewController.getWorkingSetContext().file.fullPath).toBe(testFilePath);
+                $(testWindow.document).trigger("click");
+                await awaitsFor(() => FileViewController.getWorkingSetContext() === null, "Context forgotten after a click");
+                expect($tab.hasClass("context")).toBe(false);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+            });
+
+            it("should keep a previewed file when it is saved", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath2, FileViewController.PROJECT_MANAGER),
+                    "Preview second file from the file tree"
+                );
+                await awaitsFor(() => getTab(testFilePath2).hasClass("placeholder"), "Placeholder tab to appear");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE), "Save the previewed file");
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.findInWorkingSet("first-pane", testFilePath2) !== -1 &&
+                            !getTab(testFilePath2).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath2).length === 1 &&
+                            !getWorkingSetItem(testFilePath2).hasClass("placeholder");
+                    },
+                    "Saved preview to become a working set file"
+                );
+            });
+
+            it("should keep a previewed file when it is pinned from its tab", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath2, FileViewController.PROJECT_MANAGER),
+                    "Preview second file from the file tree"
+                );
+                await awaitsFor(() => getTab(testFilePath2).hasClass("placeholder"), "Placeholder tab to appear");
+
+                await openContextMenuOfTab(getTab(testFilePath2));
+                getMenuItemByText("tabbar-context-menu", Strings.PIN_TAB).click();
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.isPathPinned("first-pane", testFilePath2) &&
+                            getTab(testFilePath2).hasClass("pinned") && !getTab(testFilePath2).hasClass("placeholder");
+                    },
+                    "Previewed file to join the working set pinned"
+                );
+                expect(MainViewManager.getWorkingSet("first-pane").map((file) => file.fullPath))
+                    .toEqual([testFilePath2, testFilePath]);
+                const $row = getWorkingSetItem(testFilePath2);
+                expect($row.length).toBe(1);
+                expect($row.hasClass("placeholder")).toBe(false);
+                expect($row.find(".file-status-icon.pinned").length).toBe(1);
+            });
+
+            it("should keep the previewed file when saving all files", async function () {
+                const FileViewController = testWindow.brackets.test.FileViewController;
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testFilePath2, FileViewController.PROJECT_MANAGER),
+                    "Preview second file from the file tree"
+                );
+                await awaitsFor(() => getTab(testFilePath2).hasClass("placeholder"), "Placeholder tab to appear");
+
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "Save all files");
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.findInWorkingSet("first-pane", testFilePath2) !== -1 &&
+                            !getTab(testFilePath2).hasClass("placeholder") &&
+                            getWorkingSetItem(testFilePath2).length === 1 &&
+                            !getWorkingSetItem(testFilePath2).hasClass("placeholder");
+                    },
+                    "Saved preview to become a working set file"
+                );
+            });
+
+            it("should not show a closed file as a placeholder while the next one opens", async function () {
+                await addToWorkingSet([testFilePath2, testFilePath3]);
+                await waitForTabs([testFilePath, testFilePath2, testFilePath3]);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath3);
+
+                // the closed file stays in view until the next one is ready, during which neither list may
+                // treat it as a preview. The pane reports that state directly
+                const pane = MainViewManager._getPane("first-pane");
+                const file = FileSystem.getFileForPath(testFilePath3);
+                const closePromise = CommandManager.execute(Commands.FILE_CLOSE, { file: file });
+                expect(pane.getTemporaryViewFile()).toBe(null);
+                await awaitsForDone(closePromise, "Close the current file");
+                await awaitsFor(
+                    () => !tabExists(testFilePath3) && getWorkingSetItem(testFilePath3).length === 0,
+                    "Closed file to leave both lists"
+                );
+                expect($("#phoenix-tab-bar .tab.placeholder").length).toBe(0);
+                expect($("#working-set-list-container li.placeholder").length).toBe(0);
+            });
+        });
+
+        describe("Context Menu Commands", function () {
+            let originalProjectPath, ProjectManager, SidebarView, Menus;
+
+            // rename and show in file tree act on the file tree, so the test folder is the project here
+            beforeAll(async function () {
+                ProjectManager = testWindow.brackets.test.ProjectManager;
+                SidebarView = testWindow.brackets.test.SidebarView;
+                Menus = testWindow.brackets.test.Menus;
+                originalProjectPath = ProjectManager.getProjectRoot().fullPath;
+                await testWindow.closeAllFiles();
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            }, 30000);
+
+            afterAll(async function () {
+                await testWindow.closeAllFiles();
+                await SpecRunnerUtils.loadProjectInTestWindow(originalProjectPath);
+            }, 30000);
+
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                await addToWorkingSet([testFilePath, testFilePath2]);
+                await waitForTabs([testFilePath, testFilePath2]);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+            });
+
+            afterEach(async function () {
+                Menus.closeAll();
+                if ($("#project-files-container .jstree-rename-input").length) {
+                    ProjectManager._actionCreator.cancelRename();
+                }
+                SidebarView.show();
+                await testWindow.closeAllFiles();
+            });
+
+            it("should save the right-clicked file and not the current one", async function () {
+                const docA = DocumentManager.getOpenDocumentForPath(testFilePath),
+                    docB = DocumentManager.getOpenDocumentForPath(testFilePath2);
+                docA.setText("// Test file 1 for TabBar, changed");
+                docB.setText("// Test file 2 for TabBar, changed");
+                await awaitsFor(
+                    function () {
+                        return isTabDirty(testFilePath) && isTabDirty(testFilePath2);
+                    },
+                    "Both tabs to show the dirty indicator"
+                );
+
+                await openContextMenuOfTab(getTab(testFilePath));
+                getMenuItemByText("tabbar-context-menu", Strings.CMD_FILE_SAVE).click();
+                await awaitsFor(
+                    function () {
+                        return !docA.isDirty && !isTabDirty(testFilePath);
+                    },
+                    "Right-clicked file to be saved"
+                );
+                expect(await readFileFromDisk(testFilePath)).toBe("// Test file 1 for TabBar, changed");
+                expect(docB.isDirty).toBe(true);
+                expect(isTabDirty(testFilePath2)).toBe(true);
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+
+                // put the file back the way the other specs expect it
+                docA.setText("// Test file 1 for TabBar");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE, { doc: docA }), "Restore the file");
+            });
+
+            it("should copy the path of the right-clicked file", async function () {
+                const copySpy = spyOn(testWindow.Phoenix.app, "copyToClipboard");
+                await openContextMenuOfTab(getTab(testFilePath));
+                getMenuItemByText("tabbar-context-menu", Strings.CMD_FILE_COPY_PATH).click();
+                await awaitsFor(
+                    function () {
+                        return copySpy.calls.count() > 0;
+                    },
+                    "Path to be copied"
+                );
+                expect(copySpy).toHaveBeenCalledWith(ProjectManager.makeProjectRelativeIfPossible(testFilePath));
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath2);
+            });
+
+            it("should reveal the right-clicked file in the tree even when the sidebar is hidden", async function () {
+                const fileName = testFilePath.split("/").pop();
+                SidebarView.hide();
+                expect(SidebarView.isVisible()).toBe(false);
+
+                await openContextMenuOfTab(getTab(testFilePath));
+                getMenuItemByText("tabbar-context-menu", Strings.CMD_SHOW_IN_TREE).click();
+                await awaitsFor(
+                    function () {
+                        const selectedName = $("#project-files-container .selected-node").text()
+                            .replace(new RegExp("\\s", "g"), "");
+                        return SidebarView.isVisible() && selectedName === fileName;
+                    },
+                    "Sidebar to show with the right-clicked file selected in the tree"
+                );
+                expect(ProjectManager.getSelectedItem().fullPath).toBe(testFilePath);
+                // the file selected in the tree is always the one in the editor, so the revealed file is shown too
+                expect(MainViewManager.getCurrentlyViewedPath("first-pane")).toBe(testFilePath);
+            });
+
+            it("should rename the right-clicked file in the tree even when the sidebar is hidden", async function () {
+                SidebarView.hide();
+                expect(SidebarView.isVisible()).toBe(false);
+
+                await openContextMenuOfTab(getTab(testFilePath));
+                getMenuItemByText("tabbar-context-menu", Strings.CMD_FILE_RENAME).click();
+                await awaitsFor(
+                    function () {
+                        return SidebarView.isVisible() &&
+                            $("#project-files-container .jstree-rename-input").length === 1;
+                    },
+                    "Sidebar to show with the rename input in the tree"
+                );
+                expect($("#project-files-container .jstree-rename-input").val()).toBe(testFilePath.split("/").pop());
+
+                ProjectManager._actionCreator.cancelRename();
+                await awaitsFor(
+                    function () {
+                        return $("#project-files-container .jstree-rename-input").length === 0;
+                    },
+                    "Rename to be cancelled"
+                );
+            });
+
+            it("should only offer rename and show in tree when the right-clicked file is on disk", async function () {
+                const untitledDoc = await jsPromise(CommandManager.execute(Commands.FILE_NEW_UNTITLED));
+                const untitledPath = untitledDoc.file.fullPath;
+                await waitForTabs([untitledPath]);
+                await openTestFiles([testFilePath]);
+                await awaitsFor(() => isTabActive(testFilePath), "First file to be current again");
+
+                function itemDisabled(text) {
+                    return getMenuItemByText("tabbar-context-menu", text).find("a").hasClass("disabled");
+                }
+
+                // the untitled file isn't on disk, while the current file is
+                await openContextMenuOfTab(getTab(untitledPath));
+                await awaitsFor(
+                    function () {
+                        return itemDisabled(Strings.CMD_FILE_RENAME) && itemDisabled(Strings.CMD_SHOW_IN_TREE);
+                    },
+                    "Rename and show in file tree to be disabled for the untitled file"
+                );
+                Menus.closeAll();
+                await awaitsFor(() => !$("#tabbar-context-menu").hasClass("open"), "Menu to close");
+
+                // the other way round, the untitled file is current and a file on disk is right-clicked
+                MainViewManager._edit("first-pane", untitledDoc);
+                await awaitsFor(() => isTabActive(untitledPath), "Untitled file to be current");
+                await openContextMenuOfTab(getTab(testFilePath));
+                await awaitsFor(
+                    function () {
+                        return !itemDisabled(Strings.CMD_FILE_RENAME) && !itemDisabled(Strings.CMD_SHOW_IN_TREE);
+                    },
+                    "Rename and show in file tree to be enabled for the file on disk"
+                );
+            });
+        });
+
+        describe("Second Pane Menus", function () {
+            let paneFiles;
+
+            beforeEach(async function () {
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 2);
+                paneFiles = await createTestFiles(3, "second-pane-menu", "// second pane menu test file");
+                await addToWorkingSet([paneFiles[0], paneFiles[1]], "second-pane");
+                await addToWorkingSet([paneFiles[2]], "first-pane");
+                await waitForTabs([paneFiles[0], paneFiles[1]], "second-pane");
+                await waitForTabs([paneFiles[2]], "first-pane");
+                expect(MainViewManager.getActivePaneId()).toBe("first-pane");
+            });
+
+            afterEach(async function () {
+                testWindow.brackets.test.Menus.closeAll();
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            it("should close and pin the right-clicked tab of the inactive pane", async function () {
+                await openContextMenuOfTab(getTabInPane(paneFiles[1], "second-pane"));
+                expect(MainViewManager.getActivePaneId()).toBe("first-pane");
+                getMenuItemByText("tabbar-context-menu", Strings.CMD_FILE_CLOSE).click();
+                cancelSaveDialog();
+                await awaitsFor(
+                    function () {
+                        return !tabExistsInPane(paneFiles[1], "second-pane");
+                    },
+                    "Right-clicked tab of the second pane to close"
+                );
+                expect(MainViewManager.findInWorkingSet("second-pane", paneFiles[1])).toBe(-1);
+                expect(MainViewManager.getWorkingSet("first-pane").map((file) => file.fullPath))
+                    .toEqual([paneFiles[2]]);
+                expect(tabExistsInPane(paneFiles[2], "first-pane")).toBe(true);
+
+                await openContextMenuOfTab(getTabInPane(paneFiles[0], "second-pane"));
+                getMenuItemByText("tabbar-context-menu", Strings.PIN_TAB).click();
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.isPathPinned("second-pane", paneFiles[0]) &&
+                            getTabInPane(paneFiles[0], "second-pane").hasClass("pinned");
+                    },
+                    "Right-clicked tab of the second pane to be pinned"
+                );
+                expect(MainViewManager.isPathPinned("first-pane", paneFiles[2])).toBe(false);
+            });
+
+            it("should close and pin the right-clicked working set item of the inactive pane", async function () {
+                await openContextMenuOfWorkingSetItem(getWorkingSetItemInPane(paneFiles[1], "second-pane"));
+                expect(MainViewManager.getActivePaneId()).toBe("first-pane");
+                getMenuItemByText("workingset-context-menu", Strings.CMD_FILE_CLOSE).click();
+                cancelSaveDialog();
+                await awaitsFor(
+                    function () {
+                        return getWorkingSetItemInPane(paneFiles[1], "second-pane").length === 0;
+                    },
+                    "Right-clicked item of the second pane to close"
+                );
+                expect(MainViewManager.findInWorkingSet("second-pane", paneFiles[1])).toBe(-1);
+                expect(MainViewManager.getWorkingSet("first-pane").map((file) => file.fullPath))
+                    .toEqual([paneFiles[2]]);
+                expect(getWorkingSetItemInPane(paneFiles[2], "first-pane").length).toBe(1);
+
+                await openContextMenuOfWorkingSetItem(getWorkingSetItemInPane(paneFiles[0], "second-pane"));
+                getMenuItemByText("workingset-context-menu", Strings.CMD_FILE_PIN).click();
+                await awaitsFor(
+                    function () {
+                        const $row = getWorkingSetItemInPane(paneFiles[0], "second-pane");
+                        return MainViewManager.isPathPinned("second-pane", paneFiles[0]) &&
+                            $row.find(".file-status-icon.pinned").length === 1;
+                    },
+                    "Right-clicked item of the second pane to be pinned"
+                );
+                expect(MainViewManager.isPathPinned("first-pane", paneFiles[2])).toBe(false);
+            });
+        });
+
+        describe("Cross Pane Drag", function () {
+            afterEach(async function () {
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            it("should keep the drop position when the target pane already has the file", async function () {
+                MainViewManager.setLayoutScheme(1, 2);
+                const files = await createTestFiles(3, "both-panes", "// file in both panes");
+                await addToWorkingSet([files[1]], "first-pane");
+                await addToWorkingSet([files[0], files[1], files[2]], "second-pane");
+                await waitForTabs([files[1]], "first-pane");
+                await waitForTabs([files[0], files[1], files[2]], "second-pane");
+
+                // dropping the file from the first pane in front of the last tab of the second pane leaves
+                // it where it already is, instead of pushing it past that tab
+                const sourceTab = $(`#phoenix-tab-bar .tab[data-path="${files[1]}"]`);
+                const targetTab = $(`#phoenix-tab-bar-2 .tab[data-path="${files[2]}"]`);
+                const dropX = targetTab[0].getBoundingClientRect().left + 5;
+                sourceTab.trigger($.Event("dragstart", {
+                    originalEvent: { dataTransfer: { setData: function () {}, effectAllowed: "move" } }
+                }));
+                targetTab.trigger($.Event("dragenter"));
+                targetTab.trigger($.Event("dragover", {
+                    originalEvent: { dataTransfer: { dropEffect: "move" }, clientX: dropX },
+                    preventDefault: function () {}
+                }));
+                targetTab.trigger($.Event("drop", {
+                    originalEvent: { dataTransfer: {}, clientX: dropX },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                }));
+                sourceTab.trigger($.Event("dragend"));
+
+                await awaitsFor(
+                    () => !tabExistsInPane(files[1], "first-pane") &&
+                        MainViewManager.getCurrentlyViewedPath("second-pane") === files[1],
+                    "File to leave the first pane and show in the second"
+                );
+                expect(MainViewManager.getWorkingSet("second-pane").map((file) => file.fullPath)).toEqual(files);
+                expect(MainViewManager.getWorkingSet("first-pane").length).toBe(0);
             });
         });
 
@@ -2678,6 +3753,42 @@ define(function (require, exports, module) {
                 expect(getPaneTabCount("second-pane")).toBe(0);
             });
 
+            it("should keep the active tab of the inactive pane in step with its current file", async function () {
+                const files = await createTestFiles(2, "inactive-pane", "// inactive pane file");
+                await addToWorkingSet([files[0], files[1]], "second-pane");
+                await addToWorkingSet([testFilePath], "first-pane");
+                await waitForTabs([files[0], files[1]], "second-pane");
+                await waitForTabs([testFilePath], "first-pane");
+                expect(MainViewManager.getActivePaneId()).toBe("first-pane");
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar-2 .tab.active").attr("data-path") === files[1];
+                    },
+                    "Second pane to mark its current file"
+                );
+
+                // showing the other file in the second pane without activating the pane is only announced by
+                // the pane itself, the tab bar has to pick that up
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, {
+                        fullPath: files[0],
+                        paneId: "second-pane",
+                        options: { noPaneActivate: true }
+                    }),
+                    "Open the first file in the second pane without activating it"
+                );
+                expect(MainViewManager.getActivePaneId()).toBe("first-pane");
+                expect(MainViewManager.getCurrentlyViewedPath("second-pane")).toBe(files[0]);
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar-2 .tab.active").attr("data-path") === files[0];
+                    },
+                    "Tab of the inactive pane to follow its current file"
+                );
+                expect($("#phoenix-tab-bar-2 .tab.active").length).toBe(1);
+                expect($("#phoenix-tab-bar .tab.active").attr("data-path")).toBe(testFilePath);
+            });
+
             it("should work correctly with vertical split layout", async function () {
                 // Change to vertical split layout (2 rows, 1 column)
                 MainViewManager.setLayoutScheme(2, 1);
@@ -2955,8 +4066,9 @@ define(function (require, exports, module) {
                 wheelEventRight.originalEvent = { deltaY: 500 }; // Large scroll right
                 $tabBar.trigger(wheelEventRight);
 
-                // Should not exceed maximum scroll (a small floating point tolerance)
-                expect($tabBar.scrollLeft()).toBeLessThanOrEqual(maxScrollLeft + 1);
+                // Should not exceed maximum scroll. scrollWidth and clientWidth are rounded to whole
+                // pixels while the tabs have fractional widths, so the real end can sit a pixel past them
+                expect($tabBar.scrollLeft()).toBeLessThanOrEqual(maxScrollLeft + 2);
 
                 // Scroll far to the left
                 $tabBar.scrollLeft(-1000); // Try to scroll beyond minimum

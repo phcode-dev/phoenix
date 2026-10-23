@@ -557,8 +557,13 @@ define(function (require, exports, module) {
      * @return {?(File|Directory)}
      */
     function getSelectedItem() {
-        // Prefer file tree context, then file tree selection, else use working set
+        // Prefer file tree context, then the item a working set or tab bar menu is open for,
+        // then file tree selection, else use working set
         var selectedEntry = getFileTreeContext();
+        if (!selectedEntry) {
+            const workingSetContext = FileViewController.getWorkingSetContext();
+            selectedEntry = workingSetContext && workingSetContext.file;
+        }
         if (!selectedEntry) {
             selectedEntry = model.getSelected();
         }
@@ -1797,12 +1802,23 @@ define(function (require, exports, module) {
         setProjectBusy(false, Strings.RENAMING);
     });
 
-    function _duplicateFileCMD() {
+    /**
+     * The path the file commands of the context menus work on: the right-clicked item in the file
+     * tree, else the item a working set or tab bar menu is open for, else the file in the active pane
+     * @private
+     * @return {?string}
+     */
+    function _getCommandTargetPath() {
         let context = getContext();
-        let fullPath = context && context.fullPath;
-        if(!fullPath){
-            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
+        if (!context) {
+            const workingSetContext = FileViewController.getWorkingSetContext();
+            context = workingSetContext && workingSetContext.file;
         }
+        return (context && context.fullPath) || MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
+    }
+
+    function _duplicateFileCMD() {
+        let fullPath = _getCommandTargetPath();
         if(fullPath && isWithinProject(fullPath)){
             let name = _getProjectDisplayNameOrPath(fullPath);
             let message = StringUtils.format(Strings.DUPLICATING, name);
@@ -1856,11 +1872,7 @@ define(function (require, exports, module) {
     }
 
     function _downloadCommand(entryToDownload) {
-        let context = entryToDownload || getContext();
-        let fullPath = context && context.fullPath;
-        if(!fullPath){
-            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
-        }
+        let fullPath = entryToDownload ? entryToDownload.fullPath : _getCommandTargetPath();
         if(fullPath){
             FileSystem.resolve(fullPath, function (err, fileOrFolder) {
                 if(err) {
@@ -1928,11 +1940,7 @@ define(function (require, exports, module) {
     }
 
     function _copyProjectRelativePath() {
-        let context = getContext();
-        let fullPath = context && context.fullPath;
-        if(!fullPath){
-            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
-        }
+        let fullPath = _getCommandTargetPath();
         if(fullPath){
             let pathToCopy = makeProjectRelativeIfPossible(fullPath);
             Phoenix.app.copyToClipboard(pathToCopy);
@@ -1952,11 +1960,7 @@ define(function (require, exports, module) {
     }
 
     function _copyFileCMD() {
-        let context = getContext();
-        let fullPath = context && context.fullPath;
-        if(!fullPath){
-            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
-        }
+        let fullPath = _getCommandTargetPath();
         if(fullPath){
             _registerPathWithClipboard(fullPath, OPERATION_COPY);
         }

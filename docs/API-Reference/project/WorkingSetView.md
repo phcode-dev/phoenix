@@ -63,7 +63,14 @@ to update an existing item, all previously applied classes have been cleared.
 
 <a name="getContext"></a>
 
-## getContext()
-Gets the filesystem object for the current context in the working set.
+## getContext() ⇒ <code>File</code>
+Gets the file a working set or tab bar context menu is open for. Right-clicking an item doesn't
+select it, so this is what the menu commands act on.
+
+**Kind**: global function  
+<a name="getContextPaneId"></a>
+
+## getContextPaneId() ⇒ <code>string</code>
+Gets the id of the pane the file of `getContext()` is shown or listed in
 
 **Kind**: global function  

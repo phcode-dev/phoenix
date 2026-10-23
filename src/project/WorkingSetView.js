@@ -45,7 +45,8 @@ define(function (require, exports, module) {
         paneListTemplate      = require("text!htmlContent/working-set.html"),
         Strings               = require("strings"),
         _                     = require("thirdparty/lodash"),
-        Mustache              = require("thirdparty/mustache/mustache");
+        Mustache              = require("thirdparty/mustache/mustache"),
+        EventDispatcher       = require("utils/EventDispatcher");
 
     /**
      * Open view dictionary
@@ -61,13 +62,6 @@ define(function (require, exports, module) {
      * @private
      */
     var _iconProviders = [];
-
-    /**
-     * The file/folder object of the current context
-     * @type {FileSystemEntry}
-     * @private
-     */
-    var _contextEntry;
 
     /**
      * Class Providers
@@ -90,7 +84,8 @@ define(function (require, exports, module) {
      * @enum {number}
      */
     var LEFT_BUTTON = 1,
-        MIDDLE_BUTTON = 2;
+        MIDDLE_BUTTON = 2,
+        RIGHT_BUTTON = 3;
 
     /**
      * Each list item in the working set stores a references to the related document in the list item's data.
@@ -299,6 +294,7 @@ define(function (require, exports, module) {
                 lastPageY = startPageY,
                 lastHit = { where: NOMANSLAND },
                 tryClosing = $(e.target).hasClass("can-close"),
+                tryUnpinning = $(e.target).closest(".file-status-icon").hasClass("pinned"),
                 currentFile = MainViewManager.getCurrentlyViewedFile(),
                 activePaneId = MainViewManager.getActivePaneId(),
                 activeView = _views[activePaneId],
@@ -763,14 +759,12 @@ define(function (require, exports, module) {
                     // re-enable stuff we turned off
                     _suppressSortRedrawForAllViews(false);
                     _suppressScrollShadowsOnAllViews(false);
-                }
 
-                // we don't need to refresh if the item
-                //  was dragged but not enough to not change
-                //  its order in the working set
-                if (!noRefresh) {
-                    // rebuild the view
-                    refresh(true);
+                    // a plain click changes nothing in the list, rebuilding it would only lose the hover
+                    // state of the row under the mouse. A drag that didn't change the order skips it too
+                    if (!noRefresh) {
+                        refresh(true);
+                    }
                 }
                 // focus the editor
                 MainViewManager.focusActivePane();
@@ -782,8 +776,18 @@ define(function (require, exports, module) {
                 if (sourceView.paneId === currentView.paneId && startingIndex === $el.index()) {
                     // if the item was dragged but not moved then don't open or close
                     if (!dragged) {
-                        // Click on close icon, or middle click anywhere - close the item without selecting it first
-                        if (tryClosing || e.which === MIDDLE_BUTTON) {
+                        // pinned items show a pin instead of the close icon, clicking it unpins the file.
+                        // a middle click on a pinned item does nothing so pinned files don't close by accident
+                        const isPinned = MainViewManager.isPathPinned(sourceView.paneId, sourceFile.fullPath);
+                        if (tryUnpinning) {
+                            CommandManager
+                                .execute(Commands.FILE_PIN, {file: sourceFile,
+                                    paneId: sourceView.paneId, pinned: false})
+                                .always(function () {
+                                    postDropCleanup();
+                                });
+                        } else if (tryClosing || (e.which === MIDDLE_BUTTON && !isPinned)) {
+                            // Click on close icon, or middle click anywhere - close the item without selecting it first
                             CommandManager
                                 .execute(Commands.FILE_CLOSE, {file: sourceFile,
                                     paneId: sourceView.paneId})
@@ -862,9 +866,14 @@ define(function (require, exports, module) {
             // close all menus, and disable sorting
             Menus.closeAll();
 
-            // Dragging only happens with the left mouse button
-            //  or (on the Mac) when the ctrl key isn't pressed
-            if (e.which !== LEFT_BUTTON || (e.ctrlKey && brackets.platform === "mac")) {
+            // a right click is for the context menu, it neither selects nor opens the item
+            if (e.which === RIGHT_BUTTON || (e.ctrlKey && brackets.platform === "mac")) {
+                preDropCleanup();
+                return;
+            }
+
+            // Dragging only happens with the left mouse button, a middle click closes the item
+            if (e.which !== LEFT_BUTTON) {
                 drop();
                 return;
             }
@@ -873,7 +882,7 @@ define(function (require, exports, module) {
             // editor tab bar do, so switching files feels fast instead of waiting
             // for mouse up. A drag can still follow - the item just becomes the
             // current file as soon as it is pressed.
-            if (!tryClosing) {
+            if (!tryClosing && !tryUnpinning) {
                 openedOnMouseDown = true;
                 FileViewController.setFileViewFocus(FileViewController.WORKING_SET_VIEW);
                 CommandManager.execute(Commands.FILE_OPEN, {fullPath: sourceFile.fullPath,
@@ -905,10 +914,45 @@ define(function (require, exports, module) {
     }
 
     /**
+     * The file the pane is showing without it being in the working set (opened with a single click in
+     * the file tree). It gets a placeholder item at the end of the list, the same way the tab bar
+     * shows a placeholder tab for it.
+     * @private
+     * @return {?File}
+     */
+    WorkingSetView.prototype._getPlaceholderFile = function () {
+        return this._pane.getTemporaryViewFile();
+    };
+
+    /**
+     * Keeps the placeholder item in step with the file the pane shows
+     * @private
+     */
+    WorkingSetView.prototype._syncPlaceholder = function () {
+        const $placeholder = this.$openFilesList.children("li.placeholder"),
+            file = this._getPlaceholderFile(),
+            shownPath = $placeholder.length ? $placeholder.data(_FILE_KEY).fullPath : null;
+
+        if ((file ? file.fullPath : null) === shownPath) {
+            return;
+        }
+
+        $placeholder.remove();
+        if (file) {
+            this._createNewListItem(file, true);
+        }
+        this._updateVisibility();
+        this._updateItemClasses();
+        this._adjustForScrollbars();
+        this._updateListSelection();
+    };
+
+    /**
      * Hides or shows the WorkingSetView
      * @private
      */
     WorkingSetView.prototype._updateVisibility = function () {
+        // a placeholder alone keeps a hidden working set hidden, showing it would push the file tree under the mouse
         var fileList = MainViewManager.getWorkingSet(this.paneId);
         if (MainViewManager.getPaneCount() === 1 && (!fileList || fileList.length === 0)) {
             this.$openFilesContainer.hide();
@@ -976,10 +1020,6 @@ define(function (require, exports, module) {
      * @private
      */
     WorkingSetView.prototype._scrollSelectedFileIntoView = function () {
-        if (!_hasSelectionFocus()) {
-            return;
-        }
-
         var file = MainViewManager.getCurrentlyViewedFile(this.paneId);
 
         var $selectedFile = this._findListItemFromFile(file);
@@ -1134,6 +1174,15 @@ define(function (require, exports, module) {
             externalProjectFiles = [],
             fileList = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
 
+        // the placeholder items take part as well, their files are shown but not in the working sets
+        MainViewManager.getPaneIdList().forEach(function (paneId) {
+            const file = MainViewManager.getCurrentlyViewedFile(paneId);
+            const isPlaceholder = file && MainViewManager.findInWorkingSet(paneId, file.fullPath) === -1;
+            if (isPlaceholder && fileList.indexOf(file) === -1) {
+                fileList.push(file);
+            }
+        });
+
         // We need to always clear current directories as files could be removed from working tree.
         this.$openFilesContainer.find("ul > li > a > span.directory").remove();
 
@@ -1183,15 +1232,21 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Updates the appearance of the list element based on the parameters provided
+     * Updates the appearance of the list element based on the parameters provided.
+     * The status icon slot shows one thing at a time: the close icon while hovering an unpinned item,
+     * the pin icon for a pinned item (hovering or not dirty), otherwise the dirty dot if the file is dirty.
      * @private
      * @param {!HTMLLIElement} listElement
      * @param {bool} isDirty
-     * @param {bool} canClose
+     * @param {bool} canClose - true while the mouse is over the item
+     * @param {bool} isPinned
      */
-    WorkingSetView.prototype._updateFileStatusIcon = function (listElement, isDirty, canClose) {
+    WorkingSetView.prototype._updateFileStatusIcon = function (listElement, isDirty, canClose, isPinned) {
         var $fileStatusIcon = listElement.find(".file-status-icon"),
-            showIcon = isDirty || canClose;
+            showPin = isPinned && (canClose || !isDirty),
+            showClose = canClose && !isPinned,
+            showDirty = isDirty && !showPin && !showClose,
+            showIcon = showPin || showClose || showDirty;
 
         // remove icon if its not needed
         if (!showIcon && $fileStatusIcon.length !== 0) {
@@ -1207,8 +1262,16 @@ define(function (require, exports, module) {
 
         // Set icon's class
         if ($fileStatusIcon) {
-            ViewUtils.toggleClass($fileStatusIcon, "dirty", isDirty);
-            ViewUtils.toggleClass($fileStatusIcon, "can-close", canClose);
+            ViewUtils.toggleClass($fileStatusIcon, "dirty", showDirty);
+            ViewUtils.toggleClass($fileStatusIcon, "can-close", showClose);
+            ViewUtils.toggleClass($fileStatusIcon, "pinned", showPin);
+            if (showPin) {
+                if ($fileStatusIcon.children(".pinned-file-icon").length === 0) {
+                    $fileStatusIcon.html("<i class='pinned-file-icon'></i>").attr("title", Strings.CMD_FILE_UNPIN);
+                }
+            } else if ($fileStatusIcon.children().length !== 0) {
+                $fileStatusIcon.empty().removeAttr("title");
+            }
         }
     };
 
@@ -1235,9 +1298,10 @@ define(function (require, exports, module) {
      * Builds the UI for a new list item and inserts in into the end of the list
      * @private
      * @param {File} file
+     * @param {boolean=} isPlaceholder - true for the file the pane shows without it being in the working set
      * @return {HTMLLIElement} newListItem
      */
-    WorkingSetView.prototype._createNewListItem = function (file) {
+    WorkingSetView.prototype._createNewListItem = function (file, isPlaceholder) {
         var self = this,
             selectedFile = MainViewManager.getCurrentlyViewedFile(this.paneId),
             data = {fullPath: file.fullPath,
@@ -1270,18 +1334,49 @@ define(function (require, exports, module) {
         });
 
         // Update the listItem's apperance
-        this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false);
+        this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false, this._isPinned(file));
         _updateListItemSelection($newItem, selectedFile);
-        _makeDraggable($newItem);
 
+        if (isPlaceholder) {
+            // a placeholder can't be dragged around as it has no place in the working set yet.
+            // Clicking it keeps the file, like clicking the placeholder tab does
+            $newItem.addClass("placeholder");
+            $newItem.on("mousedown", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                Menus.closeAll();
+                if (e.which === MIDDLE_BUTTON || (e.which === LEFT_BUTTON && $(e.target).hasClass("can-close"))) {
+                    CommandManager.execute(Commands.FILE_CLOSE, {file: file, paneId: self.paneId});
+                } else if (e.which === LEFT_BUTTON && !(e.ctrlKey && brackets.platform === "mac")) {
+                    FileViewController.openFileAndAddToWorkingSet(file.fullPath, self.paneId);
+                }
+            });
+        } else {
+            _makeDraggable($newItem);
+        }
+
+        // the hover state is remembered on the item as the status icon alone can't tell anymore,
+        // a pinned item shows its pin whether the mouse is over it or not
         $newItem.hover(
             function () {
-                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true);
+                $(this).data("hovered", true);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true, self._isPinned(file));
             },
             function () {
-                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false);
+                $(this).data("hovered", false);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false, self._isPinned(file));
             }
         );
+    };
+
+    /**
+     * Whether the file is pinned in this view's pane
+     * @private
+     * @param {!File} file
+     * @return {boolean}
+     */
+    WorkingSetView.prototype._isPinned = function (file) {
+        return MainViewManager.isPathPinned(this.paneId, file.fullPath);
     };
 
     /**
@@ -1297,6 +1392,11 @@ define(function (require, exports, module) {
         fileList.forEach(function (file) {
             self._createNewListItem(file);
         });
+
+        const placeholderFile = this._getPlaceholderFile();
+        if (placeholderFile) {
+            this._createNewListItem(placeholderFile, true);
+        }
 
         if (forceRedraw) {
             self._redraw();
@@ -1392,9 +1492,10 @@ define(function (require, exports, module) {
                     // without having to move the mouse, if there is a next file.
                     var $nextListItem = $listItem.next();
                     if ($nextListItem && $nextListItem.length > 0) {
-                        var canClose = ($listItem.find(".can-close").length === 1);
-                        var isDirty = _isOpenAndDirty($nextListItem.data(_FILE_KEY));
-                        this._updateFileStatusIcon($nextListItem, isDirty, canClose);
+                        const canClose = ($listItem.data("hovered") === true);
+                        const nextFile = $nextListItem.data(_FILE_KEY);
+                        const isDirty = _isOpenAndDirty(nextFile);
+                        this._updateFileStatusIcon($nextListItem, isDirty, canClose, this._isPinned(nextFile));
                     }
                     $listItem.remove();
                 }
@@ -1455,8 +1556,8 @@ define(function (require, exports, module) {
     WorkingSetView.prototype._handleDirtyFlagChanged = function (e, doc) {
         var listItem = this._findListItemFromFile(doc.file);
         if (listItem) {
-            var canClose = $(listItem).find(".can-close").length === 1;
-            this._updateFileStatusIcon(listItem, doc.isDirty, canClose);
+            const canClose = $(listItem).data("hovered") === true;
+            this._updateFileStatusIcon(listItem, doc.isDirty, canClose, this._isPinned(doc.file));
         }
     };
 
@@ -1474,12 +1575,50 @@ define(function (require, exports, module) {
         }
     };
 
+    /**
+     * Marks the item a context menu is open for, so it is clear what the menu acts on while the
+     * selection stays where it was
+     * @private
+     * @param {jQuery.Event} e - event object
+     * @param {?{file: File, paneId: string}} context - the file the menu is open for
+     */
+    WorkingSetView.prototype._handleWorkingSetContextChange = function (e, context) {
+        this.$openFilesList.children("li.context").removeClass("context");
+        if (context && context.paneId === this.paneId) {
+            const $listItem = this._findListItemFromFile(context.file);
+            if ($listItem) {
+                $listItem.addClass("context");
+            }
+        }
+    };
+
+    /**
+     * workingSetMove event handler, a file moved from one pane's working set to the other's
+     * @private
+     * @param {jQuery.Event} e - event object
+     * @param {!File} file - the file that moved
+     * @param {!string} sourcePaneId - the pane the file left
+     * @param {!string} destinationPaneId - the pane the file went to
+     */
+    WorkingSetView.prototype._handleWorkingSetMove = function (e, file, sourcePaneId, destinationPaneId) {
+        // a drag within the working set itself refreshes all the views once the drop is done
+        if (this.suppressSortRedraw) {
+            return;
+        }
+        if (this.paneId === sourcePaneId || this.paneId === destinationPaneId) {
+            this._rebuildViewList(true);
+        } else {
+            this._checkForDuplicateAndNonProjectFiles();
+        }
+    };
+
 
     /**
      * Initializes the WorkingSetView object
      * @private
      */
     WorkingSetView.prototype.init = function () {
+        this._pane = MainViewManager._getPane(this.paneId);
         this.$openFilesContainer = this.$el.find(".open-files-container");
         this.$workingSetListViewHeader = this.$el.find(".working-set-header");
 
@@ -1494,10 +1633,18 @@ define(function (require, exports, module) {
         MainViewManager.on(this._makeEventName("activePaneChange"), _.bind(this._handleActivePaneChange, this));
         MainViewManager.on(this._makeEventName("paneLayoutChange"), _.bind(this._handlePaneLayoutChange, this));
         MainViewManager.on(this._makeEventName("workingSetUpdate"), _.bind(this._handleWorkingSetUpdate, this));
+        MainViewManager.on(this._makeEventName("workingSetMove"), _.bind(this._handleWorkingSetMove, this));
+
+        // the placeholder item follows the file the pane shows. MainViewManager only announces the
+        // active pane's file changes, so the pane itself is asked for the rest
+        MainViewManager.on(this._makeEventName("currentFileChange"), _.bind(this._syncPlaceholder, this));
+        this._pane.on(this._makeEventName("currentViewChange"), _.bind(this._syncPlaceholder, this));
 
         DocumentManager.on(this._makeEventName("dirtyFlagChange"), _.bind(this._handleDirtyFlagChanged, this));
 
         FileViewController.on(this._makeEventName("documentSelectionFocusChange") + " " + this._makeEventName("fileViewFocusChange"), _.bind(this._updateListSelection, this));
+        FileViewController.on(this._makeEventName("workingSetContextChange"),
+            _.bind(this._handleWorkingSetContextChange, this));
 
         // Show scroller shadows when open-files-container scrolls
         ViewUtils.addScrollerShadow(this.$openFilesContainer[0], null, true);
@@ -1506,8 +1653,11 @@ define(function (require, exports, module) {
         // Disable horizontal scrolling until WebKit bug #99379 is fixed
         this.$openFilesContainer.css("overflow-x", "hidden");
 
+        const self = this;
         this.$openFilesContainer.on("contextmenu.workingSetView", function (e) {
-            _contextEntry = $(e.target).closest("li").data(_FILE_KEY);
+            // the menu acts on the right-clicked item, the selection stays where it is
+            const file = $(e.target).closest("li").data(_FILE_KEY);
+            FileViewController.setWorkingSetContext(file || null, self.paneId);
             Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).open(e);
         });
 
@@ -1523,6 +1673,7 @@ define(function (require, exports, module) {
         this.$openFilesContainer.off(".workingSetView");
         this.$el.remove();
         MainViewManager.off(this._makeEventName(""));
+        this._pane.off(this._makeEventName(""));
         DocumentManager.off(this._makeEventName(""));
         FileViewController.off(this._makeEventName(""));
     };
@@ -1563,6 +1714,7 @@ define(function (require, exports, module) {
         // build all views so the provider has a chance to add icons
         //    to all items that have already been created
         refresh(true);
+        exports.trigger("providersChange");
     }
 
     /**
@@ -1586,6 +1738,7 @@ define(function (require, exports, module) {
         // build all views so the provider has a chance to style
         //    all items that have already been created
         refresh(true);
+        exports.trigger("providersChange");
     }
 
     AppInit.htmlReady(function () {
@@ -1644,13 +1797,28 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Gets the filesystem object for the current context in the working set.
+     * Gets the file a working set or tab bar context menu is open for. Right-clicking an item doesn't
+     * select it, so this is what the menu commands act on.
+     * @return {?File}
      */
     function getContext() {
-        return _contextEntry;
+        const context = FileViewController.getWorkingSetContext();
+        return context ? context.file : undefined;
+    }
+
+    /**
+     * Gets the id of the pane the file of `getContext()` is shown or listed in
+     * @return {?string}
+     */
+    function getContextPaneId() {
+        const context = FileViewController.getWorkingSetContext();
+        return context ? context.paneId : undefined;
     }
 
     // Public API
+    // the tab bar draws its icons with the same providers, so it is told when new ones arrive
+    EventDispatcher.makeEventDispatcher(exports);
+
     exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
     exports.refresh                       = refresh;
     exports.refreshSelection              = refreshSelection;
@@ -1658,6 +1826,7 @@ define(function (require, exports, module) {
     exports.addClassProvider              = addClassProvider;
     exports.syncSelectionIndicator        = syncSelectionIndicator;
     exports.getContext                    = getContext;
+    exports.getContextPaneId              = getContextPaneId;
 
     // API to be used only by default extensions
     exports.useIconProviders              = useIconProviders;

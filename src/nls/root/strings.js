@@ -1046,7 +1046,7 @@ define({
     "GEAR_MENU_TOOLTIP": "Configure Working Files",
 
     "CMD_TOGGLE_SHOW_WORKING_SET": "Show Working Files",
-    "CMD_TOGGLE_SHOW_FILE_TABS": "Show File Tab Bar",
+    "CMD_TOGGLE_SHOW_FILE_TABS": "Show Tab Bar",
 
     "SPLITVIEW_INFO_TITLE": "Already Open",
     "SPLITVIEW_MULTIPANE_WARNING": "The file is already open in another pane. {APP_NAME} will soon support opening the same file in more than one pane. Until then, the file will be shown in the pane it's already open in.<br /><br />(You'll only see this message once.)",
@@ -1151,9 +1151,11 @@ define({
     // Tab bar Strings
     "CLOSE_TABS_TO_THE_RIGHT": "Close Tabs to the Right",
     "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
+    "CLOSE_OTHER_TABS": "Close Other Tabs",
     "CLOSE_ALL_TABS": "Close All Tabs",
-    "CLOSE_SAVED_TABS": "Close Saved Tabs",
     "CLOSE_TAB_TOOLTIP": "Close Tab",
+    "PIN_TAB": "Pin Tab",
+    "UNPIN_TAB": "Unpin Tab",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
@@ -1208,6 +1210,8 @@ define({
     "CMD_FILE_CLOSE_OTHERS": "Close Others",
     "CMD_FILE_CLOSE_ABOVE": "Close Others Above",
     "CMD_FILE_CLOSE_BELOW": "Close Others Below",
+    "CMD_FILE_PIN": "Pin",
+    "CMD_FILE_UNPIN": "Unpin",
     "CMD_FILE_SAVE": "Save File",
     "CMD_FILE_SAVE_ALL": "Save All",
     "CMD_FILE_SAVE_AS": "Save As\u2026",
@@ -1288,7 +1292,11 @@ define({
     "CMD_TOGGLE_LP_FULL_SCREEN": "Toggle Live Preview Full Screen",
     "LIVE_PREVIEW_FULL_SCREEN": "Expand Live Preview to Full Screen",
     "LIVE_PREVIEW_EXIT_FULL_SCREEN": "Exit Full Screen",
-    "CMD_TOGGLE_TABBAR": "File Tab Bar",
+    "CMD_TOGGLE_TABBAR": "Toggle Tab Bar",
+    "CMD_TOGGLE_TABBAR_SMOOTH_SCROLL": "Smooth Tab Scrolling",
+    "CMD_HIDE_TABBAR": "Hide Tab Bar",
+    "TABBAR_NUMBER_OF_TABS": "Number of Tabs",
+    "TABBAR_ALL_TABS": "All",
     "CMD_TOGGLE_PANELS": "Toggle Panels",
     "CMD_TOGGLE_PURE_CODE": "No Distractions",
     "CMD_TOGGLE_FULLSCREEN": "Fullscreen",
@@ -2146,6 +2154,7 @@ define({
     "DESCRIPTION_TABBAR": "Set the tab bar settings.",
     "DESCRIPTION_SHOW_TABBAR": "true to show the tab bar, else false.",
     "DESCRIPTION_NUMBER_OF_TABS": "The number of tabs to show in the tab bar. Set to -1 to show all tabs",
+    "DESCRIPTION_TABBAR_SMOOTH_SCROLL": "true to animate the tab bar when it scrolls to the active tab, else false.",
     "TABBAR_SHOW_HIDDEN_TABS": "Show hidden tabs",
 
     // Git extension

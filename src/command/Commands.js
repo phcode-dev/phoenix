@@ -85,6 +85,9 @@ define(function (require, exports, module) {
     /** Closes files from list */
     exports.FILE_CLOSE_LIST             = "file.close_list";            // DocumentCommandHandlers.js   handleFileCloseList()
 
+    /** Pins or unpins a file in the working set */
+    exports.FILE_PIN                    = "file.pin";                   // DocumentCommandHandlers.js   handleFilePin()
+
     /** Reopens last closed file */
     exports.FILE_REOPEN_CLOSED          = "file.reopen_closed";         // DocumentCommandHandlers.js   handleReopenClosed()
 
@@ -267,6 +270,10 @@ define(function (require, exports, module) {
     exports.TOGGLE_TABBAR            = "view.toggleTabbar";
     // extensionsIntegrated/TabBar/main.js
 
+    /** Toggles whether the tabbar animates when it scrolls to the active tab */
+    exports.TOGGLE_TABBAR_SMOOTH_SCROLL = "view.toggleTabbarSmoothScroll";
+    // extensionsIntegrated/TabBar/main.js
+
     /** Zooms in the editor view */
     exports.VIEW_ZOOM_IN                = "view.zoomIn";                // ViewCommandHandlers.js       _handleZoomIn()
 
@@ -281,6 +288,9 @@ define(function (require, exports, module) {
 
     /** Submenu for Open in working set context menu */
     exports.OPEN_IN_SUBMENU_WS          = "file-open-in-submenu-ws";
+
+    /** Submenu for Open in file tab bar context menu */
+    exports.OPEN_IN_SUBMENU_FILE_TABS   = "file-open-in-submenu-file-tabs";
 
     /** Increases editor font size */
     exports.VIEW_INCREASE_FONT_SIZE     = "view.increaseFontSize";      // ViewCommandHandlers.js       _handleIncreaseFontSize()
