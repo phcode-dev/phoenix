@@ -11,6 +11,9 @@ jobs:
   playwright-firefox-windows:
     timeout-minutes: 90
     runs-on: windows-latest
+    env:
+      # Include browser process errors when Firefox exits before the test page opens.
+      DEBUG: pw:browser
     steps:
     - uses: actions/checkout@v3
     - name: setup node
