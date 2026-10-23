@@ -36,6 +36,8 @@ Phoenix AI can create interactive mockups, comparisons, and explanations in the 
 
 > This feature is available only in desktop apps.
 
+![Image](images/pro-aiInteractive.png)
+
 ## [Bring Your Existing CLI Agents into Phoenix Code](https://docs.phcode.dev/app-links/ai-cli)
 
 `Added in October 2026`
@@ -58,6 +60,8 @@ Costs are estimates at API list prices; your provider bill may differ. You can d
 
 > These features are available only in desktop apps.
 
+![Image](images/pro-aiUsage.png)
+
 ## [Simpler AI Setup](https://docs.phcode.dev/app-links/ai-chat)
 
 `Added in October 2026`
@@ -76,6 +80,8 @@ See what you can create with Phoenix AI before signing in or using any AI credit
 
 > This feature is available only in desktop apps.
 
+![Image](images/pro-aiDemos.png)
+
 ## [AI Thinking Effort](https://docs.phcode.dev/app-links/ai-chat)
 
 `Added in October 2026`
@@ -83,6 +89,8 @@ See what you can create with Phoenix AI before signing in or using any AI credit
 Adjust how deeply supported AI models reason, from quick everyday tasks to more involved problems. Choose **Thinking effort** for the selected model, or leave it at Default.
 
 > This feature is available only in desktop apps.
+
+![Image](images/pro-aiEffort.png)
 
 ## [Find Photos with AI](https://docs.phcode.dev/app-links/ai-images)
 
@@ -99,6 +107,8 @@ Find the right photos for your page together with AI. Browse and compare options
 `Added in October 2026`
 
 Open an image in a larger lightbox without leaving your document. Click an unlinked image in reader mode, or use its expand button or double-click while editing. Press Escape to return to your Markdown.
+
+![Image](images/markdownLightbox.jpg)
 
 ## [Style Your Page Visually with the Styles Bar](https://docs.phcode.dev/app-links/styles-bar)
 
