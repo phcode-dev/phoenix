@@ -925,7 +925,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Removes the specifed file from all internal lists, destroys the view of the file (if there is one)
+     * Removes the specified file from all internal lists, destroys the view of the file (if there is one)
      *  and shows the interstitial page if the current view is destroyed
      * @private
      * @param {!File} file - file to remove
@@ -1391,7 +1391,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Removes the specifed file from all internal lists, destroys the view of the file (if there is one)
+     * Removes the specified file from all internal lists, destroys the view of the file (if there is one)
      *  and shows the interstitial page if the current view is destroyed.
      * @param {!Array.<File>}  list - Array of files to remove
      * @return {!Array.<File>} Array of File objects removed from the working set.
