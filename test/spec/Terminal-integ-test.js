@@ -229,6 +229,28 @@ define(function (require, exports, module) {
             return nativePath;
         }
 
+        /**
+         * A VIEW_TERMINAL `process` spec that runs `script` directly through the
+         * system's own interpreter, so its exit is the tab's exit.
+         * @param {string} script Command line for sh -c or cmd.exe /c.
+         * @return {{path: string, args: Array<string>, name: string}}
+         */
+        function scriptProcess(script) {
+            if (IS_WINDOWS) {
+                const ShellProfiles = testWindow.brackets.getModule("extensionsIntegrated/Terminal/ShellProfiles");
+                const cmd = ShellProfiles.getShells().find(function (shell) {
+                    return /cmd\.exe$/i.test(shell.path);
+                });
+                return {path: cmd.path, args: ["/c", script], name: "Test process"};
+            }
+            return {path: "/bin/sh", args: ["-c", script], name: "Test process"};
+        }
+
+        /** A process spec that keeps running until its tab is closed. */
+        function longRunningProcess() {
+            return scriptProcess(IS_WINDOWS ? "ping -n 120 127.0.0.1" : "sleep 120");
+        }
+
         // --- Tests ---
 
         describe("Panel basics", function () {
@@ -1056,6 +1078,44 @@ define(function (require, exports, module) {
                 expect(testWindow.$(".terminal-project-banner").length).toBe(0);
             }, 30000);
 
+            it("closes a process tab instead of running it again when the terminals restart", async function () {
+                const shellTab = await openReadyTerminal();
+                const exits = [];
+                await __PR.execCommand(__PR.Commands.VIEW_TERMINAL, {
+                    process: longRunningProcess(),
+                    onProcessExit: function (exitCode) {
+                        exits.push(exitCode);
+                    }
+                });
+                const processTab = termModule._getActiveTerminal();
+                await awaitsFor(function () {
+                    return processTab.isAlive;
+                }, "the process to be running", 10000);
+
+                await SpecRunnerUtils.loadProjectInTestWindow(secondProjectPath);
+                const path = getNativeProjectPath();
+                testWindow.$(".terminal-project-restart").click();
+                // the running process is a reason to ask first
+                await awaitsFor(function () {
+                    return isDialogOpen() || processTab._disposed;
+                }, "the restart to ask or proceed", 10000);
+                if (isDialogOpen()) {
+                    __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
+                    await __PR.waitForModalDialogClosed();
+                }
+                await awaitsFor(function () {
+                    const active = termModule._getActiveTerminal();
+                    return getTerminalCount() === 1 && active && active.isAlive && active.id !== shellTab.id;
+                }, "only the shell tab to restart", 15000);
+
+                expect(processTab._disposed).toBeTrue();
+                expect(exits).toEqual([null]);
+                const replacement = termModule._getActiveTerminal();
+                expect(replacement.processRun).toBeNull();
+                expect(replacement.shellProfile).toEqual(shellTab.shellProfile);
+                expect(replacement.cwd).toBe(path);
+            }, 30000);
+
             it("confirms active processes and leaves sessions untouched when canceled", async function () {
                 const instance = await openReadyTerminal();
                 const connectorSpy = reportActiveProcess();
@@ -1398,6 +1458,127 @@ define(function (require, exports, module) {
                             .is(":visible");
                     }, "terminal panel to close", 5000);
                 });
+        });
+
+        describe("Processes run without a shell", function () {
+            const STATE_TAB_NAMES = "terminal.tabNames";
+            let termModule, StateManager, savedNames;
+
+            beforeAll(function () {
+                termModule = testWindow.brackets.getModule("extensionsIntegrated/Terminal/main");
+                StateManager = testWindow.brackets.getModule("preferences/StateManager");
+                savedNames = StateManager.get(STATE_TAB_NAMES);
+            });
+
+            afterEach(async function () {
+                if (isDialogOpen()) {
+                    __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_CANCEL);
+                    await __PR.waitForModalDialogClosed();
+                }
+                await termModule._disposeAll();
+                WorkspaceManager.getPanelForID(PANEL_ID).hide();
+            });
+
+            afterAll(function () {
+                StateManager.set(STATE_TAB_NAMES, savedNames);
+            });
+
+            /** Read everything the tab has printed, including the exit line. */
+            function bufferText(instance) {
+                const buffer = instance.terminal.buffer.active;
+                let text = "";
+                for (let i = 0; i < buffer.length; i++) {
+                    text += buffer.getLine(i).translateToString();
+                }
+                return text;
+            }
+
+            /** Start a tab running a single process and collect what it reports. */
+            async function runProcess(spec) {
+                const exits = [];
+                const result = await __PR.execCommand(__PR.Commands.VIEW_TERMINAL, {
+                    process: spec,
+                    onProcessExit: function (exitCode) {
+                        exits.push(exitCode);
+                    }
+                });
+                return {result, exits};
+            }
+
+            /** Close a tab, confirming the running-process prompt if one appears. */
+            async function closeTab(instance) {
+                testWindow.$('.terminal-flyout-item[data-terminal-id="' + instance.id + '"] .terminal-flyout-close')
+                    .click();
+                await awaitsFor(function () {
+                    return isDialogOpen() || instance._disposed;
+                }, "the close to ask or finish", 10000);
+                if (isDialogOpen()) {
+                    __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
+                    await __PR.waitForModalDialogClosed();
+                }
+                await awaitsFor(function () {
+                    return instance._disposed;
+                }, "tab to close", 10000);
+            }
+
+            it("reports a clean exit and keeps the tab with its output", async function () {
+                const {result, exits} = await runProcess(scriptProcess("exit 0"));
+                expect(result && result.terminalId).toBeTruthy();
+                await awaitsFor(function () {
+                    return exits.length === 1;
+                }, "the exit to be reported", 10000);
+                expect(exits).toEqual([0]);
+
+                const instance = termModule._getActiveTerminal();
+                expect(instance.id).toBe(result.terminalId);
+                expect(instance.isAlive).toBeFalse();
+                expect(getTerminalCount()).toBe(1);
+                await awaitsFor(function () {
+                    return bufferText(instance).includes("[Process exited with code 0]");
+                }, "the exit line to be shown", 5000);
+            });
+
+            it("reports a failing exit code", async function () {
+                const {exits} = await runProcess(scriptProcess("exit 3"));
+                await awaitsFor(function () {
+                    return exits.length === 1;
+                }, "the exit to be reported", 10000);
+                expect(exits).toEqual([3]);
+            });
+
+            it("reports null once when the tab is closed before the process exits", async function () {
+                const {result, exits} = await runProcess(longRunningProcess());
+                const instance = termModule._getActiveTerminal();
+                expect(instance.id).toBe(result.terminalId);
+                await awaitsFor(function () {
+                    return instance.isAlive;
+                }, "the process to be running", 10000);
+
+                await closeTab(instance);
+                expect(exits).toEqual([null]);
+            });
+
+            it("reports null and returns null when the process cannot start", async function () {
+                const {result, exits} = await runProcess({path: "", args: []});
+                expect(result).toBeNull();
+                expect(exits).toEqual([null]);
+            });
+
+            it("does not keep a process tab's name for the next session", async function () {
+                StateManager.set(STATE_TAB_NAMES, []);
+                await runProcess(longRunningProcess());
+                // name it, the way the pencil does
+                testWindow.$(".terminal-flyout-item.active .terminal-flyout-edit").click();
+                const $field = testWindow.$(".terminal-flyout-rename");
+                $field.val("login");
+                $field.trigger(testWindow.$.Event("keydown", {key: "Enter"}));
+                await awaitsFor(function () {
+                    return testWindow.$(".terminal-flyout-item.active .terminal-flyout-title").text() === "login";
+                }, "tab to take the typed name", 5000);
+
+                // it would come back as a plain shell, so it is not one of the tabs to restore
+                expect(StateManager.get(STATE_TAB_NAMES)).toEqual([]);
+            });
         });
     });
 });

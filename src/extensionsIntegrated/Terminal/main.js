@@ -329,9 +329,11 @@ define(function (require, exports, module) {
      * @param {Object} shell Shell profile to use.
      * @param {string} [cwdOverride] Directory to use instead of the project root.
      * @param {string} [projectPath] Owning project when restarting during a project switch.
+     * @param {Object} [processRun] Set when `shell` is a single process run without a shell
+     *     (see _runProcessInNewTerminal): its env and the exit report the caller asked for.
      * @return {Promise<TerminalInstance|undefined>} The new terminal, if a shell is available.
      */
-    async function _createNewTerminalWithShell(shell, cwdOverride, projectPath) {
+    async function _createNewTerminalWithShell(shell, cwdOverride, projectPath, processRun) {
         if (!shell) {
             console.error("Terminal: No shell available");
             Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "new", "noShell");
@@ -339,7 +341,7 @@ define(function (require, exports, module) {
         }
         // Metric: a new terminal session was created, keyed by shell family.
         Metrics.countEvent(Metrics.EVENT_TYPE.TERMINAL, "new",
-            _shellMetricLabel(shell.name));
+            processRun ? "process" : _shellMetricLabel(shell.name));
 
         // Get cwd: use override if provided, otherwise fall back to project root
         const projectRoot = ProjectManager.getProjectRoot();
@@ -356,6 +358,7 @@ define(function (require, exports, module) {
         const instance = new TerminalInstance(nodeConnector, shell, cwd);
         // Project ownership is independent of directories the user visits in the shell.
         instance.projectPath = projectPath || (projectRoot ? projectRoot.fullPath : null);
+        instance.processRun = processRun || null;
 
         // Set up callbacks
         instance.onTitleChanged = _onTerminalTitleChanged;
@@ -393,8 +396,57 @@ define(function (require, exports, module) {
         try { instance.fitAddon.fit(); } catch (e) { /* not ready */ }
 
         // Spawn PTY process
-        await instance.spawn();
+        const spawned = await instance.spawn(processRun ? processRun.env : undefined);
+        if (processRun) {
+            processRun.started = spawned;
+            if (!spawned) {
+                _reportProcessExit(processRun, null);
+            }
+        }
         return instance;
+    }
+
+    /**
+     * Tell whoever started a process tab how it ended, once.
+     * @param {?Object} processRun The tab's run, or null for a shell tab.
+     * @param {?number} exitCode The process exit code, or null when it never ran or its tab was closed first.
+     */
+    function _reportProcessExit(processRun, exitCode) {
+        if (!processRun || processRun.reported) {
+            return;
+        }
+        processRun.reported = true;
+        if (typeof processRun.onProcessExit === "function") {
+            try {
+                processRun.onProcessExit(exitCode);
+            } catch (err) {
+                console.error("Terminal: onProcessExit handler failed:", err);
+            }
+        }
+    }
+
+    /**
+     * Run one executable as a new tab's own process, with no shell around it, so the
+     * caller learns how it ended. The tab stays open after the exit to show its output.
+     * @param {{path: string, args: (Array<string>|undefined), name: (string|undefined),
+     *     env: (Object|undefined)}} spec What to run; env is merged into the inherited environment.
+     * @param {function(?number)} [onProcessExit] Called once with the exit code, or null when
+     *     the process could not start or its tab was closed before it exited.
+     * @return {Promise<?{terminalId: string}>} The new tab, or null when the process did not start.
+     */
+    async function _runProcessInNewTerminal(spec, onProcessExit) {
+        const processRun = {env: spec.env, onProcessExit: onProcessExit, started: false, reported: false};
+        if (!spec.path || _restartingTerminals) {
+            _reportProcessExit(processRun, null);
+            return null;
+        }
+        const profile = {
+            name: spec.name || spec.path.split(/[\\/]/).pop(),
+            path: spec.path,
+            args: spec.args || []
+        };
+        const instance = await _createNewTerminalWithShell(profile, undefined, undefined, processRun);
+        return instance && processRun.started ? {terminalId: instance.id} : null;
     }
 
     /** Remove the project-switch notice without changing any terminal session. */
@@ -491,12 +543,14 @@ define(function (require, exports, module) {
             // A restart replaces every instance, and the new ones are issued
             // fresh ids, so a name looked up by id would not find them. Carry
             // the names across with the shells: the tabs are the same tabs to
-            // the user, only pointed at the new project.
-            const carried = terminalInstances.map(inst => ({
+            // the user, only pointed at the new project. A tab running a single
+            // process (no shell) ends with the restart rather than running again.
+            const shellTabs = terminalInstances.filter(inst => !inst.processRun);
+            const carried = shellTabs.map(inst => ({
                 profile: inst.shellProfile,
                 customName: inst.customName
             }));
-            const activeIndex = terminalInstances.findIndex(inst => inst.id === activeTerminalId);
+            const activeIndex = shellTabs.findIndex(inst => inst.id === activeTerminalId);
             await _disposeAllAsync();
             activeTerminalId = null;
             _updateFlyout();
@@ -510,6 +564,10 @@ define(function (require, exports, module) {
             _updateFlyout();
             if (replacements[activeIndex]) {
                 _activateTerminal(replacements[activeIndex].id);
+            }
+            if (!replacements.length) {
+                _hideProjectBanner();
+                panel.hide();
             }
             // Keep a notice for a newer project selected during the restart.
             if (_projectPath !== path) {
@@ -579,6 +637,8 @@ define(function (require, exports, module) {
             }
         }
 
+        // Disposing stops exit events, so a process still running reports as closed.
+        _reportProcessExit(instance.processRun, null);
         instance.dispose();
         terminalInstances.splice(idx, 1);
         delete processInfo[id];
@@ -748,7 +808,9 @@ define(function (require, exports, module) {
      * for it to come back.
      */
     function _saveTabNames() {
+        // A process tab would come back as a plain shell, so its name is not kept.
         StateManager.set(STATE_TAB_NAMES, terminalInstances
+            .filter(function (inst) { return !inst.processRun; })
             .map(function (inst) { return inst.customName; })
             .filter(Boolean));
     }
@@ -892,6 +954,10 @@ define(function (require, exports, module) {
      */
     function _onTerminalProcessExit(id, exitCode) {
         delete processInfo[id];
+        const instance = terminalInstances.find(inst => inst.id === id);
+        if (instance) {
+            _reportProcessExit(instance.processRun, exitCode);
+        }
         _updateFlyout();
         // Metric: terminal process exited on its own (e.g. user typed
         // "exit"). Distinct from "user" close above, which records the
@@ -901,16 +967,6 @@ define(function (require, exports, module) {
             exitCode === 0 ? "ok" : "err");
     }
 
-    /**
-     * Show the terminal panel. Creates a new terminal if none exist.
-     * If the panel is visible and the active terminal is focused and there
-     * are 2+ terminals, cycles to the next one. Otherwise just shows and
-     * focuses the active terminal.
-     *
-     * @param {Object} [options] - Optional settings
-     * @param {string} [options.shellCommand] - A shell command to execute in a new terminal.
-     *   When provided, always creates a fresh terminal and types the command into it.
-     */
     /**
      * Open the tabs the user named last time, all of them, in the order they
      * were in.
@@ -944,7 +1000,28 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Show the terminal panel. Creates a new terminal if none exist.
+     * If the panel is visible and the active terminal is focused and there
+     * are 2+ terminals, cycles to the next one. Otherwise just shows and
+     * focuses the active terminal.
+     *
+     * @param {Object} [options] - Optional settings
+     * @param {string} [options.shellCommand] - A shell command to execute in a new terminal.
+     *   When provided, always creates a fresh terminal and types the command into it.
+     * @param {{path: string, args: (Array<string>|undefined), name: (string|undefined),
+     *     env: (Object|undefined)}} [options.process] - Run this executable as a new tab's own
+     *   process instead of a shell (takes precedence over shellCommand). The tab is not saved
+     *   or restored, and a project restart closes it instead of running it again.
+     * @param {function(?number)} [options.onProcessExit] - With `process`: called once with
+     *   its exit code, or null if it could not start or its tab was closed before it exited.
+     * @return {Promise<?{terminalId: string}>} With `process`: the new tab, or null if the
+     *   process did not start. Otherwise undefined.
+     */
     async function _showTerminal(options) {
+        if (options && options.process) {
+            return _runProcessInNewTerminal(options.process, options.onProcessExit);
+        }
         if (options && options.shellCommand) {
             await _createNewTerminal();
             const active = _getActiveTerminal();
@@ -1120,6 +1197,7 @@ define(function (require, exports, module) {
      */
     function _disposeAll() {
         for (const inst of terminalInstances) {
+            _reportProcessExit(inst.processRun, null);
             inst.dispose();
         }
         terminalInstances = [];
@@ -1133,6 +1211,10 @@ define(function (require, exports, module) {
      * and acknowledged by the Node side.
      */
     async function _disposeAllAsync() {
+        // Report first, so a killed process can never be read as having finished on its own.
+        for (const inst of terminalInstances) {
+            _reportProcessExit(inst.processRun, null);
+        }
         const killPromises = terminalInstances
             .filter(function (inst) { return inst.isAlive && !inst._disposed; })
             .map(function (inst) {
