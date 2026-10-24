@@ -3041,6 +3041,7 @@ define({
     "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code is signed out or your login has expired.",
     "AI_CHAT_AUTH_ERROR_BTN": "Sign in to Claude",
     "AI_CHAT_AUTH_ERROR_HINT": "Finish signing in on the page that opens in your browser, then send your message again.",
+    "AI_CHAT_AUTH_LOGIN_FAILED": "Could not start Claude sign-in. Check your Claude Code installation and try again.",
     "AI_CHAT_MODEL_DEFAULT": "Default",
     "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Currently {0}",
     "AI_CHAT_MODEL_DEFAULT_DESC": "Recommended — uses your Claude Code model setting",
