@@ -121,6 +121,40 @@ define(function (require, exports, module) {
             const result = await nodeConnector.execPeer("locateWindowsStandaloneCodex");
             expect(result.located.path).withContext(JSON.stringify(result.located)).toBe(result.installedPath);
             expect(result.located.source).toBe("native");
+            expect(result.pathLookups).toBe(0);
+        });
+
+        it("should service a file read and timer while a PATH lookup is still running", async function () {
+            const result = await nodeConnector.execPeer("lookupWhileBusy");
+            expect(result.pendingDuringRead).toBeTrue();
+            expect(result.readCompleted).toBeTrue();
+            expect(result.downloader).toBe("curl");
+            expect(result.timeout).toBe(3000);
+            expect(result.shell).toBeFalse();
+            expect(result.windowsHide).toBeTrue();
+        });
+
+        it("should fall back to plain which when which -a is unsupported within the same deadline", async function () {
+            const result = await nodeConnector.execPeer("lookupFailure", {failure: "unsupported"});
+            expect(result.downloader).toBe("curl");
+            expect(result.calls.map(call => call.args)).toEqual([["-a", "curl"], ["curl"]]);
+            expect(result.calls[1].timeout).toBeGreaterThan(0);
+            expect(result.calls[1].timeout).toBeLessThanOrEqual(result.calls[0].timeout);
+        });
+
+        ["timeout", "missing"].forEach(function (failure) {
+            it("should not retry a PATH lookup after " + failure, async function () {
+                const result = await nodeConnector.execPeer("lookupFailure", {failure});
+                expect(result.downloader).toBeNull();
+                expect(result.calls.map(call => call.args)).toEqual([["-a", "curl"], ["-a", "wget"]]);
+            });
+        });
+
+        it("should share concurrent checks without mixing different overrides", async function () {
+            const result = await nodeConnector.execPeer("concurrentOverrides");
+            expect(result.shared).toBeTrue();
+            expect(result.independent).toBeTrue();
+            expect(result.results.map(item => item.path)).toEqual(["/test/one/codex", "/test/two/codex"]);
         });
 
         it("should use the bundled Claude Code when the system has none, or an older one", async function () {
