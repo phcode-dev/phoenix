@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "Bedankt voor uw steun aan {0}. Dit is wat er nieuw is in deze update:",
   "PROMO_CARD_LIVE_PREVIEW": "Bewerk en geef vorm in het livevoorbeeld",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Wijzig tekst, kleuren en lettertypen, verplaats elementen en probeer verschillende schermformaten. Je code wordt bijgewerkt terwijl je werkt.",
-  "PROMO_CARD_AI": "Bouw en verfijn met AI",
-  "PROMO_CARD_AI_MESSAGE": "Zet een idee om in een pagina, selecteer vervolgens een element of een stukje code en vraag AI om wijzigingen aan te brengen.",
   "PROMO_CARD_LAYERS": "Geef je pagina vorm met Lagen",
   "PROMO_CARD_LAYERS_MESSAGE": "Verken de structuur van je pagina, voeg elementen in en bewerk klassen en stijlen. Bekijk elke wijziging in het livevoorbeeld.",
   "PROMO_CARD_MARKDOWN": "Schrijf Markdown als een document",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan bestanden bewerken en commando's uitvoeren zonder goedkeuring.",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Kies hoeveel de AI mag doen zonder goedkeuring [of Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code is uitgelogd of uw login is verlopen.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Inloggen bij Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "Voltooi het inloggen op de pagina die in je browser wordt geopend en verstuur je bericht daarna opnieuw.",
   "AI_CHAT_MODEL_DEFAULT": "Standaard",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Momenteel {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Aanbevolen — gebruikt je Claude Code-modelinstelling",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Verzonden naar Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "Overdragen naar {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Draag het concept over en verstuur het vervolgens in de CLI",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Open een actieve CLI-sessie en probeer het opnieuw. Je concept blijft hier bewaard.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Concept toegevoegd. Controleer het en druk op Enter om het te versturen.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Maak verbinding met Phoenix via de verbindingsknop in de kop van de CLI en probeer het opnieuw. Als deze sessie zonder verbinding is gestart, start dan een sessie met verbinding. Je concept blijft hier bewaard.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Bijgevoegd vanuit Phoenix: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kon de oude site niet bereiken",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kon geen verbinding maken met {0} om uw projecten en instellingen te zoeken, dus er is niets gewijzigd. Controleer uw internetverbinding en probeer het opnieuw met {1}.",
   "CMD_MIGRATE_DATA": "Mijn gegevens migreren van {0}…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Inloggen bij Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "Voltooi het inloggen op de pagina die in je browser wordt geopend en verstuur je bericht daarna opnieuw.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Open een actieve CLI-sessie en probeer het opnieuw. Je concept blijft hier bewaard."
+  "PROMO_CARD_AI": "Je AI-agenten, nu visueel in Phoenix Pro",
+  "PROMO_CARD_AI_MESSAGE": "Gebruik je bestaande Claude Code- of ChatGPT-abonnement in Phoenix Code en ontdek een geheel nieuwe manier om websites visueel te bouwen en te verfijnen.",
+  "AI_CHAT_NOT_READY_YET": "AI wordt voorbereid. Wacht even.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Het aanmelden bij Claude kon niet worden gestart. Controleer je Claude Code-installatie en probeer het opnieuw."
 });

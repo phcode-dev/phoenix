@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "Kiitos tuestasi {0}. Tässä tämän päivityksen uudet ominaisuudet:",
   "PROMO_CARD_LIVE_PREVIEW": "Muokkaa sisältöä ja tyylejä reaaliaikaisessa esikatselussa",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Muuta tekstiä, värejä ja fontteja, järjestä elementtejä uudelleen ja kokeile eri näyttökokoja. Koodisi päivittyy samalla.",
-  "PROMO_CARD_AI": "Luo ja viimeistele tekoälyn avulla",
-  "PROMO_CARD_AI_MESSAGE": "Muuta idea sivuksi, valitse sitten elementti tai koodin osa ja pyydä tekoälyä tekemään muutoksia.",
   "PROMO_CARD_LAYERS": "Muokkaa sivuasi Tasot-näkymässä",
   "PROMO_CARD_LAYERS_MESSAGE": "Tutki sivusi rakennetta, lisää elementtejä ja muokkaa luokkia ja tyylejä. Näe jokainen muutos reaaliaikaisessa esikatselussa.",
   "PROMO_CARD_MARKDOWN": "Kirjoita Markdownia kuin asiakirjaa",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Tekoäly voi muokata tiedostoja ja suorittaa komentoja ilman hyväksyntää",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Valitse, kuinka paljon tekoäly saa tehdä ilman hyväksyntää [tai vaihto+sarkain]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code -palvelusta on kirjauduttu ulos tai kirjautumisesi on vanhentunut.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Kirjaudu Claudeen",
+  "AI_CHAT_AUTH_ERROR_HINT": "Viimeistele kirjautuminen selaimeen avautuvalla sivulla ja lähetä sitten viestisi uudelleen.",
   "AI_CHAT_MODEL_DEFAULT": "Oletus",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Käytössä {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Suositeltu — käyttää Claude Code -malliasetustasi",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Lähetetty Visual AI:lle",
   "LIVE_DEV_AI_CHAT_TRANSFER": "Siirrä kohteeseen {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Siirrä luonnos ja lähetä se sitten komentorivillä",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Avaa käynnissä oleva CLI-istunto ja yritä sitten uudelleen. Luonnoksesi säilytetään tässä.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Luonnos lisätty. Tarkista se ja lähetä painamalla Enter.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Yhdistä Phoenix CLI-otsakkeen yhteyspainikkeella ja yritä sitten uudelleen. Jos tämä istunto käynnistettiin ilman yhteyttä, käynnistä istunto, jossa yhteys on käytössä. Luonnoksesi säilytetään täällä.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Liitetty Phoenixista: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Ei saatu yhteyttä vanhaan sivustoon",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} ei saanut yhteyttä kohteeseen {0} hakeakseen projektejasi ja asetuksiasi, joten mitään ei ole muutettu. Tarkista internetyhteytesi ja yritä sitten uudelleen valitsemalla {1}.",
   "CMD_MIGRATE_DATA": "Siirrä omat tiedot lähteestä {0}…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Kirjaudu Claudeen",
-  "AI_CHAT_AUTH_ERROR_HINT": "Viimeistele kirjautuminen selaimeen avautuvalla sivulla ja lähetä sitten viestisi uudelleen.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Avaa käynnissä oleva CLI-istunto ja yritä sitten uudelleen. Luonnoksesi säilytetään tässä."
+  "PROMO_CARD_AI": "Tekoälyagenttisi nyt visuaalisina Phoenix Prossa",
+  "PROMO_CARD_AI_MESSAGE": "Hyödynnä nykyistä Claude Code- tai ChatGPT-tilaustasi Phoenix Codessa ja löydä aivan uusi tapa rakentaa ja viimeistellä verkkosivustoja visuaalisesti.",
+  "AI_CHAT_NOT_READY_YET": "Tekoäly valmistautuu. Odota hetki.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Claude-kirjautumista ei voitu käynnistää. Tarkista Claude Code -asennuksesi ja yritä uudelleen."
 });

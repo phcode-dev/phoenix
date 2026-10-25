@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "{0}をサポートいただきありがとうございます。今回のアップデートの新機能はこちらです。",
   "PROMO_CARD_LIVE_PREVIEW": "ライブプレビューで編集とスタイル調整",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "テキスト、色、フォントを変更したり、要素を並べ替えたり、さまざまな画面サイズを試したりできます。操作に合わせてコードも更新されます。",
-  "PROMO_CARD_AI": "AI で作成・改善",
-  "PROMO_CARD_AI_MESSAGE": "アイデアをページにしたら、要素やコードの一部を選択して、AI に変更を依頼できます。",
   "PROMO_CARD_LAYERS": "レイヤーでページを構成",
   "PROMO_CARD_LAYERS_MESSAGE": "ページの構造を確認し、要素の挿入やクラス、スタイルの編集ができます。すべての変更をライブプレビューで確認できます。",
   "PROMO_CARD_MARKDOWN": "文書のように Markdown を編集",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AIは承認なしでファイルの編集やコマンドの実行ができます",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "ＡＩが承認なしに実行できる範囲を選択［または Shift+Tab］",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Codeからサインアウトしているか、ログインの有効期限が切れています。",
+  "AI_CHAT_AUTH_ERROR_BTN": "Claude にサインイン",
+  "AI_CHAT_AUTH_ERROR_HINT": "ブラウザーで開くページでサインインを完了してから、もう一度メッセージを送信してください。",
   "AI_CHAT_MODEL_DEFAULT": "デフォルト",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "現在 {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "推奨 — ユーザーのClaude Codeモデル設定を使用します",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "ビジュアルAIに送信済み",
   "LIVE_DEV_AI_CHAT_TRANSFER": "{0}に転送",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "下書きを転送してからCLIで送信",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "実行中の CLI セッションを開いてから、もう一度お試しください。下書きはここに保存されています。",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "下書きを追加しました。内容を確認し、Enterキーを押して送信してください。",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "CLIヘッダーの接続ボタンでPhoenixに接続してから、もう一度お試しください。このセッションを未接続で開始した場合は、接続済みのセッションを開始してください。下書きはここに保持されます。",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Phoenixから添付：{0}。",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "旧サイトに接続できませんでした",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}はプロジェクトと設定を検索するために{0}に接続できませんでした。そのため、何も変更されていません。インターネット接続を確認してから、{1}で再試行してください。",
   "CMD_MIGRATE_DATA": "{0}からデータを移行…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Claude にサインイン",
-  "AI_CHAT_AUTH_ERROR_HINT": "ブラウザーで開くページでサインインを完了してから、もう一度メッセージを送信してください。",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "実行中の CLI セッションを開いてから、もう一度お試しください。下書きはここに保存されています。"
+  "PROMO_CARD_AI": "Phoenix Proで、あなたのAIエージェントがビジュアルに",
+  "PROMO_CARD_AI_MESSAGE": "お使いのClaude CodeまたはChatGPTのサブスクリプションをPhoenix Codeに連携して、ウェブサイトを視覚的に構築・改善するまったく新しい方法を体験しましょう。",
+  "AI_CHAT_NOT_READY_YET": "AIを準備しています。少々お待ちください。",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Claudeへのサインインを開始できませんでした。Claude Codeのインストール状況を確認して、もう一度お試しください。"
 });

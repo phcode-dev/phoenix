@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "شكرًا لدعمكم {0}. إليكم الجديد في هذا التحديث:",
   "PROMO_CARD_LIVE_PREVIEW": "حرّر ونسّق في المعاينة المباشرة",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "غيّر النص والألوان والخطوط، وأعد ترتيب العناصر، وجرّب أحجام شاشات مختلفة. تُحدَّث شفرتك أثناء العمل.",
-  "PROMO_CARD_AI": "أنشئ وحسّن باستخدام الذكاء الاصطناعي",
-  "PROMO_CARD_AI_MESSAGE": "حوّل فكرة إلى صفحة، ثم حدد عنصرًا أو جزءًا من الشفرة واطلب من الذكاء الاصطناعي إجراء تغييرات.",
   "PROMO_CARD_LAYERS": "شكّل صفحتك باستخدام الطبقات",
   "PROMO_CARD_LAYERS_MESSAGE": "استكشف بنية صفحتك، وأدرج العناصر، وحرّر الفئات والأنماط. شاهد كل تغيير في المعاينة المباشرة.",
   "PROMO_CARD_MARKDOWN": "اكتب Markdown كما تكتب مستندًا",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "يمكن للذكاء الاصطناعي تعديل الملفات وتشغيل الأوامر بدون موافقة",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "اختر مدى ما يمكن للذكاء الاصطناعي القيام به دون موافقة [أو Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "تم تسجيل الخروج من Claude Code أو انتهت صلاحية تسجيل دخولك.",
+  "AI_CHAT_AUTH_ERROR_BTN": "تسجيل الدخول إلى Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "أكمل تسجيل الدخول في الصفحة التي تُفتح في متصفحك، ثم أرسل رسالتك مرة أخرى.",
   "AI_CHAT_MODEL_DEFAULT": "افتراضي",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "حاليًا {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "موصى به — يستخدم إعداد نموذج Claude Code الخاص بك",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "أُرسل إلى Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "نقل إلى {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "انقل المسودة، ثم أرسلها في واجهة سطر الأوامر",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "افتح جلسة نشطة لواجهة سطر الأوامر، ثم حاول مرة أخرى. مسودتك محفوظة هنا.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "تمت إضافة المسودة. راجعها واضغط على Enter لإرسالها.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "اتصل بـ Phoenix باستخدام زر الاتصال في ترويسة واجهة سطر الأوامر، ثم حاول مجددًا. إذا بدأت هذه الجلسة دون اتصال، فابدأ جلسة متصلة. مسودتك محفوظة هنا.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "مرفق من Phoenix: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "تعذر الوصول إلى الموقع القديم",
   "MIGRATE_UNREACHABLE_MESSAGE": "لم يتمكن {APP_NAME} من الاتصال بـ {0} للبحث عن مشاريعك وإعداداتك، لذا لم يتم تغيير أي شيء. تحقق من اتصالك بالإنترنت، ثم حاول مرة أخرى باستخدام {1}.",
   "CMD_MIGRATE_DATA": "ترحيل بياناتي من {0}…",
-  "AI_CHAT_AUTH_ERROR_BTN": "تسجيل الدخول إلى Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "أكمل تسجيل الدخول في الصفحة التي تُفتح في متصفحك، ثم أرسل رسالتك مرة أخرى.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "افتح جلسة نشطة لواجهة سطر الأوامر، ثم حاول مرة أخرى. مسودتك محفوظة هنا."
+  "PROMO_CARD_AI": "وكلاؤك للذكاء الاصطناعي، الآن بواجهة مرئية في Phoenix Pro",
+  "PROMO_CARD_AI_MESSAGE": "استخدم اشتراكك الحالي في Claude Code أو ChatGPT داخل Phoenix Code، واكتشف طريقة جديدة كليًا لإنشاء مواقع الويب وتحسينها بصريًا.",
+  "AI_CHAT_NOT_READY_YET": "جارٍ تجهيز الذكاء الاصطناعي. يُرجى الانتظار لحظة.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "تعذّر بدء تسجيل الدخول إلى Claude. تحقّق من تثبيت Claude Code وحاول مجددًا."
 });

@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "Paldies, ka atbalstāt {0}. Lūk, kas jauns šajā atjauninājumā:",
   "PROMO_CARD_LIVE_PREVIEW": "Rediģējiet un pielāgojiet stilus tiešajā priekšskatījumā",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Mainiet tekstu, krāsas un fontus, pārkārtojiet elementus un izmēģiniet dažādus ekrāna izmērus. Darba gaitā kods tiek atjaunināts.",
-  "PROMO_CARD_AI": "Veidojiet un pilnveidojiet ar MI",
-  "PROMO_CARD_AI_MESSAGE": "Pārvērtiet ideju lapā, pēc tam atlasiet elementu vai koda fragmentu un lūdziet MI veikt izmaiņas.",
   "PROMO_CARD_LAYERS": "Veidojiet lapu ar slāņiem",
   "PROMO_CARD_LAYERS_MESSAGE": "Izpētiet lapas struktūru, ievietojiet elementus un rediģējiet klases un stilus. Skatiet katru izmaiņu tiešajā priekšskatījumā.",
   "PROMO_CARD_MARKDOWN": "Rakstiet Markdown kā dokumentu",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "MI var rediģēt failus un izpildīt komandas bez apstiprinājuma.",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Izvēlieties, cik daudz MI drīkst darīt bez apstiprinājuma [vai Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Jūs esat izrakstījies no Claude Code vai jūsu pieteikšanās sesija ir beigusies.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Pierakstīties Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "Pabeidziet pierakstīšanos lapā, kas atveras pārlūkprogrammā, un pēc tam nosūtiet ziņojumu vēlreiz.",
   "AI_CHAT_MODEL_DEFAULT": "Noklusējums",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Pašlaik {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Ieteicams — izmanto jūsu Claude Code modeļa iestatījumu",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Nosūtīts uz Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "Pārsūtīt uz {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Pārsūtiet melnrakstu un pēc tam iesniedziet to CLI",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Atveriet aktīvu CLI sesiju un pēc tam mēģiniet vēlreiz. Jūsu melnraksts tiek saglabāts šeit.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Melnraksts pievienots. Pārskatiet to un nospiediet Enter, lai nosūtītu.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Savienojiet Phoenix, izmantojot savienojuma pogu CLI galvenē, un pēc tam mēģiniet vēlreiz. Ja šī sesija tika sākta bez savienojuma, sāciet sesiju ar savienojumu. Jūsu melnraksts tiek saglabāts šeit.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Pievienots no Phoenix: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Neizdevās sasniegt veco vietni",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} nevarēja izveidot savienojumu ar {0}, lai meklētu jūsu projektus un iestatījumus, tādēļ nekas nav mainīts. Pārbaudiet interneta savienojumu, pēc tam mēģiniet vēlreiz, izmantojot {1}.",
   "CMD_MIGRATE_DATA": "Migrēt manus datus no {0}…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Pierakstīties Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "Pabeidziet pierakstīšanos lapā, kas atveras pārlūkprogrammā, un pēc tam nosūtiet ziņojumu vēlreiz.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Atveriet aktīvu CLI sesiju un pēc tam mēģiniet vēlreiz. Jūsu melnraksts tiek saglabāts šeit."
+  "PROMO_CARD_AI": "Jūsu MI aģenti tagad vizuāli pieejami Phoenix Pro",
+  "PROMO_CARD_AI_MESSAGE": "Izmantojiet savu esošo Claude Code vai ChatGPT abonementu Phoenix Code un atklājiet pavisam jaunu veidu, kā vizuāli veidot un pilnveidot tīmekļa vietnes.",
+  "AI_CHAT_NOT_READY_YET": "MI tiek sagatavots. Lūdzu, nedaudz uzgaidiet.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Neizdevās sākt pierakstīšanos Claude. Pārbaudiet Claude Code instalāciju un mēģiniet vēlreiz."
 });

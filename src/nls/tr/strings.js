@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "{0} desteğiniz için teşekkürler. Bu güncellemedeki yenilikler şunlar:",
   "PROMO_CARD_LIVE_PREVIEW": "Canlı Önizleme'de düzenleyin ve stil uygulayın",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Metni, renkleri ve yazı tiplerini değiştirin, öğeleri yeniden düzenleyin ve farklı ekran boyutlarını deneyin. Siz çalıştıkça kodunuz güncellenir.",
-  "PROMO_CARD_AI": "Yapay zekayla oluşturun ve geliştirin",
-  "PROMO_CARD_AI_MESSAGE": "Bir fikri sayfaya dönüştürün, ardından bir öğe veya kod parçası seçip yapay zekadan değişiklik yapmasını isteyin.",
   "PROMO_CARD_LAYERS": "Katmanlar ile sayfanızı şekillendirin",
   "PROMO_CARD_LAYERS_MESSAGE": "Sayfanızın yapısını keşfedin, öğeler ekleyin, sınıfları ve stilleri düzenleyin. Her değişikliği Canlı Önizleme'de görün.",
   "PROMO_CARD_MARKDOWN": "Markdown'ı belge yazar gibi yazın",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Yapay Zeka, onay gerekmeksizin dosyaları düzenleyebilir ve komutları çalıştırabilir.",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Yapay Zekanın onay almadan ne kadar işlem yapabileceğini seçin [veya Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code oturumu kapatıldı veya oturumunuzun süresi doldu.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Claude'a giriş yap",
+  "AI_CHAT_AUTH_ERROR_HINT": "Tarayıcınızda açılan sayfada giriş işlemini tamamlayın, ardından mesajınızı yeniden gönderin.",
   "AI_CHAT_MODEL_DEFAULT": "Varsayılan",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Şu anda {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Önerilen — Claude Code model ayarınızı kullanır",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Visual AI'ye gönderildi",
   "LIVE_DEV_AI_CHAT_TRANSFER": "{0} hedefine aktar",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Taslağı aktarın, ardından CLI'da gönderin",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Çalışan bir CLI oturumu açın, ardından yeniden deneyin. Taslağınız burada saklanır.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Taslak eklendi. İnceleyin ve göndermek için Enter tuşuna basın.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "CLI başlığındaki bağlantı düğmesini kullanarak Phoenix'e bağlanın, ardından tekrar deneyin. Bu oturum bağlantı olmadan başlatıldıysa bağlantılı bir oturum başlatın. Taslağınız burada saklanır.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Phoenix'ten eklendi: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Eski siteye ulaşılamadı",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME}, projelerinizi ve ayarlarınızı bulmak için {0} ile bağlantı kuramadı, bu nedenle hiçbir değişiklik yapılmadı. İnternet bağlantınızı kontrol edin, ardından {1} ile yeniden deneyin.",
   "CMD_MIGRATE_DATA": "Verilerimi {0} Konumundan Aktar…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Claude'a giriş yap",
-  "AI_CHAT_AUTH_ERROR_HINT": "Tarayıcınızda açılan sayfada giriş işlemini tamamlayın, ardından mesajınızı yeniden gönderin.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Çalışan bir CLI oturumu açın, ardından yeniden deneyin. Taslağınız burada saklanır."
+  "PROMO_CARD_AI": "Yapay Zekâ Ajanlarınız Artık Phoenix Pro'da Görsel Olarak Karşınızda",
+  "PROMO_CARD_AI_MESSAGE": "Mevcut Claude Code veya ChatGPT aboneliğinizi Phoenix Code'a taşıyın ve web sitelerini görsel olarak oluşturup geliştirmenin yepyeni bir yolunu keşfedin.",
+  "AI_CHAT_NOT_READY_YET": "Yapay zekâ hazırlanıyor. Lütfen biraz bekleyin.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Claude oturum açma işlemi başlatılamadı. Claude Code kurulumunuzu kontrol edip tekrar deneyin."
 });

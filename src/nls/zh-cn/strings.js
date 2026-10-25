@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "感谢您支持 {0}。本次更新内容如下：",
   "PROMO_CARD_LIVE_PREVIEW": "在实时预览中编辑内容和样式",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "修改文本、颜色和字体，重新排列元素，并尝试不同的屏幕尺寸。代码会随您的操作同步更新。",
-  "PROMO_CARD_AI": "借助 AI 创建和完善",
-  "PROMO_CARD_AI_MESSAGE": "将想法变成页面，然后选择一个元素或一段代码，让 AI 进行修改。",
   "PROMO_CARD_LAYERS": "使用图层构建页面",
   "PROMO_CARD_LAYERS_MESSAGE": "查看页面结构，插入元素，编辑类和样式。在实时预览中查看每一处更改。",
   "PROMO_CARD_MARKDOWN": "像编辑文档一样编写 Markdown",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以编辑文件和运行命令，无需批准。",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "选择 AI 无需批准即可执行的操作范围 [或 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code 已登出或您的登录已过期。",
+  "AI_CHAT_AUTH_ERROR_BTN": "登录 Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "在浏览器打开的页面中完成登录，然后重新发送消息。",
   "AI_CHAT_MODEL_DEFAULT": "默认",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "当前为 {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "推荐 — 使用您的 Claude Code 模型设置",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "已发送至 Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "传送到 {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "传送草稿，然后在 CLI 中提交",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "打开一个正在运行的 CLI 会话，然后重试。你的草稿会保留在这里。",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "草稿已添加。请检查后按 Enter 发送。",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "使用 CLI 顶部的连接按钮连接到 Phoenix，然后重试。如果此会话启动时未建立连接，请启动一个已连接的会话。你的草稿会保留在此处。",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "来自 Phoenix 的附件：{0}。",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "无法访问旧站点",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 无法连接到 {0} 以查找您的项目和设置，因此未作任何更改。请检查您的网络连接，然后使用 {1} 重试。",
   "CMD_MIGRATE_DATA": "从 {0} 迁移我的数据…",
-  "AI_CHAT_AUTH_ERROR_BTN": "登录 Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "在浏览器打开的页面中完成登录，然后重新发送消息。",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "打开一个正在运行的 CLI 会话，然后重试。你的草稿会保留在这里。"
+  "PROMO_CARD_AI": "你的 AI 智能体现已在 Phoenix Pro 中实现可视化",
+  "PROMO_CARD_AI_MESSAGE": "将你现有的 Claude Code 或 ChatGPT 订阅接入 Phoenix Code，解锁以可视化方式构建和完善网站的全新体验。",
+  "AI_CHAT_NOT_READY_YET": "AI 正在准备中，请稍候。",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "无法启动 Claude 登录。请检查 Claude Code 的安装情况，然后重试。"
 });
