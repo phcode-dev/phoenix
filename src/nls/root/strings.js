@@ -2753,6 +2753,7 @@ define({
     "AI_CHAT_SCROLL_TO_BOTTOM": "Scroll to bottom",
     "AI_CHAT_PLACEHOLDER": "Ask Claude...",
     "AI_CHAT_SETUP_PLACEHOLDER": "Set up Claude Code to start chatting",
+    "AI_CHAT_NOT_READY_YET": "AI is getting ready. Please wait a moment.",
     "AI_CHAT_PLACEHOLDER_MODEL": "Ask {0}...",
     "AI_CHAT_SEND_TITLE": "Send message",
     "AI_CHAT_STOP_TITLE": "Stop generation (Esc)",
