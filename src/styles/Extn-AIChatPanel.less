@@ -193,13 +193,18 @@
         }
     }
 
-    .ai-chat-title {
+    .ai-chat-title,
+    .ai-chat-history-title {
         min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         font: inherit;
         color: inherit;
+    }
+
+    .ai-chat-history-title {
+        display: none;
     }
 
     .ai-chat-header-actions {
@@ -301,6 +306,12 @@
         cursor: pointer;
     }
 
+    .ai-history-btn.active {
+        color: @ai-start-accent;
+        background-color: fade(@ai-start-accent, 15%);
+        border-color: fade(@ai-start-accent, 35%);
+    }
+
     .ai-new-session-btn,
     .ai-stop-cli-btn {
         display: flex;
@@ -388,8 +399,27 @@
     }
 }
 
-.ai-chat-panel.ai-chat-started:not(.ai-mode-cli):not(.ai-home) .ai-back-btn {
+.ai-chat-panel.ai-chat-started:not(.ai-mode-cli):not(.ai-home) .ai-back-btn,
+.ai-chat-panel.ai-history-open .ai-back-btn {
     display: flex;
+}
+
+.ai-chat-panel.ai-history-open .ai-chat-title-group {
+    pointer-events: none;
+
+    .ai-chat-title,
+    .ai-chat-title-icon,
+    .ai-chat-title-chevron {
+        display: none;
+    }
+
+    .ai-chat-history-title {
+        display: inline;
+    }
+}
+
+.ai-chat-panel.ai-history-open .ai-model-select {
+    display: none;
 }
 
 /* Home: the start screen laid over a chat that has started. The chat keeps
@@ -727,9 +757,10 @@
     }
 }
 
-/* Show header actions on tab container hover */
+/* Keep header actions visible while History or connection details are open. */
 .ai-tab-container:hover .ai-chat-header-actions,
 .ai-chat-header:focus-within .ai-chat-header-actions,
+.ai-chat-panel.ai-history-open .ai-chat-header-actions,
 .ai-chat-header.ai-cli-connection-open .ai-chat-header-actions {
     opacity: 1;
     pointer-events: auto;
