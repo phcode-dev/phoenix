@@ -7182,10 +7182,10 @@
         }
     }
 
-    // The spend figures' tip: a Claude plan covers the spend; Phoenix Pro adds no charge.
+    // Leave enough room for the no-charge sentence; wrap longer copy on narrow windows.
     .ai-usage-tip-note,
     .ai-usage-tip-foot {
-        max-width: 240px;
+        max-width: ~"min(280px, calc(100vw - 42px))";
         white-space: normal;
         line-height: 1.45;
     }
