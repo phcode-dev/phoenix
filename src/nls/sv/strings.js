@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "Tack för att du stödjer {0}. Här är vad som är nytt i den här uppdateringen:",
   "PROMO_CARD_LIVE_PREVIEW": "Redigera och formge i liveförhandsvisningen",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Ändra text, färger och teckensnitt, flytta om element och prova olika skärmstorlekar. Din kod uppdateras medan du arbetar.",
-  "PROMO_CARD_AI": "Skapa och förfina med AI",
-  "PROMO_CARD_AI_MESSAGE": "Förvandla en idé till en sida, välj sedan ett element eller ett kodavsnitt och be AI att göra ändringar.",
   "PROMO_CARD_LAYERS": "Forma din sida med lager",
   "PROMO_CARD_LAYERS_MESSAGE": "Utforska sidans struktur, infoga element och redigera klasser och stilar. Se varje ändring i liveförhandsvisningen.",
   "PROMO_CARD_MARKDOWN": "Skriv Markdown som ett dokument",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI kan redigera filer och köra kommandon utan godkännande",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Välj hur mycket AI:n kan göra utan godkännande [eller Skift+Tabb]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code är utloggad eller så har din inloggning gått ut.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Logga in på Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "Slutför inloggningen på sidan som öppnas i din webbläsare och skicka sedan ditt meddelande igen.",
   "AI_CHAT_MODEL_DEFAULT": "Standard",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Just nu {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Rekommenderas — använder din Claude Code-modellinställning",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Skickat till Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "Överför till {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Överför utkastet och skicka det sedan i CLI",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Öppna en aktiv CLI-session och försök sedan igen. Ditt utkast sparas här.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Utkastet har lagts till. Granska det och tryck på Enter för att skicka.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Anslut Phoenix med anslutningsknappen i CLI-rubriken och försök sedan igen. Om den här sessionen startades utan anslutning, starta en ansluten session. Ditt utkast sparas här.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Bifogat från Phoenix: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Kunde inte nå den gamla webbplatsen",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} kunde inte ansluta till {0} för att leta efter dina projekt och inställningar, så ingenting har ändrats. Kontrollera din internetanslutning och försök sedan igen med {1}.",
   "CMD_MIGRATE_DATA": "Migrera min data från {0}…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Logga in på Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "Slutför inloggningen på sidan som öppnas i din webbläsare och skicka sedan ditt meddelande igen.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Öppna en aktiv CLI-session och försök sedan igen. Ditt utkast sparas här."
+  "PROMO_CARD_AI": "Dina AI-agenter, nu visuella i Phoenix Pro",
+  "PROMO_CARD_AI_MESSAGE": "Använd din befintliga Claude Code- eller ChatGPT-prenumeration i Phoenix Code och upptäck ett helt nytt sätt att bygga och förfina webbplatser visuellt.",
+  "AI_CHAT_NOT_READY_YET": "AI förbereds. Vänta ett ögonblick.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Det gick inte att starta inloggningen till Claude. Kontrollera din Claude Code-installation och försök igen."
 });

@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "感謝您支持 {0}。以下是本次更新的新內容：",
   "PROMO_CARD_LIVE_PREVIEW": "在即時預覽中編輯內容與樣式",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "變更文字、色彩與字型，重新排列元素，並試用不同的螢幕尺寸。程式碼會隨著您的操作同步更新。",
-  "PROMO_CARD_AI": "運用 AI 建立與完善內容",
-  "PROMO_CARD_AI_MESSAGE": "將想法轉化為網頁，再選取元素或一段程式碼，請 AI 進行修改。",
   "PROMO_CARD_LAYERS": "使用圖層打造網頁",
   "PROMO_CARD_LAYERS_MESSAGE": "探索網頁結構、插入元素，並編輯類別與樣式。在即時預覽中查看每一項變更。",
   "PROMO_CARD_MARKDOWN": "像撰寫文件一樣撰寫 Markdown",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI 可以編輯檔案並執行指令，無需批准",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "選擇 AI 的自主操作程度 [或 Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code 已登出或您的登入已過期。",
+  "AI_CHAT_AUTH_ERROR_BTN": "登入 Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "請在瀏覽器開啟的頁面中完成登入，然後再次傳送訊息。",
   "AI_CHAT_MODEL_DEFAULT": "預設",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "目前為 {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "推薦 — 使用您的 Claude Code 模型設定",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "已傳送至 Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "傳送至 {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "傳送草稿，然後在 CLI 中提交",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "請開啟執行中的 CLI 工作階段，然後再試一次。你的草稿會保留在這裡。",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "已加入草稿。請檢閱後按 Enter 傳送。",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "請使用 CLI 頂端的連線按鈕連線至 Phoenix，然後再試一次。如果此工作階段啟動時未連線，請啟動已連線的工作階段。您的草稿會保留在這裡。",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "來自 Phoenix 的附件：{0}。",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "無法連線至舊網站",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} 無法連線至 {0} 以尋找您的專案與設定，因此沒有任何內容被變更。請檢查您的網路連線，然後透過 {1} 重試。",
   "CMD_MIGRATE_DATA": "從 {0} 轉移我的資料…",
-  "AI_CHAT_AUTH_ERROR_BTN": "登入 Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "請在瀏覽器開啟的頁面中完成登入，然後再次傳送訊息。",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "請開啟執行中的 CLI 工作階段，然後再試一次。你的草稿會保留在這裡。"
+  "PROMO_CARD_AI": "您的 AI 代理，現在可在 Phoenix Pro 中以視覺化方式運作",
+  "PROMO_CARD_AI_MESSAGE": "將您現有的 Claude Code 或 ChatGPT 訂閱整合至 Phoenix Code，開啟以視覺化方式建立及改進網站的全新體驗。",
+  "AI_CHAT_NOT_READY_YET": "AI 正在準備中，請稍候。",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "無法啟動 Claude 登入程序。請檢查 Claude Code 是否已正確安裝，然後再試一次。"
 });

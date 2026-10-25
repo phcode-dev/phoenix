@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "Köszönjük, hogy támogatja a {0}-t. Íme a frissítés újdonságai:",
   "PROMO_CARD_LIVE_PREVIEW": "Szerkesztés és formázás az Élő előnézetben",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Módosítsd a szöveget, a színeket és a betűtípusokat, rendezd át az elemeket, és próbálj ki különböző képernyőméreteket. A kódod menet közben frissül.",
-  "PROMO_CARD_AI": "Alkotás és finomítás mesterséges intelligenciával",
-  "PROMO_CARD_AI_MESSAGE": "Alakíts egy ötletet weboldallá, majd jelölj ki egy elemet vagy kódrészletet, és kérd meg a mesterséges intelligenciát a módosítására.",
   "PROMO_CARD_LAYERS": "Alakítsd az oldaladat a Rétegek segítségével",
   "PROMO_CARD_LAYERS_MESSAGE": "Tekintsd át az oldalad szerkezetét, szúrj be elemeket, és szerkeszd az osztályokat és a stílusokat. Minden változást láthatsz az Élő előnézetben.",
   "PROMO_CARD_MARKDOWN": "Írj Markdown-szöveget úgy, mint egy dokumentumot",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "Az MI jóváhagyás nélkül szerkeszthet fájlokat és futtathat parancsokat",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Válassza ki, mennyit tehet a MI jóváhagyás nélkül [vagy Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "A Claude Code ki van jelentkezve, vagy a bejelentkezésed lejárt.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Bejelentkezés a Claude-ba",
+  "AI_CHAT_AUTH_ERROR_HINT": "Fejezze be a bejelentkezést a böngészőben megnyíló oldalon, majd küldje el újra az üzenetét.",
   "AI_CHAT_MODEL_DEFAULT": "Alapértelmezett",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Jelenleg {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Ajánlott — a Claude Code modellbeállításodat használja",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Elküldve a Visual AI-nak",
   "LIVE_DEV_AI_CHAT_TRANSFER": "Átvitel ide: {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Vidd át a piszkozatot, majd küldd el a CLI-ben",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Nyisson meg egy futó CLI-munkamenetet, majd próbálja újra. Az üzenetvázlata itt megmarad.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Piszkozat hozzáadva. Ellenőrizd, majd az elküldéshez nyomd meg az Enter billentyűt.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Csatlakoztasd a Phoenixet a CLI fejlécében található csatlakozási gombbal, majd próbáld újra. Ha ez a munkamenet kapcsolat nélkül indult, indíts csatlakoztatott munkamenetet. A piszkozatod itt megmarad.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "A Phoenixből csatolva: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "A régi oldal nem érhető el",
   "MIGRATE_UNREACHABLE_MESSAGE": "A {APP_NAME} nem tudott csatlakozni a(z) {0} szolgáltatáshoz a projektjei és beállításai megkereséséhez, ezért semmi sem változott. Ellenőrizze az internetkapcsolatát, majd próbálja újra a(z) {1} lehetőséggel.",
   "CMD_MIGRATE_DATA": "Adataim migrálása a(z) {0} helyről…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Bejelentkezés a Claude-ba",
-  "AI_CHAT_AUTH_ERROR_HINT": "Fejezze be a bejelentkezést a böngészőben megnyíló oldalon, majd küldje el újra az üzenetét.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Nyisson meg egy futó CLI-munkamenetet, majd próbálja újra. Az üzenetvázlata itt megmarad."
+  "PROMO_CARD_AI": "AI-ügynökeid mostantól vizuálisan is elérhetők a Phoenix Pro-ban",
+  "PROMO_CARD_AI_MESSAGE": "Használd meglévő Claude Code- vagy ChatGPT-előfizetésedet a Phoenix Code-ban, és fedezd fel a weboldalak vizuális létrehozásának és finomításának egy teljesen új módját.",
+  "AI_CHAT_NOT_READY_YET": "Az AI előkészítése folyamatban van. Kérjük, várj egy pillanatot.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Nem sikerült elindítani a Claude-bejelentkezést. Ellenőrizd a Claude Code telepítését, és próbáld újra."
 });

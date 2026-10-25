@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "Terima kasih telah mendukung {0}. Berikut yang baru di pembaruan ini:",
   "PROMO_CARD_LIVE_PREVIEW": "Edit dan atur gaya di Pratinjau Langsung",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Ubah teks, warna, dan font, susun ulang elemen, serta coba berbagai ukuran layar. Kode Anda diperbarui seiring perubahan yang Anda buat.",
-  "PROMO_CARD_AI": "Bangun dan sempurnakan dengan AI",
-  "PROMO_CARD_AI_MESSAGE": "Wujudkan ide menjadi halaman, lalu pilih elemen atau bagian kode dan minta AI untuk membuat perubahan.",
   "PROMO_CARD_LAYERS": "Bentuk halaman Anda dengan Lapisan",
   "PROMO_CARD_LAYERS_MESSAGE": "Jelajahi struktur halaman Anda, sisipkan elemen, serta edit kelas dan gaya. Lihat setiap perubahan di Pratinjau Langsung.",
   "PROMO_CARD_MARKDOWN": "Tulis Markdown seperti menulis dokumen",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI dapat mengedit file dan menjalankan perintah tanpa persetujuan",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Pilih sejauh mana AI dapat bertindak tanpa persetujuan [atau Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code telah keluar atau login Anda telah kedaluwarsa.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Masuk ke Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "Selesaikan proses masuk di halaman yang terbuka di browser Anda, lalu kirim pesan Anda lagi.",
   "AI_CHAT_MODEL_DEFAULT": "Bawaan",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Saat ini {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Direkomendasikan — menggunakan pengaturan model Claude Code Anda",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Terkirim ke Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "Transfer ke {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Transfer draf, lalu kirim di CLI",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Buka sesi CLI yang sedang berjalan, lalu coba lagi. Draf Anda tetap tersimpan di sini.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Draf ditambahkan. Tinjau dan tekan Enter untuk mengirim.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Hubungkan Phoenix menggunakan tombol koneksi di bagian atas CLI, lalu coba lagi. Jika sesi ini dimulai tanpa koneksi, mulai sesi yang terhubung. Draf Anda tetap tersimpan di sini.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Dilampirkan dari Phoenix: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Tidak dapat menjangkau situs lama",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} tidak dapat terhubung ke {0} untuk mencari proyek dan pengaturan Anda, sehingga tidak ada yang diubah. Periksa koneksi internet Anda, lalu coba lagi dengan {1}.",
   "CMD_MIGRATE_DATA": "Migrasikan Data Saya dari {0}…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Masuk ke Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "Selesaikan proses masuk di halaman yang terbuka di browser Anda, lalu kirim pesan Anda lagi.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Buka sesi CLI yang sedang berjalan, lalu coba lagi. Draf Anda tetap tersimpan di sini."
+  "PROMO_CARD_AI": "Agen AI Anda, Kini Hadir secara Visual di Phoenix Pro",
+  "PROMO_CARD_AI_MESSAGE": "Gunakan langganan Claude Code atau ChatGPT yang sudah Anda miliki di Phoenix Code, dan nikmati cara baru untuk membangun dan menyempurnakan situs web secara visual.",
+  "AI_CHAT_NOT_READY_YET": "AI sedang bersiap. Harap tunggu sebentar.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Tidak dapat memulai proses masuk ke Claude. Periksa instalasi Claude Code Anda dan coba lagi."
 });

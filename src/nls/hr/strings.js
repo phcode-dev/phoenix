@@ -2337,8 +2337,6 @@ define({
   "PROMO_PRO_WHATS_NEW_MESSAGE": "Hvala što podržavate {0}. Evo što je novo u ovom ažuriranju:",
   "PROMO_CARD_LIVE_PREVIEW": "Uređujte i oblikujte u pregledu uživo",
   "PROMO_CARD_LIVE_PREVIEW_MESSAGE": "Mijenjajte tekst, boje i fontove, preraspoređujte elemente i isprobavajte različite veličine zaslona. Vaš se kod ažurira tijekom rada.",
-  "PROMO_CARD_AI": "Izrađujte i doradite uz umjetnu inteligenciju",
-  "PROMO_CARD_AI_MESSAGE": "Pretvorite ideju u stranicu, zatim odaberite element ili dio koda i zatražite od umjetne inteligencije da unese izmjene.",
   "PROMO_CARD_LAYERS": "Oblikujte stranicu pomoću slojeva",
   "PROMO_CARD_LAYERS_MESSAGE": "Istražite strukturu stranice, umetnite elemente te uređujte klase i stilove. Svaku izmjenu pogledajte u pregledu uživo.",
   "PROMO_CARD_MARKDOWN": "Pišite Markdown kao dokument",
@@ -2817,6 +2815,8 @@ define({
   "AI_CHAT_MODE_INFO_FULL_AUTO": "AI može uređivati datoteke i pokretati naredbe bez odobrenja",
   "AI_CHAT_PERMISSION_SELECT_TITLE": "Odaberite koliko AI može učiniti bez odobrenja [ili Shift+Tab]",
   "AI_CHAT_AUTH_ERROR_NOTICE": "Claude Code je odjavljen ili je vaša prijava istekla.",
+  "AI_CHAT_AUTH_ERROR_BTN": "Prijavite se u Claude",
+  "AI_CHAT_AUTH_ERROR_HINT": "Dovršite prijavu na stranici koja se otvori u pregledniku, a zatim ponovno pošaljite poruku.",
   "AI_CHAT_MODEL_DEFAULT": "Zadano",
   "AI_CHAT_MODEL_DEFAULT_DESC_CURRENT": "Trenutno {0}",
   "AI_CHAT_MODEL_DEFAULT_DESC": "Preporučeno — koristi vašu postavku modela Claude Code",
@@ -2954,6 +2954,7 @@ define({
   "LIVE_DEV_AI_CHAT_SENT": "Poslano u Visual AI",
   "LIVE_DEV_AI_CHAT_TRANSFER": "Prenesi u {0}",
   "LIVE_DEV_AI_CHAT_TRANSFER_KEYS": "Prenesite skicu, a zatim je pošaljite u CLI-ju",
+  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Otvorite aktivnu CLI sesiju, a zatim pokušajte ponovno. Vaš je nacrt spremljen ovdje.",
   "LIVE_DEV_AI_CHAT_CLI_TRANSFERRED": "Skica je dodana. Pregledajte je i pritisnite Enter za slanje.",
   "LIVE_DEV_AI_CHAT_CLI_CONNECTION_REQUIRED": "Povežite Phoenix pomoću gumba za povezivanje u zaglavlju CLI-ja, a zatim pokušajte ponovno. Ako je ova sesija pokrenuta bez veze, pokrenite povezanu sesiju. Vaša je skica sačuvana ovdje.",
   "LIVE_DEV_AI_CHAT_CLI_CONTEXT_SUMMARY": "Priloženo iz Phoenixa: {0}.",
@@ -3170,7 +3171,8 @@ define({
   "MIGRATE_UNREACHABLE_TITLE": "Nije moguće pristupiti staroj stranici",
   "MIGRATE_UNREACHABLE_MESSAGE": "{APP_NAME} se nije mogao povezati s {0} kako bi potražio vaše projekte i postavke, stoga ništa nije promijenjeno. Provjerite internetsku vezu, a zatim ponovno pokušajte pomoću {1}.",
   "CMD_MIGRATE_DATA": "Migrirati moje podatke s {0}…",
-  "AI_CHAT_AUTH_ERROR_BTN": "Prijavite se u Claude",
-  "AI_CHAT_AUTH_ERROR_HINT": "Dovršite prijavu na stranici koja se otvori u pregledniku, a zatim ponovno pošaljite poruku.",
-  "LIVE_DEV_AI_CHAT_CLI_NOT_READY": "Otvorite aktivnu CLI sesiju, a zatim pokušajte ponovno. Vaš je nacrt spremljen ovdje."
+  "PROMO_CARD_AI": "Vaši AI agenti, sada vizualno u Phoenix Pro",
+  "PROMO_CARD_AI_MESSAGE": "Povežite svoju postojeću pretplatu na Claude Code ili ChatGPT s Phoenix Codeom i otključajte potpuno nov način vizualne izrade i dorade web-stranica.",
+  "AI_CHAT_NOT_READY_YET": "AI se priprema. Pričekajte trenutak.",
+  "AI_CHAT_AUTH_LOGIN_FAILED": "Nije moguće pokrenuti prijavu na Claude. Provjerite instalaciju alata Claude Code i pokušajte ponovno."
 });
