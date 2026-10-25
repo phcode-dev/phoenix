@@ -799,7 +799,7 @@ exports.validateCliPath = async function (params) {
  * @return {Promise<{downloader: ?string}>} "curl", "wget", or null
  */
 exports.getInstallDownloader = async function () {
-    return { downloader: CliLocator.findDownloader() };
+    return { downloader: await CliLocator.findDownloader() };
 };
 
 /**

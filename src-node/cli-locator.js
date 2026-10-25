@@ -32,15 +32,14 @@
  * and known locations, each proved by actually running `--version`.
  */
 
-const { execSync, spawn } = require("child_process");
+const { execFile, spawn } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
 const isWindows = process.platform === "win32";
 
-// PATH lookups (`where`/`which`) run synchronously and block this whole Node
-// process — the integrated terminal, file watchers and MCP all share it. An
-// unreachable network drive on PATH can wedge them, so cap the wait.
+// Bound asynchronous PATH lookups: an unreachable network drive must not
+// leave discovery pending indefinitely or block the shared Node event loop.
 const PATH_LOOKUP_TIMEOUT_MS = 3000;
 
 // How long a `--version` probe may take before we give up on a candidate.
@@ -102,11 +101,11 @@ const CLI_REGISTRY = {
         posixNative: function (home) {
             return [path.join(home, ".local", "bin", "claude")];  // claude.ai/install.sh default
         },
-        posixExtra: function (home) {
+        posixExtra: async function (home) {
             return [
                 "/usr/local/bin/claude",                    // System-wide / Intel Mac Homebrew
                 "/usr/bin/claude",                          // Distro package
-                ..._nvmCandidates(home, "claude"),          // npm global via nvm
+                ...await _nvmCandidates(home, "claude"),    // npm global via nvm
                 "/opt/homebrew/bin/claude",                 // Homebrew on Apple Silicon
                 "/home/linuxbrew/.linuxbrew/bin/claude"     // Linuxbrew
             ];
@@ -147,11 +146,11 @@ const CLI_REGISTRY = {
                 path.join(home, ".codex", "packages", "standalone", "current", "bin", "codex")
             ];
         },
-        posixExtra: function (home) {
+        posixExtra: async function (home) {
             return [
                 "/usr/local/bin/codex",
                 "/usr/bin/codex",
-                ..._nvmCandidates(home, "codex"),
+                ...await _nvmCandidates(home, "codex"),
                 "/opt/homebrew/bin/codex",                  // brew install --cask codex
                 "/home/linuxbrew/.linuxbrew/bin/codex"
             ];
@@ -172,7 +171,7 @@ let _bundledClaude = null;      // Promise<?{path, version}>: looked up once per
 
 // cliId -> { path, at, overrideSig, source, version, errorCode, override, searched }
 const _cache = new Map();
-// cliId -> in-flight discovery promise, so concurrent callers share one walk
+// cliId + override signature -> in-flight discovery promise, sharing one walk
 // of the fallback chain instead of each spawning their own --version probes.
 const _inFlight = new Map();
 // cliId -> user-configured override path ("" when unset)
@@ -187,29 +186,28 @@ const _overrides = new Map();
  * `$NVM_DIR` points at). Fall back to enumerating installed versions, newest
  * first, so we still find the CLI when the default alias is a label like
  * `lts/*` or `node` that we don't expand here.
+ * @param {string} home - User's home directory.
+ * @param {string} bin - CLI executable name.
+ * @return {Promise<Array<string>>} Candidate paths in preference order.
  */
-function _nvmCandidates(home, bin) {
+async function _nvmCandidates(home, bin) {
     const nvmRoot = process.env.NVM_DIR || path.join(home, ".nvm");
     const versionsDir = path.join(nvmRoot, "versions", "node");
     const candidates = [];
     try {
         const aliasFile = path.join(nvmRoot, "alias", "default");
-        if (fs.existsSync(aliasFile)) {
-            const alias = fs.readFileSync(aliasFile, "utf8").trim();
-            if (/^v?\d/.test(alias)) {
-                const v = alias.startsWith("v") ? alias : "v" + alias;
-                candidates.push(path.join(versionsDir, v, "bin", bin));
-            }
+        const alias = (await fs.promises.readFile(aliasFile, "utf8")).trim();
+        if (/^v?\d/.test(alias)) {
+            const v = alias.startsWith("v") ? alias : "v" + alias;
+            candidates.push(path.join(versionsDir, v, "bin", bin));
         }
     } catch { /* nvm not installed or unreadable */ }
     try {
-        if (fs.existsSync(versionsDir)) {
-            const versions = fs.readdirSync(versionsDir)
-                .filter(v => /^v\d/.test(v))
-                .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
-            for (const v of versions) {
-                candidates.push(path.join(versionsDir, v, "bin", bin));
-            }
+        const versions = (await fs.promises.readdir(versionsDir))
+            .filter(v => /^v\d/.test(v))
+            .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+        for (const v of versions) {
+            candidates.push(path.join(versionsDir, v, "bin", bin));
         }
     } catch { /* ignore */ }
     return candidates;
@@ -236,18 +234,27 @@ function _dedupe(paths) {
 /**
  * Ask the OS where `bin` lives. Returns [] when the lookup tool is missing,
  * finds nothing, or takes too long.
+ * @param {string} bin - Executable name to find.
+ * @return {Promise<Array<string>>} Matching executable paths in preference order.
  */
-function _pathLookup(bin) {
+async function _pathLookup(bin) {
     try {
-        const cmd = isWindows
-            ? "where " + bin
-            : "which -a " + bin + " 2>/dev/null || which " + bin;
-        const out = execSync(cmd, {
-            encoding: "utf8",
-            timeout: PATH_LOOKUP_TIMEOUT_MS,
-            windowsHide: true
-        }).trim();
-        let paths = out.split(isWindows ? "\r\n" : "\n")
+        const started = Date.now();
+        const lookup = (args, timeout) => new Promise(resolve => {
+            execFile(isWindows ? "where.exe" : "which", args, {
+                encoding: "utf8", timeout, windowsHide: true, env: process.env
+            }, (error, stdout) => resolve({error, stdout}));
+        });
+        let result = await lookup(isWindows ? [bin] : ["-a", bin], PATH_LOOKUP_TIMEOUT_MS);
+        const remaining = PATH_LOOKUP_TIMEOUT_MS - (Date.now() - started);
+        // Some which implementations do not support -a. Retain the single-match
+        // fallback without retrying a timeout or exceeding the original deadline.
+        if (!isWindows && result.error && !result.error.killed &&
+            typeof result.error.code === "number" && remaining > 0) {
+            result = await lookup([bin], remaining);
+        }
+        if (result.error) { return []; }
+        let paths = (result.stdout || "").trim().split(/\r?\n/)
             .map(p => p.trim())
             .filter(p => p && !p.includes("node_modules"));
         if (isWindows) {
@@ -266,41 +273,43 @@ function _pathLookup(bin) {
 }
 
 /**
- * Ordered candidate paths for a CLI, split into two tiers:
- *   - `native`: installers known to drop a real executable. No shim chain to
- *     break, so file existence is enough confidence — we skip `--version`.
- *   - `fallback`: PATH discovery and known locations. Broken installs are
- *     common here (an orphan `.cmd` whose cli.js got deleted), so every
- *     candidate is proved by running `--version` before we return it.
+ * Installer locations that can be checked before starting PATH discovery.
  * @param {Object} cli - a CLI_REGISTRY entry
- * @return {{native: Array<string>, fallback: Array<string>}}
+ * @return {Array<string>} Native candidates in preference order.
  */
-function _candidates(cli) {
+function _nativeCandidates(cli) {
     const home = (isWindows ? process.env.USERPROFILE : process.env.HOME) || process.env.HOME || "";
-    const native = isWindows ? cli.winNative() : cli.posixNative(home);
-    const extra = isWindows ? cli.winExtra() : cli.posixExtra(home);
-    const nativePaths = _dedupe(native);
+    return _dedupe(isWindows ? cli.winNative() : cli.posixNative(home));
+}
+
+/**
+ * Find PATH and other fallback candidates only after native candidates fail.
+ * @param {Object} cli - CLI registry entry.
+ * @param {Array<string>} nativePaths - Previously considered native paths.
+ * @return {Promise<Array<string>>} Fallback paths, each requiring a version probe.
+ */
+async function _fallbackCandidates(cli, nativePaths) {
+    const home = (isWindows ? process.env.USERPROFILE : process.env.HOME) || process.env.HOME || "";
+    const [onPath, extra] = await Promise.all([
+        _pathLookup(cli.bin), isWindows ? cli.winExtra() : cli.posixExtra(home)
+    ]);
     // Dedupe the fallback tier against native too: `which` reports the same
     // file the native tier already listed, and a user reading searchedPaths
     // should not see it twice.
     const seenNative = new Set(nativePaths.map(p => (isWindows ? p.toLowerCase() : p)));
-    const fallback = _dedupe([..._pathLookup(cli.bin), ...extra])
+    return _dedupe([...onPath, ...extra])
         .filter(p => !seenNative.has(isWindows ? p.toLowerCase() : p));
-    return { native: nativePaths, fallback: fallback };
 }
 
 /**
- * Existence + executability check. On Windows executability is derived from
- * extension/PATHEXT not a file attribute, so existsSync is the right test;
- * on posix we want the +x bit.
+ * Check existence on Windows and executable permission on POSIX without blocking Node.
+ * @param {string} p - Candidate path.
+ * @return {Promise<boolean>} Whether the candidate can be used.
  */
-function canAccess(p) {
+async function canAccess(p) {
     if (!p) { return false; }
     try {
-        if (isWindows) {
-            return fs.existsSync(p);
-        }
-        fs.accessSync(p, fs.constants.X_OK);
+        await fs.promises.access(p, isWindows ? fs.constants.F_OK : fs.constants.X_OK);
         return true;
     } catch {
         return false;
@@ -454,16 +463,17 @@ async function _resolveOverride(cli, override) {
     // affordance the Git extension's gitPath setting allows.
     let resolved = raw;
     if (!raw.includes("/") && !raw.includes("\\")) {
-        const found = _pathLookup(raw)[0];
+        const found = (await _pathLookup(raw))[0];
         if (!found) {
             return { used: true, valid: false, path: raw, errorCode: ERROR_CODES.OVERRIDE_MISSING, onPath: true };
         }
         resolved = found;
     }
-    if (!canAccess(resolved)) {
+    if (!await canAccess(resolved)) {
         // Split "no such file" from "there but not executable": the latter is
         // the common chmod mistake and deserves its own advice.
-        const code = (!isWindows && fs.existsSync(resolved))
+        const exists = !isWindows && await fs.promises.access(resolved).then(() => true, () => false);
+        const code = exists
             ? ERROR_CODES.OVERRIDE_NOT_EXECUTABLE
             : ERROR_CODES.OVERRIDE_MISSING;
         return { used: true, valid: false, path: resolved, errorCode: code };
@@ -539,7 +549,7 @@ function _locateBundledClaude() {
         _bundledClaude = (async function () {
             const cli = CLI_REGISTRY.claude;
             for (const p of _bundledClaudeCandidates()) {
-                if (!canAccess(p)) { continue; }
+                if (!await canAccess(p)) { continue; }
                 const probe = await _probeVersion(cli, p);
                 if (probe.ok) {
                     console.log("[Phoenix AI] Bundled claude CLI at:", p, probe.version);
@@ -584,14 +594,20 @@ function setBundledRoot(dir) {
     _cache.delete("claude");
 }
 
-function _cacheHit(cliId, overrideSig) {
+/**
+ * Check that a cached result still matches this request and its executable exists.
+ * @param {string} cliId - CLI registry ID.
+ * @param {string} overrideSig - Trimmed override for this request.
+ * @return {Promise<?Object>} A matching, usable cache entry.
+ */
+async function _cacheHit(cliId, overrideSig) {
     const entry = _cache.get(cliId);
     if (!entry || entry.overrideSig !== overrideSig) {
         return null;
     }
-    if (entry.path !== null && !canAccess(entry.path)) {
+    if (entry.path !== null && !await canAccess(entry.path)) {
         console.log("[Phoenix AI] " + cliId + " CLI is no longer at", entry.path);
-        _cache.delete(cliId);
+        if (_cache.get(cliId) === entry) { _cache.delete(cliId); }
         return null;
     }
     const fresh = entry.path !== null || (Date.now() - entry.at) < NULL_CACHE_TTL_MS;
@@ -631,19 +647,20 @@ function locateCli(cliId, opts) {
     const force = !!(opts && opts.force);
     const override = (opts && opts.override !== undefined) ? opts.override : getOverride(cliId);
     const overrideSig = (override || "").trim();
+    const pendingKey = cliId + ":" + overrideSig;
 
     if (!force) {
-        const hit = _cacheHit(cliId, overrideSig);
-        if (hit) {
-            return Promise.resolve(_toResult(cliId, hit));
-        }
-        const pending = _inFlight.get(cliId);
+        const pending = _inFlight.get(pendingKey);
         if (pending) {
             return pending;
         }
     }
 
     const discovery = (async function () {
+        if (!force) {
+            const hit = await _cacheHit(cliId, overrideSig);
+            if (hit) { return _toResult(cliId, hit); }
+        }
         const entry = { path: null, at: Date.now(), overrideSig, searched: [] };
 
         if (overrideSig) {
@@ -668,8 +685,8 @@ function locateCli(cliId, opts) {
             return _toResult(cliId, entry);
         }
 
-        const { native, fallback } = _candidates(cli);
-        entry.searched = [...native, ...fallback];
+        const native = _nativeCandidates(cli);
+        entry.searched = native.slice();
         // Only claude ships with Phoenix. With a bundled copy to weigh a
         // system install against, the system install's version has to be
         // known, so the native tier is probed too.
@@ -679,7 +696,7 @@ function locateCli(cliId, opts) {
         }
         let found = null;   // {path, source, version}
         for (const p of native) {
-            if (!canAccess(p)) { continue; }
+            if (!await canAccess(p)) { continue; }
             let version = null;
             if (bundled) {
                 const probe = await _probeVersion(cli, p);
@@ -694,8 +711,10 @@ function locateCli(cliId, opts) {
             break;
         }
         if (!found) {
+            const fallback = await _fallbackCandidates(cli, native);
+            entry.searched.push(...fallback);
             for (const p of fallback) {
-                if (!canAccess(p)) { continue; }
+                if (!await canAccess(p)) { continue; }
                 const probe = await _probeVersion(cli, p);
                 if (probe.ok) {
                     console.log("[Phoenix AI] Validated " + cli.bin + " CLI at:", p);
@@ -729,12 +748,13 @@ function locateCli(cliId, opts) {
     }());
 
     if (!force) {
-        _inFlight.set(cliId, discovery);
-        discovery.finally(function () {
-            if (_inFlight.get(cliId) === discovery) {
-                _inFlight.delete(cliId);
+        _inFlight.set(pendingKey, discovery);
+        const clearPending = function () {
+            if (_inFlight.get(pendingKey) === discovery) {
+                _inFlight.delete(pendingKey);
             }
-        });
+        };
+        discovery.then(clearPending, clearPending);
     }
     return discovery;
 }
@@ -769,11 +789,11 @@ const DOWNLOADERS = ["curl", "wget"];
 /**
  * Which downloader is on PATH, so the install command offered to the user is
  * one that can actually run.
- * @return {?string} "curl", "wget", or null when neither is installed
+ * @return {Promise<?string>} "curl", "wget", or null when neither is installed
  */
-function findDownloader() {
+async function findDownloader() {
     for (const bin of DOWNLOADERS) {
-        if (_pathLookup(bin).length) {
+        if ((await _pathLookup(bin)).length) {
             return bin;
         }
     }

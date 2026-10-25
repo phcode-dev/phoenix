@@ -18,7 +18,7 @@ const PROCESS_TIMEOUT_MS = 3000;
  * @param {string} platform - Node platform name
  * @param {Object} env - Simulated desktop environment
  * @param {Function} [spawnImpl] - Optional probe process substitute
- * @param {{fs: Object, execSync: Function}} [stubs] - Optional file system and PATH lookup substitutes
+ * @param {{fs: Object, execFile: Function}} [stubs] - Optional file system and PATH lookup substitutes
  * @return {Object} Locator exports
  */
 function _loadLocator(platform, env, spawnImpl, stubs) {
@@ -27,8 +27,8 @@ function _loadLocator(platform, env, spawnImpl, stubs) {
     if (spawnImpl) {
         processStubs.spawn = spawnImpl;
     }
-    if (stubs && stubs.execSync) {
-        processStubs.execSync = stubs.execSync;
+    if (stubs && stubs.execFile) {
+        processStubs.execFile = stubs.execFile;
     }
     const dependencies = {
         path: platform === "win32" ? path.win32 : path.posix,
@@ -177,13 +177,22 @@ async function runStandaloneFixture() {
 async function locateWindowsStandaloneCodex() {
     const env = { LOCALAPPDATA: "C:\\Users\\me\\AppData\\Local", USERPROFILE: "C:\\Users\\me" };
     const installedPath = "C:\\Users\\me\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.exe";
+    let pathLookups = 0;
     const locator = _loadLocator("win32", env, null, {
         fs: Object.assign({}, fs, {
-            existsSync: function (candidate) { return candidate === installedPath; }
+            promises: Object.assign({}, fs.promises, {
+                access: async function (candidate) {
+                    if (candidate !== installedPath) { throw new Error("ENOENT"); }
+                }
+            })
         }),
-        execSync: function () { throw new Error("not on PATH"); }
+        execFile: function (_command, _args, _options, callback) {
+            pathLookups++;
+            callback(new Error("not on PATH"), "");
+        }
     });
-    return { located: await locator.locateCli("codex"), installedPath };
+    const located = await locator.locateCli("codex");
+    return { located, installedPath, pathLookups };
 }
 
 /**
@@ -212,12 +221,17 @@ function _bundledLocator(versions) {
             : "process.exit(1)"]);
     }, {
         fs: Object.assign({}, fs, {
-            accessSync: function (candidate) {
-                if (!versions[candidate]) { throw new Error("ENOENT"); }
-            },
-            existsSync: function (candidate) { return !!versions[candidate]; }
+            promises: {
+                access: async function (candidate) {
+                    if (!versions[candidate]) { throw new Error("ENOENT"); }
+                },
+                readFile: async function () { throw new Error("ENOENT"); },
+                readdir: async function () { return []; }
+            }
         }),
-        execSync: function () { throw new Error("not on PATH"); }
+        execFile: function (_command, _args, _options, callback) {
+            callback(new Error("not on PATH"), "");
+        }
     });
     locator.setBundledRoot(BUNDLED_ROOT);
     return locator;
@@ -256,20 +270,94 @@ async function relocateAfterRemoval() {
  * @return {Promise<Array<?string>>} Chosen downloader per scenario
  */
 async function findDownloaders({installed}) {
-    return installed.map(function (tools) {
+    return Promise.all(installed.map(function (tools) {
         const locator = _loadLocator("linux", { PATH: "/usr/bin" }, null, {
-            execSync: function (command) {
-                const found = tools.find(function (tool) { return command.endsWith("which " + tool); });
-                if (!found) {
-                    throw new Error("not on PATH");
-                }
-                return "/usr/bin/" + found + "\n";
+            execFile: function (_command, args, _options, callback) {
+                const found = tools.find(function (tool) { return args[args.length - 1] === tool; });
+                callback(found ? null : new Error("not on PATH"), found ? "/usr/bin/" + found + "\n" : "");
             }
         });
         return locator.findDownloader();
-    });
+    }));
 }
 
+/**
+ * Hold a real lookup child on stdin while the parent services a file read and timer.
+ * @return {Promise<Object>} Responsiveness and bounded, shell-less lookup options.
+ */
+async function lookupWhileBusy() {
+    let child, options, lookupStarted;
+    const started = new Promise(resolve => { lookupStarted = resolve; });
+    const locator = _loadLocator("linux", { PATH: "/usr/bin" }, null, {
+        execFile: function (_command, _args, opts, callback) {
+            options = opts;
+            child = childProcess.execFile(process.execPath,
+                ["-e", "process.stdin.once('data', () => { console.log('/usr/bin/curl'); process.exit(); });"],
+                { timeout: PROCESS_TIMEOUT_MS }, callback);
+            lookupStarted();
+            return child;
+        }
+    });
+    let settled = false;
+    const lookup = locator.findDownloader().then(result => { settled = true; return result; });
+    try {
+        await started;
+        const source = await fs.promises.readFile(__filename, "utf8");
+        await new Promise(resolve => setImmediate(resolve));
+        const pendingDuringRead = !settled;
+        child.stdin.end("finish");
+        return { downloader: await lookup, pendingDuringRead, readCompleted: source.length > 0,
+            timeout: options.timeout, shell: !!options.shell, windowsHide: options.windowsHide };
+    } finally {
+        if (child) { child.kill(); }
+    }
+}
+
+/**
+ * Simulate which variants or a failed lookup without depending on host-installed tools.
+ * @param {{failure: string}} params - unsupported, timeout, or missing.
+ * @return {Promise<Object>} Downloader choice and lookup arguments/deadlines.
+ */
+async function lookupFailure({failure}) {
+    const calls = [];
+    const locator = _loadLocator("linux", {}, null, {
+        execFile: function (command, args, options, callback) {
+            calls.push({command, args, timeout: options.timeout});
+            if (failure === "unsupported" && args.length === 1) {
+                callback(null, "/usr/bin/curl\n");
+            } else {
+                const error = new Error(failure);
+                error.code = failure === "missing" ? "ENOENT" : 1;
+                error.killed = failure === "timeout";
+                callback(error, "");
+            }
+        }
+    });
+    return { downloader: await locator.findDownloader(), calls };
+}
+
+/**
+ * Concurrent callers share the same override, while different overrides stay independent.
+ * @return {Promise<Object>} Promise identity and located paths.
+ */
+async function concurrentOverrides() {
+    const paths = ["/test/one/codex", "/test/two/codex"];
+    const locator = _loadLocator("linux", {}, function () {
+        return childProcess.spawn(process.execPath, ["-e", "console.log('codex-cli 1.0.0');"]);
+    }, { fs: Object.assign({}, fs, { promises: {
+        access: async function (candidate) {
+            if (!paths.includes(candidate)) { throw new Error("ENOENT"); }
+        }
+    } }) });
+    const first = locator.locateCli("codex", {override: paths[0]});
+    const shared = locator.locateCli("codex", {override: paths[0]});
+    const second = locator.locateCli("codex", {override: paths[1]});
+    return { shared: first === shared, independent: first !== second, results: await Promise.all([first, second]) };
+}
+
+exports.lookupWhileBusy = lookupWhileBusy;
+exports.lookupFailure = lookupFailure;
+exports.concurrentOverrides = concurrentOverrides;
 exports.getSpawnProfile = getSpawnProfile;
 exports.locateWindowsStandaloneCodex = locateWindowsStandaloneCodex;
 exports.findDownloaders = findDownloaders;
