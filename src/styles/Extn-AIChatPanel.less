@@ -4896,11 +4896,60 @@
         }
 
         .ai-usage-note {
+            position: relative;
             margin-top: auto;
             padding: 4px 12px 6px;
             color: @project-panel-text-2;
             white-space: normal;
             max-width: 270px;
+
+            &:hover .ai-usage-note-tip,
+            &:focus-within .ai-usage-note-tip {
+                display: block;
+            }
+        }
+
+        .ai-usage-note-trigger {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            padding: 0;
+            border: 0;
+            border-radius: 2px;
+            background: none;
+            box-shadow: none;
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            cursor: help;
+
+            span {
+                text-decoration: underline dotted;
+                text-underline-offset: 3px;
+            }
+
+            &:focus-visible {
+                outline: 1px solid @project-panel-text-1;
+                outline-offset: 3px;
+            }
+        }
+
+        .ai-usage-note-tip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 8px;
+            right: 8px;
+            margin-bottom: 6px;
+            padding: 10px 12px;
+            background: @bc-ai-sidebar-bg;
+            border: 1px solid @ai-start-border;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+            color: @project-panel-text-1;
+            line-height: 1.45;
+            z-index: 1;
+            pointer-events: none;
         }
 
         label.ai-usage-option {
@@ -6838,7 +6887,6 @@
     .ai-usage-bars {
         display: flex;
         align-items: flex-end;
-        gap: 3px;
         height: 44px;
         margin-bottom: 4px;
     }
@@ -6846,11 +6894,31 @@
     .ai-usage-bar {
         flex: 1;
         display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+        min-width: 0;
+        padding: 0 1.5px;
+        box-sizing: border-box;
+        border-radius: 2px;
+
+        &.ai-usage-bar-hovered {
+            outline: 1px solid @project-panel-text-1;
+            outline-offset: -1px;
+            background: rgba(255, 255, 255, 0.05);
+            filter: brightness(1.2);
+        }
+    }
+
+    .ai-usage-bar-fill {
+        display: flex;
         flex-direction: column-reverse;
+        flex-shrink: 0;
         border-radius: 2px 2px 0 0;
         overflow: hidden;
         background: rgba(255, 255, 255, 0.03);
         min-height: 1px;
+        pointer-events: none;
 
         i {
             display: block;
