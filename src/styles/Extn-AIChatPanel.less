@@ -138,6 +138,26 @@
     color: @project-panel-text-1;
     font-size: @ai-text-body;
     container-type: inline-size;
+
+    // Match Layers' dark sidebar scrollbars, including Windows light-theme hover.
+    #sidebar & {
+        .ai-chat-messages,
+        .ai-chat-start,
+        .ai-session-history-dropdown {
+            &::-webkit-scrollbar {
+                width: 9px;
+                height: 9px;
+                background-color: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                border-radius: 999px;
+                background-color: rgba(255, 255, 255, 0.12);
+                background-clip: padding-box;
+                border: 2px solid transparent;
+            }
+        }
+    }
 }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
