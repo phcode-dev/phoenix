@@ -38,6 +38,11 @@ function _validateDBIntegrity(lmdbDir) {
             db.getKeys({ limit: 1 }).next();
             db.close();
         `;
+        // Keep this synchronous: the 2026-10-25 async experiment had slower app-ready
+        // in 7/10 Windows, 6/10 Linux and 8/15 Mac matched warm app-reload pairs.
+        // Better Node responsiveness did not meet the startup requirement, so it was rejected.
+        // Baseline and raw results: src/extensionsIntegrated/phoenix-pro/docs/
+        // boot-01-startup-benchmark-2026-10-25.json (BOOT-01).
         execFileSync(process.execPath, ["-e", script], {
             timeout: 10000,
             stdio: "pipe",
