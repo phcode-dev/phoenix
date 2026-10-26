@@ -6655,18 +6655,20 @@
     .ai-usage-card-head {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 0;
         margin-bottom: 10px;
         min-width: 0;
     }
 
     .ai-usage-card-title {
+        margin-right: 8px;
         font-size: @ai-text-body;
         font-weight: 600;
     }
 
     /* The one header item that may give way in a narrow panel. */
     .ai-usage-card-range {
+        margin-right: 8px;
         font-size: @ai-text-meta;
         color: @project-panel-text-2;
         padding: 2px 6px;
@@ -6685,15 +6687,14 @@
         }
     }
 
-    /* Other Phoenix windows write the same ledger; this reads it again. */
+    .ai-usage-card-cost,
     .ai-usage-card-reload {
-        margin-left: auto;
         flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         border-radius: 4px;
         font-size: 11px;
         color: fade(@project-panel-text-2, 80%);
@@ -6704,9 +6705,30 @@
             background: rgba(255, 255, 255, 0.06);
         }
 
-        &.ai-usage-reloading i {
-            animation: ai-usage-spin 0.7s linear infinite;
+        &:focus-visible {
+            outline: 2px solid @project-panel-text-2;
+            outline-offset: 2px;
         }
+    }
+
+    .ai-usage-card-cost {
+        margin-left: auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 600;
+
+        &:hover {
+            background: transparent;
+        }
+    }
+
+    /* Other Phoenix windows write the same ledger; this reads it again. */
+    .ai-usage-card-reload.ai-usage-reloading i {
+        animation: ai-usage-spin 0.7s linear infinite;
     }
 
     .ai-usage-card-toggle {
@@ -7044,6 +7066,19 @@
         &:hover { color: @project-panel-text-1; }
         &:hover span { text-decoration: underline; text-underline-offset: 3px; }
         &:focus-visible { outline: 2px solid @ai-start-accent; outline-offset: 3px; }
+    }
+}
+
+.modal.ai-usage-cost-dialog {
+    width: 480px;
+    max-width: calc(100vw - 48px);
+
+    .modal-body {
+        font-size: 14px;
+        line-height: 1.6;
+
+        p { margin: 0 0 12px; }
+        .ai-usage-cost-note { margin-bottom: 0; font-size: 12px; opacity: 0.8; }
     }
 }
 
