@@ -2894,7 +2894,7 @@ define({
     "AI_CHAT_USAGE_API_TIME": "Time in API",
     "AI_CHAT_USAGE_COST": "Cost at list price",
     "AI_CHAT_USAGE_NOTE": "You won’t be charged this amount by Phoenix Pro.",
-    "AI_CHAT_USAGE_SPEND_INCLUDED": "With a Claude or ChatGPT subscription, these AI costs are covered by your plan. If you use an API key, billing is handled by your provider.",
+    "AI_CHAT_USAGE_SPEND_INCLUDED": "If you’re using a Claude or ChatGPT subscription, you won’t be charged this amount separately by your AI provider.",
     "AI_CHAT_USAGE_SPEND_NO_PRO_CHARGE": "You won’t be charged this amount by Phoenix Pro.",
     "AI_CHAT_USAGE_OPTION_TURNS": "Show usage after every turn",
     "AI_CHAT_USAGE_OPTION_DOLLARS": "Show $ cost",
