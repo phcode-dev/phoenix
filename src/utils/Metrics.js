@@ -95,7 +95,7 @@ define(function (require, exports, module) {
      * `PLATFORM`, `PROJECT`, `THEMES`, `EXTENSIONS`, `EXTENSIONS`, `UI`, `APP_MENU`, `UI_MENU`, `UI_DIALOG`,
      * `UI_BOTTOM_PANEL`, `UI_SIDE_PANEL`, `LIVE_PREVIEW`, `CODE_HINTS`, `EDITOR`, `SEARCH`, `SHARING`,
      * `PERFORMANCE`, `NEW_PROJECT`
-     * `ERROR`, `USER`, `NODEJS`, `LINT`, `GIT`, `AUTH`, `PRO`, `GUIDE`
+     * `ERROR`, `USER`, `NODEJS`, `LINT`, `GIT`, `AUTH`, `PRO`, `GUIDE`, `EXPERIMENT`
      *
      * @typedef EVENT_TYPE
      * @type {Object}
@@ -132,6 +132,7 @@ define(function (require, exports, module) {
         AUTH: "auth",
         PRO: "pro",
         AI: "ai",
+        EXPERIMENT: "exp",
         TERMINAL: "term",
         MD: "md",
         GUIDE: "guide",
@@ -362,6 +363,20 @@ define(function (require, exports, module) {
 
     // some events generate too many ga events that ga can't handle. ignore them.
     const ignoredGAEvents = ['instantSearch'];
+
+    /**
+     * Keep experiment names readable internally while meeting GA's event-name character rules.
+     * @param {string} category Event type, possibly carrying a subscriber/power-user prefix.
+     * @param {string} action Event category.
+     * @param {string} label Event label.
+     * @return {string} GA event name; existing non-experiment names are unchanged.
+     */
+    function _googleEventName(category, action, label) {
+        const name = `${category}.${action}.${label}`;
+        return category === EVENT_TYPE.EXPERIMENT || /^[SLPR]-exp$/.test(category) ?
+            name.replace(/[^a-zA-Z0-9_]/g, "_") : name;
+    }
+
     function _sendToGoogleAnalytics(category, action, label, count) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
         // TODO, see if we are sending too many events to ga, unlike core analytics, GA has a limit of
@@ -377,7 +392,7 @@ define(function (require, exports, module) {
         if(!count){
             count = 1;
         }
-        let eventAct = `${category}.${action}.${label}`;
+        const eventAct = _googleEventName(category, action, label);
         if(ignoredGAEvents.includes(action)){
             return;
         }
