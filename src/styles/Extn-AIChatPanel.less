@@ -4947,6 +4947,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
             color: @project-panel-text-1;
+            white-space: pre-line;
             line-height: 1.45;
             z-index: 1;
             pointer-events: none;
@@ -7222,12 +7223,16 @@
         }
     }
 
-    // Leave enough room for the no-charge sentence; wrap longer copy on narrow windows.
+    // Wrap the value explanation on narrow windows and preserve its paragraph breaks.
     .ai-usage-tip-note,
     .ai-usage-tip-foot {
         max-width: ~"min(280px, calc(100vw - 42px))";
         white-space: normal;
         line-height: 1.45;
+    }
+
+    .ai-usage-tip-note {
+        white-space: pre-line;
     }
 
     .ai-usage-tip-foot {
