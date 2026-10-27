@@ -161,6 +161,7 @@ define(function (require, exports, module) {
             const newer = await nodeConnector.execPeer("locateWithBundled",
                 { systemVersion: "2.2.0", bundledVersion: "2.1.141" });
             expect(newer.path).withContext(JSON.stringify(newer)).toBe("/home/test/.local/bin/claude");
+            expect(newer.execPath).toBe(newer.path);
             expect(newer.source).toBe("native");
             expect(newer.userInstalled).toBeTrue();
             const older = await nodeConnector.execPeer("locateWithBundled",
@@ -183,6 +184,40 @@ define(function (require, exports, module) {
             expect(configured.path).toBe("/home/test/.local/bin/claude");
             expect(configured.userInstalled).toBeTrue();
         }, 20000);
+
+        // Simulated Windows: npm's claude.cmd at the bundled version, so it wins the tie-break.
+        // The Agent SDK spawns without a shell, which Node refuses for a .cmd (spawn EINVAL).
+        [false, true].forEach(function (override) {
+            const how = override ? "a configured" : "a discovered";
+            it("win32: should give the Agent SDK the binary behind " + how + " npm shim", async function () {
+                const result = await nodeConnector.execPeer("locateWindowsNpmClaude",
+                    { scenario: "resolved", override });
+                const context = JSON.stringify(result);
+                // the terminal keeps the shim, which it runs through cmd.exe
+                expect(result.located.path).withContext(context).toBe(result.shim);
+                expect(result.located.source).toBe(override ? "override" : "fallback");
+                expect(result.located.execPath).toBe(result.target);
+                expect(result.direct).toEqual({ path: result.target, source: result.located.source });
+                expect(result.spawned).toContain(result.target);
+            }, 15000);
+        });
+
+        [
+            ["placeholder", "is the placeholder a skipped postinstall leaves"],
+            ["otherVersion", "reports another version"],
+            ["jsEntry", "is a script, not a binary"],
+            ["outsidePackage", "points outside the package"],
+            ["noPackage", "has no package"]
+        ].forEach(function ([scenario, reason]) {
+            it("win32: should give the Agent SDK the bundled copy when the npm shim's target " + reason,
+                async function () {
+                    const result = await nodeConnector.execPeer("locateWindowsNpmClaude", { scenario });
+                    const context = JSON.stringify(result);
+                    expect(result.located.path).withContext(context).toBe(result.shim);
+                    expect(result.located.execPath).withContext(context).toBeNull();
+                    expect(result.direct).withContext(context).toEqual({ path: result.bundled, source: "bundled" });
+                }, 15000);
+        });
 
         it("should notice a cached Claude Code has gone, and fall back to the bundled one", async function () {
             const result = await nodeConnector.execPeer("relocateAfterRemoval");

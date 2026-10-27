@@ -86,6 +86,8 @@ const CLI_REGISTRY = {
         bin: "claude",
         versionArgs: ["--version"],
         versionPattern: /^\d/,
+        // The package `npm i -g` installs, for following its Windows shim to the binary it runs.
+        npmPackage: "@anthropic-ai/claude-code",
         // claude.ai/install.sh and the desktop installer drop real binaries
         // here — no node/cli.js shim chain to break, so existence is enough.
         winNative: function () {
@@ -446,6 +448,48 @@ async function _probeVersion(cli, cliPath) {
 }
 
 /**
+ * The binary an npm shim runs, found without reading the shim. npm installs a
+ * global package under {prefix}\node_modules and writes the shim into
+ * {prefix} from the package's own `bin` entry, so follow that entry rather
+ * than parse a file whose format npm is free to change.
+ * @return {Promise<?string>} an existing `.exe` inside the package, or null
+ */
+async function _npmShimTarget(cli, shimPath) {
+    if (!cli.npmPackage) { return null; }
+    const pkgDir = path.join(path.dirname(shimPath), "node_modules", ...cli.npmPackage.split("/"));
+    try {
+        const pkg = JSON.parse(await fs.promises.readFile(path.join(pkgDir, "package.json"), "utf8"));
+        const bin = pkg.bin && typeof pkg.bin === "object" ? pkg.bin[cli.bin] : null;
+        if (typeof bin !== "string") { return null; }
+        const target = path.resolve(pkgDir, bin);
+        // Only a native binary inside the package: a JS entry point would
+        // need a Node that a desktop launch's PATH may not have.
+        if (!target.startsWith(pkgDir + path.sep) || !/\.exe$/i.test(target)) { return null; }
+        return await canAccess(target) ? target : null;
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * A path that runs without a shell. Node refuses to spawn a Windows
+ * `.cmd`/`.bat` shim shell-less (spawn EINVAL, CVE-2024-27980 hardening), so
+ * an npm shim is followed to the binary it runs; anything else already is one.
+ * @param {Object} cli - a CLI_REGISTRY entry
+ * @param {string} cliPath - a located, version-probed path
+ * @param {?string} version - its `--version` output
+ * @return {Promise<?string>} null for a shim with no binary of the same version behind it
+ */
+async function _execPathFor(cli, cliPath, version) {
+    if (!isWindows || !/\.(cmd|bat)$/i.test(cliPath)) { return cliPath; }
+    const target = await _npmShimTarget(cli, cliPath);
+    if (!target) { return null; }
+    // Same installation only: the placeholder a skipped postinstall leaves fails here.
+    const probe = await _probeVersion(cli, target);
+    return probe.ok && compareVersions(probe.version, version) === 0 ? target : null;
+}
+
+/**
  * Resolve and validate a user-configured override path.
  *
  * Unlike a discovered candidate, an override is ALWAYS proved by running
@@ -605,7 +649,8 @@ async function _cacheHit(cliId, overrideSig) {
     if (!entry || entry.overrideSig !== overrideSig) {
         return null;
     }
-    if (entry.path !== null && !await canAccess(entry.path)) {
+    if (entry.path !== null && (!await canAccess(entry.path) ||
+            (entry.execPath && !await canAccess(entry.execPath)))) {
         console.log("[Phoenix AI] " + cliId + " CLI is no longer at", entry.path);
         if (_cache.get(cliId) === entry) { _cache.delete(cliId); }
         return null;
@@ -618,6 +663,7 @@ function _toResult(cliId, entry) {
     return {
         cli: cliId,
         path: entry.path,
+        execPath: entry.execPath || null,
         source: entry.source || null,
         version: entry.version || null,
         userInstalled: !!entry.userInstalled,
@@ -635,9 +681,10 @@ function _toResult(cliId, entry) {
  *      share) after a runtime spawn failure; `{override}` uses that path for
  *      this call only instead of the stored one, so the settings UI can
  *      preview a path without committing it.
- * @return {Promise<Object>} `{cli, path, source, version, userInstalled, errorCode, override,
- *      searchedPaths}`. `userInstalled` says the user has a CLI of their own (found or configured),
- *      even when a newer bundled copy is the one `path` points to.
+ * @return {Promise<Object>} `{cli, path, execPath, source, version, userInstalled, errorCode,
+ *      override, searchedPaths}`. `userInstalled` says the user has a CLI of their own (found or
+ *      configured), even when a newer bundled copy is the one `path` points to. `execPath` is
+ *      `path` made safe to spawn without a shell (see _execPathFor), or null when it cannot be.
  */
 function locateCli(cliId, opts) {
     const cli = CLI_REGISTRY[cliId];
@@ -668,6 +715,7 @@ function locateCli(cliId, opts) {
             entry.override = report;
             if (report && report.valid) {
                 entry.path = report.path;
+                entry.execPath = await _execPathFor(cli, report.path, report.version);
                 entry.source = "override";
                 entry.version = report.version;
                 entry.userInstalled = true;
@@ -734,6 +782,7 @@ function locateCli(cliId, opts) {
         }
         if (found) {
             entry.path = found.path;
+            entry.execPath = await _execPathFor(cli, found.path, found.version);
             entry.source = found.source;
             entry.version = found.version;
             entry.at = Date.now();
@@ -843,6 +892,26 @@ function getSpawnProfile(cliPath, source) {
     return { command: cliPath, args: [], env };
 }
 
+/**
+ * What a caller that spawns without a shell, such as the Claude Agent SDK,
+ * should run for a locateCli result: its `execPath`, or, for a Windows shim
+ * with no binary found behind it, the bundled Claude Code. A shim must never
+ * reach such a caller: Node throws spawn EINVAL for it.
+ * @param {Object} located - a locateCli result
+ * @return {Promise<?{path: string, source: string}>} null when nothing can run
+ */
+async function getDirectExecutable(located) {
+    if (!located || !located.path) { return null; }
+    if (located.execPath) {
+        return { path: located.execPath, source: located.source };
+    }
+    const bundled = located.cli === "claude" ? await _locateBundledClaude() : null;
+    if (!bundled) { return null; }
+    console.log("[Phoenix AI] No binary found behind " + located.path + "; using the bundled " +
+        bundled.version);
+    return { path: bundled.path, source: "bundled" };
+}
+
 exports.CLI_IDS = CLI_IDS;
 exports.ERROR_CODES = ERROR_CODES;
 exports.canAccess = canAccess;
@@ -851,6 +920,7 @@ exports.locateCli = locateCli;
 exports.validateCliPath = validateCliPath;
 exports.findDownloader = findDownloader;
 exports.getSpawnProfile = getSpawnProfile;
+exports.getDirectExecutable = getDirectExecutable;
 exports.getSourceEnv = _cliSourceEnv;
 exports.compareVersions = compareVersions;
 exports.setBundledRoot = setBundledRoot;
