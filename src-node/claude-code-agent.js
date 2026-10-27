@@ -2190,13 +2190,14 @@ async function _runQuery(requestId, prompt, projectPath, model, signal, locale, 
         };
     }
 
-    // Set Claude CLI path if found. The env the binary's origin calls for
-    // rides along: the SDK spawns the same executable the CLI pane does, so
-    // the bundled copy must not try to auto-update here either.
-    const located = await CliLocator.locateCli("claude");
-    if (located.path) {
-        queryOptions.pathToClaudeCodeExecutable = located.path;
-        Object.assign(queryOptions.env, CliLocator.getSourceEnv(located.source));
+    // Set Claude CLI path if found. The SDK spawns it without a shell, so a
+    // Windows npm .cmd shim is swapped for the binary behind it, or the
+    // bundled copy. The env the binary's origin calls for rides along: the
+    // bundled copy must not try to auto-update here either.
+    const executable = await CliLocator.getDirectExecutable(await CliLocator.locateCli("claude"));
+    if (executable) {
+        queryOptions.pathToClaudeCodeExecutable = executable.path;
+        Object.assign(queryOptions.env, CliLocator.getSourceEnv(executable.source));
     }
 
     if (model) {

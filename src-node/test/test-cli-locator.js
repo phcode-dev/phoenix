@@ -264,6 +264,81 @@ async function relocateAfterRemoval() {
     return { before, after };
 }
 
+const WIN_NPM = "C:\\Users\\me\\AppData\\Roaming\\npm";
+const WIN_SHIM = WIN_NPM + "\\claude.cmd";
+const WIN_PACKAGE = WIN_NPM + "\\node_modules\\@anthropic-ai\\claude-code";
+const WIN_BUNDLED_ROOT = "C:\\phoenix\\src-node";
+const WIN_BUNDLED = WIN_BUNDLED_ROOT + "\\node_modules\\@anthropic-ai\\claude-agent-sdk-win32-x64\\claude.exe";
+
+// What npm leaves behind in each case. `bin` is the package's entry; `binary`
+// is what that path holds: its --version, or null for a file that won't run.
+const NPM_SHIM_SCENARIOS = {
+    resolved: { bin: "bin/claude.exe", binary: "2.1.280" },
+    placeholder: { bin: "bin/claude.exe", binary: null },     // postinstall skipped
+    otherVersion: { bin: "bin/claude.exe", binary: "2.1.279" },
+    jsEntry: { bin: "cli.js", binary: "2.1.280" },
+    outsidePackage: { bin: "../../evil.exe", binary: "2.1.280" },
+    noPackage: { bin: null, binary: null }
+};
+
+/**
+ * Locate claude on a simulated Windows machine whose only Claude Code of its
+ * own is an npm shim at the bundled version, then ask what a shell-less
+ * caller like the Agent SDK would run. Nothing is installed or read from disk.
+ * @param {{scenario: string, override: boolean}} params - an NPM_SHIM_SCENARIOS key; whether
+ *      the shim is the configured path rather than discovered
+ * @return {Promise<Object>} The located result, the direct executable and the fixture paths
+ */
+async function locateWindowsNpmClaude({scenario, override}) {
+    const fixture = NPM_SHIM_SCENARIOS[scenario];
+    const target = fixture.bin ? path.win32.resolve(WIN_PACKAGE, fixture.bin) : null;
+    const versions = { [WIN_SHIM]: "2.1.280", [WIN_BUNDLED]: "2.1.280" };
+    const files = new Set(Object.keys(versions));
+    if (target) {
+        files.add(target);
+        versions[target] = fixture.binary;
+    }
+    const env = {
+        APPDATA: "C:\\Users\\me\\AppData\\Roaming", LOCALAPPDATA: "C:\\Users\\me\\AppData\\Local",
+        USERPROFILE: "C:\\Users\\me", Path: "C:\\Windows"
+    };
+    const spawned = [];
+    const locator = _loadLocator("win32", env, function (command) {
+        // spawnCli quotes a shim's name for the shell it runs it in
+        const file = command.replace(/^"(.*)"$/, "$1");
+        spawned.push(file);
+        const version = versions[file];
+        return childProcess.spawn(process.execPath, ["-e", version
+            ? "console.log(" + JSON.stringify(version + " (Claude Code)") + ")"
+            : "process.exit(1)"]);
+    }, {
+        fs: Object.assign({}, fs, {
+            promises: {
+                access: async function (candidate) {
+                    if (!files.has(candidate)) { throw new Error("ENOENT"); }
+                },
+                readFile: async function (file) {
+                    if (fixture.bin && file === WIN_PACKAGE + "\\package.json") {
+                        return JSON.stringify({ name: "@anthropic-ai/claude-code", bin: { claude: fixture.bin } });
+                    }
+                    throw new Error("ENOENT");
+                },
+                readdir: async function () { return []; }
+            }
+        }),
+        execFile: function (_command, _args, _options, callback) {
+            callback(new Error("not on PATH"), "");
+        }
+    });
+    locator.setBundledRoot(WIN_BUNDLED_ROOT);
+    if (override) {
+        locator.setOverrides({ claude: WIN_SHIM });
+    }
+    const located = await locator.locateCli("claude");
+    const direct = await locator.getDirectExecutable(located);
+    return { located, direct, spawned, shim: WIN_SHIM, target, bundled: WIN_BUNDLED };
+}
+
 /**
  * Report the downloader chosen for each simulated set of installed tools.
  * @param {{installed: Array<Array<string>>}} params - Tool names on PATH, one list per scenario
@@ -362,6 +437,7 @@ exports.getSpawnProfile = getSpawnProfile;
 exports.locateWindowsStandaloneCodex = locateWindowsStandaloneCodex;
 exports.findDownloaders = findDownloaders;
 exports.locateWithBundled = locateWithBundled;
+exports.locateWindowsNpmClaude = locateWindowsNpmClaude;
 exports.relocateAfterRemoval = relocateAfterRemoval;
 exports.probeWindowsShim = probeWindowsShim;
 exports.runNpmFixture = runNpmFixture;

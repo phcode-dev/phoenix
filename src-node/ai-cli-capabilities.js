@@ -12,16 +12,14 @@ const CliLocator = require("./cli-locator");
  * Resolve an npm Windows shim to the native binary shipped by that same installation.
  * Never silently switches a user-selected CLI to a different installed version.
  * @param {string} cli Provider id.
- * @param {string} executable Located CLI path.
+ * @param {Object} located A CliLocator.locateCli result.
  * @return {string} Executable suitable for argument-array spawning.
  */
-function nativeExecutable(cli, executable) {
-    if (process.platform !== "win32" || !/\.(cmd|bat)$/i.test(executable)) { return executable; }
-    const base = path.dirname(executable);
-    const candidates = cli === "claude" ? [
-        path.join(base, "node_modules", "@anthropic-ai", "claude-code", "bin", "claude.exe"),
-        path.join(base, "node_modules", "@anthropic-ai", "claude-code-win32-x64", "claude.exe")
-    ] : [
+function nativeExecutable(cli, located) {
+    // Set unless the path is a shim the locator could not follow, as it can for Claude Code.
+    if (located.execPath) { return located.execPath; }
+    const base = path.dirname(located.path);
+    const candidates = cli !== "codex" ? [] : [
         path.join(base, "node_modules", "@openai", "codex", "vendor", "x86_64-pc-windows-msvc", "codex", "codex.exe"),
         path.join(base, "node_modules", "@openai", "codex-win32-x64", "vendor",
             "x86_64-pc-windows-msvc", "codex", "codex.exe")
@@ -39,7 +37,7 @@ function nativeExecutable(cli, executable) {
 async function checkLaunch(cli, projectRoot) {
     const located = await CliLocator.locateCli(cli);
     if (!located.path) { throw new Error("CLI is no longer available."); }
-    const executable = nativeExecutable(cli, located.path);
+    const executable = nativeExecutable(cli, located);
     const help = await CliLocator.spawnCli(executable, ["--help"],
         {cwd: projectRoot, timeout: 5000, windowsHide: true});
     const required = cli === "codex" ? ["--no-daemon"] :
