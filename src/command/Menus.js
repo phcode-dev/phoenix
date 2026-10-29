@@ -72,6 +72,8 @@ define(function (require, exports, module) {
         PROJECT_MENU: "project-context-menu",
         WORKING_SET_CONTEXT_MENU: "workingset-context-menu",
         WORKING_SET_CONFIG_MENU: "workingset-configuration-menu",
+        FILE_TABS_CONTEXT_MENU: "tabbar-context-menu",
+        FILE_TABS_SETTINGS_MENU: "tabbar-settings-context-menu",
         SPLITVIEW_MENU: "splitview-menu"
     };
 
@@ -744,7 +746,6 @@ define(function (require, exports, module) {
                 // CommandManager.execute() to trigger beforeExecuteCommand events consistently, whether invoked via
                 // menu click or keyboard shortcut.
                 // because there are listeners that uses beforeExecuteCommand to listen to save commands
-                // (for ex: tabbar listens to save commands to add placeholder tabs to working set)
                 // Other commands use direct execution to preserve file tree context
                 if(commandId === Commands.FILE_SAVE ||
                    commandId === Commands.FILE_SAVE_AS ||

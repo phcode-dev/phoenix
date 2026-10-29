@@ -486,6 +486,14 @@ define(function (require, exports, module) {
     Pane.prototype._viewListAddedOrder = [];
 
     /**
+     * Full paths of the pinned files. Pinned files always sit at the front of the view list in the order
+     * the user arranged them, and the bulk close commands leave them alone.
+     * @private
+     * @type {Set<string>}
+     */
+    Pane.prototype._pinnedPaths = null;
+
+    /**
      * Dictionary mapping fullpath to view
      * @type {Object.<!string, !View>}
      * @private
@@ -498,6 +506,13 @@ define(function (require, exports, module) {
      * @private
      */
     Pane.prototype._currentView = null;
+
+    /**
+     * Path of the closed file whose view stays up until the next file is ready to show
+     * @type {?string}
+     * @private
+     */
+    Pane.prototype._removedCurrentPath = null;
 
     /**
      * The last thing that received a focus event
@@ -514,6 +529,7 @@ define(function (require, exports, module) {
         this._viewList = [];
         this._viewListMRUOrder = [];
         this._viewListAddedOrder = [];
+        this._pinnedPaths = new Set();
         this._views = {};
         this._currentView = null;
         this.showInterstitial(true);
@@ -556,6 +572,20 @@ define(function (require, exports, module) {
             this._currentView = null;
             this._notifyCurrentViewChange(null, currentView);
         }
+    };
+
+    /**
+     * Gets the file of the current view when it isn't in the working set, a file opened from the file
+     * tree with a single click just to have a look at it. A file that was just closed stays up until
+     * the next one is ready but is on its way out, so it doesn't count
+     * @return {?File}
+     */
+    Pane.prototype.getTemporaryViewFile = function () {
+        const file = this._currentView && this._currentView.getFile();
+        if (!file || file.fullPath === this._removedCurrentPath || this.findInViewList(file.fullPath) !== -1) {
+            return null;
+        }
+        return file;
     };
 
     /**
@@ -616,6 +646,11 @@ define(function (require, exports, module) {
             self._viewListMRUOrder.splice(self.findInViewListMRUOrder(file.fullPath), 1);
             self._viewListAddedOrder.splice(self.findInViewListAddedOrder(file.fullPath), 1);
 
+            // a pinned file stays pinned when it moves to the other pane
+            if (self._pinnedPaths.delete(file.fullPath)) {
+                destinationPane._pinnedPaths.add(file.fullPath);
+            }
+
             // insert the view into the working set
             destinationPane._addToViewList(file, _makeIndexRequestObject(true, destinationIndex));
 
@@ -662,6 +697,8 @@ define(function (require, exports, module) {
         this._viewList = _.union(this._viewList, other._viewList);
         this._viewListMRUOrder = _.union(this._viewListMRUOrder, other._viewListMRUOrder);
         this._viewListAddedOrder = _.union(this._viewListAddedOrder, other._viewListAddedOrder);
+        other._pinnedPaths.forEach((fullPath) => this._pinnedPaths.add(fullPath));
+        this._settlePinnedOrder();
 
         var self = this,
             viewsToDestroy = [];
@@ -805,12 +842,11 @@ define(function (require, exports, module) {
 
         if (curIndex !== -1) {
             // File is in view list, but not at the specifically requested index - only need to reorder
-            if (force || (indexRequested && curIndex !== index)) {
-                var entry = this._viewList.splice(curIndex, 1)[0];
-                this._viewList.splice(index, 0, entry);
+            if (indexRequested && curIndex !== index) {
+                this.moveWorkingSetItem(curIndex, index);
                 return this.ITEM_FOUND_NEEDS_SORT;
             }
-            return this.ITEM_FOUND_NO_SORT;
+            return force ? this.ITEM_FOUND_NEEDS_SORT : this.ITEM_FOUND_NO_SORT;
         }
 
         return this.ITEM_NOT_FOUND;
@@ -828,19 +864,36 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Adds the given file to the end of the workingset, if it is not already in the list
+     * Adds the given file to the workingset, if it is not already in the list
      * @private
      * @param {!File} file
      * @param {Object=} inPlace record with inPlace add data (index, indexRequested). Used internally
+     * @return {number} the index the file was actually added at
      */
     Pane.prototype._addToViewList = function (file, inPlace) {
+        const pinnedCount = this.getPinnedCount();
+        let index = this._viewList.length;
+
         if (inPlace && inPlace.indexRequested) {
-            // If specified, insert into the workingset at this 0-based index
-            this._viewList.splice(inPlace.index, 0, file);
-        } else {
-            // If no index is specified, just add the file to the end of the workingset.
-            this._viewList.push(file);
+            // no index means the start of the list, which for us is the first spot after the pinned files.
+            // a requested index inside the pinned block means the file was dropped amongst the pinned
+            // files, so it becomes pinned as well
+            if (inPlace.index === undefined || inPlace.index === null) {
+                index = pinnedCount;
+            } else {
+                index = Math.max(0, Math.min(inPlace.index, this._viewList.length));
+            }
+            if (index < pinnedCount) {
+                this._pinnedPaths.add(file.fullPath);
+            }
         }
+
+        // a file that is already pinned (moved in from the other pane) never lands behind an unpinned one
+        if (this._pinnedPaths.has(file.fullPath)) {
+            index = Math.min(index, pinnedCount);
+        }
+
+        this._viewList.splice(index, 0, file);
 
         // Add to MRU order: either first or last, depending on whether it's already the current doc or not
         var currentPath = this.getCurrentlyViewedPath();
@@ -852,6 +905,8 @@ define(function (require, exports, module) {
 
         // Add first to Added order
         this._viewListAddedOrder.unshift(file);
+
+        return index;
     };
 
 
@@ -864,13 +919,7 @@ define(function (require, exports, module) {
      */
     Pane.prototype.addToViewList = function (file, index) {
         var indexRequested = (index !== undefined && index !== null && index >= 0 && index < this._viewList.length);
-        this._addToViewList(file, _makeIndexRequestObject(indexRequested, index));
-
-        if (!indexRequested) {
-            index = this._viewList.length - 1;
-        }
-
-        return index;
+        return this._addToViewList(file, _makeIndexRequestObject(indexRequested, index));
     };
 
 
@@ -901,6 +950,7 @@ define(function (require, exports, module) {
      * @param {?View} oldView - the view being replaced
      */
     Pane.prototype._notifyCurrentViewChange = function (newView, oldView) {
+        this._removedCurrentPath = null;
         this.updateHeaderText();
 
         this.trigger("currentViewChange", newView, oldView);
@@ -949,6 +999,7 @@ define(function (require, exports, module) {
             this._viewList.splice(index, 1);
             this._viewListMRUOrder.splice(this.findInViewListMRUOrder(file.fullPath), 1);
             this._viewListAddedOrder.splice(this.findInViewListAddedOrder(file.fullPath), 1);
+            this._pinnedPaths.delete(file.fullPath);
         }
 
         // Destroy the view
@@ -957,6 +1008,10 @@ define(function (require, exports, module) {
         if (view) {
             if (!preventViewChange) {
                 this._doDestroyView(view);
+            } else if (view === this._currentView) {
+                // the view stays up until the next file is ready, but it is on its way out so it
+                // must not be taken for a file that is just being looked at
+                this._removedCurrentPath = file.fullPath;
             }
         }
 
@@ -976,22 +1031,46 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Sorts items in the pane's view list.
+     * Sorts items in the pane's view list. Pinned files are sorted amongst themselves and stay in front.
      * @param {function(string, string, string): number} compareFn - The function used to compare items in the view list.
      */
     Pane.prototype.sortViewList = function (compareFn) {
-        this._viewList.sort(_.partial(compareFn, this.id));
+        const self = this;
+        this._viewList.sort(function (file1, file2) {
+            const pinned1 = self._pinnedPaths.has(file1.fullPath),
+                pinned2 = self._pinnedPaths.has(file2.fullPath);
+            if (pinned1 !== pinned2) {
+                return pinned1 ? -1 : 1;
+            }
+            return compareFn(self.id, file1, file2);
+        });
     };
 
     /**
      * Moves a working set item from one index to another, shifting the items after
      * it in the working set up and reinserting it at the desired location.
+     * Landing in front of a pinned file pins the moved file and landing behind an unpinned
+     * file unpins it, so the pinned files always stay together at the front.
      * @param {!number} fromIndex - The index of the item to move.
      * @param {!number} toIndex - The index to move the item to.
      * @private
      */
     Pane.prototype.moveWorkingSetItem = function (fromIndex, toIndex) {
-        this._viewList.splice(toIndex, 0, this._viewList.splice(fromIndex, 1)[0]);
+        const file = this._viewList.splice(fromIndex, 1)[0];
+        if (!file) {
+            return;
+        }
+
+        // with the file taken out, this is where the pinned files end
+        const pinnedCount = this.getPinnedCount();
+        toIndex = Math.max(0, Math.min(toIndex, this._viewList.length));
+        this._viewList.splice(toIndex, 0, file);
+
+        if (toIndex < pinnedCount) {
+            this._pinnedPaths.add(file.fullPath);
+        } else if (toIndex > pinnedCount) {
+            this._pinnedPaths.delete(file.fullPath);
+        }
     };
 
     /**
@@ -1004,7 +1083,67 @@ define(function (require, exports, module) {
         var temp = this._viewList[index1];
         this._viewList[index1] = this._viewList[index2];
         this._viewList[index2] = temp;
+        this._settlePinnedOrder();
         return true;
+    };
+
+    /**
+     * Whether the file is pinned in this pane
+     * @param {!string} fullPath - the full path of the file
+     * @return {boolean}
+     */
+    Pane.prototype.isPathPinned = function (fullPath) {
+        return this._pinnedPaths.has(fullPath);
+    };
+
+    /**
+     * Returns the number of pinned files. As pinned files are always kept at the front of the view list,
+     * this is also the index of the first unpinned file.
+     * @return {number}
+     */
+    Pane.prototype.getPinnedCount = function () {
+        let count = 0;
+        while (count < this._viewList.length && this._pinnedPaths.has(this._viewList[count].fullPath)) {
+            count++;
+        }
+        return count;
+    };
+
+    /**
+     * Pins or unpins a file in the view list. Pinning moves the file to the end of the pinned block and
+     * unpinning moves it to the start of the unpinned block, so nothing else changes position.
+     * @param {!string} fullPath - the full path of the file, it must be in the view list
+     * @param {boolean} pinned - true to pin, false to unpin
+     * @return {boolean} true if the pinned state changed
+     */
+    Pane.prototype.setPathPinned = function (fullPath, pinned) {
+        const index = this.findInViewList(fullPath);
+        if (index === -1 || this._pinnedPaths.has(fullPath) === pinned) {
+            return false;
+        }
+
+        const file = this._viewList.splice(index, 1)[0];
+        if (pinned) {
+            this._pinnedPaths.add(fullPath);
+        } else {
+            this._pinnedPaths.delete(fullPath);
+        }
+        this._viewList.splice(this.getPinnedCount(), 0, file);
+        return true;
+    };
+
+    /**
+     * Moves the pinned files back to the front of the view list without changing the order within
+     * the pinned or the unpinned files
+     * @private
+     */
+    Pane.prototype._settlePinnedOrder = function () {
+        const pinned = [],
+            unpinned = [];
+        this._viewList.forEach((file) => {
+            (this._pinnedPaths.has(file.fullPath) ? pinned : unpinned).push(file);
+        });
+        this._viewList = pinned.concat(unpinned);
     };
 
     /**
@@ -1088,7 +1227,9 @@ define(function (require, exports, module) {
         // the File object's name has changed by the time we've gotten the event.
         // So, we need to look for the file by its new name to determine if
         // if we need to dispatch the event which may look funny
-        var dispatchEvent = (this.findInViewList(newname) >= 0);
+        // a file that is only being looked at has a tab and a working set row as well, so its rename
+        // is announced too
+        const dispatchEvent = (this.findInViewList(newname) >= 0) || this.getCurrentlyViewedPath() === newname;
 
         // rename the view
         if (this._views.hasOwnProperty(oldname)) {
@@ -1097,6 +1238,16 @@ define(function (require, exports, module) {
             this._views[newname] = view;
             delete this._views[oldname];
         }
+
+        // pinned paths are stored as strings so they have to follow the rename. For a folder rename
+        // oldname is the folder path and every pinned file inside it moves along
+        const isFolder = oldname.endsWith("/");
+        Array.from(this._pinnedPaths).forEach((pinnedPath) => {
+            if (pinnedPath === oldname || (isFolder && pinnedPath.startsWith(oldname))) {
+                this._pinnedPaths.delete(pinnedPath);
+                this._pinnedPaths.add(newname + pinnedPath.slice(oldname.length));
+            }
+        });
 
         this.updateHeaderText();
 
@@ -1531,9 +1682,19 @@ define(function (require, exports, module) {
             if (entry.viewState) {
                 viewStates[entry.file] = entry.viewState;
             }
+            if (entry.pinned) {
+                self._pinnedPaths.add(entry.file);
+            }
         });
 
         this.addListToViewList(filesToAdd);
+
+        // a saved pinned file may have been refused by addListToViewList (open in the other pane already)
+        Array.from(this._pinnedPaths).forEach(function (fullPath) {
+            if (self.findInViewList(fullPath) === -1) {
+                self._pinnedPaths.delete(fullPath);
+            }
+        });
 
         ViewStateManager.addViewStates(viewStates);
 
@@ -1552,6 +1713,7 @@ define(function (require, exports, module) {
      */
     Pane.prototype.saveState = function () {
         var result = [],
+            self = this,
             currentlyViewedPath = this.getCurrentlyViewedPath();
 
         // Save the current view state first
@@ -1568,11 +1730,15 @@ define(function (require, exports, module) {
         this._viewList.forEach(function (file) {
             // Do not persist untitled document paths
             if (!(file instanceof InMemoryFile)) {
-                result.push({
+                const entry = {
                     file: file.fullPath,
                     active: (file.fullPath === currentlyViewedPath),
                     viewState: ViewStateManager.getViewState(file)
-                });
+                };
+                if (self._pinnedPaths.has(file.fullPath)) {
+                    entry.pinned = true;
+                }
+                result.push(entry);
             }
         });
 

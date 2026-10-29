@@ -62,7 +62,8 @@
  *          (e, fileRemoved:File, suppressRedraw:boolean, paneId:string)
  *    - workingSetRemoveList -- When multiple files are removed from the working set
  *          (e, filesRemoved:Array."File", paneId:string)
- *    - workingSetSort -- When a pane's view array is reordered without additions or removals.
+ *    - workingSetSort -- When a pane's view array is reordered without additions or removals. Also fired when a
+ *          file is pinned or unpinned, as pinned files are kept at the front of the working set.
  *          (e, paneId:string)
  *    - workingSetUpdate -- When changes happen due to system events such as a file being deleted.
  *                              listeners should discard all working set info and rebuilt it from the pane
@@ -491,8 +492,10 @@ define(function (require, exports, module) {
                 pane = _getPaneFromElement($container);
 
             if (pane) {
-                // Editor is a full editor
-                if (pane.id !== _activePaneId) {
+                // Editor is a full editor. Only the editor a pane is actually showing may activate the
+                // pane: a document that is open in both panes has an editor in each, and the one the
+                // other pane keeps hidden must not pull the activation over there.
+                if (pane.id !== _activePaneId && pane.getCurrentlyViewedEditor() === current) {
                     // we just need to set the active pane in this case
                     //  it will dispatch the currentFileChange message as well
                     //  as dispatching other events when the active pane changes
@@ -1000,6 +1003,46 @@ define(function (require, exports, module) {
         pane.swapViewListIndexes(index1, index2);
         exports.trigger("workingSetSort", pane.id);
         exports.trigger("_workingSetDisableAutoSort", pane.id);
+    }
+
+    /**
+     * Pins or unpins a file in a pane. Pinned files are kept at the front of the working set, in the order the
+     * user arranged them, and the bulk close commands (close others, close all...) leave them alone.
+     * Pinning a file that is only being previewed (not in the working set yet) adds it to the working set first.
+     * Fires `workingSetSort` for the pane when the pinned state changes.
+     * @param {!string} paneId - the id of the pane the file is in or ACTIVE_PANE
+     * @param {!File} file - the file to pin or unpin
+     * @param {boolean} pinned - true to pin, false to unpin
+     * @return {boolean} true if the pinned state changed
+     */
+    function setFilePinned(paneId, file, pinned) {
+        const pane = _getPane(paneId);
+        if (!pane || !file) {
+            return false;
+        }
+
+        if (pinned && pane.findInViewList(file.fullPath) === -1) {
+            addToWorkingSet(pane.id, file);
+        }
+
+        if (!pane.setPathPinned(file.fullPath, pinned)) {
+            return false;
+        }
+
+        exports.trigger("workingSetSort", pane.id);
+        _scheduleViewStateSave();
+        return true;
+    }
+
+    /**
+     * Whether the file is pinned in the given pane
+     * @param {!string} paneId - the id of the pane or ACTIVE_PANE
+     * @param {!string} fullPath - the full path of the file
+     * @return {boolean} true if the file is pinned
+     */
+    function isPathPinned(paneId, fullPath) {
+        const pane = _getPane(paneId);
+        return Boolean(pane && pane.isPathPinned(fullPath));
     }
 
     /**
@@ -1808,6 +1851,8 @@ define(function (require, exports, module) {
     exports.addListToWorkingSet = addListToWorkingSet;
     exports.getWorkingSetSize = getWorkingSetSize;
     exports.getWorkingSet = getWorkingSet;
+    exports.setFilePinned = setFilePinned;
+    exports.isPathPinned = isPathPinned;
 
     // Pane state
     exports.cacheScrollState = cacheScrollState;

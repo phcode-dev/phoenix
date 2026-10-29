@@ -27,327 +27,127 @@
  */
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
-
+    const _ = require("thirdparty/lodash");
     const DropdownButton = require("widgets/DropdownButton");
-    const MainViewManager = require("view/MainViewManager");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
-    const EditorManager = require("editor/EditorManager");
     const FileSystem = require("filesystem/FileSystem");
 
-    // holds the dropdown instance
-    let $dropdown = null;
+    // the open dropdown, there is only ever one
+    let _dropdown = null;
 
     /**
      * This function determines which tabs are hidden in the tab bar due to overflow
-     * and returns them as an array of tab data objects
+     * and returns them as an array of tab data objects. It reads the DOM, so it is only
+     * ever called when the menu is actually opened
      *
-     * @param {String} paneId - The ID of the pane ("first-pane" or "second-pane")
+     * @param {HTMLElement} bar - the pane's tab bar element
      * @returns {Array} - Array of hidden tab data objects
      */
-    function _getListOfHiddenTabs(paneId) {
-        // get the appropriate tab bar based on pane ID
-        const $currentTabBar = paneId === "first-pane"
-            ? $("#phoenix-tab-bar")
-            : $("#phoenix-tab-bar-2");
-
-        // access the DOM element to get its bounding rectangle
-        const tabBarRect = $currentTabBar[0].getBoundingClientRect();
-
-        // an array of hidden tabs objects which will store properties like
-        // path, name, isActive, isDirty and $icon
+    function _getHiddenTabs(bar) {
+        const barRect = bar.getBoundingClientRect();
         const hiddenTabs = [];
 
-        // check each tab to determine if it's visible
-        $currentTabBar.find('.tab').each(function () {
-            const tabRect = this.getBoundingClientRect();
+        for (const tab of bar.children) {
+            const tabRect = tab.getBoundingClientRect();
 
             // A tab is considered hidden if it is not completely visible
             // 2 is added here, because when we scroll till the very end of the tab bar even though,
             // the last tab was shown in the overflow menu even though it was completely visible
             // this bug was coming because a part of the last tab got hidden inside the dropdown icon
-            const isVisible = tabRect.left >= tabBarRect.left &&
-                tabRect.right <= (tabBarRect.right + 2);
-
-            if (!isVisible) {
-                // extract and store information about the hidden tab
-                const $tab = $(this);
-                const tabData = {
-                    path: $tab.data('path'),
-                    name: $tab.find('.tab-name').text(),
-                    isActive: $tab.hasClass('active'),
-                    isDirty: $tab.hasClass('dirty'),
-                    isPlaceholder: $tab.hasClass('placeholder'),
-                    $icon: $tab.find('.tab-icon').clone()
-                };
-
-                hiddenTabs.push(tabData);
+            if (tabRect.left < barRect.left || tabRect.right > barRect.right + 2) {
+                hiddenTabs.push({
+                    path: tab.getAttribute("data-path"),
+                    name: tab.querySelector(".tab-name").textContent,
+                    isDirty: tab.classList.contains("dirty"),
+                    isPinned: tab.classList.contains("pinned"),
+                    isPlaceholder: tab.classList.contains("placeholder"),
+                    iconHtml: tab.querySelector(".tab-icon").innerHTML
+                });
             }
-        });
+        }
 
         return hiddenTabs;
     }
 
-
     /**
-     * Toggles the visibility of the overflow button based on whether
-     * there are any hidden tabs
-     * Hidden tabs are tabs that are currently not visible in the tab bar
-     *
-     * @param {String} paneId - The ID of the pane ("first-pane" or "second-pane")
+     * renders a single item of the dropdown
+     * @param {Object} item - a hidden tab data object
+     * @return {{html: string, enabled: boolean}}
      */
-    function toggleOverflowVisibility(paneId) {
-        const hiddenTabs = _getListOfHiddenTabs(paneId);
+    function _renderItem(item) {
+        const path = _.escape(item.path);
+        const dirtyHtml = item.isDirty
+            ? '<span class="tab-dirty-icon-overflow">•</span>'
+            : '<span class="tab-dirty-icon-overflow empty"></span>'; // adding an empty span for better alignment
+        const controlHtml = item.isPinned
+            ? `<span class="tab-pin-icon-overflow" data-tab-path="${path}">
+                <i class="pinned-file-icon"></i></span>`
+            : `<span class="tab-close-icon-overflow" data-tab-path="${path}">
+                <i class="fa-solid fa-times"></i></span>`;
 
-        if (paneId === "first-pane") {
-            // for the html element, refer to ./html/tabbar-pane.html
-            const $overflowButton = $("#overflow-button");
-
-            if (hiddenTabs.length > 0) {
-                $overflowButton.removeClass("hidden");
-            } else {
-                $overflowButton.addClass("hidden");
-            }
-        } else {
-            // for the html element, refer to ./html/tabbar-second-pane.html
-            const $overflowButton = $("#overflow-button-2");
-
-            if (hiddenTabs.length > 0) {
-                $overflowButton.removeClass("hidden");
-            } else {
-                $overflowButton.addClass("hidden");
-            }
-        }
+        return {
+            html: `<div class="dropdown-tab-item${item.isPlaceholder ? " placeholder-item" : ""}" data-tab-path="${path}">
+                <div class="tab-info-container">
+                    ${dirtyHtml}
+                    <span class="tab-icon-container">${item.iconHtml}</span>
+                    <span class="tab-name-container">${_.escape(item.name)}</span>
+                </div>
+                ${controlHtml}
+            </div>`,
+            enabled: true
+        };
     }
-
 
     /**
      * This function is called when the overflow button is clicked
      * This will show the overflow context menu
      *
      * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
-     * @param {Number} x - x coordinate for positioning the menu
-     * @param {Number} y - y coordinate for positioning the menu
+     * @param {HTMLElement} bar - the pane's tab bar element
+     * @param {jQuery} $button - the overflow button that was clicked
      */
-    function showOverflowMenu(paneId, x, y) {
-        const hiddenTabs = _getListOfHiddenTabs(paneId);
-
-        // Create a map to track tabs that are being closed
-        // Using paths as keys for quick lookup
-        const closingTabPaths = {};
-
-        // create the dropdown
-        $dropdown = new DropdownButton.DropdownButton("", hiddenTabs, function (item, index) {
-            const iconHtml = item.$icon[0].outerHTML; // the file icon
-            const dirtyHtml = item.isDirty
-                ? '<span class="tab-dirty-icon-overflow">•</span>'
-                : '<span class="tab-dirty-icon-overflow empty"></span>'; // adding an empty span for better alignment
-
-            const closeIconHtml =
-                `<span class="tab-close-icon-overflow" data-tab-path="${item.path}" data-tab-index="${index}">
-                <i class="fa-solid fa-times"></i>
-            </span>`;
-
-            // add placeholder class to style it differently
-            const placeholderClass = item.isPlaceholder ? ' placeholder-name' : '';
-
-            // return html for this item
-            return {
-                html:
-                    `<div class="dropdown-tab-item${item.isPlaceholder
-                        ? ' placeholder-item' : ''
-                    }" data-tab-path="${item.path}">
-                <div class="tab-info-container">
-                    ${dirtyHtml}
-                    <span class="tab-icon-container">${iconHtml}</span>
-                    <span class="tab-name-container${placeholderClass}">${item.name}</span>
-                </div>
-                ${closeIconHtml}
-            </div>`,
-                enabled: true
-            };
-        });
-
-        // add custom class to separate overflow dropdown from regular ones
-        $dropdown.dropdownExtraClasses = "dropdown-overflow-menu";
-
-        // appending to document body. we'll position this with absolute positioning
-        $("body").append($dropdown.$button);
-
-        // position the dropdown where the user clicked
-        $dropdown.$button.css({
-            position: "absolute",
-            left: x + "px",
-            top: y + "px",
-            zIndex: 1000
-        });
-
-
-        // custom handler for close button clicks - must be set up BEFORE showing dropdown
-        // using one because we only want to run this handler once
-        $(document).one("mousedown", ".tab-close-icon-overflow", function (e) {
-            // store the path of the tab being closed
-            const tabPath = $(this).data("tab-path");
-            closingTabPaths[tabPath] = true;
-
-            // we don't stop propagation here - let the event bubble up
-            // because we want the tab click handler to run as we are not closing the tab here
-            // Why all this is done instead of simply closing the tab?
-            // There was no way to stop the tab click handler from running.
-            // Tried propagating the event, and all other stuff but that didn't work.
-            // So what used to happen was that the tab used to get closed but then appeared again
-
-            // But we do prevent the default action
-            e.preventDefault();
-        });
-
-        $dropdown.showDropdown();
-
-        // handle the option selection
-        $dropdown.on("select", function (e, item, index) {
-            // check if this tab was marked for closing
-            if (closingTabPaths[item.path]) {
-                // this tab is being closed, so handle the close operation
-                const file = FileSystem.getFileForPath(item.path);
-
-                if (file) {
-                    // use setTimeout to ensure this happens after all event handlers
-                    setTimeout(function () {
-                        CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: paneId });
-                        // clean up
-                        delete closingTabPaths[item.path];
-                    }, 0);
-                }
-
-                return false;
-            }
-            // regular tab selection - open the file
-            const filePath = item.path;
-            if (filePath) {
-                // Set the active pane and open the file
-                MainViewManager.setActivePaneId(paneId);
-                CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath });
-
-                // get the tab bar element based on paneId and scroll to the active tab
-                // we use setTimeout to ensure that the DOM has updated after the file open command
-                setTimeout(function () {
-                    const $tabBarElement = paneId === "first-pane" ?
-                        $("#phoenix-tab-bar") : $("#phoenix-tab-bar-2");
-                    scrollToActiveTab($tabBarElement);
-                }, 100);
-            }
-        });
-
-        // a button was getting displayed on the screen wherever a click was made. not sure why
-        // but this fixes it
-        $dropdown.$button.css({
-            display: "none"
-        });
-    }
-
-
-    /**
-     * Scrolls the tab bar to the active tab.
-     * When scrolling the tab bar, we calculate the distance we need to scroll and based on that distance,
-     * we set the duration.
-     * This ensures that the scrolling speed is consistent no matter the distance or number of tabs present in tab bar.
-     *
-     * @param {JQuery} $tabBarElement - The tab bar element,
-     * this is either $('#phoenix-tab-bar') or $('phoenix-tab-bar-2')
-     */
-    function scrollToActiveTab($tabBarElement) {
-        if (!$tabBarElement || !$tabBarElement.length) {
+    function _showOverflowMenu(paneId, bar, $button) {
+        const hiddenTabs = _getHiddenTabs(bar);
+        if (!hiddenTabs.length) {
             return;
         }
 
-        let activePath;
+        const dropdown = new DropdownButton.DropdownButton("", hiddenTabs, _renderItem);
+        // add custom class to separate overflow dropdown from regular ones
+        dropdown.dropdownExtraClasses = "dropdown-overflow-menu";
+        // the real overflow button stands in for the one DropdownButton creates, that way the list opens
+        // right under it and clicking it again isn't taken as a click outside the list
+        dropdown.$button = $button;
+        _dropdown = dropdown;
 
-        // get the active file
-        const activeEditor = EditorManager.getActiveEditor();
-        if (activeEditor && activeEditor.document && activeEditor.document.file) {
-            activePath = activeEditor.document.file.fullPath;
-        } else {
-            // If there is no active editor, we need to check if its an image file
-            const currentFile = MainViewManager.getCurrentlyViewedFile();
-            if (currentFile) {
-                activePath = currentFile.fullPath;
-            } else {
-                // if not an image file, not a text file, we don't need to scroll
-                return;
+        dropdown.on("select", function (event, item) {
+            CommandManager.execute(Commands.FILE_OPEN, { fullPath: item.path, paneId: paneId });
+        });
+        dropdown.on(DropdownButton.EVENT_DROPDOWN_CLOSED, function () {
+            if (_dropdown === dropdown) {
+                _dropdown = null;
             }
-        }
+        });
 
-        // get the active tab. the active tab is the tab that is currently open
-        const $activeTab = $tabBarElement.find(`.tab[data-path="${activePath}"]`);
+        dropdown.showDropdown();
 
-        if ($activeTab.length) {
-            // get the tab bar container's dimensions
-            const tabBar = $tabBarElement[0];
-            const tabBarRect = tabBar.getBoundingClientRect();
-            const tabBarVisibleWidth = tabBarRect.width;
-
-            // get the active tab's dimensions
-            const tabRect = $activeTab[0].getBoundingClientRect();
-
-            // calculate the tab's position relative to the tab bar container
-            const tabLeftRelative = tabRect.left - tabBarRect.left;
-            const tabRightRelative = tabRect.right - tabBarRect.left;
-
-            // get current scroll position
-            const currentScroll = tabBar.scrollLeft;
-            let targetScroll = currentScroll;
-            let scrollDistance = 0;
-
-            // calculate needed scroll adjustment
-            if (tabLeftRelative < 0) {
-                targetScroll = currentScroll + tabLeftRelative - 10;
-            } else if (tabRightRelative > tabBarVisibleWidth) {
-                const scrollAdjustment = tabRightRelative - tabBarVisibleWidth + 10;
-                targetScroll = currentScroll + scrollAdjustment;
-            }
-
-            // calculate the scroll distance in pixels
-            scrollDistance = Math.abs(targetScroll - currentScroll);
-
-            // calculate duration based on distance (0.15ms per pixel + 100ms base)
-            // min 100ms, max 400ms
-            let duration = Math.min(Math.max(scrollDistance * 0.15, 100), 400);
-
-            // only animate if we need to move more than 5 pixels
-            // otherwise, we can just jump
-            if (scrollDistance > 5) {
-                $tabBarElement.stop(true).animate(
-                    { scrollLeft: targetScroll },
-                    duration,
-                    'linear'
-                );
-            } else {
-                tabBar.scrollLeft = targetScroll;
-            }
-        }
-    }
-
-    /**
-     * to close the overflow button's dropdown
-     */
-    function _closeDropdown() {
-        if ($dropdown) {
-            if ($dropdown.$button) {
-                $dropdown.$button.remove();
-            }
-            $dropdown = null;
-        }
-    }
-
-    /**
-     * this function gets called when the overflow button gets clicked
-     * it shows/closes the dropdown as required
-     * @param {Event} e - the event instance
-     * @param {String} paneId - the pane id "first-pane" or "second-pane"
-     */
-    function _handleOverflowButtonClick(e, paneId) {
-        e.stopPropagation();
-        $dropdown ? _closeDropdown() : showOverflowMenu(paneId, e.pageX, e.pageY);
+        // these icons sit inside the list items. Being the innermost element they get the click first
+        // and keep it from reaching the item, which would otherwise open the file
+        dropdown.$dropdown.find(".tab-close-icon-overflow").on("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const file = FileSystem.getFileForPath(this.getAttribute("data-tab-path"));
+            dropdown.closeDropdown();
+            CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: paneId });
+        });
+        dropdown.$dropdown.find(".tab-pin-icon-overflow").on("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const file = FileSystem.getFileForPath(this.getAttribute("data-tab-path"));
+            dropdown.closeDropdown();
+            CommandManager.execute(Commands.FILE_PIN, { file: file, paneId: paneId, pinned: false });
+        });
     }
 
     /**
@@ -355,27 +155,27 @@ define(function (require, exports, module) {
      * this also registers the event handlers
      */
     function init() {
-        // when clicked anywhere on the page we want to close the dropdown
-        // except the overflow-buttons
-        $("html").on("click", function (e) {
-            if ($(e.target).closest("#overflow-button, #overflow-button-2").length) { return; }
-            _closeDropdown();
+        // the overflow button opens the dropdown and closes it when it is open already
+        $(document).on("click", ".tab-bar-container .overflow-button", function (event) {
+            event.stopPropagation();
+            if (_dropdown) {
+                _dropdown.closeDropdown();
+                return;
+            }
+            const container = this.closest(".tab-bar-container");
+            _showOverflowMenu(container.getAttribute("data-pane-id"),
+                container.querySelector(".phoenix-tab-bar"), $(this));
         });
 
-        // handle when the overflow button is clicked for the first pane
-        $(document).on("click", "#overflow-button", function (e) {
-            _handleOverflowButtonClick(e, "first-pane");
-        });
-
-        // for second pane
-        $(document).on("click", "#overflow-button-2", function (e) {
-            _handleOverflowButtonClick(e, "second-pane");
+        // DropdownButton closes itself on a mousedown outside the list, this covers plain clicks too
+        $(document).on("click", function (event) {
+            if (_dropdown && !$(event.target).closest(".dropdown-overflow-menu, .overflow-button").length) {
+                _dropdown.closeDropdown();
+            }
         });
     }
 
     module.exports = {
-        init,
-        toggleOverflowVisibility,
-        scrollToActiveTab
+        init
     };
 });

@@ -123,6 +123,12 @@ Closes all open files
 Closes files from list
 
 **Kind**: global variable  
+<a name="FILE_PIN"></a>
+
+## FILE\_PIN
+Pins or unpins a file in the working set
+
+**Kind**: global variable  
 <a name="FILE_REOPEN_CLOSED"></a>
 
 ## FILE\_REOPEN\_CLOSED
@@ -471,6 +477,12 @@ Toggles live-preview full screen (design mode with the sidebar hidden)
 Toggles tabbar visibility
 
 **Kind**: global variable  
+<a name="TOGGLE_TABBAR_SMOOTH_SCROLL"></a>
+
+## TOGGLE\_TABBAR\_SMOOTH\_SCROLL
+Toggles whether the tabbar animates when it scrolls to the active tab
+
+**Kind**: global variable  
 <a name="VIEW_ZOOM_IN"></a>
 
 ## VIEW\_ZOOM\_IN
@@ -499,6 +511,12 @@ Submenu for Open in project context menu
 
 ## OPEN\_IN\_SUBMENU\_WS
 Submenu for Open in working set context menu
+
+**Kind**: global variable  
+<a name="OPEN_IN_SUBMENU_FILE_TABS"></a>
+
+## OPEN\_IN\_SUBMENU\_FILE\_TABS
+Submenu for Open in file tab bar context menu
 
 **Kind**: global variable  
 <a name="VIEW_INCREASE_FONT_SIZE"></a>

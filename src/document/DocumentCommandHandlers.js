@@ -1289,6 +1289,18 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Saving a file that is only being looked at keeps it: it joins the working set of the pane showing it
+     * @param {!File} file - the file being saved
+     * @param {string} paneId - the pane the save is for
+     */
+    function _keepPreviewedFile(file, paneId) {
+        if (MainViewManager.getCurrentlyViewedPath(paneId) === file.fullPath &&
+                MainViewManager.findInWorkingSet(paneId, file.fullPath) === -1) {
+            MainViewManager.addToWorkingSet(paneId, file);
+        }
+    }
+
+    /**
      * Saves the given file. If no file specified, assumes the current document.
      * @param {?{doc: ?Document}} commandData  Document to close, or null
      * @return {$.Promise} resolved with the saved document's File (which MAY DIFFER from the doc
@@ -1299,10 +1311,22 @@ define(function (require, exports, module) {
     function handleFileSave(commandData) {
         const activeEditor = EditorManager.getActiveEditor(),
             activeDoc = activeEditor && activeEditor.document,
-            doc = (commandData && commandData.doc) || activeDoc;
+            context = FileViewController.getWorkingSetContext(),
+            contextDoc = context && DocumentManager.getOpenDocumentForPath(context.file.fullPath),
+            doc = (commandData && commandData.doc) || contextDoc || activeDoc;
         let settings;
+
+        // a working set or tab bar menu was opened on a file that was never loaded, nothing to save there
+        if (context && !contextDoc && !(commandData && commandData.doc)) {
+            return $.Deferred().resolve().promise();
+        }
         if(ChangeHelper._onBeforeSave(doc)){
             return $.Deferred().reject().promise();
+        }
+        // a save asked for by the user on the file they are looking at, not one of the saves a close or
+        // a save all hands over as commandData
+        if (doc && !(commandData && commandData.doc)) {
+            _keepPreviewedFile(doc.file, context ? context.paneId : MainViewManager.ACTIVE_PANE);
         }
 
         if (doc && !doc.isSaving) {
@@ -1414,6 +1438,12 @@ define(function (require, exports, module) {
      *      after all operations completed if any ONE of them failed.
      */
     function handleFileSaveAll() {
+        MainViewManager.getPaneIdList().forEach(function (paneId) {
+            const file = MainViewManager.getCurrentlyViewedFile(paneId);
+            if (file) {
+                _keepPreviewedFile(file, paneId);
+            }
+        });
         return saveAll();
     }
 
@@ -1478,6 +1508,13 @@ define(function (require, exports, module) {
             _forceClose = commandData._forceClose;
             paneId      = commandData.paneId || paneId;
             _spawnedRequest = commandData.spawnedRequest || false;
+        }
+
+        // from a working set or tab bar context menu the file to close is the right-clicked one
+        const context = FileViewController.getWorkingSetContext();
+        if (!file && context) {
+            file = context.file;
+            paneId = (commandData && commandData.paneId) || context.paneId;
         }
 
         // utility function for handleFileClose: closes document & removes from workingset
@@ -1924,13 +1961,28 @@ define(function (require, exports, module) {
     function handleFileRename() {
         // Prefer selected sidebar item (which could be a folder)
         var entry = ProjectManager.getContext();
-        if (!entry) {
-            // Else use current file (not selected in ProjectManager if not visible in tree or workingset)
-            entry = MainViewManager.getCurrentlyViewedFile();
-        }
         if (entry) {
             ProjectManager.renameItemInline(entry);
+            return;
         }
+
+        // Else the file a working set or tab bar menu was opened on, else the current file
+        // (not selected in ProjectManager if not visible in tree or workingset)
+        const context = FileViewController.getWorkingSetContext();
+        entry = (context && context.file) || MainViewManager.getCurrentlyViewedFile();
+        if (!entry) {
+            return;
+        }
+        if (!ProjectManager.isWithinProject(entry.fullPath)) {
+            ProjectManager.renameItemInline(entry);
+            return;
+        }
+
+        // the rename happens inline in the file tree, so the tree has to be on screen with the file in
+        // view first. This is what the working set and the tab bar context menus end up in.
+        revealInFileTree(entry).always(function () {
+            ProjectManager.renameItemInline(entry);
+        });
     }
 
 
@@ -2006,8 +2058,10 @@ define(function (require, exports, module) {
      * Reveal a file in the file tree the way the "Show in File Tree" command does: show the sidebar
      * if it is hidden, switch it to the Files tab, select the file and scroll its row into view.
      * @param {File} file - The file to reveal. Silently no-ops outside the project.
+     * @return {$.Promise} resolved once the file is selected in the tree, rejected if it never showed up
      */
     function revealInFileTree(file) {
+        const result = new $.Deferred();
         if (!SidebarView.isVisible()) {
             CommandManager.execute(Commands.VIEW_HIDE_SIDEBAR);
         }
@@ -2015,6 +2069,7 @@ define(function (require, exports, module) {
         ProjectManager.showInTree(file).always(function () {
             if (ProjectManager.isInFileTree(file.fullPath) || !ProjectManager.isWithinProject(file.fullPath)) {
                 _scrollFileTreeSelectionIntoView();
+                result.resolve();
                 return;
             }
             // A file created moments ago outside the FileSystem API is not in the tree yet, so the
@@ -2025,14 +2080,20 @@ define(function (require, exports, module) {
             let retries = 0;
             function selectWhenInTree() {
                 if (ProjectManager.isInFileTree(file.fullPath)) {
-                    ProjectManager.showInTree(file).always(_scrollFileTreeSelectionIntoView);
+                    ProjectManager.showInTree(file).always(function () {
+                        _scrollFileTreeSelectionIntoView();
+                        result.resolve();
+                    });
                 } else if (++retries < MAX_RETRIES) {
                     setTimeout(selectWhenInTree, RETRY_MS);
+                } else {
+                    result.reject();
                 }
             }
             ProjectManager.refreshFileTree();
             setTimeout(selectWhenInTree, RETRY_MS);
         });
+        return result.promise();
     }
 
     /**
@@ -2049,9 +2110,10 @@ define(function (require, exports, module) {
     }
 
     function handleShowInTree() {
-        let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
-        if(activeFile){
-            revealInFileTree(activeFile);
+        const context = FileViewController.getWorkingSetContext();
+        const file = (context && context.file) || MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+        if (file) {
+            revealInFileTree(file);
         }
     }
 
@@ -2112,6 +2174,29 @@ define(function (require, exports, module) {
                     ProjectManager.deleteItem(entry);
                 }
             });
+    }
+
+    /**
+     * Pins or unpins a file in a pane. Without `pinned` in the command data the current state is toggled.
+     * @param {{file: File=, paneId: string=, pinned: boolean=}=} commandData
+     *      file - the file to pin or unpin, defaults to the file shown in the pane
+     *      paneId - the pane the file lives in, defaults to the active pane
+     *      pinned - true to pin, false to unpin, leave out to toggle
+     */
+    function handleFilePin(commandData) {
+        const data = commandData || {},
+            context = FileViewController.getWorkingSetContext(),
+            paneId = data.paneId || (context && context.paneId) || MainViewManager.ACTIVE_PANE,
+            file = data.file || (context && context.file) || MainViewManager.getCurrentlyViewedFile(paneId);
+
+        if (!file) {
+            return;
+        }
+
+        const pinned = (typeof data.pinned === "boolean")
+            ? data.pinned
+            : !MainViewManager.isPathPinned(paneId, file.fullPath);
+        MainViewManager.setFilePinned(paneId, file, pinned);
     }
 
     /** Show the selected sidebar (tree or workingset) item in Finder/Explorer */
@@ -2510,6 +2595,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_SAVE_AS,                Commands.FILE_SAVE_AS,                   handleFileSaveAs, _designModeOpts);
     CommandManager.register(Strings.CMD_FILE_RENAME,                 Commands.FILE_RENAME,                    handleFileRename);
     CommandManager.register(Strings.CMD_FILE_DELETE,                 Commands.FILE_DELETE,                    handleFileDelete);
+    CommandManager.register(Strings.CMD_FILE_PIN,                    Commands.FILE_PIN,                       handleFilePin, _designModeOpts);
 
     // Close Commands
     CommandManager.register(Strings.CMD_FILE_CLOSE,                  Commands.FILE_CLOSE,                     handleFileClose, _designModeOpts);

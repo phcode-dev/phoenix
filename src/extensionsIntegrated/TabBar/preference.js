@@ -30,12 +30,13 @@ define(function (require, exports, module) {
     const PREFERENCES_TAB_BAR = "tabBar.options";   // Preference name
     let tabBarEnabled = true;  // preference to check if the tab bar is enabled
     let tabBarNumberOfTabs = -1; // preference to check the number of tabs, -1 means all tabs
+    let tabBarSmoothScroll = false; // whether the tab bar animates when it scrolls to the active tab
 
 
     PreferencesManager.definePreference(
         PREFERENCES_TAB_BAR,
         "object",
-        { showTabBar: true, numberOfTabs: -1 },
+        { showTabBar: true, numberOfTabs: -1, smoothScroll: false },
         {
             description: Strings.DESCRIPTION_TABBAR,
             keys: {
@@ -48,6 +49,11 @@ define(function (require, exports, module) {
                     type: "number",
                     description: Strings.DESCRIPTION_NUMBER_OF_TABS,
                     initial: -1
+                },
+                smoothScroll: {
+                    type: "boolean",
+                    description: Strings.DESCRIPTION_TABBAR_SMOOTH_SCROLL,
+                    initial: false
                 }
             }
         });
@@ -56,6 +62,7 @@ define(function (require, exports, module) {
     module.exports = {
         PREFERENCES_TAB_BAR,
         tabBarEnabled,
-        tabBarNumberOfTabs
+        tabBarNumberOfTabs,
+        tabBarSmoothScroll
     };
 });
