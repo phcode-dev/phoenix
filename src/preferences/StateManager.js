@@ -159,7 +159,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * returns a preference instance that can be listened `.on("change", cbfn(changeType))` . The callback fucntion will be called
+     * returns a preference instance that can be listened `.on("change", cbfn(changeType))` . The callback function will be called
      * whenever there is a change in the supplied id with a changeType argument. The change type can be one of the two:
      * CHANGE_TYPE_INTERNAL - if change is made within the current app window/browser tap
      * CHANGE_TYPE_EXTERNAL - if change is made in a different app window/browser tab
